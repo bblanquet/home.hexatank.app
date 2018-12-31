@@ -11,12 +11,12 @@ export class RockField extends AliveItem implements IField
 {
     Ceil:Ceil;
     
-    constructor(ceil:Ceil){
+    constructor(ceil:Ceil, sprite:string){
         super();
         this.Ceil = ceil;
         this.Ceil.Field = this;
         this.Z= 0;
-        this.DisplayObjects.push(new Sprite(PlaygroundHelper.Render.Textures["blockedCeil.png"]));
+        this.DisplayObjects.push(new Sprite(PlaygroundHelper.Render.Textures[sprite]));//"blockedCeil.png"
         PlaygroundHelper.Render.Add(this);
     }
 
@@ -24,6 +24,10 @@ export class RockField extends AliveItem implements IField
         //nothing
     }
     IsDesctrutible(): boolean {
+        return true;
+    }
+
+    public IsEnemy(item: AliveItem): boolean {
         return true;
     }
 

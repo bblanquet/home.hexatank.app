@@ -11,6 +11,7 @@ import { AngleFinder } from "./AngleFinder";
 import { IRotatable } from "./IRotatable";
 import { IRotationMaker } from "./IRotationMaker";
 import { RotationMaker } from "./RotationMaker";
+import { HqSkin } from "./HqSkin";
 
 export class TankHead extends Item implements IRotatable
 {
@@ -31,12 +32,13 @@ export class TankHead extends Item implements IRotatable
     IsCanonOverHeat:boolean=false;
     Radius:number;
 
-    Missiles:Array<Missile>;
     private _angleFinder:IAngleFinder;
     private _rotationMaker:IRotationMaker;
+    private _skin:HqSkin;
 
-    constructor(item:Tank){
+    constructor(hqSkin:HqSkin, item:Tank){
         super();
+        this._skin = hqSkin;
         this.CurrentRadius = 0;
         this.Z = 3;
         this.Base = item;
@@ -52,7 +54,7 @@ export class TankHead extends Item implements IRotatable
         });
 
         this.DisplayObjects[0].alpha = 1;
-        this._top = new PIXI.Sprite(PlaygroundHelper.Render.Textures['unitTop.png']);        
+        this._top = this._skin.GetTopTankSprite();        
         this.DisplayObjects.push(this._top);
 
         this.GetSprites().forEach(sprite => {
@@ -62,7 +64,6 @@ export class TankHead extends Item implements IRotatable
         });
         this.IsCentralRef = true;
         
-        this.Missiles = new Array<Missile>();
         
         PlaygroundHelper.Render.Add(this);
 
@@ -76,16 +77,6 @@ export class TankHead extends Item implements IRotatable
 
     public Update(viewX: number, viewY: number, zoom: number):void{
         super.Update(viewX,viewY,zoom);
-        
-        this.Missiles.forEach(missile => {
-            if(!missile.IsDone)
-            {
-                missile.Update(viewX,viewY,zoom);
-            }
-        });
-
-        this.Missiles = this.Missiles.filter(t=>!t.IsDone);
-
         this.Action();
     }
 
@@ -116,7 +107,7 @@ export class TankHead extends Item implements IRotatable
         boundingBox.X = this.Base.GetBoundingBox().GetCenter() - boundingBox.Width / 2;
         boundingBox.Y = this.Base.GetBoundingBox().GetMiddle() - boundingBox.Height / 2;
         var missile = new Missile(boundingBox, this.Base.GetTarget());
-        this.Missiles.push(missile);
+        PlaygroundHelper.Playground.Items.push(missile);
     }
 
     private CoolingDown():void {

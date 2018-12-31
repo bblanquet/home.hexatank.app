@@ -2,27 +2,9 @@ import { MenuItem } from "./MenuItem";
 import { Item } from "../Item";
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../InteractionContext";
-import { PlaygroundHelper } from "../PlaygroundHelper";
 
-export class Menu extends Item{
+export abstract class Menu extends Item{
     Items:Array<MenuItem>;
-
-    constructor(items:Array<MenuItem>){
-        super();
-
-        let size = 100;
-        let margin = PlaygroundHelper.Settings.ScreenHeight/2 - items.length * size /2; 
-        let x = PlaygroundHelper.Settings.ScreenWidth - size;
-        let i = 0;
-        this.Items = new Array<MenuItem>();
-        items.forEach(item=>
-            {
-                item.SetBoundingBox({x:x, y:margin+i*size, width:size, height:size})
-                this.Items.push(item);
-                i += 1;
-            }
-        );
-    }
 
     public Update(viewX: number, viewY: number, zoom: number): void {
         this.Items.forEach(item=>{
@@ -41,11 +23,13 @@ export class Menu extends Item{
             if(element.GetSprites()[0].containsPoint(context.Point))
             {
                 isSelected = element.Select(context);
+                console.log(`selected: ${isSelected}`,'font-weight:bold;color:red;');
                 if(isSelected)
                 {
                     return false;
                 }
             }
+            return true;
         });
         return isSelected;
     }

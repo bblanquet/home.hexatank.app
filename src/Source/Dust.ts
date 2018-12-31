@@ -9,7 +9,6 @@ export class Dust extends Item
     private i:number;
     private currentDust:number;
     private currentAlpha:number;
-    public isDone:number;
 
     constructor(boundingBox:BoundingBox)
     {
@@ -18,7 +17,6 @@ export class Dust extends Item
         this.i = 0;
         this.currentDust = -1;
         this.currentAlpha = 1;
-        this.isDone = 0;
         this.Z= 1;
 
         this.BoundingBox = boundingBox; 
@@ -36,55 +34,52 @@ export class Dust extends Item
         return this.BoundingBox;
     }
 
-    public Clear():void
-    {
-        PlaygroundHelper.Render.Remove(this);
-    }
-
     public Select(context: InteractionContext): boolean {
         //do nothing
         return false;
     }
-    public  Update(viewX: number, viewY: number, zoom: number): void{
+    public Update(viewX: number, viewY: number, zoom: number): void{
         super.Update(viewX,viewY,zoom);
 
-        if(this.isDone == 0)
+        this.i += 1;
+    
+        if(0 <= this.currentDust 
+            && this.currentDust < this.DisplayObjects.length)
         {
-            this.i += 1;
-    
-            if(0 <= this.currentDust 
-                && this.currentDust < this.DisplayObjects.length)
+            this.DisplayObjects[this.currentDust].rotation += 0.1;
+            this.DisplayObjects[this.currentDust].alpha = this.currentAlpha;
+        }
+
+        this.currentAlpha -= 0.01;
+
+        if(this.currentAlpha < 0)
+        {
+            this.currentAlpha = 0;			
+        }
+
+        if(this.i % 15 == 0)
+        {
+            var previous = this.currentDust; 
+            this.currentDust += 1;
+
+            if(this.DisplayObjects.length == this.currentDust)
             {
-                this.DisplayObjects[this.currentDust].rotation += 0.1;
-                this.DisplayObjects[this.currentDust].alpha = this.currentAlpha;
+                this.DisplayObjects[previous].alpha = 0;
+                this.Destroy();
             }
-    
-            this.currentAlpha -= 0.01;
-    
-            if(this.currentAlpha < 0)
+            else
             {
-                this.currentAlpha = 0;			
-            }
-    
-            if(this.i % 15 == 0)
-            {
-                var previous = this.currentDust; 
-                this.currentDust += 1;
-    
-                if(this.DisplayObjects.length == this.currentDust)
+                if(-1 < previous)
                 {
                     this.DisplayObjects[previous].alpha = 0;
-                    this.isDone = 1;
                 }
-                else
-                {
-                    if(-1 < previous)
-                    {
-                        this.DisplayObjects[previous].alpha = 0;
-                    }
-                    this.DisplayObjects[this.currentDust].alpha = this.currentAlpha;
-                }
+                this.DisplayObjects[this.currentDust].alpha = this.currentAlpha;
             }
         }
+    }
+
+    private Destroy() {
+        this.IsUpdatable = false;
+        PlaygroundHelper.Render.Remove(this);
     }
 }

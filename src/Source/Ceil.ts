@@ -141,12 +141,7 @@ export class Ceil extends Item implements ICeil
         if(isSelected)
         {
             console.log(`%c Q:${this.GetCoordinate().Q} R:${this.GetCoordinate().R}`,'color:purple;font-weight:bold;')
-            //this.SelectedSprite.alpha = 1;
             context.OnSelect(this);
-        }
-        else
-        {
-            //this.SelectedSprite.alpha = 0;
         }
 
         return false;

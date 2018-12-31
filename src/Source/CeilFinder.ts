@@ -5,7 +5,7 @@ import { Point } from "./Point";
 export class CeilFinder{
     public GetCeil(ceils:Array<Ceil>,vehcile:Vehicle):Ceil
     {
-        let min =this.GetCost(ceils[0].GetBoundingBox().GetCentralPoint(),vehcile.GetBoundingBox().GetCentralPoint()); 
+        let min = this.GetCost(ceils[0].GetBoundingBox().GetCentralPoint(),vehcile.GetBoundingBox().GetCentralPoint()); 
         let selectedCeil = ceils[0];
         ceils.filter(c=>!c.IsBlocked()).forEach(ceil => 
         {

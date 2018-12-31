@@ -8,19 +8,12 @@ export class LiteEvent<T> implements ILiteEvent<T> {
     }
 
     public off(handler: { (obj:any, data?: T): void }) : void {
-        //console.log(`%c before off ${this.handlers.length}`,'color:red;','font-weight:bold;');
-        this.handlers.forEach(element=>{
-            //console.log(`%c off ${element.prototype}`,'color:green;','font-weight:bold;');
-        });
-        
         this.handlers = this.handlers.filter(h => h !== handler);
-        //console.log(`%c after off ${this.handlers.length}`,'color:red;','font-weight:bold;');
-
     }
 
-    public trigger(obj:any, data?: T) {
-
-        this.handlers.forEach(h => h(obj,data));//slice(0)
+    public trigger(obj:any, data?: T) 
+    {
+        this.handlers.forEach(h => h(obj,data));
     }
 
     public expose() : ILiteEvent<T> {

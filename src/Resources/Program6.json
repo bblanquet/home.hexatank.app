@@ -1,6 +1,6 @@
 {
   "frames": {
-    "track1.png": {
+    "tankWheel1": {
       "frame": {
         "x": 0 ,
         "y": 300 ,
@@ -24,7 +24,7 @@
         "y": 0.5
       }
     } ,
-    "track2.png": {
+    "tankWheel2": {
       "frame": {
         "x": 300 ,
         "y": 300 ,
@@ -48,7 +48,7 @@
         "y": 0.5
       }
     } ,
-    "track3.png": {
+    "tankWheel3": {
       "frame": {
         "x": 600 ,
         "y": 300 ,
@@ -72,7 +72,7 @@
         "y": 0.5
       }
     } ,
-    "track4.png": {
+    "tankWheel4": {
       "frame": {
         "x": 900 ,
         "y": 300 ,
@@ -96,7 +96,7 @@
         "y": 0.5
       }
     } ,
-    "track5.png": {
+    "tankWheel5": {
       "frame": {
         "x": 1200 ,
         "y": 300 ,
@@ -120,7 +120,7 @@
         "y": 0.5
       }
     } ,
-    "track6.png": {
+    "tankWheel6": {
       "frame": {
         "x": 1500 ,
         "y": 300 ,
@@ -144,7 +144,7 @@
         "y": 0.5
       }
     } ,
-    "track7.png": {
+    "tankWheel7": {
       "frame": {
         "x": 1800 ,
         "y": 300 ,
@@ -168,7 +168,7 @@
         "y": 0.5
       }
     } ,
-    "unitTop.png": {
+    "redTopTank": {
       "frame": {
         "x": 300 ,
         "y": 600 ,
@@ -192,7 +192,7 @@
         "y": 0.5
       }
     } ,
-    "unitBottom.png": {
+    "redBottomTank": {
       "frame": {
         "x": 0 ,
         "y": 600 ,
@@ -216,7 +216,7 @@
         "y": 0.5
       }
     } ,
-    "unitTop2.png": {
+    "blueTopTank": {
       "frame": {
         "x": 900 ,
         "y": 600 ,
@@ -240,7 +240,7 @@
         "y": 0.5
       }
     } ,
-    "unitBottom2.png": {
+    "blueBottomTank": {
       "frame": {
         "x": 600 ,
         "y": 600 ,
@@ -264,10 +264,10 @@
         "y": 0.5
       }
     } ,
-    "base.png": {
+    "hq": {
       "frame": {
-        "x": 1200 ,
-        "y": 600 ,
+        "x": 0 ,
+        "y": 2100 ,
         "w": 300 ,
         "h": 300
       } ,
@@ -288,7 +288,7 @@
         "y": 0.5
       }
     } ,
-    "truck1.png": {
+    "redTruck": {
       "frame": {
         "x": 0 ,
         "y": 900 ,
@@ -312,7 +312,7 @@
         "y": 0.5
       }
     } ,
-    "truck2.png": {
+    "blueTruck": {
       "frame": {
         "x": 300 ,
         "y": 900 ,
@@ -384,7 +384,7 @@
         "y": 0.5
       }
     } ,
-    "tankIcon.png": {
+    "tankIcon": {
       "frame": {
         "x": 1500 ,
         "y": 600 ,
@@ -432,10 +432,10 @@
         "y": 0.5
       }
     } ,
-    "attack1.png": {
+    "attackIcon": {
       "frame": {
-        "x": 600 ,
-        "y": 900 ,
+        "x": 0 ,
+        "y": 2400 ,
         "w": 100 ,
         "h": 150
       } ,
@@ -456,10 +456,10 @@
         "y": 0
       }
     } ,
-    "attack2.png": {
+    "hoverAttackIcon": {
       "frame": {
-        "x": 700 ,
-        "y": 900 ,
+        "x": 0 ,
+        "y": 2550 ,
         "w": 100 ,
         "h": 150
       } ,
@@ -480,10 +480,10 @@
         "y": 0.5
       }
     } ,
-    "defense1.png": {
+    "topBorder": {
       "frame": {
-        "x": 800 ,
-        "y": 900 ,
+        "x": 400 ,
+        "y": 2400 ,
         "w": 100 ,
         "h": 150
       } ,
@@ -504,10 +504,10 @@
         "y": 0.5
       }
     } ,
-    "defense2.png": {
+    "bottomBorder": {
       "frame": {
-        "x": 900 ,
-        "y": 900 ,
+        "x": 400 ,
+        "y": 2550 ,
         "w": 100 ,
         "h": 150
       } ,

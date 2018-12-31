@@ -1,6 +1,30 @@
 {
   "frames": {
-    "track1.png": {
+    "crater": {
+      "frame": {
+        "x": 1800,
+        "y": 600 ,
+        "w": 300 ,
+        "h": 300
+      } ,
+      "rotated": false ,
+      "trimmed": false ,
+      "spriteSourceSize": {
+        "x": 0 ,
+        "y": 0 ,
+        "w": 300 ,
+        "h": 300
+      } ,
+      "sourceSize": {
+        "w": 300 ,
+        "h": 300
+      } ,
+      "pivot": {
+        "x": 0.5 ,
+        "y": 0.5
+      }
+    } ,
+    "tankWheel1": {
       "frame": {
         "x": 0 ,
         "y": 300 ,
@@ -24,7 +48,7 @@
         "y": 0.5
       }
     } ,
-    "track2.png": {
+    "tankWheel2": {
       "frame": {
         "x": 300 ,
         "y": 300 ,
@@ -48,7 +72,7 @@
         "y": 0.5
       }
     } ,
-    "track3.png": {
+    "tankWheel3": {
       "frame": {
         "x": 600 ,
         "y": 300 ,
@@ -72,7 +96,7 @@
         "y": 0.5
       }
     } ,
-    "track4.png": {
+    "tankWheel4": {
       "frame": {
         "x": 900 ,
         "y": 300 ,
@@ -96,7 +120,7 @@
         "y": 0.5
       }
     } ,
-    "track5.png": {
+    "tankWheel5": {
       "frame": {
         "x": 1200 ,
         "y": 300 ,
@@ -120,7 +144,7 @@
         "y": 0.5
       }
     } ,
-    "track6.png": {
+    "tankWheel6": {
       "frame": {
         "x": 1500 ,
         "y": 300 ,
@@ -144,7 +168,7 @@
         "y": 0.5
       }
     } ,
-    "track7.png": {
+    "tankWheel7": {
       "frame": {
         "x": 1800 ,
         "y": 300 ,
@@ -168,7 +192,7 @@
         "y": 0.5
       }
     } ,
-    "unitTop.png": {
+    "redTopTank": {
       "frame": {
         "x": 300 ,
         "y": 600 ,
@@ -192,7 +216,7 @@
         "y": 0.5
       }
     } ,
-    "unitBottom.png": {
+    "redBottomTank": {
       "frame": {
         "x": 0 ,
         "y": 600 ,
@@ -216,7 +240,7 @@
         "y": 0.5
       }
     } ,
-    "unitTop2.png": {
+    "blueTopTank": {
       "frame": {
         "x": 900 ,
         "y": 600 ,
@@ -240,7 +264,7 @@
         "y": 0.5
       }
     } ,
-    "unitBottom2.png": {
+    "blueBottomTank": {
       "frame": {
         "x": 600 ,
         "y": 600 ,
@@ -264,10 +288,10 @@
         "y": 0.5
       }
     } ,
-    "base.png": {
+    "hq": {
       "frame": {
-        "x": 1200 ,
-        "y": 600 ,
+        "x": 0 ,
+        "y": 2100 ,
         "w": 300 ,
         "h": 300
       } ,
@@ -288,7 +312,7 @@
         "y": 0.5
       }
     } ,
-    "truck1.png": {
+    "redTruck": {
       "frame": {
         "x": 0 ,
         "y": 900 ,
@@ -312,7 +336,7 @@
         "y": 0.5
       }
     } ,
-    "truck2.png": {
+    "blueTruck": {
       "frame": {
         "x": 300 ,
         "y": 900 ,
@@ -386,22 +410,46 @@
     } ,
     "tankIcon": {
       "frame": {
-        "x": 1500 ,
-        "y": 600 ,
-        "w": 300 ,
-        "h": 300
+        "x": 0 ,
+        "y": 2850 ,
+        "w": 100 ,
+        "h": 150
       } ,
       "rotated": false ,
       "trimmed": false ,
       "spriteSourceSize": {
         "x": 0 ,
         "y": 0 ,
-        "w": 300 ,
-        "h": 300
+        "w": 100 ,
+        "h": 150
       } ,
       "sourceSize": {
-        "w": 300 ,
-        "h": 300
+        "w": 100 ,
+        "h": 150
+      } ,
+      "pivot": {
+        "x": 0.5 ,
+        "y": 0.5
+      }
+    } ,
+    "truckIcon": {
+      "frame": {
+        "x": 0 ,
+        "y": 2700 ,
+        "w": 100 ,
+        "h": 150
+      } ,
+      "rotated": false ,
+      "trimmed": false ,
+      "spriteSourceSize": {
+        "x": 0 ,
+        "y": 0 ,
+        "w": 100 ,
+        "h": 150
+      } ,
+      "sourceSize": {
+        "w": 100 ,
+        "h": 150
       } ,
       "pivot": {
         "x": 0.5 ,
@@ -432,10 +480,10 @@
         "y": 0.5
       }
     } ,
-    "attack1.png": {
+    "attackIcon": {
       "frame": {
-        "x": 600 ,
-        "y": 900 ,
+        "x": 0 ,
+        "y": 2400 ,
         "w": 100 ,
         "h": 150
       } ,
@@ -456,10 +504,10 @@
         "y": 0
       }
     } ,
-    "attack2.png": {
+    "hoverAttackIcon": {
       "frame": {
-        "x": 700 ,
-        "y": 900 ,
+        "x": 0 ,
+        "y": 2550 ,
         "w": 100 ,
         "h": 150
       } ,
@@ -480,10 +528,10 @@
         "y": 0.5
       }
     } ,
-    "defense1.png": {
+    "leftTopBorder": {
       "frame": {
-        "x": 800 ,
-        "y": 900 ,
+        "x": 400 ,
+        "y": 2400 ,
         "w": 100 ,
         "h": 150
       } ,
@@ -504,10 +552,10 @@
         "y": 0.5
       }
     } ,
-    "defense2.png": {
+    "rightBottomBorder": {
       "frame": {
-        "x": 900 ,
-        "y": 900 ,
+        "x": 500 ,
+        "y": 2550 ,
         "w": 100 ,
         "h": 150
       } ,
@@ -528,10 +576,10 @@
         "y": 0.5
       }
     } ,
-    "check1.png": {
+    "rightTopBorder": {
       "frame": {
-        "x": 1000 ,
-        "y": 900 ,
+        "x": 500 ,
+        "y": 2400 ,
         "w": 100 ,
         "h": 150
       } ,
@@ -552,10 +600,10 @@
         "y": 0.5
       }
     } ,
-    "check2.png": {
+    "leftBottomBorder": {
       "frame": {
-        "x": 1100 ,
-        "y": 900 ,
+        "x": 400 ,
+        "y": 2550 ,
         "w": 100 ,
         "h": 150
       } ,
@@ -576,10 +624,10 @@
         "y": 0.5
       }
     } ,
-    "cancel1.png": {
+    "defenseIcon": {
       "frame": {
-        "x": 1200 ,
-        "y": 900 ,
+        "x": 300 ,
+        "y": 2400 ,
         "w": 100 ,
         "h": 150
       } ,
@@ -600,10 +648,106 @@
         "y": 0.5
       }
     } ,
-    "cancel2.png": {
+    "hoverDefenseIcon": {
       "frame": {
-        "x": 1300 ,
-        "y": 900 ,
+        "x": 300 ,
+        "y": 2550 ,
+        "w": 100 ,
+        "h": 150
+      } ,
+      "rotated": false ,
+      "trimmed": false ,
+      "spriteSourceSize": {
+        "x": 0 ,
+        "y": 0 ,
+        "w": 100 ,
+        "h": 150
+      } ,
+      "sourceSize": {
+        "w": 100 ,
+        "h": 150
+      } ,
+      "pivot": {
+        "x": 0.5 ,
+        "y": 0.5
+      }
+    } ,
+    "patrolIcon": {
+      "frame": {
+        "x": 200 ,
+        "y": 2400 ,
+        "w": 100 ,
+        "h": 150
+      } ,
+      "rotated": false ,
+      "trimmed": false ,
+      "spriteSourceSize": {
+        "x": 0 ,
+        "y": 0 ,
+        "w": 100 ,
+        "h": 150
+      } ,
+      "sourceSize": {
+        "w": 100 ,
+        "h": 150
+      } ,
+      "pivot": {
+        "x": 0.5 ,
+        "y": 0.5
+      }
+    } ,
+    "hoverPatrolIcon": {
+      "frame": {
+        "x": 200 ,
+        "y": 2550 ,
+        "w": 100 ,
+        "h": 150
+      } ,
+      "rotated": false ,
+      "trimmed": false ,
+      "spriteSourceSize": {
+        "x": 0 ,
+        "y": 0 ,
+        "w": 100 ,
+        "h": 150
+      } ,
+      "sourceSize": {
+        "w": 100 ,
+        "h": 150
+      } ,
+      "pivot": {
+        "x": 0.5 ,
+        "y": 0.5
+      }
+    } ,
+    "cancelIcon": {
+      "frame": {
+        "x": 100 ,
+        "y": 2400 ,
+        "w": 100 ,
+        "h": 150
+      } ,
+      "rotated": false ,
+      "trimmed": false ,
+      "spriteSourceSize": {
+        "x": 0 ,
+        "y": 0 ,
+        "w": 100 ,
+        "h": 150
+      } ,
+      "sourceSize": {
+        "w": 100 ,
+        "h": 150
+      } ,
+      "pivot": {
+        "x": 0.5 ,
+        "y": 0.5
+      }
+    } ,
+    "hoverCancelIcon": {
+      "frame": {
+        "x": 100 ,
+        "y": 2550 ,
         "w": 100 ,
         "h": 150
       } ,
@@ -696,7 +840,7 @@
         "y": 0.5
       }
     } ,
-    "blockedCeil.png": {
+    "rock": {
       "frame": {
         "x": 900 ,
         "y": 0 ,
@@ -1056,10 +1200,58 @@
         "y": 0.5
       }
     } ,
+    "tree": {
+      "frame": {
+        "x": 1500,
+        "y": 1200 ,
+        "w": 300 ,
+        "h": 300
+      } ,
+      "rotated": false ,
+      "trimmed": false ,
+      "spriteSourceSize": {
+        "x": 0 ,
+        "y": 0 ,
+        "w": 300 ,
+        "h": 300
+      } ,
+      "sourceSize": {
+        "w": 300 ,
+        "h": 300
+      } ,
+      "pivot": {
+        "x": 0.5 ,
+        "y": 0.5
+      }
+    } ,
     "flower.png": {
       "frame": {
         "x": 1500,
         "y": 1500 ,
+        "w": 300 ,
+        "h": 300
+      } ,
+      "rotated": false ,
+      "trimmed": false ,
+      "spriteSourceSize": {
+        "x": 0 ,
+        "y": 0 ,
+        "w": 300 ,
+        "h": 300
+      } ,
+      "sourceSize": {
+        "w": 300 ,
+        "h": 300
+      } ,
+      "pivot": {
+        "x": 0.5 ,
+        "y": 0.5
+      }
+    } ,
+    "selection": {
+      "frame": {
+        "x": 600,
+        "y": 2400 ,
         "w": 300 ,
         "h": 300
       } ,

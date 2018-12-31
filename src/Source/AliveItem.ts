@@ -50,4 +50,6 @@ export abstract class AliveItem extends Item{
     {
         return this.Life > 0;
     }
+
+    public abstract IsEnemy(item:AliveItem):boolean;
 }

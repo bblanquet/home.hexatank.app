@@ -9,12 +9,9 @@ export class Missile extends Item{
     BoundingBox:BoundingBox;
     Target:AliveItem;
     Index:number;
-    IsDone:boolean=false;
     IsReached:Boolean;
     private _speed:number;
-    private _timeBuffer:number=4;
     private _currentMissile:number=0;
-    private _explosion:Explosion;
     private _damage:number=50;
 
     constructor(boundingbox:BoundingBox, target:AliveItem)
@@ -77,9 +74,6 @@ export class Missile extends Item{
 
     public Update(viewX: number, viewY: number, zoom: number):void
     {
-
-        //console.log(`%c X:${this.GetBoundingBox().X} Y:${this.GetBoundingBox().Y}`,'font-weight:bold;color:red;');
-
         super.Update(viewX,viewY,zoom);
 
         if(!this.IsReached)
@@ -99,25 +93,19 @@ export class Missile extends Item{
             this.DisplayObjects[this._currentMissile].alpha = 0;
             this._currentMissile = (this._currentMissile+1) % this.DisplayObjects.length;
             this.DisplayObjects[this._currentMissile].alpha = 1;
-
         }
         else
         {
-            if(this._explosion == null)
-            {
-                PlaygroundHelper.Render.Remove(this);
-                this.Target.GetDamage(this._damage);
-                this._explosion = new Explosion(this.Target.GetBoundingBox());
-            }
-            else
-            {
-                this._explosion.Update(viewX,viewY,zoom);
-
-                if(this._explosion.IsDone){
-                    this.IsDone = true;
-                }
-            }
+            this.Target.GetDamage(this._damage);
+            let explosion = new Explosion(this.Target.GetBoundingBox());
+            PlaygroundHelper.Playground.Items.push(explosion);
+            this.Destroy();
         }
     };
 
+
+    private Destroy() {
+        PlaygroundHelper.Render.Remove(this);
+        this.IsUpdatable = false;
+    }
 }

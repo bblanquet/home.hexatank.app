@@ -10,22 +10,28 @@ import { isNullOrUndefined, isNull } from 'util';
 import { InteractionContext } from './InteractionContext';
 import { Item } from './Item';
 import { CeilFinder } from './CeilFinder';
+import { HqSkin } from './HqSkin';
+import { Headquarter } from './Headquarter';
+import { IHqContainer } from './IHqContainer';
 
-export class Tank extends Vehicle
+export class Tank extends Vehicle implements IHqContainer
 {
+    Hq: Headquarter;
     Head:TankHead;
-    private _target:AliveItem;
+    private _currentTarget:AliveItem;
     private _mainTarget:AliveItem;
     private _ceilFinder:CeilFinder;
 
-    constructor()
+    constructor(hq:Headquarter)
     {
         super();
+        this.Hq = hq;
 
-        let wheels = ['track1.png','track2.png','track3.png',
-                    'track4.png','track5.png','track6.png',
-                    'track7.png'
+        let wheels = ['tankWheel1','tankWheel2','tankWheel3',
+                    'tankWheel4','tankWheel5','tankWheel6',
+                    'tankWheel7'
                     ];
+
         wheels.forEach(wheel =>{
             let sprite = new PIXI.Sprite(PlaygroundHelper.Render.Textures[wheel]);
             this.Wheels.push(sprite);
@@ -33,11 +39,11 @@ export class Tank extends Vehicle
             this.RootSprites.push(sprite);
         });
 
-        var sprite = new PIXI.Sprite(PlaygroundHelper.Render.Textures["unitBottom.png"]);
+        var sprite = this.Hq.GetSkin().GetBottomTankSprite();//PlaygroundHelper.Render.Textures["redBottomTank"]
         this.DisplayObjects.push(sprite);
         this.RootSprites.push(sprite);
         
-        this.Head = new TankHead(this);
+        this.Head = new TankHead(this.Hq.GetSkin(),this);
 
         //make pivot sprite center
         this.GetSprites().forEach(sprite => {
@@ -56,27 +62,14 @@ export class Tank extends Vehicle
         PlaygroundHelper.Render.Remove(this.Head);        
     }
 
-    CreateDust(x:number,y:number):void
-    {
-        var b = new BoundingBox();
-        b.X = x;
-        b.Y = y;
-        b.Width = this.GetBoundingBox().Width/5;
-        b.Height = this.GetBoundingBox().Width/5;
-
-        var dust = new Dust(b);
-        PlaygroundHelper.Render.Add(dust);
-        this.Dusts.push(dust);
-    }
-
     Update(viewX: number, viewY: number, zoom: number):void{
         super.Update(viewX,viewY,zoom);
 
         if(this._mainTarget != null && !this._mainTarget.IsAlive()){
             this._mainTarget = null;
         }
-        if(this._target != null && !this._target.IsAlive()){
-            this._target = null;
+        if(this._currentTarget != null && !this._currentTarget.IsAlive()){
+            this._currentTarget = null;
         }
 
         this.Head.Update(viewX,viewY,zoom);
@@ -87,60 +80,71 @@ export class Tank extends Vehicle
     private FindTargets() {
         var ceils = this.CurrentCeil.GetAllNeighbourhood();
 
-        let aliveItems  = ceils.map(c=> (<Ceil>c).GetShootableEntity()).filter(c=> !isNull(c))
+        let enemies  = ceils.map(c=> (<Ceil>c).GetShootableEntity()).filter(c=> !isNull(c))
 
         if (!isNullOrUndefined(this._mainTarget)) {
-            var exist = aliveItems.indexOf(this._mainTarget) === -1 ? false : true;
-            if (!exist) {
-                this._mainTarget = 0 < aliveItems.length ? aliveItems[0] : null;
+            var exist = enemies.indexOf(this._mainTarget) === -1 ? false : true;
+            if(exist)
+            {
+                this._currentTarget = this._mainTarget;
             }
+            else 
+            {
+                this._currentTarget = 0 < enemies.length ? enemies[0] : null;
+            }
+            return;
         }
 
-        aliveItems = ceils.map(c=> <AliveItem>((<Ceil>c).GetMovable() as any)).filter(c=> !isNull(c))
+        enemies = ceils.map(ceil=> <AliveItem>((<Ceil>ceil).GetMovable() as any))
+                          .filter(aliveItem=> !isNullOrUndefined(aliveItem) && this.IsEnemy(aliveItem))
 
-        if (!isNullOrUndefined(this._target)) {
-            var exist = aliveItems.indexOf(this._target) === -1 ? false : true;
+        if (!isNullOrUndefined(this._currentTarget)) {
+            var exist = enemies.indexOf(this._currentTarget) === -1 ? false : true;
             if (!exist) {
-                this._target = 0 < aliveItems.length ? aliveItems[0] : null;
+                this._currentTarget = 0 < enemies.length ? enemies[0] : null;
             }
         }
         else {
-            if (0 < aliveItems.length) {
-                this._target = aliveItems[0];
+            if (0 < enemies.length) {
+                this._currentTarget = enemies[0];
             }
         }
     }
 
+    public IsEnemy(item: AliveItem): boolean {
+        var hqContainer = item as any as IHqContainer;
+        if(hqContainer != null)
+        {
+            return hqContainer.Hq !== this.Hq;
+        }
+        return false;
+    }
+
     public GetTarget():AliveItem{
-        if(this._mainTarget != null){
-            return this._mainTarget;
-        }
-        if(this._target != null){
-            return this._target;
-        }
-        return null;
+        return this._currentTarget;
     }
 
     protected Selected(obj:any, item:Item):void
     {
-        var context = obj as InteractionContext;
-        var finalCeil = item as Ceil;
-        //console.log(`%c SELECTED `,'color:green; font-weight:bold;');
+        let context = obj as InteractionContext;
+        let finalCeil = item as Ceil;
 
-        if(finalCeil != null )//&& finalCeil IsShootable()!finalCeil.IsBlocked()
+        if(finalCeil != null )
         {
             if(!finalCeil.IsBlocked())
             {
-                this.FinalCeil = finalCeil;
-                this.SetNextCeils(); 
+                super.Selected(obj,item); 
             }
-            else if(finalCeil.IsShootable())
+            else if(finalCeil.IsShootable() && !this.IsSettingPatrol)
             {
-                this.FinalCeil = this._ceilFinder.GetCeil(finalCeil.GetNeighbourhood().map(c => <Ceil>c), this);
+                let ceils = finalCeil.GetNeighbourhood().map(c => <Ceil>c);
+                if(0 === finalCeil.GetAllNeighbourhood().filter(c=> c === this.CurrentCeil).length)
+                {
+                    this.FinalCeil = this._ceilFinder.GetCeil(ceils, this);
+                    this.SetNextCeils(); 
+                }
                 this._mainTarget = finalCeil.GetShootableEntity();
-                this.SetNextCeils(); 
             }
-            //console.log(`%c opened nodes: ${this.NextCeils.length} `,'color:blue;','font-weight:bold;');
         }
 
         context.SelectionEvent.off(this.selectionFunc);

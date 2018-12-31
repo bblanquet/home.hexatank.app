@@ -1,11 +1,10 @@
-import {Ceil} from './Ceil';
 import {Item} from './Item';
-import {Vehicle} from './Vehicle';
 import {LiteEvent} from "./LiteEvent";
 
 export class InteractionContext{
     SelectionEvent:LiteEvent<Item>;
     Point:PIXI.Point;
+    Item:Item;
 
     constructor(){
         this.SelectionEvent = new LiteEvent<Item>();

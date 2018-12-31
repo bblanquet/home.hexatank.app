@@ -16,12 +16,18 @@ import { Menu } from './Source/Menu/Menu';
 import { TankMenuItem } from './Source/Menu/TankMenuItem';
 import { BottomMenu } from './Source/Menu/BottomMenu';
 import { RockField } from './Source/RockField';
+import { HqSkin } from './Source/HqSkin';
+import { RightMenu } from './Source/Menu/RightMenu';
+import { LeftMenu } from './Source/Menu/LeftMenu';
+import { AttackMenuItem } from './Source/Menu/AttackMenuItem';
+import { PatrolMenuItem } from './Source/Menu/PatrolMenuItem';
+import { TruckMenuItem } from './Source/Menu/TruckMenuItem';
 
 const app = new PIXI.Application({width: 480, height: 800});
 let playground:Playground;
 
 document.addEventListener('DOMContentLoaded', () => {
-    app.renderer.backgroundColor = 0xe5d300;
+    app.renderer.backgroundColor = 0x84cb68;
     document.body.appendChild(app.view);
     app.loader.resources
     app.loader.add("../Resources/Program6.json").load(Setup);
@@ -51,13 +57,19 @@ function Setup(){
         PlaygroundHelper.CeilsContainer.Add(ceil);
         items.push(ceil);
     });        
+    
+    CleanCeil(ceils,40);
+    var redQuarter = new Headquarter(new HqSkin("redBottomTank","redTopTank","redTruck",0xb31616),(<Ceil> ceils[40]));
+    CleanCeil(ceils,60);
+    var blueQuarter = new Headquarter(new HqSkin("blueBottomTank","blueTopTank","blueTruck",0x167eb5),(<Ceil> ceils[60]));
+
+    items.push(redQuarter);
+    items.push(blueQuarter);
 
     var vehicles = new Array<Vehicle>();
-
-    vehicles.push(VehicleFactory.GetTank(<Ceil> ceils[0]));
-    vehicles.push(VehicleFactory.GetTank(<Ceil> ceils[3]));
-    vehicles.push(VehicleFactory.GetTruck(<Ceil> ceils[23]));
-    
+    vehicles.push(VehicleFactory.GetTank(<Ceil> ceils[0],redQuarter));
+    vehicles.push(VehicleFactory.GetTank(<Ceil> ceils[3],blueQuarter));
+    vehicles.push(VehicleFactory.GetTruck(<Ceil> ceils[23],blueQuarter));
 
     CleanCeil(ceils,0);
     CleanCeil(ceils,1);
@@ -65,21 +77,33 @@ function Setup(){
     items.push(vehicles[0]);
     items.push(vehicles[1]);
     items.push(vehicles[2]);
-    
-    CleanCeil(ceils,40);
-    var headquarter = new Headquarter((<Ceil> ceils[40]));
-    items.push(headquarter);
 
     CleanCeil(ceils,15);
     let diamond = new Diamond(<Ceil> ceils[15]);
     items.push(diamond);
 
-    var menu = new Menu([new TankMenuItem(headquarter,'tankIcon','tankIcon')]);
-    items.splice(0,0,menu);
+    var rightMenu = new RightMenu(
+        [new AttackMenuItem('rightTopBorder','rightTopBorder'),
+        new TankMenuItem(redQuarter),
+        new TruckMenuItem(redQuarter),
+        new AttackMenuItem('rightBottomBorder','rightBottomBorder')]);    
+        items.splice(0,0,rightMenu);
 
-    PlaygroundHelper.Vehicles = vehicles;
+    var leftMenu = new LeftMenu(
+        [new AttackMenuItem('leftTopBorder','leftTopBorder'),
+        new AttackMenuItem('attackIcon','hoverAttackIcon'),
+        new AttackMenuItem('defenseIcon','hoverDefenseIcon'),
+        new PatrolMenuItem(),
+        new AttackMenuItem('cancelIcon','hoverCancelIcon'),
+        new AttackMenuItem('leftBottomBorder','leftBottomBorder')]);
 
-    var bottomMenu = new BottomMenu(headquarter);
+    items.splice(0,0,leftMenu);
+
+    vehicles.forEach(vehicle=>{
+        PlaygroundHelper.Add(vehicle);
+    });
+    
+    var bottomMenu = new BottomMenu(redQuarter);
 
     items.splice(0,0,bottomMenu);
 

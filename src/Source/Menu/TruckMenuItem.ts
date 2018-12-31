@@ -1,13 +1,12 @@
 import { MenuItem } from "./MenuItem";
-import { InteractionContext } from "../InteractionContext";
 import { Headquarter } from "../Headquarter";
+import { InteractionContext } from "../InteractionContext";
 
-export class TankMenuItem extends MenuItem
-{
+export class TruckMenuItem extends MenuItem{
     private _hq:Headquarter;
 
-    constructor(hq:Headquarter){
-        super('tankIcon','tankIcon');
+    constructor(hq:Headquarter,){
+        super('truckIcon','truckIcon');
         this._hq = hq;
     }
 
@@ -16,7 +15,7 @@ export class TankMenuItem extends MenuItem
         //console.log(`%c touchdown`,'color:blue;font-weight:bold;');
         
         if(this._hq.Diamonds > 4){
-            if(this._hq.CreateTank()){
+            if(this._hq.CreateTruck()){
                 this._hq.Diamonds -= 4;
             }
         }

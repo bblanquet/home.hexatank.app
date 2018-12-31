@@ -24,8 +24,13 @@ export class CeilDecorator{
             }
             else if(decorationRandom <= 0.75)
             {
-                var rock = new RockField(ceil);
-                items.push(rock); 
+                var deco = 'rock';
+                if(decorationRandom <= 0.625)
+                {
+                    deco = 'tree';
+                }
+
+                items.push(new RockField(ceil,deco)); 
             }
             else
             {

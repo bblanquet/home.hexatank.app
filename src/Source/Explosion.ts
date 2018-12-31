@@ -5,7 +5,6 @@ import { PlaygroundHelper } from "./PlaygroundHelper";
 
 export class Explosion extends Item{
     BoundingBox:BoundingBox;
-    IsDone:boolean=false;
     private _timing:number=0;
     private _timeBuffer:number=30;
     private _currentFrame:number=0;
@@ -34,45 +33,46 @@ export class Explosion extends Item{
     {
         super.Update(viewX,viewY,zoom);
 
-        if(!this.IsDone)
-        {
-            this._timing += 1;
+        this._timing += 1;
 
-            if(0 <= this._currentFrame
-                && this._currentFrame < this.DisplayObjects.length)
+        if(0 <= this._currentFrame
+            && this._currentFrame < this.DisplayObjects.length)
+        {
+            this.DisplayObjects[this._currentFrame].rotation += 0.005;
+            this.DisplayObjects[this._currentFrame].alpha = this._currentAlpha;
+        }
+
+        this._currentAlpha -= 0.01;
+
+        if(this._currentAlpha < 0)
+        {
+            this._currentAlpha = 0;
+        }
+
+        if(this._timing % this._timeBuffer == 0)
+        {
+            var previous = this._currentFrame;
+            this._currentFrame += 1;
+
+            if(this.DisplayObjects.length == this._currentFrame)
             {
-                this.DisplayObjects[this._currentFrame].rotation += 0.005;
-                this.DisplayObjects[this._currentFrame].alpha = this._currentAlpha;
+                this.DisplayObjects[previous].alpha = 0;
+                this.Destroy();
             }
-    
-            this._currentAlpha -= 0.01;
-    
-            if(this._currentAlpha < 0)
+            else
             {
-                this._currentAlpha = 0;
-            }
-    
-            if(this._timing % this._timeBuffer == 0)
-            {
-                var previous = this._currentFrame;
-                this._currentFrame += 1;
-    
-                if(this.DisplayObjects.length == this._currentFrame)
+                if(-1 < previous)
                 {
                     this.DisplayObjects[previous].alpha = 0;
-                    this.IsDone = true;
-                    PlaygroundHelper.Render.Remove(this);
                 }
-                else
-                {
-                    if(-1 < previous)
-                    {
-                        this.DisplayObjects[previous].alpha = 0;
-                    }
-                    this.DisplayObjects[this._currentFrame].alpha = this._currentAlpha;
-                }
+                this.DisplayObjects[this._currentFrame].alpha = this._currentAlpha;
             }
         }
+    }
+
+    private Destroy() {
+        this.IsUpdatable = false;
+        PlaygroundHelper.Render.Remove(this);
     }
 
     public GetBoundingBox(): BoundingBox{

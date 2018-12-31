@@ -14,6 +14,9 @@ import { TranslationMaker } from './TranslationMaker';
 import { RotationMaker } from './RotationMaker';
 import { AngleFinder } from './AngleFinder';
 import { IRotatable } from './IRotatable';
+import { isNullOrUndefined } from 'util';
+import { Sprite } from 'pixi.js';
+import { Crater } from './Crater';
 
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
     protected RootSprites:Array<PIXI.Sprite>;
@@ -28,15 +31,20 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
     private NextCeils:Array<Ceil>;
     protected FinalCeil:Ceil;
 
+    public PratrolCeils:Array<Ceil>;
+    public CurrentPratolCeil:Ceil;
+    protected IsSettingPatrol:boolean=false;
+
     protected BoundingBox:BoundingBox;
     private Size:number;
     private DustIndex:number;
-    protected Dusts:Array<Dust>;
     protected selectionFunc:any;
 
     private _translationMaker:ITranslationMaker;
     private _rotationMaker:IRotationMaker;
     private _angleFinder:IAngleFinder;
+
+    private _selectionSprite:Sprite;
 
     constructor(){
         super();
@@ -44,13 +52,18 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
         this.NextCeils = new Array<Ceil>();
         this.BoundingBox = new BoundingBox();
 
+        this._selectionSprite = new PIXI.Sprite(PlaygroundHelper.Render.Textures['selection']);
+        this.DisplayObjects.push(this._selectionSprite);
+        this._selectionSprite.alpha = 0;
+
         this.Z= 2;
         this.Size = PlaygroundHelper.Settings.Size;
         this.BoundingBox.Width = CeilProperties.GetWidth(this.Size);
         this.BoundingBox.Height = CeilProperties.GetHeight(this.Size);
 
+        this.PratrolCeils = new Array<Ceil>();
         this.RootSprites = new Array<PIXI.Sprite>();
-        this.Dusts = new Array<Dust>();
+
         this.Wheels =  new Array<PIXI.Sprite>();
         this.WheelIndex = 0;
         this.DustIndex = 0;
@@ -61,16 +74,32 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
         this._angleFinder = new AngleFinder<Vehicle>(this);
     }
 
+    public SetPatrol(context:InteractionContext):void
+    {
+        this.IsSettingPatrol = !this.IsSettingPatrol;
+        
+        if(!this.IsSettingPatrol)
+        {
+            PlaygroundHelper.OnVehiculeUnSelected.trigger(this,this);
+            context.SelectionEvent.off(this.selectionFunc);
+            this._selectionSprite.alpha = 0;
+        }
+    }
+
+    public IsPatroling():boolean{
+        return !isNullOrUndefined(this.PratrolCeils) && 0 < this.PratrolCeils.length;
+    }
+
     public GetBoundingBox():BoundingBox{
         return this.BoundingBox;
     }
 
-    private ShouldMove():Boolean{
+    private HasNextCeil():Boolean{
         return this.NextCeils.length != 0 
         || this.CurrentNextCeil != null
     }
 
-    private FindNext():void{
+    private FindNextCeil():void{
         this.CurrentNextCeil = this.NextCeils[0];
         this.NextCeils.splice(0,1);
 
@@ -84,7 +113,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
             else
             {
                 this.SetNextCeils(); 
-                this.FindNext();
+                this.FindNextCeil();
                 return;
             }
         }
@@ -99,7 +128,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
         }
     }
 
-    private Move():void
+    private MoveNextCeil():void
     {
         if(this.CurrentRadius != this.GoalRadius)
         {
@@ -143,27 +172,48 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
             let width = this.GetBoundingBox().Width;
             let height = this.GetBoundingBox().Height;
 
-            this.CreateDust(center + width/3*Math.cos(this.CurrentRadius)
-            , middle + height/3*Math.sin(this.CurrentRadius));
+            this.CreateDust(center + width/4*Math.cos(this.CurrentRadius)
+            , middle + height/4*Math.sin(this.CurrentRadius));
             
             this.CreateDust(center - width/3*Math.cos(this.CurrentRadius)
             , middle - height/3*Math.sin(this.CurrentRadius));
         }
     }
 
-    abstract CreateDust(x:number,y:number):void
+    private CreateDust(x:number,y:number):void
+    {
+        var b = new BoundingBox();
+        b.X = x;
+        b.Y = y;
+        b.Width = this.GetBoundingBox().Width/5;
+        b.Height = this.GetBoundingBox().Width/5;
+
+        var dust = new Dust(b);
+        PlaygroundHelper.Render.Add(dust);
+        PlaygroundHelper.Playground.Items.push(dust);
+    }
 
     private Moving():void
     {
-        if(this.ShouldMove())
+        if(this.HasNextCeil())
         {
             if(this.CurrentNextCeil == null)
             {
-                this.FindNext();
+                this.FindNextCeil();
             }
             else
             {
-                this.Move();
+                this.MoveNextCeil();
+            }
+        }
+        else
+        {
+            if(this.IsPatroling())
+            {
+                var index = (this.PratrolCeils.indexOf(this.CurrentPratolCeil)+1) % this.PratrolCeils.length;
+                this.CurrentPratolCeil = this.PratrolCeils[index];
+                this.FinalCeil = this.CurrentPratolCeil;
+                this.SetNextCeils();
             }
         }
     }
@@ -178,30 +228,17 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
         if(!this.IsAlive())
         {
             this.Destroy();
+            let crater = new Crater(this.BoundingBox);
+            PlaygroundHelper.Playground.Items.push(crater);
             return;
         }
 
         this.Moving();
         
         super.Update(viewX,viewY,zoom);
-
-        //handle
-        this.Dusts.forEach(dust=>{
-            dust.Update(viewX,viewY,zoom);
-        });
-
-        if(0 < this.Dusts.length)
-        {
-            var doneDusts = this.Dusts.filter(d=>d.isDone===1);
-            doneDusts.forEach(dust=>{
-                dust.Clear();
-            });
-            
-            this.Dusts = this.Dusts.filter(d=>d.isDone===0);
-        }	
     }
 
-    SetPosition (ceil:Ceil):void{
+    public SetPosition (ceil:Ceil):void{
         this.BoundingBox.X = ceil.GetBoundingBox().X;
         this.BoundingBox.Y = ceil.GetBoundingBox().Y;
         this.CurrentCeil = ceil;
@@ -213,6 +250,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
         if(this.GetSprites()[0].containsPoint(context.Point))
         {
             context.SelectionEvent.on(this.selectionFunc);
+            PlaygroundHelper.OnVehiculeSelected.trigger(this,this);
+            this._selectionSprite.alpha = 1;
             return true;
         }
         return false;
@@ -220,18 +259,29 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
 
     protected Selected(obj:any, item:Item):void
     {
-        var context = obj as InteractionContext;
-        var finalCeil = item as Ceil;
-        //console.log(`%c SELECTED `,'color:green; font-weight:bold;');
-
-        if(finalCeil != null && !finalCeil.IsBlocked())
+        var ceil = item as Ceil;
+        if(!this.IsSettingPatrol)
         {
-            this.FinalCeil = finalCeil;
-            this.SetNextCeils(); 
-            //console.log(`%c opened nodes: ${this.NextCeils.length} `,'color:blue;','font-weight:bold;');
-        }
+            if(this.IsPatroling()) //cancel patroling
+            {
+                this.PratrolCeils = new Array<Ceil>();
+            }
 
-        context.SelectionEvent.off(this.selectionFunc);
+            var context = obj as InteractionContext;    
+            if(!isNullOrUndefined(ceil) && !ceil.IsBlocked())
+            {
+                this.FinalCeil = ceil;
+                this.SetNextCeils(); 
+            }
+
+            context.SelectionEvent.off(this.selectionFunc);
+            PlaygroundHelper.OnVehiculeUnSelected.trigger(this,this);
+            this._selectionSprite.alpha = 0;
+        }
+        else
+        {
+            this.PratrolCeils.push(ceil);
+        }
     }
 
     protected SetNextCeils():void{

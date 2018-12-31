@@ -3,21 +3,25 @@ import { PlaygroundHelper } from "./PlaygroundHelper";
 import { BoundingBox } from "./BoundingBox";
 import { Dust } from "./Dust";
 import { Sprite } from "pixi.js";
+import { IHqContainer } from "./IHqContainer";
+import { Headquarter } from "./Headquarter";
+import { AliveItem } from "./AliveItem";
 
-export class Truck extends Vehicle{
-
+export class Truck extends Vehicle implements IHqContainer{
+    Hq:Headquarter;
     private _gatheredDiamonds:Array<Sprite>;
     private _timing:number=0;
     private _timeBuffer:number=30;
     private _diamondsCount:number=0;
     
-    constructor()
+    constructor(hq:Headquarter)
     {
         super();
-        let wheels = ['track1.png','track2.png','track3.png',
-        'track4.png','track5.png','track6.png',
-        'track7.png'
-        ];
+        this.Hq = hq;
+        let wheels = ['tankWheel1','tankWheel2','tankWheel3',
+                    'tankWheel4','tankWheel5','tankWheel6',
+                    'tankWheel7'
+                    ];
         wheels.forEach(wheel =>{
         let sprite = new PIXI.Sprite(PlaygroundHelper.Render.Textures[wheel]);
         this.Wheels.push(sprite);
@@ -29,7 +33,7 @@ export class Truck extends Vehicle{
     'gatheredDiamond3.png','gatheredDiamond4.png','gatheredDiamond5.png',
 'gatheredDiamond6.png']
 
-        var sprite = new PIXI.Sprite(PlaygroundHelper.Render.Textures["truck1.png"]);
+        var sprite = this.Hq.GetSkin().GetTruck();
         this.DisplayObjects.push(sprite);
         this.RootSprites.push(sprite);
 
@@ -60,16 +64,13 @@ export class Truck extends Vehicle{
         
     }    
     
-    CreateDust(x: number, y: number): void {
-        var b = new BoundingBox();
-        b.X = x;
-        b.Y = y;
-        b.Width = this.GetBoundingBox().Width/5;
-        b.Height = this.GetBoundingBox().Width/5;
-
-        var dust = new Dust(b);
-        PlaygroundHelper.Render.Add(dust);
-        this.Dusts.push(dust);    
+    public IsEnemy(item: AliveItem): boolean {
+        var hqContainer = item as any as IHqContainer;
+        if(hqContainer != null)
+        {
+            return hqContainer.Hq !== this.Hq;
+        }
+        return false;
     }
 
     public Load():void

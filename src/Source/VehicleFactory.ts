@@ -3,10 +3,11 @@ import {Vehicle} from './Vehicle';
 import {Tank} from './Tank';
 import { Truck } from './Truck';
 import { isNullOrUndefined } from 'util';
+import { Headquarter } from './Headquarter';
 
 export abstract class VehicleFactory{
     public static GetTank(
-        ceil:Ceil)
+        ceil:Ceil, hq:Headquarter)
         :Vehicle
         {
 
@@ -14,16 +15,16 @@ export abstract class VehicleFactory{
             throw "not implemented object";
         }
 
-        var tank = new Tank();
+        var tank = new Tank(hq);
         tank.SetPosition(ceil);
         return tank;
     }
 
     public static GetTruck(
-        ceil:Ceil)
+        ceil:Ceil, hq:Headquarter)
         :Vehicle
         {
-        var tank = new Truck();
+        var tank = new Truck(hq);
         tank.SetPosition(ceil);
         return tank;
     }

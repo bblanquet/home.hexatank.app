@@ -17,17 +17,24 @@ import { IRotatable } from './IRotatable';
 import { isNullOrUndefined } from 'util';
 import { Sprite } from 'pixi.js';
 import { Crater } from './Crater';
+import { BasicItem } from './BasicItem';
+import { CeilState } from './CeilState';
 
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
+
+
+    RotationSpeed: number=0.05;
+    TranslationSpeed: number=1;
     protected RootSprites:Array<PIXI.Sprite>;
     protected Wheels:Array<PIXI.Sprite>;
     private WheelIndex:number;
+    protected PathItems:Array<BasicItem>;
 
     //movable
     CurrentRadius:number;
     GoalRadius:number;
-    CurrentNextCeil:Ceil;
-    CurrentCeil:Ceil;
+    protected NextCeil:Ceil;
+    protected CurrentCeil:Ceil;
     private NextCeils:Array<Ceil>;
     protected FinalCeil:Ceil;
 
@@ -70,7 +77,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
         this.selectionFunc = this.Selected.bind(this);
 
         this._translationMaker = new TranslationMaker<Vehicle>(this);
-        this._rotationMaker = new RotationMaker<Vehicle>(this,0.03);
+        this._rotationMaker = new RotationMaker<Vehicle>(this);
         this._angleFinder = new AngleFinder<Vehicle>(this);
     }
 
@@ -96,18 +103,18 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
 
     private HasNextCeil():Boolean{
         return this.NextCeils.length != 0 
-        || this.CurrentNextCeil != null
+        || this.NextCeil != null
     }
 
     private FindNextCeil():void{
-        this.CurrentNextCeil = this.NextCeils[0];
+        this.NextCeil = this.NextCeils[0];
         this.NextCeils.splice(0,1);
 
-        if(this.CurrentNextCeil.IsBlocked())
+        if(this.NextCeil.IsBlocked())
         {
-            if(this.FinalCeil == this.CurrentNextCeil)
+            if(this.FinalCeil == this.NextCeil)
             {
-                this.CurrentNextCeil = null;
+                this.NextCeil = null;
                 this.NextCeils = [];
             }
             else
@@ -124,11 +131,11 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
         }
         else
         {
-            this._angleFinder.SetAngle(this.CurrentNextCeil);
+            this._angleFinder.SetAngle(this.NextCeil);
         }
     }
 
-    private MoveNextCeil():void
+    private Moving():void
     {
         if(this.CurrentRadius != this.GoalRadius)
         {
@@ -193,17 +200,17 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
         PlaygroundHelper.Playground.Items.push(dust);
     }
 
-    private Moving():void
+    private Acting():void
     {
         if(this.HasNextCeil())
         {
-            if(this.CurrentNextCeil == null)
+            if(this.NextCeil == null)
             {
                 this.FindNextCeil();
             }
             else
             {
-                this.MoveNextCeil();
+                this.Moving();
             }
         }
         else
@@ -218,7 +225,32 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
         }
     }
 
-    public Destroy():void{
+    public GetNextCeil(): Ceil {
+        return this.NextCeil;
+    }
+
+    MoveNextCeil(): void {
+        var previousCeil = this.CurrentCeil;
+
+        this.CurrentCeil.SetMovable(null);
+        this.CurrentCeil = this.NextCeil;
+        this.CurrentCeil.SetMovable(this);
+        this.NextCeil = null;
+
+        this.PathItems.splice(0,1)[0].Destroy();
+        this.CurrentCeil.GetAllNeighbourhood().forEach(ceil => {
+            (<Ceil>ceil).SetState(CeilState.Visible);
+        });
+
+        previousCeil.GetAllNeighbourhood().forEach(childCeil => {
+            var child = (<Ceil>childCeil);
+            if(child.GetAllNeighbourhood().filter(c=>!isNullOrUndefined((<Ceil>c).GetMovable())).length===0){
+                child.SetState(CeilState.HalfVisible);
+            }
+        });
+    }
+
+    protected Destroy():void{
         this.CurrentCeil.SetMovable(null);
         PlaygroundHelper.Render.Remove(this);
         this.IsUpdatable = false;
@@ -233,7 +265,9 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
             return;
         }
 
-        this.Moving();
+        this.CurrentCeil.Field.Support(this); 
+
+        this.Acting();
         
         super.Update(viewX,viewY,zoom);
     }
@@ -243,6 +277,9 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
         this.BoundingBox.Y = ceil.GetBoundingBox().Y;
         this.CurrentCeil = ceil;
         this.CurrentCeil.SetMovable(this);
+        this.CurrentCeil.GetAllNeighbourhood().forEach(ceil => {
+            (<Ceil>ceil).SetState(CeilState.Visible);
+        });
     };
 
     public Select(context:InteractionContext):boolean
@@ -285,16 +322,20 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
     }
 
     protected SetNextCeils():void{
-        if(this.NextCeils != null && this.NextCeils.length){
-            this.NextCeils.forEach(ceil => {
-                ceil.SetPathStatus(false);
+        if(!isNullOrUndefined(this.PathItems) && this.PathItems.length){
+            this.PathItems.forEach(pathItem => {
+                pathItem.Destroy();
             });
         }
+        this.PathItems = [];
+
         this.NextCeils = PlaygroundHelper.Engine.GetPath(this.CurrentCeil, this.FinalCeil); 
 
         if(this.NextCeils != null && this.NextCeils.length){
             this.NextCeils.forEach(ceil => {
-                ceil.SetPathStatus(true);
+                var pathItem = new BasicItem(ceil.GetBoundingBox(),new Sprite(PlaygroundHelper.Render.Textures['pathCeil']));
+                this.PathItems.push(pathItem);
+                PlaygroundHelper.Playground.Items.push(pathItem);
             });
         }
     }

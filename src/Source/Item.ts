@@ -6,9 +6,9 @@ import { Point } from './Point';
 import { IBoundingBoxContainer } from './IBoundingBoxContainer';
 
 export abstract class Item implements Updater, IBoundingBoxContainer{
-    DisplayObjects:Array<PIXI.DisplayObject>;
-    Z:number;
-    IsUpdatable:Boolean=true;
+    public DisplayObjects:Array<PIXI.DisplayObject>;
+    public Z:number;
+    public IsUpdatable:Boolean=true;
     protected IsCentralRef:boolean=false;
     constructor()
     {
@@ -30,7 +30,7 @@ export abstract class Item implements Updater, IBoundingBoxContainer{
         });
     }
 
-    private GetRef():Point
+    protected GetRef():Point
     {
         if(this.IsCentralRef)
         {

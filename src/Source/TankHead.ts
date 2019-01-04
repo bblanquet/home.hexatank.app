@@ -2,7 +2,7 @@ import { Item } from "./Item";
 import { BoundingBox } from "./BoundingBox";
 import { InteractionContext } from "./InteractionContext";
 import { PlaygroundHelper } from "./PlaygroundHelper";
-import { Sprite, ticker } from "pixi.js";
+import { Sprite } from "pixi.js";
 import "../Extension/Collection";
 import { Tank } from "./Tank";
 import { Missile } from "./Missile";
@@ -15,6 +15,7 @@ import { HqSkin } from "./HqSkin";
 
 export class TankHead extends Item implements IRotatable
 {
+    RotationSpeed: number=0.05;
     CurrentRadius: number;
     GoalRadius: number;
     Base:Tank;
@@ -67,7 +68,7 @@ export class TankHead extends Item implements IRotatable
         
         PlaygroundHelper.Render.Add(this);
 
-        this._rotationMaker = new RotationMaker<TankHead>(this,0.05);
+        this._rotationMaker = new RotationMaker<TankHead>(this);
         this._angleFinder = new AngleFinder<TankHead>(this);
     }
 

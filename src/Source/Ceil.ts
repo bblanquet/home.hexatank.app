@@ -12,22 +12,26 @@ import { RockField } from './RockField';
 import { IMovable } from './IMovable';
 import { Diamond } from './Diamond';
 import { AliveItem } from './AliveItem';
+import { BasicField } from './BasicField';
+import { CeilState } from './CeilState';
+import { isNullOrUndefined } from 'util';
 
 export class Ceil extends Item implements ICeil
 {
+    State:CeilState = CeilState.Hidden;
     Properties:CeilProperties;
-    Sprite:PIXI.Sprite;
-    SelectedSprite:PIXI.Sprite;
-    private _pathSprite:PIXI.Sprite;
-    DisplayObjects:Array<PIXI.Sprite>;
+    Sprites:{ [id: number]: Array<PIXI.Sprite>; };
     Field:IField;
     private _movable:IMovable;
+    DecorationSprite:PIXI.Sprite;
 
     constructor(properties:CeilProperties)
     {
         super();
         this.Z= 1;
+        this.Sprites = [];
         this.Properties = properties;
+        new BasicField(this);
     }
 
     public GetMovable():IMovable{
@@ -36,15 +40,6 @@ export class Ceil extends Item implements ICeil
 
     public SetMovable(movable:IMovable){
         this._movable = movable;
-        if(this._movable == null)
-        {
-            this._pathSprite.alpha = 0;
-            this.SelectedSprite.alpha = 0;
-        }
-        else
-        {
-            this._pathSprite.alpha = 1; 
-        }
     }
 
     public IsBlocked():boolean{
@@ -71,23 +66,48 @@ export class Ceil extends Item implements ICeil
         return this.Properties.BoundingBox;
     }
 
-    public Decorate(textures : PIXI.loaders.TextureDictionary):void{
-        this.Sprite = new PIXI.Sprite(textures["ceil.png"]);
+    public SetState(state:CeilState):void{
+        this.GetSprites().forEach(sprite=> sprite.alpha = 0);
+
+        this.State = state;
+
+        this.Sprites[this.State].forEach(sprite=>{
+            sprite.alpha = 1;
+        })
+    }
+
+    public SetDecoration(sprite:PIXI.Sprite):void{
+        this.DecorationSprite = sprite;
+        this.DecorationSprite.alpha = 0;
+    }
+
+    public SetSprite(textures : PIXI.loaders.TextureDictionary):void
+    {
+        let hiddenCeil = new PIXI.Sprite(textures["hiddenCeil"]);
+        hiddenCeil.alpha = 1;
+        let halfCeil = new PIXI.Sprite(textures["halfHiddenCeil"]);
+        halfCeil.alpha = 0;
+        let ceil = new PIXI.Sprite(textures["ceil.png"]);
+        ceil.alpha = 0;
+
+        this.Sprites[CeilState.Hidden] = [hiddenCeil];
         
-        this.SelectedSprite = new PIXI.Sprite(textures["selectedCeil.png"]);
-        this.SelectedSprite.alpha = 0;
+        if(isNullOrUndefined(this.DecorationSprite))
+        {
+            this.Sprites[CeilState.HalfVisible] = [halfCeil,ceil]; 
+            this.Sprites[CeilState.Visible] = [ceil];      
+        }
+        else
+        {
+            this.Sprites[CeilState.HalfVisible] = [halfCeil,this.DecorationSprite,ceil];         
+            this.Sprites[CeilState.Visible] = [this.DecorationSprite,ceil];         
 
-        this._pathSprite = new PIXI.Sprite(textures["pathCeil.png"]);
-        this._pathSprite.alpha = 0;
-
-        this.DisplayObjects = new Array<PIXI.Sprite>();
-        this.DisplayObjects.push(this.SelectedSprite);
-        this.DisplayObjects.push(this._pathSprite);
-        this.DisplayObjects.push(this.Sprite);
-
-        this.DisplayObjects.forEach(sprite =>{
-            sprite.interactive = true;
-        });
+            this.DisplayObjects.push(this.DecorationSprite);
+        }
+        
+        this.DisplayObjects.push(hiddenCeil);
+        this.DisplayObjects.push(halfCeil);
+        this.DisplayObjects.push(ceil);
     }
 
     public GetCoordinate():HexAxial{
@@ -122,21 +142,9 @@ export class Ceil extends Item implements ICeil
         return ceils;
     }
 
-    public SetPathStatus(isDisplayed:boolean):void
-    {
-        if(isDisplayed)
-        {
-            this.SelectedSprite.alpha = 1;
-        }
-        else
-        {
-            this.SelectedSprite.alpha = 0;
-        }
-    }
-
     public Select(context:InteractionContext):boolean
     {
-        var isSelected = this.Sprite.containsPoint(context.Point);
+        var isSelected = this.GetSprites()[0].containsPoint(context.Point);
         
         if(isSelected)
         {

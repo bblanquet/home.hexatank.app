@@ -96,7 +96,7 @@ export class Missile extends Item{
         }
         else
         {
-            this.Target.GetDamage(this._damage);
+            this.Target.SetDamage(this._damage); 
             let explosion = new Explosion(this.Target.GetBoundingBox());
             PlaygroundHelper.Playground.Items.push(explosion);
             this.Destroy();

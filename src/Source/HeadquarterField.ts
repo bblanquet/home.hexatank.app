@@ -27,12 +27,10 @@ export class HeadQuarterField extends Item implements IField
 
     Support(vehicule: Vehicle): void 
     {
-        var truck = vehicule as Truck;
-        if(truck !== null)
+        if(vehicule instanceof Truck)
         {
-            this.Diamonds = truck.Unload();
-            console.log(`UNLOAD ${this.Diamonds}`,'font-weiht:bold;color:blue;')
-
+            var truck = vehicule as Truck;
+            truck.Unload();
         }
     }
     IsDesctrutible(): boolean {

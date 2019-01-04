@@ -7,7 +7,7 @@ export class CeilDecorator{
 
     public static Decorate(items:Array<Item>, ceil:Ceil, textures : PIXI.loaders.TextureDictionary):void
     {
-        ceil.Decorate(textures);
+        ceil.SetSprite(textures);
 
         var random = Math.random();
         if(random < 0.6)
@@ -16,11 +16,11 @@ export class CeilDecorator{
     
             if(decorationRandom <= 0.25)
             {
-                ceil.DisplayObjects.push(new PIXI.Sprite(textures["stone.png"]));
+                ceil.SetDecoration(new PIXI.Sprite(textures["stone.png"]));
             }
             else if(decorationRandom <= 0.5)
             {
-                ceil.DisplayObjects.push(new PIXI.Sprite(textures["flower.png"]));
+                ceil.SetDecoration(new PIXI.Sprite(textures["flower.png"]));
             }
             else if(decorationRandom <= 0.75)
             {
@@ -34,7 +34,7 @@ export class CeilDecorator{
             }
             else
             {
-                ceil.DisplayObjects.push(new PIXI.Sprite(textures["water.png"]));
+                ceil.SetDecoration(new PIXI.Sprite(textures["water.png"]));
             }
 
         }

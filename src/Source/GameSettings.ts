@@ -3,4 +3,6 @@ export class GameSettings{
     Pivot:number=150;
     ScreenWidth:number;
     ScreenHeight:number;
+    RotationSpeed:number=0.05;
+    TranslationSpeed:number=1;
 }

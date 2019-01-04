@@ -28,18 +28,26 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
     {
         var distanceX = TranslationMaker.GetDiff(target.X,current.X);
         var distanceY = TranslationMaker.GetDiff(target.Y,current.Y);
+        if(distanceY <= 0.01)
+        {
+            return distanceX;
+        }
         return distanceX/distanceY;
     }
     
     public Translate():void
     {
         var itemBox = this._item.GetBoundingBox();
-        var nextCeilBox = this._item.CurrentNextCeil.GetBoundingBox();
+        var nextCeilBox = this._item.GetNextCeil().GetBoundingBox();
 
         var xRatio = this.GetXRatio(itemBox.GetCentralPoint(),nextCeilBox.GetCentralPoint());
 
-        itemBox.Y += (nextCeilBox.GetMiddle() < itemBox.GetMiddle()) ? -1:1;
-        itemBox.X += (nextCeilBox.GetCenter() < itemBox.GetCenter()) ? -1*xRatio:1*xRatio;
+        itemBox.Y += (nextCeilBox.GetMiddle() < itemBox.GetMiddle()) ? -this._item.TranslationSpeed:this._item.TranslationSpeed;
+        itemBox.X += ((nextCeilBox.GetCenter() < itemBox.GetCenter()) ? -this._item.TranslationSpeed:this._item.TranslationSpeed)*xRatio;
+
+        if(isNaN(itemBox.X)){
+            throw `error speed ${this._item.TranslationSpeed}`;
+        }
 
         if(TranslationMaker.IsCloseEnough(itemBox.GetCenter(), nextCeilBox.GetCenter()))
         {
@@ -54,10 +62,12 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
         if(itemBox.GetMiddle() == nextCeilBox.GetMiddle() 
         && itemBox.GetCenter() == nextCeilBox.GetCenter())
         {
-            this._item.CurrentCeil.SetMovable(null);
-            this._item.CurrentCeil = this._item.CurrentNextCeil;
-            this._item.CurrentCeil.SetMovable(this._item);
-            this._item.CurrentNextCeil = null;
+            this._item.MoveNextCeil();
         }
     }
 }
+
+// this._item.GetCurrentCeil().SetMovable(null);
+// this._item.SetCurrentCeil(this._item.GetNextCeil());
+// this._item.CurrentCeil.SetMovable(this._item);
+// this._item.CurrentNextCeil = null;

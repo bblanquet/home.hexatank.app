@@ -100,11 +100,5 @@ export class Truck extends Vehicle implements IHqContainer{
     public Update(viewX: number, viewY: number, zoom: number):void
     {
         super.Update(viewX,viewY,zoom);
-
-        //console.log(`%c Detect ${} `,'color:blue;font-weight:bold;');
-
-        if(this.CurrentCeil.Field != null)
-        {
-            this.CurrentCeil.Field.Support(this); 
-        }
+        this.CurrentCeil.Field.Support(this); 
     }}

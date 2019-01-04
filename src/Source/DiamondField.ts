@@ -10,24 +10,24 @@ import { Truck } from "./Truck";
 
 export class DiamondField extends Item implements IField
 {
-    Ceil:Ceil;
+    private _ceil:Ceil;
     private _timeBuffer:number=3;
     private _timing:number=0;
     IsFading:boolean;
     
     constructor(ceil:Ceil){
         super();
-        this.Ceil = ceil;
-        this.Ceil.Field = this;
+        this._ceil = ceil;
+        this._ceil.Field = this;
         this.Z= 0;
         this.DisplayObjects.push(new Sprite(PlaygroundHelper.Render.Textures["diamondField.png"]));
         PlaygroundHelper.Render.Add(this);
     }
 
     public Support(vehicule:Vehicle): void {
-        var truck = vehicule as Truck;
-        if(truck !== null)
+        if(vehicule instanceof Truck)
         {
+            var truck = vehicule as Truck;
             truck.Load();
         }
     }
@@ -36,7 +36,7 @@ export class DiamondField extends Item implements IField
     }
 
     public GetBoundingBox(): BoundingBox{
-        return this.Ceil.GetBoundingBox();
+        return this._ceil.GetBoundingBox();
     }
 
     public Select(context: InteractionContext): boolean {

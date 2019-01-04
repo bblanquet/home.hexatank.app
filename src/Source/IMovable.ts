@@ -2,6 +2,7 @@ import { Ceil } from "./Ceil";
 
 export interface IMovable
 {
-    CurrentNextCeil:Ceil;
-    CurrentCeil:Ceil;
+    MoveNextCeil():void;
+    GetNextCeil():Ceil;
+    TranslationSpeed:number;
 }

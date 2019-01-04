@@ -1,8 +1,8 @@
 import { Item } from "./Item";
 
 export abstract class AliveItem extends Item{
-    Life:number=100;
-    TotalLife:number=100;
+    protected Life:number=100;
+    protected TotalLife:number=100;
     private _totalLife:PIXI.Graphics;
     private _currentLife:PIXI.Graphics;
     private _lifes:Array<PIXI.Graphics>;
@@ -24,7 +24,7 @@ export abstract class AliveItem extends Item{
         this._lifes.push(this._currentLife);
     }
     
-    public GetDamage(damage:number):void
+    public SetDamage(damage:number):void
     {
         this.Life -= damage;
 

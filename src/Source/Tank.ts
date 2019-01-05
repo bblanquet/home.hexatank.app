@@ -7,7 +7,7 @@ import { TankHead } from './TankHead';
 import { AliveItem } from './AliveItem';
 import { Ceil } from './Ceil';
 import { isNullOrUndefined, isNull } from 'util';
-import { InteractionContext } from './InteractionContext';
+import { InteractionContext } from './Context/InteractionContext';
 import { Item } from './Item';
 import { CeilFinder } from './CeilFinder';
 import { HqSkin } from './HqSkin';
@@ -20,7 +20,6 @@ export class Tank extends Vehicle implements IHqContainer
     Head:TankHead;
     private _currentTarget:AliveItem;
     private _mainTarget:AliveItem;
-    private _ceilFinder:CeilFinder;
 
     constructor(hq:Headquarter)
     {
@@ -39,7 +38,7 @@ export class Tank extends Vehicle implements IHqContainer
             this.RootSprites.push(sprite);
         });
 
-        var sprite = this.Hq.GetSkin().GetBottomTankSprite();//PlaygroundHelper.Render.Textures["redBottomTank"]
+        var sprite = this.Hq.GetSkin().GetBottomTankSprite();
         this.DisplayObjects.push(sprite);
         this.RootSprites.push(sprite);
         
@@ -54,7 +53,6 @@ export class Tank extends Vehicle implements IHqContainer
         });
         this.IsCentralRef = true;
 
-        this._ceilFinder = new CeilFinder();
     } 
 
     public Destroy():void{
@@ -78,7 +76,7 @@ export class Tank extends Vehicle implements IHqContainer
     }
 
     private FindTargets() {
-        var ceils = this.CurrentCeil.GetAllNeighbourhood();
+        var ceils = this.GetCurrentCeil().GetAllNeighbourhood();
 
         let enemies  = ceils.map(c=> (<Ceil>c).GetShootableEntity()).filter(c=> !isNull(c))
 
@@ -124,29 +122,36 @@ export class Tank extends Vehicle implements IHqContainer
         return this._currentTarget;
     }
 
-    protected Selected(obj:any, item:Item):void
-    {
-        let context = obj as InteractionContext;
-        let finalCeil = item as Ceil;
-
-        if(finalCeil != null )
-        {
-            if(!finalCeil.IsBlocked())
-            {
-                super.Selected(obj,item); 
-            }
-            else if(finalCeil.IsShootable() && !this.IsSettingPatrol)
-            {
-                let ceils = finalCeil.GetNeighbourhood().map(c => <Ceil>c);
-                if(0 === finalCeil.GetAllNeighbourhood().filter(c=> c === this.CurrentCeil).length)
-                {
-                    this.FinalCeil = this._ceilFinder.GetCeil(ceils, this);
-                    this.SetNextCeils(); 
-                }
-                this._mainTarget = finalCeil.GetShootableEntity();
-            }
-        }
-
-        context.SelectionEvent.off(this.selectionFunc);
+    public SetMainTarget(item:AliveItem):void{
+        this._mainTarget = item;
     }
 }
+
+
+
+    //private _ceilFinder:CeilFinder;
+//        this._ceilFinder = new CeilFinder();
+
+
+        // let context = obj as InteractionContext;
+        // let finalCeil = item as Ceil;
+
+        // if(finalCeil != null )
+        // {
+        //     if(!finalCeil.IsBlocked())
+        //     {
+        //         super.Selected(obj,item); 
+        //     }
+        //     else if(finalCeil.IsShootable() && !this.IsSettingPatrol)
+        //     {
+        //         let ceils = finalCeil.GetNeighbourhood().map(c => <Ceil>c);
+        //         if(0 === finalCeil.GetAllNeighbourhood().filter(c=> c === this.CurrentCeil).length)
+        //         {
+        //             this.FinalCeil = this._ceilFinder.GetCeil(ceils, this);
+        //             this.SetNextCeils(); 
+        //         }
+        //         this._mainTarget = finalCeil.GetShootableEntity();
+        //     }
+        // }
+
+        // context.SelectionEvent.off(this.selectionFunc);

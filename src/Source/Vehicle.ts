@@ -1,7 +1,7 @@
 import {Ceil} from './Ceil';
 import {CeilProperties} from './CeilProperties';
 import {Item} from './Item';
-import {InteractionContext} from './InteractionContext';
+import {InteractionContext} from './Context/InteractionContext';
 import {PlaygroundHelper} from './PlaygroundHelper';
 import { BoundingBox } from "./BoundingBox";
 import {Dust} from './Dust';
@@ -17,8 +17,8 @@ import { IRotatable } from './IRotatable';
 import { isNullOrUndefined } from 'util';
 import { Sprite } from 'pixi.js';
 import { Crater } from './Crater';
-import { BasicItem } from './BasicItem';
 import { CeilState } from './CeilState';
+import { IOrder } from './Ia/IOrder';
 
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
 
@@ -28,24 +28,18 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
     protected RootSprites:Array<PIXI.Sprite>;
     protected Wheels:Array<PIXI.Sprite>;
     private WheelIndex:number;
-    protected PathItems:Array<BasicItem>;
 
     //movable
     CurrentRadius:number;
     GoalRadius:number;
-    protected NextCeil:Ceil;
-    protected CurrentCeil:Ceil;
-    private NextCeils:Array<Ceil>;
-    protected FinalCeil:Ceil;
+    private _nextCeil:Ceil;
+    private _currentCeil:Ceil;
 
-    public PratrolCeils:Array<Ceil>;
-    public CurrentPratolCeil:Ceil;
-    protected IsSettingPatrol:boolean=false;
+    private _order:IOrder;
 
     protected BoundingBox:BoundingBox;
     private Size:number;
     private DustIndex:number;
-    protected selectionFunc:any;
 
     private _translationMaker:ITranslationMaker;
     private _rotationMaker:IRotationMaker;
@@ -56,7 +50,6 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
     constructor(){
         super();
         this.CurrentRadius = 0;
-        this.NextCeils = new Array<Ceil>();
         this.BoundingBox = new BoundingBox();
 
         this._selectionSprite = new PIXI.Sprite(PlaygroundHelper.Render.Textures['selection']);
@@ -68,33 +61,19 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
         this.BoundingBox.Width = CeilProperties.GetWidth(this.Size);
         this.BoundingBox.Height = CeilProperties.GetHeight(this.Size);
 
-        this.PratrolCeils = new Array<Ceil>();
         this.RootSprites = new Array<PIXI.Sprite>();
 
         this.Wheels =  new Array<PIXI.Sprite>();
         this.WheelIndex = 0;
         this.DustIndex = 0;
-        this.selectionFunc = this.Selected.bind(this);
 
         this._translationMaker = new TranslationMaker<Vehicle>(this);
         this._rotationMaker = new RotationMaker<Vehicle>(this);
         this._angleFinder = new AngleFinder<Vehicle>(this);
     }
 
-    public SetPatrol(context:InteractionContext):void
-    {
-        this.IsSettingPatrol = !this.IsSettingPatrol;
-        
-        if(!this.IsSettingPatrol)
-        {
-            PlaygroundHelper.OnVehiculeUnSelected.trigger(this,this);
-            context.SelectionEvent.off(this.selectionFunc);
-            this._selectionSprite.alpha = 0;
-        }
-    }
-
-    public IsPatroling():boolean{
-        return !isNullOrUndefined(this.PratrolCeils) && 0 < this.PratrolCeils.length;
+    public SetOrder(order: IOrder): void {
+        this._order = order;
     }
 
     public GetBoundingBox():BoundingBox{
@@ -102,37 +81,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
     }
 
     private HasNextCeil():Boolean{
-        return this.NextCeils.length != 0 
-        || this.NextCeil != null
-    }
-
-    private FindNextCeil():void{
-        this.NextCeil = this.NextCeils[0];
-        this.NextCeils.splice(0,1);
-
-        if(this.NextCeil.IsBlocked())
-        {
-            if(this.FinalCeil == this.NextCeil)
-            {
-                this.NextCeil = null;
-                this.NextCeils = [];
-            }
-            else
-            {
-                this.SetNextCeils(); 
-                this.FindNextCeil();
-                return;
-            }
-        }
-
-        if(this.CurrentCeil == null)
-        {
-            this.GoalRadius = this.CurrentRadius;
-        }
-        else
-        {
-            this._angleFinder.SetAngle(this.NextCeil);
-        }
+        return this._nextCeil != null
     }
 
     private Moving():void
@@ -200,58 +149,52 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
         PlaygroundHelper.Playground.Items.push(dust);
     }
 
-    private Acting():void
-    {
-        if(this.HasNextCeil())
-        {
-            if(this.NextCeil == null)
-            {
-                this.FindNextCeil();
-            }
-            else
-            {
-                this.Moving();
-            }
-        }
-        else
-        {
-            if(this.IsPatroling())
-            {
-                var index = (this.PratrolCeils.indexOf(this.CurrentPratolCeil)+1) % this.PratrolCeils.length;
-                this.CurrentPratolCeil = this.PratrolCeils[index];
-                this.FinalCeil = this.CurrentPratolCeil;
-                this.SetNextCeils();
-            }
-        }
+    public IsSelected():boolean{
+        return this._selectionSprite.alpha === 1;
+    }
+
+    public SetSelected(state:boolean):void{
+        this._selectionSprite.alpha = state ? 1 : 0;
     }
 
     public GetNextCeil(): Ceil {
-        return this.NextCeil;
+        return this._nextCeil;
     }
 
-    MoveNextCeil(): void {
-        var previousCeil = this.CurrentCeil;
+    public MoveNextCeil(): void {
+        var previousCeil = this._currentCeil;
 
-        this.CurrentCeil.SetMovable(null);
-        this.CurrentCeil = this.NextCeil;
-        this.CurrentCeil.SetMovable(this);
-        this.NextCeil = null;
+        this._currentCeil.SetMovable(null);
+        this._currentCeil = this._nextCeil;
+        this._currentCeil.SetMovable(this);
+        this._nextCeil = null;
 
-        this.PathItems.splice(0,1)[0].Destroy();
-        this.CurrentCeil.GetAllNeighbourhood().forEach(ceil => {
-            (<Ceil>ceil).SetState(CeilState.Visible);
-        });
+        this.SetVisible();
+        this.SetHalVisible(previousCeil);
+    }
 
-        previousCeil.GetAllNeighbourhood().forEach(childCeil => {
+    private SetHalVisible(previousCeil: Ceil) {
+        var ceils = previousCeil.GetAllNeighbourhood();
+        ceils.push(previousCeil);
+        ceils.forEach(childCeil => {
             var child = (<Ceil>childCeil);
-            if(child.GetAllNeighbourhood().filter(c=>!isNullOrUndefined((<Ceil>c).GetMovable())).length===0){
+            if (isNullOrUndefined(child.GetMovable()) 
+            && child.GetAllNeighbourhood().filter(c => !isNullOrUndefined((<Ceil>c).GetMovable())).length === 0) {
                 child.SetState(CeilState.HalfVisible);
             }
         });
     }
 
+    private SetVisible() {
+        var ceils = this._currentCeil.GetAllNeighbourhood();
+        ceils.push(this._currentCeil);
+        ceils.forEach(ceil => {
+            (<Ceil>ceil).SetState(CeilState.Visible);
+        });
+    }
+
     protected Destroy():void{
-        this.CurrentCeil.SetMovable(null);
+        this._currentCeil.SetMovable(null);
         PlaygroundHelper.Render.Remove(this);
         this.IsUpdatable = false;
     }
@@ -265,79 +208,136 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
             return;
         }
 
-        this.CurrentCeil.Field.Support(this); 
+        if(this.ExistsOrder() && !this._order.IsDone())
+        {
+            this._order.Do(); 
+        }
 
-        this.Acting();
-        
+        this._currentCeil.Field.Support(this); 
+
+        if(this.HasNextCeil())
+        {
+            this.Moving();
+        }        
         super.Update(viewX,viewY,zoom);
+    }
+
+    private ExistsOrder():boolean{
+        return !isNullOrUndefined(this._order);
     }
 
     public SetPosition (ceil:Ceil):void{
         this.BoundingBox.X = ceil.GetBoundingBox().X;
         this.BoundingBox.Y = ceil.GetBoundingBox().Y;
-        this.CurrentCeil = ceil;
-        this.CurrentCeil.SetMovable(this);
-        this.CurrentCeil.GetAllNeighbourhood().forEach(ceil => {
-            (<Ceil>ceil).SetState(CeilState.Visible);
-        });
+        this._currentCeil = ceil;
+        this._currentCeil.SetMovable(this);
+        this.SetVisible()
     };
 
     public Select(context:InteractionContext):boolean
     {
         if(this.GetSprites()[0].containsPoint(context.Point))
         {
-            context.SelectionEvent.on(this.selectionFunc);
-            PlaygroundHelper.OnVehiculeSelected.trigger(this,this);
-            this._selectionSprite.alpha = 1;
+            context.OnSelect(this);
             return true;
         }
         return false;
     }
 
-    protected Selected(obj:any, item:Item):void
-    {
-        var ceil = item as Ceil;
-        if(!this.IsSettingPatrol)
-        {
-            if(this.IsPatroling()) //cancel patroling
-            {
-                this.PratrolCeils = new Array<Ceil>();
-            }
-
-            var context = obj as InteractionContext;    
-            if(!isNullOrUndefined(ceil) && !ceil.IsBlocked())
-            {
-                this.FinalCeil = ceil;
-                this.SetNextCeils(); 
-            }
-
-            context.SelectionEvent.off(this.selectionFunc);
-            PlaygroundHelper.OnVehiculeUnSelected.trigger(this,this);
-            this._selectionSprite.alpha = 0;
-        }
-        else
-        {
-            this.PratrolCeils.push(ceil);
-        }
+    public SetNextCeil(ceil: Ceil): void {
+        this._nextCeil = ceil;
+        this._angleFinder.SetAngle(this._nextCeil);
     }
-
-    protected SetNextCeils():void{
-        if(!isNullOrUndefined(this.PathItems) && this.PathItems.length){
-            this.PathItems.forEach(pathItem => {
-                pathItem.Destroy();
-            });
-        }
-        this.PathItems = [];
-
-        this.NextCeils = PlaygroundHelper.Engine.GetPath(this.CurrentCeil, this.FinalCeil); 
-
-        if(this.NextCeils != null && this.NextCeils.length){
-            this.NextCeils.forEach(ceil => {
-                var pathItem = new BasicItem(ceil.GetBoundingBox(),new Sprite(PlaygroundHelper.Render.Textures['pathCeil']));
-                this.PathItems.push(pathItem);
-                PlaygroundHelper.Playground.Items.push(pathItem);
-            });
-        }
+    public GetCurrentCeil(): Ceil {
+        return this._currentCeil;
     }
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // else
+        // {
+        //     if(this.IsPatroling())
+        //     {
+        //         var index = (this.PratrolCeils.indexOf(this.CurrentPratolCeil)+1) % this.PratrolCeils.length;
+        //         this.CurrentPratolCeil = this.PratrolCeils[index];
+        //         this.FinalCeil = this.CurrentPratolCeil;
+        //         this.SetNextCeils();
+        //     }
+        // }
+
+
+        // if(this.NextCeil.IsBlocked())
+        // {
+        //     if(this.FinalCeil == this.NextCeil)
+        //     {
+        //         this.NextCeil = null;
+        //         this.NextCeils = [];
+        //     }
+        //     else
+        //     {
+        //         this.SetNextCeils(); 
+        //         this.FindNextCeil();
+        //         return;
+        //     }
+        // }
+
+
+        // var ceil = item as Ceil;
+        // if(!this.IsSettingPatrol)
+        // {
+        //     if(this.IsPatroling()) //cancel patroling
+        //     {
+        //         this.PratrolCeils = new Array<Ceil>();
+        //         this.PatrolItems.forEach(pathItem => {
+        //             pathItem.Destroy();
+        //         });
+        //     }
+
+        //     var context = obj as InteractionContext;    
+        //     if(!isNullOrUndefined(ceil) && !ceil.IsBlocked())
+        //     {
+        //         this.FinalCeil = ceil;
+        //         this.SetNextCeils(); 
+        //     }
+
+        //     context.SelectionEvent.off(this.selectionFunc);
+        //     PlaygroundHelper.OnVehiculeUnSelected.trigger(this,this);
+        //     this._selectionSprite.alpha = 0;
+        // }
+        // else
+        // {
+        //     this.PratrolCeils.push(ceil);
+        //     var patrolItem = new BasicItem(ceil.GetBoundingBox(),new Sprite(PlaygroundHelper.Render.Textures['selectedCeil']));
+        //     this.PathItems.push(patrolItem);
+        //     PlaygroundHelper.Playground.Items.push(patrolItem);
+        // }
+
+
+        // if(!isNullOrUndefined(this.PathItems) && this.PathItems.length){
+        //     this.PathItems.forEach(pathItem => {
+        //         pathItem.Destroy();
+        //     });
+        // }
+
+        // this.PathItems = [];
+
+        // this.NextCeils = PlaygroundHelper.Engine.GetPath(this.CurrentCeil, this.FinalCeil); 
+
+        // if(this.NextCeils != null && this.NextCeils.length){
+        //     this.NextCeils.forEach(ceil => {
+        //         var pathItem = new BasicItem(ceil.GetBoundingBox(),new Sprite(PlaygroundHelper.Render.Textures['pathCeil']));
+        //         this.PathItems.push(pathItem);
+        //         PlaygroundHelper.Playground.Items.push(pathItem);
+        //     });
+        // }

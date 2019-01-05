@@ -1,6 +1,6 @@
 import { Item } from "../Item";
 import { BoundingBox } from "../BoundingBox";
-import { InteractionContext } from "../InteractionContext";
+import { InteractionContext } from "../Context/InteractionContext";
 import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Headquarter } from "../Headquarter";
 
@@ -37,7 +37,7 @@ export class BottomMenu extends Item
 
         this._graphics2.drawRect(0,PlaygroundHelper.Settings.ScreenHeight-size2,PlaygroundHelper.Settings.ScreenWidth,size2);
         this._graphics.drawRect(0,PlaygroundHelper.Settings.ScreenHeight-size,PlaygroundHelper.Settings.ScreenWidth,size);
-
+ 
         var sprite=new PIXI.Sprite(PlaygroundHelper.Render.Textures['diamondIcon']);
         sprite.x = 10;
         sprite.y = PlaygroundHelper.Settings.ScreenHeight-size;

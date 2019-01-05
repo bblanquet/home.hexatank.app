@@ -1,6 +1,6 @@
 import { Item } from "./Item";
 import { BoundingBox } from "./BoundingBox";
-import { InteractionContext } from "./InteractionContext";
+import { InteractionContext } from "./Context/InteractionContext";
 import { PlaygroundHelper } from "./PlaygroundHelper";
 import { Sprite } from "pixi.js";
 import "../Extension/Collection";
@@ -39,7 +39,7 @@ export class TankHead extends Item implements IRotatable
 
     constructor(hqSkin:HqSkin, item:Tank){
         super();
-        this._skin = hqSkin;
+        this._skin = hqSkin; 
         this.CurrentRadius = 0;
         this.Z = 3;
         this.Base = item;

@@ -1,6 +1,6 @@
 import { Item } from "../Item";
 import { BoundingBox } from "../BoundingBox";
-import { InteractionContext } from "../InteractionContext";
+import { InteractionContext } from "../Context/InteractionContext";
 import { PlaygroundHelper } from "../PlaygroundHelper";
 
 export abstract class MenuItem extends Item
@@ -15,13 +15,19 @@ export abstract class MenuItem extends Item
         this.DisplayObjects.push( new PIXI.Sprite(PlaygroundHelper.Render.Textures[selected]));
         this.IsSelected = false;
         this.DisplayObjects[0].alpha = 1;
-        this.DisplayObjects[1].alpha = 0;
+        this.DisplayObjects[1].alpha = 0; 
         PlaygroundHelper.Render.Add(this);
     }
 
-    protected Hide(){
+    public Hide(){
         this.DisplayObjects.forEach(item=>
             {item.alpha = 0;}
+            );
+    }
+
+    public Show(){
+        this.DisplayObjects.forEach(item=>
+            {item.alpha =1;}
             );
     }
 

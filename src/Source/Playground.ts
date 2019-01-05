@@ -2,7 +2,7 @@ import {Item} from './Item';
 import { IPlayground } from './IPlayground';
 import { ViewContext } from './ViewContext';
 import { InputManager } from './InputManager';
-import {InteractionContext} from './InteractionContext';
+import {InteractionContext} from './Context/InteractionContext';
 
 export class Playground implements IPlayground
 {    
@@ -19,16 +19,11 @@ export class Playground implements IPlayground
     }
 
     Select(event:InteractionContext):void{
-        this.Items.every(item => 
-        {
-            var isSelected = item.Select(event);
-            if(isSelected)
-            {    
-                console.log(`selected: ${item.constructor.name}`,'font-weight:bold;color:red;');
-            }
-            
-            return !isSelected;
-        });
+        for (let index = this.Items.length-1; -1 < index; index--) {
+            if(this.Items[index].Select(event)){
+                return;
+            }   
+        }
     }
 
     public Update():void{
@@ -38,6 +33,3 @@ export class Playground implements IPlayground
         });
     }
 } 
-
-
-            //console.log(`%c x: ${event.data.global.x} y: ${event.data.global.y}` ,'color:red;');

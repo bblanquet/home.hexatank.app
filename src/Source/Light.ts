@@ -1,6 +1,6 @@
 import { Item } from "./Item";
 import { BoundingBox } from "./BoundingBox";
-import { InteractionContext } from "./InteractionContext";
+import { InteractionContext } from "./Context/InteractionContext";
 import { PlaygroundHelper } from "./PlaygroundHelper";
 import { Sprite } from "pixi.js";
 
@@ -32,7 +32,7 @@ export class Light extends Item{
 
     public Update(viewX: number, viewY: number, zoom: number): void {
         super.Update(viewX,viewY,zoom);
-        
+         
         if(this.IsShowing)
         {
             this.DisplayObjects[0].alpha -= 0.01;

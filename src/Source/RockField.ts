@@ -3,21 +3,26 @@ import { AliveItem } from "./AliveItem";
 import { IField } from "./IField";
 import { Vehicle } from "./Vehicle";
 import { BoundingBox } from "./BoundingBox";
-import { InteractionContext } from "./InteractionContext";
+import { InteractionContext } from "./Context/InteractionContext";
 import { PlaygroundHelper } from "./PlaygroundHelper";
 import { Sprite } from "pixi.js";
 
 export class RockField extends AliveItem implements IField
 {
-    Ceil:Ceil;
+
+    private _ceil:Ceil;
     
     constructor(ceil:Ceil, sprite:string){
         super();
-        this.Ceil = ceil;
-        this.Ceil.Field = this;
+        this._ceil = ceil;
+        this._ceil.Field = this;
         this.Z= 0;
-        this.DisplayObjects.push(new Sprite(PlaygroundHelper.Render.Textures[sprite]));//"blockedCeil.png"
+        this.DisplayObjects.push(new Sprite(PlaygroundHelper.Render.Textures[sprite]));
         PlaygroundHelper.Render.Add(this);
+    }
+
+    GetCeil(): Ceil {
+        return this._ceil;
     }
 
     Support(vehicule: Vehicle): void {
@@ -32,7 +37,7 @@ export class RockField extends AliveItem implements IField
     }
 
     public GetBoundingBox(): BoundingBox {
-        return this.Ceil.GetBoundingBox();
+        return this._ceil.GetBoundingBox();
     }
     public Select(context: InteractionContext): boolean {
         //nothing
@@ -50,7 +55,7 @@ export class RockField extends AliveItem implements IField
 
     public Destroy():void{
         PlaygroundHelper.Render.Remove(this);
-        this.Ceil.Field = null;
+        this._ceil.Field = null;
         this.IsUpdatable = false;
     }
 }

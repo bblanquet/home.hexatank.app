@@ -1,7 +1,7 @@
 import { Point } from "./Point";
 import { ViewContext } from "./ViewContext";
 import {LiteEvent} from "./LiteEvent";
-import {InteractionContext} from './InteractionContext';
+import {InteractionContext} from './Context/InteractionContext';
 
 export class InputManager{
     IsGrabbed:Boolean;
@@ -51,7 +51,7 @@ export class InputManager{
     }
 
     OnMouseWheel(event:MouseWheelEvent){
-        if(0 < event.wheelDelta)
+        if(0 < event.deltaY)//event.wheelDelta
         {
             this.ViewContext.Zoom += 0.1;
         }

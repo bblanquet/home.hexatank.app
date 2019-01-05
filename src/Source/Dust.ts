@@ -1,6 +1,6 @@
 import { Item } from "./Item";
 import { BoundingBox } from "./BoundingBox";
-import { InteractionContext } from "./InteractionContext";
+import { InteractionContext } from "./Context/InteractionContext";
 import { PlaygroundHelper } from "./PlaygroundHelper";
 
 export class Dust extends Item
@@ -36,7 +36,7 @@ export class Dust extends Item
 
     public Select(context: InteractionContext): boolean {
         //do nothing
-        return false;
+        return false; 
     }
     public Update(viewX: number, viewY: number, zoom: number): void{
         super.Update(viewX,viewY,zoom);

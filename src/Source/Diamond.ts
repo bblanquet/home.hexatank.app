@@ -1,6 +1,6 @@
 import { Item } from "./Item";
 import { BoundingBox } from "./BoundingBox";
-import { InteractionContext } from "./InteractionContext";
+import { InteractionContext } from "./Context/InteractionContext";
 import { PlaygroundHelper } from "./PlaygroundHelper";
 import { Sprite } from "pixi.js";
 import { Light } from "./Light";
@@ -10,11 +10,10 @@ import { IField } from "./IField";
 import { Vehicle } from "./Vehicle";
 
 export class Diamond extends Item implements IField{
-
     BoundingBox:BoundingBox;
     Lights:Array<Light>;
     Fields:Array<DiamondField>;
-    Ceil:Ceil;
+    private _ceil:Ceil;
     private _timeBuffer:number=4;
     private _timing:number=0;
 
@@ -22,9 +21,9 @@ export class Diamond extends Item implements IField{
     {
         super();
         this.Z= 1;
-        this.Ceil = ceil;
-        this.Ceil.Field = this;
-        this.BoundingBox = this.Ceil.GetBoundingBox();
+        this._ceil = ceil;
+        this._ceil.Field = this;
+        this.BoundingBox = this._ceil.GetBoundingBox();
         var sprite = new Sprite(PlaygroundHelper.Render.Textures["diamond.png"]);
         this.DisplayObjects.push(sprite);
 
@@ -34,7 +33,7 @@ export class Diamond extends Item implements IField{
         this.Lights.push(new Light());
 
         this.Fields = new Array<DiamondField>();
-        var neighbours = this.Ceil.GetNeighbourhood();
+        var neighbours = this._ceil.GetNeighbourhood();
         neighbours.forEach(ceil=>
         {
             this.Fields.push(new DiamondField(<Ceil>ceil));
@@ -42,8 +41,13 @@ export class Diamond extends Item implements IField{
         PlaygroundHelper.Render.Add(this);
     }
 
+    GetCeil(): Ceil {
+        return this._ceil;
+    }
+
     Support(vehicule:Vehicle): void {
     }
+    
     IsDesctrutible(): boolean {
         return true;
     }
@@ -90,8 +94,8 @@ export class Diamond extends Item implements IField{
                     }
     
                     light.Display(
-                        this.Ceil.GetBoundingBox().GetCenter() + randomX, 
-                        this.Ceil.GetBoundingBox().GetMiddle() + randomY);
+                        this._ceil.GetBoundingBox().GetCenter() + randomX, 
+                        this._ceil.GetBoundingBox().GetMiddle() + randomY);
                 }
             });
         }

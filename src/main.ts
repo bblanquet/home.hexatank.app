@@ -24,6 +24,7 @@ import { PatrolMenuItem } from './Source/Menu/PatrolMenuItem';
 import { TruckMenuItem } from './Source/Menu/TruckMenuItem';
 import { SpeedFieldMenuItem } from './Source/Menu/SpeedFieldMenuItem';
 import { isNullOrUndefined } from 'util';
+import { CancelMenuItem } from './Source/Menu/CancelMenuItem';
 
 const app = new PIXI.Application({width: 480, height: 800});
 let playground:Playground;
@@ -86,17 +87,17 @@ function Setup(){
         new AttackMenuItem('healCeilIcon','healCeilIcon'),
         new SpeedFieldMenuItem(),
         new AttackMenuItem('rightBottomBorder','rightBottomBorder')]);    
-        items.splice(0,0,rightMenu);
+    items.push(rightMenu);
 
     var leftMenu = new LeftMenu(
         [new AttackMenuItem('leftTopBorder','leftTopBorder'),
         new AttackMenuItem('attackIcon','hoverAttackIcon'),
         new AttackMenuItem('defenseIcon','hoverDefenseIcon'),
         new PatrolMenuItem(),
-        new AttackMenuItem('cancelIcon','hoverCancelIcon'),
+        new CancelMenuItem(),
         new AttackMenuItem('leftBottomBorder','leftBottomBorder')]);
 
-    items.splice(0,0,leftMenu);
+    items.push(leftMenu);
 
     //vehicles.forEach(vehicle=>{
     //    PlaygroundHelper.Add(vehicle);
@@ -104,7 +105,7 @@ function Setup(){
     
     var bottomMenu = new BottomMenu(redQuarter);
 
-    items.splice(0,0,bottomMenu);
+    items.push(bottomMenu);
 
     items.forEach(item=>{
         PlaygroundHelper.Render.Add(item);

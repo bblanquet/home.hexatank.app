@@ -1,6 +1,6 @@
 import { Item } from "./Item";
 import { BoundingBox } from "./BoundingBox";
-import { InteractionContext } from "./InteractionContext";
+import { InteractionContext } from "./Context/InteractionContext";
 import { PlaygroundHelper } from "./PlaygroundHelper";
 
 export class Explosion extends Item{
@@ -17,7 +17,7 @@ export class Explosion extends Item{
         this.BoundingBox = boundingbox;
 
         let explosions = ['explosion1.png','explosion2.png','explosion3.png','explosion4.png'];
-
+ 
         explosions.forEach(explosion =>{
             let sprite = new PIXI.Sprite(PlaygroundHelper.Render.Textures[explosion]);
             sprite.pivot.set(sprite.x + sprite.width/2,sprite.y + sprite.height/2);

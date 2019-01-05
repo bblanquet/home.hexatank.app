@@ -1,14 +1,14 @@
 import { Item } from "./Item";
 import { BoundingBox } from "./BoundingBox";
 import { PlaygroundHelper } from "./PlaygroundHelper";
-import { InteractionContext } from "./InteractionContext";
+import { InteractionContext } from "./Context/InteractionContext";
 
 export class Crater extends Item{
     BoundingBox:BoundingBox;
 
     constructor(boundingbox:BoundingBox)
     {
-        super();
+        super(); 
         this.Z = 1;
         this.BoundingBox = boundingbox;
 

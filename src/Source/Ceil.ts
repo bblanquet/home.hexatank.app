@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import {Item} from './Item';
-import {InteractionContext} from './InteractionContext';
+import {InteractionContext} from './Context/InteractionContext';
 import {CeilProperties} from './CeilProperties';
 import {ICeil} from './ICeil';
 import { HexAxial } from "./Coordinates/HexAxial";
@@ -136,7 +136,7 @@ export class Ceil extends Item implements ICeil
             var ceil = PlaygroundHelper.CeilsContainer.Get(coordinate);
             if(ceil != null && !ceil.IsBlocked())
             {
-                ceils.push(ceil);
+                ceils.push(ceil); 
             }
         });
         return ceils;
@@ -148,7 +148,7 @@ export class Ceil extends Item implements ICeil
         
         if(isSelected)
         {
-            console.log(`%c Q:${this.GetCoordinate().Q} R:${this.GetCoordinate().R}`,'color:purple;font-weight:bold;')
+            //console.log(`%c Q:${this.GetCoordinate().Q} R:${this.GetCoordinate().R}`,'color:purple;font-weight:bold;')
             context.OnSelect(this);
         }
 

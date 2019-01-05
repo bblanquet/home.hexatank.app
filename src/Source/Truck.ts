@@ -100,5 +100,5 @@ export class Truck extends Vehicle implements IHqContainer{
     public Update(viewX: number, viewY: number, zoom: number):void
     {
         super.Update(viewX,viewY,zoom);
-        this.CurrentCeil.Field.Support(this); 
-    }}
+    }
+}

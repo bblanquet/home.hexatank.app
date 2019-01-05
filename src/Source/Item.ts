@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import { BoundingBox } from "./BoundingBox";
 import { Updater } from "./Updater";
-import {InteractionContext} from './InteractionContext';
+import {InteractionContext} from './Context/InteractionContext';
 import { Point } from './Point';
 import { IBoundingBoxContainer } from './IBoundingBoxContainer';
 
@@ -45,7 +45,7 @@ export abstract class Item implements Updater, IBoundingBoxContainer{
         .filter(d => d instanceof PIXI.Sprite)
         .forEach(item=>{sprites.push(<PIXI.Sprite>item)});
         return sprites;
-    }
+    } 
 
     public abstract Select(context:InteractionContext):boolean;
 }

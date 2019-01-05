@@ -1,6 +1,6 @@
 import { Item } from "./Item";
 import { BoundingBox } from "./BoundingBox";
-import { InteractionContext } from "./InteractionContext";
+import { InteractionContext } from "./Context/InteractionContext";
 import { PlaygroundHelper } from "./PlaygroundHelper";
 import { Explosion } from "./Explosion";
 import { AliveItem } from "./AliveItem";
@@ -16,7 +16,7 @@ export class Missile extends Item{
 
     constructor(boundingbox:BoundingBox, target:AliveItem)
     {
-        super();
+        super(); 
         this.Target = target;
         this.Z = 2;
         this.BoundingBox = boundingbox;

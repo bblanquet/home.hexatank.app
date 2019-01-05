@@ -1,6 +1,6 @@
 import { Item } from "./Item";
 import { BoundingBox } from "./BoundingBox";
-import { InteractionContext } from "./InteractionContext";
+import { InteractionContext } from "./Context/InteractionContext";
 import { Sprite } from "pixi.js";
 import { PlaygroundHelper } from "./PlaygroundHelper";
 import { Ceil } from "./Ceil";
@@ -17,6 +17,9 @@ export class Headquarter extends Item{
     Diamonds:number=20;
     private _skin:HqSkin;
     private _graphics:PIXI.Graphics;
+    private _timeBuffer:number=3;
+    private _timing:number=0;
+    IsFading:boolean;
 
     constructor(skin:HqSkin, ceil:Ceil){
         super();
@@ -32,12 +35,14 @@ export class Headquarter extends Item{
         this.BoundingBox.X = this.Ceil.GetBoundingBox().X;
         this.BoundingBox.Y = this.Ceil.GetBoundingBox().Y;
 
-        /*
         this._graphics = new PIXI.Graphics();
-        this._graphics.beginFill(0xb31616,1);//skin.GetColor()
-        this._graphics.drawCircle(this.Ceil.GetBoundingBox().X,this.Ceil.GetBoundingBox().Y,this.Ceil.GetBoundingBox().Width);
+        this._graphics.beginFill(skin.GetColor(),1);
+        this._graphics.drawCircle(
+            this.Ceil.GetBoundingBox().X,
+            this.Ceil.GetBoundingBox().Y,
+            this.Ceil.GetBoundingBox().Width);
+
         this.DisplayObjects.push(this._graphics);
-        */
 
         this.GetSprites().forEach(obj => {
             obj.width = this.BoundingBox.Width,
@@ -81,7 +86,7 @@ export class Headquarter extends Item{
         return isCreated;
     }
 
-    CreateTruck():boolean
+    public CreateTruck():boolean
     {
         let isCreated = false;
         this.Fields.every(field=>
@@ -113,11 +118,44 @@ export class Headquarter extends Item{
     public Update(viewX: number, viewY: number, zoom: number):void{
         super.Update(viewX,viewY,zoom);
 
+        this._graphics.beginFill(0xbf984e,1);
+        this._graphics.drawCircle(
+            this.Ceil.GetBoundingBox().X,
+            this.Ceil.GetBoundingBox().Y,
+            this.Ceil.GetBoundingBox().Width);
+
+        this.DisplayObjects.push(this._graphics);
+
         this.Fields.forEach(field=>{
             field.Update(viewX,viewY,zoom);
             this.Diamonds += field.Diamonds;
             field.Diamonds = 0;            
         });
+
+        this._timing +=1;
+
+        if(this._timing % this._timeBuffer == 0)
+        { 
+            if(this.DisplayObjects[1].alpha < 0)
+            {
+                this.IsFading = false;
+            }
+
+            if(1 < this.DisplayObjects[1].alpha)
+            {
+                this.IsFading = true;
+            }
+
+            if(this.IsFading)
+            {
+                this.DisplayObjects[1].alpha -= 0.05;
+            }
+
+            if(!this.IsFading)
+            {
+                this.DisplayObjects[1].alpha += 0.05;
+            }
+        }
     }
 
 }

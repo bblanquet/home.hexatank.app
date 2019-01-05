@@ -1,6 +1,6 @@
 import { MenuItem } from "./MenuItem";
 import { Headquarter } from "../Headquarter";
-import { InteractionContext } from "../InteractionContext";
+import { InteractionContext } from "../Context/InteractionContext";
 
 export class TruckMenuItem extends MenuItem{
     private _hq:Headquarter;
@@ -11,7 +11,7 @@ export class TruckMenuItem extends MenuItem{
     }
 
     public Select(context: InteractionContext): boolean      
-    {
+    { 
         //console.log(`%c touchdown`,'color:blue;font-weight:bold;');
         
         if(this._hq.Diamonds > 4){

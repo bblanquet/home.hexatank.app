@@ -1,6 +1,6 @@
 import { Item } from "./Item";
 import { BoundingBox } from "./BoundingBox";
-import { InteractionContext } from "./InteractionContext";
+import { InteractionContext } from "./Context/InteractionContext";
 import { Sprite } from "pixi.js";
 import { PlaygroundHelper } from "./PlaygroundHelper";
 import { Ceil } from "./Ceil";
@@ -21,11 +21,15 @@ export class HeadQuarterField extends Item implements IField
         this.Ceil = ceil;
         this.Ceil.Field = this;
         this.Z= 0;
-        this.DisplayObjects.push(new Sprite(PlaygroundHelper.Render.Textures["selectedCeil.png"]));
+        this.DisplayObjects.push(new Sprite(PlaygroundHelper.Render.Textures["selectedCeil"]));
         PlaygroundHelper.Render.Add(this);
     }
 
-    Support(vehicule: Vehicle): void 
+    public GetCeil(): Ceil {
+        return this.Ceil;
+    }
+
+    public Support(vehicule: Vehicle): void 
     {
         if(vehicule instanceof Truck)
         {
@@ -50,7 +54,7 @@ export class HeadQuarterField extends Item implements IField
         this._timing +=1;
 
         if(this._timing % this._timeBuffer == 0)
-        {
+        { 
             if(this.GetSprites()[0].alpha < 0)
             {
                 this.IsFading = false;

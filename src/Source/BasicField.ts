@@ -1,7 +1,7 @@
 import { Item } from "./Item";
 import { IField } from "./IField";
 import { BoundingBox } from "./BoundingBox";
-import { InteractionContext } from "./InteractionContext";
+import { InteractionContext } from "./Context/InteractionContext";
 import { Vehicle } from "./Vehicle";
 import { Playground } from "./Playground";
 import { PlaygroundHelper } from "./PlaygroundHelper";
@@ -14,6 +14,10 @@ export class BasicField extends Item implements IField{
         super();
         this._ceil=ceil;
         this._ceil.Field = this;
+    }
+
+    GetCeil(): Ceil {
+        return this._ceil;
     }
 
     Support(vehicule: Vehicle): void {

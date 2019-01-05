@@ -1,7 +1,7 @@
 import { Sprite } from "pixi.js";
 import { PlaygroundHelper } from "./PlaygroundHelper";
 import { BoundingBox } from "./BoundingBox";
-import { InteractionContext } from "./InteractionContext";
+import { InteractionContext } from "./Context/InteractionContext";
 import { Ceil } from "./Ceil";
 import { Item } from "./Item";
 import { IField } from "./IField";
@@ -10,6 +10,7 @@ import { Truck } from "./Truck";
 
 export class DiamondField extends Item implements IField
 {
+
     private _ceil:Ceil;
     private _timeBuffer:number=3;
     private _timing:number=0;
@@ -33,6 +34,10 @@ export class DiamondField extends Item implements IField
     }
     public IsDesctrutible(): boolean {
         return false;
+    }
+    
+    GetCeil(): Ceil {
+        return this._ceil;
     }
 
     public GetBoundingBox(): BoundingBox{

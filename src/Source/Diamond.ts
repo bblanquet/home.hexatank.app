@@ -22,7 +22,7 @@ export class Diamond extends Item implements IField{
         super();
         this.Z= 1;
         this._ceil = ceil;
-        this._ceil.Field = this;
+        this._ceil.SetField(this);
         this.BoundingBox = this._ceil.GetBoundingBox();
         var sprite = new Sprite(PlaygroundHelper.Render.Textures["diamond.png"]);
         this.DisplayObjects.push(sprite);

@@ -61,14 +61,16 @@ export class Truck extends Vehicle implements IHqContainer{
     }
 
     protected OnCeilChanged(): void {
-        
     }    
     
+    private IsHqContainer(item: any):item is IHqContainer{
+        return 'Hq' in item;
+    }
+
     public IsEnemy(item: AliveItem): boolean {
-        var hqContainer = item as any as IHqContainer;
-        if(hqContainer != null)
+        if(this.IsHqContainer(item as any))
         {
-            return hqContainer.Hq !== this.Hq;
+            return (<IHqContainer>(item as any)).Hq !== this.Hq;
         }
         return false;
     }

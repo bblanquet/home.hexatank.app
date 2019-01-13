@@ -15,7 +15,7 @@ export class RockField extends AliveItem implements IField
     constructor(ceil:Ceil, sprite:string){
         super();
         this._ceil = ceil;
-        this._ceil.Field = this;
+        this._ceil.SetField(this);
         this.Z= 0;
         this.DisplayObjects.push(new Sprite(PlaygroundHelper.Render.Textures[sprite]));
         PlaygroundHelper.Render.Add(this);
@@ -55,7 +55,7 @@ export class RockField extends AliveItem implements IField
 
     public Destroy():void{
         PlaygroundHelper.Render.Remove(this);
-        this._ceil.Field = null;
+        this._ceil.DestroyField();
         this.IsUpdatable = false;
     }
 }

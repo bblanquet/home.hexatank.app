@@ -25,6 +25,7 @@ import { TruckMenuItem } from './Source/Menu/TruckMenuItem';
 import { SpeedFieldMenuItem } from './Source/Menu/SpeedFieldMenuItem';
 import { isNullOrUndefined } from 'util';
 import { CancelMenuItem } from './Source/Menu/CancelMenuItem';
+import { SmartHq } from './Source/Ia/SmartHq';
 
 const app = new PIXI.Application({width: 480, height: 800});
 let playground:Playground;
@@ -61,8 +62,8 @@ function Setup(){
         items.push(ceil);
     });        
     
-    var redQuarter = new Headquarter(new HqSkin("redBottomTank","redTopTank","redTruck",0xb31616),(<Ceil> ceils[40]));
-    var blueQuarter = new Headquarter(new HqSkin("blueBottomTank","blueTopTank","blueTruck",0x167eb5),(<Ceil> ceils[60]));
+    var redQuarter = new Headquarter(new HqSkin("redBottomTank","redTopTank","redTruck","redHqLight"),(<Ceil> ceils[40]));
+    var blueQuarter = new SmartHq(PlaygroundHelper.GetAreas(<Ceil> ceils[60]),new HqSkin("blueBottomTank","blueTopTank","blueTruck","blueHqLight"),(<Ceil> ceils[60]));
 
     items.push(redQuarter);
     items.push(blueQuarter);

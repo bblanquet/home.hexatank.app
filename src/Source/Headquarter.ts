@@ -1,4 +1,3 @@
-import { Item } from "./Item";
 import { BoundingBox } from "./BoundingBox";
 import { InteractionContext } from "./Context/InteractionContext";
 import { Sprite } from "pixi.js";
@@ -8,15 +7,19 @@ import { HeadQuarterField } from "./HeadquarterField";
 import { Tank } from "./Tank";
 import { HqSkin } from "./HqSkin";
 import { Truck } from "./Truck";
+import { AliveItem } from "./AliveItem";
+import { IHqContainer } from "./IHqContainer";
+import { IField } from "./IField";
+import { Vehicle } from "./Vehicle";
+import { Crater } from "./Crater";
 
-export class Headquarter extends Item{
-
+export class Headquarter extends AliveItem implements IField
+{
     BoundingBox:BoundingBox;
-    Ceil:Ceil;
+    private _ceil:Ceil;
     Fields:Array<HeadQuarterField>;
-    Diamonds:number=20;
+    Diamonds:number=40;
     private _skin:HqSkin;
-    private _graphics:PIXI.Graphics;
     private _timeBuffer:number=3;
     private _timing:number=0;
     IsFading:boolean;
@@ -25,24 +28,18 @@ export class Headquarter extends Item{
         super();
         this._skin = skin;
         this.Z= 2;
-        this.Ceil = ceil;
-        var sprite = new Sprite(PlaygroundHelper.Render.Textures["hq"]);
+        this._ceil = ceil;
+        this._ceil.SetField(this);
 
-        this.DisplayObjects.push(sprite);
         this.BoundingBox = new BoundingBox();
-        this.BoundingBox.Width = this.Ceil.GetBoundingBox().Width;
-        this.BoundingBox.Height = this.Ceil.GetBoundingBox().Height;
-        this.BoundingBox.X = this.Ceil.GetBoundingBox().X;
-        this.BoundingBox.Y = this.Ceil.GetBoundingBox().Y;
+        this.BoundingBox.Width = this._ceil.GetBoundingBox().Width;
+        this.BoundingBox.Height = this._ceil.GetBoundingBox().Height;
+        this.BoundingBox.X = this._ceil.GetBoundingBox().X;
+        this.BoundingBox.Y = this._ceil.GetBoundingBox().Y;
 
-        this._graphics = new PIXI.Graphics();
-        this._graphics.beginFill(skin.GetColor(),1);
-        this._graphics.drawCircle(
-            this.Ceil.GetBoundingBox().X,
-            this.Ceil.GetBoundingBox().Y,
-            this.Ceil.GetBoundingBox().Width);
-
-        this.DisplayObjects.push(this._graphics);
+        this.DisplayObjects.push(new Sprite(PlaygroundHelper.Render.Textures["hqLight"]));
+        this.DisplayObjects.push(skin.GetColor());
+        this.DisplayObjects.push(new Sprite(PlaygroundHelper.Render.Textures["hq"]));
 
         this.GetSprites().forEach(obj => {
             obj.width = this.BoundingBox.Width,
@@ -52,7 +49,7 @@ export class Headquarter extends Item{
         });
         this.IsCentralRef = true;
 
-        var neighbours = this.Ceil.GetNeighbourhood();
+        var neighbours = this._ceil.GetNeighbourhood();
         this.Fields = new Array<HeadQuarterField>();
         neighbours.forEach(ceil=>
         {
@@ -60,7 +57,29 @@ export class Headquarter extends Item{
         });
         PlaygroundHelper.Render.Add(this);
     }
+
+    private IsHqContainer(item: any):item is IHqContainer{
+        return 'Hq' in item;
+    }
+
+    public IsEnemy(item: AliveItem): boolean {
+        if(this.IsHqContainer(item as any))
+        {
+            return (<IHqContainer>(item as any)).Hq !== this;
+        }
+        return false;
+    }
     
+    Support(vehicule: Vehicle): void {
+        throw new Error("Method not implemented.");
+    }
+    IsDesctrutible(): boolean {
+        return true;
+    }
+    GetCeil(): Ceil {
+        return this._ceil;
+    }
+
     public GetSkin():HqSkin{
         return this._skin;
     }
@@ -70,11 +89,10 @@ export class Headquarter extends Item{
         let isCreated = false;
         this.Fields.every(field=>
         {
-            if(!field.Ceil.IsBlocked())
+            if(!field.GetCeil().IsBlocked())
             {
                 var tank = new Tank(this);
-                PlaygroundHelper.Add(tank);
-                tank.SetPosition(field.Ceil);
+                tank.SetPosition(field.GetCeil());
                 PlaygroundHelper.Render.Add(tank);
                 PlaygroundHelper.Playground.Items.push(tank);
                 isCreated = true;
@@ -91,11 +109,10 @@ export class Headquarter extends Item{
         let isCreated = false;
         this.Fields.every(field=>
         {
-            if(!field.Ceil.IsBlocked())
+            if(!field.GetCeil().IsBlocked())
             {
                 var truck = new Truck(this);
-                PlaygroundHelper.Add(truck);
-                truck.SetPosition(field.Ceil);
+                truck.SetPosition(field.GetCeil());
                 PlaygroundHelper.Render.Add(truck);
                 PlaygroundHelper.Playground.Items.push(truck);
                 isCreated = true;
@@ -115,16 +132,26 @@ export class Headquarter extends Item{
         return false;
     }
 
-    public Update(viewX: number, viewY: number, zoom: number):void{
+    protected Destroy():void{
+        PlaygroundHelper.Render.Remove(this);
+        this._ceil.DestroyField();
+        this.IsUpdatable = false;
+        this.Fields.forEach(field=>{
+            field.Destroy();
+        });
+    }
+
+    public Update(viewX: number, viewY: number, zoom: number):void
+    {
+        if(!this.IsAlive())
+        {
+            this.Destroy();
+            let crater = new Crater(this.BoundingBox);
+            PlaygroundHelper.Playground.Items.push(crater);
+            return;
+        }
+
         super.Update(viewX,viewY,zoom);
-
-        this._graphics.beginFill(0xbf984e,1);
-        this._graphics.drawCircle(
-            this.Ceil.GetBoundingBox().X,
-            this.Ceil.GetBoundingBox().Y,
-            this.Ceil.GetBoundingBox().Width);
-
-        this.DisplayObjects.push(this._graphics);
 
         this.Fields.forEach(field=>{
             field.Update(viewX,viewY,zoom);
@@ -136,26 +163,25 @@ export class Headquarter extends Item{
 
         if(this._timing % this._timeBuffer == 0)
         { 
-            if(this.DisplayObjects[1].alpha < 0)
+            if(this.DisplayObjects[3].alpha < 0.25)
             {
                 this.IsFading = false;
             }
 
-            if(1 < this.DisplayObjects[1].alpha)
+            if(1 < this.DisplayObjects[3].alpha)
             {
                 this.IsFading = true;
             }
 
             if(this.IsFading)
             {
-                this.DisplayObjects[1].alpha -= 0.05;
+                this.DisplayObjects[3].alpha -= 0.05;
             }
 
             if(!this.IsFading)
             {
-                this.DisplayObjects[1].alpha += 0.05;
+                this.DisplayObjects[3].alpha += 0.05;
             }
         }
     }
-
 }

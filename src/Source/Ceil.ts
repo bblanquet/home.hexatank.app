@@ -15,13 +15,14 @@ import { AliveItem } from './AliveItem';
 import { BasicField } from './BasicField';
 import { CeilState } from './CeilState';
 import { isNullOrUndefined } from 'util';
+import { Headquarter } from './Headquarter';
 
 export class Ceil extends Item implements ICeil
 {
     State:CeilState = CeilState.Hidden;
     Properties:CeilProperties;
     Sprites:{ [id: number]: Array<PIXI.Sprite>; };
-    Field:IField;
+    private _field:IField;
     private _movable:IMovable;
     DecorationSprite:PIXI.Sprite;
 
@@ -34,6 +35,18 @@ export class Ceil extends Item implements ICeil
         new BasicField(this);
     }
 
+    public GetField():IField{
+        return this._field;
+    }
+
+    public DestroyField(){
+        new BasicField(this);
+    }
+
+    public SetField(field:IField){
+        this._field = field;
+    }
+
     public GetMovable():IMovable{
         return this._movable;
     } 
@@ -43,16 +56,26 @@ export class Ceil extends Item implements ICeil
     }
 
     public IsBlocked():boolean{
-        return (this.Field != null && (this.Field instanceof RockField ||this.Field instanceof Diamond)) || this._movable != null;
+        return (this._field != null 
+            && (this._field instanceof RockField 
+                || this._field instanceof Headquarter 
+                || this._field instanceof Diamond)) 
+                || this._movable != null;
     }
 
     public IsShootable():boolean{
-        return (this.Field instanceof RockField) || this._movable != null;
+        return (this._field instanceof RockField) 
+        || (this._field instanceof Headquarter) 
+        || this._movable != null;
     }
 
     public GetShootableEntity():AliveItem{
-        if(this.Field instanceof RockField) {
-            return <RockField> this.Field;
+        if(this._field instanceof RockField) {
+            return <RockField> this._field;
+        }
+
+        if(this._field instanceof Headquarter) {
+            return <Headquarter> this._field;
         }
 
         if(this._movable != null){
@@ -69,12 +92,25 @@ export class Ceil extends Item implements ICeil
     public SetState(state:CeilState):void{
         this.GetSprites().forEach(sprite=> sprite.alpha = 0);
 
+        if(!isNullOrUndefined(this._areaSprite)){
+            this._areaSprite.alpha = 1;
+        }
+
         this.State = state;
 
         this.Sprites[this.State].forEach(sprite=>{
             sprite.alpha = 1;
         })
     }
+
+    public AddSprite(sprite:PIXI.Sprite){
+        this._areaSprite = sprite;
+        this._areaSprite.alpha = 1;
+        this.DisplayObjects.push(this._areaSprite);
+        PlaygroundHelper.Render.AddSprite(this._areaSprite);
+    }
+
+    private _areaSprite:PIXI.Sprite;
 
     public SetDecoration(sprite:PIXI.Sprite):void{
         this.DecorationSprite = sprite;
@@ -144,11 +180,12 @@ export class Ceil extends Item implements ICeil
 
     public Select(context:InteractionContext):boolean
     {
+
         var isSelected = this.GetSprites()[0].containsPoint(context.Point);
         
         if(isSelected)
         {
-            //console.log(`%c Q:${this.GetCoordinate().Q} R:${this.GetCoordinate().R}`,'color:purple;font-weight:bold;')
+            console.log(`%c Q:${this.GetCoordinate().Q} R:${this.GetCoordinate().R}`,'color:blue;font-weight:bold;');
             context.OnSelect(this);
         }
 

@@ -19,6 +19,7 @@ import { Sprite } from 'pixi.js';
 import { Crater } from './Crater';
 import { CeilState } from './CeilState';
 import { IOrder } from './Ia/IOrder';
+import { OrderState } from './Ia/OrderState';
 
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
 
@@ -208,12 +209,15 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
             return;
         }
 
-        if(this.ExistsOrder() && !this._order.IsDone())
+        if(this.ExistsOrder())
         {
-            this._order.Do(); 
+            if(!this._order.IsDone())
+            {
+                this._order.Do(); 
+            }
         }
 
-        this._currentCeil.Field.Support(this); 
+        this._currentCeil.GetField().Support(this); 
 
         if(this.HasNextCeil())
         {
@@ -222,8 +226,12 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
         super.Update(viewX,viewY,zoom);
     }
 
-    private ExistsOrder():boolean{
+    public ExistsOrder():boolean{
         return !isNullOrUndefined(this._order);
+    }
+
+    public IsExecutingOrder():boolean{
+        return !isNullOrUndefined(this._order) && !this._order.IsDone();
     }
 
     public SetPosition (ceil:Ceil):void{
@@ -231,7 +239,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
         this.BoundingBox.Y = ceil.GetBoundingBox().Y;
         this._currentCeil = ceil;
         this._currentCeil.SetMovable(this);
-        this.SetVisible()
+        this.SetVisible();
     };
 
     public Select(context:InteractionContext):boolean
@@ -246,98 +254,10 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
 
     public SetNextCeil(ceil: Ceil): void {
         this._nextCeil = ceil;
+        this._nextCeil.SetMovable(this);
         this._angleFinder.SetAngle(this._nextCeil);
     }
     public GetCurrentCeil(): Ceil {
         return this._currentCeil;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // else
-        // {
-        //     if(this.IsPatroling())
-        //     {
-        //         var index = (this.PratrolCeils.indexOf(this.CurrentPratolCeil)+1) % this.PratrolCeils.length;
-        //         this.CurrentPratolCeil = this.PratrolCeils[index];
-        //         this.FinalCeil = this.CurrentPratolCeil;
-        //         this.SetNextCeils();
-        //     }
-        // }
-
-
-        // if(this.NextCeil.IsBlocked())
-        // {
-        //     if(this.FinalCeil == this.NextCeil)
-        //     {
-        //         this.NextCeil = null;
-        //         this.NextCeils = [];
-        //     }
-        //     else
-        //     {
-        //         this.SetNextCeils(); 
-        //         this.FindNextCeil();
-        //         return;
-        //     }
-        // }
-
-
-        // var ceil = item as Ceil;
-        // if(!this.IsSettingPatrol)
-        // {
-        //     if(this.IsPatroling()) //cancel patroling
-        //     {
-        //         this.PratrolCeils = new Array<Ceil>();
-        //         this.PatrolItems.forEach(pathItem => {
-        //             pathItem.Destroy();
-        //         });
-        //     }
-
-        //     var context = obj as InteractionContext;    
-        //     if(!isNullOrUndefined(ceil) && !ceil.IsBlocked())
-        //     {
-        //         this.FinalCeil = ceil;
-        //         this.SetNextCeils(); 
-        //     }
-
-        //     context.SelectionEvent.off(this.selectionFunc);
-        //     PlaygroundHelper.OnVehiculeUnSelected.trigger(this,this);
-        //     this._selectionSprite.alpha = 0;
-        // }
-        // else
-        // {
-        //     this.PratrolCeils.push(ceil);
-        //     var patrolItem = new BasicItem(ceil.GetBoundingBox(),new Sprite(PlaygroundHelper.Render.Textures['selectedCeil']));
-        //     this.PathItems.push(patrolItem);
-        //     PlaygroundHelper.Playground.Items.push(patrolItem);
-        // }
-
-
-        // if(!isNullOrUndefined(this.PathItems) && this.PathItems.length){
-        //     this.PathItems.forEach(pathItem => {
-        //         pathItem.Destroy();
-        //     });
-        // }
-
-        // this.PathItems = [];
-
-        // this.NextCeils = PlaygroundHelper.Engine.GetPath(this.CurrentCeil, this.FinalCeil); 
-
-        // if(this.NextCeils != null && this.NextCeils.length){
-        //     this.NextCeils.forEach(ceil => {
-        //         var pathItem = new BasicItem(ceil.GetBoundingBox(),new Sprite(PlaygroundHelper.Render.Textures['pathCeil']));
-        //         this.PathItems.push(pathItem);
-        //         PlaygroundHelper.Playground.Items.push(pathItem);
-        //     });
-        // }

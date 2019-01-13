@@ -912,6 +912,78 @@
         "y": 0.5
       }
     } ,
+    "hqLight": {
+      "frame": {
+        "x": 1800 ,
+        "y": 2400 ,
+        "w": 300 ,
+        "h": 300
+      } ,
+      "rotated": false ,
+      "trimmed": false ,
+      "spriteSourceSize": {
+        "x": 0 ,
+        "y": 0 ,
+        "w": 300 ,
+        "h": 300
+      } ,
+      "sourceSize": {
+        "w": 300 ,
+        "h": 300
+      } ,
+      "pivot": {
+        "x": 0.5 ,
+        "y": 0.5
+      }
+    } ,
+    "redHqLight": {
+      "frame": {
+        "x": 900 ,
+        "y": 2700 ,
+        "w": 300 ,
+        "h": 300
+      } ,
+      "rotated": false ,
+      "trimmed": false ,
+      "spriteSourceSize": {
+        "x": 0 ,
+        "y": 0 ,
+        "w": 300 ,
+        "h": 300
+      } ,
+      "sourceSize": {
+        "w": 300 ,
+        "h": 300
+      } ,
+      "pivot": {
+        "x": 0.5 ,
+        "y": 0.5
+      }
+    } ,
+    "blueHqLight": {
+      "frame": {
+        "x": 1800 ,
+        "y": 2700,
+        "w": 300 ,
+        "h": 300
+      } ,
+      "rotated": false ,
+      "trimmed": false ,
+      "spriteSourceSize": {
+        "x": 0 ,
+        "y": 0 ,
+        "w": 300 ,
+        "h": 300
+      } ,
+      "sourceSize": {
+        "w": 300 ,
+        "h": 300
+      } ,
+      "pivot": {
+        "x": 0.5 ,
+        "y": 0.5
+      }
+    } ,
     "blockedCeil.png": {
       "frame": {
         "x": 900 ,

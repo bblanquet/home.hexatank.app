@@ -15,7 +15,7 @@ export class FastField extends Item implements IField{
     constructor(ceil:Ceil){
         super();
         this._ceil=ceil;
-        this._ceil.Field = this;
+        this._ceil.SetField(this);
         this.Z= 0;
 
         this.DisplayObjects.push(new Sprite(PlaygroundHelper.Render.Textures['fastCeil']));        

@@ -1,7 +1,7 @@
 import { PlaygroundHelper } from "./PlaygroundHelper";
 
 export class HqSkin{
-    constructor(private _tankBottom:string,private _tankTop:string,private _truck:string,private _color:number){
+    constructor(private _tankBottom:string,private _tankTop:string,private _truck:string,private _color:string){
 
     }
 
@@ -17,8 +17,8 @@ export class HqSkin{
         return new PIXI.Sprite(PlaygroundHelper.Render.Textures[this._truck]);
     }
 
-    public GetColor():number{
-        return this._color;
+    public GetColor():PIXI.Sprite{
+        return new PIXI.Sprite(PlaygroundHelper.Render.Textures[this._color]);
     }
 
 }

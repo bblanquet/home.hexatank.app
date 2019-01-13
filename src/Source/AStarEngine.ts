@@ -3,6 +3,8 @@ import {ICeil} from './ICeil';
 
 export class AStarEngine<T extends ICeil>
 {
+    public Limitation:number=50;
+
     private ConstructPath(node:AStarNode<T>):Array<T>{
         var ceils = new Array<T>();
         while(node.Parent != null)
@@ -67,8 +69,8 @@ export class AStarEngine<T extends ICeil>
         nodes.push(node);
     }
 
-    public GetPath(startCeil:T, goalCeil:T):Array<T>{
-
+    public GetPath(startCeil:T, goalCeil:T):Array<T>
+    {
         //console.log(`%c start: ${startCeil.GetCoordinate().Q} ${startCeil.GetCoordinate().R} `,'color:green;');
         //console.log(`%c goal: ${goalCeil.GetCoordinate().Q} ${goalCeil.GetCoordinate().R} `,'color:green;');
 
@@ -86,11 +88,15 @@ export class AStarEngine<T extends ICeil>
 
         while(0 < openedNodes.length)
         {
+            if(this.Limitation < closedNodes.length ){
+                return null;
+            }
+
             var currentNode = openedNodes[0];
             openedNodes.splice(0,1);
 
-            //console.log(`%c opened nodes: ${openedNodes.length} `,'color:red;');
-            //console.log(`%c closed nodes: ${closedNodes.length} `,'color:red;');
+            //console.log(`%c opened nodes: ${openedNodes.length} `,'font-weight:bold;color:red;');
+            //console.log(`%c closed nodes: ${closedNodes.length} `,'font-weight:bold;color:red;');
             //console.log(`%c current: ${currentNode.Ceil.GetCoordinate().Q} ${currentNode.Ceil.GetCoordinate().R} cost:${currentNode.GetCost()}`,'color:blue;');
 
             if(currentNode.Ceil == goalnode.Ceil)

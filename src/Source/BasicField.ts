@@ -13,7 +13,7 @@ export class BasicField extends Item implements IField{
     constructor(ceil:Ceil){
         super();
         this._ceil=ceil;
-        this._ceil.Field = this;
+        this._ceil.SetField(this);
     }
 
     GetCeil(): Ceil {

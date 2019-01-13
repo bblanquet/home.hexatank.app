@@ -10,7 +10,8 @@ import { Truck } from "./Truck";
 
 export class HeadQuarterField extends Item implements IField
 {
-    Ceil:Ceil;
+
+    private _ceil:Ceil;
     private _timeBuffer:number=3;
     private _timing:number=0;
     IsFading:boolean;
@@ -18,15 +19,21 @@ export class HeadQuarterField extends Item implements IField
 
     constructor(ceil:Ceil){
         super();
-        this.Ceil = ceil;
-        this.Ceil.Field = this;
+        this._ceil = ceil;
+        this._ceil.SetField(this);
         this.Z= 0;
         this.DisplayObjects.push(new Sprite(PlaygroundHelper.Render.Textures["selectedCeil"]));
         PlaygroundHelper.Render.Add(this);
     }
 
+    public Destroy(): void {
+        PlaygroundHelper.Render.Remove(this);
+        this.IsUpdatable = false;
+        this._ceil.DestroyField();
+    }
+
     public GetCeil(): Ceil {
-        return this.Ceil;
+        return this._ceil;
     }
 
     public Support(vehicule: Vehicle): void 
@@ -34,15 +41,16 @@ export class HeadQuarterField extends Item implements IField
         if(vehicule instanceof Truck)
         {
             var truck = vehicule as Truck;
-            truck.Unload();
+            this.Diamonds = truck.Unload();
         }
     }
+    
     IsDesctrutible(): boolean {
         return false;
     }
 
     public GetBoundingBox(): BoundingBox{
-        return this.Ceil.GetBoundingBox();
+        return this._ceil.GetBoundingBox();
     }
 
     public Select(context: InteractionContext): boolean {

@@ -6,33 +6,32 @@ import { GameSettings } from './GameSettings';
 import { Vehicle } from './Vehicle';
 import { Playground } from './Playground';
 import { LiteEvent } from './LiteEvent';
+import { AreaEngine } from './Ia/AreaFinder/AreaEngine';
+import { Area } from './Ia/AreaFinder/Area';
 
 export class PlaygroundHelper{
     static CeilsContainer:CeilsContainer<Ceil>;
     static Engine:AStarEngine<Ceil>;
     static Render:RenderingHandler;
     static Settings:GameSettings;
-    private static _vehicles:Array<Vehicle>;
     static Playground:Playground;
     static OnVehiculeSelected:LiteEvent<Vehicle>;
     static OnVehiculeUnSelected:LiteEvent<Vehicle>;
-
+    private static _areaEngine:AreaEngine;
 
     public static Init():void{
         this.OnVehiculeSelected = new LiteEvent<Vehicle>();
         this.OnVehiculeUnSelected = new LiteEvent<Vehicle>();
+        this._areaEngine = new AreaEngine();
         PlaygroundHelper.CeilsContainer = new CeilsContainer<Ceil>();
         PlaygroundHelper.Engine = new AStarEngine<Ceil>();
         PlaygroundHelper.Settings = new GameSettings();
-        this._vehicles = new Array<Vehicle>();
     }
 
-    public static Add(vehicle:Vehicle):void{
-        this._vehicles.push(vehicle);
+    public static GetAreas(ceil:Ceil):Array<Area>
+    {
+        return this._areaEngine.GetAreas(ceil).map(c=> new Area(c));
     }
 
-    public static Remove(vehicle:Vehicle):void{
-        this._vehicles.splice(this._vehicles.indexOf(vehicle),1);
-    }
 
 }

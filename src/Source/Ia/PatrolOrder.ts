@@ -10,6 +10,7 @@ import { Sprite } from "pixi.js";
 
 export class PatrolOrder extends Order{
 
+
     private _currentPatrolCeil:Ceil;
     private _simpleOrder:SimpleOrder;
     private _patrols:Array<BasicItem>;

@@ -13,13 +13,18 @@ export class SimpleOrder extends Order{
     protected Ceils:Array<Ceil>;
     private _ceilFinder:CeilFinder;
     private _path:Array<BasicItem>;
-
-    constructor(protected Dest:Ceil,private _v:Vehicle)
+    protected Dest:Ceil;
+    constructor(protected OriginalDest:Ceil,private _v:Vehicle)
     {
         super();
+        this.Dest = OriginalDest;
         this.Ceils = new Array<Ceil>();
         this._ceilFinder = new CeilFinder();
         this._path = [];
+    }
+
+    public GetDestination():Ceil{
+        return this.Dest;
     }
 
     public Do(): void 
@@ -31,12 +36,23 @@ export class SimpleOrder extends Order{
 
         if(this.CurrentCeil === this._v.GetCurrentCeil())
         {
-            this._path[0].Destroy();
-            this._path.splice(0, 1);
+            if(this._path.length >0)
+            {
+                this._path[0].Destroy();
+                this._path.splice(0, 1);
+            }
+
             
             if(this.CurrentCeil === this.Dest)
             {
-                this.State = OrderState.Passed;
+                if(this.Dest === this.OriginalDest)
+                {
+                    this.State = OrderState.Passed;
+                }
+                else
+                {
+                    this.State = OrderState.Failed;
+                }
             }
             else
             {

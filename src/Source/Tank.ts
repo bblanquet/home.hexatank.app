@@ -1,16 +1,10 @@
 import {Vehicle} from './Vehicle';
 import * as PIXI from 'pixi.js';
-import {Dust} from './Dust';
-import { BoundingBox } from './BoundingBox';
 import { PlaygroundHelper } from './PlaygroundHelper';
 import { TankHead } from './TankHead';
 import { AliveItem } from './AliveItem';
 import { Ceil } from './Ceil';
 import { isNullOrUndefined, isNull } from 'util';
-import { InteractionContext } from './Context/InteractionContext';
-import { Item } from './Item';
-import { CeilFinder } from './CeilFinder';
-import { HqSkin } from './HqSkin';
 import { Headquarter } from './Headquarter';
 import { IHqContainer } from './IHqContainer';
 
@@ -109,11 +103,14 @@ export class Tank extends Vehicle implements IHqContainer
         }
     }
 
+    private IsHqContainer(item: any):item is IHqContainer{
+        return 'Hq' in item;
+    }
+
     public IsEnemy(item: AliveItem): boolean {
-        var hqContainer = item as any as IHqContainer;
-        if(hqContainer != null)
+        if(this.IsHqContainer(item as any))
         {
-            return hqContainer.Hq !== this.Hq;
+            return (<IHqContainer>(item as any)).Hq !== this.Hq;
         }
         return false;
     }

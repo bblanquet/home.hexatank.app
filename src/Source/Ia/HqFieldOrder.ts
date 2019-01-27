@@ -1,42 +1,34 @@
-import { Headquarter } from "../Headquarter";
+import { Headquarter } from "../Field/Headquarter";
 import { Vehicle } from "../Vehicle";
-import { Order } from "./Order";
-import { OrderState } from "./OrderState";
 import { SimpleOrder } from "./SimpleOrder";
 import { Ceil } from "../Ceil";
 
-export class HqFieldOrder extends Order
-{
-
-    private _simpleOrder:SimpleOrder;
-    private _ceil:Ceil;
-
+export class HqFieldOrder extends SimpleOrder
+{ 
     constructor(private _hq:Headquarter,private _vehicule:Vehicle){
-        super();
+        super(<Ceil>_hq.GetCeil().GetNeighbourhood()[0],_vehicule);
     }
 
-    public Do(): void 
-    {
-        if(this.State === OrderState.None)
+    protected GetClosestCeil():Ceil{
+        let ceils = this.GetCeils(this._hq);
+        if(0 === this.Dest.GetAllNeighbourhood().filter(c=> c === this._vehicule.GetCurrentCeil()).length)
         {
-            var ceils = this._hq.Fields.filter(field => !field.GetCeil().IsBlocked());
-            this._ceil = ceils[0].GetCeil();
-            this.State = OrderState.Pending;
-            this.StartMoving();
-        }
-
-        if(!this._simpleOrder.IsDone())
-        {
-            this._simpleOrder.Do();
+            if(ceils.length === 0)
+            {
+                return null;
+            }
+            else
+            {
+                return this.CeilFinder.GetCeil(ceils, this._vehicule);
+            }
         }
         else
         {
-            this.State = this._simpleOrder.GetState();
+            return this._vehicule.GetCurrentCeil();
         }
     }
 
-    private StartMoving() {
-        this._simpleOrder = new SimpleOrder(this._ceil, this._vehicule);
-        this._simpleOrder.Do();
+    private GetCeils(hq:Headquarter):Array<Ceil>{
+        return hq.GetCeil().GetNeighbourhood().map(c=><Ceil>c);
     }
 }

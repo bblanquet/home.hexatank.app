@@ -19,13 +19,13 @@ import { Sprite } from 'pixi.js';
 import { Crater } from './Crater';
 import { CeilState } from './CeilState';
 import { IOrder } from './Ia/IOrder';
-import { OrderState } from './Ia/OrderState';
+import { ISelectable } from './ISelectable';
 
-export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
-
-
+export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable
+{
     RotationSpeed: number=0.05;
     TranslationSpeed: number=1;
+    Attack:number=30;
     protected RootSprites:Array<PIXI.Sprite>;
     protected Wheels:Array<PIXI.Sprite>;
     private WheelIndex:number;
@@ -196,6 +196,10 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
 
     protected Destroy():void{
         this._currentCeil.SetMovable(null);
+        if(!isNullOrUndefined(this._nextCeil))
+        {
+            this._nextCeil.SetMovable(null);
+        }
         PlaygroundHelper.Render.Remove(this);
         this.IsUpdatable = false;
     }
@@ -240,6 +244,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable{
         this._currentCeil = ceil;
         this._currentCeil.SetMovable(this);
         this.SetVisible();
+        PlaygroundHelper.Render.Add(this);
     };
 
     public Select(context:InteractionContext):boolean

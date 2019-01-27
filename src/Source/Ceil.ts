@@ -7,15 +7,15 @@ import { HexAxial } from "./Coordinates/HexAxial";
 import {Point} from './Point';
 import {PlaygroundHelper} from './PlaygroundHelper';
 import { BoundingBox } from "./BoundingBox";
-import { IField } from './IField';
-import { RockField } from './RockField';
+import { IField } from 'Field/IField';
 import { IMovable } from './IMovable';
-import { Diamond } from './Diamond';
+import { Diamond } from './Field/Diamond';
 import { AliveItem } from './AliveItem';
-import { BasicField } from './BasicField';
+import { BasicField } from './Field/BasicField';
 import { CeilState } from './CeilState';
 import { isNullOrUndefined } from 'util';
-import { Headquarter } from './Headquarter';
+import { Headquarter } from './Field/Headquarter';
+import { RockField } from './Field/RockField';
 
 export class Ceil extends Item implements ICeil
 {
@@ -92,8 +92,9 @@ export class Ceil extends Item implements ICeil
     public SetState(state:CeilState):void{
         this.GetSprites().forEach(sprite=> sprite.alpha = 0);
 
-        if(!isNullOrUndefined(this._areaSprite)){
-            this._areaSprite.alpha = 1;
+        if(!isNullOrUndefined(this._areaSprite))
+        {
+            this._areaSprite.alpha = 0.2;
         }
 
         this.State = state;
@@ -105,7 +106,7 @@ export class Ceil extends Item implements ICeil
 
     public AddSprite(sprite:PIXI.Sprite){
         this._areaSprite = sprite;
-        this._areaSprite.alpha = 1;
+        this._areaSprite.alpha = 0.2;
         this.DisplayObjects.push(this._areaSprite);
         PlaygroundHelper.Render.AddSprite(this._areaSprite);
     }

@@ -3,13 +3,13 @@ import {Vehicle} from './Vehicle';
 import {Tank} from './Tank';
 import { Truck } from './Truck';
 import { isNullOrUndefined } from 'util';
-import { Headquarter } from './Headquarter';
+import { Headquarter } from './Field/Headquarter';
 
 export abstract class VehicleFactory{
     public static GetTank(
         ceil:Ceil, hq:Headquarter)
         :Vehicle
-        {
+        { 
 
         if(isNullOrUndefined(ceil)){
             throw "not implemented object";

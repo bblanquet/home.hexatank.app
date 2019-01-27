@@ -5,7 +5,7 @@ import { TankHead } from './TankHead';
 import { AliveItem } from './AliveItem';
 import { Ceil } from './Ceil';
 import { isNullOrUndefined, isNull } from 'util';
-import { Headquarter } from './Headquarter';
+import { Headquarter } from './Field/Headquarter';
 import { IHqContainer } from './IHqContainer';
 
 export class Tank extends Vehicle implements IHqContainer
@@ -49,10 +49,15 @@ export class Tank extends Vehicle implements IHqContainer
 
     } 
 
+    public SetPosition (ceil:Ceil):void{
+        super.SetPosition(ceil);
+        PlaygroundHelper.Render.Add(this.Head);
+    };
+
     public Destroy():void{
         super.Destroy();
         PlaygroundHelper.Render.Remove(this.Head);        
-    }
+    } 
 
     Update(viewX: number, viewY: number, zoom: number):void{
         super.Update(viewX,viewY,zoom);

@@ -24,7 +24,7 @@ export class SimpleTankOrder extends SimpleOrder{
             }
             this.Ceils = PlaygroundHelper.Engine.GetPath(this._tank.GetCurrentCeil(), this.Dest);
             this._tank.SetMainTarget(targetCeil.GetShootableEntity());
-        }
+        } 
         else
         {
             return super.FindPath();

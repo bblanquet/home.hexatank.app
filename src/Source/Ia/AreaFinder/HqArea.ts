@@ -2,27 +2,24 @@ import { Area } from "./Area";
 import { HqRequest } from "../HqRequest";
 import { Tank } from "../../Tank";
 import { Ceil } from "../../Ceil";
-import { SimpleOrder } from "../SimpleOrder";
+import { Troop } from "./Troop";
 
 export class HqArea
 {
-    private _troops:Array<[Ceil,Tank]>;
+    private _troops:Array<Troop>;
 
     constructor(private _area:Area){
-        this._troops = new Array<[Ceil,Tank]>();
+        this._troops = new Array<Troop>();
     }
-
+ 
     public GetTroopsCount():number{
         return this._troops.length;
     }
 
     public Update():void{
-        this._troops.forEach(tank=>{
-            if(!tank[1].IsExecutingOrder() && tank[1].GetCurrentCeil() !== tank[0])
-            {
-                tank[1].SetOrder(new SimpleOrder(tank[0],tank[1]));
-            }
-        })
+        this._troops.forEach(troop => {
+            troop.Update();
+        });
     }
 
     public GetCentralCeil():Ceil{
@@ -30,7 +27,7 @@ export class HqArea
     }
 
     public GetRequest():HqRequest{
-        this._troops = this._troops.filter(t=>t[1].IsAlive());
+        this._troops = this._troops.filter(t=>t.Tank.IsAlive());
         
         if(this._troops.length < 1)
         {
@@ -39,14 +36,18 @@ export class HqArea
         return HqRequest.None;
     }
 
-    public SendTank(tank:Tank):Ceil
+    public AddTroop(tank:Tank, ceil:Ceil):void{
+        this._troops.push(new Troop(ceil,tank,this)); 
+    }
+
+    public GetAvailableCeil():Ceil
     {
-        var ceils = this._area.GetAvailableCeil().filter(c=>this._troops.filter(t=>c===t[0]).length === 0);
+        let ceils = this._area.GetAvailableCeil().filter(c=>this._troops.filter(t=>c===t.CurrentCeil).length === 0);
+        
         if(ceils.length > 0)
         {
-            var selectedCeil =ceils[0];
-            this._troops.push([selectedCeil,tank]); 
-            return selectedCeil;
+            let index = Math.floor(Math.random() * (ceils.length-1)) + 0;  
+            return ceils[index];
         }
         else
         {
@@ -54,3 +55,10 @@ export class HqArea
         }
     }
 }
+
+// this._troops.forEach(troop=>{
+        //     if(!troop[1].IsExecutingOrder() && troop[1].GetCurrentCeil() !== troop[0])
+        //     {
+        //         troop[1].SetOrder(new SimpleOrder(troop[0],troop[1]));
+        //     }
+        // })

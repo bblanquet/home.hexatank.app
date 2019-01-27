@@ -9,11 +9,15 @@ export abstract class Order implements IOrder{
         this.State = OrderState.None;
     }
 
+    public Reset():void{
+        this.State = OrderState.None;
+    }
+
     public IsDone(): boolean {
         return this.State === OrderState.Failed
         || this.State === OrderState.Passed 
         || this.State === OrderState.Cancel;
-    }
+    } 
 
     public GetState(): OrderState {
         return this.State;

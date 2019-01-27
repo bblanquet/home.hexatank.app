@@ -6,7 +6,7 @@ import { PlaygroundHelper } from "../PlaygroundHelper";
 
 export class PatrolMenuItem extends MenuItem{
 
-    constructor()
+    constructor() 
     {
         super('patrolIcon','hoverPatrolIcon');
     }

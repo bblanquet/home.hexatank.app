@@ -12,6 +12,8 @@ import { IRotatable } from "./IRotatable";
 import { IRotationMaker } from "./IRotationMaker";
 import { RotationMaker } from "./RotationMaker";
 import { HqSkin } from "./HqSkin";
+import { ITimer } from "./Tools/ITimer";
+import { Timer } from "./Tools/Timer";
 
 export class TankHead extends Item implements IRotatable
 {
@@ -23,11 +25,9 @@ export class TankHead extends Item implements IRotatable
     private _canon:Array<Sprite>;
     private _currentCanon:number=0;
 
-    private _timing:number=0;
-    private _timeBuffer:number=5;
-    
-    private _coolingDownBuffer:number=100;
-    private _coolingDowntiming:number=0;
+    private _animationTimer:ITimer;//5
+    //100
+    private _coolingDownTimer:ITimer;
     
     IsAnimated:boolean=false;
     IsCanonOverHeat:boolean=false;
@@ -44,6 +44,9 @@ export class TankHead extends Item implements IRotatable
         this.Z = 3;
         this.Base = item;
         this.Radius = 0;
+        this._coolingDownTimer = new Timer(100);
+        this._animationTimer = new Timer(5);
+
         let fires = ['fire0.png','fire1.png','fire2.png','fire3.png','fire4.png'];
         
         this._canon = new Array<Sprite>();
@@ -64,10 +67,6 @@ export class TankHead extends Item implements IRotatable
             sprite.pivot.set(PlaygroundHelper.Settings.Pivot,PlaygroundHelper.Settings.Pivot);
         });
         this.IsCentralRef = true;
-        
-        
-        PlaygroundHelper.Render.Add(this);
-
         this._rotationMaker = new RotationMaker<TankHead>(this);
         this._angleFinder = new AngleFinder<TankHead>(this);
     }
@@ -107,16 +106,14 @@ export class TankHead extends Item implements IRotatable
         boundingBox.Height = this.Base.GetBoundingBox().Height / 3;
         boundingBox.X = this.Base.GetBoundingBox().GetCenter() - boundingBox.Width / 2;
         boundingBox.Y = this.Base.GetBoundingBox().GetMiddle() - boundingBox.Height / 2;
-        var missile = new Missile(boundingBox, this.Base.GetTarget());
+        var missile = new Missile(boundingBox, this.Base.GetTarget(),this.Base.Attack);
         PlaygroundHelper.Playground.Items.push(missile);
     }
 
     private CoolingDown():void {
-        this._coolingDowntiming += 1;
-        if (this._coolingDowntiming % this._coolingDownBuffer == 0) 
+        if (this._coolingDownTimer.IsElapsed()) 
         {
             this.IsCanonOverHeat = false;
-            this._coolingDowntiming = 0;
         }
     }
 
@@ -124,11 +121,8 @@ export class TankHead extends Item implements IRotatable
     {    
         if(this.IsAnimated)
         {
-            this._timing += 1;
-
-            if(this._timing % this._timeBuffer == 0)
+            if(this._animationTimer.IsElapsed())
             {    
-                this._timing = 0;
                 this._canon[this._currentCanon].alpha = 0;
                 this._currentCanon = (1+this._currentCanon)%this._canon.length;
                 this._canon[this._currentCanon].alpha =  1;

@@ -20,7 +20,7 @@ export class AreaEngine
             var neighs = this.GetNeighbourhoodAreas(currentCeil);
             neighs.forEach(neigh => {
                 this.GetAllAreas(neigh,areas);
-            });
+            }); 
         }
     }
 

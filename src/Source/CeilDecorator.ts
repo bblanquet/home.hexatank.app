@@ -1,7 +1,7 @@
-import {Ceil} from "./Ceil";
-import * as PIXI from 'pixi.js';
 import { Item } from "./Item";
-import { RockField } from "./RockField";
+import { RockField } from "./Field/RockField";
+import { Ceil } from "./Ceil";
+
 
 export class CeilDecorator{
 

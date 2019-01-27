@@ -1,19 +1,22 @@
 import {Item} from '../Item';
 import { IPatternChecker } from './IPatternChecker';
 import { PatternChecker } from './PatternChecker';
-import { Vehicle } from '../Vehicle';
 import { CancelMenuItem } from '../Menu/CancelMenuItem';
-import { Playground } from '../Playground';
 import { PlaygroundHelper } from '../PlaygroundHelper';
+import { ISelectable } from '../ISelectable';
 
 export class InteractionContext{
     Point:PIXI.Point;
     private _selectedItem:Array<Item>;
     private _checker:IPatternChecker;
 
-    constructor(){
+    constructor(){ 
         this._selectedItem = [];
         this._checker = new PatternChecker();
+    }
+
+    private IsSelectable(item: any):item is ISelectable{
+        return 'SetSelected' in item;
     }
 
     OnSelect(item:Item):void
@@ -21,16 +24,16 @@ export class InteractionContext{
         if(item instanceof CancelMenuItem)
         {
             this.Clear();
-            PlaygroundHelper.OnVehiculeUnSelected.trigger(vehicle);   
+            //PlaygroundHelper.OnUnselectedItem.trigger(vehicle);   
             return;
         }
 
-        if(item instanceof Vehicle)
+        if(this.IsSelectable(item))
         {
+            let selectable = <ISelectable> item;
             this.Clear();
-            var vehicle = (<Vehicle>item);
-            vehicle.SetSelected(true); 
-            PlaygroundHelper.OnVehiculeSelected.trigger(vehicle);   
+            selectable.SetSelected(true); 
+            PlaygroundHelper.OnSelectedItem.trigger(this,selectable);   
         }
 
         this._selectedItem.push(item);
@@ -43,11 +46,11 @@ export class InteractionContext{
 
     private Clear() {
         if (0 < this._selectedItem.length 
-            && this._selectedItem[0] instanceof Vehicle) 
+            && this.IsSelectable(this._selectedItem[0])) 
         {
-            var vehicle = (<Vehicle>this._selectedItem[0]);
-            vehicle.SetSelected(false);
-            PlaygroundHelper.OnVehiculeUnSelected.trigger(vehicle); 
+            var selectable = <ISelectable> <any> (this._selectedItem[0]);
+            selectable.SetSelected(false);
+            PlaygroundHelper.OnUnselectedItem.trigger(this,selectable); 
         }
         this._selectedItem = [];
     }

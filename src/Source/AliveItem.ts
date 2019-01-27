@@ -32,6 +32,11 @@ export abstract class AliveItem extends Item{
         {
             this.Life = 0;
         }
+
+        if(this.TotalLife < this.Life)
+        {
+            this.Life = this.TotalLife;
+        }
     }
 
     public Update(viewX: number, viewY: number, zoom: number): void {
@@ -48,7 +53,7 @@ export abstract class AliveItem extends Item{
 
     public IsAlive():boolean
     {
-        return this.Life > 0;
+        return 0 < this.Life;
     }
 
     public abstract IsEnemy(item:AliveItem):boolean;

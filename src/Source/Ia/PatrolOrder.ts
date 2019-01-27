@@ -9,14 +9,12 @@ import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Sprite } from "pixi.js";
 
 export class PatrolOrder extends Order{
-
-
     private _currentPatrolCeil:Ceil;
     private _simpleOrder:SimpleOrder;
     private _patrols:Array<BasicItem>;
 
     constructor(private _patrolCeils:Array<Ceil>,private _v:Vehicle)
-    {
+    { 
         super();
         this._patrols = new Array<BasicItem>();
         this.CreatePath();
@@ -26,13 +24,17 @@ export class PatrolOrder extends Order{
     {
         if(!isNullOrUndefined(this._patrolCeils) && 0 < this._patrolCeils.length){
             this._patrolCeils.forEach(ceil => {
-                var pathItem = new BasicItem(
+                    var pathItem = new BasicItem(
                     ceil.GetBoundingBox(),
                     new Sprite(PlaygroundHelper.Render.Textures['selectedCeil']));
-                pathItem.Set(this._v.IsSelected.bind(this._v));
+                    
+                    pathItem.SetShow(this._v.IsSelected.bind(this._v));
+                    pathItem.SetDestroyed(this._v.IsAlive.bind(this._v));
+
                     this._patrols.push(pathItem);
-                PlaygroundHelper.Playground.Items.push(pathItem);
-            });
+                    PlaygroundHelper.Playground.Items.push(pathItem);
+                }
+            );
         }
     }
 

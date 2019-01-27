@@ -5,4 +5,4 @@ export interface IOrder{
     GetState():OrderState;
     Do():void;
     Cancel():void;
-}
+} 

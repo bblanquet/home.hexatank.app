@@ -1,17 +1,16 @@
 import { Vehicle } from "./Vehicle";
 import { PlaygroundHelper } from "./PlaygroundHelper";
-import { BoundingBox } from "./BoundingBox";
-import { Dust } from "./Dust";
 import { Sprite } from "pixi.js";
 import { IHqContainer } from "./IHqContainer";
-import { Headquarter } from "./Headquarter";
+import { Headquarter } from "./Field/Headquarter";
 import { AliveItem } from "./AliveItem";
+import { ITimer } from "./Tools/ITimer";
+import { Timer } from "./Tools/Timer";
 
 export class Truck extends Vehicle implements IHqContainer{
     Hq:Headquarter;
     private _gatheredDiamonds:Array<Sprite>;
-    private _timing:number=0;
-    private _timeBuffer:number=30;
+    private _dimaondTimer:ITimer;
     private _diamondsCount:number=0;
     
     constructor(hq:Headquarter)
@@ -22,6 +21,7 @@ export class Truck extends Vehicle implements IHqContainer{
                     'tankWheel4','tankWheel5','tankWheel6',
                     'tankWheel7'
                     ];
+        this._dimaondTimer = new Timer(30);
         wheels.forEach(wheel =>{
         let sprite = new PIXI.Sprite(PlaygroundHelper.Render.Textures[wheel]);
         this.Wheels.push(sprite);
@@ -77,8 +77,7 @@ export class Truck extends Vehicle implements IHqContainer{
 
     public Load():void
     {
-        this._timing += 1;
-        if(this._timing % this._timeBuffer === 0)
+        if(this._dimaondTimer.IsElapsed())
         {
             if(!this.IsLoaded())
             {
@@ -88,7 +87,7 @@ export class Truck extends Vehicle implements IHqContainer{
         }
 
         console.log(`LOAD ${this._diamondsCount}`,'font-weiht:bold;color:red;')
-    }
+    } 
 
     public Unload():number{
         var diamonds = this._diamondsCount;

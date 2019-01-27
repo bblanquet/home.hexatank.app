@@ -5,7 +5,7 @@ export class SpeedFieldMenuItem extends MenuItem{
     
     constructor(){
         super('speedCeilIcon','speedCeilIcon');
-    }
+    } 
 
     public Select(context: InteractionContext): boolean {
         // context.SelectionEvent.on(this.SelectionFunc);

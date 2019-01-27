@@ -7,6 +7,6 @@ export class Separator extends MenuItem{
     }
  
     public Select(context: InteractionContext): boolean {
-        return false;
+        return false; 
     }
 }

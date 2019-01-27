@@ -3,11 +3,11 @@ import {AStarEngine} from './AStarEngine';
 import {Ceil} from './Ceil';
 import { RenderingHandler } from './RenderingHandler';
 import { GameSettings } from './GameSettings';
-import { Vehicle } from './Vehicle';
 import { Playground } from './Playground';
 import { LiteEvent } from './LiteEvent';
 import { AreaEngine } from './Ia/AreaFinder/AreaEngine';
 import { Area } from './Ia/AreaFinder/Area';
+import { ISelectable } from './ISelectable';
 
 export class PlaygroundHelper{
     static CeilsContainer:CeilsContainer<Ceil>;
@@ -15,13 +15,13 @@ export class PlaygroundHelper{
     static Render:RenderingHandler;
     static Settings:GameSettings;
     static Playground:Playground;
-    static OnVehiculeSelected:LiteEvent<Vehicle>;
-    static OnVehiculeUnSelected:LiteEvent<Vehicle>;
+    static OnSelectedItem:LiteEvent<ISelectable>;
+    static OnUnselectedItem:LiteEvent<ISelectable>;
     private static _areaEngine:AreaEngine;
 
     public static Init():void{
-        this.OnVehiculeSelected = new LiteEvent<Vehicle>();
-        this.OnVehiculeUnSelected = new LiteEvent<Vehicle>();
+        this.OnSelectedItem = new LiteEvent<ISelectable>();
+        this.OnUnselectedItem = new LiteEvent<ISelectable>();
         this._areaEngine = new AreaEngine();
         PlaygroundHelper.CeilsContainer = new CeilsContainer<Ceil>();
         PlaygroundHelper.Engine = new AStarEngine<Ceil>();

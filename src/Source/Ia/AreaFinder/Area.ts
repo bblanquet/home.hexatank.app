@@ -7,7 +7,7 @@ export class Area{
     constructor(private _centerCeil:Ceil){
         this._centerCeil.SetState(CeilState.Visible);
     }
-
+ 
     public GetCentralCeil():Ceil{
         return this._centerCeil;
     }

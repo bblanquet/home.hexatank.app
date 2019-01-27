@@ -11,7 +11,7 @@ import { Sprite } from "pixi.js";
 export class SimpleOrder extends Order{
     protected CurrentCeil:Ceil;
     protected Ceils:Array<Ceil>;
-    private _ceilFinder:CeilFinder;
+    protected CeilFinder:CeilFinder;
     private _path:Array<BasicItem>;
     protected Dest:Ceil;
     constructor(protected OriginalDest:Ceil,private _v:Vehicle)
@@ -19,7 +19,7 @@ export class SimpleOrder extends Order{
         super();
         this.Dest = OriginalDest;
         this.Ceils = new Array<Ceil>();
-        this._ceilFinder = new CeilFinder();
+        this.CeilFinder = new CeilFinder();
         this._path = [];
     }
 
@@ -36,7 +36,7 @@ export class SimpleOrder extends Order{
 
         if(this.CurrentCeil === this._v.GetCurrentCeil())
         {
-            if(this._path.length >0)
+            if(this._path.length > 0)
             {
                 this._path[0].Destroy();
                 this._path.splice(0, 1);
@@ -54,7 +54,7 @@ export class SimpleOrder extends Order{
                     this.State = OrderState.Failed;
                 }
             }
-            else
+            else 
             {
                 this.GoNextCeil();
             }
@@ -97,9 +97,16 @@ export class SimpleOrder extends Order{
         this.CurrentCeil = this.Ceils[0];
         this.Ceils.splice(0, 1);
 
-        if(this.CurrentCeil.IsBlocked()){
-            this.FindPath();
-            this.CurrentCeil = this.GetNextCeil();
+        if(this.CurrentCeil.IsBlocked())
+        {
+            if(this.FindPath())
+            {
+                this.CurrentCeil = this.GetNextCeil();
+            }
+            else
+            {
+                return null;
+            }
         }
 
         return this.CurrentCeil;
@@ -116,7 +123,14 @@ export class SimpleOrder extends Order{
             }
         }
         this.ClearPath();
-        this.Ceils = PlaygroundHelper.Engine.GetPath(this._v.GetCurrentCeil(), this.Dest);
+        var nextCeils = PlaygroundHelper.Engine.GetPath(this._v.GetCurrentCeil(), this.Dest);
+        
+        if(isNullOrUndefined(nextCeils))
+        {
+            return false;
+        }
+        
+        this.Ceils = nextCeils; 
         this.CreatePath();
         return true;
     }
@@ -136,7 +150,9 @@ export class SimpleOrder extends Order{
                     ceil.GetBoundingBox(),
                     new Sprite(PlaygroundHelper.Render.Textures['pathCeil']));
                 
-                    pathItem.Set(this._v.IsSelected.bind(this._v));
+                    pathItem.SetShow(this._v.IsSelected.bind(this._v));
+                    pathItem.SetDestroyed(this._v.IsAlive.bind(this._v));
+                    
                 this._path.push(pathItem);
                 PlaygroundHelper.Playground.Items.push(pathItem);
             });
@@ -154,7 +170,7 @@ export class SimpleOrder extends Order{
             }
             else
             {
-                return this._ceilFinder.GetCeil(ceils, this._v);
+                return this.CeilFinder.GetCeil(ceils, this._v);
             }
         }
         else

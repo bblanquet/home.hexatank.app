@@ -2,20 +2,16 @@ import * as PIXI from 'pixi.js';
 import { Playground } from './Source/Playground';
 import { PlaygroundBuilder } from './Source/PlaygroundBuilder';
 import {Item} from './Source/Item';
-import {VehicleFactory} from './Source/VehicleFactory';
 import {Ceil} from './Source/Ceil';
 import {CeilDecorator} from './Source/CeilDecorator';
 import {PlaygroundHelper} from './Source/PlaygroundHelper';
 import * as data from './Resources/Program6.json';
 import { RenderingHandler } from './Source/RenderingHandler';
 import { GroupsContainer } from './Source/GroupsContainer';
-import { Vehicle } from './Source/Vehicle';
-import { Diamond } from './Source/Diamond';
-import { Headquarter } from './Source/Headquarter';
-import { Menu } from './Source/Menu/Menu';
+import { Diamond } from './Source/Field/Diamond';
+import { Headquarter } from './Source/Field/Headquarter';
 import { TankMenuItem } from './Source/Menu/TankMenuItem';
 import { BottomMenu } from './Source/Menu/BottomMenu';
-import { RockField } from './Source/RockField';
 import { HqSkin } from './Source/HqSkin';
 import { RightMenu } from './Source/Menu/RightMenu';
 import { LeftMenu } from './Source/Menu/LeftMenu';
@@ -23,9 +19,12 @@ import { AttackMenuItem } from './Source/Menu/AttackMenuItem';
 import { PatrolMenuItem } from './Source/Menu/PatrolMenuItem';
 import { TruckMenuItem } from './Source/Menu/TruckMenuItem';
 import { SpeedFieldMenuItem } from './Source/Menu/SpeedFieldMenuItem';
-import { isNullOrUndefined } from 'util';
 import { CancelMenuItem } from './Source/Menu/CancelMenuItem';
 import { SmartHq } from './Source/Ia/SmartHq';
+import { EmptyMenuItem } from './Source/Menu/EmptyMenuItem';
+import { HealMenuItem } from './Source/Menu/HealMenuItem';
+import { Cloud } from './Source/Cloud';
+import { BoundingBox } from './Source/BoundingBox';
 
 const app = new PIXI.Application({width: 480, height: 800});
 let playground:Playground;
@@ -50,7 +49,7 @@ function Setup(){
     PlaygroundHelper.Settings.ScreenHeight = 800;
 
     PlaygroundHelper.Render = new RenderingHandler(
-        new GroupsContainer([0,1,2,3],app.stage),textures);
+        new GroupsContainer([0,1,2,3,4],app.stage),textures);
 
     let playgroundMaker = new PlaygroundBuilder(6);
     var ceils = playgroundMaker.Build();
@@ -62,47 +61,41 @@ function Setup(){
         items.push(ceil);
     });        
     
-    var redQuarter = new Headquarter(new HqSkin("redBottomTank","redTopTank","redTruck","redHqLight"),(<Ceil> ceils[40]));
-    var blueQuarter = new SmartHq(PlaygroundHelper.GetAreas(<Ceil> ceils[60]),new HqSkin("blueBottomTank","blueTopTank","blueTruck","blueHqLight"),(<Ceil> ceils[60]));
-
-    items.push(redQuarter);
-    items.push(blueQuarter);
-
-    //var vehicles = new Array<Vehicle>();
-    //vehicles.push(VehicleFactory.GetTank(<Ceil> ceils[0],redQuarter));
-    //vehicles.push(VehicleFactory.GetTank(<Ceil> ceils[3],blueQuarter));
-    //vehicles.push(VehicleFactory.GetTruck(<Ceil> ceils[23],blueQuarter));
-
-    //items.push(vehicles[0]);
-    //items.push(vehicles[1]);
-    //items.push(vehicles[2]);
-
     let diamond = new Diamond(<Ceil> ceils[15]);
     items.push(diamond);
 
+    var redQuarter = new Headquarter(new HqSkin("redBottomTank","redTopTank","redTruck","redHqLight","redCeil"),(<Ceil> ceils[40]));
+    var blueQuarter = new SmartHq(PlaygroundHelper.GetAreas(<Ceil> ceils[60]),
+    new HqSkin("blueBottomTank","blueTopTank","blueTruck","blueHqLight","selectedCeil"),(<Ceil> ceils[60]));
+    blueQuarter.Diamond = diamond;
+
+    var brownQuarter = new SmartHq(PlaygroundHelper.GetAreas(<Ceil> ceils[75])
+    ,new HqSkin("brownBottomTank","brownTopTank","brownTruck","brownHqLight","brownCeil"),(<Ceil> ceils[75]));
+    brownQuarter.Diamond = diamond;
+
+    items.push(redQuarter);
+    items.push(blueQuarter);
+    items.push(brownQuarter);
+
     var rightMenu = new RightMenu(
-        [new AttackMenuItem('rightTopBorder','rightTopBorder'),
+        [new EmptyMenuItem('rightTopBorder','rightTopBorder'),
         new TankMenuItem(redQuarter),
         new TruckMenuItem(redQuarter),
-        new AttackMenuItem('attackCeilIcon','attackCeilIcon'),
-        new AttackMenuItem('healCeilIcon','healCeilIcon'),
+        new HealMenuItem(),
+        new AttackMenuItem(),
         new SpeedFieldMenuItem(),
-        new AttackMenuItem('rightBottomBorder','rightBottomBorder')]);    
+        new EmptyMenuItem('rightBottomBorder','rightBottomBorder')]);    
     items.push(rightMenu);
 
     var leftMenu = new LeftMenu(
-        [new AttackMenuItem('leftTopBorder','leftTopBorder'),
-        new AttackMenuItem('attackIcon','hoverAttackIcon'),
-        new AttackMenuItem('defenseIcon','hoverDefenseIcon'),
+        [new EmptyMenuItem('leftTopBorder','leftTopBorder'),
+        new EmptyMenuItem('attackIcon','hoverAttackIcon'),
+        new EmptyMenuItem('defenseIcon','hoverDefenseIcon'),
         new PatrolMenuItem(),
         new CancelMenuItem(),
-        new AttackMenuItem('leftBottomBorder','leftBottomBorder')]);
+        new EmptyMenuItem('leftBottomBorder','leftBottomBorder')]);
 
     items.push(leftMenu);
-
-    //vehicles.forEach(vehicle=>{
-    //    PlaygroundHelper.Add(vehicle);
-    //});
     
     var bottomMenu = new BottomMenu(redQuarter);
 
@@ -111,6 +104,11 @@ function Setup(){
     items.forEach(item=>{
         PlaygroundHelper.Render.Add(item);
     });
+
+    
+    items.push(new Cloud(200,12*PlaygroundHelper.Settings.Size,600,'cloud'));
+    items.push(new Cloud(60,12*PlaygroundHelper.Settings.Size,200,'cloud2'));
+    items.push(new Cloud(0,12*PlaygroundHelper.Settings.Size,800,'cloud3'));
 
     playground = new Playground(items);
     PlaygroundHelper.Playground = playground;

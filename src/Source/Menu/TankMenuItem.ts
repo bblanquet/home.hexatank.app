@@ -1,8 +1,8 @@
 import { MenuItem } from "./MenuItem";
 import { InteractionContext } from "../Context/InteractionContext";
-import { Headquarter } from "../Headquarter";
+import { Headquarter } from "../Field/Headquarter";
 
-export class TankMenuItem extends MenuItem
+export class TankMenuItem extends MenuItem 
 {
     private _hq:Headquarter;
 

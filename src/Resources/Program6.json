@@ -1496,7 +1496,7 @@
         "h": 300
       } ,
       "rotated": false ,
-      "trimsmed": false ,
+      "trimmed": false ,
       "spriteSourceSize": {
         "x": 0 ,
         "y": 0 ,

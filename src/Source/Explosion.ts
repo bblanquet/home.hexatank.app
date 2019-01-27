@@ -2,18 +2,20 @@ import { Item } from "./Item";
 import { BoundingBox } from "./BoundingBox";
 import { InteractionContext } from "./Context/InteractionContext";
 import { PlaygroundHelper } from "./PlaygroundHelper";
+import { ITimer } from "./Tools/ITimer";
+import { Timer } from "./Tools/Timer";
 
 export class Explosion extends Item{
     BoundingBox:BoundingBox;
-    private _timing:number=0;
-    private _timeBuffer:number=30;
     private _currentFrame:number=0;
     private _currentAlpha:number=1;
+    private _timer:ITimer;
 
     constructor(boundingbox:BoundingBox)
     {
         super();
         this.Z = 3;
+        this._timer = new Timer(30);
         this.BoundingBox = boundingbox;
 
         let explosions = ['explosion1.png','explosion2.png','explosion3.png','explosion4.png'];
@@ -33,7 +35,6 @@ export class Explosion extends Item{
     {
         super.Update(viewX,viewY,zoom);
 
-        this._timing += 1;
 
         if(0 <= this._currentFrame
             && this._currentFrame < this.DisplayObjects.length)
@@ -49,7 +50,7 @@ export class Explosion extends Item{
             this._currentAlpha = 0;
         }
 
-        if(this._timing % this._timeBuffer == 0)
+        if(this._timer.IsElapsed())
         {
             var previous = this._currentFrame;
             this._currentFrame += 1;

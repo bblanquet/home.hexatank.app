@@ -8,7 +8,7 @@ export abstract class Menu extends Item{
     protected IsHidden:boolean=false;
 
     public Update(viewX: number, viewY: number, zoom: number): void {
-        this.Items.forEach(item=>{
+        this.Items.forEach(item=>{ 
             item.Update(viewX,viewY,zoom);
         });
     }

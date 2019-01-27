@@ -5,4 +5,5 @@ export class GameSettings{
     ScreenHeight:number;
     RotationSpeed:number=0.05;
     TranslationSpeed:number=1;
+    Attack:number=30;
 }

@@ -12,9 +12,8 @@ export class Missile extends Item{
     IsReached:Boolean;
     private _speed:number;
     private _currentMissile:number=0;
-    private _damage:number=50;
 
-    constructor(boundingbox:BoundingBox, target:AliveItem)
+    constructor(boundingbox:BoundingBox, target:AliveItem, private _damage:number)
     {
         super(); 
         this.Target = target;

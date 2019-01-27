@@ -2,6 +2,7 @@ import { Menu } from "./Menu";
 import { MenuItem } from "./MenuItem";
 import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Vehicle } from "../Vehicle";
+import { ISelectable } from "../ISelectable";
 
 export class LeftMenu extends Menu{
     private _show:any;
@@ -30,24 +31,31 @@ export class LeftMenu extends Menu{
         });
 
         this._hide = this.Hide.bind(this);
-        PlaygroundHelper.OnVehiculeUnSelected.on(this._hide);
+        PlaygroundHelper.OnUnselectedItem.on(this._hide);
 
         this._show = this.Show.bind(this);
-        PlaygroundHelper.OnVehiculeSelected.on(this._show);
+        PlaygroundHelper.OnSelectedItem.on(this._show);
     }
 
-    private Hide(obj:any, data?: Vehicle){
-        this.IsHidden = true;
-        this.Items.forEach(item=>{
-            item.Hide();
-        });
-    }
-
-    private Show(obj:any, data?: Vehicle)
+    private Hide(obj:any, data?: ISelectable):void
     {
-        this.IsHidden = false;
-        this.Items.forEach(item=>{
-            item.Show();
-        });
+        if(data instanceof Vehicle)
+        {
+            this.IsHidden = true; 
+            this.Items.forEach(item=>{
+                item.Hide();
+            });
+        }
+    }
+
+    private Show(obj:any, data?: ISelectable):void
+    {
+        if(data instanceof Vehicle)
+        {
+            this.IsHidden = false;
+            this.Items.forEach(item=>{
+                item.Show();
+            });
+        }
     }
 }

@@ -85,7 +85,7 @@ function Setup(){
         new AttackMenuItem(),
         new SpeedFieldMenuItem(),
         new EmptyMenuItem('rightBottomBorder','rightBottomBorder')]);    
-    items.push(rightMenu);
+    items.splice(0,0,rightMenu);
 
     var leftMenu = new LeftMenu(
         [new EmptyMenuItem('leftTopBorder','leftTopBorder'),
@@ -95,16 +95,15 @@ function Setup(){
         new CancelMenuItem(),
         new EmptyMenuItem('leftBottomBorder','leftBottomBorder')]);
 
-    items.push(leftMenu);
+    items.splice(0,0,leftMenu);
     
     var bottomMenu = new BottomMenu(redQuarter);
 
-    items.push(bottomMenu);
+    items.splice(0,0,bottomMenu);
 
     items.forEach(item=>{
         PlaygroundHelper.Render.Add(item);
     });
-
     
     items.push(new Cloud(200,12*PlaygroundHelper.Settings.Size,600,'cloud'));
     items.push(new Cloud(60,12*PlaygroundHelper.Settings.Size,200,'cloud2'));

@@ -6,8 +6,8 @@ import { PlaygroundHelper } from "./PlaygroundHelper";
 
 export class BasicItem extends Item{ 
 
-    private _show:{ (): boolean };
-    private _isDestroyed:{ (): boolean };
+    private _isVisible:{ (): boolean };
+    private _isAlive:{ (): boolean };
     constructor(private _boundingBox:BoundingBox, sprite:Sprite ){
         super();
         this.Z = 0;
@@ -16,12 +16,12 @@ export class BasicItem extends Item{
         PlaygroundHelper.Render.Add(this);
     }
 
-    public SetShow(show:{ (): boolean }):void{
-        this._show = show;
+    public SetDisplayTrigger(show:{ (): boolean }):void{
+        this._isVisible = show;
     }
 
-    public SetDestroyed(show:{ (): boolean }):void{
-        this._isDestroyed = show;
+    public SetVisible(show:{ (): boolean }):void{
+        this._isAlive = show;
     }
 
     public GetBoundingBox(): BoundingBox {
@@ -34,12 +34,12 @@ export class BasicItem extends Item{
 
     public Update(viewX: number, viewY: number, zoom: number): void 
     {
-        if(this._isDestroyed()){
+        if(!this._isAlive()){
             this.Destroy();
         }
 
         this.DisplayObjects.forEach(sprite=>{
-            sprite.alpha = this._show() ? 1 :0; 
+            sprite.alpha = this._isVisible() ? 1 :0; 
         });
         super.Update(viewX,viewY,zoom);    
     }

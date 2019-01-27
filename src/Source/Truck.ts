@@ -85,8 +85,6 @@ export class Truck extends Vehicle implements IHqContainer{
                 this._diamondsCount = (this._diamondsCount+1) % this._gatheredDiamonds.length; 
             }
         }
-
-        console.log(`LOAD ${this._diamondsCount}`,'font-weiht:bold;color:red;')
     } 
 
     public Unload():number{

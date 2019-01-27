@@ -28,8 +28,8 @@ export class PatrolOrder extends Order{
                     ceil.GetBoundingBox(),
                     new Sprite(PlaygroundHelper.Render.Textures['selectedCeil']));
                     
-                    pathItem.SetShow(this._v.IsSelected.bind(this._v));
-                    pathItem.SetDestroyed(this._v.IsAlive.bind(this._v));
+                    pathItem.SetDisplayTrigger(this._v.IsSelected.bind(this._v));
+                    pathItem.SetVisible(this._v.IsAlive.bind(this._v));
 
                     this._patrols.push(pathItem);
                     PlaygroundHelper.Playground.Items.push(pathItem);

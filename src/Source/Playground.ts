@@ -19,7 +19,7 @@ export class Playground implements IPlayground
     }
 
     Select(event:InteractionContext):void{
-        for (let index = this.Items.length-1; -1 < index; index--) {
+        for (let index = 0; index < this.Items.length; index++) {
             if(this.Items[index].Select(event)){
                 return;
             }   

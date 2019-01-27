@@ -16,7 +16,11 @@ export class Explosion extends Item{
         super();
         this.Z = 3;
         this._timer = new Timer(30);
-        this.BoundingBox = boundingbox;
+        this.BoundingBox = new BoundingBox();
+        this.BoundingBox.X = boundingbox.X;
+        this.BoundingBox.Y = boundingbox.Y;
+        this.BoundingBox.Width = boundingbox.Width;
+        this.BoundingBox.Height = boundingbox.Height;
 
         let explosions = ['explosion1.png','explosion2.png','explosion3.png','explosion4.png'];
  

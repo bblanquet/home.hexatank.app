@@ -15,7 +15,7 @@ export class HealField extends Item implements IField
         super();
         this._ceil=ceil;
         this._ceil.SetField(this);
-        this.Z= 0; 
+        this.Z= 1; 
 
         this.DisplayObjects.push(new Sprite(PlaygroundHelper.Render.Textures['healCeil']));        
         PlaygroundHelper.Render.Add(this);
@@ -32,7 +32,7 @@ export class HealField extends Item implements IField
         return false;
     }
     Support(vehicule: Vehicle): void {
-        vehicule.SetDamage(-1);
+        vehicule.SetDamage(-0.1);
         vehicule.TranslationSpeed = PlaygroundHelper.Settings.TranslationSpeed;
         vehicule.RotationSpeed = PlaygroundHelper.Settings.RotationSpeed;
         vehicule.Attack = PlaygroundHelper.Settings.Attack;

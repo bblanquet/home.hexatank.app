@@ -42,4 +42,8 @@ export class HealField extends Item implements IField
         return false;
     }
 
+    IsBlocking(): boolean {
+        return false;
+    }
+
 }

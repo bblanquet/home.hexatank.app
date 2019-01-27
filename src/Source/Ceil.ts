@@ -56,26 +56,19 @@ export class Ceil extends Item implements ICeil
     }
 
     public IsBlocked():boolean{
-        return (this._field != null 
-            && (this._field instanceof RockField 
-                || this._field instanceof Headquarter 
-                || this._field instanceof Diamond)) 
+        return (!isNullOrUndefined(this._field) && this._field.IsBlocking()) 
                 || this._movable != null;
     }
 
     public IsShootable():boolean{
-        return (this._field instanceof RockField) 
-        || (this._field instanceof Headquarter) 
-        || this._movable != null;
+        return (this._field.IsDesctrutible()) || this._movable != null;
     }
 
     public GetShootableEntity():AliveItem{
-        if(this._field instanceof RockField) {
-            return <RockField> this._field;
-        }
-
-        if(this._field instanceof Headquarter) {
-            return <Headquarter> this._field;
+        if(!isNullOrUndefined(this._field)){
+            if(this._field.IsDesctrutible()){
+                return <AliveItem> <any> this._field;
+            }
         }
 
         if(this._movable != null){

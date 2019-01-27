@@ -74,7 +74,15 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     }
 
     public SetOrder(order: IOrder): void {
+        if(!isNullOrUndefined(this._nextCeil))
+        {
+            this._nextCeil.SetMovable(null);
+        }
         this._order = order;
+    }
+
+    public CancelOrder():void{
+        this._order.Cancel();
     }
 
     public GetBoundingBox():BoundingBox{

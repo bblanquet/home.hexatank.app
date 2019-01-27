@@ -92,6 +92,25 @@ export class Tank extends Vehicle implements IHqContainer
             return;
         }
 
+        var hq = enemies.filter(c => c instanceof Headquarter).map(c => <Headquarter> c);
+        var isFound = false;
+        if(hq.length >= 1){
+            hq.some(element => {
+                if(element.IsEnemy(this)){
+                    this._currentTarget = element;
+                    isFound = true;
+                    return true;
+                }
+                return false;
+            });
+        }
+        if(isFound){
+            return;
+        }
+
+        
+
+
         enemies = ceils.map(ceil=> <AliveItem>((<Ceil>ceil).GetMovable() as any))
                           .filter(aliveItem=> !isNullOrUndefined(aliveItem) && this.IsEnemy(aliveItem))
 

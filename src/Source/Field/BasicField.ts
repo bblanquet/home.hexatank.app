@@ -28,6 +28,11 @@ export class BasicField extends Item implements IField{
     IsDesctrutible(): boolean {
         return false;
     }
+    
+    IsBlocking(): boolean {
+        return false;
+    }
+
     public GetBoundingBox(): BoundingBox {
         return this._ceil.GetBoundingBox();
     }

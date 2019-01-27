@@ -18,12 +18,16 @@ export class TruckPatrolOrder extends Order
         {
             this._currentOrder = this._diamondFieldOrder; 
             this.State = OrderState.Pending;
-            this.StartMoving();
+            this._currentOrder.Reset();
         }
 
         if(this._currentOrder.IsDone())
         {
-            if(this._currentOrder === this._diamondFieldOrder)
+            if(this._currentOrder.GetState() === OrderState.Failed)
+            {
+                //reset
+            }
+            else if(this._currentOrder === this._diamondFieldOrder)
             {
                 this._currentOrder = this._hqOrder;
             }
@@ -31,17 +35,12 @@ export class TruckPatrolOrder extends Order
             {
                 this._currentOrder = this._diamondFieldOrder;
             }
-            this.StartMoving();
+            this._currentOrder.Reset();
         }
         else
         {
             this._currentOrder.Do();
         }
-    }
-
-    private StartMoving() {
-        this._currentOrder.Reset();
-        this._currentOrder.Do();
     }
     
 }

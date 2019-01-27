@@ -60,7 +60,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         this.Fields = new Array<HeadQuarterField>();
         neighbours.forEach(ceil=>
         {
-            this.Fields.push(new HeadQuarterField(<Ceil>ceil,skin.GetCeil()));
+            this.Fields.push(new HeadQuarterField(this,<Ceil>ceil,skin.GetCeil()));
         });
         PlaygroundHelper.Render.Add(this);
     }
@@ -93,6 +93,10 @@ export class Headquarter extends AliveItem implements IField, ISelectable
     }
     GetCeil(): Ceil {
         return this._ceil;
+    }
+
+    IsBlocking(): boolean {
+        return true;
     }
 
     public GetSkin():HqSkin{

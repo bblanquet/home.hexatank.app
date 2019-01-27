@@ -8,16 +8,16 @@ import { IField } from "./IField";
 import { Vehicle } from "../Vehicle";
 import { Truck } from "../Truck";
 import { Timer } from "../Tools/Timer";
+import { Headquarter } from "./Headquarter";
 
 export class HeadQuarterField extends Item implements IField
 {
-
     private _ceil:Ceil;
     private _timer:Timer;
     IsFading:boolean;
     Diamonds:number=0; 
 
-    constructor(ceil:Ceil,sprite:Sprite){
+    constructor(private _hq:Headquarter,ceil:Ceil,sprite:Sprite){
         super();
         this._ceil = ceil;
         this._ceil.SetField(this);
@@ -46,11 +46,18 @@ export class HeadQuarterField extends Item implements IField
         if(vehicule instanceof Truck)
         {
             var truck = vehicule as Truck;
-            this.Diamonds = truck.Unload();
+            if(!truck.IsEnemy(this._hq))
+            {
+                this.Diamonds = truck.Unload();
+            }
         }
     }
     
     IsDesctrutible(): boolean {
+        return false;
+    }
+
+    IsBlocking(): boolean {
         return false;
     }
 

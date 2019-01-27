@@ -25,6 +25,12 @@ export class DiamondField extends Item implements IField
         PlaygroundHelper.Render.Add(this);
     }
 
+    public Destroy(): void {
+        PlaygroundHelper.Render.Remove(this);
+        this.IsUpdatable = false;
+        this._ceil.DestroyField();
+    }
+
     public Support(vehicule:Vehicle): void 
     {
         vehicule.TranslationSpeed = PlaygroundHelper.Settings.TranslationSpeed;
@@ -38,6 +44,10 @@ export class DiamondField extends Item implements IField
         }
     }
     public IsDesctrutible(): boolean {
+        return false;
+    }
+
+    IsBlocking(): boolean {
         return false;
     }
     
@@ -55,6 +65,7 @@ export class DiamondField extends Item implements IField
 
     public Update(viewX: number, viewY: number, zoom: number): void 
     {
+
         super.Update(viewX,viewY,zoom);
 
         if(this._timer.IsElapsed())

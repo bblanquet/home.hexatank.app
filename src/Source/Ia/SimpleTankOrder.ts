@@ -23,7 +23,10 @@ export class SimpleTankOrder extends SimpleOrder{
                 return false;
             }
             this.Ceils = PlaygroundHelper.Engine.GetPath(this._tank.GetCurrentCeil(), this.Dest);
-            this._tank.SetMainTarget(targetCeil.GetShootableEntity());
+            var target = targetCeil.GetShootableEntity();
+            if(target.IsEnemy(this._tank)){
+                this._tank.SetMainTarget(target);
+            }
         } 
         else
         {

@@ -6,25 +6,20 @@ import { Ceil } from "../Ceil";
 export class HqFieldOrder extends SimpleOrder
 { 
     constructor(private _hq:Headquarter,private _vehicule:Vehicle){
-        super(<Ceil>_hq.GetCeil().GetNeighbourhood()[0],_vehicule);
+        super(_hq.GetCeil(),_vehicule);
     }
 
     protected GetClosestCeil():Ceil{
         let ceils = this.GetCeils(this._hq);
-        if(0 === this.Dest.GetAllNeighbourhood().filter(c=> c === this._vehicule.GetCurrentCeil()).length)
+        if(0 < ceils.length)
         {
-            if(ceils.length === 0)
-            {
-                return null;
-            }
-            else
-            {
-                return this.CeilFinder.GetCeil(ceils, this._vehicule);
-            }
+            let ceil =  this.CeilFinder.GetCeil(ceils, this._vehicule);
+            this.OriginalDest = ceil;
+            return ceil;
         }
         else
         {
-            return this._vehicule.GetCurrentCeil();
+            return null;
         }
     }
 

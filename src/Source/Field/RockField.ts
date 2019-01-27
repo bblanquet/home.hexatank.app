@@ -33,6 +33,10 @@ export class RockField extends AliveItem implements IField
         return true;
     }
 
+    IsBlocking(): boolean {
+        return true;
+    }
+
     public IsEnemy(item: AliveItem): boolean {
         return true;
     }

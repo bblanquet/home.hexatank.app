@@ -9,8 +9,11 @@ import { DiamondField } from "./DiamondField";
 import { IField } from "./IField";
 import { Vehicle } from "../Vehicle";
 import { Timer } from "../Tools/Timer";
+import { AliveItem } from "../AliveItem";
+import { Crater } from "../Crater";
 
-export class Diamond extends Item implements IField{
+export class Diamond extends AliveItem implements IField{
+
     BoundingBox:BoundingBox;
     Lights:Array<Light>;
     Fields:Array<DiamondField>;
@@ -53,11 +56,36 @@ export class Diamond extends Item implements IField{
         return true;
     }
 
+    public IsEnemy(item: AliveItem): boolean {
+        return true;
+    }
+
+    IsBlocking(): boolean {
+        return true;
+    }
+
     public GetBoundingBox(): BoundingBox{
         return this.BoundingBox;
     }
     
+    protected Destroy():void{
+        PlaygroundHelper.Render.Remove(this);
+        this._ceil.DestroyField();
+        this.IsUpdatable = false;
+        this.Fields.forEach(field=>{
+            field.Destroy();
+        });
+    }
+
     public Update(viewX: number, viewY: number, zoom: number): void {
+        if(!this.IsAlive())
+        {
+            this.Destroy();
+            let crater = new Crater(this.BoundingBox);
+            PlaygroundHelper.Playground.Items.push(crater);
+            return;
+        }
+
         super.Update(viewX,viewY,zoom);
         this.Fields.forEach(field=>{
             field.Update(viewX,viewY,zoom);
@@ -69,6 +97,7 @@ export class Diamond extends Item implements IField{
             this.Lights.forEach(light=>{
                 if(!light.IsShowing)
                 {
+                    
                     var randomX = Math.random();
                     var randomY = Math.random();
                     var randomXsign = Math.random();

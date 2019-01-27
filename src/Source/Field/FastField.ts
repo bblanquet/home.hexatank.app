@@ -40,4 +40,7 @@ export class FastField extends Item implements IField
     IsDesctrutible(): boolean {
         return false;
     }
+    IsBlocking(): boolean {
+        return false;
+    }
 }

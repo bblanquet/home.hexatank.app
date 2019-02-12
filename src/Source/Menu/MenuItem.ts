@@ -2,6 +2,7 @@ import { Item } from "../Item";
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
 import { PlaygroundHelper } from "../PlaygroundHelper";
+import { isNullOrUndefined } from "util";
 
 export abstract class MenuItem extends Item
 {
@@ -37,7 +38,10 @@ export abstract class MenuItem extends Item
     }
 
     public SetBoundingBox(boundingbox:{x:number, y:number, width:number, height:number}):void{
-        this.BoundingBox = new BoundingBox();
+        if(isNullOrUndefined(this.BoundingBox))
+        {
+            this.BoundingBox = new BoundingBox();
+        }
         this.BoundingBox.X = boundingbox.x;
         this.BoundingBox.Y = boundingbox.y;
         this.BoundingBox.Width = boundingbox.width;

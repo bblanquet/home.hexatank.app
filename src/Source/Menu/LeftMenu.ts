@@ -11,19 +11,9 @@ export class LeftMenu extends Menu{
     constructor(items:Array<MenuItem>){
         super();
 
-        let width = 50;
-        let height = 75;
-        let margin = PlaygroundHelper.Settings.ScreenHeight/2 - items.length * height /2; 
-        let x = 0;
-        let i = 0;
-        this.Items = new Array<MenuItem>();
-        items.forEach(item=> 
-            {
-                item.SetBoundingBox({x:x, y:margin+i*height, width:width, height:height})
-                this.Items.push(item);
-                i += 1;
-            }
-        );
+        this.Items = items;
+
+        this.SetPosition();
 
         this.IsHidden = true;
         this.Items.forEach(item=>{
@@ -35,6 +25,18 @@ export class LeftMenu extends Menu{
 
         this._show = this.Show.bind(this);
         PlaygroundHelper.OnSelectedItem.on(this._show);
+    }
+
+    private SetPosition() {
+        let width = 50;
+        let height = 75;
+        let margin = PlaygroundHelper.Settings.ScreenHeight / 2 - this.Items.length * height / 2;
+        let x = 0;
+        let i = 0;
+        this.Items.forEach(item => {
+            item.SetBoundingBox({ x: x, y: margin + i * height, width: width, height: height });
+            i += 1;
+        });
     }
 
     private Hide(obj:any, data?: ISelectable):void
@@ -58,4 +60,9 @@ export class LeftMenu extends Menu{
             });
         }
     }
+    public Update(viewX: number, viewY: number, zoom: number): void {
+        this.SetPosition();
+        super.Update(viewX,viewY,zoom);
+    }
+
 }

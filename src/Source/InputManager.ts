@@ -50,8 +50,12 @@ export class InputManager{
         this.IsGrabbed = false;
     }
 
-    OnMouseWheel(event:MouseWheelEvent){
-        if(0 < event.deltaY)//event.wheelDelta
+    OnPinch(delta:number):void{
+        this.ViewContext.Zoom += this.ViewContext.Zoom * delta * 0.1;
+    }
+
+    OnMouseWheel(value:{deltaY:number}):void{
+        if(0 < value.deltaY)//event.wheelDelta
         {
             this.ViewContext.Zoom += 0.1;
         }

@@ -14,8 +14,6 @@ import { AliveItem } from './AliveItem';
 import { BasicField } from './Field/BasicField';
 import { CeilState } from './CeilState';
 import { isNullOrUndefined } from 'util';
-import { Headquarter } from './Field/Headquarter';
-import { RockField } from './Field/RockField';
 
 export class Ceil extends Item implements ICeil
 {
@@ -101,7 +99,7 @@ export class Ceil extends Item implements ICeil
         this._areaSprite = sprite;
         this._areaSprite.alpha = 0.2;
         this.DisplayObjects.push(this._areaSprite);
-        PlaygroundHelper.Render.AddSprite(this._areaSprite);
+        PlaygroundHelper.Render.AddDisplayableEntity(this._areaSprite);
     }
 
     private _areaSprite:PIXI.Sprite;

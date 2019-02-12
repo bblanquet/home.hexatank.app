@@ -17,7 +17,7 @@ export class RenderingHandler{
         });
     } 
 
-    public AddSprite(shape:PIXI.DisplayObject):void{
+    public AddDisplayableEntity(shape:PIXI.DisplayObject):void{
         this._groupsHandler.Groups[3].addChild(shape);
     }
 

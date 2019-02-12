@@ -7,8 +7,8 @@ import { Headquarter } from "../Field/Headquarter";
 export class BottomMenu extends Item
 {
     private _text:PIXI.Text;
-    private _graphics:PIXI.Graphics;
-    private _graphics2:PIXI.Graphics;
+    private _background:PIXI.Graphics;
+    private _border:PIXI.Graphics;
     private Hq:Headquarter;
     private _diamondSprite:PIXI.Sprite;
     public GetBoundingBox(): BoundingBox {
@@ -28,18 +28,28 @@ export class BottomMenu extends Item
         this._diamondSprite.width = 28;
         this._diamondSprite.height = 28;
 
-        this._graphics = new PIXI.Graphics();
-        this._graphics2 = new PIXI.Graphics();
-        this._graphics.beginFill(0x525252, 1);
-        this._graphics2.beginFill(0xd480dc, 2);
         this._text = new PIXI.Text('0', { fontFamily: 'Arial', fontSize: 24, fill: 0xd480dc, align: 'center' });
+        this._border = new PIXI.Graphics();
+        this._background = new PIXI.Graphics();
+
 
         this.SetPosition();
 
-        PlaygroundHelper.Render.AddSprite(this._graphics2);
-        PlaygroundHelper.Render.AddSprite(this._graphics);
-        PlaygroundHelper.Render.AddSprite(this._diamondSprite);
-        PlaygroundHelper.Render.AddSprite(this._text);
+        PlaygroundHelper.Render.AddDisplayableEntity(this._border);
+        PlaygroundHelper.Render.AddDisplayableEntity(this._background);
+        PlaygroundHelper.Render.AddDisplayableEntity(this._diamondSprite);
+        PlaygroundHelper.Render.AddDisplayableEntity(this._text);
+    }
+
+    private _first:boolean=false;
+
+    private First():void{
+        this._first = true;
+
+        let size = 30;
+        let size2 = 32;
+
+ 
     }
 
     private SetPosition() {
@@ -47,12 +57,28 @@ export class BottomMenu extends Item
         let size2 = 32;
         this._text.x = size2 + 10;
         this._text.y = PlaygroundHelper.Settings.ScreenHeight - size;
-        this._graphics2.drawRect(0, PlaygroundHelper.Settings.ScreenHeight - size2, PlaygroundHelper.Settings.ScreenWidth, size2);
-        this._graphics.drawRect(0, PlaygroundHelper.Settings.ScreenHeight - size, PlaygroundHelper.Settings.ScreenWidth, size);
+
+        this._background.clear();
+
+        this._background.beginFill(0x525252, 1);
+        this._background.drawRect(0, PlaygroundHelper.Settings.ScreenHeight - size, PlaygroundHelper.Settings.ScreenWidth, size);
+        this._background.endFill();
+
+        this._border.clear();
+
+        this._border.beginFill(0xd480dc, 2);
+        this._border.drawRect(0, PlaygroundHelper.Settings.ScreenHeight - size2, PlaygroundHelper.Settings.ScreenWidth, size2);
+        this._border.endFill();
+
+        console.log(this._border.y);
+
         this._diamondSprite.y = PlaygroundHelper.Settings.ScreenHeight-30;
     }
 
     public Update(viewX: number, viewY: number, zoom: number): void {
+        if(!this.First){
+            this.First();
+        }
         this.SetPosition();
         this._text.text = this.Hq.Diamonds.toString();
     }

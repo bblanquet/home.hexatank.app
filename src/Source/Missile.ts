@@ -24,7 +24,7 @@ export class Missile extends Item{
         var radius = this.GetAngle();
 
         missiles.forEach(missile =>{
-            let sprite = new PIXI.Sprite(PlaygroundHelper.Render.Textures[missile]);
+            let sprite = PlaygroundHelper.SpriteProvider.GetSprite(missile);
             sprite.pivot.set(sprite.x + sprite.width/2,sprite.y + sprite.height/2);
             sprite.alpha = 0;
             this.DisplayObjects.push(sprite);

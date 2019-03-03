@@ -1,8 +1,6 @@
-import { Item } from "../Item";
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
 import { PlaygroundHelper } from "../PlaygroundHelper";
-import { Sprite } from "pixi.js";
 import { Light } from "../Light";
 import { Ceil } from "../Ceil";
 import { DiamondField } from "./DiamondField";
@@ -27,7 +25,7 @@ export class Diamond extends AliveItem implements IField{
         this._ceil = ceil;
         this._ceil.SetField(this);
         this.BoundingBox = this._ceil.GetBoundingBox();
-        var sprite = new Sprite(PlaygroundHelper.Render.Textures["diamond.png"]);
+        var sprite = PlaygroundHelper.SpriteProvider.GetSprite("diamond.png");
         this.DisplayObjects.push(sprite);
         this._timer = new Timer(4);
 

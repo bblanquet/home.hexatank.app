@@ -2,7 +2,6 @@ import { Item } from "../Item";
 import { IField } from "./IField";
 import { Ceil } from "../Ceil";
 import { PlaygroundHelper } from "../PlaygroundHelper";
-import { Sprite } from "pixi.js";
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
 import { Vehicle } from "../Vehicle";
@@ -17,7 +16,7 @@ export class HealField extends Item implements IField
         this._ceil.SetField(this);
         this.Z= 1; 
 
-        this.DisplayObjects.push(new Sprite(PlaygroundHelper.Render.Textures['healCeil']));        
+        this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite('healCeil'));        
         PlaygroundHelper.Render.Add(this);
     }
 

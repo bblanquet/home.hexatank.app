@@ -21,7 +21,7 @@ export class DiamondField extends Item implements IField
         this._ceil.SetField(this);
         this.Z= 0;
         this._timer = new Timer(3);
-        this.DisplayObjects.push(new Sprite(PlaygroundHelper.Render.Textures["diamondField.png"]));
+        this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite("diamondField.png"));
         PlaygroundHelper.Render.Add(this);
     }
 

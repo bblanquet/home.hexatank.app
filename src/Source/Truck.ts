@@ -23,7 +23,7 @@ export class Truck extends Vehicle implements IHqContainer{
                     ];
         this._dimaondTimer = new Timer(30);
         wheels.forEach(wheel =>{
-        let sprite = new PIXI.Sprite(PlaygroundHelper.Render.Textures[wheel]);
+        let sprite = PlaygroundHelper.SpriteProvider.GetSprite(wheel);
         this.Wheels.push(sprite);
         this.DisplayObjects.push(sprite);
         this.RootSprites.push(sprite);
@@ -39,7 +39,7 @@ export class Truck extends Vehicle implements IHqContainer{
 
         this._gatheredDiamonds = new Array<Sprite>();
         diamonds.forEach(diamond=>{
-            var sprite = new PIXI.Sprite(PlaygroundHelper.Render.Textures[diamond]);
+            var sprite =PlaygroundHelper.SpriteProvider.GetSprite(diamond); 
             sprite.alpha = 0;
             this._gatheredDiamonds.push(sprite);
             this.DisplayObjects.push(sprite);

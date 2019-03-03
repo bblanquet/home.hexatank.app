@@ -4,11 +4,9 @@ import { GroupsContainer } from './GroupsContainer';
 
 export class RenderingHandler{
     private _groupsHandler:GroupsContainer;
-    public Textures : PIXI.loaders.TextureDictionary
     
-    constructor(groupsContainer:GroupsContainer, textures:PIXI.loaders.TextureDictionary){
+    constructor(groupsContainer:GroupsContainer){
         this._groupsHandler = groupsContainer;
-        this.Textures = textures;
     }
     public Add(item:Item){
         

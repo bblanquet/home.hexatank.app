@@ -1,7 +1,6 @@
 import { AliveItem } from "../AliveItem";
 import { Ceil } from "../Ceil";
 import { PlaygroundHelper } from "../PlaygroundHelper";
-import { Sprite } from "pixi.js";
 import { Vehicle } from "../Vehicle";
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
@@ -18,7 +17,7 @@ export class RockField extends AliveItem implements IField
         this._ceil = ceil;
         this._ceil.SetField(this);
         this.Z= 0;
-        this.DisplayObjects.push(new Sprite(PlaygroundHelper.Render.Textures[sprite]));
+        this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite(sprite));
         PlaygroundHelper.Render.Add(this);
     }
 

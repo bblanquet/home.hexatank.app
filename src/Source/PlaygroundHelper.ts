@@ -8,6 +8,7 @@ import { LiteEvent } from './LiteEvent';
 import { AreaEngine } from './Ia/AreaFinder/AreaEngine';
 import { Area } from './Ia/AreaFinder/Area';
 import { ISelectable } from './ISelectable';
+import { ISpriteProvider } from './Tools/ISpriteProvider';
 
 export class PlaygroundHelper{
     static CeilsContainer:CeilsContainer<Ceil>;
@@ -18,6 +19,7 @@ export class PlaygroundHelper{
     static OnSelectedItem:LiteEvent<ISelectable>;
     static OnUnselectedItem:LiteEvent<ISelectable>;
     private static _areaEngine:AreaEngine;
+    static SpriteProvider:ISpriteProvider;
 
     public static Init():void{
         this.OnSelectedItem = new LiteEvent<ISelectable>();

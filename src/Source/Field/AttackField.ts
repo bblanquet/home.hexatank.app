@@ -4,7 +4,6 @@ import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
 import { Vehicle } from "../Vehicle";
 import { PlaygroundHelper } from "../PlaygroundHelper";
-import { Sprite } from "pixi.js";
 import { Ceil } from "../Ceil";
 
 export class AttackField extends Item implements IField
@@ -17,7 +16,7 @@ export class AttackField extends Item implements IField
         this._ceil.SetField(this);
         this.Z= 1;
 
-        this.DisplayObjects.push(new Sprite(PlaygroundHelper.Render.Textures['attackCeil']));        
+        this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite('attackCeil'));        
         PlaygroundHelper.Render.Add(this);
     }
 

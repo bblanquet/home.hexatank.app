@@ -26,17 +26,11 @@ export class Tank extends Vehicle implements IHqContainer
                     ];
 
         wheels.forEach(wheel =>{
-            let sprite = new PIXI.Sprite(PlaygroundHelper.Render.Textures[wheel]);
+            let sprite = PlaygroundHelper.SpriteProvider.GetSprite(wheel);
             this.Wheels.push(sprite);
             this.DisplayObjects.push(sprite);
             this.RootSprites.push(sprite);
         });
-
-        var imp = PIXI.Texture.fromImage('D:/Program6Design/tank7.svg',undefined,undefined,2);
-
-        var test = new PIXI.Sprite(imp);
-        this.DisplayObjects.push(test);
-        this.RootSprites.push(test);
 
         var sprite = this.Hq.GetSkin().GetBottomTankSprite();
         this.DisplayObjects.push(sprite);

@@ -34,7 +34,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         this._ceil.SetField(this);
         this._timer = new Timer(3);
 
-        this._selectionSprite = new PIXI.Sprite(PlaygroundHelper.Render.Textures['selection']);
+        this._selectionSprite = PlaygroundHelper.SpriteProvider.GetSprite('selection');
         this.DisplayObjects.push(this._selectionSprite);
         this._selectionSprite.alpha = 0;
 
@@ -44,9 +44,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         this.BoundingBox.X = this._ceil.GetBoundingBox().X;
         this.BoundingBox.Y = this._ceil.GetBoundingBox().Y;
 
-        this.DisplayObjects.push(new Sprite(PlaygroundHelper.Render.Textures["hqLight"]));
+        this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite("hqLight"));
         this.DisplayObjects.push(skin.GetColor());
-        this.DisplayObjects.push(new Sprite(PlaygroundHelper.Render.Textures["hq"]));
+        this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite("hq"));
 
         this.GetSprites().forEach(obj => {
             obj.width = this.BoundingBox.Width,

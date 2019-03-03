@@ -12,8 +12,8 @@ export abstract class MenuItem extends Item
     constructor(unselected:string,selected:string){
         super();
         this.Z = 4; 
-        this.DisplayObjects.push( new PIXI.Sprite(PlaygroundHelper.Render.Textures[unselected]));
-        this.DisplayObjects.push( new PIXI.Sprite(PlaygroundHelper.Render.Textures[selected]));
+        this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite(unselected));
+        this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite(selected));
         this.IsSelected = false;
         this.DisplayObjects[0].alpha = 1;
         this.DisplayObjects[1].alpha = 0; 

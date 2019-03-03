@@ -51,7 +51,7 @@ export class TankHead extends Item implements IRotatable
         
         this._canon = new Array<Sprite>();
         fires.forEach(fire =>{
-            let sprite = new PIXI.Sprite(PlaygroundHelper.Render.Textures[fire]);
+            let sprite = PlaygroundHelper.SpriteProvider.GetSprite(fire);
             sprite.alpha = 0;
             this.DisplayObjects.push(sprite);
             this._canon.push(sprite);

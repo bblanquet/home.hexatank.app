@@ -9,7 +9,6 @@ import {PlaygroundHelper} from './PlaygroundHelper';
 import { BoundingBox } from "./BoundingBox";
 import { IField } from 'Field/IField';
 import { IMovable } from './IMovable';
-import { Diamond } from './Field/Diamond';
 import { AliveItem } from './AliveItem';
 import { BasicField } from './Field/BasicField';
 import { CeilState } from './CeilState';
@@ -17,9 +16,9 @@ import { isNullOrUndefined } from 'util';
 
 export class Ceil extends Item implements ICeil
 {
-    State:CeilState = CeilState.Hidden;
+    private _state:CeilState = CeilState.Hidden;
     Properties:CeilProperties;
-    Sprites:{ [id: number]: Array<PIXI.Sprite>; };
+    private _display:{ [id: number]: Array<PIXI.Sprite>; };
     private _field:IField;
     private _movable:IMovable;
     DecorationSprite:PIXI.Sprite;
@@ -28,7 +27,7 @@ export class Ceil extends Item implements ICeil
     {
         super();
         this.Z= 1;
-        this.Sprites = [];
+        this._display = [];
         this.Properties = properties;
         new BasicField(this);
     }
@@ -88,9 +87,9 @@ export class Ceil extends Item implements ICeil
             this._areaSprite.alpha = 0.2;
         }
 
-        this.State = state;
+        this._state = state;
 
-        this.Sprites[this.State].forEach(sprite=>{
+        this._display[this._state].forEach(sprite=>{
             sprite.alpha = 1;
         })
     }
@@ -109,26 +108,26 @@ export class Ceil extends Item implements ICeil
         this.DecorationSprite.alpha = 0;
     }
 
-    public SetSprite(textures : PIXI.loaders.TextureDictionary):void
+    public SetSprite():void
     {
-        let hiddenCeil = new PIXI.Sprite(textures["hiddenCeil"]);
+        let hiddenCeil = PlaygroundHelper.SpriteProvider.GetSprite("hiddenCeil");
         hiddenCeil.alpha = 1;
-        let halfCeil = new PIXI.Sprite(textures["halfHiddenCeil"]);
+        let halfCeil = PlaygroundHelper.SpriteProvider.GetSprite("halfHiddenCeil");
         halfCeil.alpha = 0;
-        let ceil = new PIXI.Sprite(textures["ceil.png"]);
+        let ceil = PlaygroundHelper.SpriteProvider.GetSprite('./Cell.svg');
         ceil.alpha = 0;
 
-        this.Sprites[CeilState.Hidden] = [hiddenCeil];
+        this._display[CeilState.Hidden] = [hiddenCeil];
         
         if(isNullOrUndefined(this.DecorationSprite))
         {
-            this.Sprites[CeilState.HalfVisible] = [halfCeil,ceil]; 
-            this.Sprites[CeilState.Visible] = [ceil];      
+            this._display[CeilState.HalfVisible] = [halfCeil,ceil]; 
+            this._display[CeilState.Visible] = [ceil];      
         }
         else
         {
-            this.Sprites[CeilState.HalfVisible] = [halfCeil,this.DecorationSprite,ceil];         
-            this.Sprites[CeilState.Visible] = [this.DecorationSprite,ceil];         
+            this._display[CeilState.HalfVisible] = [halfCeil,this.DecorationSprite,ceil];         
+            this._display[CeilState.Visible] = [this.DecorationSprite,ceil];         
 
             this.DisplayObjects.push(this.DecorationSprite);
         }

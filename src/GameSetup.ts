@@ -22,15 +22,15 @@ import { CeilDecorator } from "./Source/CeilDecorator";
 import { Item } from "./Source/Item";
 
 export class GameSetup{
-    SetMap(textures : PIXI.loaders.TextureDictionary):void
+    SetMap():void
     {
         let items = new Array<Item>();
         let playgroundMaker = new PlaygroundBuilder(6);
         var ceils = playgroundMaker.Build();
         ceils.forEach(ceil=>
         {
-            CeilDecorator.Decorate(items, ceil,textures);
-            ceil.SetSprite(textures);
+            CeilDecorator.Decorate(items, ceil);
+            ceil.SetSprite();
             PlaygroundHelper.CeilsContainer.Add(ceil);
             items.push(ceil);
         });        

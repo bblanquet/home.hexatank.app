@@ -26,7 +26,7 @@ export class PatrolOrder extends Order{
             this._patrolCeils.forEach(ceil => {
                     var pathItem = new BasicItem(
                     ceil.GetBoundingBox(),
-                    new Sprite(PlaygroundHelper.Render.Textures['selectedCeil']));
+                    PlaygroundHelper.SpriteProvider.GetSprite('selectedCeil'));
                     
                     pathItem.SetDisplayTrigger(this._v.IsSelected.bind(this._v));
                     pathItem.SetVisible(this._v.IsAlive.bind(this._v));

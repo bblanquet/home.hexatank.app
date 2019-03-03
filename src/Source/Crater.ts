@@ -12,7 +12,7 @@ export class Crater extends Item{
         this.Z = 0;
         this.BoundingBox = boundingbox;
 
-        let sprite = new PIXI.Sprite(PlaygroundHelper.Render.Textures['crater']);
+        let sprite = PlaygroundHelper.SpriteProvider.GetSprite('crater');
         this.DisplayObjects.push(sprite);
 
         PlaygroundHelper.Render.Add(this);

@@ -4,6 +4,7 @@ import { RenderingHandler } from './Source/RenderingHandler';
 import { GroupsContainer } from './Source/GroupsContainer';
 import { GameSetup } from './GameSetup';
 import * as Hammer from 'hammerjs';
+import { SpriteProvider } from './Source/Tools/SpriteProvider';
 
 const app = new PIXI.Application({
     antialias: true,
@@ -17,7 +18,7 @@ const app = new PIXI.Application({
     roundPixels: true,
 });
 
-const path = "../Resources/Program6.json";
+const path = "./Program6.json";
 
 document.addEventListener('DOMContentLoaded', () => {
     PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
@@ -25,16 +26,15 @@ document.addEventListener('DOMContentLoaded', () => {
     app.loader.add(path).load(Setup);
 }, false);
 
-function Setup(){
-    let textures = app.loader.resources[path].textures;
-
+function Setup()
+{
     PlaygroundHelper.Init();
-
+    PlaygroundHelper.SpriteProvider = new SpriteProvider(['./Cell.svg'],app.loader.resources[path].textures);
     PlaygroundHelper.Render = new RenderingHandler(
-        new GroupsContainer([0,1,2,3,4],app.stage),textures);
+        new GroupsContainer([0,1,2,3,4],app.stage));
 
     let gameSetup = new GameSetup();
-    gameSetup.SetMap(textures);
+    gameSetup.SetMap();
 
     var manager = new PIXI.interaction.InteractionManager(app.renderer);
     manager.autoPreventDefault = false;
@@ -55,7 +55,6 @@ function Setup(){
 }
 
 function ResizeTheCanvas(){
-    console.log(`%c w: ${screen.width} h: ${screen.height}`,'font-weight:bold;color:red;');
     app.renderer.resize(screen.width,screen.height); 
     PlaygroundHelper.Settings.ScreenWidth = screen.width;
     PlaygroundHelper.Settings.ScreenHeight = screen.height;  

@@ -52,7 +52,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this.CurrentRadius = 0;
         this.BoundingBox = new BoundingBox();
 
-        this._selectionSprite = new PIXI.Sprite(PlaygroundHelper.Render.Textures['selection']);
+        this._selectionSprite = PlaygroundHelper.SpriteProvider.GetSprite('selection');
         this.DisplayObjects.push(this._selectionSprite);
         this._selectionSprite.alpha = 0;
 

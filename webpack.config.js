@@ -10,11 +10,11 @@ var distDir = path.resolve(__dirname, 'dist');
 module.exports = {
     // Entry point : first executed file
     // This may be an array. It will result in many output files.
-    entry: ['./src/main.ts', './src/Resources/images.png', './src/Resources/Program6.json'],
+    entry: ['./src/main.ts'],
 
     // What files webpack will manage
     resolve: {
-        extensions: ['.js', '.ts', '.tsx','.json','.png']
+        extensions: ['.js', '.ts', '.tsx']
     },
 
     // Make errors mor clear
@@ -32,16 +32,6 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 loader: 'ts-loader'
-            },
-            {
-                test: /\.json$/,
-                loader: 'json-loader'
-            },
-            {
-                test: /\.(jpe?g|png|gif|svg)$/i,
-                use: [
-                  'url-loader?limit=10000',
-                  'img-loader']
             }
         ]
     },

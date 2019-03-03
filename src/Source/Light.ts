@@ -14,7 +14,7 @@ export class Light extends Item{
         this.BoundingBox = new BoundingBox();
         this.GetBoundingBox().Width = 10;
         this.GetBoundingBox().Height = 10;
-        var sprite = new Sprite(PlaygroundHelper.Render.Textures["diamondLight.png"]);
+        var sprite = PlaygroundHelper.SpriteProvider.GetSprite("diamondLight.png");
         this.DisplayObjects.push(sprite);
         PlaygroundHelper.Render.Add(this);
     }

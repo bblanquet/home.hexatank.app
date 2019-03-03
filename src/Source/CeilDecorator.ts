@@ -1,13 +1,14 @@
 import { Item } from "./Item";
 import { RockField } from "./Field/RockField";
 import { Ceil } from "./Ceil";
+import { PlaygroundHelper } from "./PlaygroundHelper";
 
 
 export class CeilDecorator{
 
-    public static Decorate(items:Array<Item>, ceil:Ceil, textures : PIXI.loaders.TextureDictionary):void
+    public static Decorate(items:Array<Item>, ceil:Ceil):void
     {
-        ceil.SetSprite(textures);
+        ceil.SetSprite();
 
         var random = Math.random();
         if(random < 0.6)
@@ -16,11 +17,11 @@ export class CeilDecorator{
     
             if(decorationRandom <= 0.25)
             {
-                ceil.SetDecoration(new PIXI.Sprite(textures["stone.png"]));
+                ceil.SetDecoration(PlaygroundHelper.SpriteProvider.GetSprite("stone.png"));
             }
             else if(decorationRandom <= 0.5)
             {
-                ceil.SetDecoration(new PIXI.Sprite(textures["flower.png"]));
+                ceil.SetDecoration(PlaygroundHelper.SpriteProvider.GetSprite("flower.png"));
             }
             else if(decorationRandom <= 0.75)
             {
@@ -34,20 +35,9 @@ export class CeilDecorator{
             }
             else
             {
-                ceil.SetDecoration(new PIXI.Sprite(textures["water.png"]));
+                ceil.SetDecoration(PlaygroundHelper.SpriteProvider.GetSprite("water.png"));
             }
 
         }
     }    
 }
-
-
-            //var rotationRandom = Math.random();
-            //this.decoratonSprite.x = this.x;
-            //this.decoratonSprite.y = this.y;
-            //this.decoratonSprite.width = 50;
-            //this.decoratonSprite.height = 50;
-            //this.decoratonSprite.pivot.set(this.GetCenter(),this.GetMiddle());
-            //this.decoratonSprite.rotation = rotationRandom * 360;
-            //this.decorationX = this.decoratonSprite.x;
-            //this.decorationY = this.decoratonSprite.y;

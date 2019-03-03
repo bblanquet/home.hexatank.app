@@ -23,7 +23,7 @@ export class BottomMenu extends Item
         super();
         this.Hq = headquarter;
 
-        this._diamondSprite=new PIXI.Sprite(PlaygroundHelper.Render.Textures['diamondIcon']);
+        this._diamondSprite=PlaygroundHelper.SpriteProvider.GetSprite('diamondIcon');
         this._diamondSprite.x = 10;
         this._diamondSprite.width = 28;
         this._diamondSprite.height = 28;

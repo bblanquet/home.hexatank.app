@@ -25,7 +25,7 @@ export class Explosion extends Item{
         let explosions = ['explosion1.png','explosion2.png','explosion3.png','explosion4.png'];
  
         explosions.forEach(explosion =>{
-            let sprite = new PIXI.Sprite(PlaygroundHelper.Render.Textures[explosion]);
+            let sprite = PlaygroundHelper.SpriteProvider.GetSprite(explosion);
             sprite.pivot.set(sprite.x + sprite.width/2,sprite.y + sprite.height/2);
             sprite.alpha = 0;
             this.DisplayObjects.push(sprite);

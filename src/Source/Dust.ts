@@ -22,7 +22,7 @@ export class Dust extends Item
         this.BoundingBox = boundingBox; 
         let dusts = ['dust1.png','dust2.png','dust3.png','dust4.png'];
         dusts.forEach(dust=>{
-            let sprite = new PIXI.Sprite(PlaygroundHelper.Render.Textures[dust]);
+            let sprite = PlaygroundHelper.SpriteProvider.GetSprite(dust);
             sprite.alpha = 0;
             sprite.pivot.set(sprite.x + sprite.width/2,sprite.y + sprite.height/2);
             this.DisplayObjects.push(sprite);

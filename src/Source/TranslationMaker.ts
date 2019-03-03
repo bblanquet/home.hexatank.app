@@ -67,7 +67,3 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
     }
 }
 
-// this._item.GetCurrentCeil().SetMovable(null);
-// this._item.SetCurrentCeil(this._item.GetNextCeil());
-// this._item.CurrentCeil.SetMovable(this._item);
-// this._item.CurrentNextCeil = null;

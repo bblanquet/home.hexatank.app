@@ -7,14 +7,12 @@ import { Point } from "./Point";
 
 export class CeilProperties implements ICeil
 {
-    Blocked:boolean;
     Coordinate:HexAxial;
     BoundingBox:BoundingBox;
     Size:number;
 
     constructor(coordinate:HexAxial){
         this.Coordinate = coordinate; 
-        this.Blocked = false;
         this.Size = PlaygroundHelper.Settings.Size;
         this.BoundingBox = new BoundingBox();
         this.BoundingBox.Width = CeilProperties.GetWidth(this.Size);
@@ -32,16 +30,12 @@ export class CeilProperties implements ICeil
         var ceils = new Array<ICeil>();
         this.Coordinate.GetNeighbours().forEach(coordinate => {
             var ceil = TestHelper.CeilsContainer.Get(coordinate);
-            if(ceil != null && !ceil.Blocked)
+            if(ceil != null)
             {
                 ceils.push(ceil);
             }
         });
         return ceils;
-    }
-
-    public IsBlocked():boolean{
-        return this.Blocked;
     }
 
     public GetCoordinate():HexAxial{

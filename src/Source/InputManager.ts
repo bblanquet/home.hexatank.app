@@ -51,7 +51,14 @@ export class InputManager{
     }
 
     OnPinch(delta:number):void{
-        this.ViewContext.Zoom += this.ViewContext.Zoom * delta * 0.1;
+        if(delta < 1)
+        {
+            this.ViewContext.Zoom -= delta * 0.01;
+        }
+        else
+        {
+            this.ViewContext.Zoom += delta * 0.01;
+        }
     }
 
     OnMouseWheel(value:{deltaY:number}):void{

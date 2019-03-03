@@ -46,7 +46,7 @@ export class Cloud extends Item{
             }
             else
             {
-                this._boundingBox.X += 0.1;
+                this._boundingBox.X += 0.05;
             }
         }
 
@@ -56,7 +56,7 @@ export class Cloud extends Item{
             }
             else
             {
-                this._boundingBox.X -= 0.1;
+                this._boundingBox.X -= 0.05;
             }
         }
         

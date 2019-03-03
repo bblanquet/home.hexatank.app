@@ -32,6 +32,12 @@ export class Tank extends Vehicle implements IHqContainer
             this.RootSprites.push(sprite);
         });
 
+        var imp = PIXI.Texture.fromImage('D:/Program6Design/tank7.svg',undefined,undefined,2);
+
+        var test = new PIXI.Sprite(imp);
+        this.DisplayObjects.push(test);
+        this.RootSprites.push(test);
+
         var sprite = this.Hq.GetSkin().GetBottomTankSprite();
         this.DisplayObjects.push(sprite);
         this.RootSprites.push(sprite);

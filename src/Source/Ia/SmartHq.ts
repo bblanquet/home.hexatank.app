@@ -33,7 +33,7 @@ export class SmartHq extends Headquarter{
         let requests = new Array<[HqArea,HqRequest]>();
         
         this._trucks = this._trucks.filter(t=>t.IsAlive());
-
+``
         if(this._trucks.length === 0){
             var truck = this.AddTruck();
             

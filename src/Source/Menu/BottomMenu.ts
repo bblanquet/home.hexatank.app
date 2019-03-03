@@ -70,7 +70,7 @@ export class BottomMenu extends Item
         this._border.drawRect(0, PlaygroundHelper.Settings.ScreenHeight - size2, PlaygroundHelper.Settings.ScreenWidth, size2);
         this._border.endFill();
 
-        console.log(this._border.y);
+        //console.log(this._border.y);
 
         this._diamondSprite.y = PlaygroundHelper.Settings.ScreenHeight-30;
     }

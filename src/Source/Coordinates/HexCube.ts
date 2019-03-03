@@ -24,7 +24,7 @@ export class HexCube{
         this.Y = y;
         this.Z = z;
     }
-
+    
 
     ToString ():string {
         return "HexCube(" + [this.X, this.Y, this.Z].toString() + ")";

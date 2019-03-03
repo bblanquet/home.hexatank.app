@@ -1,6 +1,5 @@
 import {Ceil} from './Ceil';
 import {CeilProperties} from './CeilProperties';
-import {Item} from './Item';
 import {InteractionContext} from './Context/InteractionContext';
 import {PlaygroundHelper} from './PlaygroundHelper';
 import { BoundingBox } from "./BoundingBox";

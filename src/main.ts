@@ -6,8 +6,7 @@ import { GameSetup } from './GameSetup';
 import * as Hammer from 'hammerjs';
 
 const app = new PIXI.Application({
-    resolution: 1,
-    antialias: false,
+    antialias: true,
     forceFXAA: false,
     forceCanvas: false,
     autoResize: true,
@@ -15,16 +14,19 @@ const app = new PIXI.Application({
     backgroundColor: 0x84cb68,
     clearBeforeRender: true,
     preserveDrawingBuffer: false,
-    roundPixels: false
+    roundPixels: true,
 });
 
+const path = "../Resources/Program6.json";
+
 document.addEventListener('DOMContentLoaded', () => {
+    PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
     document.body.appendChild(app.view);
-    app.loader.add("../Resources/Program6.json").load(Setup);
+    app.loader.add(path).load(Setup);
 }, false);
 
 function Setup(){
-    let textures = app.loader.resources["../Resources/Program6.json"].textures;
+    let textures = app.loader.resources[path].textures;
 
     PlaygroundHelper.Init();
 
@@ -53,10 +55,10 @@ function Setup(){
 }
 
 function ResizeTheCanvas(){
-    console.log(`%c w: ${app.renderer.width} h: ${app.renderer.height}`,'font-weight:bold;color:red;');
-    app.renderer.resize(window.innerWidth,window.innerHeight); 
-    PlaygroundHelper.Settings.ScreenWidth = window.innerWidth;
-    PlaygroundHelper.Settings.ScreenHeight = window.innerHeight;  
+    console.log(`%c w: ${screen.width} h: ${screen.height}`,'font-weight:bold;color:red;');
+    app.renderer.resize(screen.width,screen.height); 
+    PlaygroundHelper.Settings.ScreenWidth = screen.width;
+    PlaygroundHelper.Settings.ScreenHeight = screen.height;  
 }
 
 function GameLoop(){

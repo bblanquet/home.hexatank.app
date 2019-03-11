@@ -2,14 +2,13 @@ import { Item } from "./Item";
 import { RockField } from "./Field/RockField";
 import { Ceil } from "./Ceil";
 import { PlaygroundHelper } from "./PlaygroundHelper";
-
+import { isNullOrUndefined } from "util";
+import { BasicField } from "./Field/BasicField";
 
 export class CeilDecorator{
 
     public static Decorate(items:Array<Item>, ceil:Ceil):void
     {
-        ceil.SetSprite();
-
         var random = Math.random();
         if(random < 0.6)
         {
@@ -25,13 +24,16 @@ export class CeilDecorator{
             }
             else if(decorationRandom <= 0.75)
             {
-                var deco = 'rock';
-                if(decorationRandom <= 0.625)
+                if(ceil.GetField() instanceof BasicField)
                 {
-                    deco = 'tree';
+                    var deco = 'rock';
+                    if(decorationRandom <= 0.625)
+                    {
+                        deco = 'tree';
+                    }
+    
+                    items.push(new RockField(ceil,deco)); 
                 }
-
-                items.push(new RockField(ceil,deco)); 
             }
             else
             {

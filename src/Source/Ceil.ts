@@ -41,6 +41,10 @@ export class Ceil extends Item implements ICeil
     }
 
     public SetField(field:IField){
+        if(!isNullOrUndefined(this._field)){
+            PlaygroundHelper.Render.Remove(<Item> <any> this._field);
+        }
+
         this._field = field;
     }
 
@@ -116,7 +120,7 @@ export class Ceil extends Item implements ICeil
         hiddenCeil.alpha = 1;
         let halfCeil = PlaygroundHelper.SpriteProvider.GetSprite("./halfVisibleCell.svg");
         halfCeil.alpha = 0;
-        let ceil = PlaygroundHelper.SpriteProvider.GetSprite('./cell.svg');//   
+        let ceil = PlaygroundHelper.SpriteProvider.GetSprite('./cell.svg');   
         ceil.alpha = 0;
 
         this._display[CeilState.Hidden] = [hiddenCeil];

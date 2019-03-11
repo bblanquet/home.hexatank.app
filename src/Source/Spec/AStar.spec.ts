@@ -2,16 +2,16 @@ import 'mocha';
 import { expect } from 'chai';
 import {HexAxial} from '../Coordinates/HexAxial';
 import {AStarNode} from '../AStarNode';
-import { Playground2Builder } from '../Playground2Builder';
 import {TestHelper} from '../TestHelper';
 import {CeilProperties} from '../CeilProperties';
+import { SpecHexagonalMapBuilder } from '../Builder/SpecHexagonalMapBuilder';
 
 describe('Astar',()=>{
 
     before(()=>{
         TestHelper.Init();
-        var playgroundMaker = new Playground2Builder(4);
-        playgroundMaker.Build().forEach(ceil=>
+        var playgroundMaker = new SpecHexagonalMapBuilder();
+        playgroundMaker.Build(4).forEach(ceil=>
         {
             TestHelper.CeilsContainer.Add(ceil);
         });

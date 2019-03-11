@@ -5,7 +5,7 @@ import { CeilState } from "../../CeilState";
 export class Area{
 
     constructor(private _centerCeil:Ceil){
-        this._centerCeil.SetState(CeilState.Visible);
+        //this._centerCeil.SetState(CeilState.Visible);
     }
  
     public GetCentralCeil():Ceil{

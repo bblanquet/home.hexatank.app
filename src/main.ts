@@ -12,7 +12,7 @@ const app = new PIXI.Application({
 
 const path = "./Program6.json";
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => { 
     PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
     PIXI.settings.RENDER_OPTIONS.antialias = true;
     document.body.appendChild(app.view);
@@ -27,7 +27,7 @@ function Setup()
         new GroupsContainer([0,1,2,3,4],app.stage));
 
     let gameSetup = new GameSetup();
-    gameSetup.SetMap(app);
+    gameSetup.SetGame(app);
 
     var manager = new PIXI.interaction.InteractionManager(app.renderer);
     manager.autoPreventDefault = false;

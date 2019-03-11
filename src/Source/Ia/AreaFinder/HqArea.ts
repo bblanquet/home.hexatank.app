@@ -1,6 +1,6 @@
 import { Area } from "./Area";
 import { HqRequest } from "../HqRequest";
-import { Tank } from "../../Tank";
+import { Tank } from "../../Unit/Tank";
 import { Ceil } from "../../Ceil";
 import { Troop } from "./Troop";
 
@@ -8,7 +8,7 @@ export class HqArea
 {
     private _troops:Array<Troop>;
 
-    constructor(private _area:Area){
+    constructor(private _area:Area){ 
         this._troops = new Array<Troop>();
     }
  

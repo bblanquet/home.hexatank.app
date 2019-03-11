@@ -1,14 +1,14 @@
-import { Item } from "./Item";
-import { BoundingBox } from "./BoundingBox";
-import { InteractionContext } from "./Context/InteractionContext";
-import { PlaygroundHelper } from "./PlaygroundHelper";
+import { Item } from "../Item";
+import { BoundingBox } from "../BoundingBox";
+import { InteractionContext } from "../Context/InteractionContext";
+import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Explosion } from "./Explosion";
-import { AliveItem } from "./AliveItem";
+import { AliveItem } from "../AliveItem";
 
 export class Missile extends Item{
     BoundingBox:BoundingBox;
     Target:AliveItem;
-    Index:number;
+    Index:number; 
     IsReached:Boolean;
     private _speed:number;
     private _currentMissile:number=0;
@@ -33,8 +33,7 @@ export class Missile extends Item{
 
         this._speed = 3;
 
-        PlaygroundHelper.Render.Add(this);
-
+        this.InitPosition(this.BoundingBox);
         this.Rotate(radius);
     }
 
@@ -71,9 +70,9 @@ export class Missile extends Item{
         return radius;
     };
 
-    public Update(viewX: number, viewY: number, zoom: number):void
+    public Update(viewX: number, viewY: number):void
     {
-        super.Update(viewX,viewY,zoom);
+        super.Update(viewX,viewY);
 
         if(!this.IsReached)
         {

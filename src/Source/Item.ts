@@ -4,6 +4,7 @@ import { Updater } from "./Updater";
 import {InteractionContext} from './Context/InteractionContext';
 import { Point } from './Point';
 import { IBoundingBoxContainer } from './IBoundingBoxContainer';
+import { PlaygroundHelper } from './PlaygroundHelper';
 
 export abstract class Item implements Updater, IBoundingBoxContainer{
     public DisplayObjects:Array<PIXI.DisplayObject>;
@@ -17,16 +18,26 @@ export abstract class Item implements Updater, IBoundingBoxContainer{
 
     public abstract GetBoundingBox():BoundingBox;
 
-    public Update(viewX: number, viewY: number, zoom: number): void 
+    public InitPosition(pos:{X:number, Y:number}):void{
+        this.GetBoundingBox().X = pos.X;
+        this.GetBoundingBox().Y = pos.Y;
+        this.DisplayObjects.forEach(displayObj=>{
+            displayObj.x = pos.X;
+            displayObj.y = pos.Y;
+        });
+        PlaygroundHelper.Render.Add(this);
+    }
+
+    public Update(viewX: number, viewY: number): void 
     {    
         var ref = this.GetRef();
         this.DisplayObjects.forEach(obj => {
-            obj.x = zoom * (ref.X + viewX);
-            obj.y = zoom * (ref.Y + viewY);
+            obj.x = (ref.X + viewX);
+            obj.y = (ref.Y + viewY);
         });
         this.GetSprites().forEach(sprite=>{
-            sprite.width = zoom * this.GetBoundingBox().Width;
-            sprite.height = zoom * this.GetBoundingBox().Height;
+            sprite.width = this.GetBoundingBox().Width;
+            sprite.height =  this.GetBoundingBox().Height;
         });
     }
 

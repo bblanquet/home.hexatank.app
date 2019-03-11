@@ -1,13 +1,13 @@
 import { Ceil } from "../../Ceil";
 import { HqArea } from "./HqArea";
-import { Tank } from "../../Tank";
+import { Tank } from "../../Unit/Tank";
 import { ITimer } from "../../Tools/ITimer";
 import { SimpleOrder } from "../SimpleOrder";
 import { Timer } from "../../Tools/Timer";
 import { isNullOrUndefined } from "util";
 
 export class Troop{
-    private _changePositionTimer:ITimer;
+    private _changePositionTimer:ITimer; 
     private _cancelOrderTimer:ITimer;
 
     constructor(public CurrentCeil:Ceil,public Tank:Tank,public HqArea:HqArea){

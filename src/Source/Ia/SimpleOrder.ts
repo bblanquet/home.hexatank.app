@@ -1,5 +1,5 @@
 import { OrderState } from "./OrderState";
-import { Vehicle } from "../Vehicle";
+import { Vehicle } from "../Unit/Vehicle";
 import { Ceil } from "../Ceil";
 import { isNullOrUndefined, isNull } from "util";
 import { PlaygroundHelper } from "../PlaygroundHelper";
@@ -13,7 +13,7 @@ export class SimpleOrder extends Order{
     protected Ceils:Array<Ceil>;
     protected CeilFinder:CeilFinder;
     private _path:Array<BasicItem>;
-    protected Dest:Ceil;
+    protected Dest:Ceil; 
     constructor(protected OriginalDest:Ceil,private _v:Vehicle)
     {
         super();

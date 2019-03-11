@@ -1,7 +1,7 @@
 import { Menu } from "./Menu";
 import { MenuItem } from "./MenuItem";
 import { PlaygroundHelper } from "../PlaygroundHelper";
-import { Vehicle } from "../Vehicle";
+import { Vehicle } from "../Unit/Vehicle";
 import { ISelectable } from "../ISelectable";
 
 export class LeftMenu extends Menu{
@@ -9,7 +9,7 @@ export class LeftMenu extends Menu{
     private _hide:any;
 
     constructor(items:Array<MenuItem>){
-        super();
+        super(); 
 
         this.Items = items;
 
@@ -28,9 +28,9 @@ export class LeftMenu extends Menu{
     }
 
     private SetPosition() {
-        let width = 50;
-        let height = 75;
-        let margin = PlaygroundHelper.Settings.ScreenHeight / 2 - this.Items.length * height / 2;
+        let width = 50/PlaygroundHelper.Settings.Scale;
+        let height = 75/PlaygroundHelper.Settings.Scale;
+        let margin = PlaygroundHelper.Settings.GetRelativeHeight() / 2 - this.Items.length * height / 2;
         let x = 0;
         let i = 0;
         this.Items.forEach(item => {
@@ -60,9 +60,9 @@ export class LeftMenu extends Menu{
             });
         }
     }
-    public Update(viewX: number, viewY: number, zoom: number): void {
+    public Update(viewX: number, viewY: number): void {
         this.SetPosition();
-        super.Update(viewX,viewY,zoom);
+        super.Update(viewX,viewY);
     }
 
 }

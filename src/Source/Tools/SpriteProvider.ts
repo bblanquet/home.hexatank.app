@@ -1,10 +1,8 @@
 import { ISpriteProvider } from "./ISpriteProvider";
 
 export class SpriteProvider implements ISpriteProvider{
-    private _svgNames:Array<string>;
     private _textureDictionary:PIXI.loaders.TextureDictionary;
-    constructor(svgNames:Array<string>, texture:PIXI.loaders.TextureDictionary){
-        this._svgNames = svgNames;
+    constructor(texture:PIXI.loaders.TextureDictionary){
         this._textureDictionary = texture;
     }
     
@@ -21,6 +19,6 @@ export class SpriteProvider implements ISpriteProvider{
     }
 
     private ExistSvg(name: string):boolean {
-        return this._svgNames.filter(n => n === name).length > 0;
+        return name.includes('.svg');
     }
 }

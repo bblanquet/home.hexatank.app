@@ -20,13 +20,18 @@ import { Cloud } from "./Source/Cloud";
 import { Playground } from "./Source/Playground";
 import { CeilDecorator } from "./Source/CeilDecorator";
 import { Item } from "./Source/Item";
+import { Vehicle } from "./Source/Unit/Vehicle";
+import { InteractionContext } from "./Source/Context/InteractionContext"; 
 
 export class GameSetup{
-    SetMap():void
+    private _currentHq:Headquarter;
+
+
+    SetMap(app:PIXI.Application):void
     {
-        let items = new Array<Item>();
-        let playgroundMaker = new PlaygroundBuilder(6);
-        var ceils = playgroundMaker.Build();
+        const items = new Array<Item>();
+        const playgroundMaker = new PlaygroundBuilder(6);
+        const ceils = playgroundMaker.Build();
         ceils.forEach(ceil=>
         {
             CeilDecorator.Decorate(items, ceil);
@@ -35,15 +40,17 @@ export class GameSetup{
             items.push(ceil);
         });        
         
-        let diamond = new Diamond(<Ceil> ceils[15]);
+        const diamond = new Diamond(<Ceil> ceils[15]);
         items.push(diamond);
 
-        var redQuarter = new Headquarter(new HqSkin("redBottomTank","redTopTank","redTruck","redHqLight","redCeil"),(<Ceil> ceils[40]));
-        var blueQuarter = new SmartHq(PlaygroundHelper.GetAreas(<Ceil> ceils[60]),
+        const redQuarter = new Headquarter(new HqSkin("./tank/bottomTank.svg","./tank/topTank.svg","redTruck","redHqLight","redCeil"),(<Ceil> ceils[40]));
+        this._currentHq = redQuarter;
+        
+        const blueQuarter = new SmartHq(PlaygroundHelper.GetAreas(<Ceil> ceils[60]),
         new HqSkin("blueBottomTank","blueTopTank","blueTruck","blueHqLight","selectedCeil"),(<Ceil> ceils[60]));
         blueQuarter.Diamond = diamond;
 
-        var brownQuarter = new SmartHq(PlaygroundHelper.GetAreas(<Ceil> ceils[75])
+        const brownQuarter = new SmartHq(PlaygroundHelper.GetAreas(<Ceil> ceils[75])
         ,new HqSkin("brownBottomTank","brownTopTank","brownTruck","brownHqLight","brownCeil"),(<Ceil> ceils[75]));
         brownQuarter.Diamond = diamond;
 
@@ -51,7 +58,7 @@ export class GameSetup{
         items.push(blueQuarter);
         items.push(brownQuarter);
 
-        var rightMenu = new RightMenu(
+        const rightMenu = new RightMenu(
             [new EmptyMenuItem('rightTopBorder','rightTopBorder'),
             new TankMenuItem(redQuarter),
             new TruckMenuItem(redQuarter),
@@ -61,7 +68,7 @@ export class GameSetup{
             new EmptyMenuItem('rightBottomBorder','rightBottomBorder')]);    
         items.splice(0,0,rightMenu);
 
-        var leftMenu = new LeftMenu(
+        const leftMenu = new LeftMenu(
             [new EmptyMenuItem('leftTopBorder','leftTopBorder'),
             new EmptyMenuItem('attackIcon','hoverAttackIcon'),
             new EmptyMenuItem('defenseIcon','hoverDefenseIcon'),
@@ -71,7 +78,7 @@ export class GameSetup{
 
         items.splice(0,0,leftMenu);
         
-        var bottomMenu = new BottomMenu(redQuarter);
+        const bottomMenu = new BottomMenu(redQuarter);
 
         items.splice(0,0,bottomMenu);
 
@@ -83,7 +90,19 @@ export class GameSetup{
         items.push(new Cloud(60,12*PlaygroundHelper.Settings.Size,200,'cloud2'));
         items.push(new Cloud(0,12*PlaygroundHelper.Settings.Size,800,'cloud3'));
 
-        let playground = new Playground(items);
+        const playground = new Playground(items,app, new InteractionContext(this.IsSelectable.bind(this)));
         PlaygroundHelper.Playground = playground;
+    }
+
+    private IsSelectable(item:Item){
+        if(item instanceof Vehicle){
+            const vehicle = <Vehicle> item;
+            return !vehicle.IsEnemy(this._currentHq);
+        }
+        else if(item instanceof Headquarter)
+        {
+            return item === this._currentHq;
+        }
+        return false;
     }
 }

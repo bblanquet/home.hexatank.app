@@ -2,14 +2,14 @@ import { Item } from "../Item";
 import { IField } from "./IField";
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
-import { Vehicle } from "../Vehicle";
+import { Vehicle } from "../Unit/Vehicle";
 import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Sprite } from "pixi.js";
 import { Ceil } from "../Ceil";
 
 export class FastField extends Item implements IField
 {
-    private _ceil:Ceil;
+    private _ceil:Ceil; 
  
     constructor(ceil:Ceil){
         super();
@@ -18,7 +18,7 @@ export class FastField extends Item implements IField
         this.Z= 1;
 
         this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite('fastCeil'));        
-        PlaygroundHelper.Render.Add(this);
+        this.InitPosition(ceil.GetBoundingBox());
     }
 
     GetCeil(): Ceil {

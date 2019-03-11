@@ -1,12 +1,11 @@
-import { Sprite } from "pixi.js";
 import { PlaygroundHelper } from "../PlaygroundHelper";
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
 import { Ceil } from "../Ceil";
 import { Item } from "../Item";
 import { IField } from "./IField";
-import { Vehicle } from "../Vehicle";
-import { Truck } from "../Truck";
+import { Vehicle } from "../Unit/Vehicle"; 
+import { Truck } from "../Unit/Truck";
 import { Timer } from "../Tools/Timer";
 
 export class DiamondField extends Item implements IField
@@ -21,8 +20,8 @@ export class DiamondField extends Item implements IField
         this._ceil.SetField(this);
         this.Z= 0;
         this._timer = new Timer(3);
-        this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite("diamondField.png"));
-        PlaygroundHelper.Render.Add(this);
+        this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite('./diamondCell.svg'));
+        this.InitPosition(ceil.GetBoundingBox());
     }
 
     public Destroy(): void {
@@ -63,10 +62,9 @@ export class DiamondField extends Item implements IField
         return false;
     }
 
-    public Update(viewX: number, viewY: number, zoom: number): void 
+    public Update(viewX: number, viewY: number): void 
     {
-
-        super.Update(viewX,viewY,zoom);
+        super.Update(viewX,viewY);
 
         if(this._timer.IsElapsed())
         {

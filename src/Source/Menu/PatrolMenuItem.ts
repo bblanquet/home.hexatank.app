@@ -1,8 +1,5 @@
 import { MenuItem } from "./MenuItem";
 import { InteractionContext } from "../Context/InteractionContext";
-import { Vehicle } from "../Vehicle";
-import { Item } from "../Item";
-import { PlaygroundHelper } from "../PlaygroundHelper";
 
 export class PatrolMenuItem extends MenuItem{
 

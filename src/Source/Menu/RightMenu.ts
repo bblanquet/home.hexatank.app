@@ -28,10 +28,11 @@ export class RightMenu extends Menu{
     }
 
     private SetPosition() {
-        let width = 50;
-        let height = 75;
-        let margin = PlaygroundHelper.Settings.ScreenHeight / 2 - this.Items.length * height / 2;
-        let x = PlaygroundHelper.Settings.ScreenWidth - width;
+        let width = 50 /PlaygroundHelper.Settings.Scale;
+        let height = 75 /PlaygroundHelper.Settings.Scale;
+        let margin = (PlaygroundHelper.Settings.GetRelativeHeight() / 2) 
+        - (this.Items.length * height/ 2);
+        let x = PlaygroundHelper.Settings.GetRelativeWidth() - width;
         let i = 0;
         this.Items.forEach(item => {
             item.SetBoundingBox({ x: x, y: margin + i * height, width: width, height: height });
@@ -61,8 +62,8 @@ export class RightMenu extends Menu{
         }
     }
 
-    public Update(viewX: number, viewY: number, zoom: number): void {
+    public Update(viewX: number, viewY: number): void {
         this.SetPosition();
-        super.Update(viewX,viewY,zoom);
+        super.Update(viewX,viewY);
     }
 }

@@ -39,16 +39,16 @@ export abstract class AliveItem extends Item{
         }
     }
 
-    public Update(viewX: number, viewY: number, zoom: number): void {
-        super.Update(viewX,viewY,zoom);
+    public Update(viewX: number, viewY: number): void {
+        super.Update(viewX,viewY);
         this._lifes.forEach(element => {
-            element.x = (this.GetBoundingBox().X+viewX) * zoom;
-            element.y = (this.GetBoundingBox().Y+viewY) * zoom;
-            element.height = this.GetBoundingBox().Height/25 * zoom;
-            element.width = this.GetBoundingBox().Width * zoom;
+            element.x = (this.GetBoundingBox().X+viewX);
+            element.y = (this.GetBoundingBox().Y+viewY);
+            element.height = this.GetBoundingBox().Height/25;
+            element.width = this.GetBoundingBox().Width;
         });
 
-        this._currentLife.width = this.GetBoundingBox().Width *(this.Life/this.TotalLife)* zoom;
+        this._currentLife.width = this.GetBoundingBox().Width *(this.Life/this.TotalLife);
     }
 
     public IsAlive():boolean

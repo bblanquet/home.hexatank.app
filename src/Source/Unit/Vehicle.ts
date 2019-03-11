@@ -1,24 +1,24 @@
-import {Ceil} from './Ceil';
-import {CeilProperties} from './CeilProperties';
-import {InteractionContext} from './Context/InteractionContext';
-import {PlaygroundHelper} from './PlaygroundHelper';
-import { BoundingBox } from "./BoundingBox";
+import {Ceil} from '../Ceil';
+import {CeilProperties} from '../CeilProperties';
+import {InteractionContext} from '../Context/InteractionContext';
+import {PlaygroundHelper} from '../PlaygroundHelper';
+import { BoundingBox } from "../BoundingBox";
 import {Dust} from './Dust';
-import { AliveItem } from './AliveItem';
-import { ITranslationMaker } from './ITranslationMaker';
-import { IMovable } from './IMovable';
-import { IRotationMaker } from './IRotationMaker';
-import { IAngleFinder } from './IAngleFinder';
-import { TranslationMaker } from './TranslationMaker';
-import { RotationMaker } from './RotationMaker';
-import { AngleFinder } from './AngleFinder';
-import { IRotatable } from './IRotatable';
+import { AliveItem } from '../AliveItem';
+import { ITranslationMaker } from '../ITranslationMaker';
+import { IMovable } from '../IMovable';
+import { IRotationMaker } from '../IRotationMaker'; 
+import { IAngleFinder } from '../IAngleFinder';
+import { TranslationMaker } from '../TranslationMaker';
+import { RotationMaker } from '../RotationMaker'; 
+import { AngleFinder } from '../AngleFinder';
+import { IRotatable } from '../IRotatable';
 import { isNullOrUndefined } from 'util';
 import { Sprite } from 'pixi.js';
-import { Crater } from './Crater';
-import { CeilState } from './CeilState';
-import { IOrder } from './Ia/IOrder';
-import { ISelectable } from './ISelectable';
+import { Crater } from '../Crater';
+import { CeilState } from '../CeilState';
+import { IOrder } from '../Ia/IOrder';
+import { ISelectable } from '../ISelectable';
 
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable
 {
@@ -27,6 +27,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     Attack:number=30;
     protected RootSprites:Array<PIXI.Sprite>;
     protected Wheels:Array<PIXI.Sprite>;
+    protected BottomWheel:PIXI.Sprite;
     private WheelIndex:number;
 
     //movable
@@ -75,7 +76,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     public SetOrder(order: IOrder): void {
         if(!isNullOrUndefined(this._nextCeil))
         {
-            this._nextCeil.SetMovable(null);
+            this._nextCeil.SetOccupier(null);
         }
         this._order = order;
     }
@@ -153,7 +154,6 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         b.Height = this.GetBoundingBox().Width/5;
 
         var dust = new Dust(b);
-        PlaygroundHelper.Render.Add(dust);
         PlaygroundHelper.Playground.Items.push(dust);
     }
 
@@ -172,9 +172,9 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     public MoveNextCeil(): void {
         var previousCeil = this._currentCeil;
 
-        this._currentCeil.SetMovable(null);
+        this._currentCeil.SetOccupier(null);
         this._currentCeil = this._nextCeil;
-        this._currentCeil.SetMovable(this);
+        this._currentCeil.SetOccupier(this);
         this._nextCeil = null;
 
         this.SetVisible();
@@ -186,8 +186,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         ceils.push(previousCeil);
         ceils.forEach(childCeil => {
             var child = (<Ceil>childCeil);
-            if (isNullOrUndefined(child.GetMovable()) 
-            && child.GetAllNeighbourhood().filter(c => !isNullOrUndefined((<Ceil>c).GetMovable())).length === 0) {
+            if (isNullOrUndefined(child.GetOccupier()) 
+            && child.GetAllNeighbourhood().filter(c => !isNullOrUndefined((<Ceil>c).GetOccupier())).length === 0) {
                 child.SetState(CeilState.HalfVisible);
             }
         });
@@ -202,16 +202,16 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     }
 
     protected Destroy():void{
-        this._currentCeil.SetMovable(null);
+        this._currentCeil.SetOccupier(null);
         if(!isNullOrUndefined(this._nextCeil))
         {
-            this._nextCeil.SetMovable(null);
+            this._nextCeil.SetOccupier(null);
         }
         PlaygroundHelper.Render.Remove(this);
         this.IsUpdatable = false;
     }
 
-    public Update(viewX: number, viewY: number, zoom: number):void{
+    public Update(viewX: number, viewY: number):void{
         if(!this.IsAlive())
         {
             this.Destroy();
@@ -234,7 +234,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         {
             this.Moving();
         }        
-        super.Update(viewX,viewY,zoom);
+        super.Update(viewX,viewY);
     }
 
     public ExistsOrder():boolean{
@@ -246,12 +246,10 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     }
 
     public SetPosition (ceil:Ceil):void{
-        this.BoundingBox.X = ceil.GetBoundingBox().X;
-        this.BoundingBox.Y = ceil.GetBoundingBox().Y;
+        this.InitPosition(ceil.GetBoundingBox());
         this._currentCeil = ceil;
-        this._currentCeil.SetMovable(this);
+        this._currentCeil.SetOccupier(this);
         this.SetVisible();
-        PlaygroundHelper.Render.Add(this);
     };
 
     public Select(context:InteractionContext):boolean
@@ -266,7 +264,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
     public SetNextCeil(ceil: Ceil): void {
         this._nextCeil = ceil;
-        this._nextCeil.SetMovable(this);
+        this._nextCeil.SetOccupier(this);
         this._angleFinder.SetAngle(this._nextCeil);
     }
     public GetCurrentCeil(): Ceil {

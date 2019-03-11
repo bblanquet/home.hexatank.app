@@ -5,9 +5,9 @@ import { Sprite } from "pixi.js";
 import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Ceil } from "../Ceil";
 import { IField } from "./IField";
-import { Vehicle } from "../Vehicle";
-import { Truck } from "../Truck";
-import { Timer } from "../Tools/Timer";
+import { Vehicle } from "../Unit/Vehicle";
+import { Truck } from "../Unit/Truck";
+import { Timer } from "../Tools/Timer"; 
 import { Headquarter } from "./Headquarter";
 
 export class HeadQuarterField extends Item implements IField
@@ -24,7 +24,7 @@ export class HeadQuarterField extends Item implements IField
         this.Z= 0;
         this._timer = new Timer(3);
         this.DisplayObjects.push(sprite);
-        PlaygroundHelper.Render.Add(this);
+        this.InitPosition(ceil.GetBoundingBox());
     }
 
     public Destroy(): void {
@@ -69,8 +69,8 @@ export class HeadQuarterField extends Item implements IField
         return false;
     }
 
-    public Update(viewX: number, viewY: number, zoom: number): void {
-        super.Update(viewX,viewY,zoom);
+    public Update(viewX: number, viewY: number): void {
+        super.Update(viewX,viewY);
 
         if(this._timer.IsElapsed())
         { 

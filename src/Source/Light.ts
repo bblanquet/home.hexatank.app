@@ -2,13 +2,12 @@ import { Item } from "./Item";
 import { BoundingBox } from "./BoundingBox";
 import { InteractionContext } from "./Context/InteractionContext";
 import { PlaygroundHelper } from "./PlaygroundHelper";
-import { Sprite } from "pixi.js";
 
 export class Light extends Item{
     BoundingBox:BoundingBox;
     IsShowing:boolean;
     Size:number;
-    constructor(){
+    constructor(value:{X:number, Y:number}){
         super();
         this.Z= 3;
         this.BoundingBox = new BoundingBox();
@@ -16,7 +15,7 @@ export class Light extends Item{
         this.GetBoundingBox().Height = 10;
         var sprite = PlaygroundHelper.SpriteProvider.GetSprite("diamondLight.png");
         this.DisplayObjects.push(sprite);
-        PlaygroundHelper.Render.Add(this);
+        this.InitPosition(value)
     }
 
     public GetBoundingBox(): BoundingBox{
@@ -30,8 +29,8 @@ export class Light extends Item{
         this.GetBoundingBox().Y = y;
     }
 
-    public Update(viewX: number, viewY: number, zoom: number): void {
-        super.Update(viewX,viewY,zoom);
+    public Update(viewX: number, viewY: number): void {
+        super.Update(viewX,viewY);
          
         if(this.IsShowing)
         {

@@ -1,6 +1,6 @@
 import { SimpleOrder } from "./SimpleOrder";
 import { Ceil } from "../Ceil";
-import { Vehicle } from "../Vehicle";
+import { Vehicle } from "../Unit/Vehicle";
 import { Diamond } from "../Field/Diamond";
 
 export class DiamondFieldOrder extends SimpleOrder
@@ -15,7 +15,7 @@ export class DiamondFieldOrder extends SimpleOrder
         {
             let ceil =  this.CeilFinder.GetCeil(ceils, this._vehicule);
             this.OriginalDest = ceil;
-            return ceil;
+            return ceil; 
         }
         else
         {

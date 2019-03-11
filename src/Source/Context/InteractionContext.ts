@@ -9,14 +9,22 @@ export class InteractionContext{
     Point:PIXI.Point;
     private _selectedItem:Array<Item>;
     private _checker:IPatternChecker;
+    private _isSelectable:{(item:Item):boolean};
 
-    constructor(){ 
+    constructor(isSelectable:{(item:Item):boolean}){ 
         this._selectedItem = [];
+        this._isSelectable = isSelectable;
         this._checker = new PatternChecker();
     }
 
-    private IsSelectable(item: any):item is ISelectable{
+    private IsSelectableItem(item: any):item is ISelectable{
         return 'SetSelected' in item;
+    }
+    private ToSelectableItem(item: any):ISelectable{
+        if(this.IsSelectableItem(item)){
+            return <ISelectable> item;
+        }
+        return null;
     }
 
     OnSelect(item:Item):void
@@ -24,16 +32,23 @@ export class InteractionContext{
         if(item instanceof CancelMenuItem)
         {
             this.Clear();
-            //PlaygroundHelper.OnUnselectedItem.trigger(vehicle);   
             return;
         }
 
-        if(this.IsSelectable(item))
+        if(this._isSelectable(item))
         {
-            let selectable = <ISelectable> item;
-            this.Clear();
-            selectable.SetSelected(true); 
-            PlaygroundHelper.OnSelectedItem.trigger(this,selectable);   
+            if(item === this._selectedItem[0])
+            {
+                this.Clear();
+                return;
+            }
+            else
+            {
+                const selectable = this.ToSelectableItem(item);
+                this.Clear();
+                selectable.SetSelected(true); 
+                PlaygroundHelper.OnSelectedItem.trigger(this,selectable);   
+            }
         }
 
         this._selectedItem.push(item);
@@ -46,7 +61,7 @@ export class InteractionContext{
 
     private Clear() {
         if (0 < this._selectedItem.length 
-            && this.IsSelectable(this._selectedItem[0])) 
+            && this.IsSelectableItem(this._selectedItem[0])) 
         {
             var selectable = <ISelectable> <any> (this._selectedItem[0]);
             selectable.SetSelected(false);

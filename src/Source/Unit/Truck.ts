@@ -1,17 +1,17 @@
 import { Vehicle } from "./Vehicle";
-import { PlaygroundHelper } from "./PlaygroundHelper";
+import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Sprite } from "pixi.js";
-import { IHqContainer } from "./IHqContainer";
-import { Headquarter } from "./Field/Headquarter";
-import { AliveItem } from "./AliveItem";
-import { ITimer } from "./Tools/ITimer";
-import { Timer } from "./Tools/Timer";
+import { IHqContainer } from "../IHqContainer";
+import { Headquarter } from "../Field/Headquarter";
+import { AliveItem } from "../AliveItem";
+import { ITimer } from "../Tools/ITimer";
+import { Timer } from "../Tools/Timer";
 
 export class Truck extends Vehicle implements IHqContainer{
     Hq:Headquarter;
     private _gatheredDiamonds:Array<Sprite>;
     private _dimaondTimer:ITimer;
-    private _diamondsCount:number=0;
+    private _diamondsCount:number=0; 
     
     constructor(hq:Headquarter)
     {
@@ -72,6 +72,10 @@ export class Truck extends Vehicle implements IHqContainer{
         {
             return (<IHqContainer>(item as any)).Hq !== this.Hq;
         }
+        else if(item instanceof Headquarter)
+        {
+            return (<Headquarter>(item as any)) !== this.Hq;
+        }
         return false;
     }
 
@@ -96,8 +100,8 @@ export class Truck extends Vehicle implements IHqContainer{
         return diamonds;
     }
 
-    public Update(viewX: number, viewY: number, zoom: number):void
+    public Update(viewX: number, viewY: number):void
     {
-        super.Update(viewX,viewY,zoom);
+        super.Update(viewX,viewY);
     }
 }

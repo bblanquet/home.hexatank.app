@@ -7,14 +7,16 @@ import {InteractionContext} from './Context/InteractionContext';
 export class Playground implements IPlayground
 {    
     Items:Array<Item>;
-    ViewContext:ViewContext;
-    InputManager:InputManager;
+    private ViewContext:ViewContext;
+    public InputManager:InputManager;
+    private _app:PIXI.Application;
 
-    constructor(ceils : Array<Item>)
+    constructor(ceils : Array<Item>, app:PIXI.Application, interactionContext:InteractionContext)
     {
+        this._app = app;
         this.Items = ceils;
         this.ViewContext = new ViewContext();
-        this.InputManager = new InputManager(this.ViewContext);
+        this.InputManager = new InputManager(this.ViewContext,interactionContext);
         this.InputManager.DownEvent.on(this.Select.bind(this));
     }
 
@@ -28,8 +30,10 @@ export class Playground implements IPlayground
 
     public Update():void{
         this.Items = this.Items.filter(item => item.IsUpdatable);
+        this._app.stage.scale.x = this.ViewContext.Zoom;
+        this._app.stage.scale.y = this.ViewContext.Zoom;
         this.Items.forEach(item => {
-            item.Update(this.ViewContext.BoundingBox.X,this.ViewContext.BoundingBox.Y,this.ViewContext.Zoom);
+            item.Update(this.ViewContext.BoundingBox.X,this.ViewContext.BoundingBox.Y);
         });
     }
 } 

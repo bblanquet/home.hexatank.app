@@ -1,7 +1,7 @@
 import { AliveItem } from "../AliveItem";
 import { Ceil } from "../Ceil";
 import { PlaygroundHelper } from "../PlaygroundHelper";
-import { Vehicle } from "../Vehicle";
+import { Vehicle } from "../Unit/Vehicle";
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
 import { IField } from "./IField";
@@ -9,7 +9,7 @@ import { IField } from "./IField";
 
 export class RockField extends AliveItem implements IField
 {
-
+ 
     private _ceil:Ceil;
     
     constructor(ceil:Ceil, sprite:string){
@@ -18,7 +18,7 @@ export class RockField extends AliveItem implements IField
         this._ceil.SetField(this);
         this.Z= 0;
         this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite(sprite));
-        PlaygroundHelper.Render.Add(this);
+        this.InitPosition(ceil.GetBoundingBox());
     }
 
     GetCeil(): Ceil {
@@ -48,13 +48,13 @@ export class RockField extends AliveItem implements IField
         return false;
     }
 
-    public Update(viewX: number, viewY: number, zoom: number):void{
+    public Update(viewX: number, viewY: number):void{
         if(!this.IsAlive())
         {
             this.Destroy();
             return;
         }
-        super.Update(viewX,viewY,zoom);
+        super.Update(viewX,viewY);
     }
 
     public Destroy():void{

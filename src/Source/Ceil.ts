@@ -20,7 +20,7 @@ export class Ceil extends Item implements ICeil
     Properties:CeilProperties;
     private _display:{ [id: number]: Array<PIXI.Sprite>; };
     private _field:IField;
-    private _movable:IMovable;
+    private _occupier:IMovable;
     DecorationSprite:PIXI.Sprite;
 
     constructor(properties:CeilProperties)
@@ -44,21 +44,21 @@ export class Ceil extends Item implements ICeil
         this._field = field;
     }
 
-    public GetMovable():IMovable{
-        return this._movable;
+    public GetOccupier():IMovable{
+        return this._occupier;
     } 
 
-    public SetMovable(movable:IMovable){
-        this._movable = movable;
+    public SetOccupier(movable:IMovable){
+        this._occupier = movable;
     }
 
     public IsBlocked():boolean{
         return (!isNullOrUndefined(this._field) && this._field.IsBlocking()) 
-                || this._movable != null;
+                || this._occupier != null;
     }
 
     public IsShootable():boolean{
-        return (this._field.IsDesctrutible()) || this._movable != null;
+        return (this._field.IsDesctrutible()) || this._occupier != null;
     }
 
     public GetShootableEntity():AliveItem{
@@ -68,8 +68,8 @@ export class Ceil extends Item implements ICeil
             }
         }
 
-        if(this._movable != null){
-            return <AliveItem>(this._movable as any);
+        if(this._occupier != null){
+            return <AliveItem>(this._occupier as any);
         }
 
         return null;
@@ -97,6 +97,8 @@ export class Ceil extends Item implements ICeil
     public AddSprite(sprite:PIXI.Sprite){
         this._areaSprite = sprite;
         this._areaSprite.alpha = 0.2;
+        this._areaSprite.x = this.GetBoundingBox().X;
+        this._areaSprite.y = this.GetBoundingBox().Y;
         this.DisplayObjects.push(this._areaSprite);
         PlaygroundHelper.Render.AddDisplayableEntity(this._areaSprite);
     }
@@ -110,11 +112,11 @@ export class Ceil extends Item implements ICeil
 
     public SetSprite():void
     {
-        let hiddenCeil = PlaygroundHelper.SpriteProvider.GetSprite("hiddenCeil");
+        let hiddenCeil = PlaygroundHelper.SpriteProvider.GetSprite("./hiddenCell.svg");
         hiddenCeil.alpha = 1;
-        let halfCeil = PlaygroundHelper.SpriteProvider.GetSprite("halfHiddenCeil");
+        let halfCeil = PlaygroundHelper.SpriteProvider.GetSprite("./halfVisibleCell.svg");
         halfCeil.alpha = 0;
-        let ceil = PlaygroundHelper.SpriteProvider.GetSprite('./Cell.svg');
+        let ceil = PlaygroundHelper.SpriteProvider.GetSprite('./cell.svg');//   
         ceil.alpha = 0;
 
         this._display[CeilState.Hidden] = [hiddenCeil];

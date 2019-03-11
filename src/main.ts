@@ -7,21 +7,14 @@ import * as Hammer from 'hammerjs';
 import { SpriteProvider } from './Source/Tools/SpriteProvider';
 
 const app = new PIXI.Application({
-    antialias: true,
-    forceFXAA: false,
-    forceCanvas: false,
-    autoResize: true,
-    transparent: false,
     backgroundColor: 0x84cb68,
-    clearBeforeRender: true,
-    preserveDrawingBuffer: false,
-    roundPixels: true,
 });
 
 const path = "./Program6.json";
 
 document.addEventListener('DOMContentLoaded', () => {
     PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
+    PIXI.settings.RENDER_OPTIONS.antialias = true;
     document.body.appendChild(app.view);
     app.loader.add(path).load(Setup);
 }, false);
@@ -29,12 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
 function Setup()
 {
     PlaygroundHelper.Init();
-    PlaygroundHelper.SpriteProvider = new SpriteProvider(['./Cell.svg'],app.loader.resources[path].textures);
+    PlaygroundHelper.SpriteProvider = new SpriteProvider(app.loader.resources[path].textures);
     PlaygroundHelper.Render = new RenderingHandler(
         new GroupsContainer([0,1,2,3,4],app.stage));
 
     let gameSetup = new GameSetup();
-    gameSetup.SetMap();
+    gameSetup.SetMap(app);
 
     var manager = new PIXI.interaction.InteractionManager(app.renderer);
     manager.autoPreventDefault = false;
@@ -55,9 +48,16 @@ function Setup()
 }
 
 function ResizeTheCanvas(){
-    app.renderer.resize(screen.width,screen.height); 
-    PlaygroundHelper.Settings.ScreenWidth = screen.width;
-    PlaygroundHelper.Settings.ScreenHeight = screen.height;  
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        app.renderer.resize(screen.width,screen.height); 
+        PlaygroundHelper.Settings.ScreenWidth = screen.width;
+        PlaygroundHelper.Settings.ScreenHeight = screen.height;
+    }else{
+        app.renderer.resize(window.innerWidth,window.innerHeight); 
+        PlaygroundHelper.Settings.ScreenWidth = window.innerWidth;
+        PlaygroundHelper.Settings.ScreenHeight = window.innerHeight;
+    }
+  
 }
 
 function GameLoop(){

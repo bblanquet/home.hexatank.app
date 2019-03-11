@@ -1,5 +1,5 @@
 import { Headquarter } from "../Field/Headquarter";
-import { Vehicle } from "../Vehicle";
+import { Vehicle } from "../Unit/Vehicle";
 import { SimpleOrder } from "./SimpleOrder";
 import { Ceil } from "../Ceil";
 
@@ -13,7 +13,7 @@ export class HqFieldOrder extends SimpleOrder
         let ceils = this.GetCeils(this._hq);
         if(0 < ceils.length)
         {
-            let ceil =  this.CeilFinder.GetCeil(ceils, this._vehicule);
+            let ceil =  this.CeilFinder.GetCeil(ceils, this._vehicule); 
             this.OriginalDest = ceil;
             return ceil;
         }

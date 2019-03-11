@@ -1,15 +1,15 @@
-import { Item } from "./Item";
-import { BoundingBox } from "./BoundingBox";
-import { InteractionContext } from "./Context/InteractionContext";
-import { PlaygroundHelper } from "./PlaygroundHelper";
-import { ITimer } from "./Tools/ITimer";
-import { Timer } from "./Tools/Timer";
+import { Item } from "../Item";
+import { BoundingBox } from "../BoundingBox";
+import { InteractionContext } from "../Context/InteractionContext";
+import { PlaygroundHelper } from "../PlaygroundHelper";
+import { ITimer } from "../Tools/ITimer";
+import { Timer } from "../Tools/Timer";
 
 export class Explosion extends Item{
     BoundingBox:BoundingBox;
     private _currentFrame:number=0;
     private _currentAlpha:number=1;
-    private _timer:ITimer;
+    private _timer:ITimer; 
 
     constructor(boundingbox:BoundingBox)
     {
@@ -32,13 +32,12 @@ export class Explosion extends Item{
         });
         this.IsCentralRef = true;
 
-        PlaygroundHelper.Render.Add(this);
+        this.InitPosition(boundingbox);
     }
 
-    public Update(viewX: number, viewY: number, zoom: number):void
+    public Update(viewX: number, viewY: number):void
     {
-        super.Update(viewX,viewY,zoom);
-
+        super.Update(viewX,viewY);
 
         if(0 <= this._currentFrame
             && this._currentFrame < this.DisplayObjects.length)

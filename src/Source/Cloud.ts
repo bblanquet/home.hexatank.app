@@ -25,20 +25,20 @@ export class Cloud extends Item{
         this._timer = new Timer(3);
         this.Z = 4;
         this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite(this._sprite));
-        PlaygroundHelper.Render.Add(this);
         this._boundingBox = new BoundingBox();
         this._boundingBox.X = this._min
         this._boundingBox.Y = this._y;
         this._boundingBox.Width = PlaygroundHelper.Settings.Size*3;
         this._boundingBox.Height = PlaygroundHelper.Settings.Size*3;
+        this.InitPosition({X:this._min,Y:this._y});
     }
 
     public Select(context: InteractionContext): boolean {
         return false;
     }
 
-    public Update(viewX: number, viewY: number, zoom: number): void {
-        super.Update(viewX,viewY,zoom);
+    public Update(viewX: number, viewY: number): void {
+        super.Update(viewX,viewY);
         
         if(this._goingRight){
             if(this._boundingBox.X >= this._max){

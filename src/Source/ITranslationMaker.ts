@@ -1,3 +1,3 @@
-export interface ITranslationMaker{
+export interface ITranslationMaker{ 
     Translate():void;
 }

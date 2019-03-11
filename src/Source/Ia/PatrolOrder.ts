@@ -1,16 +1,15 @@
 import { OrderState } from "./OrderState";
-import { Vehicle } from "../Vehicle";
+import { Vehicle } from "../Unit/Vehicle";
 import { Ceil } from "../Ceil";
 import { SimpleOrder } from "./SimpleOrder";
 import { Order } from "./Order";
 import { BasicItem } from "../BasicItem";
 import { isNullOrUndefined } from "util";
 import { PlaygroundHelper } from "../PlaygroundHelper";
-import { Sprite } from "pixi.js";
 
 export class PatrolOrder extends Order{
     private _currentPatrolCeil:Ceil;
-    private _simpleOrder:SimpleOrder;
+    private _simpleOrder:SimpleOrder; 
     private _patrols:Array<BasicItem>;
 
     constructor(private _patrolCeils:Array<Ceil>,private _v:Vehicle)

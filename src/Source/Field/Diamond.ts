@@ -5,9 +5,9 @@ import { Light } from "../Light";
 import { Ceil } from "../Ceil";
 import { DiamondField } from "./DiamondField";
 import { IField } from "./IField";
-import { Vehicle } from "../Vehicle";
+import { Vehicle } from "../Unit/Vehicle";
 import { Timer } from "../Tools/Timer";
-import { AliveItem } from "../AliveItem";
+import { AliveItem } from "../AliveItem"; 
 import { Crater } from "../Crater";
 
 export class Diamond extends AliveItem implements IField{
@@ -30,9 +30,9 @@ export class Diamond extends AliveItem implements IField{
         this._timer = new Timer(4);
 
         this.Lights = new Array<Light>();
-        this.Lights.push(new Light());
-        this.Lights.push(new Light());
-        this.Lights.push(new Light());
+        this.Lights.push(new Light(this._ceil.GetBoundingBox()));
+        this.Lights.push(new Light(this._ceil.GetBoundingBox()));
+        this.Lights.push(new Light(this._ceil.GetBoundingBox()));
 
         this.Fields = new Array<DiamondField>();
         var neighbours = this._ceil.GetNeighbourhood();
@@ -40,7 +40,7 @@ export class Diamond extends AliveItem implements IField{
         {
             this.Fields.push(new DiamondField(<Ceil>ceil));
         });
-        PlaygroundHelper.Render.Add(this);
+        this.InitPosition(ceil.GetBoundingBox());
     }
 
     GetCeil(): Ceil {
@@ -75,7 +75,7 @@ export class Diamond extends AliveItem implements IField{
         });
     }
 
-    public Update(viewX: number, viewY: number, zoom: number): void {
+    public Update(viewX: number, viewY: number): void {
         if(!this.IsAlive())
         {
             this.Destroy();
@@ -84,9 +84,9 @@ export class Diamond extends AliveItem implements IField{
             return;
         }
 
-        super.Update(viewX,viewY,zoom);
+        super.Update(viewX,viewY);
         this.Fields.forEach(field=>{
-            field.Update(viewX,viewY,zoom);
+            field.Update(viewX,viewY);
         });
 
         
@@ -131,7 +131,7 @@ export class Diamond extends AliveItem implements IField{
         {
             if(light.IsShowing)
             {
-                light.Update(viewX,viewY,zoom);
+                light.Update(viewX,viewY);
             }
         });
     }

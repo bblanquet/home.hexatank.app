@@ -2,9 +2,9 @@ import { Item } from "../Item";
 import { IField } from "./IField";
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
-import { Vehicle } from "../Vehicle";
+import { Vehicle } from "../Unit/Vehicle";
 import { PlaygroundHelper } from "../PlaygroundHelper";
-import { Ceil } from "../Ceil";
+import { Ceil } from "../Ceil"; 
 
 export class BasicField extends Item implements IField{
     private _ceil:Ceil;
@@ -39,7 +39,7 @@ export class BasicField extends Item implements IField{
     public Select(context: InteractionContext): boolean {
         return false;
     }
-    public Update(viewX: number, viewY: number, zoom: number): void {}
+    public Update(viewX: number, viewY: number): void {}
 
 
 }

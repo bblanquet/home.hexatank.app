@@ -4,10 +4,10 @@ import { Ceil } from "../Ceil";
 import { PlaygroundHelper } from "../PlaygroundHelper";
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
-import { Vehicle } from "../Vehicle";
+import { Vehicle } from "../Unit/Vehicle";
 
 export class HealField extends Item implements IField
-{
+{ 
     private _ceil:Ceil;
 
     constructor(ceil:Ceil){
@@ -17,7 +17,7 @@ export class HealField extends Item implements IField
         this.Z= 1; 
 
         this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite('healCeil'));        
-        PlaygroundHelper.Render.Add(this);
+        this.InitPosition(ceil.GetBoundingBox());
     }
 
     GetCeil(): Ceil {

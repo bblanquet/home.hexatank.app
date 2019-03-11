@@ -1,21 +1,21 @@
-import { Item } from "./Item";
-import { BoundingBox } from "./BoundingBox";
-import { InteractionContext } from "./Context/InteractionContext";
-import { PlaygroundHelper } from "./PlaygroundHelper";
+import { Item } from "../Item";
+import { BoundingBox } from "../BoundingBox";
+import { InteractionContext } from "../Context/InteractionContext";
+import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Sprite } from "pixi.js";
-import "../Extension/Collection";
+import "../../Extension/Collection";
 import { Tank } from "./Tank";
 import { Missile } from "./Missile";
-import { IAngleFinder } from "./IAngleFinder";
-import { AngleFinder } from "./AngleFinder";
-import { IRotatable } from "./IRotatable";
-import { IRotationMaker } from "./IRotationMaker";
-import { RotationMaker } from "./RotationMaker";
-import { HqSkin } from "./HqSkin";
-import { ITimer } from "./Tools/ITimer";
-import { Timer } from "./Tools/Timer";
+import { IAngleFinder } from "../IAngleFinder";
+import { AngleFinder } from "../AngleFinder";
+import { IRotatable } from "../IRotatable";
+import { IRotationMaker } from "../IRotationMaker";
+import { RotationMaker } from "../RotationMaker";
+import { HqSkin } from "../HqSkin";
+import { ITimer } from "../Tools/ITimer";
+import { Timer } from "../Tools/Timer";
 
-export class TankHead extends Item implements IRotatable
+export class Turrel extends Item implements IRotatable
 {
     RotationSpeed: number=0.05;
     CurrentRadius: number;
@@ -64,19 +64,19 @@ export class TankHead extends Item implements IRotatable
         this.GetSprites().forEach(sprite => {
             sprite.width = this.Base.GetBoundingBox().Width,
             sprite.height = this.Base.GetBoundingBox().Height
-            sprite.pivot.set(PlaygroundHelper.Settings.Pivot,PlaygroundHelper.Settings.Pivot);
+            sprite.anchor.set(0.5);
         });
         this.IsCentralRef = true;
-        this._rotationMaker = new RotationMaker<TankHead>(this);
-        this._angleFinder = new AngleFinder<TankHead>(this);
+        this._rotationMaker = new RotationMaker<Turrel>(this);
+        this._angleFinder = new AngleFinder<Turrel>(this);
     }
 
     public GetBoundingBox(): BoundingBox {
         return this.Base.GetBoundingBox();
     }    
 
-    public Update(viewX: number, viewY: number, zoom: number):void{
-        super.Update(viewX,viewY,zoom);
+    public Update(viewX: number, viewY: number):void{
+        super.Update(viewX,viewY);
         this.Action();
     }
 
@@ -147,7 +147,6 @@ export class TankHead extends Item implements IRotatable
         //nothing to do
         return false;
     }
-
 
     private Rotating():boolean{
         if(this.Base.GetTarget() != null)

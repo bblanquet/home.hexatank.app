@@ -13,7 +13,6 @@ export class BasicItem extends Item{
         this.Z = 0;
         sprite.alpha = 0;
         this.DisplayObjects.push(sprite);
-        PlaygroundHelper.Render.Add(this);
     }
 
     public SetDisplayTrigger(show:{ (): boolean }):void{
@@ -32,7 +31,7 @@ export class BasicItem extends Item{
         return false;
     }
 
-    public Update(viewX: number, viewY: number, zoom: number): void 
+    public Update(viewX: number, viewY: number): void 
     {
         if(!this._isAlive()){
             this.Destroy();
@@ -41,7 +40,7 @@ export class BasicItem extends Item{
         this.DisplayObjects.forEach(sprite=>{
             sprite.alpha = this._isVisible() ? 1 :0; 
         });
-        super.Update(viewX,viewY,zoom);    
+        super.Update(viewX,viewY);    
     }
 
     Destroy(): void 

@@ -1,13 +1,13 @@
-import { Item } from "./Item";
-import { BoundingBox } from "./BoundingBox";
-import { InteractionContext } from "./Context/InteractionContext";
-import { PlaygroundHelper } from "./PlaygroundHelper";
+import { Item } from "../Item";
+import { BoundingBox } from "../BoundingBox";
+import { InteractionContext } from "../Context/InteractionContext";
+import { PlaygroundHelper } from "../PlaygroundHelper";
 
 export class Dust extends Item
 {
     BoundingBox:BoundingBox;
     private i:number;
-    private currentDust:number;
+    private currentDust:number; 
     private currentAlpha:number;
 
     constructor(boundingBox:BoundingBox)
@@ -28,6 +28,7 @@ export class Dust extends Item
             this.DisplayObjects.push(sprite);
         });
         this.IsCentralRef = true;
+        this.InitPosition(boundingBox);
     }
 
     public GetBoundingBox():BoundingBox{
@@ -38,8 +39,8 @@ export class Dust extends Item
         //do nothing
         return false; 
     }
-    public Update(viewX: number, viewY: number, zoom: number): void{
-        super.Update(viewX,viewY,zoom);
+    public Update(viewX: number, viewY: number): void{
+        super.Update(viewX,viewY);
 
         this.i += 1;
     

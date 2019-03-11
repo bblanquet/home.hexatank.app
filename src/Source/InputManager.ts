@@ -2,6 +2,7 @@ import { Point } from "./Point";
 import { ViewContext } from "./ViewContext";
 import {LiteEvent} from "./LiteEvent";
 import {InteractionContext} from './Context/InteractionContext';
+import { PlaygroundHelper } from "./PlaygroundHelper";
 
 export class InputManager{
     IsGrabbed:Boolean;
@@ -10,12 +11,12 @@ export class InputManager{
     DownEvent:LiteEvent<InteractionContext>;
     InteractionContext:InteractionContext;
 
-    constructor(viewContext:ViewContext){
+    constructor(viewContext:ViewContext, interactionContext:InteractionContext){
         this.IsGrabbed = false;
         this.ViewContext = viewContext;
         this.CurrentPoint = new Point(0,0);
         this.DownEvent = new LiteEvent<InteractionContext>();
-        this.InteractionContext = new InteractionContext();
+        this.InteractionContext = interactionContext;
     }
 
     OnMouseDown(event: PIXI.interaction.InteractionEvent){
@@ -50,25 +51,46 @@ export class InputManager{
         this.IsGrabbed = false;
     }
 
+    private _minScale:number=0.8;
+    private _maxScale:number=2;
+
     OnPinch(delta:number):void{
+
         if(delta < 1)
         {
             this.ViewContext.Zoom -= delta * 0.01;
+
+            if(this.ViewContext.Zoom < this._minScale ){
+                this.ViewContext.Zoom = this._minScale;
+            }
         }
         else
         {
             this.ViewContext.Zoom += delta * 0.01;
+            
+            if(this._maxScale < this.ViewContext.Zoom ){
+                this.ViewContext.Zoom = this._maxScale;
+            }
         }
+        PlaygroundHelper.Settings.Scale = this.ViewContext.Zoom;
     }
 
     OnMouseWheel(value:{deltaY:number}):void{
         if(0 < value.deltaY)//event.wheelDelta
         {
-            this.ViewContext.Zoom += 0.1;
+            this.ViewContext.Zoom -= 0.1;
+            if(this.ViewContext.Zoom < this._minScale ){
+                this.ViewContext.Zoom = this._minScale;
+            }
         }
         else
         {
-            this.ViewContext.Zoom -= 0.1;
+            this.ViewContext.Zoom += 0.1;
+            if(this._maxScale < this.ViewContext.Zoom ){
+                this.ViewContext.Zoom = this._maxScale;
+            }
+
         }
+        PlaygroundHelper.Settings.Scale = this.ViewContext.Zoom;
     }
 }

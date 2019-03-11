@@ -5,10 +5,10 @@ import { Ceil } from "../Ceil";
 import { HqArea } from "./AreaFinder/HqArea";
 import { HqRequest } from "./HqRequest";
 import { PlaygroundHelper } from "../PlaygroundHelper";
-import { Tank } from "../Tank";
+import { Tank } from "../Unit/Tank";
 import { Point } from "../Point";
-import { isNullOrUndefined } from "util";
-import { Truck } from "../Truck";
+import { isNullOrUndefined } from "util"; 
+import { Truck } from "../Unit/Truck"; 
 import { Diamond } from "../Field/Diamond";
 import { TruckPatrolOrder } from "./TruckPatrolOrder";
 import { HqFieldOrder } from "./HqFieldOrder";
@@ -27,8 +27,8 @@ export class SmartHq extends Headquarter{
         this._conquestedAreas= new Array<HqArea>();
     }
 
-    public Update(viewX: number, viewY: number, zoom: number):void{
-        super.Update(viewX,viewY,zoom);
+    public Update(viewX: number, viewY: number):void{
+        super.Update(viewX,viewY);
 
         let requests = new Array<[HqArea,HqRequest]>();
         
@@ -80,7 +80,6 @@ export class SmartHq extends Headquarter{
                 this.Diamonds -= 3;
                 truck = new Truck(this);
                 truck.SetPosition(field.GetCeil());
-                PlaygroundHelper.Render.Add(truck);
                 PlaygroundHelper.Playground.Items.push(truck);
                 return true;
             }

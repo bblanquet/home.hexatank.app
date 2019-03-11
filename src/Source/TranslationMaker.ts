@@ -47,7 +47,7 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 
         if(isNaN(itemBox.X)){
             throw `error speed ${this._item.TranslationSpeed}`;
-        }
+        } 
 
         if(TranslationMaker.IsCloseEnough(itemBox.GetCenter(), nextCeilBox.GetCenter()))
         {

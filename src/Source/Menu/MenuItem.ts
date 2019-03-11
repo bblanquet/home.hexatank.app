@@ -48,7 +48,7 @@ export abstract class MenuItem extends Item
         this.BoundingBox.Height = boundingbox.height;
     }
 
-    public Update(viewX: number, viewY: number, zoom: number): void {
+    public Update(viewX: number, viewY: number): void {
         this.GetSprites().forEach(sprite=>{
             sprite.x = this.GetBoundingBox().X;
             sprite.y = this.GetBoundingBox().Y;

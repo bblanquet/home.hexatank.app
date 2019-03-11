@@ -1,5 +1,5 @@
 import { Ceil } from "./Ceil";
-import { Vehicle } from "./Vehicle";
+import { Vehicle } from "./Unit/Vehicle";
 import { Point } from "./Point";
 
 export class CeilFinder{
@@ -11,7 +11,7 @@ export class CeilFinder{
         {
             var m = this.GetCost(ceil.GetBoundingBox().GetCentralPoint(),vehcile.GetBoundingBox().GetCentralPoint());
             if(m < min){
-                min = m;
+                min = m; 
                 selectedCeil = ceil;
             }
         });    

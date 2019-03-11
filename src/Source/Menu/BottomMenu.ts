@@ -11,13 +11,7 @@ export class BottomMenu extends Item
     private _border:PIXI.Graphics;
     private Hq:Headquarter;
     private _diamondSprite:PIXI.Sprite;
-    public GetBoundingBox(): BoundingBox {
-        throw new Error("Method not implemented.");
 
-    }
-    public Select(context: InteractionContext): boolean {
-        return false;
-    }
 
     constructor(headquarter:Headquarter){
         super();
@@ -32,7 +26,6 @@ export class BottomMenu extends Item
         this._border = new PIXI.Graphics();
         this._background = new PIXI.Graphics();
 
-
         this.SetPosition();
 
         PlaygroundHelper.Render.AddDisplayableEntity(this._border);
@@ -41,44 +34,43 @@ export class BottomMenu extends Item
         PlaygroundHelper.Render.AddDisplayableEntity(this._text);
     }
 
-    private _first:boolean=false;
+    public GetBoundingBox(): BoundingBox {
+        throw new Error("Method not implemented.");
 
-    private First():void{
-        this._first = true;
-
-        let size = 30;
-        let size2 = 32;
-
- 
+    }
+    public Select(context: InteractionContext): boolean {
+        return false;
     }
 
     private SetPosition() {
-        let size = 30;
-        let size2 = 32;
-        this._text.x = size2 + 10;
-        this._text.y = PlaygroundHelper.Settings.ScreenHeight - size;
+        const margin = 30/PlaygroundHelper.Settings.Scale;
+        const rectSize = 32/PlaygroundHelper.Settings.Scale;
+        this._text.x = rectSize + 10/PlaygroundHelper.Settings.Scale;
+        this._text.y = PlaygroundHelper.Settings.GetRelativeHeight() - margin;
 
         this._background.clear();
 
         this._background.beginFill(0x525252, 1);
-        this._background.drawRect(0, PlaygroundHelper.Settings.ScreenHeight - size, PlaygroundHelper.Settings.ScreenWidth, size);
+        this._background.drawRect(0
+            , PlaygroundHelper.Settings.GetRelativeHeight() - margin
+            , PlaygroundHelper.Settings.GetRelativeWidth() 
+            , margin);
         this._background.endFill();
 
         this._border.clear();
 
         this._border.beginFill(0xd480dc, 2);
-        this._border.drawRect(0, PlaygroundHelper.Settings.ScreenHeight - size2, PlaygroundHelper.Settings.ScreenWidth, size2);
+        this._border.drawRect(0
+            , PlaygroundHelper.Settings.GetRelativeHeight() - rectSize
+            , PlaygroundHelper.Settings.GetRelativeWidth() 
+            , rectSize);
         this._border.endFill();
 
-        //console.log(this._border.y);
 
-        this._diamondSprite.y = PlaygroundHelper.Settings.ScreenHeight-30;
+        this._diamondSprite.y = PlaygroundHelper.Settings.GetRelativeHeight()-margin;
     }
 
-    public Update(viewX: number, viewY: number, zoom: number): void {
-        if(!this.First){
-            this.First();
-        }
+    public Update(viewX: number, viewY: number): void {
         this.SetPosition();
         this._text.text = this.Hq.Diamonds.toString();
     }

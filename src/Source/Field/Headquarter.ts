@@ -3,14 +3,14 @@ import { InteractionContext } from "../Context/InteractionContext";
 import { Sprite } from "pixi.js";
 import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Ceil } from "../Ceil";
-import { HeadQuarterField } from "./HeadquarterField";
-import { Tank } from "../Tank";
+import { HeadQuarterField } from "./HeadquarterField"; 
+import { Tank } from "../Unit/Tank";
 import { HqSkin } from "../HqSkin";
-import { Truck } from "../Truck";
+import { Truck } from "../Unit/Truck";
 import { AliveItem } from "../AliveItem";
 import { IHqContainer } from "../IHqContainer";
-import { IField } from "./IField";
-import { Vehicle } from "../Vehicle";
+import { IField } from "./IField"; 
+import { Vehicle } from "../Unit/Vehicle";
 import { Crater } from "../Crater";
 import { ISelectable } from "../ISelectable";
 import { Timer } from "../Tools/Timer";
@@ -62,7 +62,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         {
             this.Fields.push(new HeadQuarterField(this,<Ceil>ceil,skin.GetCeil()));
         });
-        PlaygroundHelper.Render.Add(this);
+        this.InitPosition(ceil.GetBoundingBox());
     }
 
     public IsSelected():boolean{
@@ -81,6 +81,10 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         if(this.IsHqContainer(item as any))
         {
             return (<IHqContainer>(item as any)).Hq !== this;
+        }
+        else if(item instanceof Headquarter)
+        {
+            return (<Headquarter>(item as any)) !== this;
         }
         return false;
     }
@@ -112,7 +116,6 @@ export class Headquarter extends AliveItem implements IField, ISelectable
             {
                 var tank = new Tank(this);
                 tank.SetPosition(field.GetCeil());
-                PlaygroundHelper.Render.Add(tank);
                 PlaygroundHelper.Playground.Items.push(tank);
                 isCreated = true;
                 return false;
@@ -132,7 +135,6 @@ export class Headquarter extends AliveItem implements IField, ISelectable
             {
                 var truck = new Truck(this);
                 truck.SetPosition(field.GetCeil());
-                PlaygroundHelper.Render.Add(truck);
                 PlaygroundHelper.Playground.Items.push(truck);
                 isCreated = true;
                 return false;
@@ -165,7 +167,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         });
     }
 
-    public Update(viewX: number, viewY: number, zoom: number):void
+    public Update(viewX: number, viewY: number):void
     {
         if(!this.IsAlive())
         {
@@ -175,10 +177,10 @@ export class Headquarter extends AliveItem implements IField, ISelectable
             return;
         }
 
-        super.Update(viewX,viewY,zoom);
+        super.Update(viewX,viewY);
 
         this.Fields.forEach(field=>{
-            field.Update(viewX,viewY,zoom);
+            field.Update(viewX,viewY);
             this.Diamonds += field.Diamonds;
             field.Diamonds = 0;            
         });

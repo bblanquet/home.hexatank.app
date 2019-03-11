@@ -2,7 +2,7 @@ import { Item } from "../Item";
 import { IField } from "./IField";
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
-import { Vehicle } from "../Vehicle";
+import { Vehicle } from "../Unit/Vehicle";
 import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Ceil } from "../Ceil";
 
@@ -11,13 +11,13 @@ export class AttackField extends Item implements IField
     private _ceil:Ceil;
  
     constructor(ceil:Ceil){
-        super();
+        super(); 
         this._ceil=ceil;
         this._ceil.SetField(this);
         this.Z= 1;
 
         this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite('attackCeil'));        
-        PlaygroundHelper.Render.Add(this);
+        this.InitPosition(ceil.GetBoundingBox());
     }
 
     GetCeil(): Ceil {

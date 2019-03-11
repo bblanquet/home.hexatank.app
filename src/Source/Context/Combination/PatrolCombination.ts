@@ -1,6 +1,6 @@
 import { ICombination } from "./ICombination";
 import { Item } from "../../Item";
-import { Vehicle } from "../../Vehicle";
+import { Vehicle } from "../../Unit/Vehicle";
 import { PatrolMenuItem } from "../../Menu/PatrolMenuItem";
 import { Ceil } from "../../Ceil";
 import { PatrolOrder } from "../../Ia/PatrolOrder";
@@ -8,9 +8,9 @@ import { PatrolOrder } from "../../Ia/PatrolOrder";
 
 export class PatrolCombination implements ICombination{
     public IsMatching(items: Item[]): boolean 
-    {
+    { 
         return items.length >= 5
-        && items[0] instanceof Vehicle
+        && items[0] instanceof Vehicle 
         && items[1] instanceof PatrolMenuItem
         && this.IsLastPatrolItem(items); 
     }

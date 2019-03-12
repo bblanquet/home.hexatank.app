@@ -32,7 +32,7 @@ export class PlaygroundHelper{
 
     public static GetAreas(ceil:Ceil):Array<Area>
     {
-        return this._areaEngine.GetAreas(ceil).map(c=> new Area(c));
+        return this._areaEngine.GetAreas(PlaygroundHelper.CeilsContainer,ceil).map(c=> new Area(c));
     }
 
 

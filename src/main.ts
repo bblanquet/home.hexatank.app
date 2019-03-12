@@ -7,7 +7,7 @@ import * as Hammer from 'hammerjs';
 import { SpriteProvider } from './Source/Tools/SpriteProvider';
 
 const app = new PIXI.Application({
-    backgroundColor: 0x84cb68,
+    backgroundColor: 0x5EB251,
 });
 
 const path = "./Program6.json";

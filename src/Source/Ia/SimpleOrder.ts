@@ -6,7 +6,6 @@ import { PlaygroundHelper } from "../PlaygroundHelper";
 import { CeilFinder } from "../CeilFinder";
 import { Order } from "./Order";
 import { BasicItem } from "../BasicItem";
-import { Sprite } from "pixi.js";
 
 export class SimpleOrder extends Order{
     protected CurrentCeil:Ceil;
@@ -17,6 +16,9 @@ export class SimpleOrder extends Order{
     constructor(protected OriginalDest:Ceil,private _v:Vehicle)
     {
         super();
+        if(isNullOrUndefined(this.OriginalDest)){
+            throw "invalid destination";
+        }
         this.Dest = OriginalDest;
         this.Ceils = new Array<Ceil>();
         this.CeilFinder = new CeilFinder();
@@ -117,7 +119,7 @@ export class SimpleOrder extends Order{
         if(this.Dest.IsBlocked())
         {
             this.Dest = this.GetClosestCeil();
-            if(isNull(this.Dest))
+            if(isNullOrUndefined(this.Dest))
             {
                 return false;
             }
@@ -148,13 +150,11 @@ export class SimpleOrder extends Order{
             this.Ceils.forEach(ceil => {
                 var pathItem = new BasicItem(
                     ceil.GetBoundingBox(),
-                    PlaygroundHelper.SpriteProvider.GetSprite('pathCeil'));
-                
-                    pathItem.SetDisplayTrigger(this._v.IsSelected.bind(this._v));
-                    pathItem.SetVisible(this._v.IsAlive.bind(this._v));
-                    
+                    PlaygroundHelper.SpriteProvider.GetSprite('./direction/moving1.svg'));
+                pathItem.SetDisplayTrigger(this._v.IsSelected.bind(this._v));
+                pathItem.SetVisible(this._v.IsAlive.bind(this._v));
+                PlaygroundHelper.Playground.Items.push(pathItem);                    
                 this._path.push(pathItem);
-                PlaygroundHelper.Playground.Items.push(pathItem);
             });
         }
     }

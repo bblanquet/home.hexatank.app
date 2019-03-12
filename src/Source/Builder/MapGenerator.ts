@@ -19,8 +19,7 @@ import { LeftMenu } from "../Menu/LeftMenu";
 import { PatrolMenuItem } from "../Menu/PatrolMenuItem";
 import { CancelMenuItem } from "../Menu/CancelMenuItem";
 import { BottomMenu } from "../Menu/BottomMenu";
-import { Ceil } from "../Ceil";
-import { createInflate } from "zlib";
+import { FlowerMapBuilder } from "./FlowerMapBuilder";
 
 export class MapGenerator implements IMapGenerator{
     private _currentHq:Headquarter;
@@ -32,7 +31,7 @@ export class MapGenerator implements IMapGenerator{
     public SetMap():Array<Item>{
         const items = new Array<Item>();
         const mapLength = 12;
-        const mapBuilder = new HexagonalMapBuilder();
+        const mapBuilder = new FlowerMapBuilder();
         const ceils = mapBuilder.Build(mapLength);
         ceils.forEach(ceil => {
             PlaygroundHelper.CeilsContainer.Add(ceil);

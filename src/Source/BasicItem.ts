@@ -8,11 +8,12 @@ export class BasicItem extends Item{
 
     private _isVisible:{ (): boolean };
     private _isAlive:{ (): boolean };
-    constructor(private _boundingBox:BoundingBox, sprite:Sprite ){
+    constructor(private _boundingBox:BoundingBox, sprite:Sprite){
         super();
         this.Z = 0;
         sprite.alpha = 0;
         this.DisplayObjects.push(sprite);
+        this.InitPosition(this._boundingBox);
     }
 
     public SetDisplayTrigger(show:{ (): boolean }):void{

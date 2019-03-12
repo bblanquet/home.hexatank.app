@@ -1,72 +1,54 @@
 import {Item} from '../Item';
 import { IPatternChecker } from './IPatternChecker';
 import { PatternChecker } from './PatternChecker';
-import { CancelMenuItem } from '../Menu/CancelMenuItem';
-import { PlaygroundHelper } from '../PlaygroundHelper';
-import { ISelectable } from '../ISelectable';
+import { IInteractionContext } from './IInteractionContext';
+import { UnselectCombination } from './Combination/UnselectCombination';
+import { ClearTrashCombination } from './Combination/ClearTrashCombination';
+import { TruckCombination } from './Combination/TruckCombination';
+import { TankCombination } from './Combination/TankCombination';
+import { PatrolCombination } from './Combination/PatrolCombination';
+import { FastCeilCombination } from './Combination/FastCeilCombination';
+import { AttackCeilCombination } from './Combination/AttackCeilCombination';
+import { HealCeilCombination } from './Combination/HealCeilCombination';
+import { ICombination } from './Combination/ICombination';
+import { SelectionCombination } from './Combination/SelectionCombination';
+import { CancelCombination } from './Combination/CancelCombination';
 
-export class InteractionContext{
+export class InteractionContext implements IInteractionContext{
+
     Point:PIXI.Point;
     private _selectedItem:Array<Item>;
     private _checker:IPatternChecker;
-    private _isSelectable:{(item:Item):boolean};
 
     constructor(isSelectable:{(item:Item):boolean}){ 
         this._selectedItem = [];
-        this._isSelectable = isSelectable;
-        this._checker = new PatternChecker();
-    }
-
-    private IsSelectableItem(item: any):item is ISelectable{
-        return 'SetSelected' in item;
-    }
-    private ToSelectableItem(item: any):ISelectable{
-        if(this.IsSelectableItem(item)){
-            return <ISelectable> item;
-        }
-        return null;
+        let combinations = new Array<ICombination>();
+        combinations.push(new CancelCombination(isSelectable,this));
+        combinations.push(new ClearTrashCombination(isSelectable,this));
+        combinations.push(new UnselectCombination(isSelectable,this));
+        combinations.push(new SelectionCombination(isSelectable));
+        combinations.push(new TruckCombination());
+        combinations.push(new TankCombination());
+        combinations.push(new PatrolCombination());
+        combinations.push(new FastCeilCombination());
+        combinations.push(new AttackCeilCombination());
+        combinations.push(new HealCeilCombination());
+        
+        this._checker = new PatternChecker(combinations);
     }
 
     OnSelect(item:Item):void
     {
-        if(item instanceof CancelMenuItem)
-        {
-            this.Clear();
-            return;
-        }
-
-        if(this._isSelectable(item))
-        {
-            if(item === this._selectedItem[0])
-            {
-                this.Clear();
-                return;
-            }
-            else
-            {
-                const selectable = this.ToSelectableItem(item);
-                this.Clear();
-                selectable.SetSelected(true); 
-                PlaygroundHelper.OnSelectedItem.trigger(this,selectable);   
-            }
-        }
-
-        this._selectedItem.push(item);
-        
+        this._selectedItem.push(item);   
         console.log(`%c [${this._selectedItem.length}] selected: ${item.constructor.name}`,'font-weight:bold;color:red;');
-        
         this._checker.Check(this._selectedItem);
     }
 
+    Push(item: Item): void {
+        this.OnSelect(item);
+    }
 
-    private Clear() {
-        if (0 < this._selectedItem.length 
-            && this.IsSelectableItem(this._selectedItem[0])) 
-        {
-            var selectable = <ISelectable> <any> (this._selectedItem[0]);
-            selectable.SetSelected(false);
-            PlaygroundHelper.OnUnselectedItem.trigger(this,selectable); 
-        }
+    ClearContext(): void {
         this._selectedItem = [];
     }
 }

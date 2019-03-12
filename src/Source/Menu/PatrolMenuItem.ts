@@ -11,6 +11,7 @@ export class PatrolMenuItem extends MenuItem{
     public Select(context: InteractionContext): boolean 
     {
        context.OnSelect(this);
+       this.Swap();
        return true;
     }
 

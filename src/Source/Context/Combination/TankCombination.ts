@@ -16,7 +16,7 @@ export class TankCombination implements ICombination{
         && items[0] instanceof Tank 
         && items[1] instanceof Ceil
     }
-    Combine(items: Item[]): void 
+    Combine(items: Item[]): boolean 
     {
         if(this.IsMatching(items))
         {
@@ -35,7 +35,12 @@ export class TankCombination implements ICombination{
                 vehicle.SetOrder(order);
                 items.splice(1,1);
             }
+            return true;
         }
+        return false;
+    }
+
+    Clear(): void {
     }
     
 }

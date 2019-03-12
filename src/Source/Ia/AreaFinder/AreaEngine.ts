@@ -1,36 +1,36 @@
 import { Ceil } from "../../Ceil";
-import { PlaygroundHelper } from "../../PlaygroundHelper";
 import { HexAxial } from "../../Coordinates/HexAxial";
 import { isNullOrUndefined } from "util";
+import { CeilsContainer } from "../../CeilsContainer";
 
 export class AreaEngine
 {
-    public GetAreas(ceil:Ceil):Array<Ceil>
+    public GetAreas(ceils:CeilsContainer<Ceil>,ceil:Ceil):Array<Ceil>
     {
         var result = new Array<Ceil>();
-        this.GetAllAreas(ceil,result);
+        this.GetAllAreas(ceils,ceil,result);
         return result;
     }
 
-    private GetAllAreas(currentCeil:Ceil,areas:Array<Ceil>):void
+    private GetAllAreas(ceils:CeilsContainer<Ceil>, currentCeil:Ceil,areas:Array<Ceil>):void
     {
         if(areas.filter(a=>a === currentCeil).length === 0)
         {
             areas.push(currentCeil);
-            var neighs = this.GetNeighbourhoodAreas(currentCeil);
+            var neighs = this.GetNeighbourhoodAreas(ceils, currentCeil);
             neighs.forEach(neigh => {
-                this.GetAllAreas(neigh,areas);
+                this.GetAllAreas(ceils,neigh,areas);
             }); 
         }
     }
 
-    private GetNeighbourhoodAreas(ceil:Ceil):Array<Ceil>{
+    private GetNeighbourhoodAreas(ceils:CeilsContainer<Ceil>, ceil:Ceil):Array<Ceil>{
         var coo = ceil.GetCoordinate();
         var result = new Array<Ceil>();
-        var shifts = [{Q:-3,R:0},{Q:0,R:-3},{Q:3,R:-3},{Q:3,R:0},{Q:0,R:3},{Q:3,R:-3}];
+        var shifts = [{Q:-1,R:-2},{Q:2,R:-3},{Q:3,R:-1},{Q:1,R:2},{Q:-2,R:3},{Q:-3,R:1}];
         
         shifts.forEach(shift => {
-            let ngCeil = PlaygroundHelper.CeilsContainer.
+            let ngCeil = ceils.
             Get(new HexAxial(coo.Q + shift.Q,coo.R+shift.R));
             if(!isNullOrUndefined(ngCeil))
             {

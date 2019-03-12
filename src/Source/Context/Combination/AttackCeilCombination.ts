@@ -9,17 +9,13 @@ import { Headquarter } from "../../Field/Headquarter";
 
 export class AttackCeilCombination implements ICombination{
 
-    constructor(){
-        
-    }
-
     IsMatching(items: Item[]): boolean {
         return items.length >=3 
         && items[0] instanceof Headquarter
         && items[1] instanceof AttackMenuItem 
         && items[2] instanceof Ceil;
     }
-    Combine(items: Item[]): void {
+    Combine(items: Item[]): boolean {
         if(this.IsMatching(items))
         {
             let ceil = <Ceil> items[2];
@@ -29,7 +25,12 @@ export class AttackCeilCombination implements ICombination{
                 PlaygroundHelper.Playground.Items.push(field);
             }
             items.splice(1,2);
+            return true;
         }
+        return false;
+    }
+
+    Clear(): void {
     }
     
 }

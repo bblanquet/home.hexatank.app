@@ -9,9 +9,6 @@ import { Headquarter } from "../../Field/Headquarter";
 
 export class FastCeilCombination implements ICombination{
 
-    constructor(){
-        
-    }
 
     IsMatching(items: Item[]): boolean {
         return items.length >=3 
@@ -20,7 +17,7 @@ export class FastCeilCombination implements ICombination{
         && items[2] instanceof Ceil;
     }
 
-    Combine(items: Item[]): void {
+    Combine(items: Item[]): boolean {
         if(this.IsMatching(items))
         {
             let ceil = <Ceil> items[2];
@@ -30,7 +27,11 @@ export class FastCeilCombination implements ICombination{
                 PlaygroundHelper.Playground.Items.push(field);
             }
             items.splice(1,2);
+            return true;
         }
+        return false;
+    }
+    public Clear(): void {
     }
     
 }

@@ -14,6 +14,25 @@ export class CeilsContainer<T extends ICeil> {
     }
 
     Get(coordinate:HexAxial):T{
-        return this.Ceils[coordinate.ToString()];
+        if(coordinate.ToString() in this.Ceils)
+        {
+            return this.Ceils[coordinate.ToString()];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public GetNeighbourhood(coordinate:HexAxial):Array<ICeil>{
+        var ceils = new Array<ICeil>();
+        coordinate.GetNeighbours().forEach(coordinate => {
+            var ceil = this.Get(coordinate);
+            if(ceil != null)
+            {
+                ceils.push(ceil);
+            }
+        });
+        return ceils;
     }
 }

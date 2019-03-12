@@ -14,8 +14,7 @@ export class Crater extends Item{
 
         let sprite = PlaygroundHelper.SpriteProvider.GetSprite('crater');
         this.DisplayObjects.push(sprite);
-
-        PlaygroundHelper.Render.Add(this);
+        this.InitPosition(boundingbox);
     }
 
     public GetBoundingBox(): BoundingBox {

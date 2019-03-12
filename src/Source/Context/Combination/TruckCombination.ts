@@ -11,14 +11,17 @@ export class TruckCombination implements ICombination
         return items.length >=2 && items[0] instanceof Truck && items[1] instanceof Ceil
     } 
  
-    Combine(items: Item[]): void {
+    Combine(items: Item[]): boolean {
         if(this.IsMatching(items))
         {
             var vehicle = <Vehicle>items[0];
             var order = new SimpleOrder(<Ceil>items[1],vehicle);
             vehicle.SetOrder(order);
             items.splice(1,1);
+            return true;
         }
+        return false;
     }
-    
+    Clear(): void {
+    }
 }

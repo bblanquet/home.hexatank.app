@@ -8,15 +8,14 @@ export abstract class MenuItem extends Item
 {
     BoundingBox:BoundingBox;
     IsSelected:boolean;
-
+    
     constructor(unselected:string,selected:string){
         super();
         this.Z = 4; 
         this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite(unselected));
         this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite(selected));
         this.IsSelected = false;
-        this.DisplayObjects[0].alpha = 1;
-        this.DisplayObjects[1].alpha = 0; 
+        this.SetDefault();
         PlaygroundHelper.Render.Add(this);
     }
 
@@ -27,12 +26,15 @@ export abstract class MenuItem extends Item
     }
 
     public Show(){
-        this.DisplayObjects.forEach(item=>
-            {item.alpha =1;}
-            );
+        this.DisplayObjects[0].alpha = 1;
     }
 
-    protected Change():void
+    protected SetDefault():void{
+        this.DisplayObjects[0].alpha = 1;
+        this.DisplayObjects[1].alpha = 0; 
+    }
+
+    protected Swap():void
     {
         [this.DisplayObjects[0].alpha, this.DisplayObjects[1].alpha] = [this.DisplayObjects[1].alpha, this.DisplayObjects[0].alpha];
     }

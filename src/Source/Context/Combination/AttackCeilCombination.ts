@@ -6,6 +6,7 @@ import { PlaygroundHelper } from "../../PlaygroundHelper";
 import { AttackMenuItem } from "../../Menu/AttackMenuItem";
 import { AttackField } from "../../Field/AttackField";
 import { Headquarter } from "../../Field/Headquarter";
+import { BasicField } from "../../Field/BasicField";
 
 export class AttackCeilCombination implements ICombination{
 
@@ -21,8 +22,11 @@ export class AttackCeilCombination implements ICombination{
             let ceil = <Ceil> items[2];
             if(!isNullOrUndefined(ceil))
             {
-                let field = new AttackField(ceil);
-                PlaygroundHelper.Playground.Items.push(field);
+                if(ceil.GetField() instanceof BasicField)
+                {
+                    let field = new AttackField(ceil);
+                    PlaygroundHelper.Playground.Items.push(field);
+                }
             }
             items.splice(1,2);
             return true;

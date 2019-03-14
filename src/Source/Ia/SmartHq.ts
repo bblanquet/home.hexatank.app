@@ -59,7 +59,7 @@ export class SmartHq extends Headquarter{
             var area = this.FindArea();
             if(!isNullOrUndefined(area))
             {
-                area.GetCentralCeil().AddSprite(this.GetSkin().GetColor());
+                //area.GetCentralCeil().AddSprite(this.GetSkin().GetColor());
                 this._conquestedAreas.push(new HqArea(area));
             }
         }

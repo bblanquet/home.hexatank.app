@@ -19,6 +19,19 @@ export class PatrolOrder extends Order{
         this.CreatePath();
     }
 
+    public Cancel(): void {
+        super.Cancel();
+        this._patrols.forEach(patrol=>{
+            patrol.Destroy();
+        });
+        this._patrols = [];
+        
+        if(!isNullOrUndefined(this._simpleOrder))
+        {
+            this._simpleOrder.Cancel();
+        }
+    }
+
     private CreatePath():void
     {
         if(!isNullOrUndefined(this._patrolCeils) && 0 < this._patrolCeils.length){

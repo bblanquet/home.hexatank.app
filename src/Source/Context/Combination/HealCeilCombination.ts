@@ -6,6 +6,7 @@ import { isNullOrUndefined } from "util";
 import { HealField } from "../../Field/HealField";
 import { PlaygroundHelper } from "../../PlaygroundHelper";
 import { Headquarter } from "../../Field/Headquarter";
+import { BasicField } from "../../Field/BasicField";
 
 export class HealCeilCombination implements ICombination
 {
@@ -23,8 +24,11 @@ export class HealCeilCombination implements ICombination
             let ceil = <Ceil> items[2];
             if(!isNullOrUndefined(ceil))
             {
-                let field = new HealField(ceil);
-                PlaygroundHelper.Playground.Items.push(field);
+                if(ceil.GetField() instanceof BasicField)
+                {
+                    let field = new HealField(ceil);
+                    PlaygroundHelper.Playground.Items.push(field);
+                }
             }
             items.splice(1,2);
             return true;

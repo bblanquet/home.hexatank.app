@@ -25,6 +25,14 @@ export class SimpleOrder extends Order{
         this._path = [];
     }
 
+    public Cancel(): void {
+        super.Cancel();
+        this._path.forEach(patrol=>{
+            patrol.Destroy();
+        });
+        this._path = [];
+    }
+
     public GetDestination():Ceil{
         return this.Dest;
     }

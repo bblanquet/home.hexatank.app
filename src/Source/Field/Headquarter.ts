@@ -23,8 +23,8 @@ export class Headquarter extends AliveItem implements IField, ISelectable
     Diamonds:number=40;
     private _skin:HqSkin;
     IsFading:boolean;
-    private _timer:Timer;
     private _selectionSprite:Sprite;
+    private _hqMiddle:PIXI.Sprite;
 
     constructor(skin:HqSkin, ceil:Ceil){
         super();
@@ -32,7 +32,6 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         this.Z= 2;
         this._ceil = ceil;
         this._ceil.SetField(this);
-        this._timer = new Timer(3);
 
         this._selectionSprite = PlaygroundHelper.SpriteProvider.GetSprite('selection');
         this.DisplayObjects.push(this._selectionSprite);
@@ -44,9 +43,11 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         this.BoundingBox.X = this._ceil.GetBoundingBox().X;
         this.BoundingBox.Y = this._ceil.GetBoundingBox().Y;
 
-        this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite("hqLight"));
-        this.DisplayObjects.push(skin.GetColor());
-        this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite("hq"));
+        this._hqMiddle = PlaygroundHelper.SpriteProvider.GetSprite("./building/hqMiddle.svg");
+
+        this.DisplayObjects.push(this.GetSkin().GetHq());
+        this.DisplayObjects.push(this._hqMiddle);
+        this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite('./building/hqTop.svg'));
 
         this.GetSprites().forEach(obj => {
             obj.width = this.BoundingBox.Width,
@@ -168,6 +169,8 @@ export class Headquarter extends AliveItem implements IField, ISelectable
 
     public Update(viewX: number, viewY: number):void
     {
+        this._hqMiddle.rotation += 0.1;
+
         if(!this.IsAlive())
         {
             this.Destroy();
@@ -183,29 +186,5 @@ export class Headquarter extends AliveItem implements IField, ISelectable
             this.Diamonds += field.Diamonds;
             field.Diamonds = 0;            
         });
-
-
-        if(this._timer.IsElapsed())
-        { 
-            if(this.DisplayObjects[3].alpha < 0.25)
-            {
-                this.IsFading = false;
-            }
-
-            if(1 < this.DisplayObjects[3].alpha)
-            {
-                this.IsFading = true;
-            }
-
-            if(this.IsFading)
-            {
-                this.DisplayObjects[3].alpha -= 0.05;
-            }
-
-            if(!this.IsFading)
-            {
-                this.DisplayObjects[3].alpha += 0.05;
-            }
-        }
     }
 }

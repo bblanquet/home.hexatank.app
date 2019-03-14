@@ -1,7 +1,6 @@
 import { IMapGenerator } from "./IMapGenerator";
 import { Diamond } from "../Field/Diamond";
 import { Item } from "../Item";
-import { HexagonalMapBuilder } from "./HexagonalMapBuilder";
 import { CeilDecorator } from "../CeilDecorator";
 import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Headquarter } from "../Field/Headquarter";
@@ -56,15 +55,15 @@ export class MapGenerator implements IMapGenerator{
         const diamond = new Diamond(PlaygroundHelper.CeilsContainer.Get(mapBuilder.GetMidle(mapLength)));
         items.push(diamond);
         const redQuarter = new Headquarter(
-            new HqSkin("./tank/bottomTank.svg", "./tank/redTurrel.svg", "./truck/truck.svg", "redHqLight", "redCeil"), 
+            new HqSkin("./tank/bottomTank.svg", "./tank/redTurrel.svg", "./truck/truck.svg", './building/redHqBottom.svg', "redCeil"), 
             PlaygroundHelper.CeilsContainer.Get(corners[3]));
         this._currentHq = redQuarter;
         const blueQuarter = new SmartHq(PlaygroundHelper.GetAreas(PlaygroundHelper.CeilsContainer.Get(corners[1]))
-        , new HqSkin("./tank/blueBottomTank.svg", "./tank/blueTurrel.svg", "./truck/blueTruck.svg", "blueHqLight", "selectedCeil"), 
+        , new HqSkin("./tank/blueBottomTank.svg", "./tank/blueTurrel.svg", "./truck/blueTruck.svg", './building/blueHqBottom.svg', "selectedCeil"), 
         PlaygroundHelper.CeilsContainer.Get(corners[1]));
         blueQuarter.Diamond = diamond;
         const brownQuarter = new SmartHq(PlaygroundHelper.GetAreas(PlaygroundHelper.CeilsContainer.Get(corners[2]))
-        , new HqSkin("./tank/yellowBottomTank.svg", "./tank/yellowTurrel.svg", "./truck/yellowTruck.svg", "brownHqLight", "brownCeil")
+        , new HqSkin("./tank/yellowBottomTank.svg", "./tank/yellowTurrel.svg", "./truck/yellowTruck.svg", './building/yellowHqBottom.svg', "brownCeil")
         , PlaygroundHelper.CeilsContainer.Get(corners[2]));
 
         brownQuarter.Diamond = diamond;
@@ -73,7 +72,6 @@ export class MapGenerator implements IMapGenerator{
         items.push(brownQuarter);
         
 
-        
         this.SetMenus(redQuarter, items);
         ceils.forEach(ceil=>{
             CeilDecorator.Decorate(items, ceil);
@@ -98,8 +96,8 @@ export class MapGenerator implements IMapGenerator{
         new EmptyMenuItem('rightBottomBorder', 'rightBottomBorder')]);
         items.splice(0, 0, rightMenu);
         const leftMenu = new LeftMenu([new EmptyMenuItem('leftTopBorder', 'leftTopBorder'),
-        new EmptyMenuItem('attackIcon', 'hoverAttackIcon'),
-        new EmptyMenuItem('defenseIcon', 'hoverDefenseIcon'),
+        //new EmptyMenuItem('attackIcon', 'hoverAttackIcon'),
+        //new EmptyMenuItem('defenseIcon', 'hoverDefenseIcon'),
         new PatrolMenuItem(),
         new CancelMenuItem(),
         new EmptyMenuItem('leftBottomBorder', 'leftBottomBorder')]);

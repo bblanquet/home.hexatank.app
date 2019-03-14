@@ -6,9 +6,9 @@ import { Ceil } from "../../Ceil";
 import { FastField } from "../../Field/FastField";
 import { PlaygroundHelper } from "../../PlaygroundHelper";
 import { Headquarter } from "../../Field/Headquarter";
+import { BasicField } from "../../Field/BasicField";
 
 export class FastCeilCombination implements ICombination{
-
 
     IsMatching(items: Item[]): boolean {
         return items.length >=3 
@@ -23,8 +23,11 @@ export class FastCeilCombination implements ICombination{
             let ceil = <Ceil> items[2];
             if(!isNullOrUndefined(ceil))
             {
-                let field = new FastField(ceil);
-                PlaygroundHelper.Playground.Items.push(field);
+                if(ceil.GetField() instanceof BasicField)
+                {
+                    let field = new FastField(ceil);
+                    PlaygroundHelper.Playground.Items.push(field);
+                }
             }
             items.splice(1,2);
             return true;

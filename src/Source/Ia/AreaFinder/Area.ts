@@ -1,6 +1,5 @@
 import { Ceil } from "../../Ceil";
 import { isNullOrUndefined, isNull } from "util";
-import { CeilState } from "../../CeilState";
 
 export class Area{
 

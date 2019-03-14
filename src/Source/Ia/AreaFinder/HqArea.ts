@@ -55,10 +55,3 @@ export class HqArea
         }
     }
 }
-
-// this._troops.forEach(troop=>{
-        //     if(!troop[1].IsExecutingOrder() && troop[1].GetCurrentCeil() !== troop[0])
-        //     {
-        //         troop[1].SetOrder(new SimpleOrder(troop[0],troop[1]));
-        //     }
-        // })

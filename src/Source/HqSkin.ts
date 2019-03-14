@@ -17,7 +17,7 @@ export class HqSkin{
         return PlaygroundHelper.SpriteProvider.GetSprite(this._truck);
     }
 
-    public GetColor():PIXI.Sprite{
+    public GetHq():PIXI.Sprite{
         return PlaygroundHelper.SpriteProvider.GetSprite(this._color);
     }
 

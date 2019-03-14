@@ -78,6 +78,10 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         {
             this._nextCeil.SetOccupier(null);
         }
+        if(!isNullOrUndefined(this._order)){
+            this._order.Cancel();
+        }
+
         this._order = order;
     }
 

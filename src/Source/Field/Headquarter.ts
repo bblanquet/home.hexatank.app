@@ -51,8 +51,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         this.GetSprites().forEach(obj => {
             obj.width = this.BoundingBox.Width,
             obj.height = this.BoundingBox.Height
-            obj.pivot.set(PlaygroundHelper.Settings.Pivot
-                ,PlaygroundHelper.Settings.Pivot);
+            obj.anchor.set(0.5);
         });
         this.IsCentralRef = true;
 
@@ -150,11 +149,11 @@ export class Headquarter extends AliveItem implements IField, ISelectable
     }   
 
     public Select(context: InteractionContext): boolean {
-        if(this.GetSprites()[0].containsPoint(context.Point))
-        {
-            context.OnSelect(this);
-            return true;
-        }
+        // if(this.GetSprites()[0].containsPoint(context.Point))
+        // {
+        //     context.OnSelect(this);
+        //     return true;
+        // }
         return false;
         }
 

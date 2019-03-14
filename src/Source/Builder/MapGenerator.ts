@@ -20,6 +20,8 @@ import { PatrolMenuItem } from "../Menu/PatrolMenuItem";
 import { CancelMenuItem } from "../Menu/CancelMenuItem";
 import { BottomMenu } from "../Menu/BottomMenu";
 import { FlowerMapBuilder } from "./FlowerMapBuilder";
+import { BasicItem } from "../BasicItem";
+import { BoundingBox } from "../BoundingBox";
 
 export class MapGenerator implements IMapGenerator{
     private _currentHq:Headquarter;
@@ -38,25 +40,39 @@ export class MapGenerator implements IMapGenerator{
             items.push(ceil);
         });
         const corners = mapBuilder.GetCorners(mapLength);
-
+        corners.push(mapBuilder.GetMidle(mapLength));
+        corners.forEach(corner=>{
+            const ceil = PlaygroundHelper.CeilsContainer.Get(corner);
+            const b = new BoundingBox();
+            b.Width = PlaygroundHelper.Settings.Size * 6;
+            b.Height = PlaygroundHelper.Settings.Size * 6;
+            b.X = ceil.GetBoundingBox().X - (b.Width/2 - ceil.GetBoundingBox().Width/2);
+            b.Y = ceil.GetBoundingBox().Y - (b.Height/2 - ceil.GetBoundingBox().Height/2);
+            const grass = new BasicItem(b,PlaygroundHelper.SpriteProvider.GetSprite('./nature/grass.svg'));
+            grass.SetDisplayTrigger(()=>true);
+            grass.SetVisible(()=>true);
+            items.push(grass);
+        });
         const diamond = new Diamond(PlaygroundHelper.CeilsContainer.Get(mapBuilder.GetMidle(mapLength)));
         items.push(diamond);
         const redQuarter = new Headquarter(
-            new HqSkin("./tank/bottomTank.svg", "./tank/topTank.svg", "redTruck", "redHqLight", "redCeil"), 
-            PlaygroundHelper.CeilsContainer.Get(corners[0]));
+            new HqSkin("./tank/bottomTank.svg", "./tank/redTurrel.svg", "./truck/truck.svg", "redHqLight", "redCeil"), 
+            PlaygroundHelper.CeilsContainer.Get(corners[3]));
         this._currentHq = redQuarter;
         const blueQuarter = new SmartHq(PlaygroundHelper.GetAreas(PlaygroundHelper.CeilsContainer.Get(corners[1]))
-        , new HqSkin("blueBottomTank", "blueTopTank", "blueTruck", "blueHqLight", "selectedCeil"), 
+        , new HqSkin("./tank/blueBottomTank.svg", "./tank/blueTurrel.svg", "./truck/blueTruck.svg", "blueHqLight", "selectedCeil"), 
         PlaygroundHelper.CeilsContainer.Get(corners[1]));
         blueQuarter.Diamond = diamond;
         const brownQuarter = new SmartHq(PlaygroundHelper.GetAreas(PlaygroundHelper.CeilsContainer.Get(corners[2]))
-        , new HqSkin("brownBottomTank", "brownTopTank", "brownTruck", "brownHqLight", "brownCeil")
+        , new HqSkin("./tank/yellowBottomTank.svg", "./tank/yellowTurrel.svg", "./truck/yellowTruck.svg", "brownHqLight", "brownCeil")
         , PlaygroundHelper.CeilsContainer.Get(corners[2]));
 
         brownQuarter.Diamond = diamond;
         items.push(redQuarter);
         items.push(blueQuarter);
         items.push(brownQuarter);
+        
+
         
         this.SetMenus(redQuarter, items);
         ceils.forEach(ceil=>{

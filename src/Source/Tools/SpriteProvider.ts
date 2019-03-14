@@ -6,8 +6,8 @@ export class SpriteProvider implements ISpriteProvider{
         this._textureDictionary = texture;
     }
     
-    public GetSprite(name: string): PIXI.Sprite {
-        if(this.ExistSvg(name))
+    public GetSprite(name: any): PIXI.Sprite {
+        if(this.IsOldStyleSvg(name))
         {
             var texture = PIXI.Texture.fromImage(name,undefined,undefined,2);
             return new PIXI.Sprite(texture);
@@ -18,7 +18,7 @@ export class SpriteProvider implements ISpriteProvider{
         }
     }
 
-    private ExistSvg(name: string):boolean {
+    private IsOldStyleSvg(name: string):boolean {
         return name.includes('.svg');
     }
 }

@@ -254,11 +254,11 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
     public Select(context:InteractionContext):boolean
     {
-        if(this.GetSprites()[0].containsPoint(context.Point))
-        {
-            context.OnSelect(this);
-            return true;
-        }
+        // if(this.GetSprites()[0].containsPoint(context.Point))
+        // {
+        //     context.OnSelect(this);
+        //     return true;
+        // }
         return false;
     }
 

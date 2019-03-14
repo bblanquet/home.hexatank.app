@@ -24,7 +24,7 @@ export class UnselectCombination implements ICombination{
                 if(lastItem === items[0])
                 {
                     this.UnSelectItem(items[0]);
-                    return;
+                    this._interactionContext.ClearContext();
                 }
                 else
                 {

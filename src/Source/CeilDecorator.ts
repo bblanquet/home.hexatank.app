@@ -26,10 +26,10 @@ export class CeilDecorator{
             {
                 if(ceil.GetField() instanceof BasicField)
                 {
-                    var deco = 'rock';
+                    var deco = './nature/rock.svg';
                     if(decorationRandom <= 0.625)
                     {
-                        deco = 'tree';
+                        deco = './nature/tree.svg';
                     }
     
                     items.push(new RockField(ceil,deco)); 

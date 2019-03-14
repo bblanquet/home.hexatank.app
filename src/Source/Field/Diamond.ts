@@ -25,7 +25,7 @@ export class Diamond extends AliveItem implements IField{
         this._ceil = ceil;
         this._ceil.SetField(this);
         this.BoundingBox = this._ceil.GetBoundingBox();
-        var sprite = PlaygroundHelper.SpriteProvider.GetSprite("diamond.png");
+        var sprite = PlaygroundHelper.SpriteProvider.GetSprite("./nature/diamond.svg");
         this.DisplayObjects.push(sprite);
         this._timer = new Timer(4);
 

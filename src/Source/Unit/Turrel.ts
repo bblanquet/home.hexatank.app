@@ -47,7 +47,7 @@ export class Turrel extends Item implements IRotatable
         this._coolingDownTimer = new Timer(100);
         this._animationTimer = new Timer(5);
 
-        let fires = ['fire0.png','fire1.png','fire2.png','fire3.png','fire4.png'];
+        let fires = ['./tank/cannon.svg','./tank/cannon1.svg','./tank/cannon2.svg','./tank/cannon3.svg','./tank/cannon4.svg'];
         
         this._canon = new Array<Sprite>();
         fires.forEach(fire =>{

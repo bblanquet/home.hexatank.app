@@ -7,7 +7,6 @@ import { PatrolOrder } from "../../Ia/PatrolOrder";
 import { BasicItem } from "../../BasicItem";
 import { PlaygroundHelper } from "../../PlaygroundHelper";
 
-
 export class PatrolCombination implements ICombination{
     private _indicators:Array<BasicItem>;
 

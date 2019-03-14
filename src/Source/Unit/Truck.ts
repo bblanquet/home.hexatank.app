@@ -17,10 +17,15 @@ export class Truck extends Vehicle implements IHqContainer{
     {
         super();
         this.Hq = hq;
-        let wheels = ['tankWheel1','tankWheel2','tankWheel3',
-                    'tankWheel4','tankWheel5','tankWheel6',
-                    'tankWheel7'
+        const wheels = ['./tank/wheel1.svg','./tank/wheel2.svg','./tank/wheel3.svg',
+                    './tank/wheel4.svg','./tank/wheel5.svg','./tank/wheel6.svg',
+                    './tank/wheel7.svg','./tank/wheel8.svg'
                     ];
+
+        const wheelBottom = PlaygroundHelper.SpriteProvider.GetSprite('./tank/wheel.svg');
+        this.DisplayObjects.push(wheelBottom);
+        this.RootSprites.push(wheelBottom);
+        
         this._dimaondTimer = new Timer(30);
         wheels.forEach(wheel =>{
         let sprite = PlaygroundHelper.SpriteProvider.GetSprite(wheel);
@@ -29,9 +34,9 @@ export class Truck extends Vehicle implements IHqContainer{
         this.RootSprites.push(sprite);
         });
 
-        let diamonds = ['gatheredDiamond1.png','gatheredDiamond2.png',
-    'gatheredDiamond3.png','gatheredDiamond4.png','gatheredDiamond5.png',
-'gatheredDiamond6.png']
+        let diamonds = ['./truck/diamonds/diamonds1.svg','./truck/diamonds/diamonds2.svg',
+    './truck/diamonds/diamonds3.svg','./truck/diamonds/diamonds4.svg','./truck/diamonds/diamonds5.svg',
+'./truck/diamonds/diamonds6.svg']
 
         var sprite = this.Hq.GetSkin().GetTruck();
         this.DisplayObjects.push(sprite);
@@ -50,8 +55,7 @@ export class Truck extends Vehicle implements IHqContainer{
         this.GetSprites().forEach(sprite => {
         sprite.width = this.BoundingBox.Width,
         sprite.height = this.BoundingBox.Height
-        sprite.pivot.set(PlaygroundHelper.Settings.Pivot
-            ,PlaygroundHelper.Settings.Pivot);//beurk
+        sprite.anchor.set(0.5);
         });
         this.IsCentralRef = true;
     }

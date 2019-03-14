@@ -1,3 +1,3 @@
 export interface ISpriteProvider{
-    GetSprite(name:string):PIXI.Sprite;
+    GetSprite(name:any):PIXI.Sprite;
 }

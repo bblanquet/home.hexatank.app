@@ -23,6 +23,7 @@
     "mocha": "^5.2.0",
     "pixi.js": "^4.8.2",
     "script-loader": "^0.7.1",
+    "svg-inline-loader": "^0.8.0",
     "ts-loader": "^2.3.2",
     "ts-node": "^7.0.1",
     "typescript": "^2.4",

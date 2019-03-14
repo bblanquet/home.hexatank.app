@@ -14,6 +14,12 @@ export class BasicItem extends Item{
         sprite.alpha = 0;
         this.DisplayObjects.push(sprite);
         this.InitPosition(this._boundingBox);
+        sprite.anchor.set(0.50);
+        this.IsCentralRef = true;
+    }
+
+    public SetRotation(radius:number):void{
+        this.DisplayObjects[0].rotation = radius;
     }
 
     public SetDisplayTrigger(show:{ (): boolean }):void{

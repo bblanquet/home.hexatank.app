@@ -97,12 +97,12 @@ export class Tank extends Vehicle implements IHqContainer
 
         let enemies = ceils.map(c=> (<Ceil>c)
             .GetShootableEntity())
-            .filter(c=> !isNull(c))
+            .filter(c=> !isNullOrUndefined(c))
 
         //find hq among enemies
         var hq = enemies.filter(c => c instanceof Headquarter).map(c => <Headquarter> c);
         if(hq.length >= 1){
-            hq.some(element => {
+            return hq.some(element => {
                 if(element.IsEnemy(this)){
                     return true;
                 }
@@ -115,6 +115,7 @@ export class Tank extends Vehicle implements IHqContainer
     private FindTargets() {
         if(this.IsMainTargetClose()){
             this._currentTarget = this._mainTarget;
+            return;
         }
 
         //find hq among enemies

@@ -5,24 +5,24 @@ export class HqSkin{
 
     }
 
-    public GetTopTankSprite():PIXI.Sprite{
-        return PlaygroundHelper.SpriteProvider.GetSprite(this._tankTop);
+    public GetTopTankSprite():string{
+        return this._tankTop;
     }
 
-    public GetBottomTankSprite():PIXI.Sprite{
-        return PlaygroundHelper.SpriteProvider.GetSprite(this._tankBottom);
+    public GetBottomTankSprite():string{
+        return this._tankBottom;
     }
 
-    public GetTruck():PIXI.Sprite{
-        return PlaygroundHelper.SpriteProvider.GetSprite(this._truck);
+    public GetTruck():string{
+        return this._truck;
     }
 
-    public GetHq():PIXI.Sprite{
-        return PlaygroundHelper.SpriteProvider.GetSprite(this._color);
+    public GetHq():string{
+        return this._color;
     }
 
-    public GetCeil():PIXI.Sprite{
-        return PlaygroundHelper.SpriteProvider.GetSprite(this._ceil);
+    public GetCeil():string{
+        return this._ceil;
     }
 
 }

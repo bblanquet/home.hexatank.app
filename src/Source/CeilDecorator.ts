@@ -2,7 +2,6 @@ import { Item } from "./Item";
 import { RockField } from "./Field/RockField";
 import { Ceil } from "./Ceil";
 import { PlaygroundHelper } from "./PlaygroundHelper";
-import { isNullOrUndefined } from "util";
 import { BasicField } from "./Field/BasicField";
 
 export class CeilDecorator{
@@ -16,11 +15,11 @@ export class CeilDecorator{
     
             if(decorationRandom <= 0.25)
             {
-                ceil.SetDecoration(PlaygroundHelper.SpriteProvider.GetSprite("stone.png"));
+                ceil.SetDecoration('stone.png');
             }
             else if(decorationRandom <= 0.5)
             {
-                ceil.SetDecoration(PlaygroundHelper.SpriteProvider.GetSprite("flower.png"));
+                ceil.SetDecoration('flower.png');
             }
             else if(decorationRandom <= 0.75)
             {
@@ -37,7 +36,7 @@ export class CeilDecorator{
             }
             else
             {
-                ceil.SetDecoration(PlaygroundHelper.SpriteProvider.GetSprite("water.png"));
+                ceil.SetDecoration('water.png');
             }
 
         }

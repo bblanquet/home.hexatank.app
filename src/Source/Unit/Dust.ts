@@ -3,12 +3,13 @@ import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
 import { PlaygroundHelper } from "../PlaygroundHelper";
 
-export class Dust extends Item
+export class Dust extends Item 
 {
     BoundingBox:BoundingBox;
     private i:number;
     private currentDust:number; 
     private currentAlpha:number;
+    private _sprites:string[]=['dust1.png','dust2.png','dust3.png','dust4.png'];
 
     constructor(boundingBox:BoundingBox)
     {
@@ -20,13 +21,13 @@ export class Dust extends Item
         this.Z= 1;
 
         this.BoundingBox = boundingBox; 
-        let dusts = ['dust1.png','dust2.png','dust3.png','dust4.png'];
-        dusts.forEach(dust=>{
-            let sprite = PlaygroundHelper.SpriteProvider.GetSprite(dust);
-            sprite.alpha = 0;
-            sprite.pivot.set(sprite.x + sprite.width/2,sprite.y + sprite.height/2);
-            this.DisplayObjects.push(sprite);
+        this._sprites.forEach(dust=>{
+            this.GenerateSprite(dust);
         });
+        this.GetSprites().forEach(sp=>{
+            sp.alpha = 0;
+            sp.anchor.set(0.5);
+        })
         this.IsCentralRef = true;
         this.InitPosition(boundingBox);
     }
@@ -45,10 +46,10 @@ export class Dust extends Item
         this.i += 1;
     
         if(0 <= this.currentDust 
-            && this.currentDust < this.DisplayObjects.length)
+            && this.currentDust < this._sprites.length)
         {
-            this.DisplayObjects[this.currentDust].rotation += 0.1;
-            this.DisplayObjects[this.currentDust].alpha = this.currentAlpha;
+            this.SetProperty(this._sprites[this.currentDust],s=>s.rotation += 0.1);
+            this.SetProperty(this._sprites[this.currentDust],s=>s.alpha += this.currentAlpha);
         }
 
         this.currentAlpha -= 0.01;
@@ -63,23 +64,24 @@ export class Dust extends Item
             var previous = this.currentDust; 
             this.currentDust += 1;
 
-            if(this.DisplayObjects.length == this.currentDust)
+            if(this._sprites.length == this.currentDust)
             {
-                this.DisplayObjects[previous].alpha = 0;
+                this.SetProperty(this._sprites[previous],s=>s.alpha = 0);
                 this.Destroy();
             }
             else
             {
                 if(-1 < previous)
                 {
-                    this.DisplayObjects[previous].alpha = 0;
+                    this.SetProperty(this._sprites[previous],s=>s.alpha = 0);
                 }
-                this.DisplayObjects[this.currentDust].alpha = this.currentAlpha;
+                this.SetProperty(this._sprites[this.currentDust],s=>s.alpha = this.currentAlpha);
             }
         }
     }
 
-    private Destroy() {
+    public Destroy() {
+        super.Destroy();
         this.IsUpdatable = false;
         PlaygroundHelper.Render.Remove(this);
     }

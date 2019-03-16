@@ -25,8 +25,7 @@ export class Diamond extends AliveItem implements IField{
         this._ceil = ceil;
         this._ceil.SetField(this);
         this.BoundingBox = this._ceil.GetBoundingBox();
-        var sprite = PlaygroundHelper.SpriteProvider.GetSprite("./nature/diamond.svg");
-        this.DisplayObjects.push(sprite);
+        this.GenerateSprite('./nature/diamond.svg');
         this._timer = new Timer(4);
 
         this.Lights = new Array<Light>();
@@ -66,7 +65,8 @@ export class Diamond extends AliveItem implements IField{
         return this.BoundingBox;
     }
     
-    protected Destroy():void{
+    public Destroy():void{
+        super.Destroy();
         PlaygroundHelper.Render.Remove(this);
         this._ceil.DestroyField();
         this.IsUpdatable = false;

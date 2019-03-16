@@ -28,8 +28,8 @@ export class RightMenu extends Menu{
     }
 
     private SetPosition() {
-        let width = 50 /PlaygroundHelper.Settings.Scale;
-        let height = 75 /PlaygroundHelper.Settings.Scale;
+        let width = 50 /PlaygroundHelper.Settings.GetScale();
+        let height = 75 /PlaygroundHelper.Settings.GetScale();
         let margin = (PlaygroundHelper.Settings.GetRelativeHeight() / 2) 
         - (this.Items.length * height/ 2);
         let x = PlaygroundHelper.Settings.GetRelativeWidth() - width;

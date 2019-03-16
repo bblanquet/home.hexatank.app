@@ -4,7 +4,7 @@ import {InteractionContext} from '../Context/InteractionContext';
 import {PlaygroundHelper} from '../PlaygroundHelper';
 import { BoundingBox } from "../BoundingBox";
 import {Dust} from './Dust';
-import { AliveItem } from '../AliveItem';
+import { AliveItem } from '../AliveItem'; 
 import { ITranslationMaker } from '../ITranslationMaker';
 import { IMovable } from '../IMovable';
 import { IRotationMaker } from '../IRotationMaker'; 
@@ -14,7 +14,6 @@ import { RotationMaker } from '../RotationMaker';
 import { AngleFinder } from '../AngleFinder';
 import { IRotatable } from '../IRotatable';
 import { isNullOrUndefined } from 'util';
-import { Sprite } from 'pixi.js';
 import { Crater } from '../Crater';
 import { CeilState } from '../CeilState';
 import { IOrder } from '../Ia/IOrder';
@@ -25,9 +24,9 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     RotationSpeed: number=0.05;
     TranslationSpeed: number=1;
     Attack:number=30;
-    protected RootSprites:Array<PIXI.Sprite>;
-    protected Wheels:Array<PIXI.Sprite>;
-    protected BottomWheel:PIXI.Sprite;
+    protected RootSprites:Array<string>;
+    protected Wheels:Array<string>;
+    protected BottomWheel:string;
     private WheelIndex:number;
 
     //movable
@@ -46,25 +45,25 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     private _rotationMaker:IRotationMaker;
     private _angleFinder:IAngleFinder;
 
-    private _selectionSprite:Sprite;
+    private _selectionSprite:string;
 
     constructor(){
         super();
         this.CurrentRadius = 0;
         this.BoundingBox = new BoundingBox();
 
-        this._selectionSprite = PlaygroundHelper.SpriteProvider.GetSprite('selection');
-        this.DisplayObjects.push(this._selectionSprite);
-        this._selectionSprite.alpha = 0;
+        this._selectionSprite = 'selection';
+        this.GenerateSprite(this._selectionSprite); 
+        this.GetBothSprites(this._selectionSprite).forEach(sprite=>sprite.alpha = 0);
 
         this.Z= 2;
         this.Size = PlaygroundHelper.Settings.Size;
         this.BoundingBox.Width = CeilProperties.GetWidth(this.Size);
         this.BoundingBox.Height = CeilProperties.GetHeight(this.Size);
 
-        this.RootSprites = new Array<PIXI.Sprite>();
+        this.RootSprites = new Array<string>();
 
-        this.Wheels =  new Array<PIXI.Sprite>();
+        this.Wheels =  new Array<string>();
         this.WheelIndex = 0;
         this.DustIndex = 0;
 
@@ -113,7 +112,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
     private SetRotation():void{
         this.RootSprites.forEach(sprite => {
-            sprite.rotation = this.CurrentRadius;
+            this.GetBothSprites(sprite).forEach(sp=>sp.rotation= this.CurrentRadius);
         });
     };
 
@@ -127,8 +126,11 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
         this.WheelIndex = (this.WheelIndex+1) % this.Wheels.length;
 
-        this.Wheels[this.WheelIndex].alpha = 1;
-        previousWheel.alpha = 0;
+        this.SetProperty(this.Wheels[this.WheelIndex],(e)=>e.alpha= 1);
+        this.SetProperty(previousWheel,(e)=>e.alpha= 0);
+
+        //this.Wheels[this.WheelIndex].alpha = 1;
+        //previousWheel.alpha = 0;
     }
 
     private HandleDust():void{
@@ -162,11 +164,11 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     }
 
     public IsSelected():boolean{
-        return this._selectionSprite.alpha === 1;
+        return this.GetCurrentSprites()[this._selectionSprite].alpha === 1;
     }
 
     public SetSelected(state:boolean):void{
-        this._selectionSprite.alpha = state ? 1 : 0;
+        this.SetProperty(this._selectionSprite,(e)=>e.alpha= state ? 1 : 0);
     }
 
     public GetNextCeil(): Ceil {
@@ -205,7 +207,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         });
     }
 
-    protected Destroy():void{
+    public  Destroy():void{
+        super.Destroy();
         this._currentCeil.SetOccupier(null);
         if(!isNullOrUndefined(this._nextCeil))
         {

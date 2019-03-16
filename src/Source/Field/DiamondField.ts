@@ -20,11 +20,12 @@ export class DiamondField extends Item implements IField
         this._ceil.SetField(this);
         this.Z= 0;
         this._timer = new Timer(3);
-        this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite('./diamondCell.svg'));
+        this.GenerateSprite('./diamondCell.svg');
         this.InitPosition(ceil.GetBoundingBox());
     }
 
     public Destroy(): void {
+        super.Destroy();
         PlaygroundHelper.Render.Remove(this);
         this.IsUpdatable = false;
         this._ceil.DestroyField();

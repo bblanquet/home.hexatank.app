@@ -13,15 +13,17 @@ import { AliveItem } from './AliveItem';
 import { BasicField } from './Field/BasicField';
 import { CeilState } from './CeilState';
 import { isNullOrUndefined } from 'util';
+import { timingSafeEqual } from 'crypto';
 
 export class Ceil extends Item implements ICeil
 {
     private _state:CeilState = CeilState.Hidden;
     Properties:CeilProperties;
-    private _display:{ [id: number]: Array<PIXI.Sprite>; };
+    private _display:{ [id: number]: Array<string>; };
     private _field:IField;
     private _occupier:IMovable;
-    DecorationSprite:PIXI.Sprite;
+    private _decorationSprite:string;
+    private _areaSprite:string;
 
     constructor(properties:CeilProperties)
     {
@@ -88,59 +90,61 @@ export class Ceil extends Item implements ICeil
 
         if(!isNullOrUndefined(this._areaSprite))
         {
-            this._areaSprite.alpha = 0.2;
+            this.SetProperty(this._areaSprite,(e)=>e.alpha = 0.2);
         }
 
         this._state = state;
 
         this._display[this._state].forEach(sprite=>{
-            sprite.alpha = 1;
+            this.SetProperty(sprite, (e)=>e.alpha = 1);
         })
     }
 
-    public AddSprite(sprite:PIXI.Sprite){
+    public AddSprite(sprite:string){
         this._areaSprite = sprite;
-        this._areaSprite.alpha = 0.2;
-        this._areaSprite.x = this.GetBoundingBox().X;
-        this._areaSprite.y = this.GetBoundingBox().Y;
-        this.DisplayObjects.push(this._areaSprite);
-        PlaygroundHelper.Render.AddDisplayableEntity(this._areaSprite);
+        this.GenerateSprite(sprite);
+        this.SetProperty(sprite,e=>{
+            e.alpha = 0.2;
+            e.x = this.GetBoundingBox().X;
+            e.y = this.GetBoundingBox().Y; 
+        });
+        this.GetBothSprites(this._areaSprite).forEach(s=>{
+            PlaygroundHelper.Render.AddDisplayableEntity(s);
+        })
     }
 
-    private _areaSprite:PIXI.Sprite;
 
-    public SetDecoration(sprite:PIXI.Sprite):void{
-        this.DecorationSprite = sprite;
-        this.DecorationSprite.alpha = 0;
+    public SetDecoration(sprite:string):void{
+        this.GenerateSprite(sprite);
+        this._decorationSprite = sprite;
+        this.SetProperty(sprite,e=>{
+            e.alpha = 0;
+        });
     }
 
     public SetSprite():void
     {
-        let hiddenCeil = PlaygroundHelper.SpriteProvider.GetSprite("./hiddenCell.svg");
-        hiddenCeil.alpha = 1;
-        let halfCeil = PlaygroundHelper.SpriteProvider.GetSprite("./halfVisibleCell.svg");
-        halfCeil.alpha = 0;
-        let ceil = PlaygroundHelper.SpriteProvider.GetSprite('./cell.svg');   
-        ceil.alpha = 0;
+        this.GenerateSprite('./hiddenCell.svg');
+        this.SetProperty('./hiddenCell.svg',e=>e.alpha = 1);
 
-        this._display[CeilState.Hidden] = [hiddenCeil];
+        this.GenerateSprite('./halfVisibleCell.svg');
+        this.SetProperty('./halfVisibleCell.svg',e=>e.alpha = 0);
+
+        this.GenerateSprite('./cell.svg');
+        this.SetProperty('./cell.svg',e=>e.alpha = 0);
+
+        this._display[CeilState.Hidden] = ['./hiddenCell.svg'];
         
-        if(isNullOrUndefined(this.DecorationSprite))
+        if(isNullOrUndefined(this._decorationSprite))
         {
-            this._display[CeilState.HalfVisible] = [halfCeil,ceil]; 
-            this._display[CeilState.Visible] = [ceil];      
+            this._display[CeilState.HalfVisible] = ['./halfVisibleCell.svg','./cell.svg']; 
+            this._display[CeilState.Visible] = ['./cell.svg'];      
         }
         else
         {
-            this._display[CeilState.HalfVisible] = [halfCeil,this.DecorationSprite,ceil];         
-            this._display[CeilState.Visible] = [this.DecorationSprite,ceil];         
-
-            this.DisplayObjects.push(this.DecorationSprite);
+            this._display[CeilState.HalfVisible] = ['./halfVisibleCell.svg',this._decorationSprite,'./cell.svg'];         
+            this._display[CeilState.Visible] = [this._decorationSprite,'./cell.svg'];         
         }
-        
-        this.DisplayObjects.push(hiddenCeil);
-        this.DisplayObjects.push(halfCeil);
-        this.DisplayObjects.push(ceil);
     }
 
     public GetCoordinate():HexAxial{
@@ -177,9 +181,7 @@ export class Ceil extends Item implements ICeil
 
     public Select(context:InteractionContext):boolean
     {
-
         var isSelected = this.GetSprites()[0].containsPoint(context.Point);
-        
         if(isSelected)
         {
             console.log(`%c Q:${this.GetCoordinate().Q} R:${this.GetCoordinate().R}`,'color:blue;font-weight:bold;');

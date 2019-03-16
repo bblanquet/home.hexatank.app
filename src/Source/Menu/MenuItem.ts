@@ -9,34 +9,41 @@ export abstract class MenuItem extends Item
     BoundingBox:BoundingBox;
     IsSelected:boolean;
     
-    constructor(unselected:string,selected:string){
+    constructor(private _unselected:string,private _selected:string){
         super();
         this.Z = 4; 
-        this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite(unselected));
-        this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite(selected));
+        this.GenerateSprite(this._unselected);
+        this.GenerateSprite(this._selected);
         this.IsSelected = false;
         this.SetDefault();
         PlaygroundHelper.Render.Add(this);
     }
 
     public Hide(){
-        this.DisplayObjects.forEach(item=>
+        this.GetSprites().forEach(item=>
             {item.alpha = 0;}
             );
     }
 
     public Show(){
-        this.DisplayObjects[0].alpha = 1;
+        this.SetProperty(this._unselected,e=>e.alpha = 1);
     }
 
     protected SetDefault():void{
-        this.DisplayObjects[0].alpha = 1;
-        this.DisplayObjects[1].alpha = 0; 
+        this.SetProperty(this._unselected,e=>e.alpha = 1);
+        this.SetProperty(this._selected,e=>e.alpha = 0);
     }
 
     protected Swap():void
     {
-        [this.DisplayObjects[0].alpha, this.DisplayObjects[1].alpha] = [this.DisplayObjects[1].alpha, this.DisplayObjects[0].alpha];
+        if(this.GetBothSprites(this._unselected)[0].alpha === 1){
+            this.SetProperty(this._unselected,e=>e.alpha = 0); 
+            this.SetProperty(this._selected,e=>e.alpha = 1);
+
+        }else{
+            this.SetProperty(this._unselected,e=>e.alpha = 1);
+            this.SetProperty(this._selected,e=>e.alpha = 0);
+        }
     }
 
     public SetBoundingBox(boundingbox:{x:number, y:number, width:number, height:number}):void{

@@ -47,7 +47,7 @@ export class MapGenerator implements IMapGenerator{
             b.Height = PlaygroundHelper.Settings.Size * 6;
             b.X = ceil.GetBoundingBox().X - (b.Width/2 - ceil.GetBoundingBox().Width/2);
             b.Y = ceil.GetBoundingBox().Y - (b.Height/2 - ceil.GetBoundingBox().Height/2);
-            const grass = new BasicItem(b,PlaygroundHelper.SpriteProvider.GetSprite('./nature/grass.svg'));
+            const grass = new BasicItem(b,'./nature/grass.svg');
             grass.SetDisplayTrigger(()=>true);
             grass.SetVisible(()=>true);
             items.push(grass);

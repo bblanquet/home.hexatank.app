@@ -18,8 +18,8 @@ export abstract class AliveItem extends Item{
         this._totalLife.drawRect(0,0,10,10);
         this._currentLife.drawRect(0,0,10,10);
 
-        this.DisplayObjects.push(this._totalLife);
-        this.DisplayObjects.push(this._currentLife);
+        this.Push(this._totalLife);
+        this.Push(this._currentLife);
 
         this._lifes = new Array<PIXI.Graphics>();
         this._lifes.push(this._totalLife);

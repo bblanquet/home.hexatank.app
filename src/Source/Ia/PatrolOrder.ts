@@ -36,9 +36,7 @@ export class PatrolOrder extends Order{
     {
         if(!isNullOrUndefined(this._patrolCeils) && 0 < this._patrolCeils.length){
             this._patrolCeils.forEach(ceil => {
-                    var pathItem = new BasicItem(
-                    ceil.GetBoundingBox(),
-                    PlaygroundHelper.SpriteProvider.GetSprite('selectedCeil'));
+                    const pathItem = new BasicItem(ceil.GetBoundingBox(),'selectedCeil');
                     
                     pathItem.SetDisplayTrigger(this._v.IsSelected.bind(this._v));
                     pathItem.SetVisible(this._v.IsAlive.bind(this._v));

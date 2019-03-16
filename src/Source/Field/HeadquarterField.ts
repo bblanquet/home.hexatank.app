@@ -17,17 +17,18 @@ export class HeadQuarterField extends Item implements IField
     IsFading:boolean;
     Diamonds:number=0; 
 
-    constructor(private _hq:Headquarter,ceil:Ceil,sprite:Sprite){
+    constructor(private _hq:Headquarter,ceil:Ceil,sprite:string){
         super();
         this._ceil = ceil;
         this._ceil.SetField(this);
         this.Z= 0;
         this._timer = new Timer(3);
-        this.DisplayObjects.push(sprite);
+        this.GenerateSprite(sprite);
         this.InitPosition(ceil.GetBoundingBox());
     }
 
     public Destroy(): void {
+        super.Destroy();
         PlaygroundHelper.Render.Remove(this);
         this.IsUpdatable = false;
         this._ceil.DestroyField();

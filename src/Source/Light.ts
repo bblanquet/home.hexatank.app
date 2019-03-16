@@ -13,8 +13,7 @@ export class Light extends Item{
         this.BoundingBox = new BoundingBox();
         this.GetBoundingBox().Width = 10;
         this.GetBoundingBox().Height = 10;
-        var sprite = PlaygroundHelper.SpriteProvider.GetSprite("diamondLight.png");
-        this.DisplayObjects.push(sprite);
+        this.GenerateSprite('diamondLight.png');
         this.InitPosition(value)
     }
 
@@ -24,7 +23,7 @@ export class Light extends Item{
     
     public Display(x:number,y:number):void{
         this.IsShowing = true;
-        this.DisplayObjects[0].alpha = 1;
+        this.SetProperty('diamondLight.png',e=>e.alpha = 1);
         this.GetBoundingBox().X = x;
         this.GetBoundingBox().Y = y;
     }
@@ -34,10 +33,9 @@ export class Light extends Item{
          
         if(this.IsShowing)
         {
-            this.DisplayObjects[0].alpha -= 0.01;
+            this.SetProperty('diamondLight.png',e=>e.alpha -= 0.01);
             
-            
-            if(this.DisplayObjects[0].alpha <= 0)
+            if(this.GetCurrentSprites()['diamondLight.png'].alpha <= 0)
             {
                 this.IsShowing = false;
             }

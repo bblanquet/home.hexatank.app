@@ -12,6 +12,7 @@ export class Missile extends Item{
     IsReached:Boolean;
     private _speed:number;
     private _currentMissile:number=0;
+    private _missiles:Array<string>;
 
     constructor(boundingbox:BoundingBox, target:AliveItem, private _damage:number)
     {
@@ -20,14 +21,14 @@ export class Missile extends Item{
         this.Z = 2;
         this.BoundingBox = boundingbox;
         this.IsReached = false;
-        let missiles = ['missile1.png','missile2.png','missile3.png','missile4.png'];
+        this._missiles = ['missile1.png','missile2.png','missile3.png','missile4.png'];
         var radius = this.GetAngle();
 
-        missiles.forEach(missile =>{
-            let sprite = PlaygroundHelper.SpriteProvider.GetSprite(missile);
-            sprite.pivot.set(sprite.x + sprite.width/2,sprite.y + sprite.height/2);
-            sprite.alpha = 0;
-            this.DisplayObjects.push(sprite);
+        this._missiles.forEach(missile =>{
+            this.GenerateSprite(missile,e=>{
+                e.pivot.set(0.5);
+                e.alpha = 0;
+            });
         });
         this.IsCentralRef = true;
 
@@ -38,7 +39,7 @@ export class Missile extends Item{
     }
 
     public Rotate(radius:number):void{
-        this.DisplayObjects.forEach(sprite =>{
+        this.GetSprites().forEach(sprite =>{
             sprite.rotation = radius;
         }) ;
     }
@@ -88,9 +89,9 @@ export class Missile extends Item{
             this.GetBoundingBox().X += speedY*2;
             this.GetBoundingBox().Y += speedX*2;
     
-            this.DisplayObjects[this._currentMissile].alpha = 0;
-            this._currentMissile = (this._currentMissile+1) % this.DisplayObjects.length;
-            this.DisplayObjects[this._currentMissile].alpha = 1;
+            this.GetCurrentSprites()[this._missiles[this._currentMissile]].alpha = 0;
+            this._currentMissile = (this._currentMissile+1) % this._missiles.length;
+            this.GetCurrentSprites()[this._missiles[this._currentMissile]].alpha = 1;
         }
         else
         {
@@ -102,7 +103,8 @@ export class Missile extends Item{
     };
 
 
-    private Destroy() {
+    public  Destroy() {
+        super.Destroy();
         PlaygroundHelper.Render.Remove(this);
         this.IsUpdatable = false;
     }

@@ -1,6 +1,4 @@
 import { Vehicle } from "./Vehicle";
-import { PlaygroundHelper } from "../PlaygroundHelper";
-import { Sprite } from "pixi.js";
 import { IHqContainer } from "../IHqContainer";
 import { Headquarter } from "../Field/Headquarter";
 import { AliveItem } from "../AliveItem";
@@ -9,7 +7,7 @@ import { Timer } from "../Tools/Timer";
 
 export class Truck extends Vehicle implements IHqContainer{
     Hq:Headquarter;
-    private _gatheredDiamonds:Array<Sprite>;
+    private _gatheredDiamonds:Array<string>;
     private _dimaondTimer:ITimer;
     private _diamondsCount:number=0; 
     
@@ -17,38 +15,30 @@ export class Truck extends Vehicle implements IHqContainer{
     {
         super();
         this.Hq = hq;
-        const wheels = ['./tank/wheel1.svg','./tank/wheel2.svg','./tank/wheel3.svg',
+        this.Wheels = ['./tank/wheel1.svg','./tank/wheel2.svg','./tank/wheel3.svg',
                     './tank/wheel4.svg','./tank/wheel5.svg','./tank/wheel6.svg',
                     './tank/wheel7.svg','./tank/wheel8.svg'
                     ];
 
-        const wheelBottom = PlaygroundHelper.SpriteProvider.GetSprite('./tank/wheel.svg');
-        this.DisplayObjects.push(wheelBottom);
-        this.RootSprites.push(wheelBottom);
+        this.GenerateSprite('./tank/wheel.svg')
+        this.RootSprites.push('./tank/wheel.svg');
         
         this._dimaondTimer = new Timer(30);
-        wheels.forEach(wheel =>{
-        let sprite = PlaygroundHelper.SpriteProvider.GetSprite(wheel);
-        this.Wheels.push(sprite);
-        this.DisplayObjects.push(sprite);
-        this.RootSprites.push(sprite);
+        this.Wheels.forEach(wheel =>{
+            this.GenerateSprite(wheel);
+            this.RootSprites.push(wheel);
         });
 
-        let diamonds = ['./truck/diamonds/diamonds1.svg','./truck/diamonds/diamonds2.svg',
+        this._gatheredDiamonds = ['./truck/diamonds/diamonds1.svg','./truck/diamonds/diamonds2.svg',
     './truck/diamonds/diamonds3.svg','./truck/diamonds/diamonds4.svg','./truck/diamonds/diamonds5.svg',
 './truck/diamonds/diamonds6.svg']
 
-        var sprite = this.Hq.GetSkin().GetTruck();
-        this.DisplayObjects.push(sprite);
-        this.RootSprites.push(sprite);
+        this.GenerateSprite(this.Hq.GetSkin().GetTruck());
+        this.RootSprites.push(this.Hq.GetSkin().GetTruck());
 
-        this._gatheredDiamonds = new Array<Sprite>();
-        diamonds.forEach(diamond=>{
-            var sprite =PlaygroundHelper.SpriteProvider.GetSprite(diamond); 
-            sprite.alpha = 0;
-            this._gatheredDiamonds.push(sprite);
-            this.DisplayObjects.push(sprite);
-            this.RootSprites.push(sprite);
+        this._gatheredDiamonds.forEach(diamond=>{
+            this.GenerateSprite(diamond,e=>e.alpha = 0);
+            this.RootSprites.push(diamond);
         });
 
         //make pivot sprite center
@@ -89,7 +79,7 @@ export class Truck extends Vehicle implements IHqContainer{
         {
             if(!this.IsLoaded())
             {
-                this._gatheredDiamonds[this._diamondsCount].alpha = 1;
+                this.GetCurrentSprites()[this._gatheredDiamonds[this._diamondsCount]].alpha = 1;
                 this._diamondsCount = (this._diamondsCount+1) % this._gatheredDiamonds.length; 
             }
         }
@@ -99,7 +89,7 @@ export class Truck extends Vehicle implements IHqContainer{
         var diamonds = this._diamondsCount;
         this._diamondsCount = 0;
         this._gatheredDiamonds.forEach(sprite=>{
-            sprite.alpha = 0;
+            this.GetCurrentSprites()[sprite].alpha = 0;
         });
         return diamonds;
     }

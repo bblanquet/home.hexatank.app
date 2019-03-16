@@ -15,12 +15,12 @@ export class Crater extends Item{
         this.BoundingBox = boundingbox;
         this._timer = new Timer(100);
 
-        let sprite = PlaygroundHelper.SpriteProvider.GetSprite('crater');
-        this.DisplayObjects.push(sprite);
+        this.GenerateSprite('crater');
         this.InitPosition(boundingbox);
     }
 
     public Destroy(): void {
+        super.Destroy();
         PlaygroundHelper.Render.Remove(this);
         this.IsUpdatable = false;
     }
@@ -43,7 +43,7 @@ export class Crater extends Item{
 
         if(this._timer.IsElapsed())
         {
-            this.GetSprites()[0].alpha -= 0.05;
+            this.GetCurrentSprites()['crater'].alpha -= 0.05;
         }
     }
 }

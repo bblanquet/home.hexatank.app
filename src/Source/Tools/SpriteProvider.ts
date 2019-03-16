@@ -2,23 +2,27 @@ import { ISpriteProvider } from "./ISpriteProvider";
 
 export class SpriteProvider implements ISpriteProvider{
     private _textureDictionary:PIXI.loaders.TextureDictionary;
-    private _svgTextureDictionnary:{ [id: string]: PIXI.Texture; };
+    private _zoomInSvgDictionary:{ [id: string]: PIXI.Texture; };
+    private _zoomOutSvgDictionary:{ [id: string]: PIXI.Texture; };
 
     constructor(texture:PIXI.loaders.TextureDictionary){
         this._textureDictionary = texture;
-        this._svgTextureDictionnary = {};
+        this._zoomInSvgDictionary = {};
+        this._zoomOutSvgDictionary = {};
     }
-    
-    public GetSprite(name: any): PIXI.Sprite {
+
+    GetZoomOutSprite(name: any): PIXI.Sprite 
+    {
         if(this.IsOldStyleSvg(name))
         {
-            if(this._svgTextureDictionnary[name] === null){//name in
-                return new PIXI.Sprite(this._svgTextureDictionnary[name]);
+            if(this._zoomOutSvgDictionary[name] === null){
+                return new PIXI.Sprite(this._zoomOutSvgDictionary[name]);
             }
             else
             {
-                var texture = PIXI.Texture.fromImage(name,undefined,undefined,2);
-                this._svgTextureDictionnary[name] = texture;
+                PIXI.Texture.removeTextureFromCache(name);
+                var texture = PIXI.Texture.fromImage(name,undefined,undefined,0.5);
+                this._zoomOutSvgDictionary[name] = texture;
                 return new PIXI.Sprite(texture);
             }
         }
@@ -26,6 +30,27 @@ export class SpriteProvider implements ISpriteProvider{
         {
             return new PIXI.Sprite(this._textureDictionary[name]);
         }
+    }
+
+    GetZoomInSprite(name: any): PIXI.Sprite 
+    {
+        if(this.IsOldStyleSvg(name))
+        {
+            if(this._zoomInSvgDictionary[name] === null){
+                return new PIXI.Sprite(this._zoomInSvgDictionary[name]);
+            }
+            else
+            {
+                PIXI.Texture.removeTextureFromCache(name);
+                var texture = PIXI.Texture.fromImage(name,undefined,undefined,1);
+                this._zoomInSvgDictionary[name] = texture;
+                return new PIXI.Sprite(texture);
+            }
+        }
+        else
+        {
+            return new PIXI.Sprite(this._textureDictionary[name]);
+        }   
     }
 
     private IsOldStyleSvg(name: string):boolean {

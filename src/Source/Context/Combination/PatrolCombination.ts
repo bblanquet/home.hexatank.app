@@ -11,7 +11,7 @@ export class PatrolCombination implements ICombination{
     private _indicators:Array<BasicItem>;
 
     constructor(){
-        this._indicators = [];
+        this._indicators = []; 
     }
 
     public IsMatching(items: Item[]): boolean 
@@ -40,8 +40,7 @@ export class PatrolCombination implements ICombination{
     {
         if(this.ContainsVehicleePatrol(items)){
             if(items[items.length-1] instanceof Ceil){
-                const element = new BasicItem(items[items.length-1].GetBoundingBox(), 
-                PlaygroundHelper.SpriteProvider.GetSprite('./direction/patrol2.svg'));
+                const element = new BasicItem(items[items.length-1].GetBoundingBox(), './direction/patrol2.svg');
                 element.SetDisplayTrigger(()=>true);
                 element.SetVisible(()=>true);
                 this._indicators.push(element);

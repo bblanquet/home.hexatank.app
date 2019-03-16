@@ -72,7 +72,8 @@ export class InputManager{
                 this.ViewContext.Zoom = this._maxScale;
             }
         }
-        PlaygroundHelper.Settings.Scale = this.ViewContext.Zoom;
+        PlaygroundHelper.Settings.ChangeScale(this.ViewContext.Zoom);
+        console.log(`%c ${this.ViewContext.Zoom}`,'font-weight:bold;color:green;');
     }
 
     OnMouseWheel(value:{deltaY:number}):void{
@@ -91,6 +92,7 @@ export class InputManager{
             }
 
         }
-        PlaygroundHelper.Settings.Scale = this.ViewContext.Zoom;
+        PlaygroundHelper.Settings.ChangeScale(this.ViewContext.Zoom);
+        console.log(`%c ${this.ViewContext.Zoom}`,'font-weight:bold;color:green;');
     }
 }

@@ -9,8 +9,8 @@ export class RenderingHandler{
         this._groupsHandler = groupsContainer;
     }
     public Add(item:Item){
-        
-        item.DisplayObjects.forEach(sprite => {
+        //console.log(`${item.constructor.name} ${item.Z}`);
+        item.GetDisplayObjects().forEach(sprite => {
             this._groupsHandler.Groups[item.Z].addChild(sprite);
         });
     } 
@@ -20,11 +20,11 @@ export class RenderingHandler{
     }
 
     public Remove(item:Item){
-        item.DisplayObjects.forEach(sprite => {
+        item.GetDisplayObjects().forEach(sprite => {
             sprite.alpha = 1;
             sprite.destroy();
             this._groupsHandler.Groups[item.Z].removeChild(sprite);
         });
-        item.DisplayObjects = [];
+        item.Clear();
     }
 }

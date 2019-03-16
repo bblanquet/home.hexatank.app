@@ -1,25 +1,27 @@
 import { Item } from "./Item";
 import { BoundingBox } from "./BoundingBox";
 import { InteractionContext } from "./Context/InteractionContext";
-import { Sprite } from "pixi.js";
 import { PlaygroundHelper } from "./PlaygroundHelper";
 
 export class BasicItem extends Item{ 
 
     private _isVisible:{ (): boolean };
     private _isAlive:{ (): boolean };
-    constructor(private _boundingBox:BoundingBox, sprite:Sprite){
+    private _spriteName:string;
+    constructor(private _boundingBox:BoundingBox, sprite:string){
         super();
         this.Z = 0;
-        sprite.alpha = 0;
-        this.DisplayObjects.push(sprite);
+        this._spriteName = sprite;
+        this.GenerateSprite(sprite,e=>{
+            e.anchor.set(0.50);
+            e.alpha = 0;
+        });
         this.InitPosition(this._boundingBox);
-        sprite.anchor.set(0.50);
         this.IsCentralRef = true;
     }
 
     public SetRotation(radius:number):void{
-        this.DisplayObjects[0].rotation = radius;
+        this.SetProperty(this._spriteName,e=>e.rotation= radius);
     }
 
     public SetDisplayTrigger(show:{ (): boolean }):void{
@@ -40,20 +42,29 @@ export class BasicItem extends Item{
 
     public Update(viewX: number, viewY: number): void 
     {
+        super.Update(viewX,viewY);
+
         if(!this._isAlive()){
             this.Destroy();
         }
 
-        this.DisplayObjects.forEach(sprite=>{
-            sprite.alpha = this._isVisible() ? 1 :0; 
-        });
-        super.Update(viewX,viewY);    
+        if(this.GetCurrentSprites()['selectedCeil'])
+        {
+            console.log('plop');
+        }
+        const visible = this._isVisible();
+        this.SetProperty(this._spriteName,e=>e.alpha= visible ? 1 :0);
+        if(this.GetCurrentSprites()['selectedCeil'])
+        {
+            console.log('plop');
+        }
     }
 
-    Destroy(): void 
+    public Destroy(): void 
     {
+        super.Destroy();
         this.IsUpdatable = false;
-        PlaygroundHelper.Render.Remove(this);
+        PlaygroundHelper.Render.Remove(this); 
     }
 
 }

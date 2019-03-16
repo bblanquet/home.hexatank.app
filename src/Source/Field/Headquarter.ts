@@ -1,6 +1,5 @@
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
-import { Sprite } from "pixi.js";
 import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Ceil } from "../Ceil";
 import { HeadQuarterField } from "./HeadquarterField"; 
@@ -13,7 +12,6 @@ import { IField } from "./IField";
 import { Vehicle } from "../Unit/Vehicle";
 import { Crater } from "../Crater";
 import { ISelectable } from "../ISelectable";
-import { Timer } from "../Tools/Timer";
 
 export class Headquarter extends AliveItem implements IField, ISelectable
 {
@@ -23,8 +21,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable
     Diamonds:number=40;
     private _skin:HqSkin;
     IsFading:boolean;
-    private _selectionSprite:Sprite;
-    private _hqMiddle:PIXI.Sprite;
+    private _selectionSprite:string;
 
     constructor(skin:HqSkin, ceil:Ceil){
         super();
@@ -33,9 +30,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         this._ceil = ceil;
         this._ceil.SetField(this);
 
-        this._selectionSprite = PlaygroundHelper.SpriteProvider.GetSprite('selection');
-        this.DisplayObjects.push(this._selectionSprite);
-        this._selectionSprite.alpha = 0;
+        this._selectionSprite = 'selection';
+        this.GenerateSprite(this._selectionSprite);
+        this.SetProperty(this._selectionSprite,(e)=>e.alpha=0);
 
         this.BoundingBox = new BoundingBox();
         this.BoundingBox.Width = this._ceil.GetBoundingBox().Width;
@@ -43,11 +40,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         this.BoundingBox.X = this._ceil.GetBoundingBox().X;
         this.BoundingBox.Y = this._ceil.GetBoundingBox().Y;
 
-        this._hqMiddle = PlaygroundHelper.SpriteProvider.GetSprite("./building/hqMiddle.svg");
-
-        this.DisplayObjects.push(this.GetSkin().GetHq());
-        this.DisplayObjects.push(this._hqMiddle);
-        this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite('./building/hqTop.svg'));
+        this.GenerateSprite(this.GetSkin().GetHq());
+        this.GenerateSprite("./building/hqMiddle.svg");
+        this.GenerateSprite('./building/hqTop.svg');
 
         this.GetSprites().forEach(obj => {
             obj.width = this.BoundingBox.Width,
@@ -66,11 +61,11 @@ export class Headquarter extends AliveItem implements IField, ISelectable
     }
 
     public IsSelected():boolean{
-        return this._selectionSprite.alpha === 1;
+        return this.GetCurrentSprites()[this._selectionSprite].alpha === 1;
     }
 
     public SetSelected(state:boolean):void{
-        this._selectionSprite.alpha = state ? 1 : 0;
+        this.GetCurrentSprites()[this._selectionSprite].alpha = state ? 1 : 0;
     }
 
     private IsHqContainer(item: any):item is IHqContainer{
@@ -158,7 +153,8 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         return false;
         }
 
-    protected Destroy():void{
+    public Destroy():void{
+        super.Destroy();
         PlaygroundHelper.Render.Remove(this);
         this._ceil.DestroyField();
         this.IsUpdatable = false;
@@ -167,9 +163,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         });
     }
 
-    public Update(viewX: number, viewY: number):void
+    public Update(viewX: number, viewY: number):void 
     {
-        this._hqMiddle.rotation += 0.1;
+        this.GetBothSprites('./building/hqMiddle.svg').forEach(sprite=>sprite.rotation += 0.1);
 
         if(!this.IsAlive())
         {

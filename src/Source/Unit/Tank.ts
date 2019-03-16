@@ -19,26 +19,22 @@ export class Tank extends Vehicle implements IHqContainer
         super();
         this.Hq = hq;
 
-        const wheels = ['./tank/wheel1.svg','./tank/wheel2.svg','./tank/wheel3.svg',
+        this.Wheels = ['./tank/wheel1.svg','./tank/wheel2.svg','./tank/wheel3.svg',
                     './tank/wheel4.svg','./tank/wheel5.svg','./tank/wheel6.svg',
                     './tank/wheel7.svg','./tank/wheel8.svg'
                     ];
 
-        const wheelBottom = PlaygroundHelper.SpriteProvider.GetSprite('./tank/wheel.svg');
-        this.DisplayObjects.push(wheelBottom);
-        this.RootSprites.push(wheelBottom);
+        this.GenerateSprite('./tank/wheel.svg');
+        this.BottomWheel = './tank/wheel.svg';
+        this.RootSprites.push(this.BottomWheel);
 
-        wheels.forEach(wheel =>{
-            const sprite = PlaygroundHelper.SpriteProvider.GetSprite(wheel);
-            this.Wheels.push(sprite);
-            this.DisplayObjects.push(sprite);
-            this.RootSprites.push(sprite);
-
+        this.Wheels.forEach(wheel =>{
+            this.GenerateSprite(wheel);
+            this.RootSprites.push(wheel);
         });
 
-        var sprite = this.Hq.GetSkin().GetBottomTankSprite();
-        this.DisplayObjects.push(sprite);
-        this.RootSprites.push(sprite);
+        this.RootSprites.push(this.Hq.GetSkin().GetBottomTankSprite());
+        this.GenerateSprite(this.Hq.GetSkin().GetBottomTankSprite());
         
         this.Turrel = new Turrel(this.Hq.GetSkin(),this);
 

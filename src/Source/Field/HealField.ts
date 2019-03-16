@@ -16,7 +16,7 @@ export class HealField extends Item implements IField
         this._ceil.SetField(this);
         this.Z= 1; 
 
-        this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite('healCeil'));        
+        this.GenerateSprite('healCeil');      
         this.InitPosition(ceil.GetBoundingBox());
     }
 

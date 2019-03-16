@@ -2,7 +2,6 @@ import { Item } from "../Item";
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
 import { PlaygroundHelper } from "../PlaygroundHelper";
-import { Sprite } from "pixi.js";
 import "../../Extension/Collection";
 import { Tank } from "./Tank";
 import { Missile } from "./Missile";
@@ -21,8 +20,8 @@ export class Turrel extends Item implements IRotatable
     CurrentRadius: number;
     GoalRadius: number;
     Base:Tank;
-    private _top:Sprite;
-    private _canon:Array<Sprite>;
+    private _top:string;
+    private _canon:Array<string>;
     private _currentCanon:number=0;
 
     private _animationTimer:ITimer;//5
@@ -49,17 +48,17 @@ export class Turrel extends Item implements IRotatable
 
         let fires = ['./tank/cannon.svg','./tank/cannon1.svg','./tank/cannon2.svg','./tank/cannon3.svg','./tank/cannon4.svg'];
         
-        this._canon = new Array<Sprite>();
+        this._canon = new Array<string>();
         fires.forEach(fire =>{
-            let sprite = PlaygroundHelper.SpriteProvider.GetSprite(fire);
-            sprite.alpha = 0;
-            this.DisplayObjects.push(sprite);
-            this._canon.push(sprite);
+            this.GenerateSprite(fire,e=>{
+                e.alpha = 0;
+            });
+            this._canon.push(fire);
         });
 
-        this.DisplayObjects[0].alpha = 1;
+        this.SetProperty(fires[0],e=>e.alpha = 1);
         this._top = this._skin.GetTopTankSprite();        
-        this.DisplayObjects.push(this._top);
+        this.GenerateSprite(this._top);
 
         this.GetSprites().forEach(sprite => {
             sprite.width = this.Base.GetBoundingBox().Width,
@@ -123,9 +122,9 @@ export class Turrel extends Item implements IRotatable
         {
             if(this._animationTimer.IsElapsed())
             {    
-                this._canon[this._currentCanon].alpha = 0;
+                this.GetCurrentSprites()[this._canon[this._currentCanon]].alpha = 0;
                 this._currentCanon = (1+this._currentCanon)%this._canon.length;
-                this._canon[this._currentCanon].alpha =  1;
+                this.GetCurrentSprites()[this._canon[this._currentCanon]].alpha =  1;
 
                 if(this._currentCanon == 0)
                 {
@@ -137,7 +136,7 @@ export class Turrel extends Item implements IRotatable
     }
 
     public Rotate(radius:number):void{
-        this.DisplayObjects.forEach(sprite =>{
+        this.GetSprites().forEach(sprite =>{
             sprite.rotation = radius;
         }) ;
         this.Radius = radius;

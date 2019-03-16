@@ -24,7 +24,7 @@ export class Cloud extends Item{
         super(); 
         this._timer = new Timer(3);
         this.Z = 4;
-        this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite(this._sprite));
+        this.GenerateSprite(this._sprite);
         this._boundingBox = new BoundingBox();
         this._boundingBox.X = this._min
         this._boundingBox.Y = this._y;

@@ -158,7 +158,7 @@ export class SimpleOrder extends Order{
             this.Ceils.forEach(ceil => {
                 var pathItem = new BasicItem(
                     ceil.GetBoundingBox(),
-                    PlaygroundHelper.SpriteProvider.GetSprite('./direction/moving1.svg'));
+                    './direction/moving1.svg');
                 pathItem.SetDisplayTrigger(this._v.IsSelected.bind(this._v));
                 pathItem.SetVisible(this._v.IsAlive.bind(this._v));
                 PlaygroundHelper.Playground.Items.push(pathItem);                    

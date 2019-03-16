@@ -16,7 +16,7 @@ export class AttackField extends Item implements IField
         this._ceil.SetField(this);
         this.Z= 1;
 
-        this.DisplayObjects.push(PlaygroundHelper.SpriteProvider.GetSprite('attackCeil'));        
+        this.GenerateSprite('attackCeil');        
         this.InitPosition(ceil.GetBoundingBox());
     }
 

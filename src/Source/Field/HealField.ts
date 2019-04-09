@@ -5,6 +5,7 @@ import { PlaygroundHelper } from "../PlaygroundHelper";
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
 import { Vehicle } from "../Unit/Vehicle";
+import { Archive } from "../Tools/ResourceArchiver";
 
 export class HealField extends Item implements IField
 { 
@@ -16,7 +17,7 @@ export class HealField extends Item implements IField
         this._ceil.SetField(this);
         this.Z= 1; 
 
-        this.GenerateSprite('healCeil');      
+        this.GenerateSprite(Archive.bonus.health);      
         this.InitPosition(ceil.GetBoundingBox());
     }
 

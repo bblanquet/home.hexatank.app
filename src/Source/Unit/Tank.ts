@@ -6,6 +6,7 @@ import { Ceil } from '../Ceil';
 import { isNullOrUndefined, isNull } from 'util';
 import { Headquarter } from '../Field/Headquarter';
 import { IHqContainer } from '../IHqContainer';
+import { Archive } from '../Tools/ResourceArchiver';
 
 export class Tank extends Vehicle implements IHqContainer 
 {
@@ -19,14 +20,10 @@ export class Tank extends Vehicle implements IHqContainer
         super();
         this.Hq = hq;
 
-        this.Wheels = ['./tank/wheel1.svg','./tank/wheel2.svg','./tank/wheel3.svg',
-                    './tank/wheel4.svg','./tank/wheel5.svg','./tank/wheel6.svg',
-                    './tank/wheel7.svg','./tank/wheel8.svg'
-                    ];
+        this.Wheels = Archive.wheels;
 
-        this.GenerateSprite('./tank/wheel.svg');
-        this.BottomWheel = './tank/wheel.svg';
-        this.RootSprites.push(this.BottomWheel);
+        this.GenerateSprite(Archive.wheel);
+        this.RootSprites.push(Archive.wheel);
 
         this.Wheels.forEach(wheel =>{
             this.GenerateSprite(wheel);

@@ -4,6 +4,7 @@ import { InteractionContext } from "../Context/InteractionContext";
 import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Explosion } from "./Explosion";
 import { AliveItem } from "../AliveItem";
+import { Archive } from "../Tools/ResourceArchiver";
 
 export class Missile extends Item{
     BoundingBox:BoundingBox;
@@ -12,7 +13,6 @@ export class Missile extends Item{
     IsReached:Boolean;
     private _speed:number;
     private _currentMissile:number=0;
-    private _missiles:Array<string>;
 
     constructor(boundingbox:BoundingBox, target:AliveItem, private _damage:number)
     {
@@ -21,15 +21,20 @@ export class Missile extends Item{
         this.Z = 2;
         this.BoundingBox = boundingbox;
         this.IsReached = false;
-        this._missiles = ['missile1.png','missile2.png','missile3.png','missile4.png'];
         var radius = this.GetAngle();
 
-        this._missiles.forEach(missile =>{
+        Archive.missiles.forEach(missile =>{
             this.GenerateSprite(missile,e=>{
-                e.pivot.set(0.5);
                 e.alpha = 0;
             });
         });
+
+        this.GetSprites().forEach(sprite => {
+            sprite.width = this.BoundingBox.Width,
+            sprite.height = this.BoundingBox.Height
+            sprite.anchor.set(0.5);
+        });
+
         this.IsCentralRef = true;
 
         this._speed = 3;
@@ -86,12 +91,12 @@ export class Missile extends Item{
             var speedX = -this._speed*Math.cos(angle);
             var speedY = this._speed*Math.sin(angle);
     
-            this.GetBoundingBox().X += speedY*2;
-            this.GetBoundingBox().Y += speedX*2;
+            this.GetBoundingBox().X += speedY*1.5;
+            this.GetBoundingBox().Y += speedX*1.5;
     
-            this.GetCurrentSprites()[this._missiles[this._currentMissile]].alpha = 0;
-            this._currentMissile = (this._currentMissile+1) % this._missiles.length;
-            this.GetCurrentSprites()[this._missiles[this._currentMissile]].alpha = 1;
+            this.GetCurrentSprites()[Archive.missiles[this._currentMissile]].alpha = 0;
+            this._currentMissile = (this._currentMissile+1) % Archive.missiles.length;
+            this.GetCurrentSprites()[Archive.missiles[this._currentMissile]].alpha = 1;
         }
         else
         {

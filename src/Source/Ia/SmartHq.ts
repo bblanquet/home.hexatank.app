@@ -22,7 +22,7 @@ export class SmartHq extends Headquarter{
     constructor(private _remainingAreas:Area[], skin:HqSkin, ceil:Ceil)
     {
         super(skin,ceil);
-        this.Diamonds = 20;
+        this.Diamonds = 0;
         this._trucks = new Array<Truck>();
         this._conquestedAreas= new Array<HqArea>();
     }

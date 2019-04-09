@@ -5,6 +5,12 @@ import { GroupsContainer } from './Source/GroupsContainer';
 import { GameSetup } from './GameSetup';
 import * as Hammer from 'hammerjs';
 import { SpriteProvider } from './Source/Tools/SpriteProvider';
+import { InteractionContext } from './Source/Context/InteractionContext';
+import { Playground } from './Source/Playground';
+import { Item } from './Source/Item';
+import { LoadingItem } from './Source/LoadingItem';
+import { BoundingBox } from './Source/BoundingBox';
+import { FakeBackground } from './Source/FakeBackground';
 
 const app = new PIXI.Application({
     backgroundColor: 0x00A651,
@@ -24,12 +30,16 @@ function Setup()
     PlaygroundHelper.Init();
     PlaygroundHelper.SpriteProvider = new SpriteProvider(app.loader.resources[path].textures);
     PlaygroundHelper.Render = new RenderingHandler(
-        new GroupsContainer([0,1,2,3,4],app.stage));
+        new GroupsContainer([0,1,2,3,4,5,6],app.stage));
 
-    let gameSetup = new GameSetup();
-    gameSetup.SetGame(app);
+    const interaction = new InteractionContext();
 
-    var manager = new PIXI.interaction.InteractionManager(app.renderer);
+    const items = new Array<Item>();
+    const playground = new Playground(items,app, interaction);
+    PlaygroundHelper.Playground = playground;
+    PlaygroundHelper.LoadingPlayground = new Playground(items,app, interaction);
+
+    let manager = new PIXI.interaction.InteractionManager(app.renderer);
     manager.autoPreventDefault = false;
     manager.on('pointerdown', PlaygroundHelper.Playground.InputManager.OnMouseDown.bind(PlaygroundHelper.Playground.InputManager), false);
     manager.on('pointermove', PlaygroundHelper.Playground.InputManager.OnMouseMove.bind(PlaygroundHelper.Playground.InputManager), false);
@@ -41,26 +51,75 @@ function Setup()
     hammer.on('pinchmove', (event:HammerInput) => {
         PlaygroundHelper.Playground.InputManager.OnPinch(event.scale);
     });
+    hammer.on('doubletap', (event:HammerInput) => {
+        PlaygroundHelper.Playground.InputManager.OnPinch(event.scale+0.2);
+    });
 
     window.addEventListener('resize', ResizeTheCanvas);
     ResizeTheCanvas();
+
+    const loading = new LoadingItem(BoundingBox.Create(0,0,300,300));
+    PlaygroundHelper.LoadingPlayground.Items.push(loading);
+    const back = new FakeBackground();
+    PlaygroundHelper.LoadingPlayground.Items.push(back);
+
+    new Promise(()=>{
+        PlaygroundHelper.SpriteProvider.PreloadTexture();
+        gameSetup.SetGame().forEach(element => {
+            playground.Items.push(<Item> element);        
+        });
+        interaction.Setup(gameSetup.GetHq());
+        const sleep = (milliseconds:number) => {
+            return new Promise(resolve => setTimeout(resolve, milliseconds))
+        };
+        sleep(5000).then(() => {
+            loading.Destroy();
+            back.Destroy();
+            isReady = true;
+        });
+    })
+
     GameLoop();
 }
+var gameSetup = new GameSetup();
 
-function ResizeTheCanvas(){
-    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+
+function ResizeTheCanvas()
+{
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) 
+    {
         app.renderer.resize(screen.width,screen.height); 
         PlaygroundHelper.Settings.ScreenWidth = screen.width;
         PlaygroundHelper.Settings.ScreenHeight = screen.height;
-    }else{
+    }
+    else
+    {
         app.renderer.resize(window.innerWidth,window.innerHeight); 
         PlaygroundHelper.Settings.ScreenWidth = window.innerWidth;
         PlaygroundHelper.Settings.ScreenHeight = window.innerHeight;
-    }
-  
+    }  
 }
+
+var isReady=false;
+var times = new Array<number>();
 
 function GameLoop(){
     requestAnimationFrame(GameLoop);
-    PlaygroundHelper.Playground.Update();
+    if(isReady){
+        PlaygroundHelper.Playground.Update();
+    }
+    else
+    {
+        PlaygroundHelper.LoadingPlayground.Update();
+    }
+    SetFps();
+}
+
+function SetFps() {
+    const now = performance.now();
+    while (times.length > 0 && times[0] <= now - 1000) {
+        times.shift();
+    }
+    times.push(now);
+    PlaygroundHelper.Settings.ChangeFps(times.length);
 }

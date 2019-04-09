@@ -7,6 +7,7 @@ import { IField } from "./IField";
 import { Vehicle } from "../Unit/Vehicle"; 
 import { Truck } from "../Unit/Truck";
 import { Timer } from "../Tools/Timer";
+import { Archive } from "../Tools/ResourceArchiver";
 
 export class DiamondField extends Item implements IField
 {
@@ -20,7 +21,7 @@ export class DiamondField extends Item implements IField
         this._ceil.SetField(this);
         this.Z= 0;
         this._timer = new Timer(3);
-        this.GenerateSprite('./diamondCell.svg');
+        this.GenerateSprite(Archive.diamondCell);
         this.InitPosition(ceil.GetBoundingBox());
     }
 

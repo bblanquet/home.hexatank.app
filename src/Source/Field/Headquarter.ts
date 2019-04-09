@@ -12,6 +12,7 @@ import { IField } from "./IField";
 import { Vehicle } from "../Unit/Vehicle";
 import { Crater } from "../Crater";
 import { ISelectable } from "../ISelectable";
+import { Archive } from "../Tools/ResourceArchiver";
 
 export class Headquarter extends AliveItem implements IField, ISelectable
 {
@@ -41,8 +42,8 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         this.BoundingBox.Y = this._ceil.GetBoundingBox().Y;
 
         this.GenerateSprite(this.GetSkin().GetHq());
-        this.GenerateSprite("./building/hqMiddle.svg");
-        this.GenerateSprite('./building/hqTop.svg');
+        this.GenerateSprite(Archive.building.hq.bottom);
+        this.GenerateSprite(Archive.building.hq.top);
 
         this.GetSprites().forEach(obj => {
             obj.width = this.BoundingBox.Width,
@@ -165,7 +166,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable
 
     public Update(viewX: number, viewY: number):void 
     {
-        this.GetBothSprites('./building/hqMiddle.svg').forEach(sprite=>sprite.rotation += 0.1);
+        this.GetBothSprites(Archive.building.hq.bottom).forEach(sprite=>sprite.rotation += 0.1);
 
         if(!this.IsAlive())
         {

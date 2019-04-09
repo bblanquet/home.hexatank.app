@@ -1,5 +1,5 @@
 export interface ISpriteProvider{
-    //GetSprite(name:any):PIXI.Sprite;
-    GetZoomOutSprite(name:any):PIXI.Sprite;
-    GetZoomInSprite(name:any):PIXI.Sprite;
+    GetZoomOutSprite(name:string):PIXI.Sprite;
+    GetZoomInSprite(name:string):PIXI.Sprite;
+    PreloadTexture():void;
 }

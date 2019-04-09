@@ -14,6 +14,8 @@ import { ICombination } from './Combination/ICombination';
 import { SelectionCombination } from './Combination/SelectionCombination';
 import { CancelCombination } from './Combination/CancelCombination';
 import { Ceil } from '../Ceil';
+import { Vehicle } from '../Unit/Vehicle';
+import { Headquarter } from '../Field/Headquarter';
 
 export class InteractionContext implements IInteractionContext{
 
@@ -21,22 +23,39 @@ export class InteractionContext implements IInteractionContext{
     private _selectedItem:Array<Item>;
     private _checker:IPatternChecker;
     private _isSelectable:{(item:Item):boolean};
-    constructor(isSelectable:{(item:Item):boolean}){ 
+    private _currentHq:Headquarter;
+    constructor(){ 
         this._selectedItem = [];
-        this._isSelectable = isSelectable;
+        this._isSelectable = this.IsSelectable.bind(this);
         let combinations = new Array<ICombination>();
-        combinations.push(new CancelCombination(isSelectable,this));
-        combinations.push(new ClearTrashCombination(isSelectable,this));
-        combinations.push(new UnselectCombination(isSelectable,this));
-        combinations.push(new SelectionCombination(isSelectable));
+        combinations.push(new CancelCombination(this._isSelectable, this));
+        combinations.push(new ClearTrashCombination(this._isSelectable, this));
+        combinations.push(new UnselectCombination(this._isSelectable, this));
+        combinations.push(new SelectionCombination(this._isSelectable));
         combinations.push(new TruckCombination());
         combinations.push(new TankCombination());
         combinations.push(new PatrolCombination());
         combinations.push(new FastCeilCombination());
         combinations.push(new AttackCeilCombination());
         combinations.push(new HealCeilCombination());
-        
         this._checker = new PatternChecker(combinations);
+    }
+
+    public Setup(currentHq:Headquarter):void{
+        this._currentHq = currentHq;
+    }
+
+    public IsSelectable(item:Item):boolean
+    {
+        if(item instanceof Vehicle){
+            const vehicle = <Vehicle> item;
+            return !vehicle.IsEnemy(this._currentHq);
+        }
+        else if(item instanceof Headquarter)
+        {
+            return item === this._currentHq;
+        }
+        return false;
     }
 
 
@@ -55,7 +74,7 @@ export class InteractionContext implements IInteractionContext{
         }
     }
 
-    OnSelect(item:Item):void
+    public OnSelect(item:Item):void
     {
         if(item instanceof Ceil){
             if(this.ContainsSelectable(item))
@@ -69,7 +88,7 @@ export class InteractionContext implements IInteractionContext{
         this._checker.Check(this._selectedItem);
     }
 
-    Push(item: Item): void {
+    public Push(item: Item): void {
         this.OnSelect(item);
     }
 

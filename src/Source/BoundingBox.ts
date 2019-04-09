@@ -13,6 +13,16 @@ export class BoundingBox{
         this.Height = 0;
     }
 
+    public static Create(x:number,y:number,width:number,height:number):BoundingBox{
+        let b = new BoundingBox();
+        b.X = x;
+        b.Y = y;
+        b.Width = width;
+        b.Height = height;
+        return b;
+    }
+
+
     GetCenter ():number{
         return (this.X + this.Width/2);
     };

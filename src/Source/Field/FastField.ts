@@ -4,8 +4,8 @@ import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
 import { Vehicle } from "../Unit/Vehicle";
 import { PlaygroundHelper } from "../PlaygroundHelper";
-import { Sprite } from "pixi.js";
 import { Ceil } from "../Ceil";
+import { Archive } from "../Tools/ResourceArchiver";
 
 export class FastField extends Item implements IField
 {
@@ -17,7 +17,7 @@ export class FastField extends Item implements IField
         this._ceil.SetField(this);
         this.Z= 1;
 
-        this.GenerateSprite('fastCeil');
+        this.GenerateSprite(Archive.bonus.speed);
         this.InitPosition(ceil.GetBoundingBox());
     }
 

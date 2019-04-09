@@ -17,7 +17,7 @@ export abstract class Item implements Updater, IBoundingBoxContainer{
     constructor()
     {
         this.DisplayObjects = new Array<PIXI.DisplayObject>();
-        PlaygroundHelper.Settings.Subscribe(this.OnScaleChanged.bind(this));
+        PlaygroundHelper.Settings.ScaleSubscribe(this.OnScaleChanged.bind(this));
     }
 
     public GetCurrentSprites():{ [id: string]: PIXI.Sprite; }{
@@ -89,7 +89,7 @@ export abstract class Item implements Updater, IBoundingBoxContainer{
     }
 
     public  Destroy():void{
-        PlaygroundHelper.Settings.UnSubscribe(this.OnScaleChanged.bind(this));
+        PlaygroundHelper.Settings.ScaleUnsubscribe(this.OnScaleChanged.bind(this));
     }
 
     public abstract GetBoundingBox():BoundingBox;

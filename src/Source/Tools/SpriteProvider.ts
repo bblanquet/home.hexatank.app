@@ -1,4 +1,5 @@
 import { ISpriteProvider } from "./ISpriteProvider";
+import { Archive } from "./ResourceArchiver";
 
 export class SpriteProvider implements ISpriteProvider{
     private _textureDictionary:PIXI.loaders.TextureDictionary;
@@ -11,17 +12,20 @@ export class SpriteProvider implements ISpriteProvider{
         this._zoomOutSvgDictionary = {};
     }
 
-    GetZoomOutSprite(name: any): PIXI.Sprite 
+    GetZoomOutSprite(name: string): PIXI.Sprite 
     {
         if(this.IsOldStyleSvg(name))
         {
+            const postension = './out'
+            name = name.slice(1);
+            name = postension + name;
+
             if(this._zoomOutSvgDictionary[name] === null){
                 return new PIXI.Sprite(this._zoomOutSvgDictionary[name]);
             }
             else
             {
-                PIXI.Texture.removeTextureFromCache(name);
-                var texture = PIXI.Texture.fromImage(name,undefined,undefined,0.5);
+                const texture = PIXI.Texture.fromImage(name,undefined,undefined,0.5);
                 this._zoomOutSvgDictionary[name] = texture;
                 return new PIXI.Sprite(texture);
             }
@@ -32,17 +36,45 @@ export class SpriteProvider implements ISpriteProvider{
         }
     }
 
-    GetZoomInSprite(name: any): PIXI.Sprite 
+    PreloadTexture(): void {
+        this.LoadInArchive(Archive,'./out',0.5);
+        this.LoadInArchive(Archive,'./in',1);
+    }
+
+    private LoadInArchive(value:any,postension:string,accuracy:number){
+        if(typeof value === "string"){
+            let name = postension + value.slice(1);
+            const texture = PIXI.Texture.fromImage(name,undefined,undefined,accuracy);
+            this._zoomOutSvgDictionary[name] = texture;
+        }
+        else if(value instanceof Array){
+            const filenames = value as Array<string>;
+            filenames.forEach(filename=>{
+                let name = postension + filename.slice(1);
+                const texture = PIXI.Texture.fromImage(name,undefined,undefined,accuracy);
+                this._zoomOutSvgDictionary[name] = texture;
+            });
+        }
+        else{
+            for(let key in value){
+                this.LoadInArchive(value[key],postension,accuracy);
+            }
+        }
+    }
+
+    GetZoomInSprite(name: string): PIXI.Sprite 
     {
         if(this.IsOldStyleSvg(name))
         {
+            const postension = './in'
+            name = name.slice(1);
+            name = postension + name;
             if(this._zoomInSvgDictionary[name] === null){
                 return new PIXI.Sprite(this._zoomInSvgDictionary[name]);
             }
             else
             {
-                PIXI.Texture.removeTextureFromCache(name);
-                var texture = PIXI.Texture.fromImage(name,undefined,undefined,1);
+                const texture = PIXI.Texture.fromImage(name,undefined,undefined,1);
                 this._zoomInSvgDictionary[name] = texture;
                 return new PIXI.Sprite(texture);
             }

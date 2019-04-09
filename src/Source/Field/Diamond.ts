@@ -9,6 +9,7 @@ import { Vehicle } from "../Unit/Vehicle";
 import { Timer } from "../Tools/Timer";
 import { AliveItem } from "../AliveItem"; 
 import { Crater } from "../Crater";
+import { Archive } from "../Tools/ResourceArchiver";
 
 export class Diamond extends AliveItem implements IField{
 
@@ -25,7 +26,7 @@ export class Diamond extends AliveItem implements IField{
         this._ceil = ceil;
         this._ceil.SetField(this);
         this.BoundingBox = this._ceil.GetBoundingBox();
-        this.GenerateSprite('./nature/diamond.svg');
+        this.GenerateSprite(Archive.nature.diamond);
         this._timer = new Timer(4);
 
         this.Lights = new Array<Light>();
@@ -73,6 +74,9 @@ export class Diamond extends AliveItem implements IField{
         this.Fields.forEach(field=>{
             field.Destroy();
         });
+        this.Lights.forEach(light => {
+            light.Destroy();
+        });
     }
 
     public Update(viewX: number, viewY: number): void {
@@ -90,42 +94,7 @@ export class Diamond extends AliveItem implements IField{
         });
 
         
-        if(this._timer.IsElapsed())
-        {
-            this.Lights.forEach(light=>{
-                if(!light.IsShowing)
-                {
-                    
-                    var randomX = Math.random();
-                    var randomY = Math.random();
-                    var randomXsign = Math.random();
-                    var randomYsign = Math.random();
-                    var quarter = PlaygroundHelper.Settings.Size/4;
-    
-                    if(randomXsign < 0.5)
-                    {
-                        randomX = -quarter * randomX;
-                    }
-                    else
-                    {
-                        randomX = quarter * randomX;
-                    }
-    
-                    if(randomYsign < 0.5)
-                    {
-                        randomY = -quarter * randomY;
-                    }
-                    else
-                    {
-                        randomY = quarter * randomY;
-                    }
-    
-                    light.Display(
-                        this._ceil.GetBoundingBox().GetCenter() + randomX, 
-                        this._ceil.GetBoundingBox().GetMiddle() + randomY);
-                }
-            });
-        }
+        this.UpdateLights();
 
         this.Lights.forEach(light=>
         {
@@ -134,6 +103,33 @@ export class Diamond extends AliveItem implements IField{
                 light.Update(viewX,viewY);
             }
         });
+    }
+
+    private UpdateLights() {
+        if (this._timer.IsElapsed()) {
+            this.Lights.forEach(light => {
+                if (!light.IsShowing) {
+                    var randomX = Math.random();
+                    var randomY = Math.random();
+                    var randomXsign = Math.random();
+                    var randomYsign = Math.random();
+                    var quarter = PlaygroundHelper.Settings.Size / 4;
+                    if (randomXsign < 0.5) {
+                        randomX = -quarter * randomX;
+                    }
+                    else {
+                        randomX = quarter * randomX;
+                    }
+                    if (randomYsign < 0.5) {
+                        randomY = -quarter * randomY;
+                    }
+                    else {
+                        randomY = quarter * randomY;
+                    }
+                    light.Display(this._ceil.GetBoundingBox().GetCenter() + randomX, this._ceil.GetBoundingBox().GetMiddle() + randomY);
+                }
+            });
+        }
     }
 
      public Select(context: InteractionContext): boolean {

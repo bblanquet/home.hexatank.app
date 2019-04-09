@@ -17,6 +17,12 @@ export class Light extends Item{
         this.InitPosition(value)
     }
 
+    public  Destroy():void{
+        super.Destroy();
+        this.IsUpdatable = false;
+        PlaygroundHelper.Render.Remove(this);
+    }
+
     public GetBoundingBox(): BoundingBox{
         return this.BoundingBox;
     }

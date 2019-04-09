@@ -18,6 +18,7 @@ import { Crater } from '../Crater';
 import { CeilState } from '../CeilState';
 import { IOrder } from '../Ia/IOrder';
 import { ISelectable } from '../ISelectable';
+import { Timer } from '../Tools/Timer';
 
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable
 {
@@ -26,7 +27,6 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     Attack:number=30;
     protected RootSprites:Array<string>;
     protected Wheels:Array<string>;
-    protected BottomWheel:string;
     private WheelIndex:number;
 
     //movable
@@ -39,13 +39,17 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
     protected BoundingBox:BoundingBox;
     private Size:number;
-    private DustIndex:number;
 
     private _translationMaker:ITranslationMaker;
     private _rotationMaker:IRotationMaker;
     private _angleFinder:IAngleFinder;
-
+    private _pendingOrder:IOrder;
     private _selectionSprite:string;
+
+    private _dustTimer:Timer;
+    private _dustIndex:number;
+    private _leftDusts:Array<Dust>;
+    private _rightDusts:Array<Dust>;
 
     constructor(){
         super();
@@ -65,23 +69,25 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
         this.Wheels =  new Array<string>();
         this.WheelIndex = 0;
-        this.DustIndex = 0;
+        this._dustTimer = new Timer(12);
+        this._dustIndex = 0;
 
         this._translationMaker = new TranslationMaker<Vehicle>(this);
         this._rotationMaker = new RotationMaker<Vehicle>(this);
         this._angleFinder = new AngleFinder<Vehicle>(this);
+        this._leftDusts = [new Dust(new BoundingBox()),new Dust(new BoundingBox()),new Dust(new BoundingBox()),new Dust(new BoundingBox())];
+        this._rightDusts = [new Dust(new BoundingBox()),new Dust(new BoundingBox()),new Dust(new BoundingBox()),new Dust(new BoundingBox())];
+        this._leftDusts.forEach(ld=>PlaygroundHelper.Playground.Items.push(ld));
+        this._rightDusts.forEach(rd=>PlaygroundHelper.Playground.Items.push(rd));
     }
 
     public SetOrder(order: IOrder): void {
-        if(!isNullOrUndefined(this._nextCeil))
+        this._pendingOrder = order;
+
+        if(!isNullOrUndefined(this._order))
         {
-            this._nextCeil.SetOccupier(null);
-        }
-        if(!isNullOrUndefined(this._order)){
             this._order.Cancel();
         }
-
-        this._order = order;
     }
 
     public CancelOrder():void{
@@ -93,7 +99,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     }
 
     private HasNextCeil():Boolean{
-        return this._nextCeil != null
+        return !isNullOrUndefined(this._nextCeil);
     }
 
     private Moving():void
@@ -129,38 +135,34 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this.SetProperty(this.Wheels[this.WheelIndex],(e)=>e.alpha= 1);
         this.SetProperty(previousWheel,(e)=>e.alpha= 0);
 
-        //this.Wheels[this.WheelIndex].alpha = 1;
-        //previousWheel.alpha = 0;
     }
 
     private HandleDust():void{
-        this.DustIndex += 1;
-
-        if(this.DustIndex % 12 == 0)
+        if(this._dustTimer.IsElapsed())
         {
             let center=this.GetBoundingBox().GetCenter();
             let middle=this.GetBoundingBox().GetMiddle(); 
             let width = this.GetBoundingBox().Width;
             let height = this.GetBoundingBox().Height;
 
-            this.CreateDust(center + width/4*Math.cos(this.CurrentRadius)
-            , middle + height/4*Math.sin(this.CurrentRadius));
+            const leftb = new BoundingBox();
+            leftb.X = center + width/4*Math.cos(this.CurrentRadius);
+            leftb.Y = middle + height/4*Math.sin(this.CurrentRadius);
+            leftb.Width = this.GetBoundingBox().Width/5;
+            leftb.Height = this.GetBoundingBox().Width/5;
+
+            this._leftDusts[this._dustIndex].Reset(leftb);
             
-            this.CreateDust(center - width/3*Math.cos(this.CurrentRadius)
-            , middle - height/3*Math.sin(this.CurrentRadius));
+            const rightb = new BoundingBox();
+            rightb.X = center - width/3*Math.cos(this.CurrentRadius);
+            rightb.Y = middle - height/3*Math.sin(this.CurrentRadius);
+            rightb.Width = this.GetBoundingBox().Width/5;
+            rightb.Height = this.GetBoundingBox().Width/5;
+
+            this._rightDusts[this._dustIndex].Reset(rightb);
+
+            this._dustIndex = (this._dustIndex+1) % this._leftDusts.length;
         }
-    }
-
-    private CreateDust(x:number,y:number):void
-    {
-        var b = new BoundingBox();
-        b.X = x;
-        b.Y = y;
-        b.Width = this.GetBoundingBox().Width/5;
-        b.Height = this.GetBoundingBox().Width/5;
-
-        var dust = new Dust(b);
-        PlaygroundHelper.Playground.Items.push(dust);
     }
 
     public IsSelected():boolean{
@@ -178,9 +180,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     public MoveNextCeil(): void {
         var previousCeil = this._currentCeil;
 
-        this._currentCeil.SetOccupier(null);
         this._currentCeil = this._nextCeil;
-        this._currentCeil.SetOccupier(this);
         this._nextCeil = null;
 
         this.SetVisible();
@@ -207,7 +207,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         });
     }
 
-    public  Destroy():void{
+    public Destroy():void{
         super.Destroy();
         this._currentCeil.SetOccupier(null);
         if(!isNullOrUndefined(this._nextCeil))
@@ -216,6 +216,10 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         }
         PlaygroundHelper.Render.Remove(this);
         this.IsUpdatable = false;
+        this._leftDusts.forEach(ld=>ld.Destroy());
+        this._rightDusts.forEach(ld=>ld.Destroy());
+        this._leftDusts = [];
+        this._rightDusts = [];
     }
 
     public Update(viewX: number, viewY: number):void{
@@ -227,10 +231,15 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
             return;
         }
 
-        if(this.ExistsOrder())
+        if(this.ExistsOrder() && !this._order.IsDone())
         {
-            if(!this._order.IsDone())
-            {
+            this._order.Do(); 
+        }
+
+        if(!this.ExistsOrder() || this._order.IsDone() && !this.HasNextCeil()){
+            if(this._pendingOrder){
+                this._order = this._pendingOrder;
+                this._pendingOrder = null;
                 this._order.Do(); 
             }
         }
@@ -240,8 +249,34 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         if(this.HasNextCeil())
         {
             this.Moving();
-        }        
+            this.SetCurrentCeilEmpty();
+        }
+        else
+        {
+            if(this._pendingOrder)
+            {
+                this._order = this._pendingOrder;
+                this._pendingOrder = null;
+            }
+        }
         super.Update(viewX,viewY);
+    }
+
+    private SetCurrentCeilEmpty() {
+        if(this._currentCeil.GetOccupier() === this 
+        && this._nextCeil)
+        {
+            const currentCeilDistance = 
+            Math.sqrt(Math.pow(this._currentCeil.GetBoundingBox().X - this.GetBoundingBox().X, 2)
+            + Math.pow(this._currentCeil.GetBoundingBox().Y - this.GetBoundingBox().Y, 2));
+            const nextCeilDistance = Math.sqrt(Math.pow(this.GetBoundingBox().X - this._nextCeil.GetBoundingBox().X, 2)
+            + Math.pow(this.GetBoundingBox().Y - this._nextCeil.GetBoundingBox().Y, 2));
+
+            if (nextCeilDistance < currentCeilDistance) 
+            {
+                this._currentCeil.SetOccupier(null);
+            }
+        }
     }
 
     public ExistsOrder():boolean{
@@ -261,11 +296,6 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
     public Select(context:InteractionContext):boolean
     {
-        // if(this.GetSprites()[0].containsPoint(context.Point))
-        // {
-        //     context.OnSelect(this);
-        //     return true;
-        // }
         return false;
     }
 

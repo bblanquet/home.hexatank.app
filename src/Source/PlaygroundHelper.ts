@@ -16,6 +16,8 @@ export class PlaygroundHelper{
     static Render:RenderingHandler;
     static Settings:GameSettings;
     static Playground:Playground;
+    static LoadingPlayground:Playground;
+    static CurrentPlayground:Playground;
     static OnSelectedItem:LiteEvent<ISelectable>;
     static OnUnselectedItem:LiteEvent<ISelectable>;
     private static _areaEngine:AreaEngine;

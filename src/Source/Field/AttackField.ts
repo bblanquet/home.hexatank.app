@@ -5,6 +5,7 @@ import { InteractionContext } from "../Context/InteractionContext";
 import { Vehicle } from "../Unit/Vehicle";
 import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Ceil } from "../Ceil";
+import { Archive } from "../Tools/ResourceArchiver"; 
 
 export class AttackField extends Item implements IField
 {
@@ -16,7 +17,7 @@ export class AttackField extends Item implements IField
         this._ceil.SetField(this);
         this.Z= 1;
 
-        this.GenerateSprite('attackCeil');        
+        this.GenerateSprite(Archive.bonus.strength);        
         this.InitPosition(ceil.GetBoundingBox());
     }
 

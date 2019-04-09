@@ -14,7 +14,7 @@ module.exports = {
 
     // What files webpack will manage
     resolve: {
-        extensions: ['.js', '.ts', '.tsx']
+        extensions: ['.js', '.ts', '.tsx',]
     },
 
     // Make errors mor clear
@@ -43,8 +43,6 @@ module.exports = {
     devServer: {
         contentBase: './dist'
     },
-
-
     plugins: [
         new CleanWebpackPlugin([distDir]),
         new HtmlWebpackPlugin({

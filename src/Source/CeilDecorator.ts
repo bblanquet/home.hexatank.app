@@ -1,8 +1,8 @@
 import { Item } from "./Item";
 import { RockField } from "./Field/RockField";
 import { Ceil } from "./Ceil";
-import { PlaygroundHelper } from "./PlaygroundHelper";
 import { BasicField } from "./Field/BasicField";
+import { Archive } from "./Tools/ResourceArchiver";
 
 export class CeilDecorator{
 
@@ -25,10 +25,10 @@ export class CeilDecorator{
             {
                 if(ceil.GetField() instanceof BasicField)
                 {
-                    var deco = './nature/rock.svg';
+                    var deco = Archive.nature.rock;
                     if(decorationRandom <= 0.625)
                     {
-                        deco = './nature/tree.svg';
+                        deco = Archive.nature.tree;
                     }
     
                     items.push(new RockField(ceil,deco)); 

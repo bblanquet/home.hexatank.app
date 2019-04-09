@@ -24,11 +24,11 @@ export class BasicItem extends Item{
         this.SetProperty(this._spriteName,e=>e.rotation= radius);
     }
 
-    public SetDisplayTrigger(show:{ (): boolean }):void{
+    public SetDisplayTrigger(show:()=> boolean):void{
         this._isVisible = show;
     }
 
-    public SetVisible(show:{ (): boolean }):void{
+    public SetVisible(show:()=> boolean):void{
         this._isAlive = show;
     }
 
@@ -48,16 +48,8 @@ export class BasicItem extends Item{
             this.Destroy();
         }
 
-        if(this.GetCurrentSprites()['selectedCeil'])
-        {
-            console.log('plop');
-        }
         const visible = this._isVisible();
         this.SetProperty(this._spriteName,e=>e.alpha= visible ? 1 :0);
-        if(this.GetCurrentSprites()['selectedCeil'])
-        {
-            console.log('plop');
-        }
     }
 
     public Destroy(): void 

@@ -2,7 +2,6 @@ import { Item } from "../Item";
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
 import { PlaygroundHelper } from "../PlaygroundHelper";
-import "../../Extension/Collection";
 import { Tank } from "./Tank";
 import { Missile } from "./Missile";
 import { IAngleFinder } from "../IAngleFinder";
@@ -13,6 +12,7 @@ import { RotationMaker } from "../RotationMaker";
 import { HqSkin } from "../HqSkin";
 import { ITimer } from "../Tools/ITimer";
 import { Timer } from "../Tools/Timer";
+import { Archive } from "../Tools/ResourceArchiver";
 
 export class Turrel extends Item implements IRotatable
 {
@@ -46,17 +46,16 @@ export class Turrel extends Item implements IRotatable
         this._coolingDownTimer = new Timer(100);
         this._animationTimer = new Timer(5);
 
-        let fires = ['./tank/cannon.svg','./tank/cannon1.svg','./tank/cannon2.svg','./tank/cannon3.svg','./tank/cannon4.svg'];
         
         this._canon = new Array<string>();
-        fires.forEach(fire =>{
-            this.GenerateSprite(fire,e=>{
+        Archive.cannons.forEach(cannon =>{
+            this.GenerateSprite(cannon,e=>{
                 e.alpha = 0;
             });
-            this._canon.push(fire);
+            this._canon.push(cannon);
         });
 
-        this.SetProperty(fires[0],e=>e.alpha = 1);
+        this.SetProperty(Archive.cannons[0],e=>e.alpha = 1);
         this._top = this._skin.GetTopTankSprite();        
         this.GenerateSprite(this._top);
 
@@ -100,12 +99,10 @@ export class Turrel extends Item implements IRotatable
 
     private Shoot() {
         this.IsAnimated = true;
-        var boundingBox = new BoundingBox();
-        boundingBox.Width = this.Base.GetBoundingBox().Width / 4;
-        boundingBox.Height = this.Base.GetBoundingBox().Height / 3;
-        boundingBox.X = this.Base.GetBoundingBox().GetCenter() - boundingBox.Width / 2;
-        boundingBox.Y = this.Base.GetBoundingBox().GetMiddle() - boundingBox.Height / 2;
-        var missile = new Missile(boundingBox, this.Base.GetTarget(),this.Base.Attack);
+        var missile = new Missile(
+            BoundingBox.Create(this.GetBoundingBox().X,this.GetBoundingBox().Y,this.GetBoundingBox().Width,this.GetBoundingBox().Height)
+            , this.Base.GetTarget()
+            , this.Base.Attack);
         PlaygroundHelper.Playground.Items.push(missile);
     }
 

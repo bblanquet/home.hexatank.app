@@ -6,6 +6,7 @@ import { Ceil } from "../../Ceil";
 import { PatrolOrder } from "../../Ia/PatrolOrder";
 import { BasicItem } from "../../BasicItem";
 import { PlaygroundHelper } from "../../PlaygroundHelper";
+import { Archive } from "../../Tools/ResourceArchiver";
 
 export class PatrolCombination implements ICombination{
     private _indicators:Array<BasicItem>;
@@ -40,7 +41,7 @@ export class PatrolCombination implements ICombination{
     {
         if(this.ContainsVehicleePatrol(items)){
             if(items[items.length-1] instanceof Ceil){
-                const element = new BasicItem(items[items.length-1].GetBoundingBox(), './direction/patrol2.svg');
+                const element = new BasicItem(items[items.length-1].GetBoundingBox(), Archive.direction.patrol);
                 element.SetDisplayTrigger(()=>true);
                 element.SetVisible(()=>true);
                 this._indicators.push(element);

@@ -21,6 +21,7 @@ import { BottomMenu } from "../Menu/BottomMenu";
 import { FlowerMapBuilder } from "./FlowerMapBuilder";
 import { BasicItem } from "../BasicItem";
 import { BoundingBox } from "../BoundingBox";
+import {Archive} from "../Tools/ResourceArchiver"
 
 export class MapGenerator implements IMapGenerator{
     private _currentHq:Headquarter;
@@ -47,7 +48,7 @@ export class MapGenerator implements IMapGenerator{
             b.Height = PlaygroundHelper.Settings.Size * 6;
             b.X = ceil.GetBoundingBox().X - (b.Width/2 - ceil.GetBoundingBox().Width/2);
             b.Y = ceil.GetBoundingBox().Y - (b.Height/2 - ceil.GetBoundingBox().Height/2);
-            const grass = new BasicItem(b,'./nature/grass.svg');
+            const grass = new BasicItem(b,Archive.nature.grass);
             grass.SetDisplayTrigger(()=>true);
             grass.SetVisible(()=>true);
             items.push(grass);
@@ -55,15 +56,15 @@ export class MapGenerator implements IMapGenerator{
         const diamond = new Diamond(PlaygroundHelper.CeilsContainer.Get(mapBuilder.GetMidle(mapLength)));
         items.push(diamond);
         const redQuarter = new Headquarter(
-            new HqSkin("./tank/bottomTank.svg", "./tank/redTurrel.svg", "./truck/truck.svg", './building/redHqBottom.svg', "redCeil"), 
+            new HqSkin(Archive.team.red.tank, Archive.team.red.turrel,Archive.team.red.truck, Archive.team.red.hq, "redCeil"), 
             PlaygroundHelper.CeilsContainer.Get(corners[3]));
         this._currentHq = redQuarter;
         const blueQuarter = new SmartHq(PlaygroundHelper.GetAreas(PlaygroundHelper.CeilsContainer.Get(corners[1]))
-        , new HqSkin("./tank/blueBottomTank.svg", "./tank/blueTurrel.svg", "./truck/blueTruck.svg", './building/blueHqBottom.svg', "selectedCeil"), 
+        , new HqSkin(Archive.team.blue.tank, Archive.team.blue.turrel,Archive.team.blue.truck, Archive.team.blue.hq, "selectedCeil"), 
         PlaygroundHelper.CeilsContainer.Get(corners[1]));
         blueQuarter.Diamond = diamond;
         const brownQuarter = new SmartHq(PlaygroundHelper.GetAreas(PlaygroundHelper.CeilsContainer.Get(corners[2]))
-        , new HqSkin("./tank/yellowBottomTank.svg", "./tank/yellowTurrel.svg", "./truck/yellowTruck.svg", './building/yellowHqBottom.svg', "brownCeil")
+        , new HqSkin(Archive.team.yellow.tank, Archive.team.yellow.turrel,Archive.team.yellow.truck, Archive.team.yellow.hq, "brownCeil")
         , PlaygroundHelper.CeilsContainer.Get(corners[2]));
 
         brownQuarter.Diamond = diamond;
@@ -71,7 +72,6 @@ export class MapGenerator implements IMapGenerator{
         items.push(blueQuarter);
         items.push(brownQuarter);
         
-
         this.SetMenus(redQuarter, items);
         ceils.forEach(ceil=>{
             CeilDecorator.Decorate(items, ceil);
@@ -96,8 +96,6 @@ export class MapGenerator implements IMapGenerator{
         new EmptyMenuItem('rightBottomBorder', 'rightBottomBorder')]);
         items.splice(0, 0, rightMenu);
         const leftMenu = new LeftMenu([new EmptyMenuItem('leftTopBorder', 'leftTopBorder'),
-        //new EmptyMenuItem('attackIcon', 'hoverAttackIcon'),
-        //new EmptyMenuItem('defenseIcon', 'hoverDefenseIcon'),
         new PatrolMenuItem(),
         new CancelMenuItem(),
         new EmptyMenuItem('leftBottomBorder', 'leftBottomBorder')]);

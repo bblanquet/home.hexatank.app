@@ -2,24 +2,24 @@ import { Item } from "../Item";
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
 import { PlaygroundHelper } from "../PlaygroundHelper";
+import { Timer } from "../Tools/Timer";
 
 export class Dust extends Item 
 {
-    BoundingBox:BoundingBox;
-    private i:number;
+    public BoundingBox:BoundingBox;
     private currentDust:number; 
     private currentAlpha:number;
     private _sprites:string[]=['dust1.png','dust2.png','dust3.png','dust4.png'];
+    private _timer:Timer;
 
     constructor(boundingBox:BoundingBox)
     {
         super();
         
-        this.i = 0;
         this.currentDust = -1;
         this.currentAlpha = 1;
         this.Z= 1;
-
+        this._timer = new Timer(15);
         this.BoundingBox = boundingBox; 
         this._sprites.forEach(dust=>{
             this.GenerateSprite(dust);
@@ -32,6 +32,7 @@ export class Dust extends Item
         this.InitPosition(boundingBox);
     }
 
+
     public GetBoundingBox():BoundingBox{
         return this.BoundingBox;
     }
@@ -43,8 +44,6 @@ export class Dust extends Item
     public Update(viewX: number, viewY: number): void{
         super.Update(viewX,viewY);
 
-        this.i += 1;
-    
         if(0 <= this.currentDust 
             && this.currentDust < this._sprites.length)
         {
@@ -59,25 +58,41 @@ export class Dust extends Item
             this.currentAlpha = 0;			
         }
 
-        if(this.i % 15 == 0)
+        if(!this.IsDone())
         {
-            var previous = this.currentDust; 
-            this.currentDust += 1;
-
-            if(this._sprites.length == this.currentDust)
+            if(this._timer.IsElapsed())
             {
-                this.SetProperty(this._sprites[previous],s=>s.alpha = 0);
-                this.Destroy();
-            }
-            else
-            {
-                if(-1 < previous)
+                var previous = this.currentDust; 
+                this.currentDust += 1;
+    
+                if(this._sprites.length == this.currentDust)
                 {
                     this.SetProperty(this._sprites[previous],s=>s.alpha = 0);
                 }
-                this.SetProperty(this._sprites[this.currentDust],s=>s.alpha = this.currentAlpha);
+                else
+                {
+                    if(-1 < previous)
+                    {
+                        this.SetProperty(this._sprites[previous],s=>s.alpha = 0);
+                    }
+                    this.SetProperty(this._sprites[this.currentDust],s=>s.alpha = this.currentAlpha);
+                }
             }
         }
+    }
+
+    public Reset(boundingBox:BoundingBox){
+        this.BoundingBox = boundingBox;
+        this._timer = new Timer(15);
+        this.GetSprites().forEach(sp=>{
+            sp.alpha = 0;
+        });
+        this.currentDust = -1;
+        this.currentAlpha = 1;
+    }
+
+    public IsDone(){
+        return this._sprites.length == this.currentDust;
     }
 
     public Destroy() {

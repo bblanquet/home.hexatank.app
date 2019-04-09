@@ -1,4 +1,3 @@
-import * as PIXI from 'pixi.js';
 import {Item} from './Item';
 import {InteractionContext} from './Context/InteractionContext';
 import {CeilProperties} from './CeilProperties';
@@ -13,7 +12,7 @@ import { AliveItem } from './AliveItem';
 import { BasicField } from './Field/BasicField';
 import { CeilState } from './CeilState';
 import { isNullOrUndefined } from 'util';
-import { timingSafeEqual } from 'crypto';
+import { Archive } from './Tools/ResourceArchiver';
 
 export class Ceil extends Item implements ICeil
 {
@@ -124,26 +123,26 @@ export class Ceil extends Item implements ICeil
 
     public SetSprite():void
     {
-        this.GenerateSprite('./hiddenCell.svg');
-        this.SetProperty('./hiddenCell.svg',e=>e.alpha = 1);
+        this.GenerateSprite(Archive.hiddenCell);
+        this.SetProperty(Archive.hiddenCell,e=>e.alpha = 1);
 
-        this.GenerateSprite('./halfVisibleCell.svg');
-        this.SetProperty('./halfVisibleCell.svg',e=>e.alpha = 0);
+        this.GenerateSprite(Archive.halfVisibleCell);
+        this.SetProperty(Archive.halfVisibleCell,e=>e.alpha = 0);
 
-        this.GenerateSprite('./cell.svg');
-        this.SetProperty('./cell.svg',e=>e.alpha = 0);
+        this.GenerateSprite(Archive.cell);
+        this.SetProperty(Archive.cell,e=>e.alpha = 0);
 
-        this._display[CeilState.Hidden] = ['./hiddenCell.svg'];
+        this._display[CeilState.Hidden] = [Archive.hiddenCell];
         
         if(isNullOrUndefined(this._decorationSprite))
         {
-            this._display[CeilState.HalfVisible] = ['./halfVisibleCell.svg','./cell.svg']; 
-            this._display[CeilState.Visible] = ['./cell.svg'];      
+            this._display[CeilState.HalfVisible] = [Archive.halfVisibleCell,Archive.cell]; 
+            this._display[CeilState.Visible] = [Archive.cell];      
         }
         else
         {
-            this._display[CeilState.HalfVisible] = ['./halfVisibleCell.svg',this._decorationSprite,'./cell.svg'];         
-            this._display[CeilState.Visible] = [this._decorationSprite,'./cell.svg'];         
+            this._display[CeilState.HalfVisible] = [Archive.halfVisibleCell,this._decorationSprite,Archive.cell];         
+            this._display[CeilState.Visible] = [this._decorationSprite,Archive.cell];         
         }
     }
 

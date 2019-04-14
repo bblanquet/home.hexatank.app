@@ -1,8 +1,10 @@
 import { ICombination } from "./ICombination";
 import { Item } from "../../Item";
-import { PlaygroundHelper } from "../../PlaygroundHelper";
 import { ISelectable } from "../../ISelectable";
 import { IInteractionContext } from "../IInteractionContext";
+import { Ceil } from "../../Ceil";
+import { Headquarter } from "../../Field/Headquarter";
+import { Vehicle } from "../../Unit/Vehicle";
 
 export class UnselectCombination implements ICombination{
     private _isSelectable:{(item:Item):boolean};
@@ -14,7 +16,10 @@ export class UnselectCombination implements ICombination{
     }
     
     IsMatching(items: Item[]): boolean {
-        return items.filter(i=> this._isSelectable(i)).length >=2;
+        return items.filter(i=> this._isSelectable(i)).length >=2 && 
+        (items.filter(i=> this._isSelectable(i)).length === items.filter(i=> i instanceof Ceil).length
+        || items.filter(i=> this._isSelectable(i)).length === items.filter(i=> i instanceof Headquarter).length
+        || items.filter(i=> this._isSelectable(i)).length === items.filter(i=> i instanceof Vehicle).length);
     }    
     Combine(items: Item[]): boolean {
         if(this.IsMatching(items)){
@@ -43,6 +48,5 @@ export class UnselectCombination implements ICombination{
     private UnSelectItem(item: Item) {            
         var selectable = <ISelectable> <any> (item);
         selectable.SetSelected(false);
-        PlaygroundHelper.OnUnselectedItem.trigger(this,selectable); 
     }
 }

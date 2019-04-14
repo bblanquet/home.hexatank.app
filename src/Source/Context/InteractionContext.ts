@@ -16,6 +16,7 @@ import { CancelCombination } from './Combination/CancelCombination';
 import { Ceil } from '../Ceil';
 import { Vehicle } from '../Unit/Vehicle';
 import { Headquarter } from '../Field/Headquarter';
+import { Menu } from '../Menu/Menu';
 
 export class InteractionContext implements IInteractionContext{
 
@@ -24,30 +25,31 @@ export class InteractionContext implements IInteractionContext{
     private _checker:IPatternChecker;
     private _isSelectable:{(item:Item):boolean};
     private _currentHq:Headquarter;
-    constructor(){ 
+
+    public SetCombination(menus:Menu[],currentHq:Headquarter):void{
         this._selectedItem = [];
         this._isSelectable = this.IsSelectable.bind(this);
+        this._currentHq = currentHq;
         let combinations = new Array<ICombination>();
-        combinations.push(new CancelCombination(this._isSelectable, this));
-        combinations.push(new ClearTrashCombination(this._isSelectable, this));
-        combinations.push(new UnselectCombination(this._isSelectable, this));
-        combinations.push(new SelectionCombination(this._isSelectable));
+        combinations.push(new CancelCombination(this));
         combinations.push(new TruckCombination());
         combinations.push(new TankCombination());
         combinations.push(new PatrolCombination());
+        combinations.push(new ClearTrashCombination(this._isSelectable, this));
+        combinations.push(new UnselectCombination(this._isSelectable, this));
+        combinations.push(new SelectionCombination(menus,this._isSelectable));
         combinations.push(new FastCeilCombination());
         combinations.push(new AttackCeilCombination());
         combinations.push(new HealCeilCombination());
         this._checker = new PatternChecker(combinations);
     }
 
-    public Setup(currentHq:Headquarter):void{
-        this._currentHq = currentHq;
-    }
-
     public IsSelectable(item:Item):boolean
     {
-        if(item instanceof Vehicle){
+        if(item instanceof Ceil){
+            return true;
+        }
+        else if(item instanceof Vehicle){
             const vehicle = <Vehicle> item;
             return !vehicle.IsEnemy(this._currentHq);
         }

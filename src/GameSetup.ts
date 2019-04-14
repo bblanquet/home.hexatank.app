@@ -3,6 +3,7 @@ import { Headquarter } from "./Source/Field/Headquarter";
 import { Item } from "./Source/Item";
 import { IMapGenerator } from "./Source/Builder/IMapGenerator";
 import { MapGenerator } from "./Source/Builder/MapGenerator";
+import { Menu } from "./Source/Menu/Menu";
 
 export class GameSetup{
     private _mapGenerator:IMapGenerator;
@@ -16,4 +17,7 @@ export class GameSetup{
         return this._mapGenerator.GetHq();
     }
 
+    public GetMenus():Menu[]{
+        return this._mapGenerator.GetMenus();
+    }
 }

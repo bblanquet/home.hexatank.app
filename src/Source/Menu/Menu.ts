@@ -2,10 +2,17 @@ import { MenuItem } from "./MenuItem";
 import { Item } from "../Item";
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
+import { ISelectable } from "../ISelectable";
 
 export abstract class Menu extends Item{
     Items:Array<MenuItem>;
     protected IsHidden:boolean=false;
+    private _hide:{(data: ISelectable):void};
+
+    constructor(){
+        super();
+        this._hide = this.Hide.bind(this);
+    }
 
     public Update(viewX: number, viewY: number): void {
         this.Items.forEach(item=>{ 
@@ -17,8 +24,15 @@ export abstract class Menu extends Item{
         throw new Error("Method not implemented.");
     }
  
+    public Show(data: ISelectable):void{
+        data.SubscribeUnselection(this._hide);
+    }
+
+    protected Hide(data: ISelectable):void{
+        data.Unsubscribe(this._hide);
+    }
+
     public Select(context: InteractionContext): boolean {
-        //console.log(`%c cont x: ${context.Point.x} y: ${context.Point.y} `,'color:green;font-weight:bold;');
         if(this.IsHidden){
             return;
         }

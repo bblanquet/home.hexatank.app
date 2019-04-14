@@ -59,12 +59,24 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         this.InitPosition(ceil.GetBoundingBox());
     }
 
-    public IsSelected():boolean{
-        return this.GetCurrentSprites()[this._selectionSprite].alpha === 1;
+    private _visibleHandlers: { (data: ISelectable):void }[] = [];
+
+    SubscribeUnselection(handler: (data: ISelectable) => void): void {
+        this._visibleHandlers.push(handler);
+    }
+    Unsubscribe(handler: (data: ISelectable) => void): void {
+        this._visibleHandlers = this._visibleHandlers.filter(h => h !== handler);
     }
 
-    public SetSelected(state:boolean):void{
-        this.GetCurrentSprites()[this._selectionSprite].alpha = state ? 1 : 0;
+    public IsSelected():boolean{
+        return this.GetCurrentSprites()[Archive.selectionUnit].alpha === 1;
+    }
+
+    public SetSelected(visible:boolean):void{
+        this.GetCurrentSprites()[Archive.selectionUnit].alpha = visible ? 1 : 0;
+        if(!visible){
+            this._visibleHandlers.forEach(h=>h(this));
+        }
     }
 
     private IsHqContainer(item: any):item is IHqContainer{

@@ -23,12 +23,22 @@ import { BasicItem } from "../BasicItem";
 import { BoundingBox } from "../BoundingBox";
 import {Archive} from "../Tools/ResourceArchiver"
 import { TargetMenuItem } from "../Menu/TargetMenuItem";
+import { Menu } from "../Menu/Menu";
+import { ISelectable } from "../ISelectable";
+import { Vehicle } from "../Unit/Vehicle";
+import { Ceil } from "../Ceil";
 
 export class MapGenerator implements IMapGenerator{
+
     private _currentHq:Headquarter;
+    private _menus:Menu[]=[];
 
     public GetHq():Headquarter{
         return this._currentHq;
+    }
+
+    public GetMenus(): Menu[] {
+        return this._menus;
     }
 
     public SetMap():Array<Item>{
@@ -88,28 +98,36 @@ export class MapGenerator implements IMapGenerator{
     }
 
     private SetMenus(redQuarter: Headquarter, items: Item[]) {
-        const rightMenu = new RightMenu([new EmptyMenuItem('rightTopBorder'),
+        const rightMenu = new RightMenu((data:ISelectable)=>data instanceof Headquarter,[new EmptyMenuItem('rightTopBorder'),
         new TankMenuItem(redQuarter),
         new TruckMenuItem(redQuarter),
+        new CancelMenuItem(),
         new EmptyMenuItem('rightBottomBorder')]);
 
         items.splice(0, 0, rightMenu);
 
-        const leftMenu = new LeftMenu([new EmptyMenuItem(Archive.menu.topMenu),
+        const leftMenu = new LeftMenu((data:ISelectable)=>data instanceof Vehicle,[new EmptyMenuItem(Archive.menu.topMenu),
         new TargetMenuItem(),
         new PatrolMenuItem(),
         new CancelMenuItem(),
         new EmptyMenuItem(Archive.menu.bottomMenu)]);
         items.splice(0, 0, leftMenu);
 
-        const leftMenu2 = new LeftMenu([new EmptyMenuItem(Archive.menu.topMenu),
+        const leftMenu2 = new LeftMenu((data:ISelectable)=>data instanceof Ceil,[new EmptyMenuItem(Archive.menu.topMenu),
             new HealMenuItem(),
             new AttackMenuItem(),
             new SpeedFieldMenuItem(),
+            new CancelMenuItem(),
             new EmptyMenuItem(Archive.menu.bottomMenu)]);
         items.splice(0, 0, leftMenu2);
 
         const bottomMenu = new BottomMenu(redQuarter);
         items.splice(0, 0, bottomMenu);
+
+        this._menus.push(rightMenu);
+        this._menus.push(leftMenu);
+        this._menus.push(leftMenu2);
     }
+
+
 }

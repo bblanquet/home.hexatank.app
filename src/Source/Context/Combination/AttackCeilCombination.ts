@@ -11,15 +11,14 @@ import { BasicField } from "../../Field/BasicField";
 export class AttackCeilCombination implements ICombination{
 
     IsMatching(items: Item[]): boolean {
-        return items.length >=3 
-        && items[0] instanceof Headquarter
+        return items.length >=2 
+        && items[0] instanceof Ceil
         && items[1] instanceof AttackMenuItem 
-        && items[2] instanceof Ceil;
     }
     Combine(items: Item[]): boolean {
         if(this.IsMatching(items))
         {
-            let ceil = <Ceil> items[2];
+            let ceil = <Ceil> items[0];
             if(!isNullOrUndefined(ceil))
             {
                 if(ceil.GetField() instanceof BasicField)
@@ -28,7 +27,8 @@ export class AttackCeilCombination implements ICombination{
                     PlaygroundHelper.Playground.Items.push(field);
                 }
             }
-            items.splice(1,2);
+            items.splice(0,2);
+            ceil.SetSelected(false);
             return true;
         }
         return false;

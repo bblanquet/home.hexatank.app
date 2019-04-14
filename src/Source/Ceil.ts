@@ -13,8 +13,9 @@ import { BasicField } from './Field/BasicField';
 import { CeilState } from './CeilState';
 import { isNullOrUndefined } from 'util';
 import { Archive } from './Tools/ResourceArchiver';
+import { ISelectable } from './ISelectable';
 
-export class Ceil extends Item implements ICeil
+export class Ceil extends Item implements ICeil , ISelectable
 {
     private _state:CeilState = CeilState.Hidden;
     Properties:CeilProperties;
@@ -32,9 +33,29 @@ export class Ceil extends Item implements ICeil
         this.Properties = properties;
         new BasicField(this);
         this.IsCentralRef = true;
-        
         this.GenerateSprite(Archive.selectionCell);
-        this.SetProperty(Archive.selectionCell,(e)=>e.alpha=0);
+        this.SetBothProperty(Archive.selectionCell,(e)=>{
+            e.alpha=0;
+            e.anchor.set(0.5);
+        });
+    }
+
+    public SetSelected(visible: boolean): void {
+        this.SetProperty(Archive.selectionCell,(e)=>e.alpha= visible ? 1 : 0);
+        if(!visible){
+            this._visibleHandlers.forEach(h=>h(this));
+        }    
+    }
+    public IsSelected(): boolean {
+        return this.GetCurrentSprites()[Archive.selectionCell].alpha === 1;
+    }
+    private _visibleHandlers: { (data: ISelectable):void }[] = [];
+
+    public SubscribeUnselection(handler: (data: ISelectable) => void): void {
+        this._visibleHandlers.push(handler);
+    }
+    public Unsubscribe(handler: (data: ISelectable) => void): void {
+        this._visibleHandlers = this._visibleHandlers.filter(h => h !== handler);
     }
 
     public GetField():IField{

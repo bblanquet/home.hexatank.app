@@ -23,6 +23,7 @@ import { Archive } from '../Tools/ResourceArchiver';
 
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable
 {
+    
     RotationSpeed: number=0.05;
     TranslationSpeed: number=1;
     Attack:number=30;
@@ -78,6 +79,15 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this._rightDusts = [new Dust(new BoundingBox()),new Dust(new BoundingBox()),new Dust(new BoundingBox()),new Dust(new BoundingBox())];
         this._leftDusts.forEach(ld=>PlaygroundHelper.Playground.Items.push(ld));
         this._rightDusts.forEach(rd=>PlaygroundHelper.Playground.Items.push(rd));
+    }
+
+    private _visibleHandlers: { (data: ISelectable):void }[] = [];
+
+    SubscribeUnselection(handler: (data: ISelectable) => void): void {
+        this._visibleHandlers.push(handler);
+    }
+    Unsubscribe(handler: (data: ISelectable) => void): void {
+        this._visibleHandlers = this._visibleHandlers.filter(h => h !== handler);
     }
 
     public SetOrder(order: IOrder): void {
@@ -168,8 +178,11 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         return this.GetCurrentSprites()[Archive.selectionUnit].alpha === 1;
     }
 
-    public SetSelected(state:boolean):void{
-        this.SetProperty(Archive.selectionUnit,(e)=>e.alpha= state ? 1 : 0);
+    public SetSelected(visible:boolean):void{
+        this.SetProperty(Archive.selectionUnit,(e)=>e.alpha= visible ? 1 : 0);
+        if(!visible){
+            this._visibleHandlers.forEach(h=>h(this));
+        }
     }
 
     public GetNextCeil(): Ceil {

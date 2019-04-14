@@ -68,7 +68,7 @@ function Setup()
         gameSetup.SetGame().forEach(element => {
             playground.Items.push(<Item> element);        
         });
-        interaction.Setup(gameSetup.GetHq());
+        interaction.SetCombination(gameSetup.GetMenus(),gameSetup.GetHq());
         const sleep = (milliseconds:number) => {
             return new Promise(resolve => setTimeout(resolve, milliseconds))
         };

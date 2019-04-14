@@ -1,12 +1,12 @@
 import { ICombination } from "./ICombination";
 import { Item } from "../../Item";
 import { ISelectable } from "../../ISelectable";
-import { PlaygroundHelper } from "../../PlaygroundHelper";
+import { Menu } from "../../Menu/Menu";
 
 export class SelectionCombination implements ICombination{
     private _isSelectable:{(item:Item):boolean};
 
-    constructor(isSelectable:{(item:Item):boolean}){
+    constructor(private _menus:Menu[],isSelectable:{(item:Item):boolean}){
         this._isSelectable = isSelectable;
     }
 
@@ -19,7 +19,7 @@ export class SelectionCombination implements ICombination{
             const item = items[0];
             const selectable = this.ToSelectableItem(item);
             selectable.SetSelected(true); 
-            PlaygroundHelper.OnSelectedItem.trigger(this,selectable);
+            this._menus.forEach(menu=>{menu.Show(selectable);});
             return true;   
         }
         return false;

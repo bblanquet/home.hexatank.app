@@ -24,15 +24,14 @@ export class Missile extends Item{
         var radius = this.GetAngle();
 
         Archive.missiles.forEach(missile =>{
-            this.GenerateSprite(missile,e=>{
-                e.alpha = 0;
-            });
+            this.GenerateSprite(missile);
         });
 
         this.GetSprites().forEach(sprite => {
             sprite.width = this.BoundingBox.Width,
             sprite.height = this.BoundingBox.Height
             sprite.anchor.set(0.5);
+            sprite.alpha = 0;
         });
 
         this.IsCentralRef = true;

@@ -19,6 +19,7 @@ import { CeilState } from '../CeilState';
 import { IOrder } from '../Ia/IOrder';
 import { ISelectable } from '../ISelectable';
 import { Timer } from '../Tools/Timer';
+import { Archive } from '../Tools/ResourceArchiver';
 
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable
 {
@@ -44,7 +45,6 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     private _rotationMaker:IRotationMaker;
     private _angleFinder:IAngleFinder;
     private _pendingOrder:IOrder;
-    private _selectionSprite:string;
 
     private _dustTimer:Timer;
     private _dustIndex:number;
@@ -56,9 +56,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this.CurrentRadius = 0;
         this.BoundingBox = new BoundingBox();
 
-        this._selectionSprite = 'selection';
-        this.GenerateSprite(this._selectionSprite); 
-        this.GetBothSprites(this._selectionSprite).forEach(sprite=>sprite.alpha = 0);
+        this.GenerateSprite(Archive.selectionUnit); 
+        this.GetBothSprites(Archive.selectionUnit).forEach(sprite=>sprite.alpha = 0);
 
         this.Z= 2;
         this.Size = PlaygroundHelper.Settings.Size;
@@ -166,11 +165,11 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     }
 
     public IsSelected():boolean{
-        return this.GetCurrentSprites()[this._selectionSprite].alpha === 1;
+        return this.GetCurrentSprites()[Archive.selectionUnit].alpha === 1;
     }
 
     public SetSelected(state:boolean):void{
-        this.SetProperty(this._selectionSprite,(e)=>e.alpha= state ? 1 : 0);
+        this.SetProperty(Archive.selectionUnit,(e)=>e.alpha= state ? 1 : 0);
     }
 
     public GetNextCeil(): Ceil {

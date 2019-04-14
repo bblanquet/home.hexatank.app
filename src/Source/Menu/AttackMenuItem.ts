@@ -1,14 +1,14 @@
-import { MenuItem } from "./MenuItem";
 import { InteractionContext } from "../Context/InteractionContext";
+import { SelectableMenuItem } from "./SelectableMenuItem";
+import { Archive } from "../Tools/ResourceArchiver";
 
-export class AttackMenuItem extends MenuItem
+export class AttackMenuItem extends SelectableMenuItem
 {
     constructor(){
-        super('attackCeilIcon','attackCeilIcon');
+        super(Archive.menu.powerButton);
     }    
 
     public Select(context: InteractionContext): boolean {
-        // context.SelectionEvent.on(this.SelectionFunc);
         context.OnSelect(this);
         return true;
     }

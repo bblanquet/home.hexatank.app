@@ -22,6 +22,7 @@ import { FlowerMapBuilder } from "./FlowerMapBuilder";
 import { BasicItem } from "../BasicItem";
 import { BoundingBox } from "../BoundingBox";
 import {Archive} from "../Tools/ResourceArchiver"
+import { TargetMenuItem } from "../Menu/TargetMenuItem";
 
 export class MapGenerator implements IMapGenerator{
     private _currentHq:Headquarter;
@@ -87,19 +88,27 @@ export class MapGenerator implements IMapGenerator{
     }
 
     private SetMenus(redQuarter: Headquarter, items: Item[]) {
-        const rightMenu = new RightMenu([new EmptyMenuItem('rightTopBorder', 'rightTopBorder'),
+        const rightMenu = new RightMenu([new EmptyMenuItem('rightTopBorder'),
         new TankMenuItem(redQuarter),
         new TruckMenuItem(redQuarter),
-        new HealMenuItem(),
-        new AttackMenuItem(),
-        new SpeedFieldMenuItem(),
-        new EmptyMenuItem('rightBottomBorder', 'rightBottomBorder')]);
+        new EmptyMenuItem('rightBottomBorder')]);
+
         items.splice(0, 0, rightMenu);
-        const leftMenu = new LeftMenu([new EmptyMenuItem('leftTopBorder', 'leftTopBorder'),
+
+        const leftMenu = new LeftMenu([new EmptyMenuItem(Archive.menu.topMenu),
+        new TargetMenuItem(),
         new PatrolMenuItem(),
         new CancelMenuItem(),
-        new EmptyMenuItem('leftBottomBorder', 'leftBottomBorder')]);
+        new EmptyMenuItem(Archive.menu.bottomMenu)]);
         items.splice(0, 0, leftMenu);
+
+        const leftMenu2 = new LeftMenu([new EmptyMenuItem(Archive.menu.topMenu),
+            new HealMenuItem(),
+            new AttackMenuItem(),
+            new SpeedFieldMenuItem(),
+            new EmptyMenuItem(Archive.menu.bottomMenu)]);
+        items.splice(0, 0, leftMenu2);
+
         const bottomMenu = new BottomMenu(redQuarter);
         items.splice(0, 0, bottomMenu);
     }

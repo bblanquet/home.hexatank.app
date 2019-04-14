@@ -22,7 +22,6 @@ export class Headquarter extends AliveItem implements IField, ISelectable
     Diamonds:number=40;
     private _skin:HqSkin;
     IsFading:boolean;
-    private _selectionSprite:string;
 
     constructor(skin:HqSkin, ceil:Ceil){
         super();
@@ -31,9 +30,8 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         this._ceil = ceil;
         this._ceil.SetField(this);
 
-        this._selectionSprite = 'selection';
-        this.GenerateSprite(this._selectionSprite);
-        this.SetProperty(this._selectionSprite,(e)=>e.alpha=0);
+        this.GenerateSprite(Archive.selectionUnit);
+        this.SetProperty(Archive.selectionUnit,(e)=>e.alpha=0);
 
         this.BoundingBox = new BoundingBox();
         this.BoundingBox.Width = this._ceil.GetBoundingBox().Width;
@@ -146,11 +144,6 @@ export class Headquarter extends AliveItem implements IField, ISelectable
     }   
 
     public Select(context: InteractionContext): boolean {
-        // if(this.GetSprites()[0].containsPoint(context.Point))
-        // {
-        //     context.OnSelect(this);
-        //     return true;
-        // }
         return false;
         }
 

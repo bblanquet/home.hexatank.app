@@ -6,6 +6,7 @@ import { Order } from "./Order";
 import { BasicItem } from "../BasicItem";
 import { isNullOrUndefined } from "util";
 import { PlaygroundHelper } from "../PlaygroundHelper";
+import { Archive } from "../Tools/ResourceArchiver";
 
 export class PatrolOrder extends Order{
     private _currentPatrolCeil:Ceil;
@@ -36,7 +37,7 @@ export class PatrolOrder extends Order{
     {
         if(!isNullOrUndefined(this._patrolCeils) && 0 < this._patrolCeils.length){
             this._patrolCeils.forEach(ceil => {
-                    const pathItem = new BasicItem(ceil.GetBoundingBox(),'selectedCeil');
+                    const pathItem = new BasicItem(ceil.GetBoundingBox(),Archive.direction.patrol);
                     
                     pathItem.SetDisplayTrigger(this._v.IsSelected.bind(this._v));
                     pathItem.SetVisible(this._v.IsAlive.bind(this._v));

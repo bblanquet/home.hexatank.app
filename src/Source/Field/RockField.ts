@@ -7,7 +7,7 @@ import { InteractionContext } from "../Context/InteractionContext";
 import { IField } from "./IField";
 
 
-export class RockField extends AliveItem implements IField
+export class BlockingField extends AliveItem implements IField
 {
  
     private _ceil:Ceil;

@@ -1,13 +1,13 @@
-import { MenuItem } from "./MenuItem";
 import { InteractionContext } from "../Context/InteractionContext";
+import { SelectableMenuItem } from "./SelectableMenuItem";
+import { Archive } from "../Tools/ResourceArchiver";
 
-export class HealMenuItem extends MenuItem{
+export class HealMenuItem extends SelectableMenuItem{
     constructor(){
-        super('healCeilIcon','healCeilIcon');
+        super(Archive.menu.healthButton);
     }    
 
     public Select(context: InteractionContext): boolean {
-        // context.SelectionEvent.on(this.SelectionFunc);
         context.OnSelect(this); 
         return true;
     }

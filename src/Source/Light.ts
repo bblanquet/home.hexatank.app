@@ -2,19 +2,26 @@ import { Item } from "./Item";
 import { BoundingBox } from "./BoundingBox";
 import { InteractionContext } from "./Context/InteractionContext";
 import { PlaygroundHelper } from "./PlaygroundHelper";
+import { Archive } from "./Tools/ResourceArchiver";
 
 export class Light extends Item{
-    BoundingBox:BoundingBox;
-    IsShowing:boolean;
-    Size:number;
-    constructor(value:{X:number, Y:number}){
+    private _boundingBox:BoundingBox;
+    private _isVisible:boolean;
+    private _lightIndex:number;
+
+    constructor(boundingBox:BoundingBox){
         super();
         this.Z= 3;
-        this.BoundingBox = new BoundingBox();
-        this.GetBoundingBox().Width = 10;
-        this.GetBoundingBox().Height = 10;
-        this.GenerateSprite('diamondLight.png');
-        this.InitPosition(value)
+        this._boundingBox = boundingBox;
+        this._lightIndex = 0;
+        Archive.lights.forEach(light=>{
+            this.GenerateSprite(light,
+                s =>{
+                    s.alpha = 0;
+                });
+        });
+        this._isVisible = false;
+        this.InitPosition(boundingBox);
     }
 
     public  Destroy():void{
@@ -24,27 +31,43 @@ export class Light extends Item{
     }
 
     public GetBoundingBox(): BoundingBox{
-        return this.BoundingBox;
+        return this._boundingBox;
     }
     
-    public Display(x:number,y:number):void{
-        this.IsShowing = true;
-        this.SetProperty('diamondLight.png',e=>e.alpha = 1);
-        this.GetBoundingBox().X = x;
-        this.GetBoundingBox().Y = y;
+    public IsVisible():boolean{
+        return this._isVisible;
+    }
+
+    public Display():void{
+        this._isVisible = true;
+        Archive.lights.forEach(l=>this.SetProperty(l,s=>s.alpha = 0));
+        this.SetProperty(Archive.lights[0], e=>e.alpha = 1);
+        this._lightIndex = 0;
+    }
+
+    public Hide(){
+        this._isVisible = false;
+        Archive.lights.forEach(l=>this.SetProperty(l,s=>s.alpha = 0));
     }
 
     public Update(viewX: number, viewY: number): void {
         super.Update(viewX,viewY);
          
-        if(this.IsShowing)
+        if(this._isVisible)
         {
-            this.SetProperty('diamondLight.png',e=>e.alpha -= 0.01);
-            
-            if(this.GetCurrentSprites()['diamondLight.png'].alpha <= 0)
-            {
-                this.IsShowing = false;
-            }
+            this.SetProperty(Archive.lights[this._lightIndex], s=>
+                {
+                    if(s.alpha > 0){
+                        s.alpha -= 0.02;
+                    }
+                    else
+                    {
+                        this.SetProperty(Archive.lights[this._lightIndex],s=>s.alpha = 0);
+                        this._lightIndex = (this._lightIndex+1) % Archive.missiles.length;
+                        this.SetProperty(Archive.lights[this._lightIndex],s=>s.alpha = 1);
+                    }
+                }
+            );
         }
     }
 

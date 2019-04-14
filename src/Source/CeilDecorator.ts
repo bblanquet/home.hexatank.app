@@ -1,8 +1,9 @@
 import { Item } from "./Item";
-import { RockField } from "./Field/RockField";
+import { BlockingField } from "./Field/RockField";
 import { Ceil } from "./Ceil";
 import { BasicField } from "./Field/BasicField";
 import { Archive } from "./Tools/ResourceArchiver";
+import { WaterField } from "./Field/WaterField";
 
 export class CeilDecorator{
 
@@ -15,28 +16,34 @@ export class CeilDecorator{
     
             if(decorationRandom <= 0.25)
             {
-                ceil.SetDecoration('stone.png');
+                ceil.SetDecoration(Archive.nature.stone);
             }
             else if(decorationRandom <= 0.5)
             {
-                ceil.SetDecoration('flower.png');
+                ceil.SetDecoration(Archive.nature.bush);
             }
             else if(decorationRandom <= 0.75)
             {
                 if(ceil.GetField() instanceof BasicField)
                 {
-                    var deco = Archive.nature.rock;
-                    if(decorationRandom <= 0.625)
+                    if(decorationRandom <= 0.58)
                     {
-                        deco = Archive.nature.tree;
+                        items.push(new WaterField(ceil)); 
+
                     }
-    
-                    items.push(new RockField(ceil,deco)); 
+                    else if(decorationRandom <= 0.64)
+                    {
+                        items.push(new BlockingField(ceil,Archive.nature.tree)); 
+                    }
+                    else
+                    {
+                        items.push(new BlockingField(ceil,Archive.nature.rock)); 
+                    }
                 }
             }
             else
             {
-                ceil.SetDecoration('water.png');
+                ceil.SetDecoration(Archive.nature.puddle);
             }
 
         }

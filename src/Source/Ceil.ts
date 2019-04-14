@@ -31,6 +31,10 @@ export class Ceil extends Item implements ICeil
         this._display = [];
         this.Properties = properties;
         new BasicField(this);
+        this.IsCentralRef = true;
+        
+        this.GenerateSprite(Archive.selectionCell);
+        this.SetProperty(Archive.selectionCell,(e)=>e.alpha=0);
     }
 
     public GetField():IField{
@@ -104,6 +108,7 @@ export class Ceil extends Item implements ICeil
         this.GenerateSprite(sprite);
         this.SetProperty(sprite,e=>{
             e.alpha = 0.2;
+            e.anchor.set(0.5);
             e.x = this.GetBoundingBox().X;
             e.y = this.GetBoundingBox().Y; 
         });
@@ -114,23 +119,31 @@ export class Ceil extends Item implements ICeil
 
 
     public SetDecoration(sprite:string):void{
-        this.GenerateSprite(sprite);
-        this._decorationSprite = sprite;
-        this.SetProperty(sprite,e=>{
-            e.alpha = 0;
+        const random = Math.random();
+        this.GenerateSprite(sprite,s=>{
+            s.alpha = 0;
+            s.anchor.set(0.5);
+            s.rotation += random * 360;
         });
+        this._decorationSprite = sprite;
     }
 
     public SetSprite():void
     {
-        this.GenerateSprite(Archive.hiddenCell);
-        this.SetProperty(Archive.hiddenCell,e=>e.alpha = 1);
+        this.GenerateSprite(Archive.hiddenCell,s=>{
+            s.anchor.set(0.5);
+            s.alpha = 1;
+        });
 
-        this.GenerateSprite(Archive.halfVisibleCell);
-        this.SetProperty(Archive.halfVisibleCell,e=>e.alpha = 0);
+        this.GenerateSprite(Archive.halfVisibleCell,s=>{
+            s.anchor.set(0.5);
+            s.alpha = 0;
+        });
 
-        this.GenerateSprite(Archive.cell);
-        this.SetProperty(Archive.cell,e=>e.alpha = 0);
+        this.GenerateSprite(Archive.cell,s=>{
+            s.anchor.set(0.5);
+            s.alpha = 0;
+        });
 
         this._display[CeilState.Hidden] = [Archive.hiddenCell];
         

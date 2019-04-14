@@ -1,13 +1,13 @@
-import { MenuItem } from "./MenuItem";
 import { InteractionContext } from "../Context/InteractionContext";
 import { Headquarter } from "../Field/Headquarter";
+import { SelectableMenuItem } from "./SelectableMenuItem";
 
-export class TankMenuItem extends MenuItem 
+export class TankMenuItem extends SelectableMenuItem 
 {
     private _hq:Headquarter;
 
     constructor(hq:Headquarter){
-        super('tankIcon','tankIcon'); 
+        super('tankIcon'); 
         this._hq = hq;
     }
 
@@ -16,7 +16,6 @@ export class TankMenuItem extends MenuItem
         if(this._hq.Diamonds > 4){
             if(this._hq.CreateTank()){
                 this._hq.Diamonds -= 4;
-                //context.OnSelect(this);
             }
         }
         return true;

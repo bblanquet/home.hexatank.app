@@ -6,7 +6,6 @@ import { Ceil } from "../Ceil";
 import { DiamondField } from "./DiamondField";
 import { IField } from "./IField";
 import { Vehicle } from "../Unit/Vehicle";
-import { Timer } from "../Tools/Timer";
 import { AliveItem } from "../AliveItem"; 
 import { Crater } from "../Crater";
 import { Archive } from "../Tools/ResourceArchiver";
@@ -14,10 +13,9 @@ import { Archive } from "../Tools/ResourceArchiver";
 export class Diamond extends AliveItem implements IField{
 
     BoundingBox:BoundingBox;
-    Lights:Array<Light>;
+    Lights:Light;
     Fields:Array<DiamondField>;
     private _ceil:Ceil;//4
-    private _timer:Timer;
 
     constructor(ceil:Ceil) 
     {
@@ -27,13 +25,9 @@ export class Diamond extends AliveItem implements IField{
         this._ceil.SetField(this);
         this.BoundingBox = this._ceil.GetBoundingBox();
         this.GenerateSprite(Archive.nature.diamond);
-        this._timer = new Timer(4);
 
-        this.Lights = new Array<Light>();
-        this.Lights.push(new Light(this._ceil.GetBoundingBox()));
-        this.Lights.push(new Light(this._ceil.GetBoundingBox()));
-        this.Lights.push(new Light(this._ceil.GetBoundingBox()));
-
+        this.Lights = new Light(this.GetBoundingBox());
+        this.Lights.Display();
         this.Fields = new Array<DiamondField>();
         var neighbours = this._ceil.GetNeighbourhood();
         neighbours.forEach(ceil=>
@@ -74,9 +68,7 @@ export class Diamond extends AliveItem implements IField{
         this.Fields.forEach(field=>{
             field.Destroy();
         });
-        this.Lights.forEach(light => {
-            light.Destroy();
-        });
+        this.Lights.Destroy();
     }
 
     public Update(viewX: number, viewY: number): void {
@@ -93,43 +85,7 @@ export class Diamond extends AliveItem implements IField{
             field.Update(viewX,viewY);
         });
 
-        
-        this.UpdateLights();
-
-        this.Lights.forEach(light=>
-        {
-            if(light.IsShowing)
-            {
-                light.Update(viewX,viewY);
-            }
-        });
-    }
-
-    private UpdateLights() {
-        if (this._timer.IsElapsed()) {
-            this.Lights.forEach(light => {
-                if (!light.IsShowing) {
-                    var randomX = Math.random();
-                    var randomY = Math.random();
-                    var randomXsign = Math.random();
-                    var randomYsign = Math.random();
-                    var quarter = PlaygroundHelper.Settings.Size / 4;
-                    if (randomXsign < 0.5) {
-                        randomX = -quarter * randomX;
-                    }
-                    else {
-                        randomX = quarter * randomX;
-                    }
-                    if (randomYsign < 0.5) {
-                        randomY = -quarter * randomY;
-                    }
-                    else {
-                        randomY = quarter * randomY;
-                    }
-                    light.Display(this._ceil.GetBoundingBox().GetCenter() + randomX, this._ceil.GetBoundingBox().GetMiddle() + randomY);
-                }
-            });
-        }
+        this.Lights.Update(viewX,viewY);
     }
 
      public Select(context: InteractionContext): boolean {

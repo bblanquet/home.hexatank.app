@@ -21,11 +21,9 @@ export class Turrel extends Item implements IRotatable
     GoalRadius: number;
     Base:Tank;
     private _top:string;
-    private _canon:Array<string>;
     private _currentCanon:number=0;
 
-    private _animationTimer:ITimer;//5
-    //100
+    private _animationTimer:ITimer;
     private _coolingDownTimer:ITimer;
     
     IsAnimated:boolean=false;
@@ -47,12 +45,10 @@ export class Turrel extends Item implements IRotatable
         this._animationTimer = new Timer(5);
 
         
-        this._canon = new Array<string>();
         Archive.cannons.forEach(cannon =>{
             this.GenerateSprite(cannon,e=>{
                 e.alpha = 0;
             });
-            this._canon.push(cannon);
         });
 
         this.SetProperty(Archive.cannons[0],e=>e.alpha = 1);
@@ -99,7 +95,7 @@ export class Turrel extends Item implements IRotatable
 
     private Shoot() {
         this.IsAnimated = true;
-        var missile = new Missile(
+        const missile = new Missile(
             BoundingBox.Create(this.GetBoundingBox().X,this.GetBoundingBox().Y,this.GetBoundingBox().Width,this.GetBoundingBox().Height)
             , this.Base.GetTarget()
             , this.Base.Attack);
@@ -119,9 +115,9 @@ export class Turrel extends Item implements IRotatable
         {
             if(this._animationTimer.IsElapsed())
             {    
-                this.GetCurrentSprites()[this._canon[this._currentCanon]].alpha = 0;
-                this._currentCanon = (1+this._currentCanon)%this._canon.length;
-                this.GetCurrentSprites()[this._canon[this._currentCanon]].alpha =  1;
+                this.GetCurrentSprites()[Archive.cannons[this._currentCanon]].alpha = 0;
+                this._currentCanon = (1+this._currentCanon)%Archive.cannons.length;
+                this.GetCurrentSprites()[Archive.cannons[this._currentCanon]].alpha =  1;
 
                 if(this._currentCanon == 0)
                 {

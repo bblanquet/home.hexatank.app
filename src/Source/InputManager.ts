@@ -7,6 +7,7 @@ import { PlaygroundHelper } from "./PlaygroundHelper";
 export class InputManager{
     IsGrabbed:Boolean;
     CurrentPoint:Point;
+    DownPoint:Point;
     ViewContext:ViewContext;
     DownEvent:LiteEvent<InteractionContext>;
     InteractionContext:InteractionContext;
@@ -15,24 +16,24 @@ export class InputManager{
         this.IsGrabbed = false;
         this.ViewContext = viewContext;
         this.CurrentPoint = new Point(0,0);
+        this.DownPoint = new Point(0,0);
         this.DownEvent = new LiteEvent<InteractionContext>();
         this.InteractionContext = interactionContext;
     }
 
     OnMouseDown(event: PIXI.interaction.InteractionEvent){
-        //console.log(`typeof ${typeof event}`,'color:purple;');
         if(!this.IsGrabbed)
         {
             this.CurrentPoint.X = event.data.global.x;
             this.CurrentPoint.Y = event.data.global.y;
+            this.DownPoint.X = event.data.global.x;
+            this.DownPoint.Y = event.data.global.y;
             this.IsGrabbed = true;
             this.InteractionContext.Point = event.data.global;
-            this.DownEvent.trigger(this.InteractionContext);
         }
     }    
 
     OnMouseMove(event:PIXI.interaction.InteractionEvent){
-        //console.log(`%c move x: ${event.data.global.x} y: ${event.data.global.x}`,'color:green;');
         if(this.IsGrabbed)
         {
             this.ViewContext.BoundingBox.X += 
@@ -47,8 +48,13 @@ export class InputManager{
     }
 
     OnMouseUp(event:PIXI.interaction.InteractionEvent){
-        //console.log("up");
         this.IsGrabbed = false;
+        const distance = Math.abs(Math.sqrt( 
+            Math.pow(event.data.global.x - this.DownPoint.X,2) + Math.pow(event.data.global.y - this.DownPoint.Y,2)));
+        if(distance < PlaygroundHelper.Settings.Size/3)
+        {
+            this.DownEvent.trigger(this.InteractionContext);
+        }
     }
 
     private _minScale:number=0.8;
@@ -73,7 +79,6 @@ export class InputManager{
             }
         }
         PlaygroundHelper.Settings.ChangeScale(this.ViewContext.Zoom);
-        console.log(`%c ${this.ViewContext.Zoom}`,'font-weight:bold;color:green;');
     }
 
     OnMouseWheel(value:{deltaY:number}):void{
@@ -93,6 +98,5 @@ export class InputManager{
 
         }
         PlaygroundHelper.Settings.ChangeScale(this.ViewContext.Zoom);
-        console.log(`%c ${this.ViewContext.Zoom}`,'font-weight:bold;color:green;');
     }
 }

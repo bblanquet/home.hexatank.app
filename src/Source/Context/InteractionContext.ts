@@ -21,6 +21,7 @@ import { Menu } from '../Menu/Menu';
 export class InteractionContext implements IInteractionContext{
 
     Point:PIXI.Point;
+    public IsDown:boolean;
     private _selectedItem:Array<Item>;
     private _checker:IPatternChecker;
     private _isSelectable:{(item:Item):boolean};

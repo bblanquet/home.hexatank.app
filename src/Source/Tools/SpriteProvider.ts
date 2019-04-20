@@ -12,7 +12,7 @@ export class SpriteProvider implements ISpriteProvider{
         this._zoomOutSvgDictionary = {};
     }
 
-    GetZoomOutSprite(name: string): PIXI.Sprite 
+    public GetZoomOutSprite(name: string): PIXI.Sprite 
     {
         if(this.IsOldStyleSvg(name))
         {
@@ -36,7 +36,7 @@ export class SpriteProvider implements ISpriteProvider{
         }
     }
 
-    PreloadTexture(): void {
+    public PreloadTexture(): void {
         this.LoadInArchive(Archive,'./out',0.5);
         this.LoadInArchive(Archive,'./in',1);
     }
@@ -62,7 +62,7 @@ export class SpriteProvider implements ISpriteProvider{
         }
     }
 
-    GetZoomInSprite(name: string): PIXI.Sprite 
+    public GetZoomInSprite(name: string): PIXI.Sprite 
     {
         if(this.IsOldStyleSvg(name))
         {

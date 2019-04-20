@@ -1,7 +1,8 @@
+import { ViewContext } from "./ViewContext";
 
-export class GameSettings{
-
-    private _scale:number = 1;
+export class GameSettings
+{
+    private _viewContext:ViewContext=new ViewContext();
     private _scaleHandlers: {(data: boolean):void}[] = [];
     Size:number=50;
     ScreenWidth:number;
@@ -13,30 +14,46 @@ export class GameSettings{
     private _fpsHandlers:{(data: number):void}[] = [];
 
     public GetRelativeWidth():number{
-        return this.ScreenWidth/this._scale;
+        return this.ScreenWidth/this._viewContext.Scale;
     }
 
     public GetFps():number{
         return this._fps;
     }
 
-    isZoomIn(): boolean {
-        return this._scale > 1.4;
+    public isZoomIn(): boolean {
+        return this._viewContext.Scale > 1.4;
+    }
+
+    public GetX():number{
+        return this._viewContext.BoundingBox.X;
+    }
+
+    public GetY():number{
+        return this._viewContext.BoundingBox.Y;
+    }
+
+    public SetX(x:number):void{
+        this._viewContext.BoundingBox.X = x;
+    }
+
+    public SetY(y:number):void{
+        this._viewContext.BoundingBox.Y = y;
     }
 
     public GetRelativeHeight():number{
-        return this.ScreenHeight/this._scale;
+        return this.ScreenHeight/this._viewContext.Scale;
     }
 
     public GetScale():number{
-        return this._scale;
+        return this._viewContext.Scale;
     }
 
     public ChangeScale(scale:number){
-        const previousScale = this._scale;
-        this._scale = scale;
-
-        if(previousScale > 1.4 !== this._scale > 1.4){
+        const previousScale = this._viewContext.Scale;
+        this._viewContext.Scale = scale;
+        console.log("scale "+scale);
+        if(previousScale > 1.4 !== this._viewContext.Scale > 1.4){
             this._scaleHandlers.forEach(handler=>{
                 handler(this.isZoomIn());
             });

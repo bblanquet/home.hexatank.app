@@ -3,17 +3,18 @@ import { ICombination } from "./ICombination";
 import { Item } from "../../Item";
 import { Ceil } from "../../Ceil";
 import { PlaygroundHelper } from "../../PlaygroundHelper";
-import { AttackMenuItem } from "../../Menu/AttackMenuItem";
-import { AttackField } from "../../Field/AttackField";
 import { BasicField } from "../../Field/BasicField";
+import { MoneyMenuItem } from "../../Menu/MoneyMenuItem";
+import { MoneyField } from "../../Field/MoneyField";
 
-export class AttackCeilCombination implements ICombination{
+export class MoneyCeilCombination implements ICombination{
 
-    IsMatching(items: Item[]): boolean {
+    IsMatching(items: Item[]): boolean { 
         return items.length >=2 
         && items[0] instanceof Ceil
-        && items[1] instanceof AttackMenuItem 
+        && items[1] instanceof MoneyMenuItem 
     }
+
     Combine(items: Item[]): boolean {
         if(this.IsMatching(items))
         {
@@ -22,7 +23,7 @@ export class AttackCeilCombination implements ICombination{
             {
                 if(ceil.GetField() instanceof BasicField)
                 {
-                    let field = new AttackField(ceil);
+                    let field = new MoneyField(ceil);
                     PlaygroundHelper.Playground.Items.push(field);
                 }
             }

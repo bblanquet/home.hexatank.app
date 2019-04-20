@@ -17,6 +17,9 @@ import { Ceil } from '../Ceil';
 import { Vehicle } from '../Unit/Vehicle';
 import { Headquarter } from '../Field/Headquarter';
 import { Menu } from '../Menu/Menu';
+import { ZoomInCombination } from './Combination/ZoomInCombination';
+import { ZoomOutCombination } from './Combination/ZoomOutCombination';
+import { MoneyCeilCombination } from './Combination/MoneyCeilCombination';
 
 export class InteractionContext implements IInteractionContext{
 
@@ -32,6 +35,8 @@ export class InteractionContext implements IInteractionContext{
         this._isSelectable = this.IsSelectable.bind(this);
         this._currentHq = currentHq;
         let combinations = new Array<ICombination>();
+        combinations.push(new ZoomOutCombination());
+        combinations.push(new ZoomInCombination());        
         combinations.push(new CancelCombination(this));
         combinations.push(new TruckCombination());
         combinations.push(new TankCombination());
@@ -41,6 +46,7 @@ export class InteractionContext implements IInteractionContext{
         combinations.push(new SelectionCombination(menus,this._isSelectable));
         combinations.push(new FastCeilCombination());
         combinations.push(new AttackCeilCombination());
+        combinations.push(new MoneyCeilCombination());
         combinations.push(new HealCeilCombination());
         this._checker = new PatternChecker(combinations);
     }

@@ -43,7 +43,7 @@ export class Crater extends Item{
 
         if(this._timer.IsElapsed())
         {
-            this.GetCurrentSprites()['crater'].alpha -= 0.05;
+            this.GetCurrentSprites()['crater'].alpha += 0.05;
         }
     }
 }

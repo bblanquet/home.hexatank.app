@@ -1,12 +1,13 @@
 import { Headquarter } from "../Field/Headquarter";
 import { InteractionContext } from "../Context/InteractionContext";
 import { SelectableMenuItem } from "./SelectableMenuItem";
+import { Archive } from "../Tools/ResourceArchiver";
 
 export class TruckMenuItem extends SelectableMenuItem{  
     private _hq:Headquarter;
 
     constructor(hq:Headquarter,){
-        super('truckIcon');
+        super(Archive.menu.truckButton);
         this._hq = hq;
     }
 

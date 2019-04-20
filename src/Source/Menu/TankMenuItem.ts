@@ -1,13 +1,14 @@
 import { InteractionContext } from "../Context/InteractionContext";
 import { Headquarter } from "../Field/Headquarter";
 import { SelectableMenuItem } from "./SelectableMenuItem";
+import { Archive } from "../Tools/ResourceArchiver";
 
 export class TankMenuItem extends SelectableMenuItem 
 {
     private _hq:Headquarter;
 
     constructor(hq:Headquarter){
-        super('tankIcon'); 
+        super(Archive.menu.tankButton); 
         this._hq = hq;
     }
 

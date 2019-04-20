@@ -6,12 +6,17 @@ export const Archive = {
         hoverBackgroundButton:'./menu/selectedBackgroundMenu.svg',
         powerButton:'./menu/powerMenu.svg',
         healthButton:'./menu/healthMenu.svg',
+        moneyButton:'./menu/moneyMenu.svg',
         speedMenu:'./menu/speedMenu.svg',
         visionMenu:'./menu/visionMenu.svg',
         camouflageMenu:'./menu/camouflageMenu.svg',
         patrolButton:'./menu/patrolButton.svg',
         targetButton:'./menu/targetButton.svg',
-        cancelButton:'./menu/cancelButton.svg'
+        cancelButton:'./menu/cancelButton.svg',
+        tankButton:'./menu/tankButton.svg',
+        truckButton:'./menu/truckButton.svg',
+        zoomInButton:'./menu/zoomInButton.svg',
+        zoomOutButton:'./menu/zoomOutButton.svg',
     },
     missiles:[
         './tank/missile/missile.svg',
@@ -54,7 +59,9 @@ export const Archive = {
     bonus:{
         strength:'./floor/strength.svg',
         speed:'./floor/speed.svg',
-        health:'./floor/health.svg'
+        health:'./floor/health.svg',
+        emptyMoney:'./floor/money.svg',
+        fullMoney:'./floor/money2.svg',
     },
     lights:[
         './lights/light1.svg',
@@ -63,6 +70,7 @@ export const Archive = {
         './lights/light4.svg'
     ],
     nature:{
+        diamondStone:'./nature/diamondStone.svg',
         stone:'./nature/stones.svg',
         puddle:'./nature/waterPuddle.svg',
         bush:'./nature/bush.svg',

@@ -1,11 +1,11 @@
 import { BoundingBox } from "./BoundingBox";
 
 export class ViewContext{
-    BoundingBox:BoundingBox;
-    Zoom:number;
+    public BoundingBox:BoundingBox;
+    public Scale:number;
 
     constructor(){
         this.BoundingBox = new BoundingBox();
-        this.Zoom = 1;
+        this.Scale = 1;
     }
 }

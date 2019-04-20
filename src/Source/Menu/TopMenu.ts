@@ -3,30 +3,27 @@ import { MenuItem } from "./MenuItem";
 import { PlaygroundHelper } from "../PlaygroundHelper";
 import { ISelectable } from "../ISelectable";
 
-export class RightMenu extends Menu{
-
+export class TopMenu extends Menu{
     constructor(private _isOk:{(data:ISelectable):boolean},items:Array<MenuItem>){
-        super();
-        this.IsHidden = false; 
+        super(); 
+
         this.Items = items;
-
         this.SetPosition();
-
         this.IsHidden = true;
         this.Items.forEach(item=>{
             item.Hide();
         });
+
     }
 
-    private SetPosition() { 
-        let width = 50 /PlaygroundHelper.Settings.GetScale();
-        let height = 75 /PlaygroundHelper.Settings.GetScale();
-        let margin = (PlaygroundHelper.Settings.GetRelativeHeight() / 2) 
-        - (this.Items.length * height/ 2);
-        let x = PlaygroundHelper.Settings.GetRelativeWidth() - width;
+    private SetPosition() {
+        let width = 50/PlaygroundHelper.Settings.GetScale();
+        let height = 75/PlaygroundHelper.Settings.GetScale();
+        let margin = PlaygroundHelper.Settings.GetRelativeWidth() / 2 - this.Items.length * height / 2;
+        let x = 0;
         let i = 0;
         this.Items.forEach(item => {
-            item.SetBoundingBox({ x: x, y: margin + i * height, width: width, height: height });
+            item.SetBoundingBox({ x: margin + i * width, y: 20/PlaygroundHelper.Settings.GetScale(), width: width, height: height });
             i += 1;
         });
     }
@@ -53,9 +50,9 @@ export class RightMenu extends Menu{
             });
         }
     }
-
     public Update(viewX: number, viewY: number): void {
         this.SetPosition();
         super.Update(viewX,viewY);
     }
+
 }

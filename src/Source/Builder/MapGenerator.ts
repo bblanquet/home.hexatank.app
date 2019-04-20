@@ -5,9 +5,8 @@ import { CeilDecorator } from "../CeilDecorator";
 import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Headquarter } from "../Field/Headquarter";
 import { HqSkin } from "../HqSkin";
-import { SmartHq } from "../Ia/SmartHq";
+import { SmartHq } from "../Ia/SmartHq"; 
 import { Cloud } from "../Cloud";
-import { RightMenu } from "../Menu/RightMenu";
 import { EmptyMenuItem } from "../Menu/EmptyMenuItem";
 import { TankMenuItem } from "../Menu/TankMenuItem";
 import { TruckMenuItem } from "../Menu/TruckMenuItem";
@@ -17,7 +16,7 @@ import { SpeedFieldMenuItem } from "../Menu/SpeedFieldMenuItem";
 import { LeftMenu } from "../Menu/LeftMenu";
 import { PatrolMenuItem } from "../Menu/PatrolMenuItem";
 import { CancelMenuItem } from "../Menu/CancelMenuItem";
-import { BottomMenu } from "../Menu/BottomMenu";
+import { TopBar } from "../Menu/TopBar";
 import { FlowerMapBuilder } from "./FlowerMapBuilder";
 import { BasicItem } from "../BasicItem";
 import { BoundingBox } from "../BoundingBox";
@@ -27,6 +26,10 @@ import { Menu } from "../Menu/Menu";
 import { ISelectable } from "../ISelectable";
 import { Vehicle } from "../Unit/Vehicle";
 import { Ceil } from "../Ceil";
+import { ZoomInButton } from "../Menu/ZoomInButton";
+import { ZoomOutButton } from "../Menu/ZoomOutButton";
+import { TopMenu } from "../Menu/TopMenu";
+import { MoneyMenuItem } from "../Menu/MoneyMenuItem";
 
 export class MapGenerator implements IMapGenerator{
 
@@ -98,13 +101,22 @@ export class MapGenerator implements IMapGenerator{
     }
 
     private SetMenus(redQuarter: Headquarter, items: Item[]) {
-        const rightMenu = new RightMenu((data:ISelectable)=>data instanceof Headquarter,[new EmptyMenuItem('rightTopBorder'),
+        const rightMenu = new LeftMenu((data:ISelectable)=>data instanceof Headquarter,
+        [new EmptyMenuItem(Archive.menu.topMenu),
         new TankMenuItem(redQuarter),
         new TruckMenuItem(redQuarter),
         new CancelMenuItem(),
-        new EmptyMenuItem('rightBottomBorder')]);
+        new EmptyMenuItem(Archive.menu.bottomMenu)]);
 
         items.splice(0, 0, rightMenu);
+
+        const zoomMenu = new TopMenu((data:ISelectable)=>true,
+        [
+            new ZoomInButton(),
+            new ZoomOutButton()
+        ]);
+        zoomMenu.Show(null);
+        items.splice(0, 0, zoomMenu);
 
         const leftMenu = new LeftMenu((data:ISelectable)=>data instanceof Vehicle,[new EmptyMenuItem(Archive.menu.topMenu),
         new TargetMenuItem(),
@@ -117,17 +129,16 @@ export class MapGenerator implements IMapGenerator{
             new HealMenuItem(),
             new AttackMenuItem(),
             new SpeedFieldMenuItem(),
+            new MoneyMenuItem(),
             new CancelMenuItem(),
             new EmptyMenuItem(Archive.menu.bottomMenu)]);
         items.splice(0, 0, leftMenu2);
 
-        const bottomMenu = new BottomMenu(redQuarter);
+        const bottomMenu = new TopBar(redQuarter);
         items.splice(0, 0, bottomMenu);
 
         this._menus.push(rightMenu);
         this._menus.push(leftMenu);
         this._menus.push(leftMenu2);
     }
-
-
 }

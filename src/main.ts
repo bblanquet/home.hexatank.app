@@ -72,7 +72,7 @@ function Setup()
         const sleep = (milliseconds:number) => {
             return new Promise(resolve => setTimeout(resolve, milliseconds))
         };
-        sleep(5000).then(() => {
+        sleep(1000).then(() => {
             loading.Destroy();
             back.Destroy();
             isReady = true;

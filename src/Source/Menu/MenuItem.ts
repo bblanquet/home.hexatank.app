@@ -2,7 +2,6 @@ import { Item } from "../Item";
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
 import { isNullOrUndefined } from "util";
-import { Archive } from "../Tools/ResourceArchiver";
 
 export abstract class MenuItem extends Item
 {

@@ -36,7 +36,9 @@ export class Diamond extends AliveItem implements IField{
         });
         this.InitPosition(ceil.GetBoundingBox());
     }
-
+    public GetCurrentCeil(): Ceil {
+        return this._ceil;
+    }
     GetCeil(): Ceil {
         return this._ceil;
     }

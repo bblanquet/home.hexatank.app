@@ -3,6 +3,8 @@ import { Item } from "../../Item";
 import { Tank } from "../../Unit/Tank";
 import { Ceil } from "../../Ceil";
 import { SimpleTankOrder } from "../../Ia/SimpleTankOrder";
+import { SimpleOrder } from "../../Ia/SimpleOrder";
+import { TargetOrder } from "../../Ia/TargetOrder";
 
 export class TankCombination implements ICombination{
 
@@ -15,17 +17,19 @@ export class TankCombination implements ICombination{
     {
         if(this.IsMatching(items))
         {
-            const vehicle = <Tank>items[0];
+            const tank = <Tank>items[0];
             const ceil = <Ceil>items[1];
-            if(ceil.GetOccupier() === vehicle)
+            if(ceil.GetShootableEntity() !== null
+            && ceil.GetShootableEntity().IsEnemy(tank))
             {
-                vehicle.SetSelected(false);
-                items = [];
+                const order = new TargetOrder(tank,ceil.GetShootableEntity());
+                tank.SetOrder(order);
+                items.splice(1,1);
             }
             else
             {
-                const order = new SimpleTankOrder(ceil,vehicle);
-                vehicle.SetOrder(order);
+                const order = new SimpleOrder(ceil,tank);
+                tank.SetOrder(order);
                 items.splice(1,1);
             }
             return true;

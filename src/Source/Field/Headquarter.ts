@@ -16,6 +16,7 @@ import { Archive } from "../Tools/ResourceArchiver";
 
 export class Headquarter extends AliveItem implements IField, ISelectable
 {
+
     BoundingBox:BoundingBox;
     private _ceil:Ceil; 
     Fields:Array<HeadQuarterField>;
@@ -58,7 +59,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         });
         this.InitPosition(ceil.GetBoundingBox());
     }
-
+    public GetCurrentCeil(): Ceil {
+        return this._ceil;
+    }
     private _visibleHandlers: { (data: ISelectable):void }[] = [];
 
     SubscribeUnselection(handler: (data: ISelectable) => void): void {

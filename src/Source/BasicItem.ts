@@ -8,9 +8,9 @@ export class BasicItem extends Item{
     private _isVisible:{ (): boolean };
     private _isAlive:{ (): boolean };
     private _spriteName:string;
-    constructor(private _boundingBox:BoundingBox, sprite:string){
+    constructor(private _boundingBox:BoundingBox, sprite:string, z:number = 0){
         super();
-        this.Z = 0;
+        this.Z = z;
         this._spriteName = sprite;
         this.GenerateSprite(sprite,e=>{
             e.anchor.set(0.50);

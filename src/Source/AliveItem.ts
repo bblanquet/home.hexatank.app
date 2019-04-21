@@ -1,4 +1,5 @@
 import { Item } from "./Item";
+import { Ceil } from "./Ceil";
 
 export abstract class AliveItem extends Item{
     protected Life:number=100;
@@ -74,4 +75,6 @@ export abstract class AliveItem extends Item{
     }
 
     public abstract IsEnemy(item:AliveItem):boolean;
+
+    public abstract GetCurrentCeil(): Ceil;
 }

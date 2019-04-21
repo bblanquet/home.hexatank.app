@@ -47,6 +47,7 @@ export const Archive = {
     cell:'./cell.svg',
     diamondCell:'./diamondCell.svg',
     direction:{
+        target:'./direction/target.svg',
         moving:'./direction/moving1.svg',
         patrol:'./direction/patrol2.svg'
     },

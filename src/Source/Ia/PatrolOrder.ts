@@ -10,26 +10,26 @@ import { Archive } from "../Tools/ResourceArchiver";
 
 export class PatrolOrder extends Order{
     private _currentPatrolCeil:Ceil;
-    private _simpleOrder:SimpleOrder; 
-    private _patrols:Array<BasicItem>;
+    private _currentOrder:SimpleOrder; 
+    private _patrolPathDisplay:Array<BasicItem>;
 
-    constructor(private _patrolCeils:Array<Ceil>,private _v:Vehicle)
+    constructor(private _patrolCeils:Array<Ceil>, private _v:Vehicle)
     { 
         super();
-        this._patrols = new Array<BasicItem>();
+        this._patrolPathDisplay = new Array<BasicItem>();
         this.CreatePath();
     }
 
     public Cancel(): void {
         super.Cancel();
-        this._patrols.forEach(patrol=>{
+        this._patrolPathDisplay.forEach(patrol=>{
             patrol.Destroy();
         });
-        this._patrols = [];
+        this._patrolPathDisplay = [];
         
-        if(!isNullOrUndefined(this._simpleOrder))
+        if(!isNullOrUndefined(this._currentOrder))
         {
-            this._simpleOrder.Cancel();
+            this._currentOrder.Cancel();
         }
     }
 
@@ -42,7 +42,7 @@ export class PatrolOrder extends Order{
                     pathItem.SetDisplayTrigger(this._v.IsSelected.bind(this._v));
                     pathItem.SetVisible(this._v.IsAlive.bind(this._v));
 
-                    this._patrols.push(pathItem);
+                    this._patrolPathDisplay.push(pathItem);
                     PlaygroundHelper.Playground.Items.push(pathItem);
                 }
             );
@@ -58,7 +58,7 @@ export class PatrolOrder extends Order{
             this.StartMoving();
         }
 
-        if(this._simpleOrder.IsDone())
+        if(this._currentOrder.IsDone())
         {
             var index = (this._patrolCeils.indexOf(this._currentPatrolCeil)+1) % this._patrolCeils.length;
             this._currentPatrolCeil = this._patrolCeils[index];
@@ -66,12 +66,12 @@ export class PatrolOrder extends Order{
         }
         else
         {
-            this._simpleOrder.Do();
+            this._currentOrder.Do();
         }
     }
 
     private StartMoving() {
-        this._simpleOrder = new SimpleOrder(this._currentPatrolCeil, this._v);
-        this._simpleOrder.Do();
+        this._currentOrder = new SimpleOrder(this._currentPatrolCeil, this._v);
+        this._currentOrder.Do();
     }
 }

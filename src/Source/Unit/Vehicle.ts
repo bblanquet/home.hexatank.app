@@ -107,7 +107,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         return this.BoundingBox;
     }
 
-    private HasNextCeil():Boolean{
+    public HasNextCeil():Boolean{
         return !isNullOrUndefined(this._nextCeil);
     }
 

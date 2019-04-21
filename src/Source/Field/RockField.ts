@@ -20,7 +20,9 @@ export class BlockingField extends AliveItem implements IField
         this.GenerateSprite(sprite);
         this.InitPosition(ceil.GetBoundingBox());
     }
-
+    public GetCurrentCeil(): Ceil {
+        return this._ceil;
+    }
     GetCeil(): Ceil {
         return this._ceil;
     }

@@ -20,6 +20,7 @@ import { Menu } from '../Menu/Menu';
 import { ZoomInCombination } from './Combination/ZoomInCombination';
 import { ZoomOutCombination } from './Combination/ZoomOutCombination';
 import { MoneyCeilCombination } from './Combination/MoneyCeilCombination';
+import { TargetCombination } from './Combination/TargetCombination';
 
 export class InteractionContext implements IInteractionContext{
 
@@ -45,6 +46,7 @@ export class InteractionContext implements IInteractionContext{
         combinations.push(new UnselectCombination(this._isSelectable, this));
         combinations.push(new SelectionCombination(menus,this._isSelectable));
         combinations.push(new FastCeilCombination());
+        combinations.push(new TargetCombination());    
         combinations.push(new AttackCeilCombination());
         combinations.push(new MoneyCeilCombination());
         combinations.push(new HealCeilCombination());

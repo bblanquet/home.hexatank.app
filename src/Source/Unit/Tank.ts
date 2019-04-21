@@ -154,7 +154,7 @@ export class Tank extends Vehicle implements IHqContainer
     }
 
     private ContainsMainTarget(enemies: AliveItem[]) {
-        return enemies.indexOf(this._mainTarget) === 1;
+        return enemies.filter(e=>e===this._mainTarget).length === 1;
     }
 
     private IsHqContainer(item: any):item is IHqContainer{
@@ -179,5 +179,9 @@ export class Tank extends Vehicle implements IHqContainer
 
     public SetMainTarget(item:AliveItem):void{
         this._mainTarget = item;
+    }
+
+    public GetMainTarget():AliveItem{
+        return this._mainTarget;
     }
 }

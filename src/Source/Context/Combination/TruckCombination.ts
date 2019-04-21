@@ -8,7 +8,9 @@ import { Truck } from "../../Unit/Truck";
 export class TruckCombination implements ICombination
 {
     IsMatching(items: Item[]): boolean { 
-        return items.length >=2 && items[0] instanceof Truck && items[1] instanceof Ceil
+        return items.length >=2 
+        && items[0] instanceof Truck 
+        && items[1] instanceof Ceil
     } 
  
     Combine(items: Item[]): boolean {

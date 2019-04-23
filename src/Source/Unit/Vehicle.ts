@@ -23,7 +23,6 @@ import { Archive } from '../Tools/ResourceArchiver';
 
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable
 {
-    
     RotationSpeed: number=0.05;
     TranslationSpeed: number=1;
     Attack:number=30;
@@ -52,6 +51,9 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     private _leftDusts:Array<Dust>;
     private _rightDusts:Array<Dust>;
 
+    private _visibleHandlers: { (data: ISelectable):void }[] = [];
+    private _onCeilStateChanged:{(ceilState:CeilState):void};
+
     constructor(){
         super();
         this.CurrentRadius = 0;
@@ -64,7 +66,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this.Size = PlaygroundHelper.Settings.Size;
         this.BoundingBox.Width = CeilProperties.GetWidth(this.Size);
         this.BoundingBox.Height = CeilProperties.GetHeight(this.Size);
-
+        this._onCeilStateChanged = this.OnCeilStateChanged.bind(this);
         this.RootSprites = new Array<string>();
 
         this.Wheels =  new Array<string>();
@@ -81,12 +83,11 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this._rightDusts.forEach(rd=>PlaygroundHelper.Playground.Items.push(rd));
     }
 
-    private _visibleHandlers: { (data: ISelectable):void }[] = [];
 
-    SubscribeUnselection(handler: (data: ISelectable) => void): void {
+    public SubscribeUnselection(handler: (data: ISelectable) => void): void {
         this._visibleHandlers.push(handler);
     }
-    Unsubscribe(handler: (data: ISelectable) => void): void {
+    public Unsubscribe(handler: (data: ISelectable) => void): void {
         this._visibleHandlers = this._visibleHandlers.filter(h => h !== handler);
     }
 
@@ -161,7 +162,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
             leftb.Height = this.GetBoundingBox().Width/5;
 
             this._leftDusts[this._dustIndex].Reset(leftb);
-            
+            this._leftDusts[this._dustIndex].GetSprites().forEach(s=>{s.visible = this._currentCeil.IsVisible();});
+
             const rightb = new BoundingBox();
             rightb.X = center - width/3*Math.cos(this.CurrentRadius);
             rightb.Y = middle - height/3*Math.sin(this.CurrentRadius);
@@ -169,6 +171,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
             rightb.Height = this.GetBoundingBox().Width/5;
 
             this._rightDusts[this._dustIndex].Reset(rightb);
+            this._rightDusts[this._dustIndex].GetSprites().forEach(s=>{s.visible = this._currentCeil.IsVisible();});
 
             this._dustIndex = (this._dustIndex+1) % this._leftDusts.length;
         }
@@ -189,10 +192,15 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         return this._nextCeil;
     }
 
+    protected abstract OnCeilStateChanged(ceilState:CeilState):void;
+
     public MoveNextCeil(): void {
-        var previousCeil = this._currentCeil;
+        let previousCeil = this._currentCeil;
+        this._currentCeil.UnregisterCeilState(this._onCeilStateChanged);
 
         this._currentCeil = this._nextCeil;
+        this.OnCeilStateChanged(this._currentCeil.GetState());
+        this._currentCeil.RegisterCeilState(this._onCeilStateChanged);
         this._nextCeil = null;
 
         this.SetVisible();
@@ -200,23 +208,31 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     }
 
     private SetHalVisible(previousCeil: Ceil) {
-        var ceils = previousCeil.GetAllNeighbourhood();
-        ceils.push(previousCeil);
-        ceils.forEach(childCeil => {
-            var child = (<Ceil>childCeil);
-            if (isNullOrUndefined(child.GetOccupier()) 
-            && child.GetAllNeighbourhood().filter(c => !isNullOrUndefined((<Ceil>c).GetOccupier())).length === 0) {
-                child.SetState(CeilState.HalfVisible);
-            }
-        });
+        if(!this.IsEnemy(PlaygroundHelper.PlayerHeadquarter) 
+        || PlaygroundHelper.Settings.ShowEnemies)
+        {
+            var preVisibleCeils = previousCeil.GetAllNeighbourhood();
+            preVisibleCeils.push(previousCeil);
+            preVisibleCeils.forEach(ceilChild => {
+                var ceil = (<Ceil>ceilChild);
+                if (!ceil.ContainsAlly(this) && 
+                    ceil.GetAllNeighbourhood().filter(c => (<Ceil>c).ContainsAlly(this)).length === 0) 
+                {
+                    ceil.SetState(CeilState.HalfVisible);
+                }
+            });
+        }
     }
 
     private SetVisible() {
-        var ceils = this._currentCeil.GetAllNeighbourhood();
-        ceils.push(this._currentCeil);
-        ceils.forEach(ceil => {
-            (<Ceil>ceil).SetState(CeilState.Visible);
-        });
+        if(!this.IsEnemy(PlaygroundHelper.PlayerHeadquarter) 
+        || PlaygroundHelper.Settings.ShowEnemies){
+            var ceils = this._currentCeil.GetAllNeighbourhood();
+            ceils.push(this._currentCeil);
+            ceils.forEach(ceil => {
+                (<Ceil>ceil).SetState(CeilState.Visible);
+            });
+        }
     }
 
     public Destroy():void{
@@ -232,6 +248,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this._rightDusts.forEach(ld=>ld.Destroy());
         this._leftDusts = [];
         this._rightDusts = [];
+        this.SetHalVisible(this._currentCeil);
     }
 
     public Update(viewX: number, viewY: number):void{
@@ -271,6 +288,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
                 this._pendingOrder = null;
             }
         }
+
         super.Update(viewX,viewY);
     }
 
@@ -303,6 +321,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this.InitPosition(ceil.GetBoundingBox());
         this._currentCeil = ceil;
         this._currentCeil.SetOccupier(this);
+        this._currentCeil.RegisterCeilState(this._onCeilStateChanged);
+        this._onCeilStateChanged(this._currentCeil.GetState())
         this.SetVisible();
     };
 

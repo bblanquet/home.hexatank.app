@@ -9,6 +9,7 @@ export class GameSettings
     ScreenHeight:number;
     RotationSpeed:number=0.05;
     TranslationSpeed:number=1;
+    ShowEnemies:boolean=false;
     Attack:number=30;
     private _fps:number=0;
     private _fpsHandlers:{(data: number):void}[] = [];

@@ -13,16 +13,18 @@ import { Vehicle } from "../Unit/Vehicle";
 import { Crater } from "../Crater";
 import { ISelectable } from "../ISelectable";
 import { Archive } from "../Tools/ResourceArchiver";
+import { CeilState } from "../CeilState";
 
 export class Headquarter extends AliveItem implements IField, ISelectable
 {
-
-    BoundingBox:BoundingBox;
+    private _boundingBox:BoundingBox;
     private _ceil:Ceil; 
-    Fields:Array<HeadQuarterField>;
+    protected Fields:Array<HeadQuarterField>;
     Diamonds:number=40;
     private _skin:HqSkin;
-    IsFading:boolean;
+    private _onCeilStateChanged:{(ceilState:CeilState):void};
+
+
 
     constructor(skin:HqSkin, ceil:Ceil){
         super();
@@ -34,19 +36,19 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         this.GenerateSprite(Archive.selectionUnit);
         this.SetProperty(Archive.selectionUnit,(e)=>e.alpha=0);
 
-        this.BoundingBox = new BoundingBox();
-        this.BoundingBox.Width = this._ceil.GetBoundingBox().Width;
-        this.BoundingBox.Height = this._ceil.GetBoundingBox().Height;
-        this.BoundingBox.X = this._ceil.GetBoundingBox().X;
-        this.BoundingBox.Y = this._ceil.GetBoundingBox().Y;
+        this._boundingBox = new BoundingBox();
+        this._boundingBox.Width = this._ceil.GetBoundingBox().Width;
+        this._boundingBox.Height = this._ceil.GetBoundingBox().Height;
+        this._boundingBox.X = this._ceil.GetBoundingBox().X;
+        this._boundingBox.Y = this._ceil.GetBoundingBox().Y;
 
         this.GenerateSprite(this.GetSkin().GetHq());
         this.GenerateSprite(Archive.building.hq.bottom);
         this.GenerateSprite(Archive.building.hq.top);
 
         this.GetSprites().forEach(obj => {
-            obj.width = this.BoundingBox.Width,
-            obj.height = this.BoundingBox.Height
+            obj.width = this._boundingBox.Width;
+            obj.height = this._boundingBox.Height;
             obj.anchor.set(0.5);
         });
         this.IsCentralRef = true;
@@ -57,17 +59,27 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         {
             this.Fields.push(new HeadQuarterField(this,<Ceil>ceil,skin.GetCeil()));
         });
+        this._onCeilStateChanged = this.OnCeilStateChanged.bind(this);
+        this._ceil.RegisterCeilState(this._onCeilStateChanged);
         this.InitPosition(ceil.GetBoundingBox());
+
+        this.GetDisplayObjects().forEach(obj => {obj.visible = this._ceil.IsVisible();});
     }
+    protected OnCeilStateChanged(ceilState: CeilState): void {
+        this.GetDisplayObjects().forEach(s=>{
+            s.visible = ceilState === CeilState.Visible;
+        });
+    }
+
     public GetCurrentCeil(): Ceil {
         return this._ceil;
     }
     private _visibleHandlers: { (data: ISelectable):void }[] = [];
 
-    SubscribeUnselection(handler: (data: ISelectable) => void): void {
+    public SubscribeUnselection(handler: (data: ISelectable) => void): void {
         this._visibleHandlers.push(handler);
     }
-    Unsubscribe(handler: (data: ISelectable) => void): void {
+    public Unsubscribe(handler: (data: ISelectable) => void): void {
         this._visibleHandlers = this._visibleHandlers.filter(h => h !== handler);
     }
 
@@ -155,7 +167,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable
     }
 
     public GetBoundingBox(): BoundingBox {
-        return this.BoundingBox;
+        return this._boundingBox;
     }   
 
     public Select(context: InteractionContext): boolean {
@@ -165,6 +177,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable
     public Destroy():void{
         super.Destroy();
         PlaygroundHelper.Render.Remove(this);
+        this._ceil.UnregisterCeilState(this._onCeilStateChanged);
         this._ceil.DestroyField();
         this.IsUpdatable = false;
         this.Fields.forEach(field=>{
@@ -179,7 +192,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         if(!this.IsAlive())
         {
             this.Destroy();
-            let crater = new Crater(this.BoundingBox);
+            let crater = new Crater(this._boundingBox);
             PlaygroundHelper.Playground.Items.push(crater);
             return;
         }

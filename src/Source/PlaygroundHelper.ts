@@ -7,6 +7,7 @@ import { Playground } from './Playground';
 import { AreaEngine } from './Ia/AreaFinder/AreaEngine';
 import { Area } from './Ia/AreaFinder/Area';
 import { ISpriteProvider } from './Tools/ISpriteProvider';
+import { Headquarter } from './Field/Headquarter';
 
 export class PlaygroundHelper{
     static CeilsContainer:CeilsContainer<Ceil>;
@@ -18,6 +19,7 @@ export class PlaygroundHelper{
     static CurrentPlayground:Playground;
     private static _areaEngine:AreaEngine;
     static SpriteProvider:ISpriteProvider;
+    public static PlayerHeadquarter:Headquarter;
 
     public static Init():void{
         this._areaEngine = new AreaEngine();

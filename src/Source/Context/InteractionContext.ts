@@ -21,6 +21,9 @@ import { ZoomInCombination } from './Combination/ZoomInCombination';
 import { ZoomOutCombination } from './Combination/ZoomOutCombination';
 import { MoneyCeilCombination } from './Combination/MoneyCeilCombination';
 import { TargetCombination } from './Combination/TargetCombination';
+import { SwitchToCeilCombination } from './Combination/SwitchToCeilCombination';
+import { SwitchToHeadquarterCombination } from './Combination/SwitchToHeadquarterCombination';
+import { SwitchToVehicleCombination } from './Combination/SwitchToVehicleCombination';
 
 export class InteractionContext implements IInteractionContext{
 
@@ -37,7 +40,10 @@ export class InteractionContext implements IInteractionContext{
         this._currentHq = currentHq;
         let combinations = new Array<ICombination>();
         combinations.push(new ZoomOutCombination());
-        combinations.push(new ZoomInCombination());        
+        combinations.push(new ZoomInCombination());
+        combinations.push(new SwitchToCeilCombination(menus));     
+        combinations.push(new SwitchToHeadquarterCombination(menus));     
+        combinations.push(new SwitchToVehicleCombination(menus));     
         combinations.push(new CancelCombination(this));
         combinations.push(new TruckCombination());
         combinations.push(new TankCombination());

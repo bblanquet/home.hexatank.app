@@ -4,27 +4,17 @@ import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Vehicle } from "../Unit/Vehicle";
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
-import { IField } from "./IField";
+import { AliveField } from "./AliveField";
 
-
-export class BlockingField extends AliveItem implements IField
+export class BlockingField extends AliveField
 {
- 
-    private _ceil:Ceil;
-    
     constructor(ceil:Ceil, sprite:string){
-        super();
-        this._ceil = ceil;
-        this._ceil.SetField(this);
+        super(ceil);
+        this.GetCeil().SetField(this);
         this.Z= 0;
         this.GenerateSprite(sprite);
         this.InitPosition(ceil.GetBoundingBox());
-    }
-    public GetCurrentCeil(): Ceil {
-        return this._ceil;
-    }
-    GetCeil(): Ceil {
-        return this._ceil;
+        this.GetDisplayObjects().forEach(obj => {obj.visible = this.GetCeil().IsVisible();});
     }
 
     Support(vehicule: Vehicle): void {
@@ -43,7 +33,7 @@ export class BlockingField extends AliveItem implements IField
     }
 
     public GetBoundingBox(): BoundingBox {
-        return this._ceil.GetBoundingBox();
+        return this.GetCeil().GetBoundingBox();
     }
     public Select(context: InteractionContext): boolean {
         //nothing
@@ -62,7 +52,7 @@ export class BlockingField extends AliveItem implements IField
     public Destroy():void{
         super.Destroy();
         PlaygroundHelper.Render.Remove(this);
-        this._ceil.DestroyField();
+        this.GetCeil().DestroyField();
         this.IsUpdatable = false;
     }
 }

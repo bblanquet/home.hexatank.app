@@ -2,34 +2,32 @@ import { PlaygroundHelper } from "../PlaygroundHelper";
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
 import { Ceil } from "../Ceil";
-import { Item } from "../Item";
-import { IField } from "./IField";
 import { Vehicle } from "../Unit/Vehicle"; 
 import { Truck } from "../Unit/Truck";
 import { Timer } from "../Tools/Timer";
 import { Archive } from "../Tools/ResourceArchiver";
+import { Field } from "./Field";
 
-export class DiamondField extends Item implements IField
+export class DiamondField extends Field
 {
-    private _ceil:Ceil;
     private _timer:Timer;
     IsFading:boolean;
     
     constructor(ceil:Ceil){
-        super();
-        this._ceil = ceil;
-        this._ceil.SetField(this);
+        super(ceil);
+        this.GetCeil().SetField(this);
         this.Z= 0;
         this._timer = new Timer(3);
         this.GenerateSprite(Archive.diamondCell);
         this.InitPosition(ceil.GetBoundingBox());
+        this.GetDisplayObjects().forEach(obj => {obj.visible = this.GetCeil().IsVisible();});
     }
 
     public Destroy(): void {
         super.Destroy();
         PlaygroundHelper.Render.Remove(this);
         this.IsUpdatable = false;
-        this._ceil.DestroyField();
+        this.GetCeil().DestroyField();
     }
 
     public Support(vehicule:Vehicle): void 
@@ -52,12 +50,8 @@ export class DiamondField extends Item implements IField
         return false;
     }
     
-    GetCeil(): Ceil {
-        return this._ceil;
-    }
-
     public GetBoundingBox(): BoundingBox{
-        return this._ceil.GetBoundingBox();
+        return this.GetCeil().GetBoundingBox();
     }
 
     public Select(context: InteractionContext): boolean {

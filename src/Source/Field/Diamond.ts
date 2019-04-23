@@ -4,43 +4,47 @@ import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Light } from "../Light";
 import { Ceil } from "../Ceil";
 import { DiamondField } from "./DiamondField";
-import { IField } from "./IField";
 import { Vehicle } from "../Unit/Vehicle";
 import { AliveItem } from "../AliveItem"; 
 import { Crater } from "../Crater";
 import { Archive } from "../Tools/ResourceArchiver";
+import { AliveField } from "./AliveField";
+import { CeilState } from "../CeilState";
 
-export class Diamond extends AliveItem implements IField{
+export class Diamond extends AliveField{
 
     BoundingBox:BoundingBox;
     Lights:Light;
     Fields:Array<DiamondField>;
-    private _ceil:Ceil;//4
 
     constructor(ceil:Ceil) 
     {
-        super();
+        super(ceil);
         this.Z= 1;
-        this._ceil = ceil;
-        this._ceil.SetField(this);
-        this.BoundingBox = this._ceil.GetBoundingBox();
+        this.GetCeil().SetField(this);
+        this.BoundingBox = this.GetCeil().GetBoundingBox();
         this.GenerateSprite(Archive.nature.diamond);
 
         this.Lights = new Light(this.GetBoundingBox());
         this.Lights.Display();
         this.Fields = new Array<DiamondField>();
-        var neighbours = this._ceil.GetNeighbourhood();
+        var neighbours = this.GetCeil().GetNeighbourhood();
         neighbours.forEach(ceil=>
         {
             this.Fields.push(new DiamondField(<Ceil>ceil));
         });
         this.InitPosition(ceil.GetBoundingBox());
+        this.GetDisplayObjects().forEach(obj => {obj.visible = this.GetCeil().IsVisible();});
+        this.Lights.GetDisplayObjects().forEach(obj => {obj.visible = this.GetCeil().IsVisible();});
     }
-    public GetCurrentCeil(): Ceil {
-        return this._ceil;
-    }
-    GetCeil(): Ceil {
-        return this._ceil;
+
+    protected OnCeilStateChanged(ceilState: CeilState): void {
+        this.GetDisplayObjects().forEach(s=>{
+            s.visible = ceilState === CeilState.Visible;
+        });
+        this.Lights.GetDisplayObjects().forEach(s=>{
+            s.visible = ceilState === CeilState.Visible;
+        });
     }
 
     Support(vehicule:Vehicle): void {
@@ -65,7 +69,7 @@ export class Diamond extends AliveItem implements IField{
     public Destroy():void{
         super.Destroy();
         PlaygroundHelper.Render.Remove(this);
-        this._ceil.DestroyField();
+        this.GetCeil().DestroyField();
         this.IsUpdatable = false;
         this.Fields.forEach(field=>{
             field.Destroy();

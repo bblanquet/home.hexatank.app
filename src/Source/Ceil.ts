@@ -14,9 +14,12 @@ import { CeilState } from './CeilState';
 import { isNullOrUndefined } from 'util';
 import { Archive } from './Tools/ResourceArchiver';
 import { ISelectable } from './ISelectable';
+import { Vehicle } from './Unit/Vehicle';
+import { Headquarter } from './Field/Headquarter';
 
 export class Ceil extends Item implements ICeil , ISelectable
 {
+
     private _state:CeilState = CeilState.Hidden;
     Properties:CeilProperties;
     private _display:{ [id: number]: Array<string>; };
@@ -24,6 +27,7 @@ export class Ceil extends Item implements ICeil , ISelectable
     private _occupier:IMovable;
     private _decorationSprite:string;
     private _areaSprite:string;
+
 
     constructor(properties:CeilProperties)
     {
@@ -38,6 +42,36 @@ export class Ceil extends Item implements ICeil , ISelectable
             e.alpha=0;
             e.anchor.set(0.5);
         });
+    }
+
+    public GetState(): CeilState {
+        return this._state;
+    }
+
+    private _ceilStateHandlers: { (data: CeilState):void }[] = [];
+
+    public RegisterCeilState(handler: (data: CeilState) => void): void {
+        this._ceilStateHandlers.push(handler);
+    }
+    public UnregisterCeilState(handler: (data: CeilState) => void): void {
+        this._ceilStateHandlers = this._ceilStateHandlers.filter(h => h !== handler);
+    }
+
+    private OnCeilStateChanged(state:CeilState){
+        this._state = state;
+        this._ceilStateHandlers.forEach(ceilStateHandler=>
+        {
+            ceilStateHandler(this._state);
+        }
+        );
+    }
+
+    public IsVisible(): boolean {
+        return this._state === CeilState.Visible;
+    }
+
+    public IsUnknown():boolean{
+        return this._state === CeilState.Hidden;
     }
 
     public SetSelected(visible: boolean): void {
@@ -98,11 +132,24 @@ export class Ceil extends Item implements ICeil , ISelectable
             }
         }
 
-        if(this._occupier != null){
+        if(this._occupier != null)
+        {
             return <AliveItem>(this._occupier as any);
         }
 
         return null;
+    }
+
+    public ContainsAlly(v:Vehicle):boolean{
+        if(this._occupier && this._occupier instanceof AliveItem)
+        {
+            return !v.IsEnemy(this._occupier);
+        }
+        if(this._field && this._field instanceof Headquarter)
+        {
+            return !v.IsEnemy(this._field);
+        }
+        return false;
     }
 
     public GetBoundingBox():BoundingBox{
@@ -117,7 +164,7 @@ export class Ceil extends Item implements ICeil , ISelectable
             this.SetProperty(this._areaSprite,(e)=>e.alpha = 0.2);
         }
 
-        this._state = state;
+        this.OnCeilStateChanged(state);
 
         this._display[this._state].forEach(sprite=>{
             this.SetProperty(sprite, (e)=>e.alpha = 1);

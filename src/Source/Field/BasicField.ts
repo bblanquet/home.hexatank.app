@@ -1,22 +1,15 @@
-import { Item } from "../Item";
-import { IField } from "./IField";
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
 import { Vehicle } from "../Unit/Vehicle";
 import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Ceil } from "../Ceil"; 
+import { Field } from "./Field";
 
-export class BasicField extends Item implements IField{
-    private _ceil:Ceil;
+export class BasicField extends Field{
 
     constructor(ceil:Ceil){
-        super();
-        this._ceil=ceil;
-        this._ceil.SetField(this);
-    }
-
-    GetCeil(): Ceil {
-        return this._ceil;
+        super(ceil);
+        this.GetCeil().SetField(this);
     }
 
     Support(vehicule: Vehicle): void {
@@ -34,7 +27,7 @@ export class BasicField extends Item implements IField{
     }
 
     public GetBoundingBox(): BoundingBox {
-        return this._ceil.GetBoundingBox();
+        return this.GetCeil().GetBoundingBox();
     }
     public Select(context: InteractionContext): boolean {
         return false;

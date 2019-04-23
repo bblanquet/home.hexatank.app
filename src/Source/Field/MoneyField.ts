@@ -9,17 +9,16 @@ import { Archive } from "../Tools/ResourceArchiver";
 import { Timer } from "../Tools/Timer";
 import { Truck } from "../Unit/Truck";
 import { Light } from "../Light";
+import { Field } from "./Field";
 
-export class MoneyField extends Item implements IField
+export class MoneyField extends Field
 { 
-    private _ceil:Ceil;
     private _timer:Timer;
     private _light:Light;
 
     constructor(ceil:Ceil){
-        super();
-        this._ceil=ceil;
-        this._ceil.SetField(this);
+        super(ceil);
+        this.GetCeil().SetField(this);
         this.Z= 1; 
         this._timer = new Timer(10);
         this._light = new Light(ceil.GetBoundingBox());
@@ -27,10 +26,7 @@ export class MoneyField extends Item implements IField
         this.GenerateSprite(Archive.bonus.emptyMoney);
         this.GenerateSprite(Archive.bonus.fullMoney,s=>s.alpha=0);      
         this.InitPosition(ceil.GetBoundingBox());
-    }
-
-    public GetCeil(): Ceil {
-        return this._ceil;
+        this.GetDisplayObjects().forEach(obj => {obj.visible = this.GetCeil().IsVisible();});
     }
 
     private IsFull():boolean{
@@ -42,7 +38,7 @@ export class MoneyField extends Item implements IField
     }
 
     public GetBoundingBox(): BoundingBox {
-        return this._ceil.GetBoundingBox();
+        return this.GetCeil().GetBoundingBox();
     }
     public Select(context: InteractionContext): boolean {
         return false;

@@ -7,9 +7,11 @@ import { isNullOrUndefined, isNull } from 'util';
 import { Headquarter } from '../Field/Headquarter';
 import { IHqContainer } from '../IHqContainer';
 import { Archive } from '../Tools/ResourceArchiver';
+import { CeilState } from '../CeilState';
 
 export class Tank extends Vehicle implements IHqContainer 
 {
+
     Hq: Headquarter; 
     Turrel:Turrel;
     private _currentTarget:AliveItem;
@@ -44,6 +46,16 @@ export class Tank extends Vehicle implements IHqContainer
         this.IsCentralRef = true;
     } 
 
+    protected OnCeilStateChanged(ceilState: CeilState): void 
+    {
+        this.GetDisplayObjects().forEach(s=>{
+            s.visible = ceilState === CeilState.Visible;
+        });
+        this.Turrel.GetDisplayObjects().forEach(s=>{
+            s.visible = ceilState === CeilState.Visible;
+        });    
+    }
+
     public SetPosition (ceil:Ceil):void{
         super.SetPosition(ceil);
         this.Turrel.InitPosition(ceil.GetBoundingBox());
@@ -57,10 +69,13 @@ export class Tank extends Vehicle implements IHqContainer
     public Update(viewX: number, viewY: number):void{
         super.Update(viewX,viewY);
 
-        if(this._mainTarget != null && !this._mainTarget.IsAlive()){
+        if(this._mainTarget != null && !this._mainTarget.IsAlive())
+        {
             this._mainTarget = null;
         }
-        if(this._currentTarget != null && !this._currentTarget.IsAlive()){
+
+        if(this._currentTarget != null && !this._currentTarget.IsAlive())
+        {
             this._currentTarget = null;
         }
 

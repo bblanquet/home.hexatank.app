@@ -1,41 +1,34 @@
-import { Item } from "../Item";
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
-import { Sprite } from "pixi.js";
 import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Ceil } from "../Ceil";
-import { IField } from "./IField";
 import { Vehicle } from "../Unit/Vehicle";
 import { Truck } from "../Unit/Truck";
 import { Timer } from "../Tools/Timer"; 
 import { Headquarter } from "./Headquarter";
+import { Field } from "./Field";
 
-export class HeadQuarterField extends Item implements IField
+export class HeadQuarterField extends Field
 {
-    private _ceil:Ceil;
     private _timer:Timer;
     IsFading:boolean;
     Diamonds:number=0; 
 
     constructor(private _hq:Headquarter,ceil:Ceil,sprite:string){
-        super();
-        this._ceil = ceil;
-        this._ceil.SetField(this);
+        super(ceil);
+        this.GetCeil().SetField(this);
         this.Z= 0;
         this._timer = new Timer(3);
         this.GenerateSprite(sprite);
         this.InitPosition(ceil.GetBoundingBox());
+        this.GetDisplayObjects().forEach(obj => {obj.visible = this.GetCeil().IsVisible();});
     }
 
     public Destroy(): void {
         super.Destroy();
         PlaygroundHelper.Render.Remove(this);
         this.IsUpdatable = false;
-        this._ceil.DestroyField();
-    }
-
-    public GetCeil(): Ceil {
-        return this._ceil;
+        this.GetCeil().DestroyField();
     }
 
     public Support(vehicule: Vehicle): void 
@@ -63,7 +56,7 @@ export class HeadQuarterField extends Item implements IField
     }
 
     public GetBoundingBox(): BoundingBox{
-        return this._ceil.GetBoundingBox();
+        return this.GetCeil().GetBoundingBox();
     }
 
     public Select(context: InteractionContext): boolean {

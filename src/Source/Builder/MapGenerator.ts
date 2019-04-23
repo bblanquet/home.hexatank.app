@@ -15,7 +15,7 @@ import { AttackMenuItem } from "../Menu/AttackMenuItem";
 import { SpeedFieldMenuItem } from "../Menu/SpeedFieldMenuItem";
 import { LeftMenu } from "../Menu/LeftMenu";
 import { PatrolMenuItem } from "../Menu/PatrolMenuItem";
-import { CancelMenuItem } from "../Menu/CancelMenuItem";
+import { CancelMenuItem } from "../Menu/CancelMenuItem"; 
 import { TopBar } from "../Menu/TopBar";
 import { FlowerMapBuilder } from "./FlowerMapBuilder";
 import { BasicItem } from "../BasicItem";
@@ -30,6 +30,7 @@ import { ZoomInButton } from "../Menu/ZoomInButton";
 import { ZoomOutButton } from "../Menu/ZoomOutButton";
 import { TopMenu } from "../Menu/TopMenu";
 import { MoneyMenuItem } from "../Menu/MoneyMenuItem";
+import { CeilState } from "../CeilState";
 
 export class MapGenerator implements IMapGenerator{
 
@@ -80,7 +81,7 @@ export class MapGenerator implements IMapGenerator{
         const brownQuarter = new SmartHq(PlaygroundHelper.GetAreas(PlaygroundHelper.CeilsContainer.Get(corners[2]))
         , new HqSkin(Archive.team.yellow.tank, Archive.team.yellow.turrel,Archive.team.yellow.truck, Archive.team.yellow.hq, "brownCeil")
         , PlaygroundHelper.CeilsContainer.Get(corners[2]));
-
+        PlaygroundHelper.PlayerHeadquarter = redQuarter;
         brownQuarter.Diamond = diamond;
         items.push(redQuarter);
         items.push(blueQuarter);
@@ -97,6 +98,12 @@ export class MapGenerator implements IMapGenerator{
         items.push(new Cloud(200, 12 * PlaygroundHelper.Settings.Size, 600, 'cloud'));
         items.push(new Cloud(60, 12 * PlaygroundHelper.Settings.Size, 200, 'cloud2'));
         items.push(new Cloud(0, 12 * PlaygroundHelper.Settings.Size, 800, 'cloud3'));
+
+        redQuarter.GetCurrentCeil().SetState(CeilState.Visible);
+        redQuarter.GetCurrentCeil().GetAllNeighbourhood().forEach(ceil => {
+            (<Ceil>ceil).SetState(CeilState.Visible);
+        });
+
         return items;
     }
 

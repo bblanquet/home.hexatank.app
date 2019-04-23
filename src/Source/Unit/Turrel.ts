@@ -99,6 +99,7 @@ export class Turrel extends Item implements IRotatable
             BoundingBox.Create(this.GetBoundingBox().X,this.GetBoundingBox().Y,this.GetBoundingBox().Width,this.GetBoundingBox().Height)
             , this.Base.GetTarget()
             , this.Base.Attack);
+        missile.GetSprites().forEach(s=>s.visible = this.Base.GetCurrentCeil().IsVisible());
         PlaygroundHelper.Playground.Items.push(missile);
     }
 

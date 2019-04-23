@@ -6,6 +6,7 @@ import { ITimer } from "../Tools/ITimer";
 import { Timer } from "../Tools/Timer";
 import { Light } from "../Light";
 import { Archive } from "../Tools/ResourceArchiver";
+import { CeilState } from "../CeilState";
 
 export class Truck extends Vehicle implements IHqContainer{
     Hq:Headquarter;
@@ -22,7 +23,6 @@ export class Truck extends Vehicle implements IHqContainer{
 
         this.GenerateSprite(Archive.wheel)
         this.RootSprites.push(Archive.wheel);
-
 
         this._dimaondTimer = new Timer(30);
         this.Wheels.forEach(wheel =>{
@@ -42,12 +42,13 @@ export class Truck extends Vehicle implements IHqContainer{
 
         this._light = new Light(this.BoundingBox);
 
-        //make pivot sprite center
-        this.GetSprites().forEach(sprite => {
-        sprite.width = this.BoundingBox.Width,
-        sprite.height = this.BoundingBox.Height
-        sprite.anchor.set(0.5);
-        });
+        this.GetSprites().forEach(sprite => 
+            {
+                sprite.width = this.BoundingBox.Width,
+                sprite.height = this.BoundingBox.Height
+                sprite.anchor.set(0.5);
+            }
+        );
         this.IsCentralRef = true;
     }
 
@@ -55,9 +56,6 @@ export class Truck extends Vehicle implements IHqContainer{
         return this._diamondsCount === 5; 
     }
 
-    protected OnCeilChanged(): void {
-    }    
-    
     public Destroy():void{
         super.Destroy();
         this._light.Destroy();
@@ -100,6 +98,12 @@ export class Truck extends Vehicle implements IHqContainer{
         return diamonds;
     }
 
+    protected OnCeilStateChanged(ceilState: CeilState): void {
+        this.GetDisplayObjects().forEach(s=>{
+            s.visible = ceilState === CeilState.Visible;
+        });
+    }
+
     public Update(viewX: number, viewY: number):void
     {
         super.Update(viewX,viewY);
@@ -115,6 +119,7 @@ export class Truck extends Vehicle implements IHqContainer{
             }
         }
 
+        this._light.GetSprites().forEach(s=>s.visible=this.GetCurrentCeil().IsVisible());
         this._light.Update(viewX,viewY);
     }
 }

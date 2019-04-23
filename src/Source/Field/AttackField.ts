@@ -1,46 +1,41 @@
-import { Item } from "../Item";
-import { IField } from "./IField";
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
 import { Vehicle } from "../Unit/Vehicle";
 import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Ceil } from "../Ceil";
 import { Archive } from "../Tools/ResourceArchiver"; 
+import { Field } from "./Field";
 
-export class AttackField extends Item implements IField
+export class AttackField extends Field
 {
-    private _ceil:Ceil;
- 
     constructor(ceil:Ceil){
-        super(); 
-        this._ceil=ceil;
-        this._ceil.SetField(this);
+        super(ceil); 
+        this.GetCeil().SetField(this);
         this.Z= 1;
 
         this.GenerateSprite(Archive.bonus.strength);        
         this.InitPosition(ceil.GetBoundingBox());
-    }
-
-    GetCeil(): Ceil {
-        return this._ceil;
+        this.GetDisplayObjects().forEach(obj => {obj.visible = this.GetCeil().IsVisible();});
     }
 
     public GetBoundingBox(): BoundingBox {
-        return this._ceil.GetBoundingBox();
+        return this.GetCeil().GetBoundingBox();
     }
+    
     public Select(context: InteractionContext): boolean {
         return false;
     }
-    Support(vehicule: Vehicle): void {
+
+    public Support(vehicule: Vehicle): void {
         vehicule.TranslationSpeed = PlaygroundHelper.Settings.TranslationSpeed;
         vehicule.RotationSpeed = PlaygroundHelper.Settings.RotationSpeed;    
         vehicule.Attack = 50;
     }    
 
-    IsDesctrutible(): boolean {
+    public IsDesctrutible(): boolean {
         return false;
     }
-    IsBlocking(): boolean {
+    public IsBlocking(): boolean {
         return false;
     }
 }

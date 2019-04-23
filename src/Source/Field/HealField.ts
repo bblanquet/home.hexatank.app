@@ -1,32 +1,25 @@
-import { Item } from "../Item";
-import { IField } from "./IField";
 import { Ceil } from "../Ceil";
 import { PlaygroundHelper } from "../PlaygroundHelper";
 import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
 import { Vehicle } from "../Unit/Vehicle";
 import { Archive } from "../Tools/ResourceArchiver";
+import { Field } from "./Field";
 
-export class HealField extends Item implements IField
+export class HealField extends Field
 { 
-    private _ceil:Ceil;
-
     constructor(ceil:Ceil){
-        super();
-        this._ceil=ceil;
-        this._ceil.SetField(this);
+        super(ceil);
+        this.GetCeil().SetField(this);
         this.Z= 1; 
 
         this.GenerateSprite(Archive.bonus.health);      
         this.InitPosition(ceil.GetBoundingBox());
-    }
-
-    GetCeil(): Ceil {
-        return this._ceil;
+        this.GetDisplayObjects().forEach(obj => {obj.visible = this.GetCeil().IsVisible();});
     }
 
     public GetBoundingBox(): BoundingBox {
-        return this._ceil.GetBoundingBox();
+        return this.GetCeil().GetBoundingBox();
     }
     public Select(context: InteractionContext): boolean {
         return false;

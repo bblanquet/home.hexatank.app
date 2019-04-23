@@ -5,30 +5,30 @@ import { Ceil } from "../Ceil";
 import { InteractionContext } from "../Context/InteractionContext";
 import { BoundingBox } from "../BoundingBox";
 import { Archive } from "../Tools/ResourceArchiver";
+import { Field } from "./Field";
 
-export class WaterField extends Item implements IField
+export class WaterField extends Field
 {
-    private _ceil:Ceil;
     private _isIncreasingOpacity:boolean=false;
 
     constructor(ceil:Ceil){
-        super();
-        this._ceil = ceil;
-        this._ceil.SetField(this);
+        super(ceil);
+        this.GetCeil().SetField(this);
         this.Z= 0;
         this.GenerateSprite(Archive.nature.water.middle.background);
         this.GenerateSprite(Archive.nature.water.middle.wave);
         this.GenerateSprite(Archive.nature.water.leaf);
 
         this.GetSprites().forEach(sprite => {
-            sprite.width = this._ceil.GetBoundingBox().Width,
-            sprite.height = this._ceil.GetBoundingBox().Height
+            sprite.width = this.GetCeil().GetBoundingBox().Width,
+            sprite.height = this.GetCeil().GetBoundingBox().Height
             sprite.anchor.set(0.5);
         });
 
         this.IsCentralRef = true;
 
         this.InitPosition(ceil.GetBoundingBox());
+        this.GetDisplayObjects().forEach(obj => {obj.visible = this.GetCeil().IsVisible();});
     }
 
     public Update(viewX: number, viewY: number):void
@@ -51,7 +51,7 @@ export class WaterField extends Item implements IField
     };
 
     public GetBoundingBox(): BoundingBox {
-        return this._ceil.GetBoundingBox();
+        return this.GetCeil().GetBoundingBox();
     }
     public Select(context: InteractionContext): boolean {
         return false;
@@ -66,9 +66,5 @@ export class WaterField extends Item implements IField
     IsBlocking(): boolean {
         return true;
     }
-    GetCeil(): Ceil {
-        return this._ceil;
-    }
-
 
 }

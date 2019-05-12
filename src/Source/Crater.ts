@@ -3,19 +3,22 @@ import { BoundingBox } from "./BoundingBox";
 import { PlaygroundHelper } from "./PlaygroundHelper";
 import { InteractionContext } from "./Context/InteractionContext";
 import { Timer } from "./Tools/Timer";
+import { Archive } from "./Tools/ResourceArchiver";
 
 export class Crater extends Item{
     BoundingBox:BoundingBox;
     private _timer:Timer;
+    private _isDone:boolean=false;
 
     constructor(boundingbox:BoundingBox)
     {
         super(); 
         this.Z = 0;
         this.BoundingBox = boundingbox;
-        this._timer = new Timer(100);
-
-        this.GenerateSprite('crater');
+        this._timer = new Timer(120);
+        
+        this.GenerateSprite(Archive.destruction.floorExplosion,s=>s.alpha = 0.6);
+        this.GenerateSprite(Archive.destruction.debris);
         this.InitPosition(boundingbox);
     }
 
@@ -37,13 +40,16 @@ export class Crater extends Item{
     {
         super.Update(viewX,viewY);
 
-        if(this.GetSprites()[0].alpha <= 0){
+        if(this._isDone){
             this.Destroy();
         }
 
         if(this._timer.IsElapsed())
         {
-            this.GetCurrentSprites()['crater'].alpha += 0.05;
+            this.GetCurrentSprites()[Archive.destruction.floorExplosion].alpha -= 0.05;
+            if(this.GetCurrentSprites()[Archive.destruction.floorExplosion].alpha <= 0){
+                this._isDone = true;
+            }
         }
     }
 }

@@ -31,6 +31,8 @@ import { ZoomOutButton } from "../Menu/ZoomOutButton";
 import { TopMenu } from "../Menu/TopMenu";
 import { MoneyMenuItem } from "../Menu/MoneyMenuItem";
 import { CeilState } from "../CeilState";
+import { ShowEnemiesMenuItem } from "../Menu/ShowEnemiesMenuItem";
+import { HexAxial } from "../Coordinates/HexAxial";
 
 export class MapGenerator implements IMapGenerator{
 
@@ -47,42 +49,37 @@ export class MapGenerator implements IMapGenerator{
 
     public SetMap():Array<Item>{
         const items = new Array<Item>();
-        const mapLength = 12;
+        const mapLength = 20;
         const mapBuilder = new FlowerMapBuilder();
         const ceils = mapBuilder.Build(mapLength);
+        
         ceils.forEach(ceil => {
             PlaygroundHelper.CeilsContainer.Add(ceil);
             items.push(ceil);
         });
-        const corners = mapBuilder.GetCorners(mapLength);
-        corners.push(mapBuilder.GetMidle(mapLength));
-        corners.forEach(corner=>{
-            const ceil = PlaygroundHelper.CeilsContainer.Get(corner);
-            const b = new BoundingBox();
-            b.Width = PlaygroundHelper.Settings.Size * 6;
-            b.Height = PlaygroundHelper.Settings.Size * 6;
-            b.X = ceil.GetBoundingBox().X - (b.Width/2 - ceil.GetBoundingBox().Width/2);
-            b.Y = ceil.GetBoundingBox().Y - (b.Height/2 - ceil.GetBoundingBox().Height/2);
-            const grass = new BasicItem(b,Archive.nature.grass);
-            grass.SetDisplayTrigger(()=>true);
-            grass.SetVisible(()=>true);
-            items.push(grass);
-        });
+
+        const middleAreas = mapBuilder.GetAreaMiddleCeil(mapLength);
+        middleAreas.push(mapBuilder.GetMidle(mapLength));
+        this.SetGrass(middleAreas, items);
+        
         const diamond = new Diamond(PlaygroundHelper.CeilsContainer.Get(mapBuilder.GetMidle(mapLength)));
         items.push(diamond);
         const redQuarter = new Headquarter(
             new HqSkin(Archive.team.red.tank, Archive.team.red.turrel,Archive.team.red.truck, Archive.team.red.hq, "redCeil"), 
-            PlaygroundHelper.CeilsContainer.Get(corners[3]));
+            PlaygroundHelper.CeilsContainer.Get(middleAreas[3]));
+        PlaygroundHelper.PlayerHeadquarter = redQuarter;        
         this._currentHq = redQuarter;
-        const blueQuarter = new SmartHq(PlaygroundHelper.GetAreas(PlaygroundHelper.CeilsContainer.Get(corners[1]))
+        
+        const blueQuarter = new SmartHq(PlaygroundHelper.GetAreas(PlaygroundHelper.CeilsContainer.Get(middleAreas[1]))
         , new HqSkin(Archive.team.blue.tank, Archive.team.blue.turrel,Archive.team.blue.truck, Archive.team.blue.hq, "selectedCeil"), 
-        PlaygroundHelper.CeilsContainer.Get(corners[1]));
+        PlaygroundHelper.CeilsContainer.Get(middleAreas[1]));
         blueQuarter.Diamond = diamond;
-        const brownQuarter = new SmartHq(PlaygroundHelper.GetAreas(PlaygroundHelper.CeilsContainer.Get(corners[2]))
+        
+        const brownQuarter = new SmartHq(PlaygroundHelper.GetAreas(PlaygroundHelper.CeilsContainer.Get(middleAreas[2]))
         , new HqSkin(Archive.team.yellow.tank, Archive.team.yellow.turrel,Archive.team.yellow.truck, Archive.team.yellow.hq, "brownCeil")
-        , PlaygroundHelper.CeilsContainer.Get(corners[2]));
-        PlaygroundHelper.PlayerHeadquarter = redQuarter;
+        , PlaygroundHelper.CeilsContainer.Get(middleAreas[2]));
         brownQuarter.Diamond = diamond;
+        
         items.push(redQuarter);
         items.push(blueQuarter);
         items.push(brownQuarter);
@@ -107,6 +104,21 @@ export class MapGenerator implements IMapGenerator{
         return items;
     }
 
+    private SetGrass(middleAreas: HexAxial[], items: Item[]) {
+        middleAreas.forEach(corner => {
+            const ceil = PlaygroundHelper.CeilsContainer.Get(corner);
+            const boundingBox = new BoundingBox();
+            boundingBox.Width = PlaygroundHelper.Settings.Size * 6;
+            boundingBox.Height = PlaygroundHelper.Settings.Size * 6;
+            boundingBox.X = ceil.GetBoundingBox().X - (boundingBox.Width / 2 - ceil.GetBoundingBox().Width / 2);
+            boundingBox.Y = ceil.GetBoundingBox().Y - (boundingBox.Height / 2 - ceil.GetBoundingBox().Height / 2);
+            const grass = new BasicItem(boundingBox, Archive.nature.grass);
+            grass.SetDisplayTrigger(() => true);
+            grass.SetVisible(() => true);
+            items.push(grass);
+        });
+    }
+
     private SetMenus(redQuarter: Headquarter, items: Item[]) {
         const rightMenu = new LeftMenu((data:ISelectable)=>data instanceof Headquarter,
         [new EmptyMenuItem(Archive.menu.topMenu),
@@ -120,7 +132,8 @@ export class MapGenerator implements IMapGenerator{
         const zoomMenu = new TopMenu((data:ISelectable)=>true,
         [
             new ZoomInButton(),
-            new ZoomOutButton()
+            new ZoomOutButton(),
+            new ShowEnemiesMenuItem()
         ]);
         zoomMenu.Show(null);
         items.splice(0, 0, zoomMenu);

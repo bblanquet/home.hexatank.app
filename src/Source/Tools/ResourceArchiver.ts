@@ -1,4 +1,23 @@
 export const Archive = {
+    constructionEffects:[
+        './construction/dust1.svg',
+        './construction/dust2.svg',
+        './construction/dust3.svg',
+        './construction/dust4.svg',
+        './construction/dust5.svg',
+        './construction/dust6.svg',
+        './construction/dust7.svg',
+    ],
+    explosions:[
+        './explosion/explosion1.svg',
+        './explosion/explosion2.svg',
+        './explosion/explosion3.svg',
+        './explosion/explosion4.svg',
+        './explosion/explosion5.svg',
+        './explosion/explosion6.svg',
+        './explosion/explosion7.svg',
+    ],
+    skull:'./explosion/skull.svg',
     menu:{
         topMenu:'./menu/topMenu.svg',
         bottomMenu:'./menu/bottomMenu.svg',
@@ -8,12 +27,13 @@ export const Archive = {
         healthButton:'./menu/healthMenu.svg',
         moneyButton:'./menu/moneyMenu.svg',
         speedMenu:'./menu/speedMenu.svg',
+        showEnemies:'./menu/showEnemiesButton.svg',
         visionMenu:'./menu/visionMenu.svg',
         camouflageMenu:'./menu/camouflageMenu.svg',
         patrolButton:'./menu/patrolButton.svg',
         targetButton:'./menu/targetButton.svg',
         cancelButton:'./menu/cancelButton.svg',
-        tankButton:'./menu/tankButton.svg',
+        tankButton:'./menu/tankbutton.svg',
         truckButton:'./menu/truckButton.svg',
         zoomInButton:'./menu/zoomInButton.svg',
         zoomOutButton:'./menu/zoomOutButton.svg',
@@ -39,6 +59,10 @@ export const Archive = {
         './truck/diamonds/diamonds5.svg',
         './truck/diamonds/diamonds6.svg',
     ],
+    destruction:{
+        debris:'./tank/debris.svg',
+        floorExplosion:'./tank/floorExplosionTrace.svg'
+    },
     loading:'./loading.svg',
     hiddenCell:'./hiddenCell.svg',
     halfVisibleCell:'./halfVisibleCell.svg',
@@ -48,7 +72,7 @@ export const Archive = {
     diamondCell:'./diamondCell.svg',
     direction:{
         target:'./direction/target.svg',
-        moving:'./direction/moving1.svg',
+        moving:'./direction/motion.svg',
         patrol:'./direction/patrol2.svg'
     },
     building:{

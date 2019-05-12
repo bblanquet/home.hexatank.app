@@ -100,8 +100,14 @@ export class Missile extends Item{
         else
         {
             this.Target.SetDamage(this._damage); 
-            let explosion = new Explosion(this.Target.GetBoundingBox());
+            let explosion = new Explosion(this.Target.GetBoundingBox(),Archive.explosions,6,true,20);
             PlaygroundHelper.Playground.Items.push(explosion);
+            
+            if(!this.Target.IsAlive())
+            {
+                let skull = new Explosion(this.Target.GetBoundingBox(),[Archive.skull],6,false,50);
+                PlaygroundHelper.Playground.Items.push(skull);
+            }
             this.Destroy();
         }
     };

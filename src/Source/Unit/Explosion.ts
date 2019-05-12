@@ -11,19 +11,20 @@ export class Explosion extends Item{
     private _currentAlpha:number=1;
     private _timer:ITimer; 
     private _explosions:Array<string>;
+    private _isStarted:boolean=true;
 
-    constructor(boundingbox:BoundingBox)
+    constructor(boundingbox:BoundingBox,sprites:Array<string>, z:number=3, private _effect:boolean=true, timer:number=30)
     {
         super();
-        this.Z = 3;
-        this._timer = new Timer(30);
+        this.Z = z;
+        this._timer = new Timer(timer);
         this.BoundingBox = new BoundingBox();
         this.BoundingBox.X = boundingbox.X;
         this.BoundingBox.Y = boundingbox.Y;
         this.BoundingBox.Width = boundingbox.Width;
         this.BoundingBox.Height = boundingbox.Height;
 
-        this._explosions = ['explosion1.png','explosion2.png','explosion3.png','explosion4.png'];
+        this._explosions = sprites;
  
         this._explosions.forEach(explosion =>{
             this.GenerateSprite(explosion, e=>{
@@ -32,7 +33,6 @@ export class Explosion extends Item{
             })
         });
         this.IsCentralRef = true;
-
         this.InitPosition(boundingbox);
     }
 
@@ -40,14 +40,24 @@ export class Explosion extends Item{
     {
         super.Update(viewX,viewY);
 
-        if(0 <= this._currentFrame
-            && this._currentFrame < this._explosions.length)
+        if(this._isStarted)
         {
-            this.GetCurrentSprites()[this._explosions[this._currentFrame]].rotation += 0.005;
-            this.GetCurrentSprites()[this._explosions[this._currentFrame]].alpha = this._currentAlpha;
+            this._isStarted = false;
+            this.SetProperty(this._explosions[this._currentFrame],s=>s.alpha = 1);
         }
 
-        this._currentAlpha -= 0.01;
+        if(0 <= this._currentFrame
+            && this._currentFrame < this._explosions.length && this._effect)
+        {
+            this.SetProperty(this._explosions[this._currentFrame], s=>{
+                s.rotation += 0.005;
+                s.alpha = this._currentAlpha;
+            });
+        }
+
+        if(this._effect){
+            this._currentAlpha -= 0.005;
+        }
 
         if(this._currentAlpha < 0)
         {
@@ -61,16 +71,16 @@ export class Explosion extends Item{
 
             if(this._explosions.length == this._currentFrame)
             {
-                this.GetCurrentSprites()[this._explosions[previous]].alpha = 0;
+                this.SetProperty(this._explosions[previous], s=>s.alpha = 0);
                 this.Destroy();
             }
             else
             {
                 if(-1 < previous)
                 {
-                    this.GetCurrentSprites()[this._explosions[previous]].alpha = 0;
+                    this.SetProperty(this._explosions[previous], s=>s.alpha = 0);
                 }
-                this.GetCurrentSprites()[this._explosions[this._currentFrame]].alpha = this._currentAlpha;
+                this.SetProperty(this._explosions[this._currentFrame], s=>s.alpha = this._currentAlpha);
             }
         }
     }

@@ -4,13 +4,13 @@ export class GameSettings
 {
     private _viewContext:ViewContext=new ViewContext();
     private _scaleHandlers: {(data: boolean):void}[] = [];
-    Size:number=50;
-    ScreenWidth:number;
-    ScreenHeight:number;
-    RotationSpeed:number=0.05;
-    TranslationSpeed:number=1;
-    ShowEnemies:boolean=false;
-    Attack:number=30;
+    public Size:number=50;
+    public ScreenWidth:number;
+    public ScreenHeight:number;
+    public RotationSpeed:number=0.05;
+    public TranslationSpeed:number=1;
+    public ShowEnemies:boolean=false;
+    public Attack:number=30;
     private _fps:number=0;
     private _fpsHandlers:{(data: number):void}[] = [];
 
@@ -53,7 +53,7 @@ export class GameSettings
     public ChangeScale(scale:number){
         const previousScale = this._viewContext.Scale;
         this._viewContext.Scale = scale;
-        console.log("scale "+scale);
+        console.log("scale "+ scale);
         if(previousScale > 1.4 !== this._viewContext.Scale > 1.4){
             this._scaleHandlers.forEach(handler=>{
                 handler(this.isZoomIn());

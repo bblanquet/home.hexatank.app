@@ -13,6 +13,8 @@ import { Diamond } from "../Field/Diamond";
 import { TruckPatrolOrder } from "./TruckPatrolOrder";
 import { HqFieldOrder } from "./HqFieldOrder";
 import { DiamondFieldOrder } from "./DiamondFieldOrder";
+import { Archive } from "../Tools/ResourceArchiver";
+import { Explosion } from "../Unit/Explosion";
 
 export class SmartHq extends Headquarter{
     private _conquestedAreas:HqArea[];
@@ -78,6 +80,10 @@ export class SmartHq extends Headquarter{
             if(!field.GetCeil().IsBlocked())
             {
                 this.Diamonds -= 3;
+                if(field.GetCeil().IsVisible()){
+                    const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,6,false,5);
+                    PlaygroundHelper.Playground.Items.push(explosion);
+                }
                 truck = new Truck(this);
                 truck.SetPosition(field.GetCeil());
                 PlaygroundHelper.Playground.Items.push(truck);
@@ -100,6 +106,10 @@ export class SmartHq extends Headquarter{
                 if(!isNullOrUndefined(ceil) && this.Diamonds >= 5)
                 {
                     this.Diamonds -= 5;
+                    if(field.GetCeil().IsVisible()){
+                        const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,6,false,5);
+                        PlaygroundHelper.Playground.Items.push(explosion);
+                    }
                     var tank = new Tank(this);
                     tank.SetPosition(field.GetCeil());
                     area.AddTroop(tank,ceil);

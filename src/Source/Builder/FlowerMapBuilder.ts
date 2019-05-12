@@ -3,7 +3,6 @@ import { Ceil } from "../Ceil";
 import { HexAxial } from "../Coordinates/HexAxial";
 import { AreaEngine } from "../Ia/AreaFinder/AreaEngine";
 import { CeilsContainer } from "../CeilsContainer";
-import { RectangleMapBuilder } from "./RectangeMapBuilder";
 import { HexagonalMapBuilder } from "./HexagonalMapBuilder";
 
 export class FlowerMapBuilder implements IPlaygroundBuilder<Ceil>{
@@ -14,7 +13,7 @@ export class FlowerMapBuilder implements IPlaygroundBuilder<Ceil>{
         this._hexagonalBuilder = new HexagonalMapBuilder();
     }
 
-    Build(n: number): Ceil[] {
+    public Build(n: number): Ceil[] {
         const initialCeils =  this._hexagonalBuilder.Build(n);
         const container = new CeilsContainer<Ceil>();
         initialCeils.forEach(ceil => {
@@ -35,17 +34,18 @@ export class FlowerMapBuilder implements IPlaygroundBuilder<Ceil>{
 
         return result;
     }
-    GetMidle(n: number): HexAxial {
+    public GetMidle(n: number): HexAxial {
         return this._hexagonalBuilder.GetMidle(n);
     }
-    GetCorners(n: number): Array<HexAxial> {
-        const initialCeils =  this._hexagonalBuilder.Build(n);
+
+    public GetAreaMiddleCeil(size: number): Array<HexAxial> {
+        const initialCeils =  this._hexagonalBuilder.Build(size);
         const container = new CeilsContainer<Ceil>();
         initialCeils.forEach(ceil => {
             container.Add(ceil);
         });
         const areaEngine = new AreaEngine();
-        var areas = areaEngine.GetAreas(container,<Ceil> container.Get(this.GetMidle(n)));
+        var areas = areaEngine.GetAreas(container,<Ceil> container.Get(this.GetMidle(size)));
         const result = areas.map(a=>a.GetCoordinate());
         result.shift();
         return result.filter(a=> container.GetNeighbourhood(a).length === 6);

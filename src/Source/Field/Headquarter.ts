@@ -14,6 +14,7 @@ import { Crater } from "../Crater";
 import { ISelectable } from "../ISelectable";
 import { Archive } from "../Tools/ResourceArchiver";
 import { CeilState } from "../CeilState";
+import { Explosion } from "../Unit/Explosion";
 
 export class Headquarter extends AliveItem implements IField, ISelectable
 {
@@ -135,7 +136,11 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         {
             if(!field.GetCeil().IsBlocked())
             {
-                var tank = new Tank(this);
+                if(field.GetCeil().IsVisible()){
+                    const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,6,false,5);
+                    PlaygroundHelper.Playground.Items.push(explosion);
+                }
+                const tank = new Tank(this);
                 tank.SetPosition(field.GetCeil());
                 PlaygroundHelper.Playground.Items.push(tank);
                 isCreated = true;
@@ -154,6 +159,10 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         {
             if(!field.GetCeil().IsBlocked())
             {
+                if(field.GetCeil().IsVisible()){
+                    const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,6,false,5);
+                    PlaygroundHelper.Playground.Items.push(explosion);
+                }
                 var truck = new Truck(this);
                 truck.SetPosition(field.GetCeil());
                 PlaygroundHelper.Playground.Items.push(truck);

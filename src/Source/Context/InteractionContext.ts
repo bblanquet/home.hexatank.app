@@ -24,6 +24,7 @@ import { TargetCombination } from './Combination/TargetCombination';
 import { SwitchToCeilCombination } from './Combination/SwitchToCeilCombination';
 import { SwitchToHeadquarterCombination } from './Combination/SwitchToHeadquarterCombination';
 import { SwitchToVehicleCombination } from './Combination/SwitchToVehicleCombination';
+import { ShowEnemiesCombination } from './Combination/ShowEnemiesCombination';
 
 export class InteractionContext implements IInteractionContext{
 
@@ -41,6 +42,7 @@ export class InteractionContext implements IInteractionContext{
         let combinations = new Array<ICombination>();
         combinations.push(new ZoomOutCombination());
         combinations.push(new ZoomInCombination());
+        combinations.push(new ShowEnemiesCombination());
         combinations.push(new SwitchToCeilCombination(menus));     
         combinations.push(new SwitchToHeadquarterCombination(menus));     
         combinations.push(new SwitchToVehicleCombination(menus));     

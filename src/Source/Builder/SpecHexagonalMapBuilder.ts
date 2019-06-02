@@ -5,9 +5,9 @@ import {CeilProperties} from '../CeilProperties';
 
 export class SpecHexagonalMapBuilder implements IPlaygroundBuilder<CeilProperties>{
     GetMidle(n: number): HexAxial {
-        throw new Error("Method not implemented.");
+        throw new Error("Method not implemented."); 
     }
-    GetCorners(n: number): HexAxial[] {
+    GetAreaMiddleCeil(n: number): HexAxial[] {
         throw new Error("Method not implemented.");
     }
 

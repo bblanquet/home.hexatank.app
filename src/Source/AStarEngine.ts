@@ -1,10 +1,9 @@
 import {AStarNode} from './AStarNode';
 import {ICeil} from './ICeil';
+import { PlaygroundHelper } from './PlaygroundHelper';
 
 export class AStarEngine<T extends ICeil>
 {
-    public Limitation:number=50;
-
     private ConstructPath(node:AStarNode<T>):Array<T>{
         var ceils = new Array<T>();
         while(node.Parent != null)
@@ -18,39 +17,43 @@ export class AStarEngine<T extends ICeil>
 
     private Contains(nodes:Array<AStarNode<T>>, ceil:T):boolean
     {
-        nodes.forEach(node => {
-            if(node.Ceil == ceil){
+        for (let node of nodes)
+        {
+            if(node.Ceil == ceil)
+            {
                 return true;
             }
-        });
+        }
 
         return false;
     }
 
     private GetNode(ceil:T, 
-        openedNodes:Array<AStarNode<T>>,
-        closedNodes:Array<AStarNode<T>>):AStarNode<T>
+        frontierNodes:Array<AStarNode<T>>,
+        cameFromNodes:Array<AStarNode<T>>):AStarNode<T>
     {
-        openedNodes.forEach(node=>
+        for (let frontierNode of frontierNodes)
+        {
+            if(frontierNode.Ceil === ceil)
             {
-            if(node.Ceil === ceil)
-            {
-                return node;
+                return frontierNode;
             }
-        });
+        }
 
-        closedNodes.forEach(node=>
+        
+        for( let cameFromNode of cameFromNodes)
+        {
+            if(cameFromNode.Ceil === ceil)
             {
-            if(node.Ceil === ceil)
-            {
-                return node;
+                return cameFromNode;
             }
-        });
+        }
+        
 
         return new AStarNode(ceil);
     }
 
-    private Append(nodes:Array<AStarNode<T>>,node:AStarNode<T>):void
+    private InsertByCost(nodes:Array<AStarNode<T>>,node:AStarNode<T>):void
     {
         if(nodes.length == 0)
         {
@@ -59,7 +62,7 @@ export class AStarEngine<T extends ICeil>
         }
 
         for(var i =0; i < nodes.length; i++){
-            if(node.Compare(nodes[i]))
+            if(node.IsLessExpensive(nodes[i]))
             {
                 nodes.splice(i,0,node);
                 return;
@@ -69,13 +72,13 @@ export class AStarEngine<T extends ICeil>
         nodes.push(node);
     }
 
-    public GetPath(startCeil:T, goalCeil:T):Array<T>
-    {
         //console.log(`%c start: ${startCeil.GetCoordinate().Q} ${startCeil.GetCoordinate().R} `,'color:green;');
         //console.log(`%c goal: ${goalCeil.GetCoordinate().Q} ${goalCeil.GetCoordinate().R} `,'color:green;');
 
-        var openedNodes = new Array<AStarNode<T>>();
-        var closedNodes = new Array<AStarNode<T>>();
+    public GetPath(startCeil:T, goalCeil:T):Array<T>
+    {
+        var frontierNodes = new Array<AStarNode<T>>();
+        var cameFromNodes = new Array<AStarNode<T>>();
 
         var startnode = new AStarNode(startCeil);
         var goalnode = new AStarNode(goalCeil);
@@ -84,65 +87,71 @@ export class AStarEngine<T extends ICeil>
         startnode.Parent = null;
         startnode.EstimatedGoalCost = startnode.GetEstimatedCost(goalnode);
 
-        this.Append(openedNodes,startnode);
+        this.InsertByCost(frontierNodes,startnode);
 
-        while(0 < openedNodes.length)
+        while(this.IsNotEmpty(frontierNodes))
         {
-            if(this.Limitation < closedNodes.length ){
+            if(PlaygroundHelper.Settings.MapSize < cameFromNodes.length)
+            {
+                console.log(`%c COULD NOT FIND ,opened nodes: ${frontierNodes.length}`,'color:purple;');
                 return null;
             }
 
-            var currentNode = openedNodes[0];
-            openedNodes.splice(0,1);
+            const lessExpensiveFrontier = this.GetLessExpensiveFrontier(frontierNodes);
 
-            //console.log(`%c opened nodes: ${openedNodes.length} `,'font-weight:bold;color:red;');
-            //console.log(`%c closed nodes: ${closedNodes.length} `,'font-weight:bold;color:red;');
-            //console.log(`%c current: ${currentNode.Ceil.GetCoordinate().Q} ${currentNode.Ceil.GetCoordinate().R} cost:${currentNode.GetCost()}`,'color:blue;');
-
-            if(currentNode.Ceil == goalnode.Ceil)
+            if(lessExpensiveFrontier.Ceil == goalnode.Ceil)
             {
-                return this.ConstructPath(currentNode);
+                return this.ConstructPath(lessExpensiveFrontier);
             }
 
-            var surroundingCeils = currentNode.Ceil.GetNeighbourhood();
-            
-            surroundingCeils.forEach(ceil=> {
+            lessExpensiveFrontier.Ceil.GetNeighbourhood().forEach(frontierSurrounding=> 
+            {
+                const nextNode = this.GetNode(<T> frontierSurrounding, frontierNodes, cameFromNodes);
+                
+                const estimatedNextNodeCost = lessExpensiveFrontier.FromStartCost 
+                + lessExpensiveFrontier.GetEstimatedCost(nextNode);
 
-                var nextNode = this.GetNode( <T> ceil, openedNodes, closedNodes);
-                var estimatedNextNodeCost = currentNode.FromStartCost + currentNode.GetEstimatedCost(nextNode);
-
-                var isOpenedNode = this.Contains(openedNodes,<T>ceil);
-                var isClosedNode = this.Contains(closedNodes,<T>ceil);
-
-                if(this.IsNewNode(<T>ceil,openedNodes,closedNodes) 
-                    || 
-                    estimatedNextNodeCost < nextNode.FromStartCost)
+                if(this.IsNodeNew(<T>frontierSurrounding,frontierNodes,cameFromNodes) 
+                    || estimatedNextNodeCost < nextNode.FromStartCost)
                 {
-                    nextNode.Parent = currentNode;
+                    nextNode.Parent = lessExpensiveFrontier;
                     nextNode.FromStartCost = estimatedNextNodeCost;
                     nextNode.EstimatedGoalCost = nextNode.GetEstimatedCost(goalnode);
-                    
-                    //console.log(`%c next: ${ceil.GetCoordinate().Q} ${ceil.GetCoordinate().R} cost:${nextNode.GetCost()} ,opened nodes: ${openedNodes.length}`,'color:purple;');
 
-                    if(isClosedNode)
+                    if(this.Contains(cameFromNodes,<T>frontierSurrounding))
                     {
-                        closedNodes.splice(closedNodes.indexOf(nextNode),1);
+                        cameFromNodes.splice(cameFromNodes.indexOf(nextNode),1);
                     }
 
-                    if(!isOpenedNode)
+                    if(!this.Contains(frontierNodes,<T>frontierSurrounding))
                     {
-                        this.Append(openedNodes,nextNode);
+                        this.InsertByCost(frontierNodes,nextNode);
                     }
                 }
-
             });
-            closedNodes.push(currentNode);
+            cameFromNodes.push(lessExpensiveFrontier);
         }
-
+        console.log(`%c COULD NOT FIND ,opened nodes: ${frontierNodes.length}`,'color:purple;');
         return null;
     }
 
-    private IsNewNode(ceil:T, 
+    private IsNotEmpty(frontierNodes: AStarNode<T>[]) {
+        return 0 < frontierNodes.length;
+    }
+
+                //console.log(`%c opened nodes: ${openedNodes.length} `,'font-weight:bold;color:red;');
+            //console.log(`%c closed nodes: ${closedNodes.length} `,'font-weight:bold;color:red;');
+            //console.log(`%c current: ${currentNode.Ceil.GetCoordinate().Q} ${currentNode.Ceil.GetCoordinate().R} cost:${currentNode.GetCost()}`,'color:blue;');
+                    //console.log(`%c next: ${ceil.GetCoordinate().Q} ${ceil.GetCoordinate().R} cost:${nextNode.GetCost()} ,opened nodes: ${openedNodes.length}`,'color:purple;');
+
+
+    private GetLessExpensiveFrontier(openedNodes:Array<AStarNode<T>>):AStarNode<T>{
+        var currentNode = openedNodes[0];
+        openedNodes.splice(0,1);
+        return currentNode;
+    }
+
+    private IsNodeNew(ceil:T, 
         openedNodes:Array<AStarNode<T>>,
          closedNodes:Array<AStarNode<T>>)
          :Boolean

@@ -13,17 +13,17 @@ export class FlowerMapBuilder implements IPlaygroundBuilder<Ceil>{
         this._hexagonalBuilder = new HexagonalMapBuilder();
     }
 
-    public Build(n: number): Ceil[] {
-        const initialCeils =  this._hexagonalBuilder.Build(n);
+    public Build(seize: number): Ceil[] {
+        const initialCeils =  this._hexagonalBuilder.Build(seize);
         const container = new CeilsContainer<Ceil>();
         initialCeils.forEach(ceil => {
             container.Add(ceil);
         });
         const areaEngine = new AreaEngine();
-        var areas = areaEngine.GetAreas(container,<Ceil> container.Get(this.GetMidle(n)));
+        var areas = areaEngine.GetAreas(container,<Ceil> container.Get(this.GetMidle(seize)));
         var result = new Array<Ceil>();
         areas.forEach(area =>{
-            const ceils = container.GetNeighbourhood(area.GetCoordinate());
+            const ceils = container.GetNeighbourhood(area.GetCoordinate()); 
             if(ceils.length === 6){
                 result.push(area);
                 ceils.forEach(ceil=>{

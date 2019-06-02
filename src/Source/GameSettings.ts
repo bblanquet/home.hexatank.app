@@ -13,6 +13,7 @@ export class GameSettings
     public Attack:number=30;
     private _fps:number=0;
     private _fpsHandlers:{(data: number):void}[] = [];
+    public MapSize: number=0;
 
     public GetRelativeWidth():number{
         return this.ScreenWidth/this._viewContext.Scale;

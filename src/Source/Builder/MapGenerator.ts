@@ -30,9 +30,10 @@ import { ZoomInButton } from "../Menu/ZoomInButton";
 import { ZoomOutButton } from "../Menu/ZoomOutButton";
 import { TopMenu } from "../Menu/TopMenu";
 import { MoneyMenuItem } from "../Menu/MoneyMenuItem";
-import { CeilState } from "../CeilState";
+import { CeilState } from "../CeilState"; 
 import { ShowEnemiesMenuItem } from "../Menu/ShowEnemiesMenuItem";
 import { HexAxial } from "../Coordinates/HexAxial";
+import { FartestPointsFinder } from "./FartestPointsFinder";
 
 export class MapGenerator implements IMapGenerator{
 
@@ -49,35 +50,51 @@ export class MapGenerator implements IMapGenerator{
 
     public SetMap():Array<Item>{
         const items = new Array<Item>();
-        const mapLength = 20;
+        const size = 20;
         const mapBuilder = new FlowerMapBuilder();
-        const ceils = mapBuilder.Build(mapLength);
+        const ceils = mapBuilder.Build(size);
         
         ceils.forEach(ceil => {
             PlaygroundHelper.CeilsContainer.Add(ceil);
             items.push(ceil);
         });
 
-        const middleAreas = mapBuilder.GetAreaMiddleCeil(mapLength);
-        middleAreas.push(mapBuilder.GetMidle(mapLength));
+        const middleAreas = mapBuilder.GetAreaMiddleCeil(size);
+        PlaygroundHelper.Settings.MapSize = middleAreas.length * 6; 
+        const middleCeil = mapBuilder.GetMidle(size);
+        middleAreas.push(mapBuilder.GetMidle(size));
         this.SetGrass(middleAreas, items);
         
-        const diamond = new Diamond(PlaygroundHelper.CeilsContainer.Get(mapBuilder.GetMidle(mapLength)));
+        const diamond = new Diamond(PlaygroundHelper.CeilsContainer.Get(middleCeil));
         items.push(diamond);
+
+        const fatherPointManager =new FartestPointsFinder();
+        var hqPoints = fatherPointManager.GetPoints(fatherPointManager.GetFartestPoints(middleCeil,middleAreas),3);
+
         const redQuarter = new Headquarter(
             new HqSkin(Archive.team.red.tank, Archive.team.red.turrel,Archive.team.red.truck, Archive.team.red.hq, "redCeil"), 
-            PlaygroundHelper.CeilsContainer.Get(middleAreas[3]));
+            PlaygroundHelper.CeilsContainer.Get(hqPoints[0]));
         PlaygroundHelper.PlayerHeadquarter = redQuarter;        
         this._currentHq = redQuarter;
         
-        const blueQuarter = new SmartHq(PlaygroundHelper.GetAreas(PlaygroundHelper.CeilsContainer.Get(middleAreas[1]))
-        , new HqSkin(Archive.team.blue.tank, Archive.team.blue.turrel,Archive.team.blue.truck, Archive.team.blue.hq, "selectedCeil"), 
-        PlaygroundHelper.CeilsContainer.Get(middleAreas[1]));
+        const blueCeil = PlaygroundHelper.CeilsContainer.Get(hqPoints[1]);
+        const blueQuarter = new SmartHq(PlaygroundHelper.GetAreas(blueCeil)
+        , new HqSkin(Archive.team.blue.tank, 
+            Archive.team.blue.turrel,
+            Archive.team.blue.truck, 
+            Archive.team.blue.hq, 
+            "selectedCeil"), 
+            blueCeil);
         blueQuarter.Diamond = diamond;
         
-        const brownQuarter = new SmartHq(PlaygroundHelper.GetAreas(PlaygroundHelper.CeilsContainer.Get(middleAreas[2]))
-        , new HqSkin(Archive.team.yellow.tank, Archive.team.yellow.turrel,Archive.team.yellow.truck, Archive.team.yellow.hq, "brownCeil")
-        , PlaygroundHelper.CeilsContainer.Get(middleAreas[2]));
+        const brownCeil = PlaygroundHelper.CeilsContainer.Get(hqPoints[2]);
+        const brownQuarter = new SmartHq(PlaygroundHelper.GetAreas(brownCeil)
+        , new HqSkin(Archive.team.yellow.tank
+            , Archive.team.yellow.turrel
+            ,Archive.team.yellow.truck
+            , Archive.team.yellow.hq
+            , "brownCeil")
+        , brownCeil);
         brownQuarter.Diamond = diamond;
         
         items.push(redQuarter);

@@ -16,13 +16,13 @@ export class HexagonalMapBuilder implements IPlaygroundBuilder<Ceil>{
 
         const rightEdge = n+n/2+1;
         for (let index = rightEdge; index <= n*2; index++) {
-            result.push(index);
+            result.push(index); 
         }
 
         return result;
     }
 
-    public GetCorners(n:number):Array<HexAxial>{
+    public GetAreaMiddleCeil(n:number):Array<HexAxial>{
         return [
             new HexAxial(1,n/2),
             new HexAxial(n-1,n/2),//column,row

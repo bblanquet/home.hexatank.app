@@ -5,14 +5,14 @@ import {CeilProperties} from '../CeilProperties';
 
 export class RectangleMapBuilder implements IPlaygroundBuilder<Ceil>{
 
-    public GetCorners(n:number):Array<HexAxial>{
+    public GetAreaMiddleCeil(n:number):Array<HexAxial>{
         return [
             new HexAxial(1,n/2),
             new HexAxial(n-1,n/2),//column,row
             new HexAxial(n/2,1),
             new HexAxial(n-1,1),
             new HexAxial(1,n-1),
-            new HexAxial(n/2,n-1),
+            new HexAxial(n/2,n-1), 
         ]
     }
 

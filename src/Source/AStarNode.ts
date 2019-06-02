@@ -10,17 +10,17 @@ export class AStarNode<T extends ICeil>{
        this.Ceil = ceil; 
     }
 
-    Compare(node:AStarNode<T>):boolean{
-        return this.GetCost() < node.GetCost();
+    IsLessExpensive(compareToNode:AStarNode<T>):boolean{
+        return this.GetCost() < compareToNode.GetCost();
     }
 
     GetEstimatedCost(node:AStarNode<T>):number
     {
-        var central = this.Ceil.GetCentralPoint();
-        var central2 = node.Ceil.GetCentralPoint();
+        var center = this.Ceil.GetCentralPoint();
+        var compareToCenter = node.Ceil.GetCentralPoint();
 
-        return Math.sqrt(Math.pow(central2.X - central.X,2)) 
-            + Math.sqrt(Math.pow(central2.Y - central.Y,2));
+        return Math.sqrt(Math.pow(compareToCenter.X - center.X,2)) 
+            + Math.sqrt(Math.pow(compareToCenter.Y - center.Y,2));
     }
 
     GetCost():number{

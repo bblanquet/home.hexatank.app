@@ -51,8 +51,11 @@ export class InputManager{
 
     OnMouseUp(event:PIXI.interaction.InteractionEvent){
         this.IsGrabbed = false;
-        const distance = Math.abs(Math.sqrt( 
-            Math.pow(event.data.global.x - this.DownPoint.X,2) + Math.pow(event.data.global.y - this.DownPoint.Y,2)));
+        const distance = Math.abs(
+            Math.sqrt(
+                  Math.pow(event.data.global.x - this.DownPoint.X,2) 
+                + Math.pow(event.data.global.y - this.DownPoint.Y,2)));
+        
         if(distance < PlaygroundHelper.Settings.Size/3)
         {
             this.DownEvent.trigger(this.InteractionContext);

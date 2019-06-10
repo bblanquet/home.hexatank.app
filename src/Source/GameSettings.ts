@@ -7,8 +7,8 @@ export class GameSettings
     public Size:number=50;
     public ScreenWidth:number;
     public ScreenHeight:number;
-    public RotationSpeed:number=0.05;
-    public TranslationSpeed:number=1;
+    public RotationSpeed:number=0.2;
+    public TranslationSpeed:number=4;
     public ShowEnemies:boolean=false;
     public Attack:number=30;
     private _fps:number=0;

@@ -1,9 +1,9 @@
 import { ICombination } from "./ICombination";
 import { Item } from "../../Item";
 import { Vehicle } from "../../Unit/Vehicle";
-import { PatrolMenuItem } from "../../Menu/PatrolMenuItem";
+import { PatrolMenuItem } from "../../Menu/PatrolMenuItem"; 
 import { Ceil } from "../../Ceil";
-import { PatrolOrder } from "../../Ia/PatrolOrder";
+import { PatrolOrder } from "../../Ia/Order/PatrolOrder";
 import { BasicItem } from "../../BasicItem";
 import { PlaygroundHelper } from "../../PlaygroundHelper";
 import { Archive } from "../../Tools/ResourceArchiver";

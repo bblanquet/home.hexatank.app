@@ -140,7 +140,7 @@ export class Ceil extends Item implements ICeil , ISelectable
         return null;
     }
 
-    public ContainsAlly(v:Vehicle):boolean{
+    public ContainsAlly(v:AliveItem):boolean{
         if(this._occupier && this._occupier instanceof AliveItem)
         {
             return !v.IsEnemy(this._occupier);
@@ -148,6 +148,18 @@ export class Ceil extends Item implements ICeil , ISelectable
         if(this._field && this._field instanceof Headquarter)
         {
             return !v.IsEnemy(this._field);
+        }
+        return false;
+    }
+
+    public ContainsEnemy(v:AliveItem):boolean{
+        if(this._occupier && this._occupier instanceof AliveItem)
+        {
+            return v.IsEnemy(this._occupier) ;
+        }
+        if(this._field && this._field instanceof Headquarter)
+        {
+            return v.IsEnemy(this._field);
         }
         return false;
     }

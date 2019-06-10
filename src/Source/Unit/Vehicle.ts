@@ -16,8 +16,8 @@ import { IRotatable } from '../IRotatable';
 import { isNullOrUndefined } from 'util';
 import { Crater } from '../Crater';
 import { CeilState } from '../CeilState';
-import { IOrder } from '../Ia/IOrder';
-import { ISelectable } from '../ISelectable';
+import { IOrder } from '../Ia/Order/IOrder';
+import { ISelectable } from '../ISelectable'; 
 import { Timer } from '../Tools/Timer';
 import { Archive } from '../Tools/ResourceArchiver';
 
@@ -100,8 +100,12 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         }
     }
 
-    public CancelOrder():void{
-        this._order.Cancel();
+    public CancelOrder():void
+    {
+        if(this._order)
+        {
+            this._order.Cancel();
+        }
     }
 
     public GetBoundingBox():BoundingBox{
@@ -315,6 +319,10 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
     public IsExecutingOrder():boolean{
         return !isNullOrUndefined(this._order) && !this._order.IsDone();
+    }
+
+    public HasPendingOrder():boolean{
+        return !isNullOrUndefined(this._pendingOrder);
     }
 
     public SetPosition (ceil:Ceil):void{

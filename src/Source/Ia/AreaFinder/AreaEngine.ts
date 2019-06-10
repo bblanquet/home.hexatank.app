@@ -24,7 +24,7 @@ export class AreaEngine
         }
     }
 
-    private GetNeighbourhoodAreas(ceils:CeilsContainer<Ceil>, ceil:Ceil):Array<Ceil>{
+    public GetNeighbourhoodAreas(ceils:CeilsContainer<Ceil>, ceil:Ceil):Array<Ceil>{
         var coo = ceil.GetCoordinate();
         var result = new Array<Ceil>();
         var shifts = [{Q:-1,R:-2},{Q:2,R:-3},{Q:3,R:-1},{Q:1,R:2},{Q:-2,R:3},{Q:-3,R:1}];

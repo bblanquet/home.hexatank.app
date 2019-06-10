@@ -1,7 +1,7 @@
-import { Headquarter } from "../Field/Headquarter";
-import { Vehicle } from "../Unit/Vehicle";
+import { Headquarter } from "../../Field/Headquarter";
+import { Vehicle } from "../../Unit/Vehicle";
 import { SimpleOrder } from "./SimpleOrder";
-import { Ceil } from "../Ceil";
+import { Ceil } from "../../Ceil";
 
 export class HqFieldOrder extends SimpleOrder
 { 
@@ -9,7 +9,7 @@ export class HqFieldOrder extends SimpleOrder
         super(_hq.GetCeil(),_vehicule);
     }
 
-    protected GetClosestCeil():Ceil{
+    protected GetClosestCeil():Ceil{ 
         let ceils = this.GetCeils(this._hq);
         if(0 < ceils.length)
         {

@@ -1,21 +1,20 @@
 import { Area } from "./Area";
-import { HqRequest } from "../HqRequest";
 import { Tank } from "../../Unit/Tank";
 import { Ceil } from "../../Ceil";
 import { Troop } from "./Troop";
+import { PlaygroundHelper } from "../../PlaygroundHelper";
+import { Headquarter } from "../../Field/Headquarter";
+import { HqStatus } from "../HqStatus";
 
 export class HqArea
 {
     private _troops:Array<Troop>;
+    public HasReceivedRequest:boolean;
 
-    constructor(private _area:Area){ 
+    constructor(private _hq:Headquarter,private _area:Area){ 
         this._troops = new Array<Troop>();
     }
  
-    public GetTroopsCount():number{
-        return this._troops.length;
-    }
-
     public Update():void{
         this._troops.forEach(troop => {
             troop.Update();
@@ -26,24 +25,62 @@ export class HqArea
         return this._area.GetCentralCeil();
     }
 
-    public GetRequest():HqRequest{
+    public GetStatus():HqStatus{
         this._troops = this._troops.filter(t=>t.Tank.IsAlive());
-        
-        if(this._troops.length < 1)
-        {
-            return HqRequest.MissingTank;
+        return new HqStatus(
+            this.GetOutsideEnemyCount(),
+            this.GetInsideEnemyCount(),
+            this._troops.length,
+            this.GetOutsideAllyCount(),
+            this);
+    }
+
+    private GetOutsideEnemyCount() :number{
+        let outsideEnemyCount = 0;
+        PlaygroundHelper.GetNeighbourhoodAreas(this._area.GetCentralCeil()).forEach(area => {
+            outsideEnemyCount += area.GetEnemyCount(this._hq);
+        });
+        return outsideEnemyCount;
+    }
+
+    private GetOutsideAllyCount() :number{
+        let outsideEnemyCount = 0;
+        PlaygroundHelper.GetNeighbourhoodAreas(this._area.GetCentralCeil()).forEach(area => {
+            outsideEnemyCount += area.GetAllyCount(this._hq);
+        });
+        return outsideEnemyCount;
+    }
+
+
+    private GetInsideEnemyCount() :number{
+        return this._area.GetEnemyCount(this._hq);
+    }
+
+    public HasTroop():boolean{
+        return this._troops.length > 0;
+    }
+
+    public DropTroop():Tank{
+        if(this._troops.length > 0){
+            let troop = this._troops.splice(0,1)[0];
+            troop.Cancel();
+            return troop.Tank;
         }
-        return HqRequest.None;
+        return null;
     }
 
     public AddTroop(tank:Tank, ceil:Ceil):void{
         this._troops.push(new Troop(ceil,tank,this)); 
     }
 
+    public GetAvailableCeilCount():number{
+        return this._area.GetAvailableCeil().filter(c=>this._troops.filter(t=>c===t.CurrentCeil).length === 0).length;
+    }
+
     public GetAvailableCeil():Ceil
     {
-        let ceils = this._area.GetAvailableCeil().filter(c=>this._troops.filter(t=>c===t.CurrentCeil).length === 0);
-        
+        const ceils = this._area.GetAvailableCeil().filter(c=>this._troops.filter(t=>c===t.CurrentCeil).length === 0);
+
         if(ceils.length > 0)
         {
             let index = Math.floor(Math.random() * (ceils.length-1)) + 0;  

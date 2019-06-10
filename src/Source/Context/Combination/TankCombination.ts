@@ -2,9 +2,8 @@ import { ICombination } from "./ICombination";
 import { Item } from "../../Item";
 import { Tank } from "../../Unit/Tank";
 import { Ceil } from "../../Ceil";
-import { SimpleTankOrder } from "../../Ia/SimpleTankOrder";
-import { SimpleOrder } from "../../Ia/SimpleOrder";
-import { TargetOrder } from "../../Ia/TargetOrder";
+import { TargetOrder } from "../../Ia/Order/TargetOrder";
+import { SimpleOrder } from "../../Ia/Order/SimpleOrder";
 
 export class TankCombination implements ICombination{
 

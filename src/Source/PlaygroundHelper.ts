@@ -33,5 +33,7 @@ export class PlaygroundHelper{
         return this._areaEngine.GetAreas(PlaygroundHelper.CeilsContainer,ceil).map(c=> new Area(c));
     }
 
-
+    public static GetNeighbourhoodAreas(ceil:Ceil):Array<Area>{
+        return this._areaEngine.GetNeighbourhoodAreas(PlaygroundHelper.CeilsContainer,ceil).map(c=> new Area(c));
+    }
 }

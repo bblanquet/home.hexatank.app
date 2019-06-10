@@ -1,11 +1,11 @@
 import { SimpleOrder } from "./SimpleOrder";
-import { Ceil } from "../Ceil";
-import { Vehicle } from "../Unit/Vehicle";
-import { Diamond } from "../Field/Diamond";
+import { Ceil } from "../../Ceil";
+import { Vehicle } from "../../Unit/Vehicle";
+import { Diamond } from "../../Field/Diamond"; 
 
 export class DiamondFieldOrder extends SimpleOrder
 {
-    constructor(private _diamond:Diamond,private _vehicule:Vehicle){
+    constructor(private _diamond:Diamond,private _vehicule:Vehicle){ 
         super(_diamond.GetCeil(),_vehicule);
     }
     

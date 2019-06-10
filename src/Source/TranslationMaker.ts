@@ -1,6 +1,7 @@
 import { ITranslationMaker } from "./ITranslationMaker";
 import { IMovable } from "./IMovable";
 import { IBoundingBoxContainer } from "./IBoundingBoxContainer";
+import { PlaygroundHelper } from "./PlaygroundHelper";
 
 export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implements ITranslationMaker
 {
@@ -16,12 +17,12 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
         }
         return Math.abs(b - a);
     }
-    private static IsCloseEnough(a:number,b:number):boolean{
+    private IsCloseEnough(a:number,b:number,_item:T):boolean{
         if(a < b){
             [b,a] = [a,b];
         }
 
-        return Math.abs(b - a) < 1;
+        return Math.abs(b - a) <_item.TranslationSpeed;
     }
 
     private GetXRatio(current: {X: number, Y: number}, target: {X: number, Y: number}):number
@@ -42,25 +43,31 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 
         var xRatio = this.GetXRatio(itemBox.GetCentralPoint(),nextCeilBox.GetCentralPoint());
 
-        itemBox.Y += (nextCeilBox.GetMiddle() < itemBox.GetMiddle()) ? -this._item.TranslationSpeed:this._item.TranslationSpeed;
-        itemBox.X += ((nextCeilBox.GetCenter() < itemBox.GetCenter()) ? -this._item.TranslationSpeed:this._item.TranslationSpeed)*xRatio;
+        itemBox.Y += (nextCeilBox.GetMiddle() < itemBox.GetMiddle()) 
+        ? -this._item.TranslationSpeed:this._item.TranslationSpeed;
+        itemBox.X += ((nextCeilBox.GetCenter() < itemBox.GetCenter()) 
+        ? -this._item.TranslationSpeed:this._item.TranslationSpeed)*xRatio;
 
         if(isNaN(itemBox.X)){
             throw `error speed ${this._item.TranslationSpeed}`;
         } 
 
-        if(TranslationMaker.IsCloseEnough(itemBox.GetCenter(), nextCeilBox.GetCenter()))
+        const currentMiddle = itemBox.GetMiddle();
+        const nextMiddle = nextCeilBox.GetMiddle();
+        const currentCenter = itemBox.GetCenter();
+        const nextCenter = nextCeilBox.GetCenter();
+
+        if(this.IsCloseEnough(currentCenter, nextCenter,this._item))
         {
             itemBox.X = nextCeilBox.X;
         }
 
-        if(TranslationMaker.IsCloseEnough(itemBox.GetMiddle(), nextCeilBox.GetMiddle()))
+        if(this.IsCloseEnough(currentMiddle, nextMiddle,this._item))
         {
             itemBox.Y = nextCeilBox.Y;
         }
 
-        if(itemBox.GetMiddle() == nextCeilBox.GetMiddle() 
-        && itemBox.GetCenter() == nextCeilBox.GetCenter())
+        if(currentMiddle == nextMiddle && currentCenter == nextCenter)
         {
             this._item.MoveNextCeil();
         }

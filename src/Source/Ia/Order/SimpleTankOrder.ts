@@ -1,7 +1,7 @@
 import { SimpleOrder } from "./SimpleOrder";
-import { Ceil } from "../Ceil";
-import { Tank } from "../Unit/Tank";
-import { PlaygroundHelper } from "../PlaygroundHelper";
+import { Ceil } from "../../Ceil";
+import { Tank } from "../../Unit/Tank"; 
+import { PlaygroundHelper } from "../../PlaygroundHelper";
 import { isNull } from "util";
 
 export class SimpleTankOrder extends SimpleOrder{

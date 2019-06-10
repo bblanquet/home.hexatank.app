@@ -3,38 +3,50 @@ import { Area } from "./AreaFinder/Area";
 import { HqSkin } from "../HqSkin";
 import { Ceil } from "../Ceil";
 import { HqArea } from "./AreaFinder/HqArea";
-import { HqRequest } from "./HqRequest";
+import { HqPriorityRequest } from "./HqPriorityRequest"; 
 import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Tank } from "../Unit/Tank";
-import { Point } from "../Point";
-import { isNullOrUndefined } from "util"; 
+import { isNullOrUndefined } from "util";
 import { Truck } from "../Unit/Truck"; 
 import { Diamond } from "../Field/Diamond";
-import { TruckPatrolOrder } from "./TruckPatrolOrder";
-import { HqFieldOrder } from "./HqFieldOrder";
-import { DiamondFieldOrder } from "./DiamondFieldOrder";
+import { TruckPatrolOrder } from "./Order/TruckPatrolOrder";
+import { HqFieldOrder } from "./Order/HqFieldOrder";
+import { DiamondFieldOrder } from "./Order/DiamondFieldOrder";
 import { Archive } from "../Tools/ResourceArchiver";
 import { Explosion } from "../Unit/Explosion";
+import { HqRequest } from "./HqRequest";
+import { HqStatus } from "./HqStatus";
+import { HqRequestMaker } from "./HqRequestMaker";
+import { RequestHandler } from "./RequestHandler";
+import { Timer } from "../Tools/Timer";
+import { SpreadStrategy } from "./SpreadStrategy";
 
 export class SmartHq extends Headquarter{
-    private _conquestedAreas:HqArea[];
+    public AreasByCeil:{ [id: string] : HqArea; };
+    private _Areas:HqArea[];
     private _trucks:Array<Truck>;
+    private _requestHandler:RequestHandler;
     public Diamond:Diamond;
+    private _timer:Timer;
+    private _spreadStrategy:SpreadStrategy;
 
-    constructor(private _remainingAreas:Area[], skin:HqSkin, ceil:Ceil)
+    constructor(public EmptyAreas:Area[], skin:HqSkin, ceil:Ceil)
     {
         super(skin,ceil);
-        this.Diamonds = 0;
+        this._timer = new Timer(10);
+        this.Diamonds = 20;
         this._trucks = new Array<Truck>();
-        this._conquestedAreas= new Array<HqArea>();
+        this._Areas= new Array<HqArea>();
+        this.AreasByCeil = {};
+        this._requestHandler = new RequestHandler(this);
+        this._spreadStrategy = new SpreadStrategy(this);
     }
 
     public Update(viewX: number, viewY: number):void{
         super.Update(viewX,viewY);
 
-        let requests = new Array<[HqArea,HqRequest]>();
-        
         this._trucks = this._trucks.filter(t=>t.IsAlive());
+
         if(this._trucks.length === 0){
             var truck = this.AddTruck();
             
@@ -45,30 +57,54 @@ export class SmartHq extends Headquarter{
             }
         }
 
-        this._conquestedAreas.forEach(conquestedArea=>
+        if(this._timer.IsElapsed())
         {
-            conquestedArea.Update();
-            var request = conquestedArea.GetRequest();
-            if(request !== HqRequest.None)
-            {
-                requests.push([conquestedArea,request]);
-            }
-        }); 
+            const statuses = new Array<HqStatus>();
 
-        if(requests.length === 0)
-        {   
-            var area = this.FindArea();
-            if(!isNullOrUndefined(area))
+            this._Areas.forEach(conquestedArea=>
             {
-                //area.GetCentralCeil().AddSprite(this.GetSkin().GetColor());
-                this._conquestedAreas.push(new HqArea(area));
+                conquestedArea.HasReceivedRequest = false;
+                conquestedArea.Update();
+                statuses.push(conquestedArea.GetStatus());
+            }); 
+
+
+            const requests: { [id: string] : Array<HqRequest>; } = {};
+            requests[HqPriorityRequest.Low] = new Array<HqRequest>();
+            requests[HqPriorityRequest.Medium] = new Array<HqRequest>();
+            requests[HqPriorityRequest.High] = new Array<HqRequest>();
+
+            statuses.forEach(status=>{
+                let request = HqRequestMaker.GetRequest(status);
+                if(request.Priority != HqPriorityRequest.None)
+                {
+                    requests[request.Priority].push(request);
+                }
+            });
+
+            var excessAreas = statuses.filter(s=>s.GetExcessTroops()>0);
+
+            if(this.HasRequests(requests))
+            {   
+                this._requestHandler.HandleRequests(requests,excessAreas);
+            }
+            else
+            {
+                var area = this._spreadStrategy.FindArea();
+                if(!isNullOrUndefined(area))
+                {
+                    let hqArea =new HqArea(this,area);
+                    this._Areas.push(hqArea);
+                    this.AreasByCeil[area.GetCentralCeil().GetCoordinate().ToString()] = hqArea;
+                }
             }
         }
-        else
-        {
-            var hqArea = requests[0][0];
-            this.AddAreaTank(hqArea);
-        }
+    }
+
+    private HasRequests(requests: { [id: string]: HqRequest[]; }) {
+        return requests[HqPriorityRequest.Low].length > 0
+            || requests[HqPriorityRequest.Medium].length > 0
+            || requests[HqPriorityRequest.High].length > 0;
     }
 
     private AddTruck():Truck
@@ -94,68 +130,35 @@ export class SmartHq extends Headquarter{
         return truck;
     }
 
-    private AddAreaTank(area:HqArea):boolean
+    public AddAreaTank(area:HqArea):boolean
     {
         let isCreated = false;
-        this.Fields.some(field=>
+        if(this.Diamonds >= 5)
         {
-            if(!field.GetCeil().IsBlocked())
+            for(let field of this.Fields)
             {
-                var ceil =area.GetAvailableCeil(); 
-                if(!isNullOrUndefined(ceil) && this.Diamonds >= 5)
+                if(!field.GetCeil().IsBlocked())
                 {
-                    this.Diamonds -= 5;
-                    if(field.GetCeil().IsVisible()){
-                        const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,6,false,5);
-                        PlaygroundHelper.Playground.Items.push(explosion);
+                    var ceil = area.GetAvailableCeil(); 
+                    if(!isNullOrUndefined(ceil))
+                    {
+                        this.Diamonds -= 5;
+                        if(field.GetCeil().IsVisible())
+                        {
+                            const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,6,false,5);
+                            PlaygroundHelper.Playground.Items.push(explosion);
+                        }
+                        
+                        var tank = new Tank(this);
+                        tank.SetPosition(field.GetCeil());
+                        area.AddTroop(tank,ceil);
+                        PlaygroundHelper.Playground.Items.push(tank);
+                        isCreated = true;
+                        return true;
                     }
-                    var tank = new Tank(this);
-                    tank.SetPosition(field.GetCeil());
-                    area.AddTroop(tank,ceil);
-                    PlaygroundHelper.Playground.Items.push(tank);
-                    isCreated = true;
-                    return true;
                 }
             }
-            return false;
-        });
-
-        return isCreated;
-    }
-
-    private FindArea():Area
-    {    
-        if(this._remainingAreas.length === 0)
-        {
-            return null;
         }
-
-        let currentArea = this._remainingAreas[0];
-        let currentCost = this.GetCost(
-            this.GetCeil().GetCentralPoint(),
-            currentArea.GetCentralCeil().GetCentralPoint()
-        );
-
-        this._remainingAreas.forEach(area => 
-        {
-            let cost = this.GetCost(
-                this.GetCeil().GetCentralPoint(),
-                area.GetCentralCeil().GetCentralPoint()
-            )
-               if(cost < currentCost)
-               {
-                    currentArea = area;
-                    currentCost = cost;
-               }
-        });
-
-        this._remainingAreas.splice(this._remainingAreas.indexOf(currentArea),1);
-        return currentArea;
-    }
-
-    private GetCost(a:Point,b:Point):number
-    {
-        return Math.sqrt(Math.pow(b.X - a.X,2)) 
-            + Math.sqrt(Math.pow(b.Y - a.Y,2));
+        return isCreated;
     }
 } 

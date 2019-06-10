@@ -2,17 +2,22 @@ import { Ceil } from "../../Ceil";
 import { HqArea } from "./HqArea";
 import { Tank } from "../../Unit/Tank";
 import { ITimer } from "../../Tools/ITimer";
-import { SimpleOrder } from "../SimpleOrder";
 import { Timer } from "../../Tools/Timer";
 import { isNullOrUndefined } from "util";
+import { SimpleOrder } from "../Order/SimpleOrder";
 
 export class Troop{
     private _changePositionTimer:ITimer; 
     private _cancelOrderTimer:ITimer;
 
-    constructor(public CurrentCeil:Ceil,public Tank:Tank,public HqArea:HqArea){
+    constructor(public CurrentCeil:Ceil,public Tank:Tank,public HqArea:HqArea)
+    {
+        if(isNullOrUndefined(this.CurrentCeil))
+        {
+            throw "invalid destination";
+        }
         this._changePositionTimer = new Timer(20);
-        this._cancelOrderTimer = new Timer(300);
+        this._cancelOrderTimer = new Timer(20);
     }
 
     public Update():void
@@ -21,22 +26,27 @@ export class Troop{
         {
             if(this._changePositionTimer.IsElapsed())
             {
-                var selectedCeil = this.HqArea.GetAvailableCeil();
-                if(!isNullOrUndefined(selectedCeil))
+                const nextPatrolCeil = this.HqArea.GetAvailableCeil();
+                if(nextPatrolCeil)
                 {
-                    this.CurrentCeil = selectedCeil;
+                    this.CurrentCeil = nextPatrolCeil;
                 }
             }         
         }
-        else if(!this.Tank.IsExecutingOrder())
+        else if(!this.Tank.IsExecutingOrder() && !this.Tank.HasPendingOrder())
         {
             this.Tank.SetOrder(new SimpleOrder(this.CurrentCeil,this.Tank));
-        }else
+        }
+        else
         {
             if(this._cancelOrderTimer.IsElapsed())
             {
                 this.Tank.CancelOrder();
             }
         }
+    }
+
+    public Cancel():void{
+        this.Tank.CancelOrder();
     }
 }

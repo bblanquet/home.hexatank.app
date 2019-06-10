@@ -1,18 +1,18 @@
 import { Area } from "./Area";
 import { Tank } from "../../Unit/Tank";
 import { Ceil } from "../../Ceil";
-import { Troop } from "./Troop";
+import { AreaDecisionMaker } from "./AreaDecisionMaker";
 import { PlaygroundHelper } from "../../PlaygroundHelper";
 import { Headquarter } from "../../Field/Headquarter";
-import { HqStatus } from "../HqStatus";
+import { AreaStatus } from "./AreaStatus";
 
-export class HqArea
+export class HeldArea
 {
-    private _troops:Array<Troop>;
+    private _troops:Array<AreaDecisionMaker>;
     public HasReceivedRequest:boolean;
 
     constructor(private _hq:Headquarter,private _area:Area){ 
-        this._troops = new Array<Troop>();
+        this._troops = new Array<AreaDecisionMaker>();
     }
  
     public Update():void{
@@ -25,9 +25,9 @@ export class HqArea
         return this._area.GetCentralCeil();
     }
 
-    public GetStatus():HqStatus{
+    public GetStatus():AreaStatus{
         this._troops = this._troops.filter(t=>t.Tank.IsAlive());
-        return new HqStatus(
+        return new AreaStatus(
             this.GetOutsideEnemyCount(),
             this.GetInsideEnemyCount(),
             this._troops.length,
@@ -70,16 +70,16 @@ export class HqArea
     }
 
     public AddTroop(tank:Tank, ceil:Ceil):void{
-        this._troops.push(new Troop(ceil,tank,this)); 
+        this._troops.push(new AreaDecisionMaker(ceil,tank,this)); 
     }
 
     public GetAvailableCeilCount():number{
-        return this._area.GetAvailableCeil().filter(c=>this._troops.filter(t=>c===t.CurrentCeil).length === 0).length;
+        return this._area.GetAvailableCeil().filter(c=>this._troops.filter(t=>c===t.CurrentPatrolDestination).length === 0).length;
     }
 
     public GetAvailableCeil():Ceil
     {
-        const ceils = this._area.GetAvailableCeil().filter(c=>this._troops.filter(t=>c===t.CurrentCeil).length === 0);
+        const ceils = this._area.GetAvailableCeil().filter(c=>this._troops.filter(t=>c===t.CurrentPatrolDestination).length === 0);
 
         if(ceils.length > 0)
         {

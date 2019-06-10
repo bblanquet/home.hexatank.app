@@ -1,7 +1,7 @@
 import { IPlaygroundBuilder } from "./IPlaygroundBuilder";
-import { Ceil } from "../Ceil";
+import { Ceil } from "../Ceil"; 
 import { HexAxial } from "../Coordinates/HexAxial";
-import { AreaEngine } from "../Ia/AreaFinder/AreaEngine";
+import { AreaEngine } from "../Ia/Area/AreaEngine";
 import { CeilsContainer } from "../CeilsContainer";
 import { HexagonalMapBuilder } from "./HexagonalMapBuilder";
 

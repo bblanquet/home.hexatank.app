@@ -1,11 +1,11 @@
-import {CeilsContainer} from './CeilsContainer';
+import {CeilsContainer} from './CeilsContainer'; 
 import {AStarEngine} from './AStarEngine';
 import {Ceil} from './Ceil';
 import { RenderingHandler } from './RenderingHandler';
 import { GameSettings } from './GameSettings';
 import { Playground } from './Playground';
-import { AreaEngine } from './Ia/AreaFinder/AreaEngine';
-import { Area } from './Ia/AreaFinder/Area';
+import { AreaEngine } from './Ia/Area/AreaEngine';
+import { Area } from './Ia/Area/Area';
 import { ISpriteProvider } from './Tools/ISpriteProvider';
 import { Headquarter } from './Field/Headquarter';
 

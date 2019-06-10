@@ -6,6 +6,7 @@ import { InteractionContext } from "../Context/InteractionContext";
 import { BoundingBox } from "../BoundingBox";
 import { Archive } from "../Tools/ResourceArchiver";
 import { Field } from "./Field";
+import { CeilState } from "../CeilState";
 
 export class WaterField extends Field
 {
@@ -29,6 +30,12 @@ export class WaterField extends Field
 
         this.InitPosition(ceil.GetBoundingBox());
         this.GetDisplayObjects().forEach(obj => {obj.visible = this.GetCeil().IsVisible();});
+    }
+
+    protected OnCeilStateChanged(ceilState: CeilState): void {
+        this.GetDisplayObjects().forEach(s=>{
+            s.visible = ceilState === CeilState.Visible || ceilState === CeilState.HalfVisible;
+        });
     }
 
     public Update(viewX: number, viewY: number):void

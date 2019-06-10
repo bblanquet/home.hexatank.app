@@ -14,7 +14,7 @@ export abstract class Field extends Item implements IField{
         this._ceil.RegisterCeilState(this._onCeilStateChanged);
     }
 
-    private OnCeilStateChanged(ceilState: CeilState): void {
+    protected OnCeilStateChanged(ceilState: CeilState): void {
         this.GetDisplayObjects().forEach(s=>{
             s.visible = ceilState === CeilState.Visible;
         });

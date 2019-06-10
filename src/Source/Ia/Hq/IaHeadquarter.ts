@@ -1,36 +1,36 @@
-import { Headquarter } from "../Field/Headquarter";
-import { Area } from "./AreaFinder/Area";
-import { HqSkin } from "../HqSkin";
-import { Ceil } from "../Ceil";
-import { HqArea } from "./AreaFinder/HqArea";
-import { HqPriorityRequest } from "./HqPriorityRequest"; 
-import { PlaygroundHelper } from "../PlaygroundHelper";
-import { Tank } from "../Unit/Tank";
+import { Headquarter } from "../../Field/Headquarter";
+import { Area } from "../Area/Area";
+import { HqSkin } from "../../HqSkin";
+import { Ceil } from "../../Ceil";
+import { RequestPriority } from "./RequestPriority"; 
+import { PlaygroundHelper } from "../../PlaygroundHelper";
+import { Tank } from "../../Unit/Tank"; 
 import { isNullOrUndefined } from "util";
-import { Truck } from "../Unit/Truck"; 
-import { Diamond } from "../Field/Diamond";
-import { TruckPatrolOrder } from "./Order/TruckPatrolOrder";
-import { HqFieldOrder } from "./Order/HqFieldOrder";
-import { DiamondFieldOrder } from "./Order/DiamondFieldOrder";
-import { Archive } from "../Tools/ResourceArchiver";
-import { Explosion } from "../Unit/Explosion";
-import { HqRequest } from "./HqRequest";
-import { HqStatus } from "./HqStatus";
-import { HqRequestMaker } from "./HqRequestMaker";
-import { RequestHandler } from "./RequestHandler";
-import { Timer } from "../Tools/Timer";
-import { SpreadStrategy } from "./SpreadStrategy";
-import { TankBalancer } from "./TankBalancer"; 
+import { Truck } from "../../Unit/Truck"; 
+import { Diamond } from "../../Field/Diamond";
+import { TruckPatrolOrder } from "../Order/TruckPatrolOrder";
+import { HqFieldOrder } from "../Order/HqFieldOrder";
+import { DiamondFieldOrder } from "../Order/DiamondFieldOrder";
+import { Archive } from "../../Tools/ResourceArchiver"; 
+import { Explosion } from "../../Unit/Explosion"; 
+import { AreaRequest } from "../Area/AreaRequest";
+import { AreaStatus } from "../Area/AreaStatus";
+import { RequestMaker } from "./RequestMaker";
+import { CenterDecisionMaker } from "./CenterDecisionMaker";
+import { Timer } from "../../Tools/Timer";
+import { ExpansionMaker } from "./ExpansionMaker";
+import { IdleUnitContainer } from "./IdleUnitContainer"; 
+import { HeldArea } from "../Area/HeldArea";
 
-export class SmartHq extends Headquarter{
-    public AreasByCeil:{ [id: string] : HqArea; };
-    private _Areas:HqArea[];
+export class IaHeadquarter extends Headquarter{ 
+    public AreasByCeil:{ [id: string] : HeldArea; };
+    private _Areas:HeldArea[];
     private _trucks:Array<Truck>;
-    private _requestHandler:RequestHandler;
+    private _requestHandler:CenterDecisionMaker;
     public Diamond:Diamond;
     private _timer:Timer;
-    private _spreadStrategy:SpreadStrategy;
-    public TankBalancer:TankBalancer;
+    private _spreadStrategy:ExpansionMaker;
+    public TankBalancer:IdleUnitContainer;
 
     constructor(public EmptyAreas:Area[], skin:HqSkin, ceil:Ceil)
     {
@@ -38,11 +38,11 @@ export class SmartHq extends Headquarter{
         this._timer = new Timer(10);
         this.Diamonds = 5;
         this._trucks = new Array<Truck>();
-        this._Areas= new Array<HqArea>();
+        this._Areas= new Array<HeldArea>();
         this.AreasByCeil = {};
-        this._requestHandler = new RequestHandler(this);
-        this._spreadStrategy = new SpreadStrategy(this);
-        this.TankBalancer =new TankBalancer();
+        this._requestHandler = new CenterDecisionMaker(this);
+        this._spreadStrategy = new ExpansionMaker(this);
+        this.TankBalancer =new IdleUnitContainer();
     }
 
     public Update(viewX: number, viewY: number):void{
@@ -62,7 +62,7 @@ export class SmartHq extends Headquarter{
 
         if(this._timer.IsElapsed())
         {
-            const statuses = new Array<HqStatus>();
+            const statuses = new Array<AreaStatus>();
 
             this._Areas.forEach(conquestedArea=>
             {
@@ -73,14 +73,14 @@ export class SmartHq extends Headquarter{
 
             this.TankBalancer.CalculateExcess(statuses);
 
-            const requests: { [id: string] : Array<HqRequest>; } = {};
-            requests[HqPriorityRequest.Low] = new Array<HqRequest>();
-            requests[HqPriorityRequest.Medium] = new Array<HqRequest>();
-            requests[HqPriorityRequest.High] = new Array<HqRequest>();
+            const requests: { [id: string] : Array<AreaRequest>; } = {};
+            requests[RequestPriority.Low] = new Array<AreaRequest>();
+            requests[RequestPriority.Medium] = new Array<AreaRequest>();
+            requests[RequestPriority.High] = new Array<AreaRequest>();
 
             statuses.forEach(status=>{
-                let request = HqRequestMaker.GetRequest(status);
-                if(request.Priority != HqPriorityRequest.None)
+                let request = RequestMaker.GetRequest(status);
+                if(request.Priority != RequestPriority.None)
                 {
                     requests[request.Priority].push(request);
                 }
@@ -95,7 +95,7 @@ export class SmartHq extends Headquarter{
                 var area = this._spreadStrategy.FindArea();
                 if(!isNullOrUndefined(area))
                 {
-                    let hqArea =new HqArea(this,area);
+                    let hqArea =new HeldArea(this,area);
                     this._Areas.push(hqArea);
                     this.AreasByCeil[area.GetCentralCeil().GetCoordinate().ToString()] = hqArea;
                 }
@@ -103,10 +103,10 @@ export class SmartHq extends Headquarter{
         }
     }
 
-    private HasRequests(requests: { [id: string]: HqRequest[]; }) {
-        return requests[HqPriorityRequest.Low].length > 0
-            || requests[HqPriorityRequest.Medium].length > 0
-            || requests[HqPriorityRequest.High].length > 0;
+    private HasRequests(requests: { [id: string]: AreaRequest[]; }) {
+        return requests[RequestPriority.Low].length > 0
+            || requests[RequestPriority.Medium].length > 0
+            || requests[RequestPriority.High].length > 0;
     }
 
     private AddTruck():Truck
@@ -132,7 +132,7 @@ export class SmartHq extends Headquarter{
         return truck;
     }
 
-    public BuyTankForArea(area:HqArea):boolean
+    public BuyTankForArea(area:HeldArea):boolean
     {
         let isCreated = false;
         if(this.Diamonds >= 1)

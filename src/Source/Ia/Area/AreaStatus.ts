@@ -1,15 +1,14 @@
-import { HqArea } from "./AreaFinder/HqArea";
+import { HeldArea } from "./HeldArea";
 
-export class HqStatus{
+export class AreaStatus{
 
     public constructor(
         public OutsideEnemies:number,
         public InsideEnemies:number,
-        public InsideTroops:number,
+        public InsideTroops:number,   
         public OutsideTroops:number,
-        public Area:HqArea
+        public Area:HeldArea
     ){
-
     }
 
     public GetTotalEnemies():number{

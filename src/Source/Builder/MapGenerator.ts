@@ -5,14 +5,14 @@ import { CeilDecorator } from "../CeilDecorator";
 import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Headquarter } from "../Field/Headquarter";
 import { HqSkin } from "../HqSkin";
-import { SmartHq } from "../Ia/SmartHq"; 
+import { IaHeadquarter } from "../Ia/Hq/IaHeadquarter";  
 import { Cloud } from "../Cloud";
 import { EmptyMenuItem } from "../Menu/EmptyMenuItem";
 import { TankMenuItem } from "../Menu/TankMenuItem";
 import { TruckMenuItem } from "../Menu/TruckMenuItem";
 import { HealMenuItem } from "../Menu/HealMenuItem";
 import { AttackMenuItem } from "../Menu/AttackMenuItem";
-import { SpeedFieldMenuItem } from "../Menu/SpeedFieldMenuItem";
+import { SpeedFieldMenuItem } from "../Menu/SpeedFieldMenuItem"; 
 import { LeftMenu } from "../Menu/LeftMenu";
 import { PatrolMenuItem } from "../Menu/PatrolMenuItem";
 import { CancelMenuItem } from "../Menu/CancelMenuItem"; 
@@ -78,7 +78,7 @@ export class MapGenerator implements IMapGenerator{
         this._currentHq = redQuarter;
         
         const blueCeil = PlaygroundHelper.CeilsContainer.Get(hqPoints[1]);
-        const blueQuarter = new SmartHq(PlaygroundHelper.GetAreas(blueCeil)
+        const blueQuarter = new IaHeadquarter(PlaygroundHelper.GetAreas(blueCeil)
         , new HqSkin(Archive.team.blue.tank, 
             Archive.team.blue.turrel,
             Archive.team.blue.truck, 
@@ -88,7 +88,7 @@ export class MapGenerator implements IMapGenerator{
         blueQuarter.Diamond = diamond;
         
         const brownCeil = PlaygroundHelper.CeilsContainer.Get(hqPoints[2]);
-        const brownQuarter = new SmartHq(PlaygroundHelper.GetAreas(brownCeil)
+        const brownQuarter = new IaHeadquarter(PlaygroundHelper.GetAreas(brownCeil)
         , new HqSkin(Archive.team.yellow.tank
             , Archive.team.yellow.turrel
             ,Archive.team.yellow.truck

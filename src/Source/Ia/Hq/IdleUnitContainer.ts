@@ -1,14 +1,14 @@
-import { Tank } from "../Unit/Tank";
-import { HqStatus } from "./HqStatus";
+import { AreaStatus } from "../Area/AreaStatus";
+import { Tank } from "../../Unit/Tank";
 
-export class TankBalancer{
-    private statuses:Array<HqStatus>;
+export class IdleUnitContainer{
+    private statuses:Array<AreaStatus>;
 
     constructor(){
 
     }
 
-    public CalculateExcess(statuses:Array<HqStatus>):void{
+    public CalculateExcess(statuses:Array<AreaStatus>):void{
         this.statuses = statuses.filter(s=>s.GetExcessTroops()>0);
     }
 

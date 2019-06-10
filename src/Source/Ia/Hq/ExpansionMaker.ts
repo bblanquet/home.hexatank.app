@@ -1,11 +1,10 @@
-import { Area } from "./AreaFinder/Area";
-import { SmartHq } from "./SmartHq";
-import { Point } from "../Point";
+import { IaHeadquarter } from "./IaHeadquarter";
+import { Area } from "../Area/Area";
+import { Point } from "../../Point";
 
-export class SpreadStrategy{
+export class ExpansionMaker{
 
-    constructor(private _hq:SmartHq){
-        
+    constructor(private _hq:IaHeadquarter){
     }
 
     public FindArea():Area

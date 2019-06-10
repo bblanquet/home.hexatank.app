@@ -1,68 +1,51 @@
-import { HqPriorityRequest } from "./HqPriorityRequest";
-import { HqRequest } from "./HqRequest";
-import { PlaygroundHelper } from "../PlaygroundHelper";
-import { SmartHq } from "./SmartHq";
+import { RequestPriority } from "./RequestPriority";
+import { IaHeadquarter } from "./IaHeadquarter";
+import { PlaygroundHelper } from "../../PlaygroundHelper";
+import { AreaRequest } from "../Area/AreaRequest";
 
-export class RequestHandler{
+export class CenterDecisionMaker{
 
-    constructor(private _hq:SmartHq){
-        
+    constructor(private _hq:IaHeadquarter){
     }
 
-    public HandleRequests(requests: { [id: string]: HqRequest[]; }) 
+    public HandleRequests(requests: { [id: string]: AreaRequest[]; }) 
     {
-        if (requests[HqPriorityRequest.High].length > 0) {
-            requests[HqPriorityRequest.High].forEach(request => {
-                this.HandleHighRequest(request);
+        if (requests[RequestPriority.High].length > 0) {
+            requests[RequestPriority.High].forEach(request => {
+                this.GetHelpFromSurrounding(request); 
             });
         }
-        if (requests[HqPriorityRequest.Medium].length > 0) {
-            requests[HqPriorityRequest.Medium].forEach(request => {
+        if (requests[RequestPriority.Medium].length > 0) {
+            requests[RequestPriority.Medium].forEach(request => {
                 this.HandleMediumRequest(request);
             });
         }
-        if (requests[HqPriorityRequest.Low].length > 0) {
-            requests[HqPriorityRequest.Low].forEach(request => {
-                this._hq.BuyTankForArea(request.Status.Area);
+        if (requests[RequestPriority.Low].length > 0) {
+            requests[RequestPriority.Low].forEach(request => {
+                this.HandleMediumRequest(request);
             });
         }
     }
 
-    private HandleHighRequest(request: HqRequest) 
+
+    private HandleMediumRequest(request: AreaRequest) 
     {
-        let availableCeilsCount = request.Status.Area.GetAvailableCeilCount();
-        
-        if (request.RequestedUnitCount > availableCeilsCount) 
-        {
-            request.RequestedUnitCount = availableCeilsCount;
-        }
-
-        this.GetHelpFromSurrounding(request);
-    }
-
-    private HandleMediumRequest(request: HqRequest) 
-    {
-        let availableCeilsCount = request.Status.Area.GetAvailableCeilCount();
-        
-        if (request.RequestedUnitCount > availableCeilsCount) 
-        {
-            request.RequestedUnitCount = availableCeilsCount;
-        }
-
         if(this._hq.TankBalancer.HasTank())
         {
             this.GetHelpFromExcess(request);
         }
-        else
+
+        if(request.RequestedUnitCount > 0)
         {
             this.GetHelpFromBuying(request);
         }
     }
 
-    private GetHelpFromBuying(request: HqRequest){
+    private GetHelpFromBuying(request: AreaRequest){
         while(request.RequestedUnitCount > 0){
             const isPassed = this._hq.BuyTankForArea(request.Status.Area);
-            if(isPassed){
+            if(isPassed)
+            {
                 request.RequestedUnitCount -=1;
             }
             else
@@ -73,7 +56,7 @@ export class RequestHandler{
     }
 
 
-    private GetHelpFromExcess(request: HqRequest){
+    private GetHelpFromExcess(request: AreaRequest){
         while(this._hq.TankBalancer.HasTank() 
             && request.RequestedUnitCount > 0)
         {
@@ -91,7 +74,8 @@ export class RequestHandler{
         }
     }
 
-    private GetHelpFromSurrounding(request: HqRequest){
+    private GetHelpFromSurrounding(request: AreaRequest)
+    {
         var aroundAreas = PlaygroundHelper.GetNeighbourhoodAreas(request.Status.Area.GetCentralCeil());
         
         for (const aroundArea of aroundAreas) 

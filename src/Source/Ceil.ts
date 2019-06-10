@@ -14,20 +14,17 @@ import { CeilState } from './CeilState';
 import { isNullOrUndefined } from 'util';
 import { Archive } from './Tools/ResourceArchiver';
 import { ISelectable } from './ISelectable';
-import { Vehicle } from './Unit/Vehicle';
 import { Headquarter } from './Field/Headquarter';
 
 export class Ceil extends Item implements ICeil , ISelectable
 {
-
+    public Properties:CeilProperties;
     private _state:CeilState = CeilState.Hidden;
-    Properties:CeilProperties;
     private _display:{ [id: number]: Array<string>; };
     private _field:IField;
     private _occupier:IMovable;
     private _decorationSprite:string;
     private _areaSprite:string;
-
 
     constructor(properties:CeilProperties)
     {
@@ -62,8 +59,7 @@ export class Ceil extends Item implements ICeil , ISelectable
         this._ceilStateHandlers.forEach(ceilStateHandler=>
         {
             ceilStateHandler(this._state);
-        }
-        );
+        });
     }
 
     public IsVisible(): boolean {
@@ -182,9 +178,10 @@ export class Ceil extends Item implements ICeil , ISelectable
 
         this.OnCeilStateChanged(state);
 
-        this._display[this._state].forEach(sprite=>{
+        this._display[this._state].forEach(sprite=>
+        {
             this.SetProperty(sprite, (e)=>e.alpha = 1);
-        })
+        });
     }
 
     public AddSprite(sprite:string){
@@ -200,7 +197,6 @@ export class Ceil extends Item implements ICeil , ISelectable
             PlaygroundHelper.Render.AddDisplayableEntity(s);
         })
     }
-
 
     public SetDecoration(sprite:string):void{
         const random = Math.random();

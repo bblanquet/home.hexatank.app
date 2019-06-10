@@ -1,4 +1,4 @@
-export enum HqPriorityRequest{
+export enum RequestPriority{
     None='None',
     Low='Low',
     Medium='Medium',

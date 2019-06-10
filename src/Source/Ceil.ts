@@ -112,6 +112,10 @@ export class Ceil extends Item implements ICeil , ISelectable
         return this._occupier;
     } 
 
+    public HasOccupier():boolean{
+        return !isNullOrUndefined(this._occupier);
+    }
+
     public SetOccupier(movable:IMovable){
         this._occupier = movable;
     }

@@ -212,8 +212,20 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     }
 
     private SetHalVisible(previousCeil: Ceil) {
-        if(!this.IsEnemy(PlaygroundHelper.PlayerHeadquarter) 
-        || PlaygroundHelper.Settings.ShowEnemies)
+        if(PlaygroundHelper.Settings.ShowEnemies)
+        {
+            var preVisibleCeils = previousCeil.GetAllNeighbourhood();
+            preVisibleCeils.push(previousCeil);
+            preVisibleCeils.forEach(ceilChild => {
+                var ceil = (<Ceil>ceilChild);
+                if (!ceil.HasOccupier() && 
+                    ceil.GetAllNeighbourhood().filter(c => (<Ceil>c).HasOccupier()).length === 0) 
+                {
+                    ceil.SetState(CeilState.HalfVisible);
+                }
+            });
+        }
+        else if(!this.IsEnemy(PlaygroundHelper.PlayerHeadquarter))
         {
             var preVisibleCeils = previousCeil.GetAllNeighbourhood();
             preVisibleCeils.push(previousCeil);
@@ -269,7 +281,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
             this._order.Do(); 
         }
 
-        if(!this.ExistsOrder() || this._order.IsDone() && !this.HasNextCeil()){
+        if(!this.ExistsOrder() || this._order.IsDone() && !this.HasNextCeil())
+        {
             if(this._pendingOrder){
                 this._order = this._pendingOrder;
                 this._pendingOrder = null;

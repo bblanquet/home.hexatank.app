@@ -20,6 +20,7 @@ import { HqRequestMaker } from "./HqRequestMaker";
 import { RequestHandler } from "./RequestHandler";
 import { Timer } from "../Tools/Timer";
 import { SpreadStrategy } from "./SpreadStrategy";
+import { TankBalancer } from "./TankBalancer"; 
 
 export class SmartHq extends Headquarter{
     public AreasByCeil:{ [id: string] : HqArea; };
@@ -29,17 +30,19 @@ export class SmartHq extends Headquarter{
     public Diamond:Diamond;
     private _timer:Timer;
     private _spreadStrategy:SpreadStrategy;
+    public TankBalancer:TankBalancer;
 
     constructor(public EmptyAreas:Area[], skin:HqSkin, ceil:Ceil)
     {
         super(skin,ceil);
         this._timer = new Timer(10);
-        this.Diamonds = 20;
+        this.Diamonds = 5;
         this._trucks = new Array<Truck>();
         this._Areas= new Array<HqArea>();
         this.AreasByCeil = {};
         this._requestHandler = new RequestHandler(this);
         this._spreadStrategy = new SpreadStrategy(this);
+        this.TankBalancer =new TankBalancer();
     }
 
     public Update(viewX: number, viewY: number):void{
@@ -68,6 +71,7 @@ export class SmartHq extends Headquarter{
                 statuses.push(conquestedArea.GetStatus());
             }); 
 
+            this.TankBalancer.CalculateExcess(statuses);
 
             const requests: { [id: string] : Array<HqRequest>; } = {};
             requests[HqPriorityRequest.Low] = new Array<HqRequest>();
@@ -82,11 +86,9 @@ export class SmartHq extends Headquarter{
                 }
             });
 
-            var excessAreas = statuses.filter(s=>s.GetExcessTroops()>0);
-
             if(this.HasRequests(requests))
             {   
-                this._requestHandler.HandleRequests(requests,excessAreas);
+                this._requestHandler.HandleRequests(requests);
             }
             else
             {
@@ -130,10 +132,10 @@ export class SmartHq extends Headquarter{
         return truck;
     }
 
-    public AddAreaTank(area:HqArea):boolean
+    public BuyTankForArea(area:HqArea):boolean
     {
         let isCreated = false;
-        if(this.Diamonds >= 5)
+        if(this.Diamonds >= 1)
         {
             for(let field of this.Fields)
             {
@@ -142,7 +144,7 @@ export class SmartHq extends Headquarter{
                     var ceil = area.GetAvailableCeil(); 
                     if(!isNullOrUndefined(ceil))
                     {
-                        this.Diamonds -= 5;
+                        this.Diamonds -= 1;
                         if(field.GetCeil().IsVisible())
                         {
                             const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,6,false,5);

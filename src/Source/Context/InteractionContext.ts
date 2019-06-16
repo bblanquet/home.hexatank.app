@@ -103,7 +103,7 @@ export class InteractionContext implements IInteractionContext{
         }
 
         this._selectedItem.push(item);   
-        console.log(`%c [${this._selectedItem.length}] selected: ${item.constructor.name}`,'font-weight:bold;color:red;');
+        //console.log(`%c [${this._selectedItem.length}] selected: ${item.constructor.name}`,'font-weight:bold;color:red;');
         this._checker.Check(this._selectedItem);
     }
 

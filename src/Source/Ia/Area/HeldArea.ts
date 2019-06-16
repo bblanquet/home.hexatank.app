@@ -1,24 +1,45 @@
 import { Area } from "./Area";
 import { Tank } from "../../Unit/Tank";
 import { Ceil } from "../../Ceil";
-import { AreaDecisionMaker } from "./AreaDecisionMaker";
+import { TroopDecisionMaker } from "./TroopDecisionMaker";
 import { PlaygroundHelper } from "../../PlaygroundHelper";
 import { Headquarter } from "../../Field/Headquarter";
 import { AreaStatus } from "./AreaStatus";
+import { AreaDecisionMaker } from "./AreaDecisionMaker";
 
 export class HeldArea
 {
-    private _troops:Array<AreaDecisionMaker>;
+    private _areaDecisionMaker:AreaDecisionMaker;
+    private _troops:Array<TroopDecisionMaker>;
     public HasReceivedRequest:boolean;
 
-    constructor(private _hq:Headquarter,private _area:Area){ 
-        this._troops = new Array<AreaDecisionMaker>();
+    constructor(private _hq:Headquarter,private _area:Area)
+    { 
+        this._troops = new Array<TroopDecisionMaker>();
+        this._areaDecisionMaker = new AreaDecisionMaker(this);
+    }
+
+    public GetArea():Area{
+        return this._area;
     }
  
-    public Update():void{
-        this._troops.forEach(troop => {
-            troop.Update();
-        });
+    public GetTroops():Array<TroopDecisionMaker>
+    {
+        return this._troops;
+    }
+
+    public Update():void
+    {
+        if(0 < this.GetInsideEnemyCount())
+        {
+            this._areaDecisionMaker.Update();
+        }
+        else
+        {
+            this._troops.forEach(troop => {
+                troop.Update();
+            });
+        }
     }
 
     public GetCentralCeil():Ceil{
@@ -70,7 +91,7 @@ export class HeldArea
     }
 
     public AddTroop(tank:Tank, ceil:Ceil):void{
-        this._troops.push(new AreaDecisionMaker(ceil,tank,this)); 
+        this._troops.push(new TroopDecisionMaker(ceil,tank,this)); 
     }
 
     public GetAvailableCeilCount():number{

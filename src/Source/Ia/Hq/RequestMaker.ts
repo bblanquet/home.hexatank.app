@@ -15,6 +15,14 @@ export class RequestMaker{
         else if(status.InsideTroops < status.GetTotalEnemies())
         {
             let requiredUnits = status.InsideTroops - status.GetTotalEnemies();
+
+
+            if(status.InsideEnemies > 0)
+            {
+                console.log(`%c [HIGH REQUEST] Enemy Count ${status.GetTotalEnemies()}`,"font-weight:bold;color:red;");
+                return new AreaRequest(RequestPriority.High,requiredUnits,status);
+            }
+
             let availableSlots = status.Area.GetAvailableCeilCount();
         
             if (requiredUnits > availableSlots) 
@@ -22,13 +30,9 @@ export class RequestMaker{
                 requiredUnits = availableSlots;
             }
 
-            if(status.InsideEnemies > 0)
-            {
-                return new AreaRequest(RequestPriority.High,requiredUnits,status);
-            }
-
             if(status.InsideTroops < status.OutsideEnemies)
             {
+                console.log(`%c [HIGH MEDIUM] Enemy Count ${status.GetTotalEnemies()}`,"font-weight:bold;color:orange;");
                 return new AreaRequest(RequestPriority.Medium,requiredUnits,status);
             }
         }

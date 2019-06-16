@@ -7,6 +7,10 @@ export class Timer implements ITimer{
 
     }
 
+    SetElapsed():void{
+        this._current = this._tick-1;
+    }
+
     SetTicks(tick: number): void {
         if(tick <= 1){
             throw 'has to be higher than 1'

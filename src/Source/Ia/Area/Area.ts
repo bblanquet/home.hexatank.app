@@ -11,6 +11,21 @@ export class Area{
         return this._centerCeil;
     }
 
+    public GetEnemyCeil(v:AliveItem):Ceil[]
+    {
+        const result = new Array<Ceil>();
+        const ceils = this._centerCeil.GetAllNeighbourhood().map(c => <Ceil>c).filter(c=>!isNullOrUndefined(c));
+        ceils.push(this.GetCentralCeil());
+        ceils.forEach(ceil=>
+        {
+            if(ceil.ContainsEnemy(v))
+            {
+                result.push(ceil);
+            }
+        });
+        return result;
+    }
+
     public GetAvailableCeil():Ceil[]
     {
         const ceils = this._centerCeil.GetAllNeighbourhood().map(c => <Ceil>c).filter(c=>!isNullOrUndefined(c) && !c.IsBlocked());

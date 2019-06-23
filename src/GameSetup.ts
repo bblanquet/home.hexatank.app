@@ -1,5 +1,5 @@
 
-import { Headquarter } from "./Source/Field/Headquarter";
+import { Headquarter } from "./Source/Ceils/Field/Headquarter";
 import { Item } from "./Source/Item";
 import { IMapGenerator } from "./Source/Builder/IMapGenerator";
 import { MapGenerator } from "./Source/Builder/MapGenerator";
@@ -9,7 +9,7 @@ import { PlaygroundHelper } from "./Source/PlaygroundHelper";
 export class GameSetup{
     private _mapGenerator:IMapGenerator;
     public SetGame():Item[]
-    {
+    { 
         this._mapGenerator = new MapGenerator();
         const items = this._mapGenerator.SetMap();
         this.SetCenter();

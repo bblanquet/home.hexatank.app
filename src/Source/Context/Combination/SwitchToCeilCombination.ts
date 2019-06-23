@@ -1,14 +1,14 @@
 import { ICombination } from "./ICombination";
 import { Item } from "../../Item";
-import { Ceil } from "../../Ceil";
-import { Headquarter } from "../../Field/Headquarter";
+import { Ceil } from "../../Ceils/Ceil";
+import { Headquarter } from "../../Ceils/Field/Headquarter";
 import { Menu } from "../../Menu/Menu";
 
 export class SwitchToCeilCombination implements ICombination{
     constructor(private _menus:Menu[]){
     }
 
-    IsMatching(items: Item[]): boolean {
+    IsMatching(items: Item[]): boolean { 
         return items.length == 2 
         && (items[0] instanceof Headquarter)
         && items[1] instanceof Ceil;

@@ -1,9 +1,9 @@
-import {Ceil} from '../Ceil';
-import {Vehicle} from './Vehicle';
+import {Ceil} from '../Ceils/Ceil';
+import {Vehicle} from './Vehicle'; 
 import {Tank} from './Tank';
 import { Truck } from './Truck';
 import { isNullOrUndefined } from 'util';
-import { Headquarter } from '../Field/Headquarter';
+import { Headquarter } from '../Ceils/Field/Headquarter';
 
 export abstract class VehicleFactory{
     public static GetTank(

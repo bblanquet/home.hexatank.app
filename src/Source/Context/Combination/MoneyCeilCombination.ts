@@ -1,11 +1,11 @@
 import { isNullOrUndefined } from "util";
 import { ICombination } from "./ICombination";
 import { Item } from "../../Item";
-import { Ceil } from "../../Ceil";
+import { Ceil } from "../../Ceils/Ceil";
 import { PlaygroundHelper } from "../../PlaygroundHelper";
-import { BasicField } from "../../Field/BasicField";
-import { MoneyMenuItem } from "../../Menu/MoneyMenuItem";
-import { MoneyField } from "../../Field/MoneyField";
+import { BasicField } from "../../Ceils/Field/BasicField";
+import { MoneyMenuItem } from "../../Menu/MoneyMenuItem"; 
+import { MoneyField } from "../../Ceils/Field/MoneyField";
 
 export class MoneyCeilCombination implements ICombination{
 

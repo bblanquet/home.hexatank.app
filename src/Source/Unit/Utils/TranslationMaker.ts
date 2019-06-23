@@ -1,6 +1,6 @@
 import { ITranslationMaker } from "./ITranslationMaker";
-import { IMovable } from "./IMovable";
-import { IBoundingBoxContainer } from "./IBoundingBoxContainer";
+import { IMovable } from "../../IMovable"; 
+import { IBoundingBoxContainer } from "../../IBoundingBoxContainer";
 
 export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implements ITranslationMaker
 {

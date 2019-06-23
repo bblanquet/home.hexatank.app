@@ -1,11 +1,11 @@
 import { ICombination } from "./ICombination";
 import { Item } from "../../Item";
 import { Tank } from "../../Unit/Tank";
-import { Ceil } from "../../Ceil";
+import { Ceil } from "../../Ceils/Ceil";
 import { TargetOrder } from "../../Ia/Order/TargetOrder";
 import { SimpleOrder } from "../../Ia/Order/SimpleOrder";
 
-export class TankCombination implements ICombination{
+export class TankCombination implements ICombination{ 
 
     IsMatching(items: Item[]): boolean {
         return items.length >=2 

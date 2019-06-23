@@ -1,25 +1,24 @@
-import { BoundingBox } from "../BoundingBox";
-import { InteractionContext } from "../Context/InteractionContext";
-import { PlaygroundHelper } from "../PlaygroundHelper";
+import { PlaygroundHelper } from "../../PlaygroundHelper";
+import { BoundingBox } from "../../BoundingBox";
+import { InteractionContext } from "../../Context/InteractionContext";
 import { Ceil } from "../Ceil";
-import { Vehicle } from "../Unit/Vehicle";
-import { Truck } from "../Unit/Truck";
-import { Timer } from "../Tools/Timer"; 
-import { Headquarter } from "./Headquarter";
-import { Field } from "./Field";
+import { Vehicle } from "../../Unit/Vehicle"; 
+import { Truck } from "../../Unit/Truck"; 
+import { Timer } from "../../Tools/Timer"; 
+import { Archive } from "../../Tools/ResourceArchiver";
+import { Field } from "./Field"; 
 
-export class HeadQuarterField extends Field
+export class DiamondField extends Field
 {
     private _timer:Timer;
     IsFading:boolean;
-    Diamonds:number=0; 
-
-    constructor(private _hq:Headquarter,ceil:Ceil,sprite:string){
+    
+    constructor(ceil:Ceil){
         super(ceil);
         this.GetCeil().SetField(this);
         this.Z= 0;
         this._timer = new Timer(3);
-        this.GenerateSprite(sprite);
+        this.GenerateSprite(Archive.diamondCell);
         this.InitPosition(ceil.GetBoundingBox());
         this.GetDisplayObjects().forEach(obj => {obj.visible = this.GetCeil().IsVisible();});
     }
@@ -31,7 +30,7 @@ export class HeadQuarterField extends Field
         this.GetCeil().DestroyField();
     }
 
-    public Support(vehicule: Vehicle): void 
+    public Support(vehicule:Vehicle): void 
     {
         vehicule.TranslationSpeed = PlaygroundHelper.Settings.TranslationSpeed;
         vehicule.RotationSpeed = PlaygroundHelper.Settings.RotationSpeed;
@@ -40,21 +39,17 @@ export class HeadQuarterField extends Field
         if(vehicule instanceof Truck)
         {
             var truck = vehicule as Truck;
-            if(!truck.IsEnemy(this._hq))
-            {
-                this.Diamonds = truck.Unload();
-            }
+            truck.Load();
         }
     }
-    
-    IsDesctrutible(): boolean {
+    public IsDesctrutible(): boolean {
         return false;
     }
 
     IsBlocking(): boolean {
         return false;
     }
-
+    
     public GetBoundingBox(): BoundingBox{
         return this.GetCeil().GetBoundingBox();
     }
@@ -63,11 +58,12 @@ export class HeadQuarterField extends Field
         return false;
     }
 
-    public Update(viewX: number, viewY: number): void {
+    public Update(viewX: number, viewY: number): void 
+    {
         super.Update(viewX,viewY);
 
         if(this._timer.IsElapsed())
-        { 
+        {
             if(this.GetSprites()[0].alpha < 0)
             {
                 this.IsFading = false;

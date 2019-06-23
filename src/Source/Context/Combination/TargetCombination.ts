@@ -1,8 +1,8 @@
 import { ICombination } from "./ICombination";
 import { Item } from "../../Item";
 import { Tank } from "../../Unit/Tank";
-import { TargetMenuItem } from "../../Menu/TargetMenuItem";
-import { Ceil } from "../../Ceil";
+import { TargetMenuItem } from "../../Menu/TargetMenuItem"; 
+import { Ceil } from "../../Ceils/Ceil";
 import { TargetOrder } from "../../Ia/Order/TargetOrder"; 
 
 export class TargetCombination implements ICombination{

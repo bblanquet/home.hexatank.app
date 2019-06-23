@@ -1,9 +1,9 @@
 import {AStarNode} from './AStarNode';
-import {ICeil} from './ICeil';
+import {ICeil} from './Ceils/ICeil';
 import { PlaygroundHelper } from './PlaygroundHelper';
 
 export class AStarEngine<T extends ICeil>
-{
+{ 
     private ConstructPath(node:AStarNode<T>):Array<T>{
         var ceils = new Array<T>();
         while(node.Parent != null)

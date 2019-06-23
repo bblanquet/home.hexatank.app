@@ -1,25 +1,25 @@
-import {Ceil} from '../Ceil';
-import {CeilProperties} from '../CeilProperties';
+import {Ceil} from '../Ceils/Ceil';
 import {InteractionContext} from '../Context/InteractionContext';
 import {PlaygroundHelper} from '../PlaygroundHelper';
 import { BoundingBox } from "../BoundingBox";
 import {Dust} from './Dust';
 import { AliveItem } from '../AliveItem'; 
-import { ITranslationMaker } from '../ITranslationMaker';
+import { ITranslationMaker } from './Utils/ITranslationMaker';
 import { IMovable } from '../IMovable';
-import { IRotationMaker } from '../IRotationMaker'; 
-import { IAngleFinder } from '../IAngleFinder';
-import { TranslationMaker } from '../TranslationMaker';
-import { RotationMaker } from '../RotationMaker'; 
-import { AngleFinder } from '../AngleFinder';
-import { IRotatable } from '../IRotatable';
+import { IRotationMaker } from './Utils/IRotationMaker'; 
+import { IAngleFinder } from './Utils/IAngleFinder';
+import { TranslationMaker } from './Utils/TranslationMaker';
+import { RotationMaker } from './Utils/RotationMaker'; 
+import { AngleFinder } from './Utils/AngleFinder';
+import { IRotatable } from './Utils/IRotatable';
 import { isNullOrUndefined } from 'util';
 import { Crater } from '../Crater';
-import { CeilState } from '../CeilState';
+import { CeilState } from '../Ceils/CeilState';
 import { IOrder } from '../Ia/Order/IOrder';
 import { ISelectable } from '../ISelectable'; 
 import { Timer } from '../Tools/Timer';
 import { Archive } from '../Tools/ResourceArchiver';
+import { CeilProperties } from '../Ceils/CeilProperties';
 
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable
 {

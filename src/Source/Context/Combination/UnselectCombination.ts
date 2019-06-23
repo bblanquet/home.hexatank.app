@@ -2,9 +2,9 @@ import { ICombination } from "./ICombination";
 import { Item } from "../../Item";
 import { ISelectable } from "../../ISelectable";
 import { IInteractionContext } from "../IInteractionContext";
-import { Ceil } from "../../Ceil";
-import { Headquarter } from "../../Field/Headquarter";
-import { Vehicle } from "../../Unit/Vehicle";
+import { Ceil } from "../../Ceils/Ceil";
+import { Headquarter } from "../../Ceils/Field/Headquarter"; 
+import { Vehicle } from "../../Unit/Vehicle"; 
 
 export class UnselectCombination implements ICombination{
     private _isSelectable:{(item:Item):boolean};

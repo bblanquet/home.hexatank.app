@@ -2,11 +2,10 @@ import { isNullOrUndefined } from "util";
 import { ICombination } from "./ICombination";
 import { Item } from "../../Item";
 import { SpeedFieldMenuItem } from "../../Menu/SpeedFieldMenuItem";
-import { Ceil } from "../../Ceil";
-import { FastField } from "../../Field/FastField";
+import { Ceil } from "../../Ceils/Ceil"; 
+import { FastField } from "../../Ceils/Field/FastField";
 import { PlaygroundHelper } from "../../PlaygroundHelper";
-import { Headquarter } from "../../Field/Headquarter";
-import { BasicField } from "../../Field/BasicField";
+import { BasicField } from "../../Ceils/Field/BasicField"; 
 
 export class FastCeilCombination implements ICombination{
 

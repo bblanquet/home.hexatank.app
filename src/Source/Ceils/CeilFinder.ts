@@ -1,6 +1,6 @@
-import { Ceil } from "./Ceil";
-import { Vehicle } from "./Unit/Vehicle";
-import { Point } from "./Point";
+import { Ceil } from "./Ceil"; 
+import { Vehicle } from "../Unit/Vehicle";
+import { Point } from "../Point";
 
 export class CeilFinder{
     public GetCeil(ceils:Array<Ceil>,vehcile:Vehicle):Ceil

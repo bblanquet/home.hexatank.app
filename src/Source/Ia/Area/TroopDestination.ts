@@ -1,5 +1,5 @@
-import { Ceil } from "../../Ceil";
-import { isNullOrUndefined } from "util";
+import { Ceil } from "../../Ceils/Ceil";
+import { isNullOrUndefined } from "util"; 
 
 export class TroopDestination{
     

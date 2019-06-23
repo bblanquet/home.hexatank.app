@@ -33,7 +33,6 @@ export class ExpansionMaker{
                }
         });
 
-        this._hq.EmptyAreas.splice(this._hq.EmptyAreas.indexOf(currentArea),1);
         return currentArea;
     }
 

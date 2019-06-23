@@ -1,7 +1,7 @@
 import { SimpleOrder } from "./SimpleOrder";
-import { Ceil } from "../../Ceil";
-import { Vehicle } from "../../Unit/Vehicle";
-import { Diamond } from "../../Field/Diamond"; 
+import { Ceil } from "../../Ceils/Ceil";
+import { Vehicle } from "../../Unit/Vehicle"; 
+import { Diamond } from "../../Ceils/Field/Diamond"; 
 
 export class DiamondFieldOrder extends SimpleOrder
 {

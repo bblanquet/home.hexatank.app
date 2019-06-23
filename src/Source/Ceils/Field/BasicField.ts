@@ -1,14 +1,14 @@
-import { BoundingBox } from "../BoundingBox";
-import { InteractionContext } from "../Context/InteractionContext";
-import { Vehicle } from "../Unit/Vehicle";
-import { PlaygroundHelper } from "../PlaygroundHelper";
+import { BoundingBox } from "../../BoundingBox";
+import { InteractionContext } from "../../Context/InteractionContext";
+import { Vehicle } from "../../Unit/Vehicle";
+import { PlaygroundHelper } from "../../PlaygroundHelper";
 import { Ceil } from "../Ceil"; 
 import { Field } from "./Field";
 
 export class BasicField extends Field{
 
     constructor(ceil:Ceil){
-        super(ceil);
+        super(ceil); 
         this.GetCeil().SetField(this);
     }
 

@@ -1,13 +1,13 @@
-import { Headquarter } from "../../Field/Headquarter";
+import { Headquarter } from "../../Ceils/Field/Headquarter";
 import { Area } from "../Area/Area";
 import { HqSkin } from "../../HqSkin";
-import { Ceil } from "../../Ceil";
+import { Ceil } from "../../Ceils/Ceil";
 import { RequestPriority } from "./RequestPriority"; 
 import { PlaygroundHelper } from "../../PlaygroundHelper";
 import { Tank } from "../../Unit/Tank"; 
 import { isNullOrUndefined } from "util";
 import { Truck } from "../../Unit/Truck"; 
-import { Diamond } from "../../Field/Diamond";
+import { Diamond } from "../../Ceils/Field/Diamond"; 
 import { TruckPatrolOrder } from "../Order/TruckPatrolOrder";
 import { HqFieldOrder } from "../Order/HqFieldOrder";
 import { DiamondFieldOrder } from "../Order/DiamondFieldOrder";
@@ -95,9 +95,15 @@ export class IaHeadquarter extends Headquarter{
                 var area = this._spreadStrategy.FindArea();
                 if(!isNullOrUndefined(area))
                 {
-                    let hqArea =new HeldArea(this,area);
-                    this._Areas.push(hqArea);
-                    this.AreasByCeil[area.GetCentralCeil().GetCoordinate().ToString()] = hqArea;
+                    if(this.Diamonds >= 1)
+                    {
+                        this.EmptyAreas.splice(this.EmptyAreas.indexOf(area),1);
+                        let hqArea =new HeldArea(this,area);
+                        this._Areas.push(hqArea);
+                        this.AreasByCeil[area.GetCentralCeil().GetCoordinate().ToString()] = hqArea;
+                        console.log(`%c GET NEW AREA  ${hqArea.GetArea().GetCentralCeil().GetCoordinate().ToString()}`,"font-weight:bold;color:green;");
+                        this.BuyTankForArea(hqArea);
+                    }
                 }
             }
         }

@@ -1,7 +1,7 @@
-import {ICeil} from './ICeil';
+import {ICeil} from './Ceils/ICeil';
 
 export class AStarNode<T extends ICeil>{
-    Ceil:T;    
+    Ceil:T;     
     EstimatedGoalCost:number;
     FromStartCost:number;
     Parent:AStarNode<T>;

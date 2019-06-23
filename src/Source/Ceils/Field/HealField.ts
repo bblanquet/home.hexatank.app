@@ -1,10 +1,10 @@
 import { Ceil } from "../Ceil";
-import { PlaygroundHelper } from "../PlaygroundHelper";
-import { BoundingBox } from "../BoundingBox";
-import { InteractionContext } from "../Context/InteractionContext";
-import { Vehicle } from "../Unit/Vehicle";
-import { Archive } from "../Tools/ResourceArchiver";
-import { Field } from "./Field";
+import { PlaygroundHelper } from "../../PlaygroundHelper";
+import { BoundingBox } from "../../BoundingBox";
+import { InteractionContext } from "../../Context/InteractionContext";
+import { Vehicle } from "../../Unit/Vehicle";
+import { Archive } from "../../Tools/ResourceArchiver";
+import { Field } from "./Field"; 
 
 export class HealField extends Field
 { 

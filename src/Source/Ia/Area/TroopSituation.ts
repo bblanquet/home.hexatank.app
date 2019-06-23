@@ -1,6 +1,7 @@
 import { TroopDecisionMaker } from "./TroopDecisionMaker";
 import { TroopDestination } from "./TroopDestination";
-import { Ceil } from "../../Ceil";
+import { Ceil } from "../../Ceils/Ceil";
+import { isNullOrUndefined } from "util"; 
 
 export class TroopSituation
 {
@@ -13,22 +14,31 @@ export class TroopSituation
         this.Destinations = {};
     }
 
+    public GetPotentialCost():number{
+        if(isNullOrUndefined(this.PotentialNextDestination)){
+            return 1000;
+        }
+        return this.PotentialNextDestination.GetCost();
+    }
+
     public GetBestDestination(excludedArea:Array<Ceil>):TroopDestination{
         const dangerLevels = this.GetDangerLevels();
         let currentIndex = 0;
         var candidates = new Array<TroopDestination>();
-        
-        while(candidates.length ===0){
-            candidates = this.Destinations[dangerLevels[currentIndex]].filter(dest=>!excludedArea.some(e=>e===dest.Destination));
-            currentIndex++;
-            
+        while(candidates.length ===0)
+        {
             if(currentIndex >= dangerLevels.length)
             {
                 return null;
             }
+
+            candidates = this.Destinations[dangerLevels[currentIndex]].filter(dest=>!excludedArea.some(e=>e===dest.Destination));
+            currentIndex++;
         }
         
-        return candidates.sort(this.IsFarther)[0];
+        const orderedCandidates = candidates.sort(this.IsFarther);
+
+        return orderedCandidates[0];
     }
 
     public GetClosestAndSafestPath():TroopDestination{
@@ -38,12 +48,12 @@ export class TroopSituation
     private IsFarther(ta:TroopDestination,tb:TroopDestination):number{
         if(ta.GetCost() < tb.GetCost())
         {
-            return 1;
+            return -1;
         }
         
         if(ta.GetCost() > tb.GetCost())
         {
-            return -1;
+            return 1;
         }
 
         return 0;

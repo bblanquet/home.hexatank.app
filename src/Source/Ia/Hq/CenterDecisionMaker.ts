@@ -2,6 +2,7 @@ import { RequestPriority } from "./RequestPriority";
 import { IaHeadquarter } from "./IaHeadquarter";
 import { PlaygroundHelper } from "../../PlaygroundHelper";
 import { AreaRequest } from "../Area/AreaRequest";
+import { isNullOrUndefined } from "util";
 
 export class CenterDecisionMaker{
 
@@ -41,11 +42,15 @@ export class CenterDecisionMaker{
         }
     }
 
-    private GetHelpFromBuying(request: AreaRequest){
+    private GetHelpFromBuying(request: AreaRequest)
+    {
+        const ceil = request.Status.Area.GetCentralCeil();
+
         while(request.RequestedUnitCount > 0){
             const isPassed = this._hq.BuyTankForArea(request.Status.Area);
             if(isPassed)
             {
+                console.log(`%c ADD MORE TROOP BUYING ${ceil.GetCoordinate().ToString()}`,"font-weight:bold;color:green;");
                 request.RequestedUnitCount -=1;
             }
             else
@@ -57,6 +62,8 @@ export class CenterDecisionMaker{
 
 
     private GetHelpFromExcess(request: AreaRequest){
+        const ceil = request.Status.Area.GetCentralCeil();
+
         while(this._hq.TankBalancer.HasTank() 
             && request.RequestedUnitCount > 0)
         {
@@ -64,7 +71,13 @@ export class CenterDecisionMaker{
 
             if(ceil)
             {
-                request.Status.Area.AddTroop(this._hq.TankBalancer.Pop(),ceil);
+                const tank = this._hq.TankBalancer.Pop();
+                if(isNullOrUndefined(tank))
+                {
+                    throw 'not possible';
+                }
+                console.log(`%c ADD MORE TROOP EXCESS ${ceil.GetCoordinate().ToString()}`,"font-weight:bold;color:green;");
+                request.Status.Area.AddTroop(tank,ceil);
                 request.RequestedUnitCount -= 1;
             }
             else
@@ -76,28 +89,37 @@ export class CenterDecisionMaker{
 
     private GetHelpFromSurrounding(request: AreaRequest)
     {
-        var aroundAreas = PlaygroundHelper.GetNeighbourhoodAreas(request.Status.Area.GetCentralCeil());
+        const ceil = request.Status.Area.GetCentralCeil();
+        const surroundingAreas = PlaygroundHelper.GetNeighbourhoodAreas(ceil);
         
-        for (const aroundArea of aroundAreas) 
+        for (const surroundingArea of surroundingAreas) 
         {
-            const key = aroundArea.GetCentralCeil().GetCoordinate().ToString();
-            if (this._hq.AreasByCeil.hasOwnProperty(key)) 
+            const ceilKey = surroundingArea.GetCentralCeil().GetCoordinate().ToString();
+            if (this._hq.AreasByCeil.hasOwnProperty(ceilKey)) 
             {
-                const hqAroundArea = this._hq.AreasByCeil[key];
-                if(!hqAroundArea.HasReceivedRequest)
+                const hqSurroundingArea = this._hq.AreasByCeil[ceilKey];
+                if(!hqSurroundingArea.HasReceivedRequest)
                 {
-                    while (hqAroundArea.HasTroop()) 
+                    hqSurroundingArea.HasReceivedRequest = true;
+
+                    while (hqSurroundingArea.HasTroop()) 
                     {
                         if(request.RequestedUnitCount === 0)
                         {
                             return;
                         }
+
                         const ceil = request.Status.Area.GetAvailableCeil();
 
                         if(ceil)
                         {
-                            const tank = hqAroundArea.DropTroop();
+                            const tank = hqSurroundingArea.DropTroop();
+                            if(isNullOrUndefined(tank))
+                            {
+                                throw 'not possible';
+                            }
                             request.Status.Area.AddTroop(tank,ceil);
+                            console.log(`%c ADD MORE TROOP SUPPORT ${ceil.GetCoordinate().ToString()} `,"font-weight:bold;color:green;");
                             request.RequestedUnitCount -= 1;
                         }
                         else
@@ -105,7 +127,6 @@ export class CenterDecisionMaker{
                             return;
                         }
                     }
-                    hqAroundArea.HasReceivedRequest = true;
                 }
             }
         }

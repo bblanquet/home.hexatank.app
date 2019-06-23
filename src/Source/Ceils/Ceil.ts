@@ -1,20 +1,20 @@
-import {Item} from './Item';
-import {InteractionContext} from './Context/InteractionContext';
+import {Item} from '../Item';
+import {InteractionContext} from '../Context/InteractionContext';
 import {CeilProperties} from './CeilProperties';
-import {ICeil} from './ICeil';
-import { HexAxial } from "./Coordinates/HexAxial";
-import {Point} from './Point';
-import {PlaygroundHelper} from './PlaygroundHelper';
-import { BoundingBox } from "./BoundingBox";
-import { IField } from 'Field/IField';
-import { IMovable } from './IMovable';
-import { AliveItem } from './AliveItem';
+import { HexAxial } from "../Coordinates/HexAxial";
+import {Point} from '../Point';
+import {PlaygroundHelper} from '../PlaygroundHelper';
+import { BoundingBox } from "../BoundingBox";
+import { IField } from './Field/IField';
+import { IMovable } from '../IMovable';
+import { AliveItem } from '../AliveItem';
 import { BasicField } from './Field/BasicField';
 import { CeilState } from './CeilState';
 import { isNullOrUndefined } from 'util';
-import { Archive } from './Tools/ResourceArchiver';
-import { ISelectable } from './ISelectable';
+import { Archive } from '../Tools/ResourceArchiver';
+import { ISelectable } from '../ISelectable';
 import { Headquarter } from './Field/Headquarter';
+import { ICeil } from './ICeil';
 
 export class Ceil extends Item implements ICeil , ISelectable
 {

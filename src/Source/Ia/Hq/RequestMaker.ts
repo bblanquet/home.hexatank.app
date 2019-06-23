@@ -9,6 +9,7 @@ export class RequestMaker{
         {
             if(status.InsideTroops === 0)
             {
+                console.log(`%c [LOW REQUEST] `,"font-weight:bold;color:green;");
                 return new AreaRequest(RequestPriority.Low,1,status);
             }
         }
@@ -16,24 +17,26 @@ export class RequestMaker{
         {
             let requiredUnits = status.InsideTroops - status.GetTotalEnemies();
 
-
-            if(status.InsideEnemies > 0)
+            if(requiredUnits > 0)
             {
-                console.log(`%c [HIGH REQUEST] Enemy Count ${status.GetTotalEnemies()}`,"font-weight:bold;color:red;");
-                return new AreaRequest(RequestPriority.High,requiredUnits,status);
-            }
-
-            let availableSlots = status.Area.GetAvailableCeilCount();
-        
-            if (requiredUnits > availableSlots) 
-            {
-                requiredUnits = availableSlots;
-            }
-
-            if(status.InsideTroops < status.OutsideEnemies)
-            {
-                console.log(`%c [HIGH MEDIUM] Enemy Count ${status.GetTotalEnemies()}`,"font-weight:bold;color:orange;");
-                return new AreaRequest(RequestPriority.Medium,requiredUnits,status);
+                if(status.InsideEnemies > 0)
+                {
+                    console.log(`%c [HIGH REQUEST] Enemy Count ${status.GetTotalEnemies()}`,"font-weight:bold;color:red;");
+                    return new AreaRequest(RequestPriority.High,requiredUnits,status);
+                }
+    
+                let availableSlots = status.Area.GetAvailableCeilCount();
+            
+                if (requiredUnits > availableSlots) 
+                {
+                    requiredUnits = availableSlots;
+                }
+    
+                if(status.InsideTroops < status.OutsideEnemies)
+                {
+                    console.log(`%c [HIGH MEDIUM] Enemy Count ${status.GetTotalEnemies()}`,"font-weight:bold;color:orange;");
+                    return new AreaRequest(RequestPriority.Medium,requiredUnits,status);
+                }
             }
         }
 

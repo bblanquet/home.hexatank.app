@@ -2,15 +2,15 @@ import {Vehicle} from './Vehicle';
 import { PlaygroundHelper } from '../PlaygroundHelper';
 import { Turrel } from './Turrel';
 import { AliveItem } from '../AliveItem';
-import { Ceil } from '../Ceil';
+import { Ceil } from '../Ceils/Ceil';
 import { isNullOrUndefined, isNull } from 'util';
-import { Headquarter } from '../Field/Headquarter';
+import { Headquarter } from '../Ceils/Field/Headquarter';
 import { IHqContainer } from '../IHqContainer';
 import { Archive } from '../Tools/ResourceArchiver';
-import { CeilState } from '../CeilState';
+import { CeilState } from '../Ceils/CeilState'; 
 
 export class Tank extends Vehicle implements IHqContainer 
-{
+{ 
 
     Hq: Headquarter; 
     Turrel:Turrel;

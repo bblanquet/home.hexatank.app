@@ -1,9 +1,9 @@
-import { HexAxial } from "./Coordinates/HexAxial";
-import { BoundingBox } from "./BoundingBox";
-import {ICeil} from './ICeil';
-import {TestHelper} from './TestHelper';
-import { PlaygroundHelper } from "./PlaygroundHelper";
-import { Point } from "./Point";
+import { ICeil } from "./ICeil";
+import { Point } from "../Point";
+import { BoundingBox } from "../BoundingBox";
+import { HexAxial } from "../Coordinates/HexAxial";
+import { PlaygroundHelper } from "../PlaygroundHelper";
+import { TestHelper } from "../TestHelper";
 
 export class CeilProperties implements ICeil
 {

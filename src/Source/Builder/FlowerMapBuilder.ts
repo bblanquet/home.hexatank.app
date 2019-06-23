@@ -1,11 +1,11 @@
 import { IPlaygroundBuilder } from "./IPlaygroundBuilder";
-import { Ceil } from "../Ceil"; 
+import { Ceil } from "../Ceils/Ceil"; 
 import { HexAxial } from "../Coordinates/HexAxial";
 import { AreaEngine } from "../Ia/Area/AreaEngine";
-import { CeilsContainer } from "../CeilsContainer";
-import { HexagonalMapBuilder } from "./HexagonalMapBuilder";
+import { CeilsContainer } from "../Ceils/CeilsContainer";
+import { HexagonalMapBuilder } from "./HexagonalMapBuilder"; 
 
-export class FlowerMapBuilder implements IPlaygroundBuilder<Ceil>{
+export class FlowerMapBuilder implements IPlaygroundBuilder<Ceil>{ 
 
     private _hexagonalBuilder:HexagonalMapBuilder;
     

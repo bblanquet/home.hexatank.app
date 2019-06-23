@@ -1,9 +1,9 @@
 import { Item } from "./Item";
-import { Ceil } from "./Ceil";
+import { Ceil } from "./Ceils/Ceil";
 
 export abstract class AliveItem extends Item{
     protected Life:number=100;
-    protected TotalLife:number=100;
+    protected TotalLife:number=100; 
     private _totalLife:PIXI.Graphics;
     private _currentLife:PIXI.Graphics;
     private _lifes:Array<PIXI.Graphics>;

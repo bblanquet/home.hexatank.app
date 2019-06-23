@@ -1,8 +1,8 @@
 import { Item } from "../Item";
-import { Headquarter } from "../Field/Headquarter";
+import { Headquarter } from "../Ceils/Field/Headquarter";
 import { Menu } from "../Menu/Menu";
 
-export interface IMapGenerator{
+export interface IMapGenerator{ 
     SetMap():Array<Item>;
     GetHq():Headquarter;
     GetMenus():Menu[];

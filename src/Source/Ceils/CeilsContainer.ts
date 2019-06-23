@@ -1,5 +1,5 @@
-import {ICeil} from './ICeil';
-import {HexAxial} from './Coordinates/HexAxial';
+import {ICeil} from './ICeil'; 
+import {HexAxial} from '../Coordinates/HexAxial';
 
 export class CeilsContainer<T extends ICeil> {
     private Ceils:{ [id: string]: T; };

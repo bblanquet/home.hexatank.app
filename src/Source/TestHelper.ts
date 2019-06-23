@@ -1,6 +1,6 @@
-import {CeilsContainer} from './CeilsContainer';
+import {CeilsContainer} from './Ceils/CeilsContainer';
 import {AStarEngine} from './AStarEngine';
-import {CeilProperties} from './CeilProperties';
+import { CeilProperties } from './Ceils/CeilProperties';
 
 export class TestHelper{
     static CeilsContainer:CeilsContainer<CeilProperties>;

@@ -1,10 +1,8 @@
-import { Item } from "../Item";
-import { IField } from "./IField";
-import { Vehicle } from "../Unit/Vehicle";
+import { Vehicle } from "../../Unit/Vehicle";
 import { Ceil } from "../Ceil";
-import { InteractionContext } from "../Context/InteractionContext";
-import { BoundingBox } from "../BoundingBox";
-import { Archive } from "../Tools/ResourceArchiver";
+import { InteractionContext } from "../../Context/InteractionContext";
+import { BoundingBox } from "../../BoundingBox";
+import { Archive } from "../../Tools/ResourceArchiver";
 import { Field } from "./Field";
 import { CeilState } from "../CeilState";
 

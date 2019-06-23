@@ -1,12 +1,12 @@
 import { ICombination } from "./ICombination";
 import { Item } from "../../Item";
-import { Headquarter } from "../../Field/Headquarter";
+import { Headquarter } from "../../Ceils/Field/Headquarter";
 import { Vehicle } from "../../Unit/Vehicle";
-import { Ceil } from "../../Ceil";
+import { Ceil } from "../../Ceils/Ceil";
 import { ISelectable } from "../../ISelectable";
 import { Menu } from "../../Menu/Menu";
 
-export class SwitchToVehicleCombination implements ICombination{
+export class SwitchToVehicleCombination implements ICombination{ 
     
     constructor(private _menus:Menu[]){
     }

@@ -1,8 +1,8 @@
-import { Ceil } from "./Ceil";
+import { Ceil } from "./Ceils/Ceil";
 
 export interface IMovable
 {
-    MoveNextCeil():void;
+    MoveNextCeil():void; 
     GetNextCeil():Ceil;
     SetNextCeil(ceil:Ceil):void;
     GetCurrentCeil():Ceil;

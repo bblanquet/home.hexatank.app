@@ -1,11 +1,11 @@
-import { AliveItem } from "../AliveItem";
+import { AliveItem } from "../../AliveItem";
 import { Ceil } from "../Ceil";
-import { PlaygroundHelper } from "../PlaygroundHelper";
-import { Vehicle } from "../Unit/Vehicle";
-import { BoundingBox } from "../BoundingBox";
-import { InteractionContext } from "../Context/InteractionContext";
+import { PlaygroundHelper } from "../../PlaygroundHelper";
+import { Vehicle } from "../../Unit/Vehicle";
+import { BoundingBox } from "../../BoundingBox";
+import { InteractionContext } from "../../Context/InteractionContext";
 import { AliveField } from "./AliveField";
-import { CeilState } from "../CeilState";
+import { CeilState } from "../CeilState"; 
 
 export class BlockingField extends AliveField
 {

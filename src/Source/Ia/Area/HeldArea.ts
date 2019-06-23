@@ -1,10 +1,10 @@
 import { Area } from "./Area";
 import { Tank } from "../../Unit/Tank";
-import { Ceil } from "../../Ceil";
+import { Ceil } from "../../Ceils/Ceil";
 import { TroopDecisionMaker } from "./TroopDecisionMaker";
 import { PlaygroundHelper } from "../../PlaygroundHelper";
-import { Headquarter } from "../../Field/Headquarter";
-import { AreaStatus } from "./AreaStatus";
+import { Headquarter } from "../../Ceils/Field/Headquarter";
+import { AreaStatus } from "./AreaStatus"; 
 import { AreaDecisionMaker } from "./AreaDecisionMaker";
 
 export class HeldArea
@@ -30,6 +30,12 @@ export class HeldArea
 
     public Update():void
     {
+        this._troops = this._troops.filter(t=>t.Tank.IsAlive());
+
+        if(this._troops.length > 1){
+            console.log(`%c AREA  ${this._troops.length} -> ${this._area.GetCentralCeil().GetCoordinate().ToString()}`,'font-weight:bold;');
+        }
+
         if(0 < this.GetInsideEnemyCount())
         {
             this._areaDecisionMaker.Update();

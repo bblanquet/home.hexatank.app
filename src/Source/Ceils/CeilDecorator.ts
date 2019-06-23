@@ -1,8 +1,8 @@
-import { Item } from "./Item";
+import { Item } from "../Item";
 import { BlockingField } from "./Field/RockField";
 import { Ceil } from "./Ceil";
 import { BasicField } from "./Field/BasicField";
-import { Archive } from "./Tools/ResourceArchiver";
+import { Archive } from "../Tools/ResourceArchiver"; 
 import { WaterField } from "./Field/WaterField";
 
 export class CeilDecorator{

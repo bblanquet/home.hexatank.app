@@ -1,20 +1,16 @@
-import { AliveItem } from "../AliveItem";
 import { IField } from "./IField";
-import { Vehicle } from "../Unit/Vehicle";
+import { Vehicle } from "../../Unit/Vehicle";
 import { Ceil } from "../Ceil";
 import { CeilState } from "../CeilState";
+import { Item } from "../../Item";
 
-export abstract class AliveField extends AliveItem implements IField{
-    
-    abstract Support(vehicule: Vehicle): void ;
-    abstract IsDesctrutible(): boolean ;
-    abstract IsBlocking(): boolean ;
+export abstract class Field extends Item implements IField{
 
     private _onCeilStateChanged:{(ceilState:CeilState):void};
 
     constructor(private _ceil:Ceil){
         super();
-        this._onCeilStateChanged = this.OnCeilStateChanged.bind(this);
+        this._onCeilStateChanged = this.OnCeilStateChanged.bind(this); 
         this._ceil.RegisterCeilState(this._onCeilStateChanged);
     }
 
@@ -24,18 +20,17 @@ export abstract class AliveField extends AliveItem implements IField{
         });
     }
 
-    public GetCeil(): Ceil {
-        return this._ceil
-    }
-
-    public GetCurrentCeil(): Ceil {
-        return this._ceil;
-    }
-
     public Destroy():void{
         super.Destroy();
         this._ceil.UnregisterCeilState(this._onCeilStateChanged);
     }
 
+    abstract Support(vehicule: Vehicle):void;
+    abstract IsDesctrutible(): boolean ;
+    abstract IsBlocking(): boolean ;
+    GetCeil(): Ceil {
+        return this._ceil;
+    }
 
-}
+
+} 

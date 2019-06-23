@@ -1,7 +1,6 @@
 import { IPlaygroundBuilder } from './IPlaygroundBuilder';
 import { HexAxial } from '../Coordinates/HexAxial';
-import {CeilProperties} from '../CeilProperties';
-
+import { CeilProperties } from '../Ceils/CeilProperties';
 
 export class SpecHexagonalMapBuilder implements IPlaygroundBuilder<CeilProperties>{
     GetMidle(n: number): HexAxial {

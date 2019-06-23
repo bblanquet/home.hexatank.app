@@ -1,10 +1,10 @@
 import { ICombination } from "./ICombination";
 import { Item } from "../../Item";
 import { Vehicle } from "../../Unit/Vehicle";
-import { Headquarter } from "../../Field/Headquarter";
+import { Headquarter } from "../../Ceils/Field/Headquarter";
 import { ISelectable } from "../../ISelectable";
-import { Ceil } from "../../Ceil";
 import { Menu } from "../../Menu/Menu";
+import { Ceil } from "../../Ceils/Ceil";
 
 export class SwitchToHeadquarterCombination implements ICombination{
     constructor(private _menus:Menu[]){

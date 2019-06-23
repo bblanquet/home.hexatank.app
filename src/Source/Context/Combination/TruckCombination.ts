@@ -1,9 +1,9 @@
-import { ICombination } from "./ICombination";
 import { Item } from "../../Item";
-import { Ceil } from "../../Ceil";
+import { Ceil } from "../../Ceils/Ceil";
 import { Vehicle } from "../../Unit/Vehicle";
 import { Truck } from "../../Unit/Truck";
 import { SimpleOrder } from "../../Ia/Order/SimpleOrder";
+import { ICombination } from "./ICombination";
 
 export class TruckCombination implements ICombination
 {

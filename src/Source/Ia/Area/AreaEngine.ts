@@ -1,7 +1,7 @@
-import { Ceil } from "../../Ceil";
+import { Ceil } from "../../Ceils/Ceil";
 import { HexAxial } from "../../Coordinates/HexAxial";
-import { isNullOrUndefined } from "util";
-import { CeilsContainer } from "../../CeilsContainer";
+import { isNullOrUndefined } from "util"; 
+import { CeilsContainer } from "../../Ceils/CeilsContainer";
 
 export class AreaEngine
 {

@@ -1,10 +1,9 @@
 import { HeldArea } from "./HeldArea";
-import { PlaygroundHelper } from "../../PlaygroundHelper";
-import { Ceil } from "../../Ceil";
+import { PlaygroundHelper } from "../../PlaygroundHelper"; 
+import { Ceil } from "../../Ceils/Ceil";
 import { isNullOrUndefined } from "util";
 import { TroopSituation } from "./TroopSituation";
 import { TroopDestination } from "./TroopDestination";
-import { Timer } from "../../Tools/Timer";
 import { Tank } from "../../Unit/Tank";
 import { Area } from "./Area";
 import { SimpleOrder } from "../Order/SimpleOrder";
@@ -114,7 +113,10 @@ export class AreaDecisionMaker
     private SelectBestPaths(troopSituations: TroopSituation[]) 
     : { [ceilKey: string]: TroopSituation[]; }
     {
+        this.SetTroopDestination(troopSituations);
+
         var hasConflicts = true;
+        const excludedCeils : { [id: string] : Ceil; } = {};
         while (hasConflicts) 
         {
             hasConflicts = false;
@@ -123,15 +125,28 @@ export class AreaDecisionMaker
             {
                 if (troopsByDest[dest].length > 1) 
                 {
-                    const ceils = new Array<Ceil>();
-                    ceils.push(troopsByDest[dest][0].CurrentDestination.Destination);
+                    excludedCeils[dest] = troopsByDest[dest][0].CurrentDestination.Destination;
+
+                    let ceils = new Array<Ceil>();
+                    for (var prop in excludedCeils) 
+                    {
+                        ceils.push(excludedCeils[prop]);
+                    }
+
                     this.ResolveConflicts(troopsByDest[dest], ceils);
-                    hasConflicts = true;
                 }
             }
+            troopsByDest = this.GetTroopsByDest(troopSituations);
+            for (const dest in troopsByDest) {if (troopsByDest[dest].length > 1) {hasConflicts = true;}}
         }
 
         return troopsByDest;
+    }
+
+    private SetTroopDestination(troopSituations: TroopSituation[]):void{
+        troopSituations.forEach(troopSituation => {
+            troopSituation.CurrentDestination = troopSituation.GetClosestAndSafestPath();
+        });
     }
 
     private GetTroopsByDest(troopSituations: TroopSituation[])
@@ -140,7 +155,6 @@ export class AreaDecisionMaker
         var currentDestTroops: { [ceilKey: string]: TroopSituation[]; }={};
 
         troopSituations.forEach(troopSituation => {
-            troopSituation.CurrentDestination = troopSituation.GetClosestAndSafestPath();
             const key = troopSituation.CurrentDestination.Destination.GetCoordinate().ToString();
             if (!currentDestTroops.hasOwnProperty(key)) {
                 currentDestTroops[key] = new Array<TroopSituation>();
@@ -191,9 +205,9 @@ export class AreaDecisionMaker
             troop.PotentialNextDestination = troop.GetBestDestination(conflicts);
         });
 
-        var cost = Math.max.apply(Math, troops.map(function(o) { return o.PotentialNextDestination.GetCost(); }));
+        var cost = Math.max.apply(Math, troops.map(function(o) { return o.GetPotentialCost(); }));
         for(const troop of troops){
-            if(troop.PotentialNextDestination.GetCost()=== cost){
+            if(troop.GetPotentialCost()=== cost){
                 troop.PotentialNextDestination = null;
                 break;
             }
@@ -202,7 +216,7 @@ export class AreaDecisionMaker
         for(const troop of troops){
             if(troop.PotentialNextDestination != null)
             {
-                troop.CurrentDestination =troop.PotentialNextDestination; 
+                troop.CurrentDestination = troop.PotentialNextDestination; 
             }
         }
     }

@@ -1,8 +1,8 @@
 import { Item } from "../Item";
 import { BoundingBox } from "../BoundingBox";
-import { InteractionContext } from "../Context/InteractionContext";
+import { InteractionContext } from "../Context/InteractionContext"; 
 import { PlaygroundHelper } from "../PlaygroundHelper";
-import { Headquarter } from "../Field/Headquarter";
+import { Headquarter } from "../Ceils/Field/Headquarter";
 import { Archive } from "../Tools/ResourceArchiver";
 
 export class TopBar extends Item

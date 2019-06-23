@@ -1,7 +1,7 @@
-import { Headquarter } from "../../Field/Headquarter";
+import { Headquarter } from "../../Ceils/Field/Headquarter";
 import { Vehicle } from "../../Unit/Vehicle";
-import { SimpleOrder } from "./SimpleOrder";
-import { Ceil } from "../../Ceil";
+import { SimpleOrder } from "./SimpleOrder"; 
+import { Ceil } from "../../Ceils/Ceil";
 
 export class HqFieldOrder extends SimpleOrder
 { 

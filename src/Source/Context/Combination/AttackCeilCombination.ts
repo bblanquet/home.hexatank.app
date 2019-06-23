@@ -1,11 +1,11 @@
 import { isNullOrUndefined } from "util";
 import { ICombination } from "./ICombination";
 import { Item } from "../../Item";
-import { Ceil } from "../../Ceil";
+import { Ceil } from "../../Ceils/Ceil"; 
 import { PlaygroundHelper } from "../../PlaygroundHelper";
 import { AttackMenuItem } from "../../Menu/AttackMenuItem";
-import { AttackField } from "../../Field/AttackField";
-import { BasicField } from "../../Field/BasicField";
+import { AttackField } from "../../Ceils/Field/AttackField";
+import { BasicField } from "../../Ceils/Field/BasicField";
 
 export class AttackCeilCombination implements ICombination{
 

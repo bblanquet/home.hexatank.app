@@ -4,17 +4,17 @@ import { InteractionContext } from "../Context/InteractionContext";
 import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Tank } from "./Tank";
 import { Missile } from "./Missile";
-import { IAngleFinder } from "../IAngleFinder";
-import { AngleFinder } from "../AngleFinder";
-import { IRotatable } from "../IRotatable";
-import { IRotationMaker } from "../IRotationMaker";
-import { RotationMaker } from "../RotationMaker";
+import { IAngleFinder } from "./Utils/IAngleFinder";
+import { AngleFinder } from "./Utils/AngleFinder";
+import { IRotatable } from "./Utils/IRotatable";
+import { IRotationMaker } from "./Utils/IRotationMaker";
+import { RotationMaker } from "./Utils/RotationMaker"; 
 import { HqSkin } from "../HqSkin";
 import { ITimer } from "../Tools/ITimer";
 import { Timer } from "../Tools/Timer";
 import { Archive } from "../Tools/ResourceArchiver";
 
-export class Turrel extends Item implements IRotatable
+export class Turrel extends Item implements IRotatable 
 {
     RotationSpeed: number=0.05;
     CurrentRadius: number;

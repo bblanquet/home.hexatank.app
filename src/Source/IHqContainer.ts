@@ -1,5 +1,5 @@
-import { Headquarter } from "./Field/Headquarter";
+import { Headquarter } from "./Ceils/Field/Headquarter";
 
-export interface IHqContainer{
+export interface IHqContainer{ 
     Hq:Headquarter;
 } 

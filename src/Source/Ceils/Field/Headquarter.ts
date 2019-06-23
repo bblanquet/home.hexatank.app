@@ -1,20 +1,20 @@
-import { BoundingBox } from "../BoundingBox";
-import { InteractionContext } from "../Context/InteractionContext";
-import { PlaygroundHelper } from "../PlaygroundHelper";
+import { BoundingBox } from "../../BoundingBox";
+import { InteractionContext } from "../../Context/InteractionContext";
+import { PlaygroundHelper } from "../../PlaygroundHelper";
 import { Ceil } from "../Ceil";
 import { HeadQuarterField } from "./HeadquarterField"; 
-import { Tank } from "../Unit/Tank";
-import { HqSkin } from "../HqSkin";
-import { Truck } from "../Unit/Truck";
-import { AliveItem } from "../AliveItem";
-import { IHqContainer } from "../IHqContainer";
+import { Tank } from "../../Unit/Tank";
+import { HqSkin } from "../../HqSkin";
+import { AliveItem } from "../../AliveItem";
+import { IHqContainer } from "../../IHqContainer";
 import { IField } from "./IField"; 
-import { Vehicle } from "../Unit/Vehicle";
-import { Crater } from "../Crater";
-import { ISelectable } from "../ISelectable";
-import { Archive } from "../Tools/ResourceArchiver";
+import { Vehicle } from "../../Unit/Vehicle";
+import { Crater } from "../../Crater";
+import { ISelectable } from "../../ISelectable";
+import { Archive } from "../../Tools/ResourceArchiver";
 import { CeilState } from "../CeilState";
-import { Explosion } from "../Unit/Explosion";
+import { Explosion } from "../../Unit/Explosion";
+import { Truck } from "../../Unit/Truck";
 
 export class Headquarter extends AliveItem implements IField, ISelectable
 {

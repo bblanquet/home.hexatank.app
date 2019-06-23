@@ -1,14 +1,13 @@
 import { ICombination } from "./ICombination";
 import { Item } from "../../Item";
 import { HealMenuItem } from "../../Menu/HealMenuItem";
-import { Ceil } from "../../Ceil";
+import { Ceil } from "../../Ceils/Ceil";
 import { isNullOrUndefined } from "util";
-import { HealField } from "../../Field/HealField";
+import { HealField } from "../../Ceils/Field/HealField";
 import { PlaygroundHelper } from "../../PlaygroundHelper";
-import { Headquarter } from "../../Field/Headquarter";
-import { BasicField } from "../../Field/BasicField";
+import { BasicField } from "../../Ceils/Field/BasicField"; 
 
-export class HealCeilCombination implements ICombination
+export class HealCeilCombination implements ICombination 
 {
 
     public IsMatching(items: Item[]): boolean {

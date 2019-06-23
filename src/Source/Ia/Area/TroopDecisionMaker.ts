@@ -1,9 +1,9 @@
-import { Ceil } from "../../Ceil";
+import { Ceil } from "../../Ceils/Ceil";
 import { HeldArea } from "./HeldArea";
 import { Tank } from "../../Unit/Tank";
 import { ITimer } from "../../Tools/ITimer";
 import { Timer } from "../../Tools/Timer";
-import { isNullOrUndefined } from "util"; 
+import { isNullOrUndefined } from "util";  
 import { SimpleOrder } from "../Order/SimpleOrder";
 
 export class TroopDecisionMaker{ 
@@ -16,12 +16,22 @@ export class TroopDecisionMaker{
         {
             throw "invalid destination";
         }
+        if(isNullOrUndefined(this.Tank))
+        {
+            throw 'not possible';
+        }
+
         this._changePositionTimer = new Timer(20);
         this._cancelOrderTimer = new Timer(20);
     }
 
     public Update():void
     {
+        if(isNullOrUndefined(this.Tank))
+        {
+            throw 'not possible';
+        }
+
         if(this.Tank.GetCurrentCeil() === this.CurrentPatrolDestination)
         {
             if(this._changePositionTimer.IsElapsed())
@@ -47,6 +57,11 @@ export class TroopDecisionMaker{
     }
 
     public Cancel():void{
+        if(isNullOrUndefined(this.Tank))
+        {
+            throw 'not possible';
+        }
+
         this.Tank.CancelOrder();
     }
 }

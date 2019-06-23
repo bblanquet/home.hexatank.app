@@ -1,15 +1,15 @@
 import { Vehicle } from "./Vehicle";
 import { IHqContainer } from "../IHqContainer";
-import { Headquarter } from "../Field/Headquarter";
+import { Headquarter } from "../Ceils/Field/Headquarter";
 import { AliveItem } from "../AliveItem";
 import { ITimer } from "../Tools/ITimer";
 import { Timer } from "../Tools/Timer";
 import { Light } from "../Light";
 import { Archive } from "../Tools/ResourceArchiver";
-import { CeilState } from "../CeilState";
+import { CeilState } from "../Ceils/CeilState";
 
-export class Truck extends Vehicle implements IHqContainer{
-    Hq:Headquarter;
+export class Truck extends Vehicle implements IHqContainer{ 
+    Hq:Headquarter; 
     private _light:Light;
     private _gatheredDiamonds:Array<string>;
     private _dimaondTimer:ITimer;

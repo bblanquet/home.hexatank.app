@@ -1,14 +1,14 @@
-import { BoundingBox } from "../BoundingBox";
-import { InteractionContext } from "../Context/InteractionContext";
-import { PlaygroundHelper } from "../PlaygroundHelper";
-import { Light } from "../Light";
+import { BoundingBox } from "../../BoundingBox";
+import { InteractionContext } from "../../Context/InteractionContext";
+import { PlaygroundHelper } from "../../PlaygroundHelper";
+import { Light } from "../../Light";
 import { Ceil } from "../Ceil";
 import { DiamondField } from "./DiamondField";
-import { Vehicle } from "../Unit/Vehicle";
-import { AliveItem } from "../AliveItem"; 
-import { Crater } from "../Crater";
-import { Archive } from "../Tools/ResourceArchiver";
-import { AliveField } from "./AliveField";
+import { Vehicle } from "../../Unit/Vehicle";
+import { AliveItem } from "../../AliveItem"; 
+import { Crater } from "../../Crater";
+import { Archive } from "../../Tools/ResourceArchiver";
+import { AliveField } from "./AliveField"; 
 import { CeilState } from "../CeilState";
 
 export class Diamond extends AliveField{

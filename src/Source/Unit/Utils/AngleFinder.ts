@@ -1,5 +1,5 @@
 import { IAngleFinder } from "./IAngleFinder";
-import { IBoundingBoxContainer } from "./IBoundingBoxContainer";
+import { IBoundingBoxContainer } from "../../IBoundingBoxContainer"; 
 import { IRotatable } from "./IRotatable";
 
 export class AngleFinder<T extends IRotatable & IBoundingBoxContainer> implements IAngleFinder{

@@ -3,8 +3,8 @@ import { expect } from 'chai';
 import {HexAxial} from '../Coordinates/HexAxial';
 import {AStarNode} from '../AStarNode';
 import {TestHelper} from '../TestHelper';
-import {CeilProperties} from '../CeilProperties';
 import { SpecHexagonalMapBuilder } from '../Builder/SpecHexagonalMapBuilder';
+import { CeilProperties } from '../Ceils/CeilProperties';
 
 describe('Astar',()=>{
 

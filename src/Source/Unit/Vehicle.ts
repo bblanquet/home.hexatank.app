@@ -125,6 +125,9 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         }
         else
         {
+            if(this.GetNextCeil().GetState() === CeilState.Visible){
+                this.OnCeilStateChanged(this.GetNextCeil().GetState());
+            }
             this._translationMaker.Translate();
         }
         this.HandleMovingEffect();
@@ -207,11 +210,11 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this._currentCeil.RegisterCeilState(this._onCeilStateChanged);
         this._nextCeil = null;
 
-        this.SetVisible();
-        this.SetHalVisible(previousCeil);
+        this.SetCeilsVisible();
+        this.SetCeilsHalfVisible(previousCeil);
     }
 
-    private SetHalVisible(previousCeil: Ceil) {
+    private SetCeilsHalfVisible(previousCeil: Ceil) {
         if(PlaygroundHelper.Settings.ShowEnemies)
         {
             var preVisibleCeils = previousCeil.GetAllNeighbourhood();
@@ -240,9 +243,10 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         }
     }
 
-    private SetVisible() {
+    private SetCeilsVisible() {
         if(!this.IsEnemy(PlaygroundHelper.PlayerHeadquarter) 
-        || PlaygroundHelper.Settings.ShowEnemies){
+        || PlaygroundHelper.Settings.ShowEnemies)
+        {
             var ceils = this._currentCeil.GetAllNeighbourhood();
             ceils.push(this._currentCeil);
             ceils.forEach(ceil => {
@@ -264,7 +268,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this._rightDusts.forEach(ld=>ld.Destroy());
         this._leftDusts = [];
         this._rightDusts = [];
-        this.SetHalVisible(this._currentCeil);
+        this.SetCeilsHalfVisible(this._currentCeil);
     }
 
     public Update(viewX: number, viewY: number):void{
@@ -344,7 +348,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this._currentCeil.SetOccupier(this);
         this._currentCeil.RegisterCeilState(this._onCeilStateChanged);
         this._onCeilStateChanged(this._currentCeil.GetState())
-        this.SetVisible();
+        this.SetCeilsVisible();
     };
 
     public Select(context:InteractionContext):boolean

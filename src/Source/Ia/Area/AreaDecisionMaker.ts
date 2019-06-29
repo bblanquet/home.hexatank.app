@@ -14,55 +14,64 @@ export class AreaDecisionMaker
     }
 
     public Update():void {
-            this._area.GetTroops().forEach(troop => {
-                troop.Cancel();
-            });
+        this.Do();
+    }
 
-            if(this._area.GetTroops().length > 0)
-            {
-                const ally = this._area.GetTroops()[0].Tank;
+
+    private Do():void{
+        if(this._area.GetTroops().length > 0)
+        {
+            console.log(`%c [ALERT] troops count ${this._area.GetTroops().length}`,"font-weight:bold;color:red;");
+            const ally = this._area.GetTroops()[0].Tank;
+
+
+            console.log(`%c troops count ${this._area.GetTroops().length}`,"font-weight:bold;color:green;");
     
-                console.log(`%c troops count ${this._area.GetTroops().length}`,"font-weight:bold;color:green;");
-        
-                //#1 get in & out ceils
-                const areas = PlaygroundHelper.GetNeighbourhoodAreas(this._area.GetCentralCeil());
-                areas.push(this._area.GetArea());
-                
-                //#2 get enemies ceils
-                const enemyCeils = this.GetEnemyCeils(areas, ally);
-        
-                console.log(`%c enemy ceils count ${enemyCeils.length}`,"font-weight:bold;color:blue;");
-        
-                //#3 get enemy contact ceils
-                const surroundingEnemyCeils = this.GetSurroundingEnemyCeils(enemyCeils);
-                
-                console.log(`%c surrounding enemy ceils count ${Object.keys(surroundingEnemyCeils).length}`,"font-weight:bold;color:red;");
-        
-                //#4 classify ceil dangerous
-                const dangerLevelCeils = this.ClassifyCeilDanger(surroundingEnemyCeils, ally);
-        
-                for(let danger in dangerLevelCeils)
-                {
-                    console.log(`%c danger lvl ${danger} - ceils count ${Object.keys(dangerLevelCeils[danger]).length}`,"font-weight:bold;color:brown;");
-                }
-        
-                //#5 find path to reach ceils and classify them
-                const troopSituations = new Array<TroopSituation>();
-                this.FindTroopPaths(troopSituations, dangerLevelCeils);
+            //#1 get in & out ceils
+            const areas = PlaygroundHelper.GetNeighbourhoodAreas(this._area.GetCentralCeil());
+            areas.push(this._area.GetArea());
+            
+            //#2 get enemies ceils
+            const enemyCeils = this.GetEnemyCeils(areas, ally);
+    
+            console.log(`%c enemy ceils count ${enemyCeils.length}`,"font-weight:bold;color:blue;");
+    
+            //#3 get enemy contact ceils
+            const surroundingEnemyCeils = this.GetSurroundingEnemyCeils(enemyCeils);
+            
+            console.log(`%c surrounding enemy ceils count ${Object.keys(surroundingEnemyCeils).length}`,"font-weight:bold;color:red;");
+    
+            //#4 classify ceil dangerous
+            const dangerLevelCeils = this.ClassifyCeilDanger(surroundingEnemyCeils, ally);
+    
+            for(let danger in dangerLevelCeils)
+            {
+                console.log(`%c danger lvl ${danger} - ceils count ${Object.keys(dangerLevelCeils[danger]).length}`,"font-weight:bold;color:brown;");
+            }
+    
+            //#5 find path to reach ceils and classify them
+            let troopSituations = new Array<TroopSituation>();
+            this.FindTroopPaths(troopSituations, dangerLevelCeils);
 
-                //#6 select path
-                const currentDestTroops = this.SelectBestPaths(troopSituations);
-        
-                //#7 give orders to units
-                for(let key in currentDestTroops){
-                    currentDestTroops[key].forEach(troopSituation => {
-                        console.log(`%c tank get order to go to ${troopSituation.CurrentDestination.Destination.GetCoordinate().ToString()}`,"font-weight:bold;color:red;");
-                        troopSituation.Troop.Tank.SetOrder(
-                            new SimpleOrder(troopSituation.CurrentDestination.Destination,troopSituation.Troop.Tank));
-                    });
-                }
+            troopSituations = troopSituations.filter(t=>Object.keys(t.Destinations).length > 0);
+
+            //#6 select path
+            const currentDestTroops = this.SelectBestPaths(troopSituations);
+    
+            if(isNullOrUndefined(currentDestTroops)){
+                return;
+            }
+
+
+            //#7 give orders to units
+            for(let key in currentDestTroops){
+                currentDestTroops[key].forEach(troopSituation => {
+                    console.log(`%c tank get order to go to ${troopSituation.CurrentDestination.Destination.GetCoordinate().ToString()}`,"font-weight:bold;color:red;");
+                    troopSituation.Troop.Tank.SetOrder(
+                        new SimpleOrder(troopSituation.CurrentDestination.Destination,troopSituation.Troop.Tank));
+                });
+            }
         }
-
     }
 
     private GetSurroundingEnemyCeils(enemyCeils:Array<Ceil>)
@@ -114,11 +123,16 @@ export class AreaDecisionMaker
     : { [ceilKey: string]: TroopSituation[]; }
     {
         this.SetTroopDestination(troopSituations);
-
+        let unresolvedCases = 0;
         var hasConflicts = true;
         const excludedCeils : { [id: string] : Ceil; } = {};
         while (hasConflicts) 
         {
+            if(unresolvedCases === 4){
+                return null;
+            }
+
+            unresolvedCases++;
             hasConflicts = false;
             var troopsByDest = this.GetTroopsByDest(troopSituations);
             for (const dest in troopsByDest) 

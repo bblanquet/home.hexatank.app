@@ -176,12 +176,24 @@ export class Ceil extends Item implements ICeil , ISelectable
             this.SetProperty(this._areaSprite,(e)=>e.alpha = 0.2);
         }
 
+        state = this.SetHqState(state);
+
         this.OnCeilStateChanged(state);
 
         this._display[this._state].forEach(sprite=>
         {
             this.SetProperty(sprite, (e)=>e.alpha = 1);
         });
+    }
+
+    private SetHqState(state: CeilState) {
+        let ceils = new Array<Ceil>();
+        ceils.push(PlaygroundHelper.PlayerHeadquarter.GetCeil());
+        ceils = ceils.concat(PlaygroundHelper.PlayerHeadquarter.GetCeil().GetAllNeighbourhood().map(c => <Ceil>c));
+        if (ceils.indexOf(this) !== -1) {
+            state = CeilState.Visible;
+        }
+        return state;
     }
 
     public AddSprite(sprite:string){

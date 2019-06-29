@@ -8,9 +8,16 @@ export class GameSettings
     public ScreenWidth:number;
     public ScreenHeight:number;
     public RotationSpeed:number=0.2;
-    public TranslationSpeed:number=4;
+    public TurrelRotationSpeed:number=0.2;
+    public TranslationSpeed:number=2;
+    public MissileTranslationSpeed:number=5;
     public ShowEnemies:boolean=false;
     public Attack:number=30;
+    public TankPrice:number=8;
+    public TruckPrice:number=4;
+    public FieldPrice:number=2;
+    public PocketMoney:number=20;
+
     private _fps:number=0;
     private _fpsHandlers:{(data: number):void}[] = [];
     public MapSize: number=0;
@@ -72,7 +79,6 @@ export class GameSettings
 
     public ChangeFps(fps:number):void{
         this._fps = fps;
-        //console.log(`fps ${this._fps}`)
         this._fpsHandlers.forEach(fpsHandler=>{
             fpsHandler(this._fps);
         })

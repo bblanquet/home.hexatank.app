@@ -8,7 +8,7 @@ import { Light } from "../Light";
 import { Archive } from "../Tools/ResourceArchiver";
 import { CeilState } from "../Ceils/CeilState";
 
-export class Truck extends Vehicle implements IHqContainer{ 
+export class Truck extends Vehicle implements IHqContainer{
     Hq:Headquarter; 
     private _light:Light;
     private _gatheredDiamonds:Array<string>;

@@ -13,25 +13,18 @@ export class IdleUnitContainer{
     }
 
     public HasTank():boolean{
-        if(this.statuses.length == 0){
-            return false;
-        }
-        else if(this.statuses.length == 1)
-        {
-            return 0 < this.statuses[0].GetExcessTroops();
-        }
-        return true;
+        this.Cleaner();
+        return this.statuses.length > 0;
+    }
+
+    private Cleaner():void{
+        this.statuses = this.statuses.filter(s=>s.GetExcessTroops()>0);
     }
 
     public Pop():Tank{
-        while(this.statuses.length > 0){
-            if(this.statuses[0].GetExcessTroops()===0){
-                this.statuses.splice(0,1);
-            }else{
-                return this.statuses[0].Area.DropTroop();
-            }
-        }
-        throw 'no tank avalaible';
+        this.Cleaner();
+        this.statuses[0].InsideTroops--;
+        return this.statuses[0].Area.DropTroop();
     }
 
 }

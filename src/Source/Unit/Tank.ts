@@ -10,8 +10,7 @@ import { Archive } from '../Tools/ResourceArchiver';
 import { CeilState } from '../Ceils/CeilState'; 
 
 export class Tank extends Vehicle implements IHqContainer 
-{ 
-
+{
     Hq: Headquarter; 
     Turrel:Turrel;
     private _currentTarget:AliveItem;

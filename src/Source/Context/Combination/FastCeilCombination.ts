@@ -23,8 +23,11 @@ export class FastCeilCombination implements ICombination{
             {
                 if(ceil.GetField() instanceof BasicField)
                 {
-                    let field = new FastField(ceil);
-                    PlaygroundHelper.Playground.Items.push(field);
+                    if(PlaygroundHelper.PlayerHeadquarter.Diamonds >= PlaygroundHelper.Settings.FieldPrice){
+                        PlaygroundHelper.PlayerHeadquarter.Diamonds -= PlaygroundHelper.Settings.FieldPrice;
+                        let field = new FastField(ceil);
+                        PlaygroundHelper.Playground.Items.push(field);
+                    }
                 }
             }
             items.splice(0,2);

@@ -22,8 +22,11 @@ export class AttackCeilCombination implements ICombination{
             {
                 if(ceil.GetField() instanceof BasicField)
                 {
-                    let field = new AttackField(ceil);
-                    PlaygroundHelper.Playground.Items.push(field);
+                    if(PlaygroundHelper.PlayerHeadquarter.Diamonds >= PlaygroundHelper.Settings.FieldPrice){
+                        PlaygroundHelper.PlayerHeadquarter.Diamonds -= PlaygroundHelper.Settings.FieldPrice;
+                        let field = new AttackField(ceil);
+                        PlaygroundHelper.Playground.Items.push(field);
+                    }
                 }
             }
             items.splice(0,2);

@@ -1,10 +1,11 @@
 import { HexAxial } from "../Coordinates/HexAxial";
+import { ToolBox } from "../Unit/Utils/ToolBox";
 
 export class FartestPointsFinder{
 
     public GetFartestPoints(currentPoint:HexAxial,points:Array<HexAxial>):Array<HexAxial>{
-        var longest = Math.trunc(Math.max(...points.map(p=> this.GetDistance(currentPoint,p))))-1;
-        return points.filter(p=>this.GetDistance(currentPoint,p)>longest);
+        var longest = Math.trunc(Math.max(...points.map(p=> ToolBox.GetDistance(currentPoint,p))))-1;
+        return points.filter(p=>ToolBox.GetDistance(currentPoint,p)>longest);
     }
 
     public GetPoints(points:Array<HexAxial>, total:number):Array<HexAxial>{
@@ -23,7 +24,7 @@ export class FartestPointsFinder{
             let candidate = new DistancePoint();
             let distances = new Array<number>();
             hqPoints.forEach(hqPoint => {
-                distances.push(this.GetDistance(candidatePoint, hqPoint));
+                distances.push(ToolBox.GetDistance(candidatePoint, hqPoint));
             });
             candidate.Point = candidatePoint;
             candidate.Distance = Math.min(...distances);
@@ -32,14 +33,6 @@ export class FartestPointsFinder{
         var max = Math.max(...candidates.map(c=>c.Distance)); 
         return candidates.filter(c=>c.Distance === max)[0].Point;
     }
-
-    private GetDistance(point:HexAxial, compareToPoint:HexAxial):number{
-        return Math.abs(
-            Math.sqrt(
-                Math.pow(point.Q - compareToPoint.Q,2) 
-                + Math.pow(point.R - compareToPoint.R,2)));
-    }
-
 }
 
 export class DistancePoint{

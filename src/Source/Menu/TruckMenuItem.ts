@@ -2,6 +2,7 @@ import { Headquarter } from "../Ceils/Field/Headquarter";
 import { InteractionContext } from "../Context/InteractionContext";
 import { SelectableMenuItem } from "./SelectableMenuItem";
 import { Archive } from "../Tools/ResourceArchiver";
+import { PlaygroundHelper } from "../PlaygroundHelper";
 
 export class TruckMenuItem extends SelectableMenuItem{  
     private _hq:Headquarter;
@@ -13,9 +14,9 @@ export class TruckMenuItem extends SelectableMenuItem{
 
     public Select(context: InteractionContext): boolean      
     { 
-        if(this._hq.Diamonds > 4){
+        if(this._hq.Diamonds >= PlaygroundHelper.Settings.TruckPrice){
             if(this._hq.CreateTruck()){
-                this._hq.Diamonds -= 4;
+                this._hq.Diamonds -= PlaygroundHelper.Settings.TruckPrice;
             }
         }
 

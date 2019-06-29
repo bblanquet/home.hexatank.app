@@ -36,4 +36,12 @@ export class PlaygroundHelper{
     public static GetNeighbourhoodAreas(ceil:Ceil):Array<Area>{
         return this._areaEngine.GetNeighbourhoodAreas(PlaygroundHelper.CeilsContainer,ceil).map(c=> new Area(c));
     }
+
+    public static GetSecondRangeAreas(ceil:Ceil):Array<Ceil>{
+        return this._areaEngine.GetSecondRangeAreas(PlaygroundHelper.CeilsContainer,ceil);
+    }
+
+    public static GetFirstRangeAreas(ceil:Ceil):Array<Ceil>{
+        return this._areaEngine.GetFirstRange(PlaygroundHelper.CeilsContainer,ceil);
+    }
 }

@@ -32,7 +32,6 @@ function Setup()
     PlaygroundHelper.Render = new RenderingHandler(
         new GroupsContainer([0,1,2,3,4,5,6],app.stage));
 
-    const interaction = new InteractionContext();
 
     const items = new Array<Item>();
     const playground = new Playground(items,app, interaction);
@@ -57,31 +56,20 @@ function Setup()
 
     window.addEventListener('resize', ResizeTheCanvas);
     ResizeTheCanvas();
-
-    const loading = new LoadingItem(BoundingBox.Create(0,0,300,300));
-    PlaygroundHelper.LoadingPlayground.Items.push(loading);
-    const back = new FakeBackground();
-    PlaygroundHelper.LoadingPlayground.Items.push(back);
-
-    new Promise(()=>{
-        PlaygroundHelper.SpriteProvider.PreloadTexture();
-        gameSetup.SetGame().forEach(element => {
-            playground.Items.push(<Item> element);        
-        });
-        interaction.SetCombination(gameSetup.GetMenus(),gameSetup.GetHq());
-        const sleep = (milliseconds:number) => {
-            return new Promise(resolve => setTimeout(resolve, milliseconds))
-        };
-        sleep(1000).then(() => {
-            loading.Destroy();
-            back.Destroy();
-            isReady = true;
-        });
-    })
+    
+    PlaygroundHelper.SpriteProvider.PreloadTexture();
+    gameSetup.SetGame().forEach(element => {
+        PlaygroundHelper.Playground.Items.push(<Item> element);        
+    });
+    interaction.SetCombination(gameSetup.GetMenus(),gameSetup.GetHq());
 
     GameLoop();
 }
+
+var loading:LoadingItem;
+var back:FakeBackground;
 var gameSetup = new GameSetup();
+const interaction = new InteractionContext();
 
 
 function ResizeTheCanvas()
@@ -100,18 +88,11 @@ function ResizeTheCanvas()
     }  
 }
 
-var isReady=false;
 var times = new Array<number>();
 
 function GameLoop(){
     requestAnimationFrame(GameLoop);
-    if(isReady){
-        PlaygroundHelper.Playground.Update();
-    }
-    else
-    {
-        PlaygroundHelper.LoadingPlayground.Update();
-    }
+    PlaygroundHelper.Playground.Update();
     SetFps();
 }
 

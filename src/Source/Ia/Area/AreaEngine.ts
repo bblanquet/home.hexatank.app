@@ -40,4 +40,24 @@ export class AreaEngine
 
         return result;
     }
+
+    public GetFirstRange(container:CeilsContainer<Ceil>,ceil:Ceil):Array<Ceil>{
+        let innerCircle = this.GetNeighbourhoodAreas(container, ceil);
+        innerCircle.push(ceil)
+        return innerCircle;
+    }
+
+
+    public GetSecondRangeAreas(container:CeilsContainer<Ceil>,ceil:Ceil):Array<Ceil>{
+        let outerCircle = new Array<Ceil>();
+        let innerCircle = this.GetNeighbourhoodAreas(container, ceil);
+        
+        innerCircle.forEach(innerCeil => {
+            this.GetNeighbourhoodAreas(container, innerCeil).forEach(outCeil =>{
+                outerCircle.push(outCeil);
+            });
+        });
+
+        return outerCircle.filter(v=> innerCircle.indexOf(v) === -1);
+    }
 }

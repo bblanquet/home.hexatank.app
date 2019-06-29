@@ -1,9 +1,11 @@
 import { ITranslationMaker } from "./ITranslationMaker";
 import { IMovable } from "../../IMovable"; 
 import { IBoundingBoxContainer } from "../../IBoundingBoxContainer";
+import { ToolBox } from "./ToolBox";
 
 export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implements ITranslationMaker
 {
+
     private _item:T;
 
     constructor(item:T){
@@ -70,6 +72,12 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
         {
             this._item.MoveNextCeil();
         }
+    }
+
+    public GetPercentageTranslation(): number {
+        var fullDistance = ToolBox.GetDist(this._item.GetCurrentCeil().GetCentralPoint(), this._item.GetNextCeil().GetCentralPoint());
+        var currentDistance = ToolBox.GetDist(this._item.GetBoundingBox().GetCentralPoint(), this._item.GetNextCeil().GetCentralPoint());
+        return (currentDistance / fullDistance) * 100;
     }
 }
 

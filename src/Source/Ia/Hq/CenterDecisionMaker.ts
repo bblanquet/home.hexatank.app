@@ -130,5 +130,10 @@ export class CenterDecisionMaker{
                 }
             }
         }
+
+        if(request.RequestedUnitCount > 0)
+        {
+            this.HandleMediumRequest(request);
+        }
     }
 }

@@ -13,7 +13,7 @@ export class SimpleOrder extends Order{
     protected CurrentCeil:Ceil;
     protected Ceils:Array<Ceil>;
     protected CeilFinder:CeilFinder;
-    private _path:Array<BasicItem>;
+    private _uiPath:Array<BasicItem>;
     protected Dest:Ceil; 
     private _tryCount:number;
     private _sleep:Timer;
@@ -28,15 +28,12 @@ export class SimpleOrder extends Order{
         this.Dest = OriginalDest;
         this.Ceils = new Array<Ceil>();
         this.CeilFinder = new CeilFinder();
-        this._path = [];
+        this._uiPath = [];
     }
 
     public Cancel(): void {
         super.Cancel();
-        this._path.forEach(patrol=>{
-            patrol.Destroy();
-        });
-        this._path = [];
+        this.ClearPath();
     }
 
     public GetDestination():Ceil{
@@ -52,10 +49,10 @@ export class SimpleOrder extends Order{
 
         if(this.CurrentCeil === this._v.GetCurrentCeil())
         {
-            if(this._path.length > 0)
+            if(this._uiPath.length > 0)
             {
-                this._path[0].Destroy();
-                this._path.splice(0, 1);
+                this._uiPath[0].Destroy();
+                this._uiPath.splice(0, 1);
             }
             
             if(this.CurrentCeil === this.Dest)
@@ -162,19 +159,19 @@ export class SimpleOrder extends Order{
         }
         
         this.Ceils = nextCeils; 
-        this.CreatePath();
+        this.CreateUiPath();
         return true;
     }
 
     private ClearPath():void
     {
-        this._path.forEach(pathItem=>{
+        this._uiPath.forEach(pathItem=>{
             pathItem.Destroy();
         });
-        this._path = [];
+        this._uiPath = [];
     }
 
-    private CreatePath():void{
+    private CreateUiPath():void{
         if(!isNullOrUndefined(this.Ceils) && 0 < this.Ceils.length){
             this.Ceils.forEach(ceil => {
                 var pathItem = new BasicItem(
@@ -183,7 +180,7 @@ export class SimpleOrder extends Order{
                 pathItem.SetDisplayTrigger(this._v.IsSelected.bind(this._v));
                 pathItem.SetVisible(this._v.IsAlive.bind(this._v));
                 PlaygroundHelper.Playground.Items.push(pathItem);                    
-                this._path.push(pathItem);
+                this._uiPath.push(pathItem);
             });
         }
     }

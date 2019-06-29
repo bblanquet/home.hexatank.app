@@ -21,7 +21,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable
     private _boundingBox:BoundingBox;
     private _ceil:Ceil; 
     protected Fields:Array<HeadQuarterField>;
-    Diamonds:number=40;
+    Diamonds:number=PlaygroundHelper.Settings.PocketMoney;
     private _skin:HqSkin;
     private _onCeilStateChanged:{(ceilState:CeilState):void};
 

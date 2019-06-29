@@ -5,6 +5,7 @@ import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Explosion } from "./Explosion";
 import { AliveItem } from "../AliveItem";
 import { Archive } from "../Tools/ResourceArchiver";
+import { GameSettings } from "../GameSettings";
 
 export class Missile extends Item{
     BoundingBox:BoundingBox;
@@ -36,7 +37,7 @@ export class Missile extends Item{
 
         this.IsCentralRef = true;
 
-        this._speed = 3;
+        this._speed = PlaygroundHelper.Settings.MissileTranslationSpeed;
 
         this.InitPosition(this.BoundingBox);
         this.Rotate(radius);

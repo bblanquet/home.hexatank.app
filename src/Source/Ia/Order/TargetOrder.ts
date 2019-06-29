@@ -9,7 +9,7 @@ import { PlaygroundHelper } from "../../PlaygroundHelper";
 import { SimpleOrder } from "./SimpleOrder";
 
 export class TargetOrder extends Order{
-    private _targetDisplay:BasicItem;
+    private _targetUi:BasicItem;
     private _currentOrder:SimpleOrder; 
     private _currentCeil:Ceil;
 
@@ -61,16 +61,21 @@ export class TargetOrder extends Order{
 
     public Cancel(): void {
         super.Cancel();
-        this._target.Destroy();
+        this._currentOrder.Cancel();
+        this._targetUi.Destroy();
+        if(!this._target.IsAlive())
+        {
+            this._target.Destroy();
+        }
     }
 
     private ShowUi() {
-        this._targetDisplay = new BasicItem(this._target.GetBoundingBox(), Archive.direction.target,4);
-        this._targetDisplay.SetDisplayTrigger(this._v.IsSelected.bind(this._v));
-        this._targetDisplay.SetVisible(()=>
+        this._targetUi = new BasicItem(this._target.GetBoundingBox(), Archive.direction.target,4);
+        this._targetUi.SetDisplayTrigger(this._v.IsSelected.bind(this._v));
+        this._targetUi.SetVisible(()=>
             this._v.IsAlive() 
             && this._target.IsAlive()
             && this._v.GetMainTarget() === this._target );
-        PlaygroundHelper.Playground.Items.push(this._targetDisplay);
+        PlaygroundHelper.Playground.Items.push(this._targetUi);
     }
 }

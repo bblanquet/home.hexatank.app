@@ -16,7 +16,7 @@ import { Archive } from "../Tools/ResourceArchiver";
 
 export class Turrel extends Item implements IRotatable 
 {
-    RotationSpeed: number=0.05;
+    RotationSpeed: number;
     CurrentRadius: number;
     GoalRadius: number;
     Base:Tank;
@@ -37,6 +37,7 @@ export class Turrel extends Item implements IRotatable
     constructor(hqSkin:HqSkin, item:Tank){
         super();
         this._skin = hqSkin; 
+        this.RotationSpeed = PlaygroundHelper.Settings.TurrelRotationSpeed;
         this.CurrentRadius = 0;
         this.Z = 3;
         this.Base = item;

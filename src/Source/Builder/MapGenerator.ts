@@ -34,6 +34,7 @@ import { CeilState } from "../Ceils/CeilState";
 import { ShowEnemiesMenuItem } from "../Menu/ShowEnemiesMenuItem";
 import { HexAxial } from "../Coordinates/HexAxial";
 import { FartestPointsFinder } from "./FartestPointsFinder";
+import { ToolBox } from "../Unit/Utils/ToolBox";
 
 export class MapGenerator implements IMapGenerator{
 
@@ -48,77 +49,101 @@ export class MapGenerator implements IMapGenerator{
         return this._menus;
     }
 
-    public SetMap():Array<Item>{
+    public SetMap():Array<Item>
+    {
         const items = new Array<Item>();
-        const size = 20;
-        const mapBuilder = new FlowerMapBuilder();
-        const ceils = mapBuilder.Build(size);
-        
-        ceils.forEach(ceil => {
-            PlaygroundHelper.CeilsContainer.Add(ceil);
-            items.push(ceil);
-        });
+        const { middleCeil, middleAreas, ceils } = this.CreateCeils(items);
 
-        const middleAreas = mapBuilder.GetAreaMiddleCeil(size);
-        PlaygroundHelper.Settings.MapSize = middleAreas.length * 6; 
-        const middleCeil = mapBuilder.GetMidle(size);
-        middleAreas.push(mapBuilder.GetMidle(size));
-        this.SetGrass(middleAreas, items);
+        const fatherPointManager = new FartestPointsFinder();
+        var hqCeils = fatherPointManager.GetPoints(fatherPointManager.GetFartestPoints(middleCeil, middleAreas), 3);
+        const userHq = this.SetHqs(hqCeils, items);
         
-        const diamond = new Diamond(PlaygroundHelper.CeilsContainer.Get(middleCeil));
-        items.push(diamond);
+        this.SetMenus(userHq, items);
 
-        const fatherPointManager =new FartestPointsFinder();
-        var hqPoints = fatherPointManager.GetPoints(fatherPointManager.GetFartestPoints(middleCeil,middleAreas),3);
-
-        const redQuarter = new Headquarter(
-            new HqSkin(Archive.team.red.tank, Archive.team.red.turrel,Archive.team.red.truck, Archive.team.red.hq, "redCeil"), 
-            PlaygroundHelper.CeilsContainer.Get(hqPoints[0]));
-        PlaygroundHelper.PlayerHeadquarter = redQuarter;        
-        this._currentHq = redQuarter;
-        
-        const blueCeil = PlaygroundHelper.CeilsContainer.Get(hqPoints[1]);
-        const blueQuarter = new IaHeadquarter(PlaygroundHelper.GetAreas(blueCeil)
-        , new HqSkin(Archive.team.blue.tank, 
-            Archive.team.blue.turrel,
-            Archive.team.blue.truck, 
-            Archive.team.blue.hq, 
-            "selectedCeil"), 
-            blueCeil);
-        blueQuarter.Diamond = diamond;
-        
-        const brownCeil = PlaygroundHelper.CeilsContainer.Get(hqPoints[2]);
-        const brownQuarter = new IaHeadquarter(PlaygroundHelper.GetAreas(brownCeil)
-        , new HqSkin(Archive.team.yellow.tank
-            , Archive.team.yellow.turrel
-            ,Archive.team.yellow.truck
-            , Archive.team.yellow.hq
-            , "brownCeil")
-        , brownCeil);
-        brownQuarter.Diamond = diamond;
-        
-        items.push(redQuarter);
-        items.push(blueQuarter);
-        items.push(brownQuarter);
-        
-        this.SetMenus(redQuarter, items);
         ceils.forEach(ceil=>{
             CeilDecorator.Decorate(items, ceil);
             ceil.SetSprite();
         });
+
         items.forEach(item => {
             PlaygroundHelper.Render.Add(item);
         });
-        items.push(new Cloud(200, 12 * PlaygroundHelper.Settings.Size, 600, 'cloud'));
-        items.push(new Cloud(60, 12 * PlaygroundHelper.Settings.Size, 200, 'cloud2'));
-        items.push(new Cloud(0, 12 * PlaygroundHelper.Settings.Size, 800, 'cloud3'));
 
-        redQuarter.GetCurrentCeil().SetState(CeilState.Visible);
-        redQuarter.GetCurrentCeil().GetAllNeighbourhood().forEach(ceil => {
+        this.SetClouds(items);
+
+        userHq.GetCurrentCeil().SetState(CeilState.Visible);
+        userHq.GetCurrentCeil().GetAllNeighbourhood().forEach(ceil => {
             (<Ceil>ceil).SetState(CeilState.Visible);
         });
 
         return items;
+    }
+
+    private SetClouds(items: Item[]) {
+        items.push(new Cloud(200, 12 * PlaygroundHelper.Settings.Size, 600, 'cloud'));
+        items.push(new Cloud(60, 12 * PlaygroundHelper.Settings.Size, 200, 'cloud2'));
+        items.push(new Cloud(0, 12 * PlaygroundHelper.Settings.Size, 800, 'cloud3'));
+    }
+
+    private CreateCeils(items: Item[]) {
+        const size = 20;
+        const mapBuilder = new FlowerMapBuilder();
+        const ceils = mapBuilder.Build(size);
+        ceils.forEach(ceil => {
+            PlaygroundHelper.CeilsContainer.Add(ceil);
+            items.push(ceil);
+        });
+        const middleAreas = mapBuilder.GetAreaMiddleCeil(size);
+        PlaygroundHelper.Settings.MapSize = middleAreas.length * 6;
+        const middleCeil = mapBuilder.GetMidle(size);
+        middleAreas.push(mapBuilder.GetMidle(size));
+        this.SetGrass(middleAreas, items);
+        return { middleCeil, middleAreas, ceils };
+    }
+
+    private SetHqs(hqCeils: Array<HexAxial>, items: Item[]) 
+    {
+        let forbiddenCeils = new Array<Ceil>();
+        hqCeils.forEach(hqCeil=> {
+            forbiddenCeils = forbiddenCeils.concat(PlaygroundHelper.GetFirstRangeAreas(PlaygroundHelper.CeilsContainer.Get(hqCeil)));
+        });
+
+        const redHq = PlaygroundHelper.CeilsContainer.Get(hqCeils[0]);
+        const redRange = PlaygroundHelper.GetSecondRangeAreas(redHq).filter(c => forbiddenCeils.indexOf(c) === -1);
+
+        const diamond = new Diamond(
+            ToolBox.GetRandomElement(redRange)
+            //redRange[0]
+        );
+        const redQuarter = new Headquarter(new HqSkin(Archive.team.red.tank, Archive.team.red.turrel, Archive.team.red.truck, Archive.team.red.hq, "redCeil"), redHq);
+        PlaygroundHelper.PlayerHeadquarter = redQuarter;
+        this._currentHq = redQuarter;
+        items.push(redQuarter);
+        items.push(diamond);
+
+        const blueCeil = PlaygroundHelper.CeilsContainer.Get(hqCeils[1]);
+        const blueRangeAreas = PlaygroundHelper.GetSecondRangeAreas(blueCeil).filter(c => forbiddenCeils.indexOf(c) === -1);
+        const blueDiamond = new Diamond(
+            ToolBox.GetRandomElement(blueRangeAreas)
+            //blueRangeAreas[0]
+            );
+        const blueQuarter = new IaHeadquarter(PlaygroundHelper.GetAreas(blueCeil), new HqSkin(Archive.team.blue.tank, Archive.team.blue.turrel, Archive.team.blue.truck, Archive.team.blue.hq, "selectedCeil"), blueCeil);
+        blueQuarter.Diamond = blueDiamond;
+        items.push(blueDiamond);
+        items.push(blueQuarter);
+        
+        const brownCeil = PlaygroundHelper.CeilsContainer.Get(hqCeils[2]);
+        const brownRangeAreas = PlaygroundHelper.GetSecondRangeAreas(brownCeil).filter(c => redRange.indexOf(c) === -1).filter(c => forbiddenCeils.indexOf(c) === -1);
+        const brownDiamond = new Diamond(
+            ToolBox.GetRandomElement(brownRangeAreas)
+            //brownRangeAreas[0]
+            );
+        const brownQuarter = new IaHeadquarter(PlaygroundHelper.GetAreas(brownCeil), new HqSkin(Archive.team.yellow.tank, Archive.team.yellow.turrel, Archive.team.yellow.truck, Archive.team.yellow.hq, "brownCeil"), brownCeil);
+        brownQuarter.Diamond = brownDiamond;
+        items.push(brownDiamond);
+        items.push(brownQuarter);
+
+        return redQuarter;
     }
 
     private SetGrass(middleAreas: HexAxial[], items: Item[]) {

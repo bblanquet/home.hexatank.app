@@ -2,6 +2,7 @@ import { InteractionContext } from "../Context/InteractionContext";
 import { Headquarter } from "../Ceils/Field/Headquarter"; 
 import { SelectableMenuItem } from "./SelectableMenuItem";
 import { Archive } from "../Tools/ResourceArchiver";
+import { PlaygroundHelper } from "../PlaygroundHelper";
 
 export class TankMenuItem extends SelectableMenuItem 
 {
@@ -14,9 +15,9 @@ export class TankMenuItem extends SelectableMenuItem
 
     public Select(context: InteractionContext): boolean      
     {        
-        if(this._hq.Diamonds > 4){
+        if(this._hq.Diamonds >= PlaygroundHelper.Settings.TankPrice){
             if(this._hq.CreateTank()){
-                this._hq.Diamonds -= 4;
+                this._hq.Diamonds -= PlaygroundHelper.Settings.TankPrice;
             }
         }
         return true;

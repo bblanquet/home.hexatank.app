@@ -51,7 +51,7 @@ export class InteractionContext implements IInteractionContext{
         combinations.push(new TankCombination());
         combinations.push(new PatrolCombination());
         combinations.push(new ClearTrashCombination(this._isSelectable, this));
-        combinations.push(new UnselectCombination(this._isSelectable, this));
+        combinations.push(new UnselectCombination(menus,this._isSelectable, this));
         combinations.push(new SelectionCombination(menus,this._isSelectable));
         combinations.push(new FastCeilCombination());
         combinations.push(new TargetCombination());    
@@ -103,12 +103,16 @@ export class InteractionContext implements IInteractionContext{
         }
 
         this._selectedItem.push(item);   
-        //console.log(`%c [${this._selectedItem.length}] selected: ${item.constructor.name}`,'font-weight:bold;color:red;');
+        console.log(`%c [${this._selectedItem.length}] selected: ${item.constructor.name}`,'font-weight:bold;color:red;');
         this._checker.Check(this._selectedItem);
     }
 
-    public Push(item: Item): void {
-        this.OnSelect(item);
+    public Push(item: Item, forced:boolean): void {
+        if(forced){
+            this.OnSelect(item);
+        }else{
+            this._selectedItem.push(item);
+        }
     }
 
     ClearContext(): void {

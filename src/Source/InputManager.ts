@@ -63,7 +63,7 @@ export class InputManager{
     }
 
     private _minScale:number=0.8;
-    private _maxScale:number=2;
+    private _maxScale:number=4;
 
     OnPinch(delta:number):void
     {

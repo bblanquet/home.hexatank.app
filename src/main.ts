@@ -3,20 +3,22 @@ import {PlaygroundHelper} from './Source/PlaygroundHelper';
 import { RenderingHandler } from './Source/RenderingHandler';
 import { GroupsContainer } from './Source/GroupsContainer';
 import { GameSetup } from './GameSetup';
-import * as Hammer from 'hammerjs';
 import { SpriteProvider } from './Source/Tools/SpriteProvider';
 import { InteractionContext } from './Source/Context/InteractionContext';
 import { Playground } from './Source/Playground';
 import { Item } from './Source/Item';
 import { LoadingItem } from './Source/LoadingItem';
-import { BoundingBox } from './Source/BoundingBox';
 import { FakeBackground } from './Source/FakeBackground';
+
+
+const Viewport = require('pixi-viewport').Viewport
 
 const app = new PIXI.Application({
     backgroundColor: 0x00A651,
 });
 
 const path = "./Program6.json";
+var viewport;
 
 document.addEventListener('DOMContentLoaded', () => { 
     PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
@@ -29,9 +31,36 @@ function Setup()
 {
     PlaygroundHelper.Init();
     PlaygroundHelper.SpriteProvider = new SpriteProvider(app.loader.resources[path].textures);
-    PlaygroundHelper.Render = new RenderingHandler(
-        new GroupsContainer([0,1,2,3,4,5,6],app.stage));
+    
+    viewport = new Viewport({
+        screenWidth: window.innerWidth,
+        screenHeight: window.innerHeight,
+        worldWidth: 1000,
+        worldHeight: 1000,
+     
+        interaction: app.renderer.plugins.interaction
+    });
 
+    app.stage.addChild(viewport);
+
+    viewport
+    .drag()
+    .pinch()
+    .wheel()
+    .decelerate();
+    
+    PlaygroundHelper.Render = new RenderingHandler(
+        new GroupsContainer(
+            {
+                zs:[0,1,2,3,4,5],
+                parent:viewport
+            },
+            {
+                zs:[6,7],
+                parent:app.stage
+            }
+            )
+        );
 
     const items = new Array<Item>();
     const playground = new Playground(items,app, interaction);
@@ -43,17 +72,7 @@ function Setup()
     manager.on('pointerdown', PlaygroundHelper.Playground.InputManager.OnMouseDown.bind(PlaygroundHelper.Playground.InputManager), false);
     manager.on('pointermove', PlaygroundHelper.Playground.InputManager.OnMouseMove.bind(PlaygroundHelper.Playground.InputManager), false);
     manager.on('pointerup', PlaygroundHelper.Playground.InputManager.OnMouseUp.bind(PlaygroundHelper.Playground.InputManager), false);
-    window.addEventListener('mousewheel', PlaygroundHelper.Playground.InputManager.OnMouseWheel.bind(PlaygroundHelper.Playground.InputManager), false);
-    let hammer = new Hammer.Manager(app.view);
-    const pinch = new Hammer.Pinch();
-    hammer.add([pinch]);
-    hammer.on('pinchmove', (event:HammerInput) => {
-        PlaygroundHelper.Playground.InputManager.OnPinch(event.scale);
-    });
-    hammer.on('doubletap', (event:HammerInput) => {
-        PlaygroundHelper.Playground.InputManager.OnPinch(event.scale+0.2);
-    });
-
+    // window.addEventListener('mousewheel', PlaygroundHelper.Playground.InputManager.OnMouseWheel.bind(PlaygroundHelper.Playground.InputManager), false);
     window.addEventListener('resize', ResizeTheCanvas);
     ResizeTheCanvas();
     
@@ -77,12 +96,16 @@ function ResizeTheCanvas()
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) 
     {
         app.renderer.resize(screen.width,screen.height); 
+        Viewport.screenWidth = screen.width;
+        Viewport.screenHeight = screen.height;
         PlaygroundHelper.Settings.ScreenWidth = screen.width;
         PlaygroundHelper.Settings.ScreenHeight = screen.height;
     }
     else
     {
         app.renderer.resize(window.innerWidth,window.innerHeight); 
+        Viewport.screenWidth = window.innerWidth;
+        Viewport.screenHeight = window.innerHeight;
         PlaygroundHelper.Settings.ScreenWidth = window.innerWidth;
         PlaygroundHelper.Settings.ScreenHeight = window.innerHeight;
     }  

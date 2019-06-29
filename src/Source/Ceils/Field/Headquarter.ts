@@ -25,8 +25,6 @@ export class Headquarter extends AliveItem implements IField, ISelectable
     private _skin:HqSkin;
     private _onCeilStateChanged:{(ceilState:CeilState):void};
 
-
-
     constructor(skin:HqSkin, ceil:Ceil){
         super();
         this._skin = skin;
@@ -137,7 +135,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable
             if(!field.GetCeil().IsBlocked())
             {
                 if(field.GetCeil().IsVisible()){
-                    const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,6,false,5);
+                    const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,5,false,5);
                     PlaygroundHelper.Playground.Items.push(explosion);
                 }
                 const tank = new Tank(this);
@@ -160,7 +158,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable
             if(!field.GetCeil().IsBlocked())
             {
                 if(field.GetCeil().IsVisible()){
-                    const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,6,false,5);
+                    const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,5,false,5);
                     PlaygroundHelper.Playground.Items.push(explosion);
                 }
                 var truck = new Truck(this);

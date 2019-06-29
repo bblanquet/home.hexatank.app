@@ -14,7 +14,7 @@ export class TopBar extends Item
     constructor(headquarter:Headquarter){
         super();
         this.Hq = headquarter;
-        this.Z= 3;
+        this.Z= 6;
 
         this.GenerateSprite(Archive.nature.diamondStone);
         this.SetBothProperty(Archive.nature.diamondStone,e=>{
@@ -36,7 +36,7 @@ export class TopBar extends Item
         this.SetPosition();
 
         this.GetBothSprites(Archive.nature.diamondStone).forEach(s=>PlaygroundHelper.Render.AddDisplayableEntity(s));
-        PlaygroundHelper.Render.AddDisplayableEntity(this._text);
+        PlaygroundHelper.Render.AddDisplayableEntity2(this._text,6);
     }
 
     public GetBoundingBox(): BoundingBox {
@@ -48,20 +48,19 @@ export class TopBar extends Item
     }
 
     private SetPosition() {
-        this._text.x = 40/ PlaygroundHelper.Settings.GetScale();
-        this._text.y =  2/ PlaygroundHelper.Settings.GetScale();
-        this._text.style.fontSize =  24/ PlaygroundHelper.Settings.GetScale();
-        this._text.style.strokeThickness =  2/ PlaygroundHelper.Settings.GetScale();
+        this._text.x = 40;
+        this._text.y =  2;
+        this._text.style.fontSize =  24;
+        this._text.style.strokeThickness =  2;
         this.SetBothProperty(Archive.nature.diamondStone,e=>{
             e.y =0;
-            e.x = 10 / PlaygroundHelper.Settings.GetScale();
-            e.width = 28 / PlaygroundHelper.Settings.GetScale();
-            e.height = 28 / PlaygroundHelper.Settings.GetScale();
+            e.x = 10;
+            e.width = 28;
+            e.height = 28;
         });
     }
 
     public Update(viewX: number, viewY: number): void {
-        this.SetPosition();
         this._text.text = this.Hq.Diamonds.toString();
     }
 }

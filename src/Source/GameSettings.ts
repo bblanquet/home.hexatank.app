@@ -22,9 +22,9 @@ export class GameSettings
     private _fpsHandlers:{(data: number):void}[] = [];
     public MapSize: number=0;
 
-    public GetRelativeWidth():number{
-        return this.ScreenWidth/this._viewContext.Scale;
-    }
+    // public GetRelativeWidth():number{
+    //     return this.ScreenWidth/this._viewContext.Scale;
+    // }
 
     public GetFps():number{
         return this._fps;
@@ -50,13 +50,13 @@ export class GameSettings
         this._viewContext.BoundingBox.Y = y;
     }
 
-    public GetRelativeHeight():number{
-        return this.ScreenHeight/this._viewContext.Scale;
-    }
+    // public GetRelativeHeight():number{
+    //     return this.ScreenHeight/this._viewContext.Scale;
+    // }
 
-    public GetScale():number{
-        return this._viewContext.Scale;
-    }
+    // public GetScale():number{
+    //     return this._viewContext.Scale;
+    // }
 
     public ChangeScale(scale:number){
         const previousScale = this._viewContext.Scale;

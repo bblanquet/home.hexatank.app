@@ -6,7 +6,7 @@ import { PlaygroundHelper } from "../PlaygroundHelper";
 export class ZoomOutButton extends MenuItem{
     constructor(){
         super();
-        this.Z = 4; 
+        this.Z = 6; 
         this.GenerateSprite(Archive.menu.zoomOutButton);
         PlaygroundHelper.Render.Add(this);
     }

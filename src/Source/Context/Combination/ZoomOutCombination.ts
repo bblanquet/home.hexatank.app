@@ -11,11 +11,11 @@ export class ZoomOutCombination implements ICombination{
 
     Combine(items: Item[]): boolean {
         if(this.IsMatching(items)){
-            let scale = PlaygroundHelper.Settings.GetScale()-0.1;
-            PlaygroundHelper.Settings.ChangeScale(scale);
-            items.filter(i=>(i instanceof ZoomOutButton)).forEach(element => {
-                items.splice(items.indexOf(element),1);
-            });
+            // let scale = PlaygroundHelper.Settings.GetScale()-0.1;
+            // PlaygroundHelper.Settings.ChangeScale(scale);
+            // items.filter(i=>(i instanceof ZoomOutButton)).forEach(element => {
+            //     items.splice(items.indexOf(element),1);
+            // });
             return true;
         }
         return false;

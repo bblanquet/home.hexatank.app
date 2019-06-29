@@ -8,7 +8,7 @@ export class LoadingItem extends Item{
 
     constructor(private _boundingBox:BoundingBox){
         super();
-        this.Z = 6;
+        this.Z = 7;
         this.GenerateSprite(Archive.loading,e=>{
             e.anchor.set(0.50);
             e.alpha = 1;

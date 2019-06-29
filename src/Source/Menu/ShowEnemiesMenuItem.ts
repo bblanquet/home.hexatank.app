@@ -7,7 +7,7 @@ export class ShowEnemiesMenuItem extends MenuItem{
     
     constructor(){
         super();
-        this.Z = 4; 
+        this.Z = 6; 
         this.GenerateSprite(Archive.menu.showEnemies);
         PlaygroundHelper.Render.Add(this);
     }

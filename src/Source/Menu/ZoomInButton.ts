@@ -7,7 +7,7 @@ export class ZoomInButton extends MenuItem{
 
     constructor(){
         super();
-        this.Z = 4; 
+        this.Z = 6; 
         this.GenerateSprite(Archive.menu.zoomInButton);
         PlaygroundHelper.Render.Add(this);
     }

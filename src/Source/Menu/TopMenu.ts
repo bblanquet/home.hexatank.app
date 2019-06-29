@@ -17,13 +17,13 @@ export class TopMenu extends Menu{
     }
 
     private SetPosition() {
-        let width = 50/PlaygroundHelper.Settings.GetScale();
-        let height = 75/PlaygroundHelper.Settings.GetScale();
-        let margin = PlaygroundHelper.Settings.GetRelativeWidth() / 2 - this.Items.length * height / 2;
+        let width = 50;
+        let height = 75;
+        let margin = PlaygroundHelper.Settings.ScreenWidth / 2 - this.Items.length * height / 2;
         let x = 0;
         let i = 0;
         this.Items.forEach(item => {
-            item.SetBoundingBox({ x: margin + i * width, y: 20/PlaygroundHelper.Settings.GetScale(), width: width, height: height });
+            item.SetBoundingBox({ x: margin + i * width, y: 20, width: width, height: height });
             i += 1;
         });
     }

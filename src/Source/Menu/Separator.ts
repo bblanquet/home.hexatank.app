@@ -6,7 +6,7 @@ export class Separator extends MenuItem{
 
     constructor(){
         super();
-        this.Z = 4; 
+        this.Z = 6; 
         this.GenerateSprite('separator');
         this.Hide();
         PlaygroundHelper.Render.Add(this);

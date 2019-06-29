@@ -28,8 +28,8 @@ export class Playground implements IPlayground
 
     public Update():void{
         this.Items = this.Items.filter(item => item.IsUpdatable);
-        this._app.stage.scale.x = PlaygroundHelper.Settings.GetScale();
-        this._app.stage.scale.y = PlaygroundHelper.Settings.GetScale();
+        //this._app.stage.scale.x = PlaygroundHelper.Settings.GetScale();
+        //this._app.stage.scale.y = PlaygroundHelper.Settings.GetScale();
         this.Items.forEach(item => {
             item.Update(PlaygroundHelper.Settings.GetX(),PlaygroundHelper.Settings.GetY());
         });

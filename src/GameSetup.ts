@@ -18,8 +18,8 @@ export class GameSetup{
 
     private SetCenter():void{
         const hqPoint = this._mapGenerator.GetHq().GetBoundingBox().GetCentralPoint();
-        const halfWidth = PlaygroundHelper.Settings.GetRelativeWidth()/2;
-        const halfHeight = PlaygroundHelper.Settings.GetRelativeHeight()/2;
+        const halfWidth = PlaygroundHelper.Settings.ScreenWidth/2;
+        const halfHeight = PlaygroundHelper.Settings.ScreenHeight/2;
         PlaygroundHelper.Settings.SetX(-(hqPoint.X - halfWidth));
         PlaygroundHelper.Settings.SetY(-(hqPoint.Y - halfHeight));
     }

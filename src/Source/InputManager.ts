@@ -18,7 +18,7 @@ export class InputManager{
         this.InteractionContext = interactionContext;
     }
 
-    OnMouseDown(event: PIXI.interaction.InteractionEvent){
+    public OnMouseDown(event: PIXI.interaction.InteractionEvent):void{
         if(!this.IsGrabbed)
         {
             this.CurrentPoint.X = event.data.global.x;
@@ -30,26 +30,16 @@ export class InputManager{
         }
     }    
 
-    OnMouseMove(event:PIXI.interaction.InteractionEvent){
+
+    public OnMouseMove(event:PIXI.interaction.InteractionEvent):void{
         if(this.IsGrabbed)
         {
-            PlaygroundHelper.Settings.SetX(
-                PlaygroundHelper.Settings.GetX()
-                + event.data.global.x 
-                - this.CurrentPoint.X);
-            
-            PlaygroundHelper.Settings.SetY(
-                    PlaygroundHelper.Settings.GetY()
-                    + event.data.global.y 
-                    - this.CurrentPoint.Y);
-
-
             this.CurrentPoint.X = event.data.global.x;
             this.CurrentPoint.Y = event.data.global.y;
         }
     }
 
-    OnMouseUp(event:PIXI.interaction.InteractionEvent){
+    public OnMouseUp(event:PIXI.interaction.InteractionEvent):void{
         this.IsGrabbed = false;
         const distance = Math.abs(
             Math.sqrt(
@@ -62,48 +52,48 @@ export class InputManager{
         }
     }
 
-    private _minScale:number=0.8;
-    private _maxScale:number=4;
+    // private _minScale:number=0.8;
+    // private _maxScale:number=4;
 
-    OnPinch(delta:number):void
-    {
-        let zoom = PlaygroundHelper.Settings.GetScale();
-        if(delta < 1)
-        {
-            zoom -= delta * 0.01;
+    // public OnPinch(delta:number):void
+    // {
+    //     let zoom = PlaygroundHelper.Settings.GetScale();
+    //     if(delta < 1)
+    //     {
+    //         zoom -= delta * 0.01;
 
-            if(zoom < this._minScale ){
-                zoom = this._minScale;
-            }
-        }
-        else
-        {
-            zoom += delta * 0.01;
+    //         if(zoom < this._minScale ){
+    //             zoom = this._minScale;
+    //         }
+    //     }
+    //     else
+    //     {
+    //         zoom += delta * 0.01;
             
-            if(this._maxScale < zoom ){
-                zoom = this._maxScale;
-            }
-        }
-        PlaygroundHelper.Settings.ChangeScale(zoom);
-    }
+    //         if(this._maxScale < zoom ){
+    //             zoom = this._maxScale;
+    //         }
+    //     }
+    //     PlaygroundHelper.Settings.ChangeScale(zoom);
+    // }
 
-    OnMouseWheel(value:{deltaY:number}):void{
-        let zoom = PlaygroundHelper.Settings.GetScale();
-        if(0 < value.deltaY)//event.wheelDelta
-        {
-            zoom -= 0.1;
-            if(zoom < this._minScale ){
-                zoom = this._minScale;
-            }
-        }
-        else
-        {
-            zoom += 0.1;
-            if(this._maxScale < zoom ){
-                zoom = this._maxScale;
-            }
+    // public OnMouseWheel(value:{deltaY:number}):void{
+    //     let zoom = PlaygroundHelper.Settings.GetScale();
+    //     if(0 < value.deltaY)//event.wheelDelta
+    //     {
+    //         zoom -= 0.1;
+    //         if(zoom < this._minScale ){
+    //             zoom = this._minScale;
+    //         }
+    //     }
+    //     else
+    //     {
+    //         zoom += 0.1;
+    //         if(this._maxScale < zoom ){
+    //             zoom = this._maxScale;
+    //         }
 
-        }
-        PlaygroundHelper.Settings.ChangeScale(zoom);
-    }
+    //     }
+    //     PlaygroundHelper.Settings.ChangeScale(zoom);
+    // }
 }

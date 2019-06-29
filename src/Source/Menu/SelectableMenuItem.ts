@@ -11,7 +11,7 @@ export abstract class SelectableMenuItem extends MenuItem
     _isSelected:boolean=false;
     constructor(private _icon:string){
         super();
-        this.Z = 4; 
+        this.Z = 6; 
         this.GenerateSprite(Archive.menu.backgroundButton);
         this.GenerateSprite(Archive.menu.hoverBackgroundButton);
         this.GenerateSprite(this._icon);

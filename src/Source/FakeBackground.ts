@@ -10,7 +10,7 @@ export class FakeBackground extends Item{
     constructor()
     {
         super();
-        this.Z = 5;
+        this.Z = 6;
         this._background = new PIXI.Graphics();
         this.GetDisplayObjects().push(this._background);
         PlaygroundHelper.Render.Add(this);

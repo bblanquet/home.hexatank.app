@@ -123,7 +123,7 @@ export class IaHeadquarter extends Headquarter{
             {
                 this.Diamonds -= PlaygroundHelper.Settings.TruckPrice;
                 if(field.GetCeil().IsVisible()){
-                    const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,6,false,5);
+                    const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,5,false,5);
                     PlaygroundHelper.Playground.Items.push(explosion);
                 }
                 truck = new Truck(this);
@@ -152,7 +152,7 @@ export class IaHeadquarter extends Headquarter{
                         this.Diamonds -= PlaygroundHelper.Settings.TankPrice;
                         if(field.GetCeil().IsVisible())
                         {
-                            const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,6,false,5);
+                            const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,5,false,5);
                             PlaygroundHelper.Playground.Items.push(explosion);
                         }
                         

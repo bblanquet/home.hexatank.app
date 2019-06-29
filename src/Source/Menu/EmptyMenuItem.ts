@@ -6,7 +6,7 @@ export class EmptyMenuItem extends MenuItem
 {
     constructor(private _item:string){
         super(); 
-        this.Z = 4; 
+        this.Z = 6; 
         this.GenerateSprite(_item);
         this.Hide();
         PlaygroundHelper.Render.Add(this);

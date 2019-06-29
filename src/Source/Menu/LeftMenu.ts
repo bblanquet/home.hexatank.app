@@ -17,9 +17,9 @@ export class LeftMenu extends Menu{
     }
 
     private SetPosition() {
-        let width = 50/PlaygroundHelper.Settings.GetScale();
-        let height = 75/PlaygroundHelper.Settings.GetScale();
-        let margin = PlaygroundHelper.Settings.GetRelativeHeight() / 2 - this.Items.length * height / 2;
+        let width = 50;
+        let height = 75;
+        let margin = PlaygroundHelper.Settings.ScreenHeight / 2 - this.Items.length * height / 2;
         let x = 0;
         let i = 0;
         this.Items.forEach(item => {

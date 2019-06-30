@@ -3,13 +3,14 @@ import { BoundingBox } from "../BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
 import { PlaygroundHelper } from "../PlaygroundHelper";
 import { Timer } from "../Tools/Timer";
+import { Archive } from "../Tools/ResourceArchiver";
 
 export class Dust extends Item 
 {
     public BoundingBox:BoundingBox;
     private currentDust:number; 
     private currentAlpha:number;
-    private _sprites:string[]=['dust1.png','dust2.png','dust3.png','dust4.png'];
+    // private _sprites:string[]=['dust1.png','dust2.png','dust3.png','dust4.png'];
     private _timer:Timer;
 
     constructor(boundingBox:BoundingBox)
@@ -17,11 +18,11 @@ export class Dust extends Item
         super();
         
         this.currentDust = -1;
-        this.currentAlpha = 1;
+        this.currentAlpha = 0.5;
         this.Z= 1;
         this._timer = new Timer(15);
         this.BoundingBox = boundingBox; 
-        this._sprites.forEach(dust=>{
+        Archive.dusts.forEach(dust=>{
             this.GenerateSprite(dust);
         });
         this.GetSprites().forEach(sp=>{
@@ -45,10 +46,10 @@ export class Dust extends Item
         super.Update(viewX,viewY);
 
         if(0 <= this.currentDust 
-            && this.currentDust < this._sprites.length)
+            && this.currentDust < Archive.dusts.length)
         {
-            this.SetProperty(this._sprites[this.currentDust],s=>s.rotation += 0.1);
-            this.SetProperty(this._sprites[this.currentDust],s=>s.alpha += this.currentAlpha);
+            this.SetProperty(Archive.dusts[this.currentDust],s=>s.rotation += 0.1);
+            this.SetProperty(Archive.dusts[this.currentDust],s=>s.alpha += this.currentAlpha);
         }
 
         this.currentAlpha -= 0.01;
@@ -65,17 +66,17 @@ export class Dust extends Item
                 var previous = this.currentDust; 
                 this.currentDust += 1;
     
-                if(this._sprites.length == this.currentDust)
+                if(Archive.dusts.length == this.currentDust)
                 {
-                    this.SetProperty(this._sprites[previous],s=>s.alpha = 0);
+                    this.SetProperty(Archive.dusts[previous],s=>s.alpha = 0);
                 }
                 else
                 {
                     if(-1 < previous)
                     {
-                        this.SetProperty(this._sprites[previous],s=>s.alpha = 0);
+                        this.SetProperty(Archive.dusts[previous],s=>s.alpha = 0);
                     }
-                    this.SetProperty(this._sprites[this.currentDust],s=>s.alpha = this.currentAlpha);
+                    this.SetProperty(Archive.dusts[this.currentDust],s=>s.alpha = this.currentAlpha);
                 }
             }
         }
@@ -92,7 +93,7 @@ export class Dust extends Item
     }
 
     public IsDone(){
-        return this._sprites.length == this.currentDust;
+        return Archive.dusts.length == this.currentDust;
     }
 
     public Destroy() {

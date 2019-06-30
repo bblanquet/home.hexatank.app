@@ -26,8 +26,6 @@ import { Menu } from "../Menu/Menu";
 import { ISelectable } from "../ISelectable";
 import { Vehicle } from "../Unit/Vehicle";
 import { Ceil } from "../Ceils/Ceil";
-import { ZoomInButton } from "../Menu/ZoomInButton";
-import { ZoomOutButton } from "../Menu/ZoomOutButton";
 import { TopMenu } from "../Menu/TopMenu";
 import { MoneyMenuItem } from "../Menu/MoneyMenuItem";
 import { CeilState } from "../Ceils/CeilState"; 
@@ -35,6 +33,8 @@ import { ShowEnemiesMenuItem } from "../Menu/ShowEnemiesMenuItem";
 import { HexAxial } from "../Coordinates/HexAxial";
 import { FartestPointsFinder } from "./FartestPointsFinder";
 import { ToolBox } from "../Unit/Utils/ToolBox";
+import { PauseButton } from "../Menu/PauseButton";
+import { ResetButton } from "../Menu/ResetButton";
 
 export class MapGenerator implements IMapGenerator{
 
@@ -80,9 +80,11 @@ export class MapGenerator implements IMapGenerator{
     }
 
     private SetClouds(items: Item[]) {
-        items.push(new Cloud(200, 12 * PlaygroundHelper.Settings.Size, 600, 'cloud'));
-        items.push(new Cloud(60, 12 * PlaygroundHelper.Settings.Size, 200, 'cloud2'));
-        items.push(new Cloud(0, 12 * PlaygroundHelper.Settings.Size, 800, 'cloud3'));
+        items.push(new Cloud(200, 20 * PlaygroundHelper.Settings.Size, 800, Archive.nature.clouds[0]));
+        items.push(new Cloud(400, 20 * PlaygroundHelper.Settings.Size, 1200, Archive.nature.clouds[1]));
+        items.push(new Cloud(600, 20 * PlaygroundHelper.Settings.Size, 1600, Archive.nature.clouds[2]));
+        items.push(new Cloud(800, 20 * PlaygroundHelper.Settings.Size, 800, Archive.nature.clouds[3]));
+        items.push(new Cloud(1200, 20 * PlaygroundHelper.Settings.Size, 1600, Archive.nature.clouds[4]));
     }
 
     private CreateCeils(items: Item[]) {
@@ -113,7 +115,6 @@ export class MapGenerator implements IMapGenerator{
 
         const diamond = new Diamond(
             ToolBox.GetRandomElement(redRange)
-            //redRange[0]
         );
         const redQuarter = new Headquarter(new HqSkin(Archive.team.red.tank, Archive.team.red.turrel, Archive.team.red.truck, Archive.team.red.hq, "redCeil"), redHq);
         PlaygroundHelper.PlayerHeadquarter = redQuarter;
@@ -125,7 +126,6 @@ export class MapGenerator implements IMapGenerator{
         const blueRangeAreas = PlaygroundHelper.GetSecondRangeAreas(blueCeil).filter(c => forbiddenCeils.indexOf(c) === -1);
         const blueDiamond = new Diamond(
             ToolBox.GetRandomElement(blueRangeAreas)
-            //blueRangeAreas[0]
             );
         const blueQuarter = new IaHeadquarter(PlaygroundHelper.GetAreas(blueCeil), new HqSkin(Archive.team.blue.tank, Archive.team.blue.turrel, Archive.team.blue.truck, Archive.team.blue.hq, "selectedCeil"), blueCeil);
         blueQuarter.Diamond = blueDiamond;
@@ -136,7 +136,6 @@ export class MapGenerator implements IMapGenerator{
         const brownRangeAreas = PlaygroundHelper.GetSecondRangeAreas(brownCeil).filter(c => redRange.indexOf(c) === -1).filter(c => forbiddenCeils.indexOf(c) === -1);
         const brownDiamond = new Diamond(
             ToolBox.GetRandomElement(brownRangeAreas)
-            //brownRangeAreas[0]
             );
         const brownQuarter = new IaHeadquarter(PlaygroundHelper.GetAreas(brownCeil), new HqSkin(Archive.team.yellow.tank, Archive.team.yellow.turrel, Archive.team.yellow.truck, Archive.team.yellow.hq, "brownCeil"), brownCeil);
         brownQuarter.Diamond = brownDiamond;
@@ -173,9 +172,9 @@ export class MapGenerator implements IMapGenerator{
 
         const zoomMenu = new TopMenu((data:ISelectable)=>true,
         [
-            new ZoomInButton(),
-            new ZoomOutButton(),
-            new ShowEnemiesMenuItem()
+            new PauseButton(),
+            new ShowEnemiesMenuItem(),
+            new ResetButton()
         ]);
         zoomMenu.Show(null);
         items.splice(0, 0, zoomMenu);

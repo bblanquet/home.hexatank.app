@@ -18,7 +18,14 @@ const app = new PIXI.Application({
 });
 
 const path = "./Program6.json";
-var viewport;
+var viewport= new Viewport({
+    screenWidth: window.innerWidth,
+    screenHeight: window.innerHeight,
+    worldWidth: 1000,
+    worldHeight: 1000,
+ 
+    interaction: app.renderer.plugins.interaction
+});
 
 document.addEventListener('DOMContentLoaded', () => { 
     PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
@@ -32,15 +39,6 @@ function Setup()
     PlaygroundHelper.Init();
     PlaygroundHelper.SpriteProvider = new SpriteProvider(app.loader.resources[path].textures);
     
-    viewport = new Viewport({
-        screenWidth: window.innerWidth,
-        screenHeight: window.innerHeight,
-        worldWidth: 1000,
-        worldHeight: 1000,
-     
-        interaction: app.renderer.plugins.interaction
-    });
-
     app.stage.addChild(viewport);
 
     viewport
@@ -96,16 +94,20 @@ function ResizeTheCanvas()
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) 
     {
         app.renderer.resize(screen.width,screen.height); 
-        Viewport.screenWidth = screen.width;
-        Viewport.screenHeight = screen.height;
+        viewport.screenWidth = screen.width;
+        viewport.screenHeight = screen.height;
+        viewport.worldWidth = screen.width;
+        viewport.worldHeight = screen.height;
         PlaygroundHelper.Settings.ScreenWidth = screen.width;
         PlaygroundHelper.Settings.ScreenHeight = screen.height;
     }
     else
     {
         app.renderer.resize(window.innerWidth,window.innerHeight); 
-        Viewport.screenWidth = window.innerWidth;
-        Viewport.screenHeight = window.innerHeight;
+        viewport.screenWidth = window.innerWidth;
+        viewport.screenHeight = window.innerHeight;
+        viewport.worldWidth = window.innerWidth;
+        viewport.worldHeight = window.innerHeight;
         PlaygroundHelper.Settings.ScreenWidth = window.innerWidth;
         PlaygroundHelper.Settings.ScreenHeight = window.innerHeight;
     }  

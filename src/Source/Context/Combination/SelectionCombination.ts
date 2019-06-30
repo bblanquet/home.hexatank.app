@@ -4,6 +4,7 @@ import { ISelectable } from "../../ISelectable";
 import { Menu } from "../../Menu/Menu";
 import { Ceil } from "../../Ceils/Ceil";
 import { CeilState } from "../../Ceils/CeilState";
+import { BasicField } from "../../Ceils/Field/BasicField";
 
 export class SelectionCombination implements ICombination{
     private _isSelectable:{(item:Item):boolean};
@@ -22,7 +23,10 @@ export class SelectionCombination implements ICombination{
             const selectable = this.ToSelectableItem(item);
             if(selectable instanceof Ceil){
                 const selectableCeil = selectable as Ceil;
-                if(selectableCeil.GetState() === CeilState.Visible){
+                
+                if(selectableCeil.GetField() instanceof BasicField 
+                    && selectableCeil.GetState() === CeilState.Visible)
+                {
                     selectable.SetSelected(true); 
                     this._menus.forEach(menu=>{menu.Show(selectable);});
                 }

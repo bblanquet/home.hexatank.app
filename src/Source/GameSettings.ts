@@ -11,6 +11,7 @@ export class GameSettings
     public TurrelRotationSpeed:number=0.2;
     public TranslationSpeed:number=2;
     public MissileTranslationSpeed:number=5;
+    public IsPause:boolean=false;
     public ShowEnemies:boolean=false;
     public Attack:number=30;
     public TankPrice:number=8;

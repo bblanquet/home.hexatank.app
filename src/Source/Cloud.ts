@@ -2,7 +2,6 @@ import { Item } from "./Item";
 import { BoundingBox } from "./BoundingBox";
 import { InteractionContext } from "./Context/InteractionContext";
 import { PlaygroundHelper } from "./PlaygroundHelper";
-import { Sprite } from "pixi.js";
 import { ITimer } from "./Tools/ITimer";
 import { Timer } from "./Tools/Timer";
 

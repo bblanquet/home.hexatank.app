@@ -8,6 +8,12 @@ export const Archive = {
         './construction/dust6.svg',
         './construction/dust7.svg',
     ],
+    dusts:[
+        './explosion/dust1.svg',
+        './explosion/dust2.svg',
+        './explosion/dust3.svg',
+        './explosion/dust4.svg',
+    ],
     explosions:[
         './explosion/explosion1.svg',
         './explosion/explosion2.svg',
@@ -28,6 +34,8 @@ export const Archive = {
         moneyButton:'./menu/moneyMenu.svg',
         speedMenu:'./menu/speedMenu.svg',
         showEnemies:'./menu/showEnemiesButton.svg',
+        resetButton:'./menu/resetButton.svg',
+        pauseButton:'./menu/pauseButton.svg',
         visionMenu:'./menu/visionMenu.svg',
         camouflageMenu:'./menu/camouflageMenu.svg',
         patrolButton:'./menu/patrolButton.svg',
@@ -95,6 +103,13 @@ export const Archive = {
         './lights/light4.svg'
     ],
     nature:{
+        clouds:[
+            './nature/cloud1.svg',
+            './nature/cloud2.svg',
+            './nature/cloud3.svg',
+            './nature/cloud4.svg',
+            './nature/cloud5.svg',
+        ],
         diamondStone:'./nature/diamondStone.svg',
         stone:'./nature/stones.svg',
         puddle:'./nature/waterPuddle.svg',

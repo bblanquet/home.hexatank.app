@@ -6,6 +6,8 @@ import { Ceil } from "../../Ceils/Ceil";
 import { Headquarter } from "../../Ceils/Field/Headquarter"; 
 import { Vehicle } from "../../Unit/Vehicle"; 
 import { Menu } from "../../Menu/Menu";
+import { BasicField } from "../../Ceils/Field/BasicField";
+import { CeilState } from "../../Ceils/CeilState";
 
 export class UnselectCombination implements ICombination{
     private _isSelectable:{(item:Item):boolean};
@@ -31,15 +33,19 @@ export class UnselectCombination implements ICombination{
                 {
                     this.UnSelectItem(items[0]);
                     this._interactionContext.ClearContext();
-                    
                     if(lastItem instanceof Vehicle)
                     {
                         const vehicle = lastItem as Vehicle;
                         const ceil = vehicle.GetCurrentCeil();
-                        this._interactionContext.Push(ceil,false);
-                        ceil.SetSelected(true); 
-                        this._menus.forEach(menu=>{menu.Show(ceil);});
-                        return true;
+
+                        if(ceil.GetField() instanceof BasicField 
+                            && ceil.GetState() === CeilState.Visible)
+                        {
+                            this._interactionContext.Push(ceil,false);
+                            ceil.SetSelected(true); 
+                            this._menus.forEach(menu=>{menu.Show(ceil);});
+                            return true;
+                        }
                     }
                 }
                 else

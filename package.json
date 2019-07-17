@@ -12,7 +12,7 @@
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.12.10",
-    "@types/pixi.js": "^4.8.3",
+    "@types/pixi.js": "^4.8.8",
     "chai": "^4.2.0",
     "clean-webpack-plugin": "^0.1.16",
     "file-loader": "^2.0.0",
@@ -21,7 +21,7 @@
     "jsdom": "13.0.0",
     "jsdom-global": "3.0.2",
     "mocha": "^5.2.0",
-    "pixi.js": "^4.8.2",
+    "pixi.js": "^5.0.4",
     "script-loader": "^0.7.1",
     "svg-inline-loader": "^0.8.0",
     "ts-loader": "^2.3.2",
@@ -35,6 +35,8 @@
   },
   "dependencies": {
     "pixi-svg": "^1.0.1",
+    "pixi-text-input": "^1.0.4",
+    "pixi-textinput-v5": "^4.0.0-beta.10",
     "pixi-viewport": "^4.0.0-beta.3"
   }
 }

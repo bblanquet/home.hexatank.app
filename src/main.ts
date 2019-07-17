@@ -1,17 +1,17 @@
 import * as PIXI from 'pixi.js';
-import {PlaygroundHelper} from './Source/PlaygroundHelper';
-import { RenderingHandler } from './Source/RenderingHandler';
-import { GroupsContainer } from './Source/GroupsContainer';
+import { GroupsContainer } from './Source/Core/Utils/GroupsContainer';
 import { GameSetup } from './GameSetup';
-import { SpriteProvider } from './Source/Tools/SpriteProvider';
-import { InteractionContext } from './Source/Context/InteractionContext';
-import { Playground } from './Source/Playground';
-import { Item } from './Source/Item';
-import { LoadingItem } from './Source/LoadingItem';
-import { FakeBackground } from './Source/FakeBackground';
+import { SpriteProvider } from './Source/Core/Utils/SpriteProvider';
+import { InteractionContext } from './Source/Core/Context/InteractionContext';
+import { Playground } from './Source/Core/Playground';
+import { PlaygroundHelper } from './Source/Core/Utils/PlaygroundHelper';
+import { RenderingHandler } from './Source/Core/Utils/RenderingHandler';
+import { Item } from './Source/Core/Items/Item';
+
+const TextInput  = require('pixi-textinput-v5').TextInput;
 
 
-const Viewport = require('pixi-viewport').Viewport
+const Viewport = require('pixi-viewport').Viewport;
 
 const app = new PIXI.Application({
     backgroundColor: 0x00A651,
@@ -70,7 +70,6 @@ function Setup()
     manager.on('pointerdown', PlaygroundHelper.Playground.InputManager.OnMouseDown.bind(PlaygroundHelper.Playground.InputManager), false);
     manager.on('pointermove', PlaygroundHelper.Playground.InputManager.OnMouseMove.bind(PlaygroundHelper.Playground.InputManager), false);
     manager.on('pointerup', PlaygroundHelper.Playground.InputManager.OnMouseUp.bind(PlaygroundHelper.Playground.InputManager), false);
-    // window.addEventListener('mousewheel', PlaygroundHelper.Playground.InputManager.OnMouseWheel.bind(PlaygroundHelper.Playground.InputManager), false);
     window.addEventListener('resize', ResizeTheCanvas);
     ResizeTheCanvas();
     
@@ -80,11 +79,30 @@ function Setup()
     });
     interaction.SetCombination(gameSetup.GetMenus(),gameSetup.GetHq());
 
+    const input = new TextInput({
+		input: {
+			fontSize: '36px',
+			padding: '12px',
+			width: '500px',
+			color: '#26272E'
+		},
+		box: {
+			default: {fill: 0xE8E9F3, rounded: 12, stroke: {color: 0xCBCEE0, width: 3}},
+			focused: {fill: 0xE1E3EE, rounded: 12, stroke: {color: 0xABAFC6, width: 3}},
+			disabled: {fill: 0xDBDBDB, rounded: 12}
+		}
+	});
+	
+	input.placeholder = 'Enter your Text...';
+	input.x = 500;
+	input.y = 300;
+	input.pivot.x = input.width/2;
+	input.pivot.y = input.height/2;
+	app.stage.addChild(input);
+
     GameLoop();
 }
 
-var loading:LoadingItem;
-var back:FakeBackground;
 var gameSetup = new GameSetup();
 const interaction = new InteractionContext();
 

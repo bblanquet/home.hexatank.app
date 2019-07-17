@@ -1,10 +1,10 @@
 
-import { Headquarter } from "./Source/Ceils/Field/Headquarter";
-import { Item } from "./Source/Item";
-import { IMapGenerator } from "./Source/Builder/IMapGenerator";
-import { MapGenerator } from "./Source/Builder/MapGenerator";
-import { Menu } from "./Source/Menu/Menu";
-import { PlaygroundHelper } from "./Source/PlaygroundHelper";
+import { IMapGenerator } from "./Source/Core/Builder/IMapGenerator";
+import { MapGenerator } from "./Source/Core/Builder/MapGenerator";
+import { Menu } from "./Source/Core/Menu/Menu";
+import { PlaygroundHelper } from "./Source/Core/Utils/PlaygroundHelper";
+import { Item } from "./Source/Core/Items/Item";
+import { Headquarter } from "./Source/Core/Ceils/Field/Headquarter";
 
 export class GameSetup{
     private _mapGenerator:IMapGenerator;

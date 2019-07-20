@@ -14,8 +14,8 @@ export class PlaygroundHelper{
     static Engine:AStarEngine<Ceil>;
     static Render:RenderingHandler;
     static Settings:GameSettings;
-    static Playground:Playground;
-    static LoadingPlayground:Playground;
+    static CorePlayground:Playground;
+    static MenuPlayground:Playground;
     static CurrentPlayground:Playground;
     private static _areaEngine:AreaEngine;
     static SpriteProvider:ISpriteProvider;

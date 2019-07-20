@@ -1,16 +1,19 @@
-import { BoundingBox } from "../Core/Utils/BoundingBox";
-import { InteractionContext } from "../Core/Context/InteractionContext";
+import { BoundingBox } from "../../Core/Utils/BoundingBox";
+import { InteractionContext } from "../../Core/Context/InteractionContext";
 import * as PIXI from 'pixi.js';
-import { Item } from "../Core/Items/Item";
-import { PlaygroundHelper } from "../Core/Utils/PlaygroundHelper";
+import { Item } from "../../Core/Items/Item";
+import { PlaygroundHelper } from "../../Core/Utils/PlaygroundHelper";
 
-export class StaticBackground extends Item{
+export class ColorBackground extends Item{
+
     private _boundingBox:BoundingBox;
     private _background:PIXI.Graphics;
+    private _color:number;
 
-    constructor()
+    constructor(color:number)//0x525252
     {
         super();
+        this._color = color;
         this.Z = 6;
         this._background = new PIXI.Graphics();
         this.GetDisplayObjects().push(this._background);
@@ -21,7 +24,7 @@ export class StaticBackground extends Item{
 
         this._background.clear();
 
-        this._background.beginFill(0x525252, 1);
+        this._background.beginFill(this._color, 1);
         this._background.drawRect(0
             , 0
             , PlaygroundHelper.Settings.ScreenWidth

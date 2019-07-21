@@ -27,6 +27,7 @@ export class InputManager{
             this.DownPoint.X = event.data.global.x;
             this.DownPoint.Y = event.data.global.y;
             this.IsGrabbed = true;
+            console.log(`X ${event.data.global.x} Y ${event.data.global.y}`)
             this.InteractionContext.Point = event.data.global;
         }
     }    
@@ -52,49 +53,4 @@ export class InputManager{
             this.DownEvent.trigger(this.InteractionContext);
         }
     }
-
-    // private _minScale:number=0.8;
-    // private _maxScale:number=4;
-
-    // public OnPinch(delta:number):void
-    // {
-    //     let zoom = PlaygroundHelper.Settings.GetScale();
-    //     if(delta < 1)
-    //     {
-    //         zoom -= delta * 0.01;
-
-    //         if(zoom < this._minScale ){
-    //             zoom = this._minScale;
-    //         }
-    //     }
-    //     else
-    //     {
-    //         zoom += delta * 0.01;
-            
-    //         if(this._maxScale < zoom ){
-    //             zoom = this._maxScale;
-    //         }
-    //     }
-    //     PlaygroundHelper.Settings.ChangeScale(zoom);
-    // }
-
-    // public OnMouseWheel(value:{deltaY:number}):void{
-    //     let zoom = PlaygroundHelper.Settings.GetScale();
-    //     if(0 < value.deltaY)//event.wheelDelta
-    //     {
-    //         zoom -= 0.1;
-    //         if(zoom < this._minScale ){
-    //             zoom = this._minScale;
-    //         }
-    //     }
-    //     else
-    //     {
-    //         zoom += 0.1;
-    //         if(this._maxScale < zoom ){
-    //             zoom = this._maxScale;
-    //         }
-
-    //     }
-    //     PlaygroundHelper.Settings.ChangeScale(zoom);
-    // }
 }

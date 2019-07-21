@@ -9,11 +9,9 @@ export class Playground implements IPlayground
 {    
     Items:Array<Item>;
     public InputManager:InputManager;
-    private _app:PIXI.Application;
 
-    constructor(ceils : Array<Item>, app:PIXI.Application, interactionContext:InteractionContext)
+    constructor(ceils : Array<Item>, interactionContext:InteractionContext)
     {
-        this._app = app;
         this.Items = ceils;
         this.InputManager = new InputManager(interactionContext);
         this.InputManager.DownEvent.on(this.Select.bind(this));

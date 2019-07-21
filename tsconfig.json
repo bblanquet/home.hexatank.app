@@ -1,9 +1,16 @@
 {
     "compilerOptions": {
+        "moduleResolution": "node",
         "target": "es6",
+        "jsx": "react",
+        "jsxFactory": "h",
         "noImplicitAny": true,
         "removeComments": true,
         "sourceMap": true,
         "allowJs": true
-    }
+    },
+    "include": [
+      "src/*.ts",
+      "src/*.tsx",
+    ]
 }

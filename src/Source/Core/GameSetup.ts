@@ -1,10 +1,10 @@
 
-import { IMapGenerator } from "./Source/Core/Builder/IMapGenerator";
-import { MapGenerator } from "./Source/Core/Builder/MapGenerator";
-import { Menu } from "./Source/Core/Menu/Menu";
-import { PlaygroundHelper } from "./Source/Core/Utils/PlaygroundHelper";
-import { Item } from "./Source/Core/Items/Item";
-import { Headquarter } from "./Source/Core/Ceils/Field/Headquarter";
+import { IMapGenerator } from "./Builder/IMapGenerator";
+import { MapGenerator } from "./Builder/MapGenerator";
+import { Menu } from "./Menu/Menu";
+import { PlaygroundHelper } from "./Utils/PlaygroundHelper";
+import { Item } from "./Items/Item";
+import { Headquarter } from "./Ceils/Field/Headquarter";
 
 export class GameSetup{
     private _mapGenerator:IMapGenerator;
@@ -12,7 +12,7 @@ export class GameSetup{
     { 
         this._mapGenerator = new MapGenerator();
         const items = this._mapGenerator.SetMap();
-        this.SetCenter();
+        //this.SetCenter();
         return items; 
     }
 

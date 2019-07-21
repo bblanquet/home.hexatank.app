@@ -1,32 +1,35 @@
 'use strict';
 
-var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
-
 var distDir = path.resolve(__dirname, 'dist');
 
 module.exports = {
     // Entry point : first executed file
     // This may be an array. It will result in many output files.
-    entry: ['./src/main.ts'],
-
+    entry: ['./src/main.tsx'],
+    stats: {
+        errorDetails: true, // --display-error-details
+    },
     // What files webpack will manage
     resolve: {
-        extensions: ['.js', '.ts', '.tsx',]
+        extensions: ['.ts', '.tsx']
     },
 
     // Make errors mor clear
     devtool: 'inline-source-map',
 
-	
     // Configure output folder and file
     output: {
         path: distDir,
-        filename: 'main_bundle.js',
+        filename: 'main.js',
     },
 
+    resolve: {
+      extensions: ['.js','.ts', '.tsx']
+    },
     module: {
         rules: [
             {
@@ -34,8 +37,8 @@ module.exports = {
                 loader: 'ts-loader'
             },
             {
-                test: /\.svg$/,
-                loader: 'svg-inline-loader'
+                test:/\.css$/,
+                use:['style-loader','css-loader']
             }
         ]
     },
@@ -44,9 +47,12 @@ module.exports = {
         contentBase: './dist'
     },
     plugins: [
-        new CleanWebpackPlugin([distDir]),
+        new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             template: 'src/index.html'
-        })
+        }),
+        new CopyPlugin([
+            { from: './Resources', to: '' },
+        ])
     ]
 };

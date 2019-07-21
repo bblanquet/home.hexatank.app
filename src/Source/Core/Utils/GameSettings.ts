@@ -19,7 +19,7 @@ export class GameSettings
     public FieldPrice:number=2;
     public PocketMoney:number=20;
 
-    private _fps:number=0;
+    private _fps:number=60;
     private _fpsHandlers:{(data: number):void}[] = [];
     public MapSize: number=0;
 

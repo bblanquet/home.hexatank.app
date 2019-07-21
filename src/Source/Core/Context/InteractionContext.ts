@@ -29,7 +29,7 @@ import { Vehicle } from '../Items/Unit/Vehicle';
 
 export class InteractionContext implements IInteractionContext{
 
-    Point:PIXI.Point;
+    public Point:PIXI.Point;
     public IsDown:boolean;
     private _selectedItem:Array<Item>;
     private _checker:IPatternChecker;

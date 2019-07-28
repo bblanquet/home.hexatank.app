@@ -1,19 +1,18 @@
 import * as  PIXI  from 'pixi.js';
-import {h, Component} from 'preact';
-import { PlaygroundHelper } from '../Core/Utils/PlaygroundHelper';
-import { SpriteProvider } from '../Core/Utils/SpriteProvider';
-import { InteractionContext } from '../Core/Context/InteractionContext';
-import { RenderingHandler } from '../Core/Utils/RenderingHandler';
-import { GroupsContainer } from '../Core/Utils/GroupsContainer';
-import { Item } from '../Core/Items/Item';
-import { Playground } from '../Core/Playground';
-import { GameSetup } from '../Core/GameSetup';
-import './Popup.css'; 
+import {Component,h} from 'preact';
+import { PlaygroundHelper } from '../../Core/Utils/PlaygroundHelper';
+import { SpriteProvider } from '../../Core/Utils/SpriteProvider';
+import { InteractionContext } from '../../Core/Context/InteractionContext';
+import { RenderingHandler } from '../../Core/Utils/RenderingHandler';
+import { GroupsContainer } from '../../Core/Utils/GroupsContainer';
+import { Item } from '../../Core/Items/Item';
+import { Playground } from '../../Core/Playground';
+import { GameSetup } from '../../Core/GameSetup';
 
 const Viewport = require('pixi-viewport').Viewport;
 const path = "./Program6.json";
 
-export default class PixiComponent extends Component<any, {refresh:boolean}> {
+export default class CanvasComponent extends Component<any, {refresh:boolean}> {
   private _app: PIXI.Application;
   private _gameCanvas: HTMLDivElement;
   private _viewport:any;
@@ -65,10 +64,7 @@ export default class PixiComponent extends Component<any, {refresh:boolean}> {
    */
   render() {
     return (
-      <div>
-          <div class="centered popupStyle">hello</div>
-        <div ref={(thisDiv) => {this._gameCanvas = thisDiv}} />
-      </div>
+      <div ref={(thisDiv) => {this._gameCanvas = thisDiv}} />
     );
   }
 

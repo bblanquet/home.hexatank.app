@@ -10,7 +10,7 @@ export default class OffJoinComponent extends Component<any, {ServerNames:string
         super();
         this.setState({
             ServerNames:new Array<string>(),
-            PlayerName:'John doe'
+            PlayerName:'Alice'
         });
         this._socket = io('http://localhost:3000');
         this.Start();

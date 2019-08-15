@@ -58,8 +58,13 @@ io.on('connection', function(socket)
   });
 
   socket.on('rooms',function(){
-    console.log('foreact available rooms');
     io.to(socket.id).emit('rooms',{'serverNames':servers.map(s=>s.ServerName)});
+  });
+
+  socket.on('signaling',function(data){
+    let type =  data.message.candidate ? "candidate" :"sdp";
+    console.log(data.PlayerName + ' send ' + type + '.');    
+    io.in(data.ServerName).emit('signaling',{...data.message,PlayerName:data.PlayerName});
   });
 
 });

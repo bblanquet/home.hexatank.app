@@ -9,10 +9,10 @@ export class Playground implements IPlayground
     Items:Array<Item>;
     public InputManager:InputManager;
 
-    constructor(ceils : Array<Item>, interactionContext:InteractionContext)
+    constructor()
     {
-        this.Items = ceils;
-        this.InputManager = new InputManager(interactionContext);
+        this.Items = new Array<Item>();
+        this.InputManager = new InputManager(new InteractionContext());
         this.InputManager.DownEvent.on(this.Select.bind(this));
     }
 

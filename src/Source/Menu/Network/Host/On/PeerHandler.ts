@@ -1,3 +1,4 @@
+import { PacketKind } from './../../PacketKind';
 import { Player } from './../../Player';
 const io = require('socket.io-client');
 
@@ -6,12 +7,12 @@ export  class PeerHandler{
     private static _channel:RTCDataChannel;
     private static _socket:any;
 
-    private static _handlers:{type:string,func:{(message:any):void}}[] = new Array<{type:string,func:{(message:any):void}}>();
+    private static _handlers:{type:PacketKind,func:{(message:any):void}}[] = new Array<{type:PacketKind,func:{(message:any):void}}>();
     private static _player:Player;
     private static _serverName:string;
     private static _isAdmin:boolean;
 
-    public static Start(getPlayers:(players:string[])=>void):void
+    public static Start(getPlayers:(players:string[])=>void,leave:()=>void):void
     {
         this._socket = io('http://localhost:3000');
         this._socket.on('connect', () => 
@@ -20,6 +21,11 @@ export  class PeerHandler{
           {
             getPlayers(data.list);
           });
+
+          this._socket.on('close',(data:any)=>{
+            console.log("server is closed");
+            leave();
+        })
 
           if(this._isAdmin)
           {
@@ -167,21 +173,35 @@ export  class PeerHandler{
     }
 
     public static Stop():void{
-        if(this._isAdmin)
+        if(this._channel)
         {
-          this._socket.emit('remove', this._serverName);
+            this._channel.close();
         }
-        else
+
+        if(this._connector)
         {
-          this._socket.emit('leave', this._serverName);
+            this._connector.close();
+        }
+
+        if(this._socket)
+        {
+            if(this._isAdmin)
+            {
+              this._socket.emit('remove', this._serverName);
+            }
+            else
+            {
+              this._socket.emit('leave', {ServerName:this._serverName,PlayerName:this._player.Name});
+            }
+            this._socket.close();
         }
     }
 
-    public static Subscribe(handler:{type:string,func:{(message:any):void}}):void{
+    public static Subscribe(handler:{type:PacketKind,func:{(message:any):void}}):void{
         this._handlers.push(handler);
     }
 
-    public static SendMessage(type:string, content:any):void
+    public static SendMessage(type:PacketKind, content:any):void
     {
         let packet = JSON.stringify({
             type:type,

@@ -19,6 +19,26 @@
   opacity: 1;
 }
 
+.toast-blue .toast-title {
+  color:white;
+}
+
+.toast-blue {
+  background-color: #343a40;
+  color: #12a1b7;
+  font-weight: bold;
+}
+
+.toast-white .toast-title {
+  color:#343a40;
+}
+
+.toast-white {
+  background-color: #dee1e6;
+  color: #12a1b7;
+  font-weight: bold;
+}
+
 body{
   background-color:#00A651;
 }

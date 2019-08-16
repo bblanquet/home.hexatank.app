@@ -2,9 +2,11 @@ import { HostState } from '../../HostState';
 import { Component,h } from 'preact';
 import { route } from 'preact-router';
 import { Player } from '../../Player';
+import { Message } from '../../Message';
 import {PeerHandler} from './PeerHandler';
 import linkState from 'linkstate';
 import * as toastr from "toastr";
+import { PacketKind } from '../../PacketKind';
 
 export default class OnHostComponent extends Component<any, HostState> {
 
@@ -19,10 +21,14 @@ export default class OnHostComponent extends Component<any, HostState> {
             Message:''
         });
         PeerHandler.Setup(this.state.Player,this.state.ServerName,this.state.IsAdmin);
-        PeerHandler.Start(this.GetPlayers.bind(this));
+        PeerHandler.Start(this.GetPlayers.bind(this),this.Back.bind(this));
         PeerHandler.Subscribe({
           func:this.Update.bind(this),
-          type:'isReady',
+          type:PacketKind.Ready,
+        });
+        PeerHandler.Subscribe({
+          func:this.ReceiveToast.bind(this),
+          type:PacketKind.Toast,
         });
     }
 
@@ -61,7 +67,7 @@ export default class OnHostComponent extends Component<any, HostState> {
                   <div class="input-group-prepend">
                     <button class="btn btn-dark" type="button" id="button-addon1" onClick={() => this.Send()}>Send</button>
                   </div>
-                  <input type="text" class="form-control" placeholder="" onInput={linkState(this, 'Message')} aria-label="Example text with button addon" aria-describedby="button-addon1"/>
+                  <input type="text" class="form-control" value={this.state.Message} onInput={linkState(this, 'Message')} aria-label="Example text with button addon" aria-describedby="button-addon1"/>
                 </div>
 
                 {this.state.IsAdmin 
@@ -89,6 +95,14 @@ export default class OnHostComponent extends Component<any, HostState> {
       }
     }
 
+    private ReceiveToast(data:any):void{
+      var message = data as Message;
+      if(message)
+      {
+        toastr["success"](message.Content,message.Name,{iconClass: 'toast-blue'});
+      }
+    }
+
     private GetPlayers(playerNames:string[]):void{
       let players = playerNames.map(l=>new Player(l)).filter(p=>p.Name!==this.state.Player.Name);
       players.push(this.state.Player);
@@ -103,18 +117,23 @@ export default class OnHostComponent extends Component<any, HostState> {
        this.setState({
          Player:player
        });
-       PeerHandler.SendMessage('isReady',this.state.Player);
+       PeerHandler.SendMessage(PacketKind.Ready,this.state.Player);
     }
 
     private Send():void{
-      toastr.options.positionClass='toast-top-right';
-      toastr["success"]("Inconceivable!");
+      
+      let message = new Message();
+      message.Name = this.state.Player.Name;
+      message.Content = this.state.Message;
       this.setState({
         Message:''
-      })
+      });
+
+      toastr["success"](message.Content, message.Name, {iconClass: 'toast-white'});
+      PeerHandler.SendMessage(PacketKind.Toast, message);
     }
 
-    private Back(){
+    private Back():void{
       PeerHandler.Stop();
       route('/Home', true);
     }

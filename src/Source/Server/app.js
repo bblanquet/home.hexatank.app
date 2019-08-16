@@ -25,15 +25,28 @@ io.on('connection', function(socket)
   });
 
   socket.on('leave',function(data){
-    console.log('leaving: ' + data);
-    io.sockets.sockets[socketId].leave(data);
+    console.log('leaving: ' + data.ServerName);
+    socket.leave(data.ServerName);
+    
+    let servs = servers.filter(r=>r.ServerName === data.ServerName);
+    
+    if(servs.length === 1)
+    {
+      let server = servs[0];
+      server.Players = server.Players.filter(p=>p !== data.PlayerName);
+      io.in(data.ServerName).emit('players',{'list':server.Players});
+    }
+
   });
 
   socket.on('remove', function(data)
   {
     if(servers.filter(r=>r.ServerName === data).length === 1)
     {
-      console.log('deleting: ' + data);
+      console.log('closing: ' + data);
+      
+      io.in(data).emit('close');
+
       io.of('/').in(data).clients((error, socketIds) => {
         if (error){
           throw error;
@@ -63,7 +76,7 @@ io.on('connection', function(socket)
 
   socket.on('signaling',function(data){
     let type =  data.message.candidate ? "candidate" :"sdp";
-    console.log(data.PlayerName + ' send ' + type + '.');    
+    console.log(data.PlayerName + ' sends ' + type + '.');    
     io.in(data.ServerName).emit('signaling',{...data.message,PlayerName:data.PlayerName});
   });
 

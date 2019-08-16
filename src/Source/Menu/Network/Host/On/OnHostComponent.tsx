@@ -3,9 +3,11 @@ import { Component,h } from 'preact';
 import { route } from 'preact-router';
 import { Player } from '../../Player';
 import {PeerHandler} from './PeerHandler';
+import linkState from 'linkstate';
+import * as toastr from "toastr";
 
 export default class OnHostComponent extends Component<any, HostState> {
-    private _peerHandler:PeerHandler;
+
     constructor(props:any){
         super(props);
         const p = new Player(props.playerName);
@@ -13,12 +15,12 @@ export default class OnHostComponent extends Component<any, HostState> {
             ServerName:props.serverName,
             Players:[p],
             IsAdmin:props.isAdmin.toLowerCase() == 'true' ? true : false,
-            Player:p
+            Player:p,
+            Message:''
         });
-        this._peerHandler = new PeerHandler();
-        this._peerHandler.Setup(this.state.Player,this.state.ServerName,this.state.IsAdmin);
-        this._peerHandler.Start(this.GetPlayers.bind(this));
-        this._peerHandler.Subscribe({
+        PeerHandler.Setup(this.state.Player,this.state.ServerName,this.state.IsAdmin);
+        PeerHandler.Start(this.GetPlayers.bind(this));
+        PeerHandler.Subscribe({
           func:this.Update.bind(this),
           type:'isReady',
         });
@@ -29,40 +31,50 @@ export default class OnHostComponent extends Component<any, HostState> {
     componentWillUnmount() {}
 
     render() {
-        return (<div class="centered">
-        <ol class="breadcrumb">
-           <li><a href="#">{this.state.ServerName}</a></li>
-        </ol>
-        <table class="table table-dark table-hover">
-            <thead>
-                <tr>
-                <th scope="col">Player</th>
-                <th scope="col">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-            {this.state.Players.map((player) => {
-                return (<tr>
-                    <td class="align-middle">{player.Name}</td>
-                    <td class="align-middle">{player.IsReady ?  
-                      <span class="badge badge-success">Ready</span>  :  
-                      <span class="badge badge-info">Not ready</span> }
-                    </td>
-                </tr>);
-            })}
-            </tbody>
-            </table>
+        return (
+        <div>
+          <div class="centered">
+            <ol class="breadcrumb">
+              <li>{this.state.ServerName}</li>
+            </ol>
+            <table class="table table-dark table-hover">
+                <thead>
+                    <tr>
+                    <th scope="col">Player</th>
+                    <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {this.state.Players.map((player) => {
+                    return (<tr>
+                        <td class="align-middle">{player.Name}</td>
+                        <td class="align-middle">{player.IsReady ?  
+                          <span class="badge badge-success">Ready</span>  :  
+                          <span class="badge badge-info">Not ready</span> }
+                        </td>
+                    </tr>);
+                })}
+                </tbody>
+                </table>
 
-            {this.state.IsAdmin 
-            ? 
-            <button type="button" class="btn btn-primary btn-sm btn-success btn-space" onClick={() => this.Back()}>Start</button>
-            :''            
-            }
-        <button type="button" class="btn btn-primary btn-sm btn-danger btn-space" onClick={() => this.Back()}>Close</button>
-        <button type="button" class="btn btn-primary btn-sm btn-space" onClick={() => this.ChangeReady()}>
-            {this.state.Player.IsReady ? 'I am not ready' : 'I am ready'}
-        </button>
-    </div>);
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <button class="btn btn-dark" type="button" id="button-addon1" onClick={() => this.Send()}>Send</button>
+                  </div>
+                  <input type="text" class="form-control" placeholder="" onInput={linkState(this, 'Message')} aria-label="Example text with button addon" aria-describedby="button-addon1"/>
+                </div>
+
+                {this.state.IsAdmin 
+                ? 
+                <button type="button" class="btn btn-primary btn-sm btn-dark btn-space" onClick={() => this.Back()}>Start</button>
+                :''            
+                }
+            <button type="button" class="btn btn-primary btn-sm btn-danger btn-space" onClick={() => this.Back()}>Close</button>
+            <button type="button" class="btn btn-primary btn-sm btn-space" onClick={() => this.ChangeReady()}>
+                {this.state.Player.IsReady ? 'I am not ready' : 'I am ready'}
+            </button>
+        </div>
+      </div>);
     }
 
     private Update(data:any):void{
@@ -91,11 +103,19 @@ export default class OnHostComponent extends Component<any, HostState> {
        this.setState({
          Player:player
        });
-       this._peerHandler.SendMessage('isReady',this.state.Player);
+       PeerHandler.SendMessage('isReady',this.state.Player);
+    }
+
+    private Send():void{
+      toastr.options.positionClass='toast-top-right';
+      toastr["success"]("Inconceivable!");
+      this.setState({
+        Message:''
+      })
     }
 
     private Back(){
-      this._peerHandler.Stop();
+      PeerHandler.Stop();
       route('/Home', true);
     }
 }

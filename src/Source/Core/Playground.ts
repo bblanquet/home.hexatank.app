@@ -2,7 +2,6 @@ import {Item} from './Items/Item';
 import { IPlayground } from './IPlayground';
 import { InputManager } from './Utils/InputManager';
 import {InteractionContext} from './Context/InteractionContext';
-import * as PIXI from 'pixi.js';
 import { PlaygroundHelper } from './Utils/PlaygroundHelper'; 
 
 export class Playground implements IPlayground

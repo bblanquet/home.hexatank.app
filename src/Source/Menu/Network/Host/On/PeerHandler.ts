@@ -1,17 +1,17 @@
 import { Player } from './../../Player';
 const io = require('socket.io-client');
 
-export class PeerHandler{
-    private _connector:RTCPeerConnection;
-    private _channel:RTCDataChannel;
-    private _socket:any;
+export  class PeerHandler{
+    private static _connector:RTCPeerConnection;
+    private static _channel:RTCDataChannel;
+    private static _socket:any;
 
-    private _handlers:{type:string,func:{(message:any):void}}[] = new Array<{type:string,func:{(message:any):void}}>();
-    private _player:Player;
-    private _serverName:string;
-    private _isAdmin:boolean;
+    private static _handlers:{type:string,func:{(message:any):void}}[] = new Array<{type:string,func:{(message:any):void}}>();
+    private static _player:Player;
+    private static _serverName:string;
+    private static _isAdmin:boolean;
 
-    public Start(getPlayers:(players:string[])=>void):void
+    public static Start(getPlayers:(players:string[])=>void):void
     {
         this._socket = io('http://localhost:3000');
         this._socket.on('connect', () => 
@@ -19,7 +19,6 @@ export class PeerHandler{
           this._socket.on('players',(data:{list:string[]})=>
           {
             getPlayers(data.list);
-
           });
 
           if(this._isAdmin)
@@ -44,7 +43,7 @@ export class PeerHandler{
         });
     }
 
-    private StartWebRtc():void {
+    private static StartWebRtc():void {
       console.log('Starting WebRTC in as waiter');
       this.SetupIceCandidate();
     
@@ -58,7 +57,7 @@ export class PeerHandler{
       this.ListenSignal();
     }
 
-    private StartRtcOffering():void {
+    private static StartRtcOffering():void {
         console.log('Starting WebRTC in as offerer');
         this.SetupIceCandidate();
         
@@ -76,7 +75,7 @@ export class PeerHandler{
         this.ListenSignal();
     }
 
-    private SetupIceCandidate() {
+    private static SetupIceCandidate() {
         this._connector = new RTCPeerConnection({
         iceServers: [{
             urls: 'stun:stun.l.google.com:19302'
@@ -91,7 +90,7 @@ export class PeerHandler{
         };
     }
 
-    private ListenSignal():void {
+    private static ListenSignal():void {
         //Listen to signaling data from Scaledrone
         this._socket.on('signaling', (data:any) => 
         {
@@ -103,7 +102,7 @@ export class PeerHandler{
                     // This is called after receiving an offer or answer from another peer
                     this._connector.setRemoteDescription(new RTCSessionDescription(data.sdp)).then(()=>
                     {
-                        console.log(this._player.Name + ' receives a signal ', this._connector.remoteDescription.type.toUpperCase() + ' message.');
+                        console.log(this._player.Name + ' set remote description ', this._connector.remoteDescription.type.toUpperCase());
                         
                         if (this._connector.remoteDescription.type === 'offer')
                         {
@@ -125,25 +124,26 @@ export class PeerHandler{
         });
     }
 
-    private SetupDataChannel():void 
+    private static SetupDataChannel():void 
     {
         this.CheckDataChannelState();
         this._channel.onopen =()=>this.CheckDataChannelState;
         this._channel.onclose =()=>this.CheckDataChannelState;
         this._channel.onmessage = event =>
         {
-            console.log(`player ${this._player.Name} received: ${event.data.type}`)
+            let obj = JSON.parse(event.data);
+            console.log(`player ${this._player.Name} received: ${obj.type}`)
             this._handlers.forEach(handler=>
             {
-                if(handler.type === event.data.type)
+                if(handler.type === obj.type)
                 {
-                    handler.func(event.data.content);
+                    handler.func(obj.content);
                 }
             });
         }
     }
     
-    private CheckDataChannelState():void {
+    private static CheckDataChannelState():void {
         console.log('WebRTC channel state is:', this._channel.readyState);
         if (this._channel.readyState === 'open') 
         {
@@ -151,7 +151,7 @@ export class PeerHandler{
         }
     }
 
-    private SendSignal(message:any):void {
+    private static SendSignal(message:any):void {
         console.log(this._player.Name + ' is sending message: \n' + JSON.stringify(message));
         this._socket.emit('signaling', {
             ServerName: this._serverName,
@@ -160,13 +160,13 @@ export class PeerHandler{
         });
     }
 
-    public Setup(player:Player, serverName:string, isAdmin:boolean ):void{
+    public static Setup(player:Player, serverName:string, isAdmin:boolean ):void{
         this._player = player;
         this._serverName=serverName;
         this._isAdmin=isAdmin;
     }
 
-    public Stop():void{
+    public static Stop():void{
         if(this._isAdmin)
         {
           this._socket.emit('remove', this._serverName);
@@ -177,11 +177,11 @@ export class PeerHandler{
         }
     }
 
-    public Subscribe(handler:{type:string,func:{(message:any):void}}):void{
+    public static Subscribe(handler:{type:string,func:{(message:any):void}}):void{
         this._handlers.push(handler);
     }
 
-    public SendMessage(type:string, content:any):void
+    public static SendMessage(type:string, content:any):void
     {
         let packet = JSON.stringify({
             type:type,

@@ -5,5 +5,5 @@ export class HostState{
     public IsAdmin:boolean;
     public Players:Array<Player>;
     public Player:Player;
-    public MainPlayer:Player;
+    public Message:string;
 }

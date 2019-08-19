@@ -11,7 +11,6 @@ export class TopBar extends Item
     private _text:PIXI.Text;
     private Hq:Headquarter;
 
-
     constructor(headquarter:Headquarter){
         super();
         this.Hq = headquarter;
@@ -36,8 +35,8 @@ export class TopBar extends Item
 
         this.SetPosition();
 
-        this.GetBothSprites(Archive.nature.diamondStone).forEach(s=>PlaygroundHelper.Render.AddDisplayableEntity(s));
-        PlaygroundHelper.Render.AddDisplayableEntity2(this._text,6);
+        this.GetBothSprites(Archive.nature.diamondStone).forEach(s=>PlaygroundHelper.Render.AddDisplayableEntityByGroup(s,6));
+        PlaygroundHelper.Render.AddDisplayableEntityByGroup(this._text,6);
     }
 
     public GetBoundingBox(): BoundingBox {

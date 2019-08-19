@@ -15,6 +15,7 @@ import { IMovable } from '../Items/IMovable';
 import { PlaygroundHelper } from '../Utils/PlaygroundHelper';
 import { BoundingBox } from '../Utils/BoundingBox';
 import { Point } from '../Utils/Point';
+import { Field } from './Field/Field';
 
 export class Ceil extends Item implements ICeil , ISelectable
 {
@@ -98,7 +99,8 @@ export class Ceil extends Item implements ICeil , ISelectable
 
     public SetField(field:IField){
         if(!isNullOrUndefined(this._field)){
-            PlaygroundHelper.Render.Remove(<Item> <any> this._field);
+            (<Field>this._field).Destroy();
+            //PlaygroundHelper.Render.Remove(<Item> <any> this._field);
         }
 
         this._field = field;
@@ -249,6 +251,7 @@ export class Ceil extends Item implements ICeil , ISelectable
             this._display[CeilState.HalfVisible] = [Archive.halfVisibleCell,this._decorationSprite,Archive.cell];         
             this._display[CeilState.Visible] = [this._decorationSprite,Archive.cell];         
         }
+        this.InitPosition(this.Properties.BoundingBox);
     }
 
     public GetCoordinate():HexAxial{

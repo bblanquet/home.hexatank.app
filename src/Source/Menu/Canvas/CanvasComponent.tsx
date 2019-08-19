@@ -25,7 +25,7 @@ export default class CanvasComponent extends Component<any, {refresh:boolean}> {
 
   componentDidMount() {
     this._app = new PIXI.Application({
-           backgroundColor: 0x6d9ae3//0x00A651,
+           backgroundColor: 0x00A651,//0x6d9ae3
     });  
 
     this._viewport= new Viewport({
@@ -54,22 +54,22 @@ export default class CanvasComponent extends Component<any, {refresh:boolean}> {
   }
 
   private Setup():void
-    {
-        let manager = new PIXI.interaction.InteractionManager(this._app.renderer);
-        PlaygroundHelper.SpriteProvider = new SpriteProvider(this._app.loader.resources[path].textures);
-        this._app.stage.addChild(this._viewport);
-        this._viewport.drag().pinch().wheel().decelerate();
-        this._gameSetup = new GameSetup();
-        this._gameSetup.SetGame(this._app.stage,this._viewport);
-        manager.autoPreventDefault = false;
-        manager.on('pointerdown', PlaygroundHelper.Playground.InputManager.OnMouseDown.bind(PlaygroundHelper.Playground.InputManager), false);
-        manager.on('pointermove', PlaygroundHelper.Playground.InputManager.OnMouseMove.bind(PlaygroundHelper.Playground.InputManager), false);
-        manager.on('pointerup', PlaygroundHelper.Playground.InputManager.OnMouseUp.bind(PlaygroundHelper.Playground.InputManager), false);
-        window.addEventListener('resize', this._resize);
-        window.addEventListener('DOMContentLoaded',this._resize);
-        this._resize();
-        this._loop();
-    }
+  {
+      let manager = new PIXI.interaction.InteractionManager(this._app.renderer);
+      PlaygroundHelper.SpriteProvider = new SpriteProvider(this._app.loader.resources[path].textures);
+      this._app.stage.addChild(this._viewport);
+      this._viewport.drag().pinch().wheel().decelerate();
+      this._gameSetup = new GameSetup();
+      this._gameSetup.SetGame(this._app.stage,this._viewport);
+      manager.autoPreventDefault = false;
+      manager.on('pointerdown', PlaygroundHelper.Playground.InputManager.OnMouseDown.bind(PlaygroundHelper.Playground.InputManager), false);
+      manager.on('pointermove', PlaygroundHelper.Playground.InputManager.OnMouseMove.bind(PlaygroundHelper.Playground.InputManager), false);
+      manager.on('pointerup', PlaygroundHelper.Playground.InputManager.OnMouseUp.bind(PlaygroundHelper.Playground.InputManager), false);
+      window.addEventListener('resize', this._resize);
+      window.addEventListener('DOMContentLoaded',this._resize);
+      this._resize();
+      this._loop();
+  }
 
     private GameLoop():void{
       this.setState({

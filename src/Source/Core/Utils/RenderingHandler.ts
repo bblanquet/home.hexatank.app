@@ -42,7 +42,7 @@ export class RenderingHandler{
         this._groupsHandler.Groups[3].addChild(shape);
     }
 
-    public AddDisplayableEntity2(shape:PIXI.DisplayObject, group:number):void{
+    public AddDisplayableEntityByGroup(shape:PIXI.DisplayObject, group:number):void{
         this._groupsHandler.Groups[group].addChild(shape);
     }
 

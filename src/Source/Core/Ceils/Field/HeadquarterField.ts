@@ -17,7 +17,7 @@ export class HeadQuarterField extends Field
     constructor(private _hq:Headquarter,ceil:Ceil,sprite:string){
         super(ceil);
         this.GetCeil().SetField(this);
-        this.Z= 0;
+        this.Z= -1;
         this._timer = new Timer(3);
         this.GenerateSprite(sprite);
         this.InitPosition(ceil.GetBoundingBox());

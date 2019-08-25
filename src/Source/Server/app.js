@@ -1,7 +1,7 @@
 var app = require('express')();
+var fs = require('fs');
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
-
 var servers = [];
 
 app.get('/', function(req, res){
@@ -36,7 +36,17 @@ io.on('connection', function(socket)
       server.Players = server.Players.filter(p=>p !== data.PlayerName);
       io.in(data.ServerName).emit('players',{'list':server.Players});
     }
+  });
 
+  socket.on('kick',function(data){
+    console.log('kicking: ' + data.ServerName);
+    let servs = servers.filter(r=>r.ServerName === data.ServerName);
+    if(servs.length === 1)
+    {
+      let server = servs[0];
+      server.Players = server.Players.filter(p=>p !== data.PlayerName);
+      io.in(data.ServerName).emit('kick',{'PlayerName':data.PlayerName});
+    }
   });
 
   socket.on('remove', function(data)
@@ -82,6 +92,6 @@ io.on('connection', function(socket)
 
 });
 
-http.listen(3000, function(){
-  console.log('listening on *:3000');
+http.listen(8080, function(){
+  console.log('listening on *:8080');
 });

@@ -14,7 +14,7 @@ export  class PeerHandler{
 
     public static Start(getPlayers:(players:string[])=>void,leave:()=>void):void
     {
-        this._socket = io('http://localhost:3000');
+        this._socket = io('http://mottet.xyz:8080');
         this._socket.on('connect', () => 
         {
           this._socket.on('players',(data:{list:string[]})=>
@@ -25,7 +25,14 @@ export  class PeerHandler{
           this._socket.on('close',(data:any)=>{
             console.log("server is closed");
             leave();
-        })
+        });
+
+        this._socket.on('kick',(data:any)=>{
+            console.log("server is closed");
+            if(this._player.Name === data.PlayerName){
+                leave();
+            }
+        });
 
           if(this._isAdmin)
           {
@@ -53,7 +60,7 @@ export  class PeerHandler{
       console.log('Starting WebRTC in as waiter');
       this.SetupIceCandidate();
     
-      // If user is not the offerer let wait for a data channel
+      //let wait for a data channel
       this._connector.ondatachannel = event => {
           console.log('received channel ' + event.channel.label);
           this._channel = event.channel;
@@ -130,6 +137,7 @@ export  class PeerHandler{
         });
     }
 
+
     private static SetupDataChannel():void 
     {
         this.CheckDataChannelState();
@@ -138,7 +146,7 @@ export  class PeerHandler{
         this._channel.onmessage = event =>
         {
             let obj = JSON.parse(event.data);
-            console.log(`player ${this._player.Name} received: ${obj.type}`)
+            console.log(`player ${this._player.Name} received: ${(obj.type as PacketKind).toString()}`)
             this._handlers.forEach(handler=>
             {
                 if(handler.type === obj.type)
@@ -154,7 +162,18 @@ export  class PeerHandler{
         if (this._channel.readyState === 'open') 
         {
             console.log('WebRTC data channel is now open');
+            this.SendMessage(PacketKind.Open,{});
+            this.Ping();
         }
+    }
+
+    public static Ping() {
+        setInterval(() => {
+            this.SendMessage(PacketKind.Ping, {
+                PlayerName: this._player.Name,
+                Date: Date.now()
+            });
+        }, 1000);
     }
 
     private static SendSignal(message:any):void {
@@ -170,6 +189,16 @@ export  class PeerHandler{
         this._player = player;
         this._serverName=serverName;
         this._isAdmin=isAdmin;
+    }
+
+    public static Kick(playerName:string){
+        if(this._socket)
+        {
+            if(this._isAdmin)
+            {
+              this._socket.emit('kick', {ServerName:this._serverName,PlayerName:playerName});
+            }
+        }
     }
 
     public static Stop():void{

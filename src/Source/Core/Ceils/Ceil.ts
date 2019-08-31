@@ -100,7 +100,6 @@ export class Ceil extends Item implements ICeil , ISelectable
     public SetField(field:IField){
         if(!isNullOrUndefined(this._field)){
             (<Field>this._field).Destroy();
-            //PlaygroundHelper.Render.Remove(<Item> <any> this._field);
         }
 
         this._field = field;

@@ -6,5 +6,6 @@ export enum PacketKind{
  Ready,
  Hq,
  Order,
- Create
+ Create,
+ Map
 }

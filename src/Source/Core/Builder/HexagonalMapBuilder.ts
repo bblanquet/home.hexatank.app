@@ -3,7 +3,6 @@ import { HexAxial } from '../Utils/Coordinates/HexAxial';
 import {Ceil} from '../Ceils/Ceil';
 import { CeilProperties } from '../Ceils/CeilProperties'; 
 
-
 export class HexagonalMapBuilder implements IPlaygroundBuilder<Ceil>{
 
     private GetIgnoredCeil(n:number):Array<number>{

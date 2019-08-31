@@ -5,6 +5,7 @@ import { CeilState } from '../../Ceils/CeilState';
 import { Ceil } from '../../Ceils/Ceil';
 import { PlaygroundHelper } from '../../Utils/PlaygroundHelper'; 
 import { Playground } from '../../Playground';
+import { MapEntity } from './MapEntity';
 
 export class PlaygroundGenerator{
     private _mapGenerator:MapGenerator;
@@ -22,20 +23,15 @@ export class PlaygroundGenerator{
 
         //define MAP
         let mapEntity = this._mapGenerator.GetEmptyMap(3);
-        
+
         //generate HQ on MAP
-        let hqs = this._hqGenerator.GetHq(mapEntity.Hqs,mapEntity.items);
-        let playerHq = hqs[0];
+        let hqs = this.CustomisedMap(mapEntity);
 
         //Link menu to player HQ
+        let playerHq = hqs[0];
         PlaygroundHelper.PlayerHeadquarter = playerHq;
         let menus = this._menuGenerator.GetMenus(playerHq,mapEntity.items);
         PlaygroundHelper.Playground.InputManager.InteractionContext.SetCombination(menus,playerHq);
-
-        //add initialise forest and sea in map
-        this._mapGenerator.InitialiseCeils(mapEntity.Ceils, mapEntity.items);
-
-        this._mapGenerator.AddClouds(mapEntity.items);
 
         //make hq ceils visible
         playerHq.GetCurrentCeil().SetState(CeilState.Visible);
@@ -47,5 +43,14 @@ export class PlaygroundGenerator{
         mapEntity.items.forEach(item => {
             PlaygroundHelper.Playground.Items.push(item);        
         });
+    }
+
+    private CustomisedMap(mapEntity: MapEntity) 
+    {
+        let hqs = this._hqGenerator.GetHq(mapEntity.Hqs, mapEntity.items);
+        //add initialise forest and sea in map
+        this._mapGenerator.InitialiseCeils(mapEntity.Ceils, mapEntity.items);
+        this._mapGenerator.AddClouds(mapEntity.items);
+        return hqs;
     }
 }

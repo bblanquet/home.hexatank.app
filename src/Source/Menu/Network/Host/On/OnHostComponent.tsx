@@ -7,6 +7,11 @@ import { PeerHandler } from './PeerHandler';
 import linkState from 'linkstate';
 import * as toastr from "toastr";
 import { PacketKind } from '../../PacketKind';
+import { MapGenerator } from '../../../../Core/Setup/Generator/MapGenerator';
+import { PlaygroundHelper } from '../../../../Core/Utils/PlaygroundHelper';
+import { MapContext } from '../../../../Core/Setup/Generator/MapContext';
+import { GameMessage } from '../../../../Core/Utils/Network/GameMessage';
+import { MessageProgess } from '../../../../Core/Utils/Network/MessageProgess';
 
 export default class OnHostComponent extends Component<any, HostState> {
 
@@ -38,6 +43,8 @@ export default class OnHostComponent extends Component<any, HostState> {
       func: ()=>{PeerHandler.Ping()},
       type: PacketKind.Open,
     });
+    
+    PlaygroundHelper.Dispatcher.Init(!this.state.IsAdmin);
   }
 
   componentDidMount() { }
@@ -51,7 +58,7 @@ export default class OnHostComponent extends Component<any, HostState> {
           <div class="btn-group btn-group-space" role="group" aria-label="Basic example">
             {this.state.IsAdmin
               ?
-              <button type="button" class="btn btn-dark btn-sm" onClick={() => this.Back()}>Start</button>
+              <button type="button" class="btn btn-dark btn-sm" onClick={() => this.Start()}>Start</button>
               : ''
             }
             <button type="button" class="btn btn-dark btn-sm" onClick={() => this.ChangeReady()}>
@@ -159,6 +166,24 @@ export default class OnHostComponent extends Component<any, HostState> {
 
     toastr["success"](message.Content, message.Name, { iconClass: 'toast-white' });
     PeerHandler.SendMessage(PacketKind.Toast, message);
+  }
+
+  private Start():void{
+    if(this.IsEveryoneReady())
+    {
+      let mapGenerator = new MapGenerator();
+      let mapContext = mapGenerator.GetMapDefinition(3);
+      let message = new GameMessage<MapContext>();
+      message.Message = mapContext;
+      message.Status = MessageProgess.end;
+      PeerHandler.SendMessage(PacketKind.Map,message);
+      PlaygroundHelper.MapContext = mapContext; 
+      route('/Canvas', true);
+    }
+  }
+
+  private IsEveryoneReady():boolean{
+    return this.state.Players.some(u=>u.IsReady);
   }
 
   private Back(): void {

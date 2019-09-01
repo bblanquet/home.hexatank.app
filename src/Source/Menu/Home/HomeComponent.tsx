@@ -1,5 +1,7 @@
 import {h, Component} from 'preact';
 import {route} from 'preact-router';
+import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
+import { PlaygroundHelper } from '../../Core/Utils/PlaygroundHelper';
 
 export default class HomeComponent extends Component<any, any> {
     
@@ -8,6 +10,9 @@ export default class HomeComponent extends Component<any, any> {
     }
 
     private ToCanvas(e:any):void{
+        const mapGenerator = new MapGenerator();
+        const context = mapGenerator.GetMapDefinition(3);
+        PlaygroundHelper.MapContext = context;
         route('/Canvas', true);
     }
 

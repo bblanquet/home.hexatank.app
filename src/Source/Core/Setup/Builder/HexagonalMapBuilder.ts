@@ -1,9 +1,8 @@
 import { IPlaygroundBuilder } from './IPlaygroundBuilder';
-import { HexAxial } from '../Utils/Coordinates/HexAxial'; 
-import {Ceil} from '../Ceils/Ceil';
-import { CeilProperties } from '../Ceils/CeilProperties'; 
+import { HexAxial } from '../../Utils/Coordinates/HexAxial'; 
+import { CeilProperties } from '../../Ceils/CeilProperties'; 
 
-export class HexagonalMapBuilder implements IPlaygroundBuilder<Ceil>{
+export class HexagonalMapBuilder implements IPlaygroundBuilder<CeilProperties>{
 
     private GetIgnoredCeil(n:number):Array<number>{
         const result = new Array<number>();
@@ -36,7 +35,7 @@ export class HexagonalMapBuilder implements IPlaygroundBuilder<Ceil>{
         return new HexAxial(n/2,n/2);
     }
 
-    public Build(n:number): Ceil[] {
+    public Build(n:number): CeilProperties[] {
 
         if(n < 2)
         {
@@ -47,7 +46,7 @@ export class HexagonalMapBuilder implements IPlaygroundBuilder<Ceil>{
             throw new Error();
         }
 
-        var ceils = new Array<Ceil>();
+        var ceils = new Array<CeilProperties>();
         const ignoredCoordinates = this.GetIgnoredCeil(n);
 
         for (let row = 0; row <= n; row++)
@@ -57,7 +56,7 @@ export class HexagonalMapBuilder implements IPlaygroundBuilder<Ceil>{
                 if(ignoredCoordinates.indexOf(row+column)===-1)
                 {
                     var hexAxial = new HexAxial(column,row);    
-                    var ceil = new Ceil(new CeilProperties(hexAxial));
+                    var ceil = new CeilProperties(hexAxial);
                     ceils.push(ceil);
                 }   
             }            

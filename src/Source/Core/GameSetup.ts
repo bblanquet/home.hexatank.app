@@ -1,4 +1,4 @@
-import { PlaygroundGenerator } from './Builder/Generators/PlaygroundGenerator';
+import { MapRender } from './Setup/Render/MapRender';
 import { PlaygroundHelper } from "./Utils/PlaygroundHelper";
 import { RenderingHandler } from "./Utils/RenderingHandler";
 import { GroupsContainer } from "./Utils/GroupsContainer";
@@ -6,7 +6,6 @@ import { GroupsContainer } from "./Utils/GroupsContainer";
 export class GameSetup{
     public SetGame(root:PIXI.Container,movableRoot:PIXI.Container):void
     { 
-        PlaygroundHelper.Init();
         PlaygroundHelper.SpriteProvider.PreloadTexture();
         PlaygroundHelper.Render = new RenderingHandler(
             new GroupsContainer(
@@ -20,7 +19,7 @@ export class GameSetup{
                 }
                 )
             );
-        new PlaygroundGenerator().Generate();
+        new MapRender().Render(PlaygroundHelper.MapContext);
     }
 
     public SetCenter():void{

@@ -10,7 +10,7 @@ export class RenderingHandler{
     constructor(groupsContainer:GroupsContainer){
         this._groupsHandler = groupsContainer;
         this._pendingItems = new Array<Item>();
-        PlaygroundHelper.Settings.FpsSubscribe(this.RenderItems.bind(this));
+        //PlaygroundHelper.Settings.FpsSubscribe(this.RenderItems.bind(this));
     }
 
     private RenderItems(fps:number):void{

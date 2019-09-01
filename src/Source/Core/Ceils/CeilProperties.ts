@@ -2,7 +2,7 @@ import { ICeil } from "./ICeil";
 import { HexAxial } from "../Utils/Coordinates/HexAxial";
 import { BoundingBox } from "../Utils/BoundingBox";
 import { PlaygroundHelper } from "../Utils/PlaygroundHelper";
-import { Point } from '../Utils/Point';
+import { Point } from '../Utils/Point'; 
 import { TestHelper } from "../Utils/TestHelper";
 
 export class CeilProperties implements ICeil

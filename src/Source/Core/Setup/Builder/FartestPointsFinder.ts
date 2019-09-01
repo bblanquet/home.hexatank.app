@@ -1,5 +1,5 @@
-import { HexAxial } from "../Utils/Coordinates/HexAxial";
-import { ToolBox } from "../Items/Unit/Utils/ToolBox";
+import { HexAxial } from "../../Utils/Coordinates/HexAxial";
+import { ToolBox } from "../../Items/Unit/Utils/ToolBox"; 
 
 export class FartestPointsFinder{
 

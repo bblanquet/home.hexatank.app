@@ -13,7 +13,7 @@ export class WaterField extends Field
     constructor(ceil:Ceil){
         super(ceil);
         this.GetCeil().SetField(this);
-        this.Z= 0;
+        this.Z= 1;
         this.GenerateSprite(Archive.nature.water.middle.background);
         this.GenerateSprite(Archive.nature.water.middle.wave);
         this.GenerateSprite(Archive.nature.water.leaf);

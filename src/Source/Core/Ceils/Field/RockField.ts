@@ -12,7 +12,7 @@ export class BlockingField extends AliveField
     constructor(ceil:Ceil, sprite:string){
         super(ceil);
         this.GetCeil().SetField(this);
-        this.Z= 0;
+        this.Z= 1;
         this.GenerateSprite(sprite);
         this.InitPosition(ceil.GetBoundingBox());
         this.GetDisplayObjects().forEach(obj => {obj.visible = this.GetCeil().IsVisible();});

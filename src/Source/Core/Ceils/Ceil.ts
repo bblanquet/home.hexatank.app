@@ -99,7 +99,9 @@ export class Ceil extends Item implements ICeil , ISelectable
 
     public SetField(field:IField){
         if(!isNullOrUndefined(this._field)){
-            (<Field>this._field).Destroy();
+            let field = this._field;
+            this._field = null;
+            (<Field>field).Destroy();
         }
 
         this._field = field;

@@ -1,6 +1,7 @@
 import { ICombination } from "./ICombination";
 import { ResetButton } from "../../Menu/ResetButton";
 import { Item } from "../../Items/Item";
+import { route } from 'preact-router';
 
 export class ResetCombination implements ICombination{
     IsMatching(items: Item[]): boolean 
@@ -15,6 +16,7 @@ export class ResetCombination implements ICombination{
              items.filter(i=>(i instanceof ResetButton)).forEach(element => {
                  items.splice(items.indexOf(element),1);
              });
+             route('/Home', true);
             return true;
         }
         return false;

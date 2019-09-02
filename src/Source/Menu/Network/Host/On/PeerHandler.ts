@@ -2,7 +2,7 @@ import { PacketKind } from './../../PacketKind';
 import { Player } from './../../Player';
 const io = require('socket.io-client');
 
-export  class PeerHandler{
+export class PeerHandler{
     private static _connector:RTCPeerConnection;
     private static _channel:RTCDataChannel;
     private static _socket:any;
@@ -146,7 +146,7 @@ export  class PeerHandler{
         this._channel.onmessage = event =>
         {
             let obj = JSON.parse(event.data);
-            console.log(`player ${this._player.Name} received: ${(obj.type as PacketKind).toString()}`)
+            console.log(`player ${this._player.Name} received: ${(PacketKind[obj.type]).toString()}`)
             this._handlers.forEach(handler=>
             {
                 if(handler.type === obj.type)
@@ -232,11 +232,13 @@ export  class PeerHandler{
 
     public static SendMessage(type:PacketKind, content:any):void
     {
-        let packet = JSON.stringify({
-            type:type,
-            content:content
-        });
-        this._channel.send(packet);
+        if(this._channel){
+            let packet = JSON.stringify({
+                type:type,
+                content:content
+            });
+            this._channel.send(packet);
+        }
     }
 
 }

@@ -1,4 +1,4 @@
-import { HexCube } from "./HexCube";
+import { HexCube } from "./HexCube"; 
 import { Point } from "../Point";
 /* See   */
 
@@ -13,7 +13,7 @@ import { Point } from "../Point";
  */
 
 
-export class HexAxial{
+export class HexAxial{ 
     Q:number;//column
     R:number;//row
 

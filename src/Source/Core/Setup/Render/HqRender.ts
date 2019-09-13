@@ -1,4 +1,4 @@
-import { IaHeadquarter } from '../../Ia/Hq/IaHeadquarter';
+import { IaHeadquarter } from '../../Ia/Hq/IaHeadquarter'; 
 import { HexAxial } from '../../Utils/Coordinates/HexAxial';
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 import { Item } from '../../Items/Item';
@@ -10,37 +10,43 @@ import { DiamondHq } from '../Generator/DiamondHq';
 
 export class HqRender{
 
-    public GetHq(player: DiamondHq, others: Array<DiamondHq>, playgroundItems:Item[]) :Array<Headquarter>
+    _skins:HqSkin[]=[
+        new HqSkin(Archive.team.red.tank, Archive.team.red.turrel, Archive.team.red.truck, Archive.team.red.hq, "redCeil"),
+        new HqSkin(Archive.team.blue.tank, Archive.team.blue.turrel, Archive.team.blue.truck, Archive.team.blue.hq, "selectedCeil"),
+        new HqSkin(Archive.team.yellow.tank, Archive.team.yellow.turrel, Archive.team.yellow.truck, Archive.team.yellow.hq, "brownCeil")
+    ]
+
+    public GetHq(hqDefinitions: Array<DiamondHq>, playgroundItems:Item[]) :Array<Headquarter>
     {
         var hqs = new Array<Headquarter>();
+        
+        hqDefinitions.forEach(hqDefinition=>{
+            let index = hqDefinitions.indexOf(hqDefinition);
+            let hq = {};
+            
+            if(hqDefinition.isIa){
+                hq = this.CreateIaHq(
+                    hqDefinition.Hq.Position,
+                    hqDefinition.Diamond.Position, 
+                    playgroundItems,
+                    this._skins[index]);
+            }else{
+                hq = this.CreateHq(
+                    hqDefinition.Hq.Position,
+                    hqDefinition.Diamond.Position, 
+                    playgroundItems,
+                    this._skins[index]);
+            }
 
-        hqs.push(this.CreateHq(
-            player.Hq.Position,
-            player.Diamond.Position, 
-            playgroundItems,
-            this.RedSkin()));
+            if(hqDefinition.PlayerName){
+                (<Headquarter>hq).PlayerName = hqDefinition.PlayerName; 
+            }
 
-        hqs.push(this.CreateIaHq(others[1].Hq.Position,others[1].Diamond.Position, 
-            playgroundItems,
-            this.BlueSkin()));
+            hqs.push(<Headquarter>hq);
 
-        hqs.push(this.CreateIaHq(others[2].Hq.Position,others[2].Diamond.Position, 
-            playgroundItems,
-            this.BrownSkin()));
+        });
      
         return hqs;
-    }
-
-    private RedSkin(): HqSkin {
-        return new HqSkin(Archive.team.red.tank, Archive.team.red.turrel, Archive.team.red.truck, Archive.team.red.hq, "redCeil");
-    }
-
-    private BlueSkin(): HqSkin {
-        return new HqSkin(Archive.team.blue.tank, Archive.team.blue.turrel, Archive.team.blue.truck, Archive.team.blue.hq, "selectedCeil");
-    }
-
-    private BrownSkin(): HqSkin {
-        return new HqSkin(Archive.team.yellow.tank, Archive.team.yellow.turrel, Archive.team.yellow.truck, Archive.team.yellow.hq, "brownCeil");
     }
 
     private CreateHq(hqCeil: HexAxial,diamondCeil: HexAxial, items: Item[], skin:HqSkin):Headquarter {

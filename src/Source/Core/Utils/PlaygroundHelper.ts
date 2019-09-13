@@ -22,6 +22,11 @@ export class PlaygroundHelper{
     static SpriteProvider:ISpriteProvider;
     public static PlayerHeadquarter:Headquarter;
     public static Dispatcher:MessageDispatcher=new MessageDispatcher();
+    public static PlayerName: string="defaultPlayer";
+    
+    public static SetDefaultName() {
+        this.PlayerName = "defaultPlayer";
+    }
 
     public static Init():void{
         this._areaEngine = new AreaEngine();

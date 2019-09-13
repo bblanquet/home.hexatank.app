@@ -1,5 +1,5 @@
-import {ICeil} from '../Ceils/ICeil';
-import { HexAxial } from '../Utils/Coordinates/HexAxial'; 
+import { HexAxial } from '../../Utils/Coordinates/HexAxial';  
+import { ICeil } from '../../Ceils/ICeil';
 
 export interface IPlaygroundBuilder<T extends ICeil>{ 
     Build(n:number) :Array<T>;

@@ -11,15 +11,13 @@ import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
 
 export class Tank extends Vehicle implements IHqContainer 
 {
-    Hq: Headquarter; 
     Turrel:Turrel;
     private _currentTarget:AliveItem;
     private _mainTarget:AliveItem;
 
     constructor(hq:Headquarter)
     {
-        super();
-        this.Hq = hq;
+        super(hq);
 
         this.Wheels = Archive.wheels;
 

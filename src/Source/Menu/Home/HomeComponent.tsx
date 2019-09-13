@@ -10,9 +10,14 @@ export default class HomeComponent extends Component<any, any> {
     }
 
     private ToCanvas(e:any):void{
-        const mapGenerator = new MapGenerator();
-        const context = mapGenerator.GetMapDefinition(3);
-        PlaygroundHelper.MapContext = context;
+        PlaygroundHelper.MapContext = new MapGenerator().GetMapDefinition(3);
+        PlaygroundHelper.SetDefaultName();
+        PlaygroundHelper.MapContext.Hqs[0].PlayerName = PlaygroundHelper.PlayerName;
+        PlaygroundHelper.MapContext.Hqs.forEach(hq => {
+            if (!hq.PlayerName) {
+                hq.isIa = true;
+            }
+        });
         route('/Canvas', true);
     }
 

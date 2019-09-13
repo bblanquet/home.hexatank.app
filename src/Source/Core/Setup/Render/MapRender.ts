@@ -1,4 +1,4 @@
-import { CeilDecorator } from '../../Ceils/CeilDecorator';
+import { CeilDecorator } from '../../Ceils/CeilDecorator'; 
 import { CeilProperties } from '../../Ceils/CeilProperties';
 import { Cloud } from '../../Items/Others/Cloud'; 
 import { HqRender } from './HqRender';
@@ -42,9 +42,9 @@ export class MapRender{
         this.SetGrass(areas.map(a=>a.GetCentralCeil().GetCoordinate()), playgroundItems);
         this.AddClouds(playgroundItems);
 
-        const hqs = this._hqRender.GetHq(mapContext.Hq,mapContext.Hqs,playgroundItems);
+        const hqs = this._hqRender.GetHq(mapContext.Hqs,playgroundItems);
 
-        let playerHq = hqs[0];
+        let playerHq = hqs.find(hq=>hq.PlayerName === PlaygroundHelper.PlayerName);
         //Link menu to player HQ
         PlaygroundHelper.PlayerHeadquarter = playerHq;
         let menus = this._menuGenerator.GetMenus(playerHq,playgroundItems);

@@ -1,7 +1,7 @@
 import { IPlaygroundBuilder } from './IPlaygroundBuilder';
-import { HexAxial } from '../Utils/Coordinates/HexAxial';
-import {Ceil} from '../Ceils/Ceil'; 
-import { CeilProperties } from '../Ceils/CeilProperties';
+import { HexAxial } from '../../Utils/Coordinates/HexAxial';
+import {Ceil} from '../../Ceils/Ceil'; 
+import { CeilProperties } from '../../Ceils/CeilProperties';
 
 export class RectangleMapBuilder implements IPlaygroundBuilder<Ceil>{
 

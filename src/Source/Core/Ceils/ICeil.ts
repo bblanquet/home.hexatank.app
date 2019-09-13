@@ -1,5 +1,5 @@
+import { Point } from '../Utils/Point'; 
 import { HexAxial } from '../Utils/Coordinates/HexAxial';
-import { Point } from '../Utils/Point';
 
 export interface ICeil
 {

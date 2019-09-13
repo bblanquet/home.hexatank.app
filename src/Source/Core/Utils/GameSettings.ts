@@ -2,6 +2,7 @@ import { ViewContext } from "./ViewContext";
 
 export class GameSettings
 {
+
     private _viewContext:ViewContext=new ViewContext();
     private _scaleHandlers: {(data: boolean):void}[] = [];
     public Size:number=50;

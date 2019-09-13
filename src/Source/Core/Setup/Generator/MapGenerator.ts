@@ -83,7 +83,6 @@ export class MapGenerator
 
         context.Items = mapItems;
         context.CenterItem = mapItems.filter(m=>m.Position.Q === center.Q && m.Position.R === center.R)[0];
-        context.Hq = context.Hqs[0];
         return context;
     }
 

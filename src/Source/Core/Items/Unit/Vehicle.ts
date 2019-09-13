@@ -1,3 +1,4 @@
+import { Headquarter } from './../../Ceils/Field/Headquarter';
 import {Dust} from './Dust';
 import { AliveItem } from '../AliveItem'; 
 import { ITranslationMaker } from './Utils/ITranslationMaker';
@@ -20,6 +21,8 @@ import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
 import { CeilProperties } from '../../Ceils/CeilProperties';
 import { Crater } from '../Others/Crater';
 import { InteractionContext } from '../../Context/InteractionContext';
+import { PeerHandler } from '../../../Menu/Network/Host/On/PeerHandler';
+import { PacketKind } from '../../../Menu/Network/PacketKind';
 
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable
 {
@@ -54,7 +57,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     private _visibleHandlers: { (data: ISelectable):void }[] = [];
     private _onCeilStateChanged:{(ceilState:CeilState):void};
 
-    constructor(){
+    constructor(public Hq:Headquarter){
         super();
         this.CurrentRadius = 0;
         this.BoundingBox = new BoundingBox();
@@ -228,7 +231,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
                 }
             });
         }
-        else if(!this.IsEnemy(PlaygroundHelper.PlayerHeadquarter))
+        else if(!this.IsEnemy(this.Hq))
         {
             var preVisibleCeils = previousCeil.GetAllNeighbourhood();
             preVisibleCeils.push(previousCeil);
@@ -244,7 +247,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     }
 
     private SetCeilsVisible() {
-        if(!this.IsEnemy(PlaygroundHelper.PlayerHeadquarter) 
+        if(!this.IsEnemy(this.Hq) 
         || PlaygroundHelper.Settings.ShowEnemies)
         {
             var ceils = this._currentCeil.GetAllNeighbourhood();
@@ -256,6 +259,9 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     }
 
     public Destroy():void{
+        PeerHandler.SendMessage(PacketKind.Destroyed,{
+            Ceil:this._currentCeil.GetCoordinate()
+        });
         super.Destroy();
         this._currentCeil.SetOccupier(null);
         if(!isNullOrUndefined(this._nextCeil))

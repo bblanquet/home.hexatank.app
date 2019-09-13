@@ -1,13 +1,15 @@
+import { PeerHandler } from './../../../Menu/Network/Host/On/PeerHandler';
 import { OrderState } from "./OrderState";
 import { isNullOrUndefined, isNull } from "util";
 import { Order } from "./Order";
 import { Ceil } from "../../Ceils/Ceil";
 import { CeilFinder } from "../../Ceils/CeilFinder"; 
 import { BasicItem } from "../../Items/BasicItem";
-import { Timer } from "../../Utils/Timer";
+import { Timer } from "../../Utils/Timer"; 
 import { Vehicle } from "../../Items/Unit/Vehicle";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 import { Archive } from "../../Utils/ResourceArchiver";
+import { PacketKind } from '../../../Menu/Network/PacketKind';
 
 export class SimpleOrder extends Order{
     protected CurrentCeil:Ceil;
@@ -94,7 +96,13 @@ export class SimpleOrder extends Order{
         if (isNull(ceil)) {
             this.State = OrderState.Failed;
         }
-        else {
+        else 
+        {
+            PeerHandler.SendMessage(PacketKind.Next,{
+                Ceil:this._v.GetCurrentCeil().GetCoordinate(),
+                NextCeil:ceil.GetCoordinate(),
+                Hq:this._v.Hq.GetCeil().GetCoordinate(),
+            });
             this._v.SetNextCeil(ceil);
         }
     }

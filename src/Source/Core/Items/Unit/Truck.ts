@@ -9,7 +9,6 @@ import { Timer } from "../../Utils/Timer";
 import { CeilState } from "../../Ceils/CeilState";
 
 export class Truck extends Vehicle implements IHqContainer{
-    Hq:Headquarter; 
     private _light:Light;
     private _gatheredDiamonds:Array<string>;
     private _dimaondTimer:ITimer;
@@ -17,8 +16,7 @@ export class Truck extends Vehicle implements IHqContainer{
 
     constructor(hq:Headquarter)
     {
-        super();
-        this.Hq = hq;
+        super(hq);
         this.Wheels = Archive.wheels;
 
         this.GenerateSprite(Archive.wheel)

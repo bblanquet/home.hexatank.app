@@ -18,6 +18,7 @@ export default class OnHostComponent extends Component<any, HostState> {
   constructor(props: any) {
     super(props);
     const p = new Player(props.playerName);
+    
     this.setState({
       ServerName: props.serverName,
       Players: [p],
@@ -45,6 +46,7 @@ export default class OnHostComponent extends Component<any, HostState> {
     });
     
     PlaygroundHelper.Dispatcher.Init(!this.state.IsAdmin);
+    PlaygroundHelper.PlayerName = this.state.Player.Name;
   }
 
   componentDidMount() { }
@@ -173,13 +175,41 @@ export default class OnHostComponent extends Component<any, HostState> {
     {
       let mapGenerator = new MapGenerator();
       let mapContext = mapGenerator.GetMapDefinition(3);
+      this.Assign(mapContext, this.state.Players);
       let message = new GameMessage<MapContext>();
       message.Message = mapContext;
       message.Status = MessageProgess.end;
       PeerHandler.SendMessage(PacketKind.Map,message);
+      this.SetIa(mapContext);
       PlaygroundHelper.MapContext = mapContext; 
+      PlaygroundHelper.PlayerName = this.state.Player.Name;
       route('/Canvas', true);
     }
+  }
+
+  public Assign(mapContext:MapContext, players:Player[]):void
+  {
+    if(mapContext.Hqs.length < players.length)
+    {
+      throw new Error("not enough hq");
+    }
+    
+    for(let i = 0; i< mapContext.Hqs.length;i++)
+    {
+      if(i < players.length)
+      {
+        mapContext.Hqs[i].PlayerName = players[i].Name;
+      }
+    }
+  }
+
+  public SetIa(mapContext:MapContext):void
+  {
+    mapContext.Hqs.forEach(hq=>{
+      if(!hq.PlayerName){
+        hq.isIa = true;
+      }
+    });
   }
 
   private IsEveryoneReady():boolean{

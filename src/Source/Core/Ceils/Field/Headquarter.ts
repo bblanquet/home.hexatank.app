@@ -15,15 +15,16 @@ import { HqSkin } from "../../Utils/HqSkin";
 import { IHqContainer } from "../../Items/Unit/IHqContainer";
 import { Vehicle } from "../../Items/Unit/Vehicle";
 import { Explosion } from "../../Items/Unit/Explosion";
-import { Tank } from "../../Items/Unit/Tank";
+import { Tank } from "../../Items/Unit/Tank"; 
 import { Truck } from "../../Items/Unit/Truck";
 
 export class Headquarter extends AliveItem implements IField, ISelectable
 {
     private _boundingBox:BoundingBox;
     private _ceil:Ceil; 
+    public PlayerName:string;
     protected Fields:Array<HeadQuarterField>;
-    Diamonds:number=PlaygroundHelper.Settings.PocketMoney;
+    public Diamonds:number=PlaygroundHelper.Settings.PocketMoney;
     private _skin:HqSkin;
     private _onCeilStateChanged:{(ceilState:CeilState):void};
 
@@ -129,7 +130,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         return this._skin;
     }
 
-    public CreateTank(signaling:boolean=true):boolean
+    public CreateTank():boolean
     {
         let isCreated = false;
         this.Fields.every(field=>
@@ -144,12 +145,10 @@ export class Headquarter extends AliveItem implements IField, ISelectable
                 tank.SetPosition(field.GetCeil());
                 PlaygroundHelper.Playground.Items.push(tank);
                 isCreated = true;
-                if(signaling){
-                    PeerHandler.SendMessage(PacketKind.Create,{
-                        Name:Tank.constructor.name,
-                        Hq:this._ceil.GetCoordinate()
-                    });
-                }
+                PeerHandler.SendMessage(PacketKind.Create,{
+                    Name:tank.constructor.name,
+                    Hq:this._ceil.GetCoordinate()
+                });
                 return false;
             }
             return true;
@@ -158,7 +157,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         return isCreated;
     }
 
-    public CreateTruck(signaling:boolean=true):boolean
+    public CreateTruck():boolean
     {
         let isCreated = false;
         this.Fields.every(field=>
@@ -173,12 +172,10 @@ export class Headquarter extends AliveItem implements IField, ISelectable
                 truck.SetPosition(field.GetCeil());
                 PlaygroundHelper.Playground.Items.push(truck);
                 isCreated = true;
-                if(signaling){
-                    PeerHandler.SendMessage(PacketKind.Create,{
-                        Name:Truck.constructor.name,
-                        Hq:this._ceil.GetCoordinate()
-                    });
-                }
+                PeerHandler.SendMessage(PacketKind.Create,{
+                    Name:truck.constructor.name,
+                    Hq:this._ceil.GetCoordinate()
+                });
                 return false;
             }
             return true;

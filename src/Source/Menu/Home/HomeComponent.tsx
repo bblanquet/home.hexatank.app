@@ -2,10 +2,12 @@ import {h, Component} from 'preact';
 import {route} from 'preact-router';
 import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
 import { PlaygroundHelper } from '../../Core/Utils/PlaygroundHelper';
+import { GameSetup } from '../../Core/GameSetup';
 
 export default class HomeComponent extends Component<any, any> {
-    
+
     constructor(){
+        PlaygroundHelper.InitApp();
         super();
     }
 
@@ -18,6 +20,7 @@ export default class HomeComponent extends Component<any, any> {
                 hq.isIa = true;
             }
         });
+        
         route('/Canvas', true);
     }
 
@@ -29,7 +32,8 @@ export default class HomeComponent extends Component<any, any> {
         route('/OffJoin', true);
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+    }
 
     componentWillUnmount() {}
 

@@ -11,9 +11,9 @@ import { DiamondHq } from '../Generator/DiamondHq';
 export class HqRender{
 
     _skins:HqSkin[]=[
-        new HqSkin(Archive.team.red.tank, Archive.team.red.turrel, Archive.team.red.truck, Archive.team.red.hq, "redCeil"),
-        new HqSkin(Archive.team.blue.tank, Archive.team.blue.turrel, Archive.team.blue.truck, Archive.team.blue.hq, "selectedCeil"),
-        new HqSkin(Archive.team.yellow.tank, Archive.team.yellow.turrel, Archive.team.yellow.truck, Archive.team.yellow.hq, "brownCeil")
+        new HqSkin(Archive.team.red.tank, Archive.team.red.turrel, Archive.team.red.truck, Archive.team.red.hq, Archive.building.hq.red.field),
+        new HqSkin(Archive.team.blue.tank, Archive.team.blue.turrel, Archive.team.blue.truck, Archive.team.blue.hq, Archive.building.hq.blue.field),
+        new HqSkin(Archive.team.yellow.tank, Archive.team.yellow.turrel, Archive.team.yellow.truck, Archive.team.yellow.hq, Archive.building.hq.yellow.field)
     ]
 
     public GetHq(hqDefinitions: Array<DiamondHq>, playgroundItems:Item[]) :Array<Headquarter>

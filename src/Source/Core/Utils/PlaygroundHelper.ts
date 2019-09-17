@@ -10,8 +10,11 @@ import { Headquarter } from "../Ceils/Field/Headquarter";
 import { Area } from "../Ia/Area/Area";
 import { Playground } from "../Playground";
 import { MapContext } from "../Setup/Generator/MapContext";
+import { SpriteProvider } from './SpriteProvider';
+const Viewport = require('pixi-viewport').Viewport;
 
 export class PlaygroundHelper{
+
     static MapContext:MapContext;
     static CeilsContainer:CeilsContainer<Ceil>;
     static Engine:AStarEngine<Ceil>;
@@ -27,6 +30,67 @@ export class PlaygroundHelper{
     public static SetDefaultName() {
         this.PlayerName = "defaultPlayer";
     }
+
+    public static App: PIXI.Application;
+    public static Viewport:any;
+    public static Manager:PIXI.interaction.InteractionManager;
+
+
+    public static InitApp():void{
+        if(!this.App){
+            this.App = new PIXI.Application({
+                backgroundColor: 0x00A651,//0x6d9ae3
+              });
+              PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
+              PIXI.settings.RENDER_OPTIONS.antialias = true;
+    
+            this.Viewport= new Viewport({
+                screenWidth: window.innerWidth,
+                screenHeight: window.innerHeight,
+                worldWidth: 2000,
+                worldHeight: 1000,
+                interaction: this.App.renderer.plugins.interaction
+              });
+            
+            this.Manager = new PIXI.interaction.InteractionManager(this.App.renderer);        
+            
+            this.Viewport.drag().pinch().wheel().decelerate();
+            this.SpriteProvider = new SpriteProvider();
+            this.SpriteProvider.PreloadTexture();
+            this.App.stage.addChild(this.Viewport);
+        }
+    }
+
+    public static ResizeTheCanvas():void
+    {
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) 
+        {
+            this.App.renderer.resize(screen.width,screen.height); 
+            this.Viewport.screenWidth = screen.width;
+            this.Viewport.screenHeight = screen.height;
+            this.Viewport.worldWidth = screen.width;
+            this.Viewport.worldHeight = screen.height;
+            PlaygroundHelper.Settings.ScreenWidth = screen.width;
+            PlaygroundHelper.Settings.ScreenHeight = screen.height;
+        }
+        else
+        {
+            this.App.renderer.resize(window.innerWidth,window.innerHeight); 
+            this.Viewport.screenWidth = window.innerWidth;
+            this.Viewport.screenHeight = window.innerHeight;
+            this.Viewport.worldWidth = window.innerWidth;
+            this.Viewport.worldHeight = window.innerHeight;
+            PlaygroundHelper.Settings.ScreenWidth = window.innerWidth;
+            PlaygroundHelper.Settings.ScreenHeight = window.innerHeight;
+        }
+
+        // if(this._isFirstResize){
+        //   this._isFirstResize = false;
+        //   this._gameSetup.SetCenter();
+        // }
+    }
+
+    //private _isFirstResize:boolean=true;
 
     public static Init():void{
         this._areaEngine = new AreaEngine();

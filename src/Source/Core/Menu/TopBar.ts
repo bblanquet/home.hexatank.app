@@ -39,6 +39,11 @@ export class TopBar extends Item
         PlaygroundHelper.Render.AddDisplayableEntityByGroup(this._text,6);
     }
 
+    public Destroy():void{
+        super.Destroy();
+        this._text.destroy();
+    }
+
     public GetBoundingBox(): BoundingBox {
         throw new Error("Method not implemented.");
 

@@ -6,7 +6,6 @@ import { GroupsContainer } from "./Utils/GroupsContainer";
 export class GameSetup{
     public SetGame(root:PIXI.Container,movableRoot:PIXI.Container):void
     { 
-        PlaygroundHelper.SpriteProvider.PreloadTexture();
         PlaygroundHelper.Render = new RenderingHandler(
             new GroupsContainer(
                 {

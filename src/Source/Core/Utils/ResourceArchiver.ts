@@ -86,7 +86,16 @@ export const Archive = {
     building:{
         hq:{
             bottom:'./building/hqMiddle.svg',
-            top:'./building/hqTop.svg'
+            top:'./building/hqTop.svg',
+            red:{
+                field:'./building/hqRedCell.svg'
+            },
+            blue:{
+                field:'./building/hqBlueCell.svg'
+            },
+            yellow:{
+                field:'./building/hqYellowCell.svg'
+            },
         }
     },
     bonus:{

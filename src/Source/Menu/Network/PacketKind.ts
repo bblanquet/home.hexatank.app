@@ -1,6 +1,7 @@
 export enum PacketKind{
  Open,
  Ping,
+ Destroyed,
  Next,
  Target,
  Toast,

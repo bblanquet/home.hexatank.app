@@ -40,6 +40,7 @@ export default class CanvasComponent extends Component<any, {refresh:boolean}> {
     window.addEventListener('resize', ()=>PlaygroundHelper.ResizeTheCanvas);
     window.addEventListener('DOMContentLoaded',()=>PlaygroundHelper.ResizeTheCanvas);
     PlaygroundHelper.Manager.autoPreventDefault = false;
+    this._gameSetup.SetCenter();
     this._loop();
   }
 

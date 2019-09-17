@@ -6,6 +6,8 @@ import { Ceil } from "../../Ceils/Ceil";
 import { BasicField } from "../../Ceils/Field/BasicField";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 import { FastField } from "../../Ceils/Field/FastField";
+import { PeerHandler } from "../../../Menu/Network/Host/On/PeerHandler";
+import { PacketKind } from "../../../Menu/Network/PacketKind";
 
 export class FastCeilCombination implements ICombination{
 
@@ -25,6 +27,11 @@ export class FastCeilCombination implements ICombination{
                 {
                     if(PlaygroundHelper.PlayerHeadquarter.Diamonds >= PlaygroundHelper.Settings.FieldPrice){
                         PlaygroundHelper.PlayerHeadquarter.Diamonds -= PlaygroundHelper.Settings.FieldPrice;
+                        PeerHandler.SendMessage(PacketKind.Field,{
+                            Hq:PlaygroundHelper.PlayerHeadquarter.GetCurrentCeil().GetCoordinate(),
+                            Ceil:ceil.GetCoordinate(),
+                            Type:"Fast"
+                        });
                         let field = new FastField(ceil);
                         PlaygroundHelper.Playground.Items.push(field);
                     }

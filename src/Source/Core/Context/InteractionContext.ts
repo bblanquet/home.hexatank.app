@@ -1,3 +1,4 @@
+import { TruckDiamondCombination } from './Combination/TruckDiamondCombination';
 import { IPatternChecker } from './IPatternChecker';
 import { PatternChecker } from './PatternChecker';
 import { IInteractionContext } from './IInteractionContext';
@@ -48,6 +49,7 @@ export class InteractionContext implements IInteractionContext{
         combinations.push(new SwitchToHeadquarterCombination(menus));     
         combinations.push(new SwitchToVehicleCombination(menus));     
         combinations.push(new CancelCombination(this));
+        combinations.push(new TruckDiamondCombination());
         combinations.push(new TruckCombination());
         combinations.push(new TankCombination());
         combinations.push(new PatrolCombination());

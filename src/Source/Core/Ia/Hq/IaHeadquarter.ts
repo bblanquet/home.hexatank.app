@@ -56,7 +56,7 @@ export class IaHeadquarter extends Headquarter{
             
             if(!isNullOrUndefined(truck))
             {
-                truck.SetOrder(new TruckPatrolOrder(new HqFieldOrder(this,truck), new DiamondFieldOrder(this.Diamond,truck)));
+                truck.SetOrder(new TruckPatrolOrder(truck,new HqFieldOrder(this,truck), new DiamondFieldOrder(this.Diamond,truck)));
                 this._trucks.push(truck);
             }
         }
@@ -132,7 +132,7 @@ export class IaHeadquarter extends Headquarter{
                 truck.SetPosition(field.GetCeil());
                 PlaygroundHelper.Playground.Items.push(truck);
                 PeerHandler.SendMessage(PacketKind.Create,{
-                    Name:truck.constructor.name,
+                    Name:"Truck",
                     Hq:this.GetCeil().GetCoordinate()
                 });
                 return true;
@@ -168,7 +168,7 @@ export class IaHeadquarter extends Headquarter{
                         PlaygroundHelper.Playground.Items.push(tank);
                         isCreated = true;
                         PeerHandler.SendMessage(PacketKind.Create,{
-                            Name:tank.constructor.name,
+                            Name:"Tank",
                             Hq:this.GetCeil().GetCoordinate()
                         });
                         return true;

@@ -3,6 +3,8 @@ import { IField } from "./IField";
 import { Ceil } from "../Ceil"; 
 import { CeilState } from "../CeilState";
 import { Vehicle } from "../../Items/Unit/Vehicle";
+import { PeerHandler } from "../../../Menu/Network/Host/On/PeerHandler";
+import { PacketKind } from "../../../Menu/Network/PacketKind";
 
 export abstract class AliveField extends AliveItem implements IField{
     
@@ -33,6 +35,10 @@ export abstract class AliveField extends AliveItem implements IField{
     }
 
     public Destroy():void{
+        PeerHandler.SendMessage(PacketKind.Destroyed,{
+            Ceil:this._ceil.GetCoordinate(),
+            Name:"field"
+        });
         super.Destroy();
         this._ceil.UnregisterCeilState(this._onCeilStateChanged);
     }

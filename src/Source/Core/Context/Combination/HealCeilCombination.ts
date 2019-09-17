@@ -6,6 +6,8 @@ import { Ceil } from "../../Ceils/Ceil";
 import { BasicField } from "../../Ceils/Field/BasicField";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 import { HealField } from "../../Ceils/Field/HealField";
+import { PeerHandler } from "../../../Menu/Network/Host/On/PeerHandler";
+import { PacketKind } from "../../../Menu/Network/PacketKind";
 
 export class HealCeilCombination implements ICombination 
 {
@@ -27,6 +29,11 @@ export class HealCeilCombination implements ICombination
                     if(PlaygroundHelper.PlayerHeadquarter.Diamonds >= PlaygroundHelper.Settings.FieldPrice)
                     {
                         PlaygroundHelper.PlayerHeadquarter.Diamonds -= PlaygroundHelper.Settings.FieldPrice;
+                        PeerHandler.SendMessage(PacketKind.Field,{
+                            Hq:PlaygroundHelper.PlayerHeadquarter.GetCurrentCeil().GetCoordinate(),
+                            Ceil:ceil.GetCoordinate(),
+                            Type:"Heal"
+                        });
                         let field = new HealField(ceil);
                         PlaygroundHelper.Playground.Items.push(field);
                     }

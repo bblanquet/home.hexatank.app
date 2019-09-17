@@ -231,7 +231,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
                 }
             });
         }
-        else if(!this.IsEnemy(this.Hq))
+        else if(!this.IsEnemy(PlaygroundHelper.PlayerHeadquarter))
         {
             var preVisibleCeils = previousCeil.GetAllNeighbourhood();
             preVisibleCeils.push(previousCeil);
@@ -247,7 +247,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     }
 
     private SetCeilsVisible() {
-        if(!this.IsEnemy(this.Hq) 
+        if(!this.IsEnemy(PlaygroundHelper.PlayerHeadquarter) 
         || PlaygroundHelper.Settings.ShowEnemies)
         {
             var ceils = this._currentCeil.GetAllNeighbourhood();
@@ -260,7 +260,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
     public Destroy():void{
         PeerHandler.SendMessage(PacketKind.Destroyed,{
-            Ceil:this._currentCeil.GetCoordinate()
+            Ceil:this._currentCeil.GetCoordinate(),
+            Name:"vehicle"
         });
         super.Destroy();
         this._currentCeil.SetOccupier(null);

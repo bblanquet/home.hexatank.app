@@ -2,6 +2,7 @@ import { Item } from "../Items/Item";
 import { BoundingBox } from "../Utils/BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
 import { isNullOrUndefined } from "util";
+import { PlaygroundHelper } from "../Utils/PlaygroundHelper";
  
 export abstract class MenuItem extends Item
 {
@@ -28,6 +29,10 @@ export abstract class MenuItem extends Item
         this.BoundingBox.Y = boundingbox.y;
         this.BoundingBox.Width = boundingbox.width;
         this.BoundingBox.Height = boundingbox.height;
+    }
+
+    public  Destroy():void{
+        PlaygroundHelper.Render.Remove(this);
     }
 
     public Update(viewX: number, viewY: number): void {

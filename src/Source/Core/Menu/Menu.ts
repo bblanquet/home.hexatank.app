@@ -28,6 +28,13 @@ export abstract class Menu extends Item{
         data.SubscribeUnselection(this._hide);
     }
 
+    public Destroy():void{
+        super.Destroy();
+        this.Items.forEach(item=>{
+            item.Destroy();
+        })
+    }
+
     protected Hide(data: ISelectable):void{
         data.Unsubscribe(this._hide);
     }

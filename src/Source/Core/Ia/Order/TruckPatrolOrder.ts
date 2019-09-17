@@ -3,12 +3,14 @@ import { OrderState } from "./OrderState";
 import { HqFieldOrder } from "./HqFieldOrder";
 import { DiamondFieldOrder } from "./DiamondFieldOrder";
 import { SimpleOrder } from "./SimpleOrder";
+import { Truck } from "../../Items/Unit/Truck";
+import { DiamondField } from "../../Ceils/Field/DiamondField";
 
 export class TruckPatrolOrder extends Order
 { 
     private _currentOrder:SimpleOrder;
 
-    constructor(private _hqOrder:HqFieldOrder, private _diamondFieldOrder:DiamondFieldOrder){
+    constructor(private truck:Truck,private _hqOrder:HqFieldOrder, private _diamondFieldOrder:DiamondFieldOrder){
         super();
     }
 
@@ -23,6 +25,14 @@ export class TruckPatrolOrder extends Order
 
         if(this._currentOrder.IsDone())
         {
+            const field = this.truck.GetCurrentCeil().GetField();
+            if(field.constructor.name === DiamondField.name
+                && !this.truck.IsLoaded())
+            {
+                //wait
+                return;
+            }
+
             if(this._currentOrder.GetState() === OrderState.Failed)
             {
                 //reset

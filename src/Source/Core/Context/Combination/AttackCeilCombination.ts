@@ -6,6 +6,8 @@ import { Ceil } from "../../Ceils/Ceil";
 import { BasicField } from "../../Ceils/Field/BasicField";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 import { AttackField } from "../../Ceils/Field/AttackField";
+import { PacketKind } from "../../../Menu/Network/PacketKind";
+import { PeerHandler } from "../../../Menu/Network/Host/On/PeerHandler";
 
 export class AttackCeilCombination implements ICombination{
 
@@ -24,6 +26,11 @@ export class AttackCeilCombination implements ICombination{
                 {
                     if(PlaygroundHelper.PlayerHeadquarter.Diamonds >= PlaygroundHelper.Settings.FieldPrice){
                         PlaygroundHelper.PlayerHeadquarter.Diamonds -= PlaygroundHelper.Settings.FieldPrice;
+                        PeerHandler.SendMessage(PacketKind.Field,{
+                            Hq:PlaygroundHelper.PlayerHeadquarter.GetCurrentCeil().GetCoordinate(),
+                            Ceil:ceil.GetCoordinate(),
+                            Type:"Attack"
+                        });
                         let field = new AttackField(ceil);
                         PlaygroundHelper.Playground.Items.push(field);
                     }

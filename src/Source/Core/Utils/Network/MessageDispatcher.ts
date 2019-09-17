@@ -1,3 +1,5 @@
+import { AttackField } from './../../Ceils/Field/AttackField';
+import { HealField } from './../../Ceils/Field/HealField';
 import { PeerHandler } from './../../../Menu/Network/Host/On/PeerHandler';
 import { Headquarter } from './../../Ceils/Field/Headquarter';
 import { HexAxial } from './../Coordinates/HexAxial';
@@ -8,6 +10,11 @@ import { GameMessage } from './GameMessage';
 import { MessageProgess } from './MessageProgess';
 import { MapContext } from '../../Setup/Generator/MapContext';
 import { Vehicle } from '../../Items/Unit/Vehicle';
+import { IaHeadquarter } from '../../Ia/Hq/IaHeadquarter';
+import { AliveField } from '../../Ceils/Field/AliveField';
+import { Tank } from '../../Items/Unit/Tank';
+import { MoneyField } from '../../Ceils/Field/MoneyField';
+import { FastField } from '../../Ceils/Field/FastField';
 
 export class MessageDispatcher{
     private _isClient:boolean=false;
@@ -18,15 +25,13 @@ export class MessageDispatcher{
         if(this._isClient){
             PeerHandler.Subscribe({
                 type:PacketKind.Map,
-                func:(e:any)=>this.ReceiveMap(e)
+                func:(e:any)=>this.GetMap(e)
             });
         }
-
         PeerHandler.Subscribe({
             type:PacketKind.Create,
-            func:(e:any)=>this.ReceiveVehicle(e)
+            func:(e:any)=>this.CreateVehicle(e)
         });
-
         PeerHandler.Subscribe({
             type:PacketKind.Next,
             func:(e:any)=>this.ReceiveNextPosition(e)
@@ -34,14 +39,68 @@ export class MessageDispatcher{
         PeerHandler.Subscribe({
             type:PacketKind.Destroyed,
             func:(e:any)=>this.Destroyed(e)
-        })
+        });
+        PeerHandler.Subscribe({
+            type:PacketKind.Target,
+            func:(e:any)=>this.Target(e)
+        });
+        PeerHandler.Subscribe({
+            type:PacketKind.Field,
+            func:(e:any)=>this.Field(e)
+        });
     }
-    Destroyed(e: any): void {
+
+    private Field(e: any): void {
+        if(this.IsListenedHq(e)){
+            const pos = new HexAxial(e.Ceil.Q,e.Ceil.R);
+            const ceil = PlaygroundHelper.CeilsContainer.Get(pos);
+            const type = e.Type;
+            if(type === "Heal")
+            {
+                let field = new HealField(ceil);
+                PlaygroundHelper.Playground.Items.push(field);
+            }
+            else if(type === "Attack")
+            {
+                let field = new AttackField(ceil);
+                PlaygroundHelper.Playground.Items.push(field);
+            }
+            else if(type === "Money")
+            {
+                let field = new MoneyField(ceil);
+                PlaygroundHelper.Playground.Items.push(field);
+            }
+            else if(type === "Fast")
+            {
+                let field = new FastField(ceil);
+                PlaygroundHelper.Playground.Items.push(field);
+            }
+        }
+    }
+
+    private Target(e: any): void {
+        if(this.IsListenedHq(e)){
+            const targetCeil = new HexAxial(e.TargetCeil.Q,e.TargetCeil.R);
+            const pos = new HexAxial(e.Ceil.Q,e.Ceil.R);
+            const tank = PlaygroundHelper.CeilsContainer.Get(pos).GetOccupier() as Tank;
+            tank.SetMainTarget(PlaygroundHelper.CeilsContainer.Get(targetCeil).GetShootableEntity());
+        }
+    }
+
+    private Destroyed(e: any): void {
         const pos = new HexAxial(e.Ceil.Q,e.Ceil.R);
         const ceil = PlaygroundHelper.CeilsContainer.Get(pos);
-        if(ceil.HasOccupier()){
+        const destroyedItemName = e.Name;
+
+        if(ceil.HasOccupier() && "vehicle"  === destroyedItemName){
             const vehicle = ceil.GetOccupier() as Vehicle;
             vehicle.Destroy();
+            return;
+        }
+        else if(ceil.GetField().IsDesctrutible() 
+        && "field" === destroyedItemName
+        ){
+            (<AliveField>ceil.GetField()).Destroy();
         }
     }
 
@@ -59,10 +118,10 @@ export class MessageDispatcher{
         const hq = PlaygroundHelper.CeilsContainer.Get(coordinate).GetField() as Headquarter;
         return hq 
             && hq.PlayerName !== PlaygroundHelper.PlayerName
-            && hq.constructor.name !== 'IaHeadquarter';
+            && hq.constructor.name !== IaHeadquarter.name;
     }
 
-    private ReceiveVehicle(e:any): void 
+    private CreateVehicle(e:any): void 
     {
         if(this.IsListenedHq(e))
         {
@@ -79,7 +138,7 @@ export class MessageDispatcher{
         }
     }
 
-    private ReceiveMap(content:GameMessage<MapContext>):void{
+    private GetMap(content:GameMessage<MapContext>):void{
         //isntantiate coordinate
         content.Message.Items.forEach(item=>{
             item.Position = new HexAxial(item.Position.Q,item.Position.R);

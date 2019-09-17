@@ -3,6 +3,7 @@ export enum PacketKind{
  Ping,
  Destroyed,
  Next,
+ Field,
  Target,
  Toast,
  Env,

@@ -129,15 +129,15 @@ export class Ceil extends Item implements ICeil , ISelectable
     }
 
     public GetShootableEntity():AliveItem{
+        if(this._occupier != null)
+        {
+            return <AliveItem>(this._occupier as any);
+        }
+
         if(!isNullOrUndefined(this._field)){
             if(this._field.IsDesctrutible()){
                 return <AliveItem> <any> this._field;
             }
-        }
-
-        if(this._occupier != null)
-        {
-            return <AliveItem>(this._occupier as any);
         }
 
         return null;

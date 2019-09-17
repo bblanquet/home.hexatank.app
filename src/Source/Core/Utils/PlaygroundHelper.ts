@@ -83,14 +83,7 @@ export class PlaygroundHelper{
             PlaygroundHelper.Settings.ScreenWidth = window.innerWidth;
             PlaygroundHelper.Settings.ScreenHeight = window.innerHeight;
         }
-
-        // if(this._isFirstResize){
-        //   this._isFirstResize = false;
-        //   this._gameSetup.SetCenter();
-        // }
     }
-
-    //private _isFirstResize:boolean=true;
 
     public static Init():void{
         this._areaEngine = new AreaEngine();

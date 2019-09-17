@@ -78,7 +78,11 @@ export class MapGenerator
             {
                 mapItem.Type = DecorationType.None;
             }
-            mapItems.push(mapItem);
+            
+            if(mapItems.filter(mi=>mi.Position.ToString() === mapItem.Position.ToString()).length === 0){
+                mapItems.push(mapItem);
+            }
+
         });
 
         context.Items = mapItems;

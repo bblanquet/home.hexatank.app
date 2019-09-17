@@ -1,3 +1,4 @@
+import { PeerHandler } from './../../../Menu/Network/Host/On/PeerHandler';
 import {Vehicle} from './Vehicle';
 import { Turrel } from './Turrel';
 import { AliveItem } from '../AliveItem';
@@ -8,6 +9,7 @@ import { Archive } from '../../Utils/ResourceArchiver';
 import { CeilState } from '../../Ceils/CeilState';
 import { Ceil } from '../../Ceils/Ceil';
 import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
+import { PacketKind } from '../../../Menu/Network/PacketKind';
 
 export class Tank extends Vehicle implements IHqContainer 
 {
@@ -190,6 +192,11 @@ export class Tank extends Vehicle implements IHqContainer
     }
 
     public SetMainTarget(item:AliveItem):void{
+        PeerHandler.SendMessage(PacketKind.Target,{
+            Hq:this.Hq.GetCeil().GetCoordinate(),
+            Ceil:this.GetCurrentCeil().GetCoordinate(),
+            TargetCeil:item.GetCurrentCeil().GetCoordinate(),
+        });
         this._mainTarget = item;
     }
 

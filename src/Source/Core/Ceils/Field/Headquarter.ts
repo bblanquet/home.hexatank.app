@@ -1,3 +1,4 @@
+import { Tank } from './../../Items/Unit/Tank';
 import { PacketKind } from './../../../Menu/Network/PacketKind';
 import { PeerHandler } from './../../../Menu/Network/Host/On/PeerHandler';
 import { InteractionContext } from "../../Context/InteractionContext";
@@ -15,7 +16,6 @@ import { HqSkin } from "../../Utils/HqSkin";
 import { IHqContainer } from "../../Items/Unit/IHqContainer";
 import { Vehicle } from "../../Items/Unit/Vehicle";
 import { Explosion } from "../../Items/Unit/Explosion";
-import { Tank } from "../../Items/Unit/Tank"; 
 import { Truck } from "../../Items/Unit/Truck";
 
 export class Headquarter extends AliveItem implements IField, ISelectable
@@ -146,7 +146,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable
                 PlaygroundHelper.Playground.Items.push(tank);
                 isCreated = true;
                 PeerHandler.SendMessage(PacketKind.Create,{
-                    Name:tank.constructor.name,
+                    Name:"Tank",
                     Hq:this._ceil.GetCoordinate()
                 });
                 return false;
@@ -168,12 +168,12 @@ export class Headquarter extends AliveItem implements IField, ISelectable
                     const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,5,false,5);
                     PlaygroundHelper.Playground.Items.push(explosion);
                 }
-                var truck = new Truck(this);
+                let truck = new Truck(this);
                 truck.SetPosition(field.GetCeil());
                 PlaygroundHelper.Playground.Items.push(truck);
                 isCreated = true;
                 PeerHandler.SendMessage(PacketKind.Create,{
-                    Name:truck.constructor.name,
+                    Name:"Truck",
                     Hq:this._ceil.GetCoordinate()
                 });
                 return false;

@@ -103,7 +103,7 @@ export default class OnHostComponent extends Component<any, HostState> {
             <div class="input-group-prepend">
               <button class="btn btn-dark" type="button" id="button-addon1" onClick={() => this.Send()}>Send</button>
             </div>
-            <input type="text" class="form-control" value={this.state.Message} onInput={linkState(this, 'Message')} aria-label="Example text with button addon" aria-describedby="button-addon1" />
+            <input type="text" class="form-control" id="toastMessageBox" value={this.state.Message} onInput={linkState(this, 'Message')} aria-label="Example text with button addon" aria-describedby="button-addon1" />
           </div>
         </div>
       </div>);
@@ -168,6 +168,7 @@ export default class OnHostComponent extends Component<any, HostState> {
 
     toastr["success"](message.Content, message.Name, { iconClass: 'toast-white' });
     PeerHandler.SendMessage(PacketKind.Toast, message);
+    document.getElementById("toastMessageBox").focus();
   }
 
   private Start():void{

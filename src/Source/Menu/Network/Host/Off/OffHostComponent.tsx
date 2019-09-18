@@ -8,8 +8,8 @@ export default class OffHostComponent extends Component<any, OffHostState> {
     constructor(){
         super();
         this.setState({
-            ServerName:'John doe \'s server',
-            PlayerName:'John doe'
+            ServerName:'John\'s server',
+            PlayerName:'John'
         })
     }
 
@@ -35,10 +35,10 @@ export default class OffHostComponent extends Component<any, OffHostState> {
                         <input type="text" value={this.state.PlayerName} onInput={linkState(this, 'PlayerName')} class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default"/>
                     </div>
                 </div>
-            <div class="form-group mb-2">
-                    <button type="button" class="btn btn-primary btn-sm btn-space" onClick={(e) => this.Start(e)}>Start</button>
-                    <button type="button" class="btn btn-secondary btn-sm btn-space" onClick={this.Back}>Back</button>
-                </div>
+            <div class="btn-group btn-group-space" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-dark btn-sm" onClick={(e) => this.Start(e)}>Start</button>
+                <button type="button" class="btn btn-primary btn-sm btn-danger" onClick={this.Back}>Back</button>
+            </div>
         </div>);
     }
 

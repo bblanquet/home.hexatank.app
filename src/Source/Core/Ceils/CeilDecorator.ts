@@ -1,3 +1,4 @@
+import { VolcanoField } from './Field/VolcanoField';
 import { Item } from "../Items/Item";
 import { BlockingField } from "./Field/RockField";
 import { Ceil } from "./Ceil"; 
@@ -25,18 +26,21 @@ export class CeilDecorator{
             }
             else if(decorationRandom <= 0.75)
             {
-                if(decorationRandom <= 0.58)
+                if(decorationRandom <= 0.55)
                 {
                     result = DecorationType.Water;
-
                 }
-                else if(decorationRandom <= 0.64)
+                else if(decorationRandom <= 0.60)
                 {
                     result = DecorationType.Tree;
                 }
-                else
+                else if(decorationRandom <= 0.70)
                 {
                     result = DecorationType.Rock;
+                }
+                else
+                {
+                    result = DecorationType.Volcano;
                 }
             }
             else
@@ -60,6 +64,10 @@ export class CeilDecorator{
              }  
              case DecorationType.Water: { 
                 items.push(new WaterField(ceil)); 
+                break; 
+             }  
+             case DecorationType.Volcano: { 
+                items.push(new VolcanoField(ceil)); 
                 break; 
              }  
              case DecorationType.Tree: { 

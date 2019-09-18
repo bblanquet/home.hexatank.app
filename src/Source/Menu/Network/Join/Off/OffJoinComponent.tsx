@@ -47,7 +47,7 @@ export default class OffJoinComponent extends Component<any, {ServerNames:string
             })}
             </tbody>
             </table>
-            <button type="button" class="btn btn-secondary btn-sm btn-space" onClick={this.Back}>Back</button>
+            <button type="button" class="btn btn-primary btn-sm btn-danger" onClick={this.Back}>Back</button>
         </div>;
     }
 

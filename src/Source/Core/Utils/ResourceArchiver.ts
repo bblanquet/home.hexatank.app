@@ -119,6 +119,8 @@ export const Archive = {
             './nature/cloud4.svg',
             './nature/cloud5.svg',
         ],
+        volcano:'./nature/volcano.svg',
+        volcanaoAnimation:'./nature/volcanoAnimation.svg',
         diamondStone:'./nature/diamondStone.svg',
         stone:'./nature/stones.svg',
         puddle:'./nature/waterPuddle.svg',

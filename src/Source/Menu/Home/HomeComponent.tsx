@@ -40,6 +40,11 @@ export default class HomeComponent extends Component<any, any> {
     render() {
         return (
             <div class="centered">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item active" aria-current="page">Program 6</li>
+                    </ol>
+                </nav>
                 <div class="btn-group-vertical">
                     <button type="button" class="btn btn-secondary" onClick={this.ToCanvas}>Single player</button>
                     <div class="btn-group" role="group">
@@ -51,6 +56,7 @@ export default class HomeComponent extends Component<any, any> {
                             <a class="dropdown-item" onClick={this.ToJoin}>Join</a>
                         </div>
                     </div>
+                <button type="button" class="btn btn-dark">Contact</button>
                 </div>
             </div>
         );

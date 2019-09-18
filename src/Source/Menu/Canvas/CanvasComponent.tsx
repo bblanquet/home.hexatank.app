@@ -37,8 +37,8 @@ export default class CanvasComponent extends Component<any, {refresh:boolean}> {
     PlaygroundHelper.Manager.on('pointermove', PlaygroundHelper.Playground.InputManager.OnMouseMove.bind(PlaygroundHelper.Playground.InputManager), false);
     PlaygroundHelper.Manager.on('pointerup', PlaygroundHelper.Playground.InputManager.OnMouseUp.bind(PlaygroundHelper.Playground.InputManager), false);
     PlaygroundHelper.ResizeTheCanvas();
-    window.addEventListener('resize', ()=>PlaygroundHelper.ResizeTheCanvas);
-    window.addEventListener('DOMContentLoaded',()=>PlaygroundHelper.ResizeTheCanvas);
+    window.addEventListener('resize', ()=>PlaygroundHelper.ResizeTheCanvas());
+    window.addEventListener('DOMContentLoaded',()=>PlaygroundHelper.ResizeTheCanvas());
     PlaygroundHelper.Manager.autoPreventDefault = false;
     this._gameSetup.SetCenter();
     this._loop();

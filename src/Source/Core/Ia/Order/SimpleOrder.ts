@@ -99,7 +99,7 @@ export class SimpleOrder extends Order{
         else 
         {
             PeerHandler.SendMessage(PacketKind.Next,{
-                Ceil:this._v.GetCurrentCeil().GetCoordinate(),
+                Id:this._v.Id,
                 NextCeil:ceil.GetCoordinate(),
                 Hq:this._v.Hq.GetCeil().GetCoordinate(),
             });

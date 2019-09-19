@@ -201,17 +201,7 @@ export class PeerHandler{
         }
     }
 
-    public static Stop():void{
-        if(this._channel)
-        {
-            this._channel.close();
-        }
-
-        if(this._connector)
-        {
-            this._connector.close();
-        }
-
+    public static CloseRoom(){
         if(this._socket)
         {
             if(this._isAdmin)
@@ -226,13 +216,27 @@ export class PeerHandler{
         }
     }
 
+    public static Stop():void{
+        if(this._channel)
+        {
+            this._channel.close();
+        }
+
+        if(this._connector)
+        {
+            this._connector.close();
+        }
+        this.CloseRoom()
+    }
+
     public static Subscribe(handler:{type:PacketKind,func:{(message:any):void}}):void{
         this._handlers.push(handler);
     }
 
     public static SendMessage(type:PacketKind, content:any):void
     {
-        if(this._channel){
+        if(this._channel 
+            && this._channel.readyState == "open"){
             let packet = JSON.stringify({
                 type:type,
                 content:content

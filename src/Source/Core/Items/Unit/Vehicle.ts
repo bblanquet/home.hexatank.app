@@ -26,6 +26,7 @@ import { PacketKind } from '../../../Menu/Network/PacketKind';
 
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable
 {
+    public Id:string;
     RotationSpeed: number=0.05;
     TranslationSpeed: number=1;
     Attack:number=30;
@@ -364,6 +365,11 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     }
 
     public SetNextCeil(ceil: Ceil): void {
+        if(this._nextCeil){
+            if(this._nextCeil.GetOccupier() === this){
+                this._nextCeil.SetOccupier(null);
+            }
+        }
         this._nextCeil = ceil;
         this._nextCeil.SetOccupier(this);
         this._angleFinder.SetAngle(this._nextCeil);

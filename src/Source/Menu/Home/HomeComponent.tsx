@@ -1,8 +1,6 @@
 import {h, Component} from 'preact';
 import {route} from 'preact-router';
-import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
 import { PlaygroundHelper } from '../../Core/Utils/PlaygroundHelper';
-import { GameSetup } from '../../Core/GameSetup';
 
 export default class HomeComponent extends Component<any, any> {
 
@@ -11,17 +9,8 @@ export default class HomeComponent extends Component<any, any> {
         super();
     }
 
-    private ToCanvas(e:any):void{
-        PlaygroundHelper.MapContext = new MapGenerator().GetMapDefinition(3);
-        PlaygroundHelper.SetDefaultName();
-        PlaygroundHelper.MapContext.Hqs[0].PlayerName = PlaygroundHelper.PlayerName;
-        PlaygroundHelper.MapContext.Hqs.forEach(hq => {
-            if (!hq.PlayerName) {
-                hq.isIa = true;
-            }
-        });
-        
-        route('/Canvas', true);
+    private ToSinglePlayer(e:any):void{
+        route('/SinglePlayer', true);
     }
 
     private ToHost(e:any):void{
@@ -46,7 +35,7 @@ export default class HomeComponent extends Component<any, any> {
                     </ol>
                 </nav>
                 <div class="btn-group-vertical">
-                    <button type="button" class="btn btn-secondary" onClick={this.ToCanvas}>Single player</button>
+                    <button type="button" class="btn btn-secondary" onClick={this.ToSinglePlayer}>Single player</button>
                     <div class="btn-group" role="group">
                         <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Multiplayers

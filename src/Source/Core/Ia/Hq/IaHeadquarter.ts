@@ -128,13 +128,13 @@ export class IaHeadquarter extends Headquarter{
                     const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,5,false,5);
                     PlaygroundHelper.Playground.Items.push(explosion);
                 }
+                this.Count +=1;
                 truck = new Truck(this);
+                truck.Id = `${this.PlayerName}${this.Count}`;
                 truck.SetPosition(field.GetCeil());
+                PlaygroundHelper.VehiclesContainer.Add(truck);
                 PlaygroundHelper.Playground.Items.push(truck);
-                PeerHandler.SendMessage(PacketKind.Create,{
-                    Name:"Truck",
-                    Hq:this.GetCeil().GetCoordinate()
-                });
+                this.NotifyTruck(truck);
                 return true;
             }
             return false;
@@ -161,16 +161,15 @@ export class IaHeadquarter extends Headquarter{
                             const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,5,false,5);
                             PlaygroundHelper.Playground.Items.push(explosion);
                         }
-                        
+                        this.Count +=1;
                         var tank = new Tank(this);
+                        tank.Id = `${this.PlayerName}${this.Count}`;
                         tank.SetPosition(field.GetCeil());
                         area.AddTroop(tank,ceil);
+                        PlaygroundHelper.VehiclesContainer.Add(tank);
                         PlaygroundHelper.Playground.Items.push(tank);
                         isCreated = true;
-                        PeerHandler.SendMessage(PacketKind.Create,{
-                            Name:"Tank",
-                            Hq:this.GetCeil().GetCoordinate()
-                        });
+                        this.NotifyTank(tank);
                         return true;
                     }
                 }

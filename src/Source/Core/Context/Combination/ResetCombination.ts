@@ -1,3 +1,4 @@
+import { PeerHandler } from './../../../Menu/Network/Host/On/PeerHandler';
 import { ICombination } from "./ICombination";
 import { ResetButton } from "../../Menu/ResetButton";
 import { Item } from "../../Items/Item";
@@ -17,6 +18,7 @@ export class ResetCombination implements ICombination{
                  items.splice(items.indexOf(element),1);
              });
              route('/Home', true);
+             PeerHandler.Stop();
             return true;
         }
         return false;

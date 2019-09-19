@@ -23,6 +23,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable
     private _boundingBox:BoundingBox;
     private _ceil:Ceil; 
     public PlayerName:string;
+    public Count:number=0;
     protected Fields:Array<HeadQuarterField>;
     public Diamonds:number=PlaygroundHelper.Settings.PocketMoney;
     private _skin:HqSkin;
@@ -130,7 +131,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         return this._skin;
     }
 
-    public CreateTank():boolean
+    public CreateTank(pos:Ceil=null):boolean
     {
         let isCreated = false;
         this.Fields.every(field=>
@@ -141,14 +142,14 @@ export class Headquarter extends AliveItem implements IField, ISelectable
                     const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,5,false,5);
                     PlaygroundHelper.Playground.Items.push(explosion);
                 }
+                this.Count +=1;
                 const tank = new Tank(this);
-                tank.SetPosition(field.GetCeil());
+                tank.Id = `${this.PlayerName}${this.Count}`;
+                tank.SetPosition(pos === null ?field.GetCeil():pos);
+                PlaygroundHelper.VehiclesContainer.Add(tank);
                 PlaygroundHelper.Playground.Items.push(tank);
                 isCreated = true;
-                PeerHandler.SendMessage(PacketKind.Create,{
-                    Name:"Tank",
-                    Hq:this._ceil.GetCoordinate()
-                });
+                this.NotifyTank(tank);
                 return false;
             }
             return true;
@@ -157,7 +158,25 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         return isCreated;
     }
 
-    public CreateTruck():boolean
+    protected NotifyTank(tank: Tank) {
+        PeerHandler.SendMessage(PacketKind.Create, {
+            Type: "Tank",
+            Id: tank.Id,
+            Ceil: tank.GetCurrentCeil().GetCoordinate(),
+            Hq: this._ceil.GetCoordinate()
+        });
+    }
+
+    protected NotifyTruck(truck: Truck) {
+        PeerHandler.SendMessage(PacketKind.Create, {
+            Type: "Truck",
+            Id: truck.Id,
+            Ceil: truck.GetCurrentCeil().GetCoordinate(),
+            Hq: this._ceil.GetCoordinate()
+        });
+    }
+
+    public CreateTruck(pos:Ceil=null):boolean
     {
         let isCreated = false;
         this.Fields.every(field=>
@@ -168,14 +187,14 @@ export class Headquarter extends AliveItem implements IField, ISelectable
                     const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,5,false,5);
                     PlaygroundHelper.Playground.Items.push(explosion);
                 }
+                this.Count +=1;
                 let truck = new Truck(this);
-                truck.SetPosition(field.GetCeil());
+                truck.Id = `${this.PlayerName}${this.Count}`;
+                truck.SetPosition(pos === null ?field.GetCeil():pos);
+                PlaygroundHelper.VehiclesContainer.Add(truck);
                 PlaygroundHelper.Playground.Items.push(truck);
                 isCreated = true;
-                PeerHandler.SendMessage(PacketKind.Create,{
-                    Name:"Truck",
-                    Hq:this._ceil.GetCoordinate()
-                });
+                this.NotifyTruck(truck);
                 return false;
             }
             return true;
@@ -183,6 +202,8 @@ export class Headquarter extends AliveItem implements IField, ISelectable
 
         return isCreated;
     }
+
+
 
     public GetBoundingBox(): BoundingBox {
         return this._boundingBox;

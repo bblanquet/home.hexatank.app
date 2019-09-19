@@ -1,3 +1,4 @@
+import { VehiclesContainer } from '../Items/Unit/VehiclesContainer';
 import { MessageDispatcher } from './Network/MessageDispatcher';
 import { CeilsContainer } from "../Ceils/CeilsContainer";
 import { Ceil } from "../Ceils/Ceil";
@@ -17,6 +18,7 @@ export class PlaygroundHelper{
 
     static MapContext:MapContext;
     static CeilsContainer:CeilsContainer<Ceil>;
+    static VehiclesContainer:VehiclesContainer;
     static Engine:AStarEngine<Ceil>;
     static Render:RenderingHandler;
     static Settings:GameSettings=new GameSettings();
@@ -70,8 +72,8 @@ export class PlaygroundHelper{
             this.Viewport.screenHeight = screen.height;
             this.Viewport.worldWidth = screen.width;
             this.Viewport.worldHeight = screen.height;
-            PlaygroundHelper.Settings.ScreenWidth = screen.width;
-            PlaygroundHelper.Settings.ScreenHeight = screen.height;
+            this.Settings.ScreenWidth = screen.width;
+            this.Settings.ScreenHeight = screen.height;
         }
         else
         {
@@ -80,17 +82,18 @@ export class PlaygroundHelper{
             this.Viewport.screenHeight = window.innerHeight;
             this.Viewport.worldWidth = window.innerWidth;
             this.Viewport.worldHeight = window.innerHeight;
-            PlaygroundHelper.Settings.ScreenWidth = window.innerWidth;
-            PlaygroundHelper.Settings.ScreenHeight = window.innerHeight;
+            this.Settings.ScreenWidth = window.innerWidth;
+            this.Settings.ScreenHeight = window.innerHeight;
         }
     }
 
     public static Init():void{
         this._areaEngine = new AreaEngine();
-        PlaygroundHelper.CeilsContainer = new CeilsContainer<Ceil>();
-        PlaygroundHelper.Engine = new AStarEngine<Ceil>();
-        PlaygroundHelper.Settings = new GameSettings();
-        PlaygroundHelper.Playground = new Playground();
+        this.CeilsContainer = new CeilsContainer<Ceil>();
+        this.VehiclesContainer = new VehiclesContainer();
+        this.Engine = new AStarEngine<Ceil>();
+        this.Settings = new GameSettings();
+        this.Playground = new Playground();
     }
 
     public static GetAreas(centerCeil:Ceil):Array<Area>

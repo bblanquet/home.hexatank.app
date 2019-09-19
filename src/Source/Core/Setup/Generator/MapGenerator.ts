@@ -31,7 +31,7 @@ export class MapGenerator
         const fatherPointManager = new FartestPointsFinder();
 
         const hqPositions = fatherPointManager.GetPoints(fatherPointManager.GetFartestPoints(center, areas), hqCount);
-        const diamondPositions = this.GetDiamonds(hqPositions.map(s=> new CeilProperties(s)),container);
+        const diamondPositions = this.GetDiamonds(hqPositions.map(s=> new CeilProperties(s)),container,hqCount);
         
         const excluded = new Array<HexAxial>();
         let hqs = new Array<MapItem>();
@@ -78,7 +78,7 @@ export class MapGenerator
             {
                 mapItem.Type = DecorationType.None;
             }
-            
+
             if(mapItems.filter(mi=>mi.Position.ToString() === mapItem.Position.ToString()).length === 0){
                 mapItems.push(mapItem);
             }
@@ -90,7 +90,7 @@ export class MapGenerator
         return context;
     }
 
-    private GetDiamonds(hqCeils: Array<CeilProperties>,ceilsContainer:CeilsContainer<CeilProperties>):Array<CeilProperties>
+    private GetDiamonds(hqCeils: Array<CeilProperties>,ceilsContainer:CeilsContainer<CeilProperties>, hqCount:number):Array<CeilProperties>
     {
         const diamonds = new Array<CeilProperties>();
         const areaEngine = new AreaEngine<CeilProperties>();
@@ -98,9 +98,9 @@ export class MapGenerator
         hqCeils.forEach(hqCeil=> {
             forbiddenCeils = forbiddenCeils.concat(areaEngine.GetFirstRange(ceilsContainer,hqCeil));
         });
-        diamonds.push(this.GetDiamondPosition(hqCeils[0], forbiddenCeils,ceilsContainer));
-        diamonds.push(this.GetDiamondPosition(hqCeils[1], forbiddenCeils,ceilsContainer));
-        diamonds.push(this.GetDiamondPosition(hqCeils[2], forbiddenCeils,ceilsContainer));
+        for(let i = 0; i < hqCount;i++){
+            diamonds.push(this.GetDiamondPosition(hqCeils[i], forbiddenCeils,ceilsContainer));
+        }
         return diamonds;
     }
 

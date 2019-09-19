@@ -11,7 +11,7 @@ import { MapGenerator } from '../../../../Core/Setup/Generator/MapGenerator';
 import { PlaygroundHelper } from '../../../../Core/Utils/PlaygroundHelper';
 import { MapContext } from '../../../../Core/Setup/Generator/MapContext';
 import { GameMessage } from '../../../../Core/Utils/Network/GameMessage';
-import { MessageProgess } from '../../../../Core/Utils/Network/MessageProgess';
+import { MessageProgess } from '../../../../Core/Utils/Network/MessageProgess'; 
 
 export default class OnHostComponent extends Component<any, HostState> {
 
@@ -24,8 +24,10 @@ export default class OnHostComponent extends Component<any, HostState> {
       Players: [p],
       IsAdmin: props.isAdmin.toLowerCase() == 'true' ? true : false,
       Player: p,
-      Message: ''
+      Message: '',
+      IaNumber:0,
     });
+
     PeerHandler.Setup(this.state.Player, this.state.ServerName, this.state.IsAdmin);
     PeerHandler.Start(this.GetPlayers.bind(this), this.Back.bind(this));
     PeerHandler.Subscribe({
@@ -72,6 +74,9 @@ export default class OnHostComponent extends Component<any, HostState> {
           <ol class="breadcrumb">
             <li>{this.state.ServerName}</li>
           </ol>
+
+        {this.ShowIa()}
+
           <table class="table table-dark table-hover">
             <thead>
               <tr>
@@ -107,6 +112,20 @@ export default class OnHostComponent extends Component<any, HostState> {
           </div>
         </div>
       </div>);
+  }
+
+   private ShowIa() {
+    if (this.state.IsAdmin) {
+      return (<div class="form-group">
+      <label class="text-light" for="exampleFormControlSelect1">Ia</label>
+      <select onChange={linkState(this, 'IaNumber')} class="form-control" id="exampleFormControlSelect1">
+          <option>0</option>
+          <option>1</option>
+          <option>2</option>
+      </select>
+  </div>);
+    }
+    return '';
   }
 
   private ReceivePing(data:{PlayerName:string,Date:number}):void
@@ -174,8 +193,8 @@ export default class OnHostComponent extends Component<any, HostState> {
   private Start():void{
     if(this.IsEveryoneReady())
     {
-      let mapGenerator = new MapGenerator();
-      let mapContext = mapGenerator.GetMapDefinition(3);
+      const hqCount = +this.state.IaNumber +this.state.Players.length; 
+      let mapContext = new MapGenerator().GetMapDefinition(hqCount);
       this.Assign(mapContext, this.state.Players);
       let message = new GameMessage<MapContext>();
       message.Message = mapContext;
@@ -206,10 +225,13 @@ export default class OnHostComponent extends Component<any, HostState> {
 
   public SetIa(mapContext:MapContext):void
   {
+    let index = 0;
     mapContext.Hqs.forEach(hq=>{
       if(!hq.PlayerName){
         hq.isIa = true;
+        hq.PlayerName = `IA${index}`;
       }
+      index+=1;
     });
   }
 

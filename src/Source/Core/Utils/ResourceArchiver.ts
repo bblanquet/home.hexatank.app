@@ -96,6 +96,9 @@ export const Archive = {
             yellow:{
                 field:'./building/hqYellowCell.svg'
             },
+            purple:{
+                field:'./building/hqPurpleCell.svg'
+            },
         }
     },
     bonus:{
@@ -161,6 +164,11 @@ export const Archive = {
             turrel:'./tank/yellowTurrel.svg',
             truck:'./truck/yellowTruck.svg',
             hq:'./building/yellowHqBottom.svg'
+        },purple:{
+            tank:'./tank/purpleBottomTank.svg',
+            turrel:'./tank/purpleTurrel.svg',
+            truck:'./truck/purpleTruck.svg',
+            hq:'./building/purpleHqBottom.svg'
         }
     },
     wheel:'./tank/wheel.svg',

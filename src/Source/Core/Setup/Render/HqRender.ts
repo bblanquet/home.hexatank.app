@@ -13,6 +13,7 @@ export class HqRender{
     _skins:HqSkin[]=[
         new HqSkin(Archive.team.red.tank, Archive.team.red.turrel, Archive.team.red.truck, Archive.team.red.hq, Archive.building.hq.red.field),
         new HqSkin(Archive.team.blue.tank, Archive.team.blue.turrel, Archive.team.blue.truck, Archive.team.blue.hq, Archive.building.hq.blue.field),
+        new HqSkin(Archive.team.purple.tank, Archive.team.purple.turrel, Archive.team.purple.truck, Archive.team.purple.hq, Archive.building.hq.purple.field),
         new HqSkin(Archive.team.yellow.tank, Archive.team.yellow.turrel, Archive.team.yellow.truck, Archive.team.yellow.hq, Archive.building.hq.yellow.field)
     ]
 

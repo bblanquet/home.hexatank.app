@@ -37,7 +37,7 @@ export default class OffHostComponent extends Component<any, OffHostState> {
                 </div>
             <div class="btn-group btn-group-space" role="group" aria-label="Basic example">
                 <button type="button" class="btn btn-dark btn-sm" onClick={(e) => this.Start(e)}>Start</button>
-                <button type="button" class="btn btn-primary btn-sm btn-danger" onClick={this.Back}>Back</button>
+                <button type="button" class="btn btn-primary btn-sm btn-danger" onClick={(e)=>this.Back(e)}>Back</button>
             </div>
         </div>);
     }

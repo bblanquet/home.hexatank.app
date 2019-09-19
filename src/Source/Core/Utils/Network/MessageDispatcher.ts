@@ -107,8 +107,7 @@ export class MessageDispatcher{
     private ReceiveNextPosition(e:any):void{
         if(this.IsListenedHq(e)){
             const nextPos = new HexAxial(e.NextCeil.Q,e.NextCeil.R);
-            const pos = new HexAxial(e.Ceil.Q,e.Ceil.R);
-            const vehicle = PlaygroundHelper.CeilsContainer.Get(pos).GetOccupier() as Vehicle;
+            const vehicle = PlaygroundHelper.VehiclesContainer.Get(e.Id);
             vehicle.SetNextCeil(PlaygroundHelper.CeilsContainer.Get(nextPos));
         }    
     }
@@ -118,22 +117,25 @@ export class MessageDispatcher{
         const hq = PlaygroundHelper.CeilsContainer.Get(coordinate).GetField() as Headquarter;
         return hq 
             && hq.PlayerName !== PlaygroundHelper.PlayerName
-            && hq.constructor.name !== IaHeadquarter.name;
+            && hq.constructor.name !== IaHeadquarter.name; //find a way to fix it
     }
 
     private CreateVehicle(e:any): void 
     {
         if(this.IsListenedHq(e))
         {
-            const coordinate = new HexAxial(e.Hq.Q,e.Hq.R);
-            const hq = PlaygroundHelper.CeilsContainer.Get(coordinate).GetField() as Headquarter;
-            if(e.Name === "Tank")
-            {
-                hq.CreateTank();
-            }
-            else if(e.Name === "Truck")
-            {
-                hq.CreateTruck();
+            if(!PlaygroundHelper.VehiclesContainer.Exist(e.Id)){
+                const hqPos = new HexAxial(e.Hq.Q,e.Hq.R);
+                const hq = PlaygroundHelper.CeilsContainer.Get(hqPos).GetField() as Headquarter;
+                const pos = PlaygroundHelper.CeilsContainer.Get(new HexAxial(e.Ceil.Q,e.Ceil.R));
+                if(e.Type === "Tank")
+                {
+                    hq.CreateTank(pos);
+                }
+                else if(e.Type === "Truck")
+                {
+                    hq.CreateTruck(pos);
+                }
             }
         }
     }
@@ -159,6 +161,7 @@ export class MessageDispatcher{
         PlaygroundHelper.MapContext = content.Message;
         if(content.Status == MessageProgess.end){
             route('/Canvas', true);
+            PeerHandler.CloseRoom();
         }
     }
 }

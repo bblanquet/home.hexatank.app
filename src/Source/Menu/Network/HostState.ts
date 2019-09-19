@@ -1,4 +1,4 @@
-import { Player } from './Player';
+import { Player } from './Player'; 
 
 export class HostState{
     public ServerName:string;
@@ -6,4 +6,5 @@ export class HostState{
     public Players:Array<Player>;
     public Player:Player;
     public Message:string;
+    public IaNumber:number;
 }

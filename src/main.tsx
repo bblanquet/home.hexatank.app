@@ -1,6 +1,7 @@
 
 import { h, render } from 'preact';
 import HomeComponent from './Source/Menu/Home/HomeComponent'; 
+import SinglePlayerComponent from './Source/Menu/SinglePlayer/SinglePlayerComponent'; 
 import CanvasComponent from './Source/Menu/Canvas/CanvasComponent'; 
 import OffHostComponent from './Source/Menu/Network/Host/Off/OffHostComponent'; 
 import OnHostComponent from './Source/Menu/Network/Host/On/OnHostComponent'; 
@@ -13,6 +14,7 @@ import './Source/Menu/Common/CommonStyle.css'
 render(
     (<Router>
         <HomeComponent path="/Home" />
+        <SinglePlayerComponent path="/SinglePlayer" />
         <CanvasComponent path="/Canvas" default/>
         <OffHostComponent path="/OffHost"/>
         <OnHostComponent path="/OnHost/:serverName/:playerName/:isAdmin"/>

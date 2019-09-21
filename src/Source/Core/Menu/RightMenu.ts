@@ -12,14 +12,14 @@ export class RightMenu extends Menu{
 
         this.SetPosition();
 
-        this.IsHidden = true;
-        this.Items.forEach(item=>{
-            item.Hide();
-        });
+        // this.IsHidden = true;
+        // this.Items.forEach(item=>{
+        //     item.Hide();
+        // });
     }
 
     private SetPosition() { 
-        let width = 50 ;
+        let width = 50; 
         let height = 75;
         let margin = (PlaygroundHelper.Settings.ScreenHeight / 2) 
         - (this.Items.length * height/ 2);

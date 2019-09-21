@@ -1,10 +1,10 @@
 import { InteractionContext } from "../Context/InteractionContext";
-import { SelectableMenuItem } from "./SelectableMenuItem";
+import { CheckableMenuItem } from "./CheckableMenuItem";
 import { Archive } from "../Utils/ResourceArchiver";
 
-export class SpeedFieldMenuItem extends SelectableMenuItem{
+export class SpeedFieldMenuItem extends CheckableMenuItem{ 
     
-    constructor(){ 
+    constructor(){  
         super(Archive.menu.speedMenu);
     } 
 

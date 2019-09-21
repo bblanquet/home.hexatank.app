@@ -1,8 +1,8 @@
 import { InteractionContext } from "../Context/InteractionContext";
 import { Archive } from "../Utils/ResourceArchiver";
-import { SelectableMenuItem } from "./SelectableMenuItem";
+import { CheckableMenuItem } from "./CheckableMenuItem";
 
-export class CancelMenuItem extends SelectableMenuItem 
+export class CancelMenuItem extends CheckableMenuItem 
 {
     constructor()
     { 

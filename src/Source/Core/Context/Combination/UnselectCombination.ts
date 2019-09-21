@@ -21,7 +21,7 @@ export class UnselectCombination implements ICombination{
     IsMatching(items: Item[]): boolean {
         return items.filter(i=> this._isSelectable(i)).length >=2 && 
         (items.filter(i=> this._isSelectable(i)).length === items.filter(i=> i instanceof Ceil).length
-        || items.filter(i=> this._isSelectable(i)).length === items.filter(i=> i instanceof Headquarter).length
+        //|| items.filter(i=> this._isSelectable(i)).length === items.filter(i=> i instanceof Headquarter).length
         || items.filter(i=> this._isSelectable(i)).length === items.filter(i=> i instanceof Vehicle).length);
     }    
     Combine(items: Item[]): boolean {

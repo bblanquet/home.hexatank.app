@@ -1,3 +1,6 @@
+import { AddTruckCombination } from './Combination/AddTruckCombination';
+import { AddTankCombination } from './Combination/AddTankCombination';
+import { FlagCeilCombination } from './Combination/FlagCeilCombination';
 import { TruckDiamondCombination } from './Combination/TruckDiamondCombination';
 import { IPatternChecker } from './IPatternChecker';
 import { PatternChecker } from './PatternChecker';
@@ -18,8 +21,8 @@ import { PauseCombination } from './Combination/PauseCombination';
 import { ResetCombination } from './Combination/ResetCombination';
 import { MoneyCeilCombination } from './Combination/MoneyCeilCombination';
 import { TargetCombination } from './Combination/TargetCombination';
-import { SwitchToCeilCombination } from './Combination/SwitchToCeilCombination';
-import { SwitchToHeadquarterCombination } from './Combination/SwitchToHeadquarterCombination';
+// import { SwitchToCeilCombination } from './Combination/SwitchToCeilCombination';
+// import { SwitchToHeadquarterCombination } from './Combination/SwitchToHeadquarterCombination';
 import { SwitchToVehicleCombination } from './Combination/SwitchToVehicleCombination';
 import { ShowEnemiesCombination } from './Combination/ShowEnemiesCombination';
 import * as PIXI from 'pixi.js';
@@ -42,13 +45,16 @@ export class InteractionContext implements IInteractionContext{
         this._isSelectable = this.IsSelectable.bind(this);
         this._currentHq = currentHq;
         let combinations = new Array<ICombination>();
+        combinations.push(new AddTankCombination());
+        combinations.push(new AddTruckCombination());
         combinations.push(new ResetCombination());
         combinations.push(new PauseCombination()); 
         combinations.push(new ShowEnemiesCombination());
-        combinations.push(new SwitchToCeilCombination(menus));     
-        combinations.push(new SwitchToHeadquarterCombination(menus));     
+        // combinations.push(new SwitchToCeilCombination(menus));     
+        //combinations.push(new SwitchToHeadquarterCombination(menus));     
         combinations.push(new SwitchToVehicleCombination(menus));     
         combinations.push(new CancelCombination(this));
+        combinations.push(new FlagCeilCombination());
         combinations.push(new TruckDiamondCombination());
         combinations.push(new TruckCombination());
         combinations.push(new TankCombination());
@@ -72,10 +78,6 @@ export class InteractionContext implements IInteractionContext{
         else if(item instanceof Vehicle){
             const vehicle = <Vehicle> item;
             return !vehicle.IsEnemy(this._currentHq);
-        }
-        else if(item instanceof Headquarter)
-        {
-            return item === this._currentHq;
         }
         return false;
     }

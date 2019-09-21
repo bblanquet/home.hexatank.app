@@ -1,8 +1,8 @@
-import { SelectableMenuItem } from "./SelectableMenuItem";
+import { CheckableMenuItem } from "./CheckableMenuItem";
 import { InteractionContext } from "../Context/InteractionContext";
 import { Archive } from "../Utils/ResourceArchiver";
  
-export class MoneyMenuItem extends SelectableMenuItem{
+export class MoneyMenuItem extends CheckableMenuItem{ 
     constructor(){
         super(Archive.menu.moneyButton); 
     }    

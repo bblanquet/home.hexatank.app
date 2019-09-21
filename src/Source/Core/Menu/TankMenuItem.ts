@@ -1,25 +1,43 @@
 import { InteractionContext } from "../Context/InteractionContext";
-import { Headquarter } from "../Ceils/Field/Headquarter"; 
-import { SelectableMenuItem } from "./SelectableMenuItem";
 import { Archive } from "../Utils/ResourceArchiver";
 import { PlaygroundHelper } from "../Utils/PlaygroundHelper";
+import { SelectableMenuItem } from "./SelectableMenuItem";
 
 export class TankMenuItem extends SelectableMenuItem 
 {
-    private _hq:Headquarter;
+    private _requests:Array<string>;
+    private _refresh:{(c:number):void};
 
-    constructor(hq:Headquarter){
-        super(Archive.menu.tankButton); 
-        this._hq = hq;
+    constructor(){
+        super(Archive.menu.tankButton);
+        this.Z = 6;
+        this._requests =Archive.menu.amounts;
+        this._requests.forEach(r=>{
+            this.GenerateSprite(r,s=>s.alpha =0);
+        });
+        this.SetProperties([Archive.menu.amounts[0]],s=>s.alpha=1);
+        PlaygroundHelper.Render.Add(this);
+        this._refresh = this.RefreshAmount;
+        PlaygroundHelper.PlayerHeadquarter.SubscribeTank(this._refresh.bind(this));
+    }
+
+    private RefreshAmount(c:number):void{
+        this._requests.forEach(r=>this.SetProperty(r,s=>s.alpha=0));
+        this.SetProperty(this._requests[c],s=>s.alpha=1);
+    }
+
+    public Destroy():void{
+        super.Destroy();
+        PlaygroundHelper.PlayerHeadquarter.UnSubscribeTank(this._refresh);
+    }
+
+    public Show(): void {
     }
 
     public Select(context: InteractionContext): boolean      
     {        
-        if(this._hq.Diamonds >= PlaygroundHelper.Settings.TankPrice){
-            if(this._hq.CreateTank()){
-                this._hq.Diamonds -= PlaygroundHelper.Settings.TankPrice;
-            }
-        }
+        context.OnSelect(this); 
+        super.Select(context);
         return true;
     }
 

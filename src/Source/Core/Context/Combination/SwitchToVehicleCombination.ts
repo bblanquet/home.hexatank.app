@@ -2,7 +2,6 @@ import { ICombination } from "./ICombination";
 import { ISelectable } from "../../ISelectable";
 import { Menu } from "../../Menu/Menu";
 import { Item } from "../../Items/Item";
-import { Headquarter } from "../../Ceils/Field/Headquarter";
 import { Ceil } from "../../Ceils/Ceil";
 import { Vehicle } from "../../Items/Unit/Vehicle";
 
@@ -13,7 +12,7 @@ export class SwitchToVehicleCombination implements ICombination{
 
     public IsMatching(items: Item[]): boolean {
         return items.length == 2  
-        && (items[0] instanceof Headquarter || items[0] instanceof Ceil)
+        && (items[0] instanceof Ceil)
         && items[1] instanceof Vehicle;
     }    
     

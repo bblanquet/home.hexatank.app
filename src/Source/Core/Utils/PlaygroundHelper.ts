@@ -28,7 +28,25 @@ export class PlaygroundHelper{
     public static PlayerHeadquarter:Headquarter;
     public static Dispatcher:MessageDispatcher=new MessageDispatcher();
     public static PlayerName: string="defaultPlayer";
-    
+
+    private static _isAddingMode:boolean=true;
+    private static _isAddingHandlers:{(message:boolean):void}[] = new Array<{(message:boolean):void}>();
+
+    public static IsAddingMode():boolean{
+        return this._isAddingMode;
+    }
+
+    public static SetAddingMode(mode:boolean):void{
+        this._isAddingMode =mode;
+        this._isAddingHandlers.forEach(a=>a(this._isAddingMode));
+    }
+    public static SubscribeAdding(func:{(message:boolean):void}):void{
+        this._isAddingHandlers.push(func);
+    }
+    public static UnSubscribeAdding(func:{(message:boolean):void}):void{
+        this._isAddingHandlers = this._isAddingHandlers.filter(f=> f!==func);
+    }
+
     public static SetDefaultName() {
         this.PlayerName = "defaultPlayer";
     }

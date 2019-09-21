@@ -13,7 +13,6 @@ export class LeftMenu extends Menu{
         this.Items.forEach(item=>{
             item.Hide();
         });
-
     }
 
     private SetPosition() {

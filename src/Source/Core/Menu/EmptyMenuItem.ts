@@ -4,11 +4,13 @@ import { PlaygroundHelper } from "../Utils/PlaygroundHelper";
  
 export class EmptyMenuItem extends MenuItem
 {
-    constructor(private _item:string){
+    constructor(private _item:string, hasToHide:boolean=true){
         super(); 
         this.Z = 6; 
         this.GenerateSprite(_item);
-        this.Hide();
+        if(hasToHide){
+            this.Hide();
+        }
         PlaygroundHelper.Render.Add(this);
     }
 

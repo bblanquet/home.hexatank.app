@@ -1,15 +1,14 @@
 import { InteractionContext } from "../Context/InteractionContext";
-import { SelectableMenuItem } from "./SelectableMenuItem";
+import { CheckableMenuItem } from "./CheckableMenuItem";
 import { Archive } from "../Utils/ResourceArchiver";
  
-export class HealMenuItem extends SelectableMenuItem{
+export class HealMenuItem extends CheckableMenuItem{
     constructor(){
-        super(Archive.menu.healthButton);
+        super(Archive.menu.healthButton); 
     }    
 
-    public Select(context: InteractionContext): boolean {
+    public Select(context: InteractionContext): boolean { 
         context.OnSelect(this); 
         return true;
     }
-
 }

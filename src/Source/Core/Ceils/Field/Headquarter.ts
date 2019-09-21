@@ -1,3 +1,4 @@
+import { FlagCeil } from './../FlagCeil';
 import { Tank } from './../../Items/Unit/Tank';
 import { PacketKind } from './../../../Menu/Network/PacketKind';
 import { PeerHandler } from './../../../Menu/Network/Host/On/PeerHandler';
@@ -7,7 +8,6 @@ import { HeadQuarterField } from "./HeadquarterField";
 import { AliveItem } from "../../Items/AliveItem";
 import { IField } from "./IField"; 
 import { Crater } from "../../Items/Others/Crater";
-import { ISelectable } from "../../ISelectable";
 import { Archive } from "../../Utils/ResourceArchiver";
 import { CeilState } from "../CeilState";
 import { BoundingBox } from "../../Utils/BoundingBox";
@@ -17,8 +17,9 @@ import { IHqContainer } from "../../Items/Unit/IHqContainer";
 import { Vehicle } from "../../Items/Unit/Vehicle";
 import { Explosion } from "../../Items/Unit/Explosion";
 import { Truck } from "../../Items/Unit/Truck";
+import { SimpleOrder } from '../../Ia/Order/SimpleOrder';
 
-export class Headquarter extends AliveItem implements IField, ISelectable
+export class Headquarter extends AliveItem implements IField
 {
     private _boundingBox:BoundingBox;
     private _ceil:Ceil; 
@@ -28,6 +29,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable
     public Diamonds:number=PlaygroundHelper.Settings.PocketMoney;
     private _skin:HqSkin;
     private _onCeilStateChanged:{(ceilState:CeilState):void};
+    public FlagCeil:FlagCeil;
 
     constructor(skin:HqSkin, ceil:Ceil){
         super();
@@ -76,25 +78,6 @@ export class Headquarter extends AliveItem implements IField, ISelectable
 
     public GetCurrentCeil(): Ceil {
         return this._ceil;
-    }
-    private _visibleHandlers: { (data: ISelectable):void }[] = [];
-
-    public SubscribeUnselection(handler: (data: ISelectable) => void): void {
-        this._visibleHandlers.push(handler);
-    }
-    public Unsubscribe(handler: (data: ISelectable) => void): void {
-        this._visibleHandlers = this._visibleHandlers.filter(h => h !== handler);
-    }
-
-    public IsSelected():boolean{
-        return this.GetCurrentSprites()[Archive.selectionUnit].alpha === 1;
-    }
-
-    public SetSelected(visible:boolean):void{
-        this.GetCurrentSprites()[Archive.selectionUnit].alpha = visible ? 1 : 0;
-        if(!visible){
-            this._visibleHandlers.forEach(h=>h(this));
-        }
     }
 
     private IsHqContainer(item: any):item is IHqContainer{
@@ -150,6 +133,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable
                 PlaygroundHelper.Playground.Items.push(tank);
                 isCreated = true;
                 this.NotifyTank(tank);
+                if(this.FlagCeil){
+                    tank.SetOrder(new SimpleOrder(this.FlagCeil.GetCeil(),tank));
+                }
                 return false;
             }
             return true;
@@ -224,8 +210,96 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         });
     }
 
+    private _tankRequests:number=0;
+    private _tankRequestHandlers:{(message:number):void}[] = new Array<{(message:number):void}>();
+    public SubscribeTank(func:{(message:number):void}):void{
+        this._tankRequestHandlers.push(func);
+    }
+    public UnSubscribeTank(func:{(message:number):void}):void{
+        this._tankRequestHandlers = this._tankRequestHandlers.filter(f=> f!==func);
+    }
+    public GetTankRequests():number{
+        return this._tankRequests;
+    }
+
+    public AddTankRequest():void {
+        if(this._tankRequests < 4){
+            this._tankRequests+=1;
+            this._tankRequestHandlers.forEach(t=>t(this._tankRequests));
+        }
+    }
+
+    public RemoveTankRequest():void {
+        if(this._tankRequests > 0){
+            this._tankRequests-=1;
+            this._tankRequestHandlers.forEach(t=>t(this._tankRequests));
+        }
+    }
+
+    private _truckRequests:number=0;
+    private _truckRequestHandlers:{(message:number):void}[] = new Array<{(message:number):void}>();
+    public SubscribeTruck(func:{(message:number):void}):void{
+        this._truckRequestHandlers.push(func);
+    }
+    public UnSubscribeTruck(func:{(message:number):void}):void{
+        this._truckRequestHandlers = this._truckRequestHandlers.filter(f=> f!==func);
+    }
+    public GetTruckRequests():number{
+        return this._truckRequests;
+    }
+
+    public AddTruckRequest():void {
+        if(this._truckRequests < 4){
+            this._truckRequests+=1;
+            this._truckRequestHandlers.forEach(t=>t(this._truckRequests));
+        }
+    }
+
+    public RemoveTruckRequest():void {
+        if(this._truckRequests > 0){
+            this._truckRequests-=1;
+            this._truckRequestHandlers.forEach(t=>t(this._truckRequests));
+        }
+    }
+
     public Update(viewX: number, viewY: number):void 
     {
+        while(
+            this.Diamonds >= PlaygroundHelper.Settings.TruckPrice
+            && this._truckRequests > 0)
+        {
+            if(this.Diamonds >= PlaygroundHelper.Settings.TruckPrice)
+            {
+                if(this.CreateTruck()){
+                    this.Diamonds -= PlaygroundHelper.Settings.TruckPrice;
+                    this.RemoveTruckRequest();
+                }
+                else
+                {
+                    //no available slots
+                    break;
+                }
+            }
+        }
+
+        while(
+            this.Diamonds >= PlaygroundHelper.Settings.TankPrice
+            && this._tankRequests > 0)
+        {
+            if(this.Diamonds >= PlaygroundHelper.Settings.TankPrice)
+            {
+                if(this.CreateTank()){
+                    this.Diamonds -= PlaygroundHelper.Settings.TankPrice;
+                    this.RemoveTankRequest();
+                }
+                else
+                {
+                    //no available slots
+                    break;
+                }
+            }
+        }
+
         this.GetBothSprites(Archive.building.hq.bottom).forEach(sprite=>sprite.rotation += 0.1);
 
         if(!this.IsAlive())

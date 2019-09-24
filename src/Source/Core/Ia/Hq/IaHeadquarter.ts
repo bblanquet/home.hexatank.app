@@ -21,8 +21,6 @@ import { Truck } from "../../Items/Unit/Truck";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 import { Explosion } from "../../Items/Unit/Explosion";
 import { Tank } from "../../Items/Unit/Tank";
-import { PeerHandler } from "../../../Menu/Network/Host/On/PeerHandler";
-import { PacketKind } from "../../../Menu/Network/PacketKind";
 
 export class IaHeadquarter extends Headquarter{ 
     public AreasByCeil:{ [id: string] : HeldArea; };

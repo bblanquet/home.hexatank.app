@@ -45,6 +45,7 @@ export class InteractionContext implements IInteractionContext{
         this._isSelectable = this.IsSelectable.bind(this);
         this._currentHq = currentHq;
         let combinations = new Array<ICombination>();
+        combinations.push(new FlagCeilCombination());
         combinations.push(new AddTankCombination());
         combinations.push(new AddTruckCombination());
         combinations.push(new ResetCombination());
@@ -54,7 +55,6 @@ export class InteractionContext implements IInteractionContext{
         //combinations.push(new SwitchToHeadquarterCombination(menus));     
         combinations.push(new SwitchToVehicleCombination(menus));     
         combinations.push(new CancelCombination(this));
-        combinations.push(new FlagCeilCombination());
         combinations.push(new TruckDiamondCombination());
         combinations.push(new TruckCombination());
         combinations.push(new TankCombination());

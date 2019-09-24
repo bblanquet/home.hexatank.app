@@ -31,6 +31,7 @@ export class PlaygroundHelper{
 
     private static _isAddingMode:boolean=true;
     private static _isAddingHandlers:{(message:boolean):void}[] = new Array<{(message:boolean):void}>();
+    public static IsFlagingMode: boolean;
 
     public static IsAddingMode():boolean{
         return this._isAddingMode;

@@ -23,6 +23,7 @@ import { Crater } from '../Others/Crater';
 import { InteractionContext } from '../../Context/InteractionContext';
 import { PeerHandler } from '../../../Menu/Network/Host/On/PeerHandler';
 import { PacketKind } from '../../../Menu/Network/PacketKind';
+import { Explosion } from './Explosion';
 
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable
 {
@@ -264,6 +265,12 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
             Ceil:this._currentCeil.GetCoordinate(),
             Name:"vehicle"
         });
+        if(this._order){
+            this._order.Cancel();
+        }
+        if(this._pendingOrder){
+            this._pendingOrder.Cancel();
+        }
         super.Destroy();
         this._currentCeil.SetOccupier(null);
         if(!isNullOrUndefined(this._nextCeil))
@@ -282,6 +289,11 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     public Update(viewX: number, viewY: number):void{
         if(!this.IsAlive() || !this.Hq.IsAlive())
         {
+            if(!this.Hq.IsAlive())
+            {
+                let explosion = new Explosion(this.GetBoundingBox(),Archive.explosions,5,true,20);
+                PlaygroundHelper.Playground.Items.push(explosion);
+            }
             this.Destroy();
             let crater = new Crater(this.BoundingBox);
             PlaygroundHelper.Playground.Items.push(crater);

@@ -148,6 +148,11 @@ export class SimpleOrder extends Order{
         return this.CurrentCeil;
     }
 
+    public Reset():void{
+        super.Reset();
+        this.Dest = this.OriginalDest;
+    }
+
     protected FindPath():boolean
     {
         if(this.Dest.IsBlocked())

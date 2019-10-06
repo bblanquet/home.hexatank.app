@@ -4,6 +4,14 @@ import {HexAxial} from '../Utils/Coordinates/HexAxial';
 export class CeilsContainer<T extends ICeil> {
     private Ceils:{ [id: string]: T; }; 
 
+    GetAll():T[]{
+        var all = new Array<T>();
+        for(var cell in this.Ceils){
+            all.push(<T><unknown>cell);
+        }
+        return all;
+    }
+
     Add(ceil:T):void{
         
         if(this.Ceils == null)

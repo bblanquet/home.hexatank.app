@@ -1,12 +1,12 @@
 import { ICombination } from "./ICombination";
-import { IInteractionContext } from "../IInteractionContext";
+import { IContextContainer } from "../IContextContainer";
 import { Item } from "../../Items/Item";
 
 export class ClearTrashCombination implements ICombination{
     private _isSelectable:{(item:Item):boolean};
-    private _interactionContext:IInteractionContext;
+    private _interactionContext:IContextContainer; 
 
-    constructor(isSelectable:{(item:Item):boolean},interactionContext:IInteractionContext){
+    constructor(isSelectable:{(item:Item):boolean},interactionContext:IContextContainer){
         this._isSelectable = isSelectable;
         this._interactionContext = interactionContext;
     }

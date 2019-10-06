@@ -2,12 +2,12 @@ import { isNullOrUndefined } from "util";
 import { ICombination } from "./ICombination";
 import { Item } from "../../Items/Item";
 import { Ceil } from "../../Ceils/Ceil";
-import { MoneyMenuItem } from "../../Menu/MoneyMenuItem";
+import { MoneyMenuItem } from "../../Menu/Buttons/MoneyMenuItem";
 import { BasicField } from "../../Ceils/Field/BasicField";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 import { MoneyField } from "../../Ceils/Field/MoneyField";
 import { PeerHandler } from "../../../Menu/Network/Host/On/PeerHandler";
-import { PacketKind } from "../../../Menu/Network/PacketKind";
+import { PacketKind } from "../../../Menu/Network/PacketKind"; 
 
 export class MoneyCeilCombination implements ICombination{
 

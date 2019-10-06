@@ -1,12 +1,12 @@
 import { isNullOrUndefined } from "util";
 import { ICombination } from "./ICombination";
-import { SpeedFieldMenuItem } from "../../Menu/SpeedFieldMenuItem";
+import { SpeedFieldMenuItem } from "../../Menu/Buttons/SpeedFieldMenuItem";
 import { Item } from "../../Items/Item";
 import { Ceil } from "../../Ceils/Ceil";
 import { BasicField } from "../../Ceils/Field/BasicField";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 import { FastField } from "../../Ceils/Field/FastField";
-import { PeerHandler } from "../../../Menu/Network/Host/On/PeerHandler";
+import { PeerHandler } from "../../../Menu/Network/Host/On/PeerHandler"; 
 import { PacketKind } from "../../../Menu/Network/PacketKind";
 
 export class FastCeilCombination implements ICombination{

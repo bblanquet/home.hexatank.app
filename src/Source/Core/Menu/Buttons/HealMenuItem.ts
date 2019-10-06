@@ -1,6 +1,6 @@
-import { InteractionContext } from "../Context/InteractionContext";
-import { CheckableMenuItem } from "./CheckableMenuItem";
-import { Archive } from "../Utils/ResourceArchiver";
+import { InteractionContext } from "../../Context/InteractionContext";
+import { CheckableMenuItem } from "../CheckableMenuItem"; 
+import { Archive } from "../../Utils/ResourceArchiver";
  
 export class HealMenuItem extends CheckableMenuItem{
     constructor(){

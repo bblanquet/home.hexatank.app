@@ -1,7 +1,7 @@
-import { PlaygroundHelper } from './../Utils/PlaygroundHelper';
-import { CheckableMenuItem } from "./CheckableMenuItem"; 
-import { Archive } from '../Utils/ResourceArchiver';
-import { InteractionContext } from "../Context/InteractionContext";
+import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
+import { CheckableMenuItem } from "../CheckableMenuItem"; 
+import { Archive } from '../../Utils/ResourceArchiver';   
+import { InteractionContext } from "../../Context/InteractionContext";
 
 export class PlusButton extends CheckableMenuItem{
     

@@ -1,19 +1,19 @@
+import { IItemsManager } from './IItemsManager';
 import {Item} from './Items/Item';
-import { IPlayground } from './IPlayground';
 import { InputManager } from './Utils/InputManager';
 import {InteractionContext} from './Context/InteractionContext';
 import { PlaygroundHelper } from './Utils/PlaygroundHelper'; 
 
-export class Playground implements IPlayground
+export class ItemsManager implements IItemsManager
 {    
     Items:Array<Item>;
-    public InputManager:InputManager;
+    public InputManager:InputManager; 
 
     constructor()
     {
         this.Items = new Array<Item>();
         this.InputManager = new InputManager(new InteractionContext());
-        this.InputManager.DownEvent.on(this.Select.bind(this));
+        this.InputManager.MouseUpEvent.on(this.Select.bind(this));
     }
 
     Select(event:InteractionContext):void{

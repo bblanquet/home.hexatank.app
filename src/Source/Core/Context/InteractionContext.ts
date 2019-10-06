@@ -3,8 +3,9 @@ import { AddTankCombination } from './Combination/AddTankCombination';
 import { FlagCeilCombination } from './Combination/FlagCeilCombination';
 import { TruckDiamondCombination } from './Combination/TruckDiamondCombination';
 import { IPatternChecker } from './IPatternChecker';
-import { PatternChecker } from './PatternChecker';
-import { IInteractionContext } from './IInteractionContext';
+import { PatternChecker } from './PatternChecker'; 
+import { IContextContainer } from './IContextContainer';
+import {IInteractionContext} from './IInteractionContext';
 import { UnselectCombination } from './Combination/UnselectCombination';
 import { ClearTrashCombination } from './Combination/ClearTrashCombination';
 import { TruckCombination } from './Combination/TruckCombination';
@@ -31,11 +32,11 @@ import { Headquarter } from '../Ceils/Field/Headquarter';
 import { Ceil } from '../Ceils/Ceil';
 import { Vehicle } from '../Items/Unit/Vehicle';
 
-export class InteractionContext implements IInteractionContext{
+export class InteractionContext implements IContextContainer, IInteractionContext{
 
     public Point:PIXI.Point;
     public IsDown:boolean;
-    private _selectedItem:Array<Item>;
+    private _selectedItem:Array<Item>; 
     private _checker:IPatternChecker;
     private _isSelectable:{(item:Item):boolean};
     private _currentHq:Headquarter;
@@ -51,8 +52,6 @@ export class InteractionContext implements IInteractionContext{
         combinations.push(new ResetCombination());
         combinations.push(new PauseCombination()); 
         combinations.push(new ShowEnemiesCombination());
-        // combinations.push(new SwitchToCeilCombination(menus));     
-        //combinations.push(new SwitchToHeadquarterCombination(menus));     
         combinations.push(new SwitchToVehicleCombination(menus));     
         combinations.push(new CancelCombination(this));
         combinations.push(new TruckDiamondCombination());

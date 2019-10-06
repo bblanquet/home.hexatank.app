@@ -1,7 +1,7 @@
 import { ICombination } from "./ICombination";
-import { PauseButton } from "../../Menu/PauseButton";
 import { Item } from "../../Items/Item";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
+import { PauseButton } from "../../Menu/Buttons/PauseButton";
 
 export class PauseCombination implements ICombination{
     IsMatching(items: Item[]): boolean 

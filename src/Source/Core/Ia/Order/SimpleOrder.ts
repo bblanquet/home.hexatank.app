@@ -12,7 +12,7 @@ import { Archive } from "../../Utils/ResourceArchiver";
 import { PacketKind } from '../../../Menu/Network/PacketKind';
 
 export class SimpleOrder extends Order{
-    protected CurrentCeil:Ceil;
+    protected CurrentCeil:Ceil; 
     protected Ceils:Array<Ceil>;
     protected CeilFinder:CeilFinder;
     private _uiPath:Array<BasicItem>;
@@ -190,8 +190,8 @@ export class SimpleOrder extends Order{
                 var pathItem = new BasicItem(
                     ceil.GetBoundingBox(),
                     Archive.direction.moving);
-                pathItem.SetDisplayTrigger(this._v.IsSelected.bind(this._v));
-                pathItem.SetVisible(this._v.IsAlive.bind(this._v));
+                pathItem.SetVisible(this._v.IsSelected.bind(this._v));
+                pathItem.SetAlive(this._v.IsAlive.bind(this._v));
                 PlaygroundHelper.Playground.Items.push(pathItem);                    
                 this._uiPath.push(pathItem);
             });

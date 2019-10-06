@@ -1,6 +1,6 @@
 import { isNullOrUndefined } from "util";
 import { ICombination } from "./ICombination";
-import { AttackMenuItem } from "../../Menu/AttackMenuItem";
+import { AttackMenuItem } from "../../Menu/Buttons/AttackMenuItem";
 import { Item } from "../../Items/Item";
 import { Ceil } from "../../Ceils/Ceil";
 import { BasicField } from "../../Ceils/Field/BasicField";
@@ -9,7 +9,7 @@ import { AttackField } from "../../Ceils/Field/AttackField";
 import { PacketKind } from "../../../Menu/Network/PacketKind";
 import { PeerHandler } from "../../../Menu/Network/Host/On/PeerHandler";
 
-export class AttackCeilCombination implements ICombination{
+export class AttackCeilCombination implements ICombination{ 
 
     IsMatching(items: Item[]): boolean {
         return items.length >=2 

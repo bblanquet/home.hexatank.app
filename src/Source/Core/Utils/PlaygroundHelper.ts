@@ -1,4 +1,4 @@
-import { VehiclesContainer } from '../Items/Unit/VehiclesContainer';
+import { VehiclesContainer } from '../Items/Unit/VehiclesContainer'; 
 import { MessageDispatcher } from './Network/MessageDispatcher';
 import { CeilsContainer } from "../Ceils/CeilsContainer";
 import { Ceil } from "../Ceils/Ceil";
@@ -9,7 +9,7 @@ import { AreaEngine } from "../Ia/Area/AreaEngine";
 import { ISpriteProvider } from "./ISpriteProvider";
 import { Headquarter } from "../Ceils/Field/Headquarter";
 import { Area } from "../Ia/Area/Area";
-import { Playground } from "../Playground";
+import { ItemsManager } from "../ItemsManager";
 import { MapContext } from "../Setup/Generator/MapContext";
 import { SpriteProvider } from './SpriteProvider';
 const Viewport = require('pixi-viewport').Viewport;
@@ -22,7 +22,7 @@ export class PlaygroundHelper{
     static Engine:AStarEngine<Ceil>;
     static Render:RenderingHandler;
     static Settings:GameSettings=new GameSettings();
-    static Playground:Playground;
+    static Playground:ItemsManager;
     private static _areaEngine:AreaEngine<Ceil>;
     static SpriteProvider:ISpriteProvider;
     public static PlayerHeadquarter:Headquarter;
@@ -74,12 +74,22 @@ export class PlaygroundHelper{
               });
             
             this.Manager = new PIXI.interaction.InteractionManager(this.App.renderer);        
-            
             this.Viewport.drag().pinch().wheel().decelerate();
             this.SpriteProvider = new SpriteProvider();
             this.SpriteProvider.PreloadTexture();
             this.App.stage.addChild(this.Viewport);
         }
+    }
+
+    public static PauseNavigation() {
+        this.Viewport.plugins.pause('drag');
+        this.Viewport.plugins.pause('pinch');
+        this.Viewport.plugins.pause('wheel');
+        this.Viewport.plugins.pause('decelerate');
+    }
+
+    public static RestartNavigation() {
+        this.Viewport.drag().pinch().wheel().decelerate();
     }
 
     public static ResizeTheCanvas():void
@@ -112,7 +122,7 @@ export class PlaygroundHelper{
         this.VehiclesContainer = new VehiclesContainer();
         this.Engine = new AStarEngine<Ceil>();
         this.Settings = new GameSettings();
-        this.Playground = new Playground();
+        this.Playground = new ItemsManager();
     }
 
     public static GetAreas(centerCeil:Ceil):Array<Area>

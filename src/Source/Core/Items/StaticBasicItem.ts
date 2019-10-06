@@ -3,16 +3,23 @@ import { BoundingBox } from "../Utils/BoundingBox";
 import { InteractionContext } from "../Context/InteractionContext";
 import { PlaygroundHelper } from "../Utils/PlaygroundHelper"; 
 
-export class BasicItem extends Item{   
-
+export class StaticBasicItem extends Item{   
     private _isVisible:{ (): boolean };
     private _isAlive:{ (): boolean };
     private _spriteName:string;
-    constructor(private _boundingBox:BoundingBox, sprite:string, z:number = 0){
+    private _hover:string;
+    public IsHover:boolean;
+    constructor(private _boundingBox:BoundingBox, sprite:string,hoverSprite:string, z:number = 0, accuracy:number=0.5){
         super();
         this.Z = z;
         this._spriteName = sprite;
+        this._hover = hoverSprite;
+        this.Accuracy = accuracy;
         this.GenerateSprite(sprite,e=>{
+            e.anchor.set(0.50);
+            e.alpha = 0;
+        });
+        this.GenerateSprite(this._hover,e=>{
             e.anchor.set(0.50);
             e.alpha = 0;
         });
@@ -42,14 +49,32 @@ export class BasicItem extends Item{
 
     public Update(viewX: number, viewY: number): void 
     {
-        super.Update(viewX,viewY);
+        let ref = this.GetRef();
+        this.GetDisplayObjects().forEach(obj => {
+            obj.x = (ref.X );
+            obj.y = (ref.Y );
+        });
+        this.GetSprites().forEach(sprite=>{
+            sprite.width = this.GetBoundingBox().Width;
+            sprite.height =  this.GetBoundingBox().Height;
+        });
 
         if(!this._isAlive()){
             this.Destroy();
         }
 
         const visible = this._isVisible();
-        this.SetProperty(this._spriteName,e=>e.alpha= visible ? 1 :0);
+        
+        if(this.IsHover)
+        {
+            this.SetProperty(this._hover,e=>e.alpha= visible ? 1 :0);
+            this.SetProperty(this._spriteName,e=>e.alpha= 0);
+        }
+        else
+        {
+            this.SetProperty(this._hover,e=>e.alpha= 0);
+            this.SetProperty(this._spriteName,e=>e.alpha= visible ? 1 :0);
+        }
     }
 
     public Destroy(): void 

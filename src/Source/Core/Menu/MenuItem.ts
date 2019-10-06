@@ -10,6 +10,7 @@ export abstract class MenuItem extends Item
     constructor(){
         super();
         this.Hide();
+        this.Accuracy = 1;
     }
 
     public Hide(){

@@ -1,5 +1,5 @@
 import { ICombination } from "./ICombination";
-import { HealMenuItem } from "../../Menu/HealMenuItem";
+import { HealMenuItem } from "../../Menu/Buttons/HealMenuItem";
 import { isNullOrUndefined } from "util";
 import { Item } from "../../Items/Item";
 import { Ceil } from "../../Ceils/Ceil";
@@ -7,7 +7,7 @@ import { BasicField } from "../../Ceils/Field/BasicField";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 import { HealField } from "../../Ceils/Field/HealField";
 import { PeerHandler } from "../../../Menu/Network/Host/On/PeerHandler";
-import { PacketKind } from "../../../Menu/Network/PacketKind";
+import { PacketKind } from "../../../Menu/Network/PacketKind"; 
 
 export class HealCeilCombination implements ICombination 
 {

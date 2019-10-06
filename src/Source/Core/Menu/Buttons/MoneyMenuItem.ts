@@ -1,6 +1,6 @@
-import { CheckableMenuItem } from "./CheckableMenuItem";
-import { InteractionContext } from "../Context/InteractionContext";
-import { Archive } from "../Utils/ResourceArchiver";
+import { CheckableMenuItem } from "../CheckableMenuItem";
+import { InteractionContext } from "../../Context/InteractionContext";
+import { Archive } from "../../Utils/ResourceArchiver"; 
  
 export class MoneyMenuItem extends CheckableMenuItem{ 
     constructor(){

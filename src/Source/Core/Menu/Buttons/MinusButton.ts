@@ -1,7 +1,7 @@
-import { CheckableMenuItem } from "./CheckableMenuItem";
-import { Archive } from '../Utils/ResourceArchiver';
-import { InteractionContext } from "../Context/InteractionContext";
-import { PlaygroundHelper } from "../Utils/PlaygroundHelper"; 
+import { CheckableMenuItem } from "../CheckableMenuItem";
+import { Archive } from '../../Utils/ResourceArchiver';
+import { InteractionContext } from "../../Context/InteractionContext";
+import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";  
 
 export class MinusButton extends CheckableMenuItem{
     private _set:{(b:boolean):void}

@@ -25,6 +25,13 @@ export const Archive = {
     ],
     skull:'./explosion/skull.svg',
     menu:{
+        smartMenu:{
+            tankSelection:'./menu/smartMenu/tankSelection.svg',
+            hoverTankSelection:'./menu/smartMenu/tankSelectionHover.svg',
+            cellSelection:'./menu/smartMenu/cellSelection.svg',
+            hoverCellSelection:'./menu/smartMenu/cellSelectionHover.svg',
+            multiCellSelection:'./menu/smartMenu/multiSelectionCell.svg',
+        },
         amounts:[
             './menu/priceZero.svg',
             './menu/priceOne.svg',

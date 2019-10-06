@@ -1,7 +1,7 @@
-import { InteractionContext } from "../Context/InteractionContext";
-import { Archive } from "../Utils/ResourceArchiver";
-import { MenuItem } from "./MenuItem";
-import { PlaygroundHelper } from "../Utils/PlaygroundHelper";
+import { MenuItem } from "../MenuItem";
+import { Archive } from "../../Utils/ResourceArchiver";
+import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
+import { InteractionContext } from "../../Context/InteractionContext";
 
 export class ShowEnemiesMenuItem extends MenuItem{ 
     

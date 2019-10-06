@@ -1,4 +1,3 @@
-import { FlagMenuItem } from './../../Menu/FlagMenuItem';
 import { isNullOrUndefined } from "util";
 import { ICombination } from "./ICombination";
 import { Item } from "../../Items/Item";

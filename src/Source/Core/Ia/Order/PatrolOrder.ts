@@ -39,10 +39,10 @@ export class PatrolOrder extends Order{
             this._patrolCeils.forEach(ceil => {
                     const pathItem = new BasicItem(ceil.GetBoundingBox(),Archive.direction.patrol);
                     
-                    pathItem.SetDisplayTrigger(this._v.IsSelected.bind(this._v));
-                    pathItem.SetVisible(this._v.IsAlive.bind(this._v));
+                    pathItem.SetVisible(this._v.IsSelected.bind(this._v));
+                    pathItem.SetAlive(this._v.IsAlive.bind(this._v));
 
-                    this._patrolPathDisplay.push(pathItem);
+                    this._patrolPathDisplay.push(pathItem); 
                     PlaygroundHelper.Playground.Items.push(pathItem);
                 }
             );

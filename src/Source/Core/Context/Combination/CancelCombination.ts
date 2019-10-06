@@ -1,13 +1,13 @@
 import { ICombination } from "./ICombination";
-import { IInteractionContext } from "../IInteractionContext";
+import { IContextContainer } from "../IContextContainer";
 import { ISelectable } from "../../ISelectable";
-import { CancelMenuItem } from "../../Menu/CancelMenuItem";
+import { CancelMenuItem } from "../../Menu/Buttons/CancelMenuItem";
 import { Item } from "../../Items/Item";
 
 export class CancelCombination implements ICombination{
-    private _interactionContext:IInteractionContext;
+    private _interactionContext:IContextContainer;
 
-    constructor(interactionContext:IInteractionContext){
+    constructor(interactionContext:IContextContainer){  
         this._interactionContext = interactionContext;
     }
     

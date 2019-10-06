@@ -1,7 +1,7 @@
-import { Archive } from "../Utils/ResourceArchiver";
-import { InteractionContext } from "../Context/InteractionContext";
-import { CheckableMenuItem } from "./CheckableMenuItem"; 
-import { PlaygroundHelper } from "../Utils/PlaygroundHelper";
+import { Archive } from "../../Utils/ResourceArchiver";
+import { InteractionContext } from "../../Context/InteractionContext";
+import { CheckableMenuItem } from "../CheckableMenuItem"; 
+import { PlaygroundHelper } from "../../Utils/PlaygroundHelper"; 
 
 export class FlagMenuItem extends CheckableMenuItem{
     constructor(){

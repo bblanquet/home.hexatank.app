@@ -1,5 +1,5 @@
+import { ShowEnemiesMenuItem } from './../../Menu/Buttons/ShowEnemiesMenuItem';
 import { ICombination } from "./ICombination";
-import { ShowEnemiesMenuItem } from "../../Menu/ShowEnemiesMenuItem";
 import { Item } from "../../Items/Item";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 

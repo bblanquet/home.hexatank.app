@@ -1,3 +1,5 @@
+import { SmartInteraction } from './../../Menu/Smart/SmartInteraction';
+import { SmartMenu } from '../../Menu/Smart/SmartMenu';
 import { CeilDecorator } from '../../Ceils/CeilDecorator'; 
 import { CeilProperties } from '../../Ceils/CeilProperties';
 import { Cloud } from '../../Items/Others/Cloud'; 
@@ -10,8 +12,8 @@ import { Item } from '../../Items/Item';
 import { HexAxial } from '../../Utils/Coordinates/HexAxial';
 import { BoundingBox } from '../../Utils/BoundingBox';
 import { BasicItem } from '../../Items/BasicItem';
-import { Archive } from '../../Utils/ResourceArchiver';
-import { MapContext } from '../Generator/MapContext';
+import { Archive } from '../../Utils/ResourceArchiver';  
+import { MapContext } from '../Generator/MapContext'; 
 
 export class MapRender{
     private _hqRender:HqRender;
@@ -49,7 +51,21 @@ export class MapRender{
         PlaygroundHelper.PlayerHeadquarter = playerHq;
         let menus = this._menuGenerator.GetMenus(playerHq,playgroundItems);
         PlaygroundHelper.Playground.InputManager.InteractionContext.SetCombination(menus,playerHq);
-
+        
+        let smartMenu = new SmartMenu(
+            PlaygroundHelper.Playground.InputManager.HoldingStartedEvent,
+            PlaygroundHelper.Playground.InputManager.HoldingStoppedEvent,
+            PlaygroundHelper.Playground.InputManager.MovingEvent,
+        );
+        let interactionMenu = new SmartInteraction(
+            smartMenu.SelectedModeEvent,
+            PlaygroundHelper.Playground.InputManager.MovingEvent,
+            PlaygroundHelper.Playground.InputManager.HoldingStoppedEvent);
+        
+        smartMenu.GetItems().forEach(element => {
+            playgroundItems.push(element);
+        });
+        
         //make hq ceils visible
         playerHq.GetCurrentCeil().SetState(CeilState.Visible);
         playerHq.GetCurrentCeil().GetAllNeighbourhood().forEach(ceil => {
@@ -80,8 +96,8 @@ export class MapRender{
             boundingBox.X = ceil.GetBoundingBox().X - (boundingBox.Width / 2 - ceil.GetBoundingBox().Width / 2);
             boundingBox.Y = ceil.GetBoundingBox().Y - (boundingBox.Height / 2 - ceil.GetBoundingBox().Height / 2);
             const grass = new BasicItem(boundingBox, Archive.nature.grass);
-            grass.SetDisplayTrigger(() => true);
             grass.SetVisible(() => true);
+            grass.SetAlive(() => true);
             items.push(grass);
         });
     }

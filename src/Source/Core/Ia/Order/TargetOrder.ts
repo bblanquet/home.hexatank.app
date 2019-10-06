@@ -9,7 +9,7 @@ import { Tank } from "../../Items/Unit/Tank";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 
 export class TargetOrder extends Order{
-    private _targetUi:BasicItem;
+    private _targetUi:BasicItem; 
     private _currentOrder:SimpleOrder; 
     private _currentCeil:Ceil;
 
@@ -71,8 +71,8 @@ export class TargetOrder extends Order{
 
     private ShowUi() {
         this._targetUi = new BasicItem(this._target.GetBoundingBox(), Archive.direction.target,4);
-        this._targetUi.SetDisplayTrigger(this._v.IsSelected.bind(this._v));
-        this._targetUi.SetVisible(()=>
+        this._targetUi.SetVisible(this._v.IsSelected.bind(this._v));
+        this._targetUi.SetAlive(()=>
             this._v.IsAlive() 
             && this._target.IsAlive()
             && this._v.GetMainTarget() === this._target );

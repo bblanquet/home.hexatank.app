@@ -1,14 +1,14 @@
 import { ICombination } from "./ICombination";
-import { PatrolMenuItem } from "../../Menu/PatrolMenuItem"; 
+import { PatrolMenuItem } from "../../Menu/Buttons/PatrolMenuItem"; 
 import { PatrolOrder } from "../../Ia/Order/PatrolOrder"; 
 import { BasicItem } from "../../Items/BasicItem";
 import { Archive } from "../../Utils/ResourceArchiver";
 import { Item } from "../../Items/Item";
 import { Vehicle } from "../../Items/Unit/Vehicle";
 import { Ceil } from "../../Ceils/Ceil";
-import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
+import { PlaygroundHelper } from "../../Utils/PlaygroundHelper"; 
 
-export class PatrolCombination implements ICombination{
+export class PatrolCombination implements ICombination{ 
     private _indicators:Array<BasicItem>;
 
     constructor(){
@@ -42,8 +42,8 @@ export class PatrolCombination implements ICombination{
         if(this.ContainsVehicleePatrol(items)){
             if(items[items.length-1] instanceof Ceil){
                 const element = new BasicItem(items[items.length-1].GetBoundingBox(), Archive.direction.patrol);
-                element.SetDisplayTrigger(()=>true);
                 element.SetVisible(()=>true);
+                element.SetAlive(()=>true);
                 this._indicators.push(element);
                 PlaygroundHelper.Playground.Items.push(element);
             }

@@ -1,19 +1,18 @@
 import { ICombination } from "./ICombination";
 import { ISelectable } from "../../ISelectable";
-import { IInteractionContext } from "../IInteractionContext";
 import { Menu } from "../../Menu/Menu";
-import { Item } from "../../Items/Item";
+import { Item } from "../../Items/Item"; 
 import { Ceil } from "../../Ceils/Ceil";
-import { Headquarter } from "../../Ceils/Field/Headquarter";
 import { Vehicle } from "../../Items/Unit/Vehicle";
 import { BasicField } from "../../Ceils/Field/BasicField";
 import { CeilState } from "../../Ceils/CeilState";
+import { IContextContainer } from "../IContextContainer";
 
 export class UnselectCombination implements ICombination{
-    private _isSelectable:{(item:Item):boolean};
-    private _interactionContext:IInteractionContext;
+    private _isSelectable:{(item:Item):boolean}; 
+    private _interactionContext:IContextContainer;
 
-    constructor(private _menus:Menu[],isSelectable:{(item:Item):boolean},interactionContext:IInteractionContext){
+    constructor(private _menus:Menu[],isSelectable:{(item:Item):boolean},interactionContext:IContextContainer){
         this._isSelectable = isSelectable;
         this._interactionContext = interactionContext;
     }

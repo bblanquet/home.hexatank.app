@@ -1,6 +1,6 @@
 import { Item } from "../Items/Item";
 
 export interface IInteractionContext{
-    ClearContext():void;
-    Push(item: Item, forced:boolean):void;
+    Point:PIXI.Point;
+    OnSelect(item:Item):void
 }

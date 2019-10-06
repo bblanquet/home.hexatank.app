@@ -1,5 +1,4 @@
 import {Item} from '../Items/Item';
-import {InteractionContext} from '../Context/InteractionContext';
 import {CeilProperties} from './CeilProperties';
 import { HexAxial } from "../Utils/Coordinates/HexAxial";
 import { IField } from './Field/IField';
@@ -16,6 +15,7 @@ import { PlaygroundHelper } from '../Utils/PlaygroundHelper';
 import { BoundingBox } from '../Utils/BoundingBox';
 import { Point } from '../Utils/Point';
 import { Field } from './Field/Field';
+import { IInteractionContext } from '../Context/IInteractionContext';
 
 export class Ceil extends Item implements ICeil , ISelectable
 {
@@ -287,7 +287,7 @@ export class Ceil extends Item implements ICeil , ISelectable
         return ceils;
     }
 
-    public Select(context:InteractionContext):boolean
+    public Select(context:IInteractionContext):boolean
     {
         var isSelected = this.GetSprites()[0].containsPoint(context.Point);
         if(isSelected)

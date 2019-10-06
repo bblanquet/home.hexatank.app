@@ -5,6 +5,7 @@ import { Point } from '../Utils/Point';
 import { IBoundingBoxContainer } from '../IBoundingBoxContainer';
 import { PlaygroundHelper } from '../Utils/PlaygroundHelper';
 import { InteractionContext } from '../Context/InteractionContext';
+import { IInteractionContext } from '../Context/IInteractionContext';
 
 export abstract class Item implements Updater, IBoundingBoxContainer{
     private DisplayObjects:Array<PIXI.DisplayObject>;
@@ -13,7 +14,7 @@ export abstract class Item implements Updater, IBoundingBoxContainer{
     protected IsCentralRef:boolean=false;
     private _zoomIn:{ [id: string]: PIXI.Sprite; } = {};
     private _zoomOut:{ [id: string]: PIXI.Sprite; } = {};
-
+    protected Accuracy:number=0.5;
     constructor()
     {
         this.DisplayObjects = new Array<PIXI.DisplayObject>();
@@ -56,8 +57,8 @@ export abstract class Item implements Updater, IBoundingBoxContainer{
 
     protected GenerateSprite(name:string, func?:{(sprite:PIXI.Sprite):void}):void
     {
-        this._zoomOut[name] = PlaygroundHelper.SpriteProvider.GetZoomOutSprite(name);
-        this._zoomIn[name] = PlaygroundHelper.SpriteProvider.GetZoomInSprite(name);
+        this._zoomOut[name] = PlaygroundHelper.SpriteProvider.GetZoomOutSprite(name,this.Accuracy);
+        this._zoomIn[name] = PlaygroundHelper.SpriteProvider.GetZoomInSprite(name,this.Accuracy);
         
         this.DisplayObjects.push(this._zoomOut[name]);
         this.DisplayObjects.push(this._zoomIn[name]);
@@ -148,5 +149,5 @@ export abstract class Item implements Updater, IBoundingBoxContainer{
         return sprites;
     }
 
-    public abstract Select(context:InteractionContext):boolean;
+    public abstract Select(context:IInteractionContext):boolean;
 }

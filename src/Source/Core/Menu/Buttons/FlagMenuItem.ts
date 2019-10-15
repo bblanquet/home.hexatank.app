@@ -13,8 +13,16 @@ export class FlagMenuItem extends CheckableMenuItem{
     public Select(context: InteractionContext): boolean      
     { 
         PlaygroundHelper.IsFlagingMode = !PlaygroundHelper.IsFlagingMode;
-        this.Swap();
         return true;
+    }
+
+    public Update(viewX: number, viewY: number): void {
+        super.Update(viewX,viewY);
+        if(PlaygroundHelper.IsFlagingMode){
+            this.SetSelected();
+        }else{
+            this.SetUnselected();
+        }
     }
 
 }

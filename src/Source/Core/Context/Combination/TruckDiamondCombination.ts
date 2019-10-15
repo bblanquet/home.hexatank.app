@@ -5,12 +5,19 @@ import { ICombination } from "./ICombination";
 import { Item } from "../../Items/Item";
 import { Truck } from "../../Items/Unit/Truck";
 import { Ceil } from "../../Ceils/Ceil";
-import { Vehicle } from "../../Items/Unit/Vehicle";
 import { Diamond } from "../../Ceils/Field/Diamond";
 import { HqFieldOrder } from '../../Ia/Order/HqFieldOrder';
+import { IContextContainer } from '../IContextContainer';
+import { ISelectable } from '../../ISelectable'; 
 
 export class TruckDiamondCombination implements ICombination
 {
+    private _interactionContext:IContextContainer;
+
+    constructor(interactionContext:IContextContainer){  
+        this._interactionContext = interactionContext;
+    }
+
     IsMatching(items: Item[]): boolean { 
         return items.length >=2 
         && items[0].constructor.name === Truck.name 
@@ -25,11 +32,17 @@ export class TruckDiamondCombination implements ICombination
             let diamond = <Diamond>(items[1] as Ceil).GetField();
             let order = new TruckPatrolOrder(truck, new HqFieldOrder(truck.Hq,truck),new DiamondFieldOrder(diamond,truck));
             truck.SetOrder(order);
-            items.splice(1,1);
+            this.UnSelectItem(items[0]);
+            this._interactionContext.ClearContext();
             return true;
         }
         return false;
     }
     Clear(): void {
+    }
+
+    private UnSelectItem(item: Item) {            
+        var selectable = <ISelectable> <any> (item);
+        selectable.SetSelected(false);
     }
 }

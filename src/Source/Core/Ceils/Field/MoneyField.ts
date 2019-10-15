@@ -8,6 +8,7 @@ import { BoundingBox } from "../../Utils/BoundingBox";
 import { Vehicle } from "../../Items/Unit/Vehicle";
 import { Truck } from "../../Items/Unit/Truck";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
+import { CeilState } from "../CeilState";
 
 export class MoneyField extends Field
 { 
@@ -25,6 +26,12 @@ export class MoneyField extends Field
         this.GenerateSprite(Archive.bonus.fullMoney,s=>s.alpha=0);      
         this.InitPosition(ceil.GetBoundingBox());
         this.GetDisplayObjects().forEach(obj => {obj.visible = this.GetCeil().IsVisible();});
+    }
+
+    protected OnCeilStateChanged(ceilState: CeilState): void {
+        this.GetDisplayObjects().forEach(s=>{
+            s.visible = ceilState === CeilState.Visible || ceilState === CeilState.HalfVisible;
+        });
     }
 
     private IsFull():boolean{

@@ -1,12 +1,19 @@
+import { PersistentOrder } from './../../Ia/Order/PersistentOrder';
 import { ICombination } from "./ICombination";
 import { TargetOrder } from "../../Ia/Order/TargetOrder";
 import { SimpleOrder } from "../../Ia/Order/SimpleOrder";
 import { Item } from "../../Items/Item";
 import { Tank } from "../../Items/Unit/Tank";
 import { Ceil } from "../../Ceils/Ceil";
+import { IContextContainer } from "../IContextContainer";
+import { ISelectable } from "../../ISelectable";
 
 export class TankCombination implements ICombination{ 
+    private _interactionContext:IContextContainer;
 
+    constructor(interactionContext:IContextContainer){   
+        this._interactionContext = interactionContext;
+    }
     IsMatching(items: Item[]): boolean {
         return items.length >=2 
         && items[0] instanceof Tank 
@@ -27,9 +34,10 @@ export class TankCombination implements ICombination{
             }
             else
             {
-                const order = new SimpleOrder(ceil,tank);
+                const order = new PersistentOrder(ceil,tank);
                 tank.SetOrder(order);
-                items.splice(1,1);
+                this.UnSelectItem(items[0]);
+                this._interactionContext.ClearContext();
             }
             return true;
         }
@@ -39,4 +47,9 @@ export class TankCombination implements ICombination{
     Clear(): void {
     }
     
+    private UnSelectItem(item: Item) {            
+        var selectable = <ISelectable> <any> (item);
+        selectable.SetSelected(false);
+    }
+
 }

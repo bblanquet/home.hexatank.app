@@ -7,11 +7,15 @@ import { Item } from "../../Items/Item";
 import { Vehicle } from "../../Items/Unit/Vehicle";
 import { Ceil } from "../../Ceils/Ceil";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper"; 
+import { IContextContainer } from "../IContextContainer";
+import { ISelectable } from "../../ISelectable";
 
 export class PatrolCombination implements ICombination{ 
     private _indicators:Array<BasicItem>;
+    private _interactionContext:IContextContainer;
 
-    constructor(){
+    constructor(interactionContext:IContextContainer){    
+        this._interactionContext = interactionContext;
         this._indicators = []; 
     }
 
@@ -55,7 +59,8 @@ export class PatrolCombination implements ICombination{
             var vehicle = <Vehicle>items[0];
             var patrol = new PatrolOrder(this.GetCeils(items),vehicle);
             vehicle.SetOrder(patrol);
-            items.splice(1,items.length-2);
+            this.UnSelectItem(items[0]);
+            this._interactionContext.ClearContext();
             return true;
         }
         return false;
@@ -66,5 +71,10 @@ export class PatrolCombination implements ICombination{
             indicator.Destroy();
         })
         this._indicators = [];
+    }
+
+    private UnSelectItem(item: Item) {            
+        var selectable = <ISelectable> <any> (item);
+        selectable.SetSelected(false);
     }
 }

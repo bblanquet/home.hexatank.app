@@ -1,3 +1,4 @@
+import { LiteEvent } from './../../Utils/LiteEvent';
 import { Headquarter } from './../../Ceils/Field/Headquarter';
 import {Dust} from './Dust';
 import { AliveItem } from '../AliveItem'; 
@@ -58,6 +59,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
     private _visibleHandlers: { (data: ISelectable):void }[] = [];
     private _onCeilStateChanged:{(ceilState:CeilState):void};
+    public CellChanged:LiteEvent<Ceil>;
 
     constructor(public Hq:Headquarter){
         super();
@@ -86,6 +88,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this._rightDusts = [new Dust(new BoundingBox()),new Dust(new BoundingBox()),new Dust(new BoundingBox()),new Dust(new BoundingBox())];
         this._leftDusts.forEach(ld=>PlaygroundHelper.Playground.Items.push(ld));
         this._rightDusts.forEach(rd=>PlaygroundHelper.Playground.Items.push(rd));
+        this.CellChanged = new LiteEvent<Ceil>();
     }
 
 
@@ -211,6 +214,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this._currentCeil.UnregisterCeilState(this._onCeilStateChanged);
 
         this._currentCeil = this._nextCeil;
+        this.CellChanged.trigger(this._currentCeil);
         this.OnCeilStateChanged(this._currentCeil.GetState());
         this._currentCeil.RegisterCeilState(this._onCeilStateChanged);
         this._nextCeil = null;

@@ -5,6 +5,7 @@ import { Field } from "./Field";
 import { BoundingBox } from "../../Utils/BoundingBox";
 import { Vehicle } from "../../Items/Unit/Vehicle";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
+import { CeilState } from "../CeilState";
 
 export class AttackField extends Field
 {
@@ -15,7 +16,13 @@ export class AttackField extends Field
 
         this.GenerateSprite(Archive.bonus.strength);        
         this.InitPosition(ceil.GetBoundingBox());
-        this.GetDisplayObjects().forEach(obj => {obj.visible = this.GetCeil().IsVisible();});
+        this.GetDisplayObjects().forEach(obj => {obj.visible = this.GetCeil().IsUnknown();});
+    }
+
+    protected OnCeilStateChanged(ceilState: CeilState): void {
+        this.GetDisplayObjects().forEach(s=>{
+            s.visible = ceilState === CeilState.Visible || ceilState === CeilState.HalfVisible;
+        });
     }
 
     public GetBoundingBox(): BoundingBox {

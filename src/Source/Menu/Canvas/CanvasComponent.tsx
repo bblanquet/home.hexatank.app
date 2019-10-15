@@ -33,13 +33,13 @@ export default class CanvasComponent extends Component<any, {refresh:boolean}> {
     }
     this._gameSetup = new GameSetup();
     this._gameSetup.SetGame(PlaygroundHelper.App.stage,PlaygroundHelper.Viewport);
-    PlaygroundHelper.Manager.on('pointerdown', PlaygroundHelper.Playground.InputManager.OnMouseDown.bind(PlaygroundHelper.Playground.InputManager), false);
-    PlaygroundHelper.Manager.on('pointermove', PlaygroundHelper.Playground.InputManager.OnMouseMove.bind(PlaygroundHelper.Playground.InputManager), false);
-    PlaygroundHelper.Manager.on('pointerup', PlaygroundHelper.Playground.InputManager.OnMouseUp.bind(PlaygroundHelper.Playground.InputManager), false);
+    PlaygroundHelper.InteractionManager.on('pointerdown', PlaygroundHelper.InputManager.OnMouseDown.bind(PlaygroundHelper.InputManager), false);
+    PlaygroundHelper.InteractionManager.on('pointermove', PlaygroundHelper.InputManager.OnMouseMove.bind(PlaygroundHelper.InputManager), false);
+    PlaygroundHelper.InteractionManager.on('pointerup', PlaygroundHelper.InputManager.OnMouseUp.bind(PlaygroundHelper.InputManager), false);
     PlaygroundHelper.ResizeTheCanvas();
     window.addEventListener('resize', ()=>PlaygroundHelper.ResizeTheCanvas());
     window.addEventListener('DOMContentLoaded',()=>PlaygroundHelper.ResizeTheCanvas());
-    PlaygroundHelper.Manager.autoPreventDefault = false;
+    PlaygroundHelper.InteractionManager.autoPreventDefault = false;
     this._gameSetup.SetCenter();
     this._loop();
   }

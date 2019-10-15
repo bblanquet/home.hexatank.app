@@ -13,14 +13,7 @@ export class AddTankCombination implements ICombination{
     Combine(items: Item[]): boolean {
         if(this.IsMatching(items))
         {
-            if(PlaygroundHelper.IsAddingMode())
-            {
-                PlaygroundHelper.PlayerHeadquarter.AddTankRequest();
-            }
-            else
-            {
-                PlaygroundHelper.PlayerHeadquarter.RemoveTankRequest();
-            }
+            PlaygroundHelper.PlayerHeadquarter.AddTankRequest();
             items.splice(items.length-1,1);
             return true;
         }

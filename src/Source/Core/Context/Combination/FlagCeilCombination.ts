@@ -26,6 +26,7 @@ export class FlagCeilCombination implements ICombination{
                 {
                     PlaygroundHelper.PlayerHeadquarter.FlagCeil.SetCeil(ceil);
                 }
+                PlaygroundHelper.IsFlagingMode = false;
             }
         }
         return false;

@@ -1,6 +1,4 @@
 import { PauseButton } from './../../Menu/Buttons/PauseButton';
-import { MinusButton } from '../../Menu/Buttons/MinusButton';
-import { PlusButton } from '../../Menu/Buttons/PlusButton';
 import { RightMenu } from './../../Menu/RightMenu';
 import { FlagMenuItem } from '../../Menu/Buttons/FlagMenuItem';
 import { TopBar } from '../../Menu/TopBar';
@@ -33,8 +31,6 @@ export class MenuGenerator
 
         const hqMenu = new RightMenu(e=>true,
         [new EmptyMenuItem(Archive.menu.topRightMenu,false),
-        new PlusButton(),
-        new MinusButton(),
         new TankMenuItem(),
         new TruckMenuItem(),
         new FlagMenuItem(),
@@ -70,7 +66,6 @@ export class MenuGenerator
         const bottomMenu = new TopBar(hq);
         items.splice(0, 0, bottomMenu);
 
-        //menus.push(hqMenu);
         menus.push(vehicleMenu);
         menus.push(ceilMenu);
         return menus;

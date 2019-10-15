@@ -1,5 +1,4 @@
-import { SmartInteraction } from './../../Menu/Smart/SmartInteraction';
-import { SmartMenu } from '../../Menu/Smart/SmartMenu';
+import { ContextSwitcher } from './../../Utils/ContextSwitcher';
 import { CeilDecorator } from '../../Ceils/CeilDecorator'; 
 import { CeilProperties } from '../../Ceils/CeilProperties';
 import { Cloud } from '../../Items/Others/Cloud'; 
@@ -50,22 +49,13 @@ export class MapRender{
         //Link menu to player HQ
         PlaygroundHelper.PlayerHeadquarter = playerHq;
         let menus = this._menuGenerator.GetMenus(playerHq,playgroundItems);
-        PlaygroundHelper.Playground.InputManager.InteractionContext.SetCombination(menus,playerHq);
+        PlaygroundHelper.InteractionContext.SetCombination(menus,playerHq);
         
-        let smartMenu = new SmartMenu(
-            PlaygroundHelper.Playground.InputManager.HoldingStartedEvent,
-            PlaygroundHelper.Playground.InputManager.HoldingStoppedEvent,
-            PlaygroundHelper.Playground.InputManager.MovingEvent,
-        );
-        let interactionMenu = new SmartInteraction(
-            smartMenu.SelectedModeEvent,
-            PlaygroundHelper.Playground.InputManager.MovingEvent,
-            PlaygroundHelper.Playground.InputManager.HoldingStoppedEvent);
-        
-        smartMenu.GetItems().forEach(element => {
-            playgroundItems.push(element);
-        });
-        
+        let contextSwitcher = new ContextSwitcher(PlaygroundHelper.InteractionContext,
+            PlaygroundHelper.Playground,
+            PlaygroundHelper.InputManager,
+            menus[1]);
+
         //make hq ceils visible
         playerHq.GetCurrentCeil().SetState(CeilState.Visible);
         playerHq.GetCurrentCeil().GetAllNeighbourhood().forEach(ceil => {

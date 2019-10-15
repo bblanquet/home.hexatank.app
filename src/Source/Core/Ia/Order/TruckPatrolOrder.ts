@@ -14,6 +14,12 @@ export class TruckPatrolOrder extends Order
         super();
     }
 
+    public Cancel():void{
+        if(this._currentOrder){
+            this._currentOrder.Cancel();
+        }
+    }
+
     Do(): void 
     {
         if(this.State === OrderState.None)

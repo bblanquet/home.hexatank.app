@@ -13,17 +13,10 @@ export class AddTruckCombination implements ICombination{
     Combine(items: Item[]): boolean {
         if(this.IsMatching(items))
         {
-            if(PlaygroundHelper.IsAddingMode())
-            {
-                PlaygroundHelper.PlayerHeadquarter.AddTruckRequest();
-            }
-            else
-            {
-                PlaygroundHelper.PlayerHeadquarter.RemoveTruckRequest();
-            }
+            PlaygroundHelper.PlayerHeadquarter.AddTruckRequest();
             items.splice(items.length-1,1);
             return true;
-        }
+        } 
         return false;
     }
 

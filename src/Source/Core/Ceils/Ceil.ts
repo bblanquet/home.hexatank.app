@@ -26,6 +26,7 @@ export class Ceil extends Item implements ICeil , ISelectable
     private _occupier:IMovable;
     private _decorationSprite:string;
     private _areaSprite:string;
+    private _circle: PIXI.Circle;
 
     constructor(properties:CeilProperties)
     {
@@ -40,6 +41,7 @@ export class Ceil extends Item implements ICeil , ISelectable
             e.alpha=0;
             e.anchor.set(0.5);
         });
+        this._circle = new PIXI.Circle(0,0,PlaygroundHelper.Settings.Size/2);
     }
 
     public GetState(): CeilState {
@@ -287,9 +289,21 @@ export class Ceil extends Item implements ICeil , ISelectable
         return ceils;
     }
 
+    public Update(viewX: number, viewY: number): void
+    {
+        super.Update(viewX,viewY);
+        if(PlaygroundHelper.Viewport.lastViewport){
+            let scale = PlaygroundHelper.Viewport.lastViewport.scaleX;
+            this._circle.radius = PlaygroundHelper.Settings.Size/2 * scale;
+            this._circle.x = (this.GetSprites()[0].x -PlaygroundHelper.Viewport.left) * scale;
+            this._circle.y = (this.GetSprites()[0].y -PlaygroundHelper.Viewport.top) * scale;;
+        }
+
+    }
+
     public Select(context:IInteractionContext):boolean
     {
-        var isSelected = this.GetSprites()[0].containsPoint(context.Point);
+        var isSelected = this._circle.contains(context.Point.x,context.Point.y);
         if(isSelected)
         {
             console.log(`%c Q:${this.GetCoordinate().Q} R:${this.GetCoordinate().R}`,'color:blue;font-weight:bold;');

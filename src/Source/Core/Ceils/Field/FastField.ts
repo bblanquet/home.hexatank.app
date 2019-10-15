@@ -5,6 +5,7 @@ import { Field } from "./Field";
 import { BoundingBox } from "../../Utils/BoundingBox";
 import { Vehicle } from "../../Items/Unit/Vehicle";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
+import { CeilState } from "../CeilState";
 
 export class FastField extends Field
 {
@@ -16,6 +17,12 @@ export class FastField extends Field
         this.GenerateSprite(Archive.bonus.speed);
         this.InitPosition(ceil.GetBoundingBox());
         this.GetDisplayObjects().forEach(obj => {obj.visible = this.GetCeil().IsVisible();});
+    }
+
+    protected OnCeilStateChanged(ceilState: CeilState): void {
+        this.GetDisplayObjects().forEach(s=>{
+            s.visible = ceilState === CeilState.Visible || ceilState === CeilState.HalfVisible;
+        });
     }
 
     public GetBoundingBox(): BoundingBox {

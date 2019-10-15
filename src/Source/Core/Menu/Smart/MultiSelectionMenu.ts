@@ -5,20 +5,15 @@ import { Archive } from '../../Utils/ResourceArchiver';
 import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
 import { BoundingBox } from '../../Utils/BoundingBox';
 import { LiteEvent } from '../../Utils/LiteEvent';
-import { Item } from '../../Items/Item';
 
-export class SmartMenu{
+export class MultiSelectionMenu {
     private _tankSelection:StaticBasicItem;
     private _cellSelection:StaticBasicItem;
     private _initialPoint:Point;
     private _isVisible:boolean=false;
     public SelectedModeEvent:LiteEvent<SelectionMode> = new LiteEvent<SelectionMode>(); 
 
-    constructor(
-        private holdingStartedEvent:LiteEvent<Point>,
-        private holdingStoppedEvent:LiteEvent<Point>,
-        private movingEvent:LiteEvent<Point>,
-        )
+    constructor(private movingEvent:LiteEvent<Point>)
     {
         this._tankSelection = new StaticBasicItem(BoundingBox.Create(0,0,
             PlaygroundHelper.Settings.Size*2,
@@ -39,16 +34,13 @@ export class SmartMenu{
             7,
             1.1);
         
+        PlaygroundHelper.Playground.Items.push(this._tankSelection);
+        PlaygroundHelper.Playground.Items.push(this._cellSelection);
+
         this._cellSelection.SetAlive(()=>true);
         this._cellSelection.SetVisible(this.IsVisible.bind(this));
 
-        this.holdingStartedEvent.on((e:Point)=>this.Show(e));
-        this.holdingStoppedEvent.on((e:Point)=>this.Hide());
         this.movingEvent.on((e:Point)=>this.OnMouseMove(e));
-    }
-
-    public GetItems():Item[]{
-        return [this._tankSelection,this._cellSelection];
     }
 
     public Show(point:Point):void{
@@ -89,15 +81,13 @@ export class SmartMenu{
                 this.SelectedModeEvent.trigger(SelectionMode.unit);
             }
             else{
-                this.SelectedModeEvent.trigger(SelectionMode.unit);
+                this.SelectedModeEvent.trigger(SelectionMode.cell);
             }
         }
         this._isVisible = false;
     }
 
     public Destroy():void{
-        this.holdingStartedEvent.off((e:Point)=>this.Show(e));
-        this.holdingStoppedEvent.off((e:Point)=>this.Hide());
         this.movingEvent.off((e:Point)=>this.OnMouseMove(e));
     }
 }

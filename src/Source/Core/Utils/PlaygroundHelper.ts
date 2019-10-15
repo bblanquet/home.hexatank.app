@@ -1,3 +1,4 @@
+import { InteractionContext } from './../Context/InteractionContext';
 import { VehiclesContainer } from '../Items/Unit/VehiclesContainer'; 
 import { MessageDispatcher } from './Network/MessageDispatcher';
 import { CeilsContainer } from "../Ceils/CeilsContainer";
@@ -10,8 +11,9 @@ import { ISpriteProvider } from "./ISpriteProvider";
 import { Headquarter } from "../Ceils/Field/Headquarter";
 import { Area } from "../Ia/Area/Area";
 import { ItemsManager } from "../ItemsManager";
-import { MapContext } from "../Setup/Generator/MapContext";
+import { MapContext } from "../Setup/Generator/MapContext"; 
 import { SpriteProvider } from './SpriteProvider';
+import { InputManager } from './InputManager';
 const Viewport = require('pixi-viewport').Viewport;
 
 export class PlaygroundHelper{
@@ -28,25 +30,7 @@ export class PlaygroundHelper{
     public static PlayerHeadquarter:Headquarter;
     public static Dispatcher:MessageDispatcher=new MessageDispatcher();
     public static PlayerName: string="defaultPlayer";
-
-    private static _isAddingMode:boolean=true;
-    private static _isAddingHandlers:{(message:boolean):void}[] = new Array<{(message:boolean):void}>();
     public static IsFlagingMode: boolean;
-
-    public static IsAddingMode():boolean{
-        return this._isAddingMode;
-    }
-
-    public static SetAddingMode(mode:boolean):void{
-        this._isAddingMode =mode;
-        this._isAddingHandlers.forEach(a=>a(this._isAddingMode));
-    }
-    public static SubscribeAdding(func:{(message:boolean):void}):void{
-        this._isAddingHandlers.push(func);
-    }
-    public static UnSubscribeAdding(func:{(message:boolean):void}):void{
-        this._isAddingHandlers = this._isAddingHandlers.filter(f=> f!==func);
-    }
 
     public static SetDefaultName() {
         this.PlayerName = "defaultPlayer";
@@ -54,8 +38,9 @@ export class PlaygroundHelper{
 
     public static App: PIXI.Application;
     public static Viewport:any;
-    public static Manager:PIXI.interaction.InteractionManager;
-
+    public static InputManager:InputManager;
+    public static InteractionManager:PIXI.interaction.InteractionManager;
+    public static InteractionContext:InteractionContext;
 
     public static InitApp():void{
         if(!this.App){
@@ -73,7 +58,7 @@ export class PlaygroundHelper{
                 interaction: this.App.renderer.plugins.interaction
               });
             
-            this.Manager = new PIXI.interaction.InteractionManager(this.App.renderer);        
+            this.InteractionManager = new PIXI.interaction.InteractionManager(this.App.renderer);        
             this.Viewport.drag().pinch().wheel().decelerate();
             this.SpriteProvider = new SpriteProvider();
             this.SpriteProvider.PreloadTexture();
@@ -123,6 +108,8 @@ export class PlaygroundHelper{
         this.Engine = new AStarEngine<Ceil>();
         this.Settings = new GameSettings();
         this.Playground = new ItemsManager();
+        this.InputManager = new InputManager();
+        this.InteractionContext = new InteractionContext();
     }
 
     public static GetAreas(centerCeil:Ceil):Array<Area>

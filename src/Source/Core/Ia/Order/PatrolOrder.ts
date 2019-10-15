@@ -20,6 +20,7 @@ export class PatrolOrder extends Order{
         this.CreatePath();
     }
 
+
     public Cancel(): void {
         super.Cancel();
         this._patrolPathDisplay.forEach(patrol=>{
@@ -27,7 +28,7 @@ export class PatrolOrder extends Order{
         });
         this._patrolPathDisplay = [];
         
-        if(!isNullOrUndefined(this._currentOrder))
+        if(this._currentOrder)
         {
             this._currentOrder.Cancel();
         }

@@ -4,7 +4,6 @@ import { Updater } from "../Updater";
 import { Point } from '../Utils/Point';
 import { IBoundingBoxContainer } from '../IBoundingBoxContainer';
 import { PlaygroundHelper } from '../Utils/PlaygroundHelper';
-import { InteractionContext } from '../Context/InteractionContext';
 import { IInteractionContext } from '../Context/IInteractionContext';
 
 export abstract class Item implements Updater, IBoundingBoxContainer{

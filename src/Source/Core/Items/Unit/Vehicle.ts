@@ -197,6 +197,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     }
 
     public SetSelected(visible:boolean):void{
+        visible ? PlaygroundHelper.Select():PlaygroundHelper.Unselect();
         this.SetProperty(Archive.selectionUnit,(e)=>e.alpha= visible ? 1 : 0);
         if(!visible){
             this._visibleHandlers.forEach(h=>h(this));

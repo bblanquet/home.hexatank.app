@@ -57,9 +57,11 @@ export class ContextSwitcher{
     }
 
     private OnHolding():void{
-        PlaygroundHelper.PauseNavigation();
-        this._mode = ContextMode.SelectionMenu;
-        this._smartMenu.Show(this._downPoint);
+        if(!PlaygroundHelper.HasSelection() && this._mode === ContextMode.SingleSelection){
+            PlaygroundHelper.PauseNavigation();
+            this._mode = ContextMode.SelectionMenu;
+            this._smartMenu.Show(this._downPoint);
+        }
     }
 
     private OnModeChanged(mode:SelectionMode):void{

@@ -74,6 +74,7 @@ export class Ceil extends Item implements ICeil , ISelectable
     }
 
     public SetSelected(visible: boolean): void {
+        visible ? PlaygroundHelper.Select():PlaygroundHelper.Unselect();
         this.SetProperty(Archive.selectionCell,(e)=>e.alpha= visible ? 1 : 0);
         if(!visible){
             this._visibleHandlers.forEach(h=>h(this));

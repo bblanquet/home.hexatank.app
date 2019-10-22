@@ -66,6 +66,17 @@ export class PlaygroundHelper{
         }
     }
 
+    public static selectionCount:number=0;
+    public static Select():void{
+        this.selectionCount += 1;
+    }
+    public static Unselect():void{
+        this.selectionCount -= 1;
+    }
+    public static HasSelection():boolean{
+        return this.selectionCount > 0;
+    }
+
     public static PauseNavigation() {
         this.Viewport.plugins.pause('drag');
         this.Viewport.plugins.pause('pinch');
@@ -102,6 +113,7 @@ export class PlaygroundHelper{
     }
 
     public static Init():void{
+        this.selectionCount = 0;
         this._areaEngine = new AreaEngine();
         this.CeilsContainer = new CeilsContainer<Ceil>();
         this.VehiclesContainer = new VehiclesContainer();

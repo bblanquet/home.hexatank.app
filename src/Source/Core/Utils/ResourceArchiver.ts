@@ -100,6 +100,7 @@ export const Archive = {
     cell:'./cell.svg',
     diamondCell:'./diamondCell.svg',
     flagCell:'./flagCell.svg',
+    option:'./option.svg',
     direction:{
         target:'./direction/target.svg',
         moving:'./direction/motion.svg',

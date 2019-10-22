@@ -11,11 +11,6 @@ export class RightMenu extends Menu{
         this.Items = items;
 
         this.SetPosition();
-
-        // this.IsHidden = true;
-        // this.Items.forEach(item=>{
-        //     item.Hide();
-        // });
     }
 
     private SetPosition() { 

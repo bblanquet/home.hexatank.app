@@ -1,74 +1,76 @@
-import {h, Component} from 'preact';
-import {route} from 'preact-router';
+import { h, Component } from 'preact';
+import { route } from 'preact-router';
 const io = require('socket.io-client');
 import linkState from 'linkstate';
 
-export default class OffJoinComponent extends Component<any, {ServerNames:string[], PlayerName:string}> {
-    private _socket:any;
+export default class OffJoinComponent extends Component<any, { ServerNames: string[], PlayerName: string }> {
+    private _socket: any;
 
-    constructor(){
+    constructor() {
         super();
         this.setState({
-            ServerNames:new Array<string>(),
-            PlayerName:'Alice'
+            ServerNames: new Array<string>(),
+            PlayerName: 'Alice'
         });
         this._socket = io('http://mottet.xyz:8080');
         this.Start();
     }
 
-    componentDidMount() {}
+    componentDidMount() { }
 
-    componentWillUnmount() {}
+    componentWillUnmount() { }
 
     render() {
-        return <div class="centered">
-                <div class="form-group mb-2">
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-sizing-default">Playername</span>
+        return <div class="base">
+            <div class="centered">
+                <div class="container">
+                    <div class="form-group mb-2">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default">Playername</span>
+                            </div>
+                            <input type="text" value={this.state.PlayerName} onInput={linkState(this, 'PlayerName')} class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" />
                         </div>
-                        <input type="text" value={this.state.PlayerName} onInput={linkState(this, 'PlayerName')} class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default"/>
                     </div>
-                </div>
 
-            <table class="table table-dark table-hover">
-            <thead>
-                <tr>
-                <th scope="col">Servers</th>
-                <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-            {this.state.ServerNames.map((serverName) => {
-                return (<tr>
-                    <td class="align-middle">{serverName}</td>
-                    <td class="align-middle"><button type="button" onClick={()=>this.Join(serverName)} class="btn btn-primary">Join</button></td>
-                </tr>);
-            })}
-            </tbody>
-            </table>
-            <button type="button" class="btn btn-primary btn-sm btn-danger" onClick={this.Back}>Back</button>
+                    <table class="table table-dark table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Servers</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.ServerNames.map((serverName) => {
+                                return (<tr>
+                                    <td class="align-middle">{serverName}</td>
+                                    <td class="align-middle"><button type="button" onClick={() => this.Join(serverName)} class="btn btn-primary">Join</button></td>
+                                </tr>);
+                            })}
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-primary btn-sm btn-danger" onClick={this.Back}>Back</button>
+                </div>
+            </div>
         </div>;
     }
 
-    private Join(servername:string):void{
+    private Join(servername: string): void {
         route(`/OnHost/${servername}/${this.state.PlayerName}/${false}`, true);
     }
 
-    private Back(e:any){
+    private Back(e: any) {
         route('/Home', true);
     }
 
-    private Start():void{
-        this._socket.on('connect', () => 
-        {
+    private Start(): void {
+        this._socket.on('connect', () => {
             this._socket.emit('rooms');
-            this._socket.on('rooms', (roomsData:{serverNames:string[]}) =>
-                {
-                    this.setState({
-                        ServerNames:roomsData.serverNames
-                    });
-                }
+            this._socket.on('rooms', (roomsData: { serverNames: string[] }) => {
+                this.setState({
+                    ServerNames: roomsData.serverNames
+                });
+            }
             );
         });
     }

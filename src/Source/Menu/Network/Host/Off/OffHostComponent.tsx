@@ -22,6 +22,7 @@ export default class OffHostComponent extends Component<any, OffHostState> {
             <div class="base">
                 <div class="centered">
                     <div class="container">
+                    <div class="title-container">Server</div>
                         <div class="form-group mb-2">
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">

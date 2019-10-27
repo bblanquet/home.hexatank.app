@@ -2,8 +2,11 @@ import { Component, h } from 'preact';
 import { PlaygroundHelper } from '../../Core/Utils/PlaygroundHelper';
 import { GameSetup } from '../../Core/GameSetup';
 import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
+import { PeerHandler } from '../Network/Host/On/PeerHandler';
+import { route } from 'preact-router';
 
-export default class CanvasComponent extends Component<any, { refresh: boolean }> {
+
+export default class CanvasComponent extends Component<any, { hasMenu: boolean }> {
   private _gameCanvas: HTMLDivElement;
   private _loop: { (): void };
   private _gameSetup: GameSetup;
@@ -44,6 +47,14 @@ export default class CanvasComponent extends Component<any, { refresh: boolean }
     this._loop();
   }
 
+  private GameLoop(): void {
+    if (this._stop) {
+      return;
+    }
+    requestAnimationFrame(this._loop);
+    PlaygroundHelper.Playground.Update();
+  }
+
   componentWillUnmount() {
     this._stop = true;
     PlaygroundHelper.App.stop();
@@ -54,13 +65,68 @@ export default class CanvasComponent extends Component<any, { refresh: boolean }
     PlaygroundHelper.Playground.Items = [];
   }
 
+  componentDidUpdate() {
+    PlaygroundHelper.Settings.IsPause = this.state.hasMenu;
+  }
+
   render() {
     return (
-      <div>
-        {this.MenuMessage()}
+      <div style="width=100%">
+        {this.state.hasMenu ? '':this.LeftMenu()}
+        {this.state.hasMenu ? '':this.TopMenu()}
+        {this.state.hasMenu ? this.MenuMessage() : ''}
         <div ref={(dom) => { this._gameCanvas = dom }} />
       </div>
     );
+  }
+
+  private LeftMenu() {
+    return (
+      <div class="right-small">
+        <div class="middle2 max-width">
+          <div class="btn-group-vertical max-width">
+            <button type="button" class="btn btn-dark without-padding">
+              <div class="white-background">0</div>
+              <div class="fill-tank max-width standard-space"></div>
+            </button>
+            <button type="button" class="btn btn-dark without-padding">
+              <div class="white-background">0</div>
+              <div class="fill-truck max-width standard-space"></div>
+            </button>
+            <button type="button" class="btn btn-dark without-padding">
+              <div class="fill-flag max-width standard-space"></div>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  private TopMenu() {
+    return (
+      <div style="display:inline-block">
+        <button type="button" class="btn btn-dark space-out">
+          10
+        <span class="badge badge-secondary fill-diamond very-small-space middle"> </span>
+        </button>
+        <button type="button" class="btn btn-dark small-space fill-option space-out" onClick={(e: any) => this.SetMenu(e)} />
+      </div>
+    );
+  }
+
+  private Cheat(e: any): void {
+    PlaygroundHelper.Settings.ShowEnemies = !PlaygroundHelper.Settings.ShowEnemies;
+  }
+
+  private Quit(e: any): void {
+    route('/Home', true);
+    PeerHandler.Stop();
+  }
+
+  private SetMenu(e: any): void {
+    this.setState({
+      hasMenu: !this.state.hasMenu
+    });
   }
 
   private MenuMessage() {
@@ -68,15 +134,12 @@ export default class CanvasComponent extends Component<any, { refresh: boolean }
       <div class="base">
         <div class="centered">
           <div class="container">
-            <div class="relative-center">
-              <div class="btn-group-vertical">
-                <button type="button" class="btn btn-secondary">Resume</button>
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                  <label class="btn btn-primary active">
-                    <input type="checkbox" checked autocomplete="off"> Checkbox 1 (pre-checked)</input>
-                  </label>
-                </div>
-                <button type="button" class="btn btn-dark">Quit</button>
+            <div class="title-container">Menu</div>
+            <div class="container-center">
+              <div class="btn-group-vertical btn-block">
+                <button type="button" class="btn btn-primary-blue btn-block" onClick={(e: any) => this.SetMenu(e)}>Resume</button>
+                <button type="button" class="btn btn-primary-blue btn-block" onClick={(e: any) => this.Cheat(e)}>Cheat</button>
+                <button type="button" class="btn btn-dark btn-block" onClick={(e: any) => this.Quit(e)}>Quit</button>
               </div>
             </div>
           </div>
@@ -102,12 +165,6 @@ export default class CanvasComponent extends Component<any, { refresh: boolean }
     );
   }
 
-  private GameLoop(): void {
-    if (this._stop) {
-      return;
-    }
-    requestAnimationFrame(this._loop);
-    PlaygroundHelper.Playground.Update();
-  }
+
 
 }

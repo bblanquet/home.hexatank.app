@@ -5,6 +5,47 @@
   width: 100%;
 }
 
+.title-container{
+  border-radius: 2px;
+  margin: 10px;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  min-height: 0px;
+  background-color: rgb(216, 216, 216);
+  background-image: linear-gradient(transparent, #e6e6e6);
+}
+
+.btn-primary-blue {
+  background-color: rgb(51, 155, 253);
+  background-image: linear-gradient(transparent, #1e61f0);
+  transition: background-color 1s;
+  color:white;
+}
+
+.btn-primary-blue:hover {
+  background-color: rgb(23, 101, 165);
+  color:white;
+}
+
+.right-small {
+  position: fixed;
+  width: 5%;
+  height: 100%;
+  top: 0%;
+  left: 100%;
+  margin-top: 0%; 
+  margin-left: -5%;
+  background-color:rgba(29, 29, 29, 0.205);
+  }
+
+.middle2 {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 .centered {
   position: fixed;
   width: 100%;
@@ -13,20 +54,115 @@
   transform: translate(-50%, -50%);
 }
 
+.left{
+  float:left;
+}
+
+.right{
+  float:right;
+}
+
+.middle{
+  vertical-align: middle;
+}
+
+.small-space{
+  min-width: 35px;
+  min-height: 35px;
+  width: 35px;
+  height: 35px;
+}
+
+.white-background{
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.max-width{
+  width:100%;
+}
+
+.without-padding{
+  padding: 0
+}
+
+.standard-space{
+  width: 100%;
+  min-width: 100%;
+  min-height: 70px;
+  height: 70px;
+}
+
+.very-small-space{
+  min-width: 20px;
+  min-height: 20px;
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
+}
+
+.fill-diamond {
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-image: url('/out/nature/diamondStone.svg');
+}
+
+.fill-option {
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-image: url('/out/option.svg');
+}
+
+.fill-tank {
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-image: url('/out/menu/tankbutton.svg');
+}
+
+.fill-truck {
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-image: url('/out/menu/truckButton.svg');
+}
+
+.fill-flag {
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-image: url('/out/menu/flagMenu.svg');
+}
+
+.space-out{
+  margin: 5px;
+}
+
 .container{
   background-color: #f2f2f2;
   border-radius: 5px;
   width: 80%;
   max-width: 350px;
   padding: 10px;
-  border-top: 4mm ridge #383838;    
+  border-top: 20px solid rgb(51, 155, 253);
   box-shadow: 0px 0px 9px 0px #383838;
 }
 
-.relative-center{
+.btn-group-vertical > button{
+  margin-bottom:10px;
+  border-radius:2px !important;
+}
+
+.btn-group-vertical > div{
+  margin-bottom:10px;
+  border-radius:2px !important;
+}
+
+.container-center{
   margin-left: auto;
   margin-right: auto;
-  width: 8em
+  width: 50%
 }
 
 .bottom-container{
@@ -44,6 +180,10 @@
 }
 .row-blue:hover {
   color:#17a2b8;
+}
+
+.text-center{
+  text-align: center;
 }
 
 .BackgroundGreen{

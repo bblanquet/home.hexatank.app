@@ -60,6 +60,7 @@ export default class OnHostComponent extends Component<any, HostState> {
       <div class="base">
         <div class="centered">
           <div class="container">
+          <div class="title-container">{this.state.ServerName}</div>
             <div class="btn-group btn-group-space" role="group" aria-label="Basic example">
               {this.state.IsAdmin
                 ?
@@ -71,13 +72,7 @@ export default class OnHostComponent extends Component<any, HostState> {
               </button>
               <button type="button" class="btn btn-primary btn-sm btn-danger" onClick={() => this.Back()}>Close</button>
             </div>
-
-            <ol class="breadcrumb">
-              <li>{this.state.ServerName}</li>
-            </ol>
-
             {this.ShowIa()}
-
             <table class="table table-dark table-hover">
               <thead>
                 <tr>
@@ -119,7 +114,7 @@ export default class OnHostComponent extends Component<any, HostState> {
   private ShowIa() {
     if (this.state.IsAdmin) {
       return (<div class="form-group">
-        <label class="text-light" for="exampleFormControlSelect1">Ia</label>
+        <label class="text-dark" for="exampleFormControlSelect1">Ia</label>
         <select onChange={linkState(this, 'IaNumber')} class="form-control" id="exampleFormControlSelect1">
           <option>0</option>
           <option>1</option>

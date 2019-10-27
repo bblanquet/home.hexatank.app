@@ -19,13 +19,9 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
             <div class="base">
                 <div class="centered">
                     <div class="container">
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item active" aria-current="page">Single player</li>
-                            </ol>
-                        </nav>
+                    <div class="title-container">Single player</div>
                         <div class="form-group">
-                            <label class="text-light" for="exampleFormControlSelect1">Ia</label>
+                            <label class="text-dark col-sm-2 col-form-label" for="exampleFormControlSelect1">Ia</label>
                             <select onChange={linkState(this, 'IaNumber')} class="form-control" id="exampleFormControlSelect1">
                                 <option>1</option>
                                 <option>2</option>

@@ -24,6 +24,7 @@ export default class OffJoinComponent extends Component<any, { ServerNames: stri
         return <div class="base">
             <div class="centered">
                 <div class="container">
+                    <div class="title-container">Servers</div>
                     <div class="form-group mb-2">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
@@ -34,17 +35,11 @@ export default class OffJoinComponent extends Component<any, { ServerNames: stri
                     </div>
 
                     <table class="table table-dark table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">Servers</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
                         <tbody>
                             {this.state.ServerNames.map((serverName) => {
                                 return (<tr>
                                     <td class="align-middle">{serverName}</td>
-                                    <td class="align-middle"><button type="button" onClick={() => this.Join(serverName)} class="btn btn-primary">Join</button></td>
+                                    <td style="text-align:right"><button type="button" onClick={() => this.Join(serverName)} class="btn btn-primary">Join</button></td>
                                 </tr>);
                             })}
                         </tbody>

@@ -36,8 +36,9 @@ export class TankCombination implements ICombination{
             {
                 const order = new PersistentOrder(ceil,tank);
                 tank.SetOrder(order);
-                this.UnSelectItem(items[0]);
-                this._interactionContext.ClearContext();
+                items.splice(1,1);
+                // this.UnSelectItem(items[0]);
+                // this._interactionContext.ClearContext();
             }
             return true;
         }

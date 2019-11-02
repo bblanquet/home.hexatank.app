@@ -53,7 +53,7 @@ export class MoneyField extends Field
         {
             if(vehicule instanceof Truck){
                 let truck = vehicule as Truck;
-                truck.Hq.Diamonds += 1;
+                truck.Hq.Earn(1);
                 this.SetEmpty();
                 this._light.Hide();
             }

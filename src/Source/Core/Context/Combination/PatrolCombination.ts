@@ -59,8 +59,9 @@ export class PatrolCombination implements ICombination{
             var vehicle = <Vehicle>items[0];
             var patrol = new PatrolOrder(this.GetCeils(items),vehicle);
             vehicle.SetOrder(patrol);
-            this.UnSelectItem(items[0]);
-            this._interactionContext.ClearContext();
+            items.splice(1,1);
+            // this.UnSelectItem(items[0]);
+            // this._interactionContext.ClearContext();
             return true;
         }
         return false;

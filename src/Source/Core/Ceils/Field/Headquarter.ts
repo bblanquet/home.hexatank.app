@@ -1,3 +1,4 @@
+import { LiteEvent } from './../../Utils/LiteEvent';
 import { FlagCeil } from './../FlagCeil';
 import { Tank } from './../../Items/Unit/Tank';
 import { PacketKind } from './../../../Menu/Network/PacketKind';
@@ -26,7 +27,7 @@ export class Headquarter extends AliveItem implements IField
     public PlayerName:string;
     public Count:number=0;
     protected Fields:Array<HeadQuarterField>;
-    public Diamonds:number=PlaygroundHelper.Settings.PocketMoney;
+    private _diamondCount:number=PlaygroundHelper.Settings.PocketMoney;
     private _skin:HqSkin;
     private _onCeilStateChanged:{(ceilState:CeilState):void};
     public FlagCeil:FlagCeil;
@@ -210,68 +211,58 @@ export class Headquarter extends AliveItem implements IField
         });
     }
 
-    private _tankRequests:number=0;
-    private _tankRequestHandlers:{(message:number):void}[] = new Array<{(message:number):void}>();
-    public SubscribeTank(func:{(message:number):void}):void{
-        this._tankRequestHandlers.push(func);
-    }
-    public UnSubscribeTank(func:{(message:number):void}):void{
-        this._tankRequestHandlers = this._tankRequestHandlers.filter(f=> f!==func);
-    }
+    private _tankRequestCount:number=0;
+    public TankRequestEvent:LiteEvent<number> = new LiteEvent<number>();
+
     public GetTankRequests():number{
-        return this._tankRequests;
+        return this._tankRequestCount;
     }
 
     public AddTankRequest():void {
-        if(this._tankRequests < 4){
-            this._tankRequests+=1;
-            this._tankRequestHandlers.forEach(t=>t(this._tankRequests));
+        if(this._tankRequestCount < 4){
+            this._tankRequestCount+=1;
+            this.TankRequestEvent.trigger(this,this._tankRequestCount);
         }
     }
 
     public RemoveTankRequest():void {
-        if(this._tankRequests > 0){
-            this._tankRequests-=1;
-            this._tankRequestHandlers.forEach(t=>t(this._tankRequests));
+        if(this._tankRequestCount > 0){
+            this._tankRequestCount-=1;
+            this.TankRequestEvent.trigger(this,this._tankRequestCount);
         }
     }
 
-    private _truckRequests:number=0;
-    private _truckRequestHandlers:{(message:number):void}[] = new Array<{(message:number):void}>();
-    public SubscribeTruck(func:{(message:number):void}):void{
-        this._truckRequestHandlers.push(func);
-    }
-    public UnSubscribeTruck(func:{(message:number):void}):void{
-        this._truckRequestHandlers = this._truckRequestHandlers.filter(f=> f!==func);
-    }
+    private _truckRequestCount:number=0;
+    public TruckRequestEvent:LiteEvent<number>= new LiteEvent<number>();
+
     public GetTruckRequests():number{
-        return this._truckRequests;
+        return this._truckRequestCount;
     }
 
     public AddTruckRequest():void {
-        if(this._truckRequests < 4){
-            this._truckRequests+=1;
-            this._truckRequestHandlers.forEach(t=>t(this._truckRequests));
+        if(this._truckRequestCount < 4){
+            this._truckRequestCount+=1;
+            this.TruckRequestEvent.trigger(this,this._truckRequestCount);
         }
     }
 
     public RemoveTruckRequest():void {
-        if(this._truckRequests > 0){
-            this._truckRequests-=1;
-            this._truckRequestHandlers.forEach(t=>t(this._truckRequests));
+        if(this._truckRequestCount > 0){
+            this._truckRequestCount-=1;
+            this.TruckRequestEvent.trigger(this,this._truckRequestCount);
         }
     }
 
     public Update(viewX: number, viewY: number):void 
     {
         while(
-            this.Diamonds >= PlaygroundHelper.Settings.TruckPrice
-            && this._truckRequests > 0)
+            this._diamondCount >= PlaygroundHelper.Settings.TruckPrice
+            && this._truckRequestCount > 0)
         {
-            if(this.Diamonds >= PlaygroundHelper.Settings.TruckPrice)
+            if(this._diamondCount >= PlaygroundHelper.Settings.TruckPrice)
             {
                 if(this.CreateTruck()){
-                    this.Diamonds -= PlaygroundHelper.Settings.TruckPrice;
+                    this.Buy(PlaygroundHelper.Settings.TruckPrice);
                     this.RemoveTruckRequest();
                 }
                 else
@@ -283,13 +274,13 @@ export class Headquarter extends AliveItem implements IField
         }
 
         while(
-            this.Diamonds >= PlaygroundHelper.Settings.TankPrice
-            && this._tankRequests > 0)
+            this._diamondCount >= PlaygroundHelper.Settings.TankPrice
+            && this._tankRequestCount > 0)
         {
-            if(this.Diamonds >= PlaygroundHelper.Settings.TankPrice)
+            if(this._diamondCount >= PlaygroundHelper.Settings.TankPrice)
             {
                 if(this.CreateTank()){
-                    this.Diamonds -= PlaygroundHelper.Settings.TankPrice;
+                    this.Buy(PlaygroundHelper.Settings.TankPrice);
                     this.RemoveTankRequest();
                 }
                 else
@@ -314,8 +305,27 @@ export class Headquarter extends AliveItem implements IField
 
         this.Fields.forEach(field=>{
             field.Update(viewX,viewY);
-            this.Diamonds += field.Diamonds;
+            this.Earn(field.Diamonds);
             field.Diamonds = 0;            
         });
     }
+
+    public DiamondCountEvent:LiteEvent<number> = new LiteEvent<number>();
+
+    public Buy(amount:number):void{
+        if(this._diamondCount >= amount){
+            this._diamondCount -= amount;
+            this.DiamondCountEvent.trigger(this,this._diamondCount);
+        }
+    }
+
+    public Earn(amount:number):void{
+        this._diamondCount += amount;
+        this.DiamondCountEvent.trigger(this,this._diamondCount);
+    }
+
+    public GetAmount():number{
+        return this._diamondCount;
+    }
+
 }

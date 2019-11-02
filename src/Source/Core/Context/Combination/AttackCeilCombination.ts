@@ -24,8 +24,9 @@ export class AttackCeilCombination implements ICombination{
             {
                 if(ceil.GetField() instanceof BasicField)
                 {
-                    if(PlaygroundHelper.PlayerHeadquarter.Diamonds >= PlaygroundHelper.Settings.FieldPrice){
-                        PlaygroundHelper.PlayerHeadquarter.Diamonds -= PlaygroundHelper.Settings.FieldPrice;
+                    if(PlaygroundHelper.PlayerHeadquarter.GetAmount() >= PlaygroundHelper.Settings.FieldPrice)
+                    {
+                        PlaygroundHelper.PlayerHeadquarter.Buy(PlaygroundHelper.Settings.FieldPrice);
                         PeerHandler.SendMessage(PacketKind.Field,{
                             Hq:PlaygroundHelper.PlayerHeadquarter.GetCurrentCeil().GetCoordinate(),
                             Ceil:ceil.GetCoordinate(),

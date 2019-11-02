@@ -1,7 +1,6 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { PlaygroundHelper } from '../../Core/Utils/PlaygroundHelper';
-
 export default class HomeComponent extends Component<any, any> {
 
     constructor() {

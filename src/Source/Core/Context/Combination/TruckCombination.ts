@@ -28,8 +28,9 @@ export class TruckCombination implements ICombination
             var vehicle = <Vehicle>items[0];
             var order = new PersistentOrder(<Ceil>items[1],vehicle);
             vehicle.SetOrder(order);
-            this.UnSelectItem(items[0]);
-            this._interactionContext.ClearContext();
+            items.splice(1,1);
+            // this.UnSelectItem(items[0]);
+            // this._interactionContext.ClearContext();
             return true;
         }
         return false;

@@ -1,3 +1,4 @@
+
 .base{
   position: relative;
   top: 0px; 
@@ -13,33 +14,59 @@
   margin-right: auto;
   text-align: center;
   min-height: 0px;
-  background-color: rgb(216, 216, 216);
-  background-image: linear-gradient(transparent, #e6e6e6);
+  color:white;
+  background-color: rgb(41, 41, 41);
+  background-image: linear-gradient(transparent, #1b1b1b);
 }
 
 .btn-primary-blue {
-  background-color: rgb(51, 155, 253);
-  background-image: linear-gradient(transparent, #1e61f0);
+  background-color: rgb(41, 41, 41);
+  background-image: linear-gradient(transparent, #313131);
   transition: background-color 1s;
   color:white;
 }
 
 .btn-primary-blue:hover {
-  background-color: rgb(23, 101, 165);
-  color:white;
+  background-color: rgb(20, 20, 20);
+  color:rgb(212, 99, 99);
 }
 
-.right-small {
+.left-column {
   position: fixed;
-  width: 5%;
+  width: 10%;
+  height: 100%;
+  top: 0%;
+  left: 0%;
+  margin-top: 0%; 
+  background-color:rgba(29, 29, 29, 0.205);
+}  
+
+
+ .right-column {
+  position: fixed;
+  width: 10%;
   height: 100%;
   top: 0%;
   left: 100%;
   margin-top: 0%; 
-  margin-left: -5%;
+  margin-left: -10%;
   background-color:rgba(29, 29, 29, 0.205);
-  }
+}  
 
+
+  @media only screen and  (max-width: 600px) {
+    .right-column {
+      position: fixed;
+      width: 60px;
+      height: 100%;
+      top: 0%;
+      left: 100%;
+      margin-top: 0%; 
+      margin-left: -60px;
+      background-color:rgba(29, 29, 29, 0.205);
+      }
+  }
+  
 .middle2 {
   position: absolute;
   top: 50%;
@@ -52,6 +79,14 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.customed-block{
+  width: 50%;
+  min-width: 50%;
+  min-height: 20px;
+  border-radius: 3px;
+  border:2px solid white;
 }
 
 .left{
@@ -81,6 +116,17 @@
   width:100%;
 }
 
+.all-max{
+  width:100%;
+  max-width:100%;
+  min-width:100%;
+  height:100%;
+  min-height:100%;
+  max-height:100%;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+}
+
 .without-padding{
   padding: 0
 }
@@ -89,7 +135,7 @@
   width: 100%;
   min-width: 100%;
   min-height: 70px;
-  height: 70px;
+  height: 30%;
 }
 
 .very-small-space{
@@ -97,6 +143,9 @@
   min-height: 20px;
   width: 20px;
   height: 20px;
+}
+
+.very-small-margin{
   margin-left: 5px;
 }
 
@@ -116,22 +165,25 @@
 
 .fill-tank {
   overflow: hidden;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
+  background-repeat: no-repeat;
   background-image: url('/out/menu/tankbutton.svg');
 }
 
 .fill-truck {
   overflow: hidden;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
+  background-repeat: no-repeat;
   background-image: url('/out/menu/truckButton.svg');
 }
 
 .fill-flag {
   overflow: hidden;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
+  background-repeat: no-repeat;
   background-image: url('/out/menu/flagMenu.svg');
 }
 
@@ -140,12 +192,12 @@
 }
 
 .container{
-  background-color: #f2f2f2;
+  background-color: #535353;
   border-radius: 5px;
   width: 80%;
   max-width: 350px;
   padding: 10px;
-  border-top: 20px solid rgb(51, 155, 253);
+  border-top: 20px solid rgb(46, 46, 46);
   box-shadow: 0px 0px 9px 0px #383838;
 }
 

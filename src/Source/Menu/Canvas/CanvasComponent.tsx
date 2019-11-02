@@ -5,8 +5,13 @@ import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
 import { PeerHandler } from '../Network/Host/On/PeerHandler';
 import { route } from 'preact-router';
 
-
-export default class CanvasComponent extends Component<any, { hasMenu: boolean }> {
+export default class CanvasComponent extends Component<any, { 
+  HasMenu: boolean,
+  TankRequestCount:number,
+  TruckRequestCount:number,
+  Amount:number,
+  HasFlag:boolean,
+}> {
   private _gameCanvas: HTMLDivElement;
   private _loop: { (): void };
   private _gameSetup: GameSetup;
@@ -17,6 +22,13 @@ export default class CanvasComponent extends Component<any, { hasMenu: boolean }
     this._stop = true;
     PlaygroundHelper.InitApp();
     this._loop = this.GameLoop.bind(this);
+    this.setState({
+      HasMenu:false,
+      TankRequestCount:0,
+      TruckRequestCount:0,
+      Amount:PlaygroundHelper.Settings.PocketMoney,
+      HasFlag:false
+    });
   }
 
   componentDidMount() {
@@ -44,6 +56,24 @@ export default class CanvasComponent extends Component<any, { hasMenu: boolean }
     window.addEventListener('DOMContentLoaded', () => PlaygroundHelper.ResizeTheCanvas());
     PlaygroundHelper.InteractionManager.autoPreventDefault = false;
     this._gameSetup.SetCenter();
+    PlaygroundHelper.PlayerHeadquarter.TruckRequestEvent.on((obj:any,e:number)=>{
+      this.setState({
+        ...this.state,
+        TruckRequestCount:e
+      });
+    });
+    PlaygroundHelper.PlayerHeadquarter.TankRequestEvent.on((obj:any,e:number)=>{
+      this.setState({
+        ...this.state,
+        TankRequestCount:e
+      });
+    });
+    PlaygroundHelper.PlayerHeadquarter.DiamondCountEvent.on((obj:any,e:number)=>{
+      this.setState({
+        ...this.state,
+        Amount:e
+      });
+    });
     this._loop();
   }
 
@@ -66,34 +96,59 @@ export default class CanvasComponent extends Component<any, { hasMenu: boolean }
   }
 
   componentDidUpdate() {
-    PlaygroundHelper.Settings.IsPause = this.state.hasMenu;
+    PlaygroundHelper.Settings.IsPause = this.state.HasMenu;
   }
 
   render() {
     return (
       <div style="width=100%">
-        {this.state.hasMenu ? '':this.LeftMenu()}
-        {this.state.hasMenu ? '':this.TopMenu()}
-        {this.state.hasMenu ? this.MenuMessage() : ''}
+        {this.TopMenu()}
         <div ref={(dom) => { this._gameCanvas = dom }} />
+        {this.state.HasMenu ? '':this.LeftMenu()}
+        {this.state.HasMenu ? '':this.RightMenu()}
+        {this.state.HasMenu ? this.MenuMessage() : ''}
+      </div>
+    );
+  }
+
+  private RightMenu() {
+    return (
+      <div class="right-column">
+        <div class="middle2 max-width">
+          <div class="btn-group-vertical max-width">
+            <button type="button" class="btn btn-dark without-padding" onClick={(e: any) => this.AddTank(e)}>
+              <div class="white-background">{this.state.TankRequestCount}</div>
+              <div class="fill-tank max-width standard-space"></div>
+            </button>
+            <button type="button" class="btn btn-dark without-padding" onClick={(e: any) => this.AddTruck(e)}>
+              <div class="white-background">{this.state.TruckRequestCount}</div>
+              <div class="fill-truck max-width standard-space"></div>
+            </button>
+            <button type="button" class="btn btn-dark without-padding" onClick={(e: any) => this.SetFlag(e)}>
+            <div class="white-background">{this.state.HasFlag ? 'ON' : 'OFF'}</div>
+              <div class="fill-flag max-width standard-space"></div>
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
 
   private LeftMenu() {
     return (
-      <div class="right-small">
+      <div class="left-column">
         <div class="middle2 max-width">
           <div class="btn-group-vertical max-width">
-            <button type="button" class="btn btn-dark without-padding">
-              <div class="white-background">0</div>
+            <button type="button" class="btn btn-dark without-padding" onClick={(e: any) => this.AddTank(e)}>
+              <div class="white-background">{this.state.TankRequestCount}</div>
               <div class="fill-tank max-width standard-space"></div>
             </button>
-            <button type="button" class="btn btn-dark without-padding">
-              <div class="white-background">0</div>
+            <button type="button" class="btn btn-dark without-padding" onClick={(e: any) => this.AddTruck(e)}>
+              <div class="white-background">{this.state.TruckRequestCount}</div>
               <div class="fill-truck max-width standard-space"></div>
             </button>
-            <button type="button" class="btn btn-dark without-padding">
+            <button type="button" class="btn btn-dark without-padding" onClick={(e: any) => this.SetFlag(e)}>
+            <div class="white-background">{this.state.HasFlag ? 'ON' : 'OFF'}</div>
               <div class="fill-flag max-width standard-space"></div>
             </button>
           </div>
@@ -104,12 +159,14 @@ export default class CanvasComponent extends Component<any, { hasMenu: boolean }
 
   private TopMenu() {
     return (
-      <div style="display:inline-block">
+      <div style="position: fixed;">
         <button type="button" class="btn btn-dark space-out">
-          10
-        <span class="badge badge-secondary fill-diamond very-small-space middle"> </span>
+          {this.state.Amount}
+        <span class="fill-diamond badge badge-secondary very-small-space middle very-small-margin"> </span>
         </button>
-        <button type="button" class="btn btn-dark small-space fill-option space-out" onClick={(e: any) => this.SetMenu(e)} />
+        <button type="button"class="btn btn-dark small-space space-out fill-option" onClick={(e: any) => this.SetMenu(e)} />
+        <div style="width=30px;height=30px;">
+        </div>
       </div>
     );
   }
@@ -125,9 +182,26 @@ export default class CanvasComponent extends Component<any, { hasMenu: boolean }
 
   private SetMenu(e: any): void {
     this.setState({
-      hasMenu: !this.state.hasMenu
+      HasMenu: !this.state.HasMenu
     });
   }
+
+  private AddTank(e: any):void{
+    PlaygroundHelper.PlayerHeadquarter.AddTankRequest();
+  }
+
+  private AddTruck(e: any):void{
+    PlaygroundHelper.PlayerHeadquarter.AddTruckRequest();
+  }
+
+  private SetFlag(e: any):void{
+    PlaygroundHelper.IsFlagingMode = !PlaygroundHelper.IsFlagingMode;
+    this.setState({
+      ...this.state,
+      HasFlag:PlaygroundHelper.IsFlagingMode
+    })
+  }
+
 
   private MenuMessage() {
     return (

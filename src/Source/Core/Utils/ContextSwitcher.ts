@@ -142,7 +142,7 @@ export class ContextSwitcher{
         {
             let menuItem = this._multiContext.GetCellButton();
             if(menuItem && 
-                PlaygroundHelper.PlayerHeadquarter.Diamonds 
+                PlaygroundHelper.PlayerHeadquarter.GetAmount() 
                 >= PlaygroundHelper.Settings.FieldPrice*this.Cells.length){
                 
                 if(menuItem instanceof HealMenuItem ){

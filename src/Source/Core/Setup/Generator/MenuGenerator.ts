@@ -1,8 +1,4 @@
-import { RightMenu } from './../../Menu/RightMenu';
-import { FlagMenuItem } from '../../Menu/Buttons/FlagMenuItem';
-import { TruckMenuItem } from '../../Menu/Buttons/TruckMenuItem'; 
 import { EmptyMenuItem } from '../../Menu/EmptyMenuItem';
-import { TankMenuItem } from '../../Menu/Buttons/TankMenuItem';
 import { Headquarter } from '../../Ceils/Field/Headquarter';
 import { Item } from '../../Items/Item';
 import { ISelectable } from '../../ISelectable';
@@ -23,15 +19,6 @@ export class MenuGenerator
 {
     public GetMenus(hq: Headquarter, items: Item[]):Array<Menu> {
         let menus = new Array<Menu>();
-
-        const hqMenu = new RightMenu(e=>true,
-        [new EmptyMenuItem(Archive.menu.topRightMenu,false),
-        new TankMenuItem(),
-        new TruckMenuItem(),
-        new FlagMenuItem(),
-        new EmptyMenuItem(Archive.menu.bottomRightMenu,false)]);
-
-        items.splice(0, 0, hqMenu);
 
         const vehicleMenu = new LeftMenu((data:ISelectable)=>data instanceof Vehicle,[new EmptyMenuItem(Archive.menu.topMenu),
         new TargetMenuItem(),

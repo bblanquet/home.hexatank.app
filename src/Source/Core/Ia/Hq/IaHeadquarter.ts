@@ -94,7 +94,7 @@ export class IaHeadquarter extends Headquarter{
                 var area = this._spreadStrategy.FindArea();
                 if(!isNullOrUndefined(area))
                 {
-                    if(this.Diamonds >= PlaygroundHelper.Settings.TankPrice)
+                    if(this.GetAmount() >= PlaygroundHelper.Settings.TankPrice)
                     {
                         this.EmptyAreas.splice(this.EmptyAreas.indexOf(area),1);
                         let hqArea =new HeldArea(this,area);
@@ -121,7 +121,7 @@ export class IaHeadquarter extends Headquarter{
         {
             if(!field.GetCeil().IsBlocked())
             {
-                this.Diamonds -= PlaygroundHelper.Settings.TruckPrice;
+                this.Buy(PlaygroundHelper.Settings.TruckPrice);
                 if(field.GetCeil().IsVisible()){
                     const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,5,false,5);
                     PlaygroundHelper.Playground.Items.push(explosion);
@@ -144,7 +144,7 @@ export class IaHeadquarter extends Headquarter{
     public BuyTankForArea(area:HeldArea):boolean
     {
         let isCreated = false;
-        if(this.Diamonds >= PlaygroundHelper.Settings.TankPrice)
+        if(this.GetAmount() >= PlaygroundHelper.Settings.TankPrice)
         {
             for(let field of this.Fields)
             {
@@ -153,7 +153,7 @@ export class IaHeadquarter extends Headquarter{
                     var ceil = area.GetAvailableCeil(); 
                     if(!isNullOrUndefined(ceil))
                     {
-                        this.Diamonds -= PlaygroundHelper.Settings.TankPrice;
+                        this.Buy(PlaygroundHelper.Settings.TankPrice);
                         if(field.GetCeil().IsVisible())
                         {
                             const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,5,false,5);

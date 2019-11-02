@@ -1,5 +1,3 @@
-import { AddTruckCombination } from './Combination/AddTruckCombination';
-import { AddTankCombination } from './Combination/AddTankCombination';
 import { FlagCeilCombination } from './Combination/FlagCeilCombination';
 import { TruckDiamondCombination } from './Combination/TruckDiamondCombination';
 import { IPatternChecker } from './IPatternChecker';
@@ -42,8 +40,6 @@ export class InteractionContext implements IContextContainer, IInteractionContex
         this._currentHq = currentHq;
         let combinations = new Array<ICombination>();
         combinations.push(new FlagCeilCombination());
-        combinations.push(new AddTankCombination());
-        combinations.push(new AddTruckCombination());
         combinations.push(new SwitchToVehicleCombination(menus));     
         combinations.push(new CancelCombination(this));
         combinations.push(new TruckDiamondCombination(this)); 

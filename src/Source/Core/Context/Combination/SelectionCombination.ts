@@ -1,6 +1,6 @@
+import { PlaygroundHelper } from './../../Utils/PlaygroundHelper';
 import { ICombination } from "./ICombination";
 import { ISelectable } from "../../ISelectable";
-import { Menu } from "../../Menu/Menu";
 import { Item } from "../../Items/Item";
 import { Ceil } from "../../Ceils/Ceil";
 import { BasicField } from "../../Ceils/Field/BasicField";
@@ -9,7 +9,7 @@ import { CeilState } from "../../Ceils/CeilState";
 export class SelectionCombination implements ICombination{
     private _isSelectable:{(item:Item):boolean};
 
-    constructor(private _menus:Menu[],isSelectable:{(item:Item):boolean}){
+    constructor(isSelectable:{(item:Item):boolean}){
         this._isSelectable = isSelectable;
     }
 
@@ -28,7 +28,7 @@ export class SelectionCombination implements ICombination{
                     && selectableCeil.GetState() === CeilState.Visible)
                 {
                     selectable.SetSelected(true); 
-                    this._menus.forEach(menu=>{menu.Show(selectable);});
+                    PlaygroundHelper.SelectedItem.trigger(this,item);
                 }
                 else
                 {
@@ -38,7 +38,7 @@ export class SelectionCombination implements ICombination{
             else
             {
                 selectable.SetSelected(true); 
-                this._menus.forEach(menu=>{menu.Show(selectable);});
+                PlaygroundHelper.SelectedItem.trigger(this,item);
             }
             return true;   
         }

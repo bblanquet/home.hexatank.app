@@ -96,7 +96,7 @@ export class Truck extends Vehicle implements IHqContainer{
         return diamonds;
     }
 
-    protected OnCeilStateChanged(ceilState: CeilState): void {
+    protected OnCellStateChanged(obj:any,ceilState: CeilState): void {
         this.GetDisplayObjects().forEach(s=>{
             s.visible = ceilState === CeilState.Visible;
         });

@@ -40,7 +40,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     CurrentRadius:number;
     GoalRadius:number;
     private _nextCeil:Ceil;
-    private _currentCeil:Ceil;
+    private _currentCell:Ceil;
 
     private _order:IOrder;
 
@@ -57,9 +57,9 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     private _leftDusts:Array<Dust>;
     private _rightDusts:Array<Dust>;
 
-    private _visibleHandlers: { (data: ISelectable):void }[] = [];
-    private _onCeilStateChanged:{(ceilState:CeilState):void};
-    public CellChanged:LiteEvent<Ceil>;
+    public SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
+    private _onCellStateChanged:{(obj:any,ceilState:CeilState):void};
+    public CellChanged:LiteEvent<Ceil>  = new LiteEvent<Ceil>();
 
     constructor(public Hq:Headquarter){
         super();
@@ -73,7 +73,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this.Size = PlaygroundHelper.Settings.Size;
         this.BoundingBox.Width = CeilProperties.GetWidth(this.Size);
         this.BoundingBox.Height = CeilProperties.GetHeight(this.Size);
-        this._onCeilStateChanged = this.OnCeilStateChanged.bind(this);
+        this._onCellStateChanged = this.OnCellStateChanged.bind(this);
         this.RootSprites = new Array<string>();
 
         this.Wheels =  new Array<string>();
@@ -89,14 +89,6 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this._leftDusts.forEach(ld=>PlaygroundHelper.Playground.Items.push(ld));
         this._rightDusts.forEach(rd=>PlaygroundHelper.Playground.Items.push(rd));
         this.CellChanged = new LiteEvent<Ceil>();
-    }
-
-
-    public SubscribeUnselection(handler: (data: ISelectable) => void): void {
-        this._visibleHandlers.push(handler);
-    }
-    public Unsubscribe(handler: (data: ISelectable) => void): void {
-        this._visibleHandlers = this._visibleHandlers.filter(h => h !== handler);
     }
 
     public SetOrder(order: IOrder): void {
@@ -134,7 +126,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         else
         {
             if(this.GetNextCeil().GetState() === CeilState.Visible){
-                this.OnCeilStateChanged(this.GetNextCeil().GetState());
+                this.OnCellStateChanged(this,this.GetNextCeil().GetState());
             }
             this._translationMaker.Translate();
         }
@@ -177,7 +169,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
             leftb.Height = this.GetBoundingBox().Width/5;
 
             this._leftDusts[this._dustIndex].Reset(leftb);
-            this._leftDusts[this._dustIndex].GetSprites().forEach(s=>{s.visible = this._currentCeil.IsVisible();});
+            this._leftDusts[this._dustIndex].GetSprites().forEach(s=>{s.visible = this._currentCell.IsVisible();});
 
             const rightb = new BoundingBox();
             rightb.X = center - width/3*Math.cos(this.CurrentRadius);
@@ -186,7 +178,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
             rightb.Height = this.GetBoundingBox().Width/5;
 
             this._rightDusts[this._dustIndex].Reset(rightb);
-            this._rightDusts[this._dustIndex].GetSprites().forEach(s=>{s.visible = this._currentCeil.IsVisible();});
+            this._rightDusts[this._dustIndex].GetSprites().forEach(s=>{s.visible = this._currentCell.IsVisible();});
 
             this._dustIndex = (this._dustIndex+1) % this._leftDusts.length;
         }
@@ -196,28 +188,26 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         return this.GetCurrentSprites()[Archive.selectionUnit].alpha === 1;
     }
 
-    public SetSelected(visible:boolean):void{
-        visible ? PlaygroundHelper.Select():PlaygroundHelper.Unselect();
-        this.SetProperty(Archive.selectionUnit,(e)=>e.alpha= visible ? 1 : 0);
-        if(!visible){
-            this._visibleHandlers.forEach(h=>h(this));
-        }
+    public SetSelected(isSelected:boolean):void{
+        isSelected ? PlaygroundHelper.Select():PlaygroundHelper.Unselect();
+        this.SetProperty(Archive.selectionUnit,(e)=>e.alpha= isSelected ? 1 : 0);
+        this.SelectionChanged.trigger(this, this);
     }
 
     public GetNextCeil(): Ceil {
         return this._nextCeil;
     }
 
-    protected abstract OnCeilStateChanged(ceilState:CeilState):void;
+    protected abstract OnCellStateChanged(obj:any,ceilState:CeilState):void;
 
     public MoveNextCeil(): void {
-        let previousCeil = this._currentCeil;
-        this._currentCeil.UnregisterCeilState(this._onCeilStateChanged);
+        let previousCeil = this._currentCell;
+        this._currentCell.CellStateChanged.off(this._onCellStateChanged);
 
-        this._currentCeil = this._nextCeil;
-        this.CellChanged.trigger(this._currentCeil);
-        this.OnCeilStateChanged(this._currentCeil.GetState());
-        this._currentCeil.RegisterCeilState(this._onCeilStateChanged);
+        this._currentCell = this._nextCeil;
+        this.CellChanged.trigger(this._currentCell);
+        this.OnCellStateChanged(this,this._currentCell.GetState());
+        this._currentCell.CellStateChanged.on(this._onCellStateChanged);
         this._nextCeil = null;
 
         this.SetCeilsVisible();
@@ -257,8 +247,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         if(!this.IsEnemy(PlaygroundHelper.PlayerHeadquarter) 
         || PlaygroundHelper.Settings.ShowEnemies)
         {
-            var ceils = this._currentCeil.GetAllNeighbourhood();
-            ceils.push(this._currentCeil);
+            var ceils = this._currentCell.GetAllNeighbourhood();
+            ceils.push(this._currentCell);
             ceils.forEach(ceil => {
                 (<Ceil>ceil).SetState(CeilState.Visible);
             });
@@ -267,7 +257,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
     public Destroy():void{
         PeerHandler.SendMessage(PacketKind.Destroyed,{
-            Ceil:this._currentCeil.GetCoordinate(),
+            Ceil:this._currentCell.GetCoordinate(),
             Name:"vehicle"
         });
         if(this._order){
@@ -277,7 +267,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
             this._pendingOrder.Cancel();
         }
         super.Destroy();
-        this._currentCeil.SetOccupier(null);
+        this._currentCell.SetOccupier(null);
         if(!isNullOrUndefined(this._nextCeil))
         {
             this._nextCeil.SetOccupier(null);
@@ -288,7 +278,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this._rightDusts.forEach(ld=>ld.Destroy());
         this._leftDusts = [];
         this._rightDusts = [];
-        this.SetCeilsHalfVisible(this._currentCeil);
+        this.SetCeilsHalfVisible(this._currentCell);
     }
 
     public Update(viewX: number, viewY: number):void{
@@ -319,7 +309,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
             }
         }
 
-        this._currentCeil.GetField().Support(this); 
+        this._currentCell.GetField().Support(this); 
 
         if(this.HasNextCeil())
         {
@@ -339,18 +329,18 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     }
 
     private SetCurrentCeilEmpty() {
-        if(this._currentCeil.GetOccupier() === this 
+        if(this._currentCell.GetOccupier() === this 
         && this._nextCeil)
         {
             const currentCeilDistance = 
-            Math.sqrt(Math.pow(this._currentCeil.GetBoundingBox().X - this.GetBoundingBox().X, 2)
-            + Math.pow(this._currentCeil.GetBoundingBox().Y - this.GetBoundingBox().Y, 2));
+            Math.sqrt(Math.pow(this._currentCell.GetBoundingBox().X - this.GetBoundingBox().X, 2)
+            + Math.pow(this._currentCell.GetBoundingBox().Y - this.GetBoundingBox().Y, 2));
             const nextCeilDistance = Math.sqrt(Math.pow(this.GetBoundingBox().X - this._nextCeil.GetBoundingBox().X, 2)
             + Math.pow(this.GetBoundingBox().Y - this._nextCeil.GetBoundingBox().Y, 2));
 
             if (nextCeilDistance < currentCeilDistance) 
             {
-                this._currentCeil.SetOccupier(null);
+                this._currentCell.SetOccupier(null);
             }
         }
     }
@@ -369,10 +359,10 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
     public SetPosition (ceil:Ceil):void{
         this.InitPosition(ceil.GetBoundingBox());
-        this._currentCeil = ceil;
-        this._currentCeil.SetOccupier(this);
-        this._currentCeil.RegisterCeilState(this._onCeilStateChanged);
-        this._onCeilStateChanged(this._currentCeil.GetState())
+        this._currentCell = ceil;
+        this._currentCell.SetOccupier(this);
+        this._currentCell.CellStateChanged.on(this._onCellStateChanged);
+        this._onCellStateChanged(this,this._currentCell.GetState())
         this.SetCeilsVisible();
     };
 
@@ -392,6 +382,6 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this._angleFinder.SetAngle(this._nextCeil);
     }
     public GetCurrentCeil(): Ceil {
-        return this._currentCeil;
+        return this._currentCell;
     }
 }

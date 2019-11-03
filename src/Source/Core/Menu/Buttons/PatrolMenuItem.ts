@@ -1,19 +1,14 @@
-import { InteractionContext } from "../../Context/InteractionContext";
-import { Archive } from "../../Utils/ResourceArchiver"; 
-import { CheckableMenuItem } from "../CheckableMenuItem"; 
+import { Item } from "../../Items/Item";
+import { BoundingBox } from "../../Utils/BoundingBox";
+import { IInteractionContext } from "../../Context/IInteractionContext";
 
-export class PatrolMenuItem extends CheckableMenuItem{ 
 
-    constructor() 
-    {
-        super(Archive.menu.patrolButton);
+export class PatrolMenuItem extends Item 
+{
+    public GetBoundingBox(): BoundingBox {
+        throw new Error("Method not implemented.");
+    }    
+    public Select(context: IInteractionContext): boolean {
+        throw new Error("Method not implemented.");
     }
-
-    public Select(context: InteractionContext): boolean 
-    {
-       context.OnSelect(this);
-       this.Swap();
-       return true;
-    }
-
 } 

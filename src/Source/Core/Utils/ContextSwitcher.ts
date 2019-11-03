@@ -35,8 +35,7 @@ export class ContextSwitcher{
 
     constructor(private _interactionContext:InteractionContext,
                 private _itemsManager:ItemsManager,
-                private _inputManager:InputManager,
-                private _menu:Menu)
+                private _inputManager:InputManager)
     {
         this.Vehicles = new Array<Vehicle>();
         this.Cells = new Array<Ceil>();
@@ -115,7 +114,6 @@ export class ContextSwitcher{
                 }else{
                     throw 'wrong';
                 }
-
             break;
         }
     }
@@ -134,7 +132,7 @@ export class ContextSwitcher{
             }
             else 
             {
-                this._menu.Show(this.Cells[0]);
+                PlaygroundHelper.SelectedItem.trigger(this,this.Cells[0]);
                 this._multiContext.Start();
             }
         }

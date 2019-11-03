@@ -1,4 +1,6 @@
-import { FlagCeilCombination } from './Combination/FlagCeilCombination';
+import { AddTruckCombination } from './Combination/AddTruckCombination';
+import { AddTankCombination } from './Combination/AddTankCombination';
+import { FlagCellCombination } from './Combination/FlagCellCombination';
 import { TruckDiamondCombination } from './Combination/TruckDiamondCombination';
 import { IPatternChecker } from './IPatternChecker';
 import { PatternChecker } from './PatternChecker'; 
@@ -15,7 +17,6 @@ import { HealCeilCombination } from './Combination/HealCeilCombination';
 import { ICombination } from './Combination/ICombination';
 import { SelectionCombination } from './Combination/SelectionCombination';
 import { CancelCombination } from './Combination/CancelCombination';
-import { Menu } from '../Menu/Menu';
 import { MoneyCeilCombination } from './Combination/MoneyCeilCombination';
 import { TargetCombination } from './Combination/TargetCombination';
 import { SwitchToVehicleCombination } from './Combination/SwitchToVehicleCombination';
@@ -34,21 +35,23 @@ export class InteractionContext implements IContextContainer, IInteractionContex
     private _isSelectable:{(item:Item):boolean};
     private _currentHq:Headquarter;
 
-    public SetCombination(menus:Menu[],currentHq:Headquarter):void{
+    public SetCombination(currentHq:Headquarter):void{
         this._selectedItem = [];
         this._isSelectable = this.IsSelectable.bind(this);
         this._currentHq = currentHq;
         let combinations = new Array<ICombination>();
-        combinations.push(new FlagCeilCombination());
-        combinations.push(new SwitchToVehicleCombination(menus));     
+        combinations.push(new FlagCellCombination()); 
+        combinations.push(new AddTankCombination());
+        combinations.push(new AddTruckCombination());
+        combinations.push(new SwitchToVehicleCombination());     
         combinations.push(new CancelCombination(this));
         combinations.push(new TruckDiamondCombination(this)); 
         combinations.push(new TruckCombination(this));
         combinations.push(new TankCombination(this));
         combinations.push(new PatrolCombination(this)); 
         combinations.push(new ClearTrashCombination(this._isSelectable, this));
-        combinations.push(new UnselectCombination(menus,this._isSelectable, this));
-        combinations.push(new SelectionCombination(menus,this._isSelectable));
+        combinations.push(new UnselectCombination(this._isSelectable, this));
+        combinations.push(new SelectionCombination(this._isSelectable));
         combinations.push(new FastCeilCombination());
         combinations.push(new TargetCombination(this));    
         combinations.push(new AttackCeilCombination());

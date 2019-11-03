@@ -4,6 +4,19 @@ import { GameSetup } from '../../Core/GameSetup';
 import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
 import { PeerHandler } from '../Network/Host/On/PeerHandler';
 import { route } from 'preact-router';
+import { Item } from '../../Core/Items/Item';
+import { Tank } from '../../Core/Items/Unit/Tank';
+import { Truck } from '../../Core/Items/Unit/Truck';
+import { Ceil } from '../../Core/Ceils/Ceil';
+import {TankMenuItem} from '../../Core/Menu/Buttons/TankMenuItem';
+import {TruckMenuItem} from '../../Core/Menu/Buttons/TruckMenuItem';
+import { TargetMenuItem } from '../../Core/Menu/Buttons/TargetMenuItem';
+import { PatrolMenuItem } from '../../Core/Menu/Buttons/PatrolMenuItem';
+import { CancelMenuItem } from '../../Core/Menu/Buttons/CancelMenuItem';
+import { AttackMenuItem } from '../../Core/Menu/Buttons/AttackMenuItem';
+import { MoneyMenuItem } from '../../Core/Menu/Buttons/MoneyMenuItem';
+import { HealMenuItem } from '../../Core/Menu/Buttons/HealMenuItem';
+import { SpeedFieldMenuItem } from '../../Core/Menu/Buttons/SpeedFieldMenuItem';
 
 export default class CanvasComponent extends Component<any, { 
   HasMenu: boolean,
@@ -11,6 +24,7 @@ export default class CanvasComponent extends Component<any, {
   TruckRequestCount:number,
   Amount:number,
   HasFlag:boolean,
+  Item:Item
 }> {
   private _gameCanvas: HTMLDivElement;
   private _loop: { (): void };
@@ -74,7 +88,31 @@ export default class CanvasComponent extends Component<any, {
         Amount:e
       });
     });
+    PlaygroundHelper.SelectedItem.on((obj:any, e:Item)=>{
+      this.setState({
+        ...this.state,
+        Item:e
+      });
+    });
     this._loop();
+  }
+
+  private LeftMenu() {
+    if(this.state.Item){
+      if(this.state.Item instanceof Tank)
+      {
+        return this.TankMenu();
+      }
+      else if(this.state.Item instanceof Truck)
+      {
+        return this.TruckMenu();
+      }
+      else if(this.state.Item instanceof Ceil)
+      {
+        return this.CellMenu();
+      }
+    }
+    return '';
   }
 
   private GameLoop(): void {
@@ -116,11 +154,13 @@ export default class CanvasComponent extends Component<any, {
       <div class="right-column">
         <div class="middle2 max-width">
           <div class="btn-group-vertical max-width">
-            <button type="button" class="btn btn-dark without-padding" onClick={(e: any) => this.AddTank(e)}>
+            <button type="button" class="btn btn-dark without-padding" 
+            onClick={(e: any) => this.SendContext(new TankMenuItem())}>
               <div class="white-background">{this.state.TankRequestCount}</div>
               <div class="fill-tank max-width standard-space"></div>
             </button>
-            <button type="button" class="btn btn-dark without-padding" onClick={(e: any) => this.AddTruck(e)}>
+            <button type="button" class="btn btn-dark without-padding" 
+            onClick={(e: any) => this.SendContext(new TruckMenuItem())}>
               <div class="white-background">{this.state.TruckRequestCount}</div>
               <div class="fill-truck max-width standard-space"></div>
             </button>
@@ -134,22 +174,78 @@ export default class CanvasComponent extends Component<any, {
     );
   }
 
-  private LeftMenu() {
+  private SendContext(item:Item): void {
+    return PlaygroundHelper.InteractionContext.OnSelect(item);
+  }
+
+  private TankMenu() {
     return (
       <div class="left-column">
         <div class="middle2 max-width">
           <div class="btn-group-vertical max-width">
-            <button type="button" class="btn btn-dark without-padding" onClick={(e: any) => this.AddTank(e)}>
-              <div class="white-background">{this.state.TankRequestCount}</div>
-              <div class="fill-tank max-width standard-space"></div>
+            <button type="button" class="btn btn-dark without-padding" 
+            onClick={(e: any) => this.SendContext(new TargetMenuItem())}>
+              <div class="fill-target max-width standard-space"></div>
             </button>
-            <button type="button" class="btn btn-dark without-padding" onClick={(e: any) => this.AddTruck(e)}>
-              <div class="white-background">{this.state.TruckRequestCount}</div>
-              <div class="fill-truck max-width standard-space"></div>
+            <button type="button" class="btn btn-dark without-padding" 
+            onClick={(e: any) => this.SendContext(new PatrolMenuItem())}>
+              <div class="white-background">{this.state.HasFlag ? 'ON' : 'OFF'}</div>
+              <div class="fill-patrol max-width standard-space"></div>
             </button>
-            <button type="button" class="btn btn-dark without-padding" onClick={(e: any) => this.SetFlag(e)}>
-            <div class="white-background">{this.state.HasFlag ? 'ON' : 'OFF'}</div>
-              <div class="fill-flag max-width standard-space"></div>
+            <button type="button" class="btn btn-dark without-padding" 
+            onClick={(e: any) => this.SendContext(new CancelMenuItem())}>
+              <div class="fill-cancel max-width standard-space"></div>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  private CellMenu() {
+    return (
+      <div class="left-column">
+        <div class="middle2 max-width">
+          <div class="btn-group-vertical max-width">
+          <button type="button" class="btn btn-dark without-padding" 
+          onClick={(e: any) => this.SendContext(new AttackMenuItem())}>
+              <div class="fill-power max-width standard-space"></div>
+            </button>
+            <button type="button" class="btn btn-dark without-padding" 
+            onClick={(e: any) => this.SendContext(new SpeedFieldMenuItem())}>
+              <div class="fill-speed max-width standard-space"></div>
+            </button>
+            <button type="button" class="btn btn-dark without-padding" 
+            onClick={(e: any) => this.SendContext(new HealMenuItem())}>
+              <div class="fill-medic max-width standard-space"></div>
+            </button>
+            <button type="button" class="btn btn-dark without-padding" 
+            onClick={(e: any) => this.SendContext(new MoneyMenuItem())}>
+              <div class="fill-money max-width standard-space"></div>
+            </button>
+            <button type="button" class="btn btn-dark without-padding" 
+            onClick={(e: any) => this.SendContext(new CancelMenuItem())}>
+              <div class="fill-cancel max-width standard-space"></div>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  private TruckMenu() {
+    return (
+      <div class="left-column">
+        <div class="middle2 max-width">
+          <div class="btn-group-vertical max-width">
+            <button type="button" class="btn btn-dark without-padding" 
+            onClick={(e: any) => this.SendContext(new PatrolMenuItem())}>
+              <div class="white-background">{this.state.HasFlag ? 'ON' : 'OFF'}</div>
+              <div class="fill-patrol max-width standard-space"></div>
+            </button>
+            <button type="button" class="btn btn-dark without-padding" 
+            onClick={(e: any) => this.SendContext(new CancelMenuItem())}>
+              <div class="fill-cancel max-width standard-space"></div>
             </button>
           </div>
         </div>
@@ -184,14 +280,6 @@ export default class CanvasComponent extends Component<any, {
     this.setState({
       HasMenu: !this.state.HasMenu
     });
-  }
-
-  private AddTank(e: any):void{
-    PlaygroundHelper.PlayerHeadquarter.AddTankRequest();
-  }
-
-  private AddTruck(e: any):void{
-    PlaygroundHelper.PlayerHeadquarter.AddTruckRequest();
   }
 
   private SetFlag(e: any):void{

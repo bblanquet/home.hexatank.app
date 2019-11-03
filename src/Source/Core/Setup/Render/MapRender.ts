@@ -3,7 +3,6 @@ import { CeilDecorator } from '../../Ceils/CeilDecorator';
 import { CeilProperties } from '../../Ceils/CeilProperties';
 import { Cloud } from '../../Items/Others/Cloud'; 
 import { HqRender } from './HqRender';
-import { MenuGenerator } from '../Generator/MenuGenerator';
 import { CeilState } from '../../Ceils/CeilState';
 import { Ceil } from '../../Ceils/Ceil';
 import { PlaygroundHelper } from '../../Utils/PlaygroundHelper'; 
@@ -16,11 +15,9 @@ import { MapContext } from '../Generator/MapContext';
 
 export class MapRender{
     private _hqRender:HqRender;
-    private _menuGenerator:MenuGenerator;
     
     constructor(){
         this._hqRender = new HqRender();
-        this._menuGenerator = new MenuGenerator();
     }
 
     Render(mapContext:MapContext):void{
@@ -48,13 +45,11 @@ export class MapRender{
         let playerHq = hqs.find(hq=>hq.PlayerName === PlaygroundHelper.PlayerName);
         //Link menu to player HQ
         PlaygroundHelper.PlayerHeadquarter = playerHq;
-        let menus = this._menuGenerator.GetMenus(playerHq,playgroundItems);
-        PlaygroundHelper.InteractionContext.SetCombination(menus,playerHq);
+        PlaygroundHelper.InteractionContext.SetCombination(playerHq);
         
         let contextSwitcher = new ContextSwitcher(PlaygroundHelper.InteractionContext,
             PlaygroundHelper.Playground,
-            PlaygroundHelper.InputManager,
-            menus[1]);
+            PlaygroundHelper.InputManager);
 
         //make hq ceils visible
         playerHq.GetCurrentCeil().SetState(CeilState.Visible);

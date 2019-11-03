@@ -1,13 +1,13 @@
+import { PlaygroundHelper } from './../../Utils/PlaygroundHelper';
 import { ICombination } from "./ICombination";
 import { ISelectable } from "../../ISelectable";
-import { Menu } from "../../Menu/Menu";
 import { Item } from "../../Items/Item";
 import { Ceil } from "../../Ceils/Ceil";
 import { Vehicle } from "../../Items/Unit/Vehicle";
 
 export class SwitchToVehicleCombination implements ICombination{ 
     
-    constructor(private _menus:Menu[]){
+    constructor(){
     }
 
     public IsMatching(items: Item[]): boolean {
@@ -24,7 +24,7 @@ export class SwitchToVehicleCombination implements ICombination{
             hq.SetSelected(false);
             const vehicle = items[1] as Vehicle;
             vehicle.SetSelected(true);
-            this._menus.forEach(menu=>{menu.Show(vehicle);});
+            PlaygroundHelper.SelectedItem.trigger(this,vehicle);
             items.splice(0,1);
             return true;
         }

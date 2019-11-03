@@ -12,35 +12,35 @@ export abstract class AliveField extends AliveItem implements IField{
     abstract IsDesctrutible(): boolean ;
     abstract IsBlocking(): boolean ;
 
-    private _onCeilStateChanged:{(ceilState:CeilState):void};
+    private _onCellStateChanged:{(obj:any,ceilState:CeilState):void};
 
-    constructor(private _ceil:Ceil){
+    constructor(private _cell:Ceil){
         super();
-        this._onCeilStateChanged = this.OnCeilStateChanged.bind(this);
-        this._ceil.RegisterCeilState(this._onCeilStateChanged);
+        this._onCellStateChanged = this.OnCellStateChanged.bind(this);
+        this._cell.CellStateChanged.on(this._onCellStateChanged);
     }
 
-    protected OnCeilStateChanged(ceilState: CeilState): void {
+    protected OnCellStateChanged(obj:any,ceilState: CeilState): void {
         this.GetDisplayObjects().forEach(s=>{
             s.visible = ceilState === CeilState.Visible;
         });
     }
 
     public GetCeil(): Ceil {
-        return this._ceil
+        return this._cell
     }
 
     public GetCurrentCeil(): Ceil {
-        return this._ceil;
+        return this._cell;
     }
 
     public Destroy():void{
         PeerHandler.SendMessage(PacketKind.Destroyed,{
-            Ceil:this._ceil.GetCoordinate(),
+            Ceil:this._cell.GetCoordinate(),
             Name:"field"
         });
         super.Destroy();
-        this._ceil.UnregisterCeilState(this._onCeilStateChanged);
+        this._cell.CellStateChanged.off(this._onCellStateChanged);
     }
 
 

@@ -4,7 +4,7 @@ import { HexAxial } from "../Utils/Coordinates/HexAxial";
 import { IField } from './Field/IField';
 import { AliveItem } from '../Items/AliveItem';
 import { BasicField } from './Field/BasicField';
-import { CeilState } from './CeilState';
+import { CeilState } from './CeilState'; 
 import { isNullOrUndefined } from 'util';
 import { Archive } from '../Utils/ResourceArchiver';
 import { ISelectable } from '../ISelectable';
@@ -16,6 +16,7 @@ import { BoundingBox } from '../Utils/BoundingBox';
 import { Point } from '../Utils/Point';
 import { Field } from './Field/Field';
 import { IInteractionContext } from '../Context/IInteractionContext';
+import { LiteEvent } from '../Utils/LiteEvent';
 
 export class Ceil extends Item implements ICeil , ISelectable
 {
@@ -27,6 +28,7 @@ export class Ceil extends Item implements ICeil , ISelectable
     private _decorationSprite:string;
     private _areaSprite:string;
     private _circle: PIXI.Circle;
+    public SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 
     constructor(properties:CeilProperties)
     {
@@ -48,21 +50,11 @@ export class Ceil extends Item implements ICeil , ISelectable
         return this._state;
     }
 
-    private _ceilStateHandlers: { (data: CeilState):void }[] = [];
-
-    public RegisterCeilState(handler: (data: CeilState) => void): void {
-        this._ceilStateHandlers.push(handler);
-    }
-    public UnregisterCeilState(handler: (data: CeilState) => void): void {
-        this._ceilStateHandlers = this._ceilStateHandlers.filter(h => h !== handler);
-    }
+    public CellStateChanged:LiteEvent<CeilState> = new LiteEvent<CeilState>();
 
     private OnCeilStateChanged(state:CeilState){
         this._state = state;
-        this._ceilStateHandlers.forEach(ceilStateHandler=>
-        {
-            ceilStateHandler(this._state);
-        });
+        this.CellStateChanged.trigger(this,this._state);
     }
 
     public IsVisible(): boolean {
@@ -73,23 +65,13 @@ export class Ceil extends Item implements ICeil , ISelectable
         return this._state === CeilState.Hidden;
     }
 
-    public SetSelected(visible: boolean): void {
-        visible ? PlaygroundHelper.Select():PlaygroundHelper.Unselect();
-        this.SetProperty(Archive.selectionCell,(e)=>e.alpha= visible ? 1 : 0);
-        if(!visible){
-            this._visibleHandlers.forEach(h=>h(this));
-        }    
+    public SetSelected(isSelected: boolean): void {
+        isSelected ? PlaygroundHelper.Select():PlaygroundHelper.Unselect();
+        this.SetProperty(Archive.selectionCell,(e)=>e.alpha= isSelected ? 1 : 0);
+        this.SelectionChanged.trigger(this, this); 
     }
     public IsSelected(): boolean {
         return this.GetCurrentSprites()[Archive.selectionCell].alpha === 1;
-    }
-    private _visibleHandlers: { (data: ISelectable):void }[] = [];
-
-    public SubscribeUnselection(handler: (data: ISelectable) => void): void {
-        this._visibleHandlers.push(handler);
-    }
-    public Unsubscribe(handler: (data: ISelectable) => void): void {
-        this._visibleHandlers = this._visibleHandlers.filter(h => h !== handler);
     }
 
     public GetField():IField{

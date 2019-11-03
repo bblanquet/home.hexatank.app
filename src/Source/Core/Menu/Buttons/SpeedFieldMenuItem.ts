@@ -1,16 +1,13 @@
-import { InteractionContext } from "../../Context/InteractionContext";
-import { CheckableMenuItem } from "../CheckableMenuItem";
-import { Archive } from "../../Utils/ResourceArchiver";  
+import { Item } from "../../Items/Item";
+import { IInteractionContext } from "../../Context/IInteractionContext";
+import { BoundingBox } from "../../Utils/BoundingBox";
 
-export class SpeedFieldMenuItem extends CheckableMenuItem{ 
-    
-    constructor(){  
-        super(Archive.menu.speedMenu);
-    } 
-
-    public Select(context: InteractionContext): boolean {
-        context.OnSelect(this);
-        return true;
+export class SpeedFieldMenuItem extends Item 
+{
+    public GetBoundingBox(): BoundingBox {
+        throw new Error("Method not implemented.");
+    }    
+    public Select(context: IInteractionContext): boolean {
+        throw new Error("Method not implemented.");
     }
-
-}
+} 

@@ -1,3 +1,4 @@
+import { LiteEvent } from './LiteEvent';
 import { InteractionContext } from './../Context/InteractionContext';
 import { VehiclesContainer } from '../Items/Unit/VehiclesContainer'; 
 import { MessageDispatcher } from './Network/MessageDispatcher';
@@ -14,6 +15,7 @@ import { ItemsManager } from "../ItemsManager";
 import { MapContext } from "../Setup/Generator/MapContext"; 
 import { SpriteProvider } from './SpriteProvider';
 import { InputManager } from './InputManager';
+import { Item } from '../Items/Item';
 const Viewport = require('pixi-viewport').Viewport;
 
 export class PlaygroundHelper{
@@ -31,7 +33,6 @@ export class PlaygroundHelper{
     public static Dispatcher:MessageDispatcher=new MessageDispatcher();
     public static PlayerName: string="defaultPlayer";
     public static IsFlagingMode: boolean;
-
     public static SetDefaultName() {
         this.PlayerName = "defaultPlayer";
     }
@@ -66,6 +67,7 @@ export class PlaygroundHelper{
         }
     }
 
+    public static SelectedItem:LiteEvent<Item> = new LiteEvent<Item>();
     public static selectionCount:number=0;
     public static Select():void{
         this.selectionCount += 1;

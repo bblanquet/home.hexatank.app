@@ -5,7 +5,7 @@ import { Ceil } from "../../Ceils/Ceil";
 import { FlagCeil } from '../../Ceils/FlagCeil';
 import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
 
-export class FlagCeilCombination implements ICombination{
+export class FlagCellCombination implements ICombination{
 
     IsMatching(items: Item[]): boolean {
         return items.length ===1 

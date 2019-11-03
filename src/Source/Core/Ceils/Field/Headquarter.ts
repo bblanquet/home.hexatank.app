@@ -23,30 +23,30 @@ import { SimpleOrder } from '../../Ia/Order/SimpleOrder';
 export class Headquarter extends AliveItem implements IField
 {
     private _boundingBox:BoundingBox;
-    private _ceil:Ceil; 
+    private _cell:Ceil; 
     public PlayerName:string;
     public Count:number=0;
     protected Fields:Array<HeadQuarterField>;
     private _diamondCount:number=PlaygroundHelper.Settings.PocketMoney;
     private _skin:HqSkin;
-    private _onCeilStateChanged:{(ceilState:CeilState):void};
+    private _onCellStateChanged:{(obj:any,ceilState:CeilState):void};
     public FlagCeil:FlagCeil;
 
     constructor(skin:HqSkin, ceil:Ceil){
         super();
         this._skin = skin;
         this.Z= 2;
-        this._ceil = ceil;
-        this._ceil.SetField(this);
+        this._cell = ceil;
+        this._cell.SetField(this);
 
         this.GenerateSprite(Archive.selectionUnit);
         this.SetProperty(Archive.selectionUnit,(e)=>e.alpha=0);
 
         this._boundingBox = new BoundingBox();
-        this._boundingBox.Width = this._ceil.GetBoundingBox().Width;
-        this._boundingBox.Height = this._ceil.GetBoundingBox().Height;
-        this._boundingBox.X = this._ceil.GetBoundingBox().X;
-        this._boundingBox.Y = this._ceil.GetBoundingBox().Y;
+        this._boundingBox.Width = this._cell.GetBoundingBox().Width;
+        this._boundingBox.Height = this._cell.GetBoundingBox().Height;
+        this._boundingBox.X = this._cell.GetBoundingBox().X;
+        this._boundingBox.Y = this._cell.GetBoundingBox().Y;
 
         this.GenerateSprite(this.GetSkin().GetHq());
         this.GenerateSprite(Archive.building.hq.bottom);
@@ -59,26 +59,26 @@ export class Headquarter extends AliveItem implements IField
         });
         this.IsCentralRef = true;
 
-        var neighbours = this._ceil.GetNeighbourhood();
+        var neighbours = this._cell.GetNeighbourhood();
         this.Fields = new Array<HeadQuarterField>();
         neighbours.forEach(ceil=>
         {
             this.Fields.push(new HeadQuarterField(this,<Ceil>ceil,skin.GetCeil()));
         });
-        this._onCeilStateChanged = this.OnCeilStateChanged.bind(this);
-        this._ceil.RegisterCeilState(this._onCeilStateChanged);
+        this._onCellStateChanged = this.OnCeilStateChanged.bind(this);
+        this._cell.CellStateChanged.on(this._onCellStateChanged);
         this.InitPosition(ceil.GetBoundingBox());
 
-        this.GetDisplayObjects().forEach(obj => {obj.visible = this._ceil.IsVisible();});
+        this.GetDisplayObjects().forEach(obj => {obj.visible = this._cell.IsVisible();});
     }
-    protected OnCeilStateChanged(ceilState: CeilState): void {
+    protected OnCeilStateChanged(obj:any,ceilState: CeilState): void {
         this.GetDisplayObjects().forEach(s=>{
             s.visible = ceilState === CeilState.Visible;
         });
     }
 
     public GetCurrentCeil(): Ceil {
-        return this._ceil;
+        return this._cell;
     }
 
     private IsHqContainer(item: any):item is IHqContainer{
@@ -104,7 +104,7 @@ export class Headquarter extends AliveItem implements IField
         return true;
     }
     GetCeil(): Ceil {
-        return this._ceil;
+        return this._cell;
     }
 
     IsBlocking(): boolean {
@@ -150,7 +150,7 @@ export class Headquarter extends AliveItem implements IField
             Type: "Tank",
             Id: tank.Id,
             Ceil: tank.GetCurrentCeil().GetCoordinate(),
-            Hq: this._ceil.GetCoordinate()
+            Hq: this._cell.GetCoordinate()
         });
     }
 
@@ -159,7 +159,7 @@ export class Headquarter extends AliveItem implements IField
             Type: "Truck",
             Id: truck.Id,
             Ceil: truck.GetCurrentCeil().GetCoordinate(),
-            Hq: this._ceil.GetCoordinate()
+            Hq: this._cell.GetCoordinate()
         });
     }
 
@@ -203,8 +203,8 @@ export class Headquarter extends AliveItem implements IField
     public Destroy():void{
         super.Destroy();
         PlaygroundHelper.Render.Remove(this);
-        this._ceil.UnregisterCeilState(this._onCeilStateChanged);
-        this._ceil.DestroyField();
+        this._cell.CellStateChanged.off(this._onCellStateChanged);
+        this._cell.DestroyField();
         this.IsUpdatable = false;
         this.Fields.forEach(field=>{
             field.Destroy();

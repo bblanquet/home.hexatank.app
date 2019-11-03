@@ -45,7 +45,7 @@ export class Tank extends Vehicle implements IHqContainer
         this.IsCentralRef = true;
     } 
 
-    protected OnCeilStateChanged(ceilState: CeilState): void 
+    protected OnCellStateChanged(obj:any,ceilState: CeilState): void 
     {
         this.GetDisplayObjects().forEach(s=>{
             s.visible = ceilState === CeilState.Visible;

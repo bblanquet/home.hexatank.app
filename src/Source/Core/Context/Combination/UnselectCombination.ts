@@ -1,3 +1,4 @@
+import { PlaygroundHelper } from './../../Utils/PlaygroundHelper';
 import { ICombination } from "./ICombination";
 import { ISelectable } from "../../ISelectable";
 import { Menu } from "../../Menu/Menu";
@@ -12,7 +13,7 @@ export class UnselectCombination implements ICombination{
     private _isSelectable:{(item:Item):boolean}; 
     private _interactionContext:IContextContainer;
 
-    constructor(private _menus:Menu[],isSelectable:{(item:Item):boolean},interactionContext:IContextContainer){
+    constructor(isSelectable:{(item:Item):boolean},interactionContext:IContextContainer){
         this._isSelectable = isSelectable;
         this._interactionContext = interactionContext;
     }
@@ -20,7 +21,6 @@ export class UnselectCombination implements ICombination{
     IsMatching(items: Item[]): boolean {
         return items.filter(i=> this._isSelectable(i)).length >=2 && 
         (items.filter(i=> this._isSelectable(i)).length === items.filter(i=> i instanceof Ceil).length
-        //|| items.filter(i=> this._isSelectable(i)).length === items.filter(i=> i instanceof Headquarter).length
         || items.filter(i=> this._isSelectable(i)).length === items.filter(i=> i instanceof Vehicle).length);
     }    
     Combine(items: Item[]): boolean {
@@ -42,7 +42,7 @@ export class UnselectCombination implements ICombination{
                         {
                             this._interactionContext.Push(ceil,false);
                             ceil.SetSelected(true); 
-                            this._menus.forEach(menu=>{menu.Show(ceil);});
+                            PlaygroundHelper.SelectedItem.trigger(this,ceil);
                             return true;
                         }
                     }

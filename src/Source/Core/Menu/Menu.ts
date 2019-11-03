@@ -7,7 +7,7 @@ import { ISelectable } from "../ISelectable";
 export abstract class Menu extends Item{
     Items:Array<MenuItem>;
     protected IsHidden:boolean=false;
-    private _hide:{(data: ISelectable):void};
+    private _hide:{(obj:any,data: ISelectable):void};
 
     constructor(){
         super();
@@ -25,7 +25,7 @@ export abstract class Menu extends Item{
     }
  
     public Show(data: ISelectable):void{
-        data.SubscribeUnselection(this._hide);
+        data.SelectionChanged.on(this._hide);
     }
 
     public Destroy():void{
@@ -35,8 +35,8 @@ export abstract class Menu extends Item{
         })
     }
 
-    protected Hide(data: ISelectable):void{
-        data.Unsubscribe(this._hide);
+    protected Hide(obj:any,data: ISelectable):void{
+        data.SelectionChanged.on(this._hide);
     }
 
     public Select(context: InteractionContext): boolean {

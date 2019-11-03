@@ -2,7 +2,7 @@ import { Item } from "../../Items/Item";
 import { BoundingBox } from "../../Utils/BoundingBox";
 import { IInteractionContext } from "../../Context/IInteractionContext";
 
-export class TargetMenuItem extends Item 
+export class TruckMenuItem extends Item 
 {
     public GetBoundingBox(): BoundingBox {
         throw new Error("Method not implemented.");

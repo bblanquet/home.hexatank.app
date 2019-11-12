@@ -7,12 +7,11 @@ import { Point } from '../../Utils/Point';
 import { LiteEvent } from '../../Utils/LiteEvent';
 import { Ceil } from '../../Ceils/Ceil';
 import { Item } from '../../Items/Item';
-import { CheckableMenuItem } from '../CheckableMenuItem';
 
 export class MultiSelectionInteractionContext implements IInteractionContext{
     public Point: PIXI.Point;
     private _cells:CeilsContainer<Ceil>;
-    private _menuItem:CheckableMenuItem;
+    private _menuItem:Item;
     private _overrideCells:BasicItem[];
     private _isOn:boolean;
     private _isDown:boolean;
@@ -26,6 +25,7 @@ export class MultiSelectionInteractionContext implements IInteractionContext{
         movingEvent.on((e)=>this.OnMouseMoved(e));
         down.on(e=>this._isDown = e);
         downEvent.on((e)=>this.OnMouseMoved(e));
+        PlaygroundHelper.MultiInteractionContext = this;
     }
 
     public Start():void{
@@ -45,7 +45,7 @@ export class MultiSelectionInteractionContext implements IInteractionContext{
         return this._cells.GetAll();
     }
 
-    public GetCellButton():CheckableMenuItem{
+    public GetCellButton():Item{
         return this._menuItem;
     }
 
@@ -70,7 +70,7 @@ export class MultiSelectionInteractionContext implements IInteractionContext{
                 PlaygroundHelper.Playground.Items.push(c);
             }
         }
-        else if(item instanceof CheckableMenuItem){
+        else if(item instanceof Item){
             this._menuItem = item;
         }
     }

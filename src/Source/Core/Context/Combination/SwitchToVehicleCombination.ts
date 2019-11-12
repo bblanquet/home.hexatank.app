@@ -1,31 +1,39 @@
 import { PlaygroundHelper } from './../../Utils/PlaygroundHelper';
 import { ICombination } from "./ICombination";
 import { ISelectable } from "../../ISelectable";
-import { Item } from "../../Items/Item";
 import { Ceil } from "../../Ceils/Ceil";
 import { Vehicle } from "../../Items/Unit/Vehicle";
+import { CombinationContext } from './CombinationContext';
+import { ContextMode } from '../../Utils/ContextMode';
+import { InteractionKind } from '../IInteractionContext';
 
 export class SwitchToVehicleCombination implements ICombination{ 
     
     constructor(){
     }
 
-    public IsMatching(items: Item[]): boolean {
-        return items.length == 2  
-        && (items[0] instanceof Ceil)
-        && items[1] instanceof Vehicle;
+    public IsMatching(context: CombinationContext): boolean {
+        return this.IsNormalMode(context) 
+        && context.Items.length == 2  
+        && (context.Items[0] instanceof Ceil)
+        && context.Items[1] instanceof Vehicle;
     }    
     
-    Combine(items: Item[]): boolean 
+    private IsNormalMode(context: CombinationContext) {
+        return context.ContextMode === ContextMode.SingleSelection
+            && context.Kind === InteractionKind.Up;
+    }
+
+    Combine(context: CombinationContext): boolean 
     {
-        if(this.IsMatching(items))
+        if(this.IsMatching(context))
         {
-            const hq = items[0] as any as ISelectable;
+            const hq = context.Items[0] as any as ISelectable;
             hq.SetSelected(false);
-            const vehicle = items[1] as Vehicle;
+            const vehicle = context.Items[1] as Vehicle;
             vehicle.SetSelected(true);
             PlaygroundHelper.SelectedItem.trigger(this,vehicle);
-            items.splice(0,1);
+            context.Items.splice(0,1);
             return true;
         }
         return false;

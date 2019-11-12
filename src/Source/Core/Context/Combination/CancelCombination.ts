@@ -3,6 +3,9 @@ import { IContextContainer } from "../IContextContainer";
 import { ISelectable } from "../../ISelectable";
 import { CancelMenuItem } from "../../Menu/Buttons/CancelMenuItem";
 import { Item } from "../../Items/Item";
+import { CombinationContext } from "./CombinationContext";
+import { ContextMode } from "../../Utils/ContextMode";
+import { InteractionKind } from "../IInteractionContext";
 
 export class CancelCombination implements ICombination{
     private _interactionContext:IContextContainer;
@@ -11,13 +14,20 @@ export class CancelCombination implements ICombination{
         this._interactionContext = interactionContext;
     }
     
-    IsMatching(items: Item[]): boolean {
-        return items.filter(i=> i instanceof CancelMenuItem).length >= 1 && items.length >=2;
+    IsMatching(context: CombinationContext): boolean {
+        return this.IsNormalMode(context)  
+        && context.Items.filter(i=> i instanceof CancelMenuItem).length >= 1 
+        && context.Items.length >=2;
     }    
     
-    Combine(items: Item[]): boolean {
-        if(this.IsMatching(items)){
-            this.UnSelectItem(items[0]);
+    private IsNormalMode(context: CombinationContext) {
+        return context.ContextMode === ContextMode.SingleSelection
+            && context.Kind === InteractionKind.Up;
+    }
+
+    Combine(context: CombinationContext): boolean {
+        if(this.IsMatching(context)){
+            this.UnSelectItem(context.Items[0]);
             this._interactionContext.ClearContext();
             return true;
         }

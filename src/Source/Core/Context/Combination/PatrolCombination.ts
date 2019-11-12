@@ -7,30 +7,35 @@ import { Item } from "../../Items/Item";
 import { Vehicle } from "../../Items/Unit/Vehicle";
 import { Ceil } from "../../Ceils/Ceil";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper"; 
-import { IContextContainer } from "../IContextContainer";
-import { ISelectable } from "../../ISelectable";
+import { CombinationContext } from "./CombinationContext";
+import { ContextMode } from "../../Utils/ContextMode";
+import { InteractionKind } from "../IInteractionContext";
 
 export class PatrolCombination implements ICombination{ 
     private _indicators:Array<BasicItem>;
-    private _interactionContext:IContextContainer;
 
-    constructor(interactionContext:IContextContainer){    
-        this._interactionContext = interactionContext;
+    constructor(){    
         this._indicators = []; 
     }
 
-    public IsMatching(items: Item[]): boolean 
+    public IsMatching(context: CombinationContext): boolean 
     { 
-        return items.length >= 5
-        && items[0] instanceof Vehicle 
-        && items[1] instanceof PatrolMenuItem
-        && this.IsLastPatrolItem(items); 
+        return this.IsNormalMode(context)
+        && context.Items.length >= 5
+        && context.Items[0] instanceof Vehicle 
+        && context.Items[1] instanceof PatrolMenuItem
+        && this.IsLastPatrolItem(context.Items); 
     }
 
-    public ContainsVehicleePatrol(items:Item[]):boolean{
-        return items.length >= 2
-        && items[0] instanceof Vehicle 
-        && items[1] instanceof PatrolMenuItem
+    public ContainsVehicleePatrol(context:CombinationContext):boolean{
+        return context.Items.length >= 2
+        && context.Items[0] instanceof Vehicle 
+        && context.Items[1] instanceof PatrolMenuItem
+    }
+
+    private IsNormalMode(context: CombinationContext) {
+        return context.ContextMode === ContextMode.SingleSelection
+            && context.Kind === InteractionKind.Up;
     }
 
     public GetCeils(items: Item[]):Array<Ceil>{
@@ -41,11 +46,11 @@ export class PatrolCombination implements ICombination{
         return items[items.length-1] instanceof PatrolMenuItem;
     }
 
-    public Combine(items: Item[]): boolean 
+    public Combine(context: CombinationContext): boolean 
     {
-        if(this.ContainsVehicleePatrol(items)){
-            if(items[items.length-1] instanceof Ceil){
-                const element = new BasicItem(items[items.length-1].GetBoundingBox(), Archive.direction.patrol);
+        if(this.ContainsVehicleePatrol(context)){
+            if(context.Items[context.Items.length-1] instanceof Ceil){
+                const element = new BasicItem(context.Items[context.Items.length-1].GetBoundingBox(), Archive.direction.patrol);
                 element.SetVisible(()=>true);
                 element.SetAlive(()=>true);
                 this._indicators.push(element);
@@ -53,15 +58,13 @@ export class PatrolCombination implements ICombination{
             }
         }
 
-        if(this.IsMatching(items))
+        if(this.IsMatching(context))
         {
             console.log(`%c PATROL MATCH`,'font-weight:bold;color:blue;');
-            var vehicle = <Vehicle>items[0];
-            var patrol = new PatrolOrder(this.GetCeils(items),vehicle);
+            var vehicle = <Vehicle>context.Items[0];
+            var patrol = new PatrolOrder(this.GetCeils(context.Items),vehicle);
             vehicle.SetOrder(patrol);
-            items.splice(1,1);
-            // this.UnSelectItem(items[0]);
-            // this._interactionContext.ClearContext();
+            context.Items.splice(1,1);
             return true;
         }
         return false;
@@ -72,10 +75,5 @@ export class PatrolCombination implements ICombination{
             indicator.Destroy();
         })
         this._indicators = [];
-    }
-
-    private UnSelectItem(item: Item) {            
-        var selectable = <ISelectable> <any> (item);
-        selectable.SetSelected(false);
     }
 }

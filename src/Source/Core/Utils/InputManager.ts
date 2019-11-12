@@ -64,7 +64,6 @@ export class InputManager{
     }
 
     public OnMouseUp(event:PIXI.interaction.InteractionEvent):void{
-
         if(this._timerOut)
         {
             clearTimeout(this._timerOut);

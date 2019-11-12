@@ -1,3 +1,4 @@
+import { ContextMode } from './ContextMode';
 import { LiteEvent } from './LiteEvent';
 import { InteractionContext } from './../Context/InteractionContext';
 import { VehiclesContainer } from '../Items/Unit/VehiclesContainer'; 
@@ -16,6 +17,7 @@ import { MapContext } from "../Setup/Generator/MapContext";
 import { SpriteProvider } from './SpriteProvider';
 import { InputManager } from './InputManager';
 import { Item } from '../Items/Item';
+import { IInteractionContext } from '../Context/IInteractionContext';
 const Viewport = require('pixi-viewport').Viewport;
 
 export class PlaygroundHelper{
@@ -40,8 +42,9 @@ export class PlaygroundHelper{
     public static App: PIXI.Application;
     public static Viewport:any;
     public static InputManager:InputManager;
+    public static SelectionMode: ContextMode=ContextMode.SingleSelection;
     public static InteractionManager:PIXI.interaction.InteractionManager;
-    public static InteractionContext:InteractionContext;
+    public static InteractionContext:IInteractionContext;
 
     public static InitApp():void{
         if(!this.App){

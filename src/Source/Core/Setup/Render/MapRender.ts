@@ -12,6 +12,8 @@ import { BoundingBox } from '../../Utils/BoundingBox';
 import { BasicItem } from '../../Items/BasicItem';
 import { Archive } from '../../Utils/ResourceArchiver';  
 import { MapContext } from '../Generator/MapContext'; 
+import { Point } from '../../Utils/Point';
+import { InteractionKind } from '../../Context/IInteractionContext';
 
 export class MapRender{
     private _hqRender:HqRender;
@@ -47,7 +49,17 @@ export class MapRender{
         PlaygroundHelper.PlayerHeadquarter = playerHq;
         PlaygroundHelper.InteractionContext.SetCombination(playerHq);
         
-        let contextSwitcher = new ContextSwitcher(PlaygroundHelper.InteractionContext,
+        PlaygroundHelper.InputManager.UpEvent.on(
+            (o:any,point:Point)=>{
+                const interaction = PlaygroundHelper.InteractionContext;
+                interaction.Point = new PIXI.Point(point.X,point.Y);
+                interaction.Kind = InteractionKind.Up;
+                PlaygroundHelper.Playground.Select(interaction);
+            }
+
+        )
+
+        var contextSwitcher = new ContextSwitcher(PlaygroundHelper.InteractionContext,
             PlaygroundHelper.Playground,
             PlaygroundHelper.InputManager);
 

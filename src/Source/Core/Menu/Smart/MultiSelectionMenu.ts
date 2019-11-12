@@ -71,7 +71,6 @@ export class MultiSelectionMenu {
                 this._cellSelection.IsHover = true;
             }
         }
-
     }
 
     public Hide():void{

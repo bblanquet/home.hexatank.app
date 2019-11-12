@@ -10,13 +10,13 @@ export abstract class Field extends Item implements IField{
 
     constructor(private _cell:Ceil){
         super();
-        this._onCellStateChanged = this.OnCeilStateChanged.bind(this); 
+        this._onCellStateChanged = this.OnCellStateChanged.bind(this); 
         this._cell.CellStateChanged.on(this._onCellStateChanged);
     }
 
-    protected OnCeilStateChanged(obj:any,ceilState: CeilState): void {
+    protected OnCellStateChanged(obj:any,ceilState: CeilState): void {
         this.GetDisplayObjects().forEach(s=>{
-            s.visible = ceilState === CeilState.Visible;
+            s.visible = ceilState !== CeilState.Hidden;
         });
     }
 

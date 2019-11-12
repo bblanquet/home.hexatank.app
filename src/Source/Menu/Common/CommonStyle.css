@@ -41,8 +41,19 @@
   background-color:rgba(29, 29, 29, 0.205);
 }  
 
+@media only screen and  (max-width: 600px) {
+  .left-column  {
+    position: fixed;
+    width: 60px;
+    height: 100%;
+    top: 0%;
+    left: 0%;
+    margin-top: 0%; 
+    background-color:rgba(29, 29, 29, 0.205);
+    }
+}
 
- .right-column {
+.right-column {
   position: fixed;
   width: 10%;
   height: 100%;
@@ -240,22 +251,25 @@ body{
 
 .fill-target {
   overflow: hidden;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
+  background-repeat: no-repeat;
   background-image: url('/out/menu/targetButton.svg');
 }
 
 .fill-patrol {
   overflow: hidden;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
+  background-repeat: no-repeat;
   background-image: url('/out/menu/patrolButton.svg');
 }
 
 .fill-cancel {
   overflow: hidden;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
+  background-repeat: no-repeat;
   background-image: url('/out/menu/cancelButton.svg');
 }
 
@@ -329,7 +343,7 @@ body{
   background-image: url('/out/menu/speedMenu.svg');
 }
 
-.fill-speed {
+.fill-power {
   overflow: hidden;
   background-size: contain;
   background-position: center;

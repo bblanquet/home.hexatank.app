@@ -10,39 +10,39 @@ import { CeilState } from "../CeilState";
 export class AttackField extends Field
 {
     constructor(ceil:Ceil){
-        super(ceil); 
+        super(ceil);
         this.GetCeil().SetField(this);
-        this.Z= 1;
+        this.Z= 1; 
 
-        this.GenerateSprite(Archive.bonus.strength);        
+        this.GenerateSprite(Archive.bonus.strength);      
         this.InitPosition(ceil.GetBoundingBox());
-        this.GetDisplayObjects().forEach(obj => {obj.visible = this.GetCeil().IsUnknown();});
+        this.GetDisplayObjects().forEach(obj => {obj.visible = this.GetCeil().IsVisible();});
     }
 
-    protected OnCeilStateChanged(ceilState: CeilState): void {
+    protected OnCellStateChanged(ceilState: CeilState): void {
         this.GetDisplayObjects().forEach(s=>{
-            s.visible = ceilState === CeilState.Visible || ceilState === CeilState.HalfVisible;
+            s.visible = ceilState !== CeilState.Hidden;
         });
     }
 
     public GetBoundingBox(): BoundingBox {
         return this.GetCeil().GetBoundingBox();
     }
-    
     public Select(context: InteractionContext): boolean {
         return false;
     }
-
-    public Support(vehicule: Vehicle): void {
+    Support(vehicule: Vehicle): void {
         vehicule.TranslationSpeed = PlaygroundHelper.Settings.TranslationSpeed;
         vehicule.RotationSpeed = PlaygroundHelper.Settings.RotationSpeed;    
         vehicule.Attack = 50;
     }    
 
-    public IsDesctrutible(): boolean {
+    IsDesctrutible(): boolean {
         return false;
     }
-    public IsBlocking(): boolean {
+
+    IsBlocking(): boolean {
         return false;
     }
+
 }

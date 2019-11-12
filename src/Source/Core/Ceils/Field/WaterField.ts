@@ -30,9 +30,9 @@ export class WaterField extends Field
         this.GetDisplayObjects().forEach(obj => {obj.visible = this.GetCeil().IsVisible();});
     }
 
-    protected OnCeilStateChanged(ceilState: CeilState): void {
+    protected OnCellStateChanged(ceilState: CeilState): void {
         this.GetDisplayObjects().forEach(s=>{
-            s.visible = ceilState === CeilState.Visible || ceilState === CeilState.HalfVisible;
+            s.visible = ceilState !== CeilState.Hidden;
         });
     }
 

@@ -5,6 +5,9 @@ import { Item } from "../../Items/Item";
 import { Ceil } from "../../Ceils/Ceil";
 import { BasicField } from "../../Ceils/Field/BasicField";
 import { CeilState } from "../../Ceils/CeilState";
+import { CombinationContext } from './CombinationContext';
+import { ContextMode } from '../../Utils/ContextMode';
+import { InteractionKind } from '../IInteractionContext';
 
 export class SelectionCombination implements ICombination{
     private _isSelectable:{(item:Item):boolean};
@@ -13,13 +16,20 @@ export class SelectionCombination implements ICombination{
         this._isSelectable = isSelectable;
     }
 
-    IsMatching(items: Item[]): boolean {
-        return items.length === 1 && this._isSelectable(items[0]);
+    IsMatching(context: CombinationContext): boolean {
+        return this.IsNormalMode(context) 
+        && context.Items.length === 1 
+        && this._isSelectable(context.Items[0]);
     }
 
-    Combine(items: Item[]): boolean {
-        if(this.IsMatching(items)){
-            const item = items[0];
+    private IsNormalMode(context: CombinationContext) {
+        return context.ContextMode === ContextMode.SingleSelection
+            && context.Kind === InteractionKind.Up;
+    }
+
+    Combine(context: CombinationContext): boolean {
+        if(this.IsMatching(context)){
+            const item = context.Items[0];
             const selectable = this.ToSelectableItem(item);
             if(selectable instanceof Ceil){
                 const selectableCeil = selectable as Ceil;

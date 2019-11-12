@@ -1,7 +1,7 @@
 import { IItemsManager } from './IItemsManager';
 import {Item} from './Items/Item';
-import {InteractionContext} from './Context/InteractionContext';
 import { PlaygroundHelper } from './Utils/PlaygroundHelper'; 
+import { IInteractionContext } from './Context/IInteractionContext';
 
 export class ItemsManager implements IItemsManager
 {    
@@ -12,7 +12,7 @@ export class ItemsManager implements IItemsManager
         this.Items = new Array<Item>();
     }
 
-    public Select(event:InteractionContext):void{
+    public Select(event:IInteractionContext):void{
         for (let index = 0; index < this.Items.length; index++) {
             if(this.Items[index].Select(event)){
                 return;

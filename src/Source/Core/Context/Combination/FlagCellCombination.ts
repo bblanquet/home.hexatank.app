@@ -1,20 +1,27 @@
 import { isNullOrUndefined } from "util";
 import { ICombination } from "./ICombination";
-import { Item } from "../../Items/Item";
 import { Ceil } from "../../Ceils/Ceil";
 import { FlagCeil } from '../../Ceils/FlagCeil';
 import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
+import { CombinationContext } from "./CombinationContext";
+import { ContextMode } from "../../Utils/ContextMode";
+import { InteractionKind } from "../IInteractionContext";
 
 export class FlagCellCombination implements ICombination{
-
-    IsMatching(items: Item[]): boolean {
-        return items.length ===1 
-        && items[0] instanceof Ceil;
+    IsMatching(context: CombinationContext): boolean {
+        return this.IsNormalMode(context)
+        && context.Items.length ===1 
+        && context.Items[0] instanceof Ceil;
     }
-    Combine(items: Item[]): boolean {
-        if(this.IsMatching(items))
+    private IsNormalMode(context: CombinationContext) {
+        return context.ContextMode === ContextMode.SingleSelection
+            && context.Kind === InteractionKind.Up;
+    }
+
+    Combine(context: CombinationContext): boolean {
+        if(this.IsMatching(context))
         {
-            let ceil = <Ceil> items[0];
+            let ceil = <Ceil> context.Items[0];
             if(!isNullOrUndefined(ceil) && PlaygroundHelper.IsFlagingMode)
             {
                 if(!PlaygroundHelper.PlayerHeadquarter.FlagCeil)

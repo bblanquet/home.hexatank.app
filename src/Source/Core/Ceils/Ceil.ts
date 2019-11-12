@@ -17,6 +17,7 @@ import { Point } from '../Utils/Point';
 import { Field } from './Field/Field';
 import { IInteractionContext } from '../Context/IInteractionContext';
 import { LiteEvent } from '../Utils/LiteEvent';
+import { ContextMode } from '../Utils/ContextMode';
 
 export class Ceil extends Item implements ICeil , ISelectable
 {
@@ -277,7 +278,9 @@ export class Ceil extends Item implements ICeil , ISelectable
         super.Update(viewX,viewY);
         if(PlaygroundHelper.Viewport.lastViewport){
             let scale = PlaygroundHelper.Viewport.lastViewport.scaleX;
-            this._circle.radius = PlaygroundHelper.Settings.Size/2 * scale;
+            this._circle.radius = PlaygroundHelper.SelectionMode === ContextMode.MultipleSelection ?
+            PlaygroundHelper.Settings.Size/2 * scale
+            : PlaygroundHelper.Settings.Size * scale;
             this._circle.x = (this.GetSprites()[0].x -PlaygroundHelper.Viewport.left) * scale;
             this._circle.y = (this.GetSprites()[0].y -PlaygroundHelper.Viewport.top) * scale;;
         }

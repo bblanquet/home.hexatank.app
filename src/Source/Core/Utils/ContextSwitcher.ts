@@ -13,7 +13,6 @@ import { ItemsManager } from '../ItemsManager';
 import { MultiSelectionInteractionContext } from '../Menu/Smart/MultiSelectionInteractionContext';
 import { Vehicle } from '../Items/Unit/Vehicle';
 import { Ceil } from '../Ceils/Ceil';
-import { Menu } from '../Menu/Menu';
 import { HealMenuItem } from '../Menu/Buttons/HealMenuItem';
 import { SpeedFieldMenuItem } from '../Menu/Buttons/SpeedFieldMenuItem';
 import { MoneyMenuItem } from '../Menu/Buttons/MoneyMenuItem';
@@ -21,6 +20,7 @@ import { PeerHandler } from '../../Menu/Network/Host/On/PeerHandler';
 import { PacketKind } from '../../Menu/Network/PacketKind';
 import { FastField } from '../Ceils/Field/FastField';
 import { AttackField } from '../Ceils/Field/AttackField';
+import { IInteractionContext } from '../Context/IInteractionContext';
 
 export class ContextSwitcher{    
     private _downPoint:Point;
@@ -33,7 +33,7 @@ export class ContextSwitcher{
     public Cells:Ceil[];
     private _multiHandler:MultiSelectionHandler;
 
-    constructor(private _interactionContext:InteractionContext,
+    constructor(private _interactionContext:IInteractionContext,
                 private _itemsManager:ItemsManager,
                 private _inputManager:InputManager)
     {
@@ -55,10 +55,15 @@ export class ContextSwitcher{
         this._downPoint = new Point(point.X,point.Y);
     }
 
+    private SetContext(contextMode:ContextMode):void{
+        this._mode = contextMode;
+        PlaygroundHelper.SelectionMode = this._mode;
+    }
+
     private OnHolding():void{
         if(!PlaygroundHelper.HasSelection() && this._mode === ContextMode.SingleSelection){
             PlaygroundHelper.PauseNavigation();
-            this._mode = ContextMode.SelectionMenu;
+            this.SetContext(ContextMode.SelectionMenu);
             this._smartMenu.Show(this._downPoint);
         }
     }
@@ -67,12 +72,12 @@ export class ContextSwitcher{
         this._selectionMode = mode;
         if(mode !== SelectionMode.none)
         {
-            this._mode = ContextMode.MultipleSelection;
+            this.SetContext(ContextMode.MultipleSelection);
             this._multiContext.Start();
         }
         else
         {
-            this._mode = ContextMode.SingleSelection;
+            this.SetContext(ContextMode.SingleSelection);
             PlaygroundHelper.RestartNavigation();
         }
     }
@@ -127,7 +132,7 @@ export class ContextSwitcher{
             this._multiContext.Stop();
             if (this.Cells.length === 0) 
             {
-                this._mode = ContextMode.SingleSelection;
+                this.SetContext(ContextMode.SingleSelection);
                 PlaygroundHelper.RestartNavigation();
             }
             else 
@@ -196,7 +201,7 @@ export class ContextSwitcher{
             this.Vehicles = [];
             this.Cells = [];
             this._multiContext.Stop();
-            this._mode = ContextMode.SingleSelection;
+            this.SetContext(ContextMode.SingleSelection);
             PlaygroundHelper.RestartNavigation();
         }
     }
@@ -206,7 +211,7 @@ export class ContextSwitcher{
             this.SetVehicles(this._multiContext.GetCells());
             this._multiContext.Stop();
             if (this.Vehicles.length === 0) {
-                this._mode = ContextMode.SingleSelection;
+                this.SetContext(ContextMode.SingleSelection);
                 PlaygroundHelper.RestartNavigation();
             }
             else {
@@ -222,7 +227,7 @@ export class ContextSwitcher{
             });
             this.Vehicles = [];
             this._multiContext.Stop();
-            this._mode = ContextMode.SingleSelection;
+            this.SetContext(ContextMode.SingleSelection);
             PlaygroundHelper.RestartNavigation();
         }
     }

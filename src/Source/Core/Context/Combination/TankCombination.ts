@@ -7,38 +7,43 @@ import { Tank } from "../../Items/Unit/Tank";
 import { Ceil } from "../../Ceils/Ceil";
 import { IContextContainer } from "../IContextContainer";
 import { ISelectable } from "../../ISelectable";
+import { CombinationContext } from './CombinationContext';
+import { ContextMode } from '../../Utils/ContextMode';
+import { InteractionKind } from '../IInteractionContext';
 
 export class TankCombination implements ICombination{ 
-    private _interactionContext:IContextContainer;
 
-    constructor(interactionContext:IContextContainer){   
-        this._interactionContext = interactionContext;
+    constructor(){   
     }
-    IsMatching(items: Item[]): boolean {
-        return items.length >=2 
-        && items[0] instanceof Tank 
-        && items[1] instanceof Ceil
+    IsMatching(context: CombinationContext): boolean {
+        return this.IsNormalMode(context) && context.Items.length >=2 
+        && context.Items[0] instanceof Tank 
+        && context.Items[1] instanceof Ceil
     }
-    Combine(items: Item[]): boolean 
+
+    private IsNormalMode(context: CombinationContext) {
+        return context.ContextMode === ContextMode.SingleSelection
+            && context.Kind === InteractionKind.Up;
+    }
+
+    Combine(context: CombinationContext): boolean 
     {
-        if(this.IsMatching(items))
+        if(this.IsMatching(context))
         {
-            const tank = <Tank>items[0];
-            const ceil = <Ceil>items[1];
+            const tank = <Tank>context.Items[0];
+            const ceil = <Ceil>context.Items[1];
             if(ceil.GetShootableEntity() !== null
             && ceil.GetShootableEntity().IsEnemy(tank))
             {
                 const order = new TargetOrder(tank,ceil.GetShootableEntity());
                 tank.SetOrder(order);
-                items.splice(1,1);
+                context.Items.splice(1,1);
             }
             else
             {
                 const order = new PersistentOrder(ceil,tank);
                 tank.SetOrder(order);
-                items.splice(1,1);
-                // this.UnSelectItem(items[0]);
-                // this._interactionContext.ClearContext();
+                context.Items.splice(1,1);
             }
             return true;
         }
@@ -48,9 +53,4 @@ export class TankCombination implements ICombination{
     Clear(): void {
     }
     
-    private UnSelectItem(item: Item) {            
-        var selectable = <ISelectable> <any> (item);
-        selectable.SetSelected(false);
-    }
-
 }

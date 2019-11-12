@@ -17,6 +17,7 @@ import { AttackMenuItem } from '../../Core/Menu/Buttons/AttackMenuItem';
 import { MoneyMenuItem } from '../../Core/Menu/Buttons/MoneyMenuItem';
 import { HealMenuItem } from '../../Core/Menu/Buttons/HealMenuItem';
 import { SpeedFieldMenuItem } from '../../Core/Menu/Buttons/SpeedFieldMenuItem';
+import { ISelectable } from '../../Core/ISelectable';
 
 export default class CanvasComponent extends Component<any, { 
   HasMenu: boolean,
@@ -30,10 +31,12 @@ export default class CanvasComponent extends Component<any, {
   private _loop: { (): void };
   private _gameSetup: GameSetup;
   private _stop: boolean;
+  private _onItemSelectionChanged:{(obj:any,selectable:ISelectable):void};
 
   constructor() {
     super();
     this._stop = true;
+    this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this); 
     PlaygroundHelper.InitApp();
     this._loop = this.GameLoop.bind(this);
     this.setState({
@@ -43,6 +46,16 @@ export default class CanvasComponent extends Component<any, {
       Amount:PlaygroundHelper.Settings.PocketMoney,
       HasFlag:false
     });
+  }
+
+  private OnItemSelectionChanged(obj:any,item: ISelectable): void {
+    if(!item.IsSelected()){
+      item.SelectionChanged.off(this._onItemSelectionChanged);
+      this.setState({
+        ...this.state,
+        Item:null,
+      });
+    }
   }
 
   componentDidMount() {
@@ -89,6 +102,7 @@ export default class CanvasComponent extends Component<any, {
       });
     });
     PlaygroundHelper.SelectedItem.on((obj:any, e:Item)=>{
+      (e as unknown as ISelectable).SelectionChanged.on(this._onItemSelectionChanged);
       this.setState({
         ...this.state,
         Item:e
@@ -189,7 +203,7 @@ export default class CanvasComponent extends Component<any, {
             </button>
             <button type="button" class="btn btn-dark without-padding" 
             onClick={(e: any) => this.SendContext(new PatrolMenuItem())}>
-              <div class="white-background">{this.state.HasFlag ? 'ON' : 'OFF'}</div>
+              <div class="white-background">{false ? 'ON' : 'OFF'}</div>
               <div class="fill-patrol max-width standard-space"></div>
             </button>
             <button type="button" class="btn btn-dark without-padding" 
@@ -240,7 +254,7 @@ export default class CanvasComponent extends Component<any, {
           <div class="btn-group-vertical max-width">
             <button type="button" class="btn btn-dark without-padding" 
             onClick={(e: any) => this.SendContext(new PatrolMenuItem())}>
-              <div class="white-background">{this.state.HasFlag ? 'ON' : 'OFF'}</div>
+              <div class="white-background">{false ? 'ON' : 'OFF'}</div>
               <div class="fill-patrol max-width standard-space"></div>
             </button>
             <button type="button" class="btn btn-dark without-padding" 
@@ -255,7 +269,7 @@ export default class CanvasComponent extends Component<any, {
 
   private TopMenu() {
     return (
-      <div style="position: fixed;">
+      <div style="position: fixed;left: 50%;transform: translateX(-50%);">
         <button type="button" class="btn btn-dark space-out">
           {this.state.Amount}
         <span class="fill-diamond badge badge-secondary very-small-space middle very-small-margin"> </span>

@@ -1,6 +1,5 @@
 import { isNullOrUndefined } from "util";
 import { ICombination } from "./ICombination";
-import { Item } from "../../Items/Item";
 import { Ceil } from "../../Ceils/Ceil";
 import { MoneyMenuItem } from "../../Menu/Buttons/MoneyMenuItem";
 import { BasicField } from "../../Ceils/Field/BasicField";
@@ -8,19 +7,28 @@ import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 import { MoneyField } from "../../Ceils/Field/MoneyField";
 import { PeerHandler } from "../../../Menu/Network/Host/On/PeerHandler";
 import { PacketKind } from "../../../Menu/Network/PacketKind"; 
+import { CombinationContext } from "./CombinationContext";
+import { ContextMode } from "../../Utils/ContextMode";
+import { InteractionKind } from "../IInteractionContext";
 
 export class MoneyCeilCombination implements ICombination{
 
-    IsMatching(items: Item[]): boolean { 
-        return items.length >=2 
-        && items[0] instanceof Ceil
-        && items[1] instanceof MoneyMenuItem 
+    IsMatching(context: CombinationContext): boolean { 
+        return this.IsNormalMode(context) 
+        && context.Items.length >=2 
+        && context.Items[0] instanceof Ceil
+        && context.Items[1] instanceof MoneyMenuItem 
     }
 
-    Combine(items: Item[]): boolean {
-        if(this.IsMatching(items))
+    private IsNormalMode(context: CombinationContext) {
+        return context.ContextMode === ContextMode.SingleSelection
+            && context.Kind === InteractionKind.Up;
+    }
+
+    Combine(context: CombinationContext): boolean {
+        if(this.IsMatching(context))
         {
-            let ceil = <Ceil> items[0];
+            let ceil = <Ceil> context.Items[0];
             if(!isNullOrUndefined(ceil))
             {
                 if(ceil.GetField() instanceof BasicField)
@@ -38,7 +46,7 @@ export class MoneyCeilCombination implements ICombination{
                     }
                 }
             }
-            items.splice(0,2);
+            context.Items.splice(0,2);
             ceil.SetSelected(false);
             return true;
         }

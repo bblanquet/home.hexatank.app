@@ -73,7 +73,7 @@ export class Headquarter extends AliveItem implements IField
     }
     protected OnCeilStateChanged(obj:any,ceilState: CeilState): void {
         this.GetDisplayObjects().forEach(s=>{
-            s.visible = ceilState === CeilState.Visible;
+            s.visible = ceilState !== CeilState.Hidden;
         });
     }
 

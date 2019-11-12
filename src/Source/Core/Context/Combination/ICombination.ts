@@ -1,7 +1,7 @@
-import { Item } from "../../Items/Item";
+import { CombinationContext } from './CombinationContext';
 
 export interface ICombination{
-    IsMatching(items:Array<Item>):boolean;
-    Combine(items:Array<Item>):boolean;
+    IsMatching(items:CombinationContext):boolean;
+    Combine(items:CombinationContext):boolean;
     Clear():void;
 } 

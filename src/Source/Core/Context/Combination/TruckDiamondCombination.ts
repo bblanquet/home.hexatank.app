@@ -1,6 +1,5 @@
 import { DiamondFieldOrder } from './../../Ia/Order/DiamondFieldOrder';
 import { TruckPatrolOrder } from './../../Ia/Order/TruckPatrolOrder';
-import { SimpleOrder } from "../../Ia/Order/SimpleOrder";
 import { ICombination } from "./ICombination";
 import { Item } from "../../Items/Item";
 import { Truck } from "../../Items/Unit/Truck";
@@ -9,6 +8,7 @@ import { Diamond } from "../../Ceils/Field/Diamond";
 import { HqFieldOrder } from '../../Ia/Order/HqFieldOrder';
 import { IContextContainer } from '../IContextContainer';
 import { ISelectable } from '../../ISelectable'; 
+import { CombinationContext } from './CombinationContext';
 
 export class TruckDiamondCombination implements ICombination
 {
@@ -18,21 +18,21 @@ export class TruckDiamondCombination implements ICombination
         this._interactionContext = interactionContext;
     }
 
-    IsMatching(items: Item[]): boolean { 
-        return items.length >=2 
-        && items[0].constructor.name === Truck.name 
-        && items[1].constructor.name === Ceil.name
-        && (items[1] as Ceil).GetField().constructor.name == Diamond.name
+    IsMatching(context: CombinationContext): boolean { 
+        return context.Items.length >=2 
+        && context.Items[0].constructor.name === Truck.name 
+        && context.Items[1].constructor.name === Ceil.name
+        && (context.Items[1] as Ceil).GetField().constructor.name == Diamond.name
     } 
  
-    Combine(items: Item[]): boolean {
-        if(this.IsMatching(items))
+    Combine(context: CombinationContext): boolean {
+        if(this.IsMatching(context))
         {
-            let truck = <Truck>items[0];
-            let diamond = <Diamond>(items[1] as Ceil).GetField();
+            let truck = <Truck>context.Items[0];
+            let diamond = <Diamond>(context.Items[1] as Ceil).GetField();
             let order = new TruckPatrolOrder(truck, new HqFieldOrder(truck.Hq,truck),new DiamondFieldOrder(diamond,truck));
             truck.SetOrder(order);
-            this.UnSelectItem(items[0]);
+            this.UnSelectItem(context.Items[0]);
             this._interactionContext.ClearContext();
             return true;
         }

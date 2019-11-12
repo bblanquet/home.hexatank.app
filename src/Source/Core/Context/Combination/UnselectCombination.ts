@@ -1,13 +1,15 @@
 import { PlaygroundHelper } from './../../Utils/PlaygroundHelper';
 import { ICombination } from "./ICombination";
 import { ISelectable } from "../../ISelectable";
-import { Menu } from "../../Menu/Menu";
 import { Item } from "../../Items/Item"; 
 import { Ceil } from "../../Ceils/Ceil";
 import { Vehicle } from "../../Items/Unit/Vehicle";
 import { BasicField } from "../../Ceils/Field/BasicField";
 import { CeilState } from "../../Ceils/CeilState";
 import { IContextContainer } from "../IContextContainer";
+import { CombinationContext } from './CombinationContext';
+import { ContextMode } from '../../Utils/ContextMode';
+import { InteractionKind } from '../IInteractionContext';
 
 export class UnselectCombination implements ICombination{
     private _isSelectable:{(item:Item):boolean}; 
@@ -18,19 +20,26 @@ export class UnselectCombination implements ICombination{
         this._interactionContext = interactionContext;
     }
     
-    IsMatching(items: Item[]): boolean {
-        return items.filter(i=> this._isSelectable(i)).length >=2 && 
-        (items.filter(i=> this._isSelectable(i)).length === items.filter(i=> i instanceof Ceil).length
-        || items.filter(i=> this._isSelectable(i)).length === items.filter(i=> i instanceof Vehicle).length);
+    IsMatching(context: CombinationContext): boolean {
+        return this.IsNormalMode(context)
+        && context.Items.filter(i=> this._isSelectable(i)).length >=2 && 
+        (context.Items.filter(i=> this._isSelectable(i)).length === context.Items.filter(i=> i instanceof Ceil).length
+        || context.Items.filter(i=> this._isSelectable(i)).length === context.Items.filter(i=> i instanceof Vehicle).length);
     }    
-    Combine(items: Item[]): boolean {
-        if(this.IsMatching(items)){
-            const lastItem = items[items.length-1];
+
+    private IsNormalMode(context: CombinationContext) {
+        return context.ContextMode === ContextMode.SingleSelection
+            && context.Kind === InteractionKind.Up;
+    }
+
+    Combine(context: CombinationContext): boolean {
+        if(this.IsMatching(context)){
+            const lastItem = context.Items[context.Items.length-1];
             if(this._isSelectable(lastItem))
             {
-                if(lastItem === items[0])
+                if(lastItem === context.Items[0])
                 {
-                    this.UnSelectItem(items[0]);
+                    this.UnSelectItem(context.Items[0]);
                     this._interactionContext.ClearContext();
                     if(lastItem instanceof Vehicle)
                     {
@@ -49,7 +58,7 @@ export class UnselectCombination implements ICombination{
                 }
                 else
                 {
-                    this.UnSelectItem(items[0]);
+                    this.UnSelectItem(context.Items[0]);
                     this._interactionContext.ClearContext();
                     this._interactionContext.Push(lastItem,true);
                 }

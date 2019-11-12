@@ -6,6 +6,9 @@ import { Tank } from "../../Items/Unit/Tank";
 import { Ceil } from "../../Ceils/Ceil";
 import { IContextContainer } from "../IContextContainer";
 import { ISelectable } from "../../ISelectable";
+import { CombinationContext } from "./CombinationContext";
+import { InteractionKind } from "../IInteractionContext";
+import { ContextMode } from "../../Utils/ContextMode";
 
 export class TargetCombination implements ICombination{
     private _interactionContext:IContextContainer;
@@ -14,24 +17,29 @@ export class TargetCombination implements ICombination{
         this._interactionContext = interactionContext;
     }
 
-    IsMatching(items: Item[]): boolean 
+    IsMatching(combination: CombinationContext): boolean 
     {
-        return items.length ===3
-        && items[0] instanceof Tank
-        && items[1] instanceof TargetMenuItem
-        && items[2] instanceof Ceil
-        && (items[2] as Ceil).IsShootable()
-        ;
+        return this.IsNormalMode(combination) 
+        && combination.Items.length ===3
+        && combination.Items[0] instanceof Tank
+        && combination.Items[1] instanceof TargetMenuItem
+        && combination.Items[2] instanceof Ceil
+        && (combination.Items[2] as Ceil).IsShootable();
     }
 
-    Combine(items: Item[]): boolean {
-        if(this.IsMatching(items))
+    private IsNormalMode(context: CombinationContext) {
+        return context.ContextMode === ContextMode.SingleSelection
+            && context.Kind === InteractionKind.Up;
+    }
+
+    Combine(context: CombinationContext): boolean {
+        if(this.IsMatching(context))
         {
-            let tank = <Tank>items[0];
-            let ceil = (items[2] as Ceil);
+            let tank = <Tank>context.Items[0];
+            let ceil = (context.Items[2] as Ceil);
             let order = new TargetOrder(tank,ceil.GetShootableEntity());
             tank.SetOrder(order);
-            this.UnSelectItem(items[0]);
+            this.UnSelectItem(context.Items[0]);
             this._interactionContext.ClearContext();
             return true;
         }

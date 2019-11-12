@@ -1,20 +1,28 @@
 import { PlaygroundHelper } from './../../Utils/PlaygroundHelper';
 import { TankMenuItem } from '../../Menu/Buttons/TankMenuItem';
 import { ICombination } from "./ICombination";
-import { Item } from "../../Items/Item";
+import { CombinationContext } from './CombinationContext';
+import { ContextMode } from '../../Utils/ContextMode';
+import { InteractionKind } from '../IInteractionContext';
 
 export class AddTankCombination implements ICombination{
 
-    IsMatching(items: Item[]): boolean {
-        return items.length >=1
-        && items[items.length-1] instanceof TankMenuItem 
+    IsMatching(context: CombinationContext): boolean {
+        return this.IsNormalMode(context) 
+        && context.Items.length >=1
+        && context.Items[context.Items.length-1] instanceof TankMenuItem 
     }
 
-    Combine(items: Item[]): boolean {
-        if(this.IsMatching(items))
+    private IsNormalMode(context: CombinationContext) {
+        return context.ContextMode === ContextMode.SingleSelection
+            && context.Kind === InteractionKind.Up;
+    }
+
+    Combine(context: CombinationContext): boolean {
+        if(this.IsMatching(context))
         {
             PlaygroundHelper.PlayerHeadquarter.AddTankRequest();
-            items.splice(items.length-1,1);
+            context.Items.splice(context.Items.length-1,1);
             return true;
         }
         return false;

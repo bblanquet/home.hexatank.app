@@ -18,6 +18,7 @@ export class ItemsManager implements IItemsManager
                 return;
             }   
         }
+        event.OnSelect(null);
     }
 
     public Update():void{

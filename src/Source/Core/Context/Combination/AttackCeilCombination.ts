@@ -6,7 +6,7 @@ import { BasicField } from "../../Ceils/Field/BasicField";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 import { AttackField } from "../../Ceils/Field/AttackField";
 import { PacketKind } from "../../../Menu/Network/PacketKind";
-import { PeerHandler } from "../../../Menu/Network/Host/On/PeerHandler";
+import { PeerHandler } from "../../../Menu/Network/Host/On/PeerHandler"; 
 import { CombinationContext } from "./CombinationContext";
 import { ContextMode } from "../../Utils/ContextMode";
 import { InteractionKind } from "../IInteractionContext";
@@ -22,7 +22,7 @@ export class AttackCeilCombination implements ICombination{
 
     private IsNormalMode(context: CombinationContext) {
         return context.ContextMode === ContextMode.SingleSelection
-            && context.Kind === InteractionKind.Up;
+            && context.InteractionKind === InteractionKind.Up;
     }
 
     Combine(combination: CombinationContext): boolean {

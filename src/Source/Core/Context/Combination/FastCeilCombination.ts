@@ -22,11 +22,11 @@ export class FastCeilCombination implements ICombination{
 
     private IsNormalMode(context: CombinationContext) {
         return context.ContextMode === ContextMode.SingleSelection
-            && context.Kind === InteractionKind.Up;
+            && context.InteractionKind === InteractionKind.Up;
     }
 
     Combine(context: CombinationContext): boolean {
-        if(this.IsMatching(context))
+        if(this.IsMatching(context)) 
         {
             let ceil = <Ceil> context.Items[0];
             if(!isNullOrUndefined(ceil))

@@ -1,10 +1,17 @@
+import { ContextMode } from './../Utils/ContextMode';
+import { MultiCellSelectionCombination } from './Combination/Multi/MultiCellSelectionCombination';
+import { MultiUnitSelectionCombination } from './Combination/Multi/MultiUnitSelectionCombination';
+import { MultiSelectionCombination } from './Combination/Multi/MultiSelectionCombination';
+import { UpMultiMenuCombination } from './Combination/Multi/UpMultiMenuCombination';
+import { MovingMultiMenuCombination } from './Combination/Multi/MovingMultiMenuCombination';
+import { MultiSelectionMenu } from './../Menu/Smart/MultiSelectionMenu';
+import { DisplayMultiMenuCombination } from './Combination/Multi/DisplayMultiMenuCombination';
 import { CombinationContext } from './Combination/CombinationContext';
 import { AddTruckCombination } from './Combination/AddTruckCombination';
 import { AddTankCombination } from './Combination/AddTankCombination';
 import { FlagCellCombination } from './Combination/FlagCellCombination';
 import { TruckDiamondCombination } from './Combination/TruckDiamondCombination';
-import { IListenersContainer as IListenersContainer } from './IListenersContainer';
-import { PatternChecker } from './PatternChecker'; 
+import { CombinationDispatcher } from './CombinationDispatcher'; 
 import { IContextContainer } from './IContextContainer';
 import {IInteractionContext, InteractionKind} from './IInteractionContext';
 import { UnselectCombination } from './Combination/UnselectCombination';
@@ -26,14 +33,16 @@ import { Item } from '../Items/Item';
 import { Headquarter } from '../Ceils/Field/Headquarter';
 import { Ceil } from '../Ceils/Ceil';
 import { Vehicle } from '../Items/Unit/Vehicle';
-import { ContextMode } from '../Utils/ContextMode';
+import { ICombinationDispatcher } from './ICombinationDispatcher';
+import { MovingInteractionContext } from '../Menu/Smart/MovingInteractionContext';
+import { isNullOrUndefined } from 'util';
 
 export class InteractionContext implements IContextContainer, IInteractionContext{
-    public Mode: ContextMode;
+    public Mode: ContextMode=ContextMode.SingleSelection;
     public Kind: InteractionKind;
     public Point:PIXI.Point;
     private _selectedItem:Array<Item>; 
-    private _listener:IListenersContainer;
+    private _dispatcher:ICombinationDispatcher;
 
     private _isSelectable:{(item:Item):boolean};
     private _currentHq:Headquarter;
@@ -41,12 +50,20 @@ export class InteractionContext implements IContextContainer, IInteractionContex
     public SetCombination(currentHq:Headquarter):void{
         this._selectedItem = [];
         this._isSelectable = this.IsSelectable.bind(this);
-        this._currentHq = currentHq;
+        this._currentHq = currentHq; 
         this.SetListener();
     }
 
     private SetListener() {
+        const multiselectionMenu = new MultiSelectionMenu();
+        const multiSelectionContext = new MovingInteractionContext();
         let combinations = new Array<ICombination>();
+        combinations.push(new DisplayMultiMenuCombination(this,multiselectionMenu));
+        combinations.push(new MovingMultiMenuCombination(multiselectionMenu));
+        combinations.push(new UpMultiMenuCombination(multiselectionMenu,this));
+        combinations.push(new MultiSelectionCombination(multiSelectionContext));
+        combinations.push(new MultiUnitSelectionCombination(multiselectionMenu,multiSelectionContext,this));
+        combinations.push(new MultiCellSelectionCombination(multiselectionMenu,multiSelectionContext,this));
         combinations.push(new FlagCellCombination());
         combinations.push(new AddTankCombination());
         combinations.push(new AddTruckCombination());
@@ -64,7 +81,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
         combinations.push(new AttackCeilCombination());
         combinations.push(new MoneyCeilCombination());
         combinations.push(new HealCeilCombination());
-        this._listener = new PatternChecker(combinations);
+        this._dispatcher = new CombinationDispatcher(combinations);
     }
 
     public IsSelectable(item:Item):boolean
@@ -97,21 +114,25 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 
     public OnSelect(item:Item):void
     {
-        if(item instanceof Ceil){
-            if(this.ContainsSelectable(item))
-            {
-                item = this.GetSelectable(item);
+        if(!isNullOrUndefined(item)){
+            if(item instanceof Ceil){
+                if(this.ContainsSelectable(item))
+                {
+                    item = this.GetSelectable(item);
+                }
             }
+            this._selectedItem.push(item);  
         }
-
-        this._selectedItem.push(item);   
-        console.log(`%c [${this._selectedItem.length}] selected: ${item.constructor.name}`,'font-weight:bold;color:red;');
+        if(this.Kind !== InteractionKind.Moving){
+            console.log(`%c [${this._selectedItem.length}] selected: ${item ? item.constructor.name:'none'} ${InteractionKind[this.Kind]} ${ContextMode[this.Mode]}`,'font-weight:bold;color:red;');
+        }
         
         let context = new CombinationContext();
         context.Items = this._selectedItem;
-        context.Kind = this.Kind;
+        context.InteractionKind = this.Kind;
         context.ContextMode = this.Mode;
-        this._listener.Check(context);
+        context.Point = this.Point;
+        this._dispatcher.Check(context);
     }
 
     public Push(item: Item, forced:boolean): void {

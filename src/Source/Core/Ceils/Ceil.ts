@@ -276,23 +276,22 @@ export class Ceil extends Item implements ICeil , ISelectable
     public Update(viewX: number, viewY: number): void
     {
         super.Update(viewX,viewY);
-        if(PlaygroundHelper.Viewport.lastViewport){
-            let scale = PlaygroundHelper.Viewport.lastViewport.scaleX;
-            this._circle.radius = PlaygroundHelper.SelectionMode === ContextMode.MultipleSelection ?
-            PlaygroundHelper.Settings.Size/2 * scale
-            : PlaygroundHelper.Settings.Size * scale;
-            this._circle.x = (this.GetSprites()[0].x -PlaygroundHelper.Viewport.left) * scale;
-            this._circle.y = (this.GetSprites()[0].y -PlaygroundHelper.Viewport.top) * scale;;
-        }
-
     }
 
     public Select(context:IInteractionContext):boolean
     {
+        if(PlaygroundHelper.Viewport.lastViewport){
+            let scale = PlaygroundHelper.Viewport.lastViewport.scaleX;
+            this._circle.radius = context.Mode === ContextMode.MultipleSelection ? PlaygroundHelper.Settings.Size/2 * scale: PlaygroundHelper.Settings.Size * scale;
+            this._circle.radius = PlaygroundHelper.Settings.Size * scale;
+            this._circle.x = (this.GetSprites()[0].x -PlaygroundHelper.Viewport.left) * scale;
+            this._circle.y = (this.GetSprites()[0].y -PlaygroundHelper.Viewport.top) * scale;;
+        }
+
         var isSelected = this._circle.contains(context.Point.x,context.Point.y);
         if(isSelected)
         {
-            console.log(`%c Q:${this.GetCoordinate().Q} R:${this.GetCoordinate().R}`,'color:blue;font-weight:bold;');
+            //console.log(`%c Q:${this.GetCoordinate().Q} R:${this.GetCoordinate().R}`,'color:blue;font-weight:bold;');
             context.OnSelect(this);
         }
 

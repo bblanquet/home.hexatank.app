@@ -13,9 +13,9 @@ export class FlagCellCombination implements ICombination{
         && context.Items.length ===1 
         && context.Items[0] instanceof Ceil;
     }
-    private IsNormalMode(context: CombinationContext) {
+    private IsNormalMode(context: CombinationContext) { 
         return context.ContextMode === ContextMode.SingleSelection
-            && context.Kind === InteractionKind.Up;
+            && context.InteractionKind === InteractionKind.Up;
     }
 
     Combine(context: CombinationContext): boolean {

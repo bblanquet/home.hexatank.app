@@ -12,7 +12,7 @@ export class ClearTrashCombination implements ICombination{
     constructor(isSelectable:{(item:Item):boolean},interactionContext:IContextContainer){
         this._isSelectable = isSelectable;
         this._interactionContext = interactionContext;
-    }
+    } 
     
     IsMatching(context: CombinationContext): boolean {
         return this.IsNormalMode(context) 
@@ -21,7 +21,7 @@ export class ClearTrashCombination implements ICombination{
 
     private IsNormalMode(context: CombinationContext) {
         return context.ContextMode === ContextMode.SingleSelection
-            && context.Kind === InteractionKind.Up;
+            && context.InteractionKind === InteractionKind.Up;
     }
 
     Combine(items: CombinationContext): boolean {

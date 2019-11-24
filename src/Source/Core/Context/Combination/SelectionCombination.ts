@@ -9,7 +9,7 @@ import { CombinationContext } from './CombinationContext';
 import { ContextMode } from '../../Utils/ContextMode';
 import { InteractionKind } from '../IInteractionContext';
 
-export class SelectionCombination implements ICombination{
+export class SelectionCombination implements ICombination{ 
     private _isSelectable:{(item:Item):boolean};
 
     constructor(isSelectable:{(item:Item):boolean}){
@@ -24,7 +24,7 @@ export class SelectionCombination implements ICombination{
 
     private IsNormalMode(context: CombinationContext) {
         return context.ContextMode === ContextMode.SingleSelection
-            && context.Kind === InteractionKind.Up;
+            && context.InteractionKind === InteractionKind.Up;
     }
 
     Combine(context: CombinationContext): boolean {

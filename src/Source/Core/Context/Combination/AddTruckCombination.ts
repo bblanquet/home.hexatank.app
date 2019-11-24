@@ -3,7 +3,7 @@ import { PlaygroundHelper } from './../../Utils/PlaygroundHelper';
 import { ICombination } from "./ICombination";
 import { CombinationContext } from './CombinationContext';
 import { ContextMode } from '../../Utils/ContextMode';
-import { InteractionKind } from '../IInteractionContext';
+import { InteractionKind } from '../IInteractionContext'; 
 
 export class AddTruckCombination implements ICombination{
 
@@ -15,7 +15,7 @@ export class AddTruckCombination implements ICombination{
 
     private IsNormalMode(context: CombinationContext) {
         return context.ContextMode === ContextMode.SingleSelection
-            && context.Kind === InteractionKind.Up;
+            && context.InteractionKind === InteractionKind.Up;
     }
 
     Combine(context: CombinationContext): boolean {

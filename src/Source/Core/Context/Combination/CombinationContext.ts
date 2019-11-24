@@ -4,6 +4,7 @@ import { Item } from "../../Items/Item";
 
 export class CombinationContext{
     public Items:Array<Item>;
-    public Kind:InteractionKind;
+    public InteractionKind:InteractionKind;
     public ContextMode:ContextMode;
+    public Point:PIXI.Point;
 }

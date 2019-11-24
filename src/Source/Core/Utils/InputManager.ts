@@ -13,7 +13,6 @@ export class InputManager{
     public MovingEvent:LiteEvent<Point>;
     public DownEvent:LiteEvent<Point>;
     public UpEvent:LiteEvent<Point>;
-    public DownStateEvent:LiteEvent<boolean>;
 
     constructor(){
         this._downPoint = new Point(0,0);
@@ -22,7 +21,6 @@ export class InputManager{
         this.MovingEvent = new LiteEvent<Point>();
         this.HoldingEvent = new LiteEvent<Point>();
         this.DownEvent = new LiteEvent<Point>();
-        this.DownStateEvent = new LiteEvent<boolean>();
     }
 
     public OnMouseDown(event: PIXI.interaction.InteractionEvent):void{
@@ -33,7 +31,6 @@ export class InputManager{
 
         this._downPoint.X = event.data.global.x;
         this._downPoint.Y = event.data.global.y;
-        this.DownStateEvent.trigger(true);
         this.DownEvent.trigger(new Point(this._currentPoint.X,this._currentPoint.Y));
 
         if(this._timerOut){
@@ -71,7 +68,6 @@ export class InputManager{
         
         this._currentPoint.X = event.data.global.x;
         this._currentPoint.Y = event.data.global.y;
-        this.DownStateEvent.trigger(false);
         this.UpEvent.trigger(new Point(this._currentPoint.X,this._currentPoint.Y));
     }
 }

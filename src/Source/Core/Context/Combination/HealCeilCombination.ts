@@ -9,7 +9,7 @@ import { PeerHandler } from "../../../Menu/Network/Host/On/PeerHandler";
 import { PacketKind } from "../../../Menu/Network/PacketKind"; 
 import { CombinationContext } from "./CombinationContext";
 import { ContextMode } from "../../Utils/ContextMode";
-import { InteractionKind } from "../IInteractionContext";
+import { InteractionKind } from "../IInteractionContext"; 
 
 export class HealCeilCombination implements ICombination 
 {
@@ -23,7 +23,7 @@ export class HealCeilCombination implements ICombination
 
     private IsNormalMode(context: CombinationContext) {
         return context.ContextMode === ContextMode.SingleSelection
-            && context.Kind === InteractionKind.Up;
+            && context.InteractionKind === InteractionKind.Up;
     }
     
     Combine(context: CombinationContext): boolean {

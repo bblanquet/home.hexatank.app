@@ -12,7 +12,7 @@ export class CancelCombination implements ICombination{
 
     constructor(interactionContext:IContextContainer){  
         this._interactionContext = interactionContext;
-    }
+    } 
     
     IsMatching(context: CombinationContext): boolean {
         return this.IsNormalMode(context)  
@@ -22,7 +22,7 @@ export class CancelCombination implements ICombination{
     
     private IsNormalMode(context: CombinationContext) {
         return context.ContextMode === ContextMode.SingleSelection
-            && context.Kind === InteractionKind.Up;
+            && context.InteractionKind === InteractionKind.Up;
     }
 
     Combine(context: CombinationContext): boolean {

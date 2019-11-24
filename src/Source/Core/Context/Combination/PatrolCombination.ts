@@ -35,7 +35,7 @@ export class PatrolCombination implements ICombination{
 
     private IsNormalMode(context: CombinationContext) {
         return context.ContextMode === ContextMode.SingleSelection
-            && context.Kind === InteractionKind.Up;
+            && context.InteractionKind === InteractionKind.Up; 
     }
 
     public GetCeils(items: Item[]):Array<Ceil>{

@@ -1,7 +1,7 @@
 import { CombinationContext } from './CombinationContext';
 
 export interface ICombination{
-    IsMatching(items:CombinationContext):boolean;
-    Combine(items:CombinationContext):boolean;
+    IsMatching(context:CombinationContext):boolean;
+    Combine(context:CombinationContext):boolean;
     Clear():void;
 } 

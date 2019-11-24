@@ -4,7 +4,7 @@ import { TargetOrder } from "../../Ia/Order/TargetOrder";
 import { Item } from "../../Items/Item";
 import { Tank } from "../../Items/Unit/Tank"; 
 import { Ceil } from "../../Ceils/Ceil";
-import { IContextContainer } from "../IContextContainer";
+import { IContextContainer } from "../IContextContainer"; 
 import { ISelectable } from "../../ISelectable";
 import { CombinationContext } from "./CombinationContext";
 import { InteractionKind } from "../IInteractionContext";
@@ -29,7 +29,7 @@ export class TargetCombination implements ICombination{
 
     private IsNormalMode(context: CombinationContext) {
         return context.ContextMode === ContextMode.SingleSelection
-            && context.Kind === InteractionKind.Up;
+            && context.InteractionKind === InteractionKind.Up;
     }
 
     Combine(context: CombinationContext): boolean {

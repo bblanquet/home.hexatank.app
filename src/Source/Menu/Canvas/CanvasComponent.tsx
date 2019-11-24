@@ -18,6 +18,7 @@ import { MoneyMenuItem } from '../../Core/Menu/Buttons/MoneyMenuItem';
 import { HealMenuItem } from '../../Core/Menu/Buttons/HealMenuItem';
 import { SpeedFieldMenuItem } from '../../Core/Menu/Buttons/SpeedFieldMenuItem';
 import { ISelectable } from '../../Core/ISelectable';
+import { InteractionKind } from '../../Core/Context/IInteractionContext';
 
 export default class CanvasComponent extends Component<any, { 
   HasMenu: boolean,
@@ -189,6 +190,7 @@ export default class CanvasComponent extends Component<any, {
   }
 
   private SendContext(item:Item): void {
+    PlaygroundHelper.InteractionContext.Kind = InteractionKind.Up;
     return PlaygroundHelper.InteractionContext.OnSelect(item);
   }
 

@@ -1,5 +1,5 @@
 import { CombinationContext } from './Combination/CombinationContext';
 
-export interface IListenersContainer{
+export interface ICombinationDispatcher{
     Check(items:CombinationContext):void;
 } 

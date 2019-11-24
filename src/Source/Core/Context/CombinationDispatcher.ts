@@ -1,8 +1,8 @@
-import { IListenersContainer } from "./IListenersContainer";
+import { ICombinationDispatcher } from "./ICombinationDispatcher";
 import { ICombination } from "./Combination/ICombination";
 import { CombinationContext } from "./Combination/CombinationContext";
 
-export class PatternChecker implements IListenersContainer{
+export class CombinationDispatcher implements ICombinationDispatcher{ 
     private _combinations:Array<ICombination>;
       
     constructor(combinations:Array<ICombination>){

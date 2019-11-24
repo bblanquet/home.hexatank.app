@@ -1,4 +1,6 @@
-import { ContextSwitcher } from './../../Utils/ContextSwitcher';
+import { InteractionKind } from './../../Context/IInteractionContext';
+import { InteractionContext } from './../../Context/InteractionContext';
+import { MovingState } from './../../Items/Unit/Utils/MovingState';
 import { CeilDecorator } from '../../Ceils/CeilDecorator'; 
 import { CeilProperties } from '../../Ceils/CeilProperties';
 import { Cloud } from '../../Items/Others/Cloud'; 
@@ -13,7 +15,7 @@ import { BasicItem } from '../../Items/BasicItem';
 import { Archive } from '../../Utils/ResourceArchiver';  
 import { MapContext } from '../Generator/MapContext'; 
 import { Point } from '../../Utils/Point';
-import { InteractionKind } from '../../Context/IInteractionContext';
+import { ContextMode } from '../../Utils/ContextMode';
 
 export class MapRender{
     private _hqRender:HqRender;
@@ -50,18 +52,28 @@ export class MapRender{
         PlaygroundHelper.InteractionContext.SetCombination(playerHq);
         
         PlaygroundHelper.InputManager.UpEvent.on(
-            (o:any,point:Point)=>{
-                const interaction = PlaygroundHelper.InteractionContext;
-                interaction.Point = new PIXI.Point(point.X,point.Y);
-                interaction.Kind = InteractionKind.Up;
-                PlaygroundHelper.Playground.Select(interaction);
+            (point:Point)=>{
+                this.NotifyContext(InteractionKind.Up,point);
             }
+        );
 
-        )
+        PlaygroundHelper.InputManager.DownEvent.on(
+            (point:Point)=>{
+                this.Notify(InteractionKind.Down,point);
+            }
+        );
 
-        var contextSwitcher = new ContextSwitcher(PlaygroundHelper.InteractionContext,
-            PlaygroundHelper.Playground,
-            PlaygroundHelper.InputManager);
+        PlaygroundHelper.InputManager.HoldingEvent.on(
+            (point:Point)=>{
+                this.Notify(InteractionKind.Holding,point);
+            }
+        );
+
+        PlaygroundHelper.InputManager.MovingEvent.on(
+            (point:Point)=>{
+                this.Notify(InteractionKind.Moving,point);
+            }
+        );
 
         //make hq ceils visible
         playerHq.GetCurrentCeil().SetState(CeilState.Visible);
@@ -75,6 +87,23 @@ export class MapRender{
         });
     }
 
+    private Notify(kind:InteractionKind,point: Point) {
+        const interaction = PlaygroundHelper.InteractionContext;
+        interaction.Point = new PIXI.Point(point.X, point.Y);
+        interaction.Kind = kind;
+        interaction.OnSelect(null);
+    }
+
+    private NotifyContext(kind:InteractionKind,point: Point) {
+        const interaction = PlaygroundHelper.InteractionContext;
+        interaction.Point = new PIXI.Point(point.X, point.Y);
+        interaction.Kind = kind;
+        if(interaction.Mode === ContextMode.SingleSelection){
+            PlaygroundHelper.Playground.Select(interaction);
+        }else{
+            interaction.OnSelect(null);
+        }
+    }
 
     public AddClouds(items: Item[]) {
         items.push(new Cloud(200, 20 * PlaygroundHelper.Settings.Size, 800, Archive.nature.clouds[0]));

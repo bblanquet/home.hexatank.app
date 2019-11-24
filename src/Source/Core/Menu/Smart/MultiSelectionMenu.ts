@@ -4,16 +4,15 @@ import { StaticBasicItem } from '../../Items/StaticBasicItem';
 import { Archive } from '../../Utils/ResourceArchiver';
 import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
 import { BoundingBox } from '../../Utils/BoundingBox';
-import { LiteEvent } from '../../Utils/LiteEvent';
 
 export class MultiSelectionMenu {
     private _tankSelection:StaticBasicItem;
     private _cellSelection:StaticBasicItem;
     private _initialPoint:Point;
     private _isVisible:boolean=false;
-    public SelectedModeEvent:LiteEvent<SelectionMode> = new LiteEvent<SelectionMode>(); 
+    private _selectionMode:SelectionMode= SelectionMode.none;
 
-    constructor(private movingEvent:LiteEvent<Point>)
+    constructor()
     {
         this._tankSelection = new StaticBasicItem(BoundingBox.Create(0,0,
             PlaygroundHelper.Settings.Size*2,
@@ -39,8 +38,6 @@ export class MultiSelectionMenu {
 
         this._cellSelection.SetAlive(()=>true);
         this._cellSelection.SetVisible(this.IsVisible.bind(this));
-
-        this.movingEvent.on((e:Point)=>this.OnMouseMove(e));
     }
 
     public Show(point:Point):void{
@@ -73,20 +70,21 @@ export class MultiSelectionMenu {
         }
     }
 
+    public GetMode():SelectionMode{
+        return this._selectionMode;
+    }
+
     public Hide():void{
         if(this._tankSelection.IsHover || this._cellSelection.IsHover){
             if(this._tankSelection.IsHover)
             {
-                this.SelectedModeEvent.trigger(SelectionMode.unit);
+                this._selectionMode =SelectionMode.unit;
             }
             else{
-                this.SelectedModeEvent.trigger(SelectionMode.cell);
+                this._selectionMode =SelectionMode.cell;
             }
         }
         this._isVisible = false;
     }
 
-    public Destroy():void{
-        this.movingEvent.off((e:Point)=>this.OnMouseMove(e));
-    }
 }

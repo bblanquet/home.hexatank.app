@@ -128,6 +128,8 @@ export const Archive = {
         strength:'./floor/strength.svg',
         speed:'./floor/speed.svg',
         health:'./floor/health.svg',
+        poison:'./floor/poisonCell.svg',
+        slow:'./floor/slowCell.svg',
         emptyMoney:'./floor/money.svg',
         fullMoney:'./floor/money2.svg',
     },

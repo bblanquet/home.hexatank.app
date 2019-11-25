@@ -4,6 +4,8 @@ import { ICombination } from "../ICombination";
 import { CombinationContext } from "../CombinationContext";
 import { ContextMode } from "../../../Utils/ContextMode";
 import { InteractionKind } from "../../IInteractionContext";
+import { SelectionMode } from '../../../Menu/Smart/SelectionMode';
+import { PlaygroundHelper } from '../../../Utils/PlaygroundHelper';
 
 export class UpMultiMenuCombination implements ICombination{
     
@@ -17,7 +19,15 @@ export class UpMultiMenuCombination implements ICombination{
     }    
     Combine(context: CombinationContext): boolean {
         if(this.IsMatching(context)){
-            this._interactionContext.Mode = ContextMode.MultipleSelection;
+            if(this._multiselection.GetMode() !== SelectionMode.none)
+            {
+                this._interactionContext.Mode = ContextMode.MultipleSelection;
+            }
+            else
+            {
+                this._interactionContext.Mode = ContextMode.SingleSelection;
+                PlaygroundHelper.RestartNavigation();
+            }
             this._multiselection.Hide();
             return true;
         }

@@ -11,7 +11,7 @@ import { CombinationContext } from "./CombinationContext";
 import { ContextMode } from "../../Utils/ContextMode";
 import { InteractionKind } from "../IInteractionContext";
 
-export class AttackCeilCombination implements ICombination{ 
+export class AttackCellCombination implements ICombination{ 
 
     IsMatching(combination: CombinationContext): boolean {
         return this.IsNormalMode(combination) 

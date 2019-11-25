@@ -11,7 +11,7 @@ import { CombinationContext } from "./CombinationContext";
 import { ContextMode } from "../../Utils/ContextMode";
 import { InteractionKind } from "../IInteractionContext";
 
-export class FastCeilCombination implements ICombination{
+export class FastCellCombination implements ICombination{
 
     IsMatching(context: CombinationContext): boolean {
         return this.IsNormalMode(context)

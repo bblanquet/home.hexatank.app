@@ -1,3 +1,6 @@
+import { PoisonCellCombination } from './Combination/PoisonCellCombination';
+import { SlowCellCombination } from './Combination/SlowCellCombination';
+import { SlowMenuItem } from './../Menu/Buttons/SlowMenuItem';
 import { ContextMode } from './../Utils/ContextMode';
 import { MultiCellSelectionCombination } from './Combination/Multi/MultiCellSelectionCombination';
 import { MultiUnitSelectionCombination } from './Combination/Multi/MultiUnitSelectionCombination';
@@ -19,13 +22,13 @@ import { ClearTrashCombination } from './Combination/ClearTrashCombination';
 import { TruckCombination } from './Combination/TruckCombination';
 import { TankCombination } from './Combination/TankCombination';
 import { PatrolCombination } from './Combination/PatrolCombination';
-import { FastCeilCombination } from './Combination/FastCeilCombination'; 
-import { AttackCeilCombination } from './Combination/AttackCeilCombination'; 
-import { HealCeilCombination } from './Combination/HealCeilCombination';
+import { FastCellCombination } from './Combination/FastCeilCombination'; 
+import { AttackCellCombination } from './Combination/AttackCeilCombination'; 
+import { HealCellCombination as HealCellCombination } from './Combination/HealCeilCombination';
 import { ICombination } from './Combination/ICombination';
 import { SelectionCombination } from './Combination/SelectionCombination';
 import { CancelCombination } from './Combination/CancelCombination';
-import { MoneyCeilCombination } from './Combination/MoneyCeilCombination';
+import { MoneyCellCombination } from './Combination/MoneyCeilCombination';
 import { TargetCombination } from './Combination/TargetCombination';
 import { SwitchToVehicleCombination } from './Combination/SwitchToVehicleCombination';
 import * as PIXI from 'pixi.js';
@@ -33,7 +36,7 @@ import { Item } from '../Items/Item';
 import { Headquarter } from '../Ceils/Field/Headquarter';
 import { Ceil } from '../Ceils/Ceil';
 import { Vehicle } from '../Items/Unit/Vehicle';
-import { ICombinationDispatcher } from './ICombinationDispatcher';
+import { ICombinationDispatcher } from './ICombinationDispatcher'; 
 import { MovingInteractionContext } from '../Menu/Smart/MovingInteractionContext';
 import { isNullOrUndefined } from 'util';
 
@@ -76,11 +79,13 @@ export class InteractionContext implements IContextContainer, IInteractionContex
         combinations.push(new ClearTrashCombination(this._isSelectable, this));
         combinations.push(new UnselectCombination(this._isSelectable, this));
         combinations.push(new SelectionCombination(this._isSelectable));
-        combinations.push(new FastCeilCombination());
+        combinations.push(new FastCellCombination());
         combinations.push(new TargetCombination(this));
-        combinations.push(new AttackCeilCombination());
-        combinations.push(new MoneyCeilCombination());
-        combinations.push(new HealCeilCombination());
+        combinations.push(new AttackCellCombination());
+        combinations.push(new SlowCellCombination());
+        combinations.push(new PoisonCellCombination());
+        combinations.push(new MoneyCellCombination());
+        combinations.push(new HealCellCombination());
         this._dispatcher = new CombinationDispatcher(combinations);
     }
 

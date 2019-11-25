@@ -1,3 +1,6 @@
+import { SlowField } from './../../../Ceils/Field/SlowField';
+import { SlowMenuItem } from './../../../Menu/Buttons/SlowMenuItem';
+import { PoisonMenuItem } from './../../../Menu/Buttons/PoisonMenuItem';
 import { Ceil } from './../../../Ceils/Ceil';
 import { MultiSelectionMenu } from '../../../Menu/Smart/MultiSelectionMenu';
 import { ICombination } from "../ICombination";
@@ -18,6 +21,8 @@ import { MoneyMenuItem } from '../../../Menu/Buttons/MoneyMenuItem';
 import { FastField } from '../../../Ceils/Field/FastField';
 import { InteractionContext } from '../../InteractionContext';
 import { InteractionKind } from '../../IInteractionContext';
+import { Field } from '../../../Ceils/Field/Field';
+import { PoisonField } from '../../../Ceils/Field/PoisonField';
 
 export class MultiCellSelectionCombination implements ICombination{
     private _cells:Ceil[];
@@ -64,51 +69,29 @@ export class MultiCellSelectionCombination implements ICombination{
                     PlaygroundHelper.PlayerHeadquarter.GetAmount() 
                     >= PlaygroundHelper.Settings.FieldPrice*this._cells.length){
                     
-                    if(menuItem instanceof HealMenuItem ){
-                        this._cells.forEach(c=>{
-                            PeerHandler.SendMessage(PacketKind.Field,{
-                                Hq:PlaygroundHelper.PlayerHeadquarter.GetCurrentCeil().GetCoordinate(),
-                                Ceil:c.GetCoordinate(),
-                                Type:"Heal"
-                            });
-                            let field = new HealField(c);
-                            PlaygroundHelper.Playground.Items.push(field);
-                        });
+                    if(menuItem instanceof HealMenuItem)
+                    {
+                        this.SetMenuItem(c=>new HealField(c),'Heal');
                     }
                     else if(menuItem instanceof AttackMenuItem)
                     {
-                        this._cells.forEach(c=>{
-                            PeerHandler.SendMessage(PacketKind.Field,{
-                                Hq:PlaygroundHelper.PlayerHeadquarter.GetCurrentCeil().GetCoordinate(),
-                                Ceil:c.GetCoordinate(),
-                                Type:"Attack"
-                            });
-                            let field = new AttackField(c);
-                            PlaygroundHelper.Playground.Items.push(field);
-                        });
+                        this.SetMenuItem(c=>new AttackField(c),'Attack');
                     }
                     else if(menuItem instanceof SpeedFieldMenuItem)
                     {
-                        this._cells.forEach(c=>{
-                            PeerHandler.SendMessage(PacketKind.Field,{
-                                Hq:PlaygroundHelper.PlayerHeadquarter.GetCurrentCeil().GetCoordinate(),
-                                Ceil:c.GetCoordinate(),
-                                Type:"Money"
-                            });
-                            let field = new MoneyField(c);
-                            PlaygroundHelper.Playground.Items.push(field);
-                        });
+                        this.SetMenuItem(c=>new FastField(c),'Fast');
+                    }
+                    else if(menuItem instanceof PoisonMenuItem)
+                    {
+                        this.SetMenuItem(c=>new PoisonField(c),'Poison');
+                    }
+                    else if(menuItem instanceof SlowMenuItem)
+                    {
+                        this.SetMenuItem(c=>new SlowField(c),'Slow');
                     }
                     else if(menuItem instanceof MoneyMenuItem){
-                        this._cells.forEach(c=>{
-                            PeerHandler.SendMessage(PacketKind.Field,{
-                                Hq:PlaygroundHelper.PlayerHeadquarter.GetCurrentCeil().GetCoordinate(),
-                                Ceil:c.GetCoordinate(),
-                                Type:"Fast"
-                            });
-                            let field = new FastField(c);
-                            PlaygroundHelper.Playground.Items.push(field);
-                        });
+
+                        this.SetMenuItem(c=>new MoneyField(c),'Money');
                     }
                 }
                 this._cells.forEach(c => {
@@ -122,6 +105,17 @@ export class MultiCellSelectionCombination implements ICombination{
         }
         return false;
     }
+    private SetMenuItem(getField:(e:Ceil)=>Field, fieldType:string) {
+        this._cells.forEach(c => {
+            PeerHandler.SendMessage(PacketKind.Field, {
+                Hq: PlaygroundHelper.PlayerHeadquarter.GetCurrentCeil().GetCoordinate(),
+                Ceil: c.GetCoordinate(),
+                Type: fieldType
+            });
+            PlaygroundHelper.Playground.Items.push(getField(c));
+        });
+    }
+
     Clear(): void {
     }
 

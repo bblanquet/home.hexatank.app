@@ -1,31 +1,30 @@
-import { ICombination } from "./ICombination";
-import { HealMenuItem } from "../../Menu/Buttons/HealMenuItem";
+import { PoisonField } from './../../Ceils/Field/PoisonField';
+import { PoisonMenuItem } from './../../Menu/Buttons/PoisonMenuItem';
 import { isNullOrUndefined } from "util";
+import { ICombination } from "./ICombination";
 import { Ceil } from "../../Ceils/Ceil";
 import { BasicField } from "../../Ceils/Field/BasicField";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
-import { HealField } from "../../Ceils/Field/HealField";
 import { PeerHandler } from "../../../Menu/Network/Host/On/PeerHandler";
-import { PacketKind } from "../../../Menu/Network/PacketKind";  
+import { PacketKind } from "../../../Menu/Network/PacketKind"; 
 import { CombinationContext } from "./CombinationContext";
 import { ContextMode } from "../../Utils/ContextMode";
-import { InteractionKind } from "../IInteractionContext"; 
+import { InteractionKind } from "../IInteractionContext";
 
-export class HealCellCombination implements ICombination 
-{
+export class PoisonCellCombination implements ICombination{
 
-    public IsMatching(context: CombinationContext): boolean {
+    IsMatching(context: CombinationContext): boolean { 
         return this.IsNormalMode(context) 
-        && context.Items.length >=2
+        && context.Items.length >=2 
         && context.Items[0] instanceof Ceil
-        && context.Items[1] instanceof HealMenuItem 
-    }    
+        && context.Items[1] instanceof PoisonMenuItem 
+    }
 
     private IsNormalMode(context: CombinationContext) {
         return context.ContextMode === ContextMode.SingleSelection
             && context.InteractionKind === InteractionKind.Up;
-    }
-    
+    } 
+
     Combine(context: CombinationContext): boolean {
         if(this.IsMatching(context))
         {
@@ -40,9 +39,9 @@ export class HealCellCombination implements ICombination
                         PeerHandler.SendMessage(PacketKind.Field,{
                             Hq:PlaygroundHelper.PlayerHeadquarter.GetCurrentCeil().GetCoordinate(),
                             Ceil:ceil.GetCoordinate(),
-                            Type:"Heal"
+                            Type:'Poison'
                         });
-                        let field = new HealField(ceil);
+                        let field = new PoisonField(ceil);
                         PlaygroundHelper.Playground.Items.push(field);
                     }
                 }
@@ -53,6 +52,8 @@ export class HealCellCombination implements ICombination
         }
         return false;
     }
+
     Clear(): void {
-    } 
+    }
+    
 }

@@ -1,3 +1,5 @@
+import { PoisonField } from './../../Ceils/Field/PoisonField';
+import { SlowField } from './../../Ceils/Field/SlowField';
 import { AttackField } from './../../Ceils/Field/AttackField';
 import { HealField } from './../../Ceils/Field/HealField';
 import { PeerHandler } from './../../../Menu/Network/Host/On/PeerHandler';
@@ -73,6 +75,16 @@ export class MessageDispatcher{
             else if(type === "Fast")
             {
                 let field = new FastField(ceil);
+                PlaygroundHelper.Playground.Items.push(field);
+            }
+            else if(type === "Slow")
+            {
+                let field = new SlowField(ceil);
+                PlaygroundHelper.Playground.Items.push(field);
+            }
+            else if(type === "Poison")
+            {
+                let field = new PoisonField(ceil);
                 PlaygroundHelper.Playground.Items.push(field);
             }
         }

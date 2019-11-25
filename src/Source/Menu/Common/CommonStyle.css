@@ -145,7 +145,7 @@
 .standard-space{
   width: 100%;
   min-width: 100%;
-  min-height: 70px;
+  min-height: 50px;
   height: 30%;
 }
 
@@ -162,6 +162,10 @@
 
 .space-out{
   margin: 5px;
+}
+
+.darker{
+  background-color: #1f1f1f;
 }
 
 .container{
@@ -349,4 +353,20 @@ body{
   background-position: center;
   background-repeat: no-repeat;
   background-image: url('/out/menu/powerMenu.svg');
+}
+
+.fill-poison {
+  overflow: hidden;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('/out/menu/poisonMenu.svg');
+}
+
+.fill-slow {
+  overflow: hidden;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('/out/menu/slowMenu.svg');
 }

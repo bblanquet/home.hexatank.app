@@ -57,15 +57,18 @@ export class MultiSelectionMenu {
 
     public OnMouseMove(point:Point){
         if(this._isVisible){
-            if(point.X < this._initialPoint.X-10)
+            if(point.X < this._initialPoint.X-20)
             {
                 this._tankSelection.IsHover = true;
                 this._cellSelection.IsHover = false;
             }
-            else if(this._initialPoint.X+10 < point.X)
+            else if(this._initialPoint.X+20 < point.X)
             {
                 this._tankSelection.IsHover = false;
                 this._cellSelection.IsHover = true;
+            }else{
+                this._tankSelection.IsHover = false;
+                this._cellSelection.IsHover = false;
             }
         }
     }

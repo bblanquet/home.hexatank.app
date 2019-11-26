@@ -1,6 +1,4 @@
 import { InteractionKind } from './../../Context/IInteractionContext';
-import { InteractionContext } from './../../Context/InteractionContext';
-import { MovingState } from './../../Items/Unit/Utils/MovingState';
 import { CeilDecorator } from '../../Ceils/CeilDecorator'; 
 import { CeilProperties } from '../../Ceils/CeilProperties';
 import { Cloud } from '../../Items/Others/Cloud'; 
@@ -54,6 +52,12 @@ export class MapRender{
         PlaygroundHelper.InputManager.UpEvent.on(
             (point:Point)=>{
                 this.NotifyContext(InteractionKind.Up,point);
+            }
+        );
+
+        PlaygroundHelper.InputManager.MovingUpEvent.on(
+            (point:Point)=>{
+                this.Notify(InteractionKind.MovingUp,point);
             }
         );
 

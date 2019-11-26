@@ -4,7 +4,6 @@ import { PlaygroundHelper } from '../../Core/Utils/PlaygroundHelper';
 export default class HomeComponent extends Component<any, any> {
 
     constructor() {
-        PlaygroundHelper.InitApp();
         super();
     }
 

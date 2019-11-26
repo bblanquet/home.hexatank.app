@@ -23,7 +23,8 @@ export class MultiUnitSelectionCombination implements ICombination{
     IsMatching(context: CombinationContext): boolean {
         return this._multiselection.GetMode() === SelectionMode.unit
         && context.ContextMode === ContextMode.MultipleSelection
-        && context.InteractionKind === InteractionKind.Up;
+        && (context.InteractionKind === InteractionKind.Up
+            || context.InteractionKind === InteractionKind.MovingUp);
     }    
 
     Combine(context: CombinationContext): boolean {

@@ -40,7 +40,6 @@ export default class CanvasComponent extends Component<any, {
     super();
     this._stop = true;
     this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this); 
-    PlaygroundHelper.InitApp();
     this._loop = this.GameLoop.bind(this);
     this.setState({
       HasMenu:false,

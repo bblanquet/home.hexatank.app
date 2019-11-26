@@ -4,12 +4,12 @@ import { Archive } from "./ResourceArchiver";
 import * as PIXI from 'pixi.js';
 
 export class SpriteProvider implements ISpriteProvider{ 
-    private _zoomInSvgDictionary:{ [id: string]: PIXI.Sprite; };
-    private _zoomOutSvgDictionary:{ [id: string]: PIXI.Sprite; };
+    private _inDict:{ [id: string]: PIXI.Sprite; };
+    private _outDict:{ [id: string]: PIXI.Sprite; };
 
     constructor(){
-        this._zoomInSvgDictionary = {};
-        this._zoomOutSvgDictionary = {};
+        this._inDict = {};
+        this._outDict = {};
     }
 
     public GetZoomOutSprite(name: string,accuracy:number): PIXI.Sprite 
@@ -20,19 +20,19 @@ export class SpriteProvider implements ISpriteProvider{
             name = name.slice(1);
             name = postension + name; 
 
-            if(this._zoomOutSvgDictionary[name] === null){
-                return this._zoomOutSvgDictionary[name];
+            if(this._outDict[name] === null){
+                return this._outDict[name];
             }
             else
             {
                 const texture = new PIXI.Sprite(PIXI.Texture.fromImage(name,undefined,undefined,accuracy));
-                this._zoomOutSvgDictionary[name] = texture;
+                this._outDict[name] = texture;
                 return texture;
             }
         }
         else
         {
-            throw Error("nothing");// new PIXI.Sprite();//this._textureDictionary[name]
+            throw Error("asset not found");
         }
     }
 
@@ -43,13 +43,13 @@ export class SpriteProvider implements ISpriteProvider{
             const postension = './in'
             name = name.slice(1);
             name = postension + name;
-            if(this._zoomInSvgDictionary[name] === null){
-                return this._zoomInSvgDictionary[name];
+            if(this._inDict[name] === null){
+                return this._inDict[name];
             }
             else
             {
                 const texture = new PIXI.Sprite(PIXI.Texture.fromImage(name,undefined,undefined,accuracy));
-                this._zoomInSvgDictionary[name] = texture;
+                this._inDict[name] = texture;
                 return texture;
             }
         }
@@ -60,47 +60,39 @@ export class SpriteProvider implements ISpriteProvider{
     }
 
     public PreloadTexture(): void {
-        //this.LoadArchive(Archive,'./out',0.5,this._zoomOutSvgDictionary);
-        //this.LoadArchive(Archive,'./in',1,this._zoomInSvgDictionary);
-        // let container = new PIXI.Container();
-        // container.parent = PlaygroundHelper.App.stage; 
-        // for(let key in this._zoomOutSvgDictionary){
-        //     container.addChild(this._zoomOutSvgDictionary[key]);
-        //     //container.addChild(this._zoomInSvgDictionary[key]);
-        // }
-        // PlaygroundHelper.App.stage.addChild(container);
-        // for (var i = PlaygroundHelper.App.stage.children.length - 1; i >= 0; i--) {	PlaygroundHelper.App.stage.removeChild(PlaygroundHelper.App.stage.children[i]);};
+        const outKeys = new Array<string>();
+        const inKeys = new Array<string>();
+        this.GetAssetPaths(Archive,'./out', outKeys);
+        this.GetAssetPaths(Archive,'./in', inKeys);
+        let container = new PIXI.Container();
+         container.parent = PlaygroundHelper.App.stage; 
+         for(let key in this._outDict){
+             PIXI.loader.load()
+             container.addChild(this._outDict[key]);
+             container.addChild(this._inDict[key]);
+         }
+         PlaygroundHelper.App.stage.addChild(container);
+         for (var i = PlaygroundHelper.App.stage.children.length - 1; i >= 0; i--) {	PlaygroundHelper.App.stage.removeChild(PlaygroundHelper.App.stage.children[i]);};
     }
 
-    private LoadArchive(value:any,postension:string,accuracy:number,dictionary:{ [id: string]: PIXI.Sprite; }){
+    private GetAssetPaths(value:any,postension:string,keys:string[]){
         if(typeof value === "string")
         {
-            let name = postension + value.slice(1);
-            const texture = PIXI.Sprite.from(name);
-            dictionary[name] = texture;
+            keys.push(postension + value.slice(1));
         }
         else if(value instanceof Array)
         {
             const filenames = value as Array<string>;
             filenames.forEach(filename=>{
-                let name = postension + filename.slice(1);
-                //const texture = //PIXI.Sprite.from(name);
-                //.Texture.fromImage(name,undefined,undefined,accuracy);
-                const texture = new PIXI.Sprite(PIXI.Texture.fromImage(name,undefined,undefined,accuracy));
-                dictionary[name] = texture;
+                keys.push(postension + filename.slice(1));
             });
         }
         else
         {
             for(let key in value){
-                this.LoadArchive(value[key],postension,accuracy,dictionary);
+                this.GetAssetPaths(value[key],postension,keys);
             }
         }
     }
 
-
-
-    private IsOldStyleSvg(name: string):boolean {
-        return name.includes('.svg');
-    }
 }

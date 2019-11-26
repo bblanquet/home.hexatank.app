@@ -34,10 +34,10 @@ export class MultiCellSelectionCombination implements ICombination{
     IsMatching(context: CombinationContext): boolean {
         return (context.ContextMode === ContextMode.MultipleSelection 
             && this._multiselection.GetMode() === SelectionMode.cell
-            && context.InteractionKind === InteractionKind.Up)
+            && (context.InteractionKind === InteractionKind.Up||context.InteractionKind === InteractionKind.MovingUp))
         || 
         (context.ContextMode === ContextMode.SingleSelection 
-            && context.InteractionKind === InteractionKind.Up
+            && (context.InteractionKind === InteractionKind.Up||context.InteractionKind === InteractionKind.MovingUp)
             && this._cells.length > 0
             && context.Items.length > 0
             && !(context.Items[context.Items.length] instanceof Ceil));

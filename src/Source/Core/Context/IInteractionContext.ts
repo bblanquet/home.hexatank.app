@@ -11,6 +11,7 @@ export interface IInteractionContext{
 export enum InteractionKind{
     Down,
     Up,
+    MovingUp,
     Moving,
     Holding,
 }

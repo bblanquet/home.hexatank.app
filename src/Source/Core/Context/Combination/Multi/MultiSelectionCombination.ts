@@ -24,7 +24,8 @@ export class MultiSelectionCombination implements ICombination{
                 this._interactionContext.Moving(new Point(context.Point.x,context.Point.y));
             }
 
-            if(context.InteractionKind === InteractionKind.Up){
+            if(context.InteractionKind === InteractionKind.Up 
+                || context.InteractionKind === InteractionKind.MovingUp){
                 return false;
             }
 

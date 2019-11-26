@@ -15,10 +15,12 @@ export class UpMultiMenuCombination implements ICombination{
 
     IsMatching(context: CombinationContext): boolean {
         return context.ContextMode === ContextMode.SelectionMenu 
-        && context.InteractionKind === InteractionKind.Up;
+        && (context.InteractionKind === InteractionKind.MovingUp
+            || context.InteractionKind === InteractionKind.Up);
     }    
     Combine(context: CombinationContext): boolean {
         if(this.IsMatching(context)){
+            this._multiselection.Hide();
             if(this._multiselection.GetMode() !== SelectionMode.none)
             {
                 this._interactionContext.Mode = ContextMode.MultipleSelection;
@@ -28,7 +30,6 @@ export class UpMultiMenuCombination implements ICombination{
                 this._interactionContext.Mode = ContextMode.SingleSelection;
                 PlaygroundHelper.RestartNavigation();
             }
-            this._multiselection.Hide();
             return true;
         }
         return false;

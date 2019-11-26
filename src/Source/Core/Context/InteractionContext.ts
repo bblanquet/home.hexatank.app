@@ -1,6 +1,5 @@
 import { PoisonCellCombination } from './Combination/PoisonCellCombination';
 import { SlowCellCombination } from './Combination/SlowCellCombination';
-import { SlowMenuItem } from './../Menu/Buttons/SlowMenuItem';
 import { ContextMode } from './../Utils/ContextMode';
 import { MultiCellSelectionCombination } from './Combination/Multi/MultiCellSelectionCombination';
 import { MultiUnitSelectionCombination } from './Combination/Multi/MultiUnitSelectionCombination';

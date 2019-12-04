@@ -5,6 +5,7 @@ import { Ceil } from "./Ceil";
 import { Archive } from "../Utils/ResourceArchiver";
 import { WaterField } from "./Field/WaterField"; 
 import { DecorationType } from "../Setup/Generator/DecorationType";
+import { MapMode } from '../Setup/Generator/MapMode';
 
 export class CeilDecorator{
 
@@ -51,7 +52,7 @@ export class CeilDecorator{
         return result;
     }    
 
-    public static SetDecoration(items:Array<Item>, ceil:Ceil, type:DecorationType):void
+    public static SetDecoration(mapMode:MapMode, items:Array<Item>, ceil:Ceil, type:DecorationType):void
     {
         switch(type){
             case DecorationType.Stone: { 
@@ -71,7 +72,7 @@ export class CeilDecorator{
                 break; 
              }  
              case DecorationType.Tree: { 
-                items.push(new BlockingField(ceil,Archive.nature.tree)); 
+                items.push(new BlockingField(ceil,mapMode === MapMode.forest ? Archive.nature.tree : Archive.nature.palmTree)); 
                 break; 
              }
              case DecorationType.Rock: { 

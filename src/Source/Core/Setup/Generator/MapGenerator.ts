@@ -1,3 +1,4 @@
+import { MapMode } from './MapMode';
 import { HexAxial } from './../../Utils/Coordinates/HexAxial';
 import { AreaEngine } from './../../Ia/Area/AreaEngine';
 import { CeilProperties } from './../../Ceils/CeilProperties';
@@ -13,10 +14,11 @@ import { DiamondHq } from './DiamondHq';
 
 export class MapGenerator
 {
-    public GetMapDefinition(hqCount:number):MapContext
+    public GetMapDefinition(hqCount:number, mapMode:MapMode):MapContext
     {
         const size = 20;
         const context = new MapContext();
+        context.MapMode = mapMode;
         const mapItems = new Array<MapItem>();
         const mapBuilder = new FlowerMapBuilder();
         const ceilPositions = mapBuilder.Build(size);

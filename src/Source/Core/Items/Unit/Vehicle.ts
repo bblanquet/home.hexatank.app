@@ -1,3 +1,4 @@
+import { BasicItem } from './../BasicItem';
 import { LiteEvent } from './../../Utils/LiteEvent';
 import { Headquarter } from './../../Ceils/Field/Headquarter';
 import {Dust} from './Dust';
@@ -25,6 +26,7 @@ import { InteractionContext } from '../../Context/InteractionContext';
 import { PeerHandler } from '../../../Menu/Network/Host/On/PeerHandler';
 import { PacketKind } from '../../../Menu/Network/PacketKind';
 import { Explosion } from './Explosion';
+import { Sprite } from 'pixi.js';
 
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable
 {
@@ -36,6 +38,10 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     protected Wheels:Array<string>;
     private WheelIndex:number;
 
+    public HasCamouflage:boolean;
+    public Camouflage:BasicItem;
+    public camouflagedSrpites:Sprite[];
+    
     //movable
     CurrentRadius:number;
     GoalRadius:number;
@@ -91,7 +97,13 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this.CellChanged = new LiteEvent<Ceil>();
     }
 
+    protected abstract RemoveCamouflage():void;
+
     public SetOrder(order: IOrder): void {
+        if(this.HasCamouflage){
+            this.RemoveCamouflage();
+        }
+
         this._pendingOrder = order;
 
         if(!isNullOrUndefined(this._order))

@@ -41,11 +41,9 @@ export const Archive = {
             './menu/priceFive.svg'
         ],
         topMenu:'./menu/topMenu.svg',
-        topRightMenu:'./menu/topRightMenu.svg',
         plusButton:'./menu/plusButton.svg',
         minButton:'./menu/minusButton.svg',
         bottomMenu:'./menu/bottomMenu.svg',
-        bottomRightMenu:'./menu/bottomRightMenu.svg',
         backgroundButton:'./menu/backgroundMenu.svg',
         hoverBackgroundButton:'./menu/hoverBackgroundMenu.svg',
         selectabedBackgroundButton:'./menu/selectedBackgroundMenu.svg',
@@ -62,10 +60,7 @@ export const Archive = {
         patrolButton:'./menu/patrolButton.svg',
         targetButton:'./menu/targetButton.svg',
         cancelButton:'./menu/cancelButton.svg',
-        tankButton:'./menu/tankbutton.svg',
         truckButton:'./menu/truckButton.svg',
-        zoomInButton:'./menu/zoomInButton.svg',
-        zoomOutButton:'./menu/zoomOutButton.svg',
     },
     missiles:[
         './tank/missile/missile.svg',
@@ -155,6 +150,8 @@ export const Archive = {
         bush:'./nature/bush.svg',
         rock:'./nature/rock.svg',
         grass:'./nature/grass.svg',
+        sand:'./nature/sand.svg',
+        palmTree:'./nature/palmTree.svg',
         tree:'./nature/tree.svg',
         water:{
             leaf:'./nature/waterleaf.svg',

@@ -6,7 +6,6 @@ import CanvasComponent from './Source/Menu/Canvas/CanvasComponent';
 import OffHostComponent from './Source/Menu/Network/Host/Off/OffHostComponent'; 
 import OnHostComponent from './Source/Menu/Network/Host/On/OnHostComponent'; 
 import OffJoinComponent from './Source/Menu/Network/Join/Off/OffJoinComponent'; 
-import LoadComponent from './Source/Menu/Loader/LoadComponent'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 import Router from 'preact-router';
@@ -14,9 +13,8 @@ import './Source/Menu/Common/CommonStyle.css'
 
 render(
     (<Router>
-        <HomeComponent path="/Home" />
+        <HomeComponent path="/Home" default/>
         <SinglePlayerComponent path="/SinglePlayer" />
-        <LoadComponent path="/Loading" default/>
         <CanvasComponent path="/Canvas"/>
         <OffHostComponent path="/OffHost"/>
         <OnHostComponent path="/OnHost/:serverName/:playerName/:isAdmin"/>

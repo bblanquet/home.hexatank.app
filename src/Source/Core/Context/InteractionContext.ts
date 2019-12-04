@@ -1,3 +1,7 @@
+import { CamouflageCombination } from './Combination/CamouflageCombination';
+import { CamouflageMenuItem } from './../Menu/Buttons/CamouflageMenutItem';
+import { InputManager } from './../Utils/InputManager';
+import { PlaygroundHelper } from './../Utils/PlaygroundHelper';
 import { PoisonCellCombination } from './Combination/PoisonCellCombination';
 import { SlowCellCombination } from './Combination/SlowCellCombination';
 import { ContextMode } from './../Utils/ContextMode';
@@ -38,6 +42,7 @@ import { Vehicle } from '../Items/Unit/Vehicle';
 import { ICombinationDispatcher } from './ICombinationDispatcher'; 
 import { MovingInteractionContext } from '../Menu/Smart/MovingInteractionContext';
 import { isNullOrUndefined } from 'util';
+import { Point } from '../Utils/Point';
 
 export class InteractionContext implements IContextContainer, IInteractionContext{
     public Mode: ContextMode=ContextMode.SingleSelection;
@@ -49,17 +54,18 @@ export class InteractionContext implements IContextContainer, IInteractionContex
     private _isSelectable:{(item:Item):boolean};
     private _currentHq:Headquarter;
 
+    constructor(private _inputManager:InputManager){
+
+    }
+
     public SetCombination(currentHq:Headquarter):void{
         this._selectedItem = [];
         this._isSelectable = this.IsSelectable.bind(this);
         this._currentHq = currentHq; 
-        this.SetListener();
-    }
-
-    private SetListener() {
         const multiselectionMenu = new MultiSelectionMenu();
         const multiSelectionContext = new MovingInteractionContext();
         let combinations = new Array<ICombination>();
+        
         combinations.push(new DisplayMultiMenuCombination(this,multiselectionMenu));
         combinations.push(new MovingMultiMenuCombination(multiselectionMenu));
         combinations.push(new UpMultiMenuCombination(multiselectionMenu,this));
@@ -79,13 +85,77 @@ export class InteractionContext implements IContextContainer, IInteractionContex
         combinations.push(new UnselectCombination(this._isSelectable, this));
         combinations.push(new SelectionCombination(this._isSelectable));
         combinations.push(new FastCellCombination());
+        combinations.push(new CamouflageCombination());
         combinations.push(new TargetCombination(this));
         combinations.push(new AttackCellCombination());
         combinations.push(new SlowCellCombination());
         combinations.push(new PoisonCellCombination());
         combinations.push(new MoneyCellCombination());
         combinations.push(new HealCellCombination());
+
         this._dispatcher = new CombinationDispatcher(combinations);
+    }
+
+    public Mute():void{
+        this._inputManager.MovingUpEvent.off(this.MovingUp().bind(this));
+        this._inputManager.UpEvent.off(this.Up().bind(this));
+        this._inputManager.HoldingEvent.off(this.Holding().bind(this));
+        this._inputManager.MovingUpEvent.off(this.MovingUp().bind(this));
+        this._inputManager.MovingEvent.off(this.Moving().bind(this));
+    }
+
+    public Listen():void{
+        this._inputManager.UpEvent.on(this.Up().bind(this));
+        this._inputManager.MovingUpEvent.on(this.MovingUp().bind(this));
+        this._inputManager.DownEvent.on(this.Down().bind(this));
+        this._inputManager.HoldingEvent.on(this.Holding());
+        this._inputManager.MovingEvent.on(this.Moving());
+    }
+
+    private Moving(): (obj: any, data?: Point) => void {
+        return (point: Point) => {
+            this.Notify(InteractionKind.Moving, point);
+        };
+    }
+
+    private Holding(): (obj: any, data?: Point) => void {
+        return (point: Point) => {
+            this.Notify(InteractionKind.Holding, point);
+        };
+    }
+
+    private Down(): (obj: any, data?: Point) => void {
+        return (point: Point) => {
+            this.Notify(InteractionKind.Down, point);
+        };
+    }
+
+    private Up(): (obj: any, data?: Point) => void {
+        return (point: Point) => {
+            this.NotifyContext(InteractionKind.Up, point);
+        };
+    }
+
+    private MovingUp(): (obj: any, data?: Point) => void {
+        return (point: Point) => {
+            this.Notify(InteractionKind.MovingUp, point);
+        };
+    }
+
+    private Notify(kind:InteractionKind,point: Point) {
+        this.Point = new PIXI.Point(point.X, point.Y);
+        this.Kind = kind;
+        this.OnSelect(null);
+    }
+
+    private NotifyContext(kind:InteractionKind,point: Point) {
+        this.Point = new PIXI.Point(point.X, point.Y);
+        this.Kind = kind;
+        if(this.Mode === ContextMode.SingleSelection){
+            PlaygroundHelper.Playground.Select(this);
+        }else{
+            this.OnSelect(null);
+        }
     }
 
     public IsSelectable(item:Item):boolean

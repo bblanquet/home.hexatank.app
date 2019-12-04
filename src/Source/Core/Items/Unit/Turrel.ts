@@ -77,7 +77,9 @@ export class Turrel extends Item implements IRotatable
 
     private Action():void
     {
-        var isTargetReached = this.Rotating();
+        if(!this.Base.HasCamouflage){
+            var isTargetReached = this.Rotating();
+        }
 
         if(this.IsCanonOverHeat)
         {
@@ -85,12 +87,14 @@ export class Turrel extends Item implements IRotatable
         }
         else
         {
-            if(!this.IsAnimated && isTargetReached)
-            {
-                this.Shoot();
+            if(!this.Base.HasCamouflage){
+                if(!this.IsAnimated && isTargetReached)
+                {
+                    this.Shoot();
+                }
+        
+                this.CanonAnimation();
             }
-    
-            this.CanonAnimation();
         }
     }
 

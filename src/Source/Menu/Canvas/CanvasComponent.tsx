@@ -1,16 +1,16 @@
 import { Component, h } from 'preact';
 import { PlaygroundHelper } from '../../Core/Utils/PlaygroundHelper';
 import { GameSetup } from '../../Core/GameSetup';
-import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
 import { PeerHandler } from '../Network/Host/On/PeerHandler';
 import { route } from 'preact-router';
 import { Item } from '../../Core/Items/Item';
 import { Tank } from '../../Core/Items/Unit/Tank';
 import { Truck } from '../../Core/Items/Unit/Truck';
 import { Ceil } from '../../Core/Ceils/Ceil';
-import {TankMenuItem} from '../../Core/Menu/Buttons/TankMenuItem';
+import {TankMenuItem} from '../../Core/Menu/Buttons/TankMenuItem'; 
 import {TruckMenuItem} from '../../Core/Menu/Buttons/TruckMenuItem';
 import { TargetMenuItem } from '../../Core/Menu/Buttons/TargetMenuItem';
+import { CamouflageMenuItem } from '../../Core/Menu/Buttons/CamouflageMenutItem';
 import { PatrolMenuItem } from '../../Core/Menu/Buttons/PatrolMenuItem';
 import { CancelMenuItem } from '../../Core/Menu/Buttons/CancelMenuItem';
 import { AttackMenuItem } from '../../Core/Menu/Buttons/AttackMenuItem';
@@ -41,6 +41,7 @@ export default class CanvasComponent extends Component<any, {
     this._stop = true;
     this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this); 
     this._loop = this.GameLoop.bind(this);
+    PlaygroundHelper.InitApp();
     this.setState({
       HasMenu:false,
       TankRequestCount:0,
@@ -66,14 +67,7 @@ export default class CanvasComponent extends Component<any, {
     this._gameCanvas.appendChild(PlaygroundHelper.App.view);
 
     if (!PlaygroundHelper.MapContext) {
-      PlaygroundHelper.MapContext = new MapGenerator().GetMapDefinition(3);
-      PlaygroundHelper.SetDefaultName();
-      PlaygroundHelper.MapContext.Hqs[0].PlayerName = PlaygroundHelper.PlayerName;
-      PlaygroundHelper.MapContext.Hqs.forEach(hq => {
-        if (!hq.PlayerName) {
-          hq.isIa = true;
-        }
-      });
+      throw 'context missing, cannot implement map'
     }
     this._gameSetup = new GameSetup();
     this._gameSetup.SetGame(PlaygroundHelper.App.stage, PlaygroundHelper.Viewport);
@@ -207,6 +201,10 @@ export default class CanvasComponent extends Component<any, {
               <div class="fill-target max-width standard-space"></div>
             </button>
             <button type="button" class="btn btn-dark without-padding" 
+            onClick={(e: any) => this.SendContext(new CamouflageMenuItem())}>
+              <div class="fill-camouflage max-width standard-space"></div>
+            </button>
+            <button type="button" class="btn btn-dark without-padding" 
             onClick={(e: any) => this.SendContext(new PatrolMenuItem())}>
               <div class="white-background">{false ? 'ON' : 'OFF'}</div>
               <div class="fill-patrol max-width standard-space"></div>
@@ -306,6 +304,7 @@ export default class CanvasComponent extends Component<any, {
 
   private Quit(e: any): void {
     route('/Home', true);
+    PlaygroundHelper.InteractionContext.Mute();
     PeerHandler.Stop();
   }
 
@@ -322,7 +321,6 @@ export default class CanvasComponent extends Component<any, {
       HasFlag:PlaygroundHelper.IsFlagingMode
     })
   }
-
 
   private MenuMessage() {
     return (

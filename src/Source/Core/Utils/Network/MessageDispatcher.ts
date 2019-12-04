@@ -50,6 +50,10 @@ export class MessageDispatcher{
             type:PacketKind.Field,
             func:(e:any)=>this.Field(e)
         });
+        PeerHandler.Subscribe({
+            type:PacketKind.Camouflage,
+            func:(e:any)=>this.Camouflage(e)
+        });
     }
 
     private Field(e: any): void {
@@ -96,6 +100,15 @@ export class MessageDispatcher{
             const pos = new HexAxial(e.Ceil.Q,e.Ceil.R);
             const tank = PlaygroundHelper.CeilsContainer.Get(pos).GetOccupier() as Tank;
             tank.SetMainTarget(PlaygroundHelper.CeilsContainer.Get(targetCeil).GetShootableEntity());
+        }
+    }
+
+    private Camouflage(e: any): void {
+        if(this.IsListenedHq(e)){
+            const targetCeil = new HexAxial(e.TargetCeil.Q,e.TargetCeil.R);
+            const pos = new HexAxial(e.Ceil.Q,e.Ceil.R);
+            const tank = PlaygroundHelper.CeilsContainer.Get(pos).GetOccupier() as Tank;
+            tank.SetCamouflage();
         }
     }
 

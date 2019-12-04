@@ -1,3 +1,4 @@
+import { MapMode } from './../Setup/Generator/MapMode';
 import { LiteEvent } from './LiteEvent';
 import { InteractionContext } from './../Context/InteractionContext';
 import { VehiclesContainer } from '../Items/Unit/VehiclesContainer'; 
@@ -62,9 +63,12 @@ export class PlaygroundHelper{
             this.InteractionManager = new PIXI.interaction.InteractionManager(this.App.renderer);        
             this.Viewport.drag().pinch().wheel().decelerate();
             this.SpriteProvider = new SpriteProvider();
-            this.SpriteProvider.PreloadTexture();
             this.App.stage.addChild(this.Viewport);
         }
+    }
+
+    public static SetAppColor(mapMode:MapMode){
+        this.App.renderer.backgroundColor = mapMode === MapMode.forest ? 0x00A651: 0xFECE63;
     }
 
     public static SelectedItem:LiteEvent<Item> = new LiteEvent<Item>();
@@ -123,7 +127,7 @@ export class PlaygroundHelper{
         this.Settings = new GameSettings();
         this.Playground = new ItemsManager();
         this.InputManager = new InputManager();
-        this.InteractionContext = new InteractionContext();
+        this.InteractionContext = new InteractionContext(this.InputManager);
     }
 
     public static GetAreas(centerCeil:Ceil):Array<Area>

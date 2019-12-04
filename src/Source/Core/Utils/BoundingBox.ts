@@ -22,6 +22,15 @@ export class BoundingBox{
         return b;
     }
 
+    
+    public static CreateFromBox(a:BoundingBox):BoundingBox{
+        let b = new BoundingBox();
+        b.X = a.X;
+        b.Y = a.Y;
+        b.Width = a.Width;
+        b.Height = a.Height;
+        return b;
+    }
 
     GetCenter ():number{
         return (this.X + this.Width/2);

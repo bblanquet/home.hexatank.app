@@ -1,3 +1,5 @@
+import { Ceil } from './../../Ceils/Ceil';
+import { PlaygroundHelper } from './../../Utils/PlaygroundHelper';
 import { PeerHandler } from './../../../Menu/Network/Host/On/PeerHandler';
 import {Vehicle} from './Vehicle';
 import { Turrel } from './Turrel';
@@ -7,9 +9,10 @@ import { IHqContainer } from './IHqContainer';
 import { Headquarter } from '../../Ceils/Field/Headquarter';
 import { Archive } from '../../Utils/ResourceArchiver';
 import { CeilState } from '../../Ceils/CeilState';
-import { Ceil } from '../../Ceils/Ceil';
-import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
 import { PacketKind } from '../../../Menu/Network/PacketKind';
+import { BasicItem } from '../BasicItem';
+import { BoundingBox } from '../../Utils/BoundingBox';
+import { Explosion } from './Explosion';
 
 export class Tank extends Vehicle implements IHqContainer 
 {
@@ -138,7 +141,9 @@ export class Tank extends Vehicle implements IHqContainer
         const ceils = this.GetCurrentCeil().GetAllNeighbourhood();
         //find random enemy among enemies
         const enemies = ceils.map(ceil => <AliveItem>((<Ceil>ceil).GetOccupier() as any))
-            .filter(aliveItem => !isNullOrUndefined(aliveItem) && this.IsEnemy(aliveItem));
+            .filter(aliveItem => !isNullOrUndefined(aliveItem) && this.IsEnemy(aliveItem))
+            .filter(c=>(c instanceof Vehicle && !(<Vehicle>c).HasCamouflage) || c instanceof Headquarter);
+        
         if (!isNullOrUndefined(this._currentTarget)) {
             var exist = enemies.indexOf(this._currentTarget) === -1 ? false : true;
             if (!exist) {
@@ -147,6 +152,7 @@ export class Tank extends Vehicle implements IHqContainer
         }
         else {
             if (0 < enemies.length) {
+                
                 this._currentTarget = enemies[0];
             }
         }
@@ -203,4 +209,62 @@ export class Tank extends Vehicle implements IHqContainer
     public GetMainTarget():AliveItem{
         return this._mainTarget;
     }
+
+    SetCamouflage():boolean {
+        if(this.HasNextCeil()){
+            return false;
+        }
+        this.HasCamouflage = true;
+        this.camouflagedSprites = this.GetSprites().filter(s=>s.alpha !== 0);
+        this.camouflagedSprites.concat(this.Turrel.GetSprites().filter(s=>s.alpha !== 0));
+        
+        if(PlaygroundHelper.PlayerHeadquarter === this.Hq){
+            this.camouflagedSprites.forEach(s=>{
+                s.alpha = 0.5;
+            });
+        }
+        else
+        {
+            this.camouflagedSprites.forEach(s=>{
+                s.alpha = 0;
+            });
+        }
+
+        PeerHandler.SendMessage(PacketKind.Camouflage,{
+            Ceil:this.GetCurrentCeil().GetCoordinate(),
+            Name:"vehicle"
+        });
+
+        this.Camouflage = new BasicItem(BoundingBox.CreateFromBox(this.GetBoundingBox()), Archive.nature.rock,5);
+        this.Camouflage.SetVisible(()=>this.IsAlive() && this.HasCamouflage);
+        this.Camouflage.SetAlive(()=>this.IsAlive() && this.HasCamouflage);
+        PlaygroundHelper.Playground.Items.push(this.Camouflage);
+        const explosion = new Explosion(BoundingBox.CreateFromBox(this.GetBoundingBox()),Archive.constructionEffects,5,false,5);
+        PlaygroundHelper.Playground.Items.push(explosion);
+
+        return true;
+    }
+
+    RemoveCamouflage(){
+        this.HasCamouflage = false;
+
+        if(PlaygroundHelper.PlayerHeadquarter === this.Hq){
+            this.camouflagedSprites.forEach(s=>{
+                s.alpha = 1;
+            });
+        }
+        else
+        {
+            if(this.GetCurrentCeil().GetState() === CeilState.Visible){
+                this.camouflagedSprites.forEach(s=>{
+                    s.alpha = 1;
+                });
+            }else{
+                this.camouflagedSprites.forEach(s=>{
+                    s.alpha = 0;
+                });
+            }
+        }
+    }
+
 }

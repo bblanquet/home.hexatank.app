@@ -12,6 +12,7 @@ import { PlaygroundHelper } from '../../../../Core/Utils/PlaygroundHelper';
 import { MapContext } from '../../../../Core/Setup/Generator/MapContext';
 import { GameMessage } from '../../../../Core/Utils/Network/GameMessage';
 import { MessageProgess } from '../../../../Core/Utils/Network/MessageProgess';
+import { MapMode } from '../../../../Core/Setup/Generator/MapMode';
 
 export default class OnHostComponent extends Component<any, HostState> {
 
@@ -189,7 +190,7 @@ export default class OnHostComponent extends Component<any, HostState> {
   private Start(): void {
     if (this.IsEveryoneReady()) {
       const hqCount = +this.state.IaNumber + this.state.Players.length;
-      let mapContext = new MapGenerator().GetMapDefinition(hqCount);
+      let mapContext = new MapGenerator().GetMapDefinition(hqCount,MapMode.forest);
       this.Assign(mapContext, this.state.Players);
       let message = new GameMessage<MapContext>();
       message.Message = mapContext;

@@ -1,16 +1,18 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { SinglePlayerState } from './SinglePlayerState';
-import linkState from 'linkstate';
+import linkState from 'linkstate'; 
 import { PlaygroundHelper } from '../../Core/Utils/PlaygroundHelper';
 import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
+import { MapMode } from '../../Core/Setup/Generator/MapMode';
 
 export default class SinglePlayerComponent extends Component<any, SinglePlayerState> {
 
     constructor(props: any) {
         super(props);
         this.setState({
-            IaNumber: 1
+            IaNumber: 1,
+            Mode:"0"
         });
     }
 
@@ -20,14 +22,22 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
                 <div class="centered">
                     <div class="container">
                     <div class="title-container">Single player</div>
-                        <div class="form-group">
-                            <label class="text-dark col-sm-2 col-form-label" for="exampleFormControlSelect1">Ia</label>
-                            <select onChange={linkState(this, 'IaNumber')} class="form-control" id="exampleFormControlSelect1">
+                    <div class="col-auto my-1">
+                            <label class="mr-sm-2 whiteText" for="inlineFormCustomSelect">IA</label>
+                            <select onChange={linkState(this, 'IaNumber')} class="custom-select mr-sm-2" id="inlineFormCustomSelect">
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
                             </select>
                         </div>
+                        <div class="col-auto my-1 whiteText">
+                            <label class="mr-sm-2" for="inlineFormCustomSelect">Mode</label>
+                            <select onChange={linkState(this, 'Mode')} class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                                <option value="0">Sand</option>
+                                <option value="1">Forest</option>
+                            </select>
+                        </div>
+                        <p></p>
                         <div class="btn-group btn-group-space" role="group" aria-label="Basic example">
                             <button type="button" class="btn btn-dark btn-sm" onClick={(e) => this.Start(e)}>Start</button>
                             <button type="button" class="btn btn-primary btn-sm btn-danger" onClick={(e) => this.Back(e)}>Back</button>
@@ -42,7 +52,7 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
     }
 
     Start(e: MouseEvent): void {
-        PlaygroundHelper.MapContext = new MapGenerator().GetMapDefinition(+this.state.IaNumber + 1);
+        PlaygroundHelper.MapContext = new MapGenerator().GetMapDefinition(+this.state.IaNumber + 1, (+this.state.Mode) as MapMode);
         PlaygroundHelper.SetDefaultName();
         PlaygroundHelper.MapContext.Hqs[0].PlayerName = PlaygroundHelper.PlayerName;
         let index = 0;

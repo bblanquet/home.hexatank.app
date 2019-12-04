@@ -233,6 +233,10 @@
   color:white;
 }
 
+.whiteText {
+  color:white;
+}
+
 .toast-blue {
   background-color: #343a40;
   color: #12a1b7;
@@ -369,4 +373,12 @@ body{
   background-position: center;
   background-repeat: no-repeat;
   background-image: url('/out/menu/slowMenu.svg');
+}
+
+.fill-camouflage {
+  overflow: hidden;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('/out/menu/camouflageMenu.svg');
 }

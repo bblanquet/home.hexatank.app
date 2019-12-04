@@ -18,6 +18,7 @@ import { Field } from './Field/Field';
 import { IInteractionContext } from '../Context/IInteractionContext';
 import { LiteEvent } from '../Utils/LiteEvent';
 import { ContextMode } from '../Utils/ContextMode';
+import { Vehicle } from '../Items/Unit/Vehicle';
 
 export class Ceil extends Item implements ICeil , ISelectable
 {
@@ -144,6 +145,9 @@ export class Ceil extends Item implements ICeil , ISelectable
     public ContainsEnemy(v:AliveItem):boolean{
         if(this._occupier && this._occupier instanceof AliveItem)
         {
+            if(v instanceof(Vehicle) && (<Vehicle>v).HasCamouflage){
+                return false;             
+            }
             return v.IsEnemy(this._occupier) ;
         }
         if(this._field && this._field instanceof Headquarter)

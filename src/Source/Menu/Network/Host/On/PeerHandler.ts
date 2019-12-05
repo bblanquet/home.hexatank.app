@@ -41,7 +41,7 @@ export class PeerHandler{
 
           this._socket.emit('join',  
           {
-            ServerName:this._serverName,
+            ServerName:this._serverName, 
             PlayerName:this._player.Name,
           });
 
@@ -104,7 +104,7 @@ export class PeerHandler{
     }
 
     private static ListenSignal():void {
-        //Listen to signaling data from Scaledrone
+        //Listen to signaling data
         this._socket.on('signaling', (data:any) => 
         {
             // Message was sent by us
@@ -140,9 +140,9 @@ export class PeerHandler{
 
     private static SetupDataChannel():void 
     {
-        this.CheckDataChannelState();
-        this._channel.onopen =()=>this.CheckDataChannelState;
-        this._channel.onclose =()=>this.CheckDataChannelState;
+        //this.CheckDataChannelState();
+        this._channel.onopen =()=>this.CheckDataChannelState();
+        this._channel.onclose =()=>this.CheckDataChannelState();
         this._channel.onmessage = event =>
         {
             let obj = JSON.parse(event.data);
@@ -163,17 +163,7 @@ export class PeerHandler{
         {
             console.log('WebRTC data channel is now open');
             this.SendMessage(PacketKind.Open,{});
-            this.Ping();
         }
-    }
-
-    public static Ping() {
-        setInterval(() => {
-            this.SendMessage(PacketKind.Ping, {
-                PlayerName: this._player.Name,
-                Date: Date.now()
-            });
-        }, 1000);
     }
 
     private static SendSignal(message:any):void {

@@ -40,8 +40,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
     public HasCamouflage:boolean;
     public Camouflage:BasicItem;
-    public camouflagedSrpites:Sprite[];
-    
+    public camouflagedSprites:Sprite[];
+
     //movable
     CurrentRadius:number;
     GoalRadius:number;
@@ -100,10 +100,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     protected abstract RemoveCamouflage():void;
 
     public SetOrder(order: IOrder): void {
-        if(this.HasCamouflage){
-            this.RemoveCamouflage();
-        }
-
+        this.RemoveCamouflage();
         this._pendingOrder = order;
 
         if(!isNullOrUndefined(this._order))
@@ -384,6 +381,9 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     }
 
     public SetNextCeil(ceil: Ceil): void {
+        if(this.HasCamouflage){
+            this.RemoveCamouflage();
+        }
         if(this._nextCeil){
             if(this._nextCeil.GetOccupier() === this){
                 this._nextCeil.SetOccupier(null);

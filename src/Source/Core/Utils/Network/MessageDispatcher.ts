@@ -105,7 +105,6 @@ export class MessageDispatcher{
 
     private Camouflage(e: any): void {
         if(this.IsListenedHq(e)){
-            const targetCeil = new HexAxial(e.TargetCeil.Q,e.TargetCeil.R);
             const pos = new HexAxial(e.Ceil.Q,e.Ceil.R);
             const tank = PlaygroundHelper.CeilsContainer.Get(pos).GetOccupier() as Tank;
             tank.SetCamouflage();

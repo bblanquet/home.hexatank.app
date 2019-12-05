@@ -11,6 +11,10 @@ export class LiteEvent<T> implements ILiteEvent<T> {
         this.handlers = this.handlers.filter(h => h !== handler);
     }
 
+    public clear(){
+        this.handlers = [];
+    }
+
     public trigger(obj:any, data?: T) 
     {
         this.handlers.forEach(h => h(obj,data));

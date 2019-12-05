@@ -1,5 +1,6 @@
 export enum PacketKind{
  Open,
+ PartialPing,
  Ping,
  Destroyed,
  Camouflage,

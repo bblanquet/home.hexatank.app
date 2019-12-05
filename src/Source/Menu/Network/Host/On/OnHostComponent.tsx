@@ -13,6 +13,8 @@ import { MapContext } from '../../../../Core/Setup/Generator/MapContext';
 import { GameMessage } from '../../../../Core/Utils/Network/GameMessage';
 import { MessageProgess } from '../../../../Core/Utils/Network/MessageProgess';
 import { MapMode } from '../../../../Core/Setup/Generator/MapMode';
+import { PlayerStatus } from '../../PlayerStatus';
+import { PingInfo } from '../../Ping/PingInfo';
 
 export default class OnHostComponent extends Component<any, HostState> {
 
@@ -32,19 +34,32 @@ export default class OnHostComponent extends Component<any, HostState> {
     PeerHandler.Setup(this.state.Player, this.state.ServerName, this.state.IsAdmin);
     PeerHandler.Start(this.GetPlayers.bind(this), this.Back.bind(this));
     PeerHandler.Subscribe({
-      func: this.Update.bind(this),
+      func: this.OnPlayerReadyChanged.bind(this),
       type: PacketKind.Ready,
     });
     PeerHandler.Subscribe({
-      func: this.ReceiveToast.bind(this),
+      func: this.OnToastReceived.bind(this),
       type: PacketKind.Toast,
     });
+    PlaygroundHelper.InitPingHandler(p.Name);
+
     PeerHandler.Subscribe({
-      func: this.ReceivePing.bind(this),
-      type: PacketKind.Ping,
-    });
-    PeerHandler.Subscribe({
-      func: () => { PeerHandler.Ping() },
+      func: () => {
+        PlaygroundHelper.PingHandler.Start();
+        PlaygroundHelper.PingHandler.PingReceived.on((obj:any,e:PingInfo)=>{
+          const receiver = this.state.Players.filter(p => p.Name === e.Receiver)[0];
+          if(receiver){
+            receiver.Latency = e.Duration;
+            if(receiver.Status === PlayerStatus.Connecting){
+              receiver.Status = PlayerStatus.NotReady;
+            }
+            this.setState({
+              ...this.state,
+              Players: this.state.Players
+            });
+          }
+        });
+       },
       type: PacketKind.Open,
     });
 
@@ -69,7 +84,7 @@ export default class OnHostComponent extends Component<any, HostState> {
                 : ''
               }
               <button type="button" class="btn btn-dark btn-sm" onClick={() => this.ChangeReady()}>
-                {this.state.Player.IsReady ? 'I am not ready' : 'I am ready'}
+                {this.GetButtonLabel()}
               </button>
               <button type="button" class="btn btn-primary btn-sm btn-danger" onClick={() => this.Back()}>Close</button>
             </div>
@@ -87,9 +102,7 @@ export default class OnHostComponent extends Component<any, HostState> {
                 {this.state.Players.map((player) => {
                   return (<tr class={this.state.Player.Name === player.Name ? 'row-blue' : ''}>
                     <td class="align-middle">{player.Name}</td>
-                    <td class="align-middle">{player.IsReady ?
-                      <span class="badge badge-success">Ready</span> :
-                      <span class="badge badge-light">Not ready</span>}
+                    <td class="align-middle">{this.GetStatus(player)}
                     </td>
                     <td class="align-middle">{player.Latency}</td>
                     {this.state.IsAdmin ?
@@ -112,6 +125,26 @@ export default class OnHostComponent extends Component<any, HostState> {
       </div>);
   }
 
+  private GetButtonLabel() {
+    if(this.state.Player.Status === PlayerStatus.Connecting){
+      return 'connecting';
+    }
+    if(this.state.Player.Status === PlayerStatus.NotReady){
+      return 'I am ready';
+    }
+    return 'I am not ready';
+  }
+
+  private GetStatus(player: Player) {
+    if(player.Status === PlayerStatus.Connecting){
+      return <span class="badge badge-warning">Connecting</span>;
+    }
+    if(player.Status === PlayerStatus.Ready){
+      return <span class="badge badge-success">Ready</span>;
+    }
+    return <span class="badge badge-light">Not ready</span>;
+  }
+
   private ShowIa() {
     if (this.state.IsAdmin) {
       return (<div class="form-group">
@@ -126,30 +159,24 @@ export default class OnHostComponent extends Component<any, HostState> {
     return '';
   }
 
-  private ReceivePing(data: { PlayerName: string, Date: number }): void {
-    const player = this.state.Players.filter(p => p.Name === data.PlayerName)[0];
-    player.Latency = Math.abs(Date.now() - data.Date).toString();
-    this.setState({
-      Players: this.state.Players
-    });
-  }
 
   private MakeUserLeave(playerName: string): void {
     PeerHandler.Kick(playerName);
   }
 
-  private Update(data: any): void {
+  private OnPlayerReadyChanged(data: any): void {
     var player = data as Player;
     if (player) {
-      let p = this.state.Players.filter(p => p.Name === player.Name)[0];
-      p.IsReady = player.IsReady;
+      let readyChangedPlayer = this.state.Players.filter(p => p.Name === player.Name)[0];
+      readyChangedPlayer.Status = player.Status;
       this.setState({
+        ...this.state,
         Players: this.state.Players
       })
     }
   }
 
-  private ReceiveToast(data: any): void {
+  private OnToastReceived(data: any): void {
     var message = data as Message;
     if (message) {
       toastr["success"](message.Content, message.Name, { iconClass: 'toast-blue' });
@@ -158,23 +185,30 @@ export default class OnHostComponent extends Component<any, HostState> {
 
   private GetPlayers(playerNames: string[]): void {
     let players = playerNames.map(l => new Player(l)).filter(p => p.Name !== this.state.Player.Name);
+    players.forEach(p=>p.Status = PlayerStatus.Connecting);
     players.push(this.state.Player);
     this.setState({
+      ...this.state,
       Players: players
     });
   }
 
   private ChangeReady(): void {
-    const player = this.state.Player;
-    player.IsReady = !player.IsReady;
-    this.setState({
-      Player: player
-    });
-    PeerHandler.SendMessage(PacketKind.Ready, this.state.Player);
+    if(this.state.Player.Status !== PlayerStatus.Connecting){
+      const player = this.state.Player;
+      if(player.Status === PlayerStatus.NotReady){
+        player.Status = PlayerStatus.Ready;
+      }else{
+        player.Status = PlayerStatus.NotReady;
+      }
+      this.setState({
+        Player: player
+      });
+      PeerHandler.SendMessage(PacketKind.Ready, this.state.Player);
+    }
   }
 
   private Send(): void {
-
     let message = new Message();
     message.Name = this.state.Player.Name;
     message.Content = this.state.Message;
@@ -189,6 +223,7 @@ export default class OnHostComponent extends Component<any, HostState> {
 
   private Start(): void {
     if (this.IsEveryoneReady()) {
+      PlaygroundHelper.IsOnline = true;
       const hqCount = +this.state.IaNumber + this.state.Players.length;
       let mapContext = new MapGenerator().GetMapDefinition(hqCount,MapMode.forest);
       this.Assign(mapContext, this.state.Players);
@@ -197,6 +232,8 @@ export default class OnHostComponent extends Component<any, HostState> {
       message.Status = MessageProgess.end;
       PeerHandler.SendMessage(PacketKind.Map, message);
       this.SetIa(mapContext);
+
+      PlaygroundHelper.IsOnline = true;
       PlaygroundHelper.MapContext = mapContext;
       PlaygroundHelper.PlayerName = this.state.Player.Name;
       route('/Canvas', true);
@@ -227,7 +264,7 @@ export default class OnHostComponent extends Component<any, HostState> {
   }
 
   private IsEveryoneReady(): boolean {
-    return this.state.Players.some(u => u.IsReady);
+    return this.state.Players.some(u => u.Status === PlayerStatus.Ready);
   }
 
   private Back(): void {

@@ -1,6 +1,7 @@
+import { PlayerStatus } from './PlayerStatus';
 export class Player{
     public Name:string;
-    public IsReady:boolean;
+    public Status:PlayerStatus=PlayerStatus.NotReady;
     public Latency:string;
     constructor(name:string){
         this.Name=name;

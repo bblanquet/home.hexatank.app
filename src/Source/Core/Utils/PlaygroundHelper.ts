@@ -1,3 +1,4 @@
+import { PingHandler } from './../../Menu/Network/Ping/PingHandler';
 import { MapMode } from './../Setup/Generator/MapMode';
 import { LiteEvent } from './LiteEvent';
 import { InteractionContext } from './../Context/InteractionContext';
@@ -20,8 +21,10 @@ import { Item } from '../Items/Item';
 const Viewport = require('pixi-viewport').Viewport;
 
 export class PlaygroundHelper{
-
-    static MapContext:MapContext;
+    
+    public static IsOnline:boolean=false;
+    public static MapContext:MapContext;
+    public static PingHandler:PingHandler;
     static CeilsContainer:CeilsContainer<Ceil>;
     static VehiclesContainer:VehiclesContainer;
     static Engine:AStarEngine<Ceil>;
@@ -146,4 +149,12 @@ export class PlaygroundHelper{
     public static GetFirstRangeAreas(ceil:Ceil):Array<Ceil>{
         return this._areaEngine.GetFirstRange(PlaygroundHelper.CeilsContainer,ceil);
     }
+
+    static InitPingHandler(name: string) {
+        if(this.PingHandler){
+            this.PingHandler.Stop();
+        }
+        this.PingHandler = new PingHandler(name);
+      }
+
 }

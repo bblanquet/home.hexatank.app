@@ -19,7 +19,7 @@ export class Tank extends Vehicle implements IHqContainer
     Turrel:Turrel;
     private _currentTarget:AliveItem;
     private _mainTarget:AliveItem;
-
+ 
     constructor(hq:Headquarter)
     {
         super(hq);
@@ -231,8 +231,8 @@ export class Tank extends Vehicle implements IHqContainer
         }
 
         PeerHandler.SendMessage(PacketKind.Camouflage,{
+            Hq:this.Hq.GetCeil().GetCoordinate(),
             Ceil:this.GetCurrentCeil().GetCoordinate(),
-            Name:"vehicle"
         });
 
         this.Camouflage = new BasicItem(BoundingBox.CreateFromBox(this.GetBoundingBox()), Archive.nature.rock,5);
@@ -246,24 +246,27 @@ export class Tank extends Vehicle implements IHqContainer
     }
 
     RemoveCamouflage(){
-        this.HasCamouflage = false;
+        if(this.HasCamouflage){
+            this.HasCamouflage = false;
 
-        if(PlaygroundHelper.PlayerHeadquarter === this.Hq){
-            this.camouflagedSprites.forEach(s=>{
-                s.alpha = 1;
-            });
-        }
-        else
-        {
-            if(this.GetCurrentCeil().GetState() === CeilState.Visible){
+            if(PlaygroundHelper.PlayerHeadquarter === this.Hq){
                 this.camouflagedSprites.forEach(s=>{
                     s.alpha = 1;
                 });
-            }else{
-                this.camouflagedSprites.forEach(s=>{
-                    s.alpha = 0;
-                });
             }
+            else
+            {
+                if(this.GetCurrentCeil().GetState() === CeilState.Visible){
+                    this.camouflagedSprites.forEach(s=>{
+                        s.alpha = 1;
+                    });
+                }else{
+                    this.camouflagedSprites.forEach(s=>{
+                        s.alpha = 0;
+                    });
+                }
+            }
+            this.camouflagedSprites = [];
         }
     }
 

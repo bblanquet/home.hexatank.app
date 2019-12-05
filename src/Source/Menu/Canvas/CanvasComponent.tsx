@@ -21,6 +21,7 @@ import { HealMenuItem } from '../../Core/Menu/Buttons/HealMenuItem';
 import { SpeedFieldMenuItem } from '../../Core/Menu/Buttons/SpeedFieldMenuItem';
 import { ISelectable } from '../../Core/ISelectable';
 import { InteractionKind } from '../../Core/Context/IInteractionContext';
+import { PingInfo } from '../Network/Ping/PingInfo';
 
 export default class CanvasComponent extends Component<any, { 
   HasMenu: boolean,
@@ -28,7 +29,8 @@ export default class CanvasComponent extends Component<any, {
   TruckRequestCount:number,
   Amount:number,
   HasFlag:boolean,
-  Item:Item
+  Item:Item,
+  pingStatus:string
 }> {
   private _gameCanvas: HTMLDivElement;
   private _loop: { (): void };
@@ -47,7 +49,8 @@ export default class CanvasComponent extends Component<any, {
       TankRequestCount:0,
       TruckRequestCount:0,
       Amount:PlaygroundHelper.Settings.PocketMoney,
-      HasFlag:false
+      HasFlag:false,
+      pingStatus:'no data'
     });
   }
 
@@ -68,6 +71,14 @@ export default class CanvasComponent extends Component<any, {
 
     if (!PlaygroundHelper.MapContext) {
       throw 'context missing, cannot implement map'
+    }
+
+    if(PlaygroundHelper.IsOnline){
+      PlaygroundHelper.PingHandler.PingReceived.on((obj:any,data:PingInfo)=>{
+        this.setState({
+          pingStatus:`${data.Receiver}: ${data.Duration}`
+        })
+      });
     }
     this._gameSetup = new GameSetup();
     this._gameSetup.SetGame(PlaygroundHelper.App.stage, PlaygroundHelper.Viewport);
@@ -107,7 +118,7 @@ export default class CanvasComponent extends Component<any, {
     this._loop();
   }
 
-  private LeftMenu() {
+  private LeftMenuRender() {
     if(this.state.Item){
       if(this.state.Item instanceof Tank)
       {
@@ -144,22 +155,55 @@ export default class CanvasComponent extends Component<any, {
   }
 
   componentDidUpdate() {
-    PlaygroundHelper.Settings.IsPause = this.state.HasMenu;
+    if(!PlaygroundHelper.IsOnline){
+      PlaygroundHelper.Settings.IsPause = this.state.HasMenu;
+    }
+  }
+
+  private SendContext(item:Item): void {
+    PlaygroundHelper.InteractionContext.Kind = InteractionKind.Up;
+    return PlaygroundHelper.InteractionContext.OnSelect(item);
+  }
+
+  private Cheat(e: any): void {
+    PlaygroundHelper.Settings.ShowEnemies = !PlaygroundHelper.Settings.ShowEnemies;
+  }
+
+  private Quit(e: any): void {
+    route('/Home', true);
+    PlaygroundHelper.InteractionContext.Mute();
+    PlaygroundHelper.IsOnline = false;
+    PeerHandler.Stop();
+  }
+
+  private SetMenu(e: any): void {
+    this.setState({
+      HasMenu: !this.state.HasMenu
+    });
+  }
+
+  private SetFlag(e: any):void{
+    PlaygroundHelper.IsFlagingMode = !PlaygroundHelper.IsFlagingMode;
+    this.setState({
+      ...this.state,
+      HasFlag:PlaygroundHelper.IsFlagingMode
+    })
   }
 
   render() {
     return (
       <div style="width=100%">
-        {this.TopMenu()}
+        {PlaygroundHelper.IsOnline ? this.TopLeftInfo() : ''}
+        {this.TopMenuRender()}
         <div ref={(dom) => { this._gameCanvas = dom }} />
-        {this.state.HasMenu ? '':this.LeftMenu()}
-        {this.state.HasMenu ? '':this.RightMenu()}
-        {this.state.HasMenu ? this.MenuMessage() : ''}
+        {this.state.HasMenu ? '':this.LeftMenuRender()}
+        {this.state.HasMenu ? '':this.RightMenuRender()}
+        {this.state.HasMenu ? this.MenuRender() : ''}
       </div>
     );
   }
 
-  private RightMenu() {
+  private RightMenuRender() {
     return (
       <div class="right-column">
         <div class="middle2 max-width">
@@ -186,10 +230,7 @@ export default class CanvasComponent extends Component<any, {
     );
   }
 
-  private SendContext(item:Item): void {
-    PlaygroundHelper.InteractionContext.Kind = InteractionKind.Up;
-    return PlaygroundHelper.InteractionContext.OnSelect(item);
-  }
+
 
   private TankMenu() {
     return (
@@ -284,7 +325,11 @@ export default class CanvasComponent extends Component<any, {
     );
   }
 
-  private TopMenu() {
+  private TopLeftInfo(){
+  return (<div style="position: fixed;left: 0%; color:white;">{this.state.pingStatus}</div>);
+  }
+
+  private TopMenuRender() {
     return (
       <div style="position: fixed;left: 50%;transform: translateX(-50%);">
         <button type="button" class="btn btn-dark space-out">
@@ -298,31 +343,7 @@ export default class CanvasComponent extends Component<any, {
     );
   }
 
-  private Cheat(e: any): void {
-    PlaygroundHelper.Settings.ShowEnemies = !PlaygroundHelper.Settings.ShowEnemies;
-  }
-
-  private Quit(e: any): void {
-    route('/Home', true);
-    PlaygroundHelper.InteractionContext.Mute();
-    PeerHandler.Stop();
-  }
-
-  private SetMenu(e: any): void {
-    this.setState({
-      HasMenu: !this.state.HasMenu
-    });
-  }
-
-  private SetFlag(e: any):void{
-    PlaygroundHelper.IsFlagingMode = !PlaygroundHelper.IsFlagingMode;
-    this.setState({
-      ...this.state,
-      HasFlag:PlaygroundHelper.IsFlagingMode
-    })
-  }
-
-  private MenuMessage() {
+  private MenuRender() {
     return (
       <div class="base">
         <div class="centered">
@@ -357,7 +378,4 @@ export default class CanvasComponent extends Component<any, {
       </div>
     );
   }
-
-
-
 }

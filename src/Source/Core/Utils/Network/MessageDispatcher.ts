@@ -184,6 +184,7 @@ export class MessageDispatcher{
 
         PlaygroundHelper.MapContext = content.Message;
         if(content.Status == MessageProgess.end){
+            PlaygroundHelper.IsOnline = true;
             route('/Canvas', true);
             PeerHandler.CloseRoom();
         }

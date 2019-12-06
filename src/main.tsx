@@ -21,7 +21,3 @@ render(
         <OffJoinComponent path="/OffJoin"/>
     </Router>)
     , document.querySelector('#app'));
-
-/*
-url('/android_asset/www/
-*/

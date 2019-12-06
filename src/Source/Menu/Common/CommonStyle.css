@@ -262,7 +262,7 @@ body{
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url('/out/menu/targetButton.svg');
+  background-image: url('{{}}out/menu/targetButton.svg');
 }
 
 .fill-patrol {
@@ -270,7 +270,7 @@ body{
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url('/out/menu/patrolButton.svg');
+  background-image: url('{{}}out/menu/patrolButton.svg');
 }
 
 .fill-cancel {
@@ -278,21 +278,21 @@ body{
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url('/out/menu/cancelButton.svg');
+  background-image: url('{{}}out/menu/cancelButton.svg');
 }
 
 .fill-diamond {
   overflow: hidden;
   background-size: cover;
   background-position: center;
-  background-image: url('/out/nature/diamondStone.svg');
+  background-image: url('{{}}out/nature/diamondStone.svg');
 }
 
 .fill-option {
   overflow: hidden;
   background-size: cover;
   background-position: center;
-  background-image: url('/out/option.svg');
+  background-image: url('{{}}out/option.svg');
 }
 
 .fill-tank {
@@ -300,7 +300,7 @@ body{
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url('/out/menu/tankbutton.svg');
+  background-image: url('{{}}out/menu/tankbutton.svg');
 }
 
 .fill-truck {
@@ -308,7 +308,7 @@ body{
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url('/out/menu/truckButton.svg');
+  background-image: url('{{}}out/menu/truckButton.svg');
 }
 
 .fill-flag {
@@ -316,7 +316,7 @@ body{
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url('/out/menu/flagMenu.svg');
+  background-image: url('{{}}out/menu/flagMenu.svg');
 }
 
 .fill-flag {
@@ -324,7 +324,7 @@ body{
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url('/out/menu/flagMenu.svg');
+  background-image: url('{{}}out/menu/flagMenu.svg');
 }
 
 .fill-money {
@@ -332,7 +332,7 @@ body{
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url('/out/menu/moneyMenu.svg');
+  background-image: url('{{}}out/menu/moneyMenu.svg');
 }
 
 .fill-medic {
@@ -340,7 +340,7 @@ body{
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url('/out/menu/healthMenu.svg');
+  background-image: url('{{}}out/menu/healthMenu.svg');
 }
 
 .fill-speed {
@@ -348,7 +348,7 @@ body{
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url('/out/menu/speedMenu.svg');
+  background-image: url('{{}}out/menu/speedMenu.svg');
 }
 
 .fill-power {
@@ -356,7 +356,7 @@ body{
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url('/out/menu/powerMenu.svg');
+  background-image: url('{{}}out/menu/powerMenu.svg');
 }
 
 .fill-poison {
@@ -364,7 +364,7 @@ body{
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url('/out/menu/poisonMenu.svg');
+  background-image: url('{{}}out/menu/poisonMenu.svg');
 }
 
 .fill-slow {
@@ -372,7 +372,7 @@ body{
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url('/out/menu/slowMenu.svg');
+  background-image: url('{{}}out/menu/slowMenu.svg');
 }
 
 .fill-camouflage {
@@ -380,10 +380,5 @@ body{
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url('/out/menu/camouflageMenu.svg');
-  
+  background-image: url('{{}}out/menu/camouflageMenu.svg');  
 }
-
-/*
-url('/android_asset/www/
-*/

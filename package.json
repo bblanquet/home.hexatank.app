@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "start": "webpack-dev-server --open",
+    "build": "webpack --env.NODE_ENV=pc",
+    "mobile": "webpack --env.NODE_ENV=mobile",
+    "start": "webpack-dev-server --env.NODE_ENV=pc",
     "test": "mocha -r ts-node/register src/**/*.spec.ts"
   },
   "author": "BB",
@@ -23,6 +24,7 @@
     "pixi.js": "^4.8.8",
     "sass-loader": "^8.0.0",
     "script-loader": "^0.7.1",
+    "string-replace-loader": "^2.2.0",
     "style-loader": "^0.23.1",
     "svg-inline-loader": "^0.8.0",
     "typescript": "^3.6.0-dev.20190720",

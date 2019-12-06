@@ -140,7 +140,6 @@ export class PeerHandler{
 
     private static SetupDataChannel():void 
     {
-        //this.CheckDataChannelState();
         this._channel.onopen =()=>this.CheckDataChannelState();
         this._channel.onclose =()=>this.CheckDataChannelState();
         this._channel.onmessage = event =>

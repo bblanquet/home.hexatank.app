@@ -10,7 +10,7 @@ export class SpriteProvider implements ISpriteProvider{
     {
         if(this.IsSvg(name))
         {
-            const postension = './out'
+            const postension = `.{{}}out`
             name = name.slice(1);
             name = postension + name; 
 
@@ -26,7 +26,7 @@ export class SpriteProvider implements ISpriteProvider{
     {
         if(this.IsSvg(name))
         {
-            const postension = './in'
+            const postension = `.{{}}in`
             name = name.slice(1);
             name = postension + name;
             return new PIXI.Sprite(PIXI.Texture.fromImage(name,undefined,undefined,accuracy));

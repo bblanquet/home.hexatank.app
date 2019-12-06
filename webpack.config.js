@@ -5,11 +5,12 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 var distDir = path.resolve(__dirname, 'dist');
+var webpack = require('webpack');
 
-module.exports = {
+module.exports = env => {
     // Entry point : first executed file
     // This may be an array. It will result in many output files.
-    entry: ['./src/main.tsx'],
+    return {entry: ['./src/main.tsx'],
     stats: {
         errorDetails: true, // --display-error-details
     },
@@ -33,6 +34,15 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /SpriteProvider\.ts$/,
+                loader: 'string-replace-loader',
+                options: {
+                  search: '{{}}',
+                  replace: env.NODE_ENV === 'pc' ? '/' : '/android_asset/www/',
+                  flags:'g'
+                }
+            },
+            {
                 test: /\.tsx?$/,
                 loader: 'ts-loader'
             },
@@ -43,7 +53,18 @@ module.exports = {
             {
                 test:/\.css$/,
                 use:['style-loader','css-loader']
-            }
+            },
+            {
+                test: /\.css$/,
+                loader: 'string-replace-loader',
+                options: {
+                  search: '{{}}',
+                  replace: env.NODE_ENV === 'pc' ? '/' : '/android_asset/www/',
+                  flags:'g'
+                }
+            },
+
+
         ]
     },
 
@@ -57,6 +78,7 @@ module.exports = {
         }),
         new CopyPlugin([
             { from: './Resources', to: '' },
-        ])
+        ]),
     ]
+}
 };

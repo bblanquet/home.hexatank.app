@@ -1,8 +1,9 @@
+import { SandDecorator } from './../../Ceils/Decorator/SandDecorator';
 import { MapMode } from './MapMode';
 import { HexAxial } from './../../Utils/Coordinates/HexAxial';
 import { AreaEngine } from './../../Ia/Area/AreaEngine';
 import { CeilProperties } from './../../Ceils/CeilProperties';
-import { CeilDecorator } from './../../Ceils/CeilDecorator';
+import { ForestDecorator } from '../../Ceils/Decorator/ForestDecorator';
 import { ToolBox } from '../../Items/Unit/Utils/ToolBox';
 import { CeilsContainer } from '../../Ceils/CeilsContainer';
 import { MapContext } from './MapContext';
@@ -11,6 +12,7 @@ import { FlowerMapBuilder } from '../Builder/FlowerMapBuilder';
 import { FartestPointsFinder } from '../Builder/FartestPointsFinder';
 import { DecorationType } from './DecorationType';
 import { DiamondHq } from './DiamondHq';
+import { Decorator } from '../../Ceils/Decorator/Decorator';
 
 export class MapGenerator
 {
@@ -69,12 +71,21 @@ export class MapGenerator
             context.Hqs.push(hqDiamond);
         });
 
+
+        var decorator:Decorator=null;
+        if(mapMode === MapMode.forest){
+            decorator = new ForestDecorator();
+        }
+        else
+        {
+            decorator = new SandDecorator();
+        }
         //decorate tree, water, stone the map
         ceilPositions.forEach(ceilPosition => {
             let mapItem = new MapItem();
             mapItem.Position = ceilPosition.Coordinate;
             if(excluded.indexOf(ceilPosition.Coordinate) === -1){
-                mapItem.Type = CeilDecorator.Decorate();
+                mapItem.Type = decorator.GetDecoration();
             }
             else
             {

@@ -32,8 +32,8 @@ export class FastField extends Field
         return false;
     }
     Support(vehicule: Vehicle): void {
-        vehicule.TranslationSpeed = PlaygroundHelper.Settings.TranslationSpeed*2;
-        vehicule.RotationSpeed = PlaygroundHelper.Settings.RotationSpeed*2;
+        vehicule.TranslationSpeed = PlaygroundHelper.Settings.TranslationSpeed*3;
+        vehicule.RotationSpeed = PlaygroundHelper.Settings.RotationSpeed*3;
         vehicule.Attack = PlaygroundHelper.Settings.Attack;
     }    
 

@@ -34,7 +34,7 @@ export class AttackField extends Field
     Support(vehicule: Vehicle): void {
         vehicule.TranslationSpeed = PlaygroundHelper.Settings.TranslationSpeed;
         vehicule.RotationSpeed = PlaygroundHelper.Settings.RotationSpeed;    
-        vehicule.Attack = 50;
+        vehicule.Attack = PlaygroundHelper.Settings.Attack * 3;
     }    
 
     IsDesctrutible(): boolean {

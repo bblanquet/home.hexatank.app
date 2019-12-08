@@ -9,9 +9,8 @@ export class CamouflageCombination implements ICombination{
     
     IsMatching(context: CombinationContext): boolean {
         return this.IsNormalMode(context) 
-        && context.Items.length ===2
         && context.Items[0] instanceof Tank
-        && context.Items[1] instanceof CamouflageMenuItem;
+        && context.Items[context.Items.length-1] instanceof CamouflageMenuItem;
     }    
     
     private IsNormalMode(context: CombinationContext) {
@@ -22,14 +21,16 @@ export class CamouflageCombination implements ICombination{
     Combine(context: CombinationContext): boolean {
         if(this.IsMatching(context)){
             const tank = context.Items[0] as Tank;
-            if(tank.SetCamouflage()){
-                return true;
+            context.Items.splice(context.Items.length-1,1);
+            if(tank.HasCamouflage)
+            {
+                tank.RemoveCamouflage();
             }
             else
             {
-                context.Items.splice(1,1);
-                return false;
+                return tank.SetCamouflage();
             }
+            return false;
         }
         return false;
     }

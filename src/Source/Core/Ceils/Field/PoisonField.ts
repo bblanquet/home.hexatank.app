@@ -32,7 +32,7 @@ export class PoisonField extends Field
         return false;
     }
     Support(vehicule: Vehicle): void {
-        vehicule.SetDamage(0.1);
+        vehicule.SetDamage(0.15);
         vehicule.TranslationSpeed = PlaygroundHelper.Settings.TranslationSpeed;
         vehicule.RotationSpeed = PlaygroundHelper.Settings.RotationSpeed;
         vehicule.Attack = PlaygroundHelper.Settings.Attack;

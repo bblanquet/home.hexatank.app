@@ -32,8 +32,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 {
     public Id:string;
     RotationSpeed: number=0.05;
-    TranslationSpeed: number=1;
-    Attack:number=30;
+    TranslationSpeed: number=0.2;
+    Attack:number=10;
     protected RootSprites:Array<string>;
     protected Wheels:Array<string>;
     private WheelIndex:number;

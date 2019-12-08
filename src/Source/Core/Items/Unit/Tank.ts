@@ -1,3 +1,4 @@
+import { CamouflageHandler } from './../../Utils/CamouflageHandler';
 import { Ceil } from './../../Ceils/Ceil';
 import { PlaygroundHelper } from './../../Utils/PlaygroundHelper';
 import { PeerHandler } from './../../../Menu/Network/Host/On/PeerHandler';
@@ -235,7 +236,7 @@ export class Tank extends Vehicle implements IHqContainer
             Ceil:this.GetCurrentCeil().GetCoordinate(),
         });
 
-        this.Camouflage = new BasicItem(BoundingBox.CreateFromBox(this.GetBoundingBox()), Archive.nature.rock,5);
+        this.Camouflage = new BasicItem(BoundingBox.CreateFromBox(this.GetBoundingBox()), CamouflageHandler.GetCamouflage(),5);
         this.Camouflage.SetVisible(()=>this.IsAlive() && this.HasCamouflage);
         this.Camouflage.SetAlive(()=>this.IsAlive() && this.HasCamouflage);
         PlaygroundHelper.Playground.Items.push(this.Camouflage);

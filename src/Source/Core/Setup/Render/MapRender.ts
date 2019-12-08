@@ -1,5 +1,5 @@
 import { PlaygroundHelper } from './../../Utils/PlaygroundHelper';
-import { CeilDecorator } from '../../Ceils/CeilDecorator'; 
+import { ForestDecorator } from '../../Ceils/Decorator/ForestDecorator'; 
 import { CeilProperties } from '../../Ceils/CeilProperties';
 import { Cloud } from '../../Items/Others/Cloud'; 
 import { HqRender } from './HqRender';
@@ -28,7 +28,7 @@ export class MapRender{
 
         mapContext.Items.forEach(item =>{
             let ceil = new Ceil(new CeilProperties(item.Position));
-            CeilDecorator.SetDecoration(mapContext.MapMode, playgroundItems,ceil,item.Type);
+            ForestDecorator.SetDecoration(playgroundItems,ceil,item.Type);
             ceil.SetSprite();
             PlaygroundHelper.CeilsContainer.Add(ceil);
             playgroundItems.push(ceil);

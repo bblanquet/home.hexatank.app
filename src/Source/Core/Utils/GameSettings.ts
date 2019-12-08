@@ -8,13 +8,13 @@ export class GameSettings
     public Size:number=50;
     public ScreenWidth:number; 
     public ScreenHeight:number;
-    public RotationSpeed:number=0.2;
+    public RotationSpeed:number=0.05;
     public TurrelRotationSpeed:number=0.2;
-    public TranslationSpeed:number=2;
+    public TranslationSpeed:number=1;
     public MissileTranslationSpeed:number=5;
     public IsPause:boolean=false;
     public ShowEnemies:boolean=false;
-    public Attack:number=30;
+    public Attack:number=10;
     public TankPrice:number=8;
     public TruckPrice:number=4;
     public FieldPrice:number=2;

@@ -295,7 +295,6 @@ export class Ceil extends Item implements ICeil , ISelectable
         var isSelected = this._circle.contains(context.Point.x,context.Point.y);
         if(isSelected)
         {
-            //console.log(`%c Q:${this.GetCoordinate().Q} R:${this.GetCoordinate().R}`,'color:blue;font-weight:bold;');
             context.OnSelect(this);
         }
 

@@ -1,3 +1,4 @@
+import { LiteEvent } from './../../Utils/LiteEvent';
 import { InteractionContext } from "../../Context/InteractionContext";
 import { Ceil } from "../Ceil";
 import { Timer } from "../../Utils/Timer"; 
@@ -12,7 +13,8 @@ export class DiamondField extends Field
 {
     private _timer:Timer;
     IsFading:boolean;
-    
+    public Loaded:LiteEvent<{}> = new LiteEvent<{}>();
+
     constructor(ceil:Ceil){
         super(ceil);
         this.GetCeil().SetField(this);
@@ -39,7 +41,9 @@ export class DiamondField extends Field
         if(vehicule instanceof Truck)
         {
             var truck = vehicule as Truck;
-            truck.Load();
+            if(truck.Load()){
+                this.Loaded.trigger(this,{});
+            }
         }
     }
     public IsDesctrutible(): boolean {

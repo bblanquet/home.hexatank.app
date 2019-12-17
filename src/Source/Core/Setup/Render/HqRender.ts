@@ -1,21 +1,21 @@
+import { Archive } from './../../Utils/ResourceArchiver';
 import { IaHeadquarter } from '../../Ia/Hq/IaHeadquarter'; 
 import { HexAxial } from '../../Utils/Coordinates/HexAxial';
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 import { Item } from '../../Items/Item';
 import { Headquarter } from '../../Ceils/Field/Headquarter';
 import { HqSkin } from '../../Utils/HqSkin'; 
-import { Archive } from '../../Utils/ResourceArchiver';
 import { Diamond } from "../../Ceils/Field/Diamond"; 
 import { DiamondHq } from '../Generator/DiamondHq';
 
 export class HqRender{
 
     _skins:HqSkin[]=[
-        new HqSkin(Archive.team.red.tank, Archive.team.red.turrel, Archive.team.red.truck, Archive.team.red.hq, Archive.building.hq.red.field),
-        new HqSkin(Archive.team.blue.tank, Archive.team.blue.turrel, Archive.team.blue.truck, Archive.team.blue.hq, Archive.building.hq.blue.field),
-        new HqSkin(Archive.team.purple.tank, Archive.team.purple.turrel, Archive.team.purple.truck, Archive.team.purple.hq, Archive.building.hq.purple.field),
-        new HqSkin(Archive.team.yellow.tank, Archive.team.yellow.turrel, Archive.team.yellow.truck, Archive.team.yellow.hq, Archive.building.hq.yellow.field)
-    ]
+        new HqSkin(Archive.team.red.tank, Archive.team.red.turrel, Archive.team.red.truck, Archive.team.red.hq, Archive.building.hq.red.field,Archive.team.red.baseEnergy,Archive.team.red.energy),
+        new HqSkin(Archive.team.blue.tank, Archive.team.blue.turrel, Archive.team.blue.truck, Archive.team.blue.hq, Archive.building.hq.blue.field,Archive.team.blue.baseEnergy,Archive.team.blue.energy),
+        new HqSkin(Archive.team.purple.tank, Archive.team.purple.turrel, Archive.team.purple.truck, Archive.team.purple.hq, Archive.building.hq.purple.field,Archive.team.purple.baseEnergy,Archive.team.purple.energy),
+        new HqSkin(Archive.team.yellow.tank, Archive.team.yellow.turrel, Archive.team.yellow.truck, Archive.team.yellow.hq, Archive.building.hq.yellow.field,Archive.team.yellow.baseEnergy,Archive.team.yellow.energy)
+    ];
 
     public GetHq(hqDefinitions: Array<DiamondHq>, playgroundItems:Item[]) :Array<Headquarter>
     {

@@ -20,6 +20,8 @@ export class Diamond extends AliveField{
     constructor(ceil:Ceil) 
     {
         super(ceil);
+        this.TotalLife = 150;
+        this.Life = 150;
         this.Z= 1;
         this.GetCeil().SetField(this);
         this.BoundingBox = this.GetCeil().GetBoundingBox();
@@ -31,7 +33,9 @@ export class Diamond extends AliveField{
         var neighbours = this.GetCeil().GetNeighbourhood();
         neighbours.forEach(ceil=>
         {
-            this.Fields.push(new DiamondField(<Ceil>ceil));
+            const field = new DiamondField(<Ceil>ceil);
+            this.Fields.push(field);
+            field.Loaded.on(this.OnLoaded.bind(this));
         });
         this.InitPosition(ceil.GetBoundingBox());
         this.GetDisplayObjects().forEach(obj => {obj.visible = this.GetCeil().IsVisible();});
@@ -45,6 +49,10 @@ export class Diamond extends AliveField{
         this.Lights.GetDisplayObjects().forEach(s=>{
             s.visible = ceilState !== CeilState.Hidden;
         });
+    }
+
+    private OnLoaded(obj:any,e:{}):void{
+        this.SetDamage(1);
     }
 
     Support(vehicule:Vehicle): void {
@@ -72,6 +80,7 @@ export class Diamond extends AliveField{
         this.GetCeil().DestroyField();
         this.IsUpdatable = false;
         this.Fields.forEach(field=>{
+            field.Loaded.clear();
             field.Destroy();
         });
         this.Lights.Destroy();

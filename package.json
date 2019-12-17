@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --env.NODE_ENV=pc",
+    "mottet": "webpack --env.NODE_ENV=mottet",
     "mobile": "webpack --env.NODE_ENV=mobile",
     "start": "webpack-dev-server --env.NODE_ENV=pc",
     "test": "mocha -r ts-node/register src/**/*.spec.ts"
@@ -28,6 +29,7 @@
     "style-loader": "^0.23.1",
     "svg-inline-loader": "^0.8.0",
     "typescript": "^3.6.0-dev.20190720",
+    "uglifyjs-webpack-plugin": "^1.0.0-rc.0",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.6",
     "webpack-dev-server": "^3.7.2"

@@ -1,3 +1,4 @@
+import { InfluenceField } from './../../Ceils/Field/InfluenceField';
 import { PlaygroundHelper } from './../../Utils/PlaygroundHelper';
 import { ICombination } from "./ICombination";
 import { ISelectable } from "../../ISelectable";
@@ -34,7 +35,13 @@ export class SelectionCombination implements ICombination{
             if(selectable instanceof Ceil){
                 const selectableCeil = selectable as Ceil;
                 
-                if(selectableCeil.GetField() instanceof BasicField 
+                if(selectableCeil.GetField() instanceof InfluenceField 
+                && selectableCeil.GetState() === CeilState.Visible){
+                    const field = selectableCeil.GetField() as InfluenceField;
+                    field.SetSelected(true);
+                    PlaygroundHelper.SelectedItem.trigger(this,field);
+                }
+                else if(selectableCeil.GetField() instanceof BasicField 
                     && selectableCeil.GetState() === CeilState.Visible)
                 {
                     selectable.SetSelected(true); 

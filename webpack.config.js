@@ -1,16 +1,26 @@
-'use strict';
-
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 var distDir = path.resolve(__dirname, 'dist');
-var webpack = require('webpack');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+
+var getPostension = function(env){
+    if(env.NODE_ENV === 'mottet'){
+        return '/BB/dist/';
+    }
+    else if(env.NODE_ENV ==='mobile'){
+        return '/android_asset/www/';
+    }else{
+        return '/';
+    }
+}
 
 module.exports = env => {
     // Entry point : first executed file
     // This may be an array. It will result in many output files.
-    return {entry: ['./src/main.tsx'],
+    return {
+    entry: ['./src/main.tsx'],
     stats: {
         errorDetails: true, // --display-error-details
     },
@@ -28,6 +38,9 @@ module.exports = env => {
         filename: 'main.js',
     },
 
+    optimization: {
+        minimizer: [new UglifyJsPlugin()],
+    },
     resolve: {
       extensions: ['.js','.ts', '.tsx','jsx']
     },
@@ -38,7 +51,7 @@ module.exports = env => {
                 loader: 'string-replace-loader',
                 options: {
                   search: '{{}}',
-                  replace: env.NODE_ENV === 'pc' ? '/' : '/android_asset/www/',
+                  replace: getPostension(env),
                   flags:'g'
                 }
             },
@@ -59,12 +72,10 @@ module.exports = env => {
                 loader: 'string-replace-loader',
                 options: {
                   search: '{{}}',
-                  replace: env.NODE_ENV === 'pc' ? '/' : '/android_asset/www/',
+                  replace: getPostension(env),
                   flags:'g'
                 }
             },
-
-
         ]
     },
 

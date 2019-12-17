@@ -40,9 +40,11 @@ export const Archive = {
             './menu/priceFour.svg',
             './menu/priceFive.svg'
         ],
-        topMenu:'./menu/topMenu.svg',
         plusButton:'./menu/plusButton.svg',
         minButton:'./menu/minusButton.svg',
+        energyButton:'./menu/energyButton.svg',
+        smallingButton:'./menu/smallingMenu.svg',
+        biggingButton:'./menu/biggingMenu.svg',
         bottomMenu:'./menu/bottomMenu.svg',
         backgroundButton:'./menu/backgroundMenu.svg',
         hoverBackgroundButton:'./menu/hoverBackgroundMenu.svg',
@@ -161,12 +163,6 @@ export const Archive = {
                 background:'./nature/water.svg',
                 wave:'./nature/wave.svg'
             },
-            upLeft:{
-
-            },
-            downRight:{
-
-            }
         },
         diamond:'./nature/diamond.svg',
     },
@@ -175,24 +171,32 @@ export const Archive = {
             tank:'./tank/bottomTank.svg',
             turrel:'./tank/redTurrel.svg',
             truck:'./truck/truck.svg',
-            hq:'./building/redHqBottom.svg'
+            hq:'./building/redHqBottom.svg',
+            energy:'./building/redEnergyCell.svg',
+            baseEnergy:'./building/redBaseEnergyCell.svg',
         },
         blue:{
             tank:'./tank/blueBottomTank.svg',
             turrel:'./tank/blueTurrel.svg',
             truck:'./truck/blueTruck.svg',
-            hq:'./building/blueHqBottom.svg'
+            hq:'./building/blueHqBottom.svg',
+            energy:'./building/blueEnergyCell.svg',
+            baseEnergy:'./building/blueBaseEnergyCell.svg',
         },
         yellow:{
             tank:'./tank/yellowBottomTank.svg',
             turrel:'./tank/yellowTurrel.svg',
             truck:'./truck/yellowTruck.svg',
-            hq:'./building/yellowHqBottom.svg'
+            hq:'./building/yellowHqBottom.svg',
+            energy:'./building/yellowEnergyCell.svg',
+            baseEnergy:'./building/yellowBaseEnergyCell.svg',
         },purple:{
             tank:'./tank/purpleBottomTank.svg',
             turrel:'./tank/purpleTurrel.svg',
             truck:'./truck/purpleTruck.svg',
-            hq:'./building/purpleHqBottom.svg'
+            hq:'./building/purpleHqBottom.svg',
+            energy:'./building/purpleEnergyCell.svg',
+            baseEnergy:'./building/purpleBaseEnergyCell.svg',
         }
     },
     wheel:'./tank/wheel.svg',

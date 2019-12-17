@@ -13,7 +13,11 @@ import { TargetMenuItem } from '../../Core/Menu/Buttons/TargetMenuItem';
 import { CamouflageMenuItem } from '../../Core/Menu/Buttons/CamouflageMenutItem';
 import { PatrolMenuItem } from '../../Core/Menu/Buttons/PatrolMenuItem';
 import { CancelMenuItem } from '../../Core/Menu/Buttons/CancelMenuItem';
+import { PlusMenuItem } from '../../Core/Menu/Buttons/PlusMenuItem';
+import { MinusMenuItem } from '../../Core/Menu/Buttons/MinusMenuItem';
+import { BigMenuItem } from '../../Core/Menu/Buttons/BigMenuItem';
 import { AttackMenuItem } from '../../Core/Menu/Buttons/AttackMenuItem';
+import { InfluenceMenuItem } from '../../Core/Menu/Buttons/InfluenceMenuItem';
 import { MoneyMenuItem } from '../../Core/Menu/Buttons/MoneyMenuItem';
 import { SlowMenuItem } from '../../Core/Menu/Buttons/SlowMenuItem';
 import { PoisonMenuItem } from '../../Core/Menu/Buttons/PoisonMenuItem';
@@ -22,6 +26,7 @@ import { SpeedFieldMenuItem } from '../../Core/Menu/Buttons/SpeedFieldMenuItem';
 import { ISelectable } from '../../Core/ISelectable';
 import { InteractionKind } from '../../Core/Context/IInteractionContext';
 import { PingInfo } from '../Network/Ping/PingInfo';
+import { InfluenceField } from '../../Core/Ceils/Field/InfluenceField';
 
 export default class CanvasComponent extends Component<any, { 
   HasMenu: boolean,
@@ -30,7 +35,8 @@ export default class CanvasComponent extends Component<any, {
   Amount:number,
   HasFlag:boolean,
   Item:Item,
-  pingStatus:string
+  PingStatus:string,
+  HasWarning:boolean
 }> {
   private _gameCanvas: HTMLDivElement;
   private _loop: { (): void };
@@ -50,7 +56,8 @@ export default class CanvasComponent extends Component<any, {
       TruckRequestCount:0,
       Amount:PlaygroundHelper.Settings.PocketMoney,
       HasFlag:false,
-      pingStatus:'no data'
+      PingStatus:'no data',
+      HasWarning:false
     });
   }
 
@@ -76,7 +83,7 @@ export default class CanvasComponent extends Component<any, {
     if(PlaygroundHelper.IsOnline){
       PlaygroundHelper.PingHandler.PingReceived.on((obj:any,data:PingInfo)=>{
         this.setState({
-          pingStatus:`${data.Receiver}: ${data.Duration}`
+          PingStatus:`${data.Receiver}: ${data.Duration}`
         })
       });
     }
@@ -115,6 +122,12 @@ export default class CanvasComponent extends Component<any, {
         Item:e
       });
     });
+    PlaygroundHelper.WarningChanged.on((obj:any,e:boolean)=>{
+      this.setState({
+        ...this.state,
+        HasWarning:e
+      });
+    });
     this._loop();
   }
 
@@ -127,6 +140,10 @@ export default class CanvasComponent extends Component<any, {
       else if(this.state.Item instanceof Truck)
       {
         return this.TruckMenu();
+      }
+      else if(this.state.Item instanceof InfluenceField)
+      {
+        return this.FactoryMenu();
       }
       else if(this.state.Item instanceof Ceil)
       {
@@ -230,7 +247,42 @@ export default class CanvasComponent extends Component<any, {
     );
   }
 
-
+  private FactoryMenu() {
+    return (
+      <div class="left-column">
+        <div class="middle2 max-width">
+          <div class="btn-group-vertical max-width">
+          <button type="button" class="btn btn-dark without-padding">
+              <div class="fill-energy max-width standard-space"></div>
+              <div class="max-width text-center darker">2/2</div>
+            </button>
+            <button type="button" class="btn btn-dark without-padding" 
+            onClick={(e: any) => this.SendContext(new PlusMenuItem())}>
+              <div class="fill-plus max-width standard-space"></div>
+              <div class="max-width text-center darker">{PlaygroundHelper.Settings.TankPrice} <span class="fill-diamond badge very-small-space middle"> </span></div>
+            </button>
+            <button type="button" class="btn btn-dark without-padding" 
+            onClick={(e: any) => this.SendContext(new MinusMenuItem())}>
+              <div class="fill-minus max-width standard-space"></div>
+            </button>
+            <button type="button" class="btn btn-dark without-padding" 
+            onClick={(e: any) => this.SendContext(new BigMenuItem())}>
+              <div class="fill-big max-width standard-space"></div>
+              <div class="max-width text-center darker">{PlaygroundHelper.Settings.TankPrice} <span class="fill-diamond badge very-small-space middle"> </span></div>
+            </button>
+            <button type="button" class="btn btn-dark without-padding" 
+            onClick={(e: any) => this.SendContext(new MinusMenuItem())}>
+              <div class="fill-small max-width standard-space"></div>
+            </button>
+            <button type="button" class="btn btn-dark without-padding" 
+            onClick={(e: any) => this.SendContext(new CancelMenuItem())}>
+              <div class="fill-cancel max-width standard-space"></div>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   private TankMenu() {
     return (
@@ -265,6 +317,11 @@ export default class CanvasComponent extends Component<any, {
       <div class="left-column">
         <div class="middle2 max-width">
           <div class="btn-group-vertical max-width">
+          <button type="button" class="btn btn-dark without-padding" 
+          onClick={(e: any) => this.SendContext(new InfluenceMenuItem())}>
+              <div class="fill-influence max-width standard-space"></div>
+              <div class="max-width text-center darker">{PlaygroundHelper.Settings.FieldPrice} <span class="fill-diamond badge very-small-space middle"> </span></div>
+            </button>
           <button type="button" class="btn btn-dark without-padding" 
           onClick={(e: any) => this.SendContext(new AttackMenuItem())}>
               <div class="fill-power max-width standard-space"></div>
@@ -326,21 +383,28 @@ export default class CanvasComponent extends Component<any, {
   }
 
   private TopLeftInfo(){
-  return (<div style="position: fixed;left: 0%; color:white;">{this.state.pingStatus}</div>);
+  return (<div style="position: fixed;left: 0%; color:white;">{this.state.PingStatus}</div>);
   }
 
   private TopMenuRender() {
     return (
       <div style="position: fixed;left: 50%;transform: translateX(-50%);">
         <button type="button" class="btn btn-dark space-out">
-          {this.state.Amount}
-        <span class="fill-diamond badge badge-secondary very-small-space middle very-small-margin"> </span>
+        {this.ShowNoMoney()}
+        {this.state.Amount}
+         <span class="fill-diamond badge badge-secondary very-small-space middle very-small-left-margin very-small-right-margin"> </span>
         </button>
         <button type="button"class="btn btn-dark small-space space-out fill-option" onClick={(e: any) => this.SetMenu(e)} />
-        <div style="width=30px;height=30px;">
-        </div>
       </div>
     );
+  }
+
+  private ShowNoMoney(){
+    if(this.state.HasWarning){
+      return (<span class="fill-noMoney badge badge-secondary very-small-space middle very-small-right-margin blink_me" > </span>);
+    }else{
+      return ('');
+    }
   }
 
   private MenuRender() {

@@ -65,10 +65,8 @@ export class MultiCellSelectionCombination implements ICombination{
             else 
             {
                 let menuItem = context.Items[0];
-                if(menuItem && 
-                    PlaygroundHelper.PlayerHeadquarter.GetAmount() 
-                    >= PlaygroundHelper.Settings.FieldPrice*this._cells.length){
-                    
+                const cost = PlaygroundHelper.Settings.FieldPrice*this._cells.length;
+                if(menuItem && PlaygroundHelper.PlayerHeadquarter.HasMoney(cost) ){
                     if(menuItem instanceof HealMenuItem)
                     {
                         this.SetMenuItem(c=>new HealField(c),'Heal');

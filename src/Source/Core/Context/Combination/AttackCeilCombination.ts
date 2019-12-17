@@ -33,7 +33,7 @@ export class AttackCellCombination implements ICombination{
             {
                 if(ceil.GetField() instanceof BasicField)
                 {
-                    if(PlaygroundHelper.PlayerHeadquarter.GetAmount() >= PlaygroundHelper.Settings.FieldPrice)
+                    if(PlaygroundHelper.PlayerHeadquarter.HasMoney(PlaygroundHelper.Settings.FieldPrice))
                     {
                         PlaygroundHelper.PlayerHeadquarter.Buy(PlaygroundHelper.Settings.FieldPrice);
                         PeerHandler.SendMessage(PacketKind.Field,{

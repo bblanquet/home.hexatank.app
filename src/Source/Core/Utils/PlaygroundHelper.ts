@@ -21,7 +21,6 @@ import { Item } from '../Items/Item';
 const Viewport = require('pixi-viewport').Viewport;
 
 export class PlaygroundHelper{
-    
     public static IsOnline:boolean=false;
     public static MapContext:MapContext;
     public static PingHandler:PingHandler;
@@ -74,6 +73,8 @@ export class PlaygroundHelper{
         this.App.renderer.backgroundColor = mapMode === MapMode.forest ? 0x00A651: 0xFECE63;
     }
 
+    public static WarningChanged:LiteEvent<Boolean> = new LiteEvent<boolean>();
+
     public static SelectedItem:LiteEvent<Item> = new LiteEvent<Item>();
     public static selectionCount:number=0;
     public static Select():void{
@@ -95,6 +96,15 @@ export class PlaygroundHelper{
 
     public static RestartNavigation() {
         this.Viewport.drag().pinch().wheel().decelerate();
+    }
+
+    private static warningObj:any;
+    public static SetWarning():void{
+        if(PlaygroundHelper.warningObj){
+            clearTimeout(PlaygroundHelper.warningObj);
+        }
+        this.WarningChanged.trigger(this,true);
+        PlaygroundHelper.warningObj = setTimeout(()=>{this.WarningChanged.trigger(this,false)},3000);
     }
 
     public static ResizeTheCanvas():void

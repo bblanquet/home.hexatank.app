@@ -1,6 +1,12 @@
 
 export class HqSkin{
-    constructor(private _tankBottom:string,private _tankTop:string,private _truck:string,private _color:string,private _ceil:string){
+    constructor(private _tankBottom:string,
+        private _tankTop:string,
+        private _truck:string,
+        private _color:string,
+        private _ceil:string,
+        private _energyBase:string,
+        private _energy:string){
 
     }
 
@@ -22,6 +28,14 @@ export class HqSkin{
 
     public GetCeil():string{
         return this._ceil;
+    }
+
+    public GetEnergy():string{
+        return this._energy;
+    }
+
+    public GetBaseEnergy():string{
+        return this._energyBase;
     }
 
 }

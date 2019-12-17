@@ -33,7 +33,7 @@ export class HeadQuarterField extends Field
 
     public Support(vehicule: Vehicle): void 
     {
-        vehicule.TranslationSpeed = PlaygroundHelper.Settings.TranslationSpeed;
+        vehicule.TranslationSpeed = PlaygroundHelper.Settings.TranslationSpeed*3;
         vehicule.RotationSpeed = PlaygroundHelper.Settings.RotationSpeed;
         vehicule.Attack = PlaygroundHelper.Settings.Attack;
 

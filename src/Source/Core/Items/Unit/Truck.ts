@@ -76,7 +76,7 @@ export class Truck extends Vehicle implements IHqContainer{
         return false;
     }
 
-    public Load():void
+    public Load():boolean
     {
         if(this._dimaondTimer.IsElapsed())
         {
@@ -84,8 +84,10 @@ export class Truck extends Vehicle implements IHqContainer{
             {
                 this.GetCurrentSprites()[this._gatheredDiamonds[this._diamondsCount]].alpha = 1;
                 this._diamondsCount = (this._diamondsCount+1) % this._gatheredDiamonds.length; 
+                return true;
             }
         }
+        return false;
     } 
 
     public Unload():number{

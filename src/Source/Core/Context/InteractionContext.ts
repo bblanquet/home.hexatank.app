@@ -1,5 +1,5 @@
+import { InfluenceCombination } from './Combination/InfluenceCombination';
 import { CamouflageCombination } from './Combination/CamouflageCombination';
-import { CamouflageMenuItem } from './../Menu/Buttons/CamouflageMenutItem';
 import { InputManager } from './../Utils/InputManager';
 import { PlaygroundHelper } from './../Utils/PlaygroundHelper';
 import { PoisonCellCombination } from './Combination/PoisonCellCombination';
@@ -73,6 +73,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
         combinations.push(new MultiUnitSelectionCombination(multiselectionMenu,multiSelectionContext,this));
         combinations.push(new MultiCellSelectionCombination(multiselectionMenu,multiSelectionContext,this));
         combinations.push(new FlagCellCombination());
+        combinations.push(new InfluenceCombination());
         combinations.push(new AddTankCombination());
         combinations.push(new AddTruckCombination());
         combinations.push(new SwitchToVehicleCombination());

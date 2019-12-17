@@ -255,11 +255,9 @@ export class Headquarter extends AliveItem implements IField
 
     public Update(viewX: number, viewY: number):void 
     {
-        while(
-            this._diamondCount >= PlaygroundHelper.Settings.TruckPrice
-            && this._truckRequestCount > 0)
+        while(this._truckRequestCount > 0 && this._diamondCount >= PlaygroundHelper.Settings.TruckPrice)
         {
-            if(this._diamondCount >= PlaygroundHelper.Settings.TruckPrice)
+            if(this.HasMoney(PlaygroundHelper.Settings.TruckPrice))
             {
                 if(this.CreateTruck()){
                     this.Buy(PlaygroundHelper.Settings.TruckPrice);
@@ -273,11 +271,9 @@ export class Headquarter extends AliveItem implements IField
             }
         }
 
-        while(
-            this._diamondCount >= PlaygroundHelper.Settings.TankPrice
-            && this._tankRequestCount > 0)
+        while(this._tankRequestCount > 0 && this._diamondCount >= PlaygroundHelper.Settings.TankPrice)
         {
-            if(this._diamondCount >= PlaygroundHelper.Settings.TankPrice)
+            if(this.HasMoney(PlaygroundHelper.Settings.TankPrice))
             {
                 if(this.CreateTank()){
                     this.Buy(PlaygroundHelper.Settings.TankPrice);
@@ -324,8 +320,18 @@ export class Headquarter extends AliveItem implements IField
         this.DiamondCountEvent.trigger(this,this._diamondCount);
     }
 
-    public GetAmount():number{
+    protected GetAmount():number{
         return this._diamondCount;
+    }
+
+    public HasMoney(cost:number):boolean{
+        if(cost <= this._diamondCount){
+            return true;
+        }
+        if(this === PlaygroundHelper.PlayerHeadquarter){
+            PlaygroundHelper.SetWarning();
+        }
+        return false;
     }
 
 }

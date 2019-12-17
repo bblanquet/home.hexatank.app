@@ -1,3 +1,13 @@
+.blink_me {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
 
 .base{
   position: relative;
@@ -156,8 +166,12 @@
   height: 20px;
 }
 
-.very-small-margin{
+.very-small-left-margin{
   margin-left: 5px;
+}
+
+.very-small-right-margin{
+  margin-right: 5px;
 }
 
 .space-out{
@@ -256,6 +270,8 @@
 body{
   background-color:#00A651;
 }
+
+
 
 .fill-target {
   overflow: hidden;
@@ -381,4 +397,68 @@ body{
   background-position: center;
   background-repeat: no-repeat;
   background-image: url('{{}}out/menu/camouflageMenu.svg');  
+}
+
+.fill-noMoney {
+  overflow: hidden;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('{{}}out/menu/noMoney.svg');  
+}
+
+.fill-lightIcon {
+  overflow: hidden;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('{{}}out/menu/elecIcon.svg');  
+}
+
+.fill-influence {
+  overflow: hidden;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('{{}}out/menu/influenceButton.svg');  
+}
+
+.fill-big {
+  overflow: hidden;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('{{}}out/menu/biggingMenu.svg');  
+}
+
+.fill-small {
+  overflow: hidden;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('{{}}out/menu/smallingMenu.svg');  
+}
+
+.fill-energy {
+  overflow: hidden;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('{{}}out/menu/energyButton.svg');  
+}
+
+.fill-minus {
+  overflow: hidden;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('{{}}out/menu/minusButton.svg');  
+}
+
+.fill-plus {
+  overflow: hidden;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('{{}}out/menu/plusButton.svg');  
 }

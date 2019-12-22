@@ -8,6 +8,7 @@ import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 import { Vehicle } from "../../Items/Unit/Vehicle";
 import { Truck } from "../../Items/Unit/Truck";
 import { BoundingBox } from "../../Utils/BoundingBox";
+import { GameSettings } from '../../Utils/GameSettings';
 
 export class DiamondField extends Field
 {
@@ -34,9 +35,9 @@ export class DiamondField extends Field
 
     public Support(vehicule:Vehicle): void 
     {
-        vehicule.TranslationSpeed = PlaygroundHelper.Settings.TranslationSpeed;
-        vehicule.RotationSpeed = PlaygroundHelper.Settings.RotationSpeed;
-        vehicule.Attack = PlaygroundHelper.Settings.Attack;
+        vehicule.TranslationSpeed = GameSettings.TranslationSpeed;
+        vehicule.RotationSpeed = GameSettings.RotationSpeed;
+        vehicule.Attack = GameSettings.Attack;
 
         if(vehicule instanceof Truck)
         {

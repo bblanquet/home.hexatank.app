@@ -4,8 +4,8 @@ import { Archive } from "../../Utils/ResourceArchiver";
 import { Field } from "./Field";
 import { BoundingBox } from "../../Utils/BoundingBox";
 import { Vehicle } from "../../Items/Unit/Vehicle";
-import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 import { CeilState } from "../CeilState";
+import { GameSettings } from "../../Utils/GameSettings";
 
 export class FastField extends Field
 {
@@ -32,9 +32,9 @@ export class FastField extends Field
         return false;
     }
     Support(vehicule: Vehicle): void {
-        vehicule.TranslationSpeed = PlaygroundHelper.Settings.TranslationSpeed*3;
-        vehicule.RotationSpeed = PlaygroundHelper.Settings.RotationSpeed*3;
-        vehicule.Attack = PlaygroundHelper.Settings.Attack;
+        vehicule.TranslationSpeed = GameSettings.TranslationSpeed*3;
+        vehicule.RotationSpeed = GameSettings.RotationSpeed*3;
+        vehicule.Attack = GameSettings.Attack;
     }    
 
     IsDesctrutible(): boolean {

@@ -23,6 +23,7 @@ import { InteractionContext } from '../../InteractionContext';
 import { InteractionKind } from '../../IInteractionContext';
 import { Field } from '../../../Ceils/Field/Field';
 import { PoisonField } from '../../../Ceils/Field/PoisonField';
+import { GameSettings } from '../../../Utils/GameSettings';
 
 export class MultiCellSelectionCombination implements ICombination{
     private _cells:Ceil[];
@@ -65,7 +66,7 @@ export class MultiCellSelectionCombination implements ICombination{
             else 
             {
                 let menuItem = context.Items[0];
-                const cost = PlaygroundHelper.Settings.FieldPrice*this._cells.length;
+                const cost = GameSettings.FieldPrice*this._cells.length;
                 if(menuItem && PlaygroundHelper.PlayerHeadquarter.HasMoney(cost) ){
                     if(menuItem instanceof HealMenuItem)
                     {

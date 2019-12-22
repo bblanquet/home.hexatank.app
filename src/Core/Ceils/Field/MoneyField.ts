@@ -7,8 +7,8 @@ import { Field } from "./Field";
 import { BoundingBox } from "../../Utils/BoundingBox";
 import { Vehicle } from "../../Items/Unit/Vehicle";
 import { Truck } from "../../Items/Unit/Truck";
-import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 import { CeilState } from "../CeilState";
+import { GameSettings } from "../../Utils/GameSettings";
 
 export class MoneyField extends Field
 { 
@@ -59,9 +59,9 @@ export class MoneyField extends Field
             }
         }
 
-        vehicule.TranslationSpeed = PlaygroundHelper.Settings.TranslationSpeed;
-        vehicule.RotationSpeed = PlaygroundHelper.Settings.RotationSpeed;
-        vehicule.Attack = PlaygroundHelper.Settings.Attack;
+        vehicule.TranslationSpeed = GameSettings.TranslationSpeed;
+        vehicule.RotationSpeed = GameSettings.RotationSpeed;
+        vehicule.Attack = GameSettings.Attack;
     }    
 
     IsDesctrutible(): boolean {

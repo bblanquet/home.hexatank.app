@@ -17,11 +17,11 @@ export abstract class Item implements Updater, IBoundingBoxContainer{
     constructor()
     {
         this.DisplayObjects = new Array<PIXI.DisplayObject>();
-        PlaygroundHelper.Settings.ScaleSubscribe(this.OnScaleChanged.bind(this));
+        PlaygroundHelper.ScaleHandler.ScaleChanged.on(this.OnScaleChanged.bind(this));
     }
 
     public GetCurrentSprites():{ [id: string]: PIXI.Sprite; }{
-        return PlaygroundHelper.Settings.isZoomIn() ?
+        return PlaygroundHelper.ScaleHandler.isZoomIn() ?
         this._zoomIn :
         this._zoomOut;
     }
@@ -62,7 +62,7 @@ export abstract class Item implements Updater, IBoundingBoxContainer{
         this.DisplayObjects.push(this._zoomOut[name]);
         this.DisplayObjects.push(this._zoomIn[name]);
 
-        if(PlaygroundHelper.Settings.isZoomIn()){
+        if(PlaygroundHelper.ScaleHandler.isZoomIn()){
             this._zoomIn[name].alpha = 1;
             this._zoomOut[name].alpha = 0;
         }else{
@@ -75,7 +75,7 @@ export abstract class Item implements Updater, IBoundingBoxContainer{
         }
     }
 
-    private OnScaleChanged(isZoomIn:boolean){
+    private OnScaleChanged(obj:any,isZoomIn:boolean){
         if(isZoomIn)
         {
             for (let key in this._zoomIn) {
@@ -93,7 +93,7 @@ export abstract class Item implements Updater, IBoundingBoxContainer{
     }
 
     public  Destroy():void{
-        PlaygroundHelper.Settings.ScaleUnsubscribe(this.OnScaleChanged.bind(this));
+        PlaygroundHelper.ScaleHandler.ScaleChanged.off(this.OnScaleChanged.bind(this));
     }
 
     public abstract GetBoundingBox():BoundingBox;

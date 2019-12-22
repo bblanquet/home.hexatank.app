@@ -1,8 +1,8 @@
+import { GameSettings } from './../../Utils/GameSettings';
 import { InteractionContext } from "../../Context/InteractionContext";
 import { Ceil } from "../Ceil"; 
 import { Field } from "./Field";
 import { Vehicle } from "../../Items/Unit/Vehicle";
-import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 import { BoundingBox } from "../../Utils/BoundingBox";
 
 export class BasicField extends Field{
@@ -13,9 +13,9 @@ export class BasicField extends Field{
     }
 
     Support(vehicule: Vehicle): void {
-        vehicule.TranslationSpeed = PlaygroundHelper.Settings.TranslationSpeed;
-        vehicule.RotationSpeed = PlaygroundHelper.Settings.RotationSpeed;
-        vehicule.Attack = PlaygroundHelper.Settings.Attack;
+        vehicule.TranslationSpeed = GameSettings.TranslationSpeed;
+        vehicule.RotationSpeed = GameSettings.RotationSpeed;
+        vehicule.Attack = GameSettings.Attack;
     }    
     
     IsDesctrutible(): boolean {

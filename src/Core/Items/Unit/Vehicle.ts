@@ -1,3 +1,4 @@
+import { GameSettings } from './../../Utils/GameSettings';
 import { BasicItem } from '../BasicItem';
 import { LiteEvent } from '../../Utils/LiteEvent';
 import { Headquarter } from '../../Ceils/Field/Headquarter';
@@ -76,7 +77,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this.GetBothSprites(Archive.selectionUnit).forEach(sprite=>sprite.alpha = 0);
 
         this.Z= 2;
-        this.Size = PlaygroundHelper.Settings.Size;
+        this.Size = GameSettings.Size;
         this.BoundingBox.Width = CeilProperties.GetWidth(this.Size);
         this.BoundingBox.Height = CeilProperties.GetHeight(this.Size);
         this._onCellStateChanged = this.OnCellStateChanged.bind(this);
@@ -224,7 +225,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     }
 
     private SetCeilsHalfVisible(previousCeil: Ceil) {
-        if(PlaygroundHelper.Settings.ShowEnemies)
+        if(GameSettings.ShowEnemies)
         {
             var preVisibleCeils = previousCeil.GetAllNeighbourhood();
             preVisibleCeils.push(previousCeil);
@@ -254,7 +255,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
     private SetCeilsVisible() {
         if(!this.IsEnemy(PlaygroundHelper.PlayerHeadquarter) 
-        || PlaygroundHelper.Settings.ShowEnemies)
+        || GameSettings.ShowEnemies)
         {
             var ceils = this._currentCell.GetAllNeighbourhood();
             ceils.push(this._currentCell);

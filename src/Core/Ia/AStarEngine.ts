@@ -1,6 +1,6 @@
+import { GameSettings } from './../Utils/GameSettings';
 import {AStarNode} from './AStarNode';
 import {ICeil} from '../Ceils/ICeil';
-import { PlaygroundHelper } from '../Utils/PlaygroundHelper';
 
 export class AStarEngine<T extends ICeil> 
 { 
@@ -91,7 +91,7 @@ export class AStarEngine<T extends ICeil>
 
         while(this.IsNotEmpty(frontierNodes))
         {
-            if(PlaygroundHelper.Settings.MapSize < cameFromNodes.length)
+            if(GameSettings.MapSize < cameFromNodes.length)
             {
                 console.log(`%c COULD NOT FIND ,opened nodes: ${frontierNodes.length}`,'color:purple;');
                 return null;

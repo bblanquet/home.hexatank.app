@@ -19,6 +19,7 @@ import { Vehicle } from "../../Items/Unit/Vehicle";
 import { Explosion } from "../../Items/Unit/Explosion";
 import { Truck } from "../../Items/Unit/Truck";
 import { SimpleOrder } from '../../Ia/Order/SimpleOrder';
+import { GameSettings } from '../../Utils/GameSettings';
 
 export class Headquarter extends AliveItem implements IField
 {
@@ -27,7 +28,7 @@ export class Headquarter extends AliveItem implements IField
     public PlayerName:string;
     public Count:number=0;
     protected Fields:Array<HeadQuarterField>;
-    private _diamondCount:number=PlaygroundHelper.Settings.PocketMoney;
+    private _diamondCount:number=GameSettings.PocketMoney;
     private _skin:HqSkin;
     private _onCellStateChanged:{(obj:any,ceilState:CeilState):void};
     public FlagCeil:FlagCeil;
@@ -255,12 +256,12 @@ export class Headquarter extends AliveItem implements IField
 
     public Update(viewX: number, viewY: number):void 
     {
-        while(this._truckRequestCount > 0 && this._diamondCount >= PlaygroundHelper.Settings.TruckPrice)
+        while(this._truckRequestCount > 0 && this._diamondCount >= GameSettings.TruckPrice)
         {
-            if(this.HasMoney(PlaygroundHelper.Settings.TruckPrice))
+            if(this.HasMoney(GameSettings.TruckPrice))
             {
                 if(this.CreateTruck()){
-                    this.Buy(PlaygroundHelper.Settings.TruckPrice);
+                    this.Buy(GameSettings.TruckPrice);
                     this.RemoveTruckRequest();
                 }
                 else
@@ -271,12 +272,12 @@ export class Headquarter extends AliveItem implements IField
             }
         }
 
-        while(this._tankRequestCount > 0 && this._diamondCount >= PlaygroundHelper.Settings.TankPrice)
+        while(this._tankRequestCount > 0 && this._diamondCount >= GameSettings.TankPrice)
         {
-            if(this.HasMoney(PlaygroundHelper.Settings.TankPrice))
+            if(this.HasMoney(GameSettings.TankPrice))
             {
                 if(this.CreateTank()){
-                    this.Buy(PlaygroundHelper.Settings.TankPrice);
+                    this.Buy(GameSettings.TankPrice);
                     this.RemoveTankRequest();
                 }
                 else

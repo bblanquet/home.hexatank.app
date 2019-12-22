@@ -61,6 +61,23 @@ export class HexAxial{
         }
         return results;
     }
+
+    GetSpecificRange(range:number=1):HexAxial[]{
+        var results = new Array<HexAxial>();
+        var cube = this.ToCube();
+        for (let x = -range; x <= range; x++) {
+            for (let y = Math.max(-range, -x-range); y <= Math.min(range,-x+range); y++) {
+                var z = -x-y
+                const coordinate = new HexCube(cube.X+ x, cube.Y+y, cube.Z+z);
+                if(cube.X !== coordinate.X 
+                    || cube.Y !== coordinate.Y
+                    || cube.Z !== coordinate.Z){
+                    results.push(coordinate.ToAxial());
+                }
+            }
+        }
+        return results;
+    }
     
     ToPixel(size:number):Point {
         // size is option, see HexCube method

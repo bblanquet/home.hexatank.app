@@ -1,9 +1,9 @@
+import { GameSettings } from './../../Utils/GameSettings';
 import { Item } from "../Item";
 import { BoundingBox } from "../../Utils/BoundingBox";
 import { InteractionContext } from "../../Context/InteractionContext";
 import { ITimer } from "../../Utils/ITimer"; 
 import { Timer } from "../../Utils/Timer";
-import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";  
 
 export class Cloud extends Item{ 
     private _timer:ITimer;
@@ -27,8 +27,8 @@ export class Cloud extends Item{
         this._boundingBox = new BoundingBox();
         this._boundingBox.X = this._min
         this._boundingBox.Y = this._y;
-        this._boundingBox.Width = PlaygroundHelper.Settings.Size*3;
-        this._boundingBox.Height = PlaygroundHelper.Settings.Size*3;
+        this._boundingBox.Width = GameSettings.Size*3;
+        this._boundingBox.Height = GameSettings.Size*3;
         this.InitPosition({X:this._min,Y:this._y});
     }
 

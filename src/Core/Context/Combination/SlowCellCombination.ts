@@ -10,6 +10,7 @@ import { CombinationContext } from "./CombinationContext";
 import { ContextMode } from "../../Utils/ContextMode";
 import { InteractionKind } from "../IInteractionContext";
 import { SlowField } from '../../Ceils/Field/SlowField';
+import { GameSettings } from '../../Utils/GameSettings';
 
 export class SlowCellCombination implements ICombination{
 
@@ -33,9 +34,9 @@ export class SlowCellCombination implements ICombination{
             {
                 if(ceil.GetField() instanceof BasicField)
                 {
-                    if(PlaygroundHelper.PlayerHeadquarter.HasMoney(PlaygroundHelper.Settings.FieldPrice))
+                    if(PlaygroundHelper.PlayerHeadquarter.HasMoney(GameSettings.FieldPrice))
                     {
-                        PlaygroundHelper.PlayerHeadquarter.Buy(PlaygroundHelper.Settings.FieldPrice);
+                        PlaygroundHelper.PlayerHeadquarter.Buy(GameSettings.FieldPrice);
                         PeerHandler.SendMessage(PacketKind.Field,{
                             Hq:PlaygroundHelper.PlayerHeadquarter.GetCurrentCeil().GetCoordinate(),
                             Ceil:ceil.GetCoordinate(),

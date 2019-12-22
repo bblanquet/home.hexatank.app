@@ -1,3 +1,4 @@
+import { ScaleHandler } from './ScaleHandler';
 import { PingHandler } from './../../Menu/Network/Ping/PingHandler';
 import { MapMode } from '../Setup/Generator/MapMode';
 import { LiteEvent } from './LiteEvent';
@@ -36,6 +37,7 @@ export class PlaygroundHelper{
     public static Dispatcher:MessageDispatcher=new MessageDispatcher();
     public static PlayerName: string="defaultPlayer";
     public static IsFlagingMode: boolean;
+    public static ScaleHandler:ScaleHandler;
     public static SetDefaultName() {
         this.PlayerName = "defaultPlayer";
     }
@@ -47,13 +49,14 @@ export class PlaygroundHelper{
     public static InteractionContext:InteractionContext;
 
     public static InitApp():void{
+        this.ScaleHandler = new ScaleHandler();
         if(!this.App){
             this.App = new PIXI.Application({
                 backgroundColor: 0x00A651,//0x6d9ae3
               });
               PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
               PIXI.settings.RENDER_OPTIONS.antialias = true;
-    
+            
             this.Viewport= new Viewport({
                 screenWidth: window.innerWidth,
                 screenHeight: window.innerHeight,
@@ -116,8 +119,8 @@ export class PlaygroundHelper{
             this.Viewport.screenHeight = screen.height;
             this.Viewport.worldWidth = screen.width;
             this.Viewport.worldHeight = screen.height;
-            this.Settings.ScreenWidth = screen.width;
-            this.Settings.ScreenHeight = screen.height;
+            GameSettings.ScreenWidth = screen.width;
+            GameSettings.ScreenHeight = screen.height;
         }
         else
         {
@@ -126,8 +129,8 @@ export class PlaygroundHelper{
             this.Viewport.screenHeight = window.innerHeight;
             this.Viewport.worldWidth = window.innerWidth;
             this.Viewport.worldHeight = window.innerHeight;
-            this.Settings.ScreenWidth = window.innerWidth;
-            this.Settings.ScreenHeight = window.innerHeight;
+            GameSettings.ScreenWidth = window.innerWidth;
+            GameSettings.ScreenHeight = window.innerHeight;
         }
     }
 

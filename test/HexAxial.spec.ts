@@ -4,7 +4,7 @@ import { HexAxial } from '../src/Core/Utils/Coordinates/HexAxial';
 
 describe('HexAxial',() =>
 {
-    it('it should get all neighbours',()=>{
+    it('it should get all neighbours range 1',()=>{
         var coordinate = new HexAxial(4,4); 
         var neighbours = coordinate.GetNeighbours();
         expect(neighbours.length).to.equal(6);
@@ -14,7 +14,23 @@ describe('HexAxial',() =>
         expect(neighbours[3]).to.contains(new HexAxial(4,5));
         expect(neighbours[4]).to.contains(new HexAxial(5,3));
         expect(neighbours[5]).to.contains(new HexAxial(5,4));
+    });
 
+    it('it should get all neighbours range 2',()=>{
+        const center = new HexAxial(0,0);
+        const cells = center.GetNeighbours(2);
+        expect(cells.filter(s=>s.ToCube().Abs()=== 2).length).to.equal(6);
+        expect(cells.filter(s=>s.ToCube().Abs()=== 4).length).to.equal(12);
+        expect(cells.length).to.equal(18);
+    });
+
+    it('it should get all neighbours range 3',()=>{
+        const center = new HexAxial(0,0);
+        const cells = center.GetNeighbours(3);
+        expect(cells.filter(s=>s.ToCube().Abs()=== 2).length).to.equal(6);
+        expect(cells.filter(s=>s.ToCube().Abs()=== 4).length).to.equal(12);
+        expect(cells.filter(s=>s.ToCube().Abs()=== 6).length).to.equal(18);
+        expect(cells.length).to.equal(36);
     });
 
     it('it should get one neighbour',()=>{

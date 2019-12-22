@@ -43,6 +43,10 @@ export class HexCube{
         var n = this.X;
         return new HexOffset(m, n);
     };
+
+    Abs():number{
+        return Math.abs(this.X)+Math.abs(this.Y)+Math.abs(this.Z);
+    }
     
     IsLegal ():Boolean {  // better name?
         // the sum of the coordinates must be zero

@@ -1,7 +1,7 @@
 import {Point} from "./Point";
 import {LiteEvent} from "./LiteEvent";
-import { PlaygroundHelper } from "./PlaygroundHelper";
 import * as PIXI from 'pixi.js'; 
+import { GameSettings } from "./GameSettings";
 
 export class InputManager{
     private _currentPoint:Point;
@@ -50,7 +50,7 @@ export class InputManager{
                   Math.pow(this._currentPoint.X - this._downPoint.X,2) 
                 + Math.pow(this._currentPoint.Y - this._downPoint.Y,2)));
 
-        if(distance < PlaygroundHelper.Settings.Size/3)
+        if(distance < GameSettings.Size/3)
         {
             this.HoldingEvent.trigger(this._currentPoint);
         }
@@ -76,7 +76,7 @@ export class InputManager{
                   Math.pow(this._currentPoint.X - this._downPoint.X,2) 
                 + Math.pow(this._currentPoint.Y - this._downPoint.Y,2)));
 
-        if(dist < PlaygroundHelper.Settings.Size/6)
+        if(dist < GameSettings.Size/6)
         {
             this.UpEvent.trigger(new Point(this._currentPoint.X,this._currentPoint.Y));
         }

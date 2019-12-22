@@ -1,3 +1,4 @@
+import { GameSettings } from './../../Utils/GameSettings';
 import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
 import { ForestDecorator } from '../../Ceils/Decorator/ForestDecorator'; 
 import { CeilProperties } from '../../Ceils/CeilProperties';
@@ -22,7 +23,7 @@ export class MapRender{
 
     Render(mapContext:MapContext):void{
         PlaygroundHelper.Init();
-        PlaygroundHelper.Settings.MapSize = mapContext.Items.length;
+        GameSettings.MapSize = mapContext.Items.length;
 
         let playgroundItems = new Array<Item>();
 
@@ -60,19 +61,19 @@ export class MapRender{
     }
 
     public AddClouds(items: Item[]) {
-        items.push(new Cloud(200, 20 * PlaygroundHelper.Settings.Size, 800, Archive.nature.clouds[0]));
-        items.push(new Cloud(400, 20 * PlaygroundHelper.Settings.Size, 1200, Archive.nature.clouds[1]));
-        items.push(new Cloud(600, 20 * PlaygroundHelper.Settings.Size, 1600, Archive.nature.clouds[2]));
-        items.push(new Cloud(800, 20 * PlaygroundHelper.Settings.Size, 800, Archive.nature.clouds[3]));
-        items.push(new Cloud(1200, 20 * PlaygroundHelper.Settings.Size, 1600, Archive.nature.clouds[4]));
+        items.push(new Cloud(200, 20 * GameSettings.Size, 800, Archive.nature.clouds[0]));
+        items.push(new Cloud(400, 20 * GameSettings.Size, 1200, Archive.nature.clouds[1]));
+        items.push(new Cloud(600, 20 * GameSettings.Size, 1600, Archive.nature.clouds[2]));
+        items.push(new Cloud(800, 20 * GameSettings.Size, 800, Archive.nature.clouds[3]));
+        items.push(new Cloud(1200, 20 * GameSettings.Size, 1600, Archive.nature.clouds[4]));
     }
 
     private SetGrass(mode:MapMode,middleAreas: HexAxial[], items: Item[]) {
         middleAreas.forEach(corner => {
             const ceil = PlaygroundHelper.CeilsContainer.Get(corner);
             const boundingBox = new BoundingBox();
-            boundingBox.Width = PlaygroundHelper.Settings.Size * 6;
-            boundingBox.Height = PlaygroundHelper.Settings.Size * 6;
+            boundingBox.Width = GameSettings.Size * 6;
+            boundingBox.Height = GameSettings.Size * 6;
             boundingBox.X = ceil.GetBoundingBox().X - (boundingBox.Width / 2 - ceil.GetBoundingBox().Width / 2);
             boundingBox.Y = ceil.GetBoundingBox().Y - (boundingBox.Height / 2 - ceil.GetBoundingBox().Height / 2);
             const grass = new BasicItem(boundingBox, mode === MapMode.forest ? Archive.nature.grass : Archive.nature.sand );

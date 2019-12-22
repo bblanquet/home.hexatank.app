@@ -6,6 +6,7 @@ import { BoundingBox } from "../../Utils/BoundingBox";
 import { Archive } from "../../Utils/ResourceArchiver";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 import { InteractionContext } from "../../Context/InteractionContext";
+import { GameSettings } from "../../Utils/GameSettings";
 
 export class Missile extends Item{
     BoundingBox:BoundingBox;
@@ -37,7 +38,7 @@ export class Missile extends Item{
 
         this.IsCentralRef = true;
 
-        this._speed = PlaygroundHelper.Settings.MissileTranslationSpeed;
+        this._speed = GameSettings.MissileTranslationSpeed;
 
         this.InitPosition(this.BoundingBox);
         this.Rotate(radius);
@@ -58,8 +59,8 @@ export class Missile extends Item{
     }
 
     private IsTargetReached ():boolean{
-        if(Math.abs((this.Target.GetBoundingBox().GetCenter()) - this.BoundingBox.GetCenter()) < PlaygroundHelper.Settings.Size/5
-            && Math.abs((this.Target.GetBoundingBox().GetMiddle()) - this.BoundingBox.GetMiddle()) < PlaygroundHelper.Settings.Size/5)
+        if(Math.abs((this.Target.GetBoundingBox().GetCenter()) - this.BoundingBox.GetCenter()) < GameSettings.Size/5
+            && Math.abs((this.Target.GetBoundingBox().GetMiddle()) - this.BoundingBox.GetMiddle()) < GameSettings.Size/5)
         {
             return true;
         }else

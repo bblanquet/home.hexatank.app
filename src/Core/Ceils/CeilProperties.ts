@@ -1,7 +1,7 @@
+import { GameSettings } from './../Utils/GameSettings';
 import { ICeil } from "./ICeil";
 import { HexAxial } from "../Utils/Coordinates/HexAxial";
 import { BoundingBox } from "../Utils/BoundingBox";
-import { PlaygroundHelper } from "../Utils/PlaygroundHelper";
 import { Point } from '../Utils/Point'; 
 import { TestHelper } from "../Utils/TestHelper";
 
@@ -13,7 +13,7 @@ export class CeilProperties implements ICeil
 
     constructor(coordinate:HexAxial){
         this.Coordinate = coordinate; 
-        this.Size = PlaygroundHelper.Settings.Size;
+        this.Size = GameSettings.Size;
         this.BoundingBox = new BoundingBox();
         this.BoundingBox.Width = CeilProperties.GetWidth(this.Size);
         this.BoundingBox.Height = CeilProperties.GetHeight(this.Size);

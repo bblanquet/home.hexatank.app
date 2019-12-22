@@ -1,3 +1,4 @@
+import { GameSettings } from './Utils/GameSettings';
 import { IItemsManager } from './IItemsManager';
 import {Item} from './Items/Item';
 import { PlaygroundHelper } from './Utils/PlaygroundHelper'; 
@@ -22,11 +23,11 @@ export class ItemsManager implements IItemsManager
     }
 
     public Update():void{
-        if(!PlaygroundHelper.Settings.IsPause)
+        if(!GameSettings.IsPause)
         {
             this.Items = this.Items.filter(item => item.IsUpdatable);
             this.Items.forEach(item => {
-                item.Update(PlaygroundHelper.Settings.GetX(),PlaygroundHelper.Settings.GetY());
+                item.Update(PlaygroundHelper.ScaleHandler.GetX(),PlaygroundHelper.ScaleHandler.GetY());
             });
         }
         

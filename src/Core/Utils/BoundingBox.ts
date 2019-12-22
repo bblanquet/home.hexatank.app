@@ -46,8 +46,7 @@ export class BoundingBox{
 
     public GetCentralPoint():Point
     {
-        return new Point
-        (this.GetCenter(),this.GetMiddle());
+        return new Point(this.GetCenter(),this.GetMiddle());
     }
 
     public Contains(point:{X:number, Y:number}):boolean{

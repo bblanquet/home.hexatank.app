@@ -13,6 +13,7 @@ import { Timer } from "../../Utils/Timer";
 import { Archive } from "../../Utils/ResourceArchiver";
 import { BoundingBox } from "../../Utils/BoundingBox";
 import { InteractionContext } from "../../Context/InteractionContext";
+import { GameSettings } from "../../Utils/GameSettings";
 
 export class Turrel extends Item implements IRotatable 
 {
@@ -37,7 +38,7 @@ export class Turrel extends Item implements IRotatable
     constructor(hqSkin:HqSkin, item:Tank){
         super();
         this._skin = hqSkin; 
-        this.RotationSpeed = PlaygroundHelper.Settings.TurrelRotationSpeed;
+        this.RotationSpeed = GameSettings.TurrelRotationSpeed;
         this.CurrentRadius = 0;
         this.Z = 3;
         this.Base = item;

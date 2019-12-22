@@ -4,6 +4,7 @@ import { StaticBasicItem } from '../../Items/StaticBasicItem';
 import { Archive } from '../../Utils/ResourceArchiver';
 import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
 import { BoundingBox } from '../../Utils/BoundingBox';
+import { GameSettings } from '../../Utils/GameSettings';
 
 export class MultiSelectionMenu {
     private _tankSelection:StaticBasicItem;
@@ -15,8 +16,8 @@ export class MultiSelectionMenu {
     constructor()
     {
         this._tankSelection = new StaticBasicItem(BoundingBox.Create(0,0,
-            PlaygroundHelper.Settings.Size*2,
-            PlaygroundHelper.Settings.Size*4),
+            GameSettings.Size*2,
+            GameSettings.Size*4),
             Archive.menu.smartMenu.tankSelection,
             Archive.menu.smartMenu.hoverTankSelection,
             7,
@@ -26,8 +27,8 @@ export class MultiSelectionMenu {
         this._tankSelection.SetVisible(this.IsVisible.bind(this));
         
         this._cellSelection = new StaticBasicItem(BoundingBox.Create(0,0,
-            PlaygroundHelper.Settings.Size*2,
-            PlaygroundHelper.Settings.Size*4),
+            GameSettings.Size*2,
+            GameSettings.Size*4),
             Archive.menu.smartMenu.cellSelection,
             Archive.menu.smartMenu.hoverCellSelection,
             7,

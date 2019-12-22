@@ -4,8 +4,8 @@ import { Archive } from "../../Utils/ResourceArchiver";
 import { Field } from "./Field"; 
 import { BoundingBox } from "../../Utils/BoundingBox";
 import { Vehicle } from "../../Items/Unit/Vehicle";
-import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 import { CeilState } from "../CeilState";
+import { GameSettings } from "../../Utils/GameSettings";
 
 export class AttackField extends Field
 {
@@ -32,9 +32,9 @@ export class AttackField extends Field
         return false;
     }
     Support(vehicule: Vehicle): void {
-        vehicule.TranslationSpeed = PlaygroundHelper.Settings.TranslationSpeed;
-        vehicule.RotationSpeed = PlaygroundHelper.Settings.RotationSpeed;    
-        vehicule.Attack = PlaygroundHelper.Settings.Attack * 3;
+        vehicule.TranslationSpeed = GameSettings.TranslationSpeed;
+        vehicule.RotationSpeed = GameSettings.RotationSpeed;    
+        vehicule.Attack = GameSettings.Attack * 3;
     }    
 
     IsDesctrutible(): boolean {

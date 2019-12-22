@@ -19,6 +19,7 @@ import { IInteractionContext } from '../Context/IInteractionContext';
 import { LiteEvent } from '../Utils/LiteEvent';
 import { ContextMode } from '../Utils/ContextMode';
 import { Vehicle } from '../Items/Unit/Vehicle';
+import { GameSettings } from '../Utils/GameSettings';
 
 export class Ceil extends Item implements ICeil , ISelectable
 {
@@ -45,7 +46,7 @@ export class Ceil extends Item implements ICeil , ISelectable
             e.alpha=0;
             e.anchor.set(0.5);
         });
-        this._circle = new PIXI.Circle(0,0,PlaygroundHelper.Settings.Size/2);
+        this._circle = new PIXI.Circle(0,0,GameSettings.Size/2);
     }
 
     public GetState(): CeilState {
@@ -286,8 +287,8 @@ export class Ceil extends Item implements ICeil , ISelectable
     {
         if(PlaygroundHelper.Viewport.lastViewport){
             let scale = PlaygroundHelper.Viewport.lastViewport.scaleX;
-            this._circle.radius = context.Mode === ContextMode.MultipleSelection ? PlaygroundHelper.Settings.Size/2 * scale: PlaygroundHelper.Settings.Size * scale;
-            this._circle.radius = PlaygroundHelper.Settings.Size * scale;
+            this._circle.radius = context.Mode === ContextMode.MultipleSelection ? GameSettings.Size/2 * scale: GameSettings.Size * scale;
+            this._circle.radius = GameSettings.Size * scale;
             this._circle.x = (this.GetSprites()[0].x -PlaygroundHelper.Viewport.left) * scale;
             this._circle.y = (this.GetSprites()[0].y -PlaygroundHelper.Viewport.top) * scale;;
         }

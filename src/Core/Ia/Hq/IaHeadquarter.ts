@@ -21,6 +21,7 @@ import { Truck } from "../../Items/Unit/Truck";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 import { Explosion } from "../../Items/Unit/Explosion";
 import { Tank } from "../../Items/Unit/Tank";
+import { GameSettings } from "../../Utils/GameSettings";
 
 export class IaHeadquarter extends Headquarter{ 
     public AreasByCeil:{ [id: string] : HeldArea; };
@@ -94,7 +95,7 @@ export class IaHeadquarter extends Headquarter{
                 var area = this._spreadStrategy.FindArea();
                 if(!isNullOrUndefined(area))
                 {
-                    if(this.GetAmount() >= PlaygroundHelper.Settings.TankPrice)
+                    if(this.GetAmount() >= GameSettings.TankPrice)
                     {
                         this.EmptyAreas.splice(this.EmptyAreas.indexOf(area),1);
                         let hqArea =new HeldArea(this,area);
@@ -121,7 +122,7 @@ export class IaHeadquarter extends Headquarter{
         {
             if(!field.GetCeil().IsBlocked())
             {
-                this.Buy(PlaygroundHelper.Settings.TruckPrice);
+                this.Buy(GameSettings.TruckPrice);
                 if(field.GetCeil().IsVisible()){
                     const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,5,false,5);
                     PlaygroundHelper.Playground.Items.push(explosion);
@@ -144,7 +145,7 @@ export class IaHeadquarter extends Headquarter{
     public BuyTankForArea(area:HeldArea):boolean
     {
         let isCreated = false;
-        if(this.GetAmount() >= PlaygroundHelper.Settings.TankPrice)
+        if(this.GetAmount() >= GameSettings.TankPrice)
         {
             for(let field of this.Fields)
             {
@@ -153,7 +154,7 @@ export class IaHeadquarter extends Headquarter{
                     var ceil = area.GetAvailableCeil(); 
                     if(!isNullOrUndefined(ceil))
                     {
-                        this.Buy(PlaygroundHelper.Settings.TankPrice);
+                        this.Buy(GameSettings.TankPrice);
                         if(field.GetCeil().IsVisible())
                         {
                             const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,5,false,5);

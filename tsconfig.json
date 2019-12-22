@@ -15,5 +15,14 @@
     ],
     "files": [ 
       "custom.d.ts" 
-    ]
+    ],
+    "mocha.requires": [
+      "ts-node/register"
+     ],
+     "mocha":{
+      "mocha.requires": [
+        "ts-node/register"
+      ],
+      "mocha.files.glob": "./test/**/*.test.ts"
+    },
 }

@@ -1,10 +1,10 @@
 import { IPlaygroundBuilder } from './IPlaygroundBuilder';
 import { HexAxial } from '../../Utils/Coordinates/HexAxial'; 
-import { CeilProperties } from '../../Ceils/CeilProperties'; 
+import { CellProperties } from '../../Cell/CellProperties'; 
 
-export class HexagonalMapBuilder implements IPlaygroundBuilder<CeilProperties>{
+export class HexagonalMapBuilder implements IPlaygroundBuilder<CellProperties>{
 
-    private GetIgnoredCeil(n:number):Array<number>{
+    private GetIgnoredcell(n:number):Array<number>{
         const result = new Array<number>();
         
         const leftEdge = n/2-1;
@@ -20,7 +20,7 @@ export class HexagonalMapBuilder implements IPlaygroundBuilder<CeilProperties>{
         return result;
     }
 
-    public GetAreaMiddleCeil(n:number):Array<HexAxial>{
+    public GetAreaMiddlecell(n:number):Array<HexAxial>{
         return [
             new HexAxial(1,n/2),
             new HexAxial(n-1,n/2),//column,row
@@ -35,7 +35,7 @@ export class HexagonalMapBuilder implements IPlaygroundBuilder<CeilProperties>{
         return new HexAxial(n/2,n/2);
     }
 
-    public Build(n:number): CeilProperties[] {
+    public Build(n:number): CellProperties[] {
 
         if(n < 2)
         {
@@ -46,8 +46,8 @@ export class HexagonalMapBuilder implements IPlaygroundBuilder<CeilProperties>{
             throw new Error();
         }
 
-        var ceils = new Array<CeilProperties>();
-        const ignoredCoordinates = this.GetIgnoredCeil(n);
+        var cells = new Array<CellProperties>();
+        const ignoredCoordinates = this.GetIgnoredcell(n);
 
         for (let row = 0; row <= n; row++)
          {
@@ -56,12 +56,12 @@ export class HexagonalMapBuilder implements IPlaygroundBuilder<CeilProperties>{
                 if(ignoredCoordinates.indexOf(row+column)===-1)
                 {
                     var hexAxial = new HexAxial(column,row);    
-                    var ceil = new CeilProperties(hexAxial);
-                    ceils.push(ceil);
+                    var cell = new CellProperties(hexAxial);
+                    cells.push(cell);
                 }   
             }            
         }
 
-        return ceils;
+        return cells;
     }
 }

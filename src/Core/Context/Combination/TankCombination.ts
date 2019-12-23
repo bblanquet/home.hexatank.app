@@ -4,7 +4,7 @@ import { TargetOrder } from "../../Ia/Order/TargetOrder";
 import { SimpleOrder } from "../../Ia/Order/SimpleOrder";
 import { Item } from "../../Items/Item";
 import { Tank } from "../../Items/Unit/Tank";
-import { Ceil } from "../../Ceils/Ceil";
+import { Cell } from "../../Cell/Cell";
 import { IContextContainer } from "../IContextContainer";
 import { ISelectable } from "../../ISelectable";
 import { CombinationContext } from './CombinationContext';
@@ -18,7 +18,7 @@ export class TankCombination implements ICombination{
     IsMatching(context: CombinationContext): boolean {
         return this.IsNormalMode(context) && context.Items.length >=2 
         && context.Items[0] instanceof Tank 
-        && context.Items[1] instanceof Ceil
+        && context.Items[1] instanceof Cell
     }
 
     private IsNormalMode(context: CombinationContext) {
@@ -31,17 +31,17 @@ export class TankCombination implements ICombination{
         if(this.IsMatching(context))
         {
             const tank = <Tank>context.Items[0];
-            const ceil = <Ceil>context.Items[1];
-            if(ceil.GetShootableEntity() !== null
-            && ceil.GetShootableEntity().IsEnemy(tank))
+            const cell = <Cell>context.Items[1];
+            if(cell.GetShootableEntity() !== null
+            && cell.GetShootableEntity().IsEnemy(tank))
             {
-                const order = new TargetOrder(tank,ceil.GetShootableEntity());
+                const order = new TargetOrder(tank,cell.GetShootableEntity());
                 tank.SetOrder(order);
                 context.Items.splice(1,1);
             }
             else
             {
-                const order = new PersistentOrder(ceil,tank);
+                const order = new PersistentOrder(cell,tank);
                 tank.SetOrder(order);
                 context.Items.splice(1,1);
             }

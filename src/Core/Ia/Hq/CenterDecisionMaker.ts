@@ -44,13 +44,13 @@ export class CenterDecisionMaker{
 
     private GetHelpFromBuying(request: AreaRequest)
     {
-        const ceil = request.Status.Area.GetCentralCeil();
+        const cell = request.Status.Area.GetCentralCell();
 
         while(request.RequestedUnitCount > 0){
             const isPassed = this._hq.BuyTankForArea(request.Status.Area);
             if(isPassed)
             {
-                console.log(`%c ADD MORE TROOP BUYING ${ceil.GetCoordinate().ToString()}`,"font-weight:bold;color:green;");
+                console.log(`%c ADD MORE TROOP BUYING ${cell.GetCoordinate().ToString()}`,"font-weight:bold;color:green;");
                 request.RequestedUnitCount -=1;
             }
             else
@@ -62,22 +62,22 @@ export class CenterDecisionMaker{
 
 
     private GetHelpFromExcess(request: AreaRequest){
-        const ceil = request.Status.Area.GetCentralCeil();
+        const cell = request.Status.Area.GetCentralCell();
 
         while(this._hq.TankBalancer.HasTank() 
             && request.RequestedUnitCount > 0)
         {
-            const ceil = request.Status.Area.GetAvailableCeil();
+            const cell = request.Status.Area.GetAvailablecell();
 
-            if(ceil)
+            if(cell)
             {
                 const tank = this._hq.TankBalancer.Pop();
                 if(isNullOrUndefined(tank))
                 {
                     throw 'not possible';
                 }
-                console.log(`%c ADD MORE TROOP EXCESS ${ceil.GetCoordinate().ToString()}`,"font-weight:bold;color:green;");
-                request.Status.Area.AddTroop(tank,ceil);
+                console.log(`%c ADD MORE TROOP EXCESS ${cell.GetCoordinate().ToString()}`,"font-weight:bold;color:green;");
+                request.Status.Area.AddTroop(tank,cell);
                 request.RequestedUnitCount -= 1;
             }
             else
@@ -89,15 +89,15 @@ export class CenterDecisionMaker{
 
     private GetHelpFromSurrounding(request: AreaRequest)
     {
-        const ceil = request.Status.Area.GetCentralCeil(); 
-        const surroundingAreas = PlaygroundHelper.GetNeighbourhoodAreas(ceil);
+        const cell = request.Status.Area.GetCentralCell(); 
+        const surroundingAreas = PlaygroundHelper.GetNeighbourhoodAreas(cell);
         
         for (const surroundingArea of surroundingAreas) 
         {
-            const ceilKey = surroundingArea.GetCentralCeil().GetCoordinate().ToString();
-            if (this._hq.AreasByCeil.hasOwnProperty(ceilKey)) 
+            const cellKey = surroundingArea.GetCentralCell().GetCoordinate().ToString();
+            if (this._hq.AreasBycell.hasOwnProperty(cellKey)) 
             {
-                const hqSurroundingArea = this._hq.AreasByCeil[ceilKey];
+                const hqSurroundingArea = this._hq.AreasBycell[cellKey];
                 if(!hqSurroundingArea.HasReceivedRequest)
                 {
                     hqSurroundingArea.HasReceivedRequest = true;
@@ -109,17 +109,17 @@ export class CenterDecisionMaker{
                             return;
                         }
 
-                        const ceil = request.Status.Area.GetAvailableCeil();
+                        const cell = request.Status.Area.GetAvailablecell();
 
-                        if(ceil)
+                        if(cell)
                         {
                             const tank = hqSurroundingArea.DropTroop();
                             if(isNullOrUndefined(tank))
                             {
                                 throw 'not possible';
                             }
-                            request.Status.Area.AddTroop(tank,ceil);
-                            console.log(`%c ADD MORE TROOP SUPPORT ${ceil.GetCoordinate().ToString()} `,"font-weight:bold;color:green;");
+                            request.Status.Area.AddTroop(tank,cell);
+                            console.log(`%c ADD MORE TROOP SUPPORT ${cell.GetCoordinate().ToString()} `,"font-weight:bold;color:green;");
                             request.RequestedUnitCount -= 1;
                         }
                         else

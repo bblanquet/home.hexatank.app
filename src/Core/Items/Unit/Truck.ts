@@ -1,12 +1,12 @@
 import { Vehicle } from "./Vehicle";
 import { IHqContainer } from "./IHqContainer";
 import { AliveItem } from "../AliveItem";
-import { Headquarter } from "../../Ceils/Field/Headquarter";
+import { Headquarter } from "../../Cell/Field/Headquarter";
 import { Light } from "../Others/Light";
 import { ITimer } from "../../Utils/ITimer";
 import { Archive } from "../../Utils/ResourceArchiver";
 import { Timer } from "../../Utils/Timer";
-import { CeilState } from "../../Ceils/CeilState";
+import { CellState } from "../../Cell/CellState";
 
 export class Truck extends Vehicle implements IHqContainer{
 
@@ -99,9 +99,9 @@ export class Truck extends Vehicle implements IHqContainer{
         return diamonds;
     }
 
-    protected OnCellStateChanged(obj:any,ceilState: CeilState): void {
+    protected OnCellStateChanged(obj:any,cellState: CellState): void {
         this.GetDisplayObjects().forEach(s=>{
-            s.visible = ceilState === CeilState.Visible;
+            s.visible = cellState === CellState.Visible;
         });
     }
 
@@ -120,7 +120,7 @@ export class Truck extends Vehicle implements IHqContainer{
             }
         }
 
-        this._light.GetSprites().forEach(s=>s.visible=this.GetCurrentCeil().IsVisible());
+        this._light.GetSprites().forEach(s=>s.visible=this.GetCurrentCell().IsVisible());
         this._light.Update(viewX,viewY);
     }
     protected RemoveCamouflage(): void {

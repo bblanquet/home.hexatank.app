@@ -1,7 +1,7 @@
 import { Area } from "./Area";
-import { Ceil } from "../../Ceils/Ceil";
+import { Cell } from "../../Cell/Cell";
 import { TroopDecisionMaker } from "./TroopDecisionMaker";
-import { Headquarter } from "../../Ceils/Field/Headquarter";
+import { Headquarter } from "../../Cell/Field/Headquarter";
 import { AreaStatus } from "./AreaStatus"; 
 import { AreaDecisionMaker } from "./AreaDecisionMaker";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
@@ -33,7 +33,7 @@ export class HeldArea
         this._troops = this._troops.filter(t=>t.Tank.IsAlive());
 
         if(this._troops.length > 1){
-            console.log(`%c AREA  ${this._troops.length} -> ${this._area.GetCentralCeil().GetCoordinate().ToString()}`,'font-weight:bold;');
+            console.log(`%c AREA  ${this._troops.length} -> ${this._area.GetCentralCell().GetCoordinate().ToString()}`,'font-weight:bold;');
         }
 
         if(0 < this.GetInsideEnemyCount())
@@ -48,8 +48,8 @@ export class HeldArea
         }
     }
 
-    public GetCentralCeil():Ceil{
-        return this._area.GetCentralCeil();
+    public GetCentralCell():Cell{
+        return this._area.GetCentralCell();
     }
 
     public GetStatus():AreaStatus{
@@ -64,7 +64,7 @@ export class HeldArea
 
     private GetOutsideEnemyCount() :number{
         let outsideEnemyCount = 0;
-        PlaygroundHelper.GetNeighbourhoodAreas(this._area.GetCentralCeil()).forEach(area => {
+        PlaygroundHelper.GetNeighbourhoodAreas(this._area.GetCentralCell()).forEach(area => {
             outsideEnemyCount += area.GetEnemyCount(this._hq);
         });
         return outsideEnemyCount;
@@ -72,7 +72,7 @@ export class HeldArea
 
     private GetOutsideAllyCount() :number{
         let outsideEnemyCount = 0;
-        PlaygroundHelper.GetNeighbourhoodAreas(this._area.GetCentralCeil()).forEach(area => {
+        PlaygroundHelper.GetNeighbourhoodAreas(this._area.GetCentralCell()).forEach(area => {
             outsideEnemyCount += area.GetAllyCount(this._hq);
         });
         return outsideEnemyCount;
@@ -96,22 +96,22 @@ export class HeldArea
         return null;
     }
 
-    public AddTroop(tank:Tank, ceil:Ceil):void{
-        this._troops.push(new TroopDecisionMaker(ceil,tank,this)); 
+    public AddTroop(tank:Tank, cell:Cell):void{
+        this._troops.push(new TroopDecisionMaker(cell,tank,this)); 
     }
 
-    public GetAvailableCeilCount():number{
-        return this._area.GetAvailableCeil().filter(c=>this._troops.filter(t=>c===t.CurrentPatrolDestination).length === 0).length;
+    public GetAvailablecellCount():number{
+        return this._area.GetAvailablecell().filter(c=>this._troops.filter(t=>c===t.CurrentPatrolDestination).length === 0).length;
     }
 
-    public GetAvailableCeil():Ceil
+    public GetAvailablecell():Cell
     {
-        const ceils = this._area.GetAvailableCeil().filter(c=>this._troops.filter(t=>c===t.CurrentPatrolDestination).length === 0);
+        const cells = this._area.GetAvailablecell().filter(c=>this._troops.filter(t=>c===t.CurrentPatrolDestination).length === 0);
 
-        if(ceils.length > 0)
+        if(cells.length > 0)
         {
-            let index = Math.floor(Math.random() * (ceils.length-1)) + 0;  
-            return ceils[index];
+            let index = Math.floor(Math.random() * (cells.length-1)) + 0;  
+            return cells[index];
         }
         else
         {

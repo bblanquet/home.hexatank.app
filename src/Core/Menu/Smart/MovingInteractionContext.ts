@@ -1,11 +1,11 @@
 import { isNullOrUndefined } from 'util';
 import { Archive } from '../../Utils/ResourceArchiver';
 import { BasicItem } from '../../Items/BasicItem';
-import { CeilsContainer } from '../../Ceils/CeilsContainer';
+import { CellContainer } from '../../Cell/CellContainer';
 import { IInteractionContext, InteractionKind } from '../../Context/IInteractionContext';
 import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
 import { Point } from '../../Utils/Point';
-import { Ceil } from '../../Ceils/Ceil';
+import { Cell } from '../../Cell/Cell';  
 import { Item } from '../../Items/Item';
 import { ContextMode } from '../../Utils/ContextMode';
 
@@ -13,13 +13,13 @@ export class MovingInteractionContext implements IInteractionContext{
     public Kind: InteractionKind;
     public Mode: ContextMode;
     public Point: PIXI.Point;
-    private _cells:CeilsContainer<Ceil>;
+    private _cells:CellContainer<Cell>;
     private _enlightCells:BasicItem[];
     private _isOn:boolean;
     
     constructor()
     {
-        this._cells = new CeilsContainer<Ceil>();
+        this._cells = new CellContainer<Cell>();
         this._enlightCells = new Array<BasicItem>();
     }
 
@@ -36,13 +36,13 @@ export class MovingInteractionContext implements IInteractionContext{
         }
     }
 
-    public GetCells():Ceil[]{
+    public GetCells():Cell[]{
         return this._cells.GetAll();
     }
 
     public Stop():void{
         this._isOn = false;
-        this._cells = new CeilsContainer();
+        this._cells = new CellContainer();
         this._enlightCells.forEach(c=>c.Destroy());
         this._enlightCells = [];
     }
@@ -52,9 +52,9 @@ export class MovingInteractionContext implements IInteractionContext{
             return;
         }
 
-        if(item instanceof Ceil)
+        if(item instanceof Cell)
         {
-            const cell = <Ceil> item;
+            const cell = <Cell> item;
             if(this._cells.Get(cell.GetCoordinate()) === null){
                 this._cells.Add(cell);
                 const displayPath = new BasicItem(cell.GetBoundingBox(),Archive.menu.smartMenu.multiCellSelection,5);

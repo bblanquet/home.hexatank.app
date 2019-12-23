@@ -3,9 +3,9 @@ import { IaHeadquarter } from '../../Ia/Hq/IaHeadquarter';
 import { HexAxial } from '../../Utils/Coordinates/HexAxial';
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 import { Item } from '../../Items/Item';
-import { Headquarter } from '../../Ceils/Field/Headquarter';
+import { Headquarter } from '../../Cell/Field/Headquarter';
 import { HqSkin } from '../../Utils/HqSkin'; 
-import { Diamond } from "../../Ceils/Field/Diamond"; 
+import { Diamond } from "../../Cell/Field/Diamond"; 
 import { DiamondHq } from '../Generator/DiamondHq';
 
 export class HqRender{
@@ -50,18 +50,18 @@ export class HqRender{
         return hqs;
     }
 
-    private CreateHq(hqCeil: HexAxial,diamondCeil: HexAxial, items: Item[], skin:HqSkin):Headquarter {
-        const diamond = new Diamond(PlaygroundHelper.CeilsContainer.Get(diamondCeil));
-        const hq = new Headquarter(skin, PlaygroundHelper.CeilsContainer.Get(hqCeil));
+    private CreateHq(hqcell: HexAxial,diamondcell: HexAxial, items: Item[], skin:HqSkin):Headquarter {
+        const diamond = new Diamond(PlaygroundHelper.CellsContainer.Get(diamondcell));
+        const hq = new Headquarter(skin, PlaygroundHelper.CellsContainer.Get(hqcell));
         items.push(diamond);
         items.push(hq);
         return hq;
     }
 
-    private CreateIaHq(hqCeil: HexAxial, diamondCeil: HexAxial, items: Item[], skin:HqSkin):Headquarter{
-        const ceil = PlaygroundHelper.CeilsContainer.Get(hqCeil);
-        const diamond = new Diamond(PlaygroundHelper.CeilsContainer.Get(diamondCeil));
-        const hq = new IaHeadquarter(PlaygroundHelper.GetAreas(ceil), skin, ceil);
+    private CreateIaHq(hqcell: HexAxial, diamondcell: HexAxial, items: Item[], skin:HqSkin):Headquarter{
+        const cell = PlaygroundHelper.CellsContainer.Get(hqcell);
+        const diamond = new Diamond(PlaygroundHelper.CellsContainer.Get(diamondcell));
+        const hq = new IaHeadquarter(PlaygroundHelper.GetAreas(cell), skin, cell);
         hq.Diamond = diamond;
         items.push(diamond);
         items.push(hq);

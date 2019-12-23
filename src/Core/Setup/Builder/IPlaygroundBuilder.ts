@@ -1,8 +1,8 @@
 import { HexAxial } from '../../Utils/Coordinates/HexAxial';  
-import { ICeil } from '../../Ceils/ICeil';
+import { ICell } from '../../Cell/ICell';
 
-export interface IPlaygroundBuilder<T extends ICeil>{ 
+export interface IPlaygroundBuilder<T extends ICell>{ 
     Build(n:number) :Array<T>;
     GetMidle(n:number):HexAxial;
-    GetAreaMiddleCeil(n:number):Array<HexAxial>;  
+    GetAreaMiddlecell(n:number):Array<HexAxial>;  
 }

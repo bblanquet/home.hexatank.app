@@ -3,8 +3,8 @@
 // import { Menu } from "../../Menu/Menu";
 // import { Item } from "../../Items/Item";
 // import { Vehicle } from "../../Items/Unit/Vehicle";
-// import { Ceil } from "../../Ceils/Ceil";
-// import { Headquarter } from "../../Ceils/Field/Headquarter";
+// import { cell } from "../../cells/cell";
+// import { Headquarter } from "../../cells/Field/Headquarter";
 
 // export class SwitchToHeadquarterCombination implements ICombination{
 //     constructor(private _menus:Menu[]){
@@ -13,7 +13,7 @@
 //     IsMatching(items: Item[]): boolean 
 //     {
 //         return items.length == 2 
-//         && (items[0] instanceof Vehicle ||  items[0] instanceof Ceil)
+//         && (items[0] instanceof Vehicle ||  items[0] instanceof cell)
 //         && items[1] instanceof Headquarter;    
 //     }    
     

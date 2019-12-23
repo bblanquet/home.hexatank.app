@@ -1,11 +1,11 @@
-import { CeilProperties } from '../../Ceils/CeilProperties'; 
+import { CellProperties } from '../../Cell/CellProperties'; 
 import { IPlaygroundBuilder } from "./IPlaygroundBuilder";
 import { HexAxial } from "../../Utils/Coordinates/HexAxial"; 
 import { AreaEngine } from "../../Ia/Area/AreaEngine"; 
-import { CeilsContainer } from "../../Ceils/CeilsContainer";
+import { CellContainer } from "../../Cell/CellContainer";
 import { HexagonalMapBuilder } from "./HexagonalMapBuilder"; 
 
-export class FlowerMapBuilder implements IPlaygroundBuilder<CeilProperties>{ 
+export class FlowerMapBuilder implements IPlaygroundBuilder<CellProperties>{ 
 
     private _hexagonalBuilder:HexagonalMapBuilder;
     
@@ -13,21 +13,21 @@ export class FlowerMapBuilder implements IPlaygroundBuilder<CeilProperties>{
         this._hexagonalBuilder = new HexagonalMapBuilder();
     }
 
-    public Build(seize: number): CeilProperties[] {
-        const initialCeils =  this._hexagonalBuilder.Build(seize);
-        const container = new CeilsContainer<CeilProperties>();
-        initialCeils.forEach(ceil => {
-            container.Add(ceil);
+    public Build(seize: number): CellProperties[] {
+        const initialcells =  this._hexagonalBuilder.Build(seize);
+        const container = new CellContainer<CellProperties>();
+        initialcells.forEach(cell => {
+            container.Add(cell);
         });
-        const areaEngine = new AreaEngine<CeilProperties>();
-        var areas = areaEngine.GetAreas(container,<CeilProperties> container.Get(this.GetMidle(seize)));
-        var result = new Array<CeilProperties>();
+        const areaEngine = new AreaEngine<CellProperties>();
+        var areas = areaEngine.GetAreas(container,<CellProperties> container.Get(this.GetMidle(seize)));
+        var result = new Array<CellProperties>();
         areas.forEach(area =>{
-            const ceils = container.GetNeighbourhood(area.GetCoordinate()); 
-            if(ceils.length === 6){
+            const cells = container.GetNeighbourhood(area.GetCoordinate()); 
+            if(cells.length === 6){
                 result.push(area);
-                ceils.forEach(ceil=>{
-                    result.push(<CeilProperties>ceil);
+                cells.forEach(cell=>{
+                    result.push(<CellProperties>cell);
                 })
             }
         });
@@ -38,14 +38,14 @@ export class FlowerMapBuilder implements IPlaygroundBuilder<CeilProperties>{
         return this._hexagonalBuilder.GetMidle(n);
     }
 
-    public GetAreaMiddleCeil(size: number): Array<HexAxial> {
-        const initialCeils =  this._hexagonalBuilder.Build(size);
-        const container = new CeilsContainer<CeilProperties>();
-        initialCeils.forEach(ceil => {
-            container.Add(ceil);
+    public GetAreaMiddlecell(size: number): Array<HexAxial> {
+        const initialcells =  this._hexagonalBuilder.Build(size);
+        const container = new CellContainer<CellProperties>();
+        initialcells.forEach(cell => {
+            container.Add(cell);
         });
         const areaEngine = new AreaEngine();
-        var areas = areaEngine.GetAreas(container,<CeilProperties> container.Get(this.GetMidle(size)));
+        var areas = areaEngine.GetAreas(container,<CellProperties> container.Get(this.GetMidle(size)));
         const result = areas.map(a=>a.GetCoordinate());
         result.shift();
         return result.filter(a=> container.GetNeighbourhood(a).length === 6);

@@ -25,19 +25,19 @@ import { ClearTrashCombination } from './Combination/ClearTrashCombination';
 import { TruckCombination } from './Combination/TruckCombination';
 import { TankCombination } from './Combination/TankCombination';
 import { PatrolCombination } from './Combination/PatrolCombination';
-import { FastCellCombination } from './Combination/FastCeilCombination'; 
-import { AttackCellCombination } from './Combination/AttackCeilCombination'; 
-import { HealCellCombination as HealCellCombination } from './Combination/HealCeilCombination';
+import { FastCellCombination } from './Combination/FastcellCombination'; 
+import { AttackCellCombination } from './Combination/AttackcellCombination'; 
+import { HealCellCombination as HealCellCombination } from './Combination/HealcellCombination';
 import { ICombination } from './Combination/ICombination';
 import { SelectionCombination } from './Combination/SelectionCombination';
 import { CancelCombination } from './Combination/CancelCombination';
-import { MoneyCellCombination } from './Combination/MoneyCeilCombination';
+import { MoneyCellCombination } from './Combination/MoneycellCombination';
 import { TargetCombination } from './Combination/TargetCombination';
 import { SwitchToVehicleCombination } from './Combination/SwitchToVehicleCombination';
 import * as PIXI from 'pixi.js';
 import { Item } from '../Items/Item';
-import { Headquarter } from '../Ceils/Field/Headquarter';
-import { Ceil } from '../Ceils/Ceil';
+import { Headquarter } from '../Cell/Field/Headquarter';
+import { Cell } from '../Cell/Cell';
 import { Vehicle } from '../Items/Unit/Vehicle';
 import { ICombinationDispatcher } from './ICombinationDispatcher'; 
 import { MovingInteractionContext } from '../Menu/Smart/MovingInteractionContext';
@@ -161,7 +161,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 
     public IsSelectable(item:Item):boolean
     {
-        if(item instanceof Ceil){
+        if(item instanceof Cell){
             return true;
         }
         else if(item instanceof Vehicle){
@@ -173,24 +173,24 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 
 
     private ContainsSelectable(item:Item):Boolean{
-        return this._isSelectable(<Item><any>(<Ceil>item).GetOccupier())
-            || this._isSelectable(<Item><any>(<Ceil>item).GetField());
+        return this._isSelectable(<Item><any>(<Cell>item).GetOccupier())
+            || this._isSelectable(<Item><any>(<Cell>item).GetField());
     }
 
-    private GetSelectable(i: Ceil):Item {
-        if(this._isSelectable(<Item><any>(<Ceil>i).GetOccupier()))
+    private GetSelectable(i: Cell):Item {
+        if(this._isSelectable(<Item><any>(<Cell>i).GetOccupier()))
         {
-            return <Item><any>(<Ceil>i).GetOccupier();
+            return <Item><any>(<Cell>i).GetOccupier();
         }
         else{
-            return <Item><any>(<Ceil>i).GetField();
+            return <Item><any>(<Cell>i).GetField();
         }
     }
 
     public OnSelect(item:Item):void
     {
         if(!isNullOrUndefined(item)){
-            if(item instanceof Ceil){
+            if(item instanceof Cell){
                 if(this.ContainsSelectable(item))
                 {
                     item = this.GetSelectable(item);

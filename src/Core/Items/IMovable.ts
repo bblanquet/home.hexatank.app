@@ -1,10 +1,10 @@
-import { Ceil } from "../Ceils/Ceil";
+import { Cell } from "../Cell/Cell";
 
 export interface IMovable
 {
-    MoveNextCeil():void; 
-    GetNextCeil():Ceil;
-    SetNextCeil(ceil:Ceil):void;
-    GetCurrentCeil():Ceil;
+    MoveNextCell():void; 
+    GetNextCell():Cell;
+    SetNextCell(cell:Cell):void;
+    GetCurrentCell():Cell;
     TranslationSpeed:number;
 }

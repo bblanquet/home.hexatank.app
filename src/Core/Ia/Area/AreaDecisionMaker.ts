@@ -1,5 +1,5 @@
 import { HeldArea } from "./HeldArea";
-import { Ceil } from "../../Ceils/Ceil";
+import { Cell } from "../../Cell/Cell";
 import { isNullOrUndefined } from "util";
 import { TroopSituation } from "./TroopSituation";
 import { TroopDestination } from "./TroopDestination";
@@ -27,31 +27,31 @@ export class AreaDecisionMaker
 
             console.log(`%c troops count ${this._area.GetTroops().length}`,"font-weight:bold;color:green;");
     
-            //#1 get in & out ceils
-            const areas = PlaygroundHelper.GetNeighbourhoodAreas(this._area.GetCentralCeil());
+            //#1 get in & out cells
+            const areas = PlaygroundHelper.GetNeighbourhoodAreas(this._area.GetCentralCell());
             areas.push(this._area.GetArea());
             
-            //#2 get enemies ceils
-            const enemyCeils = this.GetEnemyCeils(areas, ally);
+            //#2 get enemies cells
+            const enemycells = this.GetEnemycells(areas, ally);
     
-            console.log(`%c enemy ceils count ${enemyCeils.length}`,"font-weight:bold;color:blue;");
+            console.log(`%c enemy cells count ${enemycells.length}`,"font-weight:bold;color:blue;");
     
-            //#3 get enemy contact ceils
-            const surroundingEnemyCeils = this.GetSurroundingEnemyCeils(enemyCeils);
+            //#3 get enemy contact cells
+            const surroundingEnemycells = this.GetSurroundingEnemycells(enemycells);
             
-            console.log(`%c surrounding enemy ceils count ${Object.keys(surroundingEnemyCeils).length}`,"font-weight:bold;color:red;");
+            console.log(`%c surrounding enemy cells count ${Object.keys(surroundingEnemycells).length}`,"font-weight:bold;color:red;");
     
-            //#4 classify ceil dangerous
-            const dangerLevelCeils = this.ClassifyCeilDanger(surroundingEnemyCeils, ally);
+            //#4 classify cell dangerous
+            const dangerLevelcells = this.ClassifycellDanger(surroundingEnemycells, ally);
     
-            for(let danger in dangerLevelCeils)
+            for(let danger in dangerLevelcells)
             {
-                console.log(`%c danger lvl ${danger} - ceils count ${Object.keys(dangerLevelCeils[danger]).length}`,"font-weight:bold;color:brown;");
+                console.log(`%c danger lvl ${danger} - cells count ${Object.keys(dangerLevelcells[danger]).length}`,"font-weight:bold;color:brown;");
             }
     
-            //#5 find path to reach ceils and classify them
+            //#5 find path to reach cells and classify them
             let troopSituations = new Array<TroopSituation>();
-            this.FindTroopPaths(troopSituations, dangerLevelCeils);
+            this.FindTroopPaths(troopSituations, dangerLevelcells);
 
             troopSituations = troopSituations.filter(t=>Object.keys(t.Destinations).length > 0);
 
@@ -74,58 +74,58 @@ export class AreaDecisionMaker
         }
     }
 
-    private GetSurroundingEnemyCeils(enemyCeils:Array<Ceil>)
+    private GetSurroundingEnemycells(enemycells:Array<Cell>)
     {
-        const enemyContactCeils : { [id: string] : Ceil; } = {};
-        enemyCeils.forEach(enemyCeil=>
+        const enemyContactcells : { [id: string] : Cell; } = {};
+        enemycells.forEach(enemycell=>
         {
-            enemyCeil.GetNeighbourhood().forEach(ceil=>
+            enemycell.GetNeighbourhood().forEach(cell=>
             {
-                if(!enemyContactCeils.hasOwnProperty(ceil.GetCoordinate().ToString()))
+                if(!enemyContactcells.hasOwnProperty(cell.GetCoordinate().ToString()))
                 {
-                    enemyContactCeils[ceil.GetCoordinate().ToString()] = ceil as Ceil;
+                    enemyContactcells[cell.GetCoordinate().ToString()] = cell as Cell;
                 }
             })
         });
-        return enemyContactCeils;
+        return enemyContactcells;
     }
 
 
-    private ClassifyCeilDanger(enemySurroundingCeils: { [id: string]: Ceil; }, ally: Tank) 
-    : { [id: number] : { [id: string] : Ceil; }; }
+    private ClassifycellDanger(enemySurroundingcells: { [id: string]: Cell; }, ally: Tank) 
+    : { [id: number] : { [id: string] : Cell; }; }
     {
-        var dangerLevelCeils : { [id: number] : { [id: string] : Ceil; }; } = {};
+        var dangerLevelcells : { [id: number] : { [id: string] : Cell; }; } = {};
         
-        for (let key in enemySurroundingCeils) 
+        for (let key in enemySurroundingcells) 
         {
-            const currentCeil = enemySurroundingCeils[key];
-            const ceilKey = currentCeil.GetCoordinate().ToString();
-            const dangerLevel = currentCeil
+            const currentcell = enemySurroundingcells[key];
+            const cellKey = currentcell.GetCoordinate().ToString();
+            const dangerLevel = currentcell
                 .GetAllNeighbourhood()
-                .map(c => c as Ceil)
+                .map(c => c as Cell)
                 .filter(c => !isNullOrUndefined(c) && c.ContainsEnemy(ally)).length;
             
 
-            if (!dangerLevelCeils.hasOwnProperty(dangerLevel)) 
+            if (!dangerLevelcells.hasOwnProperty(dangerLevel)) 
             {
-                dangerLevelCeils[dangerLevel] = {};
+                dangerLevelcells[dangerLevel] = {};
             }
 
-            if (!dangerLevelCeils[dangerLevel].hasOwnProperty(ceilKey)) 
+            if (!dangerLevelcells[dangerLevel].hasOwnProperty(cellKey)) 
             {
-                dangerLevelCeils[dangerLevel][ceilKey] = currentCeil;
+                dangerLevelcells[dangerLevel][cellKey] = currentcell;
             }
         }
-        return dangerLevelCeils;
+        return dangerLevelcells;
     }
 
     private SelectBestPaths(troopSituations: TroopSituation[]) 
-    : { [ceilKey: string]: TroopSituation[]; }
+    : { [cellKey: string]: TroopSituation[]; }
     {
         this.SetTroopDestination(troopSituations);
         let unresolvedCases = 0;
         var hasConflicts = true;
-        const excludedCeils : { [id: string] : Ceil; } = {};
+        const excludedcells : { [id: string] : Cell; } = {};
         while (hasConflicts) 
         {
             if(unresolvedCases === 4){
@@ -139,15 +139,15 @@ export class AreaDecisionMaker
             {
                 if (troopsByDest[dest].length > 1) 
                 {
-                    excludedCeils[dest] = troopsByDest[dest][0].CurrentDestination.Destination;
+                    excludedcells[dest] = troopsByDest[dest][0].CurrentDestination.Destination;
 
-                    let ceils = new Array<Ceil>();
-                    for (var prop in excludedCeils) 
+                    let cells = new Array<Cell>();
+                    for (var prop in excludedcells) 
                     {
-                        ceils.push(excludedCeils[prop]);
+                        cells.push(excludedcells[prop]);
                     }
 
-                    this.ResolveConflicts(troopsByDest[dest], ceils);
+                    this.ResolveConflicts(troopsByDest[dest], cells);
                 }
             }
             troopsByDest = this.GetTroopsByDest(troopSituations);
@@ -164,9 +164,9 @@ export class AreaDecisionMaker
     }
 
     private GetTroopsByDest(troopSituations: TroopSituation[])
-    :{ [ceilKey: string]: TroopSituation[]; } {
+    :{ [cellKey: string]: TroopSituation[]; } {
 
-        var currentDestTroops: { [ceilKey: string]: TroopSituation[]; }={};
+        var currentDestTroops: { [cellKey: string]: TroopSituation[]; }={};
 
         troopSituations.forEach(troopSituation => {
             const key = troopSituation.CurrentDestination.Destination.GetCoordinate().ToString();
@@ -178,20 +178,20 @@ export class AreaDecisionMaker
         return currentDestTroops;
     }
 
-    private FindTroopPaths(troopSituations: TroopSituation[], dangerLevelCeils: { [id: number]: { [id: string]: Ceil; }; }) {
+    private FindTroopPaths(troopSituations: TroopSituation[], dangerLevelcells: { [id: number]: { [id: string]: Cell; }; }) {
         this._area.GetTroops().forEach(troop => 
         {
             const troopSituation = new TroopSituation();
             troopSituation.Troop = troop;
             troopSituations.push(troopSituation);
             
-            for (let danger in dangerLevelCeils) 
+            for (let danger in dangerLevelcells) 
             {
-                for (let ceilKey in dangerLevelCeils[danger]) 
+                for (let cellKey in dangerLevelcells[danger]) 
                 {
                     var destination = new TroopDestination(
-                        dangerLevelCeils[danger][ceilKey], 
-                        PlaygroundHelper.Engine.GetPath(troop.Tank.GetCurrentCeil(), dangerLevelCeils[danger][ceilKey]));
+                        dangerLevelcells[danger][cellKey], 
+                        PlaygroundHelper.Engine.GetPath(troop.Tank.GetCurrentCell(), dangerLevelcells[danger][cellKey]));
                     
                     if (!troopSituation.Destinations.hasOwnProperty(danger)) 
                     {
@@ -203,17 +203,17 @@ export class AreaDecisionMaker
         });
     }
 
-    private GetEnemyCeils(areas: Area[], ally: Tank):Array<Ceil> {
-        const enemyCeils = new Array<Ceil>();
+    private GetEnemycells(areas: Area[], ally: Tank):Array<Cell> {
+        const enemycells = new Array<Cell>();
         areas.forEach(area => {
-            area.GetEnemyCeil(ally).forEach(enemyCeil => {
-                enemyCeils.push(enemyCeil);
+            area.GetEnemycell(ally).forEach(enemycell => {
+                enemycells.push(enemycell);
             });
         });
-        return enemyCeils;
+        return enemycells;
     }
 
-    private ResolveConflicts(troops:Array<TroopSituation>, conflicts:Array<Ceil>):void{
+    private ResolveConflicts(troops:Array<TroopSituation>, conflicts:Array<Cell>):void{
         troops.forEach(troop=>
         {
             troop.PotentialNextDestination = troop.GetBestDestination(conflicts);

@@ -1,18 +1,18 @@
-import { SandDecorator } from './../../Ceils/Decorator/SandDecorator';
+import { SandDecorator } from '../../Cell/Decorator/SandDecorator';
 import { MapMode } from './MapMode';
 import { HexAxial } from './../../Utils/Coordinates/HexAxial';
 import { AreaEngine } from './../../Ia/Area/AreaEngine';
-import { CeilProperties } from './../../Ceils/CeilProperties';
-import { ForestDecorator } from '../../Ceils/Decorator/ForestDecorator';
+import { CellProperties } from '../../Cell/CellProperties';
+import { ForestDecorator } from '../../Cell/Decorator/ForestDecorator';
 import { ToolBox } from '../../Items/Unit/Utils/ToolBox';
-import { CeilsContainer } from '../../Ceils/CeilsContainer';
+import { CellContainer } from '../../Cell/CellContainer';
 import { MapContext } from './MapContext';
 import { MapItem } from './MapItem';
 import { FlowerMapBuilder } from '../Builder/FlowerMapBuilder';
 import { FartestPointsFinder } from '../Builder/FartestPointsFinder';
 import { DecorationType } from './DecorationType';
 import { DiamondHq } from './DiamondHq';
-import { Decorator } from '../../Ceils/Decorator/Decorator';
+import { Decorator } from '../../Cell/Decorator/Decorator';
 
 export class MapGenerator
 {
@@ -23,19 +23,19 @@ export class MapGenerator
         context.MapMode = mapMode;
         const mapItems = new Array<MapItem>();
         const mapBuilder = new FlowerMapBuilder();
-        const ceilPositions = mapBuilder.Build(size);
+        const cellPositions = mapBuilder.Build(size);
         
-        const container = new CeilsContainer<CeilProperties>();
-        ceilPositions.forEach(ceil => {
-            container.Add(ceil);
+        const container = new CellContainer<CellProperties>();
+        cellPositions.forEach(cell => {
+            container.Add(cell);
         });
 
         const center = mapBuilder.GetMidle(size);
-        const areas = mapBuilder.GetAreaMiddleCeil(size);
+        const areas = mapBuilder.GetAreaMiddlecell(size);
         const fatherPointManager = new FartestPointsFinder();
 
         const hqPositions = fatherPointManager.GetPoints(fatherPointManager.GetFartestPoints(center, areas), hqCount);
-        const diamondPositions = this.GetDiamonds(hqPositions.map(s=> new CeilProperties(s)),container,hqCount);
+        const diamondPositions = this.GetDiamonds(hqPositions.map(s=> new CellProperties(s)),container,hqCount);
         
         const excluded = new Array<HexAxial>();
         let hqs = new Array<MapItem>();
@@ -81,10 +81,10 @@ export class MapGenerator
             decorator = new SandDecorator();
         }
         //decorate tree, water, stone the map
-        ceilPositions.forEach(ceilPosition => {
+        cellPositions.forEach(cellPosition => {
             let mapItem = new MapItem();
-            mapItem.Position = ceilPosition.Coordinate;
-            if(excluded.indexOf(ceilPosition.Coordinate) === -1){
+            mapItem.Position = cellPosition.Coordinate;
+            if(excluded.indexOf(cellPosition.Coordinate) === -1){
                 mapItem.Type = decorator.GetDecoration();
             }
             else
@@ -103,29 +103,29 @@ export class MapGenerator
         return context;
     }
 
-    private GetDiamonds(hqCeils: Array<CeilProperties>,ceilsContainer:CeilsContainer<CeilProperties>, hqCount:number):Array<CeilProperties>
+    private GetDiamonds(hqcells: Array<CellProperties>,cellsContainer:CellContainer<CellProperties>, hqCount:number):Array<CellProperties>
     {
-        const diamonds = new Array<CeilProperties>();
-        const areaEngine = new AreaEngine<CeilProperties>();
-        let forbiddenCeils = new Array<CeilProperties>();
-        hqCeils.forEach(hqCeil=> {
-            forbiddenCeils = forbiddenCeils.concat(areaEngine.GetFirstRange(ceilsContainer,hqCeil));
+        const diamonds = new Array<CellProperties>();
+        const areaEngine = new AreaEngine<CellProperties>();
+        let forbiddencells = new Array<CellProperties>();
+        hqcells.forEach(hqcell=> {
+            forbiddencells = forbiddencells.concat(areaEngine.GetFirstRange(cellsContainer,hqcell));
         });
         for(let i = 0; i < hqCount;i++){
-            diamonds.push(this.GetDiamondPosition(hqCeils[i], forbiddenCeils,ceilsContainer));
+            diamonds.push(this.GetDiamondPosition(hqcells[i], forbiddencells,cellsContainer));
         }
         return diamonds;
     }
 
 
-    private GetDiamondPosition(ceil: CeilProperties, forbiddenCeils: CeilProperties[],ceilsContainer:CeilsContainer<CeilProperties>):CeilProperties 
+    private GetDiamondPosition(cell: CellProperties, forbiddencells: CellProperties[],cellsContainer:CellContainer<CellProperties>):CellProperties 
     {
-        const areaEngine = new AreaEngine<CeilProperties>();
-        const secondRange = areaEngine.GetSecondRangeAreas(ceilsContainer,ceil)
-        .filter(c => !forbiddenCeils.some(fc=>fc.Coordinate.Q == c.Coordinate.Q && fc.Coordinate.R == c.Coordinate.R));
+        const areaEngine = new AreaEngine<CellProperties>();
+        const secondRange = areaEngine.GetSecondRangeAreas(cellsContainer,cell)
+        .filter(c => !forbiddencells.some(fc=>fc.Coordinate.Q == c.Coordinate.Q && fc.Coordinate.R == c.Coordinate.R));
         var result = ToolBox.GetRandomElement(secondRange);
         secondRange.forEach(c=>{
-            forbiddenCeils.push(c);
+            forbiddencells.push(c);
         });
         return result;
     }

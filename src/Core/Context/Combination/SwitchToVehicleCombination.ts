@@ -1,7 +1,7 @@
 import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
 import { ICombination } from "./ICombination";
-import { ISelectable } from "../../ISelectable";
-import { Ceil } from "../../Ceils/Ceil";
+import { ISelectable } from "../../ISelectable";    
+import { Cell } from "../../Cell/Cell";
 import { Vehicle } from "../../Items/Unit/Vehicle"; 
 import { CombinationContext } from './CombinationContext';
 import { ContextMode } from '../../Utils/ContextMode';
@@ -15,7 +15,7 @@ export class SwitchToVehicleCombination implements ICombination{
     public IsMatching(context: CombinationContext): boolean {
         return this.IsNormalMode(context) 
         && context.Items.length == 2  
-        && (context.Items[0] instanceof Ceil)
+        && (context.Items[0] instanceof Cell)
         && context.Items[1] instanceof Vehicle;
     }    
     

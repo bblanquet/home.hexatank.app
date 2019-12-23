@@ -26,7 +26,7 @@ export class RequestMaker{
                     return new AreaRequest(RequestPriority.High,requestedUnits+1,status);
                 }
     
-                let availableSlots = status.Area.GetAvailableCeilCount();
+                let availableSlots = status.Area.GetAvailablecellCount();
             
                 if (requestedUnits > availableSlots) 
                 {

@@ -6,7 +6,7 @@
     "build": "webpack --env.NODE_ENV=pc",
     "mottet": "webpack --env.NODE_ENV=mottet",
     "mobile": "webpack --env.NODE_ENV=mobile",
-    "start": "webpack-dev-server --env.NODE_ENV=pc",
+    "start": "webpack-dev-server --watch --watch-poll --env.NODE_ENV=pc",
     "test": "mocha -r ts-node/register test/**/*.spec.ts"
   },
   "author": "BB",

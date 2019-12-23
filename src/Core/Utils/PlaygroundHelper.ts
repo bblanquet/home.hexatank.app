@@ -5,14 +5,14 @@ import { LiteEvent } from './LiteEvent';
 import { InteractionContext } from '../Context/InteractionContext';
 import { VehiclesContainer } from '../Items/Unit/VehiclesContainer'; 
 import { MessageDispatcher } from './Network/MessageDispatcher';
-import { CeilsContainer } from "../Ceils/CeilsContainer";
-import { Ceil } from "../Ceils/Ceil";
+import { CellContainer } from "../Cell/CellContainer";
+import { Cell } from "../Cell/Cell";
 import { AStarEngine } from "../Ia/AStarEngine"; 
 import { RenderingHandler } from "./RenderingHandler";
 import { GameSettings } from "./GameSettings";
 import { AreaEngine } from "../Ia/Area/AreaEngine";
 import { ISpriteProvider } from "./ISpriteProvider";
-import { Headquarter } from "../Ceils/Field/Headquarter";
+import { Headquarter } from "../Cell/Field/Headquarter";
 import { Area } from "../Ia/Area/Area";
 import { ItemsManager } from "../ItemsManager";
 import { MapContext } from "../Setup/Generator/MapContext"; 
@@ -25,13 +25,13 @@ export class PlaygroundHelper{
     public static IsOnline:boolean=false;
     public static MapContext:MapContext;
     public static PingHandler:PingHandler;
-    static CeilsContainer:CeilsContainer<Ceil>;
+    static CellsContainer:CellContainer<Cell>;
     static VehiclesContainer:VehiclesContainer;
-    static Engine:AStarEngine<Ceil>;
+    static Engine:AStarEngine<Cell>;
     static Render:RenderingHandler;
     static Settings:GameSettings=new GameSettings();
     static Playground:ItemsManager;
-    private static _areaEngine:AreaEngine<Ceil>;
+    private static _areaEngine:AreaEngine<Cell>;
     static SpriteProvider:ISpriteProvider;
     public static PlayerHeadquarter:Headquarter;
     public static Dispatcher:MessageDispatcher=new MessageDispatcher();
@@ -137,30 +137,30 @@ export class PlaygroundHelper{
     public static Init():void{
         this.selectionCount = 0;
         this._areaEngine = new AreaEngine();
-        this.CeilsContainer = new CeilsContainer<Ceil>();
+        this.CellsContainer = new CellContainer<Cell>();
         this.VehiclesContainer = new VehiclesContainer();
-        this.Engine = new AStarEngine<Ceil>();
+        this.Engine = new AStarEngine<Cell>();
         this.Settings = new GameSettings();
         this.Playground = new ItemsManager();
         this.InputManager = new InputManager();
         this.InteractionContext = new InteractionContext(this.InputManager);
     }
 
-    public static GetAreas(centerCeil:Ceil):Array<Area>
+    public static GetAreas(centercell:Cell):Array<Area>
     {
-        return this._areaEngine.GetAreas(PlaygroundHelper.CeilsContainer,centerCeil).map(c=> new Area(c));
+        return this._areaEngine.GetAreas(PlaygroundHelper.CellsContainer,centercell).map(c=> new Area(c));
     }
 
-    public static GetNeighbourhoodAreas(ceil:Ceil):Array<Area>{
-        return this._areaEngine.GetNeighbourhoodAreas(PlaygroundHelper.CeilsContainer,ceil).map(c=> new Area(c));
+    public static GetNeighbourhoodAreas(cell:Cell):Array<Area>{
+        return this._areaEngine.GetNeighbourhoodAreas(PlaygroundHelper.CellsContainer,cell).map(c=> new Area(c));
     }
 
-    public static GetSecondRangeAreas(ceil:Ceil):Array<Ceil>{
-        return this._areaEngine.GetSecondRangeAreas(PlaygroundHelper.CeilsContainer,ceil);
+    public static GetSecondRangeAreas(cell:Cell):Array<Cell>{
+        return this._areaEngine.GetSecondRangeAreas(PlaygroundHelper.CellsContainer,cell);
     }
 
-    public static GetFirstRangeAreas(ceil:Ceil):Array<Ceil>{
-        return this._areaEngine.GetFirstRange(PlaygroundHelper.CeilsContainer,ceil);
+    public static GetFirstRangeAreas(cell:Cell):Array<Cell>{
+        return this._areaEngine.GetFirstRange(PlaygroundHelper.CellsContainer,cell);
     }
 
     static InitPingHandler(name: string) {

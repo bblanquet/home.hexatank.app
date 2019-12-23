@@ -1,10 +1,10 @@
-import { Headquarter } from "../../Ceils/Field/Headquarter";
+import { Headquarter } from "../../Cell/Field/Headquarter";
 import { Area } from "../Area/Area";
 import { HqSkin } from "../../Utils/HqSkin";
-import { Ceil } from "../../Ceils/Ceil";
+import { Cell } from "../../Cell/Cell";
 import { RequestPriority } from "./RequestPriority"; 
 import { isNullOrUndefined } from "util";
-import { Diamond } from "../../Ceils/Field/Diamond"; 
+import { Diamond } from "../../Cell/Field/Diamond"; 
 import { TruckPatrolOrder } from "../Order/TruckPatrolOrder";
 import { HqFieldOrder } from "../Order/HqFieldOrder";
 import { DiamondFieldOrder } from "../Order/DiamondFieldOrder";
@@ -24,7 +24,7 @@ import { Tank } from "../../Items/Unit/Tank";
 import { GameSettings } from "../../Utils/GameSettings";
 
 export class IaHeadquarter extends Headquarter{ 
-    public AreasByCeil:{ [id: string] : HeldArea; };
+    public AreasBycell:{ [id: string] : HeldArea; };
     private _Areas:HeldArea[];
     private _trucks:Array<Truck>;
     private _requestHandler:CenterDecisionMaker;
@@ -33,13 +33,13 @@ export class IaHeadquarter extends Headquarter{
     private _spreadStrategy:ExpansionMaker;
     public TankBalancer:IdleUnitContainer;
 
-    constructor(public EmptyAreas:Area[], skin:HqSkin, ceil:Ceil)
+    constructor(public EmptyAreas:Area[], skin:HqSkin, cell:Cell)
     {
-        super(skin,ceil);
+        super(skin,cell);
         this._timer = new Timer(10);
         this._trucks = new Array<Truck>();
         this._Areas= new Array<HeldArea>();
-        this.AreasByCeil = {};
+        this.AreasBycell = {};
         this._requestHandler = new CenterDecisionMaker(this);
         this._spreadStrategy = new ExpansionMaker(this);
         this.TankBalancer =new IdleUnitContainer();
@@ -100,8 +100,8 @@ export class IaHeadquarter extends Headquarter{
                         this.EmptyAreas.splice(this.EmptyAreas.indexOf(area),1);
                         let hqArea =new HeldArea(this,area);
                         this._Areas.push(hqArea);
-                        this.AreasByCeil[area.GetCentralCeil().GetCoordinate().ToString()] = hqArea;
-                        console.log(`%c GET NEW AREA  ${hqArea.GetArea().GetCentralCeil().GetCoordinate().ToString()}`,"font-weight:bold;color:green;");
+                        this.AreasBycell[area.GetCentralCell().GetCoordinate().ToString()] = hqArea;
+                        console.log(`%c GET NEW AREA  ${hqArea.GetArea().GetCentralCell().GetCoordinate().ToString()}`,"font-weight:bold;color:green;");
                         this.BuyTankForArea(hqArea);
                     }
                 }
@@ -120,17 +120,17 @@ export class IaHeadquarter extends Headquarter{
         let truck = null; 
         this.Fields.some(field=>
         {
-            if(!field.GetCeil().IsBlocked())
+            if(!field.GetCell().IsBlocked())
             {
                 this.Buy(GameSettings.TruckPrice);
-                if(field.GetCeil().IsVisible()){
-                    const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,5,false,5);
+                if(field.GetCell().IsVisible()){
+                    const explosion = new Explosion(field.GetCell().GetBoundingBox(),Archive.constructionEffects,5,false,5);
                     PlaygroundHelper.Playground.Items.push(explosion);
                 }
                 this.Count +=1;
                 truck = new Truck(this);
                 truck.Id = `${this.PlayerName}${this.Count}`;
-                truck.SetPosition(field.GetCeil());
+                truck.SetPosition(field.GetCell());
                 PlaygroundHelper.VehiclesContainer.Add(truck);
                 PlaygroundHelper.Playground.Items.push(truck);
                 this.NotifyTruck(truck);
@@ -149,22 +149,22 @@ export class IaHeadquarter extends Headquarter{
         {
             for(let field of this.Fields)
             {
-                if(!field.GetCeil().IsBlocked())
+                if(!field.GetCell().IsBlocked())
                 {
-                    var ceil = area.GetAvailableCeil(); 
-                    if(!isNullOrUndefined(ceil))
+                    var cell = area.GetAvailablecell(); 
+                    if(!isNullOrUndefined(cell))
                     {
                         this.Buy(GameSettings.TankPrice);
-                        if(field.GetCeil().IsVisible())
+                        if(field.GetCell().IsVisible())
                         {
-                            const explosion = new Explosion(field.GetCeil().GetBoundingBox(),Archive.constructionEffects,5,false,5);
+                            const explosion = new Explosion(field.GetCell().GetBoundingBox(),Archive.constructionEffects,5,false,5);
                             PlaygroundHelper.Playground.Items.push(explosion);
                         }
                         this.Count +=1;
                         var tank = new Tank(this);
                         tank.Id = `${this.PlayerName}${this.Count}`;
-                        tank.SetPosition(field.GetCeil());
-                        area.AddTroop(tank,ceil);
+                        tank.SetPosition(field.GetCell());
+                        area.AddTroop(tank,cell);
                         PlaygroundHelper.VehiclesContainer.Add(tank);
                         PlaygroundHelper.Playground.Items.push(tank);
                         isCreated = true;

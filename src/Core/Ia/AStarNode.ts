@@ -1,13 +1,13 @@
-import {ICeil} from '../Ceils/ICeil';
+import {ICell} from '../Cell/ICell';
 
-export class AStarNode<T extends ICeil>{
-    Ceil:T;      
+export class AStarNode<T extends ICell>{
+    Cell:T;      
     EstimatedGoalCost:number;
     FromStartCost:number;
     Parent:AStarNode<T>;
 
-    constructor(ceil:T){
-       this.Ceil = ceil; 
+    constructor(cell:T){
+       this.Cell = cell; 
     }
 
     IsLessExpensive(compareToNode:AStarNode<T>):boolean{
@@ -16,8 +16,8 @@ export class AStarNode<T extends ICeil>{
 
     GetEstimatedCost(node:AStarNode<T>):number
     {
-        var center = this.Ceil.GetCentralPoint();
-        var compareToCenter = node.Ceil.GetCentralPoint();
+        var center = this.Cell.GetCentralPoint();
+        var compareToCenter = node.Cell.GetCentralPoint();
 
         return Math.sqrt(Math.pow(compareToCenter.X - center.X,2)) 
             + Math.sqrt(Math.pow(compareToCenter.Y - center.Y,2));

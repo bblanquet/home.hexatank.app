@@ -1,21 +1,21 @@
-import { Headquarter } from "../../Ceils/Field/Headquarter";
+import { Headquarter } from "../../Cell/Field/Headquarter";
 import { SimpleOrder } from "./SimpleOrder"; 
-import { Ceil } from "../../Ceils/Ceil";
+import { Cell } from "../../Cell/Cell";
 import { Vehicle } from "../../Items/Unit/Vehicle";
 
 export class HqFieldOrder extends SimpleOrder
 { 
-    constructor(private _hq:Headquarter,private _vehicule:Vehicle){
-        super(_hq.GetCeil(),_vehicule);
+    constructor(private _hq:Headquarter,private _vehicule:Vehicle){ 
+        super(_hq.GetCell(),_vehicule);
     }
 
-    protected GetClosestCeil():Ceil{ 
-        let ceils = this.GetCeils(this._hq);
-        if(0 < ceils.length)
+    protected GetClosestcell():Cell{ 
+        let cells = this.GetCells(this._hq);
+        if(0 < cells.length)
         {
-            let ceil =  this.CeilFinder.GetCeil(ceils, this._vehicule); 
-            this.OriginalDest = ceil;
-            return ceil;
+            let cell =  this.cellFinder.GetCell(cells, this._vehicule); 
+            this.OriginalDest = cell;
+            return cell;
         }
         else
         {
@@ -23,7 +23,7 @@ export class HqFieldOrder extends SimpleOrder
         }
     }
 
-    private GetCeils(hq:Headquarter):Array<Ceil>{
-        return hq.GetCeil().GetNeighbourhood().map(c=><Ceil>c);
+    private GetCells(hq:Headquarter):Array<Cell>{
+        return hq.GetCell().GetNeighbourhood().map(c=><Cell>c);
     }
 }

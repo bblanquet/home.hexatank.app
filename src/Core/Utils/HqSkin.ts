@@ -4,7 +4,7 @@ export class HqSkin{
         private _tankTop:string,
         private _truck:string,
         private _color:string,
-        private _ceil:string,
+        private _cell:string,
         private _energyBase:string,
         private _energy:string){
 
@@ -26,8 +26,8 @@ export class HqSkin{
         return this._color;
     }
 
-    public GetCeil():string{
-        return this._ceil;
+    public GetCell():string{
+        return this._cell;
     }
 
     public GetEnergy():string{

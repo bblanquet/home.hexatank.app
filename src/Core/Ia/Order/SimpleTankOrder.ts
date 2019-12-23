@@ -1,13 +1,13 @@
 import { SimpleOrder } from "./SimpleOrder";
-import { Ceil } from "../../Ceils/Ceil";
 import { isNull } from "util";
 import { Tank } from "../../Items/Unit/Tank";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
+import { Cell } from "../../Cell/Cell";
 
 export class SimpleTankOrder extends SimpleOrder{
     private _tank:Tank;
 
-    constructor(d:Ceil,v:Tank){
+    constructor(d:Cell,v:Tank){
         super(d,v);
         this._tank = v;
     }
@@ -16,14 +16,14 @@ export class SimpleTankOrder extends SimpleOrder{
     {
         if(this.Dest.IsShootable())
         {
-            let targetCeil = this.Dest;
-            this.Dest = this.GetClosestCeil();
+            let tarGetCell = this.Dest;
+            this.Dest = this.GetClosestcell();
             if(isNull(this.Dest))
             {
                 return false;
             }
-            this.Ceils = PlaygroundHelper.Engine.GetPath(this._tank.GetCurrentCeil(), this.Dest);
-            var target = targetCeil.GetShootableEntity();
+            this.cells = PlaygroundHelper.Engine.GetPath(this._tank.GetCurrentCell(), this.Dest);
+            var target = tarGetCell.GetShootableEntity();
             if(target.IsEnemy(this._tank)){
                 this._tank.SetMainTarget(target);
             }

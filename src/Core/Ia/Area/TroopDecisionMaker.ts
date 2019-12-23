@@ -1,4 +1,4 @@
-import { Ceil } from "../../Ceils/Ceil";
+import { Cell } from "../../Cell/Cell";
 import { HeldArea } from "./HeldArea";
 import { ITimer } from "../../Utils/ITimer";
 import { Timer } from "../../Utils/Timer";
@@ -10,7 +10,7 @@ export class TroopDecisionMaker{
     private _changePositionTimer:ITimer; 
     private _cancelOrderTimer:ITimer;
 
-    constructor(public CurrentPatrolDestination:Ceil,public Tank:Tank,public HqArea:HeldArea)
+    constructor(public CurrentPatrolDestination:Cell,public Tank:Tank,public HqArea:HeldArea)
     {
         if(isNullOrUndefined(this.CurrentPatrolDestination)) 
         {
@@ -32,14 +32,14 @@ export class TroopDecisionMaker{
             throw 'not possible';
         }
 
-        if(this.Tank.GetCurrentCeil() === this.CurrentPatrolDestination)
+        if(this.Tank.GetCurrentCell() === this.CurrentPatrolDestination)
         {
             if(this._changePositionTimer.IsElapsed())
             {
-                const nextPatrolCeil = this.HqArea.GetAvailableCeil();
-                if(nextPatrolCeil)
+                const nextPatrolcell = this.HqArea.GetAvailablecell();
+                if(nextPatrolcell)
                 {
-                    this.CurrentPatrolDestination = nextPatrolCeil;
+                    this.CurrentPatrolDestination = nextPatrolcell;
                 }
             }
         }

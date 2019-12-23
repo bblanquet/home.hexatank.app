@@ -16,15 +16,15 @@ export class ExpansionMaker{
 
         let currentArea = this._hq.EmptyAreas[0];
         let currentCost = this.GetCost(
-            this._hq.GetCeil().GetCentralPoint(),
-            currentArea.GetCentralCeil().GetCentralPoint()
+            this._hq.GetCell().GetCentralPoint(),
+            currentArea.GetCentralCell().GetCentralPoint()
         );
 
         this._hq.EmptyAreas.forEach(area => 
         {
             let cost = this.GetCost(
-                this._hq.GetCeil().GetCentralPoint(),
-                area.GetCentralCeil().GetCentralPoint()
+                this._hq.GetCell().GetCentralPoint(),
+                area.GetCentralCell().GetCentralPoint()
             )
                if(cost < currentCost)
                {

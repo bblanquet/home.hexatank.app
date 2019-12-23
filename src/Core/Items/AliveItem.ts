@@ -1,5 +1,5 @@
 import { Item } from "./Item"; 
-import { Ceil } from "../Ceils/Ceil";
+import { Cell } from "../Cell/Cell";
 import * as PIXI from 'pixi.js';
 
 export abstract class AliveItem extends Item{
@@ -77,5 +77,5 @@ export abstract class AliveItem extends Item{
 
     public abstract IsEnemy(item:AliveItem):boolean;
 
-    public abstract GetCurrentCeil(): Ceil;
+    public abstract GetCurrentCell(): Cell;
 }

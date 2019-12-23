@@ -1,25 +1,25 @@
 import { GameSettings } from './../Utils/GameSettings';
 import {AStarNode} from './AStarNode';
-import {ICeil} from '../Ceils/ICeil';
+import {ICell} from '../Cell/ICell';
 
-export class AStarEngine<T extends ICeil> 
+export class AStarEngine<T extends ICell> 
 { 
     private ConstructPath(node:AStarNode<T>):Array<T>{
-        var ceils = new Array<T>();
+        var cells = new Array<T>();
         while(node.Parent != null)
         {
-            ceils.splice(0,0, node.Ceil);
+            cells.splice(0,0, node.Cell);
             node = node.Parent;
         }
 
-        return ceils;
+        return cells;
     }    
 
-    private Contains(nodes:Array<AStarNode<T>>, ceil:T):boolean
+    private Contains(nodes:Array<AStarNode<T>>, cell:T):boolean
     {
         for (let node of nodes)
         {
-            if(node.Ceil == ceil)
+            if(node.Cell == cell)
             {
                 return true;
             }
@@ -28,13 +28,13 @@ export class AStarEngine<T extends ICeil>
         return false;
     }
 
-    private GetNode(ceil:T, 
+    private GetNode(cell:T, 
         frontierNodes:Array<AStarNode<T>>,
         cameFromNodes:Array<AStarNode<T>>):AStarNode<T>
     {
         for (let frontierNode of frontierNodes)
         {
-            if(frontierNode.Ceil === ceil)
+            if(frontierNode.Cell === cell)
             {
                 return frontierNode;
             }
@@ -43,14 +43,14 @@ export class AStarEngine<T extends ICeil>
         
         for( let cameFromNode of cameFromNodes)
         {
-            if(cameFromNode.Ceil === ceil)
+            if(cameFromNode.Cell === cell)
             {
                 return cameFromNode;
             }
         }
         
 
-        return new AStarNode(ceil);
+        return new AStarNode(cell);
     }
 
     private InsertByCost(nodes:Array<AStarNode<T>>,node:AStarNode<T>):void
@@ -72,16 +72,16 @@ export class AStarEngine<T extends ICeil>
         nodes.push(node);
     }
 
-        //console.log(`%c start: ${startCeil.GetCoordinate().Q} ${startCeil.GetCoordinate().R} `,'color:green;');
-        //console.log(`%c goal: ${goalCeil.GetCoordinate().Q} ${goalCeil.GetCoordinate().R} `,'color:green;');
+        //console.log(`%c start: ${startcell.GetCoordinate().Q} ${startcell.GetCoordinate().R} `,'color:green;');
+        //console.log(`%c goal: ${goalcell.GetCoordinate().Q} ${goalcell.GetCoordinate().R} `,'color:green;');
 
-    public GetPath(startCeil:T, goalCeil:T):Array<T>
+    public GetPath(startcell:T, goalcell:T):Array<T>
     {
         var frontierNodes = new Array<AStarNode<T>>();
         var cameFromNodes = new Array<AStarNode<T>>();
 
-        var startnode = new AStarNode(startCeil);
-        var goalnode = new AStarNode(goalCeil);
+        var startnode = new AStarNode(startcell);
+        var goalnode = new AStarNode(goalcell);
 
         startnode.FromStartCost = 0;
         startnode.Parent = null;
@@ -99,12 +99,12 @@ export class AStarEngine<T extends ICeil>
 
             const lessExpensiveFrontier = this.GetLessExpensiveFrontier(frontierNodes);
 
-            if(lessExpensiveFrontier.Ceil == goalnode.Ceil)
+            if(lessExpensiveFrontier.Cell == goalnode.Cell)
             {
                 return this.ConstructPath(lessExpensiveFrontier);
             }
 
-            lessExpensiveFrontier.Ceil.GetNeighbourhood().forEach(frontierSurrounding=> 
+            lessExpensiveFrontier.Cell.GetNeighbourhood().forEach(frontierSurrounding=> 
             {
                 const nextNode = this.GetNode(<T> frontierSurrounding, frontierNodes, cameFromNodes);
                 
@@ -141,8 +141,8 @@ export class AStarEngine<T extends ICeil>
 
                 //console.log(`%c opened nodes: ${openedNodes.length} `,'font-weight:bold;color:red;');
             //console.log(`%c closed nodes: ${closedNodes.length} `,'font-weight:bold;color:red;');
-            //console.log(`%c current: ${currentNode.Ceil.GetCoordinate().Q} ${currentNode.Ceil.GetCoordinate().R} cost:${currentNode.GetCost()}`,'color:blue;');
-                    //console.log(`%c next: ${ceil.GetCoordinate().Q} ${ceil.GetCoordinate().R} cost:${nextNode.GetCost()} ,opened nodes: ${openedNodes.length}`,'color:purple;');
+            //console.log(`%c current: ${currentNode.cell.GetCoordinate().Q} ${currentNode.cell.GetCoordinate().R} cost:${currentNode.GetCost()}`,'color:blue;');
+                    //console.log(`%c next: ${cell.GetCoordinate().Q} ${cell.GetCoordinate().R} cost:${nextNode.GetCost()} ,opened nodes: ${openedNodes.length}`,'color:purple;');
 
 
     private GetLessExpensiveFrontier(openedNodes:Array<AStarNode<T>>):AStarNode<T>{
@@ -151,13 +151,13 @@ export class AStarEngine<T extends ICeil>
         return currentNode;
     }
 
-    private IsNodeNew(ceil:T, 
+    private IsNodeNew(cell:T, 
         openedNodes:Array<AStarNode<T>>,
          closedNodes:Array<AStarNode<T>>)
          :Boolean
     {
-        var isOpenedNode = this.Contains(openedNodes,ceil);
-        var isClosedNode = this.Contains(closedNodes,ceil);
+        var isOpenedNode = this.Contains(openedNodes,cell);
+        var isClosedNode = this.Contains(closedNodes,cell);
         return (!isOpenedNode && !isClosedNode);
     }
 }

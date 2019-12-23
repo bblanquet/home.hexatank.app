@@ -1,16 +1,16 @@
 import { IPlaygroundBuilder } from './IPlaygroundBuilder';
 import { HexAxial } from '../../Utils/Coordinates/HexAxial';
-import { CeilProperties } from '../../Ceils/CeilProperties';
+import { CellProperties } from '../../Cell/CellProperties';
 
-export class SpecHexagonalMapBuilder implements IPlaygroundBuilder<CeilProperties>{
+export class SpecHexagonalMapBuilder implements IPlaygroundBuilder<CellProperties>{
     GetMidle(n: number): HexAxial {
         throw new Error("Method not implemented.");  
     }
-    GetAreaMiddleCeil(n: number): HexAxial[] {
+    GetAreaMiddlecell(n: number): HexAxial[] {
         throw new Error("Method not implemented.");
     }
 
-    Build(edgeSize:number): CeilProperties[] { 
+    Build(edgeSize:number): CellProperties[] { 
         if(edgeSize < 2)
         {
             throw new Error();
@@ -20,7 +20,7 @@ export class SpecHexagonalMapBuilder implements IPlaygroundBuilder<CeilPropertie
             throw new Error();
         }
 
-        var ceils = new Array<CeilProperties>();
+        var cells = new Array<CellProperties>();
 
         var doubleEdgeSize = Math.round(edgeSize*2);
         var row = -1;
@@ -43,9 +43,9 @@ export class SpecHexagonalMapBuilder implements IPlaygroundBuilder<CeilPropertie
             for (var column = startColumn; column < endColumn; column++)
             {
                 var hexAxial = new HexAxial(row,column);    
-                ceils.push(new CeilProperties(hexAxial));
+                cells.push(new CellProperties(hexAxial));
             }
         }
-        return ceils;
+        return cells;
     }
 }

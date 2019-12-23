@@ -1,11 +1,11 @@
 import { IPlaygroundBuilder } from './IPlaygroundBuilder';
 import { HexAxial } from '../../Utils/Coordinates/HexAxial';
-import {Ceil} from '../../Ceils/Ceil'; 
-import { CeilProperties } from '../../Ceils/CeilProperties';
+import { Cell } from '../../Cell/Cell';
+import { CellProperties } from '../../Cell/CellProperties';
 
-export class RectangleMapBuilder implements IPlaygroundBuilder<Ceil>{
+export class RectangleMapBuilder implements IPlaygroundBuilder<Cell>{
 
-    public GetAreaMiddleCeil(n:number):Array<HexAxial>{
+    public GetAreaMiddlecell(n:number):Array<HexAxial>{
         return [
             new HexAxial(1,n/2),
             new HexAxial(n-1,n/2),//column,row
@@ -20,7 +20,7 @@ export class RectangleMapBuilder implements IPlaygroundBuilder<Ceil>{
         return new HexAxial(n/2,n/2);
     }
 
-    public Build(n:number): Ceil[] {
+    public Build(n:number): Cell[] {
 
         if(n < 2)
         {
@@ -31,18 +31,18 @@ export class RectangleMapBuilder implements IPlaygroundBuilder<Ceil>{
             throw new Error();
         }
 
-        var ceils = new Array<Ceil>();
+        var cells = new Array<Cell>();
 
         for (let row = 0; row <= n; row++)
          {
             for (let column = 0; column <= n; column++) 
             {
                 var hexAxial = new HexAxial(column,row);    
-                var ceil = new Ceil(new CeilProperties(hexAxial));
-                ceils.push(ceil);  
+                var cell = new cell(new CellProperties(hexAxial));
+                cells.push(cell);  
             }            
         }
 
-        return ceils;
+        return cells;
     }
 }

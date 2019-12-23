@@ -1,5 +1,5 @@
 import { OrderState } from "./OrderState";
-import { Ceil } from "../../Ceils/Ceil"; 
+import { Cell } from "../../Cell/Cell"; 
 import { SimpleOrder } from "./SimpleOrder";
 import { Order } from "./Order";
 import { BasicItem } from "../../Items/BasicItem";
@@ -9,11 +9,11 @@ import { Vehicle } from "../../Items/Unit/Vehicle";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 
 export class PatrolOrder extends Order{
-    private _currentPatrolCeil:Ceil;
+    private _currentPatrolcell:Cell;
     private _currentOrder:SimpleOrder; 
     private _patrolPathDisplay:Array<BasicItem>;
 
-    constructor(private _patrolCeils:Array<Ceil>, private _v:Vehicle)
+    constructor(private _patrolcells:Array<Cell>, private _v:Vehicle)
     { 
         super();
         this._patrolPathDisplay = new Array<BasicItem>();
@@ -36,9 +36,9 @@ export class PatrolOrder extends Order{
 
     private CreatePath():void
     {
-        if(!isNullOrUndefined(this._patrolCeils) && 0 < this._patrolCeils.length){
-            this._patrolCeils.forEach(ceil => {
-                    const pathItem = new BasicItem(ceil.GetBoundingBox(),Archive.direction.patrol);
+        if(!isNullOrUndefined(this._patrolcells) && 0 < this._patrolcells.length){
+            this._patrolcells.forEach(cell => {
+                    const pathItem = new BasicItem(cell.GetBoundingBox(),Archive.direction.patrol);
                     
                     pathItem.SetVisible(this._v.IsSelected.bind(this._v));
                     pathItem.SetAlive(this._v.IsAlive.bind(this._v));
@@ -54,15 +54,15 @@ export class PatrolOrder extends Order{
     {
         if(this.State === OrderState.None)
         {
-            this._currentPatrolCeil = this._patrolCeils[0]; 
+            this._currentPatrolcell = this._patrolcells[0]; 
             this.State = OrderState.Pending;
             this.StartMoving();
         }
 
         if(this._currentOrder.IsDone())
         {
-            var index = (this._patrolCeils.indexOf(this._currentPatrolCeil)+1) % this._patrolCeils.length;
-            this._currentPatrolCeil = this._patrolCeils[index];
+            var index = (this._patrolcells.indexOf(this._currentPatrolcell)+1) % this._patrolcells.length;
+            this._currentPatrolcell = this._patrolcells[index];
             this.StartMoving();
         }
         else
@@ -72,7 +72,7 @@ export class PatrolOrder extends Order{
     }
 
     private StartMoving() {
-        this._currentOrder = new SimpleOrder(this._currentPatrolCeil, this._v);
+        this._currentOrder = new SimpleOrder(this._currentPatrolcell, this._v);
         this._currentOrder.Do();
     }
 }

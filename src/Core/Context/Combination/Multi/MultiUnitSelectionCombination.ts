@@ -5,8 +5,8 @@ import { ICombination } from "../ICombination";
 import { CombinationContext } from "../CombinationContext";
 import { ContextMode } from "../../../Utils/ContextMode";
 import { SelectionMode } from '../../../Menu/Smart/SelectionMode';
-import { Ceil } from '../../../Ceils/Ceil';
-import { Vehicle } from '../../../Items/Unit/Vehicle';
+import { Cell } from '../../../Cell/Cell';
+import { Vehicle } from '../../../Items/Unit/Vehicle';      
 import { PlaygroundHelper } from '../../../Utils/PlaygroundHelper';
 import { MovingInteractionContext } from '../../../Menu/Smart/MovingInteractionContext';
 import { InteractionKind } from '../../IInteractionContext';
@@ -56,9 +56,9 @@ export class MultiUnitSelectionCombination implements ICombination{
     }
 
 
-    private SetVehicles(cells:Ceil[]):void{
+    private SetVehicles(cells:Cell[]):void{
         cells.forEach( c=>{
-            let occupier = (<Ceil><unknown>c).GetOccupier();
+            let occupier = (<Cell><unknown>c).GetOccupier();
             if(occupier 
                 && occupier instanceof Vehicle
                 && !PlaygroundHelper.PlayerHeadquarter.IsEnemy(occupier)){

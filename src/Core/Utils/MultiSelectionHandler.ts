@@ -1,11 +1,11 @@
 import { PersistentOrder } from '../Ia/Order/PersistentOrder';
-import { Ceil } from '../Ceils/Ceil';
+import { Cell } from '../Cell/Cell';      
 import { Vehicle } from '../Items/Unit/Vehicle';
 import { isNullOrUndefined } from 'util';
 
 export class MultiSelectionHandler
 {
-    public GiveOrders(vehicles:Vehicle[], selectedCells:Ceil[])
+    public GiveOrders(vehicles:Vehicle[], selectedCells:Cell[])
     {
         selectedCells = selectedCells.filter(c=>!c.IsBlocked());
         if(selectedCells.length < vehicles.length)
@@ -17,7 +17,7 @@ export class MultiSelectionHandler
         }
         else if(vehicles.length < selectedCells.length)
         {
-            let cells = new Array<Ceil>();
+            let cells = new Array<Cell>();
             this.GetSubList(selectedCells,vehicles.length,cells);
             this.SetPaths(vehicles, cells);
         }
@@ -27,7 +27,7 @@ export class MultiSelectionHandler
         }
     }
 
-    private SetPaths(vehicles: Vehicle[], selectedCells: Ceil[]) {
+    private SetPaths(vehicles: Vehicle[], selectedCells: Cell[]) {
         let pathsVehicleList = this.GetVehiclePathsList(vehicles, selectedCells);
         for (let index = 0; index < pathsVehicleList.length; index++) {
             let cell = pathsVehicleList[index].Pop();
@@ -38,10 +38,10 @@ export class MultiSelectionHandler
         }
     }
 
-    public GetSubList(cells:Ceil[],threshold:number, result:Ceil[]):void{
+    public GetSubList(cells:Cell[],threshold:number, result:Cell[]):void{
         if(result.length < threshold){
-            let first = new Array<Ceil>();
-            let second = new Array<Ceil>();
+            let first = new Array<Cell>();
+            let second = new Array<Cell>();
             result.push(this.Split(cells,first,second));
             if(0<first.length){
                 this.GetSubList(first,threshold,result);
@@ -52,7 +52,7 @@ export class MultiSelectionHandler
         }
     }
 
-    public Split(rawList:Ceil[], firstList:Ceil[],secondList:Ceil[]):Ceil{
+    public Split(rawList:Cell[], firstList:Cell[],secondList:Cell[]):Cell{
         var middle = Math.floor(rawList.length/2);
         for (let index = 0; index < middle; index++) {
             firstList.push(rawList[index]);
@@ -68,7 +68,7 @@ export class MultiSelectionHandler
         return result;
     }
 
-    private GetVehiclePathsList(vehicles:Vehicle[], cells:Ceil[]):VehiclePaths[]{
+    private GetVehiclePathsList(vehicles:Vehicle[], cells:Cell[]):VehiclePaths[]{
         let result = new Array<VehiclePaths>();
         vehicles.forEach(vehicle => {
             let vp = new VehiclePaths(vehicle);
@@ -84,17 +84,17 @@ export class MultiSelectionHandler
 }
 
 export class VehiclePaths {
-    private _cells:Array<Ceil>; 
+    private _cells:Array<Cell>; 
 
     constructor(private _vehicle:Vehicle){
-        this._cells = new Array<Ceil>();
+        this._cells = new Array<Cell>();
     }
 
     public GetVehicle():Vehicle{
         return this._vehicle;
     }
 
-    public Add(cell:Ceil){
+    public Add(cell:Cell){
         if(this._cells.length === 0){
             this._cells.push(cell)
         }else{
@@ -111,7 +111,7 @@ export class VehiclePaths {
         }
     }
 
-    public Pop():Ceil{
+    public Pop():Cell{
         const cell = this._cells[0];
         this._cells.splice(0, 1);
         return cell;        

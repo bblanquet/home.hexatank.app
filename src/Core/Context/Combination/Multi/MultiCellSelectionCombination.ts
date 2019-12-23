@@ -1,7 +1,7 @@
-import { SlowField } from '../../../Ceils/Field/SlowField';
+import { SlowField } from '../../../Cell/Field/SlowField';
 import { SlowMenuItem } from '../../../Menu/Buttons/SlowMenuItem';
 import { PoisonMenuItem } from '../../../Menu/Buttons/PoisonMenuItem';
-import { Ceil } from '../../../Ceils/Ceil';
+import { Cell } from '../../../Cell/Cell';
 import { MultiSelectionMenu } from '../../../Menu/Smart/MultiSelectionMenu';
 import { ICombination } from "../ICombination";
 import { CombinationContext } from "../CombinationContext";
@@ -12,21 +12,21 @@ import { PlaygroundHelper } from '../../../Utils/PlaygroundHelper';
 import { HealMenuItem } from '../../../Menu/Buttons/HealMenuItem';
 import { PeerHandler } from '../../../../Menu/Network/Host/On/PeerHandler';
 import { PacketKind } from '../../../../Menu/Network/PacketKind';
-import { HealField } from '../../../Ceils/Field/HealField';
+import { HealField } from '../../../Cell/Field/HealField';
 import { AttackMenuItem } from '../../../Menu/Buttons/AttackMenuItem';
-import { AttackField } from '../../../Ceils/Field/AttackField';
+import { AttackField } from '../../../Cell/Field/AttackField';
 import { SpeedFieldMenuItem } from '../../../Menu/Buttons/SpeedFieldMenuItem';
-import { MoneyField } from '../../../Ceils/Field/MoneyField';
+import { MoneyField } from '../../../Cell/Field/MoneyField';
 import { MoneyMenuItem } from '../../../Menu/Buttons/MoneyMenuItem';
-import { FastField } from '../../../Ceils/Field/FastField';
+import { FastField } from '../../../Cell/Field/FastField';
 import { InteractionContext } from '../../InteractionContext';
 import { InteractionKind } from '../../IInteractionContext';
-import { Field } from '../../../Ceils/Field/Field';
-import { PoisonField } from '../../../Ceils/Field/PoisonField';
+import { Field } from '../../../Cell/Field/Field';
+import { PoisonField } from '../../../Cell/Field/PoisonField';
 import { GameSettings } from '../../../Utils/GameSettings';
 
 export class MultiCellSelectionCombination implements ICombination{
-    private _cells:Ceil[];
+    private _cells:Cell[];
 
     constructor(private _multiselection:MultiSelectionMenu,private _multiSelectionContext:MovingInteractionContext, private _interactionContext:InteractionContext){
         this._cells = [];
@@ -41,7 +41,7 @@ export class MultiCellSelectionCombination implements ICombination{
             && (context.InteractionKind === InteractionKind.Up||context.InteractionKind === InteractionKind.MovingUp)
             && this._cells.length > 0
             && context.Items.length > 0
-            && !(context.Items[context.Items.length] instanceof Ceil));
+            && !(context.Items[context.Items.length] instanceof Cell));
     }    
     
     Combine(context: CombinationContext): boolean {
@@ -104,11 +104,11 @@ export class MultiCellSelectionCombination implements ICombination{
         }
         return false;
     }
-    private SetMenuItem(getField:(e:Ceil)=>Field, fieldType:string) {
+    private SetMenuItem(getField:(e:Cell)=>Field, fieldType:string) {
         this._cells.forEach(c => {
             PeerHandler.SendMessage(PacketKind.Field, {
-                Hq: PlaygroundHelper.PlayerHeadquarter.GetCurrentCeil().GetCoordinate(),
-                Ceil: c.GetCoordinate(),
+                Hq: PlaygroundHelper.PlayerHeadquarter.GetCurrentCell().GetCoordinate(),
+                cell: c.GetCoordinate(),
                 Type: fieldType
             });
             PlaygroundHelper.Playground.Items.push(getField(c));

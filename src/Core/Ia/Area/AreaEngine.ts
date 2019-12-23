@@ -1,60 +1,60 @@
-import { ICeil } from '../../Ceils/ICeil';
+import { ICell } from '../../Cell/ICell';
 import { HexAxial } from "../../Utils/Coordinates/HexAxial";
 import { isNullOrUndefined } from "util"; 
-import { CeilsContainer } from "../../Ceils/CeilsContainer"; 
+import { CellContainer } from "../../Cell/CellContainer"; 
 
-export class AreaEngine<T extends ICeil> 
+export class AreaEngine<T extends ICell> 
 {
-    public GetAreas(ceils:CeilsContainer<T>,ceil:T):Array<T>
+    public GetAreas(cells:CellContainer<T>,cell:T):Array<T>
     {
         var result = new Array<T>();
-        this.GetAllAreas(ceils,ceil,result);
+        this.GetAllAreas(cells,cell,result);
         return result;
     }
 
-    private GetAllAreas(ceils:CeilsContainer<T>, currentCeil:T,areas:Array<T>):void
+    private GetAllAreas(cells:CellContainer<T>, currentcell:T,areas:Array<T>):void
     {
-        if(areas.filter(a=>a === currentCeil).length === 0)
+        if(areas.filter(a=>a === currentcell).length === 0)
         {
-            areas.push(currentCeil);
-            var neighs = this.GetNeighbourhoodAreas(ceils, currentCeil);
+            areas.push(currentcell);
+            var neighs = this.GetNeighbourhoodAreas(cells, currentcell);
             neighs.forEach(neigh => {
-                this.GetAllAreas(ceils,neigh,areas);
+                this.GetAllAreas(cells,neigh,areas);
             }); 
         }
     }
 
-    public GetNeighbourhoodAreas(ceils:CeilsContainer<T>, ceil:T):Array<T>{
-        var coo = ceil.GetCoordinate();
+    public GetNeighbourhoodAreas(cells:CellContainer<T>, cell:T):Array<T>{
+        var coo = cell.GetCoordinate();
         var result = new Array<T>();
         var shifts = [{Q:-1,R:-2},{Q:2,R:-3},{Q:3,R:-1},{Q:1,R:2},{Q:-2,R:3},{Q:-3,R:1}];
         
         shifts.forEach(shift => {
-            let ngCeil = ceils.
+            let ngcell = cells.
             Get(new HexAxial(coo.Q + shift.Q,coo.R+shift.R));
-            if(!isNullOrUndefined(ngCeil))
+            if(!isNullOrUndefined(ngcell))
             {
-                result.push(ngCeil);
+                result.push(ngcell);
             }
         });
 
         return result;
     }
 
-    public GetFirstRange(container:CeilsContainer<T>,ceil:T):Array<T>{
-        let innerCircle = this.GetNeighbourhoodAreas(container, ceil);
-        innerCircle.push(ceil)
+    public GetFirstRange(container:CellContainer<T>,cell:T):Array<T>{
+        let innerCircle = this.GetNeighbourhoodAreas(container, cell);
+        innerCircle.push(cell)
         return innerCircle;
     }
 
 
-    public GetSecondRangeAreas(container:CeilsContainer<T>,ceil:T):Array<T>{
+    public GetSecondRangeAreas(container:CellContainer<T>,cell:T):Array<T>{
         let outerCircle = new Array<T>();
-        let innerCircle = this.GetNeighbourhoodAreas(container, ceil);
+        let innerCircle = this.GetNeighbourhoodAreas(container, cell);
         
-        innerCircle.forEach(innerCeil => {
-            this.GetNeighbourhoodAreas(container, innerCeil).forEach(outCeil =>{
-                outerCircle.push(outCeil);
+        innerCircle.forEach(innercell => {
+            this.GetNeighbourhoodAreas(container, innercell).forEach(outcell =>{
+                outerCircle.push(outcell);
             });
         });
 

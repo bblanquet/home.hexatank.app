@@ -1,14 +1,14 @@
 import { SimpleOrder } from './SimpleOrder';
 import { OrderState } from "./OrderState";
-import { Order } from './Order';
-import { Ceil } from '../../Ceils/Ceil';
+import { Order } from './Order';      
+import { Cell } from '../../Cell/Cell';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 
 export class PersistentOrder extends Order{
 
     private _currentOrder:SimpleOrder;
 
-    constructor(protected OriginalDest:Ceil,private _v:Vehicle){
+    constructor(protected OriginalDest:Cell,private _v:Vehicle){
         super();
         this._currentOrder = new SimpleOrder(this.OriginalDest,this._v);
         this._v.CellChanged.on(()=>this.OnCellChanged);

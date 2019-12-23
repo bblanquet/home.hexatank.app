@@ -1,13 +1,13 @@
-import {CeilsContainer} from '../Ceils/CeilsContainer';
-import {AStarEngine} from '../Ia/AStarEngine';
-import { CeilProperties } from '../Ceils/CeilProperties'; 
+import {CellContainer} from '../Cell/CellContainer';
+import {AStarEngine} from '../Ia/AStarEngine'; 
+import { CellProperties } from '../Cell/CellProperties'; 
 
 export class TestHelper{
-    static CeilsContainer:CeilsContainer<CeilProperties>;
-    static Engine:AStarEngine<CeilProperties>;        
+    static CellContainer:CellContainer<CellProperties>;
+    static Engine:AStarEngine<CellProperties>;        
 
     static Init():void{
-        TestHelper.CeilsContainer = new CeilsContainer<CeilProperties>();
-        TestHelper.Engine = new AStarEngine<CeilProperties>();
+        this.CellContainer = new CellContainer<CellProperties>();
+        this.Engine = new AStarEngine<CellProperties>();
     }
 }

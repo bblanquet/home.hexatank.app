@@ -1,7 +1,7 @@
 import { GameSettings } from './../../Utils/GameSettings';
 import { BasicItem } from '../BasicItem';
 import { LiteEvent } from '../../Utils/LiteEvent';
-import { Headquarter } from '../../Ceils/Field/Headquarter';
+import { Headquarter } from '../../Cell/Field/Headquarter';
 import {Dust} from './Dust';
 import { AliveItem } from '../AliveItem'; 
 import { ITranslationMaker } from './Utils/ITranslationMaker';
@@ -14,14 +14,14 @@ import { AngleFinder } from './Utils/AngleFinder';
 import { IRotatable } from './Utils/IRotatable';
 import { isNullOrUndefined } from 'util';
 import { ISelectable } from '../../ISelectable';
-import { Ceil } from '../../Ceils/Ceil';
+import { Cell } from '../../Cell/Cell';
 import { IOrder } from '../../Ia/Order/IOrder';
 import { BoundingBox } from '../../Utils/BoundingBox';
 import { Timer } from '../../Utils/Timer';
-import { CeilState } from '../../Ceils/CeilState';
+import { CellState } from '../../Cell/CellState';
 import { Archive } from '../../Utils/ResourceArchiver';
 import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
-import { CeilProperties } from '../../Ceils/CeilProperties';
+import { CellProperties } from '../../Cell/CellProperties';
 import { Crater } from '../Others/Crater';
 import { InteractionContext } from '../../Context/InteractionContext';
 import { PeerHandler } from '../../../Menu/Network/Host/On/PeerHandler';
@@ -46,8 +46,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     //movable
     CurrentRadius:number;
     GoalRadius:number;
-    private _nextCeil:Ceil;
-    private _currentCell:Ceil;
+    private _nextCell:Cell;
+    private _currentCell:Cell;
 
     private _order:IOrder;
 
@@ -65,8 +65,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     private _rightDusts:Array<Dust>;
 
     public SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
-    private _onCellStateChanged:{(obj:any,ceilState:CeilState):void};
-    public CellChanged:LiteEvent<Ceil>  = new LiteEvent<Ceil>();
+    private _onCellStateChanged:{(obj:any,cellState:CellState):void};
+    public CellChanged:LiteEvent<Cell>  = new LiteEvent<Cell>();
 
     constructor(public Hq:Headquarter){
         super();
@@ -78,8 +78,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
         this.Z= 2;
         this.Size = GameSettings.Size;
-        this.BoundingBox.Width = CeilProperties.GetWidth(this.Size);
-        this.BoundingBox.Height = CeilProperties.GetHeight(this.Size);
+        this.BoundingBox.Width = CellProperties.GetWidth(this.Size);
+        this.BoundingBox.Height = CellProperties.GetHeight(this.Size);
         this._onCellStateChanged = this.OnCellStateChanged.bind(this);
         this.RootSprites = new Array<string>();
 
@@ -95,7 +95,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this._rightDusts = [new Dust(new BoundingBox()),new Dust(new BoundingBox()),new Dust(new BoundingBox()),new Dust(new BoundingBox())];
         this._leftDusts.forEach(ld=>PlaygroundHelper.Playground.Items.push(ld));
         this._rightDusts.forEach(rd=>PlaygroundHelper.Playground.Items.push(rd));
-        this.CellChanged = new LiteEvent<Ceil>();
+        this.CellChanged = new LiteEvent<Cell>();
     }
 
     protected abstract RemoveCamouflage():void;
@@ -122,8 +122,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         return this.BoundingBox;
     }
 
-    public HasNextCeil():Boolean{
-        return !isNullOrUndefined(this._nextCeil);
+    public HasNextCell():Boolean{
+        return !isNullOrUndefined(this._nextCell);
     }
 
     private Moving():void
@@ -135,8 +135,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         }
         else
         {
-            if(this.GetNextCeil().GetState() === CeilState.Visible){
-                this.OnCellStateChanged(this,this.GetNextCeil().GetState());
+            if(this.GetNextCell().GetState() === CellState.Visible){
+                this.OnCellStateChanged(this,this.GetNextCell().GetState());
             }
             this._translationMaker.Translate();
         }
@@ -204,70 +204,70 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this.SelectionChanged.trigger(this, this);
     }
 
-    public GetNextCeil(): Ceil {
-        return this._nextCeil;
+    public GetNextCell(): Cell {
+        return this._nextCell;
     }
 
-    protected abstract OnCellStateChanged(obj:any,ceilState:CeilState):void;
+    protected abstract OnCellStateChanged(obj:any,cellState:CellState):void;
 
-    public MoveNextCeil(): void {
-        let previousCeil = this._currentCell;
+    public MoveNextCell(): void {
+        let previouscell = this._currentCell;
         this._currentCell.CellStateChanged.off(this._onCellStateChanged);
 
-        this._currentCell = this._nextCeil;
+        this._currentCell = this._nextCell;
         this.CellChanged.trigger(this._currentCell);
         this.OnCellStateChanged(this,this._currentCell.GetState());
         this._currentCell.CellStateChanged.on(this._onCellStateChanged);
-        this._nextCeil = null;
+        this._nextCell = null;
 
-        this.SetCeilsVisible();
-        this.SetCeilsHalfVisible(previousCeil);
+        this.SetCellsVisible();
+        this.SetCellsHalfVisible(previouscell);
     }
 
-    private SetCeilsHalfVisible(previousCeil: Ceil) {
+    private SetCellsHalfVisible(previouscell: Cell) {
         if(GameSettings.ShowEnemies)
         {
-            var preVisibleCeils = previousCeil.GetAllNeighbourhood();
-            preVisibleCeils.push(previousCeil);
-            preVisibleCeils.forEach(ceilChild => {
-                var ceil = (<Ceil>ceilChild);
-                if (!ceil.HasOccupier() && 
-                    ceil.GetAllNeighbourhood().filter(c => (<Ceil>c).HasOccupier()).length === 0) 
+            var preVisiblecells = previouscell.GetAllNeighbourhood();
+            preVisiblecells.push(previouscell);
+            preVisiblecells.forEach(cellChild => {
+                var cell = (<Cell>cellChild);
+                if (!cell.HasOccupier() && 
+                    cell.GetAllNeighbourhood().filter(c => (<Cell>c).HasOccupier()).length === 0) 
                 {
-                    ceil.SetState(CeilState.HalfVisible);
+                    cell.SetState(CellState.HalfVisible);
                 }
             });
         }
         else if(!this.IsEnemy(PlaygroundHelper.PlayerHeadquarter))
         {
-            var preVisibleCeils = previousCeil.GetAllNeighbourhood();
-            preVisibleCeils.push(previousCeil);
-            preVisibleCeils.forEach(ceilChild => {
-                var ceil = (<Ceil>ceilChild);
-                if (!ceil.ContainsAlly(this) && 
-                    ceil.GetAllNeighbourhood().filter(c => (<Ceil>c).ContainsAlly(this)).length === 0) 
+            var preVisiblecells = previouscell.GetAllNeighbourhood();
+            preVisiblecells.push(previouscell);
+            preVisiblecells.forEach(cellChild => {
+                var cell = (<Cell>cellChild);
+                if (!cell.ContainsAlly(this) && 
+                    cell.GetAllNeighbourhood().filter(c => (<Cell>c).ContainsAlly(this)).length === 0) 
                 {
-                    ceil.SetState(CeilState.HalfVisible);
+                    cell.SetState(CellState.HalfVisible);
                 }
             });
         }
     }
 
-    private SetCeilsVisible() {
+    private SetCellsVisible() {
         if(!this.IsEnemy(PlaygroundHelper.PlayerHeadquarter) 
         || GameSettings.ShowEnemies)
         {
-            var ceils = this._currentCell.GetAllNeighbourhood();
-            ceils.push(this._currentCell);
-            ceils.forEach(ceil => {
-                (<Ceil>ceil).SetState(CeilState.Visible);
+            var cells = this._currentCell.GetAllNeighbourhood();
+            cells.push(this._currentCell);
+            cells.forEach(cell => {
+                (<Cell>cell).SetState(CellState.Visible);
             });
         }
     }
 
     public Destroy():void{
         PeerHandler.SendMessage(PacketKind.Destroyed,{
-            Ceil:this._currentCell.GetCoordinate(),
+            cell:this._currentCell.GetCoordinate(),
             Name:"vehicle"
         });
         if(this._order){
@@ -278,9 +278,9 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         }
         super.Destroy();
         this._currentCell.SetOccupier(null);
-        if(!isNullOrUndefined(this._nextCeil))
+        if(!isNullOrUndefined(this._nextCell))
         {
-            this._nextCeil.SetOccupier(null);
+            this._nextCell.SetOccupier(null);
         }
         PlaygroundHelper.Render.Remove(this);
         this.IsUpdatable = false;
@@ -288,7 +288,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this._rightDusts.forEach(ld=>ld.Destroy());
         this._leftDusts = [];
         this._rightDusts = [];
-        this.SetCeilsHalfVisible(this._currentCell);
+        this.SetCellsHalfVisible(this._currentCell);
     }
 
     public Update(viewX: number, viewY: number):void{
@@ -310,7 +310,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
             this._order.Do(); 
         }
 
-        if(!this.ExistsOrder() || this._order.IsDone() && !this.HasNextCeil())
+        if(!this.ExistsOrder() || this._order.IsDone() && !this.HasNextCell())
         {
             if(this._pendingOrder){
                 this._order = this._pendingOrder;
@@ -321,10 +321,10 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
         this._currentCell.GetField().Support(this); 
 
-        if(this.HasNextCeil())
+        if(this.HasNextCell())
         {
             this.Moving();
-            this.SetCurrentCeilEmpty();
+            this.SetCurrentCellEmpty();
         }
         else
         {
@@ -338,17 +338,17 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         super.Update(viewX,viewY);
     }
 
-    private SetCurrentCeilEmpty() {
+    private SetCurrentCellEmpty() {
         if(this._currentCell.GetOccupier() === this 
-        && this._nextCeil)
+        && this._nextCell)
         {
-            const currentCeilDistance = 
+            const currentcellDistance = 
             Math.sqrt(Math.pow(this._currentCell.GetBoundingBox().X - this.GetBoundingBox().X, 2)
             + Math.pow(this._currentCell.GetBoundingBox().Y - this.GetBoundingBox().Y, 2));
-            const nextCeilDistance = Math.sqrt(Math.pow(this.GetBoundingBox().X - this._nextCeil.GetBoundingBox().X, 2)
-            + Math.pow(this.GetBoundingBox().Y - this._nextCeil.GetBoundingBox().Y, 2));
+            const nextcellDistance = Math.sqrt(Math.pow(this.GetBoundingBox().X - this._nextCell.GetBoundingBox().X, 2)
+            + Math.pow(this.GetBoundingBox().Y - this._nextCell.GetBoundingBox().Y, 2));
 
-            if (nextCeilDistance < currentCeilDistance) 
+            if (nextcellDistance < currentcellDistance) 
             {
                 this._currentCell.SetOccupier(null);
             }
@@ -367,13 +367,13 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         return !isNullOrUndefined(this._pendingOrder);
     }
 
-    public SetPosition (ceil:Ceil):void{
-        this.InitPosition(ceil.GetBoundingBox());
-        this._currentCell = ceil;
+    public SetPosition (cell:Cell):void{
+        this.InitPosition(cell.GetBoundingBox());
+        this._currentCell = cell;
         this._currentCell.SetOccupier(this);
         this._currentCell.CellStateChanged.on(this._onCellStateChanged);
         this._onCellStateChanged(this,this._currentCell.GetState())
-        this.SetCeilsVisible();
+        this.SetCellsVisible();
     };
 
     public Select(context:InteractionContext):boolean
@@ -381,20 +381,20 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         return false;
     }
 
-    public SetNextCeil(ceil: Ceil): void {
+    public SetNextCell(cell: Cell): void {
         if(this.HasCamouflage){
             this.RemoveCamouflage();
         }
-        if(this._nextCeil){
-            if(this._nextCeil.GetOccupier() === this){
-                this._nextCeil.SetOccupier(null);
+        if(this._nextCell){
+            if(this._nextCell.GetOccupier() === this){
+                this._nextCell.SetOccupier(null);
             }
         }
-        this._nextCeil = ceil;
-        this._nextCeil.SetOccupier(this);
-        this._angleFinder.SetAngle(this._nextCeil);
+        this._nextCell = cell;
+        this._nextCell.SetOccupier(this);
+        this._angleFinder.SetAngle(this._nextCell);
     }
-    public GetCurrentCeil(): Ceil {
+    public GetCurrentCell(): Cell {
         return this._currentCell;
     }
 }

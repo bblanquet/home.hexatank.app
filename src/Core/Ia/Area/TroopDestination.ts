@@ -1,9 +1,9 @@
-import { Ceil } from "../../Ceils/Ceil";
+import { Cell } from "../../Cell/Cell"; 
 import { isNullOrUndefined } from "util"; 
 
 export class TroopDestination{
     
-    constructor(public Destination:Ceil,public Path:Array<Ceil>){
+    constructor(public Destination:Cell,public Path:Array<Cell>){
     }
 
     public GetCost():number{

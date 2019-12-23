@@ -1,11 +1,11 @@
-import { InfluenceField } from '../../Ceils/Field/InfluenceField';
+import { InfluenceField } from '../../Cell/Field/InfluenceField';
 import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
 import { ICombination } from "./ICombination";
 import { ISelectable } from "../../ISelectable";
 import { Item } from "../../Items/Item";
-import { Ceil } from "../../Ceils/Ceil";
-import { BasicField } from "../../Ceils/Field/BasicField";
-import { CeilState } from "../../Ceils/CeilState";
+import { Cell } from "../../Cell/Cell";
+import { BasicField } from "../../Cell/Field/BasicField";
+import { CellState } from "../../Cell/CellState";
 import { CombinationContext } from './CombinationContext';
 import { ContextMode } from '../../Utils/ContextMode';
 import { InteractionKind } from '../IInteractionContext';
@@ -32,17 +32,17 @@ export class SelectionCombination implements ICombination{
         if(this.IsMatching(context)){
             const item = context.Items[0];
             const selectable = this.ToSelectableItem(item);
-            if(selectable instanceof Ceil){
-                const selectableCeil = selectable as Ceil;
+            if(selectable instanceof Cell){
+                const selectablecell = selectable as Cell;
                 
-                if(selectableCeil.GetField() instanceof InfluenceField 
-                && selectableCeil.GetState() === CeilState.Visible){
-                    const field = selectableCeil.GetField() as InfluenceField;
+                if(selectablecell.GetField() instanceof InfluenceField 
+                && selectablecell.GetState() === CellState.Visible){
+                    const field = selectablecell.GetField() as InfluenceField;
                     field.SetSelected(true);
                     PlaygroundHelper.SelectedItem.trigger(this,field);
                 }
-                else if(selectableCeil.GetField() instanceof BasicField 
-                    && selectableCeil.GetState() === CeilState.Visible)
+                else if(selectablecell.GetField() instanceof BasicField 
+                    && selectablecell.GetState() === CellState.Visible)
                 {
                     selectable.SetSelected(true); 
                     PlaygroundHelper.SelectedItem.trigger(this,item);

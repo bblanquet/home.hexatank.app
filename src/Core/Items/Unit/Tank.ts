@@ -1,5 +1,5 @@
 import { CamouflageHandler } from '../../Utils/CamouflageHandler';
-import { Ceil } from '../../Ceils/Ceil';
+import { Cell } from '../../Cell/Cell';
 import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
 import { PeerHandler } from './../../../Menu/Network/Host/On/PeerHandler';
 import {Vehicle} from './Vehicle';
@@ -7,9 +7,9 @@ import { Turrel } from './Turrel';
 import { AliveItem } from '../AliveItem';
 import { isNullOrUndefined, isNull } from 'util';
 import { IHqContainer } from './IHqContainer';
-import { Headquarter } from '../../Ceils/Field/Headquarter';
-import { Archive } from '../../Utils/ResourceArchiver';
-import { CeilState } from '../../Ceils/CeilState';
+import { Headquarter } from '../../Cell/Field/Headquarter';
+import { Archive } from '../../Utils/ResourceArchiver'; 
+import { CellState } from '../../Cell/CellState';
 import { PacketKind } from '../../../Menu/Network/PacketKind';
 import { BasicItem } from '../BasicItem';
 import { BoundingBox } from '../../Utils/BoundingBox';
@@ -49,19 +49,19 @@ export class Tank extends Vehicle implements IHqContainer
         this.IsCentralRef = true;
     } 
 
-    protected OnCellStateChanged(obj:any,ceilState: CeilState): void 
+    protected OnCellStateChanged(obj:any,cellState: CellState): void 
     {
         this.GetDisplayObjects().forEach(s=>{
-            s.visible = ceilState === CeilState.Visible;
+            s.visible = cellState === CellState.Visible;
         });
         this.Turrel.GetDisplayObjects().forEach(s=>{
-            s.visible = ceilState === CeilState.Visible;
+            s.visible = cellState === CellState.Visible;
         });    
     }
 
-    public SetPosition (ceil:Ceil):void{
-        super.SetPosition(ceil);
-        this.Turrel.InitPosition(ceil.GetBoundingBox());
+    public SetPosition (cell:Cell):void{
+        super.SetPosition(cell);
+        this.Turrel.InitPosition(cell.GetBoundingBox());
     };
 
     public Destroy():void{
@@ -92,9 +92,9 @@ export class Tank extends Vehicle implements IHqContainer
         //find main target among surrounding enemies
         if (!isNullOrUndefined(this._mainTarget)) 
         {
-            var ceils = this.GetCurrentCeil().GetAllNeighbourhood();
+            var cells = this.GetCurrentCell().GetAllNeighbourhood();
 
-            let enemies = ceils.map(c=> (<Ceil>c)
+            let enemies = cells.map(c=> (<Cell>c)
                 .GetShootableEntity())
                 .filter(aliveItem=> !isNull(aliveItem));
 
@@ -104,9 +104,9 @@ export class Tank extends Vehicle implements IHqContainer
     }
 
     public IsEnemyHqClose():boolean{
-        var ceils = this.GetCurrentCeil().GetAllNeighbourhood();
+        var cells = this.GetCurrentCell().GetAllNeighbourhood();
 
-        let enemies = ceils.map(c=> (<Ceil>c)
+        let enemies = cells.map(c=> (<Cell>c)
             .GetShootableEntity())
             .filter(c=> !isNullOrUndefined(c))
 
@@ -139,9 +139,9 @@ export class Tank extends Vehicle implements IHqContainer
     }
 
     private FindRandomEnemy() {
-        const ceils = this.GetCurrentCeil().GetAllNeighbourhood();
+        const cells = this.GetCurrentCell().GetAllNeighbourhood();
         //find random enemy among enemies
-        const enemies = ceils.map(ceil => <AliveItem>((<Ceil>ceil).GetOccupier() as any))
+        const enemies = cells.map(cell => <AliveItem>((<Cell>cell).GetOccupier() as any))
             .filter(aliveItem => !isNullOrUndefined(aliveItem) && this.IsEnemy(aliveItem))
             .filter(c=>(c instanceof Vehicle && !(<Vehicle>c).HasCamouflage) || c instanceof Headquarter);
         
@@ -160,8 +160,8 @@ export class Tank extends Vehicle implements IHqContainer
     }
 
     private SetHqTarget():void {
-        const ceils = this.GetCurrentCeil().GetAllNeighbourhood();
-        const enemies = ceils.map(c=> (<Ceil>c)
+        const cells = this.GetCurrentCell().GetAllNeighbourhood();
+        const enemies = cells.map(c=> (<Cell>c)
         .GetShootableEntity())
         .filter(c=> !isNull(c));
         const hqs = enemies.filter(c => c instanceof Headquarter).map(c => <Headquarter>c);
@@ -200,9 +200,9 @@ export class Tank extends Vehicle implements IHqContainer
 
     public SetMainTarget(item:AliveItem):void{
         PeerHandler.SendMessage(PacketKind.Target,{
-            Hq:this.Hq.GetCeil().GetCoordinate(),
-            Ceil:this.GetCurrentCeil().GetCoordinate(),
-            TargetCeil:item.GetCurrentCeil().GetCoordinate(),
+            Hq:this.Hq.GetCell().GetCoordinate(),
+            cell:this.GetCurrentCell().GetCoordinate(),
+            TarGetCell:item.GetCurrentCell().GetCoordinate(),
         });
         this._mainTarget = item;
     }
@@ -212,7 +212,7 @@ export class Tank extends Vehicle implements IHqContainer
     }
 
     SetCamouflage():boolean {
-        if(this.HasNextCeil()){
+        if(this.HasNextCell()){
             return false;
         }
         this.HasCamouflage = true;
@@ -232,8 +232,8 @@ export class Tank extends Vehicle implements IHqContainer
         }
 
         PeerHandler.SendMessage(PacketKind.Camouflage,{
-            Hq:this.Hq.GetCeil().GetCoordinate(),
-            Ceil:this.GetCurrentCeil().GetCoordinate(),
+            Hq:this.Hq.GetCell().GetCoordinate(),
+            cell:this.GetCurrentCell().GetCoordinate(),
         });
 
         this.Camouflage = new BasicItem(BoundingBox.CreateFromBox(this.GetBoundingBox()), CamouflageHandler.GetCamouflage(),5);
@@ -257,7 +257,7 @@ export class Tank extends Vehicle implements IHqContainer
             }
             else
             {
-                if(this.GetCurrentCeil().GetState() === CeilState.Visible){
+                if(this.GetCurrentCell().GetState() === CellState.Visible){
                     this.camouflagedSprites.forEach(s=>{
                         s.alpha = 1;
                     });

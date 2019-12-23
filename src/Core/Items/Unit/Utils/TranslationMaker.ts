@@ -5,7 +5,6 @@ import { IBoundingBoxContainer } from "../../../IBoundingBoxContainer";
 
 export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implements ITranslationMaker
 {
-
     private _item:T;
 
     constructor(item:T){
@@ -40,13 +39,13 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
     public Translate():void
     {
         var itemBox = this._item.GetBoundingBox();
-        var nextCeilBox = this._item.GetNextCeil().GetBoundingBox();
+        var nextcellBox = this._item.GetNextCell().GetBoundingBox();
 
-        var xRatio = this.GetXRatio(itemBox.GetCentralPoint(),nextCeilBox.GetCentralPoint());
+        var xRatio = this.GetXRatio(itemBox.GetCentralPoint(),nextcellBox.GetCentralPoint());
 
-        itemBox.Y += (nextCeilBox.GetMiddle() < itemBox.GetMiddle()) 
+        itemBox.Y += (nextcellBox.GetMiddle() < itemBox.GetMiddle()) 
         ? -this._item.TranslationSpeed:this._item.TranslationSpeed;
-        itemBox.X += ((nextCeilBox.GetCenter() < itemBox.GetCenter()) 
+        itemBox.X += ((nextcellBox.GetCenter() < itemBox.GetCenter()) 
         ? -this._item.TranslationSpeed:this._item.TranslationSpeed)*xRatio;
 
         if(isNaN(itemBox.X)){
@@ -54,29 +53,29 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
         } 
 
         const currentMiddle = itemBox.GetMiddle();
-        const nextMiddle = nextCeilBox.GetMiddle();
+        const nextMiddle = nextcellBox.GetMiddle();
         const currentCenter = itemBox.GetCenter();
-        const nextCenter = nextCeilBox.GetCenter();
+        const nextCenter = nextcellBox.GetCenter();
 
         if(this.IsCloseEnough(currentCenter, nextCenter,this._item))
         {
-            itemBox.X = nextCeilBox.X;
+            itemBox.X = nextcellBox.X;
         }
 
         if(this.IsCloseEnough(currentMiddle, nextMiddle,this._item))
         {
-            itemBox.Y = nextCeilBox.Y;
+            itemBox.Y = nextcellBox.Y;
         }
 
         if(currentMiddle == nextMiddle && currentCenter == nextCenter)
         {
-            this._item.MoveNextCeil();
+            this._item.MoveNextCell();
         }
     }
 
     public GetPercentageTranslation(): number {
-        var fullDistance = ToolBox.GetDist(this._item.GetCurrentCeil().GetCentralPoint(), this._item.GetNextCeil().GetCentralPoint());
-        var currentDistance = ToolBox.GetDist(this._item.GetBoundingBox().GetCentralPoint(), this._item.GetNextCeil().GetCentralPoint());
+        var fullDistance = ToolBox.GetDist(this._item.GetCurrentCell().GetCentralPoint(), this._item.GetNextCell().GetCentralPoint());
+        var currentDistance = ToolBox.GetDist(this._item.GetBoundingBox().GetCentralPoint(), this._item.GetNextCell().GetCentralPoint());
         return (currentDistance / fullDistance) * 100;
     }
 }

@@ -1,25 +1,25 @@
 import { PeerHandler } from './../../../Menu/Network/Host/On/PeerHandler';
 import { OrderState } from "./OrderState";
 import { isNullOrUndefined, isNull } from "util";
-import { Order } from "./Order";
-import { Ceil } from "../../Ceils/Ceil";
-import { CeilFinder } from "../../Ceils/CeilFinder"; 
+import { Order } from "./Order";      
+import { Cell } from "../../Cell/Cell";
+import { CellFinder } from "../../Cell/CellFinder"; 
 import { BasicItem } from "../../Items/BasicItem";
 import { Timer } from "../../Utils/Timer"; 
 import { Vehicle } from "../../Items/Unit/Vehicle";
-import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
+import { PlaygroundHelper } from "../../Utils/PlaygroundHelper"; 
 import { Archive } from "../../Utils/ResourceArchiver";
 import { PacketKind } from '../../../Menu/Network/PacketKind';
 
 export class SimpleOrder extends Order{
-    protected CurrentCeil:Ceil; 
-    protected Ceils:Array<Ceil>;
-    protected CeilFinder:CeilFinder;
+    protected Currentcell:Cell; 
+    protected cells:Array<Cell>;
+    protected cellFinder:CellFinder;
     private _uiPath:Array<BasicItem>;
-    protected Dest:Ceil; 
+    protected Dest:Cell; 
     private _tryCount:number;
     private _sleep:Timer;
-    constructor(protected OriginalDest:Ceil,private _v:Vehicle)
+    constructor(protected OriginalDest:Cell,private _v:Vehicle)
     {
         super();
         if(isNullOrUndefined(this.OriginalDest)){
@@ -28,8 +28,8 @@ export class SimpleOrder extends Order{
         this._sleep = new Timer(100);
         this._tryCount=0;
         this.Dest = OriginalDest;
-        this.Ceils = new Array<Ceil>();
-        this.CeilFinder = new CeilFinder();
+        this.cells = new Array<Cell>();
+        this.cellFinder = new CellFinder();
         this._uiPath = [];
     }
 
@@ -38,7 +38,7 @@ export class SimpleOrder extends Order{
         this.ClearPath();
     }
 
-    public GetDestination():Ceil{
+    public GetDestination():Cell{
         return this.Dest;
     }
 
@@ -49,7 +49,7 @@ export class SimpleOrder extends Order{
             return;
         }
 
-        if(this.CurrentCeil === this._v.GetCurrentCeil())
+        if(this.Currentcell === this._v.GetCurrentCell())
         {
             if(this._uiPath.length > 0)
             {
@@ -57,7 +57,7 @@ export class SimpleOrder extends Order{
                 this._uiPath.splice(0, 1);
             }
             
-            if(this.CurrentCeil === this.Dest)
+            if(this.Currentcell === this.Dest)
             {
                 if(this.Dest === this.OriginalDest)
                 {
@@ -86,24 +86,24 @@ export class SimpleOrder extends Order{
             }
             else 
             {
-                this.GoNextCeil();
+                this.GoNextcell();
             }
         }
     }
 
-    private GoNextCeil() {
-        var ceil = this.GetNextCeil();
-        if (isNull(ceil)) {
+    private GoNextcell() {
+        var cell = this.GetNextcell();
+        if (isNull(cell)) {
             this.State = OrderState.Failed;
         }
         else 
         {
             PeerHandler.SendMessage(PacketKind.Next,{
                 Id:this._v.Id,
-                NextCeil:ceil.GetCoordinate(),
-                Hq:this._v.Hq.GetCeil().GetCoordinate(),
+                Nextcell:cell.GetCoordinate(),
+                Hq:this._v.Hq.GetCell().GetCoordinate(),
             });
-            this._v.SetNextCeil(ceil);
+            this._v.SetNextCell(cell);
         }
     }
 
@@ -112,7 +112,7 @@ export class SimpleOrder extends Order{
         {    
             if(this.FindPath())
             {
-                this.GoNextCeil();
+                this.GoNextcell();
                 this.State = OrderState.Pending;
             }
             else
@@ -124,20 +124,20 @@ export class SimpleOrder extends Order{
         return true;
     }
 
-    private GetNextCeil():Ceil {
-        if(isNullOrUndefined(this.Ceils) || this.Ceils.length === 0)
+    private GetNextcell():Cell {
+        if(isNullOrUndefined(this.cells) || this.cells.length === 0)
         {
             return null;
         }
 
-        this.CurrentCeil = this.Ceils[0];
-        this.Ceils.splice(0, 1);
+        this.Currentcell = this.cells[0];
+        this.cells.splice(0, 1);
 
-        if(this.CurrentCeil.IsBlocked())
+        if(this.Currentcell.IsBlocked())
         {
             if(this.FindPath())
             {
-                this.CurrentCeil = this.GetNextCeil();
+                this.Currentcell = this.GetNextcell();
             }
             else
             {
@@ -145,7 +145,7 @@ export class SimpleOrder extends Order{
             }
         }
 
-        return this.CurrentCeil;
+        return this.Currentcell;
     }
 
     public Reset():void{
@@ -157,21 +157,21 @@ export class SimpleOrder extends Order{
     {
         if(this.Dest.IsBlocked())
         {
-            this.Dest = this.GetClosestCeil();
+            this.Dest = this.GetClosestcell();
             if(isNullOrUndefined(this.Dest))
             {
                 return false;
             }
         }
         this.ClearPath();
-        var nextCeils = PlaygroundHelper.Engine.GetPath(this._v.GetCurrentCeil(), this.Dest);
+        var nextcells = PlaygroundHelper.Engine.GetPath(this._v.GetCurrentCell(), this.Dest);
         
-        if(isNullOrUndefined(nextCeils))
+        if(isNullOrUndefined(nextcells))
         {
             return false;
         }
         
-        this.Ceils = nextCeils; 
+        this.cells = nextcells; 
         this.CreateUiPath();
         return true;
     }
@@ -185,10 +185,10 @@ export class SimpleOrder extends Order{
     }
 
     private CreateUiPath():void{
-        if(!isNullOrUndefined(this.Ceils) && 0 < this.Ceils.length){
-            this.Ceils.forEach(ceil => {
+        if(!isNullOrUndefined(this.cells) && 0 < this.cells.length){
+            this.cells.forEach(cell => {
                 var pathItem = new BasicItem(
-                    ceil.GetBoundingBox(),
+                    cell.GetBoundingBox(),
                     Archive.direction.moving);
                 pathItem.SetVisible(this._v.IsSelected.bind(this._v));
                 pathItem.SetAlive(this._v.IsAlive.bind(this._v));
@@ -199,22 +199,22 @@ export class SimpleOrder extends Order{
     }
 
 
-    protected GetClosestCeil():Ceil{
-        let ceils = this.Dest.GetNeighbourhood().map(c => <Ceil>c);
-        if(0 === this.Dest.GetAllNeighbourhood().filter(c=> c === this._v.GetCurrentCeil()).length)
+    protected GetClosestcell():Cell{
+        let cells = this.Dest.GetNeighbourhood().map(c => <Cell>c);
+        if(0 === this.Dest.GetAllNeighbourhood().filter(c=> c === this._v.GetCurrentCell()).length)
         {
-            if(ceils.length === 0)
+            if(cells.length === 0)
             {
                 return null;
             }
             else
             {
-                return this.CeilFinder.GetCeil(ceils, this._v);
+                return this.cellFinder.GetCell(cells, this._v);
             }
         }
         else
         {
-            return this._v.GetCurrentCeil();
+            return this._v.GetCurrentCell();
         }
     }
 }

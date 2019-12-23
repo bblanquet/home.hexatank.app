@@ -2,7 +2,7 @@ import { Order } from "./Order";
 import { AliveItem } from "../../Items/AliveItem";
 import { BasicItem } from "../../Items/BasicItem";
 import { OrderState } from "./OrderState"; 
-import { Ceil } from "../../Ceils/Ceil";
+import { Cell } from "../../Cell/Cell";
 import { Archive } from "../../Utils/ResourceArchiver";
 import { SimpleOrder } from "./SimpleOrder";
 import { Tank } from "../../Items/Unit/Tank";
@@ -11,7 +11,7 @@ import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 export class TargetOrder extends Order{
     private _targetUi:BasicItem; 
     private _currentOrder:SimpleOrder; 
-    private _currentCeil:Ceil;
+    private _currentcell:Cell;
 
     constructor(private _v:Tank, private _target:AliveItem){
         super();
@@ -27,25 +27,25 @@ export class TargetOrder extends Order{
 
         if(this.State === OrderState.None)
         {
-            this._currentCeil = this._target.GetCurrentCeil();
-            this._currentOrder = new SimpleOrder(this._currentCeil,this._v); 
+            this._currentcell = this._target.GetCurrentCell();
+            this._currentOrder = new SimpleOrder(this._currentcell,this._v); 
             this.State = OrderState.Pending;
             this.ShowUi();
         }
 
-        if(this._target.GetCurrentCeil() !== this._currentCeil
-            && !this._v.HasNextCeil())
+        if(this._target.GetCurrentCell() !== this._currentcell
+            && !this._v.HasNextCell())
         {
             this._currentOrder.Cancel();
-            this._currentCeil = this._target.GetCurrentCeil();
-            this._currentOrder = new SimpleOrder(this._currentCeil,this._v); 
+            this._currentcell = this._target.GetCurrentCell();
+            this._currentOrder = new SimpleOrder(this._currentcell,this._v); 
         }
 
         if(this._currentOrder.IsDone())
         {
             if(this._currentOrder.GetState() !== OrderState.Passed)
             {
-                this._currentOrder = new SimpleOrder(this._currentCeil,this._v); 
+                this._currentOrder = new SimpleOrder(this._currentcell,this._v); 
             }
             else
             {

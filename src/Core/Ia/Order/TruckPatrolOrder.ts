@@ -4,7 +4,7 @@ import { HqFieldOrder } from "./HqFieldOrder";
 import { DiamondFieldOrder } from "./DiamondFieldOrder";
 import { SimpleOrder } from "./SimpleOrder";
 import { Truck } from "../../Items/Unit/Truck";
-import { DiamondField } from "../../Ceils/Field/DiamondField";
+import { DiamondField } from "../../Cell/Field/DiamondField";
 
 export class TruckPatrolOrder extends Order
 { 
@@ -31,7 +31,7 @@ export class TruckPatrolOrder extends Order
 
         if(this._currentOrder.IsDone())
         {
-            const field = this.truck.GetCurrentCeil().GetField();
+            const field = this.truck.GetCurrentCell().GetField();
             if(field.constructor.name === DiamondField.name
                 && !this.truck.IsLoaded())
             {

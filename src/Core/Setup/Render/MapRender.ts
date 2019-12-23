@@ -1,11 +1,11 @@
 import { GameSettings } from './../../Utils/GameSettings';
 import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
-import { ForestDecorator } from '../../Ceils/Decorator/ForestDecorator'; 
-import { CeilProperties } from '../../Ceils/CeilProperties';
+import { ForestDecorator } from '../../Cell/Decorator/ForestDecorator'; 
+import { CellProperties } from '../../Cell/CellProperties';
 import { Cloud } from '../../Items/Others/Cloud'; 
 import { HqRender } from './HqRender';
-import { CeilState } from '../../Ceils/CeilState';
-import { Ceil } from '../../Ceils/Ceil';
+import { CellState } from '../../Cell/CellState';
+import { Cell } from '../../Cell/Cell';
 import { Item } from '../../Items/Item';
 import { HexAxial } from '../../Utils/Coordinates/HexAxial';
 import { BoundingBox } from '../../Utils/BoundingBox';
@@ -28,16 +28,16 @@ export class MapRender{
         let playgroundItems = new Array<Item>();
 
         mapContext.Items.forEach(item =>{
-            let ceil = new Ceil(new CeilProperties(item.Position));
-            ForestDecorator.SetDecoration(playgroundItems,ceil,item.Type);
-            ceil.SetSprite();
-            PlaygroundHelper.CeilsContainer.Add(ceil);
-            playgroundItems.push(ceil);
-            PlaygroundHelper.CeilsContainer.Add(ceil);
+            let cell = new Cell(new CellProperties(item.Position));
+            ForestDecorator.SetDecoration(playgroundItems,cell,item.Type);
+            cell.SetSprite();
+            PlaygroundHelper.CellsContainer.Add(cell);
+            playgroundItems.push(cell);
+            PlaygroundHelper.CellsContainer.Add(cell);
         });
 
-        let areas = PlaygroundHelper.GetAreas(PlaygroundHelper.CeilsContainer.Get(mapContext.CenterItem.Position));
-        this.SetGrass(mapContext.MapMode, areas.map(a=>a.GetCentralCeil().GetCoordinate()), playgroundItems);
+        let areas = PlaygroundHelper.GetAreas(PlaygroundHelper.CellsContainer.Get(mapContext.CenterItem.Position));
+        this.SetGrass(mapContext.MapMode, areas.map(a=>a.GetCentralCell().GetCoordinate()), playgroundItems);
         this.AddClouds(playgroundItems);
         PlaygroundHelper.SetAppColor(mapContext.MapMode);
         const hqs = this._hqRender.GetHq(mapContext.Hqs,playgroundItems);
@@ -48,10 +48,10 @@ export class MapRender{
         PlaygroundHelper.InteractionContext.SetCombination(playerHq);
         PlaygroundHelper.InteractionContext.Listen();
 
-        //make hq ceils visible
-        playerHq.GetCurrentCeil().SetState(CeilState.Visible);
-        playerHq.GetCurrentCeil().GetAllNeighbourhood().forEach(ceil => {
-            (<Ceil>ceil).SetState(CeilState.Visible);
+        //make hq cells visible
+        playerHq.GetCurrentCell().SetState(CellState.Visible);
+        playerHq.GetCurrentCell().GetAllNeighbourhood().forEach(cell => {
+            (<Cell>cell).SetState(CellState.Visible);
         }); 
 
         //insert elements into playground
@@ -70,12 +70,12 @@ export class MapRender{
 
     private SetGrass(mode:MapMode,middleAreas: HexAxial[], items: Item[]) {
         middleAreas.forEach(corner => {
-            const ceil = PlaygroundHelper.CeilsContainer.Get(corner);
+            const cell = PlaygroundHelper.CellsContainer.Get(corner);
             const boundingBox = new BoundingBox();
             boundingBox.Width = GameSettings.Size * 6;
             boundingBox.Height = GameSettings.Size * 6;
-            boundingBox.X = ceil.GetBoundingBox().X - (boundingBox.Width / 2 - ceil.GetBoundingBox().Width / 2);
-            boundingBox.Y = ceil.GetBoundingBox().Y - (boundingBox.Height / 2 - ceil.GetBoundingBox().Height / 2);
+            boundingBox.X = cell.GetBoundingBox().X - (boundingBox.Width / 2 - cell.GetBoundingBox().Width / 2);
+            boundingBox.Y = cell.GetBoundingBox().Y - (boundingBox.Height / 2 - cell.GetBoundingBox().Height / 2);
             const grass = new BasicItem(boundingBox, mode === MapMode.forest ? Archive.nature.grass : Archive.nature.sand );
             grass.SetVisible(() => true);
             grass.SetAlive(() => true);

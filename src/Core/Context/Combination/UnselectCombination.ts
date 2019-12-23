@@ -2,10 +2,10 @@ import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
 import { ICombination } from "./ICombination";
 import { ISelectable } from "../../ISelectable";
 import { Item } from "../../Items/Item"; 
-import { Ceil } from "../../Ceils/Ceil";
+import { Cell } from "../../Cell/Cell";      
 import { Vehicle } from "../../Items/Unit/Vehicle";
-import { BasicField } from "../../Ceils/Field/BasicField";
-import { CeilState } from "../../Ceils/CeilState";
+import { BasicField } from "../../Cell/Field/BasicField";
+import { CellState } from "../../Cell/CellState";
 import { IContextContainer } from "../IContextContainer";
 import { CombinationContext } from './CombinationContext';
 import { ContextMode } from '../../Utils/ContextMode';
@@ -23,7 +23,7 @@ export class UnselectCombination implements ICombination{
     IsMatching(context: CombinationContext): boolean {
         return this.IsNormalMode(context)
         && context.Items.filter(i=> this._isSelectable(i)).length >=2 && 
-        (context.Items.filter(i=> this._isSelectable(i)).length === context.Items.filter(i=> i instanceof Ceil).length
+        (context.Items.filter(i=> this._isSelectable(i)).length === context.Items.filter(i=> i instanceof Cell).length
         || context.Items.filter(i=> this._isSelectable(i)).length === context.Items.filter(i=> i instanceof Vehicle).length);
     }    
 
@@ -44,14 +44,14 @@ export class UnselectCombination implements ICombination{
                     if(lastItem instanceof Vehicle)
                     {
                         const vehicle = lastItem as Vehicle;
-                        const ceil = vehicle.GetCurrentCeil();
+                        const cell = vehicle.GetCurrentCell();
 
-                        if(ceil.GetField() instanceof BasicField 
-                            && ceil.GetState() === CeilState.Visible)
+                        if(cell.GetField() instanceof BasicField 
+                            && cell.GetState() === CellState.Visible)
                         {
-                            this._interactionContext.Push(ceil,false);
-                            ceil.SetSelected(true); 
-                            PlaygroundHelper.SelectedItem.trigger(this,ceil);
+                            this._interactionContext.Push(cell,false);
+                            cell.SetSelected(true); 
+                            PlaygroundHelper.SelectedItem.trigger(this,cell);
                             return true;
                         }
                     }

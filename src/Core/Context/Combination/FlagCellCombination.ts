@@ -1,7 +1,7 @@
 import { isNullOrUndefined } from "util";
 import { ICombination } from "./ICombination";
-import { Ceil } from "../../Ceils/Ceil";
-import { FlagCeil } from '../../Ceils/FlagCeil';
+import { Cell } from "../../Cell/Cell";
+import { FlagCell } from '../../Cell/FlagCell';
 import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
 import { CombinationContext } from "./CombinationContext";
 import { ContextMode } from "../../Utils/ContextMode";
@@ -11,7 +11,7 @@ export class FlagCellCombination implements ICombination{
     IsMatching(context: CombinationContext): boolean {
         return this.IsNormalMode(context)
         && context.Items.length ===1 
-        && context.Items[0] instanceof Ceil;
+        && context.Items[0] instanceof Cell;
     }
     private IsNormalMode(context: CombinationContext) { 
         return context.ContextMode === ContextMode.SingleSelection
@@ -21,17 +21,17 @@ export class FlagCellCombination implements ICombination{
     Combine(context: CombinationContext): boolean {
         if(this.IsMatching(context))
         {
-            let ceil = <Ceil> context.Items[0];
-            if(!isNullOrUndefined(ceil) && PlaygroundHelper.IsFlagingMode)
+            let cell = <Cell> context.Items[0];
+            if(!isNullOrUndefined(cell) && PlaygroundHelper.IsFlagingMode)
             {
-                if(!PlaygroundHelper.PlayerHeadquarter.FlagCeil)
+                if(!PlaygroundHelper.PlayerHeadquarter.Flagcell)
                 {
-                    PlaygroundHelper.PlayerHeadquarter.FlagCeil = new FlagCeil(ceil);
-                    PlaygroundHelper.Playground.Items.push(PlaygroundHelper.PlayerHeadquarter.FlagCeil);                    
+                    PlaygroundHelper.PlayerHeadquarter.Flagcell = new FlagCell(cell);
+                    PlaygroundHelper.Playground.Items.push(PlaygroundHelper.PlayerHeadquarter.Flagcell);                    
                 }
                 else
                 {
-                    PlaygroundHelper.PlayerHeadquarter.FlagCeil.SetCeil(ceil);
+                    PlaygroundHelper.PlayerHeadquarter.Flagcell.SetCell(cell);
                 }
                 PlaygroundHelper.IsFlagingMode = false;
             }

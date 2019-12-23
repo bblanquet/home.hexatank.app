@@ -1,9 +1,9 @@
-import { PoisonField } from '../../Ceils/Field/PoisonField';
-import { SlowField } from '../../Ceils/Field/SlowField';
-import { AttackField } from '../../Ceils/Field/AttackField';
-import { HealField } from '../../Ceils/Field/HealField';
+import { PoisonField } from '../../Cell/Field/PoisonField';
+import { SlowField } from '../../Cell/Field/SlowField';
+import { AttackField } from '../../Cell/Field/AttackField';
+import { HealField } from '../../Cell/Field/HealField';
 import { PeerHandler } from './../../../Menu/Network/Host/On/PeerHandler';
-import { Headquarter } from '../../Ceils/Field/Headquarter';
+import { Headquarter } from '../../Cell/Field/Headquarter';
 import { HexAxial } from '../Coordinates/HexAxial';
 import { PlaygroundHelper } from '../PlaygroundHelper';
 import { PacketKind } from '../../../Menu/Network/PacketKind';
@@ -13,10 +13,10 @@ import { MessageProgess } from './MessageProgess';
 import { MapContext } from '../../Setup/Generator/MapContext';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { IaHeadquarter } from '../../Ia/Hq/IaHeadquarter';
-import { AliveField } from '../../Ceils/Field/AliveField';
+import { AliveField } from '../../Cell/Field/AliveField';
 import { Tank } from '../../Items/Unit/Tank';
-import { MoneyField } from '../../Ceils/Field/MoneyField';
-import { FastField } from '../../Ceils/Field/FastField';
+import { MoneyField } from '../../Cell/Field/MoneyField';
+import { FastField } from '../../Cell/Field/FastField';
 
 export class MessageDispatcher{
     private _isClient:boolean=false;
@@ -58,37 +58,37 @@ export class MessageDispatcher{
 
     private Field(e: any): void {
         if(this.IsListenedHq(e)){
-            const pos = new HexAxial(e.Ceil.Q,e.Ceil.R);
-            const ceil = PlaygroundHelper.CeilsContainer.Get(pos);
+            const pos = new HexAxial(e.cell.Q,e.cell.R);
+            const cell = PlaygroundHelper.CellsContainer.Get(pos);
             const type = e.Type;
             if(type === "Heal")
             {
-                let field = new HealField(ceil);
+                let field = new HealField(cell);
                 PlaygroundHelper.Playground.Items.push(field);
             }
             else if(type === "Attack")
             {
-                let field = new AttackField(ceil);
+                let field = new AttackField(cell);
                 PlaygroundHelper.Playground.Items.push(field);
             }
             else if(type === "Money")
             {
-                let field = new MoneyField(ceil);
+                let field = new MoneyField(cell);
                 PlaygroundHelper.Playground.Items.push(field);
             }
             else if(type === "Fast")
             {
-                let field = new FastField(ceil);
+                let field = new FastField(cell);
                 PlaygroundHelper.Playground.Items.push(field);
             }
             else if(type === "Slow")
             {
-                let field = new SlowField(ceil);
+                let field = new SlowField(cell);
                 PlaygroundHelper.Playground.Items.push(field);
             }
             else if(type === "Poison")
             {
-                let field = new PoisonField(ceil);
+                let field = new PoisonField(cell);
                 PlaygroundHelper.Playground.Items.push(field);
             }
         }
@@ -96,49 +96,49 @@ export class MessageDispatcher{
 
     private Target(e: any): void {
         if(this.IsListenedHq(e)){
-            const targetCeil = new HexAxial(e.TargetCeil.Q,e.TargetCeil.R);
-            const pos = new HexAxial(e.Ceil.Q,e.Ceil.R);
-            const tank = PlaygroundHelper.CeilsContainer.Get(pos).GetOccupier() as Tank;
-            tank.SetMainTarget(PlaygroundHelper.CeilsContainer.Get(targetCeil).GetShootableEntity());
+            const tarGetCell = new HexAxial(e.TarGetCell.Q,e.TarGetCell.R);
+            const pos = new HexAxial(e.cell.Q,e.cell.R);
+            const tank = PlaygroundHelper.CellsContainer.Get(pos).GetOccupier() as Tank;
+            tank.SetMainTarget(PlaygroundHelper.CellsContainer.Get(tarGetCell).GetShootableEntity());
         }
     }
 
     private Camouflage(e: any): void {
         if(this.IsListenedHq(e)){
-            const pos = new HexAxial(e.Ceil.Q,e.Ceil.R);
-            const tank = PlaygroundHelper.CeilsContainer.Get(pos).GetOccupier() as Tank;
+            const pos = new HexAxial(e.cell.Q,e.cell.R);
+            const tank = PlaygroundHelper.CellsContainer.Get(pos).GetOccupier() as Tank;
             tank.SetCamouflage();
         }
     }
 
     private Destroyed(e: any): void {
-        const pos = new HexAxial(e.Ceil.Q,e.Ceil.R);
-        const ceil = PlaygroundHelper.CeilsContainer.Get(pos);
+        const pos = new HexAxial(e.cell.Q,e.cell.R);
+        const cell = PlaygroundHelper.CellsContainer.Get(pos);
         const destroyedItemName = e.Name;
 
-        if(ceil.HasOccupier() && "vehicle"  === destroyedItemName){
-            const vehicle = ceil.GetOccupier() as Vehicle;
+        if(cell.HasOccupier() && "vehicle"  === destroyedItemName){
+            const vehicle = cell.GetOccupier() as Vehicle;
             vehicle.Destroy();
             return;
         }
-        else if(ceil.GetField().IsDesctrutible() 
+        else if(cell.GetField().IsDesctrutible() 
         && "field" === destroyedItemName
         ){
-            (<AliveField>ceil.GetField()).Destroy();
+            (<AliveField>cell.GetField()).Destroy();
         }
     }
 
     private ReceiveNextPosition(e:any):void{
         if(this.IsListenedHq(e)){
-            const nextPos = new HexAxial(e.NextCeil.Q,e.NextCeil.R);
+            const nextPos = new HexAxial(e.Nextcell.Q,e.Nextcell.R);
             const vehicle = PlaygroundHelper.VehiclesContainer.Get(e.Id);
-            vehicle.SetNextCeil(PlaygroundHelper.CeilsContainer.Get(nextPos));
+            vehicle.SetNextCell(PlaygroundHelper.CellsContainer.Get(nextPos));
         }    
     }
 
     private IsListenedHq(e:any):boolean{
         const coordinate = new HexAxial(e.Hq.Q,e.Hq.R);
-        const hq = PlaygroundHelper.CeilsContainer.Get(coordinate).GetField() as Headquarter;
+        const hq = PlaygroundHelper.CellsContainer.Get(coordinate).GetField() as Headquarter;
         return hq 
             && hq.PlayerName !== PlaygroundHelper.PlayerName
             && hq.constructor.name !== IaHeadquarter.name; //find a way to fix it
@@ -150,8 +150,8 @@ export class MessageDispatcher{
         {
             if(!PlaygroundHelper.VehiclesContainer.Exist(e.Id)){
                 const hqPos = new HexAxial(e.Hq.Q,e.Hq.R);
-                const hq = PlaygroundHelper.CeilsContainer.Get(hqPos).GetField() as Headquarter;
-                const pos = PlaygroundHelper.CeilsContainer.Get(new HexAxial(e.Ceil.Q,e.Ceil.R));
+                const hq = PlaygroundHelper.CellsContainer.Get(hqPos).GetField() as Headquarter;
+                const pos = PlaygroundHelper.CellsContainer.Get(new HexAxial(e.cell.Q,e.cell.R));
                 if(e.Type === "Tank")
                 {
                     hq.CreateTank(pos);

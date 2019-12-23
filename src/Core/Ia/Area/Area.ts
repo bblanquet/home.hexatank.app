@@ -1,48 +1,48 @@
-import { Ceil } from "../../Ceils/Ceil"; 
+import { Cell } from "../../Cell/Cell"; 
 import { isNullOrUndefined } from "util";
 import { AliveItem } from "../../Items/AliveItem";
 
 export class Area{
  
-    constructor(private _centerCeil:Ceil){
+    constructor(private _centercell:Cell){
     }
  
-    public GetCentralCeil():Ceil{
-        return this._centerCeil;
+    public GetCentralCell():Cell{
+        return this._centercell;
     }
 
-    public GetEnemyCeil(v:AliveItem):Ceil[]
+    public GetEnemycell(v:AliveItem):Cell[]
     {
-        const result = new Array<Ceil>();
-        const ceils = this._centerCeil.GetAllNeighbourhood().map(c => <Ceil>c).filter(c=>!isNullOrUndefined(c));
-        ceils.push(this.GetCentralCeil());
-        ceils.forEach(ceil=>
+        const result = new Array<Cell>();
+        const cells = this._centercell.GetAllNeighbourhood().map(c => <Cell>c).filter(c=>!isNullOrUndefined(c));
+        cells.push(this.GetCentralCell());
+        cells.forEach(cell=>
         {
-            if(ceil.ContainsEnemy(v))
+            if(cell.ContainsEnemy(v))
             {
-                result.push(ceil);
+                result.push(cell);
             }
         });
         return result;
     }
 
-    public GetAvailableCeil():Ceil[]
+    public GetAvailablecell():Cell[]
     {
-        const ceils = this._centerCeil.GetAllNeighbourhood().map(c => <Ceil>c).filter(c=>!isNullOrUndefined(c) && !c.IsBlocked());
-        const centralCeil = this.GetCentralCeil();
-        if(!centralCeil.IsBlocked()){
-            ceils.push(centralCeil);
+        const cells = this._centercell.GetAllNeighbourhood().map(c => <Cell>c).filter(c=>!isNullOrUndefined(c) && !c.IsBlocked());
+        const centralcell = this.GetCentralCell();
+        if(!centralcell.IsBlocked()){
+            cells.push(centralcell);
         }
-        return ceils;
+        return cells;
     }
 
     public GetAllyCount(v:AliveItem):number{
         let enemyCount = 0;
-        const ceils = this._centerCeil.GetAllNeighbourhood().map(c=><Ceil>c);
-        ceils.push(this._centerCeil);
-        ceils.forEach(ceil=>
+        const cells = this._centercell.GetAllNeighbourhood().map(c=><Cell>c);
+        cells.push(this._centercell);
+        cells.forEach(cell=>
         {
-            if(ceil.ContainsAlly(v))
+            if(cell.ContainsAlly(v))
             {
                 enemyCount += 1;
             }
@@ -52,11 +52,11 @@ export class Area{
 
     public GetEnemyCount(v:AliveItem):number{
         let enemyCount = 0;
-        const ceils = this._centerCeil.GetAllNeighbourhood().map(c=><Ceil>c);
-        ceils.push(this._centerCeil);
-        ceils.forEach(ceil=>
+        const cells = this._centercell.GetAllNeighbourhood().map(c=><Cell>c);
+        cells.push(this._centercell);
+        cells.forEach(cell=>
         {
-            if(ceil.ContainsEnemy(v))
+            if(cell.ContainsEnemy(v))
             {
                 enemyCount += 1;
             }

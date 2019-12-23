@@ -1,6 +1,6 @@
 import { TroopDecisionMaker } from "./TroopDecisionMaker";
 import { TroopDestination } from "./TroopDestination";
-import { Ceil } from "../../Ceils/Ceil";
+import { Cell } from "../../Cell/Cell";
 import { isNullOrUndefined } from "util"; 
 
 export class TroopSituation
@@ -21,7 +21,7 @@ export class TroopSituation
         return this.PotentialNextDestination.GetCost();
     }
 
-    public GetBestDestination(excludedArea:Array<Ceil>):TroopDestination{
+    public GetBestDestination(excludedArea:Array<Cell>):TroopDestination{
         const dangerLevels = this.GetDangerLevels();
         let currentIndex = 0;
         var candidates = new Array<TroopDestination>();

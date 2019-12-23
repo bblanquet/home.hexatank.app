@@ -6,7 +6,7 @@ import { route } from 'preact-router';
 import { Item } from '../../Core/Items/Item';
 import { Tank } from '../../Core/Items/Unit/Tank';
 import { Truck } from '../../Core/Items/Unit/Truck';
-import { Ceil } from '../../Core/Ceils/Ceil'; 
+import { Cell } from '../../Core/Cell/Cell'; 
 import {TankMenuItem} from '../../Core/Menu/Buttons/TankMenuItem'; 
 import {TruckMenuItem} from '../../Core/Menu/Buttons/TruckMenuItem';
 import { TargetMenuItem } from '../../Core/Menu/Buttons/TargetMenuItem';
@@ -26,7 +26,7 @@ import { SpeedFieldMenuItem } from '../../Core/Menu/Buttons/SpeedFieldMenuItem';
 import { ISelectable } from '../../Core/ISelectable';
 import { InteractionKind } from '../../Core/Context/IInteractionContext';
 import { PingInfo } from '../Network/Ping/PingInfo';
-import { InfluenceField } from '../../Core/Ceils/Field/InfluenceField';
+import { InfluenceField } from '../../Core/Cell/Field/InfluenceField';
 import { GameSettings } from '../../Core/Utils/GameSettings';
 
 export default class CanvasComponent extends Component<any, { 
@@ -146,7 +146,7 @@ export default class CanvasComponent extends Component<any, {
       {
         return this.FactoryMenu();
       }
-      else if(this.state.Item instanceof Ceil)
+      else if(this.state.Item instanceof Cell)
       {
         return this.CellMenu();
       }

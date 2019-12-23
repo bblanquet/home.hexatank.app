@@ -3,7 +3,7 @@ import { TargetMenuItem } from "../../Menu/Buttons/TargetMenuItem";
 import { TargetOrder } from "../../Ia/Order/TargetOrder"; 
 import { Item } from "../../Items/Item";
 import { Tank } from "../../Items/Unit/Tank"; 
-import { Ceil } from "../../Ceils/Ceil";
+import { Cell } from "../../Cell/Cell";
 import { IContextContainer } from "../IContextContainer"; 
 import { ISelectable } from "../../ISelectable";
 import { CombinationContext } from "./CombinationContext";
@@ -23,8 +23,8 @@ export class TargetCombination implements ICombination{
         && combination.Items.length ===3
         && combination.Items[0] instanceof Tank
         && combination.Items[1] instanceof TargetMenuItem
-        && combination.Items[2] instanceof Ceil
-        && (combination.Items[2] as Ceil).IsShootable();
+        && combination.Items[2] instanceof Cell
+        && (combination.Items[2] as Cell).IsShootable();
     }
 
     private IsNormalMode(context: CombinationContext) {
@@ -36,8 +36,8 @@ export class TargetCombination implements ICombination{
         if(this.IsMatching(context))
         {
             let tank = <Tank>context.Items[0];
-            let ceil = (context.Items[2] as Ceil);
-            let order = new TargetOrder(tank,ceil.GetShootableEntity());
+            let cell = (context.Items[2] as Cell);
+            let order = new TargetOrder(tank,cell.GetShootableEntity());
             tank.SetOrder(order);
             this.UnSelectItem(context.Items[0]);
             this._interactionContext.ClearContext();

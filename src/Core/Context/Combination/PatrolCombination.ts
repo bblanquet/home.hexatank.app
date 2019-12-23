@@ -4,8 +4,8 @@ import { PatrolOrder } from "../../Ia/Order/PatrolOrder";
 import { BasicItem } from "../../Items/BasicItem";
 import { Archive } from "../../Utils/ResourceArchiver";
 import { Item } from "../../Items/Item";
-import { Vehicle } from "../../Items/Unit/Vehicle";
-import { Ceil } from "../../Ceils/Ceil";
+import { Vehicle } from "../../Items/Unit/Vehicle";      
+import { Cell } from "../../Cell/Cell";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper"; 
 import { CombinationContext } from "./CombinationContext";
 import { ContextMode } from "../../Utils/ContextMode";
@@ -38,8 +38,8 @@ export class PatrolCombination implements ICombination{
             && context.InteractionKind === InteractionKind.Up; 
     }
 
-    public GetCeils(items: Item[]):Array<Ceil>{
-        return items.filter(item=>item instanceof Ceil).map(item => <Ceil>item);
+    public GetCells(items: Item[]):Array<Cell>{
+        return items.filter(item=>item instanceof Cell).map(item => <Cell>item);
     } 
 
     private IsLastPatrolItem(items: Item[]):boolean{
@@ -49,7 +49,7 @@ export class PatrolCombination implements ICombination{
     public Combine(context: CombinationContext): boolean 
     {
         if(this.ContainsVehicleePatrol(context)){
-            if(context.Items[context.Items.length-1] instanceof Ceil){
+            if(context.Items[context.Items.length-1] instanceof Cell){
                 const element = new BasicItem(context.Items[context.Items.length-1].GetBoundingBox(), Archive.direction.patrol);
                 element.SetVisible(()=>true);
                 element.SetAlive(()=>true);
@@ -62,7 +62,7 @@ export class PatrolCombination implements ICombination{
         {
             console.log(`%c PATROL MATCH`,'font-weight:bold;color:blue;');
             var vehicle = <Vehicle>context.Items[0];
-            var patrol = new PatrolOrder(this.GetCeils(context.Items),vehicle);
+            var patrol = new PatrolOrder(this.GetCells(context.Items),vehicle);
             vehicle.SetOrder(patrol);
             context.Items.splice(1,1);
             return true;

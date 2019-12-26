@@ -297,6 +297,22 @@ body{
   background-image: url('{{}}out/menu/cancelButton.svg');
 }
 
+.fill-abort {
+  overflow: hidden;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('{{}}out/menu/AbortMenu.svg');
+}
+
+.fill-searchMoney {
+  overflow: hidden;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('{{}}out/menu/SearchMoneyButton.svg');
+}
+
 .fill-diamond {
   overflow: hidden;
   background-size: cover;

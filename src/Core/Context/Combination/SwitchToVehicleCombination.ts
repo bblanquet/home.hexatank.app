@@ -6,6 +6,8 @@ import { Vehicle } from "../../Items/Unit/Vehicle";
 import { CombinationContext } from './CombinationContext';
 import { ContextMode } from '../../Utils/ContextMode';
 import { InteractionKind } from '../IInteractionContext';
+import { InfluenceField } from '../../Cell/Field/InfluenceField';
+import { Headquarter } from '../../Cell/Field/Headquarter';
 
 export class SwitchToVehicleCombination implements ICombination{ 
     
@@ -15,7 +17,7 @@ export class SwitchToVehicleCombination implements ICombination{
     public IsMatching(context: CombinationContext): boolean {
         return this.IsNormalMode(context) 
         && context.Items.length == 2  
-        && (context.Items[0] instanceof Cell)
+        && (context.Items[0] instanceof Cell || context.Items[0] instanceof InfluenceField || context.Items[0] instanceof Headquarter)
         && context.Items[1] instanceof Vehicle;
     }    
     

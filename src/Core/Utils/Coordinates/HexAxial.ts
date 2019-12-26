@@ -63,20 +63,25 @@ export class HexAxial{
     }
 
     GetSpecificRange(range:number=1):HexAxial[]{
-        var results = new Array<HexAxial>();
+        if(range === 0){
+            return [this];
+        }
+        
+        var results = new Array<HexCube>();
         var cube = this.ToCube();
-        for (let x = -range; x <= range; x++) {
-            for (let y = Math.max(-range, -x-range); y <= Math.min(range,-x+range); y++) {
-                var z = -x-y
-                const coordinate = new HexCube(cube.X+ x, cube.Y+y, cube.Z+z);
-                if(cube.X !== coordinate.X 
-                    || cube.Y !== coordinate.Y
-                    || cube.Z !== coordinate.Z){
-                    results.push(coordinate.ToAxial());
-                }
+
+        //this code doesn't work for radius == 0; can you see why?
+        for (let i = 0; i < range; i++) {
+            cube = cube.GetNeighbour(4);
+        }
+
+        for( let x = 0; x < 6; x++){
+            for( let j = 0;  j < range; j++){
+                results.push(cube)
+                cube = cube.GetNeighbour(x);
             }
         }
-        return results;
+        return results.map(v=>v.ToAxial());
     }
     
     ToPixel(size:number):Point {

@@ -1,3 +1,8 @@
+import { SwitchToHeadquarterCombination } from './Combination/SwitchToHeadquarterCombination';
+import { PowerUpCombination } from './Combination/PowerUpCombination';
+import { PowerDownCombination } from './Combination/PowerDownCombination';
+import { RangeDownCombination } from './Combination/RangeDownCombination';
+import { RangeUpCombination } from './Combination/RangeUpCombination';
 import { InfluenceCombination } from './Combination/InfluenceCombination';
 import { CamouflageCombination } from './Combination/CamouflageCombination';
 import { InputManager } from '../Utils/InputManager';
@@ -43,6 +48,7 @@ import { ICombinationDispatcher } from './ICombinationDispatcher';
 import { MovingInteractionContext } from '../Menu/Smart/MovingInteractionContext';
 import { isNullOrUndefined } from 'util';
 import { Point } from '../Utils/Point';
+import { InfluenceField } from '../Cell/Field/InfluenceField';
 
 export class InteractionContext implements IContextContainer, IInteractionContext{
     public Mode: ContextMode=ContextMode.SingleSelection;
@@ -77,6 +83,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
         combinations.push(new AddTankCombination());
         combinations.push(new AddTruckCombination());
         combinations.push(new SwitchToVehicleCombination());
+        combinations.push(new SwitchToHeadquarterCombination());
         combinations.push(new CancelCombination(this));
         combinations.push(new TruckDiamondCombination(this));
         combinations.push(new TruckCombination());
@@ -93,7 +100,10 @@ export class InteractionContext implements IContextContainer, IInteractionContex
         combinations.push(new PoisonCellCombination());
         combinations.push(new MoneyCellCombination());
         combinations.push(new HealCellCombination());
-
+        combinations.push(new RangeUpCombination());
+        combinations.push(new RangeDownCombination());
+        combinations.push(new PowerDownCombination());
+        combinations.push(new PowerUpCombination());
         this._dispatcher = new CombinationDispatcher(combinations);
     }
 
@@ -167,6 +177,14 @@ export class InteractionContext implements IContextContainer, IInteractionContex
         else if(item instanceof Vehicle){
             const vehicle = <Vehicle> item;
             return !vehicle.IsEnemy(this._currentHq);
+        }
+        else if(item instanceof InfluenceField){
+            const influenceField = <InfluenceField> item;
+            return influenceField.Hq === this._currentHq;
+        }
+        else if(item instanceof Headquarter){
+            const hq = <Headquarter> item;
+            return hq === this._currentHq;
         }
         return false;
     }

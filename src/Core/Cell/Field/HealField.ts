@@ -32,7 +32,8 @@ export class HealField extends Field
         return false;
     }
     Support(vehicule: Vehicle): void {
-        vehicule.SetDamage(-0.1);
+        const sum = this.GetInfluenceSum(vehicule);
+        vehicule.SetDamage(-(0.1+sum));
         vehicule.TranslationSpeed = GameSettings.TranslationSpeed;
         vehicule.RotationSpeed = GameSettings.RotationSpeed;
         vehicule.Attack = GameSettings.Attack;

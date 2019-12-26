@@ -28,7 +28,7 @@ export class GameSetup{
         const halfHeight = GameSettings.ScreenHeight/2;
         console.log("x: " + (-(hqPoint.X - halfWidth)));
         console.log("y: " + (-(hqPoint.Y - halfHeight)));
-        //GameSettings.SetX(-(hqPoint.X - halfWidth));
-        //GameSettings.SetY(-(hqPoint.Y - halfHeight));
+        PlaygroundHelper.ScaleHandler.SetX(-(hqPoint.X - halfWidth));
+        PlaygroundHelper.ScaleHandler.SetY(-(hqPoint.Y - halfHeight));
     }
 }

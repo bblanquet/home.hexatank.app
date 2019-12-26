@@ -12,6 +12,10 @@ export class CellContainer<T extends ICell> {
         return all;
     }
 
+    public Clear():void{
+        this.Cells = {};
+    }
+
     Add(Cell:T):void{
         this.Cells[Cell.GetCoordinate().ToString()] = Cell; 
     }
@@ -25,6 +29,19 @@ export class CellContainer<T extends ICell> {
         {
             return null;
         }
+    }
+
+    IsEmpty():boolean{
+        for(var prop in this.Cells) {
+            if(this.Cells.hasOwnProperty(prop)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    Exist(coordinate:HexAxial):boolean{
+        return coordinate.ToString() in this.Cells;
     }
 
     public GetNeighbourhood(coordinate:HexAxial):Array<ICell>{

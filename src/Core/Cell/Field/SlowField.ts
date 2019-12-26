@@ -32,8 +32,9 @@ export class SlowField extends Field
         return false;
     }
     Support(vehicule: Vehicle): void { 
-        vehicule.TranslationSpeed = GameSettings.TranslationSpeed*(1/2);
-        vehicule.RotationSpeed = GameSettings.RotationSpeed*(1/2);
+        const sum = this.GetInfluenceSum(vehicule);
+        vehicule.TranslationSpeed = GameSettings.TranslationSpeed*(0.8*(1/sum));
+        vehicule.RotationSpeed = GameSettings.RotationSpeed*(0.8*(1/sum));
         vehicule.Attack = GameSettings.Attack;
     }    
 

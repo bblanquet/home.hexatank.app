@@ -62,7 +62,7 @@ export abstract class AliveItem extends Item{
         super.Update(viewX,viewY);
         this._lifes.forEach(element => {
             element.x = (this.GetBoundingBox().X+viewX) + this.GetBoundingBox().Width/4;
-            element.y = (this.GetBoundingBox().Y+viewY);
+            element.y = (this.GetBoundingBox().Y+viewY+(this.GetBoundingBox().Height/25));
             element.height = this.GetBoundingBox().Height/25;
             element.width = this.GetBoundingBox().Width/2;
         });

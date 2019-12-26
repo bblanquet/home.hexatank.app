@@ -32,8 +32,10 @@ export class FastField extends Field
         return false;
     }
     Support(vehicule: Vehicle): void {
-        vehicule.TranslationSpeed = GameSettings.TranslationSpeed*3;
-        vehicule.RotationSpeed = GameSettings.RotationSpeed*3;
+        const influences = vehicule.Hq.InfluenceFields.filter(f=>f.GetArea().Exist(this.GetCell().GetCoordinate()));
+        const sum = 1+(influences.map(i=>i.GetPower()).reduce((a,b)=>a+b)/10);
+        vehicule.TranslationSpeed = GameSettings.TranslationSpeed*(2+sum);
+        vehicule.RotationSpeed = GameSettings.RotationSpeed*(2+sum);
         vehicule.Attack = GameSettings.Attack;
     }    
 

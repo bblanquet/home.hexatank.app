@@ -29,7 +29,7 @@ export class PersistentOrder extends Order{
     {
         if(this._currentOrder.IsDone())
         {
-            if(this._currentOrder.GetState() !== OrderState.Passed){
+            if(this._currentOrder.GetState() === OrderState.Failed){
                 this._currentOrder.Reset();
             }
             else

@@ -28,6 +28,8 @@ import { InteractionKind } from '../../Core/Context/IInteractionContext';
 import { PingInfo } from '../Network/Ping/PingInfo';
 import { InfluenceField } from '../../Core/Cell/Field/InfluenceField';
 import { GameSettings } from '../../Core/Utils/GameSettings';
+import { SmallMenuItem } from '../../Core/Menu/Buttons/SmallMenuItem';
+import { Headquarter } from '../../Core/Cell/Field/Headquarter';
 
 export default class CanvasComponent extends Component<any, { 
   HasMenu: boolean,
@@ -142,6 +144,10 @@ export default class CanvasComponent extends Component<any, {
       {
         return this.TruckMenu();
       }
+      else if(this.state.Item instanceof Headquarter)
+      {
+        return this.HqMenuRender();
+      }
       else if(this.state.Item instanceof InfluenceField)
       {
         return this.FactoryMenu();
@@ -215,15 +221,14 @@ export default class CanvasComponent extends Component<any, {
         {this.TopMenuRender()}
         <div ref={(dom) => { this._gameCanvas = dom }} />
         {this.state.HasMenu ? '':this.LeftMenuRender()}
-        {this.state.HasMenu ? '':this.RightMenuRender()}
         {this.state.HasMenu ? this.MenuRender() : ''}
       </div>
     );
   }
 
-  private RightMenuRender() {
+  private HqMenuRender() {
     return (
-      <div class="right-column">
+      <div class="left-column">
         <div class="middle2 max-width">
           <div class="btn-group-vertical max-width">
             <button type="button" class="btn btn-dark without-padding" 
@@ -242,6 +247,10 @@ export default class CanvasComponent extends Component<any, {
             <div class="white-background">{this.state.HasFlag ? 'ON' : 'OFF'}</div>
               <div class="fill-flag max-width standard-space"></div>
             </button>
+            <button type="button" class="btn btn-dark without-padding" 
+            onClick={(e: any) => this.SendContext(new CancelMenuItem())}>
+              <div class="fill-cancel max-width standard-space"></div>
+            </button>
           </div>
         </div>
       </div>
@@ -249,18 +258,21 @@ export default class CanvasComponent extends Component<any, {
   }
 
   private FactoryMenu() {
+    const field = this.state.Item as InfluenceField;
     return (
       <div class="left-column">
         <div class="middle2 max-width">
           <div class="btn-group-vertical max-width">
           <button type="button" class="btn btn-dark without-padding">
               <div class="fill-energy max-width standard-space"></div>
-              <div class="max-width text-center darker">2/2</div>
+              <div class="max-width text-center darker">{field.Battery.GetCurrentPower()}/{field.Battery.GetTotalPower()}</div>
             </button>
             <button type="button" class="btn btn-dark without-padding" 
             onClick={(e: any) => this.SendContext(new PlusMenuItem())}>
               <div class="fill-plus max-width standard-space"></div>
+              {field.Battery.HasStock() ? '':
               <div class="max-width text-center darker">{GameSettings.TankPrice} <span class="fill-diamond badge very-small-space middle"> </span></div>
+              }
             </button>
             <button type="button" class="btn btn-dark without-padding" 
             onClick={(e: any) => this.SendContext(new MinusMenuItem())}>
@@ -269,10 +281,12 @@ export default class CanvasComponent extends Component<any, {
             <button type="button" class="btn btn-dark without-padding" 
             onClick={(e: any) => this.SendContext(new BigMenuItem())}>
               <div class="fill-big max-width standard-space"></div>
+              {field.Battery.HasStock() ? '':
               <div class="max-width text-center darker">{GameSettings.TankPrice} <span class="fill-diamond badge very-small-space middle"> </span></div>
-            </button>
+              }            
+              </button>
             <button type="button" class="btn btn-dark without-padding" 
-            onClick={(e: any) => this.SendContext(new MinusMenuItem())}>
+            onClick={(e: any) => this.SendContext(new SmallMenuItem())}>
               <div class="fill-small max-width standard-space"></div>
             </button>
             <button type="button" class="btn btn-dark without-padding" 
@@ -290,6 +304,11 @@ export default class CanvasComponent extends Component<any, {
       <div class="left-column">
         <div class="middle2 max-width">
           <div class="btn-group-vertical max-width">
+          <button type="button" class="btn btn-dark without-padding" 
+            onClick={(e: any) => this.SendContext(new PatrolMenuItem())}>
+              <div class="white-background">{false ? 'ON' : 'OFF'}</div>
+              <div class="fill-patrol max-width standard-space"></div>
+            </button>
             <button type="button" class="btn btn-dark without-padding" 
             onClick={(e: any) => this.SendContext(new TargetMenuItem())}>
               <div class="fill-target max-width standard-space"></div>
@@ -299,9 +318,8 @@ export default class CanvasComponent extends Component<any, {
               <div class="fill-camouflage max-width standard-space"></div>
             </button>
             <button type="button" class="btn btn-dark without-padding" 
-            onClick={(e: any) => this.SendContext(new PatrolMenuItem())}>
-              <div class="white-background">{false ? 'ON' : 'OFF'}</div>
-              <div class="fill-patrol max-width standard-space"></div>
+            onClick={(e: any) => this.SendContext(new CancelMenuItem())}>
+              <div class="fill-abort max-width standard-space"></div>
             </button>
             <button type="button" class="btn btn-dark without-padding" 
             onClick={(e: any) => this.SendContext(new CancelMenuItem())}>
@@ -372,6 +390,14 @@ export default class CanvasComponent extends Component<any, {
             onClick={(e: any) => this.SendContext(new PatrolMenuItem())}>
               <div class="white-background">{false ? 'ON' : 'OFF'}</div>
               <div class="fill-patrol max-width standard-space"></div>
+            </button>
+            <button type="button" class="btn btn-dark without-padding" 
+            onClick={(e: any) => this.SendContext(new CancelMenuItem())}>
+              <div class="fill-searchMoney max-width standard-space"></div>
+            </button>
+            <button type="button" class="btn btn-dark without-padding" 
+            onClick={(e: any) => this.SendContext(new CancelMenuItem())}>
+              <div class="fill-abort max-width standard-space"></div>
             </button>
             <button type="button" class="btn btn-dark without-padding" 
             onClick={(e: any) => this.SendContext(new CancelMenuItem())}>

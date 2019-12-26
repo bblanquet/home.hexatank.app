@@ -103,6 +103,16 @@ export class Cell extends Item implements ICell , ISelectable
         return !isNullOrUndefined(this._occupier);
     }
 
+    public HasAroundOccupier():boolean{
+        return (this.HasOccupier() 
+        || this.GetAllNeighbourhood().filter(c => (<Cell>c).HasOccupier()).length > 0);
+    }
+
+    public HasAroundAlly(a:AliveItem):boolean{
+        return (this.ContainsAlly(a)  
+        || this.GetAllNeighbourhood().filter(c => (<Cell>c).ContainsAlly(a)).length > 0);
+    }
+
     public SetOccupier(movable:IMovable){
         this._occupier = movable;
     }
@@ -235,12 +245,12 @@ export class Cell extends Item implements ICell , ISelectable
         
         if(isNullOrUndefined(this._decorationSprite))
         {
-            this._display[CellState.HalfVisible] = [Archive.halfVisibleCell,Archive.cell]; 
+            this._display[CellState.Mist] = [Archive.halfVisibleCell,Archive.cell]; 
             this._display[CellState.Visible] = [Archive.cell];      
         }
         else
         {
-            this._display[CellState.HalfVisible] = [Archive.halfVisibleCell,this._decorationSprite,Archive.cell];         
+            this._display[CellState.Mist] = [Archive.halfVisibleCell,this._decorationSprite,Archive.cell];         
             this._display[CellState.Visible] = [this._decorationSprite,Archive.cell];         
         }
         this.InitPosition(this.Properties.BoundingBox);
@@ -254,11 +264,12 @@ export class Cell extends Item implements ICell , ISelectable
         return this.Properties.GetCentralPoint();
     }
 
-    public GetAllNeighbourhood():Array<ICell>{
-        var cells = new Array<ICell>();
-        this.GetCoordinate().GetNeighbours().forEach(coordinate => {
+    public GetAll(range:number=1):Array<Cell>{
+        var cells = new Array<Cell>();
+        cells.push(this);
+        this.GetCoordinate().GetNeighbours(range).forEach(coordinate => {
             var cell = PlaygroundHelper.CellsContainer.Get(coordinate);
-            if(cell != null)
+            if(cell)
             {
                 cells.push(cell);
             }
@@ -266,9 +277,33 @@ export class Cell extends Item implements ICell , ISelectable
         return cells;
     }
 
-    public GetNeighbourhood():Array<ICell>{
+    public GetAllNeighbourhood(range:number=1):Array<ICell>{
         var cells = new Array<ICell>();
-        this.GetCoordinate().GetNeighbours().forEach(coordinate => {
+        this.GetCoordinate().GetNeighbours(range).forEach(coordinate => {
+            var cell = PlaygroundHelper.CellsContainer.Get(coordinate);
+            if(cell)
+            {
+                cells.push(cell);
+            }
+        });
+        return cells;
+    }
+
+    public GetSpecificRange(range:number=1):Array<ICell>{
+        var cells = new Array<ICell>();
+        this.GetCoordinate().GetSpecificRange(range).forEach(coordinate => {
+            var cell = PlaygroundHelper.CellsContainer.Get(coordinate);
+            if(cell)
+            {
+                cells.push(cell);
+            }
+        });
+        return cells;
+    }
+
+    public GetNeighbourhood(range:number=1):Array<ICell>{
+        var cells = new Array<ICell>();
+        this.GetCoordinate().GetNeighbours(range).forEach(coordinate => {
             var cell = PlaygroundHelper.CellsContainer.Get(coordinate);
             if(cell != null && !cell.IsBlocked())
             {

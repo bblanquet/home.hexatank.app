@@ -9,6 +9,7 @@ import { CellState } from "../../Cell/CellState";
 import { CombinationContext } from './CombinationContext';
 import { ContextMode } from '../../Utils/ContextMode';
 import { InteractionKind } from '../IInteractionContext';
+import { Headquarter } from '../../Cell/Field/Headquarter';
 
 export class SelectionCombination implements ICombination{ 
     private _isSelectable:{(item:Item):boolean};
@@ -29,15 +30,25 @@ export class SelectionCombination implements ICombination{
     }
 
     Combine(context: CombinationContext): boolean {
-        if(this.IsMatching(context)){
+        if(this.IsMatching(context))
+        {
             const item = context.Items[0];
             const selectable = this.ToSelectableItem(item);
+
             if(selectable instanceof Cell){
                 const selectablecell = selectable as Cell;
                 
                 if(selectablecell.GetField() instanceof InfluenceField 
-                && selectablecell.GetState() === CellState.Visible){
+                && selectablecell.GetState() === CellState.Visible)
+                {
                     const field = selectablecell.GetField() as InfluenceField;
+                    field.SetSelected(true);
+                    PlaygroundHelper.SelectedItem.trigger(this,field);
+                }
+                else if(selectablecell.GetField() instanceof Headquarter 
+                && selectablecell.GetField() === PlaygroundHelper.PlayerHeadquarter)
+                {
+                    const field = selectablecell.GetField() as Headquarter;
                     field.SetSelected(true);
                     PlaygroundHelper.SelectedItem.trigger(this,field);
                 }

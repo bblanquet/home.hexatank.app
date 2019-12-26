@@ -1,15 +1,13 @@
+import { InfluenceField } from './../../Cell/Field/InfluenceField';
 import { PersistentOrder } from '../../Ia/Order/PersistentOrder';
 import { ICombination } from "./ICombination";
 import { TargetOrder } from "../../Ia/Order/TargetOrder";
-import { SimpleOrder } from "../../Ia/Order/SimpleOrder";
-import { Item } from "../../Items/Item";
 import { Tank } from "../../Items/Unit/Tank";
 import { Cell } from "../../Cell/Cell";
-import { IContextContainer } from "../IContextContainer";
-import { ISelectable } from "../../ISelectable";
 import { CombinationContext } from './CombinationContext';
 import { ContextMode } from '../../Utils/ContextMode';
 import { InteractionKind } from '../IInteractionContext';
+import { CellState } from '../../Cell/CellState';
 
 export class TankCombination implements ICombination{ 
 
@@ -18,7 +16,8 @@ export class TankCombination implements ICombination{
     IsMatching(context: CombinationContext): boolean {
         return this.IsNormalMode(context) && context.Items.length >=2 
         && context.Items[0] instanceof Tank 
-        && context.Items[1] instanceof Cell
+        && (context.Items[1] instanceof Cell 
+            || context.Items[1] instanceof InfluenceField)
     }
 
     private IsNormalMode(context: CombinationContext) {
@@ -31,9 +30,17 @@ export class TankCombination implements ICombination{
         if(this.IsMatching(context))
         {
             const tank = <Tank>context.Items[0];
-            const cell = <Cell>context.Items[1];
+
+            var cell:Cell = null;
+            if(context.Items[1] instanceof InfluenceField){
+                var cell = (context.Items[1] as InfluenceField).GetCell();
+            }else{
+                cell = <Cell>context.Items[1];
+            }
+
             if(cell.GetShootableEntity() !== null
-            && cell.GetShootableEntity().IsEnemy(tank))
+            && cell.GetShootableEntity().IsEnemy(tank)
+            && cell.GetState() === CellState.Visible)
             {
                 const order = new TargetOrder(tank,cell.GetShootableEntity());
                 tank.SetOrder(order);

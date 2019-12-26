@@ -20,9 +20,22 @@ import { Explosion } from "../../Items/Unit/Explosion";
 import { Truck } from "../../Items/Unit/Truck";
 import { SimpleOrder } from '../../Ia/Order/SimpleOrder'; 
 import { GameSettings } from '../../Utils/GameSettings';
+import { InfluenceField } from './InfluenceField';
+import { ISelectable } from '../../ISelectable';
 
-export class Headquarter extends AliveItem implements IField
+export class Headquarter extends AliveItem implements IField, ISelectable
 {
+    
+    SetSelected(isSelected: boolean): void {
+        isSelected ? PlaygroundHelper.Select():PlaygroundHelper.Unselect();
+        this.SetProperty(Archive.selectionUnit,(e)=>e.alpha= isSelected ? 1 : 0);
+        this.SelectionChanged.trigger(this, this); 
+    }
+    IsSelected(): boolean {
+        return this.GetCurrentSprites()[Archive.selectionUnit].alpha === 1;
+    }
+
+    SelectionChanged: LiteEvent<ISelectable>=new LiteEvent<ISelectable>();
     private _boundingBox:BoundingBox;
     private _cell:Cell; 
     public PlayerName:string;
@@ -32,6 +45,7 @@ export class Headquarter extends AliveItem implements IField
     private _skin:HqSkin;
     private _onCellStateChanged:{(obj:any,cellState:CellState):void};
     public Flagcell:FlagCell;
+    public InfluenceFields:Array<InfluenceField> = new Array<InfluenceField>();
 
     constructor(skin:HqSkin, cell:Cell){
         super();
@@ -223,6 +237,7 @@ export class Headquarter extends AliveItem implements IField
         if(this._tankRequestCount < 4){
             this._tankRequestCount+=1;
             this.TankRequestEvent.trigger(this,this._tankRequestCount);
+            PlaygroundHelper.SetWarning();
         }
     }
 
@@ -244,6 +259,7 @@ export class Headquarter extends AliveItem implements IField
         if(this._truckRequestCount < 4){
             this._truckRequestCount+=1;
             this.TruckRequestEvent.trigger(this,this._truckRequestCount);
+            PlaygroundHelper.SetWarning();
         }
     }
 
@@ -309,11 +325,15 @@ export class Headquarter extends AliveItem implements IField
 
     public DiamondCountEvent:LiteEvent<number> = new LiteEvent<number>();
 
-    public Buy(amount:number):void{
+    public Buy(amount:number):boolean{
         if(this._diamondCount >= amount){
             this._diamondCount -= amount;
             this.DiamondCountEvent.trigger(this,this._diamondCount);
+            return true;
+        }else{
+            PlaygroundHelper.SetWarning();
         }
+        return false;
     }
 
     public Earn(amount:number):void{

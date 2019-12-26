@@ -40,6 +40,8 @@ export const Archive = {
             './menu/priceFour.svg',
             './menu/priceFive.svg'
         ],
+        abortButton:'./menu/AbortButton.svg',
+        searchMoneyButton:'./menu/SearchMoneyButton.svg',
         plusButton:'./menu/plusButton.svg',
         minButton:'./menu/minusButton.svg',
         energyButton:'./menu/energyButton.svg',
@@ -108,7 +110,8 @@ export const Archive = {
             bottom:'./building/hqMiddle.svg',
             top:'./building/hqTop.svg',
             red:{
-                field:'./building/hqRedCell.svg'
+                field:'./building/hqRedCell.svg',
+                area:'./building/redAreaEnergy.svg'
             },
             blue:{
                 field:'./building/hqBlueCell.svg'

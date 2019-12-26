@@ -10,6 +10,7 @@ import { IContextContainer } from "../IContextContainer";
 import { CombinationContext } from './CombinationContext';
 import { ContextMode } from '../../Utils/ContextMode';
 import { InteractionKind } from '../IInteractionContext';
+import { InfluenceField } from '../../Cell/Field/InfluenceField';
 
 export class UnselectCombination implements ICombination{
     private _isSelectable:{(item:Item):boolean}; 
@@ -24,7 +25,8 @@ export class UnselectCombination implements ICombination{
         return this.IsNormalMode(context)
         && context.Items.filter(i=> this._isSelectable(i)).length >=2 && 
         (context.Items.filter(i=> this._isSelectable(i)).length === context.Items.filter(i=> i instanceof Cell).length
-        || context.Items.filter(i=> this._isSelectable(i)).length === context.Items.filter(i=> i instanceof Vehicle).length);
+        || context.Items.filter(i=> this._isSelectable(i)).length === context.Items.filter(i=> i instanceof Vehicle).length
+        || context.Items.filter(i=> this._isSelectable(i)).length === context.Items.filter(i=> i instanceof InfluenceField).length);
     }    
 
     private IsNormalMode(context: CombinationContext) { 

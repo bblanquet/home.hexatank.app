@@ -1,3 +1,4 @@
+import { CellStateSetter } from './../../Cell/CellStateSetter';
 import { GameSettings } from './../../Utils/GameSettings';
 import { BasicItem } from '../BasicItem';
 import { LiteEvent } from '../../Utils/LiteEvent';
@@ -220,49 +221,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this._currentCell.CellStateChanged.on(this._onCellStateChanged);
         this._nextCell = null;
 
-        this.SetCellsVisible();
-        this.SetCellsHalfVisible(previouscell);
-    }
-
-    private SetCellsHalfVisible(previouscell: Cell) {
-        if(GameSettings.ShowEnemies)
-        {
-            var preVisiblecells = previouscell.GetAllNeighbourhood();
-            preVisiblecells.push(previouscell);
-            preVisiblecells.forEach(cellChild => {
-                var cell = (<Cell>cellChild);
-                if (!cell.HasOccupier() && 
-                    cell.GetAllNeighbourhood().filter(c => (<Cell>c).HasOccupier()).length === 0) 
-                {
-                    cell.SetState(CellState.HalfVisible);
-                }
-            });
-        }
-        else if(!this.IsEnemy(PlaygroundHelper.PlayerHeadquarter))
-        {
-            var preVisiblecells = previouscell.GetAllNeighbourhood();
-            preVisiblecells.push(previouscell);
-            preVisiblecells.forEach(cellChild => {
-                var cell = (<Cell>cellChild);
-                if (!cell.ContainsAlly(this) && 
-                    cell.GetAllNeighbourhood().filter(c => (<Cell>c).ContainsAlly(this)).length === 0) 
-                {
-                    cell.SetState(CellState.HalfVisible);
-                }
-            });
-        }
-    }
-
-    private SetCellsVisible() {
-        if(!this.IsEnemy(PlaygroundHelper.PlayerHeadquarter) 
-        || GameSettings.ShowEnemies)
-        {
-            var cells = this._currentCell.GetAllNeighbourhood();
-            cells.push(this._currentCell);
-            cells.forEach(cell => {
-                (<Cell>cell).SetState(CellState.Visible);
-            });
-        }
+        CellStateSetter.SetStates(previouscell.GetAll());
+        CellStateSetter.SetStates(this._currentCell.GetAll());
     }
 
     public Destroy():void{
@@ -288,7 +248,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this._rightDusts.forEach(ld=>ld.Destroy());
         this._leftDusts = [];
         this._rightDusts = [];
-        this.SetCellsHalfVisible(this._currentCell);
+        CellStateSetter.SetStates(this._currentCell.GetAll());
     }
 
     public Update(viewX: number, viewY: number):void{
@@ -373,7 +333,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this._currentCell.SetOccupier(this);
         this._currentCell.CellStateChanged.on(this._onCellStateChanged);
         this._onCellStateChanged(this,this._currentCell.GetState())
-        this.SetCellsVisible();
+        CellStateSetter.SetStates(this._currentCell.GetAll());
     };
 
     public Select(context:InteractionContext):boolean

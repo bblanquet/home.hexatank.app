@@ -32,9 +32,10 @@ export class AttackField extends Field
         return false;
     }
     Support(vehicule: Vehicle): void {
+        const sum = this.GetInfluenceSum(vehicule);
         vehicule.TranslationSpeed = GameSettings.TranslationSpeed;
         vehicule.RotationSpeed = GameSettings.RotationSpeed;    
-        vehicule.Attack = GameSettings.Attack * 3;
+        vehicule.Attack = GameSettings.Attack * (2+sum);
     }    
 
     IsDesctrutible(): boolean {

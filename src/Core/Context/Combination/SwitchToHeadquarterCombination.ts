@@ -1,37 +1,44 @@
-// import { ICombination } from "./ICombination";
-// import { ISelectable } from "../../ISelectable";
-// import { Menu } from "../../Menu/Menu";
-// import { Item } from "../../Items/Item";
-// import { Vehicle } from "../../Items/Unit/Vehicle";
-// import { cell } from "../../cells/cell";
-// import { Headquarter } from "../../cells/Field/Headquarter";
+import { ICombination } from "./ICombination";
+import { ISelectable } from "../../ISelectable";
+import { Menu } from "../../Menu/Menu";
+import { Vehicle } from "../../Items/Unit/Vehicle";
+import { Cell } from "../../Cell/Cell";
+import { Headquarter } from "../../Cell/Field/Headquarter";
+import { InfluenceField } from "../../Cell/Field/InfluenceField";
+import { CombinationContext } from "./CombinationContext";
+import { ContextMode } from "../../Utils/ContextMode";
+import { InteractionKind } from "../IInteractionContext";
 
-// export class SwitchToHeadquarterCombination implements ICombination{
-//     constructor(private _menus:Menu[]){
-//     }
-
-//     IsMatching(items: Item[]): boolean 
-//     {
-//         return items.length == 2 
-//         && (items[0] instanceof Vehicle ||  items[0] instanceof cell)
-//         && items[1] instanceof Headquarter;    
-//     }    
+export class SwitchToHeadquarterCombination implements ICombination{
+    constructor(){
+    }    
     
-//     Combine(items: Item[]): boolean 
-//     {
-//         if(this.IsMatching(items))
-//         {
-//             const hq = items[0] as any as ISelectable;
-//             hq.SetSelected(false);
-//             const vehicle = items[1] as Headquarter;
-//             vehicle.SetSelected(true);
-//             this._menus.forEach(menu=>{menu.Show(vehicle);});
-//             items.splice(0,1);
-//             return true;
-//         }   
-//         return false; 
-//     }
+    IsMatching(context: CombinationContext): boolean 
+    {
+        return this.IsNormalMode(context) 
+        && context.Items.length == 2 
+        && (context.Items[0] instanceof Vehicle || context.Items[0] instanceof Cell || context.Items[0] instanceof InfluenceField)
+        && context.Items[1] instanceof Headquarter;    
+    }    
 
-//     Clear(): void {
-//     }
-// }
+    private IsNormalMode(context: CombinationContext) {
+        return context.ContextMode === ContextMode.SingleSelection
+            && context.InteractionKind === InteractionKind.Up;
+    }
+ 
+    Combine(context: CombinationContext): boolean 
+    {
+        if(this.IsMatching(context))
+        {
+            const hq = context.Items[0] as any as ISelectable;
+            hq.SetSelected(false);
+            const vehicle = context.Items[1] as Headquarter;
+            vehicle.SetSelected(true);
+            context.Items.splice(0,1);
+            return true;
+        }   
+        return false; 
+    }    
+    Clear(): void {
+    }
+}

@@ -30,6 +30,8 @@ import { InfluenceField } from '../../Core/Cell/Field/InfluenceField';
 import { GameSettings } from '../../Core/Utils/GameSettings';
 import { SmallMenuItem } from '../../Core/Menu/Buttons/SmallMenuItem';
 import { Headquarter } from '../../Core/Cell/Field/Headquarter';
+import { AbortMenuItem } from '../../Core/Menu/Buttons/AbortMenuItem';
+import { SearchMoneyMenuItem } from '../../Core/Menu/Buttons/SearchMoneyMenuItem';
 
 export default class CanvasComponent extends Component<any, { 
   HasMenu: boolean,
@@ -318,7 +320,7 @@ export default class CanvasComponent extends Component<any, {
               <div class="fill-camouflage max-width standard-space"></div>
             </button>
             <button type="button" class="btn btn-dark without-padding" 
-            onClick={(e: any) => this.SendContext(new CancelMenuItem())}>
+            onClick={(e: any) => this.SendContext(new AbortMenuItem())}>
               <div class="fill-abort max-width standard-space"></div>
             </button>
             <button type="button" class="btn btn-dark without-padding" 
@@ -392,11 +394,11 @@ export default class CanvasComponent extends Component<any, {
               <div class="fill-patrol max-width standard-space"></div>
             </button>
             <button type="button" class="btn btn-dark without-padding" 
-            onClick={(e: any) => this.SendContext(new CancelMenuItem())}>
+            onClick={(e: any) => this.SendContext(new SearchMoneyMenuItem())}>
               <div class="fill-searchMoney max-width standard-space"></div>
             </button>
             <button type="button" class="btn btn-dark without-padding" 
-            onClick={(e: any) => this.SendContext(new CancelMenuItem())}>
+            onClick={(e: any) => this.SendContext(new AbortMenuItem())}>
               <div class="fill-abort max-width standard-space"></div>
             </button>
             <button type="button" class="btn btn-dark without-padding" 
@@ -428,7 +430,7 @@ export default class CanvasComponent extends Component<any, {
 
   private ShowNoMoney(){
     if(this.state.HasWarning){
-      return (<span class="fill-noMoney badge badge-secondary very-small-space middle very-small-right-margin blink_me" > </span>);
+      return (<span class="fill-noMoney badge badge-warning very-small-space middle very-small-right-margin blink_me" > </span>);
     }else{
       return ('');
     }

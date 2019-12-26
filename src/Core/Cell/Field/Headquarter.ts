@@ -1,3 +1,4 @@
+import { PlaygroundHelper } from './../../Utils/PlaygroundHelper';
 import { LiteEvent } from '../../Utils/LiteEvent';
 import { FlagCell } from '../FlagCell';
 import { Tank } from '../../Items/Unit/Tank';
@@ -12,7 +13,6 @@ import { Crater } from "../../Items/Others/Crater";
 import { Archive } from "../../Utils/ResourceArchiver";
 import { CellState } from "../CellState";
 import { BoundingBox } from "../../Utils/BoundingBox";
-import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 import { HqSkin } from "../../Utils/HqSkin";
 import { IHqContainer } from "../../Items/Unit/IHqContainer";
 import { Vehicle } from "../../Items/Unit/Vehicle";
@@ -237,7 +237,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         if(this._tankRequestCount < 4){
             this._tankRequestCount+=1;
             this.TankRequestEvent.trigger(this,this._tankRequestCount);
-            PlaygroundHelper.SetWarning();
+            if(this._diamondCount < GameSettings.TankPrice){
+                PlaygroundHelper.SetWarning();
+            }
         }
     }
 
@@ -259,7 +261,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         if(this._truckRequestCount < 4){
             this._truckRequestCount+=1;
             this.TruckRequestEvent.trigger(this,this._truckRequestCount);
-            PlaygroundHelper.SetWarning();
+            if(this._diamondCount < GameSettings.TruckPrice){
+                PlaygroundHelper.SetWarning();
+            }
         }
     }
 

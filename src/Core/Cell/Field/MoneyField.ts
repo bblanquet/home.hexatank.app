@@ -34,7 +34,7 @@ export class MoneyField extends Field
         });
     }
 
-    private IsFull():boolean{
+    public IsFull():boolean{
         return this.GetCurrentSprites()[Archive.bonus.fullMoney].alpha >= 1;
     }
 

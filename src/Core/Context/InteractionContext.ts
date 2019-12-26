@@ -1,3 +1,4 @@
+import { AbortCombination } from './Combination/AbortCombination';
 import { SwitchToHeadquarterCombination } from './Combination/SwitchToHeadquarterCombination';
 import { PowerUpCombination } from './Combination/PowerUpCombination';
 import { PowerDownCombination } from './Combination/PowerDownCombination';
@@ -79,6 +80,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
         combinations.push(new MultiUnitSelectionCombination(multiselectionMenu,multiSelectionContext,this));
         combinations.push(new MultiCellSelectionCombination(multiselectionMenu,multiSelectionContext,this));
         combinations.push(new FlagCellCombination());
+        combinations.push(new AbortCombination());
         combinations.push(new InfluenceCombination());
         combinations.push(new AddTankCombination());
         combinations.push(new AddTruckCombination());

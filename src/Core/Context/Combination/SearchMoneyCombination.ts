@@ -24,7 +24,7 @@ export class SearchMoneyCombination implements ICombination{
         if(this.IsMatching(context)){
             const vehicle = context.Items[0] as Truck;
             vehicle.SetOrder(new MoneyOrder(vehicle));
-            context.Items = context.Items.filter(i=> !(i instanceof SearchMoneyMenuItem));
+            context.Items.splice(context.Items.length-1,1);
             return true;
         }
         return false;

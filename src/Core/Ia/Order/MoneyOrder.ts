@@ -14,12 +14,18 @@ export class MoneyOrder extends Order{
     }
 
     Do(): void {
-        if(this._currentOrder.IsDone()){
-            this.TryToGetMoneyField();
+        if(this._currentOrder){
+            if(this._currentOrder.IsDone()){
+                this.TryToGetMoneyField();
+            }
+            else
+            {
+                this._currentOrder.Do();
+            }
         }
         else
         {
-            this._currentOrder.Do();
+            this.TryToGetMoneyField();
         }
     }
 

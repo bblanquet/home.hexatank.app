@@ -420,7 +420,7 @@ export default class CanvasComponent extends Component<any, {
       <div style="position: fixed;left: 50%;transform: translateX(-50%);">
         <button type="button" class="btn btn-dark space-out">
         {this.ShowNoMoney()}
-        {this.state.Amount}
+        {this.state.Amount.toPrecision(2)}
          <span class="fill-diamond badge badge-secondary very-small-space middle very-small-left-margin very-small-right-margin"> </span>
         </button>
         <button type="button"class="btn btn-dark small-space space-out fill-option" onClick={(e: any) => this.SetMenu(e)} />

@@ -7,7 +7,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 var getPostension = function(env){
     if(env.NODE_ENV === 'mottet'){
-        return '/BB/dist/';
+        return '/BB/';
     }
     else if(env.NODE_ENV ==='mobile'){
         return '/android_asset/www/';

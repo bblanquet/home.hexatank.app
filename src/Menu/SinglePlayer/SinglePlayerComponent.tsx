@@ -14,8 +14,8 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
         this.setState({
             IaNumber: 1,
             Mode:"0",
-            MapType:'Hexagon',
-            Size:'10'
+            MapType:'Flower',
+            Size:'20'
         });
         SpriteProvider.GetAssets().forEach(a=>{
             var preloadLink = document.createElement("link");

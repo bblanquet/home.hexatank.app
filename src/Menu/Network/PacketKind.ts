@@ -6,6 +6,7 @@ export enum PacketKind{
  Camouflage,
  Next,
  Field,
+ Influence,
  Target,
  Toast,
  Env,

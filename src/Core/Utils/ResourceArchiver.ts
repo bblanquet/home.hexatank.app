@@ -114,13 +114,16 @@ export const Archive = {
                 area:'./building/redAreaEnergy.svg'
             },
             blue:{
-                field:'./building/hqBlueCell.svg'
+                field:'./building/hqBlueCell.svg',
+                area:'./building/blueAreaEnergy.svg'
             },
             yellow:{
-                field:'./building/hqYellowCell.svg'
+                field:'./building/hqYellowCell.svg',
+                area:'./building/yellowAreaEnergy.svg'
             },
             purple:{
-                field:'./building/hqPurpleCell.svg'
+                field:'./building/hqPurpleCell.svg',
+                area:'./building/purpleAreaEnergy.svg'
             },
         }
     },

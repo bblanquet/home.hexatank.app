@@ -12,6 +12,8 @@ import { IInteractionContext } from "../../Context/IInteractionContext";
 import { Cell } from "../Cell";
 import { LiteEvent } from '../../Utils/LiteEvent';
 import { CellContainer } from '../CellContainer';
+import { PeerHandler } from '../../../Menu/Network/Host/On/PeerHandler';
+import { PacketKind } from '../../../Menu/Network/PacketKind';
 
 export class InfluenceField extends Field implements ISelectable{
     private _isIncreasingOpacity:boolean=false;
@@ -117,7 +119,12 @@ export class InfluenceField extends Field implements ISelectable{
     }
 
     public PowerUp():void{
-        this.Battery.High()
+        PeerHandler.SendMessage(PacketKind.Influence,{
+            Hq:this.Hq.GetCurrentCell().GetCoordinate(),
+            cell:this.GetCell().GetCoordinate(),
+            Type:"PowerUp"
+        });
+        this.Battery.High();
         this._power +=1;
     }
 
@@ -127,6 +134,11 @@ export class InfluenceField extends Field implements ISelectable{
 
     public PowerDown():void{
         if(this._power > 0){
+            PeerHandler.SendMessage(PacketKind.Influence,{
+                Hq:this.Hq.GetCurrentCell().GetCoordinate(),
+                cell:this.GetCell().GetCoordinate(),
+                Type:"PowerDown"
+            });
             this._power -=1;
             this.Battery.Low();
         }
@@ -134,12 +146,19 @@ export class InfluenceField extends Field implements ISelectable{
 
     public RangeDown():void{
         if(this._range > 0){
+            PeerHandler.SendMessage(PacketKind.Influence,{
+                Hq:this.Hq.GetCurrentCell().GetCoordinate(),
+                cell:this.GetCell().GetCoordinate(),
+                Type:"RangeDown"
+            });
             this.Battery.Low();
             this._range -=1;
             this.RefreshArea();
             this.UpdateCellStates(this._range+1);
-            this.ClearArea();
-            this.CreateArea();
+            if(this.Hq === PlaygroundHelper.PlayerHeadquarter){
+                this.ClearArea();
+                this.CreateArea();
+            }
         }
     }
 
@@ -148,12 +167,19 @@ export class InfluenceField extends Field implements ISelectable{
     }
 
     public RangeUp():void{
+        PeerHandler.SendMessage(PacketKind.Influence,{
+            Hq:this.Hq.GetCurrentCell().GetCoordinate(),
+            cell:this.GetCell().GetCoordinate(),
+            Type:"RangeUp"
+        });
         this.Battery.High()
         this._range +=1;
         this.RefreshArea();
         this.UpdateCellStates(this._range);
-        this.ClearArea();
-        this.CreateArea();
+        if(this.Hq === PlaygroundHelper.PlayerHeadquarter){
+            this.ClearArea();
+            this.CreateArea();
+        }
     }
 
     SetSelected(isSelected: boolean): void {

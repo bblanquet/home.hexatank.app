@@ -17,6 +17,7 @@ import { AliveField } from '../../Cell/Field/AliveField';
 import { Tank } from '../../Items/Unit/Tank';
 import { MoneyField } from '../../Cell/Field/MoneyField';
 import { FastField } from '../../Cell/Field/FastField';
+import { InfluenceField } from '../../Cell/Field/InfluenceField';
 
 export class MessageDispatcher{
     private _isClient:boolean=false;
@@ -53,6 +54,10 @@ export class MessageDispatcher{
         PeerHandler.Subscribe({
             type:PacketKind.Camouflage,
             func:(e:any)=>this.Camouflage(e)
+        });
+        PeerHandler.Subscribe({
+            type:PacketKind.Influence,
+            func:(e:any)=>this.Influence(e)
         });
     }
 
@@ -91,6 +96,13 @@ export class MessageDispatcher{
                 let field = new PoisonField(cell);
                 PlaygroundHelper.Playground.Items.push(field);
             }
+            else if(type === "Influence")
+            {
+                const hqPos = new HexAxial(e.Hq.Q,e.Hq.R);
+                const hq = PlaygroundHelper.CellsContainer.Get(hqPos).GetField() as Headquarter;
+                let field = new InfluenceField(cell, hq);
+                PlaygroundHelper.Playground.Items.push(field);
+            }
         }
     }
 
@@ -111,19 +123,46 @@ export class MessageDispatcher{
         }
     }
 
+    private Influence(e:any):void{
+        if(this.IsListenedHq(e)){
+            const pos = new HexAxial(e.cell.Q,e.cell.R);
+            const cell = PlaygroundHelper.CellsContainer.Get(pos);
+            const influenceField = cell.GetField() as InfluenceField;
+            const type = e.Type;
+
+            if(type === "PowerUp")
+            {
+                influenceField.PowerUp();
+            }
+            else if(type === "PowerDown")
+            {
+                influenceField.PowerDown();
+            }
+            else if(type === "RangeUp")
+            {
+                influenceField.RangeUp();
+            }
+            else if(type === "RangeDown")
+            {
+                influenceField.RangeDown();
+            }
+        }
+    }
+
     private Destroyed(e: any): void {
         const pos = new HexAxial(e.cell.Q,e.cell.R);
         const cell = PlaygroundHelper.CellsContainer.Get(pos);
         const destroyedItemName = e.Name;
 
-        if(cell.HasOccupier() && "vehicle"  === destroyedItemName){
+        if(cell.HasOccupier() && "vehicle"  === destroyedItemName)
+        {
             const vehicle = cell.GetOccupier() as Vehicle;
             vehicle.Destroy();
             return;
         }
         else if(cell.GetField().IsDesctrutible() 
-        && "field" === destroyedItemName
-        ){
+        && "field" === destroyedItemName)
+        {
             (<AliveField>cell.GetField()).Destroy();
         }
     }

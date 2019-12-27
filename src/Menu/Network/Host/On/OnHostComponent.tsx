@@ -226,7 +226,7 @@ export default class OnHostComponent extends Component<any, HostState> {
     if (this.IsEveryoneReady()) {
       PlaygroundHelper.IsOnline = true;
       const hqCount = +this.state.IaNumber + this.state.Players.length;
-      let mapContext = new MapGenerator().GetMapDefinition(hqCount,MapMode.forest);
+      let mapContext = new MapGenerator().GetMapDefinition(20,'Flower',hqCount,MapMode.forest);
       this.Assign(mapContext, this.state.Players);
       let message = new GameMessage<MapContext>();
       message.Message = mapContext;

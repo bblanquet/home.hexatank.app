@@ -13,7 +13,9 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
         super(props);
         this.setState({
             IaNumber: 1,
-            Mode:"0"
+            Mode:"0",
+            MapType:'Hexagon',
+            Size:'10'
         });
         SpriteProvider.GetAssets().forEach(a=>{
             var preloadLink = document.createElement("link");
@@ -46,6 +48,21 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
                                 <option value="1">Forest</option>
                             </select>
                         </div>
+                        <div class="col-auto my-1 whiteText">
+                            <label class="mr-sm-2" for="inlineFormCustomSelect">Size</label>
+                            <select onChange={linkState(this, 'Size')} class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                                <option value="10">16</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                            </select>
+                        </div>
+                        <div class="col-auto my-1 whiteText">
+                            <label class="mr-sm-2" for="inlineFormCustomSelect">Shape</label>
+                            <select onChange={linkState(this, 'MapType')} class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                                <option value="Hexagon">Hexagon</option>
+                                <option value="Flower">Flower</option>
+                            </select>
+                        </div>
                         <p></p>
                         <div class="btn-group btn-group-space" role="group" aria-label="Basic example">
                             <button type="button" class="btn btn-dark btn-sm" onClick={(e) => this.Start(e)}>Start</button>
@@ -61,7 +78,11 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
     }
 
     Start(e: MouseEvent): void {
-        PlaygroundHelper.MapContext = new MapGenerator().GetMapDefinition(+this.state.IaNumber + 1, (+this.state.Mode) as MapMode);
+        PlaygroundHelper.MapContext = new MapGenerator().GetMapDefinition(
+              +this.state.Size
+            , this.state.MapType
+            , +this.state.IaNumber + 1
+            , (+this.state.Mode) as MapMode);
         PlaygroundHelper.SetDefaultName();
         PlaygroundHelper.MapContext.Hqs[0].PlayerName = PlaygroundHelper.PlayerName;
         let index = 0;

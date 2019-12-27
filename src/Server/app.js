@@ -5,8 +5,8 @@ const certificate = fs.readFileSync('/etc/letsencrypt/live/www.mottet.xyz/fullch
 const credentials = {key: privateKey, cert: certificate};
 
 var app = require('express')();
-var http = require('http').createServer(credentials,app);
-var io = require('socket.io')(http);
+var https = require('https').createServer(credentials,app);
+var io = require('socket.io')(https);
 var servers = [];
 
 app.get('/', function(req, res){
@@ -97,6 +97,6 @@ io.on('connection', function(socket)
 
 });
 
-http.listen(8080, function(){
+https.listen(8080, function(){
   console.log('listening on *:8080');
 });

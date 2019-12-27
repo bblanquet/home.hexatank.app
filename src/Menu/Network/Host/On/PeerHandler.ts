@@ -14,7 +14,7 @@ export class PeerHandler{
 
     public static Start(getPlayers:(players:string[])=>void,leave:()=>void):void
     {
-        this._socket = io('https://mottet.xyz:8080');
+        this._socket = io('https://mottet.xyz:8080', {secure: true});
         this._socket.on('connect', () => 
         {
           this._socket.on('players',(data:{list:string[]})=>

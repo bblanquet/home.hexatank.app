@@ -1,3 +1,4 @@
+import { HexagonalMapBuilder } from './../Builder/HexagonalMapBuilder';
 import { SandDecorator } from '../../Cell/Decorator/SandDecorator';
 import { MapMode } from './MapMode';
 import { HexAxial } from './../../Utils/Coordinates/HexAxial';
@@ -16,22 +17,21 @@ import { Decorator } from '../../Cell/Decorator/Decorator';
 
 export class MapGenerator
 {
-    public GetMapDefinition(hqCount:number, mapMode:MapMode):MapContext
+    public GetMapDefinition(mapSize:number,mapType:string, hqCount:number, mapMode:MapMode):MapContext
     {
-        const size = 20;
         const context = new MapContext();
         context.MapMode = mapMode;
         const mapItems = new Array<MapItem>();
-        const mapBuilder = new FlowerMapBuilder();
-        const cellPositions = mapBuilder.Build(size);
+        const mapBuilder = mapType === 'Flower' ? new FlowerMapBuilder():new HexagonalMapBuilder();
+        const cellPositions = mapBuilder.Build(mapSize);
         
         const container = new CellContainer<CellProperties>();
         cellPositions.forEach(cell => {
             container.Add(cell);
         });
 
-        const center = mapBuilder.GetMidle(size);
-        const areas = mapBuilder.GetAreaMiddlecell(size);
+        const center = mapBuilder.GetMidle(mapSize);
+        const areas = mapBuilder.GetAreaMiddlecell(mapSize);
         const fatherPointManager = new FartestPointsFinder();
 
         const hqPositions = fatherPointManager.GetPoints(fatherPointManager.GetFartestPoints(center, areas), hqCount);

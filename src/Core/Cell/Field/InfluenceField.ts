@@ -1,3 +1,4 @@
+import { Archive } from './../../Utils/ResourceArchiver';
 import { CellStateSetter } from './../CellStateSetter';
 import { PlaygroundHelper } from './../../Utils/PlaygroundHelper';
 import { Battery } from './Battery';
@@ -10,7 +11,6 @@ import { Vehicle } from "../../Items/Unit/Vehicle";
 import { IInteractionContext } from "../../Context/IInteractionContext";
 import { Cell } from "../Cell";
 import { LiteEvent } from '../../Utils/LiteEvent';
-import { Archive } from '../../Utils/ResourceArchiver';
 import { CellContainer } from '../CellContainer';
 
 export class InfluenceField extends Field implements ISelectable{
@@ -49,7 +49,29 @@ export class InfluenceField extends Field implements ISelectable{
     }
 
     Support(vehicule: Vehicle): void {
-        
+        if(vehicule.Hq != this.Hq){
+            this.SetProperty(this.Hq.GetSkin().GetBaseEnergy(),e=>e.alpha = 0);
+            this.SetProperty(this.Hq.GetSkin().GetEnergy(),e=>e.alpha = 0);
+            
+            this.Hq.InfluenceFields = this.Hq.InfluenceFields.filter(f=>f !== this);
+            this.Hq = vehicule.Hq;
+            this.Hq.InfluenceFields.push(this);
+            if(!this.ExistsSprite(this.Hq.GetSkin().GetBaseEnergy())){
+                this.GenerateSprite(this.Hq.GetSkin().GetBaseEnergy(),s=>{
+                    s.width = this.GetCell().GetBoundingBox().Width,
+                    s.height = this.GetCell().GetBoundingBox().Height
+                    s.anchor.set(0.5);
+                });      
+                this.GenerateSprite(this.Hq.GetSkin().GetEnergy(),s=>{
+                    s.width = this.GetCell().GetBoundingBox().Width,
+                    s.height = this.GetCell().GetBoundingBox().Height
+                    s.anchor.set(0.5);
+                });        
+            }
+
+            this.SetProperty(this.Hq.GetSkin().GetBaseEnergy(),e=>e.alpha = 1);
+            this.SetProperty(this.Hq.GetSkin().GetEnergy(),e=>e.alpha = 1);
+        }
     }
 
 

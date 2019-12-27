@@ -40,7 +40,7 @@ export const Archive = {
             './menu/priceFour.svg',
             './menu/priceFive.svg'
         ],
-        abortButton:'./menu/AbortButton.svg',
+        abortButton:'./menu/AbortMenu.svg',
         searchMoneyButton:'./menu/SearchMoneyButton.svg',
         plusButton:'./menu/plusButton.svg',
         minButton:'./menu/minusButton.svg',

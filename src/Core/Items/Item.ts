@@ -140,6 +140,10 @@ export abstract class Item implements Updater, IBoundingBoxContainer{
         return this.GetBoundingBox().GetPosition();
     }
 
+    public ExistsSprite(sprite:string):boolean{
+        return sprite in this._zoomIn;
+    }
+
     public GetSprites():Array<PIXI.Sprite>{
         var sprites = new Array<PIXI.Sprite>();
         this.DisplayObjects

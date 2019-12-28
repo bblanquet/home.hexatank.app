@@ -3,9 +3,6 @@ import { ICombination } from "./ICombination";
 import { CombinationContext } from "./CombinationContext";
 import { ContextMode } from "../../Utils/ContextMode";
 import { InteractionKind } from "../IInteractionContext";
-import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
-import { PeerHandler } from "../../../Menu/Network/Host/On/PeerHandler";
-import { PacketKind } from "../../../Menu/Network/PacketKind";
 import { InfluenceField } from "../../Cell/Field/InfluenceField";
 
 export class RangeDownCombination implements ICombination {
@@ -26,12 +23,7 @@ export class RangeDownCombination implements ICombination {
         if (this.IsMatching(context)) {
             let field = <InfluenceField>context.Items[0];
             field.RangeDown();
-            PeerHandler.SendMessage(PacketKind.Field, {
-                Hq: PlaygroundHelper.PlayerHeadquarter.GetCurrentCell().GetCoordinate(),
-                cell: field.GetCell().GetCoordinate(),
-                Type: "InfluenceRangeUp"
-            });
-            context.Items.splice(1,1);
+            context.Items.splice(1, 1);
             return true;
         }
         return false;

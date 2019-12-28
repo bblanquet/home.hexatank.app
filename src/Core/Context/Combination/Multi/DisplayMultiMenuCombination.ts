@@ -11,7 +11,8 @@ export class DisplayMultiMenuCombination implements ICombination{
 
     IsMatching(context: CombinationContext): boolean {
         return context.ContextMode === ContextMode.SingleSelection 
-        && context.InteractionKind === InteractionKind.Holding;
+        && context.InteractionKind === InteractionKind.Holding
+        && context.Items.length === 0;
     }    
     
     Combine(context: CombinationContext): boolean {

@@ -1,3 +1,5 @@
+import { SwitchToInfluenceCombination } from './Combination/SwitchToInfluenceCombination';
+import { SwitchToCellCombination } from './Combination/SwitchToCellCombination';
 import { SearchMoneyCombination } from './Combination/SearchMoneyCombination';
 import { AbortCombination } from './Combination/AbortCombination';
 import { SwitchToHeadquarterCombination } from './Combination/SwitchToHeadquarterCombination';
@@ -86,7 +88,9 @@ export class InteractionContext implements IContextContainer, IInteractionContex
         combinations.push(new InfluenceCombination());
         combinations.push(new AddTankCombination());
         combinations.push(new AddTruckCombination());
+        combinations.push(new SwitchToCellCombination());
         combinations.push(new SwitchToVehicleCombination());
+        combinations.push(new SwitchToInfluenceCombination());
         combinations.push(new SwitchToHeadquarterCombination());
         combinations.push(new CancelCombination(this));
         combinations.push(new TruckDiamondCombination(this));

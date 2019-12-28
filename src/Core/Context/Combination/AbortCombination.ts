@@ -1,3 +1,4 @@
+import { Tank } from './../../Items/Unit/Tank';
 import { AbortMenuItem } from './../../Menu/Buttons/AbortMenuItem';
 import { ICombination } from "./ICombination";
 import { CombinationContext } from "./CombinationContext";
@@ -23,6 +24,9 @@ export class AbortCombination implements ICombination{
             const vehicle = context.Items[0] as Vehicle;
             vehicle.CancelOrder();
             context.Items.splice(context.Items.length-1,1);
+            if(vehicle instanceof Tank){
+                (vehicle as Tank).SetMainTarget(null);
+            }
             return true;
         }
         return false;

@@ -1,10 +1,10 @@
+import { PlaygroundHelper } from './../../Utils/PlaygroundHelper';
 import { InfluenceField } from '../../Cell/Field/InfluenceField';
 import { InfluenceMenuItem } from '../../Menu/Buttons/InfluenceMenuItem';
 import { isNullOrUndefined } from "util";
 import { ICombination } from "./ICombination";
 import { Cell } from "../../Cell/Cell";
 import { BasicField } from "../../Cell/Field/BasicField";
-import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
 import { PeerHandler } from "../../../Menu/Network/Host/On/PeerHandler";
 import { PacketKind } from "../../../Menu/Network/PacketKind"; 
 import { CombinationContext } from "./CombinationContext";
@@ -34,9 +34,9 @@ export class InfluenceCombination implements ICombination{
             {
                 if(cell.GetField() instanceof BasicField)
                 {
-                    if(PlaygroundHelper.PlayerHeadquarter.HasMoney(GameSettings.FieldPrice))
+                    if(PlaygroundHelper.PlayerHeadquarter.Buy(
+                        GameSettings.TruckPrice*PlaygroundHelper.PlayerHeadquarter.GetInfluenceCount()))
                     {
-                        PlaygroundHelper.PlayerHeadquarter.Buy(GameSettings.FieldPrice);
                         PeerHandler.SendMessage(PacketKind.Field,{
                             Hq:PlaygroundHelper.PlayerHeadquarter.GetCurrentCell().GetCoordinate(),
                             cell:cell.GetCoordinate(),

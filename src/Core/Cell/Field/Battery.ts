@@ -14,7 +14,7 @@ export class Battery{
       }
 
     public GetTotalPower():number{
-        const externalFields =  this._hq.InfluenceFields
+        const externalFields =  this._hq.GetInfluence()
         .filter(f=>f !== this._field)
         .filter(f=>f.GetArea().Exist(this._field.GetCell().GetCoordinate()));
 
@@ -43,7 +43,7 @@ export class Battery{
     }
 
     private TryToGetExternalEnergy():boolean{
-        const field = this._hq.InfluenceFields
+        const field = this._hq.GetInfluence()
         .filter(f=>f !== this._field)
         .filter(f=>f.Battery.HasInternalStock())
         .filter(f=>f.GetArea().Exist(this._field.GetCell().GetCoordinate()))
@@ -101,5 +101,9 @@ export class Battery{
         }
 
         return this._internalEnergy - this._usedEnergy;
+    }
+
+    public GetInternalEnergy():number{
+        return this._internalEnergy;
     }
 }

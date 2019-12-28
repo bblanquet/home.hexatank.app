@@ -11,7 +11,7 @@ export class CellStateSetter{
     public static SetState(cell:Cell):void{
         const territoty = PlaygroundHelper
         .PlayerHeadquarter
-        .InfluenceFields.map(f=>f.GetArea());
+        .GetInfluence().map(f=>f.GetArea());
 
         let isContained = false;
         territoty.some(c=>isContained = c.Exist(cell.GetCoordinate()));

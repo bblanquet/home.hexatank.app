@@ -1,3 +1,4 @@
+import { BasicInfluenceField } from './BasicInfluenceField';
 import { Archive } from './../../Utils/ResourceArchiver';
 import { CellStateSetter } from './../CellStateSetter';
 import { PlaygroundHelper } from './../../Utils/PlaygroundHelper';
@@ -16,27 +17,20 @@ import { PeerHandler } from '../../../Menu/Network/Host/On/PeerHandler';
 import { PacketKind } from '../../../Menu/Network/PacketKind';
 
 export class InfluenceField extends Field implements ISelectable{
-    private _isIncreasingOpacity:boolean=false;
+
     private _area:Array<BasicItem>=new Array<BasicItem>();
-    
     public Battery:Battery;
     private _range:number=1;
     private _power:number=0;
     private _cellContainer:CellContainer<Cell>=new CellContainer<Cell>();
-
+    public Lost:LiteEvent<InfluenceField> = new LiteEvent<InfluenceField>();
+    public basicField:BasicInfluenceField;
     constructor(cell:Cell, public Hq:Headquarter){
         super(cell);
         this.Z= 1;
-        this.Hq.InfluenceFields.push(this);
+        this.Hq.AddInfluence(this);
         this.Battery = new Battery(this.Hq,this);
         this.GetCell().SetField(this);
-        this.GenerateSprite(this.Hq.GetSkin().GetBaseEnergy(),s=>s.alpha=1);      
-        this.GenerateSprite(this.Hq.GetSkin().GetEnergy(),s=>s.alpha=1);   
-        this.GetSprites().forEach(sprite => {
-            sprite.width = this.GetCell().GetBoundingBox().Width,
-            sprite.height = this.GetCell().GetBoundingBox().Height
-            sprite.anchor.set(0.5);
-        });
         this.GenerateSprite(Archive.selectionCell);
         this.SetBothProperty(Archive.selectionCell,(e)=>{
             e.alpha=0;
@@ -48,35 +42,23 @@ export class InfluenceField extends Field implements ISelectable{
         this.InitPosition(cell.GetBoundingBox());
         this.GetDisplayObjects().forEach(obj => {obj.visible = this.GetCell().IsVisible();});
         this.UpdateCellStates(this._range);
+        this.basicField = new BasicInfluenceField(this);
     }
 
     Support(vehicule: Vehicle): void {
         if(vehicule.Hq != this.Hq){
-            this.SetProperty(this.Hq.GetSkin().GetBaseEnergy(),e=>e.alpha = 0);
-            this.SetProperty(this.Hq.GetSkin().GetEnergy(),e=>e.alpha = 0);
+            this.SetSelected(false);
             
-            this.Hq.InfluenceFields = this.Hq.InfluenceFields.filter(f=>f !== this);
+            this.Lost.trigger(this,this);
+            this.Lost.clear();
+            
             this.Hq = vehicule.Hq;
-            this.Hq.InfluenceFields.push(this);
-            if(!this.ExistsSprite(this.Hq.GetSkin().GetBaseEnergy())){
-                this.GenerateSprite(this.Hq.GetSkin().GetBaseEnergy(),s=>{
-                    s.width = this.GetCell().GetBoundingBox().Width,
-                    s.height = this.GetCell().GetBoundingBox().Height
-                    s.anchor.set(0.5);
-                });      
-                this.GenerateSprite(this.Hq.GetSkin().GetEnergy(),s=>{
-                    s.width = this.GetCell().GetBoundingBox().Width,
-                    s.height = this.GetCell().GetBoundingBox().Height
-                    s.anchor.set(0.5);
-                });        
-            }
-
-            this.SetProperty(this.Hq.GetSkin().GetBaseEnergy(),e=>e.alpha = 1);
-            this.SetProperty(this.Hq.GetSkin().GetEnergy(),e=>e.alpha = 1);
+            this.Hq.AddInfluence(this);
+            
+            this.basicField.Destroy();
+            this.basicField = new BasicInfluenceField(this);
         }
     }
-
-
 
     IsDesctrutible(): boolean {
         return false;
@@ -98,19 +80,8 @@ export class InfluenceField extends Field implements ISelectable{
     {
         super.Update(viewX,viewY);
 
-        this.SetBothProperty(this.Hq.GetSkin().GetEnergy(),s=>s.rotation += 0.01*(this._power));
+        this.basicField.Update(viewX,viewY);
 
-        this.SetProperty(this.Hq.GetSkin().GetBaseEnergy(),s=>{
-            if(s.alpha < 0.4){
-                this._isIncreasingOpacity = true;
-            }
-
-            if(1 <= s.alpha){
-                this._isIncreasingOpacity = false;
-            }
-
-            s.alpha += this._isIncreasingOpacity ? 0.01 : -0.01; 
-        });
         if(this._area){
             this._area.forEach(area => {
                 area.Update(viewX,viewY);
@@ -130,6 +101,10 @@ export class InfluenceField extends Field implements ISelectable{
 
     public GetPower():number{
         return this._power;
+    }
+
+    public GetInternalEnergy():number{
+        return this.Battery.GetInternalEnergy();
     }
 
     public PowerDown():void{
@@ -196,7 +171,7 @@ export class InfluenceField extends Field implements ISelectable{
     private CreateArea() {
         this.GetCell().GetSpecificRange(this._range).forEach(cell => {
             const b = BoundingBox.CreateFromBox((<Cell>cell).GetBoundingBox());
-            const area = new BasicItem(b, Archive.building.hq.red.area, 3);
+            const area = new BasicItem(b, this.Hq.GetSkin().GetAreaEnergy(), 3);
             area.SetVisible(() => true);
             area.SetAlive(() => true);
             PlaygroundHelper.Playground.Items.push(area);
@@ -219,10 +194,27 @@ export class InfluenceField extends Field implements ISelectable{
         this._cellContainer.Add(this.GetCell());
     }
 
-    private ClearArea() {
+    public Destroy():void{
+        super.Destroy();
+        if(this.basicField){
+            this.basicField.Destroy();
+        }
         this._area.forEach(a => 
             a.Destroy());
         this._area = [];
+    }
+
+    private ClearArea() {
+        if(this.basicField){
+            this.basicField.Destroy();
+        }
+        this._area.forEach(a => 
+            a.Destroy());
+        this._area = [];
+    }
+
+    HasStock() :boolean{
+        return this.Battery.HasStock();
     }
 
     IsSelected(): boolean {

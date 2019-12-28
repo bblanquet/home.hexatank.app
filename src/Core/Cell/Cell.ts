@@ -69,7 +69,6 @@ export class Cell extends Item implements ICell , ISelectable
     }
 
     public SetSelected(isSelected: boolean): void {
-        isSelected ? PlaygroundHelper.Select():PlaygroundHelper.Unselect();
         this.SetProperty(Archive.selectionCell,(e)=>e.alpha= isSelected ? 1 : 0);
         this.SelectionChanged.trigger(this, this); 
     }

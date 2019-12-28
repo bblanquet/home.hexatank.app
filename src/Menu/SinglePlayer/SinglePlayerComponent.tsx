@@ -52,7 +52,7 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
                             <label class="mr-sm-2" for="inlineFormCustomSelect">Size</label>
                             <select onChange={linkState(this, 'Size')} class="custom-select mr-sm-2" id="inlineFormCustomSelect">
                                 <option value="10">16</option>
-                                <option value="20">20</option>
+                                <option selected value="20">20</option>
                                 <option value="30">30</option>
                             </select>
                         </div>
@@ -60,7 +60,7 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
                             <label class="mr-sm-2" for="inlineFormCustomSelect">Shape</label>
                             <select onChange={linkState(this, 'MapType')} class="custom-select mr-sm-2" id="inlineFormCustomSelect">
                                 <option value="Hexagon">Hexagon</option>
-                                <option value="Flower">Flower</option>
+                                <option selected value="Flower">Flower</option>
                             </select>
                         </div>
                         <p></p>

@@ -4,9 +4,8 @@ import { CombinationContext } from "./CombinationContext";
 import { ContextMode } from "../../Utils/ContextMode";
 import { InteractionKind } from "../IInteractionContext";
 import { PlaygroundHelper } from "../../Utils/PlaygroundHelper";
-import { PeerHandler } from "../../../Menu/Network/Host/On/PeerHandler";
-import { PacketKind } from "../../../Menu/Network/PacketKind";
 import { InfluenceField } from "../../Cell/Field/InfluenceField";
+import { GameSettings } from '../../Utils/GameSettings';
 
 export class RangeUpCombination implements ICombination {
 
@@ -25,13 +24,11 @@ export class RangeUpCombination implements ICombination {
     Combine(context: CombinationContext): boolean {
         if (this.IsMatching(context)) {
             let field = <InfluenceField>context.Items[0];
-            field.RangeUp();
-            PeerHandler.SendMessage(PacketKind.Field, {
-                Hq: PlaygroundHelper.PlayerHeadquarter.GetCurrentCell().GetCoordinate(),
-                cell: field.GetCell().GetCoordinate(),
-                Type: "InfluenceRangeUp"
-            });
-            context.Items.splice(1,1);
+            if (field.HasStock() ||
+                PlaygroundHelper.PlayerHeadquarter.Buy(GameSettings.TruckPrice * PlaygroundHelper.PlayerHeadquarter.GetTotalEnergy())) {
+                field.RangeUp();
+            }
+            context.Items.splice(1, 1);
             return true;
         }
         return false;

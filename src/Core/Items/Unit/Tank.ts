@@ -202,7 +202,7 @@ export class Tank extends Vehicle implements IHqContainer
         PeerHandler.SendMessage(PacketKind.Target,{
             Hq:this.Hq.GetCell().GetCoordinate(),
             cell:this.GetCurrentCell().GetCoordinate(),
-            TarGetCell:item.GetCurrentCell().GetCoordinate(),
+            TarGetCell:isNullOrUndefined(item)?null:item.GetCurrentCell().GetCoordinate(),
         });
         this._mainTarget = item;
     }

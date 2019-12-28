@@ -6,8 +6,8 @@ export class HqSkin{
         private _color:string,
         private _cell:string,
         private _energyBase:string,
-        private _energy:string){
-
+        private _energy:string,
+        private _energyArea:string){
     }
 
     public GetTopTankSprite():string{
@@ -36,6 +36,10 @@ export class HqSkin{
 
     public GetBaseEnergy():string{
         return this._energyBase;
+    }
+
+    public GetAreaEnergy():string{
+        return this._energyArea;
     }
 
 }

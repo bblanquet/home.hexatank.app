@@ -238,6 +238,7 @@ export default class OnHostComponent extends Component<any, HostState> {
       PlaygroundHelper.MapContext = mapContext;
       PlaygroundHelper.PlayerName = this.state.Player.Name;
       route('/Canvas', true);
+      PeerHandler.CloseRoom();
     }
   }
 

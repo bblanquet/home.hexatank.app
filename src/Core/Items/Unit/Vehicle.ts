@@ -32,6 +32,7 @@ import { Sprite } from 'pixi.js';
 
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable
 {
+
     public Id:string;
     RotationSpeed: number=0.05;
     TranslationSpeed: number=0.2;
@@ -68,6 +69,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     public SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
     private _onCellStateChanged:{(obj:any,cellState:CellState):void};
     public CellChanged:LiteEvent<Cell>  = new LiteEvent<Cell>();
+    public Destoyed:LiteEvent<Vehicle> = new LiteEvent<Vehicle>();
 
     constructor(public Hq:Headquarter){
         super();
@@ -97,6 +99,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
         this._leftDusts.forEach(ld=>PlaygroundHelper.Playground.Items.push(ld));
         this._rightDusts.forEach(rd=>PlaygroundHelper.Playground.Items.push(rd));
         this.CellChanged = new LiteEvent<Cell>();
+        this.Hq.AddVehicle(this);
     }
 
     protected abstract RemoveCamouflage():void;
@@ -200,7 +203,6 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     }
 
     public SetSelected(isSelected:boolean):void{
-        isSelected ? PlaygroundHelper.Select():PlaygroundHelper.Unselect();
         this.SetProperty(Archive.selectionUnit,(e)=>e.alpha= isSelected ? 1 : 0);
         this.SelectionChanged.trigger(this, this);
     }
@@ -226,6 +228,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
     }
 
     public Destroy():void{
+        this.Destoyed.trigger(this,this);
+        this.Destoyed.clear();
         PeerHandler.SendMessage(PacketKind.Destroyed,{
             cell:this._currentCell.GetCoordinate(),
             Name:"vehicle"

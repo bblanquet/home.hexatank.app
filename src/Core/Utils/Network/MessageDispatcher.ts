@@ -108,10 +108,14 @@ export class MessageDispatcher{
 
     private Target(e: any): void {
         if(this.IsListenedHq(e)){
-            const tarGetCell = new HexAxial(e.TarGetCell.Q,e.TarGetCell.R);
             const pos = new HexAxial(e.cell.Q,e.cell.R);
             const tank = PlaygroundHelper.CellsContainer.Get(pos).GetOccupier() as Tank;
-            tank.SetMainTarget(PlaygroundHelper.CellsContainer.Get(tarGetCell).GetShootableEntity());
+            if(e.TarGetCell){
+                const tarGetCell = new HexAxial(e.TarGetCell.Q,e.TarGetCell.R);
+                tank.SetMainTarget(PlaygroundHelper.CellsContainer.Get(tarGetCell).GetShootableEntity());
+            }else{
+                tank.SetMainTarget(null);
+            }
         }
     }
 

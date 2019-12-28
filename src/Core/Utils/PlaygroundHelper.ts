@@ -1,3 +1,4 @@
+import { HqInfos } from './../Cell/Field/HqInfo';
 import { ScaleHandler } from './ScaleHandler';
 import { PingHandler } from './../../Menu/Network/Ping/PingHandler';
 import { MapMode } from '../Setup/Generator/MapMode';
@@ -77,18 +78,8 @@ export class PlaygroundHelper{
     }
 
     public static WarningChanged:LiteEvent<Boolean> = new LiteEvent<boolean>();
-
     public static SelectedItem:LiteEvent<Item> = new LiteEvent<Item>();
-    public static selectionCount:number=0;
-    public static Select():void{
-        this.selectionCount += 1;
-    }
-    public static Unselect():void{
-        this.selectionCount -= 1;
-    }
-    public static HasSelection():boolean{
-        return this.selectionCount > 0;
-    }
+    public static HqStats:LiteEvent<HqInfos> = new LiteEvent<HqInfos>();
 
     public static PauseNavigation() {
         this.Viewport.plugins.pause('drag');
@@ -99,6 +90,10 @@ export class PlaygroundHelper{
 
     public static RestartNavigation() {
         this.Viewport.drag().pinch().wheel().decelerate();
+    }
+
+    public static HqInfosChanged(hqInfos:HqInfos):void{
+        this.HqStats.trigger(this,hqInfos);
     }
 
     private static warningObj:any;
@@ -135,7 +130,6 @@ export class PlaygroundHelper{
     }
 
     public static Init():void{
-        this.selectionCount = 0;
         this._areaEngine = new AreaEngine();
         this.CellsContainer = new CellContainer<Cell>();
         this.VehiclesContainer = new VehiclesContainer();

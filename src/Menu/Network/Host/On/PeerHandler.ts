@@ -202,6 +202,7 @@ export class PeerHandler{
               this._socket.emit('leave', {ServerName:this._serverName,PlayerName:this._player.Name});
             }
             this._socket.close();
+            this._socket = null;
         }
     }
 
@@ -209,11 +210,13 @@ export class PeerHandler{
         if(this._channel)
         {
             this._channel.close();
+            this._channel = null;
         }
 
         if(this._connector)
         {
             this._connector.close();
+            this._connector = null;
         }
         this.CloseRoom()
     }

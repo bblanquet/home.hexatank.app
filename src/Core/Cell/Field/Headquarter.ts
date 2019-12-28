@@ -25,27 +25,18 @@ import { ISelectable } from '../../ISelectable';
 
 export class Headquarter extends AliveItem implements IField, ISelectable
 {
-    
-    SetSelected(isSelected: boolean): void {
-        isSelected ? PlaygroundHelper.Select():PlaygroundHelper.Unselect();
-        this.SetProperty(Archive.selectionUnit,(e)=>e.alpha= isSelected ? 1 : 0);
-        this.SelectionChanged.trigger(this, this); 
-    }
-    IsSelected(): boolean {
-        return this.GetCurrentSprites()[Archive.selectionUnit].alpha === 1;
-    }
-
     SelectionChanged: LiteEvent<ISelectable>=new LiteEvent<ISelectable>();
     private _boundingBox:BoundingBox;
     private _cell:Cell; 
     public PlayerName:string;
-    public Count:number=0;
+    public VehicleId:number=0;
     protected Fields:Array<HeadQuarterField>;
     private _diamondCount:number=GameSettings.PocketMoney;
     private _skin:HqSkin;
     private _onCellStateChanged:{(obj:any,cellState:CellState):void};
     public Flagcell:FlagCell;
-    public InfluenceFields:Array<InfluenceField> = new Array<InfluenceField>();
+    private _influenceFields:Array<InfluenceField> = new Array<InfluenceField>();
+    private _vehicles:Array<Vehicle> = new Array<Vehicle>();
 
     constructor(skin:HqSkin, cell:Cell){
         super();
@@ -141,9 +132,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable
                     const explosion = new Explosion(field.GetCell().GetBoundingBox(),Archive.constructionEffects,5,false,5);
                     PlaygroundHelper.Playground.Items.push(explosion);
                 }
-                this.Count +=1;
+                this.VehicleId +=1;
                 const tank = new Tank(this);
-                tank.Id = `${this.PlayerName}${this.Count}`;
+                tank.Id = `${this.PlayerName}${this.VehicleId}`;
                 tank.SetPosition(pos === null ?field.GetCell():pos);
                 PlaygroundHelper.VehiclesContainer.Add(tank);
                 PlaygroundHelper.Playground.Items.push(tank);
@@ -189,9 +180,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable
                     const explosion = new Explosion(field.GetCell().GetBoundingBox(),Archive.constructionEffects,5,false,5);
                     PlaygroundHelper.Playground.Items.push(explosion);
                 }
-                this.Count +=1;
+                this.VehicleId +=1;
                 let truck = new Truck(this);
-                truck.Id = `${this.PlayerName}${this.Count}`;
+                truck.Id = `${this.PlayerName}${this.VehicleId}`;
                 truck.SetPosition(pos === null ?field.GetCell():pos);
                 PlaygroundHelper.VehiclesContainer.Add(truck);
                 PlaygroundHelper.Playground.Items.push(truck);
@@ -205,6 +196,13 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         return isCreated;
     }
 
+    SetSelected(isSelected: boolean): void {
+        this.SetProperty(Archive.selectionUnit,(e)=>e.alpha= isSelected ? 1 : 0);
+        this.SelectionChanged.trigger(this, this); 
+    }
+    IsSelected(): boolean {
+        return this.GetCurrentSprites()[Archive.selectionUnit].alpha === 1;
+    }
 
 
     public GetBoundingBox(): BoundingBox {
@@ -278,10 +276,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable
     {
         while(this._truckRequestCount > 0 && this._diamondCount >= GameSettings.TruckPrice)
         {
-            if(this.HasMoney(GameSettings.TruckPrice))
+            if(this.Buy(GameSettings.TruckPrice*this.GetVehicleCount()))
             {
                 if(this.CreateTruck()){
-                    this.Buy(GameSettings.TruckPrice);
                     this.RemoveTruckRequest();
                 }
                 else
@@ -294,10 +291,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable
 
         while(this._tankRequestCount > 0 && this._diamondCount >= GameSettings.TankPrice)
         {
-            if(this.HasMoney(GameSettings.TankPrice))
+            if(this.Buy(GameSettings.TankPrice*this.GetVehicleCount()))
             {
                 if(this.CreateTank()){
-                    this.Buy(GameSettings.TankPrice);
                     this.RemoveTankRequest();
                 }
                 else
@@ -358,5 +354,35 @@ export class Headquarter extends AliveItem implements IField, ISelectable
         }
         return false;
     }
+
+    public GetVehicleCount():number{
+        return this._vehicles.length;
+    }
+
+    public AddVehicle(v:Vehicle):void{
+        this._vehicles.push(v);
+        v.Destoyed.on((e:any,ve:Vehicle)=>{
+            this._vehicles = this._vehicles.filter(v=>v.IsAlive());
+        })
+    }
+
+    public GetInfluenceCount():number{
+        return this._influenceFields.length;
+    }
+
+    public GetInfluence():Array<InfluenceField>{
+        return this._influenceFields;
+    }
+
+    public AddInfluence(i:InfluenceField):void{
+        this._influenceFields.push(i);
+        i.Lost.on((e:any,ie:InfluenceField)=>{
+            this._influenceFields = this._influenceFields.filter(v=>v !== ie);
+        });
+    }
+
+    public GetTotalEnergy():number {
+        return this._influenceFields.map(i=>i.GetInternalEnergy()).reduce((a,e)=>a+e,0);
+      }
 
 }

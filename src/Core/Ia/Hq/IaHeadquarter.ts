@@ -127,9 +127,9 @@ export class IaHeadquarter extends Headquarter{
                     const explosion = new Explosion(field.GetCell().GetBoundingBox(),Archive.constructionEffects,5,false,5);
                     PlaygroundHelper.Playground.Items.push(explosion);
                 }
-                this.Count +=1;
+                this.VehicleId +=1;
                 truck = new Truck(this);
-                truck.Id = `${this.PlayerName}${this.Count}`;
+                truck.Id = `${this.PlayerName}${this.VehicleId}`;
                 truck.SetPosition(field.GetCell());
                 PlaygroundHelper.VehiclesContainer.Add(truck);
                 PlaygroundHelper.Playground.Items.push(truck);
@@ -160,9 +160,9 @@ export class IaHeadquarter extends Headquarter{
                             const explosion = new Explosion(field.GetCell().GetBoundingBox(),Archive.constructionEffects,5,false,5);
                             PlaygroundHelper.Playground.Items.push(explosion);
                         }
-                        this.Count +=1;
+                        this.VehicleId +=1;
                         var tank = new Tank(this);
-                        tank.Id = `${this.PlayerName}${this.Count}`;
+                        tank.Id = `${this.PlayerName}${this.VehicleId}`;
                         tank.SetPosition(field.GetCell());
                         area.AddTroop(tank,cell);
                         PlaygroundHelper.VehiclesContainer.Add(tank);

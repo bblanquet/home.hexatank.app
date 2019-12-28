@@ -32,12 +32,13 @@ export class FastField extends Field
         return false;
     }
     Support(vehicule: Vehicle): void {
-        const influences = vehicule.Hq.InfluenceFields.filter(f=>f.GetArea().Exist(this.GetCell().GetCoordinate()));
-        const sum = 1+(influences.map(i=>i.GetPower()).reduce((a,b)=>a+b)/10);
+        const sum = this.GetInfluenceSum(vehicule);
         vehicule.TranslationSpeed = GameSettings.TranslationSpeed*(2+sum);
         vehicule.RotationSpeed = GameSettings.RotationSpeed*(2+sum);
         vehicule.Attack = GameSettings.Attack;
     }    
+
+
 
     IsDesctrutible(): boolean {
         return false;

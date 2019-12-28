@@ -237,13 +237,13 @@ export default class CanvasComponent extends Component<any, {
             onClick={(e: any) => this.SendContext(new TankMenuItem())}>
               <div class="white-background">{this.state.TankRequestCount}</div>
               <div class="fill-tank max-width standard-space"></div>
-              <div class="max-width text-center darker">{GameSettings.TankPrice} <span class="fill-diamond badge very-small-space middle"> </span></div>
+              <div class="max-width text-center darker">{GameSettings.TankPrice*PlaygroundHelper.PlayerHeadquarter.GetVehicleCount()} <span class="fill-diamond badge very-small-space middle"> </span></div>
             </button>
             <button type="button" class="btn btn-dark without-padding" 
             onClick={(e: any) => this.SendContext(new TruckMenuItem())}>
               <div class="white-background">{this.state.TruckRequestCount}</div>
               <div class="fill-truck max-width standard-space"></div>
-              <div class="max-width text-center darker">{GameSettings.TruckPrice} <span class="fill-diamond badge very-small-space middle"> </span></div>
+              <div class="max-width text-center darker">{GameSettings.TruckPrice*PlaygroundHelper.PlayerHeadquarter.GetVehicleCount()} <span class="fill-diamond badge very-small-space middle"> </span></div>
             </button>
             <button type="button" class="btn btn-dark without-padding" onClick={(e: any) => this.SetFlag(e)}>
             <div class="white-background">{this.state.HasFlag ? 'ON' : 'OFF'}</div>
@@ -265,7 +265,7 @@ export default class CanvasComponent extends Component<any, {
       <div class="left-column">
         <div class="middle2 max-width">
           <div class="btn-group-vertical max-width">
-          <button type="button" class="btn btn-dark without-padding">
+          <button type="button" class="btn btn-light without-padding">
               <div class="fill-energy max-width standard-space"></div>
               <div class="max-width text-center darker">{field.Battery.GetCurrentPower()}/{field.Battery.GetTotalPower()}</div>
             </button>
@@ -273,7 +273,7 @@ export default class CanvasComponent extends Component<any, {
             onClick={(e: any) => this.SendContext(new PlusMenuItem())}>
               <div class="fill-plus max-width standard-space"></div>
               {field.Battery.HasStock() ? '':
-              <div class="max-width text-center darker">{GameSettings.TankPrice} <span class="fill-diamond badge very-small-space middle"> </span></div>
+              <div class="max-width text-center darker">{GameSettings.TruckPrice*PlaygroundHelper.PlayerHeadquarter.GetTotalEnergy()} <span class="fill-diamond badge very-small-space middle"> </span></div>
               }
             </button>
             <button type="button" class="btn btn-dark without-padding" 
@@ -284,7 +284,7 @@ export default class CanvasComponent extends Component<any, {
             onClick={(e: any) => this.SendContext(new BigMenuItem())}>
               <div class="fill-big max-width standard-space"></div>
               {field.Battery.HasStock() ? '':
-              <div class="max-width text-center darker">{GameSettings.TankPrice} <span class="fill-diamond badge very-small-space middle"> </span></div>
+              <div class="max-width text-center darker">{GameSettings.TruckPrice*PlaygroundHelper.PlayerHeadquarter.GetTotalEnergy()} <span class="fill-diamond badge very-small-space middle"> </span></div>
               }            
               </button>
             <button type="button" class="btn btn-dark without-padding" 
@@ -341,7 +341,7 @@ export default class CanvasComponent extends Component<any, {
           <button type="button" class="btn btn-dark without-padding" 
           onClick={(e: any) => this.SendContext(new InfluenceMenuItem())}>
               <div class="fill-influence max-width standard-space"></div>
-              <div class="max-width text-center darker">{GameSettings.FieldPrice} <span class="fill-diamond badge very-small-space middle"> </span></div>
+              <div class="max-width text-center darker">{GameSettings.TruckPrice*PlaygroundHelper.PlayerHeadquarter.GetInfluenceCount()} <span class="fill-diamond badge very-small-space middle"> </span></div>
             </button>
           <button type="button" class="btn btn-dark without-padding" 
           onClick={(e: any) => this.SendContext(new AttackMenuItem())}>

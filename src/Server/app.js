@@ -101,6 +101,7 @@ io.on('connection', function(socket) {
 				console.log('[kicking] Room' + data.RoomName + ' Player ' + data.PlayerName);
 				room.RemovePlayer(data.PlayerName, data.RoomName);
 				io.in(data.RoomName).emit('kick', { PlayerName: data.PlayerName });
+				io.in(data.RoomName).emit('players', { list: room.Players });
 			}
 		}
 	});

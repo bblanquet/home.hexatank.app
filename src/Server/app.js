@@ -43,18 +43,18 @@ class RoomManager {
 		}
 	}
 
-	RemoveRoom(room) {
-		this.Rooms = this.Rooms.filter((r) => r !== room);
+	RemoveRoom(roomName) {
+		this.Rooms = this.Rooms.filter((r) => r.RoomName !== roomName);
 	}
 
 	Get(roomName) {
 		return this.Rooms.filter((r) => r.RoomName === roomName)[0];
 	}
 
-	RemovePlayer(playerName, room) {
-		if (this.Exist(room)) {
+	RemovePlayer(playerName, roomName) {
+		if (this.Exist(roomName)) {
 			let room = this.Get(room);
-			room.AddPlayer(playerName);
+			room.RemovePlayer(playerName);
 		}
 	}
 }
@@ -82,8 +82,8 @@ io.on('connection', function(socket) {
 			if (room.Exist(data.PlayerName)) {
 				console.log('[leaving] ' + data.RoomName + ' Player ' + data.PlayerName);
 				let room = roomManager.Get(data.RoomName);
-				room.RemovePlayer(data.PlayerName);
-				io.in(data.RoomName).emit('players', { Players: room.Players });
+				room.RemovePlayer(data.PlayerName, data.RoomName);
+				io.in(data.RoomName).emit('players', { list: room.Players });
 				if (room.Players.length === 0) {
 					Leave(data);
 				}
@@ -96,7 +96,7 @@ io.on('connection', function(socket) {
 			let room = roomManager.Get(data.RoomName);
 			if (room.Exist(data.PlayerName)) {
 				console.log('[kicking] Room' + data.RoomName + ' Player ' + data.PlayerName);
-				room.RemovePlayer(data.PlayerName);
+				room.RemovePlayer(data.PlayerName, data.RoomName);
 				io.in(data.RoomName).emit('kick', { PlayerName: data.PlayerName });
 			}
 		}
@@ -105,6 +105,17 @@ io.on('connection', function(socket) {
 	socket.on('remove', function(data) {
 		if (roomManager.Exist(data.RoomName)) {
 			Leave(data);
+		}
+	});
+
+	socket.on('available', function(data) {
+		if (roomManager.Exist(data.RoomName)) {
+			let room = roomManager.Get(data.RoomName);
+			if (room.Exist(data.PlayerName)) {
+				io.to(socket.id).emit('available', { IsAvailble: false, RoomName: data.RoomName });
+			} else {
+				io.to(socket.id).emit('available', { IsAvailble: true, RoomName: data.RoomName });
+			}
 		}
 	});
 

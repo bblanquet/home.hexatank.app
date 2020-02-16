@@ -31,24 +31,26 @@ class RoomManager {
 	}
 
 	Exist(roomName) {
-		return 0 < this.Rooms.filter((r) => r.RoomName === roomName).length;
+		let count = this.Rooms.filter((r) => r.Name === roomName).length;
+		console.log('[count] ' + roomName + ': ' + count);
+		return 0 < count;
 	}
 
 	AddRoom(roomName) {
-		if (this.Exist(roomName)) {
-			console.log('create room ' + roomName);
+		if (!this.Exist(roomName)) {
 			let room = new Room();
 			room.Name = roomName;
 			this.Rooms.push(room);
+			console.log('[created] ' + roomName);
 		}
 	}
 
 	RemoveRoom(roomName) {
-		this.Rooms = this.Rooms.filter((r) => r.RoomName !== roomName);
+		this.Rooms = this.Rooms.filter((r) => r.Name !== roomName);
 	}
 
 	Get(roomName) {
-		return this.Rooms.filter((r) => r.RoomName === roomName)[0];
+		return this.Rooms.filter((r) => r.Name === roomName)[0];
 	}
 
 	RemovePlayer(playerName, roomName) {
@@ -68,9 +70,10 @@ app.get('/', function(req, res) {
 io.on('connection', function(socket) {
 	console.log('[connected] socketId ' + socket.client.id);
 	socket.on('create', function(roomName) {
-		if (roomManager.Exist(roomName)) {
-			console.log('[created] Room ' + roomName);
+		if (!roomManager.Exist(roomName)) {
 			roomManager.AddRoom(roomName);
+		} else {
+			console.log('[not created] Room already exists ' + roomName);
 		}
 	});
 
@@ -108,13 +111,23 @@ io.on('connection', function(socket) {
 		}
 	});
 
+	socket.on('exist', function(data) {
+		if (roomManager.Exist(data.RoomName)) {
+			io.to(socket.id).emit('exist', { Exist: true, RoomName: data.RoomName });
+		} else {
+			io.to(socket.id).emit('exist', { Exist: false, RoomName: data.RoomName });
+		}
+	});
+
 	socket.on('available', function(data) {
 		if (roomManager.Exist(data.RoomName)) {
 			let room = roomManager.Get(data.RoomName);
 			if (room.Exist(data.PlayerName)) {
-				io.to(socket.id).emit('available', { IsAvailble: false, RoomName: data.RoomName });
+				console.log('[Not Available] Room ' + data.RoomName + ' Player ' + data.PlayerName);
+				io.to(socket.id).emit('available', { IsAvailable: false, RoomName: data.RoomName });
 			} else {
-				io.to(socket.id).emit('available', { IsAvailble: true, RoomName: data.RoomName });
+				console.log('[Available] Room ' + data.RoomName + ' Player ' + data.PlayerName);
+				io.to(socket.id).emit('available', { IsAvailable: true, RoomName: data.RoomName });
 			}
 		}
 	});
@@ -124,7 +137,7 @@ io.on('connection', function(socket) {
 			let room = roomManager.Get(data.RoomName);
 			room.AddPlayer(data.PlayerName);
 			socket.join(data.RoomName);
-			io.in(data.RoomName).emit('players', { list: server.Players });
+			io.in(data.RoomName).emit('players', { list: room.Players });
 			console.log('[join] Room ' + data.RoomName + ' Player ' + data.PlayerName);
 		}
 	});
@@ -152,6 +165,6 @@ function Leave(data) {
 		socketIds.forEach((socketId) => io.sockets.sockets[socketId].leave(data));
 	});
 	roomManager.RemoveRoom(data.RoomName);
-	console.log('[closed] Room' + data);
+	console.log('[closed] Room ' + data.RoomName);
 	io.in(data).emit('close');
 }

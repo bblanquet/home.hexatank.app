@@ -205,9 +205,6 @@ export class InfluenceField extends Field implements ISelectable{
     }
 
     private ClearArea() {
-        if(this.basicField){
-            this.basicField.Destroy();
-        }
         this._area.forEach(a => 
             a.Destroy());
         this._area = [];

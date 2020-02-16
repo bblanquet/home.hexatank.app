@@ -1,102 +1,146 @@
 const fs = require('fs');
-
-const privateKey  = fs.readFileSync('/etc/letsencrypt/live/www.mottet.xyz/privkey.pem');
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/www.mottet.xyz/privkey.pem');
 const certificate = fs.readFileSync('/etc/letsencrypt/live/www.mottet.xyz/fullchain.pem');
-const credentials = {key: privateKey, cert: certificate};
-
+const credentials = { key: privateKey, cert: certificate };
 var app = require('express')();
-var https = require('https').createServer(credentials,app);
+var https = require('https').createServer(credentials, app);
 var io = require('socket.io')(https);
-var servers = [];
 
-app.get('/', function(req, res){
-  res.sendFile(__dirname + '/index.html');
+class Room {
+	constructor() {
+		this.Name = '';
+		this.Players = [];
+	}
+
+	Exist(playerName) {
+		return 0 < this.Players.filter((p) => p === playerName).length;
+	}
+
+	AddPlayer(playerName) {
+		this.Players.push(playerName);
+	}
+
+	RemovePlayer(playerName) {
+		this.Players = this.Players.filter((p) => p !== playerName);
+	}
+}
+
+class RoomManager {
+	constructor() {
+		this.Rooms = [];
+	}
+
+	Exist(roomName) {
+		return 0 < this.Rooms.filter((r) => r.RoomName === roomName).length;
+	}
+
+	AddRoom(roomName) {
+		if (this.Exist(roomName)) {
+			console.log('create room ' + roomName);
+			let room = new Room();
+			room.Name = roomName;
+			this.Rooms.push(room);
+		}
+	}
+
+	RemoveRoom(room) {
+		this.Rooms = this.Rooms.filter((r) => r !== room);
+	}
+
+	Get(roomName) {
+		return this.Rooms.filter((r) => r.RoomName === roomName)[0];
+	}
+
+	RemovePlayer(playerName, room) {
+		if (this.Exist(room)) {
+			let room = this.Get(room);
+			room.AddPlayer(playerName);
+		}
+	}
+}
+
+var roomManager = new RoomManager();
+
+app.get('/', function(req, res) {
+	res.sendFile(__dirname + '/index.html');
 });
 
-io.on('connection', function(socket)
-{
-  console.log('connected ' + socket.client.id);
-  
-  socket.on('create', function(data) 
-  {
-    if(servers.filter(r=>r.ServerName === data).length === 0)
-    {
-      console.log('create room ' + data);
-      servers.push({
-        'ServerName':data,
-        'Players':[]
-      });
-    }
-  });
+io.on('connection', function(socket) {
+	console.log('[connected] socketId ' + socket.client.id);
+	socket.on('create', function(roomName) {
+		if (roomManager.Exist(roomName)) {
+			console.log('[created] Room ' + roomName);
+			roomManager.AddRoom(roomName);
+		}
+	});
 
-  socket.on('leave',function(data){
-    console.log('leaving: ' + data.ServerName);
-    socket.leave(data.ServerName);
-    
-    let servs = servers.filter(r=>r.ServerName === data.ServerName);
-    
-    if(servs.length === 1)
-    {
-      let server = servs[0];
-      server.Players = server.Players.filter(p=>p !== data.PlayerName);
-      io.in(data.ServerName).emit('players',{'list':server.Players});
-    }
-  });
+	socket.on('leave', function(data) {
+		socket.leave(data.RoomName);
 
-  socket.on('kick',function(data){
-    console.log('kicking: ' + data.ServerName);
-    let servs = servers.filter(r=>r.ServerName === data.ServerName);
-    if(servs.length === 1)
-    {
-      let server = servs[0];
-      server.Players = server.Players.filter(p=>p !== data.PlayerName);
-      io.in(data.ServerName).emit('kick',{'PlayerName':data.PlayerName});
-    }
-  });
+		if (roomManager.Exist(data.RoomName)) {
+			let room = roomManager.Get(data.RoomName);
+			if (room.Exist(data.PlayerName)) {
+				console.log('[leaving] ' + data.RoomName + ' Player ' + data.PlayerName);
+				let room = roomManager.Get(data.RoomName);
+				room.RemovePlayer(data.PlayerName);
+				io.in(data.RoomName).emit('players', { Players: room.Players });
+				if (room.Players.length === 0) {
+					Leave(data);
+				}
+			}
+		}
+	});
 
-  socket.on('remove', function(data)
-  {
-    if(servers.filter(r=>r.ServerName === data).length === 1)
-    {
-      console.log('closing: ' + data);
-      
-      io.in(data).emit('close');
+	socket.on('kick', function(data) {
+		if (roomManager.Exist(data.RoomName)) {
+			let room = roomManager.Get(data.RoomName);
+			if (room.Exist(data.PlayerName)) {
+				console.log('[kicking] Room' + data.RoomName + ' Player ' + data.PlayerName);
+				room.RemovePlayer(data.PlayerName);
+				io.in(data.RoomName).emit('kick', { PlayerName: data.PlayerName });
+			}
+		}
+	});
 
-      io.of('/').in(data).clients((error, socketIds) => {
-        if (error){
-          throw error;
-        }
-        socketIds.forEach(socketId => io.sockets.sockets[socketId].leave(data));
-      });
-      servers = servers.filter(r=>r.ServerName !== data);
-    }
-  });
+	socket.on('remove', function(data) {
+		if (roomManager.Exist(data.RoomName)) {
+			Leave(data);
+		}
+	});
 
-  socket.on('join', function(data) 
-  {
-    if(servers.filter(r=>r.ServerName === data.ServerName).length === 1)
-    {
-      let server = servers.filter(r=>r.ServerName === data.ServerName)[0];
-      console.log('join room ' + data.ServerName);
-      socket.join(data.ServerName);
-      server.Players.push(data.PlayerName);
-      
-      io.in(data.ServerName).emit('players',{'list':server.Players});
-    }
-  });
+	socket.on('join', function(data) {
+		if (roomManager.Exist(data.RoomName)) {
+			let room = roomManager.Get(data.RoomName);
+			room.AddPlayer(data.PlayerName);
+			socket.join(data.RoomName);
+			io.in(data.RoomName).emit('players', { list: server.Players });
+			console.log('[join] Room ' + data.RoomName + ' Player ' + data.PlayerName);
+		}
+	});
 
-  socket.on('rooms',function(){
-    io.to(socket.id).emit('rooms',{'serverNames':servers.map(s=>s.ServerName)});
-  });
+	socket.on('rooms', function() {
+		io.to(socket.id).emit('rooms', { RoomNames: roomManager.Rooms.map((r) => r.Name) });
+	});
 
-  socket.on('signaling',function(data){
-    let type =  data.message.candidate ? "candidate" :"sdp";
-    console.log(data.PlayerName + ' sends ' + type + '.');    
-    io.in(data.ServerName).emit('signaling',{...data.message,PlayerName:data.PlayerName});
-  });
-
+	socket.on('signaling', function(data) {
+		let type = data.message.candidate ? 'candidate' : 'sdp';
+		console.log(data.PlayerName + ' sends ' + type + '.');
+		io.in(data.RoomName).emit('signaling', { ...data.message, Sender: data.Sender, Receiver: data.Receiver });
+	});
 });
 
-https.listen(8080, function(){
-  console.log('listening on *:8080');
+https.listen(8080, function() {
+	console.log('listening on *:8080');
 });
+
+function Leave(data) {
+	io.of('/').in(data).clients((error, socketIds) => {
+		if (error) {
+			throw error;
+		}
+		socketIds.forEach((socketId) => io.sockets.sockets[socketId].leave(data));
+	});
+	roomManager.RemoveRoom(data.RoomName);
+	console.log('[closed] Room' + data);
+	io.in(data).emit('close');
+}

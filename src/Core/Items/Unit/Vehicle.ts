@@ -177,8 +177,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
             let height = this.GetBoundingBox().Height;
 
             const leftb = new BoundingBox();
-            leftb.X = center + width/4*Math.cos(this.CurrentRadius);
-            leftb.Y = middle + height/4*Math.sin(this.CurrentRadius);
+            leftb.X = center + ((width/3) - (this.GetBoundingBox().Width/5))*Math.cos(this.CurrentRadius);
+            leftb.Y = middle + ((height/3) - (this.GetBoundingBox().Width/5))*Math.sin(this.CurrentRadius);
             leftb.Width = this.GetBoundingBox().Width/5;
             leftb.Height = this.GetBoundingBox().Width/5;
 
@@ -186,13 +186,15 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
             this._leftDusts[this._dustIndex].GetSprites().forEach(s=>{s.visible = this._currentCell.IsVisible();});
 
             const rightb = new BoundingBox();
-            rightb.X = center - width/3*Math.cos(this.CurrentRadius);
-            rightb.Y = middle - height/3*Math.sin(this.CurrentRadius);
+            rightb.X = center + (width/3)*Math.sin(this.CurrentRadius);
+            rightb.Y = middle + (height/3)*Math.cos(this.CurrentRadius);
             rightb.Width = this.GetBoundingBox().Width/5;
             rightb.Height = this.GetBoundingBox().Width/5;
 
             this._rightDusts[this._dustIndex].Reset(rightb);
             this._rightDusts[this._dustIndex].GetSprites().forEach(s=>{s.visible = this._currentCell.IsVisible();});
+
+            console.log(this.CurrentRadius);
 
             this._dustIndex = (this._dustIndex+1) % this._leftDusts.length;
         }

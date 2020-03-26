@@ -1,47 +1,44 @@
-import { AliveItem } from "../../Items/AliveItem";
-import { IField } from "./IField";
-import { Cell } from "../Cell";       
-import { CellState } from "../CellState";
-import { Vehicle } from "../../Items/Unit/Vehicle";
-import { PeerHandler } from "../../../Menu/Network/Host/On/PeerHandler";
-import { PacketKind } from "../../../Menu/Network/PacketKind";
- 
-export abstract class AliveField extends AliveItem implements IField{
-    
-    abstract Support(vehicule: Vehicle): void ;
-    abstract IsDesctrutible(): boolean ;
-    abstract IsBlocking(): boolean ;
+import { AliveItem } from '../../Items/AliveItem';
+import { IField } from './IField';
+import { Cell } from '../Cell';
+import { CellState } from '../CellState';
+import { Vehicle } from '../../Items/Unit/Vehicle';
+import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
+import { PacketKind } from '../../../Components/Network/PacketKind';
 
-    private _onCellStateChanged:{(obj:any,cellState:CellState):void};
+export abstract class AliveField extends AliveItem implements IField {
+	abstract Support(vehicule: Vehicle): void;
+	abstract IsDesctrutible(): boolean;
+	abstract IsBlocking(): boolean;
 
-    constructor(private _cell:Cell){
-        super();
-        this._onCellStateChanged = this.OnCellStateChanged.bind(this);
-        this._cell.CellStateChanged.on(this._onCellStateChanged);
-    }
+	private _onCellStateChanged: { (obj: any, cellState: CellState): void };
 
-    protected OnCellStateChanged(obj:any,cellState: CellState): void {
-        this.GetDisplayObjects().forEach(s=>{
-            s.visible = cellState === CellState.Visible;
-        });
-    }
+	constructor(private _cell: Cell) {
+		super();
+		this._onCellStateChanged = this.OnCellStateChanged.bind(this);
+		this._cell.CellStateChanged.on(this._onCellStateChanged);
+	}
 
-    public GetCell(): Cell {
-        return this._cell
-    }
+	protected OnCellStateChanged(obj: any, cellState: CellState): void {
+		this.GetDisplayObjects().forEach((s) => {
+			s.visible = cellState === CellState.Visible;
+		});
+	}
 
-    public GetCurrentCell(): Cell {
-        return this._cell;
-    }
+	public GetCell(): Cell {
+		return this._cell;
+	}
 
-    public Destroy():void{
-        PeerHandler.SendMessage(PacketKind.Destroyed,{
-            cell:this._cell.GetCoordinate(),
-            Name:"field"
-        });
-        super.Destroy();
-        this._cell.CellStateChanged.off(this._onCellStateChanged);
-    }
+	public GetCurrentCell(): Cell {
+		return this._cell;
+	}
 
-
+	public Destroy(): void {
+		PeerHandler.SendMessage(PacketKind.Destroyed, {
+			cell: this._cell.GetCoordinate(),
+			Name: 'field'
+		});
+		super.Destroy();
+		this._cell.CellStateChanged.off(this._onCellStateChanged);
+	}
 }

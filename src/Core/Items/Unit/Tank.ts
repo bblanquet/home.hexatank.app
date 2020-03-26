@@ -1,7 +1,7 @@
 import { CamouflageHandler } from '../../Utils/CamouflageHandler';
 import { Cell } from '../../Cell/Cell';
 import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
-import { PeerHandler } from './../../../Menu/Network/Host/On/PeerHandler';
+import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
 import { Vehicle } from './Vehicle';
 import { Turrel } from './Turrel';
 import { AliveItem } from '../AliveItem';
@@ -10,7 +10,7 @@ import { IHqContainer } from './IHqContainer';
 import { Headquarter } from '../../Cell/Field/Headquarter';
 import { Archive } from '../../Utils/ResourceArchiver';
 import { CellState } from '../../Cell/CellState';
-import { PacketKind } from '../../../Menu/Network/PacketKind';
+import { PacketKind } from '../../../Components/Network/PacketKind';
 import { BasicItem } from '../BasicItem';
 import { BoundingBox } from '../../Utils/BoundingBox';
 import { Explosion } from './Explosion';

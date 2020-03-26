@@ -2,11 +2,11 @@ import { Item } from '../Item';
 import { Explosion } from './Explosion';
 import { AliveItem } from '../AliveItem';
 import * as PIXI from 'pixi.js';
-import { BoundingBox } from '../../Utils/BoundingBox';
-import { Archive } from '../../Utils/ResourceArchiver';
-import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
-import { InteractionContext } from '../../Context/InteractionContext';
-import { GameSettings } from '../../Utils/GameSettings';
+import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
+import { Archive } from '../../Framework/ResourceArchiver';
+import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { InteractionContext } from '../../Interaction/InteractionContext';
+import { GameSettings } from '../../Framework/GameSettings';
 
 export class Missile extends Item {
 	BoundingBox: BoundingBox;

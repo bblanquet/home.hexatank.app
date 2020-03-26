@@ -1,7 +1,7 @@
-import { DecorationType } from "./DecorationType"; 
-import { HexAxial } from "../../Utils/Coordinates/HexAxial";
+import { DecorationType } from './DecorationType';
+import { HexAxial } from '../../Utils/Geometry/HexAxial';
 
-export class MapItem{
-    public Type:DecorationType;
-    public Position:HexAxial;
+export class MapItem {
+	public Type: DecorationType;
+	public Position: HexAxial;
 }

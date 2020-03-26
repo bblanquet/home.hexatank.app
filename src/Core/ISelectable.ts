@@ -1,7 +1,7 @@
-import { LiteEvent } from "./Utils/LiteEvent";
+import { LiteEvent } from './Utils/Events/LiteEvent';
 
-export interface ISelectable{
-    SetSelected(visible:boolean):void;
-    IsSelected():boolean;
-    SelectionChanged: LiteEvent<ISelectable>;
+export interface ISelectable {
+	SetSelected(visible: boolean): void;
+	IsSelected(): boolean;
+	SelectionChanged: LiteEvent<ISelectable>;
 }

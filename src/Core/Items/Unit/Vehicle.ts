@@ -1,30 +1,30 @@
-import { CellStateSetter } from './../../Cell/CellStateSetter';
-import { GameSettings } from './../../Utils/GameSettings';
+import { CellStateSetter } from '../Cell/CellStateSetter';
+import { GameSettings } from '../../Framework/GameSettings';
 import { BasicItem } from '../BasicItem';
-import { LiteEvent } from '../../Utils/LiteEvent';
-import { Headquarter } from '../../Cell/Field/Headquarter';
+import { LiteEvent } from '../../Utils/Events/LiteEvent';
+import { Headquarter } from '../Cell/Field/Headquarter';
 import { Dust } from './Dust';
 import { AliveItem } from '../AliveItem';
-import { ITranslationMaker } from './Utils/ITranslationMaker';
+import { ITranslationMaker } from './MotionHelpers/ITranslationMaker';
 import { IMovable } from '../IMovable';
-import { IRotationMaker } from './Utils/IRotationMaker';
-import { IAngleFinder } from './Utils/IAngleFinder';
-import { TranslationMaker } from './Utils/TranslationMaker';
-import { RotationMaker } from './Utils/RotationMaker';
-import { AngleFinder } from './Utils/AngleFinder';
-import { IRotatable } from './Utils/IRotatable';
+import { IRotationMaker } from './MotionHelpers/IRotationMaker';
+import { IAngleFinder } from './MotionHelpers/IAngleFinder';
+import { TranslationMaker } from './MotionHelpers/TranslationMaker';
+import { RotationMaker } from './MotionHelpers/RotationMaker';
+import { AngleFinder } from './MotionHelpers/AngleFinder';
+import { IRotatable } from './MotionHelpers/IRotatable';
 import { isNullOrUndefined } from 'util';
 import { ISelectable } from '../../ISelectable';
-import { Cell } from '../../Cell/Cell';
+import { Cell } from '../Cell/Cell';
 import { IOrder } from '../../Ia/Order/IOrder';
-import { BoundingBox } from '../../Utils/BoundingBox';
-import { Timer } from '../../Utils/Timer';
-import { CellState } from '../../Cell/CellState';
-import { Archive } from '../../Utils/ResourceArchiver';
-import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
-import { CellProperties } from '../../Cell/CellProperties';
-import { Crater } from '../Others/Crater';
-import { InteractionContext } from '../../Context/InteractionContext';
+import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
+import { Timer } from '../../Utils/Timer/Timer';
+import { CellState } from '../Cell/CellState';
+import { Archive } from '../../Framework/ResourceArchiver';
+import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { CellProperties } from '../Cell/CellProperties';
+import { Crater } from '../Environment/Crater';
+import { InteractionContext } from '../../Interaction/InteractionContext';
 import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
 import { PacketKind } from '../../../Components/Network/PacketKind';
 import { Explosion } from './Explosion';
@@ -209,7 +209,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
 	public SetSelected(isSelected: boolean): void {
 		this.SetProperty(Archive.selectionUnit, (e) => (e.alpha = isSelected ? 1 : 0));
-		this.SelectionChanged.trigger(this, this);
+		this.SelectionChanged.Invoke(this, this);
 	}
 
 	public GetNextCell(): Cell {
@@ -220,12 +220,12 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
 	public MoveNextCell(): void {
 		let previouscell = this._currentCell;
-		this._currentCell.CellStateChanged.off(this._onCellStateChanged);
+		this._currentCell.CellStateChanged.Off(this._onCellStateChanged);
 
 		this._currentCell = this._nextCell;
-		this.CellChanged.trigger(this._currentCell);
+		this.CellChanged.Invoke(this._currentCell);
 		this.OnCellStateChanged(this, this._currentCell.GetState());
-		this._currentCell.CellStateChanged.on(this._onCellStateChanged);
+		this._currentCell.CellStateChanged.On(this._onCellStateChanged);
 		this._nextCell = null;
 
 		CellStateSetter.SetStates(previouscell.GetAll());
@@ -233,8 +233,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	}
 
 	public Destroy(): void {
-		this.Destoyed.trigger(this, this);
-		this.Destoyed.clear();
+		this.Destoyed.Invoke(this, this);
+		this.Destoyed.Clear();
 		PeerHandler.SendMessage(PacketKind.Destroyed, {
 			cell: this._currentCell.GetCoordinate(),
 			Name: 'vehicle'
@@ -331,7 +331,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this.InitPosition(cell.GetBoundingBox());
 		this._currentCell = cell;
 		this._currentCell.SetOccupier(this);
-		this._currentCell.CellStateChanged.on(this._onCellStateChanged);
+		this._currentCell.CellStateChanged.On(this._onCellStateChanged);
 		this._onCellStateChanged(this, this._currentCell.GetState());
 		CellStateSetter.SetStates(this._currentCell.GetAll());
 	}

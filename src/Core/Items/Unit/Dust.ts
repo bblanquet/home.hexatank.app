@@ -1,9 +1,9 @@
 import { Item } from '../Item';
-import { BoundingBox } from '../../Utils/BoundingBox';
-import { Timer } from '../../Utils/Timer';
-import { Archive } from '../../Utils/ResourceArchiver';
-import { InteractionContext } from '../../Context/InteractionContext';
-import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
+import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
+import { Timer } from '../../Utils/Timer/Timer';
+import { Archive } from '../../Framework/ResourceArchiver';
+import { InteractionContext } from '../../Interaction/InteractionContext';
+import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
 
 export class Dust extends Item {
 	public BoundingBox: BoundingBox;

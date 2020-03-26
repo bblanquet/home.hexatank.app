@@ -1,5 +1,5 @@
-import { BoundingBox } from "./Utils/BoundingBox"; 
+import { BoundingBox } from './Utils/Geometry/BoundingBox';
 
-export interface IBoundingBoxContainer{
-    GetBoundingBox():BoundingBox;
+export interface IBoundingBoxContainer {
+	GetBoundingBox(): BoundingBox;
 }

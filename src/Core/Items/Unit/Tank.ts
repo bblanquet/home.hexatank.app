@@ -1,18 +1,18 @@
-import { CamouflageHandler } from '../../Utils/CamouflageHandler';
-import { Cell } from '../../Cell/Cell';
-import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
+import { CamouflageHandler } from './CamouflageHandler';
+import { Cell } from '../Cell/Cell';
+import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
 import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
 import { Vehicle } from './Vehicle';
 import { Turrel } from './Turrel';
 import { AliveItem } from '../AliveItem';
 import { isNullOrUndefined, isNull } from 'util';
 import { IHqContainer } from './IHqContainer';
-import { Headquarter } from '../../Cell/Field/Headquarter';
-import { Archive } from '../../Utils/ResourceArchiver';
-import { CellState } from '../../Cell/CellState';
+import { Headquarter } from '../Cell/Field/Headquarter';
+import { Archive } from '../../Framework/ResourceArchiver';
+import { CellState } from '../Cell/CellState';
 import { PacketKind } from '../../../Components/Network/PacketKind';
 import { BasicItem } from '../BasicItem';
-import { BoundingBox } from '../../Utils/BoundingBox';
+import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Explosion } from './Explosion';
 
 export class Tank extends Vehicle implements IHqContainer {

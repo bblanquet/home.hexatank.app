@@ -1,12 +1,12 @@
 import { Component, h } from 'preact';
-import { PlaygroundHelper } from '../../Core/Utils/PlaygroundHelper';
+import { PlaygroundHelper } from '../../Core/Framework/PlaygroundHelper';
 import { GameSetup } from '../../Core/GameSetup';
 import { PeerHandler } from '../Network/Host/On/PeerHandler';
 import { route } from 'preact-router';
 import { Item } from '../../Core/Items/Item';
 import { Tank } from '../../Core/Items/Unit/Tank';
 import { Truck } from '../../Core/Items/Unit/Truck';
-import { Cell } from '../../Core/Cell/Cell';
+import { Cell } from '../../Core/Items/Cell/Cell';
 import { TankMenuItem } from '../../Core/Menu/Buttons/TankMenuItem';
 import { TruckMenuItem } from '../../Core/Menu/Buttons/TruckMenuItem';
 import { TargetMenuItem } from '../../Core/Menu/Buttons/TargetMenuItem';
@@ -24,14 +24,14 @@ import { PoisonMenuItem } from '../../Core/Menu/Buttons/PoisonMenuItem';
 import { HealMenuItem } from '../../Core/Menu/Buttons/HealMenuItem';
 import { SpeedFieldMenuItem } from '../../Core/Menu/Buttons/SpeedFieldMenuItem';
 import { ISelectable } from '../../Core/ISelectable';
-import { InteractionKind } from '../../Core/Context/IInteractionContext';
 import { PingInfo } from '../Network/Ping/PingInfo';
-import { InfluenceField } from '../../Core/Cell/Field/InfluenceField';
-import { GameSettings } from '../../Core/Utils/GameSettings';
+import { InfluenceField } from '../../Core/Items/Cell/Field/InfluenceField';
+import { GameSettings } from '../../Core/Framework/GameSettings';
 import { SmallMenuItem } from '../../Core/Menu/Buttons/SmallMenuItem';
-import { Headquarter } from '../../Core/Cell/Field/Headquarter';
+import { Headquarter } from '../../Core/Items/Cell/Field/Headquarter';
 import { AbortMenuItem } from '../../Core/Menu/Buttons/AbortMenuItem';
 import { SearchMoneyMenuItem } from '../../Core/Menu/Buttons/SearchMoneyMenuItem';
+import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
 
 export default class CanvasComponent extends Component<
 	any,
@@ -71,7 +71,7 @@ export default class CanvasComponent extends Component<
 
 	private OnItemSelectionChanged(obj: any, item: ISelectable): void {
 		if (!item.IsSelected()) {
-			item.SelectionChanged.off(this._onItemSelectionChanged);
+			item.SelectionChanged.Off(this._onItemSelectionChanged);
 			this.setState({
 				...this.state,
 				Item: null
@@ -89,7 +89,7 @@ export default class CanvasComponent extends Component<
 		}
 
 		if (PlaygroundHelper.IsOnline) {
-			PlaygroundHelper.PingHandler.PingReceived.on((obj: any, data: PingInfo) => {
+			PlaygroundHelper.PingHandler.PingReceived.On((obj: any, data: PingInfo) => {
 				this.setState({
 					PingStatus: `${data.Receiver}: ${data.Duration}`
 				});
@@ -117,32 +117,32 @@ export default class CanvasComponent extends Component<
 		window.addEventListener('DOMContentLoaded', () => PlaygroundHelper.ResizeTheCanvas());
 		PlaygroundHelper.InteractionManager.autoPreventDefault = false;
 		this._gameSetup.SetCenter();
-		PlaygroundHelper.PlayerHeadquarter.TruckRequestEvent.on((obj: any, e: number) => {
+		PlaygroundHelper.PlayerHeadquarter.TruckRequestEvent.On((obj: any, e: number) => {
 			this.setState({
 				...this.state,
 				TruckRequestCount: e
 			});
 		});
-		PlaygroundHelper.PlayerHeadquarter.TankRequestEvent.on((obj: any, e: number) => {
+		PlaygroundHelper.PlayerHeadquarter.TankRequestEvent.On((obj: any, e: number) => {
 			this.setState({
 				...this.state,
 				TankRequestCount: e
 			});
 		});
-		PlaygroundHelper.PlayerHeadquarter.DiamondCountEvent.on((obj: any, e: number) => {
+		PlaygroundHelper.PlayerHeadquarter.DiamondCountEvent.On((obj: any, e: number) => {
 			this.setState({
 				...this.state,
 				Amount: e
 			});
 		});
-		PlaygroundHelper.SelectedItem.on((obj: any, e: Item) => {
-			((e as unknown) as ISelectable).SelectionChanged.on(this._onItemSelectionChanged);
+		PlaygroundHelper.SelectedItem.On((obj: any, e: Item) => {
+			((e as unknown) as ISelectable).SelectionChanged.On(this._onItemSelectionChanged);
 			this.setState({
 				...this.state,
 				Item: e
 			});
 		});
-		PlaygroundHelper.WarningChanged.on((obj: any, e: boolean) => {
+		PlaygroundHelper.WarningChanged.On((obj: any, e: boolean) => {
 			this.setState({
 				...this.state,
 				HasWarning: e

@@ -2,13 +2,13 @@ import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
 import { OrderState } from './OrderState';
 import { isNullOrUndefined, isNull } from 'util';
 import { Order } from './Order';
-import { Cell } from '../../Cell/Cell';
-import { CellFinder } from '../../Cell/CellFinder';
+import { Cell } from '../../Items/Cell/Cell';
+import { CellFinder } from '../../Items/Cell/CellFinder';
 import { BasicItem } from '../../Items/BasicItem';
-import { Timer } from '../../Utils/Timer';
+import { Timer } from '../../Utils/Timer/Timer';
 import { Vehicle } from '../../Items/Unit/Vehicle';
-import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
-import { Archive } from '../../Utils/ResourceArchiver';
+import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { Archive } from '../../Framework/ResourceArchiver';
 import { PacketKind } from '../../../Components/Network/PacketKind';
 
 export class SimpleOrder extends Order {

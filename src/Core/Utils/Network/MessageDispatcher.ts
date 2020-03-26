@@ -1,11 +1,10 @@
-import { PoisonField } from '../../Cell/Field/PoisonField';
-import { SlowField } from '../../Cell/Field/SlowField';
-import { AttackField } from '../../Cell/Field/AttackField';
-import { HealField } from '../../Cell/Field/HealField';
+import { PoisonField } from '../../Items/Cell/Field/PoisonField';
+import { SlowField } from '../../Items/Cell/Field/SlowField';
+import { AttackField } from '../../Items/Cell/Field/AttackField';
+import { HealField } from '../../Items/Cell/Field/HealField';
 import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
-import { Headquarter } from '../../Cell/Field/Headquarter';
-import { HexAxial } from '../Coordinates/HexAxial';
-import { PlaygroundHelper } from '../PlaygroundHelper';
+import { Headquarter } from '../../Items/Cell/Field/Headquarter';
+import { HexAxial } from '../Geometry/HexAxial';
 import { PacketKind } from '../../../Components/Network/PacketKind';
 import { route } from 'preact-router';
 import { GameMessage } from './GameMessage';
@@ -13,11 +12,12 @@ import { MessageProgess } from './MessageProgess';
 import { MapContext } from '../../Setup/Generator/MapContext';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { IaHeadquarter } from '../../Ia/Hq/IaHeadquarter';
-import { AliveField } from '../../Cell/Field/AliveField';
+import { AliveField } from '../../Items/Cell/Field/AliveField';
 import { Tank } from '../../Items/Unit/Tank';
-import { MoneyField } from '../../Cell/Field/MoneyField';
-import { FastField } from '../../Cell/Field/FastField';
-import { InfluenceField } from '../../Cell/Field/InfluenceField';
+import { MoneyField } from '../../Items/Cell/Field/MoneyField';
+import { FastField } from '../../Items/Cell/Field/FastField';
+import { InfluenceField } from '../../Items/Cell/Field/InfluenceField';
+import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
 
 export class MessageDispatcher {
 	private _isClient: boolean = false;

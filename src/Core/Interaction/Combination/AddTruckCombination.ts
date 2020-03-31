@@ -1,5 +1,5 @@
 import { TruckMenuItem } from '../../Menu/Buttons/TruckMenuItem';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { ICombination } from './ICombination';
 import { CombinationContext } from './CombinationContext';
 import { InteractionMode } from '../InteractionMode';
@@ -22,7 +22,7 @@ export class AddTruckCombination implements ICombination {
 
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
-			PlaygroundHelper.PlayerHeadquarter.AddTruckRequest();
+			GameHelper.PlayerHeadquarter.AddTruckRequest();
 			context.Items.splice(context.Items.length - 1, 1);
 			return true;
 		}

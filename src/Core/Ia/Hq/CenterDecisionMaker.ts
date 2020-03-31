@@ -2,7 +2,7 @@ import { RequestPriority } from './RequestPriority';
 import { IaHeadquarter } from './IaHeadquarter';
 import { AreaRequest } from '../Area/AreaRequest';
 import { isNullOrUndefined } from 'util';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 
 export class CenterDecisionMaker {
 	constructor(private _hq: IaHeadquarter) {}
@@ -77,7 +77,7 @@ export class CenterDecisionMaker {
 
 	private GetHelpFromSurrounding(request: AreaRequest) {
 		const cell = request.Status.Area.GetCentralCell();
-		const surroundingAreas = PlaygroundHelper.GetNeighbourhoodAreas(cell);
+		const surroundingAreas = GameHelper.GetNeighbourhoodAreas(cell);
 
 		for (const surroundingArea of surroundingAreas) {
 			const cellKey = surroundingArea.GetCentralCell().GetCoordinate().ToString();

@@ -3,7 +3,7 @@ import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { Item } from '../../Item';
 import { IInteractionContext } from '../../../Interaction/IInteractionContext';
 import { CellState } from '../CellState';
-import { PlaygroundHelper } from '../../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../../Framework/GameHelper';
 
 export class BasicInfluenceField extends Item {
 	private _isIncreasingOpacity: boolean = false;
@@ -36,7 +36,7 @@ export class BasicInfluenceField extends Item {
 	}
 
 	public Destroy(): void {
-		PlaygroundHelper.Render.Remove(this);
+		GameHelper.Render.Remove(this);
 		super.Destroy();
 		this.InfluenceField.GetCell().CellStateChanged.Off(this._onCellStateChanged);
 	}

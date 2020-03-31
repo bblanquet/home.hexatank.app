@@ -1,4 +1,4 @@
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { InfluenceField } from '../../Items/Cell/Field/InfluenceField';
 import { InfluenceMenuItem } from '../../Menu/Buttons/InfluenceMenuItem';
 import { isNullOrUndefined } from 'util';
@@ -34,17 +34,17 @@ export class InfluenceCombination implements ICombination {
 			if (!isNullOrUndefined(cell)) {
 				if (cell.GetField() instanceof BasicField) {
 					if (
-						PlaygroundHelper.PlayerHeadquarter.Buy(
-							GameSettings.TruckPrice * PlaygroundHelper.PlayerHeadquarter.GetInfluenceCount()
+						GameHelper.PlayerHeadquarter.Buy(
+							GameSettings.TruckPrice * GameHelper.PlayerHeadquarter.GetInfluenceCount()
 						)
 					) {
 						PeerHandler.SendMessage(PacketKind.Field, {
-							Hq: PlaygroundHelper.PlayerHeadquarter.GetCurrentCell().GetCoordinate(),
+							Hq: GameHelper.PlayerHeadquarter.GetCurrentCell().GetCoordinate(),
 							cell: cell.GetCoordinate(),
 							Type: 'Influence'
 						});
-						let field = new InfluenceField(cell, PlaygroundHelper.PlayerHeadquarter);
-						PlaygroundHelper.Playground.Items.push(field);
+						let field = new InfluenceField(cell, GameHelper.PlayerHeadquarter);
+						GameHelper.Playground.Items.push(field);
 					}
 				}
 			}

@@ -3,7 +3,7 @@ import { HealMenuItem } from '../../Menu/Buttons/HealMenuItem';
 import { isNullOrUndefined } from 'util';
 import { Cell } from '../../Items/Cell/Cell';
 import { BasicField } from '../../Items/Cell/Field/BasicField';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { HealField } from '../../Items/Cell/Field/HealField';
 import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
 import { PacketKind } from '../../../Components/Network/PacketKind';
@@ -33,15 +33,15 @@ export class HealCellCombination implements ICombination {
 			let cell = <Cell>context.Items[0];
 			if (!isNullOrUndefined(cell)) {
 				if (cell.GetField() instanceof BasicField) {
-					if (PlaygroundHelper.PlayerHeadquarter.HasMoney(GameSettings.FieldPrice)) {
-						PlaygroundHelper.PlayerHeadquarter.Buy(GameSettings.FieldPrice);
+					if (GameHelper.PlayerHeadquarter.HasMoney(GameSettings.FieldPrice)) {
+						GameHelper.PlayerHeadquarter.Buy(GameSettings.FieldPrice);
 						PeerHandler.SendMessage(PacketKind.Field, {
-							Hq: PlaygroundHelper.PlayerHeadquarter.GetCurrentCell().GetCoordinate(),
+							Hq: GameHelper.PlayerHeadquarter.GetCurrentCell().GetCoordinate(),
 							cell: cell.GetCoordinate(),
 							Type: 'Heal'
 						});
 						let field = new HealField(cell);
-						PlaygroundHelper.Playground.Items.push(field);
+						GameHelper.Playground.Items.push(field);
 					}
 				}
 			}

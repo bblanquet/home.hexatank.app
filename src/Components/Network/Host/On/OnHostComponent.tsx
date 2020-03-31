@@ -8,7 +8,7 @@ import linkState from 'linkstate';
 import * as toastr from 'toastr';
 import { PacketKind } from '../../PacketKind';
 import { MapGenerator } from '../../../../Core/Setup/Generator/MapGenerator';
-import { PlaygroundHelper } from '../../../../Core/Framework/PlaygroundHelper';
+import { GameHelper } from '../../../../Core/Framework/GameHelper';
 import { MapContext } from '../../../../Core/Setup/Generator/MapContext';
 import { GameMessage } from '../../../../Core/Utils/Network/GameMessage';
 import { MessageProgess } from '../../../../Core/Utils/Network/MessageProgess';
@@ -41,30 +41,9 @@ export default class OnHostComponent extends Component<any, HostState> {
 			func: this.OnToastReceived.bind(this),
 			type: PacketKind.Toast
 		});
-		PlaygroundHelper.InitPingHandler(p.Name);
 
-		PeerHandler.Subscribe({
-			func: () => {
-				PlaygroundHelper.PingHandler.Start();
-				PlaygroundHelper.PingHandler.PingReceived.On((obj: any, e: PingInfo) => {
-					const receiver = this.state.Players.filter((p) => p.Name === e.Receiver)[0];
-					if (receiver) {
-						receiver.Latency = e.Duration;
-						if (receiver.Status === PlayerStatus.Connecting) {
-							receiver.Status = PlayerStatus.NotReady;
-						}
-						this.setState({
-							...this.state,
-							Players: this.state.Players
-						});
-					}
-				});
-			},
-			type: PacketKind.Open
-		});
-
-		PlaygroundHelper.Dispatcher.Init(!this.state.IsAdmin);
-		PlaygroundHelper.PlayerName = this.state.Player.Name;
+		GameHelper.Dispatcher.Init(!this.state.IsAdmin);
+		GameHelper.PlayerName = this.state.Player.Name;
 	}
 
 	componentDidMount() {}
@@ -256,7 +235,6 @@ export default class OnHostComponent extends Component<any, HostState> {
 
 	private Start(): void {
 		if (this.IsEveryoneReady()) {
-			PlaygroundHelper.IsOnline = true;
 			const hqCount = +this.state.IaNumber + this.state.Players.length;
 			let mapContext = new MapGenerator().GetMapDefinition(20, 'Flower', hqCount, MapMode.forest);
 			this.Assign(mapContext, this.state.Players);
@@ -266,9 +244,8 @@ export default class OnHostComponent extends Component<any, HostState> {
 			PeerHandler.SendMessage(PacketKind.Map, message);
 			this.SetIa(mapContext);
 
-			PlaygroundHelper.IsOnline = true;
-			PlaygroundHelper.MapContext = mapContext;
-			PlaygroundHelper.PlayerName = this.state.Player.Name;
+			GameHelper.MapContext = mapContext;
+			GameHelper.PlayerName = this.state.Player.Name;
 			route('/Canvas', true);
 			PeerHandler.CloseRoom();
 		}

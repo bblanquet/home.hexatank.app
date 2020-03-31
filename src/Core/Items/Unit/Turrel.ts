@@ -7,7 +7,7 @@ import { IRotatable } from './MotionHelpers/IRotatable';
 import { IRotationMaker } from './MotionHelpers/IRotationMaker';
 import { RotationMaker } from './MotionHelpers/RotationMaker';
 import { ItemSkin } from '../ItemSkin';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { Timer } from '../../Utils/Timer/Timer';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
@@ -104,7 +104,7 @@ export class Turrel extends Item implements IRotatable {
 			this.Base.Attack
 		);
 		missile.GetSprites().forEach((s) => (s.visible = this.Base.GetCurrentCell().IsVisible()));
-		PlaygroundHelper.Playground.Items.push(missile);
+		GameHelper.Playground.Items.push(missile);
 	}
 
 	private CoolingDown(): void {

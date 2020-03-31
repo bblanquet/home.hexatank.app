@@ -1,4 +1,4 @@
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { TankMenuItem } from '../../Menu/Buttons/TankMenuItem';
 import { ICombination } from './ICombination';
 import { CombinationContext } from './CombinationContext';
@@ -22,7 +22,7 @@ export class AddTankCombination implements ICombination {
 
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
-			PlaygroundHelper.PlayerHeadquarter.AddTankRequest();
+			GameHelper.PlayerHeadquarter.AddTankRequest();
 			context.Items.splice(context.Items.length - 1, 1);
 			return true;
 		}

@@ -1,7 +1,7 @@
 import { BasicInfluenceField } from './BasicInfluenceField';
 import { Archive } from '../../../Framework/ResourceArchiver';
 import { CellStateSetter } from '../CellStateSetter';
-import { PlaygroundHelper } from '../../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../../Framework/GameHelper';
 import { Battery } from './Battery';
 import { BasicItem } from '../../BasicItem';
 import { ISelectable } from '../../../ISelectable';
@@ -130,7 +130,7 @@ export class InfluenceField extends Field implements ISelectable {
 			this._range -= 1;
 			this.RefreshArea();
 			this.UpdateCellStates(this._range + 1);
-			if (this.Hq === PlaygroundHelper.PlayerHeadquarter) {
+			if (this.Hq === GameHelper.PlayerHeadquarter) {
 				this.ClearArea();
 				this.CreateArea();
 			}
@@ -151,7 +151,7 @@ export class InfluenceField extends Field implements ISelectable {
 		this._range += 1;
 		this.RefreshArea();
 		this.UpdateCellStates(this._range);
-		if (this.Hq === PlaygroundHelper.PlayerHeadquarter) {
+		if (this.Hq === GameHelper.PlayerHeadquarter) {
 			this.ClearArea();
 			this.CreateArea();
 		}
@@ -172,7 +172,7 @@ export class InfluenceField extends Field implements ISelectable {
 			const area = new BasicItem(b, this.Hq.GetSkin().GetAreaEnergy(), 3);
 			area.SetVisible(() => true);
 			area.SetAlive(() => true);
-			PlaygroundHelper.Playground.Items.push(area);
+			GameHelper.Playground.Items.push(area);
 			this._area.push(area);
 		});
 	}

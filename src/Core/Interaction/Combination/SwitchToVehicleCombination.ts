@@ -1,4 +1,4 @@
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { ICombination } from './ICombination';
 import { ISelectable } from '../../ISelectable';
 import { Cell } from '../../Items/Cell/Cell';
@@ -35,7 +35,7 @@ export class SwitchToVehicleCombination implements ICombination {
 			hq.SetSelected(false);
 			const vehicle = context.Items[1] as Vehicle;
 			vehicle.SetSelected(true);
-			PlaygroundHelper.SelectedItem.Invoke(this, vehicle);
+			GameHelper.SelectedItem.Invoke(this, vehicle);
 			context.Items.splice(0, 1);
 			return true;
 		}

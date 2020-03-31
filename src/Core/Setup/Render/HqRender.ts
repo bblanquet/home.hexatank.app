@@ -1,7 +1,7 @@
 import { Archive } from '../../Framework/ResourceArchiver';
 import { IaHeadquarter } from '../../Ia/Hq/IaHeadquarter';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { Item } from '../../Items/Item';
 import { Headquarter } from '../../Items/Cell/Field/Headquarter';
 import { ItemSkin } from '../../Items/ItemSkin';
@@ -86,17 +86,17 @@ export class HqRender {
 	}
 
 	private CreateHq(hqcell: HexAxial, diamondcell: HexAxial, items: Item[], skin: ItemSkin): Headquarter {
-		const diamond = new Diamond(PlaygroundHelper.CellsContainer.Get(diamondcell));
-		const hq = new Headquarter(skin, PlaygroundHelper.CellsContainer.Get(hqcell));
+		const diamond = new Diamond(GameHelper.Cells.Get(diamondcell));
+		const hq = new Headquarter(skin, GameHelper.Cells.Get(hqcell));
 		items.push(diamond);
 		items.push(hq);
 		return hq;
 	}
 
 	private CreateIaHq(hqcell: HexAxial, diamondcell: HexAxial, items: Item[], skin: ItemSkin): Headquarter {
-		const cell = PlaygroundHelper.CellsContainer.Get(hqcell);
-		const diamond = new Diamond(PlaygroundHelper.CellsContainer.Get(diamondcell));
-		const hq = new IaHeadquarter(PlaygroundHelper.GetAreas(cell), skin, cell);
+		const cell = GameHelper.Cells.Get(hqcell);
+		const diamond = new Diamond(GameHelper.Cells.Get(diamondcell));
+		const hq = new IaHeadquarter(GameHelper.GetAreas(cell), skin, cell);
 		hq.Diamond = diamond;
 		items.push(diamond);
 		items.push(hq);

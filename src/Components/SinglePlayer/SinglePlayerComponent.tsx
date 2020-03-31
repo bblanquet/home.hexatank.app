@@ -2,7 +2,7 @@ import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { SinglePlayerState } from './SinglePlayerState';
 import linkState from 'linkstate';
-import { PlaygroundHelper } from '../../Core/Framework/PlaygroundHelper';
+import { GameHelper } from '../../Core/Framework/GameHelper';
 import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
 import { MapMode } from '../../Core/Setup/Generator/MapMode';
 import { SpriteProvider } from '../../Core/Framework/SpriteProvider';
@@ -114,16 +114,16 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 	}
 
 	Start(e: MouseEvent): void {
-		PlaygroundHelper.MapContext = new MapGenerator().GetMapDefinition(
+		GameHelper.MapContext = new MapGenerator().GetMapDefinition(
 			+this.state.Size,
 			this.state.MapType,
 			+this.state.IaNumber + 1,
 			+this.state.Mode as MapMode
 		);
-		PlaygroundHelper.SetDefaultName();
-		PlaygroundHelper.MapContext.Hqs[0].PlayerName = PlaygroundHelper.PlayerName;
+		GameHelper.SetDefaultName();
+		GameHelper.MapContext.Hqs[0].PlayerName = GameHelper.PlayerName;
 		let index = 0;
-		PlaygroundHelper.MapContext.Hqs.forEach((hq) => {
+		GameHelper.MapContext.Hqs.forEach((hq) => {
 			if (!hq.PlayerName) {
 				hq.isIa = true;
 				hq.PlayerName = `IA${index}`;

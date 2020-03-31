@@ -7,7 +7,7 @@ import { Archive } from '../../../Framework/ResourceArchiver';
 import { CellState } from '../CellState';
 import { Vehicle } from '../../Unit/Vehicle';
 import { AliveItem } from '../../AliveItem';
-import { PlaygroundHelper } from '../../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../../Framework/GameHelper';
 import { Crater } from '../../Environment/Crater';
 import { InteractionContext } from '../../../Interaction/InteractionContext';
 
@@ -76,7 +76,7 @@ export class Diamond extends AliveField {
 
 	public Destroy(): void {
 		super.Destroy();
-		PlaygroundHelper.Render.Remove(this);
+		GameHelper.Render.Remove(this);
 		this.GetCell().DestroyField();
 		this.IsUpdatable = false;
 		this.Fields.forEach((field) => {
@@ -90,7 +90,7 @@ export class Diamond extends AliveField {
 		if (!this.IsAlive()) {
 			this.Destroy();
 			let crater = new Crater(this.BoundingBox);
-			PlaygroundHelper.Playground.Items.push(crater);
+			GameHelper.Playground.Items.push(crater);
 			return;
 		}
 

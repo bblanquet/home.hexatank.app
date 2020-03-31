@@ -1,7 +1,7 @@
 import { Item } from '../Item';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Timer } from '../../Utils/Timer/Timer';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { InteractionContext } from '../../Interaction/InteractionContext';
 import { ITimer } from '../../Utils/Timer/ITimer';
 
@@ -83,7 +83,7 @@ export class Explosion extends Item {
 	public Destroy() {
 		super.Destroy();
 		this.IsUpdatable = false;
-		PlaygroundHelper.Render.Remove(this);
+		GameHelper.Render.Remove(this);
 	}
 
 	public GetBoundingBox(): BoundingBox {

@@ -3,7 +3,7 @@ import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../Interaction/InteractionContext';
 import { Timer } from '../../Utils/Timer/Timer';
 import { Archive } from '../../Framework/ResourceArchiver';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 
 export class Crater extends Item {
 	BoundingBox: BoundingBox;
@@ -23,7 +23,7 @@ export class Crater extends Item {
 
 	public Destroy(): void {
 		super.Destroy();
-		PlaygroundHelper.Render.Remove(this);
+		GameHelper.Render.Remove(this);
 		this.IsUpdatable = false;
 	}
 

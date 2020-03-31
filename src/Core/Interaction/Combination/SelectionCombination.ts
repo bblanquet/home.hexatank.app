@@ -1,5 +1,5 @@
 import { InfluenceField } from '../../Items/Cell/Field/InfluenceField';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { ICombination } from './ICombination';
 import { ISelectable } from '../../ISelectable';
 import { Item } from '../../Items/Item';
@@ -42,26 +42,26 @@ export class SelectionCombination implements ICombination {
 				) {
 					const field = selectablecell.GetField() as InfluenceField;
 					field.SetSelected(true);
-					PlaygroundHelper.SelectedItem.Invoke(this, field);
+					GameHelper.SelectedItem.Invoke(this, field);
 				} else if (
 					selectablecell.GetField() instanceof Headquarter &&
-					selectablecell.GetField() === PlaygroundHelper.PlayerHeadquarter
+					selectablecell.GetField() === GameHelper.PlayerHeadquarter
 				) {
 					const field = selectablecell.GetField() as Headquarter;
 					field.SetSelected(true);
-					PlaygroundHelper.SelectedItem.Invoke(this, field);
+					GameHelper.SelectedItem.Invoke(this, field);
 				} else if (
 					selectablecell.GetField() instanceof BasicField &&
 					selectablecell.GetState() === CellState.Visible
 				) {
 					selectable.SetSelected(true);
-					PlaygroundHelper.SelectedItem.Invoke(this, item);
+					GameHelper.SelectedItem.Invoke(this, item);
 				} else {
 					return false;
 				}
 			} else {
 				selectable.SetSelected(true);
-				PlaygroundHelper.SelectedItem.Invoke(this, item);
+				GameHelper.SelectedItem.Invoke(this, item);
 			}
 			return true;
 		}

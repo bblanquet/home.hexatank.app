@@ -7,7 +7,7 @@ import { CellFinder } from '../../Items/Cell/CellFinder';
 import { BasicItem } from '../../Items/BasicItem';
 import { Timer } from '../../Utils/Timer/Timer';
 import { Vehicle } from '../../Items/Unit/Vehicle';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { PacketKind } from '../../../Components/Network/PacketKind';
 
@@ -133,7 +133,7 @@ export class SimpleOrder extends Order {
 			}
 		}
 		this.ClearPath();
-		var nextcells = PlaygroundHelper.Engine.GetPath(this._v.GetCurrentCell(), this.Dest);
+		var nextcells = GameHelper.Engine.GetPath(this._v.GetCurrentCell(), this.Dest);
 
 		if (isNullOrUndefined(nextcells)) {
 			return false;
@@ -157,7 +157,7 @@ export class SimpleOrder extends Order {
 				var pathItem = new BasicItem(cell.GetBoundingBox(), Archive.direction.moving);
 				pathItem.SetVisible(this._v.IsSelected.bind(this._v));
 				pathItem.SetAlive(this._v.IsAlive.bind(this._v));
-				PlaygroundHelper.Playground.Items.push(pathItem);
+				GameHelper.Playground.Items.push(pathItem);
 				this._uiPath.push(pathItem);
 			});
 		}

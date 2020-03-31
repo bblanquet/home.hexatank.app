@@ -4,7 +4,7 @@ import { CombinationContext } from './CombinationContext';
 import { InfluenceField } from '../../Items/Cell/Field/InfluenceField';
 import { InteractionMode } from '../InteractionMode';
 import { InteractionKind } from '../IInteractionContext';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { GameSettings } from '../../Framework/GameSettings';
 
 export class PowerUpCombination implements ICombination {
@@ -28,8 +28,8 @@ export class PowerUpCombination implements ICombination {
 			let field = <InfluenceField>context.Items[0];
 			if (
 				field.HasStock() ||
-				PlaygroundHelper.PlayerHeadquarter.Buy(
-					GameSettings.TruckPrice * PlaygroundHelper.PlayerHeadquarter.GetTotalEnergy()
+				GameHelper.PlayerHeadquarter.Buy(
+					GameSettings.TruckPrice * GameHelper.PlayerHeadquarter.GetTotalEnergy()
 				)
 			) {
 				field.PowerUp();

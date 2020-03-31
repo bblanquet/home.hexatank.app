@@ -5,7 +5,7 @@ import { Vehicle } from '../../Unit/Vehicle';
 import { AliveItem } from '../../AliveItem';
 import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../../Interaction/InteractionContext';
-import { PlaygroundHelper } from '../../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../../Framework/GameHelper';
 
 export class BlockingField extends AliveField {
 	constructor(ceil: Cell, sprite: string) {
@@ -58,7 +58,7 @@ export class BlockingField extends AliveField {
 
 	public Destroy(): void {
 		super.Destroy();
-		PlaygroundHelper.Render.Remove(this);
+		GameHelper.Render.Remove(this);
 		this.GetCell().DestroyField();
 		this.IsUpdatable = false;
 	}

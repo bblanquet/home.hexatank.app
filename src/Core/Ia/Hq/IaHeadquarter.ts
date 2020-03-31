@@ -18,7 +18,7 @@ import { ExpansionMaker } from './ExpansionMaker';
 import { IdleUnitContainer } from './IdleUnitContainer';
 import { HeldArea } from '../Area/HeldArea';
 import { Truck } from '../../Items/Unit/Truck';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { Explosion } from '../../Items/Unit/Explosion';
 import { Tank } from '../../Items/Unit/Tank';
 import { GameSettings } from '../../Framework/GameSettings';
@@ -129,14 +129,14 @@ export class IaHeadquarter extends Headquarter {
 						false,
 						5
 					);
-					PlaygroundHelper.Playground.Items.push(explosion);
+					GameHelper.Playground.Items.push(explosion);
 				}
 				this.VehicleId += 1;
 				truck = new Truck(this);
 				truck.Id = `${this.PlayerName}${this.VehicleId}`;
 				truck.SetPosition(field.GetCell());
-				PlaygroundHelper.VehiclesContainer.Add(truck);
-				PlaygroundHelper.Playground.Items.push(truck);
+				GameHelper.VehiclesContainer.Add(truck);
+				GameHelper.Playground.Items.push(truck);
 				this.NotifyTruck(truck);
 				return true;
 			}
@@ -162,15 +162,15 @@ export class IaHeadquarter extends Headquarter {
 								false,
 								5
 							);
-							PlaygroundHelper.Playground.Items.push(explosion);
+							GameHelper.Playground.Items.push(explosion);
 						}
 						this.VehicleId += 1;
 						var tank = new Tank(this);
 						tank.Id = `${this.PlayerName}${this.VehicleId}`;
 						tank.SetPosition(field.GetCell());
 						area.AddTroop(tank, cell);
-						PlaygroundHelper.VehiclesContainer.Add(tank);
-						PlaygroundHelper.Playground.Items.push(tank);
+						GameHelper.VehiclesContainer.Add(tank);
+						GameHelper.Playground.Items.push(tank);
 						isCreated = true;
 						this.NotifyTank(tank);
 						return true;

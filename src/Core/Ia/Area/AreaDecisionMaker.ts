@@ -5,7 +5,7 @@ import { TroopSituation } from './TroopSituation';
 import { TroopDestination } from './TroopDestination';
 import { Area } from './Area';
 import { SimpleOrder } from '../Order/SimpleOrder';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { Tank } from '../../Items/Unit/Tank';
 
 export class AreaDecisionMaker {
@@ -23,7 +23,7 @@ export class AreaDecisionMaker {
 			console.log(`%c troops count ${this._area.GetTroops().length}`, 'font-weight:bold;color:green;');
 
 			//#1 get in & out cells
-			const areas = PlaygroundHelper.GetNeighbourhoodAreas(this._area.GetCentralCell());
+			const areas = GameHelper.GetNeighbourhoodAreas(this._area.GetCentralCell());
 			areas.push(this._area.GetArea());
 
 			//#2 get enemies cells
@@ -103,7 +103,7 @@ export class AreaDecisionMaker {
 			const dangerLevel = currentcell
 				.GetAllNeighbourhood()
 				.map((c) => c as Cell)
-				.filter((c) => !isNullOrUndefined(c) && c.ContainsEnemy(ally)).length;
+				.filter((c) => !isNullOrUndefined(c) && c.HasEnemy(ally)).length;
 
 			if (!dangerLevelcells.hasOwnProperty(dangerLevel)) {
 				dangerLevelcells[dangerLevel] = {};
@@ -184,7 +184,7 @@ export class AreaDecisionMaker {
 				for (let cellKey in dangerLevelcells[danger]) {
 					var destination = new TroopDestination(
 						dangerLevelcells[danger][cellKey],
-						PlaygroundHelper.Engine.GetPath(troop.Tank.GetCurrentCell(), dangerLevelcells[danger][cellKey])
+						GameHelper.Engine.GetPath(troop.Tank.GetCurrentCell(), dangerLevelcells[danger][cellKey])
 					);
 
 					if (!troopSituation.Destinations.hasOwnProperty(danger)) {

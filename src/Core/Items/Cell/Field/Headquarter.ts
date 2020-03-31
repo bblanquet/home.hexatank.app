@@ -1,4 +1,4 @@
-import { PlaygroundHelper } from '../../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../../Framework/GameHelper';
 import { LiteEvent } from '../../../Utils/Events/LiteEvent';
 import { FlagCell } from '../FlagCell';
 import { Tank } from '../../Unit/Tank';
@@ -129,14 +129,14 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 						false,
 						5
 					);
-					PlaygroundHelper.Playground.Items.push(explosion);
+					GameHelper.Playground.Items.push(explosion);
 				}
 				this.VehicleId += 1;
 				const tank = new Tank(this);
 				tank.Id = `${this.PlayerName}${this.VehicleId}`;
 				tank.SetPosition(pos === null ? field.GetCell() : pos);
-				PlaygroundHelper.VehiclesContainer.Add(tank);
-				PlaygroundHelper.Playground.Items.push(tank);
+				GameHelper.VehiclesContainer.Add(tank);
+				GameHelper.Playground.Items.push(tank);
 				isCreated = true;
 				this.NotifyTank(tank);
 				if (this.Flagcell) {
@@ -180,14 +180,14 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 						false,
 						5
 					);
-					PlaygroundHelper.Playground.Items.push(explosion);
+					GameHelper.Playground.Items.push(explosion);
 				}
 				this.VehicleId += 1;
 				let truck = new Truck(this);
 				truck.Id = `${this.PlayerName}${this.VehicleId}`;
 				truck.SetPosition(pos === null ? field.GetCell() : pos);
-				PlaygroundHelper.VehiclesContainer.Add(truck);
-				PlaygroundHelper.Playground.Items.push(truck);
+				GameHelper.VehiclesContainer.Add(truck);
+				GameHelper.Playground.Items.push(truck);
 				isCreated = true;
 				this.NotifyTruck(truck);
 				return false;
@@ -216,7 +216,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 
 	public Destroy(): void {
 		super.Destroy();
-		PlaygroundHelper.Render.Remove(this);
+		GameHelper.Render.Remove(this);
 		this._cell.CellStateChanged.Off(this._onCellStateChanged);
 		this._cell.DestroyField();
 		this.IsUpdatable = false;
@@ -237,7 +237,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 			this._tankRequestCount += 1;
 			this.TankRequestEvent.Invoke(this, this._tankRequestCount);
 			if (this._diamondCount < GameSettings.TankPrice) {
-				PlaygroundHelper.SetWarning();
+				GameHelper.SetWarning();
 			}
 		}
 	}
@@ -261,7 +261,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 			this._truckRequestCount += 1;
 			this.TruckRequestEvent.Invoke(this, this._truckRequestCount);
 			if (this._diamondCount < GameSettings.TruckPrice) {
-				PlaygroundHelper.SetWarning();
+				GameHelper.SetWarning();
 			}
 		}
 	}
@@ -301,7 +301,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		if (!this.IsAlive()) {
 			this.Destroy();
 			let crater = new Crater(this._boundingBox);
-			PlaygroundHelper.Playground.Items.push(crater);
+			GameHelper.Playground.Items.push(crater);
 			return;
 		}
 
@@ -322,7 +322,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 			this.DiamondCountEvent.Invoke(this, this._diamondCount);
 			return true;
 		} else {
-			PlaygroundHelper.SetWarning();
+			GameHelper.SetWarning();
 		}
 		return false;
 	}
@@ -340,8 +340,8 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		if (cost <= this._diamondCount) {
 			return true;
 		}
-		if (this === PlaygroundHelper.PlayerHeadquarter) {
-			PlaygroundHelper.SetWarning();
+		if (this === GameHelper.PlayerHeadquarter) {
+			GameHelper.SetWarning();
 		}
 		return false;
 	}

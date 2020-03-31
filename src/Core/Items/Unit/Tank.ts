@@ -1,6 +1,6 @@
 import { CamouflageHandler } from './CamouflageHandler';
 import { Cell } from '../Cell/Cell';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
 import { Vehicle } from './Vehicle';
 import { Turrel } from './Turrel';
@@ -62,7 +62,7 @@ export class Tank extends Vehicle implements IHqContainer {
 
 	public Destroy(): void {
 		super.Destroy();
-		PlaygroundHelper.Render.Remove(this.Turrel);
+		GameHelper.Render.Remove(this.Turrel);
 	}
 
 	public Update(viewX: number, viewY: number): void {
@@ -201,7 +201,7 @@ export class Tank extends Vehicle implements IHqContainer {
 		this.camouflagedSprites = this.GetSprites().filter((s) => s.alpha !== 0);
 		this.camouflagedSprites.concat(this.Turrel.GetSprites().filter((s) => s.alpha !== 0));
 
-		if (PlaygroundHelper.PlayerHeadquarter === this.Hq) {
+		if (GameHelper.PlayerHeadquarter === this.Hq) {
 			this.camouflagedSprites.forEach((s) => {
 				s.alpha = 0.5;
 			});
@@ -223,7 +223,7 @@ export class Tank extends Vehicle implements IHqContainer {
 		);
 		this.Camouflage.SetVisible(() => this.IsAlive() && this.HasCamouflage);
 		this.Camouflage.SetAlive(() => this.IsAlive() && this.HasCamouflage);
-		PlaygroundHelper.Playground.Items.push(this.Camouflage);
+		GameHelper.Playground.Items.push(this.Camouflage);
 		const explosion = new Explosion(
 			BoundingBox.CreateFromBox(this.GetBoundingBox()),
 			Archive.constructionEffects,
@@ -231,7 +231,7 @@ export class Tank extends Vehicle implements IHqContainer {
 			false,
 			5
 		);
-		PlaygroundHelper.Playground.Items.push(explosion);
+		GameHelper.Playground.Items.push(explosion);
 
 		return true;
 	}
@@ -240,7 +240,7 @@ export class Tank extends Vehicle implements IHqContainer {
 		if (this.HasCamouflage) {
 			this.HasCamouflage = false;
 
-			if (PlaygroundHelper.PlayerHeadquarter === this.Hq) {
+			if (GameHelper.PlayerHeadquarter === this.Hq) {
 				this.camouflagedSprites.forEach((s) => {
 					s.alpha = 1;
 				});

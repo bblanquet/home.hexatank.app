@@ -1,5 +1,5 @@
 import { GameSettings } from '../../Framework/GameSettings';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { ForestDecorator } from '../../Items/Cell/Decorator/ForestDecorator';
 import { CellProperties } from '../../Items/Cell/CellProperties';
 import { Cloud } from '../../Items/Environment/Cloud';
@@ -21,8 +21,7 @@ export class MapRender {
 		this._hqRender = new HqRender();
 	}
 
-	Render(mapContext: MapContext): void {
-		PlaygroundHelper.Init();
+	public Render(mapContext: MapContext): void {
 		GameSettings.MapSize = mapContext.Items.length;
 
 		let playgroundItems = new Array<Item>();
@@ -31,22 +30,18 @@ export class MapRender {
 			let cell = new Cell(new CellProperties(item.Position));
 			ForestDecorator.SetDecoration(playgroundItems, cell, item.Type);
 			cell.SetSprite();
-			PlaygroundHelper.CellsContainer.Add(cell);
+			GameHelper.Cells.Add(cell);
 			playgroundItems.push(cell);
-			PlaygroundHelper.CellsContainer.Add(cell);
+			GameHelper.Cells.Add(cell);
 		});
 
-		let areas = PlaygroundHelper.GetAreas(PlaygroundHelper.CellsContainer.Get(mapContext.CenterItem.Position));
+		let areas = GameHelper.GetAreas(GameHelper.Cells.Get(mapContext.CenterItem.Position));
 		this.SetGrass(mapContext.MapMode, areas.map((a) => a.GetCentralCell().GetCoordinate()), playgroundItems);
 		this.AddClouds(playgroundItems);
-		PlaygroundHelper.SetAppColor(mapContext.MapMode);
 		const hqs = this._hqRender.GetHq(mapContext.Hqs, playgroundItems);
 
-		let playerHq = hqs.find((hq) => hq.PlayerName === PlaygroundHelper.PlayerName);
-		//Link menu to player HQ
-		PlaygroundHelper.PlayerHeadquarter = playerHq;
-		PlaygroundHelper.InteractionContext.SetCombination(playerHq);
-		PlaygroundHelper.InteractionContext.Listen();
+		let playerHq = hqs.find((hq) => hq.PlayerName === GameHelper.PlayerName);
+		GameHelper.PlayerHeadquarter = playerHq;
 
 		//make hq cells visible
 		playerHq.GetCurrentCell().SetState(CellState.Visible);
@@ -56,7 +51,7 @@ export class MapRender {
 
 		//insert elements into playground
 		playgroundItems.forEach((item) => {
-			PlaygroundHelper.Playground.Items.push(item);
+			GameHelper.Playground.Items.push(item);
 		});
 	}
 
@@ -70,7 +65,7 @@ export class MapRender {
 
 	private SetGrass(mode: MapMode, middleAreas: HexAxial[], items: Item[]) {
 		middleAreas.forEach((corner) => {
-			const cell = PlaygroundHelper.CellsContainer.Get(corner);
+			const cell = GameHelper.Cells.Get(corner);
 			const boundingBox = new BoundingBox();
 			boundingBox.Width = GameSettings.Size * 6;
 			boundingBox.Height = GameSettings.Size * 6;

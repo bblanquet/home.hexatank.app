@@ -4,7 +4,7 @@ import { TroopDecisionMaker } from './TroopDecisionMaker';
 import { Headquarter } from '../../Items/Cell/Field/Headquarter';
 import { AreaStatus } from './AreaStatus';
 import { AreaDecisionMaker } from './AreaDecisionMaker';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { Tank } from '../../Items/Unit/Tank';
 
 export class HeldArea {
@@ -61,7 +61,7 @@ export class HeldArea {
 
 	private GetOutsideEnemyCount(): number {
 		let outsideEnemyCount = 0;
-		PlaygroundHelper.GetNeighbourhoodAreas(this._area.GetCentralCell()).forEach((area) => {
+		GameHelper.GetNeighbourhoodAreas(this._area.GetCentralCell()).forEach((area) => {
 			outsideEnemyCount += area.GetEnemyCount(this._hq);
 		});
 		return outsideEnemyCount;
@@ -69,7 +69,7 @@ export class HeldArea {
 
 	private GetOutsideAllyCount(): number {
 		let outsideEnemyCount = 0;
-		PlaygroundHelper.GetNeighbourhoodAreas(this._area.GetCentralCell()).forEach((area) => {
+		GameHelper.GetNeighbourhoodAreas(this._area.GetCentralCell()).forEach((area) => {
 			outsideEnemyCount += area.GetAllyCount(this._hq);
 		});
 		return outsideEnemyCount;

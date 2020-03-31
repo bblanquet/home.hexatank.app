@@ -102,7 +102,7 @@ export class MapGenerator {
 		const areaEngine = new AreaEngine<CellProperties>();
 		let forbiddencells = new Array<CellProperties>();
 		hqcells.forEach((hqcell) => {
-			forbiddencells = forbiddencells.concat(areaEngine.GetFirstRange(cellsContainer, hqcell));
+			forbiddencells = forbiddencells.concat(areaEngine.GetFirstRangeAreas(cellsContainer, hqcell));
 		});
 		for (let i = 0; i < hqCount; i++) {
 			diamonds.push(this.GetDiamondPosition(hqcells[i], forbiddencells, cellsContainer));

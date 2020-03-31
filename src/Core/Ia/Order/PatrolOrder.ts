@@ -6,7 +6,7 @@ import { BasicItem } from '../../Items/BasicItem';
 import { isNullOrUndefined } from 'util';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { Vehicle } from '../../Items/Unit/Vehicle';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 
 export class PatrolOrder extends Order {
 	private _currentPatrolcell: Cell;
@@ -40,7 +40,7 @@ export class PatrolOrder extends Order {
 				pathItem.SetAlive(this._v.IsAlive.bind(this._v));
 
 				this._patrolPathDisplay.push(pathItem);
-				PlaygroundHelper.Playground.Items.push(pathItem);
+				GameHelper.Playground.Items.push(pathItem);
 			});
 		}
 	}

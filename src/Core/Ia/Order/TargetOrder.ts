@@ -6,7 +6,7 @@ import { Cell } from '../../Items/Cell/Cell';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { SimpleOrder } from './SimpleOrder';
 import { Tank } from '../../Items/Unit/Tank';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 
 export class TargetOrder extends Order {
 	private _targetUi: BasicItem;
@@ -64,6 +64,6 @@ export class TargetOrder extends Order {
 		this._targetUi.SetAlive(
 			() => this._v.IsAlive() && this._target.IsAlive() && this._v.GetMainTarget() === this._target
 		);
-		PlaygroundHelper.Playground.Items.push(this._targetUi);
+		GameHelper.Playground.Items.push(this._targetUi);
 	}
 }

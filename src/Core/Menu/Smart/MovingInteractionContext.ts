@@ -4,7 +4,7 @@ import { Archive } from '../../Framework/ResourceArchiver';
 import { BasicItem } from '../../Items/BasicItem';
 import { CellContainer } from '../../Items/Cell/CellContainer';
 import { IInteractionContext } from '../../Interaction/IInteractionContext';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { Point } from '../../Utils/Geometry/Point';
 import { Cell } from '../../Items/Cell/Cell';
 import { Item } from '../../Items/Item';
@@ -30,7 +30,7 @@ export class MovingInteractionContext implements IInteractionContext {
 	public Moving(point: Point): void {
 		this.Point = new PIXI.Point(point.X, point.Y);
 		if (this._isOn) {
-			PlaygroundHelper.Playground.Items.forEach((item) => {
+			GameHelper.Playground.Items.forEach((item) => {
 				item.Select(this);
 			});
 		}
@@ -60,7 +60,7 @@ export class MovingInteractionContext implements IInteractionContext {
 				displayPath.SetAlive(() => true);
 				displayPath.SetVisible(() => true);
 				this._enlightCells.push(displayPath);
-				PlaygroundHelper.Playground.Items.push(displayPath);
+				GameHelper.Playground.Items.push(displayPath);
 			}
 		}
 	}

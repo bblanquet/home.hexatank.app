@@ -2,7 +2,7 @@ import { SelectionMode } from './SelectionMode';
 import { Point } from '../../Utils/Geometry/Point';
 import { StaticBasicItem } from '../../Items/StaticBasicItem';
 import { Archive } from '../../Framework/ResourceArchiver';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { GameSettings } from '../../Framework/GameSettings';
 
@@ -33,8 +33,8 @@ export class MultiSelectionMenu {
 			1.1
 		);
 
-		PlaygroundHelper.Playground.Items.push(this._tankSelection);
-		PlaygroundHelper.Playground.Items.push(this._cellSelection);
+		GameHelper.Playground.Items.push(this._tankSelection);
+		GameHelper.Playground.Items.push(this._cellSelection);
 
 		this._cellSelection.SetAlive(() => true);
 		this._cellSelection.SetVisible(this.IsVisible.bind(this));

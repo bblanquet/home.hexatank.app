@@ -1,37 +1,27 @@
 import { Component, h } from 'preact';
-import { PlaygroundHelper } from '../../Core/Framework/PlaygroundHelper';
-import { GameSetup } from '../../Core/GameSetup';
+import { GameHelper } from '../../Core/Framework/GameHelper';
 import { PeerHandler } from '../Network/Host/On/PeerHandler';
 import { route } from 'preact-router';
 import { Item } from '../../Core/Items/Item';
 import { Tank } from '../../Core/Items/Unit/Tank';
 import { Truck } from '../../Core/Items/Unit/Truck';
 import { Cell } from '../../Core/Items/Cell/Cell';
-import { TankMenuItem } from '../../Core/Menu/Buttons/TankMenuItem';
-import { TruckMenuItem } from '../../Core/Menu/Buttons/TruckMenuItem';
-import { TargetMenuItem } from '../../Core/Menu/Buttons/TargetMenuItem';
-import { CamouflageMenuItem } from '../../Core/Menu/Buttons/CamouflageMenutItem';
-import { PatrolMenuItem } from '../../Core/Menu/Buttons/PatrolMenuItem';
-import { CancelMenuItem } from '../../Core/Menu/Buttons/CancelMenuItem';
-import { PlusMenuItem } from '../../Core/Menu/Buttons/PlusMenuItem';
-import { MinusMenuItem } from '../../Core/Menu/Buttons/MinusMenuItem';
-import { BigMenuItem } from '../../Core/Menu/Buttons/BigMenuItem';
-import { AttackMenuItem } from '../../Core/Menu/Buttons/AttackMenuItem';
-import { InfluenceMenuItem } from '../../Core/Menu/Buttons/InfluenceMenuItem';
-import { MoneyMenuItem } from '../../Core/Menu/Buttons/MoneyMenuItem';
-import { SlowMenuItem } from '../../Core/Menu/Buttons/SlowMenuItem';
-import { PoisonMenuItem } from '../../Core/Menu/Buttons/PoisonMenuItem';
-import { HealMenuItem } from '../../Core/Menu/Buttons/HealMenuItem';
-import { SpeedFieldMenuItem } from '../../Core/Menu/Buttons/SpeedFieldMenuItem';
 import { ISelectable } from '../../Core/ISelectable';
-import { PingInfo } from '../Network/Ping/PingInfo';
 import { InfluenceField } from '../../Core/Items/Cell/Field/InfluenceField';
 import { GameSettings } from '../../Core/Framework/GameSettings';
-import { SmallMenuItem } from '../../Core/Menu/Buttons/SmallMenuItem';
+import { CombinationProvider } from '../../Core/Interaction/CombinationProvider';
+import { SelectableChecker } from '../../Core/Interaction/SelectableChecker';
 import { Headquarter } from '../../Core/Items/Cell/Field/Headquarter';
-import { AbortMenuItem } from '../../Core/Menu/Buttons/AbortMenuItem';
-import { SearchMoneyMenuItem } from '../../Core/Menu/Buttons/SearchMoneyMenuItem';
-import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
+import { AppHandler } from './AppHandler';
+import FactoryMenuComponent from './FactoryMenuComponent';
+import HqMenuComponent from './HqMenuComponent';
+import TankMenuComponent from './TankMenuComponent';
+import CellMenuComponent from './CellMenuComponent';
+import TruckMenuComponent from './TruckMenuComponent';
+import { InteractionContext } from '../../Core/Interaction/InteractionContext';
+import { RenderingHandler } from '../../Core/Setup/Render/RenderingHandler';
+import { RenderingGroups } from '../../Core/Setup/Render/RenderingGroups';
+import { MapRender } from '../../Core/Setup/Render/MapRender';
 
 export default class CanvasComponent extends Component<
 	any,
@@ -48,16 +38,15 @@ export default class CanvasComponent extends Component<
 > {
 	private _gameCanvas: HTMLDivElement;
 	private _loop: { (): void };
-	private _gameSetup: GameSetup;
 	private _stop: boolean;
 	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
-
+	private _appHandler: AppHandler;
 	constructor() {
 		super();
 		this._stop = true;
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
 		this._loop = this.GameLoop.bind(this);
-		PlaygroundHelper.InitApp();
+
 		this.setState({
 			HasMenu: false,
 			TankRequestCount: 0,
@@ -81,68 +70,94 @@ export default class CanvasComponent extends Component<
 
 	componentDidMount() {
 		this._stop = false;
-		PlaygroundHelper.App.start();
-		this._gameCanvas.appendChild(PlaygroundHelper.App.view);
+		this._appHandler = new AppHandler();
+		this._appHandler.InitApp();
+		GameHelper.SpriteProvider = this._appHandler.GetSpriteProvider();
+		GameHelper.ViewPort = this._appHandler.GetViewport();
+		GameHelper.VehiclesContainer = this._appHandler.VehiclesContainer;
+		GameHelper.Engine = this._appHandler.Engine;
+		GameHelper.Settings = this._appHandler.Settings;
+		GameHelper.Playground = this._appHandler.Playground;
+		GameHelper.Cells = this._appHandler.Cells;
+		GameHelper.AreaEngine = this._appHandler.AreaEngine;
+		GameHelper.InputManager = this._appHandler.InputManager;
+		GameHelper.Render = new RenderingHandler(
+			new RenderingGroups(
+				{
+					zs: [ -1, 0, 1, 2, 3, 4, 5 ],
+					parent: this._appHandler.GetViewport()
+				},
+				{
+					zs: [ 6, 7 ],
+					parent: this._appHandler.GetApp().stage
+				}
+			)
+		);
 
-		if (!PlaygroundHelper.MapContext) {
+		this._appHandler.GetApp().start();
+		this._gameCanvas.appendChild(this._appHandler.GetApp().view);
+
+		if (!GameHelper.MapContext) {
 			throw 'context missing, cannot implement map';
 		}
 
-		if (PlaygroundHelper.IsOnline) {
-			PlaygroundHelper.PingHandler.PingReceived.On((obj: any, data: PingInfo) => {
-				this.setState({
-					PingStatus: `${data.Receiver}: ${data.Duration}`
-				});
-			});
-		}
-		this._gameSetup = new GameSetup();
-		this._gameSetup.SetGame(PlaygroundHelper.App.stage, PlaygroundHelper.Viewport);
-		PlaygroundHelper.InteractionManager.on(
+		new MapRender().Render(GameHelper.MapContext);
+		var selectable = new SelectableChecker(GameHelper.PlayerHeadquarter);
+		this._appHandler.InteractionContext = new InteractionContext(
+			this._appHandler.InputManager,
+			new CombinationProvider().GetCombination(null, null, this._appHandler, selectable.IsSelectable),
+			selectable.IsSelectable
+		);
+
+		this._appHandler.InteractionContext.Listen();
+		this._appHandler.SetBackgroundColor(GameHelper.MapContext.MapMode);
+
+		this._appHandler.InteractionManager.on(
 			'pointerdown',
-			PlaygroundHelper.InputManager.OnMouseDown.bind(PlaygroundHelper.InputManager),
+			GameHelper.InputManager.OnMouseDown.bind(GameHelper.InputManager),
 			false
 		);
-		PlaygroundHelper.InteractionManager.on(
+		this._appHandler.InteractionManager.on(
 			'pointermove',
-			PlaygroundHelper.InputManager.OnMouseMove.bind(PlaygroundHelper.InputManager),
+			GameHelper.InputManager.OnMouseMove.bind(GameHelper.InputManager),
 			false
 		);
-		PlaygroundHelper.InteractionManager.on(
+		this._appHandler.InteractionManager.on(
 			'pointerup',
-			PlaygroundHelper.InputManager.OnMouseUp.bind(PlaygroundHelper.InputManager),
+			GameHelper.InputManager.OnMouseUp.bind(GameHelper.InputManager),
 			false
 		);
-		PlaygroundHelper.ResizeTheCanvas();
-		window.addEventListener('resize', () => PlaygroundHelper.ResizeTheCanvas());
-		window.addEventListener('DOMContentLoaded', () => PlaygroundHelper.ResizeTheCanvas());
-		PlaygroundHelper.InteractionManager.autoPreventDefault = false;
-		this._gameSetup.SetCenter();
-		PlaygroundHelper.PlayerHeadquarter.TruckRequestEvent.On((obj: any, e: number) => {
+		this._appHandler.ResizeTheCanvas();
+		window.addEventListener('resize', () => this._appHandler.ResizeTheCanvas());
+		window.addEventListener('DOMContentLoaded', () => this._appHandler.ResizeTheCanvas());
+		this._appHandler.InteractionManager.autoPreventDefault = false;
+		this.SetCenter();
+		GameHelper.PlayerHeadquarter.TruckRequestEvent.On((obj: any, e: number) => {
 			this.setState({
 				...this.state,
 				TruckRequestCount: e
 			});
 		});
-		PlaygroundHelper.PlayerHeadquarter.TankRequestEvent.On((obj: any, e: number) => {
+		GameHelper.PlayerHeadquarter.TankRequestEvent.On((obj: any, e: number) => {
 			this.setState({
 				...this.state,
 				TankRequestCount: e
 			});
 		});
-		PlaygroundHelper.PlayerHeadquarter.DiamondCountEvent.On((obj: any, e: number) => {
+		GameHelper.PlayerHeadquarter.DiamondCountEvent.On((obj: any, e: number) => {
 			this.setState({
 				...this.state,
 				Amount: e
 			});
 		});
-		PlaygroundHelper.SelectedItem.On((obj: any, e: Item) => {
+		GameHelper.SelectedItem.On((obj: any, e: Item) => {
 			((e as unknown) as ISelectable).SelectionChanged.On(this._onItemSelectionChanged);
 			this.setState({
 				...this.state,
 				Item: e
 			});
 		});
-		PlaygroundHelper.WarningChanged.On((obj: any, e: boolean) => {
+		GameHelper.WarningChanged.On((obj: any, e: boolean) => {
 			this.setState({
 				...this.state,
 				HasWarning: e
@@ -151,18 +166,35 @@ export default class CanvasComponent extends Component<
 		this._loop();
 	}
 
+	public SetCenter(): void {
+		const hqPoint = GameHelper.PlayerHeadquarter.GetBoundingBox().GetCentralPoint();
+		const halfWidth = GameSettings.ScreenWidth / 2;
+		const halfHeight = GameSettings.ScreenHeight / 2;
+		console.log('x: ' + -(hqPoint.X - halfWidth));
+		console.log('y: ' + -(hqPoint.Y - halfHeight));
+		this._appHandler.ScaleHandler.SetX(-(hqPoint.X - halfWidth));
+		this._appHandler.ScaleHandler.SetY(-(hqPoint.Y - halfHeight));
+	}
+
 	private LeftMenuRender() {
 		if (this.state.Item) {
 			if (this.state.Item instanceof Tank) {
-				return this.TankMenu();
+				return <TankMenuComponent />;
 			} else if (this.state.Item instanceof Truck) {
-				return this.TruckMenu();
+				return <TruckMenuComponent />;
 			} else if (this.state.Item instanceof Headquarter) {
-				return this.HqMenuRender();
+				return (
+					<HqMenuComponent
+						SetFlag={this.SetFlag.bind(this)}
+						TankRequestCount={this.state.TankRequestCount}
+						TruckRequestCount={this.state.TruckRequestCount}
+						HasFlag={this.state.HasFlag}
+					/>
+				);
 			} else if (this.state.Item instanceof InfluenceField) {
-				return this.FactoryMenu();
+				return <FactoryMenuComponent Item={this.state.Item} />;
 			} else if (this.state.Item instanceof Cell) {
-				return this.CellMenu();
+				return <CellMenuComponent Item={this.state.Item} />;
 			}
 		}
 		return '';
@@ -173,29 +205,20 @@ export default class CanvasComponent extends Component<
 			return;
 		}
 		requestAnimationFrame(this._loop);
-		PlaygroundHelper.Playground.Update();
+		GameHelper.Playground.Update();
 	}
 
 	componentWillUnmount() {
 		this._stop = true;
-		PlaygroundHelper.App.stop();
-		PlaygroundHelper.Playground.Items.forEach((item) => {
+		this._appHandler.GetApp().stop();
+		GameHelper.Playground.Items.forEach((item) => {
 			item.Destroy();
-			PlaygroundHelper.Render.Remove(item);
+			GameHelper.Render.Remove(item);
 		});
-		PlaygroundHelper.Playground.Items = [];
+		GameHelper.Playground.Items = [];
 	}
 
-	componentDidUpdate() {
-		if (!PlaygroundHelper.IsOnline) {
-			GameSettings.IsPause = this.state.HasMenu;
-		}
-	}
-
-	private SendContext(item: Item): void {
-		PlaygroundHelper.InteractionContext.Kind = InteractionKind.Up;
-		return PlaygroundHelper.InteractionContext.OnSelect(item);
-	}
+	componentDidUpdate() {}
 
 	private Cheat(e: any): void {
 		GameSettings.ShowEnemies = !GameSettings.ShowEnemies;
@@ -203,8 +226,7 @@ export default class CanvasComponent extends Component<
 
 	private Quit(e: any): void {
 		route('/Home', true);
-		PlaygroundHelper.InteractionContext.Mute();
-		PlaygroundHelper.IsOnline = false;
+		GameHelper.InteractionContext.Mute();
 		PeerHandler.Stop();
 	}
 
@@ -214,18 +236,18 @@ export default class CanvasComponent extends Component<
 		});
 	}
 
-	private SetFlag(e: any): void {
-		PlaygroundHelper.IsFlagingMode = !PlaygroundHelper.IsFlagingMode;
+	private SetFlag(): void {
+		GameHelper.IsFlagingMode = !GameHelper.IsFlagingMode;
 		this.setState({
 			...this.state,
-			HasFlag: PlaygroundHelper.IsFlagingMode
+			HasFlag: GameHelper.IsFlagingMode
 		});
 	}
 
 	render() {
 		return (
 			<div style="width=100%">
-				{PlaygroundHelper.IsOnline ? this.TopLeftInfo() : ''}
+				{/* {GameHelper.IsOnline ? this.TopLeftInfo() : ''} */}
 				{this.TopMenuRender()}
 				<div
 					ref={(dom) => {
@@ -234,307 +256,6 @@ export default class CanvasComponent extends Component<
 				/>
 				{this.state.HasMenu ? '' : this.LeftMenuRender()}
 				{this.state.HasMenu ? this.MenuRender() : ''}
-			</div>
-		);
-	}
-
-	private HqMenuRender() {
-		return (
-			<div class="left-column">
-				<div class="middle2 max-width">
-					<div class="btn-group-vertical max-width">
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new TankMenuItem())}
-						>
-							<div class="white-background">{this.state.TankRequestCount}</div>
-							<div class="fill-tank max-width standard-space" />
-							<div class="max-width text-center darker">
-								{GameSettings.TankPrice * PlaygroundHelper.PlayerHeadquarter.GetVehicleCount()}{' '}
-								<span class="fill-diamond badge very-small-space middle"> </span>
-							</div>
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new TruckMenuItem())}
-						>
-							<div class="white-background">{this.state.TruckRequestCount}</div>
-							<div class="fill-truck max-width standard-space" />
-							<div class="max-width text-center darker">
-								{GameSettings.TruckPrice * PlaygroundHelper.PlayerHeadquarter.GetVehicleCount()}{' '}
-								<span class="fill-diamond badge very-small-space middle"> </span>
-							</div>
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SetFlag(e)}
-						>
-							<div class="white-background">{this.state.HasFlag ? 'ON' : 'OFF'}</div>
-							<div class="fill-flag max-width standard-space" />
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new CancelMenuItem())}
-						>
-							<div class="fill-cancel max-width standard-space" />
-						</button>
-					</div>
-				</div>
-			</div>
-		);
-	}
-
-	private FactoryMenu() {
-		const field = this.state.Item as InfluenceField;
-		return (
-			<div class="left-column">
-				<div class="middle2 max-width">
-					<div class="btn-group-vertical max-width">
-						<button type="button" class="btn btn-light without-padding">
-							<div class="fill-energy max-width standard-space" />
-							<div class="max-width text-center darker">
-								{field.Battery.GetCurrentPower()}/{field.Battery.GetTotalPower()}
-							</div>
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new PlusMenuItem())}
-						>
-							<div class="fill-plus max-width standard-space" />
-							{field.Battery.HasStock() ? (
-								''
-							) : (
-								<div class="max-width text-center darker">
-									{GameSettings.TruckPrice * PlaygroundHelper.PlayerHeadquarter.GetTotalEnergy()}{' '}
-									<span class="fill-diamond badge very-small-space middle"> </span>
-								</div>
-							)}
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new MinusMenuItem())}
-						>
-							<div class="fill-minus max-width standard-space" />
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new BigMenuItem())}
-						>
-							<div class="fill-big max-width standard-space" />
-							{field.Battery.HasStock() ? (
-								''
-							) : (
-								<div class="max-width text-center darker">
-									{GameSettings.TruckPrice * PlaygroundHelper.PlayerHeadquarter.GetTotalEnergy()}{' '}
-									<span class="fill-diamond badge very-small-space middle"> </span>
-								</div>
-							)}
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new SmallMenuItem())}
-						>
-							<div class="fill-small max-width standard-space" />
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new CancelMenuItem())}
-						>
-							<div class="fill-cancel max-width standard-space" />
-						</button>
-					</div>
-				</div>
-			</div>
-		);
-	}
-
-	private TankMenu() {
-		return (
-			<div class="left-column">
-				<div class="middle2 max-width">
-					<div class="btn-group-vertical max-width">
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new PatrolMenuItem())}
-						>
-							<div class="white-background">{false ? 'ON' : 'OFF'}</div>
-							<div class="fill-patrol max-width standard-space" />
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new TargetMenuItem())}
-						>
-							<div class="fill-target max-width standard-space" />
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new CamouflageMenuItem())}
-						>
-							<div class="fill-camouflage max-width standard-space" />
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new AbortMenuItem())}
-						>
-							<div class="fill-abort max-width standard-space" />
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new CancelMenuItem())}
-						>
-							<div class="fill-cancel max-width standard-space" />
-						</button>
-					</div>
-				</div>
-			</div>
-		);
-	}
-
-	private CellMenu() {
-		return (
-			<div class="left-column">
-				<div class="middle2 max-width">
-					<div class="btn-group-vertical max-width">
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new InfluenceMenuItem())}
-						>
-							<div class="fill-influence max-width standard-space" />
-							<div class="max-width text-center darker">
-								{GameSettings.TruckPrice * PlaygroundHelper.PlayerHeadquarter.GetInfluenceCount()}{' '}
-								<span class="fill-diamond badge very-small-space middle"> </span>
-							</div>
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new AttackMenuItem())}
-						>
-							<div class="fill-power max-width standard-space" />
-							<div class="max-width text-center darker">
-								{GameSettings.FieldPrice}{' '}
-								<span class="fill-diamond badge very-small-space middle"> </span>
-							</div>
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new SpeedFieldMenuItem())}
-						>
-							<div class="fill-speed max-width standard-space" />
-							<div class="max-width text-center darker">
-								{GameSettings.FieldPrice}{' '}
-								<span class="fill-diamond badge very-small-space middle"> </span>
-							</div>
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new HealMenuItem())}
-						>
-							<div class="fill-medic max-width standard-space" />
-							<div class="max-width text-center darker">
-								{GameSettings.FieldPrice}{' '}
-								<span class="fill-diamond badge very-small-space middle"> </span>
-							</div>
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new MoneyMenuItem())}
-						>
-							<div class="fill-money max-width standard-space" />
-							<div class="max-width text-center darker">
-								{GameSettings.FieldPrice}{' '}
-								<span class="fill-diamond badge very-small-space middle"> </span>
-							</div>
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new PoisonMenuItem())}
-						>
-							<div class="fill-poison max-width standard-space" />
-							<div class="max-width text-center darker">
-								{GameSettings.FieldPrice}{' '}
-								<span class="fill-diamond badge very-small-space middle"> </span>
-							</div>
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new SlowMenuItem())}
-						>
-							<div class="fill-slow max-width standard-space" />
-							<div class="max-width text-center darker">
-								{GameSettings.FieldPrice}{' '}
-								<span class="fill-diamond badge very-small-space middle"> </span>
-							</div>
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new CancelMenuItem())}
-						>
-							<div class="fill-cancel max-width standard-space" />
-						</button>
-					</div>
-				</div>
-			</div>
-		);
-	}
-
-	private TruckMenu() {
-		return (
-			<div class="left-column">
-				<div class="middle2 max-width">
-					<div class="btn-group-vertical max-width">
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new PatrolMenuItem())}
-						>
-							<div class="white-background">{false ? 'ON' : 'OFF'}</div>
-							<div class="fill-patrol max-width standard-space" />
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new SearchMoneyMenuItem())}
-						>
-							<div class="fill-searchMoney max-width standard-space" />
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new AbortMenuItem())}
-						>
-							<div class="fill-abort max-width standard-space" />
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new CancelMenuItem())}
-						>
-							<div class="fill-cancel max-width standard-space" />
-						</button>
-					</div>
-				</div>
 			</div>
 		);
 	}

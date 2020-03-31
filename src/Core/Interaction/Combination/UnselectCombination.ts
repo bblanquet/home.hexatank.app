@@ -1,4 +1,4 @@
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { ICombination } from './ICombination';
 import { ISelectable } from '../../ISelectable';
 import { Item } from '../../Items/Item';
@@ -54,7 +54,7 @@ export class UnselectCombination implements ICombination {
 						if (cell.GetField() instanceof BasicField && cell.GetState() === CellState.Visible) {
 							this._interactionContext.Push(cell, false);
 							cell.SetSelected(true);
-							PlaygroundHelper.SelectedItem.Invoke(this, cell);
+							GameHelper.SelectedItem.Invoke(this, cell);
 							return true;
 						}
 					}

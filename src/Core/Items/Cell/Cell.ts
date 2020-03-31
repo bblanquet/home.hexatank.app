@@ -11,7 +11,7 @@ import { ISelectable } from '../../ISelectable';
 import { Headquarter } from './Field/Headquarter';
 import { ICell } from './ICell';
 import { IMovable } from '../IMovable';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Point } from '../../Utils/Geometry/Point';
 import { Field } from './Field/Field';
@@ -62,10 +62,6 @@ export class Cell extends Item implements ICell, ISelectable {
 		return this._state === CellState.Visible;
 	}
 
-	public IsUnknown(): boolean {
-		return this._state === CellState.Hidden;
-	}
-
 	public SetSelected(isSelected: boolean): void {
 		this.SetProperty(Archive.selectionCell, (e) => (e.alpha = isSelected ? 1 : 0));
 		this.SelectionChanged.Invoke(this, this);
@@ -105,7 +101,7 @@ export class Cell extends Item implements ICell, ISelectable {
 	}
 
 	public HasAroundAlly(a: AliveItem): boolean {
-		return this.ContainsAlly(a) || this.GetAllNeighbourhood().filter((c) => (<Cell>c).ContainsAlly(a)).length > 0;
+		return this.HasAlly(a) || this.GetAllNeighbourhood().filter((c) => (<Cell>c).HasAlly(a)).length > 0;
 	}
 
 	public SetOccupier(movable: IMovable) {
@@ -134,7 +130,7 @@ export class Cell extends Item implements ICell, ISelectable {
 		return null;
 	}
 
-	public ContainsAlly(v: AliveItem): boolean {
+	public HasAlly(v: AliveItem): boolean {
 		if (this._occupier && this._occupier instanceof AliveItem) {
 			return !v.IsEnemy(this._occupier);
 		}
@@ -144,7 +140,7 @@ export class Cell extends Item implements ICell, ISelectable {
 		return false;
 	}
 
-	public ContainsEnemy(v: AliveItem): boolean {
+	public HasEnemy(v: AliveItem): boolean {
 		if (this._occupier && this._occupier instanceof AliveItem) {
 			if (v instanceof Vehicle && (<Vehicle>v).HasCamouflage) {
 				return false;
@@ -177,10 +173,11 @@ export class Cell extends Item implements ICell, ISelectable {
 		});
 	}
 
+	//awfull
 	private SetHqState(state: CellState) {
 		let cells = new Array<Cell>();
-		cells.push(PlaygroundHelper.PlayerHeadquarter.GetCell());
-		cells = cells.concat(PlaygroundHelper.PlayerHeadquarter.GetCell().GetAllNeighbourhood().map((c) => <Cell>c));
+		cells.push(GameHelper.PlayerHeadquarter.GetCell());
+		cells = cells.concat(GameHelper.PlayerHeadquarter.GetCell().GetAllNeighbourhood().map((c) => <Cell>c));
 		if (cells.indexOf(this) !== -1) {
 			state = CellState.Visible;
 		}
@@ -197,7 +194,7 @@ export class Cell extends Item implements ICell, ISelectable {
 			e.y = this.GetBoundingBox().Y;
 		});
 		this.GetBothSprites(this._areaSprite).forEach((s) => {
-			PlaygroundHelper.Render.AddByGroup(s, 3);
+			GameHelper.Render.AddByGroup(s, 3);
 		});
 	}
 
@@ -251,7 +248,7 @@ export class Cell extends Item implements ICell, ISelectable {
 		var cells = new Array<Cell>();
 		cells.push(this);
 		this.GetCoordinate().GetNeighbours(range).forEach((coordinate) => {
-			var cell = PlaygroundHelper.CellsContainer.Get(coordinate);
+			var cell = GameHelper.Cells.Get(coordinate);
 			if (cell) {
 				cells.push(cell);
 			}
@@ -262,7 +259,7 @@ export class Cell extends Item implements ICell, ISelectable {
 	public GetAllNeighbourhood(range: number = 1): Array<ICell> {
 		var cells = new Array<ICell>();
 		this.GetCoordinate().GetNeighbours(range).forEach((coordinate) => {
-			var cell = PlaygroundHelper.CellsContainer.Get(coordinate);
+			var cell = GameHelper.Cells.Get(coordinate);
 			if (cell) {
 				cells.push(cell);
 			}
@@ -273,7 +270,7 @@ export class Cell extends Item implements ICell, ISelectable {
 	public GetSpecificRange(range: number = 1): Array<ICell> {
 		var cells = new Array<ICell>();
 		this.GetCoordinate().GetSpecificRange(range).forEach((coordinate) => {
-			var cell = PlaygroundHelper.CellsContainer.Get(coordinate);
+			var cell = GameHelper.Cells.Get(coordinate);
 			if (cell) {
 				cells.push(cell);
 			}
@@ -284,7 +281,7 @@ export class Cell extends Item implements ICell, ISelectable {
 	public GetNeighbourhood(range: number = 1): Array<ICell> {
 		var cells = new Array<ICell>();
 		this.GetCoordinate().GetNeighbours(range).forEach((coordinate) => {
-			var cell = PlaygroundHelper.CellsContainer.Get(coordinate);
+			var cell = GameHelper.Cells.Get(coordinate);
 			if (cell != null && !cell.IsBlocked()) {
 				cells.push(cell);
 			}
@@ -297,15 +294,15 @@ export class Cell extends Item implements ICell, ISelectable {
 	}
 
 	public Select(context: IInteractionContext): boolean {
-		if (PlaygroundHelper.Viewport.lastViewport) {
-			let scale = PlaygroundHelper.Viewport.lastViewport.scaleX;
+		if (GameHelper.ViewPort.lastViewport) {
+			let scale = GameHelper.ViewPort.lastViewport.scaleX;
 			this._circle.radius =
 				context.Mode === InteractionMode.MultipleSelection
 					? GameSettings.Size / 2 * scale
 					: GameSettings.Size * scale;
 			this._circle.radius = GameSettings.Size * scale;
-			this._circle.x = (this.GetSprites()[0].x - PlaygroundHelper.Viewport.left) * scale;
-			this._circle.y = (this.GetSprites()[0].y - PlaygroundHelper.Viewport.top) * scale;
+			this._circle.x = (this.GetSprites()[0].x - GameHelper.ViewPort.left) * scale;
+			this._circle.y = (this.GetSprites()[0].y - GameHelper.ViewPort.top) * scale;
 		}
 
 		var isSelected = this._circle.contains(context.Point.x, context.Point.y);

@@ -1,14 +1,17 @@
-import { InteractionContext } from '../../InteractionContext';
 import { MultiSelectionMenu } from '../../../Menu/Smart/MultiSelectionMenu';
 import { ICombination } from '../ICombination';
 import { CombinationContext } from '../CombinationContext';
 import { SelectionMode } from '../../../Menu/Smart/SelectionMode';
-import { PlaygroundHelper } from '../../../Framework/PlaygroundHelper';
 import { InteractionMode } from '../../InteractionMode';
-import { InteractionKind } from '../../IInteractionContext';
+import { InteractionKind, IInteractionContext } from '../../IInteractionContext';
+import { AppHandler } from '../../../../Components/Canvas/AppHandler';
 
 export class UpMultiMenuCombination implements ICombination {
-	constructor(private _multiselection: MultiSelectionMenu, private _interactionContext: InteractionContext) {}
+	constructor(
+		private _multiselection: MultiSelectionMenu,
+		private _interactionContext: IInteractionContext,
+		private _appHandler: AppHandler
+	) {}
 
 	IsMatching(context: CombinationContext): boolean {
 		return (
@@ -23,7 +26,7 @@ export class UpMultiMenuCombination implements ICombination {
 				this._interactionContext.Mode = InteractionMode.MultipleSelection;
 			} else {
 				this._interactionContext.Mode = InteractionMode.SingleSelection;
-				PlaygroundHelper.RestartNavigation();
+				this._appHandler.RestartNavigation();
 			}
 			return true;
 		}

@@ -2,7 +2,7 @@ import { Item } from '../Item';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../Interaction/InteractionContext';
 import { Archive } from '../../Framework/ResourceArchiver';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 
 export class Light extends Item {
 	private _boundingBox: BoundingBox;
@@ -26,7 +26,7 @@ export class Light extends Item {
 	public Destroy(): void {
 		super.Destroy();
 		this.IsUpdatable = false;
-		PlaygroundHelper.Render.Remove(this);
+		GameHelper.Render.Remove(this);
 	}
 
 	public GetBoundingBox(): BoundingBox {

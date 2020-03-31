@@ -14,7 +14,7 @@ export class Area {
 		const cells = this._centercell.GetAllNeighbourhood().map((c) => <Cell>c).filter((c) => !isNullOrUndefined(c));
 		cells.push(this.GetCentralCell());
 		cells.forEach((cell) => {
-			if (cell.ContainsEnemy(v)) {
+			if (cell.HasEnemy(v)) {
 				result.push(cell);
 			}
 		});
@@ -38,7 +38,7 @@ export class Area {
 		const cells = this._centercell.GetAllNeighbourhood().map((c) => <Cell>c);
 		cells.push(this._centercell);
 		cells.forEach((cell) => {
-			if (cell.ContainsAlly(v)) {
+			if (cell.HasAlly(v)) {
 				enemyCount += 1;
 			}
 		});
@@ -50,7 +50,7 @@ export class Area {
 		const cells = this._centercell.GetAllNeighbourhood().map((c) => <Cell>c);
 		cells.push(this._centercell);
 		cells.forEach((cell) => {
-			if (cell.ContainsEnemy(v)) {
+			if (cell.HasEnemy(v)) {
 				enemyCount += 1;
 			}
 		});

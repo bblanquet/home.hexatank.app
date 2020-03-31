@@ -1,5 +1,4 @@
-import { InteractionKind } from './../../IInteractionContext';
-import { InteractionContext } from '../../InteractionContext';
+import { InteractionKind, IInteractionContext } from './../../IInteractionContext';
 import { MultiSelectionHelper } from './MultiSelectionHelper';
 import { MultiSelectionMenu } from '../../../Menu/Smart/MultiSelectionMenu';
 import { ICombination } from '../ICombination';
@@ -7,9 +6,10 @@ import { CombinationContext } from '../CombinationContext';
 import { SelectionMode } from '../../../Menu/Smart/SelectionMode';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
-import { PlaygroundHelper } from '../../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../../Framework/GameHelper';
 import { MovingInteractionContext } from '../../../Menu/Smart/MovingInteractionContext';
 import { InteractionMode } from '../../InteractionMode';
+import { AppHandler } from '../../../../Components/Canvas/AppHandler';
 
 export class MultiUnitSelectionCombination implements ICombination {
 	private _multiHandler: MultiSelectionHelper;
@@ -18,7 +18,8 @@ export class MultiUnitSelectionCombination implements ICombination {
 	constructor(
 		private _multiselection: MultiSelectionMenu,
 		private _multiContext: MovingInteractionContext,
-		private _interactionContext: InteractionContext
+		private _interactionContext: IInteractionContext,
+		private _appHandler: AppHandler
 	) {
 		this._multiHandler = new MultiSelectionHelper();
 		this._vehicles = [];
@@ -39,7 +40,7 @@ export class MultiUnitSelectionCombination implements ICombination {
 				this._multiContext.Stop();
 				if (this._vehicles.length === 0) {
 					this._interactionContext.Mode = InteractionMode.SingleSelection;
-					PlaygroundHelper.RestartNavigation();
+					this._appHandler.RestartNavigation();
 				}
 				return true;
 			} else {
@@ -52,7 +53,7 @@ export class MultiUnitSelectionCombination implements ICombination {
 				this._vehicles = [];
 				this._multiContext.Stop();
 				this._interactionContext.Mode = InteractionMode.SingleSelection;
-				PlaygroundHelper.RestartNavigation();
+				this._appHandler.RestartNavigation();
 			}
 			return true;
 		}
@@ -62,7 +63,7 @@ export class MultiUnitSelectionCombination implements ICombination {
 	private SetVehicles(cells: Cell[]): void {
 		cells.forEach((c) => {
 			let occupier = (<Cell>(<unknown>c)).GetOccupier();
-			if (occupier && occupier instanceof Vehicle && !PlaygroundHelper.PlayerHeadquarter.IsEnemy(occupier)) {
+			if (occupier && occupier instanceof Vehicle && !GameHelper.PlayerHeadquarter.IsEnemy(occupier)) {
 				this._vehicles.push(occupier);
 			}
 		});

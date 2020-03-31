@@ -3,7 +3,7 @@ import { Timer } from '../../../Utils/Timer/Timer';
 import { LiteEvent } from '../../../Utils/Events/LiteEvent';
 import { Cell } from '../Cell';
 import { Archive } from '../../../Framework/ResourceArchiver';
-import { PlaygroundHelper } from '../../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../../Framework/GameHelper';
 import { Vehicle } from '../../Unit/Vehicle';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { Truck } from '../../Unit/Truck';
@@ -29,7 +29,7 @@ export class DiamondField extends Field {
 
 	public Destroy(): void {
 		super.Destroy();
-		PlaygroundHelper.Render.Remove(this);
+		GameHelper.Render.Remove(this);
 		this.IsUpdatable = false;
 		this.GetCell().DestroyField();
 	}

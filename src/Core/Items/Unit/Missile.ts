@@ -4,7 +4,7 @@ import { AliveItem } from '../AliveItem';
 import * as PIXI from 'pixi.js';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Archive } from '../../Framework/ResourceArchiver';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { InteractionContext } from '../../Interaction/InteractionContext';
 import { GameSettings } from '../../Framework/GameSettings';
 
@@ -97,11 +97,11 @@ export class Missile extends Item {
 		} else {
 			this.Target.SetDamage(this._damage);
 			let explosion = new Explosion(this.Target.GetBoundingBox(), Archive.explosions, 5, true, 20);
-			PlaygroundHelper.Playground.Items.push(explosion);
+			GameHelper.Playground.Items.push(explosion);
 
 			if (!this.Target.IsAlive()) {
 				let skull = new Explosion(this.Target.GetBoundingBox(), [ Archive.skull ], 5, false, 50);
-				PlaygroundHelper.Playground.Items.push(skull);
+				GameHelper.Playground.Items.push(skull);
 			}
 			this.Destroy();
 		}
@@ -109,7 +109,7 @@ export class Missile extends Item {
 
 	public Destroy() {
 		super.Destroy();
-		PlaygroundHelper.Render.Remove(this);
+		GameHelper.Render.Remove(this);
 		this.IsUpdatable = false;
 	}
 }

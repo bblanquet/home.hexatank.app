@@ -1,5 +1,5 @@
 import { GameSettings } from '../../Framework/GameSettings';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { Cell } from './Cell';
 import { CellState } from './CellState';
 
@@ -9,7 +9,7 @@ export class CellStateSetter {
 	}
 
 	public static SetState(cell: Cell): void {
-		const territoty = PlaygroundHelper.PlayerHeadquarter.GetInfluence().map((f) => f.GetArea());
+		const territoty = GameHelper.PlayerHeadquarter.GetInfluence().map((f) => f.GetArea());
 
 		let isContained = false;
 		territoty.some((c) => (isContained = c.Exist(cell.GetCoordinate())));
@@ -26,7 +26,7 @@ export class CellStateSetter {
 					}
 				}
 			} else {
-				if (cell.HasAroundAlly(PlaygroundHelper.PlayerHeadquarter)) {
+				if (cell.HasAroundAlly(GameHelper.PlayerHeadquarter)) {
 					cell.SetState(CellState.Visible);
 				} else {
 					if (cell.GetState() !== CellState.Hidden) {

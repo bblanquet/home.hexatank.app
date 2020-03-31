@@ -4,7 +4,7 @@ import { isNullOrUndefined } from 'util';
 import { ICombination } from './ICombination';
 import { Cell } from '../../Items/Cell/Cell';
 import { BasicField } from '../../Items/Cell/Field/BasicField';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
 import { PacketKind } from '../../../Components/Network/PacketKind';
 import { CombinationContext } from './CombinationContext';
@@ -33,15 +33,15 @@ export class PoisonCellCombination implements ICombination {
 			let cell = <Cell>context.Items[0];
 			if (!isNullOrUndefined(cell)) {
 				if (cell.GetField() instanceof BasicField) {
-					if (PlaygroundHelper.PlayerHeadquarter.HasMoney(GameSettings.FieldPrice)) {
-						PlaygroundHelper.PlayerHeadquarter.Buy(GameSettings.FieldPrice);
+					if (GameHelper.PlayerHeadquarter.HasMoney(GameSettings.FieldPrice)) {
+						GameHelper.PlayerHeadquarter.Buy(GameSettings.FieldPrice);
 						PeerHandler.SendMessage(PacketKind.Field, {
-							Hq: PlaygroundHelper.PlayerHeadquarter.GetCurrentCell().GetCoordinate(),
+							Hq: GameHelper.PlayerHeadquarter.GetCurrentCell().GetCoordinate(),
 							cell: cell.GetCoordinate(),
 							Type: 'Poison'
 						});
 						let field = new PoisonField(cell);
-						PlaygroundHelper.Playground.Items.push(field);
+						GameHelper.Playground.Items.push(field);
 					}
 				}
 			}

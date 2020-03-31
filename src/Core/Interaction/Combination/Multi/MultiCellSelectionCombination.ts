@@ -7,7 +7,7 @@ import { ICombination } from '../ICombination';
 import { CombinationContext } from '../CombinationContext';
 import { MovingInteractionContext } from '../../../Menu/Smart/MovingInteractionContext';
 import { SelectionMode } from '../../../Menu/Smart/SelectionMode';
-import { PlaygroundHelper } from '../../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../../Framework/GameHelper';
 import { HealMenuItem } from '../../../Menu/Buttons/HealMenuItem';
 import { PeerHandler } from '../../../../Components/Network/Host/On/PeerHandler';
 import { PacketKind } from '../../../../Components/Network/PacketKind';
@@ -18,12 +18,12 @@ import { SpeedFieldMenuItem } from '../../../Menu/Buttons/SpeedFieldMenuItem';
 import { MoneyField } from '../../../Items/Cell/Field/MoneyField';
 import { MoneyMenuItem } from '../../../Menu/Buttons/MoneyMenuItem';
 import { FastField } from '../../../Items/Cell/Field/FastField';
-import { InteractionContext } from '../../InteractionContext';
-import { InteractionKind } from '../../IInteractionContext';
+import { InteractionKind, IInteractionContext } from '../../IInteractionContext';
 import { Field } from '../../../Items/Cell/Field/Field';
 import { PoisonField } from '../../../Items/Cell/Field/PoisonField';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { InteractionMode } from '../../InteractionMode';
+import { AppHandler } from '../../../../Components/Canvas/AppHandler';
 
 export class MultiCellSelectionCombination implements ICombination {
 	private _cells: Cell[];
@@ -31,7 +31,8 @@ export class MultiCellSelectionCombination implements ICombination {
 	constructor(
 		private _multiselection: MultiSelectionMenu,
 		private _multiSelectionContext: MovingInteractionContext,
-		private _interactionContext: InteractionContext
+		private _interactionContext: IInteractionContext,
+		private _appHandler: AppHandler
 	) {
 		this._cells = [];
 	}
@@ -61,15 +62,15 @@ export class MultiCellSelectionCombination implements ICombination {
 				this._multiSelectionContext.Stop();
 				if (this._cells.length === 0) {
 					this._interactionContext.Mode = InteractionMode.SingleSelection;
-					PlaygroundHelper.RestartNavigation();
+					this._appHandler.RestartNavigation();
 				} else {
-					PlaygroundHelper.SelectedItem.Invoke(this, this._cells[0]);
+					GameHelper.SelectedItem.Invoke(this, this._cells[0]);
 					this._interactionContext.Mode = InteractionMode.SingleSelection;
 				}
 			} else {
 				let menuItem = context.Items[0];
 				const cost = GameSettings.FieldPrice * this._cells.length;
-				if (menuItem && PlaygroundHelper.PlayerHeadquarter.HasMoney(cost)) {
+				if (menuItem && GameHelper.PlayerHeadquarter.HasMoney(cost)) {
 					if (menuItem instanceof HealMenuItem) {
 						this.SetMenuItem((c) => new HealField(c), 'Heal');
 					} else if (menuItem instanceof AttackMenuItem) {
@@ -89,7 +90,7 @@ export class MultiCellSelectionCombination implements ICombination {
 				});
 				this._cells = [];
 				context.Items.splice(context.Items.length - 1, 1);
-				PlaygroundHelper.RestartNavigation();
+				this._appHandler.RestartNavigation();
 			}
 			return true;
 		}
@@ -98,11 +99,11 @@ export class MultiCellSelectionCombination implements ICombination {
 	private SetMenuItem(getField: (e: Cell) => Field, fieldType: string) {
 		this._cells.forEach((c) => {
 			PeerHandler.SendMessage(PacketKind.Field, {
-				Hq: PlaygroundHelper.PlayerHeadquarter.GetCurrentCell().GetCoordinate(),
+				Hq: GameHelper.PlayerHeadquarter.GetCurrentCell().GetCoordinate(),
 				cell: c.GetCoordinate(),
 				Type: fieldType
 			});
-			PlaygroundHelper.Playground.Items.push(getField(c));
+			GameHelper.Playground.Items.push(getField(c));
 		});
 	}
 

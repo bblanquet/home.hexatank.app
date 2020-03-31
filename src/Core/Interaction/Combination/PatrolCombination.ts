@@ -6,7 +6,7 @@ import { Archive } from '../../Framework/ResourceArchiver';
 import { Item } from '../../Items/Item';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Cell } from '../../Items/Cell/Cell';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 import { CombinationContext } from './CombinationContext';
 import { InteractionMode } from '../InteractionMode';
 import { InteractionKind } from '../IInteractionContext';
@@ -60,7 +60,7 @@ export class PatrolCombination implements ICombination {
 				element.SetVisible(() => true);
 				element.SetAlive(() => true);
 				this._indicators.push(element);
-				PlaygroundHelper.Playground.Items.push(element);
+				GameHelper.Playground.Items.push(element);
 			}
 		}
 

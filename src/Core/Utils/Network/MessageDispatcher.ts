@@ -17,7 +17,7 @@ import { Tank } from '../../Items/Unit/Tank';
 import { MoneyField } from '../../Items/Cell/Field/MoneyField';
 import { FastField } from '../../Items/Cell/Field/FastField';
 import { InfluenceField } from '../../Items/Cell/Field/InfluenceField';
-import { PlaygroundHelper } from '../../Framework/PlaygroundHelper';
+import { GameHelper } from '../../Framework/GameHelper';
 
 export class MessageDispatcher {
 	private _isClient: boolean = false;
@@ -64,31 +64,31 @@ export class MessageDispatcher {
 	private Field(e: any): void {
 		if (this.IsListenedHq(e)) {
 			const pos = new HexAxial(e.cell.Q, e.cell.R);
-			const cell = PlaygroundHelper.CellsContainer.Get(pos);
+			const cell = GameHelper.Cells.Get(pos);
 			const type = e.Type;
 			if (type === 'Heal') {
 				let field = new HealField(cell);
-				PlaygroundHelper.Playground.Items.push(field);
+				GameHelper.Playground.Items.push(field);
 			} else if (type === 'Attack') {
 				let field = new AttackField(cell);
-				PlaygroundHelper.Playground.Items.push(field);
+				GameHelper.Playground.Items.push(field);
 			} else if (type === 'Money') {
 				let field = new MoneyField(cell);
-				PlaygroundHelper.Playground.Items.push(field);
+				GameHelper.Playground.Items.push(field);
 			} else if (type === 'Fast') {
 				let field = new FastField(cell);
-				PlaygroundHelper.Playground.Items.push(field);
+				GameHelper.Playground.Items.push(field);
 			} else if (type === 'Slow') {
 				let field = new SlowField(cell);
-				PlaygroundHelper.Playground.Items.push(field);
+				GameHelper.Playground.Items.push(field);
 			} else if (type === 'Poison') {
 				let field = new PoisonField(cell);
-				PlaygroundHelper.Playground.Items.push(field);
+				GameHelper.Playground.Items.push(field);
 			} else if (type === 'Influence') {
 				const hqPos = new HexAxial(e.Hq.Q, e.Hq.R);
-				const hq = PlaygroundHelper.CellsContainer.Get(hqPos).GetField() as Headquarter;
+				const hq = GameHelper.Cells.Get(hqPos).GetField() as Headquarter;
 				let field = new InfluenceField(cell, hq);
-				PlaygroundHelper.Playground.Items.push(field);
+				GameHelper.Playground.Items.push(field);
 			}
 		}
 	}
@@ -96,10 +96,10 @@ export class MessageDispatcher {
 	private Target(e: any): void {
 		if (this.IsListenedHq(e)) {
 			const pos = new HexAxial(e.cell.Q, e.cell.R);
-			const tank = PlaygroundHelper.CellsContainer.Get(pos).GetOccupier() as Tank;
+			const tank = GameHelper.Cells.Get(pos).GetOccupier() as Tank;
 			if (e.TarGetCell) {
 				const tarGetCell = new HexAxial(e.TarGetCell.Q, e.TarGetCell.R);
-				tank.SetMainTarget(PlaygroundHelper.CellsContainer.Get(tarGetCell).GetShootableEntity());
+				tank.SetMainTarget(GameHelper.Cells.Get(tarGetCell).GetShootableEntity());
 			} else {
 				tank.SetMainTarget(null);
 			}
@@ -109,7 +109,7 @@ export class MessageDispatcher {
 	private Camouflage(e: any): void {
 		if (this.IsListenedHq(e)) {
 			const pos = new HexAxial(e.cell.Q, e.cell.R);
-			const tank = PlaygroundHelper.CellsContainer.Get(pos).GetOccupier() as Tank;
+			const tank = GameHelper.Cells.Get(pos).GetOccupier() as Tank;
 			tank.SetCamouflage();
 		}
 	}
@@ -117,7 +117,7 @@ export class MessageDispatcher {
 	private Influence(e: any): void {
 		if (this.IsListenedHq(e)) {
 			const pos = new HexAxial(e.cell.Q, e.cell.R);
-			const cell = PlaygroundHelper.CellsContainer.Get(pos);
+			const cell = GameHelper.Cells.Get(pos);
 			const influenceField = cell.GetField() as InfluenceField;
 			const type = e.Type;
 
@@ -135,7 +135,7 @@ export class MessageDispatcher {
 
 	private Destroyed(e: any): void {
 		const pos = new HexAxial(e.cell.Q, e.cell.R);
-		const cell = PlaygroundHelper.CellsContainer.Get(pos);
+		const cell = GameHelper.Cells.Get(pos);
 		const destroyedItemName = e.Name;
 
 		if (cell.HasOccupier() && 'vehicle' === destroyedItemName) {
@@ -150,23 +150,23 @@ export class MessageDispatcher {
 	private ReceiveNextPosition(e: any): void {
 		if (this.IsListenedHq(e)) {
 			const nextPos = new HexAxial(e.Nextcell.Q, e.Nextcell.R);
-			const vehicle = PlaygroundHelper.VehiclesContainer.Get(e.Id);
-			vehicle.SetNextCell(PlaygroundHelper.CellsContainer.Get(nextPos));
+			const vehicle = GameHelper.VehiclesContainer.Get(e.Id);
+			vehicle.SetNextCell(GameHelper.Cells.Get(nextPos));
 		}
 	}
 
 	private IsListenedHq(e: any): boolean {
 		const coordinate = new HexAxial(e.Hq.Q, e.Hq.R);
-		const hq = PlaygroundHelper.CellsContainer.Get(coordinate).GetField() as Headquarter;
-		return hq && hq.PlayerName !== PlaygroundHelper.PlayerName && hq.constructor.name !== IaHeadquarter.name; //find a way to fix it
+		const hq = GameHelper.Cells.Get(coordinate).GetField() as Headquarter;
+		return hq && hq.PlayerName !== GameHelper.PlayerName && hq.constructor.name !== IaHeadquarter.name; //find a way to fix it
 	}
 
 	private CreateVehicle(e: any): void {
 		if (this.IsListenedHq(e)) {
-			if (!PlaygroundHelper.VehiclesContainer.Exist(e.Id)) {
+			if (!GameHelper.VehiclesContainer.Exist(e.Id)) {
 				const hqPos = new HexAxial(e.Hq.Q, e.Hq.R);
-				const hq = PlaygroundHelper.CellsContainer.Get(hqPos).GetField() as Headquarter;
-				const pos = PlaygroundHelper.CellsContainer.Get(new HexAxial(e.cell.Q, e.cell.R));
+				const hq = GameHelper.Cells.Get(hqPos).GetField() as Headquarter;
+				const pos = GameHelper.Cells.Get(new HexAxial(e.cell.Q, e.cell.R));
 				if (e.Type === 'Tank') {
 					hq.CreateTank(pos);
 				} else if (e.Type === 'Truck') {
@@ -191,9 +191,8 @@ export class MessageDispatcher {
 			hq.Hq.Position = new HexAxial(hq.Hq.Position.Q, hq.Hq.Position.R);
 		});
 
-		PlaygroundHelper.MapContext = content.Message;
+		GameHelper.MapContext = content.Message;
 		if (content.Status == MessageProgess.end) {
-			PlaygroundHelper.IsOnline = true;
 			route('/Canvas', true);
 			PeerHandler.CloseRoom();
 		}

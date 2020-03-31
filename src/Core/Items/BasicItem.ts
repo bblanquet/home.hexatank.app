@@ -1,7 +1,7 @@
 import { InteractionContext } from './../Interaction/InteractionContext';
 import { Item } from './Item';
 import { BoundingBox } from '../Utils/Geometry/BoundingBox';
-import { PlaygroundHelper } from '../Framework/PlaygroundHelper';
+import { GameHelper } from '../Framework/GameHelper';
 
 export class BasicItem extends Item {
 	private _isVisible: { (): boolean };
@@ -53,6 +53,6 @@ export class BasicItem extends Item {
 	public Destroy(): void {
 		super.Destroy();
 		this.IsUpdatable = false;
-		PlaygroundHelper.Render.Remove(this);
+		GameHelper.Render.Remove(this);
 	}
 }

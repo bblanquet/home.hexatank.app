@@ -1,23 +1,15 @@
 import { SmallMenuItem } from './../../Menu/Buttons/SmallMenuItem';
-import { ICombination } from './ICombination';
 import { CombinationContext } from './CombinationContext';
-import { InteractionMode } from '../InteractionMode';
-import { InteractionKind } from '../IInteractionContext';
 import { InfluenceField } from '../../Items/Cell/Field/InfluenceField';
+import { AbstractSingleCombination } from './AbstractSingleCombination';
 
-export class RangeDownCombination implements ICombination {
+export class RangeDownCombination extends AbstractSingleCombination {
 	IsMatching(context: CombinationContext): boolean {
 		return (
 			this.IsNormalMode(context) &&
 			context.Items.length == 2 &&
 			context.Items[0] instanceof InfluenceField &&
 			context.Items[1] instanceof SmallMenuItem
-		);
-	}
-
-	private IsNormalMode(context: CombinationContext) {
-		return (
-			context.ContextMode === InteractionMode.SingleSelection && context.InteractionKind === InteractionKind.Up
 		);
 	}
 

@@ -1,22 +1,15 @@
 import { DiamondFieldOrder } from '../../Ia/Order/DiamondFieldOrder';
 import { TruckPatrolOrder } from '../../Ia/Order/TruckPatrolOrder';
-import { ICombination } from './ICombination';
 import { Item } from '../../Items/Item';
 import { Truck } from '../../Items/Unit/Truck';
 import { Cell } from '../../Items/Cell/Cell';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { HqFieldOrder } from '../../Ia/Order/HqFieldOrder';
-import { IContextContainer } from '../IContextContainer';
 import { ISelectable } from '../../ISelectable';
 import { CombinationContext } from './CombinationContext';
+import { AbstractSingleCombination } from './AbstractSingleCombination';
 
-export class TruckDiamondCombination implements ICombination {
-	private _interactionContext: IContextContainer;
-
-	constructor(interactionContext: IContextContainer) {
-		this._interactionContext = interactionContext;
-	}
-
+export class TruckDiamondCombination extends AbstractSingleCombination {
 	IsMatching(context: CombinationContext): boolean {
 		return (
 			context.Items.length >= 2 &&
@@ -37,7 +30,7 @@ export class TruckDiamondCombination implements ICombination {
 			);
 			truck.SetOrder(order);
 			this.UnSelectItem(context.Items[0]);
-			this._interactionContext.ClearContext();
+			this.OnClearContext.Invoke();
 			return true;
 		}
 		return false;

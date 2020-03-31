@@ -1,12 +1,14 @@
 import { MultiSelectionMenu } from '../../../Menu/Smart/MultiSelectionMenu';
-import { ICombination } from '../ICombination';
 import { CombinationContext } from '../CombinationContext';
 import { Point } from '../../../Utils/Geometry/Point';
 import { InteractionMode } from '../../InteractionMode';
 import { InteractionKind } from '../../IInteractionContext';
+import { AbstractSingleCombination } from '../AbstractSingleCombination';
 
-export class MovingMultiMenuCombination implements ICombination {
-	constructor(private _multiselection: MultiSelectionMenu) {}
+export class MovingMultiMenuCombination extends AbstractSingleCombination {
+	constructor(private _multiselection: MultiSelectionMenu) {
+		super();
+	}
 
 	IsMatching(context: CombinationContext): boolean {
 		return (

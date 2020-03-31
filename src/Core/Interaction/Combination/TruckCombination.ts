@@ -1,27 +1,17 @@
-import { ICombination } from './ICombination';
 import { Truck } from '../../Items/Unit/Truck';
 import { Cell } from '../../Items/Cell/Cell';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { PersistentOrder } from '../../Ia/Order/PersistentOrder';
 import { CombinationContext } from './CombinationContext';
-import { InteractionMode } from '../InteractionMode';
-import { InteractionKind } from '../IInteractionContext';
+import { AbstractSingleCombination } from './AbstractSingleCombination';
 
-export class TruckCombination implements ICombination {
-	constructor() {}
-
+export class TruckCombination extends AbstractSingleCombination {
 	IsMatching(context: CombinationContext): boolean {
 		return (
 			this.IsNormalMode(context) &&
 			context.Items.length >= 2 &&
 			context.Items[0] instanceof Truck &&
 			context.Items[1] instanceof Cell
-		);
-	}
-
-	private IsNormalMode(context: CombinationContext) {
-		return (
-			context.ContextMode === InteractionMode.SingleSelection && context.InteractionKind === InteractionKind.Up
 		);
 	}
 

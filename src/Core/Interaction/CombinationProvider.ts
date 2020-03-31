@@ -40,23 +40,17 @@ import { PoisonCellCombination } from './Combination/PoisonCellCombination';
 import { SlowCellCombination } from './Combination/SlowCellCombination';
 import { MovingInteractionContext } from '../Menu/Smart/MovingInteractionContext';
 import { Item } from '../Items/Item';
-import { IInteractionContext } from './IInteractionContext';
 
 export class CombinationProvider {
-	GetCombination(
-		container: IContextContainer,
-		context: IInteractionContext,
-		appHandler: AppHandler,
-		isSelectable: (item: Item) => boolean
-	): ICombination[] {
+	GetCombination(appHandler: AppHandler, isSelectable: (item: Item) => boolean): ICombination[] {
 		const multiselectionMenu = new MultiSelectionMenu();
 		const multiSelectionContext = new MovingInteractionContext();
 		return [
-			new DisplayMultiMenuCombination(context, multiselectionMenu, appHandler),
+			new DisplayMultiMenuCombination(multiselectionMenu, appHandler),
 			new MovingMultiMenuCombination(multiselectionMenu),
-			new UpMultiMenuCombination(multiselectionMenu, context, appHandler),
+			new UpMultiMenuCombination(multiselectionMenu, appHandler),
 			new MultiSelectionCombination(multiSelectionContext),
-			new MultiUnitSelectionCombination(multiselectionMenu, multiSelectionContext, context, appHandler),
+			new MultiUnitSelectionCombination(multiselectionMenu, multiSelectionContext, appHandler),
 			new MultiCellSelectionCombination(multiselectionMenu, multiSelectionContext, context, appHandler),
 			new FlagCellCombination(),
 			new AbortCombination(),
@@ -68,17 +62,17 @@ export class CombinationProvider {
 			new SwitchToVehicleCombination(),
 			new SwitchToInfluenceCombination(),
 			new SwitchToHeadquarterCombination(),
-			new CancelCombination(container),
-			new TruckDiamondCombination(container),
+			new CancelCombination(),
+			new TruckDiamondCombination(),
 			new TruckCombination(),
 			new TankCombination(),
 			new PatrolCombination(),
-			new ClearTrashCombination(isSelectable, container),
-			new UnselectCombination(isSelectable, container),
+			new ClearTrashCombination(isSelectable),
+			new UnselectCombination(isSelectable),
 			new SelectionCombination(isSelectable),
 			new FastCellCombination(),
 			new CamouflageCombination(),
-			new TargetCombination(container),
+			new TargetCombination(),
 			new AttackCellCombination(),
 			new SlowCellCombination(),
 			new PoisonCellCombination(),

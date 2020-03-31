@@ -1,12 +1,14 @@
 import { MovingInteractionContext } from '../../../Menu/Smart/MovingInteractionContext';
-import { ICombination } from '../ICombination';
 import { CombinationContext } from '../CombinationContext';
 import { InteractionMode } from '../../InteractionMode';
 import { Point } from '../../../Utils/Geometry/Point';
 import { InteractionKind } from '../../IInteractionContext';
+import { AbstractSingleCombination } from '../AbstractSingleCombination';
 
-export class MultiSelectionCombination implements ICombination {
-	constructor(private _interactionContext: MovingInteractionContext) {}
+export class MultiSelectionCombination extends AbstractSingleCombination {
+	constructor(private _interactionContext: MovingInteractionContext) {
+		super();
+	}
 
 	IsMatching(context: CombinationContext): boolean {
 		return context.ContextMode === InteractionMode.MultipleSelection;

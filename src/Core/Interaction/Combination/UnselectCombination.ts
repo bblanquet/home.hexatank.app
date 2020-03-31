@@ -1,24 +1,20 @@
 import { GameHelper } from '../../Framework/GameHelper';
-import { ICombination } from './ICombination';
 import { ISelectable } from '../../ISelectable';
 import { Item } from '../../Items/Item';
 import { Cell } from '../../Items/Cell/Cell';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { BasicField } from '../../Items/Cell/Field/BasicField';
 import { CellState } from '../../Items/Cell/CellState';
-import { IContextContainer } from '../IContextContainer';
 import { CombinationContext } from './CombinationContext';
-import { InteractionMode } from '../InteractionMode';
-import { InteractionKind } from '../IInteractionContext';
 import { InfluenceField } from '../../Items/Cell/Field/InfluenceField';
+import { AbstractSingleCombination } from './AbstractSingleCombination';
 
-export class UnselectCombination implements ICombination {
-	private _isSelectable: { (item: Item): boolean };
-	private _interactionContext: IContextContainer;
+export class UnselectCombination extends AbstractSingleCombination {
+	private _isSelectable: (item: Item) => boolean;
 
-	constructor(isSelectable: { (item: Item): boolean }, interactionContext: IContextContainer) {
+	constructor(isSelectable: (item: Item) => boolean) {
+		super();
 		this._isSelectable = isSelectable;
-		this._interactionContext = interactionContext;
 	}
 
 	IsMatching(context: CombinationContext): boolean {
@@ -34,25 +30,19 @@ export class UnselectCombination implements ICombination {
 		);
 	}
 
-	private IsNormalMode(context: CombinationContext) {
-		return (
-			context.ContextMode === InteractionMode.SingleSelection && context.InteractionKind === InteractionKind.Up
-		);
-	}
-
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
 			const lastItem = context.Items[context.Items.length - 1];
 			if (this._isSelectable(lastItem)) {
 				if (lastItem === context.Items[0]) {
 					this.UnSelectItem(context.Items[0]);
-					this._interactionContext.ClearContext();
+					this.OnClearContext.Invoke();
 					if (lastItem instanceof Vehicle) {
 						const vehicle = lastItem as Vehicle;
 						const cell = vehicle.GetCurrentCell();
 
 						if (cell.GetField() instanceof BasicField && cell.GetState() === CellState.Visible) {
-							this._interactionContext.Push(cell, false);
+							this.OnPushedItem.Invoke(this, cell);
 							cell.SetSelected(true);
 							GameHelper.SelectedItem.Invoke(this, cell);
 							return true;
@@ -60,8 +50,8 @@ export class UnselectCombination implements ICombination {
 					}
 				} else {
 					this.UnSelectItem(context.Items[0]);
-					this._interactionContext.ClearContext();
-					this._interactionContext.Push(lastItem, true);
+					this.OnClearContext.Invoke();
+					this.OnPushedItem.Invoke(this, lastItem);
 				}
 			}
 			return true;

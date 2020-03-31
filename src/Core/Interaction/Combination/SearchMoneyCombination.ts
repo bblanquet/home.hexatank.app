@@ -1,24 +1,16 @@
 import { MoneyOrder } from './../../Ia/Order/MoneyOrder';
 import { Truck } from './../../Items/Unit/Truck';
 import { SearchMoneyMenuItem } from './../../Menu/Buttons/SearchMoneyMenuItem';
-import { ICombination } from './ICombination';
 import { CombinationContext } from './CombinationContext';
-import { InteractionMode } from '../InteractionMode';
-import { InteractionKind } from '../IInteractionContext';
+import { AbstractSingleCombination } from './AbstractSingleCombination';
 
-export class SearchMoneyCombination implements ICombination {
+export class SearchMoneyCombination extends AbstractSingleCombination {
 	IsMatching(context: CombinationContext): boolean {
 		return (
 			this.IsNormalMode(context) &&
 			context.Items[0] instanceof Truck &&
 			context.Items.filter((i) => i instanceof SearchMoneyMenuItem).length >= 1 &&
 			context.Items.length >= 2
-		);
-	}
-
-	private IsNormalMode(context: CombinationContext) {
-		return (
-			context.ContextMode === InteractionMode.SingleSelection && context.InteractionKind === InteractionKind.Up
 		);
 	}
 

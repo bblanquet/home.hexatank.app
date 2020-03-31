@@ -3,7 +3,6 @@ import { SlowMenuItem } from '../../../Menu/Buttons/SlowMenuItem';
 import { PoisonMenuItem } from '../../../Menu/Buttons/PoisonMenuItem';
 import { Cell } from '../../../Items/Cell/Cell';
 import { MultiSelectionMenu } from '../../../Menu/Smart/MultiSelectionMenu';
-import { ICombination } from '../ICombination';
 import { CombinationContext } from '../CombinationContext';
 import { MovingInteractionContext } from '../../../Menu/Smart/MovingInteractionContext';
 import { SelectionMode } from '../../../Menu/Smart/SelectionMode';
@@ -24,16 +23,17 @@ import { PoisonField } from '../../../Items/Cell/Field/PoisonField';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { InteractionMode } from '../../InteractionMode';
 import { AppHandler } from '../../../../Components/Canvas/AppHandler';
+import { AbstractSingleCombination } from '../AbstractSingleCombination';
 
-export class MultiCellSelectionCombination implements ICombination {
+export class MultiCellSelectionCombination extends AbstractSingleCombination {
 	private _cells: Cell[];
 
 	constructor(
 		private _multiselection: MultiSelectionMenu,
 		private _multiSelectionContext: MovingInteractionContext,
-		private _interactionContext: IInteractionContext,
 		private _appHandler: AppHandler
 	) {
+		super();
 		this._cells = [];
 	}
 
@@ -61,11 +61,11 @@ export class MultiCellSelectionCombination implements ICombination {
 				});
 				this._multiSelectionContext.Stop();
 				if (this._cells.length === 0) {
-					this._interactionContext.Mode = InteractionMode.SingleSelection;
+					this.OnChangedMod.Invoke(this, InteractionMode.SingleSelection);
 					this._appHandler.RestartNavigation();
 				} else {
 					GameHelper.SelectedItem.Invoke(this, this._cells[0]);
-					this._interactionContext.Mode = InteractionMode.SingleSelection;
+					this.OnChangedMod.Invoke(this, InteractionMode.SingleSelection);
 				}
 			} else {
 				let menuItem = context.Items[0];

@@ -1,7 +1,6 @@
 import { InteractionKind, IInteractionContext } from './../../IInteractionContext';
 import { MultiSelectionHelper } from './MultiSelectionHelper';
 import { MultiSelectionMenu } from '../../../Menu/Smart/MultiSelectionMenu';
-import { ICombination } from '../ICombination';
 import { CombinationContext } from '../CombinationContext';
 import { SelectionMode } from '../../../Menu/Smart/SelectionMode';
 import { Cell } from '../../../Items/Cell/Cell';
@@ -10,17 +9,18 @@ import { GameHelper } from '../../../Framework/GameHelper';
 import { MovingInteractionContext } from '../../../Menu/Smart/MovingInteractionContext';
 import { InteractionMode } from '../../InteractionMode';
 import { AppHandler } from '../../../../Components/Canvas/AppHandler';
+import { AbstractSingleCombination } from '../AbstractSingleCombination';
 
-export class MultiUnitSelectionCombination implements ICombination {
+export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 	private _multiHandler: MultiSelectionHelper;
 	private _vehicles: Vehicle[];
 
 	constructor(
 		private _multiselection: MultiSelectionMenu,
 		private _multiContext: MovingInteractionContext,
-		private _interactionContext: IInteractionContext,
 		private _appHandler: AppHandler
 	) {
+		super();
 		this._multiHandler = new MultiSelectionHelper();
 		this._vehicles = [];
 	}
@@ -39,7 +39,7 @@ export class MultiUnitSelectionCombination implements ICombination {
 				this.SetVehicles(this._multiContext.GetCells());
 				this._multiContext.Stop();
 				if (this._vehicles.length === 0) {
-					this._interactionContext.Mode = InteractionMode.SingleSelection;
+					this.OnChangedMod.Invoke(this, InteractionMode.SingleSelection);
 					this._appHandler.RestartNavigation();
 				}
 				return true;
@@ -52,7 +52,7 @@ export class MultiUnitSelectionCombination implements ICombination {
 				});
 				this._vehicles = [];
 				this._multiContext.Stop();
-				this._interactionContext.Mode = InteractionMode.SingleSelection;
+				this.OnChangedMod.Invoke(this, InteractionMode.SingleSelection);
 				this._appHandler.RestartNavigation();
 			}
 			return true;

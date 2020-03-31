@@ -1,16 +1,12 @@
-import { ICombination } from './ICombination';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Cell } from '../../Items/Cell/Cell';
 import { CombinationContext } from './CombinationContext';
 import { InfluenceField } from '../../Items/Cell/Field/InfluenceField';
 import { Headquarter } from '../../Items/Cell/Field/Headquarter';
-import { InteractionMode } from '../InteractionMode';
-import { InteractionKind } from '../IInteractionContext';
 import { ISelectable } from '../../ISelectable';
+import { AbstractSingleCombination } from './AbstractSingleCombination';
 
-export class SwitchToInfluenceCombination implements ICombination {
-	constructor() {}
-
+export class SwitchToInfluenceCombination extends AbstractSingleCombination {
 	IsMatching(context: CombinationContext): boolean {
 		return (
 			this.IsNormalMode(context) &&
@@ -19,12 +15,6 @@ export class SwitchToInfluenceCombination implements ICombination {
 				context.Items[0] instanceof Headquarter ||
 				context.Items[0] instanceof Cell) &&
 			context.Items[1] instanceof InfluenceField
-		);
-	}
-
-	private IsNormalMode(context: CombinationContext) {
-		return (
-			context.ContextMode === InteractionMode.SingleSelection && context.InteractionKind === InteractionKind.Up
 		);
 	}
 

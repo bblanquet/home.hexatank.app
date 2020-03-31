@@ -4,8 +4,8 @@
 // import { InteractionContext } from '../InteractionContext';
 // import { PlaygroundHelper } from '../../Utils/PlaygroundHelper';
 
-// export class StartGameCombination implements ICombination{
-    
+// export class StartGameCombination extends AbstractSingleCombination{
+
 //     _gameSetup:GameSetup;
 //     _interaction:InteractionContext;
 
@@ -16,14 +16,14 @@
 
 //     IsMatching(items: Item[]): boolean {
 //         throw new Error("Method not implemented.");
-//     }    
-    
-//     Combine(items: Item[]): boolean 
+//     }
+
+//     Combine(items: Item[]): boolean
 //     {
 //         if(this.IsMatching(items)){
 //             PlaygroundHelper.SpriteProvider.PreloadTexture();
 //             this._gameSetup.SetGame().forEach(element => {
-//                 PlaygroundHelper.Playground.Items.push(<Item> element);        
+//                 PlaygroundHelper.Playground.Items.push(<Item> element);
 //             });
 //             this._interaction.SetCombination(this._gameSetup.GetMenus(),this._gameSetup.GetHq());
 //             return true;

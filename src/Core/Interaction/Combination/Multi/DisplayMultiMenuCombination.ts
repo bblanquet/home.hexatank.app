@@ -1,17 +1,15 @@
 import { AppHandler } from './../../../../Components/Canvas/AppHandler';
-import { InteractionKind, IInteractionContext } from './../../IInteractionContext';
+import { InteractionKind } from './../../IInteractionContext';
 import { MultiSelectionMenu } from '../../../Menu/Smart/MultiSelectionMenu';
-import { ICombination } from '../ICombination';
+import { AbstractSingleCombination } from './../AbstractSingleCombination';
 import { CombinationContext } from '../CombinationContext';
 import { Point } from '../../../Utils/Geometry/Point';
 import { InteractionMode } from '../../InteractionMode';
 
-export class DisplayMultiMenuCombination implements ICombination {
-	constructor(
-		private _interactionContext: IInteractionContext,
-		private _multiselection: MultiSelectionMenu,
-		private _appHandler: AppHandler
-	) {}
+export class DisplayMultiMenuCombination extends AbstractSingleCombination {
+	constructor(private _multiselection: MultiSelectionMenu, private _appHandler: AppHandler) {
+		super();
+	}
 
 	IsMatching(context: CombinationContext): boolean {
 		return (
@@ -24,7 +22,7 @@ export class DisplayMultiMenuCombination implements ICombination {
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
 			this._multiselection.Show(new Point(context.Point.x, context.Point.y));
-			this._interactionContext.Mode = InteractionMode.SelectionMenu;
+			this.OnChangedMod.Invoke(this, InteractionMode.SelectionMenu);
 			this._appHandler.PauseNavigation();
 			return true;
 		}

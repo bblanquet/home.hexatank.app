@@ -27,6 +27,9 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 	) {
 		this._selectedItem = [];
 		this._dispatcher = new CombinationDispatcher(combinations);
+		combinations.forEach(c=>{
+			c.OnChangedMod.On(this.)
+		})
 	}
 
 	public Mute(): void {

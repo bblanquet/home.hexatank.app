@@ -1,31 +1,24 @@
 import { InfluenceField } from '../../Items/Cell/Field/InfluenceField';
 import { GameHelper } from '../../Framework/GameHelper';
-import { ICombination } from './ICombination';
 import { ISelectable } from '../../ISelectable';
 import { Item } from '../../Items/Item';
 import { Cell } from '../../Items/Cell/Cell';
 import { BasicField } from '../../Items/Cell/Field/BasicField';
 import { CellState } from '../../Items/Cell/CellState';
 import { CombinationContext } from './CombinationContext';
-import { InteractionMode } from '../InteractionMode';
-import { InteractionKind } from '../IInteractionContext';
 import { Headquarter } from '../../Items/Cell/Field/Headquarter';
+import { AbstractSingleCombination } from './AbstractSingleCombination';
 
-export class SelectionCombination implements ICombination {
-	private _isSelectable: { (item: Item): boolean };
+export class SelectionCombination extends AbstractSingleCombination {
+	private _isSelectable: (item: Item) => boolean;
 
-	constructor(isSelectable: { (item: Item): boolean }) {
+	constructor(isSelectable: (item: Item) => boolean) {
+		super();
 		this._isSelectable = isSelectable;
 	}
 
 	IsMatching(context: CombinationContext): boolean {
 		return this.IsNormalMode(context) && context.Items.length === 1 && this._isSelectable(context.Items[0]);
-	}
-
-	private IsNormalMode(context: CombinationContext) {
-		return (
-			context.ContextMode === InteractionMode.SingleSelection && context.InteractionKind === InteractionKind.Up
-		);
 	}
 
 	Combine(context: CombinationContext): boolean {

@@ -1,23 +1,15 @@
 import { Tank } from './../../Items/Unit/Tank';
 import { AbortMenuItem } from './../../Menu/Buttons/AbortMenuItem';
-import { ICombination } from './ICombination';
 import { CombinationContext } from './CombinationContext';
 import { Vehicle } from '../../Items/Unit/Vehicle';
-import { InteractionMode } from '../InteractionMode';
-import { InteractionKind } from '../IInteractionContext';
+import { AbstractSingleCombination } from './AbstractSingleCombination';
 
-export class AbortCombination implements ICombination {
+export class AbortCombination extends AbstractSingleCombination {
 	IsMatching(context: CombinationContext): boolean {
 		return (
 			this.IsNormalMode(context) &&
 			context.Items.filter((i) => i instanceof AbortMenuItem).length >= 1 &&
 			context.Items.length >= 2
-		);
-	}
-
-	private IsNormalMode(context: CombinationContext) {
-		return (
-			context.ContextMode === InteractionMode.SingleSelection && context.InteractionKind === InteractionKind.Up
 		);
 	}
 

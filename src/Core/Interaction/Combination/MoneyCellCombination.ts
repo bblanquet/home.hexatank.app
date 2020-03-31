@@ -1,5 +1,4 @@
 import { isNullOrUndefined } from 'util';
-import { ICombination } from './ICombination';
 import { Cell } from '../../Items/Cell/Cell';
 import { MoneyMenuItem } from '../../Menu/Buttons/MoneyMenuItem';
 import { BasicField } from '../../Items/Cell/Field/BasicField';
@@ -8,23 +7,16 @@ import { MoneyField } from '../../Items/Cell/Field/MoneyField';
 import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
 import { PacketKind } from '../../../Components/Network/PacketKind';
 import { CombinationContext } from './CombinationContext';
-import { InteractionMode } from '../InteractionMode';
-import { InteractionKind } from '../IInteractionContext';
 import { GameSettings } from '../../Framework/GameSettings';
+import { AbstractSingleCombination } from './AbstractSingleCombination';
 
-export class MoneyCellCombination implements ICombination {
+export class MoneyCellCombination extends AbstractSingleCombination {
 	IsMatching(context: CombinationContext): boolean {
 		return (
 			this.IsNormalMode(context) &&
 			context.Items.length >= 2 &&
 			context.Items[0] instanceof Cell &&
 			context.Items[1] instanceof MoneyMenuItem
-		);
-	}
-
-	private IsNormalMode(context: CombinationContext) {
-		return (
-			context.ContextMode === InteractionMode.SingleSelection && context.InteractionKind === InteractionKind.Up
 		);
 	}
 

@@ -105,7 +105,7 @@ export default class CanvasComponent extends Component<
 		var selectable = new SelectableChecker(GameHelper.PlayerHeadquarter);
 		this._appHandler.InteractionContext = new InteractionContext(
 			this._appHandler.InputManager,
-			new CombinationProvider().GetCombination(null, null, this._appHandler, selectable.IsSelectable),
+			new CombinationProvider().GetCombination(this._appHandler, selectable.IsSelectable),
 			selectable.IsSelectable
 		);
 

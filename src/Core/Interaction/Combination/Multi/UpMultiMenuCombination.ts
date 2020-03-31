@@ -5,13 +5,12 @@ import { SelectionMode } from '../../../Menu/Smart/SelectionMode';
 import { InteractionMode } from '../../InteractionMode';
 import { InteractionKind, IInteractionContext } from '../../IInteractionContext';
 import { AppHandler } from '../../../../Components/Canvas/AppHandler';
+import { AbstractSingleCombination } from '../AbstractSingleCombination';
 
-export class UpMultiMenuCombination implements ICombination {
-	constructor(
-		private _multiselection: MultiSelectionMenu,
-		private _interactionContext: IInteractionContext,
-		private _appHandler: AppHandler
-	) {}
+export class UpMultiMenuCombination extends AbstractSingleCombination {
+	constructor(private _multiselection: MultiSelectionMenu, private _appHandler: AppHandler) {
+		super();
+	}
 
 	IsMatching(context: CombinationContext): boolean {
 		return (
@@ -23,9 +22,9 @@ export class UpMultiMenuCombination implements ICombination {
 		if (this.IsMatching(context)) {
 			this._multiselection.Hide();
 			if (this._multiselection.GetMode() !== SelectionMode.none) {
-				this._interactionContext.Mode = InteractionMode.MultipleSelection;
+				this.OnChangedMod.Invoke(this, InteractionMode.MultipleSelection);
 			} else {
-				this._interactionContext.Mode = InteractionMode.SingleSelection;
+				this.OnChangedMod.Invoke(this, InteractionMode.SingleSelection);
 				this._appHandler.RestartNavigation();
 			}
 			return true;

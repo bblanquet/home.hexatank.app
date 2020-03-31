@@ -1,20 +1,13 @@
 import { isNullOrUndefined } from 'util';
-import { ICombination } from './ICombination';
 import { Cell } from '../../Items/Cell/Cell';
 import { FlagCell } from '../../Items/Cell/FlagCell';
 import { GameHelper } from '../../Framework/GameHelper';
 import { CombinationContext } from './CombinationContext';
-import { InteractionMode } from '../InteractionMode';
-import { InteractionKind } from '../IInteractionContext';
+import { AbstractSingleCombination } from './AbstractSingleCombination';
 
-export class FlagCellCombination implements ICombination {
+export class FlagCellCombination extends AbstractSingleCombination {
 	IsMatching(context: CombinationContext): boolean {
 		return this.IsNormalMode(context) && context.Items.length === 1 && context.Items[0] instanceof Cell;
-	}
-	private IsNormalMode(context: CombinationContext) {
-		return (
-			context.ContextMode === InteractionMode.SingleSelection && context.InteractionKind === InteractionKind.Up
-		);
 	}
 
 	Combine(context: CombinationContext): boolean {

@@ -10,13 +10,10 @@ import { GameHelper } from '../../Framework/GameHelper';
 import { CombinationContext } from './CombinationContext';
 import { InteractionMode } from '../InteractionMode';
 import { InteractionKind } from '../IInteractionContext';
+import { AbstractSingleCombination } from './AbstractSingleCombination';
 
-export class PatrolCombination implements ICombination {
-	private _indicators: Array<BasicItem>;
-
-	constructor() {
-		this._indicators = [];
-	}
+export class PatrolCombination extends AbstractSingleCombination {
+	private _indicators: Array<BasicItem> = [];
 
 	public IsMatching(context: CombinationContext): boolean {
 		return (
@@ -33,12 +30,6 @@ export class PatrolCombination implements ICombination {
 			context.Items.length >= 2 &&
 			context.Items[0] instanceof Vehicle &&
 			context.Items[1] instanceof PatrolMenuItem
-		);
-	}
-
-	private IsNormalMode(context: CombinationContext) {
-		return (
-			context.ContextMode === InteractionMode.SingleSelection && context.InteractionKind === InteractionKind.Up
 		);
 	}
 

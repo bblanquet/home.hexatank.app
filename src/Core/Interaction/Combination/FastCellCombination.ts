@@ -1,5 +1,4 @@
 import { isNullOrUndefined } from 'util';
-import { ICombination } from './ICombination';
 import { SpeedFieldMenuItem } from '../../Menu/Buttons/SpeedFieldMenuItem';
 import { Cell } from '../../Items/Cell/Cell';
 import { BasicField } from '../../Items/Cell/Field/BasicField';
@@ -8,23 +7,16 @@ import { FastField } from '../../Items/Cell/Field/FastField';
 import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
 import { PacketKind } from '../../../Components/Network/PacketKind';
 import { CombinationContext } from './CombinationContext';
-import { InteractionMode } from '../InteractionMode';
-import { InteractionKind } from '../IInteractionContext';
 import { GameSettings } from '../../Framework/GameSettings';
+import { AbstractSingleCombination } from './AbstractSingleCombination';
 
-export class FastCellCombination implements ICombination {
+export class FastCellCombination extends AbstractSingleCombination {
 	IsMatching(context: CombinationContext): boolean {
 		return (
 			this.IsNormalMode(context) &&
 			context.Items.length >= 2 &&
 			context.Items[0] instanceof Cell &&
 			context.Items[1] instanceof SpeedFieldMenuItem
-		);
-	}
-
-	private IsNormalMode(context: CombinationContext) {
-		return (
-			context.ContextMode === InteractionMode.SingleSelection && context.InteractionKind === InteractionKind.Up
 		);
 	}
 
@@ -51,5 +43,4 @@ export class FastCellCombination implements ICombination {
 		}
 		return false;
 	}
-	public;
 }

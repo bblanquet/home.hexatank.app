@@ -1,17 +1,13 @@
 import { GameHelper } from '../../Framework/GameHelper';
-import { ICombination } from './ICombination';
 import { ISelectable } from '../../ISelectable';
 import { Cell } from '../../Items/Cell/Cell';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { CombinationContext } from './CombinationContext';
-import { InteractionMode } from '../InteractionMode';
-import { InteractionKind } from '../IInteractionContext';
 import { InfluenceField } from '../../Items/Cell/Field/InfluenceField';
 import { Headquarter } from '../../Items/Cell/Field/Headquarter';
+import { AbstractSingleCombination } from './AbstractSingleCombination';
 
-export class SwitchToVehicleCombination implements ICombination {
-	constructor() {}
-
+export class SwitchToVehicleCombination extends AbstractSingleCombination {
 	public IsMatching(context: CombinationContext): boolean {
 		return (
 			this.IsNormalMode(context) &&
@@ -20,12 +16,6 @@ export class SwitchToVehicleCombination implements ICombination {
 				context.Items[0] instanceof InfluenceField ||
 				context.Items[0] instanceof Headquarter) &&
 			context.Items[1] instanceof Vehicle
-		);
-	}
-
-	private IsNormalMode(context: CombinationContext) {
-		return (
-			context.ContextMode === InteractionMode.SingleSelection && context.InteractionKind === InteractionKind.Up
 		);
 	}
 

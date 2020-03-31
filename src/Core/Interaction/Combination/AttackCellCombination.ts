@@ -51,6 +51,4 @@ export class AttackCellCombination implements ICombination {
 		}
 		return false;
 	}
-
-	Clear(): void {}
 }

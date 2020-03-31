@@ -30,6 +30,4 @@ export class RangeDownCombination implements ICombination {
 		}
 		return false;
 	}
-
-	Clear(): void {}
 }

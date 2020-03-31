@@ -30,6 +30,4 @@ export class PowerDownCombination implements ICombination {
 		}
 		return false;
 	}
-
-	Clear(): void {}
 }

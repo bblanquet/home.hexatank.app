@@ -28,6 +28,4 @@ export class AddTruckCombination implements ICombination {
 		}
 		return false;
 	}
-
-	Clear(): void {}
 }

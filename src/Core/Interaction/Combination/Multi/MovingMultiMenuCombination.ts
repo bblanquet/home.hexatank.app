@@ -21,5 +21,4 @@ export class MovingMultiMenuCombination implements ICombination {
 		}
 		return false;
 	}
-	Clear(): void {}
 }

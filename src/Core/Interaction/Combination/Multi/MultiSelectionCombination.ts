@@ -33,5 +33,4 @@ export class MultiSelectionCombination implements ICombination {
 		}
 		return false;
 	}
-	Clear(): void {}
 }

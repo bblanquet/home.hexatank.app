@@ -28,6 +28,4 @@ export class AddTankCombination implements ICombination {
 		}
 		return false;
 	}
-
-	Clear(): void {}
 }

@@ -106,6 +106,4 @@ export class MultiCellSelectionCombination implements ICombination {
 			GameHelper.Playground.Items.push(getField(c));
 		});
 	}
-
-	Clear(): void {}
 }

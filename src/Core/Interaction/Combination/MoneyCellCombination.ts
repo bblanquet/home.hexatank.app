@@ -51,6 +51,4 @@ export class MoneyCellCombination implements ICombination {
 		}
 		return false;
 	}
-
-	Clear(): void {}
 }

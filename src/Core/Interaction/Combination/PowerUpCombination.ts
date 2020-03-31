@@ -39,6 +39,4 @@ export class PowerUpCombination implements ICombination {
 		}
 		return false;
 	}
-
-	Clear(): void {}
 }

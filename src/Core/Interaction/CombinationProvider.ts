@@ -46,53 +46,48 @@ export class CombinationProvider {
 	GetCombination(
 		container: IContextContainer,
 		context: IInteractionContext,
-		appHanlder: AppHandler,
+		appHandler: AppHandler,
 		isSelectable: (item: Item) => boolean
 	): ICombination[] {
 		const multiselectionMenu = new MultiSelectionMenu();
 		const multiSelectionContext = new MovingInteractionContext();
-		let combinations = new Array<ICombination>();
-
-		combinations.push(new DisplayMultiMenuCombination(context, multiselectionMenu, appHanlder));
-		combinations.push(new MovingMultiMenuCombination(multiselectionMenu));
-		combinations.push(new UpMultiMenuCombination(multiselectionMenu, context, appHanlder));
-		combinations.push(new MultiSelectionCombination(multiSelectionContext));
-		combinations.push(
-			new MultiUnitSelectionCombination(multiselectionMenu, multiSelectionContext, context, appHanlder)
-		);
-		combinations.push(
-			new MultiCellSelectionCombination(multiselectionMenu, multiSelectionContext, context, appHanlder)
-		);
-		combinations.push(new FlagCellCombination());
-		combinations.push(new AbortCombination());
-		combinations.push(new SearchMoneyCombination());
-		combinations.push(new InfluenceCombination());
-		combinations.push(new AddTankCombination());
-		combinations.push(new AddTruckCombination());
-		combinations.push(new SwitchToCellCombination());
-		combinations.push(new SwitchToVehicleCombination());
-		combinations.push(new SwitchToInfluenceCombination());
-		combinations.push(new SwitchToHeadquarterCombination());
-		combinations.push(new CancelCombination(container));
-		combinations.push(new TruckDiamondCombination(container));
-		combinations.push(new TruckCombination());
-		combinations.push(new TankCombination());
-		combinations.push(new PatrolCombination());
-		combinations.push(new ClearTrashCombination(isSelectable, container));
-		combinations.push(new UnselectCombination(isSelectable, container));
-		combinations.push(new SelectionCombination(isSelectable));
-		combinations.push(new FastCellCombination());
-		combinations.push(new CamouflageCombination());
-		combinations.push(new TargetCombination(container));
-		combinations.push(new AttackCellCombination());
-		combinations.push(new SlowCellCombination());
-		combinations.push(new PoisonCellCombination());
-		combinations.push(new MoneyCellCombination());
-		combinations.push(new HealCellCombination());
-		combinations.push(new RangeUpCombination());
-		combinations.push(new RangeDownCombination());
-		combinations.push(new PowerDownCombination());
-		combinations.push(new PowerUpCombination());
-		return combinations;
+		return [
+			new DisplayMultiMenuCombination(context, multiselectionMenu, appHandler),
+			new MovingMultiMenuCombination(multiselectionMenu),
+			new UpMultiMenuCombination(multiselectionMenu, context, appHandler),
+			new MultiSelectionCombination(multiSelectionContext),
+			new MultiUnitSelectionCombination(multiselectionMenu, multiSelectionContext, context, appHandler),
+			new MultiCellSelectionCombination(multiselectionMenu, multiSelectionContext, context, appHandler),
+			new FlagCellCombination(),
+			new AbortCombination(),
+			new SearchMoneyCombination(),
+			new InfluenceCombination(),
+			new AddTankCombination(),
+			new AddTruckCombination(),
+			new SwitchToCellCombination(),
+			new SwitchToVehicleCombination(),
+			new SwitchToInfluenceCombination(),
+			new SwitchToHeadquarterCombination(),
+			new CancelCombination(container),
+			new TruckDiamondCombination(container),
+			new TruckCombination(),
+			new TankCombination(),
+			new PatrolCombination(),
+			new ClearTrashCombination(isSelectable, container),
+			new UnselectCombination(isSelectable, container),
+			new SelectionCombination(isSelectable),
+			new FastCellCombination(),
+			new CamouflageCombination(),
+			new TargetCombination(container),
+			new AttackCellCombination(),
+			new SlowCellCombination(),
+			new PoisonCellCombination(),
+			new MoneyCellCombination(),
+			new HealCellCombination(),
+			new RangeUpCombination(),
+			new RangeDownCombination(),
+			new PowerDownCombination(),
+			new PowerUpCombination()
+		];
 	}
 }

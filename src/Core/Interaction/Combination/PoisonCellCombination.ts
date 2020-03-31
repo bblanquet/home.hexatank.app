@@ -51,6 +51,4 @@ export class PoisonCellCombination implements ICombination {
 		}
 		return false;
 	}
-
-	Clear(): void {}
 }

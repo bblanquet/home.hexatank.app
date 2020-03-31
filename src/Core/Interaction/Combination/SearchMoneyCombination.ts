@@ -31,5 +31,4 @@ export class SearchMoneyCombination implements ICombination {
 		}
 		return false;
 	}
-	Clear(): void {}
 }

@@ -39,5 +39,4 @@ export class SwitchToHeadquarterCombination implements ICombination {
 		}
 		return false;
 	}
-	Clear(): void {}
 }

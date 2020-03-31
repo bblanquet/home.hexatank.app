@@ -32,6 +32,4 @@ export class FlagCellCombination implements ICombination {
 		}
 		return false;
 	}
-
-	Clear(): void {}
 }

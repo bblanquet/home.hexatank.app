@@ -78,6 +78,4 @@ export class SelectionCombination implements ICombination {
 		}
 		return null;
 	}
-
-	Clear(): void {}
 }

@@ -51,5 +51,4 @@ export class HealCellCombination implements ICombination {
 		}
 		return false;
 	}
-	Clear(): void {}
 }

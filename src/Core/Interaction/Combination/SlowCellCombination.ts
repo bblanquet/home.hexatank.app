@@ -51,6 +51,4 @@ export class SlowCellCombination implements ICombination {
 		}
 		return false;
 	}
-
-	Clear(): void {}
 }

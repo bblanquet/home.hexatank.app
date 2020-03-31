@@ -45,5 +45,4 @@ export class SwitchToInfluenceCombination implements ICombination {
 		}
 		return false;
 	}
-	Clear(): void {}
 }

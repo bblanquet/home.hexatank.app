@@ -31,6 +31,4 @@ export class ClearTrashCombination implements ICombination {
 		}
 		return false;
 	}
-
-	Clear(): void {}
 }

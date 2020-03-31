@@ -33,5 +33,4 @@ export class CamouflageCombination implements ICombination {
 		}
 		return false;
 	}
-	Clear(): void {}
 }

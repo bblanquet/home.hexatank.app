@@ -1,4 +1,3 @@
-import { ISelectableChecker } from './ISelectableChecker';
 import { ICombination } from './Combination/ICombination';
 import { InputNotifier } from './InputNotifier';
 import { GameHelper } from '../Framework/GameHelper';

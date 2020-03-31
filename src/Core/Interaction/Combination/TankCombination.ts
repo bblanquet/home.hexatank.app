@@ -54,6 +54,4 @@ export class TankCombination implements ICombination {
 		}
 		return false;
 	}
-
-	Clear(): void {}
 }

@@ -41,6 +41,4 @@ export class SwitchToVehicleCombination implements ICombination {
 		}
 		return false;
 	}
-
-	Clear(): void {}
 }

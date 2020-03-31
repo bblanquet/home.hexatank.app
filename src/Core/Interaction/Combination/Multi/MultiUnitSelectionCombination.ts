@@ -71,6 +71,4 @@ export class MultiUnitSelectionCombination implements ICombination {
 			v.SetSelected(true);
 		});
 	}
-
-	Clear(): void {}
 }

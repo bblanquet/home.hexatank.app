@@ -69,7 +69,6 @@ export class UnselectCombination implements ICombination {
 		return false;
 	}
 
-	Clear(): void {}
 	private UnSelectItem(item: Item) {
 		var selectable = <ISelectable>(<any>item);
 		selectable.SetSelected(false);

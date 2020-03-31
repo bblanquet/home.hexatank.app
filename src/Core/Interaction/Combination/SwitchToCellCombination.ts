@@ -36,5 +36,4 @@ export class SwitchToCellCombination implements ICombination {
 		}
 		return false;
 	}
-	Clear(): void {}
 }

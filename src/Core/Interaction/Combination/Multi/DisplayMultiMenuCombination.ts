@@ -30,6 +30,4 @@ export class DisplayMultiMenuCombination implements ICombination {
 		}
 		return false;
 	}
-
-	Clear(): void {}
 }

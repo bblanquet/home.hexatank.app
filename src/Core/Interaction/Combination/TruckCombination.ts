@@ -35,5 +35,4 @@ export class TruckCombination implements ICombination {
 		}
 		return false;
 	}
-	Clear(): void {}
 }

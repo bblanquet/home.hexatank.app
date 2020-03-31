@@ -51,5 +51,5 @@ export class FastCellCombination implements ICombination {
 		}
 		return false;
 	}
-	public Clear(): void {}
+	public;
 }

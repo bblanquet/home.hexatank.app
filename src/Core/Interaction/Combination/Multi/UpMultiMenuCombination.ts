@@ -32,5 +32,4 @@ export class UpMultiMenuCombination implements ICombination {
 		}
 		return false;
 	}
-	Clear(): void {}
 }

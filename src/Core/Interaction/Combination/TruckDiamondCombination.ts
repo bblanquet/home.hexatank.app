@@ -42,7 +42,6 @@ export class TruckDiamondCombination implements ICombination {
 		}
 		return false;
 	}
-	Clear(): void {}
 
 	private UnSelectItem(item: Item) {
 		var selectable = <ISelectable>(<any>item);

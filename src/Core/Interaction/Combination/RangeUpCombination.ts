@@ -39,6 +39,4 @@ export class RangeUpCombination implements ICombination {
 		}
 		return false;
 	}
-
-	Clear(): void {}
 }

@@ -33,5 +33,4 @@ export class AbortCombination implements ICombination {
 		}
 		return false;
 	}
-	Clear(): void {}
 }

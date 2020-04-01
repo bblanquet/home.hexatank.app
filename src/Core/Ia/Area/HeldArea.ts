@@ -1,3 +1,4 @@
+import { AreaEngine } from './AreaEngine';
 import { Area } from './Area';
 import { Cell } from '../../Items/Cell/Cell';
 import { TroopDecisionMaker } from './TroopDecisionMaker';
@@ -6,15 +7,16 @@ import { AreaStatus } from './AreaStatus';
 import { AreaDecisionMaker } from './AreaDecisionMaker';
 import { GameHelper } from '../../Framework/GameHelper';
 import { Tank } from '../../Items/Unit/Tank';
+import { CellContext } from '../../Items/Cell/CellContext';
 
 export class HeldArea {
 	private _areaDecisionMaker: AreaDecisionMaker;
 	private _troops: Array<TroopDecisionMaker>;
 	public HasReceivedRequest: boolean;
 
-	constructor(private _hq: Headquarter, private _area: Area) {
+	constructor(private _hq: Headquarter, private _area: Area, private _cells: CellContext<Cell>) {
 		this._troops = new Array<TroopDecisionMaker>();
-		this._areaDecisionMaker = new AreaDecisionMaker(this);
+		this._areaDecisionMaker = new AreaDecisionMaker(this, this._cells);
 	}
 
 	public GetArea(): Area {
@@ -61,17 +63,23 @@ export class HeldArea {
 
 	private GetOutsideEnemyCount(): number {
 		let outsideEnemyCount = 0;
-		GameHelper.GetNeighbourhoodAreas(this._area.GetCentralCell()).forEach((area) => {
-			outsideEnemyCount += area.GetEnemyCount(this._hq);
-		});
+		new AreaEngine<Cell>()
+			.GetExcludedFirstRange(this._cells, this._area.GetCentralCell())
+			.map((c) => new Area(c))
+			.forEach((area) => {
+				outsideEnemyCount += area.GetEnemyCount(this._hq);
+			});
 		return outsideEnemyCount;
 	}
 
 	private GetOutsideAllyCount(): number {
 		let outsideEnemyCount = 0;
-		GameHelper.GetNeighbourhoodAreas(this._area.GetCentralCell()).forEach((area) => {
-			outsideEnemyCount += area.GetAllyCount(this._hq);
-		});
+		new AreaEngine<Cell>()
+			.GetExcludedFirstRange(this._cells, this._area.GetCentralCell())
+			.map((c) => new Area(c))
+			.forEach((area) => {
+				outsideEnemyCount += area.GetAllyCount(this._hq);
+			});
 		return outsideEnemyCount;
 	}
 

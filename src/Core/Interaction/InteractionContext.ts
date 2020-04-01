@@ -12,6 +12,7 @@ import { ICombinationDispatcher } from './ICombinationDispatcher';
 import { isNullOrUndefined } from 'util';
 import { Point } from '../Utils/Geometry/Point';
 import { IInteractionContext, InteractionKind } from './IInteractionContext';
+import { ISelectableChecker } from './ISelectableChecker';
 
 export class InteractionContext implements IContextContainer, IInteractionContext {
 	public Mode: InteractionMode = InteractionMode.SingleSelection;
@@ -23,13 +24,19 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 	constructor(
 		private _inputNotifier: InputNotifier,
 		combinations: ICombination[],
-		private _isSelectable: (item: Item) => boolean
+		private _checker: ISelectableChecker
 	) {
 		this._selectedItem = [];
 		this._dispatcher = new CombinationDispatcher(combinations);
-		combinations.forEach(c=>{
-			c.OnChangedMod.On(this.)
-		})
+		combinations.forEach((c) => {
+			c.OnClearContext.On(this.ClearContext.bind(this));
+			c.OnChangedMode.On(this.SetMode.bind(this));
+			c.OnPushedItem.On(this.Push.bind(this));
+		});
+	}
+
+	private SetMode(obj: any, data: InteractionMode) {
+		this.Mode = data;
 	}
 
 	public Mute(): void {
@@ -96,13 +103,13 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 
 	private ContainsSelectable(item: Item): Boolean {
 		return (
-			this._isSelectable(<Item>(<any>(<Cell>item).GetOccupier())) ||
-			this._isSelectable(<Item>(<any>(<Cell>item).GetField()))
+			this._checker.IsSelectable(<Item>(<any>(<Cell>item).GetOccupier())) ||
+			this._checker.IsSelectable(<Item>(<any>(<Cell>item).GetField()))
 		);
 	}
 
 	private GetSelectable(i: Cell): Item {
-		if (this._isSelectable(<Item>(<any>(<Cell>i).GetOccupier()))) {
+		if (this._checker.IsSelectable(<Item>(<any>(<Cell>i).GetOccupier()))) {
 			return <Item>(<any>(<Cell>i).GetOccupier());
 		} else {
 			return <Item>(<any>(<Cell>i).GetField());
@@ -135,11 +142,11 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 		this._dispatcher.Check(context);
 	}
 
-	public Push(item: Item, forced: boolean): void {
-		if (forced) {
-			this.OnSelect(item);
+	public Push(obj: any, data: { item: Item; isForced: boolean }): void {
+		if (data.isForced) {
+			this.OnSelect(data.item);
 		} else {
-			this._selectedItem.push(item);
+			this._selectedItem.push(data.item);
 		}
 	}
 

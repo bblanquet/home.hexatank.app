@@ -5,13 +5,13 @@ import { CamouflageMenuItem } from '../../Core/Menu/Buttons/CamouflageMenutItem'
 import { AbortMenuItem } from '../../Core/Menu/Buttons/AbortMenuItem';
 import { CancelMenuItem } from '../../Core/Menu/Buttons/CancelMenuItem';
 import { Item } from '../../Core/Items/Item';
-import { GameHelper } from '../../Core/Framework/GameHelper';
 import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
+import { AppHandler } from './AppHandler';
 
-export default class TankMenuComponent extends Component<{}, {}> {
+export default class TankMenuComponent extends Component<{ AppHandler: AppHandler }, {}> {
 	private SendContext(item: Item): void {
-		GameHelper.InteractionContext.Kind = InteractionKind.Up;
-		return GameHelper.InteractionContext.OnSelect(item);
+		this.props.AppHandler.InteractionContext.Kind = InteractionKind.Up;
+		return this.props.AppHandler.InteractionContext.OnSelect(item);
 	}
 
 	render() {

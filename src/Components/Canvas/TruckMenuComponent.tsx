@@ -6,11 +6,12 @@ import { PatrolMenuItem } from '../../Core/Menu/Buttons/PatrolMenuItem';
 import { SearchMoneyMenuItem } from '../../Core/Menu/Buttons/SearchMoneyMenuItem';
 import { AbortMenuItem } from '../../Core/Menu/Buttons/AbortMenuItem';
 import { CancelMenuItem } from '../../Core/Menu/Buttons/CancelMenuItem';
+import { AppHandler } from './AppHandler';
 
-export default class TruckMenuComponent extends Component<{}, {}> {
+export default class TruckMenuComponent extends Component<{ AppHandler: AppHandler }, {}> {
 	private SendContext(item: Item): void {
-		GameHelper.InteractionContext.Kind = InteractionKind.Up;
-		return GameHelper.InteractionContext.OnSelect(item);
+		this.props.AppHandler.InteractionContext.Kind = InteractionKind.Up;
+		return this.props.AppHandler.InteractionContext.OnSelect(item);
 	}
 
 	render() {

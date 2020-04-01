@@ -6,12 +6,14 @@ import { Item } from '../../Core/Items/Item';
 import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
 import { TankMenuItem } from '../../Core/Menu/Buttons/TankMenuItem';
 import { TruckMenuItem } from '../../Core/Menu/Buttons/TruckMenuItem';
+import { AppHandler } from './AppHandler';
 
 export default class HqMenuComponent extends Component<
 	{
 		TankRequestCount: number;
 		TruckRequestCount: number;
 		HasFlag: boolean;
+		AppHandler: AppHandler;
 		SetFlag: () => void;
 	},
 	{}
@@ -67,7 +69,7 @@ export default class HqMenuComponent extends Component<
 	}
 
 	private SendContext(item: Item): void {
-		GameHelper.InteractionContext.Kind = InteractionKind.Up;
-		return GameHelper.InteractionContext.OnSelect(item);
+		this.props.AppHandler.InteractionContext.Kind = InteractionKind.Up;
+		return this.props.AppHandler.InteractionContext.OnSelect(item);
 	}
 }

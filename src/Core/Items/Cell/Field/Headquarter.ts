@@ -2,8 +2,6 @@ import { GameHelper } from '../../../Framework/GameHelper';
 import { LiteEvent } from '../../../Utils/Events/LiteEvent';
 import { FlagCell } from '../FlagCell';
 import { Tank } from '../../Unit/Tank';
-import { PacketKind } from '../../../../Components/Network/PacketKind';
-import { PeerHandler } from '../../../../Components/Network/Host/On/PeerHandler';
 import { InteractionContext } from '../../../Interaction/InteractionContext';
 import { Cell } from '../Cell';
 import { HeadQuarterField } from './HeadquarterField';
@@ -24,18 +22,18 @@ import { InfluenceField } from './InfluenceField';
 import { ISelectable } from '../../../ISelectable';
 
 export class Headquarter extends AliveItem implements IField, ISelectable {
+	public Flagcell: FlagCell;
 	SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 	private _boundingBox: BoundingBox;
 	private _cell: Cell;
 	public PlayerName: string;
-	public VehicleId: number = 0;
 	protected Fields: Array<HeadQuarterField>;
 	private _diamondCount: number = GameSettings.PocketMoney;
 	private _skin: ItemSkin;
-	private _onCellStateChanged: { (obj: any, cellState: CellState): void };
-	public Flagcell: FlagCell;
+	private _onCellStateChanged: (obj: any, cellState: CellState) => void;
 	private _influenceFields: Array<InfluenceField> = new Array<InfluenceField>();
 	private _vehicles: Array<Vehicle> = new Array<Vehicle>();
+	public OnVehiculeCreated: LiteEvent<Vehicle> = new LiteEvent<Vehicle>();
 
 	constructor(skin: ItemSkin, cell: Cell) {
 		super();
@@ -117,7 +115,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		return this._skin;
 	}
 
-	public CreateTank(pos: Cell = null): boolean {
+	public CreateTank(cell: Cell = null): boolean {
 		let isCreated = false;
 		this.Fields.every((field) => {
 			if (!field.GetCell().IsBlocked()) {
@@ -131,14 +129,11 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 					);
 					GameHelper.Playground.Items.push(explosion);
 				}
-				this.VehicleId += 1;
 				const tank = new Tank(this);
-				tank.Id = `${this.PlayerName}${this.VehicleId}`;
-				tank.SetPosition(pos === null ? field.GetCell() : pos);
-				GameHelper.VehiclesContainer.Add(tank);
+				tank.SetPosition(cell === null ? field.GetCell() : cell);
+				this.OnVehiculeCreated.Invoke(this, tank);
 				GameHelper.Playground.Items.push(tank);
 				isCreated = true;
-				this.NotifyTank(tank);
 				if (this.Flagcell) {
 					tank.SetOrder(new SimpleOrder(this.Flagcell.GetCell(), tank));
 				}
@@ -150,25 +145,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		return isCreated;
 	}
 
-	protected NotifyTank(tank: Tank) {
-		PeerHandler.SendMessage(PacketKind.Create, {
-			Type: 'Tank',
-			Id: tank.Id,
-			cell: tank.GetCurrentCell().GetCoordinate(),
-			Hq: this._cell.GetCoordinate()
-		});
-	}
-
-	protected NotifyTruck(truck: Truck) {
-		PeerHandler.SendMessage(PacketKind.Create, {
-			Type: 'Truck',
-			Id: truck.Id,
-			cell: truck.GetCurrentCell().GetCoordinate(),
-			Hq: this._cell.GetCoordinate()
-		});
-	}
-
-	public CreateTruck(pos: Cell = null): boolean {
+	public CreateTruck(cell: Cell = null): boolean {
 		let isCreated = false;
 		this.Fields.every((field) => {
 			if (!field.GetCell().IsBlocked()) {
@@ -182,14 +159,11 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 					);
 					GameHelper.Playground.Items.push(explosion);
 				}
-				this.VehicleId += 1;
 				let truck = new Truck(this);
-				truck.Id = `${this.PlayerName}${this.VehicleId}`;
-				truck.SetPosition(pos === null ? field.GetCell() : pos);
-				GameHelper.VehiclesContainer.Add(truck);
+				truck.SetPosition(cell === null ? field.GetCell() : cell);
+				this.OnVehiculeCreated.Invoke(this, truck);
 				GameHelper.Playground.Items.push(truck);
 				isCreated = true;
-				this.NotifyTruck(truck);
 				return false;
 			}
 			return true;
@@ -226,7 +200,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	}
 
 	private _tankRequestCount: number = 0;
-	public TankRequestEvent: LiteEvent<number> = new LiteEvent<number>();
+	public OnTankRequestChanged: LiteEvent<number> = new LiteEvent<number>();
 
 	public GetTankRequests(): number {
 		return this._tankRequestCount;
@@ -235,9 +209,10 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	public AddTankRequest(): void {
 		if (this._tankRequestCount < 4) {
 			this._tankRequestCount += 1;
-			this.TankRequestEvent.Invoke(this, this._tankRequestCount);
-			if (this._diamondCount < GameSettings.TankPrice) {
-				GameHelper.SetWarning();
+			const tankPrice = GameSettings.TankPrice * this.GetVehicleCount();
+			this.OnTankRequestChanged.Invoke(this, this._tankRequestCount);
+			if (this._diamondCount < tankPrice) {
+				this.CashMissing();
 			}
 		}
 	}
@@ -245,12 +220,12 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	public RemoveTankRequest(): void {
 		if (this._tankRequestCount > 0) {
 			this._tankRequestCount -= 1;
-			this.TankRequestEvent.Invoke(this, this._tankRequestCount);
+			this.OnTankRequestChanged.Invoke(this, this._tankRequestCount);
 		}
 	}
 
 	private _truckRequestCount: number = 0;
-	public TruckRequestEvent: LiteEvent<number> = new LiteEvent<number>();
+	public OnTruckRequestChanged: LiteEvent<number> = new LiteEvent<number>();
 
 	public GetTruckRequests(): number {
 		return this._truckRequestCount;
@@ -259,9 +234,10 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	public AddTruckRequest(): void {
 		if (this._truckRequestCount < 4) {
 			this._truckRequestCount += 1;
-			this.TruckRequestEvent.Invoke(this, this._truckRequestCount);
-			if (this._diamondCount < GameSettings.TruckPrice) {
-				GameHelper.SetWarning();
+			const truckPrice = GameSettings.TruckPrice * this.GetVehicleCount();
+			this.OnTruckRequestChanged.Invoke(this, this._truckRequestCount);
+			if (this._diamondCount < truckPrice) {
+				this.CashMissing();
 			}
 		}
 	}
@@ -269,13 +245,26 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	public RemoveTruckRequest(): void {
 		if (this._truckRequestCount > 0) {
 			this._truckRequestCount -= 1;
-			this.TruckRequestEvent.Invoke(this, this._truckRequestCount);
+			this.OnTruckRequestChanged.Invoke(this, this._truckRequestCount);
 		}
 	}
 
+	public OnCashMissing: LiteEvent<Boolean> = new LiteEvent<boolean>();
+	private _cashMissedTimeout: NodeJS.Timeout;
+	public CashMissing(): void {
+		if (this._cashMissedTimeout) {
+			clearTimeout(this._cashMissedTimeout);
+		}
+		this.OnCashMissing.Invoke(this, true);
+		this._cashMissedTimeout = setTimeout(() => {
+			this.OnCashMissing.Invoke(this, false);
+		}, 3000);
+	}
+
 	public Update(viewX: number, viewY: number): void {
-		while (this._truckRequestCount > 0 && this._diamondCount >= GameSettings.TruckPrice) {
-			if (this.Buy(GameSettings.TruckPrice * this.GetVehicleCount())) {
+		const truckPrice = GameSettings.TruckPrice * this.GetVehicleCount();
+		while (0 < this._truckRequestCount && truckPrice <= this._diamondCount) {
+			if (this.Buy(truckPrice)) {
 				if (this.CreateTruck()) {
 					this.RemoveTruckRequest();
 				} else {
@@ -285,7 +274,8 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 			}
 		}
 
-		while (this._tankRequestCount > 0 && this._diamondCount >= GameSettings.TankPrice) {
+		const tankPrice = GameSettings.TankPrice * this.GetVehicleCount();
+		while (0 < this._tankRequestCount && tankPrice <= this._diamondCount) {
 			if (this.Buy(GameSettings.TankPrice * this.GetVehicleCount())) {
 				if (this.CreateTank()) {
 					this.RemoveTankRequest();
@@ -314,22 +304,22 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		});
 	}
 
-	public DiamondCountEvent: LiteEvent<number> = new LiteEvent<number>();
+	public OnDiamondCountChanged: LiteEvent<number> = new LiteEvent<number>();
 
 	public Buy(amount: number): boolean {
 		if (this._diamondCount >= amount) {
 			this._diamondCount -= amount;
-			this.DiamondCountEvent.Invoke(this, this._diamondCount);
+			this.OnDiamondCountChanged.Invoke(this, this._diamondCount);
 			return true;
 		} else {
-			GameHelper.SetWarning();
+			this.CashMissing();
 		}
 		return false;
 	}
 
 	public Earn(amount: number): void {
 		this._diamondCount += amount;
-		this.DiamondCountEvent.Invoke(this, this._diamondCount);
+		this.OnDiamondCountChanged.Invoke(this, this._diamondCount);
 	}
 
 	protected GetAmount(): number {
@@ -339,9 +329,6 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	public HasMoney(cost: number): boolean {
 		if (cost <= this._diamondCount) {
 			return true;
-		}
-		if (this === GameHelper.PlayerHeadquarter) {
-			GameHelper.SetWarning();
 		}
 		return false;
 	}

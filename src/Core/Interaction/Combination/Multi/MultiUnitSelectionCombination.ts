@@ -39,7 +39,7 @@ export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 				this.SetVehicles(this._multiContext.GetCells());
 				this._multiContext.Stop();
 				if (this._vehicles.length === 0) {
-					this.OnChangedMod.Invoke(this, InteractionMode.SingleSelection);
+					this.OnChangedMode.Invoke(this, InteractionMode.SingleSelection);
 					this._appHandler.RestartNavigation();
 				}
 				return true;
@@ -52,7 +52,7 @@ export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 				});
 				this._vehicles = [];
 				this._multiContext.Stop();
-				this.OnChangedMod.Invoke(this, InteractionMode.SingleSelection);
+				this.OnChangedMode.Invoke(this, InteractionMode.SingleSelection);
 				this._appHandler.RestartNavigation();
 			}
 			return true;

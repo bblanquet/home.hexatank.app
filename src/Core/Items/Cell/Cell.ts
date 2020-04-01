@@ -1,3 +1,4 @@
+import { CellContext } from './CellContext';
 import { Item } from '../Item';
 import { CellProperties } from './CellProperties';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
@@ -32,7 +33,7 @@ export class Cell extends Item implements ICell, ISelectable {
 	private _circle: PIXI.Circle;
 	public SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 
-	constructor(properties: CellProperties) {
+	constructor(properties: CellProperties, private _cells: CellContext<Cell>) {
 		super();
 		this.Z = 1;
 		this._display = [];
@@ -248,7 +249,7 @@ export class Cell extends Item implements ICell, ISelectable {
 		var cells = new Array<Cell>();
 		cells.push(this);
 		this.GetCoordinate().GetNeighbours(range).forEach((coordinate) => {
-			var cell = GameHelper.Cells.Get(coordinate);
+			var cell = this._cells.Get(coordinate);
 			if (cell) {
 				cells.push(cell);
 			}
@@ -259,7 +260,7 @@ export class Cell extends Item implements ICell, ISelectable {
 	public GetAllNeighbourhood(range: number = 1): Array<ICell> {
 		var cells = new Array<ICell>();
 		this.GetCoordinate().GetNeighbours(range).forEach((coordinate) => {
-			var cell = GameHelper.Cells.Get(coordinate);
+			var cell = this._cells.Get(coordinate);
 			if (cell) {
 				cells.push(cell);
 			}
@@ -270,7 +271,7 @@ export class Cell extends Item implements ICell, ISelectable {
 	public GetSpecificRange(range: number = 1): Array<ICell> {
 		var cells = new Array<ICell>();
 		this.GetCoordinate().GetSpecificRange(range).forEach((coordinate) => {
-			var cell = GameHelper.Cells.Get(coordinate);
+			var cell = this._cells.Get(coordinate);
 			if (cell) {
 				cells.push(cell);
 			}
@@ -281,7 +282,7 @@ export class Cell extends Item implements ICell, ISelectable {
 	public GetNeighbourhood(range: number = 1): Array<ICell> {
 		var cells = new Array<ICell>();
 		this.GetCoordinate().GetNeighbours(range).forEach((coordinate) => {
-			var cell = GameHelper.Cells.Get(coordinate);
+			var cell = this._cells.Get(coordinate);
 			if (cell != null && !cell.IsBlocked()) {
 				cells.push(cell);
 			}

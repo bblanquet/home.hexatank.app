@@ -22,6 +22,7 @@ import { GameHelper } from '../../Framework/GameHelper';
 import { Explosion } from '../../Items/Unit/Explosion';
 import { Tank } from '../../Items/Unit/Tank';
 import { GameSettings } from '../../Framework/GameSettings';
+import { CellContext } from '../../Items/Cell/CellContext';
 
 export class IaHeadquarter extends Headquarter {
 	public AreasBycell: { [id: string]: HeldArea };
@@ -33,13 +34,13 @@ export class IaHeadquarter extends Headquarter {
 	private _spreadStrategy: ExpansionMaker;
 	public TankBalancer: IdleUnitContainer;
 
-	constructor(public EmptyAreas: Area[], skin: ItemSkin, cell: Cell) {
+	constructor(public EmptyAreas: Area[], skin: ItemSkin, cell: Cell, private _cells: CellContext<Cell>) {
 		super(skin, cell);
 		this._timer = new Timer(10);
 		this._trucks = new Array<Truck>();
 		this._Areas = new Array<HeldArea>();
 		this.AreasBycell = {};
-		this._requestHandler = new CenterDecisionMaker(this);
+		this._requestHandler = new CenterDecisionMaker(this, _cells);
 		this._spreadStrategy = new ExpansionMaker(this);
 		this.TankBalancer = new IdleUnitContainer();
 	}
@@ -94,7 +95,7 @@ export class IaHeadquarter extends Headquarter {
 				if (!isNullOrUndefined(area)) {
 					if (this.GetAmount() >= GameSettings.TankPrice) {
 						this.EmptyAreas.splice(this.EmptyAreas.indexOf(area), 1);
-						let hqArea = new HeldArea(this, area);
+						let hqArea = new HeldArea(this, area, this._cells);
 						this._Areas.push(hqArea);
 						this.AreasBycell[area.GetCentralCell().GetCoordinate().ToString()] = hqArea;
 						console.log(
@@ -131,13 +132,10 @@ export class IaHeadquarter extends Headquarter {
 					);
 					GameHelper.Playground.Items.push(explosion);
 				}
-				this.VehicleId += 1;
 				truck = new Truck(this);
-				truck.Id = `${this.PlayerName}${this.VehicleId}`;
 				truck.SetPosition(field.GetCell());
-				GameHelper.VehiclesContainer.Add(truck);
+				this.OnVehiculeCreated.Invoke(this, truck);
 				GameHelper.Playground.Items.push(truck);
-				this.NotifyTruck(truck);
 				return true;
 			}
 			return false;
@@ -164,15 +162,12 @@ export class IaHeadquarter extends Headquarter {
 							);
 							GameHelper.Playground.Items.push(explosion);
 						}
-						this.VehicleId += 1;
 						var tank = new Tank(this);
-						tank.Id = `${this.PlayerName}${this.VehicleId}`;
 						tank.SetPosition(field.GetCell());
 						area.AddTroop(tank, cell);
-						GameHelper.VehiclesContainer.Add(tank);
+						this.OnVehiculeCreated.Invoke(this, tank);
 						GameHelper.Playground.Items.push(tank);
 						isCreated = true;
-						this.NotifyTank(tank);
 						return true;
 					}
 				}

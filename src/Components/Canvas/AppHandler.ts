@@ -3,10 +3,7 @@ import { SpriteProvider } from './../../Core/Framework/SpriteProvider';
 import { ScaleHandler } from './../../Core/Framework/ScaleHandler';
 import { ISpriteProvider } from '../../Core/Framework/ISpriteProvider';
 import { MapMode } from '../../Core/Setup/Generator/MapMode';
-import { AreaEngine } from '../../Core/Ia/Area/AreaEngine';
 import { Cell } from '../../Core/Items/Cell/Cell';
-import { CellContainer } from '../../Core/Items/Cell/CellContainer';
-import { VehiclesContainer } from '../../Core/Items/Unit/VehiclesContainer';
 import { AStarEngine } from '../../Core/Ia/AStarEngine';
 import { ItemsManager } from '../../Core/ItemsManager';
 import { InputNotifier } from '../../Core/Interaction/InputNotifier';
@@ -23,9 +20,6 @@ export class AppHandler {
 
 	public InteractionManager: PIXI.interaction.InteractionManager;
 	private _spriteProvider: ISpriteProvider;
-	public AreaEngine: AreaEngine<Cell>;
-	public Cells: CellContainer<Cell>;
-	public VehiclesContainer: VehiclesContainer;
 	public Engine: AStarEngine<Cell>;
 	public Settings: GameSettings = new GameSettings();
 	public Playground: ItemsManager;
@@ -63,9 +57,6 @@ export class AppHandler {
 		this._spriteProvider = new SpriteProvider();
 		this._app.stage.addChild(this._viewPort);
 
-		this.AreaEngine = new AreaEngine();
-		this.Cells = new CellContainer<Cell>();
-		this.VehiclesContainer = new VehiclesContainer();
 		this.Engine = new AStarEngine<Cell>();
 		this.Settings = new GameSettings();
 		this.Playground = new ItemsManager(this.ScaleHandler);

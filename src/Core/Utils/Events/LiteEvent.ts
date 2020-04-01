@@ -1,13 +1,13 @@
 import { ILiteEvent } from './ILiteEvent';
 
 export class LiteEvent<T> implements ILiteEvent<T> {
-	private handlers: { (obj: any, data?: T): void }[] = [];
+	private handlers: { (obj: any, data: T): void }[] = [];
 
-	public On(handler: { (obj: any, data?: T): void }): void {
+	public On(handler: { (obj: any, data: T): void }): void {
 		this.handlers.push(handler);
 	}
 
-	public Off(handler: { (obj: any, data?: T): void }): void {
+	public Off(handler: { (obj: any, data: T): void }): void {
 		this.handlers = this.handlers.filter((h) => h !== handler);
 	}
 

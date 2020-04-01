@@ -2,7 +2,7 @@ import { InteractionKind } from './../../Interaction/IInteractionContext';
 import { isNullOrUndefined } from 'util';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { BasicItem } from '../../Items/BasicItem';
-import { CellContainer } from '../../Items/Cell/CellContainer';
+import { CellContext } from '../../Items/Cell/CellContext';
 import { IInteractionContext } from '../../Interaction/IInteractionContext';
 import { GameHelper } from '../../Framework/GameHelper';
 import { Point } from '../../Utils/Geometry/Point';
@@ -14,12 +14,12 @@ export class MovingInteractionContext implements IInteractionContext {
 	public Kind: InteractionKind;
 	public Mode: InteractionMode;
 	public Point: PIXI.Point;
-	private _cells: CellContainer<Cell>;
+	private _cells: CellContext<Cell>;
 	private _enlightCells: BasicItem[];
 	private _isOn: boolean;
 
 	constructor() {
-		this._cells = new CellContainer<Cell>();
+		this._cells = new CellContext<Cell>();
 		this._enlightCells = new Array<BasicItem>();
 	}
 
@@ -37,12 +37,12 @@ export class MovingInteractionContext implements IInteractionContext {
 	}
 
 	public GetCells(): Cell[] {
-		return this._cells.GetAll();
+		return this._cells.All();
 	}
 
 	public Stop(): void {
 		this._isOn = false;
-		this._cells = new CellContainer();
+		this._cells = new CellContext();
 		this._enlightCells.forEach((c) => c.Destroy());
 		this._enlightCells = [];
 	}

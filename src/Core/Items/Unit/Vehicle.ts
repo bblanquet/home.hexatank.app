@@ -197,8 +197,6 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 				s.visible = this._currentCell.IsVisible();
 			});
 
-			console.log(this.CurrentRadius);
-
 			this._dustIndex = (this._dustIndex + 1) % this._leftDusts.length;
 		}
 	}

@@ -14,7 +14,6 @@ import { GameMessage } from '../../../../Core/Utils/Network/GameMessage';
 import { MessageProgess } from '../../../../Core/Utils/Network/MessageProgess';
 import { MapMode } from '../../../../Core/Setup/Generator/MapMode';
 import { PlayerStatus } from '../../PlayerStatus';
-import { PingInfo } from '../../Ping/PingInfo';
 
 export default class OnHostComponent extends Component<any, HostState> {
 	constructor(props: any) {
@@ -42,7 +41,6 @@ export default class OnHostComponent extends Component<any, HostState> {
 			type: PacketKind.Toast
 		});
 
-		GameHelper.Dispatcher.Init(!this.state.IsAdmin);
 		GameHelper.PlayerName = this.state.Player.Name;
 	}
 

@@ -2,7 +2,7 @@ import { CellProperties } from '../../Items/Cell/CellProperties';
 import { IPlaygroundBuilder } from './IPlaygroundBuilder';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 import { AreaEngine } from '../../Ia/Area/AreaEngine';
-import { CellContainer } from '../../Items/Cell/CellContainer';
+import { CellContext } from '../../Items/Cell/CellContext';
 import { HexagonalMapBuilder } from './HexagonalMapBuilder';
 
 export class FlowerMapBuilder implements IPlaygroundBuilder<CellProperties> {
@@ -14,7 +14,7 @@ export class FlowerMapBuilder implements IPlaygroundBuilder<CellProperties> {
 
 	public Build(seize: number): CellProperties[] {
 		const initialcells = this._hexagonalBuilder.Build(seize);
-		const container = new CellContainer<CellProperties>();
+		const container = new CellContext<CellProperties>();
 		initialcells.forEach((cell) => {
 			container.Add(cell);
 		});
@@ -39,7 +39,7 @@ export class FlowerMapBuilder implements IPlaygroundBuilder<CellProperties> {
 
 	public GetAreaMiddlecell(size: number): Array<HexAxial> {
 		const initialcells = this._hexagonalBuilder.Build(size);
-		const container = new CellContainer<CellProperties>();
+		const container = new CellContext<CellProperties>();
 		initialcells.forEach((cell) => {
 			container.Add(cell);
 		});

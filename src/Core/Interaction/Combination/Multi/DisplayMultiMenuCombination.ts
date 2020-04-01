@@ -22,7 +22,7 @@ export class DisplayMultiMenuCombination extends AbstractSingleCombination {
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
 			this._multiselection.Show(new Point(context.Point.x, context.Point.y));
-			this.OnChangedMod.Invoke(this, InteractionMode.SelectionMenu);
+			this.OnChangedMode.Invoke(this, InteractionMode.SelectionMenu);
 			this._appHandler.PauseNavigation();
 			return true;
 		}

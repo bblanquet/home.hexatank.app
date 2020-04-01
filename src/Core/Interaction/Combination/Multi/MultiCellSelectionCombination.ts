@@ -61,11 +61,11 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 				});
 				this._multiSelectionContext.Stop();
 				if (this._cells.length === 0) {
-					this.OnChangedMod.Invoke(this, InteractionMode.SingleSelection);
+					this.OnChangedMode.Invoke(this, InteractionMode.SingleSelection);
 					this._appHandler.RestartNavigation();
 				} else {
 					GameHelper.SelectedItem.Invoke(this, this._cells[0]);
-					this.OnChangedMod.Invoke(this, InteractionMode.SingleSelection);
+					this.OnChangedMode.Invoke(this, InteractionMode.SingleSelection);
 				}
 			} else {
 				let menuItem = context.Items[0];

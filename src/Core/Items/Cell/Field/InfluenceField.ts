@@ -12,7 +12,7 @@ import { Vehicle } from '../../Unit/Vehicle';
 import { IInteractionContext } from '../../../Interaction/IInteractionContext';
 import { Cell } from '../Cell';
 import { LiteEvent } from '../../../Utils/Events/LiteEvent';
-import { CellContainer } from '../CellContainer';
+import { CellContext } from '../CellContext';
 import { PeerHandler } from '../../../../Components/Network/Host/On/PeerHandler';
 import { PacketKind } from '../../../../Components/Network/PacketKind';
 
@@ -21,7 +21,7 @@ export class InfluenceField extends Field implements ISelectable {
 	public Battery: Battery;
 	private _range: number = 1;
 	private _power: number = 0;
-	private _cellContainer: CellContainer<Cell> = new CellContainer<Cell>();
+	private _cellContainer: CellContext<Cell> = new CellContext<Cell>();
 	public Lost: LiteEvent<InfluenceField> = new LiteEvent<InfluenceField>();
 	public basicField: BasicInfluenceField;
 	constructor(cell: Cell, public Hq: Headquarter) {
@@ -177,7 +177,7 @@ export class InfluenceField extends Field implements ISelectable {
 		});
 	}
 
-	public GetArea(): CellContainer<Cell> {
+	public GetArea(): CellContext<Cell> {
 		if (this._cellContainer.IsEmpty()) {
 			this.RefreshArea();
 		}

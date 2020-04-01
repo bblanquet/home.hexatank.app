@@ -1,3 +1,4 @@
+import { AStarEngine } from './../AStarEngine';
 import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
 import { OrderState } from './OrderState';
 import { isNullOrUndefined, isNull } from 'util';
@@ -133,7 +134,7 @@ export class SimpleOrder extends Order {
 			}
 		}
 		this.ClearPath();
-		var nextcells = GameHelper.Engine.GetPath(this._v.GetCurrentCell(), this.Dest);
+		var nextcells = new AStarEngine<Cell>().GetPath(this._v.GetCurrentCell(), this.Dest);
 
 		if (isNullOrUndefined(nextcells)) {
 			return false;

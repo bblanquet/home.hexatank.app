@@ -1,11 +1,15 @@
+import { CellContext } from './../../Items/Cell/CellContext';
+import { AreaEngine } from './../Area/AreaEngine';
 import { RequestPriority } from './RequestPriority';
 import { IaHeadquarter } from './IaHeadquarter';
 import { AreaRequest } from '../Area/AreaRequest';
 import { isNullOrUndefined } from 'util';
 import { GameHelper } from '../../Framework/GameHelper';
+import { Cell } from '../../Items/Cell/Cell';
+import { Area } from '../Area/Area';
 
 export class CenterDecisionMaker {
-	constructor(private _hq: IaHeadquarter) {}
+	constructor(private _hq: IaHeadquarter, private _cells: CellContext<Cell>) {}
 
 	public HandleRequests(requests: { [id: string]: AreaRequest[] }) {
 		if (requests[RequestPriority.High].length > 0) {
@@ -77,10 +81,10 @@ export class CenterDecisionMaker {
 
 	private GetHelpFromSurrounding(request: AreaRequest) {
 		const cell = request.Status.Area.GetCentralCell();
-		const surroundingAreas = GameHelper.GetNeighbourhoodAreas(cell);
+		const firstRange = new AreaEngine<Cell>().GetExcludedFirstRange(this._cells, cell).map((c) => new Area(c));
 
-		for (const surroundingArea of surroundingAreas) {
-			const cellKey = surroundingArea.GetCentralCell().GetCoordinate().ToString();
+		for (const area of firstRange) {
+			const cellKey = area.GetCentralCell().GetCoordinate().ToString();
 			if (this._hq.AreasBycell.hasOwnProperty(cellKey)) {
 				const hqSurroundingArea = this._hq.AreasBycell[cellKey];
 				if (!hqSurroundingArea.HasReceivedRequest) {

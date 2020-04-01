@@ -1,5 +1,6 @@
+import { ISelectableChecker } from './ISelectableChecker';
+import { ISelectable } from './../ISelectable';
 import { AppHandler } from './../../Components/Canvas/AppHandler';
-import { IContextContainer } from './IContextContainer';
 import { ICombination } from './Combination/ICombination';
 import { UnselectCombination } from './Combination/UnselectCombination';
 import { ClearTrashCombination } from './Combination/ClearTrashCombination';
@@ -39,10 +40,9 @@ import { CamouflageCombination } from './Combination/CamouflageCombination';
 import { PoisonCellCombination } from './Combination/PoisonCellCombination';
 import { SlowCellCombination } from './Combination/SlowCellCombination';
 import { MovingInteractionContext } from '../Menu/Smart/MovingInteractionContext';
-import { Item } from '../Items/Item';
 
 export class CombinationProvider {
-	GetCombination(appHandler: AppHandler, isSelectable: (item: Item) => boolean): ICombination[] {
+	GetCombination(appHandler: AppHandler, checker: ISelectableChecker): ICombination[] {
 		const multiselectionMenu = new MultiSelectionMenu();
 		const multiSelectionContext = new MovingInteractionContext();
 		return [
@@ -51,7 +51,7 @@ export class CombinationProvider {
 			new UpMultiMenuCombination(multiselectionMenu, appHandler),
 			new MultiSelectionCombination(multiSelectionContext),
 			new MultiUnitSelectionCombination(multiselectionMenu, multiSelectionContext, appHandler),
-			new MultiCellSelectionCombination(multiselectionMenu, multiSelectionContext, context, appHandler),
+			new MultiCellSelectionCombination(multiselectionMenu, multiSelectionContext, appHandler),
 			new FlagCellCombination(),
 			new AbortCombination(),
 			new SearchMoneyCombination(),
@@ -67,9 +67,9 @@ export class CombinationProvider {
 			new TruckCombination(),
 			new TankCombination(),
 			new PatrolCombination(),
-			new ClearTrashCombination(isSelectable),
-			new UnselectCombination(isSelectable),
-			new SelectionCombination(isSelectable),
+			new ClearTrashCombination(checker),
+			new UnselectCombination(checker),
+			new SelectionCombination(checker),
 			new FastCellCombination(),
 			new CamouflageCombination(),
 			new TargetCombination(),

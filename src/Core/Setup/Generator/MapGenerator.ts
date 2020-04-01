@@ -6,7 +6,7 @@ import { AreaEngine } from './../../Ia/Area/AreaEngine';
 import { CellProperties } from '../../Items/Cell/CellProperties';
 import { ForestDecorator } from '../../Items/Cell/Decorator/ForestDecorator';
 import { DistanceHelper } from '../../Items/Unit/MotionHelpers/DistanceHelper';
-import { CellContainer } from '../../Items/Cell/CellContainer';
+import { CellContext } from '../../Items/Cell/CellContext';
 import { MapContext } from './MapContext';
 import { MapItem } from './MapItem';
 import { FlowerMapBuilder } from '../Builder/FlowerMapBuilder';
@@ -23,7 +23,7 @@ export class MapGenerator {
 		const mapBuilder = mapType === 'Flower' ? new FlowerMapBuilder() : new HexagonalMapBuilder();
 		const cellPositions = mapBuilder.Build(mapSize);
 
-		const container = new CellContainer<CellProperties>();
+		const container = new CellContext<CellProperties>();
 		cellPositions.forEach((cell) => {
 			container.Add(cell);
 		});
@@ -95,14 +95,14 @@ export class MapGenerator {
 
 	private GetDiamonds(
 		hqcells: Array<CellProperties>,
-		cellsContainer: CellContainer<CellProperties>,
+		cellsContainer: CellContext<CellProperties>,
 		hqCount: number
 	): Array<CellProperties> {
 		const diamonds = new Array<CellProperties>();
 		const areaEngine = new AreaEngine<CellProperties>();
 		let forbiddencells = new Array<CellProperties>();
 		hqcells.forEach((hqcell) => {
-			forbiddencells = forbiddencells.concat(areaEngine.GetFirstRangeAreas(cellsContainer, hqcell));
+			forbiddencells = forbiddencells.concat(areaEngine.GetIncludedFirstRange(cellsContainer, hqcell));
 		});
 		for (let i = 0; i < hqCount; i++) {
 			diamonds.push(this.GetDiamondPosition(hqcells[i], forbiddencells, cellsContainer));
@@ -113,11 +113,11 @@ export class MapGenerator {
 	private GetDiamondPosition(
 		cell: CellProperties,
 		forbiddencells: CellProperties[],
-		cellsContainer: CellContainer<CellProperties>
+		cellsContainer: CellContext<CellProperties>
 	): CellProperties {
 		const areaEngine = new AreaEngine<CellProperties>();
 		const secondRange = areaEngine
-			.GetSecondRangeAreas(cellsContainer, cell)
+			.GetIncludedSecondRange(cellsContainer, cell)
 			.filter(
 				(c) =>
 					!forbiddencells.some((fc) => fc.Coordinate.Q == c.Coordinate.Q && fc.Coordinate.R == c.Coordinate.R)

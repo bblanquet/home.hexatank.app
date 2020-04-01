@@ -8,6 +8,6 @@ export interface ICombination {
 	IsMatching(context: CombinationContext): boolean;
 	Combine(context: CombinationContext): boolean;
 	OnClearContext: SimpleEvent;
-	OnChangedMod: ILiteEvent<InteractionMode>;
-	OnPushedItem: ILiteEvent<Item>;
+	OnChangedMode: ILiteEvent<InteractionMode>;
+	OnPushedItem: ILiteEvent<{ item: Item; isForced: boolean }>;
 }

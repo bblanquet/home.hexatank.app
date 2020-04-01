@@ -1,24 +1,24 @@
 import { InfluenceField } from '../../Items/Cell/Field/InfluenceField';
 import { GameHelper } from '../../Framework/GameHelper';
 import { ISelectable } from '../../ISelectable';
-import { Item } from '../../Items/Item';
 import { Cell } from '../../Items/Cell/Cell';
 import { BasicField } from '../../Items/Cell/Field/BasicField';
 import { CellState } from '../../Items/Cell/CellState';
 import { CombinationContext } from './CombinationContext';
 import { Headquarter } from '../../Items/Cell/Field/Headquarter';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
+import { ISelectableChecker } from '../ISelectableChecker';
 
 export class SelectionCombination extends AbstractSingleCombination {
-	private _isSelectable: (item: Item) => boolean;
+	private _checker: ISelectableChecker;
 
-	constructor(isSelectable: (item: Item) => boolean) {
+	constructor(isSelectable: ISelectableChecker) {
 		super();
-		this._isSelectable = isSelectable;
+		this._checker = isSelectable;
 	}
 
 	IsMatching(context: CombinationContext): boolean {
-		return this.IsNormalMode(context) && context.Items.length === 1 && this._isSelectable(context.Items[0]);
+		return this.IsNormalMode(context) && context.Items.length === 1 && this._checker.IsSelectable(context.Items[0]);
 	}
 
 	Combine(context: CombinationContext): boolean {

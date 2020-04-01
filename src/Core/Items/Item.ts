@@ -49,7 +49,7 @@ export abstract class Item implements Updater, IBoundingBoxContainer {
 	}
 
 	protected GenerateSprite(name: string, func?: { (sprite: PIXI.Sprite): void }): void {
-		this._sprites[name] = GameHelper.SpriteProvider.GetZoomInSprite(name, this.Accuracy);
+		this._sprites[name] = GameHelper.SpriteProvider.GetSprite(name, this.Accuracy);
 
 		this.DisplayObjects.push(this._sprites[name]);
 		this._sprites[name].alpha = 1;

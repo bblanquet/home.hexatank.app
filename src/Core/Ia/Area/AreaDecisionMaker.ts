@@ -1,3 +1,5 @@
+import { AreaEngine } from './AreaEngine';
+import { CellContext } from './../../Items/Cell/CellContext';
 import { HeldArea } from './HeldArea';
 import { Cell } from '../../Items/Cell/Cell';
 import { isNullOrUndefined } from 'util';
@@ -7,9 +9,10 @@ import { Area } from './Area';
 import { SimpleOrder } from '../Order/SimpleOrder';
 import { GameHelper } from '../../Framework/GameHelper';
 import { Tank } from '../../Items/Unit/Tank';
+import { AStarEngine } from '../AStarEngine';
 
 export class AreaDecisionMaker {
-	constructor(private _area: HeldArea) {}
+	constructor(private _area: HeldArea, private _cells: CellContext<Cell>) {}
 
 	public Update(): void {
 		this.Do();
@@ -23,8 +26,9 @@ export class AreaDecisionMaker {
 			console.log(`%c troops count ${this._area.GetTroops().length}`, 'font-weight:bold;color:green;');
 
 			//#1 get in & out cells
-			const areas = GameHelper.GetNeighbourhoodAreas(this._area.GetCentralCell());
-			areas.push(this._area.GetArea());
+			const areas = new AreaEngine<Cell>()
+				.GetIncludedFirstRange(this._cells, this._area.GetCentralCell())
+				.map((c) => new Area(c));
 
 			//#2 get enemies cells
 			const enemycells = this.GetEnemycells(areas, ally);
@@ -184,7 +188,7 @@ export class AreaDecisionMaker {
 				for (let cellKey in dangerLevelcells[danger]) {
 					var destination = new TroopDestination(
 						dangerLevelcells[danger][cellKey],
-						GameHelper.Engine.GetPath(troop.Tank.GetCurrentCell(), dangerLevelcells[danger][cellKey])
+						new AStarEngine<Cell>().GetPath(troop.Tank.GetCurrentCell(), dangerLevelcells[danger][cellKey])
 					);
 
 					if (!troopSituation.Destinations.hasOwnProperty(danger)) {

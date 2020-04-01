@@ -1,3 +1,5 @@
+import { AreaEngine } from './../../Ia/Area/AreaEngine';
+import { CellContext } from './../../Items/Cell/CellContext';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { IaHeadquarter } from '../../Ia/Hq/IaHeadquarter';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
@@ -7,6 +9,8 @@ import { Headquarter } from '../../Items/Cell/Field/Headquarter';
 import { ItemSkin } from '../../Items/ItemSkin';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { DiamondHq } from '../Generator/DiamondHq';
+import { Cell } from '../../Items/Cell/Cell';
+import { Area } from '../../Ia/Area/Area';
 
 export class HqRender {
 	_skins: ItemSkin[] = [
@@ -52,7 +56,11 @@ export class HqRender {
 		)
 	];
 
-	public GetHq(hqDefinitions: Array<DiamondHq>, playgroundItems: Item[]): Array<Headquarter> {
+	public GetHq(
+		cells: CellContext<Cell>,
+		hqDefinitions: Array<DiamondHq>,
+		playgroundItems: Item[]
+	): Array<Headquarter> {
 		var hqs = new Array<Headquarter>();
 
 		hqDefinitions.forEach((hqDefinition) => {
@@ -61,6 +69,7 @@ export class HqRender {
 
 			if (hqDefinition.isIa) {
 				hq = this.CreateIaHq(
+					cells,
 					hqDefinition.Hq.Position,
 					hqDefinition.Diamond.Position,
 					playgroundItems,
@@ -68,6 +77,7 @@ export class HqRender {
 				);
 			} else {
 				hq = this.CreateHq(
+					cells,
 					hqDefinition.Hq.Position,
 					hqDefinition.Diamond.Position,
 					playgroundItems,
@@ -85,18 +95,35 @@ export class HqRender {
 		return hqs;
 	}
 
-	private CreateHq(hqcell: HexAxial, diamondcell: HexAxial, items: Item[], skin: ItemSkin): Headquarter {
-		const diamond = new Diamond(GameHelper.Cells.Get(diamondcell));
-		const hq = new Headquarter(skin, GameHelper.Cells.Get(hqcell));
+	private CreateHq(
+		cells: CellContext<Cell>,
+		hqcell: HexAxial,
+		diamondcell: HexAxial,
+		items: Item[],
+		skin: ItemSkin
+	): Headquarter {
+		const diamond = new Diamond(cells.Get(diamondcell));
+		const hq = new Headquarter(skin, cells.Get(hqcell));
 		items.push(diamond);
 		items.push(hq);
 		return hq;
 	}
 
-	private CreateIaHq(hqcell: HexAxial, diamondcell: HexAxial, items: Item[], skin: ItemSkin): Headquarter {
-		const cell = GameHelper.Cells.Get(hqcell);
-		const diamond = new Diamond(GameHelper.Cells.Get(diamondcell));
-		const hq = new IaHeadquarter(GameHelper.GetAreas(cell), skin, cell);
+	private CreateIaHq(
+		cells: CellContext<Cell>,
+		hqcell: HexAxial,
+		diamondcell: HexAxial,
+		items: Item[],
+		skin: ItemSkin
+	): Headquarter {
+		const cell = cells.Get(hqcell);
+		const diamond = new Diamond(cells.Get(diamondcell));
+		const hq = new IaHeadquarter(
+			new AreaEngine<Cell>().GetAreas(cells, cell).map((c) => new Area(c)),
+			skin,
+			cell,
+			cells
+		);
 		hq.Diamond = diamond;
 		items.push(diamond);
 		items.push(hq);

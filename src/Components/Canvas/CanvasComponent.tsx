@@ -3,6 +3,7 @@ import { GameHelper } from '../../Core/Framework/GameHelper';
 import { PeerHandler } from '../Network/Host/On/PeerHandler';
 import { route } from 'preact-router';
 import { Item } from '../../Core/Items/Item';
+import { GameContext } from '../../Core/Framework/GameContext';
 import { Tank } from '../../Core/Items/Unit/Tank';
 import { Truck } from '../../Core/Items/Unit/Truck';
 import { Cell } from '../../Core/Items/Cell/Cell';
@@ -41,6 +42,7 @@ export default class CanvasComponent extends Component<
 	private _stop: boolean;
 	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
 	private _appHandler: AppHandler;
+	private _gameContext: GameContext;
 	constructor() {
 		super();
 		this._stop = true;
@@ -74,13 +76,8 @@ export default class CanvasComponent extends Component<
 		this._appHandler.InitApp();
 		GameHelper.SpriteProvider = this._appHandler.GetSpriteProvider();
 		GameHelper.ViewPort = this._appHandler.GetViewport();
-		GameHelper.VehiclesContainer = this._appHandler.VehiclesContainer;
-		GameHelper.Engine = this._appHandler.Engine;
 		GameHelper.Settings = this._appHandler.Settings;
 		GameHelper.Playground = this._appHandler.Playground;
-		GameHelper.Cells = this._appHandler.Cells;
-		GameHelper.AreaEngine = this._appHandler.AreaEngine;
-		GameHelper.InputManager = this._appHandler.InputManager;
 		GameHelper.Render = new RenderingHandler(
 			new RenderingGroups(
 				{
@@ -101,30 +98,29 @@ export default class CanvasComponent extends Component<
 			throw 'context missing, cannot implement map';
 		}
 
-		new MapRender().Render(GameHelper.MapContext);
-		var selectable = new SelectableChecker(GameHelper.PlayerHeadquarter);
+		this._gameContext = new MapRender().Render(GameHelper.MapContext);
+		const checker = new SelectableChecker(GameHelper.PlayerHeadquarter);
 		this._appHandler.InteractionContext = new InteractionContext(
 			this._appHandler.InputManager,
-			new CombinationProvider().GetCombination(this._appHandler, selectable.IsSelectable),
-			selectable.IsSelectable
+			new CombinationProvider().GetCombination(this._appHandler, checker),
+			checker
 		);
-
 		this._appHandler.InteractionContext.Listen();
 		this._appHandler.SetBackgroundColor(GameHelper.MapContext.MapMode);
 
 		this._appHandler.InteractionManager.on(
 			'pointerdown',
-			GameHelper.InputManager.OnMouseDown.bind(GameHelper.InputManager),
+			this._appHandler.InputManager.OnMouseDown.bind(this._appHandler.InputManager),
 			false
 		);
 		this._appHandler.InteractionManager.on(
 			'pointermove',
-			GameHelper.InputManager.OnMouseMove.bind(GameHelper.InputManager),
+			this._appHandler.InputManager.OnMouseMove.bind(this._appHandler.InputManager),
 			false
 		);
 		this._appHandler.InteractionManager.on(
 			'pointerup',
-			GameHelper.InputManager.OnMouseUp.bind(GameHelper.InputManager),
+			this._appHandler.InputManager.OnMouseUp.bind(this._appHandler.InputManager),
 			false
 		);
 		this._appHandler.ResizeTheCanvas();
@@ -132,19 +128,19 @@ export default class CanvasComponent extends Component<
 		window.addEventListener('DOMContentLoaded', () => this._appHandler.ResizeTheCanvas());
 		this._appHandler.InteractionManager.autoPreventDefault = false;
 		this.SetCenter();
-		GameHelper.PlayerHeadquarter.TruckRequestEvent.On((obj: any, e: number) => {
+		this._gameContext.MainHq.OnTruckRequestChanged.On((obj: any, e: number) => {
 			this.setState({
 				...this.state,
 				TruckRequestCount: e
 			});
 		});
-		GameHelper.PlayerHeadquarter.TankRequestEvent.On((obj: any, e: number) => {
+		this._gameContext.MainHq.OnTankRequestChanged.On((obj: any, e: number) => {
 			this.setState({
 				...this.state,
 				TankRequestCount: e
 			});
 		});
-		GameHelper.PlayerHeadquarter.DiamondCountEvent.On((obj: any, e: number) => {
+		this._gameContext.MainHq.OnDiamondCountChanged.On((obj: any, e: number) => {
 			this.setState({
 				...this.state,
 				Amount: e
@@ -157,11 +153,13 @@ export default class CanvasComponent extends Component<
 				Item: e
 			});
 		});
-		GameHelper.WarningChanged.On((obj: any, e: boolean) => {
-			this.setState({
-				...this.state,
-				HasWarning: e
-			});
+		this._gameContext.MainHq.OnCashMissing.On((obj: any, e: boolean) => {
+			if (e !== this.state.HasWarning) {
+				this.setState({
+					...this.state,
+					HasWarning: e
+				});
+			}
 		});
 		this._loop();
 	}
@@ -179,9 +177,9 @@ export default class CanvasComponent extends Component<
 	private LeftMenuRender() {
 		if (this.state.Item) {
 			if (this.state.Item instanceof Tank) {
-				return <TankMenuComponent />;
+				return <TankMenuComponent AppHandler={this._appHandler} />;
 			} else if (this.state.Item instanceof Truck) {
-				return <TruckMenuComponent />;
+				return <TruckMenuComponent AppHandler={this._appHandler} />;
 			} else if (this.state.Item instanceof Headquarter) {
 				return (
 					<HqMenuComponent
@@ -189,12 +187,13 @@ export default class CanvasComponent extends Component<
 						TankRequestCount={this.state.TankRequestCount}
 						TruckRequestCount={this.state.TruckRequestCount}
 						HasFlag={this.state.HasFlag}
+						AppHandler={this._appHandler}
 					/>
 				);
 			} else if (this.state.Item instanceof InfluenceField) {
-				return <FactoryMenuComponent Item={this.state.Item} />;
+				return <FactoryMenuComponent Item={this.state.Item} AppHandler={this._appHandler} />;
 			} else if (this.state.Item instanceof Cell) {
-				return <CellMenuComponent Item={this.state.Item} />;
+				return <CellMenuComponent Item={this.state.Item} AppHandler={this._appHandler} />;
 			}
 		}
 		return '';
@@ -226,7 +225,7 @@ export default class CanvasComponent extends Component<
 
 	private Quit(e: any): void {
 		route('/Home', true);
-		GameHelper.InteractionContext.Mute();
+		this._appHandler.InteractionContext.Mute();
 		PeerHandler.Stop();
 	}
 

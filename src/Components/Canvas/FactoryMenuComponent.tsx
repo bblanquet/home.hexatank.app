@@ -9,8 +9,9 @@ import { CancelMenuItem } from '../../Core/Menu/Buttons/CancelMenuItem';
 import { InfluenceField } from '../../Core/Items/Cell/Field/InfluenceField';
 import { Item } from '../../Core/Items/Item';
 import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
+import { AppHandler } from './AppHandler';
 
-export default class FactoryMenuComponent extends Component<{ Item: Item }, {}> {
+export default class FactoryMenuComponent extends Component<{ Item: Item; AppHandler: AppHandler }, {}> {
 	render() {
 		const field = this.props.Item as InfluenceField;
 		return (
@@ -81,7 +82,7 @@ export default class FactoryMenuComponent extends Component<{ Item: Item }, {}> 
 	}
 
 	private SendContext(item: Item): void {
-		GameHelper.InteractionContext.Kind = InteractionKind.Up;
-		return GameHelper.InteractionContext.OnSelect(item);
+		this.props.AppHandler.InteractionContext.Kind = InteractionKind.Up;
+		return this.props.AppHandler.InteractionContext.OnSelect(item);
 	}
 }

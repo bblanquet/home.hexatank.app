@@ -11,8 +11,9 @@ import { PoisonMenuItem } from '../../Core/Menu/Buttons/PoisonMenuItem';
 import { SlowMenuItem } from '../../Core/Menu/Buttons/SlowMenuItem';
 import { CancelMenuItem } from '../../Core/Menu/Buttons/CancelMenuItem';
 import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
+import { AppHandler } from './AppHandler';
 
-export default class CellMenuComponent extends Component<{ Item: Item }, {}> {
+export default class CellMenuComponent extends Component<{ Item: Item; AppHandler: AppHandler }, {}> {
 	render() {
 		return (
 			<div class="left-column">
@@ -109,7 +110,7 @@ export default class CellMenuComponent extends Component<{ Item: Item }, {}> {
 	}
 
 	private SendContext(item: Item): void {
-		GameHelper.InteractionContext.Kind = InteractionKind.Up;
-		return GameHelper.InteractionContext.OnSelect(item);
+		this.props.AppHandler.InteractionContext.Kind = InteractionKind.Up;
+		return this.props.AppHandler.InteractionContext.OnSelect(item);
 	}
 }

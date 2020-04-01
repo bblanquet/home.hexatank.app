@@ -22,9 +22,9 @@ export class UpMultiMenuCombination extends AbstractSingleCombination {
 		if (this.IsMatching(context)) {
 			this._multiselection.Hide();
 			if (this._multiselection.GetMode() !== SelectionMode.none) {
-				this.OnChangedMod.Invoke(this, InteractionMode.MultipleSelection);
+				this.OnChangedMode.Invoke(this, InteractionMode.MultipleSelection);
 			} else {
-				this.OnChangedMod.Invoke(this, InteractionMode.SingleSelection);
+				this.OnChangedMode.Invoke(this, InteractionMode.SingleSelection);
 				this._appHandler.RestartNavigation();
 			}
 			return true;

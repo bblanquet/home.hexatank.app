@@ -8,24 +8,25 @@ import { CellState } from '../../Items/Cell/CellState';
 import { CombinationContext } from './CombinationContext';
 import { InfluenceField } from '../../Items/Cell/Field/InfluenceField';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
+import { ISelectableChecker } from '../ISelectableChecker';
 
 export class UnselectCombination extends AbstractSingleCombination {
-	private _isSelectable: (item: Item) => boolean;
+	private _checker: ISelectableChecker;
 
-	constructor(isSelectable: (item: Item) => boolean) {
+	constructor(isSelectable: ISelectableChecker) {
 		super();
-		this._isSelectable = isSelectable;
+		this._checker = isSelectable;
 	}
 
 	IsMatching(context: CombinationContext): boolean {
 		return (
 			this.IsNormalMode(context) &&
-			context.Items.filter((i) => this._isSelectable(i)).length >= 2 &&
-			(context.Items.filter((i) => this._isSelectable(i)).length ===
+			context.Items.filter((i) => this._checker.IsSelectable(i)).length >= 2 &&
+			(context.Items.filter((i) => this._checker.IsSelectable(i)).length ===
 				context.Items.filter((i) => i instanceof Cell).length ||
-				context.Items.filter((i) => this._isSelectable(i)).length ===
+				context.Items.filter((i) => this._checker.IsSelectable(i)).length ===
 					context.Items.filter((i) => i instanceof Vehicle).length ||
-				context.Items.filter((i) => this._isSelectable(i)).length ===
+				context.Items.filter((i) => this._checker.IsSelectable(i)).length ===
 					context.Items.filter((i) => i instanceof InfluenceField).length)
 		);
 	}
@@ -33,7 +34,7 @@ export class UnselectCombination extends AbstractSingleCombination {
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
 			const lastItem = context.Items[context.Items.length - 1];
-			if (this._isSelectable(lastItem)) {
+			if (this._checker.IsSelectable(lastItem)) {
 				if (lastItem === context.Items[0]) {
 					this.UnSelectItem(context.Items[0]);
 					this.OnClearContext.Invoke();
@@ -42,7 +43,7 @@ export class UnselectCombination extends AbstractSingleCombination {
 						const cell = vehicle.GetCurrentCell();
 
 						if (cell.GetField() instanceof BasicField && cell.GetState() === CellState.Visible) {
-							this.OnPushedItem.Invoke(this, cell);
+							this.OnPushedItem.Invoke(this, { item: cell, isForced: false });
 							cell.SetSelected(true);
 							GameHelper.SelectedItem.Invoke(this, cell);
 							return true;
@@ -51,7 +52,7 @@ export class UnselectCombination extends AbstractSingleCombination {
 				} else {
 					this.UnSelectItem(context.Items[0]);
 					this.OnClearContext.Invoke();
-					this.OnPushedItem.Invoke(this, lastItem);
+					this.OnPushedItem.Invoke(this, { item: lastItem, isForced: true });
 				}
 			}
 			return true;

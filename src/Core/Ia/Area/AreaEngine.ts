@@ -1,26 +1,26 @@
 import { ICell } from '../../Items/Cell/ICell';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 import { isNullOrUndefined } from 'util';
-import { CellContainer } from '../../Items/Cell/CellContainer';
+import { CellContext } from '../../Items/Cell/CellContext';
 
 export class AreaEngine<T extends ICell> {
-	public GetAreas(cells: CellContainer<T>, cell: T): Array<T> {
+	public GetAreas(cells: CellContext<T>, cell: T): Array<T> {
 		var result = new Array<T>();
 		this.GetAllAreas(cells, cell, result);
 		return result;
 	}
 
-	private GetAllAreas(cells: CellContainer<T>, currentcell: T, areas: Array<T>): void {
+	private GetAllAreas(cells: CellContext<T>, currentcell: T, areas: Array<T>): void {
 		if (areas.filter((a) => a === currentcell).length === 0) {
 			areas.push(currentcell);
-			var neighs = this.GetAroundAreas(cells, currentcell);
+			var neighs = this.GetExcludedFirstRange(cells, currentcell);
 			neighs.forEach((neigh) => {
 				this.GetAllAreas(cells, neigh, areas);
 			});
 		}
 	}
 
-	public GetAroundAreas(cells: CellContainer<T>, cell: T): Array<T> {
+	public GetExcludedFirstRange(cells: CellContext<T>, cell: T): Array<T> {
 		var coo = cell.GetCoordinate();
 		var result = new Array<T>();
 		var shifts = [
@@ -42,18 +42,18 @@ export class AreaEngine<T extends ICell> {
 		return result;
 	}
 
-	public GetFirstRangeAreas(container: CellContainer<T>, center: T): Array<T> {
-		let innerCircle = this.GetAroundAreas(container, center);
+	public GetIncludedFirstRange(container: CellContext<T>, center: T): Array<T> {
+		let innerCircle = this.GetExcludedFirstRange(container, center);
 		innerCircle.push(center);
 		return innerCircle;
 	}
 
-	public GetSecondRangeAreas(container: CellContainer<T>, center: T): Array<T> {
+	public GetIncludedSecondRange(container: CellContext<T>, center: T): Array<T> {
 		let outerCircle = new Array<T>();
-		let innerCircle = this.GetAroundAreas(container, center);
+		let innerCircle = this.GetExcludedFirstRange(container, center);
 
 		innerCircle.forEach((innercell) => {
-			this.GetAroundAreas(container, innercell).forEach((outcell) => {
+			this.GetExcludedFirstRange(container, innercell).forEach((outcell) => {
 				outerCircle.push(outcell);
 			});
 		});

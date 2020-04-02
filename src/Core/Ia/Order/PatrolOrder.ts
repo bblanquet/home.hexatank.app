@@ -40,7 +40,6 @@ export class PatrolOrder extends Order {
 				pathItem.SetAlive(this._v.IsAlive.bind(this._v));
 
 				this._patrolPathDisplay.push(pathItem);
-				GameHelper.Playground.Items.push(pathItem);
 			});
 		}
 	}

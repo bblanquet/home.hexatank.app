@@ -29,7 +29,6 @@ export class DiamondField extends Field {
 
 	public Destroy(): void {
 		super.Destroy();
-		GameHelper.Render.Remove(this);
 		this.IsUpdatable = false;
 		this.GetCell().DestroyField();
 	}

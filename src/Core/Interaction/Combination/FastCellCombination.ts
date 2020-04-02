@@ -2,13 +2,12 @@ import { isNullOrUndefined } from 'util';
 import { SpeedFieldMenuItem } from '../../Menu/Buttons/SpeedFieldMenuItem';
 import { Cell } from '../../Items/Cell/Cell';
 import { BasicField } from '../../Items/Cell/Field/BasicField';
-import { GameHelper } from '../../Framework/GameHelper';
-import { FastField } from '../../Items/Cell/Field/FastField';
 import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
 import { PacketKind } from '../../../Components/Network/PacketKind';
 import { CombinationContext } from './CombinationContext';
 import { GameSettings } from '../../Framework/GameSettings';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
+import { FastField } from '../../Items/Cell/Field/FastField';
 import { GameContext } from '../../Framework/GameContext';
 
 export class FastCellCombination extends AbstractSingleCombination {
@@ -37,8 +36,7 @@ export class FastCellCombination extends AbstractSingleCombination {
 							cell: cell.GetCoordinate(),
 							Type: 'Fast'
 						});
-						let field = new FastField(cell);
-						GameHelper.Playground.Items.push(field);
+						new FastField(cell);
 					}
 				}
 			}

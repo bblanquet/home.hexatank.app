@@ -128,12 +128,11 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 						false,
 						5
 					);
-					GameHelper.Playground.Items.push(explosion);
 				}
 				const tank = new Tank(this, this.GameContext);
 				tank.SetPosition(cell === null ? field.GetCell() : cell);
 				this.OnVehiculeCreated.Invoke(this, tank);
-				GameHelper.Playground.Items.push(tank);
+
 				isCreated = true;
 				if (this.Flagcell) {
 					tank.SetOrder(new SimpleOrder(this.Flagcell.GetCell(), tank));
@@ -158,12 +157,11 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 						false,
 						5
 					);
-					GameHelper.Playground.Items.push(explosion);
 				}
 				let truck = new Truck(this, this.GameContext);
 				truck.SetPosition(cell === null ? field.GetCell() : cell);
 				this.OnVehiculeCreated.Invoke(this, truck);
-				GameHelper.Playground.Items.push(truck);
+
 				isCreated = true;
 				return false;
 			}
@@ -191,7 +189,6 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 
 	public Destroy(): void {
 		super.Destroy();
-		GameHelper.Render.Remove(this);
 		this._cell.CellStateChanged.Off(this._onCellStateChanged);
 		this._cell.DestroyField();
 		this.IsUpdatable = false;
@@ -292,7 +289,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		if (!this.IsAlive()) {
 			this.Destroy();
 			let crater = new Crater(this._boundingBox);
-			GameHelper.Playground.Items.push(crater);
+
 			return;
 		}
 

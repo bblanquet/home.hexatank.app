@@ -37,8 +37,7 @@ export class MoneyCellCombination extends AbstractSingleCombination {
 							cell: cell.GetCoordinate(),
 							Type: 'Money'
 						});
-						let field = new MoneyField(cell);
-						GameHelper.Playground.Items.push(field);
+						new MoneyField(cell);
 					}
 				}
 			}

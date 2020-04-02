@@ -107,7 +107,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 		}
 
 		if (this.Mode === InteractionMode.SingleSelection) {
-			GameHelper.Playground.Select(this);
+			GameHelper.Updater.Select(this);
 		} else {
 			this.OnSelect(null);
 		}

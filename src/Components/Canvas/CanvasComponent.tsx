@@ -74,7 +74,7 @@ export default class CanvasComponent extends Component<
 		this._stop = false;
 		this._appHandler = new AppHandler();
 		this._appHandler.InitApp();
-		GameHelper.Playground = this._appHandler.Playground;
+		GameHelper.Updater = this._appHandler.Playground;
 		GameHelper.Render = new RenderingHandler(
 			new RenderingGroups(
 				{
@@ -215,17 +215,16 @@ export default class CanvasComponent extends Component<
 			return;
 		}
 		requestAnimationFrame(this._loop);
-		GameHelper.Playground.Update();
+		GameHelper.Updater.Update();
 	}
 
 	componentWillUnmount() {
 		this._stop = true;
 		this._appHandler.GetApp().stop();
-		GameHelper.Playground.Items.forEach((item) => {
+		GameHelper.Updater.Items.forEach((item) => {
 			item.Destroy();
-			GameHelper.Render.Remove(item);
 		});
-		GameHelper.Playground.Items = [];
+		GameHelper.Updater.Items = [];
 	}
 
 	componentDidUpdate() {}
@@ -247,10 +246,10 @@ export default class CanvasComponent extends Component<
 	}
 
 	private SetFlag(): void {
-		GameHelper.IsFlagingMode = !GameHelper.IsFlagingMode;
+		this._gameContext.IsFlagingMode = !this._gameContext.IsFlagingMode;
 		this.setState({
 			...this.state,
-			HasFlag: GameHelper.IsFlagingMode
+			HasFlag: this._gameContext.IsFlagingMode
 		});
 	}
 

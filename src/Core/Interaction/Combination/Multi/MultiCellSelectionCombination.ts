@@ -105,7 +105,6 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 				cell: c.GetCoordinate(),
 				Type: fieldType
 			});
-			GameHelper.Playground.Items.push(getField(c));
 		});
 	}
 }

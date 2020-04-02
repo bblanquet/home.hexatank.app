@@ -1,21 +1,27 @@
 import { SpriteProvider } from './../Framework/SpriteProvider';
 import * as PIXI from 'pixi.js';
 import { BoundingBox } from '../Utils/Geometry/BoundingBox';
-import { Updater } from '../Updater';
+import { IUpdatable } from '../IUpdatable';
 import { Point } from '../Utils/Geometry/Point';
 import { IBoundingBoxContainer } from '../IBoundingBoxContainer';
 import { GameHelper } from '../Framework/GameHelper';
 import { IInteractionContext } from '../Interaction/IInteractionContext';
 
-export abstract class Item implements Updater, IBoundingBoxContainer {
+export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 	private DisplayObjects: Array<PIXI.DisplayObject>;
-	public Z: number;
-	public IsUpdatable: Boolean = true;
-	protected IsCentralRef: boolean = false;
 	private _sprites: { [id: string]: PIXI.Sprite } = {};
 	protected Accuracy: number = 0.5;
-	constructor() {
+
+	public Z: number;
+	public IsUpdatable: Boolean;
+	protected IsCentralRef: boolean = false;
+
+	constructor(isUpdatable: boolean = true) {
 		this.DisplayObjects = new Array<PIXI.DisplayObject>();
+		this.IsUpdatable = isUpdatable;
+		if (this.IsUpdatable) {
+			GameHelper.Updater.Items.push(this);
+		}
 	}
 
 	public GetCurrentSprites(): { [id: string]: PIXI.Sprite } {
@@ -33,15 +39,15 @@ export abstract class Item implements Updater, IBoundingBoxContainer {
 		return [ this._sprites[name] ];
 	}
 
-	protected SetProperty(name: string, func: { (sprite: PIXI.Sprite): void }) {
+	protected SetProperty(name: string, func: (sprite: PIXI.Sprite) => void) {
 		func(this.GetCurrentSprites()[name]);
 	}
 
-	protected SetProperties(names: string[], func: { (sprite: PIXI.Sprite): void }) {
+	protected SetProperties(names: string[], func: (sprite: PIXI.Sprite) => void) {
 		names.forEach((name) => func(this.GetCurrentSprites()[name]));
 	}
 
-	protected SetBothProperty(name: string, func: { (sprite: PIXI.Sprite): void }) {
+	protected SetBothProperty(name: string, func: (sprite: PIXI.Sprite) => void) {
 		func(this._sprites[name]);
 	}
 
@@ -49,7 +55,7 @@ export abstract class Item implements Updater, IBoundingBoxContainer {
 		this.DisplayObjects.push(blop);
 	}
 
-	protected GenerateSprite(name: string, func?: { (sprite: PIXI.Sprite): void }): void {
+	protected GenerateSprite(name: string, func?: (sprite: PIXI.Sprite) => void): void {
 		this._sprites[name] = new SpriteProvider().GetSprite(name, this.Accuracy);
 
 		this.DisplayObjects.push(this._sprites[name]);
@@ -60,7 +66,9 @@ export abstract class Item implements Updater, IBoundingBoxContainer {
 		}
 	}
 
-	public Destroy(): void {}
+	public Destroy(): void {
+		GameHelper.Render.Remove(this);
+	}
 
 	public abstract GetBoundingBox(): BoundingBox;
 

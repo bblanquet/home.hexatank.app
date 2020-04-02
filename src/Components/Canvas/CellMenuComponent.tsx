@@ -3,7 +3,6 @@ import { Item } from '../../Core/Items/Item';
 import { InfluenceMenuItem } from '../../Core/Menu/Buttons/InfluenceMenuItem';
 import { AttackMenuItem } from '../../Core/Menu/Buttons/AttackMenuItem';
 import { GameSettings } from '../../Core/Framework/GameSettings';
-import { GameHelper } from '../../Core/Framework/GameHelper';
 import { SpeedFieldMenuItem } from '../../Core/Menu/Buttons/SpeedFieldMenuItem';
 import { HealMenuItem } from '../../Core/Menu/Buttons/HealMenuItem';
 import { MoneyMenuItem } from '../../Core/Menu/Buttons/MoneyMenuItem';

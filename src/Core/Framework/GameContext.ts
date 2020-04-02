@@ -13,6 +13,7 @@ export class GameContext {
 	private _hqs: Headquarter[];
 	public MainHq: Headquarter;
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
+	public IsFlagingMode: boolean;
 
 	public SetHqs(hqs: Headquarter[]) {
 		this._hqs = hqs;

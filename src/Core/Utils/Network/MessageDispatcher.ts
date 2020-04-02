@@ -68,27 +68,27 @@
 // 			const type = e.Type;
 // 			if (type === 'Heal') {
 // 				let field = new HealField(cell);
-// 				GameHelper.Playground.Items.push(field);
+//
 // 			} else if (type === 'Attack') {
 // 				let field = new AttackField(cell);
-// 				GameHelper.Playground.Items.push(field);
+//
 // 			} else if (type === 'Money') {
 // 				let field = new MoneyField(cell);
-// 				GameHelper.Playground.Items.push(field);
+//
 // 			} else if (type === 'Fast') {
 // 				let field = new FastField(cell);
-// 				GameHelper.Playground.Items.push(field);
+//
 // 			} else if (type === 'Slow') {
 // 				let field = new SlowField(cell);
-// 				GameHelper.Playground.Items.push(field);
+//
 // 			} else if (type === 'Poison') {
 // 				let field = new PoisonField(cell);
-// 				GameHelper.Playground.Items.push(field);
+//
 // 			} else if (type === 'Influence') {
 // 				const hqPos = new HexAxial(e.Hq.Q, e.Hq.R);
 // 				const hq = GameHelper.Cells.Get(hqPos).GetField() as Headquarter;
 // 				let field = new InfluenceField(cell, hq);
-// 				GameHelper.Playground.Items.push(field);
+//
 // 			}
 // 		}
 // 	}

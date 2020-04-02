@@ -87,6 +87,5 @@ export class Dust extends Item {
 	public Destroy() {
 		super.Destroy();
 		this.IsUpdatable = false;
-		GameHelper.Render.Remove(this);
 	}
 }

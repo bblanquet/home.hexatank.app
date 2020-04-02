@@ -2,7 +2,6 @@ import { HealMenuItem } from '../../Menu/Buttons/HealMenuItem';
 import { isNullOrUndefined } from 'util';
 import { Cell } from '../../Items/Cell/Cell';
 import { BasicField } from '../../Items/Cell/Field/BasicField';
-import { GameHelper } from '../../Framework/GameHelper';
 import { HealField } from '../../Items/Cell/Field/HealField';
 import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
 import { PacketKind } from '../../../Components/Network/PacketKind';
@@ -37,8 +36,7 @@ export class HealCellCombination extends AbstractSingleCombination {
 							cell: cell.GetCoordinate(),
 							Type: 'Heal'
 						});
-						let field = new HealField(cell);
-						GameHelper.Playground.Items.push(field);
+						new HealField(cell);
 					}
 				}
 			}

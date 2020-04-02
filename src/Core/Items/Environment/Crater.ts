@@ -23,7 +23,6 @@ export class Crater extends Item {
 
 	public Destroy(): void {
 		super.Destroy();
-		GameHelper.Render.Remove(this);
 		this.IsUpdatable = false;
 	}
 

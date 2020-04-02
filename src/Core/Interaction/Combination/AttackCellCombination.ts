@@ -2,7 +2,6 @@ import { isNullOrUndefined } from 'util';
 import { AttackMenuItem } from '../../Menu/Buttons/AttackMenuItem';
 import { Cell } from '../../Items/Cell/Cell';
 import { BasicField } from '../../Items/Cell/Field/BasicField';
-import { GameHelper } from '../../Framework/GameHelper';
 import { AttackField } from '../../Items/Cell/Field/AttackField';
 import { PacketKind } from '../../../Components/Network/PacketKind';
 import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
@@ -37,8 +36,7 @@ export class AttackCellCombination extends AbstractSingleCombination {
 							cell: cell.GetCoordinate(),
 							Type: 'Attack'
 						});
-						let field = new AttackField(cell);
-						GameHelper.Playground.Items.push(field);
+						new AttackField(cell);
 					}
 				}
 			}

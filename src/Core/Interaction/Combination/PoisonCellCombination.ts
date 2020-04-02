@@ -38,7 +38,6 @@ export class PoisonCellCombination extends AbstractSingleCombination {
 							Type: 'Poison'
 						});
 						let field = new PoisonField(cell);
-						GameHelper.Playground.Items.push(field);
 					}
 				}
 			}

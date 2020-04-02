@@ -105,8 +105,6 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 			new Dust(new BoundingBox()),
 			new Dust(new BoundingBox())
 		];
-		this._leftDusts.forEach((ld) => GameHelper.Playground.Items.push(ld));
-		this._rightDusts.forEach((rd) => GameHelper.Playground.Items.push(rd));
 		this.CellChanged = new LiteEvent<Cell>();
 		this.Hq.AddVehicle(this);
 	}
@@ -249,7 +247,6 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		if (!isNullOrUndefined(this._nextCell)) {
 			this._nextCell.SetOccupier(null);
 		}
-		GameHelper.Render.Remove(this);
 		this.IsUpdatable = false;
 		this._leftDusts.forEach((ld) => ld.Destroy());
 		this._rightDusts.forEach((ld) => ld.Destroy());
@@ -262,11 +259,10 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		if (!this.IsAlive() || !this.Hq.IsAlive()) {
 			if (!this.Hq.IsAlive()) {
 				let explosion = new Explosion(this.GetBoundingBox(), Archive.explosions, 5, true, 20);
-				GameHelper.Playground.Items.push(explosion);
 			}
 			this.Destroy();
 			let crater = new Crater(this.BoundingBox);
-			GameHelper.Playground.Items.push(crater);
+
 			return;
 		}
 

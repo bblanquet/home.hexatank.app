@@ -1,10 +1,10 @@
 import { ViewContext } from './Utils/Geometry/ViewContext';
 import { GameSettings } from './Framework/GameSettings';
-import { IItemsManager } from './IItemsManager';
+import { IItemsUpdater } from './IItemsUpdater';
 import { Item } from './Items/Item';
 import { IInteractionContext } from './Interaction/IInteractionContext';
 
-export class ItemsManager implements IItemsManager {
+export class ItemsUpdater implements IItemsUpdater {
 	Items: Array<Item>;
 
 	constructor(public ViewContext: ViewContext) {

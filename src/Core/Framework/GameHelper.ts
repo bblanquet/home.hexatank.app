@@ -1,10 +1,9 @@
 import { RenderingHandler } from '../Setup/Render/RenderingHandler';
-import { ItemsManager } from '../ItemsManager';
+import { ItemsUpdater } from '../ItemsUpdater';
 import { MapContext } from '../Setup/Generator/MapContext';
 
 export class GameHelper {
-	public static Playground: ItemsManager;
+	public static Updater: ItemsUpdater;
 	public static MapContext: MapContext;
 	public static Render: RenderingHandler;
-	public static IsFlagingMode: boolean;
 }

@@ -3,7 +3,6 @@ import { Cell } from '../Cell';
 import { Timer } from '../../../Utils/Timer/Timer';
 import { Headquarter } from './Headquarter';
 import { Field } from './Field';
-import { GameHelper } from '../../../Framework/GameHelper';
 import { Vehicle } from '../../Unit/Vehicle';
 import { Truck } from '../../Unit/Truck';
 import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
@@ -28,7 +27,6 @@ export class HeadQuarterField extends Field {
 
 	public Destroy(): void {
 		super.Destroy();
-		GameHelper.Render.Remove(this);
 		this.IsUpdatable = false;
 		this.GetCell().DestroyField();
 	}

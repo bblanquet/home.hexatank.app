@@ -137,12 +137,11 @@ export class IaHeadquarter extends Headquarter {
 						false,
 						5
 					);
-					GameHelper.Playground.Items.push(explosion);
 				}
 				truck = new Truck(this, this.GameContext);
 				truck.SetPosition(field.GetCell());
 				this.OnVehiculeCreated.Invoke(this, truck);
-				GameHelper.Playground.Items.push(truck);
+
 				return true;
 			}
 			return false;
@@ -167,13 +166,12 @@ export class IaHeadquarter extends Headquarter {
 								false,
 								5
 							);
-							GameHelper.Playground.Items.push(explosion);
 						}
 						var tank = new Tank(this, this.GameContext);
 						tank.SetPosition(field.GetCell());
 						area.AddTroop(tank, cell);
 						this.OnVehiculeCreated.Invoke(this, tank);
-						GameHelper.Playground.Items.push(tank);
+
 						isCreated = true;
 						return true;
 					}

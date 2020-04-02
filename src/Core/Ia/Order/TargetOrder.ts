@@ -64,6 +64,5 @@ export class TargetOrder extends Order {
 		this._targetUi.SetAlive(
 			() => this._v.IsAlive() && this._target.IsAlive() && this._v.GetMainTarget() === this._target
 		);
-		GameHelper.Playground.Items.push(this._targetUi);
 	}
 }

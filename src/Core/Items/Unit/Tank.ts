@@ -63,7 +63,7 @@ export class Tank extends Vehicle implements IHqContainer {
 
 	public Destroy(): void {
 		super.Destroy();
-		GameHelper.Render.Remove(this.Turrel);
+		this.Turrel.Destroy();
 	}
 
 	public Update(viewX: number, viewY: number): void {
@@ -224,7 +224,7 @@ export class Tank extends Vehicle implements IHqContainer {
 		);
 		this.Camouflage.SetVisible(() => this.IsAlive() && this.HasCamouflage);
 		this.Camouflage.SetAlive(() => this.IsAlive() && this.HasCamouflage);
-		GameHelper.Playground.Items.push(this.Camouflage);
+
 		const explosion = new Explosion(
 			BoundingBox.CreateFromBox(this.GetBoundingBox()),
 			Archive.constructionEffects,
@@ -232,7 +232,6 @@ export class Tank extends Vehicle implements IHqContainer {
 			false,
 			5
 		);
-		GameHelper.Playground.Items.push(explosion);
 
 		return true;
 	}

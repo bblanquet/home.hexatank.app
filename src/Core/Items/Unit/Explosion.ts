@@ -83,7 +83,6 @@ export class Explosion extends Item {
 	public Destroy() {
 		super.Destroy();
 		this.IsUpdatable = false;
-		GameHelper.Render.Remove(this);
 	}
 
 	public GetBoundingBox(): BoundingBox {

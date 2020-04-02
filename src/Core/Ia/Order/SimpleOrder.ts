@@ -158,7 +158,7 @@ export class SimpleOrder extends Order {
 				var pathItem = new BasicItem(cell.GetBoundingBox(), Archive.direction.moving);
 				pathItem.SetVisible(this._v.IsSelected.bind(this._v));
 				pathItem.SetAlive(this._v.IsAlive.bind(this._v));
-				GameHelper.Playground.Items.push(pathItem);
+
 				this._uiPath.push(pathItem);
 			});
 		}

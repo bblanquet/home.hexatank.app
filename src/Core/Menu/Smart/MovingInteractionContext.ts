@@ -41,7 +41,7 @@ export class MovingInteractionContext implements IInteractionContext {
 		}
 
 		if (this._isOn) {
-			GameHelper.Playground.Items.forEach((item) => {
+			GameHelper.Updater.Items.forEach((item) => {
 				item.Select(this);
 			});
 		}
@@ -71,7 +71,6 @@ export class MovingInteractionContext implements IInteractionContext {
 				displayPath.SetAlive(() => true);
 				displayPath.SetVisible(() => true);
 				this._enlightCells.push(displayPath);
-				GameHelper.Playground.Items.push(displayPath);
 			}
 		}
 	}

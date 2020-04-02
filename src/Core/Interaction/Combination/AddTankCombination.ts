@@ -1,10 +1,7 @@
 import { GameContext } from './../../Framework/GameContext';
-import { GameHelper } from '../../Framework/GameHelper';
 import { TankMenuItem } from '../../Menu/Buttons/TankMenuItem';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { CombinationContext } from './CombinationContext';
-import { InteractionMode } from '../InteractionMode';
-import { InteractionKind } from '../IInteractionContext';
 
 export class AddTankCombination extends AbstractSingleCombination {
 	constructor(private _gameContext: GameContext) {

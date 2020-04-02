@@ -51,7 +51,6 @@ export class PatrolCombination extends AbstractSingleCombination {
 				element.SetVisible(() => true);
 				element.SetAlive(() => true);
 				this._indicators.push(element);
-				GameHelper.Playground.Items.push(element);
 			}
 		}
 

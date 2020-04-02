@@ -26,7 +26,6 @@ export class Light extends Item {
 	public Destroy(): void {
 		super.Destroy();
 		this.IsUpdatable = false;
-		GameHelper.Render.Remove(this);
 	}
 
 	public GetBoundingBox(): BoundingBox {

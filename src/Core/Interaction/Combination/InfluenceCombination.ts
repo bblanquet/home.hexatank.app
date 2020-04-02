@@ -41,7 +41,6 @@ export class InfluenceCombination extends AbstractSingleCombination {
 							Type: 'Influence'
 						});
 						let field = new InfluenceField(cell, this._gameContext.MainHq, this._gameContext);
-						GameHelper.Playground.Items.push(field);
 					}
 				}
 			}

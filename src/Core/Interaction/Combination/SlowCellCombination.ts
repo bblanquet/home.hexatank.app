@@ -38,7 +38,6 @@ export class SlowCellCombination extends AbstractSingleCombination {
 							Type: 'Slow'
 						});
 						let field = new SlowField(cell);
-						GameHelper.Playground.Items.push(field);
 					}
 				}
 			}

@@ -33,9 +33,6 @@ export class MultiSelectionMenu {
 			1.1
 		);
 
-		GameHelper.Playground.Items.push(this._tankSelection);
-		GameHelper.Playground.Items.push(this._cellSelection);
-
 		this._cellSelection.SetAlive(() => true);
 		this._cellSelection.SetVisible(this.IsVisible.bind(this));
 	}

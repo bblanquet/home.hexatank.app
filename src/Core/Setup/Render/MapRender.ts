@@ -56,9 +56,7 @@ export class MapRender {
 		});
 
 		//insert elements into playground
-		playgroundItems.forEach((item) => {
-			GameHelper.Playground.Items.push(item);
-		});
+		playgroundItems.forEach((item) => {});
 
 		return context;
 	}

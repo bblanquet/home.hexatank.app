@@ -173,7 +173,7 @@ export class InfluenceField extends Field implements ISelectable {
 			const area = new BasicItem(b, this.Hq.GetSkin().GetAreaEnergy(), 3);
 			area.SetVisible(() => true);
 			area.SetAlive(() => true);
-			GameHelper.Playground.Items.push(area);
+
 			this._area.push(area);
 		});
 	}

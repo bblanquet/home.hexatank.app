@@ -97,11 +97,9 @@ export class Missile extends Item {
 		} else {
 			this.Target.SetDamage(this._damage);
 			let explosion = new Explosion(this.Target.GetBoundingBox(), Archive.explosions, 5, true, 20);
-			GameHelper.Playground.Items.push(explosion);
 
 			if (!this.Target.IsAlive()) {
 				let skull = new Explosion(this.Target.GetBoundingBox(), [ Archive.skull ], 5, false, 50);
-				GameHelper.Playground.Items.push(skull);
 			}
 			this.Destroy();
 		}
@@ -109,7 +107,6 @@ export class Missile extends Item {
 
 	public Destroy() {
 		super.Destroy();
-		GameHelper.Render.Remove(this);
 		this.IsUpdatable = false;
 	}
 }

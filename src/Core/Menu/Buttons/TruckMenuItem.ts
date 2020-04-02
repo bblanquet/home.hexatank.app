@@ -9,4 +9,8 @@ export class TruckMenuItem extends Item {
 	public Select(context: IInteractionContext): boolean {
 		throw new Error('Method not implemented.');
 	}
+
+	constructor() {
+		super(false);
+	}
 }

@@ -76,7 +76,6 @@ export class Diamond extends AliveField {
 
 	public Destroy(): void {
 		super.Destroy();
-		GameHelper.Render.Remove(this);
 		this.GetCell().DestroyField();
 		this.IsUpdatable = false;
 		this.Fields.forEach((field) => {
@@ -90,7 +89,7 @@ export class Diamond extends AliveField {
 		if (!this.IsAlive()) {
 			this.Destroy();
 			let crater = new Crater(this.BoundingBox);
-			GameHelper.Playground.Items.push(crater);
+
 			return;
 		}
 

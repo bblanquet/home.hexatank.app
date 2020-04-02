@@ -58,7 +58,6 @@ export class BlockingField extends AliveField {
 
 	public Destroy(): void {
 		super.Destroy();
-		GameHelper.Render.Remove(this);
 		this.GetCell().DestroyField();
 		this.IsUpdatable = false;
 	}

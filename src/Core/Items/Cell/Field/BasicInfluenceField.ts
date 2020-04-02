@@ -36,7 +36,6 @@ export class BasicInfluenceField extends Item {
 	}
 
 	public Destroy(): void {
-		GameHelper.Render.Remove(this);
 		super.Destroy();
 		this.InfluenceField.GetCell().CellStateChanged.Off(this._onCellStateChanged);
 	}

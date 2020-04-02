@@ -10,8 +10,12 @@ import { InfluenceField } from '../../Core/Items/Cell/Field/InfluenceField';
 import { Item } from '../../Core/Items/Item';
 import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
 import { AppHandler } from './AppHandler';
+import { GameContext } from '../../Core/Framework/GameContext';
 
-export default class FactoryMenuComponent extends Component<{ Item: Item; AppHandler: AppHandler }, {}> {
+export default class FactoryMenuComponent extends Component<
+	{ Item: Item; AppHandler: AppHandler; GameContext: GameContext },
+	{}
+> {
 	render() {
 		const field = this.props.Item as InfluenceField;
 		return (
@@ -34,7 +38,7 @@ export default class FactoryMenuComponent extends Component<{ Item: Item; AppHan
 								''
 							) : (
 								<div class="max-width text-center darker">
-									{GameSettings.TruckPrice * GameHelper.PlayerHeadquarter.GetTotalEnergy()}{' '}
+									{GameSettings.TruckPrice * this.props.GameContext.MainHq.GetTotalEnergy()}{' '}
 									<span class="fill-diamond badge very-small-space middle"> </span>
 								</div>
 							)}
@@ -56,7 +60,7 @@ export default class FactoryMenuComponent extends Component<{ Item: Item; AppHan
 								''
 							) : (
 								<div class="max-width text-center darker">
-									{GameSettings.TruckPrice * GameHelper.PlayerHeadquarter.GetTotalEnergy()}{' '}
+									{GameSettings.TruckPrice * this.props.GameContext.MainHq.GetTotalEnergy()}{' '}
 									<span class="fill-diamond badge very-small-space middle"> </span>
 								</div>
 							)}

@@ -9,8 +9,13 @@ import { PacketKind } from '../../../Components/Network/PacketKind';
 import { CombinationContext } from './CombinationContext';
 import { GameSettings } from '../../Framework/GameSettings';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
+import { GameContext } from '../../Framework/GameContext';
 
 export class PoisonCellCombination extends AbstractSingleCombination {
+	constructor(private _gameContext: GameContext) {
+		super();
+	}
+
 	IsMatching(context: CombinationContext): boolean {
 		return (
 			this.IsNormalMode(context) &&
@@ -25,10 +30,10 @@ export class PoisonCellCombination extends AbstractSingleCombination {
 			let cell = <Cell>context.Items[0];
 			if (!isNullOrUndefined(cell)) {
 				if (cell.GetField() instanceof BasicField) {
-					if (GameHelper.PlayerHeadquarter.HasMoney(GameSettings.FieldPrice)) {
-						GameHelper.PlayerHeadquarter.Buy(GameSettings.FieldPrice);
+					if (this._gameContext.MainHq.HasMoney(GameSettings.FieldPrice)) {
+						this._gameContext.MainHq.Buy(GameSettings.FieldPrice);
 						PeerHandler.SendMessage(PacketKind.Field, {
-							Hq: GameHelper.PlayerHeadquarter.GetCurrentCell().GetCoordinate(),
+							Hq: this._gameContext.MainHq.GetCurrentCell().GetCoordinate(),
 							cell: cell.GetCoordinate(),
 							Type: 'Poison'
 						});

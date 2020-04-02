@@ -10,6 +10,7 @@ import { MovingInteractionContext } from '../../../Menu/Smart/MovingInteractionC
 import { InteractionMode } from '../../InteractionMode';
 import { AppHandler } from '../../../../Components/Canvas/AppHandler';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
+import { GameContext } from '../../../Framework/GameContext';
 
 export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 	private _multiHandler: MultiSelectionHelper;
@@ -18,7 +19,8 @@ export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 	constructor(
 		private _multiselection: MultiSelectionMenu,
 		private _multiContext: MovingInteractionContext,
-		private _appHandler: AppHandler
+		private _appHandler: AppHandler,
+		private _gameContext: GameContext
 	) {
 		super();
 		this._multiHandler = new MultiSelectionHelper();
@@ -63,7 +65,7 @@ export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 	private SetVehicles(cells: Cell[]): void {
 		cells.forEach((c) => {
 			let occupier = (<Cell>(<unknown>c)).GetOccupier();
-			if (occupier && occupier instanceof Vehicle && !GameHelper.PlayerHeadquarter.IsEnemy(occupier)) {
+			if (occupier && occupier instanceof Vehicle && !this._gameContext.MainHq.IsEnemy(occupier)) {
 				this._vehicles.push(occupier);
 			}
 		});

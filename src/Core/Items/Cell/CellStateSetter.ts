@@ -1,15 +1,15 @@
 import { GameSettings } from '../../Framework/GameSettings';
-import { GameHelper } from '../../Framework/GameHelper';
 import { Cell } from './Cell';
 import { CellState } from './CellState';
+import { GameContext } from '../../Framework/GameContext';
 
 export class CellStateSetter {
-	public static SetStates(cells: Array<Cell>): void {
-		cells.forEach((cell) => this.SetState(cell));
+	public static SetStates(gameContext: GameContext, cells: Array<Cell>): void {
+		cells.forEach((cell) => this.SetState(gameContext, cell));
 	}
 
-	public static SetState(cell: Cell): void {
-		const territoty = GameHelper.PlayerHeadquarter.GetInfluence().map((f) => f.GetArea());
+	public static SetState(gameContext: GameContext, cell: Cell): void {
+		const territoty = gameContext.MainHq.GetInfluence().map((f) => f.GetArea());
 
 		let isContained = false;
 		territoty.some((c) => (isContained = c.Exist(cell.GetCoordinate())));
@@ -26,7 +26,7 @@ export class CellStateSetter {
 					}
 				}
 			} else {
-				if (cell.HasAroundAlly(GameHelper.PlayerHeadquarter)) {
+				if (cell.HasAroundAlly(gameContext.MainHq)) {
 					cell.SetState(CellState.Visible);
 				} else {
 					if (cell.GetState() !== CellState.Hidden) {

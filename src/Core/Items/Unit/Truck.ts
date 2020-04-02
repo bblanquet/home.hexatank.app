@@ -7,6 +7,7 @@ import { Archive } from '../../Framework/ResourceArchiver';
 import { Timer } from '../../Utils/Timer/Timer';
 import { CellState } from '../Cell/CellState';
 import { ITimer } from '../../Utils/Timer/ITimer';
+import { GameContext } from '../../Framework/GameContext';
 
 export class Truck extends Vehicle implements IHqContainer {
 	private _light: Light;
@@ -14,8 +15,8 @@ export class Truck extends Vehicle implements IHqContainer {
 	private _dimaondTimer: ITimer;
 	private _diamondsCount: number = 0;
 
-	constructor(hq: Headquarter) {
-		super(hq);
+	constructor(hq: Headquarter, gameContext: GameContext) {
+		super(hq, gameContext);
 		this.Wheels = Archive.wheels;
 
 		this.GenerateSprite(Archive.wheel);

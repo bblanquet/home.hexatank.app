@@ -1,6 +1,5 @@
 import { GameContext } from './../Framework/GameContext';
 import { ISelectableChecker } from './ISelectableChecker';
-import { ISelectable } from './../ISelectable';
 import { AppHandler } from './../../Components/Canvas/AppHandler';
 import { ICombination } from './Combination/ICombination';
 import { UnselectCombination } from './Combination/UnselectCombination';
@@ -51,14 +50,14 @@ export class CombinationProvider {
 			new MovingMultiMenuCombination(multiselectionMenu),
 			new UpMultiMenuCombination(multiselectionMenu, appHandler),
 			new MultiSelectionCombination(multiSelectionContext),
-			new MultiUnitSelectionCombination(multiselectionMenu, multiSelectionContext, appHandler),
+			new MultiUnitSelectionCombination(multiselectionMenu, multiSelectionContext, appHandler, gameContext),
 			new MultiCellSelectionCombination(multiselectionMenu, multiSelectionContext, appHandler, gameContext),
-			new FlagCellCombination(),
+			new FlagCellCombination(gameContext),
 			new AbortCombination(),
 			new SearchMoneyCombination(),
-			new InfluenceCombination(),
-			new AddTankCombination(),
-			new AddTruckCombination(),
+			new InfluenceCombination(gameContext),
+			new AddTankCombination(gameContext),
+			new AddTruckCombination(gameContext),
 			new SwitchToCellCombination(),
 			new SwitchToVehicleCombination(gameContext),
 			new SwitchToInfluenceCombination(),
@@ -71,18 +70,18 @@ export class CombinationProvider {
 			new ClearTrashCombination(checker),
 			new UnselectCombination(checker, gameContext),
 			new SelectionCombination(checker, gameContext),
-			new FastCellCombination(),
+			new FastCellCombination(gameContext),
 			new CamouflageCombination(),
 			new TargetCombination(),
-			new AttackCellCombination(),
-			new SlowCellCombination(),
-			new PoisonCellCombination(),
-			new MoneyCellCombination(),
-			new HealCellCombination(),
-			new RangeUpCombination(),
+			new AttackCellCombination(gameContext),
+			new SlowCellCombination(gameContext),
+			new PoisonCellCombination(gameContext),
+			new MoneyCellCombination(gameContext),
+			new HealCellCombination(gameContext),
+			new RangeUpCombination(gameContext),
 			new RangeDownCombination(),
 			new PowerDownCombination(),
-			new PowerUpCombination()
+			new PowerUpCombination(gameContext)
 		];
 	}
 }

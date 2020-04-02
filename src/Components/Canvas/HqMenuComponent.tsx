@@ -7,6 +7,7 @@ import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
 import { TankMenuItem } from '../../Core/Menu/Buttons/TankMenuItem';
 import { TruckMenuItem } from '../../Core/Menu/Buttons/TruckMenuItem';
 import { AppHandler } from './AppHandler';
+import { GameContext } from '../../Core/Framework/GameContext';
 
 export default class HqMenuComponent extends Component<
 	{
@@ -15,6 +16,7 @@ export default class HqMenuComponent extends Component<
 		HasFlag: boolean;
 		AppHandler: AppHandler;
 		SetFlag: () => void;
+		GameContext: GameContext;
 	},
 	{}
 > {
@@ -31,7 +33,7 @@ export default class HqMenuComponent extends Component<
 							<div class="white-background">{this.props.TankRequestCount}</div>
 							<div class="fill-tank max-width standard-space" />
 							<div class="max-width text-center darker">
-								{GameSettings.TankPrice * GameHelper.PlayerHeadquarter.GetVehicleCount()}{' '}
+								{GameSettings.TankPrice * this.props.GameContext.MainHq.GetVehicleCount()}{' '}
 								<span class="fill-diamond badge very-small-space middle"> </span>
 							</div>
 						</button>
@@ -43,7 +45,7 @@ export default class HqMenuComponent extends Component<
 							<div class="white-background">{this.props.TruckRequestCount}</div>
 							<div class="fill-truck max-width standard-space" />
 							<div class="max-width text-center darker">
-								{GameSettings.TruckPrice * GameHelper.PlayerHeadquarter.GetVehicleCount()}{' '}
+								{GameSettings.TruckPrice * this.props.GameContext.MainHq.GetVehicleCount()}{' '}
 								<span class="fill-diamond badge very-small-space middle"> </span>
 							</div>
 						</button>

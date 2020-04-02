@@ -33,7 +33,7 @@ export class MapRender {
 		let playgroundItems = new Array<Item>();
 
 		mapContext.Items.forEach((item) => {
-			let cell = new Cell(new CellProperties(item.Position), cells);
+			let cell = new Cell(new CellProperties(item.Position), cells, context);
 			ForestDecorator.SetDecoration(playgroundItems, cell, item.Type);
 			cell.SetSprite();
 			cells.Add(cell);
@@ -43,13 +43,11 @@ export class MapRender {
 		let areas = new AreaEngine<Cell>().GetAreas(cells, cells.Get(mapContext.CenterItem.Position));
 		this.SetGrass(cells, mapContext.MapMode, areas.map((a) => a.GetCoordinate()), playgroundItems);
 		this.AddClouds(playgroundItems);
-		const hqs = this._hqRender.GetHq(cells, mapContext.Hqs, playgroundItems);
+		const hqs = this._hqRender.GetHq(context, cells, mapContext.Hqs, playgroundItems);
 		context.SetHqs(hqs);
 
 		let playerHq = hqs.find((hq) => hq.PlayerName === mapContext.PlayerName);
 		context.MainHq = playerHq;
-
-		GameHelper.PlayerHeadquarter = playerHq;
 
 		//make hq cells visible
 		playerHq.GetCurrentCell().SetState(CellState.Visible);

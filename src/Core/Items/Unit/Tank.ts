@@ -14,14 +14,15 @@ import { PacketKind } from '../../../Components/Network/PacketKind';
 import { BasicItem } from '../BasicItem';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Explosion } from './Explosion';
+import { GameContext } from '../../Framework/GameContext';
 
 export class Tank extends Vehicle implements IHqContainer {
 	Turrel: Turrel;
 	private _currentTarget: AliveItem;
 	private _mainTarget: AliveItem;
 
-	constructor(hq: Headquarter) {
-		super(hq);
+	constructor(hq: Headquarter, gameContext: GameContext) {
+		super(hq, gameContext);
 
 		this.Wheels = Archive.wheels;
 
@@ -201,7 +202,7 @@ export class Tank extends Vehicle implements IHqContainer {
 		this.camouflagedSprites = this.GetSprites().filter((s) => s.alpha !== 0);
 		this.camouflagedSprites.concat(this.Turrel.GetSprites().filter((s) => s.alpha !== 0));
 
-		if (GameHelper.PlayerHeadquarter === this.Hq) {
+		if (this.GameContext.MainHq === this.Hq) {
 			this.camouflagedSprites.forEach((s) => {
 				s.alpha = 0.5;
 			});
@@ -240,7 +241,7 @@ export class Tank extends Vehicle implements IHqContainer {
 		if (this.HasCamouflage) {
 			this.HasCamouflage = false;
 
-			if (GameHelper.PlayerHeadquarter === this.Hq) {
+			if (this.GameContext.MainHq === this.Hq) {
 				this.camouflagedSprites.forEach((s) => {
 					s.alpha = 1;
 				});

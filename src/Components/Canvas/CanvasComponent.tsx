@@ -96,7 +96,7 @@ export default class CanvasComponent extends Component<
 		}
 
 		this._gameContext = new MapRender().Render(GameHelper.MapContext);
-		const checker = new SelectableChecker(GameHelper.PlayerHeadquarter);
+		const checker = new SelectableChecker(this._gameContext.MainHq);
 		this._appHandler.InteractionContext = new InteractionContext(
 			this._appHandler.InputManager,
 			new CombinationProvider().GetCombination(this._appHandler, checker, this._gameContext),
@@ -163,7 +163,7 @@ export default class CanvasComponent extends Component<
 	}
 
 	public SetCenter(): void {
-		const hqPoint = GameHelper.PlayerHeadquarter.GetBoundingBox().GetCentralPoint();
+		const hqPoint = this._gameContext.MainHq.GetBoundingBox().GetCentralPoint();
 		const halfWidth = GameSettings.ScreenWidth / 2;
 		const halfHeight = GameSettings.ScreenHeight / 2;
 		console.log('x: ' + -(hqPoint.X - halfWidth));
@@ -186,12 +186,25 @@ export default class CanvasComponent extends Component<
 						TruckRequestCount={this.state.TruckRequestCount}
 						HasFlag={this.state.HasFlag}
 						AppHandler={this._appHandler}
+						GameContext={this._gameContext}
 					/>
 				);
 			} else if (this.state.Item instanceof InfluenceField) {
-				return <FactoryMenuComponent Item={this.state.Item} AppHandler={this._appHandler} />;
+				return (
+					<FactoryMenuComponent
+						Item={this.state.Item}
+						AppHandler={this._appHandler}
+						GameContext={this._gameContext}
+					/>
+				);
 			} else if (this.state.Item instanceof Cell) {
-				return <CellMenuComponent Item={this.state.Item} AppHandler={this._appHandler} />;
+				return (
+					<CellMenuComponent
+						Item={this.state.Item}
+						AppHandler={this._appHandler}
+						GameContext={this._gameContext}
+					/>
+				);
 			}
 		}
 		return '';

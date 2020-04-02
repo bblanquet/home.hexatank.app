@@ -72,7 +72,7 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 			} else {
 				let menuItem = context.Items[0];
 				const cost = GameSettings.FieldPrice * this._cells.length;
-				if (menuItem && GameHelper.PlayerHeadquarter.HasMoney(cost)) {
+				if (menuItem && this._gameContext.MainHq.HasMoney(cost)) {
 					if (menuItem instanceof HealMenuItem) {
 						this.SetMenuItem((c) => new HealField(c), 'Heal');
 					} else if (menuItem instanceof AttackMenuItem) {
@@ -101,7 +101,7 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 	private SetMenuItem(getField: (e: Cell) => Field, fieldType: string) {
 		this._cells.forEach((c) => {
 			PeerHandler.SendMessage(PacketKind.Field, {
-				Hq: GameHelper.PlayerHeadquarter.GetCurrentCell().GetCoordinate(),
+				Hq: this._gameContext.MainHq.GetCurrentCell().GetCoordinate(),
 				cell: c.GetCoordinate(),
 				Type: fieldType
 			});

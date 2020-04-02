@@ -12,8 +12,12 @@ import { SlowMenuItem } from '../../Core/Menu/Buttons/SlowMenuItem';
 import { CancelMenuItem } from '../../Core/Menu/Buttons/CancelMenuItem';
 import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
 import { AppHandler } from './AppHandler';
+import { GameContext } from '../../Core/Framework/GameContext';
 
-export default class CellMenuComponent extends Component<{ Item: Item; AppHandler: AppHandler }, {}> {
+export default class CellMenuComponent extends Component<
+	{ Item: Item; AppHandler: AppHandler; GameContext: GameContext },
+	{}
+> {
 	render() {
 		return (
 			<div class="left-column">
@@ -26,7 +30,7 @@ export default class CellMenuComponent extends Component<{ Item: Item; AppHandle
 						>
 							<div class="fill-influence max-width standard-space" />
 							<div class="max-width text-center darker">
-								{GameSettings.TruckPrice * GameHelper.PlayerHeadquarter.GetInfluenceCount()}{' '}
+								{GameSettings.TruckPrice * this.props.GameContext.MainHq.GetInfluenceCount()}{' '}
 								<span class="fill-diamond badge very-small-space middle"> </span>
 							</div>
 						</button>

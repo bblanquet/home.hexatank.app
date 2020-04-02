@@ -1,3 +1,4 @@
+import { GameContext } from './../../../Framework/GameContext';
 import { BasicInfluenceField } from './BasicInfluenceField';
 import { Archive } from '../../../Framework/ResourceArchiver';
 import { CellStateSetter } from '../CellStateSetter';
@@ -24,7 +25,7 @@ export class InfluenceField extends Field implements ISelectable {
 	private _cellContainer: CellContext<Cell> = new CellContext<Cell>();
 	public Lost: LiteEvent<InfluenceField> = new LiteEvent<InfluenceField>();
 	public basicField: BasicInfluenceField;
-	constructor(cell: Cell, public Hq: Headquarter) {
+	constructor(cell: Cell, public Hq: Headquarter, private _context: GameContext) {
 		super(cell);
 		this.Z = 1;
 		this.Hq.AddInfluence(this);
@@ -130,7 +131,7 @@ export class InfluenceField extends Field implements ISelectable {
 			this._range -= 1;
 			this.RefreshArea();
 			this.UpdateCellStates(this._range + 1);
-			if (this.Hq === GameHelper.PlayerHeadquarter) {
+			if (this.Hq === this._context.MainHq) {
 				this.ClearArea();
 				this.CreateArea();
 			}
@@ -138,7 +139,7 @@ export class InfluenceField extends Field implements ISelectable {
 	}
 
 	private UpdateCellStates(range: number) {
-		CellStateSetter.SetStates(this.GetCell().GetAll(range));
+		CellStateSetter.SetStates(this._context, this.GetCell().GetAll(range));
 	}
 
 	public RangeUp(): void {
@@ -151,7 +152,7 @@ export class InfluenceField extends Field implements ISelectable {
 		this._range += 1;
 		this.RefreshArea();
 		this.UpdateCellStates(this._range);
-		if (this.Hq === GameHelper.PlayerHeadquarter) {
+		if (this.Hq === this._context.MainHq) {
 			this.ClearArea();
 			this.CreateArea();
 		}

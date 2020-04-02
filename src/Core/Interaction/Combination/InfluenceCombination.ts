@@ -9,8 +9,13 @@ import { PacketKind } from '../../../Components/Network/PacketKind';
 import { CombinationContext } from './CombinationContext';
 import { GameSettings } from '../../Framework/GameSettings';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
+import { GameContext } from '../../Framework/GameContext';
 
 export class InfluenceCombination extends AbstractSingleCombination {
+	constructor(private _gameContext: GameContext) {
+		super();
+	}
+
 	IsMatching(context: CombinationContext): boolean {
 		return (
 			this.IsNormalMode(context) &&
@@ -26,16 +31,16 @@ export class InfluenceCombination extends AbstractSingleCombination {
 			if (!isNullOrUndefined(cell)) {
 				if (cell.GetField() instanceof BasicField) {
 					if (
-						GameHelper.PlayerHeadquarter.Buy(
-							GameSettings.TruckPrice * GameHelper.PlayerHeadquarter.GetInfluenceCount()
+						this._gameContext.MainHq.Buy(
+							GameSettings.TruckPrice * this._gameContext.MainHq.GetInfluenceCount()
 						)
 					) {
 						PeerHandler.SendMessage(PacketKind.Field, {
-							Hq: GameHelper.PlayerHeadquarter.GetCurrentCell().GetCoordinate(),
+							Hq: this._gameContext.MainHq.GetCurrentCell().GetCoordinate(),
 							cell: cell.GetCoordinate(),
 							Type: 'Influence'
 						});
-						let field = new InfluenceField(cell, GameHelper.PlayerHeadquarter);
+						let field = new InfluenceField(cell, this._gameContext.MainHq, this._gameContext);
 						GameHelper.Playground.Items.push(field);
 					}
 				}

@@ -1,9 +1,9 @@
+import { GameContext } from './../../Framework/GameContext';
 import { AreaEngine } from './../../Ia/Area/AreaEngine';
 import { CellContext } from './../../Items/Cell/CellContext';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { IaHeadquarter } from '../../Ia/Hq/IaHeadquarter';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
-import { GameHelper } from '../../Framework/GameHelper';
 import { Item } from '../../Items/Item';
 import { Headquarter } from '../../Items/Cell/Field/Headquarter';
 import { ItemSkin } from '../../Items/ItemSkin';
@@ -57,6 +57,7 @@ export class HqRender {
 	];
 
 	public GetHq(
+		context: GameContext,
 		cells: CellContext<Cell>,
 		hqDefinitions: Array<DiamondHq>,
 		playgroundItems: Item[]
@@ -69,6 +70,7 @@ export class HqRender {
 
 			if (hqDefinition.isIa) {
 				hq = this.CreateIaHq(
+					context,
 					cells,
 					hqDefinition.Hq.Position,
 					hqDefinition.Diamond.Position,
@@ -77,6 +79,7 @@ export class HqRender {
 				);
 			} else {
 				hq = this.CreateHq(
+					context,
 					cells,
 					hqDefinition.Hq.Position,
 					hqDefinition.Diamond.Position,
@@ -96,6 +99,7 @@ export class HqRender {
 	}
 
 	private CreateHq(
+		context: GameContext,
 		cells: CellContext<Cell>,
 		hqcell: HexAxial,
 		diamondcell: HexAxial,
@@ -103,13 +107,14 @@ export class HqRender {
 		skin: ItemSkin
 	): Headquarter {
 		const diamond = new Diamond(cells.Get(diamondcell));
-		const hq = new Headquarter(skin, cells.Get(hqcell));
+		const hq = new Headquarter(skin, cells.Get(hqcell), context);
 		items.push(diamond);
 		items.push(hq);
 		return hq;
 	}
 
 	private CreateIaHq(
+		context: GameContext,
 		cells: CellContext<Cell>,
 		hqcell: HexAxial,
 		diamondcell: HexAxial,
@@ -122,7 +127,8 @@ export class HqRender {
 			new AreaEngine<Cell>().GetAreas(cells, cell).map((c) => new Area(c)),
 			skin,
 			cell,
-			cells
+			cells,
+			context
 		);
 		hq.Diamond = diamond;
 		items.push(diamond);

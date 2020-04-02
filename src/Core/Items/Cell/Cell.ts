@@ -1,3 +1,4 @@
+import { GameContext } from './../../Framework/GameContext';
 import { CellContext } from './CellContext';
 import { Item } from '../Item';
 import { CellProperties } from './CellProperties';
@@ -33,7 +34,7 @@ export class Cell extends Item implements ICell, ISelectable {
 	private _circle: PIXI.Circle;
 	public SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 
-	constructor(properties: CellProperties, private _cells: CellContext<Cell>) {
+	constructor(properties: CellProperties, private _cells: CellContext<Cell>, private _gameContext: GameContext) {
 		super();
 		this.Z = 1;
 		this._display = [];
@@ -177,8 +178,8 @@ export class Cell extends Item implements ICell, ISelectable {
 	//awfull
 	private SetHqState(state: CellState) {
 		let cells = new Array<Cell>();
-		cells.push(GameHelper.PlayerHeadquarter.GetCell());
-		cells = cells.concat(GameHelper.PlayerHeadquarter.GetCell().GetAllNeighbourhood().map((c) => <Cell>c));
+		cells.push(this._gameContext.MainHq.GetCell());
+		cells = cells.concat(this._gameContext.MainHq.GetCell().GetAllNeighbourhood().map((c) => <Cell>c));
 		if (cells.indexOf(this) !== -1) {
 			state = CellState.Visible;
 		}

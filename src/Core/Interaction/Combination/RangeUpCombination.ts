@@ -4,8 +4,13 @@ import { GameHelper } from '../../Framework/GameHelper';
 import { InfluenceField } from '../../Items/Cell/Field/InfluenceField';
 import { GameSettings } from '../../Framework/GameSettings';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
+import { GameContext } from '../../Framework/GameContext';
 
 export class RangeUpCombination extends AbstractSingleCombination {
+	constructor(private _gameContext: GameContext) {
+		super();
+	}
+
 	IsMatching(context: CombinationContext): boolean {
 		return (
 			this.IsNormalMode(context) &&
@@ -20,9 +25,7 @@ export class RangeUpCombination extends AbstractSingleCombination {
 			let field = <InfluenceField>context.Items[0];
 			if (
 				field.HasStock() ||
-				GameHelper.PlayerHeadquarter.Buy(
-					GameSettings.TruckPrice * GameHelper.PlayerHeadquarter.GetTotalEnergy()
-				)
+				this._gameContext.MainHq.Buy(GameSettings.TruckPrice * this._gameContext.MainHq.GetTotalEnergy())
 			) {
 				field.RangeUp();
 			}

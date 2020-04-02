@@ -1,5 +1,4 @@
 import { isNullOrUndefined } from 'util';
-import { ICombination } from './ICombination';
 import { AttackMenuItem } from '../../Menu/Buttons/AttackMenuItem';
 import { Cell } from '../../Items/Cell/Cell';
 import { BasicField } from '../../Items/Cell/Field/BasicField';
@@ -10,8 +9,13 @@ import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
 import { CombinationContext } from './CombinationContext';
 import { GameSettings } from '../../Framework/GameSettings';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
+import { GameContext } from '../../Framework/GameContext';
 
 export class AttackCellCombination extends AbstractSingleCombination {
+	constructor(private _gameContext: GameContext) {
+		super();
+	}
+
 	IsMatching(combination: CombinationContext): boolean {
 		return (
 			this.IsNormalMode(combination) &&
@@ -26,10 +30,10 @@ export class AttackCellCombination extends AbstractSingleCombination {
 			let cell = <Cell>combination.Items[0];
 			if (!isNullOrUndefined(cell)) {
 				if (cell.GetField() instanceof BasicField) {
-					if (GameHelper.PlayerHeadquarter.HasMoney(GameSettings.FieldPrice)) {
-						GameHelper.PlayerHeadquarter.Buy(GameSettings.FieldPrice);
+					if (this._gameContext.MainHq.HasMoney(GameSettings.FieldPrice)) {
+						this._gameContext.MainHq.Buy(GameSettings.FieldPrice);
 						PeerHandler.SendMessage(PacketKind.Field, {
-							Hq: GameHelper.PlayerHeadquarter.GetCurrentCell().GetCoordinate(),
+							Hq: this._gameContext.MainHq.GetCurrentCell().GetCoordinate(),
 							cell: cell.GetCoordinate(),
 							Type: 'Attack'
 						});

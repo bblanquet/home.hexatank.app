@@ -23,6 +23,7 @@ import { Explosion } from '../../Items/Unit/Explosion';
 import { Tank } from '../../Items/Unit/Tank';
 import { GameSettings } from '../../Framework/GameSettings';
 import { CellContext } from '../../Items/Cell/CellContext';
+import { GameContext } from '../../Framework/GameContext';
 
 export class IaHeadquarter extends Headquarter {
 	public AreasBycell: { [id: string]: HeldArea };
@@ -34,8 +35,14 @@ export class IaHeadquarter extends Headquarter {
 	private _spreadStrategy: ExpansionMaker;
 	public TankBalancer: IdleUnitContainer;
 
-	constructor(public EmptyAreas: Area[], skin: ItemSkin, cell: Cell, private _cells: CellContext<Cell>) {
-		super(skin, cell);
+	constructor(
+		public EmptyAreas: Area[],
+		skin: ItemSkin,
+		cell: Cell,
+		private _cells: CellContext<Cell>,
+		gameContext: GameContext
+	) {
+		super(skin, cell, gameContext);
 		this._timer = new Timer(10);
 		this._trucks = new Array<Truck>();
 		this._Areas = new Array<HeldArea>();
@@ -132,7 +139,7 @@ export class IaHeadquarter extends Headquarter {
 					);
 					GameHelper.Playground.Items.push(explosion);
 				}
-				truck = new Truck(this);
+				truck = new Truck(this, this.GameContext);
 				truck.SetPosition(field.GetCell());
 				this.OnVehiculeCreated.Invoke(this, truck);
 				GameHelper.Playground.Items.push(truck);
@@ -162,7 +169,7 @@ export class IaHeadquarter extends Headquarter {
 							);
 							GameHelper.Playground.Items.push(explosion);
 						}
-						var tank = new Tank(this);
+						var tank = new Tank(this, this.GameContext);
 						tank.SetPosition(field.GetCell());
 						area.AddTroop(tank, cell);
 						this.OnVehiculeCreated.Invoke(this, tank);

@@ -4,8 +4,13 @@ import { FlagCell } from '../../Items/Cell/FlagCell';
 import { GameHelper } from '../../Framework/GameHelper';
 import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
+import { GameContext } from '../../Framework/GameContext';
 
 export class FlagCellCombination extends AbstractSingleCombination {
+	constructor(private _gameContext: GameContext) {
+		super();
+	}
+
 	IsMatching(context: CombinationContext): boolean {
 		return this.IsNormalMode(context) && context.Items.length === 1 && context.Items[0] instanceof Cell;
 	}
@@ -14,11 +19,11 @@ export class FlagCellCombination extends AbstractSingleCombination {
 		if (this.IsMatching(context)) {
 			let cell = <Cell>context.Items[0];
 			if (!isNullOrUndefined(cell) && GameHelper.IsFlagingMode) {
-				if (!GameHelper.PlayerHeadquarter.Flagcell) {
-					GameHelper.PlayerHeadquarter.Flagcell = new FlagCell(cell);
-					GameHelper.Playground.Items.push(GameHelper.PlayerHeadquarter.Flagcell);
+				if (!this._gameContext.MainHq.Flagcell) {
+					this._gameContext.MainHq.Flagcell = new FlagCell(cell);
+					GameHelper.Playground.Items.push(this._gameContext.MainHq.Flagcell);
 				} else {
-					GameHelper.PlayerHeadquarter.Flagcell.SetCell(cell);
+					this._gameContext.MainHq.Flagcell.SetCell(cell);
 				}
 				GameHelper.IsFlagingMode = false;
 			}

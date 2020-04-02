@@ -1,3 +1,4 @@
+import { GameContext } from './../../../Framework/GameContext';
 import { GameHelper } from '../../../Framework/GameHelper';
 import { LiteEvent } from '../../../Utils/Events/LiteEvent';
 import { FlagCell } from '../FlagCell';
@@ -35,7 +36,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	private _vehicles: Array<Vehicle> = new Array<Vehicle>();
 	public OnVehiculeCreated: LiteEvent<Vehicle> = new LiteEvent<Vehicle>();
 
-	constructor(skin: ItemSkin, cell: Cell) {
+	constructor(skin: ItemSkin, cell: Cell, protected GameContext: GameContext) {
 		super();
 		this._skin = skin;
 		this.Z = 2;
@@ -129,7 +130,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 					);
 					GameHelper.Playground.Items.push(explosion);
 				}
-				const tank = new Tank(this);
+				const tank = new Tank(this, this.GameContext);
 				tank.SetPosition(cell === null ? field.GetCell() : cell);
 				this.OnVehiculeCreated.Invoke(this, tank);
 				GameHelper.Playground.Items.push(tank);
@@ -159,7 +160,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 					);
 					GameHelper.Playground.Items.push(explosion);
 				}
-				let truck = new Truck(this);
+				let truck = new Truck(this, this.GameContext);
 				truck.SetPosition(cell === null ? field.GetCell() : cell);
 				this.OnVehiculeCreated.Invoke(this, truck);
 				GameHelper.Playground.Items.push(truck);

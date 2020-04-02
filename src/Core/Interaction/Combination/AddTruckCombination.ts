@@ -1,9 +1,13 @@
 import { TruckMenuItem } from '../../Menu/Buttons/TruckMenuItem';
-import { GameHelper } from '../../Framework/GameHelper';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { CombinationContext } from './CombinationContext';
+import { GameContext } from '../../Framework/GameContext';
 
 export class AddTruckCombination extends AbstractSingleCombination {
+	constructor(private _gameContext: GameContext) {
+		super();
+	}
+
 	IsMatching(context: CombinationContext): boolean {
 		return (
 			this.IsNormalMode(context) &&
@@ -14,7 +18,7 @@ export class AddTruckCombination extends AbstractSingleCombination {
 
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
-			GameHelper.PlayerHeadquarter.AddTruckRequest();
+			this._gameContext.MainHq.AddTruckRequest();
 			context.Items.splice(context.Items.length - 1, 1);
 			return true;
 		}

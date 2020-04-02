@@ -1,3 +1,4 @@
+import { GameContext } from './../../Framework/GameContext';
 import { CellStateSetter } from '../Cell/CellStateSetter';
 import { GameSettings } from '../../Framework/GameSettings';
 import { BasicItem } from '../BasicItem';
@@ -69,7 +70,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	public CellChanged: LiteEvent<Cell> = new LiteEvent<Cell>();
 	public Destoyed: LiteEvent<Vehicle> = new LiteEvent<Vehicle>();
 
-	constructor(public Hq: Headquarter) {
+	constructor(public Hq: Headquarter, protected GameContext: GameContext) {
 		super();
 		this.CurrentRadius = 0;
 		this.BoundingBox = new BoundingBox();
@@ -226,8 +227,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this._currentCell.CellStateChanged.On(this._onCellStateChanged);
 		this._nextCell = null;
 
-		CellStateSetter.SetStates(previouscell.GetAll());
-		CellStateSetter.SetStates(this._currentCell.GetAll());
+		CellStateSetter.SetStates(this.GameContext, previouscell.GetAll());
+		CellStateSetter.SetStates(this.GameContext, this._currentCell.GetAll());
 	}
 
 	public Destroy(): void {
@@ -254,7 +255,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this._rightDusts.forEach((ld) => ld.Destroy());
 		this._leftDusts = [];
 		this._rightDusts = [];
-		CellStateSetter.SetStates(this._currentCell.GetAll());
+		CellStateSetter.SetStates(this.GameContext, this._currentCell.GetAll());
 	}
 
 	public Update(viewX: number, viewY: number): void {
@@ -331,7 +332,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this._currentCell.SetOccupier(this);
 		this._currentCell.CellStateChanged.On(this._onCellStateChanged);
 		this._onCellStateChanged(this, this._currentCell.GetState());
-		CellStateSetter.SetStates(this._currentCell.GetAll());
+		CellStateSetter.SetStates(this.GameContext, this._currentCell.GetAll());
 	}
 
 	public Select(context: InteractionContext): boolean {

@@ -74,9 +74,6 @@ export default class CanvasComponent extends Component<
 		this._stop = false;
 		this._appHandler = new AppHandler();
 		this._appHandler.InitApp();
-		GameHelper.SpriteProvider = this._appHandler.GetSpriteProvider();
-		GameHelper.ViewPort = this._appHandler.GetViewport();
-		GameHelper.Settings = this._appHandler.Settings;
 		GameHelper.Playground = this._appHandler.Playground;
 		GameHelper.Render = new RenderingHandler(
 			new RenderingGroups(
@@ -102,8 +99,9 @@ export default class CanvasComponent extends Component<
 		const checker = new SelectableChecker(GameHelper.PlayerHeadquarter);
 		this._appHandler.InteractionContext = new InteractionContext(
 			this._appHandler.InputManager,
-			new CombinationProvider().GetCombination(this._appHandler, checker),
-			checker
+			new CombinationProvider().GetCombination(this._appHandler, checker, this._gameContext),
+			checker,
+			this._appHandler.GetViewport()
 		);
 		this._appHandler.InteractionContext.Listen();
 		this._appHandler.SetBackgroundColor(GameHelper.MapContext.MapMode);
@@ -146,7 +144,7 @@ export default class CanvasComponent extends Component<
 				Amount: e
 			});
 		});
-		GameHelper.SelectedItem.On((obj: any, e: Item) => {
+		this._gameContext.OnItemSelected.On((obj: any, e: Item) => {
 			((e as unknown) as ISelectable).SelectionChanged.On(this._onItemSelectionChanged);
 			this.setState({
 				...this.state,
@@ -170,8 +168,8 @@ export default class CanvasComponent extends Component<
 		const halfHeight = GameSettings.ScreenHeight / 2;
 		console.log('x: ' + -(hqPoint.X - halfWidth));
 		console.log('y: ' + -(hqPoint.Y - halfHeight));
-		this._appHandler.ScaleHandler.SetX(-(hqPoint.X - halfWidth));
-		this._appHandler.ScaleHandler.SetY(-(hqPoint.Y - halfHeight));
+		this._appHandler.Playground.ViewContext.SetX(-(hqPoint.X - halfWidth));
+		this._appHandler.Playground.ViewContext.SetY(-(hqPoint.Y - halfHeight));
 	}
 
 	private LeftMenuRender() {

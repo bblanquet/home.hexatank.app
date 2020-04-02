@@ -9,6 +9,7 @@ import { Point } from '../../Utils/Geometry/Point';
 import { Cell } from '../../Items/Cell/Cell';
 import { Item } from '../../Items/Item';
 import { InteractionMode } from '../../Interaction/InteractionMode';
+import { ViewContext } from '../../Utils/Geometry/ViewContext';
 
 export class MovingInteractionContext implements IInteractionContext {
 	public Kind: InteractionKind;
@@ -17,8 +18,9 @@ export class MovingInteractionContext implements IInteractionContext {
 	private _cells: CellContext<Cell>;
 	private _enlightCells: BasicItem[];
 	private _isOn: boolean;
+	public View: ViewContext;
 
-	constructor() {
+	constructor(private _viewport: any) {
 		this._cells = new CellContext<Cell>();
 		this._enlightCells = new Array<BasicItem>();
 	}
@@ -29,6 +31,15 @@ export class MovingInteractionContext implements IInteractionContext {
 
 	public Moving(point: Point): void {
 		this.Point = new PIXI.Point(point.X, point.Y);
+		if (this._viewport.lastViewport) {
+			this.View = new ViewContext();
+			this.View.Scale = this._viewport.lastViewport.scaleX;
+			this.View.SetX(this._viewport.left);
+			this.View.SetY(this._viewport.top);
+		} else {
+			this.View = null;
+		}
+
 		if (this._isOn) {
 			GameHelper.Playground.Items.forEach((item) => {
 				item.Select(this);

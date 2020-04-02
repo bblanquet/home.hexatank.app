@@ -120,8 +120,7 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 			+this.state.IaNumber + 1,
 			+this.state.Mode as MapMode
 		);
-		GameHelper.SetDefaultName();
-		GameHelper.MapContext.Hqs[0].PlayerName = GameHelper.PlayerName;
+		GameHelper.MapContext.Hqs[0].PlayerName = GameHelper.MapContext.PlayerName;
 		let index = 0;
 		GameHelper.MapContext.Hqs.forEach((hq) => {
 			if (!hq.PlayerName) {

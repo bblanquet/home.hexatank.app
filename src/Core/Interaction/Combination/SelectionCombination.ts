@@ -8,11 +8,12 @@ import { CombinationContext } from './CombinationContext';
 import { Headquarter } from '../../Items/Cell/Field/Headquarter';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { ISelectableChecker } from '../ISelectableChecker';
+import { GameContext } from '../../Framework/GameContext';
 
 export class SelectionCombination extends AbstractSingleCombination {
 	private _checker: ISelectableChecker;
 
-	constructor(isSelectable: ISelectableChecker) {
+	constructor(isSelectable: ISelectableChecker, private _gameContext: GameContext) {
 		super();
 		this._checker = isSelectable;
 	}
@@ -35,26 +36,26 @@ export class SelectionCombination extends AbstractSingleCombination {
 				) {
 					const field = selectablecell.GetField() as InfluenceField;
 					field.SetSelected(true);
-					GameHelper.SelectedItem.Invoke(this, field);
+					this._gameContext.OnItemSelected.Invoke(this, field);
 				} else if (
 					selectablecell.GetField() instanceof Headquarter &&
 					selectablecell.GetField() === GameHelper.PlayerHeadquarter
 				) {
 					const field = selectablecell.GetField() as Headquarter;
 					field.SetSelected(true);
-					GameHelper.SelectedItem.Invoke(this, field);
+					this._gameContext.OnItemSelected.Invoke(this, field);
 				} else if (
 					selectablecell.GetField() instanceof BasicField &&
 					selectablecell.GetState() === CellState.Visible
 				) {
 					selectable.SetSelected(true);
-					GameHelper.SelectedItem.Invoke(this, item);
+					this._gameContext.OnItemSelected.Invoke(this, item);
 				} else {
 					return false;
 				}
 			} else {
 				selectable.SetSelected(true);
-				GameHelper.SelectedItem.Invoke(this, item);
+				this._gameContext.OnItemSelected.Invoke(this, item);
 			}
 			return true;
 		}

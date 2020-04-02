@@ -40,8 +40,6 @@ export default class OnHostComponent extends Component<any, HostState> {
 			func: this.OnToastReceived.bind(this),
 			type: PacketKind.Toast
 		});
-
-		GameHelper.PlayerName = this.state.Player.Name;
 	}
 
 	componentDidMount() {}
@@ -235,6 +233,7 @@ export default class OnHostComponent extends Component<any, HostState> {
 		if (this.IsEveryoneReady()) {
 			const hqCount = +this.state.IaNumber + this.state.Players.length;
 			let mapContext = new MapGenerator().GetMapDefinition(20, 'Flower', hqCount, MapMode.forest);
+			mapContext.PlayerName = this.state.Player.Name;
 			this.Assign(mapContext, this.state.Players);
 			let message = new GameMessage<MapContext>();
 			message.Message = mapContext;
@@ -243,7 +242,6 @@ export default class OnHostComponent extends Component<any, HostState> {
 			this.SetIa(mapContext);
 
 			GameHelper.MapContext = mapContext;
-			GameHelper.PlayerName = this.state.Player.Name;
 			route('/Canvas', true);
 			PeerHandler.CloseRoom();
 		}

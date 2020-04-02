@@ -1,6 +1,5 @@
 import { Component, h } from 'preact';
 import { Item } from '../../Core/Items/Item';
-import { GameHelper } from '../../Core/Framework/GameHelper';
 import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
 import { PatrolMenuItem } from '../../Core/Menu/Buttons/PatrolMenuItem';
 import { SearchMoneyMenuItem } from '../../Core/Menu/Buttons/SearchMoneyMenuItem';

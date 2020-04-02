@@ -13,18 +13,21 @@ import { isNullOrUndefined } from 'util';
 import { Point } from '../Utils/Geometry/Point';
 import { IInteractionContext, InteractionKind } from './IInteractionContext';
 import { ISelectableChecker } from './ISelectableChecker';
+import { ViewContext } from '../Utils/Geometry/ViewContext';
 
 export class InteractionContext implements IContextContainer, IInteractionContext {
 	public Mode: InteractionMode = InteractionMode.SingleSelection;
 	public Kind: InteractionKind;
 	public Point: PIXI.Point;
+	public View: ViewContext;
 	private _selectedItem: Array<Item>;
 	private _dispatcher: ICombinationDispatcher;
 
 	constructor(
 		private _inputNotifier: InputNotifier,
 		combinations: ICombination[],
-		private _checker: ISelectableChecker
+		private _checker: ISelectableChecker,
+		private _viewPort: any
 	) {
 		this._selectedItem = [];
 		this._dispatcher = new CombinationDispatcher(combinations);
@@ -94,6 +97,15 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 	private NotifyContext(kind: InteractionKind, point: Point) {
 		this.Point = new PIXI.Point(point.X, point.Y);
 		this.Kind = kind;
+		if (this._viewPort.lastViewport) {
+			this.View = new ViewContext();
+			this.View.Scale = this._viewPort.lastViewport.scaleX;
+			this.View.SetX(this._viewPort.left);
+			this.View.SetY(this._viewPort.top);
+		} else {
+			this.View = null;
+		}
+
 		if (this.Mode === InteractionMode.SingleSelection) {
 			GameHelper.Playground.Select(this);
 		} else {

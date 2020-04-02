@@ -1,14 +1,13 @@
+import { ViewContext } from './Utils/Geometry/ViewContext';
 import { GameSettings } from './Framework/GameSettings';
 import { IItemsManager } from './IItemsManager';
 import { Item } from './Items/Item';
-import { GameHelper } from './Framework/GameHelper';
 import { IInteractionContext } from './Interaction/IInteractionContext';
-import { ScaleHandler } from './Framework/ScaleHandler';
 
 export class ItemsManager implements IItemsManager {
 	Items: Array<Item>;
 
-	constructor(private _scaleHandler: ScaleHandler) {
+	constructor(public ViewContext: ViewContext) {
 		this.Items = new Array<Item>();
 	}
 
@@ -25,7 +24,7 @@ export class ItemsManager implements IItemsManager {
 		if (!GameSettings.IsPause) {
 			this.Items = this.Items.filter((item) => item.IsUpdatable);
 			this.Items.forEach((item) => {
-				item.Update(this._scaleHandler.GetX(), this._scaleHandler.GetY());
+				item.Update(this.ViewContext.GetX(), this.ViewContext.GetY());
 			});
 		}
 	}

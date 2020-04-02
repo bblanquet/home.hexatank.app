@@ -1,3 +1,4 @@
+import { GameContext } from './../Framework/GameContext';
 import { ISelectableChecker } from './ISelectableChecker';
 import { ISelectable } from './../ISelectable';
 import { AppHandler } from './../../Components/Canvas/AppHandler';
@@ -42,16 +43,16 @@ import { SlowCellCombination } from './Combination/SlowCellCombination';
 import { MovingInteractionContext } from '../Menu/Smart/MovingInteractionContext';
 
 export class CombinationProvider {
-	GetCombination(appHandler: AppHandler, checker: ISelectableChecker): ICombination[] {
+	GetCombination(appHandler: AppHandler, checker: ISelectableChecker, gameContext: GameContext): ICombination[] {
 		const multiselectionMenu = new MultiSelectionMenu();
-		const multiSelectionContext = new MovingInteractionContext();
+		const multiSelectionContext = new MovingInteractionContext(appHandler.GetViewport());
 		return [
 			new DisplayMultiMenuCombination(multiselectionMenu, appHandler),
 			new MovingMultiMenuCombination(multiselectionMenu),
 			new UpMultiMenuCombination(multiselectionMenu, appHandler),
 			new MultiSelectionCombination(multiSelectionContext),
 			new MultiUnitSelectionCombination(multiselectionMenu, multiSelectionContext, appHandler),
-			new MultiCellSelectionCombination(multiselectionMenu, multiSelectionContext, appHandler),
+			new MultiCellSelectionCombination(multiselectionMenu, multiSelectionContext, appHandler, gameContext),
 			new FlagCellCombination(),
 			new AbortCombination(),
 			new SearchMoneyCombination(),
@@ -59,7 +60,7 @@ export class CombinationProvider {
 			new AddTankCombination(),
 			new AddTruckCombination(),
 			new SwitchToCellCombination(),
-			new SwitchToVehicleCombination(),
+			new SwitchToVehicleCombination(gameContext),
 			new SwitchToInfluenceCombination(),
 			new SwitchToHeadquarterCombination(),
 			new CancelCombination(),
@@ -68,8 +69,8 @@ export class CombinationProvider {
 			new TankCombination(),
 			new PatrolCombination(),
 			new ClearTrashCombination(checker),
-			new UnselectCombination(checker),
-			new SelectionCombination(checker),
+			new UnselectCombination(checker, gameContext),
+			new SelectionCombination(checker, gameContext),
 			new FastCellCombination(),
 			new CamouflageCombination(),
 			new TargetCombination(),

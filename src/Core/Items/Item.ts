@@ -1,3 +1,4 @@
+import { SpriteProvider } from './../Framework/SpriteProvider';
 import * as PIXI from 'pixi.js';
 import { BoundingBox } from '../Utils/Geometry/BoundingBox';
 import { Updater } from '../Updater';
@@ -49,7 +50,7 @@ export abstract class Item implements Updater, IBoundingBoxContainer {
 	}
 
 	protected GenerateSprite(name: string, func?: { (sprite: PIXI.Sprite): void }): void {
-		this._sprites[name] = GameHelper.SpriteProvider.GetSprite(name, this.Accuracy);
+		this._sprites[name] = new SpriteProvider().GetSprite(name, this.Accuracy);
 
 		this.DisplayObjects.push(this._sprites[name]);
 		this._sprites[name].alpha = 1;

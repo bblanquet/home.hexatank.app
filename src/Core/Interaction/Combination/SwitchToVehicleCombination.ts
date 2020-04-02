@@ -1,4 +1,4 @@
-import { GameHelper } from '../../Framework/GameHelper';
+import { GameContext } from './../../Framework/GameContext';
 import { ISelectable } from '../../ISelectable';
 import { Cell } from '../../Items/Cell/Cell';
 import { Vehicle } from '../../Items/Unit/Vehicle';
@@ -8,6 +8,10 @@ import { Headquarter } from '../../Items/Cell/Field/Headquarter';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 
 export class SwitchToVehicleCombination extends AbstractSingleCombination {
+	constructor(private _gameContext: GameContext) {
+		super();
+	}
+
 	public IsMatching(context: CombinationContext): boolean {
 		return (
 			this.IsNormalMode(context) &&
@@ -25,7 +29,7 @@ export class SwitchToVehicleCombination extends AbstractSingleCombination {
 			hq.SetSelected(false);
 			const vehicle = context.Items[1] as Vehicle;
 			vehicle.SetSelected(true);
-			GameHelper.SelectedItem.Invoke(this, vehicle);
+			this._gameContext.OnItemSelected.Invoke(this, vehicle);
 			context.Items.splice(0, 1);
 			return true;
 		}

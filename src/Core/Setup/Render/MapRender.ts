@@ -46,7 +46,7 @@ export class MapRender {
 		const hqs = this._hqRender.GetHq(cells, mapContext.Hqs, playgroundItems);
 		context.SetHqs(hqs);
 
-		let playerHq = hqs.find((hq) => hq.PlayerName === GameHelper.PlayerName);
+		let playerHq = hqs.find((hq) => hq.PlayerName === mapContext.PlayerName);
 		context.MainHq = playerHq;
 
 		GameHelper.PlayerHeadquarter = playerHq;

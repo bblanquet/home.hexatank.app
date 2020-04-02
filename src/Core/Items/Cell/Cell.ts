@@ -295,15 +295,15 @@ export class Cell extends Item implements ICell, ISelectable {
 	}
 
 	public Select(context: IInteractionContext): boolean {
-		if (GameHelper.ViewPort.lastViewport) {
-			let scale = GameHelper.ViewPort.lastViewport.scaleX;
+		if (context.View) {
+			let scale = context.View.Scale;
 			this._circle.radius =
 				context.Mode === InteractionMode.MultipleSelection
 					? GameSettings.Size / 2 * scale
 					: GameSettings.Size * scale;
 			this._circle.radius = GameSettings.Size * scale;
-			this._circle.x = (this.GetSprites()[0].x - GameHelper.ViewPort.left) * scale;
-			this._circle.y = (this.GetSprites()[0].y - GameHelper.ViewPort.top) * scale;
+			this._circle.x = (this.GetSprites()[0].x - context.View.GetX()) * scale;
+			this._circle.y = (this.GetSprites()[0].y - context.View.GetY()) * scale;
 		}
 
 		var isSelected = this._circle.contains(context.Point.x, context.Point.y);

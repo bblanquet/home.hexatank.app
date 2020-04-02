@@ -17,13 +17,14 @@ import { SpeedFieldMenuItem } from '../../../Menu/Buttons/SpeedFieldMenuItem';
 import { MoneyField } from '../../../Items/Cell/Field/MoneyField';
 import { MoneyMenuItem } from '../../../Menu/Buttons/MoneyMenuItem';
 import { FastField } from '../../../Items/Cell/Field/FastField';
-import { InteractionKind, IInteractionContext } from '../../IInteractionContext';
+import { InteractionKind } from '../../IInteractionContext';
 import { Field } from '../../../Items/Cell/Field/Field';
 import { PoisonField } from '../../../Items/Cell/Field/PoisonField';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { InteractionMode } from '../../InteractionMode';
 import { AppHandler } from '../../../../Components/Canvas/AppHandler';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
+import { GameContext } from '../../../Framework/GameContext';
 
 export class MultiCellSelectionCombination extends AbstractSingleCombination {
 	private _cells: Cell[];
@@ -31,7 +32,8 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 	constructor(
 		private _multiselection: MultiSelectionMenu,
 		private _multiSelectionContext: MovingInteractionContext,
-		private _appHandler: AppHandler
+		private _appHandler: AppHandler,
+		private _gameContext: GameContext
 	) {
 		super();
 		this._cells = [];
@@ -64,7 +66,7 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 					this.OnChangedMode.Invoke(this, InteractionMode.SingleSelection);
 					this._appHandler.RestartNavigation();
 				} else {
-					GameHelper.SelectedItem.Invoke(this, this._cells[0]);
+					this._gameContext.OnItemSelected.Invoke(this, this._cells[0]);
 					this.OnChangedMode.Invoke(this, InteractionMode.SingleSelection);
 				}
 			} else {

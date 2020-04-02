@@ -9,11 +9,12 @@ import { CombinationContext } from './CombinationContext';
 import { InfluenceField } from '../../Items/Cell/Field/InfluenceField';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { ISelectableChecker } from '../ISelectableChecker';
+import { GameContext } from '../../Framework/GameContext';
 
 export class UnselectCombination extends AbstractSingleCombination {
 	private _checker: ISelectableChecker;
 
-	constructor(isSelectable: ISelectableChecker) {
+	constructor(isSelectable: ISelectableChecker, private _gameContext: GameContext) {
 		super();
 		this._checker = isSelectable;
 	}
@@ -45,7 +46,7 @@ export class UnselectCombination extends AbstractSingleCombination {
 						if (cell.GetField() instanceof BasicField && cell.GetState() === CellState.Visible) {
 							this.OnPushedItem.Invoke(this, { item: cell, isForced: false });
 							cell.SetSelected(true);
-							GameHelper.SelectedItem.Invoke(this, cell);
+							this._gameContext.OnItemSelected.Invoke(this, cell);
 							return true;
 						}
 					}

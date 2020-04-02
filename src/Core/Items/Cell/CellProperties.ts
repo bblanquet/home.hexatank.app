@@ -1,11 +1,9 @@
 import { GameSettings } from '../../Framework/GameSettings';
-import { ICell } from './ICell';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Point } from '../../Utils/Geometry/Point';
-import { TestHelper } from '../../Framework/TestHelper';
 
-export class CellProperties implements ICell {
+export class CellProperties {
 	Coordinate: HexAxial;
 	BoundingBox: BoundingBox;
 	Size: number;
@@ -23,17 +21,6 @@ export class CellProperties implements ICell {
 
 	public GetCentralPoint(): Point {
 		return this.BoundingBox.GetCentralPoint();
-	}
-
-	public GetNeighbourhood(): Array<ICell> {
-		var cells = new Array<ICell>();
-		this.Coordinate.GetNeighbours().forEach((coordinate) => {
-			var cell = TestHelper.CellContainer.Get(coordinate);
-			if (cell != null) {
-				cells.push(cell);
-			}
-		});
-		return cells;
 	}
 
 	public GetCoordinate(): HexAxial {

@@ -1,11 +1,10 @@
-import { AreaEngine } from './AreaEngine';
+import { AreaSearch } from './AreaSearch';
 import { Area } from './Area';
 import { Cell } from '../../Items/Cell/Cell';
 import { TroopDecisionMaker } from './TroopDecisionMaker';
 import { Headquarter } from '../../Items/Cell/Field/Headquarter';
 import { AreaStatus } from './AreaStatus';
 import { AreaDecisionMaker } from './AreaDecisionMaker';
-import { GameHelper } from '../../Framework/GameHelper';
 import { Tank } from '../../Items/Unit/Tank';
 import { CellContext } from '../../Items/Cell/CellContext';
 
@@ -63,9 +62,9 @@ export class HeldArea {
 
 	private GetOutsideEnemyCount(): number {
 		let outsideEnemyCount = 0;
-		new AreaEngine<Cell>()
-			.GetExcludedFirstRange(this._cells, this._area.GetCentralCell())
-			.map((c) => new Area(c))
+		new AreaSearch()
+			.GetExcludedFirstRange(this._cells.Keys(), this._area.GetCentralCell().GetCoordinate())
+			.map((coo) => new Area(this._cells.Get(coo)))
 			.forEach((area) => {
 				outsideEnemyCount += area.GetEnemyCount(this._hq);
 			});
@@ -74,9 +73,9 @@ export class HeldArea {
 
 	private GetOutsideAllyCount(): number {
 		let outsideEnemyCount = 0;
-		new AreaEngine<Cell>()
-			.GetExcludedFirstRange(this._cells, this._area.GetCentralCell())
-			.map((c) => new Area(c))
+		new AreaSearch()
+			.GetExcludedFirstRange(this._cells.Keys(), this._area.GetCentralCell().GetCoordinate())
+			.map((coo) => new Area(this._cells.Get(coo)))
 			.forEach((area) => {
 				outsideEnemyCount += area.GetAllyCount(this._hq);
 			});

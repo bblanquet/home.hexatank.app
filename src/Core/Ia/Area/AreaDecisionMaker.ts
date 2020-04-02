@@ -1,4 +1,4 @@
-import { AreaEngine } from './AreaEngine';
+import { AreaSearch } from './AreaSearch';
 import { CellContext } from './../../Items/Cell/CellContext';
 import { HeldArea } from './HeldArea';
 import { Cell } from '../../Items/Cell/Cell';
@@ -7,7 +7,6 @@ import { TroopSituation } from './TroopSituation';
 import { TroopDestination } from './TroopDestination';
 import { Area } from './Area';
 import { SimpleOrder } from '../Order/SimpleOrder';
-import { GameHelper } from '../../Framework/GameHelper';
 import { Tank } from '../../Items/Unit/Tank';
 import { AStarEngine } from '../AStarEngine';
 
@@ -26,9 +25,9 @@ export class AreaDecisionMaker {
 			console.log(`%c troops count ${this._area.GetTroops().length}`, 'font-weight:bold;color:green;');
 
 			//#1 get in & out cells
-			const areas = new AreaEngine<Cell>()
-				.GetIncludedFirstRange(this._cells, this._area.GetCentralCell())
-				.map((c) => new Area(c));
+			const areas = new AreaSearch()
+				.GetIncludedFirstRange(this._cells.Keys(), this._area.GetCentralCell().GetCoordinate())
+				.map((coo) => new Area(this._cells.Get(coo)));
 
 			//#2 get enemies cells
 			const enemycells = this.GetEnemycells(areas, ally);

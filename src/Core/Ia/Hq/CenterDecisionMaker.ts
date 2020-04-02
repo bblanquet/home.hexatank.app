@@ -1,10 +1,9 @@
 import { CellContext } from './../../Items/Cell/CellContext';
-import { AreaEngine } from './../Area/AreaEngine';
+import { AreaSearch } from '../Area/AreaSearch';
 import { RequestPriority } from './RequestPriority';
 import { IaHeadquarter } from './IaHeadquarter';
 import { AreaRequest } from '../Area/AreaRequest';
 import { isNullOrUndefined } from 'util';
-import { GameHelper } from '../../Framework/GameHelper';
 import { Cell } from '../../Items/Cell/Cell';
 import { Area } from '../Area/Area';
 
@@ -81,7 +80,9 @@ export class CenterDecisionMaker {
 
 	private GetHelpFromSurrounding(request: AreaRequest) {
 		const cell = request.Status.Area.GetCentralCell();
-		const firstRange = new AreaEngine<Cell>().GetExcludedFirstRange(this._cells, cell).map((c) => new Area(c));
+		const firstRange = new AreaSearch()
+			.GetExcludedFirstRange(this._cells.Keys(), cell.GetCoordinate())
+			.map((coo) => new Area(this._cells.Get(coo)));
 
 		for (const area of firstRange) {
 			const cellKey = area.GetCentralCell().GetCoordinate().ToString();

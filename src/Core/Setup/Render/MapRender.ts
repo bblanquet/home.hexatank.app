@@ -1,7 +1,6 @@
 import { CellContext } from './../../Items/Cell/CellContext';
 import { GameContext } from './../../Framework/GameContext';
 import { GameSettings } from '../../Framework/GameSettings';
-import { GameHelper } from '../../Framework/GameHelper';
 import { ForestDecorator } from '../../Items/Cell/Decorator/ForestDecorator';
 import { CellProperties } from '../../Items/Cell/CellProperties';
 import { Cloud } from '../../Items/Environment/Cloud';
@@ -15,7 +14,7 @@ import { BasicItem } from '../../Items/BasicItem';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { MapContext } from '../Generator/MapContext';
 import { MapMode } from '../Generator/MapMode';
-import { AreaEngine } from '../../Ia/Area/AreaEngine';
+import { AreaSearch } from '../../Ia/Area/AreaSearch';
 
 export class MapRender {
 	private _hqRender: HqRender;
@@ -40,8 +39,8 @@ export class MapRender {
 			playgroundItems.push(cell);
 		});
 
-		let areas = new AreaEngine<Cell>().GetAreas(cells, cells.Get(mapContext.CenterItem.Position));
-		this.SetGrass(cells, mapContext.MapMode, areas.map((a) => a.GetCoordinate()), playgroundItems);
+		let areas = new AreaSearch().GetAreas(cells.Keys(), mapContext.CenterItem.Position);
+		this.SetGrass(cells, mapContext.MapMode, areas, playgroundItems);
 		this.AddClouds(playgroundItems);
 		const hqs = this._hqRender.GetHq(context, cells, mapContext.Hqs, playgroundItems);
 		context.SetHqs(hqs);

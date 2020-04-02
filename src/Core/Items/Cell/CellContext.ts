@@ -1,3 +1,4 @@
+import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { ICell } from './ICell';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 
@@ -10,6 +11,15 @@ export class CellContext<T extends ICell> {
 
 	public Add(Cell: T): void {
 		this.Cells[Cell.GetCoordinate().ToString()] = Cell;
+	}
+
+	public Keys(): Dictionnary<HexAxial> {
+		const list = new Dictionnary<HexAxial>();
+		for (var key in this.Cells) {
+			let coo = this.Cells[key].GetCoordinate();
+			list.Add(coo.ToString(), coo);
+		}
+		return list;
 	}
 
 	public Get(coordinate: HexAxial): T {
@@ -39,16 +49,5 @@ export class CellContext<T extends ICell> {
 			all.push(<T>(<unknown>this.Cells[key]));
 		}
 		return all;
-	}
-
-	public GetNeighbourhood(coordinate: HexAxial): Array<ICell> {
-		var Cells = new Array<ICell>();
-		coordinate.GetNeighbours().forEach((coordinate) => {
-			var Cell = this.Get(coordinate);
-			if (Cell != null) {
-				Cells.push(Cell);
-			}
-		});
-		return Cells;
 	}
 }

@@ -2,7 +2,7 @@ import { IPlaygroundBuilder } from './IPlaygroundBuilder';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 import { CellProperties } from '../../Items/Cell/CellProperties';
 
-export class HexagonalMapBuilder implements IPlaygroundBuilder<CellProperties> {
+export class HexagonalMapBuilder implements IPlaygroundBuilder {
 	private GetIgnoredcell(n: number): Array<number> {
 		const result = new Array<number>();
 
@@ -34,7 +34,7 @@ export class HexagonalMapBuilder implements IPlaygroundBuilder<CellProperties> {
 		return new HexAxial(n / 2, n / 2);
 	}
 
-	public Build(n: number): CellProperties[] {
+	public Build(n: number): HexAxial[] {
 		if (n < 2) {
 			throw new Error();
 		}
@@ -43,15 +43,14 @@ export class HexagonalMapBuilder implements IPlaygroundBuilder<CellProperties> {
 			throw new Error();
 		}
 
-		var cells = new Array<CellProperties>();
+		var cells = new Array<HexAxial>();
 		const ignoredCoordinates = this.GetIgnoredcell(n);
 
 		for (let row = 0; row <= n; row++) {
 			for (let column = 0; column <= n; column++) {
 				if (ignoredCoordinates.indexOf(row + column) === -1) {
 					var hexAxial = new HexAxial(column, row);
-					var cell = new CellProperties(hexAxial);
-					cells.push(cell);
+					cells.push(hexAxial);
 				}
 			}
 		}

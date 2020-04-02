@@ -1,5 +1,5 @@
 import { GameContext } from './../../Framework/GameContext';
-import { AreaEngine } from './../../Ia/Area/AreaEngine';
+import { AreaSearch } from '../../Ia/Area/AreaSearch';
 import { CellContext } from './../../Items/Cell/CellContext';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { IaHeadquarter } from '../../Ia/Hq/IaHeadquarter';
@@ -124,7 +124,7 @@ export class HqRender {
 		const cell = cells.Get(hqcell);
 		const diamond = new Diamond(cells.Get(diamondcell));
 		const hq = new IaHeadquarter(
-			new AreaEngine<Cell>().GetAreas(cells, cell).map((c) => new Area(c)),
+			new AreaSearch().GetAreas(cells.Keys(), cell.GetCoordinate()).map((coo) => new Area(cells.Get(coo))),
 			skin,
 			cell,
 			cells,

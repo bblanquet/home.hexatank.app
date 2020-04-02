@@ -1,32 +1,31 @@
-import { CellProperties } from '../../Items/Cell/CellProperties';
+import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { IPlaygroundBuilder } from './IPlaygroundBuilder';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
-import { AreaEngine } from '../../Ia/Area/AreaEngine';
-import { CellContext } from '../../Items/Cell/CellContext';
+import { AreaSearch } from '../../Ia/Area/AreaSearch';
 import { HexagonalMapBuilder } from './HexagonalMapBuilder';
 
-export class FlowerMapBuilder implements IPlaygroundBuilder<CellProperties> {
+export class FlowerMapBuilder implements IPlaygroundBuilder {
 	private _hexagonalBuilder: HexagonalMapBuilder;
 
 	constructor() {
 		this._hexagonalBuilder = new HexagonalMapBuilder();
 	}
 
-	public Build(seize: number): CellProperties[] {
-		const initialcells = this._hexagonalBuilder.Build(seize);
-		const container = new CellContext<CellProperties>();
-		initialcells.forEach((cell) => {
-			container.Add(cell);
+	public Build(seize: number): HexAxial[] {
+		const initCoos = this._hexagonalBuilder.Build(seize);
+		const coordinates = new Dictionnary<HexAxial>();
+		initCoos.forEach((initCoo) => {
+			coordinates.Add(initCoo.ToString(), initCoo);
 		});
-		const areaEngine = new AreaEngine<CellProperties>();
-		var areas = areaEngine.GetAreas(container, <CellProperties>container.Get(this.GetMidle(seize)));
-		var result = new Array<CellProperties>();
+		const areaEngine = new AreaSearch();
+		var areas = areaEngine.GetAreas(coordinates, coordinates.Get(this.GetMidle(seize).ToString()));
+		var result = new Array<HexAxial>();
 		areas.forEach((area) => {
-			const cells = container.GetNeighbourhood(area.GetCoordinate());
-			if (cells.length === 6) {
+			const around = area.GetNeighbours();
+			if (around.length === 6) {
 				result.push(area);
-				cells.forEach((cell) => {
-					result.push(<CellProperties>cell);
+				around.forEach((cell) => {
+					result.push(cell);
 				});
 			}
 		});
@@ -39,14 +38,13 @@ export class FlowerMapBuilder implements IPlaygroundBuilder<CellProperties> {
 
 	public GetAreaMiddlecell(size: number): Array<HexAxial> {
 		const initialcells = this._hexagonalBuilder.Build(size);
-		const container = new CellContext<CellProperties>();
-		initialcells.forEach((cell) => {
-			container.Add(cell);
+		const coordinates = new Dictionnary<HexAxial>();
+		initialcells.forEach((coordinate) => {
+			coordinates.Add(coordinate.ToString(), coordinate);
 		});
-		const areaEngine = new AreaEngine();
-		var areas = areaEngine.GetAreas(container, <CellProperties>container.Get(this.GetMidle(size)));
-		const result = areas.map((a) => a.GetCoordinate());
+		const areaSearch = new AreaSearch();
+		var result = areaSearch.GetAreas(coordinates, coordinates.Get(this.GetMidle(size).ToString()));
 		result.shift();
-		return result.filter((a) => container.GetNeighbourhood(a).length === 6);
+		return result.filter((a) => a.GetNeighbours().length === 6);
 	}
 }

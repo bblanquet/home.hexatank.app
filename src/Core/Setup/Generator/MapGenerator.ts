@@ -1,5 +1,6 @@
+import { CheeseFlowerMapBuilder } from './../Builder/CheeseFlowerMapBuilder';
+import { DonutFlowerMapBuilder } from './../Builder/DonutFlowerMapBuilder';
 import { Dictionnary } from './../../Utils/Collections/Dictionnary';
-import { HexagonalMapBuilder } from './../Builder/HexagonalMapBuilder';
 import { SandDecorator } from '../../Items/Cell/Decorator/SandDecorator';
 import { MapMode } from './MapMode';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
@@ -13,13 +14,22 @@ import { FartestPointsFinder } from '../Builder/FartestPointsFinder';
 import { DecorationType } from './DecorationType';
 import { DiamondHq } from './DiamondHq';
 import { Decorator } from '../../Items/Cell/Decorator/Decorator';
+import { IPlaygroundBuilder } from '../Builder/IPlaygroundBuilder';
 
 export class MapGenerator {
+	private _builders: Dictionnary<IPlaygroundBuilder>;
+	constructor() {
+		this._builders = new Dictionnary<IPlaygroundBuilder>();
+		this._builders.Add('Flower', new FlowerMapBuilder());
+		this._builders.Add('Cheese', new CheeseFlowerMapBuilder());
+		this._builders.Add('Donut', new DonutFlowerMapBuilder());
+	}
+
 	public GetMapDefinition(mapSize: number, mapType: string, hqCount: number, mapMode: MapMode): MapContext {
 		const context = new MapContext();
 		context.MapMode = mapMode;
 		const mapItems = new Array<MapItem>();
-		const mapBuilder = mapType === 'Flower' ? new FlowerMapBuilder() : new HexagonalMapBuilder();
+		const mapBuilder = this._builders.Get(mapType);
 		const cellPositions = mapBuilder.Build(mapSize);
 
 		const container = new Dictionnary<HexAxial>();
@@ -27,14 +37,14 @@ export class MapGenerator {
 			container.Add(cell.ToString(), cell);
 		});
 
-		const center = mapBuilder.GetMidle(mapSize);
-		const areas = mapBuilder.GetAreaMiddlecell(mapSize);
+		const areas = mapBuilder.GetAreaCoordinates(mapSize);
+		const border = Dictionnary.To<HexAxial>((e) => e.ToString(), mapBuilder.GetRange(mapSize, mapSize - 1));
 		const fatherPointManager = new FartestPointsFinder();
 
-		const hqPositions = fatherPointManager.GetPoints(fatherPointManager.GetFartestPoints(center, areas), hqCount);
+		const hqPositions = fatherPointManager.GetPoints(areas.filter((a) => border.Exist(a.ToString())), hqCount); //fatherPointManager.GetFartestPoints(center, areas)
 		const diamondPositions = this.GetDiamonds(hqPositions, container, hqCount);
 
-		const excluded = new Array<HexAxial>();
+		const excluded = new Dictionnary<HexAxial>();
 		let hqs = new Array<MapItem>();
 		//add hqs
 		hqPositions.forEach((hq) => {
@@ -42,9 +52,9 @@ export class MapGenerator {
 			hqMapItem.Position = hq;
 			hqMapItem.Type = DecorationType.Hq;
 			mapItems.push(hqMapItem);
-			excluded.push(hq);
+			excluded.Add(hq.ToString(), hq);
 			hq.GetNeighbours().forEach((p) => {
-				excluded.push(p);
+				excluded.Add(p.ToString(), p);
 			});
 			hqs.push(hqMapItem);
 		});
@@ -56,9 +66,9 @@ export class MapGenerator {
 			diamonMapItem.Position = diamondCoo;
 			diamonMapItem.Type = DecorationType.Hq;
 			mapItems.push(diamonMapItem);
-			excluded.push(diamondCoo);
+			excluded.Add(diamondCoo.ToString(), diamondCoo);
 			diamondCoo.GetNeighbours().forEach((p) => {
-				excluded.push(p);
+				excluded.Add(p.ToString(), p);
 			});
 			let hqDiamond = new DiamondHq();
 			hqDiamond.Diamond = diamonMapItem;
@@ -76,7 +86,7 @@ export class MapGenerator {
 		cellPositions.forEach((coo) => {
 			let mapItem = new MapItem();
 			mapItem.Position = coo;
-			if (excluded.indexOf(coo) === -1) {
+			if (!excluded.Exist(coo.ToString())) {
 				mapItem.Type = decorator.GetDecoration();
 			} else {
 				mapItem.Type = DecorationType.None;
@@ -88,7 +98,8 @@ export class MapGenerator {
 		});
 
 		context.Items = mapItems;
-		context.CenterItem = mapItems.filter((m) => m.Position.Q === center.Q && m.Position.R === center.R)[0];
+		context.CenterItem = mapItems[0];
+		//mapItems.filter((m) => m.Position.Q === center.Q && m.Position.R === center.R)[0];
 		return context;
 	}
 

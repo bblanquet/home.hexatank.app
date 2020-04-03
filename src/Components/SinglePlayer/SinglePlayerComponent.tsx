@@ -14,7 +14,7 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 			IaNumber: 1,
 			Mode: '0',
 			MapType: 'Flower',
-			Size: '20'
+			Size: '12'
 		});
 		SpriteProvider.GetAssets().forEach((a) => {
 			var preloadLink = document.createElement('link');
@@ -68,11 +68,11 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 								class="custom-select mr-sm-2"
 								id="inlineFormCustomSelect"
 							>
-								<option value="10">16</option>
-								<option selected value="20">
-									20
+								<option value="8">small</option>
+								<option selected value="12">
+									medium
 								</option>
-								<option value="30">30</option>
+								<option value="16">big</option>
 							</select>
 						</div>
 						<div class="col-auto my-1 whiteText">
@@ -84,7 +84,8 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 								class="custom-select mr-sm-2"
 								id="inlineFormCustomSelect"
 							>
-								<option value="Hexagon">Hexagon</option>
+								<option value="Donut">Donut</option>
+								<option value="Cheese">Cheese</option>
 								<option selected value="Flower">
 									Flower
 								</option>

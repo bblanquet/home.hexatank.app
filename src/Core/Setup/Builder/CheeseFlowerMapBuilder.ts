@@ -4,7 +4,7 @@ import { HexAxial } from '../../Utils/Geometry/HexAxial';
 import { AreaSearch } from '../../Ia/Area/AreaSearch';
 import { CircleMapBuilder } from './CircleMapBuilder';
 
-export class FlowerMapBuilder implements IPlaygroundBuilder {
+export class CheeseFlowerMapBuilder implements IPlaygroundBuilder {
 	private _hexagonalBuilder: CircleMapBuilder;
 
 	constructor() {
@@ -20,14 +20,18 @@ export class FlowerMapBuilder implements IPlaygroundBuilder {
 		const areaEngine = new AreaSearch();
 		var areas = areaEngine.GetAreas(coordinates, coordinates.Get(this.GetMidle(ranges).ToString()));
 		var result = new Array<HexAxial>();
+		let i = 1;
 		areas.forEach((area) => {
-			const around = area.GetNeighbours();
-			if (around.length === 6) {
-				result.push(area);
-				around.forEach((cell) => {
-					result.push(cell);
-				});
+			if (i % 7 !== 0) {
+				const around = area.GetNeighbours();
+				if (around.length === 6) {
+					result.push(area);
+					around.forEach((cell) => {
+						result.push(cell);
+					});
+				}
 			}
+			i++;
 		});
 		return result;
 	}

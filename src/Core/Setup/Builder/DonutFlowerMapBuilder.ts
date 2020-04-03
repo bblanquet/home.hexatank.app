@@ -1,24 +1,24 @@
+import { DonutMapBuilder } from './DonutMapBuilder';
 import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { IPlaygroundBuilder } from './IPlaygroundBuilder';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 import { AreaSearch } from '../../Ia/Area/AreaSearch';
-import { CircleMapBuilder } from './CircleMapBuilder';
 
-export class FlowerMapBuilder implements IPlaygroundBuilder {
-	private _hexagonalBuilder: CircleMapBuilder;
+export class DonutFlowerMapBuilder implements IPlaygroundBuilder {
+	private _donutBuilder: DonutMapBuilder;
 
 	constructor() {
-		this._hexagonalBuilder = new CircleMapBuilder();
+		this._donutBuilder = new DonutMapBuilder();
 	}
 
 	public Build(ranges: number): HexAxial[] {
-		const initCoos = this._hexagonalBuilder.Build(ranges);
+		const initCoos = this._donutBuilder.Build(ranges);
 		const coordinates = new Dictionnary<HexAxial>();
 		initCoos.forEach((initCoo) => {
 			coordinates.Add(initCoo.ToString(), initCoo);
 		});
 		const areaEngine = new AreaSearch();
-		var areas = areaEngine.GetAreas(coordinates, coordinates.Get(this.GetMidle(ranges).ToString()));
+		var areas = areaEngine.GetAreas(coordinates, coordinates.Get(coordinates.Keys()[0]));
 		var result = new Array<HexAxial>();
 		areas.forEach((area) => {
 			const around = area.GetNeighbours();
@@ -33,7 +33,7 @@ export class FlowerMapBuilder implements IPlaygroundBuilder {
 	}
 
 	public GetMidle(ranges: number): HexAxial {
-		return this._hexagonalBuilder.GetMidle(ranges);
+		return this._donutBuilder.GetMidle(ranges);
 	}
 
 	GetRange(ranges: number, range: number): HexAxial[] {
@@ -52,7 +52,7 @@ export class FlowerMapBuilder implements IPlaygroundBuilder {
 			coordinates.Add(coordinate.ToString(), coordinate);
 		});
 		const areaSearch = new AreaSearch();
-		var result = areaSearch.GetAreas(coordinates, coordinates.Get(this.GetMidle(ranges).ToString()));
+		var result = areaSearch.GetAreas(coordinates, coordinates.Get(coordinates.Keys()[0]));
 		result.shift();
 		return result.filter((a) => a.GetNeighbours().length === 6);
 	}

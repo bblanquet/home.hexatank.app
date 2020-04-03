@@ -50,4 +50,12 @@ export class Dictionnary<T> {
 	Exist(Key: string): boolean {
 		return Key in this._values;
 	}
+
+	public static To<T>(key: (d: T) => string, list: T[]): Dictionnary<T> {
+		const dictionnary = new Dictionnary<T>();
+		list.forEach((item) => {
+			dictionnary.Add(key(item), item);
+		});
+		return dictionnary;
+	}
 }

@@ -1,16 +1,16 @@
-import { Cell } from '../../Items/Cell/Cell';
-import { HeldArea } from './HeldArea';
-import { Timer } from '../../Utils/Timer/Timer';
+import { Cell } from '../../../Items/Cell/Cell';
+import { KingdomArea } from '../../Utils/KingdomArea';
+import { Timer } from '../../../Utils/Timer/Timer';
 import { isNullOrUndefined } from 'util';
-import { SimpleOrder } from '../Order/SimpleOrder';
-import { Tank } from '../../Items/Unit/Tank';
-import { ITimer } from '../../Utils/Timer/ITimer';
+import { SimpleOrder } from '../../Order/SimpleOrder';
+import { Tank } from '../../../Items/Unit/Tank';
+import { ITimer } from '../../../Utils/Timer/ITimer';
 
 export class TroopDecisionMaker {
 	private _changePositionTimer: ITimer;
 	private _cancelOrderTimer: ITimer;
 
-	constructor(public CurrentPatrolDestination: Cell, public Tank: Tank, public HqArea: HeldArea) {
+	constructor(public CurrentPatrolDestination: Cell, public Tank: Tank, public HqArea: KingdomArea) {
 		if (isNullOrUndefined(this.CurrentPatrolDestination)) {
 			throw 'invalid destination';
 		}
@@ -29,7 +29,7 @@ export class TroopDecisionMaker {
 
 		if (this.Tank.GetCurrentCell() === this.CurrentPatrolDestination) {
 			if (this._changePositionTimer.IsElapsed()) {
-				const nextPatrolcell = this.HqArea.GetAvailablecell();
+				const nextPatrolcell = this.HqArea.GetRandomFreeCell();
 				if (nextPatrolcell) {
 					this.CurrentPatrolDestination = nextPatrolcell;
 				}

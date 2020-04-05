@@ -10,7 +10,7 @@ export class AStarNode<T extends ICell> {
 		this.Cell = cell;
 	}
 
-	IsLessExpensive(compareToNode: AStarNode<T>): boolean {
+	IsLessCostly(compareToNode: AStarNode<T>): boolean {
 		return this.GetCost() < compareToNode.GetCost();
 	}
 

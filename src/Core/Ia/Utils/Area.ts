@@ -3,15 +3,15 @@ import { isNullOrUndefined } from 'util';
 import { AliveItem } from '../../Items/AliveItem';
 
 export class Area {
-	constructor(private _centercell: Cell) {}
+	constructor(private _centralCell: Cell) {}
 
 	public GetCentralCell(): Cell {
-		return this._centercell;
+		return this._centralCell;
 	}
 
-	public GetEnemycell(v: AliveItem): Cell[] {
+	public GetFoeCells(v: AliveItem): Cell[] {
 		const result = new Array<Cell>();
-		const cells = this._centercell.GetAllNeighbourhood().map((c) => <Cell>c).filter((c) => !isNullOrUndefined(c));
+		const cells = this._centralCell.GetAllNeighbourhood().map((c) => <Cell>c).filter((c) => !isNullOrUndefined(c));
 		cells.push(this.GetCentralCell());
 		cells.forEach((cell) => {
 			if (cell.HasEnemy(v)) {
@@ -21,8 +21,8 @@ export class Area {
 		return result;
 	}
 
-	public GetAvailablecell(): Cell[] {
-		const cells = this._centercell
+	public GetFreeCells(): Cell[] {
+		const cells = this._centralCell
 			.GetAllNeighbourhood()
 			.map((c) => <Cell>c)
 			.filter((c) => !isNullOrUndefined(c) && !c.IsBlocked());
@@ -35,8 +35,8 @@ export class Area {
 
 	public GetAllyCount(v: AliveItem): number {
 		let enemyCount = 0;
-		const cells = this._centercell.GetAllNeighbourhood().map((c) => <Cell>c);
-		cells.push(this._centercell);
+		const cells = this._centralCell.GetAllNeighbourhood().map((c) => <Cell>c);
+		cells.push(this._centralCell);
 		cells.forEach((cell) => {
 			if (cell.HasAlly(v)) {
 				enemyCount += 1;
@@ -45,10 +45,10 @@ export class Area {
 		return enemyCount;
 	}
 
-	public GetEnemyCount(v: AliveItem): number {
+	public GetFoeCount(v: AliveItem): number {
 		let enemyCount = 0;
-		const cells = this._centercell.GetAllNeighbourhood().map((c) => <Cell>c);
-		cells.push(this._centercell);
+		const cells = this._centralCell.GetAllNeighbourhood().map((c) => <Cell>c);
+		cells.push(this._centralCell);
 		cells.forEach((cell) => {
 			if (cell.HasEnemy(v)) {
 				enemyCount += 1;

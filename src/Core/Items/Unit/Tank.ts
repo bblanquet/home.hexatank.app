@@ -1,6 +1,5 @@
 import { CamouflageHandler } from './CamouflageHandler';
 import { Cell } from '../Cell/Cell';
-import { GameHelper } from '../../Framework/GameHelper';
 import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
 import { Vehicle } from './Vehicle';
 import { Turrel } from './Turrel';

@@ -31,7 +31,12 @@ export class BoundingBox {
 		return b;
 	}
 
-	GetCenter(): number {
+	public SetPosition(point: Point): void {
+		this.X = point.X;
+		this.Y = point.Y;
+	}
+
+	public GetCenter(): number {
 		return this.X + this.Width / 2;
 	}
 

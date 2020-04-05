@@ -1,183 +1,22 @@
 import { Headquarter } from '../../Items/Cell/Field/Headquarter';
-import { Area } from '../Area/Area';
 import { ItemSkin } from '../../Items/ItemSkin';
 import { Cell } from '../../Items/Cell/Cell';
-import { RequestPriority } from './RequestPriority';
-import { isNullOrUndefined } from 'util';
-import { Diamond } from '../../Items/Cell/Field/Diamond';
-import { TruckPatrolOrder } from '../Order/TruckPatrolOrder';
-import { HqFieldOrder } from '../Order/HqFieldOrder';
-import { DiamondFieldOrder } from '../Order/DiamondFieldOrder';
-import { Archive } from '../../Framework/ResourceArchiver';
-import { AreaRequest } from '../Area/AreaRequest';
-import { AreaStatus } from '../Area/AreaStatus';
-import { RequestMaker } from './RequestMaker';
-import { CenterDecisionMaker } from './CenterDecisionMaker';
-import { Timer } from '../../Utils/Timer/Timer';
-import { ExpansionMaker } from './ExpansionMaker';
-import { IdleUnitContainer } from './IdleUnitContainer';
-import { HeldArea } from '../Area/HeldArea';
-import { Truck } from '../../Items/Unit/Truck';
-import { GameHelper } from '../../Framework/GameHelper';
-import { Explosion } from '../../Items/Unit/Explosion';
-import { Tank } from '../../Items/Unit/Tank';
-import { GameSettings } from '../../Framework/GameSettings';
-import { CellContext } from '../../Items/Cell/CellContext';
+import { IDoable } from '../Decision/IDoable';
 import { GameContext } from '../../Framework/GameContext';
 
 export class IaHeadquarter extends Headquarter {
-	public AreasBycell: { [id: string]: HeldArea };
-	private _Areas: HeldArea[];
-	private _trucks: Array<Truck>;
-	private _requestHandler: CenterDecisionMaker;
-	public Diamond: Diamond;
-	private _timer: Timer;
-	private _spreadStrategy: ExpansionMaker;
-	public TankBalancer: IdleUnitContainer;
+	private _decision: IDoable;
 
-	constructor(
-		public EmptyAreas: Area[],
-		skin: ItemSkin,
-		cell: Cell,
-		private _cells: CellContext<Cell>,
-		gameContext: GameContext
-	) {
+	constructor(skin: ItemSkin, cell: Cell, gameContext: GameContext) {
 		super(skin, cell, gameContext);
-		this._timer = new Timer(10);
-		this._trucks = new Array<Truck>();
-		this._Areas = new Array<HeldArea>();
-		this.AreasBycell = {};
-		this._requestHandler = new CenterDecisionMaker(this, _cells);
-		this._spreadStrategy = new ExpansionMaker(this);
-		this.TankBalancer = new IdleUnitContainer();
+	}
+
+	public SetDoer(decision: IDoable): void {
+		this._decision = decision;
 	}
 
 	public Update(viewX: number, viewY: number): void {
 		super.Update(viewX, viewY);
-
-		this._trucks = this._trucks.filter((t) => t.IsAlive());
-
-		if (this._trucks.length === 0) {
-			var truck = this.AddTruck();
-
-			if (!isNullOrUndefined(truck)) {
-				truck.SetOrder(
-					new TruckPatrolOrder(
-						truck,
-						new HqFieldOrder(this, truck),
-						new DiamondFieldOrder(this.Diamond, truck)
-					)
-				);
-				this._trucks.push(truck);
-			}
-		}
-
-		if (this._timer.IsElapsed()) {
-			const statuses = new Array<AreaStatus>();
-
-			this._Areas.forEach((conquestedArea) => {
-				conquestedArea.HasReceivedRequest = false;
-				conquestedArea.Update();
-				statuses.push(conquestedArea.GetStatus());
-			});
-
-			this.TankBalancer.CalculateExcess(statuses);
-
-			const requests: { [id: string]: Array<AreaRequest> } = {};
-			requests[RequestPriority.Low] = new Array<AreaRequest>();
-			requests[RequestPriority.Medium] = new Array<AreaRequest>();
-			requests[RequestPriority.High] = new Array<AreaRequest>();
-
-			statuses.forEach((status) => {
-				let request = RequestMaker.GetRequest(status);
-				if (request.Priority != RequestPriority.None) {
-					requests[request.Priority].push(request);
-				}
-			});
-
-			if (this.HasRequests(requests)) {
-				this._requestHandler.HandleRequests(requests);
-			} else {
-				var area = this._spreadStrategy.FindArea();
-				if (!isNullOrUndefined(area)) {
-					if (this.GetAmount() >= GameSettings.TankPrice) {
-						this.EmptyAreas.splice(this.EmptyAreas.indexOf(area), 1);
-						let hqArea = new HeldArea(this, area, this._cells);
-						this._Areas.push(hqArea);
-						this.AreasBycell[area.GetCentralCell().GetCoordinate().ToString()] = hqArea;
-						console.log(
-							`%c GET NEW AREA  ${hqArea.GetArea().GetCentralCell().GetCoordinate().ToString()}`,
-							'font-weight:bold;color:green;'
-						);
-						this.BuyTankForArea(hqArea);
-					}
-				}
-			}
-		}
-	}
-
-	private HasRequests(requests: { [id: string]: AreaRequest[] }) {
-		return (
-			requests[RequestPriority.Low].length > 0 ||
-			requests[RequestPriority.Medium].length > 0 ||
-			requests[RequestPriority.High].length > 0
-		);
-	}
-
-	private AddTruck(): Truck {
-		let truck = null;
-		this.Fields.some((field) => {
-			if (!field.GetCell().IsBlocked()) {
-				this.Buy(GameSettings.TruckPrice);
-				if (field.GetCell().IsVisible()) {
-					const explosion = new Explosion(
-						field.GetCell().GetBoundingBox(),
-						Archive.constructionEffects,
-						5,
-						false,
-						5
-					);
-				}
-				truck = new Truck(this, this.GameContext);
-				truck.SetPosition(field.GetCell());
-				this.OnVehiculeCreated.Invoke(this, truck);
-
-				return true;
-			}
-			return false;
-		});
-
-		return truck;
-	}
-
-	public BuyTankForArea(area: HeldArea): boolean {
-		let isCreated = false;
-		if (this.GetAmount() >= GameSettings.TankPrice) {
-			for (let field of this.Fields) {
-				if (!field.GetCell().IsBlocked()) {
-					var cell = area.GetAvailablecell();
-					if (!isNullOrUndefined(cell)) {
-						this.Buy(GameSettings.TankPrice);
-						if (field.GetCell().IsVisible()) {
-							const explosion = new Explosion(
-								field.GetCell().GetBoundingBox(),
-								Archive.constructionEffects,
-								5,
-								false,
-								5
-							);
-						}
-						var tank = new Tank(this, this.GameContext);
-						tank.SetPosition(field.GetCell());
-						area.AddTroop(tank, cell);
-						this.OnVehiculeCreated.Invoke(this, tank);
-
-						isCreated = true;
-						return true;
-					}
-				}
-			}
-		}
-		return isCreated;
+		this._decision.Do();
 	}
 }

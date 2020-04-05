@@ -3,13 +3,11 @@ import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Timer } from '../../Utils/Timer/Timer';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { InteractionContext } from '../../Interaction/InteractionContext';
-import { GameHelper } from '../../Framework/GameHelper';
 
 export class Dust extends Item {
 	public BoundingBox: BoundingBox;
 	private currentDust: number;
 	private currentAlpha: number;
-	// private _sprites:string[]=['dust1.png','dust2.png','dust3.png','dust4.png'];
 	private _timer: Timer;
 
 	constructor(boundingBox: BoundingBox) {

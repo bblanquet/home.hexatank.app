@@ -1,4 +1,3 @@
-export interface ITranslationMaker{ 
-    Translate():void;
-    GetPercentageTranslation():number;
+export interface ITranslationMaker {
+	Translate(): void;
 }

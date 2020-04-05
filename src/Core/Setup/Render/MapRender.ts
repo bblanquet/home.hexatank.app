@@ -14,7 +14,7 @@ import { BasicItem } from '../../Items/BasicItem';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { MapContext } from '../Generator/MapContext';
 import { MapMode } from '../Generator/MapMode';
-import { AreaSearch } from '../../Ia/Area/AreaSearch';
+import { AreaSearch } from '../../Ia/Utils/AreaSearch';
 
 export class MapRender {
 	private _hqRender: HqRender;

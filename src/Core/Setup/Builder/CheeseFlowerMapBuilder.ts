@@ -1,7 +1,7 @@
 import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { IPlaygroundBuilder } from './IPlaygroundBuilder';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
-import { AreaSearch } from '../../Ia/Area/AreaSearch';
+import { AreaSearch } from '../../Ia/Utils/AreaSearch';
 import { CircleMapBuilder } from './CircleMapBuilder';
 
 export class CheeseFlowerMapBuilder implements IPlaygroundBuilder {

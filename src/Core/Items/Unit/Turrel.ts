@@ -130,6 +130,7 @@ export class Turrel extends Item implements IRotatable {
 	public Rotate(radius: number): void {
 		this.GetSprites().forEach((sprite) => {
 			sprite.rotation = radius;
+			sprite.calculateVertices();
 		});
 		this.Radius = radius;
 	}

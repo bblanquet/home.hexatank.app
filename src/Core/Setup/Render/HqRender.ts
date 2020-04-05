@@ -1,5 +1,6 @@
+import { BasicKingdomDecisionMaker } from './../../Ia/Decision/Kingdom/BasicKingdomDecisionMaker';
 import { GameContext } from './../../Framework/GameContext';
-import { AreaSearch } from '../../Ia/Area/AreaSearch';
+import { AreaSearch } from '../../Ia/Utils/AreaSearch';
 import { CellContext } from './../../Items/Cell/CellContext';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { IaHeadquarter } from '../../Ia/Hq/IaHeadquarter';
@@ -10,7 +11,7 @@ import { ItemSkin } from '../../Items/ItemSkin';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { DiamondHq } from '../Generator/DiamondHq';
 import { Cell } from '../../Items/Cell/Cell';
-import { Area } from '../../Ia/Area/Area';
+import { Area } from '../../Ia/Utils/Area';
 
 export class HqRender {
 	_skins: ItemSkin[] = [
@@ -123,14 +124,15 @@ export class HqRender {
 	): Headquarter {
 		const cell = cells.Get(hqcell);
 		const diamond = new Diamond(cells.Get(diamondcell));
-		const hq = new IaHeadquarter(
-			new AreaSearch().GetAreas(cells.Keys(), cell.GetCoordinate()).map((coo) => new Area(cells.Get(coo))),
-			skin,
-			cell,
-			cells,
-			context
-		);
-		hq.Diamond = diamond;
+		const areas = new AreaSearch()
+			.GetAreas(cells.Keys(), cell.GetCoordinate())
+			.map((coo) => new Area(cells.Get(coo)));
+
+		const hq = new IaHeadquarter(skin, cell, context);
+		const decision = new BasicKingdomDecisionMaker(hq, cells, areas);
+		decision.Diamond = diamond;
+		hq.SetDoer(decision);
+
 		items.push(diamond);
 		items.push(hq);
 		return hq;

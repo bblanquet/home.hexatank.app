@@ -1,5 +1,4 @@
 import { GameContext } from './../../../Framework/GameContext';
-import { GameHelper } from '../../../Framework/GameHelper';
 import { LiteEvent } from '../../../Utils/Events/LiteEvent';
 import { FlagCell } from '../FlagCell';
 import { Tank } from '../../Unit/Tank';
@@ -28,7 +27,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	private _boundingBox: BoundingBox;
 	private _cell: Cell;
 	public PlayerName: string;
-	protected Fields: Array<HeadQuarterField>;
+	public Fields: Array<HeadQuarterField>;
 	private _diamondCount: number = GameSettings.PocketMoney;
 	private _skin: ItemSkin;
 	private _onCellStateChanged: (obj: any, cellState: CellState) => void;
@@ -36,7 +35,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	private _vehicles: Array<Vehicle> = new Array<Vehicle>();
 	public OnVehiculeCreated: LiteEvent<Vehicle> = new LiteEvent<Vehicle>();
 
-	constructor(skin: ItemSkin, cell: Cell, protected GameContext: GameContext) {
+	constructor(skin: ItemSkin, cell: Cell, public GameContext: GameContext) {
 		super();
 		this._skin = skin;
 		this.Z = 2;
@@ -121,13 +120,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		this.Fields.every((field) => {
 			if (!field.GetCell().IsBlocked()) {
 				if (field.GetCell().IsVisible()) {
-					const explosion = new Explosion(
-						field.GetCell().GetBoundingBox(),
-						Archive.constructionEffects,
-						5,
-						false,
-						5
-					);
+					new Explosion(field.GetCell().GetBoundingBox(), Archive.constructionEffects, 5, false, 5);
 				}
 				const tank = new Tank(this, this.GameContext);
 				tank.SetPosition(cell === null ? field.GetCell() : cell);
@@ -150,16 +143,10 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		this.Fields.every((field) => {
 			if (!field.GetCell().IsBlocked()) {
 				if (field.GetCell().IsVisible()) {
-					const explosion = new Explosion(
-						field.GetCell().GetBoundingBox(),
-						Archive.constructionEffects,
-						5,
-						false,
-						5
-					);
+					new Explosion(field.GetCell().GetBoundingBox(), Archive.constructionEffects, 5, false, 5);
 				}
 				let truck = new Truck(this, this.GameContext);
-				truck.SetPosition(cell === null ? field.GetCell() : cell);
+				truck.SetPosition(cell || field.GetCell());
 				this.OnVehiculeCreated.Invoke(this, truck);
 
 				isCreated = true;
@@ -320,7 +307,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		this.OnDiamondCountChanged.Invoke(this, this._diamondCount);
 	}
 
-	protected GetAmount(): number {
+	public GetAmount(): number {
 		return this._diamondCount;
 	}
 

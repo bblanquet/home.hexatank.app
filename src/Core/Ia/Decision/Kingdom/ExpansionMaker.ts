@@ -1,22 +1,23 @@
-import { IaHeadquarter } from './IaHeadquarter';
-import { Area } from '../Area/Area';
-import { Point } from '../../Utils/Geometry/Point';
+import { Headquarter } from '../../../Items/Cell/Field/Headquarter';
+import { BasicKingdomDecisionMaker } from './BasicKingdomDecisionMaker';
+import { Area } from '../../Utils/Area';
+import { Point } from '../../../Utils/Geometry/Point';
 
 export class ExpansionMaker {
-	constructor(private _hq: IaHeadquarter) {}
+	constructor(private _hq: Headquarter, private decisionMaker: BasicKingdomDecisionMaker) {}
 
 	public FindArea(): Area {
-		if (this._hq.EmptyAreas.length === 0) {
+		if (this.decisionMaker.EmptyAreas.length === 0) {
 			return null;
 		}
 
-		let currentArea = this._hq.EmptyAreas[0];
+		let currentArea = this.decisionMaker.EmptyAreas[0];
 		let currentCost = this.GetCost(
 			this._hq.GetCell().GetCentralPoint(),
 			currentArea.GetCentralCell().GetCentralPoint()
 		);
 
-		this._hq.EmptyAreas.forEach((area) => {
+		this.decisionMaker.EmptyAreas.forEach((area) => {
 			let cost = this.GetCost(this._hq.GetCell().GetCentralPoint(), area.GetCentralCell().GetCentralPoint());
 			if (cost < currentCost) {
 				currentArea = area;

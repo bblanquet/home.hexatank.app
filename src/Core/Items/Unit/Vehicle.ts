@@ -1,6 +1,6 @@
+import { GameSettings } from './../../Framework/GameSettings';
 import { GameContext } from './../../Framework/GameContext';
 import { CellStateSetter } from '../Cell/CellStateSetter';
-import { GameSettings } from '../../Framework/GameSettings';
 import { BasicItem } from '../BasicItem';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { Headquarter } from '../Cell/Field/Headquarter';
@@ -22,7 +22,6 @@ import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Timer } from '../../Utils/Timer/Timer';
 import { CellState } from '../Cell/CellState';
 import { Archive } from '../../Framework/ResourceArchiver';
-import { GameHelper } from '../../Framework/GameHelper';
 import { CellProperties } from '../Cell/CellProperties';
 import { Crater } from '../Environment/Crater';
 import { InteractionContext } from '../../Interaction/InteractionContext';
@@ -30,6 +29,7 @@ import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
 import { PacketKind } from '../../../Components/Network/PacketKind';
 import { Explosion } from './Explosion';
 import { Sprite } from 'pixi.js';
+import { Point } from '../../Utils/Geometry/Point';
 
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable {
 	public Id: string;
@@ -169,35 +169,69 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
 	private HandleDust(): void {
 		if (this._dustTimer.IsElapsed()) {
-			let center = this.GetBoundingBox().GetCenter();
-			let middle = this.GetBoundingBox().GetMiddle();
-			let width = this.GetBoundingBox().Width;
-			let height = this.GetBoundingBox().Height;
+			const ref = this.GetBoundingBox().GetCentralPoint();
+			const width = this.GetBoundingBox().Width;
+			const height = this.GetBoundingBox().Height;
 
-			const leftb = new BoundingBox();
-			leftb.X = center + (width / 3 - this.GetBoundingBox().Width / 5) * Math.cos(this.CurrentRadius);
-			leftb.Y = middle + (height / 3 - this.GetBoundingBox().Width / 5) * Math.sin(this.CurrentRadius);
-			leftb.Width = this.GetBoundingBox().Width / 5;
-			leftb.Height = this.GetBoundingBox().Width / 5;
+			const left = new BoundingBox();
+			let leftPoint = new Point(0, 0);
+			if (1.57 < Math.abs(this.CurrentRadius) && Math.abs(this.CurrentRadius) < 4.71) {
+				leftPoint.X = ref.X + (width / 5 + width / 5);
+				leftPoint.Y = ref.Y + (height / 7 + width / 5);
+			} else {
+				leftPoint.X = ref.X + width / 5;
+				leftPoint.Y = ref.Y + height / 7;
+			}
 
-			this._leftDusts[this._dustIndex].Reset(leftb);
+			leftPoint = this.RotatePoint(ref, this.CurrentRadius, leftPoint);
+
+			left.SetPosition(leftPoint);
+			left.Width = this.GetBoundingBox().Width / 5;
+			left.Height = this.GetBoundingBox().Width / 5;
+
+			this._leftDusts[this._dustIndex].Reset(left);
 			this._leftDusts[this._dustIndex].GetSprites().forEach((s) => {
 				s.visible = this._currentCell.IsVisible();
 			});
 
-			const rightb = new BoundingBox();
-			rightb.X = center + width / 3 * Math.sin(this.CurrentRadius);
-			rightb.Y = middle + height / 3 * Math.cos(this.CurrentRadius);
-			rightb.Width = this.GetBoundingBox().Width / 5;
-			rightb.Height = this.GetBoundingBox().Width / 5;
+			const right = new BoundingBox();
+			let rightPoint = new Point(0, 0);
+			if (1.57 < Math.abs(this.CurrentRadius) && Math.abs(this.CurrentRadius) < 4.71) {
+				rightPoint.X = ref.X - width / 5;
+				rightPoint.Y = ref.Y + (height / 7 + width / 5);
+			} else {
+				rightPoint.X = ref.X - (width / 5 + width / 5);
+				rightPoint.Y = ref.Y + height / 7;
+			}
 
-			this._rightDusts[this._dustIndex].Reset(rightb);
+			rightPoint = this.RotatePoint(ref, this.CurrentRadius, rightPoint);
+
+			right.SetPosition(rightPoint);
+			right.Width = this.GetBoundingBox().Width / 5;
+			right.Height = this.GetBoundingBox().Width / 5;
+
+			this._rightDusts[this._dustIndex].Reset(right);
 			this._rightDusts[this._dustIndex].GetSprites().forEach((s) => {
 				s.visible = this._currentCell.IsVisible();
 			});
 
 			this._dustIndex = (this._dustIndex + 1) % this._leftDusts.length;
 		}
+	}
+
+	private RotatePoint(ref: Point, angle: number, orginal: Point): Point {
+		// translate point back to origin:
+		orginal.X -= ref.X;
+		orginal.Y -= ref.Y;
+
+		// rotate point
+		const xnew = orginal.X * Math.cos(angle) - orginal.Y * Math.sin(angle);
+		const ynew = orginal.X * Math.sin(angle) + orginal.Y * Math.cos(angle);
+
+		// translate point back:
+		orginal.X = xnew + ref.X;
+		orginal.Y = ynew + ref.Y;
+		return orginal;
 	}
 
 	public IsSelected(): boolean {

@@ -23,92 +23,85 @@ export class AStarEngine<T extends ICell> {
 		return false;
 	}
 
-	private GetNode(cell: T, frontierNodes: Array<AStarNode<T>>, cameFromNodes: Array<AStarNode<T>>): AStarNode<T> {
-		for (let frontierNode of frontierNodes) {
-			if (frontierNode.Cell === cell) {
-				return frontierNode;
+	private GetNode(cell: T, candidates: Array<AStarNode<T>>, path: Array<AStarNode<T>>): AStarNode<T> {
+		for (let candidate of candidates) {
+			if (candidate.Cell === cell) {
+				return candidate;
 			}
 		}
 
-		for (let cameFromNode of cameFromNodes) {
-			if (cameFromNode.Cell === cell) {
-				return cameFromNode;
+		for (let pathItem of path) {
+			if (pathItem.Cell === cell) {
+				return pathItem;
 			}
 		}
 
 		return new AStarNode(cell);
 	}
 
-	private InsertByCost(nodes: Array<AStarNode<T>>, node: AStarNode<T>): void {
-		if (nodes.length == 0) {
-			nodes.push(node);
-			return;
-		}
-
-		for (var i = 0; i < nodes.length; i++) {
-			if (node.IsLessExpensive(nodes[i])) {
-				nodes.splice(i, 0, node);
-				return;
+	private AddNodeIntoCandidates(candidates: Array<AStarNode<T>>, currentNode: AStarNode<T>): void {
+		if (candidates.length === 0) {
+			candidates.push(currentNode);
+		} else {
+			for (var i = 0; i < candidates.length; i++) {
+				if (currentNode.IsLessCostly(candidates[i])) {
+					candidates.splice(i, 0, currentNode);
+					return;
+				}
 			}
+			candidates.push(currentNode);
 		}
-
-		nodes.push(node);
 	}
 
 	//console.log(`%c start: ${startcell.GetCoordinate().Q} ${startcell.GetCoordinate().R} `,'color:green;');
 	//console.log(`%c goal: ${goalcell.GetCoordinate().Q} ${goalcell.GetCoordinate().R} `,'color:green;');
 
 	public GetPath(startcell: T, goalcell: T): Array<T> {
-		var frontierNodes = new Array<AStarNode<T>>();
-		var cameFromNodes = new Array<AStarNode<T>>();
+		var candidates = new Array<AStarNode<T>>();
+		var path = new Array<AStarNode<T>>();
 
-		var startnode = new AStarNode(startcell);
-		var goalnode = new AStarNode(goalcell);
+		var start = new AStarNode(startcell);
+		var goal = new AStarNode(goalcell);
 
-		startnode.FromStartCost = 0;
-		startnode.Parent = null;
-		startnode.EstimatedGoalCost = startnode.GetEstimatedCost(goalnode);
+		start.FromStartCost = 0;
+		start.Parent = null;
+		start.EstimatedGoalCost = start.GetEstimatedCost(goal);
 
-		this.InsertByCost(frontierNodes, startnode);
+		this.AddNodeIntoCandidates(candidates, start);
 
-		while (this.IsNotEmpty(frontierNodes)) {
-			if (GameSettings.MapSize < cameFromNodes.length) {
-				console.log(`%c COULD NOT FIND ,opened nodes: ${frontierNodes.length}`, 'color:purple;');
+		while (this.IsNotEmpty(candidates)) {
+			if (GameSettings.MapSize * 4 < path.length) {
+				console.log(`%c COULD NOT FIND ,opened nodes: ${candidates.length}`, 'color:purple;');
 				return null;
 			}
 
-			const lessExpensiveFrontier = this.GetLessExpensiveFrontier(frontierNodes);
+			const bestCandidate = this.PopLessCostlyCandidate(candidates);
 
-			if (lessExpensiveFrontier.Cell == goalnode.Cell) {
-				return this.ConstructPath(lessExpensiveFrontier);
+			if (bestCandidate.Cell == goal.Cell) {
+				return this.ConstructPath(bestCandidate);
 			}
 
-			lessExpensiveFrontier.Cell.GetNeighbourhood().forEach((frontierSurrounding) => {
-				const nextNode = this.GetNode(<T>frontierSurrounding, frontierNodes, cameFromNodes);
+			bestCandidate.Cell.GetNeighbourhood().forEach((nextCell) => {
+				const nextNode = this.GetNode(<T>nextCell, candidates, path);
+				const moveToNextCost = bestCandidate.FromStartCost + bestCandidate.GetEstimatedCost(nextNode);
 
-				const estimatedNextNodeCost =
-					lessExpensiveFrontier.FromStartCost + lessExpensiveFrontier.GetEstimatedCost(nextNode);
+				if (this.IsNew(nextNode.Cell, candidates, path) || moveToNextCost < nextNode.FromStartCost) {
+					nextNode.Parent = bestCandidate;
+					nextNode.FromStartCost = moveToNextCost;
+					nextNode.EstimatedGoalCost = nextNode.GetEstimatedCost(goal);
 
-				if (
-					this.IsNodeNew(<T>frontierSurrounding, frontierNodes, cameFromNodes) ||
-					estimatedNextNodeCost < nextNode.FromStartCost
-				) {
-					nextNode.Parent = lessExpensiveFrontier;
-					nextNode.FromStartCost = estimatedNextNodeCost;
-					nextNode.EstimatedGoalCost = nextNode.GetEstimatedCost(goalnode);
-
-					if (this.Contains(cameFromNodes, <T>frontierSurrounding)) {
-						cameFromNodes.splice(cameFromNodes.indexOf(nextNode), 1);
+					if (this.Contains(path, nextNode.Cell)) {
+						path.splice(path.indexOf(nextNode), 1); //remove next node from path
 					}
 
-					if (!this.Contains(frontierNodes, <T>frontierSurrounding)) {
-						this.InsertByCost(frontierNodes, nextNode);
+					if (!this.Contains(candidates, nextNode.Cell)) {
+						this.AddNodeIntoCandidates(candidates, nextNode);
 					}
 				}
 			});
-			cameFromNodes.push(lessExpensiveFrontier);
+			path.push(bestCandidate);
 		}
-		console.log(`%c COULD NOT FIND ,opened nodes: ${frontierNodes.length}`, 'color:purple;');
+		console.log(`%c COULD NOT FIND ,opened nodes: ${candidates.length}`, 'color:purple;');
 		return null;
 	}
 
@@ -121,13 +114,13 @@ export class AStarEngine<T extends ICell> {
 	//console.log(`%c current: ${currentNode.cell.GetCoordinate().Q} ${currentNode.cell.GetCoordinate().R} cost:${currentNode.GetCost()}`,'color:blue;');
 	//console.log(`%c next: ${cell.GetCoordinate().Q} ${cell.GetCoordinate().R} cost:${nextNode.GetCost()} ,opened nodes: ${openedNodes.length}`,'color:purple;');
 
-	private GetLessExpensiveFrontier(openedNodes: Array<AStarNode<T>>): AStarNode<T> {
-		var currentNode = openedNodes[0];
-		openedNodes.splice(0, 1);
+	private PopLessCostlyCandidate(candidates: Array<AStarNode<T>>): AStarNode<T> {
+		var currentNode = candidates[0];
+		candidates.splice(0, 1);
 		return currentNode;
 	}
 
-	private IsNodeNew(cell: T, openedNodes: Array<AStarNode<T>>, closedNodes: Array<AStarNode<T>>): Boolean {
+	private IsNew(cell: T, openedNodes: Array<AStarNode<T>>, closedNodes: Array<AStarNode<T>>): Boolean {
 		var isOpenedNode = this.Contains(openedNodes, cell);
 		var isClosedNode = this.Contains(closedNodes, cell);
 		return !isOpenedNode && !isClosedNode;

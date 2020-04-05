@@ -1,4 +1,4 @@
-import { TroopDecisionMaker } from './TroopDecisionMaker';
+import { TroopDecisionMaker } from '../Decision/Troop/TroopDecisionMaker';
 import { TroopDestination } from './TroopDestination';
 import { Cell } from '../../Items/Cell/Cell';
 import { isNullOrUndefined } from 'util';

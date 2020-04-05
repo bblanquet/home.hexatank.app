@@ -4,7 +4,7 @@ import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { SandDecorator } from '../../Items/Cell/Decorator/SandDecorator';
 import { MapMode } from './MapMode';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
-import { AreaSearch } from '../../Ia/Area/AreaSearch';
+import { AreaSearch } from '../../Ia/Utils/AreaSearch';
 import { ForestDecorator } from '../../Items/Cell/Decorator/ForestDecorator';
 import { DistanceHelper } from '../../Items/Unit/MotionHelpers/DistanceHelper';
 import { MapContext } from './MapContext';

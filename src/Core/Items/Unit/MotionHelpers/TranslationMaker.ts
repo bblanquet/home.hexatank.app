@@ -1,6 +1,5 @@
 import { ITranslationMaker } from './ITranslationMaker';
 import { IMovable } from '../../IMovable';
-import { DistanceHelper } from './DistanceHelper';
 import { IBoundingBoxContainer } from '../../../IBoundingBoxContainer';
 
 export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implements ITranslationMaker {
@@ -10,7 +9,7 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 		this._item = item;
 	}
 
-	private static GetDiff(a: number, b: number): number {
+	private GetDelta(a: number, b: number): number {
 		if (a < b) {
 			[ b, a ] = [ a, b ];
 		}
@@ -25,58 +24,39 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 	}
 
 	private GetXRatio(current: { X: number; Y: number }, target: { X: number; Y: number }): number {
-		var distanceX = TranslationMaker.GetDiff(target.X, current.X);
-		var distanceY = TranslationMaker.GetDiff(target.Y, current.Y);
-		if (distanceY <= 0.01) {
-			return distanceX;
+		const deltaX = this.GetDelta(target.X, current.X);
+		const deltaY = this.GetDelta(target.Y, current.Y);
+		if (deltaY <= 0.01) {
+			return deltaX;
 		}
-		return distanceX / distanceY;
+		return deltaX / deltaY;
 	}
 
 	public Translate(): void {
-		var itemBox = this._item.GetBoundingBox();
-		var nextcellBox = this._item.GetNextCell().GetBoundingBox();
-
-		var xRatio = this.GetXRatio(itemBox.GetCentralPoint(), nextcellBox.GetCentralPoint());
-
-		itemBox.Y +=
-			nextcellBox.GetMiddle() < itemBox.GetMiddle() ? -this._item.TranslationSpeed : this._item.TranslationSpeed;
-		itemBox.X +=
-			(nextcellBox.GetCenter() < itemBox.GetCenter()
-				? -this._item.TranslationSpeed
-				: this._item.TranslationSpeed) * xRatio;
-
-		if (isNaN(itemBox.X)) {
-			throw `error speed ${this._item.TranslationSpeed}`;
-		}
-
+		const itemBox = this._item.GetBoundingBox();
+		const nextcellBox = this._item.GetNextCell().GetBoundingBox();
+		const currentCenter = itemBox.GetCenter();
 		const currentMiddle = itemBox.GetMiddle();
 		const nextMiddle = nextcellBox.GetMiddle();
-		const currentCenter = itemBox.GetCenter();
 		const nextCenter = nextcellBox.GetCenter();
 
-		if (this.IsCloseEnough(currentCenter, nextCenter, this._item)) {
-			itemBox.X = nextcellBox.X;
+		const xRatio = this.GetXRatio(itemBox.GetCentralPoint(), nextcellBox.GetCentralPoint());
+		const ySign = nextMiddle < currentMiddle ? -1 : 1;
+		const xSign = nextCenter < currentCenter ? -1 : 1;
+
+		if (!this.IsCloseEnough(currentCenter, nextCenter, this._item)) {
+			itemBox.X += xSign * this._item.TranslationSpeed * xRatio;
 		}
 
-		if (this.IsCloseEnough(currentMiddle, nextMiddle, this._item)) {
-			itemBox.Y = nextcellBox.Y;
+		if (!this.IsCloseEnough(currentMiddle, nextMiddle, this._item)) {
+			itemBox.Y += ySign * this._item.TranslationSpeed;
 		}
 
-		if (currentMiddle == nextMiddle && currentCenter == nextCenter) {
+		if (
+			this.IsCloseEnough(currentCenter, nextCenter, this._item) &&
+			this.IsCloseEnough(currentMiddle, nextMiddle, this._item)
+		) {
 			this._item.MoveNextCell();
 		}
-	}
-
-	public GetPercentageTranslation(): number {
-		var fullDistance = DistanceHelper.GetDist(
-			this._item.GetCurrentCell().GetCentralPoint(),
-			this._item.GetNextCell().GetCentralPoint()
-		);
-		var currentDistance = DistanceHelper.GetDist(
-			this._item.GetBoundingBox().GetCentralPoint(),
-			this._item.GetNextCell().GetCentralPoint()
-		);
-		return currentDistance / fullDistance * 100;
 	}
 }

@@ -67,6 +67,7 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 	}
 
 	public Destroy(): void {
+		this.IsUpdatable = false;
 		GameHelper.Render.Remove(this);
 	}
 

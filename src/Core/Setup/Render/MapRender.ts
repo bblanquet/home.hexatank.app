@@ -14,7 +14,7 @@ import { BasicItem } from '../../Items/BasicItem';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { MapContext } from '../Generator/MapContext';
 import { MapMode } from '../Generator/MapMode';
-import { AreaSearch } from '../../Ia/Utils/AreaSearch';
+import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 
 export class MapRender {
 	private _hqRender: HqRender;
@@ -39,7 +39,7 @@ export class MapRender {
 			playgroundItems.push(cell);
 		});
 
-		let areas = new AreaSearch().GetAreas(cells.Keys(), mapContext.CenterItem.Position);
+		let areas = new AreaSearch(cells.Keys()).GetAreas(mapContext.CenterItem.Position);
 		this.SetGrass(cells, mapContext.MapMode, areas, playgroundItems);
 		this.AddClouds(playgroundItems);
 		const hqs = this._hqRender.GetHq(context, cells, mapContext.Hqs, playgroundItems);

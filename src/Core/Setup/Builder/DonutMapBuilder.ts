@@ -1,7 +1,7 @@
 import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { IPlaygroundBuilder } from './IPlaygroundBuilder';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
-import { AreaSearch } from '../../Ia/Utils/AreaSearch';
+import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 import { CircleMapBuilder } from './CircleMapBuilder';
 
 export class DonutMapBuilder implements IPlaygroundBuilder {
@@ -54,8 +54,8 @@ export class DonutMapBuilder implements IPlaygroundBuilder {
 			donutCoo.Add(coordinate.ToString(), coordinate);
 		});
 
-		const areaSearch = new AreaSearch();
-		var result = areaSearch.GetAreas(coordinates, coordinates.Get(this.GetMidle(ranges).ToString()));
+		const areaSearch = new AreaSearch(coordinates);
+		var result = areaSearch.GetAreas(coordinates.Get(this.GetMidle(ranges).ToString()));
 		result.shift();
 		return result.filter((a) => a.GetNeighbours().length === 6 && donutCoo.Exist(a.ToString()));
 	}

@@ -1,8 +1,8 @@
-import { Headquarter } from '../../Items/Cell/Field/Headquarter';
-import { ItemSkin } from '../../Items/ItemSkin';
-import { Cell } from '../../Items/Cell/Cell';
-import { IDoable } from '../Decision/IDoable';
-import { GameContext } from '../../Framework/GameContext';
+import { Headquarter } from '../Items/Cell/Field/Headquarter';
+import { ItemSkin } from '../Items/ItemSkin';
+import { Cell } from '../Items/Cell/Cell';
+import { IDoable } from './Decision/IDoable';
+import { GameContext } from '../Framework/GameContext';
 
 export class IaHeadquarter extends Headquarter {
 	private _decision: IDoable;
@@ -11,7 +11,7 @@ export class IaHeadquarter extends Headquarter {
 		super(skin, cell, gameContext);
 	}
 
-	public SetDoer(decision: IDoable): void {
+	public SetDoable(decision: IDoable): void {
 		this._decision = decision;
 	}
 

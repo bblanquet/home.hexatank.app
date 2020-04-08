@@ -1,10 +1,10 @@
 import { isNullOrUndefined } from 'util';
-import { ITimer } from '../../../Utils/Timer/ITimer';
-import { Cell } from '../../../Items/Cell/Cell';
-import { Tank } from '../../../Items/Unit/Tank';
-import { KingdomArea } from '../Utils/KingdomArea';
-import { Timer } from '../../../Utils/Timer/Timer';
-import { SimpleOrder } from '../../Order/SimpleOrder';
+import { ITimer } from '../../../../Utils/Timer/ITimer';
+import { Cell } from '../../../../Items/Cell/Cell';
+import { Tank } from '../../../../Items/Unit/Tank';
+import { KingdomArea } from '../../Utils/KingdomArea';
+import { Timer } from '../../../../Utils/Timer/Timer';
+import { SimpleOrder } from '../../../Order/SimpleOrder';
 
 export class TroopDecisionMaker {
 	private _changePositionTimer: ITimer;

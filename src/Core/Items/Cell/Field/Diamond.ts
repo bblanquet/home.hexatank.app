@@ -7,7 +7,6 @@ import { Archive } from '../../../Framework/ResourceArchiver';
 import { CellState } from '../CellState';
 import { Vehicle } from '../../Unit/Vehicle';
 import { AliveItem } from '../../AliveItem';
-import { GameHelper } from '../../../Framework/GameHelper';
 import { Crater } from '../../Environment/Crater';
 import { InteractionContext } from '../../../Interaction/InteractionContext';
 

@@ -1,16 +1,16 @@
-import { Groups } from '../../../Utils/Collections/Groups';
-import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
-import { AreaSearch } from '../Utils/AreaSearch';
-import { CellContext } from '../../../Items/Cell/CellContext';
-import { KingdomArea } from '../Utils/KingdomArea';
-import { Cell } from '../../../Items/Cell/Cell';
+import { KingdomArea } from '../../Utils/KingdomArea';
+import { CellContext } from '../../../../Items/Cell/CellContext';
+import { Cell } from '../../../../Items/Cell/Cell';
+import { Area } from '../../Utils/Area';
+import { TroopSituation } from '../../Troop/TroopSituation';
 import { isNullOrUndefined } from 'util';
-import { TroopSituation } from '../Troop/TroopSituation';
-import { TroopDestination } from '../Utils/TroopDestination';
-import { Area } from '../Utils/Area';
-import { SimpleOrder } from '../../Order/SimpleOrder';
-import { Tank } from '../../../Items/Unit/Tank';
-import { AStarEngine } from '../../AStarEngine';
+import { SimpleOrder } from '../../../Order/SimpleOrder';
+import { Dictionnary } from '../../../../Utils/Collections/Dictionnary';
+import { Tank } from '../../../../Items/Unit/Tank';
+import { Groups } from '../../../../Utils/Collections/Groups';
+import { TroopDestination } from '../../Utils/TroopDestination';
+import { AreaSearch } from '../../Utils/AreaSearch';
+import { AStarEngine } from '../../../AStarEngine';
 
 export class BasicAreaDecisionMaker {
 	private _areaSearch: AreaSearch;

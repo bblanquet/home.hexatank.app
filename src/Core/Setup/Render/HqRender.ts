@@ -1,9 +1,12 @@
-import { BasicKingdomDecisionMaker } from './../../Ia/Decision/Kingdom/BasicKingdomDecisionMaker';
+import { RequestMaker } from './../../Ia/Decision/RequestMaker/RequestMaker';
+import { ExpansionMaker } from './../../Ia/Decision/ExpansionMaker/ExpansionMaker';
+import { BasicRequestHandler } from './../../Ia/Decision/RequestHandler/BasicRequestHandler';
+import { KingdomDecisionMaker } from '../../Ia/Decision/KingdomDecisionMaker';
 import { GameContext } from './../../Framework/GameContext';
-import { AreaSearch } from '../../Ia/Utils/AreaSearch';
+import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 import { CellContext } from './../../Items/Cell/CellContext';
 import { Archive } from '../../Framework/ResourceArchiver';
-import { IaHeadquarter } from '../../Ia/Hq/IaHeadquarter';
+import { IaHeadquarter } from '../../Ia/IaHeadquarter';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 import { Item } from '../../Items/Item';
 import { Headquarter } from '../../Items/Cell/Field/Headquarter';
@@ -11,7 +14,7 @@ import { ItemSkin } from '../../Items/ItemSkin';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { DiamondHq } from '../Generator/DiamondHq';
 import { Cell } from '../../Items/Cell/Cell';
-import { Area } from '../../Ia/Utils/Area';
+import { Area } from '../../Ia/Decision/Utils/Area';
 
 export class HqRender {
 	_skins: ItemSkin[] = [
@@ -124,14 +127,21 @@ export class HqRender {
 	): Headquarter {
 		const cell = cells.Get(hqcell);
 		const diamond = new Diamond(cells.Get(diamondcell));
-		const areas = new AreaSearch()
-			.GetAreas(cells.Keys(), cell.GetCoordinate())
-			.map((coo) => new Area(cells.Get(coo)));
+		const areas = new AreaSearch(cells.Keys())
+			.GetAreas(cell.GetCoordinate())
+			.map((coo) => new Area(cells.Get(coo), cells));
 
 		const hq = new IaHeadquarter(skin, cell, context);
-		const decision = new BasicKingdomDecisionMaker(hq, cells, areas);
+		const decision = new KingdomDecisionMaker(hq, areas);
+
+		decision.Setup(
+			new RequestMaker(),
+			new BasicRequestHandler(hq, decision),
+			new ExpansionMaker(hq, decision, cells)
+		);
+
 		decision.Diamond = diamond;
-		hq.SetDoer(decision);
+		hq.SetDoable(decision);
 
 		items.push(diamond);
 		items.push(hq);

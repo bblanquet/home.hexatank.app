@@ -4,7 +4,7 @@ import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { SandDecorator } from '../../Items/Cell/Decorator/SandDecorator';
 import { MapMode } from './MapMode';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
-import { AreaSearch } from '../../Ia/Utils/AreaSearch';
+import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 import { ForestDecorator } from '../../Items/Cell/Decorator/ForestDecorator';
 import { DistanceHelper } from '../../Items/Unit/MotionHelpers/DistanceHelper';
 import { MapContext } from './MapContext';
@@ -109,10 +109,10 @@ export class MapGenerator {
 		hqCount: number
 	): Array<HexAxial> {
 		const diamonds = new Array<HexAxial>();
-		const areaEngine = new AreaSearch();
+		const areaEngine = new AreaSearch(coordinates);
 		let forbiddencells = new Array<HexAxial>();
 		hqcells.forEach((hqcell) => {
-			forbiddencells = forbiddencells.concat(areaEngine.GetIncludedFirstRange(coordinates, hqcell));
+			forbiddencells = forbiddencells.concat(areaEngine.GetIncludedFirstRange(hqcell));
 		});
 		for (let i = 0; i < hqCount; i++) {
 			diamonds.push(this.GetDiamondPosition(hqcells[i], forbiddencells, coordinates));
@@ -125,9 +125,9 @@ export class MapGenerator {
 		forbiddencells: HexAxial[],
 		coordinates: Dictionnary<HexAxial>
 	): HexAxial {
-		const areaEngine = new AreaSearch();
+		const areaEngine = new AreaSearch(coordinates);
 		const secondRange = areaEngine
-			.GetIncludedSecondRange(coordinates, cell)
+			.GetIncludedSecondRange(cell)
 			.filter((c) => !forbiddencells.some((fc) => fc.Q == c.Q && fc.R == c.R));
 		var result = DistanceHelper.GetRandomElement(secondRange);
 		secondRange.forEach((c) => {

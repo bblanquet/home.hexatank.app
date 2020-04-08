@@ -1,4 +1,4 @@
-import { Cell } from '../../Items/Cell/Cell';
+import { Cell } from '../../../Items/Cell/Cell';
 import { isNullOrUndefined } from 'util';
 
 export class TroopDestination {

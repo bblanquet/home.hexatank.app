@@ -1,9 +1,32 @@
-import { Cell } from '../../Items/Cell/Cell';
+import { Headquarter } from '../../../Items/Cell/Field/Headquarter';
+import { Diamond } from '../../../Items/Cell/Field/Diamond';
+import { Cell } from '../../../Items/Cell/Cell';
 import { isNullOrUndefined } from 'util';
-import { AliveItem } from '../../Items/AliveItem';
+import { AliveItem } from '../../../Items/AliveItem';
+import { CellContext } from '../../../Items/Cell/CellContext';
+import { AreaSearch } from './AreaSearch';
 
 export class Area {
-	constructor(private _centralCell: Cell) {}
+	private _areaSearch: AreaSearch;
+	constructor(private _centralCell: Cell, private _cells: CellContext<Cell>) {
+		this._areaSearch = new AreaSearch(this._cells.Keys());
+	}
+
+	public GetAroundAreas(): Area[] {
+		return this._areaSearch
+			.GetExcludedFirstRange(this.GetCentralCell().GetCoordinate())
+			.map((coo) => new Area(this._cells.Get(coo), this._cells));
+	}
+
+	public HasHq(): boolean {
+		const field = this.GetCentralCell().GetField();
+		return field instanceof Headquarter;
+	}
+
+	public HasDiamond(): boolean {
+		const field = this.GetCentralCell().GetField();
+		return field instanceof Diamond;
+	}
 
 	public GetCentralCell(): Cell {
 		return this._centralCell;

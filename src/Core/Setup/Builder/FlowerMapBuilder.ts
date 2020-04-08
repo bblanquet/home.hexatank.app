@@ -1,7 +1,7 @@
 import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { IPlaygroundBuilder } from './IPlaygroundBuilder';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
-import { AreaSearch } from '../../Ia/Utils/AreaSearch';
+import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 import { CircleMapBuilder } from './CircleMapBuilder';
 
 export class FlowerMapBuilder implements IPlaygroundBuilder {
@@ -17,8 +17,8 @@ export class FlowerMapBuilder implements IPlaygroundBuilder {
 		initCoos.forEach((initCoo) => {
 			coordinates.Add(initCoo.ToString(), initCoo);
 		});
-		const areaEngine = new AreaSearch();
-		var areas = areaEngine.GetAreas(coordinates, coordinates.Get(this.GetMidle(ranges).ToString()));
+		const areaEngine = new AreaSearch(coordinates);
+		var areas = areaEngine.GetAreas(coordinates.Get(this.GetMidle(ranges).ToString()));
 		var result = new Array<HexAxial>();
 		areas.forEach((area) => {
 			const around = area.GetNeighbours();
@@ -51,8 +51,8 @@ export class FlowerMapBuilder implements IPlaygroundBuilder {
 		this.Build(ranges).forEach((coordinate) => {
 			coordinates.Add(coordinate.ToString(), coordinate);
 		});
-		const areaSearch = new AreaSearch();
-		var result = areaSearch.GetAreas(coordinates, coordinates.Get(this.GetMidle(ranges).ToString()));
+		const areaEngine = new AreaSearch(coordinates);
+		var result = areaEngine.GetAreas(coordinates.Get(this.GetMidle(ranges).ToString()));
 		result.shift();
 		return result.filter((a) => a.GetNeighbours().length === 6);
 	}

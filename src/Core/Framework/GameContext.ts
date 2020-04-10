@@ -14,7 +14,6 @@ export class GameContext {
 	public MainHq: Headquarter;
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
 	public IsFlagingMode: boolean;
-	public IsPause: boolean;
 
 	public SetHqs(hqs: Headquarter[]) {
 		this._hqs = hqs;

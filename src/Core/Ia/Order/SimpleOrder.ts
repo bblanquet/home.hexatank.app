@@ -134,7 +134,11 @@ export class SimpleOrder extends Order {
 			}
 		}
 		this.ClearPath();
-		var nextcells = new AStarEngine<Cell>().GetPath(this._v.GetCurrentCell(), this.Dest);
+		var nextcells = new AStarEngine<Cell>((c: Cell) => !isNullOrUndefined(c) && !c.IsBlocked()).GetPath(
+			this._v.GetCurrentCell(),
+			this.Dest,
+			true
+		);
 
 		if (isNullOrUndefined(nextcells)) {
 			return false;

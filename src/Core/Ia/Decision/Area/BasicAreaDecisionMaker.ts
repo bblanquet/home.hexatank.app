@@ -1,15 +1,15 @@
-import { Groups } from '../../../Utils/Collections/Groups';
-import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
-import { AreaSearch } from '../Utils/AreaSearch';
-import { CellContext } from '../../../Items/Cell/CellContext';
+import { TroopSituation } from './../Troop/TroopSituation';
 import { KingdomArea } from '../Utils/KingdomArea';
+import { CellContext } from '../../../Items/Cell/CellContext';
 import { Cell } from '../../../Items/Cell/Cell';
-import { isNullOrUndefined } from 'util';
-import { TroopSituation } from '../Troop/TroopSituation';
-import { TroopDestination } from '../Utils/TroopDestination';
 import { Area } from '../Utils/Area';
+import { isNullOrUndefined } from 'util';
 import { SimpleOrder } from '../../Order/SimpleOrder';
+import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
 import { Tank } from '../../../Items/Unit/Tank';
+import { Groups } from '../../../Utils/Collections/Groups';
+import { TroopDestination } from '../Utils/TroopDestination';
+import { AreaSearch } from '../Utils/AreaSearch';
 import { AStarEngine } from '../../AStarEngine';
 
 export class BasicAreaDecisionMaker {
@@ -193,7 +193,10 @@ export class BasicAreaDecisionMaker {
 				for (let cellKey in dangerLevelcells[danger]) {
 					var destination = new TroopDestination(
 						dangerLevelcells[danger][cellKey],
-						new AStarEngine<Cell>().GetPath(troop.Tank.GetCurrentCell(), dangerLevelcells[danger][cellKey])
+						new AStarEngine<Cell>((c: Cell) => !isNullOrUndefined(c) && !c.IsBlocked()).GetPath(
+							troop.Tank.GetCurrentCell(),
+							dangerLevelcells[danger][cellKey]
+						)
 					);
 
 					if (!troopSituation.Destinations.hasOwnProperty(danger)) {

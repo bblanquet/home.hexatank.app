@@ -243,6 +243,7 @@ export default class CanvasComponent extends Component<
 		this.setState({
 			HasMenu: !this.state.HasMenu
 		});
+		GameSettings.IsPause = this.state.HasMenu;
 	}
 
 	private SetFlag(): void {

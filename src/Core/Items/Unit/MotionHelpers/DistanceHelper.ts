@@ -1,11 +1,6 @@
 import { HexAxial } from '../../../Utils/Geometry/HexAxial';
-import { Point } from '../../../Utils/Geometry/Point';
 
 export class DistanceHelper {
-	public static GetDist(point: Point, compareToPoint: Point): number {
-		return Math.abs(Math.sqrt(Math.pow(point.X - compareToPoint.X, 2) + Math.pow(point.Y - compareToPoint.Y, 2)));
-	}
-
 	public static GetDistance(point: HexAxial, compareToPoint: HexAxial): number {
 		return Math.abs(Math.sqrt(Math.pow(point.Q - compareToPoint.Q, 2) + Math.pow(point.R - compareToPoint.R, 2)));
 	}

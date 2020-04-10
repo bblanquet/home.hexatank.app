@@ -3,6 +3,8 @@ import { AStarNode } from './AStarNode';
 import { ICell } from '../Items/Cell/ICell';
 
 export class AStarEngine<T extends ICell> {
+	constructor(private _filter: (cell: ICell) => boolean) {}
+
 	private ConstructPath(node: AStarNode<T>): Array<T> {
 		var cells = new Array<T>();
 		while (node.Parent != null) {
@@ -53,10 +55,7 @@ export class AStarEngine<T extends ICell> {
 		}
 	}
 
-	//console.log(`%c start: ${startcell.GetCoordinate().Q} ${startcell.GetCoordinate().R} `,'color:green;');
-	//console.log(`%c goal: ${goalcell.GetCoordinate().Q} ${goalcell.GetCoordinate().R} `,'color:green;');
-
-	public GetPath(startcell: T, goalcell: T): Array<T> {
+	public GetPath(startcell: T, goalcell: T, fastestWay: boolean = false): Array<T> {
 		var candidates = new Array<AStarNode<T>>();
 		var path = new Array<AStarNode<T>>();
 
@@ -71,7 +70,7 @@ export class AStarEngine<T extends ICell> {
 
 		while (this.IsNotEmpty(candidates)) {
 			if (GameSettings.MapSize * 4 < path.length) {
-				console.log(`%c COULD NOT FIND ,opened nodes: ${candidates.length}`, 'color:purple;');
+				//console.log(`%c COULD NOT FIND ,opened nodes: ${candidates.length}`, 'color:purple;');
 				return null;
 			}
 
@@ -81,9 +80,10 @@ export class AStarEngine<T extends ICell> {
 				return this.ConstructPath(bestCandidate);
 			}
 
-			bestCandidate.Cell.GetNeighbourhood().forEach((nextCell) => {
+			bestCandidate.Cell.GetFilteredNeighbourhood(this._filter).forEach((nextCell) => {
 				const nextNode = this.GetNode(<T>nextCell, candidates, path);
-				const moveToNextCost = bestCandidate.FromStartCost + bestCandidate.GetEstimatedCost(nextNode);
+				const moveToNextCost =
+					bestCandidate.FromStartCost + bestCandidate.GetEstimatedCost(nextNode, fastestWay);
 
 				if (this.IsNew(nextNode.Cell, candidates, path) || moveToNextCost < nextNode.FromStartCost) {
 					nextNode.Parent = bestCandidate;
@@ -101,18 +101,13 @@ export class AStarEngine<T extends ICell> {
 			});
 			path.push(bestCandidate);
 		}
-		console.log(`%c COULD NOT FIND ,opened nodes: ${candidates.length}`, 'color:purple;');
+		//console.log(`%c COULD NOT FIND ,opened nodes: ${candidates.length}`, 'color:purple;');
 		return null;
 	}
 
 	private IsNotEmpty(frontierNodes: AStarNode<T>[]) {
 		return 0 < frontierNodes.length;
 	}
-
-	//console.log(`%c opened nodes: ${openedNodes.length} `,'font-weight:bold;color:red;');
-	//console.log(`%c closed nodes: ${closedNodes.length} `,'font-weight:bold;color:red;');
-	//console.log(`%c current: ${currentNode.cell.GetCoordinate().Q} ${currentNode.cell.GetCoordinate().R} cost:${currentNode.GetCost()}`,'color:blue;');
-	//console.log(`%c next: ${cell.GetCoordinate().Q} ${cell.GetCoordinate().R} cost:${nextNode.GetCost()} ,opened nodes: ${openedNodes.length}`,'color:purple;');
 
 	private PopLessCostlyCandidate(candidates: Array<AStarNode<T>>): AStarNode<T> {
 		var currentNode = candidates[0];

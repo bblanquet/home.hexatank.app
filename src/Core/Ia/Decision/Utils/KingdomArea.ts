@@ -1,3 +1,8 @@
+import { DistanceHelper } from './../../../Items/Unit/MotionHelpers/DistanceHelper';
+import { HeadQuarterField } from './../../../Items/Cell/Field/HeadquarterField';
+import { FastField } from './../../../Items/Cell/Field/FastField';
+import { ICell } from './../../../Items/Cell/ICell';
+import { AStarEngine } from './../../AStarEngine';
 import { TroopDecisionMaker } from '../Troop/TroopDecisionMaker';
 import { IKingdomDecisionMaker } from '../IKingdomDecisionMaker';
 import { Area } from './Area';
@@ -34,8 +39,39 @@ export class KingdomArea {
 		return this.Troops;
 	}
 
+	public GetDistanceFromHq(): number {
+		return DistanceHelper.GetDistance(this.GetCentralCell().GetCoordinate(), this._hq.GetCell().GetCoordinate());
+	}
+
 	public GetCentralCell(): Cell {
 		return this._spot.GetCentralCell();
+	}
+
+	public GetAllyAreas(): KingdomArea[] {
+		const spots = this._spot.GetAroundAreas();
+		const allySpots = new Array<KingdomArea>();
+		const k = this._kindgom.GetKingdomAreas();
+		spots.forEach((s) => {
+			const coo = s.GetCentralCell().GetCoordinate().ToString();
+			if (k.Exist(coo)) {
+				allySpots.push(k.Get(coo));
+			}
+		});
+		return allySpots;
+	}
+
+	public IsConnected(): boolean {
+		const pathFinder = new AStarEngine<Cell>((c: ICell) => {
+			let cell = c as Cell;
+			return (
+				cell !== null &&
+				(cell.GetField() instanceof FastField ||
+					cell.GetField() instanceof HeadQuarterField ||
+					cell.GetField() instanceof Headquarter)
+			);
+		});
+		const path = pathFinder.GetPath(this.GetCentralCell(), this._hq.GetCell());
+		return path !== null;
 	}
 
 	public GetOuterFoeCount(): number {

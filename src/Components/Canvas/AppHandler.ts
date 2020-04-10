@@ -1,8 +1,6 @@
 import { ViewContext } from './../../Core/Utils/Geometry/ViewContext';
 import { GameSettings } from './../../Core/Framework/GameSettings';
 import { MapMode } from '../../Core/Setup/Generator/MapMode';
-import { Cell } from '../../Core/Items/Cell/Cell';
-import { AStarEngine } from '../../Core/Ia/AStarEngine';
 import { ItemsUpdater } from '../../Core/ItemsUpdater';
 import { InputNotifier } from '../../Core/Interaction/InputNotifier';
 import { InteractionContext } from '../../Core/Interaction/InteractionContext';
@@ -11,12 +9,9 @@ const Viewport = require('pixi-viewport').Viewport;
 export class AppHandler {
 	public InputManager: InputNotifier;
 	public InteractionContext: InteractionContext;
-
 	private _viewPort: any;
 	private _app: PIXI.Application;
-
 	public InteractionManager: PIXI.interaction.InteractionManager;
-	public Engine: AStarEngine<Cell>;
 	public Playground: ItemsUpdater;
 
 	public GetApp(): PIXI.Application {
@@ -46,7 +41,6 @@ export class AppHandler {
 		this._viewPort.drag().pinch().wheel().decelerate();
 		this._app.stage.addChild(this._viewPort);
 
-		this.Engine = new AStarEngine<Cell>();
 		this.Playground = new ItemsUpdater(new ViewContext());
 		this.InputManager = new InputNotifier();
 	}

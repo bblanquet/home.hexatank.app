@@ -1,6 +1,6 @@
 import { IExpansionMaker } from './IExpansionMaker';
 import { Headquarter } from '../../../Items/Cell/Field/Headquarter';
-import { KingdomDecisionMaker } from '../KingdomDecisionMaker';
+import { Kingdom } from '../Kingdom';
 import { Area } from '../Utils/Area';
 import { Point } from '../../../Utils/Geometry/Point';
 import { isNullOrUndefined } from 'util';
@@ -11,7 +11,7 @@ import { CellContext } from '../../../Items/Cell/CellContext';
 import { Cell } from '../../../Items/Cell/Cell';
 
 export class ExpansionMaker implements IExpansionMaker {
-	constructor(private _hq: Headquarter, private _decision: KingdomDecisionMaker, private _cells: CellContext<Cell>) {}
+	constructor(private _hq: Headquarter, private _decision: Kingdom, private _cells: CellContext<Cell>) {}
 
 	public Expand(): void {
 		const area = this.FindArea();

@@ -1,3 +1,4 @@
+import { FastField } from './Field/FastField';
 import { GameContext } from './../../Framework/GameContext';
 import { CellContext } from './CellContext';
 import { Item } from '../Item';
@@ -47,6 +48,13 @@ export class Cell extends Item implements ICell, ISelectable {
 			e.anchor.set(0.5);
 		});
 		this._circle = new PIXI.Circle(0, 0, GameSettings.Size / 2);
+	}
+	GetCostRatio(): number {
+		if (this.GetField() instanceof FastField) {
+			return 0.5;
+		} else {
+			return 1;
+		}
 	}
 
 	public GetState(): CellState {
@@ -112,6 +120,10 @@ export class Cell extends Item implements ICell, ISelectable {
 
 	public IsBlocked(): boolean {
 		return (!isNullOrUndefined(this._field) && this._field.IsBlocking()) || this._occupier != null;
+	}
+
+	public HasBlockingField(): boolean {
+		return !isNullOrUndefined(this._field) && this._field.IsBlocking();
 	}
 
 	public IsShootable(): boolean {
@@ -281,10 +293,21 @@ export class Cell extends Item implements ICell, ISelectable {
 	}
 
 	public GetNeighbourhood(range: number = 1): Array<ICell> {
-		var cells = new Array<ICell>();
+		let cells = new Array<ICell>();
 		this.GetCoordinate().GetNeighbours(range).forEach((coordinate) => {
-			var cell = this._cells.Get(coordinate);
+			let cell = this._cells.Get(coordinate);
 			if (cell != null && !cell.IsBlocked()) {
+				cells.push(cell);
+			}
+		});
+		return cells;
+	}
+
+	public GetFilteredNeighbourhood(filter: (cell: ICell) => boolean): Array<ICell> {
+		let cells = new Array<ICell>();
+		this.GetCoordinate().GetNeighbours(1).forEach((coordinate) => {
+			let cell = this._cells.Get(coordinate);
+			if (filter(cell)) {
 				cells.push(cell);
 			}
 		});

@@ -1,7 +1,7 @@
 import { RequestMaker } from './../../Ia/Decision/RequestMaker/RequestMaker';
 import { ExpansionMaker } from './../../Ia/Decision/ExpansionMaker/ExpansionMaker';
 import { BasicRequestHandler } from './../../Ia/Decision/RequestHandler/BasicRequestHandler';
-import { KingdomDecisionMaker } from '../../Ia/Decision/KingdomDecisionMaker';
+import { Kingdom } from '../../Ia/Decision/Kingdom';
 import { GameContext } from './../../Framework/GameContext';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 import { CellContext } from './../../Items/Cell/CellContext';
@@ -132,7 +132,7 @@ export class HqRender {
 			.map((coo) => new Area(cells.Get(coo), cells));
 
 		const hq = new IaHeadquarter(skin, cell, context);
-		const decision = new KingdomDecisionMaker(hq, areas);
+		const decision = new Kingdom(hq, areas);
 
 		decision.Setup(
 			new RequestMaker(),

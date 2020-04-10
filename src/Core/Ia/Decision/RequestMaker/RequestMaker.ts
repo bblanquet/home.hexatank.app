@@ -13,22 +13,26 @@ export class RequestMaker implements IRequestMaker {
 			return request;
 		}
 
-		return this.GetEconomyRequest(area);
+		request = this.GetTruckRequest(area);
+
+		if (request.RequestType !== RequestType.None) {
+			return request;
+		}
+
+		return this.GetRoadRequest(area);
 	}
 
 	public GetDefenseRequest(area: KingdomArea): AreaRequest {
 		const enemies = area.GetFoesCount();
 		if (enemies === 0) {
 			if (area.Troops.length === 0) {
-				console.log(`%c [LOW REQUEST] `, 'font-weight:bold;color:green;');
 				return new AreaRequest(RequestType.Tank, RequestPriority.Low, 1, area);
 			}
 		} else if (area.Troops.length <= enemies) {
 			let requestedUnits = area.Troops.length - area.GetFoesCount();
 
-			if (requestedUnits >= 0) {
-				if (area.GetInnerFoeCount() > 0) {
-					console.log(`%c [HIGH REQUEST] Enemy Count ${area.GetFoesCount()}`, 'font-weight:bold;color:red;');
+			if (0 <= requestedUnits) {
+				if (0 < area.GetInnerFoeCount()) {
 					return new AreaRequest(RequestType.Tank, RequestPriority.High, requestedUnits + 1, area);
 				}
 
@@ -39,22 +43,30 @@ export class RequestMaker implements IRequestMaker {
 				}
 
 				if (area.Troops.length < area.GetOuterFoeCount()) {
-					console.log(
-						`%c [HIGH MEDIUM] Enemy Count ${area.GetFoesCount()}`,
-						'font-weight:bold;color:orange;'
-					);
 					return new AreaRequest(RequestType.Tank, RequestPriority.Medium, requestedUnits, area);
 				}
 			}
 		}
-		return new AreaRequest(RequestType.None, RequestPriority.None, 0, area);
+		return this.NoRequest(area);
 	}
 
-	public GetEconomyRequest(area: KingdomArea): AreaRequest {
+	public GetTruckRequest(area: KingdomArea): AreaRequest {
 		if (area.GetSpot().HasDiamond() && isNullOrUndefined(area.Truck)) {
 			return new AreaRequest(RequestType.Truck, RequestPriority.High, 1, area);
 		} else {
-			return new AreaRequest(RequestType.None, RequestPriority.None, 0, area);
+			return this.NoRequest(area);
 		}
+	}
+
+	public GetRoadRequest(area: KingdomArea): AreaRequest {
+		if (!area.IsConnected() && 0 < area.GetAllyAreas().length) {
+			return new AreaRequest(RequestType.Road, RequestPriority.High, 1, area);
+		} else {
+			return this.NoRequest(area);
+		}
+	}
+
+	private NoRequest(area: KingdomArea): AreaRequest {
+		return new AreaRequest(RequestType.None, RequestPriority.None, 0, area);
 	}
 }

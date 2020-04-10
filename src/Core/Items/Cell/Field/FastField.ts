@@ -32,6 +32,11 @@ export class FastField extends Field {
 	public Select(context: InteractionContext): boolean {
 		return false;
 	}
+
+	public Update(viewX: number, viewY: number): void {
+		super.Update(viewX, viewY);
+	}
+
 	Support(vehicule: Vehicle): void {
 		const sum = this.GetInfluenceSum(vehicule);
 		vehicule.TranslationSpeed = GameSettings.TranslationSpeed * (2 + sum);

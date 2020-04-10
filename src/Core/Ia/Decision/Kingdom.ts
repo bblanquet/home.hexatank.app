@@ -18,13 +18,13 @@ import { IRequestHandler } from './RequestHandler/IRequestHandler';
 import { IRequestMaker } from './RequestMaker/IRequestMaker';
 import { Tank } from '../../Items/Unit/Tank';
 
-export class KingdomDecisionMaker implements IDoable, IKingdomDecisionMaker {
+export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	public AreaDecisions: BasicAreaDecisionMaker[];
 	public Trucks: Array<Truck> = new Array<Truck>();
 	public Tanks: Array<Tank> = new Array<Tank>();
 	public CellAreas: Dictionnary<BasicAreaDecisionMaker>;
 	public Diamond: Diamond;
-	private _idleTimer: Timer = new Timer(40);
+	private _idleTimer: Timer = new Timer(125);
 	public IdleTanks: IdleUnitContainer;
 	private _requestMaker: IRequestMaker;
 	private _requestHandler: IRequestHandler;
@@ -82,6 +82,15 @@ export class KingdomDecisionMaker implements IDoable, IKingdomDecisionMaker {
 					requests.Add(request.Priority, request);
 				}
 			});
+
+			const hCount = requests.Exist(RequestPriority.High) ? requests.Get(RequestPriority.High).length : 0;
+			const mCount = requests.Exist(RequestPriority.Medium) ? requests.Get(RequestPriority.Medium).length : 0;
+			const lCount = requests.Exist(RequestPriority.Low) ? requests.Get(RequestPriority.Low).length : 0;
+			console.log(
+				`%c [MONEY] ${this._hq.GetAmount()} [A] ${this.AreaDecisions
+					.length} [H] ${hCount} [M] ${mCount} [L] ${lCount}`,
+				'font-weight:bold;color:red;'
+			);
 
 			if (requests.Any()) {
 				this._requestHandler.HandleRequests(requests);

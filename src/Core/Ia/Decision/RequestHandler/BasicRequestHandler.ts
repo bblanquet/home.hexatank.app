@@ -1,8 +1,10 @@
+import { BasicField } from './../../../Items/Cell/Field/BasicField';
+import { FastField } from './../../../Items/Cell/Field/FastField';
+import { Groups } from './../../../Utils/Collections/Groups';
 import { Truck } from './../../../Items/Unit/Truck';
 import { Headquarter } from '../../../Items/Cell/Field/Headquarter';
 import { IRequestHandler } from './IRequestHandler';
-import { Groups } from '../../../Utils/Collections/Groups';
-import { KingdomDecisionMaker } from '../KingdomDecisionMaker';
+import { Kingdom } from '../Kingdom';
 import { RequestPriority } from '../Utils/RequestPriority';
 import { AreaRequest } from '../Utils/AreaRequest';
 import { isNullOrUndefined } from 'util';
@@ -15,9 +17,10 @@ import { RequestType } from '../Utils/RequestType';
 import { TruckPatrolOrder } from '../../Order/TruckPatrolOrder';
 import { HqFieldOrder } from '../../Order/HqFieldOrder';
 import { DiamondFieldOrder } from '../../Order/DiamondFieldOrder';
+import { AStarEngine } from '../../AStarEngine';
 
 export class BasicRequestHandler implements IRequestHandler {
-	constructor(private _hq: Headquarter, private _decision: KingdomDecisionMaker) {}
+	constructor(private _hq: Headquarter, private _decision: Kingdom) {}
 
 	public HandleRequests(requests: Groups<AreaRequest>) {
 		if (requests.Exist(RequestPriority.High)) {
@@ -26,6 +29,8 @@ export class BasicRequestHandler implements IRequestHandler {
 					this.HandleHighTankRequest(request);
 				} else if (request.RequestType === RequestType.Truck) {
 					this.HandleHighTruckRequest(request);
+				} else if (request.RequestType === RequestType.Road) {
+					this.HandleRoadRequest(request);
 				}
 			});
 		}
@@ -57,7 +62,6 @@ export class BasicRequestHandler implements IRequestHandler {
 		while (request.RequestCount > 0) {
 			const isPassed = this.BuyTank(request.Area);
 			if (isPassed) {
-				this.Log(cell);
 				request.RequestCount -= 1;
 			} else {
 				return;
@@ -92,11 +96,43 @@ export class BasicRequestHandler implements IRequestHandler {
 				if (isNullOrUndefined(tank)) {
 					throw 'not possible';
 				}
-				this.LogExcess(cell);
 				request.Area.AddTroop(tank, cell);
 				request.RequestCount -= 1;
 			} else {
 				return;
+			}
+		}
+	}
+
+	private HandleRoadRequest(request: AreaRequest): void {
+		const central = request.Area.GetCentralCell();
+		const allyAreas = request.Area.GetAllyAreas().filter((a) => a.IsConnected());
+		if (0 < allyAreas.length) {
+			const groups = new Groups<KingdomArea>();
+			allyAreas.forEach((area) => {
+				groups.Add(area.GetDistanceFromHq().toString(), area);
+			});
+
+			const min = Math.min(...groups.Keys().map((k) => +k));
+			const target = groups.Get(min.toString())[0];
+
+			const road = new AStarEngine<Cell>(
+				(c: Cell) =>
+					(!isNullOrUndefined(c) && c.GetField() instanceof Headquarter) ||
+					(!isNullOrUndefined(c) && !c.HasBlockingField())
+			).GetPath(central, target.GetCentralCell());
+
+			if (!isNullOrUndefined(road)) {
+				road.push(central);
+				const price = road.length * GameSettings.FieldPrice;
+				if (price < this._hq.GetAmount()) {
+					road.forEach((c) => {
+						if (c.GetField() instanceof BasicField) {
+							new FastField(c);
+							this._hq.Buy(GameSettings.FieldPrice);
+						}
+					});
+				}
 			}
 		}
 	}
@@ -143,7 +179,6 @@ export class BasicRequestHandler implements IRequestHandler {
 								throw 'not possible';
 							}
 							request.Area.AddTroop(tank, freeCell);
-							this.LogSupport(freeCell);
 							request.RequestCount -= 1;
 						} else {
 							return;
@@ -156,16 +191,5 @@ export class BasicRequestHandler implements IRequestHandler {
 		if (request.RequestCount > 0) {
 			this.HandleMediumRequest(request);
 		}
-	}
-
-	private LogSupport(cell: Cell) {
-		console.log(`%c ADD MORE TROOP SUPPORT ${cell.GetCoordinate().ToString()} `, 'font-weight:bold;color:green;');
-	}
-
-	private Log(cell: Cell) {
-		console.log(`%c ADD MORE TROOP BUYING ${cell.GetCoordinate().ToString()}`, 'font-weight:bold;color:green;');
-	}
-	private LogExcess(cell: Cell) {
-		console.log(`%c ADD MORE TROOP EXCESS ${cell.GetCoordinate().ToString()}`, 'font-weight:bold;color:green;');
 	}
 }

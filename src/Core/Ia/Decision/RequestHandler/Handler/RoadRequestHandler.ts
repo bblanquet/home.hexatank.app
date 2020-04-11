@@ -43,6 +43,7 @@ export class RoadRequestHandler implements ISimpleRequestHandler {
 				road.push(central);
 				const price = road.length * GameSettings.FieldPrice;
 				if (price < this._hq.GetAmount()) {
+					console.log(`%c [ROAD] `, 'font-weight:bold;color:blue;');
 					road.forEach((c) => {
 						if (c.GetField() instanceof BasicField) {
 							new FastField(c);

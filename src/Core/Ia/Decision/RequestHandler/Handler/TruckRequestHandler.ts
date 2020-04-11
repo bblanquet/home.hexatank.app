@@ -21,6 +21,7 @@ export class TruckRequestHandler implements ISimpleRequestHandler {
 	}
 
 	public Handle(request: AreaRequest): void {
+		console.log(`%c [TRUCK] `, 'font-weight:bold;color:blue;');
 		var lambda: any = (obj: any, vehicle: Vehicle) => {
 			if (vehicle instanceof Truck) {
 				const truck = vehicle as Truck;

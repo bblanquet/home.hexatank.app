@@ -1,4 +1,5 @@
-import { RequestMaker } from './../../Ia/Decision/RequestMaker/RequestMaker';
+import { GeneralRequester } from './../../Ia/Decision/RequestMaker/GeneralRequester/GeneralRequester';
+import { AreaRequestMaker } from '../../Ia/Decision/RequestMaker/AreaRequestMaker';
 import { ExpansionMaker } from './../../Ia/Decision/ExpansionMaker/ExpansionMaker';
 import { BasicRequestHandler } from './../../Ia/Decision/RequestHandler/BasicRequestHandler';
 import { Kingdom } from '../../Ia/Decision/Kingdom';
@@ -135,9 +136,10 @@ export class HqRender {
 		const decision = new Kingdom(hq, areas);
 
 		decision.Setup(
-			new RequestMaker(),
+			new AreaRequestMaker(),
 			new BasicRequestHandler(hq, decision),
-			new ExpansionMaker(hq, decision, cells)
+			new ExpansionMaker(hq, decision, cells),
+			new GeneralRequester()
 		);
 
 		decision.Diamond = diamond;

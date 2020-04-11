@@ -16,6 +16,8 @@ export class TankHighRequestHandler implements ISimpleRequestHandler {
 	}
 
 	Handle(request: AreaRequest): void {
+		console.log(`%c [H TANK] `, 'font-weight:bold;color:blue;');
+
 		const aroundAreas = request.Area.GetSpot().GetAroundAreas();
 
 		for (const aroundArea of aroundAreas) {

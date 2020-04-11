@@ -21,6 +21,7 @@ export class TankMediumRequestHandler implements ISimpleRequestHandler {
 	}
 
 	public Handle(request: AreaRequest): void {
+		console.log(`%c [M TANK] `, 'font-weight:bold;color:blue;');
 		if (this._kingdom.IdleTanks.HasTank()) {
 			this.GetHelpFromIdleTanks(request);
 		}
@@ -48,8 +49,6 @@ export class TankMediumRequestHandler implements ISimpleRequestHandler {
 	}
 
 	private GetHelpFromBuying(request: AreaRequest) {
-		const cell = request.Area.GetCentralCell();
-
 		while (request.RequestCount > 0) {
 			const isPassed = this.BuyTank(request.Area);
 			if (isPassed) {

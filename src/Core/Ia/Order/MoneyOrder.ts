@@ -1,4 +1,3 @@
-import { PersistentOrder } from './PersistentOrder';
 import { Order } from './Order';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { SimpleOrder } from './SimpleOrder';

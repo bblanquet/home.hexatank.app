@@ -1,3 +1,4 @@
+import { BasicField } from './../../../Items/Cell/Field/BasicField';
 import { MoneyField } from './../../../Items/Cell/Field/MoneyField';
 import { Diamond } from './../../../Items/Cell/Field/Diamond';
 import { DistanceHelper } from './../../../Items/Unit/MotionHelpers/DistanceHelper';
@@ -31,6 +32,10 @@ export class KingdomArea {
 
 	public IsImportant(): boolean {
 		return this._spot.HasDiamond() || this._spot.HasHq();
+	}
+
+	public HasFreeCells(): boolean {
+		return 0 < this._spot.GetCells().filter((c) => c.GetField() instanceof BasicField).length;
 	}
 
 	public GetSpot(): Area {

@@ -65,7 +65,8 @@ export class ExpansionMaker implements IExpansionMaker {
 
 	private Log(areaDecision: BasicAreaDecisionMaker) {
 		console.log(
-			`%c GET NEW AREA  ${areaDecision.Area.GetSpot().GetCentralCell().GetCoordinate().ToString()}`,
+			`%c [NEW AREA]  Q:${areaDecision.Area.GetSpot().GetCentralCell().GetCoordinate()
+				.Q} R:${areaDecision.Area.GetSpot().GetCentralCell().GetCoordinate().R}}`,
 			'font-weight:bold;color:green;'
 		);
 	}

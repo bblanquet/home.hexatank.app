@@ -1,3 +1,4 @@
+import { IGeneralRequester } from './RequestMaker/GeneralRequester/IGeneralRequester';
 import { Diamond } from './../../Items/Cell/Field/Diamond';
 import { IExpansionMaker } from './ExpansionMaker/IExpansionMaker';
 import { IKingdomDecisionMaker } from './IKingdomDecisionMaker';
@@ -15,8 +16,9 @@ import { Timer } from '../../Utils/Timer/Timer';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Area } from './Utils/Area';
 import { IRequestHandler } from './RequestHandler/IRequestHandler';
-import { IRequestMaker } from './RequestMaker/IRequestMaker';
 import { Tank } from '../../Items/Unit/Tank';
+import { IAreaRequestListMaker } from './RequestMaker/IAreaRequestListMaker';
+import { RequestType } from './Utils/RequestType';
 
 export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	public AreaDecisions: BasicAreaDecisionMaker[];
@@ -26,9 +28,10 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	public Diamond: Diamond;
 	private _idleTimer: Timer = new Timer(125);
 	public IdleTanks: IdleUnitContainer;
-	private _requestMaker: IRequestMaker;
+	private _requestMaker: IAreaRequestListMaker;
 	private _requestHandler: IRequestHandler;
 	private _expansionMaker: IExpansionMaker;
+	private _generalRequestMaker: IGeneralRequester;
 
 	constructor(private _hq: Headquarter, public RemainingAreas: Area[]) {
 		this.AreaDecisions = new Array<BasicAreaDecisionMaker>();
@@ -49,10 +52,16 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 		return this.Diamond;
 	}
 
-	public Setup(requestMaker: IRequestMaker, requestHandler: IRequestHandler, expansionMaker: IExpansionMaker) {
+	public Setup(
+		requestMaker: IAreaRequestListMaker,
+		requestHandler: IRequestHandler,
+		expansionMaker: IExpansionMaker,
+		generalRequestMaker: IGeneralRequester
+	) {
 		this._requestHandler = requestHandler;
 		this._requestMaker = requestMaker;
 		this._expansionMaker = expansionMaker;
+		this._generalRequestMaker = generalRequestMaker;
 	}
 
 	public GetKingdomAreas(): Dictionnary<KingdomArea> {
@@ -76,24 +85,9 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 			});
 
 			this.IdleTanks.CalculateExcess(areas);
+			const requests = this.GetRequests(areas);
 
-			const requests = new Groups<AreaRequest>();
-
-			areas.forEach((status) => {
-				let request = this._requestMaker.GetRequest(status);
-				if (request.Priority != RequestPriority.None) {
-					requests.Add(request.Priority, request);
-				}
-			});
-
-			const hCount = requests.Exist(RequestPriority.High) ? requests.Get(RequestPriority.High).length : 0;
-			const mCount = requests.Exist(RequestPriority.Medium) ? requests.Get(RequestPriority.Medium).length : 0;
-			const lCount = requests.Exist(RequestPriority.Low) ? requests.Get(RequestPriority.Low).length : 0;
-			console.log(
-				`%c [MONEY] ${this._hq.GetAmount()} [A] ${this.AreaDecisions
-					.length} [H] ${hCount} [M] ${mCount} [L] ${lCount}`,
-				'font-weight:bold;color:red;'
-			);
+			this.Log(requests);
 
 			if (requests.Any()) {
 				this._requestHandler.HandleRequests(requests);
@@ -101,5 +95,32 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 				this._expansionMaker.Expand();
 			}
 		}
+	}
+
+	private GetRequests(areas: KingdomArea[]) {
+		const requests = new Groups<AreaRequest>();
+		const generalRequest = this._generalRequestMaker.GetResquest(this);
+		if (generalRequest.RequestType !== RequestType.None) {
+			requests.Add(generalRequest.Priority, generalRequest);
+		}
+		areas.forEach((status) => {
+			this._requestMaker.GetRequest(status).forEach((r) => {
+				requests.Add(r.Priority, r);
+			});
+		});
+		return requests;
+	}
+
+	private Log(requests: Groups<AreaRequest>) {
+		const hCount = requests.Exist(RequestPriority.High) ? requests.Get(RequestPriority.High).length : 0;
+		const hTypes = requests.Exist(RequestPriority.High)
+			? requests.Get(RequestPriority.High).map((c) => c.RequestType)
+			: '';
+		// const mCount = requests.Exist(RequestPriority.Medium) ? requests.Get(RequestPriority.Medium).length : 0;
+		// const lCount = requests.Exist(RequestPriority.Low) ? requests.Get(RequestPriority.Low).length : 0;
+		console.log(
+			`%c [MONEY] ${this._hq.GetAmount()} [A] ${this.AreaDecisions.length} [H] ${hCount} ${hTypes.toString()} `,
+			'font-weight:bold;color:red;'
+		);
 	}
 }

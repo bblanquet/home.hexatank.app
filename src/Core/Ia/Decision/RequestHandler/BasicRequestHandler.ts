@@ -16,12 +16,13 @@ export class BasicRequestHandler implements IRequestHandler {
 
 	constructor(private _hq: Headquarter, private _decision: Kingdom) {
 		this._handlers = new Groups<ISimpleRequestHandler>();
+		this._handlers.Add(RequestPriority.High, new TruckRequestHandler(this._hq, this._decision));
 		this._handlers.Add(
 			RequestPriority.High,
 			new TankHighRequestHandler(this._decision, new TankMediumRequestHandler(this._decision, this._hq))
 		);
-		this._handlers.Add(RequestPriority.High, new TruckRequestHandler(this._hq, this._decision));
 		this._handlers.Add(RequestPriority.Medium, new TankMediumRequestHandler(this._decision, this._hq));
+		this._handlers.Add(RequestPriority.Low, new TankMediumRequestHandler(this._decision, this._hq));
 		this._handlers.Add(RequestPriority.High, new RoadRequestHandler(this._hq));
 		this._handlers.Add(RequestPriority.High, new FarmRequestHandler(this._hq));
 	}

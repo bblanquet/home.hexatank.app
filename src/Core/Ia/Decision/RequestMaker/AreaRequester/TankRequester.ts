@@ -1,11 +1,11 @@
-import { RequestMaker } from './../RequestMaker';
-import { IRequestMaker } from './../IRequestMaker';
+import { AreaRequestMaker } from '../AreaRequestMaker';
+import { IAreaRequestMaker } from '../IAreaRequestMaker';
 import { KingdomArea } from '../../Utils/KingdomArea';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { RequestType } from '../../Utils/RequestType';
 import { RequestPriority } from '../../Utils/RequestPriority';
 
-export class TankRequester implements IRequestMaker {
+export class TankRequester implements IAreaRequestMaker {
 	public GetRequest(area: KingdomArea): AreaRequest {
 		const enemies = area.GetFoesCount();
 		if (enemies === 0) {
@@ -31,6 +31,6 @@ export class TankRequester implements IRequestMaker {
 				}
 			}
 		}
-		return RequestMaker.NoRequest(area);
+		return AreaRequestMaker.NoRequest(area);
 	}
 }

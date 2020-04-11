@@ -1,7 +1,8 @@
+import { RoadRequestHandler } from './Handler/RoadRequestHandler';
+import { FarmRequestHandler } from './Handler/FarmRequestHandler';
 import { TruckRequestHandler } from './Handler/TruckRequestHandler';
 import { TankMediumRequestHandler } from './Handler/TankMediumRequestHandler';
 import { TankHighRequestHandler } from './Handler/TankHighRequestHandler';
-import { RoadRequestHandler } from './Handler/RoadRequestHandler';
 import { ISimpleRequestHandler } from './ISimpleRequestHandler';
 import { Groups } from './../../../Utils/Collections/Groups';
 import { Headquarter } from '../../../Items/Cell/Field/Headquarter';
@@ -21,6 +22,8 @@ export class BasicRequestHandler implements IRequestHandler {
 		);
 		this._handlers.Add(RequestPriority.High, new TruckRequestHandler(this._hq, this._decision));
 		this._handlers.Add(RequestPriority.Medium, new TankMediumRequestHandler(this._decision, this._hq));
+		this._handlers.Add(RequestPriority.High, new RoadRequestHandler(this._hq));
+		this._handlers.Add(RequestPriority.High, new FarmRequestHandler(this._hq));
 	}
 
 	public HandleRequests(requests: Groups<AreaRequest>) {

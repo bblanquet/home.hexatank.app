@@ -1,3 +1,4 @@
+import { Diamond } from './../../../Items/Cell/Field/Diamond';
 import { DistanceHelper } from './../../../Items/Unit/MotionHelpers/DistanceHelper';
 import { HeadQuarterField } from './../../../Items/Cell/Field/HeadquarterField';
 import { FastField } from './../../../Items/Cell/Field/FastField';
@@ -61,17 +62,28 @@ export class KingdomArea {
 	}
 
 	public IsConnected(): boolean {
-		const pathFinder = new AStarEngine<Cell>((c: ICell) => {
-			let cell = c as Cell;
-			return (
-				cell !== null &&
-				(cell.GetField() instanceof FastField ||
-					cell.GetField() instanceof HeadQuarterField ||
-					cell.GetField() instanceof Headquarter)
-			);
-		});
-		const path = pathFinder.GetPath(this.GetCentralCell(), this._hq.GetCell());
-		return path !== null;
+		const central = this.GetCentralCell();
+		if (!central.IsBlocked()) {
+			const pathFinder = new AStarEngine<Cell>((c: ICell) => {
+				let cell = c as Cell;
+				return (
+					cell !== null &&
+					(cell.GetField() instanceof FastField ||
+						cell.GetField() instanceof HeadQuarterField ||
+						cell.GetField() instanceof Headquarter)
+				);
+			});
+			const path = pathFinder.GetPath(central, this._hq.GetCell());
+			return path !== null;
+		} else {
+			if (central === this._hq.GetCell() || central.GetField() instanceof Diamond) {
+				return true;
+			}
+			return central.GetAllNeighbourhood().some((c) => {
+				const cell = <Cell>c;
+				return cell.GetField() instanceof FastField;
+			});
+		}
 	}
 
 	public GetOuterFoeCount(): number {

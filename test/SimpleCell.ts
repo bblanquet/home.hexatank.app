@@ -21,6 +21,19 @@ export class SimpleCell implements ICell {
 		this.BoundingBox.X = pos.X;
 		this.BoundingBox.Y = pos.Y;
 	}
+	GetFilteredNeighbourhood(filter: (cell: ICell) => boolean): ICell[] {
+		var cells = new Array<ICell>();
+		this.Coordinate.GetNeighbours().forEach((coordinate) => {
+			var cell = this._cells.Get(coordinate);
+			if (cell != null) {
+				cells.push(cell);
+			}
+		});
+		return cells;
+	}
+	GetCostRatio(): number {
+		return 1;
+	}
 
 	public GetCentralPoint(): Point {
 		return this.BoundingBox.GetCentralPoint();

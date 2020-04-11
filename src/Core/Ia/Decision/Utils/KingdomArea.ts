@@ -1,3 +1,4 @@
+import { MoneyField } from './../../../Items/Cell/Field/MoneyField';
 import { Diamond } from './../../../Items/Cell/Field/Diamond';
 import { DistanceHelper } from './../../../Items/Unit/MotionHelpers/DistanceHelper';
 import { HeadQuarterField } from './../../../Items/Cell/Field/HeadquarterField';
@@ -61,6 +62,14 @@ export class KingdomArea {
 		return allySpots;
 	}
 
+	public HasFarmField(): boolean {
+		return this._spot.GetCells().some((c) => c.GetField() instanceof MoneyField);
+	}
+
+	public HasNature(): boolean {
+		return this._spot.GetCells().some((c) => c.HasShootableField());
+	}
+
 	public IsConnected(): boolean {
 		const central = this.GetCentralCell();
 		if (!central.IsBlocked()) {
@@ -79,10 +88,7 @@ export class KingdomArea {
 			if (central === this._hq.GetCell() || central.GetField() instanceof Diamond) {
 				return true;
 			}
-			return central.GetAllNeighbourhood().some((c) => {
-				const cell = <Cell>c;
-				return cell.GetField() instanceof FastField;
-			});
+			return this._spot.GetCells().some((c) => c.GetField() instanceof FastField);
 		}
 	}
 

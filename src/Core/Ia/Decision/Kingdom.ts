@@ -1,3 +1,4 @@
+import { Diamond } from './../../Items/Cell/Field/Diamond';
 import { IExpansionMaker } from './ExpansionMaker/IExpansionMaker';
 import { IKingdomDecisionMaker } from './IKingdomDecisionMaker';
 import { IDoable } from './IDoable';
@@ -10,7 +11,6 @@ import { AreaRequest } from './Utils/AreaRequest';
 import { RequestPriority } from './Utils/RequestPriority';
 import { KingdomArea } from './Utils/KingdomArea';
 import { Truck } from '../../Items/Unit/Truck';
-import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { Timer } from '../../Utils/Timer/Timer';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Area } from './Utils/Area';
@@ -44,6 +44,9 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 				this.Tanks.push(tank);
 			}
 		});
+	}
+	public GetDiamond(): Diamond {
+		return this.Diamond;
 	}
 
 	public Setup(requestMaker: IRequestMaker, requestHandler: IRequestHandler, expansionMaker: IExpansionMaker) {

@@ -126,6 +126,10 @@ export class Cell extends Item implements ICell, ISelectable {
 		return !isNullOrUndefined(this._field) && this._field.IsBlocking();
 	}
 
+	public HasShootableField(): boolean {
+		return this._field.IsDesctrutible();
+	}
+
 	public IsShootable(): boolean {
 		return this._field.IsDesctrutible() || this._occupier != null;
 	}

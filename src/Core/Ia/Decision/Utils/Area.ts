@@ -32,6 +32,10 @@ export class Area {
 		return this._centralCell;
 	}
 
+	public GetCells(): Cell[] {
+		return this.GetCentralCell().GetAllNeighbourhood().map((c) => <Cell>c);
+	}
+
 	public GetFoeCells(v: AliveItem): Cell[] {
 		const result = new Array<Cell>();
 		const cells = this._centralCell.GetAllNeighbourhood().map((c) => <Cell>c).filter((c) => !isNullOrUndefined(c));

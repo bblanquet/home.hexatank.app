@@ -1,3 +1,4 @@
+import { HealUnitRequester } from './AreaRequester/HealUnitRequester';
 import { FarmRequester } from './AreaRequester/FarmRequester';
 import { TruckRequest } from './AreaRequester/TruckRequester';
 import { RoadRequester } from './AreaRequester/RoadRequester';
@@ -8,12 +9,19 @@ import { RequestType } from '../Utils/RequestType';
 import { KingdomArea } from '../Utils/KingdomArea';
 import { RequestPriority } from '../Utils/RequestPriority';
 import { AreaRequest } from '../Utils/AreaRequest';
+import { Kingdom } from '../Kingdom';
 
 export class AreaRequestMaker implements IAreaRequestListMaker {
 	private _requesters: IAreaRequestMaker[];
 
-	constructor() {
-		this._requesters = [ new TruckRequest(), new RoadRequester(), new FarmRequester(), new TankRequester() ];
+	constructor(private _kingdom: Kingdom) {
+		this._requesters = [
+			new HealUnitRequester(this._kingdom),
+			new TruckRequest(),
+			new RoadRequester(),
+			new FarmRequester(),
+			new TankRequester()
+		];
 	}
 
 	public GetRequest(area: KingdomArea): AreaRequest[] {

@@ -1,5 +1,4 @@
 import { MoneyOrder } from './../Order/MoneyOrder';
-import { IGeneralRequester } from './RequestMaker/GeneralRequester/IGeneralRequester';
 import { Diamond } from './../../Items/Cell/Field/Diamond';
 import { IExpansionMaker } from './ExpansionMaker/IExpansionMaker';
 import { IKingdomDecisionMaker } from './IKingdomDecisionMaker';
@@ -19,7 +18,6 @@ import { Area } from './Utils/Area';
 import { IRequestHandler } from './RequestHandler/IRequestHandler';
 import { Tank } from '../../Items/Unit/Tank';
 import { IAreaRequestListMaker } from './RequestMaker/IAreaRequestListMaker';
-import { RequestType } from './Utils/RequestType';
 import { IGeneralListRequester } from './RequestMaker/GeneralRequester/IGeneralListRequester';
 
 export class Kingdom implements IDoable, IKingdomDecisionMaker {

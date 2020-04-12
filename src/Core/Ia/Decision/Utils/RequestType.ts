@@ -2,9 +2,10 @@ export enum RequestType {
 	None = 'None',
 	Farm = 'Farm',
 	Factory = 'Factory',
-	Road = 'Factory',
+	Road = 'Road',
 	Tank = 'Tank',
 	Truck = 'Truck',
 	Defense = 'Defense',
-	Heal = 'Heal'
+	Heal = 'Heal',
+	HealUnit = 'HealUnit'
 }

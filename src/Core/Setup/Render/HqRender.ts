@@ -1,7 +1,7 @@
 import { GeneralRequester } from './../../Ia/Decision/RequestMaker/GeneralRequester/GeneralRequester';
 import { AreaRequestMaker } from '../../Ia/Decision/RequestMaker/AreaRequestMaker';
 import { ExpansionMaker } from './../../Ia/Decision/ExpansionMaker/ExpansionMaker';
-import { BasicRequestHandler } from './../../Ia/Decision/RequestHandler/BasicRequestHandler';
+import { RequestHandler } from '../../Ia/Decision/RequestHandler/RequestHandler';
 import { Kingdom } from '../../Ia/Decision/Kingdom';
 import { GameContext } from './../../Framework/GameContext';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
@@ -133,17 +133,17 @@ export class HqRender {
 			.map((coo) => new Area(cells.Get(coo), cells));
 
 		const hq = new IaHeadquarter(skin, cell, context);
-		const decision = new Kingdom(hq, areas);
+		const kingdom = new Kingdom(hq, areas);
 
-		decision.Setup(
-			new AreaRequestMaker(),
-			new BasicRequestHandler(hq, decision),
-			new ExpansionMaker(hq, decision, cells),
+		kingdom.Setup(
+			new AreaRequestMaker(kingdom),
+			new RequestHandler(hq, kingdom),
+			new ExpansionMaker(hq, kingdom, cells),
 			new GeneralRequester()
 		);
 
-		decision.SetDiamond(diamond);
-		hq.SetDoable(decision);
+		kingdom.SetDiamond(diamond);
+		hq.SetDoable(kingdom);
 
 		items.push(diamond);
 		items.push(hq);

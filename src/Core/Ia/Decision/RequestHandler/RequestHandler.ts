@@ -1,28 +1,32 @@
+import { HealUnitRequestHandler } from './Handler/HealUnitRequestHandler';
+import { HealingRequestHandler } from './Handler/HealingRequestHandler';
 import { RoadRequestHandler } from './Handler/RoadRequestHandler';
 import { FarmRequestHandler } from './Handler/FarmRequestHandler';
 import { TruckRequestHandler } from './Handler/TruckRequestHandler';
 import { TankMediumRequestHandler } from './Handler/TankMediumRequestHandler';
 import { TankHighRequestHandler } from './Handler/TankHighRequestHandler';
 import { ISimpleRequestHandler } from './ISimpleRequestHandler';
-import { Groups } from './../../../Utils/Collections/Groups';
+import { Groups } from '../../../Utils/Collections/Groups';
 import { Headquarter } from '../../../Items/Cell/Field/Headquarter';
 import { IRequestHandler } from './IRequestHandler';
 import { Kingdom } from '../Kingdom';
 import { RequestPriority } from '../Utils/RequestPriority';
 import { AreaRequest } from '../Utils/AreaRequest';
 
-export class BasicRequestHandler implements IRequestHandler {
+export class RequestHandler implements IRequestHandler {
 	private _handlers: Groups<ISimpleRequestHandler>;
 
-	constructor(private _hq: Headquarter, private _decision: Kingdom) {
+	constructor(private _hq: Headquarter, private _kindgom: Kingdom) {
 		this._handlers = new Groups<ISimpleRequestHandler>();
-		this._handlers.Add(RequestPriority.High, new TruckRequestHandler(this._hq, this._decision));
+		this._handlers.Add(RequestPriority.High, new HealUnitRequestHandler(this._kindgom));
+		this._handlers.Add(RequestPriority.High, new HealingRequestHandler(this._hq));
+		this._handlers.Add(RequestPriority.High, new TruckRequestHandler(this._hq, this._kindgom));
 		this._handlers.Add(
 			RequestPriority.High,
-			new TankHighRequestHandler(this._decision, new TankMediumRequestHandler(this._decision, this._hq))
+			new TankHighRequestHandler(this._kindgom, new TankMediumRequestHandler(this._kindgom, this._hq))
 		);
-		this._handlers.Add(RequestPriority.Medium, new TankMediumRequestHandler(this._decision, this._hq));
-		this._handlers.Add(RequestPriority.Low, new TankMediumRequestHandler(this._decision, this._hq));
+		this._handlers.Add(RequestPriority.Medium, new TankMediumRequestHandler(this._kindgom, this._hq));
+		this._handlers.Add(RequestPriority.Low, new TankMediumRequestHandler(this._kindgom, this._hq));
 		this._handlers.Add(RequestPriority.High, new RoadRequestHandler(this._hq));
 		this._handlers.Add(RequestPriority.High, new FarmRequestHandler(this._hq));
 	}

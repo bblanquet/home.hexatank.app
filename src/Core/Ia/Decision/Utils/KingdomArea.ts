@@ -1,3 +1,4 @@
+import { TroopDecisionMaker } from './../Troop/TroopDecisionMaker';
 import { HealField } from './../../../Items/Cell/Field/HealField';
 import { BasicField } from './../../../Items/Cell/Field/BasicField';
 import { MoneyField } from './../../../Items/Cell/Field/MoneyField';
@@ -7,7 +8,6 @@ import { HeadQuarterField } from './../../../Items/Cell/Field/HeadquarterField';
 import { FastField } from './../../../Items/Cell/Field/FastField';
 import { ICell } from './../../../Items/Cell/ICell';
 import { AStarEngine } from './../../AStarEngine';
-import { TroopDecisionMaker } from '../Troop/TroopDecisionMaker';
 import { IKingdomDecisionMaker } from '../IKingdomDecisionMaker';
 import { Area } from './Area';
 import { Cell } from '../../../Items/Cell/Cell';
@@ -162,6 +162,15 @@ export class KingdomArea {
 		return null;
 	}
 
+	public DropSpecificTroop(troop: TroopDecisionMaker): boolean {
+		if (this.Troops.some((t) => t === troop)) {
+			this.Troops = this.Troops.filter((t) => t !== troop);
+			troop.Cancel();
+			return true;
+		}
+		return false;
+	}
+
 	public AddTroop(tank: Tank, cell: Cell): void {
 		this.Troops.push(new TroopDecisionMaker(cell, tank, this));
 	}
@@ -180,6 +189,15 @@ export class KingdomArea {
 		if (cells.length > 0) {
 			let index = Math.floor(Math.random() * (cells.length - 1)) + 0;
 			return cells[index];
+		} else {
+			return null;
+		}
+	}
+
+	public GetHealSpot(): Cell {
+		const freeCells = this._spot.GetFreeCells().filter((c) => c.GetField() instanceof HealField);
+		if (0 < freeCells.length) {
+			return freeCells[0];
 		} else {
 			return null;
 		}

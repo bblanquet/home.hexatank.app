@@ -28,6 +28,10 @@ export abstract class AliveItem extends Item {
 		this._lifes.push(this._currentLife);
 	}
 
+	public HasDamage(): boolean {
+		return this._currentLife < this._totalLife;
+	}
+
 	private Show(): void {
 		this._totalLife.alpha = 1;
 		this._currentLife.alpha = 1;

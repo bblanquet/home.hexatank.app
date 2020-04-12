@@ -36,7 +36,7 @@ export class ExpansionMaker implements IExpansionMaker {
 		}
 
 		if (0 === this._decision.AreaDecisions.length) {
-			const diamondCell = this._decision.Diamond.GetCell();
+			const diamondCell = this._decision.GetDiamond().GetCell();
 			return this._decision.RemainingAreas.filter((a) => a.GetCentralCell() === diamondCell)[0];
 		}
 

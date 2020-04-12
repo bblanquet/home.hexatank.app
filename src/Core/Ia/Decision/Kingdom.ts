@@ -1,3 +1,4 @@
+import { MoneyOrder } from './../Order/MoneyOrder';
 import { IGeneralRequester } from './RequestMaker/GeneralRequester/IGeneralRequester';
 import { Diamond } from './../../Items/Cell/Field/Diamond';
 import { IExpansionMaker } from './ExpansionMaker/IExpansionMaker';
@@ -5,7 +6,7 @@ import { IKingdomDecisionMaker } from './IKingdomDecisionMaker';
 import { IDoable } from './IDoable';
 import { Groups } from '../../Utils/Collections/Groups';
 import { Dictionnary } from '../../Utils/Collections/Dictionnary';
-import { BasicAreaDecisionMaker } from './Area/BasicAreaDecisionMaker';
+import { IAreaDecisionMaker } from './Area/IAreaDecisionMaker';
 import { IdleUnitContainer } from './IdleUnitContainer';
 import { Headquarter } from '../../Items/Cell/Field/Headquarter';
 import { AreaRequest } from './Utils/AreaRequest';
@@ -19,23 +20,24 @@ import { IRequestHandler } from './RequestHandler/IRequestHandler';
 import { Tank } from '../../Items/Unit/Tank';
 import { IAreaRequestListMaker } from './RequestMaker/IAreaRequestListMaker';
 import { RequestType } from './Utils/RequestType';
+import { IGeneralListRequester } from './RequestMaker/GeneralRequester/IGeneralListRequester';
 
 export class Kingdom implements IDoable, IKingdomDecisionMaker {
-	public AreaDecisions: BasicAreaDecisionMaker[];
+	public AreaDecisions: IAreaDecisionMaker[];
 	public Trucks: Array<Truck> = new Array<Truck>();
 	public Tanks: Array<Tank> = new Array<Tank>();
-	public CellAreas: Dictionnary<BasicAreaDecisionMaker>;
-	public Diamond: Diamond;
-	private _idleTimer: Timer = new Timer(125);
+	public CellAreas: Dictionnary<IAreaDecisionMaker>;
+	private _diamond: Diamond;
+	private _idleTimer: Timer = new Timer(25);
 	public IdleTanks: IdleUnitContainer;
 	private _requestMaker: IAreaRequestListMaker;
 	private _requestHandler: IRequestHandler;
 	private _expansionMaker: IExpansionMaker;
-	private _generalRequestMaker: IGeneralRequester;
+	private _generalRequestMaker: IGeneralListRequester;
 
 	constructor(private _hq: Headquarter, public RemainingAreas: Area[]) {
-		this.AreaDecisions = new Array<BasicAreaDecisionMaker>();
-		this.CellAreas = new Dictionnary<BasicAreaDecisionMaker>();
+		this.AreaDecisions = new Array<IAreaDecisionMaker>();
+		this.CellAreas = new Dictionnary<IAreaDecisionMaker>();
 		this.IdleTanks = new IdleUnitContainer();
 
 		this._hq.OnVehiculeCreated.On((hq: any, vehicle: Vehicle) => {
@@ -48,15 +50,28 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 			}
 		});
 	}
+
+	public SetDiamond(diamond: Diamond): void {
+		this._diamond = diamond;
+		this._diamond.OnDestroyed.On(this.DiamondDestroyed.bind(this));
+	}
+
+	private DiamondDestroyed(): void {
+		this._diamond.OnDestroyed.Clear();
+		this.Trucks.forEach((truck) => {
+			truck.SetOrder(new MoneyOrder(truck));
+		});
+	}
+
 	public GetDiamond(): Diamond {
-		return this.Diamond;
+		return this._diamond;
 	}
 
 	public Setup(
 		requestMaker: IAreaRequestListMaker,
 		requestHandler: IRequestHandler,
 		expansionMaker: IExpansionMaker,
-		generalRequestMaker: IGeneralRequester
+		generalRequestMaker: IGeneralListRequester
 	) {
 		this._requestHandler = requestHandler;
 		this._requestMaker = requestMaker;
@@ -99,10 +114,10 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 
 	private GetRequests(areas: KingdomArea[]) {
 		const requests = new Groups<AreaRequest>();
-		const generalRequest = this._generalRequestMaker.GetResquest(this);
-		if (generalRequest.RequestType !== RequestType.None) {
-			requests.Add(generalRequest.Priority, generalRequest);
-		}
+		this._generalRequestMaker.GetResquest(this).forEach((r) => {
+			requests.Add(r.Priority, r);
+		});
+
 		areas.forEach((status) => {
 			this._requestMaker.GetRequest(status).forEach((r) => {
 				requests.Add(r.Priority, r);

@@ -27,7 +27,7 @@ export class BasicAreaDecisionMaker {
 			this.LogPosition();
 		}
 
-		if (0 < this.Area.GetInnerFoeCount()) {
+		if (0 < this.Area.GetFoesCount()) {
 			this.Do();
 		} else {
 			this.Area.Troops.forEach((troop) => {
@@ -47,17 +47,14 @@ export class BasicAreaDecisionMaker {
 				.map((coo) => new Area(this._cells.Get(coo), this._cells));
 
 			//#2 get enemies cells
-			const enemycells = this.GetFoeCells(areas, ally);
+			const foeCells = this.GetFoeCells(areas, ally);
 
-			console.log(`%c enemy cells count ${enemycells.length}`, 'font-weight:bold;color:blue;');
+			console.log(`%c [DETECTED FOE] ${foeCells.length}`, 'font-weight:bold;color:blue;');
 
 			//#3 get enemy contact cells
-			const aroundFoeCells = this.GetAroundFoeCells(enemycells);
+			const aroundFoeCells = this.GetAroundFoeCells(foeCells);
 
-			console.log(
-				`%c surrounding enemy cells count ${Object.keys(aroundFoeCells).length}`,
-				'font-weight:bold;color:red;'
-			);
+			console.log(`%c [FREE FOE CELL] ${Object.keys(aroundFoeCells).length}`, 'font-weight:bold;color:red;');
 
 			//#4 classify cell dangerous
 			const dangerLevelcells = this.ClassifyCellDanger(aroundFoeCells, ally);

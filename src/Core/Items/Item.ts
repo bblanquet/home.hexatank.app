@@ -1,3 +1,4 @@
+import { SimpleEvent } from './../Utils/Events/SimpleEvent';
 import { SpriteProvider } from './../Framework/SpriteProvider';
 import * as PIXI from 'pixi.js';
 import { BoundingBox } from '../Utils/Geometry/BoundingBox';
@@ -11,6 +12,7 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 	private DisplayObjects: Array<PIXI.DisplayObject>;
 	private _sprites: { [id: string]: PIXI.Sprite } = {};
 	protected Accuracy: number = 0.5;
+	public OnDestroyed: SimpleEvent = new SimpleEvent();
 
 	public Z: number;
 	public IsUpdatable: Boolean;
@@ -69,6 +71,7 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 	public Destroy(): void {
 		this.IsUpdatable = false;
 		GameHelper.Render.Remove(this);
+		this.OnDestroyed.Invoke();
 	}
 
 	public abstract GetBoundingBox(): BoundingBox;

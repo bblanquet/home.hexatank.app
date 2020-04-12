@@ -7,7 +7,7 @@ import { RequestType } from '../../Utils/RequestType';
 
 export class FarmRequester implements IAreaRequestMaker {
 	GetRequest(area: KingdomArea): AreaRequest {
-		if (area.IsConnected() && area.HasFreeCells() && !area.HasFarmField()) {
+		if (area.HasAtLeastTwoConnections() && area.HasFreeCells() && !area.HasFarmField()) {
 			return new AreaRequest(RequestType.Farm, RequestPriority.High, 1, area);
 		} else {
 			return AreaRequestMaker.NoRequest(area);

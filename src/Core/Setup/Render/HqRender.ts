@@ -142,7 +142,7 @@ export class HqRender {
 			new GeneralRequester()
 		);
 
-		decision.Diamond = diamond;
+		decision.SetDiamond(diamond);
 		hq.SetDoable(decision);
 
 		items.push(diamond);

@@ -1,3 +1,4 @@
+import { HealField } from './../../../Items/Cell/Field/HealField';
 import { BasicField } from './../../../Items/Cell/Field/BasicField';
 import { MoneyField } from './../../../Items/Cell/Field/MoneyField';
 import { Diamond } from './../../../Items/Cell/Field/Diamond';
@@ -42,6 +43,12 @@ export class KingdomArea {
 		return this._spot;
 	}
 
+	public HasHealing(): boolean {
+		return this._spot.GetCells().some((c) => c.GetField() instanceof HealField);
+	}
+
+	// public IsDefenseArea(): boolean {}
+
 	public GetTroops(): Array<TroopDecisionMaker> {
 		return this.Troops;
 	}
@@ -77,24 +84,45 @@ export class KingdomArea {
 
 	public IsConnected(): boolean {
 		const central = this.GetCentralCell();
-		if (!central.IsBlocked()) {
-			const pathFinder = new AStarEngine<Cell>((c: ICell) => {
-				let cell = c as Cell;
-				return (
-					cell !== null &&
-					(cell.GetField() instanceof FastField ||
-						cell.GetField() instanceof HeadQuarterField ||
-						cell.GetField() instanceof Headquarter)
-				);
-			});
-			const path = pathFinder.GetPath(central, this._hq.GetCell());
-			return path !== null;
-		} else {
+		if (central.IsBlocked()) {
 			if (central === this._hq.GetCell() || central.GetField() instanceof Diamond) {
 				return true;
 			}
 			return this._spot.GetCells().some((c) => c.GetField() instanceof FastField);
+		} else {
+			return this.HasRoad(this._hq.GetCell());
 		}
+	}
+
+	private HasRoad(cell: Cell): boolean {
+		const central = this.GetCentralCell();
+		const pathFinder = new AStarEngine<Cell>((c: ICell) => {
+			let cell = c as Cell;
+			return (
+				cell !== null &&
+				(cell.GetField() instanceof FastField ||
+					cell.GetField() instanceof HeadQuarterField ||
+					cell.GetField() instanceof Headquarter)
+			);
+		});
+		const path = pathFinder.GetPath(central, cell);
+		return path !== null;
+	}
+
+	public HasAtLeastTwoConnections(): boolean {
+		const allyAreas = this.GetAllyAreas();
+		let connections = 0;
+		if (allyAreas.length < 2) {
+			return false;
+		}
+
+		allyAreas.forEach((allyArea) => {
+			if (this.HasRoad(allyArea.GetCentralCell())) {
+				connections += 1;
+			}
+		});
+
+		return 2 <= connections;
 	}
 
 	public GetOuterFoeCount(): number {
@@ -115,6 +143,10 @@ export class KingdomArea {
 
 	public GetInnerFoeCount(): number {
 		return this._spot.GetFoeCount(this._hq);
+	}
+
+	public GetAllFoeCount(): number {
+		return this.GetInnerFoeCount() + this.GetOuterFoeCount();
 	}
 
 	public HasTroop(): boolean {

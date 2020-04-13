@@ -2,6 +2,7 @@ import { CheeseFlowerMapBuilder } from './../Builder/CheeseFlowerMapBuilder';
 import { DonutFlowerMapBuilder } from './../Builder/DonutFlowerMapBuilder';
 import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { SandDecorator } from '../../Items/Cell/Decorator/SandDecorator';
+import { IceDecorator } from '../../Items/Cell/Decorator/IceDecorator';
 import { MapMode } from './MapMode';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
@@ -79,6 +80,8 @@ export class MapGenerator {
 		var decorator: Decorator = null;
 		if (mapMode === MapMode.forest) {
 			decorator = new ForestDecorator();
+		} else if (mapMode === MapMode.ice) {
+			decorator = new IceDecorator();
 		} else {
 			decorator = new SandDecorator();
 		}

@@ -57,6 +57,7 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 							>
 								<option value="0">Sand</option>
 								<option value="1">Forest</option>
+								<option value="2">Ice</option>
 							</select>
 						</div>
 						<div class="col-auto my-1 whiteText">

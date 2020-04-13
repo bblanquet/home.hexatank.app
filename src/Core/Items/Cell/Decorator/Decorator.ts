@@ -60,6 +60,18 @@ export abstract class Decorator {
 				items.push(new BlockingField(cell, Archive.nature.rock));
 				break;
 			}
+			case DecorationType.IceTree: {
+				items.push(new BlockingField(cell, Archive.nature.iceTree));
+				break;
+			}
+			case DecorationType.IceStone: {
+				cell.SetDecoration(Archive.nature.iceStone);
+				break;
+			}
+			case DecorationType.IceRock: {
+				items.push(new BlockingField(cell, Archive.nature.iceRock));
+				break;
+			}
 			case DecorationType.SandRock: {
 				items.push(new BlockingField(cell, Archive.nature.sandRock));
 				break;

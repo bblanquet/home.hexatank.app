@@ -1,15 +1,18 @@
-export enum DecorationType{
-    None,
-    Stone,
-    SandStone,
-    Water,
-    Volcano,
-    Puddle,
-    Bush,
-    Tree,
-    palmTree,
-    SandRock,
-    Rock,
-    Diamond,
-    Hq
+export enum DecorationType {
+	None,
+	Stone,
+	SandStone,
+	Water,
+	Volcano,
+	Puddle,
+	Bush,
+	Tree,
+	IceTree,
+	IceRock,
+	IceStone,
+	palmTree,
+	SandRock,
+	Rock,
+	Diamond,
+	Hq
 }

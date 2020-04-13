@@ -2,7 +2,6 @@ import { Item } from '../Item';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../Interaction/InteractionContext';
 import { Archive } from '../../Framework/ResourceArchiver';
-import { GameHelper } from '../../Framework/GameHelper';
 
 export class Light extends Item {
 	private _boundingBox: BoundingBox;
@@ -57,7 +56,7 @@ export class Light extends Item {
 					s.alpha -= 0.02;
 				} else {
 					this.SetProperty(Archive.lights[this._lightIndex], (s) => (s.alpha = 0));
-					this._lightIndex = (this._lightIndex + 1) % Archive.missiles.length;
+					this._lightIndex = (this._lightIndex + 1) % Archive.lights.length;
 					this.SetProperty(Archive.lights[this._lightIndex], (s) => (s.alpha = 1));
 				}
 			});

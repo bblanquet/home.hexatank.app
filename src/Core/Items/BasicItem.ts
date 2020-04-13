@@ -1,7 +1,6 @@
 import { InteractionContext } from './../Interaction/InteractionContext';
 import { Item } from './Item';
 import { BoundingBox } from '../Utils/Geometry/BoundingBox';
-import { GameHelper } from '../Framework/GameHelper';
 
 export class BasicItem extends Item {
 	private _isVisible: { (): boolean };

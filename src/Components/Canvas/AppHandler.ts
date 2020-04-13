@@ -66,7 +66,14 @@ export class AppHandler {
 	}
 
 	public SetBackgroundColor(mapMode: MapMode) {
-		this._app.renderer.backgroundColor = mapMode === MapMode.forest ? 0x00a651 : 0xfece63;
+		let color = 0x00a651;
+		if (mapMode === MapMode.sand) {
+			color = 0xfece63;
+		} else if (mapMode === MapMode.ice) {
+			color = 0xacddf3;
+		}
+
+		this._app.renderer.backgroundColor = color;
 	}
 
 	public PauseNavigation() {

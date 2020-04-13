@@ -10,7 +10,7 @@ import { Cell } from '../../Items/Cell/Cell';
 import { Item } from '../../Items/Item';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
-import { BasicItem } from '../../Items/BasicItem';
+import { Floor } from '../../Items/Environment/Floor';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { MapContext } from '../Generator/MapContext';
 import { MapMode } from '../Generator/MapMode';
@@ -76,10 +76,15 @@ export class MapRender {
 			boundingBox.Height = GameSettings.Size * 6;
 			boundingBox.X = cell.GetBoundingBox().X - (boundingBox.Width / 2 - cell.GetBoundingBox().Width / 2);
 			boundingBox.Y = cell.GetBoundingBox().Y - (boundingBox.Height / 2 - cell.GetBoundingBox().Height / 2);
-			const grass = new BasicItem(
-				boundingBox,
-				mode === MapMode.forest ? Archive.nature.grass : Archive.nature.sand
-			);
+
+			let floor = Archive.nature.forest;
+			if (mode === MapMode.ice) {
+				floor = Archive.nature.ice;
+			} else if (mode === MapMode.sand) {
+				floor = Archive.nature.sand;
+			}
+
+			const grass = new Floor(boundingBox, floor);
 			grass.SetVisible(() => true);
 			grass.SetAlive(() => true);
 			items.push(grass);

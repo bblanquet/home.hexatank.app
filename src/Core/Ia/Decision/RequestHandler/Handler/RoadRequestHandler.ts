@@ -17,10 +17,6 @@ export class RoadRequestHandler implements ISimpleRequestHandler {
 	Type(): RequestType {
 		return RequestType.Road;
 	}
-	Priority(): RequestPriority {
-		return RequestPriority.High;
-	}
-
 	Handle(request: AreaRequest): void {
 		const central = request.Area.GetCentralCell();
 		const allyAreas = request.Area.GetAllyAreas().filter((a) => a.IsConnected());

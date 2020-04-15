@@ -1,6 +1,7 @@
 export enum RequestType {
 	None = 'None',
 	Farm = 'Farm',
+	Clear = 'Clear',
 	Factory = 'Factory',
 	Road = 'Road',
 	Tank = 'Tank',

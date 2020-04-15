@@ -5,7 +5,6 @@ import { Vehicle } from '../../Unit/Vehicle';
 import { AliveItem } from '../../AliveItem';
 import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../../Interaction/InteractionContext';
-import { GameHelper } from '../../../Framework/GameHelper';
 
 export class BlockingField extends AliveField {
 	constructor(ceil: Cell, sprite: string) {

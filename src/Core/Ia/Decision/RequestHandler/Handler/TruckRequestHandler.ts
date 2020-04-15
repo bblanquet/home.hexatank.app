@@ -16,9 +16,6 @@ export class TruckRequestHandler implements ISimpleRequestHandler {
 	Type(): RequestType {
 		return RequestType.Truck;
 	}
-	Priority(): RequestPriority {
-		return RequestPriority.High;
-	}
 
 	public Handle(request: AreaRequest): void {
 		console.log(`%c [TRUCK] `, 'font-weight:bold;color:blue;');

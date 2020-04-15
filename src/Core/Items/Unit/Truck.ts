@@ -1,3 +1,4 @@
+import { GameSettings } from './../../Framework/GameSettings';
 import { Vehicle } from './Vehicle';
 import { IHqContainer } from './IHqContainer';
 import { AliveItem } from '../AliveItem';
@@ -22,7 +23,7 @@ export class Truck extends Vehicle implements IHqContainer {
 		this.GenerateSprite(Archive.wheel);
 		this.RootSprites.push(Archive.wheel);
 
-		this._dimaondTimer = new Timer(30);
+		this._dimaondTimer = new Timer(GameSettings.DiamondLoadingSpeed);
 		this.Wheels.forEach((wheel) => {
 			this.GenerateSprite(wheel);
 			this.RootSprites.push(wheel);

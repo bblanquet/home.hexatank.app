@@ -8,6 +8,7 @@ export class ForestDecorator extends Decorator {
 		this._blockingCells = [
 			new DecoratingElement(DecorationType.Rock),
 			new DecoratingElement(DecorationType.Tree),
+			new DecoratingElement(DecorationType.DarkTree),
 			new DecoratingElement(DecorationType.Water),
 			new DecoratingElement(DecorationType.Volcano, 1)
 		];
@@ -15,7 +16,8 @@ export class ForestDecorator extends Decorator {
 		this._decorationCells = [
 			new DecoratingElement(DecorationType.Stone),
 			new DecoratingElement(DecorationType.Bush),
-			new DecoratingElement(DecorationType.Puddle)
+			new DecoratingElement(DecorationType.Leaf),
+			new DecoratingElement(DecorationType.Leaf2)
 		];
 	}
 }

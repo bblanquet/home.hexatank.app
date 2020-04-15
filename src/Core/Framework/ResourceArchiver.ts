@@ -139,9 +139,10 @@ export const Archive = {
 		diamondStone: './nature/diamondStone.svg',
 		stone: './nature/forestStone.svg',
 		iceStone: './nature/IceStones.svg',
+		icePlants: './nature/IcePlants.svg',
 		sandStone: './nature/sandStones.svg',
 		puddle: './nature/waterPuddle.svg',
-		bush: './nature/ForestPlants.svg',
+		bush: './nature/ForestLeafs2.svg',
 		rock: './nature/forestRock.svg',
 		sandRock: './nature/sandRock.svg',
 		forest: './nature/forestFloor.svg',
@@ -151,6 +152,9 @@ export const Archive = {
 		palmTree: './nature/palmTree.svg',
 		iceTree: './nature/iceTree.svg',
 		tree: './nature/forestTree2.svg',
+		ForestLeaf: './nature/ForestLeafs.svg',
+		ForestLeaf2: './nature/ForestLeafs3.svg',
+		darkTree: './nature/ForestDarkTree.svg',
 		water: {
 			leaf: './nature/waterleaf.svg',
 			middle: {

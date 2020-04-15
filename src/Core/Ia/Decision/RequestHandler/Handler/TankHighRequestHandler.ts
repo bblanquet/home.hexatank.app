@@ -11,10 +11,6 @@ export class TankHighRequestHandler implements ISimpleRequestHandler {
 	Type(): RequestType {
 		return RequestType.Tank;
 	}
-	Priority(): RequestPriority {
-		return RequestPriority.High;
-	}
-
 	Handle(request: AreaRequest): void {
 		console.log(`%c [H TANK] `, 'font-weight:bold;color:blue;');
 

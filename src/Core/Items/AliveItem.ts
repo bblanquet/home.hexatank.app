@@ -5,41 +5,41 @@ import * as PIXI from 'pixi.js';
 export abstract class AliveItem extends Item {
 	protected Life: number = 100;
 	protected TotalLife: number = 100;
-	private _totalLife: PIXI.Graphics;
-	private _currentLife: PIXI.Graphics;
-	private _lifes: Array<PIXI.Graphics>;
+	private _totalLifeBar: PIXI.Graphics;
+	private _currentLifeBar: PIXI.Graphics;
+	private _lifeBars: Array<PIXI.Graphics>;
 	constructor() {
 		super();
-		this._totalLife = new PIXI.Graphics();
-		this._currentLife = new PIXI.Graphics();
-		this._totalLife.beginFill(0xdc2929, 1);
-		this._totalLife.alpha = 0;
-		this._currentLife.beginFill(0x35dc29, 1);
-		this._currentLife.alpha = 0;
+		this._totalLifeBar = new PIXI.Graphics();
+		this._currentLifeBar = new PIXI.Graphics();
+		this._totalLifeBar.beginFill(0xdc2929, 1);
+		this._totalLifeBar.alpha = 0;
+		this._currentLifeBar.beginFill(0x35dc29, 1);
+		this._currentLifeBar.alpha = 0;
 
-		this._totalLife.drawRect(0, 0, 10, 10);
-		this._currentLife.drawRect(0, 0, 10, 10);
+		this._totalLifeBar.drawRect(0, 0, 10, 10);
+		this._currentLifeBar.drawRect(0, 0, 10, 10);
 
-		this.Push(this._totalLife);
-		this.Push(this._currentLife);
+		this.Push(this._totalLifeBar);
+		this.Push(this._currentLifeBar);
 
-		this._lifes = new Array<PIXI.Graphics>();
-		this._lifes.push(this._totalLife);
-		this._lifes.push(this._currentLife);
+		this._lifeBars = new Array<PIXI.Graphics>();
+		this._lifeBars.push(this._totalLifeBar);
+		this._lifeBars.push(this._currentLifeBar);
 	}
 
 	public HasDamage(): boolean {
-		return this._currentLife < this._totalLife;
+		return this.Life < this.TotalLife;
 	}
 
 	private Show(): void {
-		this._totalLife.alpha = 1;
-		this._currentLife.alpha = 1;
+		this._totalLifeBar.alpha = 1;
+		this._currentLifeBar.alpha = 1;
 	}
 
 	private Hide(): void {
-		this._totalLife.alpha = 0;
-		this._currentLife.alpha = 0;
+		this._totalLifeBar.alpha = 0;
+		this._currentLifeBar.alpha = 0;
 	}
 
 	public SetDamage(damage: number): void {
@@ -61,14 +61,14 @@ export abstract class AliveItem extends Item {
 
 	public Update(viewX: number, viewY: number): void {
 		super.Update(viewX, viewY);
-		this._lifes.forEach((element) => {
+		this._lifeBars.forEach((element) => {
 			element.x = this.GetBoundingBox().X + viewX + this.GetBoundingBox().Width / 4;
 			element.y = this.GetBoundingBox().Y + viewY + this.GetBoundingBox().Height / 25;
 			element.height = this.GetBoundingBox().Height / 25;
 			element.width = this.GetBoundingBox().Width / 2;
 		});
 
-		this._currentLife.width = this.GetBoundingBox().Width * (this.Life / this.TotalLife) / 2;
+		this._currentLifeBar.width = this.GetBoundingBox().Width * (this.Life / this.TotalLife) / 2;
 	}
 
 	public IsAlive(): boolean {

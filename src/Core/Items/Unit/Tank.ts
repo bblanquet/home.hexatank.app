@@ -46,6 +46,10 @@ export class Tank extends Vehicle implements IHqContainer {
 		this.IsCentralRef = true;
 	}
 
+	public HasTarget(): boolean {
+		return !isNullOrUndefined(this._mainTarget);
+	}
+
 	protected OnCellStateChanged(obj: any, cellState: CellState): void {
 		this.GetDisplayObjects().forEach((s) => {
 			s.visible = cellState === CellState.Visible;

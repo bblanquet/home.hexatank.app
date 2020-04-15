@@ -16,9 +16,6 @@ export class TankMediumRequestHandler implements ISimpleRequestHandler {
 	Type(): RequestType {
 		return RequestType.Tank;
 	}
-	Priority(): RequestPriority {
-		return RequestPriority.Medium;
-	}
 
 	public Handle(request: AreaRequest): void {
 		console.log(`%c [M TANK] `, 'font-weight:bold;color:blue;');

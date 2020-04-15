@@ -27,7 +27,4 @@ export class HealingRequestHandler implements ISimpleRequestHandler {
 	Type(): RequestType {
 		return RequestType.Heal;
 	}
-	Priority(): RequestPriority {
-		return RequestPriority.High;
-	}
 }

@@ -11,7 +11,6 @@ export class SandDecorator extends Decorator {
 		];
 
 		this._decorationCells = [
-			new DecoratingElement(DecorationType.Stone),
 			new DecoratingElement(DecorationType.SandStone),
 			new DecoratingElement(DecorationType.Bush)
 		];

@@ -52,6 +52,10 @@ export abstract class Decorator {
 				items.push(new BlockingField(cell, Archive.nature.tree));
 				break;
 			}
+			case DecorationType.DarkTree: {
+				items.push(new BlockingField(cell, Archive.nature.darkTree));
+				break;
+			}
 			case DecorationType.palmTree: {
 				items.push(new BlockingField(cell, Archive.nature.palmTree));
 				break;
@@ -78,6 +82,18 @@ export abstract class Decorator {
 			}
 			case DecorationType.Puddle: {
 				cell.SetDecoration(Archive.nature.puddle);
+				break;
+			}
+			case DecorationType.IcePlants: {
+				cell.SetDecoration(Archive.nature.icePlants);
+				break;
+			}
+			case DecorationType.Leaf: {
+				cell.SetDecoration(Archive.nature.ForestLeaf);
+				break;
+			}
+			case DecorationType.Leaf2: {
+				cell.SetDecoration(Archive.nature.ForestLeaf2);
 				break;
 			}
 		}

@@ -1,9 +1,9 @@
 import { Headquarter } from '../../Items/Cell/Field/Headquarter';
-import { SimpleOrder } from './SimpleOrder';
+import { SmartSimpleOrder } from './SmartSimpleOrder';
 import { Cell } from '../../Items/Cell/Cell';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 
-export class HqFieldOrder extends SimpleOrder {
+export class HqFieldOrder extends SmartSimpleOrder {
 	constructor(private _hq: Headquarter, private _vehicule: Vehicle) {
 		super(_hq.GetCell(), _vehicule);
 	}

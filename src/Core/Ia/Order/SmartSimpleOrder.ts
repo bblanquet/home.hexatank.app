@@ -11,7 +11,7 @@ import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { PacketKind } from '../../../Components/Network/PacketKind';
 
-export class SimpleOrder extends Order {
+export class SmartSimpleOrder extends Order {
 	protected Currentcell: Cell;
 	protected cells: Array<Cell>;
 	protected cellFinder: CellFinder;
@@ -69,7 +69,10 @@ export class SimpleOrder extends Order {
 					}
 				}
 			} else {
-				this.GoNextcell();
+				if (this.FindPath()) {
+					this.GoNextcell();
+					this.State = OrderState.Pending;
+				}
 			}
 		}
 	}

@@ -13,7 +13,7 @@ export class IceDecorator extends Decorator {
 
 		this._decorationCells = [
 			new DecoratingElement(DecorationType.IceStone),
-			new DecoratingElement(DecorationType.Bush)
+			new DecoratingElement(DecorationType.IcePlants)
 		];
 	}
 }

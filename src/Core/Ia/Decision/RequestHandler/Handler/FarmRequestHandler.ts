@@ -27,7 +27,4 @@ export class FarmRequestHandler implements ISimpleRequestHandler {
 	Type(): RequestType {
 		return RequestType.Farm;
 	}
-	Priority(): RequestPriority {
-		return RequestPriority.High;
-	}
 }

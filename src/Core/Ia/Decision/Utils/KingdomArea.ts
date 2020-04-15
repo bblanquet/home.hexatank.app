@@ -1,3 +1,4 @@
+import { BlockingField } from './../../../Items/Cell/Field/RockField';
 import { TroopDecisionMaker } from './../Troop/TroopDecisionMaker';
 import { HealField } from './../../../Items/Cell/Field/HealField';
 import { BasicField } from './../../../Items/Cell/Field/BasicField';
@@ -79,7 +80,11 @@ export class KingdomArea {
 	}
 
 	public HasNature(): boolean {
-		return this._spot.GetCells().some((c) => c.HasShootableField());
+		return this._spot.GetCells().some((c) => c.HasShootableField() && c.GetField() instanceof BlockingField);
+	}
+
+	public GetNatures(): Cell[] {
+		return this._spot.GetCells().filter((c) => c.HasShootableField());
 	}
 
 	public IsConnected(): boolean {
@@ -151,6 +156,11 @@ export class KingdomArea {
 
 	public HasTroop(): boolean {
 		return this.Troops.length > 0;
+	}
+
+	public IsTroopFighting(): boolean {
+		const result = this.Troops.map((t) => t.Tank).some((t) => t.HasTarget());
+		return result;
 	}
 
 	public DropTroop(): Tank {

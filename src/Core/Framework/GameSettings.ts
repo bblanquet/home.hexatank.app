@@ -2,6 +2,7 @@ export class GameSettings {
 	public static RotationSpeed: number = 0.15; //0.05
 	public static TurrelRotationSpeed: number = 0.2;
 	public static TranslationSpeed: number = 3; //1
+	public static DiamondLoadingSpeed: number = 3; //30
 
 	public static Size: number = 50;
 	public static ScreenWidth: number;

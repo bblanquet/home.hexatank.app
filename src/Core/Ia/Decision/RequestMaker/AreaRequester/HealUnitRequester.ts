@@ -13,9 +13,9 @@ export class HealUnitRequester implements IAreaRequestMaker {
 			hasHealing &&
 			area.GetFoesCount() === 0 &&
 			!area.HasHealing() &&
-			area.GetTroops().some((t) => t.Tank.HasDamage)
+			area.GetTroops().some((t) => t.Tank.HasDamage())
 		) {
-			return new AreaRequest(RequestType.HealUnit, RequestPriority.None, 0, area);
+			return new AreaRequest(RequestType.HealUnit, RequestPriority.High, 0, area);
 		} else {
 			return new AreaRequest(RequestType.None, RequestPriority.None, 0, area);
 		}

@@ -1,9 +1,9 @@
-import { SimpleOrder } from './SimpleOrder';
+import { SmartSimpleOrder } from './SmartSimpleOrder';
 import { Cell } from '../../Items/Cell/Cell';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 
-export class DiamondFieldOrder extends SimpleOrder {
+export class DiamondFieldOrder extends SmartSimpleOrder {
 	constructor(private _diamond: Diamond, private _vehicule: Vehicle) {
 		super(_diamond.GetCell(), _vehicule);
 	}

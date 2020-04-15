@@ -30,15 +30,15 @@ export class MoneyOrder extends Order {
 		}
 	}
 
-	public GetFullMoneyFieldCount(range: number): number {
+	public HasFullMoneyCell(range: number): boolean {
 		return this._v
 			.GetCurrentCell()
 			.GetSpecificRange(range)
 			.map((c) => c as Cell)
-			.filter((c) => c.GetField() instanceof MoneyField && (<MoneyField>c.GetField()).IsFull()).length;
+			.some((c) => c.GetField() instanceof MoneyField && (<MoneyField>c.GetField()).IsFull());
 	}
 
-	public GetFullMoneyField(range: number): Cell {
+	public GetFirstFullMoneyCell(range: number): Cell {
 		return this._v
 			.GetCurrentCell()
 			.GetSpecificRange(range)
@@ -47,12 +47,12 @@ export class MoneyOrder extends Order {
 	}
 
 	public TryToGetMoneyField(): void {
-		if (this.GetFullMoneyFieldCount(1)) {
-			const cell = this.GetFullMoneyField(1);
-			this._currentOrder = new SimpleOrder(cell, this._v);
-		} else if (this.GetFullMoneyFieldCount(2)) {
-			const cell = this.GetFullMoneyField(2);
-			this._currentOrder = new SimpleOrder(cell, this._v);
+		for (let i = 1; i < 3; i++) {
+			if (this.HasFullMoneyCell(i)) {
+				const cell = this.GetFirstFullMoneyCell(i);
+				this._currentOrder = new SimpleOrder(cell, this._v);
+				return;
+			}
 		}
 	}
 }

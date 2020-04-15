@@ -18,6 +18,13 @@ export class AppHandler {
 		return this._app;
 	}
 
+	public Clear(): void {
+		this.InteractionManager.destroy();
+		this._app.stop();
+		this._app.destroy();
+		this._viewPort.destroy();
+	}
+
 	public GetViewport(): any {
 		return this._viewPort;
 	}

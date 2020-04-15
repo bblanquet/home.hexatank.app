@@ -27,4 +27,8 @@ export class RenderingHandler {
 		});
 		item.Clear();
 	}
+
+	public Clear(): void {
+		this._groups.Clear();
+	}
 }

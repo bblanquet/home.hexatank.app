@@ -28,6 +28,7 @@ export default class CanvasComponent extends Component<
 	any,
 	{
 		HasMenu: boolean;
+		HasRefresh: boolean;
 		TankRequestCount: number;
 		TruckRequestCount: number;
 		Amount: number;
@@ -38,17 +39,15 @@ export default class CanvasComponent extends Component<
 	}
 > {
 	private _gameCanvas: HTMLDivElement;
-	private _loop: { (): void };
 	private _stop: boolean;
 	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
 	private _appHandler: AppHandler;
 	private _gameContext: GameContext;
+
 	constructor() {
 		super();
 		this._stop = true;
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
-		this._loop = this.GameLoop.bind(this);
-
 		this.setState({
 			HasMenu: false,
 			TankRequestCount: 0,
@@ -59,7 +58,6 @@ export default class CanvasComponent extends Component<
 			HasWarning: false
 		});
 	}
-
 	private OnItemSelectionChanged(obj: any, item: ISelectable): void {
 		if (!item.IsSelected()) {
 			item.SelectionChanged.Off(this._onItemSelectionChanged);
@@ -71,6 +69,7 @@ export default class CanvasComponent extends Component<
 	}
 
 	componentDidMount() {
+		GameSettings.Init();
 		this._stop = false;
 		this._appHandler = new AppHandler();
 		this._appHandler.InitApp();
@@ -90,7 +89,6 @@ export default class CanvasComponent extends Component<
 
 		this._appHandler.GetApp().start();
 		this._gameCanvas.appendChild(this._appHandler.GetApp().view);
-
 		if (!GameHelper.MapContext) {
 			throw 'context missing, cannot implement map';
 		}
@@ -159,7 +157,7 @@ export default class CanvasComponent extends Component<
 				});
 			}
 		});
-		this._loop();
+		this.GameLoop();
 	}
 
 	public SetCenter(): void {
@@ -214,17 +212,27 @@ export default class CanvasComponent extends Component<
 		if (this._stop) {
 			return;
 		}
-		requestAnimationFrame(this._loop);
+		this.setState({
+			HasRefresh: !this.state.HasRefresh
+		});
+		requestAnimationFrame(() => this.GameLoop());
 		GameHelper.Updater.Update();
 	}
 
 	componentWillUnmount() {
+		window.removeEventListener('resize', () => this._appHandler.ResizeTheCanvas());
+		window.removeEventListener('DOMContentLoaded', () => this._appHandler.ResizeTheCanvas());
 		this._stop = true;
-		this._appHandler.GetApp().stop();
 		GameHelper.Updater.Items.forEach((item) => {
 			item.Destroy();
 		});
 		GameHelper.Updater.Items = [];
+		GameHelper.Updater = null;
+		GameHelper.MapContext = null;
+		GameHelper.Render.Clear();
+		GameHelper.Render = null;
+		this._appHandler.Clear();
+		this._gameCanvas = null;
 	}
 
 	componentDidUpdate() {}

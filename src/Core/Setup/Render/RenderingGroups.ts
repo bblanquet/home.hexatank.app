@@ -25,4 +25,12 @@ export class RenderingGroups {
 			this.Z[z] = group;
 		});
 	}
+
+	public Clear(): void {
+		for (var key in this.Z) {
+			delete this.Z[key];
+		}
+		this._fixedParent.destroy();
+		this._parent.destroy();
+	}
 }

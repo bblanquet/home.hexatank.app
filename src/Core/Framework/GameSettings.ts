@@ -16,4 +16,17 @@ export class GameSettings {
 	public static FieldPrice: number = 2;
 	public static PocketMoney: number = 20;
 	public static MapSize: number = 0;
+
+	public static Init(): void {
+		this.Size = 50;
+		this.MissileTranslationSpeed = 5;
+		this.IsPause = false;
+		this.ShowEnemies = false;
+		this.Attack = 10;
+		this.TankPrice = 8;
+		this.TruckPrice = 4;
+		this.FieldPrice = 2;
+		this.PocketMoney = 20;
+		this.MapSize = 0;
+	}
 }

@@ -13,7 +13,8 @@ export class SandDecorator extends Decorator {
 		this._decorationCells = [
 			new DecoratingElement(DecorationType.SandStone),
 			new DecoratingElement(DecorationType.Bush),
-			new DecoratingElement(DecorationType.Leaf2)
+			new DecoratingElement(DecorationType.SandPlants),
+			new DecoratingElement(DecorationType.WhiteSkull)
 		];
 	}
 }

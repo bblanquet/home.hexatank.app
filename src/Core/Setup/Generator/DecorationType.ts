@@ -6,6 +6,8 @@ export enum DecorationType {
 	Volcano,
 	Puddle,
 	Bush,
+	WhiteSkull,
+	SandPlants,
 	Tree,
 	Leaf,
 	Leaf2,

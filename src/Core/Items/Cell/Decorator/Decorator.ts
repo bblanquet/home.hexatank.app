@@ -40,6 +40,14 @@ export abstract class Decorator {
 				cell.SetDecoration(Archive.nature.bush);
 				break;
 			}
+			case DecorationType.WhiteSkull: {
+				cell.SetDecoration(Archive.nature.whiteSkull);
+				break;
+			}
+			case DecorationType.SandPlants: {
+				cell.SetDecoration(Archive.nature.sandPlants);
+				break;
+			}
 			case DecorationType.Water: {
 				items.push(new WaterField(cell));
 				break;

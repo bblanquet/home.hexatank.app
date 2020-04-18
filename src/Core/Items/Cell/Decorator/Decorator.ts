@@ -40,6 +40,14 @@ export abstract class Decorator {
 				cell.SetDecoration(Archive.nature.bush);
 				break;
 			}
+			case DecorationType.SandCactusPlants: {
+				cell.SetDecoration(Archive.nature.cactusPlants);
+				break;
+			}
+			case DecorationType.SandCactus: {
+				items.push(new BlockingField(cell, Archive.nature.cactus));
+				break;
+			}
 			case DecorationType.WhiteSkull: {
 				cell.SetDecoration(Archive.nature.whiteSkull);
 				break;
@@ -76,6 +84,10 @@ export abstract class Decorator {
 				items.push(new BlockingField(cell, Archive.nature.iceTree));
 				break;
 			}
+			case DecorationType.IceTree2: {
+				items.push(new BlockingField(cell, Archive.nature.iceTree2));
+				break;
+			}
 			case DecorationType.IceStone: {
 				cell.SetDecoration(Archive.nature.iceStone);
 				break;
@@ -94,6 +106,10 @@ export abstract class Decorator {
 			}
 			case DecorationType.IcePlants: {
 				cell.SetDecoration(Archive.nature.icePlants);
+				break;
+			}
+			case DecorationType.IcePlants2: {
+				cell.SetDecoration(Archive.nature.icePlants2);
 				break;
 			}
 			case DecorationType.Leaf: {

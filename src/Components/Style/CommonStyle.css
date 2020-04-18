@@ -1,481 +1,477 @@
 .blink_me {
-  animation: blinker 1s linear infinite;
+	animation: blinker 1s linear infinite;
 }
 
 @keyframes blinker {
-  50% {
-    opacity: 0;
-  }
+	50% {
+		opacity: 0;
+	}
 }
 
-
-.base{
-  position: relative;
-  top: 0px; 
-  left: 0px;
-  width: 100%;
+.base {
+	position: relative;
+	top: 0px;
+	left: 0px;
+	width: 100%;
 }
 
-.title-container{
-  border-radius: 2px;
-  margin: 10px;
-  width: 50%;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-  min-height: 0px;
-  color:white;
-  background-color: rgb(41, 41, 41);
-  background-image: linear-gradient(transparent, #1b1b1b);
+.title-container {
+	border-radius: 2px;
+	margin: 10px;
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	min-height: 0px;
+	color: white;
+	background-color: rgb(41, 41, 41);
+	background-image: linear-gradient(transparent, #1b1b1b);
 }
 
 .btn-primary-blue {
-  background-color: rgb(41, 41, 41);
-  background-image: linear-gradient(transparent, #313131);
-  transition: background-color 1s;
-  color:white;
+	background-color: rgb(41, 41, 41);
+	background-image: linear-gradient(transparent, #313131);
+	transition: background-color 1s;
+	color: white;
 }
 
 .btn-primary-blue:hover {
-  background-color: rgb(20, 20, 20);
-  color:rgb(212, 99, 99);
+	background-color: rgb(20, 20, 20);
+	color: rgb(212, 99, 99);
 }
 
 .left-column {
-  position: fixed;
-  width: 10%;
-  height: 100%;
-  top: 0%;
-  left: 0%;
-  margin-top: 0%; 
-  background-color:rgba(29, 29, 29, 0.205);
-}  
+	position: fixed;
+	width: 10%;
+	height: 100%;
+	top: 0%;
+	left: 0%;
+	margin-top: 0%;
+	background-color: rgba(29, 29, 29, 0.205);
+}
 
-@media only screen and  (max-width: 600px) {
-  .left-column  {
-    position: fixed;
-    width: 60px;
-    height: 100%;
-    top: 0%;
-    left: 0%;
-    margin-top: 0%; 
-    background-color:rgba(29, 29, 29, 0.205);
-    }
+@media only screen and (max-width: 600px) {
+	.left-column {
+		position: fixed;
+		width: 60px;
+		height: 100%;
+		top: 0%;
+		left: 0%;
+		margin-top: 0%;
+		background-color: rgba(29, 29, 29, 0.205);
+	}
 }
 
 .right-column {
-  position: fixed;
-  width: 10%;
-  height: 100%;
-  top: 0%;
-  left: 100%;
-  margin-top: 0%; 
-  margin-left: -10%;
-  background-color:rgba(29, 29, 29, 0.205);
-}  
-
-
-@media only screen and  (max-width: 600px) {
-  .right-column {
-    position: fixed;
-    width: 60px;
-    height: 100%;
-    top: 0%;
-    left: 100%;
-    margin-top: 0%; 
-    margin-left: -60px;
-    background-color:rgba(29, 29, 29, 0.205);
-    }
+	position: fixed;
+	width: 10%;
+	height: 100%;
+	top: 0%;
+	left: 100%;
+	margin-top: 0%;
+	margin-left: -10%;
+	background-color: rgba(29, 29, 29, 0.205);
 }
-  
+
+@media only screen and (max-width: 600px) {
+	.right-column {
+		position: fixed;
+		width: 60px;
+		height: 100%;
+		top: 0%;
+		left: 100%;
+		margin-top: 0%;
+		margin-left: -60px;
+		background-color: rgba(29, 29, 29, 0.205);
+	}
+}
+
 .middle2 {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
 }
 
 .centered {
-  position: fixed;
-  width: 100%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+	position: fixed;
+	width: 100%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
-.customed-block{
-  width: 50%;
-  min-width: 50%;
-  min-height: 20px;
-  border-radius: 3px;
-  border:2px solid white;
+.customed-block {
+	width: 50%;
+	min-width: 50%;
+	min-height: 20px;
+	border-radius: 3px;
+	border: 2px solid white;
 }
 
-.left{
-  float:left;
+.left {
+	float: left;
 }
 
-.right{
-  float:right;
+.right {
+	float: right;
 }
 
-.middle{
-  vertical-align: middle;
+.middle {
+	vertical-align: middle;
 }
 
-.small-space{
-  min-width: 35px;
-  min-height: 35px;
-  width: 35px;
-  height: 35px;
+.small-space {
+	min-width: 35px;
+	min-height: 35px;
+	width: 35px;
+	height: 35px;
 }
 
-.white-background{
-  background-color: rgba(255, 255, 255, 0.3);
+.white-background {
+	background-color: rgba(255, 255, 255, 0.3);
 }
 
-.max-width{
-  width:100%;
+.max-width {
+	width: 100%;
 }
 
-.all-max{
-  width:100%;
-  max-width:100%;
-  min-width:100%;
-  height:100%;
-  min-height:100%;
-  max-height:100%;
-  margin: 0 0 0 0;
-  padding: 0 0 0 0;
+.all-max {
+	width: 100%;
+	max-width: 100%;
+	min-width: 100%;
+	height: 100%;
+	min-height: 100%;
+	max-height: 100%;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
 }
 
-.without-padding{
-  padding: 0
+.without-padding {
+	padding: 0;
 }
 
-.standard-space{
-  width: 100%;
-  min-width: 100%;
-  min-height: 50px;
-  height: 30%;
+.standard-space {
+	width: 100%;
+	min-width: 100%;
+	min-height: 50px;
+	height: 30%;
 }
 
-.very-small-space{
-  min-width: 20px;
-  min-height: 20px;
-  width: 20px;
-  height: 20px;
+.very-small-space {
+	min-width: 20px;
+	min-height: 20px;
+	width: 20px;
+	height: 20px;
 }
 
-.very-small-left-margin{
-  margin-left: 5px;
+.very-small-left-margin {
+	margin-left: 5px;
 }
 
-.very-small-right-margin{
-  margin-right: 5px;
+.very-small-right-margin {
+	margin-right: 5px;
 }
 
-.space-out{
-  margin: 5px;
+.space-out {
+	margin: 5px;
 }
 
-.darker{
-  background-color: #1f1f1f;
-  color:#dee1e6;
+.darker {
+	background-color: #1f1f1f;
+	color: #dee1e6;
 }
 
-.container{
-  background-color: #535353;
-  border-radius: 5px;
-  width: 80%;
-  max-width: 350px;
-  padding: 10px;
-  border-top: 20px solid rgb(46, 46, 46);
-  box-shadow: 0px 0px 9px 0px #383838;
+.container {
+	background-color: #535353;
+	border-radius: 5px;
+	width: 80%;
+	max-width: 350px;
+	padding: 10px;
+	border-top: 20px solid rgb(46, 46, 46);
+	box-shadow: 0px 0px 9px 0px #383838;
 }
 
-.btn-group-vertical > button{
-  margin-bottom:10px;
-  border-radius:2px !important;
+.btn-group-vertical > button {
+	margin-bottom: 10px;
+	border-radius: 2px !important;
 }
 
-.btn-group-vertical > div{
-  margin-bottom:10px;
-  border-radius:2px !important;
+.btn-group-vertical > div {
+	margin-bottom: 10px;
+	border-radius: 2px !important;
 }
 
-.container-center{
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%
+.container-center {
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
 }
 
-.bottom-container{
-  margin-top: 5px;
-  height: 30px;
+.bottom-container {
+	margin-top: 5px;
+	height: 30px;
 }
 
 .btn-small {
-  padding: 2px 2px;
-  font-size: 10px;
+	padding: 2px 2px;
+	font-size: 10px;
 }
 
 .row-blue {
-  color:#17a2b8;
+	color: #17a2b8;
 }
 .row-blue:hover {
-  color:#17a2b8;
+	color: #17a2b8;
 }
 
-.text-center{
-  text-align: center;
+.text-center {
+	text-align: center;
 }
 
-.BackgroundGreen{
-  width:100%;
-  height: 100%;
-  background-color:#00A651;
+.BackgroundGreen {
+	width: 100%;
+	height: 100%;
+	background-color: #00a651;
 }
 
 .btn-group-space {
-  margin-bottom: 1rem;
+	margin-bottom: 1rem;
 }
 
 #toast-container > div {
-  opacity: 1;
+	opacity: 1;
 }
 
 .toast-blue .toast-title {
-  color:white;
+	color: white;
 }
 
 .whiteText {
-  color:white;
+	color: white;
 }
 
 .toast-blue {
-  background-color: #343a40;
-  color: #12a1b7;
-  font-weight: bold;
+	background-color: #343a40;
+	color: #12a1b7;
+	font-weight: bold;
 }
 
 .toast-white .toast-title {
-  color:#343a40;
+	color: #343a40;
 }
 
 .toast-white {
-  background-color: #dee1e6;
-  color: #12a1b7;
-  font-weight: bold;
+	background-color: #dee1e6;
+	color: #12a1b7;
+	font-weight: bold;
 }
 
-body{
-  background-color:#00A651;
+body {
+	background-color: #00a651;
 }
-
-
 
 .fill-target {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/targetButton.svg');
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/targetButton.svg');
 }
 
 .fill-patrol {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/patrolButton.svg');
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/patrolButton.svg');
 }
 
 .fill-cancel {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/cancelButton.svg');
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/cancelButton.svg');
 }
 
 .fill-abort {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/AbortMenu.svg');
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/AbortMenu.svg');
 }
 
 .fill-searchMoney {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/SearchMoneyButton.svg');
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/SearchMoneyButton.svg');
 }
 
 .fill-diamond {
-  overflow: hidden;
-  background-size: cover;
-  background-position: center;
-  background-image: url('{{}}out/nature/diamondStone.svg');
+	overflow: hidden;
+	background-size: cover;
+	background-position: center;
+	background-image: url('{{}}nature/diamondStone.svg');
 }
 
 .fill-option {
-  overflow: hidden;
-  background-size: cover;
-  background-position: center;
-  background-image: url('{{}}out/option.svg');
+	overflow: hidden;
+	background-size: cover;
+	background-position: center;
+	background-image: url('{{}}option.svg');
 }
 
 .fill-tank {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/tankbutton.svg');
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/tankButton.svg');
 }
 
 .fill-truck {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/truckButton.svg');
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/truckButton.svg');
 }
 
 .fill-flag {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/flagMenu.svg');
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/flagMenu.svg');
 }
 
 .fill-flag {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/flagMenu.svg');
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/flagMenu.svg');
 }
 
 .fill-money {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/moneyMenu.svg');
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/moneyMenu.svg');
 }
 
 .fill-medic {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/healthMenu.svg');
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/healthMenu.svg');
 }
 
 .fill-speed {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/speedMenu.svg');
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/speedMenu.svg');
 }
 
 .fill-power {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/powerMenu.svg');
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/powerMenu.svg');
 }
 
 .fill-poison {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/poisonMenu.svg');
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/poisonMenu.svg');
 }
 
 .fill-slow {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/slowMenu.svg');
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/slowMenu.svg');
 }
 
 .fill-camouflage {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/camouflageMenu.svg');  
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/camouflageMenu.svg');
 }
 
 .fill-noMoney {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/noMoney.svg');  
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/noMoney.svg');
 }
 
 .fill-lightIcon {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/elecIcon.svg');  
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/elecIcon.svg');
 }
 
 .fill-influence {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/influenceButton.svg');  
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/influenceButton.svg');
 }
 
 .fill-big {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/biggingMenu.svg');  
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/biggingMenu.svg');
 }
 
 .fill-small {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/smallingMenu.svg');  
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/smallingMenu.svg');
 }
 
 .fill-energy {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/energyButton.svg');  
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/energyButton.svg');
 }
 
 .fill-minus {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/minusButton.svg');  
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/minusButton.svg');
 }
 
 .fill-plus {
-  overflow: hidden;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('{{}}out/menu/plusButton.svg');  
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/plusButton.svg');
 }

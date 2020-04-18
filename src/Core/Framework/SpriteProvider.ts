@@ -7,7 +7,7 @@ export class SpriteProvider implements ISpriteProvider {
 
 	public GetSprite(name: string, accuracy: number): PIXI.Sprite {
 		if (this.IsSvg(name)) {
-			const postension = `.{{}}in`;
+			const postension = `.{{}}`;
 			name = name.slice(1);
 			name = postension + name;
 			return new PIXI.Sprite(PIXI.Texture.fromImage(name, undefined, undefined, accuracy));
@@ -22,7 +22,7 @@ export class SpriteProvider implements ISpriteProvider {
 
 	public static GetAssets(): string[] {
 		const keys = new Array<string>();
-		this.GetPaths(Archive, '.{{}}out', keys);
+		this.GetPaths(Archive, '.{{}}', keys);
 		return keys;
 	}
 

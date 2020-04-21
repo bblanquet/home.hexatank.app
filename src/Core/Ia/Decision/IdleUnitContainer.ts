@@ -2,25 +2,33 @@ import { KingdomArea } from './Utils/KingdomArea';
 import { Tank } from '../../Items/Unit/Tank';
 
 export class IdleUnitContainer {
-	private Areas: Array<KingdomArea>;
+	private _excessAreas: Array<KingdomArea>;
 
 	constructor() {}
 
-	public CalculateExcess(statuses: Array<KingdomArea>): void {
-		this.Areas = statuses.filter((s) => s.GetExcessTroops() > 0);
+	public CalculateExcess(areas: Array<KingdomArea>): void {
+		this._excessAreas = areas.filter((area) => 0 < this.GetExcess(area));
+	}
+
+	private GetExcess(area: KingdomArea): number {
+		if (area.GetFoesCount() == 0 && !area.IsBorder() && !(area.IsTroopFighting() || area.IsTroopHealing())) {
+			return area.Troops.length;
+		} else {
+			return 0;
+		}
 	}
 
 	public HasTank(): boolean {
-		this.Cleaner();
-		return this.Areas.length > 0;
+		this.SetExcessAreas();
+		return 0 < this._excessAreas.length;
 	}
 
-	private Cleaner(): void {
-		this.Areas = this.Areas.filter((s) => s.GetExcessTroops() > 0);
+	private SetExcessAreas(): void {
+		this._excessAreas = this._excessAreas.filter((s) => 0 < this.GetExcess(s));
 	}
 
 	public Pop(): Tank {
-		this.Cleaner();
-		return this.Areas[0].DropTroop();
+		this.SetExcessAreas();
+		return this._excessAreas[0].DropTroop();
 	}
 }

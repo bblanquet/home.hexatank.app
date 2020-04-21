@@ -13,7 +13,7 @@ export class AppHandler {
 	private _app: PIXI.Application;
 	public InteractionManager: PIXI.interaction.InteractionManager;
 	public Playground: ItemsUpdater;
-
+	public ViewContext: ViewContext;
 	public GetApp(): PIXI.Application {
 		return this._app;
 	}
@@ -47,8 +47,8 @@ export class AppHandler {
 		this.InteractionManager = new PIXI.interaction.InteractionManager(this._app.renderer);
 		this._viewPort.drag().pinch().wheel().decelerate();
 		this._app.stage.addChild(this._viewPort);
-
-		this.Playground = new ItemsUpdater(new ViewContext());
+		this.ViewContext = new ViewContext();
+		this.Playground = new ItemsUpdater(this.ViewContext);
 		this.InputManager = new InputNotifier();
 	}
 

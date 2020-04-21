@@ -5,6 +5,7 @@ import { isNullOrUndefined } from 'util';
 import { AliveItem } from '../../../Items/AliveItem';
 import { CellContext } from '../../../Items/Cell/CellContext';
 import { AreaSearch } from './AreaSearch';
+import { DistanceHelper } from '../../../Items/Unit/MotionHelpers/DistanceHelper';
 
 export class Area {
 	private _areaSearch: AreaSearch;
@@ -23,6 +24,10 @@ export class Area {
 		return field instanceof Headquarter;
 	}
 
+	public GetDistanceFrom(cell: Cell): number {
+		return DistanceHelper.GetDistance(this.GetCentralCell().GetCoordinate(), cell.GetCoordinate());
+	}
+
 	public HasDiamond(): boolean {
 		const field = this.GetCentralCell().GetField();
 		return field instanceof Diamond;
@@ -32,8 +37,14 @@ export class Area {
 		return this._centralCell;
 	}
 
+	public Contains(cell: Cell): boolean {
+		return this.GetCells().some((c) => c === cell);
+	}
+
 	public GetCells(): Cell[] {
-		return this.GetCentralCell().GetAllNeighbourhood().map((c) => <Cell>c);
+		const cells = this.GetCentralCell().GetAllNeighbourhood().map((c) => <Cell>c);
+		cells.push(this.GetCentralCell());
+		return cells;
 	}
 
 	public GetFoeCells(v: AliveItem): Cell[] {
@@ -46,6 +57,10 @@ export class Area {
 			}
 		});
 		return result;
+	}
+
+	HasFreeCells(): boolean {
+		return 0 < this.GetFreeCells().length;
 	}
 
 	public GetFreeCells(): Cell[] {

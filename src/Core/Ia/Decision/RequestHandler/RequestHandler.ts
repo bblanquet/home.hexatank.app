@@ -30,7 +30,7 @@ export class RequestHandler implements IRequestHandler {
 		);
 		this._handlers.Add(RequestPriority.Medium, new TankMediumRequestHandler(this._kindgom, this._hq));
 		this._handlers.Add(RequestPriority.Low, new TankMediumRequestHandler(this._kindgom, this._hq));
-		this._handlers.Add(RequestPriority.High, new RoadRequestHandler(this._hq));
+		this._handlers.Add(RequestPriority.Medium, new RoadRequestHandler(this._hq));
 		this._handlers.Add(RequestPriority.High, new FarmRequestHandler(this._hq));
 	}
 

@@ -19,7 +19,7 @@ import { ISelectable } from '../../ISelectable';
 import { Cell } from '../Cell/Cell';
 import { IOrder } from '../../Ia/Order/IOrder';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
-import { Timer } from '../../Utils/Timer/Timer';
+import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { CellState } from '../Cell/CellState';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { CellProperties } from '../Cell/CellProperties';
@@ -60,7 +60,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	private _angleFinder: IAngleFinder;
 	private _pendingOrder: IOrder;
 
-	private _dustTimer: Timer;
+	private _dustTimer: TickTimer;
 	private _dustIndex: number;
 	private _leftDusts: Array<Dust>;
 	private _rightDusts: Array<Dust>;
@@ -87,7 +87,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
 		this.Wheels = new Array<string>();
 		this.WheelIndex = 0;
-		this._dustTimer = new Timer(12);
+		this._dustTimer = new TickTimer(12);
 		this._dustIndex = 0;
 
 		this._translationMaker = new TranslationMaker<Vehicle>(this);

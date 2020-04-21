@@ -1,6 +1,6 @@
 import { Item } from '../Item';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
-import { Timer } from '../../Utils/Timer/Timer';
+import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { GameHelper } from '../../Framework/GameHelper';
 import { InteractionContext } from '../../Interaction/InteractionContext';
 import { ITimer } from '../../Utils/Timer/ITimer';
@@ -22,7 +22,7 @@ export class Explosion extends Item {
 	) {
 		super();
 		this.Z = z;
-		this._timer = new Timer(timer);
+		this._timer = new TickTimer(timer);
 		this.BoundingBox = new BoundingBox();
 		this.BoundingBox.X = boundingbox.X;
 		this.BoundingBox.Y = boundingbox.Y;

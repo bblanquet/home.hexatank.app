@@ -1,12 +1,12 @@
 import { BasicItem } from './../BasicItem';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Archive } from '../../Framework/ResourceArchiver';
-import { Timer } from '../../Utils/Timer/Timer';
+import { TickTimer } from '../../Utils/Timer/TickTimer';
 
 export class Floor extends BasicItem {
 	private _grassIndex: number;
-	private _idleLongTimer: Timer;
-	private _idleTimer: Timer = new Timer(4);
+	private _idleLongTimer: TickTimer;
+	private _idleTimer: TickTimer = new TickTimer(4);
 	private _isIncreasing: boolean = true;
 	private _isAnimated: boolean = true;
 
@@ -21,15 +21,15 @@ export class Floor extends BasicItem {
 		});
 		this.InitPosition(boundingBox);
 		this.IsCentralRef = true;
-		this._idleLongTimer = new Timer(this.GetRandom());
+		this._idleLongTimer = new TickTimer(this.GetRandom());
 	}
 
 	public Update(viewX: number, viewY: number): void {
 		super.Update(viewX, viewY);
 
 		if (this._idleLongTimer.IsElapsed()) {
-			this._idleLongTimer = new Timer(this.GetRandom());
-			this._idleTimer = new Timer(this.GetSmallRandom());
+			this._idleLongTimer = new TickTimer(this.GetRandom());
+			this._idleTimer = new TickTimer(this.GetSmallRandom());
 		}
 
 		if (this._idleTimer.IsElapsed()) {

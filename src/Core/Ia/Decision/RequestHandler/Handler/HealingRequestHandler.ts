@@ -5,7 +5,6 @@ import { AreaRequest } from '../../Utils/AreaRequest';
 import { BasicField } from '../../../../Items/Cell/Field/BasicField';
 import { GameSettings } from '../../../../Framework/GameSettings';
 import { RequestType } from '../../Utils/RequestType';
-import { RequestPriority } from '../../Utils/RequestPriority';
 
 export class HealingRequestHandler implements ISimpleRequestHandler {
 	constructor(private _hq: Headquarter) {}

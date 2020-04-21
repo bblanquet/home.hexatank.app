@@ -1,6 +1,6 @@
 import { Item } from '../Item';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
-import { Timer } from '../../Utils/Timer/Timer';
+import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { InteractionContext } from '../../Interaction/InteractionContext';
 
@@ -8,14 +8,14 @@ export class Dust extends Item {
 	public BoundingBox: BoundingBox;
 	private currentDust: number;
 	private currentAlpha: number;
-	private _timer: Timer;
+	private _timer: TickTimer;
 
 	constructor(boundingBox: BoundingBox) {
 		super();
 		this.currentDust = -1;
 		this.currentAlpha = 0.5;
 		this.Z = 1;
-		this._timer = new Timer(15);
+		this._timer = new TickTimer(15);
 
 		this.BoundingBox = boundingBox;
 		Archive.dusts.forEach((dust) => {
@@ -70,7 +70,7 @@ export class Dust extends Item {
 
 	public Reset(boundingBox: BoundingBox) {
 		this.BoundingBox = boundingBox;
-		this._timer = new Timer(15);
+		this._timer = new TickTimer(15);
 		this.GetSprites().forEach((sp) => {
 			sp.alpha = 0;
 		});

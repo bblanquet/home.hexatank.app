@@ -8,7 +8,6 @@ import { Truck } from '../../../../Items/Unit/Truck';
 import { HqFieldOrder } from '../../../Order/HqFieldOrder';
 import { DiamondFieldOrder } from '../../../Order/DiamondFieldOrder';
 import { RequestType } from '../../Utils/RequestType';
-import { RequestPriority } from '../../Utils/RequestPriority';
 
 export class TruckRequestHandler implements ISimpleRequestHandler {
 	constructor(private _hq: Headquarter, private _kingdom: IKingdomDecisionMaker) {}

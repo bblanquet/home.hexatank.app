@@ -74,6 +74,7 @@ export default class CanvasComponent extends Component<
 		this._appHandler = new AppHandler();
 		this._appHandler.InitApp();
 		GameHelper.Updater = this._appHandler.Playground;
+		GameHelper.ViewContext = this._appHandler.ViewContext;
 		GameHelper.Render = new RenderingHandler(
 			new RenderingGroups(
 				{
@@ -231,6 +232,7 @@ export default class CanvasComponent extends Component<
 		GameHelper.MapContext = null;
 		GameHelper.Render.Clear();
 		GameHelper.Render = null;
+		GameHelper.ViewContext = null;
 		this._appHandler.Clear();
 		this._gameCanvas = null;
 	}

@@ -7,8 +7,8 @@ import { AreaRequestMaker } from '../AreaRequestMaker';
 
 export class RoadRequester implements IAreaRequestMaker {
 	GetRequest(area: KingdomArea): AreaRequest {
-		if (!area.IsConnected() && 0 < area.GetAllyAreas().length) {
-			return new AreaRequest(RequestType.Road, RequestPriority.High, 1, area);
+		if (!area.IsConnected() && 0 < area.GetAllyAreas().length && !area.HasNature()) {
+			return new AreaRequest(RequestType.Road, RequestPriority.Medium, 1, area);
 		} else {
 			return AreaRequestMaker.NoRequest(area);
 		}

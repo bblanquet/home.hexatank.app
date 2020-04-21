@@ -11,7 +11,7 @@ export class HqFieldOrder extends SmartSimpleOrder {
 	protected GetClosestcell(): Cell {
 		let cells = this.GetCells(this._hq);
 		if (0 < cells.length) {
-			let cell = this.cellFinder.GetCell(cells, this._vehicule);
+			let cell = this.cellFinder.GetClosestCell(cells, this._vehicule);
 			this.OriginalDest = cell;
 			return cell;
 		} else {

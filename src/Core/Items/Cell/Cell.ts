@@ -37,7 +37,7 @@ export class Cell extends Item implements ICell, ISelectable {
 
 	constructor(properties: CellProperties, private _cells: CellContext<Cell>, private _gameContext: GameContext) {
 		super();
-		this.Z = 1;
+		this.Z = 2;
 		this._display = [];
 		this.Properties = properties;
 		new BasicField(this);

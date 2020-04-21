@@ -1,15 +1,18 @@
+import { HealField } from './../../../Items/Cell/Field/HealField';
+import { TimeTimer } from './../../../Utils/Timer/TimeTimer';
 import { isNullOrUndefined } from 'util';
 import { ITimer } from '../../../Utils/Timer/ITimer';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Tank } from '../../../Items/Unit/Tank';
 import { KingdomArea } from '../Utils/KingdomArea';
-import { Timer } from '../../../Utils/Timer/Timer';
+import { TickTimer } from '../../../Utils/Timer/TickTimer';
 import { SimpleOrder } from '../../Order/SimpleOrder';
 import { AliveItem } from '../../../Items/AliveItem';
 
 export class TroopDecisionMaker {
 	private _changePositionTimer: ITimer;
 	private _cancelOrderTimer: ITimer;
+	private _idleTimer: ITimer;
 
 	private readonly IsPratrolDone = this.Tank.GetCurrentCell() === this.CurrentPatrolDestination;
 	private _target: AliveItem;
@@ -22,8 +25,9 @@ export class TroopDecisionMaker {
 			throw 'not possible';
 		}
 
-		this._changePositionTimer = new Timer(20);
-		this._cancelOrderTimer = new Timer(20);
+		this._changePositionTimer = new TickTimer(20);
+		this._cancelOrderTimer = new TickTimer(20);
+		this._idleTimer = new TimeTimer(0);
 	}
 
 	SetTarget(cell: Cell) {
@@ -41,8 +45,15 @@ export class TroopDecisionMaker {
 				this.SetNextDestination();
 			}
 		} else if (this.IsIdle()) {
-			this.SetNextDestination();
-			this.Tank.SetOrder(new SimpleOrder(this.CurrentPatrolDestination, this.Tank));
+			if (isNullOrUndefined(this._idleTimer)) {
+				this._idleTimer = new TimeTimer(4000);
+			}
+
+			if (this._idleTimer.IsElapsed()) {
+				this._idleTimer = null;
+				this.SetNextDestination();
+				this.Tank.SetOrder(new SimpleOrder(this.CurrentPatrolDestination, this.Tank));
+			}
 		} else {
 			if (this._cancelOrderTimer.IsElapsed()) {
 				this.Tank.CancelOrder();
@@ -72,6 +83,9 @@ export class TroopDecisionMaker {
 		}
 
 		if (this.Tank.HasDamage()) {
+			if (this.Tank.GetCurrentCell().GetField() instanceof HealField) {
+				return;
+			}
 			const healSpot = this.Area.GetHealSpot();
 			if (healSpot) {
 				this.CurrentPatrolDestination = healSpot;

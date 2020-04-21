@@ -50,7 +50,7 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 		const ySign = nextMiddle < currentMiddle ? -1 : 1;
 		const xSign = nextCenter < currentCenter ? -1 : 1;
 
-		if (!this.IsCloseEnough(currentCenter, nextCenter, this._item)) {
+		if (this.IsCloseEnough(currentCenter, nextCenter, this._item)) {
 			itemBox.X = this._item.GetNextCell().GetBoundingBox().X;
 		} else {
 			itemBox.X += xSign * this._item.TranslationSpeed;

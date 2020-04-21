@@ -7,27 +7,28 @@ import { RequestPriority } from '../../Utils/RequestPriority';
 
 export class TankRequester implements IAreaRequestMaker {
 	public GetRequest(area: KingdomArea): AreaRequest {
-		const enemies = area.GetFoesCount();
-		if (enemies === 0) {
-			if (area.Troops.length === 0) {
+		const foes = area.GetFoesCount();
+
+		if (foes === 0) {
+			if (area.Troops.length === 0 && area.IsBorder()) {
 				return new AreaRequest(RequestType.Tank, RequestPriority.Low, 1, area);
 			}
-		} else if (area.Troops.length <= enemies) {
-			let requestedUnits = area.Troops.length - area.GetFoesCount();
+		} else if (area.Troops.length <= foes) {
+			let requestTroops = area.Troops.length - area.GetFoesCount();
 
-			if (0 <= requestedUnits) {
+			if (0 <= requestTroops) {
 				if (0 < area.GetInnerFoeCount()) {
-					return new AreaRequest(RequestType.Tank, RequestPriority.High, requestedUnits + 1, area);
+					return new AreaRequest(RequestType.Tank, RequestPriority.High, requestTroops + 1, area);
 				}
 
-				let availableSlots = area.GetFreeCellCount();
+				const freeCells = area.GetFreeCellCount();
 
-				if (requestedUnits > availableSlots) {
-					requestedUnits = availableSlots;
+				if (freeCells < requestTroops) {
+					requestTroops = freeCells;
 				}
 
 				if (area.Troops.length < area.GetOuterFoeCount()) {
-					return new AreaRequest(RequestType.Tank, RequestPriority.Medium, requestedUnits, area);
+					return new AreaRequest(RequestType.Tank, RequestPriority.Medium, requestTroops, area);
 				}
 			}
 		}

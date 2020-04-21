@@ -5,7 +5,7 @@ import { AliveItem } from '../AliveItem';
 import { Headquarter } from '../Cell/Field/Headquarter';
 import { Light } from '../Environment/Light';
 import { Archive } from '../../Framework/ResourceArchiver';
-import { Timer } from '../../Utils/Timer/Timer';
+import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { CellState } from '../Cell/CellState';
 import { ITimer } from '../../Utils/Timer/ITimer';
 import { GameContext } from '../../Framework/GameContext';
@@ -23,7 +23,7 @@ export class Truck extends Vehicle implements IHqContainer {
 		this.GenerateSprite(Archive.wheel);
 		this.RootSprites.push(Archive.wheel);
 
-		this._dimaondTimer = new Timer(GameSettings.DiamondLoadingSpeed);
+		this._dimaondTimer = new TickTimer(GameSettings.DiamondLoadingSpeed);
 		this.Wheels.forEach((wheel) => {
 			this.GenerateSprite(wheel);
 			this.RootSprites.push(wheel);

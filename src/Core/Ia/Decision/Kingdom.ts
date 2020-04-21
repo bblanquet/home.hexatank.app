@@ -12,7 +12,7 @@ import { AreaRequest } from './Utils/AreaRequest';
 import { RequestPriority } from './Utils/RequestPriority';
 import { KingdomArea } from './Utils/KingdomArea';
 import { Truck } from '../../Items/Unit/Truck';
-import { Timer } from '../../Utils/Timer/Timer';
+import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Area } from './Utils/Area';
 import { IRequestHandler } from './RequestHandler/IRequestHandler';
@@ -26,7 +26,7 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	public Tanks: Array<Tank> = new Array<Tank>();
 	public CellAreas: Dictionnary<IAreaDecisionMaker>;
 	private _diamond: Diamond;
-	private _idleTimer: Timer = new Timer(25);
+	private _idleTimer: TickTimer = new TickTimer(25);
 	public IdleTanks: IdleUnitContainer;
 	private _requestMaker: IAreaRequestListMaker;
 	private _requestHandler: IRequestHandler;
@@ -57,6 +57,7 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	private DiamondDestroyed(): void {
 		this._diamond.OnDestroyed.Clear();
 		this.Trucks.forEach((truck) => {
+			truck.CancelOrder();
 			truck.SetOrder(new MoneyOrder(truck));
 		});
 	}
@@ -129,11 +130,19 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 		const hTypes = requests.Exist(RequestPriority.High)
 			? requests.Get(RequestPriority.High).map((c) => c.RequestType)
 			: '';
+
+		const mCount = requests.Exist(RequestPriority.Medium) ? requests.Get(RequestPriority.Medium).length : 0;
+		const mTypes = requests.Exist(RequestPriority.Medium)
+			? requests.Get(RequestPriority.Medium).map((c) => c.RequestType)
+			: '';
 		// const mCount = requests.Exist(RequestPriority.Medium) ? requests.Get(RequestPriority.Medium).length : 0;
 		// const lCount = requests.Exist(RequestPriority.Low) ? requests.Get(RequestPriority.Low).length : 0;
 		console.log(
-			`%c [MONEY] ${this._hq.GetAmount()} [A] ${this.AreaDecisions.length} [H] ${hCount} ${hTypes.toString()} `,
-			'font-weight:bold;color:red;'
+			`%c [MONEY] ${this._hq.GetAmount()} [A] ${this.AreaDecisions.length}`,
+			'font-weight:bold;color:#940c0c;'
 		);
+		console.log(`%c [H] ${hCount} ${hTypes.toString()} `, 'font-weight:bold;color:#94570c;');
+		console.log(`%c [M] ${mCount} ${mTypes.toString()} `, 'font-weight:bold;color:#94770c;');
+		console.log(`%c ----------------------- `, 'font-weight:bold;color:#94770c;');
 	}
 }

@@ -1,5 +1,5 @@
 import { Field } from './Field';
-import { Timer } from '../../../Utils/Timer/Timer';
+import { TickTimer } from '../../../Utils/Timer/TickTimer';
 import { LiteEvent } from '../../../Utils/Events/LiteEvent';
 import { Cell } from '../Cell';
 import { Archive } from '../../../Framework/ResourceArchiver';
@@ -11,7 +11,7 @@ import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../../Interaction/InteractionContext';
 
 export class DiamondField extends Field {
-	private _timer: Timer;
+	private _timer: TickTimer;
 	IsFading: boolean;
 	public Loaded: LiteEvent<{}> = new LiteEvent<{}>();
 
@@ -19,7 +19,7 @@ export class DiamondField extends Field {
 		super(cell);
 		this.GetCell().SetField(this);
 		this.Z = 0;
-		this._timer = new Timer(3);
+		this._timer = new TickTimer(3);
 		this.GenerateSprite(Archive.diamondCell);
 		this.InitPosition(cell.GetBoundingBox());
 		this.GetDisplayObjects().forEach((obj) => {
@@ -28,8 +28,8 @@ export class DiamondField extends Field {
 	}
 
 	public Destroy(): void {
-		super.Destroy();
 		this.IsUpdatable = false;
+		super.Destroy();
 		this.GetCell().DestroyField();
 	}
 
@@ -62,6 +62,10 @@ export class DiamondField extends Field {
 	}
 
 	public Update(viewX: number, viewY: number): void {
+		if (!this.IsUpdatable) {
+			return;
+		}
+
 		super.Update(viewX, viewY);
 
 		if (this._timer.IsElapsed()) {

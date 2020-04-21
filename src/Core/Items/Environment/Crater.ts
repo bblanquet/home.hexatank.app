@@ -1,20 +1,20 @@
 import { Item } from '../Item';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../Interaction/InteractionContext';
-import { Timer } from '../../Utils/Timer/Timer';
+import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { GameHelper } from '../../Framework/GameHelper';
 
 export class Crater extends Item {
 	BoundingBox: BoundingBox;
-	private _timer: Timer;
+	private _timer: TickTimer;
 	private _isDone: boolean = false;
 
 	constructor(boundingbox: BoundingBox) {
 		super();
 		this.Z = 0;
 		this.BoundingBox = boundingbox;
-		this._timer = new Timer(120);
+		this._timer = new TickTimer(120);
 
 		this.GenerateSprite(Archive.destruction.floorExplosion, (s) => (s.alpha = 0.6));
 		this.GenerateSprite(Archive.destruction.debris);

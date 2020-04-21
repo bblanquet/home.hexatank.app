@@ -1,7 +1,7 @@
 import { Cell } from '../Cell';
 import { Field } from './Field';
 import { CellState } from '../CellState';
-import { Timer } from '../../../Utils/Timer/Timer';
+import { TickTimer } from '../../../Utils/Timer/TickTimer';
 import { Light } from '../../Environment/Light';
 import { Archive } from '../../../Framework/ResourceArchiver';
 import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
@@ -11,14 +11,14 @@ import { Truck } from '../../Unit/Truck';
 import { GameSettings } from '../../../Framework/GameSettings';
 
 export class MoneyField extends Field {
-	private _timer: Timer;
+	private _timer: TickTimer;
 	private _light: Light;
 
 	constructor(cell: Cell) {
 		super(cell);
 		this.GetCell().SetField(this);
 		this.Z = 1;
-		this._timer = new Timer(10);
+		this._timer = new TickTimer(10);
 		this._light = new Light(cell.GetBoundingBox());
 		this._light.Hide();
 		this.GenerateSprite(Archive.bonus.emptyMoney);

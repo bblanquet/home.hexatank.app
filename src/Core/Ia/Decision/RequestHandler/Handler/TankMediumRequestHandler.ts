@@ -8,7 +8,6 @@ import { GameSettings } from '../../../../Framework/GameSettings';
 import { Vehicle } from '../../../../Items/Unit/Vehicle';
 import { Tank } from '../../../../Items/Unit/Tank';
 import { RequestType } from '../../Utils/RequestType';
-import { RequestPriority } from '../../Utils/RequestPriority';
 
 export class TankMediumRequestHandler implements ISimpleRequestHandler {
 	constructor(private _kingdom: Kingdom, private _hq: Headquarter) {}

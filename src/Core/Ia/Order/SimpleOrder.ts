@@ -6,7 +6,7 @@ import { Order } from './Order';
 import { Cell } from '../../Items/Cell/Cell';
 import { CellFinder } from '../../Items/Cell/CellFinder';
 import { BasicItem } from '../../Items/BasicItem';
-import { Timer } from '../../Utils/Timer/Timer';
+import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { PacketKind } from '../../../Components/Network/PacketKind';
@@ -18,13 +18,13 @@ export class SimpleOrder extends Order {
 	private _uiPath: Array<BasicItem>;
 	protected Dest: Cell;
 	private _tryCount: number;
-	private _sleep: Timer;
+	private _sleep: TickTimer;
 	constructor(protected OriginalDest: Cell, private _v: Vehicle) {
 		super();
 		if (isNullOrUndefined(this.OriginalDest)) {
 			throw 'invalid destination';
 		}
-		this._sleep = new Timer(100);
+		this._sleep = new TickTimer(100);
 		this._tryCount = 0;
 		this.Dest = OriginalDest;
 		this.cells = new Array<Cell>();
@@ -173,7 +173,7 @@ export class SimpleOrder extends Order {
 			if (cells.length === 0) {
 				return null;
 			} else {
-				return this.cellFinder.GetCell(cells, this._v);
+				return this.cellFinder.GetClosestCell(cells, this._v);
 			}
 		} else {
 			return this._v.GetCurrentCell();

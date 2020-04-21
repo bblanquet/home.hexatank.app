@@ -8,11 +8,11 @@ export class HealUnitRequester implements IAreaRequestMaker {
 	constructor(private _kingdom: Kingdom) {}
 
 	GetRequest(area: KingdomArea): AreaRequest {
-		const hasHealing = this._kingdom.GetKingdomAreas().Values().some((a) => a.HasHealing());
+		const hasHealing = this._kingdom.GetKingdomAreas().Values().some((a) => a.HasMedic());
 		if (
 			hasHealing &&
 			area.GetFoesCount() === 0 &&
-			!area.HasHealing() &&
+			!area.HasMedic() &&
 			area.GetTroops().some((t) => t.Tank.HasDamage())
 		) {
 			return new AreaRequest(RequestType.HealUnit, RequestPriority.High, 0, area);

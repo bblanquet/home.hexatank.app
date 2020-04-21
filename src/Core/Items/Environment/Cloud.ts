@@ -2,7 +2,7 @@ import { GameSettings } from '../../Framework/GameSettings';
 import { Item } from '../Item';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../Interaction/InteractionContext';
-import { Timer } from '../../Utils/Timer/Timer';
+import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { ITimer } from '../../Utils/Timer/ITimer';
 
 export class Cloud extends Item {
@@ -17,7 +17,7 @@ export class Cloud extends Item {
 
 	constructor(private _min: number, private _max: number, private _y: number, private _sprite: string) {
 		super();
-		this._timer = new Timer(3);
+		this._timer = new TickTimer(3);
 		this.Z = 4;
 		this.GenerateSprite(this._sprite);
 		this._boundingBox = new BoundingBox();

@@ -74,21 +74,20 @@ export class Diamond extends AliveField {
 	}
 
 	public Destroy(): void {
-		super.Destroy();
-		this.GetCell().DestroyField();
 		this.IsUpdatable = false;
 		this.Fields.forEach((field) => {
 			field.Loaded.Clear();
 			field.Destroy();
 		});
+		super.Destroy();
+		this.GetCell().DestroyField();
 		this.Lights.Destroy();
 	}
 
 	public Update(viewX: number, viewY: number): void {
 		if (!this.IsAlive()) {
 			this.Destroy();
-			let crater = new Crater(this.BoundingBox);
-
+			new Crater(this.BoundingBox);
 			return;
 		}
 

@@ -1,4 +1,3 @@
-import { BlockingField } from './../../../Items/Cell/Field/RockField';
 import { TroopDecisionMaker } from './../Troop/TroopDecisionMaker';
 import { HealField } from './../../../Items/Cell/Field/HealField';
 import { BasicField } from './../../../Items/Cell/Field/BasicField';
@@ -44,11 +43,9 @@ export class KingdomArea {
 		return this._spot;
 	}
 
-	public HasHealing(): boolean {
+	public HasMedic(): boolean {
 		return this._spot.GetCells().some((c) => c.GetField() instanceof HealField);
 	}
-
-	// public IsDefenseArea(): boolean {}
 
 	public GetTroops(): Array<TroopDecisionMaker> {
 		return this.Troops;
@@ -62,14 +59,26 @@ export class KingdomArea {
 		return this._spot.GetCentralCell();
 	}
 
+	public GetConnectingCentralCell(): Cell {
+		if (!this._spot.GetCentralCell().IsBlocked()) {
+			return this._spot.GetCentralCell();
+		} else {
+			if (this.HasFastField()) {
+				return this.GetFastFields()[0];
+			} else {
+				return this._spot.GetFreeCells()[0];
+			}
+		}
+	}
+
 	public GetAllyAreas(): KingdomArea[] {
 		const spots = this._spot.GetAroundAreas();
 		const allySpots = new Array<KingdomArea>();
-		const k = this._kindgom.GetKingdomAreas();
+		const kingdom = this._kindgom.GetKingdomAreas();
 		spots.forEach((s) => {
 			const coo = s.GetCentralCell().GetCoordinate().ToString();
-			if (k.Exist(coo)) {
-				allySpots.push(k.Get(coo));
+			if (kingdom.Exist(coo)) {
+				allySpots.push(kingdom.Get(coo));
 			}
 		});
 		return allySpots;
@@ -79,8 +88,19 @@ export class KingdomArea {
 		return this._spot.GetCells().some((c) => c.GetField() instanceof MoneyField);
 	}
 
+	public HasFastField(): boolean {
+		return this._spot.GetCells().some((c) => c.GetField() instanceof FastField);
+	}
+
+	public GetFastFields(): Cell[] {
+		return this._spot.GetCells().filter((c) => c.GetField() instanceof FastField);
+	}
+
 	public HasNature(): boolean {
-		return this._spot.GetCells().some((c) => c.HasShootableField() && c.GetField() instanceof BlockingField);
+		if (this.IsImportant()) {
+			return false;
+		}
+		return this._spot.GetCells().some((c) => c.HasShootableField());
 	}
 
 	public GetNatures(): Cell[] {
@@ -89,17 +109,24 @@ export class KingdomArea {
 
 	public IsConnected(): boolean {
 		const central = this.GetCentralCell();
-		if (central.IsBlocked()) {
-			if (central === this._hq.GetCell() || central.GetField() instanceof Diamond) {
-				return true;
-			}
-			return this._spot.GetCells().some((c) => c.GetField() instanceof FastField);
-		} else {
-			return this.HasRoad(this._hq.GetCell());
+		if (central === this._hq.GetCell() || central.GetField() instanceof Diamond) {
+			return true;
 		}
+
+		return this._spot.GetCells().some((c) => c.GetField() instanceof FastField);
+
+		// const central = this.GetCentralCell();
+		// if (central.IsBlocked()) {
+		// 	if (central === this._hq.GetCell() || central.GetField() instanceof Diamond) {
+		// 		return true;
+		// 	}
+		// 	return this._spot.GetCells().some((c) => c.GetField() instanceof FastField);
+		// } else {
+		// 	return this.HasRoad(this._hq.GetCell(), 100);
+		// }
 	}
 
-	private HasRoad(cell: Cell): boolean {
+	private HasRoad(cell: Cell, count: number): boolean {
 		const central = this.GetCentralCell();
 		const pathFinder = new AStarEngine<Cell>((c: ICell) => {
 			let cell = c as Cell;
@@ -111,7 +138,7 @@ export class KingdomArea {
 			);
 		});
 		const path = pathFinder.GetPath(central, cell);
-		return path !== null;
+		return path !== null && path.length < count;
 	}
 
 	public HasAtLeastTwoConnections(): boolean {
@@ -122,12 +149,15 @@ export class KingdomArea {
 		}
 
 		allyAreas.forEach((allyArea) => {
-			if (this.HasRoad(allyArea.GetCentralCell())) {
+			if (this.HasRoad(allyArea.GetCentralCell(), 5)) {
 				connections += 1;
 			}
 		});
 
-		return 2 <= connections;
+		if (2 <= connections) {
+			return true;
+		}
+		return false;
 	}
 
 	public GetOuterFoeCount(): number {
@@ -156,6 +186,10 @@ export class KingdomArea {
 
 	public HasTroop(): boolean {
 		return this.Troops.length > 0;
+	}
+
+	public IsTroopHealing(): boolean {
+		return this.Troops.map((t) => t.Tank).some((t) => t.HasDamage()) && this.HasMedic();
 	}
 
 	public IsTroopFighting(): boolean {
@@ -220,16 +254,8 @@ export class KingdomArea {
 	public HasIdleTroops(): boolean {
 		return (
 			(this.GetFoesCount() == 0 && this.Troops.length > 1) ||
+			(this.GetFoesCount() == 0 && !this.IsBorder()) ||
 			(this.GetInnerFoeCount() == 0 && this.GetOuterFoeCount() < this.Troops.length + 2)
 		);
-	}
-
-	public GetExcessTroops(): number {
-		if (this.GetFoesCount() == 0 && this.Troops.length > 1) {
-			return this.Troops.length - 1;
-		} else if (this.GetInnerFoeCount() === 0 && this.GetOuterFoeCount() < this.Troops.length + 2) {
-			return this.Troops.length - 2;
-		}
-		return 0;
 	}
 }

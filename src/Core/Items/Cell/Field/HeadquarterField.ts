@@ -1,6 +1,6 @@
 import { InteractionContext } from '../../../Interaction/InteractionContext';
 import { Cell } from '../Cell';
-import { Timer } from '../../../Utils/Timer/Timer';
+import { TickTimer } from '../../../Utils/Timer/TickTimer';
 import { Headquarter } from './Headquarter';
 import { Field } from './Field';
 import { Vehicle } from '../../Unit/Vehicle';
@@ -9,7 +9,7 @@ import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { GameSettings } from '../../../Framework/GameSettings';
 
 export class HeadQuarterField extends Field {
-	private _timer: Timer;
+	private _timer: TickTimer;
 	IsFading: boolean;
 	Diamonds: number = 0;
 
@@ -17,7 +17,7 @@ export class HeadQuarterField extends Field {
 		super(ceil);
 		this.GetCell().SetField(this);
 		this.Z = -1;
-		this._timer = new Timer(3);
+		this._timer = new TickTimer(3);
 		this.GenerateSprite(sprite);
 		this.InitPosition(ceil.GetBoundingBox());
 		this.GetDisplayObjects().forEach((obj) => {

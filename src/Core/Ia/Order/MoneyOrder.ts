@@ -1,11 +1,11 @@
+import { SmartPreciseOrder } from './SmartPreciseOrder';
 import { Order } from './Order';
 import { Vehicle } from '../../Items/Unit/Vehicle';
-import { SimpleOrder } from './SimpleOrder';
 import { Cell } from '../../Items/Cell/Cell';
 import { MoneyField } from '../../Items/Cell/Field/MoneyField';
 
 export class MoneyOrder extends Order {
-	private _currentOrder: SimpleOrder;
+	private _currentOrder: SmartPreciseOrder;
 
 	constructor(private _v: Vehicle) {
 		super();
@@ -47,10 +47,10 @@ export class MoneyOrder extends Order {
 	}
 
 	public TryToGetMoneyField(): void {
-		for (let i = 1; i < 3; i++) {
+		for (let i = 1; i < 6; i++) {
 			if (this.HasFullMoneyCell(i)) {
 				const cell = this.GetFirstFullMoneyCell(i);
-				this._currentOrder = new SimpleOrder(cell, this._v);
+				this._currentOrder = new SmartPreciseOrder(cell, this._v);
 				return;
 			}
 		}

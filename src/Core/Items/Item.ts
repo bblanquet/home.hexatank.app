@@ -79,15 +79,16 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 	public InitPosition(pos: { X: number; Y: number }): void {
 		this.GetBoundingBox().X = pos.X;
 		this.GetBoundingBox().Y = pos.Y;
-		this.DisplayObjects.forEach((displayObj) => {
-			displayObj.x = pos.X;
-			displayObj.y = pos.Y;
+		const ref = this.GetRef();
+		this.DisplayObjects.forEach((obj) => {
+			obj.x = ref.X + GameHelper.ViewContext.GetX();
+			obj.y = ref.Y + GameHelper.ViewContext.GetY();
 		});
 		GameHelper.Render.Add(this);
 	}
 
 	public Update(viewX: number, viewY: number): void {
-		var ref = this.GetRef();
+		const ref = this.GetRef();
 		this.DisplayObjects.forEach((obj) => {
 			obj.x = ref.X + viewX;
 			obj.y = ref.Y + viewY;

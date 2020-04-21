@@ -12,7 +12,6 @@ export class FastField extends Field {
 		super(cell);
 		this.GetCell().SetField(this);
 		this.Z = 1;
-
 		this.GenerateSprite(Archive.bonus.speed);
 		this.InitPosition(cell.GetBoundingBox());
 		this.GetDisplayObjects().forEach((obj) => {

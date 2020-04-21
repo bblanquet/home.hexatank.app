@@ -8,7 +8,7 @@ import { IRotationMaker } from './MotionHelpers/IRotationMaker';
 import { RotationMaker } from './MotionHelpers/RotationMaker';
 import { ItemSkin } from '../ItemSkin';
 import { GameHelper } from '../../Framework/GameHelper';
-import { Timer } from '../../Utils/Timer/Timer';
+import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../Interaction/InteractionContext';
@@ -42,8 +42,8 @@ export class Turrel extends Item implements IRotatable {
 		this.Z = 3;
 		this.Base = item;
 		this.Radius = 0;
-		this._coolingDownTimer = new Timer(100);
-		this._animationTimer = new Timer(5);
+		this._coolingDownTimer = new TickTimer(100);
+		this._animationTimer = new TickTimer(5);
 
 		Archive.cannons.forEach((cannon) => {
 			this.GenerateSprite(cannon, (e) => {

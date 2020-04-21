@@ -11,7 +11,7 @@ import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { PacketKind } from '../../../Components/Network/PacketKind';
 
-export class SmartSimpleOrder extends Order {
+export class SmartPreciseOrder extends Order {
 	protected Currentcell: Cell;
 	protected cells: Array<Cell>;
 	protected cellFinder: CellFinder;
@@ -71,7 +71,8 @@ export class SmartSimpleOrder extends Order {
 			} else {
 				if (this.FindPath()) {
 					this.GoNextcell();
-					this.State = OrderState.Pending;
+				} else {
+					this.State = OrderState.Failed;
 				}
 			}
 		}
@@ -130,10 +131,7 @@ export class SmartSimpleOrder extends Order {
 
 	protected FindPath(): boolean {
 		if (this.Dest.IsBlocked()) {
-			this.Dest = this.GetClosestcell();
-			if (isNullOrUndefined(this.Dest)) {
-				return false;
-			}
+			return false;
 		}
 		this.ClearPath();
 		var nextcells = new AStarEngine<Cell>((c: Cell) => !isNullOrUndefined(c) && !c.IsBlocked()).GetPath(

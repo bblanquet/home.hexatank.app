@@ -35,7 +35,7 @@ export class MoneyOrder extends Order {
 			.GetCurrentCell()
 			.GetSpecificRange(range)
 			.map((c) => c as Cell)
-			.some((c) => c.GetField() instanceof MoneyField && (<MoneyField>c.GetField()).IsFull());
+			.some((c) => c.GetField() instanceof MoneyField && (<MoneyField>c.GetField()).IsFull() && !c.IsBlocked());
 	}
 
 	public GetFirstFullMoneyCell(range: number): Cell {
@@ -43,7 +43,9 @@ export class MoneyOrder extends Order {
 			.GetCurrentCell()
 			.GetSpecificRange(range)
 			.map((c) => c as Cell)
-			.filter((c) => c.GetField() instanceof MoneyField && (<MoneyField>c.GetField()).IsFull())[0];
+			.filter(
+				(c) => c.GetField() instanceof MoneyField && (<MoneyField>c.GetField()).IsFull() && !c.IsBlocked()
+			)[0];
 	}
 
 	public TryToGetMoneyField(): void {

@@ -6,7 +6,7 @@ import { IDoable } from './IDoable';
 import { Groups } from '../../Utils/Collections/Groups';
 import { Dictionnary } from '../../Utils/Collections/Dictionnary';
 import { IAreaDecisionMaker } from './Area/IAreaDecisionMaker';
-import { IdleUnitContainer } from './IdleUnitContainer';
+import { ExcessTankFinder } from './ExcessTankFinder';
 import { Headquarter } from '../../Items/Cell/Field/Headquarter';
 import { AreaRequest } from './Utils/AreaRequest';
 import { RequestPriority } from './Utils/RequestPriority';
@@ -27,7 +27,7 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	public CellAreas: Dictionnary<IAreaDecisionMaker>;
 	private _diamond: Diamond;
 	private _idleTimer: TickTimer = new TickTimer(25);
-	public IdleTanks: IdleUnitContainer;
+	public IdleTanks: ExcessTankFinder;
 	private _requestMaker: IAreaRequestListMaker;
 	private _requestHandler: IRequestHandler;
 	private _expansionMaker: IExpansionMaker;
@@ -36,7 +36,7 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	constructor(private _hq: Headquarter, public RemainingAreas: Area[]) {
 		this.AreaDecisions = new Array<IAreaDecisionMaker>();
 		this.CellAreas = new Dictionnary<IAreaDecisionMaker>();
-		this.IdleTanks = new IdleUnitContainer();
+		this.IdleTanks = new ExcessTankFinder();
 
 		this._hq.OnVehiculeCreated.On((hq: any, vehicle: Vehicle) => {
 			if (vehicle instanceof Truck) {
@@ -93,6 +93,7 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 			const areas = new Array<KingdomArea>();
 
 			this.AreaDecisions.forEach((areaDecision) => {
+				areaDecision.Area.CalculateFoes();
 				areaDecision.HasReceivedRequest = false;
 				areaDecision.Update();
 				areas.push(areaDecision.Area);

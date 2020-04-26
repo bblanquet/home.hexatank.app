@@ -7,6 +7,22 @@
 		opacity: 0;
 	}
 }
+.btn-simple-black {
+	font-family: Impact;
+	background-color: #222223;
+	border-bottom: 8px solid black;
+	color: gainsboro;
+}
+
+.btn-space {
+	margin: 10px 10px 10px 10px;
+}
+
+.btn-simple-black:hover {
+	background-color: black;
+	border-bottom: 8px solid black;
+	color: gainsboro;
+}
 
 .base {
 	position: relative;
@@ -16,28 +32,39 @@
 }
 
 .title-container {
-	border-radius: 2px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	padding-left: 30px;
+	padding-right: 30px;
+	padding-top: 2vh;
 	margin: 10px;
 	width: 50%;
+	font-size: 3vh;
 	margin-left: auto;
 	margin-right: auto;
 	text-align: center;
 	min-height: 0px;
+	background: #262626;
 	color: white;
-	background-color: rgb(41, 41, 41);
-	background-image: linear-gradient(transparent, #1b1b1b);
+	font-family: Impact;
 }
 
-.btn-primary-blue {
-	background-color: rgb(41, 41, 41);
-	background-image: linear-gradient(transparent, #313131);
-	transition: background-color 1s;
+.duration-container {
+	display: inline-block;
+	width: -webkit-max-content;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	text-align: center;
 	color: white;
+	background-color: #313131;
 }
 
-.btn-primary-blue:hover {
-	background-color: rgb(20, 20, 20);
-	color: rgb(212, 99, 99);
+.fit-content {
+	width: fit-content;
 }
 
 .left-column {
@@ -71,6 +98,16 @@
 	margin-top: 0%;
 	margin-left: -10%;
 	background-color: rgba(29, 29, 29, 0.205);
+}
+
+.btn-group-vertical > button {
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+.btn-group-vertical > div {
+	margin-bottom: 10px;
+	margin-top: 10px;
 }
 
 @media only screen and (max-width: 600px) {
@@ -157,6 +194,29 @@
 	height: 30%;
 }
 
+.sub-background-color {
+	border-radius: 1.35em;
+	box-shadow: 0 0 0 0.4em #262626;
+	background: rgba(197, 183, 152, 1);
+}
+
+body {
+	height: 100%;
+	margin: 0;
+	background: #3f3f3f;
+}
+
+.bottom-space {
+	margin-bottom: 10px;
+}
+
+.banner-space {
+	width: 100%;
+	min-width: 100%;
+	min-height: 150px;
+	height: 30%;
+}
+
 .very-small-space {
 	min-width: 20px;
 	min-height: 20px;
@@ -181,26 +241,6 @@
 	color: #dee1e6;
 }
 
-.container {
-	background-color: #535353;
-	border-radius: 5px;
-	width: 80%;
-	max-width: 350px;
-	padding: 10px;
-	border-top: 20px solid rgb(46, 46, 46);
-	box-shadow: 0px 0px 9px 0px #383838;
-}
-
-.btn-group-vertical > button {
-	margin-bottom: 10px;
-	border-radius: 2px !important;
-}
-
-.btn-group-vertical > div {
-	margin-bottom: 10px;
-	border-radius: 2px !important;
-}
-
 .container-center {
 	margin-left: auto;
 	margin-right: auto;
@@ -222,16 +262,6 @@
 }
 .row-blue:hover {
 	color: #17a2b8;
-}
-
-.text-center {
-	text-align: center;
-}
-
-.BackgroundGreen {
-	width: 100%;
-	height: 100%;
-	background-color: #00a651;
 }
 
 .btn-group-space {
@@ -264,10 +294,6 @@
 	background-color: #dee1e6;
 	color: #12a1b7;
 	font-weight: bold;
-}
-
-body {
-	background-color: #00a651;
 }
 
 .fill-target {
@@ -322,6 +348,74 @@ body {
 	background-size: cover;
 	background-position: center;
 	background-image: url('{{}}option.svg');
+}
+
+.generalContainer {
+	z-index: 0;
+	width: 80%;
+	padding: 10px;
+}
+
+.absolute-center-middle {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.fill-effect {
+	overflow: hidden;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/containerEffect.svg');
+}
+
+.fill-campaign {
+	overflow: hidden;
+	background-size: contain;
+	background-position: bottom;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/character1.svg');
+}
+
+.corner-space {
+	width: 100%;
+	min-width: 100%;
+	min-height: 150px;
+	height: 30%;
+}
+
+.text-center {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	/* bring your own prefixes */
+	transform: translate(-50%, -50%);
+}
+
+.containerStyle {
+	border-radius: 1.75em;
+	box-shadow: 0 0 0 0.8em #262626;
+	background: radial-gradient(circle, rgba(197, 183, 152, 1) 0%, rgba(159, 142, 106, 1) 100%);
+	display: flex;
+	height: 80vh;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+
+.fill-border {
+	border-radius: 1.75em;
+	height: 80vh;
+	box-shadow: 0 0 0 0.8em #262626;
+}
+
+.fill-content-camouflage {
+	width: 100%;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/camouflage.svg');
 }
 
 .fill-tank {

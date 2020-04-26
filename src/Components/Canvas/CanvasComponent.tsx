@@ -14,11 +14,11 @@ import { CombinationProvider } from '../../Core/Interaction/CombinationProvider'
 import { SelectableChecker } from '../../Core/Interaction/SelectableChecker';
 import { Headquarter } from '../../Core/Items/Cell/Field/Headquarter';
 import { AppHandler } from './AppHandler';
-import FactoryMenuComponent from './FactoryMenuComponent';
-import HqMenuComponent from './HqMenuComponent';
-import TankMenuComponent from './TankMenuComponent';
-import CellMenuComponent from './CellMenuComponent';
-import TruckMenuComponent from './TruckMenuComponent';
+import FactoryMenuComponent from './Parts/FactoryMenuComponent';
+import HqMenuComponent from './Parts/HqMenuComponent';
+import TankMenuComponent from './Parts/TankMenuComponent';
+import CellMenuComponent from './Parts/CellMenuComponent';
+import TruckMenuComponent from './Parts/TruckMenuComponent';
 import { InteractionContext } from '../../Core/Interaction/InteractionContext';
 import { RenderingHandler } from '../../Core/Setup/Render/RenderingHandler';
 import { RenderingGroups } from '../../Core/Setup/Render/RenderingGroups';
@@ -127,33 +127,28 @@ export default class CanvasComponent extends Component<
 		this.SetCenter();
 		this._gameContext.MainHq.OnTruckRequestChanged.On((obj: any, e: number) => {
 			this.setState({
-				...this.state,
 				TruckRequestCount: e
 			});
 		});
 		this._gameContext.MainHq.OnTankRequestChanged.On((obj: any, e: number) => {
 			this.setState({
-				...this.state,
 				TankRequestCount: e
 			});
 		});
 		this._gameContext.MainHq.OnDiamondCountChanged.On((obj: any, e: number) => {
 			this.setState({
-				...this.state,
 				Amount: e
 			});
 		});
 		this._gameContext.OnItemSelected.On((obj: any, e: Item) => {
 			((e as unknown) as ISelectable).SelectionChanged.On(this._onItemSelectionChanged);
 			this.setState({
-				...this.state,
 				Item: e
 			});
 		});
 		this._gameContext.MainHq.OnCashMissing.On((obj: any, e: boolean) => {
 			if (e !== this.state.HasWarning) {
 				this.setState({
-					...this.state,
 					HasWarning: e
 				});
 			}
@@ -316,7 +311,7 @@ export default class CanvasComponent extends Component<
 	}
 
 	private MenuRender() {
-		return (
+		let value = (
 			<div class="base">
 				<div class="centered">
 					<div class="container">
@@ -325,19 +320,23 @@ export default class CanvasComponent extends Component<
 							<div class="btn-group-vertical btn-block">
 								<button
 									type="button"
-									class="btn btn-primary-blue btn-block"
+									class="btn btn-dark btn-block"
 									onClick={(e: any) => this.SetMenu(e)}
 								>
 									Resume
 								</button>
 								<button
 									type="button"
-									class="btn btn-primary-blue btn-block"
+									class="btn btn-dark btn-block"
 									onClick={(e: any) => this.Cheat(e)}
 								>
 									Cheat
 								</button>
-								<button type="button" class="btn btn-dark btn-block" onClick={(e: any) => this.Quit(e)}>
+								<button
+									type="button"
+									class="btn btn-secondary btn-block"
+									onClick={(e: any) => this.Quit(e)}
+								>
 									Quit
 								</button>
 							</div>
@@ -346,6 +345,7 @@ export default class CanvasComponent extends Component<
 				</div>
 			</div>
 		);
+		return value;
 	}
 
 	private EndMessage() {

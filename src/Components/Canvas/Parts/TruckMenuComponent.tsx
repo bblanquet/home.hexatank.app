@@ -1,11 +1,11 @@
 import { Component, h } from 'preact';
-import { Item } from '../../Core/Items/Item';
-import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
-import { PatrolMenuItem } from '../../Core/Menu/Buttons/PatrolMenuItem';
-import { SearchMoneyMenuItem } from '../../Core/Menu/Buttons/SearchMoneyMenuItem';
-import { AbortMenuItem } from '../../Core/Menu/Buttons/AbortMenuItem';
-import { CancelMenuItem } from '../../Core/Menu/Buttons/CancelMenuItem';
-import { AppHandler } from './AppHandler';
+import { Item } from '../../../Core/Items/Item';
+import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
+import { PatrolMenuItem } from '../../../Core/Menu/Buttons/PatrolMenuItem';
+import { SearchMoneyMenuItem } from '../../../Core/Menu/Buttons/SearchMoneyMenuItem';
+import { AbortMenuItem } from '../../../Core/Menu/Buttons/AbortMenuItem';
+import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
+import { AppHandler } from '../AppHandler';
 
 export default class TruckMenuComponent extends Component<{ AppHandler: AppHandler }, {}> {
 	private SendContext(item: Item): void {

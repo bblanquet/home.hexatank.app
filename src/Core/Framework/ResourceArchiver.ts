@@ -172,32 +172,32 @@ export const Archive = {
 	},
 	team: {
 		red: {
-			tank: './tank/bottomTank.svg',
-			turrel: './tank/redTurrel.svg',
+			tank: './tank/red/body.svg',
+			turrel: './tank/red/head.svg',
 			truck: './truck/truck.svg',
 			hq: './building/redHqBottom.svg',
 			energy: './building/redEnergyCell.svg',
 			baseEnergy: './building/redBaseEnergyCell.svg'
 		},
 		blue: {
-			tank: './tank/blueBottomTank.svg',
-			turrel: './tank/blueTurrel.svg',
+			tank: './tank/blue/body.svg',
+			turrel: './tank/blue/head.svg',
 			truck: './truck/blueTruck.svg',
 			hq: './building/blueHqBottom.svg',
 			energy: './building/blueEnergyCell.svg',
 			baseEnergy: './building/blueBaseEnergyCell.svg'
 		},
 		yellow: {
-			tank: './tank/yellowBottomTank.svg',
-			turrel: './tank/yellowTurrel.svg',
+			tank: './tank/yellow/body.svg',
+			turrel: './tank/yellow/head.svg',
 			truck: './truck/yellowTruck.svg',
 			hq: './building/yellowHqBottom.svg',
 			energy: './building/yellowEnergyCell.svg',
 			baseEnergy: './building/yellowBaseEnergyCell.svg'
 		},
 		purple: {
-			tank: './tank/purpleBottomTank.svg',
-			turrel: './tank/purpleTurrel.svg',
+			tank: './tank/purple/body.svg',
+			turrel: './tank/purple/head.svg',
 			truck: './truck/purpleTruck.svg',
 			hq: './building/purpleHqBottom.svg',
 			energy: './building/purpleEnergyCell.svg',

@@ -9,14 +9,18 @@ import { DistanceHelper } from '../../../Items/Unit/MotionHelpers/DistanceHelper
 
 export class Area {
 	private _areaSearch: AreaSearch;
+	private _aroudnAreas: Area[];
 	constructor(private _centralCell: Cell, private _cells: CellContext<Cell>) {
 		this._areaSearch = new AreaSearch(this._cells.Keys());
 	}
 
 	public GetAroundAreas(): Area[] {
-		return this._areaSearch
-			.GetExcludedFirstRange(this.GetCentralCell().GetCoordinate())
-			.map((coo) => new Area(this._cells.Get(coo), this._cells));
+		if (!this._aroudnAreas) {
+			this._aroudnAreas = this._aroudnAreas = this._areaSearch
+				.GetExcludedFirstRange(this.GetCentralCell().GetCoordinate())
+				.map((coo) => new Area(this._cells.Get(coo), this._cells));
+		}
+		return this._aroudnAreas;
 	}
 
 	public HasHq(): boolean {

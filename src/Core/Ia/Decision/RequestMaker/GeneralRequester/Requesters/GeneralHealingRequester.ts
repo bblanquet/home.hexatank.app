@@ -7,11 +7,9 @@ import { RequestPriority } from '../../../Utils/RequestPriority';
 export class GeneralHealingRequester implements IGeneralRequester {
 	GetResquest(kingdom: Kingdom): AreaRequest {
 		const kingdomAreas = kingdom.AreaDecisions.map((a) => a.Area);
-		const candidates = kingdomAreas.filter(
-			(a) => !a.IsImportant() && a.HasFreeCells() && a.HasAtLeastTwoConnections()
-		);
+		const candidates = kingdomAreas.filter((a) => !a.IsImportant() && a.HasFreeFields() && a.HasFastField());
 		const healingArea = kingdomAreas.filter((a) => a.HasMedic());
-		const total = Math.floor(kingdomAreas.length / 6);
+		const total = Math.floor(kingdomAreas.length / 8);
 
 		if (healingArea.length < total && 0 < candidates.length) {
 			return new AreaRequest(RequestType.Heal, RequestPriority.High, 2, candidates[0]);

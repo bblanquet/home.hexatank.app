@@ -1,3 +1,4 @@
+import { GameSettings } from './../../../Framework/GameSettings';
 import { Cell } from '../Cell';
 import { AliveField } from './AliveField';
 import { CellState } from '../CellState';
@@ -9,6 +10,8 @@ import { InteractionContext } from '../../../Interaction/InteractionContext';
 export class BlockingField extends AliveField {
 	constructor(ceil: Cell, sprite: string) {
 		super(ceil);
+		this.TotalLife = GameSettings.GeneralLife;
+		this.Life = GameSettings.GeneralLife;
 		this.GetCell().SetField(this);
 		this.Z = 1;
 		this.GenerateSprite(sprite);

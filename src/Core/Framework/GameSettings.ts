@@ -3,6 +3,8 @@ export class GameSettings {
 	public static TurrelRotationSpeed: number = 0.4;
 	public static TranslationSpeed: number = 6; //1
 	public static DiamondLoadingSpeed: number = 3; //30
+	public static MoneyLoadingSpeed: number = 3; //10
+	public static GeneralLife: number = 20; //100
 
 	public static Size: number = 50;
 	public static ScreenWidth: number;

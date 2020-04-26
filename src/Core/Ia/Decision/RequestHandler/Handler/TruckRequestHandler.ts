@@ -1,3 +1,4 @@
+import { MoneyOrder } from './../../../Order/MoneyOrder';
 import { IKingdomDecisionMaker } from './../../IKingdomDecisionMaker';
 import { Headquarter } from './../../../../Items/Cell/Field/Headquarter';
 import { TruckPatrolOrder } from './../../../Order/TruckPatrolOrder';
@@ -21,13 +22,18 @@ export class TruckRequestHandler implements ISimpleRequestHandler {
 		var lambda: any = (obj: any, vehicle: Vehicle) => {
 			if (vehicle instanceof Truck) {
 				const truck = vehicle as Truck;
-				truck.SetOrder(
-					new TruckPatrolOrder(
-						truck,
-						new HqFieldOrder(this._hq, truck),
-						new DiamondFieldOrder(this._kingdom.GetDiamond(), truck)
-					)
-				);
+				if (this._kingdom.GetDiamond().IsAlive()) {
+					truck.SetOrder(
+						new TruckPatrolOrder(
+							truck,
+							new HqFieldOrder(this._hq, truck),
+							new DiamondFieldOrder(this._kingdom.GetDiamond(), truck)
+						)
+					);
+				} else {
+					truck.SetOrder(new MoneyOrder(truck));
+				}
+
 				request.Area.Truck = truck;
 			}
 		};

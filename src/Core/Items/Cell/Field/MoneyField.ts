@@ -1,3 +1,4 @@
+import { GameSettings } from './../../../Framework/GameSettings';
 import { Cell } from '../Cell';
 import { Field } from './Field';
 import { CellState } from '../CellState';
@@ -8,7 +9,6 @@ import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../../Interaction/InteractionContext';
 import { Vehicle } from '../../Unit/Vehicle';
 import { Truck } from '../../Unit/Truck';
-import { GameSettings } from '../../../Framework/GameSettings';
 
 export class MoneyField extends Field {
 	private _timer: TickTimer;
@@ -18,7 +18,7 @@ export class MoneyField extends Field {
 		super(cell);
 		this.GetCell().SetField(this);
 		this.Z = 1;
-		this._timer = new TickTimer(10);
+		this._timer = new TickTimer(GameSettings.MoneyLoadingSpeed);
 		this._light = new Light(cell.GetBoundingBox());
 		this._light.Hide();
 		this.GenerateSprite(Archive.bonus.emptyMoney);

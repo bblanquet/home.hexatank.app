@@ -1,7 +1,7 @@
 import { KingdomArea } from './Utils/KingdomArea';
 import { Tank } from '../../Items/Unit/Tank';
 
-export class IdleUnitContainer {
+export class ExcessTankFinder {
 	private _excessAreas: Array<KingdomArea>;
 
 	constructor() {}
@@ -11,7 +11,11 @@ export class IdleUnitContainer {
 	}
 
 	private GetExcess(area: KingdomArea): number {
-		if (area.GetFoesCount() == 0 && !area.IsBorder() && !(area.IsTroopFighting() || area.IsTroopHealing())) {
+		if (
+			area.GetFoesCount() == 0 &&
+			!area.IsBorder() &&
+			!(area.IsTroopFighting() || area.IsTroopHealing() || area.HasNature())
+		) {
 			return area.Troops.length;
 		} else {
 			return 0;

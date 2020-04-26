@@ -35,7 +35,7 @@ export class KingdomArea {
 		return this._spot.HasDiamond() || this._spot.HasHq();
 	}
 
-	public HasFreeCells(): boolean {
+	public HasFreeFields(): boolean {
 		return 0 < this._spot.GetCells().filter((c) => c.GetField() instanceof BasicField).length;
 	}
 
@@ -160,12 +160,28 @@ export class KingdomArea {
 		return false;
 	}
 
-	public GetOuterFoeCount(): number {
+	private _outerFoes: number;
+	private _innerFoes: number;
+
+	public CalculateFoes(): void {
+		this._outerFoes = this.CalculateOuterFoeCount();
+		this._innerFoes = this.CalculateInnerFoeCount();
+	}
+
+	private CalculateOuterFoeCount(): number {
 		let outsideEnemyCount = 0;
 		this._spot.GetAroundAreas().forEach((area) => {
 			outsideEnemyCount += area.GetFoeCount(this._hq);
 		});
 		return outsideEnemyCount;
+	}
+
+	private CalculateInnerFoeCount(): number {
+		return this._spot.GetFoeCount(this._hq);
+	}
+
+	public GetOuterFoeCount(): number {
+		return this._outerFoes;
 	}
 
 	private GetOuterAllyCount(): number {
@@ -177,7 +193,7 @@ export class KingdomArea {
 	}
 
 	public GetInnerFoeCount(): number {
-		return this._spot.GetFoeCount(this._hq);
+		return this._innerFoes;
 	}
 
 	public GetAllFoeCount(): number {

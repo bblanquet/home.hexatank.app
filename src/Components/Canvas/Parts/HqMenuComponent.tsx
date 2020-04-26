@@ -1,13 +1,13 @@
 import { Component, h } from 'preact';
-import { GameHelper } from '../../Core/Framework/GameHelper';
-import { GameSettings } from '../../Core/Framework/GameSettings';
-import { CancelMenuItem } from '../../Core/Menu/Buttons/CancelMenuItem';
-import { Item } from '../../Core/Items/Item';
-import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
-import { TankMenuItem } from '../../Core/Menu/Buttons/TankMenuItem';
-import { TruckMenuItem } from '../../Core/Menu/Buttons/TruckMenuItem';
-import { AppHandler } from './AppHandler';
-import { GameContext } from '../../Core/Framework/GameContext';
+import { GameHelper } from '../../../Core/Framework/GameHelper';
+import { GameSettings } from '../../../Core/Framework/GameSettings';
+import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
+import { Item } from '../../../Core/Items/Item';
+import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
+import { TankMenuItem } from '../../../Core/Menu/Buttons/TankMenuItem';
+import { TruckMenuItem } from '../../../Core/Menu/Buttons/TruckMenuItem';
+import { AppHandler } from '../AppHandler';
+import { GameContext } from '../../../Core/Framework/GameContext';
 
 export default class HqMenuComponent extends Component<
 	{

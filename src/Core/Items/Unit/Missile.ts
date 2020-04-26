@@ -1,10 +1,8 @@
 import { Item } from '../Item';
 import { Explosion } from './Explosion';
 import { AliveItem } from '../AliveItem';
-import * as PIXI from 'pixi.js';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Archive } from '../../Framework/ResourceArchiver';
-import { GameHelper } from '../../Framework/GameHelper';
 import { InteractionContext } from '../../Interaction/InteractionContext';
 import { GameSettings } from '../../Framework/GameSettings';
 
@@ -96,10 +94,10 @@ export class Missile extends Item {
 			this.GetCurrentSprites()[Archive.missiles[this._currentMissile]].alpha = 1;
 		} else {
 			this.Target.SetDamage(this._damage);
-			let explosion = new Explosion(this.Target.GetBoundingBox(), Archive.explosions, 5, true, 20);
+			new Explosion(this.Target.GetBoundingBox(), Archive.explosions, 5, true, 20);
 
 			if (!this.Target.IsAlive()) {
-				let skull = new Explosion(this.Target.GetBoundingBox(), [ Archive.skull ], 5, false, 50);
+				new Explosion(this.Target.GetBoundingBox(), [ Archive.skull ], 5, false, 50);
 			}
 			this.Destroy();
 		}

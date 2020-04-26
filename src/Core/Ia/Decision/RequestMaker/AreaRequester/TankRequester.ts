@@ -10,7 +10,7 @@ export class TankRequester implements IAreaRequestMaker {
 		const foes = area.GetFoesCount();
 
 		if (foes === 0) {
-			if (area.Troops.length === 0 && area.IsBorder()) {
+			if (area.Troops.length === 0 && (area.IsBorder() || area.HasNature())) {
 				return new AreaRequest(RequestType.Tank, RequestPriority.Low, 1, area);
 			}
 		} else if (area.Troops.length <= foes) {

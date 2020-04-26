@@ -1,12 +1,12 @@
 import { Component, h } from 'preact';
-import { PatrolMenuItem } from '../../Core/Menu/Buttons/PatrolMenuItem';
-import { TargetMenuItem } from '../../Core/Menu/Buttons/TargetMenuItem';
-import { CamouflageMenuItem } from '../../Core/Menu/Buttons/CamouflageMenutItem';
-import { AbortMenuItem } from '../../Core/Menu/Buttons/AbortMenuItem';
-import { CancelMenuItem } from '../../Core/Menu/Buttons/CancelMenuItem';
-import { Item } from '../../Core/Items/Item';
-import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
-import { AppHandler } from './AppHandler';
+import { PatrolMenuItem } from '../../../Core/Menu/Buttons/PatrolMenuItem';
+import { TargetMenuItem } from '../../../Core/Menu/Buttons/TargetMenuItem';
+import { CamouflageMenuItem } from '../../../Core/Menu/Buttons/CamouflageMenutItem';
+import { AbortMenuItem } from '../../../Core/Menu/Buttons/AbortMenuItem';
+import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
+import { Item } from '../../../Core/Items/Item';
+import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
+import { AppHandler } from '../AppHandler';
 
 export default class TankMenuComponent extends Component<{ AppHandler: AppHandler }, {}> {
 	private SendContext(item: Item): void {

@@ -1,17 +1,17 @@
 import { Component, h } from 'preact';
-import { Item } from '../../Core/Items/Item';
-import { InfluenceMenuItem } from '../../Core/Menu/Buttons/InfluenceMenuItem';
-import { AttackMenuItem } from '../../Core/Menu/Buttons/AttackMenuItem';
-import { GameSettings } from '../../Core/Framework/GameSettings';
-import { SpeedFieldMenuItem } from '../../Core/Menu/Buttons/SpeedFieldMenuItem';
-import { HealMenuItem } from '../../Core/Menu/Buttons/HealMenuItem';
-import { MoneyMenuItem } from '../../Core/Menu/Buttons/MoneyMenuItem';
-import { PoisonMenuItem } from '../../Core/Menu/Buttons/PoisonMenuItem';
-import { SlowMenuItem } from '../../Core/Menu/Buttons/SlowMenuItem';
-import { CancelMenuItem } from '../../Core/Menu/Buttons/CancelMenuItem';
-import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
-import { AppHandler } from './AppHandler';
-import { GameContext } from '../../Core/Framework/GameContext';
+import { Item } from '../../../Core/Items/Item';
+import { InfluenceMenuItem } from '../../../Core/Menu/Buttons/InfluenceMenuItem';
+import { AttackMenuItem } from '../../../Core/Menu/Buttons/AttackMenuItem';
+import { GameSettings } from '../../../Core/Framework/GameSettings';
+import { SpeedFieldMenuItem } from '../../../Core/Menu/Buttons/SpeedFieldMenuItem';
+import { HealMenuItem } from '../../../Core/Menu/Buttons/HealMenuItem';
+import { MoneyMenuItem } from '../../../Core/Menu/Buttons/MoneyMenuItem';
+import { PoisonMenuItem } from '../../../Core/Menu/Buttons/PoisonMenuItem';
+import { SlowMenuItem } from '../../../Core/Menu/Buttons/SlowMenuItem';
+import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
+import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
+import { AppHandler } from '../AppHandler';
+import { GameContext } from '../../../Core/Framework/GameContext';
 
 export default class CellMenuComponent extends Component<
 	{ Item: Item; AppHandler: AppHandler; GameContext: GameContext },

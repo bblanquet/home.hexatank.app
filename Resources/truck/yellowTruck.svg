@@ -14,14 +14,14 @@
 	.st8{display:inline;fill:#555555;stroke:#424143;stroke-width:2;stroke-miterlimit:10;}
 	.st9{display:inline;fill:#010101;}
 	.st10{fill:#010101;}
-	.st11{display:inline;fill:#F9F31C;}
+	.st11{display:inline;fill:#c5b798;}
 	.st12{display:inline;fill:#595A5C;}
 	.st13{display:inline;fill:url(#XMLID_2_);}
 	.st14{display:inline;fill:url(#XMLID_91_);fill-opacity:0.33;}
 	.st15{display:inline;fill:url(#XMLID_317_);fill-opacity:0.32;}
 	.st16{display:inline;fill:#FFFFFF;fill-opacity:0.78;}
-	.st17{display:inline;fill:#F9F31C;stroke:#414042;stroke-width:3;stroke-miterlimit:10;}
-	.st18{display:inline;fill:#F9F31C;stroke:#414042;stroke-width:2;stroke-miterlimit:10;}
+	.st17{display:inline;fill:#c5b798;stroke:#414042;stroke-width:3;stroke-miterlimit:10;}
+	.st18{display:inline;fill:#c5b798;stroke:#414042;stroke-width:2;stroke-miterlimit:10;}
 	.st19{display:inline;opacity:0.68;fill:url(#XMLID_337_);fill-opacity:0.49;enable-background:new    ;}
 	.st20{opacity:0.68;fill:url(#XMLID_339_);enable-background:new    ;}
 	.st21{display:inline;fill:#FFFFFF;fill-opacity:0.42;}
@@ -42,7 +42,7 @@
 	.st36{fill:#FFFFFF;fill-opacity:0.55;}
 	.st37{display:inline;fill:#6D6E71;stroke:#414042;stroke-width:2;stroke-miterlimit:10;}
 	.st38{display:inline;fill:#808285;stroke:#414042;stroke-width:2;stroke-miterlimit:10;}
-	.st39{fill:#F9F31C;}
+	.st39{fill:#c5b798;}
 	.st40{fill:none;stroke:#414042;stroke-width:2;stroke-miterlimit:10;}
 	.st41{display:inline;opacity:0.26;fill:url(#XMLID_364_);enable-background:new    ;}
 	.st42{display:inline;opacity:0.64;fill-opacity:0.51;}
@@ -52,8 +52,8 @@
 	.st46{fill:url(#XMLID_366_);fill-opacity:0.33;}
 	.st47{fill:url(#XMLID_367_);fill-opacity:0.32;}
 	.st48{fill:#FFFFFF;fill-opacity:0.78;}
-	.st49{fill:#F9F31C;stroke:#414042;stroke-width:3;stroke-miterlimit:10;}
-	.st50{fill:#F9F31C;stroke:#414042;stroke-width:2;stroke-miterlimit:10;}
+	.st49{fill:#c5b798;stroke:#414042;stroke-width:3;stroke-miterlimit:10;}
+	.st50{fill:#c5b798;stroke:#414042;stroke-width:2;stroke-miterlimit:10;}
 	.st51{opacity:0.68;fill:url(#XMLID_368_);fill-opacity:0.49;enable-background:new    ;}
 	.st52{opacity:0.68;fill:url(#XMLID_369_);enable-background:new    ;}
 	.st53{fill:#FFFFFF;fill-opacity:0.42;}

@@ -33,51 +33,53 @@ export default class HomeComponent extends Component<any, any> {
 	render() {
 		return (
 			<div class="generalContainer absolute-center-middle">
-				<div class="title-container fit-content">Program 6</div>
 				<div class="containerStyle ">
-					<div class="fill-content-camouflage">
-						<div class="fill-border ">
-							<div class="text-center">
-								<div class="btn-group-vertical ">
+					<div class="fill-content-camouflage fill-border">
+						<div class="title-container fit-content">Program 6</div>
+						<div class="black-line long" />
+						<div class="text-center">
+							<div class="fill-body-tank">
+								<div class="fill-top-tank spin " />
+							</div>
+
+							<div class="btn-group-vertical ">
+								<button
+									type="button"
+									class="btn btn-simple-black rounded-pill"
+									onClick={this.ToCampaign}
+								>
+									{IconProvider.GetIcon(this._isFirstRender, 'fas fa-dungeon')} Campaign
+								</button>
+								<button
+									type="button"
+									class="btn btn-simple-black rounded-pill"
+									onClick={this.ToSinglePlayer}
+								>
+									{IconProvider.GetIcon(this._isFirstRender, 'fas fa-gamepad')} Single player
+								</button>
+								<div class="btn-group" role="group">
 									<button
+										id="btnGroupDrop1"
 										type="button"
-										class="btn btn-simple-black rounded-pill"
-										onClick={this.ToCampaign}
+										class="btn btn-simple-black rounded-pill dropdown-toggle"
+										data-toggle="dropdown"
+										aria-haspopup="true"
+										aria-expanded="false"
 									>
-										{IconProvider.GetIcon(this._isFirstRender, 'fas fa-dungeon')} Campaign
+										{IconProvider.GetIcon(this._isFirstRender, 'fas fa-network-wired')} Multiplayers
 									</button>
-									<button
-										type="button"
-										class="btn btn-simple-black rounded-pill"
-										onClick={this.ToSinglePlayer}
-									>
-										{IconProvider.GetIcon(this._isFirstRender, 'fas fa-gamepad')} Single player
-									</button>
-									<div class="btn-group" role="group">
-										<button
-											id="btnGroupDrop1"
-											type="button"
-											class="btn btn-simple-black rounded-pill dropdown-toggle"
-											data-toggle="dropdown"
-											aria-haspopup="true"
-											aria-expanded="false"
-										>
-											{IconProvider.GetIcon(this._isFirstRender, 'fas fa-network-wired')}{' '}
-											Multiplayers
-										</button>
-										<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-											<a class="dropdown-item" onClick={this.ToHost}>
-												Host
-											</a>
-											<a class="dropdown-item" onClick={this.ToJoin}>
-												Join
-											</a>
-										</div>
+									<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+										<a class="dropdown-item" onClick={this.ToHost}>
+											Host
+										</a>
+										<a class="dropdown-item" onClick={this.ToJoin}>
+											Join
+										</a>
 									</div>
-									<button type="button" class="btn btn-simple-black rounded-pill">
-										{IconProvider.GetIcon(this._isFirstRender, 'fas fa-phone-square')} Contact
-									</button>
 								</div>
+								<button type="button" class="btn btn-simple-black rounded-pill">
+									{IconProvider.GetIcon(this._isFirstRender, 'fas fa-phone-square')} Contact
+								</button>
 							</div>
 						</div>
 					</div>

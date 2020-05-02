@@ -7,6 +7,33 @@
 		opacity: 0;
 	}
 }
+
+@-webkit-keyframes spin {
+	0% {
+		-webkit-transform: rotate(0deg);
+	}
+	30% {
+		-webkit-transform: rotate(65deg);
+	}
+	50% {
+		-webkit-transform: rotate(160deg);
+	}
+	70% {
+		-webkit-transform: rotate(65deg);
+	}
+	100% {
+		-webkit-transform: rotate(360deg);
+	}
+}
+
+.spin {
+	-webkit-animation: spin 7s infinite alternate ease-in-out;
+}
+
+.btn-space {
+	margin: 10px 10px 10px 10px;
+}
+
 .btn-simple-black {
 	font-family: Impact;
 	background-color: #222223;
@@ -14,13 +41,22 @@
 	color: gainsboro;
 }
 
-.btn-space {
-	margin: 10px 10px 10px 10px;
-}
-
 .btn-simple-black:hover {
 	background-color: black;
 	border-bottom: 8px solid black;
+	color: gainsboro;
+}
+
+.btn-simple-red {
+	font-family: Impact;
+	background-color: #5b1919;
+	border-bottom: 8px solid #300e0e;
+	color: gainsboro;
+}
+
+.btn-simple-red:hover {
+	background-color: #5b1919;
+	border-bottom: 8px solid #5b1919;
 	color: gainsboro;
 }
 
@@ -38,6 +74,7 @@
 	padding-right: 30px;
 	padding-top: 2vh;
 	margin: 10px;
+	padding-bottom: 10px;
 	width: 50%;
 	font-size: 3vh;
 	margin-left: auto;
@@ -63,8 +100,29 @@
 	background-color: #313131;
 }
 
+.black-line {
+	background: rgba(197, 183, 152, 0.7);
+	border-top: 10px solid #ba3131;
+	width: 50%;
+	margin-left: 25%;
+	position: relative;
+}
+
+.long {
+	height: 80vh;
+}
+
+.short {
+	height: 40vh;
+}
+
 .fit-content {
 	width: fit-content;
+}
+
+.fit2 {
+	display: block;
+	overflow: auto;
 }
 
 .left-column {
@@ -129,14 +187,6 @@
 	transform: translateY(-50%);
 }
 
-.centered {
-	position: fixed;
-	width: 100%;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-}
-
 .customed-block {
 	width: 50%;
 	min-width: 50%;
@@ -196,8 +246,10 @@
 
 .sub-background-color {
 	border-radius: 1.35em;
-	box-shadow: 0 0 0 0.4em #262626;
-	background: rgba(197, 183, 152, 1);
+	box-shadow: 0 0 0 0.4em #5b1919;
+	background: rgba(197, 183, 152, 0.5);
+	margin: 0px 5% 20px 5%;
+	width: 90%;
 }
 
 body {
@@ -213,8 +265,7 @@ body {
 .banner-space {
 	width: 100%;
 	min-width: 100%;
-	min-height: 150px;
-	height: 30%;
+	height: 20%;
 }
 
 .very-small-space {
@@ -239,12 +290,6 @@ body {
 .darker {
 	background-color: #1f1f1f;
 	color: #dee1e6;
-}
-
-.container-center {
-	margin-left: auto;
-	margin-right: auto;
-	width: 50%;
 }
 
 .bottom-container {
@@ -353,6 +398,7 @@ body {
 .generalContainer {
 	z-index: 0;
 	width: 80%;
+	max-width: 500px;
 	padding: 10px;
 }
 
@@ -363,6 +409,48 @@ body {
 	transform: translate(-50%, -50%);
 }
 
+.text-center {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	/* bring your own prefixes */
+	transform: translate(-50%, -50%);
+}
+
+.centered {
+	position: fixed;
+	width: 100%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.container-center {
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+}
+
+.campaign-talking {
+	font-family: Impact;
+	background: rgba(255, 255, 255, 0.7);
+	text-align: center;
+	width: 90%;
+	margin-left: 5%;
+	margin-top: 5%;
+	border-radius: 5px;
+}
+
+.foe-talking {
+	font-family: Impact;
+	background: #262626;
+	color: white;
+	text-align: center;
+	border-radius: 5px;
+	margin-top: 20px;
+	padding: 10px 10px 10px 10px;
+}
+
 .fill-effect {
 	overflow: hidden;
 	background-size: cover;
@@ -371,12 +459,74 @@ body {
 	background-image: url('{{}}components/containerEffect.svg');
 }
 
-.fill-campaign {
+.fill-battle {
+	overflow: hidden;
+	width: 25px;
+	height: 25px;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/battle.svg');
+}
+
+.fill-redArmy {
 	overflow: hidden;
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{}}components/character1.svg');
+	background-image: url('{{}}components/redArmy.svg');
+}
+
+.fill-redArmy-blink {
+	overflow: hidden;
+	background-size: contain;
+	background-position: bottom;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/redArmyBlink.svg');
+}
+
+.fill-triangle {
+	width: 100%;
+	height: 10px;
+	overflow: hidden;
+	background-size: contain;
+	background-position: top;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/triangle.svg');
+}
+
+.fill-content-camouflage {
+	width: 100%;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/camouflage.svg');
+}
+
+.fill-content-red-camouflage {
+	width: 100%;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/redCamouflage.svg');
+}
+
+.fill-top-tank {
+	width: 100%;
+	height: 150px;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/top.svg');
+}
+
+.fill-body-tank {
+	width: 100%;
+	height: 150px;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/body.svg');
 }
 
 .corner-space {
@@ -386,36 +536,18 @@ body {
 	height: 30%;
 }
 
-.text-center {
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	/* bring your own prefixes */
-	transform: translate(-50%, -50%);
-}
-
 .containerStyle {
 	border-radius: 1.75em;
 	box-shadow: 0 0 0 0.8em #262626;
 	background: radial-gradient(circle, rgba(197, 183, 152, 1) 0%, rgba(159, 142, 106, 1) 100%);
 	display: flex;
-	height: 80vh;
 	justify-content: space-between;
 	flex-wrap: wrap;
 }
 
 .fill-border {
 	border-radius: 1.75em;
-	height: 80vh;
 	box-shadow: 0 0 0 0.8em #262626;
-}
-
-.fill-content-camouflage {
-	width: 100%;
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/camouflage.svg');
 }
 
 .fill-tank {

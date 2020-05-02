@@ -312,29 +312,30 @@ export default class CanvasComponent extends Component<
 
 	private MenuRender() {
 		let value = (
-			<div class="base">
-				<div class="centered">
-					<div class="container">
+			<div class="generalContainer absolute-center-middle">
+				<div class="containerStyle ">
+					<div class="fill-content-camouflage fill-border">
 						<div class="title-container">Menu</div>
-						<div class="container-center">
+						<div class="black-line short" />
+						<div class="text-center">
 							<div class="btn-group-vertical btn-block">
 								<button
 									type="button"
-									class="btn btn-dark btn-block"
+									class="btn btn-simple-black rounded-pill"
 									onClick={(e: any) => this.SetMenu(e)}
 								>
 									Resume
 								</button>
 								<button
 									type="button"
-									class="btn btn-dark btn-block"
+									class="btn btn-simple-black rounded-pill"
 									onClick={(e: any) => this.Cheat(e)}
 								>
 									Cheat
 								</button>
 								<button
 									type="button"
-									class="btn btn-secondary btn-block"
+									class="btn btn-simple-red rounded-pill"
 									onClick={(e: any) => this.Quit(e)}
 								>
 									Quit

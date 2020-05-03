@@ -4,20 +4,18 @@ import { GameHelper } from '../../Core/Framework/GameHelper';
 import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
 import { MapMode } from '../../Core/Setup/Generator/MapMode';
 import { SpriteProvider } from '../../Core/Framework/SpriteProvider';
-import { IconProvider } from '../IconProvider';
+import { ComponentsHelper } from '../ComponentsHelper';
 
 export default class CampaignComponent extends Component<any, any> {
 	private _isFirstRender = true;
-	private _redArmyDiv: HTMLDivElement;
-	private _redArmyTalkDiv: HTMLDivElement;
-	private _talkingTimer: NodeJS.Timer;
-	private _timer: NodeJS.Timer;
-	private _texts: Array<string> = [
-		"Don't cry when you will loose...",
-		'I will have no mercy...',
-		'I cannot wait to see you loosing...'
-	];
-	private _textIndex = 0;
+	private _eyesDiv: HTMLDivElement;
+	private _mouthDiv: HTMLDivElement;
+	private _mouthTimer: NodeJS.Timer;
+	private _eyesTimer: NodeJS.Timer;
+	private _eyes: Array<string> = [ 'fill-redArmy-eyes', 'fill-redArmy-eyes-blink' ];
+	private _eyesIndex = 0;
+	private _mouths: Array<string> = [ 'fill-redArmy-mouth-1', 'fill-redArmy-mouth-2', 'fill-redArmy-mouth-3' ];
+	private _mouthIndex = 0;
 
 	constructor(props: any) {
 		super(props);
@@ -39,109 +37,102 @@ export default class CampaignComponent extends Component<any, any> {
 
 	componentDidMount() {
 		this._isFirstRender = false;
-		this._timer = setInterval(() => this.AnimateRedArmy(), 2000);
-		this._talkingTimer = setInterval(() => this.TalkingArmy(), 3000);
+		this._eyesTimer = setInterval(() => this.EyesAnimation(), 2000);
+		this._mouthTimer = setInterval(() => this.MouthAnimation(), 3000);
 	}
 
 	componentWillUnmount() {
-		clearInterval(this._timer);
-		clearInterval(this._talkingTimer);
+		clearInterval(this._eyesTimer);
+		clearInterval(this._mouthTimer);
 	}
 
-	private AnimateRedArmy(): void {
-		clearInterval(this._timer);
-		if (this._redArmyDiv.classList.contains('fill-redArmy')) {
-			this._redArmyDiv.classList.remove('fill-redArmy');
-			this._redArmyDiv.classList.add('fill-redArmy-blink');
-			this._timer = setInterval(() => this.AnimateRedArmy(), 250);
+	private EyesAnimation(): void {
+		clearInterval(this._eyesTimer);
+		let current = this._eyesIndex;
+		this._eyesIndex = (this._eyesIndex + 1) % this._eyes.length;
+		this._eyesDiv.classList.remove(this._eyes[current]);
+		this._eyesDiv.classList.add(this._eyes[this._eyesIndex]);
+
+		if (this._eyesIndex === 0) {
+			this._eyesTimer = setInterval(() => this.EyesAnimation(), 2000);
 		} else {
-			this._redArmyDiv.classList.remove('fill-redArmy-blink');
-			this._redArmyDiv.classList.add('fill-redArmy');
-			this._timer = setInterval(() => this.AnimateRedArmy(), 2000);
+			this._eyesTimer = setInterval(() => this.EyesAnimation(), 250);
 		}
 	}
 
-	private TalkingArmy(): void {
-		this._textIndex = (this._textIndex + 1) % this._texts.length;
-		this._redArmyTalkDiv.textContent = this._texts[this._textIndex];
+	private MouthAnimation(): void {
+		clearInterval(this._mouthTimer);
+
+		let current = this._mouthIndex;
+		this._mouthIndex = (this._mouthIndex + 1) % this._mouths.length;
+		this._mouthDiv.classList.remove(this._mouths[current]);
+		this._mouthDiv.classList.add(this._mouths[this._mouthIndex]);
+
+		if (this._eyesIndex === 0) {
+			this._mouthTimer = setInterval(() => this.MouthAnimation(), 1000);
+		} else {
+			this._mouthTimer = setInterval(() => this.MouthAnimation(), 100);
+		}
 	}
 
 	render() {
 		return (
 			<div class="generalContainer absolute-center-middle">
-				<div class="title-container fit-content">Campaign</div>
-				<div class="containerStyle long">
-					<div class="fill-content-camouflage fill-border">
-						<div class="campaign-talking">Release areas from the red army.</div>
-
-						<div class="container-center">
-							<div
-								class="foe-talking"
-								ref={(dom) => {
-									this._redArmyTalkDiv = dom;
-								}}
-							>
-								don't cry if you loose...
-							</div>
-							<div class="fill-triangle" />
-						</div>
-
+				<div class="container-center">
+					<div class="logo-container">
+						<div class="fill-redArmy" />
 						<div
-							class="fill-redArmy banner-space"
+							class="fill-redArmy-eyes"
 							ref={(dom) => {
-								this._redArmyDiv = dom;
+								this._eyesDiv = dom;
 							}}
 						/>
-						<div class="sub-background-color fit-content ">
-							<div class="row justify-content-center">
-								<div class="col-auto">
-									<button
-										type="button"
-										class="btn btn-simple-red rounded-pill btn-space"
-										onClick={(e) => this.Start(e)}
-									>
-										<div class="fill-battle" /> 1
-									</button>
-								</div>
-								<div class="col-auto">
-									<button
-										type="button"
-										class="btn btn-simple-red rounded-pill btn-space"
-										onClick={(e) => this.Start(e)}
-									>
-										<div class="fill-battle" /> 2
-									</button>
-								</div>
-								<div class="w-100 d-none d-md-block " />
-								<div class="col-auto">
-									<button
-										type="button"
-										class="btn btn-simple-red rounded-pill btn-space"
-										onClick={(e) => this.Start(e)}
-									>
-										<div class="fill-battle" /> 3
-									</button>
-								</div>
-								<div class="col-auto">
-									<button
-										type="button"
-										class="btn btn-simple-red rounded-pill btn-space"
-										onClick={(e) => this.Start(e)}
-									>
-										<div class="fill-battle" />
-										4
-									</button>
-								</div>
-							</div>
-						</div>
-						<button
-							type="button"
-							class="btn btn-simple-black rounded-pill very-small-left-margin"
-							onClick={(e) => this.Back(e)}
-						>
-							{IconProvider.GetIcon(this._isFirstRender, 'fas fa-undo-alt')} Back
-						</button>
+						<div
+							class="fill-redArmy-mouth-1"
+							ref={(dom) => {
+								this._mouthDiv = dom;
+							}}
+						/>
 					</div>
+					<div class="row justify-content-center">
+						<div class="col-auto container-center">
+							{ComponentsHelper.GetRedButton(
+								this._isFirstRender,
+								'fas fa-arrow-alt-circle-right',
+								'1',
+								(e) => this.Start(e)
+							)}
+						</div>
+						<div class="col-auto container-center">
+							{ComponentsHelper.GetRedButton(
+								this._isFirstRender,
+								'fas fa-arrow-alt-circle-right',
+								'2',
+								(e) => this.Start(e)
+							)}
+						</div>
+						<div class="w-100 d-none d-md-block " />
+						<div class="col-auto container-center">
+							{ComponentsHelper.GetRedButton(
+								this._isFirstRender,
+								'fas fa-arrow-alt-circle-right',
+								'3',
+								(e) => this.Start(e)
+							)}
+						</div>
+						<div class="col-auto container-center">
+							{ComponentsHelper.GetRedButton(
+								this._isFirstRender,
+								'fas fa-arrow-alt-circle-right',
+								'4',
+								(e) => this.Start(e)
+							)}
+						</div>
+					</div>
+
+					{ComponentsHelper.GetBlackButton(this._isFirstRender, 'fas fa-undo-alt', 'Black', (e) =>
+						this.Back(e)
+					)}
 				</div>
 			</div>
 		);

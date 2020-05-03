@@ -1,3 +1,4 @@
+import { Dictionnary } from './../../../Utils/Collections/Dictionnary';
 import { TroopSituation } from './../Troop/TroopSituation';
 import { KingdomArea } from '../Utils/KingdomArea';
 import { CellContext } from '../../../Items/Cell/CellContext';
@@ -5,7 +6,6 @@ import { Cell } from '../../../Items/Cell/Cell';
 import { Area } from '../Utils/Area';
 import { isNullOrUndefined } from 'util';
 import { SimpleOrder } from '../../Order/SimpleOrder';
-import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
 import { Tank } from '../../../Items/Unit/Tank';
 import { Groups } from '../../../Utils/Collections/Groups';
 import { TroopDestination } from '../Utils/TroopDestination';
@@ -57,17 +57,14 @@ export class BasicAreaDecisionMaker {
 			console.log(`%c [FREE FOE CELL] ${Object.keys(aroundFoeCells).length}`, 'font-weight:bold;color:red;');
 
 			//#4 classify cell dangerous
-			const dangerLevelcells = this.ClassifyCellDanger(aroundFoeCells, ally);
+			const cellsByDanger = this.ClassifyCellDanger(aroundFoeCells, ally);
 
-			for (let danger in dangerLevelcells) {
-				this.LogDanger(danger, dangerLevelcells);
+			for (let danger in cellsByDanger) {
+				this.LogDanger(danger, cellsByDanger);
 			}
 
 			//#5 find path to reach cells and classify them
-			let troopSituations = new Array<TroopSituation>();
-			this.FindTroopPaths(troopSituations, dangerLevelcells);
-
-			troopSituations = troopSituations.filter((t) => Object.keys(t.Destinations).length > 0);
+			let troopSituations = this.FindTroopPaths(cellsByDanger);
 
 			//#6 select path
 			const destTroops = this.SelectBestPaths(troopSituations);
@@ -101,29 +98,30 @@ export class BasicAreaDecisionMaker {
 		return enemyContactcells;
 	}
 
-	private ClassifyCellDanger(
-		aroundFoeCells: Dictionnary<Cell>,
-		ally: Tank
-	): { [id: number]: { [id: string]: Cell } } {
-		var dangerLevelcells: { [id: number]: { [id: string]: Cell } } = {};
+	private ClassifyCellDanger(aroundFoeCells: Dictionnary<Cell>, ally: Tank): { [danger: number]: Dictionnary<Cell> } {
+		var dangerLevelcells: { [danger: number]: Dictionnary<Cell> } = {};
 
 		aroundFoeCells.Keys().forEach((key) => {
 			const currentcell = aroundFoeCells.Get(key);
-			const cellKey = currentcell.GetCoordinate().ToString();
-			const dangerLevel = currentcell
-				.GetAllNeighbourhood()
-				.map((c) => c as Cell)
-				.filter((c) => !isNullOrUndefined(c) && c.HasEnemy(ally)).length;
+			const coordinate = currentcell.GetCoordinate().ToString();
+			const dangerLevel = this.GetAroundCellFoes(currentcell, ally);
 
 			if (!dangerLevelcells.hasOwnProperty(dangerLevel)) {
-				dangerLevelcells[dangerLevel] = {};
+				dangerLevelcells[dangerLevel] = new Dictionnary<Cell>();
 			}
 
-			if (!dangerLevelcells[dangerLevel].hasOwnProperty(cellKey)) {
-				dangerLevelcells[dangerLevel][cellKey] = currentcell;
+			if (!dangerLevelcells[dangerLevel].hasOwnProperty(coordinate)) {
+				dangerLevelcells[dangerLevel].Add(coordinate, currentcell);
 			}
 		});
 		return dangerLevelcells;
+	}
+
+	private GetAroundCellFoes(currentcell: Cell, ally: Tank) {
+		return currentcell
+			.GetAllNeighbourhood()
+			.map((c) => c as Cell)
+			.filter((c) => !isNullOrUndefined(c) && c.HasEnemy(ally)).length;
 	}
 
 	private SelectBestPaths(troopSituations: TroopSituation[]): Groups<TroopSituation> {
@@ -177,23 +175,20 @@ export class BasicAreaDecisionMaker {
 		return troopsByDest;
 	}
 
-	private FindTroopPaths(
-		troopSituations: TroopSituation[],
-		dangerLevelcells: { [id: number]: { [id: string]: Cell } }
-	) {
+	private FindTroopPaths(cellsByDanger: { [id: number]: Dictionnary<Cell> }): Array<TroopSituation> {
+		let troopSituations = new Array<TroopSituation>();
+
 		this.Area.GetTroops().forEach((troop) => {
 			const troopSituation = new TroopSituation();
 			troopSituation.Troop = troop;
 			troopSituations.push(troopSituation);
 
-			for (let danger in dangerLevelcells) {
-				for (let cellKey in dangerLevelcells[danger]) {
-					var destination = new TroopDestination(
-						dangerLevelcells[danger][cellKey],
-						new AStarEngine<Cell>((c: Cell) => !isNullOrUndefined(c) && !c.IsBlocked()).GetPath(
-							troop.Tank.GetCurrentCell(),
-							dangerLevelcells[danger][cellKey]
-						)
+			for (let danger in cellsByDanger) {
+				const cells = cellsByDanger[danger];
+				for (let coordinate in cells.Keys()) {
+					let destination = new TroopDestination(
+						cells.Get(coordinate),
+						this.GetRoad(troop.Tank.GetCurrentCell(), cells.Get(coordinate))
 					);
 
 					if (!troopSituation.Destinations.hasOwnProperty(danger)) {
@@ -203,6 +198,14 @@ export class BasicAreaDecisionMaker {
 				}
 			}
 		});
+		return troopSituations.filter((t) => Object.keys(t.Destinations).length > 0);
+	}
+
+	private GetRoad(departure: Cell, destination: Cell): Cell[] {
+		return new AStarEngine<Cell>((c: Cell) => !isNullOrUndefined(c) && !c.IsBlocked()).GetPath(
+			departure,
+			destination
+		);
 	}
 
 	private GetFoeCells(areas: Area[], ally: Tank): Array<Cell> {
@@ -247,7 +250,7 @@ export class BasicAreaDecisionMaker {
 		);
 	}
 
-	private LogDanger(danger: string, dangerLevelcells: { [id: number]: { [id: string]: Cell } }) {
+	private LogDanger(danger: string, dangerLevelcells: { [id: number]: Dictionnary<Cell> }) {
 		console.log(
 			`%c danger lvl ${danger} - cells count ${Object.keys(dangerLevelcells[+danger]).length}`,
 			'font-weight:bold;color:brown;'

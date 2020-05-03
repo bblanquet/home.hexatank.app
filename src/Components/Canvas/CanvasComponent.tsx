@@ -23,6 +23,7 @@ import { InteractionContext } from '../../Core/Interaction/InteractionContext';
 import { RenderingHandler } from '../../Core/Setup/Render/RenderingHandler';
 import { RenderingGroups } from '../../Core/Setup/Render/RenderingGroups';
 import { MapRender } from '../../Core/Setup/Render/MapRender';
+import { ComponentsHelper } from '../ComponentsHelper';
 
 export default class CanvasComponent extends Component<
 	any,
@@ -312,37 +313,12 @@ export default class CanvasComponent extends Component<
 
 	private MenuRender() {
 		let value = (
-			<div class="generalContainer absolute-center-middle">
-				<div class="containerStyle ">
-					<div class="fill-content-camouflage fill-border">
-						<div class="title-container">Menu</div>
-						<div class="black-line short" />
-						<div class="text-center">
-							<div class="btn-group-vertical btn-block">
-								<button
-									type="button"
-									class="btn btn-simple-black rounded-pill"
-									onClick={(e: any) => this.SetMenu(e)}
-								>
-									Resume
-								</button>
-								<button
-									type="button"
-									class="btn btn-simple-black rounded-pill"
-									onClick={(e: any) => this.Cheat(e)}
-								>
-									Cheat
-								</button>
-								<button
-									type="button"
-									class="btn btn-simple-red rounded-pill"
-									onClick={(e: any) => this.Quit(e)}
-								>
-									Quit
-								</button>
-							</div>
-						</div>
-					</div>
+			<div class="generalContainer absolute-center-middle-menu menu-container fit-content">
+				<div class="container-center">
+					<div class="title-container">Menu</div>
+					{ComponentsHelper.GetRedButton(false, 'fas fa-undo-alt', 'Resume', (e) => this.SetMenu(e))}
+					{ComponentsHelper.GetRedButton(false, 'fas fa-undo-alt', 'Cheat', (e) => this.Cheat(e))}
+					{ComponentsHelper.GetRedButton(false, 'fas fa-undo-alt', 'Quit', (e) => this.Quit(e))}
 				</div>
 			</div>
 		);

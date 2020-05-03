@@ -9,7 +9,7 @@ import OffJoinComponent from './Components/Network/Join/Off/OffJoinComponent';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 import Router from 'preact-router';
-import './Components/Style/CommonStyle.css';
+import './Components/Style/CommonStyle.scss';
 import '@fortawesome/fontawesome-free/js/fontawesome';
 import '@fortawesome/fontawesome-free/js/solid';
 import '@fortawesome/fontawesome-free/js/regular';

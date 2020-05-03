@@ -3,7 +3,7 @@ import { TroopDecisionMaker } from './TroopDecisionMaker';
 import { TroopDestination } from '../Utils/TroopDestination';
 import { Cell } from '../../../Items/Cell/Cell';
 
-export class TroopSituation {
+export class TroopRoads {
 	public Troop: TroopDecisionMaker;
 	public Destinations: { [Danger: number]: Array<TroopDestination> };
 	public CurrentDestination: TroopDestination;

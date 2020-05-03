@@ -7,6 +7,7 @@ import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
 import { MapMode } from '../../Core/Setup/Generator/MapMode';
 import { SpriteProvider } from '../../Core/Framework/SpriteProvider';
 import { IconProvider } from '../IconProvider';
+import { ComponentsHelper } from '../ComponentsHelper';
 
 export default class SinglePlayerComponent extends Component<any, SinglePlayerState> {
 	private _isFirstRender = true;
@@ -36,88 +37,84 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 	render() {
 		return (
 			<div class="generalContainer absolute-center-middle">
-				<div class="containerStyle ">
-					<div class="fill-content-camouflage fill-border">
-						<div class="title-container">Single player</div>
-						<div class="black-line long" />
-						<div class="text-center">
-							<div class="col-auto my-1">
-								<label class="mr-sm-2 whiteText" for="inlineFormCustomSelect">
-									IA
-								</label>
-								<select
-									onChange={linkState(this, 'IaNumber')}
-									class="custom-select mr-sm-2"
-									id="inlineFormCustomSelect"
-								>
-									<option>1</option>
-									<option>2</option>
-									<option>3</option>
-								</select>
-							</div>
-							<div class="col-auto my-1 whiteText">
-								<label class="mr-sm-2" for="inlineFormCustomSelect">
-									Mode
-								</label>
-								<select
-									onChange={linkState(this, 'Mode')}
-									class="custom-select mr-sm-2"
-									id="inlineFormCustomSelect"
-								>
-									<option value="0">Sand</option>
-									<option value="1">Forest</option>
-									<option value="2">Ice</option>
-								</select>
-							</div>
-							<div class="col-auto my-1 whiteText">
-								<label class="mr-sm-2" for="inlineFormCustomSelect">
-									Size
-								</label>
-								<select
-									onChange={linkState(this, 'Size')}
-									class="custom-select mr-sm-2"
-									id="inlineFormCustomSelect"
-								>
-									<option value="8">small</option>
-									<option selected value="12">
-										medium
-									</option>
-									<option value="16">big</option>
-								</select>
-							</div>
-							<div class="col-auto my-1 whiteText">
-								<label class="mr-sm-2" for="inlineFormCustomSelect">
-									Shape
-								</label>
-								<select
-									onChange={linkState(this, 'MapType')}
-									class="custom-select mr-sm-2"
-									id="inlineFormCustomSelect"
-								>
-									<option value="Donut">Donut</option>
-									<option value="Cheese">Cheese</option>
-									<option selected value="Flower">
-										Flower
-									</option>
-								</select>
-							</div>
-							<p />
-
-							<button
-								type="button"
-								class="btn btn-simple-black rounded-pill btn-space"
-								onClick={(e) => this.Back(e)}
-							>
-								{IconProvider.GetIcon(this._isFirstRender, 'fas fa-undo-alt')} Back
-							</button>
-							<button
-								type="button"
-								class="btn btn-simple-red rounded-pill btn-space"
-								onClick={(e) => this.Start(e)}
-							>
-								<div class="fill-battle" />
-							</button>
+				<div class="container-center">
+					<div class="logo-container">
+						<div class="fill-logo-back-container">
+							<div class="fill-logo-back spin-fade" />
 						</div>
+						<div class="fill-logo" />
+					</div>
+					<div class="col-auto my-1">
+						<label class="mr-sm-2 whiteText" for="inlineFormCustomSelect">
+							IA
+						</label>
+						<select
+							onChange={linkState(this, 'IaNumber')}
+							class="custom-select mr-sm-2"
+							id="inlineFormCustomSelect"
+						>
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+						</select>
+					</div>
+					<div class="col-auto my-1 whiteText">
+						<label class="mr-sm-2" for="inlineFormCustomSelect">
+							Mode
+						</label>
+						<select
+							onChange={linkState(this, 'Mode')}
+							class="custom-select mr-sm-2"
+							id="inlineFormCustomSelect"
+						>
+							<option value="0">Sand</option>
+							<option value="1">Forest</option>
+							<option value="2">Ice</option>
+						</select>
+					</div>
+					<div class="col-auto my-1 whiteText">
+						<label class="mr-sm-2" for="inlineFormCustomSelect">
+							Size
+						</label>
+						<select
+							onChange={linkState(this, 'Size')}
+							class="custom-select mr-sm-2"
+							id="inlineFormCustomSelect"
+						>
+							<option value="8">small</option>
+							<option selected value="12">
+								medium
+							</option>
+							<option value="16">big</option>
+						</select>
+					</div>
+					<div class="col-auto my-1 whiteText">
+						<label class="mr-sm-2" for="inlineFormCustomSelect">
+							Shape
+						</label>
+						<select
+							onChange={linkState(this, 'MapType')}
+							class="custom-select mr-sm-2"
+							id="inlineFormCustomSelect"
+						>
+							<option value="Donut">Donut</option>
+							<option value="Cheese">Cheese</option>
+							<option selected value="Flower">
+								Flower
+							</option>
+						</select>
+					</div>
+					<p />
+					<div class="container-center-horizontal">
+						{ComponentsHelper.GetBlackButton(this._isFirstRender, 'fas fa-undo-alt', 'Black', (e) =>
+							this.Back(e)
+						)}
+						{ComponentsHelper.GetRedButton(
+							this._isFirstRender,
+							'fas fa-arrow-alt-circle-right',
+							'Play',
+							(e) => this.Start(e)
+						)}
 					</div>
 				</div>
 			</div>

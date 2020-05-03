@@ -1,3 +1,9 @@
+@font-face {
+	font-family: 'AnimalSilence';
+	src: url('{{}}fonts/AnimalSilence.otf') format("opentype");
+	letter-spacing: 0.2em;
+}
+
 .blink_me {
 	animation: blinker 1s linear infinite;
 }
@@ -8,18 +14,9 @@
 	}
 }
 
-@-webkit-keyframes spin {
+@-webkit-keyframes opacity {
 	0% {
 		-webkit-transform: rotate(0deg);
-	}
-	30% {
-		-webkit-transform: rotate(65deg);
-	}
-	50% {
-		-webkit-transform: rotate(160deg);
-	}
-	70% {
-		-webkit-transform: rotate(65deg);
 	}
 	100% {
 		-webkit-transform: rotate(360deg);
@@ -27,7 +24,37 @@
 }
 
 .spin {
-	-webkit-animation: spin 7s infinite alternate ease-in-out;
+	-webkit-animation: spin 5s linear infinite;
+}
+
+@-webkit-keyframes spin {
+	0% {
+		-webkit-transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(360deg);
+	}
+}
+
+.spin {
+	-webkit-animation: spin 15s linear infinite;
+}
+
+@-webkit-keyframes fade {
+	0% {
+		opacity: 0.2;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.fade {
+	-webkit-animation: fade 1s linear infinite alternate;
+}
+
+.spin-fade {
+	-webkit-animation: fade 1s linear infinite alternate, spin 15s linear infinite;
 }
 
 .btn-space {
@@ -68,22 +95,15 @@
 }
 
 .title-container {
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
-	padding-left: 30px;
-	padding-right: 30px;
-	padding-top: 2vh;
 	margin: 10px;
-	padding-bottom: 10px;
 	width: 50%;
-	font-size: 3vh;
 	margin-left: auto;
 	margin-right: auto;
 	text-align: center;
 	min-height: 0px;
-	background: #262626;
 	color: white;
-	font-family: Impact;
+	font-family: AnimalSilence;
+	letter-spacing: 0.5mm;
 }
 
 .duration-container {
@@ -255,7 +275,11 @@
 body {
 	height: 100%;
 	margin: 0;
-	background: #3f3f3f;
+	background: radial-gradient(black 15%, transparent 16%) 0 0, radial-gradient(black 15%, transparent 16%) 8px 8px,
+		radial-gradient(rgba(255, 255, 255, .1) 15%, transparent 20%) 0 1px,
+		radial-gradient(rgba(255, 255, 255, .1) 15%, transparent 20%) 8px 9px;
+	background-color: #282828;
+	background-size: 16px 16px;
 }
 
 .bottom-space {
@@ -405,6 +429,13 @@ body {
 .absolute-center-middle {
 	position: absolute;
 	left: 50%;
+	top: 30%;
+	transform: translate(-50%, -30%);
+}
+
+.absolute-center-middle-menu {
+	position: absolute;
+	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
 }
@@ -413,22 +444,21 @@ body {
 	position: fixed;
 	top: 50%;
 	left: 50%;
-	/* bring your own prefixes */
-	transform: translate(-50%, -50%);
-}
-
-.centered {
-	position: fixed;
-	width: 100%;
-	top: 50%;
-	left: 50%;
 	transform: translate(-50%, -50%);
 }
 
 .container-center {
-	margin-left: auto;
-	margin-right: auto;
-	width: 50%;
+	flex-direction: column;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.container-center-horizontal {
+	flex-direction: row;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .campaign-talking {
@@ -470,19 +500,103 @@ body {
 }
 
 .fill-redArmy {
+	width: 100%;
+	height: 100%;
 	overflow: hidden;
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{}}components/redArmy.svg');
+	background-image: url('{{}}components/redArmyLeader.svg');
 }
 
-.fill-redArmy-blink {
+.fill-redArmy-eyes {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
 	overflow: hidden;
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{}}components/redArmyBlink.svg');
+	background-image: url('{{}}components/redArmyLeaderEyes.svg');
+}
+
+.fill-redArmy-eyes-blink {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	overflow: hidden;
+	background-size: contain;
+	background-position: bottom;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/redArmyLeaderBlink.svg');
+}
+
+.fill-redArmy-mouth-1 {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	overflow: hidden;
+	background-size: contain;
+	background-position: bottom;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/redArmyLeaderMouth1.svg');
+}
+
+.fill-redArmy-mouth-2 {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	overflow: hidden;
+	background-size: contain;
+	background-position: bottom;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/redArmyLeaderMouth2.svg');
+}
+
+.fill-redArmy-mouth-3 {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	overflow: hidden;
+	background-size: contain;
+	background-position: bottom;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/redArmyLeaderMouth3.svg');
+}
+
+.fill-red-building-1 {
+	width: 100px;
+	height: 100px;
+	overflow: hidden;
+	background-size: contain;
+	background-position: bottom;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/redBuilding1.svg');
+}
+
+.fill-red-building-2 {
+	width: 100px;
+	height: 100px;
+	overflow: hidden;
+	background-size: contain;
+	background-position: bottom;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/redBuilding2.svg');
+}
+
+.fill-red-building-3 {
+	width: 100px;
+	height: 100px;
+	overflow: hidden;
+	background-size: contain;
+	background-position: bottom;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/redBuilding3.svg');
 }
 
 .fill-triangle {
@@ -511,38 +625,159 @@ body {
 	background-image: url('{{}}components/redCamouflage.svg');
 }
 
-.fill-top-tank {
+.logo-container {
+	position: relative;
 	width: 100%;
-	height: 150px;
-	background-size: contain;
+	height: 250px;
+	left: 50%;
+	transform: translate(-50%, 0%);
+}
+
+.fill-logo-back-container {
+	position: relative;
+	width: 100%;
+	height: 50%;
+	pointer-events: none;
+	overflow: hidden;
+}
+
+.fill-logo-back {
+	width: 100%;
+	height: 250px;
+	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{}}components/top.svg');
+	background-image: url('{{}}components/program6LogoBackground.svg');
+	pointer-events: none;
 }
 
-.fill-body-tank {
+.fill-logo {
+	position: absolute;
+	top: 0px;
+	left: 0px;
 	width: 100%;
-	height: 150px;
-	background-size: contain;
+	height: 100%;
+	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{}}components/body.svg');
+	background-image: url('{{}}components/program6Logo.svg');
 }
 
-.corner-space {
-	width: 100%;
-	min-width: 100%;
-	min-height: 150px;
-	height: 30%;
+.menu-container {
+	background: radial-gradient(black 15%, transparent 16%) 0 0, radial-gradient(black 15%, transparent 16%) 8px 8px,
+		radial-gradient(rgba(255, 255, 255, .1) 15%, transparent 20%) 0 1px,
+		radial-gradient(rgba(255, 255, 255, .1) 15%, transparent 20%) 8px 9px;
+	background-color: #282828;
+	background-size: 16px 16px;
+	border-radius: 20px;
+	border: white solid 10px;
 }
 
-.containerStyle {
-	border-radius: 1.75em;
-	box-shadow: 0 0 0 0.8em #262626;
-	background: radial-gradient(circle, rgba(197, 183, 152, 1) 0%, rgba(159, 142, 106, 1) 100%);
-	display: flex;
-	justify-content: space-between;
-	flex-wrap: wrap;
+.custom-black-btn {
+	background-color: #1c1c1c;
+	color: white;
+	font-family: AnimalSilence;
+	letter-spacing: 0.5mm;
+	font-size: large;
+	text-align: center;
+	border-radius: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.custom-black-btn:hover {
+	background-color: #3f3f3f;
+	color: white;
+	font-family: AnimalSilence;
+	letter-spacing: 0.5mm;
+	font-size: large;
+	text-align: center;
+	border-radius: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.custom-btn-black-border {
+	border: #6b5e39 solid 1px;
+	border-radius: 15px;
+	background: rgb(37, 37, 37);
+	background: linear-gradient(
+		90deg,
+		rgba(37, 37, 37, 1) 0%,
+		rgba(94, 94, 94, 1) 25%,
+		rgba(144, 144, 144, 1) 50%,
+		rgba(94, 94, 94, 1) 75%,
+		rgba(37, 37, 37, 1) 100%
+	);
+	padding: 4px 0px 4px 0px;
+}
+
+.custom-btn {
+	background-color: #ba1818;
+	color: white;
+	font-family: AnimalSilence;
+	letter-spacing: 0.5mm;
+	font-size: large;
+	text-align: center;
+	border-radius: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.custom-btn:hover {
+	background-color: #e02020;
+	color: white;
+	font-family: AnimalSilence;
+	letter-spacing: 0.5mm;
+	font-size: large;
+	text-align: center;
+	border-radius: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.custom-btn-border {
+	border: #6b5e39 solid 1px;
+	border-radius: 15px;
+	background: rgb(187, 43, 36);
+	background: linear-gradient(
+		90deg,
+		rgba(187, 43, 36, 1) 0%,
+		rgba(233, 95, 50, 1) 25%,
+		rgba(241, 143, 52, 1) 50%,
+		rgba(233, 95, 50, 1) 75%,
+		rgba(187, 43, 36, 1) 100%
+	);
+	padding: 4px 0px 4px 0px;
+}
+
+.custom-btn-border2 {
+	padding: 3px 2px 3px 2px;
+	border-radius: 18px;
+	background: rgb(198, 198, 198);
+	background: linear-gradient(
+		90deg,
+		rgba(198, 198, 198, 1) 0%,
+		rgba(198, 198, 198, 1) 48%,
+		rgba(198, 198, 198, 1) 50%,
+		rgba(219, 219, 219, 1) 51%,
+		rgba(219, 219, 219, 1) 100%
+	);
+	border-bottom: #9c9b9b solid 4px;
+}
+
+.custom-btn-border3 {
+	border-radius: 15px;
+	background-color: rgba(0, 0, 0, 0);
+	border-bottom: rgba(0, 0, 0, 0.75) solid 6px;
 }
 
 .fill-border {

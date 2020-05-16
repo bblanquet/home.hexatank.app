@@ -447,6 +447,10 @@ body {
 	transform: translate(-50%, -50%);
 }
 
+.align-text-center {
+	text-align: center;
+}
+
 .container-center {
 	flex-direction: column;
 	display: flex;
@@ -863,6 +867,30 @@ body {
 	background-position: center;
 	background-repeat: no-repeat;
 	background-image: url('{{}}menu/slowMenu.svg');
+}
+
+.fill-thunder {
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/thunder.svg');
+}
+
+.fill-network {
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/network.svg');
+}
+
+.fill-shield {
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/shield.svg');
 }
 
 .fill-camouflage {

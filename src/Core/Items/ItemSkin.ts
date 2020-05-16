@@ -3,11 +3,10 @@ export class ItemSkin {
 		private _tankBottom: string,
 		private _tankTop: string,
 		private _truck: string,
-		private _color: string,
-		private _cell: string,
-		private _energyBase: string,
-		private _energy: string,
-		private _energyArea: string
+		private _hq: string,
+		private _hqField: string,
+		private _area: string,
+		private _light: string
 	) {}
 
 	public GetTopTankSprite(): string {
@@ -23,22 +22,18 @@ export class ItemSkin {
 	}
 
 	public GetHq(): string {
-		return this._color;
+		return this._hq;
 	}
 
-	public GetCell(): string {
-		return this._cell;
+	public GetHqCell(): string {
+		return this._hqField;
 	}
 
-	public GetEnergy(): string {
-		return this._energy;
+	public GetLight(): string {
+		return this._light;
 	}
 
-	public GetBaseEnergy(): string {
-		return this._energyBase;
-	}
-
-	public GetAreaEnergy(): string {
-		return this._energyArea;
+	public GetArea(): string {
+		return this._area;
 	}
 }

@@ -2,7 +2,6 @@ import { GameContext } from './../../../Framework/GameContext';
 import { BasicInfluenceField } from './BasicInfluenceField';
 import { Archive } from '../../../Framework/ResourceArchiver';
 import { CellStateSetter } from '../CellStateSetter';
-import { GameHelper } from '../../../Framework/GameHelper';
 import { Battery } from './Battery';
 import { BasicItem } from '../../BasicItem';
 import { ISelectable } from '../../../ISelectable';
@@ -24,7 +23,9 @@ export class InfluenceField extends Field implements ISelectable {
 	private _power: number = 0;
 	private _cellContainer: CellContext<Cell> = new CellContext<Cell>();
 	public Lost: LiteEvent<InfluenceField> = new LiteEvent<InfluenceField>();
+
 	public basicField: BasicInfluenceField;
+
 	constructor(cell: Cell, public Hq: Headquarter, private _context: GameContext) {
 		super(cell);
 		this.Z = 1;
@@ -170,7 +171,7 @@ export class InfluenceField extends Field implements ISelectable {
 	private CreateArea() {
 		this.GetCell().GetSpecificRange(this._range).forEach((cell) => {
 			const b = BoundingBox.CreateFromBox((<Cell>cell).GetBoundingBox());
-			const area = new BasicItem(b, this.Hq.GetSkin().GetAreaEnergy(), 3);
+			const area = new BasicItem(b, this.Hq.GetSkin().GetArea(), 3);
 			area.SetVisible(() => true);
 			area.SetAlive(() => true);
 

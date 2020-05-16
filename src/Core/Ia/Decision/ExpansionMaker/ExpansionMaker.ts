@@ -26,7 +26,11 @@ export class ExpansionMaker implements IExpansionMaker {
 
 	private CreateArea(area: Area) {
 		this._kingdom.RemainingAreas.splice(this._kingdom.RemainingAreas.indexOf(area), 1);
-		const areaDecision = new BasicAreaDecisionMaker(new KingdomArea(this._hq, area, this._kingdom), this._cells);
+		const areaDecision = new BasicAreaDecisionMaker(
+			this._hq,
+			new KingdomArea(this._hq, area, this._kingdom),
+			this._cells
+		);
 		this._kingdom.AreaDecisions.push(areaDecision);
 		this._kingdom.CellAreas.Add(area.GetCentralCell().GetCoordinate().ToString(), areaDecision);
 		this.Log(areaDecision);

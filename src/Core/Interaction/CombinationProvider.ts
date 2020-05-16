@@ -1,3 +1,5 @@
+import { AttackField } from './../Items/Cell/Field/AttackField';
+import { GenericCellCombination } from './Combination/GenericCellCombination';
 import { GameContext } from './../Framework/GameContext';
 import { ISelectableChecker } from './ISelectableChecker';
 import { AppHandler } from './../../Components/Canvas/AppHandler';
@@ -39,7 +41,11 @@ import { InfluenceCombination } from './Combination/InfluenceCombination';
 import { CamouflageCombination } from './Combination/CamouflageCombination';
 import { PoisonCellCombination } from './Combination/PoisonCellCombination';
 import { SlowCellCombination } from './Combination/SlowCellCombination';
+import { ShieldCellCombination } from './Combination/ShieldCellCombination';
 import { MovingInteractionContext } from '../Menu/Smart/MovingInteractionContext';
+import { AttackMenuItem } from '../Menu/Buttons/AttackMenuItem';
+import { SlowMenuItem } from '../Menu/Buttons/SlowMenuItem';
+import { SlowField } from '../Items/Cell/Field/SlowField';
 
 export class CombinationProvider {
 	GetCombination(appHandler: AppHandler, checker: ISelectableChecker, gameContext: GameContext): ICombination[] {
@@ -73,8 +79,15 @@ export class CombinationProvider {
 			new FastCellCombination(gameContext),
 			new CamouflageCombination(),
 			new TargetCombination(),
-			new AttackCellCombination(gameContext),
+			new GenericCellCombination(
+				gameContext,
+				(e) => e instanceof AttackMenuItem,
+				(e) => new AttackField(e),
+				'Attack'
+			),
+			new GenericCellCombination(gameContext, (e) => e instanceof SlowMenuItem, (e) => new SlowField(e), 'Slow'),
 			new SlowCellCombination(gameContext),
+			new ShieldCellCombination(gameContext),
 			new PoisonCellCombination(gameContext),
 			new MoneyCellCombination(gameContext),
 			new HealCellCombination(gameContext),

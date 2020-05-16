@@ -1,6 +1,7 @@
+import { AttackField } from './../../../Items/Cell/Field/AttackField';
+import { KingdomArea } from './../Utils/KingdomArea';
 import { Dictionnary } from './../../../Utils/Collections/Dictionnary';
-import { TroopSituation } from './../Troop/TroopSituation';
-import { KingdomArea } from '../Utils/KingdomArea';
+import { TroopRoads } from '../Troop/TroopRoads';
 import { CellContext } from '../../../Items/Cell/CellContext';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Area } from '../Utils/Area';
@@ -11,12 +12,16 @@ import { Groups } from '../../../Utils/Collections/Groups';
 import { TroopDestination } from '../Utils/TroopDestination';
 import { AreaSearch } from '../Utils/AreaSearch';
 import { AStarEngine } from '../../AStarEngine';
+import { Headquarter } from '../../../Items/Cell/Field/Headquarter';
+import { GameSettings } from '../../../Framework/GameSettings';
+import { BasicField } from '../../../Items/Cell/Field/BasicField';
+import { HealField } from '../../../Items/Cell/Field/HealField';
 
 export class BasicAreaDecisionMaker {
 	private _areaSearch: AreaSearch;
 	public HasReceivedRequest: boolean;
 
-	constructor(public Area: KingdomArea, private _cells: CellContext<Cell>) {
+	constructor(private _hq: Headquarter, public Area: KingdomArea, private _cells: CellContext<Cell>) {
 		this._areaSearch = new AreaSearch(this._cells.Keys());
 	}
 
@@ -51,31 +56,45 @@ export class BasicAreaDecisionMaker {
 
 			console.log(`%c [DETECTED FOE] ${foeCells.length}`, 'font-weight:bold;color:blue;');
 
-			//#3 get enemy contact cells
-			const aroundFoeCells = this.GetAroundFoeCells(foeCells);
+			this.ReinforceTroops();
+			this.SendTroops(foeCells, ally);
+		}
+	}
 
-			console.log(`%c [FREE FOE CELL] ${Object.keys(aroundFoeCells).length}`, 'font-weight:bold;color:red;');
-
-			//#4 classify cell dangerous
-			const cellsByDanger = this.ClassifyCellDanger(aroundFoeCells, ally);
-
-			for (let danger in cellsByDanger) {
-				this.LogDanger(danger, cellsByDanger);
+	private ReinforceTroops(): void {
+		this.Area.GetTroops().filter((t) => t.IsCloseFromEnemy()).forEach((t) => {
+			let cell = t.Tank.GetCurrentCell();
+			if (GameSettings.FieldPrice < this._hq.GetAmount()) {
+				if (cell.GetField() instanceof BasicField) {
+					new AttackField(cell);
+					this._hq.Buy(GameSettings.FieldPrice);
+				}
 			}
+		});
+	}
 
-			//#5 find path to reach cells and classify them
-			let troopSituations = this.FindTroopPaths(cellsByDanger);
+	private SendTroops(foeCells: Cell[], ally: Tank) {
+		//#3 get enemy contact cells
+		const aroundFoeCells = this.GetAroundFoeCells(foeCells);
 
-			//#6 select path
-			const destTroops = this.SelectBestPaths(troopSituations);
+		console.log(`%c [FREE FOE CELL] ${Object.keys(aroundFoeCells).length}`, 'font-weight:bold;color:red;');
 
-			if (isNullOrUndefined(destTroops)) {
-				return;
-			}
+		//#4 classify cell dangerous
+		const cellsByDanger = this.ClassifyCellDanger(aroundFoeCells, ally);
+		for (let danger in cellsByDanger) {
+			this.LogDanger(danger, cellsByDanger);
+		}
 
-			//#7 give orders to units
-			destTroops.Keys().forEach((dest) => {
-				destTroops.Get(dest).forEach((troopSituation) => {
+		//#5 find path to reach cells and classify them
+		const troopRoads = this.GetTroopRoads(cellsByDanger);
+
+		//#6 select path
+		const bestTroopRoads = this.FindBestRoads(troopRoads);
+
+		//#7 give orders to units
+		if (!isNullOrUndefined(bestTroopRoads)) {
+			bestTroopRoads.Keys().forEach((coordinate) => {
+				bestTroopRoads.Get(coordinate).forEach((troopSituation) => {
 					this.LogOrder(troopSituation);
 					troopSituation.Troop.Tank.SetOrder(
 						new SimpleOrder(troopSituation.CurrentDestination.Destination, troopSituation.Troop.Tank)
@@ -124,11 +143,11 @@ export class BasicAreaDecisionMaker {
 			.filter((c) => !isNullOrUndefined(c) && c.HasEnemy(ally)).length;
 	}
 
-	private SelectBestPaths(troopSituations: TroopSituation[]): Groups<TroopSituation> {
-		this.SetTroopDestination(troopSituations);
+	private FindBestRoads(troopRoads: TroopRoads[]): Groups<TroopRoads> {
+		this.SetTroopDestination(troopRoads);
 		let unresolvedCases = 0;
 		var hasConflicts = true;
-		const excludedcells: { [id: string]: Cell } = {};
+		const excludedcells = new Dictionnary<Cell>();
 		while (hasConflicts) {
 			if (unresolvedCases === 4) {
 				return null;
@@ -136,20 +155,20 @@ export class BasicAreaDecisionMaker {
 
 			unresolvedCases++;
 			hasConflicts = false;
-			var destTroops = this.GetTroopsByDest(troopSituations);
+			var destTroops = this.GetTroopsByDest(troopRoads);
 			destTroops.Keys().forEach((dest) => {
 				if (1 < destTroops.Get(dest).length) {
-					excludedcells[dest] = destTroops.Get(dest)[0].CurrentDestination.Destination;
+					excludedcells.Add(dest, destTroops.Get(dest)[0].CurrentDestination.Destination);
 
 					let cells = new Array<Cell>();
-					for (var prop in excludedcells) {
-						cells.push(excludedcells[prop]);
-					}
+					excludedcells.Values().forEach((cell) => {
+						cells.push(cell);
+					});
 
 					this.ResolveConflicts(destTroops.Get(dest), cells);
 				}
 			});
-			destTroops = this.GetTroopsByDest(troopSituations);
+			destTroops = this.GetTroopsByDest(troopRoads);
 			destTroops.Keys().forEach((dest) => {
 				if (1 < destTroops.Get(dest).length) {
 					hasConflicts = true;
@@ -160,14 +179,14 @@ export class BasicAreaDecisionMaker {
 		return destTroops;
 	}
 
-	private SetTroopDestination(troopSituations: TroopSituation[]): void {
+	private SetTroopDestination(troopSituations: TroopRoads[]): void {
 		troopSituations.forEach((troopSituation) => {
 			troopSituation.CurrentDestination = troopSituation.GetClosestAndSafestPath();
 		});
 	}
 
-	private GetTroopsByDest(troopSituations: TroopSituation[]): Groups<TroopSituation> {
-		var troopsByDest = new Groups<TroopSituation>();
+	private GetTroopsByDest(troopSituations: TroopRoads[]): Groups<TroopRoads> {
+		var troopsByDest = new Groups<TroopRoads>();
 		troopSituations.forEach((troopSituation) => {
 			const key = troopSituation.CurrentDestination.Destination.GetCoordinate().ToString();
 			troopsByDest.Add(key, troopSituation);
@@ -175,30 +194,30 @@ export class BasicAreaDecisionMaker {
 		return troopsByDest;
 	}
 
-	private FindTroopPaths(cellsByDanger: { [id: number]: Dictionnary<Cell> }): Array<TroopSituation> {
-		let troopSituations = new Array<TroopSituation>();
+	private GetTroopRoads(cellsByDanger: { [id: number]: Dictionnary<Cell> }): Array<TroopRoads> {
+		let allTroopRoads = new Array<TroopRoads>();
 
-		this.Area.GetTroops().forEach((troop) => {
-			const troopSituation = new TroopSituation();
-			troopSituation.Troop = troop;
-			troopSituations.push(troopSituation);
+		this.Area.GetTroops().filter((t) => !t.IsCloseFromEnemy()).forEach((troop) => {
+			const troopRoads = new TroopRoads();
+			troopRoads.Troop = troop;
+			allTroopRoads.push(troopRoads);
 
 			for (let danger in cellsByDanger) {
 				const cells = cellsByDanger[danger];
-				for (let coordinate in cells.Keys()) {
+				cells.Keys().forEach((coordinate) => {
 					let destination = new TroopDestination(
 						cells.Get(coordinate),
 						this.GetRoad(troop.Tank.GetCurrentCell(), cells.Get(coordinate))
 					);
 
-					if (!troopSituation.Destinations.hasOwnProperty(danger)) {
-						troopSituation.Destinations[danger] = new Array<TroopDestination>();
+					if (!troopRoads.Destinations.hasOwnProperty(danger)) {
+						troopRoads.Destinations[danger] = new Array<TroopDestination>();
 					}
-					troopSituation.Destinations[danger].push(destination);
-				}
+					troopRoads.Destinations[danger].push(destination);
+				});
 			}
 		});
-		return troopSituations.filter((t) => Object.keys(t.Destinations).length > 0);
+		return allTroopRoads.filter((t) => Object.keys(t.Destinations).length > 0);
 	}
 
 	private GetRoad(departure: Cell, destination: Cell): Cell[] {
@@ -218,7 +237,7 @@ export class BasicAreaDecisionMaker {
 		return enemycells;
 	}
 
-	private ResolveConflicts(troops: Array<TroopSituation>, conflicts: Array<Cell>): void {
+	private ResolveConflicts(troops: Array<TroopRoads>, conflicts: Array<Cell>): void {
 		troops.forEach((troop) => {
 			troop.PotentialNextDestination = troop.GetBestDestination(conflicts);
 		});
@@ -243,7 +262,7 @@ export class BasicAreaDecisionMaker {
 		}
 	}
 
-	private LogOrder(troopSituation: TroopSituation) {
+	private LogOrder(troopSituation: TroopRoads) {
 		console.log(
 			`%c tank get order to go to ${troopSituation.CurrentDestination.Destination.GetCoordinate().ToString()}`,
 			'font-weight:bold;color:red;'

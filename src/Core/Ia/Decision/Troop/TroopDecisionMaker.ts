@@ -61,13 +61,13 @@ export class TroopDecisionMaker {
 		}
 	}
 
-	private IsIdle(): boolean {
-		return !(this.Tank.IsExecutingOrder() || this.Tank.HasPendingOrder() || this.IsCloseFromFoe());
+	public IsIdle(): boolean {
+		return !(this.Tank.IsExecutingOrder() || this.Tank.HasPendingOrder() || this.IsCloseFromTarget());
 	}
 
 	private SetNextDestination(): void {
 		if (this._target && this._target.IsAlive()) {
-			if (this.IsCloseFromFoe()) {
+			if (this.IsCloseFromTarget()) {
 				return;
 			} else {
 				const availableCells = this._target
@@ -99,7 +99,14 @@ export class TroopDecisionMaker {
 		}
 	}
 
-	private IsCloseFromFoe() {
+	public IsCloseFromEnemy(): boolean {
+		return this.Tank
+			.GetCurrentCell()
+			.GetAllNeighbourhood()
+			.some((c) => (c as Cell).HasEnemy(this.Tank) && (c as Cell).HasOccupier());
+	}
+
+	private IsCloseFromTarget() {
 		if (this._target && this._target.IsAlive()) {
 			return this._target.GetCurrentCell().GetAllNeighbourhood().some((c) => c === this.Tank.GetCurrentCell());
 		} else {

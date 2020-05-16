@@ -1,5 +1,4 @@
 import { Component, h } from 'preact';
-import { GameHelper } from '../../../Core/Framework/GameHelper';
 import { GameSettings } from '../../../Core/Framework/GameSettings';
 import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
 import { Item } from '../../../Core/Items/Item';
@@ -32,7 +31,7 @@ export default class HqMenuComponent extends Component<
 						>
 							<div class="white-background">{this.props.TankRequestCount}</div>
 							<div class="fill-tank max-width standard-space" />
-							<div class="max-width text-center darker">
+							<div class="max-width align-text-center darker">
 								{GameSettings.TankPrice * this.props.GameContext.MainHq.GetVehicleCount()}{' '}
 								<span class="fill-diamond badge very-small-space middle"> </span>
 							</div>
@@ -44,7 +43,7 @@ export default class HqMenuComponent extends Component<
 						>
 							<div class="white-background">{this.props.TruckRequestCount}</div>
 							<div class="fill-truck max-width standard-space" />
-							<div class="max-width text-center darker">
+							<div class="max-width align-text-center darker">
 								{GameSettings.TruckPrice * this.props.GameContext.MainHq.GetVehicleCount()}{' '}
 								<span class="fill-diamond badge very-small-space middle"> </span>
 							</div>

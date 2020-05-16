@@ -6,17 +6,26 @@ import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../../Interaction/InteractionContext';
 import { Vehicle } from '../../Unit/Vehicle';
 import { GameSettings } from '../../../Framework/GameSettings';
+import { IAnimator } from '../../Animator/IAnimator';
+import { BouncingScaleAnimator } from '../../Animator/BouncingScaleAnimator';
 
 export class FastField extends Field {
+	private _animator: IAnimator;
+	private _isIncreasingOpacity: boolean = false;
+
 	constructor(cell: Cell) {
 		super(cell);
 		this.GetCell().SetField(this);
 		this.Z = 1;
+		this.GenerateSprite(Archive.bonus.coverBottom);
 		this.GenerateSprite(Archive.bonus.speed);
+		this.GenerateSprite(Archive.bonus.light.blue);
+		this.GenerateSprite(Archive.bonus.coverTop);
 		this.InitPosition(cell.GetBoundingBox());
 		this.GetDisplayObjects().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});
+		this._animator = new BouncingScaleAnimator(this);
 	}
 
 	protected OnCellStateChanged(cellState: CellState): void {
@@ -33,7 +42,22 @@ export class FastField extends Field {
 	}
 
 	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
+		if (!this._animator.IsDone) {
+			this._animator.Update(viewX, viewY);
+		} else {
+			super.Update(viewX, viewY);
+		}
+		this.SetProperty(Archive.bonus.light.blue, (s) => {
+			if (s.alpha < 0.1) {
+				this._isIncreasingOpacity = true;
+			}
+
+			if (1 <= s.alpha) {
+				this._isIncreasingOpacity = false;
+			}
+
+			s.alpha += this._isIncreasingOpacity ? 0.01 : -0.01;
+		});
 	}
 
 	Support(vehicule: Vehicle): void {

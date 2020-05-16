@@ -292,10 +292,10 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	public Update(viewX: number, viewY: number): void {
 		if (!this.IsAlive() || !this.Hq.IsAlive()) {
 			if (!this.Hq.IsAlive()) {
-				let explosion = new Explosion(this.GetBoundingBox(), Archive.explosions, 5, true, 20);
+				new Explosion(this.GetBoundingBox(), Archive.explosions, 5, true, 20);
 			}
 			this.Destroy();
-			let crater = new Crater(this.BoundingBox);
+			new Crater(this.BoundingBox);
 
 			return;
 		}

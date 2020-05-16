@@ -1,8 +1,6 @@
 import { isNullOrUndefined } from 'util';
 import { Cell } from '../../Items/Cell/Cell';
-import { MoneyMenuItem } from '../../Menu/Buttons/MoneyMenuItem';
 import { BasicField } from '../../Items/Cell/Field/BasicField';
-import { MoneyField } from '../../Items/Cell/Field/MoneyField';
 import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
 import { PacketKind } from '../../../Components/Network/PacketKind';
 import { CombinationContext } from './CombinationContext';
@@ -10,8 +8,13 @@ import { GameSettings } from '../../Framework/GameSettings';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { GameContext } from '../../Framework/GameContext';
 
-export class MoneyCellCombination extends AbstractSingleCombination {
-	constructor(private _gameContext: GameContext) {
+export class GenericCellCombination extends AbstractSingleCombination {
+	constructor(
+		private _gameContext: GameContext,
+		private _isType: (e: any) => boolean,
+		private _create: (e: Cell) => void,
+		private _type: string
+	) {
 		super();
 	}
 
@@ -20,7 +23,7 @@ export class MoneyCellCombination extends AbstractSingleCombination {
 			this.IsNormalMode(context) &&
 			context.Items.length >= 2 &&
 			context.Items[0] instanceof Cell &&
-			context.Items[1] instanceof MoneyMenuItem
+			this._isType(context.Items[1])
 		);
 	}
 
@@ -34,9 +37,9 @@ export class MoneyCellCombination extends AbstractSingleCombination {
 						PeerHandler.SendMessage(PacketKind.Field, {
 							Hq: this._gameContext.MainHq.GetCurrentCell().GetCoordinate(),
 							cell: cell.GetCoordinate(),
-							Type: 'Money'
+							Type: this._type
 						});
-						new MoneyField(cell);
+						this._create(cell);
 					}
 				}
 			}

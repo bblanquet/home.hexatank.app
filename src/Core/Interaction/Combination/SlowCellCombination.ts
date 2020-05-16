@@ -2,7 +2,6 @@ import { SlowMenuItem } from '../../Menu/Buttons/SlowMenuItem';
 import { isNullOrUndefined } from 'util';
 import { Cell } from '../../Items/Cell/Cell';
 import { BasicField } from '../../Items/Cell/Field/BasicField';
-import { GameHelper } from '../../Framework/GameHelper';
 import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
 import { PacketKind } from '../../../Components/Network/PacketKind';
 import { CombinationContext } from './CombinationContext';

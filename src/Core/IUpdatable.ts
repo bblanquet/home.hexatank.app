@@ -1,3 +1,3 @@
 export interface IUpdatable {
-	Update(viewX: number, viewY: number, zoom: number): void;
+	Update(viewX: number, viewY: number): void;
 }

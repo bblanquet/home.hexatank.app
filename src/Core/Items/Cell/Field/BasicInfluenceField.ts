@@ -3,30 +3,29 @@ import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { Item } from '../../Item';
 import { IInteractionContext } from '../../../Interaction/IInteractionContext';
 import { CellState } from '../CellState';
-import { GameHelper } from '../../../Framework/GameHelper';
+import { IAnimator } from '../../Animator/IAnimator';
+import { Archive } from '../../../Framework/ResourceArchiver';
+import { BouncingScaleAnimator } from '../../Animator/BouncingScaleAnimator';
 
 export class BasicInfluenceField extends Item {
 	private _isIncreasingOpacity: boolean = false;
-	private _onCellStateChanged: { (obj: any, cellState: CellState): void };
+	private _onCellStateChanged: (obj: any, cellState: CellState) => void;
+	private _animator: IAnimator;
 
 	constructor(public InfluenceField: InfluenceField) {
 		super();
 		this.Z = 1;
-		this.GenerateSprite(this.InfluenceField.Hq.GetSkin().GetBaseEnergy(), (s) => (s.alpha = 1));
-		this.GenerateSprite(this.InfluenceField.Hq.GetSkin().GetEnergy(), (s) => (s.alpha = 1));
-		this.GetSprites().forEach((sprite) => {
-			(sprite.width = this.InfluenceField.GetCell().GetBoundingBox().Width),
-				(sprite.height = this.InfluenceField.GetCell().GetBoundingBox().Height);
-			sprite.anchor.set(0.5);
-		});
-
-		this.IsCentralRef = true;
+		this.GenerateSprite(Archive.bonus.coverBottom);
+		this.GenerateSprite(Archive.bonus.factory.bottom);
+		this.GenerateSprite(Archive.bonus.factory.middle);
+		this.GenerateSprite(Archive.bonus.factory.top);
+		this.GenerateSprite(Archive.bonus.light.blue);
+		this.GenerateSprite(Archive.bonus.coverTop);
 		this.InitPosition(this.InfluenceField.GetCell().GetBoundingBox());
-		this.GetDisplayObjects().forEach((obj) => {
-			obj.visible = this.InfluenceField.GetCell().IsVisible();
-		});
+
 		this._onCellStateChanged = this.OnCellStateChanged.bind(this);
 		this.InfluenceField.GetCell().CellStateChanged.On(this._onCellStateChanged);
+		this._animator = new BouncingScaleAnimator(this);
 	}
 
 	protected OnCellStateChanged(obj: any, cellState: CellState): void {
@@ -48,15 +47,22 @@ export class BasicInfluenceField extends Item {
 	}
 
 	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
+		if (!this._animator.IsDone) {
+			this._animator.Update(viewX, viewY);
+			if (this._animator.IsDone) {
+				this.ChangeReferential(viewX, viewY);
+			}
+		} else {
+			super.Update(viewX, viewY);
+		}
 
 		this.SetBothProperty(
-			this.InfluenceField.Hq.GetSkin().GetEnergy(),
+			Archive.bonus.factory.middle,
 			(s) => (s.rotation += 0.01 * this.InfluenceField.GetPower())
 		);
 
-		this.SetProperty(this.InfluenceField.Hq.GetSkin().GetBaseEnergy(), (s) => {
-			if (s.alpha < 0.4) {
+		this.SetProperty(Archive.bonus.light.blue, (s) => {
+			if (s.alpha < 0.1) {
 				this._isIncreasingOpacity = true;
 			}
 
@@ -66,5 +72,15 @@ export class BasicInfluenceField extends Item {
 
 			s.alpha += this._isIncreasingOpacity ? 0.01 : -0.01;
 		});
+	}
+
+	private ChangeReferential(viewX: number, viewY: number) {
+		this.GetSprites().forEach((sprite) => {
+			(sprite.width = this.InfluenceField.GetCell().GetBoundingBox().Width),
+				(sprite.height = this.InfluenceField.GetCell().GetBoundingBox().Height);
+			sprite.anchor.set(0.5);
+		});
+		this.IsCentralRef = true;
+		super.Update(viewX, viewY);
 	}
 }

@@ -25,9 +25,8 @@ export class HqRender {
 			Archive.team.red.truck,
 			Archive.team.red.hq,
 			Archive.building.hq.red.field,
-			Archive.team.red.baseEnergy,
-			Archive.team.red.energy,
-			Archive.building.hq.red.area
+			Archive.team.red.area,
+			Archive.bonus.light.blue
 		),
 		new ItemSkin(
 			Archive.team.blue.tank,
@@ -35,9 +34,8 @@ export class HqRender {
 			Archive.team.blue.truck,
 			Archive.team.blue.hq,
 			Archive.building.hq.blue.field,
-			Archive.team.blue.baseEnergy,
-			Archive.team.blue.energy,
-			Archive.building.hq.blue.area
+			Archive.team.blue.area,
+			Archive.bonus.light.blue
 		),
 		new ItemSkin(
 			Archive.team.purple.tank,
@@ -45,9 +43,8 @@ export class HqRender {
 			Archive.team.purple.truck,
 			Archive.team.purple.hq,
 			Archive.building.hq.purple.field,
-			Archive.team.purple.baseEnergy,
-			Archive.team.purple.energy,
-			Archive.building.hq.purple.area
+			Archive.team.purple.area,
+			Archive.bonus.light.blue
 		),
 		new ItemSkin(
 			Archive.team.yellow.tank,
@@ -55,9 +52,8 @@ export class HqRender {
 			Archive.team.yellow.truck,
 			Archive.team.yellow.hq,
 			Archive.building.hq.yellow.field,
-			Archive.team.yellow.baseEnergy,
-			Archive.team.yellow.energy,
-			Archive.building.hq.yellow.area
+			Archive.team.yellow.area,
+			Archive.bonus.light.blue
 		)
 	];
 

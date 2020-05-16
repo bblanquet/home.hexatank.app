@@ -84,6 +84,10 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 			obj.x = ref.X + GameHelper.ViewContext.GetX();
 			obj.y = ref.Y + GameHelper.ViewContext.GetY();
 		});
+		this.GetSprites().forEach((sprite) => {
+			sprite.width = this.GetBoundingBox().Width;
+			sprite.height = this.GetBoundingBox().Height;
+		});
 		GameHelper.Render.Add(this);
 	}
 
@@ -99,7 +103,7 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 		});
 	}
 
-	protected GetRef(): Point {
+	public GetRef(): Point {
 		if (this.IsCentralRef) {
 			return this.GetBoundingBox().GetCentralPoint();
 		}

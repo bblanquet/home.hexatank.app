@@ -111,8 +111,20 @@ export const Archive = {
 		}
 	},
 	bonus: {
+		light: {
+			blue: './tank/blue/light.svg',
+			red: './tank/red/light.svg'
+		},
+		factory: {
+			top: './floor/factoryTop.svg',
+			middle: './floor/factoryMiddle.svg',
+			bottom: './floor/factoryBottom.svg'
+		},
+		coverBottom: './floor/coverBottom.svg',
+		coverTop: './floor/coverTop.svg',
 		strength: './floor/strength.svg',
 		speed: './floor/speed.svg',
+		shield: './floor/shield.svg',
 		health: './floor/health.svg',
 		poison: './floor/poisonCell.svg',
 		slow: './floor/slowCell.svg',
@@ -177,7 +189,7 @@ export const Archive = {
 			truck: './truck/truck.svg',
 			hq: './building/redHqBottom.svg',
 			energy: './building/redEnergyCell.svg',
-			baseEnergy: './building/redBaseEnergyCell.svg'
+			area: './building/redBaseEnergyCell.svg'
 		},
 		blue: {
 			tank: './tank/blue/body.svg',
@@ -185,7 +197,7 @@ export const Archive = {
 			truck: './truck/blueTruck.svg',
 			hq: './building/blueHqBottom.svg',
 			energy: './building/blueEnergyCell.svg',
-			baseEnergy: './building/blueBaseEnergyCell.svg'
+			area: './building/blueBaseEnergyCell.svg'
 		},
 		yellow: {
 			tank: './tank/yellow/body.svg',
@@ -193,7 +205,7 @@ export const Archive = {
 			truck: './truck/yellowTruck.svg',
 			hq: './building/yellowHqBottom.svg',
 			energy: './building/yellowEnergyCell.svg',
-			baseEnergy: './building/yellowBaseEnergyCell.svg'
+			area: './building/yellowBaseEnergyCell.svg'
 		},
 		purple: {
 			tank: './tank/purple/body.svg',
@@ -201,7 +213,7 @@ export const Archive = {
 			truck: './truck/purpleTruck.svg',
 			hq: './building/purpleHqBottom.svg',
 			energy: './building/purpleEnergyCell.svg',
-			baseEnergy: './building/purpleBaseEnergyCell.svg'
+			area: './building/purpleBaseEnergyCell.svg'
 		}
 	},
 	wheel: './tank/wheel.svg',

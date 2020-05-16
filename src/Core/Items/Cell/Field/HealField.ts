@@ -1,3 +1,5 @@
+import { BouncingScaleAnimator } from './../../Animator/BouncingScaleAnimator';
+import { IAnimator } from './../../Animator/IAnimator';
 import { Cell } from '../Cell';
 import { Field } from './Field';
 import { CellState } from '../CellState';
@@ -8,16 +10,23 @@ import { Vehicle } from '../../Unit/Vehicle';
 import { GameSettings } from '../../../Framework/GameSettings';
 
 export class HealField extends Field {
+	private _isIncreasingOpacity: boolean = false;
+	private _animator: IAnimator;
+
 	constructor(cell: Cell) {
 		super(cell);
 		this.GetCell().SetField(this);
 		this.Z = 1;
-
+		this.GenerateSprite(Archive.bonus.coverBottom);
 		this.GenerateSprite(Archive.bonus.health);
+		this.GenerateSprite(Archive.bonus.light.blue);
+		this.GenerateSprite(Archive.bonus.coverTop);
+
 		this.InitPosition(cell.GetBoundingBox());
 		this.GetDisplayObjects().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});
+		this._animator = new BouncingScaleAnimator(this);
 	}
 
 	protected OnCellStateChanged(cellState: CellState): void {
@@ -38,6 +47,26 @@ export class HealField extends Field {
 		vehicule.TranslationSpeed = GameSettings.TranslationSpeed;
 		vehicule.RotationSpeed = GameSettings.RotationSpeed;
 		vehicule.Attack = GameSettings.Attack;
+	}
+
+	public Update(viewX: number, viewY: number): void {
+		if (!this._animator.IsDone) {
+			this._animator.Update(viewX, viewY);
+		} else {
+			super.Update(viewX, viewY);
+		}
+
+		this.SetProperty(Archive.bonus.light.blue, (s) => {
+			if (s.alpha < 0.1) {
+				this._isIncreasingOpacity = true;
+			}
+
+			if (1 <= s.alpha) {
+				this._isIncreasingOpacity = false;
+			}
+
+			s.alpha += this._isIncreasingOpacity ? 0.01 : -0.01;
+		});
 	}
 
 	IsDesctrutible(): boolean {

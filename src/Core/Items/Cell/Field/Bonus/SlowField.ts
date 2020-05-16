@@ -1,14 +1,14 @@
-import { Cell } from '../Cell';
-import { Field } from './Field';
-import { CellState } from '../CellState';
-import { Archive } from '../../../Framework/ResourceArchiver';
-import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
-import { InteractionContext } from '../../../Interaction/InteractionContext';
-import { Vehicle } from '../../Unit/Vehicle';
-import { GameSettings } from '../../../Framework/GameSettings';
+import { Cell } from '../../Cell';
+import { Field } from '../Field';
+import { CellState } from '../../CellState';
+import { Archive } from '../../../../Framework/ResourceArchiver';
+import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
+import { InteractionContext } from '../../../../Interaction/InteractionContext';
+import { Vehicle } from '../../../Unit/Vehicle';
+import { GameSettings } from '../../../../Framework/GameSettings';
 
 export class SlowField extends Field {
-	constructor(ceil: Cell) {
+	constructor(ceil: Cell, private _light: string) {
 		super(ceil);
 		this.GetCell().SetField(this);
 		this.Z = 1;

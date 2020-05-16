@@ -2,7 +2,7 @@ import { SmartPreciseOrder } from './SmartPreciseOrder';
 import { Order } from './Order';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Cell } from '../../Items/Cell/Cell';
-import { MoneyField } from '../../Items/Cell/Field/MoneyField';
+import { MoneyField } from '../../Items/Cell/Field/Bonus/MoneyField';
 
 export class MoneyOrder extends Order {
 	private _currentOrder: SmartPreciseOrder;

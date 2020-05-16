@@ -1,7 +1,7 @@
 import { BigMenuItem } from './../../Menu/Buttons/BigMenuItem';
 import { CombinationContext } from './CombinationContext';
 import { GameHelper } from '../../Framework/GameHelper';
-import { InfluenceField } from '../../Items/Cell/Field/InfluenceField';
+import { InfluenceField } from '../../Items/Cell/Field/Bonus/InfluenceField';
 import { GameSettings } from '../../Framework/GameSettings';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { GameContext } from '../../Framework/GameContext';

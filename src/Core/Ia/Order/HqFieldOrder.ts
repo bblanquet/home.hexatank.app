@@ -1,4 +1,4 @@
-import { Headquarter } from '../../Items/Cell/Field/Headquarter';
+import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { SmartSimpleOrder } from './SmartSimpleOrder';
 import { Cell } from '../../Items/Cell/Cell';
 import { Vehicle } from '../../Items/Unit/Vehicle';

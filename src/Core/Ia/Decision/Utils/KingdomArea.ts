@@ -1,17 +1,17 @@
 import { TroopDecisionMaker } from './../Troop/TroopDecisionMaker';
-import { HealField } from './../../../Items/Cell/Field/HealField';
+import { HealField } from '../../../Items/Cell/Field/Bonus/HealField';
 import { BasicField } from './../../../Items/Cell/Field/BasicField';
-import { MoneyField } from './../../../Items/Cell/Field/MoneyField';
+import { MoneyField } from '../../../Items/Cell/Field/Bonus/MoneyField';
 import { Diamond } from './../../../Items/Cell/Field/Diamond';
 import { DistanceHelper } from './../../../Items/Unit/MotionHelpers/DistanceHelper';
-import { HeadQuarterField } from './../../../Items/Cell/Field/HeadquarterField';
-import { FastField } from './../../../Items/Cell/Field/FastField';
+import { HeadQuarterField } from '../../../Items/Cell/Field/Hq/HeadquarterField';
+import { FastField } from '../../../Items/Cell/Field/Bonus/FastField';
 import { ICell } from './../../../Items/Cell/ICell';
 import { AStarEngine } from './../../AStarEngine';
 import { IKingdomDecisionMaker } from '../IKingdomDecisionMaker';
 import { Area } from './Area';
 import { Cell } from '../../../Items/Cell/Cell';
-import { Headquarter } from '../../../Items/Cell/Field/Headquarter';
+import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 import { Tank } from '../../../Items/Unit/Tank';
 import { Truck } from '../../../Items/Unit/Truck';
 

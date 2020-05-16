@@ -1,4 +1,4 @@
-import { FastField } from './Field/FastField';
+import { FastField } from './Field/Bonus/FastField';
 import { GameContext } from './../../Framework/GameContext';
 import { CellContext } from './CellContext';
 import { Item } from '../Item';
@@ -11,7 +11,7 @@ import { CellState } from './CellState';
 import { isNullOrUndefined } from 'util';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { ISelectable } from '../../ISelectable';
-import { Headquarter } from './Field/Headquarter';
+import { Headquarter } from './Field/Hq/Headquarter';
 import { ICell } from './ICell';
 import { IMovable } from '../IMovable';
 import { GameHelper } from '../../Framework/GameHelper';

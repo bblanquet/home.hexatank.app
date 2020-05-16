@@ -1,34 +1,34 @@
-import { GameSettings } from './../../../Framework/GameSettings';
-import { Cell } from '../Cell';
-import { Field } from './Field';
-import { CellState } from '../CellState';
-import { TickTimer } from '../../../Utils/Timer/TickTimer';
-import { Light } from '../../Environment/Light';
-import { Archive } from '../../../Framework/ResourceArchiver';
-import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
-import { InteractionContext } from '../../../Interaction/InteractionContext';
-import { Vehicle } from '../../Unit/Vehicle';
-import { Truck } from '../../Unit/Truck';
-import { IAnimator } from '../../Animator/IAnimator';
-import { BouncingScaleAnimator } from '../../Animator/BouncingScaleAnimator';
+import { GameSettings } from '../../../../Framework/GameSettings';
+import { Cell } from '../../Cell';
+import { Field } from '../Field';
+import { CellState } from '../../CellState';
+import { TickTimer } from '../../../../Utils/Timer/TickTimer';
+import { Light } from '../../../Environment/Light';
+import { Archive } from '../../../../Framework/ResourceArchiver';
+import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
+import { InteractionContext } from '../../../../Interaction/InteractionContext';
+import { Vehicle } from '../../../Unit/Vehicle';
+import { Truck } from '../../../Unit/Truck';
+import { IAnimator } from '../../../Animator/IAnimator';
+import { BouncingScaleAnimator } from '../../../Animator/BouncingScaleAnimator';
 
 export class MoneyField extends Field {
 	private _timer: TickTimer;
-	private _light: Light;
+	private _lightItem: Light;
 	private _animator: IAnimator;
 	private _isIncreasingOpacity: boolean = false;
 
-	constructor(cell: Cell) {
+	constructor(cell: Cell, private _light: string) {
 		super(cell);
 		this.GetCell().SetField(this);
 		this.Z = 1;
 		this._timer = new TickTimer(GameSettings.MoneyLoadingSpeed);
-		this._light = new Light(cell.GetBoundingBox());
-		this._light.Hide();
+		this._lightItem = new Light(cell.GetBoundingBox());
+		this._lightItem.Hide();
 		this.GenerateSprite(Archive.bonus.coverBottom);
 		this.GenerateSprite(Archive.bonus.emptyMoney);
 		this.GenerateSprite(Archive.bonus.fullMoney, (s) => (s.alpha = 0));
-		this.GenerateSprite(Archive.bonus.light.blue);
+		this.GenerateSprite(this._light);
 		this.GenerateSprite(Archive.bonus.coverTop);
 
 		this.InitPosition(cell.GetBoundingBox());
@@ -65,7 +65,7 @@ export class MoneyField extends Field {
 				const sum = this.GetInfluenceSum(vehicule);
 				truck.Hq.Earn(1 + sum);
 				this.SetEmpty();
-				this._light.Hide();
+				this._lightItem.Hide();
 			}
 		}
 
@@ -90,19 +90,19 @@ export class MoneyField extends Field {
 		}
 
 		if (this.IsFull()) {
-			this._light.Update(viewX, viewY);
+			this._lightItem.Update(viewX, viewY);
 		}
 
 		if (!this.IsFull()) {
 			if (this._timer.IsElapsed()) {
 				this.SetProperty(Archive.bonus.fullMoney, (s) => (s.alpha += 0.02));
 				if (this.GetCurrentSprites()[Archive.bonus.fullMoney].alpha >= 1) {
-					this._light.Display();
+					this._lightItem.Display();
 				}
 			}
 		}
 
-		this.SetProperty(Archive.bonus.light.blue, (s) => {
+		this.SetProperty(this._light, (s) => {
 			if (s.alpha < 0.1) {
 				this._isIncreasingOpacity = true;
 			}

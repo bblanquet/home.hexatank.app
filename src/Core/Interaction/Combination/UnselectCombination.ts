@@ -6,7 +6,7 @@ import { Vehicle } from '../../Items/Unit/Vehicle';
 import { BasicField } from '../../Items/Cell/Field/BasicField';
 import { CellState } from '../../Items/Cell/CellState';
 import { CombinationContext } from './CombinationContext';
-import { InfluenceField } from '../../Items/Cell/Field/InfluenceField';
+import { InfluenceField } from '../../Items/Cell/Field/Bonus/InfluenceField';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { ISelectableChecker } from '../ISelectableChecker';
 import { GameContext } from '../../Framework/GameContext';

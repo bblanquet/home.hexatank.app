@@ -6,7 +6,7 @@ import { SmallMenuItem } from '../../../Core/Menu/Buttons/SmallMenuItem';
 import { GameHelper } from '../../../Core/Framework/GameHelper';
 import { GameSettings } from '../../../Core/Framework/GameSettings';
 import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
-import { InfluenceField } from '../../../Core/Items/Cell/Field/InfluenceField';
+import { InfluenceField } from '../../../Core/Items/Cell/Field/Bonus/InfluenceField';
 import { Item } from '../../../Core/Items/Item';
 import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
 import { AppHandler } from '../AppHandler';

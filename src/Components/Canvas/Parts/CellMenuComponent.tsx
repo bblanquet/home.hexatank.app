@@ -13,6 +13,8 @@ import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
 import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
 import { AppHandler } from '../AppHandler';
 import { GameContext } from '../../../Core/Framework/GameContext';
+import { NetworkMenuItem } from '../../../Core/Menu/Buttons/NetworkMenuItem';
+import { ThunderMenuItem } from '../../../Core/Menu/Buttons/ThunderMenuItem';
 
 export default class CellMenuComponent extends Component<
 	{ Item: Item; AppHandler: AppHandler; GameContext: GameContext },
@@ -81,7 +83,7 @@ export default class CellMenuComponent extends Component<
 						<button
 							type="button"
 							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new MoneyMenuItem())}
+							onClick={(e: any) => this.SendContext(new ThunderMenuItem())}
 						>
 							<div class="fill-thunder max-width standard-space" />
 							<div class="max-width align-text-center darker">
@@ -92,7 +94,7 @@ export default class CellMenuComponent extends Component<
 						<button
 							type="button"
 							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new MoneyMenuItem())}
+							onClick={(e: any) => this.SendContext(new NetworkMenuItem())}
 						>
 							<div class="fill-network max-width standard-space" />
 							<div class="max-width align-text-center darker">
@@ -117,17 +119,6 @@ export default class CellMenuComponent extends Component<
 							onClick={(e: any) => this.SendContext(new PoisonMenuItem())}
 						>
 							<div class="fill-poison max-width standard-space" />
-							<div class="max-width align-text-center darker">
-								{GameSettings.FieldPrice}{' '}
-								<span class="fill-diamond badge very-small-space middle"> </span>
-							</div>
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new SlowMenuItem())}
-						>
-							<div class="fill-slow max-width standard-space" />
 							<div class="max-width align-text-center darker">
 								{GameSettings.FieldPrice}{' '}
 								<span class="fill-diamond badge very-small-space middle"> </span>

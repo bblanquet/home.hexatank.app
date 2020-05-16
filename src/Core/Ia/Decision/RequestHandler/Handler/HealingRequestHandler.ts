@@ -1,6 +1,6 @@
-import { HealField } from './../../../../Items/Cell/Field/HealField';
+import { HealField } from '../../../../Items/Cell/Field/Bonus/HealField';
 import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
-import { Headquarter } from '../../../../Items/Cell/Field/Headquarter';
+import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { BasicField } from '../../../../Items/Cell/Field/BasicField';
 import { GameSettings } from '../../../../Framework/GameSettings';
@@ -17,7 +17,7 @@ export class HealingRequestHandler implements ISimpleRequestHandler {
 			console.log(`%c [HEALING] `, 'font-weight:bold;color:blue;');
 			cells.forEach((c) => {
 				if (c.GetField() instanceof BasicField) {
-					new HealField(c);
+					new HealField(c, this._hq.GetSkin().GetLight());
 					this._hq.Buy(GameSettings.FieldPrice);
 				}
 			});

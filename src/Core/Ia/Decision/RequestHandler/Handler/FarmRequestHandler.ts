@@ -1,11 +1,10 @@
-import { MoneyField } from './../../../../Items/Cell/Field/MoneyField';
+import { MoneyField } from '../../../../Items/Cell/Field/Bonus/MoneyField';
 import { BasicField } from './../../../../Items/Cell/Field/BasicField';
 import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { RequestType } from '../../Utils/RequestType';
-import { RequestPriority } from '../../Utils/RequestPriority';
 import { GameSettings } from '../../../../Framework/GameSettings';
-import { Headquarter } from '../../../../Items/Cell/Field/Headquarter';
+import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 
 export class FarmRequestHandler implements ISimpleRequestHandler {
 	constructor(private _hq: Headquarter) {}
@@ -18,7 +17,7 @@ export class FarmRequestHandler implements ISimpleRequestHandler {
 			console.log(`%c [FARM] `, 'font-weight:bold;color:blue;');
 			cells.forEach((c) => {
 				if (c.GetField() instanceof BasicField) {
-					new MoneyField(c);
+					new MoneyField(c, this._hq.GetSkin().GetLight());
 					this._hq.Buy(GameSettings.FieldPrice);
 				}
 			});

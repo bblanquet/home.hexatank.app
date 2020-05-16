@@ -1,4 +1,8 @@
-import { AttackField } from './../Items/Cell/Field/AttackField';
+import { ThunderField } from '../Items/Cell/Field/Bonus/ThunderField';
+import { NetworkField } from '../Items/Cell/Field/Bonus/NetworkField';
+import { NetworkMenuItem } from './../Menu/Buttons/NetworkMenuItem';
+import { ThunderMenuItem } from './../Menu/Buttons/ThunderMenuItem';
+import { AttackField } from '../Items/Cell/Field/Bonus/AttackField';
 import { GenericCellCombination } from './Combination/GenericCellCombination';
 import { GameContext } from './../Framework/GameContext';
 import { ISelectableChecker } from './ISelectableChecker';
@@ -9,12 +13,8 @@ import { ClearTrashCombination } from './Combination/ClearTrashCombination';
 import { TruckCombination } from './Combination/TruckCombination';
 import { TankCombination } from './Combination/TankCombination';
 import { PatrolCombination } from './Combination/PatrolCombination';
-import { FastCellCombination } from './Combination/FastcellCombination';
-import { AttackCellCombination } from './Combination/AttackcellCombination';
-import { HealCellCombination } from './Combination/HealcellCombination';
 import { SelectionCombination } from './Combination/SelectionCombination';
 import { CancelCombination } from './Combination/CancelCombination';
-import { MoneyCellCombination } from './Combination/MoneycellCombination';
 import { TargetCombination } from './Combination/TargetCombination';
 import { SwitchToVehicleCombination } from './Combination/SwitchToVehicleCombination';
 import { AddTruckCombination } from './Combination/AddTruckCombination';
@@ -39,13 +39,20 @@ import { RangeDownCombination } from './Combination/RangeDownCombination';
 import { RangeUpCombination } from './Combination/RangeUpCombination';
 import { InfluenceCombination } from './Combination/InfluenceCombination';
 import { CamouflageCombination } from './Combination/CamouflageCombination';
-import { PoisonCellCombination } from './Combination/PoisonCellCombination';
-import { SlowCellCombination } from './Combination/SlowCellCombination';
-import { ShieldCellCombination } from './Combination/ShieldCellCombination';
 import { MovingInteractionContext } from '../Menu/Smart/MovingInteractionContext';
 import { AttackMenuItem } from '../Menu/Buttons/AttackMenuItem';
 import { SlowMenuItem } from '../Menu/Buttons/SlowMenuItem';
-import { SlowField } from '../Items/Cell/Field/SlowField';
+import { SlowField } from '../Items/Cell/Field/Bonus/SlowField';
+import { ShieldMenuItem } from '../Menu/Buttons/ShieldMenuItem';
+import { ShieldField } from '../Items/Cell/Field/Bonus/ShieldField';
+import { PoisonMenuItem } from '../Menu/Buttons/PoisonMenuItem';
+import { PoisonField } from '../Items/Cell/Field/Bonus/PoisonField';
+import { MoneyMenuItem } from '../Menu/Buttons/MoneyMenuItem';
+import { MoneyField } from '../Items/Cell/Field/Bonus/MoneyField';
+import { HealMenuItem } from '../Menu/Buttons/HealMenuItem';
+import { HealField } from '../Items/Cell/Field/Bonus/HealField';
+import { SpeedFieldMenuItem } from '../Menu/Buttons/SpeedFieldMenuItem';
+import { FastField } from '../Items/Cell/Field/Bonus/FastField';
 
 export class CombinationProvider {
 	GetCombination(appHandler: AppHandler, checker: ISelectableChecker, gameContext: GameContext): ICombination[] {
@@ -61,7 +68,6 @@ export class CombinationProvider {
 			new FlagCellCombination(gameContext),
 			new AbortCombination(),
 			new SearchMoneyCombination(),
-			new InfluenceCombination(gameContext),
 			new AddTankCombination(gameContext),
 			new AddTruckCombination(gameContext),
 			new SwitchToCellCombination(),
@@ -76,21 +82,63 @@ export class CombinationProvider {
 			new ClearTrashCombination(checker),
 			new UnselectCombination(checker, gameContext),
 			new SelectionCombination(checker, gameContext),
-			new FastCellCombination(gameContext),
 			new CamouflageCombination(),
 			new TargetCombination(),
+			new InfluenceCombination(gameContext),
+			new GenericCellCombination(
+				gameContext,
+				(e) => e instanceof SpeedFieldMenuItem,
+				(e) => new FastField(e, gameContext.MainHq.GetSkin().GetLight()),
+				'Fast'
+			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof AttackMenuItem,
-				(e) => new AttackField(e),
+				(e) => new AttackField(e, gameContext.MainHq.GetSkin().GetLight()),
 				'Attack'
 			),
-			new GenericCellCombination(gameContext, (e) => e instanceof SlowMenuItem, (e) => new SlowField(e), 'Slow'),
-			new SlowCellCombination(gameContext),
-			new ShieldCellCombination(gameContext),
-			new PoisonCellCombination(gameContext),
-			new MoneyCellCombination(gameContext),
-			new HealCellCombination(gameContext),
+			new GenericCellCombination(
+				gameContext,
+				(e) => e instanceof SlowMenuItem,
+				(e) => new SlowField(e, gameContext.MainHq.GetSkin().GetLight()),
+				'Slow'
+			),
+			new GenericCellCombination(
+				gameContext,
+				(e) => e instanceof ShieldMenuItem,
+				(e) => new ShieldField(e, gameContext.MainHq.GetSkin().GetLight()),
+				'Shield'
+			),
+			new GenericCellCombination(
+				gameContext,
+				(e) => e instanceof PoisonMenuItem,
+				(e) => new PoisonField(e, gameContext.MainHq.GetSkin().GetLight()),
+				'Poison'
+			),
+			new GenericCellCombination(
+				gameContext,
+				(e) => e instanceof MoneyMenuItem,
+				(e) => new MoneyField(e, gameContext.MainHq.GetSkin().GetLight()),
+				'Money'
+			),
+			new GenericCellCombination(
+				gameContext,
+				(e) => e instanceof ThunderMenuItem,
+				(e) => new ThunderField(e, gameContext.MainHq.GetSkin().GetLight()),
+				'Thunder'
+			),
+			new GenericCellCombination(
+				gameContext,
+				(e) => e instanceof NetworkMenuItem,
+				(e) => new NetworkField(e, gameContext.MainHq.GetSkin().GetLight()),
+				'Network'
+			),
+			new GenericCellCombination(
+				gameContext,
+				(e) => e instanceof HealMenuItem,
+				(e) => new HealField(e, gameContext.MainHq.GetSkin().GetLight()),
+				'Heal'
+			),
 			new RangeUpCombination(gameContext),
 			new RangeDownCombination(),
 			new PowerDownCombination(),

@@ -1,4 +1,4 @@
-import { Headquarter } from '../../../Items/Cell/Field/Headquarter';
+import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 import { Diamond } from '../../../Items/Cell/Field/Diamond';
 import { Cell } from '../../../Items/Cell/Cell';
 import { isNullOrUndefined } from 'util';

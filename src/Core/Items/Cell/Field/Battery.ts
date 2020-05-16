@@ -1,109 +1,108 @@
-import { Headquarter } from "./Headquarter";
-import { InfluenceField } from "./InfluenceField";
+import { Headquarter } from './Hq/Headquarter';
+import { InfluenceField } from './Bonus/InfluenceField';
 
-export class Battery{
-    private _usedEnergy:number=1;
-    private _internalEnergy:number=1;
+export class Battery {
+	private _usedEnergy: number = 1;
+	private _internalEnergy: number = 1;
 
-    constructor(private _hq:Headquarter, private _field:InfluenceField){
-        
-    }
+	constructor(private _hq: Headquarter, private _field: InfluenceField) {}
 
-    GetUsedPower() {
-        return this._usedEnergy;
-      }
+	GetUsedPower() {
+		return this._usedEnergy;
+	}
 
-    public GetTotalPower():number{
-        const externalFields =  this._hq.GetInfluence()
-        .filter(f=>f !== this._field)
-        .filter(f=>f.GetArea().Exist(this._field.GetCell().GetCoordinate()));
+	public GetTotalPower(): number {
+		const externalFields = this._hq
+			.GetInfluence()
+			.filter((f) => f !== this._field)
+			.filter((f) => f.GetArea().Exist(this._field.GetCell().GetCoordinate()));
 
-        const externalStockfields =  externalFields
-        .filter(f=>f.Battery.HasInternalStock());
+		const externalStockfields = externalFields.filter((f) => f.Battery.HasInternalStock());
 
-        const extenalEnergy = externalStockfields
-        .map(f=>f.Battery.GetInternalStock())
-        .reduce((accumulator, currentValue) => accumulator + currentValue,0);
-        
-        return extenalEnergy+ this._internalEnergy;
-    }
+		const extenalEnergy = externalStockfields
+			.map((f) => f.Battery.GetInternalStock())
+			.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
-    public High():void{
-        if(this.HasInternalStock()){
-            this._usedEnergy +=1;
-        }else if(this.TryToGetExternalEnergy()){
-            this.AddPower();
-            this._usedEnergy +=1;
-        }else{
-            if(this._hq.Buy(1)){
-                this.AddPower();
-                this._usedEnergy +=1;
-            }
-        }
-    }
+		return extenalEnergy + this._internalEnergy;
+	}
 
-    private TryToGetExternalEnergy():boolean{
-        const field = this._hq.GetInfluence()
-        .filter(f=>f !== this._field)
-        .filter(f=>f.Battery.HasInternalStock())
-        .filter(f=>f.GetArea().Exist(this._field.GetCell().GetCoordinate()))
-        .sort((one, two) => (one.Battery.GetInternalStock() > two.Battery.GetInternalStock() ? -1 : 1));
+	public High(): void {
+		if (this.HasInternalStock()) {
+			this._usedEnergy += 1;
+		} else if (this.TryToGetExternalEnergy()) {
+			this.AddPower();
+			this._usedEnergy += 1;
+		} else {
+			if (this._hq.Buy(1)) {
+				this.AddPower();
+				this._usedEnergy += 1;
+			}
+		}
+	}
 
-        if(field.length > 0){
-            field[0].Battery.ReducePower();
-            return true;
-        }else{
-            return false;
-        }
-    }
+	private TryToGetExternalEnergy(): boolean {
+		const field = this._hq
+			.GetInfluence()
+			.filter((f) => f !== this._field)
+			.filter((f) => f.Battery.HasInternalStock())
+			.filter((f) => f.GetArea().Exist(this._field.GetCell().GetCoordinate()))
+			.sort((one, two) => (one.Battery.GetInternalStock() > two.Battery.GetInternalStock() ? -1 : 1));
 
-    public Low():void{
-        if(this._usedEnergy>1){
-            this._usedEnergy -=1;
-        }
-    }
+		if (field.length > 0) {
+			field[0].Battery.ReducePower();
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-    public GetCurrentPower():number{
-        return this._usedEnergy;
-    }
+	public Low(): void {
+		if (this._usedEnergy > 1) {
+			this._usedEnergy -= 1;
+		}
+	}
 
-    public AddPower():void{
-        this._internalEnergy += 1;
-    }
+	public GetCurrentPower(): number {
+		return this._usedEnergy;
+	}
 
-    public ReducePower():void{
-        if(this._internalEnergy < 1){
-            throw "should not happen";
-        }
-        this._internalEnergy -= 1;
-    }
+	public AddPower(): void {
+		this._internalEnergy += 1;
+	}
 
-    public HasStock():boolean{
-        const power = this.GetTotalPower();
-        if(this._usedEnergy > power){
-            throw "should not happen";
-        }
+	public ReducePower(): void {
+		if (this._internalEnergy < 1) {
+			throw 'should not happen';
+		}
+		this._internalEnergy -= 1;
+	}
 
-        return this._usedEnergy < power;
-    }
+	public HasStock(): boolean {
+		const power = this.GetTotalPower();
+		if (this._usedEnergy > power) {
+			throw 'should not happen';
+		}
 
-    private HasInternalStock():boolean{
-        if(this._usedEnergy > this._internalEnergy){
-            throw "should not happen";
-        }
+		return this._usedEnergy < power;
+	}
 
-        return this._usedEnergy < this._internalEnergy;
-    }
+	private HasInternalStock(): boolean {
+		if (this._usedEnergy > this._internalEnergy) {
+			throw 'should not happen';
+		}
 
-    public GetInternalStock():number{
-        if(this._usedEnergy > this._internalEnergy){
-            throw "should not happen";
-        }
+		return this._usedEnergy < this._internalEnergy;
+	}
 
-        return this._internalEnergy - this._usedEnergy;
-    }
+	public GetInternalStock(): number {
+		if (this._usedEnergy > this._internalEnergy) {
+			throw 'should not happen';
+		}
 
-    public GetInternalEnergy():number{
-        return this._internalEnergy;
-    }
+		return this._internalEnergy - this._usedEnergy;
+	}
+
+	public GetInternalEnergy(): number {
+		return this._internalEnergy;
+	}
 }

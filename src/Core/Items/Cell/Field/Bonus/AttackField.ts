@@ -1,26 +1,26 @@
-import { Cell } from '../Cell';
-import { Field } from './Field';
-import { CellState } from '../CellState';
-import { Archive } from '../../../Framework/ResourceArchiver';
-import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
-import { InteractionContext } from '../../../Interaction/InteractionContext';
-import { Vehicle } from '../../Unit/Vehicle';
-import { GameSettings } from '../../../Framework/GameSettings';
-import { BouncingScaleAnimator } from '../../Animator/BouncingScaleAnimator';
-import { IAnimator } from '../../Animator/IAnimator';
+import { Cell } from '../../Cell';
+import { Field } from '../Field';
+import { CellState } from '../../CellState';
+import { Archive } from '../../../../Framework/ResourceArchiver';
+import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
+import { InteractionContext } from '../../../../Interaction/InteractionContext';
+import { Vehicle } from '../../../Unit/Vehicle';
+import { GameSettings } from '../../../../Framework/GameSettings';
+import { BouncingScaleAnimator } from '../../../Animator/BouncingScaleAnimator';
+import { IAnimator } from '../../../Animator/IAnimator';
 
 export class AttackField extends Field {
 	private _animator: IAnimator;
 	private _isIncreasingOpacity: boolean = false;
 
-	constructor(cell: Cell) {
+	constructor(cell: Cell, private _light: string) {
 		super(cell);
 		this.GetCell().SetField(this);
 		this.Z = 1;
 
 		this.GenerateSprite(Archive.bonus.coverBottom);
 		this.GenerateSprite(Archive.bonus.strength);
-		this.GenerateSprite(Archive.bonus.light.blue);
+		this.GenerateSprite(this._light);
 		this.GenerateSprite(Archive.bonus.coverTop);
 		this.InitPosition(cell.GetBoundingBox());
 		this.GetDisplayObjects().forEach((obj) => {
@@ -54,7 +54,7 @@ export class AttackField extends Field {
 		} else {
 			super.Update(viewX, viewY);
 		}
-		this.SetProperty(Archive.bonus.light.blue, (s) => {
+		this.SetProperty(this._light, (s) => {
 			if (s.alpha < 0.1) {
 				this._isIncreasingOpacity = true;
 			}

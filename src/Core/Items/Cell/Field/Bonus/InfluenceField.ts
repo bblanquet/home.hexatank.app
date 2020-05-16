@@ -1,20 +1,20 @@
-import { GameContext } from './../../../Framework/GameContext';
-import { BasicInfluenceField } from './BasicInfluenceField';
-import { Archive } from '../../../Framework/ResourceArchiver';
-import { CellStateSetter } from '../CellStateSetter';
-import { Battery } from './Battery';
-import { BasicItem } from '../../BasicItem';
-import { ISelectable } from '../../../ISelectable';
-import { Headquarter } from './Headquarter';
-import { Field } from './Field';
-import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
-import { Vehicle } from '../../Unit/Vehicle';
-import { IInteractionContext } from '../../../Interaction/IInteractionContext';
-import { Cell } from '../Cell';
-import { LiteEvent } from '../../../Utils/Events/LiteEvent';
-import { CellContext } from '../CellContext';
-import { PeerHandler } from '../../../../Components/Network/Host/On/PeerHandler';
-import { PacketKind } from '../../../../Components/Network/PacketKind';
+import { GameContext } from '../../../../Framework/GameContext';
+import { BasicInfluenceField } from '../BasicInfluenceField';
+import { Archive } from '../../../../Framework/ResourceArchiver';
+import { CellStateSetter } from '../../CellStateSetter';
+import { Battery } from '../Battery';
+import { BasicItem } from '../../../BasicItem';
+import { ISelectable } from '../../../../ISelectable';
+import { Headquarter } from '../Hq/Headquarter';
+import { Field } from '../Field';
+import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
+import { Vehicle } from '../../../Unit/Vehicle';
+import { IInteractionContext } from '../../../../Interaction/IInteractionContext';
+import { Cell } from '../../Cell';
+import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
+import { CellContext } from '../../CellContext';
+import { PeerHandler } from '../../../../../Components/Network/Host/On/PeerHandler';
+import { PacketKind } from '../../../../../Components/Network/PacketKind';
 
 export class InfluenceField extends Field implements ISelectable {
 	private _area: Array<BasicItem> = new Array<BasicItem>();
@@ -26,7 +26,7 @@ export class InfluenceField extends Field implements ISelectable {
 
 	public basicField: BasicInfluenceField;
 
-	constructor(cell: Cell, public Hq: Headquarter, private _context: GameContext) {
+	constructor(cell: Cell, public Hq: Headquarter, private _context: GameContext, private _light: string) {
 		super(cell);
 		this.Z = 1;
 		this.Hq.AddInfluence(this);
@@ -45,7 +45,7 @@ export class InfluenceField extends Field implements ISelectable {
 			obj.visible = this.GetCell().IsVisible();
 		});
 		this.UpdateCellStates(this._range);
-		this.basicField = new BasicInfluenceField(this);
+		this.basicField = new BasicInfluenceField(this, this._light);
 	}
 
 	Support(vehicule: Vehicle): void {
@@ -59,7 +59,7 @@ export class InfluenceField extends Field implements ISelectable {
 			this.Hq.AddInfluence(this);
 
 			this.basicField.Destroy();
-			this.basicField = new BasicInfluenceField(this);
+			this.basicField = new BasicInfluenceField(this, this._light);
 		}
 	}
 

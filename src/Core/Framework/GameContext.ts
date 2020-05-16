@@ -1,4 +1,4 @@
-import { Headquarter } from './../Items/Cell/Field/Headquarter';
+import { Headquarter } from '../Items/Cell/Field/Hq/Headquarter';
 import { Dictionnary } from './../Utils/Collections/Dictionnary';
 import { Vehicle } from './../Items/Unit/Vehicle';
 import { Tank } from '../Items/Unit/Tank';

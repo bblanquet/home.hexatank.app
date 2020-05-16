@@ -124,6 +124,8 @@ export const Archive = {
 		coverTop: './floor/coverTop.svg',
 		strength: './floor/strength.svg',
 		speed: './floor/speed.svg',
+		network: './floor/network.svg',
+		thunder: './floor/thunder.svg',
 		shield: './floor/shield.svg',
 		health: './floor/health.svg',
 		poison: './floor/poisonCell.svg',
@@ -188,32 +190,28 @@ export const Archive = {
 			turrel: './tank/red/head.svg',
 			truck: './truck/truck.svg',
 			hq: './building/redHqBottom.svg',
-			energy: './building/redEnergyCell.svg',
-			area: './building/redBaseEnergyCell.svg'
+			area: './building/redEnergyCell.svg'
 		},
 		blue: {
 			tank: './tank/blue/body.svg',
 			turrel: './tank/blue/head.svg',
 			truck: './truck/blueTruck.svg',
 			hq: './building/blueHqBottom.svg',
-			energy: './building/blueEnergyCell.svg',
-			area: './building/blueBaseEnergyCell.svg'
+			area: './building/blueEnergyCell.svg'
 		},
 		yellow: {
 			tank: './tank/yellow/body.svg',
 			turrel: './tank/yellow/head.svg',
 			truck: './truck/yellowTruck.svg',
 			hq: './building/yellowHqBottom.svg',
-			energy: './building/yellowEnergyCell.svg',
-			area: './building/yellowBaseEnergyCell.svg'
+			area: './building/yellowEnergyCell.svg'
 		},
 		purple: {
 			tank: './tank/purple/body.svg',
 			turrel: './tank/purple/head.svg',
 			truck: './truck/purpleTruck.svg',
 			hq: './building/purpleHqBottom.svg',
-			energy: './building/purpleEnergyCell.svg',
-			area: './building/purpleBaseEnergyCell.svg'
+			area: './building/purpleEnergyCell.svg'
 		}
 	},
 	wheel: './tank/wheel.svg',

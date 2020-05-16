@@ -1,4 +1,4 @@
-import { HealField } from './../../../Items/Cell/Field/HealField';
+import { HealField } from '../../../Items/Cell/Field/Bonus/HealField';
 import { TimeTimer } from './../../../Utils/Timer/TimeTimer';
 import { isNullOrUndefined } from 'util';
 import { ITimer } from '../../../Utils/Timer/ITimer';

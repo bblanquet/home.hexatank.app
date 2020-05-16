@@ -1,5 +1,5 @@
 import { GameHelper } from '../../Framework/GameHelper';
-import { InfluenceField } from '../../Items/Cell/Field/InfluenceField';
+import { InfluenceField } from '../../Items/Cell/Field/Bonus/InfluenceField';
 import { InfluenceMenuItem } from '../../Menu/Buttons/InfluenceMenuItem';
 import { isNullOrUndefined } from 'util';
 import { Cell } from '../../Items/Cell/Cell';
@@ -40,7 +40,12 @@ export class InfluenceCombination extends AbstractSingleCombination {
 							cell: cell.GetCoordinate(),
 							Type: 'Influence'
 						});
-						let field = new InfluenceField(cell, this._gameContext.MainHq, this._gameContext);
+						new InfluenceField(
+							cell,
+							this._gameContext.MainHq,
+							this._gameContext,
+							this._gameContext.MainHq.GetSkin().GetLight()
+						);
 					}
 				}
 			}

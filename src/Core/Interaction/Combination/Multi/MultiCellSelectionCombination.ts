@@ -1,4 +1,4 @@
-import { SlowField } from '../../../Items/Cell/Field/SlowField';
+import { SlowField } from '../../../Items/Cell/Field/Bonus/SlowField';
 import { SlowMenuItem } from '../../../Menu/Buttons/SlowMenuItem';
 import { PoisonMenuItem } from '../../../Menu/Buttons/PoisonMenuItem';
 import { Cell } from '../../../Items/Cell/Cell';
@@ -10,16 +10,16 @@ import { GameHelper } from '../../../Framework/GameHelper';
 import { HealMenuItem } from '../../../Menu/Buttons/HealMenuItem';
 import { PeerHandler } from '../../../../Components/Network/Host/On/PeerHandler';
 import { PacketKind } from '../../../../Components/Network/PacketKind';
-import { HealField } from '../../../Items/Cell/Field/HealField';
+import { HealField } from '../../../Items/Cell/Field/Bonus/HealField';
 import { AttackMenuItem } from '../../../Menu/Buttons/AttackMenuItem';
-import { AttackField } from '../../../Items/Cell/Field/AttackField';
+import { AttackField } from '../../../Items/Cell/Field/Bonus/AttackField';
 import { SpeedFieldMenuItem } from '../../../Menu/Buttons/SpeedFieldMenuItem';
-import { MoneyField } from '../../../Items/Cell/Field/MoneyField';
+import { MoneyField } from '../../../Items/Cell/Field/Bonus/MoneyField';
 import { MoneyMenuItem } from '../../../Menu/Buttons/MoneyMenuItem';
-import { FastField } from '../../../Items/Cell/Field/FastField';
+import { FastField } from '../../../Items/Cell/Field/Bonus/FastField';
 import { InteractionKind } from '../../IInteractionContext';
 import { Field } from '../../../Items/Cell/Field/Field';
-import { PoisonField } from '../../../Items/Cell/Field/PoisonField';
+import { PoisonField } from '../../../Items/Cell/Field/Bonus/PoisonField';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { InteractionMode } from '../../InteractionMode';
 import { AppHandler } from '../../../../Components/Canvas/AppHandler';
@@ -74,17 +74,35 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 				const cost = GameSettings.FieldPrice * this._cells.length;
 				if (menuItem && this._gameContext.MainHq.HasMoney(cost)) {
 					if (menuItem instanceof HealMenuItem) {
-						this.SetMenuItem((c) => new HealField(c), 'Heal');
+						this.SetMenuItem(
+							(c) => new HealField(c, this._gameContext.MainHq.GetSkin().GetLight()),
+							'Heal'
+						);
 					} else if (menuItem instanceof AttackMenuItem) {
-						this.SetMenuItem((c) => new AttackField(c), 'Attack');
+						this.SetMenuItem(
+							(c) => new AttackField(c, this._gameContext.MainHq.GetSkin().GetLight()),
+							'Attack'
+						);
 					} else if (menuItem instanceof SpeedFieldMenuItem) {
-						this.SetMenuItem((c) => new FastField(c), 'Fast');
+						this.SetMenuItem(
+							(c) => new FastField(c, this._gameContext.MainHq.GetSkin().GetLight()),
+							'Fast'
+						);
 					} else if (menuItem instanceof PoisonMenuItem) {
-						this.SetMenuItem((c) => new PoisonField(c), 'Poison');
+						this.SetMenuItem(
+							(c) => new PoisonField(c, this._gameContext.MainHq.GetSkin().GetLight()),
+							'Poison'
+						);
 					} else if (menuItem instanceof SlowMenuItem) {
-						this.SetMenuItem((c) => new SlowField(c), 'Slow');
+						this.SetMenuItem(
+							(c) => new SlowField(c, this._gameContext.MainHq.GetSkin().GetLight()),
+							'Slow'
+						);
 					} else if (menuItem instanceof MoneyMenuItem) {
-						this.SetMenuItem((c) => new MoneyField(c), 'Money');
+						this.SetMenuItem(
+							(c) => new MoneyField(c, this._gameContext.MainHq.GetSkin().GetLight()),
+							'Money'
+						);
 					}
 				}
 				this._cells.forEach((c) => {

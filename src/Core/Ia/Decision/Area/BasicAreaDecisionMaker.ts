@@ -1,4 +1,4 @@
-import { AttackField } from './../../../Items/Cell/Field/AttackField';
+import { AttackField } from '../../../Items/Cell/Field/Bonus/AttackField';
 import { KingdomArea } from './../Utils/KingdomArea';
 import { Dictionnary } from './../../../Utils/Collections/Dictionnary';
 import { TroopRoads } from '../Troop/TroopRoads';
@@ -12,10 +12,10 @@ import { Groups } from '../../../Utils/Collections/Groups';
 import { TroopDestination } from '../Utils/TroopDestination';
 import { AreaSearch } from '../Utils/AreaSearch';
 import { AStarEngine } from '../../AStarEngine';
-import { Headquarter } from '../../../Items/Cell/Field/Headquarter';
+import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { BasicField } from '../../../Items/Cell/Field/BasicField';
-import { HealField } from '../../../Items/Cell/Field/HealField';
+import { HealField } from '../../../Items/Cell/Field/Bonus/HealField';
 
 export class BasicAreaDecisionMaker {
 	private _areaSearch: AreaSearch;
@@ -66,7 +66,7 @@ export class BasicAreaDecisionMaker {
 			let cell = t.Tank.GetCurrentCell();
 			if (GameSettings.FieldPrice < this._hq.GetAmount()) {
 				if (cell.GetField() instanceof BasicField) {
-					new AttackField(cell);
+					new AttackField(cell, this._hq.GetSkin().GetLight());
 					this._hq.Buy(GameSettings.FieldPrice);
 				}
 			}

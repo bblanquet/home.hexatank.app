@@ -3,7 +3,7 @@ import { GameContext } from './../../Framework/GameContext';
 import { CellStateSetter } from '../Cell/CellStateSetter';
 import { BasicItem } from '../BasicItem';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
-import { Headquarter } from '../Cell/Field/Headquarter';
+import { Headquarter } from '../Cell/Field/Hq/Headquarter';
 import { Dust } from './Dust';
 import { AliveItem } from '../AliveItem';
 import { ITranslationMaker } from './MotionHelpers/ITranslationMaker';

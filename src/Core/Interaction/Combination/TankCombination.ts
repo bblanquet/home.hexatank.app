@@ -1,4 +1,4 @@
-import { InfluenceField } from '../../Items/Cell/Field/InfluenceField';
+import { InfluenceField } from '../../Items/Cell/Field/Bonus/InfluenceField';
 import { PersistentOrder } from '../../Ia/Order/PersistentOrder';
 import { TargetOrder } from '../../Ia/Order/TargetOrder';
 import { Tank } from '../../Items/Unit/Tank';

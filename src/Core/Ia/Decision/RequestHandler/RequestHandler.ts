@@ -9,7 +9,7 @@ import { TankMediumRequestHandler } from './Handler/TankMediumRequestHandler';
 import { TankHighRequestHandler } from './Handler/TankHighRequestHandler';
 import { ISimpleRequestHandler } from './ISimpleRequestHandler';
 import { Groups } from '../../../Utils/Collections/Groups';
-import { Headquarter } from '../../../Items/Cell/Field/Headquarter';
+import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 import { IRequestHandler } from './IRequestHandler';
 import { Kingdom } from '../Kingdom';
 import { RequestPriority } from '../Utils/RequestPriority';

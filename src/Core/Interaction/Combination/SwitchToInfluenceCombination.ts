@@ -1,8 +1,8 @@
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Cell } from '../../Items/Cell/Cell';
 import { CombinationContext } from './CombinationContext';
-import { InfluenceField } from '../../Items/Cell/Field/InfluenceField';
-import { Headquarter } from '../../Items/Cell/Field/Headquarter';
+import { InfluenceField } from '../../Items/Cell/Field/Bonus/InfluenceField';
+import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { ISelectable } from '../../ISelectable';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 

@@ -2,7 +2,7 @@ import { GameSettings } from './../../Framework/GameSettings';
 import { Vehicle } from './Vehicle';
 import { IHqContainer } from './IHqContainer';
 import { AliveItem } from '../AliveItem';
-import { Headquarter } from '../Cell/Field/Headquarter';
+import { Headquarter } from '../Cell/Field/Hq/Headquarter';
 import { Light } from '../Environment/Light';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { TickTimer } from '../../Utils/Timer/TickTimer';

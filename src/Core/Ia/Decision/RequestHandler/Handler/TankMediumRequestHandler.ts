@@ -1,4 +1,4 @@
-import { Headquarter } from './../../../../Items/Cell/Field/Headquarter';
+import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { Kingdom } from '../../Kingdom';

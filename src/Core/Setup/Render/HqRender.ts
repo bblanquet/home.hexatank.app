@@ -10,7 +10,7 @@ import { Archive } from '../../Framework/ResourceArchiver';
 import { IaHeadquarter } from '../../Ia/IaHeadquarter';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 import { Item } from '../../Items/Item';
-import { Headquarter } from '../../Items/Cell/Field/Headquarter';
+import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { ItemSkin } from '../../Items/ItemSkin';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { DiamondHq } from '../Generator/DiamondHq';
@@ -26,7 +26,7 @@ export class HqRender {
 			Archive.team.red.hq,
 			Archive.building.hq.red.field,
 			Archive.team.red.area,
-			Archive.bonus.light.blue
+			Archive.bonus.light.red
 		),
 		new ItemSkin(
 			Archive.team.blue.tank,

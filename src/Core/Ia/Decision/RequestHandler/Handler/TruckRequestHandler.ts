@@ -1,6 +1,6 @@
 import { MoneyOrder } from './../../../Order/MoneyOrder';
 import { IKingdomDecisionMaker } from './../../IKingdomDecisionMaker';
-import { Headquarter } from './../../../../Items/Cell/Field/Headquarter';
+import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 import { TruckPatrolOrder } from './../../../Order/TruckPatrolOrder';
 import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';

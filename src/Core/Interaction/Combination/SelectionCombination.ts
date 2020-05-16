@@ -1,11 +1,11 @@
-import { InfluenceField } from '../../Items/Cell/Field/InfluenceField';
+import { InfluenceField } from '../../Items/Cell/Field/Bonus/InfluenceField';
 import { GameHelper } from '../../Framework/GameHelper';
 import { ISelectable } from '../../ISelectable';
 import { Cell } from '../../Items/Cell/Cell';
 import { BasicField } from '../../Items/Cell/Field/BasicField';
 import { CellState } from '../../Items/Cell/CellState';
 import { CombinationContext } from './CombinationContext';
-import { Headquarter } from '../../Items/Cell/Field/Headquarter';
+import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { ISelectableChecker } from '../ISelectableChecker';
 import { GameContext } from '../../Framework/GameContext';

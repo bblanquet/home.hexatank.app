@@ -6,7 +6,7 @@ import { Turrel } from './Turrel';
 import { AliveItem } from '../AliveItem';
 import { isNullOrUndefined, isNull } from 'util';
 import { IHqContainer } from './IHqContainer';
-import { Headquarter } from '../Cell/Field/Headquarter';
+import { Headquarter } from '../Cell/Field/Hq/Headquarter';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { CellState } from '../Cell/CellState';
 import { PacketKind } from '../../../Components/Network/PacketKind';

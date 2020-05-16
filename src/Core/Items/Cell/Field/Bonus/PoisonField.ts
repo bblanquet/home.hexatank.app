@@ -1,25 +1,25 @@
-import { Cell } from '../Cell';
-import { Field } from './Field';
-import { CellState } from '../CellState';
-import { Archive } from '../../../Framework/ResourceArchiver';
-import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
-import { InteractionContext } from '../../../Interaction/InteractionContext';
-import { Vehicle } from '../../Unit/Vehicle';
-import { GameSettings } from '../../../Framework/GameSettings';
-import { IAnimator } from '../../Animator/IAnimator';
-import { BouncingScaleAnimator } from '../../Animator/BouncingScaleAnimator';
+import { Cell } from '../../Cell';
+import { Field } from '../Field';
+import { CellState } from '../../CellState';
+import { Archive } from '../../../../Framework/ResourceArchiver';
+import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
+import { InteractionContext } from '../../../../Interaction/InteractionContext';
+import { Vehicle } from '../../../Unit/Vehicle';
+import { GameSettings } from '../../../../Framework/GameSettings';
+import { IAnimator } from '../../../Animator/IAnimator';
+import { BouncingScaleAnimator } from '../../../Animator/BouncingScaleAnimator';
 
 export class PoisonField extends Field {
 	private _isIncreasingOpacity: boolean = false;
 	private _animator: IAnimator;
 
-	constructor(ceil: Cell) {
+	constructor(ceil: Cell, private _light: string) {
 		super(ceil);
 		this.GetCell().SetField(this);
 		this.Z = 1;
 		this.GenerateSprite(Archive.bonus.coverBottom);
 		this.GenerateSprite(Archive.bonus.poison);
-		this.GenerateSprite(Archive.bonus.light.blue);
+		this.GenerateSprite(this._light);
 		this.GenerateSprite(Archive.bonus.coverTop);
 
 		this.InitPosition(ceil.GetBoundingBox());
@@ -49,7 +49,7 @@ export class PoisonField extends Field {
 			super.Update(viewX, viewY);
 		}
 
-		this.SetProperty(Archive.bonus.light.blue, (s) => {
+		this.SetProperty(this._light, (s) => {
 			if (s.alpha < 0.1) {
 				this._isIncreasingOpacity = true;
 			}

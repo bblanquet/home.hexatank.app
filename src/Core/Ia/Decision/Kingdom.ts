@@ -7,7 +7,7 @@ import { Groups } from '../../Utils/Collections/Groups';
 import { Dictionnary } from '../../Utils/Collections/Dictionnary';
 import { IAreaDecisionMaker } from './Area/IAreaDecisionMaker';
 import { ExcessTankFinder } from './ExcessTankFinder';
-import { Headquarter } from '../../Items/Cell/Field/Headquarter';
+import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { AreaRequest } from './Utils/AreaRequest';
 import { RequestPriority } from './Utils/RequestPriority';
 import { KingdomArea } from './Utils/KingdomArea';

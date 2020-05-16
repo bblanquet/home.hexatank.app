@@ -1,4 +1,4 @@
-import { Headquarter } from '../Items/Cell/Field/Headquarter';
+import { Headquarter } from '../Items/Cell/Field/Hq/Headquarter';
 import { ItemSkin } from '../Items/ItemSkin';
 import { Cell } from '../Items/Cell/Cell';
 import { IDoable } from './Decision/IDoable';

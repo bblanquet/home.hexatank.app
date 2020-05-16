@@ -1,9 +1,9 @@
 import { ISelectableChecker } from './ISelectableChecker';
-import { Headquarter } from './../Items/Cell/Field/Headquarter';
+import { Headquarter } from '../Items/Cell/Field/Hq/Headquarter';
 import { Item } from '../Items/Item';
 import { Cell } from '../Items/Cell/Cell';
 import { Vehicle } from '../Items/Unit/Vehicle';
-import { InfluenceField } from '../Items/Cell/Field/InfluenceField';
+import { InfluenceField } from '../Items/Cell/Field/Bonus/InfluenceField';
 
 export class SelectableChecker implements ISelectableChecker {
 	constructor(private _currentHq: Headquarter) {}

@@ -1,5 +1,5 @@
 import { IExpansionMaker } from './IExpansionMaker';
-import { Headquarter } from '../../../Items/Cell/Field/Headquarter';
+import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 import { Kingdom } from '../Kingdom';
 import { Area } from '../Utils/Area';
 import { Point } from '../../../Utils/Geometry/Point';

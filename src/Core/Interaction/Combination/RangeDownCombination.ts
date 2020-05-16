@@ -1,6 +1,6 @@
 import { SmallMenuItem } from './../../Menu/Buttons/SmallMenuItem';
 import { CombinationContext } from './CombinationContext';
-import { InfluenceField } from '../../Items/Cell/Field/InfluenceField';
+import { InfluenceField } from '../../Items/Cell/Field/Bonus/InfluenceField';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 
 export class RangeDownCombination extends AbstractSingleCombination {

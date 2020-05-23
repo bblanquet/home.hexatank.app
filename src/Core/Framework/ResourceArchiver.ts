@@ -115,23 +115,22 @@ export const Archive = {
 			blue: './tank/blue/light.svg',
 			red: './tank/red/light.svg'
 		},
-		factory: {
+		reactor: {
 			top: './floor/factoryTop.svg',
-			middle: './floor/factoryMiddle.svg',
-			bottom: './floor/factoryBottom.svg'
+			bottom: './floor/reactor.svg'
 		},
 		coverBottom: './floor/coverBottom.svg',
 		coverTop: './floor/coverTop.svg',
-		strength: './floor/strength.svg',
+		strength: './floor/power.svg',
 		speed: './floor/speed.svg',
 		network: './floor/network.svg',
-		thunder: './floor/thunder.svg',
+		thunder: './floor/energy.svg',
 		shield: './floor/shield.svg',
-		health: './floor/health.svg',
-		poison: './floor/poisonCell.svg',
+		health: './floor/repair.svg',
+		poison: './floor/poison.svg',
 		slow: './floor/slowCell.svg',
-		emptyMoney: './floor/money.svg',
-		fullMoney: './floor/money2.svg'
+		emptyMoney: './floor/emptyDiamond.svg',
+		fullMoney: './floor/diamond.svg'
 	},
 	lights: [ './lights/light1.svg', './lights/light2.svg', './lights/light3.svg', './lights/light4.svg' ],
 	nature: {

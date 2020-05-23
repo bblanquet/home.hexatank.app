@@ -1,4 +1,4 @@
-import { InfluenceField } from '../../Items/Cell/Field/Bonus/InfluenceField';
+import { Reactor } from '../../Items/Cell/Field/Bonus/Reactor';
 import { GameHelper } from '../../Framework/GameHelper';
 import { ISelectable } from '../../ISelectable';
 import { Cell } from '../../Items/Cell/Cell';
@@ -30,11 +30,8 @@ export class SelectionCombination extends AbstractSingleCombination {
 			if (selectable instanceof Cell) {
 				const selectablecell = selectable as Cell;
 
-				if (
-					selectablecell.GetField() instanceof InfluenceField &&
-					selectablecell.GetState() === CellState.Visible
-				) {
-					const field = selectablecell.GetField() as InfluenceField;
+				if (selectablecell.GetField() instanceof Reactor && selectablecell.GetState() === CellState.Visible) {
+					const field = selectablecell.GetField() as Reactor;
 					field.SetSelected(true);
 					this._gameContext.OnItemSelected.Invoke(this, field);
 				} else if (

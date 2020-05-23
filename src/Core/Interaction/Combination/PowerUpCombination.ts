@@ -1,6 +1,6 @@
 import { PlusMenuItem } from './../../Menu/Buttons/PlusMenuItem';
 import { CombinationContext } from './CombinationContext';
-import { InfluenceField } from '../../Items/Cell/Field/Bonus/InfluenceField';
+import { Reactor } from '../../Items/Cell/Field/Bonus/Reactor';
 import { GameSettings } from '../../Framework/GameSettings';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { GameContext } from '../../Framework/GameContext';
@@ -14,14 +14,14 @@ export class PowerUpCombination extends AbstractSingleCombination {
 		return (
 			this.IsNormalMode(context) &&
 			context.Items.length == 2 &&
-			context.Items[0] instanceof InfluenceField &&
+			context.Items[0] instanceof Reactor &&
 			context.Items[1] instanceof PlusMenuItem
 		);
 	}
 
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
-			let field = <InfluenceField>context.Items[0];
+			let field = <Reactor>context.Items[0];
 			if (
 				field.HasStock() ||
 				this._gameContext.MainHq.Buy(GameSettings.TruckPrice * this._gameContext.MainHq.GetTotalEnergy())

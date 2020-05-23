@@ -1,25 +1,26 @@
-import { Cell } from '../../Cell';
 import { Field } from '../Field';
-import { CellState } from '../../CellState';
+import { Vehicle } from '../../../Unit/Vehicle';
+import { IAnimator } from '../../../Animator/IAnimator';
+import { Cell } from '../../Cell';
 import { Archive } from '../../../../Framework/ResourceArchiver';
+import { BouncingScaleAnimator } from '../../../Animator/BouncingScaleAnimator';
+import { CellState } from '../../CellState';
 import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../../../Interaction/InteractionContext';
-import { Vehicle } from '../../../Unit/Vehicle';
-import { GameSettings } from '../../../../Framework/GameSettings';
-import { IAnimator } from '../../../Animator/IAnimator';
-import { BouncingScaleAnimator } from '../../../Animator/BouncingScaleAnimator';
 
-export class ThunderField extends Field {
+export abstract class BonusField extends Field {
 	private _animator: IAnimator;
 	private _isIncreasingOpacity: boolean = false;
-	public IsUsed: boolean = false;
+	public IsActive: boolean = false;
 
-	constructor(cell: Cell, private _light: string) {
+	constructor(cell: Cell, private _light: string, private _bonus: string[]) {
 		super(cell);
 		this.GetCell().SetField(this);
 		this.Z = 1;
 		this.GenerateSprite(Archive.bonus.coverBottom);
-		this.GenerateSprite(Archive.bonus.thunder);
+		this._bonus.forEach((b) => {
+			this.GenerateSprite(b);
+		});
 		this.GenerateSprite(this._light);
 		this.GenerateSprite(Archive.bonus.coverTop);
 		this.InitPosition(cell.GetBoundingBox());
@@ -48,25 +49,24 @@ export class ThunderField extends Field {
 		} else {
 			super.Update(viewX, viewY);
 		}
-		this.SetProperty(this._light, (s) => {
-			if (s.alpha < 0.1) {
-				this._isIncreasingOpacity = true;
-			}
+		if (this.IsActive) {
+			this.SetProperty(this._light, (s) => {
+				if (s.alpha < 0.1) {
+					this._isIncreasingOpacity = true;
+				}
 
-			if (1 <= s.alpha) {
-				this._isIncreasingOpacity = false;
-			}
+				if (1 <= s.alpha) {
+					this._isIncreasingOpacity = false;
+				}
 
-			s.alpha += this._isIncreasingOpacity ? 0.01 : -0.01;
-		});
+				s.alpha += this._isIncreasingOpacity ? 0.01 : -0.01;
+			});
+		} else {
+			this.SetProperty(this._light, (e) => (e.alpha = 0));
+		}
 	}
 
-	Support(vehicule: Vehicle): void {
-		const sum = this.GetInfluenceSum(vehicule);
-		vehicule.TranslationSpeed = GameSettings.TranslationSpeed * (2 + sum);
-		vehicule.RotationSpeed = GameSettings.RotationSpeed * (2 + sum);
-		vehicule.Attack = GameSettings.Attack;
-	}
+	abstract Support(vehicule: Vehicle): void;
 
 	IsDesctrutible(): boolean {
 		return false;

@@ -45,7 +45,7 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 		func(this.GetCurrentSprites()[name]);
 	}
 
-	protected SetProperties(names: string[], func: (sprite: PIXI.Sprite) => void) {
+	public SetProperties(names: string[], func: (sprite: PIXI.Sprite) => void) {
 		names.forEach((name) => func(this.GetCurrentSprites()[name]));
 	}
 

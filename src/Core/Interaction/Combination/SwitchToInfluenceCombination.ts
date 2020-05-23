@@ -1,7 +1,7 @@
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Cell } from '../../Items/Cell/Cell';
 import { CombinationContext } from './CombinationContext';
-import { InfluenceField } from '../../Items/Cell/Field/Bonus/InfluenceField';
+import { Reactor } from '../../Items/Cell/Field/Bonus/Reactor';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { ISelectable } from '../../ISelectable';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
@@ -14,14 +14,14 @@ export class SwitchToInfluenceCombination extends AbstractSingleCombination {
 			(context.Items[0] instanceof Vehicle ||
 				context.Items[0] instanceof Headquarter ||
 				context.Items[0] instanceof Cell) &&
-			context.Items[1] instanceof InfluenceField
+			context.Items[1] instanceof Reactor
 		);
 	}
 
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
 			if (context.Items[0] instanceof Vehicle) {
-				context.Items.push((context.Items[1] as InfluenceField).GetCell());
+				context.Items.push((context.Items[1] as Reactor).GetCell());
 				context.Items.splice(1, 1);
 				return false;
 			} else {

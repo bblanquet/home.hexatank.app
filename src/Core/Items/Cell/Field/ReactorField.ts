@@ -5,20 +5,20 @@ import { CellState } from '../CellState';
 import { IAnimator } from '../../Animator/IAnimator';
 import { Archive } from '../../../Framework/ResourceArchiver';
 import { BouncingScaleAnimator } from '../../Animator/BouncingScaleAnimator';
-import { InfluenceField } from './Bonus/InfluenceField';
+import { Reactor } from './Bonus/Reactor';
 
-export class BasicInfluenceField extends Item {
+export class ReactorField extends Item {
 	private _isIncreasingOpacity: boolean = false;
 	private _onCellStateChanged: (obj: any, cellState: CellState) => void;
 	private _animator: IAnimator;
 
-	constructor(public InfluenceField: InfluenceField, private _light: string) {
+	constructor(public InfluenceField: Reactor, private _light: string) {
 		super();
 		this.Z = 1;
 		this.GenerateSprite(Archive.bonus.coverBottom);
-		this.GenerateSprite(Archive.bonus.factory.bottom);
-		this.GenerateSprite(Archive.bonus.factory.middle);
-		this.GenerateSprite(Archive.bonus.factory.top);
+		this.GenerateSprite(Archive.bonus.reactor.bottom);
+		// this.GenerateSprite(Archive.bonus.factory.middle);
+		// this.GenerateSprite(Archive.bonus.factory.top);
 		this.GenerateSprite(this._light);
 		this.GenerateSprite(Archive.bonus.coverTop);
 		this.InitPosition(this.InfluenceField.GetCell().GetBoundingBox());
@@ -56,10 +56,10 @@ export class BasicInfluenceField extends Item {
 			super.Update(viewX, viewY);
 		}
 
-		this.SetBothProperty(
-			Archive.bonus.factory.middle,
-			(s) => (s.rotation += 0.01 * this.InfluenceField.GetPower())
-		);
+		// this.SetBothProperty(
+		// 	Archive.bonus.factory.middle,
+		// 	(s) => (s.rotation += 0.01 * this.InfluenceField.GetPower())
+		// );
 
 		this.SetProperty(this._light, (s) => {
 			if (s.alpha < 0.1) {

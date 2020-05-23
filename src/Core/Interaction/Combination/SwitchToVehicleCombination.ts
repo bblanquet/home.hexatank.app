@@ -3,7 +3,7 @@ import { ISelectable } from '../../ISelectable';
 import { Cell } from '../../Items/Cell/Cell';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { CombinationContext } from './CombinationContext';
-import { InfluenceField } from '../../Items/Cell/Field/Bonus/InfluenceField';
+import { Reactor } from '../../Items/Cell/Field/Bonus/Reactor';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 
@@ -17,7 +17,7 @@ export class SwitchToVehicleCombination extends AbstractSingleCombination {
 			this.IsNormalMode(context) &&
 			context.Items.length == 2 &&
 			(context.Items[0] instanceof Cell ||
-				context.Items[0] instanceof InfluenceField ||
+				context.Items[0] instanceof Reactor ||
 				context.Items[0] instanceof Headquarter) &&
 			context.Items[1] instanceof Vehicle
 		);

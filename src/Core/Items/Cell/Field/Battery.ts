@@ -1,11 +1,10 @@
 import { Headquarter } from './Hq/Headquarter';
-import { InfluenceField } from './Bonus/InfluenceField';
+import { Reactor } from './Bonus/Reactor';
 
 export class Battery {
-	private _usedEnergy: number = 1;
-	private _internalEnergy: number = 1;
+	private _usedEnergy: number = 0;
 
-	constructor(private _hq: Headquarter, private _field: InfluenceField) {}
+	constructor(private _hq: Headquarter, private _field: Reactor) {}
 
 	GetUsedPower() {
 		return this._usedEnergy;
@@ -23,20 +22,14 @@ export class Battery {
 			.map((f) => f.Battery.GetInternalStock())
 			.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
-		return extenalEnergy + this._internalEnergy;
+		return extenalEnergy + this._field.GetInternalEnergy();
 	}
 
 	public High(): void {
 		if (this.HasInternalStock()) {
 			this._usedEnergy += 1;
 		} else if (this.TryToGetExternalEnergy()) {
-			this.AddPower();
 			this._usedEnergy += 1;
-		} else {
-			if (this._hq.Buy(1)) {
-				this.AddPower();
-				this._usedEnergy += 1;
-			}
 		}
 	}
 
@@ -57,7 +50,7 @@ export class Battery {
 	}
 
 	public Low(): void {
-		if (this._usedEnergy > 1) {
+		if (this._usedEnergy > 0) {
 			this._usedEnergy -= 1;
 		}
 	}
@@ -66,16 +59,7 @@ export class Battery {
 		return this._usedEnergy;
 	}
 
-	public AddPower(): void {
-		this._internalEnergy += 1;
-	}
-
-	public ReducePower(): void {
-		if (this._internalEnergy < 1) {
-			throw 'should not happen';
-		}
-		this._internalEnergy -= 1;
-	}
+	public ReducePower(): void {}
 
 	public HasStock(): boolean {
 		const power = this.GetTotalPower();
@@ -87,22 +71,22 @@ export class Battery {
 	}
 
 	private HasInternalStock(): boolean {
-		if (this._usedEnergy > this._internalEnergy) {
+		if (this._usedEnergy > this.GetInternalEnergy()) {
 			throw 'should not happen';
 		}
 
-		return this._usedEnergy < this._internalEnergy;
+		return this._usedEnergy < this.GetInternalEnergy();
 	}
 
 	public GetInternalStock(): number {
-		if (this._usedEnergy > this._internalEnergy) {
+		if (this._usedEnergy > this.GetInternalEnergy()) {
 			throw 'should not happen';
 		}
 
-		return this._internalEnergy - this._usedEnergy;
+		return this.GetInternalEnergy() - this._usedEnergy;
 	}
 
 	public GetInternalEnergy(): number {
-		return this._internalEnergy;
+		return this._field.GetInternalEnergy();
 	}
 }

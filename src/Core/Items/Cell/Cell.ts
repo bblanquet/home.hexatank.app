@@ -1,3 +1,5 @@
+import { BouncingScaleDownAnimator } from './../Animator/BouncingScaleDownAnimator';
+import { IAnimator } from './../Animator/IAnimator';
 import { FastField } from './Field/Bonus/FastField';
 import { GameContext } from './../../Framework/GameContext';
 import { CellContext } from './CellContext';
@@ -14,7 +16,6 @@ import { ISelectable } from '../../ISelectable';
 import { Headquarter } from './Field/Hq/Headquarter';
 import { ICell } from './ICell';
 import { IMovable } from '../IMovable';
-import { GameHelper } from '../../Framework/GameHelper';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Point } from '../../Utils/Geometry/Point';
 import { Field } from './Field/Field';
@@ -31,9 +32,9 @@ export class Cell extends Item implements ICell, ISelectable {
 	private _field: IField;
 	private _occupier: IMovable;
 	private _decorationSprite: string;
-	private _areaSprite: string;
 	private _circle: PIXI.Circle;
 	public SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
+	private _animator: IAnimator = null;
 
 	constructor(properties: CellProperties, private _cells: CellContext<Cell>, private _gameContext: GameContext) {
 		super();
@@ -176,11 +177,9 @@ export class Cell extends Item implements ICell, ISelectable {
 	}
 
 	public SetState(state: CellState): void {
-		this.GetSprites().forEach((sprite) => (sprite.alpha = 0));
+		const isDiscovered = this._state === CellState.Hidden && state !== CellState.Hidden;
 
-		if (!isNullOrUndefined(this._areaSprite)) {
-			this.SetProperty(this._areaSprite, (e) => (e.alpha = 0.2));
-		}
+		this.GetSprites().forEach((sprite) => (sprite.alpha = 0));
 
 		state = this.SetHqState(state);
 
@@ -189,6 +188,11 @@ export class Cell extends Item implements ICell, ISelectable {
 		this._display[this._state].forEach((sprite) => {
 			this.SetProperty(sprite, (e) => (e.alpha = 1));
 		});
+
+		if (isDiscovered) {
+			this.SetProperty(Archive.hiddenCell, (e) => (e.alpha = 1));
+			this._animator = new BouncingScaleDownAnimator(this, Archive.hiddenCell);
+		}
 	}
 
 	//awfull
@@ -200,20 +204,6 @@ export class Cell extends Item implements ICell, ISelectable {
 			state = CellState.Visible;
 		}
 		return state;
-	}
-
-	public AddSprite(sprite: string) {
-		this._areaSprite = sprite;
-		this.GenerateSprite(sprite);
-		this.SetProperty(sprite, (e) => {
-			e.alpha = 0.2;
-			e.anchor.set(0.5);
-			e.x = this.GetBoundingBox().X;
-			e.y = this.GetBoundingBox().Y;
-		});
-		this.GetBothSprites(this._areaSprite).forEach((s) => {
-			GameHelper.Render.AddByGroup(s, 3);
-		});
 	}
 
 	public SetDecoration(sprite: string): void {
@@ -320,6 +310,13 @@ export class Cell extends Item implements ICell, ISelectable {
 
 	public Update(viewX: number, viewY: number): void {
 		super.Update(viewX, viewY);
+		if (this._animator) {
+			if (this._animator.IsDone) {
+				this._animator = null;
+			} else {
+				this._animator.Update(viewX, viewY);
+			}
+		}
 	}
 
 	public Select(context: IInteractionContext): boolean {

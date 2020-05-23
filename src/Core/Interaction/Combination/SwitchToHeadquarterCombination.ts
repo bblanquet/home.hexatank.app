@@ -2,7 +2,7 @@ import { ISelectable } from '../../ISelectable';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Cell } from '../../Items/Cell/Cell';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
-import { InfluenceField } from '../../Items/Cell/Field/Bonus/InfluenceField';
+import { Reactor } from '../../Items/Cell/Field/Bonus/Reactor';
 import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 
@@ -13,7 +13,7 @@ export class SwitchToHeadquarterCombination extends AbstractSingleCombination {
 			context.Items.length == 2 &&
 			(context.Items[0] instanceof Vehicle ||
 				context.Items[0] instanceof Cell ||
-				context.Items[0] instanceof InfluenceField) &&
+				context.Items[0] instanceof Reactor) &&
 			context.Items[1] instanceof Headquarter
 		);
 	}

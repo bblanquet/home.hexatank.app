@@ -8,7 +8,6 @@ import { HealMenuItem } from '../../../Core/Menu/Buttons/HealMenuItem';
 import { MoneyMenuItem } from '../../../Core/Menu/Buttons/MoneyMenuItem';
 import { PoisonMenuItem } from '../../../Core/Menu/Buttons/PoisonMenuItem';
 import { ShieldMenuItem } from '../../../Core/Menu/Buttons/ShieldMenuItem';
-import { SlowMenuItem } from '../../../Core/Menu/Buttons/SlowMenuItem';
 import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
 import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
 import { AppHandler } from '../AppHandler';
@@ -23,7 +22,7 @@ export default class CellMenuComponent extends Component<
 	render() {
 		return (
 			<div class="left-column">
-				<div class="middle2 max-width">
+				<div class="middle2 max-width" style="max-height: 100vh;height:100vh;overflow-y: scroll;">
 					<div class="btn-group-vertical max-width">
 						<button
 							type="button"

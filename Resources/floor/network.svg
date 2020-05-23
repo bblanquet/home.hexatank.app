@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="300px" height="260px"
-	 viewBox="0 0 300 260" style="enable-background:new 0 0 300 260;" xml:space="preserve">
+<svg version="1.0" id="Calque_52_1_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+	 y="0px" width="300px" height="260px" viewBox="0 0 300 260" style="enable-background:new 0 0 300 260;" xml:space="preserve">
 <style type="text/css">
-	.st0{display:none;}
-	.st1{display:inline;}
-	.st2{opacity:0.7;fill:none;stroke:#FFFFFF;stroke-width:7;stroke-miterlimit:10;}
+	.st0{fill:#333333;}
+	.st1{fill:#FFFFFF;}
+	.st2{fill:url(#XMLID_2_);}
+	.st3{fill:none;stroke:#FFFFFF;stroke-width:6;stroke-miterlimit:10;}
+	.st4{opacity:0.41;fill:url(#XMLID_3_);}
 </style>
-<g id="Calque_3" class="st0">
-	<rect id="XMLID_1_" class="st1" width="300" height="260"/>
+<circle id="XMLID_584_" class="st0" cx="152.6" cy="130" r="61.8"/>
+<circle id="XMLID_586_" class="st1" cx="152.6" cy="130" r="55.9"/>
+<radialGradient id="XMLID_2_" cx="152.5742" cy="130" r="53.3701" gradientUnits="userSpaceOnUse">
+	<stop  offset="0" style="stop-color:#2484C6"/>
+	<stop  offset="1" style="stop-color:#135786"/>
+</radialGradient>
+<circle id="XMLID_585_" class="st2" cx="152.6" cy="130" r="53.4"/>
+<g id="Calque_121">
+	<path id="XMLID_583_" class="st3" d="M152.6,109.7c11.4,0,21.8-3.2,29.3-8.5c-7.5-7.5-17.9-12.1-29.3-12.1s-21.8,4.6-29.3,12.1
+		C130.8,106.5,141.1,109.7,152.6,109.7z"/>
+	<circle id="XMLID_580_" class="st3" cx="152.6" cy="130.5" r="41.4"/>
+	<ellipse id="XMLID_579_" class="st3" cx="152.6" cy="130.5" rx="26.6" ry="41.4"/>
+	<line id="XMLID_451_" class="st3" x1="111.2" y1="130.5" x2="194" y2="130.5"/>
+	<line id="XMLID_449_" class="st3" x1="152.6" y1="89.1" x2="152.6" y2="171.9"/>
+	<path id="XMLID_215_" class="st3" d="M152.6,150.9c-11.5,0-22,3.3-29.5,8.6c7.5,7.6,17.9,12.3,29.5,12.3s22-4.7,29.5-12.3
+		C174.6,154.2,164.1,150.9,152.6,150.9z"/>
 </g>
-<g id="shield">
-	<circle id="XMLID_2_" class="st2" cx="150" cy="130" r="57.2"/>
-	<ellipse id="XMLID_3_" class="st2" cx="150" cy="130" rx="36.8" ry="57.2"/>
-	<line id="XMLID_4_" class="st2" x1="92.8" y1="130" x2="207.2" y2="130"/>
-	<line id="XMLID_5_" class="st2" x1="150" y1="72.8" x2="150" y2="187.2"/>
-	<path id="XMLID_9_" class="st2" d="M150,158.3c-16,0-30.4,4.6-40.8,11.9c10.4,10.5,24.8,17.1,40.8,17.1s30.4-6.5,40.8-17.1
-		C180.4,162.8,166,158.3,150,158.3z"/>
-	<path id="XMLID_10_" class="st2" d="M150,101.2c15.8,0,30.1-4.5,40.5-11.7c-10.4-10.4-24.7-16.8-40.5-16.8s-30.1,6.4-40.5,16.8
-		C119.9,96.8,134.2,101.2,150,101.2z"/>
-</g>
+<linearGradient id="XMLID_3_" gradientUnits="userSpaceOnUse" x1="151.8229" y1="128.7492" x2="135.7655" y2="79.3297">
+	<stop  offset="0" style="stop-color:#FFFFFF"/>
+	<stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0"/>
+</linearGradient>
+<path id="XMLID_598_" class="st4" d="M198.1,102.1c-9.4-15.3-26.2-25.5-45.5-25.5c-29.5,0-53.4,23.9-53.4,53.4c0,2.5,0.2,5,0.5,7.4
+	C123.8,136.2,171.9,130.2,198.1,102.1z"/>
 </svg>

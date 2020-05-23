@@ -1,5 +1,6 @@
+import { ThunderField } from './ThunderField';
 import { GameContext } from '../../../../Framework/GameContext';
-import { BasicInfluenceField } from '../BasicInfluenceField';
+import { ReactorField } from '../ReactorField';
 import { Archive } from '../../../../Framework/ResourceArchiver';
 import { CellStateSetter } from '../../CellStateSetter';
 import { Battery } from '../Battery';
@@ -16,15 +17,13 @@ import { CellContext } from '../../CellContext';
 import { PeerHandler } from '../../../../../Components/Network/Host/On/PeerHandler';
 import { PacketKind } from '../../../../../Components/Network/PacketKind';
 
-export class InfluenceField extends Field implements ISelectable {
+export class Reactor extends Field implements ISelectable {
 	private _area: Array<BasicItem> = new Array<BasicItem>();
 	public Battery: Battery;
-	private _range: number = 1;
-	private _power: number = 0;
+	private _range: number = 0;
 	private _cellContainer: CellContext<Cell> = new CellContext<Cell>();
-	public Lost: LiteEvent<InfluenceField> = new LiteEvent<InfluenceField>();
-
-	public basicField: BasicInfluenceField;
+	public Lost: LiteEvent<Reactor> = new LiteEvent<Reactor>();
+	public basicField: ReactorField;
 
 	constructor(cell: Cell, public Hq: Headquarter, private _context: GameContext, private _light: string) {
 		super(cell);
@@ -44,8 +43,17 @@ export class InfluenceField extends Field implements ISelectable {
 		this.GetDisplayObjects().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});
-		this.UpdateCellStates(this._range);
-		this.basicField = new BasicInfluenceField(this, this._light);
+		this.basicField = new ReactorField(this, this._light);
+		this.RangeAnimation();
+	}
+
+	private RangeAnimation(): void {
+		if (this._range < 4) {
+			this._range += 1;
+			this.RefreshArea();
+			this.UpdateCellStates(this._range);
+			setTimeout(() => this.RangeAnimation(), 1000);
+		}
 	}
 
 	Support(vehicule: Vehicle): void {
@@ -59,8 +67,14 @@ export class InfluenceField extends Field implements ISelectable {
 			this.Hq.AddInfluence(this);
 
 			this.basicField.Destroy();
-			this.basicField = new BasicInfluenceField(this, this._light);
+			this.basicField = new ReactorField(this, this._light);
 		}
+	}
+
+	public GetInternalEnergy(): number {
+		return this._cellContainer
+			.All()
+			.filter((c) => c.GetField() instanceof ThunderField && !(c.GetField() as ThunderField).IsUsed).length;
 	}
 
 	IsDesctrutible(): boolean {
@@ -98,65 +112,25 @@ export class InfluenceField extends Field implements ISelectable {
 			Type: 'PowerUp'
 		});
 		this.Battery.High();
-		this._power += 1;
 	}
 
 	public GetPower(): number {
-		return this._power;
-	}
-
-	public GetInternalEnergy(): number {
-		return this.Battery.GetInternalEnergy();
+		return this.Battery.GetUsedPower();
 	}
 
 	public PowerDown(): void {
-		if (this._power > 0) {
+		if (this.Battery.GetUsedPower() > 0) {
 			PeerHandler.SendMessage(PacketKind.Influence, {
 				Hq: this.Hq.GetCurrentCell().GetCoordinate(),
 				cell: this.GetCell().GetCoordinate(),
 				Type: 'PowerDown'
 			});
-			this._power -= 1;
 			this.Battery.Low();
-		}
-	}
-
-	public RangeDown(): void {
-		if (this._range > 0) {
-			PeerHandler.SendMessage(PacketKind.Influence, {
-				Hq: this.Hq.GetCurrentCell().GetCoordinate(),
-				cell: this.GetCell().GetCoordinate(),
-				Type: 'RangeDown'
-			});
-			this.Battery.Low();
-			this._range -= 1;
-			this.RefreshArea();
-			this.UpdateCellStates(this._range + 1);
-			if (this.Hq === this._context.MainHq) {
-				this.ClearArea();
-				this.CreateArea();
-			}
 		}
 	}
 
 	private UpdateCellStates(range: number) {
 		CellStateSetter.SetStates(this._context, this.GetCell().GetAll(range));
-	}
-
-	public RangeUp(): void {
-		PeerHandler.SendMessage(PacketKind.Influence, {
-			Hq: this.Hq.GetCurrentCell().GetCoordinate(),
-			cell: this.GetCell().GetCoordinate(),
-			Type: 'RangeUp'
-		});
-		this.Battery.High();
-		this._range += 1;
-		this.RefreshArea();
-		this.UpdateCellStates(this._range);
-		if (this.Hq === this._context.MainHq) {
-			this.ClearArea();
-			this.CreateArea();
-		}
 	}
 
 	SetSelected(isSelected: boolean): void {

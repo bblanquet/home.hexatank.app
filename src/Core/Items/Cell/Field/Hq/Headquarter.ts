@@ -18,7 +18,7 @@ import { Explosion } from '../../../Unit/Explosion';
 import { Truck } from '../../../Unit/Truck';
 import { SimpleOrder } from '../../../../Ia/Order/SimpleOrder';
 import { GameSettings } from '../../../../Framework/GameSettings';
-import { InfluenceField } from '../Bonus/InfluenceField';
+import { Reactor } from '../Bonus/Reactor';
 import { ISelectable } from '../../../../ISelectable';
 
 export class Headquarter extends AliveItem implements IField, ISelectable {
@@ -31,7 +31,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	private _diamondCount: number = GameSettings.PocketMoney;
 	private _skin: ItemSkin;
 	private _onCellStateChanged: (obj: any, cellState: CellState) => void;
-	private _influenceFields: Array<InfluenceField> = new Array<InfluenceField>();
+	private _influenceFields: Array<Reactor> = new Array<Reactor>();
 	private _vehicles: Array<Vehicle> = new Array<Vehicle>();
 	public OnVehiculeCreated: LiteEvent<Vehicle> = new LiteEvent<Vehicle>();
 
@@ -333,13 +333,13 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		return this._influenceFields.length;
 	}
 
-	public GetInfluence(): Array<InfluenceField> {
+	public GetInfluence(): Array<Reactor> {
 		return this._influenceFields;
 	}
 
-	public AddInfluence(i: InfluenceField): void {
+	public AddInfluence(i: Reactor): void {
 		this._influenceFields.push(i);
-		i.Lost.On((e: any, ie: InfluenceField) => {
+		i.Lost.On((e: any, ie: Reactor) => {
 			this._influenceFields = this._influenceFields.filter((v) => v !== ie);
 		});
 	}

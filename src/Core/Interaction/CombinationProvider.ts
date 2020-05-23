@@ -35,8 +35,6 @@ import { AbortCombination } from './Combination/AbortCombination';
 import { SwitchToHeadquarterCombination } from './Combination/SwitchToHeadquarterCombination';
 import { PowerUpCombination } from './Combination/PowerUpCombination';
 import { PowerDownCombination } from './Combination/PowerDownCombination';
-import { RangeDownCombination } from './Combination/RangeDownCombination';
-import { RangeUpCombination } from './Combination/RangeUpCombination';
 import { InfluenceCombination } from './Combination/InfluenceCombination';
 import { CamouflageCombination } from './Combination/CamouflageCombination';
 import { MovingInteractionContext } from '../Menu/Smart/MovingInteractionContext';
@@ -139,8 +137,6 @@ export class CombinationProvider {
 				(e) => new HealField(e, gameContext.MainHq.GetSkin().GetLight()),
 				'Heal'
 			),
-			new RangeUpCombination(gameContext),
-			new RangeDownCombination(),
 			new PowerDownCombination(),
 			new PowerUpCombination(gameContext)
 		];

@@ -3,7 +3,7 @@ import { Headquarter } from '../Items/Cell/Field/Hq/Headquarter';
 import { Item } from '../Items/Item';
 import { Cell } from '../Items/Cell/Cell';
 import { Vehicle } from '../Items/Unit/Vehicle';
-import { InfluenceField } from '../Items/Cell/Field/Bonus/InfluenceField';
+import { Reactor } from '../Items/Cell/Field/Bonus/Reactor';
 
 export class SelectableChecker implements ISelectableChecker {
 	constructor(private _currentHq: Headquarter) {}
@@ -14,8 +14,8 @@ export class SelectableChecker implements ISelectableChecker {
 		} else if (item instanceof Vehicle) {
 			const vehicle = <Vehicle>item;
 			return !vehicle.IsEnemy(this._currentHq);
-		} else if (item instanceof InfluenceField) {
-			const influenceField = <InfluenceField>item;
+		} else if (item instanceof Reactor) {
+			const influenceField = <Reactor>item;
 			return influenceField.Hq === this._currentHq;
 		} else if (item instanceof Headquarter) {
 			const hq = <Headquarter>item;

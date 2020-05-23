@@ -1,4 +1,4 @@
-import { InfluenceField } from '../../Items/Cell/Field/Bonus/InfluenceField';
+import { Reactor } from '../../Items/Cell/Field/Bonus/Reactor';
 import { PersistentOrder } from '../../Ia/Order/PersistentOrder';
 import { TargetOrder } from '../../Ia/Order/TargetOrder';
 import { Tank } from '../../Items/Unit/Tank';
@@ -13,7 +13,7 @@ export class TankCombination extends AbstractSingleCombination {
 			this.IsNormalMode(context) &&
 			context.Items.length >= 2 &&
 			context.Items[0] instanceof Tank &&
-			(context.Items[1] instanceof Cell || context.Items[1] instanceof InfluenceField)
+			(context.Items[1] instanceof Cell || context.Items[1] instanceof Reactor)
 		);
 	}
 
@@ -22,8 +22,8 @@ export class TankCombination extends AbstractSingleCombination {
 			const tank = <Tank>context.Items[0];
 
 			var cell: Cell = null;
-			if (context.Items[1] instanceof InfluenceField) {
-				var cell = (context.Items[1] as InfluenceField).GetCell();
+			if (context.Items[1] instanceof Reactor) {
+				var cell = (context.Items[1] as Reactor).GetCell();
 			} else {
 				cell = <Cell>context.Items[1];
 			}

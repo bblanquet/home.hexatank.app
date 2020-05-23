@@ -8,13 +8,12 @@ import { Tank } from '../../Core/Items/Unit/Tank';
 import { Truck } from '../../Core/Items/Unit/Truck';
 import { Cell } from '../../Core/Items/Cell/Cell';
 import { ISelectable } from '../../Core/ISelectable';
-import { InfluenceField } from '../../Core/Items/Cell/Field/Bonus/InfluenceField';
+import { Reactor } from '../../Core/Items/Cell/Field/Bonus/Reactor';
 import { GameSettings } from '../../Core/Framework/GameSettings';
 import { CombinationProvider } from '../../Core/Interaction/CombinationProvider';
 import { SelectableChecker } from '../../Core/Interaction/SelectableChecker';
 import { Headquarter } from '../../Core/Items/Cell/Field/Hq/Headquarter';
 import { AppHandler } from './AppHandler';
-import FactoryMenuComponent from './Parts/FactoryMenuComponent';
 import HqMenuComponent from './Parts/HqMenuComponent';
 import TankMenuComponent from './Parts/TankMenuComponent';
 import CellMenuComponent from './Parts/CellMenuComponent';
@@ -24,6 +23,7 @@ import { RenderingHandler } from '../../Core/Setup/Render/RenderingHandler';
 import { RenderingGroups } from '../../Core/Setup/Render/RenderingGroups';
 import { MapRender } from '../../Core/Setup/Render/MapRender';
 import { ComponentsHelper } from '../ComponentsHelper';
+import ReactorMenuComponent from './Parts/ReactorMenuComponent';
 
 export default class CanvasComponent extends Component<
 	any,
@@ -184,9 +184,9 @@ export default class CanvasComponent extends Component<
 						GameContext={this._gameContext}
 					/>
 				);
-			} else if (this.state.Item instanceof InfluenceField) {
+			} else if (this.state.Item instanceof Reactor) {
 				return (
-					<FactoryMenuComponent
+					<ReactorMenuComponent
 						Item={this.state.Item}
 						AppHandler={this._appHandler}
 						GameContext={this._gameContext}

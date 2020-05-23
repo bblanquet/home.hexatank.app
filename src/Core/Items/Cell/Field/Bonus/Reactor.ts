@@ -1,6 +1,7 @@
+import { SimpleEvent } from './../../../../Utils/Events/SimpleEvent';
 import { ThunderField } from './ThunderField';
 import { GameContext } from '../../../../Framework/GameContext';
-import { ReactorField } from '../ReactorField';
+import { ReactorField } from './ReactorField';
 import { Archive } from '../../../../Framework/ResourceArchiver';
 import { CellStateSetter } from '../../CellStateSetter';
 import { Battery } from '../Battery';
@@ -21,7 +22,7 @@ export class Reactor extends Field implements ISelectable {
 	private _area: Array<BasicItem> = new Array<BasicItem>();
 	public Battery: Battery;
 	private _range: number = 0;
-	private _cellContainer: CellContext<Cell> = new CellContext<Cell>();
+	private _cells: CellContext<Cell> = new CellContext<Cell>();
 	public Lost: LiteEvent<Reactor> = new LiteEvent<Reactor>();
 	public basicField: ReactorField;
 
@@ -72,7 +73,7 @@ export class Reactor extends Field implements ISelectable {
 	}
 
 	public GetInternalEnergy(): number {
-		return this._cellContainer
+		return this._cells
 			.All()
 			.filter((c) => c.GetField() instanceof ThunderField && !(c.GetField() as ThunderField).IsUsed).length;
 	}
@@ -154,18 +155,18 @@ export class Reactor extends Field implements ISelectable {
 	}
 
 	public GetArea(): CellContext<Cell> {
-		if (this._cellContainer.IsEmpty()) {
+		if (this._cells.IsEmpty()) {
 			this.RefreshArea();
 		}
-		return this._cellContainer;
+		return this._cells;
 	}
 
 	private RefreshArea() {
-		this._cellContainer.Clear();
+		this._cells.Clear();
 		this.GetCell().GetAllNeighbourhood(this._range).forEach((cell) => {
-			this._cellContainer.Add(cell as Cell);
+			this._cells.Add(cell as Cell);
 		});
-		this._cellContainer.Add(this.GetCell());
+		this._cells.Add(this.GetCell());
 	}
 
 	public Destroy(): void {

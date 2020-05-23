@@ -138,12 +138,12 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 			: '';
 		// const mCount = requests.Exist(RequestPriority.Medium) ? requests.Get(RequestPriority.Medium).length : 0;
 		// const lCount = requests.Exist(RequestPriority.Low) ? requests.Get(RequestPriority.Low).length : 0;
-		console.log(
-			`%c [MONEY] ${this._hq.GetAmount()} [A] ${this.AreaDecisions.length}`,
-			'font-weight:bold;color:#940c0c;'
-		);
-		console.log(`%c [H] ${hCount} ${hTypes.toString()} `, 'font-weight:bold;color:#94570c;');
-		console.log(`%c [M] ${mCount} ${mTypes.toString()} `, 'font-weight:bold;color:#94770c;');
-		console.log(`%c ----------------------- `, 'font-weight:bold;color:#94770c;');
+		// console.log(
+		// 	`%c [MONEY] ${this._hq.GetAmount()} [A] ${this.AreaDecisions.length}`,
+		// 	'font-weight:bold;color:#940c0c;'
+		// );
+		// console.log(`%c [H] ${hCount} ${hTypes.toString()} `, 'font-weight:bold;color:#94570c;');
+		// console.log(`%c [M] ${mCount} ${mTypes.toString()} `, 'font-weight:bold;color:#94770c;');
+		// console.log(`%c ----------------------- `, 'font-weight:bold;color:#94770c;');
 	}
 }

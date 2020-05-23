@@ -17,7 +17,7 @@ export class HealingRequestHandler implements ISimpleRequestHandler {
 			console.log(`%c [HEALING] `, 'font-weight:bold;color:blue;');
 			cells.forEach((c) => {
 				if (c.GetField() instanceof BasicField) {
-					new HealField(c, this._hq.GetSkin().GetLight());
+					new HealField(c, this._hq);
 					this._hq.Buy(GameSettings.FieldPrice);
 				}
 			});

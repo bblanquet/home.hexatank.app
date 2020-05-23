@@ -29,23 +29,27 @@ export class BouncingScaleAnimator implements IAnimator {
 		}
 
 		if (this._scale <= 1 && !this._isIncreasing) {
+			this._scale = 1;
+			this.SetBoundingBox(viewX, viewY);
 			this.IsDone = true;
 		}
 	}
 
 	private SetBoundingBox(viewX: number, viewY: number) {
-		const reference = this._item.GetRef();
 		this._item.GetSprites().forEach((obj) => {
 			obj.width = this._item.GetBoundingBox().Width * this._scale;
 			obj.height = this._item.GetBoundingBox().Height * this._scale;
-			obj.x =
-				this._item.GetBoundingBox().Width / 2 -
-				this._item.GetBoundingBox().Width * this._scale / 2 +
-				(reference.X + viewX);
-			obj.y =
-				this._item.GetBoundingBox().Height / 2 -
-				this._item.GetBoundingBox().Height * this._scale / 2 +
-				(reference.Y + viewY);
+			if (!this._item.IsCentralRef) {
+				const reference = this._item.GetRef();
+				obj.x =
+					this._item.GetBoundingBox().Width / 2 -
+					this._item.GetBoundingBox().Width * this._scale / 2 +
+					(reference.X + viewX);
+				obj.y =
+					this._item.GetBoundingBox().Height / 2 -
+					this._item.GetBoundingBox().Height * this._scale / 2 +
+					(reference.Y + viewY);
+			}
 		});
 	}
 }

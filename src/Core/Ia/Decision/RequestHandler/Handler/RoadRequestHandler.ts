@@ -40,7 +40,7 @@ export class RoadRequestHandler implements ISimpleRequestHandler {
 			console.log(`%c [ROAD] `, 'font-weight:bold;color:blue;');
 			road.forEach((c) => {
 				if (c.GetField() instanceof BasicField) {
-					new FastField(c, this._hq.GetSkin().GetLight());
+					new FastField(c, this._hq);
 					this._hq.Buy(GameSettings.FieldPrice);
 				}
 			});

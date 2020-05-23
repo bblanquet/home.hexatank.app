@@ -86,13 +86,13 @@ export class CombinationProvider {
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof SpeedFieldMenuItem,
-				(e) => new FastField(e, gameContext.MainHq.GetSkin().GetLight()),
+				(e) => new FastField(e, gameContext.MainHq),
 				'Fast'
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof AttackMenuItem,
-				(e) => new AttackField(e, gameContext.MainHq.GetSkin().GetLight()),
+				(e) => new AttackField(e, gameContext.MainHq),
 				'Attack'
 			),
 			new GenericCellCombination(
@@ -104,13 +104,13 @@ export class CombinationProvider {
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof ShieldMenuItem,
-				(e) => new ShieldField(e, gameContext.MainHq.GetSkin().GetLight()),
+				(e) => new ShieldField(e, gameContext.MainHq),
 				'Shield'
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof PoisonMenuItem,
-				(e) => new PoisonField(e, gameContext.MainHq.GetSkin().GetLight()),
+				(e) => new PoisonField(e, gameContext.MainHq),
 				'Poison'
 			),
 			new GenericCellCombination(
@@ -122,19 +122,19 @@ export class CombinationProvider {
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof ThunderMenuItem,
-				(e) => new ThunderField(e, gameContext.MainHq.GetSkin().GetLight()),
+				(e) => new ThunderField(e, gameContext.MainHq),
 				'Thunder'
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof NetworkMenuItem,
-				(e) => new NetworkField(e, gameContext.MainHq.GetSkin().GetLight()),
+				(e) => new NetworkField(e, gameContext.MainHq),
 				'Network'
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof HealMenuItem,
-				(e) => new HealField(e, gameContext.MainHq.GetSkin().GetLight()),
+				(e) => new HealField(e, gameContext.MainHq),
 				'Heal'
 			),
 			new PowerDownCombination(),

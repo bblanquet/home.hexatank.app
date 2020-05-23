@@ -1,5 +1,7 @@
 import { Headquarter } from './Hq/Headquarter';
 import { Reactor } from './Bonus/Reactor';
+import { BonusField } from './Bonus/BonusField';
+import { AliveBonusField } from './Bonus/AliveBonusField';
 
 export class Battery {
 	private _usedEnergy: number = 0;
@@ -26,10 +28,21 @@ export class Battery {
 	}
 
 	public High(): void {
-		if (this.HasInternalStock()) {
+		if (this.HasInternalStock() || this.TryToGetExternalEnergy()) {
 			this._usedEnergy += 1;
-		} else if (this.TryToGetExternalEnergy()) {
-			this._usedEnergy += 1;
+			this._field.GetArea().All().forEach((cell) => {
+				if (cell.GetField() instanceof BonusField) {
+					const bonusField = cell.GetField() as BonusField;
+					if (bonusField.IsAlly(this._hq)) {
+						bonusField.EnergyChanged(true);
+					}
+				} else if (cell.GetField() instanceof AliveBonusField) {
+					const bonusField = cell.GetField() as AliveBonusField;
+					if (!bonusField.IsEnemy(this._hq)) {
+						bonusField.EnergyChanged(true);
+					}
+				}
+			});
 		}
 	}
 
@@ -52,6 +65,19 @@ export class Battery {
 	public Low(): void {
 		if (this._usedEnergy > 0) {
 			this._usedEnergy -= 1;
+			this._field.GetArea().All().forEach((cell) => {
+				if (cell.GetField() instanceof BonusField) {
+					const bonusField = cell.GetField() as BonusField;
+					if (bonusField.IsAlly(this._hq)) {
+						bonusField.EnergyChanged(false);
+					}
+				} else if (cell.GetField() instanceof AliveBonusField) {
+					const bonusField = cell.GetField() as AliveBonusField;
+					if (!bonusField.IsEnemy(this._hq)) {
+						bonusField.EnergyChanged(false);
+					}
+				}
+			});
 		}
 	}
 

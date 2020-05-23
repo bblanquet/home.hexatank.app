@@ -3,10 +3,11 @@ import { BonusField } from './BonusField';
 import { Archive } from '../../../../Framework/ResourceArchiver';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { GameSettings } from '../../../../Framework/GameSettings';
+import { Headquarter } from '../Hq/Headquarter';
 
 export class PoisonField extends BonusField {
-	constructor(cell: Cell, light: string) {
-		super(cell, light, [ Archive.bonus.poison ]);
+	constructor(cell: Cell, hq: Headquarter) {
+		super(cell, [ Archive.bonus.poison ], hq);
 	}
 	Support(vehicule: Vehicle): void {
 		const sum = this.GetInfluenceSum(vehicule);

@@ -16,7 +16,7 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 
 	public Z: number;
 	public IsUpdatable: Boolean;
-	protected IsCentralRef: boolean = false;
+	public IsCentralRef: boolean = false;
 
 	constructor(isUpdatable: boolean = true) {
 		this.DisplayObjects = new Array<PIXI.DisplayObject>();

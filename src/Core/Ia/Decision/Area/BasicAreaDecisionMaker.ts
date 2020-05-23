@@ -66,7 +66,7 @@ export class BasicAreaDecisionMaker {
 			let cell = t.Tank.GetCurrentCell();
 			if (GameSettings.FieldPrice < this._hq.GetAmount()) {
 				if (cell.GetField() instanceof BasicField) {
-					new AttackField(cell, this._hq.GetSkin().GetLight());
+					new AttackField(cell, this._hq);
 					this._hq.Buy(GameSettings.FieldPrice);
 				}
 			}

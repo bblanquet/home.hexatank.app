@@ -3,14 +3,15 @@ import { Archive } from '../../../../Framework/ResourceArchiver';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { GameSettings } from '../../../../Framework/GameSettings';
 import { BonusField } from './BonusField';
+import { Headquarter } from '../Hq/Headquarter';
 
 export class HealField extends BonusField {
-	constructor(cell: Cell, light: string) {
-		super(cell, light, [ Archive.bonus.health ]);
+	constructor(cell: Cell, hq: Headquarter) {
+		super(cell, [ Archive.bonus.health ], hq);
 	}
 
 	Support(vehicule: Vehicle): void {
-		if (this.IsActive) {
+		if (0 < this.Energy) {
 			const sum = this.GetInfluenceSum(vehicule);
 			vehicule.SetDamage(-(0.1 + sum));
 			vehicule.TranslationSpeed = GameSettings.TranslationSpeed;

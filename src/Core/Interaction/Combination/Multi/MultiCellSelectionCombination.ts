@@ -6,7 +6,6 @@ import { MultiSelectionMenu } from '../../../Menu/Smart/MultiSelectionMenu';
 import { CombinationContext } from '../CombinationContext';
 import { MovingInteractionContext } from '../../../Menu/Smart/MovingInteractionContext';
 import { SelectionMode } from '../../../Menu/Smart/SelectionMode';
-import { GameHelper } from '../../../Framework/GameHelper';
 import { HealMenuItem } from '../../../Menu/Buttons/HealMenuItem';
 import { PeerHandler } from '../../../../Components/Network/Host/On/PeerHandler';
 import { PacketKind } from '../../../../Components/Network/PacketKind';
@@ -74,25 +73,13 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 				const cost = GameSettings.FieldPrice * this._cells.length;
 				if (menuItem && this._gameContext.MainHq.HasMoney(cost)) {
 					if (menuItem instanceof HealMenuItem) {
-						this.SetMenuItem(
-							(c) => new HealField(c, this._gameContext.MainHq.GetSkin().GetLight()),
-							'Heal'
-						);
+						this.SetMenuItem((c) => new HealField(c, this._gameContext.MainHq), 'Heal');
 					} else if (menuItem instanceof AttackMenuItem) {
-						this.SetMenuItem(
-							(c) => new AttackField(c, this._gameContext.MainHq.GetSkin().GetLight()),
-							'Attack'
-						);
+						this.SetMenuItem((c) => new AttackField(c, this._gameContext.MainHq), 'Attack');
 					} else if (menuItem instanceof SpeedFieldMenuItem) {
-						this.SetMenuItem(
-							(c) => new FastField(c, this._gameContext.MainHq.GetSkin().GetLight()),
-							'Fast'
-						);
+						this.SetMenuItem((c) => new FastField(c, this._gameContext.MainHq), 'Fast');
 					} else if (menuItem instanceof PoisonMenuItem) {
-						this.SetMenuItem(
-							(c) => new PoisonField(c, this._gameContext.MainHq.GetSkin().GetLight()),
-							'Poison'
-						);
+						this.SetMenuItem((c) => new PoisonField(c, this._gameContext.MainHq), 'Poison');
 					} else if (menuItem instanceof SlowMenuItem) {
 						this.SetMenuItem(
 							(c) => new SlowField(c, this._gameContext.MainHq.GetSkin().GetLight()),

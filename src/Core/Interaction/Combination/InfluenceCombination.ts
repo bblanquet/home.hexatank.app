@@ -32,7 +32,7 @@ export class InfluenceCombination extends AbstractSingleCombination {
 				if (cell.GetField() instanceof BasicField) {
 					if (
 						this._gameContext.MainHq.Buy(
-							GameSettings.TruckPrice * this._gameContext.MainHq.GetInfluenceCount()
+							GameSettings.TruckPrice * this._gameContext.MainHq.GetReactorsCount()
 						)
 					) {
 						PeerHandler.SendMessage(PacketKind.Field, {

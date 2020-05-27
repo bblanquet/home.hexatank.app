@@ -10,6 +10,7 @@ export class BouncingScaleDownAnimator implements IAnimator {
 	public constructor(private _item: Item, private _sprite: string) {
 		this._item.SetProperties([ this._sprite ], (e) => (e.alpha = 1));
 	}
+	Reset(): void {}
 
 	Update(viewX: number, viewY: number): void {
 		if (this._isIncreasing) {

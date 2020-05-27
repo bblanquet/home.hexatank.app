@@ -62,7 +62,7 @@ export class MoneyField extends Field {
 		if (this.IsFull()) {
 			if (vehicule instanceof Truck) {
 				let truck = vehicule as Truck;
-				const sum = this.GetInfluenceSum(vehicule);
+				const sum = this.GetReactorsPower(vehicule);
 				truck.Hq.Earn(1 + sum);
 				this.SetEmpty();
 				this._lightItem.Hide();

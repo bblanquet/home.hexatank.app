@@ -116,7 +116,7 @@ export const Archive = {
 			red: './tank/red/light.svg'
 		},
 		reactor: {
-			top: './floor/factoryTop.svg',
+			top: './floor/reactorLight.svg',
 			bottom: './floor/reactor.svg'
 		},
 		coverBottom: './floor/coverBottom.svg',
@@ -125,6 +125,7 @@ export const Archive = {
 		speed: './floor/speed.svg',
 		network: './floor/network.svg',
 		thunder: './floor/energy.svg',
+		redThunder: './floor/lowEnergy.svg',
 		shield: './floor/shield.svg',
 		health: './floor/repair.svg',
 		poison: './floor/poison.svg',

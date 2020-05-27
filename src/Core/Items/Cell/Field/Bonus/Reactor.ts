@@ -1,5 +1,4 @@
-import { SimpleEvent } from './../../../../Utils/Events/SimpleEvent';
-import { ThunderField } from './ThunderField';
+import { BatteryField } from './BatteryField';
 import { GameContext } from '../../../../Framework/GameContext';
 import { ReactorField } from './ReactorField';
 import { Archive } from '../../../../Framework/ResourceArchiver';
@@ -22,14 +21,14 @@ export class Reactor extends Field implements ISelectable {
 	private _area: Array<BasicItem> = new Array<BasicItem>();
 	public Battery: Battery;
 	private _range: number = 0;
-	private _cells: CellContext<Cell> = new CellContext<Cell>();
+	private _internalCells: CellContext<Cell> = new CellContext<Cell>();
 	public Lost: LiteEvent<Reactor> = new LiteEvent<Reactor>();
 	public basicField: ReactorField;
 
 	constructor(cell: Cell, public Hq: Headquarter, private _context: GameContext, private _light: string) {
 		super(cell);
 		this.Z = 1;
-		this.Hq.AddInfluence(this);
+		this.Hq.AddReactor(this);
 		this.Battery = new Battery(this.Hq, this);
 		this.GetCell().SetField(this);
 		this.GenerateSprite(Archive.selectionCell);
@@ -51,7 +50,7 @@ export class Reactor extends Field implements ISelectable {
 	private RangeAnimation(): void {
 		if (this._range < 4) {
 			this._range += 1;
-			this.RefreshArea();
+			this.RefreshInternal();
 			this.UpdateCellStates(this._range);
 			setTimeout(() => this.RangeAnimation(), 1000);
 		}
@@ -65,17 +64,11 @@ export class Reactor extends Field implements ISelectable {
 			this.Lost.Clear();
 
 			this.Hq = vehicule.Hq;
-			this.Hq.AddInfluence(this);
+			this.Hq.AddReactor(this);
 
 			this.basicField.Destroy();
 			this.basicField = new ReactorField(this, this._light);
 		}
-	}
-
-	public GetInternalEnergy(): number {
-		return this._cells
-			.All()
-			.filter((c) => c.GetField() instanceof ThunderField && !(c.GetField() as ThunderField).IsUsed).length;
 	}
 
 	IsDesctrutible(): boolean {
@@ -154,19 +147,19 @@ export class Reactor extends Field implements ISelectable {
 		});
 	}
 
-	public GetArea(): CellContext<Cell> {
-		if (this._cells.IsEmpty()) {
-			this.RefreshArea();
+	public GetInternal(): CellContext<Cell> {
+		if (this._internalCells.IsEmpty()) {
+			this.RefreshInternal();
 		}
-		return this._cells;
+		return this._internalCells;
 	}
 
-	private RefreshArea() {
-		this._cells.Clear();
+	private RefreshInternal() {
+		this._internalCells.Clear();
 		this.GetCell().GetAllNeighbourhood(this._range).forEach((cell) => {
-			this._cells.Add(cell as Cell);
+			this._internalCells.Add(cell as Cell);
 		});
-		this._cells.Add(this.GetCell());
+		this._internalCells.Add(this.GetCell());
 	}
 
 	public Destroy(): void {

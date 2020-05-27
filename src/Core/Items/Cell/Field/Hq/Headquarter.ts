@@ -1,3 +1,4 @@
+import { BatteryField } from '../Bonus/BatteryField';
 import { GameContext } from '../../../../Framework/GameContext';
 import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
 import { FlagCell } from '../../FlagCell';
@@ -20,6 +21,7 @@ import { SimpleOrder } from '../../../../Ia/Order/SimpleOrder';
 import { GameSettings } from '../../../../Framework/GameSettings';
 import { Reactor } from '../Bonus/Reactor';
 import { ISelectable } from '../../../../ISelectable';
+import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
 
 export class Headquarter extends AliveItem implements IField, ISelectable {
 	public Flagcell: FlagCell;
@@ -31,7 +33,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	private _diamondCount: number = GameSettings.PocketMoney;
 	private _skin: ItemSkin;
 	private _onCellStateChanged: (obj: any, cellState: CellState) => void;
-	private _influenceFields: Array<Reactor> = new Array<Reactor>();
+	private _reactors: Array<Reactor> = new Array<Reactor>();
+	private _batteryFields: Array<BatteryField> = new Array<BatteryField>();
+
 	private _vehicles: Array<Vehicle> = new Array<Vehicle>();
 	public OnVehiculeCreated: LiteEvent<Vehicle> = new LiteEvent<Vehicle>();
 
@@ -329,22 +333,40 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		});
 	}
 
-	public GetInfluenceCount(): number {
-		return this._influenceFields.length;
+	public GetReactorsCount(): number {
+		return this._reactors.length;
 	}
 
-	public GetInfluence(): Array<Reactor> {
-		return this._influenceFields;
+	public GetReactors(): Array<Reactor> {
+		return this._reactors;
 	}
 
-	public AddInfluence(i: Reactor): void {
-		this._influenceFields.push(i);
-		i.Lost.On((e: any, ie: Reactor) => {
-			this._influenceFields = this._influenceFields.filter((v) => v !== ie);
+	public AddReactor(reactor: Reactor): void {
+		this._reactors.push(reactor);
+		reactor.Lost.On((e: any, ie: Reactor) => {
+			this._reactors = this._reactors.filter((v) => v !== ie);
 		});
 	}
 
+	public AddBatteryField(energyField: BatteryField): void {
+		this._batteryFields.push(energyField);
+	}
+
+	public GetBatteryFields(): Array<BatteryField> {
+		return this._batteryFields;
+	}
+
 	public GetTotalEnergy(): number {
-		return this._influenceFields.map((i) => i.GetInternalEnergy()).reduce((a, e) => a + e, 0);
+		return this._batteryFields.length;
+	}
+
+	GetCellEnergy(coo: HexAxial): number {
+		let result = 0;
+		this._reactors.forEach((r) => {
+			if (r.GetInternal().Exist(coo)) {
+				result += r.GetPower();
+			}
+		});
+		return result;
 	}
 }

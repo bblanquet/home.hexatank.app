@@ -1,118 +1,96 @@
+import { CellContext } from './../CellContext';
+import { BatteryField } from './Bonus/BatteryField';
 import { Headquarter } from './Hq/Headquarter';
 import { Reactor } from './Bonus/Reactor';
 import { BonusField } from './Bonus/BonusField';
 import { AliveBonusField } from './Bonus/AliveBonusField';
+import { ICell } from '../ICell';
 
 export class Battery {
-	private _usedEnergy: number = 0;
+	private _batteryFields: Array<BatteryField> = new Array<BatteryField>();
 
 	constructor(private _hq: Headquarter, private _field: Reactor) {}
 
 	GetUsedPower() {
-		return this._usedEnergy;
+		return this._batteryFields.length;
 	}
 
-	public GetTotalPower(): number {
-		const externalFields = this._hq
-			.GetInfluence()
-			.filter((f) => f !== this._field)
-			.filter((f) => f.GetArea().Exist(this._field.GetCell().GetCoordinate()));
-
-		const externalStockfields = externalFields.filter((f) => f.Battery.HasInternalStock());
-
-		const extenalEnergy = externalStockfields
-			.map((f) => f.Battery.GetInternalStock())
-			.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-
-		return extenalEnergy + this._field.GetInternalEnergy();
+	public GetTotalBatteries(): number {
+		return this.GetRemains().length + this._batteryFields.length;
 	}
 
 	public High(): void {
-		if (this.HasInternalStock() || this.TryToGetExternalEnergy()) {
-			this._usedEnergy += 1;
-			this._field.GetArea().All().forEach((cell) => {
-				if (cell.GetField() instanceof BonusField) {
-					const bonusField = cell.GetField() as BonusField;
-					if (bonusField.IsAlly(this._hq)) {
-						bonusField.EnergyChanged(true);
-					}
-				} else if (cell.GetField() instanceof AliveBonusField) {
-					const bonusField = cell.GetField() as AliveBonusField;
-					if (!bonusField.IsEnemy(this._hq)) {
-						bonusField.EnergyChanged(true);
-					}
-				}
-			});
+		const remains = this.GetRemains();
+		if (0 < remains.length) {
+			const battery = remains.shift();
+			battery.SetUsed(true);
+			this._batteryFields.push(battery);
+			this.UpdateBonusCells(true);
 		}
 	}
 
-	private TryToGetExternalEnergy(): boolean {
-		const field = this._hq
-			.GetInfluence()
-			.filter((f) => f !== this._field)
-			.filter((f) => f.Battery.HasInternalStock())
-			.filter((f) => f.GetArea().Exist(this._field.GetCell().GetCoordinate()))
-			.sort((one, two) => (one.Battery.GetInternalStock() > two.Battery.GetInternalStock() ? -1 : 1));
-
-		if (field.length > 0) {
-			field[0].Battery.ReducePower();
-			return true;
-		} else {
-			return false;
-		}
+	private UpdateBonusCells(isUp: boolean) {
+		this._field.GetInternal().All().forEach((cell) => {
+			if (cell.GetField() instanceof BonusField) {
+				const bonusField = cell.GetField() as BonusField;
+				if (bonusField.IsAlly(this._hq)) {
+					bonusField.EnergyChanged(isUp);
+				}
+			} else if (cell.GetField() instanceof AliveBonusField) {
+				const bonusField = cell.GetField() as AliveBonusField;
+				if (!bonusField.IsEnemy(this._hq)) {
+					bonusField.EnergyChanged(isUp);
+				}
+			}
+		});
 	}
 
 	public Low(): void {
-		if (this._usedEnergy > 0) {
-			this._usedEnergy -= 1;
-			this._field.GetArea().All().forEach((cell) => {
-				if (cell.GetField() instanceof BonusField) {
-					const bonusField = cell.GetField() as BonusField;
-					if (bonusField.IsAlly(this._hq)) {
-						bonusField.EnergyChanged(false);
-					}
-				} else if (cell.GetField() instanceof AliveBonusField) {
-					const bonusField = cell.GetField() as AliveBonusField;
-					if (!bonusField.IsEnemy(this._hq)) {
-						bonusField.EnergyChanged(false);
-					}
-				}
-			});
+		if (this._batteryFields.length > 0) {
+			const battery = this._batteryFields.shift();
+			battery.SetUsed(false);
+			this.UpdateBonusCells(false);
 		}
 	}
-
-	public GetCurrentPower(): number {
-		return this._usedEnergy;
-	}
-
-	public ReducePower(): void {}
 
 	public HasStock(): boolean {
-		const power = this.GetTotalPower();
-		if (this._usedEnergy > power) {
-			throw 'should not happen';
-		}
-
-		return this._usedEnergy < power;
+		return this.GetRemains().length > 0;
 	}
 
-	private HasInternalStock(): boolean {
-		if (this._usedEnergy > this.GetInternalEnergy()) {
-			throw 'should not happen';
-		}
-
-		return this._usedEnergy < this.GetInternalEnergy();
+	private GetRemains(): Array<BatteryField> {
+		return this.GetRemainingBatteries(this.GetCells(this.GetNearbyReactors()));
 	}
 
-	public GetInternalStock(): number {
-		if (this._usedEnergy > this.GetInternalEnergy()) {
-			throw 'should not happen';
-		}
-
-		return this.GetInternalEnergy() - this._usedEnergy;
+	private GetRemainingBatteries(cells: CellContext<ICell>): Array<BatteryField> {
+		const result = new Array<BatteryField>();
+		this._hq.GetBatteryFields().filter((f) => !f.IsUsed()).forEach((battery) => {
+			if (cells.Exist(battery.GetCell().GetCoordinate())) {
+				result.push(battery);
+			}
+		});
+		return result;
 	}
 
-	public GetInternalEnergy(): number {
-		return this._field.GetInternalEnergy();
+	private GetCells(reactors: Array<Reactor>): CellContext<ICell> {
+		const result = new CellContext();
+		reactors.forEach((r) => {
+			r.GetInternal().All().forEach((cell) => {
+				if (!result.Exist(cell.GetCoordinate())) {
+					result.Add(cell);
+				}
+			});
+		});
+		return result;
+	}
+
+	private GetNearbyReactors(): Array<Reactor> {
+		const result = new Array<Reactor>();
+		const internal = this._field.GetInternal();
+		this._hq.GetReactors().forEach((reactor) => {
+			if (internal.Exist(reactor.GetCell().GetCoordinate())) {
+				result.push(reactor);
+			}
+		});
+		return result;
 	}
 }

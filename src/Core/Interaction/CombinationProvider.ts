@@ -1,4 +1,4 @@
-import { ThunderField } from '../Items/Cell/Field/Bonus/ThunderField';
+import { BatteryField } from '../Items/Cell/Field/Bonus/BatteryField';
 import { NetworkField } from '../Items/Cell/Field/Bonus/NetworkField';
 import { NetworkMenuItem } from './../Menu/Buttons/NetworkMenuItem';
 import { ThunderMenuItem } from './../Menu/Buttons/ThunderMenuItem';
@@ -122,7 +122,7 @@ export class CombinationProvider {
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof ThunderMenuItem,
-				(e) => new ThunderField(e, gameContext.MainHq),
+				(e) => new BatteryField(e, gameContext.MainHq),
 				'Thunder'
 			),
 			new GenericCellCombination(

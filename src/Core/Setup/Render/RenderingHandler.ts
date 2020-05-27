@@ -10,7 +10,15 @@ export class RenderingHandler {
 	}
 
 	public Add(item: Item) {
-		item.GetDisplayObjects().forEach((sprite) => {
+		const all = item.GetDisplayObjects();
+		const sprites = all.filter((i) => i instanceof PIXI.Sprite);
+		const others = all.filter((i) => !(i instanceof PIXI.Sprite));
+
+		sprites.forEach((sprite) => {
+			this._groups.Z[item.Z].addChild(sprite);
+		});
+
+		others.forEach((sprite) => {
 			this._groups.Z[item.Z].addChild(sprite);
 		});
 	}

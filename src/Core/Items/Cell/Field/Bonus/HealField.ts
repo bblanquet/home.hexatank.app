@@ -12,7 +12,7 @@ export class HealField extends BonusField {
 
 	Support(vehicule: Vehicle): void {
 		if (0 < this.Energy) {
-			const sum = this.GetInfluenceSum(vehicule);
+			const sum = this.GetReactorsPower(vehicule);
 			vehicule.SetDamage(-(0.1 + sum));
 			vehicule.TranslationSpeed = GameSettings.TranslationSpeed;
 			vehicule.RotationSpeed = GameSettings.RotationSpeed;

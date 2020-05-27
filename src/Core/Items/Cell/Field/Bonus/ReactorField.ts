@@ -1,8 +1,9 @@
+import { InfiniteFadeAnimation } from './../../../Animator/InfiniteFadeAnimation';
+import { IAnimator } from './../../../Animator/IAnimator';
 import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { Item } from '../../../Item';
 import { IInteractionContext } from '../../../../Interaction/IInteractionContext';
 import { CellState } from '../../CellState';
-import { IAnimator } from '../../../Animator/IAnimator';
 import { Archive } from '../../../../Framework/ResourceArchiver';
 import { BouncingScaleAnimator } from '../../../Animator/BouncingScaleAnimator';
 import { Reactor } from './Reactor';
@@ -11,12 +12,14 @@ export class ReactorField extends Item {
 	private _isIncreasingOpacity: boolean = false;
 	private _onCellStateChanged: (obj: any, cellState: CellState) => void;
 	private _animator: IAnimator;
+	private _fadeAnimator: IAnimator;
 
 	constructor(public InfluenceField: Reactor, private _light: string) {
 		super();
 		this.Z = 1;
 		this.GenerateSprite(Archive.bonus.coverBottom);
 		this.GenerateSprite(Archive.bonus.reactor.bottom);
+		this.GenerateSprite(Archive.bonus.reactor.top);
 		this.GenerateSprite(this._light);
 		this.GenerateSprite(Archive.bonus.coverTop);
 		this.InitPosition(this.InfluenceField.GetCell().GetBoundingBox());
@@ -24,6 +27,7 @@ export class ReactorField extends Item {
 		this._onCellStateChanged = this.OnCellStateChanged.bind(this);
 		this.InfluenceField.GetCell().CellStateChanged.On(this._onCellStateChanged);
 		this._animator = new BouncingScaleAnimator(this);
+		this._fadeAnimator = new InfiniteFadeAnimation(this, Archive.bonus.reactor.top, 0.2, 1, 0.005);
 	}
 
 	protected OnCellStateChanged(obj: any, cellState: CellState): void {
@@ -53,6 +57,8 @@ export class ReactorField extends Item {
 		} else {
 			super.Update(viewX, viewY);
 		}
+
+		this._fadeAnimator.Update(viewX, viewY);
 
 		this.SetProperty(this._light, (s) => {
 			if (s.alpha < 0.1) {

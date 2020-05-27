@@ -24,9 +24,11 @@ export abstract class Field extends Item implements IField {
 		this._cell.CellStateChanged.Off(this._onCellStateChanged);
 	}
 
-	protected GetInfluenceSum(vehicule: Vehicle) {
-		const influences = vehicule.Hq.GetInfluence().filter((f) => f.GetArea().Exist(this.GetCell().GetCoordinate()));
-		const sum = 1 + influences.map((i) => i.GetPower()).reduce((a, b) => a + b, 0) / 10;
+	protected GetReactorsPower(vehicule: Vehicle): number {
+		const connectedReactors = vehicule.Hq
+			.GetReactors()
+			.filter((f) => f.GetInternal().Exist(this.GetCell().GetCoordinate()));
+		const sum = connectedReactors.map((i) => i.GetPower()).reduce((a, b) => a + b, 0);
 		return sum;
 	}
 

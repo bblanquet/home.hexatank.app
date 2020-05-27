@@ -15,7 +15,7 @@ export class MultiSelectionMenu {
 
 	constructor() {
 		this._tankSelection = new StaticBasicItem(
-			BoundingBox.Create(0, 0, GameSettings.Size * 2, GameSettings.Size * 4),
+			BoundingBox.Create(0, 0, 180, 280),
 			Archive.menu.smartMenu.tankSelection,
 			Archive.menu.smartMenu.hoverTankSelection,
 			7,
@@ -26,7 +26,7 @@ export class MultiSelectionMenu {
 		this._tankSelection.SetVisible(this.IsVisible.bind(this));
 
 		this._cellSelection = new StaticBasicItem(
-			BoundingBox.Create(0, 0, GameSettings.Size * 2, GameSettings.Size * 4),
+			BoundingBox.Create(0, 0, 180, 280),
 			Archive.menu.smartMenu.cellSelection,
 			Archive.menu.smartMenu.hoverCellSelection,
 			7,

@@ -9,7 +9,7 @@ export class CellStateSetter {
 	}
 
 	public static SetState(gameContext: GameContext, cell: Cell): void {
-		const territoty = gameContext.MainHq.GetInfluence().map((f) => f.GetArea());
+		const territoty = gameContext.MainHq.GetReactors().map((f) => f.GetInternal());
 
 		let isContained = false;
 		territoty.some((c) => (isContained = c.Exist(cell.GetCoordinate())));

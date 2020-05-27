@@ -22,7 +22,7 @@ export default class CellMenuComponent extends Component<
 	render() {
 		return (
 			<div class="left-column">
-				<div class="middle2 max-width" style="max-height: 100vh;height:100vh;overflow-y: scroll;">
+				<div class="middle2 max-width" style="max-height:100vh;overflow-y: scroll;">
 					<div class="btn-group-vertical max-width">
 						<button
 							type="button"
@@ -31,7 +31,7 @@ export default class CellMenuComponent extends Component<
 						>
 							<div class="fill-influence max-width standard-space" />
 							<div class="max-width align-text-center darker">
-								{GameSettings.TruckPrice * this.props.GameContext.MainHq.GetInfluenceCount()}{' '}
+								{GameSettings.TruckPrice * this.props.GameContext.MainHq.GetReactorsCount()}{' '}
 								<span class="fill-diamond badge very-small-space middle"> </span>
 							</div>
 						</button>

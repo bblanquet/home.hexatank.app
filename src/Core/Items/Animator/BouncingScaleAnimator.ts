@@ -13,6 +13,7 @@ export class BouncingScaleAnimator implements IAnimator {
 			obj.height = 0;
 		});
 	}
+	Reset(): void {}
 
 	Update(viewX: number, viewY: number): void {
 		if (this._isIncreasing) {

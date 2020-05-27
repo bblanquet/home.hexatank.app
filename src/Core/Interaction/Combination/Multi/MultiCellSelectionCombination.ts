@@ -1,3 +1,4 @@
+import { BasicField } from './../../../Items/Cell/Field/BasicField';
 import { SlowField } from '../../../Items/Cell/Field/Bonus/SlowField';
 import { SlowMenuItem } from '../../../Menu/Buttons/SlowMenuItem';
 import { PoisonMenuItem } from '../../../Menu/Buttons/PoisonMenuItem';
@@ -91,7 +92,9 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 							'Money'
 						);
 					}
+					this._gameContext.MainHq.Buy(cost);
 				}
+
 				this._cells.forEach((c) => {
 					c.SetSelected(false);
 				});
@@ -105,11 +108,16 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 	}
 	private SetMenuItem(getField: (e: Cell) => Field, fieldType: string) {
 		this._cells.forEach((c) => {
-			PeerHandler.SendMessage(PacketKind.Field, {
-				Hq: this._gameContext.MainHq.GetCurrentCell().GetCoordinate(),
-				cell: c.GetCoordinate(),
-				Type: fieldType
-			});
+			if (c.GetField() instanceof BasicField) {
+				this._cells.forEach((c) => {
+					PeerHandler.SendMessage(PacketKind.Field, {
+						Hq: this._gameContext.MainHq.GetCurrentCell().GetCoordinate(),
+						cell: c.GetCoordinate(),
+						Type: fieldType
+					});
+				});
+				getField(c);
+			}
 		});
 	}
 }

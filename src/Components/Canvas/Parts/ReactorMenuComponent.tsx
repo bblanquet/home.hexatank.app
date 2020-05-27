@@ -1,7 +1,6 @@
 import { Component, h } from 'preact';
 import { PlusMenuItem } from '../../../Core/Menu/Buttons/PlusMenuItem';
 import { MinusMenuItem } from '../../../Core/Menu/Buttons/MinusMenuItem';
-import { GameSettings } from '../../../Core/Framework/GameSettings';
 import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
 import { Reactor } from '../../../Core/Items/Cell/Field/Bonus/Reactor';
 import { Item } from '../../../Core/Items/Item';
@@ -14,7 +13,7 @@ export default class ReactorMenuComponent extends Component<
 	{}
 > {
 	render() {
-		const field = this.props.Item as Reactor;
+		const reactor = this.props.Item as Reactor;
 		return (
 			<div class="left-column">
 				<div class="middle2 max-width">
@@ -22,7 +21,7 @@ export default class ReactorMenuComponent extends Component<
 						<button type="button" class="btn btn-light without-padding">
 							<div class="fill-energy max-width standard-space" />
 							<div class="max-width align-text-center darker">
-								{field.Battery.GetCurrentPower()}/{field.Battery.GetTotalPower()}
+								{reactor.Battery.GetUsedPower()}/{reactor.Battery.GetTotalBatteries()}
 							</div>
 						</button>
 						<button

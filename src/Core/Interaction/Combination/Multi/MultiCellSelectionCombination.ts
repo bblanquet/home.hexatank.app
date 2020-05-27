@@ -1,3 +1,7 @@
+import { ShieldMenuItem } from './../../../Menu/Buttons/ShieldMenuItem';
+import { ShieldField } from './../../../Items/Cell/Field/Bonus/ShieldField';
+import { BatteryField } from './../../../Items/Cell/Field/Bonus/BatteryField';
+import { ThunderMenuItem } from './../../../Menu/Buttons/ThunderMenuItem';
 import { BasicField } from './../../../Items/Cell/Field/BasicField';
 import { SlowField } from '../../../Items/Cell/Field/Bonus/SlowField';
 import { SlowMenuItem } from '../../../Menu/Buttons/SlowMenuItem';
@@ -18,13 +22,13 @@ import { MoneyField } from '../../../Items/Cell/Field/Bonus/MoneyField';
 import { MoneyMenuItem } from '../../../Menu/Buttons/MoneyMenuItem';
 import { FastField } from '../../../Items/Cell/Field/Bonus/FastField';
 import { InteractionKind } from '../../IInteractionContext';
-import { Field } from '../../../Items/Cell/Field/Field';
 import { PoisonField } from '../../../Items/Cell/Field/Bonus/PoisonField';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { InteractionMode } from '../../InteractionMode';
 import { AppHandler } from '../../../../Components/Canvas/AppHandler';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { GameContext } from '../../../Framework/GameContext';
+import { IField } from '../../../Items/Cell/Field/IField';
 
 export class MultiCellSelectionCombination extends AbstractSingleCombination {
 	private _cells: Cell[];
@@ -77,20 +81,21 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 						this.SetMenuItem((c) => new HealField(c, this._gameContext.MainHq), 'Heal');
 					} else if (menuItem instanceof AttackMenuItem) {
 						this.SetMenuItem((c) => new AttackField(c, this._gameContext.MainHq), 'Attack');
+					} else if (menuItem instanceof ShieldMenuItem) {
+						this.SetMenuItem((c) => new ShieldField(c, this._gameContext.MainHq), 'Shield');
 					} else if (menuItem instanceof SpeedFieldMenuItem) {
 						this.SetMenuItem((c) => new FastField(c, this._gameContext.MainHq), 'Fast');
 					} else if (menuItem instanceof PoisonMenuItem) {
 						this.SetMenuItem((c) => new PoisonField(c, this._gameContext.MainHq), 'Poison');
+					} else if (menuItem instanceof ThunderMenuItem) {
+						this.SetMenuItem((c) => new BatteryField(c, this._gameContext.MainHq), 'Battery');
 					} else if (menuItem instanceof SlowMenuItem) {
 						this.SetMenuItem(
 							(c) => new SlowField(c, this._gameContext.MainHq.GetSkin().GetLight()),
 							'Slow'
 						);
 					} else if (menuItem instanceof MoneyMenuItem) {
-						this.SetMenuItem(
-							(c) => new MoneyField(c, this._gameContext.MainHq.GetSkin().GetLight()),
-							'Money'
-						);
+						this.SetMenuItem((c) => new MoneyField(c, this._gameContext.MainHq), 'Money');
 					}
 					this._gameContext.MainHq.Buy(cost);
 				}
@@ -106,7 +111,7 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 		}
 		return false;
 	}
-	private SetMenuItem(getField: (e: Cell) => Field, fieldType: string) {
+	private SetMenuItem(getField: (e: Cell) => IField, fieldType: string) {
 		this._cells.forEach((c) => {
 			if (c.GetField() instanceof BasicField) {
 				this._cells.forEach((c) => {

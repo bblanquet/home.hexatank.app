@@ -15,7 +15,7 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 	public OnDestroyed: SimpleEvent = new SimpleEvent();
 
 	public Z: number;
-	public IsUpdatable: Boolean;
+	public IsUpdatable: boolean;
 	public IsCentralRef: boolean = false;
 
 	constructor(isUpdatable: boolean = true) {

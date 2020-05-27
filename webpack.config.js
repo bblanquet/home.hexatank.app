@@ -7,11 +7,11 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 var getPostension = function(env) {
 	if (env.NODE_ENV === 'mottet') {
-		return '/BB/';
+		return '/BB/Res/';
 	} else if (env.NODE_ENV === 'mobile') {
-		return '/android_asset/www/';
+		return '/android_asset/www/Res/';
 	} else {
-		return '/';
+		return '/Res/';
 	}
 };
 
@@ -97,7 +97,7 @@ module.exports = (env) => {
 			new HtmlWebpackPlugin({
 				template: 'src/index.html'
 			}),
-			new CopyPlugin([ { from: './Resources', to: '' } ])
+			new CopyPlugin([ { from: './Resources', to: 'Res' } ])
 		]
 	};
 };

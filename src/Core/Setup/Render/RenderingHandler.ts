@@ -19,7 +19,7 @@ export class RenderingHandler {
 		});
 
 		others.forEach((sprite) => {
-			this._groups.Z[item.Z].addChild(sprite);
+			this._groups.Z[4].addChild(sprite);
 		});
 	}
 

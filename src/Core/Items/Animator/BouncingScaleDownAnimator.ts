@@ -7,8 +7,8 @@ export class BouncingScaleDownAnimator implements IAnimator {
 	private _step: number = 0.01;
 	private _isIncreasing: boolean = true;
 
-	public constructor(private _item: Item, private _sprite: string) {
-		this._item.SetProperties([ this._sprite ], (e) => (e.alpha = 1));
+	public constructor(private _item: Item, private _sprites: string[]) {
+		this._item.SetProperties(this._sprites, (e) => (e.alpha = 1));
 	}
 	Reset(): void {}
 
@@ -29,13 +29,13 @@ export class BouncingScaleDownAnimator implements IAnimator {
 		if (this._scale <= 0 && !this._isIncreasing) {
 			this._scale = 0;
 			this.SetBoundingBox(viewX, viewY);
-			this._item.SetProperties([ this._sprite ], (e) => (e.alpha = 0));
+			this._item.SetProperties(this._sprites, (e) => (e.alpha = 0));
 			this.IsDone = true;
 		}
 	}
 
 	private SetBoundingBox(viewX: number, viewY: number) {
-		this._item.SetProperties([ this._sprite ], (obj) => {
+		this._item.SetProperties(this._sprites, (obj) => {
 			obj.width = this._item.GetBoundingBox().Width * this._scale;
 			obj.height = this._item.GetBoundingBox().Height * this._scale;
 			if (!this._item.IsCentralRef) {

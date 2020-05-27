@@ -17,7 +17,7 @@ export class FarmRequestHandler implements ISimpleRequestHandler {
 			console.log(`%c [FARM] `, 'font-weight:bold;color:blue;');
 			cells.forEach((c) => {
 				if (c.GetField() instanceof BasicField) {
-					new MoneyField(c, this._hq.GetSkin().GetLight());
+					new MoneyField(c, this._hq);
 					this._hq.Buy(GameSettings.FieldPrice);
 				}
 			});

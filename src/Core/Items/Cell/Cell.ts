@@ -191,7 +191,7 @@ export class Cell extends Item implements ICell, ISelectable {
 
 		if (isDiscovered) {
 			this.SetProperty(Archive.hiddenCell, (e) => (e.alpha = 1));
-			this._animator = new BouncingScaleDownAnimator(this, Archive.hiddenCell);
+			this._animator = new BouncingScaleDownAnimator(this, [ Archive.hiddenCell ]);
 		}
 	}
 

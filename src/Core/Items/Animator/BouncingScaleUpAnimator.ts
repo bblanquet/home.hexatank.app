@@ -7,8 +7,8 @@ export class BouncingScaleUpAnimator implements IAnimator {
 	private _step: number = 0.01;
 	private _isIncreasing: boolean = true;
 
-	public constructor(private _item: Item, private _sprite: string) {
-		this._item.SetProperties([ this._sprite ], (e) => (e.alpha = 0));
+	public constructor(private _item: Item, private _sprites: string[]) {
+		this._item.SetProperties(this._sprites, (e) => (e.alpha = 0));
 	}
 	Reset(): void {}
 
@@ -34,7 +34,7 @@ export class BouncingScaleUpAnimator implements IAnimator {
 	}
 
 	private SetBoundingBox(viewX: number, viewY: number) {
-		this._item.SetProperties([ this._sprite ], (obj) => {
+		this._item.SetProperties(this._sprites, (obj) => {
 			const reference = this._item.GetRef();
 			console.log('X: ' + obj.x + 'W: ' + this._item.GetBoundingBox().Width);
 			obj.width = this._item.GetBoundingBox().Width * this._scale;

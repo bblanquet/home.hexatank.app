@@ -1,3 +1,4 @@
+import { Headquarter } from './../Hq/Headquarter';
 import { FadeOutAnimation } from '../../../Animator/FadeOutAnimation';
 import { FadeInAnimation } from '../../../Animator/FadeInAnimation';
 import { IAnimator } from '../../../Animator/IAnimator';
@@ -5,7 +6,6 @@ import { Cell } from '../../Cell';
 import { Archive } from '../../../../Framework/ResourceArchiver';
 import { BonusField } from './BonusField';
 import { Vehicle } from '../../../Unit/Vehicle';
-import { Headquarter } from '../Hq/Headquarter';
 
 export class BatteryField extends BonusField {
 	private _isUsed: boolean;
@@ -24,7 +24,7 @@ export class BatteryField extends BonusField {
 		}
 	}
 
-	constructor(cell: Cell, private hq: Headquarter) {
+	constructor(cell: Cell, hq: Headquarter) {
 		super(cell, [ Archive.bonus.thunder, Archive.bonus.redThunder ], hq);
 		this.SetProperty(Archive.bonus.redThunder, (e) => (e.alpha = 0));
 		hq.AddBatteryField(this);

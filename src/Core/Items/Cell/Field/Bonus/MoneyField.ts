@@ -11,6 +11,7 @@ import { Vehicle } from '../../../Unit/Vehicle';
 import { Truck } from '../../../Unit/Truck';
 import { IAnimator } from '../../../Animator/IAnimator';
 import { BouncingScaleAnimator } from '../../../Animator/BouncingScaleAnimator';
+import { Headquarter } from '../Hq/Headquarter';
 
 export class MoneyField extends Field {
 	private _timer: TickTimer;
@@ -18,7 +19,7 @@ export class MoneyField extends Field {
 	private _animator: IAnimator;
 	private _isIncreasingOpacity: boolean = false;
 
-	constructor(cell: Cell, private _light: string) {
+	constructor(cell: Cell, private _hq: Headquarter) {
 		super(cell);
 		this.GetCell().SetField(this);
 		this.Z = 1;
@@ -28,7 +29,7 @@ export class MoneyField extends Field {
 		this.GenerateSprite(Archive.bonus.coverBottom);
 		this.GenerateSprite(Archive.bonus.emptyMoney);
 		this.GenerateSprite(Archive.bonus.fullMoney, (s) => (s.alpha = 0));
-		this.GenerateSprite(this._light);
+		this.GenerateSprite(this._hq.GetSkin().GetLight());
 		this.GenerateSprite(Archive.bonus.coverTop);
 
 		this.InitPosition(cell.GetBoundingBox());
@@ -62,7 +63,7 @@ export class MoneyField extends Field {
 		if (this.IsFull()) {
 			if (vehicule instanceof Truck) {
 				let truck = vehicule as Truck;
-				const sum = this.GetReactorsPower(vehicule);
+				const sum = this.GetReactorsPower(this._hq) * 0.3;
 				truck.Hq.Earn(1 + sum);
 				this.SetEmpty();
 				this._lightItem.Hide();
@@ -102,7 +103,7 @@ export class MoneyField extends Field {
 			}
 		}
 
-		this.SetProperty(this._light, (s) => {
+		this.SetProperty(this._hq.GetSkin().GetLight(), (s) => {
 			if (s.alpha < 0.1) {
 				this._isIncreasingOpacity = true;
 			}

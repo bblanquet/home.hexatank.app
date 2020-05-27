@@ -12,10 +12,10 @@ export class AttackField extends BonusField {
 
 	Support(vehicule: Vehicle): void {
 		if (0 < this.Energy) {
-			const sum = this.GetReactorsPower(vehicule);
+			const sum = this.GetReactorsPower(this.hq) * 0.1;
 			vehicule.TranslationSpeed = GameSettings.TranslationSpeed;
 			vehicule.RotationSpeed = GameSettings.RotationSpeed;
-			vehicule.Attack = GameSettings.Attack * (2 + sum);
+			vehicule.Attack = GameSettings.Attack + 2 + sum;
 		}
 	}
 }

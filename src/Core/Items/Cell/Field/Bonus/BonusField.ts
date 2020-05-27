@@ -16,7 +16,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 	private _isIncreasingOpacity: boolean = false;
 	public Energy: number = 0;
 
-	constructor(cell: Cell, private _bonus: string[], private _hq: Headquarter) {
+	constructor(cell: Cell, private _bonus: string[], protected hq: Headquarter) {
 		super(cell);
 		this.GetCell().SetField(this);
 		this.Z = 1;
@@ -24,21 +24,21 @@ export abstract class BonusField extends Field implements IActiveContainer {
 		this._bonus.forEach((b) => {
 			this.GenerateSprite(b);
 		});
-		this.GenerateSprite(this._hq.GetSkin().GetLight());
+		this.GenerateSprite(this.hq.GetSkin().GetLight());
 		this.GenerateSprite(Archive.bonus.coverTop);
 		this.InitPosition(cell.GetBoundingBox());
 		this.GetDisplayObjects().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});
 		this._animator = new BouncingScaleAnimator(this);
-		this.Energy = this._hq.GetCellEnergy(cell.GetCoordinate());
+		this.Energy = this.hq.GetCellEnergy(cell.GetCoordinate());
 	}
 	EnergyChanged(isUp: boolean): void {
 		this.Energy = isUp ? this.Energy + 1 : this.Energy - 1;
 	}
 
 	public IsAlly(aliveItem: AliveItem): boolean {
-		return !this._hq.IsEnemy(aliveItem);
+		return !this.hq.IsEnemy(aliveItem);
 	}
 
 	protected OnCellStateChanged(cellState: CellState): void {
@@ -61,7 +61,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 			super.Update(viewX, viewY);
 		}
 		if (0 < this.Energy) {
-			this.SetProperty(this._hq.GetSkin().GetLight(), (s) => {
+			this.SetProperty(this.hq.GetSkin().GetLight(), (s) => {
 				if (s.alpha < 0.1) {
 					this._isIncreasingOpacity = true;
 				}
@@ -73,7 +73,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 				s.alpha += this._isIncreasingOpacity ? 0.01 : -0.01;
 			});
 		} else {
-			this.SetProperty(this._hq.GetSkin().GetLight(), (e) => (e.alpha = 0));
+			this.SetProperty(this.hq.GetSkin().GetLight(), (e) => (e.alpha = 0));
 		}
 	}
 

@@ -317,7 +317,11 @@ export default class CanvasComponent extends Component<
 				<div class="container-center">
 					<div class="title-container">Menu</div>
 					{ComponentsHelper.GetRedButton(false, 'fas fa-undo-alt', 'Resume', (e) => this.SetMenu(e))}
-					{ComponentsHelper.GetRedButton(false, 'fas fa-undo-alt', 'Cheat', (e) => this.Cheat(e))}
+					{GameSettings.ShowEnemies ? (
+						ComponentsHelper.GetBlackButton(false, 'fas fa-undo-alt', 'Cheat', (e) => this.Cheat(e))
+					) : (
+						ComponentsHelper.GetRedButton(false, 'fas fa-undo-alt', 'Cheat', (e) => this.Cheat(e))
+					)}
 					{ComponentsHelper.GetRedButton(false, 'fas fa-undo-alt', 'Quit', (e) => this.Quit(e))}
 				</div>
 			</div>

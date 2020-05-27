@@ -15,6 +15,10 @@ export class TimeTimer implements ITimer {
 	}
 
 	IsElapsed(): boolean {
-		return this._currentDate < Date.now();
+		const result = this._currentDate < Date.now();
+		if (result) {
+			this._currentDate = Date.now() + this._tick;
+		}
+		return result;
 	}
 }

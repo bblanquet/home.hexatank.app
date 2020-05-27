@@ -33,6 +33,13 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 			obj.visible = this.GetCell().IsVisible();
 		});
 		this._animator = new BouncingScaleAnimator(this);
+		this.Energy = this._hq.GetCellEnergy(cell.GetCoordinate());
+	}
+
+	protected GetReactorsPower(hq: Headquarter): number {
+		const connectedReactors = hq.GetReactors().filter((f) => f.GetInternal().Exist(this.GetCell().GetCoordinate()));
+		const sum = connectedReactors.map((i) => i.GetPower()).reduce((a, b) => a + b, 0);
+		return sum;
 	}
 
 	public EnergyChanged(isUp: boolean): void {
@@ -41,9 +48,9 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 		this.Energy = isUp ? this.Energy + 1 : this.Energy - 1;
 
 		if (this.Energy === 1 && formerEnergy === 0) {
-			this._animator = new BouncingScaleUpAnimator(this, this._bonus[0]);
+			this._animator = new BouncingScaleUpAnimator(this, this._bonus);
 		} else if (this.Energy === 0 && formerEnergy === 1) {
-			this._animator = new BouncingScaleDownAnimator(this, this._bonus[0]);
+			this._animator = new BouncingScaleDownAnimator(this, this._bonus);
 		}
 	}
 
@@ -87,7 +94,7 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 		return true;
 	}
 	IsBlocking(): boolean {
-		return true;
+		return 0 < this.Energy;
 	}
 
 	public abstract Support(vehicule: Vehicle): void;

@@ -11,9 +11,9 @@ export class FastField extends BonusField {
 	}
 	Support(vehicule: Vehicle): void {
 		if (0 < this.Energy) {
-			const sum = this.GetReactorsPower(vehicule);
-			vehicule.TranslationSpeed = GameSettings.TranslationSpeed * (2 + sum);
-			vehicule.RotationSpeed = GameSettings.RotationSpeed * (2 + sum);
+			const sum = this.GetReactorsPower(this.hq) * 0.1;
+			vehicule.TranslationSpeed = GameSettings.TranslationSpeed * (1.5 + sum);
+			vehicule.RotationSpeed = GameSettings.RotationSpeed * (1.5 + sum);
 			vehicule.Attack = GameSettings.Attack;
 		}
 	}

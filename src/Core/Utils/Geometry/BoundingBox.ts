@@ -31,6 +31,15 @@ export class BoundingBox {
 		return b;
 	}
 
+	public static CreateFromBoxAndShift(a: BoundingBox, x: number, y: number): BoundingBox {
+		let b = new BoundingBox();
+		b.X = a.X + x;
+		b.Y = a.Y + y;
+		b.Width = a.Width;
+		b.Height = a.Height;
+		return b;
+	}
+
 	public SetPosition(point: Point): void {
 		this.X = point.X;
 		this.Y = point.Y;

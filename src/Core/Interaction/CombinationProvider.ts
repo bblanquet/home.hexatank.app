@@ -116,7 +116,7 @@ export class CombinationProvider {
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof MoneyMenuItem,
-				(e) => new MoneyField(e, gameContext.MainHq.GetSkin().GetLight()),
+				(e) => new MoneyField(e, gameContext.MainHq),
 				'Money'
 			),
 			new GenericCellCombination(

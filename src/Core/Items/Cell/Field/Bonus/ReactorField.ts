@@ -1,4 +1,6 @@
-import { InfiniteFadeAnimation } from './../../../Animator/InfiniteFadeAnimation';
+import { BasicItem } from './../../../BasicItem';
+import { RotationAnimator } from './../../../Animator/RotationAnimator';
+import { BasicAnimatedItem } from './../../../BasicAnimatedItem';
 import { IAnimator } from './../../../Animator/IAnimator';
 import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { Item } from '../../../Item';
@@ -7,27 +9,54 @@ import { CellState } from '../../CellState';
 import { Archive } from '../../../../Framework/ResourceArchiver';
 import { BouncingScaleAnimator } from '../../../Animator/BouncingScaleAnimator';
 import { Reactor } from './Reactor';
+import { GameSettings } from '../../../../Framework/GameSettings';
 
 export class ReactorField extends Item {
 	private _isIncreasingOpacity: boolean = false;
 	private _onCellStateChanged: (obj: any, cellState: CellState) => void;
 	private _animator: IAnimator;
-	private _fadeAnimator: IAnimator;
+	private _wires: BasicAnimatedItem[];
+	private _reactor: BasicItem;
 
-	constructor(public InfluenceField: Reactor, private _light: string) {
+	constructor(public Reactor: Reactor, private _light: string) {
 		super();
 		this.Z = 1;
+
 		this.GenerateSprite(Archive.bonus.coverBottom);
-		this.GenerateSprite(Archive.bonus.reactor.bottom);
-		this.GenerateSprite(Archive.bonus.reactor.top);
 		this.GenerateSprite(this._light);
 		this.GenerateSprite(Archive.bonus.coverTop);
-		this.InitPosition(this.InfluenceField.GetCell().GetBoundingBox());
+		this.InitPosition(this.Reactor.GetCell().GetBoundingBox());
 
 		this._onCellStateChanged = this.OnCellStateChanged.bind(this);
-		this.InfluenceField.GetCell().CellStateChanged.On(this._onCellStateChanged);
+		this.Reactor.GetCell().CellStateChanged.On(this._onCellStateChanged);
 		this._animator = new BouncingScaleAnimator(this);
-		this._fadeAnimator = new InfiniteFadeAnimation(this, Archive.bonus.reactor.top, 0.2, 1, 0.005);
+
+		this._wires = [
+			this.GetWire(-GameSettings.Size / 4, -GameSettings.Size / 4, false),
+			this.GetWire(GameSettings.Size / 4, GameSettings.Size / 4, true),
+			this.GetWire(-GameSettings.Size / 4, GameSettings.Size / 4, false),
+			this.GetWire(GameSettings.Size / 4, -GameSettings.Size / 4, true)
+		];
+
+		this._reactor = new BasicItem(
+			BoundingBox.CreateFromBox(this.Reactor.GetCell().GetBoundingBox()),
+			Archive.bonus.reactor.bottom,
+			2
+		);
+		this._reactor.SetVisible(() => this.Reactor.GetCell().IsVisible());
+		this._reactor.SetAlive(() => this.Reactor.IsUpdatable);
+	}
+
+	private GetWire(x: number, y: number, side: boolean): BasicAnimatedItem {
+		const wire = new BasicAnimatedItem(
+			BoundingBox.CreateFromBoxAndShift(this.Reactor.GetCell().GetBoundingBox(), x, y),
+			Archive.bonus.reactor.wire,
+			2,
+			(e) => new RotationAnimator(e, [ Archive.bonus.reactor.wire ], side)
+		);
+		wire.SetVisible(() => this.Reactor.GetCell().IsVisible());
+		wire.SetAlive(() => this.Reactor.IsUpdatable);
+		return wire;
 	}
 
 	protected OnCellStateChanged(obj: any, cellState: CellState): void {
@@ -38,17 +67,23 @@ export class ReactorField extends Item {
 
 	public Destroy(): void {
 		super.Destroy();
-		this.InfluenceField.GetCell().CellStateChanged.Off(this._onCellStateChanged);
+		this.Reactor.GetCell().CellStateChanged.Off(this._onCellStateChanged);
 	}
 
 	public GetBoundingBox(): BoundingBox {
-		return this.InfluenceField.GetCell().GetBoundingBox();
+		return this.Reactor.GetCell().GetBoundingBox();
 	}
 	public Select(context: IInteractionContext): boolean {
 		return false;
 	}
 
 	public Update(viewX: number, viewY: number): void {
+		this._wires.forEach((w) => {
+			w.Update(viewX, viewY);
+		});
+
+		this._reactor.Update(viewX, viewY);
+
 		if (!this._animator.IsDone) {
 			this._animator.Update(viewX, viewY);
 			if (this._animator.IsDone) {
@@ -57,8 +92,6 @@ export class ReactorField extends Item {
 		} else {
 			super.Update(viewX, viewY);
 		}
-
-		this._fadeAnimator.Update(viewX, viewY);
 
 		this.SetProperty(this._light, (s) => {
 			if (s.alpha < 0.1) {
@@ -75,8 +108,8 @@ export class ReactorField extends Item {
 
 	private ChangeReferential(viewX: number, viewY: number) {
 		this.GetSprites().forEach((sprite) => {
-			(sprite.width = this.InfluenceField.GetCell().GetBoundingBox().Width),
-				(sprite.height = this.InfluenceField.GetCell().GetBoundingBox().Height);
+			(sprite.width = this.Reactor.GetCell().GetBoundingBox().Width),
+				(sprite.height = this.Reactor.GetCell().GetBoundingBox().Height);
 			sprite.anchor.set(0.5);
 		});
 		this.IsCentralRef = true;

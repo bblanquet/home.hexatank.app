@@ -117,7 +117,8 @@ export const Archive = {
 		},
 		reactor: {
 			top: './floor/reactorLight.svg',
-			bottom: './floor/reactor.svg'
+			bottom: './floor/reactor.svg',
+			wire: './floor/reactorWire.svg'
 		},
 		coverBottom: './floor/coverBottom.svg',
 		coverTop: './floor/coverTop.svg',
@@ -127,6 +128,7 @@ export const Archive = {
 		thunder: './floor/energy.svg',
 		redThunder: './floor/lowEnergy.svg',
 		shield: './floor/shield.svg',
+		shieldLight: './floor/shieldLight.svg',
 		health: './floor/repair.svg',
 		poison: './floor/poison.svg',
 		slow: './floor/slowCell.svg',
@@ -190,28 +192,28 @@ export const Archive = {
 			turrel: './tank/red/head.svg',
 			truck: './truck/truck.svg',
 			hq: './building/redHqBottom.svg',
-			area: './building/redEnergyCell.svg'
+			area: './building/redAreaEnergy.svg'
 		},
 		blue: {
 			tank: './tank/blue/body.svg',
 			turrel: './tank/blue/head.svg',
 			truck: './truck/blueTruck.svg',
 			hq: './building/blueHqBottom.svg',
-			area: './building/blueEnergyCell.svg'
+			area: './building/blueAreaEnergy.svg'
 		},
 		yellow: {
 			tank: './tank/yellow/body.svg',
 			turrel: './tank/yellow/head.svg',
 			truck: './truck/yellowTruck.svg',
 			hq: './building/yellowHqBottom.svg',
-			area: './building/yellowEnergyCell.svg'
+			area: './building/yellowAreaEnergy.svg'
 		},
 		purple: {
 			tank: './tank/purple/body.svg',
 			turrel: './tank/purple/head.svg',
 			truck: './truck/purpleTruck.svg',
 			hq: './building/purpleHqBottom.svg',
-			area: './building/purpleEnergyCell.svg'
+			area: './building/purpleAreaEnergy.svg'
 		}
 	},
 	wheel: './tank/wheel.svg',

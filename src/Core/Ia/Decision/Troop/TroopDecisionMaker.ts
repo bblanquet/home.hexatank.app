@@ -44,7 +44,7 @@ export class TroopDecisionMaker {
 			if (this._changePositionTimer.IsElapsed()) {
 				this.SetNextDestination();
 			}
-		} else if (this.IsIdle()) {
+		} else if (this.Tank.HasTarget() || this.IsIdle()) {
 			if (isNullOrUndefined(this._idleTimer)) {
 				this._idleTimer = new TimeTimer(4000);
 			}

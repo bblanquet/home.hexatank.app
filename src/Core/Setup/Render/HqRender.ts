@@ -133,7 +133,7 @@ export class HqRender {
 
 		kingdom.Setup(
 			new AreaRequestMaker(kingdom),
-			new RequestHandler(hq, kingdom),
+			new RequestHandler(hq, kingdom, context),
 			new ExpansionMaker(hq, kingdom, cells),
 			new GeneralRequester()
 		);

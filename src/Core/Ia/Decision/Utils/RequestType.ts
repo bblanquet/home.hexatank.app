@@ -8,5 +8,7 @@ export enum RequestType {
 	Truck = 'Truck',
 	Defense = 'Defense',
 	Heal = 'Heal',
-	HealUnit = 'HealUnit'
+	HealUnit = 'HealUnit',
+	Reactor = 'Reactor',
+	Energy = 'Energy'
 }

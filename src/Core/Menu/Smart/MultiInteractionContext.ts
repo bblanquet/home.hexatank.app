@@ -1,4 +1,4 @@
-import { InteractionKind } from './../../Interaction/IInteractionContext';
+import { InteractionKind } from '../../Interaction/IInteractionContext';
 import { isNullOrUndefined } from 'util';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { BasicItem } from '../../Items/BasicItem';
@@ -11,7 +11,7 @@ import { Item } from '../../Items/Item';
 import { InteractionMode } from '../../Interaction/InteractionMode';
 import { ViewContext } from '../../Utils/Geometry/ViewContext';
 
-export class MovingInteractionContext implements IInteractionContext {
+export class MultiInteractionContext implements IInteractionContext {
 	public Kind: InteractionKind;
 	public Mode: InteractionMode;
 	public Point: PIXI.Point;

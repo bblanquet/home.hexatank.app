@@ -1,3 +1,4 @@
+import { ReactorRequester } from './AreaRequester/ReactorRequester';
 import { ClearAreaRequester } from './AreaRequester/ClearAreaRequester';
 import { HealUnitRequester } from './AreaRequester/HealUnitRequester';
 import { FarmRequester } from './AreaRequester/FarmRequester';
@@ -17,6 +18,7 @@ export class AreaRequestMaker implements IAreaRequestListMaker {
 
 	constructor(private _kingdom: Kingdom) {
 		this._requesters = [
+			new ReactorRequester(),
 			new HealUnitRequester(this._kingdom),
 			new ClearAreaRequester(),
 			new TruckRequest(),

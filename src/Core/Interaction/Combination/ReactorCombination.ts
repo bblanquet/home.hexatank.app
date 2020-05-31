@@ -11,7 +11,7 @@ import { GameSettings } from '../../Framework/GameSettings';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { GameContext } from '../../Framework/GameContext';
 
-export class InfluenceCombination extends AbstractSingleCombination {
+export class ReactorCombination extends AbstractSingleCombination {
 	constructor(private _gameContext: GameContext) {
 		super();
 	}
@@ -38,7 +38,7 @@ export class InfluenceCombination extends AbstractSingleCombination {
 						PeerHandler.SendMessage(PacketKind.Field, {
 							Hq: this._gameContext.MainHq.GetCurrentCell().GetCoordinate(),
 							cell: cell.GetCoordinate(),
-							Type: 'Influence'
+							Type: 'Reactor'
 						});
 						new Reactor(
 							cell,

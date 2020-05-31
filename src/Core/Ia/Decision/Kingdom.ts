@@ -1,3 +1,4 @@
+import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
 import { MoneyOrder } from './../Order/MoneyOrder';
 import { Diamond } from './../../Items/Cell/Field/Diamond';
 import { IExpansionMaker } from './ExpansionMaker/IExpansionMaker';
@@ -7,7 +8,6 @@ import { Groups } from '../../Utils/Collections/Groups';
 import { Dictionnary } from '../../Utils/Collections/Dictionnary';
 import { IAreaDecisionMaker } from './Area/IAreaDecisionMaker';
 import { ExcessTankFinder } from './ExcessTankFinder';
-import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { AreaRequest } from './Utils/AreaRequest';
 import { RequestPriority } from './Utils/RequestPriority';
 import { KingdomArea } from './Utils/KingdomArea';
@@ -19,26 +19,28 @@ import { IRequestHandler } from './RequestHandler/IRequestHandler';
 import { Tank } from '../../Items/Unit/Tank';
 import { IAreaRequestListMaker } from './RequestMaker/IAreaRequestListMaker';
 import { IGeneralListRequester } from './RequestMaker/GeneralRequester/IGeneralListRequester';
+import { Cell } from '../../Items/Cell/Cell';
 
 export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	public AreaDecisions: IAreaDecisionMaker[];
 	public Trucks: Array<Truck> = new Array<Truck>();
 	public Tanks: Array<Tank> = new Array<Tank>();
 	public CellAreas: Dictionnary<IAreaDecisionMaker>;
+	public IdleTanks: ExcessTankFinder;
+
 	private _diamond: Diamond;
 	private _idleTimer: TickTimer = new TickTimer(25);
-	public IdleTanks: ExcessTankFinder;
 	private _requestMaker: IAreaRequestListMaker;
 	private _requestHandler: IRequestHandler;
 	private _expansionMaker: IExpansionMaker;
 	private _generalRequestMaker: IGeneralListRequester;
 
-	constructor(private _hq: Headquarter, public RemainingAreas: Area[]) {
+	constructor(public Hq: Headquarter, public RemainingAreas: Area[]) {
 		this.AreaDecisions = new Array<IAreaDecisionMaker>();
 		this.CellAreas = new Dictionnary<IAreaDecisionMaker>();
 		this.IdleTanks = new ExcessTankFinder();
 
-		this._hq.OnVehiculeCreated.On((hq: any, vehicle: Vehicle) => {
+		this.Hq.OnVehiculeCreated.On((hq: any, vehicle: Vehicle) => {
 			if (vehicle instanceof Truck) {
 				const truck = vehicle as Truck;
 				this.Trucks.push(truck);
@@ -52,6 +54,14 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	public SetDiamond(diamond: Diamond): void {
 		this._diamond = diamond;
 		this._diamond.OnDestroyed.On(this.DiamondDestroyed.bind(this));
+	}
+
+	public GetArea(cell: Cell): KingdomArea {
+		const areas = this.AreaDecisions.filter((c) => c.Area.HasCell(cell));
+		if (0 < areas.length) {
+			return areas[0].Area;
+		}
+		return null;
 	}
 
 	private DiamondDestroyed(): void {
@@ -138,12 +148,12 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 			: '';
 		// const mCount = requests.Exist(RequestPriority.Medium) ? requests.Get(RequestPriority.Medium).length : 0;
 		// const lCount = requests.Exist(RequestPriority.Low) ? requests.Get(RequestPriority.Low).length : 0;
-		// console.log(
-		// 	`%c [MONEY] ${this._hq.GetAmount()} [A] ${this.AreaDecisions.length}`,
-		// 	'font-weight:bold;color:#940c0c;'
-		// );
-		// console.log(`%c [H] ${hCount} ${hTypes.toString()} `, 'font-weight:bold;color:#94570c;');
-		// console.log(`%c [M] ${mCount} ${mTypes.toString()} `, 'font-weight:bold;color:#94770c;');
-		// console.log(`%c ----------------------- `, 'font-weight:bold;color:#94770c;');
+		console.log(
+			`%c [MONEY] ${this.Hq.GetAmount()} [A] ${this.AreaDecisions.length}`,
+			'font-weight:bold;color:#940c0c;'
+		);
+		console.log(`%c [H] ${hCount} ${hTypes.toString()} `, 'font-weight:bold;color:#94570c;');
+		console.log(`%c [M] ${mCount} ${mTypes.toString()} `, 'font-weight:bold;color:#94770c;');
+		console.log(`%c ----------------------- `, 'font-weight:bold;color:#94770c;');
 	}
 }

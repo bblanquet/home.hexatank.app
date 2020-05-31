@@ -15,7 +15,6 @@ import { AStarEngine } from '../../AStarEngine';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { BasicField } from '../../../Items/Cell/Field/BasicField';
-import { HealField } from '../../../Items/Cell/Field/Bonus/HealField';
 
 export class BasicAreaDecisionMaker {
 	private _areaSearch: AreaSearch;

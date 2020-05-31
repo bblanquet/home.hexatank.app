@@ -14,6 +14,7 @@ import { Cell } from '../../../Items/Cell/Cell';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 import { Tank } from '../../../Items/Unit/Tank';
 import { Truck } from '../../../Items/Unit/Truck';
+import { ReactorAreaState } from './ReactorAreaState';
 
 export class KingdomArea {
 	public Troops: Array<TroopDecisionMaker>;
@@ -31,8 +32,29 @@ export class KingdomArea {
 			);
 	}
 
+	public IsCovered(): ReactorAreaState {
+		let covered = 0;
+		this.GetSpot().GetCells().forEach((c) => {
+			if (this._hq.IsCovered(c)) {
+				covered += 1;
+			}
+		});
+		console.log('is covered: ' + covered);
+		if (covered === 7) {
+			return ReactorAreaState.All;
+		} else if (covered === 0) {
+			return ReactorAreaState.None;
+		} else {
+			return ReactorAreaState.Partial;
+		}
+	}
+
 	public IsImportant(): boolean {
 		return this._spot.HasDiamond() || this._spot.HasHq();
+	}
+
+	HasCell(cell: Cell) {
+		return this._spot.Contains(cell);
 	}
 
 	public HasFreeFields(): boolean {

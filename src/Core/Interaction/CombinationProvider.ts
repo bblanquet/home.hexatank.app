@@ -35,9 +35,9 @@ import { AbortCombination } from './Combination/AbortCombination';
 import { SwitchToHeadquarterCombination } from './Combination/SwitchToHeadquarterCombination';
 import { PowerUpCombination } from './Combination/PowerUpCombination';
 import { PowerDownCombination } from './Combination/PowerDownCombination';
-import { InfluenceCombination } from './Combination/InfluenceCombination';
+import { ReactorCombination } from './Combination/ReactorCombination';
 import { CamouflageCombination } from './Combination/CamouflageCombination';
-import { MovingInteractionContext } from '../Menu/Smart/MovingInteractionContext';
+import { MultiInteractionContext } from '../Menu/Smart/MultiInteractionContext';
 import { AttackMenuItem } from '../Menu/Buttons/AttackMenuItem';
 import { SlowMenuItem } from '../Menu/Buttons/SlowMenuItem';
 import { SlowField } from '../Items/Cell/Field/Bonus/SlowField';
@@ -55,7 +55,7 @@ import { FastField } from '../Items/Cell/Field/Bonus/FastField';
 export class CombinationProvider {
 	GetCombination(appHandler: AppHandler, checker: ISelectableChecker, gameContext: GameContext): ICombination[] {
 		const multiselectionMenu = new MultiSelectionMenu();
-		const multiSelectionContext = new MovingInteractionContext(appHandler.GetViewport());
+		const multiSelectionContext = new MultiInteractionContext(appHandler.GetViewport());
 		return [
 			new DisplayMultiMenuCombination(multiselectionMenu, appHandler),
 			new MovingMultiMenuCombination(multiselectionMenu),
@@ -82,7 +82,7 @@ export class CombinationProvider {
 			new SelectionCombination(checker, gameContext),
 			new CamouflageCombination(),
 			new TargetCombination(),
-			new InfluenceCombination(gameContext),
+			new ReactorCombination(gameContext),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof SpeedFieldMenuItem,

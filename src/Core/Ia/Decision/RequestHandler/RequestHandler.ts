@@ -1,3 +1,5 @@
+import { EnergyRequestHandler } from './Handler/EnergyRequestHandler';
+import { ReactorRequestHandler } from './Handler/ReactorRequestHandler';
 import { ClearRequestHandler } from './Handler/ClearRequestHandler';
 import { ClearAreaRequester } from './../RequestMaker/AreaRequester/ClearAreaRequester';
 import { HealUnitRequestHandler } from './Handler/HealUnitRequestHandler';
@@ -14,12 +16,15 @@ import { IRequestHandler } from './IRequestHandler';
 import { Kingdom } from '../Kingdom';
 import { RequestPriority } from '../Utils/RequestPriority';
 import { AreaRequest } from '../Utils/AreaRequest';
+import { GameContext } from '../../../Framework/GameContext';
 
 export class RequestHandler implements IRequestHandler {
 	private _handlers: Groups<ISimpleRequestHandler>;
 
-	constructor(private _hq: Headquarter, private _kindgom: Kingdom) {
+	constructor(private _hq: Headquarter, private _kindgom: Kingdom, context: GameContext) {
 		this._handlers = new Groups<ISimpleRequestHandler>();
+		this._handlers.Add(RequestPriority.High, new EnergyRequestHandler(this._hq));
+		this._handlers.Add(RequestPriority.High, new ReactorRequestHandler(this._hq, context));
 		this._handlers.Add(RequestPriority.High, new ClearRequestHandler());
 		this._handlers.Add(RequestPriority.High, new HealUnitRequestHandler(this._kindgom));
 		this._handlers.Add(RequestPriority.High, new HealingRequestHandler(this._hq));

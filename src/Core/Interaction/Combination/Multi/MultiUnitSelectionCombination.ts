@@ -6,7 +6,7 @@ import { SelectionMode } from '../../../Menu/Smart/SelectionMode';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { GameHelper } from '../../../Framework/GameHelper';
-import { MovingInteractionContext } from '../../../Menu/Smart/MovingInteractionContext';
+import { MultiInteractionContext } from '../../../Menu/Smart/MultiInteractionContext';
 import { InteractionMode } from '../../InteractionMode';
 import { AppHandler } from '../../../../Components/Canvas/AppHandler';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
@@ -18,7 +18,7 @@ export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 
 	constructor(
 		private _multiselection: MultiSelectionMenu,
-		private _multiContext: MovingInteractionContext,
+		private _multiContext: MultiInteractionContext,
 		private _appHandler: AppHandler,
 		private _gameContext: GameContext
 	) {

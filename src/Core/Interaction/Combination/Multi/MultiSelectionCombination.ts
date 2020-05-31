@@ -1,4 +1,4 @@
-import { MovingInteractionContext } from '../../../Menu/Smart/MovingInteractionContext';
+import { MultiInteractionContext } from '../../../Menu/Smart/MultiInteractionContext';
 import { CombinationContext } from '../CombinationContext';
 import { InteractionMode } from '../../InteractionMode';
 import { Point } from '../../../Utils/Geometry/Point';
@@ -6,7 +6,7 @@ import { InteractionKind } from '../../IInteractionContext';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 
 export class MultiSelectionCombination extends AbstractSingleCombination {
-	constructor(private _interactionContext: MovingInteractionContext) {
+	constructor(private _interactionContext: MultiInteractionContext) {
 		super();
 	}
 

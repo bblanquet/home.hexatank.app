@@ -1,3 +1,4 @@
+import { GeneralEnergyRequester } from './Requesters/GeneralEnergyRequester';
 import { GeneralTruckRequester } from './Requesters/GeneralTruckRequester';
 import { GeneralHealingRequester } from './Requesters/GeneralHealingRequester';
 import { IGeneralRequester } from './IGeneralRequester';
@@ -9,7 +10,7 @@ import { RequestPriority } from '../../Utils/RequestPriority';
 export class GeneralRequester implements IGeneralListRequester {
 	_requesters: IGeneralRequester[];
 	constructor() {
-		this._requesters = [ new GeneralTruckRequester(), new GeneralHealingRequester() ];
+		this._requesters = [ new GeneralTruckRequester(), new GeneralHealingRequester(), new GeneralEnergyRequester() ];
 	}
 
 	public GetResquest(kingdom: Kingdom): AreaRequest[] {

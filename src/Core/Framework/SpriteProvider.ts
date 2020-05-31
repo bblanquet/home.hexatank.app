@@ -10,6 +10,7 @@ export class SpriteProvider implements ISpriteProvider {
 			const postension = `.{{}}`;
 			name = name.slice(1);
 			name = postension + name;
+			name = name.replace('//', '/');
 			return new PIXI.Sprite(PIXI.Texture.fromImage(name, undefined, undefined, accuracy));
 		} else {
 			throw Error('nothing');

@@ -20,6 +20,7 @@ import { PacketKind } from '../../../../../Components/Network/PacketKind';
 export class Reactor extends Field implements ISelectable {
 	private _area: Array<BasicItem> = new Array<BasicItem>();
 	public Battery: Battery;
+	private _totalRange: number = 4;
 	private _range: number = 0;
 	private _internalCells: CellContext<Cell> = new CellContext<Cell>();
 	public Lost: LiteEvent<Reactor> = new LiteEvent<Reactor>();
@@ -48,7 +49,7 @@ export class Reactor extends Field implements ISelectable {
 	}
 
 	private RangeAnimation(): void {
-		if (this._range < 4) {
+		if (this._range < this._totalRange) {
 			this._range += 1;
 			this.RefreshInternal();
 			this.UpdateCellStates(this._range);
@@ -154,9 +155,13 @@ export class Reactor extends Field implements ISelectable {
 		return this._internalCells;
 	}
 
+	public IsCovered(c: Cell): boolean {
+		return this.GetInternal().Exist(c.GetCoordinate());
+	}
+
 	private RefreshInternal() {
 		this._internalCells.Clear();
-		this.GetCell().GetAllNeighbourhood(this._range).forEach((cell) => {
+		this.GetCell().GetAllNeighbourhood(this._totalRange).forEach((cell) => {
 			this._internalCells.Add(cell as Cell);
 		});
 		this._internalCells.Add(this.GetCell());

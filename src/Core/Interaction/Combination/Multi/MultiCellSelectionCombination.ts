@@ -9,7 +9,7 @@ import { PoisonMenuItem } from '../../../Menu/Buttons/PoisonMenuItem';
 import { Cell } from '../../../Items/Cell/Cell';
 import { MultiSelectionMenu } from '../../../Menu/Smart/MultiSelectionMenu';
 import { CombinationContext } from '../CombinationContext';
-import { MovingInteractionContext } from '../../../Menu/Smart/MovingInteractionContext';
+import { MultiInteractionContext } from '../../../Menu/Smart/MultiInteractionContext';
 import { SelectionMode } from '../../../Menu/Smart/SelectionMode';
 import { HealMenuItem } from '../../../Menu/Buttons/HealMenuItem';
 import { PeerHandler } from '../../../../Components/Network/Host/On/PeerHandler';
@@ -35,7 +35,7 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 
 	constructor(
 		private _multiselection: MultiSelectionMenu,
-		private _multiSelectionContext: MovingInteractionContext,
+		private _multiSelectionContext: MultiInteractionContext,
 		private _appHandler: AppHandler,
 		private _gameContext: GameContext
 	) {

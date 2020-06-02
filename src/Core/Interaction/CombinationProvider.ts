@@ -1,3 +1,4 @@
+import { SwithcMultiCombination } from './Combination/SwitchMultiCombination';
 import { BatteryField } from '../Items/Cell/Field/Bonus/BatteryField';
 import { NetworkField } from '../Items/Cell/Field/Bonus/NetworkField';
 import { NetworkMenuItem } from './../Menu/Buttons/NetworkMenuItem';
@@ -37,7 +38,7 @@ import { PowerUpCombination } from './Combination/PowerUpCombination';
 import { PowerDownCombination } from './Combination/PowerDownCombination';
 import { ReactorCombination } from './Combination/ReactorCombination';
 import { CamouflageCombination } from './Combination/CamouflageCombination';
-import { MultiInteractionContext } from '../Menu/Smart/MultiInteractionContext';
+import { MultiSelectionContext } from '../Menu/Smart/MultiSelectionContext';
 import { AttackMenuItem } from '../Menu/Buttons/AttackMenuItem';
 import { SlowMenuItem } from '../Menu/Buttons/SlowMenuItem';
 import { SlowField } from '../Items/Cell/Field/Bonus/SlowField';
@@ -55,8 +56,12 @@ import { FastField } from '../Items/Cell/Field/Bonus/FastField';
 export class CombinationProvider {
 	GetCombination(appHandler: AppHandler, checker: ISelectableChecker, gameContext: GameContext): ICombination[] {
 		const multiselectionMenu = new MultiSelectionMenu();
-		const multiSelectionContext = new MultiInteractionContext(appHandler.GetViewport());
+		const multiSelectionContext = new MultiSelectionContext(appHandler.GetViewport());
 		return [
+			new AbortCombination(),
+			new CancelCombination(),
+			new CamouflageCombination(),
+			new SwithcMultiCombination(appHandler, multiSelectionContext),
 			new DisplayMultiMenuCombination(multiselectionMenu, appHandler),
 			new MovingMultiMenuCombination(multiselectionMenu),
 			new UpMultiMenuCombination(multiselectionMenu, appHandler),
@@ -64,7 +69,6 @@ export class CombinationProvider {
 			new MultiUnitSelectionCombination(multiselectionMenu, multiSelectionContext, appHandler, gameContext),
 			new MultiCellSelectionCombination(multiselectionMenu, multiSelectionContext, appHandler, gameContext),
 			new FlagCellCombination(gameContext),
-			new AbortCombination(),
 			new SearchMoneyCombination(),
 			new AddTankCombination(gameContext),
 			new AddTruckCombination(gameContext),
@@ -72,7 +76,6 @@ export class CombinationProvider {
 			new SwitchToVehicleCombination(gameContext),
 			new SwitchToInfluenceCombination(),
 			new SwitchToHeadquarterCombination(),
-			new CancelCombination(),
 			new TruckDiamondCombination(),
 			new TruckCombination(),
 			new TankCombination(),
@@ -80,7 +83,6 @@ export class CombinationProvider {
 			new ClearTrashCombination(checker),
 			new UnselectCombination(checker, gameContext),
 			new SelectionCombination(checker, gameContext),
-			new CamouflageCombination(),
 			new TargetCombination(),
 			new ReactorCombination(gameContext),
 			new GenericCellCombination(

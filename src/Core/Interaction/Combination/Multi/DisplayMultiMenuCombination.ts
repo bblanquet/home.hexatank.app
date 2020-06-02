@@ -15,7 +15,7 @@ export class DisplayMultiMenuCombination extends AbstractSingleCombination {
 
 	IsMatching(context: CombinationContext): boolean {
 		return (
-			//context.ContextMode === InteractionMode.SingleSelection &&
+			context.ContextMode === InteractionMode.SingleSelection &&
 			context.InteractionKind === InteractionKind.Holding
 		);
 	}

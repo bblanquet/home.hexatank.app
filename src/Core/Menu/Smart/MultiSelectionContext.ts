@@ -11,7 +11,7 @@ import { Item } from '../../Items/Item';
 import { InteractionMode } from '../../Interaction/InteractionMode';
 import { ViewContext } from '../../Utils/Geometry/ViewContext';
 
-export class MultiInteractionContext implements IInteractionContext {
+export class MultiSelectionContext implements IInteractionContext {
 	public Kind: InteractionKind;
 	public Mode: InteractionMode;
 	public Point: PIXI.Point;
@@ -25,7 +25,7 @@ export class MultiInteractionContext implements IInteractionContext {
 		this._enlightCells = new Array<BasicItem>();
 	}
 
-	public Start(): void {
+	public Listen(): void {
 		this._isOn = true;
 	}
 
@@ -51,7 +51,7 @@ export class MultiInteractionContext implements IInteractionContext {
 		return this._cells.All();
 	}
 
-	public Stop(): void {
+	public Close(): void {
 		this._isOn = false;
 		this._cells = new CellContext();
 		this._enlightCells.forEach((c) => c.Destroy());

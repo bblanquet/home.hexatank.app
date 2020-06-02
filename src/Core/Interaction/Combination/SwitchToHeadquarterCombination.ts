@@ -1,3 +1,4 @@
+import { Group } from './../../Items/Group';
 import { ISelectable } from '../../ISelectable';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Cell } from '../../Items/Cell/Cell';
@@ -13,6 +14,7 @@ export class SwitchToHeadquarterCombination extends AbstractSingleCombination {
 			context.Items.length == 2 &&
 			(context.Items[0] instanceof Vehicle ||
 				context.Items[0] instanceof Cell ||
+				context.Items[0] instanceof Group ||
 				context.Items[0] instanceof Reactor) &&
 			context.Items[1] instanceof Headquarter
 		);

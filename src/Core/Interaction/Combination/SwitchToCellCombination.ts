@@ -4,13 +4,16 @@ import { Reactor } from '../../Items/Cell/Field/Bonus/Reactor';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { ISelectable } from '../../ISelectable';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
+import { Group } from '../../Items/Group';
 
 export class SwitchToCellCombination extends AbstractSingleCombination {
 	IsMatching(context: CombinationContext): boolean {
 		return (
 			this.IsNormalMode(context) &&
 			context.Items.length == 2 &&
-			(context.Items[0] instanceof Headquarter || context.Items[0] instanceof Reactor) &&
+			(context.Items[0] instanceof Headquarter ||
+				context.Items[0] instanceof Reactor ||
+				context.Items[0] instanceof Group) &&
 			context.Items[1] instanceof Cell
 		);
 	}

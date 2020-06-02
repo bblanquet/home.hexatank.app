@@ -30,7 +30,7 @@ export class TroopDecisionMaker {
 		this._idleTimer = new TimeTimer(0);
 	}
 
-	SetTarget(cell: Cell) {
+	public SetTarget(cell: Cell): void {
 		this._target = cell.GetShootableEntity();
 		this.Tank.SetMainTarget(this._target);
 	}
@@ -44,12 +44,12 @@ export class TroopDecisionMaker {
 			if (this._changePositionTimer.IsElapsed()) {
 				this.SetNextDestination();
 			}
-		} else if (this.Tank.HasTarget() || this.IsIdle()) {
+		} else if (this.IsIdle()) {
 			if (isNullOrUndefined(this._idleTimer)) {
 				this._idleTimer = new TimeTimer(4000);
 			}
 
-			if (this._idleTimer.IsElapsed()) {
+			if (this.Tank.HasTarget() || this._idleTimer.IsElapsed()) {
 				this._idleTimer = null;
 				this.SetNextDestination();
 				this.Tank.SetOrder(new SimpleOrder(this.CurrentPatrolDestination, this.Tank));

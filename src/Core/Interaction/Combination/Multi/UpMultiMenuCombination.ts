@@ -1,5 +1,4 @@
 import { MultiSelectionMenu } from '../../../Menu/Smart/MultiSelectionMenu';
-import { ICombination } from '../ICombination';
 import { CombinationContext } from '../CombinationContext';
 import { SelectionMode } from '../../../Menu/Smart/SelectionMode';
 import { InteractionMode } from '../../InteractionMode';

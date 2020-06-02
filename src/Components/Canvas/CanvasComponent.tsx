@@ -16,6 +16,7 @@ import { Headquarter } from '../../Core/Items/Cell/Field/Hq/Headquarter';
 import { AppHandler } from './AppHandler';
 import HqMenuComponent from './Parts/HqMenuComponent';
 import TankMenuComponent from './Parts/TankMenuComponent';
+import MultiTankMenuComponent from './Parts/MultiTankMenuComponent';
 import CellMenuComponent from './Parts/CellMenuComponent';
 import TruckMenuComponent from './Parts/TruckMenuComponent';
 import { InteractionContext } from '../../Core/Interaction/InteractionContext';
@@ -24,6 +25,7 @@ import { RenderingGroups } from '../../Core/Setup/Render/RenderingGroups';
 import { MapRender } from '../../Core/Setup/Render/MapRender';
 import { ComponentsHelper } from '../ComponentsHelper';
 import ReactorMenuComponent from './Parts/ReactorMenuComponent';
+import { Group } from '../../Core/Items/Group';
 
 export default class CanvasComponent extends Component<
 	any,
@@ -173,6 +175,8 @@ export default class CanvasComponent extends Component<
 				return <TankMenuComponent AppHandler={this._appHandler} />;
 			} else if (this.state.Item instanceof Truck) {
 				return <TruckMenuComponent AppHandler={this._appHandler} />;
+			} else if (this.state.Item instanceof Group) {
+				return <MultiTankMenuComponent AppHandler={this._appHandler} />;
 			} else if (this.state.Item instanceof Headquarter) {
 				return (
 					<HqMenuComponent

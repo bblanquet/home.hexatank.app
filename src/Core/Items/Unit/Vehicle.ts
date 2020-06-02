@@ -30,8 +30,9 @@ import { PacketKind } from '../../../Components/Network/PacketKind';
 import { Explosion } from './Explosion';
 import { Sprite } from 'pixi.js';
 import { Point } from '../../Utils/Geometry/Point';
+import { ICancellable } from './ICancellable';
 
-export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable {
+export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable, ICancellable {
 	public Id: string;
 	RotationSpeed: number = 0.05;
 	TranslationSpeed: number = 0.2;

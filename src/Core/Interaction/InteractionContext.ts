@@ -139,7 +139,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 		}
 		if (this.Kind !== InteractionKind.Moving) {
 			console.log(
-				`%c [${this._selectedItem.length}] selected: ${item ? item.constructor.name : 'none'} ${InteractionMode[
+				`%c [${this._selectedItem.length}] selected: ${item ? item.constructor.name : 'none'} ${InteractionKind[
 					this.Kind
 				]} ${InteractionMode[this.Mode]}`,
 				'font-weight:bold;color:red;'

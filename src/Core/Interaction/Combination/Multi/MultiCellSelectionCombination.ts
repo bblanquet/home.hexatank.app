@@ -9,7 +9,7 @@ import { PoisonMenuItem } from '../../../Menu/Buttons/PoisonMenuItem';
 import { Cell } from '../../../Items/Cell/Cell';
 import { MultiSelectionMenu } from '../../../Menu/Smart/MultiSelectionMenu';
 import { CombinationContext } from '../CombinationContext';
-import { MultiInteractionContext } from '../../../Menu/Smart/MultiInteractionContext';
+import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
 import { SelectionMode } from '../../../Menu/Smart/SelectionMode';
 import { HealMenuItem } from '../../../Menu/Buttons/HealMenuItem';
 import { PeerHandler } from '../../../../Components/Network/Host/On/PeerHandler';
@@ -35,7 +35,7 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 
 	constructor(
 		private _multiselection: MultiSelectionMenu,
-		private _multiSelectionContext: MultiInteractionContext,
+		private _multiSelectionContext: MultiSelectionContext,
 		private _appHandler: AppHandler,
 		private _gameContext: GameContext
 	) {
@@ -65,7 +65,7 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 				this._cells.forEach((c) => {
 					c.SetSelected(true);
 				});
-				this._multiSelectionContext.Stop();
+				this._multiSelectionContext.Close();
 				if (this._cells.length === 0) {
 					this.OnChangedMode.Invoke(this, InteractionMode.SingleSelection);
 					this._appHandler.RestartNavigation();

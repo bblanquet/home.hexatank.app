@@ -41,17 +41,21 @@ export class ReactorField extends Item {
 		this._reactor = new BasicItem(
 			BoundingBox.CreateFromBox(this.Reactor.GetCell().GetBoundingBox()),
 			Archive.bonus.reactor.bottom,
-			2
+			1
 		);
 		this._reactor.SetVisible(() => this.Reactor.GetCell().IsVisible());
 		this._reactor.SetAlive(() => this.Reactor.IsUpdatable);
+
+		this.GetDisplayObjects().forEach((obj) => {
+			obj.visible = this.Reactor.GetCell().IsVisible();
+		});
 	}
 
 	private GetWire(x: number, y: number, side: boolean): BasicAnimatedItem {
 		const wire = new BasicAnimatedItem(
 			BoundingBox.CreateFromBoxAndShift(this.Reactor.GetCell().GetBoundingBox(), x, y),
 			Archive.bonus.reactor.wire,
-			2,
+			1,
 			(e) => new RotationAnimator(e, [ Archive.bonus.reactor.wire ], side)
 		);
 		wire.SetVisible(() => this.Reactor.GetCell().IsVisible());

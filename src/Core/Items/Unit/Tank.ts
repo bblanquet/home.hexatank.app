@@ -1,3 +1,4 @@
+import { ICamouflageAble } from './ICamouflageAble';
 import { CamouflageHandler } from './CamouflageHandler';
 import { Cell } from '../Cell/Cell';
 import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
@@ -15,7 +16,7 @@ import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Explosion } from './Explosion';
 import { GameContext } from '../../Framework/GameContext';
 
-export class Tank extends Vehicle implements IHqContainer {
+export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 	Turrel: Turrel;
 	private _currentTarget: AliveItem;
 	private _mainTarget: AliveItem;
@@ -95,6 +96,11 @@ export class Tank extends Vehicle implements IHqContainer {
 			return this.ContainsMainTarget(enemies);
 		}
 		return false;
+	}
+
+	public CancelOrder(): void {
+		super.CancelOrder();
+		this.SetMainTarget(null);
 	}
 
 	public IsEnemyHqClose(): boolean {

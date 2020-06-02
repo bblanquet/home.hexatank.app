@@ -7,6 +7,8 @@ import { InteractionContext } from '../../Core/Interaction/InteractionContext';
 const Viewport = require('pixi-viewport').Viewport;
 
 export class AppHandler {
+	public IsOrderMode: boolean = false;
+
 	public InputManager: InputNotifier;
 	public InteractionContext: InteractionContext;
 	private _viewPort: any;

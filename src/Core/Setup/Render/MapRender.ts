@@ -1,3 +1,4 @@
+import { SimpleFloor } from './../../Items/Environment/SimpleFloor';
 import { CellContext } from './../../Items/Cell/CellContext';
 import { GameContext } from './../../Framework/GameContext';
 import { GameSettings } from '../../Framework/GameSettings';
@@ -40,7 +41,7 @@ export class MapRender {
 		});
 
 		let areas = new AreaSearch(cells.Keys()).GetAreas(mapContext.CenterItem.Position);
-		this.SetGrass(cells, mapContext.MapMode, areas, playgroundItems);
+		this.SetLands(cells, mapContext.MapMode, areas, playgroundItems);
 		this.AddClouds(playgroundItems);
 		const hqs = this._hqRender.GetHq(context, cells, mapContext.Hqs, playgroundItems);
 		context.SetHqs(hqs);
@@ -55,7 +56,8 @@ export class MapRender {
 		});
 
 		//insert elements into playground
-		playgroundItems.forEach((item) => {});
+		this.SetHqLands(cells, Archive.nature.hq, hqs.map((h) => h.GetCell().GetCoordinate()), playgroundItems);
+		this.SetHqLands(cells, Archive.nature.hq2, hqs.map((h) => h.GetCell().GetCoordinate()), playgroundItems, 1);
 
 		return context;
 	}
@@ -68,7 +70,7 @@ export class MapRender {
 		items.push(new Cloud(1200, 20 * GameSettings.Size, 1600, Archive.nature.clouds[4]));
 	}
 
-	private SetGrass(cells: CellContext<Cell>, mode: MapMode, middleAreas: HexAxial[], items: Item[]) {
+	private SetLands(cells: CellContext<Cell>, mode: MapMode, middleAreas: HexAxial[], items: Item[]) {
 		middleAreas.forEach((corner) => {
 			const cell = cells.Get(corner);
 			const boundingBox = new BoundingBox();
@@ -84,10 +86,32 @@ export class MapRender {
 				floor = Archive.nature.sand;
 			}
 
-			const grass = new Floor(boundingBox, floor);
-			grass.SetVisible(() => true);
-			grass.SetAlive(() => true);
-			items.push(grass);
+			const land = new Floor(boundingBox, floor);
+			land.SetVisible(() => true);
+			land.SetAlive(() => true);
+			items.push(land);
+		});
+	}
+
+	private SetHqLands(
+		cells: CellContext<Cell>,
+		sprite: string,
+		middleAreas: HexAxial[],
+		items: Item[],
+		z: number = 0
+	) {
+		middleAreas.forEach((corner) => {
+			const cell = cells.Get(corner);
+			const boundingBox = new BoundingBox();
+			boundingBox.Width = GameSettings.Size * 6;
+			boundingBox.Height = GameSettings.Size * 6;
+			boundingBox.X = cell.GetBoundingBox().X - (boundingBox.Width / 2 - cell.GetBoundingBox().Width / 2);
+			boundingBox.Y = cell.GetBoundingBox().Y - (boundingBox.Height / 2 - cell.GetBoundingBox().Height / 2);
+
+			const land = new SimpleFloor(boundingBox, sprite, z);
+			land.SetVisible(() => true);
+			land.SetAlive(() => true);
+			items.push(land);
 		});
 	}
 }

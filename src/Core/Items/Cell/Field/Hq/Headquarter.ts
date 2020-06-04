@@ -69,7 +69,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		var neighbours = this._cell.GetNeighbourhood();
 		this.Fields = new Array<HeadQuarterField>();
 		neighbours.forEach((cell) => {
-			this.Fields.push(new HeadQuarterField(this, <Cell>cell, skin.GetHqCell()));
+			this.Fields.push(new HeadQuarterField(this, <Cell>cell, skin.GetLight()));
 		});
 		this._onCellStateChanged = this.OncellStateChanged.bind(this);
 		this._cell.CellStateChanged.On(this._onCellStateChanged);

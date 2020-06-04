@@ -16,7 +16,7 @@ export class HeadQuarterField extends Field {
 	constructor(private _hq: Headquarter, ceil: Cell, sprite: string) {
 		super(ceil);
 		this.GetCell().SetField(this);
-		this.Z = -1;
+		this.Z = 1;
 		this._timer = new TickTimer(3);
 		this.GenerateSprite(sprite);
 		this.InitPosition(ceil.GetBoundingBox());
@@ -64,7 +64,7 @@ export class HeadQuarterField extends Field {
 		super.Update(viewX, viewY);
 
 		if (this._timer.IsElapsed()) {
-			if (this.GetSprites()[0].alpha < 0) {
+			if (this.GetSprites()[0].alpha < 0.25) {
 				this.IsFading = false;
 			}
 
@@ -73,11 +73,11 @@ export class HeadQuarterField extends Field {
 			}
 
 			if (this.IsFading) {
-				this.GetSprites()[0].alpha -= 0.05;
+				this.GetSprites()[0].alpha -= 0.01;
 			}
 
 			if (!this.IsFading) {
-				this.GetSprites()[0].alpha += 0.05;
+				this.GetSprites()[0].alpha += 0.01;
 			}
 		}
 	}

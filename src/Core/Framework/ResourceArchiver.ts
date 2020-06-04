@@ -167,6 +167,8 @@ export const Archive = {
 		sandRock: './nature/sandRock.svg',
 		forest: './nature/forestFloor.svg',
 		ice: './nature/iceFloor.svg',
+		hq: './nature/hqFloor.svg',
+		hq2: './nature/hqFloor2.svg',
 		iceRock: './nature/iceRock.svg',
 		sand: './nature/sandFloor.svg',
 		sandPlants: './nature/sandPlants.svg',

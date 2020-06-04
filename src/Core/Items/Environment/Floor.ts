@@ -8,7 +8,6 @@ export class Floor extends BasicItem {
 	private _idleLongTimer: TickTimer;
 	private _idleTimer: TickTimer = new TickTimer(4);
 	private _isIncreasing: boolean = true;
-	private _isAnimated: boolean = true;
 
 	constructor(boundingBox: BoundingBox, sprite: string, z: number = 0) {
 		super(boundingBox, sprite, z);

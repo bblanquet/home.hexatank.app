@@ -1,3 +1,4 @@
+import { RaidRequestHandler } from './Handler/RaidRequestHandler';
 import { EnergyRequestHandler } from './Handler/EnergyRequestHandler';
 import { ReactorRequestHandler } from './Handler/ReactorRequestHandler';
 import { ClearRequestHandler } from './Handler/ClearRequestHandler';
@@ -23,6 +24,7 @@ export class RequestHandler implements IRequestHandler {
 
 	constructor(private _hq: Headquarter, private _kindgom: Kingdom, context: GameContext) {
 		this._handlers = new Groups<ISimpleRequestHandler>();
+		this._handlers.Add(RequestPriority.High, new RaidRequestHandler(context, this._kindgom));
 		this._handlers.Add(RequestPriority.High, new EnergyRequestHandler(this._hq));
 		this._handlers.Add(RequestPriority.High, new ReactorRequestHandler(this._hq, context));
 		this._handlers.Add(RequestPriority.High, new ClearRequestHandler());

@@ -1,4 +1,4 @@
-import { Headquarter } from '../Items/Cell/Field/Hq/Headquarter';
+import { Headquarter } from './../Items/Cell/Field/Hq/Headquarter';
 import { Dictionnary } from './../Utils/Collections/Dictionnary';
 import { Vehicle } from './../Items/Unit/Vehicle';
 import { Tank } from '../Items/Unit/Tank';
@@ -20,6 +20,10 @@ export class GameContext {
 		this._hqs.forEach((hq) => {
 			hq.OnVehiculeCreated.On(this.VehiculeCreated.bind(this));
 		});
+	}
+
+	public GetHqs(): Headquarter[] {
+		return this._hqs;
 	}
 
 	private VehiculeCreated(obj: Headquarter, vehicule: Vehicle): void {

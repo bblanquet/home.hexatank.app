@@ -326,6 +326,10 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		return this._vehicles.length;
 	}
 
+	public GetTankCount(): number {
+		return this._vehicles.filter((v) => v instanceof Tank).length;
+	}
+
 	public AddVehicle(v: Vehicle): void {
 		this._vehicles.push(v);
 		v.Destoyed.On((e: any, ve: Vehicle) => {

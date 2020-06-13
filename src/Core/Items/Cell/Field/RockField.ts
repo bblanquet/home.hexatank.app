@@ -16,13 +16,13 @@ export class BlockingField extends AliveField {
 		this.Z = 1;
 		this.GenerateSprite(sprite);
 		this.InitPosition(ceil.GetBoundingBox());
-		this.GetDisplayObjects().forEach((obj) => {
+		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});
 	}
 
 	protected OnCellStateChanged(ceilState: CellState): void {
-		this.GetDisplayObjects().forEach((s) => {
+		this.GetCurrentSprites().Values().forEach((s) => {
 			s.visible = ceilState !== CellState.Hidden;
 		});
 	}

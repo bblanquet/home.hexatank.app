@@ -20,7 +20,7 @@ export abstract class AliveField extends AliveItem implements IField {
 	}
 
 	protected OnCellStateChanged(obj: any, cellState: CellState): void {
-		this.GetDisplayObjects().forEach((s) => {
+		this.GetCurrentSprites().Values().forEach((s) => {
 			s.visible = cellState === CellState.Visible;
 		});
 	}

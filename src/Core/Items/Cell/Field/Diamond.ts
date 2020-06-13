@@ -34,19 +34,19 @@ export class Diamond extends AliveField {
 			field.Loaded.On(this.OnLoaded.bind(this));
 		});
 		this.InitPosition(cell.GetBoundingBox());
-		this.GetDisplayObjects().forEach((obj) => {
+		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});
-		this.Lights.GetDisplayObjects().forEach((obj) => {
+		this.Lights.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});
 	}
 
 	protected OnCellStateChanged(cellState: CellState): void {
-		this.GetDisplayObjects().forEach((s) => {
+		this.GetCurrentSprites().Values().forEach((s) => {
 			s.visible = cellState !== CellState.Hidden;
 		});
-		this.Lights.GetDisplayObjects().forEach((s) => {
+		this.Lights.GetCurrentSprites().Values().forEach((s) => {
 			s.visible = cellState !== CellState.Hidden;
 		});
 	}

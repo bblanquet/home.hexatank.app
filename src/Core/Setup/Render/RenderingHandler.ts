@@ -28,7 +28,7 @@ export class RenderingHandler {
 	}
 
 	public Remove(item: Item) {
-		item.GetDisplayObjects().forEach((sprite) => {
+		item.GetAllDisplayable().forEach((sprite) => {
 			sprite.alpha = 1;
 			sprite.destroy();
 			this._groups.Z[item.Z].removeChild(sprite);

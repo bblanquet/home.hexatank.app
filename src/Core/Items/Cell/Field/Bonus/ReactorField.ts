@@ -46,7 +46,7 @@ export class ReactorField extends Item {
 		this._reactor.SetVisible(() => this.Reactor.GetCell().IsVisible());
 		this._reactor.SetAlive(() => this.Reactor.IsUpdatable);
 
-		this.GetDisplayObjects().forEach((obj) => {
+		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.Reactor.GetCell().IsVisible();
 		});
 	}
@@ -64,7 +64,7 @@ export class ReactorField extends Item {
 	}
 
 	protected OnCellStateChanged(obj: any, cellState: CellState): void {
-		this.GetDisplayObjects().forEach((s) => {
+		this.GetCurrentSprites().Values().forEach((s) => {
 			s.visible = cellState !== CellState.Hidden;
 		});
 	}

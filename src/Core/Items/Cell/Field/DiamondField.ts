@@ -22,7 +22,7 @@ export class DiamondField extends Field {
 		this._timer = new TickTimer(3);
 		this.GenerateSprite(Archive.diamondCell);
 		this.InitPosition(cell.GetBoundingBox());
-		this.GetDisplayObjects().forEach((obj) => {
+		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});
 	}

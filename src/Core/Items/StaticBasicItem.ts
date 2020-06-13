@@ -53,7 +53,7 @@ export class StaticBasicItem extends Item {
 
 	public Update(viewX: number, viewY: number): void {
 		let ref = this.GetRef();
-		this.GetDisplayObjects().forEach((obj) => {
+		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.x = ref.X;
 			obj.y = ref.Y;
 		});

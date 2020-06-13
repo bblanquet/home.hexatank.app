@@ -27,7 +27,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 		this.GenerateSprite(this.hq.GetSkin().GetLight());
 		this.GenerateSprite(Archive.bonus.coverTop);
 		this.InitPosition(cell.GetBoundingBox());
-		this.GetDisplayObjects().forEach((obj) => {
+		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});
 		this._animator = new BouncingScaleAnimator(this);
@@ -42,7 +42,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 	}
 
 	protected OnCellStateChanged(cellState: CellState): void {
-		this.GetDisplayObjects().forEach((s) => {
+		this.GetCurrentSprites().Values().forEach((s) => {
 			s.visible = cellState !== CellState.Hidden;
 		});
 	}

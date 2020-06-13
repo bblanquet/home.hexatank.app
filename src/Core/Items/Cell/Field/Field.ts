@@ -16,7 +16,7 @@ export abstract class Field extends Item implements IField {
 	}
 
 	protected OnCellStateChanged(obj: any, cellState: CellState): void {
-		this.GetDisplayObjects().forEach((s) => {
+		this.GetCurrentSprites().Values().forEach((s) => {
 			s.visible = cellState !== CellState.Hidden;
 		});
 	}

@@ -1,5 +1,6 @@
 export enum SpriteAccuracy {
-	low,
+	high,
+	mediumHigh,
 	medium,
-	high
+	low
 }

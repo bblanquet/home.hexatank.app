@@ -20,7 +20,7 @@ export class HeadQuarterField extends Field {
 		this._timer = new TickTimer(3);
 		this.GenerateSprite(sprite);
 		this.InitPosition(ceil.GetBoundingBox());
-		this.GetDisplayObjects().forEach((obj) => {
+		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});
 	}

@@ -52,10 +52,10 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 	}
 
 	protected OnCellStateChanged(obj: any, cellState: CellState): void {
-		this.GetDisplayObjects().forEach((s) => {
+		this.GetCurrentSprites().Values().forEach((s) => {
 			s.visible = cellState === CellState.Visible;
 		});
-		this.Turrel.GetDisplayObjects().forEach((s) => {
+		this.Turrel.GetCurrentSprites().Values().forEach((s) => {
 			s.visible = cellState === CellState.Visible;
 		});
 	}

@@ -30,9 +30,9 @@ export class ItemsUpdater implements IItemsUpdater {
 		}
 	}
 
-	public UpdateZoom(_currentAccuracy: SpriteAccuracy) {
+	public UpdateZoom(accuracy: SpriteAccuracy) {
 		this.Items.forEach((i) => {
-			i.UpdateZoom(_currentAccuracy);
+			i.UpdateZoom(accuracy);
 		});
 	}
 }

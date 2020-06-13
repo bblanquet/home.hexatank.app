@@ -40,7 +40,7 @@ export class Reactor extends Field implements ISelectable {
 		this.IsCentralRef = true;
 
 		this.InitPosition(cell.GetBoundingBox());
-		this.GetDisplayObjects().forEach((obj) => {
+		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});
 		this.basicField = new ReactorField(this, this._light);

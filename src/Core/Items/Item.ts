@@ -28,16 +28,12 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 		}
 	}
 
-	UpdateZoom(_currentAccuracy: SpriteAccuracy) {
-		this._spriteManager.Update(_currentAccuracy);
+	UpdateZoom(accuracy: SpriteAccuracy) {
+		this._spriteManager.Update(accuracy);
 	}
 
 	public GetCurrentSprites(): Dictionnary<PIXI.Sprite> {
 		return this._spriteManager.GetCurrentSprites();
-	}
-
-	public GetDisplayObjects(): Array<PIXI.DisplayObject> {
-		return this.DisplayObjects;
 	}
 
 	public GetAllDisplayable(): Array<PIXI.DisplayObject> {
@@ -74,6 +70,7 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 	public Destroy(): void {
 		this.IsUpdatable = false;
 		GameHelper.Render.Remove(this);
+		this._spriteManager.Destroyed();
 		this.OnDestroyed.Invoke();
 	}
 
@@ -88,9 +85,12 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 			obj.y = ref.Y + GameHelper.ViewContext.GetY();
 		});
 		this.GetSprites().forEach((sprite) => {
+			sprite.x = ref.X + GameHelper.ViewContext.GetX();
+			sprite.y = ref.Y + GameHelper.ViewContext.GetY();
 			sprite.width = this.GetBoundingBox().Width;
 			sprite.height = this.GetBoundingBox().Height;
 		});
+		this._spriteManager.Init();
 		GameHelper.Render.Add(this);
 	}
 
@@ -101,6 +101,8 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 			obj.y = ref.Y + viewY;
 		});
 		this.GetSprites().forEach((sprite) => {
+			sprite.x = ref.X + viewX;
+			sprite.y = ref.Y + viewY;
 			sprite.width = this.GetBoundingBox().Width;
 			sprite.height = this.GetBoundingBox().Height;
 		});

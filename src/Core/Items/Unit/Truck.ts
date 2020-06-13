@@ -91,7 +91,7 @@ export class Truck extends Vehicle implements IHqContainer {
 	}
 
 	protected OnCellStateChanged(obj: any, cellState: CellState): void {
-		this.GetDisplayObjects().forEach((s) => {
+		this.GetCurrentSprites().Values().forEach((s) => {
 			s.visible = cellState === CellState.Visible;
 		});
 	}

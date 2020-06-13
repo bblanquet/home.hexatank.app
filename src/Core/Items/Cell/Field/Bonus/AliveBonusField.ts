@@ -29,7 +29,7 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 		this.GenerateSprite(this._hq.GetSkin().GetLight());
 		this.GenerateSprite(Archive.bonus.coverTop);
 		this.InitPosition(cell.GetBoundingBox());
-		this.GetDisplayObjects().forEach((obj) => {
+		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});
 		this._animator = new BouncingScaleAnimator(this);
@@ -55,7 +55,7 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 	}
 
 	protected OnCellStateChanged(cellState: CellState): void {
-		this.GetDisplayObjects().forEach((s) => {
+		this.GetCurrentSprites().Values().forEach((s) => {
 			s.visible = cellState !== CellState.Hidden;
 		});
 	}

@@ -61,9 +61,11 @@ export class AppHandler {
 		this._viewPort.on('zoomed', (e: any) => {
 			let currentZoom = this._viewPort.scale.x;
 			let accuracy = SpriteAccuracy.high;
-			if (currentZoom < 0.2) {
+			if (0.5 < currentZoom && currentZoom < 0.7) {
+				accuracy = SpriteAccuracy.mediumHigh;
+			} else if (0.3 < currentZoom && currentZoom <= 0.5) {
 				accuracy = SpriteAccuracy.medium;
-			} else if (currentZoom < 0.1) {
+			} else if (currentZoom <= 0.3) {
 				accuracy = SpriteAccuracy.low;
 			}
 

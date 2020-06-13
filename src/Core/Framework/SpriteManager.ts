@@ -58,13 +58,12 @@ export class SpriteManager {
 	}
 
 	public Update(accuracy: SpriteAccuracy): void {
-		this._sprites.Get(SpriteAccuracy[this._currentAcccuracy]).Values().forEach((s) => {
-			s.visible = false;
+		this._sprites.Get(SpriteAccuracy[this._currentAcccuracy]).Keys().forEach((s) => {
+			const current = this._sprites.Get(SpriteAccuracy[this._currentAcccuracy]).Get(s);
+			const next = this._sprites.Get(SpriteAccuracy[accuracy]).Get(s);
+			next.visible = current.visible;
+			current.visible = false;
 		});
-		this._sprites.Get(SpriteAccuracy[accuracy]).Values().forEach((s) => {
-			s.visible = true;
-		});
-
 		this._currentAcccuracy = accuracy;
 	}
 

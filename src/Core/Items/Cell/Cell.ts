@@ -24,6 +24,7 @@ import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { InteractionMode } from '../../Interaction/InteractionMode';
 import { Vehicle } from '../Unit/Vehicle';
 import { GameSettings } from '../../Framework/GameSettings';
+import * as PIXI from 'pixi.js';
 
 export class Cell extends Item implements ICell, ISelectable {
 	public Properties: CellProperties;
@@ -44,7 +45,7 @@ export class Cell extends Item implements ICell, ISelectable {
 		new BasicField(this);
 		this.IsCentralRef = true;
 		this.GenerateSprite(Archive.selectionCell);
-		this.SetBothProperty(Archive.selectionCell, (e) => {
+		this.SetProperty(Archive.selectionCell, (e) => {
 			e.alpha = 0;
 			e.anchor.set(0.5);
 		});
@@ -78,7 +79,7 @@ export class Cell extends Item implements ICell, ISelectable {
 		this.SelectionChanged.Invoke(this, this);
 	}
 	public IsSelected(): boolean {
-		return this.GetCurrentSprites()[Archive.selectionCell].alpha === 1;
+		return this.GetCurrentSprites().Get(Archive.selectionCell).alpha === 1;
 	}
 
 	public GetField(): IField {

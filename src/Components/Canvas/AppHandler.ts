@@ -1,3 +1,4 @@
+import { SpriteAccuracy } from './../../Core/Framework/SpriteAccuracy';
 import { ViewContext } from './../../Core/Utils/Geometry/ViewContext';
 import { GameSettings } from './../../Core/Framework/GameSettings';
 import { MapMode } from '../../Core/Setup/Generator/MapMode';
@@ -5,6 +6,8 @@ import { ItemsUpdater } from '../../Core/ItemsUpdater';
 import { InputNotifier } from '../../Core/Interaction/InputNotifier';
 import { InteractionContext } from '../../Core/Interaction/InteractionContext';
 const Viewport = require('pixi-viewport').Viewport;
+import * as PIXI from 'pixi.js';
+import { Archive } from '../../Core/Framework/ResourceArchiver';
 
 export class AppHandler {
 	public IsOrderMode: boolean = false;
@@ -36,7 +39,8 @@ export class AppHandler {
 			backgroundColor: 0x00a651 //0x6d9ae3
 		});
 		PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
-		PIXI.settings.RENDER_OPTIONS.antialias = true;
+		PIXI.settings.RENDER_OPTIONS.antialias = false;
+		PIXI.settings.TARGET_FPMS = PIXI.TARGETS.TEXTURE_2D;
 
 		this._viewPort = new Viewport({
 			screenWidth: window.innerWidth,
@@ -52,6 +56,58 @@ export class AppHandler {
 		this.ViewContext = new ViewContext();
 		this.Playground = new ItemsUpdater(this.ViewContext);
 		this.InputManager = new InputNotifier();
+		// this.Load();
+
+		this._viewPort.on('zoomed', (e: any) => {
+			let currentZoom = this._viewPort.scale.x;
+			let accuracy = SpriteAccuracy.high;
+			if (currentZoom < 0.2) {
+				accuracy = SpriteAccuracy.medium;
+			} else if (currentZoom < 0.1) {
+				accuracy = SpriteAccuracy.low;
+			}
+
+			if (this._currentAccuracy !== accuracy) {
+				this._currentAccuracy = accuracy;
+				this.Playground.UpdateZoom(this._currentAccuracy);
+			}
+		});
+	}
+
+	private _currentAccuracy: SpriteAccuracy = SpriteAccuracy.high;
+
+	private Load(): void {
+		this.GetAssets().forEach((asset) => {
+			this._app.loader.add(asset, asset);
+		});
+	}
+
+	public GetAssets(): string[] {
+		const keys = new Array<string>();
+		this.GetPaths(Archive, keys);
+		return keys;
+	}
+
+	private GetPaths(value: any, keys: string[]) {
+		if (typeof value === 'string') {
+			keys.push(this.GetPath(value.slice(1)));
+		} else if (value instanceof Array) {
+			(value as Array<string>).forEach((filename) => {
+				keys.push(this.GetPath(filename.slice(1)));
+			});
+		} else {
+			for (let key in value) {
+				this.GetPaths(value[key], keys);
+			}
+		}
+	}
+
+	private GetPath(asset: string): string {
+		let path = asset;
+		path = path.slice(1); //remove dot
+		path = `.{{}}` + path;
+		path = path.replace('//', '/');
+		return path;
 	}
 
 	public ResizeTheCanvas(): void {

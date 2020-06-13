@@ -5,6 +5,7 @@ import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { InteractionContext } from '../../Interaction/InteractionContext';
 import { GameSettings } from '../../Framework/GameSettings';
+import * as PIXI from 'pixi.js';
 
 export class Missile extends Item {
 	BoundingBox: BoundingBox;
@@ -89,9 +90,9 @@ export class Missile extends Item {
 			this.GetBoundingBox().X += speedY * 1.5;
 			this.GetBoundingBox().Y += speedX * 1.5;
 
-			this.GetCurrentSprites()[Archive.missiles[this._currentMissile]].alpha = 0;
+			this.SetProperty(Archive.missiles[this._currentMissile], (e) => (e.alpha = 0));
 			this._currentMissile = (this._currentMissile + 1) % Archive.missiles.length;
-			this.GetCurrentSprites()[Archive.missiles[this._currentMissile]].alpha = 1;
+			this.SetProperty(Archive.missiles[this._currentMissile], (e) => (e.alpha = 1));
 		} else {
 			this.Target.SetDamage(this._damage);
 			new Explosion(this.Target.GetBoundingBox(), Archive.explosions, 5, true, 20);

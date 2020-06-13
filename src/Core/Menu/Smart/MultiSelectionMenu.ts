@@ -2,9 +2,7 @@ import { SelectionMode } from './SelectionMode';
 import { Point } from '../../Utils/Geometry/Point';
 import { StaticBasicItem } from '../../Items/StaticBasicItem';
 import { Archive } from '../../Framework/ResourceArchiver';
-import { GameHelper } from '../../Framework/GameHelper';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
-import { GameSettings } from '../../Framework/GameSettings';
 
 export class MultiSelectionMenu {
 	private _tankSelection: StaticBasicItem;

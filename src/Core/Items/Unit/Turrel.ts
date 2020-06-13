@@ -115,9 +115,9 @@ export class Turrel extends Item implements IRotatable {
 	private CanonAnimation(): void {
 		if (this.IsAnimated) {
 			if (this._animationTimer.IsElapsed()) {
-				this.GetCurrentSprites()[Archive.cannons[this._currentCanon]].alpha = 0;
+				this.SetProperty(Archive.cannons[this._currentCanon], (e) => (e.alpha = 0));
 				this._currentCanon = (1 + this._currentCanon) % Archive.cannons.length;
-				this.GetCurrentSprites()[Archive.cannons[this._currentCanon]].alpha = 1;
+				this.SetProperty(Archive.cannons[this._currentCanon], (e) => (e.alpha = 1));
 
 				if (this._currentCanon == 0) {
 					this.IsAnimated = false;

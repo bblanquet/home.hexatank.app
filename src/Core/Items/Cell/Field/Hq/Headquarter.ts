@@ -167,7 +167,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		this.SelectionChanged.Invoke(this, this);
 	}
 	IsSelected(): boolean {
-		return this.GetCurrentSprites()[Archive.selectionUnit].alpha === 1;
+		return this.GetCurrentSprites().Get(Archive.selectionUnit).alpha === 1;
 	}
 
 	public GetBoundingBox(): BoundingBox {
@@ -275,7 +275,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 			}
 		}
 
-		this.GetBothSprites(Archive.building.hq.bottom).forEach((sprite) => (sprite.rotation += 0.1));
+		this.SetProperty(Archive.building.hq.bottom, (sprite) => (sprite.rotation += 0.1));
 
 		if (!this.IsAlive()) {
 			this.Destroy();

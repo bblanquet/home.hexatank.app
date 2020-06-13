@@ -42,8 +42,8 @@ export class Crater extends Item {
 		}
 
 		if (this._timer.IsElapsed()) {
-			this.GetCurrentSprites()[Archive.destruction.floorExplosion].alpha -= 0.05;
-			if (this.GetCurrentSprites()[Archive.destruction.floorExplosion].alpha <= 0) {
+			this.GetCurrentSprites().Get(Archive.destruction.floorExplosion).alpha -= 0.05;
+			if (this.GetCurrentSprites().Get(Archive.destruction.floorExplosion).alpha <= 0) {
 				this._isDone = true;
 			}
 		}

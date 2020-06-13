@@ -3,7 +3,6 @@ import { route } from 'preact-router';
 import { GameHelper } from '../../Core/Framework/GameHelper';
 import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
 import { MapMode } from '../../Core/Setup/Generator/MapMode';
-import { SpriteProvider } from '../../Core/Framework/SpriteProvider';
 import { ComponentsHelper } from '../ComponentsHelper';
 
 export default class CampaignComponent extends Component<any, any> {
@@ -25,14 +24,14 @@ export default class CampaignComponent extends Component<any, any> {
 			MapType: 'Flower',
 			Size: '12'
 		});
-		SpriteProvider.GetAssets().forEach((a) => {
-			var preloadLink = document.createElement('link');
-			preloadLink.href = a;
-			preloadLink.crossOrigin = 'anonymous';
-			preloadLink.rel = 'preload';
-			preloadLink.as = 'image';
-			document.head.appendChild(preloadLink);
-		});
+		// SpriteProvider.GetAssets().forEach((a) => {
+		// 	var preloadLink = document.createElement('link');
+		// 	preloadLink.href = a;
+		// 	preloadLink.crossOrigin = 'anonymous';
+		// 	preloadLink.rel = 'preload';
+		// 	preloadLink.as = 'image';
+		// 	document.head.appendChild(preloadLink);
+		// });
 	}
 
 	componentDidMount() {

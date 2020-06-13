@@ -5,8 +5,6 @@ import linkState from 'linkstate';
 import { GameHelper } from '../../Core/Framework/GameHelper';
 import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
 import { MapMode } from '../../Core/Setup/Generator/MapMode';
-import { SpriteProvider } from '../../Core/Framework/SpriteProvider';
-import { IconProvider } from '../IconProvider';
 import { ComponentsHelper } from '../ComponentsHelper';
 
 export default class SinglePlayerComponent extends Component<any, SinglePlayerState> {
@@ -20,14 +18,14 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 			MapType: 'Flower',
 			Size: '12'
 		});
-		SpriteProvider.GetAssets().forEach((a) => {
-			var preloadLink = document.createElement('link');
-			preloadLink.href = a;
-			preloadLink.crossOrigin = 'anonymous';
-			preloadLink.rel = 'preload';
-			preloadLink.as = 'image';
-			document.head.appendChild(preloadLink);
-		});
+		// SpriteProvider.GetAssets().forEach((a) => {
+		// 	var preloadLink = document.createElement('link');
+		// 	preloadLink.href = a;
+		// 	preloadLink.crossOrigin = 'anonymous';
+		// 	preloadLink.rel = 'preload';
+		// 	preloadLink.as = 'image';
+		// 	document.head.appendChild(preloadLink);
+		// });
 	}
 
 	componentDidMount() {

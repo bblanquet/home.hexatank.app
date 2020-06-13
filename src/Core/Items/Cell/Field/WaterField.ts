@@ -39,7 +39,7 @@ export class WaterField extends Field {
 
 	public Update(viewX: number, viewY: number): void {
 		super.Update(viewX, viewY);
-		this.SetBothProperty(Archive.nature.water.leaf, (s) => (s.rotation += 0.005));
+		this.SetProperty(Archive.nature.water.leaf, (s) => (s.rotation += 0.005));
 
 		this.SetProperty(Archive.nature.water.middle.wave, (s) => {
 			if (s.alpha < 0.4) {

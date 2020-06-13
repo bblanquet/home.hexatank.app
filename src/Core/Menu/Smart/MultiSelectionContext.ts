@@ -10,6 +10,7 @@ import { Cell } from '../../Items/Cell/Cell';
 import { Item } from '../../Items/Item';
 import { InteractionMode } from '../../Interaction/InteractionMode';
 import { ViewContext } from '../../Utils/Geometry/ViewContext';
+import * as PIXI from 'pixi.js';
 
 export class MultiSelectionContext implements IInteractionContext {
 	public Kind: InteractionKind;

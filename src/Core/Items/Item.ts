@@ -1,5 +1,7 @@
+import { SpriteManager } from './../Framework/SpriteManager';
+import { SpriteAccuracy } from './../Framework/SpriteAccuracy';
+import { Dictionnary } from './../Utils/Collections/Dictionnary';
 import { SimpleEvent } from './../Utils/Events/SimpleEvent';
-import { SpriteProvider } from './../Framework/SpriteProvider';
 import * as PIXI from 'pixi.js';
 import { BoundingBox } from '../Utils/Geometry/BoundingBox';
 import { IUpdatable } from '../IUpdatable';
@@ -10,8 +12,7 @@ import { IInteractionContext } from '../Interaction/IInteractionContext';
 
 export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 	private DisplayObjects: Array<PIXI.DisplayObject>;
-	private _sprites: { [id: string]: PIXI.Sprite } = {};
-	protected Accuracy: number = 0.5;
+	private _spriteManager: SpriteManager;
 	public OnDestroyed: SimpleEvent = new SimpleEvent();
 
 	public Z: number;
@@ -19,6 +20,7 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 	public IsCentralRef: boolean = false;
 
 	constructor(isUpdatable: boolean = true) {
+		this._spriteManager = new SpriteManager();
 		this.DisplayObjects = new Array<PIXI.DisplayObject>();
 		this.IsUpdatable = isUpdatable;
 		if (this.IsUpdatable) {
@@ -26,31 +28,39 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 		}
 	}
 
-	public GetCurrentSprites(): { [id: string]: PIXI.Sprite } {
-		return this._sprites;
+	UpdateZoom(_currentAccuracy: SpriteAccuracy) {
+		this._spriteManager.Update(_currentAccuracy);
+	}
+
+	public GetCurrentSprites(): Dictionnary<PIXI.Sprite> {
+		return this._spriteManager.GetCurrentSprites();
 	}
 
 	public GetDisplayObjects(): Array<PIXI.DisplayObject> {
 		return this.DisplayObjects;
 	}
+
+	public GetAllDisplayable(): Array<PIXI.DisplayObject> {
+		const result = new Array<PIXI.DisplayObject>();
+		this.DisplayObjects.forEach((d) => {
+			result.push(d);
+		});
+		this._spriteManager.GetAll().forEach((d) => {
+			result.push(d);
+		});
+		return result;
+	}
+
 	public Clear(): void {
 		this.DisplayObjects = [];
 	}
 
-	protected GetBothSprites(name: string): Array<PIXI.Sprite> {
-		return [ this._sprites[name] ];
-	}
-
 	protected SetProperty(name: string, func: (sprite: PIXI.Sprite) => void) {
-		func(this.GetCurrentSprites()[name]);
+		this._spriteManager.SetProperty(name, func);
 	}
 
 	public SetProperties(names: string[], func: (sprite: PIXI.Sprite) => void) {
-		names.forEach((name) => func(this.GetCurrentSprites()[name]));
-	}
-
-	protected SetBothProperty(name: string, func: (sprite: PIXI.Sprite) => void) {
-		func(this._sprites[name]);
+		this._spriteManager.SetProperties(names, func);
 	}
 
 	public Push(blop: PIXI.Graphics): void {
@@ -58,14 +68,7 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 	}
 
 	protected GenerateSprite(name: string, func?: (sprite: PIXI.Sprite) => void): void {
-		this._sprites[name] = new SpriteProvider().GetSprite(name, this.Accuracy);
-
-		this.DisplayObjects.push(this._sprites[name]);
-		this._sprites[name].alpha = 1;
-
-		if (func) {
-			this.SetBothProperty(name, func);
-		}
+		this._spriteManager.GenerateSprite(name, func);
 	}
 
 	public Destroy(): void {
@@ -110,16 +113,8 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 		return this.GetBoundingBox().GetPosition();
 	}
 
-	public ExistsSprite(sprite: string): boolean {
-		return sprite in this._sprites;
-	}
-
 	public GetSprites(): Array<PIXI.Sprite> {
-		var sprites = new Array<PIXI.Sprite>();
-		this.DisplayObjects.filter((d) => d instanceof PIXI.Sprite).forEach((item) => {
-			sprites.push(<PIXI.Sprite>item);
-		});
-		return sprites;
+		return this._spriteManager.GetAll();
 	}
 
 	public abstract Select(context: IInteractionContext): boolean;

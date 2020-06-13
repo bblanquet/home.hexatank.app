@@ -73,7 +73,7 @@ export class Truck extends Vehicle implements IHqContainer {
 	public Load(): boolean {
 		if (this._dimaondTimer.IsElapsed()) {
 			if (!this.IsLoaded()) {
-				this.GetCurrentSprites()[this._gatheredDiamonds[this._diamondsCount]].alpha = 1;
+				this.SetProperty(this._gatheredDiamonds[this._diamondsCount], (e) => (e.alpha = 1));
 				this._diamondsCount = (this._diamondsCount + 1) % this._gatheredDiamonds.length;
 				return true;
 			}
@@ -85,7 +85,7 @@ export class Truck extends Vehicle implements IHqContainer {
 		var diamonds = this._diamondsCount;
 		this._diamondsCount = 0;
 		this._gatheredDiamonds.forEach((sprite) => {
-			this.GetCurrentSprites()[sprite].alpha = 0;
+			this.SetProperty(sprite, (e) => (e.alpha = 0));
 		});
 		return diamonds;
 	}

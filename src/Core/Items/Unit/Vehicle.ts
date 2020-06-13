@@ -77,7 +77,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this.BoundingBox = new BoundingBox();
 
 		this.GenerateSprite(Archive.selectionUnit);
-		this.GetBothSprites(Archive.selectionUnit).forEach((sprite) => (sprite.alpha = 0));
+		this.SetProperties([ Archive.selectionUnit ], (sprite) => (sprite.alpha = 0));
 
 		this.Z = 2;
 		this.Size = GameSettings.Size;
@@ -150,7 +150,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
 	private SetRotation(): void {
 		this.RootSprites.forEach((sprite) => {
-			this.GetBothSprites(sprite).forEach((sp) => (sp.rotation = this.CurrentRadius));
+			this.SetProperty(sprite, (sp) => (sp.rotation = this.CurrentRadius));
 		});
 	}
 
@@ -236,7 +236,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	}
 
 	public IsSelected(): boolean {
-		return this.GetCurrentSprites()[Archive.selectionUnit].alpha === 1;
+		return this.GetCurrentSprites().Get(Archive.selectionUnit).alpha === 1;
 	}
 
 	public SetSelected(isSelected: boolean): void {

@@ -3,6 +3,7 @@ import { GameSettings } from './Framework/GameSettings';
 import { IItemsUpdater } from './IItemsUpdater';
 import { Item } from './Items/Item';
 import { IInteractionContext } from './Interaction/IInteractionContext';
+import { SpriteAccuracy } from './Framework/SpriteAccuracy';
 
 export class ItemsUpdater implements IItemsUpdater {
 	Items: Array<Item>;
@@ -27,5 +28,11 @@ export class ItemsUpdater implements IItemsUpdater {
 				item.Update(this.ViewContext.GetX(), this.ViewContext.GetY());
 			});
 		}
+	}
+
+	public UpdateZoom(_currentAccuracy: SpriteAccuracy) {
+		this.Items.forEach((i) => {
+			i.UpdateZoom(_currentAccuracy);
+		});
 	}
 }

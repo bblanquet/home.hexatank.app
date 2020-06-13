@@ -1,4 +1,3 @@
-import { BatteryField } from './BatteryField';
 import { GameContext } from '../../../../Framework/GameContext';
 import { ReactorField } from './ReactorField';
 import { Archive } from '../../../../Framework/ResourceArchiver';
@@ -33,7 +32,7 @@ export class Reactor extends Field implements ISelectable {
 		this.Battery = new Battery(this.Hq, this);
 		this.GetCell().SetField(this);
 		this.GenerateSprite(Archive.selectionCell);
-		this.SetBothProperty(Archive.selectionCell, (e) => {
+		this.SetProperty(Archive.selectionCell, (e) => {
 			e.alpha = 0;
 			e.anchor.set(0.5);
 		});
@@ -186,7 +185,7 @@ export class Reactor extends Field implements ISelectable {
 	}
 
 	IsSelected(): boolean {
-		return this.GetCurrentSprites()[Archive.selectionCell].alpha === 1;
+		return this.GetCurrentSprites().Get(Archive.selectionCell).alpha === 1;
 	}
 	SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 }

@@ -10,7 +10,7 @@ export class RenderingHandler {
 	}
 
 	public Add(item: Item) {
-		const all = item.GetDisplayObjects();
+		const all = item.GetAllDisplayable();
 		const sprites = all.filter((i) => i instanceof PIXI.Sprite);
 		const others = all.filter((i) => !(i instanceof PIXI.Sprite));
 

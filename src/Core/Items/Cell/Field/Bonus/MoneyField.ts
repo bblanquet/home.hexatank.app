@@ -23,7 +23,7 @@ export class MoneyField extends BonusField {
 	}
 
 	public IsFull(): boolean {
-		return this.GetCurrentSprites()[Archive.bonus.fullMoney].alpha >= 1;
+		return this.GetCurrentSprites().Get(Archive.bonus.fullMoney).alpha >= 1;
 	}
 
 	private SetEmpty(): void {
@@ -56,7 +56,7 @@ export class MoneyField extends BonusField {
 		if (!this.IsFull() && this.Energy > 0) {
 			if (this._timer.IsElapsed()) {
 				this.SetProperty(Archive.bonus.fullMoney, (s) => (s.alpha += 0.02));
-				if (this.GetCurrentSprites()[Archive.bonus.fullMoney].alpha >= 1) {
+				if (this.GetCurrentSprites().Get(Archive.bonus.fullMoney).alpha >= 1) {
 					this._lightItem.Display();
 				}
 			}

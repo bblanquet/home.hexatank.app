@@ -1,7 +1,6 @@
 import { Item } from './Item';
 import { BoundingBox } from '../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../Interaction/InteractionContext';
-import { GameHelper } from '../Framework/GameHelper';
 
 export class StaticBasicItem extends Item {
 	private _isVisible: { (): boolean };
@@ -20,7 +19,6 @@ export class StaticBasicItem extends Item {
 		this.Z = z;
 		this._spriteName = sprite;
 		this._hover = hoverSprite;
-		this.Accuracy = accuracy;
 		this.GenerateSprite(sprite, (e) => {
 			e.anchor.set(0.5);
 			e.alpha = 0;

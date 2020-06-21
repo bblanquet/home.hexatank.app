@@ -14,13 +14,13 @@ import { SelectionMode } from '../../../Menu/Smart/SelectionMode';
 import { HealMenuItem } from '../../../Menu/Buttons/HealMenuItem';
 import { PeerHandler } from '../../../../Components/Network/Host/On/PeerHandler';
 import { PacketKind } from '../../../../Components/Network/PacketKind';
-import { HealField } from '../../../Items/Cell/Field/Bonus/HealField';
+import { MedicField } from '../../../Items/Cell/Field/Bonus/MedicField';
 import { AttackMenuItem } from '../../../Menu/Buttons/AttackMenuItem';
 import { AttackField } from '../../../Items/Cell/Field/Bonus/AttackField';
 import { SpeedFieldMenuItem } from '../../../Menu/Buttons/SpeedFieldMenuItem';
 import { MoneyField } from '../../../Items/Cell/Field/Bonus/MoneyField';
 import { MoneyMenuItem } from '../../../Menu/Buttons/MoneyMenuItem';
-import { FastField } from '../../../Items/Cell/Field/Bonus/FastField';
+import { RoadField } from '../../../Items/Cell/Field/Bonus/RoadField';
 import { InteractionKind } from '../../IInteractionContext';
 import { PoisonField } from '../../../Items/Cell/Field/Bonus/PoisonField';
 import { GameSettings } from '../../../Framework/GameSettings';
@@ -78,13 +78,13 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 				const cost = GameSettings.FieldPrice * this._cells.length;
 				if (menuItem && this._gameContext.MainHq.HasMoney(cost)) {
 					if (menuItem instanceof HealMenuItem) {
-						this.SetMenuItem((c) => new HealField(c, this._gameContext.MainHq), 'Heal');
+						this.SetMenuItem((c) => new MedicField(c, this._gameContext.MainHq), 'Heal');
 					} else if (menuItem instanceof AttackMenuItem) {
 						this.SetMenuItem((c) => new AttackField(c, this._gameContext.MainHq), 'Attack');
 					} else if (menuItem instanceof ShieldMenuItem) {
 						this.SetMenuItem((c) => new ShieldField(c, this._gameContext.MainHq), 'Shield');
 					} else if (menuItem instanceof SpeedFieldMenuItem) {
-						this.SetMenuItem((c) => new FastField(c, this._gameContext.MainHq), 'Fast');
+						this.SetMenuItem((c) => new RoadField(c, this._gameContext.MainHq), 'Fast');
 					} else if (menuItem instanceof PoisonMenuItem) {
 						this.SetMenuItem((c) => new PoisonField(c, this._gameContext.MainHq), 'Poison');
 					} else if (menuItem instanceof ThunderMenuItem) {

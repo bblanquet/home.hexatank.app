@@ -1,4 +1,4 @@
-import { HealField } from '../../../Items/Cell/Field/Bonus/HealField';
+import { MedicField } from '../../../Items/Cell/Field/Bonus/MedicField';
 import { TimeTimer } from './../../../Utils/Timer/TimeTimer';
 import { isNullOrUndefined } from 'util';
 import { ITimer } from '../../../Utils/Timer/ITimer';
@@ -83,7 +83,7 @@ export class TroopDecisionMaker {
 		}
 
 		if (this.Tank.HasDamage()) {
-			if (this.Tank.GetCurrentCell().GetField() instanceof HealField) {
+			if (this.Tank.GetCurrentCell().GetField() instanceof MedicField) {
 				return;
 			}
 			const healSpot = this.Area.GetHealSpot();

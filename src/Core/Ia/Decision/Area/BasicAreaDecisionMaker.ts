@@ -10,19 +10,15 @@ import { SimpleOrder } from '../../Order/SimpleOrder';
 import { Tank } from '../../../Items/Unit/Tank';
 import { Groups } from '../../../Utils/Collections/Groups';
 import { TroopDestination } from '../Utils/TroopDestination';
-import { AreaSearch } from '../Utils/AreaSearch';
 import { AStarEngine } from '../../AStarEngine';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { BasicField } from '../../../Items/Cell/Field/BasicField';
 
 export class BasicAreaDecisionMaker {
-	private _areaSearch: AreaSearch;
 	public HasReceivedRequest: boolean;
 
-	constructor(private _hq: Headquarter, public Area: KingdomArea, private _cells: CellContext<Cell>) {
-		this._areaSearch = new AreaSearch(this._cells.Keys());
-	}
+	constructor(private _hq: Headquarter, public Area: KingdomArea, private _areas: Area[]) {}
 
 	public Update(): void {
 		this.Area.Troops = this.Area.Troops.filter((t) => t.Tank.IsAlive());
@@ -46,9 +42,7 @@ export class BasicAreaDecisionMaker {
 			const ally = this.Area.GetTroops()[0].Tank;
 
 			//#1 get in & out cells
-			const areas = this._areaSearch
-				.GetIncludedFirstRange(this.Area.GetCentralCell().GetCoordinate())
-				.map((coo) => new Area(this._cells.Get(coo), this._cells));
+			const areas = this.GetAround(this.Area.GetSpot());
 
 			//#2 get enemies cells
 			const foeCells = this.GetFoeCells(areas, ally);
@@ -58,6 +52,16 @@ export class BasicAreaDecisionMaker {
 			this.ReinforceTroops();
 			this.SendTroops(foeCells, ally);
 		}
+	}
+
+	private GetAround(area: Area): Area[] {
+		const as = new Array<Area>();
+		area.GetAroundAreas().forEach((a) => {
+			as.push(a);
+		});
+		as.push(area);
+
+		return as;
 	}
 
 	private ReinforceTroops(): void {

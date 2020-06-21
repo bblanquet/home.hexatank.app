@@ -4,6 +4,7 @@ import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
 import { RequestType } from '../../Utils/RequestType';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { GameContext } from '../../../../Framework/GameContext';
+import { Area } from '../../Utils/Area';
 
 export class RaidRequestHandler implements ISimpleRequestHandler {
 	constructor(private _gameContex: GameContext, private _kingdom: Kingdom) {}
@@ -16,7 +17,7 @@ export class RaidRequestHandler implements ISimpleRequestHandler {
 			const total = 5;
 			areas.some((area) => {
 				group.AddTank(area.DropTroop());
-				if (group.GetTankCount() >= total) {
+				if (total <= group.GetTankCount()) {
 					return true;
 				}
 				return false;
@@ -25,6 +26,7 @@ export class RaidRequestHandler implements ISimpleRequestHandler {
 			group.Start();
 		}
 	}
+
 	Type(): RequestType {
 		return RequestType.Raid;
 	}

@@ -1,6 +1,7 @@
+import { ILiteEvent } from './../../Utils/Events/ILiteEvent';
 import { BouncingScaleDownAnimator } from './../Animator/BouncingScaleDownAnimator';
 import { IAnimator } from './../Animator/IAnimator';
-import { FastField } from './Field/Bonus/FastField';
+import { RoadField } from './Field/Bonus/RoadField';
 import { GameContext } from './../../Framework/GameContext';
 import { CellContext } from './CellContext';
 import { Item } from '../Item';
@@ -28,6 +29,11 @@ import * as PIXI from 'pixi.js';
 
 export class Cell extends Item implements ICell, ISelectable {
 	public Properties: CellProperties;
+
+	public OnFieldChanged: ILiteEvent<IField> = new LiteEvent<IField>();
+	public OnFieldDestroyed: ILiteEvent<IField> = new LiteEvent<IField>();
+	public OnUnitChanged: ILiteEvent<Vehicle> = new LiteEvent<Vehicle>();
+
 	private _state: CellState = CellState.Hidden;
 	private _display: { [id: number]: Array<string> };
 	private _field: IField;
@@ -52,7 +58,7 @@ export class Cell extends Item implements ICell, ISelectable {
 		this._circle = new PIXI.Circle(0, 0, GameSettings.Size / 2);
 	}
 	GetCostRatio(): number {
-		if (this.GetField() instanceof FastField) {
+		if (this.GetField() instanceof RoadField) {
 			return 0.5;
 		} else {
 			return 1;
@@ -87,17 +93,21 @@ export class Cell extends Item implements ICell, ISelectable {
 	}
 
 	public DestroyField() {
+		this.OnFieldDestroyed.Invoke(this, this._field);
 		new BasicField(this);
+		this.OnFieldChanged.Invoke(this, this._field);
 	}
 
 	public SetField(field: IField) {
 		if (!isNullOrUndefined(this._field)) {
 			let field = this._field;
 			this._field = null;
+			this.OnFieldDestroyed.Invoke(this, this._field);
 			(<Field>field).Destroy();
 		}
 
 		this._field = field;
+		this.OnFieldChanged.Invoke(this, this._field);
 	}
 
 	public GetOccupier(): IMovable {

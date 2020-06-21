@@ -1,4 +1,4 @@
-import { HealField } from '../../../../Items/Cell/Field/Bonus/HealField';
+import { MedicField } from '../../../../Items/Cell/Field/Bonus/MedicField';
 import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
 import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 import { AreaRequest } from '../../Utils/AreaRequest';
@@ -17,7 +17,7 @@ export class HealingRequestHandler implements ISimpleRequestHandler {
 			console.log(`%c [HEALING] `, 'font-weight:bold;color:blue;');
 			cells.forEach((c) => {
 				if (c.GetField() instanceof BasicField) {
-					new HealField(c, this._hq);
+					new MedicField(c, this._hq);
 					this._hq.Buy(GameSettings.FieldPrice);
 				}
 			});

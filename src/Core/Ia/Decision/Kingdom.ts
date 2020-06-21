@@ -20,9 +20,11 @@ import { Tank } from '../../Items/Unit/Tank';
 import { IAreaRequestListMaker } from './RequestMaker/IAreaRequestListMaker';
 import { IGeneralListRequester } from './RequestMaker/GeneralRequester/IGeneralListRequester';
 import { Cell } from '../../Items/Cell/Cell';
+import { RaidTroopDecisionMaker } from './Troop/RaidTroopDecisionMaker';
 
 export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	public AreaDecisions: IAreaDecisionMaker[];
+	public Raids: RaidTroopDecisionMaker[];
 	public Trucks: Array<Truck> = new Array<Truck>();
 	public Tanks: Array<Tank> = new Array<Tank>();
 	public CellAreas: Dictionnary<IAreaDecisionMaker>;
@@ -37,6 +39,7 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 
 	constructor(public Hq: Headquarter, public RemainingAreas: Area[]) {
 		this.AreaDecisions = new Array<IAreaDecisionMaker>();
+		this.Raids = new Array<RaidTroopDecisionMaker>();
 		this.CellAreas = new Dictionnary<IAreaDecisionMaker>();
 		this.IdleTanks = new ExcessTankFinder();
 

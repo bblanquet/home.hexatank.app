@@ -1,6 +1,8 @@
 import { SmartSimpleOrder } from './../../Order/SmartSimpleOrder';
 import { Tank } from './../../../Items/Unit/Tank';
 import { AliveItem } from '../../../Items/AliveItem';
+import { Area } from '../Utils/Area';
+
 export class RaidTroopDecisionMaker {
 	private _tanks: Tank[] = new Array<Tank>();
 	private _target: AliveItem;
@@ -14,6 +16,14 @@ export class RaidTroopDecisionMaker {
 	}
 	public AddTank(tank: Tank): void {
 		this._tanks.push(tank);
+	}
+
+	private HasAccess(): boolean {
+		return false;
+	}
+
+	private FindShort(): Area {
+		return null;
 	}
 
 	public Start(): void {

@@ -9,7 +9,7 @@ import { isNullOrUndefined } from 'util';
 import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 import { GameSettings } from '../../../../Framework/GameSettings';
 import { BasicField } from '../../../../Items/Cell/Field/BasicField';
-import { FastField } from '../../../../Items/Cell/Field/Bonus/FastField';
+import { RoadField } from '../../../../Items/Cell/Field/Bonus/RoadField';
 import { Groups } from './../../../../Utils/Collections/Groups';
 
 export class RoadRequestHandler implements ISimpleRequestHandler {
@@ -40,7 +40,7 @@ export class RoadRequestHandler implements ISimpleRequestHandler {
 			console.log(`%c [ROAD] `, 'font-weight:bold;color:blue;');
 			road.forEach((c) => {
 				if (c.GetField() instanceof BasicField) {
-					new FastField(c, this._hq);
+					new RoadField(c, this._hq);
 					this._hq.Buy(GameSettings.FieldPrice);
 				}
 			});

@@ -1,3 +1,4 @@
+import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { GeneralRequester } from './../../Ia/Decision/RequestMaker/GeneralRequester/GeneralRequester';
 import { AreaRequestMaker } from '../../Ia/Decision/RequestMaker/AreaRequestMaker';
 import { ExpansionMaker } from './../../Ia/Decision/ExpansionMaker/ExpansionMaker';
@@ -124,9 +125,17 @@ export class HqRender {
 	): Headquarter {
 		const cell = cells.Get(hqcell);
 		const diamond = new Diamond(cells.Get(diamondcell));
-		const areas = new AreaSearch(cells.Keys())
-			.GetAreas(cell.GetCoordinate())
-			.map((coo) => new Area(cells.Get(coo), cells));
+		const areaSearch = new AreaSearch(cells.Keys());
+
+		const areas = areaSearch.GetAreas(cell.GetCoordinate()).map((coo) => new Area(cells.Get(coo)));
+		const areaByCoo = Dictionnary.To((e: Area) => e.GetCentralCell().GetCoordinate().ToString(), areas);
+
+		areas.forEach((a) => {
+			const around = areaSearch
+				.GetExcludedFirstRange(a.GetCentralCell().GetCoordinate())
+				.map((coo) => areaByCoo.Get(coo.ToString()));
+			a.SetAround(around);
+		});
 
 		const hq = new IaHeadquarter(skin, cell, context);
 		const kingdom = new Kingdom(hq, areas);
@@ -146,3 +155,6 @@ export class HqRender {
 		return hq;
 	}
 }
+//
+//
+//

@@ -1,11 +1,11 @@
 import { TroopDecisionMaker } from './../Troop/TroopDecisionMaker';
-import { HealField } from '../../../Items/Cell/Field/Bonus/HealField';
+import { MedicField } from '../../../Items/Cell/Field/Bonus/MedicField';
 import { BasicField } from './../../../Items/Cell/Field/BasicField';
 import { MoneyField } from '../../../Items/Cell/Field/Bonus/MoneyField';
 import { Diamond } from './../../../Items/Cell/Field/Diamond';
 import { DistanceHelper } from './../../../Items/Unit/MotionHelpers/DistanceHelper';
 import { HeadQuarterField } from '../../../Items/Cell/Field/Hq/HeadquarterField';
-import { FastField } from '../../../Items/Cell/Field/Bonus/FastField';
+import { RoadField } from '../../../Items/Cell/Field/Bonus/RoadField';
 import { ICell } from './../../../Items/Cell/ICell';
 import { AStarEngine } from './../../AStarEngine';
 import { IKingdomDecisionMaker } from '../IKingdomDecisionMaker';
@@ -66,7 +66,7 @@ export class KingdomArea {
 	}
 
 	public HasMedic(): boolean {
-		return this._spot.GetCells().some((c) => c.GetField() instanceof HealField);
+		return this._spot.GetCells().some((c) => c.GetField() instanceof MedicField);
 	}
 
 	public GetTroops(): Array<TroopDecisionMaker> {
@@ -111,11 +111,11 @@ export class KingdomArea {
 	}
 
 	public HasFastField(): boolean {
-		return this._spot.GetCells().some((c) => c.GetField() instanceof FastField);
+		return this._spot.GetCells().some((c) => c.GetField() instanceof RoadField);
 	}
 
 	public GetFastFields(): Cell[] {
-		return this._spot.GetCells().filter((c) => c.GetField() instanceof FastField);
+		return this._spot.GetCells().filter((c) => c.GetField() instanceof RoadField);
 	}
 
 	public HasNature(): boolean {
@@ -135,17 +135,7 @@ export class KingdomArea {
 			return true;
 		}
 
-		return this._spot.GetCells().some((c) => c.GetField() instanceof FastField);
-
-		// const central = this.GetCentralCell();
-		// if (central.IsBlocked()) {
-		// 	if (central === this._hq.GetCell() || central.GetField() instanceof Diamond) {
-		// 		return true;
-		// 	}
-		// 	return this._spot.GetCells().some((c) => c.GetField() instanceof FastField);
-		// } else {
-		// 	return this.HasRoad(this._hq.GetCell(), 100);
-		// }
+		return this._spot.GetCells().some((c) => c.GetField() instanceof RoadField);
 	}
 
 	private HasRoad(cell: Cell, count: number): boolean {
@@ -154,7 +144,7 @@ export class KingdomArea {
 			let cell = c as Cell;
 			return (
 				cell !== null &&
-				(cell.GetField() instanceof FastField ||
+				(cell.GetField() instanceof RoadField ||
 					cell.GetField() instanceof HeadQuarterField ||
 					cell.GetField() instanceof Headquarter)
 			);
@@ -277,7 +267,7 @@ export class KingdomArea {
 	}
 
 	public GetHealSpot(): Cell {
-		const freeCells = this._spot.GetFreeCells().filter((c) => c.GetField() instanceof HealField);
+		const freeCells = this._spot.GetFreeCells().filter((c) => c.GetField() instanceof MedicField);
 		if (0 < freeCells.length) {
 			return freeCells[0];
 		} else {

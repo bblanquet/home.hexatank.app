@@ -5,7 +5,7 @@ import { GameSettings } from '../../../../Framework/GameSettings';
 import { BonusField } from './BonusField';
 import { Headquarter } from '../Hq/Headquarter';
 
-export class HealField extends BonusField {
+export class MedicField extends BonusField {
 	constructor(cell: Cell, hq: Headquarter) {
 		super(cell, [ Archive.bonus.health ], hq);
 	}

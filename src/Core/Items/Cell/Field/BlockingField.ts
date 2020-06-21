@@ -1,4 +1,4 @@
-import { GameSettings } from './../../../Framework/GameSettings';
+import { GameSettings } from '../../../Framework/GameSettings';
 import { Cell } from '../Cell';
 import { AliveField } from './AliveField';
 import { CellState } from '../CellState';

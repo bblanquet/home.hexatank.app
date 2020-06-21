@@ -1,11 +1,11 @@
-import { Headquarter } from './../Hq/Headquarter';
+import { Headquarter } from '../Hq/Headquarter';
 import { Cell } from '../../Cell';
 import { BonusField } from './BonusField';
 import { Archive } from '../../../../Framework/ResourceArchiver';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { GameSettings } from '../../../../Framework/GameSettings';
 
-export class FastField extends BonusField {
+export class RoadField extends BonusField {
 	constructor(cell: Cell, hq: Headquarter) {
 		super(cell, [ Archive.bonus.speed ], hq);
 	}

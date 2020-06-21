@@ -364,6 +364,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this._currentCell.CellStateChanged.On(this._onCellStateChanged);
 		this._onCellStateChanged(this, this._currentCell.GetState());
 		CellStateSetter.SetStates(this.GameContext, this._currentCell.GetAll());
+		this._currentCell.OnUnitChanged.Invoke(this, this);
 	}
 
 	public Select(context: InteractionContext): boolean {
@@ -381,6 +382,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		}
 		this._nextCell = cell;
 		this._nextCell.SetOccupier(this);
+		this._nextCell.OnUnitChanged.Invoke(this, this);
 		this._angleFinder.SetAngle(this._nextCell);
 	}
 	public GetCurrentCell(): Cell {

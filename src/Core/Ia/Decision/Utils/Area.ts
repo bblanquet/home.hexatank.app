@@ -1,25 +1,27 @@
+import { AreaStatus } from './AreaStatus';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 import { Diamond } from '../../../Items/Cell/Field/Diamond';
 import { Cell } from '../../../Items/Cell/Cell';
 import { isNullOrUndefined } from 'util';
 import { AliveItem } from '../../../Items/AliveItem';
-import { CellContext } from '../../../Items/Cell/CellContext';
-import { AreaSearch } from './AreaSearch';
 import { DistanceHelper } from '../../../Items/Unit/MotionHelpers/DistanceHelper';
 
 export class Area {
-	private _areaSearch: AreaSearch;
 	private _aroudnAreas: Area[];
-	constructor(private _centralCell: Cell, private _cells: CellContext<Cell>) {
-		this._areaSearch = new AreaSearch(this._cells.Keys());
+	private _status: AreaStatus;
+	constructor(private _centralCell: Cell) {
+		this._status = new AreaStatus(this);
+	}
+
+	public SetAround(aroundAreas: Area[]): void {
+		this._aroudnAreas = aroundAreas;
+	}
+
+	public GetStatus(): AreaStatus {
+		return this._status;
 	}
 
 	public GetAroundAreas(): Area[] {
-		if (!this._aroudnAreas) {
-			this._aroudnAreas = this._aroudnAreas = this._areaSearch
-				.GetExcludedFirstRange(this.GetCentralCell().GetCoordinate())
-				.map((coo) => new Area(this._cells.Get(coo), this._cells));
-		}
 		return this._aroudnAreas;
 	}
 

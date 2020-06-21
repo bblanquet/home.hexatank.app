@@ -49,9 +49,9 @@ import { PoisonField } from '../Items/Cell/Field/Bonus/PoisonField';
 import { MoneyMenuItem } from '../Menu/Buttons/MoneyMenuItem';
 import { MoneyField } from '../Items/Cell/Field/Bonus/MoneyField';
 import { HealMenuItem } from '../Menu/Buttons/HealMenuItem';
-import { HealField } from '../Items/Cell/Field/Bonus/HealField';
+import { MedicField } from '../Items/Cell/Field/Bonus/MedicField';
 import { SpeedFieldMenuItem } from '../Menu/Buttons/SpeedFieldMenuItem';
-import { FastField } from '../Items/Cell/Field/Bonus/FastField';
+import { RoadField } from '../Items/Cell/Field/Bonus/RoadField';
 
 export class CombinationProvider {
 	GetCombination(appHandler: AppHandler, checker: ISelectableChecker, gameContext: GameContext): ICombination[] {
@@ -88,7 +88,7 @@ export class CombinationProvider {
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof SpeedFieldMenuItem,
-				(e) => new FastField(e, gameContext.MainHq),
+				(e) => new RoadField(e, gameContext.MainHq),
 				'Fast'
 			),
 			new GenericCellCombination(
@@ -136,7 +136,7 @@ export class CombinationProvider {
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof HealMenuItem,
-				(e) => new HealField(e, gameContext.MainHq),
+				(e) => new MedicField(e, gameContext.MainHq),
 				'Heal'
 			),
 			new PowerDownCombination(),

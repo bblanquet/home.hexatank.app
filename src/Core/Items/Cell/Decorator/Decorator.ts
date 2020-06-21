@@ -1,4 +1,4 @@
-import { BlockingField } from '../Field/RockField';
+import { BlockingField } from '../Field/BlockingField';
 import { VolcanoField } from '../Field/VolcanoField';
 import { WaterField } from '../Field/WaterField';
 import { Cell } from '../Cell';

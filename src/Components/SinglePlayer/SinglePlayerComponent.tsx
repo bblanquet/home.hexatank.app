@@ -18,14 +18,6 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 			MapType: 'Flower',
 			Size: '12'
 		});
-		// SpriteProvider.GetAssets().forEach((a) => {
-		// 	var preloadLink = document.createElement('link');
-		// 	preloadLink.href = a;
-		// 	preloadLink.crossOrigin = 'anonymous';
-		// 	preloadLink.rel = 'preload';
-		// 	preloadLink.as = 'image';
-		// 	document.head.appendChild(preloadLink);
-		// });
 	}
 
 	componentDidMount() {

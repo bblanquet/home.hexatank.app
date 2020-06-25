@@ -59,8 +59,8 @@ export class BlockingField extends AliveField {
 	}
 
 	public Destroy(): void {
-		super.Destroy();
 		this.GetCell().DestroyField();
+		super.Destroy();
 		this.IsUpdatable = false;
 	}
 }

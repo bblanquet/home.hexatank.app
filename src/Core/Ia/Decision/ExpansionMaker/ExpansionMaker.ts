@@ -7,11 +7,9 @@ import { isNullOrUndefined } from 'util';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { BasicAreaDecisionMaker } from '../Area/BasicAreaDecisionMaker';
 import { KingdomArea } from '../Utils/KingdomArea';
-import { CellContext } from '../../../Items/Cell/CellContext';
-import { Cell } from '../../../Items/Cell/Cell';
 
 export class ExpansionMaker implements IExpansionMaker {
-	constructor(private _hq: Headquarter, private _kingdom: Kingdom, private _cells: CellContext<Cell>) {}
+	constructor(private _hq: Headquarter, private _kingdom: Kingdom, private _areas: Array<Area>) {}
 
 	public Expand(): void {
 		if (!this._kingdom.AreaDecisions.some((a) => a.Area.HasFreeFields())) {
@@ -29,7 +27,7 @@ export class ExpansionMaker implements IExpansionMaker {
 		const areaDecision = new BasicAreaDecisionMaker(
 			this._hq,
 			new KingdomArea(this._hq, area, this._kingdom),
-			this._cells
+			this._areas
 		);
 		this._kingdom.AreaDecisions.push(areaDecision);
 		this._kingdom.CellAreas.Add(area.GetCentralCell().GetCoordinate().ToString(), areaDecision);

@@ -30,8 +30,8 @@ import * as PIXI from 'pixi.js';
 export class Cell extends Item implements ICell, ISelectable {
 	public Properties: CellProperties;
 
-	public OnFieldChanged: ILiteEvent<IField> = new LiteEvent<IField>();
-	public OnFieldDestroyed: ILiteEvent<IField> = new LiteEvent<IField>();
+	public OnFieldChanged: ILiteEvent<Cell> = new LiteEvent<Cell>();
+	public OnFieldDestroyed: ILiteEvent<Cell> = new LiteEvent<Cell>();
 	public OnUnitChanged: ILiteEvent<Vehicle> = new LiteEvent<Vehicle>();
 
 	private _state: CellState = CellState.Hidden;
@@ -93,21 +93,19 @@ export class Cell extends Item implements ICell, ISelectable {
 	}
 
 	public DestroyField() {
-		this.OnFieldDestroyed.Invoke(this, this._field);
 		new BasicField(this);
-		this.OnFieldChanged.Invoke(this, this._field);
 	}
 
 	public SetField(field: IField) {
 		if (!isNullOrUndefined(this._field)) {
 			let field = this._field;
+			this.OnFieldDestroyed.Invoke(this, this);
 			this._field = null;
-			this.OnFieldDestroyed.Invoke(this, this._field);
 			(<Field>field).Destroy();
 		}
 
 		this._field = field;
-		this.OnFieldChanged.Invoke(this, this._field);
+		this.OnFieldChanged.Invoke(this, this);
 	}
 
 	public GetOccupier(): IMovable {

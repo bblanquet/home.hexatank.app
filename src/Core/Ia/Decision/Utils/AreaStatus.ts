@@ -3,11 +3,12 @@ import { BasicField } from '../../../Items/Cell/Field/BasicField';
 import { MedicField } from '../../../Items/Cell/Field/Bonus/MedicField';
 import { RoadField } from '../../../Items/Cell/Field/Bonus/RoadField';
 import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
-import { IField } from '../../../Items/Cell/Field/IField';
 import { Area } from './Area';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
+import { FarmField } from '../../../Items/Cell/Field/Bonus/FarmField';
+import { Cell } from '../../../Items/Cell/Cell';
 export class AreaStatus {
-	private _fields: Dictionnary<number>;
+	private _fields: Dictionnary<Array<Cell>>;
 	private _units: Dictionnary<Vehicle>;
 
 	constructor(private _area: Area) {
@@ -20,11 +21,11 @@ export class AreaStatus {
 	}
 
 	public Refresh(): void {
-		this._fields = new Dictionnary<number>();
+		this._fields = new Dictionnary<Array<Cell>>();
 		this._units = new Dictionnary<Vehicle>();
 
 		this._area.GetCells().forEach((c) => {
-			this.Update(c.GetField(), (e) => e + 1);
+			this.Update(c, true);
 			if (c.HasOccupier()) {
 				const vehicule = c.GetOccupier() as Vehicle;
 				this._units.Add(vehicule.Id, vehicule);
@@ -32,27 +33,32 @@ export class AreaStatus {
 		});
 	}
 
-	private FieldChanged(obj: any, field: IField): void {
-		this.Update(field, (e) => e + 1);
+	private FieldChanged(obj: any, field: Cell): void {
+		this.Update(field, true);
 	}
 
-	private Update(field: IField, doer: (a: number) => number): void {
-		const key = field.constructor.name;
+	private Update(cell: Cell, isNew: boolean): void {
+		const key = cell.GetField().constructor.name;
 		if (!this._fields.Exist(key)) {
-			this._fields.Add(key, 0);
-		}
-		const value = doer(this._fields.Get(key));
-
-		if (value < 0) {
-			throw 'it should not happen';
+			this._fields.Add(key, []);
 		}
 
-		this._fields.Remove(key);
-		this._fields.Add(key, value);
+		if (isNew) {
+			this._fields.Get(key).push(cell);
+		} else {
+			if (this._fields.Get(key).length < 1) {
+				throw 'it should not happen';
+			}
+			var newList = this._fields.Get(key).filter((c) => c !== cell);
+			this._fields.Remove(key);
+			if (0 < newList.length) {
+				this._fields.Add(key, newList);
+			}
+		}
 	}
 
-	private FieldDestroyed(obj: any, field: IField): void {
-		this.Update(field, (e) => e - 1);
+	private FieldDestroyed(obj: any, field: Cell): void {
+		this.Update(field, false);
 	}
 
 	private UnitChanged(obj: any, v: Vehicle): void {
@@ -61,20 +67,15 @@ export class AreaStatus {
 		}
 	}
 
-	public HasNature(): boolean {
-		return this._fields.Get(BlockingField.name) > 0;
+	public HasField(field: string): boolean {
+		return this._fields.Exist(field);
 	}
 
-	public HasRoadFields(): boolean {
-		return this._fields.Get(RoadField.name) > 0;
-	}
-
-	public HasMedicFields(): boolean {
-		return this._fields.Get(MedicField.name) > 0;
-	}
-
-	public HasFreeFields(): boolean {
-		return this._fields.Get(BasicField.name) > 0;
+	public GetCells(field: string): Cell[] {
+		if (!this._fields.Exist(field)) {
+			return [];
+		}
+		return this._fields.Get(field);
 	}
 
 	public Destroy(): void {}

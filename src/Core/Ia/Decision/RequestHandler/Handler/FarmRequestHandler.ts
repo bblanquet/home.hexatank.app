@@ -1,4 +1,4 @@
-import { MoneyField } from '../../../../Items/Cell/Field/Bonus/MoneyField';
+import { FarmField } from '../../../../Items/Cell/Field/Bonus/FarmField';
 import { BasicField } from './../../../../Items/Cell/Field/BasicField';
 import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
@@ -17,7 +17,7 @@ export class FarmRequestHandler implements ISimpleRequestHandler {
 			console.log(`%c [FARM] `, 'font-weight:bold;color:blue;');
 			cells.forEach((c) => {
 				if (c.GetField() instanceof BasicField) {
-					new MoneyField(c, this._hq);
+					new FarmField(c, this._hq);
 					this._hq.Buy(GameSettings.FieldPrice);
 				}
 			});

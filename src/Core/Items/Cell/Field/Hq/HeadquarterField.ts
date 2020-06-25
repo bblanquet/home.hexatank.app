@@ -61,23 +61,25 @@ export class HeadQuarterField extends Field {
 	}
 
 	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
+		if (this.IsUpdatable) {
+			super.Update(viewX, viewY);
 
-		if (this._timer.IsElapsed()) {
-			if (this.GetSprites()[0].alpha < 0.25) {
-				this.IsFading = false;
-			}
+			if (this._timer.IsElapsed()) {
+				if (this.GetSprites()[0].alpha < 0.25) {
+					this.IsFading = false;
+				}
 
-			if (1 < this.GetSprites()[0].alpha) {
-				this.IsFading = true;
-			}
+				if (1 < this.GetSprites()[0].alpha) {
+					this.IsFading = true;
+				}
 
-			if (this.IsFading) {
-				this.GetSprites()[0].alpha -= 0.01;
-			}
+				if (this.IsFading) {
+					this.GetSprites()[0].alpha -= 0.01;
+				}
 
-			if (!this.IsFading) {
-				this.GetSprites()[0].alpha += 0.01;
+				if (!this.IsFading) {
+					this.GetSprites()[0].alpha += 0.01;
+				}
 			}
 		}
 	}

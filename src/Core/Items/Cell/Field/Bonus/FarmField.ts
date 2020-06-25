@@ -9,7 +9,7 @@ import { Headquarter } from '../Hq/Headquarter';
 import { BonusField } from './BonusField';
 import { CellState } from '../../CellState';
 
-export class MoneyField extends BonusField {
+export class FarmField extends BonusField {
 	private _timer: TickTimer;
 	private _lightItem: Light;
 

@@ -47,7 +47,7 @@ import { ShieldField } from '../Items/Cell/Field/Bonus/ShieldField';
 import { PoisonMenuItem } from '../Menu/Buttons/PoisonMenuItem';
 import { PoisonField } from '../Items/Cell/Field/Bonus/PoisonField';
 import { MoneyMenuItem } from '../Menu/Buttons/MoneyMenuItem';
-import { MoneyField } from '../Items/Cell/Field/Bonus/MoneyField';
+import { FarmField } from '../Items/Cell/Field/Bonus/FarmField';
 import { HealMenuItem } from '../Menu/Buttons/HealMenuItem';
 import { MedicField } from '../Items/Cell/Field/Bonus/MedicField';
 import { SpeedFieldMenuItem } from '../Menu/Buttons/SpeedFieldMenuItem';
@@ -118,7 +118,7 @@ export class CombinationProvider {
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof MoneyMenuItem,
-				(e) => new MoneyField(e, gameContext.MainHq),
+				(e) => new FarmField(e, gameContext.MainHq),
 				'Money'
 			),
 			new GenericCellCombination(

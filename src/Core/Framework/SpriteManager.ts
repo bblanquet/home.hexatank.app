@@ -20,7 +20,7 @@ export class SpriteManager {
 	}
 
 	private Accuracies(): SpriteAccuracy[] {
-		return [ SpriteAccuracy.high, SpriteAccuracy.low, SpriteAccuracy.medium, SpriteAccuracy.mediumHigh ];
+		return [ SpriteAccuracy.high ];
 	}
 
 	public GetCurrentSprites(): Dictionnary<PIXI.Sprite> {

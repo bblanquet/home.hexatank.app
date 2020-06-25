@@ -9,7 +9,6 @@ import { Dictionnary } from '../../Utils/Collections/Dictionnary';
 import { IAreaDecisionMaker } from './Area/IAreaDecisionMaker';
 import { ExcessTankFinder } from './ExcessTankFinder';
 import { AreaRequest } from './Utils/AreaRequest';
-import { RequestPriority } from './Utils/RequestPriority';
 import { KingdomArea } from './Utils/KingdomArea';
 import { Truck } from '../../Items/Unit/Truck';
 import { TickTimer } from '../../Utils/Timer/TickTimer';
@@ -140,24 +139,23 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	}
 
 	private Log(requests: Groups<AreaRequest>) {
-		const hCount = requests.Exist(RequestPriority.High) ? requests.Get(RequestPriority.High).length : 0;
-		const hTypes = requests.Exist(RequestPriority.High)
-			? requests.Get(RequestPriority.High).map((c) => c.RequestType)
-			: '';
-
-		const mCount = requests.Exist(RequestPriority.Medium) ? requests.Get(RequestPriority.Medium).length : 0;
-		const mTypes = requests.Exist(RequestPriority.Medium)
-			? requests.Get(RequestPriority.Medium).map((c) => c.RequestType)
-			: '';
+		// const hCount = requests.Exist(RequestPriority.High) ? requests.Get(RequestPriority.High).length : 0;
+		// const hTypes = requests.Exist(RequestPriority.High)
+		// 	? requests.Get(RequestPriority.High).map((c) => c.RequestType)
+		// 	: '';
 		// const mCount = requests.Exist(RequestPriority.Medium) ? requests.Get(RequestPriority.Medium).length : 0;
-		// const lCount = requests.Exist(RequestPriority.Low) ? requests.Get(RequestPriority.Low).length : 0;
-
-		console.log(
-			`%c [MONEY] ${this.Hq.GetAmount()} [A] ${this.AreaDecisions.length}`,
-			'font-weight:bold;color:#940c0c;'
-		);
-		console.log(`%c [H] ${hCount} ${hTypes.toString()} `, 'font-weight:bold;color:#94570c;');
-		console.log(`%c [M] ${mCount} ${mTypes.toString()} `, 'font-weight:bold;color:#94770c;');
-		console.log(`%c ----------------------- `, 'font-weight:bold;color:#94770c;');
+		// const mTypes = requests.Exist(RequestPriority.Medium)
+		// 	? requests.Get(RequestPriority.Medium).map((c) => c.RequestType)
+		// 	: '';
+		// console.log(
+		// 	`%c [MONEY] ${this.Hq.GetAmount()} [A] ${this.AreaDecisions.length}`,
+		// 	'font-weight:bold;color:#940c0c;'
+		// );
+		// console.log(`%c [H] ${hCount} ${hTypes.toString()} `, 'font-weight:bold;color:#94570c;');
+		// console.log(`%c [M] ${mCount} ${mTypes.toString()} `, 'font-weight:bold;color:#94770c;');
+		// console.log(`%c ----------------------- `, 'font-weight:bold;color:#94770c;');
 	}
 }
+
+// const mCount = requests.Exist(RequestPriority.Medium) ? requests.Get(RequestPriority.Medium).length : 0;
+// const lCount = requests.Exist(RequestPriority.Low) ? requests.Get(RequestPriority.Low).length : 0;

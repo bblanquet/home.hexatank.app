@@ -143,7 +143,7 @@ export class HqRender {
 		kingdom.Setup(
 			new AreaRequestMaker(kingdom),
 			new RequestHandler(hq, kingdom, context),
-			new ExpansionMaker(hq, kingdom, cells),
+			new ExpansionMaker(hq, kingdom, areas),
 			new GeneralRequester()
 		);
 
@@ -155,6 +155,3 @@ export class HqRender {
 		return hq;
 	}
 }
-//
-//
-//

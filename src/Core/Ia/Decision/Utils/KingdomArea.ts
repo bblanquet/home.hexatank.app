@@ -1,7 +1,8 @@
-import { TroopDecisionMaker } from './../Troop/TroopDecisionMaker';
-import { MedicField } from '../../../Items/Cell/Field/Bonus/MedicField';
+import { MedicField } from './../../../Items/Cell/Field/Bonus/MedicField';
 import { BasicField } from './../../../Items/Cell/Field/BasicField';
-import { MoneyField } from '../../../Items/Cell/Field/Bonus/MoneyField';
+import { FarmField } from './../../../Items/Cell/Field/Bonus/FarmField';
+import { BlockingField } from './../../../Items/Cell/Field/BlockingField';
+import { TroopDecisionMaker } from './../Troop/TroopDecisionMaker';
 import { Diamond } from './../../../Items/Cell/Field/Diamond';
 import { DistanceHelper } from './../../../Items/Unit/MotionHelpers/DistanceHelper';
 import { HeadQuarterField } from '../../../Items/Cell/Field/Hq/HeadquarterField';
@@ -39,7 +40,6 @@ export class KingdomArea {
 				covered += 1;
 			}
 		});
-		console.log('is covered: ' + covered);
 		if (covered === 7) {
 			return ReactorAreaState.All;
 		} else if (covered === 0) {
@@ -50,7 +50,7 @@ export class KingdomArea {
 	}
 
 	public IsImportant(): boolean {
-		return this._spot.HasDiamond() || this._spot.HasHq();
+		return this._spot.GetStatus().HasField(Diamond.name) || this._spot.GetStatus().HasField(HeadQuarterField.name);
 	}
 
 	HasCell(cell: Cell) {
@@ -58,7 +58,7 @@ export class KingdomArea {
 	}
 
 	public HasFreeFields(): boolean {
-		return 0 < this._spot.GetCells().filter((c) => c.GetField() instanceof BasicField).length;
+		return this.GetSpot().GetStatus().HasField(BasicField.name);
 	}
 
 	public GetSpot(): Area {
@@ -66,7 +66,7 @@ export class KingdomArea {
 	}
 
 	public HasMedic(): boolean {
-		return this._spot.GetCells().some((c) => c.GetField() instanceof MedicField);
+		return this.GetSpot().GetStatus().HasField(MedicField.name);
 	}
 
 	public GetTroops(): Array<TroopDecisionMaker> {
@@ -85,8 +85,8 @@ export class KingdomArea {
 		if (!this._spot.GetCentralCell().IsBlocked()) {
 			return this._spot.GetCentralCell();
 		} else {
-			if (this.HasFastField()) {
-				return this.GetFastFields()[0];
+			if (this.HasRoadField()) {
+				return this.GetRoadFields()[0];
 			} else {
 				return this._spot.GetFreeCells()[0];
 			}
@@ -107,26 +107,26 @@ export class KingdomArea {
 	}
 
 	public HasFarmField(): boolean {
-		return this._spot.GetCells().some((c) => c.GetField() instanceof MoneyField);
+		return this._spot.GetStatus().HasField(FarmField.name);
 	}
 
-	public HasFastField(): boolean {
-		return this._spot.GetCells().some((c) => c.GetField() instanceof RoadField);
+	public HasRoadField(): boolean {
+		return this._spot.GetStatus().HasField(RoadField.name);
 	}
 
-	public GetFastFields(): Cell[] {
-		return this._spot.GetCells().filter((c) => c.GetField() instanceof RoadField);
+	public GetRoadFields(): Cell[] {
+		return this._spot.GetStatus().GetCells(RoadField.name);
 	}
 
 	public HasNature(): boolean {
 		if (this.IsImportant()) {
 			return false;
 		}
-		return this._spot.GetCells().some((c) => c.HasShootableField());
+		return this._spot.GetStatus().HasField(BlockingField.name);
 	}
 
 	public GetNatures(): Cell[] {
-		return this._spot.GetCells().filter((c) => c.HasShootableField());
+		return this._spot.GetStatus().GetCells(BlockingField.name);
 	}
 
 	public IsConnected(): boolean {
@@ -135,7 +135,7 @@ export class KingdomArea {
 			return true;
 		}
 
-		return this._spot.GetCells().some((c) => c.GetField() instanceof RoadField);
+		return this._spot.GetStatus().HasField(RoadField.name);
 	}
 
 	private HasRoad(cell: Cell, count: number): boolean {

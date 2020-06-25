@@ -2,7 +2,7 @@ import { SmartPreciseOrder } from './SmartPreciseOrder';
 import { Order } from './Order';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Cell } from '../../Items/Cell/Cell';
-import { MoneyField } from '../../Items/Cell/Field/Bonus/MoneyField';
+import { FarmField } from '../../Items/Cell/Field/Bonus/FarmField';
 
 export class MoneyOrder extends Order {
 	private _currentOrder: SmartPreciseOrder;
@@ -35,7 +35,7 @@ export class MoneyOrder extends Order {
 			.GetCurrentCell()
 			.GetSpecificRange(range)
 			.map((c) => c as Cell)
-			.some((c) => c.GetField() instanceof MoneyField && (<MoneyField>c.GetField()).IsFull() && !c.IsBlocked());
+			.some((c) => c.GetField() instanceof FarmField && (<FarmField>c.GetField()).IsFull() && !c.IsBlocked());
 	}
 
 	public GetFirstFullMoneyCell(range: number): Cell {
@@ -44,7 +44,7 @@ export class MoneyOrder extends Order {
 			.GetSpecificRange(range)
 			.map((c) => c as Cell)
 			.filter(
-				(c) => c.GetField() instanceof MoneyField && (<MoneyField>c.GetField()).IsFull() && !c.IsBlocked()
+				(c) => c.GetField() instanceof FarmField && (<FarmField>c.GetField()).IsFull() && !c.IsBlocked()
 			)[0];
 	}
 

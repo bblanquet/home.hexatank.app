@@ -37,7 +37,6 @@ export const Archive = {
 		bottomMenu: './menu/bottomMenu.svg',
 		backgroundButton: './menu/backgroundMenu.svg',
 		hoverBackgroundButton: './menu/hoverBackgroundMenu.svg',
-		powerButton: './menu/powerMenu.svg',
 		flagButton: './menu/flagMenu.svg',
 		healthButton: './menu/healthMenu.svg',
 		moneyButton: './menu/moneyMenu.svg',
@@ -93,20 +92,16 @@ export const Archive = {
 			bottom: './building/hqMiddle.svg',
 			top: './building/hqTop.svg',
 			red: {
-				field: './building/hqRedCell.svg',
-				area: './building/redAreaEnergy.svg'
+				field: './building/hqRedCell.svg'
 			},
 			blue: {
-				field: './building/hqBlueCell.svg',
-				area: './building/blueAreaEnergy.svg'
+				field: './building/hqBlueCell.svg'
 			},
 			yellow: {
-				field: './building/hqYellowCell.svg',
-				area: './building/yellowAreaEnergy.svg'
+				field: './building/hqYellowCell.svg'
 			},
 			purple: {
-				field: './building/hqPurpleCell.svg',
-				area: './building/purpleAreaEnergy.svg'
+				field: './building/hqPurpleCell.svg'
 			}
 		}
 	},

@@ -18,7 +18,7 @@ import { MedicField } from '../../../Items/Cell/Field/Bonus/MedicField';
 import { AttackMenuItem } from '../../../Menu/Buttons/AttackMenuItem';
 import { AttackField } from '../../../Items/Cell/Field/Bonus/AttackField';
 import { SpeedFieldMenuItem } from '../../../Menu/Buttons/SpeedFieldMenuItem';
-import { MoneyField } from '../../../Items/Cell/Field/Bonus/MoneyField';
+import { FarmField } from '../../../Items/Cell/Field/Bonus/FarmField';
 import { MoneyMenuItem } from '../../../Menu/Buttons/MoneyMenuItem';
 import { RoadField } from '../../../Items/Cell/Field/Bonus/RoadField';
 import { InteractionKind } from '../../IInteractionContext';
@@ -95,7 +95,7 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 							'Slow'
 						);
 					} else if (menuItem instanceof MoneyMenuItem) {
-						this.SetMenuItem((c) => new MoneyField(c, this._gameContext.MainHq), 'Money');
+						this.SetMenuItem((c) => new FarmField(c, this._gameContext.MainHq), 'Money');
 					}
 					this._gameContext.MainHq.Buy(cost);
 				}

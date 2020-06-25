@@ -10,31 +10,22 @@ export class SpriteProvider {
 	private static _svgs: Dictionnary<PIXI.resources.SVGResource> = new Dictionnary<PIXI.resources.SVGResource>();
 
 	public static GetSprite(name: string, accuracy: SpriteAccuracy): PIXI.Sprite {
-		const otpions = { resourceOptions: { scale: this.GetNumber(name, accuracy) } };
+		const otpions = { resourceOptions: { scale: this.GetNumber(name) } };
 		return new PIXI.Sprite(PIXI.Texture.from(`${accuracy}${this.GetPath(name)}`, otpions));
 	}
 
-	private static GetNumber(sprite: string, accuracy: SpriteAccuracy): number {
+	private static GetNumber(sprite: string): number {
 		if (
 			[
-				Archive.menu.smartMenu.tankSelection,
-				Archive.menu.smartMenu.hoverTankSelection,
-				Archive.menu.smartMenu.cellSelection,
-				Archive.menu.smartMenu.hoverCellSelection
-			].map((e) => sprite)
+				this.GetPath(Archive.menu.smartMenu.tankSelection),
+				this.GetPath(Archive.menu.smartMenu.hoverTankSelection),
+				this.GetPath(Archive.menu.smartMenu.cellSelection),
+				this.GetPath(Archive.menu.smartMenu.hoverCellSelection)
+			].some((e) => sprite === e)
 		) {
 			return 1;
-		}
-
-		switch (accuracy) {
-			case SpriteAccuracy.low:
-				return 0.15;
-			case SpriteAccuracy.medium:
-				return 0.25;
-			case SpriteAccuracy.mediumHigh:
-				return 0.5;
-			case SpriteAccuracy.high:
-				return 0.3;
+		} else {
+			return 0.3;
 		}
 	}
 
@@ -96,7 +87,7 @@ export class SpriteProvider {
 	private static LoadAsset(data: AssetData, callBack: () => void) {
 		const res = new PIXI.resources.SVGResource(data.Name, { scale: data.Acc });
 		const key = data.ToString();
-		const otpions = { resourceOptions: { scale: SpriteProvider.GetNumber(data.Name, data.Acc) } };
+		const otpions = { resourceOptions: { scale: SpriteProvider.GetNumber(data.Name) } };
 		let texture = new PIXI.Texture(new PIXI.BaseTexture(data.Name, otpions));
 		texture.baseTexture.once('loaded', () => {
 			callBack();

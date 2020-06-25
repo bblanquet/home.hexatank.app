@@ -50,9 +50,9 @@ export default class LoadingComponent extends Component<any, { percentage: numbe
 					</div>
 					<div class="fill-logo" />
 				</div>
-				<div class="progress">
+				<div class="progress" style="height:20px; border: 4px solid rgb(198, 198, 198);">
 					<div
-						class="progress-bar bg-danger"
+						class="progress-bar bg-danger "
 						role="progressbar"
 						style={'width:' + this.state.percentage + '%'}
 						aria-valuenow="100"

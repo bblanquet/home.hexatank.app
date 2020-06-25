@@ -611,14 +611,6 @@ body {
 	background-image: url('{{}}menu/flagMenu.svg');
 }
 
-.fill-flag {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/flagMenu.svg');
-}
-
 .fill-money {
 	overflow: hidden;
 	background-size: contain;
@@ -881,24 +873,6 @@ body {
 	background-image: url('{{}}components/redBuilding3.svg');
 }
 
-.fill-triangle {
-	width: 100%;
-	height: 10px;
-	overflow: hidden;
-	background-size: contain;
-	background-position: top;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/triangle.svg');
-}
-
-.fill-content-camouflage {
-	width: 100%;
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/camouflage.svg');
-}
-
 .fill-order {
 	width: 100%;
 	background-size: contain;
@@ -913,14 +887,6 @@ body {
 	background-position: bottom;
 	background-repeat: no-repeat;
 	background-image: url('{{}}menu/activeOrder.svg');
-}
-
-.fill-content-red-camouflage {
-	width: 100%;
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/redCamouflage.svg');
 }
 
 .fill-target {
@@ -1003,6 +969,10 @@ body:after {
 	content: url('{{}}components/program6Logo.svg') url('{{}}components/program6LogoBackground.svg')
 		url('{{}}option.svg') url('{{}}nature/diamondStone.svg') url('{{}}nature/diamondStone.svg')
 		url('{{}}menu/SearchMoneyButton.svg') url('{{}}menu/AbortMenu.svg') url('{{}}menu/cancelButton.svg')
-		url('{{}}menu/patrolButton.svg') url('{{}}menu/targetButton.svg');
+		url('{{}}menu/patrolButton.svg') url('{{}}menu/targetButton.svg') url('{{}}menu/activeOrder.svg')
+		url('{{}}components/redArmyLeaderMouth3.svg') url('{{}}components/redArmyLeaderMouth2.svg')
+		url('{{}}components/redArmyLeaderMouth1.svg') url('{{}}components/redArmyLeaderBlink.svg')
+		url('{{}}components/redArmyLeaderEyes.svg') url('{{}}components/redArmyLeader.svg')
+		url('{{}}menu/tankButton.svg') url('{{}}menu/truckButton.svg') url('{{}}menu/flagMenu.svg');
 	display: none;
 }

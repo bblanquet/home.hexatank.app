@@ -53,11 +53,11 @@ export class AppHandler {
 		this.InputManager = new InputNotifier();
 
 		this._viewPort.on('zoomed', (e: any) => {
-			if (this._viewPort.scale.x < 0.5) {
-				this._viewPort.setZoom(0.5, this._viewPort.center);
+			if (this._viewPort.scale.x < 0.7) {
+				this._viewPort.setZoom(0.7, this._viewPort.center);
 				return;
-			} else if (this._viewPort.scale.x > 1.3) {
-				this._viewPort.setZoom(1.3, this._viewPort.center);
+			} else if (this._viewPort.scale.x > 1.5) {
+				this._viewPort.setZoom(1.5, this._viewPort.center);
 				return;
 			}
 		});

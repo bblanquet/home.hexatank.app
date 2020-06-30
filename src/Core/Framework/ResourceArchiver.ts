@@ -111,9 +111,9 @@ export const Archive = {
 			red: './tank/red/light.svg'
 		},
 		reactor: {
-			top: './floor/reactorLight.svg',
-			bottom: './floor/reactor.svg',
-			wire: './floor/reactorWire.svg'
+			top: './floor/reactor.svg',
+			dark: './floor/reactorDark.svg',
+			light: './floor/reactorLight.svg'
 		},
 		coverBottom: './floor/coverBottom.svg',
 		coverTop: './floor/coverTop.svg',

@@ -2,7 +2,6 @@ import { RaidRequestHandler } from './Handler/RaidRequestHandler';
 import { EnergyRequestHandler } from './Handler/EnergyRequestHandler';
 import { ReactorRequestHandler } from './Handler/ReactorRequestHandler';
 import { ClearRequestHandler } from './Handler/ClearRequestHandler';
-import { ClearAreaRequester } from './../RequestMaker/AreaRequester/ClearAreaRequester';
 import { HealUnitRequestHandler } from './Handler/HealUnitRequestHandler';
 import { HealingRequestHandler } from './Handler/HealingRequestHandler';
 import { RoadRequestHandler } from './Handler/RoadRequestHandler';

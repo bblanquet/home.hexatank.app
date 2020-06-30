@@ -100,22 +100,17 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	public Do(): void {
 		this.Trucks = this.Trucks.filter((t) => t.IsAlive());
 		this.Tanks = this.Tanks.filter((t) => t.IsAlive());
-
 		if (this._idleTimer.IsElapsed()) {
 			const areas = new Array<KingdomArea>();
-
 			this.AreaDecisions.forEach((areaDecision) => {
 				areaDecision.Area.CalculateFoes();
 				areaDecision.HasReceivedRequest = false;
 				areaDecision.Update();
 				areas.push(areaDecision.Area);
 			});
-
 			this.IdleTanks.CalculateExcess(areas);
 			const requests = this.GetRequests(areas);
-
 			this.Log(requests);
-
 			if (requests.Any()) {
 				this._requestHandler.HandleRequests(requests);
 			} else {

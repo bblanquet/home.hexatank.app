@@ -38,6 +38,10 @@ export class Dust extends Item {
 		return false;
 	}
 	public Update(viewX: number, viewY: number): void {
+		if (!this.IsUpdatable) {
+			return;
+		}
+
 		super.Update(viewX, viewY);
 
 		if (0 <= this.currentDust && this.currentDust < Archive.dusts.length) {
@@ -83,7 +87,7 @@ export class Dust extends Item {
 	}
 
 	public Destroy() {
-		super.Destroy();
 		this.IsUpdatable = false;
+		super.Destroy();
 	}
 }

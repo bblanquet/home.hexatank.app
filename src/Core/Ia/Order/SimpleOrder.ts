@@ -10,6 +10,7 @@ import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { PacketKind } from '../../../Components/Network/PacketKind';
+import { ShieldField } from '../../Items/Cell/Field/Bonus/ShieldField';
 
 export class SimpleOrder extends Order {
 	protected Currentcell: Cell;
@@ -109,7 +110,7 @@ export class SimpleOrder extends Order {
 		this.Currentcell = this.cells[0];
 		this.cells.splice(0, 1);
 
-		if (this.Currentcell.IsBlocked()) {
+		if (!this.IsAvailableField(this.Currentcell)) {
 			if (this.FindPath()) {
 				this.Currentcell = this.GetNextcell();
 			} else {
@@ -125,15 +126,24 @@ export class SimpleOrder extends Order {
 		this.Dest = this.OriginalDest;
 	}
 
+	private IsAvailableField(c: Cell): boolean {
+		const field = c.GetField();
+		if (field instanceof ShieldField) {
+			const shield = field as ShieldField;
+			return !shield.IsEnemy(this._v);
+		}
+		return !c.IsBlocked();
+	}
+
 	protected FindPath(): boolean {
-		if (this.Dest.IsBlocked()) {
+		if (!this.IsAvailableField(this.Dest)) {
 			this.Dest = this.GetClosestcell();
 			if (isNullOrUndefined(this.Dest)) {
 				return false;
 			}
 		}
 		this.ClearPath();
-		var nextcells = new AStarEngine<Cell>((c: Cell) => !isNullOrUndefined(c) && !c.IsBlocked()).GetPath(
+		var nextcells = new AStarEngine<Cell>((c: Cell) => !isNullOrUndefined(c) && this.IsAvailableField(c)).GetPath(
 			this._v.GetCurrentCell(),
 			this.Dest,
 			true

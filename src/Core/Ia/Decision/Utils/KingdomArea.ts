@@ -1,3 +1,5 @@
+import { ShieldField } from './../../../Items/Cell/Field/Bonus/ShieldField';
+import { isNullOrUndefined } from 'util';
 import { MedicField } from './../../../Items/Cell/Field/Bonus/MedicField';
 import { BasicField } from './../../../Items/Cell/Field/BasicField';
 import { FarmField } from './../../../Items/Cell/Field/Bonus/FarmField';
@@ -16,12 +18,42 @@ import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 import { Tank } from '../../../Items/Unit/Tank';
 import { Truck } from '../../../Items/Unit/Truck';
 import { ReactorAreaState } from './ReactorAreaState';
+import { AreaSearch } from './AreaSearch';
 
 export class KingdomArea {
 	public Troops: Array<TroopDecisionMaker>;
 	public Truck: Truck;
-	constructor(private _hq: Headquarter, private _spot: Area, private _kindgom: IKingdomDecisionMaker) {
+	private _range: number = 0;
+
+	constructor(
+		private _hq: Headquarter,
+		private _spot: Area,
+		private _kindgom: IKingdomDecisionMaker,
+		private _areaSearch: AreaSearch
+	) {
 		this.Troops = new Array<TroopDecisionMaker>();
+		let range = 1;
+		let isFound = false;
+		let areas = this._areaSearch.GetAreaRange(this._hq.GetCell().GetCoordinate(), range);
+		const co = this._spot.GetCentralCell().GetCoordinate();
+
+		while (!isFound) {
+			if (areas.indexOf(co) !== -1) {
+				isFound = true;
+				this._range = range;
+			} else {
+				range += 1;
+				areas = this._areaSearch.GetAreaRange(this._hq.GetCell().GetCoordinate(), range);
+			}
+
+			if (areas.length === 0) {
+				isFound = true;
+			}
+		}
+	}
+
+	public GetRange(): number {
+		return this._range;
 	}
 
 	public IsBorder(): boolean {
@@ -31,6 +63,10 @@ export class KingdomArea {
 				(aroundArea) =>
 					!this._kindgom.GetKingdomAreas().Exist(aroundArea.GetCentralCell().GetCoordinate().ToString())
 			);
+	}
+
+	HasHq(): boolean {
+		return this._spot.GetStatus().HasField(HeadQuarterField.name);
 	}
 
 	public IsCovered(): ReactorAreaState {
@@ -53,7 +89,7 @@ export class KingdomArea {
 		return this._spot.GetStatus().HasField(Diamond.name) || this._spot.GetStatus().HasField(HeadQuarterField.name);
 	}
 
-	HasCell(cell: Cell) {
+	public HasCell(cell: Cell) {
 		return this._spot.Contains(cell);
 	}
 
@@ -91,6 +127,32 @@ export class KingdomArea {
 				return this._spot.GetFreeCells()[0];
 			}
 		}
+	}
+
+	public GetClosesHqField(n: number): Cell[] {
+		const result = new Array<Cell>();
+		let i = 0;
+		this.GetSpot()
+			.GetCells()
+			.sort((a, b) => {
+				const ditanceA = DistanceHelper.GetDistance(this._hq.GetCell().GetCoordinate(), a.GetCoordinate());
+				const ditanceB = DistanceHelper.GetDistance(this._hq.GetCell().GetCoordinate(), b.GetCoordinate());
+
+				if (ditanceA < ditanceB) {
+					return -1;
+				}
+				if (ditanceA > ditanceB) {
+					return 1;
+				}
+				return 0;
+			})
+			.some((c) => {
+				result.push(c);
+				i += 1;
+				return i === n;
+			});
+
+		return result;
 	}
 
 	public GetAllyAreas(): KingdomArea[] {
@@ -135,7 +197,14 @@ export class KingdomArea {
 			return true;
 		}
 
-		return this._spot.GetStatus().HasField(RoadField.name);
+		if (!this.HasNature() && !this._spot.GetStatus().HasField(BasicField.name)) {
+			return true;
+		}
+		if (!this.HasNature() && this.GetFreeCellCount() === 0) {
+			return true;
+		}
+
+		return this._spot.GetStatus().HasFields([ RoadField.name ]);
 	}
 
 	private HasRoad(cell: Cell, count: number): boolean {
@@ -145,6 +214,7 @@ export class KingdomArea {
 			return (
 				cell !== null &&
 				(cell.GetField() instanceof RoadField ||
+					cell.GetField() instanceof ShieldField ||
 					cell.GetField() instanceof HeadQuarterField ||
 					cell.GetField() instanceof Headquarter)
 			);
@@ -183,13 +253,13 @@ export class KingdomArea {
 	private CalculateOuterFoeCount(): number {
 		let outsideEnemyCount = 0;
 		this._spot.GetAroundAreas().forEach((area) => {
-			outsideEnemyCount += area.GetFoeCount(this._hq);
+			outsideEnemyCount += area.GetStatus().GetFoeVehicleCount(this._hq);
 		});
 		return outsideEnemyCount;
 	}
 
 	private CalculateInnerFoeCount(): number {
-		return this._spot.GetFoeCount(this._hq);
+		return this._spot.GetStatus().GetFoeVehicleCount(this._hq);
 	}
 
 	public GetOuterFoeCount(): number {

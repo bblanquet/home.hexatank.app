@@ -26,6 +26,10 @@ export class GameContext {
 		return this._hqs;
 	}
 
+	public GetHq(path: string) {
+		return this._hqs.find((e) => e.GetCell().GetCoordinate().ToString() === path);
+	}
+
 	private VehiculeCreated(obj: Headquarter, vehicule: Vehicle): void {
 		vehicule.Id = `${obj.PlayerName}${this._vehicleCount}`;
 		this._vehicles.Add(vehicule.Id, vehicule);

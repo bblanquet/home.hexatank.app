@@ -2,7 +2,6 @@ import { AttackField } from '../../../Items/Cell/Field/Bonus/AttackField';
 import { KingdomArea } from './../Utils/KingdomArea';
 import { Dictionnary } from './../../../Utils/Collections/Dictionnary';
 import { TroopRoads } from '../Troop/TroopRoads';
-import { CellContext } from '../../../Items/Cell/CellContext';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Area } from '../Utils/Area';
 import { isNullOrUndefined } from 'util';

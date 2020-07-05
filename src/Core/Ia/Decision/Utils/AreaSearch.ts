@@ -1,5 +1,5 @@
+import { HexAxial } from './../../../Utils/Geometry/HexAxial';
 import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
-import { HexAxial } from '../../../Utils/Geometry/HexAxial';
 import { isNullOrUndefined } from 'util';
 
 export class AreaSearch {
@@ -14,14 +14,14 @@ export class AreaSearch {
 	private GetAllAreas(currentCoordinate: HexAxial, result: Array<HexAxial>): void {
 		if (result.filter((a) => a === currentCoordinate).length === 0) {
 			result.push(currentCoordinate);
-			var neighs = this.GetExcludedFirstRange(currentCoordinate);
+			var neighs = this.GetRangeOne(currentCoordinate);
 			neighs.forEach((neigh) => {
 				this.GetAllAreas(neigh, result);
 			});
 		}
 	}
 
-	public GetExcludedFirstRange(coordinate: HexAxial): Array<HexAxial> {
+	private GetRangeOne(coordinate: HexAxial): Array<HexAxial> {
 		var result = new Array<HexAxial>();
 		var shifts = [
 			{ Q: -1, R: -2 },
@@ -42,18 +42,74 @@ export class AreaSearch {
 		return result;
 	}
 
+	// public GetAllRanges(center: HexAxial):Dictionnary<Array<HexAxial>>{
+	// 	const result = new Dictionnary<Array<HexAxial>>();
+	// 	let ranges = new Array<HexAxial>();
+	// 	let r = 1;
+	// 	do{
+
+	// 		ranges = this.GetAreaRange(center,1);
+	// 		result.Add()
+
+	// 	}while(0 < ranges.length)
+
+	// 	return result;
+	// }
+
+	public GetAreaRange(center: HexAxial, range: number): Array<HexAxial> {
+		let outer = new Dictionnary<HexAxial>();
+		let ignored = new Dictionnary<HexAxial>();
+		let inner = Dictionnary.To<HexAxial>((e) => e.ToString(), this.GetRangeOne(center));
+		let currentRange = 1;
+
+		if (range === currentRange) {
+			return inner.Values();
+		}
+
+		inner.Add(center.ToString(), center);
+
+		while (outer.Values().length === 0) {
+			inner.Values().forEach((i) => {
+				if (!ignored.Exist(i.ToString())) {
+					ignored.Add(i.ToString(), i);
+				}
+			});
+
+			inner.Values().forEach((innercell) => {
+				this.GetRangeOne(innercell).forEach((outcell) => {
+					if (!ignored.Exist(outcell.ToString())) {
+						outer.Add(outcell.ToString(), outcell);
+					}
+				});
+			});
+
+			currentRange += 1;
+
+			if (outer.IsEmpty()) {
+				return [];
+			}
+
+			if (currentRange < range) {
+				inner = outer;
+				outer = new Dictionnary<HexAxial>();
+			}
+		}
+
+		return outer.Values();
+	}
+
 	public GetIncludedFirstRange(center: HexAxial): Array<HexAxial> {
-		let innerCircle = this.GetExcludedFirstRange(center);
+		let innerCircle = this.GetRangeOne(center);
 		innerCircle.push(center);
 		return innerCircle;
 	}
 
 	public GetIncludedSecondRange(center: HexAxial): Array<HexAxial> {
 		let outerCircle = new Array<HexAxial>();
-		let innerCircle = this.GetExcludedFirstRange(center);
+		let innerCircle = this.GetRangeOne(center);
 
 		innerCircle.forEach((innercell) => {
-			this.GetExcludedFirstRange(innercell).forEach((outcell) => {
+			this.GetRangeOne(innercell).forEach((outcell) => {
 				outerCircle.push(outcell);
 			});
 		});

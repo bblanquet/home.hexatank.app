@@ -132,18 +132,18 @@ export class HqRender {
 
 		areas.forEach((a) => {
 			const around = areaSearch
-				.GetExcludedFirstRange(a.GetCentralCell().GetCoordinate())
+				.GetAreaRange(a.GetCentralCell().GetCoordinate(), 1)
 				.map((coo) => areaByCoo.Get(coo.ToString()));
 			a.SetAround(around);
 		});
 
 		const hq = new IaHeadquarter(skin, cell, context);
-		const kingdom = new Kingdom(hq, areas);
+		const kingdom = new Kingdom(hq, areas, areaSearch);
 
 		kingdom.Setup(
 			new AreaRequestMaker(kingdom),
 			new RequestHandler(hq, kingdom, context),
-			new ExpansionMaker(hq, kingdom, areas),
+			new ExpansionMaker(hq, kingdom, areas, areaSearch),
 			new GeneralRequester()
 		);
 

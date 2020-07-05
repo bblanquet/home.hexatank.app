@@ -17,7 +17,6 @@ export class TankMediumRequestHandler implements ISimpleRequestHandler {
 	}
 
 	public Handle(request: AreaRequest): void {
-		// console.log(`%c [M TANK] `, 'font-weight:bold;color:blue;');
 		if (this._kingdom.IdleTanks.HasTank()) {
 			this.GetHelpFromIdleTanks(request);
 		}

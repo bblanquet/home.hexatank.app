@@ -7,9 +7,15 @@ import { isNullOrUndefined } from 'util';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { BasicAreaDecisionMaker } from '../Area/BasicAreaDecisionMaker';
 import { KingdomArea } from '../Utils/KingdomArea';
+import { AreaSearch } from '../Utils/AreaSearch';
 
 export class ExpansionMaker implements IExpansionMaker {
-	constructor(private _hq: Headquarter, private _kingdom: Kingdom, private _areas: Array<Area>) {}
+	constructor(
+		private _hq: Headquarter,
+		private _kingdom: Kingdom,
+		private _areas: Array<Area>,
+		private _areaSearch: AreaSearch
+	) {}
 
 	public Expand(): void {
 		if (!this._kingdom.AreaDecisions.some((a) => a.Area.HasFreeFields())) {
@@ -26,7 +32,7 @@ export class ExpansionMaker implements IExpansionMaker {
 		this._kingdom.RemainingAreas.splice(this._kingdom.RemainingAreas.indexOf(area), 1);
 		const areaDecision = new BasicAreaDecisionMaker(
 			this._hq,
-			new KingdomArea(this._hq, area, this._kingdom),
+			new KingdomArea(this._hq, area, this._kingdom, this._areaSearch),
 			this._areas
 		);
 		this._kingdom.AreaDecisions.push(areaDecision);

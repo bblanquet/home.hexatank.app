@@ -20,6 +20,8 @@ import { IAreaRequestListMaker } from './RequestMaker/IAreaRequestListMaker';
 import { IGeneralListRequester } from './RequestMaker/GeneralRequester/IGeneralListRequester';
 import { Cell } from '../../Items/Cell/Cell';
 import { RaidTroopDecisionMaker } from './Troop/RaidTroopDecisionMaker';
+import { RequestPriority } from './Utils/RequestPriority';
+import { AreaSearch } from './Utils/AreaSearch';
 
 export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	public AreaDecisions: IAreaDecisionMaker[];
@@ -36,7 +38,7 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	private _expansionMaker: IExpansionMaker;
 	private _generalRequestMaker: IGeneralListRequester;
 
-	constructor(public Hq: Headquarter, public RemainingAreas: Area[]) {
+	constructor(public Hq: Headquarter, public RemainingAreas: Area[], private _areaSearch: AreaSearch) {
 		this.AreaDecisions = new Array<IAreaDecisionMaker>();
 		this.Raids = new Array<RaidTroopDecisionMaker>();
 		this.CellAreas = new Dictionnary<IAreaDecisionMaker>();
@@ -134,21 +136,21 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	}
 
 	private Log(requests: Groups<AreaRequest>) {
-		// const hCount = requests.Exist(RequestPriority.High) ? requests.Get(RequestPriority.High).length : 0;
-		// const hTypes = requests.Exist(RequestPriority.High)
-		// 	? requests.Get(RequestPriority.High).map((c) => c.RequestType)
-		// 	: '';
-		// const mCount = requests.Exist(RequestPriority.Medium) ? requests.Get(RequestPriority.Medium).length : 0;
-		// const mTypes = requests.Exist(RequestPriority.Medium)
-		// 	? requests.Get(RequestPriority.Medium).map((c) => c.RequestType)
-		// 	: '';
-		// console.log(
-		// 	`%c [MONEY] ${this.Hq.GetAmount()} [A] ${this.AreaDecisions.length}`,
-		// 	'font-weight:bold;color:#940c0c;'
-		// );
-		// console.log(`%c [H] ${hCount} ${hTypes.toString()} `, 'font-weight:bold;color:#94570c;');
-		// console.log(`%c [M] ${mCount} ${mTypes.toString()} `, 'font-weight:bold;color:#94770c;');
-		// console.log(`%c ----------------------- `, 'font-weight:bold;color:#94770c;');
+		const hCount = requests.Exist(RequestPriority.High) ? requests.Get(RequestPriority.High).length : 0;
+		const hTypes = requests.Exist(RequestPriority.High)
+			? requests.Get(RequestPriority.High).map((c) => c.RequestType)
+			: '';
+		const mCount = requests.Exist(RequestPriority.Medium) ? requests.Get(RequestPriority.Medium).length : 0;
+		const mTypes = requests.Exist(RequestPriority.Medium)
+			? requests.Get(RequestPriority.Medium).map((c) => c.RequestType)
+			: '';
+		console.log(
+			`%c [MONEY] ${this.Hq.GetAmount()} [A] ${this.AreaDecisions.length}`,
+			'font-weight:bold;color:#940c0c;'
+		);
+		console.log(`%c [H] ${hCount} ${hTypes.toString()} `, 'font-weight:bold;color:#94570c;');
+		console.log(`%c [M] ${mCount} ${mTypes.toString()} `, 'font-weight:bold;color:#94770c;');
+		console.log(`%c ----------------------- `, 'font-weight:bold;color:#94770c;');
 	}
 }
 

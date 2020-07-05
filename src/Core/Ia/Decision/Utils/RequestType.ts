@@ -11,5 +11,6 @@ export enum RequestType {
 	HealUnit = 'HealUnit',
 	Reactor = 'Reactor',
 	Energy = 'Energy',
-	Raid = 'Raid'
+	Raid = 'Raid',
+	Shield = 'Shield'
 }

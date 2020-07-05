@@ -92,6 +92,12 @@
 	color: gainsboro;
 }
 
+.btn-simple-black:active {
+	background-color: black;
+	border-bottom: 8px solid black;
+	color: gainsboro;
+}
+
 .btn-simple-red {
 	font-family: Impact;
 	background-color: #5b1919;
@@ -100,6 +106,12 @@
 }
 
 .btn-simple-red:hover {
+	background-color: #5b1919;
+	border-bottom: 8px solid #5b1919;
+	color: gainsboro;
+}
+
+.btn-simple-red:active {
 	background-color: #5b1919;
 	border-bottom: 8px solid #5b1919;
 	color: gainsboro;
@@ -503,6 +515,20 @@ body {
 	padding-bottom: 3px;
 }
 
+.custom-black-btn:active {
+	background-color: #3f3f3f;
+	color: white;
+	font-family: AnimalSilence;
+	letter-spacing: 0.5mm;
+	font-size: large;
+	text-align: center;
+	border-radius: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
 .custom-btn-black-border {
 	border: #6b5e39 solid 1px;
 	border-radius: 15px;
@@ -533,6 +559,20 @@ body {
 }
 
 .custom-btn:hover {
+	background-color: #e02020;
+	color: white;
+	font-family: AnimalSilence;
+	letter-spacing: 0.5mm;
+	font-size: large;
+	text-align: center;
+	border-radius: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.custom-btn:active {
 	background-color: #e02020;
 	color: white;
 	font-family: AnimalSilence;

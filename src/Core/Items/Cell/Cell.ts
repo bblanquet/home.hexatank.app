@@ -31,7 +31,6 @@ export class Cell extends Item implements ICell, ISelectable {
 	public Properties: CellProperties;
 
 	public OnFieldChanged: ILiteEvent<Cell> = new LiteEvent<Cell>();
-	public OnFieldDestroyed: ILiteEvent<Cell> = new LiteEvent<Cell>();
 	public OnUnitChanged: ILiteEvent<Vehicle> = new LiteEvent<Vehicle>();
 
 	private _state: CellState = CellState.Hidden;
@@ -99,7 +98,6 @@ export class Cell extends Item implements ICell, ISelectable {
 	public SetField(field: IField) {
 		if (!isNullOrUndefined(this._field)) {
 			let field = this._field;
-			this.OnFieldDestroyed.Invoke(this, this);
 			this._field = null;
 			(<Field>field).Destroy();
 		}

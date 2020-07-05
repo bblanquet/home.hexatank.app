@@ -1,3 +1,4 @@
+import { ShieldField } from './../../../../Items/Cell/Field/Bonus/ShieldField';
 import { Area } from './../../Utils/Area';
 import { RequestType } from './../../Utils/RequestType';
 import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
@@ -21,8 +22,9 @@ export class RoadRequestHandler implements ISimpleRequestHandler {
 		const central = request.Area.GetCentralCell();
 		const allyAreas = request.Area.GetAllyAreas().filter((a) => a.IsConnected());
 		if (0 < allyAreas.length) {
+			// has ally area  around
 			const road = this.GetRoadToConnectingArea(allyAreas, central);
-			const nextRoad = this.GetRoadFarthest(request.Area);
+			const nextRoad = this.GetRoadToFarthestAreaFromHq(request.Area);
 
 			if (0 < road.length && 0 < nextRoad.length) {
 				road.push(central);
@@ -47,7 +49,7 @@ export class RoadRequestHandler implements ISimpleRequestHandler {
 		}
 	}
 
-	private GetFarthestFromHq(area: KingdomArea): Area {
+	private GetFarthestAraFromHq(area: KingdomArea): Area {
 		const aroundAreas = area.GetSpot().GetAroundAreas().filter((a) => a.HasFreeCells());
 		const areaByHqDistance = this.GetAllAreaByHqDistance(aroundAreas);
 		const farthestHqArea = Math.max(...areaByHqDistance.Keys().map((k) => +k));
@@ -59,8 +61,8 @@ export class RoadRequestHandler implements ISimpleRequestHandler {
 		}
 	}
 
-	private GetRoadFarthest(area: KingdomArea): Cell[] {
-		const destination = this.GetFarthestFromHq(area);
+	private GetRoadToFarthestAreaFromHq(area: KingdomArea): Cell[] {
+		const destination = this.GetFarthestAraFromHq(area);
 		if (destination) {
 			let nextCell = destination.GetCentralCell();
 			if (nextCell.IsBlocked()) {
@@ -105,7 +107,9 @@ export class RoadRequestHandler implements ISimpleRequestHandler {
 
 	private GetRoad(central: Cell, target: Cell) {
 		return new AStarEngine<Cell>(
-			(c: Cell) => !isNullOrUndefined(c) && (c.GetField() instanceof Headquarter || !c.HasBlockingField())
+			(c: Cell) =>
+				!isNullOrUndefined(c) &&
+				(c.GetField() instanceof Headquarter || !c.HasBlockingField() || c.GetField() instanceof ShieldField)
 		).GetPath(central, target);
 	}
 }

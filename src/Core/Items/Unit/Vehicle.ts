@@ -127,6 +127,13 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		}
 	}
 
+	public HasOrder(): boolean {
+		if (this._order === null) {
+			return false;
+		}
+		return this._order.IsDone();
+	}
+
 	public GetBoundingBox(): BoundingBox {
 		return this.BoundingBox;
 	}

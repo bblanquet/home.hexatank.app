@@ -1,5 +1,4 @@
 import { AreaStatus } from './AreaStatus';
-import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 import { Diamond } from '../../../Items/Cell/Field/Diamond';
 import { Cell } from '../../../Items/Cell/Cell';
 import { isNullOrUndefined } from 'util';
@@ -23,11 +22,6 @@ export class Area {
 
 	public GetAroundAreas(): Area[] {
 		return this._aroudnAreas;
-	}
-
-	public HasHq(): boolean {
-		const field = this.GetCentralCell().GetField();
-		return field instanceof Headquarter;
 	}
 
 	public GetDistanceFrom(cell: Cell): number {
@@ -65,11 +59,7 @@ export class Area {
 		return result;
 	}
 
-	HasFreeCells(): boolean {
-		return 0 < this.GetFreeCells().length;
-	}
-
-	public GetFreeCells(): Cell[] {
+	public GetFreeUnitCells(): Cell[] {
 		const cells = this._centralCell
 			.GetAllNeighbourhood()
 			.map((c) => <Cell>c)
@@ -79,29 +69,5 @@ export class Area {
 			cells.push(centralcell);
 		}
 		return cells;
-	}
-
-	public GetAllyCount(v: AliveItem): number {
-		let enemyCount = 0;
-		const cells = this._centralCell.GetAllNeighbourhood().map((c) => <Cell>c);
-		cells.push(this._centralCell);
-		cells.forEach((cell) => {
-			if (cell.HasAlly(v)) {
-				enemyCount += 1;
-			}
-		});
-		return enemyCount;
-	}
-
-	public GetFoeCount(v: AliveItem): number {
-		let enemyCount = 0;
-		const cells = this._centralCell.GetAllNeighbourhood().map((c) => <Cell>c);
-		cells.push(this._centralCell);
-		cells.forEach((cell) => {
-			if (cell.HasEnemy(v)) {
-				enemyCount += 1;
-			}
-		});
-		return enemyCount;
 	}
 }

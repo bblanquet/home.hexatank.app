@@ -56,13 +56,6 @@ export class Cell extends Item implements ICell, ISelectable {
 		});
 		this._circle = new PIXI.Circle(0, 0, GameSettings.Size / 2);
 	}
-	GetCostRatio(): number {
-		if (this.GetField() instanceof RoadField) {
-			return 0.5;
-		} else {
-			return 1;
-		}
-	}
 
 	public GetState(): CellState {
 		return this._state;

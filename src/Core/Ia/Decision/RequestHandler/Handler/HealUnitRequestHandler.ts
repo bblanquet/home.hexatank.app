@@ -11,13 +11,13 @@ export class HealUnitRequestHandler implements ISimpleRequestHandler {
 		const damagedTroops = request.Area.GetTroops().filter((t) => t.Tank.HasDamage());
 		let currentArea = healingAreas.pop();
 		damagedTroops.forEach((t) => {
-			let destination = currentArea.GetRandomFreeCell();
+			let destination = currentArea.GetRandomFreeUnitCell();
 			while (!destination) {
 				if (healingAreas.length === 0) {
 					return;
 				}
 				currentArea = healingAreas.pop();
-				destination = currentArea.GetRandomFreeCell();
+				destination = currentArea.GetRandomFreeUnitCell();
 			}
 			request.Area.DropSpecificTroop(t);
 			currentArea.AddTroop(t.Tank, destination);

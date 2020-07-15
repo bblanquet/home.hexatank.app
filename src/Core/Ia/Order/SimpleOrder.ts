@@ -11,6 +11,7 @@ import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { PacketKind } from '../../../Components/Network/PacketKind';
 import { ShieldField } from '../../Items/Cell/Field/Bonus/ShieldField';
+import { AStarHelper } from '../AStarHelper';
 
 export class SimpleOrder extends Order {
 	protected Currentcell: Cell;
@@ -143,11 +144,9 @@ export class SimpleOrder extends Order {
 			}
 		}
 		this.ClearPath();
-		var nextcells = new AStarEngine<Cell>((c: Cell) => !isNullOrUndefined(c) && this.IsAvailableField(c)).GetPath(
-			this._v.GetCurrentCell(),
-			this.Dest,
-			true
-		);
+		const filter = (c: Cell) => !isNullOrUndefined(c) && this.IsAvailableField(c);
+		const cost = (c: Cell) => AStarHelper.GetBasicCost(c);
+		const nextcells = new AStarEngine<Cell>(filter, cost).GetPath(this._v.GetCurrentCell(), this.Dest, true);
 
 		if (isNullOrUndefined(nextcells)) {
 			return false;

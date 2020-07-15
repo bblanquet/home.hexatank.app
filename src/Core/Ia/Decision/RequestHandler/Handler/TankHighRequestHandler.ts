@@ -28,7 +28,7 @@ export class TankHighRequestHandler implements ISimpleRequestHandler {
 							return;
 						}
 
-						const freeCell = request.Area.GetRandomFreeCell();
+						const freeCell = request.Area.GetRandomFreeUnitCell();
 
 						if (freeCell) {
 							const tank = aroundArea.Area.DropTroop();

@@ -1,4 +1,4 @@
-import { GeneralRaidRequest } from './Requesters/GeneralRaidRequest';
+import { GeneralSquadRequest } from './Requesters/GeneralSquadRequest';
 import { GeneralEnergyRequester } from './Requesters/GeneralEnergyRequester';
 import { GeneralTruckRequester } from './Requesters/GeneralTruckRequester';
 import { GeneralHealingRequester } from './Requesters/GeneralHealingRequester';
@@ -15,7 +15,7 @@ export class GeneralRequester implements IGeneralListRequester {
 			new GeneralTruckRequester(),
 			new GeneralHealingRequester(),
 			new GeneralEnergyRequester(),
-			new GeneralRaidRequest()
+			new GeneralSquadRequest()
 		];
 	}
 

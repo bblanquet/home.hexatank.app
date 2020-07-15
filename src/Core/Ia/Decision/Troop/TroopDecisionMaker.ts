@@ -93,7 +93,7 @@ export class TroopDecisionMaker {
 			}
 		}
 
-		const spot = this.Area.GetRandomFreeCell();
+		const spot = this.Area.GetRandomFreeUnitCell();
 		if (spot) {
 			this.CurrentPatrolDestination = spot;
 		}

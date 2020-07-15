@@ -35,6 +35,27 @@ export class AreaStatus {
 		});
 	}
 
+	public IsNeutral(): boolean {
+		return this._units.IsEmpty() && this._hqFields.IsEmpty();
+	}
+
+	public HasFoesOf(item: AliveItem): boolean {
+		const hasUnitFoes = this._units.Values().some((c) => c.IsEnemy(item));
+		if (hasUnitFoes) {
+			return true;
+		}
+
+		if (this._hqFields.IsEmpty()) {
+			return false;
+		}
+
+		const hasCellFoes = this._hqFields
+			.Values()
+			.reduce((e, x) => e.concat(x))
+			.some((c) => (c.GetField() as BonusField).GetHq().IsEnemy(item));
+		return hasCellFoes;
+	}
+
 	private FieldChanged(obj: any, field: Cell): void {
 		this.Update(field, true);
 	}
@@ -71,7 +92,11 @@ export class AreaStatus {
 	}
 
 	public GetCellCount(): number {
-		return this._fields.Values().reduce((e, x) => e.concat(x)).length;
+		const fields = this._fields.Values();
+		if (fields.length === 0) {
+			return 0;
+		}
+		return fields.reduce((e, x) => e.concat(x)).length;
 	}
 
 	private RemoveNewBonusField(cell: Cell) {
@@ -98,10 +123,6 @@ export class AreaStatus {
 				this._hqFields.Add(co, [ cell ]);
 			}
 		}
-	}
-
-	private FieldDestroyed(obj: any, field: Cell): void {
-		this.Update(field, false);
 	}
 
 	private UnitChanged(obj: any, v: Vehicle): void {
@@ -136,11 +157,21 @@ export class AreaStatus {
 		return false;
 	}
 
+	public CleanDeadUnits(): void {
+		this._units.Values().forEach((u) => {
+			if (!u.IsUpdatable) {
+				this._units.Remove(u.Id);
+			}
+		});
+	}
+
 	public HasFoeVehicle(item: AliveItem): boolean {
+		this.CleanDeadUnits();
 		return this._units.Values().some((e) => e.IsEnemy(item));
 	}
 
 	public GetFoeVehicleCount(item: AliveItem): number {
+		this.CleanDeadUnits();
 		return this._units.Values().filter((e) => e.IsEnemy(item)).length;
 	}
 
@@ -149,6 +180,14 @@ export class AreaStatus {
 			return [];
 		}
 		return this._fields.Get(field);
+	}
+
+	public GetKindCells(fields: string[]): Cell[] {
+		var result = new Array<Cell>();
+		fields.forEach((f) => {
+			result = result.concat(this.GetCells(f));
+		});
+		return result;
 	}
 
 	public Destroy(): void {}

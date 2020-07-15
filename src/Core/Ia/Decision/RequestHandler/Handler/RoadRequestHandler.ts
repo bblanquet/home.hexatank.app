@@ -1,3 +1,4 @@
+import { BasicField } from './../../../../Items/Cell/Field/BasicField';
 import { ShieldField } from './../../../../Items/Cell/Field/Bonus/ShieldField';
 import { Area } from './../../Utils/Area';
 import { RequestType } from './../../Utils/RequestType';
@@ -9,9 +10,9 @@ import { Cell } from '../../../../Items/Cell/Cell';
 import { isNullOrUndefined } from 'util';
 import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 import { GameSettings } from '../../../../Framework/GameSettings';
-import { BasicField } from '../../../../Items/Cell/Field/BasicField';
 import { RoadField } from '../../../../Items/Cell/Field/Bonus/RoadField';
 import { Groups } from './../../../../Utils/Collections/Groups';
+import { AStarHelper } from '../../../AStarHelper';
 
 export class RoadRequestHandler implements ISimpleRequestHandler {
 	constructor(private _hq: Headquarter) {}
@@ -26,12 +27,18 @@ export class RoadRequestHandler implements ISimpleRequestHandler {
 			const road = this.GetRoadToConnectingArea(allyAreas, central);
 			const nextRoad = this.GetRoadToFarthestAreaFromHq(request.Area);
 
-			if (0 < road.length && 0 < nextRoad.length) {
+			if (0 < road.length || 0 < nextRoad.length) {
 				road.push(central);
 				nextRoad.forEach((r) => {
 					road.push(r);
 				});
-				this.CreateRoad(road);
+				if (road.some((r) => r.GetField() instanceof BasicField)) {
+					this.CreateRoad(road);
+				} else {
+					request.Area.SetUnconnectable();
+				}
+			} else {
+				request.Area.SetUnconnectable();
 			}
 		}
 	}
@@ -50,7 +57,10 @@ export class RoadRequestHandler implements ISimpleRequestHandler {
 	}
 
 	private GetFarthestAraFromHq(area: KingdomArea): Area {
-		const aroundAreas = area.GetSpot().GetAroundAreas().filter((a) => a.HasFreeCells());
+		const aroundAreas = area.GetSpot().GetAroundAreas().filter((a) => a.GetStatus().HasField(BasicField.name));
+		if (aroundAreas.length === 0) {
+			return null;
+		}
 		const areaByHqDistance = this.GetAllAreaByHqDistance(aroundAreas);
 		const farthestHqArea = Math.max(...areaByHqDistance.Keys().map((k) => +k));
 		const a = areaByHqDistance.Get(farthestHqArea.toString());
@@ -66,7 +76,7 @@ export class RoadRequestHandler implements ISimpleRequestHandler {
 		if (destination) {
 			let nextCell = destination.GetCentralCell();
 			if (nextCell.IsBlocked()) {
-				nextCell = destination.GetFreeCells()[0];
+				nextCell = destination.GetStatus().GetCells(BasicField.name)[0];
 			}
 			const road = this.GetRoad(area.GetCentralCell(), nextCell);
 			if (road) {
@@ -80,7 +90,12 @@ export class RoadRequestHandler implements ISimpleRequestHandler {
 		const areaByHqDistance = this.GetAreaByHqDistance(allyAreas);
 		const closestHqArea = Math.min(...areaByHqDistance.Keys().map((k) => +k));
 		const connectingArea = areaByHqDistance.Get(closestHqArea.toString())[0];
-		const road = this.GetRoad(central, connectingArea.GetConnectingCentralCell());
+		const connectingCell = connectingArea.GetConnectingCentralCell();
+		if (isNullOrUndefined(connectingCell)) {
+			return [];
+		}
+
+		const road = this.GetRoad(central, connectingCell);
 
 		if (isNullOrUndefined(road)) {
 			return [];
@@ -106,10 +121,11 @@ export class RoadRequestHandler implements ISimpleRequestHandler {
 	}
 
 	private GetRoad(central: Cell, target: Cell) {
-		return new AStarEngine<Cell>(
-			(c: Cell) =>
-				!isNullOrUndefined(c) &&
-				(c.GetField() instanceof Headquarter || !c.HasBlockingField() || c.GetField() instanceof ShieldField)
-		).GetPath(central, target);
+		const filter = (c: Cell) =>
+			!isNullOrUndefined(c) &&
+			(c.GetField() instanceof Headquarter || !c.HasBlockingField() || c.GetField() instanceof ShieldField);
+		const cost = (c: Cell) => AStarHelper.GetBasicCost(c);
+
+		return new AStarEngine<Cell>(filter, cost).GetPath(central, target);
 	}
 }

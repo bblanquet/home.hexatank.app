@@ -138,7 +138,7 @@ export class HqRender {
 		});
 
 		const hq = new IaHeadquarter(skin, cell, context);
-		const kingdom = new Kingdom(hq, areas, areaSearch);
+		const kingdom = new Kingdom(hq, areas);
 
 		kingdom.Setup(
 			new AreaRequestMaker(kingdom),

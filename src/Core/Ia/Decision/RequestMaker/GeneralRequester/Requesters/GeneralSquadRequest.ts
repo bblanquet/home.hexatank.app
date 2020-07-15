@@ -1,11 +1,11 @@
-import { TimeTimer } from './../../../../../Utils/Timer/TimeTimer';
-import { IGeneralRequester } from './../IGeneralRequester';
-import { Kingdom } from './../../../Kingdom';
+import { TimeTimer } from '../../../../../Utils/Timer/TimeTimer';
+import { IGeneralRequester } from '../IGeneralRequester';
+import { Kingdom } from '../../../Kingdom';
 import { AreaRequest } from '../../../Utils/AreaRequest';
 import { RequestType } from '../../../Utils/RequestType';
 import { RequestPriority } from '../../../Utils/RequestPriority';
 
-export class GeneralRaidRequest implements IGeneralRequester {
+export class GeneralSquadRequest implements IGeneralRequester {
 	private _raidTimer: TimeTimer;
 
 	constructor() {

@@ -1,3 +1,4 @@
+import { AStarHelper } from './../../AStarHelper';
 import { AttackField } from '../../../Items/Cell/Field/Bonus/AttackField';
 import { KingdomArea } from './../Utils/KingdomArea';
 import { Dictionnary } from './../../../Utils/Collections/Dictionnary';
@@ -223,10 +224,9 @@ export class BasicAreaDecisionMaker {
 	}
 
 	private GetRoad(departure: Cell, destination: Cell): Cell[] {
-		return new AStarEngine<Cell>((c: Cell) => !isNullOrUndefined(c) && !c.IsBlocked()).GetPath(
-			departure,
-			destination
-		);
+		const filter = (c: Cell) => !isNullOrUndefined(c) && !c.IsBlocked();
+		const cost = (c: Cell) => AStarHelper.GetBasicCost(c);
+		return new AStarEngine<Cell>(filter, cost).GetPath(departure, destination);
 	}
 
 	private GetFoeCells(areas: Area[], ally: Tank): Array<Cell> {

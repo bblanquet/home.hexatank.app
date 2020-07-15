@@ -1,4 +1,5 @@
 import { ICell } from '../Items/Cell/ICell';
+import { Point } from '../Utils/Geometry/Point';
 
 export class AStarNode<T extends ICell> {
 	Cell: T;
@@ -6,7 +7,7 @@ export class AStarNode<T extends ICell> {
 	FromStartCost: number;
 	Parent: AStarNode<T>;
 
-	constructor(cell: T) {
+	constructor(cell: T, private _cellCost: (cell: T) => number) {
 		this.Cell = cell;
 	}
 
@@ -17,12 +18,14 @@ export class AStarNode<T extends ICell> {
 	GetEstimatedCost(nextNode: AStarNode<T>, fastestWay: boolean = false): number {
 		const center = this.Cell.GetCentralPoint();
 		const compareToCenter = nextNode.Cell.GetCentralPoint();
-		const ratio = fastestWay ? nextNode.Cell.GetCostRatio() : 1;
+		const ratio = fastestWay ? this._cellCost(this.Cell) : 1;
 		return this.Distance(compareToCenter, center) * ratio;
 	}
 
-	private Distance(compareToCenter: import("d:/workspace/program6/src/Core/Utils/Geometry/Point").Point, center: import("d:/workspace/program6/src/Core/Utils/Geometry/Point").Point): number {
-		return (Math.sqrt(Math.pow(compareToCenter.X - center.X, 2)) + Math.sqrt(Math.pow(compareToCenter.Y - center.Y, 2)));
+	private Distance(compareToCenter: Point, center: Point): number {
+		return (
+			Math.sqrt(Math.pow(compareToCenter.X - center.X, 2)) + Math.sqrt(Math.pow(compareToCenter.Y - center.Y, 2))
+		);
 	}
 
 	GetCost(): number {

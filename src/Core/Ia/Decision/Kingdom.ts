@@ -19,13 +19,12 @@ import { Tank } from '../../Items/Unit/Tank';
 import { IAreaRequestListMaker } from './RequestMaker/IAreaRequestListMaker';
 import { IGeneralListRequester } from './RequestMaker/GeneralRequester/IGeneralListRequester';
 import { Cell } from '../../Items/Cell/Cell';
-import { RaidTroopDecisionMaker } from './Troop/RaidTroopDecisionMaker';
+import { Squad } from './Troop/Squad';
 import { RequestPriority } from './Utils/RequestPriority';
-import { AreaSearch } from './Utils/AreaSearch';
 
 export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	public AreaDecisions: IAreaDecisionMaker[];
-	public Raids: RaidTroopDecisionMaker[];
+	public Squads: Squad[];
 	public Trucks: Array<Truck> = new Array<Truck>();
 	public Tanks: Array<Tank> = new Array<Tank>();
 	public CellAreas: Dictionnary<IAreaDecisionMaker>;
@@ -38,9 +37,9 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	private _expansionMaker: IExpansionMaker;
 	private _generalRequestMaker: IGeneralListRequester;
 
-	constructor(public Hq: Headquarter, public RemainingAreas: Area[], private _areaSearch: AreaSearch) {
+	constructor(public Hq: Headquarter, public Areas: Area[]) {
 		this.AreaDecisions = new Array<IAreaDecisionMaker>();
-		this.Raids = new Array<RaidTroopDecisionMaker>();
+		this.Squads = new Array<Squad>();
 		this.CellAreas = new Dictionnary<IAreaDecisionMaker>();
 		this.IdleTanks = new ExcessTankFinder();
 
@@ -100,9 +99,14 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	}
 
 	public Do(): void {
-		this.Trucks = this.Trucks.filter((t) => t.IsAlive());
-		this.Tanks = this.Tanks.filter((t) => t.IsAlive());
 		if (this._idleTimer.IsElapsed()) {
+			this.Trucks = this.Trucks.filter((t) => t.IsAlive());
+			this.Tanks = this.Tanks.filter((t) => t.IsAlive());
+
+			this.Squads.forEach((s) => {
+				s.Do();
+			});
+
 			const areas = new Array<KingdomArea>();
 			this.AreaDecisions.forEach((areaDecision) => {
 				areaDecision.Area.CalculateFoes();

@@ -1,5 +1,4 @@
 import { ShieldField } from './../../../Items/Cell/Field/Bonus/ShieldField';
-import { isNullOrUndefined } from 'util';
 import { MedicField } from './../../../Items/Cell/Field/Bonus/MedicField';
 import { BasicField } from './../../../Items/Cell/Field/BasicField';
 import { FarmField } from './../../../Items/Cell/Field/Bonus/FarmField';
@@ -19,6 +18,7 @@ import { Tank } from '../../../Items/Unit/Tank';
 import { Truck } from '../../../Items/Unit/Truck';
 import { ReactorAreaState } from './ReactorAreaState';
 import { AreaSearch } from './AreaSearch';
+import { AStarHelper } from '../../AStarHelper';
 
 export class KingdomArea {
 	public Troops: Array<TroopDecisionMaker>;
@@ -124,7 +124,11 @@ export class KingdomArea {
 			if (this.HasRoadField()) {
 				return this.GetRoadFields()[0];
 			} else {
-				return this._spot.GetFreeCells()[0];
+				if (this._spot.GetStatus().HasField(BasicField.name)) {
+					return this._spot.GetStatus().GetCells(BasicField.name)[0];
+				} else {
+					return null;
+				}
 			}
 		}
 	}
@@ -191,16 +195,23 @@ export class KingdomArea {
 		return this._spot.GetStatus().GetCells(BlockingField.name);
 	}
 
+	private _isUnconnectable: boolean = false;
+
+	public SetUnconnectable(): void {
+		this._isUnconnectable = true;
+	}
+
 	public IsConnected(): boolean {
 		const central = this.GetCentralCell();
 		if (central === this._hq.GetCell() || central.GetField() instanceof Diamond) {
 			return true;
 		}
 
-		if (!this.HasNature() && !this._spot.GetStatus().HasField(BasicField.name)) {
+		if (this._isUnconnectable) {
 			return true;
 		}
-		if (!this.HasNature() && this.GetFreeCellCount() === 0) {
+
+		if (!this.HasNature() && !this._spot.GetStatus().HasField(BasicField.name)) {
 			return true;
 		}
 
@@ -209,7 +220,7 @@ export class KingdomArea {
 
 	private HasRoad(cell: Cell, count: number): boolean {
 		const central = this.GetCentralCell();
-		const pathFinder = new AStarEngine<Cell>((c: ICell) => {
+		const filter = (c: ICell) => {
 			let cell = c as Cell;
 			return (
 				cell !== null &&
@@ -218,7 +229,9 @@ export class KingdomArea {
 					cell.GetField() instanceof HeadQuarterField ||
 					cell.GetField() instanceof Headquarter)
 			);
-		});
+		};
+		const cost = (c: Cell) => AStarHelper.GetBasicCost(c);
+		const pathFinder = new AStarEngine<Cell>(filter, cost);
 		const path = pathFinder.GetPath(central, cell);
 		return path !== null && path.length < count;
 	}
@@ -266,14 +279,6 @@ export class KingdomArea {
 		return this._outerFoes;
 	}
 
-	private GetOuterAllyCount(): number {
-		let outsideEnemyCount = 0;
-		this._spot.GetAroundAreas().forEach((area) => {
-			outsideEnemyCount += area.GetAllyCount(this._hq);
-		});
-		return outsideEnemyCount;
-	}
-
 	public GetInnerFoeCount(): number {
 		return this._innerFoes;
 	}
@@ -317,15 +322,15 @@ export class KingdomArea {
 		this.Troops.push(new TroopDecisionMaker(cell, tank, this));
 	}
 
-	public GetFreeCellCount(): number {
+	public GetFreeUnitCellCount(): number {
 		return this._spot
-			.GetFreeCells()
+			.GetFreeUnitCells()
 			.filter((c) => this.Troops.filter((t) => c === t.CurrentPatrolDestination).length === 0).length;
 	}
 
-	public GetRandomFreeCell(): Cell {
+	public GetRandomFreeUnitCell(): Cell {
 		const cells = this._spot
-			.GetFreeCells()
+			.GetFreeUnitCells()
 			.filter((c) => this.Troops.filter((t) => c === t.CurrentPatrolDestination).length === 0);
 
 		if (cells.length > 0) {
@@ -337,7 +342,7 @@ export class KingdomArea {
 	}
 
 	public GetHealSpot(): Cell {
-		const freeCells = this._spot.GetFreeCells().filter((c) => c.GetField() instanceof MedicField);
+		const freeCells = this._spot.GetFreeUnitCells().filter((c) => c.GetField() instanceof MedicField);
 		if (0 < freeCells.length) {
 			return freeCells[0];
 		} else {

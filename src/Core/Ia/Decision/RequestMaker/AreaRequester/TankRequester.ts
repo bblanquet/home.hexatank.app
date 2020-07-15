@@ -21,7 +21,7 @@ export class TankRequester implements IAreaRequestMaker {
 					return new AreaRequest(RequestType.Tank, RequestPriority.High, requestTroops + 1, area);
 				}
 
-				const freeCells = area.GetFreeCellCount();
+				const freeCells = area.GetFreeUnitCellCount();
 
 				if (freeCells < requestTroops) {
 					requestTroops = freeCells;

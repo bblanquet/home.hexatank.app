@@ -29,7 +29,7 @@ export class ExpansionMaker implements IExpansionMaker {
 	}
 
 	private CreateArea(area: Area) {
-		this._kingdom.RemainingAreas.splice(this._kingdom.RemainingAreas.indexOf(area), 1);
+		this._kingdom.Areas.splice(this._kingdom.Areas.indexOf(area), 1);
 		const areaDecision = new BasicAreaDecisionMaker(
 			this._hq,
 			new KingdomArea(this._hq, area, this._kingdom, this._areaSearch),
@@ -41,25 +41,25 @@ export class ExpansionMaker implements IExpansionMaker {
 	}
 
 	private FindArea(): Area {
-		if (this._kingdom.RemainingAreas.length === 0) {
+		if (this._kingdom.Areas.length === 0) {
 			return null;
 		}
 
 		if (0 === this._kingdom.AreaDecisions.length) {
 			const diamondCell = this._kingdom.GetDiamond().GetCell();
-			return this._kingdom.RemainingAreas.filter((a) => a.GetCentralCell() === diamondCell)[0];
+			return this._kingdom.Areas.filter((a) => a.GetCentralCell() === diamondCell)[0];
 		}
 
 		return this.GetClosestArea();
 	}
 
 	private GetClosestArea() {
-		let currentArea = this._kingdom.RemainingAreas[0];
+		let currentArea = this._kingdom.Areas[0];
 		let currentCost = this.GetCost(
 			this._hq.GetCell().GetCentralPoint(),
 			currentArea.GetCentralCell().GetCentralPoint()
 		);
-		this._kingdom.RemainingAreas.forEach((area) => {
+		this._kingdom.Areas.forEach((area) => {
 			let cost = this.GetCost(this._hq.GetCell().GetCentralPoint(), area.GetCentralCell().GetCentralPoint());
 			if (cost < currentCost) {
 				currentArea = area;

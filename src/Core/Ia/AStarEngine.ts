@@ -3,7 +3,7 @@ import { AStarNode } from './AStarNode';
 import { ICell } from '../Items/Cell/ICell';
 
 export class AStarEngine<T extends ICell> {
-	constructor(private _filter: (cell: ICell) => boolean) {}
+	constructor(private _cellFilter: (cell: T) => boolean, private _cellCost: (cell: T) => number) {}
 
 	private ConstructPath(node: AStarNode<T>): Array<T> {
 		var cells = new Array<T>();
@@ -38,7 +38,7 @@ export class AStarEngine<T extends ICell> {
 			}
 		}
 
-		return new AStarNode(cell);
+		return new AStarNode(cell, this._cellCost);
 	}
 
 	private AddNodeIntoCandidates(candidates: Array<AStarNode<T>>, currentNode: AStarNode<T>): void {
@@ -59,8 +59,8 @@ export class AStarEngine<T extends ICell> {
 		var candidates = new Array<AStarNode<T>>();
 		var path = new Array<AStarNode<T>>();
 
-		var start = new AStarNode(startcell);
-		var goal = new AStarNode(goalcell);
+		var start = new AStarNode(startcell, this._cellCost);
+		var goal = new AStarNode(goalcell, this._cellCost);
 
 		start.FromStartCost = 0;
 		start.Parent = null;
@@ -80,7 +80,7 @@ export class AStarEngine<T extends ICell> {
 				return this.ConstructPath(bestCandidate);
 			}
 
-			bestCandidate.Cell.GetFilteredNeighbourhood(this._filter).forEach((nextCell) => {
+			bestCandidate.Cell.GetFilteredNeighbourhood(this._cellFilter).forEach((nextCell) => {
 				const nextNode = this.GetNode(<T>nextCell, candidates, path);
 				const moveToNextCost =
 					bestCandidate.FromStartCost + bestCandidate.GetEstimatedCost(nextNode, fastestWay);

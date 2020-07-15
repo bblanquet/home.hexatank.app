@@ -10,6 +10,7 @@ import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { PacketKind } from '../../../Components/Network/PacketKind';
+import { AStarHelper } from '../AStarHelper';
 
 export class SmartPreciseOrder extends Order {
 	protected Currentcell: Cell;
@@ -134,11 +135,9 @@ export class SmartPreciseOrder extends Order {
 			return false;
 		}
 		this.ClearPath();
-		var nextcells = new AStarEngine<Cell>((c: Cell) => !isNullOrUndefined(c) && !c.IsBlocked()).GetPath(
-			this._v.GetCurrentCell(),
-			this.Dest,
-			true
-		);
+		const filter = (c: Cell) => !isNullOrUndefined(c) && !c.IsBlocked();
+		const cost = (c: Cell) => AStarHelper.GetBasicCost(c);
+		const nextcells = new AStarEngine<Cell>(filter, cost).GetPath(this._v.GetCurrentCell(), this.Dest, true);
 
 		if (isNullOrUndefined(nextcells)) {
 			return false;

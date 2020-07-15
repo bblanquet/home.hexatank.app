@@ -1,3 +1,4 @@
+import { AStarHelper } from './../AStarHelper';
 import { ShieldField } from './../../Items/Cell/Field/Bonus/ShieldField';
 import { AStarEngine } from './../AStarEngine';
 import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
@@ -148,16 +149,12 @@ export class SmartSimpleOrder extends Order {
 			}
 		}
 		this.ClearPath();
-		var nextcells = new AStarEngine<Cell>((c: Cell) => !isNullOrUndefined(c) && this.IsAvailableField(c)).GetPath(
-			this._v.GetCurrentCell(),
-			this.Dest,
-			true
-		);
-
+		const filter = (c: Cell) => !isNullOrUndefined(c) && this.IsAvailableField(c);
+		const cost = (c: Cell) => AStarHelper.GetBasicCost(c);
+		const nextcells = new AStarEngine<Cell>(filter, cost).GetPath(this._v.GetCurrentCell(), this.Dest, true);
 		if (isNullOrUndefined(nextcells)) {
 			return false;
 		}
-
 		this.cells = nextcells;
 		this.CreateUiPath();
 		return true;

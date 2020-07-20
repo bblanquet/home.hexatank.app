@@ -1,3 +1,4 @@
+import { TankPowerUpCombination } from './Combination/TankPowerUpCombination';
 import { SwithcMultiCombination } from './Combination/SwitchMultiCombination';
 import { BatteryField } from '../Items/Cell/Field/Bonus/BatteryField';
 import { NetworkField } from '../Items/Cell/Field/Bonus/NetworkField';
@@ -140,6 +141,7 @@ export class CombinationProvider {
 				'Heal'
 			),
 			new PowerDownCombination(),
+			new TankPowerUpCombination(),
 			new PowerUpCombination(gameContext)
 		];
 	}

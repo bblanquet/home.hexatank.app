@@ -11,6 +11,10 @@ export class CancelCombination extends AbstractSingleCombination {
 	}
 
 	Combine(context: CombinationContext): boolean {
+		if (context.Items.filter((i) => i instanceof CancelMenuItem).length >= 1) {
+			console.log('');
+		}
+
 		if (this.IsMatching(context)) {
 			this.UnSelectItem(context.Items[0]);
 			this.OnClearContext.Invoke();

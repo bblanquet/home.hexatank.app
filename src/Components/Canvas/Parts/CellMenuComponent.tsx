@@ -39,6 +39,50 @@ export default class CellMenuComponent extends Component<
 							<button
 								type="button"
 								class="btn btn-dark without-padding"
+								onClick={(e: any) => this.SendContext(new ThunderMenuItem())}
+							>
+								<div class="fill-thunder max-width standard-space" />
+								<div class="max-width align-text-center darker">
+									{GameSettings.FieldPrice}{' '}
+									<span class="fill-diamond badge very-small-space middle"> </span>
+								</div>
+							</button>
+							<button
+								type="button"
+								class="btn btn-dark without-padding"
+								onClick={(e: any) => this.SendContext(new ShieldMenuItem())}
+							>
+								<div class="fill-shield max-width standard-space" />
+								<div class="max-width align-text-center darker">
+									{GameSettings.FieldPrice}{' '}
+									<span class="fill-diamond badge very-small-space middle"> </span>
+								</div>
+							</button>
+							<button
+								type="button"
+								class="btn btn-dark without-padding"
+								onClick={(e: any) => this.SendContext(new PoisonMenuItem())}
+							>
+								<div class="fill-poison max-width standard-space" />
+								<div class="max-width align-text-center darker">
+									{GameSettings.FieldPrice}{' '}
+									<span class="fill-diamond badge very-small-space middle"> </span>
+								</div>
+							</button>
+							<button
+								type="button"
+								class="btn btn-dark without-padding"
+								onClick={(e: any) => this.SendContext(new MoneyMenuItem())}
+							>
+								<div class="fill-money max-width standard-space" />
+								<div class="max-width align-text-center darker">
+									{GameSettings.FieldPrice}{' '}
+									<span class="fill-diamond badge very-small-space middle"> </span>
+								</div>
+							</button>
+							<button
+								type="button"
+								class="btn btn-dark without-padding"
 								onClick={(e: any) => this.SendContext(new AttackMenuItem())}
 							>
 								<div class="fill-power max-width standard-space" />
@@ -72,53 +116,9 @@ export default class CellMenuComponent extends Component<
 							<button
 								type="button"
 								class="btn btn-dark without-padding"
-								onClick={(e: any) => this.SendContext(new MoneyMenuItem())}
-							>
-								<div class="fill-money max-width standard-space" />
-								<div class="max-width align-text-center darker">
-									{GameSettings.FieldPrice}{' '}
-									<span class="fill-diamond badge very-small-space middle"> </span>
-								</div>
-							</button>
-							<button
-								type="button"
-								class="btn btn-dark without-padding"
-								onClick={(e: any) => this.SendContext(new ThunderMenuItem())}
-							>
-								<div class="fill-thunder max-width standard-space" />
-								<div class="max-width align-text-center darker">
-									{GameSettings.FieldPrice}{' '}
-									<span class="fill-diamond badge very-small-space middle"> </span>
-								</div>
-							</button>
-							<button
-								type="button"
-								class="btn btn-dark without-padding"
 								onClick={(e: any) => this.SendContext(new NetworkMenuItem())}
 							>
 								<div class="fill-network max-width standard-space" />
-								<div class="max-width align-text-center darker">
-									{GameSettings.FieldPrice}{' '}
-									<span class="fill-diamond badge very-small-space middle"> </span>
-								</div>
-							</button>
-							<button
-								type="button"
-								class="btn btn-dark without-padding"
-								onClick={(e: any) => this.SendContext(new ShieldMenuItem())}
-							>
-								<div class="fill-shield max-width standard-space" />
-								<div class="max-width align-text-center darker">
-									{GameSettings.FieldPrice}{' '}
-									<span class="fill-diamond badge very-small-space middle"> </span>
-								</div>
-							</button>
-							<button
-								type="button"
-								class="btn btn-dark without-padding"
-								onClick={(e: any) => this.SendContext(new PoisonMenuItem())}
-							>
-								<div class="fill-poison max-width standard-space" />
 								<div class="max-width align-text-center darker">
 									{GameSettings.FieldPrice}{' '}
 									<span class="fill-diamond badge very-small-space middle"> </span>

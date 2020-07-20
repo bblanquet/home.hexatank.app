@@ -1,3 +1,4 @@
+import { PowerUp } from './PowerUp';
 import { ICamouflageAble } from './ICamouflageAble';
 import { CamouflageHandler } from './CamouflageHandler';
 import { Cell } from '../Cell/Cell';
@@ -17,7 +18,8 @@ import { Explosion } from './Explosion';
 import { GameContext } from '../../Framework/GameContext';
 
 export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
-	Turrel: Turrel;
+	public Turrel: Turrel;
+	public PowerUp: PowerUp;
 	private _currentTarget: AliveItem;
 	private _mainTarget: AliveItem;
 
@@ -25,7 +27,6 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 		super(hq, gameContext);
 
 		this.Wheels = Archive.wheels;
-
 		this.GenerateSprite(Archive.wheel);
 		this.RootSprites.push(Archive.wheel);
 
@@ -38,6 +39,7 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 		this.GenerateSprite(this.Hq.GetSkin().GetBottomTankSprite());
 
 		this.Turrel = new Turrel(this.Hq.GetSkin(), this);
+		this.PowerUp = new PowerUp(this);
 
 		//make pivot sprite center
 		this.GetSprites().forEach((sprite) => {
@@ -72,6 +74,10 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 
 	public Update(viewX: number, viewY: number): void {
 		super.Update(viewX, viewY);
+
+		if (this.PowerUp.IsActive()) {
+			this.PowerUp.Update(viewX, viewY);
+		}
 
 		if (this._mainTarget != null && !this._mainTarget.IsAlive()) {
 			this._mainTarget = null;

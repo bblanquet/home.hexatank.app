@@ -25,7 +25,9 @@ import { RenderingGroups } from '../../Core/Setup/Render/RenderingGroups';
 import { MapRender } from '../../Core/Setup/Render/MapRender';
 import { ComponentsHelper } from '../ComponentsHelper';
 import ReactorMenuComponent from './Parts/ReactorMenuComponent';
+import PowerMenuComponent from './Parts/PowerMenuComponent';
 import { Group } from '../../Core/Items/Group';
+import { AttackField } from '../../Core/Items/Cell/Field/Bonus/AttackField';
 
 export default class CanvasComponent extends Component<
 	any,
@@ -175,6 +177,14 @@ export default class CanvasComponent extends Component<
 				return <TankMenuComponent AppHandler={this._appHandler} />;
 			} else if (this.state.Item instanceof Truck) {
 				return <TruckMenuComponent AppHandler={this._appHandler} />;
+			} else if (this.state.Item instanceof AttackField) {
+				return (
+					<PowerMenuComponent
+						Item={this.state.Item}
+						AppHandler={this._appHandler}
+						GameContext={this._gameContext}
+					/>
+				);
 			} else if (this.state.Item instanceof Group) {
 				return <MultiTankMenuComponent AppHandler={this._appHandler} />;
 			} else if (this.state.Item instanceof Headquarter) {

@@ -79,6 +79,29 @@ export const Archive = {
 	selectionUnit: './selectionUnit.svg',
 	selectionCell: './selectionCell.svg',
 	cell: './cell.svg',
+	powerUpR: [
+		'./powerup1.svg',
+		'./powerup2.svg',
+		'./powerup3.svg',
+		'./powerup4.svg',
+		'./powerup5.svg',
+		'./powerup6.svg',
+		'./powerup7.svg'
+	],
+	powerUp: [
+		'./powerup1.svg',
+		'./powerup2.svg',
+		'./powerup3.svg',
+		'./powerup4.svg',
+		'./powerup5.svg',
+		'./powerup6.svg',
+		'./powerup7.svg',
+		'./powerup6.svg',
+		'./powerup5.svg',
+		'./powerup4.svg',
+		'./powerup3.svg',
+		'./powerup2.svg'
+	],
 	diamondCell: './diamondCell.svg',
 	flagCell: './flagCell.svg',
 	option: './option.svg',
@@ -108,7 +131,9 @@ export const Archive = {
 	bonus: {
 		light: {
 			blue: './tank/blue/light.svg',
-			red: './tank/red/light.svg'
+			red: './tank/red/light.svg',
+			yellow: './tank/yellow/light.svg',
+			purple: './tank/purple/light.svg'
 		},
 		reactor: {
 			top: './floor/reactor.svg',

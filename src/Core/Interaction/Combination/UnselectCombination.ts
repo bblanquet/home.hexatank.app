@@ -1,4 +1,3 @@
-import { GameHelper } from '../../Framework/GameHelper';
 import { ISelectable } from '../../ISelectable';
 import { Item } from '../../Items/Item';
 import { Cell } from '../../Items/Cell/Cell';

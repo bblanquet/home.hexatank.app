@@ -779,6 +779,14 @@ body {
 	background-image: url('{{}}menu/energyButton.svg');
 }
 
+.fill-active {
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/activate.svg');
+}
+
 .fill-minus {
 	overflow: hidden;
 	background-size: contain;

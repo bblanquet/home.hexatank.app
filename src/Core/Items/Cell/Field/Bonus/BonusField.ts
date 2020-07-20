@@ -16,7 +16,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 	private _isIncreasingOpacity: boolean = false;
 	public Energy: number = 0;
 
-	constructor(cell: Cell, private _bonus: string[], protected hq: Headquarter) {
+	constructor(cell: Cell, private _bonus: string[], protected hq: Headquarter, override: boolean = true) {
 		super(cell);
 		this.GetCell().SetField(this);
 		this.Z = 1;
@@ -26,12 +26,14 @@ export abstract class BonusField extends Field implements IActiveContainer {
 		});
 		this.GenerateSprite(this.hq.GetSkin().GetLight());
 		// this.GenerateSprite(Archive.bonus.coverTop);
-		this.InitPosition(cell.GetBoundingBox());
+		this._animator = new BouncingScaleAnimator(this);
+		this.Energy = this.hq.GetCellEnergy(cell.GetCoordinate());
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});
-		this._animator = new BouncingScaleAnimator(this);
-		this.Energy = this.hq.GetCellEnergy(cell.GetCoordinate());
+		if (override) {
+			this.InitPosition(cell.GetBoundingBox());
+		}
 	}
 
 	public GetHq(): Headquarter {

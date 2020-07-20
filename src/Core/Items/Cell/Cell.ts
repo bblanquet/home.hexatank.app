@@ -1,7 +1,6 @@
 import { ILiteEvent } from './../../Utils/Events/ILiteEvent';
 import { BouncingScaleDownAnimator } from './../Animator/BouncingScaleDownAnimator';
 import { IAnimator } from './../Animator/IAnimator';
-import { RoadField } from './Field/Bonus/RoadField';
 import { GameContext } from './../../Framework/GameContext';
 import { CellContext } from './CellContext';
 import { Item } from '../Item';

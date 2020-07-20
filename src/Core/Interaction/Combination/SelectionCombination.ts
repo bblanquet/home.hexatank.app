@@ -9,6 +9,7 @@ import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { ISelectableChecker } from '../ISelectableChecker';
 import { GameContext } from '../../Framework/GameContext';
+import { AttackField } from '../../Items/Cell/Field/Bonus/AttackField';
 
 export class SelectionCombination extends AbstractSingleCombination {
 	private _checker: ISelectableChecker;
@@ -39,6 +40,13 @@ export class SelectionCombination extends AbstractSingleCombination {
 					selectablecell.GetField() === this._gameContext.MainHq
 				) {
 					const field = selectablecell.GetField() as Headquarter;
+					field.SetSelected(true);
+					this._gameContext.OnItemSelected.Invoke(this, field);
+				} else if (
+					selectablecell.GetField() instanceof AttackField &&
+					selectablecell.GetState() === CellState.Visible
+				) {
+					const field = selectablecell.GetField() as AttackField;
 					field.SetSelected(true);
 					this._gameContext.OnItemSelected.Invoke(this, field);
 				} else if (

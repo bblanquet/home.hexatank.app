@@ -24,6 +24,7 @@ export class Reactor extends Field implements ISelectable {
 	private _internalCells: CellContext<Cell> = new CellContext<Cell>();
 	public Lost: LiteEvent<Reactor> = new LiteEvent<Reactor>();
 	public basicField: ReactorField;
+	SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 
 	constructor(cell: Cell, public Hq: Headquarter, private _context: GameContext, private _light: string) {
 		super(cell);
@@ -166,6 +167,10 @@ export class Reactor extends Field implements ISelectable {
 		this._internalCells.Add(this.GetCell());
 	}
 
+	public GetAllCells(): Cell[] {
+		return this.GetCell().GetAllNeighbourhood(this._totalRange).map((c) => c as Cell);
+	}
+
 	public Destroy(): void {
 		super.Destroy();
 		if (this.basicField) {
@@ -187,5 +192,4 @@ export class Reactor extends Field implements ISelectable {
 	IsSelected(): boolean {
 		return this.GetCurrentSprites().Get(Archive.selectionCell).alpha === 1;
 	}
-	SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 }

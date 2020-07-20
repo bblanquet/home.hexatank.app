@@ -1,3 +1,4 @@
+import { AttackField } from './../Items/Cell/Field/Bonus/AttackField';
 import { ISelectableChecker } from './ISelectableChecker';
 import { Headquarter } from '../Items/Cell/Field/Hq/Headquarter';
 import { Item } from '../Items/Item';
@@ -20,6 +21,9 @@ export class SelectableChecker implements ISelectableChecker {
 		} else if (item instanceof Headquarter) {
 			const hq = <Headquarter>item;
 			return hq === this._currentHq;
+		} else if (item instanceof AttackField) {
+			const a = <AttackField>item;
+			return a.GetHq() === this._currentHq;
 		}
 		return false;
 	}

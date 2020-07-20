@@ -45,7 +45,7 @@ export class HqRender {
 			Archive.team.purple.hq,
 			Archive.building.hq.purple.field,
 			Archive.team.purple.area,
-			Archive.bonus.light.blue
+			Archive.bonus.light.purple
 		),
 		new ItemSkin(
 			Archive.team.yellow.tank,
@@ -54,7 +54,7 @@ export class HqRender {
 			Archive.team.yellow.hq,
 			Archive.building.hq.yellow.field,
 			Archive.team.yellow.area,
-			Archive.bonus.light.blue
+			Archive.bonus.light.yellow
 		)
 	];
 

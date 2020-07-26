@@ -27,7 +27,8 @@ export class HqRender {
 			Archive.team.red.hq,
 			Archive.building.hq.red.field,
 			Archive.team.red.area,
-			Archive.bonus.light.red
+			Archive.bonus.light.red,
+			Archive.bonus.reactor.red
 		),
 		new ItemSkin(
 			Archive.team.blue.tank,
@@ -36,7 +37,8 @@ export class HqRender {
 			Archive.team.blue.hq,
 			Archive.building.hq.blue.field,
 			Archive.team.blue.area,
-			Archive.bonus.light.blue
+			Archive.bonus.light.blue,
+			Archive.bonus.reactor.blue
 		),
 		new ItemSkin(
 			Archive.team.purple.tank,
@@ -45,7 +47,8 @@ export class HqRender {
 			Archive.team.purple.hq,
 			Archive.building.hq.purple.field,
 			Archive.team.purple.area,
-			Archive.bonus.light.purple
+			Archive.bonus.light.purple,
+			Archive.bonus.reactor.purple
 		),
 		new ItemSkin(
 			Archive.team.yellow.tank,
@@ -54,6 +57,7 @@ export class HqRender {
 			Archive.team.yellow.hq,
 			Archive.building.hq.yellow.field,
 			Archive.team.yellow.area,
+			Archive.bonus.light.yellow,
 			Archive.bonus.light.yellow
 		)
 	];

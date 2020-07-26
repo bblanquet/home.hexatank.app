@@ -675,6 +675,30 @@ body {
 	background-image: url('{{}}menu/speedMenu.svg');
 }
 
+.fill-energy-speed {
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/fastEnergyButton.svg');
+}
+
+.fill-energy-power {
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/powerEnergyMenu.svg');
+}
+
+.fill-energy-heal {
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/healEnergyMenu.svg');
+}
+
 .fill-power {
 	overflow: hidden;
 	background-size: contain;
@@ -1021,6 +1045,9 @@ body:after {
 		url('{{}}components/redArmyLeaderMouth3.svg') url('{{}}components/redArmyLeaderMouth2.svg')
 		url('{{}}components/redArmyLeaderMouth1.svg') url('{{}}components/redArmyLeaderBlink.svg')
 		url('{{}}components/redArmyLeaderEyes.svg') url('{{}}components/redArmyLeader.svg')
-		url('{{}}menu/tankButton.svg') url('{{}}menu/truckButton.svg') url('{{}}menu/flagMenu.svg');
+		url('{{}}menu/tankButton.svg') url('{{}}menu/truckButton.svg') url('{{}}menu/flagMenu.svg')
+		url('{{}}menu/activate.svg') url('{{}}menu/healEnergyMenu.svg') url('{{}}menu/powerEnergyMenu.svg')
+		url('{{}}menu/fastEnergyButton.svg') url('{{}}menu/plusButton.svg') url('{{}}menu/minusButton.svg')
+		url('{{}}menu/energyButton.svg');
 	display: none;
 }

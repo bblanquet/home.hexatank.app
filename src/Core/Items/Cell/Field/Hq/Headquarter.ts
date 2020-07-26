@@ -79,6 +79,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 			obj.visible = this._cell.IsVisible();
 		});
 	}
+	SetPowerUp(vehicule: Vehicle): void {}
 	protected OncellStateChanged(obj: any, cellState: CellState): void {
 		this.GetCurrentSprites().Values().forEach((s) => {
 			s.visible = cellState !== CellState.Hidden;

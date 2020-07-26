@@ -6,7 +6,8 @@ export class ItemSkin {
 		private _hq: string,
 		private _hqField: string,
 		private _area: string,
-		private _light: string
+		private _light: string,
+		private _reactor: string
 	) {}
 
 	public GetTopTankSprite(): string {
@@ -35,5 +36,8 @@ export class ItemSkin {
 
 	public GetArea(): string {
 		return this._area;
+	}
+	public GetReactor(): string {
+		return this._reactor;
 	}
 }

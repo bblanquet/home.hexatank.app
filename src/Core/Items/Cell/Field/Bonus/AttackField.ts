@@ -1,3 +1,5 @@
+import { Tank } from './../../../Unit/Tank';
+import { AttackUp } from './../../../Unit/PowerUp/AttackUp';
 import { ISelectable } from './../../../../ISelectable';
 import { Cell } from '../../Cell';
 import { BonusField } from './BonusField';
@@ -6,8 +8,9 @@ import { GameSettings } from '../../../../Framework/GameSettings';
 import { Archive } from '../../../../Framework/ResourceArchiver';
 import { Headquarter } from '../Hq/Headquarter';
 import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
+import { isNullOrUndefined } from 'util';
 
-export class AttackField extends BonusField implements ISelectable {
+export class AttackField extends BonusField {
 	SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 
 	constructor(cell: Cell, hq: Headquarter) {
@@ -27,11 +30,12 @@ export class AttackField extends BonusField implements ISelectable {
 		}
 	}
 
-	SetSelected(isSelected: boolean): void {
-		this.SetProperty(Archive.selectionCell, (e) => (e.alpha = isSelected ? 1 : 0));
-		this.SelectionChanged.Invoke(this, this);
-	}
-	IsSelected(): boolean {
-		return this.GetCurrentSprites().Get(Archive.selectionCell).alpha === 1;
+	public SetPowerUp(vehicule: Vehicle): void {
+		if (!(vehicule.PowerUps instanceof AttackUp) && vehicule instanceof Tank) {
+			const up = new AttackUp(vehicule);
+			up.SetActive(true);
+			up.SetCellPower(true);
+			vehicule.SetPowerUp(up);
+		}
 	}
 }

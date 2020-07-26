@@ -1,3 +1,5 @@
+import { TimeTimer } from './../../../../Utils/Timer/TimeTimer';
+import { BasicRangeAnimator } from './../../../Animator/BasicRangeAnimator';
 import { GameContext } from '../../../../Framework/GameContext';
 import { ReactorField } from './ReactorField';
 import { Archive } from '../../../../Framework/ResourceArchiver';
@@ -17,14 +19,17 @@ import { PeerHandler } from '../../../../../Components/Network/Host/On/PeerHandl
 import { PacketKind } from '../../../../../Components/Network/PacketKind';
 
 export class Reactor extends Field implements ISelectable {
+	private _fireAnimation: BasicRangeAnimator;
 	private _area: Array<BasicItem> = new Array<BasicItem>();
 	public Battery: Battery;
 	private _totalRange: number = 4;
+	private _isLocked: boolean;
 	private _range: number = 0;
 	private _internalCells: CellContext<Cell> = new CellContext<Cell>();
 	public Lost: LiteEvent<Reactor> = new LiteEvent<Reactor>();
 	public basicField: ReactorField;
 	SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
+	public PowerChanged: LiteEvent<boolean> = new LiteEvent<boolean>();
 
 	constructor(cell: Cell, public Hq: Headquarter, private _context: GameContext, private _light: string) {
 		super(cell);
@@ -46,6 +51,21 @@ export class Reactor extends Field implements ISelectable {
 		});
 		this.basicField = new ReactorField(this, this._light);
 		this.RangeAnimation();
+	}
+
+	public StartOverclockAnimation(): void {
+		this._fireAnimation = new BasicRangeAnimator(this.GetCell(), this._totalRange);
+	}
+
+	public IsLocked(): boolean {
+		return this._isLocked;
+	}
+
+	public SetLocked(l: boolean): void {
+		this._isLocked = l;
+		if (this._isLocked) {
+			setTimeout(() => (this._isLocked = false), 30000);
+		}
 	}
 
 	private RangeAnimation(): void {
@@ -98,15 +118,24 @@ export class Reactor extends Field implements ISelectable {
 				area.Update(viewX, viewY);
 			});
 		}
+
+		if (this._fireAnimation && !this._fireAnimation.IsDone) {
+			this._fireAnimation.Update(viewX, viewY);
+		}
 	}
 
 	public PowerUp(): void {
+		const formerEnergy = this.Battery.GetUsedPower();
 		PeerHandler.SendMessage(PacketKind.Influence, {
 			Hq: this.Hq.GetCurrentCell().GetCoordinate(),
 			cell: this.GetCell().GetCoordinate(),
 			Type: 'PowerUp'
 		});
 		this.Battery.High();
+
+		if (formerEnergy === 0 && this.Battery.GetUsedPower() === 1) {
+			this.PowerChanged.Invoke(this, true);
+		}
 	}
 
 	public GetPower(): number {
@@ -114,13 +143,16 @@ export class Reactor extends Field implements ISelectable {
 	}
 
 	public PowerDown(): void {
-		if (this.Battery.GetUsedPower() > 0) {
+		if (0 < this.Battery.GetUsedPower()) {
 			PeerHandler.SendMessage(PacketKind.Influence, {
 				Hq: this.Hq.GetCurrentCell().GetCoordinate(),
 				cell: this.GetCell().GetCoordinate(),
 				Type: 'PowerDown'
 			});
 			this.Battery.Low();
+			if (this.Battery.GetUsedPower() === 0) {
+				this.PowerChanged.Invoke(this, false);
+			}
 		}
 	}
 

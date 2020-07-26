@@ -31,7 +31,11 @@ export class SelectionCombination extends AbstractSingleCombination {
 			if (selectable instanceof Cell) {
 				const selectablecell = selectable as Cell;
 
-				if (selectablecell.GetField() instanceof Reactor && selectablecell.GetState() === CellState.Visible) {
+				if (
+					selectablecell.GetField() instanceof Reactor &&
+					selectablecell.GetState() === CellState.Visible &&
+					!(selectablecell.GetField() as Reactor).IsLocked()
+				) {
 					const field = selectablecell.GetField() as Reactor;
 					field.SetSelected(true);
 					this._gameContext.OnItemSelected.Invoke(this, field);
@@ -40,13 +44,6 @@ export class SelectionCombination extends AbstractSingleCombination {
 					selectablecell.GetField() === this._gameContext.MainHq
 				) {
 					const field = selectablecell.GetField() as Headquarter;
-					field.SetSelected(true);
-					this._gameContext.OnItemSelected.Invoke(this, field);
-				} else if (
-					selectablecell.GetField() instanceof AttackField &&
-					selectablecell.GetState() === CellState.Visible
-				) {
-					const field = selectablecell.GetField() as AttackField;
 					field.SetSelected(true);
 					this._gameContext.OnItemSelected.Invoke(this, field);
 				} else if (

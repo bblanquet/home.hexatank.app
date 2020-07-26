@@ -4,7 +4,7 @@ import { Cell } from '../Cell';
 import { CellState } from '../CellState';
 import { Item } from '../../Item';
 import { Vehicle } from '../../Unit/Vehicle';
-import { AliveItem } from '../../AliveItem';
+import { isNullOrUndefined } from 'util';
 
 export abstract class Field extends Item implements IField {
 	private _onCellStateChanged: { (obj: any, cellState: CellState): void };
@@ -35,6 +35,7 @@ export abstract class Field extends Item implements IField {
 	abstract Support(vehicule: Vehicle): void;
 	abstract IsDesctrutible(): boolean;
 	abstract IsBlocking(): boolean;
+	public SetPowerUp(vehicule: Vehicle): void {}
 	GetCell(): Cell {
 		return this._cell;
 	}

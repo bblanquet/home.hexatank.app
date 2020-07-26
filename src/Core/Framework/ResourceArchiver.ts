@@ -46,7 +46,10 @@ export const Archive = {
 		patrolButton: './menu/patrolButton.svg',
 		targetButton: './menu/targetButton.svg',
 		cancelButton: './menu/cancelButton.svg',
-		truckButton: './menu/truckButton.svg'
+		truckButton: './menu/truckButton.svg',
+		attackEnergyButton: './menu/powerEnergyMenu.svg',
+		healEnergyButton: './menu/healEnergyMenu.svg',
+		fastEnergyButton: './menu/fastEnergyButton.svg'
 	},
 	missiles: [
 		'./tank/missile/missile.svg',
@@ -78,7 +81,10 @@ export const Archive = {
 	halfVisibleCell: './halfVisibleCell.svg',
 	selectionUnit: './selectionUnit.svg',
 	selectionCell: './selectionCell.svg',
+	selectionPower: './selectionPowerUp.svg',
 	cell: './cell.svg',
+	healUp: [ './healUp.svg', './healUp2.svg', './healUp3.svg', './healUp4.svg', './healUp5.svg' ],
+	speedUp: [ './speedUp.svg', './speedUp2.svg', './speedUp3.svg' ],
 	powerUpR: [
 		'./powerup1.svg',
 		'./powerup2.svg',
@@ -136,9 +142,13 @@ export const Archive = {
 			purple: './tank/purple/light.svg'
 		},
 		reactor: {
-			top: './floor/reactor.svg',
-			dark: './floor/reactorDark.svg',
-			light: './floor/reactorLight.svg'
+			cover: './floor/reactorCover2.svg',
+			rotationCover: './floor/reactorCover.svg',
+			light: './floor/reactorDarkLight.svg',
+			blue: './floor/blueReactor.svg',
+			gray: './floor/grayReactor.svg',
+			red: './floor/redReactor.svg',
+			purple: './floor/purpleReactor.svg'
 		},
 		coverBottom: './floor/coverBottom.svg',
 		coverTop: './floor/coverTop.svg',

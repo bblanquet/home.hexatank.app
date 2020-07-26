@@ -6,4 +6,5 @@ export interface IField {
 	IsDesctrutible(): boolean;
 	IsBlocking(): boolean;
 	GetCell(): Cell;
+	SetPowerUp(vehicule: Vehicle): void;
 }

@@ -7,6 +7,9 @@ import { Item } from '../../../Core/Items/Item';
 import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
 import { AppHandler } from '../AppHandler';
 import { GameContext } from '../../../Core/Framework/GameContext';
+import { AttackMenuItem } from '../../../Core/Menu/Buttons/AttackMenuItem';
+import { SpeedFieldMenuItem } from '../../../Core/Menu/Buttons/SpeedFieldMenuItem';
+import { HealMenuItem } from '../../../Core/Menu/Buttons/HealMenuItem';
 
 export default class ReactorMenuComponent extends Component<
 	{ Item: Item; AppHandler: AppHandler; GameContext: GameContext },
@@ -37,6 +40,27 @@ export default class ReactorMenuComponent extends Component<
 							onClick={(e: any) => this.SendContext(new MinusMenuItem())}
 						>
 							<div class="fill-minus max-width standard-space" />
+						</button>
+						<button
+							type="button"
+							class="btn btn-dark without-padding"
+							onClick={(e: any) => this.SendContext(new AttackMenuItem())}
+						>
+							<div class="fill-energy-power max-width standard-space" />
+						</button>
+						<button
+							type="button"
+							class="btn btn-dark without-padding"
+							onClick={(e: any) => this.SendContext(new SpeedFieldMenuItem())}
+						>
+							<div class="fill-energy-speed max-width standard-space" />
+						</button>
+						<button
+							type="button"
+							class="btn btn-dark without-padding"
+							onClick={(e: any) => this.SendContext(new HealMenuItem())}
+						>
+							<div class="fill-energy-heal max-width standard-space" />
 						</button>
 						<button
 							type="button"

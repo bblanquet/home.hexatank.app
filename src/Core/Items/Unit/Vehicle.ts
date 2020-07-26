@@ -1,3 +1,4 @@
+import { Cell } from './../Cell/Cell';
 import { GameSettings } from './../../Framework/GameSettings';
 import { GameContext } from './../../Framework/GameContext';
 import { CellStateSetter } from '../Cell/CellStateSetter';
@@ -16,7 +17,6 @@ import { AngleFinder } from './MotionHelpers/AngleFinder';
 import { IRotatable } from './MotionHelpers/IRotatable';
 import { isNullOrUndefined } from 'util';
 import { ISelectable } from '../../ISelectable';
-import { Cell } from '../Cell/Cell';
 import { IOrder } from '../../Ia/Order/IOrder';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { TickTimer } from '../../Utils/Timer/TickTimer';
@@ -31,8 +31,10 @@ import { Explosion } from './Explosion';
 import { Sprite } from 'pixi.js';
 import { Point } from '../../Utils/Geometry/Point';
 import { ICancellable } from './ICancellable';
+import { Up } from './PowerUp/Up';
 
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable, ICancellable {
+	public PowerUps: Array<Up> = [];
 	public Id: string;
 	RotationSpeed: number = 0.05;
 	TranslationSpeed: number = 0.2;
@@ -111,6 +113,16 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	}
 
 	protected abstract RemoveCamouflage(): void;
+
+	SetPowerUp(up: Up) {
+		if (0 < this.PowerUps.length) {
+			const last = this.PowerUps[this.PowerUps.length - 1];
+			up.SetCurrentRotation(last.GetCurrentRotation() + Math.PI * 2 * 60 / 360);
+		}
+
+		this.PowerUps.push(up);
+		up.SetActive(true);
+	}
 
 	public SetOrder(order: IOrder): void {
 		this.RemoveCamouflage();
@@ -262,6 +274,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this._currentCell.CellStateChanged.Off(this._onCellStateChanged);
 
 		this._currentCell = this._nextCell;
+		this._currentCell.GetField().SetPowerUp(this);
+
 		this.CellChanged.Invoke(this._currentCell);
 		this.OnCellStateChanged(this, this._currentCell.GetState());
 		this._currentCell.CellStateChanged.On(this._onCellStateChanged);
@@ -298,6 +312,12 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	}
 
 	public Update(viewX: number, viewY: number): void {
+		if (!isNullOrUndefined(this.PowerUps)) {
+			this.PowerUps.forEach((powerUp) => {
+				powerUp.Update(viewX, viewY);
+			});
+		}
+
 		if (!this.IsAlive() || !this.Hq.IsAlive()) {
 			if (!this.Hq.IsAlive()) {
 				new Explosion(this.GetBoundingBox(), Archive.explosions, 5, true, 20);
@@ -388,6 +408,13 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 			}
 		}
 		this._nextCell = cell;
+		if (this._nextCell.GetField().constructor.name !== this._currentCell.GetField().constructor.name) {
+			if (!isNullOrUndefined(this.PowerUps)) {
+				const cellUps = this.PowerUps.filter((c) => c.IsCellPower());
+				cellUps.forEach((c) => c.Destroy());
+				this.PowerUps = this.PowerUps.filter((c) => !c.IsCellPower());
+			}
+		}
 		this._nextCell.SetOccupier(this);
 		this._nextCell.OnUnitChanged.Invoke(this, this);
 		this._angleFinder.SetAngle(this._nextCell);

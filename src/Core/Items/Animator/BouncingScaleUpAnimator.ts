@@ -6,9 +6,15 @@ export class BouncingScaleUpAnimator implements IAnimator {
 	private _scale: number = 0;
 	private _step: number = 0.01;
 	private _isIncreasing: boolean = true;
+	private _speed: number;
 
-	public constructor(private _item: Item, private _sprites: string[]) {
-		this._item.SetProperties(this._sprites, (e) => (e.alpha = 0));
+	public constructor(private _item: Item, private _sprites: string[], speed: number = 0.005) {
+		this._item.SetProperties(this._sprites, (e) => {
+			e.alpha = 0;
+			e.width = 0;
+			e.height = 0;
+		});
+		this._speed = speed;
 	}
 	Reset(): void {}
 
@@ -16,7 +22,7 @@ export class BouncingScaleUpAnimator implements IAnimator {
 		if (this._isIncreasing) {
 			this._scale += this._step;
 			this.SetBoundingBox(viewX, viewY);
-			this._step += 0.005;
+			this._step += this._speed;
 		} else {
 			this._scale -= this._step;
 			this.SetBoundingBox(viewX, viewY);

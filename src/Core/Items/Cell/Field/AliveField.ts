@@ -18,6 +18,7 @@ export abstract class AliveField extends AliveItem implements IField {
 		this._onCellStateChanged = this.OnCellStateChanged.bind(this);
 		this._cell.CellStateChanged.On(this._onCellStateChanged);
 	}
+	SetPowerUp(vehicule: Vehicle): void {}
 
 	protected OnCellStateChanged(obj: any, cellState: CellState): void {
 		this.GetCurrentSprites().Values().forEach((s) => {

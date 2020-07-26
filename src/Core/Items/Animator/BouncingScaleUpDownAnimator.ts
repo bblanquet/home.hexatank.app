@@ -1,15 +1,19 @@
 import { Item } from '../Item';
 import { IAnimator } from './IAnimator';
 
-export class BouncingScaleDownAnimator implements IAnimator {
+export class BouncingScaleUpDownAnimator implements IAnimator {
 	public IsDone: boolean = false;
-	private _scale: number = 1;
+	private _scale: number = 0;
 	private _step: number = 0.01;
 	private _isIncreasing: boolean = true;
 	private _speed: number;
 
-	public constructor(private _item: Item, private _sprites: string[], speed: number = 0.005) {
-		this._item.SetProperties(this._sprites, (e) => (e.alpha = 1));
+	public constructor(private _item: Item, private _sprites: string[], speed: number = 0.001) {
+		this._item.SetProperties(this._sprites, (e) => {
+			e.alpha = 0;
+			e.width = 0;
+			e.height = 0;
+		});
 		this._speed = speed;
 	}
 	Reset(): void {}
@@ -31,17 +35,17 @@ export class BouncingScaleDownAnimator implements IAnimator {
 		if (this._scale <= 0 && !this._isIncreasing) {
 			this._scale = 0;
 			this.SetBoundingBox(viewX, viewY);
-			this._item.SetProperties(this._sprites, (e) => (e.alpha = 0));
 			this.IsDone = true;
 		}
 	}
 
 	private SetBoundingBox(viewX: number, viewY: number) {
 		this._item.SetProperties(this._sprites, (obj) => {
+			const reference = this._item.GetRef();
+			console.log('X: ' + obj.x + 'W: ' + this._item.GetBoundingBox().Width);
 			obj.width = this._item.GetBoundingBox().Width * this._scale;
 			obj.height = this._item.GetBoundingBox().Height * this._scale;
 			if (!this._item.IsCentralRef) {
-				const reference = this._item.GetRef();
 				obj.x =
 					this._item.GetBoundingBox().Width / 2 -
 					this._item.GetBoundingBox().Width * this._scale / 2 +

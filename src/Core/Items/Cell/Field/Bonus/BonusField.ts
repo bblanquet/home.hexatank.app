@@ -26,7 +26,6 @@ export abstract class BonusField extends Field implements IActiveContainer {
 		});
 		this.GenerateSprite(this.hq.GetSkin().GetLight());
 		// this.GenerateSprite(Archive.bonus.coverTop);
-		this._animator = new BouncingScaleAnimator(this);
 		this.Energy = this.hq.GetCellEnergy(cell.GetCoordinate());
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
@@ -34,6 +33,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 		if (override) {
 			this.InitPosition(cell.GetBoundingBox());
 		}
+		this._animator = new BouncingScaleAnimator(this);
 	}
 
 	public GetHq(): Headquarter {

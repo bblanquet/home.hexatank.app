@@ -9,9 +9,9 @@ export class SpriteProvider {
 
 	private static _svgs: Dictionnary<PIXI.resources.SVGResource> = new Dictionnary<PIXI.resources.SVGResource>();
 
-	public static GetSprite(name: string, accuracy: SpriteAccuracy): PIXI.Sprite {
+	public static GetSprite(name: string): PIXI.Sprite {
 		const otpions = { resourceOptions: { scale: this.GetNumber(name) } };
-		return new PIXI.Sprite(PIXI.Texture.from(`${accuracy}${this.GetPath(name)}`, otpions));
+		return new PIXI.Sprite(PIXI.Texture.from(`${SpriteAccuracy.high}${this.GetPath(name)}`, otpions));
 	}
 
 	private static GetNumber(sprite: string): number {

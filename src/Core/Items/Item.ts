@@ -28,10 +28,6 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 		}
 	}
 
-	UpdateZoom(accuracy: SpriteAccuracy) {
-		this._spriteManager.Update(accuracy);
-	}
-
 	public GetCurrentSprites(): Dictionnary<PIXI.Sprite> {
 		return this._spriteManager.GetCurrentSprites();
 	}
@@ -90,7 +86,6 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 			sprite.width = this.GetBoundingBox().Width;
 			sprite.height = this.GetBoundingBox().Height;
 		});
-		this._spriteManager.Init();
 		GameHelper.Render.Add(this);
 	}
 

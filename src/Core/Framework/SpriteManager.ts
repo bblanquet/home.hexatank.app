@@ -3,34 +3,23 @@ import { SpriteProvider } from './SpriteProvider';
 import { SpriteAccuracy } from './SpriteAccuracy';
 
 export class SpriteManager {
-	private _sprites: Dictionnary<Dictionnary<PIXI.Sprite>>;
-	private _currentAcccuracy: SpriteAccuracy;
+	private _sprites: Dictionnary<PIXI.Sprite>;
 	private _destroyed: boolean = false;
 
 	constructor() {
-		this._sprites = new Dictionnary<Dictionnary<PIXI.Sprite>>();
-		this.Accuracies().forEach((a) => {
-			this._sprites.Add(SpriteAccuracy[a], new Dictionnary<PIXI.Sprite>());
-		});
-		this._currentAcccuracy = SpriteAccuracy.high;
+		this._sprites = new Dictionnary<PIXI.Sprite>();
 	}
 
 	public Destroyed(): void {
 		this._destroyed = true;
 	}
 
-	private Accuracies(): SpriteAccuracy[] {
-		return [ SpriteAccuracy.high ];
-	}
-
 	public GetCurrentSprites(): Dictionnary<PIXI.Sprite> {
-		return this._sprites.Get(SpriteAccuracy[this._currentAcccuracy]);
+		return this._sprites;
 	}
 
 	public SetProperty(name: string, func: (sprite: PIXI.Sprite) => void) {
-		this.Accuracies().forEach((accuracy) => {
-			func(this._sprites.Get(SpriteAccuracy[accuracy]).Get(name));
-		});
+		func(this._sprites.Get(name));
 	}
 
 	public SetProperties(names: string[], func: (sprite: PIXI.Sprite) => void) {
@@ -38,33 +27,21 @@ export class SpriteManager {
 	}
 
 	public GenerateSprite(name: string, func?: (sprite: PIXI.Sprite) => void) {
-		this.Accuracies().forEach((accuracy) => {
-			const sprite = SpriteProvider.GetSprite(name, accuracy);
-			sprite.visible = accuracy === this._currentAcccuracy;
+		const sprite = SpriteProvider.GetSprite(name);
 
-			if (func) {
-				func(sprite);
-			}
-			this._sprites.Get(SpriteAccuracy[accuracy]).Add(name, sprite);
-		});
+		if (func) {
+			func(sprite);
+		}
+		this._sprites.Add(name, sprite);
 	}
 
-	public Init(): void {
-		this.Accuracies().forEach((accuracy) => {
-			this._sprites.Get(SpriteAccuracy[accuracy]).Values().forEach((sprite) => {
-				sprite.visible = accuracy === this._currentAcccuracy;
-			});
-		});
-	}
-
-	public Update(accuracy: SpriteAccuracy): void {
-		this._sprites.Get(SpriteAccuracy[this._currentAcccuracy]).Keys().forEach((s) => {
-			const current = this._sprites.Get(SpriteAccuracy[this._currentAcccuracy]).Get(s);
-			const next = this._sprites.Get(SpriteAccuracy[accuracy]).Get(s);
+	public Update(): void {
+		this._sprites.Keys().forEach((s) => {
+			const current = this._sprites.Get(s);
+			const next = this._sprites.Get(s);
 			next.visible = current.visible;
 			current.visible = false;
 		});
-		this._currentAcccuracy = accuracy;
 	}
 
 	public GetAll(): Array<PIXI.Sprite> {
@@ -72,12 +49,6 @@ export class SpriteManager {
 		if (this._destroyed) {
 			return result;
 		}
-
-		this._sprites.Values().forEach((list) => {
-			list.Values().forEach((s) => {
-				result.push(s);
-			});
-		});
-		return result;
+		return this._sprites.Values();
 	}
 }

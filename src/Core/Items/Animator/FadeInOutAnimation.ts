@@ -16,11 +16,11 @@ export class FadeInOutAnimation implements IAnimator {
 		end: number,
 		step: number
 	) {
-		this._item.SetProperties([ this._sprite ], (e) => (e.alpha = this._start));
 		this._animators = [
 			new FadeInAnimation(_item, _sprite, _start, end, step),
 			new FadeOutAnimation(_item, _sprite, end, _start, step)
 		];
+		this._item.SetProperties([ this._sprite ], (e) => (e.alpha = this._start));
 	}
 	Reset(): void {}
 

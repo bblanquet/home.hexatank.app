@@ -14,7 +14,8 @@ export class SwitchToCellCombination extends AbstractSingleCombination {
 			(context.Items[0] instanceof Headquarter ||
 				context.Items[0] instanceof Reactor ||
 				context.Items[0] instanceof Group) &&
-			context.Items[1] instanceof Cell
+			context.Items[1] instanceof Cell &&
+			(context.Items[1] as Cell).IsVisible()
 		);
 	}
 

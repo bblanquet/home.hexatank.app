@@ -1,5 +1,4 @@
 import { FadeInOutAnimation } from './FadeInOutAnimation';
-import { BouncingScaleUpDownAnimator } from './BouncingScaleUpDownAnimator';
 import { BoundingBox } from './../../Utils/Geometry/BoundingBox';
 import { BasicItem } from './../BasicItem';
 import { IAnimator } from './IAnimator';
@@ -37,15 +36,15 @@ export class BasicRangeAnimator implements IAnimator {
 		if (this._animators.length === 0) {
 			let newCells = new Array<Cell>();
 
-			for (let range = 0; range < this._totalRange; range++) {
+			for (let range = 0; range <= this._totalRange; range++) {
 				newCells = newCells.concat(this._origin.GetSpecificRange(range).map((c) => c as Cell));
 			}
 			newCells.forEach((c) => {
-				let item = new BasicItem(BoundingBox.CreateFromBox(c.GetBoundingBox()), Archive.selectionPower, 3);
+				let item = new BasicItem(BoundingBox.CreateFromBox(c.GetBoundingBox()), Archive.selectionPower, 2);
 				let animator = new FadeInOutAnimation(item, Archive.selectionPower, 0, 1, 0.02);
 				item.SetAnimator(animator);
-				item.SetVisible(() => true);
 				item.SetAlive(() => true);
+				item.SetVisible(() => true);
 				this._animators.push(animator);
 				this._items.push(item);
 			});

@@ -1,5 +1,4 @@
 import { isNullOrUndefined } from 'util';
-import { Item } from '../../Item';
 import { RotationAnimator } from '../../Animator/RotationAnimator';
 import { IAnimator } from '../../Animator/IAnimator';
 import { TickTimer } from '../../../Utils/Timer/TickTimer';

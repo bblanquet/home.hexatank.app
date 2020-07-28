@@ -18,16 +18,7 @@ export class Truck extends Vehicle implements IHqContainer {
 
 	constructor(hq: Headquarter, gameContext: GameContext) {
 		super(hq, gameContext);
-		this.Wheels = Archive.wheels;
-
-		this.GenerateSprite(Archive.wheel);
-		this.RootSprites.push(Archive.wheel);
-
 		this._dimaondTimer = new TickTimer(GameSettings.DiamondLoadingSpeed);
-		this.Wheels.forEach((wheel) => {
-			this.GenerateSprite(wheel);
-			this.RootSprites.push(wheel);
-		});
 
 		this._gatheredDiamonds = Archive.diamonds;
 

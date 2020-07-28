@@ -24,15 +24,6 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 	constructor(hq: Headquarter, gameContext: GameContext) {
 		super(hq, gameContext);
 
-		this.Wheels = Archive.wheels;
-		this.GenerateSprite(Archive.wheel);
-		this.RootSprites.push(Archive.wheel);
-
-		this.Wheels.forEach((wheel) => {
-			this.GenerateSprite(wheel);
-			this.RootSprites.push(wheel);
-		});
-
 		this.RootSprites.push(this.Hq.GetSkin().GetBottomTankSprite());
 		this.GenerateSprite(this.Hq.GetSkin().GetBottomTankSprite());
 

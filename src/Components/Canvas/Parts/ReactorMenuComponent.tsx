@@ -12,7 +12,7 @@ import { SpeedFieldMenuItem } from '../../../Core/Menu/Buttons/SpeedFieldMenuIte
 import { HealMenuItem } from '../../../Core/Menu/Buttons/HealMenuItem';
 
 export default class ReactorMenuComponent extends Component<
-	{ Item: Item; AppHandler: AppHandler; GameContext: GameContext },
+	{ Item: Reactor; AppHandler: AppHandler; GameContext: GameContext },
 	{}
 > {
 	render() {
@@ -41,27 +41,9 @@ export default class ReactorMenuComponent extends Component<
 						>
 							<div class="fill-minus max-width standard-space" />
 						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new AttackMenuItem())}
-						>
-							<div class="fill-energy-power max-width standard-space" />
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new SpeedFieldMenuItem())}
-						>
-							<div class="fill-energy-speed max-width standard-space" />
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new HealMenuItem())}
-						>
-							<div class="fill-energy-heal max-width standard-space" />
-						</button>
+						{this.RenderAttack()}
+						{this.RenderHeal()}
+						{this.RenderSpeed()}
 						<button
 							type="button"
 							class="btn btn-dark without-padding"
@@ -73,6 +55,54 @@ export default class ReactorMenuComponent extends Component<
 				</div>
 			</div>
 		);
+	}
+
+	private RenderAttack() {
+		if (this.props.Item.HasPower()) {
+			return (
+				<button
+					type="button"
+					class="btn btn-dark without-padding"
+					onClick={(e: any) => this.SendContext(new AttackMenuItem())}
+				>
+					<div class="fill-energy-power max-width standard-space" />
+				</button>
+			);
+		} else {
+			return '';
+		}
+	}
+
+	private RenderSpeed() {
+		if (this.props.Item.HasPower()) {
+			return (
+				<button
+					type="button"
+					class="btn btn-dark without-padding"
+					onClick={(e: any) => this.SendContext(new SpeedFieldMenuItem())}
+				>
+					<div class="fill-energy-speed max-width standard-space" />
+				</button>
+			);
+		} else {
+			return '';
+		}
+	}
+
+	private RenderHeal() {
+		if (this.props.Item.HasPower()) {
+			return (
+				<button
+					type="button"
+					class="btn btn-dark without-padding"
+					onClick={(e: any) => this.SendContext(new HealMenuItem())}
+				>
+					<div class="fill-energy-heal max-width standard-space" />
+				</button>
+			);
+		} else {
+			return '';
+		}
 	}
 
 	private SendContext(item: Item): void {

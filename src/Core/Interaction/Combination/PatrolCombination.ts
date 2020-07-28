@@ -1,4 +1,3 @@
-import { ICombination } from './ICombination';
 import { PatrolMenuItem } from '../../Menu/Buttons/PatrolMenuItem';
 import { PatrolOrder } from '../../Ia/Order/PatrolOrder';
 import { BasicItem } from '../../Items/BasicItem';
@@ -6,10 +5,7 @@ import { Archive } from '../../Framework/ResourceArchiver';
 import { Item } from '../../Items/Item';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Cell } from '../../Items/Cell/Cell';
-import { GameHelper } from '../../Framework/GameHelper';
 import { CombinationContext } from './CombinationContext';
-import { InteractionMode } from '../InteractionMode';
-import { InteractionKind } from '../IInteractionContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 
 export class PatrolCombination extends AbstractSingleCombination {

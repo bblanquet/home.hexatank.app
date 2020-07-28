@@ -61,6 +61,10 @@ export class Reactor extends Field implements ISelectable {
 		return this._isLocked;
 	}
 
+	HasPower(): boolean {
+		return 0 < this.Battery.GetUsedPower();
+	}
+
 	public SetLocked(l: boolean): void {
 		this._isLocked = l;
 		if (this._isLocked) {

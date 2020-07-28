@@ -5,7 +5,6 @@ import { Vehicle } from '../../../Unit/Vehicle';
 import { GameSettings } from '../../../../Framework/GameSettings';
 import { BonusField } from './BonusField';
 import { Headquarter } from '../Hq/Headquarter';
-import { isNullOrUndefined } from 'util';
 
 export class MedicField extends BonusField {
 	constructor(cell: Cell, hq: Headquarter) {

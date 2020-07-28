@@ -1,5 +1,4 @@
 import { SpriteManager } from './../Framework/SpriteManager';
-import { SpriteAccuracy } from './../Framework/SpriteAccuracy';
 import { Dictionnary } from './../Utils/Collections/Dictionnary';
 import { SimpleEvent } from './../Utils/Events/SimpleEvent';
 import * as PIXI from 'pixi.js';

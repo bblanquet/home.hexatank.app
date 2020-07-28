@@ -40,7 +40,6 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	TranslationSpeed: number = 0.2;
 	Attack: number = 10;
 	protected RootSprites: Array<string>;
-	protected Wheels: Array<string>;
 	private WheelIndex: number;
 
 	public HasCamouflage: boolean;
@@ -88,7 +87,14 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this._onCellStateChanged = this.OnCellStateChanged.bind(this);
 		this.RootSprites = new Array<string>();
 
-		this.Wheels = new Array<string>();
+		this.GenerateSprite(Archive.wheel);
+		this.RootSprites.push(Archive.wheel);
+
+		Archive.wheels.forEach((wheel) => {
+			this.GenerateSprite(wheel, (s) => (s.alpha = 0));
+			this.RootSprites.push(wheel);
+		});
+
 		this.WheelIndex = 0;
 		this._dustTimer = new TickTimer(12);
 		this._dustIndex = 0;
@@ -110,6 +116,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		];
 		this.CellChanged = new LiteEvent<Cell>();
 		this.Hq.AddVehicle(this);
+		this.SetProperty(Archive.wheels[0], (s) => (s.alpha = 1));
 	}
 
 	protected abstract RemoveCamouflage(): void;
@@ -179,11 +186,11 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	}
 
 	private HandleWheels(): void {
-		var previousWheel = this.Wheels[this.WheelIndex];
+		var previousWheel = Archive.wheels[this.WheelIndex];
 
-		this.WheelIndex = (this.WheelIndex + 1) % this.Wheels.length;
+		this.WheelIndex = (this.WheelIndex + 1) % Archive.wheels.length;
 
-		this.SetProperty(this.Wheels[this.WheelIndex], (e) => (e.alpha = 1));
+		this.SetProperty(Archive.wheels[this.WheelIndex], (e) => (e.alpha = 1));
 		this.SetProperty(previousWheel, (e) => (e.alpha = 0));
 	}
 

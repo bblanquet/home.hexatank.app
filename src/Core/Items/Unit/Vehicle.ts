@@ -124,11 +124,9 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	SetPowerUp(up: Up) {
 		if (0 < this.PowerUps.length) {
 			const last = this.PowerUps[this.PowerUps.length - 1];
-			up.SetCurrentRotation(last.GetCurrentRotation() + Math.PI * 2 * 60 / 360);
+			up.Animation.SetCurrentRotation(last.Animation.GetCurrentRotation() + Math.PI * 2 * 60 / 360);
 		}
-
 		this.PowerUps.push(up);
-		up.SetActive(true);
 	}
 
 	public SetOrder(order: IOrder): void {
@@ -281,12 +279,12 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this._currentCell.CellStateChanged.Off(this._onCellStateChanged);
 
 		this._currentCell = this._nextCell;
-		this._currentCell.GetField().SetPowerUp(this);
 
 		this.CellChanged.Invoke(this._currentCell);
 		this.OnCellStateChanged(this, this._currentCell.GetState());
 		this._currentCell.CellStateChanged.On(this._onCellStateChanged);
 		this._nextCell = null;
+		this._currentCell.GetField().SetPowerUp(this);
 
 		CellStateSetter.SetStates(this.GameContext, previouscell.GetAll());
 		CellStateSetter.SetStates(this.GameContext, this._currentCell.GetAll());
@@ -321,7 +319,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	public Update(viewX: number, viewY: number): void {
 		if (!isNullOrUndefined(this.PowerUps)) {
 			this.PowerUps.forEach((powerUp) => {
-				powerUp.Update(viewX, viewY);
+				powerUp.Animation.Update(viewX, viewY);
 			});
 		}
 
@@ -415,13 +413,6 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 			}
 		}
 		this._nextCell = cell;
-		if (this._nextCell.GetField().constructor.name !== this._currentCell.GetField().constructor.name) {
-			if (!isNullOrUndefined(this.PowerUps)) {
-				const cellUps = this.PowerUps.filter((c) => c.IsCellPower());
-				cellUps.forEach((c) => c.Destroy());
-				this.PowerUps = this.PowerUps.filter((c) => !c.IsCellPower());
-			}
-		}
 		this._nextCell.SetOccupier(this);
 		this._nextCell.OnUnitChanged.Invoke(this, this);
 		this._angleFinder.SetAngle(this._nextCell);

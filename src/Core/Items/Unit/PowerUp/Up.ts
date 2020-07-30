@@ -1,24 +1,6 @@
-import { Item } from '../../Item';
-import { TimeTimer } from '../../../Utils/Timer/TimeTimer';
+import { UpCondition } from './Condition/UpCondition';
+import { UpAnimation } from './UpAnimation';
 
-export abstract class Up extends Item {
-	protected _activeTimer: TimeTimer;
-	protected _isActive: boolean;
-	private _isCell: boolean;
-
-	public IsCellPower(): boolean {
-		return this._isCell;
-	}
-
-	public SetCellPower(isPower: boolean) {
-		this._isCell = isPower;
-	}
-
-	public IsActive(): boolean {
-		return this._isActive;
-	}
-
-	public abstract SetActive(isActive: boolean): void;
-	public abstract GetCurrentRotation(): number;
-	public abstract SetCurrentRotation(radian: number): void;
+export class Up {
+	constructor(private _condition: UpCondition, public Animation: UpAnimation) {}
 }

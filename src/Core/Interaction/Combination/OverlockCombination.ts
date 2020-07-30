@@ -1,3 +1,5 @@
+import { HealUp } from './../../Items/Unit/PowerUp/HealUp';
+import { TimeUpCondition } from './../../Items/Unit/PowerUp/Condition/TimeUpCondition';
 import { AttackUp } from '../../Items/Unit/PowerUp/AttackUp';
 import { Tank } from '../../Items/Unit/Tank';
 import { SpeedUp } from '../../Items/Unit/PowerUp/SpeedUp';
@@ -8,7 +10,6 @@ import { CombinationContext } from './CombinationContext';
 import { Reactor } from '../../Items/Cell/Field/Bonus/Reactor';
 import { SpeedFieldMenuItem } from '../../Menu/Buttons/SpeedFieldMenuItem';
 import { Vehicle } from '../../Items/Unit/Vehicle';
-import { HealUp } from '../../Items/Unit/PowerUp/HealUp';
 import { InteractionMode } from '../InteractionMode';
 import { Item } from '../../Items/Item';
 import { ISelectable } from '../../ISelectable';
@@ -48,16 +49,19 @@ export class OverlockCombination extends AbstractSingleCombination {
 			if (context.Items[1] instanceof AttackMenuItem) {
 				vehicles.forEach((v) => {
 					if (v instanceof Tank) {
-						v.SetPowerUp(new AttackUp(v));
+						const sum = reactor.GetPower() * 0.1 + 2;
+						v.SetPowerUp(new AttackUp(v, new TimeUpCondition(), sum));
 					}
 				});
 			} else if (context.Items[1] instanceof HealMenuItem) {
 				vehicles.forEach((v) => {
-					v.SetPowerUp(new HealUp(v));
+					const sum = reactor.GetPower() * 0.1 + 0.01;
+					v.SetPowerUp(new HealUp(v, new TimeUpCondition(), sum));
 				});
 			} else if (context.Items[1] instanceof SpeedFieldMenuItem) {
 				vehicles.forEach((v) => {
-					v.SetPowerUp(new SpeedUp(v));
+					const sum = reactor.GetPower() * 0.1 + 2;
+					v.SetPowerUp(new SpeedUp(v, new TimeUpCondition(), sum, sum));
 				});
 			}
 			this.UnSelectItem(context.Items[0]);

@@ -1,4 +1,3 @@
-import { TimeTimer } from './../../../../Utils/Timer/TimeTimer';
 import { BasicRangeAnimator } from './../../../Animator/BasicRangeAnimator';
 import { GameContext } from '../../../../Framework/GameContext';
 import { ReactorField } from './ReactorField';
@@ -28,7 +27,7 @@ export class Reactor extends Field implements ISelectable {
 	private _internalCells: CellContext<Cell> = new CellContext<Cell>();
 	public Lost: LiteEvent<Reactor> = new LiteEvent<Reactor>();
 	public basicField: ReactorField;
-	SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
+	public SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 	public PowerChanged: LiteEvent<boolean> = new LiteEvent<boolean>();
 
 	constructor(cell: Cell, public Hq: Headquarter, private _context: GameContext, private _light: string) {
@@ -90,6 +89,7 @@ export class Reactor extends Field implements ISelectable {
 
 			this.Hq = vehicule.Hq;
 			this.Hq.AddReactor(this);
+			this.Hq.ReactorConquested.Invoke(this, this);
 
 			this.basicField.Destroy();
 			this.basicField = new ReactorField(this, this._light);

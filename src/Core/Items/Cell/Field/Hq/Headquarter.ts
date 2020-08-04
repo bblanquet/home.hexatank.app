@@ -37,7 +37,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	private _batteryFields: Array<BatteryField> = new Array<BatteryField>();
 
 	private _vehicles: Array<Vehicle> = new Array<Vehicle>();
-	public OnVehiculeCreated: LiteEvent<Vehicle> = new LiteEvent<Vehicle>();
+	public VehicleCreated: LiteEvent<Vehicle> = new LiteEvent<Vehicle>();
+	public ReactorConquested: LiteEvent<Reactor> = new LiteEvent<Reactor>();
+	public ReactorLost: LiteEvent<Reactor> = new LiteEvent<Reactor>();
 
 	constructor(skin: ItemSkin, cell: Cell, public GameContext: GameContext) {
 		super();
@@ -129,7 +131,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 				}
 				const tank = new Tank(this, this.GameContext);
 				tank.SetPosition(cell === null ? field.GetCell() : cell);
-				this.OnVehiculeCreated.Invoke(this, tank);
+				this.VehicleCreated.Invoke(this, tank);
 
 				isCreated = true;
 				if (this.Flagcell) {
@@ -152,7 +154,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 				}
 				let truck = new Truck(this, this.GameContext);
 				truck.SetPosition(cell || field.GetCell());
-				this.OnVehiculeCreated.Invoke(this, truck);
+				this.VehicleCreated.Invoke(this, truck);
 
 				isCreated = true;
 				return false;
@@ -354,6 +356,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		this._reactors.push(reactor);
 		reactor.Lost.On((e: any, ie: Reactor) => {
 			this._reactors = this._reactors.filter((v) => v !== ie);
+			this.ReactorLost.Invoke(this, ie);
 		});
 	}
 

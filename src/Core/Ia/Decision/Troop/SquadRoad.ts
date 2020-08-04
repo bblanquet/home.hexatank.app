@@ -24,6 +24,8 @@ export class SquadRoad {
 		const steps = road.filter(
 			(c) => c.GetField() instanceof ShieldField && (c.GetField() as ShieldField).IsEnemy(this._hq)
 		);
-		return result.concat(steps).concat([ road[road.length - 1] ]);
+		result = result.concat(steps).concat([ road[road.length - 1] ]);
+
+		return result;
 	}
 }

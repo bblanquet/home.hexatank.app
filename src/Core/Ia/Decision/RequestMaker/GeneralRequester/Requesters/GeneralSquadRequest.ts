@@ -16,7 +16,7 @@ export class GeneralSquadRequest implements IGeneralRequester {
 		const kingdomAreas = kingdom.AreaDecisions.map((a) => a.Area);
 		const farmAreas = kingdomAreas.filter((a) => a.HasFarmField());
 		if (this._raidTimer.IsElapsed()) {
-			if (kingdom.GetKingdomAreas().Values().filter((a) => a.HasTroop()).length > 5) {
+			if (kingdom.GetKingdomAreas().Values().filter((a) => a.HasTroop()).length >= 2) {
 				return new AreaRequest(RequestType.Raid, RequestPriority.High, 2, farmAreas[0]);
 			}
 		}

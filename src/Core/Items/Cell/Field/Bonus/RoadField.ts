@@ -14,7 +14,7 @@ export class RoadField extends BonusField {
 
 	public SetPowerUp(vehicule: Vehicle): void {
 		if (!(vehicule.PowerUps instanceof SpeedUp)) {
-			const sum = 0.5 + this.GetReactorsPower(this.hq) * 0.1;
+			const sum = this.GetReactorsPower(this.hq) * 0.2;
 			const up = new SpeedUp(vehicule, new CellUpCondition(vehicule), sum, sum);
 			vehicule.SetPowerUp(up);
 		}

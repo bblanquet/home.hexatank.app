@@ -65,9 +65,9 @@ export class TankMediumRequestHandler implements ISimpleRequestHandler {
 					isCreated = true;
 				}
 			};
-			this._hq.OnVehiculeCreated.On(lambda);
+			this._hq.VehicleCreated.On(lambda);
 			this._hq.CreateTank();
-			this._hq.OnVehiculeCreated.Off(lambda);
+			this._hq.VehicleCreated.Off(lambda);
 		}
 		return isCreated;
 	}

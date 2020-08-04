@@ -1,3 +1,4 @@
+import { IAreaDecisionMaker } from './IAreaDecisionMaker';
 import { AStarHelper } from './../../AStarHelper';
 import { AttackField } from '../../../Items/Cell/Field/Bonus/AttackField';
 import { KingdomArea } from './../Utils/KingdomArea';
@@ -10,15 +11,16 @@ import { SimpleOrder } from '../../Order/SimpleOrder';
 import { Tank } from '../../../Items/Unit/Tank';
 import { Groups } from '../../../Utils/Collections/Groups';
 import { TroopDestination } from '../Utils/TroopDestination';
-import { AStarEngine } from '../../AStarEngine';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { BasicField } from '../../../Items/Cell/Field/BasicField';
+import { AStarEngine } from '../../AStarEngine';
 
-export class BasicAreaDecisionMaker {
+export class BasicAreaDecisionMaker implements IAreaDecisionMaker {
 	public HasReceivedRequest: boolean;
+	constructor(private _hq: Headquarter, public Area: KingdomArea) {}
 
-	constructor(private _hq: Headquarter, public Area: KingdomArea, private _areas: Area[]) {}
+	private _isDestroyed: boolean = false;
 
 	public Update(): void {
 		this.Area.Troops = this.Area.Troops.filter((t) => t.Tank.IsAlive());
@@ -34,6 +36,14 @@ export class BasicAreaDecisionMaker {
 				troop.Update();
 			});
 		}
+	}
+
+	IsDestroyed(): boolean {
+		return this._isDestroyed;
+	}
+
+	Destroy(): void {
+		this._isDestroyed = true;
 	}
 
 	private Do(): void {
@@ -68,7 +78,7 @@ export class BasicAreaDecisionMaker {
 		this.Area.GetTroops().filter((t) => t.IsCloseFromEnemy()).forEach((t) => {
 			let cell = t.Tank.GetCurrentCell();
 			if (GameSettings.FieldPrice < this._hq.GetAmount()) {
-				if (cell.GetField() instanceof BasicField) {
+				if (cell.GetField() instanceof BasicField && this._hq.IsCovered(cell)) {
 					new AttackField(cell, this._hq);
 					this._hq.Buy(GameSettings.FieldPrice);
 				}

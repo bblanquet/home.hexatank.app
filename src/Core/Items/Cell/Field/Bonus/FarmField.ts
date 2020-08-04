@@ -34,8 +34,8 @@ export class FarmField extends BonusField {
 		if (this.IsFull()) {
 			if (vehicule instanceof Truck) {
 				let truck = vehicule as Truck;
-				const sum = this.GetReactorsPower(this.hq) * 0.3;
-				truck.Hq.Earn(1 + sum);
+				const sum = this.GetReactorsPower(this.hq);
+				truck.Hq.Earn(sum);
 				this.SetEmpty();
 				this._lightItem.Hide();
 			}

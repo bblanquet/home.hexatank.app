@@ -49,18 +49,18 @@ export class OverlockCombination extends AbstractSingleCombination {
 			if (context.Items[1] instanceof AttackMenuItem) {
 				vehicles.forEach((v) => {
 					if (v instanceof Tank) {
-						const sum = reactor.GetPower() * 0.1 + 2;
+						const sum = reactor.GetPower() * 5;
 						v.SetPowerUp(new AttackUp(v, new TimeUpCondition(), sum));
 					}
 				});
 			} else if (context.Items[1] instanceof HealMenuItem) {
 				vehicles.forEach((v) => {
-					const sum = reactor.GetPower() * 0.1 + 0.01;
+					const sum = reactor.GetPower();
 					v.SetPowerUp(new HealUp(v, new TimeUpCondition(), sum));
 				});
 			} else if (context.Items[1] instanceof SpeedFieldMenuItem) {
 				vehicles.forEach((v) => {
-					const sum = reactor.GetPower() * 0.1 + 2;
+					const sum = reactor.GetPower() * 0.2;
 					v.SetPowerUp(new SpeedUp(v, new TimeUpCondition(), sum, sum));
 				});
 			}

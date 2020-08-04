@@ -52,7 +52,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	private _nextCell: Cell;
 	private _currentCell: Cell;
 
-	private _order: IOrder;
+	private _order: IOrder = null;
 
 	protected BoundingBox: BoundingBox;
 	private Size: number;

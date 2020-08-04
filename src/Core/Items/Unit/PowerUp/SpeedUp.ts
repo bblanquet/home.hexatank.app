@@ -11,7 +11,7 @@ export class SpeedUp extends Up {
 		private _transationUp: number,
 		private _rotationUp: number
 	) {
-		super(condition, new UpAnimation(_vehicle, Archive.powerUp, Archive.powerUpR));
+		super(condition, new UpAnimation(_vehicle, Archive.speedUp, Archive.speedUp));
 		this._vehicle.TranslationSpeed += this._transationUp;
 		this._vehicle.RotationSpeed += this._rotationUp;
 		condition.Done.On(() => {

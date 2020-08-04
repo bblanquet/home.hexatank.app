@@ -1,10 +1,11 @@
-import { ReactorField } from './../../Items/Cell/Field/Bonus/ReactorField';
+import { CellHelper } from './../../Items/Cell/CellHelper';
+import { ReactorSquadTarget } from './Troop/Target/ReactorSquadTarget';
+import { HqSquadTarget } from './Troop/Target/HqSquadTarget';
+import { Reactor } from './../../Items/Cell/Field/Bonus/Reactor';
+import { ISquadTarget } from './Troop/Target/ISquadTarget';
 import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
 import { Area } from './Utils/Area';
 import { Cell } from '../../Items/Cell/Cell';
-import { DistanceHelper } from '../../Items/Unit/MotionHelpers/DistanceHelper';
-import { Groups } from './../../Utils/Collections/Groups';
-import { Reactor } from '../../Items/Cell/Field/Bonus/Reactor';
 
 export class MapObserver {
 	public NeutralAreas: Area[];
@@ -36,25 +37,17 @@ export class MapObserver {
 			.reduce((x, y) => x.concat(y));
 	}
 
-	public GetShortestImportantFields(cell: Cell): Cell {
-		const result = this.GetImportantFields();
-		if (result.length === 0) {
+	public GetShortestImportantFields(origin: Cell): ISquadTarget {
+		const cells = this.GetImportantFields();
+		if (cells.length === 0) {
 			return null;
 		}
-		const cellByDist = this.GetCellByDistance(result, cell);
-		const closestCell = Math.min(...cellByDist.Keys().map((k) => +k));
-		return cellByDist.Get(closestCell.toString())[0];
-	}
 
-	private GetCellByDistance(candidates: Cell[], source: Cell): Groups<Cell> {
-		const groups = new Groups<Cell>();
-		candidates.forEach((candidate) => {
-			groups.Add(this.GetDistance(source, candidate).toString(), candidate);
-		});
-		return groups;
-	}
-
-	private GetDistance(source: Cell, target: Cell): number {
-		return DistanceHelper.GetDistance(source.GetCoordinate(), target.GetCoordinate());
+		const cell = CellHelper.GetClosest(cells, origin);
+		if (cell.GetField() instanceof Reactor) {
+			return new ReactorSquadTarget(cell, this._hq);
+		} else {
+			return new HqSquadTarget(cell, this._hq);
+		}
 	}
 }

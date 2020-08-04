@@ -69,6 +69,10 @@ export class ReactorField extends Item {
 	}
 
 	public Update(viewX: number, viewY: number): void {
+		if (!this.IsUpdatable) {
+			return;
+		}
+
 		if (!this._animator.IsDone) {
 			this._animator.Update(viewX, viewY);
 			if (this._animator.IsDone) {
@@ -85,7 +89,6 @@ export class ReactorField extends Item {
 		if (!isNullOrUndefined(this._lightAnimator)) {
 			this._lightAnimator.Update(viewX, viewY);
 		}
-
 		this._rotator.Update(viewX, viewY);
 
 		this.SetProperty(this._light, (s) => {

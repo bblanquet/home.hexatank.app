@@ -147,7 +147,7 @@ export class HqRender {
 		kingdom.Setup(
 			new AreaRequestMaker(kingdom),
 			new RequestHandler(hq, kingdom, context),
-			new ExpansionMaker(hq, kingdom, areas, areaSearch),
+			new ExpansionMaker(hq, kingdom, areaSearch),
 			new GeneralRequester()
 		);
 

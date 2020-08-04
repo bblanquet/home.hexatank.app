@@ -18,7 +18,7 @@ export class GameContext {
 	public SetHqs(hqs: Headquarter[]) {
 		this._hqs = hqs;
 		this._hqs.forEach((hq) => {
-			hq.OnVehiculeCreated.On(this.VehiculeCreated.bind(this));
+			hq.VehicleCreated.On(this.VehiculeCreated.bind(this));
 		});
 	}
 
@@ -44,7 +44,7 @@ export class GameContext {
 
 	public Destroy(): void {
 		this._hqs.forEach((hq) => {
-			hq.OnVehiculeCreated.Clear();
+			hq.VehicleCreated.Clear();
 		});
 	}
 }

@@ -1,3 +1,4 @@
+import { Reactor } from './../../Items/Cell/Field/Bonus/Reactor';
 import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
 import { MoneyOrder } from './../Order/MoneyOrder';
 import { Diamond } from './../../Items/Cell/Field/Diamond';
@@ -43,7 +44,7 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 		this.CellAreas = new Dictionnary<IAreaDecisionMaker>();
 		this.IdleTanks = new ExcessTankFinder();
 
-		this.Hq.OnVehiculeCreated.On((hq: any, vehicle: Vehicle) => {
+		this.Hq.VehicleCreated.On((hq: any, vehicle: Vehicle) => {
 			if (vehicle instanceof Truck) {
 				const truck = vehicle as Truck;
 				this.Trucks.push(truck);
@@ -51,6 +52,25 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 				const tank = vehicle as Tank;
 				this.Tanks.push(tank);
 			}
+		});
+		this.Hq.ReactorConquested.On((e: any, obj: Reactor) => {
+			const c = obj.GetCell();
+			let area = this.Areas.filter((a) => a.Contains(c))[0];
+			this._expansionMaker.CreateArea(area);
+		});
+
+		this.Hq.ReactorLost.On((e: any, obj: Reactor) => {
+			const c = obj.GetCell();
+			let foundArea: KingdomArea = null;
+			this.GetKingdomAreas().Values().some((area) => {
+				if (!area.HasCell(c)) {
+					foundArea = area;
+					return true;
+				}
+				return false;
+			});
+			this.GetKingdomAreas().Remove(foundArea.GetCentralCell().GetCoordinate().ToString());
+			this.Areas.push(foundArea.GetSpot());
 		});
 	}
 
@@ -100,26 +120,30 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 
 	public Do(): void {
 		if (this._idleTimer.IsElapsed()) {
-			// this.Trucks = this.Trucks.filter((t) => t.IsAlive());
-			// this.Tanks = this.Tanks.filter((t) => t.IsAlive());
-			// this.Squads.forEach((s) => {
-			// 	s.Do();
-			// });
-			// const areas = new Array<KingdomArea>();
-			// this.AreaDecisions.forEach((areaDecision) => {
-			// 	areaDecision.Area.CalculateFoes();
-			// 	areaDecision.HasReceivedRequest = false;
-			// 	areaDecision.Update();
-			// 	areas.push(areaDecision.Area);
-			// });
-			// this.IdleTanks.CalculateExcess(areas);
-			// const requests = this.GetRequests(areas);
-			// this.Log(requests);
-			// if (requests.Any()) {
-			// 	this._requestHandler.HandleRequests(requests);
-			// } else {
-			// 	this._expansionMaker.Expand();
-			// }
+			this.Trucks = this.Trucks.filter((t) => t.IsAlive());
+			this.Tanks = this.Tanks.filter((t) => t.IsAlive());
+			this.Squads = this.Squads.filter((s) => !s.IsDone);
+			this.Squads.forEach((squad) => {
+				squad.Do();
+			});
+			const areas = new Array<KingdomArea>();
+			this.AreaDecisions = this.AreaDecisions.filter((t) => !t.IsDestroyed());
+			this.AreaDecisions.forEach((areaDecision) => {
+				areaDecision.Area.CalculateFoes();
+				areaDecision.HasReceivedRequest = false;
+				areaDecision.Update();
+				areas.push(areaDecision.Area);
+			});
+			this.IdleTanks.CalculateExcess(areas);
+			const requests = this.GetRequests(areas);
+			this.Log(requests);
+			if (requests.Any()) {
+				this._requestHandler.HandleRequests(requests);
+			}
+
+			if (15 <= this.Hq.GetAmount()) {
+				this._expansionMaker.Expand();
+			}
 		}
 	}
 

@@ -1,3 +1,5 @@
+import { NetworkMenuItem } from './../../../Menu/Buttons/NetworkMenuItem';
+import { NetworkField } from './../../../Items/Cell/Field/Bonus/NetworkField';
 import { ShieldMenuItem } from './../../../Menu/Buttons/ShieldMenuItem';
 import { ShieldField } from './../../../Items/Cell/Field/Bonus/ShieldField';
 import { BatteryField } from './../../../Items/Cell/Field/Bonus/BatteryField';
@@ -89,6 +91,8 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 						this.SetMenuItem((c) => new PoisonField(c, this._gameContext.MainHq), 'Poison');
 					} else if (menuItem instanceof ThunderMenuItem) {
 						this.SetMenuItem((c) => new BatteryField(c, this._gameContext.MainHq), 'Battery');
+					} else if (menuItem instanceof NetworkMenuItem) {
+						this.SetMenuItem((c) => new NetworkField(c, this._gameContext.MainHq), 'Network');
 					} else if (menuItem instanceof SlowMenuItem) {
 						this.SetMenuItem(
 							(c) => new SlowField(c, this._gameContext.MainHq.GetSkin().GetLight()),

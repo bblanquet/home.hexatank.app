@@ -14,12 +14,14 @@ import { AppHandler } from '../AppHandler';
 import { GameContext } from '../../../Core/Framework/GameContext';
 import { NetworkMenuItem } from '../../../Core/Menu/Buttons/NetworkMenuItem';
 import { ThunderMenuItem } from '../../../Core/Menu/Buttons/ThunderMenuItem';
+import { Cell } from '../../../Core/Items/Cell/Cell';
 
 export default class CellMenuComponent extends Component<
 	{ Item: Item; AppHandler: AppHandler; GameContext: GameContext },
 	{}
 > {
 	render() {
+		const isCovered = this.IsCovered();
 		return (
 			<div class="left-column">
 				<div class="middle2 max-width" style="max-height:100vh">
@@ -36,94 +38,14 @@ export default class CellMenuComponent extends Component<
 									<span class="fill-diamond badge very-small-space middle"> </span>
 								</div>
 							</button>
-							<button
-								type="button"
-								class="btn btn-dark without-padding"
-								onClick={(e: any) => this.SendContext(new ThunderMenuItem())}
-							>
-								<div class="fill-thunder max-width standard-space" />
-								<div class="max-width align-text-center darker">
-									{GameSettings.FieldPrice}{' '}
-									<span class="fill-diamond badge very-small-space middle"> </span>
-								</div>
-							</button>
-							<button
-								type="button"
-								class="btn btn-dark without-padding"
-								onClick={(e: any) => this.SendContext(new ShieldMenuItem())}
-							>
-								<div class="fill-shield max-width standard-space" />
-								<div class="max-width align-text-center darker">
-									{GameSettings.FieldPrice}{' '}
-									<span class="fill-diamond badge very-small-space middle"> </span>
-								</div>
-							</button>
-							<button
-								type="button"
-								class="btn btn-dark without-padding"
-								onClick={(e: any) => this.SendContext(new PoisonMenuItem())}
-							>
-								<div class="fill-poison max-width standard-space" />
-								<div class="max-width align-text-center darker">
-									{GameSettings.FieldPrice}{' '}
-									<span class="fill-diamond badge very-small-space middle"> </span>
-								</div>
-							</button>
-							<button
-								type="button"
-								class="btn btn-dark without-padding"
-								onClick={(e: any) => this.SendContext(new MoneyMenuItem())}
-							>
-								<div class="fill-money max-width standard-space" />
-								<div class="max-width align-text-center darker">
-									{GameSettings.FieldPrice}{' '}
-									<span class="fill-diamond badge very-small-space middle"> </span>
-								</div>
-							</button>
-							<button
-								type="button"
-								class="btn btn-dark without-padding"
-								onClick={(e: any) => this.SendContext(new AttackMenuItem())}
-							>
-								<div class="fill-power max-width standard-space" />
-								<div class="max-width align-text-center darker">
-									{GameSettings.FieldPrice}{' '}
-									<span class="fill-diamond badge very-small-space middle"> </span>
-								</div>
-							</button>
-							<button
-								type="button"
-								class="btn btn-dark without-padding"
-								onClick={(e: any) => this.SendContext(new SpeedFieldMenuItem())}
-							>
-								<div class="fill-speed max-width standard-space" />
-								<div class="max-width align-text-center darker">
-									{GameSettings.FieldPrice}{' '}
-									<span class="fill-diamond badge very-small-space middle"> </span>
-								</div>
-							</button>
-							<button
-								type="button"
-								class="btn btn-dark without-padding"
-								onClick={(e: any) => this.SendContext(new HealMenuItem())}
-							>
-								<div class="fill-medic max-width standard-space" />
-								<div class="max-width align-text-center darker">
-									{GameSettings.FieldPrice}{' '}
-									<span class="fill-diamond badge very-small-space middle"> </span>
-								</div>
-							</button>
-							<button
-								type="button"
-								class="btn btn-dark without-padding"
-								onClick={(e: any) => this.SendContext(new NetworkMenuItem())}
-							>
-								<div class="fill-network max-width standard-space" />
-								<div class="max-width align-text-center darker">
-									{GameSettings.FieldPrice}{' '}
-									<span class="fill-diamond badge very-small-space middle"> </span>
-								</div>
-							</button>
+							{isCovered ? this.DisplayThunder() : ''}
+							{isCovered ? this.DisplayShield() : ''}
+							{isCovered ? this.DisplayPoison() : ''}
+							{isCovered ? this.DisplayMoney() : ''}
+							{isCovered ? this.DisplayAttack() : ''}
+							{isCovered ? this.DisplaySpeed() : ''}
+							{isCovered ? this.DisplayHeal() : ''}
+							{isCovered ? this.DisplayDiamind() : ''}
 							<button
 								type="button"
 								class="btn btn-dark without-padding"
@@ -135,6 +57,130 @@ export default class CellMenuComponent extends Component<
 					</div>
 				</div>
 			</div>
+		);
+	}
+
+	private IsCovered(): boolean {
+		return this.props.GameContext.MainHq.IsCovered(this.props.Item as Cell);
+	}
+
+	private DisplayThunder() {
+		return (
+			<button
+				type="button"
+				class="btn btn-dark without-padding"
+				onClick={(e: any) => this.SendContext(new ThunderMenuItem())}
+			>
+				<div class="fill-thunder max-width standard-space" />
+				<div class="max-width align-text-center darker">
+					{GameSettings.FieldPrice} <span class="fill-diamond badge very-small-space middle"> </span>
+				</div>
+			</button>
+		);
+	}
+
+	private DisplayShield() {
+		return (
+			<button
+				type="button"
+				class="btn btn-dark without-padding"
+				onClick={(e: any) => this.SendContext(new ShieldMenuItem())}
+			>
+				<div class="fill-shield max-width standard-space" />
+				<div class="max-width align-text-center darker">
+					{GameSettings.FieldPrice} <span class="fill-diamond badge very-small-space middle"> </span>
+				</div>
+			</button>
+		);
+	}
+
+	private DisplayPoison() {
+		return (
+			<button
+				type="button"
+				class="btn btn-dark without-padding"
+				onClick={(e: any) => this.SendContext(new PoisonMenuItem())}
+			>
+				<div class="fill-poison max-width standard-space" />
+				<div class="max-width align-text-center darker">
+					{GameSettings.FieldPrice} <span class="fill-diamond badge very-small-space middle"> </span>
+				</div>
+			</button>
+		);
+	}
+
+	private DisplayMoney() {
+		return (
+			<button
+				type="button"
+				class="btn btn-dark without-padding"
+				onClick={(e: any) => this.SendContext(new MoneyMenuItem())}
+			>
+				<div class="fill-money max-width standard-space" />
+				<div class="max-width align-text-center darker">
+					{GameSettings.FieldPrice} <span class="fill-diamond badge very-small-space middle"> </span>
+				</div>
+			</button>
+		);
+	}
+
+	private DisplayAttack() {
+		return (
+			<button
+				type="button"
+				class="btn btn-dark without-padding"
+				onClick={(e: any) => this.SendContext(new AttackMenuItem())}
+			>
+				<div class="fill-power max-width standard-space" />
+				<div class="max-width align-text-center darker">
+					{GameSettings.FieldPrice} <span class="fill-diamond badge very-small-space middle"> </span>
+				</div>
+			</button>
+		);
+	}
+
+	private DisplaySpeed() {
+		return (
+			<button
+				type="button"
+				class="btn btn-dark without-padding"
+				onClick={(e: any) => this.SendContext(new SpeedFieldMenuItem())}
+			>
+				<div class="fill-speed max-width standard-space" />
+				<div class="max-width align-text-center darker">
+					{GameSettings.FieldPrice} <span class="fill-diamond badge very-small-space middle"> </span>
+				</div>
+			</button>
+		);
+	}
+
+	private DisplayHeal() {
+		return (
+			<button
+				type="button"
+				class="btn btn-dark without-padding"
+				onClick={(e: any) => this.SendContext(new HealMenuItem())}
+			>
+				<div class="fill-medic max-width standard-space" />
+				<div class="max-width align-text-center darker">
+					{GameSettings.FieldPrice} <span class="fill-diamond badge very-small-space middle"> </span>
+				</div>
+			</button>
+		);
+	}
+
+	private DisplayDiamind() {
+		return (
+			<button
+				type="button"
+				class="btn btn-dark without-padding"
+				onClick={(e: any) => this.SendContext(new NetworkMenuItem())}
+			>
+				<div class="fill-network max-width standard-space" />
+				<div class="max-width align-text-center darker">
+					{GameSettings.FieldPrice} <span class="fill-diamond badge very-small-space middle"> </span>
+				</div>
+			</button>
 		);
 	}
 

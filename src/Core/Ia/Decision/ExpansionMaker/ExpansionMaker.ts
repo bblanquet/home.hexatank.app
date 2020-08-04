@@ -10,15 +10,10 @@ import { KingdomArea } from '../Utils/KingdomArea';
 import { AreaSearch } from '../Utils/AreaSearch';
 
 export class ExpansionMaker implements IExpansionMaker {
-	constructor(
-		private _hq: Headquarter,
-		private _kingdom: Kingdom,
-		private _areas: Array<Area>,
-		private _areaSearch: AreaSearch
-	) {}
+	constructor(private _hq: Headquarter, private _kingdom: Kingdom, private _areaSearch: AreaSearch) {}
 
 	public Expand(): void {
-		if (!this._kingdom.AreaDecisions.some((a) => a.Area.HasFreeFields())) {
+		if (this._kingdom.AreaDecisions.filter((a) => a.Area.HasFreeFields()).length < 3) {
 			const area = this.FindArea();
 			if (!isNullOrUndefined(area)) {
 				if (GameSettings.TankPrice <= this._hq.GetAmount()) {
@@ -28,16 +23,21 @@ export class ExpansionMaker implements IExpansionMaker {
 		}
 	}
 
-	private CreateArea(area: Area) {
+	public CreateArea(area: Area): void {
 		this._kingdom.Areas.splice(this._kingdom.Areas.indexOf(area), 1);
 		const areaDecision = new BasicAreaDecisionMaker(
 			this._hq,
-			new KingdomArea(this._hq, area, this._kingdom, this._areaSearch),
-			this._areas
+			new KingdomArea(this._hq, area, this._kingdom, this._areaSearch)
 		);
 		this._kingdom.AreaDecisions.push(areaDecision);
 		this._kingdom.CellAreas.Add(area.GetCentralCell().GetCoordinate().ToString(), areaDecision);
 		this.Log(areaDecision);
+	}
+
+	public RemoveArea(area: Area): void {
+		const decisionMaker = this._kingdom.CellAreas.Get(area.GetCentralCell().GetCoordinate().ToString());
+		decisionMaker.Destroy();
+		this._kingdom.CellAreas.Remove(area.GetCentralCell().GetCoordinate().ToString());
 	}
 
 	private FindArea(): Area {

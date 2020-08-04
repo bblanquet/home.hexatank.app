@@ -3,8 +3,8 @@ import { Cell } from './Cell/Cell';
 import * as PIXI from 'pixi.js';
 
 export abstract class AliveItem extends Item {
-	protected Life: number = 100;
-	protected TotalLife: number = 100;
+	protected Life: number = 40;
+	protected TotalLife: number = 40;
 	private _totalLifeBar: PIXI.Graphics;
 	private _borderBar: PIXI.Graphics;
 	private _currentLifeBar: PIXI.Graphics;

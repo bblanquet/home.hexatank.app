@@ -65,6 +65,15 @@ export class KingdomArea {
 			);
 	}
 
+	public IsIsolated(): boolean {
+		return this._spot
+			.GetAroundAreas()
+			.every(
+				(aroundArea) =>
+					!this._kindgom.GetKingdomAreas().Exist(aroundArea.GetCentralCell().GetCoordinate().ToString())
+			);
+	}
+
 	HasHq(): boolean {
 		return this._spot.GetStatus().HasField(HeadQuarterField.name);
 	}
@@ -203,6 +212,10 @@ export class KingdomArea {
 
 	public IsConnected(): boolean {
 		const central = this.GetCentralCell();
+		if (this.IsIsolated()) {
+			return true;
+		}
+
 		if (central === this._hq.GetCell() || central.GetField() instanceof Diamond) {
 			return true;
 		}

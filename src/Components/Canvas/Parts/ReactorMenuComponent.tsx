@@ -2,7 +2,7 @@ import { Component, h } from 'preact';
 import { PlusMenuItem } from '../../../Core/Menu/Buttons/PlusMenuItem';
 import { MinusMenuItem } from '../../../Core/Menu/Buttons/MinusMenuItem';
 import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
-import { Reactor } from '../../../Core/Items/Cell/Field/Bonus/Reactor';
+import { ReactorField } from '../../../Core/Items/Cell/Field/Bonus/ReactorField';
 import { Item } from '../../../Core/Items/Item';
 import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
 import { AppHandler } from '../AppHandler';
@@ -12,11 +12,11 @@ import { SpeedFieldMenuItem } from '../../../Core/Menu/Buttons/SpeedFieldMenuIte
 import { HealMenuItem } from '../../../Core/Menu/Buttons/HealMenuItem';
 
 export default class ReactorMenuComponent extends Component<
-	{ Item: Reactor; AppHandler: AppHandler; GameContext: GameContext },
+	{ Item: ReactorField; AppHandler: AppHandler; GameContext: GameContext },
 	{}
 > {
 	render() {
-		const reactor = this.props.Item as Reactor;
+		const reactor = this.props.Item as ReactorField;
 		return (
 			<div class="left-column">
 				<div class="middle2 max-width">

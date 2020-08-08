@@ -14,6 +14,15 @@ export class BasicRangeAnimator implements IAnimator {
 		this._animators = [];
 	}
 
+	Destroy(): void {
+		this.IsDone = true;
+		if (this._items) {
+			this._items.forEach((e) => {
+				e.Destroy();
+			});
+		}
+	}
+
 	Reset(): void {
 		this._items.forEach((i) => {
 			i.Destroy();

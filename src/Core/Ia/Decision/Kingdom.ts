@@ -1,4 +1,5 @@
-import { Reactor } from './../../Items/Cell/Field/Bonus/Reactor';
+import { isNullOrUndefined } from 'util';
+import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
 import { MoneyOrder } from './../Order/MoneyOrder';
 import { Diamond } from './../../Items/Cell/Field/Diamond';
@@ -22,6 +23,7 @@ import { IGeneralListRequester } from './RequestMaker/GeneralRequester/IGeneralL
 import { Cell } from '../../Items/Cell/Cell';
 import { Squad } from './Troop/Squad';
 import { RequestPriority } from './Utils/RequestPriority';
+import { unwatchFile } from 'fs';
 
 export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	public AreaDecisions: IAreaDecisionMaker[];
@@ -53,13 +55,15 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 				this.Tanks.push(tank);
 			}
 		});
-		this.Hq.ReactorConquested.On((e: any, obj: Reactor) => {
+		this.Hq.ReactorConquested.On((e: any, obj: ReactorField) => {
 			const c = obj.GetCell();
 			let area = this.Areas.filter((a) => a.Contains(c))[0];
-			this._expansionMaker.CreateArea(area);
+			if (!isNullOrUndefined(area)) {
+				this._expansionMaker.CreateArea(area);
+			}
 		});
 
-		this.Hq.ReactorLost.On((e: any, obj: Reactor) => {
+		this.Hq.ReactorLost.On((e: any, obj: ReactorField) => {
 			const c = obj.GetCell();
 			let foundArea: KingdomArea = null;
 			this.GetKingdomAreas().Values().some((area) => {
@@ -99,6 +103,10 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 		return this._diamond;
 	}
 
+	GetSquads() {
+		return this.Squads;
+	}
+
 	public Setup(
 		requestMaker: IAreaRequestListMaker,
 		requestHandler: IRequestHandler,
@@ -122,7 +130,7 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 		if (this._idleTimer.IsElapsed()) {
 			this.Trucks = this.Trucks.filter((t) => t.IsAlive());
 			this.Tanks = this.Tanks.filter((t) => t.IsAlive());
-			this.Squads = this.Squads.filter((s) => !s.IsDone);
+			this.Squads = this.Squads.filter((s) => !s.IsDone && s.HasTank());
 			this.Squads.forEach((squad) => {
 				squad.Do();
 			});

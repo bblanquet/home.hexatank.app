@@ -8,7 +8,7 @@ import { Tank } from '../../Core/Items/Unit/Tank';
 import { Truck } from '../../Core/Items/Unit/Truck';
 import { Cell } from '../../Core/Items/Cell/Cell';
 import { ISelectable } from '../../Core/ISelectable';
-import { Reactor } from '../../Core/Items/Cell/Field/Bonus/Reactor';
+import { ReactorField } from '../../Core/Items/Cell/Field/Bonus/ReactorField';
 import { GameSettings } from '../../Core/Framework/GameSettings';
 import { CombinationProvider } from '../../Core/Interaction/CombinationProvider';
 import { SelectableChecker } from '../../Core/Interaction/SelectableChecker';
@@ -189,7 +189,7 @@ export default class CanvasComponent extends Component<
 						GameContext={this._gameContext}
 					/>
 				);
-			} else if (this.state.Item instanceof Reactor) {
+			} else if (this.state.Item instanceof ReactorField) {
 				return (
 					<ReactorMenuComponent
 						Item={this.state.Item}

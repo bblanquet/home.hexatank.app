@@ -1,4 +1,4 @@
-import { Reactor } from '../../Items/Cell/Field/Bonus/Reactor';
+import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { GameHelper } from '../../Framework/GameHelper';
 import { ISelectable } from '../../ISelectable';
 import { Cell } from '../../Items/Cell/Cell';
@@ -32,11 +32,11 @@ export class SelectionCombination extends AbstractSingleCombination {
 				const selectablecell = selectable as Cell;
 
 				if (
-					selectablecell.GetField() instanceof Reactor &&
+					selectablecell.GetField() instanceof ReactorField &&
 					selectablecell.GetState() === CellState.Visible &&
-					!(selectablecell.GetField() as Reactor).IsLocked()
+					!(selectablecell.GetField() as ReactorField).IsLocked()
 				) {
-					const field = selectablecell.GetField() as Reactor;
+					const field = selectablecell.GetField() as ReactorField;
 					field.SetSelected(true);
 					this._gameContext.OnItemSelected.Invoke(this, field);
 				} else if (

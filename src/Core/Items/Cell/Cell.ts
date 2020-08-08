@@ -274,6 +274,19 @@ export class Cell extends Item implements ICell, ISelectable {
 		return cells;
 	}
 
+	public GetIncludedRange(range: number = 1): Array<ICell> {
+		var cells = new Array<ICell>();
+		for (let index = 1; index <= range; index++) {
+			this.GetCoordinate().GetSpecificRange(index).forEach((coordinate) => {
+				var cell = this._cells.Get(coordinate);
+				if (cell) {
+					cells.push(cell);
+				}
+			});
+		}
+		return cells;
+	}
+
 	public GetSpecificRange(range: number = 1): Array<ICell> {
 		var cells = new Array<ICell>();
 		this.GetCoordinate().GetSpecificRange(range).forEach((coordinate) => {

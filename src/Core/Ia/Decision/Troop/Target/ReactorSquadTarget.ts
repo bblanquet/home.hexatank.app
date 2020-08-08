@@ -1,5 +1,5 @@
 import { Headquarter } from './../../../../Items/Cell/Field/Hq/Headquarter';
-import { Reactor } from './../../../../Items/Cell/Field/Bonus/Reactor';
+import { ReactorField } from '../../../../Items/Cell/Field/Bonus/ReactorField';
 import { ISquadTarget } from './ISquadTarget';
 import { Cell } from '../../../../Items/Cell/Cell';
 import { BasicField } from '../../../../Items/Cell/Field/BasicField';
@@ -13,7 +13,8 @@ export class ReactorSquadTarget implements ISquadTarget {
 	IsDone(): boolean {
 		return (
 			this._cell.GetField() instanceof BasicField ||
-			(this._cell.GetField() instanceof Reactor && (this._cell.GetField() as Reactor).Hq === this._hqSquad)
+			(this._cell.GetField() instanceof ReactorField &&
+				(this._cell.GetField() as ReactorField).Hq === this._hqSquad)
 		);
 	}
 }

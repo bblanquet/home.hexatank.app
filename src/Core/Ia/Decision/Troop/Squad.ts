@@ -19,6 +19,14 @@ export class Squad implements IDoable {
 	public IsDone: boolean = false;
 	public constructor(private _road: SquadRoad, private _mapObserver: MapObserver, private _kg: Kingdom) {}
 
+	HasTank(): boolean {
+		return 0 < this._tanks.length;
+	}
+
+	public Drop(): Tank {
+		return this._tanks.shift();
+	}
+
 	public Do(): void {
 		if (this._target.IsDone()) {
 			this.IsDone = true;

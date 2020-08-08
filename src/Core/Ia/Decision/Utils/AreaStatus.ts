@@ -1,4 +1,4 @@
-import { ReactorField } from './../../../Items/Cell/Field/Bonus/ReactorField';
+import { ReactorAppearance } from '../../../Items/Cell/Field/Bonus/ReactorAppearance';
 import { GameContext } from './../../../Framework/GameContext';
 import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
 import { Area } from './Area';
@@ -6,6 +6,7 @@ import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { Cell } from '../../../Items/Cell/Cell';
 import { AliveItem } from '../../../Items/AliveItem';
 import { BonusField } from '../../../Items/Cell/Field/Bonus/BonusField';
+import { ReactorField } from '../../../Items/Cell/Field/Bonus/ReactorField';
 
 export class AreaStatus {
 	private _fields: Dictionnary<Array<Cell>>;
@@ -52,7 +53,11 @@ export class AreaStatus {
 		const hasCellFoes = this._hqFields
 			.Values()
 			.reduce((e, x) => e.concat(x))
-			.some((c) => (c.GetField() as BonusField).GetHq().IsEnemy(item));
+			.some(
+				(c) =>
+					(c.GetField() instanceof BonusField || c.GetField() instanceof ReactorField) &&
+					(c.GetField() as BonusField).GetHq().IsEnemy(item)
+			);
 		return hasCellFoes;
 	}
 
@@ -148,9 +153,9 @@ export class AreaStatus {
 
 	public HasFoeReactor(item: AliveItem): boolean {
 		if (this.HasFoeField(item)) {
-			if (this.HasField(ReactorField.name)) {
-				return this.GetCells(ReactorField.name)
-					.map((c) => (c.GetField() as any) as ReactorField)
+			if (this.HasField(ReactorAppearance.name)) {
+				return this.GetCells(ReactorAppearance.name)
+					.map((c) => (c.GetField() as any) as ReactorAppearance)
 					.some((e) => e.IsEnemy(item));
 			}
 		}

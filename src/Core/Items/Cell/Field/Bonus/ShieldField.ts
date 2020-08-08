@@ -34,14 +34,20 @@ export class ShieldField extends AliveBonusField {
 			this._fadeAnimator.Update(viewX, viewY);
 		}
 
-		if (this._timer.IsElapsed()) {
-			if (this.HasDamage()) {
-				const bonus = 0.5 * this.GetReactorsPower(this.hq);
-				this.SetDamage(-(0.5 + bonus));
+		if (!this.IsAlive()) {
+			this.GetCell().DestroyField();
+			this.Destroy();
+			return;
+		} else {
+			if (this._timer.IsElapsed()) {
+				if (this.HasDamage()) {
+					const bonus = 0.5 * this.GetReactorsPower(this.hq);
+					this.SetDamage(-(0.5 + bonus));
+				}
 			}
-		}
 
-		super.Update(viewX, viewY);
+			super.Update(viewX, viewY);
+		}
 	}
 
 	public Destroy() {}

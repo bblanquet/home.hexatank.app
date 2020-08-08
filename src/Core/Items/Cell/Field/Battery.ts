@@ -1,7 +1,7 @@
 import { CellContext } from './../CellContext';
 import { BatteryField } from './Bonus/BatteryField';
 import { Headquarter } from './Hq/Headquarter';
-import { Reactor } from './Bonus/Reactor';
+import { ReactorField } from './Bonus/ReactorField';
 import { BonusField } from './Bonus/BonusField';
 import { AliveBonusField } from './Bonus/AliveBonusField';
 import { ICell } from '../ICell';
@@ -9,7 +9,7 @@ import { ICell } from '../ICell';
 export class Battery {
 	private _batteryFields: Array<BatteryField> = new Array<BatteryField>();
 
-	constructor(private _hq: Headquarter, private _field: Reactor) {}
+	constructor(private _hq: Headquarter, private _field: ReactorField) {}
 
 	GetUsedPower() {
 		return this._batteryFields.length;
@@ -71,7 +71,7 @@ export class Battery {
 		return result;
 	}
 
-	private GetCells(reactors: Array<Reactor>): CellContext<ICell> {
+	private GetCells(reactors: Array<ReactorField>): CellContext<ICell> {
 		const result = new CellContext();
 		reactors.forEach((r) => {
 			r.GetInternal().All().forEach((cell) => {
@@ -83,8 +83,8 @@ export class Battery {
 		return result;
 	}
 
-	private GetNearbyReactors(): Array<Reactor> {
-		const result = new Array<Reactor>();
+	private GetNearbyReactors(): Array<ReactorField> {
+		const result = new Array<ReactorField>();
 		const internal = this._field.GetInternal();
 		this._hq.GetReactors().forEach((reactor) => {
 			if (internal.Exist(reactor.GetCell().GetCoordinate())) {

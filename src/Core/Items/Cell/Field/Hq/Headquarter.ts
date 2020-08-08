@@ -19,7 +19,7 @@ import { Explosion } from '../../../Unit/Explosion';
 import { Truck } from '../../../Unit/Truck';
 import { SimpleOrder } from '../../../../Ia/Order/SimpleOrder';
 import { GameSettings } from '../../../../Framework/GameSettings';
-import { Reactor } from '../Bonus/Reactor';
+import { ReactorField } from '../Bonus/ReactorField';
 import { ISelectable } from '../../../../ISelectable';
 import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
 
@@ -33,13 +33,13 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	private _diamondCount: number = GameSettings.PocketMoney;
 	private _skin: ItemSkin;
 	private _onCellStateChanged: (obj: any, cellState: CellState) => void;
-	private _reactors: Array<Reactor> = new Array<Reactor>();
+	private _reactors: Array<ReactorField> = new Array<ReactorField>();
 	private _batteryFields: Array<BatteryField> = new Array<BatteryField>();
 
 	private _vehicles: Array<Vehicle> = new Array<Vehicle>();
 	public VehicleCreated: LiteEvent<Vehicle> = new LiteEvent<Vehicle>();
-	public ReactorConquested: LiteEvent<Reactor> = new LiteEvent<Reactor>();
-	public ReactorLost: LiteEvent<Reactor> = new LiteEvent<Reactor>();
+	public ReactorConquested: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
+	public ReactorLost: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
 
 	constructor(skin: ItemSkin, cell: Cell, public GameContext: GameContext) {
 		super();
@@ -344,7 +344,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		return this._reactors.length;
 	}
 
-	public GetReactors(): Array<Reactor> {
+	public GetReactors(): Array<ReactorField> {
 		return this._reactors;
 	}
 
@@ -352,9 +352,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		return this._reactors.filter((c) => c.IsCovered(cell)).length > 0;
 	}
 
-	public AddReactor(reactor: Reactor): void {
+	public AddReactor(reactor: ReactorField): void {
 		this._reactors.push(reactor);
-		reactor.Lost.On((e: any, ie: Reactor) => {
+		reactor.Lost.On((e: any, ie: ReactorField) => {
 			this._reactors = this._reactors.filter((v) => v !== ie);
 			this.ReactorLost.Invoke(this, ie);
 		});

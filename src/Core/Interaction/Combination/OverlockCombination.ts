@@ -7,7 +7,7 @@ import { HealMenuItem } from '../../Menu/Buttons/HealMenuItem';
 import { AttackMenuItem } from '../../Menu/Buttons/AttackMenuItem';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { CombinationContext } from './CombinationContext';
-import { Reactor } from '../../Items/Cell/Field/Bonus/Reactor';
+import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { SpeedFieldMenuItem } from '../../Menu/Buttons/SpeedFieldMenuItem';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { InteractionMode } from '../InteractionMode';
@@ -23,8 +23,8 @@ export class OverlockCombination extends AbstractSingleCombination {
 		return (
 			this.IsNormalMode(context) &&
 			context.Items.length == 2 &&
-			context.Items[0] instanceof Reactor &&
-			(context.Items[0] as Reactor).HasPower() &&
+			context.Items[0] instanceof ReactorField &&
+			(context.Items[0] as ReactorField).HasPower() &&
 			(context.Items[1] instanceof AttackMenuItem ||
 				context.Items[1] instanceof HealMenuItem ||
 				context.Items[1] instanceof SpeedFieldMenuItem)
@@ -33,37 +33,8 @@ export class OverlockCombination extends AbstractSingleCombination {
 
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
-			let vehicles = new Array<Vehicle>();
-			const reactor = context.Items[0] as Reactor;
-			reactor.GetAllCells().forEach((c) => {
-				if (c.HasOccupier()) {
-					const vehicle = c.GetOccupier() as Vehicle;
-					if (!vehicle.IsEnemy(reactor.Hq)) {
-						vehicles.push(vehicle);
-					}
-				}
-			});
-
-			reactor.StartOverclockAnimation();
-			reactor.SetLocked(true);
-			if (context.Items[1] instanceof AttackMenuItem) {
-				vehicles.forEach((v) => {
-					if (v instanceof Tank) {
-						const sum = reactor.GetPower() * 5;
-						v.SetPowerUp(new AttackUp(v, new TimeUpCondition(), sum));
-					}
-				});
-			} else if (context.Items[1] instanceof HealMenuItem) {
-				vehicles.forEach((v) => {
-					const sum = reactor.GetPower();
-					v.SetPowerUp(new HealUp(v, new TimeUpCondition(), sum));
-				});
-			} else if (context.Items[1] instanceof SpeedFieldMenuItem) {
-				vehicles.forEach((v) => {
-					const sum = reactor.GetPower() * 0.2;
-					v.SetPowerUp(new SpeedUp(v, new TimeUpCondition(), sum, sum));
-				});
-			}
+			const reactor = context.Items[0] as ReactorField;
+			reactor.StartLocked(context.Items[1]);
 			this.UnSelectItem(context.Items[0]);
 			this.OnClearContext.Invoke();
 			this.OnChangedMode.Invoke(this, InteractionMode.SingleSelection);

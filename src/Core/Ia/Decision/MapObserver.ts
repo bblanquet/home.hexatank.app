@@ -1,7 +1,7 @@
 import { CellHelper } from './../../Items/Cell/CellHelper';
 import { ReactorSquadTarget } from './Troop/Target/ReactorSquadTarget';
 import { HqSquadTarget } from './Troop/Target/HqSquadTarget';
-import { Reactor } from './../../Items/Cell/Field/Bonus/Reactor';
+import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { ISquadTarget } from './Troop/Target/ISquadTarget';
 import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
 import { Area } from './Utils/Area';
@@ -27,13 +27,13 @@ export class MapObserver {
 
 	public GetImportantFields(): Cell[] {
 		this.Observe();
-		const areas = this.FoeAreas.filter((a) => a.GetStatus().HasFields([ Reactor.name, Headquarter.name ]));
+		const areas = this.FoeAreas.filter((a) => a.GetStatus().HasFields([ ReactorField.name, Headquarter.name ]));
 		if (0 === areas.length) {
 			return [];
 		}
 
 		return areas
-			.map((a) => a.GetStatus().GetKindCells([ Reactor.name, Headquarter.name ]))
+			.map((a) => a.GetStatus().GetKindCells([ ReactorField.name, Headquarter.name ]))
 			.reduce((x, y) => x.concat(y));
 	}
 
@@ -44,7 +44,7 @@ export class MapObserver {
 		}
 
 		const cell = CellHelper.GetClosest(cells, origin);
-		if (cell.GetField() instanceof Reactor) {
+		if (cell.GetField() instanceof ReactorField) {
 			return new ReactorSquadTarget(cell, this._hq);
 		} else {
 			return new HqSquadTarget(cell, this._hq);

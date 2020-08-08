@@ -1,3 +1,4 @@
+import { AttackMenuItem } from './../../../Menu/Buttons/AttackMenuItem';
 import { IAreaDecisionMaker } from './IAreaDecisionMaker';
 import { AStarHelper } from './../../AStarHelper';
 import { AttackField } from '../../../Items/Cell/Field/Bonus/AttackField';
@@ -15,6 +16,7 @@ import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { BasicField } from '../../../Items/Cell/Field/BasicField';
 import { AStarEngine } from '../../AStarEngine';
+import { ReactorAreaState } from '../Utils/ReactorAreaState';
 
 export class BasicAreaDecisionMaker implements IAreaDecisionMaker {
 	public HasReceivedRequest: boolean;
@@ -59,7 +61,8 @@ export class BasicAreaDecisionMaker implements IAreaDecisionMaker {
 
 			console.log(`%c [DETECTED FOE] ${foeCells.length}`, 'font-weight:bold;color:blue;');
 
-			this.ReinforceTroops();
+			this.FireCell();
+			this.PowerUp();
 			this.SendTroops(foeCells, ally);
 		}
 	}
@@ -74,7 +77,18 @@ export class BasicAreaDecisionMaker implements IAreaDecisionMaker {
 		return as;
 	}
 
-	private ReinforceTroops(): void {
+	private PowerUp(): void {
+		if (this.Area.IsCovered() !== ReactorAreaState.None) {
+			this._hq
+				.GetReactors()
+				.filter((r) => !r.IsLocked() && r.IsCovered(this.Area.GetCentralCell()))
+				.forEach((r) => {
+					r.StartLocked(new AttackMenuItem());
+				});
+		}
+	}
+
+	private FireCell(): void {
 		this.Area.GetTroops().filter((t) => t.IsCloseFromEnemy()).forEach((t) => {
 			let cell = t.Tank.GetCurrentCell();
 			if (GameSettings.FieldPrice < this._hq.GetAmount()) {

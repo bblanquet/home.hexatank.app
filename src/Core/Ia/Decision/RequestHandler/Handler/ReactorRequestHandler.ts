@@ -5,7 +5,7 @@ import { RequestType } from '../../Utils/RequestType';
 import { BasicField } from '../../../../Items/Cell/Field/BasicField';
 import { GameSettings } from '../../../../Framework/GameSettings';
 import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
-import { Reactor } from '../../../../Items/Cell/Field/Bonus/Reactor';
+import { ReactorField } from '../../../../Items/Cell/Field/Bonus/ReactorField';
 
 export class ReactorRequestHandler implements ISimpleRequestHandler {
 	constructor(private _hq: Headquarter, private _gameContext: GameContext) {}
@@ -15,7 +15,7 @@ export class ReactorRequestHandler implements ISimpleRequestHandler {
 			const cells = request.Area.GetSpot().GetCells().filter((c) => c.GetField() instanceof BasicField);
 			cells.some((c) => {
 				if (c.GetField() instanceof BasicField) {
-					const reactor = new Reactor(c, this._hq, this._gameContext, this._hq.GetSkin().GetLight());
+					const reactor = new ReactorField(c, this._hq, this._gameContext, this._hq.GetSkin().GetLight());
 					this._hq.AddReactor(reactor);
 					this._hq.Buy(GameSettings.FieldPrice);
 					console.log(`%c [REACTOR] `, 'font-weight:bold;color:blue;');

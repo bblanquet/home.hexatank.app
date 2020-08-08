@@ -1,5 +1,5 @@
 import { GameHelper } from '../../Framework/GameHelper';
-import { Reactor } from '../../Items/Cell/Field/Bonus/Reactor';
+import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { InfluenceMenuItem } from '../../Menu/Buttons/InfluenceMenuItem';
 import { isNullOrUndefined } from 'util';
 import { Cell } from '../../Items/Cell/Cell';
@@ -40,7 +40,7 @@ export class ReactorCombination extends AbstractSingleCombination {
 							cell: cell.GetCoordinate(),
 							Type: 'Reactor'
 						});
-						new Reactor(
+						new ReactorField(
 							cell,
 							this._gameContext.MainHq,
 							this._gameContext,

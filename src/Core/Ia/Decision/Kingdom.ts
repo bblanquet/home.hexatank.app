@@ -39,12 +39,18 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	private _requestHandler: IRequestHandler;
 	private _expansionMaker: IExpansionMaker;
 	private _generalRequestMaker: IGeneralListRequester;
+	public AllAreas: Area[];
 
 	constructor(public Hq: Headquarter, public Areas: Area[]) {
 		this.AreaDecisions = new Array<IAreaDecisionMaker>();
 		this.Squads = new Array<Squad>();
 		this.CellAreas = new Dictionnary<IAreaDecisionMaker>();
 		this.IdleTanks = new ExcessTankFinder();
+
+		this.AllAreas = new Array<Area>();
+		this.Areas.forEach((a) => {
+			this.AllAreas.push(a);
+		});
 
 		this.Hq.VehicleCreated.On((hq: any, vehicle: Vehicle) => {
 			if (vehicle instanceof Truck) {

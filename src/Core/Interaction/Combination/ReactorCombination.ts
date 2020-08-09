@@ -1,4 +1,3 @@
-import { GameHelper } from '../../Framework/GameHelper';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { InfluenceMenuItem } from '../../Menu/Buttons/InfluenceMenuItem';
 import { isNullOrUndefined } from 'util';

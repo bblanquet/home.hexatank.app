@@ -1,10 +1,9 @@
-import { Headquarter } from './Hq/Headquarter';
 import { IField } from './IField';
 import { Cell } from '../Cell';
+import { Vehicle } from '../../Unit/Vehicle';
+import { Headquarter } from './Hq/Headquarter';
 import { CellState } from '../CellState';
 import { Item } from '../../Item';
-import { Vehicle } from '../../Unit/Vehicle';
-import { isNullOrUndefined } from 'util';
 
 export abstract class Field extends Item implements IField {
 	private _onCellStateChanged: { (obj: any, cellState: CellState): void };

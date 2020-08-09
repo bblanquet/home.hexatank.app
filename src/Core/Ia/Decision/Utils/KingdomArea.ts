@@ -1,3 +1,4 @@
+import { AreaStatus } from './AreaStatus';
 import { ShieldField } from './../../../Items/Cell/Field/Bonus/ShieldField';
 import { MedicField } from './../../../Items/Cell/Field/Bonus/MedicField';
 import { BasicField } from './../../../Items/Cell/Field/BasicField';
@@ -50,6 +51,10 @@ export class KingdomArea {
 				isFound = true;
 			}
 		}
+	}
+
+	ContainsTroop(): boolean {
+		return this.GetSpot().GetStatus().HasUnit(this._hq);
 	}
 
 	public GetRange(): number {

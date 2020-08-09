@@ -15,7 +15,7 @@ export class SquadRequestHandler implements ISimpleRequestHandler {
 		if (0 < foes.length) {
 			const squad = new Squad(
 				new SquadRoad(this._kingdom.Hq),
-				new MapObserver(this._kingdom.Areas, this._kingdom.Hq),
+				new MapObserver(this._kingdom.AllAreas, this._kingdom.Hq),
 				this._kingdom
 			);
 			const hasTarget = squad.SetTarget();

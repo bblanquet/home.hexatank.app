@@ -1,3 +1,5 @@
+import { FieldHelper } from './../../../Items/Cell/Field/FieldHelper';
+import { IField } from './../../../Items/Cell/Field/IField';
 import { ReactorAppearance } from '../../../Items/Cell/Field/Bonus/ReactorAppearance';
 import { GameContext } from './../../../Framework/GameContext';
 import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
@@ -5,8 +7,6 @@ import { Area } from './Area';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { Cell } from '../../../Items/Cell/Cell';
 import { AliveItem } from '../../../Items/AliveItem';
-import { BonusField } from '../../../Items/Cell/Field/Bonus/BonusField';
-import { ReactorField } from '../../../Items/Cell/Field/Bonus/ReactorField';
 
 export class AreaStatus {
 	private _fields: Dictionnary<Array<Cell>>;
@@ -40,6 +40,10 @@ export class AreaStatus {
 		return this._units.IsEmpty() && this._hqFields.IsEmpty();
 	}
 
+	HasUnit(item: AliveItem): boolean {
+		return this._units.Values().some((c) => !c.IsEnemy(item));
+	}
+
 	public HasFoesOf(item: AliveItem): boolean {
 		const hasUnitFoes = this._units.Values().some((c) => c.IsEnemy(item));
 		if (hasUnitFoes) {
@@ -50,15 +54,11 @@ export class AreaStatus {
 			return false;
 		}
 
-		const hasCellFoes = this._hqFields
-			.Values()
-			.reduce((e, x) => e.concat(x))
-			.some(
-				(c) =>
-					(c.GetField() instanceof BonusField || c.GetField() instanceof ReactorField) &&
-					(c.GetField() as BonusField).GetHq().IsEnemy(item)
-			);
-		return hasCellFoes;
+		const fields = this._hqFields.Values().reduce((e, x) => e.concat(x)).map((c) => c.GetField());
+		const hasFoeCell = fields
+			.filter((e: IField) => FieldHelper.IsSpecialField(e))
+			.some((e) => FieldHelper.IsEnemy(e, item));
+		return hasFoeCell;
 	}
 
 	private FieldChanged(obj: any, field: Cell): void {
@@ -89,7 +89,7 @@ export class AreaStatus {
 		}
 
 		this._fields.Get(key).push(cell);
-		this.AddNewBonusField(cell);
+		this.AddSpecialField(cell);
 
 		if (7 < this.GetCellCount()) {
 			throw 'it should not happen';
@@ -105,8 +105,8 @@ export class AreaStatus {
 	}
 
 	private RemoveNewBonusField(cell: Cell) {
-		if (cell.GetField() instanceof BonusField) {
-			const hq = (cell.GetField() as BonusField).GetHq();
+		if (FieldHelper.IsSpecialField(cell.GetField())) {
+			const hq = FieldHelper.GetHq(cell.GetField());
 			let hqCo = hq.GetCell().GetCoordinate().ToString();
 			if (this._hqFields.Exist(hqCo)) {
 				const newHqList = this._hqFields.Get(hqCo).filter((c) => c !== cell);
@@ -118,9 +118,9 @@ export class AreaStatus {
 		}
 	}
 
-	private AddNewBonusField(cell: Cell) {
-		if (cell.GetField() instanceof BonusField) {
-			const hq = (cell.GetField() as BonusField).GetHq();
+	private AddSpecialField(cell: Cell) {
+		if (FieldHelper.IsSpecialField(cell.GetField())) {
+			const hq = FieldHelper.GetHq(cell.GetField());
 			let co = hq.GetCell().GetCoordinate().ToString();
 			if (this._hqFields.Exist(co)) {
 				this._hqFields.Get(co).push(cell);

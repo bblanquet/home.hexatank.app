@@ -1,3 +1,4 @@
+import { FieldHelper } from './../FieldHelper';
 import { BasicRangeAnimator } from '../../../Animator/BasicRangeAnimator';
 import { GameContext } from '../../../../Framework/GameContext';
 import { ReactorAppearance } from './ReactorAppearance';
@@ -24,7 +25,6 @@ import { HealMenuItem } from '../../../../Menu/Buttons/HealMenuItem';
 import { HealUp } from '../../../Unit/PowerUp/HealUp';
 import { SpeedFieldMenuItem } from '../../../../Menu/Buttons/SpeedFieldMenuItem';
 import { SpeedUp } from '../../../Unit/PowerUp/SpeedUp';
-import { BonusField } from './BonusField';
 import { Explosion } from '../../../Unit/Explosion';
 
 export class ReactorField extends Field implements ISelectable {
@@ -135,14 +135,16 @@ export class ReactorField extends Field implements ISelectable {
 	Support(vehicule: Vehicle): void {
 		if (vehicule.Hq != this.Hq) {
 			this.SetSelected(false);
-
+			while (this.HasPower()) {
+				this.PowerDown();
+			}
 			this.Lost.Invoke(this, this);
 			this.Lost.Clear();
 
 			this.Appearance.Destroy();
 			this.GetCell().DestroyField();
 			this.GetCell().GetIncludedRange(2).map((c) => <Cell>c).forEach((c) => {
-				if (c.GetField() instanceof BonusField || c.GetField() instanceof ReactorField) {
+				if (FieldHelper.IsSpecialField(c.GetField())) {
 					c.DestroyField();
 					if (c.IsVisible()) {
 						new Explosion(c.GetBoundingBox(), Archive.constructionEffects, 5, false, 5);
@@ -150,7 +152,12 @@ export class ReactorField extends Field implements ISelectable {
 				}
 			});
 
-			var reactor = new ReactorField(this.GetCell(), vehicule.Hq, this._context, this._light);
+			var reactor = new ReactorField(
+				this.GetCell(),
+				vehicule.Hq,
+				this._context,
+				vehicule.Hq.GetSkin().GetLight()
+			);
 			this.Hq.ReactorConquested.Invoke(this, reactor);
 		}
 	}

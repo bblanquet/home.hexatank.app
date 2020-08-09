@@ -1,3 +1,4 @@
+import { isNullOrUndefined } from 'util';
 import { TimeTimer } from './../../../../Utils/Timer/TimeTimer';
 import { ITimer } from './../../../../Utils/Timer/ITimer';
 import { Headquarter } from './../Hq/Headquarter';
@@ -13,8 +14,11 @@ export class ShieldField extends AliveBonusField {
 	private _timer: ITimer;
 	private _fadeAnimator: IAnimator;
 
-	constructor(cell: Cell, private hq: Headquarter) {
+	constructor(cell: Cell, hq: Headquarter) {
 		super(cell, [ Archive.bonus.shieldLight, Archive.bonus.shield ], hq);
+		if (isNullOrUndefined(hq)) {
+			throw 'not supposed to be there';
+		}
 		this._timer = new TimeTimer(3000);
 		this._fadeAnimator = new InfiniteFadeAnimation(this, Archive.bonus.shieldLight, 0.6, 1, 0.01);
 		if (this.Energy === 0) {
@@ -23,10 +27,14 @@ export class ShieldField extends AliveBonusField {
 		}
 	}
 
+	public GetHq(): Headquarter {
+		return this.Hq;
+	}
+
 	Support(vehicule: Vehicle): void {}
 
 	public IsEnemy(item: AliveItem): boolean {
-		return this.hq.IsEnemy(item);
+		return this.Hq.IsEnemy(item);
 	}
 
 	public Update(viewX: number, viewY: number): void {
@@ -41,7 +49,7 @@ export class ShieldField extends AliveBonusField {
 		} else {
 			if (this._timer.IsElapsed()) {
 				if (this.HasDamage()) {
-					const bonus = 0.5 * this.GetReactorsPower(this.hq);
+					const bonus = 0.5 * this.GetReactorsPower(this.Hq);
 					this.SetDamage(-(0.5 + bonus));
 				}
 			}
@@ -50,5 +58,8 @@ export class ShieldField extends AliveBonusField {
 		}
 	}
 
-	public Destroy() {}
+	public Destroy() {
+		this.Life = 0;
+		super.Destroy();
+	}
 }

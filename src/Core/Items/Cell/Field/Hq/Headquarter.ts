@@ -365,6 +365,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	}
 
 	public GetBatteryFields(): Array<BatteryField> {
+		this._batteryFields = this._batteryFields.filter((b) => b.IsUpdatable);
 		return this._batteryFields;
 	}
 

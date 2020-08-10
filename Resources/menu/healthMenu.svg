@@ -1,24 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.0" id="Calque_52" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="150px" height="100px"
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 100 150" style="enable-background:new 0 0 100 150;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:none;stroke:#FFFFFF;stroke-width:4;stroke-miterlimit:10;}
-	.st1{fill:#FFFFFF;}
+	.st0{fill:#A9A8A8;}
+	.st1{fill:#C6C6C5;}
+	.st2{fill:url(#XMLID_2_);stroke:#414042;stroke-width:3;stroke-miterlimit:10;}
+	.st3{fill:none;stroke:#AAA8A8;stroke-width:3;stroke-miterlimit:10;}
 </style>
-<g id="health">
-	<g id="圖層_3_7_">
-		<g id="圖層_23_8_">
-			<g id="XMLID_72_">
-				<path id="XMLID_73_" class="st0" d="M64.4,104.5l-27.9-0.1c-2.2,0-4.2-1.2-5.3-3L17.3,78c-1.1-1.8-1.1-4.1,0-5.9l14-23.5
-					c1.1-1.8,3.1-3,5.3-3l27.9,0.1c2.2,0,4.2,1.2,5.3,3l13.9,23.5c1.1,1.8,1.1,4.1,0,5.9l-14,23.5C68.6,103.4,66.6,104.5,64.4,104.5
-					z"/>
-			</g>
-		</g>
-	</g>
-	<g id="圖層_5_2_">
-		<rect id="XMLID_71_" x="46.7" y="55.1" class="st1" width="7.5" height="38.9"/>
-		<rect id="XMLID_70_" x="31" y="70.8" class="st1" width="38.9" height="7.5"/>
+<g id="Calque_52">
+</g>
+<g id="Calque_36_-_copie_4">
+	<g id="Calque_2_-_copie_10">
+		<path id="XMLID_106_" class="st0" d="M65.8,61.6c-2.7-3-6-4.9-9.7-5.9l0.6-3.8l-4.2-0.7L52,55c-3.8-0.2-7.6,0.7-11,2.6l-2.3-3.2
+			L35.2,57l2.3,3.2c-3,2.7-4.9,6-5.9,9.7l-3.8-0.6l-0.7,4.2l3.8,0.6c-0.2,3.8,0.7,7.6,2.6,11l-3.2,2.3l2.5,3.4l3.2-2.3
+			c2.7,3,6,4.9,9.7,5.9l-0.6,3.8l4.2,0.7l0.6-3.8c3.8,0.2,7.6-0.7,11-2.6l2.3,3.2l3.4-2.5l-2.3-3.2c3-2.7,4.9-6,5.9-9.7l3.8,0.6
+			l0.7-4.2L70.9,76c0.2-3.8-0.7-7.6-2.6-11l3.2-2.3L69,59.3L65.8,61.6z M60.9,88.7c-7.6,5.5-18.1,3.8-23.6-3.7
+			c-5.5-7.6-3.8-18.1,3.7-23.6s18.1-3.8,23.6,3.7C70.1,72.6,68.4,83.2,60.9,88.7z"/>
+		<path id="XMLID_103_" class="st1" d="M41,61.3c-7.6,5.5-9.2,16.1-3.7,23.6c5.5,7.6,16.1,9.2,23.6,3.7c7.6-5.5,9.2-16.1,3.7-23.6
+			C59.1,57.5,48.5,55.8,41,61.3z M57.7,84.4c-5.2,3.8-12.4,2.6-16.1-2.6c-3.8-5.2-2.6-12.4,2.6-16.1c5.2-3.8,12.4-2.6,16.1,2.6
+			C64,73.4,62.9,80.6,57.7,84.4z"/>
+		
+			<radialGradient id="XMLID_2_" cx="-18.5769" cy="121.1709" r="28.7365" gradientTransform="matrix(0.809 -0.5878 0.5878 0.809 -5.2639 -33.9485)" gradientUnits="userSpaceOnUse">
+			<stop  offset="0" style="stop-color:#D6D5D5"/>
+			<stop  offset="0.3213" style="stop-color:#D4D3D2"/>
+			<stop  offset="0.5416" style="stop-color:#CCCACA"/>
+			<stop  offset="0.7315" style="stop-color:#BEBDBD"/>
+			<stop  offset="0.9032" style="stop-color:#ACABAB"/>
+			<stop  offset="1" style="stop-color:#9F9E9E"/>
+		</radialGradient>
+		<path id="XMLID_100_" class="st2" d="M76.8,61.7l-5.2-7.1L66,58.6c-2.2-2-4.6-3.5-7.3-4.5l1.1-6.9l-8.7-1.4L50,52.8
+			c-2.8,0.1-5.7,0.8-8.3,2l-4.1-5.6l-7.1,5.2l4.1,5.6c-2,2.2-3.5,4.6-4.5,7.3l-6.9-1.1l-1.4,8.7l6.9,1.1c0.1,2.8,0.8,5.7,2,8.3
+			l-5.6,4.1l5.2,7.1l5.6-4.1c2.2,2,4.6,3.5,7.3,4.5l-1.1,6.9l8.7,1.4l1.1-6.9c2.8-0.1,5.7-0.8,8.3-2l4.1,5.6l7.1-5.2l-4.1-5.6
+			c2-2.2,3.5-4.6,4.5-7.3l6.9,1.1l1.4-8.7l-6.9-1.1c-0.1-2.8-0.8-5.7-2-8.3L76.8,61.7z M57.4,84c-5,3.6-11.9,2.5-15.5-2.5
+			c-3.6-5-2.5-11.9,2.5-15.5c5-3.6,11.9-2.5,15.5,2.5S62.4,80.4,57.4,84z"/>
+		<path id="XMLID_97_" class="st3" d="M42.1,62.9c-6.7,4.9-8.2,14.2-3.3,20.9c4.9,6.7,14.2,8.2,20.9,3.3c6.7-4.9,8.2-14.2,3.3-20.9
+			C58.2,59.5,48.8,58,42.1,62.9z M58.5,85.4c-5.7,4.2-13.8,2.9-17.9-2.8c-4.2-5.7-2.9-13.8,2.8-17.9c5.7-4.2,13.8-2.9,17.9,2.8
+			C65.5,73.2,64.2,81.2,58.5,85.4z"/>
 	</g>
 </g>
 </svg>

@@ -38,14 +38,14 @@ export default class CellMenuComponent extends Component<
 									<span class="fill-diamond badge very-small-space middle"> </span>
 								</div>
 							</button>
+							{isCovered ? this.DisplayAttack() : ''}
 							{isCovered ? this.DisplayThunder() : ''}
 							{isCovered ? this.DisplayShield() : ''}
 							{isCovered ? this.DisplayPoison() : ''}
-							{isCovered ? this.DisplayMoney() : ''}
-							{isCovered ? this.DisplayAttack() : ''}
-							{isCovered ? this.DisplaySpeed() : ''}
 							{isCovered ? this.DisplayHeal() : ''}
-							{isCovered ? this.DisplayDiamind() : ''}
+							{isCovered ? this.DisplayMoney() : ''}
+							{isCovered ? this.DisplaySpeed() : ''}
+							{isCovered ? this.DisplayNetwork() : ''}
 							<button
 								type="button"
 								class="btn btn-dark without-padding"
@@ -169,7 +169,7 @@ export default class CellMenuComponent extends Component<
 		);
 	}
 
-	private DisplayDiamind() {
+	private DisplayNetwork() {
 		return (
 			<button
 				type="button"

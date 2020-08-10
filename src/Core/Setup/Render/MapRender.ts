@@ -48,7 +48,7 @@ export class MapRender {
 
 		let playerHq = hqs.find((hq) => hq.PlayerName === mapContext.PlayerName);
 		context.MainHq = playerHq;
-
+		context.Setup();
 		//make hq cells visible
 		playerHq.GetCurrentCell().SetState(CellState.Visible);
 		playerHq.GetCurrentCell().GetAllNeighbourhood().forEach((cell) => {

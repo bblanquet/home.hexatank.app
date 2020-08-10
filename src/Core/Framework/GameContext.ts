@@ -1,3 +1,5 @@
+import { GameStatus } from './../../Components/Canvas/GameStatus';
+import { SimpleEvent } from './../Utils/Events/SimpleEvent';
 import { Headquarter } from './../Items/Cell/Field/Hq/Headquarter';
 import { Dictionnary } from './../Utils/Collections/Dictionnary';
 import { Vehicle } from './../Items/Unit/Vehicle';
@@ -14,11 +16,26 @@ export class GameContext {
 	public MainHq: Headquarter;
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
 	public IsFlagingMode: boolean;
+	public GameEnded: LiteEvent<GameStatus> = new LiteEvent<GameStatus>();
 
 	public SetHqs(hqs: Headquarter[]) {
 		this._hqs = hqs;
 		this._hqs.forEach((hq) => {
 			hq.VehicleCreated.On(this.VehiculeCreated.bind(this));
+		});
+	}
+
+	public Setup(): void {
+		this.MainHq.OnDestroyed.On(() => {
+			this.GameEnded.Invoke(this, GameStatus.Lost);
+		});
+
+		this._hqs.forEach((hq) => {
+			hq.OnDestroyed.On(() => {
+				if (this._hqs.some((e) => !e.IsAlive())) {
+					this.GameEnded.Invoke(this, GameStatus.Won);
+				}
+			});
 		});
 	}
 

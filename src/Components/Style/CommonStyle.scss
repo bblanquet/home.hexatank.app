@@ -739,6 +739,29 @@ body {
 	background-image: url('{{}}menu/network.svg');
 }
 
+.end-message {
+	display: inline-block;
+	background-color: #313131;
+	border-radius: 50px;
+	border-bottom: 6px solid;
+	width: -webkit-max-content;
+	box-shadow: 0px 0px 5px 0px #191919;
+}
+
+.fill-rip {
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/RIP.svg');
+}
+
+.fill-victory {
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/victory.svg');
+}
+
 .fill-shield {
 	overflow: hidden;
 	background-size: contain;

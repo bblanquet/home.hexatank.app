@@ -26,7 +26,7 @@ import { MapRender } from '../../Core/Setup/Render/MapRender';
 import { ComponentsHelper } from '../ComponentsHelper';
 import ReactorMenuComponent from './Parts/ReactorMenuComponent';
 import { Group } from '../../Core/Items/Group';
-import { AttackField } from '../../Core/Items/Cell/Field/Bonus/AttackField';
+import { GameStatus } from './GameStatus';
 
 export default class CanvasComponent extends Component<
 	any,
@@ -40,6 +40,7 @@ export default class CanvasComponent extends Component<
 		Item: Item;
 		PingStatus: string;
 		HasWarning: boolean;
+		GameStatus: GameStatus;
 	}
 > {
 	private _gameCanvas: HTMLDivElement;
@@ -59,7 +60,8 @@ export default class CanvasComponent extends Component<
 			Amount: GameSettings.PocketMoney,
 			HasFlag: false,
 			PingStatus: 'no data',
-			HasWarning: false
+			HasWarning: false,
+			GameStatus: GameStatus.Pending
 		});
 	}
 	private OnItemSelectionChanged(obj: any, item: ISelectable): void {
@@ -154,6 +156,13 @@ export default class CanvasComponent extends Component<
 			if (e !== this.state.HasWarning) {
 				this.setState({
 					HasWarning: e
+				});
+			}
+		});
+		this._gameContext.GameEnded.On((obj: any, e: GameStatus) => {
+			if (e !== this.state.GameStatus) {
+				this.setState({
+					GameStatus: e
 				});
 			}
 		});
@@ -270,13 +279,14 @@ export default class CanvasComponent extends Component<
 			<div style="width=100%">
 				{/* {GameHelper.IsOnline ? this.TopLeftInfo() : ''} */}
 				{this.TopMenuRender()}
+				{this.state.GameStatus === GameStatus.Pending ? '' : this.GetEndMessage()}
 				<div
 					ref={(dom) => {
 						this._gameCanvas = dom;
 					}}
 				/>
-				{this.state.HasMenu ? '' : this.LeftMenuRender()}
-				{this.state.HasMenu ? this.MenuRender() : ''}
+				{this.state.HasMenu && this.state.GameStatus === GameStatus.Pending ? '' : this.LeftMenuRender()}
+				{this.state.HasMenu && this.state.GameStatus === GameStatus.Pending ? this.MenuRender() : ''}
 			</div>
 		);
 	}
@@ -286,6 +296,10 @@ export default class CanvasComponent extends Component<
 	}
 
 	private TopMenuRender() {
+		if (this.state.GameStatus !== GameStatus.Pending) {
+			return '';
+		}
+
 		return (
 			<div style="position: fixed;left: 50%;transform: translateX(-50%);">
 				<button type="button" class="btn btn-dark space-out">
@@ -334,22 +348,26 @@ export default class CanvasComponent extends Component<
 		return value;
 	}
 
-	private EndMessage() {
-		return (
-			<div class="base">
-				<div class="centered">
-					<div class="container">
-						You won
-						<div class="bottom-container">
-							<div style="float:right;">
-								<button type="button" class="btn btn-dark btn-sm">
-									Back
-								</button>
-							</div>
-						</div>
+	private GetEndMessage() {
+		if (this.state.GameStatus === GameStatus.Won) {
+			return (
+				<div class="generalContainer absolute-center-middle-menu menu-container fit-content">
+					<div class="container-center">
+						<div class="fill-victory" style="width:20vh;height:20vh" />
+						{ComponentsHelper.GetRedButton(false, 'fas fa-undo-alt', 'Quit', (e) => this.Quit(e))}
 					</div>
 				</div>
-			</div>
-		);
+			);
+		} else if (this.state.GameStatus === GameStatus.Lost) {
+			return (
+				<div class="generalContainer absolute-center-middle-menu menu-container fit-content">
+					<div class="container-center">
+						<div class="fill-rip" style="width:20vh;height:20vh" />
+						{ComponentsHelper.GetRedButton(false, 'fas fa-undo-alt', 'Quit', (e) => this.Quit(e))}
+					</div>
+				</div>
+			);
+		}
+		return '';
 	}
 }

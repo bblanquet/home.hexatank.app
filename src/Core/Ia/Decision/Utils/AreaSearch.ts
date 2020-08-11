@@ -42,20 +42,6 @@ export class AreaSearch {
 		return result;
 	}
 
-	// public GetAllRanges(center: HexAxial):Dictionnary<Array<HexAxial>>{
-	// 	const result = new Dictionnary<Array<HexAxial>>();
-	// 	let ranges = new Array<HexAxial>();
-	// 	let r = 1;
-	// 	do{
-
-	// 		ranges = this.GetAreaRange(center,1);
-	// 		result.Add()
-
-	// 	}while(0 < ranges.length)
-
-	// 	return result;
-	// }
-
 	public GetAreaRange(center: HexAxial, range: number): Array<HexAxial> {
 		let outer = new Dictionnary<HexAxial>();
 		let ignored = new Dictionnary<HexAxial>();

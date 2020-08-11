@@ -1,4 +1,3 @@
-import { AreaStatus } from './AreaStatus';
 import { ShieldField } from './../../../Items/Cell/Field/Bonus/ShieldField';
 import { MedicField } from './../../../Items/Cell/Field/Bonus/MedicField';
 import { BasicField } from './../../../Items/Cell/Field/BasicField';
@@ -24,7 +23,7 @@ import { AStarHelper } from '../../AStarHelper';
 export class KingdomArea {
 	public Troops: Array<TroopDecisionMaker>;
 	public Truck: Truck;
-	private _range: number = 0;
+	private _range: number = 0; //range from HQ
 
 	constructor(
 		private _hq: Headquarter,
@@ -59,6 +58,10 @@ export class KingdomArea {
 
 	public GetRange(): number {
 		return this._range;
+	}
+
+	GetFoesAroundArea(): Array<Area> {
+		return this.GetSpot().GetAroundAreas().filter((a) => a.GetStatus().HasFoesOf(this._hq));
 	}
 
 	public IsBorder(): boolean {

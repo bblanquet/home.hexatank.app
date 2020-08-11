@@ -16,6 +16,10 @@ export class FieldHelper {
 		);
 	}
 
+	public static IsBonusField(cell: IField): boolean {
+		return cell instanceof BonusField || cell instanceof ReactorField || cell instanceof ShieldField;
+	}
+
 	public static IsEnemy(e: IField, item: AliveItem): boolean {
 		if (e instanceof BonusField) {
 			return (e as BonusField).GetHq().IsEnemy(item);

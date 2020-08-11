@@ -144,7 +144,7 @@ export class ReactorField extends Field implements ISelectable {
 			this.Appearance.Destroy();
 			this.GetCell().DestroyField();
 			this.GetCell().GetIncludedRange(2).map((c) => <Cell>c).forEach((c) => {
-				if (FieldHelper.IsSpecialField(c.GetField())) {
+				if (FieldHelper.IsBonusField(c.GetField())) {
 					c.DestroyField();
 					if (c.IsVisible()) {
 						new Explosion(c.GetBoundingBox(), Archive.constructionEffects, 5, false, 5);

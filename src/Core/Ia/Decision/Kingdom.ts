@@ -136,7 +136,7 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 		if (this._idleTimer.IsElapsed()) {
 			this.Trucks = this.Trucks.filter((t) => t.IsAlive());
 			this.Tanks = this.Tanks.filter((t) => t.IsAlive());
-			this.Squads = this.Squads.filter((s) => !s.IsDone && s.HasTank());
+			this.Squads = this.Squads.filter((s) => !s.IsDone());
 			this.Squads.forEach((squad) => {
 				squad.Do();
 			});

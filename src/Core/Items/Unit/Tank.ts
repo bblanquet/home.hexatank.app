@@ -181,6 +181,10 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 	}
 
 	public SetMainTarget(item: AliveItem): void {
+		if (!item.IsEnemy(this)) {
+			throw 'should not be there';
+		}
+
 		PeerHandler.SendMessage(PacketKind.Target, {
 			Hq: this.Hq.GetCell().GetCoordinate(),
 			cell: this.GetCurrentCell().GetCoordinate(),

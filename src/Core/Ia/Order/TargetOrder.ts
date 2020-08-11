@@ -6,7 +6,6 @@ import { Cell } from '../../Items/Cell/Cell';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { SimpleOrder } from './SimpleOrder';
 import { Tank } from '../../Items/Unit/Tank';
-import { GameHelper } from '../../Framework/GameHelper';
 
 export class TargetOrder extends Order {
 	private _targetUi: BasicItem;

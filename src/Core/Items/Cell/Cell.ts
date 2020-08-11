@@ -205,6 +205,10 @@ export class Cell extends Item implements ICell, ISelectable {
 		return state;
 	}
 
+	public Coo(): string {
+		return this.GetCoordinate().ToString();
+	}
+
 	public SetDecoration(sprite: string): void {
 		const random = Math.random();
 		this.GenerateSprite(sprite, (s) => {

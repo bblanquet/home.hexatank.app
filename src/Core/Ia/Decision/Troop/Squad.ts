@@ -1,4 +1,3 @@
-import { Headquarter } from './../../../Items/Cell/Field/Hq/Headquarter';
 import { Tank } from './../../../Items/Unit/Tank';
 import { ISquadTarget } from './Target/ISquadTarget';
 import { isNullOrUndefined } from 'util';
@@ -13,7 +12,6 @@ export class Squad implements IDoable {
 	private _targets: ISquadTarget[];
 	private _mainTarget: ISquadTarget;
 	private _currentTarget: ISquadTarget;
-	public IsDone: boolean = false;
 	public constructor(private _road: SquadRoad, private _mapObserver: MapObserver, private _kg: Kingdom) {}
 
 	HasTank(): boolean {
@@ -24,21 +22,23 @@ export class Squad implements IDoable {
 		return this._tanks.shift();
 	}
 
-	public Do(): void {
-		if (this._mainTarget.IsDone() || this._tanks.length === 0) {
-			this.IsDone = true;
-			this.SetDone();
-			return;
-		}
+	public IsDone(): boolean {
+		return this._tanks.length === 0;
+	}
 
-		if (this.HasNoTarget()) {
-			if (!this._mainTarget.IsDone()) {
-				this._targets = this._road.GetTargets(this._tanks, this._mainTarget);
-				if (0 < this._targets.length) {
-					this._currentTarget = this._targets.shift();
-					this._tanks.forEach((tank) => {
-						this._currentTarget.Attack(tank);
-					});
+	public Do(): void {
+		if (this._mainTarget.IsDone()) {
+			this.DispatchAll();
+		} else {
+			if (this.HasNoTarget()) {
+				if (!this._mainTarget.IsDone()) {
+					this._targets = this._road.GetTargets(this._tanks, this._mainTarget);
+					if (0 < this._targets.length) {
+						this._currentTarget = this._targets.shift();
+						this._tanks.forEach((tank) => {
+							this._currentTarget.Attack(tank);
+						});
+					}
 				}
 			}
 		}
@@ -48,14 +48,13 @@ export class Squad implements IDoable {
 		return isNullOrUndefined(this._currentTarget);
 	}
 
-	private SetDone() {
-		this.IsDone = true;
+	private DispatchAll() {
 		this._tanks.forEach((t) => {
-			this.Dispatch(t, this._kg.Hq);
+			this.Dispatch(t);
 		});
 	}
 
-	private Dispatch(tank: Tank, hq: Headquarter): void {
+	private Dispatch(tank: Tank): void {
 		const candidates = this._kg
 			.GetKingdomAreas()
 			.Values()
@@ -66,7 +65,7 @@ export class Squad implements IDoable {
 		area.AddTroop(tank, area.GetRandomFreeUnitCell());
 	}
 
-	public SetTarget(): boolean {
+	public SetMainTarget(): boolean {
 		this._mainTarget = this._mapObserver.GetShortestImportantFields(this._kg.Hq.GetCell());
 		return this._mainTarget !== null;
 	}

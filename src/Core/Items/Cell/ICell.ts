@@ -6,4 +6,5 @@ export interface ICell {
 	GetNeighbourhood(): Array<ICell>;
 	GetFilteredNeighbourhood(filter: (cell: ICell) => boolean): Array<ICell>;
 	GetCentralPoint(): Point;
+	Coo(): string;
 }

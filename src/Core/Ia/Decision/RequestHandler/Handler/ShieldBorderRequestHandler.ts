@@ -1,6 +1,4 @@
-import { HexAxial } from './../../../../Utils/Geometry/HexAxial';
-import { KingdomArea } from './../../Utils/KingdomArea';
-import { ShieldField } from './../../../../Items/Cell/Field/Bonus/ShieldField';
+import { Dictionnary } from './../../../../Utils/Collections/Dictionnary';
 import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { RequestType } from '../../Utils/RequestType';
@@ -8,20 +6,22 @@ import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 import { Cell } from '../../../../Items/Cell/Cell';
 import { GameSettings } from '../../../../Framework/GameSettings';
 import { BasicField } from '../../../../Items/Cell/Field/BasicField';
-
-export class ShieldRequestHandler implements ISimpleRequestHandler {
+import { ShieldField } from '../../../../Items/Cell/Field/Bonus/ShieldField';
+export class ShieldBorderRequestHandler implements ISimpleRequestHandler {
 	constructor(private _hq: Headquarter) {}
 
 	Handle(request: AreaRequest): void {
-		let cellCount = 2;
-		if (1 < request.Area.GetRange()) {
-			cellCount = 3;
-		}
+		const foeAreas = request.Area.GetFoesAroundArea();
+		const foeCells = foeAreas.reduce((e, a) => e.concat(a.GetCells()), new Array<Cell>());
+		const dic = Dictionnary.To((e) => e.GetCoordinate().ToString(), foeCells);
 
-		this.CreateShield(request.Area.GetClosesHqField(cellCount));
+		request.Area.GetSpot().GetCells().forEach((c) => {
+			if (c.GetAllNeighbourhood().some((c) => dic.Exist(c.Coo()))) {
+			}
+		});
 	}
 	Type(): RequestType {
-		return RequestType.Shield;
+		return RequestType.BorderShield;
 	}
 
 	private CreateShield(road: Cell[]) {

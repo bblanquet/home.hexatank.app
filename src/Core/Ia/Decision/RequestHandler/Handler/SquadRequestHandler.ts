@@ -18,7 +18,7 @@ export class SquadRequestHandler implements ISimpleRequestHandler {
 				new MapObserver(this._kingdom.AllAreas, this._kingdom.Hq),
 				this._kingdom
 			);
-			const hasTarget = squad.SetTarget();
+			const hasTarget = squad.SetMainTarget();
 
 			if (hasTarget) {
 				const areas = this._kingdom.GetKingdomAreas().Values().filter((a) => a.HasTroop());

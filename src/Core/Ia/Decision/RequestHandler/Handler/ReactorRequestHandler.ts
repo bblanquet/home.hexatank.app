@@ -11,7 +11,7 @@ export class ReactorRequestHandler implements ISimpleRequestHandler {
 	constructor(private _hq: Headquarter, private _gameContext: GameContext) {}
 
 	Handle(request: AreaRequest): void {
-		if (GameSettings.FieldPrice < this._hq.GetAmount()) {
+		if (GameSettings.FieldPrice < this._hq.GetAmount() && request.Area.ContainsTroop()) {
 			const cells = request.Area.GetSpot().GetCells().filter((c) => c.GetField() instanceof BasicField);
 			cells.some((c) => {
 				if (c.GetField() instanceof BasicField) {

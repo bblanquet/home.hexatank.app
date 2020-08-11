@@ -44,7 +44,7 @@ export class GameContext {
 	}
 
 	public GetHq(path: string) {
-		return this._hqs.find((e) => e.GetCell().GetCoordinate().ToString() === path);
+		return this._hqs.find((e) => e.GetCell().Coo() === path);
 	}
 
 	private VehiculeCreated(obj: Headquarter, vehicule: Vehicle): void {

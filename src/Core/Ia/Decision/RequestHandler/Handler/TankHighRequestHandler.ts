@@ -66,7 +66,7 @@ export class TankHighRequestHandler implements ISimpleRequestHandler {
 			request.Area.GetCentralCell()
 		);
 		for (const cell of cells) {
-			const coordinate = cell.GetCoordinate().ToString();
+			const coordinate = cell.Coo();
 			if (this._kingdom.CellAreas.Exist(coordinate)) {
 				const aroundArea = this._kingdom.CellAreas.Get(coordinate);
 				if (!aroundArea.HasReceivedRequest) {

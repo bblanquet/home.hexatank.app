@@ -30,14 +30,14 @@ export class ExpansionMaker implements IExpansionMaker {
 			new KingdomArea(this._hq, area, this._kingdom, this._areaSearch)
 		);
 		this._kingdom.AreaDecisions.push(areaDecision);
-		this._kingdom.CellAreas.Add(area.GetCentralCell().GetCoordinate().ToString(), areaDecision);
+		this._kingdom.CellAreas.Add(area.GetCentralCell().Coo(), areaDecision);
 		this.Log(areaDecision);
 	}
 
 	public RemoveArea(area: Area): void {
-		const decisionMaker = this._kingdom.CellAreas.Get(area.GetCentralCell().GetCoordinate().ToString());
+		const decisionMaker = this._kingdom.CellAreas.Get(area.GetCentralCell().Coo());
 		decisionMaker.Destroy();
-		this._kingdom.CellAreas.Remove(area.GetCentralCell().GetCoordinate().ToString());
+		this._kingdom.CellAreas.Remove(area.GetCentralCell().Coo());
 	}
 
 	private FindArea(): Area {

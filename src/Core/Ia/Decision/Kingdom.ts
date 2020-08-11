@@ -79,7 +79,7 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 				}
 				return false;
 			});
-			this.GetKingdomAreas().Remove(foundArea.GetCentralCell().GetCoordinate().ToString());
+			this.GetKingdomAreas().Remove(foundArea.GetCentralCell().Coo());
 			this.Areas.push(foundArea.GetSpot());
 		});
 	}
@@ -126,10 +126,7 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	}
 
 	public GetKingdomAreas(): Dictionnary<KingdomArea> {
-		return Dictionnary.To<KingdomArea>(
-			(t) => t.GetCentralCell().GetCoordinate().ToString(),
-			this.AreaDecisions.map((m) => m.Area)
-		);
+		return Dictionnary.To<KingdomArea>((t) => t.GetCentralCell().Coo(), this.AreaDecisions.map((m) => m.Area));
 	}
 
 	public Do(): void {

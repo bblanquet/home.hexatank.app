@@ -6,6 +6,7 @@ import { FarmRequester } from './AreaRequester/FarmRequester';
 import { TruckRequest } from './AreaRequester/TruckRequester';
 import { RoadRequester } from './AreaRequester/RoadRequester';
 import { TankRequester } from './AreaRequester/TankRequester';
+import { ShieldBorderRequester } from './AreaRequester/ShieldBorderRequester';
 import { IAreaRequestMaker } from './IAreaRequestMaker';
 import { IAreaRequestListMaker } from './IAreaRequestListMaker';
 import { RequestType } from '../Utils/RequestType';
@@ -19,6 +20,7 @@ export class AreaRequestMaker implements IAreaRequestListMaker {
 
 	constructor(private _kingdom: Kingdom) {
 		this._requesters = [
+			new ShieldBorderRequester(),
 			new ReactorRequester(),
 			new ShieldAreaRequester(),
 			new HealUnitRequester(this._kingdom),

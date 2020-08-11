@@ -16,8 +16,8 @@ export class GeneralEnergyRequester implements IGeneralRequester {
 
 			reactor.GetInternal().All().forEach((c) =>
 				kingdomAreas.filter((a) => a.HasCell(c)).forEach((a) => {
-					if (!candidates.Exist(a.GetCentralCell().GetCoordinate().ToString())) {
-						candidates.Add(a.GetCentralCell().GetCoordinate().ToString(), a);
+					if (!candidates.Exist(a.GetCentralCell().Coo())) {
+						candidates.Add(a.GetCentralCell().Coo(), a);
 					}
 				})
 			);

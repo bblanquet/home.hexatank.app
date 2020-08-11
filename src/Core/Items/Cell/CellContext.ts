@@ -10,7 +10,7 @@ export class CellContext<T extends ICell> {
 	}
 
 	public Add(Cell: T): void {
-		this.Cells[Cell.GetCoordinate().ToString()] = Cell;
+		this.Cells[Cell.Coo()] = Cell;
 	}
 
 	public Keys(): Dictionnary<HexAxial> {

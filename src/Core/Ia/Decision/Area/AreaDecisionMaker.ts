@@ -27,10 +27,6 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 	public Update(): void {
 		this.Area.Troops = this.Area.Troops.filter((t) => t.Tank.IsAlive());
 
-		if (1 < this.Area.Troops.length) {
-			this.LogPosition();
-		}
-
 		if (0 < this.Area.GetFoesCount()) {
 			this.Do();
 		} else {
@@ -135,7 +131,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 		const enemyContactcells = new Dictionnary<Cell>();
 		enemycells.forEach((enemycell) => {
 			enemycell.GetNeighbourhood().forEach((cell) => {
-				let coo = cell.GetCoordinate().ToString();
+				let coo = cell.Coo();
 				if (!enemyContactcells.Exist(coo)) {
 					enemyContactcells.Add(coo, cell as Cell);
 				}
@@ -149,7 +145,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 
 		aroundFoeCells.Keys().forEach((key) => {
 			const currentcell = aroundFoeCells.Get(key);
-			const coordinate = currentcell.GetCoordinate().ToString();
+			const coordinate = currentcell.Coo();
 			const dangerLevel = this.GetAroundCellFoes(currentcell, ally);
 
 			if (!dangerLevelcells.hasOwnProperty(dangerLevel)) {
@@ -215,7 +211,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 	private GetTroopsByDest(troopSituations: TroopRoads[]): Groups<TroopRoads> {
 		var troopsByDest = new Groups<TroopRoads>();
 		troopSituations.forEach((troopSituation) => {
-			const key = troopSituation.CurrentDestination.Destination.GetCoordinate().ToString();
+			const key = troopSituation.CurrentDestination.Destination.Coo();
 			troopsByDest.Add(key, troopSituation);
 		});
 		return troopsByDest;
@@ -290,7 +286,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 
 	private LogOrder(troopSituation: TroopRoads) {
 		console.log(
-			`%c tank get order to go to ${troopSituation.CurrentDestination.Destination.GetCoordinate().ToString()}`,
+			`%c tank get order to go to ${troopSituation.CurrentDestination.Destination.Coo()}`,
 			'font-weight:bold;color:red;'
 		);
 	}
@@ -303,10 +299,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 	}
 
 	private LogPosition() {
-		console.log(
-			`%c AREA  ${this.Area.Troops.length} -> ${this.Area.GetCentralCell().GetCoordinate().ToString()}`,
-			'font-weight:bold;'
-		);
+		console.log(`%c AREA  ${this.Area.Troops.length} -> ${this.Area.GetCentralCell().Coo()}`, 'font-weight:bold;');
 	}
 
 	private LogTroopCount() {

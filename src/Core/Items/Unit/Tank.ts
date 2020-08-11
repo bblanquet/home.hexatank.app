@@ -181,7 +181,7 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 	}
 
 	public SetMainTarget(item: AliveItem): void {
-		if (!item.IsEnemy(this)) {
+		if (!isNullOrUndefined(item) && !item.IsEnemy(this)) {
 			throw 'should not be there';
 		}
 

@@ -132,7 +132,7 @@ export class HqRender {
 		const areaSearch = new AreaSearch(cells.Keys());
 
 		const areas = areaSearch.GetAreas(cell.GetCoordinate()).map((coo) => new Area(cells.Get(coo)));
-		const areaByCoo = Dictionnary.To((e: Area) => e.GetCentralCell().GetCoordinate().ToString(), areas);
+		const areaByCoo = Dictionnary.To((e: Area) => e.GetCentralCell().Coo(), areas);
 
 		areas.forEach((a) => {
 			const around = areaSearch

@@ -11,17 +11,24 @@ export class ShieldBorderRequestHandler implements ISimpleRequestHandler {
 	constructor(private _hq: Headquarter) {}
 
 	Handle(request: AreaRequest): void {
-		const foeAreas = request.Area.GetFoesAroundArea();
-		const foeCells = foeAreas.reduce((e, a) => e.concat(a.GetCells()), new Array<Cell>());
-		const dic = Dictionnary.To((e) => e.GetCoordinate().ToString(), foeCells);
-
-		request.Area.GetSpot().GetCells().forEach((c) => {
-			if (c.GetAllNeighbourhood().some((c) => dic.Exist(c.Coo()))) {
-			}
-		});
+		const road = this.GetCells(request);
+		this.CreateShield(road);
 	}
 	Type(): RequestType {
 		return RequestType.BorderShield;
+	}
+
+	private GetCells(request: AreaRequest): Array<Cell> {
+		const foeAreas = request.Area.GetFoesAroundArea();
+		const foeCells = foeAreas.reduce((e, a) => e.concat(a.GetCells()), new Array<Cell>());
+		const dic = Dictionnary.To((e) => e.Coo(), foeCells);
+		const road = new Array<Cell>();
+		request.Area.GetSpot().GetCells().forEach((c) => {
+			if (c.GetAllNeighbourhood().some((c) => dic.Exist(c.Coo()))) {
+				road.push(c);
+			}
+		});
+		return road;
 	}
 
 	private CreateShield(road: Cell[]) {

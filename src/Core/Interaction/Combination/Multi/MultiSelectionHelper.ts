@@ -26,7 +26,7 @@ export class MultiSelectionHelper {
 			let cell = pathsVehicleList[index].Pop();
 			pathsVehicleList[index].GetVehicle().SetOrder(new PersistentOrder(cell, vehicles[index]));
 			pathsVehicleList.forEach((pathVehicle) => {
-				pathVehicle.Remove(cell.GetCoordinate().ToString());
+				pathVehicle.Remove(cell.Coo());
 			});
 		}
 	}
@@ -114,6 +114,6 @@ export class VehiclePaths {
 	}
 
 	public Remove(pos: string): void {
-		this._cells = this._cells.filter((c) => c.GetCoordinate().ToString() !== pos);
+		this._cells = this._cells.filter((c) => c.Coo() !== pos);
 	}
 }

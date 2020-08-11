@@ -107,7 +107,7 @@ export class AreaStatus {
 	private RemoveNewBonusField(cell: Cell) {
 		if (FieldHelper.IsSpecialField(cell.GetField())) {
 			const hq = FieldHelper.GetHq(cell.GetField());
-			let hqCo = hq.GetCell().GetCoordinate().ToString();
+			let hqCo = hq.GetCell().Coo();
 			if (this._hqFields.Exist(hqCo)) {
 				const newHqList = this._hqFields.Get(hqCo).filter((c) => c !== cell);
 				this._hqFields.Remove(hqCo);
@@ -121,7 +121,7 @@ export class AreaStatus {
 	private AddSpecialField(cell: Cell) {
 		if (FieldHelper.IsSpecialField(cell.GetField())) {
 			const hq = FieldHelper.GetHq(cell.GetField());
-			let co = hq.GetCell().GetCoordinate().ToString();
+			let co = hq.GetCell().Coo();
 			if (this._hqFields.Exist(co)) {
 				this._hqFields.Get(co).push(cell);
 			} else {

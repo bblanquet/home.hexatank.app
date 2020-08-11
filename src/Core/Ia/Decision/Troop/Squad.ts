@@ -35,11 +35,12 @@ export class Squad implements IDoable {
 					this._targets = this._road.GetTargets(this._tanks, this._mainTarget);
 					if (0 < this._targets.length) {
 						this._currentTarget = this._targets.shift();
-						this._tanks.forEach((tank) => {
-							this._currentTarget.Attack(tank);
-						});
 					}
 				}
+			} else {
+				this._tanks.forEach((tank) => {
+					this._currentTarget.Attack(tank);
+				});
 			}
 		}
 	}
@@ -60,9 +61,11 @@ export class Squad implements IDoable {
 			.Values()
 			.filter((a) => 0 < a.GetFreeUnitCellCount())
 			.map((c) => c.GetCentralCell());
-		const closestCell = CellHelper.GetClosest(candidates, tank.GetCurrentCell());
-		const area = this._kg.GetKingdomAreas().Get(closestCell.GetCoordinate().ToString());
-		area.AddTroop(tank, area.GetRandomFreeUnitCell());
+		if (0 < candidates.length) {
+			const closestCell = CellHelper.GetClosest(candidates, tank.GetCurrentCell());
+			const area = this._kg.GetKingdomAreas().Get(closestCell.Coo());
+			area.AddTroop(tank, area.GetRandomFreeUnitCell());
+		}
 	}
 
 	public SetMainTarget(): boolean {

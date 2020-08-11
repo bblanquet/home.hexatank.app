@@ -67,19 +67,13 @@ export class KingdomArea {
 	public IsBorder(): boolean {
 		return this._spot
 			.GetAroundAreas()
-			.some(
-				(aroundArea) =>
-					!this._kindgom.GetKingdomAreas().Exist(aroundArea.GetCentralCell().GetCoordinate().ToString())
-			);
+			.some((aroundArea) => !this._kindgom.GetKingdomAreas().Exist(aroundArea.GetCentralCell().Coo()));
 	}
 
 	public IsIsolated(): boolean {
 		return this._spot
 			.GetAroundAreas()
-			.every(
-				(aroundArea) =>
-					!this._kindgom.GetKingdomAreas().Exist(aroundArea.GetCentralCell().GetCoordinate().ToString())
-			);
+			.every((aroundArea) => !this._kindgom.GetKingdomAreas().Exist(aroundArea.GetCentralCell().Coo()));
 	}
 
 	HasHq(): boolean {
@@ -181,7 +175,7 @@ export class KingdomArea {
 		const allySpots = new Array<KingdomArea>();
 		const kingdom = this._kindgom.GetKingdomAreas();
 		spots.forEach((s) => {
-			const coo = s.GetCentralCell().GetCoordinate().ToString();
+			const coo = s.GetCentralCell().Coo();
 			if (kingdom.Exist(coo)) {
 				allySpots.push(kingdom.Get(coo));
 			}

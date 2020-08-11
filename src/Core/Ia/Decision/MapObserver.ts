@@ -46,8 +46,10 @@ export class MapObserver {
 		const cell = CellHelper.GetClosest(cells, origin);
 		if (cell.GetField() instanceof ReactorField) {
 			return new ReactorSquadTarget(cell, this._hq);
+		} else if (cell.GetField() instanceof Headquarter) {
+			return new AliveSquadTarget(cell.GetField() as Headquarter);
 		} else {
-			return new AliveSquadTarget(this._hq);
+			throw 'should not be there';
 		}
 	}
 }

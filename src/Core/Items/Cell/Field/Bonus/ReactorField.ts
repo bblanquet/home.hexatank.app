@@ -158,7 +158,7 @@ export class ReactorField extends Field implements ISelectable {
 				this._context,
 				vehicule.Hq.GetSkin().GetLight()
 			);
-			this.Hq.ReactorConquested.Invoke(this, reactor);
+			vehicule.Hq.ReactorConquested.Invoke(this, reactor);
 		}
 	}
 

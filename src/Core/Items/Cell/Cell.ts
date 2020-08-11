@@ -85,6 +85,7 @@ export class Cell extends Item implements ICell, ISelectable {
 
 	public DestroyField() {
 		new BasicField(this);
+		this.OnFieldChanged.Invoke(this, this);
 	}
 
 	public SetField(field: IField) {

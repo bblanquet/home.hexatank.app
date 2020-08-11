@@ -1,3 +1,4 @@
+import { ShieldBorderRequestHandler } from './Handler/ShieldBorderRequestHandler';
 import { ShieldRequestHandler } from './Handler/ShieldRequestHandler';
 import { SquadRequestHandler } from './Handler/SquadRequestHandler';
 import { EnergyRequestHandler } from './Handler/EnergyRequestHandler';
@@ -24,6 +25,7 @@ export class RequestHandler implements IRequestHandler {
 
 	constructor(private _hq: Headquarter, private _kindgom: Kingdom, context: GameContext) {
 		this._handlers = new Groups<ISimpleRequestHandler>();
+		this._handlers.Add(RequestPriority.High, new ShieldBorderRequestHandler(this._hq));
 		this._handlers.Add(RequestPriority.High, new ShieldRequestHandler(this._hq));
 		this._handlers.Add(RequestPriority.High, new SquadRequestHandler(context, this._kindgom));
 		this._handlers.Add(RequestPriority.High, new EnergyRequestHandler(this._hq));

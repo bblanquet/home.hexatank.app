@@ -5,6 +5,7 @@ import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { isNullOrUndefined } from 'util';
 import { RequestType } from '../../Utils/RequestType';
+import { CellHelper } from '../../../../Items/Cell/CellHelper';
 
 export class TankHighRequestHandler implements ISimpleRequestHandler {
 	constructor(private _kingdom: Kingdom, private _mediumRequest: ISimpleRequestHandler) {}
@@ -59,9 +60,13 @@ export class TankHighRequestHandler implements ISimpleRequestHandler {
 
 	private GetReinforcement(request: AreaRequest) {
 		const troopAreas = new Array<KingdomArea>();
-		const aroundAreas = request.Area.GetSpot().GetAroundAreas();
-		for (const aroundArea of aroundAreas) {
-			const coordinate = aroundArea.GetCentralCell().GetCoordinate().ToString();
+		const kgAreas = this._kingdom.GetKingdomAreas();
+		const cells = CellHelper.OrderByDistance(
+			kgAreas.Values().map((c) => c.GetCentralCell()),
+			request.Area.GetCentralCell()
+		);
+		for (const cell of cells) {
+			const coordinate = cell.GetCoordinate().ToString();
 			if (this._kingdom.CellAreas.Exist(coordinate)) {
 				const aroundArea = this._kingdom.CellAreas.Get(coordinate);
 				if (!aroundArea.HasReceivedRequest) {

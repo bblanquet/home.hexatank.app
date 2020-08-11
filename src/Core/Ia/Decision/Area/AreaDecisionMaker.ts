@@ -1,9 +1,9 @@
-import { AttackMenuItem } from './../../../Menu/Buttons/AttackMenuItem';
+import { AttackMenuItem } from '../../../Menu/Buttons/AttackMenuItem';
 import { IAreaDecisionMaker } from './IAreaDecisionMaker';
-import { AStarHelper } from './../../AStarHelper';
+import { AStarHelper } from '../../AStarHelper';
 import { AttackField } from '../../../Items/Cell/Field/Bonus/AttackField';
-import { KingdomArea } from './../Utils/KingdomArea';
-import { Dictionnary } from './../../../Utils/Collections/Dictionnary';
+import { KingdomArea } from '../Utils/KingdomArea';
+import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
 import { TroopRoads } from '../Troop/TroopRoads';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Area } from '../Utils/Area';
@@ -18,7 +18,7 @@ import { BasicField } from '../../../Items/Cell/Field/BasicField';
 import { AStarEngine } from '../../AStarEngine';
 import { ReactorAreaState } from '../Utils/ReactorAreaState';
 
-export class BasicAreaDecisionMaker implements IAreaDecisionMaker {
+export class AreaDecisionMaker implements IAreaDecisionMaker {
 	public HasReceivedRequest: boolean;
 	constructor(private _hq: Headquarter, public Area: KingdomArea) {}
 

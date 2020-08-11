@@ -5,7 +5,7 @@ import { Area } from '../Utils/Area';
 import { Point } from '../../../Utils/Geometry/Point';
 import { isNullOrUndefined } from 'util';
 import { GameSettings } from '../../../Framework/GameSettings';
-import { BasicAreaDecisionMaker } from '../Area/BasicAreaDecisionMaker';
+import { AreaDecisionMaker } from '../Area/AreaDecisionMaker';
 import { KingdomArea } from '../Utils/KingdomArea';
 import { AreaSearch } from '../Utils/AreaSearch';
 
@@ -25,7 +25,7 @@ export class ExpansionMaker implements IExpansionMaker {
 
 	public CreateArea(area: Area): void {
 		this._kingdom.Areas.splice(this._kingdom.Areas.indexOf(area), 1);
-		const areaDecision = new BasicAreaDecisionMaker(
+		const areaDecision = new AreaDecisionMaker(
 			this._hq,
 			new KingdomArea(this._hq, area, this._kingdom, this._areaSearch)
 		);
@@ -73,7 +73,7 @@ export class ExpansionMaker implements IExpansionMaker {
 		return Math.sqrt(Math.pow(b.X - a.X, 2)) + Math.sqrt(Math.pow(b.Y - a.Y, 2));
 	}
 
-	private Log(areaDecision: BasicAreaDecisionMaker) {
+	private Log(areaDecision: AreaDecisionMaker) {
 		console.log(
 			`%c [NEW AREA]  Q:${areaDecision.Area.GetSpot().GetCentralCell().GetCoordinate()
 				.Q} R:${areaDecision.Area.GetSpot().GetCentralCell().GetCoordinate().R}}`,

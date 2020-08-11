@@ -4,6 +4,7 @@ import { BonusField } from './Bonus/BonusField';
 import { ReactorField } from './Bonus/ReactorField';
 import { ShieldField } from './Bonus/ShieldField';
 import { AliveItem } from '../../AliveItem';
+import { Cell } from '../Cell';
 
 export class FieldHelper {
 	public static IsSpecialField(cell: IField): boolean {

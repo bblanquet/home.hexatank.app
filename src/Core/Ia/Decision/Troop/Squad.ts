@@ -4,18 +4,15 @@ import { ISquadTarget } from './Target/ISquadTarget';
 import { isNullOrUndefined } from 'util';
 import { IDoable } from './../IDoable';
 import { SquadRoad } from './SquadRoad';
-import { SmartSimpleOrder } from '../../Order/SmartSimpleOrder';
-import { Cell } from '../../../Items/Cell/Cell';
 import { MapObserver } from '../MapObserver';
-import { AliveItem } from '../../../Items/AliveItem';
 import { Kingdom } from '../Kingdom';
 import { CellHelper } from '../../../Items/Cell/CellHelper';
 
 export class Squad implements IDoable {
 	private _tanks: Tank[] = new Array<Tank>();
-	private _steps: Cell[];
-	private _target: ISquadTarget;
-	private _currentStep: Cell;
+	private _targets: ISquadTarget[];
+	private _mainTarget: ISquadTarget;
+	private _currentTarget: ISquadTarget;
 	public IsDone: boolean = false;
 	public constructor(private _road: SquadRoad, private _mapObserver: MapObserver, private _kg: Kingdom) {}
 
@@ -28,33 +25,27 @@ export class Squad implements IDoable {
 	}
 
 	public Do(): void {
-		if (this._target.IsDone()) {
+		if (this._mainTarget.IsDone() || this._tanks.length === 0) {
 			this.IsDone = true;
+			this.SetDone();
 			return;
 		}
 
-		if (isNullOrUndefined(this._currentStep)) {
-			if (this._target.IsDone()) {
-				this.SetDone();
-			} else {
-				this._steps = this._road.GetTargets(this._tanks, this._target.GetCell());
-				if (0 < this._steps.length) {
-					this._currentStep = this._steps.shift();
-					this._tanks.forEach((t) => t.CancelOrder());
-				} else {
-					this.SetDone();
+		if (this.HasNoTarget()) {
+			if (!this._mainTarget.IsDone()) {
+				this._targets = this._road.GetTargets(this._tanks, this._mainTarget);
+				if (0 < this._targets.length) {
+					this._currentTarget = this._targets.shift();
+					this._tanks.forEach((tank) => {
+						this._currentTarget.Attack(tank);
+					});
 				}
 			}
-		} else {
-			if (this._tanks.some((t) => t === this._currentStep.GetOccupier())) {
-				this._currentStep = null;
-			} else {
-				this._tanks.forEach((t) => {
-					this.SetOrder(t);
-					//if (!t.HasOrder()) {}
-				});
-			}
 		}
+	}
+
+	private HasNoTarget() {
+		return isNullOrUndefined(this._currentTarget);
 	}
 
 	private SetDone() {
@@ -75,19 +66,9 @@ export class Squad implements IDoable {
 		area.AddTroop(tank, area.GetRandomFreeUnitCell());
 	}
 
-	private SetOrder(t: Tank) {
-		t.SetOrder(new SmartSimpleOrder(this._currentStep, t));
-		if (this._currentStep.GetField() instanceof AliveItem) {
-			const f = (this._currentStep.GetField() as unknown) as AliveItem;
-			if (f.IsEnemy(t)) {
-				t.SetMainTarget(f);
-			}
-		}
-	}
-
 	public SetTarget(): boolean {
-		this._target = this._mapObserver.GetShortestImportantFields(this._kg.Hq.GetCell());
-		return this._target !== null;
+		this._mainTarget = this._mapObserver.GetShortestImportantFields(this._kg.Hq.GetCell());
+		return this._mainTarget !== null;
 	}
 
 	GetTankCount(): number {

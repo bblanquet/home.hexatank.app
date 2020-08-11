@@ -9,6 +9,18 @@ export class CellHelper {
 		return cellByDist.Get(closestCell.toString())[0];
 	}
 
+	public static OrderByDistance(candidates: Cell[], source: Cell): Cell[] {
+		const cellByDist = this.GetCellByDistance(candidates, source);
+		const keys = cellByDist.Keys().sort((n1, n2) => +n1 - +n2);
+		const result = new Array<Cell>();
+		keys.forEach((key) => {
+			cellByDist.Get(key).forEach((e) => {
+				result.push(e);
+			});
+		});
+		return result;
+	}
+
 	private static GetCellByDistance(candidates: Cell[], source: Cell): Groups<Cell> {
 		const groups = new Groups<Cell>();
 		candidates.forEach((candidate) => {

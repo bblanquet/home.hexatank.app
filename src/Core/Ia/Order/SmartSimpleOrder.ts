@@ -3,7 +3,7 @@ import { ShieldField } from './../../Items/Cell/Field/Bonus/ShieldField';
 import { AStarEngine } from './../AStarEngine';
 import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
 import { OrderState } from './OrderState';
-import { isNullOrUndefined, isNull } from 'util';
+import { isNullOrUndefined } from 'util';
 import { Order } from './Order';
 import { Cell } from '../../Items/Cell/Cell';
 import { CellFinder } from '../../Items/Cell/CellFinder';
@@ -83,7 +83,7 @@ export class SmartSimpleOrder extends Order {
 
 	private GoNextcell() {
 		var cell = this.GetNextcell();
-		if (isNull(cell)) {
+		if (isNullOrUndefined(cell)) {
 			this.State = OrderState.Failed;
 		} else {
 			PeerHandler.SendMessage(PacketKind.Next, {
@@ -143,9 +143,12 @@ export class SmartSimpleOrder extends Order {
 
 	protected FindPath(): boolean {
 		if (!this.IsAvailableField(this.Dest)) {
-			this.Dest = this.GetClosestcell();
-			if (isNullOrUndefined(this.Dest)) {
+			const nextDest = this.GetClosestcell();
+			if (isNullOrUndefined(nextDest)) {
+				this.Dest = this.OriginalDest;
 				return false;
+			} else {
+				this.Dest = nextDest;
 			}
 		}
 		this.ClearPath();

@@ -1,5 +1,4 @@
 import { GameStatus } from './../../Components/Canvas/GameStatus';
-import { SimpleEvent } from './../Utils/Events/SimpleEvent';
 import { Headquarter } from './../Items/Cell/Field/Hq/Headquarter';
 import { Dictionnary } from './../Utils/Collections/Dictionnary';
 import { Vehicle } from './../Items/Unit/Vehicle';
@@ -30,9 +29,10 @@ export class GameContext {
 			this.GameEnded.Invoke(this, GameStatus.Lost);
 		});
 
-		this._hqs.forEach((hq) => {
-			hq.OnDestroyed.On(() => {
-				if (this._hqs.some((e) => !e.IsAlive())) {
+		const foes = this._hqs.filter((hq) => hq !== this.MainHq);
+		foes.forEach((foe) => {
+			foe.OnDestroyed.On(() => {
+				if (foes.every((e) => !e.IsAlive())) {
 					this.GameEnded.Invoke(this, GameStatus.Won);
 				}
 			});

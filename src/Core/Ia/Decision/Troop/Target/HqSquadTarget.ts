@@ -1,15 +1,24 @@
 import { ISquadTarget } from './ISquadTarget';
 import { Cell } from '../../../../Items/Cell/Cell';
-import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
-import { BasicField } from '../../../../Items/Cell/Field/BasicField';
+import { AliveItem } from '../../../../Items/AliveItem';
+import { Tank } from '../../../../Items/Unit/Tank';
+import { SmartSimpleOrder } from '../../../Order/SmartSimpleOrder';
 
-export class HqSquadTarget implements ISquadTarget {
-	constructor(private _cell: Cell, private _hqSquad: Headquarter) {}
+export class AliveSquadTarget implements ISquadTarget {
+	constructor(private _item: AliveItem) {
+		if (!(this._item instanceof AliveItem)) {
+			throw 'not supposed to be there';
+		}
+	}
+	Attack(tank: Tank): void {
+		tank.SetOrder(new SmartSimpleOrder(this._item.GetCurrentCell(), tank));
+		tank.SetMainTarget(this._item);
+	}
 
 	GetCell(): Cell {
-		return this._cell;
+		return this._item.GetCurrentCell();
 	}
 	IsDone(): boolean {
-		return this._cell.GetField() instanceof BasicField;
+		return !this._item.IsAlive();
 	}
 }

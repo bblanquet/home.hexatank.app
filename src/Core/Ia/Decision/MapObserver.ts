@@ -1,6 +1,6 @@
 import { CellHelper } from './../../Items/Cell/CellHelper';
 import { ReactorSquadTarget } from './Troop/Target/ReactorSquadTarget';
-import { HqSquadTarget } from './Troop/Target/HqSquadTarget';
+import { AliveSquadTarget } from './Troop/Target/HqSquadTarget';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { ISquadTarget } from './Troop/Target/ISquadTarget';
 import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
@@ -47,7 +47,7 @@ export class MapObserver {
 		if (cell.GetField() instanceof ReactorField) {
 			return new ReactorSquadTarget(cell, this._hq);
 		} else {
-			return new HqSquadTarget(cell, this._hq);
+			return new AliveSquadTarget(this._hq);
 		}
 	}
 }

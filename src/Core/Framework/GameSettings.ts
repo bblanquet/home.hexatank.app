@@ -31,4 +31,22 @@ export class GameSettings {
 		this.PocketMoney = 20;
 		this.MapSize = 0;
 	}
+
+	public static SetNormalSpeed(): void {
+		this.RotationSpeed = 0.05;
+		this.TurrelRotationSpeed = 0.4;
+		this.TranslationSpeed = 1;
+		this.DiamondLoadingSpeed = 30;
+		this.MoneyLoadingSpeed = 10;
+		this.GeneralLife = 30;
+	}
+
+	public static SetFastSpeed(): void {
+		this.RotationSpeed = 0.3;
+		this.TurrelRotationSpeed = 0.4;
+		this.TranslationSpeed = 6;
+		this.DiamondLoadingSpeed = 3;
+		this.MoneyLoadingSpeed = 3;
+		this.GeneralLife = 20;
+	}
 }

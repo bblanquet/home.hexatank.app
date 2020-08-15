@@ -93,7 +93,7 @@ export default class CanvasComponent extends Component<
 				}
 			)
 		);
-
+		GameSettings.SetNormalSpeed();
 		this._appHandler.GetApp().start();
 		this._gameCanvas.appendChild(this._appHandler.GetApp().view);
 		if (!GameHelper.MapContext) {

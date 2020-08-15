@@ -49,6 +49,7 @@ export class GameContext {
 
 	private VehiculeCreated(obj: Headquarter, vehicule: Vehicle): void {
 		vehicule.Id = `${obj.PlayerName}${this._vehicleCount}`;
+		this._vehicleCount += 1;
 		this._vehicles.Add(vehicule.Id, vehicule);
 
 		PeerHandler.SendMessage(PacketKind.Create, {

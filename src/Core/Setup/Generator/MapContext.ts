@@ -7,5 +7,5 @@ export class MapContext {
 	public CenterItem: MapItem;
 	public Hqs: Array<DiamondHq>;
 	public MapMode: MapMode;
-	public PlayerName: string = 'defaultPlayer';
+	public PlayerName: string = 'Unit ';
 }

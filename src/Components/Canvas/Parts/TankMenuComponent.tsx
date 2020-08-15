@@ -7,8 +7,9 @@ import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
 import { Item } from '../../../Core/Items/Item';
 import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
 import { AppHandler } from '../AppHandler';
+import { Vehicle } from '../../../Core/Items/Unit/Vehicle';
 
-export default class TankMenuComponent extends Component<{ AppHandler: AppHandler }, {}> {
+export default class TankMenuComponent extends Component<{ AppHandler: AppHandler; Tank: Vehicle }, {}> {
 	private SendContext(item: Item): void {
 		this.props.AppHandler.InteractionContext.Kind = InteractionKind.Up;
 		return this.props.AppHandler.InteractionContext.OnSelect(item);
@@ -19,6 +20,9 @@ export default class TankMenuComponent extends Component<{ AppHandler: AppHandle
 			<div class="left-column">
 				<div class="middle2 max-width">
 					<div class="btn-group-vertical max-width">
+						<button type="button" class="btn btn-light without-padding">
+							{this.props.Tank.Id}
+						</button>
 						<button
 							type="button"
 							class="btn btn-dark without-padding"

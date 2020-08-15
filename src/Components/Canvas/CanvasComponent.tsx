@@ -182,9 +182,9 @@ export default class CanvasComponent extends Component<
 	private LeftMenuRender() {
 		if (this.state.Item) {
 			if (this.state.Item instanceof Tank) {
-				return <TankMenuComponent AppHandler={this._appHandler} />;
+				return <TankMenuComponent AppHandler={this._appHandler} Tank={this.state.Item} />;
 			} else if (this.state.Item instanceof Truck) {
-				return <TruckMenuComponent AppHandler={this._appHandler} />;
+				return <TruckMenuComponent AppHandler={this._appHandler} Truck={this.state.Item} />;
 			} else if (this.state.Item instanceof Group) {
 				return <MultiTankMenuComponent AppHandler={this._appHandler} />;
 			} else if (this.state.Item instanceof Headquarter) {

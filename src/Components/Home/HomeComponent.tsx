@@ -17,7 +17,7 @@ export default class HomeComponent extends Component<any, any> {
 	}
 
 	private ToHost(e: any): void {
-		route('/OffHost', true);
+		route('/OffJoin', true);
 	}
 
 	private ToJoin(e: any): void {

@@ -3,8 +3,6 @@ import { IField } from './IField';
 import { Vehicle } from '../../Unit/Vehicle';
 import { CellState } from '../CellState';
 import { Cell } from '../Cell';
-import { PeerHandler } from '../../../../Components/Network/Host/On/PeerHandler';
-import { PacketKind } from '../../../../Components/Network/PacketKind';
 
 export abstract class AliveField extends AliveItem implements IField {
 	abstract Support(vehicule: Vehicle): void;
@@ -35,10 +33,10 @@ export abstract class AliveField extends AliveItem implements IField {
 	}
 
 	public Destroy(): void {
-		PeerHandler.SendMessage(PacketKind.Destroyed, {
-			cell: this._cell.GetCoordinate(),
-			Name: 'field'
-		});
+		// PeerHandler.SendMessage(PacketKind.Destroyed, {
+		// 	cell: this._cell.GetCoordinate(),
+		// 	Name: 'field'
+		// });
 		super.Destroy();
 		this._cell.CellStateChanged.Off(this._onCellStateChanged);
 	}

@@ -15,8 +15,6 @@ import { IInteractionContext } from '../../../../Interaction/IInteractionContext
 import { Cell } from '../../Cell';
 import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
 import { CellContext } from '../../CellContext';
-import { PeerHandler } from '../../../../../Components/Network/Host/On/PeerHandler';
-import { PacketKind } from '../../../../../Components/Network/PacketKind';
 import { AttackMenuItem } from '../../../../Menu/Buttons/AttackMenuItem';
 import { Tank } from '../../../Unit/Tank';
 import { AttackUp } from '../../../Unit/PowerUp/AttackUp';
@@ -196,11 +194,11 @@ export class ReactorField extends Field implements ISelectable {
 
 	public PowerUp(): void {
 		const formerEnergy = this.Battery.GetUsedPower();
-		PeerHandler.SendMessage(PacketKind.Influence, {
-			Hq: this.Hq.GetCurrentCell().GetCoordinate(),
-			cell: this.GetCell().GetCoordinate(),
-			Type: 'PowerUp'
-		});
+		// PeerHandler.SendMessage(PacketKind.Influence, {
+		// 	Hq: this.Hq.GetCurrentCell().GetCoordinate(),
+		// 	cell: this.GetCell().GetCoordinate(),
+		// 	Type: 'PowerUp'
+		// });
 		this.Battery.High();
 
 		if (formerEnergy === 0 && this.Battery.GetUsedPower() === 1) {
@@ -214,11 +212,11 @@ export class ReactorField extends Field implements ISelectable {
 
 	public PowerDown(): void {
 		if (0 < this.Battery.GetUsedPower()) {
-			PeerHandler.SendMessage(PacketKind.Influence, {
-				Hq: this.Hq.GetCurrentCell().GetCoordinate(),
-				cell: this.GetCell().GetCoordinate(),
-				Type: 'PowerDown'
-			});
+			// PeerHandler.SendMessage(PacketKind.Influence, {
+			// 	Hq: this.Hq.GetCurrentCell().GetCoordinate(),
+			// 	cell: this.GetCell().GetCoordinate(),
+			// 	Type: 'PowerDown'
+			// });
 			this.Battery.Low();
 			if (this.Battery.GetUsedPower() === 0) {
 				this.PowerChanged.Invoke(this, false);

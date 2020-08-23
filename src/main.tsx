@@ -4,8 +4,7 @@ import SinglePlayerComponent from './Components/SinglePlayer/SinglePlayerCompone
 import CanvasComponent from './Components/Canvas/CanvasComponent';
 import CampaignComponent from './Components/Campaign/CampaignComponent';
 import OffHostComponent from './Components/Network/Host/Off/OffHostComponent';
-import OnHostComponent from './Components/Network/Host/On/OnHostComponent';
-import OffJoinComponent from './Components/Network/Join/Off/OffJoinComponent';
+import JoiningComponent from './Components/Network/Join/OffJoinComponent';
 import LoadingComponent from './Components/Loading/LoadingComponent';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
@@ -23,8 +22,7 @@ render(
 		<CampaignComponent path="/Campaign" />
 		<CanvasComponent path="/Canvas" />
 		<OffHostComponent path="/OffHost" />
-		<OnHostComponent path="/OnHost/:serverName/:playerName/:isAdmin" />
-		<OffJoinComponent path="/OffJoin" />
+		<JoiningComponent path="/OffJoin" />
 		<LoadingComponent path="/Loading" default />
 	</Router>,
 	document.querySelector('#app')

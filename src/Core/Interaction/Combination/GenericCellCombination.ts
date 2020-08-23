@@ -1,8 +1,6 @@
 import { isNullOrUndefined } from 'util';
 import { Cell } from '../../Items/Cell/Cell';
 import { BasicField } from '../../Items/Cell/Field/BasicField';
-import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
-import { PacketKind } from '../../../Components/Network/PacketKind';
 import { CombinationContext } from './CombinationContext';
 import { GameSettings } from '../../Framework/GameSettings';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
@@ -34,11 +32,11 @@ export class GenericCellCombination extends AbstractSingleCombination {
 				if (cell.GetField() instanceof BasicField) {
 					if (this._gameContext.MainHq.HasMoney(GameSettings.FieldPrice)) {
 						this._gameContext.MainHq.Buy(GameSettings.FieldPrice);
-						PeerHandler.SendMessage(PacketKind.Field, {
-							Hq: this._gameContext.MainHq.GetCurrentCell().GetCoordinate(),
-							cell: cell.GetCoordinate(),
-							Type: this._type
-						});
+						// PeerHandler.SendMessage(PacketKind.Field, {
+						// 	Hq: this._gameContext.MainHq.GetCurrentCell().GetCoordinate(),
+						// 	cell: cell.GetCoordinate(),
+						// 	Type: this._type
+						// });
 						this._create(cell);
 					}
 				}

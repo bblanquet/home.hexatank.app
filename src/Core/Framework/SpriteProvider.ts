@@ -32,7 +32,7 @@ export class SpriteProvider {
 	public static LoadAll(): LiteEvent<number> {
 		const event = new LiteEvent<number>();
 		const assets = this.Assets();
-		const threshold = 20;
+		const threshold = 200;
 		let loaded = 0;
 		const total = assets.length;
 

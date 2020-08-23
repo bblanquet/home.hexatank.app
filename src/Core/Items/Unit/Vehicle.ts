@@ -25,8 +25,6 @@ import { Archive } from '../../Framework/ResourceArchiver';
 import { CellProperties } from '../Cell/CellProperties';
 import { Crater } from '../Environment/Crater';
 import { InteractionContext } from '../../Interaction/InteractionContext';
-import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
-import { PacketKind } from '../../../Components/Network/PacketKind';
 import { Explosion } from './Explosion';
 import { Sprite } from 'pixi.js';
 import { Point } from '../../Utils/Geometry/Point';
@@ -293,10 +291,10 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	public Destroy(): void {
 		this.Destoyed.Invoke(this, this);
 		this.Destoyed.Clear();
-		PeerHandler.SendMessage(PacketKind.Destroyed, {
-			cell: this._currentCell.GetCoordinate(),
-			Name: 'vehicle'
-		});
+		// PeerHandler.SendMessage(PacketKind.Destroyed, {
+		// 	cell: this._currentCell.GetCoordinate(),
+		// 	Name: 'vehicle'
+		// });
 		if (this._order) {
 			this._order.Cancel();
 		}

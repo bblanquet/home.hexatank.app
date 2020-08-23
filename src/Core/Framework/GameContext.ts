@@ -3,8 +3,6 @@ import { Headquarter } from './../Items/Cell/Field/Hq/Headquarter';
 import { Dictionnary } from './../Utils/Collections/Dictionnary';
 import { Vehicle } from './../Items/Unit/Vehicle';
 import { Tank } from '../Items/Unit/Tank';
-import { PeerHandler } from '../../Components/Network/Host/On/PeerHandler';
-import { PacketKind } from '../../Components/Network/PacketKind';
 import { LiteEvent } from '../Utils/Events/LiteEvent';
 import { Item } from '../Items/Item';
 
@@ -52,12 +50,12 @@ export class GameContext {
 		this._vehicleCount += 1;
 		this._vehicles.Add(vehicule.Id, vehicule);
 
-		PeerHandler.SendMessage(PacketKind.Create, {
-			Type: vehicule instanceof Tank ? 'Tank' : 'Truck',
-			Id: vehicule.Id,
-			cell: vehicule.GetCurrentCell().GetCoordinate(),
-			Hq: obj.GetCell().GetCoordinate()
-		});
+		// PeerHandler.SendMessage(PacketKind.Create, {
+		// 	Type: vehicule instanceof Tank ? 'Tank' : 'Truck',
+		// 	Id: vehicule.Id,
+		// 	cell: vehicule.GetCurrentCell().GetCoordinate(),
+		// 	Hq: obj.GetCell().GetCoordinate()
+		// });
 	}
 
 	public Destroy(): void {

@@ -1,7 +1,6 @@
 import { ICamouflageAble } from './ICamouflageAble';
 import { CamouflageHandler } from './CamouflageHandler';
 import { Cell } from '../Cell/Cell';
-import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
 import { Vehicle } from './Vehicle';
 import { Turrel } from './Turrel';
 import { AliveItem } from '../AliveItem';
@@ -10,7 +9,6 @@ import { IHqContainer } from './IHqContainer';
 import { Headquarter } from '../Cell/Field/Hq/Headquarter';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { CellState } from '../Cell/CellState';
-import { PacketKind } from '../../../Components/Network/PacketKind';
 import { BasicItem } from '../BasicItem';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Explosion } from './Explosion';
@@ -185,11 +183,11 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 			throw 'should not be there';
 		}
 
-		PeerHandler.SendMessage(PacketKind.Target, {
-			Hq: this.Hq.GetCell().GetCoordinate(),
-			cell: this.GetCurrentCell().GetCoordinate(),
-			TarGetCell: isNullOrUndefined(item) ? null : item.GetCurrentCell().GetCoordinate()
-		});
+		// PeerHandler.SendMessage(PacketKind.Target, {
+		// 	Hq: this.Hq.GetCell().GetCoordinate(),
+		// 	cell: this.GetCurrentCell().GetCoordinate(),
+		// 	TarGetCell: isNullOrUndefined(item) ? null : item.GetCurrentCell().GetCoordinate()
+		// });
 		this._mainTarget = item;
 	}
 
@@ -215,10 +213,10 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 			});
 		}
 
-		PeerHandler.SendMessage(PacketKind.Camouflage, {
-			Hq: this.Hq.GetCell().GetCoordinate(),
-			cell: this.GetCurrentCell().GetCoordinate()
-		});
+		// PeerHandler.SendMessage(PacketKind.Camouflage, {
+		// 	Hq: this.Hq.GetCell().GetCoordinate(),
+		// 	cell: this.GetCurrentCell().GetCoordinate()
+		// });
 
 		this.Camouflage = new BasicItem(
 			BoundingBox.CreateFromBox(this.GetBoundingBox()),

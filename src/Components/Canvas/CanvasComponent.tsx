@@ -1,6 +1,5 @@
 import { Component, h } from 'preact';
 import { GameHelper } from '../../Core/Framework/GameHelper';
-import { PeerHandler } from '../Network/Host/On/PeerHandler';
 import { route } from 'preact-router';
 import { Item } from '../../Core/Items/Item';
 import { GameContext } from '../../Core/Framework/GameContext';
@@ -256,7 +255,7 @@ export default class CanvasComponent extends Component<
 	private Quit(e: any): void {
 		route('/Home', true);
 		this._appHandler.InteractionContext.Mute();
-		PeerHandler.Stop();
+		// PeerHandler.Stop();
 	}
 
 	private SetMenu(e: any): void {

@@ -1,7 +1,6 @@
 import { AStarHelper } from './../AStarHelper';
 import { ShieldField } from './../../Items/Cell/Field/Bonus/ShieldField';
 import { AStarEngine } from './../AStarEngine';
-import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
 import { OrderState } from './OrderState';
 import { isNullOrUndefined } from 'util';
 import { Order } from './Order';
@@ -11,7 +10,6 @@ import { BasicItem } from '../../Items/BasicItem';
 import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Archive } from '../../Framework/ResourceArchiver';
-import { PacketKind } from '../../../Components/Network/PacketKind';
 
 export class SmartSimpleOrder extends Order {
 	protected Currentcell: Cell;
@@ -86,11 +84,11 @@ export class SmartSimpleOrder extends Order {
 		if (isNullOrUndefined(cell)) {
 			this.State = OrderState.Failed;
 		} else {
-			PeerHandler.SendMessage(PacketKind.Next, {
-				Id: this._v.Id,
-				Nextcell: cell.GetCoordinate(),
-				Hq: this._v.Hq.GetCell().GetCoordinate()
-			});
+			// PeerHandler.SendMessage(PacketKind.Next, {
+			// 	Id: this._v.Id,
+			// 	Nextcell: cell.GetCoordinate(),
+			// 	Hq: this._v.Hq.GetCell().GetCoordinate()
+			// });
 			this._v.SetNextCell(cell);
 		}
 	}

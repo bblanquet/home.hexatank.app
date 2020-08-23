@@ -3,8 +3,6 @@ import { InfluenceMenuItem } from '../../Menu/Buttons/InfluenceMenuItem';
 import { isNullOrUndefined } from 'util';
 import { Cell } from '../../Items/Cell/Cell';
 import { BasicField } from '../../Items/Cell/Field/BasicField';
-import { PeerHandler } from '../../../Components/Network/Host/On/PeerHandler';
-import { PacketKind } from '../../../Components/Network/PacketKind';
 import { CombinationContext } from './CombinationContext';
 import { GameSettings } from '../../Framework/GameSettings';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
@@ -34,11 +32,11 @@ export class ReactorCombination extends AbstractSingleCombination {
 							GameSettings.TruckPrice * this._gameContext.MainHq.GetReactorsCount()
 						)
 					) {
-						PeerHandler.SendMessage(PacketKind.Field, {
-							Hq: this._gameContext.MainHq.GetCurrentCell().GetCoordinate(),
-							cell: cell.GetCoordinate(),
-							Type: 'Reactor'
-						});
+						// PeerHandler.SendMessage(PacketKind.Field, {
+						// 	Hq: this._gameContext.MainHq.GetCurrentCell().GetCoordinate(),
+						// 	cell: cell.GetCoordinate(),
+						// 	Type: 'Reactor'
+						// });
 						new ReactorField(
 							cell,
 							this._gameContext.MainHq,

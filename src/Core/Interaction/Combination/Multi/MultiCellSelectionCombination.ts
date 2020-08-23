@@ -14,8 +14,6 @@ import { CombinationContext } from '../CombinationContext';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
 import { SelectionMode } from '../../../Menu/Smart/SelectionMode';
 import { HealMenuItem } from '../../../Menu/Buttons/HealMenuItem';
-import { PeerHandler } from '../../../../Components/Network/Host/On/PeerHandler';
-import { PacketKind } from '../../../../Components/Network/PacketKind';
 import { MedicField } from '../../../Items/Cell/Field/Bonus/MedicField';
 import { AttackMenuItem } from '../../../Menu/Buttons/AttackMenuItem';
 import { AttackField } from '../../../Items/Cell/Field/Bonus/AttackField';
@@ -119,11 +117,11 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 		this._cells.forEach((c) => {
 			if (c.GetField() instanceof BasicField) {
 				this._cells.forEach((c) => {
-					PeerHandler.SendMessage(PacketKind.Field, {
-						Hq: this._gameContext.MainHq.GetCurrentCell().GetCoordinate(),
-						cell: c.GetCoordinate(),
-						Type: fieldType
-					});
+					// PeerHandler.SendMessage(PacketKind.Field, {
+					// 	Hq: this._gameContext.MainHq.GetCurrentCell().GetCoordinate(),
+					// 	cell: c.GetCoordinate(),
+					// 	Type: fieldType
+					// });
 				});
 				getField(c);
 			}

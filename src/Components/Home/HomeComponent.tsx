@@ -1,6 +1,7 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { ComponentsHelper } from '../ComponentsHelper';
+import { ButtonOption } from '../ButtonOption';
 
 export default class HomeComponent extends Component<any, any> {
 	constructor() {
@@ -17,10 +18,10 @@ export default class HomeComponent extends Component<any, any> {
 	}
 
 	private ToHost(e: any): void {
-		route('/OffJoin', true);
+		route('/CreatingHost', true);
 	}
 
-	private ToJoin(e: any): void {
+	private ToGuest(e: any): void {
 		route('/OffJoin', true);
 	}
 
@@ -42,12 +43,10 @@ export default class HomeComponent extends Component<any, any> {
 				<div class="container-center">
 					{ComponentsHelper.GetRedButton(this._isFirstRender, 'fas fa-dungeon', 'Campaign', this.ToCampaign)}
 					{ComponentsHelper.GetRedButton(this._isFirstRender, 'fas fa-gamepad', 'Play', this.ToSinglePlayer)}
-					{ComponentsHelper.GetRedButton(
-						this._isFirstRender,
-						'fas fa-network-wired',
-						'Multiplayers',
-						this.ToHost
-					)}
+					{ComponentsHelper.GetDropRedButton(this._isFirstRender, 'fas fa-network-wired', 'Multiplayers', [
+						new ButtonOption('Guest', (e: any) => this.ToGuest(e)),
+						new ButtonOption('Host', (e: any) => this.ToHost(e))
+					])}
 					{ComponentsHelper.GetRedButton(
 						this._isFirstRender,
 						'fas fa-phone-square',

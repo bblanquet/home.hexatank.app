@@ -40,9 +40,7 @@ export default class JoiningComponent extends Component<any, { RoomNames: string
 					</div>
 					<div class="fill-logo" />
 				</div>
-				<div class="title-container">
-					{IconProvider.GetIcon(this._isFirstRender, 'fab fa-wolf-pack-battalion')} Rooms
-				</div>
+				<div class="title-container">Rooms</div>
 				<div class="form-group mb-2">
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">

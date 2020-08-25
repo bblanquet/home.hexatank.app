@@ -39,6 +39,7 @@
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-free": "^5.12.1",
+		"@types/socket.io-client": "^1.4.33",
 		"@types/svg-sprite-loader": "^3.9.1",
 		"@types/toastr": "^2.1.37",
 		"bootstrap": "^4.3.1",

@@ -8,7 +8,7 @@ import { PacketKind } from '../../../Network/Message/PacketKind';
 import { ComponentsHelper } from '../../ComponentsHelper';
 
 export default class CreatingHostComponent extends Component<any, CreatingHostState> {
-	private _socket: any;
+	private _socket: SocketIOClient.Socket;
 	private _isFirstRender = true;
 
 	constructor() {
@@ -76,7 +76,9 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 				</div>
 				<div class="container-center-horizontal">
 					{ComponentsHelper.GetBlackButton(this._isFirstRender, 'fas fa-undo-alt', 'Back', this.Back)}
-					{ComponentsHelper.GetRedButton(this._isFirstRender, 'far fa-play-circle', 'Start', this.Start)}
+					{ComponentsHelper.GetRedButton(this._isFirstRender, 'far fa-play-circle', 'Start', (e) =>
+						this.Start(e)
+					)}
 				</div>
 			</div>
 		);

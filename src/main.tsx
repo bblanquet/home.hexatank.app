@@ -3,9 +3,9 @@ import HomeComponent from './Components/Home/HomeComponent';
 import SinglePlayerComponent from './Components/SinglePlayer/SinglePlayerComponent';
 import CanvasComponent from './Components/Canvas/CanvasComponent';
 import CampaignComponent from './Components/Campaign/CampaignComponent';
-import OffHostComponent from './Components/Network/Host/Off/OffHostComponent';
-import JoiningComponent from './Components/Network/Join/JoiningComponent';
+import GuestComponent from './Components/Network/Guest/GuestComponent';
 import CreatingHostComponent from './Components/Network/Creating/CreatingHostComponent';
+import HostingComponent from './Components/Network/Host/HostingComponent';
 import LoadingComponent from './Components/Loading/LoadingComponent';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
@@ -22,9 +22,9 @@ render(
 		<SinglePlayerComponent path="/SinglePlayer" />
 		<CampaignComponent path="/Campaign" />
 		<CanvasComponent path="/Canvas" />
-		<OffHostComponent path="/OffHost" />
 		<CreatingHostComponent path="/CreatingHost" />
-		<JoiningComponent path="/OffJoin" />
+		<HostingComponent path="/Hosting/:RoomName/:playerName/:isAdmin" />
+		<GuestComponent path="/OffJoin" />
 		<LoadingComponent path="/Loading" default />
 	</Router>,
 	document.querySelector('#app')

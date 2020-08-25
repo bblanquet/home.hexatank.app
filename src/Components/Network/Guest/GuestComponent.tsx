@@ -2,12 +2,11 @@ import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import linkState from 'linkstate';
 import * as toastr from 'toastr';
-import { IconProvider } from '../../IconProvider';
 import { PacketKind } from '../../../Network/Message/PacketKind';
 import { ComponentsHelper } from '../../ComponentsHelper';
 const io = require('socket.io-client');
 
-export default class JoiningComponent extends Component<any, { RoomNames: string[]; PlayerName: string }> {
+export default class GuestComponent extends Component<any, { RoomNames: string[]; PlayerName: string }> {
 	private _socket: any;
 	private _isFirstRender = true;
 
@@ -59,9 +58,40 @@ export default class JoiningComponent extends Component<any, { RoomNames: string
 					</div>
 				</div>
 
-				<table class="table table-dark table-hover">
+				<div class="custom-btn-border3 fit-content">
+					<div class="custom-btn-border2 fit-content">
+						<table class="table table-dark table-striped table-borderless custom-table">
+							<thead>
+								<tr class="d-flex">
+									<th>Firstname</th>
+									<th>Lastname</th>
+									<th>Email</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="d-flex">
+									<td class="active">John</td>
+									<td class="success">Doe</td>
+									<td class="danger">john@example.com</td>
+								</tr>
+								<tr class="d-flex">
+									<td>Mary</td>
+									<td>Moe</td>
+									<td>mary@example.com</td>
+								</tr>
+								<tr class="d-flex">
+									<td>July</td>
+									<td>Dooley</td>
+									<td>july@example.com</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				{/* <table class="table table-dark table-hover ctm-table">
 					{this.state.RoomNames.length === 0 ? this.EmptyGrid() : this.Grid()}
-				</table>
+				</table> */}
 				<div class="container-center-horizontal">
 					{ComponentsHelper.GetBlackButton(this._isFirstRender, 'fas fa-undo-alt', 'Back', this.Back)}
 					{ComponentsHelper.GetRedButton(this._isFirstRender, 'fas fa-sync-alt', 'Refresh', this.Refresh)}

@@ -72,10 +72,10 @@ export class NetworkDispatcher {
 		this._socket.Emit(message);
 	}
 
-	private HandleNextCellChanged(source: any, t: Vehicle): void {
+	private HandleNextCellChanged(source: Vehicle, cell: Cell): void {
 		const content = new NextCellPacket();
-		content.Id = t.Id;
-		content.Coo = t.GetNextCell().Coo();
+		content.Id = source.Id;
+		content.Coo = cell.Coo();
 		const message = this.Message<NextCellPacket>(PacketKind.NextCell, content);
 		this._socket.Emit(message);
 	}

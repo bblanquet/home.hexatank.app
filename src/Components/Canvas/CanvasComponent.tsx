@@ -100,6 +100,8 @@ export default class CanvasComponent extends Component<
 		}
 
 		this._gameContext = new MapRender().Render(GameHelper.MapContext);
+		GameHelper.SetNetwork(this._gameContext);
+
 		const checker = new SelectableChecker(this._gameContext.GetMainHq());
 		this._appHandler.InteractionContext = new InteractionContext(
 			this._appHandler.InputManager,

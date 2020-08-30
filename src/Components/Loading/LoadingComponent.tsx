@@ -12,21 +12,21 @@ export default class LoadingComponent extends Component<any, { percentage: numbe
 	componentDidMount() {
 		this._isFirstRender = false;
 
-		// setTimeout(() => {
-		// 	const listener = SpriteProvider.LoadAll();
-		// 	listener.On((obj: any, percentage: number) => {
-		// 		this.setState({
-		// 			percentage: percentage
-		// 		});
+		setTimeout(() => {
+			const listener = SpriteProvider.LoadAll();
+			listener.On((obj: any, percentage: number) => {
+				this.setState({
+					percentage: percentage
+				});
 
-		// 		if (percentage === 100) {
-		// 			listener.Clear();
-		// 		}
-		// 	});
-		// }, 1000);
-		this.setState({
-			percentage: 100
-		});
+				if (percentage === 100) {
+					listener.Clear();
+				}
+			});
+		}, 1000);
+		// this.setState({
+		// 	percentage: 100
+		// });
 	}
 
 	private ToHome(e: any): void {

@@ -10,4 +10,8 @@ export class NetworkContext {
 		this._receiver = new NetworkReceiver(this._socket, this._gameContext);
 		this._dispatcher = new NetworkDispatcher(this._gameContext, this._socket);
 	}
+
+	public Destroy(): void {
+		this._socket.Stop();
+	}
 }

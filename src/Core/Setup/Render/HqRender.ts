@@ -78,8 +78,8 @@ export class HqRender {
 				hq = this.CreateIaHq(
 					context,
 					cells,
-					hqDefinition.Hq.Position,
-					hqDefinition.Diamond.Position,
+					new HexAxial(hqDefinition.Hq.Position.Q, hqDefinition.Hq.Position.R),
+					new HexAxial(hqDefinition.Diamond.Position.Q, hqDefinition.Diamond.Position.R),
 					playgroundItems,
 					this._skins[index]
 				);
@@ -87,8 +87,8 @@ export class HqRender {
 				hq = this.CreateHq(
 					context,
 					cells,
-					hqDefinition.Hq.Position,
-					hqDefinition.Diamond.Position,
+					new HexAxial(hqDefinition.Hq.Position.Q, hqDefinition.Hq.Position.R),
+					new HexAxial(hqDefinition.Diamond.Position.Q, hqDefinition.Diamond.Position.R),
 					playgroundItems,
 					this._skins[index]
 				);

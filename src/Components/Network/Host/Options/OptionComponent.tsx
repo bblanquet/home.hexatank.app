@@ -1,130 +1,54 @@
 import { h, Component } from 'preact';
 import linkState from 'linkstate';
+import { ComponentsHelper } from '../../../ComponentsHelper';
 
-export default class OptionComponent extends Component<{ Update: (g: any) => void; Data: any }, any> {
+export default class OptionComponent extends Component<{ Update: (g: number) => void }, { IaNumber: number }> {
+	private _isFirstRender = true;
 	constructor() {
 		super();
+		this.setState({
+			IaNumber: 0
+		});
 	}
 
-	componentWillMount() {
-		this.setState(this.props.Data);
+	componentDidMount() {
+		this._isFirstRender = false;
 	}
 
-	private Update(): void {
-		this.props.Update(this.state);
+	componentWillMount() {}
+
+	private Update(e: number): void {
+		this.setState({
+			IaNumber: e
+		});
+		this.props.Update(e);
 	}
 
 	render() {
 		return (
 			<div class="whiteText">
-				<div class="custom-control custom-switch btn-group-space ">
-					<input
-						type="checkbox"
-						class="custom-control-input"
-						id="Angel"
-						value={this.state.Angel ? 1 : 0}
-						onChange={linkState(this, 'Angel')}
-					/>
-					<label class="custom-control-label" for="Angel">
-						Angel
-					</label>
-				</div>
-				<div class="custom-control custom-switch btn-group-space ">
-					<input
-						type="checkbox"
-						class="custom-control-input"
-						id="Witch"
-						value={this.state.Witch ? 1 : 0}
-						onChange={linkState(this, 'Witch')}
-					/>
-					<label class="custom-control-label" for="Witch">
-						Witch
-					</label>
-				</div>
-				<div class="custom-control custom-switch btn-group-space ">
-					<input
-						type="checkbox"
-						class="custom-control-input"
-						id="Seer"
-						value={this.state.Seer ? 1 : 0}
-						onChange={linkState(this, 'Seer')}
-					/>
-					<label class="custom-control-label" for="Seer">
-						Seer
-					</label>
-				</div>
 				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text custom-black-btn" id="inputGroup-sizing-default">
+							IA
+						</span>
+					</div>
 					<select
 						id="daytime"
 						class="custom-select"
-						value={this.state.DaytimeDuration}
-						onChange={linkState(this, 'DaytimeDuration')}
+						value={this.state.IaNumber}
+						onChange={linkState(this, 'IaNumber')}
 					>
-						<option selected value="10">
-							10 seconds
+						<option selected value="0">
+							0
 						</option>
-						<option selected value="30">
-							30 seconds
-						</option>
-						<option value="60">1 minute</option>
-						<option value="90">1 minute 30 seconds</option>
-						<option value="120">2 minutes</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
 					</select>
-					<div class="input-group-append">
-						<label class="input-group-text" for="inputGroupSelect02">
-							Day time duration
-						</label>
-					</div>
 				</div>
-				<div class="input-group mb-3">
-					<select
-						id="daytime"
-						class="custom-select"
-						value={this.state.RedNightDuration}
-						onChange={linkState(this, 'RedNightDuration')}
-					>
-						<option selected value="10">
-							10 seconds
-						</option>
-						<option selected value="30">
-							30 seconds
-						</option>
-						<option value="60">1 minute</option>
-						<option value="90">1 minute 30 seconds</option>
-						<option value="120">2 minutes</option>
-					</select>
-					<div class="input-group-append">
-						<label class="input-group-text" for="inputGroupSelect02">
-							Red night duration
-						</label>
-					</div>
-				</div>
-				<div class="input-group mb-3">
-					<select
-						id="daytime"
-						class="custom-select"
-						value={this.state.PurpleNightDuration}
-						onChange={linkState(this, 'PurpleNightDuration')}
-					>
-						<option selected value="10">
-							10 seconds
-						</option>
-						<option selected value="30">
-							30 seconds
-						</option>
-						<option value="60">1 minute</option>
-						<option value="90">1 minute 30 seconds</option>
-						<option value="120">2 minutes</option>
-					</select>
-					<div class="input-group-append">
-						<label class="input-group-text" for="inputGroupSelect02">
-							Purple night duration
-						</label>
-					</div>
-				</div>
-				<button type="button" class="btn btn-primary btn-sm btn-danger" onClick={() => this.Update()}>
-					BACK
-				</button>
+				{ComponentsHelper.GetBlackButton(this._isFirstRender, 'fas fa-undo-alt', 'Back', () =>
+					this.Update(this.state.IaNumber)
+				)}
 			</div>
 		);
 	}

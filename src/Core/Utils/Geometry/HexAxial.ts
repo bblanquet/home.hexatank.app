@@ -12,6 +12,14 @@ import { Point } from './Point';
  *   \__/  \__/  \__/
  */
 
+export class LightHexAxial {
+	Q: number; //column
+	R: number; //row
+	ToString(): string {
+		return 'HexAxial(' + [ this.Q, this.R ].toString() + ')';
+	}
+}
+
 export class HexAxial {
 	Q: number; //column
 	R: number; //row

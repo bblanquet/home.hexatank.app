@@ -108,8 +108,25 @@
 	-webkit-animation: fade 1s linear infinite alternate, spin 15s linear infinite;
 }
 
+.full-width {
+	width: 100%;
+}
+
 .btn-space {
 	margin: 10px 10px 10px 10px;
+}
+
+.no-radius {
+	border-radius: 0px;
+}
+
+.optionContainer {
+	background-color: #1f1f1f;
+	border-radius: 5px;
+	width: 80%;
+	max-width: 350px;
+	padding: 10px;
+	border: #c2c2c2 solid 3px;
 }
 
 .btn-simple-black {

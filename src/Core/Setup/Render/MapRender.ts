@@ -33,30 +33,32 @@ export class MapRender {
 		let playgroundItems = new Array<Item>();
 
 		mapContext.Items.forEach((item) => {
-			let cell = new Cell(new CellProperties(item.Position), cells, context);
+			let cell = new Cell(new CellProperties(new HexAxial(item.Position.Q, item.Position.R)), cells, context);
 			ForestDecorator.SetDecoration(playgroundItems, cell, item.Type);
 			cell.SetSprite();
 			cells.Add(cell);
 			playgroundItems.push(cell);
 		});
 
-		let areas = new AreaSearch(cells.Keys()).GetAreas(mapContext.CenterItem.Position);
+		let areas = new AreaSearch(cells.Keys()).GetAreas(
+			new HexAxial(mapContext.CenterItem.Position.Q, mapContext.CenterItem.Position.R)
+		);
 		this.SetLands(cells, mapContext.MapMode, areas, playgroundItems);
 		this.AddClouds(playgroundItems);
 		const hqs = this._hqRender.GetHq(context, cells, mapContext.Hqs, playgroundItems);
 
 		let playerHq = hqs.find((hq) => hq.PlayerName === mapContext.PlayerName);
-		//make hq cells visible
-		playerHq.GetCurrentCell().SetState(CellState.Visible);
-		playerHq.GetCurrentCell().GetAllNeighbourhood().forEach((cell) => {
-			(<Cell>cell).SetState(CellState.Visible);
-		});
 
 		//insert elements into playground
 		this.SetHqLands(cells, Archive.nature.hq, hqs.map((h) => h.GetCell().GetCoordinate()), playgroundItems);
 		this.SetHqLands(cells, Archive.nature.hq2, hqs.map((h) => h.GetCell().GetCoordinate()), playgroundItems, 1);
 
 		context.Setup(playerHq, hqs, cells.All());
+		//make hq cells visible, need context to be setup :<, has to fix it one day
+		playerHq.GetCurrentCell().SetState(CellState.Visible);
+		playerHq.GetCurrentCell().GetAllNeighbourhood().forEach((cell) => {
+			(<Cell>cell).SetState(CellState.Visible);
+		});
 		return context;
 	}
 

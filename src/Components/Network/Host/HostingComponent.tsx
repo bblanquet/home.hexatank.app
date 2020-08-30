@@ -18,8 +18,10 @@ import { ComponentsHelper } from '../../ComponentsHelper';
 import { MapGenerator } from '../../../Core/Setup/Generator/MapGenerator';
 import { MapMode } from '../../../Core/Setup/Generator/MapMode';
 import { MapContext } from '../../../Core/Setup/Generator/MapContext';
-import { GameContext } from '../../../Core/Framework/GameContext';
 import { GameHelper } from '../../../Core/Framework/GameHelper';
+import { NetworkContext } from '../../../Core/Framework/NetworkContext';
+import { Cell } from '../../../Core/Items/Cell/Cell';
+import { HexAxial } from '../../../Core/Utils/Geometry/HexAxial';
 
 export default class HostingComponent extends Component<any, HostState> {
 	private _socket: NetworkSocket;
@@ -28,7 +30,6 @@ export default class HostingComponent extends Component<any, HostState> {
 
 	private _readyObserver: NetworkObserver;
 	private _toastObserver: NetworkObserver;
-	private _contextObserver: NetworkObserver;
 	private _playersObserver: NetworkObserver;
 	private _pingObserver: NetworkObserver;
 	private _mapObserver: NetworkObserver;
@@ -38,7 +39,6 @@ export default class HostingComponent extends Component<any, HostState> {
 		super(props);
 		this._readyObserver = new NetworkObserver(PacketKind.Ready, this.OnPlayerReadyChanged.bind(this));
 		this._toastObserver = new NetworkObserver(PacketKind.Toast, this.OnToastReceived.bind(this));
-		this._contextObserver = new NetworkObserver(PacketKind.Context, this.OnStarted.bind(this));
 		this._playersObserver = new NetworkObserver(PacketKind.Players, this.OnPlayersChanged.bind(this));
 		this._pingObserver = new NetworkObserver(PacketKind.Ping, this.OnPingChanged.bind(this));
 		this._mapObserver = new NetworkObserver(PacketKind.Map, this.OnMapReceived.bind(this));
@@ -65,10 +65,9 @@ export default class HostingComponent extends Component<any, HostState> {
 		this._socket.OnPeerConnectionChanged.On(this._onPeerConnectionChanged);
 		this._socket.OnReceived.On(this._toastObserver);
 		this._socket.OnReceived.On(this._readyObserver);
-		this._socket.OnReceived.On(this._contextObserver);
 		this._socket.OnReceived.On(this._playersObserver);
 		this._socket.OnReceived.On(this._pingObserver);
-
+		this._socket.OnReceived.On(this._mapObserver);
 		// NetworkService.Dispatcher.Init(!this.state.IsAdmin);
 	}
 
@@ -79,8 +78,8 @@ export default class HostingComponent extends Component<any, HostState> {
 	componentWillUnmount() {
 		this._socket.OnReceived.Off(this._toastObserver);
 		this._socket.OnReceived.Off(this._readyObserver);
-		this._socket.OnReceived.Off(this._contextObserver);
 		this._socket.OnReceived.Off(this._playersObserver);
+		this._socket.OnReceived.Off(this._mapObserver);
 		this._socket.OnPeerConnectionChanged.Off(this._onPeerConnectionChanged);
 	}
 
@@ -99,16 +98,16 @@ export default class HostingComponent extends Component<any, HostState> {
 					{this.GetDownsideButton()}
 				</div>
 				{this.GetSettings()}
-				<div class="absolute-center-bottom custom-black-btn">{this.GetMessageForm()}</div>
+				<div class="absolute-center-bottom full-width">{this.GetMessageForm()}</div>
 			</div>
 		);
 	}
 	GetSettings() {
 		if (this._hasSettings) {
 			return (
-				<div class="optionContainer absolute-center-middle">
+				<div class="optionContainer absolute-center-middle-menu">
 					<div class="title-container">Settings</div>
-					<OptionComponent Data={this.state.Settings} Update={this.Update.bind(this)} />
+					<OptionComponent Update={this.Update.bind(this)} />
 				</div>
 			);
 		} else {
@@ -125,19 +124,19 @@ export default class HostingComponent extends Component<any, HostState> {
 			}
 		}
 	}
-	private Update(gameSetting: GameSettings): void {
+	private Update(iaNumber: number): void {
 		this._hasSettings = false;
 		this.setState({
-			Settings: gameSetting
+			IaNumber: iaNumber
 		});
 	}
 
 	private GetMessageForm() {
 		return (
-			<div class="input-group mb-3">
+			<div class="input-group">
 				<input
 					type="text"
-					class="form-control"
+					class="form-control no-radius"
 					id="toastMessageBox"
 					value={this.state.Message}
 					onInput={linkState(this, 'Message')}
@@ -159,10 +158,14 @@ export default class HostingComponent extends Component<any, HostState> {
 				{ComponentsHelper.GetBlackButton(this._isFirstRender, 'fas fa-toggle-on', this.GetButtonLabel(), () =>
 					this.ChangeReady()
 				)}
-				{ComponentsHelper.GetBlackButton(this._isFirstRender, 'fas fa-cog', 'Setup', () => {
-					this._hasSettings = true;
-					this.setState({});
-				})}
+				{this.state.IsAdmin ? (
+					ComponentsHelper.GetBlackButton(this._isFirstRender, 'fas fa-cog', 'Setup', () => {
+						this._hasSettings = true;
+						this.setState({});
+					})
+				) : (
+					''
+				)}
 			</div>
 		);
 	}
@@ -171,7 +174,13 @@ export default class HostingComponent extends Component<any, HostState> {
 		return (
 			<div class="container-center-horizontal">
 				{ComponentsHelper.GetBlackButton(this._isFirstRender, 'fas fa-undo-alt', 'Back', () => this.Back())}
-				{ComponentsHelper.GetRedButton(this._isFirstRender, 'far fa-play-circle', 'Start', () => this.Start())}
+				{this.state.IsAdmin ? (
+					ComponentsHelper.GetRedButton(this._isFirstRender, 'far fa-play-circle', 'Start', () =>
+						this.Start()
+					)
+				) : (
+					''
+				)}
 			</div>
 		);
 	}
@@ -184,6 +193,9 @@ export default class HostingComponent extends Component<any, HostState> {
 	}
 
 	private OnMapReceived(data: NetworkMessage<MapContext>): void {
+		GameHelper.MapContext = data.Content;
+		GameHelper.MapContext.PlayerName = this.state.Player.Name;
+		GameHelper.Socket = this._socket;
 		route('/Canvas', true);
 	}
 
@@ -251,14 +263,10 @@ export default class HostingComponent extends Component<any, HostState> {
 
 	private Start(): void {
 		if (this.IsEveryoneReady()) {
-			const mapContext = new MapGenerator().GetMapDefinition(
-				12,
-				'Flower',
-				this.state.Players.Count(),
-				MapMode.forest
-			);
+			const hqCount = +this.state.IaNumber + this.state.Players.Count();
+			const mapContext = new MapGenerator().GetMapDefinition(12, 'Flower', hqCount, MapMode.forest);
 			mapContext.PlayerName = this.state.Player.Name;
-			this.Assign(mapContext, this.state.Players.Values());
+			this.AssignHqToPlayer(mapContext, this.state.Players.Values());
 
 			const message = new NetworkMessage<MapContext>();
 			message.Content = mapContext;
@@ -268,6 +276,9 @@ export default class HostingComponent extends Component<any, HostState> {
 			this._socket.Emit(message);
 			this.SetIa(mapContext);
 			this.HideRoom();
+			GameHelper.MapContext = mapContext;
+			GameHelper.Socket = this._socket;
+			route('/Canvas', true);
 		}
 	}
 
@@ -290,12 +301,7 @@ export default class HostingComponent extends Component<any, HostState> {
 		this._socket.Emit(message);
 	}
 
-	private OnStarted(data: NetworkMessage<MapContext>): void {
-		GameHelper.MapContext = data.Content;
-		route('/Canvas', true);
-	}
-
-	public Assign(mapContext: any, players: Player[]): void {
+	public AssignHqToPlayer(mapContext: any, players: Player[]): void {
 		if (mapContext.Hqs.length < players.length) {
 			throw new Error('not enough hq');
 		}

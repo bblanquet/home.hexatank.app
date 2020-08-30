@@ -35,7 +35,7 @@ export class ReactorField extends Field implements ISelectable {
 	private _internalCells: CellContext<Cell> = new CellContext<Cell>();
 	public Lost: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
 	public Appearance: ReactorAppearance;
-	public SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
+	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 	public PowerChanged: LiteEvent<boolean> = new LiteEvent<boolean>();
 
 	constructor(cell: Cell, public Hq: Headquarter, private _context: GameContext, private _light: string) {
@@ -156,7 +156,7 @@ export class ReactorField extends Field implements ISelectable {
 				this._context,
 				vehicule.Hq.GetSkin().GetLight()
 			);
-			vehicule.Hq.ReactorConquested.Invoke(this, reactor);
+			vehicule.Hq.OnReactorConquested.Invoke(this, reactor);
 		}
 	}
 
@@ -235,7 +235,7 @@ export class ReactorField extends Field implements ISelectable {
 		} else {
 			this.ClearArea();
 		}
-		this.SelectionChanged.Invoke(this, this);
+		this.OnSelectionChanged.Invoke(this, this);
 	}
 	private CreateArea() {
 		this.GetCell().GetSpecificRange(this._range).forEach((cell) => {

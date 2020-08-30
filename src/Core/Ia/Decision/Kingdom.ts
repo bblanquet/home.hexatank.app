@@ -52,7 +52,7 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 			this.AllAreas.push(a);
 		});
 
-		this.Hq.VehicleCreated.On((hq: any, vehicle: Vehicle) => {
+		this.Hq.OnVehicleCreated.On((hq: any, vehicle: Vehicle) => {
 			if (vehicle instanceof Truck) {
 				const truck = vehicle as Truck;
 				this.Trucks.push(truck);
@@ -61,7 +61,7 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 				this.Tanks.push(tank);
 			}
 		});
-		this.Hq.ReactorConquested.On((e: any, obj: ReactorField) => {
+		this.Hq.OnReactorConquested.On((e: any, obj: ReactorField) => {
 			const c = obj.GetCell();
 			let area = this.Areas.filter((a) => a.Contains(c))[0];
 			if (!isNullOrUndefined(area)) {
@@ -69,7 +69,7 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 			}
 		});
 
-		this.Hq.ReactorLost.On((e: any, obj: ReactorField) => {
+		this.Hq.OnReactorLost.On((e: any, obj: ReactorField) => {
 			const c = obj.GetCell();
 			let foundArea: KingdomArea = null;
 			this.GetKingdomAreas().Values().some((area) => {

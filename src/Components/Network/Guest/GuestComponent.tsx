@@ -39,11 +39,10 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 					</div>
 					<div class="fill-logo" />
 				</div>
-				<div class="title-container">Rooms</div>
 				<div class="form-group mb-2">
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
-							<span class="input-group-text" id="inputGroup-sizing-default">
+							<span class="input-group-text custom-black-btn" id="inputGroup-sizing-default">
 								Playername
 							</span>
 						</div>
@@ -57,41 +56,10 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 						/>
 					</div>
 				</div>
-
-				<div class="custom-btn-border3 fit-content">
-					<div class="custom-btn-border2 fit-content">
-						<table class="table table-dark table-striped table-borderless custom-table">
-							<thead>
-								<tr class="d-flex">
-									<th>Firstname</th>
-									<th>Lastname</th>
-									<th>Email</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr class="d-flex">
-									<td class="active">John</td>
-									<td class="success">Doe</td>
-									<td class="danger">john@example.com</td>
-								</tr>
-								<tr class="d-flex">
-									<td>Mary</td>
-									<td>Moe</td>
-									<td>mary@example.com</td>
-								</tr>
-								<tr class="d-flex">
-									<td>July</td>
-									<td>Dooley</td>
-									<td>july@example.com</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-
-				{/* <table class="table table-dark table-hover ctm-table">
-					{this.state.RoomNames.length === 0 ? this.EmptyGrid() : this.Grid()}
-				</table> */}
+				{ComponentsHelper.GetGrid(
+					this.Header(),
+					this.state.RoomNames.length === 0 ? this.EmptyGridContent() : this.GridContent()
+				)}
 				<div class="container-center-horizontal">
 					{ComponentsHelper.GetBlackButton(this._isFirstRender, 'fas fa-undo-alt', 'Back', this.Back)}
 					{ComponentsHelper.GetRedButton(this._isFirstRender, 'fas fa-sync-alt', 'Refresh', this.Refresh)}
@@ -100,27 +68,35 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 		);
 	}
 
-	private EmptyGrid() {
+	private Header() {
+		return (
+			<thead>
+				<tr class="d-flex">
+					<th>Rooms</th>
+				</tr>
+			</thead>
+		);
+	}
+
+	private EmptyGridContent() {
 		return (
 			<tbody>
-				<tr>
-					<td class="align-middle">No room available...</td>
+				<tr class="d-flex">
+					<td class="align-self-center">No room available...</td>
 				</tr>
 			</tbody>
 		);
 	}
 
-	private Grid() {
+	private GridContent() {
 		return (
 			<tbody>
 				{this.state.RoomNames.map((RoomName) => {
 					return (
-						<tr>
-							<td class="align-middle">{RoomName}</td>
-							<td style="text-align:right">
-								<button type="button" onClick={() => this.Join(RoomName)} class="btn btn-danger">
-									Join
-								</button>
+						<tr class="d-flex">
+							<td class="align-self-center">{RoomName}</td>
+							<td class="align-self-center">
+								{ComponentsHelper.GetSmBlackButton('Join', () => this.Join(RoomName))}
 							</td>
 						</tr>
 					);

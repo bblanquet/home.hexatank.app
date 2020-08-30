@@ -17,6 +17,10 @@ export class Dictionnary<T> {
 		return all;
 	}
 
+	Count(): number {
+		return Object.keys(this._values).length;
+	}
+
 	public Clear(): void {
 		this._values = {};
 	}

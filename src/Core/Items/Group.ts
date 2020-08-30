@@ -15,7 +15,7 @@ import { Tank } from './Unit/Tank';
 export class Group extends Item implements ISelectable, ICancellable, ICamouflageAble {
 	private _multiHandler: MultiSelectionHelper;
 	private _units: Array<Vehicle> = new Array<Vehicle>();
-	SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
+	OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 
 	constructor(private _app: AppHandler, private selectionContext: MultiSelectionContext) {
 		super(false);
@@ -57,7 +57,7 @@ export class Group extends Item implements ISelectable, ICancellable, ICamouflag
 				v.SetSelected(visible);
 			});
 		}
-		this.SelectionChanged.Invoke(this, this);
+		this.OnSelectionChanged.Invoke(this, this);
 	}
 	IsSelected(): boolean {
 		return this.Any();

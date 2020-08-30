@@ -25,7 +25,6 @@ import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
 
 export class Headquarter extends AliveItem implements IField, ISelectable {
 	public Flagcell: FlagCell;
-	SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 	private _boundingBox: BoundingBox;
 	private _cell: Cell;
 	public PlayerName: string;
@@ -37,9 +36,10 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	private _batteryFields: Array<BatteryField> = new Array<BatteryField>();
 
 	private _vehicles: Array<Vehicle> = new Array<Vehicle>();
-	public VehicleCreated: LiteEvent<Vehicle> = new LiteEvent<Vehicle>();
-	public ReactorConquested: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
-	public ReactorLost: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
+	public OnVehicleCreated: LiteEvent<Vehicle> = new LiteEvent<Vehicle>();
+	public OnReactorConquested: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
+	public OnReactorLost: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
+	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 
 	constructor(skin: ItemSkin, cell: Cell, public GameContext: GameContext) {
 		super();
@@ -131,7 +131,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 				}
 				const tank = new Tank(this, this.GameContext);
 				tank.SetPosition(cell === null ? field.GetCell() : cell);
-				this.VehicleCreated.Invoke(this, tank);
+				this.OnVehicleCreated.Invoke(this, tank);
 
 				isCreated = true;
 				if (this.Flagcell) {
@@ -154,7 +154,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 				}
 				let truck = new Truck(this, this.GameContext);
 				truck.SetPosition(cell || field.GetCell());
-				this.VehicleCreated.Invoke(this, truck);
+				this.OnVehicleCreated.Invoke(this, truck);
 
 				isCreated = true;
 				return false;
@@ -167,7 +167,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 
 	SetSelected(isSelected: boolean): void {
 		this.SetProperty(Archive.selectionUnit, (e) => (e.alpha = isSelected ? 1 : 0));
-		this.SelectionChanged.Invoke(this, this);
+		this.OnSelectionChanged.Invoke(this, this);
 	}
 	IsSelected(): boolean {
 		return this.GetCurrentSprites().Get(Archive.selectionUnit).alpha === 1;
@@ -356,7 +356,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		this._reactors.push(reactor);
 		reactor.Lost.On((e: any, ie: ReactorField) => {
 			this._reactors = this._reactors.filter((v) => v !== ie);
-			this.ReactorLost.Invoke(this, ie);
+			this.OnReactorLost.Invoke(this, ie);
 		});
 	}
 

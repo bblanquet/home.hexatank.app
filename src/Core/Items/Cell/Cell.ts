@@ -38,7 +38,7 @@ export class Cell extends Item implements ICell, ISelectable {
 	private _occupier: IMovable;
 	private _decorationSprite: string;
 	private _circle: PIXI.Circle;
-	public SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
+	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 	private _animator: IAnimator = null;
 
 	constructor(properties: CellProperties, private _cells: CellContext<Cell>, private _gameContext: GameContext) {
@@ -73,7 +73,7 @@ export class Cell extends Item implements ICell, ISelectable {
 
 	public SetSelected(isSelected: boolean): void {
 		this.SetProperty(Archive.selectionCell, (e) => (e.alpha = isSelected ? 1 : 0));
-		this.SelectionChanged.Invoke(this, this);
+		this.OnSelectionChanged.Invoke(this, this);
 	}
 	public IsSelected(): boolean {
 		return this.GetCurrentSprites().Get(Archive.selectionCell).alpha === 1;

@@ -25,8 +25,8 @@ export class MapRender {
 	}
 
 	public Render(mapContext: MapContext): GameContext {
-		const context = new GameContext();
 		const cells = new CellContext<Cell>();
+		const context = new GameContext();
 
 		GameSettings.MapSize = mapContext.Items.length;
 
@@ -44,11 +44,8 @@ export class MapRender {
 		this.SetLands(cells, mapContext.MapMode, areas, playgroundItems);
 		this.AddClouds(playgroundItems);
 		const hqs = this._hqRender.GetHq(context, cells, mapContext.Hqs, playgroundItems);
-		context.SetHqs(hqs);
 
 		let playerHq = hqs.find((hq) => hq.PlayerName === mapContext.PlayerName);
-		context.MainHq = playerHq;
-		context.Setup();
 		//make hq cells visible
 		playerHq.GetCurrentCell().SetState(CellState.Visible);
 		playerHq.GetCurrentCell().GetAllNeighbourhood().forEach((cell) => {
@@ -59,6 +56,7 @@ export class MapRender {
 		this.SetHqLands(cells, Archive.nature.hq, hqs.map((h) => h.GetCell().GetCoordinate()), playgroundItems);
 		this.SetHqLands(cells, Archive.nature.hq2, hqs.map((h) => h.GetCell().GetCoordinate()), playgroundItems, 1);
 
+		context.Setup(playerHq, hqs, cells.All());
 		return context;
 	}
 

@@ -65,7 +65,7 @@ export default class CanvasComponent extends Component<
 	}
 	private OnItemSelectionChanged(obj: any, item: ISelectable): void {
 		if (!item.IsSelected()) {
-			item.SelectionChanged.Off(this._onItemSelectionChanged);
+			item.OnSelectionChanged.Off(this._onItemSelectionChanged);
 			this.setState({
 				...this.state,
 				Item: null
@@ -146,7 +146,7 @@ export default class CanvasComponent extends Component<
 			});
 		});
 		this._gameContext.OnItemSelected.On((obj: any, e: Item) => {
-			((e as unknown) as ISelectable).SelectionChanged.On(this._onItemSelectionChanged);
+			((e as unknown) as ISelectable).OnSelectionChanged.On(this._onItemSelectionChanged);
 			this.setState({
 				Item: e
 			});
@@ -158,7 +158,7 @@ export default class CanvasComponent extends Component<
 				});
 			}
 		});
-		this._gameContext.GameEnded.On((obj: any, e: GameStatus) => {
+		this._gameContext.OnGameEnded.On((obj: any, e: GameStatus) => {
 			if (e !== this.state.GameStatus) {
 				this.setState({
 					GameStatus: e

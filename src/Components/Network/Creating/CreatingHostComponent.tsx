@@ -43,7 +43,7 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 				<div class="form-group mb-2">
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
-							<span class="input-group-text" id="inputGroup-sizing-default">
+							<span class="input-group-text custom-black-btn" id="inputGroup-sizing-default">
 								Room name
 							</span>
 						</div>
@@ -60,7 +60,7 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 				<div class="form-group mb-2">
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
-							<span class="input-group-text" id="inputGroup-sizing-default">
+							<span class="input-group-text custom-black-btn" id="inputGroup-sizing-default">
 								Player Name
 							</span>
 						</div>

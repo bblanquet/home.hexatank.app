@@ -3,6 +3,7 @@ import { ConnectionKind } from '../../../../Network/ConnectionKind';
 import { NetworkSocket } from '../../../../Network/NetworkSocket';
 import { HostState } from '../../HostState';
 import { Player } from '../../../../Network/Player';
+import { ComponentsHelper } from '../../../ComponentsHelper';
 
 export default class PlayersComponent extends Component<{ HostState: HostState; NetworkHandler: NetworkSocket }, {}> {
 	constructor() {
@@ -14,45 +15,46 @@ export default class PlayersComponent extends Component<{ HostState: HostState; 
 	componentWillUnmount() {}
 
 	render() {
+		return ComponentsHelper.GetGrid(this.GetHeader(), this.GetContent());
+	}
+
+	private GetHeader() {
 		return (
-			<table class="table table-dark table-hover">
-				<thead>
-					<tr>
-						<th scope="col">Player</th>
-						<th scope="col">Peer</th>
-						<th scope="col">Ping</th>
-						{this.props.HostState.IsAdmin ? <th scope="col">*</th> : ''}
-					</tr>
-				</thead>
-				<tbody>
-					{this.props.HostState.Players.Values().map((player) => {
-						return (
-							<tr class={this.props.HostState.Player.Name === player.Name ? 'row-blue' : ''}>
+			<thead>
+				<tr>
+					<th scope="col">Player</th>
+					<th scope="col">Peer</th>
+					<th scope="col">Ping</th>
+					{this.props.HostState.IsAdmin ? <th scope="col">*</th> : ''}
+				</tr>
+			</thead>
+		);
+	}
+
+	private GetContent() {
+		return (
+			<tbody>
+				{this.props.HostState.Players.Values().map((player) => {
+					return (
+						<tr class={this.props.HostState.Player.Name === player.Name ? 'row-blue' : ''}>
+							<td class="align-middle">
+								{player.Name} {this.GetReady(player)}
+							</td>
+							<td class="align-middle">
+								{this.GetType(player)} {this.GetConnection(player)}
+							</td>
+							<td class="align-middle">{+player.Latency === 0 ? '' : player.Latency}</td>
+							{this.props.HostState.IsAdmin ? (
 								<td class="align-middle">
-									{player.Name} {this.GetReady(player)}
+									{ComponentsHelper.GetSmBlackButton('-', () => this.MakeUserLeave(player.Name))}
 								</td>
-								<td class="align-middle">
-									{this.GetType(player)} {this.GetConnection(player)}
-								</td>
-								<td class="align-middle">{+player.Latency === 0 ? '-' : player.Latency}</td>
-								{this.props.HostState.IsAdmin ? (
-									<td class="align-middle">
-										<button
-											type="button"
-											class="btn btn-danger btn-small"
-											onClick={() => this.MakeUserLeave(player.Name)}
-										>
-											X
-										</button>
-									</td>
-								) : (
-									''
-								)}
-							</tr>
-						);
-					})}
-				</tbody>
-			</table>
+							) : (
+								''
+							)}
+						</tr>
+					);
+				})}
+			</tbody>
 		);
 	}
 

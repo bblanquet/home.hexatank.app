@@ -65,7 +65,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	private _leftDusts: Array<Dust>;
 	private _rightDusts: Array<Dust>;
 
-	public SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
+	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 	private _onCellStateChanged: { (obj: any, cellState: CellState): void };
 	public CellChanged: LiteEvent<Cell> = new LiteEvent<Cell>();
 	public Destoyed: LiteEvent<Vehicle> = new LiteEvent<Vehicle>();
@@ -263,7 +263,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
 	public SetSelected(isSelected: boolean): void {
 		this.SetProperty(Archive.selectionUnit, (e) => (e.alpha = isSelected ? 1 : 0));
-		this.SelectionChanged.Invoke(this, this);
+		this.OnSelectionChanged.Invoke(this, this);
 	}
 
 	public GetNextCell(): Cell {

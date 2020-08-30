@@ -2,36 +2,45 @@ import { GameStatus } from './../../Components/Canvas/GameStatus';
 import { Headquarter } from './../Items/Cell/Field/Hq/Headquarter';
 import { Dictionnary } from './../Utils/Collections/Dictionnary';
 import { Vehicle } from './../Items/Unit/Vehicle';
-import { Tank } from '../Items/Unit/Tank';
 import { LiteEvent } from '../Utils/Events/LiteEvent';
 import { Item } from '../Items/Item';
+import { Cell } from '../Items/Cell/Cell';
 
 export class GameContext {
-	private _vehicleCount: number = 0;
-	private _vehicles: Dictionnary<Vehicle> = new Dictionnary<Vehicle>();
-	private _hqs: Headquarter[];
-	public MainHq: Headquarter;
+	//events
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
+	public OnGameEnded: LiteEvent<GameStatus> = new LiteEvent<GameStatus>();
+
+	//elements
+	private _mainHq: Headquarter;
+	private _hqs: Headquarter[];
+	private _cells: Cell[];
+	private _vehicles: Dictionnary<Vehicle> = new Dictionnary<Vehicle>();
+
+	//context
 	public IsFlagingMode: boolean;
-	public GameEnded: LiteEvent<GameStatus> = new LiteEvent<GameStatus>();
 
-	public SetHqs(hqs: Headquarter[]) {
+	//stats
+	private _vehicleCount: number = 0;
+
+	setup(mainHq: Headquarter, hqs: Headquarter[], cells: Cell[]) {
+		this._mainHq = mainHq;
 		this._hqs = hqs;
+		this._cells = cells;
+
+		this._mainHq.OnDestroyed.On(() => {
+			this.OnGameEnded.Invoke(this, GameStatus.Lost);
+		});
+
 		this._hqs.forEach((hq) => {
-			hq.VehicleCreated.On(this.VehiculeCreated.bind(this));
-		});
-	}
-
-	public Setup(): void {
-		this.MainHq.OnDestroyed.On(() => {
-			this.GameEnded.Invoke(this, GameStatus.Lost);
+			hq.OnVehicleCreated.On(this.HandleVehicleCreated.bind(this));
 		});
 
-		const foes = this._hqs.filter((hq) => hq !== this.MainHq);
+		const foes = this._hqs.filter((hq) => hq !== this._mainHq);
 		foes.forEach((foe) => {
 			foe.OnDestroyed.On(() => {
 				if (foes.every((e) => !e.IsAlive())) {
-					this.GameEnded.Invoke(this, GameStatus.Won);
+					this.OnGameEnded.Invoke(this, GameStatus.Won);
 				}
 			});
 		});
@@ -41,26 +50,24 @@ export class GameContext {
 		return this._hqs;
 	}
 
-	public GetHq(path: string) {
-		return this._hqs.find((e) => e.GetCell().Coo() === path);
+	GetCells(): Cell[] {
+		return this._cells;
 	}
 
-	private VehiculeCreated(obj: Headquarter, vehicule: Vehicle): void {
+	public GetHq(coo: string) {
+		return this._hqs.find((e) => e.GetCell().Coo() === coo);
+	}
+
+	private HandleVehicleCreated(obj: Headquarter, vehicule: Vehicle): void {
 		vehicule.Id = `${obj.PlayerName}${this._vehicleCount}`;
 		this._vehicleCount += 1;
 		this._vehicles.Add(vehicule.Id, vehicule);
-
-		// PeerHandler.SendMessage(PacketKind.Create, {
-		// 	Type: vehicule instanceof Tank ? 'Tank' : 'Truck',
-		// 	Id: vehicule.Id,
-		// 	cell: vehicule.GetCurrentCell().GetCoordinate(),
-		// 	Hq: obj.GetCell().GetCoordinate()
-		// });
-	}
-
-	public Destroy(): void {
-		this._hqs.forEach((hq) => {
-			hq.VehicleCreated.Clear();
-		});
 	}
 }
+
+// PeerHandler.SendMessage(PacketKind.Create, {
+// 	Type: vehicule instanceof Tank ? 'Tank' : 'Truck',
+// 	Id: vehicule.Id,
+// 	cell: vehicule.GetCurrentCell().GetCoordinate(),
+// 	Hq: obj.GetCell().GetCoordinate()
+// });

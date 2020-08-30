@@ -37,8 +37,8 @@ export class TruckRequestHandler implements ISimpleRequestHandler {
 				request.Area.Truck = truck;
 			}
 		};
-		this._hq.VehicleCreated.On(lambda);
+		this._hq.OnVehicleCreated.On(lambda);
 		this._hq.CreateTruck();
-		this._hq.VehicleCreated.Off(lambda);
+		this._hq.OnVehicleCreated.Off(lambda);
 	}
 }

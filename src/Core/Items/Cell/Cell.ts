@@ -198,8 +198,8 @@ export class Cell extends Item implements ICell, ISelectable {
 	//awfull
 	private SetHqState(state: CellState) {
 		let cells = new Array<Cell>();
-		cells.push(this._gameContext.MainHq.GetCell());
-		cells = cells.concat(this._gameContext.MainHq.GetCell().GetAllNeighbourhood().map((c) => <Cell>c));
+		cells.push(this._gameContext.GetMainHq().GetCell());
+		cells = cells.concat(this._gameContext.GetMainHq().GetCell().GetAllNeighbourhood().map((c) => <Cell>c));
 		if (cells.indexOf(this) !== -1) {
 			state = CellState.Visible;
 		}

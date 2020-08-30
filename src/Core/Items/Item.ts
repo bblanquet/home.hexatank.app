@@ -1,6 +1,6 @@
+import { LiteEvent } from './../Utils/Events/LiteEvent';
 import { SpriteManager } from './../Framework/SpriteManager';
 import { Dictionnary } from './../Utils/Collections/Dictionnary';
-import { SimpleEvent } from './../Utils/Events/SimpleEvent';
 import * as PIXI from 'pixi.js';
 import { BoundingBox } from '../Utils/Geometry/BoundingBox';
 import { IUpdatable } from '../IUpdatable';
@@ -12,7 +12,7 @@ import { IInteractionContext } from '../Interaction/IInteractionContext';
 export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 	private DisplayObjects: Array<PIXI.DisplayObject>;
 	private _spriteManager: SpriteManager;
-	public OnDestroyed: SimpleEvent = new SimpleEvent();
+	public OnDestroyed: LiteEvent<Item> = new LiteEvent();
 
 	public Z: number;
 	public IsUpdatable: boolean;
@@ -66,7 +66,7 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 		this.IsUpdatable = false;
 		GameHelper.Render.Remove(this);
 		this._spriteManager.Destroyed();
-		this.OnDestroyed.Invoke();
+		this.OnDestroyed.Invoke(this, this);
 	}
 
 	public abstract GetBoundingBox(): BoundingBox;

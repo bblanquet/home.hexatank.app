@@ -34,7 +34,8 @@ export default class CellMenuComponent extends Component<
 							>
 								<div class="fill-influence max-width standard-space" />
 								<div class="max-width align-text-center darker">
-									{GameSettings.TruckPrice * this.props.GameContext.MainHq.GetReactorsCount()}{' '}
+									{GameSettings.TruckPrice *
+										this.props.GameContext.GetMainHq().GetReactorsCount()}{' '}
 									<span class="fill-diamond badge very-small-space middle"> </span>
 								</div>
 							</button>
@@ -61,7 +62,7 @@ export default class CellMenuComponent extends Component<
 	}
 
 	private IsCovered(): boolean {
-		return this.props.GameContext.MainHq.IsCovered(this.props.Item as Cell);
+		return this.props.GameContext.GetMainHq().IsCovered(this.props.Item as Cell);
 	}
 
 	private DisplayThunder() {

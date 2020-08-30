@@ -335,7 +335,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 
 	public AddVehicle(v: Vehicle): void {
 		this._vehicles.push(v);
-		v.Destoyed.On((e: any, ve: Vehicle) => {
+		v.OnDestroyed.On((e: any, ve: Vehicle) => {
 			this._vehicles = this._vehicles.filter((v) => v.IsAlive());
 		});
 	}

@@ -5,7 +5,7 @@ import { Cell } from '../../../Cell/Cell';
 export class CellUpCondition extends UpCondition {
 	public constructor(private _v: Vehicle) {
 		super();
-		this._v.CellChanged.On((e: any, data: Cell) => {
+		this._v.OnCellChanged.On((e: any, data: Cell) => {
 			this.Done.Invoke();
 		});
 	}

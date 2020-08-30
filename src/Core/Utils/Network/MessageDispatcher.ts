@@ -88,7 +88,6 @@
 // 				const hqPos = new HexAxial(e.Hq.Q, e.Hq.R);
 // 				const hq = GameHelper.Cells.Get(hqPos).GetField() as Headquarter;
 // 				let field = new InfluenceField(cell, hq);
-//
 // 			}
 // 		}
 // 	}

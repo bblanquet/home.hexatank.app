@@ -28,20 +28,20 @@ export class ReactorCombination extends AbstractSingleCombination {
 			if (!isNullOrUndefined(cell)) {
 				if (cell.GetField() instanceof BasicField) {
 					if (
-						this._gameContext.MainHq.Buy(
-							GameSettings.TruckPrice * this._gameContext.MainHq.GetReactorsCount()
-						)
+						this._gameContext
+							.GetMainHq()
+							.Buy(GameSettings.TruckPrice * this._gameContext.GetMainHq().GetReactorsCount())
 					) {
 						// PeerHandler.SendMessage(PacketKind.Field, {
-						// 	Hq: this._gameContext.MainHq.GetCurrentCell().GetCoordinate(),
+						// 	Hq: this._gameContext.GetMainHq().GetCurrentCell().GetCoordinate(),
 						// 	cell: cell.GetCoordinate(),
 						// 	Type: 'Reactor'
 						// });
 						new ReactorField(
 							cell,
-							this._gameContext.MainHq,
+							this._gameContext.GetMainHq(),
 							this._gameContext,
-							this._gameContext.MainHq.GetSkin().GetLight()
+							this._gameContext.GetMainHq().GetSkin().GetLight()
 						);
 					}
 				}

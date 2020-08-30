@@ -76,30 +76,30 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 			} else {
 				let menuItem = context.Items[0];
 				const cost = GameSettings.FieldPrice * this._cells.length;
-				if (menuItem && this._gameContext.MainHq.HasMoney(cost)) {
+				if (menuItem && this._gameContext.GetMainHq().HasMoney(cost)) {
 					if (menuItem instanceof HealMenuItem) {
-						this.SetMenuItem((c) => new MedicField(c, this._gameContext.MainHq), 'Heal');
+						this.SetMenuItem((c) => new MedicField(c, this._gameContext.GetMainHq()), 'Heal');
 					} else if (menuItem instanceof AttackMenuItem) {
-						this.SetMenuItem((c) => new AttackField(c, this._gameContext.MainHq), 'Attack');
+						this.SetMenuItem((c) => new AttackField(c, this._gameContext.GetMainHq()), 'Attack');
 					} else if (menuItem instanceof ShieldMenuItem) {
-						this.SetMenuItem((c) => new ShieldField(c, this._gameContext.MainHq), 'Shield');
+						this.SetMenuItem((c) => new ShieldField(c, this._gameContext.GetMainHq()), 'Shield');
 					} else if (menuItem instanceof SpeedFieldMenuItem) {
-						this.SetMenuItem((c) => new RoadField(c, this._gameContext.MainHq), 'Fast');
+						this.SetMenuItem((c) => new RoadField(c, this._gameContext.GetMainHq()), 'Fast');
 					} else if (menuItem instanceof PoisonMenuItem) {
-						this.SetMenuItem((c) => new PoisonField(c, this._gameContext.MainHq), 'Poison');
+						this.SetMenuItem((c) => new PoisonField(c, this._gameContext.GetMainHq()), 'Poison');
 					} else if (menuItem instanceof ThunderMenuItem) {
-						this.SetMenuItem((c) => new BatteryField(c, this._gameContext.MainHq), 'Battery');
+						this.SetMenuItem((c) => new BatteryField(c, this._gameContext.GetMainHq()), 'Battery');
 					} else if (menuItem instanceof NetworkMenuItem) {
-						this.SetMenuItem((c) => new NetworkField(c, this._gameContext.MainHq), 'Network');
+						this.SetMenuItem((c) => new NetworkField(c, this._gameContext.GetMainHq()), 'Network');
 					} else if (menuItem instanceof SlowMenuItem) {
 						this.SetMenuItem(
-							(c) => new SlowField(c, this._gameContext.MainHq.GetSkin().GetLight()),
+							(c) => new SlowField(c, this._gameContext.GetMainHq().GetSkin().GetLight()),
 							'Slow'
 						);
 					} else if (menuItem instanceof MoneyMenuItem) {
-						this.SetMenuItem((c) => new FarmField(c, this._gameContext.MainHq), 'Money');
+						this.SetMenuItem((c) => new FarmField(c, this._gameContext.GetMainHq()), 'Money');
 					}
-					this._gameContext.MainHq.Buy(cost);
+					this._gameContext.GetMainHq().Buy(cost);
 				}
 
 				this._cells.forEach((c) => {
@@ -118,7 +118,7 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 			if (c.GetField() instanceof BasicField) {
 				this._cells.forEach((c) => {
 					// PeerHandler.SendMessage(PacketKind.Field, {
-					// 	Hq: this._gameContext.MainHq.GetCurrentCell().GetCoordinate(),
+					// 	Hq: this._gameContext.GetMainHq().GetCurrentCell().GetCoordinate(),
 					// 	cell: c.GetCoordinate(),
 					// 	Type: fieldType
 					// });

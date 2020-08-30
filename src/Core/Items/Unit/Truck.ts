@@ -81,7 +81,7 @@ export class Truck extends Vehicle implements IHqContainer {
 		return diamonds;
 	}
 
-	protected OnCellStateChanged(obj: any, cellState: CellState): void {
+	protected HandleCellStateChanged(obj: any, cellState: CellState): void {
 		this.GetCurrentSprites().Values().forEach((s) => {
 			s.visible = cellState === CellState.Visible;
 		});

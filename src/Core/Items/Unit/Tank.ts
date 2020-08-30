@@ -1,3 +1,4 @@
+import { LiteEvent } from './../../Utils/Events/LiteEvent';
 import { ICamouflageAble } from './ICamouflageAble';
 import { CamouflageHandler } from './CamouflageHandler';
 import { Cell } from '../Cell/Cell';
@@ -18,6 +19,8 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 	public Turrel: Turrel;
 	private _currentTarget: AliveItem;
 	private _mainTarget: AliveItem;
+	public OnTargetChanged: LiteEvent<AliveItem> = new LiteEvent();
+	public OnCamouflageChanged: LiteEvent<AliveItem> = new LiteEvent();
 
 	constructor(hq: Headquarter, gameContext: GameContext) {
 		super(hq, gameContext);
@@ -39,7 +42,7 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 		return !isNullOrUndefined(this._mainTarget);
 	}
 
-	protected OnCellStateChanged(obj: any, cellState: CellState): void {
+	protected HandleCellStateChanged(obj: any, cellState: CellState): void {
 		this.GetCurrentSprites().Values().forEach((s) => {
 			s.visible = cellState === CellState.Visible;
 		});
@@ -182,13 +185,8 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 		if (!isNullOrUndefined(item) && !item.IsEnemy(this)) {
 			throw 'should not be there';
 		}
-
-		// PeerHandler.SendMessage(PacketKind.Target, {
-		// 	Hq: this.Hq.GetCell().GetCoordinate(),
-		// 	cell: this.GetCurrentCell().GetCoordinate(),
-		// 	TarGetCell: isNullOrUndefined(item) ? null : item.GetCurrentCell().GetCoordinate()
-		// });
 		this._mainTarget = item;
+		this.OnTargetChanged.Invoke(this, this._mainTarget);
 	}
 
 	public GetMainTarget(): AliveItem {
@@ -203,7 +201,7 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 		this.camouflagedSprites = this.GetSprites().filter((s) => s.alpha !== 0);
 		this.camouflagedSprites.concat(this.Turrel.GetSprites().filter((s) => s.alpha !== 0));
 
-		if (this.GameContext.MainHq === this.Hq) {
+		if (this.GameContext.GetMainHq() === this.Hq) {
 			this.camouflagedSprites.forEach((s) => {
 				s.alpha = 0.5;
 			});
@@ -241,7 +239,7 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 		if (this.HasCamouflage) {
 			this.HasCamouflage = false;
 
-			if (this.GameContext.MainHq === this.Hq) {
+			if (this.GameContext.GetMainHq() === this.Hq) {
 				this.camouflagedSprites.forEach((s) => {
 					s.alpha = 1;
 				});

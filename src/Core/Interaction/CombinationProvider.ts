@@ -89,55 +89,55 @@ export class CombinationProvider {
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof SpeedFieldMenuItem,
-				(e) => new RoadField(e, gameContext.MainHq),
+				(e) => new RoadField(e, gameContext.GetMainHq()),
 				'Fast'
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof AttackMenuItem,
-				(e) => new AttackField(e, gameContext.MainHq),
+				(e) => new AttackField(e, gameContext.GetMainHq()),
 				'Attack'
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof SlowMenuItem,
-				(e) => new SlowField(e, gameContext.MainHq.GetSkin().GetLight()),
+				(e) => new SlowField(e, gameContext.GetMainHq().GetSkin().GetLight()),
 				'Slow'
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof ShieldMenuItem,
-				(e) => new ShieldField(e, gameContext.MainHq),
+				(e) => new ShieldField(e, gameContext.GetMainHq()),
 				'Shield'
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof PoisonMenuItem,
-				(e) => new PoisonField(e, gameContext.MainHq),
+				(e) => new PoisonField(e, gameContext.GetMainHq()),
 				'Poison'
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof MoneyMenuItem,
-				(e) => new FarmField(e, gameContext.MainHq),
+				(e) => new FarmField(e, gameContext.GetMainHq()),
 				'Money'
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof ThunderMenuItem,
-				(e) => new BatteryField(e, gameContext.MainHq),
+				(e) => new BatteryField(e, gameContext.GetMainHq()),
 				'Thunder'
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof NetworkMenuItem,
-				(e) => new NetworkField(e, gameContext.MainHq),
+				(e) => new NetworkField(e, gameContext.GetMainHq()),
 				'Network'
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof HealMenuItem,
-				(e) => new MedicField(e, gameContext.MainHq),
+				(e) => new MedicField(e, gameContext.GetMainHq()),
 				'Heal'
 			),
 			new PowerDownCombination(),

@@ -4,7 +4,7 @@ export enum PacketKind {
 	//connecting
 	Candidate,
 	Offer,
-	//setup game event
+	//setup
 	Join,
 	Joined,
 	Close,
@@ -13,7 +13,7 @@ export enum PacketKind {
 	Exist,
 	Rooms,
 	Leave,
-	//game
+	//general
 	OneWayPing,
 	TwoWayPing,
 	Ping,
@@ -24,6 +24,12 @@ export enum PacketKind {
 	Message,
 	Kick,
 	Hide,
-	//more
-	Map
+	//game
+	Map,
+	UnitDestroyed,
+	UnitCreated,
+	Target,
+	Camouflage,
+	NextCell,
+	FieldChanged
 }

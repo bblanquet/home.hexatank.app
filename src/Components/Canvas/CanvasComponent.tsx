@@ -100,7 +100,7 @@ export default class CanvasComponent extends Component<
 		}
 
 		this._gameContext = new MapRender().Render(GameHelper.MapContext);
-		const checker = new SelectableChecker(this._gameContext.MainHq);
+		const checker = new SelectableChecker(this._gameContext.GetMainHq());
 		this._appHandler.InteractionContext = new InteractionContext(
 			this._appHandler.InputManager,
 			new CombinationProvider().GetCombination(this._appHandler, checker, this._gameContext),
@@ -130,17 +130,17 @@ export default class CanvasComponent extends Component<
 		window.addEventListener('DOMContentLoaded', () => this._appHandler.ResizeTheCanvas());
 		this._appHandler.InteractionManager.autoPreventDefault = false;
 		this.SetCenter();
-		this._gameContext.MainHq.OnTruckRequestChanged.On((obj: any, e: number) => {
+		this._gameContext.GetMainHq().OnTruckRequestChanged.On((obj: any, e: number) => {
 			this.setState({
 				TruckRequestCount: e
 			});
 		});
-		this._gameContext.MainHq.OnTankRequestChanged.On((obj: any, e: number) => {
+		this._gameContext.GetMainHq().OnTankRequestChanged.On((obj: any, e: number) => {
 			this.setState({
 				TankRequestCount: e
 			});
 		});
-		this._gameContext.MainHq.OnDiamondCountChanged.On((obj: any, e: number) => {
+		this._gameContext.GetMainHq().OnDiamondCountChanged.On((obj: any, e: number) => {
 			this.setState({
 				Amount: e
 			});
@@ -151,7 +151,7 @@ export default class CanvasComponent extends Component<
 				Item: e
 			});
 		});
-		this._gameContext.MainHq.OnCashMissing.On((obj: any, e: boolean) => {
+		this._gameContext.GetMainHq().OnCashMissing.On((obj: any, e: boolean) => {
 			if (e !== this.state.HasWarning) {
 				this.setState({
 					HasWarning: e
@@ -169,7 +169,7 @@ export default class CanvasComponent extends Component<
 	}
 
 	public SetCenter(): void {
-		const hqPoint = this._gameContext.MainHq.GetBoundingBox().GetCentralPoint();
+		const hqPoint = this._gameContext.GetMainHq().GetBoundingBox().GetCentralPoint();
 		const halfWidth = GameSettings.ScreenWidth / 2;
 		const halfHeight = GameSettings.ScreenHeight / 2;
 		console.log('x: ' + -(hqPoint.X - halfWidth));

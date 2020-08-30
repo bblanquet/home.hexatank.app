@@ -65,10 +65,10 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	private _leftDusts: Array<Dust>;
 	private _rightDusts: Array<Dust>;
 
+	private _handleCellStateChanged: (obj: any, cellState: CellState) => void;
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
-	private _onCellStateChanged: { (obj: any, cellState: CellState): void };
-	public CellChanged: LiteEvent<Cell> = new LiteEvent<Cell>();
-	public Destoyed: LiteEvent<Vehicle> = new LiteEvent<Vehicle>();
+	public OnCellChanged: LiteEvent<Cell> = new LiteEvent<Cell>();
+	public OnNextCellChanged: LiteEvent<Cell> = new LiteEvent<Cell>();
 
 	constructor(public Hq: Headquarter, protected GameContext: GameContext) {
 		super();
@@ -82,7 +82,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this.Size = GameSettings.Size;
 		this.BoundingBox.Width = CellProperties.GetWidth(this.Size);
 		this.BoundingBox.Height = CellProperties.GetHeight(this.Size);
-		this._onCellStateChanged = this.OnCellStateChanged.bind(this);
+		this._handleCellStateChanged = this.HandleCellStateChanged.bind(this);
 		this.RootSprites = new Array<string>();
 
 		this.GenerateSprite(Archive.wheel);
@@ -112,7 +112,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 			new Dust(new BoundingBox()),
 			new Dust(new BoundingBox())
 		];
-		this.CellChanged = new LiteEvent<Cell>();
+		this.OnCellChanged = new LiteEvent<Cell>();
 		this.Hq.AddVehicle(this);
 		this.SetProperty(Archive.wheels[0], (s) => (s.alpha = 1));
 	}
@@ -163,7 +163,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 			this.SetRotation();
 		} else {
 			if (this.GetNextCell().GetState() === CellState.Visible) {
-				this.OnCellStateChanged(this, this.GetNextCell().GetState());
+				this.HandleCellStateChanged(this, this.GetNextCell().GetState());
 			}
 			this._translationMaker.Translate();
 		}
@@ -270,17 +270,17 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		return this._nextCell;
 	}
 
-	protected abstract OnCellStateChanged(obj: any, cellState: CellState): void;
+	protected abstract HandleCellStateChanged(obj: any, cellState: CellState): void;
 
 	public MoveNextCell(): void {
 		let previouscell = this._currentCell;
-		this._currentCell.CellStateChanged.Off(this._onCellStateChanged);
+		this._currentCell.CellStateChanged.Off(this._handleCellStateChanged);
 
 		this._currentCell = this._nextCell;
 
-		this.CellChanged.Invoke(this._currentCell);
-		this.OnCellStateChanged(this, this._currentCell.GetState());
-		this._currentCell.CellStateChanged.On(this._onCellStateChanged);
+		this.OnCellChanged.Invoke(this._currentCell);
+		this.HandleCellStateChanged(this, this._currentCell.GetState());
+		this._currentCell.CellStateChanged.On(this._handleCellStateChanged);
 		this._nextCell = null;
 		this._currentCell.GetField().SetPowerUp(this);
 
@@ -289,12 +289,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	}
 
 	public Destroy(): void {
-		this.Destoyed.Invoke(this, this);
-		this.Destoyed.Clear();
-		// PeerHandler.SendMessage(PacketKind.Destroyed, {
-		// 	cell: this._currentCell.GetCoordinate(),
-		// 	Name: 'vehicle'
-		// });
+		this.OnDestroyed.Invoke(this, this);
+		this.OnDestroyed.Clear();
 		if (this._order) {
 			this._order.Cancel();
 		}
@@ -391,8 +387,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this.InitPosition(cell.GetBoundingBox());
 		this._currentCell = cell;
 		this._currentCell.SetOccupier(this);
-		this._currentCell.CellStateChanged.On(this._onCellStateChanged);
-		this._onCellStateChanged(this, this._currentCell.GetState());
+		this._currentCell.CellStateChanged.On(this._handleCellStateChanged);
+		this._handleCellStateChanged(this, this._currentCell.GetState());
 		CellStateSetter.SetStates(this.GameContext, this._currentCell.GetAll());
 		this._currentCell.OnUnitChanged.Invoke(this, this);
 	}
@@ -411,6 +407,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 			}
 		}
 		this._nextCell = cell;
+		this.OnNextCellChanged.Invoke(this, this._nextCell);
 		this._nextCell.SetOccupier(this);
 		this._nextCell.OnUnitChanged.Invoke(this, this);
 		this._angleFinder.SetAngle(this._nextCell);

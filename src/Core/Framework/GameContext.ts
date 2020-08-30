@@ -1,3 +1,5 @@
+import { Tank } from './../Items/Unit/Tank';
+import { isNullOrUndefined } from 'util';
 import { GameStatus } from './../../Components/Canvas/GameStatus';
 import { Headquarter } from './../Items/Cell/Field/Hq/Headquarter';
 import { Dictionnary } from './../Utils/Collections/Dictionnary';
@@ -14,7 +16,7 @@ export class GameContext {
 	//elements
 	private _mainHq: Headquarter;
 	private _hqs: Headquarter[];
-	private _cells: Cell[];
+	private _cells: Dictionnary<Cell>;
 	private _vehicles: Dictionnary<Vehicle> = new Dictionnary<Vehicle>();
 
 	//context
@@ -23,10 +25,10 @@ export class GameContext {
 	//stats
 	private _vehicleCount: number = 0;
 
-	setup(mainHq: Headquarter, hqs: Headquarter[], cells: Cell[]) {
+	public Setup(mainHq: Headquarter, hqs: Headquarter[], cells: Cell[]) {
 		this._mainHq = mainHq;
 		this._hqs = hqs;
-		this._cells = cells;
+		this._cells = Dictionnary.To((c) => c.Coo(), cells);
 
 		this._mainHq.OnDestroyed.On(() => {
 			this.OnGameEnded.Invoke(this, GameStatus.Lost);
@@ -46,16 +48,44 @@ export class GameContext {
 		});
 	}
 
+	ExistUnit(id: string) {
+		return this._vehicles.Exist(id);
+	}
+
+	public GetMainHq(): Headquarter {
+		return this._mainHq;
+	}
+
 	public GetHqs(): Headquarter[] {
 		return this._hqs;
 	}
 
-	GetCells(): Cell[] {
-		return this._cells;
+	public GetCells(): Cell[] {
+		return this._cells.Values();
+	}
+
+	public GetCell(coo: string): Cell {
+		return this._cells.Get(coo);
 	}
 
 	public GetHq(coo: string) {
 		return this._hqs.find((e) => e.GetCell().Coo() === coo);
+	}
+
+	GetTank(id: string): Tank {
+		const result = this._vehicles.Get(id);
+		if (isNullOrUndefined(result) || !(result instanceof Tank)) {
+			throw 'synchronized issue';
+		}
+		return result as Tank;
+	}
+
+	GetUnit(id: string): Vehicle {
+		const result = this._vehicles.Get(id);
+		if (isNullOrUndefined(result)) {
+			throw 'synchronized issue';
+		}
+		return result;
 	}
 
 	private HandleVehicleCreated(obj: Headquarter, vehicule: Vehicle): void {
@@ -64,10 +94,3 @@ export class GameContext {
 		this._vehicles.Add(vehicule.Id, vehicule);
 	}
 }
-
-// PeerHandler.SendMessage(PacketKind.Create, {
-// 	Type: vehicule instanceof Tank ? 'Tank' : 'Truck',
-// 	Id: vehicule.Id,
-// 	cell: vehicule.GetCurrentCell().GetCoordinate(),
-// 	Hq: obj.GetCell().GetCoordinate()
-// });

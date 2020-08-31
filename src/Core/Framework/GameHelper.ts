@@ -1,3 +1,4 @@
+import { Player } from './../../Network/Player';
 import { GameContext } from './GameContext';
 import { NetworkSocket } from './../../Network/NetworkSocket';
 import { NetworkContext } from './NetworkContext';
@@ -13,9 +14,10 @@ export class GameHelper {
 	public static Socket: NetworkSocket;
 	public static Render: RenderingHandler;
 	public static ViewContext: ViewContext;
+	public static Players: Player[] = [];
 
 	//ugly find another way later
-	public static SetNetwork(gameContext: GameContext) {
+	public static SetNetwork(gameContext: GameContext): void {
 		if (this.Socket) {
 			this.NetworkContext = new NetworkContext(gameContext, this.Socket);
 		}

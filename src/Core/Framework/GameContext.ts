@@ -7,6 +7,7 @@ import { Vehicle } from './../Items/Unit/Vehicle';
 import { LiteEvent } from '../Utils/Events/LiteEvent';
 import { Item } from '../Items/Item';
 import { Cell } from '../Items/Cell/Cell';
+import { Player } from '../../Network/Player';
 
 export class GameContext {
 	//events
@@ -24,6 +25,9 @@ export class GameContext {
 
 	//stats
 	private _vehicleCount: number = 0;
+
+	//online
+	public Players: Player[];
 
 	public Setup(mainHq: Headquarter, hqs: Headquarter[], cells: Cell[]) {
 		this._mainHq = mainHq;

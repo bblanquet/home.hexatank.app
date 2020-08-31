@@ -19,9 +19,6 @@ import { MapGenerator } from '../../../Core/Setup/Generator/MapGenerator';
 import { MapMode } from '../../../Core/Setup/Generator/MapMode';
 import { MapContext } from '../../../Core/Setup/Generator/MapContext';
 import { GameHelper } from '../../../Core/Framework/GameHelper';
-import { NetworkContext } from '../../../Core/Framework/NetworkContext';
-import { Cell } from '../../../Core/Items/Cell/Cell';
-import { HexAxial } from '../../../Core/Utils/Geometry/HexAxial';
 
 export default class HostingComponent extends Component<any, HostState> {
 	private _socket: NetworkSocket;
@@ -192,13 +189,6 @@ export default class HostingComponent extends Component<any, HostState> {
 		return 'Nok';
 	}
 
-	private OnMapReceived(data: NetworkMessage<MapContext>): void {
-		GameHelper.MapContext = data.Content;
-		GameHelper.MapContext.PlayerName = this.state.Player.Name;
-		GameHelper.Socket = this._socket;
-		route('/Canvas', true);
-	}
-
 	private OnPlayerReadyChanged(data: NetworkMessage<boolean>): void {
 		if (this.state.Players.Exist(data.Emitter)) {
 			this.state.Players.Get(data.Emitter).IsReady = data.Content;
@@ -278,8 +268,17 @@ export default class HostingComponent extends Component<any, HostState> {
 			this.HideRoom();
 			GameHelper.MapContext = mapContext;
 			GameHelper.Socket = this._socket;
+			GameHelper.Players = this.state.Players.Values();
 			route('/Canvas', true);
 		}
+	}
+
+	private OnMapReceived(data: NetworkMessage<MapContext>): void {
+		GameHelper.MapContext = data.Content;
+		GameHelper.MapContext.PlayerName = this.state.Player.Name;
+		GameHelper.Socket = this._socket;
+		GameHelper.Players = this.state.Players.Values();
+		route('/Canvas', true);
 	}
 
 	public SetIa(mapContext: MapContext): void {

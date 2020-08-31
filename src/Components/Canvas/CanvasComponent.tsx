@@ -26,19 +26,19 @@ import { ComponentsHelper } from '../ComponentsHelper';
 import ReactorMenuComponent from './Parts/ReactorMenuComponent';
 import { Group } from '../../Core/Items/Group';
 import { GameStatus } from './GameStatus';
+import { Player } from '../../Network/Player';
 
 export default class CanvasComponent extends Component<
 	any,
 	{
 		HasMenu: boolean;
-		HasRefresh: boolean;
+		HasFlag: boolean;
+		HasWarning: boolean;
 		TankRequestCount: number;
 		TruckRequestCount: number;
 		Amount: number;
-		HasFlag: boolean;
 		Item: Item;
-		PingStatus: string;
-		HasWarning: boolean;
+		Players: Player[];
 		GameStatus: GameStatus;
 	}
 > {
@@ -58,7 +58,6 @@ export default class CanvasComponent extends Component<
 			TruckRequestCount: 0,
 			Amount: GameSettings.PocketMoney,
 			HasFlag: false,
-			PingStatus: 'no data',
 			HasWarning: false,
 			GameStatus: GameStatus.Pending
 		});
@@ -224,9 +223,6 @@ export default class CanvasComponent extends Component<
 		if (this._stop) {
 			return;
 		}
-		this.setState({
-			HasRefresh: !this.state.HasRefresh
-		});
 		requestAnimationFrame(() => this.GameLoop());
 		GameHelper.Updater.Update();
 	}
@@ -278,7 +274,7 @@ export default class CanvasComponent extends Component<
 	render() {
 		return (
 			<div style="width=100%">
-				{/* {GameHelper.IsOnline ? this.TopLeftInfo() : ''} */}
+				{this.TopLeftInfo()}
 				{this.TopMenuRender()}
 				{this.state.GameStatus === GameStatus.Pending ? '' : this.GetEndMessage()}
 				<div
@@ -293,7 +289,17 @@ export default class CanvasComponent extends Component<
 	}
 
 	private TopLeftInfo() {
-		return <div style="position: fixed;left: 0%; color:white;">{this.state.PingStatus}</div>;
+		return (
+			<div style="position: fixed;left: 0%; color:white;">
+				{GameHelper.Players.map((player) => {
+					return (
+						<div>
+							{player.Name} <span class="badge badge-info">{player.Latency}</span>
+						</div>
+					);
+				})}
+			</div>
+		);
 	}
 
 	private TopMenuRender() {

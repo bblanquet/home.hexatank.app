@@ -1,3 +1,5 @@
+import { ShieldField } from './../Items/Cell/Field/Bonus/ShieldField';
+import { ReactorField } from './../Items/Cell/Field/Bonus/ReactorField';
 import { FieldTypeHelper } from './Packets/FieldTypeHelper';
 import { NextCellPacket } from './Packets/NextCellPacket';
 import { TargetPacket } from './Packets/TargetPacket';
@@ -30,6 +32,10 @@ export class NetworkDispatcher {
 		fieldPacket.Coo = c.Coo();
 		fieldPacket.Type = FieldTypeHelper.GetDescription(field);
 		if (field instanceof BonusField) {
+			fieldPacket.HqCoo = field.GetHq().GetCell().Coo();
+		} else if (field instanceof ReactorField) {
+			fieldPacket.HqCoo = field.GetHq().GetCell().Coo();
+		} else if (field instanceof ShieldField) {
 			fieldPacket.HqCoo = field.GetHq().GetCell().Coo();
 		}
 		const message = this.Message<FieldPacket>(PacketKind.FieldChanged, fieldPacket);

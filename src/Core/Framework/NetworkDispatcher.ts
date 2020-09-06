@@ -1,3 +1,5 @@
+import { PowerFieldPacket } from './Packets/PowerFieldPacket';
+import { OverlockedPacket } from './Packets/OverlockedPacket';
 import { ShieldField } from './../Items/Cell/Field/Bonus/ShieldField';
 import { ReactorField } from './../Items/Cell/Field/Bonus/ReactorField';
 import { FieldTypeHelper } from './Packets/FieldTypeHelper';
@@ -35,6 +37,8 @@ export class NetworkDispatcher {
 			fieldPacket.HqCoo = field.GetHq().GetCell().Coo();
 		} else if (field instanceof ReactorField) {
 			fieldPacket.HqCoo = field.GetHq().GetCell().Coo();
+			field.Overlocked.On(this.HandleOverlockChanged.bind(this));
+			field.PowerChanged.On(this.HandlePowerChanged.bind(this));
 		} else if (field instanceof ShieldField) {
 			fieldPacket.HqCoo = field.GetHq().GetCell().Coo();
 		}
@@ -102,5 +106,27 @@ export class NetworkDispatcher {
 		content.Id = v.Id;
 		content.Kind = v instanceof Tank ? 'Tank' : 'Truck';
 		return content;
+	}
+
+	private HandlePowerChanged(source: any, power: boolean): void {
+		const reactor = source as ReactorField;
+		const packet = new PowerFieldPacket();
+		packet.Coo = reactor.GetCell().Coo();
+		packet.Power = power;
+		packet.HqCoo = reactor.Hq.GetCell().Coo();
+		packet.Type = 'ReactorField';
+		const message = this.Message<PowerFieldPacket>(PacketKind.PowerChanged, packet);
+		this._socket.Emit(message);
+	}
+
+	private HandleOverlockChanged(source: any, powerUp: string): void {
+		const reactor = source as ReactorField;
+		const packet = new OverlockedPacket();
+		packet.Coo = reactor.GetCell().Coo();
+		packet.PowerUp = powerUp;
+		packet.HqCoo = reactor.Hq.GetCell().Coo();
+		packet.Type = 'ReactorField';
+		const message = this.Message<OverlockedPacket>(PacketKind.Overlocked, packet);
+		this._socket.Emit(message);
 	}
 }

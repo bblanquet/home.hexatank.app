@@ -1,3 +1,4 @@
+import { GameContext } from './../../Core/Framework/GameContext';
 import { ViewContext } from './../../Core/Utils/Geometry/ViewContext';
 import { GameSettings } from './../../Core/Framework/GameSettings';
 import { MapMode } from '../../Core/Setup/Generator/MapMode';
@@ -6,17 +7,25 @@ import { InputNotifier } from '../../Core/Interaction/InputNotifier';
 import { InteractionContext } from '../../Core/Interaction/InteractionContext';
 const Viewport = require('pixi-viewport').Viewport;
 import * as PIXI from 'pixi.js';
+import { SelectableChecker } from '../../Core/Interaction/SelectableChecker';
+import { CombinationProvider } from '../../Core/Interaction/CombinationProvider';
+import { GameHelper } from '../../Core/Framework/GameHelper';
+import { RenderingHandler } from '../../Core/Setup/Render/RenderingHandler';
+import { RenderingGroups } from '../../Core/Setup/Render/RenderingGroups';
+import { MapRender } from '../../Core/Setup/Render/MapRender';
 
 export class AppHandler {
 	public IsOrderMode: boolean = false;
 
-	public InputManager: InputNotifier;
+	//environement
+	public InputNotifier: InputNotifier;
 	public InteractionContext: InteractionContext;
 	private _viewPort: any;
 	private _app: PIXI.Application;
 	public InteractionManager: PIXI.interaction.InteractionManager;
 	public Playground: ItemsUpdater;
 	public ViewContext: ViewContext;
+
 	public GetApp(): PIXI.Application {
 		return this._app;
 	}
@@ -32,7 +41,7 @@ export class AppHandler {
 		return this._viewPort;
 	}
 
-	public InitApp(): void {
+	public InitApp(): GameContext {
 		this._app = new PIXI.Application({
 			backgroundColor: 0x00a651 //0x6d9ae3
 		});
@@ -50,7 +59,7 @@ export class AppHandler {
 		this._app.stage.addChild(this._viewPort);
 		this.ViewContext = new ViewContext();
 		this.Playground = new ItemsUpdater(this.ViewContext);
-		this.InputManager = new InputNotifier();
+		this.InputNotifier = new InputNotifier();
 
 		this._viewPort.on('zoomed', (e: any) => {
 			if (this._viewPort.scale.x < 0.7) {
@@ -61,6 +70,51 @@ export class AppHandler {
 				return;
 			}
 		});
+		GameHelper.Updater = this.Playground;
+		GameHelper.ViewContext = this.ViewContext;
+		GameHelper.Render = new RenderingHandler(
+			new RenderingGroups(
+				{
+					zs: [ -1, 0, 1, 2, 3, 4, 5 ],
+					parent: this.GetViewport()
+				},
+				{
+					zs: [ 6, 7 ],
+					parent: this.GetApp().stage
+				}
+			)
+		);
+		GameSettings.SetNormalSpeed();
+		this.GetApp().start();
+		if (!GameHelper.MapContext) {
+			throw 'context missing, cannot implement map';
+		}
+
+		const gameContext = new MapRender().Render(GameHelper.MapContext);
+		GameHelper.SetNetwork(gameContext);
+		this.Setup(gameContext);
+		return gameContext;
+	}
+
+	public Setup(gameContext: GameContext) {
+		const checker = new SelectableChecker(gameContext.GetMainHq());
+		this.InteractionContext = new InteractionContext(
+			this.InputNotifier,
+			new CombinationProvider().GetCombination(this, checker, gameContext),
+			checker,
+			this.GetViewport()
+		);
+		this.InteractionContext.Listen();
+		this.SetBackgroundColor(GameHelper.MapContext.MapMode);
+
+		this.InteractionManager.on('pointerdown', this.InputNotifier.OnMouseDown.bind(this.InputNotifier), false);
+		this.InteractionManager.on('pointermove', this.InputNotifier.OnMouseMove.bind(this.InputNotifier), false);
+		this.InteractionManager.on('pointerup', this.InputNotifier.OnMouseUp.bind(this.InputNotifier), false);
+		this.ResizeTheCanvas();
+		window.addEventListener('resize', () => this.ResizeTheCanvas());
+		window.addEventListener('DOMContentLoaded', () => this.ResizeTheCanvas());
+		this.InteractionManager.autoPreventDefault = false;
+		this.SetCenter(gameContext);
 	}
 
 	public ResizeTheCanvas(): void {
@@ -83,6 +137,16 @@ export class AppHandler {
 		}
 	}
 
+	public SetCenter(gameContext: GameContext): void {
+		const hqPoint = gameContext.GetMainHq().GetBoundingBox().GetCentralPoint();
+		const halfWidth = GameSettings.ScreenWidth / 2;
+		const halfHeight = GameSettings.ScreenHeight / 2;
+		console.log('x: ' + -(hqPoint.X - halfWidth));
+		console.log('y: ' + -(hqPoint.Y - halfHeight));
+		this.Playground.ViewContext.SetX(-(hqPoint.X - halfWidth));
+		this.Playground.ViewContext.SetY(-(hqPoint.Y - halfHeight));
+	}
+
 	public SetBackgroundColor(mapMode: MapMode) {
 		let color = 0x00a651;
 		if (mapMode === MapMode.sand) {
@@ -90,7 +154,6 @@ export class AppHandler {
 		} else if (mapMode === MapMode.ice) {
 			color = 0xacddf3;
 		}
-
 		this._app.renderer.backgroundColor = color;
 	}
 

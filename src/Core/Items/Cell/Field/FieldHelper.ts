@@ -5,6 +5,9 @@ import { ReactorField } from './Bonus/ReactorField';
 import { ShieldField } from './Bonus/ShieldField';
 import { AliveItem } from '../../AliveItem';
 import { Cell } from '../Cell';
+import { AttackMenuItem } from '../../../Menu/Buttons/AttackMenuItem';
+import { HealMenuItem } from '../../../Menu/Buttons/HealMenuItem';
+import { SpeedFieldMenuItem } from '../../../Menu/Buttons/SpeedFieldMenuItem';
 
 export class FieldHelper {
 	public static IsSpecialField(cell: IField): boolean {
@@ -42,6 +45,17 @@ export class FieldHelper {
 			return (e as ReactorField).GetHq();
 		} else if (e instanceof Headquarter) {
 			return e as Headquarter;
+		}
+		throw 'not supposed to be there';
+	}
+
+	public static GetPowerUp(type: string): any {
+		if (type === 'AttackMenuItem') {
+			return new AttackMenuItem();
+		} else if (type === 'HealMenuItem') {
+			return new HealMenuItem();
+		} else if (type === 'SpeedFieldMenuItem') {
+			return new SpeedFieldMenuItem();
 		}
 		throw 'not supposed to be there';
 	}

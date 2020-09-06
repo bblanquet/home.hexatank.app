@@ -16,8 +16,10 @@ export class MedicField extends BonusField {
 	public SetPowerUp(vehicule: Vehicle): void {
 		if (!(vehicule.PowerUps instanceof HealUp)) {
 			const sum = this.GetReactorsPower(this.hq);
-			const up = new HealUp(vehicule, new CellUpCondition(vehicule), sum);
-			vehicule.SetPowerUp(up);
+			if (0 < sum) {
+				const up = new HealUp(vehicule, new CellUpCondition(vehicule), sum);
+				vehicule.SetPowerUp(up);
+			}
 		}
 	}
 }

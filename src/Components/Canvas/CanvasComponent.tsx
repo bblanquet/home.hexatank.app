@@ -76,107 +76,56 @@ export default class CanvasComponent extends Component<
 		GameSettings.Init();
 		this._stop = false;
 		this._appHandler = new AppHandler();
-		this._appHandler.InitApp();
-		GameHelper.Updater = this._appHandler.Playground;
-		GameHelper.ViewContext = this._appHandler.ViewContext;
-		GameHelper.Render = new RenderingHandler(
-			new RenderingGroups(
-				{
-					zs: [ -1, 0, 1, 2, 3, 4, 5 ],
-					parent: this._appHandler.GetViewport()
-				},
-				{
-					zs: [ 6, 7 ],
-					parent: this._appHandler.GetApp().stage
-				}
-			)
-		);
-		GameSettings.SetNormalSpeed();
-		this._appHandler.GetApp().start();
+		this._gameContext = this._appHandler.InitApp();
 		this._gameCanvas.appendChild(this._appHandler.GetApp().view);
-		if (!GameHelper.MapContext) {
-			throw 'context missing, cannot implement map';
-		}
-
-		this._gameContext = new MapRender().Render(GameHelper.MapContext);
-		GameHelper.SetNetwork(this._gameContext);
-
-		const checker = new SelectableChecker(this._gameContext.GetMainHq());
-		this._appHandler.InteractionContext = new InteractionContext(
-			this._appHandler.InputManager,
-			new CombinationProvider().GetCombination(this._appHandler, checker, this._gameContext),
-			checker,
-			this._appHandler.GetViewport()
-		);
-		this._appHandler.InteractionContext.Listen();
-		this._appHandler.SetBackgroundColor(GameHelper.MapContext.MapMode);
-
-		this._appHandler.InteractionManager.on(
-			'pointerdown',
-			this._appHandler.InputManager.OnMouseDown.bind(this._appHandler.InputManager),
-			false
-		);
-		this._appHandler.InteractionManager.on(
-			'pointermove',
-			this._appHandler.InputManager.OnMouseMove.bind(this._appHandler.InputManager),
-			false
-		);
-		this._appHandler.InteractionManager.on(
-			'pointerup',
-			this._appHandler.InputManager.OnMouseUp.bind(this._appHandler.InputManager),
-			false
-		);
-		this._appHandler.ResizeTheCanvas();
-		window.addEventListener('resize', () => this._appHandler.ResizeTheCanvas());
-		window.addEventListener('DOMContentLoaded', () => this._appHandler.ResizeTheCanvas());
-		this._appHandler.InteractionManager.autoPreventDefault = false;
-		this.SetCenter();
-		this._gameContext.GetMainHq().OnTruckRequestChanged.On((obj: any, e: number) => {
-			this.setState({
-				TruckRequestCount: e
-			});
-		});
-		this._gameContext.GetMainHq().OnTankRequestChanged.On((obj: any, e: number) => {
-			this.setState({
-				TankRequestCount: e
-			});
-		});
-		this._gameContext.GetMainHq().OnDiamondCountChanged.On((obj: any, e: number) => {
-			this.setState({
-				Amount: e
-			});
-		});
-		this._gameContext.OnItemSelected.On((obj: any, e: Item) => {
-			((e as unknown) as ISelectable).OnSelectionChanged.On(this._onItemSelectionChanged);
-			this.setState({
-				Item: e
-			});
-		});
-		this._gameContext.GetMainHq().OnCashMissing.On((obj: any, e: boolean) => {
-			if (e !== this.state.HasWarning) {
-				this.setState({
-					HasWarning: e
-				});
-			}
-		});
-		this._gameContext.OnGameEnded.On((obj: any, e: GameStatus) => {
-			if (e !== this.state.GameStatus) {
-				this.setState({
-					GameStatus: e
-				});
-			}
-		});
+		this._gameContext.GetMainHq().OnTruckRequestChanged.On(this.UpdateTruckRequest.bind(this));
+		this._gameContext.GetMainHq().OnTankRequestChanged.On(this.UpdateTankRequest.bind(this));
+		this._gameContext.GetMainHq().OnDiamondCountChanged.On(this.UpdateMoney.bind(this));
+		this._gameContext.OnItemSelected.On(this.UpdateSelection.bind(this));
+		this._gameContext.GetMainHq().OnCashMissing.On(this.UpdateWarning.bind(this));
+		this._gameContext.OnGameEnded.On(this.UpdateGameStatus.bind(this));
 		this.GameLoop();
 	}
 
-	public SetCenter(): void {
-		const hqPoint = this._gameContext.GetMainHq().GetBoundingBox().GetCentralPoint();
-		const halfWidth = GameSettings.ScreenWidth / 2;
-		const halfHeight = GameSettings.ScreenHeight / 2;
-		console.log('x: ' + -(hqPoint.X - halfWidth));
-		console.log('y: ' + -(hqPoint.Y - halfHeight));
-		this._appHandler.Playground.ViewContext.SetX(-(hqPoint.X - halfWidth));
-		this._appHandler.Playground.ViewContext.SetY(-(hqPoint.Y - halfHeight));
+	private UpdateTruckRequest(obj: any, e: number): void {
+		this.setState({
+			TruckRequestCount: e
+		});
+	}
+
+	private UpdateTankRequest(obj: any, e: number): void {
+		this.setState({
+			TankRequestCount: e
+		});
+	}
+
+	private UpdateMoney(obj: any, e: number): void {
+		this.setState({
+			Amount: e
+		});
+	}
+
+	private UpdateSelection(obj: any, e: Item): void {
+		((e as unknown) as ISelectable).OnSelectionChanged.On(this._onItemSelectionChanged);
+		this.setState({
+			Item: e
+		});
+	}
+
+	private UpdateWarning(obj: any, e: boolean): void {
+		if (e !== this.state.HasWarning) {
+			this.setState({
+				HasWarning: e
+			});
+		}
+	}
+
+	private UpdateGameStatus(obj: any, e: GameStatus): void {
+		if (e !== this.state.GameStatus) {
+			this.setState({
+				GameStatus: e
+			});
+		}
 	}
 
 	private LeftMenuRender() {
@@ -240,6 +189,9 @@ export default class CanvasComponent extends Component<
 		GameHelper.Render.Clear();
 		GameHelper.Render = null;
 		GameHelper.ViewContext = null;
+		if (GameHelper.Socket) {
+			GameHelper.Socket.Stop();
+		}
 		this._appHandler.Clear();
 		this._gameCanvas = null;
 	}

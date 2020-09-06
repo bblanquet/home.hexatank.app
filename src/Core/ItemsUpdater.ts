@@ -3,7 +3,6 @@ import { GameSettings } from './Framework/GameSettings';
 import { IItemsUpdater } from './IItemsUpdater';
 import { Item } from './Items/Item';
 import { IInteractionContext } from './Interaction/IInteractionContext';
-import { SpriteAccuracy } from './Framework/SpriteAccuracy';
 
 export class ItemsUpdater implements IItemsUpdater {
 	Items: Array<Item>;

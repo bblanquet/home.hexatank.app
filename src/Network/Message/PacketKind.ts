@@ -1,9 +1,11 @@
 export enum PacketKind {
 	//reseting peer connection
 	Reset,
+
 	//connecting
 	Candidate,
 	Offer,
+
 	//setup
 	Join,
 	Joined,
@@ -13,6 +15,7 @@ export enum PacketKind {
 	Exist,
 	Rooms,
 	Leave,
+
 	//general
 	OneWayPing,
 	TwoWayPing,
@@ -24,11 +27,14 @@ export enum PacketKind {
 	Message,
 	Kick,
 	Hide,
+
 	//game
 	Map,
 	UnitDestroyed,
 	UnitCreated,
 	Target,
+	Overlocked,
+	PowerChanged,
 	Camouflage,
 	NextCell,
 	FieldChanged

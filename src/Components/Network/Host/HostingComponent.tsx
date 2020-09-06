@@ -65,7 +65,6 @@ export default class HostingComponent extends Component<any, HostState> {
 		this._socket.OnReceived.On(this._playersObserver);
 		this._socket.OnReceived.On(this._pingObserver);
 		this._socket.OnReceived.On(this._mapObserver);
-		// NetworkService.Dispatcher.Init(!this.state.IsAdmin);
 	}
 
 	componentDidMount() {

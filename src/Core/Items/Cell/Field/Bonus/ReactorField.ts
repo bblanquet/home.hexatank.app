@@ -26,17 +26,25 @@ import { SpeedUp } from '../../../Unit/PowerUp/SpeedUp';
 import { Explosion } from '../../../Unit/Explosion';
 
 export class ReactorField extends Field implements ISelectable {
-	private _fireAnimation: BasicRangeAnimator;
-	private _area: Array<BasicItem> = new Array<BasicItem>();
+	//state
 	public Battery: Battery;
 	private _totalRange: number = 4;
 	private _isLocked: boolean;
 	private _range: number = 0;
-	private _internalCells: CellContext<Cell> = new CellContext<Cell>();
-	public Lost: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
+
+	//UI
 	public Appearance: ReactorAppearance;
+	private _fireAnimation: BasicRangeAnimator;
+
+	//cells
+	private _area: Array<BasicItem> = new Array<BasicItem>();
+	private _internalCells: CellContext<Cell> = new CellContext<Cell>();
+
+	//events
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 	public PowerChanged: LiteEvent<boolean> = new LiteEvent<boolean>();
+	public Lost: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
+	public Overlocked: LiteEvent<string> = new LiteEvent<string>();
 
 	constructor(cell: Cell, public Hq: Headquarter, private _context: GameContext, private _light: string) {
 		super(cell);
@@ -86,23 +94,34 @@ export class ReactorField extends Field implements ISelectable {
 		return vehicles;
 	}
 
-	public StartLocked(obj: any): void {
+	private GetPowerUp(type: any): string {
+		if (type instanceof AttackMenuItem) {
+			return 'AttackMenuItem';
+		} else if (type instanceof HealMenuItem) {
+			return 'HealMenuItem';
+		} else if (type instanceof SpeedFieldMenuItem) {
+			return 'SpeedFieldMenuItem';
+		}
+	}
+
+	public StartLocked(type: any): void {
+		this.Overlocked.Invoke(this, this.GetPowerUp(type));
 		this.StartOverclockAnimation();
 		this.SetLocked(true);
 		const vehicles = this.GetVehicles();
-		if (obj instanceof AttackMenuItem) {
+		if (type instanceof AttackMenuItem) {
 			vehicles.forEach((v) => {
 				if (v instanceof Tank) {
 					const sum = this.GetPower() * 5;
 					v.SetPowerUp(new AttackUp(v, new TimeUpCondition(), sum));
 				}
 			});
-		} else if (obj instanceof HealMenuItem) {
+		} else if (type instanceof HealMenuItem) {
 			vehicles.forEach((v) => {
 				const sum = this.GetPower();
 				v.SetPowerUp(new HealUp(v, new TimeUpCondition(), sum));
 			});
-		} else if (obj instanceof SpeedFieldMenuItem) {
+		} else if (type instanceof SpeedFieldMenuItem) {
 			vehicles.forEach((v) => {
 				const sum = this.GetPower() * 0.2;
 				v.SetPowerUp(new SpeedUp(v, new TimeUpCondition(), sum, sum));

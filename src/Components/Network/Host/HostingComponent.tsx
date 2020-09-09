@@ -19,6 +19,7 @@ import { MapGenerator } from '../../../Core/Setup/Generator/MapGenerator';
 import { MapMode } from '../../../Core/Setup/Generator/MapMode';
 import { MapContext } from '../../../Core/Setup/Generator/MapContext';
 import { GameHelper } from '../../../Core/Framework/GameHelper';
+import { isNullOrUndefined } from 'util';
 
 export default class HostingComponent extends Component<any, HostState> {
 	private _socket: NetworkSocket;
@@ -256,7 +257,6 @@ export default class HostingComponent extends Component<any, HostState> {
 			const mapContext = new MapGenerator().GetMapDefinition(12, 'Flower', hqCount, MapMode.forest);
 			mapContext.PlayerName = this.state.Player.Name;
 			this.AssignHqToPlayer(mapContext, this.state.Players.Values());
-
 			const message = new NetworkMessage<MapContext>();
 			message.Content = mapContext;
 			message.Kind = PacketKind.Map;
@@ -275,6 +275,10 @@ export default class HostingComponent extends Component<any, HostState> {
 	private OnMapReceived(data: NetworkMessage<MapContext>): void {
 		GameHelper.MapContext = data.Content;
 		GameHelper.MapContext.PlayerName = this.state.Player.Name;
+		this.SetIa(GameHelper.MapContext);
+		GameHelper.MapContext.Hqs.forEach((hq) => {
+			hq.isIa = false;
+		});
 		GameHelper.Socket = this._socket;
 		GameHelper.Players = this.state.Players.Values();
 		route('/Canvas', true);
@@ -283,9 +287,9 @@ export default class HostingComponent extends Component<any, HostState> {
 	public SetIa(mapContext: MapContext): void {
 		let index = 0;
 		mapContext.Hqs.forEach((hq) => {
-			if (!hq.PlayerName) {
+			if (isNullOrUndefined(hq.PlayerName)) {
 				hq.isIa = true;
-				hq.PlayerName = `IA${index}`;
+				hq.PlayerName = `IA-${index}`;
 			}
 			index += 1;
 		});

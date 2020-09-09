@@ -145,7 +145,7 @@ export default class CampaignComponent extends Component<any, any> {
 		GameHelper.MapContext.Hqs.forEach((hq) => {
 			if (!hq.PlayerName) {
 				hq.isIa = true;
-				hq.PlayerName = `IA${index}`;
+				hq.PlayerName = `IA-${index}`;
 			}
 			index += 1;
 		});

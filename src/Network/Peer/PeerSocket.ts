@@ -48,8 +48,9 @@ export abstract class PeerSocket {
 
 	protected ReceivePacket(event: MessageEvent): void {
 		const packet = <INetworkMessage>JSON.parse(event.data);
+
 		if (!this.IsPing(packet.Kind)) {
-			console.log(`[${packet.Emitter}] > ${this.Owner}] ${PacketKind[packet.Kind]} <<<`);
+			console.log(`%c [${packet.Emitter}] > ${this.Owner}] ${PacketKind[packet.Kind]} <<<`, 'color:#ff7373;');
 		}
 		if (packet.Recipient === PeerSocket.All() || packet.Recipient === this.Owner) {
 			const value = (packet as any).Content;
@@ -199,6 +200,10 @@ export abstract class PeerSocket {
 	protected abstract GetType(): string;
 
 	public Send(message: INetworkMessage): void {
+		console.log(
+			`%c [${message.Emitter} -> ${message.Recipient}] ${PacketKind[message.Kind]} >>>`,
+			'color:#73a9ff;'
+		);
 		if (this.Channel) {
 			this.Channel.send(JSON.stringify(message));
 		} else {

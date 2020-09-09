@@ -127,7 +127,7 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 		GameHelper.MapContext.Hqs.forEach((hq) => {
 			if (!hq.PlayerName) {
 				hq.isIa = true;
-				hq.PlayerName = `IA${index}`;
+				hq.PlayerName = `IA-${index}`;
 			}
 			index += 1;
 		});

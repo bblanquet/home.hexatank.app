@@ -84,7 +84,7 @@ export class AppHandler {
 				}
 			)
 		);
-		GameSettings.SetNormalSpeed();
+		GameSettings.SetFastSpeed();
 		this.GetApp().start();
 		if (!GameHelper.MapContext) {
 			throw 'context missing, cannot implement map';
@@ -92,11 +92,11 @@ export class AppHandler {
 
 		const gameContext = new MapRender().Render(GameHelper.MapContext);
 		GameHelper.SetNetwork(gameContext);
-		this.Setup(gameContext);
+		this.SetupInputs(gameContext);
 		return gameContext;
 	}
 
-	public Setup(gameContext: GameContext) {
+	public SetupInputs(gameContext: GameContext) {
 		const checker = new SelectableChecker(gameContext.GetMainHq());
 		this.InteractionContext = new InteractionContext(
 			this.InputNotifier,

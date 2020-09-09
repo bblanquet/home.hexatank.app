@@ -76,9 +76,13 @@ export class SpriteProvider {
 
 	private static Assets(): Array<AssetData> {
 		const assets = new Array<AssetData>();
+		const unique = new Set<string>();
 		[ SpriteAccuracy.high ].forEach((accuracy) => {
 			SpriteProvider.GetAssets().forEach((name) => {
-				assets.push(new AssetData(accuracy, name));
+				if (!unique.has(name)) {
+					assets.push(new AssetData(accuracy, name));
+					unique.add(name);
+				}
 			});
 		});
 		return assets;

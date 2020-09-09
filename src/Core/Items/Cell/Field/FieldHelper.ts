@@ -4,7 +4,6 @@ import { BonusField } from './Bonus/BonusField';
 import { ReactorField } from './Bonus/ReactorField';
 import { ShieldField } from './Bonus/ShieldField';
 import { AliveItem } from '../../AliveItem';
-import { Cell } from '../Cell';
 import { AttackMenuItem } from '../../../Menu/Buttons/AttackMenuItem';
 import { HealMenuItem } from '../../../Menu/Buttons/HealMenuItem';
 import { SpeedFieldMenuItem } from '../../../Menu/Buttons/SpeedFieldMenuItem';

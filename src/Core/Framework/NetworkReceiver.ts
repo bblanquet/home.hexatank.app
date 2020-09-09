@@ -45,7 +45,11 @@ export class NetworkReceiver {
 
 	private IsListenedHq(coo: string): boolean {
 		const hq = this._context.GetCell(coo).GetField() as Headquarter;
-		return hq && hq.PlayerName !== this._context.GetMainHq().PlayerName && !(hq instanceof IaHeadquarter); //find a way to fix it
+		return (
+			!isNullOrUndefined(hq) &&
+			hq.PlayerName !== this._context.GetMainHq().PlayerName &&
+			!(hq instanceof IaHeadquarter)
+		);
 	}
 
 	private HandleCreatingUnit(message: NetworkMessage<CreatingUnitPacket>): void {
@@ -68,7 +72,7 @@ export class NetworkReceiver {
 		const content = message.Content;
 		const tank = this._context.GetTank(content.Id);
 		if (this.IsListenedHq(tank.Hq.GetCell().Coo())) {
-			if (content.TagertCoo) {
+			if (content.HasTarget && content.TagertCoo) {
 				const cell = this._context.GetCell(content.TagertCoo);
 				tank.SetMainTarget(cell.GetShootableEntity());
 			} else {
@@ -94,6 +98,9 @@ export class NetworkReceiver {
 	}
 
 	private HandleChangedField(message: NetworkMessage<FieldPacket>): void {
+		if (message.Content.Type === 'BasicField') {
+			return;
+		}
 		const cell = this._context.GetCell(message.Content.Coo);
 		const hq = isNullOrUndefined(message.Content.HqCoo) ? null : this._context.GetHq(message.Content.HqCoo);
 		if (this.IsListenedHq(message.Content.HqCoo)) {

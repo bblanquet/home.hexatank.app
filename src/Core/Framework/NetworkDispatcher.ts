@@ -1,3 +1,6 @@
+import { FieldHelper } from './../Items/Cell/Field/FieldHelper';
+import { isNullOrUndefined } from 'util';
+import { Headquarter } from './../Items/Cell/Field/Hq/Headquarter';
 import { PowerFieldPacket } from './Packets/PowerFieldPacket';
 import { OverlockedPacket } from './Packets/OverlockedPacket';
 import { ShieldField } from './../Items/Cell/Field/Bonus/ShieldField';
@@ -16,46 +19,61 @@ import { Tank } from '../Items/Unit/Tank';
 import { CreatingUnitPacket } from './Packets/CreatingUnitPacket';
 import { FieldPacket } from './Packets/FieldPacket';
 import { BonusField } from '../Items/Cell/Field/Bonus/BonusField';
+import { AliveItem } from '../Items/AliveItem';
+import { IaHeadquarter } from '../Ia/IaHeadquarter';
 
 export class NetworkDispatcher {
-	public constructor(private _gameContext: GameContext, private _socket: NetworkSocket) {
-		this._gameContext.GetCells().forEach((cell) => {
+	public constructor(private _context: GameContext, private _socket: NetworkSocket) {
+		this._context.GetCells().forEach((cell) => {
 			cell.OnFieldChanged.On(this.HandleChangedField.bind(this));
 		});
 
-		this._gameContext.GetHqs().forEach((hq) => {
+		this._context.GetHqs().forEach((hq) => {
 			hq.OnVehicleCreated.On(this.HandleVehicleCreated.bind(this));
 		});
 	}
 
 	private HandleChangedField(source: any, c: Cell): void {
 		const field = c.GetField();
-		const fieldPacket = new FieldPacket();
-		fieldPacket.Coo = c.Coo();
-		fieldPacket.Type = FieldTypeHelper.GetDescription(field);
-		if (field instanceof BonusField) {
-			fieldPacket.HqCoo = field.GetHq().GetCell().Coo();
-		} else if (field instanceof ReactorField) {
-			fieldPacket.HqCoo = field.GetHq().GetCell().Coo();
-			field.Overlocked.On(this.HandleOverlockChanged.bind(this));
-			field.PowerChanged.On(this.HandlePowerChanged.bind(this));
-		} else if (field instanceof ShieldField) {
-			fieldPacket.HqCoo = field.GetHq().GetCell().Coo();
+		if (!FieldHelper.IsSpecialField(field) || this.IsSpeakingHq(FieldHelper.GetHq(field))) {
+			const fieldPacket = new FieldPacket();
+			fieldPacket.Coo = c.Coo();
+			fieldPacket.Type = FieldTypeHelper.GetDescription(field);
+			if (field instanceof BonusField) {
+				fieldPacket.HqCoo = field.GetHq().GetCell().Coo();
+			} else if (field instanceof ReactorField) {
+				fieldPacket.HqCoo = field.GetHq().GetCell().Coo();
+				if (this.IsSpeakingHq(field.GetHq())) {
+					field.Overlocked.On(this.HandleOverlockChanged.bind(this));
+					field.PowerChanged.On(this.HandlePowerChanged.bind(this));
+				}
+			} else if (field instanceof ShieldField) {
+				fieldPacket.HqCoo = field.GetHq().GetCell().Coo();
+			}
+			const message = this.Message<FieldPacket>(PacketKind.FieldChanged, fieldPacket);
+			this._socket.Emit(message);
 		}
-		const message = this.Message<FieldPacket>(PacketKind.FieldChanged, fieldPacket);
-		this._socket.Emit(message);
 	}
 
-	private HandleVehicleCreated(source: any, v: Vehicle): void {
-		if (v instanceof Tank) {
-			const tank = v as Tank;
-			tank.OnTargetChanged.On(this.HandleTargetChanged.bind(this));
-			tank.OnCamouflageChanged.On(this.HandleCamouflageChanged.bind(this));
+	private IsSpeakingHq(hq: Headquarter): boolean {
+		return hq.PlayerName === this._context.GetMainHq().PlayerName || hq instanceof IaHeadquarter;
+	}
+
+	private HandleVehicleCreated(source: any, vehicle: Vehicle): void {
+		if (this.IsSpeakingHq(vehicle.Hq)) {
+			if (vehicle instanceof Tank) {
+				const tank = vehicle as Tank;
+				tank.OnTargetChanged.On(this.HandleTargetChanged.bind(this));
+				tank.OnCamouflageChanged.On(this.HandleCamouflageChanged.bind(this));
+			}
+			vehicle.OnNextCellChanged.On(this.HandleNextCellChanged.bind(this));
+			vehicle.OnDestroyed.On(this.HandleVehicleDestroyed.bind(this));
+			const message = this.Message<CreatingUnitPacket>(
+				PacketKind.UnitCreated,
+				this.GetCreatingUnitMessage(vehicle)
+			);
+			this._socket.Emit(message);
 		}
-		v.OnNextCellChanged.On(this.HandleNextCellChanged.bind(this));
-		v.OnDestroyed.On(this.HandleVehicleDestroyed.bind(this));
-		const message = this.Message<CreatingUnitPacket>(PacketKind.UnitCreated, this.GetCreatingUnitMessage(v));
-		this._socket.Emit(message);
 	}
 
 	private HandleVehicleDestroyed(source: any, v: Vehicle) {
@@ -69,10 +87,15 @@ export class NetworkDispatcher {
 		this._socket.Emit(message);
 	}
 
-	private HandleTargetChanged(source: any, t: Tank): void {
+	private HandleTargetChanged(source: any, target: AliveItem): void {
 		const targetPacket = new TargetPacket();
-		targetPacket.Id = t.Id;
-		targetPacket.TagertCoo = t.GetMainTarget().GetCurrentCell().Coo();
+		if (source instanceof Vehicle) {
+			targetPacket.Id = source.Id;
+		}
+		targetPacket.HasTarget = !isNullOrUndefined(target);
+		if (!isNullOrUndefined(target)) {
+			targetPacket.TagertCoo = target.GetCurrentCell().Coo();
+		}
 		const message = this.Message<TargetPacket>(PacketKind.Target, targetPacket);
 		this._socket.Emit(message);
 	}
@@ -93,7 +116,7 @@ export class NetworkDispatcher {
 	private Message<T>(kind: PacketKind, content: T): NetworkMessage<T> {
 		const message = new NetworkMessage<T>();
 		message.Recipient = PeerSocket.All();
-		message.Emitter = this._gameContext.GetMainHq().PlayerName;
+		message.Emitter = this._context.GetMainHq().PlayerName;
 		message.Kind = kind;
 		message.Content = content;
 		return message;

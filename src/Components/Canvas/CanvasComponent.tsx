@@ -9,8 +9,6 @@ import { Cell } from '../../Core/Items/Cell/Cell';
 import { ISelectable } from '../../Core/ISelectable';
 import { ReactorField } from '../../Core/Items/Cell/Field/Bonus/ReactorField';
 import { GameSettings } from '../../Core/Framework/GameSettings';
-import { CombinationProvider } from '../../Core/Interaction/CombinationProvider';
-import { SelectableChecker } from '../../Core/Interaction/SelectableChecker';
 import { Headquarter } from '../../Core/Items/Cell/Field/Hq/Headquarter';
 import { AppHandler } from './AppHandler';
 import HqMenuComponent from './Parts/HqMenuComponent';
@@ -18,10 +16,6 @@ import TankMenuComponent from './Parts/TankMenuComponent';
 import MultiTankMenuComponent from './Parts/MultiTankMenuComponent';
 import CellMenuComponent from './Parts/CellMenuComponent';
 import TruckMenuComponent from './Parts/TruckMenuComponent';
-import { InteractionContext } from '../../Core/Interaction/InteractionContext';
-import { RenderingHandler } from '../../Core/Setup/Render/RenderingHandler';
-import { RenderingGroups } from '../../Core/Setup/Render/RenderingGroups';
-import { MapRender } from '../../Core/Setup/Render/MapRender';
 import { ComponentsHelper } from '../ComponentsHelper';
 import ReactorMenuComponent from './Parts/ReactorMenuComponent';
 import { Group } from '../../Core/Items/Group';
@@ -191,6 +185,7 @@ export default class CanvasComponent extends Component<
 		GameHelper.ViewContext = null;
 		if (GameHelper.Socket) {
 			GameHelper.Socket.Stop();
+			GameHelper.Socket = null;
 		}
 		this._appHandler.Clear();
 		this._gameCanvas = null;
@@ -205,14 +200,15 @@ export default class CanvasComponent extends Component<
 	private Quit(e: any): void {
 		route('/Home', true);
 		this._appHandler.InteractionContext.Mute();
-		// PeerHandler.Stop();
 	}
 
 	private SetMenu(e: any): void {
 		this.setState({
 			HasMenu: !this.state.HasMenu
 		});
-		GameSettings.IsPause = this.state.HasMenu;
+		if (!GameHelper.Socket) {
+			GameSettings.IsPause = this.state.HasMenu;
+		}
 	}
 
 	private SetFlag(): void {

@@ -5,7 +5,8 @@ import * as toastr from 'toastr';
 import { CreatingHostState } from './CreatingHostState';
 const io = require('socket.io-client');
 import { PacketKind } from '../../../Network/Message/PacketKind';
-import { ComponentsHelper } from '../../ComponentsHelper';
+import RedButtonComponent from '../../Common/Button/RedButtonComponent';
+import BlackButtonComponent from '../../Common/Button/BlackButtonComponent';
 
 export default class CreatingHostComponent extends Component<any, CreatingHostState> {
 	private _socket: SocketIOClient.Socket;
@@ -75,10 +76,18 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 					</div>
 				</div>
 				<div class="container-center-horizontal">
-					{ComponentsHelper.GetBlackButton(this._isFirstRender, 'fas fa-undo-alt', 'Back', this.Back)}
-					{ComponentsHelper.GetRedButton(this._isFirstRender, 'far fa-play-circle', 'Start', (e) =>
-						this.Start(e)
-					)}
+					<BlackButtonComponent
+						icon={'fas fa-undo-alt'}
+						title={'Back'}
+						isFirstRender={this._isFirstRender}
+						callBack={() => this.Back()}
+					/>
+					<RedButtonComponent
+						icon={'far fa-play-circle'}
+						title={'Start'}
+						isFirstRender={this._isFirstRender}
+						callBack={() => this.Start()}
+					/>
 				</div>
 			</div>
 		);
@@ -99,11 +108,11 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 		});
 	}
 
-	private Start(e: any): void {
+	private Start(): void {
 		this._socket.emit(PacketKind[PacketKind.Exist], { RoomName: this.state.RoomName });
 	}
 
-	private Back(e: any) {
+	private Back() {
 		route('/Home', true);
 	}
 }

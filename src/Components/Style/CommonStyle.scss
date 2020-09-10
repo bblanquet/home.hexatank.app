@@ -489,13 +489,6 @@ body {
 	transform: translate(-50%, -50%);
 }
 
-.text-center {
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-}
-
 .align-text-center {
 	text-align: center;
 }
@@ -803,7 +796,7 @@ body {
 
 .fill-power {
 	overflow: hidden;
-	background-size: contain;
+	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
 	background-image: url('{{}}menu/powerMenu.svg');

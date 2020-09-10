@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 import linkState from 'linkstate';
-import { ComponentsHelper } from '../../../ComponentsHelper';
+import BlackButtonComponent from '../../../Common/Button/BlackButtonComponent';
 
 export default class OptionComponent extends Component<{ Update: (g: number) => void }, { IaNumber: number }> {
 	private _isFirstRender = true;
@@ -46,9 +46,12 @@ export default class OptionComponent extends Component<{ Update: (g: number) => 
 						<option value="2">2</option>
 					</select>
 				</div>
-				{ComponentsHelper.GetBlackButton(this._isFirstRender, 'fas fa-undo-alt', 'Back', () =>
-					this.Update(this.state.IaNumber)
-				)}
+				<BlackButtonComponent
+					icon={'fas fa-undo-alt'}
+					title={'Back'}
+					isFirstRender={this._isFirstRender}
+					callBack={() => this.Update(this.state.IaNumber)}
+				/>
 			</div>
 		);
 	}

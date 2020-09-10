@@ -1,7 +1,9 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
-import { ComponentsHelper } from '../ComponentsHelper';
-import { ButtonOption } from '../ButtonOption';
+import PanelComponent from '../Common/Panel/PanelComponent';
+import RedButtonComponent from '../Common/Button/RedButtonComponent';
+import DropDownButtonComponent from '../Common/Button/DropDownButtonComponent';
+import { ButtonOption } from '../Common/Button/ButtonOption';
 
 export default class HomeComponent extends Component<any, any> {
 	constructor() {
@@ -9,19 +11,19 @@ export default class HomeComponent extends Component<any, any> {
 	}
 	private _isFirstRender = true;
 
-	private ToSinglePlayer(e: any): void {
+	private ToSinglePlayer(): void {
 		route('/SinglePlayer', true);
 	}
 
-	private ToCampaign(e: any): void {
+	private ToCampaign(): void {
 		route('/Campaign', true);
 	}
 
-	private ToHost(e: any): void {
+	private ToHost(): void {
 		route('/CreatingHost', true);
 	}
 
-	private ToGuest(e: any): void {
+	private ToGuest(): void {
 		route('/OffJoin', true);
 	}
 
@@ -33,28 +35,37 @@ export default class HomeComponent extends Component<any, any> {
 
 	render() {
 		return (
-			<div class="generalContainer absolute-center-middle">
-				<div class="logo-container">
-					<div class="fill-logo-back-container">
-						<div class="fill-logo-back spin-fade" />
-					</div>
-					<div class="fill-logo" />
-				</div>
+			<PanelComponent>
 				<div class="container-center">
-					{ComponentsHelper.GetRedButton(this._isFirstRender, 'fas fa-dungeon', 'Campaign', this.ToCampaign)}
-					{ComponentsHelper.GetRedButton(this._isFirstRender, 'fas fa-gamepad', 'Play', this.ToSinglePlayer)}
-					{ComponentsHelper.GetDropRedButton(this._isFirstRender, 'fas fa-network-wired', 'Multiplayers', [
-						new ButtonOption('Guest', (e: any) => this.ToGuest(e)),
-						new ButtonOption('Host', (e: any) => this.ToHost(e))
-					])}
-					{ComponentsHelper.GetRedButton(
-						this._isFirstRender,
-						'fas fa-phone-square',
-						'Contact',
-						this.ToCampaign
-					)}
+					<RedButtonComponent
+						icon={'fas fa-dungeon'}
+						title={'Campaign'}
+						isFirstRender={this._isFirstRender}
+						callBack={() => this.ToCampaign()}
+					/>
+					<RedButtonComponent
+						icon={'fas fa-gamepad'}
+						title={'Play'}
+						isFirstRender={this._isFirstRender}
+						callBack={() => this.ToSinglePlayer()}
+					/>
+					<DropDownButtonComponent
+						icon={'fas fa-network-wired'}
+						title={'Multiplayers'}
+						isFirstRender={this._isFirstRender}
+						items={[
+							new ButtonOption('Guest', () => this.ToGuest()),
+							new ButtonOption('Host', () => this.ToHost())
+						]}
+					/>
+					<RedButtonComponent
+						icon={'fas fa-phone-square'}
+						title={'Contact'}
+						isFirstRender={this._isFirstRender}
+						callBack={() => this.ToCampaign()}
+					/>
 				</div>
-			</div>
+			</PanelComponent>
 		);
 	}
 }

@@ -21,6 +21,8 @@ import ReactorMenuComponent from './Parts/ReactorMenuComponent';
 import { Group } from '../../Core/Items/Group';
 import { GameStatus } from './GameStatus';
 import { Player } from '../../Network/Player';
+import RedButtonComponent from '../Common/Button/RedButtonComponent';
+import BlackButtonComponent from '../Common/Button/BlackButtonComponent';
 
 export default class CanvasComponent extends Component<
 	any,
@@ -193,16 +195,16 @@ export default class CanvasComponent extends Component<
 
 	componentDidUpdate() {}
 
-	private Cheat(e: any): void {
+	private Cheat(): void {
 		GameSettings.ShowEnemies = !GameSettings.ShowEnemies;
 	}
 
-	private Quit(e: any): void {
+	private Quit(): void {
 		route('/Home', true);
 		this._appHandler.InteractionContext.Mute();
 	}
 
-	private SetMenu(e: any): void {
+	private SetMenu(): void {
 		this.setState({
 			HasMenu: !this.state.HasMenu
 		});
@@ -267,7 +269,7 @@ export default class CanvasComponent extends Component<
 				<button
 					type="button"
 					class="btn btn-dark small-space space-out fill-option"
-					onClick={(e: any) => this.SetMenu(e)}
+					onClick={(e: any) => this.SetMenu()}
 				/>
 			</div>
 		);
@@ -290,13 +292,33 @@ export default class CanvasComponent extends Component<
 			<div class="generalContainer absolute-center-middle-menu menu-container fit-content">
 				<div class="container-center">
 					<div class="title-container">Menu</div>
-					{ComponentsHelper.GetRedButton(false, 'fas fa-undo-alt', 'Resume', (e) => this.SetMenu(e))}
+					<RedButtonComponent
+						icon={'fas fa-undo-alt'}
+						title={'Resume'}
+						isFirstRender={false}
+						callBack={() => this.SetMenu()}
+					/>
 					{GameSettings.ShowEnemies ? (
-						ComponentsHelper.GetBlackButton(false, 'fas fa-undo-alt', 'Cheat', (e) => this.Cheat(e))
+						<BlackButtonComponent
+							icon={'fas fa-undo-alt'}
+							title={'Cheat'}
+							isFirstRender={false}
+							callBack={() => this.Cheat()}
+						/>
 					) : (
-						ComponentsHelper.GetRedButton(false, 'fas fa-undo-alt', 'Cheat', (e) => this.Cheat(e))
+						<RedButtonComponent
+							icon={'fas fa-undo-alt'}
+							title={'Cheat'}
+							isFirstRender={false}
+							callBack={() => this.Cheat()}
+						/>
 					)}
-					{ComponentsHelper.GetRedButton(false, 'fas fa-undo-alt', 'Quit', (e) => this.Quit(e))}
+					<RedButtonComponent
+						icon={'fas fa-undo-alt'}
+						title={'Quit'}
+						isFirstRender={false}
+						callBack={() => this.Quit()}
+					/>{' '}
 				</div>
 			</div>
 		);
@@ -309,7 +331,12 @@ export default class CanvasComponent extends Component<
 				<div class="generalContainer absolute-center-middle-menu menu-container fit-content">
 					<div class="container-center">
 						<div class="fill-victory" style="width:20vh;height:20vh" />
-						{ComponentsHelper.GetRedButton(false, 'fas fa-undo-alt', 'Quit', (e) => this.Quit(e))}
+						<RedButtonComponent
+							icon={'fas fa-undo-alt'}
+							title={'Quit'}
+							isFirstRender={false}
+							callBack={() => this.Quit()}
+						/>
 					</div>
 				</div>
 			);
@@ -318,7 +345,12 @@ export default class CanvasComponent extends Component<
 				<div class="generalContainer absolute-center-middle-menu menu-container fit-content">
 					<div class="container-center">
 						<div class="fill-rip" style="width:20vh;height:20vh" />
-						{ComponentsHelper.GetRedButton(false, 'fas fa-undo-alt', 'Quit', (e) => this.Quit(e))}
+						<RedButtonComponent
+							icon={'fas fa-undo-alt'}
+							title={'Quit'}
+							isFirstRender={false}
+							callBack={() => this.Quit()}
+						/>
 					</div>
 				</div>
 			);

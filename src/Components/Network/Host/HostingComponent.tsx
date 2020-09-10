@@ -11,15 +11,16 @@ import { PeerSocket } from '../../../Network/Peer/PeerSocket';
 import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
 import { Player } from '../../../Network/Player';
 import OptionComponent from './Options/OptionComponent';
-import { IconProvider } from '../../IconProvider';
+import { IconProvider } from '../../Common/IconProvider';
 import { HostState } from '../HostState';
 import { GameSettings } from '../../../Core/Framework/GameSettings';
-import { ComponentsHelper } from '../../ComponentsHelper';
 import { MapGenerator } from '../../../Core/Setup/Generator/MapGenerator';
 import { MapMode } from '../../../Core/Setup/Generator/MapMode';
 import { MapContext } from '../../../Core/Setup/Generator/MapContext';
 import { GameHelper } from '../../../Core/Framework/GameHelper';
 import { isNullOrUndefined } from 'util';
+import BlackButtonComponent from '../../Common/Button/BlackButtonComponent';
+import RedButtonComponent from '../../Common/Button/RedButtonComponent';
 
 export default class HostingComponent extends Component<any, HostState> {
 	private _socket: NetworkSocket;
@@ -152,14 +153,23 @@ export default class HostingComponent extends Component<any, HostState> {
 	private GetDownsideButton() {
 		return (
 			<div class="container-center-horizontal">
-				{ComponentsHelper.GetBlackButton(this._isFirstRender, 'fas fa-toggle-on', this.GetButtonLabel(), () =>
-					this.ChangeReady()
-				)}
+				<BlackButtonComponent
+					icon={'fas fa-toggle-on'}
+					title={this.GetButtonLabel()}
+					isFirstRender={this._isFirstRender}
+					callBack={() => this.ChangeReady()}
+				/>
+
 				{this.state.IsAdmin ? (
-					ComponentsHelper.GetBlackButton(this._isFirstRender, 'fas fa-cog', 'Setup', () => {
-						this._hasSettings = true;
-						this.setState({});
-					})
+					<BlackButtonComponent
+						icon={'fas fa-cog'}
+						title={'Setup'}
+						isFirstRender={this._isFirstRender}
+						callBack={() => () => {
+							this._hasSettings = true;
+							this.setState({});
+						}}
+					/>
 				) : (
 					''
 				)}
@@ -170,11 +180,19 @@ export default class HostingComponent extends Component<any, HostState> {
 	private GetUpdsideButton() {
 		return (
 			<div class="container-center-horizontal">
-				{ComponentsHelper.GetBlackButton(this._isFirstRender, 'fas fa-undo-alt', 'Back', () => this.Back())}
+				<BlackButtonComponent
+					icon={'fas fa-undo-alt'}
+					title={'Back'}
+					isFirstRender={this._isFirstRender}
+					callBack={() => this.Back()}
+				/>{' '}
 				{this.state.IsAdmin ? (
-					ComponentsHelper.GetRedButton(this._isFirstRender, 'far fa-play-circle', 'Start', () =>
-						this.Start()
-					)
+					<RedButtonComponent
+						icon={'far fa-play-circle'}
+						title={'Start'}
+						isFirstRender={this._isFirstRender}
+						callBack={() => this.Start()}
+					/>
 				) : (
 					''
 				)}

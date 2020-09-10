@@ -1,7 +1,8 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { SpriteProvider } from '../../Core/Framework/SpriteProvider';
-import { ComponentsHelper } from '../ComponentsHelper';
+import RedButtonComponent from '../Common/Button/RedButtonComponent';
+import PanelComponent from '../Common/Panel/PanelComponent';
 
 export default class LoadingComponent extends Component<any, { percentage: number }> {
 	constructor() {
@@ -24,12 +25,9 @@ export default class LoadingComponent extends Component<any, { percentage: numbe
 				}
 			});
 		}, 1000);
-		// this.setState({
-		// 	percentage: 100
-		// });
 	}
 
-	private ToHome(e: any): void {
+	private ToHome(): void {
 		route('/Home', true);
 	}
 
@@ -37,7 +35,12 @@ export default class LoadingComponent extends Component<any, { percentage: numbe
 		if (this.state.percentage === 100) {
 			return (
 				<div class="container-center">
-					{ComponentsHelper.GetRedButton(this._isFirstRender, 'fas fa-dungeon', 'Continue', this.ToHome)}
+					<RedButtonComponent
+						icon={'fas fa-dungeon'}
+						title={'Continue'}
+						isFirstRender={this._isFirstRender}
+						callBack={() => this.ToHome()}
+					/>
 				</div>
 			);
 		}
@@ -46,13 +49,7 @@ export default class LoadingComponent extends Component<any, { percentage: numbe
 
 	render() {
 		return (
-			<div class="generalContainer absolute-center-middle">
-				<div class="logo-container">
-					<div class="fill-logo-back-container">
-						<div class="fill-logo-back spin-fade" />
-					</div>
-					<div class="fill-logo" />
-				</div>
+			<PanelComponent>
 				<div class="progress" style="height:20px; border: 4px solid rgb(198, 198, 198);">
 					<div
 						class="progress-bar bg-danger "
@@ -64,7 +61,7 @@ export default class LoadingComponent extends Component<any, { percentage: numbe
 					/>
 				</div>
 				{this.Continue()}
-			</div>
+			</PanelComponent>
 		);
 	}
 }

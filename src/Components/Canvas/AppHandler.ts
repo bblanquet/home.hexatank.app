@@ -84,7 +84,7 @@ export class AppHandler {
 				}
 			)
 		);
-		GameSettings.SetFastSpeed();
+		GameSettings.SetNormalSpeed();
 		this.GetApp().start();
 		if (!GameHelper.MapContext) {
 			throw 'context missing, cannot implement map';

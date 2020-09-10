@@ -4,6 +4,8 @@ import linkState from 'linkstate';
 import * as toastr from 'toastr';
 import { PacketKind } from '../../../Network/Message/PacketKind';
 import { ComponentsHelper } from '../../ComponentsHelper';
+import BlackButtonComponent from '../../Common/Button/BlackButtonComponent';
+import RedButtonComponent from '../../Common/Button/RedButtonComponent';
 const io = require('socket.io-client');
 
 export default class GuestComponent extends Component<any, { RoomNames: string[]; PlayerName: string }> {
@@ -61,8 +63,18 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 					this.state.RoomNames.length === 0 ? this.EmptyGridContent() : this.GridContent()
 				)}
 				<div class="container-center-horizontal">
-					{ComponentsHelper.GetBlackButton(this._isFirstRender, 'fas fa-undo-alt', 'Back', this.Back)}
-					{ComponentsHelper.GetRedButton(this._isFirstRender, 'fas fa-sync-alt', 'Refresh', this.Refresh)}
+					<BlackButtonComponent
+						icon={'fas fa-undo-alt'}
+						title={'Back'}
+						isFirstRender={this._isFirstRender}
+						callBack={() => this.Back()}
+					/>
+					<RedButtonComponent
+						icon={'fas fa-sync-alt'}
+						title={'Refresh'}
+						isFirstRender={this._isFirstRender}
+						callBack={() => this.Refresh()}
+					/>
 				</div>
 			</div>
 		);
@@ -112,7 +124,7 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 		});
 	}
 
-	private Back(e: any) {
+	private Back() {
 		route('/Home', true);
 	}
 

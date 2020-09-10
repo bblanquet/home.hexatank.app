@@ -3,7 +3,8 @@ import { route } from 'preact-router';
 import { GameHelper } from '../../Core/Framework/GameHelper';
 import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
 import { MapMode } from '../../Core/Setup/Generator/MapMode';
-import { ComponentsHelper } from '../ComponentsHelper';
+import RedButtonComponent from '../Common/Button/RedButtonComponent';
+import BlackButtonComponent from '../Common/Button/BlackButtonComponent';
 
 export default class CampaignComponent extends Component<any, any> {
 	private _isFirstRender = true;
@@ -87,53 +88,55 @@ export default class CampaignComponent extends Component<any, any> {
 					</div>
 					<div class="row justify-content-center">
 						<div class="col-auto container-center">
-							{ComponentsHelper.GetRedButton(
-								this._isFirstRender,
-								'fas fa-arrow-alt-circle-right',
-								'1',
-								(e) => this.Start(e)
-							)}
+							<RedButtonComponent
+								icon={'fas fa-arrow-alt-circle-right'}
+								title={'1'}
+								isFirstRender={this._isFirstRender}
+								callBack={() => this.Start()}
+							/>
 						</div>
 						<div class="col-auto container-center">
-							{ComponentsHelper.GetRedButton(
-								this._isFirstRender,
-								'fas fa-arrow-alt-circle-right',
-								'2',
-								(e) => this.Start(e)
-							)}
+							<RedButtonComponent
+								icon={'fas fa-arrow-alt-circle-right'}
+								title={'2'}
+								isFirstRender={this._isFirstRender}
+								callBack={() => this.Start()}
+							/>
 						</div>
 						<div class="w-100 d-none d-md-block " />
 						<div class="col-auto container-center">
-							{ComponentsHelper.GetRedButton(
-								this._isFirstRender,
-								'fas fa-arrow-alt-circle-right',
-								'3',
-								(e) => this.Start(e)
-							)}
+							<RedButtonComponent
+								icon={'fas fa-arrow-alt-circle-right'}
+								title={'3'}
+								isFirstRender={this._isFirstRender}
+								callBack={() => this.Start()}
+							/>
 						</div>
 						<div class="col-auto container-center">
-							{ComponentsHelper.GetRedButton(
-								this._isFirstRender,
-								'fas fa-arrow-alt-circle-right',
-								'4',
-								(e) => this.Start(e)
-							)}
+							<RedButtonComponent
+								icon={'fas fa-arrow-alt-circle-right'}
+								title={'4'}
+								isFirstRender={this._isFirstRender}
+								callBack={() => this.Start()}
+							/>
 						</div>
 					</div>
-
-					{ComponentsHelper.GetBlackButton(this._isFirstRender, 'fas fa-undo-alt', 'Black', (e) =>
-						this.Back(e)
-					)}
+					<BlackButtonComponent
+						icon={'fas fa-undo-alt'}
+						title={'Black'}
+						isFirstRender={this._isFirstRender}
+						callBack={() => this.Back()}
+					/>
 				</div>
 			</div>
 		);
 	}
 
-	private Back(e: any) {
+	private Back() {
 		route('/Home', true);
 	}
 
-	Start(e: MouseEvent): void {
+	Start(): void {
 		GameHelper.MapContext = new MapGenerator().GetMapDefinition(
 			+this.state.Size,
 			this.state.MapType,

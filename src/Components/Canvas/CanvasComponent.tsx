@@ -16,7 +16,6 @@ import TankMenuComponent from './Parts/TankMenuComponent';
 import MultiTankMenuComponent from './Parts/MultiTankMenuComponent';
 import CellMenuComponent from './Parts/CellMenuComponent';
 import TruckMenuComponent from './Parts/TruckMenuComponent';
-import { ComponentsHelper } from '../ComponentsHelper';
 import ReactorMenuComponent from './Parts/ReactorMenuComponent';
 import { Group } from '../../Core/Items/Group';
 import { GameStatus } from './GameStatus';

@@ -3,7 +3,8 @@ import { ConnectionKind } from '../../../../Network/ConnectionKind';
 import { NetworkSocket } from '../../../../Network/NetworkSocket';
 import { HostState } from '../../HostState';
 import { Player } from '../../../../Network/Player';
-import { ComponentsHelper } from '../../../ComponentsHelper';
+import GridComponent from '../../../Common/Grid/GridComponent';
+import SmBlackButtonComponent from '../../../Common/Button/SmBlackButtonComponent';
 
 export default class PlayersComponent extends Component<{ HostState: HostState; NetworkHandler: NetworkSocket }, {}> {
 	constructor() {
@@ -15,7 +16,7 @@ export default class PlayersComponent extends Component<{ HostState: HostState; 
 	componentWillUnmount() {}
 
 	render() {
-		return ComponentsHelper.GetGrid(this.GetHeader(), this.GetContent());
+		return <GridComponent left={this.GetHeader()} right={this.GetContent()} />;
 	}
 
 	private GetHeader() {
@@ -46,7 +47,10 @@ export default class PlayersComponent extends Component<{ HostState: HostState; 
 							<td class="align-middle">{+player.Latency === 0 ? '' : player.Latency}</td>
 							{this.props.HostState.IsAdmin ? (
 								<td class="align-middle">
-									{ComponentsHelper.GetSmBlackButton('-', () => this.MakeUserLeave(player.Name))}
+									<SmBlackButtonComponent
+										title={'-'}
+										callBack={() => this.MakeUserLeave(player.Name)}
+									/>
 								</td>
 							) : (
 								''

@@ -12,8 +12,8 @@ import { AppHandler } from '../AppHandler';
 import { GameContext } from '../../../Core/Framework/GameContext';
 import { ThunderMenuItem } from '../../../Core/Menu/Buttons/ThunderMenuItem';
 import { Cell } from '../../../Core/Items/Cell/Cell';
-import { BtnInfo } from '../../Circular/BtnInfo';
-import CircularComponent from '../../Circular/CircularComponent';
+import { BtnInfo } from '../../Common/Circular/BtnInfo';
+import CircularComponent from '../../Common/Circular/CircularComponent';
 import { PoisonMenuItem } from '../../../Core/Menu/Buttons/PoisonMenuItem';
 import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
 

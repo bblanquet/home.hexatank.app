@@ -20,20 +20,18 @@ export default class CircularComponent extends Component<
 				btns: this.props.btns
 			});
 		}
+		this._toggleDiv.checked = false;
+		if (this._toggleDiv && !this._toggleDiv.checked) {
+			setTimeout(() => {
+				if (this._toggleDiv && !this._toggleDiv.checked) {
+					this._toggleDiv.checked = true;
+				}
+			}, 1);
+		}
 	}
 
 	componentWillUnmount() {
 		this._toggleDiv.checked = false;
-	}
-
-	componentDidUpdate() {
-		if (this._toggleDiv && !this._toggleDiv.checked) {
-			this._toggleDiv.checked = true;
-			setTimeout(() => {
-				if (this._toggleDiv && !this._toggleDiv.checked) {
-				}
-			}, 50);
-		}
 	}
 
 	private Btn(className: string, amount: number, callback: () => void) {

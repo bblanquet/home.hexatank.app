@@ -7,6 +7,7 @@ const io = require('socket.io-client');
 import { PacketKind } from '../../../Network/Message/PacketKind';
 import RedButtonComponent from '../../Common/Button/RedButtonComponent';
 import BlackButtonComponent from '../../Common/Button/BlackButtonComponent';
+import PanelComponent from '../../Common/Panel/PanelComponent';
 
 export default class CreatingHostComponent extends Component<any, CreatingHostState> {
 	private _socket: SocketIOClient.Socket;
@@ -34,13 +35,7 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 
 	render() {
 		return (
-			<div class="generalContainer absolute-center-middle">
-				<div class="logo-container">
-					<div class="fill-logo-back-container">
-						<div class="fill-logo-back spin-fade" />
-					</div>
-					<div class="fill-logo" />
-				</div>
+			<PanelComponent>
 				<div class="form-group mb-2">
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
@@ -89,7 +84,7 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 						callBack={() => this.Start()}
 					/>
 				</div>
-			</div>
+			</PanelComponent>
 		);
 	}
 

@@ -76,46 +76,38 @@ input {
 
 .btn-circular:nth-child(2) {
 	top: 0px;
-	-webkit-transition-delay: 0s;
 	transition-delay: 0s;
 }
 .btn-circular:nth-child(3) {
 	top: 0px;
 	left: 0px;
-	-webkit-transition-delay: 0.05s;
 	transition-delay: 0.1s;
 }
 .btn-circular:nth-child(4) {
 	left: 0px;
-	-webkit-transition-delay: 0.1s;
 	transition-delay: 0.2s;
 }
 .btn-circular:nth-child(5) {
 	top: 0px;
 	left: 0px;
-	-webkit-transition-delay: 0.15s;
-	transition-delay: 0.3s;
+	transition-delay: 0.1s;
 }
 .btn-circular:nth-child(6) {
 	top: 0px;
-	-webkit-transition-delay: 0.25s;
-	transition-delay: 0.4s;
+	transition-delay: 0.0s;
 }
 .btn-circular:nth-child(7) {
 	top: 0px;
 	left: 0px;
-	-webkit-transition-delay: 0.2s;
-	transition-delay: 0.3s;
+	transition-delay: 0.1s;
 }
 .btn-circular:nth-child(8) {
 	left: 0px;
-	-webkit-transition-delay: 0.15s;
 	transition-delay: 0.2s;
 }
 .btn-circular:nth-child(9) {
 	top: 0px;
 	left: 0px;
-	-webkit-transition-delay: 0.05s;
 	transition-delay: 0.1s;
 }
 

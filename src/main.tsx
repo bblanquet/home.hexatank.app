@@ -7,7 +7,7 @@ import GuestComponent from './Components/Network/Guest/GuestComponent';
 import CreatingHostComponent from './Components/Network/Creating/CreatingHostComponent';
 import HostingComponent from './Components/Network/Host/HostingComponent';
 import LoadingComponent from './Components/Loading/LoadingComponent';
-import CircularComponent from './Components/Circular/CircularComponent';
+import CircularComponent from './Components/Common/Circular/CircularComponent';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 import Router from 'preact-router';
@@ -17,7 +17,7 @@ import '@fortawesome/fontawesome-free/js/fontawesome';
 import '@fortawesome/fontawesome-free/js/solid';
 import '@fortawesome/fontawesome-free/js/regular';
 import '@fortawesome/fontawesome-free/js/brands';
-import { BtnInfo } from './Components/Circular/BtnInfo';
+import { BtnInfo } from './Components/Common/Circular/BtnInfo';
 
 var btn = [
 	new BtnInfo(() => {}, 'fill-influence', 4),

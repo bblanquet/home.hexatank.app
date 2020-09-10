@@ -3,9 +3,12 @@ import { route } from 'preact-router';
 import linkState from 'linkstate';
 import * as toastr from 'toastr';
 import { PacketKind } from '../../../Network/Message/PacketKind';
-import { ComponentsHelper } from '../../ComponentsHelper';
 import BlackButtonComponent from '../../Common/Button/BlackButtonComponent';
 import RedButtonComponent from '../../Common/Button/RedButtonComponent';
+import PanelComponent from '../../Common/Panel/PanelComponent';
+import GridComponent from '../../Common/Grid/GridComponent';
+import SmBlackButtonComponent from '../../Common/Button/SmBlackButtonComponent';
+
 const io = require('socket.io-client');
 
 export default class GuestComponent extends Component<any, { RoomNames: string[]; PlayerName: string }> {
@@ -34,13 +37,7 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 
 	render() {
 		return (
-			<div class="generalContainer absolute-center-middle">
-				<div class="logo-container">
-					<div class="fill-logo-back-container">
-						<div class="fill-logo-back spin-fade" />
-					</div>
-					<div class="fill-logo" />
-				</div>
+			<PanelComponent>
 				<div class="form-group mb-2">
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
@@ -58,10 +55,10 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 						/>
 					</div>
 				</div>
-				{ComponentsHelper.GetGrid(
-					this.Header(),
-					this.state.RoomNames.length === 0 ? this.EmptyGridContent() : this.GridContent()
-				)}
+				<GridComponent
+					left={this.Header()}
+					right={this.state.RoomNames.length === 0 ? this.EmptyGridContent() : this.GridContent()}
+				/>
 				<div class="container-center-horizontal">
 					<BlackButtonComponent
 						icon={'fas fa-undo-alt'}
@@ -76,7 +73,7 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 						callBack={() => this.Refresh()}
 					/>
 				</div>
-			</div>
+			</PanelComponent>
 		);
 	}
 
@@ -108,7 +105,7 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 						<tr class="d-flex">
 							<td class="align-self-center">{RoomName}</td>
 							<td class="align-self-center">
-								{ComponentsHelper.GetSmBlackButton('Join', () => this.Join(RoomName))}
+								<SmBlackButtonComponent title={'Join'} callBack={() => this.Join(RoomName)} />
 							</td>
 						</tr>
 					);

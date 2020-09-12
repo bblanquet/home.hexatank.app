@@ -1,11 +1,14 @@
 import { h, Component } from 'preact';
+import { JsxElement } from 'typescript';
+import { Point } from '../../../Core/Utils/Geometry/Point';
 import { BtnInfo } from './BtnInfo';
 
 export default class CircularComponent extends Component<
 	{ btns: BtnInfo[]; OnCancel: () => void },
 	{ btns: BtnInfo[] }
 > {
-	private _toggleDiv: HTMLInputElement;
+	private _cancelBtn: HTMLInputElement;
+	private _otherBtns: HTMLDivElement[] = [];
 
 	constructor() {
 		super();
@@ -19,19 +22,41 @@ export default class CircularComponent extends Component<
 			this.setState({
 				btns: this.props.btns
 			});
-		}
-		this._toggleDiv.checked = false;
-		if (this._toggleDiv && !this._toggleDiv.checked) {
-			setTimeout(() => {
-				if (this._toggleDiv && !this._toggleDiv.checked) {
-					this._toggleDiv.checked = true;
-				}
-			}, 1);
+			let i = 0;
+			this.state.btns.forEach((btn) => {
+				const div = document.createElement('div');
+				div.className = 'btn btn-dark btn-circular';
+				this.SetDivPosition(div, this.GetPoint(50, i, this.state.btns.length));
+				div.onclick = () => btn.CallBack();
+				this._otherBtns.push(div);
+				i++;
+			});
 		}
 	}
 
+	private GetBtn(btn: BtnInfo) {
+		return <button class="btn btn-dark btn-circular">{this.Btn(btn.ClassName, btn.Amount, btn.CallBack)}</button>;
+	}
+
+	componentDidUpdate(prevProps: any, prevState: any) {
+		if (this._cancelBtn && !this._cancelBtn.checked) {
+			this._cancelBtn.checked = true;
+		}
+	}
+
+	private SetDivPosition(div: HTMLDivElement, point: Point) {
+		div.style.left = `${point.X}px`;
+		div.style.top = `${point.Y}px`;
+	}
+
+	private GetPoint(distance: number, i: number, total: number): Point {
+		const x = Math.cos(distance * i * (Math.PI / 180)) * Math.round(window.innerHeight / 100) * total;
+		const y = Math.sin(distance * i * (Math.PI / 180)) * Math.round(window.innerHeight / 100) * total;
+		return new Point(x, y);
+	}
+
 	componentWillUnmount() {
-		this._toggleDiv.checked = false;
+		this._cancelBtn.checked = false;
 	}
 
 	private Btn(className: string, amount: number, callback: () => void) {
@@ -60,11 +85,14 @@ export default class CircularComponent extends Component<
 					type="checkbox"
 					id="toggle"
 					ref={(dom) => {
-						this._toggleDiv = dom;
+						this._cancelBtn = dom;
 					}}
 				/>
 				<label id="show-menu" for="toggle">
-					<div onClick={() => this.props.OnCancel()} class="btn btn-dark btn-circular above-circular">
+					<div
+						onClick={() => this.props.OnCancel()}
+						class="btn btn-dark btn-circular above-circular bouncing-up-animation"
+					>
 						{this.Cancel()}
 					</div>
 					{this.state.btns.map((btn) => {

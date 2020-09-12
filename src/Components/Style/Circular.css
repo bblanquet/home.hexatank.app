@@ -3,6 +3,25 @@ input {
 	display: none;
 }
 
+.bouncing-up-animation {
+	animation: bouncing-up 0.5s alternate ease-in;
+}
+
+@keyframes bouncing-up {
+	0% {
+		transform: scale(.0);
+	}
+	75% {
+		transform: scale(1.5);
+	}
+	90% {
+		transform: scale(0.9);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
 * {
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;

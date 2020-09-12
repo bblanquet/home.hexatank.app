@@ -39,8 +39,8 @@ render(
 		<CreatingHostComponent path="/CreatingHost" />
 		<HostingComponent path="/Hosting/:RoomName/:playerName/:isAdmin" />
 		<GuestComponent path="/OffJoin" />
-		<LoadingComponent path="/Loading" default />
-		<CircularComponent path="/circular" OnCancel={() => {}} btns={btn} />
+		<LoadingComponent path="/Loading" />
+		<CircularComponent path="/circular" OnCancel={() => {}} btns={btn} default />
 	</Router>,
 	document.querySelector('#app')
 );

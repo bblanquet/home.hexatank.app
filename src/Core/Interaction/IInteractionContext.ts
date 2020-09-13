@@ -15,5 +15,5 @@ export enum InteractionKind {
 	Up,
 	MovingUp,
 	Moving,
-	Holding
+	DoubleClick
 }

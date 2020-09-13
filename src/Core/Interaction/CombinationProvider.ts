@@ -63,12 +63,14 @@ export class CombinationProvider {
 			new CancelCombination(),
 			new CamouflageCombination(),
 			new SwithcMultiCombination(appHandler, multiSelectionContext),
+
 			new DisplayMultiMenuCombination(multiselectionMenu, appHandler),
 			new MovingMultiMenuCombination(multiselectionMenu),
 			new UpMultiMenuCombination(multiselectionMenu, appHandler),
 			new MultiSelectionCombination(multiSelectionContext),
 			new MultiUnitSelectionCombination(multiselectionMenu, multiSelectionContext, appHandler, gameContext),
 			new MultiCellSelectionCombination(multiselectionMenu, multiSelectionContext, appHandler, gameContext),
+
 			new FlagCellCombination(gameContext),
 			new SearchMoneyCombination(),
 			new AddTankCombination(gameContext),

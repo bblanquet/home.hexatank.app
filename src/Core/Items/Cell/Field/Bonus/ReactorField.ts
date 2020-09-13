@@ -1,3 +1,4 @@
+import { BatteryField } from './BatteryField';
 import { FieldHelper } from './../FieldHelper';
 import { BasicRangeAnimator } from '../../../Animator/BasicRangeAnimator';
 import { GameContext } from '../../../../Framework/GameContext';
@@ -213,12 +214,16 @@ export class ReactorField extends Field implements ISelectable {
 
 	public PowerUp(): void {
 		const formerEnergy = this.Battery.GetUsedPower();
-		// PeerHandler.SendMessage(PacketKind.Influence, {
-		// 	Hq: this.Hq.GetCurrentCell().GetCoordinate(),
-		// 	cell: this.GetCell().GetCoordinate(),
-		// 	Type: 'PowerUp'
-		// });
 		this.Battery.High();
+
+		if (formerEnergy === 0 && this.Battery.GetUsedPower() === 1) {
+			this.PowerChanged.Invoke(this, true);
+		}
+	}
+
+	public ForcePowerUp(battery: BatteryField) {
+		const formerEnergy = this.Battery.GetUsedPower();
+		this.Battery.ForceHigh(battery);
 
 		if (formerEnergy === 0 && this.Battery.GetUsedPower() === 1) {
 			this.PowerChanged.Invoke(this, true);
@@ -231,11 +236,6 @@ export class ReactorField extends Field implements ISelectable {
 
 	public PowerDown(): void {
 		if (0 < this.Battery.GetUsedPower()) {
-			// PeerHandler.SendMessage(PacketKind.Influence, {
-			// 	Hq: this.Hq.GetCurrentCell().GetCoordinate(),
-			// 	cell: this.GetCell().GetCoordinate(),
-			// 	Type: 'PowerDown'
-			// });
 			this.Battery.Low();
 			if (this.Battery.GetUsedPower() === 0) {
 				this.PowerChanged.Invoke(this, false);

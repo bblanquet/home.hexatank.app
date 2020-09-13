@@ -362,6 +362,10 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 
 	public AddBatteryField(energyField: BatteryField): void {
 		this._batteryFields.push(energyField);
+		const reactors = this._reactors.filter((c) => c.IsCovered(energyField.GetCell()));
+		if (reactors.length === 1) {
+			reactors[0].PowerUp();
+		}
 	}
 
 	public GetBatteryFields(): Array<BatteryField> {

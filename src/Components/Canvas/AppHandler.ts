@@ -107,9 +107,9 @@ export class AppHandler {
 		this.InteractionContext.Listen();
 		this.SetBackgroundColor(GameHelper.MapContext.MapMode);
 
-		this.InteractionManager.on('pointerdown', this.InputNotifier.OnMouseDown.bind(this.InputNotifier), false);
-		this.InteractionManager.on('pointermove', this.InputNotifier.OnMouseMove.bind(this.InputNotifier), false);
-		this.InteractionManager.on('pointerup', this.InputNotifier.OnMouseUp.bind(this.InputNotifier), false);
+		this.InteractionManager.on('pointerdown', this.InputNotifier.HandleMouseDown.bind(this.InputNotifier), false);
+		this.InteractionManager.on('pointermove', this.InputNotifier.HandleMouseMove.bind(this.InputNotifier), false);
+		this.InteractionManager.on('pointerup', this.InputNotifier.HandleMouseUp.bind(this.InputNotifier), false);
 		this.ResizeTheCanvas();
 		window.addEventListener('resize', () => this.ResizeTheCanvas());
 		window.addEventListener('DOMContentLoaded', () => this.ResizeTheCanvas());

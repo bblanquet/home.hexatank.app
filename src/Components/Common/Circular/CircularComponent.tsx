@@ -1,5 +1,4 @@
 import { h, Component } from 'preact';
-import { JsxElement } from 'typescript';
 import { Point } from '../../../Core/Utils/Geometry/Point';
 import { BtnInfo } from './BtnInfo';
 
@@ -7,13 +6,31 @@ export default class CircularComponent extends Component<
 	{ btns: BtnInfo[]; OnCancel: () => void },
 	{ btns: BtnInfo[] }
 > {
-	private _cancelBtn: HTMLInputElement;
-	private _otherBtns: HTMLDivElement[] = [];
-
+	private _positions: Point[] = [];
 	constructor() {
 		super();
 		this.setState({
 			btns: []
+		});
+	}
+
+	componentWillMount() {
+		if (this.props.btns) {
+			this.InitPositions();
+		}
+	}
+
+	private SetPositions() {
+		this._positions = [];
+		this.props.btns.forEach((btn, index) => {
+			this._positions.push(this.GetPoint(index, this.props.btns.length));
+		});
+		this.setState({});
+	}
+
+	private InitPositions() {
+		this.props.btns.forEach((btn, index) => {
+			this._positions.push(new Point(0, 0));
 		});
 	}
 
@@ -22,55 +39,39 @@ export default class CircularComponent extends Component<
 			this.setState({
 				btns: this.props.btns
 			});
-			let i = 0;
-			this.state.btns.forEach((btn) => {
-				const div = document.createElement('div');
-				div.className = 'btn btn-dark btn-circular';
-				this.SetDivPosition(div, this.GetPoint(50, i, this.state.btns.length));
-				div.onclick = () => btn.CallBack();
-				this._otherBtns.push(div);
-				i++;
-			});
+			setTimeout(() => {
+				this.SetPositions();
+			}, 700);
 		}
 	}
 
-	private GetBtn(btn: BtnInfo) {
-		return <button class="btn btn-dark btn-circular">{this.Btn(btn.ClassName, btn.Amount, btn.CallBack)}</button>;
-	}
+	componentDidUpdate(prevProps: any, prevState: any) {}
 
-	componentDidUpdate(prevProps: any, prevState: any) {
-		if (this._cancelBtn && !this._cancelBtn.checked) {
-			this._cancelBtn.checked = true;
-		}
-	}
-
-	private SetDivPosition(div: HTMLDivElement, point: Point) {
-		div.style.left = `${point.X}px`;
-		div.style.top = `${point.Y}px`;
-	}
-
-	private GetPoint(distance: number, i: number, total: number): Point {
-		const x = Math.cos(distance * i * (Math.PI / 180)) * Math.round(window.innerHeight / 100) * total;
-		const y = Math.sin(distance * i * (Math.PI / 180)) * Math.round(window.innerHeight / 100) * total;
+	private GetPoint(i: number, total: number): Point {
+		const x = Math.cos(i * 2 * Math.PI / total) * 150;
+		const y = Math.sin(i * 2 * Math.PI / total) * 150;
 		return new Point(x, y);
 	}
 
-	componentWillUnmount() {
-		this._cancelBtn.checked = false;
-	}
+	componentWillUnmount() {}
 
-	private Btn(className: string, amount: number, callback: () => void) {
+	private Btn(btn: BtnInfo, point: Point) {
 		return (
-			<div class="max-space container-center" onClick={callback}>
-				<div class={`${className} circular-space`} />
-				<div>
-					{amount} <span class="fill-diamond badge very-small-space middle"> </span>
+			<div
+				className="btn btn-dark btn-circular "
+				style={`transform:translate(${point.X}px,${point.Y}px); opacity:${point.IsOrigin() ? 0 : 1}`}
+			>
+				<div class="max-space container-center" onClick={() => btn.CallBack()}>
+					<div class={`${btn.ClassName} circular-space`} />
+					<div>
+						{btn.Amount} <span class="fill-diamond badge very-small-space middle"> </span>
+					</div>
 				</div>
 			</div>
 		);
 	}
 
-	private Cancel() {
+	private CancelLogo() {
 		return (
 			<div class="max-space container-center">
 				<div class="fill-cancel max-width standard-space" />
@@ -81,28 +82,15 @@ export default class CircularComponent extends Component<
 	render() {
 		return (
 			<div class="circular-menu">
-				<input
-					type="checkbox"
-					id="toggle"
-					ref={(dom) => {
-						this._cancelBtn = dom;
-					}}
-				/>
-				<label id="show-menu" for="toggle">
-					<div
-						onClick={() => this.props.OnCancel()}
-						class="btn btn-dark btn-circular above-circular bouncing-up-animation"
-					>
-						{this.Cancel()}
-					</div>
-					{this.state.btns.map((btn) => {
-						return (
-							<button class="btn btn-dark btn-circular">
-								{this.Btn(btn.ClassName, btn.Amount, btn.CallBack)}
-							</button>
-						);
-					})}
-				</label>
+				<div
+					onClick={() => this.props.OnCancel()}
+					class="btn btn-dark btn-circular above-circular bouncing-up-animation"
+				>
+					{this.CancelLogo()}
+				</div>
+				{this.state.btns.map((btn, index) => {
+					return this.Btn(btn, this._positions[index]);
+				})}
 			</div>
 		);
 	}

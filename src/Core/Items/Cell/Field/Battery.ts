@@ -29,6 +29,11 @@ export class Battery {
 		}
 	}
 
+	public ForceHigh(battery: BatteryField): void {
+		this._batteryFields.push(battery);
+		this.UpdateBonusCells(true);
+	}
+
 	private UpdateBonusCells(isUp: boolean) {
 		this._field.GetInternal().All().forEach((cell) => {
 			if (cell.GetField() instanceof BonusField) {

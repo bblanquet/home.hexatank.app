@@ -23,7 +23,7 @@ export class AttackField extends BonusField {
 	Support(vehicule: Vehicle): void {}
 
 	public SetPowerUp(vehicule: Vehicle): void {
-		if (!(vehicule.PowerUps instanceof AttackUp) && vehicule instanceof Tank) {
+		if (vehicule instanceof Tank) {
 			const sum = this.GetReactorsPower(this.hq) * 5;
 			if (0 < sum) {
 				const up = new AttackUp(vehicule, new CellUpCondition(vehicule), sum);

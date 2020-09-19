@@ -82,7 +82,7 @@ export default class CanvasComponent extends Component<
 		this._gameContext.OnItemSelected.On(this.UpdateSelection.bind(this));
 		this._gameContext.GetMainHq().CashMissing.On(this.HandleCashMissing.bind(this));
 		this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));
-		this._appHandler.MultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
+		this._appHandler.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
 		this.GameLoop();
 	}
 

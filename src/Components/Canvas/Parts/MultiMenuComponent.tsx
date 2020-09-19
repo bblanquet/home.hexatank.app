@@ -37,6 +37,6 @@ export default class MultiMenuComponent extends Component<
 	}
 
 	private Cancel(): void {
-		this.props.AppHandler.MultiMenuShowed.Invoke(this, false);
+		this.props.AppHandler.OnMultiMenuShowed.Invoke(this, false);
 	}
 }

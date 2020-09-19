@@ -20,7 +20,7 @@ export class ActiveMultiSelectionCombination extends AbstractSingleCombination {
 
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
-			this._appHandler.MultiMenuShowed.Invoke(this, false);
+			this._appHandler.OnMultiMenuShowed.Invoke(this, false);
 			this._appHandler.PauseNavigation();
 			this._multiContext.Listen(context.Items[0] instanceof MultiTankMenuItem);
 			this.ClearContext.Invoke();

@@ -22,7 +22,7 @@ export class DisplayMultiMenuCombination extends AbstractSingleCombination {
 				this.UnSelectItem(context.Items[0]);
 			}
 			this.ClearContext.Invoke();
-			this._appHandler.MultiMenuShowed.Invoke(this, true);
+			this._appHandler.OnMultiMenuShowed.Invoke(this, true);
 
 			return true;
 		}

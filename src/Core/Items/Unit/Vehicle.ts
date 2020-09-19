@@ -278,11 +278,14 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
 		this._currentCell = this._nextCell;
 
-		this.OnCellChanged.Invoke(this._currentCell);
+		this.OnCellChanged.Invoke(this, previouscell);
 		this.HandleCellStateChanged(this, this._currentCell.GetState());
 		this._currentCell.CellStateChanged.On(this._handleCellStateChanged);
 		this._nextCell = null;
-		this._currentCell.GetField().SetPowerUp(this);
+
+		if (this._currentCell.GetField().constructor.name !== previouscell.GetField().constructor.name) {
+			this._currentCell.GetField().SetPowerUp(this);
+		}
 
 		CellStateSetter.SetStates(this.GameContext, previouscell.GetAll());
 		CellStateSetter.SetStates(this.GameContext, this._currentCell.GetAll());

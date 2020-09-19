@@ -26,7 +26,9 @@ import { FlagCellCombination } from './Combination/FlagCellCombination';
 import { TruckDiamondCombination } from './Combination/TruckDiamondCombination';
 import { MultiCellSelectionCombination } from './Combination/Multi/MultiCellSelectionCombination';
 import { MultiUnitOrderCombination } from './Combination/Multi/MultiUnitOrderCombination';
-import { MultiUnitSelectionCombination } from './Combination/Multi/MultiUnitSelectionCombination';
+import { MultiUnitSelectionCombination } from './Combination/Multi/MultiUnitSelectionCombination'; //ClearMultiCellBonusCombination
+import { ClearMultiSelectionMenuCombination } from './Combination/Multi/ClearMultiSelectionMenuCombination';
+import { ClearMultiCellBonusCombination } from './Combination/Multi/ClearMultiCellBonusCombination';
 import { MultiCellBonusCombination } from './Combination/Multi/MultiCellBonusCombination';
 import { MultiSelectionCombination } from './Combination/Multi/MultiSelectionCombination';
 import { DisplayMultiMenuCombination } from './Combination/Multi/DisplayMultiMenuCombination';
@@ -63,6 +65,8 @@ export class CombinationProvider {
 			new CamouflageCombination(),
 
 			new DisplayMultiMenuCombination(appHandler, multiSelectionContext),
+			new ClearMultiCellBonusCombination(),
+			new ClearMultiSelectionMenuCombination(appHandler),
 			new ActiveMultiSelectionCombination(appHandler, multiSelectionContext),
 			new MultiSelectionCombination(multiSelectionContext),
 			new MultiUnitSelectionCombination(multiSelectionContext, appHandler, gameContext),

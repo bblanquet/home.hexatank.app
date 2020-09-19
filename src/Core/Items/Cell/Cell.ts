@@ -96,6 +96,10 @@ export class Cell extends Item implements ICell, ISelectable {
 		}
 
 		this._field = field;
+		const occ = this.GetOccupier() as any;
+		if (occ instanceof Vehicle) {
+			this._field.SetPowerUp(occ);
+		}
 		this.OnFieldChanged.Invoke(this, this);
 	}
 

@@ -25,7 +25,7 @@ export class AppHandler {
 	public InteractionManager: PIXI.interaction.InteractionManager;
 	public Playground: ItemsUpdater;
 	public ViewContext: ViewContext;
-	public MultiMenuShowed: LiteEvent<boolean> = new LiteEvent<boolean>();
+	public OnMultiMenuShowed: LiteEvent<boolean> = new LiteEvent<boolean>();
 
 	public GetApp(): PIXI.Application {
 		return this._app;

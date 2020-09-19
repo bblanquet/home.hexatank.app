@@ -1,4 +1,4 @@
-import { Group } from './../../Items/Group';
+import { UnitGroup } from '../../Items/UnitGroup';
 import { ICamouflageAble } from './../../Items/Unit/ICamouflageAble';
 import { CamouflageMenuItem } from '../../Menu/Buttons/CamouflageMenutItem';
 import { CombinationContext } from './CombinationContext';
@@ -8,7 +8,7 @@ import { AbstractSingleCombination } from './AbstractSingleCombination';
 export class CamouflageCombination extends AbstractSingleCombination {
 	IsMatching(context: CombinationContext): boolean {
 		return (
-			(context.Items[0] instanceof Tank || context.Items[0] instanceof Group) &&
+			(context.Items[0] instanceof Tank || context.Items[0] instanceof UnitGroup) &&
 			context.Items[context.Items.length - 1] instanceof CamouflageMenuItem
 		);
 	}

@@ -1,4 +1,4 @@
-import { Group } from './../../Items/Group';
+import { UnitGroup } from '../../Items/UnitGroup';
 import { GameContext } from './../../Framework/GameContext';
 import { ISelectable } from '../../ISelectable';
 import { Cell } from '../../Items/Cell/Cell';
@@ -19,7 +19,7 @@ export class SwitchToVehicleCombination extends AbstractSingleCombination {
 			context.Items.length == 2 &&
 			(context.Items[0] instanceof Cell ||
 				context.Items[0] instanceof ReactorField ||
-				context.Items[0] instanceof Group ||
+				context.Items[0] instanceof UnitGroup ||
 				context.Items[0] instanceof Headquarter) &&
 			context.Items[1] instanceof Vehicle
 		);

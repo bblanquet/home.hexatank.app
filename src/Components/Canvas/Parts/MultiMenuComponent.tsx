@@ -1,13 +1,13 @@
 import { Component, h } from 'preact';
 import { Item } from '../../../Core/Items/Item';
-import { SpeedFieldMenuItem } from '../../../Core/Menu/Buttons/SpeedFieldMenuItem';
-import { HealMenuItem } from '../../../Core/Menu/Buttons/HealMenuItem';
+import { MultiTankMenuItem } from '../../../Core/Menu/Buttons/MultiTankMenuItem';
+import { MultiCellMenuItem } from '../../../Core/Menu/Buttons/MultiCellMenuItem';
 import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
 import { AppHandler } from '../AppHandler';
 import { GameContext } from '../../../Core/Framework/GameContext';
 import { BtnInfo } from '../../Common/Circular/BtnInfo';
 import ExpCircularComponent from '../../Common/Circular/ExpCircularComponent';
-import WhiteBtn from '../../Common/Button/Standard/WhiteBtn';
+import WhiteBtn from '../../Common/Button/Standard/SmWhiteBtnComponent';
 import { Point } from '../../../Core/Utils/Geometry/Point';
 
 export default class MultiMenuComponent extends Component<
@@ -18,12 +18,12 @@ export default class MultiMenuComponent extends Component<
 		return (
 			<ExpCircularComponent OnCancel={() => this.Cancel()}>
 				<WhiteBtn
-					CallBack={() => this.SendContext(new SpeedFieldMenuItem())}
+					CallBack={() => this.SendContext(new MultiTankMenuItem())}
 					icon={'fill-multi-tank'}
 					Point={new Point(0, 0)}
 				/>
 				<WhiteBtn
-					CallBack={() => this.SendContext(new HealMenuItem())}
+					CallBack={() => this.SendContext(new MultiCellMenuItem())}
 					icon={'fill-multi-cell'}
 					Point={new Point(0, 0)}
 				/>

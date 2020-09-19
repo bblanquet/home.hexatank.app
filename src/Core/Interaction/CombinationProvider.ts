@@ -1,3 +1,4 @@
+import { ActiveMultiSelectionCombination } from './Combination/Multi/ActiveMultiSelectionCombination';
 import { OverlockCombination } from './Combination/OverlockCombination';
 import { SwithcMultiCombination } from './Combination/SwitchMultiCombination';
 import { BatteryField } from '../Items/Cell/Field/Bonus/BatteryField';
@@ -24,7 +25,9 @@ import { AddTankCombination } from './Combination/AddTankCombination';
 import { FlagCellCombination } from './Combination/FlagCellCombination';
 import { TruckDiamondCombination } from './Combination/TruckDiamondCombination';
 import { MultiCellSelectionCombination } from './Combination/Multi/MultiCellSelectionCombination';
+import { MultiUnitOrderCombination } from './Combination/Multi/MultiUnitOrderCombination';
 import { MultiUnitSelectionCombination } from './Combination/Multi/MultiUnitSelectionCombination';
+import { MultiCellBonusCombination } from './Combination/Multi/MultiCellBonusCombination';
 import { MultiSelectionCombination } from './Combination/Multi/MultiSelectionCombination';
 import { DisplayMultiMenuCombination } from './Combination/Multi/DisplayMultiMenuCombination';
 import { SwitchToInfluenceCombination } from './Combination/SwitchToInfluenceCombination';
@@ -59,11 +62,14 @@ export class CombinationProvider {
 			new CancelCombination(),
 			new CamouflageCombination(),
 
-			new SwithcMultiCombination(appHandler, multiSelectionContext),
-			new DisplayMultiMenuCombination(appHandler),
+			new DisplayMultiMenuCombination(appHandler, multiSelectionContext),
+			new ActiveMultiSelectionCombination(appHandler, multiSelectionContext),
 			new MultiSelectionCombination(multiSelectionContext),
 			new MultiUnitSelectionCombination(multiSelectionContext, appHandler, gameContext),
+			new MultiUnitOrderCombination(appHandler, multiSelectionContext),
 			new MultiCellSelectionCombination(multiSelectionContext, appHandler, gameContext),
+			new MultiCellBonusCombination(appHandler, gameContext),
+			new SwithcMultiCombination(appHandler, multiSelectionContext),
 
 			new FlagCellCombination(gameContext),
 			new SearchMoneyCombination(),

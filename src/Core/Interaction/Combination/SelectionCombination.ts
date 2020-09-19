@@ -1,5 +1,4 @@
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
-import { GameHelper } from '../../Framework/GameHelper';
 import { ISelectable } from '../../ISelectable';
 import { Cell } from '../../Items/Cell/Cell';
 import { BasicField } from '../../Items/Cell/Field/BasicField';
@@ -9,7 +8,6 @@ import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { ISelectableChecker } from '../ISelectableChecker';
 import { GameContext } from '../../Framework/GameContext';
-import { AttackField } from '../../Items/Cell/Field/Bonus/AttackField';
 
 export class SelectionCombination extends AbstractSingleCombination {
 	private _checker: ISelectableChecker;

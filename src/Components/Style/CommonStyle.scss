@@ -756,7 +756,7 @@ body {
 
 .fill-multi-tank {
 	overflow: hidden;
-	background-size: contain;
+	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
 	background-image: url('{{}}menu/smartMenu/multiTank.svg');
@@ -764,7 +764,7 @@ body {
 
 .fill-multi-cell {
 	overflow: hidden;
-	background-size: contain;
+	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
 	background-image: url('{{}}menu/smartMenu/multiCell.svg');

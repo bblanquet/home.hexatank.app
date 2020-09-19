@@ -3,7 +3,6 @@ import { CancelMenuItem } from '../../Menu/Buttons/CancelMenuItem';
 import { Item } from '../../Items/Item';
 import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
-import { InteractionMode } from '../InteractionMode';
 
 export class CancelCombination extends AbstractSingleCombination {
 	IsMatching(context: CombinationContext): boolean {
@@ -17,8 +16,7 @@ export class CancelCombination extends AbstractSingleCombination {
 
 		if (this.IsMatching(context)) {
 			this.UnSelectItem(context.Items[0]);
-			this.OnClearContext.Invoke();
-			this.OnChangedMode.Invoke(this, InteractionMode.SingleSelection);
+			this.ClearContext.Invoke();
 			return true;
 		}
 		return false;

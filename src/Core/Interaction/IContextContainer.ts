@@ -1,3 +1,3 @@
 export interface IContextContainer {
-	ClearContext(): void;
+	HandleClearContext(): void;
 }

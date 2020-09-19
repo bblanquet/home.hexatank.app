@@ -1,7 +1,7 @@
+import { UnitGroup } from '../Items/UnitGroup';
 import { ICombination } from './Combination/ICombination';
 import { InputNotifier } from './InputNotifier';
 import { GameHelper } from '../Framework/GameHelper';
-import { InteractionMode } from './InteractionMode';
 import { CombinationContext } from './Combination/CombinationContext';
 import { CombinationDispatcher } from './CombinationDispatcher';
 import { IContextContainer } from './IContextContainer';
@@ -16,7 +16,6 @@ import { ISelectableChecker } from './ISelectableChecker';
 import { ViewContext } from '../Utils/Geometry/ViewContext';
 
 export class InteractionContext implements IContextContainer, IInteractionContext {
-	public Mode: InteractionMode = InteractionMode.SingleSelection;
 	public Kind: InteractionKind;
 	public Point: PIXI.Point;
 	public View: ViewContext;
@@ -32,14 +31,9 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 		this._selectedItem = [];
 		this._dispatcher = new CombinationDispatcher(combinations);
 		combinations.forEach((c) => {
-			c.OnClearContext.On(this.ClearContext.bind(this));
-			c.OnChangedMode.On(this.SetMode.bind(this));
-			c.OnPushedItem.On(this.Push.bind(this));
+			c.ClearContext.On(this.HandleClearContext.bind(this));
+			c.ForcingSelectedItem.On(this.HandleForcingSelectedItem.bind(this));
 		});
-	}
-
-	private SetMode(obj: any, data: InteractionMode) {
-		this.Mode = data;
 	}
 
 	public Mute(): void {
@@ -106,11 +100,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 			this.View = null;
 		}
 
-		if (this.Mode === InteractionMode.SingleSelection) {
-			GameHelper.Updater.Select(this);
-		} else {
-			this.OnSelect(null);
-		}
+		GameHelper.Updater.Select(this);
 	}
 
 	private ContainsSelectable(item: Item): Boolean {
@@ -139,9 +129,9 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 		}
 		if (this.Kind !== InteractionKind.Moving) {
 			console.log(
-				`%c [${this._selectedItem.length}] selected: ${item ? item.constructor.name : 'none'} ${InteractionKind[
-					this.Kind
-				]} ${InteractionMode[this.Mode]}`,
+				`%c COUNT[${this._selectedItem.length}] ITEMS[ ${this._selectedItem.map(
+					(e) => `${e.constructor.name} `
+				)}] INT[${InteractionKind[this.Kind]}] ${this.GetDetail(this._selectedItem)}`,
 				'font-weight:bold;color:red;'
 			);
 		}
@@ -149,12 +139,22 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 		let context = new CombinationContext();
 		context.Items = this._selectedItem;
 		context.InteractionKind = this.Kind;
-		context.ContextMode = this.Mode;
 		context.Point = this.Point;
 		this._dispatcher.Check(context);
 	}
 
-	public Push(obj: any, data: { item: Item; isForced: boolean }): void {
+	private HasGroup(items: Item[]): boolean {
+		return 0 < items.length && items[0] instanceof UnitGroup;
+	}
+
+	private GetDetail(items: Item[]) {
+		if (!this.HasGroup(items)) {
+			return '';
+		}
+		return `GROUPLISTENING[${(items[0] as UnitGroup).IsListeningOrder}]`;
+	}
+
+	public HandleForcingSelectedItem(obj: any, data: { item: Item; isForced: boolean }): void {
 		if (data.isForced) {
 			this.OnSelect(data.item);
 		} else {
@@ -162,7 +162,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 		}
 	}
 
-	ClearContext(): void {
+	HandleClearContext(): void {
 		this._selectedItem = [];
 	}
 }

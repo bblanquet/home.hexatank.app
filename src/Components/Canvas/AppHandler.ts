@@ -17,8 +17,6 @@ import { RenderingGroups } from '../../Core/Setup/Render/RenderingGroups';
 import { MapRender } from '../../Core/Setup/Render/MapRender';
 
 export class AppHandler {
-	public IsOrderMode: boolean = false;
-
 	//environement
 	public InputNotifier: InputNotifier;
 	public InteractionContext: InteractionContext;

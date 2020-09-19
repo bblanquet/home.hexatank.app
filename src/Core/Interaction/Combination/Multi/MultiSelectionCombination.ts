@@ -1,6 +1,5 @@
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
 import { CombinationContext } from '../CombinationContext';
-import { InteractionMode } from '../../InteractionMode';
 import { Point } from '../../../Utils/Geometry/Point';
 import { InteractionKind } from '../../IInteractionContext';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
@@ -11,16 +10,15 @@ export class MultiSelectionCombination extends AbstractSingleCombination {
 	}
 
 	IsMatching(context: CombinationContext): boolean {
-		return context.ContextMode === InteractionMode.MultipleSelection;
+		return this._multiContext.IsListening();
 	}
 
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
-			if (context.InteractionKind === InteractionKind.Down) {
-				this._multiContext.Listen();
-			}
-
-			if (context.InteractionKind === InteractionKind.Moving) {
+			if (
+				context.InteractionKind === InteractionKind.Down ||
+				context.InteractionKind === InteractionKind.Moving
+			) {
 				this._multiContext.Moving(new Point(context.Point.x, context.Point.y));
 			}
 

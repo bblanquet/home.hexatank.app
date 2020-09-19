@@ -50,7 +50,11 @@ export default class CellMenuComponent extends Component<
 	}
 
 	private IsCovered(): boolean {
-		return this.props.GameContext.GetMainHq().IsCovered(this.props.Item as Cell);
+		if (this.props.Item instanceof Cell) {
+			return this.props.GameContext.GetMainHq().IsCovered(this.props.Item as Cell);
+		} else {
+			return false;
+		}
 	}
 
 	private SendContext(item: Item): void {

@@ -30,7 +30,7 @@ export class TruckDiamondCombination extends AbstractSingleCombination {
 			);
 			truck.SetOrder(order);
 			this.UnSelectItem(context.Items[0]);
-			this.OnClearContext.Invoke();
+			this.ClearContext.Invoke();
 			return true;
 		}
 		return false;

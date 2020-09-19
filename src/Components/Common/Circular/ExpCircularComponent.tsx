@@ -1,32 +1,34 @@
-import { h, Component } from 'preact';
+import { h, Component, toChildArray, cloneElement } from 'preact';
 import { Point } from '../../../Core/Utils/Geometry/Point';
 
-export default class ExpCircularComponent extends Component<{ OnCancel: () => void }> {
+export default class CircularComponent extends Component<{ OnCancel: () => void }, {}> {
+	private _positions: Point[] = [];
 	constructor() {
 		super();
-		this.setState({
-			btns: []
-		});
+		this.setState({});
 	}
 
 	componentWillMount() {
 		if (this.props.children) {
+			this._positions = [];
 			(this.props.children as any[]).forEach((c) => {
-				c.attributes.Point = new Point(0, 0);
+				this._positions.push(new Point(0, 0));
 			});
 		}
 	}
 
 	private SetPositions() {
-		const btns = this.props.children as any[];
-		btns.forEach((c, index) => {
-			c.attributes.Point = this.GetPoint(index, btns.length);
+		this._positions = [];
+		const children = toChildArray(this.props.children);
+		const size = children.length;
+		(this.props.children as any[]).forEach((c, index) => {
+			this._positions.push(this.GetPoint(index, size));
 		});
 		this.setState({});
 	}
 
 	componentDidMount() {
-		if (this.props) {
+		if (this.props.children) {
 			this.setState({});
 			setTimeout(() => {
 				this.SetPositions();
@@ -50,6 +52,10 @@ export default class ExpCircularComponent extends Component<{ OnCancel: () => vo
 		);
 	}
 
+	Convert(child: any, index: number) {
+		return cloneElement(child, { Point: this._positions[index] });
+	}
+
 	render() {
 		return (
 			<div class="circular-menu">
@@ -59,7 +65,9 @@ export default class ExpCircularComponent extends Component<{ OnCancel: () => vo
 				>
 					{this.CancelLogo()}
 				</div>
-				{this.props.children}
+				{toChildArray(this.props.children).map((child, i) => {
+					return this.Convert(child, i);
+				})}
 			</div>
 		);
 	}

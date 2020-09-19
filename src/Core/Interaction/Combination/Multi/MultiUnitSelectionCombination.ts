@@ -1,17 +1,14 @@
-import { Group } from './../../../Items/Group';
-import { InteractionKind } from './../../IInteractionContext';
+import { UnitGroup } from '../../../Items/UnitGroup';
 import { CombinationContext } from '../CombinationContext';
-import { SelectionMode } from '../../../Menu/Smart/SelectionMode';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
-import { InteractionMode } from '../../InteractionMode';
 import { AppHandler } from '../../../../Components/Canvas/AppHandler';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { GameContext } from '../../../Framework/GameContext';
 
 export class MultiUnitSelectionCombination extends AbstractSingleCombination {
-	private _group: Group;
+	private _group: UnitGroup;
 
 	constructor(
 		private _multiContext: MultiSelectionContext,
@@ -19,15 +16,11 @@ export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 		private _gameContext: GameContext
 	) {
 		super();
-		this._group = new Group(this._appHandler, this._multiContext);
+		this._group = new UnitGroup(this._appHandler, this._multiContext);
 	}
 
 	IsMatching(context: CombinationContext): boolean {
-		return (
-			//this._multiselection.GetMode() === SelectionMode.unit &&
-			context.ContextMode === InteractionMode.MultipleSelection &&
-			(context.InteractionKind === InteractionKind.Up || context.InteractionKind === InteractionKind.MovingUp)
-		);
+		return this._multiContext.IsListeningUnit() && context.Items.length === 0;
 	}
 
 	Combine(context: CombinationContext): boolean {
@@ -35,16 +28,6 @@ export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 			if (!this._group.Any()) {
 				this.Init();
 				return true;
-			} else {
-				if (this._appHandler.IsOrderMode) {
-					if (0 < this._multiContext.GetCells().length) {
-						this._group.SetOrder(this._multiContext.GetCells());
-					}
-					this._multiContext.Close();
-					this._appHandler.RestartNavigation();
-					this._appHandler.IsOrderMode = false;
-					this.OnChangedMode.Invoke(this, InteractionMode.SingleSelection);
-				}
 			}
 			return true;
 		}
@@ -63,13 +46,13 @@ export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 		this._multiContext.Close();
 
 		if (!this._group.Any()) {
-			this.OnChangedMode.Invoke(this, InteractionMode.SingleSelection);
 			this._appHandler.RestartNavigation();
 		} else {
+			this._multiContext.Listen(true);
 			this._group.SetSelected(true);
 			this._gameContext.OnItemSelected.Invoke(this, this._group);
-			this.OnPushedItem.Invoke(null, { item: this._group, isForced: true });
-			this._appHandler.IsOrderMode = true;
+			this.ForcingSelectedItem.Invoke(null, { item: this._group, isForced: true });
+			this._group.IsListeningOrder = true;
 		}
 	}
 }

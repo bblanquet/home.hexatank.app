@@ -6,8 +6,9 @@ import { Item } from '../../../Core/Items/Item';
 import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
 import { AppHandler } from '../AppHandler';
 import { MultiOrderMenuItem } from '../../../Core/Menu/Buttons/MultiOrderMenuItem';
+import { UnitGroup } from '../../../Core/Items/UnitGroup';
 
-export default class MultiTankMenuComponent extends Component<{ AppHandler: AppHandler }, {}> {
+export default class MultiTankMenuComponent extends Component<{ AppHandler: AppHandler; item: UnitGroup }, {}> {
 	private SendContext(item: Item): void {
 		this.props.AppHandler.InteractionContext.Kind = InteractionKind.Up;
 		return this.props.AppHandler.InteractionContext.OnSelect(item);
@@ -25,7 +26,7 @@ export default class MultiTankMenuComponent extends Component<{ AppHandler: AppH
 						>
 							<div
 								class={
-									this.props.AppHandler.IsOrderMode ? (
+									this.props.item.IsListeningOrder ? (
 										'fill-active-order max-width standard-space'
 									) : (
 										'fill-order max-width standard-space'

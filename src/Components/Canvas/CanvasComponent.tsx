@@ -18,11 +18,12 @@ import CellMenuComponent from './Parts/CellMenuComponent';
 import MultiMenuComponent from './Parts/MultiMenuComponent';
 import TruckMenuComponent from './Parts/TruckMenuComponent';
 import ReactorMenuComponent from './Parts/ReactorMenuComponent';
-import { Group } from '../../Core/Items/Group';
+import { UnitGroup } from '../../Core/Items/UnitGroup';
 import { GameStatus } from './GameStatus';
 import { Player } from '../../Network/Player';
 import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
 import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
+import { CellGroup } from '../../Core/Items/CellGroup';
 
 export default class CanvasComponent extends Component<
 	any,
@@ -146,8 +147,8 @@ export default class CanvasComponent extends Component<
 				return <TankMenuComponent AppHandler={this._appHandler} Tank={this.state.Item} />;
 			} else if (this.state.Item instanceof Truck) {
 				return <TruckMenuComponent AppHandler={this._appHandler} Truck={this.state.Item} />;
-			} else if (this.state.Item instanceof Group) {
-				return <MultiTankMenuComponent AppHandler={this._appHandler} />;
+			} else if (this.state.Item instanceof UnitGroup) {
+				return <MultiTankMenuComponent AppHandler={this._appHandler} item={this.state.Item} />;
 			} else if (this.state.Item instanceof Headquarter) {
 				return (
 					<HqMenuComponent
@@ -167,7 +168,7 @@ export default class CanvasComponent extends Component<
 						GameContext={this._gameContext}
 					/>
 				);
-			} else if (this.state.Item instanceof Cell) {
+			} else if (this.state.Item instanceof Cell || this.state.Item instanceof CellGroup) {
 				return (
 					<CellMenuComponent
 						Item={this.state.Item}
@@ -221,11 +222,12 @@ export default class CanvasComponent extends Component<
 	}
 
 	private SetMenu(): void {
+		const newValue = !this.state.HasMenu;
 		this.setState({
-			HasMenu: !this.state.HasMenu
+			HasMenu: newValue
 		});
 		if (!GameHelper.Socket) {
-			GameSettings.IsPause = this.state.HasMenu;
+			GameSettings.IsPause = newValue;
 		}
 	}
 
@@ -285,7 +287,7 @@ export default class CanvasComponent extends Component<
 				<button
 					type="button"
 					class="btn btn-dark small-space space-out fill-option"
-					onClick={(e: any) => this.SetMenu()}
+					onClick={() => this.SetMenu()}
 				/>
 			</div>
 		);

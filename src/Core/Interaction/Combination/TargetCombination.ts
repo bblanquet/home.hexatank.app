@@ -26,7 +26,7 @@ export class TargetCombination extends AbstractSingleCombination {
 			let order = new TargetOrder(tank, cell.GetShootableEntity());
 			tank.SetOrder(order);
 			this.UnSelectItem(context.Items[0]);
-			this.OnClearContext.Invoke();
+			this.ClearContext.Invoke();
 			return true;
 		}
 		return false;

@@ -4,9 +4,10 @@ import * as PIXI from 'pixi.js';
 import { GameSettings } from '../Framework/GameSettings';
 
 export class InputNotifier {
+	private _isDown: boolean = false;
 	private _currentPoint: Point;
 	private _downPoint: Point;
-	private _doubleClickLatency: number = 350;
+	private _doubleClickLatency: number = 250;
 	public DoubleEvent: LiteEvent<Point>;
 	public MovingEvent: LiteEvent<Point>;
 	public DownEvent: LiteEvent<Point>;
@@ -26,12 +27,15 @@ export class InputNotifier {
 	}
 
 	public HandleMouseMove(event: PIXI.interaction.InteractionEvent): void {
-		this._currentPoint.X = event.data.global.x;
-		this._currentPoint.Y = event.data.global.y;
-		this.MovingEvent.Invoke(new Point(this._currentPoint.X, this._currentPoint.Y));
+		if (this._isDown) {
+			this._currentPoint.X = event.data.global.x;
+			this._currentPoint.Y = event.data.global.y;
+			this.MovingEvent.Invoke(new Point(this._currentPoint.X, this._currentPoint.Y));
+		}
 	}
 
 	public HandleMouseDown(event: PIXI.interaction.InteractionEvent): void {
+		this._isDown = true;
 		const pvsDownDate = this._downDate;
 		this._downDate = new Date().getTime();
 
@@ -58,6 +62,7 @@ export class InputNotifier {
 	}
 
 	public HandleMouseUp(event: PIXI.interaction.InteractionEvent): void {
+		this._isDown = false;
 		this._currentPoint.X = event.data.global.x;
 		this._currentPoint.Y = event.data.global.y;
 
@@ -85,19 +90,3 @@ export class InputNotifier {
 		return diff < this._doubleClickLatency ? this._doubleClickLatency - diff : 0;
 	}
 }
-
-// private HandleHolding(): void {
-// 	if (this._timerOut) {
-// 		clearTimeout(this._timerOut);
-// 	}
-// 	const distance = Math.abs(
-// 		Math.sqrt(
-// 			Math.pow(this._currentPoint.X - this._downPoint.X, 2) +
-// 				Math.pow(this._currentPoint.Y - this._downPoint.Y, 2)
-// 		)
-// 	);
-
-// 	if (distance < GameSettings.Size / 3) {
-// 		this.HoldingEvent.Invoke(this._currentPoint);
-// 	}
-// }

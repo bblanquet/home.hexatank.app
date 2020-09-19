@@ -21,10 +21,10 @@ import { Point } from '../../Utils/Geometry/Point';
 import { Field } from './Field/Field';
 import { IInteractionContext } from '../../Interaction/IInteractionContext';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
-import { InteractionMode } from '../../Interaction/InteractionMode';
 import { Vehicle } from '../Unit/Vehicle';
 import { GameSettings } from '../../Framework/GameSettings';
 import * as PIXI from 'pixi.js';
+import { MultiSelectionContext } from '../../Menu/Smart/MultiSelectionContext';
 
 export class Cell extends Item implements ICell, ISelectable {
 	public Properties: CellProperties;
@@ -339,10 +339,8 @@ export class Cell extends Item implements ICell, ISelectable {
 	public Select(context: IInteractionContext): boolean {
 		if (context.View) {
 			let scale = context.View.Scale;
-			this._circle.radius =
-				context.Mode === InteractionMode.MultipleSelection
-					? GameSettings.Size / 2 * scale
-					: GameSettings.Size * scale;
+			this._circle.radius = //a bit ulgy MultiSelectionContext
+				context instanceof MultiSelectionContext ? GameSettings.Size / 2 * scale : GameSettings.Size * scale;
 			this._circle.radius = GameSettings.Size * scale;
 			this._circle.x = (this.GetSprites()[0].x - context.View.GetX()) * scale;
 			this._circle.y = (this.GetSprites()[0].y - context.View.GetY()) * scale;

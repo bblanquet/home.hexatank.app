@@ -1,6 +1,6 @@
-import { MultiSelectionContext } from './../Menu/Smart/MultiSelectionContext';
-import { AppHandler } from './../../Components/Canvas/AppHandler';
-import { ISelectable } from './../ISelectable';
+import { MultiSelectionContext } from '../Menu/Smart/MultiSelectionContext';
+import { AppHandler } from '../../Components/Canvas/AppHandler';
+import { ISelectable } from '../ISelectable';
 import { Item } from './Item';
 import { Vehicle } from './Unit/Vehicle';
 import { LiteEvent } from '../Utils/Events/LiteEvent';
@@ -12,8 +12,9 @@ import { MultiSelectionHelper } from '../Interaction/Combination/Multi/MultiSele
 import { Cell } from './Cell/Cell';
 import { Tank } from './Unit/Tank';
 
-export class Group extends Item implements ISelectable, ICancellable, ICamouflageAble {
+export class UnitGroup extends Item implements ISelectable, ICancellable, ICamouflageAble {
 	private _multiHandler: MultiSelectionHelper;
+	public IsListeningOrder: boolean = false;
 	private _units: Array<Vehicle> = new Array<Vehicle>();
 	OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 

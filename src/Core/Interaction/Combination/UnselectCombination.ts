@@ -37,13 +37,13 @@ export class UnselectCombination extends AbstractSingleCombination {
 			if (this._checker.IsSelectable(lastItem)) {
 				if (lastItem === context.Items[0]) {
 					this.UnSelectItem(context.Items[0]);
-					this.OnClearContext.Invoke();
+					this.ClearContext.Invoke();
 					if (lastItem instanceof Vehicle) {
 						const vehicle = lastItem as Vehicle;
 						const cell = vehicle.GetCurrentCell();
 
 						if (cell.GetField() instanceof BasicField && cell.GetState() === CellState.Visible) {
-							this.OnPushedItem.Invoke(this, { item: cell, isForced: false });
+							this.ForcingSelectedItem.Invoke(this, { item: cell, isForced: false });
 							cell.SetSelected(true);
 							this._gameContext.OnItemSelected.Invoke(this, cell);
 							return true;
@@ -51,8 +51,8 @@ export class UnselectCombination extends AbstractSingleCombination {
 					}
 				} else {
 					this.UnSelectItem(context.Items[0]);
-					this.OnClearContext.Invoke();
-					this.OnPushedItem.Invoke(this, { item: lastItem, isForced: true });
+					this.ClearContext.Invoke();
+					this.ForcingSelectedItem.Invoke(this, { item: lastItem, isForced: true });
 				}
 			}
 			return true;

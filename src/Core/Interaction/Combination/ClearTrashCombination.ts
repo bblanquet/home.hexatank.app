@@ -13,7 +13,7 @@ export class ClearTrashCombination extends AbstractSingleCombination {
 
 	Combine(items: CombinationContext): boolean {
 		if (this.IsMatching(items)) {
-			this.OnClearContext.Invoke();
+			this.ClearContext.Invoke();
 			return true;
 		}
 		return false;

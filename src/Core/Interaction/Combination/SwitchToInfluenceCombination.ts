@@ -5,7 +5,7 @@ import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { ISelectable } from '../../ISelectable';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
-import { Group } from '../../Items/Group';
+import { UnitGroup } from '../../Items/UnitGroup';
 
 export class SwitchToInfluenceCombination extends AbstractSingleCombination {
 	IsMatching(context: CombinationContext): boolean {
@@ -14,7 +14,7 @@ export class SwitchToInfluenceCombination extends AbstractSingleCombination {
 			context.Items.length == 2 &&
 			(context.Items[0] instanceof Vehicle ||
 				context.Items[0] instanceof Headquarter ||
-				context.Items[0] instanceof Group ||
+				context.Items[0] instanceof UnitGroup ||
 				context.Items[0] instanceof Cell) &&
 			context.Items[1] instanceof ReactorField
 		);

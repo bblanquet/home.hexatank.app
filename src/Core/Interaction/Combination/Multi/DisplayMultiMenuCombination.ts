@@ -4,9 +4,10 @@ import { AbstractSingleCombination } from './../AbstractSingleCombination';
 import { CombinationContext } from '../CombinationContext';
 import { Item } from '../../../Items/Item';
 import { ISelectable } from '../../../ISelectable';
+import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
 
 export class DisplayMultiMenuCombination extends AbstractSingleCombination {
-	constructor(private _appHandler: AppHandler) {
+	constructor(private _appHandler: AppHandler, private _multiSelectionContext: MultiSelectionContext) {
 		super();
 	}
 
@@ -16,10 +17,11 @@ export class DisplayMultiMenuCombination extends AbstractSingleCombination {
 
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
+			this._multiSelectionContext.Close();
 			if (0 < context.Items.length) {
 				this.UnSelectItem(context.Items[0]);
 			}
-			this.OnClearContext.Invoke();
+			this.ClearContext.Invoke();
 			this._appHandler.MultiMenuShowed.Invoke(this, true);
 
 			return true;

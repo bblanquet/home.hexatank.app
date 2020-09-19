@@ -23,7 +23,6 @@ import { IGeneralListRequester } from './RequestMaker/GeneralRequester/IGeneralL
 import { Cell } from '../../Items/Cell/Cell';
 import { Squad } from './Troop/Squad';
 import { RequestPriority } from './Utils/RequestPriority';
-import { unwatchFile } from 'fs';
 
 export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	public AreaDecisions: IAreaDecisionMaker[];
@@ -173,21 +172,21 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	}
 
 	private Log(requests: Groups<AreaRequest>) {
-		const hCount = requests.Exist(RequestPriority.High) ? requests.Get(RequestPriority.High).length : 0;
-		const hTypes = requests.Exist(RequestPriority.High)
-			? requests.Get(RequestPriority.High).map((c) => c.RequestType)
-			: '';
-		const mCount = requests.Exist(RequestPriority.Medium) ? requests.Get(RequestPriority.Medium).length : 0;
-		const mTypes = requests.Exist(RequestPriority.Medium)
-			? requests.Get(RequestPriority.Medium).map((c) => c.RequestType)
-			: '';
-		console.log(
-			`%c [MONEY] ${this.Hq.GetAmount()} [A] ${this.AreaDecisions.length}`,
-			'font-weight:bold;color:#940c0c;'
-		);
-		console.log(`%c [H] ${hCount} ${hTypes.toString()} `, 'font-weight:bold;color:#94570c;');
-		console.log(`%c [M] ${mCount} ${mTypes.toString()} `, 'font-weight:bold;color:#94770c;');
-		console.log(`%c ----------------------- `, 'font-weight:bold;color:#94770c;');
+		// const hCount = requests.Exist(RequestPriority.High) ? requests.Get(RequestPriority.High).length : 0;
+		// const hTypes = requests.Exist(RequestPriority.High)
+		// 	? requests.Get(RequestPriority.High).map((c) => c.RequestType)
+		// 	: '';
+		// const mCount = requests.Exist(RequestPriority.Medium) ? requests.Get(RequestPriority.Medium).length : 0;
+		// const mTypes = requests.Exist(RequestPriority.Medium)
+		// 	? requests.Get(RequestPriority.Medium).map((c) => c.RequestType)
+		// 	: '';
+		// console.log(
+		// 	`%c [MONEY] ${this.Hq.GetAmount()} [A] ${this.AreaDecisions.length}`,
+		// 	'font-weight:bold;color:#940c0c;'
+		// );
+		// console.log(`%c [H] ${hCount} ${hTypes.toString()} `, 'font-weight:bold;color:#94570c;');
+		// console.log(`%c [M] ${mCount} ${mTypes.toString()} `, 'font-weight:bold;color:#94770c;');
+		// console.log(`%c ----------------------- `, 'font-weight:bold;color:#94770c;');
 	}
 }
 

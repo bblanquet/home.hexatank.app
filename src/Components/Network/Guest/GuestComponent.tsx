@@ -3,11 +3,11 @@ import { route } from 'preact-router';
 import linkState from 'linkstate';
 import * as toastr from 'toastr';
 import { PacketKind } from '../../../Network/Message/PacketKind';
-import BlackButtonComponent from '../../Common/Button/BlackButtonComponent';
-import RedButtonComponent from '../../Common/Button/RedButtonComponent';
+import BlackButtonComponent from '../../Common/Button/Stylish/BlackButtonComponent';
+import RedButtonComponent from '../../Common/Button/Stylish/RedButtonComponent';
 import PanelComponent from '../../Common/Panel/PanelComponent';
 import GridComponent from '../../Common/Grid/GridComponent';
-import SmBlackButtonComponent from '../../Common/Button/SmBlackButtonComponent';
+import SmBlackButtonComponent from '../../Common/Button/Stylish/SmBlackButtonComponent';
 
 const io = require('socket.io-client');
 

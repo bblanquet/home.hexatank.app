@@ -1,7 +1,5 @@
 import { Group } from './../../../Items/Group';
 import { InteractionKind } from './../../IInteractionContext';
-import { MultiSelectionHelper } from './MultiSelectionHelper';
-import { MultiSelectionMenu } from '../../../Menu/Smart/MultiSelectionMenu';
 import { CombinationContext } from '../CombinationContext';
 import { SelectionMode } from '../../../Menu/Smart/SelectionMode';
 import { Cell } from '../../../Items/Cell/Cell';
@@ -16,7 +14,6 @@ export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 	private _group: Group;
 
 	constructor(
-		private _multiselection: MultiSelectionMenu,
 		private _multiContext: MultiSelectionContext,
 		private _appHandler: AppHandler,
 		private _gameContext: GameContext
@@ -27,7 +24,7 @@ export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 
 	IsMatching(context: CombinationContext): boolean {
 		return (
-			this._multiselection.GetMode() === SelectionMode.unit &&
+			//this._multiselection.GetMode() === SelectionMode.unit &&
 			context.ContextMode === InteractionMode.MultipleSelection &&
 			(context.InteractionKind === InteractionKind.Up || context.InteractionKind === InteractionKind.MovingUp)
 		);

@@ -45,7 +45,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 	public Mute(): void {
 		this._inputNotifier.MovingUpEvent.Off(this.MovingUp().bind(this));
 		this._inputNotifier.UpEvent.Off(this.Up().bind(this));
-		this._inputNotifier.HoldingEvent.Off(this.Holding().bind(this));
+		this._inputNotifier.DoubleEvent.Off(this.Doubling().bind(this));
 		this._inputNotifier.MovingUpEvent.Off(this.MovingUp().bind(this));
 		this._inputNotifier.MovingEvent.Off(this.Moving().bind(this));
 	}
@@ -54,7 +54,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 		this._inputNotifier.UpEvent.On(this.Up().bind(this));
 		this._inputNotifier.MovingUpEvent.On(this.MovingUp().bind(this));
 		this._inputNotifier.DownEvent.On(this.Down().bind(this));
-		this._inputNotifier.HoldingEvent.On(this.Holding());
+		this._inputNotifier.DoubleEvent.On(this.Doubling());
 		this._inputNotifier.MovingEvent.On(this.Moving());
 	}
 
@@ -64,9 +64,9 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 		};
 	}
 
-	private Holding(): (obj: any, data?: Point) => void {
+	private Doubling(): (obj: any, data?: Point) => void {
 		return (point: Point) => {
-			this.Notify(InteractionKind.Holding, point);
+			this.Notify(InteractionKind.DoubleClick, point);
 		};
 	}
 

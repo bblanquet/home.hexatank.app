@@ -1,8 +1,8 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import PanelComponent from '../Common/Panel/PanelComponent';
-import RedButtonComponent from '../Common/Button/RedButtonComponent';
-import DropDownButtonComponent from '../Common/Button/DropDownButtonComponent';
+import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
+import DropDownButtonComponent from '../Common/Button/Stylish/DropDownButtonComponent';
 import { ButtonOption } from '../Common/Button/ButtonOption';
 
 export default class HomeComponent extends Component<any, any> {

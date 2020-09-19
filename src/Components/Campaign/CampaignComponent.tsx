@@ -3,8 +3,8 @@ import { route } from 'preact-router';
 import { GameHelper } from '../../Core/Framework/GameHelper';
 import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
 import { MapMode } from '../../Core/Setup/Generator/MapMode';
-import RedButtonComponent from '../Common/Button/RedButtonComponent';
-import BlackButtonComponent from '../Common/Button/BlackButtonComponent';
+import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
+import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
 
 export default class CampaignComponent extends Component<any, any> {
 	private _isFirstRender = true;

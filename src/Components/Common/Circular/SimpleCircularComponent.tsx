@@ -2,7 +2,7 @@ import { h, Component } from 'preact';
 import { Point } from '../../../Core/Utils/Geometry/Point';
 import { BtnInfo } from './BtnInfo';
 
-export default class CircularComponent extends Component<
+export default class SimpleCircularComponent extends Component<
 	{ btns: BtnInfo[]; OnCancel: () => void },
 	{ btns: BtnInfo[] }
 > {
@@ -61,9 +61,6 @@ export default class CircularComponent extends Component<
 			>
 				<div class="max-space container-center" onClick={() => btn.CallBack()}>
 					<div class={`${btn.ClassName} circular-space`} />
-					<div>
-						{btn.Amount} <span class="fill-diamond badge very-small-space middle"> </span>
-					</div>
 				</div>
 			</div>
 		);

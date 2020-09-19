@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { SpriteProvider } from '../../Core/Framework/SpriteProvider';
-import RedButtonComponent from '../Common/Button/RedButtonComponent';
+import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
 import PanelComponent from '../Common/Panel/PanelComponent';
 
 export default class LoadingComponent extends Component<any, { percentage: number }> {

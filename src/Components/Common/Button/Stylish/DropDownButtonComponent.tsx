@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
-import { IconProvider } from '../IconProvider';
-import { ButtonOption } from './ButtonOption';
+import { IconProvider } from '../../IconProvider';
+import { ButtonOption } from '../ButtonOption';
 
 export default class DropDownButtonComponent extends Component<
 	{ title: string; isFirstRender: boolean; icon: string; items: ButtonOption[] },

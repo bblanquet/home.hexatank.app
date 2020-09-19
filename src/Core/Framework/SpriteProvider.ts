@@ -10,23 +10,8 @@ export class SpriteProvider {
 	private static _svgs: Dictionnary<PIXI.resources.SVGResource> = new Dictionnary<PIXI.resources.SVGResource>();
 
 	public static GetSprite(name: string): PIXI.Sprite {
-		const otpions = { resourceOptions: { scale: this.GetNumber(name) } };
+		const otpions = { resourceOptions: { scale: 0.3 } };
 		return new PIXI.Sprite(PIXI.Texture.from(`${SpriteAccuracy.high}${this.GetPath(name)}`, otpions));
-	}
-
-	private static GetNumber(sprite: string): number {
-		if (
-			[
-				this.GetPath(Archive.menu.smartMenu.tankSelection),
-				this.GetPath(Archive.menu.smartMenu.hoverTankSelection),
-				this.GetPath(Archive.menu.smartMenu.cellSelection),
-				this.GetPath(Archive.menu.smartMenu.hoverCellSelection)
-			].some((e) => sprite === e)
-		) {
-			return 1;
-		} else {
-			return 0.3;
-		}
 	}
 
 	public static LoadAll(): LiteEvent<number> {
@@ -91,7 +76,7 @@ export class SpriteProvider {
 	private static LoadAsset(data: AssetData, callBack: () => void) {
 		const res = new PIXI.resources.SVGResource(data.Name, { scale: data.Acc });
 		const key = data.ToString();
-		const otpions = { resourceOptions: { scale: SpriteProvider.GetNumber(data.Name) } };
+		const otpions = { resourceOptions: { scale: 0.3 } };
 		let texture = new PIXI.Texture(new PIXI.BaseTexture(data.Name, otpions));
 		texture.baseTexture.once('loaded', () => {
 			callBack();

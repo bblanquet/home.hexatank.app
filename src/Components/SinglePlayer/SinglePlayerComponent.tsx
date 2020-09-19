@@ -5,8 +5,8 @@ import linkState from 'linkstate';
 import { GameHelper } from '../../Core/Framework/GameHelper';
 import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
 import { MapMode } from '../../Core/Setup/Generator/MapMode';
-import RedButtonComponent from '../Common/Button/RedButtonComponent';
-import BlackButtonComponent from '../Common/Button/BlackButtonComponent';
+import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
+import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
 import PanelComponent from '../Common/Panel/PanelComponent';
 
 export default class SinglePlayerComponent extends Component<any, SinglePlayerState> {

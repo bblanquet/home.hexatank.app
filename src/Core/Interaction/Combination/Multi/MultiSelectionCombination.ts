@@ -6,7 +6,7 @@ import { InteractionKind } from '../../IInteractionContext';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 
 export class MultiSelectionCombination extends AbstractSingleCombination {
-	constructor(private _interactionContext: MultiSelectionContext) {
+	constructor(private _multiContext: MultiSelectionContext) {
 		super();
 	}
 
@@ -17,11 +17,11 @@ export class MultiSelectionCombination extends AbstractSingleCombination {
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
 			if (context.InteractionKind === InteractionKind.Down) {
-				this._interactionContext.Listen();
+				this._multiContext.Listen();
 			}
 
 			if (context.InteractionKind === InteractionKind.Moving) {
-				this._interactionContext.Moving(new Point(context.Point.x, context.Point.y));
+				this._multiContext.Moving(new Point(context.Point.x, context.Point.y));
 			}
 
 			if (

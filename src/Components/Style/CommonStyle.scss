@@ -754,6 +754,22 @@ body {
 	background-image: url('{{}}menu/moneyMenu.svg');
 }
 
+.fill-multi-tank {
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/smartMenu/multiTank.svg');
+}
+
+.fill-multi-cell {
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}menu/smartMenu/multiCell.svg');
+}
+
 .fill-medic {
 	overflow: hidden;
 	background-size: contain;

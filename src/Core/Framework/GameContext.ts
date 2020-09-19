@@ -12,7 +12,7 @@ import { Player } from '../../Network/Player';
 export class GameContext {
 	//events
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
-	public OnGameEnded: LiteEvent<GameStatus> = new LiteEvent<GameStatus>();
+	public GameStatusChanged: LiteEvent<GameStatus> = new LiteEvent<GameStatus>();
 
 	//elements
 	private _mainHq: Headquarter;
@@ -35,7 +35,7 @@ export class GameContext {
 		this._cells = Dictionnary.To((c) => c.Coo(), cells);
 
 		this._mainHq.OnDestroyed.On(() => {
-			this.OnGameEnded.Invoke(this, GameStatus.Lost);
+			this.GameStatusChanged.Invoke(this, GameStatus.Lost);
 		});
 
 		this._hqs.forEach((hq) => {
@@ -46,7 +46,7 @@ export class GameContext {
 		foes.forEach((foe) => {
 			foe.OnDestroyed.On(() => {
 				if (foes.every((e) => !e.IsAlive())) {
-					this.OnGameEnded.Invoke(this, GameStatus.Won);
+					this.GameStatusChanged.Invoke(this, GameStatus.Won);
 				}
 			});
 		});

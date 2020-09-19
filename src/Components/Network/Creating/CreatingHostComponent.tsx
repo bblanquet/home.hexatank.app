@@ -5,8 +5,8 @@ import * as toastr from 'toastr';
 import { CreatingHostState } from './CreatingHostState';
 const io = require('socket.io-client');
 import { PacketKind } from '../../../Network/Message/PacketKind';
-import RedButtonComponent from '../../Common/Button/RedButtonComponent';
-import BlackButtonComponent from '../../Common/Button/BlackButtonComponent';
+import RedButtonComponent from '../../Common/Button/Stylish/RedButtonComponent';
+import BlackButtonComponent from '../../Common/Button/Stylish/BlackButtonComponent';
 import PanelComponent from '../../Common/Panel/PanelComponent';
 
 export default class CreatingHostComponent extends Component<any, CreatingHostState> {

@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 import linkState from 'linkstate';
-import BlackButtonComponent from '../../../Common/Button/BlackButtonComponent';
+import BlackButtonComponent from '../../../Common/Button/Stylish/BlackButtonComponent';
 
 export default class OptionComponent extends Component<{ Update: (g: number) => void }, { IaNumber: number }> {
 	private _isFirstRender = true;

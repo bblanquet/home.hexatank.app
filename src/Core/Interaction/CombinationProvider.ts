@@ -26,9 +26,6 @@ import { TruckDiamondCombination } from './Combination/TruckDiamondCombination';
 import { MultiCellSelectionCombination } from './Combination/Multi/MultiCellSelectionCombination';
 import { MultiUnitSelectionCombination } from './Combination/Multi/MultiUnitSelectionCombination';
 import { MultiSelectionCombination } from './Combination/Multi/MultiSelectionCombination';
-import { UpMultiMenuCombination } from './Combination/Multi/UpMultiMenuCombination';
-import { MovingMultiMenuCombination } from './Combination/Multi/MovingMultiMenuCombination';
-import { MultiSelectionMenu } from '../Menu/Smart/MultiSelectionMenu';
 import { DisplayMultiMenuCombination } from './Combination/Multi/DisplayMultiMenuCombination';
 import { SwitchToInfluenceCombination } from './Combination/SwitchToInfluenceCombination';
 import { SwitchToCellCombination } from './Combination/SwitchToCellCombination';
@@ -56,20 +53,17 @@ import { RoadField } from '../Items/Cell/Field/Bonus/RoadField';
 
 export class CombinationProvider {
 	GetCombination(appHandler: AppHandler, checker: ISelectableChecker, gameContext: GameContext): ICombination[] {
-		const multiselectionMenu = new MultiSelectionMenu();
 		const multiSelectionContext = new MultiSelectionContext(appHandler.GetViewport());
 		return [
 			new AbortCombination(),
 			new CancelCombination(),
 			new CamouflageCombination(),
-			new SwithcMultiCombination(appHandler, multiSelectionContext),
 
-			new DisplayMultiMenuCombination(multiselectionMenu, appHandler),
-			new MovingMultiMenuCombination(multiselectionMenu),
-			new UpMultiMenuCombination(multiselectionMenu, appHandler),
+			new SwithcMultiCombination(appHandler, multiSelectionContext),
+			new DisplayMultiMenuCombination(appHandler),
 			new MultiSelectionCombination(multiSelectionContext),
-			new MultiUnitSelectionCombination(multiselectionMenu, multiSelectionContext, appHandler, gameContext),
-			new MultiCellSelectionCombination(multiselectionMenu, multiSelectionContext, appHandler, gameContext),
+			new MultiUnitSelectionCombination(multiSelectionContext, appHandler, gameContext),
+			new MultiCellSelectionCombination(multiSelectionContext, appHandler, gameContext),
 
 			new FlagCellCombination(gameContext),
 			new SearchMoneyCombination(),

@@ -15,18 +15,20 @@ import HqMenuComponent from './Parts/HqMenuComponent';
 import TankMenuComponent from './Parts/TankMenuComponent';
 import MultiTankMenuComponent from './Parts/MultiTankMenuComponent';
 import CellMenuComponent from './Parts/CellMenuComponent';
+import MultiMenuComponent from './Parts/MultiMenuComponent';
 import TruckMenuComponent from './Parts/TruckMenuComponent';
 import ReactorMenuComponent from './Parts/ReactorMenuComponent';
 import { Group } from '../../Core/Items/Group';
 import { GameStatus } from './GameStatus';
 import { Player } from '../../Network/Player';
-import RedButtonComponent from '../Common/Button/RedButtonComponent';
-import BlackButtonComponent from '../Common/Button/BlackButtonComponent';
+import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
+import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
 
 export default class CanvasComponent extends Component<
 	any,
 	{
 		HasMenu: boolean;
+		HasMultiMenu: boolean;
 		HasFlag: boolean;
 		HasWarning: boolean;
 		TankRequestCount: number;
@@ -73,28 +75,35 @@ export default class CanvasComponent extends Component<
 		this._appHandler = new AppHandler();
 		this._gameContext = this._appHandler.InitApp();
 		this._gameCanvas.appendChild(this._appHandler.GetApp().view);
-		this._gameContext.GetMainHq().OnTruckRequestChanged.On(this.UpdateTruckRequest.bind(this));
-		this._gameContext.GetMainHq().OnTankRequestChanged.On(this.UpdateTankRequest.bind(this));
-		this._gameContext.GetMainHq().OnDiamondCountChanged.On(this.UpdateMoney.bind(this));
+		this._gameContext.GetMainHq().TruckChanged.On(this.HandleTruckChanged.bind(this));
+		this._gameContext.GetMainHq().TankRequestChanged.On(this.HandleTankChanged.bind(this));
+		this._gameContext.GetMainHq().DiamondCountChanged.On(this.HandleDiamondChanged.bind(this));
 		this._gameContext.OnItemSelected.On(this.UpdateSelection.bind(this));
-		this._gameContext.GetMainHq().OnCashMissing.On(this.UpdateWarning.bind(this));
-		this._gameContext.OnGameEnded.On(this.UpdateGameStatus.bind(this));
+		this._gameContext.GetMainHq().CashMissing.On(this.HandleCashMissing.bind(this));
+		this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));
+		this._appHandler.MultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
 		this.GameLoop();
 	}
 
-	private UpdateTruckRequest(obj: any, e: number): void {
+	private HandleMultiMenuShowed(src: any, isDisplayed: boolean): void {
+		this.setState({
+			HasMultiMenu: isDisplayed
+		});
+	}
+
+	private HandleTruckChanged(obj: any, e: number): void {
 		this.setState({
 			TruckRequestCount: e
 		});
 	}
 
-	private UpdateTankRequest(obj: any, e: number): void {
+	private HandleTankChanged(obj: any, e: number): void {
 		this.setState({
 			TankRequestCount: e
 		});
 	}
 
-	private UpdateMoney(obj: any, e: number): void {
+	private HandleDiamondChanged(obj: any, e: number): void {
 		this.setState({
 			Amount: e
 		});
@@ -107,7 +116,7 @@ export default class CanvasComponent extends Component<
 		});
 	}
 
-	private UpdateWarning(obj: any, e: boolean): void {
+	private HandleCashMissing(obj: any, e: boolean): void {
 		if (e !== this.state.HasWarning) {
 			this.setState({
 				HasWarning: e
@@ -115,7 +124,7 @@ export default class CanvasComponent extends Component<
 		}
 	}
 
-	private UpdateGameStatus(obj: any, e: GameStatus): void {
+	private HandleGameStatus(obj: any, e: GameStatus): void {
 		if (e !== this.state.GameStatus) {
 			this.setState({
 				GameStatus: e
@@ -124,7 +133,15 @@ export default class CanvasComponent extends Component<
 	}
 
 	private LeftMenuRender() {
-		if (this.state.Item) {
+		if (this.state.HasMultiMenu) {
+			return (
+				<MultiMenuComponent
+					Item={this.state.Item}
+					AppHandler={this._appHandler}
+					GameContext={this._gameContext}
+				/>
+			);
+		} else if (this.state.Item) {
 			if (this.state.Item instanceof Tank) {
 				return <TankMenuComponent AppHandler={this._appHandler} Tank={this.state.Item} />;
 			} else if (this.state.Item instanceof Truck) {

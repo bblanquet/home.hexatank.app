@@ -9,7 +9,6 @@ import { SlowField } from '../../../Items/Cell/Field/Bonus/SlowField';
 import { SlowMenuItem } from '../../../Menu/Buttons/SlowMenuItem';
 import { PoisonMenuItem } from '../../../Menu/Buttons/PoisonMenuItem';
 import { Cell } from '../../../Items/Cell/Cell';
-import { MultiSelectionMenu } from '../../../Menu/Smart/MultiSelectionMenu';
 import { CombinationContext } from '../CombinationContext';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
 import { SelectionMode } from '../../../Menu/Smart/SelectionMode';
@@ -34,7 +33,6 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 	private _cells: Cell[];
 
 	constructor(
-		private _multiselection: MultiSelectionMenu,
 		private _multiSelectionContext: MultiSelectionContext,
 		private _appHandler: AppHandler,
 		private _gameContext: GameContext
@@ -46,7 +44,7 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 	IsMatching(context: CombinationContext): boolean {
 		return (
 			(context.ContextMode === InteractionMode.MultipleSelection &&
-				this._multiselection.GetMode() === SelectionMode.cell &&
+				//this._multiselection.GetMode() === SelectionMode.cell &&
 				(context.InteractionKind === InteractionKind.Up ||
 					context.InteractionKind === InteractionKind.MovingUp)) ||
 			(context.ContextMode === InteractionMode.SingleSelection &&

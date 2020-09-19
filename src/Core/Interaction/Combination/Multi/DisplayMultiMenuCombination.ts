@@ -1,23 +1,17 @@
 import { AppHandler } from './../../../../Components/Canvas/AppHandler';
 import { InteractionKind } from './../../IInteractionContext';
-import { MultiSelectionMenu } from '../../../Menu/Smart/MultiSelectionMenu';
 import { AbstractSingleCombination } from './../AbstractSingleCombination';
 import { CombinationContext } from '../CombinationContext';
-import { Point } from '../../../Utils/Geometry/Point';
-import { InteractionMode } from '../../InteractionMode';
 import { Item } from '../../../Items/Item';
 import { ISelectable } from '../../../ISelectable';
 
 export class DisplayMultiMenuCombination extends AbstractSingleCombination {
-	constructor(private _multiselection: MultiSelectionMenu, private _appHandler: AppHandler) {
+	constructor(private _appHandler: AppHandler) {
 		super();
 	}
 
 	IsMatching(context: CombinationContext): boolean {
-		return (
-			context.ContextMode === InteractionMode.SingleSelection &&
-			context.InteractionKind === InteractionKind.Holding
-		);
+		return context.InteractionKind === InteractionKind.DoubleClick;
 	}
 
 	Combine(context: CombinationContext): boolean {
@@ -26,9 +20,8 @@ export class DisplayMultiMenuCombination extends AbstractSingleCombination {
 				this.UnSelectItem(context.Items[0]);
 			}
 			this.OnClearContext.Invoke();
-			this._multiselection.Show(new Point(context.Point.x, context.Point.y));
-			this.OnChangedMode.Invoke(this, InteractionMode.SelectionMenu);
-			this._appHandler.PauseNavigation();
+			this._appHandler.MultiMenuShowed.Invoke(this, true);
+
 			return true;
 		}
 		return false;

@@ -4,7 +4,7 @@ import { NetworkSocket } from '../../../../Network/NetworkSocket';
 import { HostState } from '../../HostState';
 import { Player } from '../../../../Network/Player';
 import GridComponent from '../../../Common/Grid/GridComponent';
-import SmBlackButtonComponent from '../../../Common/Button/SmBlackButtonComponent';
+import SmBlackButtonComponent from '../../../Common/Button/Stylish/SmBlackButtonComponent';
 
 export default class PlayersComponent extends Component<{ HostState: HostState; NetworkHandler: NetworkSocket }, {}> {
 	constructor() {

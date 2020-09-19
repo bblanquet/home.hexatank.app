@@ -19,8 +19,8 @@ import { MapMode } from '../../../Core/Setup/Generator/MapMode';
 import { MapContext } from '../../../Core/Setup/Generator/MapContext';
 import { GameHelper } from '../../../Core/Framework/GameHelper';
 import { isNullOrUndefined } from 'util';
-import BlackButtonComponent from '../../Common/Button/BlackButtonComponent';
-import RedButtonComponent from '../../Common/Button/RedButtonComponent';
+import BlackButtonComponent from '../../Common/Button/Stylish/BlackButtonComponent';
+import RedButtonComponent from '../../Common/Button/Stylish/RedButtonComponent';
 
 export default class HostingComponent extends Component<any, HostState> {
 	private _socket: NetworkSocket;

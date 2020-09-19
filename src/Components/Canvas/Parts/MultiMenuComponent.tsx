@@ -6,24 +6,29 @@ import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
 import { AppHandler } from '../AppHandler';
 import { GameContext } from '../../../Core/Framework/GameContext';
 import { BtnInfo } from '../../Common/Circular/BtnInfo';
-import SimpleCircularComponent from '../../Common/Circular/SimpleCircularComponent';
+import ExpCircularComponent from '../../Common/Circular/ExpCircularComponent';
+import WhiteBtn from '../../Common/Button/Standard/WhiteBtn';
+import { Point } from '../../../Core/Utils/Geometry/Point';
 
 export default class MultiMenuComponent extends Component<
 	{ Item: Item; AppHandler: AppHandler; GameContext: GameContext },
 	{ btns: BtnInfo[] }
 > {
-	componentWillMount() {
-		let btns = [
-			new BtnInfo(() => this.SendContext(new SpeedFieldMenuItem()), 'fill-multi-tank', 0),
-			new BtnInfo(() => this.SendContext(new HealMenuItem()), 'fill-multi-cell', 0)
-		];
-		this.setState({
-			btns
-		});
-	}
-
 	render() {
-		return <SimpleCircularComponent btns={this.state.btns} OnCancel={() => this.Cancel()} />;
+		return (
+			<ExpCircularComponent OnCancel={() => this.Cancel()}>
+				<WhiteBtn
+					CallBack={() => this.SendContext(new SpeedFieldMenuItem())}
+					icon={'fill-multi-tank'}
+					Point={new Point(0, 0)}
+				/>
+				<WhiteBtn
+					CallBack={() => this.SendContext(new HealMenuItem())}
+					icon={'fill-multi-cell'}
+					Point={new Point(0, 0)}
+				/>
+			</ExpCircularComponent>
+		);
 	}
 
 	private SendContext(item: Item): void {

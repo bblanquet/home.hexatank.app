@@ -1,10 +1,7 @@
 import { h, Component } from 'preact';
 import { Point } from '../../../../Core/Utils/Geometry/Point';
 
-export default class BlackButton extends Component<
-	{ CallBack: () => void; title: string; icon: string; Point: Point },
-	{}
-> {
+export default class WhiteBtn extends Component<{ CallBack: () => void; icon: string; Point: Point }, {}> {
 	constructor() {
 		super();
 	}
@@ -12,7 +9,7 @@ export default class BlackButton extends Component<
 	render() {
 		return (
 			<div
-				className="btn btn-dark btn-circular "
+				className="btn btn-light btn-circular "
 				style={`transform:translate(${this.props.Point.X}px,${this.props.Point
 					.Y}px); opacity:${this.props.Point.IsOrigin() ? 0 : 1}`}
 			>
@@ -21,5 +18,11 @@ export default class BlackButton extends Component<
 				</div>
 			</div>
 		);
+	}
+
+	SetPosition(point: Point): void {
+		this.setState({
+			Point: point
+		});
 	}
 }

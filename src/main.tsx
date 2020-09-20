@@ -8,6 +8,7 @@ import CreatingHostComponent from './Components/Network/Creating/CreatingHostCom
 import HostingComponent from './Components/Network/Host/HostingComponent';
 import LoadingComponent from './Components/Loading/LoadingComponent';
 import CircularComponent from './Components/Common/Circular/CircularComponent';
+import PopupComponent from './Components/Popup/PopupComponent';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 import Router from 'preact-router';
@@ -39,8 +40,9 @@ render(
 		<CreatingHostComponent path="/CreatingHost" />
 		<HostingComponent path="/Hosting/:RoomName/:playerName/:isAdmin" />
 		<GuestComponent path="/OffJoin" />
-		<LoadingComponent path="/Loading" default />
+		<LoadingComponent path="/Loading" />
 		<CircularComponent path="/circular" OnCancel={() => {}} btns={btn} />
+		<PopupComponent path="/popup" default />
 	</Router>,
 	document.querySelector('#app')
 );

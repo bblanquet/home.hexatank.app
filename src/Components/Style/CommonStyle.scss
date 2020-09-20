@@ -362,10 +362,7 @@
 body {
 	height: 100%;
 	margin: 0;
-	background: radial-gradient(black 15%, transparent 16%) 0 0, radial-gradient(black 15%, transparent 16%) 8px 8px,
-		radial-gradient(rgba(255, 255, 255, .1) 15%, transparent 20%) 0 1px,
-		radial-gradient(rgba(255, 255, 255, .1) 15%, transparent 20%) 8px 9px;
-	background-color: #282828;
+	background-color: #5d9936;
 	background-size: 16px 16px;
 }
 
@@ -535,6 +532,15 @@ body {
 	transform: translate(-50%, 0%);
 }
 
+.title-popup-container {
+	position: relative;
+	width: 100%;
+	height: 30vh;
+	left: 50%;
+	margin-top: -15vh;
+	transform: translate(-50%, 0%);
+}
+
 .fill-logo-back-container {
 	position: relative;
 	width: 100%;
@@ -544,13 +550,16 @@ body {
 }
 
 .menu-container {
+	-webkit-box-shadow: 0px 0px 16px -1px rgba(0, 0, 0, 0.75);
+	-moz-box-shadow: 0px 0px 16px -1px rgba(0, 0, 0, 0.75);
+	box-shadow: 0px 0px 16px -1px rgba(0, 0, 0, 0.75);
 	background: radial-gradient(black 15%, transparent 16%) 0 0, radial-gradient(black 15%, transparent 16%) 8px 8px,
 		radial-gradient(rgba(255, 255, 255, .1) 15%, transparent 20%) 0 1px,
 		radial-gradient(rgba(255, 255, 255, .1) 15%, transparent 20%) 8px 9px;
 	background-color: #282828;
 	background-size: 16px 16px;
 	border-radius: 20px;
-	border: white solid 10px;
+	border: white solid 2px;
 }
 
 .custom-black-btn {
@@ -1156,6 +1165,16 @@ body {
 	background-position: center;
 	background-repeat: no-repeat;
 	background-image: url('{{}}components/program6LogoBackground.svg');
+	pointer-events: none;
+}
+
+.fill-defeat {
+	width: 100%;
+	height: 30vh;
+	background-size: auto;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/defeat.svg');
 	pointer-events: none;
 }
 

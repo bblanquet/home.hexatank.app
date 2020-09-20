@@ -7,7 +7,6 @@ import GuestComponent from './Components/Network/Guest/GuestComponent';
 import CreatingHostComponent from './Components/Network/Creating/CreatingHostComponent';
 import HostingComponent from './Components/Network/Host/HostingComponent';
 import LoadingComponent from './Components/Loading/LoadingComponent';
-import CircularComponent from './Components/Common/Circular/CircularComponent';
 import PopupComponent from './Components/Popup/PopupComponent';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
@@ -18,18 +17,81 @@ import '@fortawesome/fontawesome-free/js/fontawesome';
 import '@fortawesome/fontawesome-free/js/solid';
 import '@fortawesome/fontawesome-free/js/regular';
 import '@fortawesome/fontawesome-free/js/brands';
-import { BtnInfo } from './Components/Common/Circular/BtnInfo';
+import { Groups } from './Core/Utils/Collections/Groups';
+import { Curve } from './Core/Utils/Stats/Curve';
+import { StatsKind } from './Core/Utils/Stats/StatsKind';
+import { DateValue } from './Core/Utils/Stats/DateValue';
+import { GameStatus } from './Components/Canvas/GameStatus';
 
-var btn = [
-	new BtnInfo(() => {}, 'fill-influence', 4),
-	new BtnInfo(() => {}, 'fill-thunder', 4),
-	new BtnInfo(() => {}, 'fill-shield', 4),
-	new BtnInfo(() => {}, 'fill-money', 4),
-	new BtnInfo(() => {}, 'fill-power', 4),
-	new BtnInfo(() => {}, 'fill-poison', 4),
-	new BtnInfo(() => {}, 'fill-speed', 4),
-	new BtnInfo(() => {}, 'fill-medic', 4)
-];
+function Context() {
+	const c = new Groups<Curve>();
+	c.Add(
+		StatsKind[StatsKind.Cell],
+		new Curve(
+			[
+				new DateValue(GetDuration(0), 1),
+				new DateValue(GetDuration(3), 2),
+				new DateValue(GetDuration(5), 5),
+				new DateValue(GetDuration(7), 1)
+			],
+			'#4287f5'
+		)
+	);
+	c.Add(
+		StatsKind[StatsKind.Cell],
+		new Curve(
+			[
+				new DateValue(GetDuration(0), 0),
+				new DateValue(GetDuration(2), 2),
+				new DateValue(GetDuration(6), 5),
+				new DateValue(GetDuration(8), 3)
+			],
+			'#f54242'
+		)
+	);
+
+	c.Add(
+		StatsKind[StatsKind.Money],
+		new Curve(
+			[
+				new DateValue(GetDuration(0), 1),
+				new DateValue(GetDuration(3), 2),
+				new DateValue(GetDuration(5), 5),
+				new DateValue(GetDuration(7), 1)
+			],
+			'#f54293'
+		)
+	);
+	c.Add(
+		StatsKind[StatsKind.Power],
+		new Curve(
+			[
+				new DateValue(GetDuration(0), 0),
+				new DateValue(GetDuration(2), 2),
+				new DateValue(GetDuration(6), 5),
+				new DateValue(GetDuration(8), 3)
+			],
+			'#f542f5'
+		)
+	);
+	c.Add(
+		StatsKind[StatsKind.Unit],
+		new Curve(
+			[
+				new DateValue(GetDuration(0), 0),
+				new DateValue(GetDuration(2), 2),
+				new DateValue(GetDuration(6), 5),
+				new DateValue(GetDuration(8), 3)
+			],
+			'#42f545'
+		)
+	);
+	return c;
+}
+
+function GetDuration(seconds: number): number {
+	return new Date().setSeconds(seconds) - new Date().getDate();
+}
 
 render(
 	<Router>
@@ -40,9 +102,8 @@ render(
 		<CreatingHostComponent path="/CreatingHost" />
 		<HostingComponent path="/Hosting/:RoomName/:playerName/:isAdmin" />
 		<GuestComponent path="/OffJoin" />
-		<LoadingComponent path="/Loading" />
-		<CircularComponent path="/circular" OnCancel={() => {}} btns={btn} />
-		<PopupComponent path="/popup" default />
+		<LoadingComponent path="/Loading" default />
+		<PopupComponent path="/Popup" curves={Context()} status={GameStatus.Won} />
 	</Router>,
 	document.querySelector('#app')
 );

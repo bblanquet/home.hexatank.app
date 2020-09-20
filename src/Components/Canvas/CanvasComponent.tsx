@@ -24,6 +24,7 @@ import { Player } from '../../Network/Player';
 import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
 import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
 import { CellGroup } from '../../Core/Items/CellGroup';
+import PopupComponent from '../Popup/PopupComponent';
 
 export default class CanvasComponent extends Component<
 	any,
@@ -344,34 +345,8 @@ export default class CanvasComponent extends Component<
 	}
 
 	private GetEndMessage() {
-		if (this.state.GameStatus === GameStatus.Won) {
-			return (
-				<div class="generalContainer absolute-center-middle-menu menu-container fit-content">
-					<div class="container-center">
-						<div class="fill-victory" style="width:20vh;height:20vh" />
-						<RedButtonComponent
-							icon={'fas fa-undo-alt'}
-							title={'Quit'}
-							isFirstRender={false}
-							callBack={() => this.Quit()}
-						/>
-					</div>
-				</div>
-			);
-		} else if (this.state.GameStatus === GameStatus.Lost) {
-			return (
-				<div class="generalContainer absolute-center-middle-menu menu-container fit-content">
-					<div class="container-center">
-						<div class="fill-rip" style="width:20vh;height:20vh" />
-						<RedButtonComponent
-							icon={'fas fa-undo-alt'}
-							title={'Quit'}
-							isFirstRender={false}
-							callBack={() => this.Quit()}
-						/>
-					</div>
-				</div>
-			);
+		if ([ GameStatus.Won, GameStatus.Lost ].includes(this.state.GameStatus)) {
+			return <PopupComponent status={this.state.GameStatus} curves={this._gameContext.GetCurves()} />;
 		}
 		return '';
 	}

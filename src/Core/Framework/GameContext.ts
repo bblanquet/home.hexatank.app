@@ -1,3 +1,5 @@
+import { DateValue } from './../Utils/Stats/DateValue';
+import { StatsKind } from './../Utils/Stats/StatsKind';
 import { Tank } from './../Items/Unit/Tank';
 import { isNullOrUndefined } from 'util';
 import { GameStatus } from './../../Components/Canvas/GameStatus';
@@ -8,6 +10,8 @@ import { LiteEvent } from '../Utils/Events/LiteEvent';
 import { Item } from '../Items/Item';
 import { Cell } from '../Items/Cell/Cell';
 import { Player } from '../../Network/Player';
+import { Groups } from '../Utils/Collections/Groups';
+import { Curve } from '../Utils/Stats/Curve';
 
 export class GameContext {
 	//events
@@ -29,6 +33,8 @@ export class GameContext {
 	//online
 	public Players: Player[];
 
+	private _curves: Groups<Curve> = new Groups<Curve>();
+
 	public Setup(mainHq: Headquarter, hqs: Headquarter[], cells: Cell[]) {
 		this._mainHq = mainHq;
 		this._hqs = hqs;
@@ -39,6 +45,10 @@ export class GameContext {
 		});
 
 		this._hqs.forEach((hq) => {
+			this._curves.Add(StatsKind[StatsKind.Unit], new Curve(new Array<DateValue>(), hq.GetSkin().GetColor()));
+			this._curves.Add(StatsKind[StatsKind.Money], new Curve(new Array<DateValue>(), hq.GetSkin().GetColor()));
+			this._curves.Add(StatsKind[StatsKind.Cell], new Curve(new Array<DateValue>(), hq.GetSkin().GetColor()));
+			this._curves.Add(StatsKind[StatsKind.Power], new Curve(new Array<DateValue>(), hq.GetSkin().GetColor()));
 			hq.OnVehicleCreated.On(this.HandleVehicleCreated.bind(this));
 		});
 
@@ -50,6 +60,10 @@ export class GameContext {
 				}
 			});
 		});
+	}
+
+	GetCurves(): Groups<Curve> {
+		return this._curves;
 	}
 
 	ExistUnit(id: string) {
@@ -92,9 +106,11 @@ export class GameContext {
 		return result;
 	}
 
-	private HandleVehicleCreated(obj: Headquarter, vehicule: Vehicle): void {
-		vehicule.Id = `${obj.PlayerName}${this._vehicleCount}`;
+	private HandleVehicleCreated(src: Headquarter, vehicule: Vehicle): void {
+		vehicule.Id = `${src.PlayerName}${this._vehicleCount}`;
 		this._vehicleCount += 1;
 		this._vehicles.Add(vehicule.Id, vehicule);
+		const curve = this._curves.Get(StatsKind[StatsKind.Unit]).find((c) => c.Color === src.GetSkin().GetColor());
+		curve.Points.push(new DateValue(new Date().getDate(), src.GetVehicleCount()));
 	}
 }

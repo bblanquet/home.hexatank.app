@@ -1,69 +1,45 @@
-import * as Chart from 'chart.js';
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
+import { Groups } from '../../Core/Utils/Collections/Groups';
+import { Curve } from '../../Core/Utils/Stats/Curve';
+import { StatsKind } from '../../Core/Utils/Stats/StatsKind';
+import { GameStatus } from '../Canvas/GameStatus';
 import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
 import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
-import SmBlackIconButtonComponent from '../Common/Button/Stylish/SmBlackIconButtonComponent';
-import SmRedIconButtonComponent from '../Common/Button/Stylish/SmRedIconButtonComponent';
+import SmActiveIconButtonComponent from '../Common/Button/Stylish/SmActiveIconButtonComponent';
+import { ChartProvider } from './ChartProvider';
 
-export default class PopupComponent extends Component<any, any> {
+export default class PopupComponent extends Component<
+	{ curves: Groups<Curve>; status: GameStatus },
+	{ Kind: StatsKind }
+> {
 	private _isFirstRender = true;
 	private _canvas: HTMLCanvasElement;
-	private _chart: Chart;
 	constructor() {
 		super();
+		this.setState({
+			Kind: StatsKind.Unit
+		});
 	}
 
 	componentDidMount() {
 		this._isFirstRender = false;
-		this._chart = new Chart(this._canvas, {
-			// The type of chart we want to create
-			type: 'line',
-			// The data for our dataset
-			data: {
-				labels: [ '0', '1', '2', '3', '4', '5', '6' ],
-				datasets: [
-					{
-						label: '',
-						borderColor: '#9F6A6A',
-						data: [ 0, 10, 5, 2, 4, 1, 6 ]
-					},
-					{
-						label: '',
-						borderColor: '#6A899F',
-						data: [ 0, 1, 4, 6, 1, 3, 2 ]
-					},
-					{
-						label: '',
-						borderColor: '#9F8E6A',
-						data: [ 0, 4, 2, 6, 6, 2, 3 ]
-					}
-				]
-			},
+		new ChartProvider().AttachChart(this.props.curves.Get(StatsKind[this.state.Kind]), this._canvas);
+	}
 
-			// Configuration options go here
-			options: {
-				scales: {
-					yAxes: [
-						{
-							ticks: {
-								max: 10,
-								min: 0,
-								stepSize: 2
-							}
-						}
-					]
-				}
-			}
-		});
-		Chart.defaults.global.defaultFontColor = 'white';
+	componentDidUpdate() {
+		new ChartProvider().AttachChart(this.props.curves.Get(StatsKind[this.state.Kind]), this._canvas);
+	}
+
+	private Quit(): void {
+		route('/Home', true);
 	}
 
 	render() {
 		return (
 			<div class="generalContainer absolute-center-middle-menu menu-container fit-content">
 				<div class="title-popup-container">
-					<div class="fill-defeat" />
+					{this.props.status === GameStatus.Won ? <div class="fill-won" /> : <div class="fill-defeat" />}
 				</div>
 				<div class="container-center">
 					<div class="input-group mb-3" style="padding-left:20%;padding-right:20%">
@@ -83,13 +59,45 @@ export default class PopupComponent extends Component<any, any> {
 					</div>
 
 					<div class="container-center-horizontal">
-						<SmRedIconButtonComponent style={'fill-sm-tank'} callBack={() => {}} />
-						<SmBlackIconButtonComponent style={'fill-sm-hexa'} callBack={() => {}} />
-						<SmBlackIconButtonComponent style={'fill-sm-diam '} callBack={() => {}} />
-						<SmBlackIconButtonComponent style={'fill-sm-power'} callBack={() => {}} />
+						<SmActiveIconButtonComponent
+							isActive={this.state.Kind === StatsKind.Unit}
+							style={'fill-sm-tank'}
+							callBack={() => {
+								this.setState({
+									Kind: StatsKind.Unit
+								});
+							}}
+						/>
+						<SmActiveIconButtonComponent
+							isActive={this.state.Kind === StatsKind.Cell}
+							style={'fill-sm-hexa'}
+							callBack={() => {
+								this.setState({
+									Kind: StatsKind.Cell
+								});
+							}}
+						/>
+						<SmActiveIconButtonComponent
+							isActive={this.state.Kind === StatsKind.Money}
+							style={'fill-sm-diam '}
+							callBack={() => {
+								this.setState({
+									Kind: StatsKind.Money
+								});
+							}}
+						/>
+						<SmActiveIconButtonComponent
+							isActive={this.state.Kind === StatsKind.Power}
+							style={'fill-sm-power'}
+							callBack={() => {
+								this.setState({
+									Kind: StatsKind.Power
+								});
+							}}
+						/>
 					</div>
 					<canvas
-						style="background-color:rgba(255, 255, 255, .1); border-radius: 10px; margin-top:20px; margin-bottom:20px"
+						style="border-radius: 10px; margin-top:30px; margin-bottom:20px"
 						ref={(e) => {
 							this._canvas = e;
 						}}
@@ -99,13 +107,17 @@ export default class PopupComponent extends Component<any, any> {
 							icon={'fas fa-undo-alt'}
 							title={'Back'}
 							isFirstRender={this._isFirstRender}
-							callBack={() => {}}
+							callBack={() => {
+								this.Quit();
+							}}
 						/>
 						<RedButtonComponent
 							icon={'fas fa-sync-alt'}
 							title={'Retry'}
 							isFirstRender={this._isFirstRender}
-							callBack={() => {}}
+							callBack={() => {
+								this.Quit();
+							}}
 						/>
 					</div>
 				</div>

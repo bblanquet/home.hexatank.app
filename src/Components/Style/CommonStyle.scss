@@ -351,6 +351,13 @@
 	height: 30%;
 }
 
+.icon-space {
+	width: 30px;
+	min-width: 30px;
+	min-height: 30px;
+	height: 30px;
+}
+
 .sub-background-color {
 	border-radius: 1.35em;
 	box-shadow: 0 0 0 0.4em #5b1919;
@@ -559,7 +566,7 @@ body {
 	background-color: #282828;
 	background-size: 16px 16px;
 	border-radius: 20px;
-	border: white solid 2px;
+	border: rgba(198, 198, 198, 1) solid 5px;
 }
 
 .custom-black-btn {
@@ -617,6 +624,21 @@ body {
 		rgba(37, 37, 37, 1) 100%
 	);
 	padding: 4px 0px 4px 0px;
+}
+
+.custom-sm-red-border {
+	border: #6b5e39 solid 1px;
+	border-radius: 15px;
+	background: rgb(187, 43, 36);
+	background: linear-gradient(
+		90deg,
+		rgba(187, 43, 36, 1) 0%,
+		rgba(233, 95, 50, 1) 25%,
+		rgba(241, 143, 52, 1) 50%,
+		rgba(233, 95, 50, 1) 75%,
+		rgba(187, 43, 36, 1) 100%
+	);
+	padding: 2px 0px 2px 0px;
 }
 
 .custom-sm-black-border {
@@ -1110,6 +1132,38 @@ body {
 	background-position: center;
 	background-repeat: no-repeat;
 	background-image: url('{{}}menu/targetButton.svg');
+}
+
+.fill-sm-hexa {
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/hexaIcon.svg');
+}
+
+.fill-sm-diam {
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/diamIcon.svg');
+}
+
+.fill-sm-power {
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/powerIcon.svg');
+}
+
+.fill-sm-tank {
+	overflow: hidden;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/tanIcon.svg');
 }
 
 .fill-patrol {

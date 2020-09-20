@@ -39,10 +39,12 @@
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-free": "^5.12.1",
+		"@types/chart.js": "^2.9.24",
 		"@types/socket.io-client": "^1.4.33",
 		"@types/svg-sprite-loader": "^3.9.1",
 		"@types/toastr": "^2.1.37",
 		"bootstrap": "^4.3.1",
+		"chart.js": "^2.9.3",
 		"clean-webpack-plugin": "^3.0.0",
 		"file-loader": "^6.0.0",
 		"html-webpack-plugin": "^3.2.0",

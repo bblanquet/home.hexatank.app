@@ -24,7 +24,7 @@ export class ReactorAppearance extends Item {
 		super();
 		this.Z = 1;
 
-		this.Reactor.PowerChanged.On((e: any, isFadeIn: boolean) => {
+		this.Reactor.OnPowerChanged.On((e: any, isFadeIn: boolean) => {
 			this._lightAnimator = isFadeIn
 				? new FadeInAnimation(this, this.Reactor.Hq.GetSkin().GetReactor(), 0, 1, 0.05)
 				: new FadeOutAnimation(this, this.Reactor.Hq.GetSkin().GetReactor(), 0, 1, 0.05);

@@ -27,6 +27,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 		this.GenerateSprite(this.hq.GetSkin().GetLight());
 		// this.GenerateSprite(Archive.bonus.coverTop);
 		this.Energy = this.hq.GetCellEnergy(cell.GetCoordinate());
+		this.hq.AddField(this);
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});

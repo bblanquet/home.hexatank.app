@@ -54,7 +54,7 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 		this._spriteManager.SetProperties(names, func);
 	}
 
-	public Push(blop: PIXI.Graphics): void {
+	protected Push(blop: PIXI.Graphics): void {
 		this.DisplayObjects.push(blop);
 	}
 
@@ -67,6 +67,7 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 		GameHelper.Render.Remove(this);
 		this._spriteManager.Destroyed();
 		this.OnDestroyed.Invoke(this, this);
+		this.OnDestroyed.Clear();
 	}
 
 	public abstract GetBoundingBox(): BoundingBox;

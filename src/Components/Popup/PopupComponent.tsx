@@ -14,9 +14,11 @@ export default class PopupComponent extends Component<
 	{ Kind: StatsKind }
 > {
 	private _isFirstRender = true;
+	private _chartProvider: ChartProvider;
 	private _canvas: HTMLCanvasElement;
 	constructor() {
 		super();
+		this._chartProvider = new ChartProvider();
 		this.setState({
 			Kind: StatsKind.Unit
 		});
@@ -24,11 +26,19 @@ export default class PopupComponent extends Component<
 
 	componentDidMount() {
 		this._isFirstRender = false;
-		new ChartProvider().AttachChart(this.props.curves.Get(StatsKind[this.state.Kind]), this._canvas);
+		this._chartProvider.AttachChart(
+			StatsKind[this.state.Kind],
+			this.props.curves.Get(StatsKind[this.state.Kind]),
+			this._canvas
+		);
 	}
 
 	componentDidUpdate() {
-		new ChartProvider().AttachChart(this.props.curves.Get(StatsKind[this.state.Kind]), this._canvas);
+		this._chartProvider.AttachChart(
+			StatsKind[this.state.Kind],
+			this.props.curves.Get(StatsKind[this.state.Kind]),
+			this._canvas
+		);
 	}
 
 	private Quit(): void {
@@ -78,20 +88,20 @@ export default class PopupComponent extends Component<
 							}}
 						/>
 						<SmActiveIconButtonComponent
-							isActive={this.state.Kind === StatsKind.Money}
+							isActive={this.state.Kind === StatsKind.Diamond}
 							style={'fill-sm-diam '}
 							callBack={() => {
 								this.setState({
-									Kind: StatsKind.Money
+									Kind: StatsKind.Diamond
 								});
 							}}
 						/>
 						<SmActiveIconButtonComponent
-							isActive={this.state.Kind === StatsKind.Power}
+							isActive={this.state.Kind === StatsKind.Energy}
 							style={'fill-sm-power'}
 							callBack={() => {
 								this.setState({
-									Kind: StatsKind.Power
+									Kind: StatsKind.Energy
 								});
 							}}
 						/>

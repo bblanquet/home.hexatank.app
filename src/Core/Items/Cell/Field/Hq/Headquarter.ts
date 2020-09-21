@@ -1,3 +1,4 @@
+import { ITimer } from './../../../../Utils/Timer/ITimer';
 import { BatteryField } from '../Bonus/BatteryField';
 import { GameContext } from '../../../../Framework/GameContext';
 import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
@@ -22,6 +23,7 @@ import { GameSettings } from '../../../../Framework/GameSettings';
 import { ReactorField } from '../Bonus/ReactorField';
 import { ISelectable } from '../../../../ISelectable';
 import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
+import { Item } from '../../../Item';
 
 export class Headquarter extends AliveItem implements IField, ISelectable {
 	public Flagcell: FlagCell;
@@ -29,17 +31,25 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	private _cell: Cell;
 	public PlayerName: string;
 	public Fields: Array<HeadQuarterField>;
-	private _diamondCount: number = GameSettings.PocketMoney;
 	private _skin: ItemSkin;
-	private _onCellStateChanged: (obj: any, cellState: CellState) => void;
+
+	private _tankRequestCount: number = 0;
+
+	//belongs
+	private _diamondCount: number = GameSettings.PocketMoney;
 	private _reactors: Array<ReactorField> = new Array<ReactorField>();
 	private _batteryFields: Array<BatteryField> = new Array<BatteryField>();
-
 	private _vehicles: Array<Vehicle> = new Array<Vehicle>();
+
+	private _onCellStateChanged: (obj: any, cellState: CellState) => void;
 	public OnVehicleCreated: LiteEvent<Vehicle> = new LiteEvent<Vehicle>();
+	public OnDiamondCountChanged: LiteEvent<number> = new LiteEvent<number>();
+	public OnFieldCountchanged: LiteEvent<number> = new LiteEvent<number>();
+	public OnEnergyChanged: LiteEvent<number> = new LiteEvent<number>();
 	public OnReactorConquested: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
 	public OnReactorLost: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
+	public TankRequestChanged: LiteEvent<number> = new LiteEvent<number>();
 
 	constructor(skin: ItemSkin, cell: Cell, public GameContext: GameContext) {
 		super();
@@ -88,12 +98,27 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		});
 	}
 
+	private _fields: Array<Item> = new Array<Item>();
+
+	public AddField(field: Item) {
+		this._fields.push(field);
+		field.OnDestroyed.On((src: any, itm: Item) => {
+			this._fields = this._fields.filter((t) => !t.IsUpdatable);
+			this.OnFieldCountchanged.Invoke(this, this._fields.length);
+		});
+		this.OnFieldCountchanged.Invoke(this, this._fields.length);
+	}
+
 	public GetCurrentCell(): Cell {
 		return this._cell;
 	}
 
 	private IsHqContainer(item: any): item is IHqContainer {
 		return 'Hq' in item;
+	}
+
+	public GetDiamondCount(): number {
+		return this._diamondCount;
 	}
 
 	public IsEnemy(item: AliveItem): boolean {
@@ -190,9 +215,6 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 			field.Destroy();
 		});
 	}
-
-	private _tankRequestCount: number = 0;
-	public TankRequestChanged: LiteEvent<number> = new LiteEvent<number>();
 
 	public GetTankRequests(): number {
 		return this._tankRequestCount;
@@ -296,12 +318,10 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		});
 	}
 
-	public DiamondCountChanged: LiteEvent<number> = new LiteEvent<number>();
-
 	public Buy(amount: number): boolean {
 		if (this._diamondCount >= amount) {
 			this._diamondCount -= amount;
-			this.DiamondCountChanged.Invoke(this, this._diamondCount);
+			this.OnDiamondCountChanged.Invoke(this, this._diamondCount);
 			return true;
 		} else {
 			this.OnCashMissing();
@@ -310,8 +330,10 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	}
 
 	public Earn(amount: number): void {
-		this._diamondCount += amount;
-		this.DiamondCountChanged.Invoke(this, this._diamondCount);
+		if (amount !== 0) {
+			this._diamondCount += amount;
+			this.OnDiamondCountChanged.Invoke(this, this._diamondCount);
+		}
 	}
 
 	public GetAmount(): number {
@@ -354,9 +376,13 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 
 	public AddReactor(reactor: ReactorField): void {
 		this._reactors.push(reactor);
-		reactor.Lost.On((e: any, ie: ReactorField) => {
+		reactor.OnPowerChanged.On((src: any, data: boolean) => {
+			this.OnEnergyChanged.Invoke(this, 0);
+		});
+		reactor.OnLost.On((e: any, ie: ReactorField) => {
 			this._reactors = this._reactors.filter((v) => v !== ie);
 			this.OnReactorLost.Invoke(this, ie);
+			this.OnEnergyChanged.Invoke(this, 0);
 		});
 	}
 
@@ -377,10 +403,20 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		return this._batteryFields.length;
 	}
 
-	GetCellEnergy(coo: HexAxial): number {
+	public GetCellEnergy(coo: HexAxial): number {
 		let result = 0;
 		this._reactors.forEach((r) => {
 			if (r.GetInternal().Exist(coo)) {
+				result += r.GetPower();
+			}
+		});
+		return result;
+	}
+
+	public GetCellTotalEnergy(): number {
+		let result = 0;
+		this._reactors.forEach((r) => {
+			if (r.GetInternal()) {
 				result += r.GetPower();
 			}
 		});

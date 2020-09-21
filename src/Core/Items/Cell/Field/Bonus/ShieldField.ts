@@ -25,6 +25,7 @@ export class ShieldField extends AliveBonusField {
 			this.SetProperty(Archive.bonus.shield, (e) => (e.alpha = 0));
 			this.SetProperty(Archive.bonus.shieldLight, (e) => (e.alpha = 0));
 		}
+		hq.AddField(this);
 	}
 
 	public GetHq(): Headquarter {

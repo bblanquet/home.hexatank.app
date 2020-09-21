@@ -41,24 +41,24 @@ export default class HostingComponent extends Component<any, HostState> {
 		this._playersObserver = new NetworkObserver(PacketKind.Players, this.OnPlayersChanged.bind(this));
 		this._pingObserver = new NetworkObserver(PacketKind.Ping, this.OnPingChanged.bind(this));
 		this._mapObserver = new NetworkObserver(PacketKind.Map, this.OnMapReceived.bind(this));
-		toastr.options.closeDuration = 10000;
+		toastr.options.closeDuration = 5000;
 
 		const p = new Player(props.playerName);
 		p.IsReady = false;
 		const dictionnary = new Dictionnary<Player>();
 		dictionnary.Add(p.Name, p);
-
+		const isAdmin = props.isAdmin.toLowerCase() == 'true' ? true : false;
 		this.setState({
 			RoomName: props.RoomName,
 			Players: dictionnary,
-			IsAdmin: props.isAdmin.toLowerCase() == 'true' ? true : false,
+			IsAdmin: isAdmin,
 			Player: p,
 			Message: '',
 			IaNumber: 0,
 			Settings: new GameSettings()
 		});
 
-		this._socket = new NetworkSocket(props.playerName, props.RoomName, this.state.IsAdmin);
+		this._socket = new NetworkSocket(props.playerName, props.RoomName, isAdmin);
 
 		this._onPeerConnectionChanged = this.PeerConnectionChanged.bind(this);
 		this._socket.OnPeerConnectionChanged.On(this._onPeerConnectionChanged);
@@ -165,7 +165,7 @@ export default class HostingComponent extends Component<any, HostState> {
 						icon={'fas fa-cog'}
 						title={'Setup'}
 						isFirstRender={this._isFirstRender}
-						callBack={() => () => {
+						callBack={() => {
 							this._hasSettings = true;
 							this.setState({});
 						}}

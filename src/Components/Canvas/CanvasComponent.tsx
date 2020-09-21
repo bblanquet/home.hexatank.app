@@ -79,7 +79,7 @@ export default class CanvasComponent extends Component<
 		this._gameCanvas.appendChild(this._appHandler.GetApp().view);
 		this._gameContext.GetMainHq().TruckChanged.On(this.HandleTruckChanged.bind(this));
 		this._gameContext.GetMainHq().TankRequestChanged.On(this.HandleTankChanged.bind(this));
-		this._gameContext.GetMainHq().DiamondCountChanged.On(this.HandleDiamondChanged.bind(this));
+		this._gameContext.GetMainHq().OnDiamondCountChanged.On(this.HandleDiamondChanged.bind(this));
 		this._gameContext.OnItemSelected.On(this.UpdateSelection.bind(this));
 		this._gameContext.GetMainHq().CashMissing.On(this.HandleCashMissing.bind(this));
 		this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));

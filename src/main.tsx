@@ -51,7 +51,7 @@ function Context() {
 	);
 
 	c.Add(
-		StatsKind[StatsKind.Money],
+		StatsKind[StatsKind.Diamond],
 		new Curve(
 			[
 				new DateValue(GetDuration(0), 1),
@@ -63,7 +63,7 @@ function Context() {
 		)
 	);
 	c.Add(
-		StatsKind[StatsKind.Power],
+		StatsKind[StatsKind.Energy],
 		new Curve(
 			[
 				new DateValue(GetDuration(0), 0),
@@ -90,7 +90,7 @@ function Context() {
 }
 
 function GetDuration(seconds: number): number {
-	return new Date().setSeconds(seconds) - new Date().getDate();
+	return new Date(new Date().getTime()).setSeconds(seconds) - new Date().getTime();
 }
 
 render(

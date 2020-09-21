@@ -44,8 +44,8 @@ export class NetworkDispatcher {
 			} else if (field instanceof ReactorField) {
 				fieldPacket.HqCoo = field.GetHq().GetCell().Coo();
 				if (this.IsSpeakingHq(field.GetHq())) {
-					field.Overlocked.On(this.HandleOverlockChanged.bind(this));
-					field.PowerChanged.On(this.HandlePowerChanged.bind(this));
+					field.OnOverlocked.On(this.HandleOverlockChanged.bind(this));
+					field.OnPowerChanged.On(this.HandlePowerChanged.bind(this));
 				}
 			} else if (field instanceof ShieldField) {
 				fieldPacket.HqCoo = field.GetHq().GetCell().Coo();

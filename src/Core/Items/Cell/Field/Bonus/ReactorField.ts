@@ -43,9 +43,9 @@ export class ReactorField extends Field implements ISelectable {
 
 	//events
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
-	public PowerChanged: LiteEvent<boolean> = new LiteEvent<boolean>();
-	public Lost: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
-	public Overlocked: LiteEvent<string> = new LiteEvent<string>();
+	public OnPowerChanged: LiteEvent<boolean> = new LiteEvent<boolean>();
+	public OnLost: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
+	public OnOverlocked: LiteEvent<string> = new LiteEvent<string>();
 
 	constructor(cell: Cell, public Hq: Headquarter, private _context: GameContext, private _light: string) {
 		super(cell);
@@ -67,6 +67,7 @@ export class ReactorField extends Field implements ISelectable {
 		});
 		this.Appearance = new ReactorAppearance(this, this._light);
 		this.RangeAnimation();
+		this.Hq.AddField(this);
 	}
 
 	public GetHq(): Headquarter {
@@ -106,7 +107,7 @@ export class ReactorField extends Field implements ISelectable {
 	}
 
 	public StartLocked(type: any): void {
-		this.Overlocked.Invoke(this, this.GetPowerUp(type));
+		this.OnOverlocked.Invoke(this, this.GetPowerUp(type));
 		this.StartOverclockAnimation();
 		this.SetLocked(true);
 		const vehicles = this.GetVehicles();
@@ -156,8 +157,8 @@ export class ReactorField extends Field implements ISelectable {
 			while (this.HasPower()) {
 				this.PowerDown();
 			}
-			this.Lost.Invoke(this, this);
-			this.Lost.Clear();
+			this.OnLost.Invoke(this, this);
+			this.OnLost.Clear();
 
 			this.Appearance.Destroy();
 			this.GetCell().DestroyField();
@@ -217,7 +218,7 @@ export class ReactorField extends Field implements ISelectable {
 		this.Battery.High();
 
 		if (formerEnergy === 0 && this.Battery.GetUsedPower() === 1) {
-			this.PowerChanged.Invoke(this, true);
+			this.OnPowerChanged.Invoke(this, true);
 		}
 	}
 
@@ -226,7 +227,7 @@ export class ReactorField extends Field implements ISelectable {
 		this.Battery.ForceHigh(battery);
 
 		if (formerEnergy === 0 && this.Battery.GetUsedPower() === 1) {
-			this.PowerChanged.Invoke(this, true);
+			this.OnPowerChanged.Invoke(this, true);
 		}
 	}
 
@@ -238,7 +239,7 @@ export class ReactorField extends Field implements ISelectable {
 		if (0 < this.Battery.GetUsedPower()) {
 			this.Battery.Low();
 			if (this.Battery.GetUsedPower() === 0) {
-				this.PowerChanged.Invoke(this, false);
+				this.OnPowerChanged.Invoke(this, false);
 			}
 		}
 	}

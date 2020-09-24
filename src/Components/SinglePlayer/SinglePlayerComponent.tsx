@@ -30,56 +30,80 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 		return (
 			<PanelComponent>
 				<div class="col-auto my-1">
-					<label class="mr-sm-2 whiteText" for="inlineFormCustomSelect">
-						IA
-					</label>
-					<select
-						onInput={linkState(this, 'IaNumber')}
-						class="custom-select mr-sm-2"
-						id="inlineFormCustomSelect"
-					>
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-					</select>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text custom-black-btn" id="inputGroup-sizing-default">
+								IA
+							</span>
+						</div>
+						<select
+							onInput={linkState(this, 'IaNumber')}
+							class="custom-select mr-sm-2"
+							id="inlineFormCustomSelect"
+						>
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+						</select>
+					</div>
 				</div>
 				<div class="col-auto my-1 whiteText">
-					<label class="mr-sm-2" for="inlineFormCustomSelect">
-						Mode
-					</label>
-					<select onInput={linkState(this, 'Mode')} class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-						<option value="0">Sand</option>
-						<option value="1">Forest</option>
-						<option value="2">Ice</option>
-					</select>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text custom-black-btn" id="inputGroup-sizing-default">
+								Mode
+							</span>
+						</div>
+						<select
+							onInput={linkState(this, 'Mode')}
+							class="custom-select mr-sm-2"
+							id="inlineFormCustomSelect"
+						>
+							<option value="0">Sand</option>
+							<option value="1">Forest</option>
+							<option value="2">Ice</option>
+						</select>
+					</div>
 				</div>
 				<div class="col-auto my-1 whiteText">
-					<label class="mr-sm-2" for="inlineFormCustomSelect">
-						Size
-					</label>
-					<select onInput={linkState(this, 'Size')} class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-						<option value="8">small</option>
-						<option selected value="12">
-							medium
-						</option>
-						<option value="16">big</option>
-					</select>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text custom-black-btn" id="inputGroup-sizing-default">
+								Size
+							</span>
+						</div>
+						<select
+							onInput={linkState(this, 'Size')}
+							class="custom-select mr-sm-2"
+							id="inlineFormCustomSelect"
+						>
+							<option value="8">small</option>
+							<option selected value="12">
+								medium
+							</option>
+							<option value="16">big</option>
+						</select>
+					</div>
 				</div>
 				<div class="col-auto my-1 whiteText">
-					<label class="mr-sm-2" for="inlineFormCustomSelect">
-						Shape
-					</label>
-					<select
-						onInput={linkState(this, 'MapType')}
-						class="custom-select mr-sm-2"
-						id="inlineFormCustomSelect"
-					>
-						<option value="Donut">Donut</option>
-						<option value="Cheese">Cheese</option>
-						<option selected value="Flower">
-							Flower
-						</option>
-					</select>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text custom-black-btn" id="inputGroup-sizing-default">
+								Shape
+							</span>
+						</div>
+						<select
+							onInput={linkState(this, 'MapType')}
+							class="custom-select mr-sm-2"
+							id="inlineFormCustomSelect"
+						>
+							<option value="Donut">Donut</option>
+							<option value="Cheese">Cheese</option>
+							<option selected value="Flower">
+								Flower
+							</option>
+						</select>
+					</div>
 				</div>
 				<p />
 				<div class="container-center-horizontal">

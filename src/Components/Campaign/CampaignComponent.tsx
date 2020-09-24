@@ -123,7 +123,7 @@ export default class CampaignComponent extends Component<any, any> {
 					</div>
 					<BlackButtonComponent
 						icon={'fas fa-undo-alt'}
-						title={'Black'}
+						title={'Back'}
 						isFirstRender={this._isFirstRender}
 						callBack={() => this.Back()}
 					/>

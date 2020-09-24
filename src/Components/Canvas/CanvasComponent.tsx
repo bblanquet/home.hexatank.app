@@ -18,11 +18,10 @@ import CellMenuComponent from './Parts/CellMenuComponent';
 import MultiMenuComponent from './Parts/MultiMenuComponent';
 import TruckMenuComponent from './Parts/TruckMenuComponent';
 import ReactorMenuComponent from './Parts/ReactorMenuComponent';
+import PopupMenuComponent from '../PopupMenu/PopupMenuComponent';
 import { UnitGroup } from '../../Core/Items/UnitGroup';
 import { GameStatus } from './GameStatus';
 import { Player } from '../../Network/Player';
-import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
-import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
 import { CellGroup } from '../../Core/Items/CellGroup';
 import PopupComponent from '../Popup/PopupComponent';
 
@@ -213,10 +212,6 @@ export default class CanvasComponent extends Component<
 
 	componentDidUpdate() {}
 
-	private Cheat(): void {
-		GameSettings.ShowEnemies = !GameSettings.ShowEnemies;
-	}
-
 	private Quit(): void {
 		route('/Home', true);
 		this._appHandler.InteractionContext.Mute();
@@ -307,41 +302,7 @@ export default class CanvasComponent extends Component<
 	}
 
 	private MenuRender() {
-		let value = (
-			<div class="generalContainer absolute-center-middle-menu menu-container fit-content">
-				<div class="container-center">
-					<div class="title-container">Menu</div>
-					<RedButtonComponent
-						icon={'fas fa-undo-alt'}
-						title={'Resume'}
-						isFirstRender={false}
-						callBack={() => this.SetMenu()}
-					/>
-					{GameSettings.ShowEnemies ? (
-						<BlackButtonComponent
-							icon={'fas fa-undo-alt'}
-							title={'Cheat'}
-							isFirstRender={false}
-							callBack={() => this.Cheat()}
-						/>
-					) : (
-						<RedButtonComponent
-							icon={'fas fa-undo-alt'}
-							title={'Cheat'}
-							isFirstRender={false}
-							callBack={() => this.Cheat()}
-						/>
-					)}
-					<RedButtonComponent
-						icon={'fas fa-undo-alt'}
-						title={'Quit'}
-						isFirstRender={false}
-						callBack={() => this.Quit()}
-					/>{' '}
-				</div>
-			</div>
-		);
-		return value;
+		return <PopupMenuComponent status={this.state.GameStatus} callBack={() => this.SetMenu()} />;
 	}
 
 	private GetEndMessage() {

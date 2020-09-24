@@ -701,6 +701,48 @@ body {
 	padding-bottom: 3px;
 }
 
+.custom-blue-btn {
+	background-color: rgba(50, 155, 233, 1);
+	color: white;
+	font-family: AnimalSilence;
+	letter-spacing: 0.5mm;
+	font-size: large;
+	text-align: center;
+	border-radius: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.custom-blue-btn:hover {
+	background-color: #67b7f2;
+	color: white;
+	font-family: AnimalSilence;
+	letter-spacing: 0.5mm;
+	font-size: large;
+	text-align: center;
+	border-radius: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.custom-blue-btn:active {
+	background-color: #67b7f2;
+	color: white;
+	font-family: AnimalSilence;
+	letter-spacing: 0.5mm;
+	font-size: large;
+	text-align: center;
+	border-radius: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
 .custom-red-border {
 	border: #6b5e39 solid 1px;
 	border-radius: 15px;
@@ -712,6 +754,21 @@ body {
 		rgba(241, 143, 52, 1) 50%,
 		rgba(233, 95, 50, 1) 75%,
 		rgba(187, 43, 36, 1) 100%
+	);
+	padding: 4px 0px 4px 0px;
+}
+
+.custom-blue-border {
+	border: #6b5e39 solid 1px;
+	border-radius: 15px;
+	background: rgb(36, 105, 187);
+	background: linear-gradient(
+		90deg,
+		rgba(36, 105, 187, 1) 0%,
+		rgba(50, 155, 233, 1) 25%,
+		rgba(52, 241, 198, 1) 50%,
+		rgba(50, 155, 233, 1) 75%,
+		rgba(36, 105, 187, 1) 100%
 	);
 	padding: 4px 0px 4px 0px;
 }
@@ -1021,6 +1078,16 @@ body {
 	background-position: bottom;
 	background-repeat: no-repeat;
 	background-image: url('{{}}components/redArmyLeader.svg');
+}
+
+.fill-blueArmy {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background-size: contain;
+	background-position: bottom;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/blueArmyLeader.svg');
 }
 
 .fill-redArmy-eyes {

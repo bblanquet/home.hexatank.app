@@ -3,6 +3,7 @@ import HomeComponent from './Components/Home/HomeComponent';
 import SinglePlayerComponent from './Components/SinglePlayer/SinglePlayerComponent';
 import CanvasComponent from './Components/Canvas/CanvasComponent';
 import CampaignComponent from './Components/Campaign/CampaignComponent';
+import BlueCampaignComponent from './Components/Campaign/BlueCampaignComponent';
 import GuestComponent from './Components/Network/Guest/GuestComponent';
 import CreatingHostComponent from './Components/Network/Creating/CreatingHostComponent';
 import HostingComponent from './Components/Network/Host/HostingComponent';
@@ -98,6 +99,7 @@ render(
 		<HomeComponent path="/Home" />
 		<SinglePlayerComponent path="/SinglePlayer" />
 		<CampaignComponent path="/Campaign" />
+		<BlueCampaignComponent path="/BlueCampaignComponent" />
 		<CanvasComponent path="/Canvas" />
 		<CreatingHostComponent path="/CreatingHost" />
 		<HostingComponent path="/Hosting/:RoomName/:playerName/:isAdmin" />

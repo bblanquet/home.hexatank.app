@@ -95,56 +95,47 @@ export class CombinationProvider {
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof SpeedFieldMenuItem,
-				(e) => new RoadField(e, gameContext.GetMainHq()),
-				'Fast'
+				(e) => new RoadField(e, gameContext.GetMainHq())
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof AttackMenuItem,
-				(e) => new AttackField(e, gameContext.GetMainHq()),
-				'Attack'
+				(e) => new AttackField(e, gameContext.GetMainHq())
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof SlowMenuItem,
-				(e) => new SlowField(e, gameContext.GetMainHq().GetSkin().GetLight()),
-				'Slow'
+				(e) => new SlowField(e, gameContext.GetMainHq().GetSkin().GetLight())
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof ShieldMenuItem,
-				(e) => new ShieldField(e, gameContext.GetMainHq()),
-				'Shield'
+				(e) => new ShieldField(e, gameContext.GetMainHq())
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof PoisonMenuItem,
-				(e) => new PoisonField(e, gameContext.GetMainHq()),
-				'Poison'
+				(e) => new PoisonField(e, gameContext.GetMainHq())
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof MoneyMenuItem,
-				(e) => new FarmField(e, gameContext.GetMainHq()),
-				'Money'
+				(e) => new FarmField(e, gameContext.GetMainHq())
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof ThunderMenuItem,
-				(e) => new BatteryField(e, gameContext.GetMainHq()),
-				'Thunder'
+				(e) => new BatteryField(e, gameContext.GetMainHq())
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof NetworkMenuItem,
-				(e) => new NetworkField(e, gameContext.GetMainHq()),
-				'Network'
+				(e) => new NetworkField(e, gameContext.GetMainHq())
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof HealMenuItem,
-				(e) => new MedicField(e, gameContext.GetMainHq()),
-				'Heal'
+				(e) => new MedicField(e, gameContext.GetMainHq())
 			),
 			new PowerDownCombination(),
 			new OverlockCombination(),

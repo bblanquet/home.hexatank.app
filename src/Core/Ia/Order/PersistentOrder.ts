@@ -10,15 +10,17 @@ export class PersistentOrder extends Order {
 	constructor(protected OriginalDest: Cell, private _v: Vehicle) {
 		super();
 		this._currentOrder = new SimpleOrder(this.OriginalDest, this._v);
-		this._v.OnCellChanged.On((src: any, c: Cell) => this.OnCellChanged);
+		this._v.OnCellChanged.On((src: any, c: Cell) => this.OnCellChanged());
 	}
 
 	private OnCellChanged(): void {
-		this._currentOrder = new SimpleOrder(this.OriginalDest, this._v);
+		if (this._v.GetCurrentCell() !== this.OriginalDest) {
+			this._currentOrder = new SimpleOrder(this.OriginalDest, this._v);
+		}
 	}
 
 	public Cancel(): void {
-		this._v.OnCellChanged.Off((src: any, c: Cell) => this.OnCellChanged);
+		this._v.OnCellChanged.Off((src: any, c: Cell) => this.OnCellChanged());
 		if (this._currentOrder) {
 			this._currentOrder.Cancel();
 		}
@@ -29,7 +31,7 @@ export class PersistentOrder extends Order {
 			if (this._currentOrder.GetState() === OrderState.Failed) {
 				this._currentOrder.Reset();
 			} else {
-				this._v.OnCellChanged.Off((src: any, c: Cell) => this.OnCellChanged);
+				this._v.OnCellChanged.Off((src: any, c: Cell) => this.OnCellChanged());
 			}
 		} else {
 			this._currentOrder.Do();

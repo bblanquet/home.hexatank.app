@@ -1,73 +1,48 @@
-import { h, Component } from 'preact';
+import { h, Component, toChildArray, cloneElement } from 'preact';
 import { Point } from '../../../Core/Utils/Geometry/Point';
-import { BtnInfo } from './BtnInfo';
 
-export default class CircularComponent extends Component<
-	{ btns: BtnInfo[]; OnCancel: () => void },
-	{ btns: BtnInfo[] }
-> {
+export default class CircularComponent extends Component<{ OnCancel: () => void; isDark: boolean }, {}> {
 	private _positions: Point[] = [];
 	constructor() {
 		super();
-		this.setState({
-			btns: []
-		});
+		this.setState({});
 	}
 
 	componentWillMount() {
-		if (this.props.btns) {
-			this.InitPositions();
+		if (this.props.children) {
+			this._positions = [];
+			(this.props.children as any[]).forEach((c) => {
+				this._positions.push(new Point(0, 0));
+			});
 		}
 	}
 
 	private SetPositions() {
 		this._positions = [];
-		this.props.btns.forEach((btn, index) => {
-			this._positions.push(this.GetPoint(index, this.props.btns.length));
+		const children = toChildArray(this.props.children);
+		const size = children.length;
+		(this.props.children as any[]).forEach((c, index) => {
+			this._positions.push(this.GetPoint(index, size));
 		});
 		this.setState({});
 	}
 
-	private InitPositions() {
-		this.props.btns.forEach((btn, index) => {
-			this._positions.push(new Point(0, 0));
-		});
-	}
-
 	componentDidMount() {
-		if (this.props.btns) {
-			this.setState({
-				btns: this.props.btns
-			});
+		if (this.props.children) {
+			this.setState({});
 			setTimeout(() => {
 				this.SetPositions();
-			}, 700);
+			}, 200);
 		}
 	}
 
 	private GetPoint(i: number, total: number): Point {
-		const x = Math.cos(i * 2 * Math.PI / total) * 150;
-		const y = Math.sin(i * 2 * Math.PI / total) * 150;
+		const x = Math.cos(i * 2 * Math.PI / total) * 125;
+		const y = Math.sin(i * 2 * Math.PI / total) * 125;
 		return new Point(x, y);
 	}
 
 	componentWillUnmount() {}
-
-	private Btn(btn: BtnInfo, point: Point) {
-		return (
-			<div
-				className="btn btn-dark btn-circular "
-				style={`transform:translate(${point.X}px,${point.Y}px); opacity:${point.IsOrigin() ? 0 : 1}`}
-			>
-				<div class="max-space container-center" onClick={() => btn.CallBack()}>
-					<div class={`${btn.ClassName} circular-space`} />
-					<div>
-						{btn.Amount} <span class="fill-diamond badge very-small-space middle"> </span>
-					</div>
-				</div>
-			</div>
-		);
-	}
 
 	private CancelLogo() {
 		return (
@@ -77,17 +52,23 @@ export default class CircularComponent extends Component<
 		);
 	}
 
+	Convert(child: any, index: number) {
+		return cloneElement(child, { Point: this._positions[index] });
+	}
+
 	render() {
 		return (
 			<div class="circular-menu">
 				<div
 					onClick={() => this.props.OnCancel()}
-					class="btn btn-dark btn-circular above-circular bouncing-up-animation"
+					class={`btn ${this.props.isDark
+						? 'btn-dark'
+						: 'btn-light'} btn-circular above-circular bouncing-up-animation`}
 				>
 					{this.CancelLogo()}
 				</div>
-				{this.state.btns.map((btn, index) => {
-					return this.Btn(btn, this._positions[index]);
+				{toChildArray(this.props.children).map((child, i) => {
+					return this.Convert(child, i);
 				})}
 			</div>
 		);

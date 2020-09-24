@@ -1,3 +1,5 @@
+import { InfluenceMenuItem } from './../../../Menu/Buttons/InfluenceMenuItem';
+import { MoneyMenuItem } from './../../../Menu/Buttons/MoneyMenuItem';
 import { CellGroup } from './../../../Items/CellGroup';
 import { NetworkMenuItem } from './../../../Menu/Buttons/NetworkMenuItem';
 import { ShieldMenuItem } from './../../../Menu/Buttons/ShieldMenuItem';
@@ -33,6 +35,8 @@ export class ClearMultiCellBonusCombination extends AbstractSingleCombination {
 		return (
 			menuItem instanceof HealMenuItem ||
 			menuItem instanceof AttackMenuItem ||
+			menuItem instanceof MoneyMenuItem ||
+			menuItem instanceof InfluenceMenuItem ||
 			menuItem instanceof ShieldMenuItem ||
 			menuItem instanceof SpeedFieldMenuItem ||
 			menuItem instanceof PoisonMenuItem ||

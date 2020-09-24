@@ -10,8 +10,7 @@ export class GenericCellCombination extends AbstractSingleCombination {
 	constructor(
 		private _gameContext: GameContext,
 		private _isType: (e: any) => boolean,
-		private _create: (e: Cell) => void,
-		private _type: string
+		private _create: (e: Cell) => void
 	) {
 		super();
 	}
@@ -30,13 +29,7 @@ export class GenericCellCombination extends AbstractSingleCombination {
 			let cell = <Cell>context.Items[0];
 			if (!isNullOrUndefined(cell)) {
 				if (cell.GetField() instanceof BasicField) {
-					if (this._gameContext.GetMainHq().HasMoney(GameSettings.FieldPrice)) {
-						this._gameContext.GetMainHq().Buy(GameSettings.FieldPrice);
-						// PeerHandler.SendMessage(PacketKind.Field, {
-						// 	Hq: this._gameContext.GetMainHq().GetCurrentCell().GetCoordinate(),
-						// 	cell: cell.GetCoordinate(),
-						// 	Type: this._type
-						// });
+					if (this._gameContext.GetMainHq().Buy(GameSettings.FieldPrice)) {
 						this._create(cell);
 					}
 				}

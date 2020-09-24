@@ -49,7 +49,7 @@ export class MultiCellBonusCombination extends AbstractSingleCombination {
 			let cells = context.Items[0] as CellGroup;
 			let menuItem = context.Items[1];
 			const cost = GameSettings.FieldPrice * cells.GetCells().length;
-			if (menuItem && this._gameContext.GetMainHq().HasMoney(cost)) {
+			if (menuItem && this._gameContext.GetMainHq().Buy(cost)) {
 				if (menuItem instanceof HealMenuItem) {
 					this.SetMenuItem(cells, (c) => new MedicField(c, this._gameContext.GetMainHq()));
 				} else if (menuItem instanceof AttackMenuItem) {
@@ -72,11 +72,14 @@ export class MultiCellBonusCombination extends AbstractSingleCombination {
 				} else if (menuItem instanceof MoneyMenuItem) {
 					this.SetMenuItem(cells, (c) => new FarmField(c, this._gameContext.GetMainHq()));
 				}
-				this._gameContext.GetMainHq().Buy(cost);
 				cells.SetSelected(false);
 				this.ClearContext.Invoke();
 				this._appHandler.RestartNavigation();
 				return true;
+			} else {
+				cells.SetSelected(false);
+				this.ClearContext.Invoke();
+				this._appHandler.RestartNavigation();
 			}
 			return false;
 		}

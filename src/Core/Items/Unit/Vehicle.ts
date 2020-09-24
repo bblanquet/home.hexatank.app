@@ -34,9 +34,9 @@ import { Up } from './PowerUp/Up';
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable, ICancellable {
 	public PowerUps: Array<Up> = [];
 	public Id: string;
-	RotationSpeed: number = 0.05;
-	TranslationSpeed: number = 0.2;
-	Attack: number = 10;
+	public RotationSpeed: number = GameSettings.RotationSpeed;
+	public TranslatingDuration: number = GameSettings.TranslatinDuration;
+	public Attack: number = 10;
 	protected RootSprites: Array<string>;
 	private WheelIndex: number;
 

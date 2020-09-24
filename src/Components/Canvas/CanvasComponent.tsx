@@ -93,28 +93,28 @@ export default class CanvasComponent extends Component<
 		});
 	}
 
-	private HandleTruckChanged(obj: any, e: number): void {
+	private HandleTruckChanged(obj: any, request: number): void {
 		this.setState({
-			TruckRequestCount: e
+			TruckRequestCount: request
 		});
 	}
 
-	private HandleTankChanged(obj: any, e: number): void {
+	private HandleTankChanged(obj: any, request: number): void {
 		this.setState({
-			TankRequestCount: e
+			TankRequestCount: request
 		});
 	}
 
-	private HandleDiamondChanged(obj: any, e: number): void {
+	private HandleDiamondChanged(obj: any, amount: number): void {
 		this.setState({
-			Amount: e
+			Amount: amount
 		});
 	}
 
-	private UpdateSelection(obj: any, e: Item): void {
-		((e as unknown) as ISelectable).OnSelectionChanged.On(this._onItemSelectionChanged);
+	private UpdateSelection(obj: any, selectedItem: Item): void {
+		((selectedItem as unknown) as ISelectable).OnSelectionChanged.On(this._onItemSelectionChanged);
 		this.setState({
-			Item: e
+			Item: selectedItem
 		});
 	}
 

@@ -12,7 +12,7 @@ export class BasicField extends Field {
 	}
 
 	Support(vehicule: Vehicle): void {
-		vehicule.TranslationSpeed = GameSettings.TranslationSpeed;
+		vehicule.TranslatingDuration = GameSettings.TranslatinDuration;
 		vehicule.RotationSpeed = GameSettings.RotationSpeed;
 		vehicule.Attack = GameSettings.Attack;
 	}

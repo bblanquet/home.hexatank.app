@@ -5,5 +5,5 @@ export interface IMovable {
 	GetNextCell(): Cell;
 	SetNextCell(cell: Cell): void;
 	GetCurrentCell(): Cell;
-	TranslationSpeed: number;
+	TranslatingDuration: number;
 }

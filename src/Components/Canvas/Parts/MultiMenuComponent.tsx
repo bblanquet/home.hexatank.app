@@ -6,7 +6,7 @@ import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
 import { AppHandler } from '../AppHandler';
 import { GameContext } from '../../../Core/Framework/GameContext';
 import { BtnInfo } from '../../Common/Circular/BtnInfo';
-import ExpCircularComponent from '../../Common/Circular/ExpCircularComponent';
+import ExpCircularComponent from '../../Common/Circular/CircularComponent';
 import WhiteBtn from '../../Common/Button/Standard/SmWhiteBtnComponent';
 import { Point } from '../../../Core/Utils/Geometry/Point';
 
@@ -16,7 +16,7 @@ export default class MultiMenuComponent extends Component<
 > {
 	render() {
 		return (
-			<ExpCircularComponent OnCancel={() => this.Cancel()}>
+			<ExpCircularComponent OnCancel={() => this.Cancel()} isDark={false}>
 				<WhiteBtn
 					CallBack={() => this.SendContext(new MultiTankMenuItem())}
 					icon={'fill-multi-tank'}

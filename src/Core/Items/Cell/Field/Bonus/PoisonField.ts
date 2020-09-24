@@ -12,7 +12,7 @@ export class PoisonField extends BonusField {
 	Support(vehicule: Vehicle): void {
 		const coef = this.GetReactorsPower(this.hq) * 0.01;
 		vehicule.SetDamage(0.15 + coef);
-		vehicule.TranslationSpeed = GameSettings.TranslationSpeed;
+		vehicule.TranslatingDuration = GameSettings.TranslatinDuration;
 		vehicule.RotationSpeed = GameSettings.RotationSpeed;
 		vehicule.Attack = GameSettings.Attack;
 	}

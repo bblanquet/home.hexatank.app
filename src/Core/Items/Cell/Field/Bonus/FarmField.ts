@@ -41,7 +41,7 @@ export class FarmField extends BonusField {
 			}
 		}
 
-		vehicule.TranslationSpeed = GameSettings.TranslationSpeed;
+		vehicule.TranslatingDuration = GameSettings.TranslatinDuration;
 		vehicule.RotationSpeed = GameSettings.RotationSpeed;
 		vehicule.Attack = GameSettings.Attack;
 	}

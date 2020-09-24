@@ -34,7 +34,7 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 						IA
 					</label>
 					<select
-						onChange={linkState(this, 'IaNumber')}
+						onInput={linkState(this, 'IaNumber')}
 						class="custom-select mr-sm-2"
 						id="inlineFormCustomSelect"
 					>
@@ -47,11 +47,7 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 					<label class="mr-sm-2" for="inlineFormCustomSelect">
 						Mode
 					</label>
-					<select
-						onChange={linkState(this, 'Mode')}
-						class="custom-select mr-sm-2"
-						id="inlineFormCustomSelect"
-					>
+					<select onInput={linkState(this, 'Mode')} class="custom-select mr-sm-2" id="inlineFormCustomSelect">
 						<option value="0">Sand</option>
 						<option value="1">Forest</option>
 						<option value="2">Ice</option>
@@ -61,11 +57,7 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 					<label class="mr-sm-2" for="inlineFormCustomSelect">
 						Size
 					</label>
-					<select
-						onChange={linkState(this, 'Size')}
-						class="custom-select mr-sm-2"
-						id="inlineFormCustomSelect"
-					>
+					<select onInput={linkState(this, 'Size')} class="custom-select mr-sm-2" id="inlineFormCustomSelect">
 						<option value="8">small</option>
 						<option selected value="12">
 							medium
@@ -78,7 +70,7 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 						Shape
 					</label>
 					<select
-						onChange={linkState(this, 'MapType')}
+						onInput={linkState(this, 'MapType')}
 						class="custom-select mr-sm-2"
 						id="inlineFormCustomSelect"
 					>

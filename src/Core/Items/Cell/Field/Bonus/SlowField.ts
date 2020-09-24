@@ -34,7 +34,7 @@ export class SlowField extends Field {
 	}
 	Support(vehicule: Vehicle): void {
 		const sum = this.GetReactorsPower(null);
-		vehicule.TranslationSpeed = GameSettings.TranslationSpeed * (0.8 * (1 / sum));
+		vehicule.TranslatingDuration = GameSettings.TranslatinDuration;
 		vehicule.RotationSpeed = GameSettings.RotationSpeed * (0.8 * (1 / sum));
 		vehicule.Attack = GameSettings.Attack;
 	}

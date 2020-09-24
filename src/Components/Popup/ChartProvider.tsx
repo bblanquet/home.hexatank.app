@@ -91,8 +91,4 @@ export class ChartProvider {
 			this._cache.Add(cacheKey, chart);
 		}
 	}
-
-	private GetDuration(seconds: number): string | number | Date | moment.Moment {
-		return new Date().setSeconds(seconds) - new Date().getDate();
-	}
 }

@@ -1,5 +1,5 @@
 .bouncing-up-animation {
-	animation: bouncing-up 0.5s alternate ease-in;
+	animation: bouncing-up 0.3s alternate ease-in;
 }
 
 @keyframes bouncing-up {

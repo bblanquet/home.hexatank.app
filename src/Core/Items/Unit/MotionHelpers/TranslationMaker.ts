@@ -1,70 +1,56 @@
+import { isNullOrUndefined } from 'util';
 import { ITranslationMaker } from './ITranslationMaker';
 import { IMovable } from '../../IMovable';
 import { IBoundingBoxContainer } from '../../../IBoundingBoxContainer';
 
 export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implements ITranslationMaker {
 	private _item: T;
-	private _yRatio: number;
-	private _isInit: boolean;
+	private _departureDate: number;
+	private _arrivalDate: number;
 
 	constructor(item: T) {
 		this._item = item;
 	}
 
-	private GetDelta(a: number, b: number): number {
-		if (a < b) {
-			[ b, a ] = [ a, b ];
+	private GetPercentage(arrival: number, current: number): number {
+		if (arrival <= current) {
+			return 100;
 		}
-		return Math.abs(b - a);
-	}
-	private IsCloseEnough(a: number, b: number, _item: T): boolean {
-		if (a < b) {
-			[ b, a ] = [ a, b ];
-		}
-
-		return Math.abs(b - a) < _item.TranslationSpeed;
-	}
-
-	private GetYRatio(current: { X: number; Y: number }, target: { X: number; Y: number }): number {
-		const deltaX = this.GetDelta(target.X, current.X);
-		const deltaY = this.GetDelta(target.Y, current.Y);
-		if (deltaX <= 0.01) {
-			return 1;
-		}
-		return deltaY / deltaX;
+		return current / arrival;
 	}
 
 	public Translate(): void {
-		const itemBox = this._item.GetBoundingBox();
-		const nextcellBox = this._item.GetNextCell().GetBoundingBox();
-		const currentCenter = itemBox.GetCenter();
-		const currentMiddle = itemBox.GetMiddle();
-		const nextMiddle = nextcellBox.GetMiddle();
-		const nextCenter = nextcellBox.GetCenter();
+		const departure = this._item.GetCurrentCell().GetBoundingBox();
+		const target = this._item.GetNextCell().GetBoundingBox();
+		const movable = this._item.GetBoundingBox();
 
-		if (!this._isInit) {
-			this._yRatio = this.GetYRatio(itemBox.GetCentralPoint(), nextcellBox.GetCentralPoint());
-			this._isInit = true;
+		const departureCenter = departure.GetCenter();
+		const departureMiddle = departure.GetMiddle();
+
+		const arrivalMiddle = target.GetMiddle();
+		const arrivalCenter = target.GetCenter();
+
+		const distanceMiddle = arrivalMiddle - departureMiddle;
+		const distanceCenter = arrivalCenter - departureCenter;
+
+		if (isNullOrUndefined(this._arrivalDate)) {
+			this._departureDate = new Date().getTime();
+			this._arrivalDate =
+				new Date(this._departureDate + this._item.TranslatingDuration * 1000).getTime() - this._departureDate;
 		}
 
-		const ySign = nextMiddle < currentMiddle ? -1 : 1;
-		const xSign = nextCenter < currentCenter ? -1 : 1;
+		const currentDate = new Date().getTime() - this._departureDate;
+		const percentage = this.GetPercentage(this._arrivalDate, currentDate);
 
-		if (this.IsCloseEnough(currentCenter, nextCenter, this._item)) {
-			itemBox.X = this._item.GetNextCell().GetBoundingBox().X;
-		} else {
-			itemBox.X += xSign * this._item.TranslationSpeed;
-		}
+		movable.X = departure.X + percentage * distanceCenter;
+		movable.Y = departure.Y + percentage * distanceMiddle;
 
-		if (this.IsCloseEnough(currentMiddle, nextMiddle, this._item)) {
-			itemBox.Y = this._item.GetNextCell().GetBoundingBox().Y;
-		} else {
-			itemBox.Y += ySign * this._item.TranslationSpeed * this._yRatio;
-		}
-
-		if (currentCenter === nextCenter && currentMiddle === nextMiddle) {
+		if (percentage === 100) {
+			movable.X = this._item.GetNextCell().GetBoundingBox().X;
+			movable.Y = this._item.GetNextCell().GetBoundingBox().Y;
+			this._departureDate = null;
+			this._arrivalDate = null;
 			this._item.MoveNextCell();
-			this._isInit = false;
 		}
 	}
 }

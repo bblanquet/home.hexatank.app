@@ -34,7 +34,7 @@ export class DiamondField extends Field {
 	}
 
 	public Support(vehicule: Vehicle): void {
-		vehicule.TranslationSpeed = GameSettings.TranslationSpeed;
+		vehicule.TranslatingDuration = GameSettings.TranslatinDuration;
 		vehicule.RotationSpeed = GameSettings.RotationSpeed;
 		vehicule.Attack = GameSettings.Attack;
 

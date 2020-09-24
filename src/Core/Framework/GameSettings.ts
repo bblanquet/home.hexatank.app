@@ -1,7 +1,7 @@
 export class GameSettings {
 	public static RotationSpeed: number = 0.3; //0.05
 	public static TurrelRotationSpeed: number = 0.4;
-	public static TranslationSpeed: number = 6; //1
+	public static TranslatinDuration: number = 3; //1
 	public static DiamondLoadingSpeed: number = 3; //30
 	public static MoneyLoadingSpeed: number = 3; //10
 	public static GeneralLife: number = 20; //100
@@ -35,7 +35,7 @@ export class GameSettings {
 	public static SetNormalSpeed(): void {
 		this.RotationSpeed = 0.05;
 		this.TurrelRotationSpeed = 0.4;
-		this.TranslationSpeed = 1;
+		this.TranslatinDuration = 3;
 		this.DiamondLoadingSpeed = 30;
 		this.MoneyLoadingSpeed = 10;
 		this.GeneralLife = 30;
@@ -44,7 +44,7 @@ export class GameSettings {
 	public static SetFastSpeed(): void {
 		this.RotationSpeed = 0.3;
 		this.TurrelRotationSpeed = 0.4;
-		this.TranslationSpeed = 6;
+		this.TranslatinDuration = 0.5;
 		this.DiamondLoadingSpeed = 3;
 		this.MoneyLoadingSpeed = 3;
 		this.GeneralLife = 20;

@@ -13,40 +13,69 @@ import { GameContext } from '../../../Core/Framework/GameContext';
 import { ThunderMenuItem } from '../../../Core/Menu/Buttons/ThunderMenuItem';
 import { Cell } from '../../../Core/Items/Cell/Cell';
 import { BtnInfo } from '../../Common/Circular/BtnInfo';
-import CircularComponent from '../../Common/Circular/CircularComponent';
 import { PoisonMenuItem } from '../../../Core/Menu/Buttons/PoisonMenuItem';
 import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
+import ExpCircularComponent from '../../Common/Circular/CircularComponent';
+import SmDarkShopBtnComponent from '../../Common/Button/Standard/SmDarkShopBtnComponent';
+import { Point } from '../../../Core/Utils/Geometry/Point';
 
 export default class CellMenuComponent extends Component<
 	{ Item: Item; AppHandler: AppHandler; GameContext: GameContext },
 	{ btns: BtnInfo[] }
 > {
-	componentWillMount() {
-		let btns = [
-			new BtnInfo(
-				() => this.SendContext(new InfluenceMenuItem()),
-				'fill-influence',
-				this.props.GameContext.GetMainHq().GetReactorsCount()
-			)
-		];
-		if (true || this.IsCovered()) {
-			btns = btns.concat([
-				new BtnInfo(() => this.SendContext(new ThunderMenuItem()), 'fill-thunder', GameSettings.FieldPrice),
-				new BtnInfo(() => this.SendContext(new ShieldMenuItem()), 'fill-shield', GameSettings.FieldPrice),
-				new BtnInfo(() => this.SendContext(new MoneyMenuItem()), 'fill-money', GameSettings.FieldPrice),
-				new BtnInfo(() => this.SendContext(new AttackMenuItem()), 'fill-power', GameSettings.FieldPrice),
-				new BtnInfo(() => this.SendContext(new PoisonMenuItem()), 'fill-poison', GameSettings.FieldPrice),
-				new BtnInfo(() => this.SendContext(new SpeedFieldMenuItem()), 'fill-speed', GameSettings.FieldPrice),
-				new BtnInfo(() => this.SendContext(new HealMenuItem()), 'fill-medic', GameSettings.FieldPrice)
-			]);
-		}
-		this.setState({
-			btns
-		});
-	}
-
 	render() {
-		return <CircularComponent btns={this.state.btns} OnCancel={() => this.Cancel()} />;
+		return (
+			<ExpCircularComponent OnCancel={() => this.Cancel()} isDark={true}>
+				<SmDarkShopBtnComponent
+					CallBack={() => this.SendContext(new InfluenceMenuItem())}
+					Amount={`${this.props.GameContext.GetMainHq().GetReactorsCount() * GameSettings.FieldPrice}`}
+					Icon="fill-influence"
+					Point={new Point(0, 0)}
+				/>
+				<SmDarkShopBtnComponent
+					CallBack={() => this.SendContext(new ThunderMenuItem())}
+					Amount={`${GameSettings.FieldPrice}`}
+					Icon="fill-thunder"
+					Point={new Point(0, 0)}
+				/>
+				<SmDarkShopBtnComponent
+					CallBack={() => this.SendContext(new ShieldMenuItem())}
+					Amount={`${GameSettings.FieldPrice}`}
+					Icon="fill-shield"
+					Point={new Point(0, 0)}
+				/>
+				<SmDarkShopBtnComponent
+					CallBack={() => this.SendContext(new MoneyMenuItem())}
+					Amount={`${GameSettings.FieldPrice}`}
+					Icon="fill-money"
+					Point={new Point(0, 0)}
+				/>
+				<SmDarkShopBtnComponent
+					CallBack={() => this.SendContext(new AttackMenuItem())}
+					Amount={`${GameSettings.FieldPrice}`}
+					Icon="fill-power"
+					Point={new Point(0, 0)}
+				/>
+				<SmDarkShopBtnComponent
+					CallBack={() => this.SendContext(new PoisonMenuItem())}
+					Amount={`${GameSettings.FieldPrice}`}
+					Icon="fill-poison"
+					Point={new Point(0, 0)}
+				/>
+				<SmDarkShopBtnComponent
+					CallBack={() => this.SendContext(new SpeedFieldMenuItem())}
+					Amount={`${GameSettings.FieldPrice}`}
+					Icon="fill-speed"
+					Point={new Point(0, 0)}
+				/>
+				<SmDarkShopBtnComponent
+					CallBack={() => this.SendContext(new HealMenuItem())}
+					Amount={`${GameSettings.FieldPrice}`}
+					Icon="fill-medic"
+					Point={new Point(0, 0)}
+				/>
+			</ExpCircularComponent>
+		);
 	}
 
 	private IsCovered(): boolean {

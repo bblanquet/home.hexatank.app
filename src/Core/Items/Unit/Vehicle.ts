@@ -34,7 +34,7 @@ import { Up } from './PowerUp/Up';
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable, ICancellable {
 	public PowerUps: Array<Up> = [];
 	public Id: string;
-	public RotationSpeed: number = GameSettings.RotationSpeed;
+	public RotatingDuration: number = GameSettings.RotatingDuration;
 	public TranslatingDuration: number = GameSettings.TranslatinDuration;
 	public Attack: number = 10;
 	protected RootSprites: Array<string>;
@@ -160,7 +160,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	private Moving(): void {
 		if (this.CurrentRadius != this.GoalRadius) {
 			this._rotationMaker.Rotate();
-			this.SetRotation();
+			this.SetSpriteRotation();
 		} else {
 			if (this.GetNextCell().GetState() === CellState.Visible) {
 				this.HandleCellStateChanged(this, this.GetNextCell().GetState());
@@ -170,7 +170,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this.HandleMovingEffect();
 	}
 
-	private SetRotation(): void {
+	private SetSpriteRotation(): void {
 		this.RootSprites.forEach((sprite) => {
 			this.SetProperty(sprite, (sp) => (sp.rotation = this.CurrentRadius));
 		});

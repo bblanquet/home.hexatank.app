@@ -16,7 +16,7 @@ import { GameSettings } from '../../Framework/GameSettings';
 import { ITimer } from '../../Utils/Timer/ITimer';
 
 export class Turrel extends Item implements IRotatable {
-	RotationSpeed: number;
+	RotatingDuration: number;
 	CurrentRadius: number;
 	GoalRadius: number;
 	Base: Tank;
@@ -37,7 +37,7 @@ export class Turrel extends Item implements IRotatable {
 	constructor(hqSkin: ItemSkin, item: Tank) {
 		super();
 		this._skin = hqSkin;
-		this.RotationSpeed = GameSettings.TurrelRotationSpeed;
+		this.RotatingDuration = GameSettings.TurrelRotatingDuration;
 		this.CurrentRadius = 0;
 		this.Z = 3;
 		this.Base = item;

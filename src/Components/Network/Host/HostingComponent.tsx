@@ -1,6 +1,5 @@
 import { Component, h } from 'preact';
 import { route } from 'preact-router';
-import linkState from 'linkstate';
 import * as toastr from 'toastr';
 import { PacketKind } from '../../../Network/Message/PacketKind';
 import PlayersComponent from './Players/PlayersComponent';
@@ -137,7 +136,9 @@ export default class HostingComponent extends Component<any, HostState> {
 					class="form-control no-radius"
 					id="toastMessageBox"
 					value={this.state.Message}
-					onInput={linkState(this, 'Message')}
+					onInput={(e: any) => {
+						this.setState({ Message: e.target.value });
+					}}
 					aria-label="Example text with button addon"
 					aria-describedby="button-addon1"
 				/>

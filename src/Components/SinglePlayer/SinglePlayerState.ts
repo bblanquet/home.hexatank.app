@@ -1,6 +1,6 @@
-export class SinglePlayerState{
-    public IaNumber:number;
-    public Mode:string;
-    public Size:string;
-    public MapType:string;
+export class SinglePlayerState {
+	public IaNumber: number;
+	public Mode: string;
+	public Size: number;
+	public MapType: string;
 }

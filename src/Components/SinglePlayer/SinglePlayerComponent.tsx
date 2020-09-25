@@ -1,7 +1,6 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { SinglePlayerState } from './SinglePlayerState';
-import linkState from 'linkstate';
 import { GameHelper } from '../../Core/Framework/GameHelper';
 import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
 import { MapMode } from '../../Core/Setup/Generator/MapMode';
@@ -16,9 +15,9 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 		super(props);
 		this.setState({
 			IaNumber: 1,
-			Mode: '0',
+			Mode: '',
 			MapType: 'Flower',
-			Size: '12'
+			Size: 12
 		});
 	}
 
@@ -37,7 +36,9 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 							</span>
 						</div>
 						<select
-							onInput={linkState(this, 'IaNumber')}
+							onInput={(e: any) => {
+								this.setState({ IaNumber: Number(e.target.children[e.target.selectedIndex].text) });
+							}}
 							class="custom-select mr-sm-2"
 							id="inlineFormCustomSelect"
 						>
@@ -55,7 +56,9 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 							</span>
 						</div>
 						<select
-							onInput={linkState(this, 'Mode')}
+							onInput={(e: any) => {
+								this.setState({ Mode: e.target.children[e.target.selectedIndex].text });
+							}}
 							class="custom-select mr-sm-2"
 							id="inlineFormCustomSelect"
 						>
@@ -73,7 +76,9 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 							</span>
 						</div>
 						<select
-							onInput={linkState(this, 'Size')}
+							onInput={(e: any) => {
+								this.setState({ Size: Number(e.target.children[e.target.selectedIndex].text) });
+							}}
 							class="custom-select mr-sm-2"
 							id="inlineFormCustomSelect"
 						>
@@ -93,7 +98,9 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 							</span>
 						</div>
 						<select
-							onInput={linkState(this, 'MapType')}
+							onInput={(e: any) => {
+								this.setState({ MapType: e.target.children[e.target.selectedIndex].text });
+							}}
 							class="custom-select mr-sm-2"
 							id="inlineFormCustomSelect"
 						>

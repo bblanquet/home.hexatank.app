@@ -1,5 +1,4 @@
 import { h, Component } from 'preact';
-import linkState from 'linkstate';
 import BlackButtonComponent from '../../../Common/Button/Stylish/BlackButtonComponent';
 
 export default class OptionComponent extends Component<{ Update: (g: number) => void }, { IaNumber: number }> {
@@ -37,7 +36,9 @@ export default class OptionComponent extends Component<{ Update: (g: number) => 
 						id="daytime"
 						class="custom-select"
 						value={this.state.IaNumber}
-						onChange={linkState(this, 'IaNumber')}
+						onInput={(e: any) => {
+							this.setState({ IaNumber: e.target.value });
+						}}
 					>
 						<option selected value="0">
 							0

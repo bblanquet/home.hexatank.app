@@ -1,6 +1,5 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
-import linkState from 'linkstate';
 import * as toastr from 'toastr';
 import { PacketKind } from '../../../Network/Message/PacketKind';
 import BlackButtonComponent from '../../Common/Button/Stylish/BlackButtonComponent';
@@ -48,7 +47,9 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 						<input
 							type="text"
 							value={this.state.PlayerName}
-							onInput={linkState(this, 'PlayerName')}
+							onInput={(e: any) => {
+								this.setState({ PlayerName: e.target.value });
+							}}
 							class="form-control"
 							aria-label="Default"
 							aria-describedby="inputGroup-sizing-default"

@@ -3,6 +3,7 @@ import { route } from 'preact-router';
 import * as toastr from 'toastr';
 import { PacketKind } from '../../../Network/Message/PacketKind';
 import BlackButtonComponent from '../../Common/Button/Stylish/BlackButtonComponent';
+import TextComponent from '../../Common/Text/TextComponent';
 import RedButtonComponent from '../../Common/Button/Stylish/RedButtonComponent';
 import PanelComponent from '../../Common/Panel/PanelComponent';
 import GridComponent from '../../Common/Grid/GridComponent';
@@ -37,25 +38,14 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 	render() {
 		return (
 			<PanelComponent>
-				<div class="form-group mb-2">
-					<div class="input-group mb-3">
-						<div class="input-group-prepend">
-							<span class="input-group-text custom-black-btn" id="inputGroup-sizing-default">
-								Playername
-							</span>
-						</div>
-						<input
-							type="text"
-							value={this.state.PlayerName}
-							onInput={(e: any) => {
-								this.setState({ PlayerName: e.target.value });
-							}}
-							class="form-control"
-							aria-label="Default"
-							aria-describedby="inputGroup-sizing-default"
-						/>
-					</div>
-				</div>
+				<TextComponent
+					value={this.state.PlayerName}
+					label={'Playername'}
+					isEditable={true}
+					onInput={(e: any) => {
+						this.setState({ PlayerName: e.target.value });
+					}}
+				/>
 				<GridComponent
 					left={this.Header()}
 					right={this.state.RoomNames.length === 0 ? this.EmptyGridContent() : this.GridContent()}

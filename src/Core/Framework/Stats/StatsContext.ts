@@ -28,35 +28,43 @@ export class StatsContext {
 		});
 	}
 
+	private GetTime(): number {
+		return new Date().getTime() - this._refDate;
+	}
+
 	private HandleDiamondChanged(src: Headquarter, diamond: number): void {
+		const time = this.GetTime();
 		this._gameContext.GetHqs().forEach((hq) => {
 			const curve = this._curves
 				.Get(StatsKind[StatsKind.Diamond])
 				.find((c) => c.Color === hq.GetSkin().GetColor());
-			curve.Points.push(new DateValue(new Date().getTime() - this._refDate, hq.GetDiamondCount()));
+			curve.Points.push(new DateValue(time, hq.GetDiamondCount()));
 		});
 	}
 
 	private HandleVehicleCreated(src: Headquarter, vehicule: Vehicle): void {
+		const time = this.GetTime();
 		this._gameContext.GetHqs().forEach((hq) => {
 			const curve = this._curves.Get(StatsKind[StatsKind.Unit]).find((c) => c.Color === hq.GetSkin().GetColor());
-			curve.Points.push(new DateValue(new Date().getTime() - this._refDate, hq.GetVehicleCount()));
+			curve.Points.push(new DateValue(time, hq.GetVehicleCount()));
 		});
 	}
 
 	private HandleFieldChanged(src: Headquarter, field: number): void {
+		const time = this.GetTime();
 		this._gameContext.GetHqs().forEach((hq) => {
 			const curve = this._curves.Get(StatsKind[StatsKind.Cell]).find((c) => c.Color === hq.GetSkin().GetColor());
-			curve.Points.push(new DateValue(new Date().getTime() - this._refDate, hq.GetDiamondCount()));
+			curve.Points.push(new DateValue(time, hq.GetDiamondCount()));
 		});
 	}
 
 	private HandleEnergyChanged(src: Headquarter, energy: number): void {
+		const time = this.GetTime();
 		this._gameContext.GetHqs().forEach((hq) => {
 			const curve = this._curves
 				.Get(StatsKind[StatsKind.Energy])
 				.find((c) => c.Color === hq.GetSkin().GetColor());
-			curve.Points.push(new DateValue(new Date().getTime() - this._refDate, hq.GetCellTotalEnergy()));
+			curve.Points.push(new DateValue(time, hq.GetCellTotalEnergy()));
 		});
 	}
 }

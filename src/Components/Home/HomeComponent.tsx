@@ -3,6 +3,7 @@ import { route } from 'preact-router';
 import PanelComponent from '../Common/Panel/PanelComponent';
 import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
 import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
+import BlueButtonComponent from '../Common/Button/Stylish/BlueButtonComponent';
 import DropDownButtonComponent from '../Common/Button/Stylish/DropDownButtonComponent';
 import { ButtonOption } from '../Common/Button/ButtonOption';
 
@@ -63,7 +64,7 @@ export default class HomeComponent extends Component<any, any> {
 							new ButtonOption('Host', () => this.ToHost())
 						]}
 					/>
-					<RedButtonComponent
+					<BlueButtonComponent
 						icon={'fas fa-video'}
 						title={'Playback'}
 						isFirstRender={this._isFirstRender}

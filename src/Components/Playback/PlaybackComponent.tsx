@@ -6,6 +6,7 @@ import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent'
 import { GameHelper } from '../../Core/Framework/GameHelper';
 import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
 import { MapMode } from '../../Core/Setup/Generator/MapMode';
+import TextComponent from '../Common/Text/TextComponent';
 
 export default class PlaybackComponent extends Component<any, { contexts: any[] }> {
 	constructor() {
@@ -68,6 +69,14 @@ export default class PlaybackComponent extends Component<any, { contexts: any[] 
 						</label>
 					</div>
 				</div>
+				{this.state.contexts.map((c, i) => (
+					<TextComponent
+						value={c.Title}
+						label={`Record ${i + 1}`}
+						isEditable={false}
+						onInput={(e: any) => {}}
+					/>
+				))}
 				<div class="container-center-horizontal">
 					<BlackButtonComponent
 						icon={'fas fa-undo-alt'}

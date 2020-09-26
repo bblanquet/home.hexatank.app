@@ -7,6 +7,7 @@ import { PacketKind } from '../../../Network/Message/PacketKind';
 import RedButtonComponent from '../../Common/Button/Stylish/RedButtonComponent';
 import BlackButtonComponent from '../../Common/Button/Stylish/BlackButtonComponent';
 import PanelComponent from '../../Common/Panel/PanelComponent';
+import TextComponent from '../../Common/Text/TextComponent';
 
 export default class CreatingHostComponent extends Component<any, CreatingHostState> {
 	private _socket: SocketIOClient.Socket;
@@ -35,44 +36,22 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 	render() {
 		return (
 			<PanelComponent>
-				<div class="form-group mb-2">
-					<div class="input-group mb-3">
-						<div class="input-group-prepend">
-							<span class="input-group-text custom-black-btn" id="inputGroup-sizing-default">
-								Room name
-							</span>
-						</div>
-						<input
-							type="text"
-							value={this.state.RoomName}
-							onInput={(e: any) => {
-								this.setState({ RoomName: e.target.value });
-							}}
-							class="form-control"
-							aria-label="Default"
-							aria-describedby="inputGroup-sizing-default"
-						/>
-					</div>
-				</div>
-				<div class="form-group mb-2">
-					<div class="input-group mb-3">
-						<div class="input-group-prepend">
-							<span class="input-group-text custom-black-btn" id="inputGroup-sizing-default">
-								Player Name
-							</span>
-						</div>
-						<input
-							type="text"
-							value={this.state.PlayerName}
-							onInput={(e: any) => {
-								this.setState({ PlayerName: e.target.value });
-							}}
-							class="form-control"
-							aria-label="Default"
-							aria-describedby="inputGroup-sizing-default"
-						/>
-					</div>
-				</div>
+				<TextComponent
+					value={this.state.PlayerName}
+					label={'Room name'}
+					isEditable={true}
+					onInput={(e: any) => {
+						this.setState({ RoomName: e.target.value });
+					}}
+				/>
+				<TextComponent
+					value={this.state.PlayerName}
+					label={'Playername'}
+					isEditable={true}
+					onInput={(e: any) => {
+						this.setState({ PlayerName: e.target.value });
+					}}
+				/>
 				<div class="container-center-horizontal">
 					<BlackButtonComponent
 						icon={'fas fa-undo-alt'}

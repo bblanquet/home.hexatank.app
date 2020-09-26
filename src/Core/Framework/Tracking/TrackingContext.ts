@@ -1,3 +1,4 @@
+import { PlaybackObject } from './TrackingObject';
 import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { GameContext } from './../GameContext';
 import { MapContext } from './../../Setup/Generator/MapContext';
@@ -12,6 +13,7 @@ export class TrackingContext {
 	private _refDate: number;
 
 	constructor(private _mapContext: MapContext, private _gameContext: GameContext) {
+		this._refDate = new Date().getTime();
 		this._gameContext.GetHqs().forEach((hq) => {
 			this._hqsTracking.Add(hq.PlayerName, new TrackingHqValue(hq.PlayerName, hq.GetSkin().GetColor()));
 			hq.OnVehicleCreated.On(this.HandleVehicleCreated.bind(this));
@@ -43,14 +45,16 @@ export class TrackingContext {
 		});
 	}
 
-	public GetTrackingObject(): any {
-		const obj: any = {
-			Title: `save_${new Date().toLocaleTimeString()}`,
-			MapContext: this._mapContext
-		};
-		this._hqsTracking.Keys().forEach((key) => {
-			obj[key] = this._hqsTracking.Get(key).GetJsonObject;
+	public GetTrackingObject(): PlaybackObject {
+		const players: any = {};
+		this._hqsTracking.Keys().map((key) => {
+			players[key] = this._hqsTracking.Get(key).GetJsonObject();
 		});
+
+		const obj = new PlaybackObject();
+		obj.Title = `save_${new Date().toLocaleTimeString()}`;
+		obj.MapContext = this._mapContext;
+		obj.Players = players;
 		return obj;
 	}
 }

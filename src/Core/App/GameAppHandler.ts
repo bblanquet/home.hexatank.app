@@ -5,6 +5,7 @@ import { MapRender } from '../Setup/Render/MapRender';
 import { CombinationProvider } from '../Interaction/CombinationProvider';
 import { InteractionContext } from '../Interaction/InteractionContext';
 import { SelectableChecker } from '../Interaction/SelectableChecker';
+import { HqRender } from '../Setup/Render/Hq/HqRender';
 
 export class GameAppHandler extends AppHandler {
 	public SetupGameContext(): GameContext {
@@ -14,7 +15,7 @@ export class GameAppHandler extends AppHandler {
 			throw 'context missing, cannot implement map';
 		}
 
-		const gameContext = new MapRender().Render(GameHelper.MapContext);
+		const gameContext = new MapRender(new HqRender()).Render(GameHelper.MapContext);
 		GameHelper.SetNetwork(gameContext);
 		this.SetupInputs(gameContext);
 

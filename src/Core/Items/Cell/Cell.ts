@@ -63,6 +63,12 @@ export class Cell extends Item implements ICell, ISelectable {
 	public CellStateChanged: LiteEvent<CellState> = new LiteEvent<CellState>();
 
 	private OncellStateChanged(state: CellState) {
+		if (this._isAlwaysVisible) {
+			this._state = CellState.Visible;
+			this.CellStateChanged.Invoke(this, this._state);
+			return;
+		}
+
 		this._state = state;
 		this.CellStateChanged.Invoke(this, this._state);
 	}
@@ -101,6 +107,13 @@ export class Cell extends Item implements ICell, ISelectable {
 			this._field.SetPowerUp(occ);
 		}
 		this.OnFieldChanged.Invoke(this, this);
+	}
+
+	private _isAlwaysVisible: boolean = false;
+
+	public AlwaysVisible() {
+		this._isAlwaysVisible = true;
+		this._state = CellState.Visible;
 	}
 
 	public GetOccupier(): IMovable {

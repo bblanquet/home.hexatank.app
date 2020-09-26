@@ -1,4 +1,4 @@
-import { PlaybackObject } from './TrackingObject';
+import { TrackingObject } from './TrackingObject';
 import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { GameContext } from './../GameContext';
 import { MapContext } from './../../Setup/Generator/MapContext';
@@ -27,31 +27,32 @@ export class TrackingContext {
 	private HandleVehicleCreated(src: Headquarter, vehicule: Vehicle): void {
 		this._hqsTracking
 			.Get(src.PlayerName)
-			.Units.Add(vehicule.Id, new TrackingUnitValue(this.GetTime(), vehicule.GetCurrentCell().GetCoordinate()));
+			.Units.Add(vehicule.Id, [
+				new TrackingUnitValue(this.GetTime(), vehicule.GetCurrentCell().GetCoordinate())
+			]);
 		vehicule.OnCellChanged.On(this.HandleVehicleCellChanged.bind(this));
 	}
 
 	private HandleVehicleCellChanged(src: Vehicle, formerCell: Cell): void {
 		const time = this.GetTime();
-		this._hqsTracking.Values().forEach((hqTracking) => {
-			hqTracking.Units.Keys().forEach((id) => {
-				this._hqsTracking
-					.Get(hqTracking.Name)
-					.Units.Add(
-						id,
-						new TrackingUnitValue(time, this._gameContext.GetUnit(id).GetCurrentCell().GetCoordinate())
+		this._hqsTracking.Values().forEach((hq) => {
+			hq.Units.Keys().forEach((unitKey) => {
+				hq.Units
+					.Get(unitKey)
+					.push(
+						new TrackingUnitValue(time, this._gameContext.GetUnit(unitKey).GetCurrentCell().GetCoordinate())
 					);
 			});
 		});
 	}
 
-	public GetTrackingObject(): PlaybackObject {
+	public GetTrackingObject(): TrackingObject {
 		const players: any = {};
 		this._hqsTracking.Keys().map((key) => {
 			players[key] = this._hqsTracking.Get(key).GetJsonObject();
 		});
 
-		const obj = new PlaybackObject();
+		const obj = new TrackingObject();
 		obj.Title = `save_${new Date().toLocaleTimeString()}`;
 		obj.MapContext = this._mapContext;
 		obj.Players = players;

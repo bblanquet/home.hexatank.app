@@ -1,3 +1,4 @@
+import { HqRender } from './Hq/HqRender';
 import { SimpleFloor } from './../../Items/Environment/SimpleFloor';
 import { CellContext } from './../../Items/Cell/CellContext';
 import { GameContext } from './../../Framework/GameContext';
@@ -5,7 +6,6 @@ import { GameSettings } from '../../Framework/GameSettings';
 import { ForestDecorator } from '../../Items/Cell/Decorator/ForestDecorator';
 import { CellProperties } from '../../Items/Cell/CellProperties';
 import { Cloud } from '../../Items/Environment/Cloud';
-import { HqRender } from './HqRender';
 import { CellState } from '../../Items/Cell/CellState';
 import { Cell } from '../../Items/Cell/Cell';
 import { Item } from '../../Items/Item';
@@ -18,11 +18,7 @@ import { MapMode } from '../Generator/MapMode';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 
 export class MapRender {
-	private _hqRender: HqRender;
-
-	constructor() {
-		this._hqRender = new HqRender();
-	}
+	constructor(private _hqRender: HqRender) {}
 
 	public Render(mapContext: MapContext): GameContext {
 		const cells = new CellContext<Cell>();

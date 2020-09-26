@@ -1,44 +1,40 @@
 import { Component, h } from 'preact';
 import { GameHelper } from '../../Core/Framework/GameHelper';
 import { ISelectable } from '../../Core/ISelectable';
+import { LightCanvasUpdater } from './LightCanvasUpdater';
 import { GameSettings } from '../../Core/Framework/GameSettings';
 import { TrackingAppHandler } from '../../Core/App/TrackingAppHandler';
 
-export default class LightCanvasComponent extends Component<any, {}> {
+export default class LightCanvasComponent extends Component<{}, { dataSet: number[] }> {
 	private _gameCanvas: HTMLDivElement;
-	private _stop: boolean;
 	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
 	private _appHandler: TrackingAppHandler;
+	private _updater: LightCanvasUpdater;
 
 	constructor() {
 		super();
-		this._stop = true;
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
-		this.setState({});
+		this.setState({ dataSet: [] });
 	}
 	private OnItemSelectionChanged(obj: any, item: ISelectable): void {
 		if (!item.IsSelected()) {
 			item.OnSelectionChanged.Off(this._onItemSelectionChanged);
-			this.setState({
-				...this.state,
-				Item: null
-			});
 		}
 	}
 
 	componentDidMount() {
 		GameSettings.Init();
-		this._stop = false;
 		this._appHandler = new TrackingAppHandler();
-		this._appHandler.SetupGameContext();
+		const context = this._appHandler.SetupGameContext();
 		this._gameCanvas.appendChild(this._appHandler.GetApp().view);
+		this._updater = new LightCanvasUpdater(GameHelper.Tracking, context);
+		this.setState({
+			dataSet: GameHelper.Tracking.Values()[0].Units.Values()[0].map((d) => d.X)
+		});
 		this.GameLoop();
 	}
 
 	private GameLoop(): void {
-		if (this._stop) {
-			return;
-		}
 		requestAnimationFrame(() => this.GameLoop());
 		GameHelper.Updater.Update();
 	}
@@ -46,7 +42,6 @@ export default class LightCanvasComponent extends Component<any, {}> {
 	componentWillUnmount() {
 		window.removeEventListener('resize', () => this._appHandler.ResizeTheCanvas());
 		window.removeEventListener('DOMContentLoaded', () => this._appHandler.ResizeTheCanvas());
-
 		this._appHandler.Clear();
 		this._gameCanvas = null;
 	}
@@ -81,15 +76,26 @@ export default class LightCanvasComponent extends Component<any, {}> {
 		);
 	}
 
+	private HandleRangeChanged(e: any): void {
+		this._updater.SetDate(e.target.value);
+	}
+
 	private BottomMenuRender() {
 		return (
 			<div class="absolute-center-bottom full-width">
-				<form>
-					<div class="form-group">
-						<label for="formControlRange">Example Range input</label>
-						<input type="range" class="form-control-range" id="formControlRange" />
-					</div>
-				</form>
+				<div class="form-group">
+					<input
+						class="custom-range"
+						type="range"
+						min={0 < this.state.dataSet.length ? this.state.dataSet[0] : 0}
+						max={0 < this.state.dataSet.length ? this.state.dataSet[this.state.dataSet.length - 1] : 0}
+						list="num"
+						onInput={(e: any) => this.HandleRangeChanged(e)}
+					/>
+					<datalist id="num">
+						{this.state.dataSet.map((data) => <option value={data} label={`${data}`} />)}
+					</datalist>
+				</div>
 			</div>
 		);
 	}

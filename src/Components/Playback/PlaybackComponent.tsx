@@ -4,15 +4,16 @@ import PanelComponent from '../Common/Panel/PanelComponent';
 import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
 import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
 import { GameHelper } from '../../Core/Framework/GameHelper';
-import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
-import { MapMode } from '../../Core/Setup/Generator/MapMode';
 import TextComponent from '../Common/Text/TextComponent';
-
-export default class PlaybackComponent extends Component<any, { contexts: any[] }> {
+import { TrackingObject } from '../../Core/Framework/Tracking/TrackingObject';
+import { TrackingHqValue } from '../../Core/Framework/Tracking/TrackingHqValue';
+import { TrackingUnitValue } from '../../Core/Framework/Tracking/TrackingUnitValue';
+import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
+export default class PlaybackComponent extends Component<any, { TrackingObjs: TrackingObject[] }> {
 	constructor() {
 		super();
 		this.setState({
-			contexts: []
+			TrackingObjs: []
 		});
 	}
 	private _isFirstRender = true;
@@ -22,17 +23,20 @@ export default class PlaybackComponent extends Component<any, { contexts: any[] 
 	}
 
 	private Play(): void {
-		GameHelper.MapContext = new MapGenerator().GetMapDefinition(+16, 'Flower', 2, MapMode.forest);
-		GameHelper.MapContext.Hqs[0].PlayerName = GameHelper.MapContext.PlayerName;
-		let index = 0;
-		GameHelper.MapContext.Hqs.forEach((hq) => {
-			if (!hq.PlayerName) {
-				hq.isIa = true;
-				hq.PlayerName = `IA-${index}`;
-			}
-			index += 1;
-		});
+		GameHelper.Tracking = this.ToTracking(this.state.TrackingObjs[0].Players);
+		GameHelper.MapContext = this.state.TrackingObjs[0].MapContext;
 		route('/LightCanvas', true);
+	}
+
+	public ToTracking(e: any): Dictionnary<TrackingHqValue> {
+		const result = new Dictionnary<TrackingHqValue>();
+		result.SetValues(e);
+		result.Values().forEach((v) => {
+			const units = v.Units as any;
+			v.Units = new Dictionnary<TrackingUnitValue[]>();
+			v.Units.SetValues(units);
+		});
+		return result;
 	}
 
 	componentDidMount() {
@@ -46,9 +50,9 @@ export default class PlaybackComponent extends Component<any, { contexts: any[] 
 		reader.readAsText(e.target.files[0], 'UTF-8');
 		reader.onload = (ev: ProgressEvent<FileReader>) => {
 			const context = JSON.parse(ev.target.result as string);
-			this.state.contexts.push(context);
+			this.state.TrackingObjs.push(context);
 			this.setState({
-				contexts: this.state.contexts
+				TrackingObjs: this.state.TrackingObjs
 			});
 		};
 	}
@@ -69,7 +73,7 @@ export default class PlaybackComponent extends Component<any, { contexts: any[] 
 						</label>
 					</div>
 				</div>
-				{this.state.contexts.map((c, i) => (
+				{this.state.TrackingObjs.map((c, i) => (
 					<TextComponent
 						value={c.Title}
 						label={`Record ${i + 1}`}

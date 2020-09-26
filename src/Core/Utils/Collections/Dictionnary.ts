@@ -55,7 +55,11 @@ export class Dictionnary<T> {
 		return Key in this._values;
 	}
 
-	public GetJsObject(): any {
+	public SetValues(jsObj: { [id: string]: T }) {
+		this._values = jsObj;
+	}
+
+	public GetValues(): { [id: string]: T } {
 		return this._values;
 	}
 

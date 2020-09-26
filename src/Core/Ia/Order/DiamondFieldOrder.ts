@@ -4,12 +4,12 @@ import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 
 export class DiamondFieldOrder extends SmartSimpleOrder {
-	constructor(private _diamond: Diamond, private _vehicule: Vehicle) {
-		super(_diamond.GetCell(), _vehicule);
+	constructor(public Diamond: Diamond, private _vehicule: Vehicle) {
+		super(Diamond.GetCell(), _vehicule);
 	}
 
 	protected GetClosestcell(): Cell {
-		let cells = this.GetCells(this._diamond);
+		let cells = this.GetCells(this.Diamond);
 		if (0 < cells.length) {
 			let cell = this.cellFinder.GetClosestCell(cells, this._vehicule);
 			this.OriginalDest = cell;

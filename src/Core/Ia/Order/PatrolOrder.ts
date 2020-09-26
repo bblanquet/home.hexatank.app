@@ -6,7 +6,7 @@ import { BasicItem } from '../../Items/BasicItem';
 import { isNullOrUndefined } from 'util';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { Vehicle } from '../../Items/Unit/Vehicle';
-import { GameHelper } from '../../Framework/GameHelper';
+import { OrderKind } from './OrderKind';
 
 export class PatrolOrder extends Order {
 	private _currentPatrolcell: Cell;
@@ -17,6 +17,13 @@ export class PatrolOrder extends Order {
 		super();
 		this._patrolPathDisplay = new Array<BasicItem>();
 		this.CreatePath();
+	}
+
+	public GetKind(): OrderKind {
+		return OrderKind.SimpleSmart;
+	}
+	public GetDestination(): Cell[] {
+		return this._patrolcells;
 	}
 
 	public Cancel(): void {

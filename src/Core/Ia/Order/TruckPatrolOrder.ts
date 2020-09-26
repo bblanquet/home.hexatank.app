@@ -5,6 +5,8 @@ import { DiamondFieldOrder } from './DiamondFieldOrder';
 import { SmartSimpleOrder } from './SmartSimpleOrder';
 import { Truck } from '../../Items/Unit/Truck';
 import { DiamondField } from '../../Items/Cell/Field/DiamondField';
+import { Cell } from '../../Items/Cell/Cell';
+import { OrderKind } from './OrderKind';
 
 export class TruckPatrolOrder extends Order {
 	private _currentOrder: SmartSimpleOrder;
@@ -17,6 +19,13 @@ export class TruckPatrolOrder extends Order {
 		if (this._currentOrder) {
 			this._currentOrder.Cancel();
 		}
+	}
+
+	public GetKind(): OrderKind {
+		return OrderKind.Truck;
+	}
+	public GetDestination(): Cell[] {
+		return [ this._hqOrder.Hq.GetCurrentCell(), this._diamondFieldOrder.Diamond.GetCurrentCell() ];
 	}
 
 	Do(): void {

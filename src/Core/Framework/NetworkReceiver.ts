@@ -4,6 +4,7 @@ import { Headquarter } from './../Items/Cell/Field/Hq/Headquarter';
 import { IaHeadquarter } from './../Ia/IaHeadquarter';
 import { isNullOrUndefined } from 'util';
 import { FieldTypeHelper } from './Packets/FieldTypeHelper';
+import { OrderPacket } from './Packets/OrderPacket';
 import { PacketKind } from './../../Network/Message/PacketKind';
 import { TargetPacket } from './Packets/TargetPacket';
 import { NetworkMessage } from './../../Network/Message/NetworkMessage';
@@ -13,8 +14,9 @@ import { NetworkObserver } from '../../Network/NetworkObserver';
 import { NetworkSocket } from '../../Network/NetworkSocket';
 import { NextCellPacket } from './Packets/NextCellPacket';
 import { FieldPacket } from './Packets/FieldPacket';
-import { FieldHelper } from '../Items/Cell/Field/FieldHelper';
+import { TypeTranslator } from '../Items/Cell/Field/TypeTranslator';
 import { PowerFieldPacket } from './Packets/PowerFieldPacket';
+import { Cell } from '../Items/Cell/Cell';
 
 export class NetworkReceiver {
 	private _creatingUnitObserver: NetworkObserver;
@@ -24,6 +26,7 @@ export class NetworkReceiver {
 	private _fieldObserver: NetworkObserver;
 	private _powerObserver: NetworkObserver;
 	private _overlockedObserver: NetworkObserver;
+	private _orderChangedObserver: NetworkObserver;
 
 	constructor(private _socket: NetworkSocket, private _context: GameContext) {
 		this._creatingUnitObserver = new NetworkObserver(PacketKind.UnitCreated, this.HandleCreatingUnit.bind(this));
@@ -33,6 +36,7 @@ export class NetworkReceiver {
 		this._fieldObserver = new NetworkObserver(PacketKind.FieldChanged, this.HandleChangedField.bind(this));
 		this._powerObserver = new NetworkObserver(PacketKind.PowerChanged, this.HandlePowerChanged.bind(this));
 		this._overlockedObserver = new NetworkObserver(PacketKind.Overlocked, this.HandleOverlocked.bind(this));
+		this._orderChangedObserver = new NetworkObserver(PacketKind.OrderChanging, this.HandleOrderChanged.bind(this));
 
 		this._socket.OnReceived.On(this._creatingUnitObserver);
 		this._socket.OnReceived.On(this._targetObserver);
@@ -41,6 +45,7 @@ export class NetworkReceiver {
 		this._socket.OnReceived.On(this._fieldObserver);
 		this._socket.OnReceived.On(this._powerObserver);
 		this._socket.OnReceived.On(this._overlockedObserver);
+		this._socket.OnReceived.On(this._orderChangedObserver);
 	}
 
 	private IsListenedHq(coo: string): boolean {
@@ -65,6 +70,18 @@ export class NetworkReceiver {
 					hq.CreateTruck(pos);
 				}
 			}
+		}
+	}
+
+	private HandleOrderChanged(message: NetworkMessage<OrderPacket>): void {
+		const unit = this._context.GetUnit(message.Content.Id);
+		const cells = new Array<Cell>();
+		message.Content.Coos.forEach((coo) => {
+			cells.push(this._context.GetCell(coo));
+		});
+
+		if (this.IsListenedHq(unit.Hq.GetCell().Coo())) {
+			TypeTranslator.SetOrder(unit, cells, message.Content.Kind);
 		}
 	}
 
@@ -93,7 +110,7 @@ export class NetworkReceiver {
 		const cell = this._context.GetCell(message.Content.Coo);
 
 		if (this.IsListenedHq(unit.Hq.GetCell().Coo())) {
-			unit.SetNextCell(cell);
+			//unit.SetNextCell(cell);
 		}
 	}
 
@@ -126,7 +143,7 @@ export class NetworkReceiver {
 		const hq = isNullOrUndefined(message.Content.HqCoo) ? null : this._context.GetHq(message.Content.HqCoo);
 		if (this.IsListenedHq(message.Content.HqCoo)) {
 			const reactor = cell.GetField() as ReactorField;
-			reactor.StartLocked(FieldHelper.GetPowerUp(message.Content.PowerUp));
+			reactor.StartLocked(TypeTranslator.GetPowerUp(message.Content.PowerUp));
 		}
 	}
 }

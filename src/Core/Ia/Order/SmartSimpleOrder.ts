@@ -10,6 +10,7 @@ import { BasicItem } from '../../Items/BasicItem';
 import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Archive } from '../../Framework/ResourceArchiver';
+import { OrderKind } from './OrderKind';
 
 export class SmartSimpleOrder extends Order {
 	protected Currentcell: Cell;
@@ -37,8 +38,11 @@ export class SmartSimpleOrder extends Order {
 		this.ClearPath();
 	}
 
-	public GetDestination(): Cell {
-		return this.Dest;
+	public GetKind(): OrderKind {
+		return OrderKind.SimpleSmart;
+	}
+	public GetDestination(): Cell[] {
+		return [ this.OriginalDest ];
 	}
 
 	public Do(): void {
@@ -84,11 +88,6 @@ export class SmartSimpleOrder extends Order {
 		if (isNullOrUndefined(cell)) {
 			this.State = OrderState.Failed;
 		} else {
-			// PeerHandler.SendMessage(PacketKind.Next, {
-			// 	Id: this._v.Id,
-			// 	Nextcell: cell.GetCoordinate(),
-			// 	Hq: this._v.Hq.GetCell().GetCoordinate()
-			// });
 			this._v.SetNextCell(cell);
 		}
 	}

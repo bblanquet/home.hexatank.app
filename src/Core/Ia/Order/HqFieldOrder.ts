@@ -4,12 +4,12 @@ import { Cell } from '../../Items/Cell/Cell';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 
 export class HqFieldOrder extends SmartSimpleOrder {
-	constructor(private _hq: Headquarter, private _vehicule: Vehicle) {
-		super(_hq.GetCell(), _vehicule);
+	constructor(public Hq: Headquarter, private _vehicule: Vehicle) {
+		super(Hq.GetCell(), _vehicule);
 	}
 
 	protected GetClosestcell(): Cell {
-		let cells = this.GetCells(this._hq);
+		let cells = this.GetCells(this.Hq);
 		if (0 < cells.length) {
 			let cell = this.cellFinder.GetClosestCell(cells, this._vehicule);
 			this.OriginalDest = cell;

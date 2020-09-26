@@ -1,4 +1,5 @@
-import { FieldHelper } from './../Items/Cell/Field/FieldHelper';
+import { IOrder } from './../Ia/Order/IOrder';
+import { TypeTranslator } from '../Items/Cell/Field/TypeTranslator';
 import { isNullOrUndefined } from 'util';
 import { Headquarter } from './../Items/Cell/Field/Hq/Headquarter';
 import { PowerFieldPacket } from './Packets/PowerFieldPacket';
@@ -21,6 +22,7 @@ import { FieldPacket } from './Packets/FieldPacket';
 import { BonusField } from '../Items/Cell/Field/Bonus/BonusField';
 import { AliveItem } from '../Items/AliveItem';
 import { IaHeadquarter } from '../Ia/IaHeadquarter';
+import { OrderPacket } from './Packets/OrderPacket';
 
 export class NetworkDispatcher {
 	public constructor(private _context: GameContext, private _socket: NetworkSocket) {
@@ -35,7 +37,7 @@ export class NetworkDispatcher {
 
 	private HandleChangedField(source: any, c: Cell): void {
 		const field = c.GetField();
-		if (!FieldHelper.IsSpecialField(field) || this.IsSpeakingHq(FieldHelper.GetHq(field))) {
+		if (!TypeTranslator.IsSpecialField(field) || this.IsSpeakingHq(TypeTranslator.GetHq(field))) {
 			const fieldPacket = new FieldPacket();
 			fieldPacket.Coo = c.Coo();
 			fieldPacket.Type = FieldTypeHelper.GetDescription(field);
@@ -67,6 +69,7 @@ export class NetworkDispatcher {
 				tank.OnCamouflageChanged.On(this.HandleCamouflageChanged.bind(this));
 			}
 			vehicle.OnNextCellChanged.On(this.HandleNextCellChanged.bind(this));
+			vehicle.OnOrderChanging.On(this.HandleOrderChanging.bind(this));
 			vehicle.OnDestroyed.On(this.HandleVehicleDestroyed.bind(this));
 			const message = this.Message<CreatingUnitPacket>(
 				PacketKind.UnitCreated,
@@ -81,6 +84,7 @@ export class NetworkDispatcher {
 			const tank = v as Tank;
 			tank.OnTargetChanged.Clear();
 			tank.OnCamouflageChanged.Clear();
+			tank.OnOrderChanging.Clear();
 			tank.OnNextCellChanged.Clear();
 		}
 		const message = this.Message<string>(PacketKind.UnitDestroyed, v.Id);
@@ -102,6 +106,15 @@ export class NetworkDispatcher {
 
 	private HandleCamouflageChanged(source: any, t: Tank): void {
 		const message = this.Message<string>(PacketKind.Camouflage, t.Id);
+		this._socket.Emit(message);
+	}
+
+	private HandleOrderChanging(source: Vehicle, order: IOrder): void {
+		const content = new OrderPacket();
+		content.Id = source.Id;
+		content.Coos = order.GetDestination().map((dest) => dest.Coo());
+		content.Kind = order.GetKind();
+		const message = this.Message<OrderPacket>(PacketKind.OrderChanging, content);
 		this._socket.Emit(message);
 	}
 

@@ -13,15 +13,17 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 
 	constructor(props: any) {
 		super(props);
+	}
+
+	componentWillUpdate() {}
+
+	componentDidMount() {
 		this.setState({
 			IaNumber: 1,
-			Mode: '',
+			Mode: '0',
 			MapType: 'Flower',
 			Size: 12
 		});
-	}
-
-	componentDidMount() {
 		this._isFirstRender = false;
 	}
 
@@ -37,14 +39,14 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 						</div>
 						<select
 							onInput={(e: any) => {
-								this.setState({ IaNumber: Number(e.target.children[e.target.selectedIndex].text) });
+								this.setState({ IaNumber: Number(e.target.value) });
 							}}
 							class="custom-select mr-sm-2"
 							id="inlineFormCustomSelect"
 						>
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
 						</select>
 					</div>
 				</div>
@@ -57,7 +59,7 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 						</div>
 						<select
 							onInput={(e: any) => {
-								this.setState({ Mode: e.target.children[e.target.selectedIndex].text });
+								this.setState({ Mode: e.target.value });
 							}}
 							class="custom-select mr-sm-2"
 							id="inlineFormCustomSelect"
@@ -77,7 +79,7 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 						</div>
 						<select
 							onInput={(e: any) => {
-								this.setState({ Size: Number(e.target.children[e.target.selectedIndex].text) });
+								this.setState({ Size: Number(e.target.value) });
 							}}
 							class="custom-select mr-sm-2"
 							id="inlineFormCustomSelect"
@@ -99,7 +101,7 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 						</div>
 						<select
 							onInput={(e: any) => {
-								this.setState({ MapType: e.target.children[e.target.selectedIndex].text });
+								this.setState({ MapType: e.target.value });
 							}}
 							class="custom-select mr-sm-2"
 							id="inlineFormCustomSelect"

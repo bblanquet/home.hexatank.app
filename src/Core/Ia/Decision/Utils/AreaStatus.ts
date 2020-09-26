@@ -1,4 +1,4 @@
-import { FieldHelper } from './../../../Items/Cell/Field/FieldHelper';
+import { TypeTranslator } from '../../../Items/Cell/Field/TypeTranslator';
 import { IField } from './../../../Items/Cell/Field/IField';
 import { ReactorAppearance } from '../../../Items/Cell/Field/Bonus/ReactorAppearance';
 import { GameContext } from './../../../Framework/GameContext';
@@ -56,8 +56,8 @@ export class AreaStatus {
 
 		const fields = this._hqFields.Values().reduce((e, x) => e.concat(x)).map((c) => c.GetField());
 		const hasFoeCell = fields
-			.filter((e: IField) => FieldHelper.IsSpecialField(e))
-			.some((e) => FieldHelper.IsEnemy(e, item));
+			.filter((e: IField) => TypeTranslator.IsSpecialField(e))
+			.some((e) => TypeTranslator.IsEnemy(e, item));
 		return hasFoeCell;
 	}
 
@@ -105,8 +105,8 @@ export class AreaStatus {
 	}
 
 	private RemoveNewBonusField(cell: Cell) {
-		if (FieldHelper.IsSpecialField(cell.GetField())) {
-			const hq = FieldHelper.GetHq(cell.GetField());
+		if (TypeTranslator.IsSpecialField(cell.GetField())) {
+			const hq = TypeTranslator.GetHq(cell.GetField());
 			let hqCo = hq.GetCell().Coo();
 			if (this._hqFields.Exist(hqCo)) {
 				const newHqList = this._hqFields.Get(hqCo).filter((c) => c !== cell);
@@ -119,8 +119,8 @@ export class AreaStatus {
 	}
 
 	private AddSpecialField(cell: Cell) {
-		if (FieldHelper.IsSpecialField(cell.GetField())) {
-			const hq = FieldHelper.GetHq(cell.GetField());
+		if (TypeTranslator.IsSpecialField(cell.GetField())) {
+			const hq = TypeTranslator.GetHq(cell.GetField());
 			let co = hq.GetCell().Coo();
 			if (this._hqFields.Exist(co)) {
 				this._hqFields.Get(co).push(cell);

@@ -22,10 +22,6 @@ export class RotationMaker<T extends IRotatable> implements IRotationMaker {
 		return current / arrival;
 	}
 
-	private GetDeg(rad: number): string {
-		return ` ${Math.round(rad * 180 / Math.PI)} Deg `;
-	}
-
 	public Rotate(): void {
 		if (isNullOrUndefined(this._arrivalDate)) {
 			this.departureRotation = this._movable.CurrentRadius;
@@ -38,12 +34,6 @@ export class RotationMaker<T extends IRotatable> implements IRotationMaker {
 			const duration = this._departureDate + this._movable.RotatingDuration * distanceRatio * 1000;
 			this._arrivalDate = new Date(duration).getTime() - this._departureDate;
 			this._sign = this.GetSign() ? 1 : -1;
-			console.log(
-				`%c start Dep${this.GetDeg(this.departureRotation)}Arr${this.GetDeg(
-					this.arrivalRotation
-				)}Delta${this.GetDeg(this._distance)}${new Date(this._arrivalDate).toLocaleTimeString()}`,
-				'color:green'
-			);
 		}
 
 		const currentDate = new Date().getTime() - this._departureDate;
@@ -52,13 +42,8 @@ export class RotationMaker<T extends IRotatable> implements IRotationMaker {
 		if (percentage === 100) {
 			this._arrivalDate = null;
 			this._movable.CurrentRadius = this.arrivalRotation;
-			console.log(`%c end `, 'color:red');
 		} else {
 			this._movable.CurrentRadius = this.departureRotation + this._distance * percentage * this._sign;
-			console.log(
-				`%c progress ${this.GetDeg(this._movable.CurrentRadius)}${Math.round(100 * percentage)}% `,
-				'color:blue'
-			);
 		}
 	}
 

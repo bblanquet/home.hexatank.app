@@ -1,6 +1,5 @@
 import { Component, h } from 'preact';
 import { GameHelper } from '../../Core/Framework/GameHelper';
-import { route } from 'preact-router';
 import { Item } from '../../Core/Items/Item';
 import { GameContext } from '../../Core/Framework/GameContext';
 import { Tank } from '../../Core/Items/Unit/Tank';
@@ -211,11 +210,6 @@ export default class CanvasComponent extends Component<
 	}
 
 	componentDidUpdate() {}
-
-	private Quit(): void {
-		route('/Home', true);
-		this._appHandler.InteractionContext.Mute();
-	}
 
 	private SetMenu(): void {
 		const newValue = !this.state.HasMenu;

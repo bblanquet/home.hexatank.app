@@ -3,18 +3,27 @@ import { OrderState } from './OrderState';
 import { Order } from './Order';
 import { Cell } from '../../Items/Cell/Cell';
 import { Vehicle } from '../../Items/Unit/Vehicle';
+import { OrderKind } from './OrderKind';
 
 export class PersistentOrder extends Order {
 	private _currentOrder: SimpleOrder;
 
 	constructor(protected OriginalDest: Cell, private _v: Vehicle) {
 		super();
-		this._currentOrder = new SimpleOrder(this.OriginalDest, this._v);
+		this._currentOrder = new SimpleOrder(this.OriginalDest, this._v, true);
 		this._v.OnCellChanged.On((src: any, c: Cell) => this.OnCellChanged());
+	}
+
+	public GetKind(): OrderKind {
+		return OrderKind.Persistent;
+	}
+	public GetDestination(): Cell[] {
+		return [ this.OriginalDest ];
 	}
 
 	private OnCellChanged(): void {
 		if (this._v.GetCurrentCell() !== this.OriginalDest) {
+			this._currentOrder.Cancel();
 			this._currentOrder = new SimpleOrder(this.OriginalDest, this._v);
 		}
 	}

@@ -1,5 +1,5 @@
 import { BatteryField } from './BatteryField';
-import { FieldHelper } from './../FieldHelper';
+import { TypeTranslator } from '../TypeTranslator';
 import { BasicRangeAnimator } from '../../../Animator/BasicRangeAnimator';
 import { GameContext } from '../../../../Framework/GameContext';
 import { ReactorAppearance } from './ReactorAppearance';
@@ -163,7 +163,7 @@ export class ReactorField extends Field implements ISelectable {
 			this.Appearance.Destroy();
 			this.GetCell().DestroyField();
 			this.GetCell().GetIncludedRange(2).map((c) => <Cell>c).forEach((c) => {
-				if (FieldHelper.IsBonusField(c.GetField())) {
+				if (TypeTranslator.IsBonusField(c.GetField())) {
 					c.DestroyField();
 					if (c.IsVisible()) {
 						new Explosion(c.GetBoundingBox(), Archive.constructionEffects, 5, false, 5);

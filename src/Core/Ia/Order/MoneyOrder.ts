@@ -3,12 +3,20 @@ import { Order } from './Order';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Cell } from '../../Items/Cell/Cell';
 import { FarmField } from '../../Items/Cell/Field/Bonus/FarmField';
+import { OrderKind } from './OrderKind';
 
 export class MoneyOrder extends Order {
 	private _currentOrder: SmartPreciseOrder;
 
 	constructor(private _v: Vehicle) {
 		super();
+	}
+
+	public GetKind(): OrderKind {
+		return OrderKind.Money;
+	}
+	public GetDestination(): Cell[] {
+		return null;
 	}
 
 	Do(): void {

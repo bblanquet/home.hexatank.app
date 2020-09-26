@@ -1,3 +1,4 @@
+import { IOrder } from './../../Ia/Order/IOrder';
 import { Cell } from './../Cell/Cell';
 import { GameSettings } from './../../Framework/GameSettings';
 import { GameContext } from './../../Framework/GameContext';
@@ -17,7 +18,6 @@ import { AngleFinder } from './MotionHelpers/AngleFinder';
 import { IRotatable } from './MotionHelpers/IRotatable';
 import { isNullOrUndefined } from 'util';
 import { ISelectable } from '../../ISelectable';
-import { IOrder } from '../../Ia/Order/IOrder';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { CellState } from '../Cell/CellState';
@@ -69,6 +69,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 	public OnCellChanged: LiteEvent<Cell> = new LiteEvent<Cell>();
 	public OnNextCellChanged: LiteEvent<Cell> = new LiteEvent<Cell>();
+	public OnOrderChanging: LiteEvent<IOrder> = new LiteEvent<IOrder>();
 
 	constructor(public Hq: Headquarter, protected GameContext: GameContext) {
 		super();
@@ -128,6 +129,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	}
 
 	public SetOrder(order: IOrder): void {
+		this.OnOrderChanging.Invoke(this, order);
+
 		this.RemoveCamouflage();
 		this._pendingOrder = order;
 

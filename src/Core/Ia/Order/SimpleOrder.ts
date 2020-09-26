@@ -1,3 +1,5 @@
+import { BouncingScaleUpAnimator } from './../../Items/Animator/BouncingScaleUpAnimator';
+import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { AStarEngine } from './../AStarEngine';
 import { OrderState } from './OrderState';
 import { isNullOrUndefined, isNull } from 'util';
@@ -10,16 +12,17 @@ import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { ShieldField } from '../../Items/Cell/Field/Bonus/ShieldField';
 import { AStarHelper } from '../AStarHelper';
+import { OrderKind } from './OrderKind';
 
 export class SimpleOrder extends Order {
 	protected Currentcell: Cell;
 	protected cells: Array<Cell>;
 	protected cellFinder: CellFinder;
-	private _uiPath: Array<BasicItem>;
+	private _uiPath: Dictionnary<BasicItem>;
 	protected Dest: Cell;
 	private _tryCount: number;
 	private _sleep: TickTimer;
-	constructor(protected OriginalDest: Cell, private _v: Vehicle) {
+	constructor(protected OriginalDest: Cell, private _v: Vehicle, private _hasAnimation: boolean = false) {
 		super();
 		if (isNullOrUndefined(this.OriginalDest)) {
 			throw 'invalid destination';
@@ -29,16 +32,19 @@ export class SimpleOrder extends Order {
 		this.Dest = OriginalDest;
 		this.cells = new Array<Cell>();
 		this.cellFinder = new CellFinder();
-		this._uiPath = [];
+		this._uiPath = new Dictionnary<BasicItem>();
+	}
+
+	public GetKind(): OrderKind {
+		return OrderKind.Simple;
+	}
+	public GetDestination(): Cell[] {
+		return [ this.OriginalDest ];
 	}
 
 	public Cancel(): void {
 		super.Cancel();
 		this.ClearPath();
-	}
-
-	public GetDestination(): Cell {
-		return this.Dest;
 	}
 
 	public Do(): void {
@@ -47,10 +53,7 @@ export class SimpleOrder extends Order {
 		}
 
 		if (this.Currentcell === this._v.GetCurrentCell()) {
-			if (this._uiPath.length > 0) {
-				this._uiPath[0].Destroy();
-				this._uiPath.splice(0, 1);
-			}
+			this.DestroyUiCell();
 
 			if (this.Currentcell === this.Dest) {
 				if (this.Dest === this.OriginalDest) {
@@ -74,16 +77,18 @@ export class SimpleOrder extends Order {
 		}
 	}
 
+	private DestroyUiCell() {
+		if (!this._uiPath.IsEmpty()) {
+			this._uiPath.Get(this.Currentcell.Coo()).Destroy();
+			this._uiPath.Remove(this.Currentcell.Coo());
+		}
+	}
+
 	private GoNextcell() {
 		var cell = this.GetNextcell();
 		if (isNull(cell)) {
 			this.State = OrderState.Failed;
 		} else {
-			// PeerHandler.SendMessage(PacketKind.Next, {
-			// 	Id: this._v.Id,
-			// 	Nextcell: cell.GetCoordinate(),
-			// 	Hq: this._v.Hq.GetCell().GetCoordinate()
-			// });
 			this._v.SetNextCell(cell);
 		}
 	}
@@ -109,7 +114,7 @@ export class SimpleOrder extends Order {
 		this.Currentcell = this.cells[0];
 		this.cells.splice(0, 1);
 
-		if (!this.IsAvailableField(this.Currentcell)) {
+		if (!this.IsAccessible(this.Currentcell)) {
 			if (this.FindPath()) {
 				this.Currentcell = this.GetNextcell();
 			} else {
@@ -125,7 +130,7 @@ export class SimpleOrder extends Order {
 		this.Dest = this.OriginalDest;
 	}
 
-	private IsAvailableField(c: Cell): boolean {
+	private IsAccessible(c: Cell): boolean {
 		const field = c.GetField();
 		if (field instanceof ShieldField) {
 			const shield = field as ShieldField;
@@ -135,14 +140,14 @@ export class SimpleOrder extends Order {
 	}
 
 	protected FindPath(): boolean {
-		if (!this.IsAvailableField(this.Dest)) {
+		if (!this.IsAccessible(this.Dest)) {
 			this.Dest = this.GetClosestcell();
 			if (isNullOrUndefined(this.Dest)) {
 				return false;
 			}
 		}
 		this.ClearPath();
-		const filter = (c: Cell) => !isNullOrUndefined(c) && this.IsAvailableField(c);
+		const filter = (c: Cell) => !isNullOrUndefined(c) && this.IsAccessible(c);
 		const cost = (c: Cell) => AStarHelper.GetBasicCost(c);
 		const nextcells = new AStarEngine<Cell>(filter, cost).GetPath(this._v.GetCurrentCell(), this.Dest, true);
 
@@ -156,20 +161,22 @@ export class SimpleOrder extends Order {
 	}
 
 	private ClearPath(): void {
-		this._uiPath.forEach((pathItem) => {
-			pathItem.Destroy();
+		this._uiPath.Values().forEach((uiItem) => {
+			uiItem.Destroy();
 		});
-		this._uiPath = [];
+		this._uiPath.Clear();
 	}
 
 	private CreateUiPath(): void {
 		if (!isNullOrUndefined(this.cells) && 0 < this.cells.length) {
 			this.cells.forEach((cell) => {
 				var pathItem = new BasicItem(cell.GetBoundingBox(), Archive.direction.moving);
+				if (this._hasAnimation) {
+					pathItem.SetAnimator(new BouncingScaleUpAnimator(pathItem, [ Archive.direction.moving ]));
+				}
 				pathItem.SetVisible(this._v.IsSelected.bind(this._v));
 				pathItem.SetAlive(this._v.IsAlive.bind(this._v));
-
-				this._uiPath.push(pathItem);
+				this._uiPath.Add(cell.Coo(), pathItem);
 			});
 		}
 	}

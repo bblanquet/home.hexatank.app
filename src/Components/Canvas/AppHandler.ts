@@ -1,5 +1,4 @@
 import { LiteEvent } from './../../Core/Utils/Events/LiteEvent';
-import { SimpleEvent } from './../../Core/Utils/Events/SimpleEvent';
 import { GameContext } from './../../Core/Framework/GameContext';
 import { ViewContext } from './../../Core/Utils/Geometry/ViewContext';
 import { GameSettings } from './../../Core/Framework/GameSettings';

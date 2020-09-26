@@ -9,6 +9,7 @@ import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { AStarHelper } from '../AStarHelper';
+import { OrderKind } from './OrderKind';
 
 export class SmartPreciseOrder extends Order {
 	protected Currentcell: Cell;
@@ -34,10 +35,6 @@ export class SmartPreciseOrder extends Order {
 	public Cancel(): void {
 		super.Cancel();
 		this.ClearPath();
-	}
-
-	public GetDestination(): Cell {
-		return this.Dest;
 	}
 
 	public Do(): void {
@@ -77,16 +74,18 @@ export class SmartPreciseOrder extends Order {
 		}
 	}
 
+	public GetKind(): OrderKind {
+		return OrderKind.Smart;
+	}
+	public GetDestination(): Cell[] {
+		return [ this.OriginalDest ];
+	}
+
 	private GoNextcell() {
 		var cell = this.GetNextcell();
 		if (isNull(cell)) {
 			this.State = OrderState.Failed;
 		} else {
-			// PeerHandler.SendMessage(PacketKind.Next, {
-			// 	Id: this._v.Id,
-			// 	Nextcell: cell.GetCoordinate(),
-			// 	Hq: this._v.Hq.GetCell().GetCoordinate()
-			// });
 			this._v.SetNextCell(cell);
 		}
 	}

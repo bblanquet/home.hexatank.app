@@ -9,7 +9,7 @@ import { ISelectable } from '../../Core/ISelectable';
 import { ReactorField } from '../../Core/Items/Cell/Field/Bonus/ReactorField';
 import { GameSettings } from '../../Core/Framework/GameSettings';
 import { Headquarter } from '../../Core/Items/Cell/Field/Hq/Headquarter';
-import { AppHandler } from './AppHandler';
+import { GameAppHandler } from '../../Core/App/GameAppHandler';
 import HqMenuComponent from './Parts/HqMenuComponent';
 import TankMenuComponent from './Parts/TankMenuComponent';
 import MultiTankMenuComponent from './Parts/MultiTankMenuComponent';
@@ -42,7 +42,7 @@ export default class CanvasComponent extends Component<
 	private _gameCanvas: HTMLDivElement;
 	private _stop: boolean;
 	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
-	private _appHandler: AppHandler;
+	private _appHandler: GameAppHandler;
 	private _gameContext: GameContext;
 
 	constructor() {
@@ -72,8 +72,8 @@ export default class CanvasComponent extends Component<
 	componentDidMount() {
 		GameSettings.Init();
 		this._stop = false;
-		this._appHandler = new AppHandler();
-		this._gameContext = this._appHandler.InitApp();
+		this._appHandler = new GameAppHandler();
+		this._gameContext = this._appHandler.SetupGameContext();
 		this._gameCanvas.appendChild(this._appHandler.GetApp().view);
 		this._gameContext.GetMainHq().TruckChanged.On(this.HandleTruckChanged.bind(this));
 		this._gameContext.GetMainHq().TankRequestChanged.On(this.HandleTankChanged.bind(this));
@@ -301,7 +301,13 @@ export default class CanvasComponent extends Component<
 
 	private GetEndMessage() {
 		if ([ GameStatus.Won, GameStatus.Lost ].includes(this.state.GameStatus)) {
-			return <PopupComponent status={this.state.GameStatus} curves={this._gameContext.GetCurves()} />;
+			return (
+				<PopupComponent
+					status={this.state.GameStatus}
+					curves={this._gameContext.StatsContext.GetCurves()}
+					context={this._gameContext.TrackingContext.GetTrackingObject()}
+				/>
+			);
 		}
 		return '';
 	}

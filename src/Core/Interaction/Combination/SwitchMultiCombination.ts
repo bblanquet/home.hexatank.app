@@ -1,9 +1,9 @@
 import { MultiSelectionContext } from './../../Menu/Smart/MultiSelectionContext';
-import { AppHandler } from './../../../Components/Canvas/AppHandler';
 import { MultiOrderMenuItem } from './../../Menu/Buttons/MultiOrderMenuItem';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { CombinationContext } from './CombinationContext';
 import { UnitGroup } from '../../Items/UnitGroup';
+import { AppHandler } from '../../App/AppHandler';
 
 export class SwithcMultiCombination extends AbstractSingleCombination {
 	constructor(private _app: AppHandler, private _multiContext: MultiSelectionContext) {

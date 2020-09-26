@@ -6,7 +6,7 @@ import { AbortMenuItem } from '../../../Core/Menu/Buttons/AbortMenuItem';
 import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
 import { Item } from '../../../Core/Items/Item';
 import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
-import { AppHandler } from '../AppHandler';
+import { AppHandler } from '../../../Core/App/AppHandler';
 import { Vehicle } from '../../../Core/Items/Unit/Vehicle';
 
 export default class TankMenuComponent extends Component<{ AppHandler: AppHandler; Tank: Vehicle }, {}> {

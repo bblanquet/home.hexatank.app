@@ -2,6 +2,7 @@ import { h, render } from 'preact';
 import HomeComponent from './Components/Home/HomeComponent';
 import SinglePlayerComponent from './Components/SinglePlayer/SinglePlayerComponent';
 import CanvasComponent from './Components/Canvas/CanvasComponent';
+import LightCanvasComponent from './Components/LightCanvas/LightCanvasComponent';
 import CampaignComponent from './Components/Campaign/CampaignComponent';
 import BlueCampaignComponent from './Components/Campaign/BlueCampaignComponent';
 import GuestComponent from './Components/Network/Guest/GuestComponent';
@@ -9,6 +10,7 @@ import CreatingHostComponent from './Components/Network/Creating/CreatingHostCom
 import HostingComponent from './Components/Network/Host/HostingComponent';
 import LoadingComponent from './Components/Loading/LoadingComponent';
 import PopupComponent from './Components/Popup/PopupComponent';
+import PlaybackComponent from './Components/Playback/PlaybackComponent';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 import Router from 'preact-router';
@@ -101,11 +103,13 @@ render(
 		<CampaignComponent path="/Campaign" />
 		<BlueCampaignComponent path="/BlueCampaignComponent" />
 		<CanvasComponent path="/Canvas" />
+		<LightCanvasComponent path="/LightCanvas" />
 		<CreatingHostComponent path="/CreatingHost" />
 		<HostingComponent path="/Hosting/:RoomName/:playerName/:isAdmin" />
 		<GuestComponent path="/OffJoin" />
+		<PlaybackComponent path="/Playback" />
 		<LoadingComponent path="/Loading" default />
-		<PopupComponent path="/Popup" curves={Context()} status={GameStatus.Won} />
+		<PopupComponent path="/Popup" curves={Context()} status={GameStatus.Won} context={{}} />
 	</Router>,
 	document.querySelector('#app')
 );

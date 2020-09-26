@@ -3,7 +3,7 @@ import { Item } from '../../../Core/Items/Item';
 import { MultiTankMenuItem } from '../../../Core/Menu/Buttons/MultiTankMenuItem';
 import { MultiCellMenuItem } from '../../../Core/Menu/Buttons/MultiCellMenuItem';
 import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
-import { AppHandler } from '../AppHandler';
+import { AppHandler } from '../../../Core/App/AppHandler';
 import { GameContext } from '../../../Core/Framework/GameContext';
 import { BtnInfo } from '../../Common/Circular/BtnInfo';
 import ExpCircularComponent from '../../Common/Circular/CircularComponent';

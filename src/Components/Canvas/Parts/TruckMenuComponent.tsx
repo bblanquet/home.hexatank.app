@@ -5,7 +5,7 @@ import { PatrolMenuItem } from '../../../Core/Menu/Buttons/PatrolMenuItem';
 import { SearchMoneyMenuItem } from '../../../Core/Menu/Buttons/SearchMoneyMenuItem';
 import { AbortMenuItem } from '../../../Core/Menu/Buttons/AbortMenuItem';
 import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
-import { AppHandler } from '../AppHandler';
+import { AppHandler } from '../../../Core/App/AppHandler';
 import { Vehicle } from '../../../Core/Items/Unit/Vehicle';
 
 export default class TruckMenuComponent extends Component<{ AppHandler: AppHandler; Truck: Vehicle }, {}> {

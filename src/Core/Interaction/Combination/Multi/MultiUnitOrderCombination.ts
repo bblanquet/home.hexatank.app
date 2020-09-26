@@ -1,8 +1,8 @@
 import { UnitGroup } from '../../../Items/UnitGroup';
 import { CombinationContext } from '../CombinationContext';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
-import { AppHandler } from '../../../../Components/Canvas/AppHandler';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
+import { AppHandler } from '../../../App/AppHandler';
 
 export class MultiUnitOrderCombination extends AbstractSingleCombination {
 	constructor(private _appHandler: AppHandler, private _multiContext: MultiSelectionContext) {

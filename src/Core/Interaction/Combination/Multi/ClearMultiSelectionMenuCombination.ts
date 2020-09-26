@@ -1,8 +1,8 @@
-import { AppHandler } from './../../../../Components/Canvas/AppHandler';
 import { AbstractSingleCombination } from './../AbstractSingleCombination';
 import { CombinationContext } from '../CombinationContext';
 import { MultiCellMenuItem } from '../../../Menu/Buttons/MultiCellMenuItem';
 import { MultiTankMenuItem } from '../../../Menu/Buttons/MultiTankMenuItem';
+import { AppHandler } from '../../../App/AppHandler';
 
 export class ClearMultiSelectionMenuCombination extends AbstractSingleCombination {
 	private _isShowing: boolean = false;

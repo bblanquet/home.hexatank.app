@@ -55,6 +55,10 @@ export class Dictionnary<T> {
 		return Key in this._values;
 	}
 
+	public GetJsObject(): any {
+		return this._values;
+	}
+
 	public static To<T>(key: (d: T) => string, list: T[]): Dictionnary<T> {
 		const dictionnary = new Dictionnary<T>();
 		list.forEach((item) => {

@@ -1,5 +1,5 @@
 import { MultiSelectionContext } from '../Menu/Smart/MultiSelectionContext';
-import { AppHandler } from '../../Components/Canvas/AppHandler';
+import { AppHandler } from '../App/AppHandler';
 import { ISelectable } from '../ISelectable';
 import { Item } from './Item';
 import { Vehicle } from './Unit/Vehicle';

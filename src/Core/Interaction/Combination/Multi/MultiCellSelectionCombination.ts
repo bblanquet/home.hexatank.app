@@ -1,9 +1,9 @@
 import { CellGroup } from './../../../Items/CellGroup';
 import { CombinationContext } from '../CombinationContext';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
-import { AppHandler } from '../../../../Components/Canvas/AppHandler';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { GameContext } from '../../../Framework/GameContext';
+import { AppHandler } from '../../../App/AppHandler';
 
 export class MultiCellSelectionCombination extends AbstractSingleCombination {
 	constructor(

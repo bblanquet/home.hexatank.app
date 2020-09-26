@@ -9,7 +9,6 @@ import { AttackField } from '../Items/Cell/Field/Bonus/AttackField';
 import { GenericCellCombination } from './Combination/GenericCellCombination';
 import { GameContext } from './../Framework/GameContext';
 import { ISelectableChecker } from './ISelectableChecker';
-import { AppHandler } from './../../Components/Canvas/AppHandler';
 import { ICombination } from './Combination/ICombination';
 import { UnselectCombination } from './Combination/UnselectCombination';
 import { ClearTrashCombination } from './Combination/ClearTrashCombination';
@@ -55,6 +54,7 @@ import { HealMenuItem } from '../Menu/Buttons/HealMenuItem';
 import { MedicField } from '../Items/Cell/Field/Bonus/MedicField';
 import { SpeedFieldMenuItem } from '../Menu/Buttons/SpeedFieldMenuItem';
 import { RoadField } from '../Items/Cell/Field/Bonus/RoadField';
+import { AppHandler } from '../App/AppHandler';
 
 export class CombinationProvider {
 	GetCombination(appHandler: AppHandler, checker: ISelectableChecker, gameContext: GameContext): ICombination[] {

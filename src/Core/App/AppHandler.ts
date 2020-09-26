@@ -1,29 +1,29 @@
-import { LiteEvent } from './../../Core/Utils/Events/LiteEvent';
-import { GameContext } from './../../Core/Framework/GameContext';
-import { ViewContext } from './../../Core/Utils/Geometry/ViewContext';
-import { GameSettings } from './../../Core/Framework/GameSettings';
-import { MapMode } from '../../Core/Setup/Generator/MapMode';
-import { ItemsUpdater } from '../../Core/ItemsUpdater';
-import { InputNotifier } from '../../Core/Interaction/InputNotifier';
-import { InteractionContext } from '../../Core/Interaction/InteractionContext';
 const Viewport = require('pixi-viewport').Viewport;
 import * as PIXI from 'pixi.js';
-import { SelectableChecker } from '../../Core/Interaction/SelectableChecker';
-import { CombinationProvider } from '../../Core/Interaction/CombinationProvider';
-import { GameHelper } from '../../Core/Framework/GameHelper';
-import { RenderingHandler } from '../../Core/Setup/Render/RenderingHandler';
-import { RenderingGroups } from '../../Core/Setup/Render/RenderingGroups';
-import { MapRender } from '../../Core/Setup/Render/MapRender';
+import { LiteEvent } from '../Utils/Events/LiteEvent';
+import { GameContext } from '../Framework/GameContext';
+import { ViewContext } from '../Utils/Geometry/ViewContext';
+import { GameSettings } from '../Framework/GameSettings';
+import { MapMode } from '../Setup/Generator/MapMode';
+import { ItemsUpdater } from '../ItemsUpdater';
+import { InputNotifier } from '../Interaction/InputNotifier';
+import { InteractionContext } from '../Interaction/InteractionContext';
+import { GameHelper } from '../Framework/GameHelper';
+import { RenderingHandler } from '../Setup/Render/RenderingHandler';
+import { RenderingGroups } from '../Setup/Render/RenderingGroups';
 
-export class AppHandler {
+export abstract class AppHandler {
 	//environement
-	public InputNotifier: InputNotifier;
-	public InteractionContext: InteractionContext;
-	private _viewPort: any;
 	private _app: PIXI.Application;
+
+	private _viewPort: any;
+	public InteractionContext: InteractionContext;
+	public InputNotifier: InputNotifier;
 	public InteractionManager: PIXI.interaction.InteractionManager;
+
 	public Playground: ItemsUpdater;
-	public ViewContext: ViewContext;
+
+	//cannot be extracted?
 	public OnMultiMenuShowed: LiteEvent<boolean> = new LiteEvent<boolean>();
 
 	public GetApp(): PIXI.Application {
@@ -41,10 +41,8 @@ export class AppHandler {
 		return this._viewPort;
 	}
 
-	public InitApp(): GameContext {
-		this._app = new PIXI.Application({
-			backgroundColor: 0x00a651 //0x6d9ae3
-		});
+	protected SetupApp(): void {
+		this._app = new PIXI.Application({});
 
 		this._viewPort = new Viewport({
 			screenWidth: window.innerWidth,
@@ -57,8 +55,8 @@ export class AppHandler {
 		this.InteractionManager = new PIXI.interaction.InteractionManager(this._app.renderer);
 		this._viewPort.drag().pinch().wheel().decelerate();
 		this._app.stage.addChild(this._viewPort);
-		this.ViewContext = new ViewContext();
-		this.Playground = new ItemsUpdater(this.ViewContext);
+		const viewContext = new ViewContext();
+		this.Playground = new ItemsUpdater(viewContext);
 		this.InputNotifier = new InputNotifier();
 
 		this._viewPort.on('zoomed', (e: any) => {
@@ -71,7 +69,7 @@ export class AppHandler {
 			}
 		});
 		GameHelper.Updater = this.Playground;
-		GameHelper.ViewContext = this.ViewContext;
+		GameHelper.ViewContext = viewContext;
 		GameHelper.Render = new RenderingHandler(
 			new RenderingGroups(
 				{
@@ -86,36 +84,12 @@ export class AppHandler {
 		);
 		GameSettings.SetFastSpeed();
 		this.GetApp().start();
-		if (!GameHelper.MapContext) {
-			throw 'context missing, cannot implement map';
-		}
-
-		const gameContext = new MapRender().Render(GameHelper.MapContext);
-		GameHelper.SetNetwork(gameContext);
-		this.SetupInputs(gameContext);
-		return gameContext;
-	}
-
-	public SetupInputs(gameContext: GameContext) {
-		const checker = new SelectableChecker(gameContext.GetMainHq());
-		this.InteractionContext = new InteractionContext(
-			this.InputNotifier,
-			new CombinationProvider().GetCombination(this, checker, gameContext),
-			checker,
-			this.GetViewport()
-		);
-		this.InteractionContext.Listen();
 		this.SetBackgroundColor(GameHelper.MapContext.MapMode);
-
-		this.InteractionManager.on('pointerdown', this.InputNotifier.HandleMouseDown.bind(this.InputNotifier), false);
-		this.InteractionManager.on('pointermove', this.InputNotifier.HandleMouseMove.bind(this.InputNotifier), false);
-		this.InteractionManager.on('pointerup', this.InputNotifier.HandleMouseUp.bind(this.InputNotifier), false);
-		this.ResizeTheCanvas();
-		window.addEventListener('resize', () => this.ResizeTheCanvas());
-		window.addEventListener('DOMContentLoaded', () => this.ResizeTheCanvas());
-		this.InteractionManager.autoPreventDefault = false;
-		this.SetCenter(gameContext);
 	}
+
+	public abstract SetupGameContext(): GameContext;
+
+	protected abstract SetupInputs(gameContext: GameContext): void;
 
 	public ResizeTheCanvas(): void {
 		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -137,17 +111,15 @@ export class AppHandler {
 		}
 	}
 
-	public SetCenter(gameContext: GameContext): void {
+	protected SetCenter(gameContext: GameContext): void {
 		const hqPoint = gameContext.GetMainHq().GetBoundingBox().GetCentralPoint();
 		const halfWidth = GameSettings.ScreenWidth / 2;
 		const halfHeight = GameSettings.ScreenHeight / 2;
-		console.log('x: ' + -(hqPoint.X - halfWidth));
-		console.log('y: ' + -(hqPoint.Y - halfHeight));
 		this.Playground.ViewContext.SetX(-(hqPoint.X - halfWidth));
 		this.Playground.ViewContext.SetY(-(hqPoint.Y - halfHeight));
 	}
 
-	public SetBackgroundColor(mapMode: MapMode) {
+	private SetBackgroundColor(mapMode: MapMode) {
 		let color = 0x00a651;
 		if (mapMode === MapMode.sand) {
 			color = 0xfece63;

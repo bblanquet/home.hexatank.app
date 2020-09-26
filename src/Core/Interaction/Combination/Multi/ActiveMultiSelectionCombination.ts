@@ -3,7 +3,7 @@ import { CombinationContext } from '../CombinationContext';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { MultiCellMenuItem } from '../../../Menu/Buttons/MultiCellMenuItem';
 import { MultiTankMenuItem } from '../../../Menu/Buttons/MultiTankMenuItem';
-import { AppHandler } from '../../../../Components/Canvas/AppHandler';
+import { AppHandler } from '../../../App/AppHandler';
 
 export class ActiveMultiSelectionCombination extends AbstractSingleCombination {
 	constructor(private _appHandler: AppHandler, private _multiContext: MultiSelectionContext) {

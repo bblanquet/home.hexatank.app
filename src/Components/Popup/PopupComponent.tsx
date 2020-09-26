@@ -10,7 +10,7 @@ import SmActiveIconButtonComponent from '../Common/Button/Stylish/SmActiveIconBu
 import { ChartProvider } from './ChartProvider';
 
 export default class PopupComponent extends Component<
-	{ curves: Groups<Curve>; status: GameStatus },
+	{ curves: Groups<Curve>; context: any; status: GameStatus },
 	{ Kind: StatsKind }
 > {
 	private _isFirstRender = true;
@@ -43,6 +43,15 @@ export default class PopupComponent extends Component<
 
 	private Quit(): void {
 		route('/Home', true);
+	}
+
+	private Save(): void {
+		const url = document.createElement('a');
+		const file = new Blob([ JSON.stringify(this.props.context) ], { type: 'application/json' });
+		url.href = URL.createObjectURL(file);
+		url.download = `${this.props.context.Title}.json`;
+		url.click();
+		URL.revokeObjectURL(url.href);
 	}
 
 	render() {
@@ -122,11 +131,11 @@ export default class PopupComponent extends Component<
 							}}
 						/>
 						<RedButtonComponent
-							icon={'fas fa-sync-alt'}
-							title={'Retry'}
+							icon={'fas fa-save'}
+							title={'Save'}
 							isFirstRender={this._isFirstRender}
 							callBack={() => {
-								this.Quit();
+								this.Save();
 							}}
 						/>
 					</div>

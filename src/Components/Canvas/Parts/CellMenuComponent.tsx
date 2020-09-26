@@ -8,7 +8,7 @@ import { HealMenuItem } from '../../../Core/Menu/Buttons/HealMenuItem';
 import { MoneyMenuItem } from '../../../Core/Menu/Buttons/MoneyMenuItem';
 import { ShieldMenuItem } from '../../../Core/Menu/Buttons/ShieldMenuItem';
 import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
-import { AppHandler } from '../AppHandler';
+import { AppHandler } from '../../../Core/App/AppHandler';
 import { GameContext } from '../../../Core/Framework/GameContext';
 import { ThunderMenuItem } from '../../../Core/Menu/Buttons/ThunderMenuItem';
 import { Cell } from '../../../Core/Items/Cell/Cell';

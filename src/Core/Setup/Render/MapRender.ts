@@ -53,7 +53,7 @@ export class MapRender {
 		this.SetHqLands(cells, Archive.nature.hq, hqs.map((h) => h.GetCell().GetCoordinate()), playgroundItems);
 		this.SetHqLands(cells, Archive.nature.hq2, hqs.map((h) => h.GetCell().GetCoordinate()), playgroundItems, 1);
 
-		context.Setup(playerHq, hqs, cells.All());
+		context.Setup(mapContext, playerHq, hqs, cells.All());
 		//make hq cells visible, need context to be setup :<, has to fix it one day
 		playerHq.GetCurrentCell().SetState(CellState.Visible);
 		playerHq.GetCurrentCell().GetAllNeighbourhood().forEach((cell) => {

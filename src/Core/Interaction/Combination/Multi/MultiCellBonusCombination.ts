@@ -22,10 +22,10 @@ import { MoneyMenuItem } from '../../../Menu/Buttons/MoneyMenuItem';
 import { RoadField } from '../../../Items/Cell/Field/Bonus/RoadField';
 import { PoisonField } from '../../../Items/Cell/Field/Bonus/PoisonField';
 import { GameSettings } from '../../../Framework/GameSettings';
-import { AppHandler } from '../../../../Components/Canvas/AppHandler';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { GameContext } from '../../../Framework/GameContext';
 import { IField } from '../../../Items/Cell/Field/IField';
+import { AppHandler } from '../../../App/AppHandler';
 
 export class MultiCellBonusCombination extends AbstractSingleCombination {
 	constructor(private _appHandler: AppHandler, private _gameContext: GameContext) {

@@ -1,10 +1,10 @@
-import { AppHandler } from './../../../../Components/Canvas/AppHandler';
 import { InteractionKind } from './../../IInteractionContext';
 import { AbstractSingleCombination } from './../AbstractSingleCombination';
 import { CombinationContext } from '../CombinationContext';
 import { Item } from '../../../Items/Item';
 import { ISelectable } from '../../../ISelectable';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
+import { AppHandler } from '../../../App/AppHandler';
 
 export class DisplayMultiMenuCombination extends AbstractSingleCombination {
 	constructor(private _appHandler: AppHandler, private _multiSelectionContext: MultiSelectionContext) {

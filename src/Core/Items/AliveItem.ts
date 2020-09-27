@@ -1,6 +1,7 @@
 import { Item } from './Item';
 import { Cell } from './Cell/Cell';
 import * as PIXI from 'pixi.js';
+import { LiteEvent } from '../Utils/Events/LiteEvent';
 
 export abstract class AliveItem extends Item {
 	protected Life: number = 40;
@@ -9,6 +10,9 @@ export abstract class AliveItem extends Item {
 	private _borderBar: PIXI.Graphics;
 	private _currentLifeBar: PIXI.Graphics;
 	private _lifeBars: Array<PIXI.Graphics>;
+
+	public OnDamageReceived: LiteEvent<number> = new LiteEvent<number>();
+
 	constructor() {
 		super();
 		this._totalLifeBar = new PIXI.Graphics();
@@ -66,6 +70,7 @@ export abstract class AliveItem extends Item {
 		if (this.TotalLife < this.Life) {
 			this.Life = this.TotalLife;
 		}
+		this.OnDamageReceived.Invoke(this, this.Life);
 	}
 
 	public Update(viewX: number, viewY: number): void {
@@ -87,6 +92,14 @@ export abstract class AliveItem extends Item {
 
 	public IsAlive(): boolean {
 		return 0 < this.Life;
+	}
+
+	public GetCurrentLife(): number {
+		return this.Life;
+	}
+
+	public SetCurrentLife(life: number): void {
+		this.SetDamage(this.TotalLife - life);
 	}
 
 	public abstract IsEnemy(item: AliveItem): boolean;

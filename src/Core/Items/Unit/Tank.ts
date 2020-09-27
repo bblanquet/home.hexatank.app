@@ -21,9 +21,9 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 	private _mainTarget: AliveItem;
 	public OnTargetChanged: LiteEvent<AliveItem> = new LiteEvent();
 	public OnCamouflageChanged: LiteEvent<AliveItem> = new LiteEvent();
-	constructor(hq: Headquarter, gameContext: GameContext, public IsPacific: boolean = false) {
+	constructor(hq: Headquarter, gameContext: GameContext, isPacific: boolean = false) {
 		super(hq, gameContext);
-
+		this.IsPacific = isPacific;
 		this.RootSprites.push(this.Hq.GetSkin().GetBottomTankSprite());
 		this.GenerateSprite(this.Hq.GetSkin().GetBottomTankSprite());
 

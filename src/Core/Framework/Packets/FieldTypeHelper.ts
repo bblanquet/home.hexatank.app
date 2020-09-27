@@ -1,4 +1,5 @@
-import { TrackingAction } from './../Tracking/TrackingAction';
+import { Archive } from './../ResourceArchiver';
+import { DiamondField } from './../../Items/Cell/Field/DiamondField';
 import { BlockingField } from './../../Items/Cell/Field/BlockingField';
 import { BasicField } from './../../Items/Cell/Field/BasicField';
 import { GameContext } from './../GameContext';
@@ -15,6 +16,7 @@ import { RoadField } from '../../Items/Cell/Field/Bonus/RoadField';
 import { ShieldField } from '../../Items/Cell/Field/Bonus/ShieldField';
 import { Cell } from '../../Items/Cell/Cell';
 import { TrackingKind } from '../Tracking/TrackingKind';
+import { Diamond } from '../../Items/Cell/Field/Diamond';
 export class FieldTypeHelper {
 	public static GetDescription(obj: IField): string {
 		if (obj instanceof AttackField) {
@@ -66,6 +68,41 @@ export class FieldTypeHelper {
 			return TrackingKind.Basic;
 		} else if (obj instanceof BlockingField) {
 			return TrackingKind.Blocking;
+		} else if (obj instanceof DiamondField) {
+			return TrackingKind.DiamondField;
+		} else if (obj instanceof Diamond) {
+			return TrackingKind.Diamond;
+		}
+		return TrackingKind.None;
+	}
+
+	public static CreateTrackingField(action: TrackingKind, cell: Cell, hq: Headquarter, context: GameContext): IField {
+		if (action === TrackingKind.Attack) {
+			return new AttackField(cell, hq);
+		} else if (action === TrackingKind.Battery) {
+			return new BatteryField(cell, hq);
+		} else if (action === TrackingKind.Basic) {
+			return new BasicField(cell);
+		} else if (action === TrackingKind.Farm) {
+			return new FarmField(cell, hq);
+		} else if (action === TrackingKind.Medic) {
+			return new MedicField(cell, hq);
+		} else if (action === TrackingKind.Network) {
+			return new NetworkField(cell, hq);
+		} else if (action === TrackingKind.Poison) {
+			return new PoisonField(cell, hq);
+		} else if (action === TrackingKind.Reactor) {
+			return new ReactorField(cell, hq, context, hq.GetSkin().GetLight(), true);
+		} else if (action === TrackingKind.Road) {
+			return new RoadField(cell, hq);
+		} else if (action === TrackingKind.Shield) {
+			return new ShieldField(cell, hq);
+		} else if (action === TrackingKind.DiamondField) {
+			return new DiamondField(cell);
+		} else if (action === TrackingKind.Diamond) {
+			return new Diamond(cell);
+		} else if (action === TrackingKind.Blocking) {
+			return new BlockingField(cell, Archive.nature.tree);
 		}
 		throw 'not found';
 	}

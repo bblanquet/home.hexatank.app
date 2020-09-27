@@ -10,6 +10,7 @@ import { TrackingHq } from '../../Core/Framework/Tracking/TrackingHq';
 import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
 import { TrackingUnit } from '../../Core/Framework/Tracking/TrackingUnit';
 import { TrackingData } from '../../Core/Framework/Tracking/TrackingData';
+import { TrackingCell } from '../../Core/Framework/Tracking/TrackingCell';
 export default class PlaybackComponent extends Component<any, { TrackingObjs: TrackingObject[] }> {
 	constructor() {
 		super();
@@ -39,8 +40,12 @@ export default class PlaybackComponent extends Component<any, { TrackingObjs: Tr
 			hq.Units.SetValues(units);
 		});
 
+		const cells = new Dictionnary<TrackingCell>();
+		cells.SetValues(e.Cells);
+
 		const result = new TrackingData();
-		result.TrackingHq = hqs;
+		result.Hqs = hqs;
+		result.Cells = cells;
 		result.Dates = e.Points;
 		return result;
 	}

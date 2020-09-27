@@ -1,8 +1,8 @@
 export enum TrackingKind {
+	None,
 	Created,
 	Moved,
 	Destroyed,
-
 	Basic,
 	Attack,
 	Battery,
@@ -14,6 +14,6 @@ export enum TrackingKind {
 	Road,
 	Shield,
 	Diamond,
-
-	Blocking
+	Blocking,
+	DiamondField
 }

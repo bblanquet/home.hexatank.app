@@ -47,7 +47,13 @@ export class ReactorField extends Field implements ISelectable {
 	public OnLost: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
 	public OnOverlocked: LiteEvent<string> = new LiteEvent<string>();
 
-	constructor(cell: Cell, public Hq: Headquarter, private _context: GameContext, private _light: string) {
+	constructor(
+		cell: Cell,
+		public Hq: Headquarter,
+		private _context: GameContext,
+		private _light: string,
+		public IsPacific: boolean = false
+	) {
 		super(cell);
 		this.Z = 1;
 		this.Hq.AddReactor(this);
@@ -113,6 +119,9 @@ export class ReactorField extends Field implements ISelectable {
 		const vehicles = this.GetVehicles();
 		if (type instanceof AttackMenuItem) {
 			vehicles.forEach((v) => {
+				if (v.IsPacific) {
+					return;
+				}
 				if (v instanceof Tank) {
 					const sum = this.GetPower() * 5;
 					v.SetPowerUp(new AttackUp(v, new TimeUpCondition(), sum));
@@ -120,11 +129,17 @@ export class ReactorField extends Field implements ISelectable {
 			});
 		} else if (type instanceof HealMenuItem) {
 			vehicles.forEach((v) => {
+				if (v.IsPacific) {
+					return;
+				}
 				const sum = this.GetPower();
 				v.SetPowerUp(new HealUp(v, new TimeUpCondition(), sum));
 			});
 		} else if (type instanceof SpeedFieldMenuItem) {
 			vehicles.forEach((v) => {
+				if (v.IsPacific) {
+					return;
+				}
 				const sum = this.GetPower() * 0.2;
 				v.SetPowerUp(new SpeedUp(v, new TimeUpCondition(), sum, sum));
 			});
@@ -152,6 +167,10 @@ export class ReactorField extends Field implements ISelectable {
 	}
 
 	Support(vehicule: Vehicle): void {
+		if (this.IsPacific) {
+			return;
+		}
+
 		if (vehicule.Hq != this.Hq) {
 			this.SetSelected(false);
 			while (this.HasPower()) {

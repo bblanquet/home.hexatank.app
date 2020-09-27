@@ -16,7 +16,7 @@ export class Truck extends Vehicle implements IHqContainer {
 	private _dimaondTimer: ITimer;
 	private _diamondsCount: number = 0;
 
-	constructor(hq: Headquarter, gameContext: GameContext) {
+	constructor(hq: Headquarter, gameContext: GameContext, public IsPacific: boolean = false) {
 		super(hq, gameContext);
 		this._dimaondTimer = new TickTimer(GameSettings.DiamondLoadingSpeed);
 
@@ -62,6 +62,9 @@ export class Truck extends Vehicle implements IHqContainer {
 	}
 
 	public Load(): boolean {
+		if (this.IsPacific) {
+			return false;
+		}
 		if (this._dimaondTimer.IsElapsed()) {
 			if (!this.IsLoaded()) {
 				this.SetProperty(this._gatheredDiamonds[this._diamondsCount], (e) => (e.alpha = 1));

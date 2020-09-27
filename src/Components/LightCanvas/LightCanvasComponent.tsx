@@ -27,9 +27,9 @@ export default class LightCanvasComponent extends Component<{}, { dataSet: numbe
 		this._appHandler = new TrackingAppHandler();
 		const context = this._appHandler.SetupGameContext();
 		this._gameCanvas.appendChild(this._appHandler.GetApp().view);
-		this._updater = new LightCanvasUpdater(GameHelper.Tracking, context);
+		this._updater = new LightCanvasUpdater(GameHelper.TackingDatas, context);
 		this.setState({
-			dataSet: GameHelper.Tracking.Values()[0].Units.Values()[0].map((d) => d.X)
+			dataSet: GameHelper.TackingDatas.Dates
 		});
 		this.GameLoop();
 	}

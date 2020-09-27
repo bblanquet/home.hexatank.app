@@ -1,3 +1,4 @@
+import { TrackingData } from './Tracking/TrackingData';
 import { Player } from './../../Network/Player';
 import { GameContext } from './GameContext';
 import { NetworkSocket } from './../../Network/NetworkSocket';
@@ -6,14 +7,12 @@ import { RenderingHandler } from '../Setup/Render/RenderingHandler';
 import { ItemsUpdater } from '../ItemsUpdater';
 import { MapContext } from '../Setup/Generator/MapContext';
 import { ViewContext } from '../Utils/Geometry/ViewContext';
-import { Dictionnary } from '../Utils/Collections/Dictionnary';
-import { TrackingHqValue } from './Tracking/TrackingHqValue';
 
 export class GameHelper {
 	public static Updater: ItemsUpdater;
 	public static MapContext: MapContext;
 	public static NetworkContext: NetworkContext;
-	public static Tracking: Dictionnary<TrackingHqValue>;
+	public static TackingDatas: TrackingData;
 	public static Socket: NetworkSocket;
 	public static Render: RenderingHandler;
 	public static ViewContext: ViewContext;

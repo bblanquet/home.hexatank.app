@@ -1,6 +1,8 @@
 import { MapContext } from './../../Setup/Generator/MapContext';
 export class TrackingObject {
 	MapContext: MapContext;
-	Players: any;
+	Points: number[];
+	Hqs: any;
+	Cells: any;
 	Title: string;
 }

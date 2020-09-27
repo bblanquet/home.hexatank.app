@@ -21,8 +21,7 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 	private _mainTarget: AliveItem;
 	public OnTargetChanged: LiteEvent<AliveItem> = new LiteEvent();
 	public OnCamouflageChanged: LiteEvent<AliveItem> = new LiteEvent();
-
-	constructor(hq: Headquarter, gameContext: GameContext) {
+	constructor(hq: Headquarter, gameContext: GameContext, public IsPacific: boolean = false) {
 		super(hq, gameContext);
 
 		this.RootSprites.push(this.Hq.GetSkin().GetBottomTankSprite());
@@ -113,6 +112,10 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 	}
 
 	private FindTargets() {
+		if (this.IsPacific) {
+			return;
+		}
+
 		if (this.IsMainTargetClose()) {
 			this._currentTarget = this._mainTarget;
 			return;
@@ -210,11 +213,6 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 				s.alpha = 0;
 			});
 		}
-
-		// PeerHandler.SendMessage(PacketKind.Camouflage, {
-		// 	Hq: this.Hq.GetCell().GetCoordinate(),
-		// 	cell: this.GetCurrentCell().GetCoordinate()
-		// });
 
 		this.Camouflage = new BasicItem(
 			BoundingBox.CreateFromBox(this.GetBoundingBox()),

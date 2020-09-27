@@ -6,9 +6,10 @@ import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent'
 import { GameHelper } from '../../Core/Framework/GameHelper';
 import TextComponent from '../Common/Text/TextComponent';
 import { TrackingObject } from '../../Core/Framework/Tracking/TrackingObject';
-import { TrackingHqValue } from '../../Core/Framework/Tracking/TrackingHqValue';
-import { TrackingUnitValue } from '../../Core/Framework/Tracking/TrackingUnitValue';
+import { TrackingHq } from '../../Core/Framework/Tracking/TrackingHq';
 import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
+import { TrackingUnit } from '../../Core/Framework/Tracking/TrackingUnit';
+import { TrackingData } from '../../Core/Framework/Tracking/TrackingData';
 export default class PlaybackComponent extends Component<any, { TrackingObjs: TrackingObject[] }> {
 	constructor() {
 		super();
@@ -23,19 +24,24 @@ export default class PlaybackComponent extends Component<any, { TrackingObjs: Tr
 	}
 
 	private Play(): void {
-		GameHelper.Tracking = this.ToTracking(this.state.TrackingObjs[0].Players);
+		GameHelper.TackingDatas = this.ToTracking(this.state.TrackingObjs[0]);
 		GameHelper.MapContext = this.state.TrackingObjs[0].MapContext;
 		route('/LightCanvas', true);
 	}
 
-	public ToTracking(e: any): Dictionnary<TrackingHqValue> {
-		const result = new Dictionnary<TrackingHqValue>();
-		result.SetValues(e);
-		result.Values().forEach((v) => {
-			const units = v.Units as any;
-			v.Units = new Dictionnary<TrackingUnitValue[]>();
-			v.Units.SetValues(units);
+	public ToTracking(e: TrackingObject): TrackingData {
+		const hqs = new Dictionnary<TrackingHq>();
+		hqs.SetValues(e.Hqs);
+
+		hqs.Values().forEach((hq) => {
+			const units = hq.Units as any;
+			hq.Units = new Dictionnary<TrackingUnit>();
+			hq.Units.SetValues(units);
 		});
+
+		const result = new TrackingData();
+		result.TrackingHq = hqs;
+		result.Dates = e.Points;
 		return result;
 	}
 

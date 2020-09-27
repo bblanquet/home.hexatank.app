@@ -1,3 +1,5 @@
+import { TrackingAction } from './../Tracking/TrackingAction';
+import { BlockingField } from './../../Items/Cell/Field/BlockingField';
 import { BasicField } from './../../Items/Cell/Field/BasicField';
 import { GameContext } from './../GameContext';
 import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
@@ -12,6 +14,7 @@ import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { RoadField } from '../../Items/Cell/Field/Bonus/RoadField';
 import { ShieldField } from '../../Items/Cell/Field/Bonus/ShieldField';
 import { Cell } from '../../Items/Cell/Cell';
+import { TrackingKind } from '../Tracking/TrackingKind';
 export class FieldTypeHelper {
 	public static GetDescription(obj: IField): string {
 		if (obj instanceof AttackField) {
@@ -34,6 +37,35 @@ export class FieldTypeHelper {
 			return 'ShieldField';
 		} else if (obj instanceof BasicField) {
 			return 'BasicField';
+		} else if (obj instanceof BlockingField) {
+			return 'BlockingField';
+		}
+		throw 'not found';
+	}
+
+	public static GetTrackingDescription(obj: IField): TrackingKind {
+		if (obj instanceof AttackField) {
+			return TrackingKind.Attack;
+		} else if (obj instanceof BatteryField) {
+			return TrackingKind.Battery;
+		} else if (obj instanceof FarmField) {
+			return TrackingKind.Farm;
+		} else if (obj instanceof MedicField) {
+			return TrackingKind.Medic;
+		} else if (obj instanceof NetworkField) {
+			return TrackingKind.Network;
+		} else if (obj instanceof PoisonField) {
+			return TrackingKind.Poison;
+		} else if (obj instanceof ReactorField) {
+			return TrackingKind.Reactor;
+		} else if (obj instanceof RoadField) {
+			return TrackingKind.Road;
+		} else if (obj instanceof ShieldField) {
+			return TrackingKind.Shield;
+		} else if (obj instanceof BasicField) {
+			return TrackingKind.Basic;
+		} else if (obj instanceof BlockingField) {
+			return TrackingKind.Blocking;
 		}
 		throw 'not found';
 	}

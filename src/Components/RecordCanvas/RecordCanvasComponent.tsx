@@ -40,10 +40,10 @@ export default class RecordCanvasComponent extends Component<
 		this._appHandler = new TrackingAppHandler();
 		const context = this._appHandler.SetupGameContext();
 		this._gameCanvas.appendChild(this._appHandler.GetApp().view);
-		this._updater = new RecordCanvasUpdater(GameHelper.TackingDatas, context);
+		this._updater = new RecordCanvasUpdater(GameHelper.Record, context);
 		context.OnItemSelected.On(this.UpdateSelection.bind(this));
 		this.setState({
-			dataSet: GameHelper.TackingDatas.Dates
+			dataSet: GameHelper.Record.Dates
 		});
 		this.GameLoop();
 	}

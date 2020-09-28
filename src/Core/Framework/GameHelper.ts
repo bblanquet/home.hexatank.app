@@ -12,7 +12,8 @@ export class GameHelper {
 	public static Updater: ItemsUpdater;
 	public static MapContext: MapContext;
 	public static NetworkContext: NetworkContext;
-	public static TackingDatas: RecordData;
+	public static Record: RecordData;
+	public static ComparedRecord: RecordData;
 	public static Socket: NetworkSocket;
 	public static Render: RenderingHandler;
 	public static ViewContext: ViewContext;

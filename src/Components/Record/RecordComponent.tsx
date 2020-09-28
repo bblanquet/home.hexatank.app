@@ -25,10 +25,16 @@ export default class RecordComponent extends Component<any, { Records: RecordObj
 		route('/Home', true);
 	}
 
+	private ToCompare(): void {
+		GameHelper.Record = this.ToTracking(this.state.Records[0]);
+		GameHelper.ComparedRecord = this.ToTracking(this.state.Records[1]);
+		route('/Comparer', true);
+	}
+
 	private Play(data: RecordObject): void {
-		GameHelper.TackingDatas = this.ToTracking(data);
+		GameHelper.Record = this.ToTracking(data);
 		GameHelper.MapContext = data.MapContext;
-		route('/LightCanvas', true);
+		route('/RecordCanvas', true);
 	}
 
 	public ToTracking(e: RecordObject): RecordData {
@@ -145,7 +151,7 @@ export default class RecordComponent extends Component<any, { Records: RecordObj
 							icon={'fas fa-chart-line'}
 							title={'Compare'}
 							callBack={() => {
-								this.ToHome();
+								this.ToCompare();
 							}}
 						/>
 					) : (

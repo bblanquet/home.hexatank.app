@@ -167,7 +167,7 @@ render(
 		<CampaignComponent path="/Campaign" />
 		<BlueCampaignComponent path="/BlueCampaignComponent" />
 		<CanvasComponent path="/Canvas" />
-		<RecordCanvasComponent path="/LightCanvas" />
+		<RecordCanvasComponent path="/RecordCanvas" />
 		<CreatingHostComponent path="/CreatingHost" />
 		<HostingComponent path="/Hosting/:RoomName/:playerName/:isAdmin" />
 		<GuestComponent path="/OffJoin" />

@@ -1,6 +1,6 @@
 import { RecordAction } from '../../../Core/Framework/Record/RecordAction';
 
-export class TrackingPoint {
+export class RecordPoint {
 	public X: number;
 	public Y: number;
 	public IsEqualed: boolean;

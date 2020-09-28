@@ -3,11 +3,12 @@ import { route } from 'preact-router';
 import { CompChartProvider } from '../Common/CompChartProvider';
 import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
 import { RecordData } from '../../Core/Framework/Record/RecordData';
-import { TrackingComparer } from './Comparers/TrackingComparer';
+import { RecordComparer } from './Comparers/RecordComparer';
 import PanelComponent from '../Common/Panel/PanelComponent';
 import DropDownComponent from '../Common/DropDown/DropDownComponent';
-import { TrackingCurve } from './Comparers/TrackingCurve';
+import { DeltaRecordCurve } from './Comparers/DeltaRecordCurve';
 import TextComponent from '../Common/Text/TextComponent';
+import { GameHelper } from '../../Core/Framework/GameHelper';
 
 export default class ComparerComponent extends Component<
 	{},
@@ -19,7 +20,7 @@ export default class ComparerComponent extends Component<
 		CurveIndex: number | null;
 	}
 > {
-	private _trackingComparer: TrackingComparer;
+	private _trackingComparer: RecordComparer;
 	private _chartProvider: CompChartProvider;
 	private _canvas: HTMLCanvasElement;
 	private _chart: Chart;
@@ -38,8 +39,13 @@ export default class ComparerComponent extends Component<
 		});
 	}
 
+	componentWillMount() {
+		this._d1 = GameHelper.Record;
+		this._d2 = GameHelper.ComparedRecord;
+	}
+
 	componentDidMount() {
-		this._trackingComparer = new TrackingComparer(this._d1, this._d2);
+		this._trackingComparer = new RecordComparer(this._d1, this._d2);
 		const hqId = this._d1.Hqs.Keys()[0];
 		const unitId = this._d1.Hqs.Get(hqId).Units.Keys()[0];
 		this.setState({
@@ -66,7 +72,11 @@ export default class ComparerComponent extends Component<
 				<div class="container-center">
 					<div class="container-center-horizontal">
 						<DropDownComponent
-							OnInput={(e: any) => this.setState({ SelectedHqId: e.target.value })}
+							OnInput={(e: any) =>
+								this.setState({
+									SelectedHqId: e.target.value,
+									SelectedUnitId: this._d1.Hqs.Get(e.target.value).Units.Keys()[0]
+								})}
 							Label={'Hq'}
 							Values={this.state.HqIds}
 						/>
@@ -116,32 +126,36 @@ export default class ComparerComponent extends Component<
 		);
 	}
 
-	private GetD2(): string {
-		if (this.state.CurveIndex === null) {
-			return '';
-		}
-		return this._d2.Hqs
-			.Get(this.state.SelectedHqId)
-			.Units.Get(this.state.SelectedUnitId)
-			.Actions[this.state.CurveIndex].Amount.ToString();
+	private GetD1(): string {
+		return this.GetCoo(this._d1);
 	}
 
-	private GetD1(): string {
+	private GetD2(): string {
+		return this.GetCoo(this._d2);
+	}
+
+	private GetCoo(d: RecordData): string {
 		if (this.state.CurveIndex === null) {
 			return '';
 		}
-		return this._d1.Hqs
-			.Get(this.state.SelectedHqId)
-			.Units.Get(this.state.SelectedUnitId)
-			.Actions[this.state.CurveIndex].Amount.ToString();
+		const unit = d.Hqs.Get(this.state.SelectedHqId).Units.Get(this.state.SelectedUnitId);
+		const action = unit.Actions[this.state.CurveIndex];
+		if (action !== undefined) {
+			const data = action.Amount;
+			return `(${[ data.Q, data.R ].toString()})`;
+		} else {
+			return '';
+		}
 	}
 
 	private UpdateCurve(unitId: string) {
-		const points = this._trackingComparer.GetDelta(this.state.SelectedHqId, unitId);
-		const trackingCurve = new TrackingCurve();
-		trackingCurve.Points = points;
-		trackingCurve.Title = unitId;
-		this._chart = this._chartProvider.AttachChart(trackingCurve, this._canvas);
+		if (!this._d1.Hqs.Get(this.state.SelectedHqId).Units.IsEmpty()) {
+			const points = this._trackingComparer.GetDelta(this.state.SelectedHqId, unitId);
+			const trackingCurve = new DeltaRecordCurve();
+			trackingCurve.Points = points;
+			trackingCurve.Title = unitId;
+			this._chart = this._chartProvider.AttachChart(trackingCurve, this._canvas);
+		}
 	}
 
 	private GetUnitIds(): string[] {

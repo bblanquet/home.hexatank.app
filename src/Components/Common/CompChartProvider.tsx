@@ -1,10 +1,10 @@
 import * as Chart from 'chart.js';
-import { TrackingCurve } from '../Comparer/Comparers/TrackingCurve';
+import { DeltaRecordCurve } from '../Comparer/Comparers/DeltaRecordCurve';
 
 export class CompChartProvider {
 	constructor() {}
 
-	private Convert(curve: TrackingCurve): Chart.ChartDataSets[] {
+	private Convert(curve: DeltaRecordCurve): Chart.ChartDataSets[] {
 		const datasets = new Array<Chart.ChartDataSets>();
 		datasets.push({
 			borderColor: '#FFFFFF',
@@ -22,7 +22,7 @@ export class CompChartProvider {
 		return datasets;
 	}
 
-	public AttachChart(curves: TrackingCurve, div: HTMLCanvasElement): Chart {
+	public AttachChart(curves: DeltaRecordCurve, div: HTMLCanvasElement): Chart {
 		const ps = curves.Points.map((p) => p.Y);
 		const max = Math.max(...ps);
 		let step = Math.round(max / 5);
@@ -80,6 +80,7 @@ export class CompChartProvider {
 		});
 		chart.canvas = div;
 		Chart.defaults.global.defaultFontColor = 'white';
+		chart.update();
 		return chart;
 	}
 }

@@ -4,7 +4,7 @@ import { LiteEvent } from '../Utils/Events/LiteEvent';
 import { GameContext } from '../Framework/GameContext';
 import { ViewContext } from '../Utils/Geometry/ViewContext';
 import { GameSettings } from '../Framework/GameSettings';
-import { MapMode } from '../Setup/Generator/MapMode';
+import { MapEnv } from '../Setup/Generator/MapEnv';
 import { ItemsUpdater } from '../ItemsUpdater';
 import { InputNotifier } from '../Interaction/InputNotifier';
 import { InteractionContext } from '../Interaction/InteractionContext';
@@ -119,11 +119,11 @@ export abstract class AppHandler {
 		this.Playground.ViewContext.SetY(-(hqPoint.Y - halfHeight));
 	}
 
-	private SetBackgroundColor(mapMode: MapMode) {
+	private SetBackgroundColor(mapMode: MapEnv) {
 		let color = 0x00a651;
-		if (mapMode === MapMode.sand) {
+		if (mapMode === MapEnv.sand) {
 			color = 0xfece63;
-		} else if (mapMode === MapMode.ice) {
+		} else if (mapMode === MapEnv.ice) {
 			color = 0xacddf3;
 		}
 		this._app.renderer.backgroundColor = color;

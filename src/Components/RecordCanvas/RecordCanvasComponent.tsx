@@ -1,17 +1,15 @@
 import { Component, h } from 'preact';
 import { GameHelper } from '../../Core/Framework/GameHelper';
 import { ISelectable } from '../../Core/ISelectable';
-import { LightCanvasUpdater } from './LightCanvasUpdater';
+import { RecordCanvasUpdater } from './Updaters/RecordCanvasUpdater';
 import { GameSettings } from '../../Core/Framework/GameSettings';
 import { TrackingAppHandler } from '../../Core/App/TrackingAppHandler';
 import RangeComponent from '../Common/Range/RangeComponent';
 import { Item } from '../../Core/Items/Item';
-import { Tank } from '../../Core/Items/Unit/Tank';
-import { Truck } from '../../Core/Items/Unit/Truck';
-import TankMenuComponent from '../Canvas/Parts/TankMenuComponent';
-import TruckMenuComponent from '../Canvas/Parts/TruckMenuComponent';
+import UnitMenuComponent from './Parts/UnitMenuComponent';
+import { Vehicle } from '../../Core/Items/Unit/Vehicle';
 
-export default class LightCanvasComponent extends Component<
+export default class RecordCanvasComponent extends Component<
 	{},
 	{
 		dataSet: number[];
@@ -21,7 +19,7 @@ export default class LightCanvasComponent extends Component<
 	private _gameCanvas: HTMLDivElement;
 	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
 	private _appHandler: TrackingAppHandler;
-	private _updater: LightCanvasUpdater;
+	private _updater: RecordCanvasUpdater;
 
 	constructor() {
 		super();
@@ -31,6 +29,9 @@ export default class LightCanvasComponent extends Component<
 	private OnItemSelectionChanged(obj: any, item: ISelectable): void {
 		if (!item.IsSelected()) {
 			item.OnSelectionChanged.Off(this._onItemSelectionChanged);
+			this.setState({
+				Item: null
+			});
 		}
 	}
 
@@ -39,7 +40,8 @@ export default class LightCanvasComponent extends Component<
 		this._appHandler = new TrackingAppHandler();
 		const context = this._appHandler.SetupGameContext();
 		this._gameCanvas.appendChild(this._appHandler.GetApp().view);
-		this._updater = new LightCanvasUpdater(GameHelper.TackingDatas, context);
+		this._updater = new RecordCanvasUpdater(GameHelper.TackingDatas, context);
+		context.OnItemSelected.On(this.UpdateSelection.bind(this));
 		this.setState({
 			dataSet: GameHelper.TackingDatas.Dates
 		});
@@ -77,16 +79,19 @@ export default class LightCanvasComponent extends Component<
 
 	private LeftMenuRender() {
 		if (this.state.Item) {
-			if (this.state.Item instanceof Tank) {
-				return <TankMenuComponent AppHandler={this._appHandler} Tank={this.state.Item} />;
-			} else if (this.state.Item instanceof Truck) {
-				return <TruckMenuComponent AppHandler={this._appHandler} Truck={this.state.Item} />;
-			}
+			return <UnitMenuComponent AppHandler={this._appHandler} Vehicle={this.state.Item as Vehicle} />;
 		}
 		return '';
 	}
 
 	private SetMenu(): void {}
+
+	private UpdateSelection(obj: any, selectedItem: Item): void {
+		((selectedItem as unknown) as ISelectable).OnSelectionChanged.On(this._onItemSelectionChanged);
+		this.setState({
+			Item: selectedItem
+		});
+	}
 
 	private TopMenuRender() {
 		return (

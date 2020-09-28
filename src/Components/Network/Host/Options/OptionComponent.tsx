@@ -50,7 +50,6 @@ export default class OptionComponent extends Component<{ Update: (g: number) => 
 				<BlackButtonComponent
 					icon={'fas fa-undo-alt'}
 					title={'Back'}
-					isFirstRender={this._isFirstRender}
 					callBack={() => this.Update(this.state.IaNumber)}
 				/>
 			</div>

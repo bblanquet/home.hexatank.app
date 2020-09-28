@@ -1,4 +1,4 @@
-export enum TrackingKind {
+export enum RecordKind {
 	None,
 	Created,
 	Moved,

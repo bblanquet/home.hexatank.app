@@ -11,7 +11,6 @@ import TextComponent from '../../Common/Text/TextComponent';
 
 export default class CreatingHostComponent extends Component<any, CreatingHostState> {
 	private _socket: SocketIOClient.Socket;
-	private _isFirstRender = true;
 
 	constructor() {
 		super();
@@ -21,10 +20,6 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 		});
 		this._socket = io('https://mottet.xyz:9117');
 		this.Listen();
-	}
-
-	componentDidMount() {
-		this._isFirstRender = false;
 	}
 
 	componentWillUnmount() {
@@ -53,18 +48,8 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 					}}
 				/>
 				<div class="container-center-horizontal">
-					<BlackButtonComponent
-						icon={'fas fa-undo-alt'}
-						title={'Back'}
-						isFirstRender={this._isFirstRender}
-						callBack={() => this.Back()}
-					/>
-					<RedButtonComponent
-						icon={'far fa-play-circle'}
-						title={'Start'}
-						isFirstRender={this._isFirstRender}
-						callBack={() => this.Start()}
-					/>
+					<BlackButtonComponent icon={'fas fa-undo-alt'} title={'Back'} callBack={() => this.Back()} />
+					<RedButtonComponent icon={'far fa-play-circle'} title={'Start'} callBack={() => this.Start()} />
 				</div>
 			</PanelComponent>
 		);

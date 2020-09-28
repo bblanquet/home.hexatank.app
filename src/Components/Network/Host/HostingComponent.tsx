@@ -14,7 +14,7 @@ import { IconProvider } from '../../Common/IconProvider';
 import { HostState } from '../HostState';
 import { GameSettings } from '../../../Core/Framework/GameSettings';
 import { MapGenerator } from '../../../Core/Setup/Generator/MapGenerator';
-import { MapMode } from '../../../Core/Setup/Generator/MapMode';
+import { MapEnv } from '../../../Core/Setup/Generator/MapEnv';
 import { MapContext } from '../../../Core/Setup/Generator/MapContext';
 import { GameHelper } from '../../../Core/Framework/GameHelper';
 import { isNullOrUndefined } from 'util';
@@ -157,7 +157,6 @@ export default class HostingComponent extends Component<any, HostState> {
 				<BlackButtonComponent
 					icon={'fas fa-toggle-on'}
 					title={this.GetButtonLabel()}
-					isFirstRender={this._isFirstRender}
 					callBack={() => this.ChangeReady()}
 				/>
 
@@ -165,7 +164,6 @@ export default class HostingComponent extends Component<any, HostState> {
 					<BlackButtonComponent
 						icon={'fas fa-cog'}
 						title={'Setup'}
-						isFirstRender={this._isFirstRender}
 						callBack={() => {
 							this._hasSettings = true;
 							this.setState({});
@@ -181,19 +179,9 @@ export default class HostingComponent extends Component<any, HostState> {
 	private GetUpdsideButton() {
 		return (
 			<div class="container-center-horizontal">
-				<BlackButtonComponent
-					icon={'fas fa-undo-alt'}
-					title={'Back'}
-					isFirstRender={this._isFirstRender}
-					callBack={() => this.Back()}
-				/>{' '}
+				<BlackButtonComponent icon={'fas fa-undo-alt'} title={'Back'} callBack={() => this.Back()} />{' '}
 				{this.state.IsAdmin ? (
-					<RedButtonComponent
-						icon={'far fa-play-circle'}
-						title={'Start'}
-						isFirstRender={this._isFirstRender}
-						callBack={() => this.Start()}
-					/>
+					<RedButtonComponent icon={'far fa-play-circle'} title={'Start'} callBack={() => this.Start()} />
 				) : (
 					''
 				)}
@@ -273,7 +261,7 @@ export default class HostingComponent extends Component<any, HostState> {
 	private Start(): void {
 		if (this.IsEveryoneReady()) {
 			const hqCount = +this.state.IaNumber + this.state.Players.Count();
-			const mapContext = new MapGenerator().GetMapDefinition(12, 'Flower', hqCount, MapMode.forest);
+			const mapContext = new MapGenerator().GetMapDefinition(12, 'Flower', hqCount, MapEnv.forest);
 			mapContext.PlayerName = this.state.Player.Name;
 			this.AssignHqToPlayer(mapContext, this.state.Players.Values());
 			const message = new NetworkMessage<MapContext>();

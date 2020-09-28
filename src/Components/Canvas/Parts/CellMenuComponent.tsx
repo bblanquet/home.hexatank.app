@@ -12,7 +12,6 @@ import { AppHandler } from '../../../Core/App/AppHandler';
 import { GameContext } from '../../../Core/Framework/GameContext';
 import { ThunderMenuItem } from '../../../Core/Menu/Buttons/ThunderMenuItem';
 import { Cell } from '../../../Core/Items/Cell/Cell';
-import { BtnInfo } from '../../Common/Circular/BtnInfo';
 import { PoisonMenuItem } from '../../../Core/Menu/Buttons/PoisonMenuItem';
 import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
 import ExpCircularComponent from '../../Common/Circular/CircularComponent';
@@ -21,7 +20,7 @@ import { Point } from '../../../Core/Utils/Geometry/Point';
 
 export default class CellMenuComponent extends Component<
 	{ Item: Item; AppHandler: AppHandler; GameContext: GameContext },
-	{ btns: BtnInfo[] }
+	{}
 > {
 	render() {
 		return (

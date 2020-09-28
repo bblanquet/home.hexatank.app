@@ -3,7 +3,7 @@ import { DonutFlowerMapBuilder } from './../Builder/DonutFlowerMapBuilder';
 import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { SandDecorator } from '../../Items/Cell/Decorator/SandDecorator';
 import { IceDecorator } from '../../Items/Cell/Decorator/IceDecorator';
-import { MapMode } from './MapMode';
+import { MapEnv } from './MapEnv';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 import { ForestDecorator } from '../../Items/Cell/Decorator/ForestDecorator';
@@ -26,7 +26,7 @@ export class MapGenerator {
 		this._builders.Add('Donut', new DonutFlowerMapBuilder());
 	}
 
-	public GetMapDefinition(mapSize: number, mapType: string, hqCount: number, mapMode: MapMode): MapContext {
+	public GetMapDefinition(mapSize: number, mapType: string, hqCount: number, mapMode: MapEnv): MapContext {
 		const context = new MapContext();
 		context.MapMode = mapMode;
 		const mapItems = new Array<MapItem>();
@@ -78,9 +78,9 @@ export class MapGenerator {
 		});
 
 		var decorator: Decorator = null;
-		if (mapMode === MapMode.forest) {
+		if (mapMode === MapEnv.forest) {
 			decorator = new ForestDecorator();
-		} else if (mapMode === MapMode.ice) {
+		} else if (mapMode === MapEnv.ice) {
 			decorator = new IceDecorator();
 		} else {
 			decorator = new SandDecorator();

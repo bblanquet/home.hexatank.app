@@ -15,7 +15,7 @@ import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { RoadField } from '../../Items/Cell/Field/Bonus/RoadField';
 import { ShieldField } from '../../Items/Cell/Field/Bonus/ShieldField';
 import { Cell } from '../../Items/Cell/Cell';
-import { TrackingKind } from '../Tracking/TrackingKind';
+import { RecordKind } from '../Record/RecordKind';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 export class FieldTypeHelper {
 	public static GetDescription(obj: IField): string {
@@ -45,63 +45,63 @@ export class FieldTypeHelper {
 		throw 'not found';
 	}
 
-	public static GetTrackingDescription(obj: IField): TrackingKind {
+	public static GetTrackingDescription(obj: IField): RecordKind {
 		if (obj instanceof AttackField) {
-			return TrackingKind.Attack;
+			return RecordKind.Attack;
 		} else if (obj instanceof BatteryField) {
-			return TrackingKind.Battery;
+			return RecordKind.Battery;
 		} else if (obj instanceof FarmField) {
-			return TrackingKind.Farm;
+			return RecordKind.Farm;
 		} else if (obj instanceof MedicField) {
-			return TrackingKind.Medic;
+			return RecordKind.Medic;
 		} else if (obj instanceof NetworkField) {
-			return TrackingKind.Network;
+			return RecordKind.Network;
 		} else if (obj instanceof PoisonField) {
-			return TrackingKind.Poison;
+			return RecordKind.Poison;
 		} else if (obj instanceof ReactorField) {
-			return TrackingKind.Reactor;
+			return RecordKind.Reactor;
 		} else if (obj instanceof RoadField) {
-			return TrackingKind.Road;
+			return RecordKind.Road;
 		} else if (obj instanceof ShieldField) {
-			return TrackingKind.Shield;
+			return RecordKind.Shield;
 		} else if (obj instanceof BasicField) {
-			return TrackingKind.Basic;
+			return RecordKind.Basic;
 		} else if (obj instanceof BlockingField) {
-			return TrackingKind.Blocking;
+			return RecordKind.Blocking;
 		} else if (obj instanceof DiamondField) {
-			return TrackingKind.DiamondField;
+			return RecordKind.DiamondField;
 		} else if (obj instanceof Diamond) {
-			return TrackingKind.Diamond;
+			return RecordKind.Diamond;
 		}
-		return TrackingKind.None;
+		return RecordKind.None;
 	}
 
-	public static CreateTrackingField(action: TrackingKind, cell: Cell, hq: Headquarter, context: GameContext): IField {
-		if (action === TrackingKind.Attack) {
+	public static CreateTrackingField(action: RecordKind, cell: Cell, hq: Headquarter, context: GameContext): IField {
+		if (action === RecordKind.Attack) {
 			return new AttackField(cell, hq);
-		} else if (action === TrackingKind.Battery) {
+		} else if (action === RecordKind.Battery) {
 			return new BatteryField(cell, hq);
-		} else if (action === TrackingKind.Basic) {
+		} else if (action === RecordKind.Basic) {
 			return new BasicField(cell);
-		} else if (action === TrackingKind.Farm) {
+		} else if (action === RecordKind.Farm) {
 			return new FarmField(cell, hq);
-		} else if (action === TrackingKind.Medic) {
+		} else if (action === RecordKind.Medic) {
 			return new MedicField(cell, hq);
-		} else if (action === TrackingKind.Network) {
+		} else if (action === RecordKind.Network) {
 			return new NetworkField(cell, hq);
-		} else if (action === TrackingKind.Poison) {
+		} else if (action === RecordKind.Poison) {
 			return new PoisonField(cell, hq);
-		} else if (action === TrackingKind.Reactor) {
+		} else if (action === RecordKind.Reactor) {
 			return new ReactorField(cell, hq, context, hq.GetSkin().GetLight(), true);
-		} else if (action === TrackingKind.Road) {
+		} else if (action === RecordKind.Road) {
 			return new RoadField(cell, hq);
-		} else if (action === TrackingKind.Shield) {
+		} else if (action === RecordKind.Shield) {
 			return new ShieldField(cell, hq);
-		} else if (action === TrackingKind.DiamondField) {
+		} else if (action === RecordKind.DiamondField) {
 			return new DiamondField(cell);
-		} else if (action === TrackingKind.Diamond) {
+		} else if (action === RecordKind.Diamond) {
 			return new Diamond(cell);
-		} else if (action === TrackingKind.Blocking) {
+		} else if (action === RecordKind.Blocking) {
 			return new BlockingField(cell, Archive.nature.tree);
 		}
 		throw 'not found';

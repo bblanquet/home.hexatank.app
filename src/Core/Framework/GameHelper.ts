@@ -1,4 +1,4 @@
-import { TrackingData } from './Tracking/TrackingData';
+import { RecordData } from './Record/RecordData';
 import { Player } from './../../Network/Player';
 import { GameContext } from './GameContext';
 import { NetworkSocket } from './../../Network/NetworkSocket';
@@ -12,7 +12,7 @@ export class GameHelper {
 	public static Updater: ItemsUpdater;
 	public static MapContext: MapContext;
 	public static NetworkContext: NetworkContext;
-	public static TackingDatas: TrackingData;
+	public static TackingDatas: RecordData;
 	public static Socket: NetworkSocket;
 	public static Render: RenderingHandler;
 	public static ViewContext: ViewContext;

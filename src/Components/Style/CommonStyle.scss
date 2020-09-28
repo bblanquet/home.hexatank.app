@@ -401,6 +401,10 @@ body {
 	margin-right: 5px;
 }
 
+.small-right-margin {
+	margin-right: 15px;
+}
+
 .space-out {
 	margin: 5px;
 }
@@ -529,6 +533,10 @@ input[type='range']::-webkit-slider-thumb {
 	border: 1px solid #cecece;
 	height: 20px;
 	width: 20px;
+}
+
+input[type="file"] {
+	display: none;
 }
 
 .foe-talking {

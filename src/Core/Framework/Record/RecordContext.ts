@@ -1,40 +1,40 @@
-import { TrackingCell } from './TrackingCell';
-import { Tank } from './../../Items/Unit/Tank';
-import { TrackingUnit } from './TrackingUnit';
-import { TrackingKind } from './TrackingKind';
-import { TrackingObject } from './TrackingObject';
-import { GameContext } from './../GameContext';
-import { MapContext } from './../../Setup/Generator/MapContext';
+import { RecordCell } from './RecordCell';
+import { Tank } from '../../Items/Unit/Tank';
+import { RecordUnit } from './RecordUnit';
+import { RecordKind } from './RecordKind';
+import { RecordObject } from './RecordObject';
+import { GameContext } from '../GameContext';
+import { MapContext } from '../../Setup/Generator/MapContext';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { Vehicle } from '../../Items/Unit/Vehicle';
-import { TrackingHq } from './TrackingHq';
+import { RecordHq } from './RecordHq';
 import { Cell } from '../../Items/Cell/Cell';
-import { TrackingAction } from './TrackingAction';
+import { RecordAction } from './RecordAction';
 import { Item } from '../../Items/Item';
 import { FieldTypeHelper } from '../Packets/FieldTypeHelper';
-import { TrackingField } from './TrackingField';
-import { TrackingData } from './TrackingData';
+import { RecordField } from './RecordField';
+import { RecordData } from './RecordData';
 
-export class TrackingContext {
-	private _data: TrackingData;
+export class RecordContext {
+	private _data: RecordData;
 	private _refDate: number;
 
 	constructor(private _mapContext: MapContext, private _gameContext: GameContext) {
 		this._refDate = new Date().getTime();
-		this._data = new TrackingData();
+		this._data = new RecordData();
 
 		this._gameContext.GetHqs().forEach((hq) => {
-			this._data.Hqs.Add(hq.PlayerName, new TrackingHq(hq.PlayerName, hq.GetSkin().GetColor()));
+			this._data.Hqs.Add(hq.PlayerName, new RecordHq(hq.PlayerName, hq.GetSkin().GetColor()));
 			hq.OnVehicleCreated.On(this.HandleVehicleCreated.bind(this));
 		});
 
 		const time = this.GetTime();
 		this._data.Dates.push(time);
 		this._gameContext.GetCells().forEach((cell) => {
-			const action = new TrackingField(time, FieldTypeHelper.GetTrackingDescription(cell.GetField()));
-			if (action.kind !== TrackingKind.None) {
-				const trackingCell = new TrackingCell();
-				trackingCell.Actions = new Array<TrackingField>();
+			const action = new RecordField(time, FieldTypeHelper.GetTrackingDescription(cell.GetField()));
+			if (action.kind !== RecordKind.None) {
+				const trackingCell = new RecordCell();
+				trackingCell.Actions = new Array<RecordField>();
 				trackingCell.Actions.push(action);
 				this._data.Cells.Add(cell.Coo(), trackingCell);
 				cell.OnFieldChanged.On(this.HandleFieldChanged.bind(this));
@@ -49,23 +49,18 @@ export class TrackingContext {
 	private HandleFieldChanged(src: any, cell: Cell): void {
 		const time = this.GetTime();
 		this._data.Dates.push(time);
-		const action = new TrackingField(time, FieldTypeHelper.GetTrackingDescription(cell.GetField()));
+		const action = new RecordField(time, FieldTypeHelper.GetTrackingDescription(cell.GetField()));
 		this._data.Cells.Get(cell.Coo()).Actions.push(action);
 	}
 
 	private HandleVehicleCreated(src: Headquarter, vehicule: Vehicle): void {
 		const time = this.GetTime();
-		const trackingUnit = new TrackingUnit();
+		const trackingUnit = new RecordUnit();
 		trackingUnit.Id = vehicule.Id;
 		trackingUnit.IsTank = vehicule instanceof Tank;
 		this._data.Dates.push(time);
 		trackingUnit.Actions.push(
-			new TrackingAction(
-				time,
-				vehicule.GetCurrentCell().GetCoordinate(),
-				TrackingKind.Created,
-				src.GetCurrentLife()
-			)
+			new RecordAction(time, vehicule.GetCurrentCell().GetCoordinate(), RecordKind.Created, src.GetCurrentLife())
 		);
 		this._data.Hqs.Get(src.PlayerName).Units.Add(vehicule.Id, trackingUnit);
 		vehicule.OnCellChanged.On(this.HandleVehicleCellChanged.bind(this));
@@ -80,12 +75,7 @@ export class TrackingContext {
 			.Get(src.Hq.PlayerName)
 			.Units.Get(src.Id)
 			.Actions.push(
-				new TrackingAction(
-					time,
-					src.GetCurrentCell().GetCoordinate(),
-					TrackingKind.Destroyed,
-					src.GetCurrentLife()
-				)
+				new RecordAction(time, src.GetCurrentCell().GetCoordinate(), RecordKind.Destroyed, src.GetCurrentLife())
 			);
 	}
 
@@ -97,23 +87,18 @@ export class TrackingContext {
 				.Get(src.Hq.PlayerName)
 				.Units.Get(src.Id)
 				.Actions.push(
-					new TrackingAction(
-						time,
-						src.GetCurrentCell().GetCoordinate(),
-						TrackingKind.Moved,
-						src.GetCurrentLife()
-					)
+					new RecordAction(time, src.GetCurrentCell().GetCoordinate(), RecordKind.Moved, src.GetCurrentLife())
 				);
 		}
 	}
 
-	public GetTrackingObject(): TrackingObject {
+	public GetTrackingObject(): RecordObject {
 		const players: any = {};
 		this._data.Hqs.Keys().map((key) => {
 			players[key] = this._data.Hqs.Get(key).GetJsonObject();
 		});
 
-		const obj = new TrackingObject();
+		const obj = new RecordObject();
 		obj.Title = `save_${new Date().toLocaleTimeString()}`;
 		obj.MapContext = this._mapContext;
 		obj.Cells = this._data.Cells.GetValues();

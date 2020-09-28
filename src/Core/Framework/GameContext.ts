@@ -1,5 +1,5 @@
 import { MapContext } from './../Setup/Generator/MapContext';
-import { TrackingContext } from './Tracking/TrackingContext';
+import { RecordContext } from './Record/RecordContext';
 import { StatsContext } from './Stats/StatsContext';
 import { Tank } from './../Items/Unit/Tank';
 import { isNullOrUndefined } from 'util';
@@ -14,7 +14,7 @@ import { Player } from '../../Network/Player';
 
 export class GameContext {
 	public StatsContext: StatsContext;
-	public TrackingContext: TrackingContext;
+	public TrackingContext: RecordContext;
 
 	//events
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
@@ -58,7 +58,7 @@ export class GameContext {
 		});
 
 		this.StatsContext = new StatsContext(this);
-		this.TrackingContext = new TrackingContext(mapContext, this);
+		this.TrackingContext = new RecordContext(mapContext, this);
 	}
 
 	ExistUnit(id: string) {

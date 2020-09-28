@@ -1,5 +1,4 @@
 import * as Chart from 'chart.js';
-import * as moment from 'moment';
 import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
 import { Curve } from '../../Core/Utils/Stats/Curve';
 import { DateValue } from '../../Core/Utils/Stats/DateValue';

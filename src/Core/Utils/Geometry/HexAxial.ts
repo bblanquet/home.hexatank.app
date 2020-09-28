@@ -16,7 +16,7 @@ export class LightHexAxial {
 	Q: number; //column
 	R: number; //row
 	ToString(): string {
-		return 'HexAxial(' + [ this.Q, this.R ].toString() + ')';
+		return `(${[ this.Q, this.R ].toString()})`;
 	}
 }
 
@@ -30,7 +30,7 @@ export class HexAxial {
 	}
 
 	ToString(): string {
-		return 'HexAxial(' + [ this.Q, this.R ].toString() + ')';
+		return `(${[ this.Q, this.R ].toString()})`;
 	}
 
 	ToCube(): HexCube {

@@ -11,7 +11,6 @@ export default class HomeComponent extends Component<any, any> {
 	constructor() {
 		super();
 	}
-	private _isFirstRender = true;
 
 	private ToSinglePlayer(): void {
 		route('/SinglePlayer', true);
@@ -25,7 +24,7 @@ export default class HomeComponent extends Component<any, any> {
 		route('/CreatingHost', true);
 	}
 
-	private ToPlayback(): void {
+	private ToRecord(): void {
 		route('/Playback', true);
 	}
 
@@ -33,9 +32,7 @@ export default class HomeComponent extends Component<any, any> {
 		route('/OffJoin', true);
 	}
 
-	componentDidMount() {
-		this._isFirstRender = false;
-	}
+	componentDidMount() {}
 
 	componentWillUnmount() {}
 
@@ -43,37 +40,20 @@ export default class HomeComponent extends Component<any, any> {
 		return (
 			<PanelComponent>
 				<div class="container-center">
-					<RedButtonComponent
-						icon={'fas fa-dungeon'}
-						title={'Campaign'}
-						isFirstRender={this._isFirstRender}
-						callBack={() => this.ToCampaign()}
-					/>
-					<RedButtonComponent
-						icon={'fas fa-gamepad'}
-						title={'Play'}
-						isFirstRender={this._isFirstRender}
-						callBack={() => this.ToSinglePlayer()}
-					/>
+					<RedButtonComponent icon={'fas fa-dungeon'} title={'Campaign'} callBack={() => this.ToCampaign()} />
+					<RedButtonComponent icon={'fas fa-gamepad'} title={'Play'} callBack={() => this.ToSinglePlayer()} />
 					<DropDownButtonComponent
 						icon={'fas fa-network-wired'}
 						title={'Multiplayers'}
-						isFirstRender={this._isFirstRender}
 						items={[
 							new ButtonOption('Guest', () => this.ToGuest()),
 							new ButtonOption('Host', () => this.ToHost())
 						]}
 					/>
-					<BlueButtonComponent
-						icon={'fas fa-video'}
-						title={'Playback'}
-						isFirstRender={this._isFirstRender}
-						callBack={() => this.ToPlayback()}
-					/>
+					<BlueButtonComponent icon={'fas fa-video'} title={'Record'} callBack={() => this.ToRecord()} />
 					<BlackButtonComponent
 						icon={'fas fa-phone-square'}
 						title={'Contact'}
-						isFirstRender={this._isFirstRender}
 						callBack={() => this.ToCampaign()}
 					/>
 				</div>

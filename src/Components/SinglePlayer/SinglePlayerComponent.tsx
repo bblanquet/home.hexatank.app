@@ -3,14 +3,13 @@ import { route } from 'preact-router';
 import { SinglePlayerState } from './SinglePlayerState';
 import { GameHelper } from '../../Core/Framework/GameHelper';
 import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
-import { MapMode } from '../../Core/Setup/Generator/MapMode';
+import { MapEnv } from '../../Core/Setup/Generator/MapEnv';
 import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
+import DropDownComponent from '../Common/DropDown/DropDownComponent';
 import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
 import PanelComponent from '../Common/Panel/PanelComponent';
 
 export default class SinglePlayerComponent extends Component<any, SinglePlayerState> {
-	private _isFirstRender = true;
-
 	constructor(props: any) {
 		super(props);
 	}
@@ -20,112 +19,49 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 	componentDidMount() {
 		this.setState({
 			IaNumber: 1,
-			Mode: '0',
+			Env: '0',
 			MapType: 'Flower',
 			Size: 12
 		});
-		this._isFirstRender = false;
 	}
 
 	render() {
 		return (
 			<PanelComponent>
-				<div class="col-auto my-1">
-					<div class="input-group mb-3">
-						<div class="input-group-prepend">
-							<span class="input-group-text custom-black-btn" id="inputGroup-sizing-default">
-								IA
-							</span>
-						</div>
-						<select
-							onInput={(e: any) => {
-								this.setState({ IaNumber: Number(e.target.value) });
-							}}
-							class="custom-select mr-sm-2"
-							id="inlineFormCustomSelect"
-						>
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-						</select>
-					</div>
-				</div>
-				<div class="col-auto my-1 whiteText">
-					<div class="input-group mb-3">
-						<div class="input-group-prepend">
-							<span class="input-group-text custom-black-btn" id="inputGroup-sizing-default">
-								Mode
-							</span>
-						</div>
-						<select
-							onInput={(e: any) => {
-								this.setState({ Mode: e.target.value });
-							}}
-							class="custom-select mr-sm-2"
-							id="inlineFormCustomSelect"
-						>
-							<option value="0">Sand</option>
-							<option value="1">Forest</option>
-							<option value="2">Ice</option>
-						</select>
-					</div>
-				</div>
-				<div class="col-auto my-1 whiteText">
-					<div class="input-group mb-3">
-						<div class="input-group-prepend">
-							<span class="input-group-text custom-black-btn" id="inputGroup-sizing-default">
-								Size
-							</span>
-						</div>
-						<select
-							onInput={(e: any) => {
-								this.setState({ Size: Number(e.target.value) });
-							}}
-							class="custom-select mr-sm-2"
-							id="inlineFormCustomSelect"
-						>
-							<option value="8">small</option>
-							<option selected value="12">
-								medium
-							</option>
-							<option value="16">big</option>
-						</select>
-					</div>
-				</div>
-				<div class="col-auto my-1 whiteText">
-					<div class="input-group mb-3">
-						<div class="input-group-prepend">
-							<span class="input-group-text custom-black-btn" id="inputGroup-sizing-default">
-								Shape
-							</span>
-						</div>
-						<select
-							onInput={(e: any) => {
-								this.setState({ MapType: e.target.value });
-							}}
-							class="custom-select mr-sm-2"
-							id="inlineFormCustomSelect"
-						>
-							<option value="Donut">Donut</option>
-							<option value="Cheese">Cheese</option>
-							<option selected value="Flower">
-								Flower
-							</option>
-						</select>
-					</div>
-				</div>
+				<DropDownComponent
+					OnInput={(e: any) => {
+						this.setState({ IaNumber: Number(e.target.value) });
+					}}
+					Label={'IA'}
+					Values={[ '1', '2', '3' ]}
+				/>
+				<DropDownComponent
+					OnInput={(e: any) => {
+						this.setState({ Env: e.target.value });
+					}}
+					Label={'Env'}
+					Values={[ 'Sand', 'Forest', 'Ice' ]}
+				/>
+				<DropDownComponent
+					OnInput={(e: any) => {
+						this.setState({ Size: Number(e.target.value) });
+					}}
+					Label={'Env'}
+					Values={[ 'Small', 'Medium', 'Large' ]}
+				/>
+				<DropDownComponent
+					OnInput={(e: any) => {
+						this.setState({ MapType: e.target.value });
+					}}
+					Label={'Shape'}
+					Values={[ 'Donut', 'Cheese', 'Flower' ]}
+				/>
 				<p />
 				<div class="container-center-horizontal">
-					<BlackButtonComponent
-						icon={'fas fa-undo-alt'}
-						title={'Back'}
-						isFirstRender={this._isFirstRender}
-						callBack={() => this.Back()}
-					/>
+					<BlackButtonComponent icon={'fas fa-undo-alt'} title={'Back'} callBack={() => this.Back()} />
 					<RedButtonComponent
 						icon={'fas fa-arrow-alt-circle-right'}
 						title={'Play'}
-						isFirstRender={this._isFirstRender}
 						callBack={() => this.Start()}
 					/>
 				</div>
@@ -137,12 +73,24 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 		route('/Home', true);
 	}
 
+	private ConvertEnv(): MapEnv {
+		if (this.state.Env === 'Sand') return MapEnv.sand;
+		if (this.state.Env === 'Forest') return MapEnv.forest;
+		if (this.state.Env === 'Ice') return MapEnv.ice;
+	}
+
+	private ConvertSize(): number {
+		if (this.state.Env === 'Small') return 8;
+		if (this.state.Env === 'Medium') return 12;
+		if (this.state.Env === 'Large') return 16;
+	}
+
 	Start(): void {
 		GameHelper.MapContext = new MapGenerator().GetMapDefinition(
-			+this.state.Size,
+			this.ConvertSize(),
 			this.state.MapType,
 			+this.state.IaNumber + 1,
-			+this.state.Mode as MapMode
+			this.ConvertEnv()
 		);
 		GameHelper.MapContext.Hqs[0].PlayerName = GameHelper.MapContext.PlayerName;
 		let index = 0;

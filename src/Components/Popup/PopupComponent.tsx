@@ -7,13 +7,12 @@ import { GameStatus } from '../Canvas/GameStatus';
 import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
 import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
 import SmActiveIconButtonComponent from '../Common/Button/Stylish/SmActiveIconButtonComponent';
-import { ChartProvider } from './ChartProvider';
+import { ChartProvider } from '../Common/ChartProvider';
 
 export default class PopupComponent extends Component<
 	{ curves: Groups<Curve>; context: any; status: GameStatus },
 	{ Kind: StatsKind }
 > {
-	private _isFirstRender = true;
 	private _chartProvider: ChartProvider;
 	private _canvas: HTMLCanvasElement;
 	constructor() {
@@ -25,7 +24,6 @@ export default class PopupComponent extends Component<
 	}
 
 	componentDidMount() {
-		this._isFirstRender = false;
 		this._chartProvider.AttachChart(
 			StatsKind[this.state.Kind],
 			this.props.curves.Get(StatsKind[this.state.Kind]),
@@ -125,7 +123,6 @@ export default class PopupComponent extends Component<
 						<BlackButtonComponent
 							icon={'fas fa-undo-alt'}
 							title={'Back'}
-							isFirstRender={this._isFirstRender}
 							callBack={() => {
 								this.Quit();
 							}}
@@ -133,7 +130,6 @@ export default class PopupComponent extends Component<
 						<RedButtonComponent
 							icon={'fas fa-save'}
 							title={'Save'}
-							isFirstRender={this._isFirstRender}
 							callBack={() => {
 								this.Save();
 							}}

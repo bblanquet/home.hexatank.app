@@ -14,7 +14,7 @@ import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Floor } from '../../Items/Environment/Floor';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { MapContext } from '../Generator/MapContext';
-import { MapMode } from '../Generator/MapMode';
+import { MapEnv } from '../Generator/MapEnv';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 
 export class MapRender {
@@ -66,7 +66,7 @@ export class MapRender {
 		items.push(new Cloud(1200, 20 * GameSettings.Size, 1600, Archive.nature.clouds[4]));
 	}
 
-	private SetLands(cells: CellContext<Cell>, mode: MapMode, middleAreas: HexAxial[], items: Item[]) {
+	private SetLands(cells: CellContext<Cell>, mode: MapEnv, middleAreas: HexAxial[], items: Item[]) {
 		middleAreas.forEach((corner) => {
 			const cell = cells.Get(corner);
 			const boundingBox = new BoundingBox();
@@ -76,9 +76,9 @@ export class MapRender {
 			boundingBox.Y = cell.GetBoundingBox().Y - (boundingBox.Height / 2 - cell.GetBoundingBox().Height / 2);
 
 			let floor = Archive.nature.forest;
-			if (mode === MapMode.ice) {
+			if (mode === MapEnv.ice) {
 				floor = Archive.nature.ice;
-			} else if (mode === MapMode.sand) {
+			} else if (mode === MapEnv.sand) {
 				floor = Archive.nature.sand;
 			}
 

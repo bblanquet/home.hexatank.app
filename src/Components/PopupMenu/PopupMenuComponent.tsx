@@ -10,7 +10,6 @@ export default class PopupMenuComponent extends Component<
 	{ status: GameStatus; callBack: () => void },
 	{ Kind: StatsKind }
 > {
-	private _isFirstRender = true;
 	constructor() {
 		super();
 		this.setState({
@@ -18,9 +17,7 @@ export default class PopupMenuComponent extends Component<
 		});
 	}
 
-	componentDidMount() {
-		this._isFirstRender = false;
-	}
+	componentDidMount() {}
 
 	private Quit(): void {
 		route('/Home', true);
@@ -43,30 +40,14 @@ export default class PopupMenuComponent extends Component<
 					<RedButtonComponent
 						icon={'fas fa-arrow-alt-circle-right'}
 						title={'Resume'}
-						isFirstRender={this._isFirstRender}
 						callBack={() => this.props.callBack()}
 					/>
 					{GameSettings.ShowEnemies ? (
-						<BlackButtonComponent
-							icon={'fas fa-eye'}
-							title={'Cheat'}
-							isFirstRender={this._isFirstRender}
-							callBack={() => this.Cheat()}
-						/>
+						<BlackButtonComponent icon={'fas fa-eye'} title={'Cheat'} callBack={() => this.Cheat()} />
 					) : (
-						<RedButtonComponent
-							icon={'fas fa-eye'}
-							title={'Cheat'}
-							isFirstRender={this._isFirstRender}
-							callBack={() => this.Cheat()}
-						/>
+						<RedButtonComponent icon={'fas fa-eye'} title={'Cheat'} callBack={() => this.Cheat()} />
 					)}
-					<BlackButtonComponent
-						icon={'fas fa-undo-alt'}
-						title={'Quit'}
-						isFirstRender={this._isFirstRender}
-						callBack={() => this.Quit()}
-					/>{' '}
+					<BlackButtonComponent icon={'fas fa-undo-alt'} title={'Quit'} callBack={() => this.Quit()} />{' '}
 				</div>
 			</div>
 		);

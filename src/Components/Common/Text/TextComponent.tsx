@@ -10,7 +10,7 @@ export default class TextComponent extends Component<
 
 	render() {
 		return (
-			<div class="form-group mb-2">
+			<div class="form-group col-md-2">
 				<div class="input-group mb-3">
 					<div class="input-group-prepend">
 						<span class="input-group-text custom-black-btn" id="inputGroup-sizing-default">
@@ -24,7 +24,6 @@ export default class TextComponent extends Component<
 						disabled={this.props.isEditable}
 						class="form-control"
 						aria-label="Default"
-						aria-describedby="inputGroup-sizing-default"
 					/>
 				</div>
 			</div>

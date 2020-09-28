@@ -394,10 +394,12 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this.InitPosition(cell.GetBoundingBox());
 		this._currentCell = cell;
 		this._currentCell.SetOccupier(this);
-		this._currentCell.CellStateChanged.On(this._handleCellStateChanged);
-		this._handleCellStateChanged(this, this._currentCell.GetState());
-		CellStateSetter.SetStates(this.GameContext, this._currentCell.GetAll());
-		this._currentCell.OnUnitChanged.Invoke(this, this);
+		if (!this.IsPacific) {
+			this._currentCell.CellStateChanged.On(this._handleCellStateChanged);
+			this._handleCellStateChanged(this, this._currentCell.GetState());
+			CellStateSetter.SetStates(this.GameContext, this._currentCell.GetAll());
+			this._currentCell.OnUnitChanged.Invoke(this, this);
+		}
 	}
 
 	public Select(context: InteractionContext): boolean {

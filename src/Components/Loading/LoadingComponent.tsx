@@ -8,11 +8,8 @@ export default class LoadingComponent extends Component<any, { percentage: numbe
 	constructor() {
 		super();
 	}
-	private _isFirstRender = true;
 
 	componentDidMount() {
-		this._isFirstRender = false;
-
 		setTimeout(() => {
 			const listener = SpriteProvider.LoadAll();
 			listener.On((obj: any, percentage: number) => {
@@ -35,12 +32,7 @@ export default class LoadingComponent extends Component<any, { percentage: numbe
 		if (this.state.percentage === 100) {
 			return (
 				<div class="container-center">
-					<RedButtonComponent
-						icon={'fas fa-dungeon'}
-						title={'Continue'}
-						isFirstRender={this._isFirstRender}
-						callBack={() => this.ToHome()}
-					/>
+					<RedButtonComponent icon={'fas fa-dungeon'} title={'Continue'} callBack={() => this.ToHome()} />
 				</div>
 			);
 		}

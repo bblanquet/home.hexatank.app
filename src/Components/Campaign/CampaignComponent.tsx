@@ -2,12 +2,11 @@ import { Component, h } from 'preact';
 import { route } from 'preact-router';
 import { GameHelper } from '../../Core/Framework/GameHelper';
 import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
-import { MapMode } from '../../Core/Setup/Generator/MapMode';
+import { MapEnv } from '../../Core/Setup/Generator/MapEnv';
 import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
 import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
 
 export default class CampaignComponent extends Component<any, any> {
-	private _isFirstRender = true;
 	private _eyesDiv: HTMLDivElement;
 	private _mouthDiv: HTMLDivElement;
 	private _mouthTimer: NodeJS.Timer;
@@ -28,7 +27,6 @@ export default class CampaignComponent extends Component<any, any> {
 	}
 
 	componentDidMount() {
-		this._isFirstRender = false;
 		this._eyesTimer = setInterval(() => this.EyesAnimation(), 2000);
 		this._mouthTimer = setInterval(() => this.MouthAnimation(), 3000);
 	}
@@ -90,7 +88,6 @@ export default class CampaignComponent extends Component<any, any> {
 						<BlackButtonComponent
 							icon={'fas fa-long-arrow-alt-right'}
 							title={''}
-							isFirstRender={this._isFirstRender}
 							callBack={() => this.BlueCampaign()}
 						/>
 					</div>
@@ -99,7 +96,6 @@ export default class CampaignComponent extends Component<any, any> {
 							<RedButtonComponent
 								icon={'fas fa-arrow-alt-circle-right'}
 								title={'1'}
-								isFirstRender={this._isFirstRender}
 								callBack={() => this.Start()}
 							/>
 						</div>
@@ -107,7 +103,6 @@ export default class CampaignComponent extends Component<any, any> {
 							<RedButtonComponent
 								icon={'fas fa-arrow-alt-circle-right'}
 								title={'2'}
-								isFirstRender={this._isFirstRender}
 								callBack={() => this.Start()}
 							/>
 						</div>
@@ -116,7 +111,6 @@ export default class CampaignComponent extends Component<any, any> {
 							<RedButtonComponent
 								icon={'fas fa-arrow-alt-circle-right'}
 								title={'3'}
-								isFirstRender={this._isFirstRender}
 								callBack={() => this.Start()}
 							/>
 						</div>
@@ -124,17 +118,11 @@ export default class CampaignComponent extends Component<any, any> {
 							<RedButtonComponent
 								icon={'fas fa-arrow-alt-circle-right'}
 								title={'4'}
-								isFirstRender={this._isFirstRender}
 								callBack={() => this.Start()}
 							/>
 						</div>
 					</div>
-					<BlackButtonComponent
-						icon={'fas fa-undo-alt'}
-						title={'Back'}
-						isFirstRender={this._isFirstRender}
-						callBack={() => this.Back()}
-					/>
+					<BlackButtonComponent icon={'fas fa-undo-alt'} title={'Back'} callBack={() => this.Back()} />
 				</div>
 			</div>
 		);
@@ -153,7 +141,7 @@ export default class CampaignComponent extends Component<any, any> {
 			+this.state.Size,
 			this.state.MapType,
 			+this.state.IaNumber + 1,
-			+this.state.Mode as MapMode
+			+this.state.Mode as MapEnv
 		);
 		GameHelper.MapContext.Hqs[0].PlayerName = GameHelper.MapContext.PlayerName;
 		let index = 0;

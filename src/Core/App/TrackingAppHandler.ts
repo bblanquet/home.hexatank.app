@@ -1,3 +1,4 @@
+import { TrackingClearTrashCombination } from './../Interaction/Combination/TrackingClearTrashCombination';
 import { ClearTrashCombination } from './../Interaction/Combination/ClearTrashCombination';
 import { TrackingSelectableChecker } from './../Interaction/TrackingSelectable';
 import { DummyHqRender } from './../Setup/Render/Hq/DummyHqRender';
@@ -9,6 +10,7 @@ import { InteractionContext } from '../Interaction/InteractionContext';
 import { CellStateSetter } from '../Items/Cell/CellStateSetter';
 import { SelectionCombination } from '../Interaction/Combination/SelectionCombination';
 import { UnselectCombination } from '../Interaction/Combination/UnselectCombination';
+import { CancelCombination } from '../Interaction/Combination/CancelCombination';
 
 export class TrackingAppHandler extends AppHandler {
 	public SetupGameContext(): GameContext {
@@ -36,9 +38,10 @@ export class TrackingAppHandler extends AppHandler {
 		this.InteractionContext = new InteractionContext(
 			this.InputNotifier,
 			[
+				new CancelCombination(),
 				new ClearTrashCombination(checker),
-				new UnselectCombination(checker, gameContext),
-				new SelectionCombination(checker, gameContext)
+				new SelectionCombination(checker, gameContext),
+				new TrackingClearTrashCombination()
 			],
 			checker,
 			this.GetViewport()

@@ -13,7 +13,6 @@ const io = require('socket.io-client');
 
 export default class GuestComponent extends Component<any, { RoomNames: string[]; PlayerName: string }> {
 	private _socket: any;
-	private _isFirstRender = true;
 
 	constructor() {
 		super();
@@ -25,9 +24,7 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 		this.Listen();
 	}
 
-	componentDidMount() {
-		this._isFirstRender = false;
-	}
+	componentDidMount() {}
 
 	componentWillUnmount() {
 		if (this._socket) {
@@ -51,18 +48,8 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 					right={this.state.RoomNames.length === 0 ? this.EmptyGridContent() : this.GridContent()}
 				/>
 				<div class="container-center-horizontal">
-					<BlackButtonComponent
-						icon={'fas fa-undo-alt'}
-						title={'Back'}
-						isFirstRender={this._isFirstRender}
-						callBack={() => this.Back()}
-					/>
-					<RedButtonComponent
-						icon={'fas fa-sync-alt'}
-						title={'Refresh'}
-						isFirstRender={this._isFirstRender}
-						callBack={() => this.Refresh()}
-					/>
+					<BlackButtonComponent icon={'fas fa-undo-alt'} title={'Back'} callBack={() => this.Back()} />
+					<RedButtonComponent icon={'fas fa-sync-alt'} title={'Refresh'} callBack={() => this.Refresh()} />
 				</div>
 			</PanelComponent>
 		);

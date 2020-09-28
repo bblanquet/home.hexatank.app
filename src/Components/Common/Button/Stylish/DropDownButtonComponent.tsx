@@ -3,11 +3,17 @@ import { IconProvider } from '../../IconProvider';
 import { ButtonOption } from '../ButtonOption';
 
 export default class DropDownButtonComponent extends Component<
-	{ title: string; isFirstRender: boolean; icon: string; items: ButtonOption[] },
+	{ title: string; icon: string; items: ButtonOption[] },
 	any
 > {
+	private _isFirstRender = true;
+
 	constructor() {
 		super();
+	}
+
+	componentDidMount() {
+		this._isFirstRender = false;
 	}
 
 	render() {
@@ -17,7 +23,7 @@ export default class DropDownButtonComponent extends Component<
 					<div class="custom-border-layout-2 fit-content">
 						<div class="custom-red-border fit-content ">
 							<div class="custom-btn fit-content">
-								{IconProvider.GetIcon(this.props.isFirstRender, this.props.icon)} {this.props.title}
+								{IconProvider.GetIcon(this._isFirstRender, this.props.icon)} {this.props.title}
 							</div>
 						</div>
 					</div>

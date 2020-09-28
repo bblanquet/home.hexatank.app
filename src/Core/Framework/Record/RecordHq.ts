@@ -1,10 +1,10 @@
-import { TrackingUnit } from './TrackingUnit';
+import { RecordUnit } from './RecordUnit';
 import { Dictionnary } from '../../Utils/Collections/Dictionnary';
 
-export class TrackingHq {
-	public Units: Dictionnary<TrackingUnit>;
+export class RecordHq {
+	public Units: Dictionnary<RecordUnit>;
 	constructor(public Name: string, public Color: string) {
-		this.Units = new Dictionnary<TrackingUnit>();
+		this.Units = new Dictionnary<RecordUnit>();
 	}
 
 	GetJsonObject(): any {

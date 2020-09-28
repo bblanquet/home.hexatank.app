@@ -524,6 +524,13 @@ body {
 	border-radius: 5px;
 }
 
+input[type='range']::-webkit-slider-thumb {
+	background-color: #e9e9e9;
+	border: 1px solid #cecece;
+	height: 20px;
+	width: 20px;
+}
+
 .foe-talking {
 	font-family: Impact;
 	background: #262626;

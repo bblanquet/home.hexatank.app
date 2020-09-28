@@ -10,6 +10,7 @@ import { Vehicle } from '../../Core/Items/Unit/Vehicle';
 import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
 import { Tank } from '../../Core/Items/Unit/Tank';
 import { Truck } from '../../Core/Items/Unit/Truck';
+import { cpuUsage } from 'process';
 export class LightCanvasUpdater {
 	private _displayedUnits: Dictionnary<Vehicle>;
 	private _displayedFields: Dictionnary<IField>;
@@ -30,43 +31,52 @@ export class LightCanvasUpdater {
 		this.UpdateActiveField(fieldCoos);
 	}
 
-	private UpdateActiveUnits(coos: Dictionnary<{ Axial: HexAxial; Hq: Headquarter; IsTank: boolean; Life: number }>) {
-		this._displayedUnits.Keys().forEach((key) => {
-			if (!coos.Exist(key)) {
-				this._displayedUnits.Get(key).Destroy();
-				this._displayedUnits.Remove(key);
+	private UpdateActiveUnits(units: Dictionnary<{ Axial: HexAxial; Hq: Headquarter; IsTank: boolean; Life: number }>) {
+		units.Keys().forEach((unitId) => {
+			const coo = units.Get(unitId).Axial.ToString();
+			const cell = this._gameContext.GetCell(coo);
+			if (this._displayedUnits.Exist(unitId)) {
+				if (this._displayedUnits.Get(unitId).GetCurrentCell().Coo() !== coo) {
+					this._displayedUnits.Get(unitId).SetPosition(cell);
+				}
+			} else {
+				let v: Vehicle = units.Get(unitId).IsTank
+					? new Tank(units.Get(unitId).Hq, this._gameContext, true)
+					: new Truck(units.Get(unitId).Hq, this._gameContext, true);
+				v.Id = unitId;
+				v.SetPosition(cell);
+				this._displayedUnits.Add(unitId, v);
 			}
+			if (0 < units.Get(unitId).Life) {
+				if (this._displayedUnits.Get(unitId).GetCurrentLife() !== units.Get(unitId).Life) {
+					this._displayedUnits.Get(unitId).SetCurrentLife(units.Get(unitId).Life);
+				}
+			}
+			this._displayedUnits.Get(unitId).SetVisible(true);
 		});
 
-		coos.Keys().forEach((key) => {
-			const cell = this._gameContext.GetCell(coos.Get(key).Axial.ToString());
-			if (this._displayedUnits.Exist(key)) {
-				this._displayedUnits.Get(key).Destroy();
-				this._displayedUnits.Remove(key);
+		this._displayedUnits.Keys().forEach((unitId) => {
+			if (!units.Exist(unitId)) {
+				const unit = this._displayedUnits.Get(unitId);
+				unit.SetVisible(false);
 			}
-			let v: Vehicle = null;
-			if (coos.Get(key).IsTank) {
-				v = new Tank(coos.Get(key).Hq, this._gameContext, true);
-				v.SetCurrentLife(coos.Get(key).Life);
-			} else {
-				v = new Truck(coos.Get(key).Hq, this._gameContext, true);
-				v.SetCurrentLife(coos.Get(key).Life);
-			}
-			v.Id = key;
-			v.SetPosition(cell);
-			this._displayedUnits.Add(key, v);
 		});
 	}
 
 	private GetActiveUnits(date: number) {
-		const coos = new Dictionnary<{ Axial: HexAxial; Hq: Headquarter; IsTank: boolean; Life: number }>();
+		const coos = new Dictionnary<{
+			Axial: HexAxial;
+			Hq: Headquarter;
+			IsTank: boolean;
+			Life: number;
+		}>();
 		this._ref.Hqs.Values().forEach((hq) => {
 			hq.Units.Keys().forEach((key) => {
 				const dates = hq.Units.Get(key).Actions.map((a) => a.X);
 				const dateIndex = this.GetIndex(date, dates);
 				if (!isNullOrUndefined(dateIndex)) {
 					const action = hq.Units.Get(key).Actions[dateIndex];
-					if (+action.kind !== +TrackingKind.Destroyed) {
+					if (+action.kind !== TrackingKind.Destroyed) {
 						coos.Add(key, {
 							Axial: new HexAxial(action.Amount.Q, action.Amount.R),
 							Hq: this._gameContext.GetHqs().find((c) => c.PlayerName === hq.Name),
@@ -112,7 +122,7 @@ export class LightCanvasUpdater {
 		});
 	}
 
-	public GetIndex(value: number, list: number[]): number {
+	public GetIndex(value: number, list: number[]): number | null {
 		var mid;
 		var low = 0;
 		var high = list.length - 1;
@@ -129,6 +139,9 @@ export class LightCanvasUpdater {
 			return high;
 		}
 
-		return low;
+		if (list[low] < value) {
+			return low;
+		}
+		return null;
 	}
 }

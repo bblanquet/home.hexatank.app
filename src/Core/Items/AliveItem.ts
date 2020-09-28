@@ -57,7 +57,16 @@ export abstract class AliveItem extends Item {
 
 	public SetDamage(damage: number): void {
 		this.Life -= damage;
+		this.UpdateDamage();
+	}
 
+	public SetVisible(isVisible: boolean): void {
+		this._totalLifeBar.visible = isVisible;
+		this._currentLifeBar.visible = isVisible;
+		this._borderBar.visible = isVisible;
+	}
+
+	private UpdateDamage() {
 		if (0 < this.Life && this.Life < this.TotalLife) {
 			this.Show();
 		} else {
@@ -99,7 +108,8 @@ export abstract class AliveItem extends Item {
 	}
 
 	public SetCurrentLife(life: number): void {
-		this.SetDamage(this.TotalLife - life);
+		this.Life = life;
+		this.UpdateDamage();
 	}
 
 	public abstract IsEnemy(item: AliveItem): boolean;

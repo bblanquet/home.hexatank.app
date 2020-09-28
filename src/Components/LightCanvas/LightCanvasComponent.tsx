@@ -4,8 +4,20 @@ import { ISelectable } from '../../Core/ISelectable';
 import { LightCanvasUpdater } from './LightCanvasUpdater';
 import { GameSettings } from '../../Core/Framework/GameSettings';
 import { TrackingAppHandler } from '../../Core/App/TrackingAppHandler';
+import RangeComponent from '../Common/Range/RangeComponent';
+import { Item } from '../../Core/Items/Item';
+import { Tank } from '../../Core/Items/Unit/Tank';
+import { Truck } from '../../Core/Items/Unit/Truck';
+import TankMenuComponent from '../Canvas/Parts/TankMenuComponent';
+import TruckMenuComponent from '../Canvas/Parts/TruckMenuComponent';
 
-export default class LightCanvasComponent extends Component<{}, { dataSet: number[] }> {
+export default class LightCanvasComponent extends Component<
+	{},
+	{
+		dataSet: number[];
+		Item: Item;
+	}
+> {
 	private _gameCanvas: HTMLDivElement;
 	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
 	private _appHandler: TrackingAppHandler;
@@ -58,8 +70,20 @@ export default class LightCanvasComponent extends Component<{}, { dataSet: numbe
 						this._gameCanvas = dom;
 					}}
 				/>
+				{this.LeftMenuRender()}
 			</div>
 		);
+	}
+
+	private LeftMenuRender() {
+		if (this.state.Item) {
+			if (this.state.Item instanceof Tank) {
+				return <TankMenuComponent AppHandler={this._appHandler} Tank={this.state.Item} />;
+			} else if (this.state.Item instanceof Truck) {
+				return <TruckMenuComponent AppHandler={this._appHandler} Truck={this.state.Item} />;
+			}
+		}
+		return '';
 	}
 
 	private SetMenu(): void {}
@@ -83,19 +107,7 @@ export default class LightCanvasComponent extends Component<{}, { dataSet: numbe
 	private BottomMenuRender() {
 		return (
 			<div class="absolute-center-bottom full-width">
-				<div class="form-group">
-					<input
-						class="custom-range"
-						type="range"
-						min={0 < this.state.dataSet.length ? this.state.dataSet[0] : 0}
-						max={0 < this.state.dataSet.length ? this.state.dataSet[this.state.dataSet.length - 1] : 0}
-						list="num"
-						onInput={(e: any) => this.HandleRangeChanged(e)}
-					/>
-					<datalist id="num">
-						{this.state.dataSet.map((data) => <option value={data} label={`${data}`} />)}
-					</datalist>
-				</div>
+				<RangeComponent dataSet={this.state.dataSet} onChange={(e: any) => this.HandleRangeChanged(e)} />
 			</div>
 		);
 	}

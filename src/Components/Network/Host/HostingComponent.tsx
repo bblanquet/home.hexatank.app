@@ -10,7 +10,6 @@ import { PeerSocket } from '../../../Network/Peer/PeerSocket';
 import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
 import { Player } from '../../../Network/Player';
 import OptionComponent from './Options/OptionComponent';
-import { IconProvider } from '../../Common/IconProvider';
 import { HostState } from '../HostState';
 import { GameSettings } from '../../../Core/Framework/GameSettings';
 import { MapGenerator } from '../../../Core/Setup/Generator/MapGenerator';
@@ -20,10 +19,11 @@ import { GameHelper } from '../../../Core/Framework/GameHelper';
 import { isNullOrUndefined } from 'util';
 import BlackButtonComponent from '../../Common/Button/Stylish/BlackButtonComponent';
 import RedButtonComponent from '../../Common/Button/Stylish/RedButtonComponent';
+import Icon from '../../Common/Icon/IconComponent';
+import PanelComponent from '../../Common/Panel/PanelComponent';
 
 export default class HostingComponent extends Component<any, HostState> {
 	private _socket: NetworkSocket;
-	private _isFirstRender = true;
 	private _hasSettings: boolean = false;
 
 	private _readyObserver: NetworkObserver;
@@ -68,10 +68,6 @@ export default class HostingComponent extends Component<any, HostState> {
 		this._socket.OnReceived.On(this._mapObserver);
 	}
 
-	componentDidMount() {
-		this._isFirstRender = false;
-	}
-
 	componentWillUnmount() {
 		this._socket.OnReceived.Off(this._toastObserver);
 		this._socket.OnReceived.Off(this._readyObserver);
@@ -82,21 +78,13 @@ export default class HostingComponent extends Component<any, HostState> {
 
 	render() {
 		return (
-			<div>
-				<div class="absolute-center-top generalContainer">
-					<div class="logo-container">
-						<div class="fill-logo-back-container">
-							<div class="fill-logo-back spin-fade" />
-						</div>
-						<div class="fill-logo" />
-					</div>
-					{this.GetUpdsideButton()}
-					<PlayersComponent NetworkHandler={this._socket} HostState={this.state} />
-					{this.GetDownsideButton()}
-				</div>
+			<PanelComponent>
+				{this.GetUpdsideButton()}
+				<PlayersComponent NetworkHandler={this._socket} HostState={this.state} />
+				{this.GetDownsideButton()}
 				{this.GetSettings()}
 				<div class="absolute-center-bottom full-width">{this.GetMessageForm()}</div>
-			</div>
+			</PanelComponent>
 		);
 	}
 	GetSettings() {
@@ -144,7 +132,7 @@ export default class HostingComponent extends Component<any, HostState> {
 				/>
 				<div class="input-group-append">
 					<button class="btn btn-dark" type="button" id="button-addon1" onClick={() => this.SendToast()}>
-						{IconProvider.GetIcon(this._isFirstRender, 'fas fa-comment')}
+						<Icon Value={'fas fa-comment'} />
 					</button>
 				</div>
 			</div>

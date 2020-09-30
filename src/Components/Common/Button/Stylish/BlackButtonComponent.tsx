@@ -1,5 +1,5 @@
 import { h, Component } from 'preact';
-import { IconProvider } from '../../IconProvider';
+import Icon from '../../Icon/IconComponent';
 
 export default class BlackButtonComponent extends Component<
 	{ callBack: () => void; title: string; icon: string },
@@ -21,7 +21,7 @@ export default class BlackButtonComponent extends Component<
 				<div class="custom-border-layout-2 fit-content">
 					<div class="custom-black-border fit-content">
 						<div class="custom-black-btn fit-content" onClick={() => this.props.callBack()}>
-							{IconProvider.GetIcon(this._isFirstRender, this.props.icon)} {this.props.title}
+							<Icon Value={this.props.icon} /> {this.props.title}
 						</div>
 					</div>
 				</div>

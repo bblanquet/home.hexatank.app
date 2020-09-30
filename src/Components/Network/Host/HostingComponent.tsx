@@ -16,7 +16,7 @@ import { MapGenerator } from '../../../Core/Setup/Generator/MapGenerator';
 import { MapEnv } from '../../../Core/Setup/Generator/MapEnv';
 import { MapContext } from '../../../Core/Setup/Generator/MapContext';
 import { GameHelper } from '../../../Core/Framework/GameHelper';
-import { isNullOrUndefined } from 'util';
+import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
 import BlackButtonComponent from '../../Common/Button/Stylish/BlackButtonComponent';
 import RedButtonComponent from '../../Common/Button/Stylish/RedButtonComponent';
 import Icon from '../../Common/Icon/IconComponent';

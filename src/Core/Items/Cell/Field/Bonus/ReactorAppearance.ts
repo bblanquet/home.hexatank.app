@@ -1,6 +1,5 @@
 import { FadeOutAnimation } from '../../../Animator/FadeOutAnimation';
 import { FadeInAnimation } from '../../../Animator/FadeInAnimation';
-import { isNullOrUndefined } from 'util';
 import { RotationAnimator } from '../../../Animator/RotationAnimator';
 import { IAnimator } from '../../../Animator/IAnimator';
 import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
@@ -11,6 +10,7 @@ import { Archive } from '../../../../Framework/ResourceArchiver';
 import { BouncingScaleAnimator } from '../../../Animator/BouncingScaleAnimator';
 import { ReactorField } from './ReactorField';
 import { AliveItem } from '../../../AliveItem';
+import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 
 export class ReactorAppearance extends Item {
 	private _isIncreasingOpacity: boolean = false;

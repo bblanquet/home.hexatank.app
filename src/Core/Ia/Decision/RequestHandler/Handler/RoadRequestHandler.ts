@@ -7,12 +7,12 @@ import { AreaRequest } from '../../Utils/AreaRequest';
 import { KingdomArea } from '../../Utils/KingdomArea';
 import { AStarEngine } from '../../../AStarEngine';
 import { Cell } from '../../../../Items/Cell/Cell';
-import { isNullOrUndefined } from 'util';
 import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 import { GameSettings } from '../../../../Framework/GameSettings';
 import { RoadField } from '../../../../Items/Cell/Field/Bonus/RoadField';
 import { Groups } from './../../../../Utils/Collections/Groups';
 import { AStarHelper } from '../../../AStarHelper';
+import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 
 export class RoadRequestHandler implements ISimpleRequestHandler {
 	constructor(private _hq: Headquarter) {}

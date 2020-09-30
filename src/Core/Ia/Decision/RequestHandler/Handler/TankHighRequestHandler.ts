@@ -3,9 +3,9 @@ import { KingdomArea } from './../../Utils/KingdomArea';
 import { Kingdom } from './../../Kingdom';
 import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
-import { isNullOrUndefined } from 'util';
 import { RequestType } from '../../Utils/RequestType';
 import { CellHelper } from '../../../../Items/Cell/CellHelper';
+import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 
 export class TankHighRequestHandler implements ISimpleRequestHandler {
 	constructor(private _kingdom: Kingdom, private _mediumRequest: ISimpleRequestHandler) {}

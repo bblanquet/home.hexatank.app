@@ -1,11 +1,11 @@
 import { Tank } from './../../../Items/Unit/Tank';
 import { ISquadTarget } from './Target/ISquadTarget';
-import { isNullOrUndefined } from 'util';
 import { IDoable } from './../IDoable';
 import { SquadRoad } from './SquadRoad';
 import { MapObserver } from '../MapObserver';
 import { Kingdom } from '../Kingdom';
 import { CellHelper } from '../../../Items/Cell/CellHelper';
+import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class Squad implements IDoable {
 	private _tanks: Tank[] = new Array<Tank>();

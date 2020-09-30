@@ -10,7 +10,6 @@ import { IField } from './Field/IField';
 import { AliveItem } from '../AliveItem';
 import { BasicField } from './Field/BasicField';
 import { CellState } from './CellState';
-import { isNullOrUndefined } from 'util';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { ISelectable } from '../../ISelectable';
 import { Headquarter } from './Field/Hq/Headquarter';
@@ -25,6 +24,7 @@ import { Vehicle } from '../Unit/Vehicle';
 import { GameSettings } from '../../Framework/GameSettings';
 import * as PIXI from 'pixi.js';
 import { MultiSelectionContext } from '../../Menu/Smart/MultiSelectionContext';
+import { isNullOrUndefined } from '../../Utils/ToolBox';
 
 export class Cell extends Item implements ICell, ISelectable {
 	public Properties: CellProperties;

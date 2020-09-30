@@ -282,7 +282,7 @@ export default class GameCanvasComponent extends Component<
 	}
 
 	private GetEndMessage() {
-		if ([ GameStatus.Won, GameStatus.Lost ].includes(this.state.GameStatus)) {
+		if ([ GameStatus.Won, GameStatus.Lost ].some((e) => e === this.state.GameStatus)) {
 			return (
 				<PopupComponent
 					status={this.state.GameStatus}

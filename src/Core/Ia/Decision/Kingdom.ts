@@ -1,4 +1,3 @@
-import { isNullOrUndefined } from 'util';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
 import { MoneyOrder } from './../Order/MoneyOrder';
@@ -22,6 +21,7 @@ import { IAreaRequestListMaker } from './RequestMaker/IAreaRequestListMaker';
 import { IGeneralListRequester } from './RequestMaker/GeneralRequester/IGeneralListRequester';
 import { Cell } from '../../Items/Cell/Cell';
 import { Squad } from './Troop/Squad';
+import { isNullOrUndefined } from '../../Utils/ToolBox';
 
 export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	public AreaDecisions: IAreaDecisionMaker[];

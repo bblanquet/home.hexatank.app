@@ -7,7 +7,6 @@ import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
 import { TroopRoads } from '../Troop/TroopRoads';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Area } from '../Utils/Area';
-import { isNullOrUndefined } from 'util';
 import { SimpleOrder } from '../../Order/SimpleOrder';
 import { Tank } from '../../../Items/Unit/Tank';
 import { Groups } from '../../../Utils/Collections/Groups';
@@ -17,6 +16,7 @@ import { GameSettings } from '../../../Framework/GameSettings';
 import { BasicField } from '../../../Items/Cell/Field/BasicField';
 import { AStarEngine } from '../../AStarEngine';
 import { ReactorAreaState } from '../Utils/ReactorAreaState';
+import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class AreaDecisionMaker implements IAreaDecisionMaker {
 	public HasReceivedRequest: boolean;

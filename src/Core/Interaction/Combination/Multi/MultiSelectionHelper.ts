@@ -1,7 +1,7 @@
 import { PersistentOrder } from '../../../Ia/Order/PersistentOrder';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
-import { isNullOrUndefined } from 'util';
+import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class MultiSelectionHelper {
 	public GiveOrders(vehicles: Vehicle[], selectedCells: Cell[]) {

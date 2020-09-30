@@ -1,9 +1,9 @@
-import { isNullOrUndefined } from 'util';
 import { Cell } from '../../Items/Cell/Cell';
 import { FlagCell } from '../../Items/Cell/FlagCell';
 import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { GameContext } from '../../Framework/GameContext';
+import { isNullOrUndefined } from '../../Utils/ToolBox';
 
 export class FlagCellCombination extends AbstractSingleCombination {
 	constructor(private _gameContext: GameContext) {

@@ -9,11 +9,11 @@ import * as PIXI from 'pixi.js';
 import { Item } from '../Items/Item';
 import { Cell } from '../Items/Cell/Cell';
 import { ICombinationDispatcher } from './ICombinationDispatcher';
-import { isNullOrUndefined } from 'util';
 import { Point } from '../Utils/Geometry/Point';
 import { IInteractionContext, InteractionKind } from './IInteractionContext';
 import { ISelectableChecker } from './ISelectableChecker';
 import { ViewContext } from '../Utils/Geometry/ViewContext';
+import { isNullOrUndefined } from '../Utils/ToolBox';
 
 export class InteractionContext implements IContextContainer, IInteractionContext {
 	public Kind: InteractionKind;

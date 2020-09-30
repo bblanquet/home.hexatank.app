@@ -1,9 +1,9 @@
 import { AreaStatus } from './AreaStatus';
 import { Diamond } from '../../../Items/Cell/Field/Diamond';
 import { Cell } from '../../../Items/Cell/Cell';
-import { isNullOrUndefined } from 'util';
 import { AliveItem } from '../../../Items/AliveItem';
 import { DistanceHelper } from '../../../Items/Unit/MotionHelpers/DistanceHelper';
+import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class Area {
 	private _aroudnAreas: Area[];

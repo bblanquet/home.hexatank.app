@@ -2,12 +2,12 @@ import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { Kingdom } from '../../Kingdom';
-import { isNullOrUndefined } from 'util';
 import { KingdomArea } from '../../Utils/KingdomArea';
 import { GameSettings } from '../../../../Framework/GameSettings';
 import { Vehicle } from '../../../../Items/Unit/Vehicle';
 import { Tank } from '../../../../Items/Unit/Tank';
 import { RequestType } from '../../Utils/RequestType';
+import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 
 export class TankMediumRequestHandler implements ISimpleRequestHandler {
 	constructor(private _kingdom: Kingdom, private _hq: Headquarter) {}

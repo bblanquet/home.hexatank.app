@@ -5,12 +5,12 @@ import { PacketKind } from '../Message/PacketKind';
 import { NetworkMessage } from '../Message/NetworkMessage';
 import { ServerSocket } from '../Server/ServerSocket';
 import { ConnectionKind } from '../ConnectionKind';
-import { isNullOrUndefined } from 'util';
 import { INetworkMessage } from '../Message/INetworkMessage';
 import { PingPacket } from './Ping/PingPacket';
 import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
 import { SimpleEvent } from '../../Core/Utils/Events/SimpleEvent';
 import { NetworkObserver } from '../NetworkObserver';
+import { isNullOrUndefined } from '../../Core/Utils/ToolBox';
 
 export abstract class PeerSocket {
 	protected Connection: RTCPeerConnection;

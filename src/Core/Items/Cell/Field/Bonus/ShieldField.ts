@@ -1,4 +1,3 @@
-import { isNullOrUndefined } from 'util';
 import { TimeTimer } from './../../../../Utils/Timer/TimeTimer';
 import { ITimer } from './../../../../Utils/Timer/ITimer';
 import { Headquarter } from './../Hq/Headquarter';
@@ -9,6 +8,7 @@ import { AliveBonusField } from './AliveBonusField';
 import { AliveItem } from '../../../AliveItem';
 import { IAnimator } from '../../../Animator/IAnimator';
 import { InfiniteFadeAnimation } from '../../../Animator/InfiniteFadeAnimation';
+import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 
 export class ShieldField extends AliveBonusField {
 	private _timer: ITimer;

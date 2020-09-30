@@ -1,5 +1,4 @@
 import { InteractionKind } from '../../Interaction/IInteractionContext';
-import { isNullOrUndefined } from 'util';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { BasicItem } from '../../Items/BasicItem';
 import { CellContext } from '../../Items/Cell/CellContext';
@@ -10,6 +9,7 @@ import { Cell } from '../../Items/Cell/Cell';
 import { Item } from '../../Items/Item';
 import { ViewContext } from '../../Utils/Geometry/ViewContext';
 import * as PIXI from 'pixi.js';
+import { isNullOrUndefined } from '../../Utils/ToolBox';
 
 export class MultiSelectionContext implements IInteractionContext {
 	public Kind: InteractionKind;

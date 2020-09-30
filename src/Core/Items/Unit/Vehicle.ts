@@ -16,7 +16,6 @@ import { TranslationMaker } from './MotionHelpers/TranslationMaker';
 import { RotationMaker } from './MotionHelpers/RotationMaker';
 import { AngleFinder } from './MotionHelpers/AngleFinder';
 import { IRotatable } from './MotionHelpers/IRotatable';
-import { isNullOrUndefined } from 'util';
 import { ISelectable } from '../../ISelectable';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { TickTimer } from '../../Utils/Timer/TickTimer';
@@ -30,6 +29,7 @@ import { Sprite } from 'pixi.js';
 import { Point } from '../../Utils/Geometry/Point';
 import { ICancellable } from './ICancellable';
 import { Up } from './PowerUp/Up';
+import { isNullOrUndefined } from '../../Utils/ToolBox';
 
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable, ICancellable {
 	public PowerUps: Array<Up> = [];

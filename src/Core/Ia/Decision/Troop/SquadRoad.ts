@@ -5,8 +5,8 @@ import { Headquarter } from './../../../Items/Cell/Field/Hq/Headquarter';
 import { AStarHelper } from './../../AStarHelper';
 import { AStarEngine } from '../../AStarEngine';
 import { Cell } from '../../../Items/Cell/Cell';
-import { isNullOrUndefined } from 'util';
 import { AliveSquadTarget } from './Target/HqSquadTarget';
+import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class SquadRoad {
 	constructor(private _hq: Headquarter) {}

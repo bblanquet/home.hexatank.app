@@ -4,7 +4,7 @@ import { PacketKind } from '../Message/PacketKind';
 import { ConnectionKind } from '../ConnectionKind';
 
 export class OffererSocket extends PeerSocket {
-	private _timeOut: NodeJS.Timeout;
+	private _timeOut: any;
 
 	constructor(serverSocket: ServerSocket, owner: string, recipient: string) {
 		super(serverSocket, owner, recipient);
@@ -52,7 +52,7 @@ export class OffererSocket extends PeerSocket {
 		};
 
 		this.ServerPing.PingReceived.On((obj: any, data: number) => {
-			if(this.GetConnectionStatus().IsNotConnected()){
+			if (this.GetConnectionStatus().IsNotConnected()) {
 				let message = this.GetTemplate(PacketKind.Reset);
 				this.ServerSocket.Emit(message);
 				this.ShutDown();

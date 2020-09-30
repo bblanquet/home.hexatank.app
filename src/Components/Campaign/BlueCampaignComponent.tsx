@@ -7,8 +7,8 @@ import BlueButtonComponent from '../Common/Button/Stylish/BlueButtonComponent';
 import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
 
 export default class BlueCampaignComponent extends Component<any, any> {
-	private _mouthTimer: NodeJS.Timer;
-	private _eyesTimer: NodeJS.Timer;
+	private _mouthTimer: any;
+	private _eyesTimer: any;
 
 	constructor(props: any) {
 		super(props);

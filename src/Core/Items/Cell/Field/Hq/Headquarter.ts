@@ -264,7 +264,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	}
 
 	public OnCashMissing: LiteEvent<Boolean> = new LiteEvent<boolean>();
-	private _cashMissedTimeout: NodeJS.Timeout;
+	private _cashMissedTimeout: any;
 	public CashMissing(): void {
 		if (this._cashMissedTimeout) {
 			clearTimeout(this._cashMissedTimeout);

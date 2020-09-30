@@ -1,6 +1,5 @@
 import { MedicField } from '../../../Items/Cell/Field/Bonus/MedicField';
 import { TimeTimer } from './../../../Utils/Timer/TimeTimer';
-import { isNullOrUndefined } from 'util';
 import { ITimer } from '../../../Utils/Timer/ITimer';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Tank } from '../../../Items/Unit/Tank';
@@ -8,6 +7,7 @@ import { KingdomArea } from '../Utils/KingdomArea';
 import { TickTimer } from '../../../Utils/Timer/TickTimer';
 import { SimpleOrder } from '../../Order/SimpleOrder';
 import { AliveItem } from '../../../Items/AliveItem';
+import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class TroopDecisionMaker {
 	private _changePositionTimer: ITimer;

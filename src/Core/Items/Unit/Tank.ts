@@ -5,7 +5,6 @@ import { Cell } from '../Cell/Cell';
 import { Vehicle } from './Vehicle';
 import { Turrel } from './Turrel';
 import { AliveItem } from '../AliveItem';
-import { isNullOrUndefined, isNull } from 'util';
 import { IHqContainer } from './IHqContainer';
 import { Headquarter } from '../Cell/Field/Hq/Headquarter';
 import { Archive } from '../../Framework/ResourceArchiver';
@@ -14,6 +13,7 @@ import { BasicItem } from '../BasicItem';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Explosion } from './Explosion';
 import { GameContext } from '../../Framework/GameContext';
+import { isNullOrUndefined } from '../../Utils/ToolBox';
 
 export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 	public Turrel: Turrel;
@@ -86,7 +86,9 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 		if (!isNullOrUndefined(this._mainTarget)) {
 			var cells = this.GetCurrentCell().GetAllNeighbourhood();
 
-			let enemies = cells.map((c) => (<Cell>c).GetShootableEntity()).filter((aliveItem) => !isNull(aliveItem));
+			let enemies = cells
+				.map((c) => (<Cell>c).GetShootableEntity())
+				.filter((aliveItem) => !isNullOrUndefined(aliveItem));
 
 			return this.ContainsMainTarget(enemies);
 		}
@@ -157,7 +159,7 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 
 	private SetHqTarget(): void {
 		const cells = this.GetCurrentCell().GetAllNeighbourhood();
-		const enemies = cells.map((c) => (<Cell>c).GetShootableEntity()).filter((c) => !isNull(c));
+		const enemies = cells.map((c) => (<Cell>c).GetShootableEntity()).filter((c) => !isNullOrUndefined(c));
 		const hqs = enemies.filter((c) => c instanceof Headquarter).map((c) => <Headquarter>c);
 		hqs.some((element) => {
 			if (element.IsEnemy(this)) {

@@ -1,5 +1,3 @@
-import { isNullOrUndefined } from 'util';
-import { Dictionnary } from './../../../Utils/Collections/Dictionnary';
 import { TargetOrder } from './../../../Ia/Order/TargetOrder';
 import { PatrolOrder } from './../../../Ia/Order/PatrolOrder';
 import { TruckPatrolOrder } from './../../../Ia/Order/TruckPatrolOrder';

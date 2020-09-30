@@ -2,7 +2,6 @@ import { BouncingScaleUpAnimator } from './../../Items/Animator/BouncingScaleUpA
 import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { AStarEngine } from './../AStarEngine';
 import { OrderState } from './OrderState';
-import { isNullOrUndefined, isNull } from 'util';
 import { Order } from './Order';
 import { Cell } from '../../Items/Cell/Cell';
 import { CellFinder } from '../../Items/Cell/CellFinder';
@@ -13,6 +12,7 @@ import { Archive } from '../../Framework/ResourceArchiver';
 import { ShieldField } from '../../Items/Cell/Field/Bonus/ShieldField';
 import { AStarHelper } from '../AStarHelper';
 import { OrderKind } from './OrderKind';
+import { isNullOrUndefined } from '../../Utils/ToolBox';
 
 export class SimpleOrder extends Order {
 	protected Currentcell: Cell;
@@ -86,7 +86,7 @@ export class SimpleOrder extends Order {
 
 	private GoNextcell() {
 		var cell = this.GetNextcell();
-		if (isNull(cell)) {
+		if (isNullOrUndefined(cell)) {
 			this.State = OrderState.Failed;
 		} else {
 			this._v.SetNextCell(cell);

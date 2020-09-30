@@ -1,8 +1,8 @@
 import { Component, h } from 'preact';
 import { route } from 'preact-router';
 import * as toastr from 'toastr';
+import * as io from 'socket.io-client';
 import { CreatingHostState } from './CreatingHostState';
-const io = require('socket.io-client');
 import { PacketKind } from '../../../Network/Message/PacketKind';
 import RedButtonComponent from '../../Common/Button/Stylish/RedButtonComponent';
 import BlackButtonComponent from '../../Common/Button/Stylish/BlackButtonComponent';

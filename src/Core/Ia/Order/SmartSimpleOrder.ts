@@ -2,7 +2,6 @@ import { AStarHelper } from './../AStarHelper';
 import { ShieldField } from './../../Items/Cell/Field/Bonus/ShieldField';
 import { AStarEngine } from './../AStarEngine';
 import { OrderState } from './OrderState';
-import { isNullOrUndefined } from 'util';
 import { Order } from './Order';
 import { Cell } from '../../Items/Cell/Cell';
 import { CellFinder } from '../../Items/Cell/CellFinder';
@@ -11,6 +10,7 @@ import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { OrderKind } from './OrderKind';
+import { isNullOrUndefined } from '../../Utils/ToolBox';
 
 export class SmartSimpleOrder extends Order {
 	protected Currentcell: Cell;

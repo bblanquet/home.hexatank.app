@@ -1,7 +1,7 @@
-import { isNullOrUndefined } from 'util';
 import { TroopDecisionMaker } from './TroopDecisionMaker';
 import { TroopDestination } from '../Utils/TroopDestination';
 import { Cell } from '../../../Items/Cell/Cell';
+import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class TroopRoads {
 	public Troop: TroopDecisionMaker;

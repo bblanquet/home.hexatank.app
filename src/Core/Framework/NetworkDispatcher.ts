@@ -1,6 +1,5 @@
 import { IOrder } from './../Ia/Order/IOrder';
 import { TypeTranslator } from '../Items/Cell/Field/TypeTranslator';
-import { isNullOrUndefined } from 'util';
 import { Headquarter } from './../Items/Cell/Field/Hq/Headquarter';
 import { PowerFieldPacket } from './Packets/PowerFieldPacket';
 import { OverlockedPacket } from './Packets/OverlockedPacket';
@@ -23,6 +22,7 @@ import { BonusField } from '../Items/Cell/Field/Bonus/BonusField';
 import { AliveItem } from '../Items/AliveItem';
 import { IaHeadquarter } from '../Ia/IaHeadquarter';
 import { OrderPacket } from './Packets/OrderPacket';
+import { isNullOrUndefined } from '../Utils/ToolBox';
 
 export class NetworkDispatcher {
 	public constructor(private _context: GameContext, private _socket: NetworkSocket) {

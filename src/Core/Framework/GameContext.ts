@@ -2,7 +2,6 @@ import { MapContext } from './../Setup/Generator/MapContext';
 import { RecordContext } from './Record/RecordContext';
 import { StatsContext } from './Stats/StatsContext';
 import { Tank } from './../Items/Unit/Tank';
-import { isNullOrUndefined } from 'util';
 import { Headquarter } from './../Items/Cell/Field/Hq/Headquarter';
 import { Dictionnary } from './../Utils/Collections/Dictionnary';
 import { Vehicle } from './../Items/Unit/Vehicle';
@@ -11,6 +10,7 @@ import { Item } from '../Items/Item';
 import { Cell } from '../Items/Cell/Cell';
 import { Player } from '../../Network/Player';
 import { GameStatus } from './GameStatus';
+import { isNullOrUndefined } from '../Utils/ToolBox';
 
 export class GameContext {
 	public StatsContext: StatsContext;

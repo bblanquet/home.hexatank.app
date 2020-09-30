@@ -3,11 +3,11 @@ import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 import { Kingdom } from '../Kingdom';
 import { Area } from '../Utils/Area';
 import { Point } from '../../../Utils/Geometry/Point';
-import { isNullOrUndefined } from 'util';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { AreaDecisionMaker } from '../Area/AreaDecisionMaker';
 import { KingdomArea } from '../Utils/KingdomArea';
 import { AreaSearch } from '../Utils/AreaSearch';
+import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class ExpansionMaker implements IExpansionMaker {
 	constructor(private _hq: Headquarter, private _kingdom: Kingdom, private _areaSearch: AreaSearch) {}

@@ -2,7 +2,6 @@ import { OverlockedPacket } from './Packets/OverlockedPacket';
 import { ReactorField } from './../Items/Cell/Field/Bonus/ReactorField';
 import { Headquarter } from './../Items/Cell/Field/Hq/Headquarter';
 import { IaHeadquarter } from './../Ia/IaHeadquarter';
-import { isNullOrUndefined } from 'util';
 import { FieldTypeHelper } from './Packets/FieldTypeHelper';
 import { OrderPacket } from './Packets/OrderPacket';
 import { PacketKind } from './../../Network/Message/PacketKind';
@@ -17,6 +16,7 @@ import { FieldPacket } from './Packets/FieldPacket';
 import { TypeTranslator } from '../Items/Cell/Field/TypeTranslator';
 import { PowerFieldPacket } from './Packets/PowerFieldPacket';
 import { Cell } from '../Items/Cell/Cell';
+import { isNullOrUndefined } from '../Utils/ToolBox';
 
 export class NetworkReceiver {
 	private _creatingUnitObserver: NetworkObserver;

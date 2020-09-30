@@ -1,6 +1,6 @@
 import { HexAxial } from './../../../Utils/Geometry/HexAxial';
 import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
-import { isNullOrUndefined } from 'util';
+import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class AreaSearch {
 	constructor(private _coordinates: Dictionnary<HexAxial>) {}

@@ -3,10 +3,10 @@ import { Cell } from '../../Items/Cell/Cell';
 import { SimpleOrder } from './SimpleOrder';
 import { Order } from './Order';
 import { BasicItem } from '../../Items/BasicItem';
-import { isNullOrUndefined } from 'util';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { OrderKind } from './OrderKind';
+import { isNullOrUndefined } from '../../Utils/ToolBox';
 
 export class PatrolOrder extends Order {
 	private _currentPatrolcell: Cell;

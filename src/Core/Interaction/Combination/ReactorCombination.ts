@@ -1,12 +1,12 @@
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { InfluenceMenuItem } from '../../Menu/Buttons/InfluenceMenuItem';
-import { isNullOrUndefined } from 'util';
 import { Cell } from '../../Items/Cell/Cell';
 import { BasicField } from '../../Items/Cell/Field/BasicField';
 import { CombinationContext } from './CombinationContext';
 import { GameSettings } from '../../Framework/GameSettings';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { GameContext } from '../../Framework/GameContext';
+import { isNullOrUndefined } from '../../Utils/ToolBox';
 
 export class ReactorCombination extends AbstractSingleCombination {
 	constructor(private _gameContext: GameContext) {

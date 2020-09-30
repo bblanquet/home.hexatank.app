@@ -1,7 +1,7 @@
-import { isNullOrUndefined } from 'util';
 import { ITranslationMaker } from './ITranslationMaker';
 import { IMovable } from '../../IMovable';
 import { IBoundingBoxContainer } from '../../../IBoundingBoxContainer';
+import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implements ITranslationMaker {
 	private _item: T;

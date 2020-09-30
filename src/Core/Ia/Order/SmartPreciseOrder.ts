@@ -1,6 +1,5 @@
 import { AStarEngine } from './../AStarEngine';
 import { OrderState } from './OrderState';
-import { isNullOrUndefined, isNull } from 'util';
 import { Order } from './Order';
 import { Cell } from '../../Items/Cell/Cell';
 import { CellFinder } from '../../Items/Cell/CellFinder';
@@ -10,6 +9,7 @@ import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { AStarHelper } from '../AStarHelper';
 import { OrderKind } from './OrderKind';
+import { isNullOrUndefined } from '../../Utils/ToolBox';
 
 export class SmartPreciseOrder extends Order {
 	protected Currentcell: Cell;
@@ -83,7 +83,7 @@ export class SmartPreciseOrder extends Order {
 
 	private GoNextcell() {
 		var cell = this.GetNextcell();
-		if (isNull(cell)) {
+		if (isNullOrUndefined(cell)) {
 			this.State = OrderState.Failed;
 		} else {
 			this._v.SetNextCell(cell);

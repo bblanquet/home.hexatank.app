@@ -1,4 +1,3 @@
-import { isNullOrUndefined } from 'util';
 import { RotationAnimator } from '../../Animator/RotationAnimator';
 import { IAnimator } from '../../Animator/IAnimator';
 import { TickTimer } from '../../../Utils/Timer/TickTimer';
@@ -7,6 +6,7 @@ import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { IInteractionContext } from '../../../Interaction/IInteractionContext';
 import { Item } from '../../Item';
 import { Vehicle } from '../Vehicle';
+import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class UpAnimation extends Item {
 	private _rotationAnimator: RotationAnimator;

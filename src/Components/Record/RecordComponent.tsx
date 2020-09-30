@@ -1,3 +1,6 @@
+import { inject } from 'inversify';
+import { IAppService } from '../../Services/App/IAppService';
+import { TYPES } from '../../types';
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import PanelComponent from '../Common/Panel/PanelComponent';
@@ -13,9 +16,12 @@ import { RecordData } from '../../Core/Framework/Record/RecordData';
 import { RecordCell } from '../../Core/Framework/Record/RecordCell';
 import SmBlackButtonComponent from '../Common/Button/Stylish/SmBlackButtonComponent';
 import GridComponent from '../Common/Grid/GridComponent';
+
 export default class RecordComponent extends Component<any, { Records: RecordObject[] }> {
+	@inject(TYPES.AppService) private _appService: IAppService;
 	constructor() {
 		super();
+		this._appService.CreateApp(null);
 		this.setState({
 			Records: []
 		});

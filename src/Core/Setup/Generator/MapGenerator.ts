@@ -42,7 +42,7 @@ export class MapGenerator {
 		const border = Dictionnary.To<HexAxial>((e) => e.ToString(), mapBuilder.GetRange(mapSize, mapSize - 1));
 		const fatherPointManager = new FartestPointsFinder();
 
-		const hqPositions = fatherPointManager.GetPoints(areas.filter((a) => border.Exist(a.ToString())), hqCount); //fatherPointManager.GetFartestPoints(center, areas)
+		const hqPositions = fatherPointManager.GetPoints(areas.filter((a) => border.Exist(a.ToString())), hqCount);
 		const diamondPositions = this.GetDiamonds(hqPositions, container, hqCount);
 
 		const excluded = new Dictionnary<HexAxial>();
@@ -77,14 +77,7 @@ export class MapGenerator {
 			context.Hqs.push(hqDiamond);
 		});
 
-		var decorator: Decorator = null;
-		if (mapMode === MapEnv.forest) {
-			decorator = new ForestDecorator();
-		} else if (mapMode === MapEnv.ice) {
-			decorator = new IceDecorator();
-		} else {
-			decorator = new SandDecorator();
-		}
+		var decorator: Decorator = this.GetDecorator(mapMode);
 		//decorate tree, water, stone the map
 		cellPositions.forEach((coo) => {
 			let mapItem = new MapItem();
@@ -104,6 +97,18 @@ export class MapGenerator {
 		context.CenterItem = mapItems[0];
 		//mapItems.filter((m) => m.Position.Q === center.Q && m.Position.R === center.R)[0];
 		return context;
+	}
+
+	private GetDecorator(mapMode: MapEnv) {
+		var decorator: Decorator = null;
+		if (mapMode === MapEnv.forest) {
+			decorator = new ForestDecorator();
+		} else if (mapMode === MapEnv.ice) {
+			decorator = new IceDecorator();
+		} else {
+			decorator = new SandDecorator();
+		}
+		return decorator;
 	}
 
 	private GetDiamonds(

@@ -9,7 +9,6 @@ import { MapRender } from '../Setup/Render/MapRender';
 import { InteractionContext } from '../Interaction/InteractionContext';
 import { CellStateSetter } from '../Items/Cell/CellStateSetter';
 import { SelectionCombination } from '../Interaction/Combination/SelectionCombination';
-import { UnselectCombination } from '../Interaction/Combination/UnselectCombination';
 import { CancelCombination } from '../Interaction/Combination/CancelCombination';
 
 export class TrackingAppHandler extends AppHandler {

@@ -1,13 +1,13 @@
 import { Component, h } from 'preact';
-import { GameHelper } from '../../Core/Framework/GameHelper';
-import { ISelectable } from '../../Core/ISelectable';
+import { GameHelper } from '../../../Core/Framework/GameHelper';
+import { ISelectable } from '../../../Core/ISelectable';
 import { RecordCanvasUpdater } from './Updaters/RecordCanvasUpdater';
-import { GameSettings } from '../../Core/Framework/GameSettings';
-import { TrackingAppHandler } from '../../Core/App/TrackingAppHandler';
-import RangeComponent from '../Common/Range/RangeComponent';
-import { Item } from '../../Core/Items/Item';
+import { GameSettings } from '../../../Core/Framework/GameSettings';
+import { TrackingAppHandler } from '../../../Core/App/TrackingAppHandler';
+import RangeComponent from '../../Common/Range/RangeComponent';
+import { Item } from '../../../Core/Items/Item';
 import UnitMenuComponent from './Parts/UnitMenuComponent';
-import { Vehicle } from '../../Core/Items/Unit/Vehicle';
+import { Vehicle } from '../../../Core/Items/Unit/Vehicle';
 
 export default class RecordCanvasComponent extends Component<
 	{},

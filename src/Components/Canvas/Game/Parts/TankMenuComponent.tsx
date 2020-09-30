@@ -1,14 +1,15 @@
 import { Component, h } from 'preact';
-import { Item } from '../../../Core/Items/Item';
-import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
-import { PatrolMenuItem } from '../../../Core/Menu/Buttons/PatrolMenuItem';
-import { SearchMoneyMenuItem } from '../../../Core/Menu/Buttons/SearchMoneyMenuItem';
-import { AbortMenuItem } from '../../../Core/Menu/Buttons/AbortMenuItem';
-import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
-import { AppHandler } from '../../../Core/App/AppHandler';
-import { Vehicle } from '../../../Core/Items/Unit/Vehicle';
+import { PatrolMenuItem } from '../../../../Core/Menu/Buttons/PatrolMenuItem';
+import { TargetMenuItem } from '../../../../Core/Menu/Buttons/TargetMenuItem';
+import { CamouflageMenuItem } from '../../../../Core/Menu/Buttons/CamouflageMenutItem';
+import { AbortMenuItem } from '../../../../Core/Menu/Buttons/AbortMenuItem';
+import { CancelMenuItem } from '../../../../Core/Menu/Buttons/CancelMenuItem';
+import { Item } from '../../../../Core/Items/Item';
+import { InteractionKind } from '../../../../Core/Interaction/IInteractionContext';
+import { AppHandler } from '../../../../Core/App/AppHandler';
+import { Vehicle } from '../../../../Core/Items/Unit/Vehicle';
 
-export default class TruckMenuComponent extends Component<{ AppHandler: AppHandler; Truck: Vehicle }, {}> {
+export default class TankMenuComponent extends Component<{ AppHandler: AppHandler; Tank: Vehicle }, {}> {
 	private SendContext(item: Item): void {
 		this.props.AppHandler.InteractionContext.Kind = InteractionKind.Up;
 		return this.props.AppHandler.InteractionContext.OnSelect(item);
@@ -20,7 +21,7 @@ export default class TruckMenuComponent extends Component<{ AppHandler: AppHandl
 				<div class="middle2 max-width">
 					<div class="btn-group-vertical max-width">
 						<button type="button" class="btn btn-light without-padding">
-							{this.props.Truck.Id}
+							{this.props.Tank.Id}
 						</button>
 						<button
 							type="button"
@@ -33,9 +34,16 @@ export default class TruckMenuComponent extends Component<{ AppHandler: AppHandl
 						<button
 							type="button"
 							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new SearchMoneyMenuItem())}
+							onClick={(e: any) => this.SendContext(new TargetMenuItem())}
 						>
-							<div class="fill-searchMoney max-width standard-space" />
+							<div class="fill-target max-width standard-space" />
+						</button>
+						<button
+							type="button"
+							class="btn btn-dark without-padding"
+							onClick={(e: any) => this.SendContext(new CamouflageMenuItem())}
+						>
+							<div class="fill-camouflage max-width standard-space" />
 						</button>
 						<button
 							type="button"

@@ -15,19 +15,22 @@ import { RenderingGroups } from '../Setup/Render/RenderingGroups';
 export abstract class AppHandler {
 	//environement
 	private _app: PIXI.Application;
-
+	private _itemsUpdater: ItemsUpdater;
 	private _viewPort: any;
-	public InteractionContext: InteractionContext;
-	public InputNotifier: InputNotifier;
-	public InteractionManager: PIXI.interaction.InteractionManager;
+	protected InputNotifier: InputNotifier;
+	protected InteractionManager: PIXI.interaction.InteractionManager;
 
-	public Playground: ItemsUpdater;
+	public InteractionContext: InteractionContext;
 
 	//cannot be extracted?
 	public OnMultiMenuShowed: LiteEvent<boolean> = new LiteEvent<boolean>();
 
 	public GetApp(): PIXI.Application {
 		return this._app;
+	}
+
+	public GetUpdater(): ItemsUpdater {
+		return this._itemsUpdater;
 	}
 
 	public Clear(): void {
@@ -56,7 +59,7 @@ export abstract class AppHandler {
 		this._viewPort.drag().pinch().wheel().decelerate();
 		this._app.stage.addChild(this._viewPort);
 		const viewContext = new ViewContext();
-		this.Playground = new ItemsUpdater(viewContext);
+		this._itemsUpdater = new ItemsUpdater(viewContext);
 		this.InputNotifier = new InputNotifier();
 
 		this._viewPort.on('zoomed', (e: any) => {
@@ -68,7 +71,7 @@ export abstract class AppHandler {
 				return;
 			}
 		});
-		GameHelper.Updater = this.Playground;
+		GameHelper.Updater = this._itemsUpdater;
 		GameHelper.ViewContext = viewContext;
 		GameHelper.Render = new RenderingHandler(
 			new RenderingGroups(
@@ -115,8 +118,8 @@ export abstract class AppHandler {
 		const hqPoint = gameContext.GetMainHq().GetBoundingBox().GetCentralPoint();
 		const halfWidth = GameSettings.ScreenWidth / 2;
 		const halfHeight = GameSettings.ScreenHeight / 2;
-		this.Playground.ViewContext.SetX(-(hqPoint.X - halfWidth));
-		this.Playground.ViewContext.SetY(-(hqPoint.Y - halfHeight));
+		this._itemsUpdater.ViewContext.SetX(-(hqPoint.X - halfWidth));
+		this._itemsUpdater.ViewContext.SetY(-(hqPoint.Y - halfHeight));
 	}
 
 	private SetBackgroundColor(mapMode: MapEnv) {

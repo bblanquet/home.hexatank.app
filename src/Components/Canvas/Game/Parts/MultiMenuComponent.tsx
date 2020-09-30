@@ -1,13 +1,13 @@
 import { Component, h } from 'preact';
-import { Item } from '../../../Core/Items/Item';
-import { MultiTankMenuItem } from '../../../Core/Menu/Buttons/MultiTankMenuItem';
-import { MultiCellMenuItem } from '../../../Core/Menu/Buttons/MultiCellMenuItem';
-import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
-import { AppHandler } from '../../../Core/App/AppHandler';
-import { GameContext } from '../../../Core/Framework/GameContext';
-import ExpCircularComponent from '../../Common/Circular/CircularComponent';
-import WhiteBtn from '../../Common/Button/Standard/SmWhiteBtnComponent';
-import { Point } from '../../../Core/Utils/Geometry/Point';
+import { Item } from '../../../../Core/Items/Item';
+import { MultiTankMenuItem } from '../../../../Core/Menu/Buttons/MultiTankMenuItem';
+import { MultiCellMenuItem } from '../../../../Core/Menu/Buttons/MultiCellMenuItem';
+import { InteractionKind } from '../../../../Core/Interaction/IInteractionContext';
+import { AppHandler } from '../../../../Core/App/AppHandler';
+import { GameContext } from '../../../../Core/Framework/GameContext';
+import ExpCircularComponent from '../../../Common/Circular/CircularComponent';
+import WhiteBtn from '../../../Common/Button/Standard/SmWhiteBtnComponent';
+import { Point } from '../../../../Core/Utils/Geometry/Point';
 
 export default class MultiMenuComponent extends Component<
 	{ Item: Item; AppHandler: AppHandler; GameContext: GameContext },

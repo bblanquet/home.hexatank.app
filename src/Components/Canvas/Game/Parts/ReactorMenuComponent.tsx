@@ -1,15 +1,15 @@
 import { Component, h } from 'preact';
-import { PlusMenuItem } from '../../../Core/Menu/Buttons/PlusMenuItem';
-import { MinusMenuItem } from '../../../Core/Menu/Buttons/MinusMenuItem';
-import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
-import { ReactorField } from '../../../Core/Items/Cell/Field/Bonus/ReactorField';
-import { Item } from '../../../Core/Items/Item';
-import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
-import { AppHandler } from '../../../Core/App/AppHandler';
-import { GameContext } from '../../../Core/Framework/GameContext';
-import { AttackMenuItem } from '../../../Core/Menu/Buttons/AttackMenuItem';
-import { SpeedFieldMenuItem } from '../../../Core/Menu/Buttons/SpeedFieldMenuItem';
-import { HealMenuItem } from '../../../Core/Menu/Buttons/HealMenuItem';
+import { PlusMenuItem } from '../../../../Core/Menu/Buttons/PlusMenuItem';
+import { MinusMenuItem } from '../../../../Core/Menu/Buttons/MinusMenuItem';
+import { CancelMenuItem } from '../../../../Core/Menu/Buttons/CancelMenuItem';
+import { ReactorField } from '../../../../Core/Items/Cell/Field/Bonus/ReactorField';
+import { Item } from '../../../../Core/Items/Item';
+import { InteractionKind } from '../../../../Core/Interaction/IInteractionContext';
+import { AppHandler } from '../../../../Core/App/AppHandler';
+import { GameContext } from '../../../../Core/Framework/GameContext';
+import { AttackMenuItem } from '../../../../Core/Menu/Buttons/AttackMenuItem';
+import { SpeedFieldMenuItem } from '../../../../Core/Menu/Buttons/SpeedFieldMenuItem';
+import { HealMenuItem } from '../../../../Core/Menu/Buttons/HealMenuItem';
 
 export default class ReactorMenuComponent extends Component<
 	{ Item: ReactorField; AppHandler: AppHandler; GameContext: GameContext },

@@ -3,7 +3,6 @@ import { RecordContext } from './Record/RecordContext';
 import { StatsContext } from './Stats/StatsContext';
 import { Tank } from './../Items/Unit/Tank';
 import { isNullOrUndefined } from 'util';
-import { GameStatus } from './../../Components/Canvas/GameStatus';
 import { Headquarter } from './../Items/Cell/Field/Hq/Headquarter';
 import { Dictionnary } from './../Utils/Collections/Dictionnary';
 import { Vehicle } from './../Items/Unit/Vehicle';
@@ -11,6 +10,7 @@ import { LiteEvent } from '../Utils/Events/LiteEvent';
 import { Item } from '../Items/Item';
 import { Cell } from '../Items/Cell/Cell';
 import { Player } from '../../Network/Player';
+import { GameStatus } from './GameStatus';
 
 export class GameContext {
 	public StatsContext: StatsContext;

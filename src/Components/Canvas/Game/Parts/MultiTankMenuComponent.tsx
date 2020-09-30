@@ -1,12 +1,12 @@
 import { Component, h } from 'preact';
-import { CamouflageMenuItem } from '../../../Core/Menu/Buttons/CamouflageMenutItem';
-import { AbortMenuItem } from '../../../Core/Menu/Buttons/AbortMenuItem';
-import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
-import { Item } from '../../../Core/Items/Item';
-import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
-import { AppHandler } from '../../../Core/App/AppHandler';
-import { MultiOrderMenuItem } from '../../../Core/Menu/Buttons/MultiOrderMenuItem';
-import { UnitGroup } from '../../../Core/Items/UnitGroup';
+import { CamouflageMenuItem } from '../../../../Core/Menu/Buttons/CamouflageMenutItem';
+import { AbortMenuItem } from '../../../../Core/Menu/Buttons/AbortMenuItem';
+import { CancelMenuItem } from '../../../../Core/Menu/Buttons/CancelMenuItem';
+import { Item } from '../../../../Core/Items/Item';
+import { InteractionKind } from '../../../../Core/Interaction/IInteractionContext';
+import { AppHandler } from '../../../../Core/App/AppHandler';
+import { MultiOrderMenuItem } from '../../../../Core/Menu/Buttons/MultiOrderMenuItem';
+import { UnitGroup } from '../../../../Core/Items/UnitGroup';
 
 export default class MultiTankMenuComponent extends Component<{ AppHandler: AppHandler; item: UnitGroup }, {}> {
 	private SendContext(item: Item): void {

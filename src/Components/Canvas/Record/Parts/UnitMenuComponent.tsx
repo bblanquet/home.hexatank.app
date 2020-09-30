@@ -1,9 +1,9 @@
 import { Component, h } from 'preact';
-import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
-import { Item } from '../../../Core/Items/Item';
-import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
-import { AppHandler } from '../../../Core/App/AppHandler';
-import { Vehicle } from '../../../Core/Items/Unit/Vehicle';
+import { CancelMenuItem } from '../../../../Core/Menu/Buttons/CancelMenuItem';
+import { Item } from '../../../../Core/Items/Item';
+import { InteractionKind } from '../../../../Core/Interaction/IInteractionContext';
+import { AppHandler } from '../../../../Core/App/AppHandler';
+import { Vehicle } from '../../../../Core/Items/Unit/Vehicle';
 
 export default class UnitMenuComponent extends Component<{ AppHandler: AppHandler; Vehicle: Vehicle }, {}> {
 	private SendContext(item: Item): void {

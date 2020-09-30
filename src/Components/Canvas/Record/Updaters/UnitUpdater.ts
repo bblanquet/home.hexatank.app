@@ -1,14 +1,14 @@
 import { IndexFinder } from './IndexFinder';
 import { isNullOrUndefined } from 'util';
-import { RecordKind } from '../../../Core/Framework/Record/RecordKind';
-import { Headquarter } from '../../../Core/Items/Cell/Field/Hq/Headquarter';
-import { HexAxial } from '../../../Core/Utils/Geometry/HexAxial';
-import { Vehicle } from '../../../Core/Items/Unit/Vehicle';
-import { Dictionnary } from '../../../Core/Utils/Collections/Dictionnary';
-import { Tank } from '../../../Core/Items/Unit/Tank';
-import { Truck } from '../../../Core/Items/Unit/Truck';
-import { GameContext } from '../../../Core/Framework/GameContext';
-import { RecordData } from '../../../Core/Framework/Record/RecordData';
+import { RecordKind } from '../../../../Core/Framework/Record/RecordKind';
+import { Headquarter } from '../../../../Core/Items/Cell/Field/Hq/Headquarter';
+import { HexAxial } from '../../../../Core/Utils/Geometry/HexAxial';
+import { Vehicle } from '../../../../Core/Items/Unit/Vehicle';
+import { Dictionnary } from '../../../../Core/Utils/Collections/Dictionnary';
+import { Tank } from '../../../../Core/Items/Unit/Tank';
+import { Truck } from '../../../../Core/Items/Unit/Truck';
+import { GameContext } from '../../../../Core/Framework/GameContext';
+import { RecordData } from '../../../../Core/Framework/Record/RecordData';
 
 export class UnitUpdater {
 	private _displayedUnits: Dictionnary<Vehicle>;

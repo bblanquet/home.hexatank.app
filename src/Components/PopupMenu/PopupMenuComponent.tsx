@@ -1,10 +1,10 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { StatsKind } from '../../Core/Utils/Stats/StatsKind';
-import { GameStatus } from '../Canvas/GameStatus';
 import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
 import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
 import { GameSettings } from '../../Core/Framework/GameSettings';
+import { GameStatus } from '../../Core/Framework/GameStatus';
 
 export default class PopupMenuComponent extends Component<
 	{ status: GameStatus; callBack: () => void },

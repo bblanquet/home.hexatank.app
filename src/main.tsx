@@ -1,8 +1,8 @@
 import { h, render } from 'preact';
 import HomeComponent from './Components/Home/HomeComponent';
 import SinglePlayerComponent from './Components/SinglePlayer/SinglePlayerComponent';
-import CanvasComponent from './Components/Canvas/CanvasComponent';
-import RecordCanvasComponent from './Components/RecordCanvas/RecordCanvasComponent';
+import GameCanvasComponent from './Components/Canvas/Game/GameCanvasComponent';
+import RecordCanvasComponent from './Components/Canvas/Record/RecordCanvasComponent';
 import CampaignComponent from './Components/Campaign/CampaignComponent';
 import BlueCampaignComponent from './Components/Campaign/BlueCampaignComponent';
 import GuestComponent from './Components/Network/Guest/GuestComponent';
@@ -25,13 +25,13 @@ import { Groups } from './Core/Utils/Collections/Groups';
 import { Curve } from './Core/Utils/Stats/Curve';
 import { StatsKind } from './Core/Utils/Stats/StatsKind';
 import { DateValue } from './Core/Utils/Stats/DateValue';
-import { GameStatus } from './Components/Canvas/GameStatus';
 import { RecordData } from './Core/Framework/Record/RecordData';
 import { RecordHq } from './Core/Framework/Record/RecordHq';
 import { RecordUnit } from './Core/Framework/Record/RecordUnit';
 import { RecordAction } from './Core/Framework/Record/RecordAction';
 import { HexAxial } from './Core/Utils/Geometry/HexAxial';
 import { RecordKind } from './Core/Framework/Record/RecordKind';
+import { GameStatus } from './Core/Framework/GameStatus';
 
 function Context() {
 	const c = new Groups<Curve>();
@@ -166,7 +166,7 @@ render(
 		<SinglePlayerComponent path="/SinglePlayer" />
 		<CampaignComponent path="/Campaign" />
 		<BlueCampaignComponent path="/BlueCampaignComponent" />
-		<CanvasComponent path="/Canvas" />
+		<GameCanvasComponent path="/Canvas" />
 		<RecordCanvasComponent path="/RecordCanvas" />
 		<CreatingHostComponent path="/CreatingHost" />
 		<HostingComponent path="/Hosting/:RoomName/:playerName/:isAdmin" />

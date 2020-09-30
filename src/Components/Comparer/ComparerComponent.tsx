@@ -80,6 +80,7 @@ export default class ComparerComponent extends Component<
 							Label={'Hq'}
 							Values={this.state.HqIds}
 						/>
+						<div class="small-right-margin" />
 						<DropDownComponent
 							OnInput={(e: any) => {
 								this.setState({
@@ -109,9 +110,9 @@ export default class ComparerComponent extends Component<
 
 					<div class="container-center-horizontal">
 						<TextComponent onInput={(e: any) => {}} label={'D1'} isEditable={false} value={this.GetD1()} />
+						<div class="small-right-margin" />
 						<TextComponent onInput={(e: any) => {}} label={'D2'} isEditable={false} value={this.GetD2()} />
 					</div>
-
 					<div class="container-center-horizontal">
 						<BlackButtonComponent
 							icon={'fas fa-undo-alt'}

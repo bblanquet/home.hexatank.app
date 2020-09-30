@@ -9,14 +9,20 @@ import { MapContext } from '../Setup/Generator/MapContext';
 import { ViewContext } from '../Utils/Geometry/ViewContext';
 
 export class GameHelper {
-	public static Updater: ItemsUpdater;
+	//use to setup game
 	public static MapContext: MapContext;
-	public static NetworkContext: NetworkContext;
-	public static Record: RecordData;
-	public static ComparedRecord: RecordData;
-	public static Socket: NetworkSocket;
+
+	//use for items
 	public static Render: RenderingHandler;
 	public static ViewContext: ViewContext;
+	public static Updater: ItemsUpdater;
+
+	public static Record: RecordData;
+	public static ComparedRecord: RecordData;
+
+	//use for network
+	public static NetworkContext: NetworkContext;
+	public static Socket: NetworkSocket;
 	public static Players: Player[] = [];
 
 	//ugly find another way later

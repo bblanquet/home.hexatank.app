@@ -49,7 +49,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	public OnReactorConquested: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
 	public OnReactorLost: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
-	public TankRequestChanged: LiteEvent<number> = new LiteEvent<number>();
+	public OnTankRequestChanged: LiteEvent<number> = new LiteEvent<number>();
 
 	constructor(skin: ItemSkin, cell: Cell, public GameContext: GameContext) {
 		super();
@@ -224,9 +224,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		if (this._tankRequestCount < 4) {
 			this._tankRequestCount += 1;
 			const tankPrice = GameSettings.TankPrice * this.GetVehicleCount();
-			this.TankRequestChanged.Invoke(this, this._tankRequestCount);
+			this.OnTankRequestChanged.Invoke(this, this._tankRequestCount);
 			if (this._diamondCount < tankPrice) {
-				this.OnCashMissing();
+				this.CashMissing();
 			}
 		}
 	}
@@ -234,12 +234,12 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	public RemoveTankRequest(): void {
 		if (this._tankRequestCount > 0) {
 			this._tankRequestCount -= 1;
-			this.TankRequestChanged.Invoke(this, this._tankRequestCount);
+			this.OnTankRequestChanged.Invoke(this, this._tankRequestCount);
 		}
 	}
 
 	private _truckRequestCount: number = 0;
-	public TruckChanged: LiteEvent<number> = new LiteEvent<number>();
+	public OnTruckChanged: LiteEvent<number> = new LiteEvent<number>();
 
 	public GetTruckRequests(): number {
 		return this._truckRequestCount;
@@ -249,9 +249,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		if (this._truckRequestCount < 4) {
 			this._truckRequestCount += 1;
 			const truckPrice = GameSettings.TruckPrice * this.GetVehicleCount();
-			this.TruckChanged.Invoke(this, this._truckRequestCount);
+			this.OnTruckChanged.Invoke(this, this._truckRequestCount);
 			if (this._diamondCount < truckPrice) {
-				this.OnCashMissing();
+				this.CashMissing();
 			}
 		}
 	}
@@ -259,19 +259,19 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	public RemoveTruckRequest(): void {
 		if (this._truckRequestCount > 0) {
 			this._truckRequestCount -= 1;
-			this.TruckChanged.Invoke(this, this._truckRequestCount);
+			this.OnTruckChanged.Invoke(this, this._truckRequestCount);
 		}
 	}
 
-	public CashMissing: LiteEvent<Boolean> = new LiteEvent<boolean>();
+	public OnCashMissing: LiteEvent<Boolean> = new LiteEvent<boolean>();
 	private _cashMissedTimeout: NodeJS.Timeout;
-	public OnCashMissing(): void {
+	public CashMissing(): void {
 		if (this._cashMissedTimeout) {
 			clearTimeout(this._cashMissedTimeout);
 		}
-		this.CashMissing.Invoke(this, true);
+		this.OnCashMissing.Invoke(this, true);
 		this._cashMissedTimeout = setTimeout(() => {
-			this.CashMissing.Invoke(this, false);
+			this.OnCashMissing.Invoke(this, false);
 		}, 3000);
 	}
 
@@ -324,7 +324,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 			this.OnDiamondCountChanged.Invoke(this, this._diamondCount);
 			return true;
 		} else {
-			this.OnCashMissing();
+			this.CashMissing();
 		}
 		return false;
 	}

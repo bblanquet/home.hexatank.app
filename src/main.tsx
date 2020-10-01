@@ -1,4 +1,4 @@
-import './inversify.config';
+import './Register';
 import { h, render } from 'preact';
 import HomeComponent from './Components/Home/HomeComponent';
 import SinglePlayerComponent from './Components/SinglePlayer/SinglePlayerComponent';

@@ -1,4 +1,3 @@
-import { injectable } from 'inversify';
 import { GameContext } from '../../Core/Framework/GameContext';
 import { NetworkContext } from '../../Core/Framework/NetworkContext';
 import { NetworkSocket } from '../../Network/NetworkSocket';
@@ -6,31 +5,34 @@ import { Player } from '../../Network/Player';
 import { INetworkService } from './INetworkService';
 import { isNullOrUndefined } from '../../Core/Utils/ToolBox';
 
-@injectable()
 export class NetworkService implements INetworkService {
 	//use for network
-	public NetworkContext: NetworkContext;
-	public Socket: NetworkSocket;
-	public Players: Player[] = [];
+	private _networkContext: NetworkContext;
+	private _socket: NetworkSocket;
+	private _players: Player[] = [];
 
 	Register(networkSocket: NetworkSocket, game: GameContext, players: Player[]): void {
-		this.Socket = networkSocket;
-		this.Players = players;
-		this.NetworkContext = new NetworkContext(game, this.Socket);
+		this._socket = networkSocket;
+		this._players = players;
+		this._networkContext = new NetworkContext(game, this._socket);
 	}
 
 	HasSocket(): boolean {
-		return !isNullOrUndefined(this.Socket);
+		return !isNullOrUndefined(this._socket);
 	}
 
 	GetPlayers(): Player[] {
-		return this.Players;
+		return this._players;
 	}
 
 	Collect(): void {
-		this.NetworkContext.Destroy();
-		this.Socket.Stop();
-		this.Socket = null;
-		this.NetworkContext = null;
+		if (this._networkContext) {
+			this._networkContext.Destroy();
+			this._networkContext = null;
+		}
+		if (this._socket) {
+			this._socket.Stop();
+			this._socket = null;
+		}
 	}
 }

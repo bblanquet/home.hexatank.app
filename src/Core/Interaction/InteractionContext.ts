@@ -14,11 +14,10 @@ import { IInteractionContext, InteractionKind } from './IInteractionContext';
 import { ISelectableChecker } from './ISelectableChecker';
 import { ViewContext } from '../Utils/Geometry/ViewContext';
 import { isNullOrUndefined } from '../Utils/ToolBox';
-import { lazyInject } from '../../inversify.config';
-import { TYPES } from '../../types';
+import { Factory, FactoryKey } from '../../Factory';
 
 export class InteractionContext implements IContextContainer, IInteractionContext {
-	@lazyInject(TYPES.Empty) private _updateService: IUpdateService;
+	private _updateService: IUpdateService;
 	public Kind: InteractionKind;
 	public Point: PIXI.Point;
 	public View: ViewContext;
@@ -31,6 +30,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 		private _checker: ISelectableChecker,
 		private _viewPort: any
 	) {
+		this._updateService = Factory.Load<IUpdateService>(FactoryKey.Update);
 		this._selectedItem = [];
 		this._dispatcher = new CombinationDispatcher(combinations);
 		combinations.forEach((c) => {

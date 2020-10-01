@@ -6,13 +6,15 @@ import { Item } from '../../../../Core/Items/Item';
 import { InteractionKind } from '../../../../Core/Interaction/IInteractionContext';
 import { MultiOrderMenuItem } from '../../../../Core/Menu/Buttons/MultiOrderMenuItem';
 import { UnitGroup } from '../../../../Core/Items/UnitGroup';
-import { lazyInject } from '../../../../inversify.config';
+import { Factory, FactoryKey } from '../../../../Factory';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
-import { TYPES } from '../../../../types';
 
 export default class MultiTankMenuComponent extends Component<{ item: UnitGroup }, {}> {
-	@lazyInject(TYPES.Empty) private _interactionService: IInteractionService;
-
+	private _interactionService: IInteractionService;
+	constructor() {
+		super();
+		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
+	}
 	private SendContext(item: Item): void {
 		const interaction = this._interactionService.Publish();
 		interaction.Kind = InteractionKind.Up;

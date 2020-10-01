@@ -1,12 +1,12 @@
 import { Dictionnary } from './Core/Utils/Collections/Dictionnary';
-import 'reflect-metadata';
 
 export class Factory {
-	private _objects: Dictionnary<any> = new Dictionnary<any>();
-	public Register(key: FactoryKey, obj: any): void {
+	private static _objects: Dictionnary<any> = new Dictionnary<any>();
+	public static Register(key: FactoryKey, obj: any): void {
+		console.log(`register ${FactoryKey[key]}`);
 		this._objects.Add(key.toString(), obj);
 	}
-	public Load<T>(key: FactoryKey): T {
+	public static Load<T>(key: FactoryKey): T {
 		return (this._objects.Get(key.toString()) as any) as T;
 	}
 }
@@ -18,7 +18,7 @@ export enum FactoryKey {
 	Interaction,
 	RecordInteraction,
 	Layer,
-	Netword,
+	Network,
 	Record,
 	Update
 }

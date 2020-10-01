@@ -9,13 +9,15 @@ import { GameContext } from '../../../../Core/Framework/GameContext';
 import { AttackMenuItem } from '../../../../Core/Menu/Buttons/AttackMenuItem';
 import { SpeedFieldMenuItem } from '../../../../Core/Menu/Buttons/SpeedFieldMenuItem';
 import { HealMenuItem } from '../../../../Core/Menu/Buttons/HealMenuItem';
-import { lazyInject } from '../../../../inversify.config';
+import { Factory, FactoryKey } from '../../../../Factory';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
-import { TYPES } from '../../../../types';
 
 export default class ReactorMenuComponent extends Component<{ Item: ReactorField; GameContext: GameContext }, {}> {
-	@lazyInject(TYPES.Empty) private _interactionService: IInteractionService;
-
+	private _interactionService: IInteractionService;
+	constructor() {
+		super();
+		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
+	}
 	render() {
 		const reactor = this.props.Item as ReactorField;
 		return (

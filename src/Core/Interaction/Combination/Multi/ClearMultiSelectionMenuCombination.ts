@@ -2,16 +2,16 @@ import { AbstractSingleCombination } from './../AbstractSingleCombination';
 import { CombinationContext } from '../CombinationContext';
 import { MultiCellMenuItem } from '../../../Menu/Buttons/MultiCellMenuItem';
 import { MultiTankMenuItem } from '../../../Menu/Buttons/MultiTankMenuItem';
-import { lazyInject } from '../../../../inversify.config';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
-import { TYPES } from '../../../../types';
+import { Factory, FactoryKey } from '../../../../Factory';
 
 export class ClearMultiSelectionMenuCombination extends AbstractSingleCombination {
 	private _isShowing: boolean = false;
-	@lazyInject(TYPES.Empty) private _interactionService: IInteractionService;
+	private _interactionService: IInteractionService;
 
 	constructor() {
 		super();
+		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
 		this._interactionService.OnMultiMenuShowed.On((src: any, isShowing) => {
 			this._isShowing = isShowing;
 		});

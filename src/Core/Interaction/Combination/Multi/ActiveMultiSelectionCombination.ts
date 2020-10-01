@@ -4,16 +4,17 @@ import { CombinationContext } from '../CombinationContext';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { MultiCellMenuItem } from '../../../Menu/Buttons/MultiCellMenuItem';
 import { MultiTankMenuItem } from '../../../Menu/Buttons/MultiTankMenuItem';
-import { lazyInject } from '../../../../inversify.config';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
-import { TYPES } from '../../../../types';
+import { Factory, FactoryKey } from '../../../../Factory';
 
 export class ActiveMultiSelectionCombination extends AbstractSingleCombination {
-	@lazyInject(TYPES.Empty) private _interactionService: IInteractionService;
-	@lazyInject(TYPES.Empty) private _layerService: ILayerService;
+	private _interactionService: IInteractionService;
+	private _layerService: ILayerService;
 
 	constructor(private _multiContext: MultiSelectionContext) {
 		super();
+		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
+		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
 	}
 
 	IsMatching(context: CombinationContext): boolean {

@@ -1,6 +1,4 @@
-import { lazyInject } from '../../inversify.config';
 import { ICompareService } from '../../Services/Compare/ICompareService';
-import { TYPES } from '../../types';
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { CompChartProvider } from '../Common/CompChartProvider';
@@ -11,6 +9,7 @@ import PanelComponent from '../Common/Panel/PanelComponent';
 import DropDownComponent from '../Common/DropDown/DropDownComponent';
 import { DeltaRecordCurve } from './Comparers/DeltaRecordCurve';
 import TextComponent from '../Common/Text/TextComponent';
+import { Factory, FactoryKey } from '../../Factory';
 
 export default class ComparerComponent extends Component<
 	{},
@@ -22,7 +21,7 @@ export default class ComparerComponent extends Component<
 		CurveIndex: number | null;
 	}
 > {
-	@lazyInject(TYPES.Empty) private _compareService: ICompareService;
+	private _compareService: ICompareService;
 	private _trackingComparer: RecordComparer;
 	private _chartProvider: CompChartProvider;
 
@@ -48,6 +47,7 @@ export default class ComparerComponent extends Component<
 	}
 
 	componentDidMount() {
+		this._compareService = Factory.Load<ICompareService>(FactoryKey.Compare);
 		this._trackingComparer = new RecordComparer(this._d1, this._d2);
 		const hqId = this._d1.Hqs.Keys()[0];
 		const unitId = this._d1.Hqs.Get(hqId).Units.Keys()[0];

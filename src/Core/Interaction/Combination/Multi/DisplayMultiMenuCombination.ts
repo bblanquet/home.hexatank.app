@@ -4,14 +4,14 @@ import { CombinationContext } from '../CombinationContext';
 import { Item } from '../../../Items/Item';
 import { ISelectable } from '../../../ISelectable';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
-import { lazyInject } from '../../../../inversify.config';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
-import { TYPES } from '../../../../types';
+import { Factory, FactoryKey } from '../../../../Factory';
 
 export class DisplayMultiMenuCombination extends AbstractSingleCombination {
-	@lazyInject(TYPES.Empty) private _interactionService: IInteractionService;
+	private _interactionService: IInteractionService;
 	constructor(private _multiSelectionContext: MultiSelectionContext) {
 		super();
+		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
 	}
 
 	IsMatching(context: CombinationContext): boolean {

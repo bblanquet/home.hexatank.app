@@ -25,15 +25,15 @@ import { GameSettings } from '../../../Framework/GameSettings';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { GameContext } from '../../../Framework/GameContext';
 import { IField } from '../../../Items/Cell/Field/IField';
-import { lazyInject } from '../../../../inversify.config';
 import { ILayerService } from '../../../../Services/Layer/ILayerService';
-import { TYPES } from '../../../../types';
+import { Factory, FactoryKey } from '../../../../Factory';
 
 export class MultiCellBonusCombination extends AbstractSingleCombination {
-	@lazyInject(TYPES.Empty) private _layerService: ILayerService;
+	private _layerService: ILayerService;
 
 	constructor(private _gameContext: GameContext) {
 		super();
+		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
 	}
 
 	IsMatching(context: CombinationContext): boolean {

@@ -6,9 +6,8 @@ import { InteractionKind } from '../../../../Core/Interaction/IInteractionContex
 import { TankMenuItem } from '../../../../Core/Menu/Buttons/TankMenuItem';
 import { TruckMenuItem } from '../../../../Core/Menu/Buttons/TruckMenuItem';
 import { GameContext } from '../../../../Core/Framework/GameContext';
-import { lazyInject } from '../../../../inversify.config';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
-import { TYPES } from '../../../../types';
+import { Factory, FactoryKey } from '../../../../Factory';
 
 export default class HqMenuComponent extends Component<
 	{
@@ -20,8 +19,11 @@ export default class HqMenuComponent extends Component<
 	},
 	{}
 > {
-	@lazyInject(TYPES.Empty) private _interactionService: IInteractionService;
-
+	private _interactionService: IInteractionService;
+	constructor() {
+		super();
+		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
+	}
 	render() {
 		return (
 			<div class="left-column">

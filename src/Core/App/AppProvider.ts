@@ -1,4 +1,3 @@
-import { StageAssigner } from './StageAssigner';
 import { MapContext } from '../Setup/Generator/MapContext';
 import * as PIXI from 'pixi.js';
 import { MapEnv } from '../Setup/Generator/MapEnv';
@@ -7,7 +6,6 @@ export class AppProvider {
 	public Provide(mapContext: MapContext): PIXI.Application {
 		const app = new PIXI.Application({});
 		app.renderer.backgroundColor = this.GetColor(mapContext);
-		app.start();
 		return app;
 	}
 

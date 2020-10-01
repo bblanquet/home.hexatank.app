@@ -4,13 +4,10 @@ import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
 import { MapEnv } from '../../Core/Setup/Generator/MapEnv';
 import BlueButtonComponent from '../Common/Button/Stylish/BlueButtonComponent';
 import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
-import { lazyInject } from '../../inversify.config';
+import { Factory, FactoryKey } from '../../Factory';
 import { IAppService } from '../../Services/App/IAppService';
-import { TYPES } from '../../types';
 
 export default class BlueCampaignComponent extends Component<any, any> {
-	@lazyInject(TYPES.Empty) private _appService: IAppService;
-
 	private _mouthTimer: any;
 	private _eyesTimer: any;
 
@@ -103,7 +100,7 @@ export default class BlueCampaignComponent extends Component<any, any> {
 			}
 			index += 1;
 		});
-		this._appService.Register(mapContext);
+		Factory.Load<IAppService>(FactoryKey.App).Register(mapContext);
 		route('/Canvas', true);
 	}
 }

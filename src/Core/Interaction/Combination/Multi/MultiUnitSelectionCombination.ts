@@ -6,15 +6,15 @@ import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { GameContext } from '../../../Framework/GameContext';
-import { lazyInject } from '../../../../inversify.config';
-import { TYPES } from '../../../../types';
+import { Factory, FactoryKey } from '../../../../Factory';
 
 export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 	private _group: UnitGroup;
-	@lazyInject(TYPES.Empty) private _layerService: ILayerService;
+	private _layerService: ILayerService;
 
 	constructor(private _multiContext: MultiSelectionContext, private _gameContext: GameContext) {
 		super();
+		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
 		this._group = new UnitGroup(this._multiContext);
 	}
 

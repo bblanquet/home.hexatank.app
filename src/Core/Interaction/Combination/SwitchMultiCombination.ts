@@ -3,14 +3,14 @@ import { MultiOrderMenuItem } from './../../Menu/Buttons/MultiOrderMenuItem';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { CombinationContext } from './CombinationContext';
 import { UnitGroup } from '../../Items/UnitGroup';
-import { lazyInject } from '../../../inversify.config';
 import { ILayerService } from '../../../Services/Layer/ILayerService';
-import { TYPES } from '../../../types';
+import { Factory, FactoryKey } from '../../../Factory';
 
 export class SwithcMultiCombination extends AbstractSingleCombination {
-	@lazyInject(TYPES.Empty) private _layerService: ILayerService;
+	private _layerService: ILayerService;
 	constructor(private _multiContext: MultiSelectionContext) {
 		super();
+		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
 	}
 
 	IsMatching(context: CombinationContext): boolean {

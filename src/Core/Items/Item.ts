@@ -1,5 +1,4 @@
-import { lazyInject } from '../../inversify.config';
-import { TYPES } from '../../types';
+import { Factory, FactoryKey } from './../../Factory';
 import { ILayerService } from './../../Services/Layer/ILayerService';
 import { IUpdateService } from './../../Services/Update/IUpdateService';
 import { LiteEvent } from './../Utils/Events/LiteEvent';
@@ -13,8 +12,8 @@ import { IBoundingBoxContainer } from '../IBoundingBoxContainer';
 import { IInteractionContext } from '../Interaction/IInteractionContext';
 
 export abstract class Item implements IUpdatable, IBoundingBoxContainer {
-	@lazyInject(TYPES.Empty) private _updateService: IUpdateService;
-	@lazyInject(TYPES.Empty) protected _layerService: ILayerService;
+	private _updateService: IUpdateService;
+	protected _layerService: ILayerService;
 
 	private DisplayObjects: Array<PIXI.DisplayObject>;
 	private _spriteManager: SpriteManager;
@@ -25,6 +24,8 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 	public IsCentralRef: boolean = false;
 
 	constructor(isUpdatable: boolean = true) {
+		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
+		this._updateService = Factory.Load<IUpdateService>(FactoryKey.Update);
 		this._spriteManager = new SpriteManager();
 		this.DisplayObjects = new Array<PIXI.DisplayObject>();
 		this.IsUpdatable = isUpdatable;

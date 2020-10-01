@@ -1,11 +1,9 @@
-import { injectable } from 'inversify';
 import { GameContext } from './../../Core/Framework/GameContext';
 import { MapContext } from '../../Core/Setup/Generator/MapContext';
 import { HqRender } from '../../Core/Setup/Render/Hq/HqRender';
 import { MapRender } from '../../Core/Setup/Render/MapRender';
 import { IGameContextService } from './IGameContextService';
 
-@injectable()
 export class GameContextService implements IGameContextService {
 	private _gameContext: GameContext;
 

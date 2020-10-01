@@ -5,12 +5,9 @@ import { MapEnv } from '../../Core/Setup/Generator/MapEnv';
 import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
 import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
 import { IAppService } from '../../Services/App/IAppService';
-import { lazyInject } from '../../inversify.config';
-import { TYPES } from '../../types';
+import { Factory, FactoryKey } from '../../Factory';
 
 export default class CampaignComponent extends Component<any, any> {
-	@lazyInject(TYPES.Empty) private _appService: IAppService;
-
 	private _eyesDiv: HTMLDivElement;
 	private _mouthDiv: HTMLDivElement;
 	private _mouthTimer: NodeJS.Timer;
@@ -155,7 +152,7 @@ export default class CampaignComponent extends Component<any, any> {
 			}
 			index += 1;
 		});
-		this._appService.Register(mapContext);
+		Factory.Load<IAppService>(FactoryKey.App).Register(mapContext);
 		route('/Canvas', true);
 	}
 }

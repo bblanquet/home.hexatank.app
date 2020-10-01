@@ -4,13 +4,17 @@ import { Item } from '../../Items/Item';
 
 export class RenderingLayers {
 	private _layers: Dictionnary<PIXI.Container>;
-	constructor(stage: PIXI.Container, viewportStage: any) {
+	constructor(viewportStage: any, stage: PIXI.Container) {
 		this._layers = new Dictionnary<PIXI.Container>();
 		[ -1, 0, 1, 2, 3, 4, 5 ].forEach((z) => {
-			this._layers.Add(z.toString(), viewportStage);
+			var group = new PIXI.Container();
+			viewportStage.addChild(group);
+			this._layers.Add(z.toString(), group);
 		});
 		[ 6, 7 ].forEach((z) => {
-			this._layers.Add(z.toString(), stage);
+			var group = new PIXI.Container();
+			stage.addChild(group);
+			this._layers.Add(z.toString(), group);
 		});
 	}
 
@@ -28,15 +32,10 @@ export class RenderingLayers {
 		});
 	}
 
-	public AddByGroup(shape: PIXI.DisplayObject, group: number): void {
-		this._layers.Get(group.toString()).addChild(shape);
-	}
-
 	public Remove(item: Item) {
 		item.GetAllDisplayable().forEach((sprite) => {
 			sprite.alpha = 1;
 			sprite.destroy();
-			this._layers.Get((4).toString()).removeChild(sprite);
 		});
 		item.Clear();
 	}

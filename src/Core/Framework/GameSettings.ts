@@ -7,8 +7,6 @@ export class GameSettings {
 	public static GeneralLife: number = 20; //100
 
 	public static Size: number = 50;
-	public static ScreenWidth: number;
-	public static ScreenHeight: number;
 	public static MissileTranslationSpeed: number = 5;
 	public static IsPause: boolean = false;
 	public static ShowEnemies: boolean = false;

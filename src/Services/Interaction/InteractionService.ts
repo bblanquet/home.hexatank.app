@@ -1,46 +1,39 @@
-import { TYPES } from '../../types';
 import { InputNotifier } from './../../Core/Interaction/InputNotifier';
 import { CombinationProvider } from './../../Core/Interaction/CombinationProvider';
 import { SelectableChecker } from './../../Core/Interaction/SelectableChecker';
 import { GameContext } from './../../Core/Framework/GameContext';
-import { inject, injectable } from 'inversify';
 import { InteractionContext } from '../../Core/Interaction/InteractionContext';
 import { IInteractionService } from './IInteractionService';
 import { ILayerService } from '../Layer/ILayerService';
 import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
+import { Factory, FactoryKey } from '../../Factory';
+import * as PIXI from 'pixi.js';
 
-@injectable()
 export class InteractionService implements IInteractionService {
-	@inject(TYPES.Empty) private _layerService: ILayerService;
+	private _layerService: ILayerService;
 
-	private _interactionManager: PIXI.interaction.InteractionManager;
 	private _inputNotifier: InputNotifier;
 	private _interaction: InteractionContext;
-	public OnMultiMenuShowed: LiteEvent<boolean>;
+	public OnMultiMenuShowed: LiteEvent<boolean> = new LiteEvent<boolean>();
 
-	Register(pixi: PIXI.Application, gameContext: GameContext): void {
+	constructor() {
+		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
+	}
+
+	Register(manager: PIXI.interaction.InteractionManager, gameContext: GameContext): void {
 		this._inputNotifier = new InputNotifier();
-		this._interactionManager = new PIXI.interaction.InteractionManager(pixi.renderer);
 		const checker = new SelectableChecker(gameContext.GetMainHq());
-		const context = new InteractionContext(
+		this._interaction = new InteractionContext(
 			this._inputNotifier,
 			new CombinationProvider().GetCombination(checker, gameContext),
 			checker,
 			this._layerService.GetViewport()
 		);
-		context.Listen();
-		this._interactionManager.on(
-			'pointerdown',
-			this._inputNotifier.HandleMouseDown.bind(this._inputNotifier),
-			false
-		);
-		this._interactionManager.on(
-			'pointermove',
-			this._inputNotifier.HandleMouseMove.bind(this._inputNotifier),
-			false
-		);
-		this._interactionManager.on('pointerup', this._inputNotifier.HandleMouseUp.bind(this._inputNotifier), false);
-		this._interactionManager.autoPreventDefault = false;
+		this._interaction.Listen();
+		manager.on('pointerdown', this._inputNotifier.HandleMouseDown.bind(this._inputNotifier), false);
+		manager.on('pointermove', this._inputNotifier.HandleMouseMove.bind(this._inputNotifier), false);
+		manager.on('pointerup', this._inputNotifier.HandleMouseUp.bind(this._inputNotifier), false);
+		manager.autoPreventDefault = false;
 	}
 
 	Publish(): InteractionContext {
@@ -48,7 +41,7 @@ export class InteractionService implements IInteractionService {
 	}
 
 	Collect(): void {
-		this._interactionManager.destroy();
+		this.OnMultiMenuShowed.Clear();
 		this._inputNotifier.Clear();
 	}
 }

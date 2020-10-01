@@ -1,15 +1,17 @@
-import { injectable } from 'inversify';
-import { StageAssigner } from '../../Core/App/StageAssigner';
 import { RenderingLayers } from '../../Core/Setup/Render/RenderingHandler';
 import { ILayerService } from './ILayerService';
 const Viewport = require('pixi-viewport').Viewport;
 
-@injectable()
 export class LayerService implements ILayerService {
 	private _rendering: RenderingLayers;
 	private _viewPort: any;
 
 	Register(app: PIXI.Application): void {
+		this.SetViewport(app);
+		this._rendering = new RenderingLayers(this._viewPort, app.stage);
+		app.stage.addChild(this._viewPort);
+	}
+	private SetViewport(app: PIXI.Application) {
 		this._viewPort = new Viewport({
 			screenWidth: window.innerWidth,
 			screenHeight: window.innerHeight,
@@ -17,9 +19,18 @@ export class LayerService implements ILayerService {
 			worldHeight: 1000,
 			interaction: app.renderer.plugins.interaction
 		});
-
-		this._rendering = new StageAssigner().Assign(this._viewPort, app);
+		this._viewPort.on('zoomed', (e: any) => {
+			if (this._viewPort.scale.x < 0.7) {
+				this._viewPort.setZoom(0.7, this._viewPort.center);
+				return;
+			} else if (this._viewPort.scale.x > 1.5) {
+				this._viewPort.setZoom(1.5, this._viewPort.center);
+				return;
+			}
+		});
+		this.StartNavigation();
 	}
+
 	Publish(): RenderingLayers {
 		return this._rendering;
 	}

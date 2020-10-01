@@ -7,13 +7,10 @@ import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
 import DropDownComponent from '../Common/DropDown/DropDownComponent';
 import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
 import PanelComponent from '../Common/Panel/PanelComponent';
-import { lazyInject } from '../../inversify.config';
 import { IAppService } from '../../Services/App/IAppService';
-import { TYPES } from '../../types';
+import { Factory, FactoryKey } from '../../Factory';
 
 export default class SinglePlayerComponent extends Component<any, SinglePlayerState> {
-	@lazyInject(TYPES.Empty) private _appService: IAppService;
-
 	constructor(props: any) {
 		super(props);
 	}
@@ -104,7 +101,7 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 			}
 			index += 1;
 		});
-		this._appService.Register(mapContext);
+		Factory.Load<IAppService>(FactoryKey.App).Register(mapContext);
 		route('/Canvas', true);
 	}
 }

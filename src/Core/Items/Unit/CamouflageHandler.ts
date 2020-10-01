@@ -1,11 +1,14 @@
-import { lazyInject } from '../../../inversify.config';
-import { TYPES } from '../../../types';
+import { Factory, FactoryKey } from './../../../Factory';
 import { IAppService } from '../../../Services/App/IAppService';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { MapEnv } from '../../Setup/Generator/MapEnv';
 
 export class CamouflageHandler {
-	@lazyInject(TYPES.Empty) private _appService: IAppService;
+	private _appService: IAppService;
+
+	constructor() {
+		this._appService = Factory.Load<IAppService>(FactoryKey.App);
+	}
 
 	public GetCamouflage(): string {
 		const random = Math.floor(Math.random() * 2) + 1;

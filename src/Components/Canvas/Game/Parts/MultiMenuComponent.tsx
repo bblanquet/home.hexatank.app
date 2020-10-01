@@ -6,13 +6,15 @@ import { InteractionKind } from '../../../../Core/Interaction/IInteractionContex
 import ExpCircularComponent from '../../../Common/Circular/CircularComponent';
 import WhiteBtn from '../../../Common/Button/Standard/SmWhiteBtnComponent';
 import { Point } from '../../../../Core/Utils/Geometry/Point';
-import { lazyInject } from '../../../../inversify.config';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
-import { TYPES } from '../../../../types';
+import { Factory, FactoryKey } from '../../../../Factory';
 
 export default class MultiMenuComponent extends Component<{ Item: Item }, {}> {
-	@lazyInject(TYPES.Empty) private _interactionService: IInteractionService;
-
+	private _interactionService: IInteractionService;
+	constructor() {
+		super();
+		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
+	}
 	render() {
 		return (
 			<ExpCircularComponent OnCancel={() => this.Cancel()} isDark={false}>

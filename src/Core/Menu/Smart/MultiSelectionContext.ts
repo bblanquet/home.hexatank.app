@@ -1,5 +1,4 @@
-import { IInteractionService } from './../../../Services/Interaction/IInteractionService';
-import { lazyInject } from '../../../inversify.config';
+import { ILayerService } from './../../../Services/Layer/ILayerService';
 import { IUpdateService } from '../../../Services/Update/IUpdateService';
 import { InteractionKind } from '../../Interaction/IInteractionContext';
 import { Archive } from '../../Framework/ResourceArchiver';
@@ -12,11 +11,11 @@ import { Item } from '../../Items/Item';
 import { ViewContext } from '../../Utils/Geometry/ViewContext';
 import * as PIXI from 'pixi.js';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
-import { TYPES } from '../../../types';
+import { Factory, FactoryKey } from '../../../Factory';
 
 export class MultiSelectionContext implements IInteractionContext {
-	@lazyInject(TYPES.Empty) private _updateService: IUpdateService;
-	@lazyInject(TYPES.Empty) private _interactionService: IInteractionService;
+	private _updateService: IUpdateService;
+	private _layerService: ILayerService;
 	public Kind: InteractionKind;
 	public Point: PIXI.Point;
 	private _cells: CellContext<Cell>;
@@ -26,7 +25,9 @@ export class MultiSelectionContext implements IInteractionContext {
 	public _isUnitSelection: boolean;
 	private _viewport: any;
 	constructor() {
-		this._viewport = this._interactionService.Publish();
+		this._updateService = Factory.Load<IUpdateService>(FactoryKey.Update);
+		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
+		this._viewport = this._layerService.GetViewport();
 		this._cells = new CellContext<Cell>();
 		this._enlightCells = new Array<BasicItem>();
 	}

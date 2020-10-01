@@ -1,19 +1,15 @@
-import { lazyInject } from '../../../../inversify.config';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
 import { Component, h } from 'preact';
 import { CancelMenuItem } from '../../../../Core/Menu/Buttons/CancelMenuItem';
 import { Item } from '../../../../Core/Items/Item';
 import { InteractionKind } from '../../../../Core/Interaction/IInteractionContext';
 import { Vehicle } from '../../../../Core/Items/Unit/Vehicle';
-import { TYPES } from '../../../../types';
+import { Factory, FactoryKey } from '../../../../Factory';
 
 export default class UnitMenuComponent extends Component<{ Vehicle: Vehicle }, {}> {
-	@lazyInject(TYPES.Empty) private _interactionService: IInteractionService;
-
-	private SendContext(item: Item): void {
-		const interaction = this._interactionService.Publish();
-		interaction.Kind = InteractionKind.Up;
-		return interaction.OnSelect(item);
+	private _interactionService: IInteractionService;
+	componentDidMount(): void {
+		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.RecordInteraction);
 	}
 
 	render() {
@@ -35,5 +31,11 @@ export default class UnitMenuComponent extends Component<{ Vehicle: Vehicle }, {
 				</div>
 			</div>
 		);
+	}
+
+	private SendContext(item: Item): void {
+		const interaction = this._interactionService.Publish();
+		interaction.Kind = InteractionKind.Up;
+		return interaction.OnSelect(item);
 	}
 }

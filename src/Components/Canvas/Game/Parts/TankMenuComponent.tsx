@@ -7,13 +7,15 @@ import { CancelMenuItem } from '../../../../Core/Menu/Buttons/CancelMenuItem';
 import { Item } from '../../../../Core/Items/Item';
 import { InteractionKind } from '../../../../Core/Interaction/IInteractionContext';
 import { Vehicle } from '../../../../Core/Items/Unit/Vehicle';
-import { lazyInject } from '../../../../inversify.config';
+import { Factory, FactoryKey } from '../../../../Factory';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
-import { TYPES } from '../../../../types';
 
 export default class TankMenuComponent extends Component<{ Tank: Vehicle }, {}> {
-	@lazyInject(TYPES.Empty) private _interactionService: IInteractionService;
-
+	private _interactionService: IInteractionService;
+	constructor() {
+		super();
+		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
+	}
 	private SendContext(item: Item): void {
 		const interaction = this._interactionService.Publish();
 		interaction.Kind = InteractionKind.Up;

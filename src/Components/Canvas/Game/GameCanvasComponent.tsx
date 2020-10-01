@@ -22,11 +22,10 @@ import { GameStatus } from '../../../Core/Framework/GameStatus';
 import { Player } from '../../../Network/Player';
 import { CellGroup } from '../../../Core/Items/CellGroup';
 import PopupComponent from '../../Popup/PopupComponent';
-import { lazyInject } from '../../../inversify.config';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
-import { TYPES } from '../../../types';
 import { INetworkService } from '../../../Services/Network/INetworkService';
 import { IInteractionService } from '../../../Services/Interaction/IInteractionService';
+import { Factory, FactoryKey } from '../../../Factory';
 
 export default class GameCanvasComponent extends Component<
 	any,
@@ -43,9 +42,9 @@ export default class GameCanvasComponent extends Component<
 		GameStatus: GameStatus;
 	}
 > {
-	@lazyInject(TYPES.Empty) private _gameContextService: IGameContextService;
-	@lazyInject(TYPES.Empty) private _networkService: INetworkService;
-	@lazyInject(TYPES.Empty) private _interactionService: IInteractionService;
+	private _gameContextService: IGameContextService;
+	private _networkService: INetworkService;
+	private _interactionService: IInteractionService;
 
 	private _gameContext: GameContext;
 
@@ -53,6 +52,9 @@ export default class GameCanvasComponent extends Component<
 
 	constructor() {
 		super();
+		this._gameContextService = Factory.Load<IGameContextService>(FactoryKey.GameContext);
+		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
+		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
 		this.setState({
 			HasMenu: false,

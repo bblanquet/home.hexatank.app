@@ -1,7 +1,5 @@
-import { lazyInject } from '../../../inversify.config';
 import { IAppService } from '../../../Services/App/IAppService';
 import { INetworkService } from '../../../Services/Network/INetworkService';
-import { TYPES } from '../../../types';
 import { Component, h } from 'preact';
 import { route } from 'preact-router';
 import * as toastr from 'toastr';
@@ -25,11 +23,12 @@ import RedButtonComponent from '../../Common/Button/Stylish/RedButtonComponent';
 import Icon from '../../Common/Icon/IconComponent';
 import PanelComponent from '../../Common/Panel/PanelComponent';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
+import { Factory, FactoryKey } from '../../../Factory';
 
 export default class HostingComponent extends Component<any, HostState> {
-	@lazyInject(TYPES.Empty) private _appService: IAppService;
-	@lazyInject(TYPES.Empty) private _networkService: INetworkService;
-	@lazyInject(TYPES.Empty) private _gameContextService: IGameContextService;
+	private _appService: IAppService;
+	private _networkService: INetworkService;
+	private _gameContextService: IGameContextService;
 
 	private _socket: NetworkSocket;
 	private _hasSettings: boolean = false;
@@ -74,6 +73,12 @@ export default class HostingComponent extends Component<any, HostState> {
 		this._socket.OnReceived.On(this._playersObserver);
 		this._socket.OnReceived.On(this._pingObserver);
 		this._socket.OnReceived.On(this._mapObserver);
+	}
+
+	componentDidMount() {
+		this._appService = Factory.Load<IAppService>(FactoryKey.App);
+		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
+		this._gameContextService = Factory.Load<IGameContextService>(FactoryKey.GameContext);
 	}
 
 	componentWillUnmount() {

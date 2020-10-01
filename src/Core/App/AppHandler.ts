@@ -95,26 +95,6 @@
 
 // 	protected abstract SetupInputs(gameContext: GameContext): void;
 
-// 	public ResizeTheCanvas(): void {
-// 		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-// 			this._app.renderer.resize(screen.width, screen.height);
-// 			this._viewPort.screenWidth = screen.width;
-// 			this._viewPort.screenHeight = screen.height;
-// 			this._viewPort.worldWidth = screen.width;
-// 			this._viewPort.worldHeight = screen.height;
-// 			GameSettings.ScreenWidth = screen.width;
-// 			GameSettings.ScreenHeight = screen.height;
-// 		} else {
-// 			this._app.renderer.resize(window.innerWidth, window.innerHeight);
-// 			this._viewPort.screenWidth = window.innerWidth;
-// 			this._viewPort.screenHeight = window.innerHeight;
-// 			this._viewPort.worldWidth = window.innerWidth;
-// 			this._viewPort.worldHeight = window.innerHeight;
-// 			GameSettings.ScreenWidth = window.innerWidth;
-// 			GameSettings.ScreenHeight = window.innerHeight;
-// 		}
-// 	}
-
 // 	protected SetCenter(gameContext: GameContext): void {
 // 		const hqPoint = gameContext.GetMainHq().GetBoundingBox().GetCentralPoint();
 // 		const halfWidth = GameSettings.ScreenWidth / 2;

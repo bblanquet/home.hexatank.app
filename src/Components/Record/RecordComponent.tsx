@@ -1,6 +1,4 @@
-import { lazyInject } from '../../inversify.config';
 import { IAppService } from '../../Services/App/IAppService';
-import { TYPES } from '../../types';
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import PanelComponent from '../Common/Panel/PanelComponent';
@@ -17,11 +15,12 @@ import SmBlackButtonComponent from '../Common/Button/Stylish/SmBlackButtonCompon
 import GridComponent from '../Common/Grid/GridComponent';
 import { IRecordService } from '../../Services/Record/IRecordService';
 import { ICompareService } from '../../Services/Compare/ICompareService';
+import { Factory, FactoryKey } from '../../Factory';
 
 export default class RecordComponent extends Component<any, { Records: RecordObject[] }> {
-	@lazyInject(TYPES.Empty) private _appService: IAppService;
-	@lazyInject(TYPES.Empty) private _recordService: IRecordService;
-	@lazyInject(TYPES.Empty) private _compareService: ICompareService;
+	private _appService: IAppService;
+	private _recordService: IRecordService;
+	private _compareService: ICompareService;
 
 	constructor() {
 		super();
@@ -69,7 +68,11 @@ export default class RecordComponent extends Component<any, { Records: RecordObj
 		return result;
 	}
 
-	componentDidMount() {}
+	componentDidMount() {
+		this._appService = Factory.Load<IAppService>(FactoryKey.App);
+		this._recordService = Factory.Load<IRecordService>(FactoryKey.Record);
+		this._compareService = Factory.Load<ICompareService>(FactoryKey.Compare);
+	}
 
 	componentWillUnmount() {}
 

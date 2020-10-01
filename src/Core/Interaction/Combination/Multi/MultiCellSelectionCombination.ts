@@ -3,15 +3,15 @@ import { CombinationContext } from '../CombinationContext';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { GameContext } from '../../../Framework/GameContext';
-import { lazyInject } from '../../../../inversify.config';
 import { ILayerService } from '../../../../Services/Layer/ILayerService';
-import { TYPES } from '../../../../types';
+import { Factory, FactoryKey } from '../../../../Factory';
 
 export class MultiCellSelectionCombination extends AbstractSingleCombination {
-	@lazyInject(TYPES.Empty) private _layerService: ILayerService;
+	private _layerService: ILayerService;
 
 	constructor(private _multiSelectionContext: MultiSelectionContext, private _gameContext: GameContext) {
 		super();
+		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
 	}
 
 	IsMatching(context: CombinationContext): boolean {

@@ -16,13 +16,15 @@ import { CancelMenuItem } from '../../../../Core/Menu/Buttons/CancelMenuItem';
 import ExpCircularComponent from '../../../Common/Circular/CircularComponent';
 import SmDarkShopBtnComponent from '../../../Common/Button/Standard/SmDarkShopBtnComponent';
 import { Point } from '../../../../Core/Utils/Geometry/Point';
-import { lazyInject } from '../../../../inversify.config';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
-import { TYPES } from '../../../../types';
+import { Factory, FactoryKey } from '../../../../Factory';
 
 export default class CellMenuComponent extends Component<{ Item: Item; GameContext: GameContext }, {}> {
-	@lazyInject(TYPES.Empty) private _interactionService: IInteractionService;
-
+	private _interactionService: IInteractionService;
+	constructor() {
+		super();
+		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
+	}
 	render() {
 		return (
 			<ExpCircularComponent OnCancel={() => this.Cancel()} isDark={true}>

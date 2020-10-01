@@ -3,6 +3,6 @@ import { IGarbage } from '../IGarbage';
 
 export interface IAppService extends IGarbage {
 	Register(mapContext: MapContext): void;
-	Publish(): HTMLElement;
+	Publish(): PIXI.Application;
 	Context(): MapContext;
 }

@@ -1,38 +1,52 @@
-import { inject, injectable } from 'inversify';
-import 'reflect-metadata';
+import { GameSettings } from './../../Core/Framework/GameSettings';
+import { IInteractionService } from './../Interaction/IInteractionService';
 import { INetworkService } from './../Network/INetworkService';
-import { TYPES } from '../../types';
 import { ILayerService } from './../Layer/ILayerService';
 import { IUpdateService } from './../Update/IUpdateService';
 import { IGameContextService } from './../GameContext/IGameContextService';
 import { AppProvider } from './../../Core/App/AppProvider';
 import { MapContext } from './../../Core/Setup/Generator/MapContext';
 import { IAppService } from './IAppService';
-import { IInteractionService } from '../Interaction/IInteractionService';
+import { Factory, FactoryKey } from '../../Factory';
+import * as PIXI from 'pixi.js';
 
-@injectable()
 export class AppService implements IAppService {
 	private _context: MapContext;
 	private _app: PIXI.Application;
-	@inject(TYPES.Empty) private _gameContextService: IGameContextService;
-	@inject(TYPES.Empty) private _interactionService: IInteractionService;
-	@inject(TYPES.Empty) private _layerService: ILayerService;
-	@inject(TYPES.Empty) private _updateService: IUpdateService;
-	@inject(TYPES.Empty) private _networkService: INetworkService;
+	private _appProvider: AppProvider;
+	private _interactionManager: PIXI.interaction.InteractionManager;
+
+	private _gameContextService: IGameContextService;
+	private _interactionService: IInteractionService;
+	private _layerService: ILayerService;
+	private _updateService: IUpdateService;
+	private _networkService: INetworkService;
+
+	constructor() {
+		this._appProvider = new AppProvider();
+		this._gameContextService = Factory.Load<IGameContextService>(FactoryKey.GameContext);
+		this._updateService = Factory.Load<IUpdateService>(FactoryKey.Update);
+		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
+		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
+		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
+	}
 
 	public Register(mapContext: MapContext): void {
+		GameSettings.SetNormalSpeed();
 		this._context = mapContext;
-		const appProvider = new AppProvider();
-		this._app = appProvider.Provide(mapContext);
+		this._updateService.Register();
+		this._app = this._appProvider.Provide(mapContext);
+		this._interactionManager = new PIXI.interaction.InteractionManager(this._app.renderer);
+
 		this._layerService.Register(this._app);
 		this._gameContextService.Register(mapContext);
 		const gameContext = this._gameContextService.Publish();
-		this._interactionService.Register(this._app, gameContext);
-		this._updateService.Register();
+		this._interactionService.Register(this._interactionManager, gameContext);
+		this._app.start();
 	}
 
-	public Publish(): HTMLElement {
-		return this._app.view;
+	public Publish(): PIXI.Application {
+		return this._app;
 	}
 
 	public Context(): MapContext {
@@ -40,6 +54,7 @@ export class AppService implements IAppService {
 	}
 
 	public Collect(): void {
+		this._interactionManager.destroy();
 		this._gameContextService.Collect();
 		this._interactionService.Collect();
 		this._layerService.Collect();

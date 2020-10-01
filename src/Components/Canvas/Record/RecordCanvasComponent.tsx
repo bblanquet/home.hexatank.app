@@ -1,6 +1,4 @@
-import { lazyInject } from '../../../inversify.config';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
-import { TYPES } from '../../../types';
 import { Component, h } from 'preact';
 import { ISelectable } from '../../../Core/ISelectable';
 import { RecordCanvasUpdater } from './Updaters/RecordCanvasUpdater';
@@ -11,6 +9,7 @@ import UnitMenuComponent from './Parts/UnitMenuComponent';
 import { Vehicle } from '../../../Core/Items/Unit/Vehicle';
 import CanvasComponent from '../CanvasComponent';
 import { IRecordService } from '../../../Services/Record/IRecordService';
+import { Factory, FactoryKey } from '../../../Factory';
 
 export default class RecordCanvasComponent extends Component<
 	{},
@@ -19,8 +18,8 @@ export default class RecordCanvasComponent extends Component<
 		Item: Item;
 	}
 > {
-	@lazyInject(TYPES.Empty) private _recordService: IRecordService;
-	@lazyInject(TYPES.Empty) private _gameService: IGameContextService;
+	private _recordService: IRecordService;
+	private _gameService: IGameContextService;
 	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
 	private _updater: RecordCanvasUpdater;
 
@@ -40,6 +39,8 @@ export default class RecordCanvasComponent extends Component<
 
 	componentDidMount() {
 		GameSettings.Init();
+		this._gameService = Factory.Load<IGameContextService>(FactoryKey.GameContext);
+		this._recordService = Factory.Load<IRecordService>(FactoryKey.Record);
 		const context = this._gameService.Publish();
 		const record = this._recordService.Publish();
 		this._updater = new RecordCanvasUpdater(record, context);

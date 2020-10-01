@@ -1,12 +1,18 @@
+import { ILayerService } from './../../../../Services/Layer/ILayerService';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
 import { CombinationContext } from '../CombinationContext';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { MultiCellMenuItem } from '../../../Menu/Buttons/MultiCellMenuItem';
 import { MultiTankMenuItem } from '../../../Menu/Buttons/MultiTankMenuItem';
-import { AppHandler } from '../../../App/AppHandler';
+import { lazyInject } from '../../../../inversify.config';
+import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
+import { TYPES } from '../../../../types';
 
 export class ActiveMultiSelectionCombination extends AbstractSingleCombination {
-	constructor(private _appHandler: AppHandler, private _multiContext: MultiSelectionContext) {
+	@lazyInject(TYPES.Empty) private _interactionService: IInteractionService;
+	@lazyInject(TYPES.Empty) private _layerService: ILayerService;
+
+	constructor(private _multiContext: MultiSelectionContext) {
 		super();
 	}
 
@@ -20,8 +26,8 @@ export class ActiveMultiSelectionCombination extends AbstractSingleCombination {
 
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
-			this._appHandler.OnMultiMenuShowed.Invoke(this, false);
-			this._appHandler.PauseNavigation();
+			this._interactionService.OnMultiMenuShowed.Invoke(this, false);
+			this._layerService.PauseNavigation();
 			this._multiContext.Listen(context.Items[0] instanceof MultiTankMenuItem);
 			this.ClearContext.Invoke();
 			return true;

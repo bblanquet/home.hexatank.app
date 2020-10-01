@@ -1,3 +1,7 @@
+import { lazyInject } from '../../inversify.config';
+import { TYPES } from '../../types';
+import { ILayerService } from './../../Services/Layer/ILayerService';
+import { IUpdateService } from './../../Services/Update/IUpdateService';
 import { LiteEvent } from './../Utils/Events/LiteEvent';
 import { SpriteManager } from './../Framework/SpriteManager';
 import { Dictionnary } from './../Utils/Collections/Dictionnary';
@@ -6,10 +10,12 @@ import { BoundingBox } from '../Utils/Geometry/BoundingBox';
 import { IUpdatable } from '../IUpdatable';
 import { Point } from '../Utils/Geometry/Point';
 import { IBoundingBoxContainer } from '../IBoundingBoxContainer';
-import { GameHelper } from '../Framework/GameHelper';
 import { IInteractionContext } from '../Interaction/IInteractionContext';
 
 export abstract class Item implements IUpdatable, IBoundingBoxContainer {
+	@lazyInject(TYPES.Empty) private _updateService: IUpdateService;
+	@lazyInject(TYPES.Empty) protected _layerService: ILayerService;
+
 	private DisplayObjects: Array<PIXI.DisplayObject>;
 	private _spriteManager: SpriteManager;
 	public OnDestroyed: LiteEvent<Item> = new LiteEvent();
@@ -23,7 +29,7 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 		this.DisplayObjects = new Array<PIXI.DisplayObject>();
 		this.IsUpdatable = isUpdatable;
 		if (this.IsUpdatable) {
-			GameHelper.Updater.Items.push(this);
+			this._updateService.Publish().Items.push(this);
 		}
 	}
 
@@ -64,7 +70,7 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 
 	public Destroy(): void {
 		this.IsUpdatable = false;
-		GameHelper.Render.Remove(this);
+		this._layerService.Publish().Remove(this);
 		this._spriteManager.Destroyed();
 		this.OnDestroyed.Invoke(this, this);
 		this.OnDestroyed.Clear();
@@ -77,16 +83,16 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 		this.GetBoundingBox().Y = pos.Y;
 		const ref = this.GetRef();
 		this.DisplayObjects.forEach((obj) => {
-			obj.x = ref.X + GameHelper.ViewContext.GetX();
-			obj.y = ref.Y + GameHelper.ViewContext.GetY();
+			obj.x = ref.X + this._updateService.Publish().ViewContext.GetX();
+			obj.y = ref.Y + this._updateService.Publish().ViewContext.GetY();
 		});
 		this.GetSprites().forEach((sprite) => {
-			sprite.x = ref.X + GameHelper.ViewContext.GetX();
-			sprite.y = ref.Y + GameHelper.ViewContext.GetY();
+			sprite.x = ref.X + this._updateService.Publish().ViewContext.GetX();
+			sprite.y = ref.Y + this._updateService.Publish().ViewContext.GetY();
 			sprite.width = this.GetBoundingBox().Width;
 			sprite.height = this.GetBoundingBox().Height;
 		});
-		GameHelper.Render.Add(this);
+		this._layerService.Publish().Add(this);
 	}
 
 	public Update(viewX: number, viewY: number): void {

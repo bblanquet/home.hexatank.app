@@ -5,20 +5,23 @@ import { Item } from '../../../../Core/Items/Item';
 import { InteractionKind } from '../../../../Core/Interaction/IInteractionContext';
 import { TankMenuItem } from '../../../../Core/Menu/Buttons/TankMenuItem';
 import { TruckMenuItem } from '../../../../Core/Menu/Buttons/TruckMenuItem';
-import { AppHandler } from '../../../../Core/App/AppHandler';
 import { GameContext } from '../../../../Core/Framework/GameContext';
+import { lazyInject } from '../../../../inversify.config';
+import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
+import { TYPES } from '../../../../types';
 
 export default class HqMenuComponent extends Component<
 	{
 		TankRequestCount: number;
 		TruckRequestCount: number;
 		HasFlag: boolean;
-		AppHandler: AppHandler;
 		SetFlag: () => void;
 		GameContext: GameContext;
 	},
 	{}
 > {
+	@lazyInject(TYPES.Empty) private _interactionService: IInteractionService;
+
 	render() {
 		return (
 			<div class="left-column">
@@ -70,7 +73,8 @@ export default class HqMenuComponent extends Component<
 	}
 
 	private SendContext(item: Item): void {
-		this.props.AppHandler.InteractionContext.Kind = InteractionKind.Up;
-		return this.props.AppHandler.InteractionContext.OnSelect(item);
+		const interaction = this._interactionService.Publish();
+		interaction.Kind = InteractionKind.Up;
+		interaction.OnSelect(item);
 	}
 }

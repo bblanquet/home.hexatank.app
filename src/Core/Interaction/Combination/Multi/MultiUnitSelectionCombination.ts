@@ -1,3 +1,4 @@
+import { ILayerService } from './../../../../Services/Layer/ILayerService';
 import { UnitGroup } from '../../../Items/UnitGroup';
 import { CombinationContext } from '../CombinationContext';
 import { Cell } from '../../../Items/Cell/Cell';
@@ -5,18 +6,16 @@ import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { GameContext } from '../../../Framework/GameContext';
-import { AppHandler } from '../../../App/AppHandler';
+import { lazyInject } from '../../../../inversify.config';
+import { TYPES } from '../../../../types';
 
 export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 	private _group: UnitGroup;
+	@lazyInject(TYPES.Empty) private _layerService: ILayerService;
 
-	constructor(
-		private _multiContext: MultiSelectionContext,
-		private _appHandler: AppHandler,
-		private _gameContext: GameContext
-	) {
+	constructor(private _multiContext: MultiSelectionContext, private _gameContext: GameContext) {
 		super();
-		this._group = new UnitGroup(this._appHandler, this._multiContext);
+		this._group = new UnitGroup(this._multiContext);
 	}
 
 	IsMatching(context: CombinationContext): boolean {
@@ -46,7 +45,7 @@ export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 		this._multiContext.Close();
 
 		if (!this._group.Any()) {
-			this._appHandler.RestartNavigation();
+			this._layerService.StartNavigation();
 		} else {
 			this._multiContext.Listen(true);
 			this._group.SetSelected(true);

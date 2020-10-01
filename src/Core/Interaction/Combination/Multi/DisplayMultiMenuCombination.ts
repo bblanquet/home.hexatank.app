@@ -4,10 +4,13 @@ import { CombinationContext } from '../CombinationContext';
 import { Item } from '../../../Items/Item';
 import { ISelectable } from '../../../ISelectable';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
-import { AppHandler } from '../../../App/AppHandler';
+import { lazyInject } from '../../../../inversify.config';
+import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
+import { TYPES } from '../../../../types';
 
 export class DisplayMultiMenuCombination extends AbstractSingleCombination {
-	constructor(private _appHandler: AppHandler, private _multiSelectionContext: MultiSelectionContext) {
+	@lazyInject(TYPES.Empty) private _interactionService: IInteractionService;
+	constructor(private _multiSelectionContext: MultiSelectionContext) {
 		super();
 	}
 
@@ -22,7 +25,7 @@ export class DisplayMultiMenuCombination extends AbstractSingleCombination {
 				this.UnSelectItem(context.Items[0]);
 			}
 			this.ClearContext.Invoke();
-			this._appHandler.OnMultiMenuShowed.Invoke(this, true);
+			this._interactionService.OnMultiMenuShowed.Invoke(this, true);
 
 			return true;
 		}

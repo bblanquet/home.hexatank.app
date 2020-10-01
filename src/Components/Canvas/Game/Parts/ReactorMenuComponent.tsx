@@ -5,16 +5,17 @@ import { CancelMenuItem } from '../../../../Core/Menu/Buttons/CancelMenuItem';
 import { ReactorField } from '../../../../Core/Items/Cell/Field/Bonus/ReactorField';
 import { Item } from '../../../../Core/Items/Item';
 import { InteractionKind } from '../../../../Core/Interaction/IInteractionContext';
-import { AppHandler } from '../../../../Core/App/AppHandler';
 import { GameContext } from '../../../../Core/Framework/GameContext';
 import { AttackMenuItem } from '../../../../Core/Menu/Buttons/AttackMenuItem';
 import { SpeedFieldMenuItem } from '../../../../Core/Menu/Buttons/SpeedFieldMenuItem';
 import { HealMenuItem } from '../../../../Core/Menu/Buttons/HealMenuItem';
+import { lazyInject } from '../../../../inversify.config';
+import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
+import { TYPES } from '../../../../types';
 
-export default class ReactorMenuComponent extends Component<
-	{ Item: ReactorField; AppHandler: AppHandler; GameContext: GameContext },
-	{}
-> {
+export default class ReactorMenuComponent extends Component<{ Item: ReactorField; GameContext: GameContext }, {}> {
+	@lazyInject(TYPES.Empty) private _interactionService: IInteractionService;
+
 	render() {
 		const reactor = this.props.Item as ReactorField;
 		return (
@@ -106,7 +107,8 @@ export default class ReactorMenuComponent extends Component<
 	}
 
 	private SendContext(item: Item): void {
-		this.props.AppHandler.InteractionContext.Kind = InteractionKind.Up;
-		return this.props.AppHandler.InteractionContext.OnSelect(item);
+		const interaction = this._interactionService.Publish();
+		interaction.Kind = InteractionKind.Up;
+		interaction.OnSelect(item);
 	}
 }

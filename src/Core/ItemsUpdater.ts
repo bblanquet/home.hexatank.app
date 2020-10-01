@@ -5,9 +5,10 @@ import { Item } from './Items/Item';
 import { IInteractionContext } from './Interaction/IInteractionContext';
 
 export class ItemsUpdater implements IItemsUpdater {
-	Items: Array<Item>;
-
-	constructor(public ViewContext: ViewContext) {
+	public Items: Array<Item>;
+	public ViewContext: ViewContext;
+	constructor() {
+		this.ViewContext = new ViewContext();
 		this.Items = new Array<Item>();
 	}
 

@@ -1,5 +1,4 @@
 import { Component, h } from 'preact';
-import { GameHelper } from '../../../Core/Framework/GameHelper';
 import { Item } from '../../../Core/Items/Item';
 import { GameContext } from '../../../Core/Framework/GameContext';
 import { Tank } from '../../../Core/Items/Unit/Tank';
@@ -9,7 +8,6 @@ import { ISelectable } from '../../../Core/ISelectable';
 import { ReactorField } from '../../../Core/Items/Cell/Field/Bonus/ReactorField';
 import { GameSettings } from '../../../Core/Framework/GameSettings';
 import { Headquarter } from '../../../Core/Items/Cell/Field/Hq/Headquarter';
-import { GameAppHandler } from '../../../Core/App/GameAppHandler';
 import HqMenuComponent from './Parts/HqMenuComponent';
 import CanvasComponent from '../CanvasComponent';
 import TankMenuComponent from './Parts/TankMenuComponent';
@@ -24,6 +22,11 @@ import { GameStatus } from '../../../Core/Framework/GameStatus';
 import { Player } from '../../../Network/Player';
 import { CellGroup } from '../../../Core/Items/CellGroup';
 import PopupComponent from '../../Popup/PopupComponent';
+import { lazyInject } from '../../../inversify.config';
+import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
+import { TYPES } from '../../../types';
+import { INetworkService } from '../../../Services/Network/INetworkService';
+import { IInteractionService } from '../../../Services/Interaction/IInteractionService';
 
 export default class GameCanvasComponent extends Component<
 	any,
@@ -40,9 +43,13 @@ export default class GameCanvasComponent extends Component<
 		GameStatus: GameStatus;
 	}
 > {
-	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
-	private _appHandler: GameAppHandler;
+	@lazyInject(TYPES.Empty) private _gameContextService: IGameContextService;
+	@lazyInject(TYPES.Empty) private _networkService: INetworkService;
+	@lazyInject(TYPES.Empty) private _interactionService: IInteractionService;
+
 	private _gameContext: GameContext;
+
+	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
 
 	constructor() {
 		super();
@@ -69,15 +76,14 @@ export default class GameCanvasComponent extends Component<
 
 	componentDidMount() {
 		GameSettings.Init();
-		this._appHandler = new GameAppHandler();
-		this._gameContext = this._appHandler.SetupGameContext();
+		this._gameContext = this._gameContextService.Publish();
 		this._gameContext.GetMainHq().OnTruckChanged.On(this.HandleTruckChanged.bind(this));
 		this._gameContext.GetMainHq().OnTankRequestChanged.On(this.HandleTankChanged.bind(this));
 		this._gameContext.GetMainHq().OnDiamondCountChanged.On(this.HandleDiamondChanged.bind(this));
 		this._gameContext.OnItemSelected.On(this.UpdateSelection.bind(this));
 		this._gameContext.GetMainHq().OnCashMissing.On(this.HandleCashMissing.bind(this));
 		this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));
-		this._appHandler.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
+		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
 	}
 
 	private HandleMultiMenuShowed(src: any, isDisplayed: boolean): void {
@@ -129,20 +135,14 @@ export default class GameCanvasComponent extends Component<
 
 	private LeftMenuRender() {
 		if (this.state.HasMultiMenu) {
-			return (
-				<MultiMenuComponent
-					Item={this.state.Item}
-					AppHandler={this._appHandler}
-					GameContext={this._gameContext}
-				/>
-			);
+			return <MultiMenuComponent Item={this.state.Item} />;
 		} else if (this.state.Item) {
 			if (this.state.Item instanceof Tank) {
-				return <TankMenuComponent AppHandler={this._appHandler} Tank={this.state.Item} />;
+				return <TankMenuComponent Tank={this.state.Item} />;
 			} else if (this.state.Item instanceof Truck) {
-				return <TruckMenuComponent AppHandler={this._appHandler} Truck={this.state.Item} />;
+				return <TruckMenuComponent Truck={this.state.Item} />;
 			} else if (this.state.Item instanceof UnitGroup) {
-				return <MultiTankMenuComponent AppHandler={this._appHandler} item={this.state.Item} />;
+				return <MultiTankMenuComponent item={this.state.Item} />;
 			} else if (this.state.Item instanceof Headquarter) {
 				return (
 					<HqMenuComponent
@@ -150,49 +150,16 @@ export default class GameCanvasComponent extends Component<
 						TankRequestCount={this.state.TankRequestCount}
 						TruckRequestCount={this.state.TruckRequestCount}
 						HasFlag={this.state.HasFlag}
-						AppHandler={this._appHandler}
 						GameContext={this._gameContext}
 					/>
 				);
 			} else if (this.state.Item instanceof ReactorField) {
-				return (
-					<ReactorMenuComponent
-						Item={this.state.Item}
-						AppHandler={this._appHandler}
-						GameContext={this._gameContext}
-					/>
-				);
+				return <ReactorMenuComponent Item={this.state.Item} GameContext={this._gameContext} />;
 			} else if (this.state.Item instanceof Cell || this.state.Item instanceof CellGroup) {
-				return (
-					<CellMenuComponent
-						Item={this.state.Item}
-						AppHandler={this._appHandler}
-						GameContext={this._gameContext}
-					/>
-				);
+				return <CellMenuComponent Item={this.state.Item} GameContext={this._gameContext} />;
 			}
 		}
 		return '';
-	}
-
-	componentWillUnmount() {
-		window.removeEventListener('resize', () => this._appHandler.ResizeTheCanvas());
-		window.removeEventListener('DOMContentLoaded', () => this._appHandler.ResizeTheCanvas());
-		GameHelper.Updater.Items.forEach((item) => {
-			item.Destroy();
-		});
-		GameHelper.Updater.Items = [];
-		GameHelper.Updater = null;
-		GameHelper.MapContext = null;
-		GameHelper.Render.Clear();
-		GameHelper.Render = null;
-
-		GameHelper.ViewContext = null;
-		if (GameHelper.Socket) {
-			GameHelper.Socket.Stop();
-			GameHelper.Socket = null;
-		}
-		this._appHandler.Clear();
 	}
 
 	componentDidUpdate() {}
@@ -202,7 +169,7 @@ export default class GameCanvasComponent extends Component<
 		this.setState({
 			HasMenu: newValue
 		});
-		if (!GameHelper.Socket) {
+		if (!this._networkService.HasSocket()) {
 			GameSettings.IsPause = newValue;
 		}
 	}
@@ -221,7 +188,7 @@ export default class GameCanvasComponent extends Component<
 				{this.TopLeftInfo()}
 				{this.TopMenuRender()}
 				{this.state.GameStatus === GameStatus.Pending ? '' : this.GetEndMessage()}
-				<CanvasComponent App={this._appHandler.GetApp()} Updater={this._appHandler.GetUpdater()} />
+				<CanvasComponent />
 				{this.state.HasMenu && this.state.GameStatus === GameStatus.Pending ? '' : this.LeftMenuRender()}
 				{this.state.HasMenu && this.state.GameStatus === GameStatus.Pending ? this.MenuRender() : ''}
 			</div>
@@ -231,7 +198,7 @@ export default class GameCanvasComponent extends Component<
 	private TopLeftInfo() {
 		return (
 			<div style="position: fixed;left: 0%; color:white;">
-				{GameHelper.Players.map((player) => {
+				{this._networkService.GetPlayers().map((player) => {
 					return (
 						<div>
 							{player.Name} <span class="badge badge-info">{player.Latency}</span>

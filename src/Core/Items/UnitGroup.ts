@@ -1,5 +1,4 @@
 import { MultiSelectionContext } from '../Menu/Smart/MultiSelectionContext';
-import { AppHandler } from '../App/AppHandler';
 import { ISelectable } from '../ISelectable';
 import { Item } from './Item';
 import { Vehicle } from './Unit/Vehicle';
@@ -13,12 +12,13 @@ import { Cell } from './Cell/Cell';
 import { Tank } from './Unit/Tank';
 
 export class UnitGroup extends Item implements ISelectable, ICancellable, ICamouflageAble {
-	private _multiHandler: MultiSelectionHelper;
-	public IsListeningOrder: boolean = false;
 	private _units: Array<Vehicle> = new Array<Vehicle>();
-	OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
+	private _multiHandler: MultiSelectionHelper;
 
-	constructor(private _app: AppHandler, private selectionContext: MultiSelectionContext) {
+	public IsListeningOrder: boolean = false;
+	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
+
+	constructor(private selectionContext: MultiSelectionContext) {
 		super(false);
 		this._multiHandler = new MultiSelectionHelper();
 	}
@@ -50,7 +50,7 @@ export class UnitGroup extends Item implements ISelectable, ICancellable, ICamou
 
 	SetSelected(visible: boolean): void {
 		if (!visible) {
-			this._app.RestartNavigation();
+			this._layerService.StartNavigation();
 			this.selectionContext.Close();
 			this.Clear();
 		} else {

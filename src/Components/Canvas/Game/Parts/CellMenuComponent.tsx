@@ -8,7 +8,6 @@ import { HealMenuItem } from '../../../../Core/Menu/Buttons/HealMenuItem';
 import { MoneyMenuItem } from '../../../../Core/Menu/Buttons/MoneyMenuItem';
 import { ShieldMenuItem } from '../../../../Core/Menu/Buttons/ShieldMenuItem';
 import { InteractionKind } from '../../../../Core/Interaction/IInteractionContext';
-import { AppHandler } from '../../../../Core/App/AppHandler';
 import { GameContext } from '../../../../Core/Framework/GameContext';
 import { ThunderMenuItem } from '../../../../Core/Menu/Buttons/ThunderMenuItem';
 import { Cell } from '../../../../Core/Items/Cell/Cell';
@@ -17,11 +16,13 @@ import { CancelMenuItem } from '../../../../Core/Menu/Buttons/CancelMenuItem';
 import ExpCircularComponent from '../../../Common/Circular/CircularComponent';
 import SmDarkShopBtnComponent from '../../../Common/Button/Standard/SmDarkShopBtnComponent';
 import { Point } from '../../../../Core/Utils/Geometry/Point';
+import { lazyInject } from '../../../../inversify.config';
+import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
+import { TYPES } from '../../../../types';
 
-export default class CellMenuComponent extends Component<
-	{ Item: Item; AppHandler: AppHandler; GameContext: GameContext },
-	{}
-> {
+export default class CellMenuComponent extends Component<{ Item: Item; GameContext: GameContext }, {}> {
+	@lazyInject(TYPES.Empty) private _interactionService: IInteractionService;
+
 	render() {
 		return (
 			<ExpCircularComponent OnCancel={() => this.Cancel()} isDark={true}>
@@ -86,8 +87,9 @@ export default class CellMenuComponent extends Component<
 	}
 
 	private SendContext(item: Item): void {
-		this.props.AppHandler.InteractionContext.Kind = InteractionKind.Up;
-		return this.props.AppHandler.InteractionContext.OnSelect(item);
+		const interaction = this._interactionService.Publish();
+		interaction.Kind = InteractionKind.Up;
+		interaction.OnSelect(item);
 	}
 
 	private Cancel(): void {

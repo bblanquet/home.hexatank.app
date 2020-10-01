@@ -223,7 +223,7 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 
 		this.Camouflage = new BasicItem(
 			BoundingBox.CreateFromBox(this.GetBoundingBox()),
-			CamouflageHandler.GetCamouflage(),
+			new CamouflageHandler().GetCamouflage(),
 			5
 		);
 		this.Camouflage.SetVisible(() => this.IsAlive() && this.HasCamouflage);

@@ -1,3 +1,7 @@
+import { lazyInject } from '../../../inversify.config';
+import { IAppService } from '../../../Services/App/IAppService';
+import { INetworkService } from '../../../Services/Network/INetworkService';
+import { TYPES } from '../../../types';
 import { Component, h } from 'preact';
 import { route } from 'preact-router';
 import * as toastr from 'toastr';
@@ -15,14 +19,18 @@ import { GameSettings } from '../../../Core/Framework/GameSettings';
 import { MapGenerator } from '../../../Core/Setup/Generator/MapGenerator';
 import { MapEnv } from '../../../Core/Setup/Generator/MapEnv';
 import { MapContext } from '../../../Core/Setup/Generator/MapContext';
-import { GameHelper } from '../../../Core/Framework/GameHelper';
 import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
 import BlackButtonComponent from '../../Common/Button/Stylish/BlackButtonComponent';
 import RedButtonComponent from '../../Common/Button/Stylish/RedButtonComponent';
 import Icon from '../../Common/Icon/IconComponent';
 import PanelComponent from '../../Common/Panel/PanelComponent';
+import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
 
 export default class HostingComponent extends Component<any, HostState> {
+	@lazyInject(TYPES.Empty) private _appService: IAppService;
+	@lazyInject(TYPES.Empty) private _networkService: INetworkService;
+	@lazyInject(TYPES.Empty) private _gameContextService: IGameContextService;
+
 	private _socket: NetworkSocket;
 	private _hasSettings: boolean = false;
 
@@ -260,22 +268,26 @@ export default class HostingComponent extends Component<any, HostState> {
 			this._socket.Emit(message);
 			this.SetIa(mapContext);
 			this.HideRoom();
-			GameHelper.MapContext = mapContext;
-			GameHelper.Socket = this._socket;
-			GameHelper.Players = this.state.Players.Values();
+			this._appService.Register(mapContext);
+			this._networkService.Register(
+				this._socket,
+				this._gameContextService.Publish(),
+				this.state.Players.Values()
+			);
 			route('/Canvas', true);
 		}
 	}
 
 	private OnMapReceived(data: NetworkMessage<MapContext>): void {
-		GameHelper.MapContext = data.Content;
-		GameHelper.MapContext.PlayerName = this.state.Player.Name;
-		this.SetIa(GameHelper.MapContext);
-		GameHelper.MapContext.Hqs.forEach((hq) => {
+		const mapContext = data.Content;
+		mapContext.PlayerName = this.state.Player.Name;
+		this.SetIa(mapContext);
+		mapContext.Hqs.forEach((hq) => {
 			hq.isIa = false;
 		});
-		GameHelper.Socket = this._socket;
-		GameHelper.Players = this.state.Players.Values();
+
+		this._appService.Register(mapContext);
+		this._networkService.Register(this._socket, this._gameContextService.Publish(), this.state.Players.Values());
 		route('/Canvas', true);
 	}
 

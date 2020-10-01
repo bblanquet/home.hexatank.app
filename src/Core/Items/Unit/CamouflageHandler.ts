@@ -1,15 +1,19 @@
+import { lazyInject } from '../../../inversify.config';
+import { TYPES } from '../../../types';
+import { IAppService } from '../../../Services/App/IAppService';
 import { Archive } from '../../Framework/ResourceArchiver';
-import { GameHelper } from '../../Framework/GameHelper';
 import { MapEnv } from '../../Setup/Generator/MapEnv';
 
 export class CamouflageHandler {
-	public static GetCamouflage(): string {
+	@lazyInject(TYPES.Empty) private _appService: IAppService;
+
+	public GetCamouflage(): string {
 		const random = Math.floor(Math.random() * 2) + 1;
-		if (GameHelper.MapContext.MapMode === MapEnv.forest) {
+		if (this._appService.Context().MapMode === MapEnv.forest) {
 			return random === 1 ? Archive.nature.tree : Archive.nature.rock;
-		} else if (GameHelper.MapContext.MapMode === MapEnv.sand) {
+		} else if (this._appService.Context().MapMode === MapEnv.sand) {
 			return random === 1 ? Archive.nature.sandRock : Archive.nature.palmTree;
-		} else if (GameHelper.MapContext.MapMode === MapEnv.ice) {
+		} else if (this._appService.Context().MapMode === MapEnv.ice) {
 			return random === 1 ? Archive.nature.iceTree : Archive.nature.rock;
 		}
 	}

@@ -54,26 +54,25 @@ import { HealMenuItem } from '../Menu/Buttons/HealMenuItem';
 import { MedicField } from '../Items/Cell/Field/Bonus/MedicField';
 import { SpeedFieldMenuItem } from '../Menu/Buttons/SpeedFieldMenuItem';
 import { RoadField } from '../Items/Cell/Field/Bonus/RoadField';
-import { AppHandler } from '../App/AppHandler';
 
 export class CombinationProvider {
-	GetCombination(appHandler: AppHandler, checker: ISelectableChecker, gameContext: GameContext): ICombination[] {
-		const multiSelectionContext = new MultiSelectionContext(appHandler.GetViewport());
+	GetCombination(checker: ISelectableChecker, gameContext: GameContext): ICombination[] {
+		const multiSelectionContext = new MultiSelectionContext();
 		return [
 			new AbortCombination(),
 			new CancelCombination(),
 			new CamouflageCombination(),
 
-			new DisplayMultiMenuCombination(appHandler, multiSelectionContext),
+			new DisplayMultiMenuCombination(multiSelectionContext),
 			new ClearMultiCellBonusCombination(),
-			new ClearMultiSelectionMenuCombination(appHandler),
-			new ActiveMultiSelectionCombination(appHandler, multiSelectionContext),
+			new ClearMultiSelectionMenuCombination(),
+			new ActiveMultiSelectionCombination(multiSelectionContext),
 			new MultiSelectionCombination(multiSelectionContext),
-			new MultiUnitSelectionCombination(multiSelectionContext, appHandler, gameContext),
-			new MultiUnitOrderCombination(appHandler, multiSelectionContext),
-			new MultiCellSelectionCombination(multiSelectionContext, appHandler, gameContext),
-			new MultiCellBonusCombination(appHandler, gameContext),
-			new SwithcMultiCombination(appHandler, multiSelectionContext),
+			new MultiUnitSelectionCombination(multiSelectionContext, gameContext),
+			new MultiUnitOrderCombination(multiSelectionContext),
+			new MultiCellSelectionCombination(multiSelectionContext, gameContext),
+			new MultiCellBonusCombination(gameContext),
+			new SwithcMultiCombination(multiSelectionContext),
 
 			new FlagCellCombination(gameContext),
 			new SearchMoneyCombination(),

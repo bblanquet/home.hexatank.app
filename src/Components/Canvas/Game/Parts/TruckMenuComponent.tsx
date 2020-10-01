@@ -5,13 +5,18 @@ import { PatrolMenuItem } from '../../../../Core/Menu/Buttons/PatrolMenuItem';
 import { SearchMoneyMenuItem } from '../../../../Core/Menu/Buttons/SearchMoneyMenuItem';
 import { AbortMenuItem } from '../../../../Core/Menu/Buttons/AbortMenuItem';
 import { CancelMenuItem } from '../../../../Core/Menu/Buttons/CancelMenuItem';
-import { AppHandler } from '../../../../Core/App/AppHandler';
 import { Vehicle } from '../../../../Core/Items/Unit/Vehicle';
+import { lazyInject } from '../../../../inversify.config';
+import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
+import { TYPES } from '../../../../types';
 
-export default class TruckMenuComponent extends Component<{ AppHandler: AppHandler; Truck: Vehicle }, {}> {
+export default class TruckMenuComponent extends Component<{ Truck: Vehicle }, {}> {
+	@lazyInject(TYPES.Empty) private _interactionService: IInteractionService;
+
 	private SendContext(item: Item): void {
-		this.props.AppHandler.InteractionContext.Kind = InteractionKind.Up;
-		return this.props.AppHandler.InteractionContext.OnSelect(item);
+		const interaction = this._interactionService.Publish();
+		interaction.Kind = InteractionKind.Up;
+		return interaction.OnSelect(item);
 	}
 
 	render() {

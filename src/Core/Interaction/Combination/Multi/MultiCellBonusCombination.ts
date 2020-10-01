@@ -25,10 +25,14 @@ import { GameSettings } from '../../../Framework/GameSettings';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { GameContext } from '../../../Framework/GameContext';
 import { IField } from '../../../Items/Cell/Field/IField';
-import { AppHandler } from '../../../App/AppHandler';
+import { lazyInject } from '../../../../inversify.config';
+import { ILayerService } from '../../../../Services/Layer/ILayerService';
+import { TYPES } from '../../../../types';
 
 export class MultiCellBonusCombination extends AbstractSingleCombination {
-	constructor(private _appHandler: AppHandler, private _gameContext: GameContext) {
+	@lazyInject(TYPES.Empty) private _layerService: ILayerService;
+
+	constructor(private _gameContext: GameContext) {
 		super();
 	}
 
@@ -74,12 +78,12 @@ export class MultiCellBonusCombination extends AbstractSingleCombination {
 				}
 				cells.SetSelected(false);
 				this.ClearContext.Invoke();
-				this._appHandler.RestartNavigation();
+				this._layerService.StartNavigation();
 				return true;
 			} else {
 				cells.SetSelected(false);
 				this.ClearContext.Invoke();
-				this._appHandler.RestartNavigation();
+				this._layerService.StartNavigation();
 			}
 			return false;
 		}

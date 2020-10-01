@@ -1,3 +1,6 @@
+import { lazyInject } from '../../inversify.config';
+import { ICompareService } from '../../Services/Compare/ICompareService';
+import { TYPES } from '../../types';
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { CompChartProvider } from '../Common/CompChartProvider';
@@ -8,7 +11,6 @@ import PanelComponent from '../Common/Panel/PanelComponent';
 import DropDownComponent from '../Common/DropDown/DropDownComponent';
 import { DeltaRecordCurve } from './Comparers/DeltaRecordCurve';
 import TextComponent from '../Common/Text/TextComponent';
-import { GameHelper } from '../../Core/Framework/GameHelper';
 
 export default class ComparerComponent extends Component<
 	{},
@@ -20,8 +22,10 @@ export default class ComparerComponent extends Component<
 		CurveIndex: number | null;
 	}
 > {
+	@lazyInject(TYPES.Empty) private _compareService: ICompareService;
 	private _trackingComparer: RecordComparer;
 	private _chartProvider: CompChartProvider;
+
 	private _canvas: HTMLCanvasElement;
 	private _chart: Chart;
 	private _d1: RecordData;
@@ -40,8 +44,7 @@ export default class ComparerComponent extends Component<
 	}
 
 	componentWillMount() {
-		this._d1 = GameHelper.Record;
-		this._d2 = GameHelper.ComparedRecord;
+		[ this._d1, this._d2 ] = this._compareService.Publish();
 	}
 
 	componentDidMount() {

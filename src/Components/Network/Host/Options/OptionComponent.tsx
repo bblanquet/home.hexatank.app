@@ -2,7 +2,6 @@ import { h, Component } from 'preact';
 import BlackButtonComponent from '../../../Common/Button/Stylish/BlackButtonComponent';
 
 export default class OptionComponent extends Component<{ Update: (g: number) => void }, { IaNumber: number }> {
-	private _isFirstRender = true;
 	constructor() {
 		super();
 		this.setState({
@@ -10,9 +9,7 @@ export default class OptionComponent extends Component<{ Update: (g: number) => 
 		});
 	}
 
-	componentDidMount() {
-		this._isFirstRender = false;
-	}
+	componentDidMount() {}
 
 	componentWillMount() {}
 

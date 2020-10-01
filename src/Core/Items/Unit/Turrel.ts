@@ -7,7 +7,6 @@ import { IRotatable } from './MotionHelpers/IRotatable';
 import { IRotationMaker } from './MotionHelpers/IRotationMaker';
 import { RotationMaker } from './MotionHelpers/RotationMaker';
 import { ItemSkin } from '../ItemSkin';
-import { GameHelper } from '../../Framework/GameHelper';
 import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';

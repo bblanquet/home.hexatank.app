@@ -1,21 +1,21 @@
+import { Item } from '../../../Items/Item';
 import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
 import { GeneralRequester } from '../../../Ia/Decision/RequestMaker/GeneralRequester/GeneralRequester';
 import { AreaRequestMaker } from '../../../Ia/Decision/RequestMaker/AreaRequestMaker';
 import { ExpansionMaker } from '../../../Ia/Decision/ExpansionMaker/ExpansionMaker';
 import { RequestHandler } from '../../../Ia/Decision/RequestHandler/RequestHandler';
 import { Kingdom } from '../../../Ia/Decision/Kingdom';
-import { GameContext } from '../../../Framework/GameContext';
 import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
+import { IaHeadquarter } from '../../../Ia/IaHeadquarter';
+import { Diamond } from '../../../Items/Cell/Field/Diamond';
+import { Area } from '../../../Ia/Decision/Utils/Area';
+import { GameContext } from '../../../Framework/GameContext';
+import { Cell } from '../../../Items/Cell/Cell';
+import { ItemSkin } from '../../../Items/ItemSkin';
+import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
+import { HexAxial } from '../../../Utils/Geometry/HexAxial';
 import { CellContext } from '../../../Items/Cell/CellContext';
 import { AbstractHqRender } from './AbstractHqRender';
-import { IaHeadquarter } from '../../../Ia/IaHeadquarter';
-import { HexAxial } from '../../../Utils/Geometry/HexAxial';
-import { Item } from '../../../Items/Item';
-import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
-import { ItemSkin } from '../../../Items/ItemSkin';
-import { Diamond } from '../../../Items/Cell/Field/Diamond';
-import { Cell } from '../../../Items/Cell/Cell';
-import { Area } from '../../../Ia/Decision/Utils/Area';
 
 export class HqRender extends AbstractHqRender {
 	protected CreateIaHq(

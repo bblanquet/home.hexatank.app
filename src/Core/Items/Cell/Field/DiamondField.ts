@@ -3,7 +3,6 @@ import { TickTimer } from '../../../Utils/Timer/TickTimer';
 import { LiteEvent } from '../../../Utils/Events/LiteEvent';
 import { Cell } from '../Cell';
 import { Archive } from '../../../Framework/ResourceArchiver';
-import { GameHelper } from '../../../Framework/GameHelper';
 import { Vehicle } from '../../Unit/Vehicle';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { Truck } from '../../Unit/Truck';

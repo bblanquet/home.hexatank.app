@@ -1,15 +1,19 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { SinglePlayerState } from './SinglePlayerState';
-import { GameHelper } from '../../Core/Framework/GameHelper';
 import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
 import { MapEnv } from '../../Core/Setup/Generator/MapEnv';
 import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
 import DropDownComponent from '../Common/DropDown/DropDownComponent';
 import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
 import PanelComponent from '../Common/Panel/PanelComponent';
+import { lazyInject } from '../../inversify.config';
+import { IAppService } from '../../Services/App/IAppService';
+import { TYPES } from '../../types';
 
 export default class SinglePlayerComponent extends Component<any, SinglePlayerState> {
+	@lazyInject(TYPES.Empty) private _appService: IAppService;
+
 	constructor(props: any) {
 		super(props);
 	}
@@ -86,21 +90,21 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 	}
 
 	Start(): void {
-		GameHelper.MapContext = new MapGenerator().GetMapDefinition(
+		const mapContext = new MapGenerator().GetMapDefinition(
 			this.ConvertSize(),
 			this.state.MapType,
 			+this.state.IaNumber + 1,
 			this.ConvertEnv()
 		);
-		GameHelper.MapContext.Hqs[0].PlayerName = GameHelper.MapContext.PlayerName;
-		let index = 0;
-		GameHelper.MapContext.Hqs.forEach((hq) => {
+		mapContext.Hqs[0].PlayerName = mapContext.PlayerName;
+		mapContext.Hqs.forEach((hq, index) => {
 			if (!hq.PlayerName) {
 				hq.isIa = true;
 				hq.PlayerName = `IA-${index}`;
 			}
 			index += 1;
 		});
+		this._appService.Register(mapContext);
 		route('/Canvas', true);
 	}
 }

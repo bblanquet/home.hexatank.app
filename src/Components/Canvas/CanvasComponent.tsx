@@ -1,8 +1,16 @@
-import { Component, h } from 'preact';
+import { lazyInject } from '../../inversify.config';
+import { IAppService } from '../../Services/App/IAppService';
+import { IUpdateService } from '../../Services/Update/IUpdateService';
 import { ItemsUpdater } from '../../Core/ItemsUpdater';
+import { TYPES } from '../../types';
+import { Component, h } from 'preact';
 
-export default class CanvasComponent extends Component<{ App: PIXI.Application; Updater: ItemsUpdater }, {}> {
+export default class CanvasComponent extends Component<{}, {}> {
+	@lazyInject(TYPES.Empty) private _appService: IAppService;
+	@lazyInject(TYPES.Empty) private _updateService: IUpdateService;
+
 	private _gameCanvas: HTMLDivElement;
+	private _updater: ItemsUpdater;
 	private _stop: boolean;
 
 	constructor() {
@@ -12,8 +20,13 @@ export default class CanvasComponent extends Component<{ App: PIXI.Application; 
 
 	componentDidMount() {
 		this._stop = false;
-		this._gameCanvas.appendChild(this.props.App.view);
+		this._gameCanvas.appendChild(this._appService.Publish());
+		this._updater = this._updateService.Publish();
 		this.GameLoop();
+	}
+
+	componentWillUnmount() {
+		this._appService.Collect();
 	}
 
 	private GameLoop(): void {
@@ -21,7 +34,7 @@ export default class CanvasComponent extends Component<{ App: PIXI.Application; 
 			return;
 		}
 		requestAnimationFrame(() => this.GameLoop());
-		this.props.Updater.Update();
+		this._updater.Update();
 	}
 
 	componentDidUpdate() {}

@@ -1,5 +1,5 @@
 const TYPES = {
-	AppService: Symbol.for('AppService')
+	Empty: Symbol.for('')
 };
 
 export { TYPES };

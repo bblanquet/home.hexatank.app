@@ -1,17 +1,22 @@
+import { IInteractionService } from './../../../Services/Interaction/IInteractionService';
+import { lazyInject } from '../../../inversify.config';
+import { IUpdateService } from '../../../Services/Update/IUpdateService';
 import { InteractionKind } from '../../Interaction/IInteractionContext';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { BasicItem } from '../../Items/BasicItem';
 import { CellContext } from '../../Items/Cell/CellContext';
 import { IInteractionContext } from '../../Interaction/IInteractionContext';
-import { GameHelper } from '../../Framework/GameHelper';
 import { Point } from '../../Utils/Geometry/Point';
 import { Cell } from '../../Items/Cell/Cell';
 import { Item } from '../../Items/Item';
 import { ViewContext } from '../../Utils/Geometry/ViewContext';
 import * as PIXI from 'pixi.js';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
+import { TYPES } from '../../../types';
 
 export class MultiSelectionContext implements IInteractionContext {
+	@lazyInject(TYPES.Empty) private _updateService: IUpdateService;
+	@lazyInject(TYPES.Empty) private _interactionService: IInteractionService;
 	public Kind: InteractionKind;
 	public Point: PIXI.Point;
 	private _cells: CellContext<Cell>;
@@ -19,8 +24,9 @@ export class MultiSelectionContext implements IInteractionContext {
 	private _isOn: boolean;
 	public View: ViewContext;
 	public _isUnitSelection: boolean;
-
-	constructor(private _viewport: any) {
+	private _viewport: any;
+	constructor() {
+		this._viewport = this._interactionService.Publish();
 		this._cells = new CellContext<Cell>();
 		this._enlightCells = new Array<BasicItem>();
 	}
@@ -54,7 +60,7 @@ export class MultiSelectionContext implements IInteractionContext {
 		}
 
 		if (this._isOn) {
-			GameHelper.Updater.Items.forEach((item) => {
+			this._updateService.Publish().Items.forEach((item) => {
 				item.Select(this);
 			});
 		}

@@ -14,6 +14,14 @@ export class InputNotifier {
 	public UpEvent: LiteEvent<Point>;
 	public MovingUpEvent: LiteEvent<Point>;
 
+	Clear(): void {
+		this.DoubleEvent.Clear();
+		this.MovingEvent.Clear();
+		this.DownEvent.Clear();
+		this.DownEvent.Clear();
+		this.MovingUpEvent.Clear();
+	}
+
 	private _downDate: number | null;
 
 	constructor() {

@@ -3,14 +3,14 @@ import { CombinationContext } from '../CombinationContext';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { GameContext } from '../../../Framework/GameContext';
-import { AppHandler } from '../../../App/AppHandler';
+import { lazyInject } from '../../../../inversify.config';
+import { ILayerService } from '../../../../Services/Layer/ILayerService';
+import { TYPES } from '../../../../types';
 
 export class MultiCellSelectionCombination extends AbstractSingleCombination {
-	constructor(
-		private _multiSelectionContext: MultiSelectionContext,
-		private _appHandler: AppHandler,
-		private _gameContext: GameContext
-	) {
+	@lazyInject(TYPES.Empty) private _layerService: ILayerService;
+
+	constructor(private _multiSelectionContext: MultiSelectionContext, private _gameContext: GameContext) {
 		super();
 	}
 
@@ -29,7 +29,7 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 				this._gameContext.OnItemSelected.Invoke(this, cellGroup);
 			}
 			this._multiSelectionContext.Close();
-			this._appHandler.RestartNavigation();
+			this._layerService.StartNavigation();
 			return true;
 		}
 		return false;

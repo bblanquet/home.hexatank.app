@@ -1,13 +1,16 @@
+import { lazyInject } from '../../../inversify.config';
+import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
+import { TYPES } from '../../../types';
 import { Component, h } from 'preact';
-import { GameHelper } from '../../../Core/Framework/GameHelper';
 import { ISelectable } from '../../../Core/ISelectable';
 import { RecordCanvasUpdater } from './Updaters/RecordCanvasUpdater';
 import { GameSettings } from '../../../Core/Framework/GameSettings';
-import { TrackingAppHandler } from '../../../Core/App/TrackingAppHandler';
 import RangeComponent from '../../Common/Range/RangeComponent';
 import { Item } from '../../../Core/Items/Item';
 import UnitMenuComponent from './Parts/UnitMenuComponent';
 import { Vehicle } from '../../../Core/Items/Unit/Vehicle';
+import CanvasComponent from '../CanvasComponent';
+import { IRecordService } from '../../../Services/Record/IRecordService';
 
 export default class RecordCanvasComponent extends Component<
 	{},
@@ -16,9 +19,9 @@ export default class RecordCanvasComponent extends Component<
 		Item: Item;
 	}
 > {
-	private _gameCanvas: HTMLDivElement;
+	@lazyInject(TYPES.Empty) private _recordService: IRecordService;
+	@lazyInject(TYPES.Empty) private _gameService: IGameContextService;
 	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
-	private _appHandler: TrackingAppHandler;
 	private _updater: RecordCanvasUpdater;
 
 	constructor() {
@@ -37,28 +40,16 @@ export default class RecordCanvasComponent extends Component<
 
 	componentDidMount() {
 		GameSettings.Init();
-		this._appHandler = new TrackingAppHandler();
-		const context = this._appHandler.SetupGameContext();
-		this._gameCanvas.appendChild(this._appHandler.GetApp().view);
-		this._updater = new RecordCanvasUpdater(GameHelper.Record, context);
+		const context = this._gameService.Publish();
+		const record = this._recordService.Publish();
+		this._updater = new RecordCanvasUpdater(record, context);
 		context.OnItemSelected.On(this.UpdateSelection.bind(this));
 		this.setState({
-			dataSet: GameHelper.Record.Dates
+			dataSet: record.Dates
 		});
-		this.GameLoop();
 	}
 
-	private GameLoop(): void {
-		requestAnimationFrame(() => this.GameLoop());
-		GameHelper.Updater.Update();
-	}
-
-	componentWillUnmount() {
-		window.removeEventListener('resize', () => this._appHandler.ResizeTheCanvas());
-		window.removeEventListener('DOMContentLoaded', () => this._appHandler.ResizeTheCanvas());
-		this._appHandler.Clear();
-		this._gameCanvas = null;
-	}
+	componentWillUnmount() {}
 
 	componentDidUpdate() {}
 
@@ -67,11 +58,7 @@ export default class RecordCanvasComponent extends Component<
 			<div style="width=100%">
 				{this.TopMenuRender()}
 				{this.BottomMenuRender()}
-				<div
-					ref={(dom) => {
-						this._gameCanvas = dom;
-					}}
-				/>
+				<CanvasComponent />
 				{this.LeftMenuRender()}
 			</div>
 		);
@@ -79,7 +66,7 @@ export default class RecordCanvasComponent extends Component<
 
 	private LeftMenuRender() {
 		if (this.state.Item) {
-			return <UnitMenuComponent AppHandler={this._appHandler} Vehicle={this.state.Item as Vehicle} />;
+			return <UnitMenuComponent Vehicle={this.state.Item as Vehicle} />;
 		}
 		return '';
 	}

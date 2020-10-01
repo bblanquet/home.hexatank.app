@@ -1,12 +1,16 @@
 import { Component, h } from 'preact';
 import { route } from 'preact-router';
-import { GameHelper } from '../../Core/Framework/GameHelper';
 import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
 import { MapEnv } from '../../Core/Setup/Generator/MapEnv';
 import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
 import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
+import { IAppService } from '../../Services/App/IAppService';
+import { lazyInject } from '../../inversify.config';
+import { TYPES } from '../../types';
 
 export default class CampaignComponent extends Component<any, any> {
+	@lazyInject(TYPES.Empty) private _appService: IAppService;
+
 	private _eyesDiv: HTMLDivElement;
 	private _mouthDiv: HTMLDivElement;
 	private _mouthTimer: NodeJS.Timer;
@@ -137,21 +141,21 @@ export default class CampaignComponent extends Component<any, any> {
 	}
 
 	Start(): void {
-		GameHelper.MapContext = new MapGenerator().GetMapDefinition(
+		const mapContext = new MapGenerator().GetMapDefinition(
 			+this.state.Size,
 			this.state.MapType,
 			+this.state.IaNumber + 1,
 			+this.state.Mode as MapEnv
 		);
-		GameHelper.MapContext.Hqs[0].PlayerName = GameHelper.MapContext.PlayerName;
-		let index = 0;
-		GameHelper.MapContext.Hqs.forEach((hq) => {
+		mapContext.Hqs[0].PlayerName = mapContext.PlayerName;
+		mapContext.Hqs.forEach((hq, index) => {
 			if (!hq.PlayerName) {
 				hq.isIa = true;
 				hq.PlayerName = `IA-${index}`;
 			}
 			index += 1;
 		});
+		this._appService.Register(mapContext);
 		route('/Canvas', true);
 	}
 }

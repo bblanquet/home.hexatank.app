@@ -1,7 +1,7 @@
+import { IUpdateService } from './../../Services/Update/IUpdateService';
 import { UnitGroup } from '../Items/UnitGroup';
 import { ICombination } from './Combination/ICombination';
 import { InputNotifier } from './InputNotifier';
-import { GameHelper } from '../Framework/GameHelper';
 import { CombinationContext } from './Combination/CombinationContext';
 import { CombinationDispatcher } from './CombinationDispatcher';
 import { IContextContainer } from './IContextContainer';
@@ -14,8 +14,11 @@ import { IInteractionContext, InteractionKind } from './IInteractionContext';
 import { ISelectableChecker } from './ISelectableChecker';
 import { ViewContext } from '../Utils/Geometry/ViewContext';
 import { isNullOrUndefined } from '../Utils/ToolBox';
+import { lazyInject } from '../../inversify.config';
+import { TYPES } from '../../types';
 
 export class InteractionContext implements IContextContainer, IInteractionContext {
+	@lazyInject(TYPES.Empty) private _updateService: IUpdateService;
 	public Kind: InteractionKind;
 	public Point: PIXI.Point;
 	public View: ViewContext;
@@ -100,7 +103,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 			this.View = null;
 		}
 
-		GameHelper.Updater.Select(this);
+		this._updateService.Publish().Select(this);
 	}
 
 	private ContainsSelectable(item: Item): Boolean {

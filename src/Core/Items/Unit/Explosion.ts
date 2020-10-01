@@ -1,7 +1,6 @@
 import { Item } from '../Item';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { TickTimer } from '../../Utils/Timer/TickTimer';
-import { GameHelper } from '../../Framework/GameHelper';
 import { InteractionContext } from '../../Interaction/InteractionContext';
 import { ITimer } from '../../Utils/Timer/ITimer';
 

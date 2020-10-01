@@ -1,4 +1,4 @@
-import { inject } from 'inversify';
+import { lazyInject } from '../../inversify.config';
 import { IAppService } from '../../Services/App/IAppService';
 import { TYPES } from '../../types';
 import { h, Component } from 'preact';
@@ -7,7 +7,6 @@ import PanelComponent from '../Common/Panel/PanelComponent';
 import UploadButtonComponent from '../Common/Button/Stylish/UploadButtonComponent';
 import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
 import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
-import { GameHelper } from '../../Core/Framework/GameHelper';
 import { RecordObject } from '../../Core/Framework/Record/RecordObject';
 import { RecordHq } from '../../Core/Framework/Record/RecordHq';
 import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
@@ -16,12 +15,16 @@ import { RecordData } from '../../Core/Framework/Record/RecordData';
 import { RecordCell } from '../../Core/Framework/Record/RecordCell';
 import SmBlackButtonComponent from '../Common/Button/Stylish/SmBlackButtonComponent';
 import GridComponent from '../Common/Grid/GridComponent';
+import { IRecordService } from '../../Services/Record/IRecordService';
+import { ICompareService } from '../../Services/Compare/ICompareService';
 
 export default class RecordComponent extends Component<any, { Records: RecordObject[] }> {
-	@inject(TYPES.AppService) private _appService: IAppService;
+	@lazyInject(TYPES.Empty) private _appService: IAppService;
+	@lazyInject(TYPES.Empty) private _recordService: IRecordService;
+	@lazyInject(TYPES.Empty) private _compareService: ICompareService;
+
 	constructor() {
 		super();
-		this._appService.CreateApp(null);
 		this.setState({
 			Records: []
 		});
@@ -32,14 +35,17 @@ export default class RecordComponent extends Component<any, { Records: RecordObj
 	}
 
 	private ToCompare(): void {
-		GameHelper.Record = this.ToTracking(this.state.Records[0]);
-		GameHelper.ComparedRecord = this.ToTracking(this.state.Records[1]);
+		const record = this.ToTracking(this.state.Records[0]);
+		const compare = this.ToTracking(this.state.Records[1]);
+		this._compareService.Register(record, compare);
 		route('/Comparer', true);
 	}
 
 	private Play(data: RecordObject): void {
-		GameHelper.Record = this.ToTracking(data);
-		GameHelper.MapContext = data.MapContext;
+		const record = this.ToTracking(data);
+		this._appService.Register(data.MapContext);
+		this._recordService.Register(record);
+
 		route('/RecordCanvas', true);
 	}
 

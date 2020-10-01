@@ -2,10 +2,14 @@ import { UnitGroup } from '../../../Items/UnitGroup';
 import { CombinationContext } from '../CombinationContext';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
-import { AppHandler } from '../../../App/AppHandler';
+import { lazyInject } from '../../../../inversify.config';
+import { ILayerService } from '../../../../Services/Layer/ILayerService';
+import { TYPES } from '../../../../types';
 
 export class MultiUnitOrderCombination extends AbstractSingleCombination {
-	constructor(private _appHandler: AppHandler, private _multiContext: MultiSelectionContext) {
+	@lazyInject(TYPES.Empty) private _layerService: ILayerService;
+
+	constructor(private _multiContext: MultiSelectionContext) {
 		super();
 	}
 
@@ -26,7 +30,7 @@ export class MultiUnitOrderCombination extends AbstractSingleCombination {
 					group.SetOrder(this._multiContext.GetCells());
 				}
 				this._multiContext.Close();
-				this._appHandler.RestartNavigation();
+				this._layerService.StartNavigation();
 				group.IsListeningOrder = false;
 			}
 			return true;

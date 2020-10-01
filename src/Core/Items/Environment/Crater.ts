@@ -3,7 +3,6 @@ import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../Interaction/InteractionContext';
 import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { Archive } from '../../Framework/ResourceArchiver';
-import { GameHelper } from '../../Framework/GameHelper';
 
 export class Crater extends Item {
 	BoundingBox: BoundingBox;

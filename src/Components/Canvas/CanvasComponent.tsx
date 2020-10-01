@@ -5,12 +5,14 @@ import { Component, h } from 'preact';
 import { Factory, FactoryKey } from '../../Factory';
 import { ILayerService } from '../../Services/Layer/ILayerService';
 import { IGameContextService } from '../../Services/GameContext/IGameContextService';
+import { IKeyService } from '../../Services/Key/IKeyService';
 
 export default class CanvasComponent extends Component<{}, {}> {
 	private _gameCanvas: HTMLDivElement;
 	private _updater: ItemsUpdater;
 	private _appService: IAppService;
 	private _gameContextService: IGameContextService;
+	private _keyService: IKeyService;
 	private _layerService: ILayerService;
 	private _stop: boolean;
 	private _width: number;
@@ -19,7 +21,8 @@ export default class CanvasComponent extends Component<{}, {}> {
 	constructor() {
 		super();
 		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
-		this._appService = Factory.Load<IAppService>(FactoryKey.App);
+		this._keyService = Factory.Load<IKeyService>(FactoryKey.Key);
+		this._appService = Factory.Load<IAppService>(this._keyService.GetAppKey());
 		this._updater = Factory.Load<IUpdateService>(FactoryKey.Update).Publish();
 		this._gameContextService = Factory.Load<IGameContextService>(FactoryKey.GameContext);
 		this._stop = true;
@@ -38,7 +41,7 @@ export default class CanvasComponent extends Component<{}, {}> {
 	componentWillUnmount() {
 		window.removeEventListener('resize', () => this.ResizeTheCanvas());
 		window.removeEventListener('DOMContentLoaded', () => this.ResizeTheCanvas());
-		Factory.Load<IAppService>(FactoryKey.App).Collect();
+		Factory.Load<IAppService>(this._keyService.GetAppKey()).Collect();
 	}
 
 	private GameLoop(): void {

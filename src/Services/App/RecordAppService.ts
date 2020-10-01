@@ -1,5 +1,4 @@
-import { HqRender } from './../../Core/Setup/Render/Hq/HqRender';
-import { IKeyService } from './../Key/IKeyService';
+import { DummyHqRender } from './../../Core/Setup/Render/Hq/DummyHqRender';
 import { GameSettings } from './../../Core/Framework/GameSettings';
 import { IInteractionService } from './../Interaction/IInteractionService';
 import { INetworkService } from './../Network/INetworkService';
@@ -11,8 +10,10 @@ import { MapContext } from './../../Core/Setup/Generator/MapContext';
 import { IAppService } from './IAppService';
 import { Factory, FactoryKey } from '../../Factory';
 import * as PIXI from 'pixi.js';
+import { IKeyService } from '../Key/IKeyService';
+import { CellStateSetter } from '../../Core/Items/Cell/CellStateSetter';
 
-export class AppService implements IAppService {
+export class RecordAppService implements IAppService {
 	private _context: MapContext;
 	private _app: PIXI.Application;
 	private _appProvider: AppProvider;
@@ -31,7 +32,7 @@ export class AppService implements IAppService {
 		this._updateService = Factory.Load<IUpdateService>(FactoryKey.Update);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
 		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
-		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
+		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.RecordInteraction);
 		this._keyService = Factory.Load<IKeyService>(FactoryKey.Key);
 	}
 
@@ -39,16 +40,22 @@ export class AppService implements IAppService {
 		this._keyService.DefineKey(this);
 
 		GameSettings.Init();
-		GameSettings.SetFastSpeed();
+		GameSettings.SetNormalSpeed();
 		this._context = mapContext;
 		this._updateService.Register();
 		this._app = this._appProvider.Provide(mapContext);
 		this._interactionManager = new PIXI.interaction.InteractionManager(this._app.renderer);
 
 		this._layerService.Register(this._app);
-		this._gameContextService.Register(new HqRender(), mapContext);
+		this._gameContextService.Register(new DummyHqRender(), mapContext);
 		const gameContext = this._gameContextService.Publish();
 		this._interactionService.Register(this._interactionManager, gameContext);
+
+		gameContext.GetCells().forEach((c) => {
+			c.AlwaysVisible();
+		});
+		CellStateSetter.SetStates(gameContext, gameContext.GetCells());
+
 		this._app.start();
 	}
 

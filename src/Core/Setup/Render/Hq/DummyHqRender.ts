@@ -1,13 +1,7 @@
 import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
-import { GeneralRequester } from '../../../Ia/Decision/RequestMaker/GeneralRequester/GeneralRequester';
-import { AreaRequestMaker } from '../../../Ia/Decision/RequestMaker/AreaRequestMaker';
-import { ExpansionMaker } from '../../../Ia/Decision/ExpansionMaker/ExpansionMaker';
-import { RequestHandler } from '../../../Ia/Decision/RequestHandler/RequestHandler';
-import { Kingdom } from '../../../Ia/Decision/Kingdom';
 import { GameContext } from '../../../Framework/GameContext';
 import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
 import { CellContext } from '../../../Items/Cell/CellContext';
-import { IaHeadquarter } from '../../../Ia/IaHeadquarter';
 import { HexAxial } from '../../../Utils/Geometry/HexAxial';
 import { Item } from '../../../Items/Item';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';

@@ -12,7 +12,10 @@ export class Factory {
 }
 
 export enum FactoryKey {
+	None,
+	Key,
 	App,
+	RecordApp,
 	Compare,
 	GameContext,
 	Interaction,

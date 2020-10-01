@@ -2,7 +2,6 @@ import { IGameContextService } from '../../../Services/GameContext/IGameContextS
 import { Component, h } from 'preact';
 import { ISelectable } from '../../../Core/ISelectable';
 import { RecordCanvasUpdater } from './Updaters/RecordCanvasUpdater';
-import { GameSettings } from '../../../Core/Framework/GameSettings';
 import RangeComponent from '../../Common/Range/RangeComponent';
 import { Item } from '../../../Core/Items/Item';
 import UnitMenuComponent from './Parts/UnitMenuComponent';
@@ -10,6 +9,7 @@ import { Vehicle } from '../../../Core/Items/Unit/Vehicle';
 import CanvasComponent from '../CanvasComponent';
 import { IRecordService } from '../../../Services/Record/IRecordService';
 import { Factory, FactoryKey } from '../../../Factory';
+import { route } from 'preact-router';
 
 export default class RecordCanvasComponent extends Component<
 	{},
@@ -25,6 +25,8 @@ export default class RecordCanvasComponent extends Component<
 
 	constructor() {
 		super();
+		this._gameService = Factory.Load<IGameContextService>(FactoryKey.GameContext);
+		this._recordService = Factory.Load<IRecordService>(FactoryKey.Record);
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
 		this.setState({ dataSet: [] });
 	}
@@ -38,8 +40,6 @@ export default class RecordCanvasComponent extends Component<
 	}
 
 	componentDidMount() {
-		this._gameService = Factory.Load<IGameContextService>(FactoryKey.GameContext);
-		this._recordService = Factory.Load<IRecordService>(FactoryKey.Record);
 		const context = this._gameService.Publish();
 		const record = this._recordService.Publish();
 		this._updater = new RecordCanvasUpdater(record, context);
@@ -71,7 +71,9 @@ export default class RecordCanvasComponent extends Component<
 		return '';
 	}
 
-	private SetMenu(): void {}
+	private SetMenu(): void {
+		route('/Home', true);
+	}
 
 	private UpdateSelection(obj: any, selectedItem: Item): void {
 		((selectedItem as unknown) as ISelectable).OnSelectionChanged.On(this._onItemSelectionChanged);

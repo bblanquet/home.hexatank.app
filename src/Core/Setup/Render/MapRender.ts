@@ -1,4 +1,3 @@
-import { HqRender } from './Hq/HqRender';
 import { SimpleFloor } from './../../Items/Environment/SimpleFloor';
 import { CellContext } from './../../Items/Cell/CellContext';
 import { GameContext } from './../../Framework/GameContext';
@@ -16,14 +15,10 @@ import { Archive } from '../../Framework/ResourceArchiver';
 import { MapContext } from '../Generator/MapContext';
 import { MapEnv } from '../Generator/MapEnv';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
+import { AbstractHqRender } from './Hq/AbstractHqRender';
 
 export class MapRender {
-	private _hqRender: HqRender;
-	constructor() {
-		this._hqRender = new HqRender();
-	}
-
-	public Render(mapContext: MapContext): GameContext {
+	public Render(hqRender: AbstractHqRender, mapContext: MapContext): GameContext {
 		const cells = new CellContext<Cell>();
 		const context = new GameContext();
 		const playgroundItems = new Array<Item>();
@@ -43,7 +38,7 @@ export class MapRender {
 		);
 		this.SetLands(cells, mapContext.MapMode, areas, playgroundItems);
 		this.AddClouds(playgroundItems);
-		const hqs = this._hqRender.GetHq(context, cells, mapContext.Hqs, playgroundItems);
+		const hqs = hqRender.GetHq(context, cells, mapContext.Hqs, playgroundItems);
 
 		let playerHq = hqs.find((hq) => hq.PlayerName === mapContext.PlayerName);
 

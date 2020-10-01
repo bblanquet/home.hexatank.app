@@ -24,6 +24,9 @@ export default class RecordComponent extends Component<any, { Records: RecordObj
 
 	constructor() {
 		super();
+		this._appService = Factory.Load<IAppService>(FactoryKey.RecordApp);
+		this._recordService = Factory.Load<IRecordService>(FactoryKey.Record);
+		this._compareService = Factory.Load<ICompareService>(FactoryKey.Compare);
 		this.setState({
 			Records: []
 		});
@@ -67,14 +70,6 @@ export default class RecordComponent extends Component<any, { Records: RecordObj
 		result.Dates = e.Points;
 		return result;
 	}
-
-	componentDidMount() {
-		this._appService = Factory.Load<IAppService>(FactoryKey.App);
-		this._recordService = Factory.Load<IRecordService>(FactoryKey.Record);
-		this._compareService = Factory.Load<ICompareService>(FactoryKey.Compare);
-	}
-
-	componentWillUnmount() {}
 
 	private Upload(e: any): void {
 		var reader = new FileReader();

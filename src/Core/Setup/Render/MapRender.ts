@@ -18,15 +18,17 @@ import { MapEnv } from '../Generator/MapEnv';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 
 export class MapRender {
-	constructor(private _hqRender: HqRender) {}
+	private _hqRender: HqRender;
+	constructor() {
+		this._hqRender = new HqRender();
+	}
 
 	public Render(mapContext: MapContext): GameContext {
 		const cells = new CellContext<Cell>();
 		const context = new GameContext();
+		const playgroundItems = new Array<Item>();
 
 		GameSettings.MapSize = mapContext.Items.length;
-
-		let playgroundItems = new Array<Item>();
 
 		mapContext.Items.forEach((item) => {
 			let cell = new Cell(new CellProperties(new HexAxial(item.Position.Q, item.Position.R)), cells, context);

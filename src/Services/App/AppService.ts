@@ -32,6 +32,7 @@ export class AppService implements IAppService {
 	}
 
 	public Register(mapContext: MapContext): void {
+		GameSettings.Init();
 		GameSettings.SetNormalSpeed();
 		this._context = mapContext;
 		this._updateService.Register();

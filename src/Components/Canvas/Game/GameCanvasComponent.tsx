@@ -77,7 +77,6 @@ export default class GameCanvasComponent extends Component<
 	}
 
 	componentDidMount() {
-		GameSettings.Init();
 		this._gameContext = this._gameContextService.Publish();
 		this._gameContext.GetMainHq().OnTruckChanged.On(this.HandleTruckChanged.bind(this));
 		this._gameContext.GetMainHq().OnTankRequestChanged.On(this.HandleTankChanged.bind(this));

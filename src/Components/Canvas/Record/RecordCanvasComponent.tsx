@@ -38,7 +38,6 @@ export default class RecordCanvasComponent extends Component<
 	}
 
 	componentDidMount() {
-		GameSettings.Init();
 		this._gameService = Factory.Load<IGameContextService>(FactoryKey.GameContext);
 		this._recordService = Factory.Load<IRecordService>(FactoryKey.Record);
 		const context = this._gameService.Publish();

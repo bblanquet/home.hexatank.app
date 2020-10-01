@@ -16,8 +16,8 @@ export class CellContext<T extends ICell> {
 	public Keys(): Dictionnary<HexAxial> {
 		const list = new Dictionnary<HexAxial>();
 		for (var key in this.Cells) {
-			let coo = this.Cells[key].GetCoordinate();
-			list.Add(coo.ToString(), coo);
+			let cell = this.Cells[key];
+			list.Add(cell.Coo(), cell.GetCoordinate());
 		}
 		return list;
 	}

@@ -43,6 +43,14 @@ export class ServerSocket {
 		this.Socket.close();
 	}
 
+	public Kick(room: string, name: string) {
+		console.log(`[${this._name} -> ${name}] ${PacketKind[PacketKind.Kick]} >>>`);
+		this.Socket.emit(PacketKind[PacketKind.Kick], {
+			PlayerName: name,
+			RoomName: room
+		});
+	}
+
 	public Emit(packet: INetworkMessage): void {
 		console.log(`[${packet.Emitter} -> ${packet.Recipient}] ${PacketKind[packet.Kind]} >>>`);
 		packet.RoomName = this._room;
@@ -71,7 +79,7 @@ export class ServerSocket {
 			this.Socket.on(PacketKind[PacketKind.Kick], (data: any) => {
 				if (this._name === data.PlayerName) {
 					const message = new EmptyMessage();
-					message.Kind = PacketKind.Close;
+					message.Kind = PacketKind.Kick;
 					this.OnReceived.Invoke(message.Kind, message);
 				}
 			});

@@ -54,12 +54,6 @@ export class RotationMaker<T extends IRotatable> implements IRotationMaker {
 
 		const currentDate = new Date().getTime() - this._departureDate;
 		this._ratio = this.GetRatio(this._duration, currentDate);
-		// console.log(
-		// 	`%c ${this._movable.CurrentRadius.toPrecision(2)} ${this.Percentage()} ${moment(this.Duration()).format(
-		// 		'ss.SSS'
-		// 	)}`,
-		// 	'color:red'
-		// );
 
 		if (this._ratio === 1) {
 			this._duration = null;

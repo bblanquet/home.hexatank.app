@@ -20,7 +20,7 @@ export default class TextComponent extends Component<
 					type="text"
 					value={this.props.value}
 					onInput={(e: any) => this.props.onInput(e)}
-					disabled={this.props.isEditable}
+					disabled={!this.props.isEditable}
 					class="form-control"
 					aria-label="Default"
 				/>

@@ -113,7 +113,9 @@ export default class RecordComponent extends Component<any, { Records: RecordObj
 							<td class="align-self-center">
 								<div class="container-center-horizontal">
 									<div class="small-right-margin">{data.Title} </div>
-									<SmBlackButtonComponent title={`Play`} callBack={() => this.Play(data)} />
+									<SmBlackButtonComponent callBack={() => this.Play(data)}>
+										{'Title'}
+									</SmBlackButtonComponent>
 								</div>
 							</td>
 						</tr>

@@ -85,7 +85,9 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 						<tr class="d-flex">
 							<td class="align-self-center">{RoomName}</td>
 							<td class="align-self-center">
-								<SmBlackButtonComponent title={'Join'} callBack={() => this.Join(RoomName)} />
+								<SmBlackButtonComponent callBack={() => this.Join(RoomName)}>
+									{'Join'}
+								</SmBlackButtonComponent>
 							</td>
 						</tr>
 					);

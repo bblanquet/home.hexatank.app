@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 
-export default class SmBlackButtonComponent extends Component<{ callBack: () => void; title: string }, any> {
+export default class SmBlackButtonComponent extends Component<{ callBack: () => void }, any> {
 	constructor() {
 		super();
 	}
@@ -10,7 +10,7 @@ export default class SmBlackButtonComponent extends Component<{ callBack: () => 
 			<div class="custom-sm-border-layout fit-content">
 				<div class="custom-sm-black-border fit-content">
 					<div class="custom-black-btn fit-content" onClick={this.props.callBack}>
-						{this.props.title}
+						{this.props.children}
 					</div>
 				</div>
 			</div>

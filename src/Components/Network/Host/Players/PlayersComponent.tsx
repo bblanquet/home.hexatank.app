@@ -1,19 +1,16 @@
 import { h, Component } from 'preact';
-import { ConnectionKind } from '../../../../Network/ConnectionKind';
 import { NetworkSocket } from '../../../../Network/NetworkSocket';
 import { HostState } from '../../HostState';
-import { Player } from '../../../../Network/Player';
 import GridComponent from '../../../Common/Grid/GridComponent';
 import SmBlackButtonComponent from '../../../Common/Button/Stylish/SmBlackButtonComponent';
+import { ConnectionKind } from '../../../../Network/ConnectionKind';
+import { Player } from '../../../../Network/Player';
+import Icon from '../../../Common/Icon/IconComponent';
 
-export default class PlayersComponent extends Component<{ HostState: HostState; NetworkHandler: NetworkSocket }, {}> {
+export default class PlayersComponent extends Component<{ HostState: HostState; Socket: NetworkSocket }, {}> {
 	constructor() {
 		super();
 	}
-
-	componentDidMount() {}
-
-	componentWillUnmount() {}
 
 	render() {
 		return <GridComponent left={this.GetHeader()} right={this.GetContent()} />;
@@ -47,10 +44,9 @@ export default class PlayersComponent extends Component<{ HostState: HostState; 
 							<td class="align-middle">{+player.Latency === 0 ? '' : player.Latency}</td>
 							{this.props.HostState.IsAdmin ? (
 								<td class="align-middle">
-									<SmBlackButtonComponent
-										title={'-'}
-										callBack={() => this.MakeUserLeave(player.Name)}
-									/>
+									<SmBlackButtonComponent callBack={() => this.MakeUserLeave(player.Name)}>
+										<Icon Value={'fas fa-user-slash'} />
+									</SmBlackButtonComponent>
 								</td>
 							) : (
 								''
@@ -67,13 +63,13 @@ export default class PlayersComponent extends Component<{ HostState: HostState; 
 	}
 
 	private GetConnection(player: Player) {
-		if (player.Connection.Kind === ConnectionKind.Ok) {
-			return <span class="badge badge-success">{player.Connection.State.substring(0, 3)}</span>;
-		} else if (player.Connection.Kind === ConnectionKind.Nok) {
-			return <span class="badge badge-danger">{player.Connection.State.substring(0, 3)}</span>;
-		} else {
-			return <span class="badge badge-warning opacity-changing">{player.Connection.State.substring(0, 3)}</span>;
+		let style = 'badge badge-success';
+		if (player.Connection.Kind === ConnectionKind.Nok) {
+			style = 'badge badge-danger';
+		} else if (player.Connection.Kind === ConnectionKind.Connecting) {
+			style = 'badge badge-warning opacity-changing';
 		}
+		return <span class={style}>{player.Connection.State.substring(0, 3)}</span>;
 	}
 
 	private GetReady(player: Player) {
@@ -85,6 +81,6 @@ export default class PlayersComponent extends Component<{ HostState: HostState; 
 	}
 
 	private MakeUserLeave(playerName: string): void {
-		this.props.NetworkHandler.Kick(playerName);
+		this.props.Socket.Kick(this.props.HostState.RoomName, playerName);
 	}
 }

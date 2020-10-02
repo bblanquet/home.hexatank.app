@@ -10,7 +10,7 @@ import { Player } from '../../../Network/Player';
 
 export default class ToastComponent extends Component<{ socket: NetworkSocket; Player: Player }, { Message: string }> {
 	private _toastObserver: NetworkObserver;
-
+	private _input: HTMLInputElement;
 	constructor(props: any) {
 		super(props);
 		this._toastObserver = new NetworkObserver(PacketKind.Toast, this.OnToastReceived.bind(this));
@@ -34,7 +34,16 @@ export default class ToastComponent extends Component<{ socket: NetworkSocket; P
 							type="text"
 							class="form-control no-radius"
 							id="toastMessageBox"
+							ref={(v) => {
+								this._input = v;
+							}}
 							value={this.state.Message}
+							onKeyDown={(e: any) => {
+								if (e.key === 'Enter') {
+									this._input.blur();
+									this.SendToast();
+								}
+							}}
 							onInput={(e: any) => {
 								this.setState({ Message: e.target.value });
 							}}
@@ -46,7 +55,10 @@ export default class ToastComponent extends Component<{ socket: NetworkSocket; P
 								class="btn btn-dark"
 								type="button"
 								id="button-addon1"
-								onClick={() => this.SendToast()}
+								onClick={() => {
+									this._input.blur();
+									this.SendToast();
+								}}
 							>
 								<Icon Value={'fas fa-comment'} />
 							</button>

@@ -78,7 +78,7 @@ export default class HostingComponent extends Component<any, HostState> {
 			<ToastComponent socket={this._socket} Player={this.state.Player}>
 				<PanelComponent>
 					{this.GetUpdsideButton()}
-					<PlayersComponent NetworkHandler={this._socket} HostState={this.state} />
+					<PlayersComponent Socket={this._socket} HostState={this.state} />
 					{this.GetDownsideButton()}
 					{this._hasSettings ? <OptionComponent Update={this.Update.bind(this)} /> : ''}
 				</PanelComponent>
@@ -188,34 +188,6 @@ export default class HostingComponent extends Component<any, HostState> {
 		this._socket.EmitAll<boolean>(PacketKind.Loaded, true);
 	}
 
-	private HandlePlayers(message: NetworkMessage<string[]>): void {
-		message.Content.forEach((playerName) => {
-			if (!this.state.Players.Exist(playerName)) {
-				this.state.Players.Add(playerName, new Player(playerName));
-			}
-		});
-
-		this.state.Players.Keys().filter((p) => message.Content.indexOf(p) === -1).forEach((c) => {
-			this.state.Players.Remove(c);
-		});
-
-		this.setState({});
-	}
-
-	private HandleReady(data: NetworkMessage<boolean>): void {
-		if (this.state.Players.Exist(data.Emitter)) {
-			this.state.Players.Get(data.Emitter).IsReady = data.Content;
-			this.setState({});
-		}
-	}
-
-	private HandlePing(message: NetworkMessage<string>): void {
-		if (this.state.Players.Exist(message.Emitter)) {
-			this.state.Players.Get(message.Emitter).Latency = message.Content;
-			this.setState({});
-		}
-	}
-
 	private HandleStart(data: NetworkMessage<any>): void {
 		route('/Canvas', true);
 	}
@@ -235,6 +207,39 @@ export default class HostingComponent extends Component<any, HostState> {
 			hq.isIa = false;
 		});
 		this.Load(mapContext);
+	}
+
+	//should be kept
+	private HandlePlayers(message: NetworkMessage<string[]>): void {
+		message.Content.forEach((playerName) => {
+			if (!this.state.Players.Exist(playerName)) {
+				this.state.Players.Add(playerName, new Player(playerName));
+			}
+		});
+
+		this.state.Players.Keys().filter((p) => message.Content.indexOf(p) === -1).forEach((c) => {
+			if (this.state.Player.Name === c) {
+				this.Back();
+			} else {
+				this.state.Players.Remove(c);
+			}
+		});
+
+		this.setState({});
+	}
+
+	private HandleReady(data: NetworkMessage<boolean>): void {
+		if (this.state.Players.Exist(data.Emitter)) {
+			this.state.Players.Get(data.Emitter).IsReady = data.Content;
+			this.setState({});
+		}
+	}
+
+	private HandlePing(message: NetworkMessage<string>): void {
+		if (this.state.Players.Exist(message.Emitter)) {
+			this.state.Players.Get(message.Emitter).Latency = message.Content;
+			this.setState({});
+		}
 	}
 
 	private Back(): void {

@@ -22,6 +22,7 @@ export class SimpleOrder extends Order {
 	protected Dest: Cell;
 	private _tryCount: number;
 	private _sleep: TickTimer;
+
 	constructor(protected OriginalDest: Cell, private _v: Vehicle, private _hasAnimation: boolean = false) {
 		super();
 		if (isNullOrUndefined(this.OriginalDest)) {

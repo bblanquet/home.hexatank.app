@@ -34,7 +34,7 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 		return (
 			<PanelComponent>
 				<TextComponent
-					value={this.state.PlayerName}
+					value={this.state.RoomName}
 					label={'Room name'}
 					isEditable={true}
 					onInput={(e: any) => {

@@ -31,7 +31,9 @@ export default class RangeComponent extends Component<
 				<datalist id="num">
 					{this.props.dataSet.map((data) => <option value={data} label={`${data}`} />)}
 				</datalist>
-				<SmBlackButtonComponent callBack={() => {}} title={this.state.value ? this.state.value : '00:00'} />
+				<SmBlackButtonComponent callBack={() => {}} >
+				{this.state.value ? this.state.value : '00:00'}
+				</SmBlackButtonComponent >
 			</div>
 		);
 	}

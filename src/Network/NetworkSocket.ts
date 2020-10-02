@@ -28,10 +28,10 @@ export class NetworkSocket {
 	private _pingObserver: NetworkObserver;
 
 	constructor(owner: string, room: string, private _isAdmin: boolean) {
-		this._playersObserver = new KindEventObserver(PacketKind.Players, this.OnPlayersReceived.bind(this));
-		this._offerObserver = new KindEventObserver(PacketKind.Offer, this.OnOfferReceived.bind(this));
-		this._resetObserver = new KindEventObserver(PacketKind.Reset, this.OnReset.bind(this));
-		this._pingObserver = new KindEventObserver(PacketKind.Ping, this.OnPing.bind(this));
+		this._playersObserver = new KindEventObserver(PacketKind.Players, this.HandlePlayersReceived.bind(this));
+		this._offerObserver = new KindEventObserver(PacketKind.Offer, this.HandleOfferReceived.bind(this));
+		this._resetObserver = new KindEventObserver(PacketKind.Reset, this.HandleReset.bind(this));
+		this._pingObserver = new KindEventObserver(PacketKind.Ping, this.HandlePing.bind(this));
 
 		this.Owner = owner;
 		this.ServerSocket = new ServerSocket('https://mottet.xyz', 9117, this.Owner, room);
@@ -42,7 +42,12 @@ export class NetworkSocket {
 		this.ServerSocket.Start();
 	}
 
-	private OnPlayersReceived(message: NetworkMessage<Array<string>>): void {
+	private HandlePlayersReceived(message: NetworkMessage<Array<string>>): void {
+		//remove potentially kicked players
+		this.PeerSockets.Keys().filter((name) => !message.Content.includes(name)).forEach((name) => {
+			this.PeerSockets.Get(name).ShutDown();
+		});
+
 		if (!this._isAdmin) {
 			if (this.PeerSockets.IsEmpty()) {
 				message.Content.forEach((recipient) => {
@@ -83,7 +88,7 @@ export class NetworkSocket {
 		this.OnReceived.Invoke(message.Kind, message);
 	}
 
-	private OnOfferReceived(message: NetworkMessage<any>): void {
+	private HandleOfferReceived(message: NetworkMessage<any>): void {
 		if (!this.PeerSockets.Exist(message.Emitter)) {
 			const receiverSocket = new ReceiverSocket(this.ServerSocket, this.Owner, message.Emitter);
 			this.PeerSockets.Add(message.Emitter, receiverSocket);
@@ -104,14 +109,14 @@ export class NetworkSocket {
 		});
 	}
 
-	private OnReset(message: NetworkMessage<any>): void {
+	private HandleReset(message: NetworkMessage<any>): void {
 		if (this.PeerSockets.Exist(message.Emitter)) {
 			this.PeerSockets.Get(message.Emitter).ShutDown();
 		}
 		this.CreateOfferSocket(message.Emitter);
 	}
 
-	private OnPing(message: NetworkMessage<any>): void {
+	private HandlePing(message: NetworkMessage<any>): void {
 		if (!this._isConnected) {
 			const now = new Date();
 			const twoSecondsEarlierThanNow = now.setSeconds(now.getSeconds() - 2);
@@ -167,11 +172,7 @@ export class NetworkSocket {
 		this.PeerSockets.Clear();
 	}
 
-	public Kick(name: string): void {
-		const message = new NetworkMessage<string>();
-		message.Kind = PacketKind.Kick;
-		message.Recipient = name;
-		message.Emitter = this.Owner;
-		this.ServerSocket.Emit(message);
+	public Kick(room: string, name: string): void {
+		this.ServerSocket.Kick(room, name);
 	}
 }

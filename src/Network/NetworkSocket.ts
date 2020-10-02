@@ -124,6 +124,24 @@ export class NetworkSocket {
 		}
 	}
 
+	public EmitServer<T>(kind: PacketKind, content: T): void {
+		const message = new NetworkMessage<T>();
+		message.Content = content;
+		message.Kind = kind;
+		message.Recipient = PeerSocket.Server();
+		message.Emitter = this.Owner;
+		this.Emit(message);
+	}
+
+	public EmitAll<T>(kind: PacketKind, content: T): void {
+		const message = new NetworkMessage<T>();
+		message.Content = content;
+		message.Kind = kind;
+		message.Recipient = PeerSocket.All();
+		message.Emitter = this.Owner;
+		this.Emit(message);
+	}
+
 	public Emit(message: INetworkMessage): void {
 		if (message.Recipient === PeerSocket.All()) {
 			this.PeerSockets.Values().forEach((peer) => {

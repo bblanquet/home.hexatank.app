@@ -34,7 +34,7 @@ render(
 		<GameCanvasComponent path="/Canvas" />
 		<RecordCanvasComponent path="/RecordCanvas" />
 		<CreatingHostComponent path="/CreatingHost" />
-		<HostingComponent path="/Hosting/:RoomName/:playerName/:isAdmin" />
+		<HostingComponent path="/Hosting" />
 		<GuestComponent path="/OffJoin" />
 		<RecordComponent path="/Playback" />
 		<LoadingComponent path="/Loading" default />

@@ -15,6 +15,7 @@ export enum FactoryKey {
 	None,
 	Key,
 	App,
+	Hosting,
 	RecordApp,
 	Compare,
 	GameContext,

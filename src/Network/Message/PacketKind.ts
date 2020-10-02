@@ -29,6 +29,8 @@ export enum PacketKind {
 	Hide,
 
 	//game
+	Start,
+	Loaded,
 	Map,
 	UnitDestroyed,
 	UnitCreated,

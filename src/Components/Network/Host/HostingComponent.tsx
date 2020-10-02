@@ -1,116 +1,89 @@
 import { IAppService } from '../../../Services/App/IAppService';
 import { INetworkService } from '../../../Services/Network/INetworkService';
+import { IHostingService } from '../../../Services/Hosting/IHostingService';
 import { Component, h } from 'preact';
 import { route } from 'preact-router';
-import * as toastr from 'toastr';
 import { PacketKind } from '../../../Network/Message/PacketKind';
 import PlayersComponent from './Players/PlayersComponent';
 import { NetworkObserver } from '../../../Network/NetworkObserver';
-import { Dictionnary } from '../../../Core/Utils/Collections/Dictionnary';
 import { NetworkSocket } from '../../../Network/NetworkSocket';
 import { PeerSocket } from '../../../Network/Peer/PeerSocket';
 import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
 import { Player } from '../../../Network/Player';
 import OptionComponent from './Options/OptionComponent';
+import ToastComponent from './../../Common/Toast/ToastComponent';
 import { HostState } from '../HostState';
-import { GameSettings } from '../../../Core/Framework/GameSettings';
 import { MapGenerator } from '../../../Core/Setup/Generator/MapGenerator';
 import { MapEnv } from '../../../Core/Setup/Generator/MapEnv';
 import { MapContext } from '../../../Core/Setup/Generator/MapContext';
 import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
 import BlackButtonComponent from '../../Common/Button/Stylish/BlackButtonComponent';
 import RedButtonComponent from '../../Common/Button/Stylish/RedButtonComponent';
-import Icon from '../../Common/Icon/IconComponent';
-import PanelComponent from '../../Common/Panel/PanelComponent';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
 import { Factory, FactoryKey } from '../../../Factory';
+import PanelComponent from '../../Common/Panel/PanelComponent';
 
 export default class HostingComponent extends Component<any, HostState> {
+	private _hasSettings: boolean = false;
+
 	private _appService: IAppService;
+	private _hostingService: IHostingService;
 	private _networkService: INetworkService;
 	private _gameContextService: IGameContextService;
 
 	private _socket: NetworkSocket;
-	private _hasSettings: boolean = false;
+	private _observers: NetworkObserver[];
 
-	private _readyObserver: NetworkObserver;
-	private _toastObserver: NetworkObserver;
-	private _playersObserver: NetworkObserver;
-	private _pingObserver: NetworkObserver;
-	private _mapObserver: NetworkObserver;
-
-	private _onPeerConnectionChanged: any;
 	constructor(props: any) {
 		super(props);
-		this._readyObserver = new NetworkObserver(PacketKind.Ready, this.OnPlayerReadyChanged.bind(this));
-		this._toastObserver = new NetworkObserver(PacketKind.Toast, this.OnToastReceived.bind(this));
-		this._playersObserver = new NetworkObserver(PacketKind.Players, this.OnPlayersChanged.bind(this));
-		this._pingObserver = new NetworkObserver(PacketKind.Ping, this.OnPingChanged.bind(this));
-		this._mapObserver = new NetworkObserver(PacketKind.Map, this.OnMapReceived.bind(this));
-		toastr.options.closeDuration = 5000;
 
-		const p = new Player(props.playerName);
-		p.IsReady = false;
-		const dictionnary = new Dictionnary<Player>();
-		dictionnary.Add(p.Name, p);
-		const isAdmin = props.isAdmin.toLowerCase() == 'true' ? true : false;
-		this.setState({
-			RoomName: props.RoomName,
-			Players: dictionnary,
-			IsAdmin: isAdmin,
-			Player: p,
-			Message: '',
-			IaNumber: 0,
-			Settings: new GameSettings()
-		});
-
-		this._socket = new NetworkSocket(props.playerName, props.RoomName, isAdmin);
-
-		this._onPeerConnectionChanged = this.PeerConnectionChanged.bind(this);
-		this._socket.OnPeerConnectionChanged.On(this._onPeerConnectionChanged);
-		this._socket.OnReceived.On(this._toastObserver);
-		this._socket.OnReceived.On(this._readyObserver);
-		this._socket.OnReceived.On(this._playersObserver);
-		this._socket.OnReceived.On(this._pingObserver);
-		this._socket.OnReceived.On(this._mapObserver);
-	}
-
-	componentDidMount() {
 		this._appService = Factory.Load<IAppService>(FactoryKey.App);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
 		this._gameContextService = Factory.Load<IGameContextService>(FactoryKey.GameContext);
+		this._hostingService = Factory.Load<IHostingService>(FactoryKey.Hosting);
+
+		const model = this._hostingService.Publish();
+		this.setState(model);
+
+		this._observers = [
+			new NetworkObserver(PacketKind.Ready, this.HandleReady.bind(this)),
+			new NetworkObserver(PacketKind.Players, this.HandlePlayers.bind(this)),
+			new NetworkObserver(PacketKind.Ping, this.HandlePing.bind(this)),
+
+			//map, loaded, start should be in a service...
+			new NetworkObserver(PacketKind.Map, this.HandleMap.bind(this)),
+			new NetworkObserver(PacketKind.Loaded, this.HandleLoaded.bind(this)),
+			new NetworkObserver(PacketKind.Start, this.HandleStart.bind(this))
+		];
+
+		this._socket = new NetworkSocket(model.Player.Name, model.RoomName, model.IsAdmin);
+		this._observers.forEach((obs) => {
+			this._socket.OnReceived.On(obs);
+		});
+		this._socket.OnPeerConnectionChanged.On(this.PeerConnectionChanged.bind(this));
 	}
 
 	componentWillUnmount() {
-		this._socket.OnReceived.Off(this._toastObserver);
-		this._socket.OnReceived.Off(this._readyObserver);
-		this._socket.OnReceived.Off(this._playersObserver);
-		this._socket.OnReceived.Off(this._mapObserver);
-		this._socket.OnPeerConnectionChanged.Off(this._onPeerConnectionChanged);
+		if (this.state.IsAdmin) {
+			this._socket.EmitServer<any>(PacketKind.Hide, {});
+		}
+		this._observers.forEach((obs) => {
+			this._socket.OnReceived.Off(obs);
+		});
+		this._socket.OnPeerConnectionChanged.Clear();
 	}
 
 	render() {
 		return (
-			<PanelComponent>
-				{this.GetUpdsideButton()}
-				<PlayersComponent NetworkHandler={this._socket} HostState={this.state} />
-				{this.GetDownsideButton()}
-				{this.GetSettings()}
-				<div class="absolute-center-bottom full-width">{this.GetMessageForm()}</div>
-			</PanelComponent>
+			<ToastComponent socket={this._socket} Player={this.state.Player}>
+				<PanelComponent>
+					{this.GetUpdsideButton()}
+					<PlayersComponent NetworkHandler={this._socket} HostState={this.state} />
+					{this.GetDownsideButton()}
+					{this._hasSettings ? <OptionComponent Update={this.Update.bind(this)} /> : ''}
+				</PanelComponent>
+			</ToastComponent>
 		);
-	}
-	GetSettings() {
-		if (this._hasSettings) {
-			return (
-				<div class="optionContainer absolute-center-middle-menu">
-					<div class="title-container">Settings</div>
-					<OptionComponent Update={this.Update.bind(this)} />
-				</div>
-			);
-		} else {
-			return '';
-		}
 	}
 
 	private PeerConnectionChanged(obj: any, peer: PeerSocket): void {
@@ -129,35 +102,12 @@ export default class HostingComponent extends Component<any, HostState> {
 		});
 	}
 
-	private GetMessageForm() {
-		return (
-			<div class="input-group">
-				<input
-					type="text"
-					class="form-control no-radius"
-					id="toastMessageBox"
-					value={this.state.Message}
-					onInput={(e: any) => {
-						this.setState({ Message: e.target.value });
-					}}
-					aria-label="Example text with button addon"
-					aria-describedby="button-addon1"
-				/>
-				<div class="input-group-append">
-					<button class="btn btn-dark" type="button" id="button-addon1" onClick={() => this.SendToast()}>
-						<Icon Value={'fas fa-comment'} />
-					</button>
-				</div>
-			</div>
-		);
-	}
-
 	private GetDownsideButton() {
 		return (
 			<div class="container-center-horizontal">
 				<BlackButtonComponent
 					icon={'fas fa-toggle-on'}
-					title={this.GetButtonLabel()}
+					title={this.state.Player.IsReady ? 'Ok' : 'Nok'}
 					callBack={() => this.ChangeReady()}
 				/>
 
@@ -182,7 +132,7 @@ export default class HostingComponent extends Component<any, HostState> {
 			<div class="container-center-horizontal">
 				<BlackButtonComponent icon={'fas fa-undo-alt'} title={'Back'} callBack={() => this.Back()} />{' '}
 				{this.state.IsAdmin ? (
-					<RedButtonComponent icon={'far fa-play-circle'} title={'Start'} callBack={() => this.Start()} />
+					<RedButtonComponent icon={'far fa-play-circle'} title={'Start'} callBack={() => this.Loading()} />
 				) : (
 					''
 				)}
@@ -190,110 +140,23 @@ export default class HostingComponent extends Component<any, HostState> {
 		);
 	}
 
-	private GetButtonLabel() {
-		if (this.state.Player.IsReady) {
-			return 'Ok';
-		}
-		return 'Nok';
-	}
-
-	private OnPlayerReadyChanged(data: NetworkMessage<boolean>): void {
-		if (this.state.Players.Exist(data.Emitter)) {
-			this.state.Players.Get(data.Emitter).IsReady = data.Content;
-			this.setState({});
-		}
-	}
-
-	private OnToastReceived(message: NetworkMessage<string>): void {
-		if (message) {
-			toastr['success'](message.Content, `> ${message.Emitter}`, { iconClass: 'toast-gray' });
-			document.getElementById('toastMessageBox').focus();
-		}
-	}
-
-	private OnPlayersChanged(message: NetworkMessage<string[]>): void {
-		message.Content.forEach((playerName) => {
-			if (!this.state.Players.Exist(playerName)) {
-				this.state.Players.Add(playerName, new Player(playerName));
-			}
-		});
-
-		this.state.Players.Keys().filter((p) => message.Content.indexOf(p) === -1).forEach((c) => {
-			this.state.Players.Remove(c);
-		});
-
-		this.setState({});
-	}
-
-	private OnPingChanged(message: NetworkMessage<string>): void {
-		if (this.state.Players.Exist(message.Emitter)) {
-			this.state.Players.Get(message.Emitter).Latency = message.Content;
-			this.setState({});
-		}
-	}
-
 	private ChangeReady(): void {
 		const player = this.state.Player;
 		player.IsReady = !player.IsReady;
 		this.setState({});
-		const message = new NetworkMessage<boolean>();
-		message.Emitter = this.state.Player.Name;
-		message.Content = player.IsReady;
-		message.Kind = PacketKind.Ready;
-		message.Recipient = PeerSocket.All();
-		this._socket.Emit(message);
+		this._socket.EmitAll<boolean>(PacketKind.Ready, player.IsReady);
 	}
 
-	private SendToast(): void {
-		let message = new NetworkMessage<string>();
-		message.Emitter = this.state.Player.Name;
-		message.Recipient = PeerSocket.All();
-		message.Content = this.state.Message;
-		message.Kind = PacketKind.Toast;
-		this.setState({
-			Message: ''
-		});
-
-		toastr['success'](message.Content, `> ${message.Emitter}`, { iconClass: 'toast-white' });
-		this._socket.Emit(message);
-		document.getElementById('toastMessageBox').focus();
-	}
-
-	private Start(): void {
-		if (this.IsEveryoneReady()) {
+	private Loading(): void {
+		if (this.state.Players.Values().every((e) => e.IsReady)) {
 			const hqCount = +this.state.IaNumber + this.state.Players.Count();
 			const mapContext = new MapGenerator().GetMapDefinition(12, 'Flower', hqCount, MapEnv.forest);
 			mapContext.PlayerName = this.state.Player.Name;
 			this.AssignHqToPlayer(mapContext, this.state.Players.Values());
-			const message = new NetworkMessage<MapContext>();
-			message.Content = mapContext;
-			message.Kind = PacketKind.Map;
-			message.Recipient = PeerSocket.All();
-			message.Emitter = this.state.Player.Name;
-			this._socket.Emit(message);
 			this.SetIa(mapContext);
-			this.HideRoom();
-			this._appService.Register(mapContext);
-			this._networkService.Register(
-				this._socket,
-				this._gameContextService.Publish(),
-				this.state.Players.Values()
-			);
-			route('/Canvas', true);
+			this.Load(mapContext);
+			this._socket.EmitAll<MapContext>(PacketKind.Map, mapContext);
 		}
-	}
-
-	private OnMapReceived(data: NetworkMessage<MapContext>): void {
-		const mapContext = data.Content;
-		mapContext.PlayerName = this.state.Player.Name;
-		this.SetIa(mapContext);
-		mapContext.Hqs.forEach((hq) => {
-			hq.isIa = false;
-		});
-
-		this._appService.Register(mapContext);
-		this._networkService.Register(this._socket, this._gameContextService.Publish(), this.state.Players.Values());
-		route('/Canvas', true);
 	}
 
 	public SetIa(mapContext: MapContext): void {
@@ -307,33 +170,71 @@ export default class HostingComponent extends Component<any, HostState> {
 		});
 	}
 
-	private HideRoom(): void {
-		const message = new NetworkMessage<any>();
-		message.Emitter = this.state.Player.Name;
-		message.Recipient = PeerSocket.Server();
-		message.Kind = PacketKind.Hide;
-		this._socket.Emit(message);
-	}
-
-	public AssignHqToPlayer(mapContext: any, players: Player[]): void {
+	public AssignHqToPlayer(mapContext: MapContext, players: Player[]): void {
 		if (mapContext.Hqs.length < players.length) {
 			throw new Error('not enough hq');
 		}
-		for (let i = 0; i < mapContext.Hqs.length; i++) {
-			if (i < players.length) {
-				mapContext.Hqs[i].PlayerName = players[i].Name;
+		mapContext.Hqs.forEach((hq, index) => {
+			if (index < players.length) {
+				mapContext.Hqs[index].PlayerName = players[index].Name;
 			}
+		});
+	}
+
+	private Load(mapContext: MapContext) {
+		this._appService.Register(mapContext);
+		this._networkService.Register(this._socket, this._gameContextService.Publish(), this.state.Players.Values());
+		this.state.Player.IsLoaded = true;
+		this._socket.EmitAll<boolean>(PacketKind.Loaded, true);
+	}
+
+	private HandlePlayers(message: NetworkMessage<string[]>): void {
+		message.Content.forEach((playerName) => {
+			if (!this.state.Players.Exist(playerName)) {
+				this.state.Players.Add(playerName, new Player(playerName));
+			}
+		});
+
+		this.state.Players.Keys().filter((p) => message.Content.indexOf(p) === -1).forEach((c) => {
+			this.state.Players.Remove(c);
+		});
+
+		this.setState({});
+	}
+
+	private HandleReady(data: NetworkMessage<boolean>): void {
+		if (this.state.Players.Exist(data.Emitter)) {
+			this.state.Players.Get(data.Emitter).IsReady = data.Content;
+			this.setState({});
 		}
 	}
 
-	private IsEveryoneReady(): boolean {
-		let players = this.state.Players.Values();
-		for (let i = 0; i < players.length; i++) {
-			if (!players[i].IsReady) {
-				return false;
-			}
+	private HandlePing(message: NetworkMessage<string>): void {
+		if (this.state.Players.Exist(message.Emitter)) {
+			this.state.Players.Get(message.Emitter).Latency = message.Content;
+			this.setState({});
 		}
-		return true;
+	}
+
+	private HandleStart(data: NetworkMessage<any>): void {
+		route('/Canvas', true);
+	}
+
+	private HandleLoaded(data: NetworkMessage<boolean>): void {
+		this.state.Players.Get(data.Emitter).IsLoaded = data.Content;
+		if (this.state.IsAdmin && this.state.Players.Values().every((p) => p.IsLoaded)) {
+			this._socket.EmitAll<any>(PacketKind.Start, {});
+			route('/Canvas', true);
+		}
+	}
+
+	private HandleMap(data: NetworkMessage<MapContext>): void {
+		const mapContext = data.Content;
+		mapContext.PlayerName = this.state.Player.Name;
+		mapContext.Hqs.forEach((hq) => {
+			hq.isIa = false;
+		});
+		this.Load(mapContext);
 	}
 
 	private Back(): void {

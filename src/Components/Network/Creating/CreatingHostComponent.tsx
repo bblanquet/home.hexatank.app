@@ -8,6 +8,8 @@ import RedButtonComponent from '../../Common/Button/Stylish/RedButtonComponent';
 import BlackButtonComponent from '../../Common/Button/Stylish/BlackButtonComponent';
 import PanelComponent from '../../Common/Panel/PanelComponent';
 import TextComponent from '../../Common/Text/TextComponent';
+import { Factory, FactoryKey } from '../../../Factory';
+import { IHostingService } from '../../../Services/Hosting/IHostingService';
 
 export default class CreatingHostComponent extends Component<any, CreatingHostState> {
 	private _socket: SocketIOClient.Socket;
@@ -59,7 +61,12 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 		this._socket.on('connect', () => {
 			this._socket.on(PacketKind[PacketKind.Exist], (data: { Exist: boolean; RoomName: string }) => {
 				if (!data.Exist) {
-					route(`/Hosting/${this.state.RoomName}/${this.state.PlayerName}/${true}`, true);
+					Factory.Load<IHostingService>(FactoryKey.Hosting).Register(
+						this.state.PlayerName,
+						this.state.RoomName,
+						true
+					);
+					route('/Hosting', true);
 				} else {
 					toastr['warning'](`${data.RoomName} is already used.`, 'WARNING', { iconClass: 'toast-red' });
 				}

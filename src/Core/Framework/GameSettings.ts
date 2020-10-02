@@ -40,7 +40,7 @@ export class GameSettings {
 	}
 
 	public static SetFastSpeed(): void {
-		this.RotatingDuration = 0.2;
+		this.RotatingDuration = 0.8;
 		this.TurrelRotatingDuration = 0.1;
 		this.TranslatinDuration = 0.1;
 		this.DiamondLoadingSpeed = 3;

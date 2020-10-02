@@ -8,6 +8,8 @@ import RedButtonComponent from '../../Common/Button/Stylish/RedButtonComponent';
 import PanelComponent from '../../Common/Panel/PanelComponent';
 import GridComponent from '../../Common/Grid/GridComponent';
 import SmBlackButtonComponent from '../../Common/Button/Stylish/SmBlackButtonComponent';
+import { Factory, FactoryKey } from '../../../Factory';
+import { IHostingService } from '../../../Services/Hosting/IHostingService';
 
 const io = require('socket.io-client');
 
@@ -117,7 +119,12 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 			});
 			this._socket.on(PacketKind[PacketKind.Available], (data: { IsAvailable: boolean; RoomName: string }) => {
 				if (data.IsAvailable) {
-					route(`/Hosting/${data.RoomName}/${this.state.PlayerName}/${false}`, true);
+					Factory.Load<IHostingService>(FactoryKey.Hosting).Register(
+						this.state.PlayerName,
+						data.RoomName,
+						false
+					);
+					route('/Hosting', true);
 				} else {
 					toastr['warning'](`${this.state.PlayerName} is already used in ${data.RoomName}`, 'WARNING', {
 						iconClass: 'toast-red'

@@ -128,31 +128,31 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 	}
 
 	public Do(): void {
-		if (this._idleTimer.IsElapsed()) {
-			this.Trucks = this.Trucks.filter((t) => t.IsAlive());
-			this.Tanks = this.Tanks.filter((t) => t.IsAlive());
-			this.Squads = this.Squads.filter((s) => !s.IsDone());
-			this.Squads.forEach((squad) => {
-				squad.Do();
-			});
-			const areas = new Array<KingdomArea>();
-			this.AreaDecisions = this.AreaDecisions.filter((t) => !t.IsDestroyed());
-			this.AreaDecisions.forEach((areaDecision) => {
-				areaDecision.Area.CalculateFoes();
-				areaDecision.HasReceivedRequest = false;
-				areaDecision.Update();
-				areas.push(areaDecision.Area);
-			});
-			this.IdleTanks.CalculateExcess(areas);
-			const requests = this.GetRequests(areas);
-			this.Log(requests);
-			if (requests.Any()) {
-				this._requestHandler.HandleRequests(requests);
-			}
-			if (15 <= this.Hq.GetAmount()) {
-				this._expansionMaker.Expand();
-			}
-		}
+		// if (this._idleTimer.IsElapsed()) {
+		// 	this.Trucks = this.Trucks.filter((t) => t.IsAlive());
+		// 	this.Tanks = this.Tanks.filter((t) => t.IsAlive());
+		// 	this.Squads = this.Squads.filter((s) => !s.IsDone());
+		// 	this.Squads.forEach((squad) => {
+		// 		squad.Do();
+		// 	});
+		// 	const areas = new Array<KingdomArea>();
+		// 	this.AreaDecisions = this.AreaDecisions.filter((t) => !t.IsDestroyed());
+		// 	this.AreaDecisions.forEach((areaDecision) => {
+		// 		areaDecision.Area.CalculateFoes();
+		// 		areaDecision.HasReceivedRequest = false;
+		// 		areaDecision.Update();
+		// 		areas.push(areaDecision.Area);
+		// 	});
+		// 	this.IdleTanks.CalculateExcess(areas);
+		// 	const requests = this.GetRequests(areas);
+		// 	this.Log(requests);
+		// 	if (requests.Any()) {
+		// 		this._requestHandler.HandleRequests(requests);
+		// 	}
+		// 	if (15 <= this.Hq.GetAmount()) {
+		// 		this._expansionMaker.Expand();
+		// 	}
+		// }
 	}
 
 	private GetRequests(areas: KingdomArea[]) {

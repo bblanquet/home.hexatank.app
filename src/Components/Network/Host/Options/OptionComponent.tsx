@@ -22,33 +22,36 @@ export default class OptionComponent extends Component<{ Update: (g: number) => 
 
 	render() {
 		return (
-			<div class="whiteText">
-				<div class="input-group mb-3">
-					<div class="input-group-prepend">
-						<span class="input-group-text custom-black-btn" id="inputGroup-sizing-default">
-							IA
-						</span>
+			<div class="optionContainer absolute-center-middle-menu">
+				<div class="title-container">Settings</div>
+				<div class="whiteText">
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text custom-black-btn" id="inputGroup-sizing-default">
+								IA
+							</span>
+						</div>
+						<select
+							id="daytime"
+							class="custom-select"
+							value={this.state.IaNumber}
+							onInput={(e: any) => {
+								this.setState({ IaNumber: e.target.value });
+							}}
+						>
+							<option selected value="0">
+								0
+							</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+						</select>
 					</div>
-					<select
-						id="daytime"
-						class="custom-select"
-						value={this.state.IaNumber}
-						onInput={(e: any) => {
-							this.setState({ IaNumber: e.target.value });
-						}}
-					>
-						<option selected value="0">
-							0
-						</option>
-						<option value="1">1</option>
-						<option value="2">2</option>
-					</select>
+					<BlackButtonComponent
+						icon={'fas fa-undo-alt'}
+						title={'Back'}
+						callBack={() => this.Update(this.state.IaNumber)}
+					/>
 				</div>
-				<BlackButtonComponent
-					icon={'fas fa-undo-alt'}
-					title={'Back'}
-					callBack={() => this.Update(this.state.IaNumber)}
-				/>
 			</div>
 		);
 	}

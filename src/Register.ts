@@ -1,3 +1,4 @@
+import { HostingService } from './Services/Hosting/HostingService';
 import { KeyService } from './Services/Key/KeyService';
 import { RecordInteractionService } from './Services/Interaction/RecordInteractionService';
 import { RecordAppService } from './Services/App/RecordAppService';
@@ -12,6 +13,7 @@ import { AppService } from './Services/App/AppService';
 import { Factory, FactoryKey } from './Factory';
 
 Factory.Register(FactoryKey.Key, new KeyService());
+Factory.Register(FactoryKey.Hosting, new HostingService());
 Factory.Register(FactoryKey.Update, new UpdateService());
 Factory.Register(FactoryKey.Compare, new CompareService());
 Factory.Register(FactoryKey.GameContext, new GameContextService());

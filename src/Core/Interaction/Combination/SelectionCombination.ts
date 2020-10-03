@@ -28,7 +28,6 @@ export class SelectionCombination extends AbstractSingleCombination {
 
 			if (selectable instanceof Cell) {
 				const selectablecell = selectable as Cell;
-
 				if (
 					selectablecell.GetField() instanceof ReactorField &&
 					selectablecell.GetState() === CellState.Visible &&

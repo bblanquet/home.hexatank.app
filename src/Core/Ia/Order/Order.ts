@@ -1,30 +1,44 @@
 import { Cell } from '../../Items/Cell/Cell';
+import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { IOrder } from './IOrder';
 import { OrderKind } from './OrderKind';
 import { OrderState } from './OrderState';
 
 export abstract class Order implements IOrder {
-	protected State: OrderState;
+	private _state: OrderState;
+	public OnPathCreated: LiteEvent<Cell[]> = new LiteEvent<Cell[]>();
+	public OnNextCell: LiteEvent<Cell> = new LiteEvent<Cell>();
+	public OnStateChanged: LiteEvent<OrderState> = new LiteEvent<OrderState>();
 	constructor() {
-		this.State = OrderState.None;
+		this._state = OrderState.None;
 	}
+
 	abstract GetKind(): OrderKind;
-	abstract GetDestination(): Cell[];
+	abstract GetCells(): Cell[];
 
 	public Reset(): void {
-		this.State = OrderState.None;
+		this._state = OrderState.None;
 	}
 
 	public IsDone(): boolean {
-		return this.State === OrderState.Failed || this.State === OrderState.Passed || this.State === OrderState.Cancel;
+		return (
+			this._state === OrderState.Failed || this._state === OrderState.Passed || this._state === OrderState.Cancel
+		);
 	}
 
 	public GetState(): OrderState {
-		return this.State;
+		return this._state;
 	}
 
 	public Cancel(): void {
-		this.State = OrderState.Cancel;
+		this._state = OrderState.Cancel;
+	}
+
+	protected SetState(state: OrderState): void {
+		this._state = state;
+		if (this.IsDone()) {
+		}
+		this.OnStateChanged.Invoke(this, this._state);
 	}
 
 	abstract Do(): void;

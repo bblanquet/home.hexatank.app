@@ -1,12 +1,12 @@
-import { OrderState } from './OrderState';
-import { Cell } from '../../Items/Cell/Cell';
-import { SimpleOrder } from './SimpleOrder';
-import { Order } from './Order';
-import { BasicItem } from '../../Items/BasicItem';
-import { Archive } from '../../Framework/ResourceArchiver';
-import { Vehicle } from '../../Items/Unit/Vehicle';
-import { OrderKind } from './OrderKind';
-import { isNullOrUndefined } from '../../Utils/ToolBox';
+import { OrderState } from './../OrderState';
+import { Cell } from '../../../Items/Cell/Cell';
+import { SimpleOrder } from './../SimpleOrder';
+import { Order } from './../Order';
+import { BasicItem } from '../../../Items/BasicItem';
+import { Archive } from '../../../Framework/ResourceArchiver';
+import { Vehicle } from '../../../Items/Unit/Vehicle';
+import { OrderKind } from './../OrderKind';
+import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class PatrolOrder extends Order {
 	private _currentPatrolcell: Cell;
@@ -22,7 +22,7 @@ export class PatrolOrder extends Order {
 	public GetKind(): OrderKind {
 		return OrderKind.SimpleSmart;
 	}
-	public GetDestination(): Cell[] {
+	public GetCells(): Cell[] {
 		return this._patrolcells;
 	}
 
@@ -52,9 +52,9 @@ export class PatrolOrder extends Order {
 	}
 
 	public Do(): void {
-		if (this.State === OrderState.None) {
+		if (this.GetState() === OrderState.None) {
 			this._currentPatrolcell = this._patrolcells[0];
-			this.State = OrderState.Pending;
+			this.SetState(OrderState.Pending);
 			this.StartMoving();
 		}
 

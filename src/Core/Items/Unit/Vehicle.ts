@@ -1,3 +1,4 @@
+import { UiOrder } from './../../Ia/Order/UiOrder';
 import { IOrder } from './../../Ia/Order/IOrder';
 import { Cell } from './../Cell/Cell';
 import { GameSettings } from './../../Framework/GameSettings';
@@ -147,10 +148,10 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	}
 
 	public HasOrder(): boolean {
-		if (this._order === null) {
+		if (isNullOrUndefined(this._order)) {
 			return false;
 		}
-		return this._order.IsDone();
+		return !this._order.IsDone();
 	}
 
 	public GetBoundingBox(): BoundingBox {
@@ -265,9 +266,28 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		return this.GetCurrentSprites().Get(Archive.selectionUnit).alpha === 1;
 	}
 
+	//is it the right place???
+	private _uiOrder: UiOrder;
 	public SetSelected(isSelected: boolean): void {
 		this.SetProperty(Archive.selectionUnit, (e) => (e.alpha = isSelected ? 1 : 0));
+		this.SetUiOrder();
 		this.OnSelectionChanged.Invoke(this, this);
+	}
+
+	private SetUiOrder() {
+		if (!this.GameContext.GetMainHq().IsEnemy(this)) {
+			if (this._uiOrder && this.HasOrder() && this._uiOrder.HasOrder(this._order)) {
+				return;
+			}
+
+			if (this._uiOrder) {
+				this._uiOrder.Clear();
+				this._uiOrder = null;
+			}
+			if (this.IsSelected() && this.HasOrder()) {
+				this._uiOrder = new UiOrder(this._order);
+			}
+		}
 	}
 
 	public GetNextCell(): Cell {
@@ -334,16 +354,9 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 			return;
 		}
 
-		if (this.ExistsOrder() && !this._order.IsDone()) {
+		this.Switch();
+		if (this.HasOrder()) {
 			this._order.Do();
-		}
-
-		if (!this.ExistsOrder() || (this._order.IsDone() && !this.HasNextCell())) {
-			if (this._pendingOrder) {
-				this._order = this._pendingOrder;
-				this._pendingOrder = null;
-				this._order.Do();
-			}
 		}
 
 		this._currentCell.GetField().Support(this);
@@ -351,14 +364,17 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		if (this.HasNextCell()) {
 			this.Moving();
 			this.SetCurrentCellEmpty();
-		} else {
-			if (this._pendingOrder) {
-				this._order = this._pendingOrder;
-				this._pendingOrder = null;
-			}
 		}
 
 		super.Update(viewX, viewY);
+	}
+
+	private Switch() {
+		if (!this.HasOrder() && this._pendingOrder) {
+			this._order = this._pendingOrder;
+			this._pendingOrder = null;
+			this.SetUiOrder();
+		}
 	}
 
 	private SetCurrentCellEmpty() {

@@ -1,51 +1,39 @@
-import { BouncingScaleUpAnimator } from './../../Items/Animator/BouncingScaleUpAnimator';
-import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { AStarEngine } from './../AStarEngine';
 import { OrderState } from './OrderState';
 import { Order } from './Order';
 import { Cell } from '../../Items/Cell/Cell';
 import { CellFinder } from '../../Items/Cell/CellFinder';
-import { BasicItem } from '../../Items/BasicItem';
-import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { Vehicle } from '../../Items/Unit/Vehicle';
-import { Archive } from '../../Framework/ResourceArchiver';
 import { ShieldField } from '../../Items/Cell/Field/Bonus/ShieldField';
 import { AStarHelper } from '../AStarHelper';
 import { OrderKind } from './OrderKind';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 
 export class SimpleOrder extends Order {
-	protected Currentcell: Cell;
-	protected cells: Array<Cell>;
-	protected cellFinder: CellFinder;
-	private _uiPath: Dictionnary<BasicItem>;
-	protected Dest: Cell;
-	private _tryCount: number;
-	private _sleep: TickTimer;
+	protected CellFinder: CellFinder;
+	protected GoalCells: Array<Cell>;
+	protected CurrentGoal: Cell;
+	protected FinalGoal: Cell;
 
-	constructor(protected OriginalDest: Cell, private _v: Vehicle, private _hasAnimation: boolean = false) {
+	constructor(protected FinalOriginalGoal: Cell, protected Vehicle: Vehicle) {
 		super();
-		if (isNullOrUndefined(this.OriginalDest)) {
+		if (isNullOrUndefined(this.FinalOriginalGoal)) {
 			throw 'invalid destination';
 		}
-		this._sleep = new TickTimer(100);
-		this._tryCount = 0;
-		this.Dest = OriginalDest;
-		this.cells = new Array<Cell>();
-		this.cellFinder = new CellFinder();
-		this._uiPath = new Dictionnary<BasicItem>();
+		this.FinalGoal = FinalOriginalGoal;
+		this.GoalCells = new Array<Cell>();
+		this.CellFinder = new CellFinder();
 	}
 
 	public GetKind(): OrderKind {
 		return OrderKind.Simple;
 	}
-	public GetDestination(): Cell[] {
-		return [ this.OriginalDest ];
+	public GetCells(): Cell[] {
+		return this.GoalCells;
 	}
 
 	public Cancel(): void {
 		super.Cancel();
-		this.ClearPath();
 	}
 
 	public Do(): void {
@@ -53,145 +41,104 @@ export class SimpleOrder extends Order {
 			return;
 		}
 
-		if (this.Currentcell === this._v.GetCurrentCell()) {
-			this.DestroyUiCell();
-
-			if (this.Currentcell === this.Dest) {
-				if (this.Dest === this.OriginalDest) {
-					this._tryCount = 0;
-					this.State = OrderState.Passed;
-				} else {
-					if (this._sleep.IsElapsed()) {
-						if (this._tryCount >= 5) {
-							this.State = OrderState.Failed;
-						} else {
-							this._tryCount += 1;
-							if (isNullOrUndefined(this.OriginalDest.GetOccupier())) {
-								this.Dest = this.OriginalDest;
-							}
-						}
-					}
-				}
+		if (this.CurrentGoal === this.Vehicle.GetCurrentCell()) {
+			this.OnNextCell.Invoke(this, this.CurrentGoal);
+			if (this.CurrentGoal === this.FinalGoal) {
+				this.SetState(this.FinalGoal === this.FinalOriginalGoal ? OrderState.Passed : OrderState.Failed);
 			} else {
 				this.GoNextcell();
 			}
 		}
 	}
 
-	private DestroyUiCell() {
-		if (!this._uiPath.IsEmpty()) {
-			this._uiPath.Get(this.Currentcell.Coo()).Destroy();
-			this._uiPath.Remove(this.Currentcell.Coo());
-		}
-	}
-
-	private GoNextcell() {
-		var cell = this.GetNextcell();
-		if (isNullOrUndefined(cell)) {
-			this.State = OrderState.Failed;
+	protected GoNextcell() {
+		this.CurrentGoal = this.GetNextGoal();
+		if (isNullOrUndefined(this.CurrentGoal)) {
+			this.SetState(OrderState.Failed);
 		} else {
-			this._v.SetNextCell(cell);
+			this.Vehicle.SetNextCell(this.CurrentGoal);
 		}
 	}
 
-	private Init(): boolean {
-		if (this.State === OrderState.None) {
-			if (this.FindPath()) {
+	protected Init(): boolean {
+		if (this.GetState() === OrderState.None) {
+			if (this.CreateGoalCells()) {
 				this.GoNextcell();
-				this.State = OrderState.Pending;
+				this.SetState(OrderState.Pending);
 			} else {
-				this.State = OrderState.Failed;
+				this.SetState(OrderState.Failed);
 				return false;
 			}
 		}
 		return true;
 	}
 
-	private GetNextcell(): Cell {
-		if (isNullOrUndefined(this.cells) || this.cells.length === 0) {
+	private GetNextGoal(): Cell {
+		if (isNullOrUndefined(this.GoalCells) || this.GoalCells.length === 0) {
 			return null;
 		}
 
-		this.Currentcell = this.cells[0];
-		this.cells.splice(0, 1);
-
-		if (!this.IsAccessible(this.Currentcell)) {
-			if (this.FindPath()) {
-				this.Currentcell = this.GetNextcell();
+		const candidate = this.GoalCells.splice(0, 1)[0];
+		if (!this.IsAccessible(candidate)) {
+			if (this.CreateGoalCells()) {
+				return this.GetNextGoal();
 			} else {
 				return null;
 			}
 		}
 
-		return this.Currentcell;
+		return candidate;
 	}
 
 	public Reset(): void {
 		super.Reset();
-		this.Dest = this.OriginalDest;
+		this.FinalGoal = this.FinalOriginalGoal;
 	}
 
 	private IsAccessible(c: Cell): boolean {
 		const field = c.GetField();
 		if (field instanceof ShieldField) {
 			const shield = field as ShieldField;
-			return !shield.IsEnemy(this._v);
+			return !shield.IsEnemy(this.Vehicle);
 		}
 		return !c.IsBlocked();
 	}
 
-	protected FindPath(): boolean {
-		if (!this.IsAccessible(this.Dest)) {
-			this.Dest = this.GetClosestcell();
-			if (isNullOrUndefined(this.Dest)) {
+	protected CreateGoalCells(): boolean {
+		if (!this.IsAccessible(this.FinalGoal)) {
+			this.FinalGoal = this.GetClosestCell();
+			if (isNullOrUndefined(this.FinalGoal)) {
 				return false;
 			}
 		}
-		this.ClearPath();
 		const filter = (c: Cell) => !isNullOrUndefined(c) && this.IsAccessible(c);
 		const cost = (c: Cell) => AStarHelper.GetBasicCost(c);
-		const nextcells = new AStarEngine<Cell>(filter, cost).GetPath(this._v.GetCurrentCell(), this.Dest, true);
+		const nextcells = new AStarEngine<Cell>(filter, cost).GetPath(
+			this.Vehicle.GetCurrentCell(),
+			this.FinalGoal,
+			true
+		);
 
 		if (isNullOrUndefined(nextcells)) {
 			return false;
-		}
-
-		this.cells = nextcells;
-		this.CreateUiPath();
-		return true;
-	}
-
-	private ClearPath(): void {
-		this._uiPath.Values().forEach((uiItem) => {
-			uiItem.Destroy();
-		});
-		this._uiPath.Clear();
-	}
-
-	private CreateUiPath(): void {
-		if (!isNullOrUndefined(this.cells) && 0 < this.cells.length) {
-			this.cells.forEach((cell) => {
-				var pathItem = new BasicItem(cell.GetBoundingBox(), Archive.direction.moving);
-				if (this._hasAnimation) {
-					pathItem.SetAnimator(new BouncingScaleUpAnimator(pathItem, [ Archive.direction.moving ]));
-				}
-				pathItem.SetVisible(this._v.IsSelected.bind(this._v));
-				pathItem.SetAlive(this._v.IsAlive.bind(this._v));
-				this._uiPath.Add(cell.Coo(), pathItem);
-			});
+		} else {
+			this.GoalCells = nextcells;
+			this.OnPathCreated.Invoke(this, this.GoalCells);
+			return true;
 		}
 	}
 
-	protected GetClosestcell(): Cell {
-		let cells = this.Dest.GetNeighbourhood().map((c) => <Cell>c);
-		if (0 === this.Dest.GetAllNeighbourhood().filter((c) => c === this._v.GetCurrentCell()).length) {
+	protected GetClosestCell(): Cell {
+		const vehiculeCell = this.Vehicle.GetCurrentCell();
+		if (this.FinalGoal.GetAllNeighbourhood().some((c) => c === vehiculeCell)) {
+			return this.Vehicle.GetCurrentCell();
+		} else {
+			const cells = this.FinalGoal.GetNeighbourhood().map((c) => <Cell>c);
 			if (cells.length === 0) {
 				return null;
 			} else {
-				return this.cellFinder.GetClosestCell(cells, this._v);
+				return this.CellFinder.GetClosestCell(cells, this.Vehicle);
 			}
-		} else {
-			return this._v.GetCurrentCell();
 		}
 	}
 }

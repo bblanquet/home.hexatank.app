@@ -1,12 +1,12 @@
-import { Order } from './Order';
-import { AliveItem } from '../../Items/AliveItem';
-import { BasicItem } from '../../Items/BasicItem';
-import { OrderState } from './OrderState';
-import { Cell } from '../../Items/Cell/Cell';
-import { Archive } from '../../Framework/ResourceArchiver';
-import { SimpleOrder } from './SimpleOrder';
-import { Tank } from '../../Items/Unit/Tank';
-import { OrderKind } from './OrderKind';
+import { Archive } from '../../../Framework/ResourceArchiver';
+import { AliveItem } from '../../../Items/AliveItem';
+import { BasicItem } from '../../../Items/BasicItem';
+import { Cell } from '../../../Items/Cell/Cell';
+import { Tank } from '../../../Items/Unit/Tank';
+import { Order } from '../Order';
+import { OrderKind } from '../OrderKind';
+import { OrderState } from '../OrderState';
+import { SimpleOrder } from '../SimpleOrder';
 
 export class TargetOrder extends Order {
 	private _targetUi: BasicItem;
@@ -21,7 +21,7 @@ export class TargetOrder extends Order {
 	public GetKind(): OrderKind {
 		return OrderKind.Target;
 	}
-	public GetDestination(): Cell[] {
+	public GetCells(): Cell[] {
 		return [ this._target.GetCurrentCell() ];
 	}
 
@@ -31,10 +31,10 @@ export class TargetOrder extends Order {
 			return;
 		}
 
-		if (this.State === OrderState.None) {
+		if (this.GetState() === OrderState.None) {
 			this._currentcell = this._target.GetCurrentCell();
 			this._currentOrder = new SimpleOrder(this._currentcell, this._v);
-			this.State = OrderState.Pending;
+			this.SetState(OrderState.Pending);
 			this.ShowUi();
 		}
 
@@ -48,7 +48,7 @@ export class TargetOrder extends Order {
 			if (this._currentOrder.GetState() !== OrderState.Passed) {
 				this._currentOrder = new SimpleOrder(this._currentcell, this._v);
 			} else {
-				this.State = OrderState.Passed;
+				this.SetState(OrderState.Passed);
 				return;
 			}
 		} else {

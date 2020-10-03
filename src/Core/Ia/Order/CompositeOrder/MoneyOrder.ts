@@ -1,9 +1,10 @@
+import { OrderState } from './../OrderState';
 import { SmartPreciseOrder } from './SmartPreciseOrder';
-import { Order } from './Order';
-import { Vehicle } from '../../Items/Unit/Vehicle';
-import { Cell } from '../../Items/Cell/Cell';
-import { FarmField } from '../../Items/Cell/Field/Bonus/FarmField';
-import { OrderKind } from './OrderKind';
+import { Order } from './../Order';
+import { Vehicle } from '../../../Items/Unit/Vehicle';
+import { Cell } from '../../../Items/Cell/Cell';
+import { FarmField } from '../../../Items/Cell/Field/Bonus/FarmField';
+import { OrderKind } from './../OrderKind';
 
 export class MoneyOrder extends Order {
 	private _currentOrder: SmartPreciseOrder;
@@ -15,8 +16,8 @@ export class MoneyOrder extends Order {
 	public GetKind(): OrderKind {
 		return OrderKind.Money;
 	}
-	public GetDestination(): Cell[] {
-		return null;
+	public GetCells(): Cell[] {
+		return this._currentOrder.GetCells();
 	}
 
 	Do(): void {

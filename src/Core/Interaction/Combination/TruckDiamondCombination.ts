@@ -1,10 +1,10 @@
-import { DiamondFieldOrder } from '../../Ia/Order/DiamondFieldOrder';
-import { TruckPatrolOrder } from '../../Ia/Order/TruckPatrolOrder';
+import { DiamondFieldOrder } from '../../Ia/Order/CompositeOrder/DiamondFieldOrder';
+import { TruckPatrolOrder } from '../../Ia/Order/CompositeOrder/TruckPatrolOrder';
 import { Item } from '../../Items/Item';
 import { Truck } from '../../Items/Unit/Truck';
 import { Cell } from '../../Items/Cell/Cell';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
-import { HqFieldOrder } from '../../Ia/Order/HqFieldOrder';
+import { HqFieldOrder } from '../../Ia/Order/CompositeOrder/HqFieldOrder';
 import { ISelectable } from '../../ISelectable';
 import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';

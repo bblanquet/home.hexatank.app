@@ -1,5 +1,5 @@
 import { PatrolMenuItem } from '../../Menu/Buttons/PatrolMenuItem';
-import { PatrolOrder } from '../../Ia/Order/PatrolOrder';
+import { PatrolOrder } from '../../Ia/Order/CompositeOrder/PatrolOrder';
 import { BasicItem } from '../../Items/BasicItem';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { Item } from '../../Items/Item';

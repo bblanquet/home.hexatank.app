@@ -1,12 +1,12 @@
-import { Order } from './Order';
-import { OrderState } from './OrderState';
+import { Order } from '../Order';
+import { OrderState } from '../OrderState';
 import { HqFieldOrder } from './HqFieldOrder';
 import { DiamondFieldOrder } from './DiamondFieldOrder';
 import { SmartSimpleOrder } from './SmartSimpleOrder';
-import { Truck } from '../../Items/Unit/Truck';
-import { DiamondField } from '../../Items/Cell/Field/DiamondField';
-import { Cell } from '../../Items/Cell/Cell';
-import { OrderKind } from './OrderKind';
+import { Truck } from '../../../Items/Unit/Truck';
+import { DiamondField } from '../../../Items/Cell/Field/DiamondField';
+import { Cell } from '../../../Items/Cell/Cell';
+import { OrderKind } from '../OrderKind';
 
 export class TruckPatrolOrder extends Order {
 	private _currentOrder: SmartSimpleOrder;
@@ -24,14 +24,14 @@ export class TruckPatrolOrder extends Order {
 	public GetKind(): OrderKind {
 		return OrderKind.Truck;
 	}
-	public GetDestination(): Cell[] {
+	public GetCells(): Cell[] {
 		return [ this._hqOrder.Hq.GetCurrentCell(), this._diamondFieldOrder.Diamond.GetCurrentCell() ];
 	}
 
 	Do(): void {
-		if (this.State === OrderState.None) {
+		if (this.GetState() === OrderState.None) {
 			this._currentOrder = this._diamondFieldOrder;
-			this.State = OrderState.Pending;
+			this.SetState(OrderState.Pending);
 			this._currentOrder.Reset();
 		}
 

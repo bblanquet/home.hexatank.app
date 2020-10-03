@@ -1,6 +1,6 @@
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
-import { PersistentOrder } from '../../Ia/Order/PersistentOrder';
-import { TargetOrder } from '../../Ia/Order/TargetOrder';
+import { PersistentOrder } from '../../Ia/Order/CompositeOrder/PersistentOrder';
+import { TargetOrder } from '../../Ia/Order/CompositeOrder/TargetOrder';
 import { Tank } from '../../Items/Unit/Tank';
 import { Cell } from '../../Items/Cell/Cell';
 import { CombinationContext } from './CombinationContext';

@@ -1,13 +1,13 @@
-import { MoneyOrder } from './../../../Order/MoneyOrder';
+import { MoneyOrder } from './../../../Order/CompositeOrder/MoneyOrder';
 import { IKingdomDecisionMaker } from './../../IKingdomDecisionMaker';
 import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
-import { TruckPatrolOrder } from './../../../Order/TruckPatrolOrder';
+import { TruckPatrolOrder } from '../../../Order/CompositeOrder/TruckPatrolOrder';
 import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { Vehicle } from '../../../../Items/Unit/Vehicle';
 import { Truck } from '../../../../Items/Unit/Truck';
-import { HqFieldOrder } from '../../../Order/HqFieldOrder';
-import { DiamondFieldOrder } from '../../../Order/DiamondFieldOrder';
+import { HqFieldOrder } from '../../../Order/CompositeOrder/HqFieldOrder';
+import { DiamondFieldOrder } from '../../../Order/CompositeOrder/DiamondFieldOrder';
 import { RequestType } from '../../Utils/RequestType';
 
 export class TruckRequestHandler implements ISimpleRequestHandler {

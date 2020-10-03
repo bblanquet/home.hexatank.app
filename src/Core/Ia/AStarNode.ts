@@ -23,9 +23,7 @@ export class AStarNode<T extends ICell> {
 	}
 
 	private Distance(compareToCenter: Point, center: Point): number {
-		return (
-			Math.sqrt(Math.pow(compareToCenter.X - center.X, 2)) + Math.sqrt(Math.pow(compareToCenter.Y - center.Y, 2))
-		);
+		return compareToCenter.GetDistance(center);
 	}
 
 	GetCost(): number {

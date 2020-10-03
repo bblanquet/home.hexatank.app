@@ -74,12 +74,7 @@ export class InputNotifier {
 		this._currentPoint.X = event.data.global.x;
 		this._currentPoint.Y = event.data.global.y;
 
-		const dist = Math.abs(
-			Math.sqrt(
-				Math.pow(this._currentPoint.X - this._downPoint.X, 2) +
-					Math.pow(this._currentPoint.Y - this._downPoint.Y, 2)
-			)
-		);
+		const dist = Math.abs(this._currentPoint.GetDistance(this._downPoint));
 
 		setTimeout(() => {
 			if (this._downDate !== null) {

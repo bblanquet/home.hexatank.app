@@ -55,22 +55,18 @@ export class ExpansionMaker implements IExpansionMaker {
 
 	private GetClosestArea() {
 		let currentArea = this._kingdom.Areas[0];
-		let currentCost = this.GetCost(
-			this._hq.GetCell().GetCentralPoint(),
-			currentArea.GetCentralCell().GetCentralPoint()
-		);
+		let currentCost = this._hq
+			.GetCell()
+			.GetCentralPoint()
+			.GetDistance(currentArea.GetCentralCell().GetCentralPoint());
 		this._kingdom.Areas.forEach((area) => {
-			let cost = this.GetCost(this._hq.GetCell().GetCentralPoint(), area.GetCentralCell().GetCentralPoint());
+			let cost = this._hq.GetCell().GetCentralPoint().GetDistance(area.GetCentralCell().GetCentralPoint());
 			if (cost < currentCost) {
 				currentArea = area;
 				currentCost = cost;
 			}
 		});
 		return currentArea;
-	}
-
-	private GetCost(a: Point, b: Point): number {
-		return Math.sqrt(Math.pow(b.X - a.X, 2)) + Math.sqrt(Math.pow(b.Y - a.Y, 2));
 	}
 
 	private Log(areaDecision: AreaDecisionMaker) {

@@ -20,10 +20,10 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 
 	componentDidMount() {
 		this.setState({
-			IaNumber: 1,
-			Env: '0',
+			IaCount: 1,
+			Env: 'Forest',
 			MapType: 'Flower',
-			Size: 12
+			Size: 'Small'
 		});
 	}
 
@@ -33,7 +33,7 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 				<PanelComponent>
 					<DropDownComponent
 						OnInput={(e: any) => {
-							this.setState({ IaNumber: Number(e.target.value) });
+							this.setState({ IaCount: Number(e.target.value) });
 						}}
 						Label={'IA'}
 						Values={[ '1', '2', '3' ]}
@@ -43,13 +43,13 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 							this.setState({ Env: e.target.value });
 						}}
 						Label={'Env'}
-						Values={[ 'Sand', 'Forest', 'Ice' ]}
+						Values={[ 'Forest', 'Sand', 'Ice' ]}
 					/>
 					<DropDownComponent
 						OnInput={(e: any) => {
-							this.setState({ Size: Number(e.target.value) });
+							this.setState({ Size: e.target.value });
 						}}
-						Label={'Env'}
+						Label={'Size'}
 						Values={[ 'Small', 'Medium', 'Large' ]}
 					/>
 					<DropDownComponent
@@ -57,7 +57,7 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 							this.setState({ MapType: e.target.value });
 						}}
 						Label={'Shape'}
-						Values={[ 'Donut', 'Cheese', 'Flower' ]}
+						Values={[ 'Flower', 'Donut', 'Cheese' ]}
 					/>
 					<p />
 					<div class="container-center-horizontal">
@@ -77,23 +77,30 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 		route('/Home', true);
 	}
 
+	private ConvertSize(): number {
+		if (this.state.Size === 'Small') return 8;
+		if (this.state.Size === 'Medium') return 10;
+		if (this.state.Size === 'Large') return 12;
+		return 8;
+	}
+
 	private ConvertEnv(): MapEnv {
 		if (this.state.Env === 'Sand') return MapEnv.sand;
 		if (this.state.Env === 'Forest') return MapEnv.forest;
 		if (this.state.Env === 'Ice') return MapEnv.ice;
-	}
-
-	private ConvertSize(): number {
-		if (this.state.Env === 'Small') return 8;
-		if (this.state.Env === 'Medium') return 12;
-		if (this.state.Env === 'Large') return 16;
+		return MapEnv.forest;
 	}
 
 	Start(): void {
+		let iaCount = this.state.IaCount + 1;
+		if (this.ConvertSize() === 8 && 2 < iaCount) {
+			iaCount = 2;
+		}
+
 		const mapContext = new MapGenerator().GetMapDefinition(
 			this.ConvertSize(),
 			this.state.MapType,
-			+this.state.IaNumber + 1,
+			iaCount,
 			this.ConvertEnv()
 		);
 		mapContext.Hqs[0].PlayerName = mapContext.PlayerName;

@@ -1,6 +1,6 @@
 export class SinglePlayerState {
-	public IaNumber: number;
+	public IaCount: number;
 	public Env: string;
-	public Size: number;
+	public Size: string;
 	public MapType: string;
 }

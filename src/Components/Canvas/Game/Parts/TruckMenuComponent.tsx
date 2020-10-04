@@ -31,7 +31,13 @@ export default class TruckMenuComponent extends Component<{ Truck: Vehicle; isSe
 						</button>
 						<button
 							type="button"
-							class="btn btn-dark without-padding"
+							class={
+								this.props.isSettingPatrol ? (
+									'btn btn-light without-padding'
+								) : (
+									'btn btn-dark without-padding'
+								)
+							}
 							onClick={(e: any) => this.SendContext(new PatrolMenuItem())}
 						>
 							<div class="white-background">{this.props.isSettingPatrol ? 'ON' : 'OFF'}</div>

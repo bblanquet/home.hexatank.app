@@ -17,6 +17,7 @@ import { IRecordService } from '../../Services/Record/IRecordService';
 import { ICompareService } from '../../Services/Compare/ICompareService';
 import { Factory, FactoryKey } from '../../Factory';
 import Redirect from '../Redirect/RedirectComponent';
+import Icon from '../Common/Icon/IconComponent';
 
 export default class RecordComponent extends Component<any, { Records: RecordObject[] }> {
 	private _appService: IAppService;
@@ -115,7 +116,7 @@ export default class RecordComponent extends Component<any, { Records: RecordObj
 								<div class="container-center-horizontal">
 									<div class="small-right-margin">{data.Title} </div>
 									<SmBlackButtonComponent callBack={() => this.Play(data)}>
-										{'Title'}
+										<Icon Value="fas fa-play-circle" />
 									</SmBlackButtonComponent>
 								</div>
 							</td>

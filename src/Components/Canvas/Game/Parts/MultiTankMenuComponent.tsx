@@ -28,18 +28,17 @@ export default class MultiTankMenuComponent extends Component<{ item: UnitGroup 
 					<div class="btn-group-vertical max-width">
 						<button
 							type="button"
-							class="btn btn-dark without-padding"
+							class={
+								!this.props.item.IsListeningOrder ? (
+									'btn btn-dark without-padding'
+								) : (
+									'btn btn-light without-padding'
+								)
+							}
 							onClick={(e: any) => this.SendContext(new MultiOrderMenuItem())}
 						>
-							<div
-								class={
-									this.props.item.IsListeningOrder ? (
-										'fill-active-order max-width standard-space'
-									) : (
-										'fill-order max-width standard-space'
-									)
-								}
-							/>
+							<div class="white-background">{this.props.item.IsListeningOrder ? 'ON' : 'OFF'}</div>
+							<div class="fill-active-order max-width standard-space" />
 						</button>
 						<button
 							type="button"

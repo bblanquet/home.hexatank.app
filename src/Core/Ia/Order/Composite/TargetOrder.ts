@@ -1,3 +1,4 @@
+import { ZKind } from '../../../Items/ZKind';
 import { Archive } from '../../../Framework/ResourceArchiver';
 import { AliveItem } from '../../../Items/AliveItem';
 import { BasicItem } from '../../../Items/BasicItem';
@@ -66,7 +67,7 @@ export class TargetOrder extends Order {
 	}
 
 	private ShowUi() {
-		this._targetUi = new BasicItem(this._target.GetBoundingBox(), Archive.direction.target, 4);
+		this._targetUi = new BasicItem(this._target.GetBoundingBox(), Archive.direction.target, ZKind.Sky);
 		this._targetUi.SetVisible(this._v.IsSelected.bind(this._v));
 		this._targetUi.SetAlive(
 			() => this._v.IsAlive() && this._target.IsAlive() && this._v.GetMainTarget() === this._target

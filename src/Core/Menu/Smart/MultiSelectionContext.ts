@@ -1,3 +1,4 @@
+import { ZKind } from './../../Items/ZKind';
 import { ILayerService } from './../../../Services/Layer/ILayerService';
 import { IUpdateService } from '../../../Services/Update/IUpdateService';
 import { InteractionKind } from '../../Interaction/IInteractionContext';
@@ -87,7 +88,11 @@ export class MultiSelectionContext implements IInteractionContext {
 			const cell = <Cell>item;
 			if (this._cells.Get(cell.GetCoordinate()) === null) {
 				this._cells.Add(cell);
-				const displayPath = new BasicItem(cell.GetBoundingBox(), Archive.menu.smartMenu.multiCellSelection, 5);
+				const displayPath = new BasicItem(
+					cell.GetBoundingBox(),
+					Archive.menu.smartMenu.multiCellSelection,
+					ZKind.AboveSky
+				);
 				displayPath.SetAlive(() => true);
 				displayPath.SetVisible(() => true);
 				this._enlightCells.push(displayPath);

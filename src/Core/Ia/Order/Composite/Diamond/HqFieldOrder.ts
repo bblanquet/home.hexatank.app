@@ -1,7 +1,7 @@
-import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
-import { SmartSimpleOrder } from './SmartSimpleOrder';
-import { Cell } from '../../../Items/Cell/Cell';
-import { Vehicle } from '../../../Items/Unit/Vehicle';
+import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
+import { SmartSimpleOrder } from '../SmartSimpleOrder';
+import { Cell } from '../../../../Items/Cell/Cell';
+import { Vehicle } from '../../../../Items/Unit/Vehicle';
 
 export class HqFieldOrder extends SmartSimpleOrder {
 	constructor(public Hq: Headquarter, private _vehicule: Vehicle) {

@@ -1,5 +1,5 @@
 import { TargetMenuItem } from '../../Menu/Buttons/TargetMenuItem';
-import { TargetOrder } from '../../Ia/Order/CompositeOrder/TargetOrder';
+import { TargetOrder } from '../../Ia/Order/Composite/TargetOrder';
 import { Item } from '../../Items/Item';
 import { Tank } from '../../Items/Unit/Tank';
 import { Cell } from '../../Items/Cell/Cell';

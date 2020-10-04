@@ -9,6 +9,7 @@ import { Vehicle } from '../../Unit/Vehicle';
 import { AliveItem } from '../../AliveItem';
 import { Crater } from '../../Environment/Crater';
 import { InteractionContext } from '../../../Interaction/InteractionContext';
+import { ZKind } from '../../ZKind';
 
 export class Diamond extends AliveField {
 	BoundingBox: BoundingBox;
@@ -19,7 +20,7 @@ export class Diamond extends AliveField {
 		super(cell);
 		this.TotalLife = 150;
 		this.Life = 150;
-		this.Z = 1;
+		this.Z = ZKind.Field;
 		this.GetCell().SetField(this);
 		this.BoundingBox = this.GetCell().GetBoundingBox();
 		this.GenerateSprite(Archive.nature.diamond);

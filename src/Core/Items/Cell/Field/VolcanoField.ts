@@ -5,6 +5,7 @@ import { Archive } from '../../../Framework/ResourceArchiver';
 import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../../Interaction/InteractionContext';
 import { Vehicle } from '../../Unit/Vehicle';
+import { ZKind } from '../../ZKind';
 
 export class VolcanoField extends Field {
 	private _isIncreasingOpacity: boolean = false;
@@ -12,7 +13,7 @@ export class VolcanoField extends Field {
 	constructor(ceil: Cell) {
 		super(ceil);
 		this.GetCell().SetField(this);
-		this.Z = 1;
+		this.Z = ZKind.Field;
 		this.GenerateSprite(Archive.nature.volcano);
 		this.GenerateSprite(Archive.nature.volcanaoAnimation);
 

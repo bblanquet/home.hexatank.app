@@ -1,4 +1,3 @@
-import { OrderState } from './../OrderState';
 import { SmartPreciseOrder } from './SmartPreciseOrder';
 import { Order } from './../Order';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
@@ -17,18 +16,22 @@ export class MoneyOrder extends Order {
 		return OrderKind.Money;
 	}
 	public GetCells(): Cell[] {
-		return this._currentOrder.GetCells();
+		if (this._currentOrder) {
+			return this._currentOrder.GetCells();
+		} else {
+			return [];
+		}
 	}
 
 	Do(): void {
 		if (this._currentOrder) {
 			if (this._currentOrder.IsDone()) {
-				this.TryToGetMoneyField();
+				this.TryToFindMoneyField();
 			} else {
 				this._currentOrder.Do();
 			}
 		} else {
-			this.TryToGetMoneyField();
+			this.TryToFindMoneyField();
 		}
 	}
 
@@ -57,13 +60,35 @@ export class MoneyOrder extends Order {
 			)[0];
 	}
 
-	public TryToGetMoneyField(): void {
+	public TryToFindMoneyField(): void {
 		for (let i = 1; i < 6; i++) {
 			if (this.HasFullMoneyCell(i)) {
 				const cell = this.GetFirstFullMoneyCell(i);
-				this._currentOrder = new SmartPreciseOrder(cell, this._v);
+				this.SetCurrentOrder(new SmartPreciseOrder(cell, this._v));
 				return;
 			}
 		}
+	}
+
+	private SetCurrentOrder(order: SmartPreciseOrder): void {
+		this.Clear();
+		this._currentOrder = order;
+		this._currentOrder.OnPathCreated.On(this.InvokePathCreated.bind(this));
+		this._currentOrder.OnNextCell.On(this.InvokeNextCell.bind(this));
+	}
+
+	private Clear() {
+		if (this._currentOrder) {
+			this._currentOrder.OnPathCreated.Off(this.InvokePathCreated.bind(this));
+			this._currentOrder.OnNextCell.Off(this.InvokeNextCell.bind(this));
+		}
+	}
+
+	private InvokePathCreated(src: any, cells: Cell[]): void {
+		this.OnPathCreated.Invoke(this, cells);
+	}
+
+	private InvokeNextCell(src: any, cell: Cell): void {
+		this.OnNextCell.Invoke(this, cell);
 	}
 }

@@ -1,3 +1,4 @@
+import { ZKind } from './../ZKind';
 import { Item } from '../Item';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../Interaction/InteractionContext';
@@ -10,7 +11,7 @@ export class Light extends Item {
 
 	constructor(boundingBox: BoundingBox) {
 		super();
-		this.Z = 3;
+		this.Z = ZKind.AboveCell;
 		this._boundingBox = boundingBox;
 		this._lightIndex = 0;
 		Archive.lights.forEach((light) => {

@@ -1,3 +1,4 @@
+import { ZKind } from './../ZKind';
 import { Item } from '../Item';
 import { Tank } from './Tank';
 import { Missile } from './Missile';
@@ -38,7 +39,7 @@ export class Turrel extends Item implements IRotatable {
 		this._skin = hqSkin;
 		this.RotatingDuration = GameSettings.TurrelRotatingDuration;
 		this.CurrentRadius = 0;
-		this.Z = 3;
+		this.Z = ZKind.AboveCell;
 		this.Base = item;
 		this.Radius = 0;
 		this._coolingDownTimer = new TickTimer(100);

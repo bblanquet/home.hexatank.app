@@ -1,3 +1,4 @@
+import { ZKind } from './../ZKind';
 import { Item } from '../Item';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { TickTimer } from '../../Utils/Timer/TickTimer';
@@ -14,7 +15,7 @@ export class Dust extends Item {
 		super();
 		this.currentDust = -1;
 		this.currentAlpha = 0.5;
-		this.Z = 1;
+		this.Z = ZKind.Field;
 		this._timer = new TickTimer(15);
 
 		this.BoundingBox = boundingBox;

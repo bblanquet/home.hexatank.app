@@ -6,6 +6,7 @@ import { Vehicle } from '../../Unit/Vehicle';
 import { AliveItem } from '../../AliveItem';
 import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../../Interaction/InteractionContext';
+import { ZKind } from '../../ZKind';
 
 export class BlockingField extends AliveField {
 	constructor(ceil: Cell, sprite: string) {
@@ -13,7 +14,7 @@ export class BlockingField extends AliveField {
 		this.TotalLife = GameSettings.GeneralLife;
 		this.Life = GameSettings.GeneralLife;
 		this.GetCell().SetField(this);
-		this.Z = 1;
+		this.Z = ZKind.Field;
 		this.GenerateSprite(sprite);
 		this.InitPosition(ceil.GetBoundingBox());
 		this.GetCurrentSprites().Values().forEach((obj) => {

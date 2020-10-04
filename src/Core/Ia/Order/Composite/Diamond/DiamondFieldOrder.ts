@@ -1,7 +1,7 @@
-import { SmartSimpleOrder } from './SmartSimpleOrder';
-import { Cell } from '../../../Items/Cell/Cell';
-import { Diamond } from '../../../Items/Cell/Field/Diamond';
-import { Vehicle } from '../../../Items/Unit/Vehicle';
+import { SmartSimpleOrder } from '../SmartSimpleOrder';
+import { Cell } from '../../../../Items/Cell/Cell';
+import { Diamond } from '../../../../Items/Cell/Field/Diamond';
+import { Vehicle } from '../../../../Items/Unit/Vehicle';
 
 export class DiamondFieldOrder extends SmartSimpleOrder {
 	constructor(public Diamond: Diamond, vehicle: Vehicle) {
@@ -9,7 +9,7 @@ export class DiamondFieldOrder extends SmartSimpleOrder {
 	}
 
 	protected GetClosestCell(): Cell {
-		let cells = this.GetDiaondCells(this.Diamond);
+		let cells = this.GetDiamondCells(this.Diamond);
 		if (0 < cells.length) {
 			let cell = this.CellFinder.GetClosestCell(cells, this.Vehicle);
 			this.FinalOriginalGoal = cell;
@@ -19,7 +19,7 @@ export class DiamondFieldOrder extends SmartSimpleOrder {
 		}
 	}
 
-	private GetDiaondCells(hq: Diamond): Array<Cell> {
+	private GetDiamondCells(hq: Diamond): Array<Cell> {
 		return hq.GetCell().GetNeighbourhood().map((c) => <Cell>c);
 	}
 }

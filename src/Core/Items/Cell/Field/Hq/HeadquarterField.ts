@@ -1,3 +1,4 @@
+import { ZKind } from './../../../ZKind';
 import { InteractionContext } from '../../../../Interaction/InteractionContext';
 import { Cell } from '../../Cell';
 import { TickTimer } from '../../../../Utils/Timer/TickTimer';
@@ -16,7 +17,7 @@ export class HeadQuarterField extends Field {
 	constructor(private _hq: Headquarter, ceil: Cell, sprite: string) {
 		super(ceil);
 		this.GetCell().SetField(this);
-		this.Z = 1;
+		this.Z = ZKind.Field;
 		this._timer = new TickTimer(3);
 		this.GenerateSprite(sprite);
 		this.InitPosition(ceil.GetBoundingBox());

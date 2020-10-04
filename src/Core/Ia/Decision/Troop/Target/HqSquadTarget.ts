@@ -2,7 +2,7 @@ import { ISquadTarget } from './ISquadTarget';
 import { Cell } from '../../../../Items/Cell/Cell';
 import { AliveItem } from '../../../../Items/AliveItem';
 import { Tank } from '../../../../Items/Unit/Tank';
-import { SmartSimpleOrder } from '../../../Order/CompositeOrder/SmartSimpleOrder';
+import { SmartSimpleOrder } from '../../../Order/Composite/SmartSimpleOrder';
 
 export class AliveSquadTarget implements ISquadTarget {
 	constructor(private _item: AliveItem) {

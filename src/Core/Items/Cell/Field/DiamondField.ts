@@ -1,3 +1,4 @@
+import { ZKind } from './../../ZKind';
 import { Field } from './Field';
 import { TickTimer } from '../../../Utils/Timer/TickTimer';
 import { LiteEvent } from '../../../Utils/Events/LiteEvent';
@@ -17,7 +18,7 @@ export class DiamondField extends Field {
 	constructor(cell: Cell) {
 		super(cell);
 		this.GetCell().SetField(this);
-		this.Z = 0;
+		this.Z = ZKind.Field;
 		this._timer = new TickTimer(3);
 		this.GenerateSprite(Archive.diamondCell);
 		this.InitPosition(cell.GetBoundingBox());

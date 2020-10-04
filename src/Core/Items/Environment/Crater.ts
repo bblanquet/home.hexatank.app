@@ -1,3 +1,4 @@
+import { ZKind } from './../ZKind';
 import { Item } from '../Item';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../Interaction/InteractionContext';
@@ -11,7 +12,7 @@ export class Crater extends Item {
 
 	constructor(boundingbox: BoundingBox) {
 		super();
-		this.Z = 0;
+		this.Z = ZKind.Field;
 		this.BoundingBox = boundingbox;
 		this._timer = new TickTimer(120);
 

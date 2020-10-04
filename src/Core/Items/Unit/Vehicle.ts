@@ -1,3 +1,4 @@
+import { ZKind } from './../ZKind';
 import { UiOrder } from './../../Ia/Order/UiOrder';
 import { IOrder } from './../../Ia/Order/IOrder';
 import { Cell } from './../Cell/Cell';
@@ -81,7 +82,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this.GenerateSprite(Archive.selectionUnit);
 		this.SetProperties([ Archive.selectionUnit ], (sprite) => (sprite.alpha = 0));
 
-		this.Z = 2;
+		this.Z = ZKind.Cell;
 		this.Size = GameSettings.Size;
 		this.BoundingBox.Width = CellProperties.GetWidth(this.Size);
 		this.BoundingBox.Height = CellProperties.GetHeight(this.Size);
@@ -346,7 +347,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
 		if (!this.IsAlive() || !this.Hq.IsAlive()) {
 			if (!this.Hq.IsAlive()) {
-				new Explosion(this.GetBoundingBox(), Archive.explosions, 5, true, 20);
+				new Explosion(this.GetBoundingBox(), Archive.explosions, ZKind.AboveSky, true, 20);
 			}
 			this.Destroy();
 			new Crater(this.BoundingBox);

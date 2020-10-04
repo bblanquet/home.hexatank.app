@@ -1,3 +1,4 @@
+import { ZKind } from './../../../ZKind';
 import { BatteryField } from './BatteryField';
 import { TypeTranslator } from '../TypeTranslator';
 import { BasicRangeAnimator } from '../../../Animator/BasicRangeAnimator';
@@ -55,7 +56,7 @@ export class ReactorField extends Field implements ISelectable {
 		public IsPacific: boolean = false
 	) {
 		super(cell);
-		this.Z = 1;
+		this.Z = ZKind.Field;
 		this.Hq.AddReactor(this);
 		this.Battery = new Battery(this.Hq, this);
 		this.GetCell().SetField(this);
@@ -185,7 +186,7 @@ export class ReactorField extends Field implements ISelectable {
 				if (TypeTranslator.IsBonusField(c.GetField())) {
 					c.DestroyField();
 					if (c.IsVisible()) {
-						new Explosion(c.GetBoundingBox(), Archive.constructionEffects, 5, false, 5);
+						new Explosion(c.GetBoundingBox(), Archive.constructionEffects, ZKind.AboveSky, false, 5);
 					}
 				}
 			});
@@ -279,7 +280,7 @@ export class ReactorField extends Field implements ISelectable {
 	private CreateArea() {
 		this.GetCell().GetSpecificRange(this._range).forEach((cell) => {
 			const b = BoundingBox.CreateFromBox((<Cell>cell).GetBoundingBox());
-			const area = new BasicItem(b, this.Hq.GetSkin().GetArea(), 3);
+			const area = new BasicItem(b, this.Hq.GetSkin().GetArea(), ZKind.AboveCell);
 			area.SetVisible(() => true);
 			area.SetAlive(() => true);
 

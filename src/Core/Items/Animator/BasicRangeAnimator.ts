@@ -1,3 +1,4 @@
+import { ZKind } from './../ZKind';
 import { FadeInOutAnimation } from './FadeInOutAnimation';
 import { BoundingBox } from './../../Utils/Geometry/BoundingBox';
 import { BasicItem } from './../BasicItem';
@@ -49,7 +50,11 @@ export class BasicRangeAnimator implements IAnimator {
 				newCells = newCells.concat(this._origin.GetSpecificRange(range).map((c) => c as Cell));
 			}
 			newCells.forEach((c) => {
-				let item = new BasicItem(BoundingBox.CreateFromBox(c.GetBoundingBox()), Archive.selectionPower, 2);
+				let item = new BasicItem(
+					BoundingBox.CreateFromBox(c.GetBoundingBox()),
+					Archive.selectionPower,
+					ZKind.Cell
+				);
 				let animator = new FadeInOutAnimation(item, Archive.selectionPower, 0, 1, 0.02);
 				item.SetAnimator(animator);
 				item.SetAlive(() => true);

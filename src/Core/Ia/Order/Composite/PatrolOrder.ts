@@ -1,11 +1,11 @@
-import { OrderState } from './../OrderState';
+import { OrderState } from '../OrderState';
 import { Cell } from '../../../Items/Cell/Cell';
-import { SimpleOrder } from './../SimpleOrder';
-import { Order } from './../Order';
+import { SimpleOrder } from '../SimpleOrder';
+import { Order } from '../Order';
 import { BasicItem } from '../../../Items/BasicItem';
 import { Archive } from '../../../Framework/ResourceArchiver';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
-import { OrderKind } from './../OrderKind';
+import { OrderKind } from '../OrderKind';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class PatrolOrder extends Order {

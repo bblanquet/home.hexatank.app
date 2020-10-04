@@ -11,6 +11,7 @@ import { BouncingScaleAnimator } from '../../../Animator/BouncingScaleAnimator';
 import { ReactorField } from './ReactorField';
 import { AliveItem } from '../../../AliveItem';
 import { isNullOrUndefined } from '../../../../Utils/ToolBox';
+import { ZKind } from '../../../ZKind';
 
 export class ReactorAppearance extends Item {
 	private _isIncreasingOpacity: boolean = false;
@@ -22,7 +23,7 @@ export class ReactorAppearance extends Item {
 
 	constructor(public Reactor: ReactorField, private _light: string) {
 		super();
-		this.Z = 1;
+		this.Z = ZKind.Field;
 
 		this.Reactor.OnPowerChanged.On((e: any, isFadeIn: boolean) => {
 			this._lightAnimator = isFadeIn

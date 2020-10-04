@@ -1,3 +1,4 @@
+import { ZKind } from './../ZKind';
 import { Item } from '../Item';
 import { Explosion } from './Explosion';
 import { AliveItem } from '../AliveItem';
@@ -18,7 +19,7 @@ export class Missile extends Item {
 	constructor(boundingbox: BoundingBox, target: AliveItem, private _damage: number) {
 		super();
 		this.Target = target;
-		this.Z = 2;
+		this.Z = ZKind.Field;
 		this.BoundingBox = boundingbox;
 		this.IsReached = false;
 		var radius = this.GetAngle();

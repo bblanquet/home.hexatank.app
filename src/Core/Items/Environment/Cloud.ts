@@ -1,3 +1,4 @@
+import { ZKind } from './../ZKind';
 import { GameSettings } from '../../Framework/GameSettings';
 import { Item } from '../Item';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
@@ -18,7 +19,7 @@ export class Cloud extends Item {
 	constructor(private _min: number, private _max: number, private _y: number, private _sprite: string) {
 		super();
 		this._timer = new TickTimer(3);
-		this.Z = 4;
+		this.Z = ZKind.Sky;
 		this.GenerateSprite(this._sprite);
 		this._boundingBox = new BoundingBox();
 		this._boundingBox.X = this._min;

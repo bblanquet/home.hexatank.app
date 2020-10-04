@@ -1,3 +1,4 @@
+import { ZKind } from './../ZKind';
 import { ILiteEvent } from './../../Utils/Events/ILiteEvent';
 import { BouncingScaleDownAnimator } from './../Animator/BouncingScaleDownAnimator';
 import { IAnimator } from './../Animator/IAnimator';
@@ -43,7 +44,7 @@ export class Cell extends Item implements ICell, ISelectable {
 
 	constructor(properties: CellProperties, private _cells: CellContext<Cell>, private _gameContext: GameContext) {
 		super();
-		this.Z = 2;
+		this.Z = ZKind.Cell;
 		this._display = [];
 		this.Properties = properties;
 		new BasicField(this);

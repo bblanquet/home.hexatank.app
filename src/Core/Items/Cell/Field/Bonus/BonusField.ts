@@ -10,6 +10,7 @@ import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../../../Interaction/InteractionContext';
 import { IActiveContainer } from '../IActiveContainer';
 import { AliveItem } from '../../../AliveItem';
+import { ZKind } from '../../../ZKind';
 
 export abstract class BonusField extends Field implements IActiveContainer {
 	private _animator: IAnimator;
@@ -19,7 +20,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 	constructor(cell: Cell, private _bonus: string[], protected hq: Headquarter, override: boolean = true) {
 		super(cell);
 		this.GetCell().SetField(this);
-		this.Z = 1;
+		this.Z = ZKind.Field;
 		this.GenerateSprite(Archive.bonus.coverBottom);
 		this._bonus.forEach((b) => {
 			this.GenerateSprite(b);

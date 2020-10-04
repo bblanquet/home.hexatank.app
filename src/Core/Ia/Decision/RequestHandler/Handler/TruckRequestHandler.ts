@@ -1,13 +1,13 @@
-import { MoneyOrder } from './../../../Order/CompositeOrder/MoneyOrder';
+import { MoneyOrder } from '../../../Order/Composite/MoneyOrder';
 import { IKingdomDecisionMaker } from './../../IKingdomDecisionMaker';
 import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
-import { TruckPatrolOrder } from '../../../Order/CompositeOrder/TruckPatrolOrder';
+import { DiamondTruckOrder } from '../../../Order/Composite/Diamond/DiamondTruckOrder';
 import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { Vehicle } from '../../../../Items/Unit/Vehicle';
 import { Truck } from '../../../../Items/Unit/Truck';
-import { HqFieldOrder } from '../../../Order/CompositeOrder/HqFieldOrder';
-import { DiamondFieldOrder } from '../../../Order/CompositeOrder/DiamondFieldOrder';
+import { HqFieldOrder } from '../../../Order/Composite/Diamond/HqFieldOrder';
+import { DiamondFieldOrder } from '../../../Order/Composite/Diamond/DiamondFieldOrder';
 import { RequestType } from '../../Utils/RequestType';
 
 export class TruckRequestHandler implements ISimpleRequestHandler {
@@ -24,7 +24,7 @@ export class TruckRequestHandler implements ISimpleRequestHandler {
 				const truck = vehicle as Truck;
 				if (this._kingdom.GetDiamond().IsAlive()) {
 					truck.SetOrder(
-						new TruckPatrolOrder(
+						new DiamondTruckOrder(
 							truck,
 							new HqFieldOrder(this._hq, truck),
 							new DiamondFieldOrder(this._kingdom.GetDiamond(), truck)

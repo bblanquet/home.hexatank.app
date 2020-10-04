@@ -1,3 +1,4 @@
+import { ZKind } from './../ZKind';
 import { LiteEvent } from './../../Utils/Events/LiteEvent';
 import { ICamouflageAble } from './ICamouflageAble';
 import { CamouflageHandler } from './CamouflageHandler';
@@ -224,7 +225,7 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 		this.Camouflage = new BasicItem(
 			BoundingBox.CreateFromBox(this.GetBoundingBox()),
 			new CamouflageHandler().GetCamouflage(),
-			5
+			ZKind.AboveSky
 		);
 		this.Camouflage.SetVisible(() => this.IsAlive() && this.HasCamouflage);
 		this.Camouflage.SetAlive(() => this.IsAlive() && this.HasCamouflage);
@@ -232,7 +233,7 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 		const explosion = new Explosion(
 			BoundingBox.CreateFromBox(this.GetBoundingBox()),
 			Archive.constructionEffects,
-			5,
+			ZKind.AboveSky,
 			false,
 			5
 		);

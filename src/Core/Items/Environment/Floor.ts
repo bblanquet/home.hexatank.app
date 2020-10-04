@@ -1,3 +1,4 @@
+import { ZKind } from './../ZKind';
 import { BasicItem } from './../BasicItem';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Archive } from '../../Framework/ResourceArchiver';
@@ -9,8 +10,8 @@ export class Floor extends BasicItem {
 	private _idleTimer: TickTimer = new TickTimer(4);
 	private _isIncreasing: boolean = true;
 
-	constructor(boundingBox: BoundingBox, sprite: string, z: number = 0) {
-		super(boundingBox, sprite, z);
+	constructor(boundingBox: BoundingBox, sprite: string) {
+		super(boundingBox, sprite, ZKind.Ground);
 		this._grassIndex = 0;
 		Archive.nature.grass.forEach((g) => {
 			this.GenerateSprite(g, (e) => {

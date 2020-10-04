@@ -12,6 +12,7 @@ import { IInteractionContext } from '../../../../Interaction/IInteractionContext
 import { BouncingScaleAnimator } from '../../../Animator/BouncingScaleAnimator';
 import { CellState } from '../../CellState';
 import { Headquarter } from '../Hq/Headquarter';
+import { ZKind } from '../../../ZKind';
 
 export abstract class AliveBonusField extends AliveField implements IActiveContainer {
 	private _animator: IAnimator;
@@ -21,7 +22,7 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 	constructor(cell: Cell, private _bonus: string[], protected Hq: Headquarter) {
 		super(cell);
 		this.GetCell().SetField(this);
-		this.Z = 1;
+		this.Z = ZKind.Field;
 		this.GenerateSprite(Archive.bonus.coverBottom);
 		this._bonus.forEach((b) => {
 			this.GenerateSprite(b);

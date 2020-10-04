@@ -1,5 +1,5 @@
 import { PatrolMenuItem } from '../../Menu/Buttons/PatrolMenuItem';
-import { PatrolOrder } from '../../Ia/Order/CompositeOrder/PatrolOrder';
+import { PatrolOrder } from '../../Ia/Order/Composite/PatrolOrder';
 import { BasicItem } from '../../Items/BasicItem';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { Item } from '../../Items/Item';
@@ -7,6 +7,7 @@ import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Cell } from '../../Items/Cell/Cell';
 import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
+import { ZKind } from '../../Items/ZKind';
 
 export class PatrolCombination extends AbstractSingleCombination {
 	private _indicators: Array<BasicItem> = [];
@@ -42,7 +43,8 @@ export class PatrolCombination extends AbstractSingleCombination {
 			if (context.Items[context.Items.length - 1] instanceof Cell) {
 				const element = new BasicItem(
 					context.Items[context.Items.length - 1].GetBoundingBox(),
-					Archive.direction.patrol
+					Archive.direction.patrol,
+					ZKind.Cell
 				);
 				element.SetVisible(() => true);
 				element.SetAlive(() => true);

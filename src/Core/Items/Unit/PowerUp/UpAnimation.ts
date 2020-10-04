@@ -1,3 +1,4 @@
+import { ZKind } from './../../ZKind';
 import { RotationAnimator } from '../../Animator/RotationAnimator';
 import { IAnimator } from '../../Animator/IAnimator';
 import { TickTimer } from '../../../Utils/Timer/TickTimer';
@@ -16,7 +17,7 @@ export class UpAnimation extends Item {
 
 	constructor(private _vehicle: Vehicle, private _animImages: string[], private _images: string[]) {
 		super();
-		this.Z = 3;
+		this.Z = ZKind.AboveCell;
 		this._animationTimer = new TickTimer(5);
 		this._images.forEach((p) => {
 			this.GenerateSprite(p);

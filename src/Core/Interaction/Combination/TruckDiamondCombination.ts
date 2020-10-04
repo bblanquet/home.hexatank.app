@@ -1,10 +1,10 @@
-import { DiamondFieldOrder } from '../../Ia/Order/CompositeOrder/DiamondFieldOrder';
-import { TruckPatrolOrder } from '../../Ia/Order/CompositeOrder/TruckPatrolOrder';
+import { DiamondFieldOrder } from '../../Ia/Order/Composite/Diamond/DiamondFieldOrder';
+import { DiamondTruckOrder } from '../../Ia/Order/Composite/Diamond/DiamondTruckOrder';
 import { Item } from '../../Items/Item';
 import { Truck } from '../../Items/Unit/Truck';
 import { Cell } from '../../Items/Cell/Cell';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
-import { HqFieldOrder } from '../../Ia/Order/CompositeOrder/HqFieldOrder';
+import { HqFieldOrder } from '../../Ia/Order/Composite/Diamond/HqFieldOrder';
 import { ISelectable } from '../../ISelectable';
 import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
@@ -23,7 +23,7 @@ export class TruckDiamondCombination extends AbstractSingleCombination {
 		if (this.IsMatching(context)) {
 			let truck = <Truck>context.Items[0];
 			let diamond = <Diamond>(context.Items[1] as Cell).GetField();
-			let order = new TruckPatrolOrder(
+			let order = new DiamondTruckOrder(
 				truck,
 				new HqFieldOrder(truck.Hq, truck),
 				new DiamondFieldOrder(diamond, truck)

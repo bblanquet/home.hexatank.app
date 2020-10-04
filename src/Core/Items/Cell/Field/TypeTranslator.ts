@@ -1,9 +1,8 @@
-import { TargetOrder } from './../../../Ia/Order/CompositeOrder/TargetOrder';
-import { PatrolOrder } from './../../../Ia/Order/CompositeOrder/PatrolOrder';
-import { TruckPatrolOrder } from '../../../Ia/Order/CompositeOrder/TruckPatrolOrder';
-import { SmartPreciseOrder } from './../../../Ia/Order/CompositeOrder/SmartPreciseOrder';
-import { MoneyOrder } from './../../../Ia/Order/CompositeOrder/MoneyOrder';
-import { PersistentOrder } from '../../../Ia/Order/CompositeOrder/PersistentOrder';
+import { TargetOrder } from '../../../Ia/Order/Composite/TargetOrder';
+import { PatrolOrder } from '../../../Ia/Order/Composite/PatrolOrder';
+import { DiamondTruckOrder } from '../../../Ia/Order/Composite/Diamond/DiamondTruckOrder';
+import { SmartPreciseOrder } from '../../../Ia/Order/Composite/SmartPreciseOrder';
+import { MoneyOrder } from '../../../Ia/Order/Composite/MoneyOrder';
 import { SimpleOrder } from '../../../Ia/Order/SimpleOrder';
 import { Headquarter } from './Hq/Headquarter';
 import { IField } from './IField';
@@ -17,10 +16,10 @@ import { SpeedFieldMenuItem } from '../../../Menu/Buttons/SpeedFieldMenuItem';
 import { OrderKind } from '../../../Ia/Order/OrderKind';
 import { Vehicle } from '../../Unit/Vehicle';
 import { Cell } from '../Cell';
-import { SmartSimpleOrder } from '../../../Ia/Order/CompositeOrder/SmartSimpleOrder';
+import { SmartSimpleOrder } from '../../../Ia/Order/Composite/SmartSimpleOrder';
 import { Truck } from '../../Unit/Truck';
-import { HqFieldOrder } from '../../../Ia/Order/CompositeOrder/HqFieldOrder';
-import { DiamondFieldOrder } from '../../../Ia/Order/CompositeOrder/DiamondFieldOrder';
+import { HqFieldOrder } from '../../../Ia/Order/Composite/Diamond/HqFieldOrder';
+import { DiamondFieldOrder } from '../../../Ia/Order/Composite/Diamond/DiamondFieldOrder';
 import { Diamond } from './Diamond';
 import { Tank } from '../../Unit/Tank';
 
@@ -41,8 +40,6 @@ export class TypeTranslator {
 	public static SetOrder(v: Vehicle, dest: Cell[], kind: OrderKind): void {
 		if (kind === OrderKind.Simple) {
 			v.SetOrder(new SimpleOrder(dest[0], v));
-		} else if (kind === OrderKind.Persistent) {
-			v.SetOrder(new PersistentOrder(dest[0], v));
 		} else if (kind === OrderKind.Smart) {
 			v.SetOrder(new SmartPreciseOrder(dest[0], v));
 		} else if (kind === OrderKind.SimpleSmart) {
@@ -53,7 +50,7 @@ export class TypeTranslator {
 			v.SetOrder(new PatrolOrder(dest, v));
 		} else if (kind === OrderKind.Truck) {
 			v.SetOrder(
-				new TruckPatrolOrder(
+				new DiamondTruckOrder(
 					v as Truck,
 					new HqFieldOrder(dest[0].GetField() as Headquarter, v),
 					new DiamondFieldOrder(dest[1].GetField() as Diamond, v)

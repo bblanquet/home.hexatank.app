@@ -45,21 +45,23 @@ export class BasicItem extends Item {
 	}
 
 	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
-		if (this._animator && !this._animator.IsDone) {
-			this._animator.Update(viewX, viewY);
-		} else {
-			const visible = this._isVisible();
-			this.SetProperty(this._spriteName, (e) => (e.alpha = visible ? 1 : 0));
-		}
+		if (this.IsUpdatable) {
+			super.Update(viewX, viewY);
+			if (this._animator && !this._animator.IsDone) {
+				this._animator.Update(viewX, viewY);
+			} else {
+				const visible = this._isVisible();
+				this.SetProperty(this._spriteName, (e) => (e.alpha = visible ? 1 : 0));
+			}
 
-		if (!this._isAlive()) {
-			this.Destroy();
+			if (!this._isAlive()) {
+				this.Destroy();
+			}
 		}
 	}
 
 	public Destroy(): void {
-		super.Destroy();
 		this.IsUpdatable = false;
+		super.Destroy();
 	}
 }

@@ -1,4 +1,4 @@
-import { MoneyOrder } from './../../Ia/Order/CompositeOrder/MoneyOrder';
+import { MoneyOrder } from '../../Ia/Order/Composite/MoneyOrder';
 import { Truck } from './../../Items/Unit/Truck';
 import { SearchMoneyMenuItem } from './../../Menu/Buttons/SearchMoneyMenuItem';
 import { CombinationContext } from './CombinationContext';

@@ -1,6 +1,6 @@
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
-import { MoneyOrder } from './../Order/CompositeOrder/MoneyOrder';
+import { MoneyOrder } from '../Order/Composite/MoneyOrder';
 import { Diamond } from './../../Items/Cell/Field/Diamond';
 import { IExpansionMaker } from './ExpansionMaker/IExpansionMaker';
 import { IKingdomDecisionMaker } from './IKingdomDecisionMaker';

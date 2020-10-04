@@ -6,12 +6,13 @@ import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../../../Interaction/InteractionContext';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { GameSettings } from '../../../../Framework/GameSettings';
+import { ZKind } from '../../../ZKind';
 
 export class SlowField extends Field {
 	constructor(ceil: Cell, private _light: string) {
 		super(ceil);
 		this.GetCell().SetField(this);
-		this.Z = 1;
+		this.Z = ZKind.Field;
 
 		this.GenerateSprite(Archive.bonus.slow);
 		this.InitPosition(ceil.GetBoundingBox());

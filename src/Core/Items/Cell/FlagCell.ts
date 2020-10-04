@@ -1,3 +1,4 @@
+import { ZKind } from './../ZKind';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { Cell } from './Cell';
@@ -10,7 +11,7 @@ export class FlagCell extends Item {
 
 	constructor(cell: Cell) {
 		super();
-		this.Z = 2;
+		this.Z = ZKind.Cell;
 		this.GenerateSprite(Archive.flagCell, (e) => {
 			e.anchor.set(0.5);
 			e.alpha = 0;

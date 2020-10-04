@@ -1,3 +1,4 @@
+import { ZKind } from './../../../ZKind';
 import { ITimer } from './../../../../Utils/Timer/ITimer';
 import { BatteryField } from '../Bonus/BatteryField';
 import { GameContext } from '../../../../Framework/GameContext';
@@ -54,7 +55,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	constructor(skin: ItemSkin, cell: Cell, public GameContext: GameContext) {
 		super();
 		this._skin = skin;
-		this.Z = 2;
+		this.Z = ZKind.Cell;
 		this._cell = cell;
 		this._cell.SetField(this);
 
@@ -152,7 +153,13 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		this.Fields.every((field) => {
 			if (!field.GetCell().IsBlocked()) {
 				if (field.GetCell().IsVisible()) {
-					new Explosion(field.GetCell().GetBoundingBox(), Archive.constructionEffects, 5, false, 5);
+					new Explosion(
+						field.GetCell().GetBoundingBox(),
+						Archive.constructionEffects,
+						ZKind.AboveSky,
+						false,
+						5
+					);
 				}
 				const tank = new Tank(this, this.GameContext);
 				tank.SetPosition(cell === null ? field.GetCell() : cell);

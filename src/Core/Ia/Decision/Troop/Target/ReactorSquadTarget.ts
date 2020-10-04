@@ -4,7 +4,7 @@ import { ISquadTarget } from './ISquadTarget';
 import { Cell } from '../../../../Items/Cell/Cell';
 import { BasicField } from '../../../../Items/Cell/Field/BasicField';
 import { Tank } from '../../../../Items/Unit/Tank';
-import { SmartSimpleOrder } from '../../../Order/CompositeOrder/SmartSimpleOrder';
+import { SmartSimpleOrder } from '../../../Order/Composite/SmartSimpleOrder';
 
 export class ReactorSquadTarget implements ISquadTarget {
 	constructor(private _cell: Cell, private _hqSquad: Headquarter) {}

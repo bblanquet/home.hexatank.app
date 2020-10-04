@@ -1165,6 +1165,66 @@ input[type="file"] {
 	background-image: url('{{}}components/redArmyLeaderMouth3.svg');
 }
 
+.fill-blueArmy-eyes {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	overflow: hidden;
+	background-size: contain;
+	background-position: bottom;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/blueArmyLeaderEyes.svg');
+}
+
+.fill-blueArmy-eyes-blink {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	overflow: hidden;
+	background-size: contain;
+	background-position: bottom;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/blueArmyLeaderBlink.svg');
+}
+
+.fill-blueArmy-mouth-1 {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	overflow: hidden;
+	background-size: contain;
+	background-position: bottom;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/blueArmyLeaderMouth1.svg');
+}
+
+.fill-blueArmy-mouth-2 {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	overflow: hidden;
+	background-size: contain;
+	background-position: bottom;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/blueArmyLeaderMouth2.svg');
+}
+
+.fill-blueArmy-mouth-3 {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	overflow: hidden;
+	background-size: contain;
+	background-position: bottom;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/blueArmyLeaderMouth3.svg');
+}
+
 .fill-red-building-1 {
 	width: 100px;
 	height: 100px;
@@ -1347,6 +1407,9 @@ body:after {
 		url('{{}}components/redArmyLeaderMouth3.svg') url('{{}}components/redArmyLeaderMouth2.svg')
 		url('{{}}components/redArmyLeaderMouth1.svg') url('{{}}components/redArmyLeaderBlink.svg')
 		url('{{}}components/redArmyLeaderEyes.svg') url('{{}}components/redArmyLeader.svg')
+		url('{{}}components/blueArmyLeaderMouth3.svg') url('{{}}components/blueArmyLeaderMouth2.svg')
+		url('{{}}components/blueArmyLeaderMouth1.svg') url('{{}}components/blueArmyLeaderBlink.svg')
+		url('{{}}components/blueArmyLeaderEyes.svg') url('{{}}components/blueArmyLeader.svg')
 		url('{{}}menu/tankButton.svg') url('{{}}menu/truckButton.svg') url('{{}}menu/flagMenu.svg')
 		url('{{}}menu/activate.svg') url('{{}}menu/healEnergyMenu.svg') url('{{}}menu/powerEnergyMenu.svg')
 		url('{{}}menu/fastEnergyButton.svg') url('{{}}menu/plusButton.svg') url('{{}}menu/minusButton.svg')

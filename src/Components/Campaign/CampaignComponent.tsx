@@ -29,8 +29,8 @@ export default class CampaignComponent extends Component<any, any> {
 	}
 
 	componentDidMount() {
-		this._eyesTimer = setInterval(() => this.EyesAnimation(), 2000);
-		this._mouthTimer = setInterval(() => this.MouthAnimation(), 3000);
+		this._eyesTimer = setInterval(() => this.EyesAnimation(), 200);
+		this._mouthTimer = setInterval(() => this.MouthAnimation(), 200);
 	}
 
 	componentWillUnmount() {

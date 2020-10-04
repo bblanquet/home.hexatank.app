@@ -9,8 +9,14 @@ import { IAppService } from '../../Services/App/IAppService';
 import Redirect from '../Redirect/RedirectComponent';
 
 export default class BlueCampaignComponent extends Component<any, any> {
-	private _mouthTimer: any;
-	private _eyesTimer: any;
+	private _eyesDiv: HTMLDivElement;
+	private _mouthDiv: HTMLDivElement;
+	private _mouthTimer: NodeJS.Timer;
+	private _eyesTimer: NodeJS.Timer;
+	private _eyes: Array<string> = [ 'fill-blueArmy-eyes', 'fill-blueArmy-eyes-blink' ];
+	private _eyesIndex = 0;
+	private _mouths: Array<string> = [ 'fill-blueArmy-mouth-1', 'fill-blueArmy-mouth-2', 'fill-blueArmy-mouth-3' ];
+	private _mouthIndex = 0;
 
 	constructor(props: any) {
 		super(props);
@@ -22,9 +28,43 @@ export default class BlueCampaignComponent extends Component<any, any> {
 		});
 	}
 
+	componentDidMount() {
+		this._eyesTimer = setInterval(() => this.EyesAnimation(), 200);
+		this._mouthTimer = setInterval(() => this.MouthAnimation(), 200);
+	}
+
 	componentWillUnmount() {
 		clearInterval(this._eyesTimer);
 		clearInterval(this._mouthTimer);
+	}
+
+	private EyesAnimation(): void {
+		clearInterval(this._eyesTimer);
+		let current = this._eyesIndex;
+		this._eyesIndex = (this._eyesIndex + 1) % this._eyes.length;
+		this._eyesDiv.classList.remove(this._eyes[current]);
+		this._eyesDiv.classList.add(this._eyes[this._eyesIndex]);
+
+		if (this._eyesIndex === 0) {
+			this._eyesTimer = setInterval(() => this.EyesAnimation(), 2000);
+		} else {
+			this._eyesTimer = setInterval(() => this.EyesAnimation(), 250);
+		}
+	}
+
+	private MouthAnimation(): void {
+		clearInterval(this._mouthTimer);
+
+		let current = this._mouthIndex;
+		this._mouthIndex = (this._mouthIndex + 1) % this._mouths.length;
+		this._mouthDiv.classList.remove(this._mouths[current]);
+		this._mouthDiv.classList.add(this._mouths[this._mouthIndex]);
+
+		if (this._eyesIndex === 0) {
+			this._mouthTimer = setInterval(() => this.MouthAnimation(), 1000);
+		} else {
+			this._mouthTimer = setInterval(() => this.MouthAnimation(), 100);
+		}
 	}
 
 	render() {
@@ -33,7 +73,20 @@ export default class BlueCampaignComponent extends Component<any, any> {
 				<div class="generalContainer absolute-center-middle">
 					<div class="container-center">
 						<div class="logo-container">
-							<div class="fill-blueArmy" />
+							<div class="fill-blueArmy">
+								<div
+									class="fill-blueArmy-eyes"
+									ref={(dom) => {
+										this._eyesDiv = dom;
+									}}
+								/>
+								<div
+									class="fill-blueArmy-mouth-1"
+									ref={(dom) => {
+										this._mouthDiv = dom;
+									}}
+								/>
+							</div>
 						</div>
 						<div class="container-center-horizontal">
 							<BlackButtonComponent

@@ -9,6 +9,7 @@ import { ZKind } from '../../Items/ZKind';
 
 export class UiOrder {
 	private _items: Dictionnary<BasicItem>;
+
 	constructor(private _order: IOrder) {
 		this._order.OnPathCreated.On(this.HandleCreatedGoals.bind(this));
 		this._order.OnNextCell.On(this.HandleNextCell.bind(this));
@@ -58,22 +59,21 @@ export class UiOrder {
 	private Destroy(key: string) {
 		if (this._items.Exist(key)) {
 			const c = this._items.Get(key);
-			this._items.Remove(key);
 			c.Destroy();
+			this._items.Remove(key);
 		}
 	}
 
 	public Clear() {
+		if (this._order) {
+			this._order.OnPathCreated.Clear();
+			this._order.OnNextCell.Clear();
+			this._order.OnStateChanged.Clear();
+		}
 		if (this._items) {
 			this._items.Keys().forEach((key) => {
 				this.Destroy(key);
 			});
-		}
-
-		if (this._order) {
-			this._order.OnPathCreated.Off(this.HandleCreatedGoals.bind(this));
-			this._order.OnNextCell.Off(this.HandleNextCell.bind(this));
-			this._order.OnStateChanged.Off(this.HandleStateChanged.bind(this));
 		}
 	}
 }

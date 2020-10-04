@@ -30,7 +30,7 @@ export class PatrolCombination extends AbstractSingleCombination {
 	public IsCorrupted(context: CombinationContext): boolean {
 		return (
 			this.ContainsVehicleePatrol(context) &&
-			context.Items.some((i) => !(i instanceof Cell || i instanceof PatrolMenuItem))
+			context.Items.some((i, index) => 1 < index && !(i instanceof Cell || i instanceof PatrolMenuItem))
 		);
 	}
 
@@ -52,8 +52,10 @@ export class PatrolCombination extends AbstractSingleCombination {
 
 	public Combine(context: CombinationContext): boolean {
 		if (this.IsCorrupted(context)) {
+			context.Items.splice(1, context.Items.length - 1);
 			this._gameContext.OnPatrolSetting.Invoke(this, false);
 			this.ClearIndicators();
+			return;
 		}
 
 		if (this.ContainsVehicleePatrol(context)) {

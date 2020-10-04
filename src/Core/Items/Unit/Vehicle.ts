@@ -277,7 +277,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
 	private SetUiOrder() {
 		if (!this.GameContext.GetMainHq().IsEnemy(this)) {
-			if (this._uiOrder && this.HasOrder() && this._uiOrder.HasOrder(this._order)) {
+			if (this._uiOrder && this.HasOrder() && this._uiOrder.HasOrder(this._order) && this.IsSelected()) {
 				return;
 			}
 

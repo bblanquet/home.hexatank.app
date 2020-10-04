@@ -12,6 +12,13 @@ export class MoneyOrder extends Order {
 		super();
 	}
 
+	public GetGoals(): Cell[] {
+		if (this._currentOrder) {
+			return this._currentOrder.GetGoals();
+		}
+		return [];
+	}
+
 	public GetKind(): OrderKind {
 		return OrderKind.Money;
 	}

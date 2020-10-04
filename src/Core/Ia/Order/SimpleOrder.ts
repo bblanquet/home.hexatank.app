@@ -25,6 +25,10 @@ export class SimpleOrder extends Order {
 		this.CellFinder = new CellFinder();
 	}
 
+	GetGoals(): Cell[] {
+		return [ this.FinalOriginalGoal ];
+	}
+
 	public GetKind(): OrderKind {
 		return OrderKind.Simple;
 	}

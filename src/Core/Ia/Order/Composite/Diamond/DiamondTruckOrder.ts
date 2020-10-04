@@ -15,6 +15,10 @@ export class DiamondTruckOrder extends Order {
 		super();
 	}
 
+	public GetGoals(): Cell[] {
+		return this._hqOrder.GetGoals().concat(this._diamondFieldOrder.GetGoals());
+	}
+
 	public Cancel(): void {
 		super.Cancel();
 		if (this._currentOrder) {

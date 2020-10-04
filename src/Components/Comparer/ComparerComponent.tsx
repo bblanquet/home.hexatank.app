@@ -41,6 +41,7 @@ export default class ComparerComponent extends Component<
 			SelectedUnitId: '',
 			CurveIndex: null
 		});
+		this._compareService = Factory.Load<ICompareService>(FactoryKey.Compare);
 	}
 
 	componentWillMount() {
@@ -54,7 +55,6 @@ export default class ComparerComponent extends Component<
 
 	componentDidMount() {
 		if (this._d1 && this._d2) {
-			this._compareService = Factory.Load<ICompareService>(FactoryKey.Compare);
 			this._trackingComparer = new RecordComparer(this._d1, this._d2);
 			const hqId = this._d1.Hqs.Keys()[0];
 			const unitId = this._d1.Hqs.Get(hqId).Units.Keys()[0];

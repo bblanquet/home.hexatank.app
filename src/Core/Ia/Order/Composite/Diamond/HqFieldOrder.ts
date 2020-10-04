@@ -19,6 +19,10 @@ export class HqFieldOrder extends SmartSimpleOrder {
 		}
 	}
 
+	public GetGoals(): Cell[] {
+		return [ this.Hq.GetCell() ];
+	}
+
 	private GetHqCells(hq: Headquarter): Array<Cell> {
 		return hq.GetCell().GetNeighbourhood().map((c) => <Cell>c);
 	}

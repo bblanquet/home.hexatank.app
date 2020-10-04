@@ -19,6 +19,10 @@ export class PatrolOrder extends Order {
 		this.CreatePath();
 	}
 
+	public GetGoals(): Cell[] {
+		return this._patrolcells;
+	}
+
 	public GetKind(): OrderKind {
 		return OrderKind.SimpleSmart;
 	}

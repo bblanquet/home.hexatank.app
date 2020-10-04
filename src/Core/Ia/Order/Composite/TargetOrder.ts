@@ -19,6 +19,10 @@ export class TargetOrder extends Order {
 		this._v.SetMainTarget(this._target);
 	}
 
+	public GetGoals(): Cell[] {
+		return [ this._v.GetCurrentCell() ];
+	}
+
 	public GetKind(): OrderKind {
 		return OrderKind.Target;
 	}

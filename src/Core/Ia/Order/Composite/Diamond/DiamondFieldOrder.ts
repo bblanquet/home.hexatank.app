@@ -19,6 +19,10 @@ export class DiamondFieldOrder extends SmartSimpleOrder {
 		}
 	}
 
+	public GetGoals(): Cell[] {
+		return [ this.Diamond.GetCell() ];
+	}
+
 	private GetDiamondCells(hq: Diamond): Array<Cell> {
 		return hq.GetCell().GetNeighbourhood().map((c) => <Cell>c);
 	}

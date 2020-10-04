@@ -21,16 +21,21 @@ export class CompChartProvider {
 		});
 		return datasets;
 	}
+	private _chart: Chart;
 
 	public AttachChart(curves: DeltaRecordCurve, div: HTMLCanvasElement): Chart {
 		const ps = curves.Points.map((p) => p.Y);
 		const max = Math.max(...ps);
-		let step = Math.round(max / 5);
+		let step = Math.abs(Math.round(max / 5));
 		if (step === 0) {
 			step = 1;
 		}
 
-		const chart = new Chart(div, {
+		if (this._chart) {
+			this._chart.destroy();
+		}
+
+		this._chart = new Chart(div, {
 			type: 'line',
 			data: {
 				datasets: this.Convert(curves)
@@ -78,9 +83,9 @@ export class CompChartProvider {
 				}
 			}
 		});
-		chart.canvas = div;
+		this._chart.canvas = div;
 		Chart.defaults.global.defaultFontColor = 'white';
-		chart.update();
-		return chart;
+		this._chart.update();
+		return this._chart;
 	}
 }

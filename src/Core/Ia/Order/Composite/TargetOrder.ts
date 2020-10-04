@@ -7,11 +7,11 @@ import { Tank } from '../../../Items/Unit/Tank';
 import { Order } from '../Order';
 import { OrderKind } from '../OrderKind';
 import { OrderState } from '../OrderState';
-import { SimpleOrder } from '../SimpleOrder';
+import { SmartSimpleOrder } from './SmartSimpleOrder';
 
 export class TargetOrder extends Order {
 	private _targetUi: BasicItem;
-	private _currentOrder: SimpleOrder;
+	private _currentOrder: SmartSimpleOrder;
 	private _currentcell: Cell;
 
 	constructor(private _v: Tank, private _target: AliveItem) {
@@ -23,7 +23,11 @@ export class TargetOrder extends Order {
 		return OrderKind.Target;
 	}
 	public GetCells(): Cell[] {
-		return [ this._target.GetCurrentCell() ];
+		if (this._currentOrder) {
+			return this._currentOrder.GetCells();
+		} else {
+			return [];
+		}
 	}
 
 	public Do(): void {
@@ -34,7 +38,7 @@ export class TargetOrder extends Order {
 
 		if (this.GetState() === OrderState.None) {
 			this._currentcell = this._target.GetCurrentCell();
-			this._currentOrder = new SimpleOrder(this._currentcell, this._v);
+			this.SetCurrentOrder(new SmartSimpleOrder(this._currentcell, this._v));
 			this.SetState(OrderState.Pending);
 			this.ShowUi();
 		}
@@ -42,12 +46,12 @@ export class TargetOrder extends Order {
 		if (this._target.GetCurrentCell() !== this._currentcell && !this._v.HasNextCell()) {
 			this._currentOrder.Cancel();
 			this._currentcell = this._target.GetCurrentCell();
-			this._currentOrder = new SimpleOrder(this._currentcell, this._v);
+			this.SetCurrentOrder(new SmartSimpleOrder(this._currentcell, this._v));
 		}
 
 		if (this._currentOrder.IsDone()) {
 			if (this._currentOrder.GetState() !== OrderState.Passed) {
-				this._currentOrder = new SimpleOrder(this._currentcell, this._v);
+				this.SetCurrentOrder(new SmartSimpleOrder(this._currentcell, this._v));
 			} else {
 				this.SetState(OrderState.Passed);
 				return;
@@ -72,5 +76,27 @@ export class TargetOrder extends Order {
 		this._targetUi.SetAlive(
 			() => this._v.IsAlive() && this._target.IsAlive() && this._v.GetMainTarget() === this._target
 		);
+	}
+
+	private SetCurrentOrder(order: SmartSimpleOrder): void {
+		this.Clear();
+		this._currentOrder = order;
+		this._currentOrder.OnPathCreated.On(this.InvokePathCreated.bind(this));
+		this._currentOrder.OnNextCell.On(this.InvokeNextCell.bind(this));
+	}
+
+	private Clear() {
+		if (this._currentOrder) {
+			this._currentOrder.OnPathCreated.Off(this.InvokePathCreated.bind(this));
+			this._currentOrder.OnNextCell.Off(this.InvokeNextCell.bind(this));
+		}
+	}
+
+	private InvokePathCreated(src: any, cells: Cell[]): void {
+		this.OnPathCreated.Invoke(this, cells);
+	}
+
+	private InvokeNextCell(src: any, cell: Cell): void {
+		this.OnNextCell.Invoke(this, cell);
 	}
 }

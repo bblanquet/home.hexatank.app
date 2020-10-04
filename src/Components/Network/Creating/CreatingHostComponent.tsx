@@ -10,6 +10,7 @@ import PanelComponent from '../../Common/Panel/PanelComponent';
 import TextComponent from '../../Common/Text/TextComponent';
 import { Factory, FactoryKey } from '../../../Factory';
 import { IHostingService } from '../../../Services/Hosting/IHostingService';
+import Redirect from '../../Redirect/RedirectComponent';
 
 export default class CreatingHostComponent extends Component<any, CreatingHostState> {
 	private _socket: SocketIOClient.Socket;
@@ -32,28 +33,30 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 
 	render() {
 		return (
-			<PanelComponent>
-				<TextComponent
-					value={this.state.RoomName}
-					label={'Room name'}
-					isEditable={true}
-					onInput={(e: any) => {
-						this.setState({ RoomName: e.target.value });
-					}}
-				/>
-				<TextComponent
-					value={this.state.PlayerName}
-					label={'Playername'}
-					isEditable={true}
-					onInput={(e: any) => {
-						this.setState({ PlayerName: e.target.value });
-					}}
-				/>
-				<div class="container-center-horizontal">
-					<BlackButtonComponent icon={'fas fa-undo-alt'} title={'Back'} callBack={() => this.Back()} />
-					<RedButtonComponent icon={'far fa-play-circle'} title={'Start'} callBack={() => this.Start()} />
-				</div>
-			</PanelComponent>
+			<Redirect>
+				<PanelComponent>
+					<TextComponent
+						value={this.state.RoomName}
+						label={'Room name'}
+						isEditable={true}
+						onInput={(e: any) => {
+							this.setState({ RoomName: e.target.value });
+						}}
+					/>
+					<TextComponent
+						value={this.state.PlayerName}
+						label={'Playername'}
+						isEditable={true}
+						onInput={(e: any) => {
+							this.setState({ PlayerName: e.target.value });
+						}}
+					/>
+					<div class="container-center-horizontal">
+						<BlackButtonComponent icon={'fas fa-undo-alt'} title={'Back'} callBack={() => this.Back()} />
+						<RedButtonComponent icon={'far fa-play-circle'} title={'Start'} callBack={() => this.Start()} />
+					</div>
+				</PanelComponent>
+			</Redirect>
 		);
 	}
 

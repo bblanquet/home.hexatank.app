@@ -10,6 +10,7 @@ import GridComponent from '../../Common/Grid/GridComponent';
 import SmBlackButtonComponent from '../../Common/Button/Stylish/SmBlackButtonComponent';
 import { Factory, FactoryKey } from '../../../Factory';
 import { IHostingService } from '../../../Services/Hosting/IHostingService';
+import Redirect from '../../Redirect/RedirectComponent';
 
 const io = require('socket.io-client');
 
@@ -36,24 +37,30 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 
 	render() {
 		return (
-			<PanelComponent>
-				<TextComponent
-					value={this.state.PlayerName}
-					label={'Playername'}
-					isEditable={true}
-					onInput={(e: any) => {
-						this.setState({ PlayerName: e.target.value });
-					}}
-				/>
-				<GridComponent
-					left={this.Header()}
-					right={this.state.RoomNames.length === 0 ? this.EmptyGridContent() : this.GridContent()}
-				/>
-				<div class="container-center-horizontal">
-					<BlackButtonComponent icon={'fas fa-undo-alt'} title={'Back'} callBack={() => this.Back()} />
-					<RedButtonComponent icon={'fas fa-sync-alt'} title={'Refresh'} callBack={() => this.Refresh()} />
-				</div>
-			</PanelComponent>
+			<Redirect>
+				<PanelComponent>
+					<TextComponent
+						value={this.state.PlayerName}
+						label={'Playername'}
+						isEditable={true}
+						onInput={(e: any) => {
+							this.setState({ PlayerName: e.target.value });
+						}}
+					/>
+					<GridComponent
+						left={this.Header()}
+						right={this.state.RoomNames.length === 0 ? this.EmptyGridContent() : this.GridContent()}
+					/>
+					<div class="container-center-horizontal">
+						<BlackButtonComponent icon={'fas fa-undo-alt'} title={'Back'} callBack={() => this.Back()} />
+						<RedButtonComponent
+							icon={'fas fa-sync-alt'}
+							title={'Refresh'}
+							callBack={() => this.Refresh()}
+						/>
+					</div>
+				</PanelComponent>
+			</Redirect>
 		);
 	}
 

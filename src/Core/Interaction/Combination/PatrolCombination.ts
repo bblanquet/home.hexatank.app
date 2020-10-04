@@ -8,9 +8,14 @@ import { Cell } from '../../Items/Cell/Cell';
 import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { ZKind } from '../../Items/ZKind';
+import { GameContext } from '../../Framework/GameContext';
 
 export class PatrolCombination extends AbstractSingleCombination {
 	private _indicators: Array<BasicItem> = [];
+
+	constructor(private _gameContext: GameContext) {
+		super();
+	}
 
 	public IsMatching(context: CombinationContext): boolean {
 		return (
@@ -19,6 +24,13 @@ export class PatrolCombination extends AbstractSingleCombination {
 			context.Items[0] instanceof Vehicle &&
 			context.Items[1] instanceof PatrolMenuItem &&
 			this.IsLastPatrolItem(context.Items)
+		);
+	}
+
+	public IsCorrupted(context: CombinationContext): boolean {
+		return (
+			this.ContainsVehicleePatrol(context) &&
+			context.Items.some((i) => !(i instanceof Cell || i instanceof PatrolMenuItem))
 		);
 	}
 
@@ -39,31 +51,37 @@ export class PatrolCombination extends AbstractSingleCombination {
 	}
 
 	public Combine(context: CombinationContext): boolean {
+		if (this.IsCorrupted(context)) {
+			this._gameContext.OnPatrolSetting.Invoke(this, false);
+			this.ClearIndicators();
+		}
+
 		if (this.ContainsVehicleePatrol(context)) {
+			this._gameContext.OnPatrolSetting.Invoke(this, true);
 			if (context.Items[context.Items.length - 1] instanceof Cell) {
-				const element = new BasicItem(
+				const indicator = new BasicItem(
 					context.Items[context.Items.length - 1].GetBoundingBox(),
-					Archive.direction.patrol,
-					ZKind.Cell
+					Archive.direction.moving,
+					ZKind.AboveCell
 				);
-				element.SetVisible(() => true);
-				element.SetAlive(() => true);
-				this._indicators.push(element);
+				indicator.SetVisible(() => true);
+				indicator.SetAlive(() => true);
+				this._indicators.push(indicator);
 			}
 		}
 
 		if (this.IsMatching(context)) {
-			console.log(`%c PATROL MATCH`, 'font-weight:bold;color:blue;');
-			var vehicle = <Vehicle>context.Items[0];
-			var patrol = new PatrolOrder(this.GetCells(context.Items), vehicle);
-			vehicle.SetOrder(patrol);
+			this._gameContext.OnPatrolSetting.Invoke(this, false);
+			this.ClearIndicators();
+			const vehicle = context.Items[0] as Vehicle;
+			vehicle.SetOrder(new PatrolOrder(this.GetCells(context.Items), vehicle));
 			context.Items.splice(1, 1);
 			return true;
 		}
 		return false;
 	}
 
-	Clear(): void {
+	ClearIndicators(): void {
 		this._indicators.forEach((indicator) => {
 			indicator.Destroy();
 		});

@@ -7,6 +7,15 @@ import { Archive } from './ResourceArchiver';
 export class SpriteProvider {
 	constructor() {}
 
+	private static _isLoaded: boolean = false;
+	public static IsLoaded(): boolean {
+		return this._isLoaded;
+	}
+
+	public static SetLoaded(isLoaded: boolean): void {
+		this._isLoaded = isLoaded;
+	}
+
 	private static _svgs: Dictionnary<PIXI.resources.SVGResource> = new Dictionnary<PIXI.resources.SVGResource>();
 
 	public static GetSprite(name: string): PIXI.Sprite {

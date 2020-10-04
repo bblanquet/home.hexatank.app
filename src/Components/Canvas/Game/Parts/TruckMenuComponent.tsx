@@ -9,7 +9,7 @@ import { Vehicle } from '../../../../Core/Items/Unit/Vehicle';
 import { Factory, FactoryKey } from '../../../../Factory';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
 
-export default class TruckMenuComponent extends Component<{ Truck: Vehicle }, {}> {
+export default class TruckMenuComponent extends Component<{ Truck: Vehicle; isSettingPatrol: boolean }, {}> {
 	private _interactionService: IInteractionService;
 	constructor() {
 		super();
@@ -34,7 +34,7 @@ export default class TruckMenuComponent extends Component<{ Truck: Vehicle }, {}
 							class="btn btn-dark without-padding"
 							onClick={(e: any) => this.SendContext(new PatrolMenuItem())}
 						>
-							<div class="white-background">{false ? 'ON' : 'OFF'}</div>
+							<div class="white-background">{this.props.isSettingPatrol ? 'ON' : 'OFF'}</div>
 							<div class="fill-patrol max-width standard-space" />
 						</button>
 						<button

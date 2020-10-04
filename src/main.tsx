@@ -25,21 +25,24 @@ import '@fortawesome/fontawesome-free/js/brands';
 import { GameStatus } from './Core/Framework/GameStatus';
 import { Context } from './Context';
 
-render(
-	<Router>
-		<HomeComponent path="/Home" />
-		<SinglePlayerComponent path="/SinglePlayer" />
-		<CampaignComponent path="/Campaign" />
-		<BlueCampaignComponent path="/BlueCampaignComponent" />
-		<GameCanvasComponent path="/Canvas" />
-		<RecordCanvasComponent path="/RecordCanvas" />
-		<CreatingHostComponent path="/CreatingHost" />
-		<HostingComponent path="/Hosting" />
-		<GuestComponent path="/OffJoin" />
-		<RecordComponent path="/Playback" />
-		<LoadingComponent path="/Loading" default />
-		<PopupComponent path="/Popup" curves={Context()} status={GameStatus.Won} context={{}} />
-		<ComparerComponent path="/Comparer" />
-	</Router>,
-	document.querySelector('#app')
-);
+const Main = (e: any) => {
+	return (
+		<Router>
+			<HomeComponent path="/Home" />
+			<SinglePlayerComponent path="/SinglePlayer" />
+			<CampaignComponent path="/Campaign" />
+			<BlueCampaignComponent path="/BlueCampaignComponent" />
+			<GameCanvasComponent path="/Canvas" />
+			<RecordCanvasComponent path="/RecordCanvas" />
+			<CreatingHostComponent path="/CreatingHost" />
+			<HostingComponent path="/Hosting" />
+			<GuestComponent path="/OffJoin" />
+			<RecordComponent path="/Playback" />
+			<LoadingComponent path="/Loading" default />
+			<PopupComponent path="/Popup" curves={Context()} status={GameStatus.Won} context={{}} />
+			<ComparerComponent path="/Comparer" />
+		</Router>
+	);
+};
+
+render(<Main />, document.body);

@@ -26,6 +26,7 @@ import { IGameContextService } from '../../../Services/GameContext/IGameContextS
 import { INetworkService } from '../../../Services/Network/INetworkService';
 import { IInteractionService } from '../../../Services/Interaction/IInteractionService';
 import { Factory, FactoryKey } from '../../../Factory';
+import Redirect from '../../Redirect/RedirectComponent';
 
 export default class GameCanvasComponent extends Component<
 	any,
@@ -40,6 +41,7 @@ export default class GameCanvasComponent extends Component<
 		Item: Item;
 		Players: Player[];
 		GameStatus: GameStatus;
+		IsSettingPatrol: boolean;
 	}
 > {
 	private _gameContextService: IGameContextService;
@@ -63,7 +65,8 @@ export default class GameCanvasComponent extends Component<
 			Amount: GameSettings.PocketMoney,
 			HasFlag: false,
 			HasWarning: false,
-			GameStatus: GameStatus.Pending
+			GameStatus: GameStatus.Pending,
+			IsSettingPatrol: false
 		});
 	}
 	private OnItemSelectionChanged(obj: any, item: ISelectable): void {
@@ -81,7 +84,8 @@ export default class GameCanvasComponent extends Component<
 		this._gameContext.GetMainHq().OnTruckChanged.On(this.HandleTruckChanged.bind(this));
 		this._gameContext.GetMainHq().OnTankRequestChanged.On(this.HandleTankChanged.bind(this));
 		this._gameContext.GetMainHq().OnDiamondCountChanged.On(this.HandleDiamondChanged.bind(this));
-		this._gameContext.OnItemSelected.On(this.UpdateSelection.bind(this));
+		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
+		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.GetMainHq().OnCashMissing.On(this.HandleCashMissing.bind(this));
 		this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
@@ -111,10 +115,16 @@ export default class GameCanvasComponent extends Component<
 		});
 	}
 
-	private UpdateSelection(obj: any, selectedItem: Item): void {
+	private HandleSelection(obj: any, selectedItem: Item): void {
 		((selectedItem as unknown) as ISelectable).OnSelectionChanged.On(this._onItemSelectionChanged);
 		this.setState({
 			Item: selectedItem
+		});
+	}
+
+	private HandleSettingPatrol(obj: any, isSettingPatrol: boolean): void {
+		this.setState({
+			IsSettingPatrol: isSettingPatrol
 		});
 	}
 
@@ -139,9 +149,9 @@ export default class GameCanvasComponent extends Component<
 			return <MultiMenuComponent Item={this.state.Item} />;
 		} else if (this.state.Item) {
 			if (this.state.Item instanceof Tank) {
-				return <TankMenuComponent Tank={this.state.Item} />;
+				return <TankMenuComponent Tank={this.state.Item} isSettingPatrol={this.state.IsSettingPatrol} />;
 			} else if (this.state.Item instanceof Truck) {
-				return <TruckMenuComponent Truck={this.state.Item} />;
+				return <TruckMenuComponent Truck={this.state.Item} isSettingPatrol={this.state.IsSettingPatrol} />;
 			} else if (this.state.Item instanceof UnitGroup) {
 				return <MultiTankMenuComponent item={this.state.Item} />;
 			} else if (this.state.Item instanceof Headquarter) {
@@ -185,14 +195,16 @@ export default class GameCanvasComponent extends Component<
 
 	render() {
 		return (
-			<div style="width=100%">
-				{this.TopLeftInfo()}
-				{this.TopMenuRender()}
-				{this.state.GameStatus === GameStatus.Pending ? '' : this.GetEndMessage()}
-				<CanvasComponent />
-				{this.state.HasMenu && this.state.GameStatus === GameStatus.Pending ? '' : this.LeftMenuRender()}
-				{this.state.HasMenu && this.state.GameStatus === GameStatus.Pending ? this.MenuRender() : ''}
-			</div>
+			<Redirect>
+				<div style="width=100%">
+					{this.TopLeftInfo()}
+					{this.TopMenuRender()}
+					{this.state.GameStatus === GameStatus.Pending ? '' : this.GetEndMessage()}
+					<CanvasComponent />
+					{this.state.HasMenu && this.state.GameStatus === GameStatus.Pending ? '' : this.LeftMenuRender()}
+					{this.state.HasMenu && this.state.GameStatus === GameStatus.Pending ? this.MenuRender() : ''}
+				</div>
+			</Redirect>
 		);
 	}
 

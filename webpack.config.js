@@ -37,13 +37,13 @@ module.exports = (env) => {
 		resolve: {
 			extensions: [ '.ts', '.tsx' ]
 		},
-
 		// Make errors mor clear
 		devtool: 'inline-source-map',
 		// Configure output folder and file
 		output: {
 			path: distDir,
-			filename: 'main.js'
+			filename: 'main.js',
+			publicPath: '/'
 		},
 
 		optimization: {
@@ -107,9 +107,9 @@ module.exports = (env) => {
 				}
 			]
 		},
-
 		devServer: {
-			contentBase: './dist'
+			contentBase: './dist',
+			historyApiFallback: true
 		},
 		plugins: [
 			new CleanWebpackPlugin(),

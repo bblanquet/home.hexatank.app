@@ -6,6 +6,7 @@ import BlueButtonComponent from '../Common/Button/Stylish/BlueButtonComponent';
 import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
 import { Factory, FactoryKey } from '../../Factory';
 import { IAppService } from '../../Services/App/IAppService';
+import Redirect from '../Redirect/RedirectComponent';
 
 export default class BlueCampaignComponent extends Component<any, any> {
 	private _mouthTimer: any;
@@ -28,52 +29,54 @@ export default class BlueCampaignComponent extends Component<any, any> {
 
 	render() {
 		return (
-			<div class="generalContainer absolute-center-middle">
-				<div class="container-center">
-					<div class="logo-container">
-						<div class="fill-blueArmy" />
+			<Redirect>
+				<div class="generalContainer absolute-center-middle">
+					<div class="container-center">
+						<div class="logo-container">
+							<div class="fill-blueArmy" />
+						</div>
+						<div class="container-center-horizontal">
+							<BlackButtonComponent
+								icon={'fas fa-long-arrow-alt-left'}
+								title={''}
+								callBack={() => this.RedCampaign()}
+							/>
+						</div>
+						<div class="row justify-content-center">
+							<div class="col-auto container-center">
+								<BlueButtonComponent
+									icon={'fas fa-arrow-alt-circle-right'}
+									title={'1'}
+									callBack={() => this.Start()}
+								/>
+							</div>
+							<div class="col-auto container-center">
+								<BlueButtonComponent
+									icon={'fas fa-arrow-alt-circle-right'}
+									title={'2'}
+									callBack={() => this.Start()}
+								/>
+							</div>
+							<div class="w-100 d-none d-md-block " />
+							<div class="col-auto container-center">
+								<BlueButtonComponent
+									icon={'fas fa-arrow-alt-circle-right'}
+									title={'3'}
+									callBack={() => this.Start()}
+								/>
+							</div>
+							<div class="col-auto container-center">
+								<BlueButtonComponent
+									icon={'fas fa-arrow-alt-circle-right'}
+									title={'4'}
+									callBack={() => this.Start()}
+								/>
+							</div>
+						</div>
+						<BlackButtonComponent icon={'fas fa-undo-alt'} title={'Back'} callBack={() => this.Back()} />
 					</div>
-					<div class="container-center-horizontal">
-						<BlackButtonComponent
-							icon={'fas fa-long-arrow-alt-left'}
-							title={''}
-							callBack={() => this.RedCampaign()}
-						/>
-					</div>
-					<div class="row justify-content-center">
-						<div class="col-auto container-center">
-							<BlueButtonComponent
-								icon={'fas fa-arrow-alt-circle-right'}
-								title={'1'}
-								callBack={() => this.Start()}
-							/>
-						</div>
-						<div class="col-auto container-center">
-							<BlueButtonComponent
-								icon={'fas fa-arrow-alt-circle-right'}
-								title={'2'}
-								callBack={() => this.Start()}
-							/>
-						</div>
-						<div class="w-100 d-none d-md-block " />
-						<div class="col-auto container-center">
-							<BlueButtonComponent
-								icon={'fas fa-arrow-alt-circle-right'}
-								title={'3'}
-								callBack={() => this.Start()}
-							/>
-						</div>
-						<div class="col-auto container-center">
-							<BlueButtonComponent
-								icon={'fas fa-arrow-alt-circle-right'}
-								title={'4'}
-								callBack={() => this.Start()}
-							/>
-						</div>
-					</div>
-					<BlackButtonComponent icon={'fas fa-undo-alt'} title={'Back'} callBack={() => this.Back()} />
-				</div>
-			</div>
+				</div>{' '}
+			</Redirect>
 		);
 	}
 

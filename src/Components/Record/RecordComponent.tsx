@@ -16,6 +16,7 @@ import GridComponent from '../Common/Grid/GridComponent';
 import { IRecordService } from '../../Services/Record/IRecordService';
 import { ICompareService } from '../../Services/Compare/ICompareService';
 import { Factory, FactoryKey } from '../../Factory';
+import Redirect from '../Redirect/RedirectComponent';
 
 export default class RecordComponent extends Component<any, { Records: RecordObject[] }> {
 	private _appService: IAppService;
@@ -127,50 +128,52 @@ export default class RecordComponent extends Component<any, { Records: RecordObj
 
 	render() {
 		return (
-			<PanelComponent>
-				<div class="container-center-horizontal">
-					<BlackButtonComponent
-						icon={'fas fa-trash'}
-						title={'Clear'}
-						callBack={() => {
-							this.setState({
-								Records: []
-							});
-						}}
-					/>
-					<UploadButtonComponent
-						icon={'fas fa-upload'}
-						title={'Upload'}
-						callBack={(e: any) => this.Upload(e)}
-					/>
-				</div>
-
-				<GridComponent
-					left={this.Header()}
-					right={this.state.Records.length === 0 ? this.EmptyGridContent() : this.GridContent()}
-				/>
-
-				<div class="container-center-horizontal">
-					<BlackButtonComponent
-						icon={'fas fa-undo-alt'}
-						title={'Back'}
-						callBack={() => {
-							this.ToHome();
-						}}
-					/>
-					{this.state.Records.length === 2 ? (
-						<RedButtonComponent
-							icon={'fas fa-chart-line'}
-							title={'Compare'}
+			<Redirect>
+				<PanelComponent>
+					<div class="container-center-horizontal">
+						<BlackButtonComponent
+							icon={'fas fa-trash'}
+							title={'Clear'}
 							callBack={() => {
-								this.ToCompare();
+								this.setState({
+									Records: []
+								});
 							}}
 						/>
-					) : (
-						''
-					)}
-				</div>
-			</PanelComponent>
+						<UploadButtonComponent
+							icon={'fas fa-upload'}
+							title={'Upload'}
+							callBack={(e: any) => this.Upload(e)}
+						/>
+					</div>
+
+					<GridComponent
+						left={this.Header()}
+						right={this.state.Records.length === 0 ? this.EmptyGridContent() : this.GridContent()}
+					/>
+
+					<div class="container-center-horizontal">
+						<BlackButtonComponent
+							icon={'fas fa-undo-alt'}
+							title={'Back'}
+							callBack={() => {
+								this.ToHome();
+							}}
+						/>
+						{this.state.Records.length === 2 ? (
+							<RedButtonComponent
+								icon={'fas fa-chart-line'}
+								title={'Compare'}
+								callBack={() => {
+									this.ToCompare();
+								}}
+							/>
+						) : (
+							''
+						)}
+					</div>
+				</PanelComponent>
+			</Redirect>
 		);
 	}
 }

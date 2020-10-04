@@ -9,6 +9,7 @@ import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent'
 import PanelComponent from '../Common/Panel/PanelComponent';
 import { IAppService } from '../../Services/App/IAppService';
 import { Factory, FactoryKey } from '../../Factory';
+import Redirect from '../Redirect/RedirectComponent';
 
 export default class SinglePlayerComponent extends Component<any, SinglePlayerState> {
 	constructor(props: any) {
@@ -28,45 +29,47 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 
 	render() {
 		return (
-			<PanelComponent>
-				<DropDownComponent
-					OnInput={(e: any) => {
-						this.setState({ IaNumber: Number(e.target.value) });
-					}}
-					Label={'IA'}
-					Values={[ '1', '2', '3' ]}
-				/>
-				<DropDownComponent
-					OnInput={(e: any) => {
-						this.setState({ Env: e.target.value });
-					}}
-					Label={'Env'}
-					Values={[ 'Sand', 'Forest', 'Ice' ]}
-				/>
-				<DropDownComponent
-					OnInput={(e: any) => {
-						this.setState({ Size: Number(e.target.value) });
-					}}
-					Label={'Env'}
-					Values={[ 'Small', 'Medium', 'Large' ]}
-				/>
-				<DropDownComponent
-					OnInput={(e: any) => {
-						this.setState({ MapType: e.target.value });
-					}}
-					Label={'Shape'}
-					Values={[ 'Donut', 'Cheese', 'Flower' ]}
-				/>
-				<p />
-				<div class="container-center-horizontal">
-					<BlackButtonComponent icon={'fas fa-undo-alt'} title={'Back'} callBack={() => this.Back()} />
-					<RedButtonComponent
-						icon={'fas fa-arrow-alt-circle-right'}
-						title={'Play'}
-						callBack={() => this.Start()}
+			<Redirect>
+				<PanelComponent>
+					<DropDownComponent
+						OnInput={(e: any) => {
+							this.setState({ IaNumber: Number(e.target.value) });
+						}}
+						Label={'IA'}
+						Values={[ '1', '2', '3' ]}
 					/>
-				</div>
-			</PanelComponent>
+					<DropDownComponent
+						OnInput={(e: any) => {
+							this.setState({ Env: e.target.value });
+						}}
+						Label={'Env'}
+						Values={[ 'Sand', 'Forest', 'Ice' ]}
+					/>
+					<DropDownComponent
+						OnInput={(e: any) => {
+							this.setState({ Size: Number(e.target.value) });
+						}}
+						Label={'Env'}
+						Values={[ 'Small', 'Medium', 'Large' ]}
+					/>
+					<DropDownComponent
+						OnInput={(e: any) => {
+							this.setState({ MapType: e.target.value });
+						}}
+						Label={'Shape'}
+						Values={[ 'Donut', 'Cheese', 'Flower' ]}
+					/>
+					<p />
+					<div class="container-center-horizontal">
+						<BlackButtonComponent icon={'fas fa-undo-alt'} title={'Back'} callBack={() => this.Back()} />
+						<RedButtonComponent
+							icon={'fas fa-arrow-alt-circle-right'}
+							title={'Play'}
+							callBack={() => this.Start()}
+						/>
+					</div>
+				</PanelComponent>
+			</Redirect>
 		);
 	}
 

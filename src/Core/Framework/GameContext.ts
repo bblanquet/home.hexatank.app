@@ -18,6 +18,7 @@ export class GameContext {
 
 	//events
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
+	public OnPatrolSetting: LiteEvent<Boolean> = new LiteEvent<Boolean>();
 	public GameStatusChanged: LiteEvent<GameStatus> = new LiteEvent<GameStatus>();
 
 	//elements

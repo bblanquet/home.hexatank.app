@@ -18,6 +18,7 @@ export default class LoadingComponent extends Component<any, { percentage: numbe
 				});
 
 				if (percentage === 100) {
+					SpriteProvider.SetLoaded(true);
 					listener.Clear();
 				}
 			});

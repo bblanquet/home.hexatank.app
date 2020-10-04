@@ -1,16 +1,16 @@
 import { OrderState } from '../OrderState';
 import { Cell } from '../../../Items/Cell/Cell';
-import { SimpleOrder } from '../SimpleOrder';
 import { Order } from '../Order';
 import { BasicItem } from '../../../Items/BasicItem';
 import { Archive } from '../../../Framework/ResourceArchiver';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { OrderKind } from '../OrderKind';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
+import { SmartPreciseOrder } from './SmartPreciseOrder';
 
 export class PatrolOrder extends Order {
 	private _currentPatrolcell: Cell;
-	private _currentOrder: SimpleOrder;
+	private _currentOrder: SmartPreciseOrder;
 	private _patrolPathDisplay: Array<BasicItem>;
 
 	constructor(private _patrolcells: Array<Cell>, private _v: Vehicle) {
@@ -23,7 +23,11 @@ export class PatrolOrder extends Order {
 		return OrderKind.SimpleSmart;
 	}
 	public GetCells(): Cell[] {
-		return this._patrolcells;
+		if (this._currentOrder) {
+			return this._currentOrder.GetCells();
+		} else {
+			return [];
+		}
 	}
 
 	public Cancel(): void {
@@ -41,7 +45,7 @@ export class PatrolOrder extends Order {
 	private CreatePath(): void {
 		if (!isNullOrUndefined(this._patrolcells) && 0 < this._patrolcells.length) {
 			this._patrolcells.forEach((cell) => {
-				const pathItem = new BasicItem(cell.GetBoundingBox(), Archive.direction.patrol);
+				const pathItem = new BasicItem(cell.GetBoundingBox(), Archive.direction.moving);
 
 				pathItem.SetVisible(this._v.IsSelected.bind(this._v));
 				pathItem.SetAlive(this._v.IsAlive.bind(this._v));
@@ -68,7 +72,29 @@ export class PatrolOrder extends Order {
 	}
 
 	private StartMoving() {
-		this._currentOrder = new SimpleOrder(this._currentPatrolcell, this._v);
+		this.SetCurrentOrder(new SmartPreciseOrder(this._currentPatrolcell, this._v));
 		this._currentOrder.Do();
+	}
+
+	private SetCurrentOrder(order: SmartPreciseOrder): void {
+		this.Clear();
+		this._currentOrder = order;
+		this._currentOrder.OnPathCreated.On(this.InvokePathCreated.bind(this));
+		this._currentOrder.OnNextCell.On(this.InvokeNextCell.bind(this));
+	}
+
+	private Clear() {
+		if (this._currentOrder) {
+			this._currentOrder.OnPathCreated.Off(this.InvokePathCreated.bind(this));
+			this._currentOrder.OnNextCell.Off(this.InvokeNextCell.bind(this));
+		}
+	}
+
+	private InvokePathCreated(src: any, cells: Cell[]): void {
+		this.OnPathCreated.Invoke(this, cells);
+	}
+
+	private InvokeNextCell(src: any, cell: Cell): void {
+		this.OnNextCell.Invoke(this, cell);
 	}
 }

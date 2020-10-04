@@ -10,6 +10,7 @@ import DropDownComponent from '../Common/DropDown/DropDownComponent';
 import { DeltaRecordCurve } from './Comparers/DeltaRecordCurve';
 import TextComponent from '../Common/Text/TextComponent';
 import { Factory, FactoryKey } from '../../Factory';
+import Redirect from '../Redirect/RedirectComponent';
 
 export default class ComparerComponent extends Component<
 	{},
@@ -43,20 +44,27 @@ export default class ComparerComponent extends Component<
 	}
 
 	componentWillMount() {
-		[ this._d1, this._d2 ] = this._compareService.Publish();
+		if (this._compareService) {
+			const result = this._compareService.Publish();
+			if (result) {
+				[ this._d1, this._d2 ] = result;
+			}
+		}
 	}
 
 	componentDidMount() {
-		this._compareService = Factory.Load<ICompareService>(FactoryKey.Compare);
-		this._trackingComparer = new RecordComparer(this._d1, this._d2);
-		const hqId = this._d1.Hqs.Keys()[0];
-		const unitId = this._d1.Hqs.Get(hqId).Units.Keys()[0];
-		this.setState({
-			HqIds: this._d1.Hqs.Keys(),
-			SelectedHqId: hqId,
-			SelectedUnitId: unitId,
-			UnitIds: this._d1.Hqs.Get(hqId).Units.Keys()
-		});
+		if (this._d1 && this._d2) {
+			this._compareService = Factory.Load<ICompareService>(FactoryKey.Compare);
+			this._trackingComparer = new RecordComparer(this._d1, this._d2);
+			const hqId = this._d1.Hqs.Keys()[0];
+			const unitId = this._d1.Hqs.Get(hqId).Units.Keys()[0];
+			this.setState({
+				HqIds: this._d1.Hqs.Keys(),
+				SelectedHqId: hqId,
+				SelectedUnitId: unitId,
+				UnitIds: this._d1.Hqs.Get(hqId).Units.Keys()
+			});
+		}
 	}
 
 	componentDidUpdate() {
@@ -71,62 +79,74 @@ export default class ComparerComponent extends Component<
 
 	render() {
 		return (
-			<PanelComponent>
-				<div class="container-center">
-					<div class="container-center-horizontal">
-						<DropDownComponent
-							OnInput={(e: any) =>
-								this.setState({
-									SelectedHqId: e.target.value,
-									SelectedUnitId: this._d1.Hqs.Get(e.target.value).Units.Keys()[0]
-								})}
-							Label={'Hq'}
-							Values={this.state.HqIds}
-						/>
-						<div class="small-right-margin" />
-						<DropDownComponent
-							OnInput={(e: any) => {
-								this.setState({
-									SelectedUnitId: e.target.value
-								});
+			<Redirect>
+				<PanelComponent>
+					<div class="container-center">
+						<div class="container-center-horizontal">
+							<DropDownComponent
+								OnInput={(e: any) =>
+									this.setState({
+										SelectedHqId: e.target.value,
+										SelectedUnitId: this._d1.Hqs.Get(e.target.value).Units.Keys()[0]
+									})}
+								Label={'Hq'}
+								Values={this.state.HqIds}
+							/>
+							<div class="small-right-margin" />
+							<DropDownComponent
+								OnInput={(e: any) => {
+									this.setState({
+										SelectedUnitId: e.target.value
+									});
+								}}
+								Label={'Unit'}
+								Values={this.GetUnitIds()}
+							/>
+						</div>
+
+						<canvas
+							style="border-radius: 10px; margin-top:30px; margin-bottom:20px"
+							ref={(e) => {
+								this._canvas = e;
 							}}
-							Label={'Unit'}
-							Values={this.GetUnitIds()}
-						/>
-					</div>
-
-					<canvas
-						style="border-radius: 10px; margin-top:30px; margin-bottom:20px"
-						ref={(e) => {
-							this._canvas = e;
-						}}
-						onClick={(e: any) => {
-							var activePoints = this._chart.getElementsAtEvent(e);
-							if (0 < activePoints.length) {
-								const index = (activePoints[0] as any)._index;
-								this.setState({
-									CurveIndex: index
-								});
-							}
-						}}
-					/>
-
-					<div class="container-center-horizontal">
-						<TextComponent onInput={(e: any) => {}} label={'D1'} isEditable={false} value={this.GetD1()} />
-						<div class="small-right-margin" />
-						<TextComponent onInput={(e: any) => {}} label={'D2'} isEditable={false} value={this.GetD2()} />
-					</div>
-					<div class="container-center-horizontal">
-						<BlackButtonComponent
-							icon={'fas fa-undo-alt'}
-							title={'Back'}
-							callBack={() => {
-								this.Quit();
+							onClick={(e: any) => {
+								var activePoints = this._chart.getElementsAtEvent(e);
+								if (0 < activePoints.length) {
+									const index = (activePoints[0] as any)._index;
+									this.setState({
+										CurveIndex: index
+									});
+								}
 							}}
 						/>
+
+						<div class="container-center-horizontal">
+							<TextComponent
+								onInput={(e: any) => {}}
+								label={'D1'}
+								isEditable={false}
+								value={this.GetD1()}
+							/>
+							<div class="small-right-margin" />
+							<TextComponent
+								onInput={(e: any) => {}}
+								label={'D2'}
+								isEditable={false}
+								value={this.GetD2()}
+							/>
+						</div>
+						<div class="container-center-horizontal">
+							<BlackButtonComponent
+								icon={'fas fa-undo-alt'}
+								title={'Back'}
+								callBack={() => {
+									this.Quit();
+								}}
+							/>
+						</div>
 					</div>
-				</div>
-			</PanelComponent>
+				</PanelComponent>
+			</Redirect>
 		);
 	}
 

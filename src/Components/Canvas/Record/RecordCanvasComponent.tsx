@@ -10,6 +10,7 @@ import CanvasComponent from '../CanvasComponent';
 import { IRecordService } from '../../../Services/Record/IRecordService';
 import { Factory, FactoryKey } from '../../../Factory';
 import { route } from 'preact-router';
+import Redirect from '../../Redirect/RedirectComponent';
 
 export default class RecordCanvasComponent extends Component<
 	{},
@@ -55,12 +56,14 @@ export default class RecordCanvasComponent extends Component<
 
 	render() {
 		return (
-			<div style="width=100%">
-				{this.TopMenuRender()}
-				{this.BottomMenuRender()}
-				<CanvasComponent />
-				{this.LeftMenuRender()}
-			</div>
+			<Redirect>
+				<div style="width=100%">
+					{this.TopMenuRender()}
+					{this.BottomMenuRender()}
+					<CanvasComponent />
+					{this.LeftMenuRender()}
+				</div>
+			</Redirect>
 		);
 	}
 

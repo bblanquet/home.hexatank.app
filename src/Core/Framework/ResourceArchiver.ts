@@ -86,8 +86,7 @@ export const Archive = {
 	option: './option.svg',
 	direction: {
 		target: './direction/target.svg',
-		moving: './direction/motion.svg',
-		patrol: './direction/patrol2.svg'
+		moving: './direction/motion.svg'
 	},
 	building: {
 		hq: {

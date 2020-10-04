@@ -22,6 +22,8 @@ import RedButtonComponent from '../../Common/Button/Stylish/RedButtonComponent';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
 import { Factory, FactoryKey } from '../../../Factory';
 import PanelComponent from '../../Common/Panel/PanelComponent';
+import Redirect from '../../Redirect/RedirectComponent';
+import { SpriteProvider } from '../../../Core/Framework/SpriteProvider';
 
 export default class HostingComponent extends Component<any, HostState> {
 	private _hasSettings: boolean = false;
@@ -36,6 +38,10 @@ export default class HostingComponent extends Component<any, HostState> {
 
 	constructor(props: any) {
 		super(props);
+
+		if (!SpriteProvider.IsLoaded()) {
+			return;
+		}
 
 		this._appService = Factory.Load<IAppService>(FactoryKey.App);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
@@ -67,22 +73,33 @@ export default class HostingComponent extends Component<any, HostState> {
 		if (this.state.IsAdmin) {
 			this._socket.EmitServer<any>(PacketKind.Hide, {});
 		}
-		this._observers.forEach((obs) => {
-			this._socket.OnReceived.Off(obs);
-		});
-		this._socket.OnPeerConnectionChanged.Clear();
+		if (this._observers) {
+			this._observers.forEach((obs) => {
+				this._socket.OnReceived.Off(obs);
+			});
+		}
+
+		if (this._socket) {
+			this._socket.OnPeerConnectionChanged.Clear();
+		}
 	}
 
 	render() {
 		return (
-			<ToastComponent socket={this._socket} Player={this.state.Player}>
-				<PanelComponent>
-					{this.GetUpdsideButton()}
-					<PlayersComponent Socket={this._socket} HostState={this.state} />
-					{this.GetDownsideButton()}
-					{this._hasSettings ? <OptionComponent Update={this.Update.bind(this)} /> : ''}
-				</PanelComponent>
-			</ToastComponent>
+			<Redirect>
+				{SpriteProvider.IsLoaded() ? (
+					<ToastComponent socket={this._socket} Player={this.state.Player}>
+						<PanelComponent>
+							{this.GetUpdsideButton()}
+							<PlayersComponent Socket={this._socket} HostState={this.state} />
+							{this.GetDownsideButton()}
+							{this._hasSettings ? <OptionComponent Update={this.Update.bind(this)} /> : ''}
+						</PanelComponent>
+					</ToastComponent>
+				) : (
+					''
+				)}
+			</Redirect>
 		);
 	}
 

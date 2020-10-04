@@ -85,7 +85,7 @@ export class CombinationProvider {
 			new TruckDiamondCombination(),
 			new TruckCombination(),
 			new TankCombination(),
-			new PatrolCombination(),
+			new PatrolCombination(gameContext),
 			new ClearTrashCombination(checker),
 			new UnselectCombination(checker, gameContext),
 			new SelectionCombination(checker, gameContext),

@@ -1,32 +1,33 @@
 import * as moment from 'moment';
 import { h, Component } from 'preact';
+import { Dictionnary } from '../../../Core/Utils/Collections/Dictionnary';
 import SmActiveButtonComponent from '../Button/Stylish/SmActiveButtonComponent';
 import Icon from '../Icon/IconComponent';
 
 export default class RangeComponent extends Component<
-	{ onChange: (e: any) => void; dataSet: number[] },
-	{ value: string; isActive: boolean; currentValue: string }
+	{ onChange: (e: number) => void; dataSet: number[] },
+	{ value: number; isActive: boolean }
 > {
 	private _toolTip: HTMLElement;
 	private _input: HTMLInputElement;
+	private _indexes: Dictionnary<number> = new Dictionnary<number>();
 	constructor() {
 		super();
 	}
 
 	componentDidMount() {
-		document.addEventListener('DOMContentLoaded', () => this.SetBubble(this._input, this._toolTip));
-		this._input.addEventListener('input', () => this.SetBubble(this._input, this._toolTip));
-	}
-
-	componentDidUpdate() {
 		if (!this.state.value) {
 			this.setState({
-				value: moment(new Date(this.props.dataSet[0])).format('mm:ss')
+				value: this.props.dataSet[0]
 			});
 		}
 	}
 
-	private SetBubble(range: any, rangeV: any) {
+	componentDidUpdate() {
+		this.SetPosition(this._input, this._toolTip);
+	}
+
+	private SetPosition(range: any, rangeV: any) {
 		const newValue = Number((range.value - range.min) * 100 / (range.max - range.min));
 		const newPosition = 10 - newValue * 0.2;
 		rangeV.style.left = `calc(${newValue}% + (${newPosition}px))`;
@@ -36,6 +37,31 @@ export default class RangeComponent extends Component<
 		return 'padding:5px 5px 5px 5px; background: rgb(255,255,255);background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(230,230,230,1) 100%);';
 	}
 
+	private Pushed(): void {
+		this.setState({ isActive: !this.state.isActive });
+		this.Play();
+	}
+
+	private Play(): void {
+		setTimeout(() => {
+			if (this.state.isActive) {
+				if (this._indexes.IsEmpty()) {
+					this.props.dataSet.forEach((d, index) => {
+						this._indexes.Add(d.toString(), index);
+					});
+				}
+				const index = this._indexes.Get(this.state.value.toString()) + 1;
+				const value = this.props.dataSet[index];
+				this._input.value = value.toString();
+				this.setState({
+					value: value
+				});
+				this.props.onChange(this.state.value);
+				this.Play();
+			}
+		}, 500);
+	}
+
 	render() {
 		return (
 			<div>
@@ -43,9 +69,7 @@ export default class RangeComponent extends Component<
 					<SmActiveButtonComponent
 						left={<Icon Value={'fas fa-play'} />}
 						right={<Icon Value={'fas fa-pause'} />}
-						callBack={() => {
-							this.setState({ isActive: !this.state.isActive });
-						}}
+						callBack={() => this.Pushed()}
 						isActive={this.state.isActive}
 					/>
 					<div class="range-wrap" style="margin:5px 5px 5px 5px;">
@@ -55,7 +79,7 @@ export default class RangeComponent extends Component<
 								this._toolTip = dom;
 							}}
 						>
-							<div class="btn-space">{this.state.value}</div>
+							<div class="btn-space">{moment(new Date(this.state.value)).format('mm:ss')}</div>
 						</div>
 						<input
 							ref={(dom) => {
@@ -67,10 +91,10 @@ export default class RangeComponent extends Component<
 							max={0 < this.props.dataSet.length ? this.props.dataSet[this.props.dataSet.length - 1] : 0}
 							list="num"
 							onInput={(e: any) => {
-								this.props.onChange(e);
 								this.setState({
-									value: moment(new Date(+e.target.value)).format('mm:ss')
+									value: +e.target.value
 								});
+								this.props.onChange(this.state.value);
 							}}
 						/>
 						<datalist id="num">

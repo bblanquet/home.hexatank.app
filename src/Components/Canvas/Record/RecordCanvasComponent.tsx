@@ -15,7 +15,6 @@ import Redirect from '../../Redirect/RedirectComponent';
 export default class RecordCanvasComponent extends Component<
 	{},
 	{
-		dataSet: number[];
 		Item: Item;
 	}
 > {
@@ -29,7 +28,6 @@ export default class RecordCanvasComponent extends Component<
 		this._gameService = Factory.Load<IGameContextService>(FactoryKey.GameContext);
 		this._recordService = Factory.Load<IRecordService>(FactoryKey.Record);
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
-		this.setState({ dataSet: [] });
 	}
 	private OnItemSelectionChanged(obj: any, item: ISelectable): void {
 		if (!item.IsSelected()) {
@@ -42,12 +40,12 @@ export default class RecordCanvasComponent extends Component<
 
 	componentDidMount() {
 		const context = this._gameService.Publish();
-		const record = this._recordService.Publish();
-		this._updater = new RecordCanvasUpdater(record, context);
+		this._updater = new RecordCanvasUpdater(this.GetRecord(), context);
 		context.OnItemSelected.On(this.UpdateSelection.bind(this));
-		this.setState({
-			dataSet: record.Dates
-		});
+	}
+
+	private GetRecord() {
+		return this._recordService.Publish();
 	}
 
 	componentWillUnmount() {}
@@ -61,8 +59,8 @@ export default class RecordCanvasComponent extends Component<
 					{this.TopMenuRender()}
 					<div class="absolute-center-bottom full-width">
 						<RangeComponent
-							dataSet={this.state.dataSet}
-							onChange={(e: any) => this.HandleRangeChanged(e)}
+							dataSet={this.GetRecord().Dates}
+							onChange={(e: number) => this.HandleRangeChanged(e)}
 						/>
 					</div>
 					<CanvasComponent />
@@ -102,7 +100,7 @@ export default class RecordCanvasComponent extends Component<
 		);
 	}
 
-	private HandleRangeChanged(e: any): void {
-		this._updater.SetDate(e.target.value);
+	private HandleRangeChanged(e: number): void {
+		this._updater.SetDate(e);
 	}
 }

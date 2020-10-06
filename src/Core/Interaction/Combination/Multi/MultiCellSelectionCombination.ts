@@ -1,3 +1,4 @@
+import { BasicField } from './../../../Items/Cell/Field/BasicField';
 import { CellGroup } from './../../../Items/CellGroup';
 import { CombinationContext } from '../CombinationContext';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
@@ -5,6 +6,7 @@ import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { GameContext } from '../../../Framework/GameContext';
 import { ILayerService } from '../../../../Services/Layer/ILayerService';
 import { Factory, FactoryKey } from '../../../../Factory';
+import { CellState } from '../../../Items/Cell/CellState';
 
 export class MultiCellSelectionCombination extends AbstractSingleCombination {
 	private _layerService: ILayerService;
@@ -20,7 +22,9 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
-			const cells = this._multiSelectionContext.GetCells();
+			const cells = this._multiSelectionContext
+				.GetCells()
+				.filter((c) => c.GetField() instanceof BasicField && c.GetState() === CellState.Visible);
 			if (0 < cells.length) {
 				const cellGroup = new CellGroup();
 				cellGroup.SetCells(cells);

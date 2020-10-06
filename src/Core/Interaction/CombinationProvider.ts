@@ -33,7 +33,7 @@ import { MultiSelectionCombination } from './Combination/Multi/MultiSelectionCom
 import { DisplayMultiMenuCombination } from './Combination/Multi/DisplayMultiMenuCombination';
 import { SwitchToInfluenceCombination } from './Combination/SwitchToInfluenceCombination';
 import { SwitchToCellCombination } from './Combination/SwitchToCellCombination';
-import { SearchMoneyCombination } from './Combination/SearchMoneyCombination';
+import { FarmCombination } from './Combination/FarmCombination';
 import { AbortCombination } from './Combination/AbortCombination';
 import { SwitchToHeadquarterCombination } from './Combination/SwitchToHeadquarterCombination';
 import { PowerUpCombination } from './Combination/PowerUpCombination';
@@ -59,37 +59,45 @@ export class CombinationProvider {
 	GetCombination(checker: ISelectableChecker, gameContext: GameContext): ICombination[] {
 		const multiSelectionContext = new MultiSelectionContext();
 		return [
-			new AbortCombination(),
+			//CLEAR
 			new CancelCombination(),
-			new CamouflageCombination(),
 
-			new DisplayMultiMenuCombination(multiSelectionContext),
-			new ClearMultiCellBonusCombination(),
-			new ClearMultiSelectionMenuCombination(),
-			new ActiveMultiSelectionCombination(multiSelectionContext),
-			new MultiSelectionCombination(multiSelectionContext),
-			new MultiUnitSelectionCombination(multiSelectionContext, gameContext),
-			new MultiUnitOrderCombination(multiSelectionContext),
-			new MultiCellSelectionCombination(multiSelectionContext, gameContext),
-			new MultiCellBonusCombination(gameContext),
-			new SwithcMultiCombination(multiSelectionContext),
-
-			new FlagCellCombination(gameContext),
-			new SearchMoneyCombination(),
-			new AddTankCombination(gameContext),
-			new AddTruckCombination(gameContext),
+			//SINGLE SELECTION
 			new SwitchToCellCombination(),
 			new SwitchToVehicleCombination(gameContext),
 			new SwitchToInfluenceCombination(),
 			new SwitchToHeadquarterCombination(),
-			new TruckDiamondCombination(),
-			new TruckCombination(),
-			new TankCombination(),
-			new PatrolCombination(gameContext),
-			new ClearTrashCombination(checker),
 			new UnselectCombination(checker, gameContext),
 			new SelectionCombination(checker, gameContext),
+
+			//MULTI SELECTION
+			new ClearMultiCellBonusCombination(),
+			new ClearMultiSelectionMenuCombination(),
+			new DisplayMultiMenuCombination(multiSelectionContext),
+			new ActiveMultiSelectionCombination(multiSelectionContext),
+			new MultiSelectionCombination(multiSelectionContext),
+			new MultiCellSelectionCombination(multiSelectionContext, gameContext),
+			new MultiCellBonusCombination(gameContext),
+			new MultiUnitSelectionCombination(multiSelectionContext, gameContext),
+			new MultiUnitOrderCombination(multiSelectionContext),
+			new SwithcMultiCombination(multiSelectionContext),
+
+			//HQ
+			new AddTankCombination(gameContext),
+			new AddTruckCombination(gameContext),
+			new FlagCellCombination(gameContext),
+
+			//VEHICLE
+			new AbortCombination(),
+			new TruckDiamondCombination(),
+			new TruckCombination(),
+			new CamouflageCombination(),
+			new TankCombination(),
+			new PatrolCombination(gameContext),
 			new TargetCombination(),
+			new FarmCombination(),
+
+			//CELL
 			new ReactorCombination(gameContext),
 			new GenericCellCombination(
 				gameContext,
@@ -136,9 +144,14 @@ export class CombinationProvider {
 				(e) => e instanceof HealMenuItem,
 				(e) => new MedicField(e, gameContext.GetMainHq())
 			),
+
+			//REACTOR
 			new PowerDownCombination(),
 			new OverlockCombination(),
-			new PowerUpCombination(gameContext)
+			new PowerUpCombination(gameContext),
+
+			//CLEAR
+			new ClearTrashCombination(checker)
 		];
 	}
 }

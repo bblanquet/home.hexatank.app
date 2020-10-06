@@ -110,6 +110,10 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		this.OnFieldCountchanged.Invoke(this, this._fields.length);
 	}
 
+	public GetFieldCount(): number {
+		return this._fields.length;
+	}
+
 	public GetCurrentCell(): Cell {
 		return this._cell;
 	}

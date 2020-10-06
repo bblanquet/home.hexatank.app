@@ -1,10 +1,10 @@
 import { MoneyOrder } from '../../Ia/Order/Composite/MoneyOrder';
-import { Truck } from './../../Items/Unit/Truck';
-import { SearchMoneyMenuItem } from './../../Menu/Buttons/SearchMoneyMenuItem';
+import { Truck } from '../../Items/Unit/Truck';
+import { SearchMoneyMenuItem } from '../../Menu/Buttons/SearchMoneyMenuItem';
 import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 
-export class SearchMoneyCombination extends AbstractSingleCombination {
+export class FarmCombination extends AbstractSingleCombination {
 	IsMatching(context: CombinationContext): boolean {
 		return (
 			this.IsNormalMode(context) &&

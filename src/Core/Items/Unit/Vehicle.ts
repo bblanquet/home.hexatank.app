@@ -371,7 +371,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	}
 
 	private Switch() {
-		if (!this.HasOrder() && this._pendingOrder) {
+		if (!this.HasOrder() && !this.HasNextCell() && this._pendingOrder) {
 			this._order = this._pendingOrder;
 			this._pendingOrder = null;
 			this.SetUiOrder();

@@ -54,7 +54,7 @@ export class StatsContext {
 		const time = this.GetTime();
 		this._gameContext.GetHqs().forEach((hq) => {
 			const curve = this._curves.Get(StatsKind[StatsKind.Cell]).find((c) => c.Color === hq.GetSkin().GetColor());
-			curve.Points.push(new DateValue(time, hq.GetDiamondCount()));
+			curve.Points.push(new DateValue(time, hq.GetFieldCount()));
 		});
 	}
 

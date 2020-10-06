@@ -1,0 +1,283 @@
+.custom-black-btn {
+	background-color: #1c1c1c;
+	color: white;
+	font-family: AnimalSilence;
+	letter-spacing: 0.5mm;
+	font-size: large;
+	text-align: center;
+	border-radius: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.custom-black-btn:hover {
+	background-color: #3f3f3f;
+	color: white;
+	font-family: AnimalSilence;
+	letter-spacing: 0.5mm;
+	font-size: large;
+	text-align: center;
+	border-radius: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.custom-black-btn:active {
+	background-color: #3f3f3f;
+	color: white;
+	font-family: AnimalSilence;
+	letter-spacing: 0.5mm;
+	font-size: large;
+	text-align: center;
+	border-radius: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.custom-black-border {
+	border: #6b5e39 solid 1px;
+	border-radius: 15px;
+	background: rgb(37, 37, 37);
+	background: linear-gradient(
+		90deg,
+		rgba(37, 37, 37, 1) 0%,
+		rgba(94, 94, 94, 1) 25%,
+		rgba(144, 144, 144, 1) 50%,
+		rgba(94, 94, 94, 1) 75%,
+		rgba(37, 37, 37, 1) 100%
+	);
+	padding: 4px 0px 4px 0px;
+}
+
+.custom-sm-red-border {
+	border: #6b5e39 solid 1px;
+	border-radius: 15px;
+	background: rgb(187, 43, 36);
+	background: linear-gradient(
+		90deg,
+		rgba(187, 43, 36, 1) 0%,
+		rgba(233, 95, 50, 1) 25%,
+		rgba(241, 143, 52, 1) 50%,
+		rgba(233, 95, 50, 1) 75%,
+		rgba(187, 43, 36, 1) 100%
+	);
+	padding: 2px 0px 2px 0px;
+}
+
+.custom-sm-black-border {
+	border: #6b5e39 solid 1px;
+	border-radius: 15px;
+	background: rgb(37, 37, 37);
+	background: linear-gradient(
+		90deg,
+		rgba(37, 37, 37, 1) 0%,
+		rgba(94, 94, 94, 1) 25%,
+		rgba(144, 144, 144, 1) 50%,
+		rgba(94, 94, 94, 1) 75%,
+		rgba(37, 37, 37, 1) 100%
+	);
+	padding: 2px 0px 2px 0px;
+}
+
+.custom-btn {
+	background-color: #ba1818;
+	color: white;
+	font-family: AnimalSilence;
+	letter-spacing: 0.5mm;
+	font-size: large;
+	text-align: center;
+	border-radius: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.custom-btn:hover {
+	background-color: #e02020;
+	color: white;
+	font-family: AnimalSilence;
+	letter-spacing: 0.5mm;
+	font-size: large;
+	text-align: center;
+	border-radius: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.custom-btn:active {
+	background-color: #e02020;
+	color: white;
+	font-family: AnimalSilence;
+	letter-spacing: 0.5mm;
+	font-size: large;
+	text-align: center;
+	border-radius: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.custom-blue-btn {
+	background-color: rgba(50, 155, 233, 1);
+	color: white;
+	font-family: AnimalSilence;
+	letter-spacing: 0.5mm;
+	font-size: large;
+	text-align: center;
+	border-radius: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.custom-blue-btn:hover {
+	background-color: #67b7f2;
+	color: white;
+	font-family: AnimalSilence;
+	letter-spacing: 0.5mm;
+	font-size: large;
+	text-align: center;
+	border-radius: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.custom-blue-btn:active {
+	background-color: #67b7f2;
+	color: white;
+	font-family: AnimalSilence;
+	letter-spacing: 0.5mm;
+	font-size: large;
+	text-align: center;
+	border-radius: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.custom-red-border {
+	border: #6b5e39 solid 1px;
+	border-radius: 15px;
+	background: rgb(187, 43, 36);
+	background: linear-gradient(
+		90deg,
+		rgba(187, 43, 36, 1) 0%,
+		rgba(233, 95, 50, 1) 25%,
+		rgba(241, 143, 52, 1) 50%,
+		rgba(233, 95, 50, 1) 75%,
+		rgba(187, 43, 36, 1) 100%
+	);
+	padding: 4px 0px 4px 0px;
+}
+
+.custom-sm-blue-border {
+	border: #6b5e39 solid 1px;
+	border-radius: 15px;
+	background: rgb(36, 105, 187);
+	background: linear-gradient(
+		90deg,
+		rgba(36, 105, 187, 1) 0%,
+		rgba(50, 155, 233, 1) 25%,
+		rgba(52, 241, 198, 1) 50%,
+		rgba(50, 155, 233, 1) 75%,
+		rgba(36, 105, 187, 1) 100%
+	);
+	padding: 2px 0px 2px 0px;
+}
+
+.custom-blue-border {
+	border: #6b5e39 solid 1px;
+	border-radius: 15px;
+	background: rgb(36, 105, 187);
+	background: linear-gradient(
+		90deg,
+		rgba(36, 105, 187, 1) 0%,
+		rgba(50, 155, 233, 1) 25%,
+		rgba(52, 241, 198, 1) 50%,
+		rgba(50, 155, 233, 1) 75%,
+		rgba(36, 105, 187, 1) 100%
+	);
+	padding: 4px 0px 4px 0px;
+}
+
+.custom-border-layout-2 {
+	padding: 3px 2px 3px 2px;
+	border-radius: 18px;
+	background: rgb(198, 198, 198);
+	background: linear-gradient(
+		90deg,
+		rgba(198, 198, 198, 1) 0%,
+		rgba(198, 198, 198, 1) 48%,
+		rgba(198, 198, 198, 1) 50%,
+		rgba(219, 219, 219, 1) 51%,
+		rgba(219, 219, 219, 1) 100%
+	);
+	border-bottom: #9c9b9b solid 4px;
+}
+
+.custom-sm-border-layout {
+	padding: 3px 2px 3px 2px;
+	border-radius: 18px;
+	background: rgb(198, 198, 198);
+	background: linear-gradient(
+		90deg,
+		rgba(198, 198, 198, 1) 0%,
+		rgba(198, 198, 198, 1) 48%,
+		rgba(198, 198, 198, 1) 50%,
+		rgba(219, 219, 219, 1) 51%,
+		rgba(219, 219, 219, 1) 100%
+	);
+}
+
+.custom-border-layout-3 {
+	border-radius: 15px;
+	background-color: rgba(0, 0, 0, 0);
+	border-bottom: rgba(0, 0, 0, 0.75) solid 6px;
+}
+
+.custom-drop-down-menu {
+	margin-left: 20px;
+	border: solid rgba(219, 219, 219, 1) 3px;
+	background: rgb(168, 39, 32);
+	background: linear-gradient(
+		90deg,
+		rgba(168, 39, 32, 1) 0%,
+		rgba(201, 84, 45) 25%,
+		rgb(202, 120, 43) 50%,
+		rgb(201, 84, 45) 75%,
+		rgba(168, 39, 32, 1) 100%
+	);
+}
+
+.custom-drop-down-button {
+	background-color: #9b1616;
+	color: white;
+	font-family: AnimalSilence;
+	letter-spacing: 0.5mm;
+	font-size: large;
+	text-align: center;
+}
+
+/* and this styles the dropdwon trigger link, when open */
+.custom-drop-down-button:hover {
+	background-color: #c01b1b;
+	color: white;
+	font-family: AnimalSilence;
+	letter-spacing: 0.5mm;
+	font-size: large;
+	text-align: center;
+}

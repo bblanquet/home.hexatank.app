@@ -1,3 +1,12 @@
+.unselectable {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
 ::-webkit-scrollbar {
 	width: 12px;
 }
@@ -11,8 +20,8 @@
 	height: 6px;
 	border: 4px solid rgba(0, 0, 0, 0);
 	background-clip: padding-box;
-	-webkit-border-radius: 7px;
 	background-color: rgba(0, 0, 0, 0.15);
+	-webkit-border-radius: 7px;
 	-webkit-box-shadow: inset -1px -1px 0px rgba(0, 0, 0, 0.05), inset 1px 1px 0px rgba(0, 0, 0, 0.05);
 }
 
@@ -67,39 +76,6 @@
 	}
 }
 
-.custom-drop-down-menu {
-	margin-left: 20px;
-	border: solid rgba(219, 219, 219, 1) 3px;
-	background: rgb(168, 39, 32);
-	background: linear-gradient(
-		90deg,
-		rgba(168, 39, 32, 1) 0%,
-		rgba(201, 84, 45) 25%,
-		rgb(202, 120, 43) 50%,
-		rgb(201, 84, 45) 75%,
-		rgba(168, 39, 32, 1) 100%
-	);
-}
-
-.custom-drop-down-button {
-	background-color: #9b1616;
-	color: white;
-	font-family: AnimalSilence;
-	letter-spacing: 0.5mm;
-	font-size: large;
-	text-align: center;
-}
-
-/* and this styles the dropdwon trigger link, when open */
-.custom-drop-down-button:hover {
-	background-color: #c01b1b;
-	color: white;
-	font-family: AnimalSilence;
-	letter-spacing: 0.5mm;
-	font-size: large;
-	text-align: center;
-}
-
 .fade {
 	-webkit-animation: fade 1s linear infinite alternate;
 }
@@ -127,44 +103,6 @@
 	max-width: 350px;
 	padding: 10px;
 	border: #c2c2c2 solid 3px;
-}
-
-.btn-simple-black {
-	font-family: Impact;
-	background-color: #222223;
-	border-bottom: 8px solid black;
-	color: gainsboro;
-}
-
-.btn-simple-black:hover {
-	background-color: black;
-	border-bottom: 8px solid black;
-	color: gainsboro;
-}
-
-.btn-simple-black:active {
-	background-color: black;
-	border-bottom: 8px solid black;
-	color: gainsboro;
-}
-
-.btn-simple-red {
-	font-family: Impact;
-	background-color: #5b1919;
-	border-bottom: 8px solid #300e0e;
-	color: gainsboro;
-}
-
-.btn-simple-red:hover {
-	background-color: #5b1919;
-	border-bottom: 8px solid #5b1919;
-	color: gainsboro;
-}
-
-.btn-simple-red:active {
-	background-color: #5b1919;
-	border-bottom: 8px solid #5b1919;
-	color: gainsboro;
 }
 
 .custom-table {
@@ -225,6 +163,10 @@
 
 .fit-content {
 	width: fit-content;
+}
+
+.fit-height {
+	height: fit-content;
 }
 
 .fit2 {
@@ -528,17 +470,6 @@ body {
 	border-radius: 5px;
 }
 
-input[type='range']::-webkit-slider-thumb {
-	background-color: #e9e9e9;
-	border: 1px solid #cecece;
-	height: 20px;
-	width: 20px;
-}
-
-input[type="file"] {
-	display: none;
-}
-
 .foe-talking {
 	font-family: Impact;
 	background: #262626;
@@ -587,832 +518,48 @@ input[type="file"] {
 	border: rgba(198, 198, 198, 1) solid 5px;
 }
 
-.custom-black-btn {
-	background-color: #1c1c1c;
-	color: white;
-	font-family: AnimalSilence;
-	letter-spacing: 0.5mm;
-	font-size: large;
-	text-align: center;
-	border-radius: 15px;
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-top: 3px;
-	padding-bottom: 3px;
+input[type=range] {
+	-webkit-appearance: none;
+	margin: 20px 0;
+	width: 100%;
 }
-
-.custom-black-btn:hover {
-	background-color: #3f3f3f;
-	color: white;
-	font-family: AnimalSilence;
-	letter-spacing: 0.5mm;
-	font-size: large;
-	text-align: center;
-	border-radius: 15px;
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-top: 3px;
-	padding-bottom: 3px;
+input[type=range]:focus {
+	outline: none;
 }
-
-.custom-black-btn:active {
-	background-color: #3f3f3f;
-	color: white;
-	font-family: AnimalSilence;
-	letter-spacing: 0.5mm;
-	font-size: large;
-	text-align: center;
-	border-radius: 15px;
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-top: 3px;
-	padding-bottom: 3px;
-}
-
-.custom-black-border {
-	border: #6b5e39 solid 1px;
-	border-radius: 15px;
+input[type=range]::-webkit-slider-runnable-track {
+	width: 100%;
+	height: 4px;
+	cursor: pointer;
 	background: rgb(37, 37, 37);
-	background: linear-gradient(
-		90deg,
-		rgba(37, 37, 37, 1) 0%,
-		rgba(94, 94, 94, 1) 25%,
-		rgba(144, 144, 144, 1) 50%,
-		rgba(94, 94, 94, 1) 75%,
-		rgba(37, 37, 37, 1) 100%
-	);
-	padding: 4px 0px 4px 0px;
+	border-radius: 25px;
 }
-
-.custom-sm-red-border {
-	border: #6b5e39 solid 1px;
-	border-radius: 15px;
-	background: rgb(187, 43, 36);
-	background: linear-gradient(
-		90deg,
-		rgba(187, 43, 36, 1) 0%,
-		rgba(233, 95, 50, 1) 25%,
-		rgba(241, 143, 52, 1) 50%,
-		rgba(233, 95, 50, 1) 75%,
-		rgba(187, 43, 36, 1) 100%
-	);
-	padding: 2px 0px 2px 0px;
+input[type=range]::-webkit-slider-thumb {
+	height: 20px;
+	width: 20px;
+	border-radius: 50%;
+	background: #fff;
+	box-shadow: 0 0 4px 0 rgba(0, 0, 0, 1);
+	cursor: pointer;
+	-webkit-appearance: none;
+	margin-top: -8px;
 }
-
-.custom-sm-black-border {
-	border: #6b5e39 solid 1px;
-	border-radius: 15px;
+input[type=range]:focus::-webkit-slider-runnable-track {
 	background: rgb(37, 37, 37);
-	background: linear-gradient(
-		90deg,
-		rgba(37, 37, 37, 1) 0%,
-		rgba(94, 94, 94, 1) 25%,
-		rgba(144, 144, 144, 1) 50%,
-		rgba(94, 94, 94, 1) 75%,
-		rgba(37, 37, 37, 1) 100%
-	);
-	padding: 2px 0px 2px 0px;
 }
-
-.custom-btn {
-	background-color: #ba1818;
-	color: white;
-	font-family: AnimalSilence;
-	letter-spacing: 0.5mm;
-	font-size: large;
+.range-wrap {
+	position: relative;
+	width: 100%;
+}
+.range-value {
+	top: -100%;
 	text-align: center;
+	background: rgb(37, 37, 37);
+	color: #fff;
+	font-weight: bold;
+	font-size: 12px;
+	display: block;
+	position: absolute;
+	transform: translate(-50%, 0);
 	border-radius: 15px;
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-top: 3px;
-	padding-bottom: 3px;
-}
-
-.custom-btn:hover {
-	background-color: #e02020;
-	color: white;
-	font-family: AnimalSilence;
-	letter-spacing: 0.5mm;
-	font-size: large;
-	text-align: center;
-	border-radius: 15px;
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-top: 3px;
-	padding-bottom: 3px;
-}
-
-.custom-btn:active {
-	background-color: #e02020;
-	color: white;
-	font-family: AnimalSilence;
-	letter-spacing: 0.5mm;
-	font-size: large;
-	text-align: center;
-	border-radius: 15px;
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-top: 3px;
-	padding-bottom: 3px;
-}
-
-.custom-blue-btn {
-	background-color: rgba(50, 155, 233, 1);
-	color: white;
-	font-family: AnimalSilence;
-	letter-spacing: 0.5mm;
-	font-size: large;
-	text-align: center;
-	border-radius: 15px;
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-top: 3px;
-	padding-bottom: 3px;
-}
-
-.custom-blue-btn:hover {
-	background-color: #67b7f2;
-	color: white;
-	font-family: AnimalSilence;
-	letter-spacing: 0.5mm;
-	font-size: large;
-	text-align: center;
-	border-radius: 15px;
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-top: 3px;
-	padding-bottom: 3px;
-}
-
-.custom-blue-btn:active {
-	background-color: #67b7f2;
-	color: white;
-	font-family: AnimalSilence;
-	letter-spacing: 0.5mm;
-	font-size: large;
-	text-align: center;
-	border-radius: 15px;
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-top: 3px;
-	padding-bottom: 3px;
-}
-
-.custom-red-border {
-	border: #6b5e39 solid 1px;
-	border-radius: 15px;
-	background: rgb(187, 43, 36);
-	background: linear-gradient(
-		90deg,
-		rgba(187, 43, 36, 1) 0%,
-		rgba(233, 95, 50, 1) 25%,
-		rgba(241, 143, 52, 1) 50%,
-		rgba(233, 95, 50, 1) 75%,
-		rgba(187, 43, 36, 1) 100%
-	);
-	padding: 4px 0px 4px 0px;
-}
-
-.custom-blue-border {
-	border: #6b5e39 solid 1px;
-	border-radius: 15px;
-	background: rgb(36, 105, 187);
-	background: linear-gradient(
-		90deg,
-		rgba(36, 105, 187, 1) 0%,
-		rgba(50, 155, 233, 1) 25%,
-		rgba(52, 241, 198, 1) 50%,
-		rgba(50, 155, 233, 1) 75%,
-		rgba(36, 105, 187, 1) 100%
-	);
-	padding: 4px 0px 4px 0px;
-}
-
-.custom-border-layout-2 {
-	padding: 3px 2px 3px 2px;
-	border-radius: 18px;
-	background: rgb(198, 198, 198);
-	background: linear-gradient(
-		90deg,
-		rgba(198, 198, 198, 1) 0%,
-		rgba(198, 198, 198, 1) 48%,
-		rgba(198, 198, 198, 1) 50%,
-		rgba(219, 219, 219, 1) 51%,
-		rgba(219, 219, 219, 1) 100%
-	);
-	border-bottom: #9c9b9b solid 4px;
-}
-
-.custom-sm-border-layout {
-	padding: 3px 2px 3px 2px;
-	border-radius: 18px;
-	background: rgb(198, 198, 198);
-	background: linear-gradient(
-		90deg,
-		rgba(198, 198, 198, 1) 0%,
-		rgba(198, 198, 198, 1) 48%,
-		rgba(198, 198, 198, 1) 50%,
-		rgba(219, 219, 219, 1) 51%,
-		rgba(219, 219, 219, 1) 100%
-	);
-}
-
-.custom-border-layout-3 {
-	border-radius: 15px;
-	background-color: rgba(0, 0, 0, 0);
-	border-bottom: rgba(0, 0, 0, 0.75) solid 6px;
-}
-
-.fill-border {
-	border-radius: 1.75em;
-	box-shadow: 0 0 0 0.8em #262626;
-}
-
-.fill-tank {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/tankButton.svg');
-}
-
-.fill-truck {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/truckButton.svg');
-}
-
-.fill-flag {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/flagMenu.svg');
-}
-
-.fill-money {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/moneyMenu.svg');
-}
-
-.fill-multi-tank {
-	overflow: hidden;
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/smartMenu/multiTank.svg');
-}
-
-.fill-multi-cell {
-	overflow: hidden;
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/smartMenu/multiCell.svg');
-}
-
-.fill-medic {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/healthMenu.svg');
-}
-
-.fill-speed {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/speedMenu.svg');
-}
-
-.fill-energy-speed {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/fastEnergyButton.svg');
-}
-
-.fill-energy-power {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/powerEnergyMenu.svg');
-}
-
-.fill-energy-heal {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/healEnergyMenu.svg');
-}
-
-.fill-power {
-	overflow: hidden;
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/powerMenu.svg');
-}
-
-.fill-poison {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/poisonMenu.svg');
-}
-
-.fill-slow {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/slowMenu.svg');
-}
-
-.fill-thunder {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/thunder.svg');
-}
-
-.fill-network {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/network.svg');
-}
-
-.end-message {
-	display: inline-block;
-	background-color: #313131;
-	border-radius: 50px;
-	border-bottom: 6px solid;
-	width: -webkit-max-content;
-	box-shadow: 0px 0px 5px 0px #191919;
-}
-
-.fill-rip {
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/RIP.svg');
-}
-
-.fill-victory {
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/victory.svg');
-}
-
-.fill-shield {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/shield.svg');
-}
-
-.fill-camouflage {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/camouflageMenu.svg');
-}
-
-.fill-noMoney {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/noMoney.svg');
-}
-
-.fill-lightIcon {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/elecIcon.svg');
-}
-
-.fill-influence {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/influenceButton.svg');
-}
-
-.fill-big {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/biggingMenu.svg');
-}
-
-.fill-small {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/smallingMenu.svg');
-}
-
-.fill-energy {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/energyButton.svg');
-}
-
-.fill-active {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/activate.svg');
-}
-
-.fill-minus {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/minusButton.svg');
-}
-
-.fill-plus {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/plusButton.svg');
-}
-
-.fill-effect {
-	overflow: hidden;
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/containerEffect.svg');
-}
-
-.fill-battle {
-	overflow: hidden;
-	width: 25px;
-	height: 25px;
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/battle.svg');
-}
-
-.fill-redArmy {
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-	background-size: contain;
-	background-position: bottom;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/redArmyLeader.svg');
-}
-
-.fill-blueArmy {
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-	background-size: contain;
-	background-position: bottom;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/blueArmyLeader.svg');
-}
-
-.fill-redArmy-eyes {
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	top: 0px;
-	overflow: hidden;
-	background-size: contain;
-	background-position: bottom;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/redArmyLeaderEyes.svg');
-}
-
-.fill-redArmy-eyes-blink {
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	top: 0px;
-	overflow: hidden;
-	background-size: contain;
-	background-position: bottom;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/redArmyLeaderBlink.svg');
-}
-
-.fill-redArmy-mouth-1 {
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	top: 0px;
-	overflow: hidden;
-	background-size: contain;
-	background-position: bottom;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/redArmyLeaderMouth1.svg');
-}
-
-.fill-redArmy-mouth-2 {
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	top: 0px;
-	overflow: hidden;
-	background-size: contain;
-	background-position: bottom;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/redArmyLeaderMouth2.svg');
-}
-
-.fill-redArmy-mouth-3 {
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	top: 0px;
-	overflow: hidden;
-	background-size: contain;
-	background-position: bottom;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/redArmyLeaderMouth3.svg');
-}
-
-.fill-blueArmy-eyes {
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	top: 0px;
-	overflow: hidden;
-	background-size: contain;
-	background-position: bottom;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/blueArmyLeaderEyes.svg');
-}
-
-.fill-blueArmy-eyes-blink {
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	top: 0px;
-	overflow: hidden;
-	background-size: contain;
-	background-position: bottom;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/blueArmyLeaderBlink.svg');
-}
-
-.fill-blueArmy-mouth-1 {
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	top: 0px;
-	overflow: hidden;
-	background-size: contain;
-	background-position: bottom;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/blueArmyLeaderMouth1.svg');
-}
-
-.fill-blueArmy-mouth-2 {
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	top: 0px;
-	overflow: hidden;
-	background-size: contain;
-	background-position: bottom;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/blueArmyLeaderMouth2.svg');
-}
-
-.fill-blueArmy-mouth-3 {
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	top: 0px;
-	overflow: hidden;
-	background-size: contain;
-	background-position: bottom;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/blueArmyLeaderMouth3.svg');
-}
-
-.fill-red-building-1 {
-	width: 100px;
-	height: 100px;
-	overflow: hidden;
-	background-size: contain;
-	background-position: bottom;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/redBuilding1.svg');
-}
-
-.fill-red-building-2 {
-	width: 100px;
-	height: 100px;
-	overflow: hidden;
-	background-size: contain;
-	background-position: bottom;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/redBuilding2.svg');
-}
-
-.fill-red-building-3 {
-	width: 100px;
-	height: 100px;
-	overflow: hidden;
-	background-size: contain;
-	background-position: bottom;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/redBuilding3.svg');
-}
-
-.fill-order {
-	width: 100%;
-	background-size: contain;
-	background-position: bottom;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/order.svg');
-}
-
-.fill-active-order {
-	width: 100%;
-	background-size: contain;
-	background-position: bottom;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/activeOrder.svg');
-}
-
-.fill-target {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/targetButton.svg');
-}
-
-.fill-sm-hexa {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/hexaIcon.svg');
-}
-
-.fill-sm-diam {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/diamIcon.svg');
-}
-
-.fill-sm-power {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/powerIcon.svg');
-}
-
-.fill-sm-tank {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/tanIcon.svg');
-}
-
-.fill-patrol {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/patrolButton.svg');
-}
-
-.fill-cancel {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/cancelButton.svg');
-}
-
-.fill-abort {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/AbortMenu.svg');
-}
-
-.fill-searchMoney {
-	overflow: hidden;
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}menu/SearchMoneyButton.svg');
-}
-
-.fill-diamond {
-	overflow: hidden;
-	background-size: cover;
-	background-position: center;
-	background-image: url('{{}}nature/diamondStone.svg');
-}
-
-.fill-option {
-	overflow: hidden;
-	background-size: cover;
-	background-position: center;
-	background-image: url('{{}}option.svg');
-}
-
-.fill-logo-back {
-	width: 100%;
-	height: 30vh;
-	background-size: auto;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/program6LogoBackground.svg');
-	pointer-events: none;
-}
-
-.fill-won {
-	width: 100%;
-	height: 30vh;
-	background-size: auto;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/won.svg');
-	pointer-events: none;
-}
-
-.fill-defeat {
-	width: 100%;
-	height: 30vh;
-	background-size: auto;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/defeat.svg');
-	pointer-events: none;
-}
-
-.fill-logo {
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	width: 100%;
-	height: 100%;
-	background-size: auto;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-image: url('{{}}components/program6Logo.svg');
-}
-
-body:after {
-	content: url('{{}}components/program6Logo.svg') url('{{}}components/program6LogoBackground.svg')
-		url('{{}}option.svg') url('{{}}nature/diamondStone.svg') url('{{}}nature/diamondStone.svg')
-		url('{{}}menu/SearchMoneyButton.svg') url('{{}}menu/AbortMenu.svg') url('{{}}menu/cancelButton.svg')
-		url('{{}}menu/patrolButton.svg') url('{{}}menu/targetButton.svg') url('{{}}menu/activeOrder.svg')
-		url('{{}}components/redArmyLeaderMouth3.svg') url('{{}}components/redArmyLeaderMouth2.svg')
-		url('{{}}components/redArmyLeaderMouth1.svg') url('{{}}components/redArmyLeaderBlink.svg')
-		url('{{}}components/redArmyLeaderEyes.svg') url('{{}}components/redArmyLeader.svg')
-		url('{{}}components/blueArmyLeaderMouth3.svg') url('{{}}components/blueArmyLeaderMouth2.svg')
-		url('{{}}components/blueArmyLeaderMouth1.svg') url('{{}}components/blueArmyLeaderBlink.svg')
-		url('{{}}components/blueArmyLeaderEyes.svg') url('{{}}components/blueArmyLeader.svg')
-		url('{{}}menu/tankButton.svg') url('{{}}menu/truckButton.svg') url('{{}}menu/flagMenu.svg')
-		url('{{}}menu/activate.svg') url('{{}}menu/healEnergyMenu.svg') url('{{}}menu/powerEnergyMenu.svg')
-		url('{{}}menu/fastEnergyButton.svg') url('{{}}menu/plusButton.svg') url('{{}}menu/minusButton.svg')
-		url('{{}}menu/energyButton.svg');
-	display: none;
+	border: 3px solid #fff;
 }

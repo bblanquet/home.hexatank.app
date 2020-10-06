@@ -277,6 +277,7 @@ export class ReactorField extends Field implements ISelectable {
 		}
 		this.OnSelectionChanged.Invoke(this, this);
 	}
+
 	private CreateArea() {
 		this.GetCell().GetSpecificRange(this._range).forEach((cell) => {
 			const b = BoundingBox.CreateFromBox((<Cell>cell).GetBoundingBox());

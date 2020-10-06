@@ -79,7 +79,7 @@ export class Cell extends Item implements ICell, ISelectable {
 	}
 
 	public SetSelected(isSelected: boolean): void {
-		this.SetProperty(Archive.selectionCell, (e) => (e.alpha = isSelected ? 1 : 0));
+		this.SetSelectedAppareance(isSelected);
 		this.OnSelectionChanged.Invoke(this, this);
 	}
 	public IsSelected(): boolean {
@@ -194,11 +194,16 @@ export class Cell extends Item implements ICell, ISelectable {
 		return this.Properties.BoundingBox;
 	}
 
+	protected SetSelectedAppareance(isSelected: boolean) {
+		this.SetProperty(Archive.selectionCell, (e) => (e.alpha = isSelected ? 1 : 0));
+	}
+
 	public SetState(state: CellState): void {
 		const isDiscovered = this._state === CellState.Hidden && state !== CellState.Hidden;
 
+		const isSelected = this.IsSelected();
 		this.GetSprites().forEach((sprite) => (sprite.alpha = 0));
-
+		this.SetSelectedAppareance(isSelected);
 		state = this.SetHqState(state);
 
 		this.OncellStateChanged(state);

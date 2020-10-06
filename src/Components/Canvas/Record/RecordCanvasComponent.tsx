@@ -59,7 +59,12 @@ export default class RecordCanvasComponent extends Component<
 			<Redirect>
 				<div style="width=100%">
 					{this.TopMenuRender()}
-					{this.BottomMenuRender()}
+					<div class="absolute-center-bottom full-width">
+						<RangeComponent
+							dataSet={this.state.dataSet}
+							onChange={(e: any) => this.HandleRangeChanged(e)}
+						/>
+					</div>
 					<CanvasComponent />
 					{this.LeftMenuRender()}
 				</div>
@@ -99,13 +104,5 @@ export default class RecordCanvasComponent extends Component<
 
 	private HandleRangeChanged(e: any): void {
 		this._updater.SetDate(e.target.value);
-	}
-
-	private BottomMenuRender() {
-		return (
-			<div class="absolute-center-bottom full-width">
-				<RangeComponent dataSet={this.state.dataSet} onChange={(e: any) => this.HandleRangeChanged(e)} />
-			</div>
-		);
 	}
 }

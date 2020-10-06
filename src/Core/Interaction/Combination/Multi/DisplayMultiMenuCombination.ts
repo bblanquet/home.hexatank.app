@@ -6,12 +6,16 @@ import { ISelectable } from '../../../ISelectable';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
 import { Factory, FactoryKey } from '../../../../Factory';
+import { ILayerService } from '../../../../Services/Layer/ILayerService';
 
 export class DisplayMultiMenuCombination extends AbstractSingleCombination {
 	private _interactionService: IInteractionService;
+	private _layerService: ILayerService;
+
 	constructor(private _multiSelectionContext: MultiSelectionContext) {
 		super();
 		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
+		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
 	}
 
 	IsMatching(context: CombinationContext): boolean {
@@ -20,6 +24,7 @@ export class DisplayMultiMenuCombination extends AbstractSingleCombination {
 
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
+			this._layerService.StartNavigation();
 			this._multiSelectionContext.Close();
 			if (0 < context.Items.length) {
 				this.UnSelectItem(context.Items[0]);

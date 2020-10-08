@@ -8,6 +8,7 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 	private _departureDate: number;
 	private _arrivalDate: number;
 	private _ratio: number;
+	private readonly milliseconds = 1000;
 
 	constructor(item: T) {
 		this._item = item;
@@ -38,7 +39,8 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 			this._ratio = 0;
 			this._departureDate = new Date().getTime();
 			this._arrivalDate =
-				new Date(this._departureDate + this._item.TranslatingDuration * 1000).getTime() - this._departureDate;
+				new Date(this._departureDate + this._item.GetTranslationDuration() * this.milliseconds).getTime() -
+				this._departureDate;
 		}
 
 		const currentDate = new Date().getTime() - this._departureDate;

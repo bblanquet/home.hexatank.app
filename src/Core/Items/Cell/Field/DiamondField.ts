@@ -34,8 +34,6 @@ export class DiamondField extends Field {
 	}
 
 	public Support(vehicule: Vehicle): void {
-		vehicule.TranslatingDuration = GameSettings.TranslatinDuration;
-		vehicule.RotatingDuration = GameSettings.RotatingDuration;
 		vehicule.Attack = GameSettings.Attack;
 
 		if (vehicule instanceof Truck) {

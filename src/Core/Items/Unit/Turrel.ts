@@ -16,12 +16,12 @@ import { GameSettings } from '../../Framework/GameSettings';
 import { ITimer } from '../../Utils/Timer/ITimer';
 
 export class Turrel extends Item implements IRotatable {
-	RotatingDuration: number;
 	CurrentRadius: number;
 	GoalRadius: number;
 	Base: Tank;
 	private _top: string;
 	private _currentCanon: number = 0;
+	private _rotatingDuration: number;
 
 	private _animationTimer: ITimer;
 	private _coolingDownTimer: ITimer;
@@ -37,7 +37,7 @@ export class Turrel extends Item implements IRotatable {
 	constructor(hqSkin: ItemSkin, item: Tank) {
 		super();
 		this._skin = hqSkin;
-		this.RotatingDuration = GameSettings.TurrelRotatingDuration;
+		this._rotatingDuration = GameSettings.TurrelRotatingDuration;
 		this.CurrentRadius = 0;
 		this.Z = ZKind.AboveCell;
 		this.Base = item;
@@ -62,6 +62,12 @@ export class Turrel extends Item implements IRotatable {
 		this.IsCentralRef = true;
 		this._rotationMaker = new RotationMaker<Turrel>(this);
 		this._angleFinder = new AngleFinder<Turrel>(this);
+	}
+	GetRotatingDuration(): number {
+		return this._rotatingDuration;
+	}
+	SetRotatingDuration(rotation: number): void {
+		this._rotatingDuration = rotation;
 	}
 
 	public GetBoundingBox(): BoundingBox {

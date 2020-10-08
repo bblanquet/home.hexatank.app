@@ -24,7 +24,7 @@ export class RotationMaker<T extends IRotatable> implements IRotationMaker {
 
 	private Extra() {
 		const angleRatio = Math.abs(this._angle / this._fullRotation);
-		const milliseconds = this._movable.RotatingDuration * this.ToMilliseconds;
+		const milliseconds = this._movable.GetRotatingDuration() * this.ToMilliseconds;
 		return milliseconds * angleRatio;
 	}
 

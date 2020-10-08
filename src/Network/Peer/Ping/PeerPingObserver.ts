@@ -38,7 +38,7 @@ export class PeerPingObserver {
 	private OnTwoWayPingReceived(peer: any, packet: NetworkMessage<number>): void {
 		if (packet.Recipient === this._owner && packet.Kind === PacketKind.TwoWayPing) {
 			const now = new Date().getTime();
-			const latency = Math.abs(now - packet.Content);
+			const latency = Math.abs(now - packet.Content) / 2;
 
 			const ping = new PingPacket();
 			ping.Latency = latency;

@@ -36,8 +36,8 @@ import { isNullOrUndefined } from '../../Utils/ToolBox';
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable, ICancellable {
 	public PowerUps: Array<Up> = [];
 	public Id: string;
-	public RotatingDuration: number = GameSettings.RotatingDuration;
-	public TranslatingDuration: number = GameSettings.TranslatinDuration;
+	private _rotatingDuration: number = GameSettings.RotatingDuration;
+	private _translatingDuration: number = GameSettings.TranslatinDuration;
 	public Attack: number = 10;
 	public IsPacific: boolean = false;
 	protected RootSprites: Array<string>;
@@ -119,6 +119,28 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this.OnCellChanged = new LiteEvent<Cell>();
 		this.Hq.AddVehicle(this);
 		this.SetProperty(Archive.wheels[0], (s) => (s.alpha = 1));
+	}
+
+	GetTranslationDuration(): number {
+		if (this._translatingDuration < GameSettings.GetFastestTranslation()) {
+			console.log(`Set speed ${GameSettings.GetFastestTranslation()}`);
+			return GameSettings.GetFastestTranslation();
+		}
+		console.log(`Get speed ${this._translatingDuration}`);
+		return this._translatingDuration;
+	}
+	SetTranslationDuration(translation: number): void {
+		this._translatingDuration += translation;
+		console.log(`Set speed ${this._translatingDuration}`);
+	}
+	GetRotatingDuration(): number {
+		if (this._rotatingDuration < GameSettings.GetFastestRotation()) {
+			return GameSettings.GetFastestRotation();
+		}
+		return this._rotatingDuration;
+	}
+	SetRotatingDuration(rotation: number): void {
+		this._rotatingDuration += rotation;
 	}
 
 	protected abstract RemoveCamouflage(): void;
@@ -301,6 +323,10 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		let previouscell = this._currentCell;
 		this._currentCell.CellStateChanged.Off(this._handleCellStateChanged);
 
+		if (previouscell.GetOccupier() === this) {
+			previouscell.SetOccupier(null);
+		}
+
 		this._currentCell = this._nextCell;
 
 		this.OnCellChanged.Invoke(this, previouscell);
@@ -308,7 +334,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this._currentCell.CellStateChanged.On(this._handleCellStateChanged);
 		this._nextCell = null;
 
-		if (this._currentCell.GetField().constructor.name !== previouscell.GetField().constructor.name) {
+		if (this._currentCell.GetField().constructor !== previouscell.GetField().constructor) {
 			this._currentCell.GetField().SetPowerUp(this);
 		}
 
@@ -364,7 +390,6 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
 		if (this.HasNextCell()) {
 			this.Moving();
-			this.SetCurrentCellEmpty();
 		}
 
 		super.Update(viewX, viewY);
@@ -375,23 +400,6 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 			this._order = this._pendingOrder;
 			this._pendingOrder = null;
 			this.SetUiOrder();
-		}
-	}
-
-	private SetCurrentCellEmpty() {
-		if (this._currentCell.GetOccupier() === this && this._nextCell) {
-			const currentcellDistance = Math.sqrt(
-				Math.pow(this._currentCell.GetBoundingBox().X - this.GetBoundingBox().X, 2) +
-					Math.pow(this._currentCell.GetBoundingBox().Y - this.GetBoundingBox().Y, 2)
-			);
-			const nextcellDistance = Math.sqrt(
-				Math.pow(this.GetBoundingBox().X - this._nextCell.GetBoundingBox().X, 2) +
-					Math.pow(this.GetBoundingBox().Y - this._nextCell.GetBoundingBox().Y, 2)
-			);
-
-			if (nextcellDistance < currentcellDistance) {
-				this._currentCell.SetOccupier(null);
-			}
 		}
 	}
 

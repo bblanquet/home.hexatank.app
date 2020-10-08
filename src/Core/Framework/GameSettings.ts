@@ -6,6 +6,14 @@ export class GameSettings {
 	public static MoneyLoadingSpeed: number = 3; //10
 	public static GeneralLife: number = 20; //100
 
+	public static GetFastestRotation(): number {
+		return 0.8;
+	}
+
+	public static GetFastestTranslation(): number {
+		return 0.5;
+	}
+
 	public static Size: number = 50;
 	public static MissileTranslationSpeed: number = 5;
 	public static IsPause: boolean = false;

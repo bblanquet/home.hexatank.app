@@ -1,12 +1,12 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import PanelComponent from '../Common/Panel/PanelComponent';
-import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
-import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
-import BlueButtonComponent from '../Common/Button/Stylish/BlueButtonComponent';
+import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import DropDownButtonComponent from '../Common/Button/Stylish/DropDownButtonComponent';
 import Redirect from '../Redirect/RedirectComponent';
 import { ButtonOption } from '../Common/Button/ButtonOption';
+import Icon from '../Common/Icon/IconComponent';
+import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 
 export default class HomeComponent extends Component<any, any> {
 	constructor() {
@@ -42,16 +42,12 @@ export default class HomeComponent extends Component<any, any> {
 			<Redirect>
 				<PanelComponent>
 					<div class="container-center">
-						<RedButtonComponent
-							icon={'fas fa-dungeon'}
-							title={'Campaign'}
-							callBack={() => this.ToCampaign()}
-						/>
-						<RedButtonComponent
-							icon={'fas fa-gamepad'}
-							title={'Play'}
-							callBack={() => this.ToSinglePlayer()}
-						/>
+						<ButtonComponent color={ColorKind.Red} callBack={() => this.ToCampaign()}>
+							<Icon Value="fas fa-dungeon" /> Campaign
+						</ButtonComponent>
+						<ButtonComponent color={ColorKind.Red} callBack={() => this.ToSinglePlayer()}>
+							<Icon Value="fas fa-gamepad" /> Play
+						</ButtonComponent>
 						<DropDownButtonComponent
 							icon={'fas fa-network-wired'}
 							title={'Multiplayers'}
@@ -60,12 +56,12 @@ export default class HomeComponent extends Component<any, any> {
 								new ButtonOption('Host', () => this.ToHost())
 							]}
 						/>
-						<BlueButtonComponent icon={'fas fa-video'} title={'Record'} callBack={() => this.ToRecord()} />
-						<BlackButtonComponent
-							icon={'fas fa-phone-square'}
-							title={'Contact'}
-							callBack={() => this.ToCampaign()}
-						/>
+						<ButtonComponent color={ColorKind.Blue} callBack={() => this.ToRecord()}>
+							<Icon Value="fas fa-video" /> Record
+						</ButtonComponent>
+						<ButtonComponent color={ColorKind.Black} callBack={() => this.ToCampaign()}>
+							<Icon Value="fas fa-phone-square" /> Contact
+						</ButtonComponent>
 					</div>
 				</PanelComponent>
 			</Redirect>

@@ -1,5 +1,7 @@
 import { h, Component } from 'preact';
-import BlackButtonComponent from '../../../Common/Button/Stylish/BlackButtonComponent';
+import ButtonComponent from '../../../Common/Button/Stylish/ButtonComponent';
+import { ColorKind } from '../../../Common/Button/Stylish/ColorKind';
+import Icon from '../../../Common/Icon/IconComponent';
 
 export default class OptionComponent extends Component<{ Update: (g: number) => void }, { IaNumber: number }> {
 	constructor() {
@@ -46,11 +48,9 @@ export default class OptionComponent extends Component<{ Update: (g: number) => 
 							<option value="2">2</option>
 						</select>
 					</div>
-					<BlackButtonComponent
-						icon={'fas fa-undo-alt'}
-						title={'Back'}
-						callBack={() => this.Update(this.state.IaNumber)}
-					/>
+					<ButtonComponent color={ColorKind.Black} callBack={() => this.Update(this.state.IaNumber)}>
+						<Icon Value="fas fa-undo-alt" /> Black
+					</ButtonComponent>
 				</div>
 			</div>
 		);

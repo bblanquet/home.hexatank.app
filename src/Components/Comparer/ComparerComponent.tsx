@@ -2,7 +2,6 @@ import { ICompareService } from '../../Services/Compare/ICompareService';
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { CompChartProvider } from '../Common/CompChartProvider';
-import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
 import { RecordData } from '../../Core/Framework/Record/RecordData';
 import { RecordComparer } from './Comparers/RecordComparer';
 import PanelComponent from '../Common/Panel/PanelComponent';
@@ -11,6 +10,9 @@ import { DeltaRecordCurve } from './Comparers/DeltaRecordCurve';
 import TextComponent from '../Common/Text/TextComponent';
 import { Factory, FactoryKey } from '../../Factory';
 import Redirect from '../Redirect/RedirectComponent';
+import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
+import { ColorKind } from '../Common/Button/Stylish/ColorKind';
+import Icon from '../Common/Icon/IconComponent';
 
 export default class ComparerComponent extends Component<
 	{},
@@ -136,13 +138,14 @@ export default class ComparerComponent extends Component<
 							/>
 						</div>
 						<div class="container-center-horizontal">
-							<BlackButtonComponent
-								icon={'fas fa-undo-alt'}
-								title={'Back'}
+							<ButtonComponent
 								callBack={() => {
 									this.Quit();
 								}}
-							/>
+								color={ColorKind.Black}
+							>
+								<Icon Value="fas fa-undo-alt" /> Quit
+							</ButtonComponent>
 						</div>
 					</div>
 				</PanelComponent>

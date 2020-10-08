@@ -1,7 +1,9 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { SpriteProvider } from '../../Core/Framework/SpriteProvider';
-import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
+import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
+import { ColorKind } from '../Common/Button/Stylish/ColorKind';
+import Icon from '../Common/Icon/IconComponent';
 import PanelComponent from '../Common/Panel/PanelComponent';
 
 export default class LoadingComponent extends Component<any, { percentage: number }> {
@@ -33,7 +35,14 @@ export default class LoadingComponent extends Component<any, { percentage: numbe
 		if (this.state.percentage === 100) {
 			return (
 				<div class="container-center">
-					<RedButtonComponent icon={'fas fa-dungeon'} title={'Continue'} callBack={() => this.ToHome()} />
+					<ButtonComponent
+						callBack={() => {
+							this.ToHome();
+						}}
+						color={ColorKind.Red}
+					>
+						<Icon Value="fas fa-dungeon" /> Continue
+					</ButtonComponent>
 				</div>
 			);
 		}

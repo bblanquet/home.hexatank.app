@@ -2,15 +2,16 @@ import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import * as toastr from 'toastr';
 import { PacketKind } from '../../../Network/Message/PacketKind';
-import BlackButtonComponent from '../../Common/Button/Stylish/BlackButtonComponent';
 import TextComponent from '../../Common/Text/TextComponent';
-import RedButtonComponent from '../../Common/Button/Stylish/RedButtonComponent';
 import PanelComponent from '../../Common/Panel/PanelComponent';
 import GridComponent from '../../Common/Grid/GridComponent';
-import SmBlackButtonComponent from '../../Common/Button/Stylish/SmBlackButtonComponent';
+import SmButtonComponent from '../../Common/Button/Stylish/SmButtonComponent';
 import { Factory, FactoryKey } from '../../../Factory';
 import { IHostingService } from '../../../Services/Hosting/IHostingService';
 import Redirect from '../../Redirect/RedirectComponent';
+import ButtonComponent from '../../Common/Button/Stylish/ButtonComponent';
+import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
+import Icon from '../../Common/Icon/IconComponent';
 
 const io = require('socket.io-client');
 
@@ -52,12 +53,22 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 						right={this.state.RoomNames.length === 0 ? this.EmptyGridContent() : this.GridContent()}
 					/>
 					<div class="container-center-horizontal">
-						<BlackButtonComponent icon={'fas fa-undo-alt'} title={'Back'} callBack={() => this.Back()} />
-						<RedButtonComponent
-							icon={'fas fa-sync-alt'}
-							title={'Refresh'}
-							callBack={() => this.Refresh()}
-						/>
+						<ButtonComponent
+							callBack={() => {
+								this.Back();
+							}}
+							color={ColorKind.Black}
+						>
+							<Icon Value="fas fa-undo-alt" /> Back
+						</ButtonComponent>
+						<ButtonComponent
+							callBack={() => {
+								this.Refresh();
+							}}
+							color={ColorKind.Red}
+						>
+							<Icon Value="fas fa-sync-alt" /> Refresh
+						</ButtonComponent>
 					</div>
 				</PanelComponent>
 			</Redirect>
@@ -92,9 +103,9 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 						<tr class="d-flex">
 							<td class="align-self-center">{RoomName}</td>
 							<td class="align-self-center">
-								<SmBlackButtonComponent callBack={() => this.Join(RoomName)}>
+								<SmButtonComponent callBack={() => this.Join(RoomName)} color={ColorKind.Black}>
 									{'Join'}
-								</SmBlackButtonComponent>
+								</SmButtonComponent>
 							</td>
 						</tr>
 					);

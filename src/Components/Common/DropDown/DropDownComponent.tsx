@@ -12,7 +12,7 @@ export default class DropDownComponent extends Component<
 		return (
 			<div class="input-group mb-3">
 				<div class="input-group-prepend">
-					<span class="input-group-text custom-black-btn" id="inputGroup-sizing-default">
+					<span class="input-group-text  black-primary custom-btn-layout-1" id="inputGroup-sizing-default">
 						{this.props.Label}
 					</span>
 				</div>

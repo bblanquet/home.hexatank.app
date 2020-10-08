@@ -1,10 +1,11 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { StatsKind } from '../../Core/Utils/Stats/StatsKind';
-import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
-import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
 import { GameSettings } from '../../Core/Framework/GameSettings';
 import { GameStatus } from '../../Core/Framework/GameStatus';
+import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
+import { ColorKind } from '../Common/Button/Stylish/ColorKind';
+import Icon from '../Common/Icon/IconComponent';
 
 export default class PopupMenuComponent extends Component<
 	{ status: GameStatus; callBack: () => void },
@@ -37,17 +38,36 @@ export default class PopupMenuComponent extends Component<
 					<div class="fill-logo" />{' '}
 				</div>
 				<div class="container-center">
-					<RedButtonComponent
-						icon={'fas fa-arrow-alt-circle-right'}
-						title={'Resume'}
-						callBack={() => this.props.callBack()}
-					/>
+					<ButtonComponent
+						callBack={() => {
+							this.props.callBack();
+						}}
+						color={ColorKind.Red}
+					>
+						<Icon Value="fas fa-arrow-alt-circle-right" /> Resume
+					</ButtonComponent>
 					{GameSettings.ShowEnemies ? (
-						<BlackButtonComponent icon={'fas fa-eye'} title={'Cheat'} callBack={() => this.Cheat()} />
+						<ButtonComponent callBack={() => this.Cheat()} color={ColorKind.Black}>
+							<Icon Value="fas fa-eye" /> Cheat
+						</ButtonComponent>
 					) : (
-						<RedButtonComponent icon={'fas fa-eye'} title={'Cheat'} callBack={() => this.Cheat()} />
+						<ButtonComponent
+							callBack={() => {
+								this.Cheat();
+							}}
+							color={ColorKind.Red}
+						>
+							<Icon Value="fas fa-eye" /> Cheat
+						</ButtonComponent>
 					)}
-					<BlackButtonComponent icon={'fas fa-undo-alt'} title={'Quit'} callBack={() => this.Quit()} />{' '}
+					<ButtonComponent
+						callBack={() => {
+							this.Quit();
+						}}
+						color={ColorKind.Black}
+					>
+						<Icon Value="fas fa-undo-alt" /> Quit
+					</ButtonComponent>
 				</div>
 			</div>
 		);

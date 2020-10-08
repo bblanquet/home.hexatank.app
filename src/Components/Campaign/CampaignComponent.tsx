@@ -2,11 +2,12 @@ import { Component, h } from 'preact';
 import { route } from 'preact-router';
 import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
 import { MapEnv } from '../../Core/Setup/Generator/MapEnv';
-import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
-import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
 import { IAppService } from '../../Services/App/IAppService';
 import { Factory, FactoryKey } from '../../Factory';
 import Redirect from '../Redirect/RedirectComponent';
+import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
+import { ColorKind } from '../Common/Button/Stylish/ColorKind';
+import Icon from '../Common/Icon/IconComponent';
 
 export default class CampaignComponent extends Component<any, any> {
 	private _eyesDiv: HTMLDivElement;
@@ -88,44 +89,66 @@ export default class CampaignComponent extends Component<any, any> {
 							/>
 						</div>
 						<div class="container-center-horizontal">
-							<BlackButtonComponent
-								icon={'fas fa-long-arrow-alt-right'}
-								title={''}
-								callBack={() => this.BlueCampaign()}
-							/>
+							<ButtonComponent
+								callBack={() => {
+									this.BlueCampaign();
+								}}
+								color={ColorKind.Black}
+							>
+								<Icon Value="fas fa-long-arrow-alt-right" />
+							</ButtonComponent>
 						</div>
 						<div class="row justify-content-center">
 							<div class="col-auto container-center">
-								<RedButtonComponent
-									icon={'fas fa-arrow-alt-circle-right'}
-									title={'1'}
-									callBack={() => this.Start()}
-								/>
+								<ButtonComponent
+									callBack={() => {
+										this.Start();
+									}}
+									color={ColorKind.Red}
+								>
+									<Icon Value="fas fa-arrow-alt-circle-right" /> 1
+								</ButtonComponent>
 							</div>
 							<div class="col-auto container-center">
-								<RedButtonComponent
-									icon={'fas fa-arrow-alt-circle-right'}
-									title={'2'}
-									callBack={() => this.Start()}
-								/>
+								<ButtonComponent
+									callBack={() => {
+										this.Start();
+									}}
+									color={ColorKind.Red}
+								>
+									<Icon Value="fas fa-arrow-alt-circle-right" /> 2
+								</ButtonComponent>
 							</div>
 							<div class="w-100 d-none d-md-block " />
 							<div class="col-auto container-center">
-								<RedButtonComponent
-									icon={'fas fa-arrow-alt-circle-right'}
-									title={'3'}
-									callBack={() => this.Start()}
-								/>
+								<ButtonComponent
+									callBack={() => {
+										this.Start();
+									}}
+									color={ColorKind.Red}
+								>
+									<Icon Value="fas fa-arrow-alt-circle-right" /> 3
+								</ButtonComponent>
 							</div>
 							<div class="col-auto container-center">
-								<RedButtonComponent
-									icon={'fas fa-arrow-alt-circle-right'}
-									title={'4'}
-									callBack={() => this.Start()}
-								/>
+								<ButtonComponent
+									callBack={() => {
+										this.Start();
+									}}
+									color={ColorKind.Red}
+								>
+									<Icon Value="fas fa-arrow-alt-circle-right" /> 4
+								</ButtonComponent>
 							</div>
 						</div>
-						<BlackButtonComponent icon={'fas fa-undo-alt'} title={'Back'} callBack={() => this.Back()} />
+						<ButtonComponent
+							callBack={() => {
+								this.Back();
+							}}
+							color={ColorKind.Black}
+						>
+							<Icon Value="fas fa-undo-alt" /> Back
+						</ButtonComponent>
 					</div>
 				</div>
 			</Redirect>

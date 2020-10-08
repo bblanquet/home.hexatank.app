@@ -2,10 +2,11 @@ import { h, Component } from 'preact';
 import { NetworkSocket } from '../../../../Network/NetworkSocket';
 import { HostState } from '../../HostState';
 import GridComponent from '../../../Common/Grid/GridComponent';
-import SmBlackButtonComponent from '../../../Common/Button/Stylish/SmBlackButtonComponent';
+import SmButtonComponent from '../../../Common/Button/Stylish/SmButtonComponent';
 import { ConnectionKind } from '../../../../Network/ConnectionKind';
 import { Player } from '../../../../Network/Player';
 import Icon from '../../../Common/Icon/IconComponent';
+import { ColorKind } from '../../../Common/Button/Stylish/ColorKind';
 
 export default class PlayersComponent extends Component<{ HostState: HostState; Socket: NetworkSocket }, {}> {
 	constructor() {
@@ -44,9 +45,12 @@ export default class PlayersComponent extends Component<{ HostState: HostState; 
 							<td class="align-middle">{+player.Latency === 0 ? '' : player.Latency}</td>
 							{this.props.HostState.IsAdmin ? (
 								<td class="align-middle">
-									<SmBlackButtonComponent callBack={() => this.MakeUserLeave(player.Name)}>
+									<SmButtonComponent
+										callBack={() => this.MakeUserLeave(player.Name)}
+										color={ColorKind.Black}
+									>
 										<Icon Value={'fas fa-user-slash'} />
-									</SmBlackButtonComponent>
+									</SmButtonComponent>
 								</td>
 							) : (
 								''

@@ -13,10 +13,10 @@ export default class DropDownButtonComponent extends Component<
 	render() {
 		return (
 			<div class="dropdown show">
-				<div class="custom-border-layout-3 fit-content btn-space" data-toggle="dropdown">
-					<div class="custom-border-layout-2 fit-content">
-						<div class="custom-red-border fit-content ">
-							<div class="custom-btn fit-content">
+				<div class="custom-btn-layout-4 fit-content btn-space" data-toggle="dropdown">
+					<div class="custom-btn-layout-3 fit-content">
+						<div class="red-secondary custom-btn-layout-2 fit-content">
+							<div class="red-primary custom-btn-layout-1 fit-content">
 								<Icon Value={this.props.icon} /> {this.props.title}
 							</div>
 						</div>

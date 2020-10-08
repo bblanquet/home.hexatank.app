@@ -3,21 +3,21 @@ import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import PanelComponent from '../Common/Panel/PanelComponent';
 import UploadButtonComponent from '../Common/Button/Stylish/UploadButtonComponent';
-import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
-import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
 import { RecordObject } from '../../Core/Framework/Record/RecordObject';
 import { RecordHq } from '../../Core/Framework/Record/RecordHq';
 import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
 import { RecordUnit } from '../../Core/Framework/Record/RecordUnit';
 import { RecordData } from '../../Core/Framework/Record/RecordData';
 import { RecordCell } from '../../Core/Framework/Record/RecordCell';
-import SmBlackButtonComponent from '../Common/Button/Stylish/SmBlackButtonComponent';
 import GridComponent from '../Common/Grid/GridComponent';
 import { IRecordService } from '../../Services/Record/IRecordService';
 import { ICompareService } from '../../Services/Compare/ICompareService';
 import { Factory, FactoryKey } from '../../Factory';
 import Redirect from '../Redirect/RedirectComponent';
 import Icon from '../Common/Icon/IconComponent';
+import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
+import { ColorKind } from '../Common/Button/Stylish/ColorKind';
+import SmButtonComponent from '../Common/Button/Stylish/SmButtonComponent';
 
 export default class RecordComponent extends Component<any, { Records: RecordObject[] }> {
 	private _appService: IAppService;
@@ -115,9 +115,9 @@ export default class RecordComponent extends Component<any, { Records: RecordObj
 							<td class="align-self-center">
 								<div class="container-center-horizontal">
 									<div class="small-right-margin">{data.Title} </div>
-									<SmBlackButtonComponent callBack={() => this.Play(data)}>
+									<SmButtonComponent callBack={() => this.Play(data)} color={ColorKind.Black}>
 										<Icon Value="fas fa-play-circle" />
-									</SmBlackButtonComponent>
+									</SmButtonComponent>
 								</div>
 							</td>
 						</tr>
@@ -132,15 +132,17 @@ export default class RecordComponent extends Component<any, { Records: RecordObj
 			<Redirect>
 				<PanelComponent>
 					<div class="container-center-horizontal">
-						<BlackButtonComponent
-							icon={'fas fa-trash'}
-							title={'Clear'}
+						<ButtonComponent
 							callBack={() => {
 								this.setState({
 									Records: []
 								});
 							}}
-						/>
+							color={ColorKind.Black}
+						>
+							<Icon Value="fas fa-trash" /> Clear
+						</ButtonComponent>
+
 						<UploadButtonComponent
 							icon={'fas fa-upload'}
 							title={'Upload'}
@@ -154,21 +156,23 @@ export default class RecordComponent extends Component<any, { Records: RecordObj
 					/>
 
 					<div class="container-center-horizontal">
-						<BlackButtonComponent
-							icon={'fas fa-undo-alt'}
-							title={'Back'}
+						<ButtonComponent
 							callBack={() => {
 								this.ToHome();
 							}}
-						/>
+							color={ColorKind.Black}
+						>
+							<Icon Value="fas fa-undo-alt" /> Back
+						</ButtonComponent>
 						{this.state.Records.length === 2 ? (
-							<RedButtonComponent
-								icon={'fas fa-chart-line'}
-								title={'Compare'}
+							<ButtonComponent
 								callBack={() => {
 									this.ToCompare();
 								}}
-							/>
+								color={ColorKind.Red}
+							>
+								<Icon Value="fas fa-chart-line" /> Compare
+							</ButtonComponent>
 						) : (
 							''
 						)}

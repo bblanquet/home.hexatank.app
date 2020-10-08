@@ -1,5 +1,7 @@
 import { h, Component } from 'preact';
 import Icon from '../../Icon/IconComponent';
+import ButtonComponent from './ButtonComponent';
+import { ColorKind } from './ColorKind';
 
 export default class UploadButtonComponent extends Component<
 	{ callBack: (e: any) => void; title: string; icon: string },
@@ -19,15 +21,14 @@ export default class UploadButtonComponent extends Component<
 
 	render() {
 		return (
-			<div class="custom-border-layout-3 fit-content btn-space">
-				<div class="custom-border-layout-2 fit-content">
-					<div class="custom-blue-border fit-content">
-						<div class="custom-blue-btn fit-content" onClick={() => this.ForceFileClick()}>
-							<Icon Value={this.props.icon} /> {this.props.title}
-						</div>
-					</div>
-				</div>
-			</div>
+			<ButtonComponent
+				callBack={() => {
+					this.ForceFileClick();
+				}}
+				color={ColorKind.Blue}
+			>
+				<Icon Value={this.props.icon} /> {this.props.title}
+			</ButtonComponent>
 		);
 	}
 

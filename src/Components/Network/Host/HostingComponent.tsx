@@ -17,13 +17,14 @@ import { MapGenerator } from '../../../Core/Setup/Generator/MapGenerator';
 import { MapEnv } from '../../../Core/Setup/Generator/MapEnv';
 import { MapContext } from '../../../Core/Setup/Generator/MapContext';
 import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
-import BlackButtonComponent from '../../Common/Button/Stylish/BlackButtonComponent';
-import RedButtonComponent from '../../Common/Button/Stylish/RedButtonComponent';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
 import { Factory, FactoryKey } from '../../../Factory';
 import PanelComponent from '../../Common/Panel/PanelComponent';
 import Redirect from '../../Redirect/RedirectComponent';
 import { SpriteProvider } from '../../../Core/Framework/SpriteProvider';
+import ButtonComponent from '../../Common/Button/Stylish/ButtonComponent';
+import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
+import Icon from '../../Common/Icon/IconComponent';
 
 export default class HostingComponent extends Component<any, HostState> {
 	private _hasSettings: boolean = false;
@@ -122,21 +123,13 @@ export default class HostingComponent extends Component<any, HostState> {
 	private GetDownsideButton() {
 		return (
 			<div class="container-center-horizontal">
-				<BlackButtonComponent
-					icon={'fas fa-toggle-on'}
-					title={this.state.Player.IsReady ? 'Ok' : 'Nok'}
-					callBack={() => this.ChangeReady()}
-				/>
-
+				<ButtonComponent callBack={() => this.Back()} color={ColorKind.Black}>
+					<Icon Value="fas fa-undo-alt" /> Back
+				</ButtonComponent>
 				{this.state.IsAdmin ? (
-					<BlackButtonComponent
-						icon={'fas fa-cog'}
-						title={'Setup'}
-						callBack={() => {
-							this._hasSettings = true;
-							this.setState({});
-						}}
-					/>
+					<ButtonComponent callBack={() => this.Loading()} color={ColorKind.Red}>
+						<Icon Value="far fa-play-circle" /> Start
+					</ButtonComponent>
 				) : (
 					''
 				)}
@@ -147,12 +140,22 @@ export default class HostingComponent extends Component<any, HostState> {
 	private GetUpdsideButton() {
 		return (
 			<div class="container-center-horizontal">
-				<BlackButtonComponent icon={'fas fa-undo-alt'} title={'Back'} callBack={() => this.Back()} />{' '}
 				{this.state.IsAdmin ? (
-					<RedButtonComponent icon={'far fa-play-circle'} title={'Start'} callBack={() => this.Loading()} />
+					<ButtonComponent
+						callBack={() => {
+							this._hasSettings = true;
+							this.setState({});
+						}}
+						color={ColorKind.Black}
+					>
+						<Icon Value="fas fa-cog" /> Setup
+					</ButtonComponent>
 				) : (
 					''
 				)}
+				<ButtonComponent color={ColorKind.Black} callBack={() => this.ChangeReady()}>
+					<Icon Value="fas fa-toggle-on" /> {this.state.Player.IsReady ? 'Ok' : 'Nok'}
+				</ButtonComponent>
 			</div>
 		);
 	}

@@ -4,10 +4,11 @@ import { GameStatus } from '../../Core/Framework/GameStatus';
 import { Groups } from '../../Core/Utils/Collections/Groups';
 import { Curve } from '../../Core/Utils/Stats/Curve';
 import { StatsKind } from '../../Core/Utils/Stats/StatsKind';
-import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
-import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
-import SmActiveIconButtonComponent from '../Common/Button/Stylish/SmActiveIconButtonComponent';
+import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
+import { ColorKind } from '../Common/Button/Stylish/ColorKind';
+import SmActiveButtonComponent from '../Common/Button/Stylish/SmActiveButtonComponent';
 import { ChartProvider } from '../Common/ChartProvider';
+import Icon from '../Common/Icon/IconComponent';
 
 export default class PopupComponent extends Component<
 	{ curves: Groups<Curve>; context: any; status: GameStatus },
@@ -76,36 +77,40 @@ export default class PopupComponent extends Component<
 					</div>
 
 					<div class="container-center-horizontal">
-						<SmActiveIconButtonComponent
+						<SmActiveButtonComponent
+							left={<div class="fill-sm-tank max-width icon-space" />}
+							right={<div class="fill-sm-tank max-width icon-space" />}
 							isActive={this.state.Kind === StatsKind.Unit}
-							style={'fill-sm-tank'}
 							callBack={() => {
 								this.setState({
 									Kind: StatsKind.Unit
 								});
 							}}
 						/>
-						<SmActiveIconButtonComponent
+						<SmActiveButtonComponent
+							left={<div class="fill-sm-hexa max-width icon-space" />}
+							right={<div class="fill-sm-hexa max-width icon-space" />}
 							isActive={this.state.Kind === StatsKind.Cell}
-							style={'fill-sm-hexa'}
 							callBack={() => {
 								this.setState({
 									Kind: StatsKind.Cell
 								});
 							}}
 						/>
-						<SmActiveIconButtonComponent
+						<SmActiveButtonComponent
+							left={<div class="fill-sm-diam max-width icon-space" />}
+							right={<div class="fill-sm-diam max-width icon-space" />}
 							isActive={this.state.Kind === StatsKind.Diamond}
-							style={'fill-sm-diam '}
 							callBack={() => {
 								this.setState({
 									Kind: StatsKind.Diamond
 								});
 							}}
 						/>
-						<SmActiveIconButtonComponent
+						<SmActiveButtonComponent
+							left={<div class="fill-sm-power max-width icon-space" />}
+							right={<div class="fill-sm-power max-width icon-space" />}
 							isActive={this.state.Kind === StatsKind.Energy}
-							style={'fill-sm-power'}
 							callBack={() => {
 								this.setState({
 									Kind: StatsKind.Energy
@@ -120,20 +125,22 @@ export default class PopupComponent extends Component<
 						}}
 					/>
 					<div class="container-center-horizontal">
-						<BlackButtonComponent
-							icon={'fas fa-undo-alt'}
-							title={'Back'}
+						<ButtonComponent
 							callBack={() => {
 								this.Quit();
 							}}
-						/>
-						<RedButtonComponent
-							icon={'fas fa-save'}
-							title={'Save'}
+							color={ColorKind.Black}
+						>
+							<Icon Value="fas fa-undo-alt" /> Back
+						</ButtonComponent>
+						<ButtonComponent
 							callBack={() => {
 								this.Save();
 							}}
-						/>
+							color={ColorKind.Red}
+						>
+							<Icon Value="fas fa-save" /> Save
+						</ButtonComponent>
 					</div>
 				</div>
 			</div>

@@ -8,8 +8,8 @@ export default class GridComponent extends Component<any, any> {
 	render() {
 		return (
 			<div class="container-center-horizontal">
-				<div class="custom-border-layout-3 fit-content">
-					<div class="custom-border-layout-2 fit-content">
+				<div class="custom-btn-layout-4 fit-content">
+					<div class="custom-btn-layout-3 fit-content">
 						<table class="table table-dark table-striped table-borderless custom-table">
 							{this.props.left}
 							{this.props.right}

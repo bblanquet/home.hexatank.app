@@ -1,36 +1,46 @@
 import { h, Component } from 'preact';
 
-export default class Icon extends Component<{ Value: string }, { force: number }> {
-	private _icon: HTMLElement;
+export default class Icon extends Component<{ Value: string }, {}> {
+	private _span: HTMLElement;
+	private _iconKey: string = '';
 
 	constructor() {
 		super();
-		this.setState({
-			force: 0
-		});
 	}
 
-	componentDidMount() {
-		if (this.IsSvgGenerated()) {
-			this.setState({ force: this.state.force + 1 });
+	private HasRightSvg() {
+		return this.HasSvg() && this.IsRightIcon();
+	}
+
+	private IsRightIcon() {
+		return this._iconKey === this.props.Value;
+	}
+
+	private HasSvg(): boolean {
+		if (!this._span) {
+			return false;
 		}
-	}
-
-	componentDidUpdate() {
-		if (this.IsSvgGenerated()) {
-			this.setState({ force: this.state.force + 1 });
+		for (let index = 0; index < this._span.childNodes.length; index++) {
+			if (this._span.childNodes[index] instanceof SVGElement) {
+				return true;
+			}
 		}
+		return false;
 	}
 
-	private IsSvgGenerated() {
-		return (
-			this._icon.childNodes.length === 0 ||
-			(this._icon.childNodes.length === 1 && this._icon.childNodes[0] instanceof SVGElement)
-		);
+	private RemoveAllChildren(): void {
+		while (this._span.firstChild) {
+			this._span.removeChild(this._span.lastChild);
+		}
 	}
 
 	private Generate() {
-		if (this._icon && this.IsSvgGenerated()) {
+		if (this.HasSvg() && !this.IsRightIcon()) {
+			this.RemoveAllChildren();
+		}
+
+		if (!this.HasRightSvg()) {
+			this._iconKey = this.props.Value;
 			return <i class={this.props.Value} />;
 		}
 	}
@@ -39,7 +49,7 @@ export default class Icon extends Component<{ Value: string }, { force: number }
 		return (
 			<span
 				ref={(dom) => {
-					this._icon = dom;
+					this._span = dom;
 				}}
 			>
 				{this.Generate()}

@@ -3,13 +3,14 @@ import { route } from 'preact-router';
 import { SinglePlayerState } from './SinglePlayerState';
 import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
 import { MapEnv } from '../../Core/Setup/Generator/MapEnv';
-import RedButtonComponent from '../Common/Button/Stylish/RedButtonComponent';
 import DropDownComponent from '../Common/DropDown/DropDownComponent';
-import BlackButtonComponent from '../Common/Button/Stylish/BlackButtonComponent';
 import PanelComponent from '../Common/Panel/PanelComponent';
 import { IAppService } from '../../Services/App/IAppService';
 import { Factory, FactoryKey } from '../../Factory';
 import Redirect from '../Redirect/RedirectComponent';
+import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
+import { ColorKind } from '../Common/Button/Stylish/ColorKind';
+import Icon from '../Common/Icon/IconComponent';
 
 export default class SinglePlayerComponent extends Component<any, SinglePlayerState> {
 	constructor(props: any) {
@@ -61,12 +62,22 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 					/>
 					<p />
 					<div class="container-center-horizontal">
-						<BlackButtonComponent icon={'fas fa-undo-alt'} title={'Back'} callBack={() => this.Back()} />
-						<RedButtonComponent
-							icon={'fas fa-arrow-alt-circle-right'}
-							title={'Play'}
-							callBack={() => this.Start()}
-						/>
+						<ButtonComponent
+							callBack={() => {
+								this.Back();
+							}}
+							color={ColorKind.Black}
+						>
+							<Icon Value="fas fa-undo-alt" /> Back
+						</ButtonComponent>
+						<ButtonComponent
+							callBack={() => {
+								this.Start();
+							}}
+							color={ColorKind.Red}
+						>
+							<Icon Value="fas fa-arrow-alt-circle-right" /> Play
+						</ButtonComponent>
 					</div>
 				</PanelComponent>
 			</Redirect>

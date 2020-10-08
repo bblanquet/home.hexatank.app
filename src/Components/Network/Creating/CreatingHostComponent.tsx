@@ -4,13 +4,14 @@ import * as toastr from 'toastr';
 import * as io from 'socket.io-client';
 import { CreatingHostState } from './CreatingHostState';
 import { PacketKind } from '../../../Network/Message/PacketKind';
-import RedButtonComponent from '../../Common/Button/Stylish/RedButtonComponent';
-import BlackButtonComponent from '../../Common/Button/Stylish/BlackButtonComponent';
 import PanelComponent from '../../Common/Panel/PanelComponent';
 import TextComponent from '../../Common/Text/TextComponent';
 import { Factory, FactoryKey } from '../../../Factory';
 import { IHostingService } from '../../../Services/Hosting/IHostingService';
 import Redirect from '../../Redirect/RedirectComponent';
+import ButtonComponent from '../../Common/Button/Stylish/ButtonComponent';
+import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
+import Icon from '../../Common/Icon/IconComponent';
 
 export default class CreatingHostComponent extends Component<any, CreatingHostState> {
 	private _socket: SocketIOClient.Socket;
@@ -52,8 +53,22 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 						}}
 					/>
 					<div class="container-center-horizontal">
-						<BlackButtonComponent icon={'fas fa-undo-alt'} title={'Back'} callBack={() => this.Back()} />
-						<RedButtonComponent icon={'far fa-play-circle'} title={'Start'} callBack={() => this.Start()} />
+						<ButtonComponent
+							callBack={() => {
+								this.Back();
+							}}
+							color={ColorKind.Black}
+						>
+							<Icon Value="fas fa-undo-alt" /> Back
+						</ButtonComponent>
+						<ButtonComponent
+							callBack={() => {
+								this.Start();
+							}}
+							color={ColorKind.Red}
+						>
+							<Icon Value="far fa-play-circle" /> Start
+						</ButtonComponent>
 					</div>
 				</PanelComponent>
 			</Redirect>

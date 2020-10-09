@@ -43,9 +43,9 @@ export class AppService implements IAppService {
 		this._context = mapContext;
 		this._updateService.Register();
 		this._app = this._appProvider.Provide(mapContext);
-		this._interactionManager = new PIXI.interaction.InteractionManager(this._app.renderer);
 
 		this._layerService.Register(this._app);
+		this._interactionManager = new PIXI.interaction.InteractionManager(this._app.renderer);
 		this._gameContextService.Register(new HqRender(), mapContext);
 		const gameContext = this._gameContextService.Publish();
 		this._interactionService.Register(this._interactionManager, gameContext);

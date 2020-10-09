@@ -14,7 +14,7 @@ export class DiamondFieldOrder extends SmartSimpleOrder {
 
 	protected GetClosestCell(): Cell {
 		let cells = this.GetDiamondPath(this.Diamond);
-		if (1 < cells.length && cells[cells.length - 1].GetField() instanceof Diamond) {
+		if (cells && 1 < cells.length && cells[cells.length - 1].GetField() instanceof Diamond) {
 			const lastCell = cells[cells.length - 2];
 			this.FinalOriginalGoal = lastCell;
 			return lastCell;

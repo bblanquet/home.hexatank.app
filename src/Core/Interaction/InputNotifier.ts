@@ -45,6 +45,10 @@ export class InputNotifier {
 	public HandleMouseDown(event: PIXI.interaction.InteractionEvent): void {
 		this._isDown = true;
 		const pvsDownDate = this._downDate;
+		let pvsDownPoint: Point = null;
+		if (this._downPoint) {
+			pvsDownPoint = new Point(this._downPoint.X, this._downPoint.Y);
+		}
 		this._downDate = new Date().getTime();
 
 		this._currentPoint.X = event.data.global.x;
@@ -54,7 +58,10 @@ export class InputNotifier {
 		this._downPoint.Y = event.data.global.y;
 
 		if (this.IsDouble(pvsDownDate)) {
-			this.DoubleEvent.Invoke(new Point(this._currentPoint.X, this._currentPoint.Y));
+			const dist = Math.abs(this._currentPoint.GetDistance(pvsDownPoint));
+			if (dist < 30) {
+				this.DoubleEvent.Invoke(new Point(this._currentPoint.X, this._currentPoint.Y));
+			}
 			this._downDate = null;
 		} else {
 			setTimeout(() => {

@@ -1,14 +1,15 @@
 import { RenderingLayers } from '../../Core/Setup/Render/RenderingHandler';
 import { ILayerService } from './ILayerService';
-const Viewport = require('pixi-viewport').Viewport;
+import { Viewport } from 'pixi-viewport';
 
 export class LayerService implements ILayerService {
 	private _rendering: RenderingLayers;
-	private _viewPort: any;
+	private _viewPort: Viewport;
 
 	Register(app: PIXI.Application): void {
 		this.SetViewport(app);
 		this._rendering = new RenderingLayers(this._viewPort, app.stage);
+		this.StartNavigation();
 		app.stage.addChild(this._viewPort);
 	}
 	private SetViewport(app: PIXI.Application) {
@@ -21,14 +22,13 @@ export class LayerService implements ILayerService {
 		});
 		this._viewPort.on('zoomed', (e: any) => {
 			if (this._viewPort.scale.x < 0.7) {
-				this._viewPort.setZoom(0.7, this._viewPort.center);
+				this._viewPort.setZoom(0.7, true); //this._viewPort.center
 				return;
 			} else if (this._viewPort.scale.x > 1.5) {
-				this._viewPort.setZoom(1.5, this._viewPort.center);
+				this._viewPort.setZoom(1.5, true); //this._viewPort.center
 				return;
 			}
 		});
-		this.StartNavigation();
 	}
 
 	Publish(): RenderingLayers {

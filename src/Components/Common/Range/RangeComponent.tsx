@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 import { h, Component } from 'preact';
 import { Dictionnary } from '../../../Core/Utils/Collections/Dictionnary';
+import { ColorKind } from '../Button/Stylish/ColorKind';
 import SmActiveButtonComponent from '../Button/Stylish/SmActiveButtonComponent';
 import Icon from '../Icon/IconComponent';
 
@@ -69,6 +70,8 @@ export default class RangeComponent extends Component<
 					<SmActiveButtonComponent
 						left={<Icon Value={'fas fa-play'} />}
 						right={<Icon Value={'fas fa-pause'} />}
+						leftColor={ColorKind.Black}
+						rightColor={ColorKind.Blue}
 						callBack={() => this.Pushed()}
 						isActive={this.state.isActive}
 					/>

@@ -80,6 +80,8 @@ export default class PopupComponent extends Component<
 						<SmActiveButtonComponent
 							left={<div class="fill-sm-tank max-width icon-space" />}
 							right={<div class="fill-sm-tank max-width icon-space" />}
+							leftColor={ColorKind.Black}
+							rightColor={ColorKind.Red}
 							isActive={this.state.Kind === StatsKind.Unit}
 							callBack={() => {
 								this.setState({
@@ -90,6 +92,8 @@ export default class PopupComponent extends Component<
 						<SmActiveButtonComponent
 							left={<div class="fill-sm-hexa max-width icon-space" />}
 							right={<div class="fill-sm-hexa max-width icon-space" />}
+							leftColor={ColorKind.Black}
+							rightColor={ColorKind.Red}
 							isActive={this.state.Kind === StatsKind.Cell}
 							callBack={() => {
 								this.setState({
@@ -100,6 +104,8 @@ export default class PopupComponent extends Component<
 						<SmActiveButtonComponent
 							left={<div class="fill-sm-diam max-width icon-space" />}
 							right={<div class="fill-sm-diam max-width icon-space" />}
+							leftColor={ColorKind.Black}
+							rightColor={ColorKind.Red}
 							isActive={this.state.Kind === StatsKind.Diamond}
 							callBack={() => {
 								this.setState({
@@ -110,6 +116,8 @@ export default class PopupComponent extends Component<
 						<SmActiveButtonComponent
 							left={<div class="fill-sm-power max-width icon-space" />}
 							right={<div class="fill-sm-power max-width icon-space" />}
+							leftColor={ColorKind.Black}
+							rightColor={ColorKind.Red}
 							isActive={this.state.Kind === StatsKind.Energy}
 							callBack={() => {
 								this.setState({

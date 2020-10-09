@@ -57,6 +57,7 @@ export default class GameCanvasComponent extends Component<
 		this._gameContextService = Factory.Load<IGameContextService>(FactoryKey.GameContext);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
 		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
+		this._gameContext = this._gameContextService.Publish();
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
 		this.setState({
 			HasMenu: false,
@@ -80,7 +81,6 @@ export default class GameCanvasComponent extends Component<
 	}
 
 	componentDidMount() {
-		this._gameContext = this._gameContextService.Publish();
 		this._gameContext.GetMainHq().OnTruckChanged.On(this.HandleTruckChanged.bind(this));
 		this._gameContext.GetMainHq().OnTankRequestChanged.On(this.HandleTankChanged.bind(this));
 		this._gameContext.GetMainHq().OnDiamondCountChanged.On(this.HandleDiamondChanged.bind(this));
@@ -209,17 +209,19 @@ export default class GameCanvasComponent extends Component<
 	}
 
 	private TopLeftInfo() {
-		return (
-			<div style="position: fixed;left: 0%; color:white;">
-				{this._networkService.GetPlayers().map((player) => {
-					return (
-						<div>
-							{player.Name} <span class="badge badge-info">{player.Latency}</span>
-						</div>
-					);
-				})}
-			</div>
-		);
+		if (this._networkService.HasSocket()) {
+			return (
+				<div style="position: fixed;left: 0%; color:white;">
+					{this._gameContext.Players.map((player) => {
+						return (
+							<div>
+								{player.Name} <span class="badge badge-info">{player.Latency}</span>
+							</div>
+						);
+					})}
+				</div>
+			);
+		}
 	}
 
 	private TopMenuRender() {

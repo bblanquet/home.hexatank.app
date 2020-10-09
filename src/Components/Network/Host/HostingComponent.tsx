@@ -25,6 +25,7 @@ import { SpriteProvider } from '../../../Core/Framework/SpriteProvider';
 import ButtonComponent from '../../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
 import Icon from '../../Common/Icon/IconComponent';
+import ActiveButtonComponent from '../../Common/Button/Stylish/ActiveButtonComponent';
 
 export default class HostingComponent extends Component<any, HostState> {
 	private _hasSettings: boolean = false;
@@ -127,9 +128,22 @@ export default class HostingComponent extends Component<any, HostState> {
 					<Icon Value="fas fa-undo-alt" /> Back
 				</ButtonComponent>
 				{this.state.IsAdmin ? (
-					<ButtonComponent callBack={() => this.Loading()} color={ColorKind.Red}>
-						<Icon Value="far fa-play-circle" /> Start
-					</ButtonComponent>
+					<ActiveButtonComponent
+						left={
+							<span>
+								<Icon Value={'far fa-play-circle'} /> START
+							</span>
+						}
+						right={
+							<span>
+								<Icon Value={'far fa-play-circle'} /> START
+							</span>
+						}
+						leftColor={ColorKind.Red}
+						rightColor={ColorKind.Gray}
+						callBack={() => this.Loading()}
+						isActive={this.state.Players.Values().every((e) => e.IsReady)}
+					/>
 				) : (
 					''
 				)}
@@ -153,9 +167,23 @@ export default class HostingComponent extends Component<any, HostState> {
 				) : (
 					''
 				)}
-				<ButtonComponent color={ColorKind.Black} callBack={() => this.ChangeReady()}>
-					<Icon Value="fas fa-toggle-on" /> {this.state.Player.IsReady ? 'Ok' : 'Nok'}
-				</ButtonComponent>
+
+				<ActiveButtonComponent
+					left={
+						<span>
+							<Icon Value={'fas fa-toggle-on'} /> ON
+						</span>
+					}
+					right={
+						<span>
+							<Icon Value={'fas fa-toggle-off'} /> OFF
+						</span>
+					}
+					leftColor={ColorKind.Gray}
+					rightColor={ColorKind.Green}
+					callBack={() => this.ChangeReady()}
+					isActive={this.state.Player.IsReady}
+				/>
 			</div>
 		);
 	}
@@ -203,7 +231,9 @@ export default class HostingComponent extends Component<any, HostState> {
 
 	private Load(mapContext: MapContext) {
 		this._appService.Register(mapContext);
-		this._networkService.Register(this._socket, this._gameContextService.Publish(), this.state.Players.Values());
+		const context = this._gameContextService.Publish();
+		context.Players = this.state.Players.Values();
+		this._networkService.Register(this._socket, context);
 		this.state.Player.IsLoaded = true;
 		this._socket.EmitAll<boolean>(PacketKind.Loaded, true);
 	}

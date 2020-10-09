@@ -78,9 +78,9 @@ export default class PlayersComponent extends Component<{ HostState: HostState; 
 
 	private GetReady(player: Player) {
 		if (player.IsReady) {
-			return <span class="badge badge-success">OK</span>;
+			return <span class="badge badge-success">ON</span>;
 		} else {
-			return <span class="badge badge-light">NOK</span>;
+			return <span class="badge badge-light">OFF</span>;
 		}
 	}
 

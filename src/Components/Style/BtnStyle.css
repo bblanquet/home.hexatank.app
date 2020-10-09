@@ -152,37 +152,38 @@
 }
 
 .green-secondary {
-	background: rgb(74, 168, 32);
+	background: rgb(136, 187, 36);
 	background: linear-gradient(
 		90deg,
-		rgba(74, 168, 32, 1) 0%,
-		rgba(140, 201, 45, 1) 25%,
-		rgba(180, 202, 43, 1) 50%,
-		rgba(140, 201, 45, 1) 75%,
-		rgba(74, 168, 32, 1) 100%
+		rgba(136, 187, 36, 1) 0%,
+		rgba(178, 242, 103, 1) 25%,
+		rgba(231, 241, 52, 1) 50%,
+		rgba(178, 242, 103, 1) 75%,
+		rgba(136, 187, 36, 1) 100%
 	);
 }
 
 .green-primary {
-	background-color: #8cc92d;
+	background-color: #a7f232;
 }
 
 .green-primary:hover {
 	background-color: #a7f232;
 }
 
-.gray-secondary {
-	background: rgb(37, 37, 37);
+.white-secondary {
+	background: rgb(172, 172, 172);
 	background: linear-gradient(
 		90deg,
-		rgba(37, 37, 37, 1) 0%,
-		rgba(94, 94, 94, 1) 25%,
-		rgba(144, 144, 144, 1) 50%,
-		rgba(94, 94, 94, 1) 75%,
-		rgba(37, 37, 37, 1) 100%
+		rgba(172, 172, 172, 1) 0%,
+		rgba(230, 230, 230, 1) 25%,
+		rgba(255, 255, 253, 1) 50%,
+		rgba(230, 230, 230, 1) 75%,
+		rgba(172, 172, 172, 1) 100%
 	);
 }
 
-.gray-primary {
-	background-color: #1c1c1c;
+.white-primary {
+	color: #454545;
+	background-color: #f2f2f2;
 }

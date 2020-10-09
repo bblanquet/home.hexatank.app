@@ -123,15 +123,12 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
 	GetTranslationDuration(): number {
 		if (this._translatingDuration < GameSettings.GetFastestTranslation()) {
-			console.log(`Set speed ${GameSettings.GetFastestTranslation()}`);
 			return GameSettings.GetFastestTranslation();
 		}
-		console.log(`Get speed ${this._translatingDuration}`);
 		return this._translatingDuration;
 	}
 	SetTranslationDuration(translation: number): void {
 		this._translatingDuration += translation;
-		console.log(`Set speed ${this._translatingDuration}`);
 	}
 	GetRotatingDuration(): number {
 		if (this._rotatingDuration < GameSettings.GetFastestRotation()) {

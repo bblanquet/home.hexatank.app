@@ -24,12 +24,12 @@ export class CompChartProvider {
 	private _chart: Chart;
 
 	public AttachChart(curves: DeltaRecordCurve, div: HTMLCanvasElement): Chart {
-		const ps = curves.Points.map((p) => p.Y);
-		const max = Math.max(...ps);
-		let step = Math.abs(Math.round(max / 5));
-		if (step === 0) {
-			step = 1;
-		}
+		// const ps = curves.Points.map((p) => p.Y);
+		// const max = Math.max(...ps);
+		// let step = Math.abs(Math.round(max / 5));
+		// if (step === 0) {
+		// 	step = 1;
+		// }
 
 		if (this._chart) {
 			this._chart.destroy();
@@ -55,9 +55,19 @@ export class CompChartProvider {
 				scales: {
 					xAxes: [
 						{
-							type: 'linear',
-							ticks: {
-								stepSize: 1
+							type: 'time',
+							time: {
+								displayFormats: {
+									millisecond: 'ss.SSS',
+									second: 'ss.SSS',
+									minute: 'ss.SSS',
+									hour: 'ss.SSS',
+									day: 'ss.SSS',
+									week: 'ss.SSS',
+									month: 'ss.SSS',
+									quarter: 'ss.SSS',
+									year: 'ss.SSS'
+								}
 							}
 						}
 					],
@@ -65,7 +75,6 @@ export class CompChartProvider {
 						{
 							type: 'time',
 							time: {
-								unitStepSize: step,
 								displayFormats: {
 									millisecond: 'ss.SSS',
 									second: 'ss.SSS',

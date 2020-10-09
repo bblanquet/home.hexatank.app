@@ -7,11 +7,11 @@ export class GameSettings {
 	public static GeneralLife: number = 20; //100
 
 	public static GetFastestRotation(): number {
-		return 0.8;
+		return 0.3;
 	}
 
 	public static GetFastestTranslation(): number {
-		return 0.5;
+		return 0.1;
 	}
 
 	public static Size: number = 50;
@@ -48,9 +48,9 @@ export class GameSettings {
 	}
 
 	public static SetFastSpeed(): void {
-		this.RotatingDuration = 0.8;
+		this.RotatingDuration = this.GetFastestRotation();
 		this.TurrelRotatingDuration = 0.1;
-		this.TranslatinDuration = 0.1;
+		this.TranslatinDuration = this.GetFastestTranslation();
 		this.DiamondLoadingSpeed = 3;
 		this.MoneyLoadingSpeed = 3;
 		this.GeneralLife = 20;

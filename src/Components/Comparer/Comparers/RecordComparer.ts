@@ -14,7 +14,7 @@ export class RecordComparer {
 				delta.D1 = data;
 				delta.D2 = d2Unit.Actions[index];
 				delta.Y = delta.D1.X - delta.D2.X;
-				delta.X = index;
+				delta.X = delta.D1.X;
 				delta.IsEqualed = delta.D1.Amount.Q === delta.D2.Amount.Q && delta.D1.Amount.R === delta.D2.Amount.R;
 				deltas.push(delta);
 			}

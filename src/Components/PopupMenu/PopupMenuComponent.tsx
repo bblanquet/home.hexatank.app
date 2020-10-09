@@ -6,6 +6,7 @@ import { GameStatus } from '../../Core/Framework/GameStatus';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
+import ActiveButtonComponent from '../Common/Button/Stylish/ActiveButtonComponent';
 
 export default class PopupMenuComponent extends Component<
 	{ status: GameStatus; callBack: () => void },
@@ -26,6 +27,7 @@ export default class PopupMenuComponent extends Component<
 
 	private Cheat(): void {
 		GameSettings.ShowEnemies = !GameSettings.ShowEnemies;
+		this.setState({});
 	}
 
 	render() {
@@ -46,20 +48,22 @@ export default class PopupMenuComponent extends Component<
 					>
 						<Icon Value="fas fa-arrow-alt-circle-right" /> Resume
 					</ButtonComponent>
-					{GameSettings.ShowEnemies ? (
-						<ButtonComponent callBack={() => this.Cheat()} color={ColorKind.Black}>
-							<Icon Value="fas fa-eye" /> Cheat
-						</ButtonComponent>
-					) : (
-						<ButtonComponent
-							callBack={() => {
-								this.Cheat();
-							}}
-							color={ColorKind.Red}
-						>
-							<Icon Value="fas fa-eye" /> Cheat
-						</ButtonComponent>
-					)}
+					<ActiveButtonComponent
+						left={
+							<span>
+								<Icon Value="fas fa-eye" /> Cheat
+							</span>
+						}
+						right={
+							<span>
+								<Icon Value="fas fa-eye-slash" /> Cheat
+							</span>
+						}
+						leftColor={ColorKind.Black}
+						rightColor={ColorKind.Blue}
+						isActive={GameSettings.ShowEnemies}
+						callBack={() => this.Cheat()}
+					/>
 					<ButtonComponent
 						callBack={() => {
 							this.Quit();

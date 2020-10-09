@@ -97,6 +97,7 @@ export class SimpleOrder extends Order {
 	public Reset(): void {
 		super.Reset();
 		this.FinalGoal = this.FinalOriginalGoal;
+		this.SetState(OrderState.None);
 	}
 
 	private IsAccessible(c: Cell): boolean {

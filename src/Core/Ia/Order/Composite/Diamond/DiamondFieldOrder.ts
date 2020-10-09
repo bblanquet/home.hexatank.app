@@ -2,6 +2,10 @@ import { SmartSimpleOrder } from '../SmartSimpleOrder';
 import { Cell } from '../../../../Items/Cell/Cell';
 import { Diamond } from '../../../../Items/Cell/Field/Diamond';
 import { Vehicle } from '../../../../Items/Unit/Vehicle';
+import { isNullOrUndefined } from '../../../../Utils/ToolBox';
+import { AStarEngine } from '../../../AStarEngine';
+import { AStarHelper } from '../../../AStarHelper';
+import { ShieldField } from '../../../../Items/Cell/Field/Bonus/ShieldField';
 
 export class DiamondFieldOrder extends SmartSimpleOrder {
 	constructor(public Diamond: Diamond, vehicle: Vehicle) {
@@ -9,11 +13,11 @@ export class DiamondFieldOrder extends SmartSimpleOrder {
 	}
 
 	protected GetClosestCell(): Cell {
-		let cells = this.GetDiamondCells(this.Diamond);
-		if (0 < cells.length) {
-			let cell = this.CellFinder.GetClosestCell(cells, this.Vehicle);
-			this.FinalOriginalGoal = cell;
-			return cell;
+		let cells = this.GetDiamondPath(this.Diamond);
+		if (1 < cells.length && cells[cells.length - 1].GetField() instanceof Diamond) {
+			const lastCell = cells[cells.length - 2];
+			this.FinalOriginalGoal = lastCell;
+			return lastCell;
 		} else {
 			return null;
 		}
@@ -23,7 +27,27 @@ export class DiamondFieldOrder extends SmartSimpleOrder {
 		return [ this.Diamond.GetCell() ];
 	}
 
-	private GetDiamondCells(hq: Diamond): Array<Cell> {
-		return hq.GetCell().GetNeighbourhood().map((c) => <Cell>c);
+	private GetDiamondPath(diamond: Diamond): Array<Cell> {
+		const filter = (c: Cell) => !isNullOrUndefined(c) && this.IsDiamondAccessible(c);
+		const cost = (c: Cell) => AStarHelper.GetBasicCost(c);
+		const cells = new AStarEngine<Cell>(filter, cost).GetPath(
+			this.Vehicle.GetCurrentCell(),
+			diamond.GetCell(),
+			true
+		);
+
+		return cells;
+	}
+
+	private IsDiamondAccessible(c: Cell): boolean {
+		const field = c.GetField();
+		if (field instanceof ShieldField) {
+			const shield = field as ShieldField;
+			return !shield.IsEnemy(this.Vehicle);
+		}
+		if (field === this.Diamond) {
+			return true;
+		}
+		return !c.IsBlocked();
 	}
 }

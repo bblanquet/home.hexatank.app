@@ -44,6 +44,7 @@ export default class GameCanvasComponent extends Component<
 		IsSettingPatrol: boolean;
 	}
 > {
+	private _diamonds: number;
 	private _gameContextService: IGameContextService;
 	private _networkService: INetworkService;
 	private _interactionService: IInteractionService;
@@ -69,6 +70,7 @@ export default class GameCanvasComponent extends Component<
 			GameStatus: GameStatus.Pending,
 			IsSettingPatrol: false
 		});
+		this._diamonds = GameSettings.PocketMoney;
 	}
 	private OnItemSelectionChanged(obj: any, item: ISelectable): void {
 		if (!item.IsSelected()) {
@@ -110,6 +112,7 @@ export default class GameCanvasComponent extends Component<
 	}
 
 	private HandleDiamondChanged(obj: any, amount: number): void {
+		this._diamonds = amount;
 		this.setState({
 			Amount: amount
 		});
@@ -233,7 +236,7 @@ export default class GameCanvasComponent extends Component<
 			<div style="position: fixed;left: 50%;transform: translateX(-50%);">
 				<button type="button" class="btn btn-dark space-out">
 					{this.ShowNoMoney()}
-					{this.state.Amount.toPrecision(2)}
+					{this._diamonds.toPrecision(2)}
 					<span class="fill-diamond badge badge-secondary very-small-space middle very-small-left-margin very-small-right-margin">
 						{' '}
 					</span>

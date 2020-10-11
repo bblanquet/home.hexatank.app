@@ -17,7 +17,7 @@ export class ReactorRequestHandler implements ISimpleRequestHandler {
 				if (c.GetField() instanceof BasicField) {
 					const reactor = new ReactorField(c, this._hq, this._gameContext, this._hq.GetSkin().GetLight());
 					this._hq.AddReactor(reactor);
-					this._hq.Buy(GameSettings.FieldPrice);
+					this._hq.Buy((this._hq.GetReactorsCount() + 1) * GameSettings.FieldPrice);
 					console.log(`%c [REACTOR] `, 'font-weight:bold;color:blue;');
 					return true;
 				}

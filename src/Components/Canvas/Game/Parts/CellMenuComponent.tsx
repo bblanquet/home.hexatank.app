@@ -30,7 +30,7 @@ export default class CellMenuComponent extends Component<{ Item: Item; GameConte
 			<ExpCircularComponent OnCancel={() => this.Cancel()} isDark={true}>
 				<SmDarkShopBtnComponent
 					CallBack={() => this.SendContext(new InfluenceMenuItem())}
-					Amount={`${this.props.GameContext.GetMainHq().GetReactorsCount() * GameSettings.FieldPrice}`}
+					Amount={`${(this.props.GameContext.GetMainHq().GetReactorsCount() + 1) * GameSettings.FieldPrice}`}
 					Icon="fill-influence"
 					Point={new Point(0, 0)}
 				/>

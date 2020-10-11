@@ -1,3 +1,6 @@
+import { GeneralRequestProvider } from './../../../Ia/Decision/Providers/GeneralRequestProvider';
+import { RequestHandlerProvider } from './../../../Ia/Decision/Providers/RequestHandlerProvider';
+import { RequestMakerProvider } from './../../../Ia/Decision/Providers/RequestMakerProvider';
 import { Item } from '../../../Items/Item';
 import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
 import { GeneralRequester } from '../../../Ia/Decision/RequestMaker/GeneralRequester/GeneralRequester';
@@ -44,10 +47,10 @@ export class HqRender extends AbstractHqRender {
 		const kingdom = new Kingdom(hq, areas);
 
 		kingdom.Setup(
-			new AreaRequestMaker(kingdom),
-			new RequestHandler(hq, kingdom, context),
+			new AreaRequestMaker(new RequestMakerProvider(kingdom).Get()),
+			new RequestHandler(new RequestHandlerProvider(hq, kingdom, context).Get()),
 			new ExpansionMaker(hq, kingdom, areaSearch),
-			new GeneralRequester()
+			new GeneralRequester(new GeneralRequestProvider().Get())
 		);
 
 		kingdom.SetDiamond(diamond);

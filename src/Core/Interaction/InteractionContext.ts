@@ -1,3 +1,4 @@
+import { InteractionInfo } from './InteractionInfo';
 import { LiteEvent } from './../Utils/Events/LiteEvent';
 import { IUpdateService } from './../../Services/Update/IUpdateService';
 import { UnitGroup } from '../Items/UnitGroup';
@@ -24,7 +25,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 	public View: ViewContext;
 	private _selectedItem: Array<Item>;
 	private _dispatcher: ICombinationDispatcher;
-	public OnInteractionChanged: LiteEvent<string> = new LiteEvent<string>();
+	public OnInteractionChanged: LiteEvent<InteractionInfo> = new LiteEvent<InteractionInfo>();
 
 	constructor(
 		private _inputNotifier: InputNotifier,
@@ -133,7 +134,11 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 			this._selectedItem.push(item);
 		}
 		if (this.Kind !== InteractionKind.Moving) {
-			this.OnInteractionChanged.Invoke(this, this.GetMessage());
+			const info = new InteractionInfo();
+			info.InteractionKind = InteractionKind[this.Kind];
+			info.ItemsCount = this._selectedItem.length;
+			info.Items = this._selectedItem.map((s) => s.constructor.name);
+			this.OnInteractionChanged.Invoke(this, info);
 			console.log(`%c ${this.GetMessage()}`, 'font-weight:bold;color:red;');
 		}
 

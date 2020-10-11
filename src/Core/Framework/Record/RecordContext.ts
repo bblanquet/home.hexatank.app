@@ -15,6 +15,7 @@ import { Item } from '../../Items/Item';
 import { FieldTypeHelper } from '../Packets/FieldTypeHelper';
 import { RecordField } from './RecordField';
 import { RecordData } from './RecordData';
+import { InteractionInfo } from '../../Interaction/InteractionInfo';
 
 export class RecordContext {
 	private _data: RecordData;
@@ -49,7 +50,7 @@ export class RecordContext {
 		this._interactionContext.OnInteractionChanged.On(this.HandleInteractionChanged.bind(this));
 	}
 
-	private HandleInteractionChanged(src: any, message: string): void {
+	private HandleInteractionChanged(src: any, message: InteractionInfo): void {
 		this._data.Interactions.push(message);
 	}
 

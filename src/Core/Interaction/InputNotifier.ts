@@ -7,7 +7,10 @@ export class InputNotifier {
 	private _isDown: boolean = false;
 	private _currentPoint: Point;
 	private _downPoint: Point;
-	private _doubleClickLatency: number = 250;
+
+	private readonly _doubleClickLatency: number = 250;
+	private readonly _doubleTapDistance = 30;
+
 	public DoubleEvent: LiteEvent<Point>;
 	public MovingEvent: LiteEvent<Point>;
 	public DownEvent: LiteEvent<Point>;
@@ -59,7 +62,7 @@ export class InputNotifier {
 
 		if (this.IsDouble(pvsDownDate)) {
 			const dist = Math.abs(this._currentPoint.GetDistance(pvsDownPoint));
-			if (dist < 30) {
+			if (dist < this._doubleTapDistance) {
 				this.DoubleEvent.Invoke(new Point(this._currentPoint.X, this._currentPoint.Y));
 			}
 			this._downDate = null;

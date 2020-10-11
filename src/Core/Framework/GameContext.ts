@@ -59,7 +59,6 @@ export class GameContext {
 		});
 
 		this.StatsContext = new StatsContext(this);
-		this.TrackingContext = new RecordContext(mapContext, this);
 	}
 
 	ExistUnit(id: string) {

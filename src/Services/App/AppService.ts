@@ -11,6 +11,7 @@ import { MapContext } from './../../Core/Setup/Generator/MapContext';
 import { IAppService } from './IAppService';
 import { Factory, FactoryKey } from '../../Factory';
 import * as PIXI from 'pixi.js';
+import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 
 export class AppService implements IAppService {
 	private _context: MapContext;
@@ -39,7 +40,7 @@ export class AppService implements IAppService {
 		this._keyService.DefineKey(this);
 
 		GameSettings.Init();
-		GameSettings.SetFastSpeed();
+		GameSettings.SetNormalSpeed();
 		this._context = mapContext;
 		this._updateService.Register();
 		this._app = this._appProvider.Provide(mapContext);
@@ -49,6 +50,7 @@ export class AppService implements IAppService {
 		this._gameContextService.Register(new HqRender(), mapContext);
 		const gameContext = this._gameContextService.Publish();
 		this._interactionService.Register(this._interactionManager, gameContext);
+		gameContext.TrackingContext = new RecordContext(mapContext, gameContext, this._interactionService.Publish());
 		this._app.start();
 	}
 

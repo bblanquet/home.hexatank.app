@@ -61,6 +61,8 @@ export class CombinationProvider {
 		return [
 			//CLEAR
 			new CancelCombination(),
+			new ClearMultiCellBonusCombination(),
+			new ClearMultiSelectionMenuCombination(),
 
 			//SINGLE SELECTION
 			new SwitchToCellCombination(),
@@ -71,8 +73,6 @@ export class CombinationProvider {
 			new SelectionCombination(checker, gameContext),
 
 			//MULTI SELECTION
-			new ClearMultiCellBonusCombination(),
-			new ClearMultiSelectionMenuCombination(),
 			new DisplayMultiMenuCombination(multiSelectionContext),
 			new ActiveMultiSelectionCombination(multiSelectionContext),
 			new MultiSelectionCombination(multiSelectionContext),

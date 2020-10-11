@@ -1,3 +1,4 @@
+import { LiteEvent } from './../Utils/Events/LiteEvent';
 import { IUpdateService } from './../../Services/Update/IUpdateService';
 import { UnitGroup } from '../Items/UnitGroup';
 import { ICombination } from './Combination/ICombination';
@@ -23,6 +24,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 	public View: ViewContext;
 	private _selectedItem: Array<Item>;
 	private _dispatcher: ICombinationDispatcher;
+	public OnInteractionChanged: LiteEvent<string> = new LiteEvent<string>();
 
 	constructor(
 		private _inputNotifier: InputNotifier,
@@ -131,12 +133,8 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 			this._selectedItem.push(item);
 		}
 		if (this.Kind !== InteractionKind.Moving) {
-			console.log(
-				`%c COUNT[${this._selectedItem.length}] ITEMS[ ${this._selectedItem.map(
-					(e) => `${e.constructor.name} `
-				)}] INT[${InteractionKind[this.Kind]}] ${this.GetDetail(this._selectedItem)}`,
-				'font-weight:bold;color:red;'
-			);
+			this.OnInteractionChanged.Invoke(this, this.GetMessage());
+			console.log(`%c ${this.GetMessage()}`, 'font-weight:bold;color:red;');
 		}
 
 		let context = new CombinationContext();
@@ -144,6 +142,12 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 		context.InteractionKind = this.Kind;
 		context.Point = this.Point;
 		this._dispatcher.Check(context);
+	}
+
+	private GetMessage() {
+		return `COUNT[${this._selectedItem.length}] ITEMS[ ${this._selectedItem.map(
+			(e) => `${e.constructor.name} `
+		)}] INT[${InteractionKind[this.Kind]}] ${this.GetDetail(this._selectedItem)}`;
 	}
 
 	private HasGroup(items: Item[]): boolean {

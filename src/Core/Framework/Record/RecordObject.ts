@@ -1,8 +1,9 @@
 import { MapContext } from '../../Setup/Generator/MapContext';
 export class RecordObject {
-	MapContext: MapContext;
-	Points: number[];
-	Hqs: any;
-	Cells: any;
-	Title: string;
+	public MapContext: MapContext;
+	public Points: number[];
+	public Hqs: any;
+	public Cells: any;
+	public Title: string;
+	public Interactions: string[];
 }

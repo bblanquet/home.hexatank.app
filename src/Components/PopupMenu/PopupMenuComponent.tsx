@@ -7,6 +7,8 @@ import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import ActiveButtonComponent from '../Common/Button/Stylish/ActiveButtonComponent';
+import { Factory, FactoryKey } from '../../Factory';
+import { GameContextService } from '../../Services/GameContext/GameContextService';
 
 export default class PopupMenuComponent extends Component<
 	{ status: GameStatus; callBack: () => void },
@@ -28,6 +30,18 @@ export default class PopupMenuComponent extends Component<
 	private Cheat(): void {
 		GameSettings.ShowEnemies = !GameSettings.ShowEnemies;
 		this.setState({});
+	}
+
+	private Save(): void {
+		const data = Factory.Load<GameContextService>(FactoryKey.GameContext)
+			.Publish()
+			.TrackingContext.GetTrackingObject();
+		const url = document.createElement('a');
+		const file = new Blob([ JSON.stringify(data) ], { type: 'application/json' });
+		url.href = URL.createObjectURL(file);
+		url.download = `${data.Title}.json`;
+		url.click();
+		URL.revokeObjectURL(url.href);
 	}
 
 	render() {
@@ -60,10 +74,18 @@ export default class PopupMenuComponent extends Component<
 							</span>
 						}
 						leftColor={ColorKind.Black}
-						rightColor={ColorKind.Blue}
+						rightColor={ColorKind.Red}
 						isActive={GameSettings.ShowEnemies}
 						callBack={() => this.Cheat()}
 					/>
+					<ButtonComponent
+						callBack={() => {
+							this.Save();
+						}}
+						color={ColorKind.Blue}
+					>
+						<Icon Value="fas fa-save" /> Save
+					</ButtonComponent>
 					<ButtonComponent
 						callBack={() => {
 							this.Quit();

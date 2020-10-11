@@ -43,7 +43,7 @@ module.exports = (env) => {
 		output: {
 			path: distDir,
 			filename: 'main.js',
-			publicPath: './'
+			publicPath: '/'
 		},
 
 		optimization: {

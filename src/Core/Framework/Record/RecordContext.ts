@@ -1,3 +1,4 @@
+import { InteractionContext } from './../../Interaction/InteractionContext';
 import { RecordCell } from './RecordCell';
 import { Tank } from '../../Items/Unit/Tank';
 import { RecordUnit } from './RecordUnit';
@@ -19,7 +20,11 @@ export class RecordContext {
 	private _data: RecordData;
 	private _refDate: number;
 
-	constructor(private _mapContext: MapContext, private _gameContext: GameContext) {
+	constructor(
+		private _mapContext: MapContext,
+		private _gameContext: GameContext,
+		private _interactionContext: InteractionContext
+	) {
 		this._refDate = new Date().getTime();
 		this._data = new RecordData();
 
@@ -40,6 +45,12 @@ export class RecordContext {
 				cell.OnFieldChanged.On(this.HandleFieldChanged.bind(this));
 			}
 		});
+
+		this._interactionContext.OnInteractionChanged.On(this.HandleInteractionChanged.bind(this));
+	}
+
+	private HandleInteractionChanged(src: any, message: string): void {
+		this._data.Interactions.push(message);
 	}
 
 	private GetTime(): number {
@@ -103,6 +114,7 @@ export class RecordContext {
 		obj.MapContext = this._mapContext;
 		obj.Cells = this._data.Cells.GetValues();
 		obj.Hqs = players;
+		obj.Interactions = this._data.Interactions;
 		obj.Points = this._data.Dates;
 		return obj;
 	}

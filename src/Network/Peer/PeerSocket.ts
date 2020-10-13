@@ -6,7 +6,7 @@ import { NetworkMessage } from '../Message/NetworkMessage';
 import { ServerSocket } from '../Server/ServerSocket';
 import { ConnectionKind } from '../ConnectionKind';
 import { INetworkMessage } from '../Message/INetworkMessage';
-import { PingPacket } from './Ping/PingPacket';
+import { PingData } from './Ping/PingData';
 import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
 import { SimpleEvent } from '../../Core/Utils/Events/SimpleEvent';
 import { NetworkObserver } from '../NetworkObserver';
@@ -29,6 +29,9 @@ export abstract class PeerSocket {
 
 	private _candidateObserver: NetworkObserver;
 	private _offerObserver: NetworkObserver;
+
+	private _bestLatency: number = -1;
+	private _delta: number;
 
 	constructor(serverSocket: ServerSocket, owner: string, recipient: string) {
 		//basic info
@@ -119,11 +122,11 @@ export abstract class PeerSocket {
 		}
 	}
 
-	public GetLastPing(): PingPacket {
+	public GetLastPing(): PingData {
 		if (this.PeerPing) {
-			return this.PeerPing.GetLastPing();
+			return this.PeerPing.GetLastPingData();
 		} else {
-			return new PingPacket();
+			return new PingData();
 		}
 	}
 
@@ -177,12 +180,12 @@ export abstract class PeerSocket {
 
 	private CreatePing() {
 		this.PeerPing = new PeerPingObserver(this, this.Owner);
-		this.PeerPing.PingReceived.On((obj: any, latency: string) => {
+		this.PeerPing.OnPingReceived.On((obj: any, data: PingData) => {
 			const message = new NetworkMessage<string>();
 			message.Kind = PacketKind.Ping;
 			message.Emitter = this.GetRecipient();
 			message.Recipient = this.Owner;
-			message.Content = latency;
+			message.Content = data.Latency.toString();
 
 			if (this._lastConnectionStatus && this._lastConnectionStatus.IsNotConnected()) {
 				//code for firefox
@@ -192,9 +195,22 @@ export abstract class PeerSocket {
 				}
 			}
 
+			this.HandleDelta(data);
 			this.OnReceivedMessage.Invoke(this, message);
 		});
 		this.PeerPing.Start();
+	}
+
+	private HandleDelta(data: PingData) {
+		if (this._bestLatency === -1 || this._bestLatency < data.Latency) {
+			this._bestLatency = data.Latency;
+			const deltaMessage = new NetworkMessage<number>();
+			deltaMessage.Kind = PacketKind.Delta;
+			deltaMessage.Emitter = this.GetRecipient();
+			deltaMessage.Recipient = this.Owner;
+			deltaMessage.Content = data.Delta;
+			this.OnReceivedMessage.Invoke(this, deltaMessage);
+		}
 	}
 
 	protected abstract GetType(): string;

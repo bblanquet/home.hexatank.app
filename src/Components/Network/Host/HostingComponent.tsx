@@ -26,6 +26,7 @@ import ButtonComponent from '../../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
 import Icon from '../../Common/Icon/IconComponent';
 import ActiveButtonComponent from '../../Common/Button/Stylish/ActiveButtonComponent';
+import * as moment from 'moment';
 
 export default class HostingComponent extends Component<any, HostState> {
 	private _hasSettings: boolean = false;
@@ -57,6 +58,7 @@ export default class HostingComponent extends Component<any, HostState> {
 			new NetworkObserver(PacketKind.Ready, this.HandleReady.bind(this)),
 			new NetworkObserver(PacketKind.Players, this.HandlePlayers.bind(this)),
 			new NetworkObserver(PacketKind.Ping, this.HandlePing.bind(this)),
+			new NetworkObserver(PacketKind.Delta, this.HandleDelta.bind(this)),
 
 			//map, loaded, start should be in a service...
 			new NetworkObserver(PacketKind.Map, this.HandleMap.bind(this)),
@@ -288,6 +290,17 @@ export default class HostingComponent extends Component<any, HostState> {
 	private HandlePing(message: NetworkMessage<string>): void {
 		if (this.state.Players.Exist(message.Emitter)) {
 			this.state.Players.Get(message.Emitter).Latency = message.Content;
+			this.setState({});
+		}
+	}
+
+	private HandleDelta(message: NetworkMessage<number>): void {
+		if (this.state.Players.Exist(message.Emitter)) {
+			this.state.Players.Get(message.Emitter).Delta = message.Content;
+			const duration = moment.duration(message.Content);
+			console.log(
+				`DELTA ${duration.hours()}:${duration.minutes()}:${duration.seconds()}:${duration.milliseconds()}`
+			);
 			this.setState({});
 		}
 	}

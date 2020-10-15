@@ -20,6 +20,7 @@ export enum PacketKind {
 	OneWayPing,
 	TwoWayPing,
 	Ping,
+	TimeOut,
 	Delta,
 	Synchronised,
 	Context,

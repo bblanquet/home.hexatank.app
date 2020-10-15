@@ -15,6 +15,9 @@ export class GameContextService implements IGameContextService {
 	}
 
 	Collect(): void {
+		this._gameContext.Players.forEach((p) => {
+			p.OnChanged.Clear();
+		});
 		this._gameContext = null;
 	}
 }

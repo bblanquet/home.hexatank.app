@@ -40,9 +40,9 @@ export default class PlayersComponent extends Component<{ HostState: HostState; 
 								{player.Name} {this.GetReady(player)}
 							</td>
 							<td class="align-middle">
-								{this.GetType(player)} {this.GetConnection(player)}
+								{this.GetType(player)} {this.GetConnection(player)} {this.GetTimeout(player)}
 							</td>
-							<td class="align-middle">{+player.Latency === 0 ? '' : player.Latency}</td>
+							<td class="align-middle">{+player.GetLatency() === 0 ? '' : player.GetLatency()}</td>
 							{this.props.HostState.IsAdmin ? (
 								<td class="align-middle">
 									<SmButtonComponent
@@ -63,17 +63,31 @@ export default class PlayersComponent extends Component<{ HostState: HostState; 
 	}
 
 	private GetType(player: Player) {
-		return <span class="badge badge-light">{player.Connection.Type}</span>;
+		return <span class="badge badge-light">{player.GetConnection().Type}</span>;
+	}
+
+	private GetTimeout(player: Player) {
+		if (player.HasTimeOut()) {
+			return (
+				<span
+					class="badge badge-danger align-text-center blink_me"
+					style="background-color:#ff0062; border: white solid 0.5px"
+				>
+					<Icon Value={'fas fa-exclamation-circle'} />
+				</span>
+			);
+		}
+		return '';
 	}
 
 	private GetConnection(player: Player) {
 		let style = 'badge badge-success';
-		if (player.Connection.Kind === ConnectionKind.Nok) {
+		if (player.GetConnection().Kind === ConnectionKind.Nok) {
 			style = 'badge badge-danger';
-		} else if (player.Connection.Kind === ConnectionKind.Connecting) {
+		} else if (player.GetConnection().Kind === ConnectionKind.Connecting) {
 			style = 'badge badge-warning opacity-changing';
 		}
-		return <span class={style}>{player.Connection.State.substring(0, 3)}</span>;
+		return <span class={style}>{player.GetConnection().State.substring(0, 3)}</span>;
 	}
 
 	private GetReady(player: Player) {

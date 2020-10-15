@@ -59,6 +59,7 @@ export default class HostingComponent extends Component<any, HostState> {
 			new NetworkObserver(PacketKind.Players, this.HandlePlayers.bind(this)),
 			new NetworkObserver(PacketKind.Ping, this.HandlePing.bind(this)),
 			new NetworkObserver(PacketKind.Delta, this.HandleDelta.bind(this)),
+			new NetworkObserver(PacketKind.TimeOut, this.HandleTimeout.bind(this)),
 
 			//map, loaded, start should be in a service...
 			new NetworkObserver(PacketKind.Map, this.HandleMap.bind(this)),
@@ -111,7 +112,7 @@ export default class HostingComponent extends Component<any, HostState> {
 		if (peer) {
 			const player = this.state.Players.Get(peer.GetRecipient());
 			if (player) {
-				player.Connection = peer.GetConnectionStatus();
+				player.SetConnection(peer.GetConnectionStatus());
 				this.setState({});
 			}
 		}
@@ -289,7 +290,14 @@ export default class HostingComponent extends Component<any, HostState> {
 
 	private HandlePing(message: NetworkMessage<string>): void {
 		if (this.state.Players.Exist(message.Emitter)) {
-			this.state.Players.Get(message.Emitter).Latency = message.Content;
+			this.state.Players.Get(message.Emitter).SetLatency(message.Content);
+			this.setState({});
+		}
+	}
+
+	private HandleTimeout(message: NetworkMessage<boolean>): void {
+		if (this.state.Players.Exist(message.Emitter)) {
+			this.state.Players.Get(message.Emitter).SetTimeOut(message.Content);
 			this.setState({});
 		}
 	}

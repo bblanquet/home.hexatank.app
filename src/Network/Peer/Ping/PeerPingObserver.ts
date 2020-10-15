@@ -1,6 +1,5 @@
 import { PingContent } from './PingContent';
 import { LiteEvent } from './../../../Core/Utils/Events/LiteEvent';
-import { SimpleEvent } from './../../../Core/Utils/Events/SimpleEvent';
 import { PingData } from './PingData';
 import { PacketKind } from '../../Message/PacketKind';
 import { NetworkMessage } from '../../Message/NetworkMessage';
@@ -8,11 +7,14 @@ import { PeerSocket } from '../PeerSocket';
 
 export class PeerPingObserver {
 	public OnPingReceived: LiteEvent<PingData> = new LiteEvent<PingData>();
-	public OnTimeOutReceived: SimpleEvent;
+	public OnTimeoutStateChanged: LiteEvent<boolean> = new LiteEvent<boolean>();
 	private _pingData: PingData = new PingData();
+	private _timeOut: NodeJS.Timeout;
+	private _shortSleep: number = 500;
+	private _timeoutSleep: number = 1000;
+	private _pingInterval: number = 2000;
 
 	constructor(private _socket: PeerSocket, private _owner: string) {
-		this.OnTimeOutReceived = new SimpleEvent();
 		this._socket.OnReceivedMessage.On(this.OnOneWayPingReceived.bind(this));
 		this._socket.OnReceivedMessage.On(this.OnTwoWayPingReceived.bind(this));
 	}
@@ -26,7 +28,11 @@ export class PeerPingObserver {
 			message.Emitter = this._owner;
 			message.Kind = PacketKind.OneWayPing;
 			this._socket.Send(message);
-		}, 500);
+
+			this._timeOut = setTimeout(() => {
+				this.OnTimeoutStateChanged.Invoke(this, true);
+			}, this._timeoutSleep);
+		}, this._shortSleep);
 	}
 
 	public Stop(): void {
@@ -48,10 +54,12 @@ export class PeerPingObserver {
 			data.Delta = Math.abs(packet.Content.EmittedDate - receiverEmittedDate);
 			this._pingData = data;
 
+			clearTimeout(this._timeOut);
+			this.OnTimeoutStateChanged.Invoke(this, false);
 			this.OnPingReceived.Invoke(this, data);
 			setTimeout(() => {
 				this.Start();
-			}, 2000);
+			}, this._pingInterval);
 		}
 	}
 

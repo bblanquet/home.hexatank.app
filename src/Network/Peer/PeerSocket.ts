@@ -31,7 +31,6 @@ export abstract class PeerSocket {
 	private _offerObserver: NetworkObserver;
 
 	private _bestLatency: number = -1;
-	private _delta: number;
 
 	constructor(serverSocket: ServerSocket, owner: string, recipient: string) {
 		//basic info
@@ -180,13 +179,10 @@ export abstract class PeerSocket {
 
 	private CreatePing() {
 		this.PeerPing = new PeerPingObserver(this, this.Owner);
+		this.PeerPing.OnTimeoutStateChanged.On((obj: any, state: boolean) => {
+			this.OnReceivedMessage.Invoke(this, this.GetMessage<boolean>(PacketKind.TimeOut, state));
+		});
 		this.PeerPing.OnPingReceived.On((obj: any, data: PingData) => {
-			const message = new NetworkMessage<string>();
-			message.Kind = PacketKind.Ping;
-			message.Emitter = this.GetRecipient();
-			message.Recipient = this.Owner;
-			message.Content = data.Latency.toString();
-
 			if (this._lastConnectionStatus && this._lastConnectionStatus.IsNotConnected()) {
 				//code for firefox
 				const connection = this.GetConnectionStatus();
@@ -196,7 +192,7 @@ export abstract class PeerSocket {
 			}
 
 			this.HandleDelta(data);
-			this.OnReceivedMessage.Invoke(this, message);
+			this.OnReceivedMessage.Invoke(this, this.GetMessage<string>(PacketKind.Ping, data.Latency.toString()));
 		});
 		this.PeerPing.Start();
 	}
@@ -204,13 +200,17 @@ export abstract class PeerSocket {
 	private HandleDelta(data: PingData) {
 		if (this._bestLatency === -1 || this._bestLatency < data.Latency) {
 			this._bestLatency = data.Latency;
-			const deltaMessage = new NetworkMessage<number>();
-			deltaMessage.Kind = PacketKind.Delta;
-			deltaMessage.Emitter = this.GetRecipient();
-			deltaMessage.Recipient = this.Owner;
-			deltaMessage.Content = data.Delta;
-			this.OnReceivedMessage.Invoke(this, deltaMessage);
+			this.OnReceivedMessage.Invoke(this, this.GetMessage<number>(PacketKind.Delta, data.Delta));
 		}
+	}
+
+	private GetMessage<T>(kind: PacketKind, data: T) {
+		const deltaMessage = new NetworkMessage<T>();
+		deltaMessage.Kind = kind;
+		deltaMessage.Emitter = this.GetRecipient();
+		deltaMessage.Recipient = this.Owner;
+		deltaMessage.Content = data;
+		return deltaMessage;
 	}
 
 	protected abstract GetType(): string;

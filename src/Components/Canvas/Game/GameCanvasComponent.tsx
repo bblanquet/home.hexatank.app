@@ -27,6 +27,7 @@ import { INetworkService } from '../../../Services/Network/INetworkService';
 import { IInteractionService } from '../../../Services/Interaction/IInteractionService';
 import { Factory, FactoryKey } from '../../../Factory';
 import Redirect from '../../Redirect/RedirectComponent';
+import Icon from '../../Common/Icon/IconComponent';
 
 export default class GameCanvasComponent extends Component<
 	any,
@@ -91,6 +92,11 @@ export default class GameCanvasComponent extends Component<
 		this._gameContext.GetMainHq().OnCashMissing.On(this.HandleCashMissing.bind(this));
 		this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
+		this._gameContext.Players.forEach((player) => {
+			player.OnChanged.On(() => {
+				this.setState({});
+			});
+		});
 	}
 
 	private HandleMultiMenuShowed(src: any, isDisplayed: boolean): void {
@@ -218,13 +224,28 @@ export default class GameCanvasComponent extends Component<
 					{this._gameContext.Players.map((player) => {
 						return (
 							<div>
-								{player.Name} <span class="badge badge-info">{player.Latency}</span>
+								{player.Name} <span class="badge badge-info">{player.GetLatency()}</span>{' '}
+								{this.HasTimeout(player)}
 							</div>
 						);
 					})}
 				</div>
 			);
 		}
+	}
+
+	private HasTimeout(player: Player) {
+		if (player.HasTimeOut()) {
+			return (
+				<span
+					class="badge badge-danger align-text-center blink_me"
+					style="background-color:#ff0062; border: white solid 0.5px"
+				>
+					<Icon Value={'fas fa-exclamation-circle'} />
+				</span>
+			);
+		}
+		return '';
 	}
 
 	private TopMenuRender() {

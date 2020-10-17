@@ -32,6 +32,7 @@ export enum PacketKind {
 
 	//game
 	Start,
+	Loading,
 	Loaded,
 	Map,
 	UnitDestroyed,

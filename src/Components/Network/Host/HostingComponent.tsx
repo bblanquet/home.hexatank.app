@@ -33,7 +33,7 @@ import { MapSetting } from '../../Form/MapSetting';
 
 export default class HostingComponent extends Component<any, HostState> {
 	private _hasSettings: boolean = false;
-	private _isStarting: boolean = false;
+	private _isLoading: boolean = false;
 
 	private _appService: IAppService;
 	private _hostingService: IHostingService;
@@ -67,6 +67,7 @@ export default class HostingComponent extends Component<any, HostState> {
 
 			//map, loaded, start should be in a service...
 			new NetworkObserver(PacketKind.Map, this.HandleMap.bind(this)),
+			new NetworkObserver(PacketKind.Loading, this.HandleLoading.bind(this)),
 			new NetworkObserver(PacketKind.Loaded, this.HandleLoaded.bind(this)),
 			new NetworkObserver(PacketKind.Start, this.HandleStart.bind(this))
 		];
@@ -97,14 +98,14 @@ export default class HostingComponent extends Component<any, HostState> {
 		return (
 			<Redirect>
 				<Visible isVisible={SpriteProvider.IsLoaded()}>
-					<Visible isVisible={this._isStarting}>
+					<Visible isVisible={this._isLoading}>
 						<ToastComponent socket={this._socket} Player={this.state.Player}>
 							<PanelComponent>
 								<LoadingPlayers Socket={this._socket} HostState={this.state} />
 							</PanelComponent>
 						</ToastComponent>
 					</Visible>
-					<Visible isVisible={!this._isStarting}>
+					<Visible isVisible={!this._isLoading}>
 						<Visible isVisible={this._hasSettings}>
 							<OptionComponent Update={this.Update.bind(this)} Model={this.state.MapSetting} />
 						</Visible>
@@ -215,8 +216,8 @@ export default class HostingComponent extends Component<any, HostState> {
 
 	private Loading(): void {
 		if (this.state.Players.Values().every((e) => e.IsReady)) {
-			this._isStarting = true;
-			this.setState({});
+			this._socket.EmitAll<any>(PacketKind.Loading, {});
+			this.SetLoading();
 			let hqCount = +this.state.MapSetting.IaCount + this.state.Players.Count();
 			if (this.ConvertSize() === 8 && 3 < hqCount) {
 				this.state.MapSetting.Size = 'Large';
@@ -286,6 +287,15 @@ export default class HostingComponent extends Component<any, HostState> {
 		route('/Canvas', true);
 	}
 
+	private HandleLoading(data: NetworkMessage<any>): void {
+		this.SetLoading();
+	}
+
+	private SetLoading(): void {
+		this._isLoading = true;
+		this.setState({});
+	}
+
 	private HandleLoaded(data: NetworkMessage<boolean>): void {
 		this.state.Players.Get(data.Emitter).IsLoaded = data.Content;
 		if (this.state.IsAdmin && this.state.Players.Values().every((p) => p.IsLoaded)) {
@@ -295,7 +305,6 @@ export default class HostingComponent extends Component<any, HostState> {
 	}
 
 	private HandleMap(data: NetworkMessage<MapContext>): void {
-		this._isStarting = true;
 		this.setState({});
 		const mapContext = data.Content;
 		mapContext.PlayerName = this.state.Player.Name;

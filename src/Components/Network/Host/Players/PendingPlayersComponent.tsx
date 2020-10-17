@@ -7,8 +7,9 @@ import { ConnectionKind } from '../../../../Network/ConnectionKind';
 import { Player } from '../../../../Network/Player';
 import Icon from '../../../Common/Icon/IconComponent';
 import { ColorKind } from '../../../Common/Button/Stylish/ColorKind';
+import Visible from '../../../Common/Visible/VisibleComponent';
 
-export default class PlayersComponent extends Component<{ HostState: HostState; Socket: NetworkSocket }, {}> {
+export default class PendingPlayers extends Component<{ HostState: HostState; Socket: NetworkSocket }, {}> {
 	constructor() {
 		super();
 	}
@@ -23,7 +24,7 @@ export default class PlayersComponent extends Component<{ HostState: HostState; 
 				<tr>
 					<th scope="col">Player</th>
 					<th scope="col">Peer</th>
-					<th scope="col">Ping</th>
+					<th scope="col">Loading</th>
 					{this.props.HostState.IsAdmin ? <th scope="col">*</th> : ''}
 				</tr>
 			</thead>
@@ -43,7 +44,7 @@ export default class PlayersComponent extends Component<{ HostState: HostState; 
 								{this.GetType(player)} {this.GetConnection(player)} {this.GetTimeout(player)}
 							</td>
 							<td class="align-middle">{+player.GetLatency() === 0 ? '' : player.GetLatency()}</td>
-							{this.props.HostState.IsAdmin ? (
+							<Visible isVisible={this.props.HostState.IsAdmin}>
 								<td class="align-middle">
 									<SmButtonComponent
 										callBack={() => this.MakeUserLeave(player.Name)}
@@ -52,9 +53,7 @@ export default class PlayersComponent extends Component<{ HostState: HostState; 
 										<Icon Value={'fas fa-user-slash'} />
 									</SmButtonComponent>
 								</td>
-							) : (
-								''
-							)}
+							</Visible>
 						</tr>
 					);
 				})}

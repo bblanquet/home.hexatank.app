@@ -218,8 +218,10 @@ export default class HostingComponent extends Component<any, HostState> {
 			this._isStarting = true;
 			this.setState({});
 			let hqCount = +this.state.MapSetting.IaCount + this.state.Players.Count();
-			if (this.ConvertSize() === 8 && 2 < hqCount) {
-				hqCount = 2;
+			if (this.ConvertSize() === 8 && 3 < hqCount) {
+				this.state.MapSetting.Size = 'Large';
+			} else if (this.ConvertSize() === 8 && 2 < hqCount) {
+				this.state.MapSetting.Size = 'Medium';
 			}
 			const mapContext = new MapGenerator().GetMapDefinition(
 				this.ConvertSize(),

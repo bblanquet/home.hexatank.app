@@ -92,11 +92,13 @@ export default class GameCanvasComponent extends Component<
 		this._gameContext.GetMainHq().OnCashMissing.On(this.HandleCashMissing.bind(this));
 		this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
-		this._gameContext.Players.forEach((player) => {
-			player.OnChanged.On(() => {
-				this.setState({});
+		if (this._gameContext.Players) {
+			this._gameContext.Players.forEach((player) => {
+				player.OnChanged.On(() => {
+					this.setState({});
+				});
 			});
-		});
+		}
 	}
 
 	private HandleMultiMenuShowed(src: any, isDisplayed: boolean): void {

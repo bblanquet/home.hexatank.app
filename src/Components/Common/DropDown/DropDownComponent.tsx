@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 
 export default class DropDownComponent extends Component<
-	{ OnInput: (e: any) => void; Label: string; Values: string[] },
+	{ OnInput: (e: any) => void; Label: string; Values: string[]; DefaultValue: string },
 	{}
 > {
 	constructor() {
@@ -17,6 +17,7 @@ export default class DropDownComponent extends Component<
 					</span>
 				</div>
 				<select
+					value={this.props.DefaultValue ? this.props.DefaultValue : this.props.Values[0]}
 					onInput={(e: any) => {
 						this.props.OnInput(e);
 					}}

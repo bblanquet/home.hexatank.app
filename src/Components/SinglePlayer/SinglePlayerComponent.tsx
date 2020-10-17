@@ -1,10 +1,10 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
-import { SinglePlayerState } from './SinglePlayerState';
+import { MapSetting } from '../Form/MapSetting';
 import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
 import { MapEnv } from '../../Core/Setup/Generator/MapEnv';
-import DropDownComponent from '../Common/DropDown/DropDownComponent';
 import PanelComponent from '../Common/Panel/PanelComponent';
+import MapFormComponent from '../Form/MapFormComponent';
 import { IAppService } from '../../Services/App/IAppService';
 import { Factory, FactoryKey } from '../../Factory';
 import Redirect from '../Redirect/RedirectComponent';
@@ -12,72 +12,43 @@ import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 
-export default class SinglePlayerComponent extends Component<any, SinglePlayerState> {
+export default class SinglePlayerComponent extends Component<any, MapSetting> {
 	constructor(props: any) {
 		super(props);
+		this.setState(new MapSetting());
 	}
 
-	componentWillUpdate() {}
-
-	componentDidMount() {
-		this.setState({
-			IaCount: 1,
-			Env: 'Forest',
-			MapType: 'Flower',
-			Size: 'Small'
-		});
+	private Update(m: MapSetting): void {
+		if (m.IaCount === 0) {
+			m.IaCount = 1;
+		}
+		this.setState(m);
 	}
 
 	render() {
 		return (
 			<Redirect>
 				<PanelComponent>
-					<DropDownComponent
-						OnInput={(e: any) => {
-							this.setState({ IaCount: Number(e.target.value) });
-						}}
-						Label={'IA'}
-						Values={[ '1', '2', '3' ]}
-					/>
-					<DropDownComponent
-						OnInput={(e: any) => {
-							this.setState({ Env: e.target.value });
-						}}
-						Label={'Env'}
-						Values={[ 'Forest', 'Sand', 'Ice' ]}
-					/>
-					<DropDownComponent
-						OnInput={(e: any) => {
-							this.setState({ Size: e.target.value });
-						}}
-						Label={'Size'}
-						Values={[ 'Small', 'Medium', 'Large' ]}
-					/>
-					<DropDownComponent
-						OnInput={(e: any) => {
-							this.setState({ MapType: e.target.value });
-						}}
-						Label={'Shape'}
-						Values={[ 'Flower', 'Donut', 'Cheese' ]}
-					/>
-					<p />
-					<div class="container-center-horizontal">
-						<ButtonComponent
-							callBack={() => {
-								this.Back();
-							}}
-							color={ColorKind.Black}
-						>
-							<Icon Value="fas fa-undo-alt" /> Back
-						</ButtonComponent>
-						<ButtonComponent
-							callBack={() => {
-								this.Start();
-							}}
-							color={ColorKind.Red}
-						>
-							<Icon Value="fas fa-arrow-alt-circle-right" /> Play
-						</ButtonComponent>
+					<div class="container-center">
+						<MapFormComponent Model={this.state} CallBack={this.Update.bind(this)} />
+						<div class="container-center-horizontal">
+							<ButtonComponent
+								callBack={() => {
+									this.Back();
+								}}
+								color={ColorKind.Black}
+							>
+								<Icon Value="fas fa-undo-alt" /> Back
+							</ButtonComponent>
+							<ButtonComponent
+								callBack={() => {
+									this.Start();
+								}}
+								color={ColorKind.Red}
+							>
+								<Icon Value="fas fa-arrow-alt-circle-right" /> Play
+							</ButtonComponent>
+						</div>
 					</div>
 				</PanelComponent>
 			</Redirect>
@@ -103,15 +74,17 @@ export default class SinglePlayerComponent extends Component<any, SinglePlayerSt
 	}
 
 	Start(): void {
-		let iaCount = this.state.IaCount + 1;
-		if (this.ConvertSize() === 8 && 2 < iaCount) {
-			iaCount = 2;
+		let hqCount = this.state.IaCount + 1;
+		if (this.ConvertSize() === 8 && 2 < hqCount) {
+			hqCount = 2;
+		} else if (hqCount === 1) {
+			hqCount += 1;
 		}
 
 		const mapContext = new MapGenerator().GetMapDefinition(
 			this.ConvertSize(),
 			this.state.MapType,
-			iaCount,
+			hqCount,
 			this.ConvertEnv()
 		);
 		mapContext.Hqs[0].PlayerName = mapContext.PlayerName;

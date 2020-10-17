@@ -1,3 +1,4 @@
+import { MapSetting } from './../Form/MapSetting';
 import { Player } from '../../Network/Player';
 import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
 
@@ -7,5 +8,5 @@ export class HostState {
 	public Players: Dictionnary<Player>;
 	public Player: Player;
 	public Message: string;
-	public IaNumber: number;
+	public MapSetting: MapSetting;
 }

@@ -4,7 +4,8 @@ import { IHostingService } from '../../../Services/Hosting/IHostingService';
 import { Component, h } from 'preact';
 import { route } from 'preact-router';
 import { PacketKind } from '../../../Network/Message/PacketKind';
-import PlayersComponent from './Players/PlayersComponent';
+import PendingPlayers from './Players/PendingPlayersComponent';
+import LoadingPlayers from './Players/LoadingPlayersComponent';
 import { NetworkObserver } from '../../../Network/NetworkObserver';
 import { NetworkSocket } from '../../../Network/NetworkSocket';
 import { PeerSocket } from '../../../Network/Peer/PeerSocket';
@@ -23,13 +24,16 @@ import PanelComponent from '../../Common/Panel/PanelComponent';
 import Redirect from '../../Redirect/RedirectComponent';
 import { SpriteProvider } from '../../../Core/Framework/SpriteProvider';
 import ButtonComponent from '../../Common/Button/Stylish/ButtonComponent';
+import Visible from '../../Common/Visible/VisibleComponent';
 import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
 import Icon from '../../Common/Icon/IconComponent';
 import ActiveButtonComponent from '../../Common/Button/Stylish/ActiveButtonComponent';
 import * as moment from 'moment';
+import { MapSetting } from '../../Form/MapSetting';
 
 export default class HostingComponent extends Component<any, HostState> {
 	private _hasSettings: boolean = false;
+	private _isStarting: boolean = false;
 
 	private _appService: IAppService;
 	private _hostingService: IHostingService;
@@ -92,18 +96,29 @@ export default class HostingComponent extends Component<any, HostState> {
 	render() {
 		return (
 			<Redirect>
-				{SpriteProvider.IsLoaded() ? (
-					<ToastComponent socket={this._socket} Player={this.state.Player}>
-						<PanelComponent>
-							{this.GetUpdsideButton()}
-							<PlayersComponent Socket={this._socket} HostState={this.state} />
-							{this.GetDownsideButton()}
-							{this._hasSettings ? <OptionComponent Update={this.Update.bind(this)} /> : ''}
-						</PanelComponent>
-					</ToastComponent>
-				) : (
-					''
-				)}
+				<Visible isVisible={SpriteProvider.IsLoaded()}>
+					<Visible isVisible={this._isStarting}>
+						<ToastComponent socket={this._socket} Player={this.state.Player}>
+							<PanelComponent>
+								<LoadingPlayers Socket={this._socket} HostState={this.state} />
+							</PanelComponent>
+						</ToastComponent>
+					</Visible>
+					<Visible isVisible={!this._isStarting}>
+						<Visible isVisible={this._hasSettings}>
+							<OptionComponent Update={this.Update.bind(this)} Model={this.state.MapSetting} />
+						</Visible>
+						<Visible isVisible={!this._hasSettings}>
+							<ToastComponent socket={this._socket} Player={this.state.Player}>
+								<PanelComponent>
+									{this.GetUpdsideButton()}
+									<PendingPlayers Socket={this._socket} HostState={this.state} />
+									{this.GetDownsideButton()}
+								</PanelComponent>
+							</ToastComponent>
+						</Visible>
+					</Visible>
+				</Visible>
 			</Redirect>
 		);
 	}
@@ -117,10 +132,10 @@ export default class HostingComponent extends Component<any, HostState> {
 			}
 		}
 	}
-	private Update(iaNumber: number): void {
+	private Update(model: MapSetting): void {
 		this._hasSettings = false;
 		this.setState({
-			IaNumber: iaNumber
+			MapSetting: model
 		});
 	}
 
@@ -200,14 +215,38 @@ export default class HostingComponent extends Component<any, HostState> {
 
 	private Loading(): void {
 		if (this.state.Players.Values().every((e) => e.IsReady)) {
-			const hqCount = +this.state.IaNumber + this.state.Players.Count();
-			const mapContext = new MapGenerator().GetMapDefinition(12, 'Flower', hqCount, MapEnv.forest);
+			this._isStarting = true;
+			this.setState({});
+			let hqCount = +this.state.MapSetting.IaCount + this.state.Players.Count();
+			if (this.ConvertSize() === 8 && 2 < hqCount) {
+				hqCount = 2;
+			}
+			const mapContext = new MapGenerator().GetMapDefinition(
+				this.ConvertSize(),
+				this.state.MapSetting.MapType,
+				hqCount,
+				this.ConvertEnv()
+			);
 			mapContext.PlayerName = this.state.Player.Name;
 			this.AssignHqToPlayer(mapContext, this.state.Players.Values());
 			this.SetIa(mapContext);
 			this.Load(mapContext);
 			this._socket.EmitAll<MapContext>(PacketKind.Map, mapContext);
 		}
+	}
+
+	private ConvertSize(): number {
+		if (this.state.MapSetting.Size === 'Small') return 8;
+		if (this.state.MapSetting.Size === 'Medium') return 10;
+		if (this.state.MapSetting.Size === 'Large') return 12;
+		return 8;
+	}
+
+	private ConvertEnv(): MapEnv {
+		if (this.state.MapSetting.Env === 'Sand') return MapEnv.sand;
+		if (this.state.MapSetting.Env === 'Forest') return MapEnv.forest;
+		if (this.state.MapSetting.Env === 'Ice') return MapEnv.ice;
+		return MapEnv.forest;
 	}
 
 	public SetIa(mapContext: MapContext): void {
@@ -254,6 +293,8 @@ export default class HostingComponent extends Component<any, HostState> {
 	}
 
 	private HandleMap(data: NetworkMessage<MapContext>): void {
+		this._isStarting = true;
+		this.setState({});
 		const mapContext = data.Content;
 		mapContext.PlayerName = this.state.Player.Name;
 		mapContext.Hqs.forEach((hq) => {

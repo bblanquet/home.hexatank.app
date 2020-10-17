@@ -2,55 +2,39 @@ import { h, Component } from 'preact';
 import ButtonComponent from '../../../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../../../Common/Button/Stylish/ColorKind';
 import Icon from '../../../Common/Icon/IconComponent';
+import MapFormComponent from '../../../Form/MapFormComponent';
+import { MapSetting } from '../../../Form/MapSetting';
 
-export default class OptionComponent extends Component<{ Update: (g: number) => void }, { IaNumber: number }> {
+export default class OptionComponent extends Component<{ Update: (model: MapSetting) => void; Model: MapSetting }> {
+	private _m: MapSetting;
 	constructor() {
 		super();
-		this.setState({
-			IaNumber: 0
-		});
 	}
 
-	componentDidMount() {}
+	componentDidMount() {
+		this._m = this.props.Model;
+	}
 
-	componentWillMount() {}
-
-	private Update(e: number): void {
-		this.setState({
-			IaNumber: e
-		});
-		this.props.Update(e);
+	private Update(m: MapSetting): void {
+		this._m = m;
 	}
 
 	render() {
 		return (
-			<div class="optionContainer absolute-center-middle-menu">
-				<div class="title-container">Settings</div>
-				<div class="whiteText">
-					<div class="input-group mb-3">
-						<div class="input-group-prepend">
-							<span class="input-group-text custom-black-btn" id="inputGroup-sizing-default">
-								IA
-							</span>
-						</div>
-						<select
-							id="daytime"
-							class="custom-select"
-							value={this.state.IaNumber}
-							onInput={(e: any) => {
-								this.setState({ IaNumber: e.target.value });
-							}}
-						>
-							<option selected value="0">
-								0
-							</option>
-							<option value="1">1</option>
-							<option value="2">2</option>
-						</select>
+			<div class="generalContainer absolute-center-middle-menu simple-menu-container fit-content">
+				<div class="title-popup-container">
+					<div class="fill-logo-back-container">
+						<div class="fill-logo-back spin-fade" />
 					</div>
-					<ButtonComponent color={ColorKind.Black} callBack={() => this.Update(this.state.IaNumber)}>
-						<Icon Value="fas fa-undo-alt" /> Black
-					</ButtonComponent>
+					<div class="fill-logo" />
+				</div>
+				<div class="container-center">
+					<MapFormComponent Model={this.props.Model} CallBack={this.Update.bind(this)} />
+					<div class="container-center-horizontal">
+						<ButtonComponent color={ColorKind.Red} callBack={() => this.props.Update(this._m)}>
+							<Icon Value="fas fa-undo-alt" /> Save
+						</ButtonComponent>
+					</div>
 				</div>
 			</div>
 		);

@@ -91,6 +91,7 @@ export default class ComparerComponent extends Component<
 										SelectedHqId: e.target.value,
 										SelectedUnitId: this._d1.Hqs.Get(e.target.value).Units.Keys()[0]
 									})}
+								DefaultValue={this.state.SelectedHqId}
 								Label={'Hq'}
 								Values={this.state.HqIds}
 							/>
@@ -102,6 +103,7 @@ export default class ComparerComponent extends Component<
 									});
 								}}
 								Label={'Unit'}
+								DefaultValue={this.state.SelectedUnitId}
 								Values={this.GetUnitIds()}
 							/>
 						</div>

@@ -1,18 +1,18 @@
 import { INetworkMessage } from './INetworkMessage';
 import { PacketKind } from './PacketKind';
 
-export class EmptyMessage implements INetworkMessage{
+export class EmptyMessage implements INetworkMessage {
+	EmittedDate: number;
+	RoomName: string;
+	Emitter: string;
+	Recipient: string;
+	Kind: PacketKind;
 
-    RoomName: string;
-    Emitter: string;    
-    Recipient: string;
-    Kind: PacketKind;
-    
-    HasContent(): boolean {
-        return false;
-    }
+	HasContent(): boolean {
+		return false;
+	}
 
-    GetContent() :any{
-        return null;
-    }
+	GetContent(): any {
+		return null;
+	}
 }

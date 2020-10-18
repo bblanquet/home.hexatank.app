@@ -11,6 +11,7 @@ import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
 import { SimpleEvent } from '../../Core/Utils/Events/SimpleEvent';
 import { NetworkObserver } from '../NetworkObserver';
 import { isNullOrUndefined } from '../../Core/Utils/ToolBox';
+import * as moment from 'moment';
 
 export abstract class PeerSocket {
 	protected Connection: RTCPeerConnection;
@@ -30,7 +31,9 @@ export abstract class PeerSocket {
 	private _candidateObserver: NetworkObserver;
 	private _offerObserver: NetworkObserver;
 
-	private _bestLatency: number = -1;
+	private _shortestLatency: number | null = null;
+	private _dateDelta: number | null = null;
+	private _deltaSign: boolean | null = null;
 
 	constructor(serverSocket: ServerSocket, owner: string, recipient: string) {
 		//basic info
@@ -53,6 +56,25 @@ export abstract class PeerSocket {
 
 		if (!this.IsPing(packet.Kind)) {
 			console.log(`%c [${packet.Emitter}] > ${this.Owner}] ${PacketKind[packet.Kind]} <<<`, 'color:#ff7373;');
+
+			if (this._dateDelta !== null) {
+				let deviceRefEmittedDate: number = null;
+
+				if (this._deltaSign) {
+					deviceRefEmittedDate = moment(packet.EmittedDate)
+						.subtract(moment.duration(this._dateDelta, 'milliseconds'))
+						.toDate()
+						.getTime();
+				} else {
+					deviceRefEmittedDate = moment(packet.EmittedDate)
+						.add(moment.duration(this._dateDelta, 'milliseconds'))
+						.toDate()
+						.getTime();
+				}
+				const now = new Date().getTime();
+				const messageLatency = moment.duration(now - deviceRefEmittedDate);
+				console.log(`Message Latency ${moment.utc(messageLatency.asMilliseconds()).format('HH:mm:ss.SSS')}`);
+			}
 		}
 		if (packet.Recipient === PeerSocket.All() || packet.Recipient === this.Owner) {
 			const value = (packet as any).Content;
@@ -198,9 +220,12 @@ export abstract class PeerSocket {
 	}
 
 	private HandleDelta(data: PingData) {
-		if (this._bestLatency === -1 || this._bestLatency < data.Latency) {
-			this._bestLatency = data.Latency;
-			this.OnReceivedMessage.Invoke(this, this.GetMessage<number>(PacketKind.Delta, data.Delta));
+		if (this._shortestLatency === null || data.Latency < this._shortestLatency) {
+			this._shortestLatency = data.Latency;
+			this._deltaSign = data.DeltaSign;
+			this._dateDelta = moment.duration(data.DateDelta).asMilliseconds();
+			console.log(`Delta Date ${moment.utc(this._dateDelta).format('HH:mm:ss.SSS')}`);
+			console.log(`Shortest latency ${moment(this._shortestLatency).format('HH:mm:ss.SSS')}`);
 		}
 	}
 

@@ -21,7 +21,6 @@ export enum PacketKind {
 	TwoWayPing,
 	Ping,
 	TimeOut,
-	Delta,
 	Synchronised,
 	Context,
 	Toast,

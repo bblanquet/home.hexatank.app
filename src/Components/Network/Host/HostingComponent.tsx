@@ -62,7 +62,6 @@ export default class HostingComponent extends Component<any, HostState> {
 			new NetworkObserver(PacketKind.Ready, this.HandleReady.bind(this)),
 			new NetworkObserver(PacketKind.Players, this.HandlePlayers.bind(this)),
 			new NetworkObserver(PacketKind.Ping, this.HandlePing.bind(this)),
-			new NetworkObserver(PacketKind.Delta, this.HandleDelta.bind(this)),
 			new NetworkObserver(PacketKind.TimeOut, this.HandleTimeout.bind(this)),
 
 			//map, loaded, start should be in a service...
@@ -350,17 +349,6 @@ export default class HostingComponent extends Component<any, HostState> {
 	private HandleTimeout(message: NetworkMessage<boolean>): void {
 		if (this.state.Players.Exist(message.Emitter)) {
 			this.state.Players.Get(message.Emitter).SetTimeOut(message.Content);
-			this.setState({});
-		}
-	}
-
-	private HandleDelta(message: NetworkMessage<number>): void {
-		if (this.state.Players.Exist(message.Emitter)) {
-			this.state.Players.Get(message.Emitter).Delta = message.Content;
-			const duration = moment.duration(message.Content);
-			console.log(
-				`DELTA ${duration.hours()}:${duration.minutes()}:${duration.seconds()}:${duration.milliseconds()}`
-			);
 			this.setState({});
 		}
 	}

@@ -110,7 +110,7 @@ export class NetworkReceiver {
 		const cell = this._context.GetCell(message.Content.Coo);
 
 		if (this.IsListenedHq(unit.Hq.GetCell().Coo())) {
-			//unit.SetNextCell(cell);
+			unit.SetNextCell(cell);
 		}
 	}
 

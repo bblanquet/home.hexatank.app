@@ -1,5 +1,6 @@
 export class PingData {
 	public PingDate: number;
 	public Latency: number;
-	public Delta: number;
+	public DateDelta: number;
+	public DeltaSign: boolean;
 }

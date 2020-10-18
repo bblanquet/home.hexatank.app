@@ -148,6 +148,7 @@ export class NetworkSocket {
 	}
 
 	public Emit(message: INetworkMessage): void {
+		message.EmittedDate = new Date().getTime();
 		if (message.Recipient === PeerSocket.All()) {
 			this.PeerSockets.Values().forEach((peer) => {
 				peer.Send(message);

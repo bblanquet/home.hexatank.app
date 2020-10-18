@@ -45,15 +45,12 @@ export class PeerPingObserver {
 
 	private OnTwoWayPingReceived(peer: any, packet: NetworkMessage<PingContent>): void {
 		if (packet.Recipient === this._owner && packet.Kind === PacketKind.TwoWayPing) {
-			const now = new Date().getTime();
-			const latency = Math.abs(now - packet.Content.EmittedDate) / 2;
-			const receiverEmittedDate = packet.Content.ReceivedDate - latency;
 			const data = new PingData();
-			data.Latency = latency;
-			data.PingDate = now;
-			data.Delta = Math.abs(packet.Content.EmittedDate - receiverEmittedDate);
+			data.PingDate = new Date().getTime();
+			data.Latency = Math.abs(data.PingDate - packet.Content.EmittedDate) / 2;
+			const recipientRefEmittedDate = packet.Content.ReceivedDate - data.Latency;
+			data.DateDelta = Math.abs(packet.Content.EmittedDate - recipientRefEmittedDate);
 			this._pingData = data;
-
 			clearTimeout(this._timeOut);
 			this.OnTimeoutStateChanged.Invoke(this, false);
 			this.OnPingReceived.Invoke(this, data);

@@ -8,6 +8,8 @@ export class NetworkMessage<T> implements INetworkMessage {
 	public RoomName: string;
 	public Recipient: string;
 	public Kind: PacketKind;
+	public EmittedDate: number;
+	public Latency: number | null = null;
 
 	public HasContent(): boolean {
 		return !isNullOrUndefined(this.Content);

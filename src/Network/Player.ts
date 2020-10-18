@@ -2,7 +2,6 @@ import { SimpleEvent } from './../Core/Utils/Events/SimpleEvent';
 import { ConnectionStatus } from './ConnectionStatus';
 export class Player {
 	public Name: string;
-	public Delta: number | null;
 
 	private _connection: ConnectionStatus;
 	private _hasTimeout: boolean = false;
@@ -16,7 +15,6 @@ export class Player {
 	constructor(name: string) {
 		this.Name = name;
 		this._latency = '0';
-		this.Delta = null;
 		this.IsLoaded = false;
 		this.IsReady = false;
 		this._connection = new ConnectionStatus();

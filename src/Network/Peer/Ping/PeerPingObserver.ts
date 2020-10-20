@@ -50,6 +50,7 @@ export class PeerPingObserver {
 			data.Latency = Math.abs(data.PingDate - packet.Content.EmittedDate) / 2;
 			const recipientRefEmittedDate = packet.Content.ReceivedDate - data.Latency;
 			data.DateDelta = Math.abs(packet.Content.EmittedDate - recipientRefEmittedDate);
+			data.DeltaSign = packet.Content.EmittedDate < recipientRefEmittedDate;
 			this._pingData = data;
 			clearTimeout(this._timeOut);
 			this.OnTimeoutStateChanged.Invoke(this, false);

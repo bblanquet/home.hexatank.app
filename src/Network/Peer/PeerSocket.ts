@@ -59,7 +59,6 @@ export abstract class PeerSocket {
 
 			if (this._dateDelta !== null) {
 				let deviceRefEmittedDate: number = null;
-
 				if (this._deltaSign) {
 					deviceRefEmittedDate = moment(packet.EmittedDate)
 						.subtract(moment.duration(this._dateDelta, 'milliseconds'))

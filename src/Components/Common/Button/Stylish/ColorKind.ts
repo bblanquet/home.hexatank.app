@@ -3,5 +3,6 @@ export enum ColorKind {
 	Red,
 	Blue,
 	Green,
-	Gray
+	Gray,
+	Yellow
 }

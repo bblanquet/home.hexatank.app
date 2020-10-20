@@ -187,3 +187,25 @@
 	color: #454545;
 	background-color: #f2f2f2;
 }
+
+.yellow-secondary {
+	background: rgb(243, 165, 70);
+	background: linear-gradient(
+		90deg,
+		rgba(243, 165, 70, 1) 0%,
+		rgba(243, 224, 70, 1) 25%,
+		rgba(255, 250, 80, 1) 50%,
+		rgba(243, 224, 70, 1) 75%,
+		rgba(243, 165, 70, 1) 100%
+	);
+}
+
+.yellow-primary {
+	background-color: #ffd733;
+	color: black;
+}
+
+.yellow-primary:hover {
+	background-color: #ffe579;
+	color: black;
+}

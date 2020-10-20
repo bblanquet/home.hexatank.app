@@ -10,12 +10,14 @@ export default class ButtonComponent extends Component<{ callBack: () => void; c
 		this._primary.Add(ColorKind[ColorKind.Red], 'red-primary');
 		this._primary.Add(ColorKind[ColorKind.Green], 'green-primary');
 		this._primary.Add(ColorKind[ColorKind.Gray], 'white-primary');
+		this._primary.Add(ColorKind[ColorKind.Yellow], 'yellow-primary');
 
 		this._secondary.Add(ColorKind[ColorKind.Black], 'black-secondary');
 		this._secondary.Add(ColorKind[ColorKind.Blue], 'blue-secondary');
 		this._secondary.Add(ColorKind[ColorKind.Red], 'red-secondary');
 		this._secondary.Add(ColorKind[ColorKind.Green], 'green-secondary');
 		this._secondary.Add(ColorKind[ColorKind.Gray], 'white-secondary');
+		this._secondary.Add(ColorKind[ColorKind.Yellow], 'yellow-secondary');
 	}
 
 	render() {

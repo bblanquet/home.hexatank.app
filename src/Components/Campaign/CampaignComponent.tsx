@@ -19,6 +19,10 @@ export default class CampaignComponent extends Component<any, any> {
 	private _mouths: Array<string> = [ 'fill-redArmy-mouth-1', 'fill-redArmy-mouth-2', 'fill-redArmy-mouth-3' ];
 	private _mouthIndex = 0;
 
+	private _lockDiv: any;
+	private _lockDiv2: any;
+	private _lockDiv3: any;
+
 	constructor(props: any) {
 		super(props);
 		this.setState({
@@ -111,33 +115,51 @@ export default class CampaignComponent extends Component<any, any> {
 							</div>
 							<div class="col-auto container-center">
 								<ButtonComponent
-									callBack={() => {
-										this.Start();
+									ref={(e: any) => {
+										this._lockDiv = e;
 									}}
-									color={ColorKind.Red}
+									callBack={() => {
+										this._lockDiv.base.classList.remove('bounce');
+										setTimeout(() => {
+											this._lockDiv.base.classList.add('bounce');
+										}, 10);
+									}}
+									color={ColorKind.Yellow}
 								>
-									<Icon Value="fas fa-arrow-alt-circle-right" /> 2
+									<Icon Value="fas fa-lock" />
 								</ButtonComponent>
 							</div>
 							<div class="w-100 d-none d-md-block " />
 							<div class="col-auto container-center">
 								<ButtonComponent
-									callBack={() => {
-										this.Start();
+									ref={(e: any) => {
+										this._lockDiv2 = e;
 									}}
-									color={ColorKind.Red}
+									callBack={() => {
+										this._lockDiv2.base.classList.remove('bounce');
+										setTimeout(() => {
+											this._lockDiv2.base.classList.add('bounce');
+										}, 10);
+									}}
+									color={ColorKind.Yellow}
 								>
-									<Icon Value="fas fa-arrow-alt-circle-right" /> 3
+									<Icon Value="fas fa-lock" />
 								</ButtonComponent>
 							</div>
 							<div class="col-auto container-center">
 								<ButtonComponent
-									callBack={() => {
-										this.Start();
+									ref={(e: any) => {
+										this._lockDiv3 = e;
 									}}
-									color={ColorKind.Red}
+									callBack={() => {
+										this._lockDiv3.base.classList.remove('bounce');
+										setTimeout(() => {
+											this._lockDiv3.base.classList.add('bounce');
+										}, 10);
+									}}
+									color={ColorKind.Yellow}
 								>
-									<Icon Value="fas fa-arrow-alt-circle-right" /> 4
+									<Icon Value="fas fa-lock" />
 								</ButtonComponent>
 							</div>
 						</div>

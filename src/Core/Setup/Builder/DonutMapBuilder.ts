@@ -5,11 +5,11 @@ import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 import { CircleMapBuilder } from './CircleMapBuilder';
 
 export class DonutMapBuilder implements IPlaygroundBuilder {
-	public GetMidle(ranges: number): HexAxial {
+	public GetRefCoo(ranges: number): HexAxial {
 		return new HexAxial(ranges / 2, ranges / 2);
 	}
 
-	public Build(ranges: number): HexAxial[] {
+	public GetAllCoos(ranges: number): HexAxial[] {
 		const empty = ranges / 2;
 		if (ranges < 2) {
 			throw new Error();
@@ -33,29 +33,19 @@ export class DonutMapBuilder implements IPlaygroundBuilder {
 		return cells;
 	}
 
-	GetRange(ranges: number, range: number): HexAxial[] {
-		const cells = new Array<HexAxial>();
-		const cell = this.GetMidle(ranges);
-
-		cell.GetSpecificRange(range).forEach((c) => {
-			cells.push(c);
-		});
-		return cells;
-	}
-
-	public GetAreaCoordinates(ranges: number): HexAxial[] {
+	public GetAreaCoos(ranges: number): HexAxial[] {
 		const coordinates = new Dictionnary<HexAxial>();
-		new CircleMapBuilder().Build(ranges).forEach((coordinate) => {
+		new CircleMapBuilder().GetAllCoos(ranges).forEach((coordinate) => {
 			coordinates.Add(coordinate.ToString(), coordinate);
 		});
 
 		const donutCoo = new Dictionnary<HexAxial>();
-		this.Build(ranges).forEach((coordinate) => {
+		this.GetAllCoos(ranges).forEach((coordinate) => {
 			donutCoo.Add(coordinate.ToString(), coordinate);
 		});
 
 		const areaSearch = new AreaSearch(coordinates);
-		var result = areaSearch.GetAreas(coordinates.Get(this.GetMidle(ranges).ToString()));
+		var result = areaSearch.GetAreas(coordinates.Get(this.GetRefCoo(ranges).ToString()));
 		result.shift();
 		return result.filter((a) => a.GetNeighbours().length === 6 && donutCoo.Exist(a.ToString()));
 	}

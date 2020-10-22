@@ -16,7 +16,7 @@ export class RoadField extends BonusField {
 		if (vehicule.IsPacific) {
 			return;
 		}
-		const sum = this.GetReactorsPower(this.hq) * 0.8;
+		const sum = this.GetReactorsPower(this.hq) * 0.2;
 		if (0 < sum) {
 			const up = new SpeedUp(vehicule, new CellUpCondition(vehicule), sum, sum);
 			vehicule.SetPowerUp(up);

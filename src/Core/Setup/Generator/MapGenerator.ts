@@ -1,3 +1,4 @@
+import { TriangleFlowerMapBuilder } from './../Builder/TriangleFlowerMapBuilder';
 import { CheeseFlowerMapBuilder } from './../Builder/CheeseFlowerMapBuilder';
 import { DonutFlowerMapBuilder } from './../Builder/DonutFlowerMapBuilder';
 import { Dictionnary } from './../../Utils/Collections/Dictionnary';
@@ -24,6 +25,7 @@ export class MapGenerator {
 		this._builders.Add('Flower', new FlowerMapBuilder());
 		this._builders.Add('Cheese', new CheeseFlowerMapBuilder());
 		this._builders.Add('Donut', new DonutFlowerMapBuilder());
+		this._builders.Add('Triangle', new TriangleFlowerMapBuilder());
 	}
 
 	public GetMapDefinition(mapSize: number, mapType: string, hqCount: number, mapMode: MapEnv): MapContext {
@@ -31,19 +33,23 @@ export class MapGenerator {
 		context.MapMode = mapMode;
 		const mapItems = new Array<MapItem>();
 		const mapBuilder = this._builders.Get(mapType);
-		const cellPositions = mapBuilder.Build(mapSize);
+		const cellPositions = mapBuilder.GetAllCoos(mapSize);
 
-		const container = new Dictionnary<HexAxial>();
+		const cells = new Dictionnary<HexAxial>();
 		cellPositions.forEach((cell) => {
-			container.Add(cell.ToString(), cell);
+			cells.Add(cell.ToString(), cell);
 		});
 
-		const areas = mapBuilder.GetAreaCoordinates(mapSize);
-		const border = Dictionnary.To<HexAxial>((e) => e.ToString(), mapBuilder.GetRange(mapSize, mapSize - 1));
-		const fatherPointManager = new FartestPointsFinder();
+		const areas = mapBuilder.GetAreaCoos(mapSize);
+		const border = Dictionnary.To<HexAxial>(
+			(e) => e.ToString(),
+			areas.filter((a) => AreaSearch.IsBorder(a, cells))
+		);
+		const farthestPointManager = new FartestPointsFinder();
 
-		const hqPositions = fatherPointManager.GetPoints(areas.filter((a) => border.Exist(a.ToString())), hqCount);
-		const diamondPositions = this.GetDiamonds(hqPositions, container, hqCount);
+		const borderAreas = areas.filter((a) => border.Exist(a.ToString()));
+		const hqPositions = farthestPointManager.GetPoints(borderAreas, hqCount);
+		const diamondPositions = this.GetDiamonds(hqPositions, cells, hqCount);
 
 		const excluded = new Dictionnary<HexAxial>();
 		let hqs = new Array<MapItem>();

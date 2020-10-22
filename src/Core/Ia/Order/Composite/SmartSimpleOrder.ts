@@ -23,6 +23,8 @@ export class SmartSimpleOrder extends SimpleOrder {
 					if (this.GetState() !== OrderState.Failed) {
 						this.SetState(OrderState.Pending);
 					}
+				} else {
+					this.SetState(OrderState.Failed);
 				}
 			}
 		}

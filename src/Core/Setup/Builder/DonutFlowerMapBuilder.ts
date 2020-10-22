@@ -11,8 +11,8 @@ export class DonutFlowerMapBuilder implements IPlaygroundBuilder {
 		this._donutBuilder = new DonutMapBuilder();
 	}
 
-	public Build(ranges: number): HexAxial[] {
-		const initCoos = this._donutBuilder.Build(ranges);
+	public GetAllCoos(ranges: number): HexAxial[] {
+		const initCoos = this._donutBuilder.GetAllCoos(ranges);
 		const coordinates = new Dictionnary<HexAxial>();
 		initCoos.forEach((initCoo) => {
 			coordinates.Add(initCoo.ToString(), initCoo);
@@ -32,23 +32,13 @@ export class DonutFlowerMapBuilder implements IPlaygroundBuilder {
 		return result;
 	}
 
-	public GetMidle(ranges: number): HexAxial {
-		return this._donutBuilder.GetMidle(ranges);
+	public GetRefCoo(ranges: number): HexAxial {
+		return this._donutBuilder.GetRefCoo(ranges);
 	}
 
-	GetRange(ranges: number, range: number): HexAxial[] {
-		const cells = new Array<HexAxial>();
-		const cell = this.GetMidle(ranges);
-
-		cell.GetSpecificRange(range).forEach((c) => {
-			cells.push(c);
-		});
-		return cells;
-	}
-
-	public GetAreaCoordinates(ranges: number): Array<HexAxial> {
+	public GetAreaCoos(ranges: number): Array<HexAxial> {
 		const coordinates = new Dictionnary<HexAxial>();
-		this.Build(ranges).forEach((coordinate) => {
+		this.GetAllCoos(ranges).forEach((coordinate) => {
 			coordinates.Add(coordinate.ToString(), coordinate);
 		});
 		const areaSearch = new AreaSearch(coordinates);

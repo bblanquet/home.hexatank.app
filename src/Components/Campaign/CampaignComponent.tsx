@@ -29,7 +29,7 @@ export default class CampaignComponent extends Component<any, any> {
 			IaNumber: 1,
 			Mode: '0',
 			MapType: 'Flower',
-			Size: '12'
+			Size: '8'
 		});
 	}
 

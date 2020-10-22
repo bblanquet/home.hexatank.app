@@ -26,6 +26,7 @@ import { GameSettings } from '../../Framework/GameSettings';
 import * as PIXI from 'pixi.js';
 import { MultiSelectionContext } from '../../Menu/Smart/MultiSelectionContext';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
+import { BonusField } from './Field/Bonus/BonusField';
 
 export class Cell extends Item implements ICell, ISelectable {
 	public Properties: CellProperties;
@@ -96,8 +97,16 @@ export class Cell extends Item implements ICell, ISelectable {
 	}
 
 	public SetField(field: IField) {
+
+		if(isNullOrUndefined(field)){
+			throw 'not supposed to be there field';
+		}
+
 		if (!isNullOrUndefined(this._field)) {
 			let field = this._field;
+			if (field instanceof BasicField && this._field instanceof BonusField) {
+				throw 'not supposed to be there field';
+			}
 			this._field = null;
 			(<Field>field).Destroy();
 		}

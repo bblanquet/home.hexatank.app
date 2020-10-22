@@ -1,11 +1,11 @@
 import { Dictionnary } from './../../Utils/Collections/Dictionnary';
-import { IPlaygroundBuilder } from './IPlaygroundBuilder';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
+import { IPlaygroundBuilder } from './IPlaygroundBuilder';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 
-export class CircleMapBuilder implements IPlaygroundBuilder {
+export class TriangleMapBuilder implements IPlaygroundBuilder {
 	public GetRefCoo(ranges: number): HexAxial {
-		return new HexAxial(ranges / 2, ranges / 2);
+		return new HexAxial(1, 1);
 	}
 
 	public GetAllCoos(ranges: number): HexAxial[] {
@@ -17,16 +17,14 @@ export class CircleMapBuilder implements IPlaygroundBuilder {
 			throw new Error();
 		}
 
-		const cells = new Array<HexAxial>();
-		const cell = this.GetRefCoo(ranges);
-
-		for (let range = 0; range <= ranges; range++) {
-			cell.GetSpecificRange(range).forEach((c) => {
-				cells.push(c);
-			});
+		const result = new Array<HexAxial>();
+		for (let r = 0; r < ranges; r++) {
+			for (let q = 0; q < ranges - r; q++) {
+				result.push(new HexAxial(q, r));
+			}
 		}
 
-		return cells;
+		return result;
 	}
 
 	public GetAreaCoos(ranges: number): HexAxial[] {

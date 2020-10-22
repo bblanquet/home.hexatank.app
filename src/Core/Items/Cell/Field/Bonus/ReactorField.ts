@@ -141,7 +141,7 @@ export class ReactorField extends Field implements ISelectable {
 				if (v.IsPacific) {
 					return;
 				}
-				const sum = this.GetPower() * 0.8;
+				const sum = this.GetPower() * 0.2;
 				v.SetPowerUp(new SpeedUp(v, new TimeUpCondition(), sum, sum));
 			});
 		}

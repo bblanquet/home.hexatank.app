@@ -39,9 +39,9 @@ export class GameSettings {
 	}
 
 	public static SetNormalSpeed(): void {
-		this.RotatingDuration = 2;
+		this.RotatingDuration = 1;
 		this.TurrelRotatingDuration = 1;
-		this.TranslatinDuration = 3;
+		this.TranslatinDuration = 2;
 		this.DiamondLoadingSpeed = 30;
 		this.MoneyLoadingSpeed = 10;
 		this.GeneralLife = 30;

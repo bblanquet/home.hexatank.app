@@ -91,12 +91,16 @@ export class HexCube {
 	ToPixel(size: number): Point {
 		// size is the distance between the center and a corner.
 		// Default is 1 if not given
-		if (size === undefined) {
+		if (!size) {
 			size = 1;
 		}
 
-		var x = size * 3 / 2 * this.X;
-		var y = size * Math.sqrt(3) * (this.Y + this.X / 2);
+		const x = size * 3 / 2 * this.X;
+		const y = size * Math.sqrt(3) * (this.Y + this.X / 2);
 		return new Point(x, y);
+	}
+
+	GetDistance(b: HexCube): number {
+		return (Math.abs(this.X - b.X) + Math.abs(this.Y - b.Y) + Math.abs(this.Z - b.Z)) / 2;
 	}
 }

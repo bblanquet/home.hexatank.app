@@ -11,14 +11,14 @@ export class FlowerMapBuilder implements IPlaygroundBuilder {
 		this._hexagonalBuilder = new CircleMapBuilder();
 	}
 
-	public Build(ranges: number): HexAxial[] {
-		const initCoos = this._hexagonalBuilder.Build(ranges);
+	public GetAllCoos(ranges: number): HexAxial[] {
+		const initCoos = this._hexagonalBuilder.GetAllCoos(ranges);
 		const coordinates = new Dictionnary<HexAxial>();
 		initCoos.forEach((initCoo) => {
 			coordinates.Add(initCoo.ToString(), initCoo);
 		});
 		const areaEngine = new AreaSearch(coordinates);
-		var areas = areaEngine.GetAreas(coordinates.Get(this.GetMidle(ranges).ToString()));
+		var areas = areaEngine.GetAreas(coordinates.Get(this.GetRefCoo(ranges).ToString()));
 		var result = new Array<HexAxial>();
 		areas.forEach((area) => {
 			const around = area.GetNeighbours();
@@ -32,27 +32,17 @@ export class FlowerMapBuilder implements IPlaygroundBuilder {
 		return result;
 	}
 
-	public GetMidle(ranges: number): HexAxial {
-		return this._hexagonalBuilder.GetMidle(ranges);
+	public GetRefCoo(ranges: number): HexAxial {
+		return this._hexagonalBuilder.GetRefCoo(ranges);
 	}
 
-	GetRange(ranges: number, range: number): HexAxial[] {
-		const cells = new Array<HexAxial>();
-		const cell = this.GetMidle(ranges);
-
-		cell.GetSpecificRange(range).forEach((c) => {
-			cells.push(c);
-		});
-		return cells;
-	}
-
-	public GetAreaCoordinates(ranges: number): Array<HexAxial> {
+	public GetAreaCoos(ranges: number): Array<HexAxial> {
 		const coordinates = new Dictionnary<HexAxial>();
-		this.Build(ranges).forEach((coordinate) => {
+		this.GetAllCoos(ranges).forEach((coordinate) => {
 			coordinates.Add(coordinate.ToString(), coordinate);
 		});
 		const areaEngine = new AreaSearch(coordinates);
-		var result = areaEngine.GetAreas(coordinates.Get(this.GetMidle(ranges).ToString()));
+		var result = areaEngine.GetAreas(coordinates.Get(this.GetRefCoo(ranges).ToString()));
 		result.shift();
 		return result.filter((a) => a.GetNeighbours().length === 6);
 	}

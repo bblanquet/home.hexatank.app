@@ -21,6 +21,18 @@ export class AreaSearch {
 		}
 	}
 
+	static IsBorder(coo: HexAxial, cells: Dictionnary<HexAxial>): boolean {
+		var shifts = [
+			{ Q: -1, R: -2 },
+			{ Q: 2, R: -3 },
+			{ Q: 3, R: -1 },
+			{ Q: 1, R: 2 },
+			{ Q: -2, R: 3 },
+			{ Q: -3, R: 1 }
+		];
+		return !shifts.every((c) => cells.Exist(new HexAxial(coo.Q + c.Q, coo.R + c.R).ToString()));
+	}
+
 	private GetRangeOne(coordinate: HexAxial): Array<HexAxial> {
 		var result = new Array<HexAxial>();
 		var shifts = [

@@ -8,29 +8,35 @@ export class FartestPointsFinder {
 	}
 
 	public GetPoints(points: Array<HexAxial>, total: number): Array<HexAxial> {
-		let result = new Array<HexAxial>();
-		result.push(points[0]);
+		let result = [ this.GetFirstPoint(points) ];
 		while (result.length < total) {
-			let candidate = this.GetFarthestPoint(result, points);
-			result.push(candidate);
+			result.push(this.GetFarthestPoint(result, points));
 		}
 		return result;
 	}
 
-	private GetFarthestPoint(hqPoints: Array<HexAxial>, candidatePoints: Array<HexAxial>): HexAxial {
+	private GetFarthestPoint(hqPoints: Array<HexAxial>, allPoints: Array<HexAxial>): HexAxial {
 		let candidates = new Array<DistancePoint>();
-		candidatePoints.forEach((candidatePoint) => {
+		allPoints.forEach((point) => {
 			let candidate = new DistancePoint();
-			let distances = new Array<number>();
-			hqPoints.forEach((hqPoint) => {
-				distances.push(DistanceHelper.GetDistance(candidatePoint, hqPoint));
-			});
-			candidate.Point = candidatePoint;
-			candidate.Distance = Math.min(...distances);
+			candidate.Point = point;
+			candidate.Distance = Math.min(...hqPoints.map((hqPoint) => DistanceHelper.GetDistance(point, hqPoint)));
 			candidates.push(candidate);
 		});
-		var max = Math.max(...candidates.map((c) => c.Distance));
-		return candidates.filter((c) => c.Distance === max)[0].Point;
+		var longestInClosest = Math.max(...candidates.map((c) => c.Distance));
+		return candidates.find((c) => c.Distance === longestInClosest).Point;
+	}
+
+	private GetFirstPoint(allPoints: Array<HexAxial>): HexAxial {
+		let candidates = new Array<DistancePoint>();
+		allPoints.forEach((point) => {
+			let candidate = new DistancePoint();
+			candidate.Point = point;
+			candidate.Distance = Math.max(...allPoints.map((hqPoint) => DistanceHelper.GetDistance(point, hqPoint)));
+			candidates.push(candidate);
+		});
+		var longestInClosest = Math.max(...candidates.map((c) => c.Distance));
+		return candidates.find((c) => c.Distance === longestInClosest).Point;
 	}
 }
 

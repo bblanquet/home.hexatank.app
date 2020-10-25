@@ -23,6 +23,9 @@ export class HexCube {
 		this.X = x;
 		this.Y = y;
 		this.Z = z;
+		if (!this.IsLegal()) {
+			throw 'cube issue';
+		}
 	}
 
 	ToString(): string {
@@ -34,7 +37,7 @@ export class HexCube {
 	}
 
 	ToAxial(): HexAxial {
-		return new HexAxial(this.X, this.Y);
+		return new HexAxial(this.X, this.Z);
 	}
 
 	ToOffset(): HexOffset {
@@ -50,7 +53,7 @@ export class HexCube {
 	IsLegal(): Boolean {
 		// better name?
 		// the sum of the coordinates must be zero
-		return this.X + this.Y + this.Z === 0 ? true : false;
+		return this.X + this.Y + this.Z === 0;
 	}
 
 	Round(): HexCube {
@@ -101,6 +104,6 @@ export class HexCube {
 	}
 
 	GetDistance(b: HexCube): number {
-		return (Math.abs(this.X - b.X) + Math.abs(this.Y - b.Y) + Math.abs(this.Z - b.Z)) / 2;
+		return Math.max(Math.abs(this.X - b.X), Math.abs(this.Y - b.Y), Math.abs(this.Z - b.Z)); //(Math.abs(this.X - b.X) + Math.abs(this.Y - b.Y) + Math.abs(this.Z - b.Z)) / 2;
 	}
 }

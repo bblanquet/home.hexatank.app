@@ -34,7 +34,7 @@ export class CellUpdater {
 			if (!isNullOrUndefined(dateIndex)) {
 				const action = cell.Actions[dateIndex];
 				coos.Add(coo, {
-					Axial: this._gameContext.GetCell(coo).GetCoordinate(),
+					Axial: this._gameContext.GetCell(coo).GetHexCoo(),
 					Action: action.kind
 				});
 			}

@@ -21,6 +21,7 @@ import { DecorationType } from './DecorationType';
 import { DiamondHq } from './DiamondHq';
 import { Decorator } from '../../Items/Cell/Decorator/Decorator';
 import { IPlaygroundBuilder } from '../Builder/IPlaygroundBuilder';
+import { GameSettings } from '../../Framework/GameSettings';
 
 export class MapGenerator {
 	private _builders: Dictionnary<IPlaygroundBuilder>;
@@ -41,12 +42,10 @@ export class MapGenerator {
 		context.MapMode = mapMode;
 		const mapItems = new Array<MapItem>();
 		const mapBuilder = this._builders.Get(mapType);
-		const cellPositions = mapBuilder.GetAllCoos(mapSize);
+		const hexagonales = mapBuilder.GetAllCoos(mapSize);
+		GameSettings.MapSize = hexagonales.length;
 
-		const cells = new Dictionnary<HexAxial>();
-		cellPositions.forEach((cell) => {
-			cells.Add(cell.ToString(), cell);
-		});
+		const cells = Dictionnary.To<HexAxial>((e) => e.ToString(), hexagonales);
 
 		const areas = mapBuilder.GetAreaCoos(mapSize);
 		const border = Dictionnary.To<HexAxial>(
@@ -56,7 +55,7 @@ export class MapGenerator {
 		const farthestPointManager = new FartestPointsFinder();
 
 		const borderAreas = areas.filter((a) => border.Exist(a.ToString()));
-		const hqPositions = farthestPointManager.GetPoints(borderAreas, hqCount);
+		const hqPositions = farthestPointManager.GetPoints(borderAreas, cells, hqCount);
 		const diamondPositions = this.GetDiamonds(hqPositions, cells, hqCount);
 
 		const excluded = new Dictionnary<HexAxial>();
@@ -93,7 +92,7 @@ export class MapGenerator {
 
 		var decorator: Decorator = this.GetDecorator(mapMode);
 		//decorate tree, water, stone the map
-		cellPositions.forEach((coo) => {
+		hexagonales.forEach((coo) => {
 			let mapItem = new MapItem();
 			mapItem.Position = coo;
 			if (!excluded.Exist(coo.ToString())) {

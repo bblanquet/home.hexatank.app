@@ -25,7 +25,7 @@ export class Area {
 	}
 
 	public GetDistanceFrom(cell: Cell): number {
-		return DistanceHelper.GetDistance(this.GetCentralCell().GetCoordinate(), cell.GetCoordinate());
+		return DistanceHelper.GetDistance(this.GetCentralCell().GetHexCoo(), cell.GetHexCoo());
 	}
 
 	public HasDiamond(): boolean {
@@ -42,14 +42,14 @@ export class Area {
 	}
 
 	public GetCells(): Cell[] {
-		const cells = this.GetCentralCell().GetAllNeighbourhood().map((c) => <Cell>c);
+		const cells = this.GetCentralCell().GetAllNeighbourhood();
 		cells.push(this.GetCentralCell());
 		return cells;
 	}
 
 	public GetFoeCells(v: AliveItem): Cell[] {
 		const result = new Array<Cell>();
-		const cells = this._centralCell.GetAllNeighbourhood().map((c) => <Cell>c).filter((c) => !isNullOrUndefined(c));
+		const cells = this._centralCell.GetAllNeighbourhood().filter((c) => !isNullOrUndefined(c));
 		cells.push(this.GetCentralCell());
 		cells.forEach((cell) => {
 			if (cell.HasEnemy(v)) {
@@ -60,10 +60,7 @@ export class Area {
 	}
 
 	public GetFreeUnitCells(): Cell[] {
-		const cells = this._centralCell
-			.GetAllNeighbourhood()
-			.map((c) => <Cell>c)
-			.filter((c) => !isNullOrUndefined(c) && !c.IsBlocked());
+		const cells = this._centralCell.GetAllNeighbourhood().filter((c) => !isNullOrUndefined(c) && !c.IsBlocked());
 		const centralcell = this.GetCentralCell();
 		if (!centralcell.IsBlocked()) {
 			cells.push(centralcell);

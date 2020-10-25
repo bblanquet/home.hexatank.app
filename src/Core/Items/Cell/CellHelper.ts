@@ -30,6 +30,6 @@ export class CellHelper {
 	}
 
 	private static GetDistance(source: Cell, target: Cell): number {
-		return DistanceHelper.GetDistance(source.GetCoordinate(), target.GetCoordinate());
+		return DistanceHelper.GetDistance(source.GetHexCoo(), target.GetHexCoo());
 	}
 }

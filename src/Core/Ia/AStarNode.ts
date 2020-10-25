@@ -1,7 +1,6 @@
-import { ICell } from '../Items/Cell/ICell';
-import { Point } from '../Utils/Geometry/Point';
+import { IHex } from '../Utils/Geometry/IHex';
 
-export class AStarNode<T extends ICell> {
+export class AStarNode<T extends IHex<T>> {
 	Cell: T;
 	EstimatedGoalCost: number;
 	FromStartCost: number;
@@ -16,14 +15,8 @@ export class AStarNode<T extends ICell> {
 	}
 
 	GetEstimatedCost(nextNode: AStarNode<T>, fastestWay: boolean = false): number {
-		const center = this.Cell.GetCentralPoint();
-		const compareToCenter = nextNode.Cell.GetCentralPoint();
 		const ratio = fastestWay ? this._cellCost(this.Cell) : 1;
-		return this.Distance(compareToCenter, center) * ratio;
-	}
-
-	private Distance(compareToCenter: Point, center: Point): number {
-		return compareToCenter.GetDistance(center);
+		return this.Cell.GetDistance(nextNode.Cell) * ratio;
 	}
 
 	GetCost(): number {

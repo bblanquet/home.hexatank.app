@@ -72,7 +72,7 @@ export class RecordContext {
 		trackingUnit.IsTank = vehicule instanceof Tank;
 		this._data.Dates.push(time);
 		trackingUnit.Actions.push(
-			new RecordAction(time, vehicule.GetCurrentCell().GetCoordinate(), RecordKind.Created, src.GetCurrentLife())
+			new RecordAction(time, vehicule.GetCurrentCell().GetHexCoo(), RecordKind.Created, src.GetCurrentLife())
 		);
 		this._data.Hqs.Get(src.PlayerName).Units.Add(vehicule.Id, trackingUnit);
 		vehicule.OnCellChanged.On(this.HandleVehicleCellChanged.bind(this));
@@ -87,7 +87,7 @@ export class RecordContext {
 			.Get(src.Hq.PlayerName)
 			.Units.Get(src.Id)
 			.Actions.push(
-				new RecordAction(time, src.GetCurrentCell().GetCoordinate(), RecordKind.Destroyed, src.GetCurrentLife())
+				new RecordAction(time, src.GetCurrentCell().GetHexCoo(), RecordKind.Destroyed, src.GetCurrentLife())
 			);
 	}
 
@@ -99,7 +99,7 @@ export class RecordContext {
 				.Get(src.Hq.PlayerName)
 				.Units.Get(src.Id)
 				.Actions.push(
-					new RecordAction(time, src.GetCurrentCell().GetCoordinate(), RecordKind.Moved, src.GetCurrentLife())
+					new RecordAction(time, src.GetCurrentCell().GetHexCoo(), RecordKind.Moved, src.GetCurrentLife())
 				);
 		}
 	}

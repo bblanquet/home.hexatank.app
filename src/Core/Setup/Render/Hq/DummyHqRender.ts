@@ -24,12 +24,12 @@ export class DummyHqRender extends HqRender {
 		const diamond = new Diamond(cells.Get(diamondcell));
 		const areaSearch = new AreaSearch(cells.Keys());
 
-		const areas = areaSearch.GetAreas(cell.GetCoordinate()).map((coo) => new Area(cells.Get(coo)));
+		const areas = areaSearch.GetAreas(cell.GetHexCoo()).map((coo) => new Area(cells.Get(coo)));
 		const areaByCoo = Dictionnary.To((e: Area) => e.GetCentralCell().Coo(), areas);
 
 		areas.forEach((a) => {
 			const around = areaSearch
-				.GetAreaRange(a.GetCentralCell().GetCoordinate(), 1)
+				.GetAreaRange(a.GetCentralCell().GetHexCoo(), 1)
 				.map((coo) => areaByCoo.Get(coo.ToString()));
 			a.SetAround(around);
 		});

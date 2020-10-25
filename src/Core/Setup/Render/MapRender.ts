@@ -23,8 +23,6 @@ export class MapRender {
 		const context = new GameContext();
 		const playgroundItems = new Array<Item>();
 
-		GameSettings.MapSize = mapContext.Items.length;
-
 		mapContext.Items.forEach((item) => {
 			let cell = new Cell(new CellProperties(new HexAxial(item.Position.Q, item.Position.R)), cells, context);
 			ForestDecorator.SetDecoration(playgroundItems, cell, item.Type);
@@ -43,8 +41,8 @@ export class MapRender {
 		let playerHq = hqs.find((hq) => hq.PlayerName === mapContext.PlayerName);
 
 		//insert elements into playground
-		this.SetHqLands(cells, Archive.nature.hq, hqs.map((h) => h.GetCell().GetCoordinate()), playgroundItems);
-		this.SetHqLands(cells, Archive.nature.hq2, hqs.map((h) => h.GetCell().GetCoordinate()), playgroundItems, 1);
+		this.SetHqLands(cells, Archive.nature.hq, hqs.map((h) => h.GetCell().GetHexCoo()), playgroundItems);
+		this.SetHqLands(cells, Archive.nature.hq2, hqs.map((h) => h.GetCell().GetHexCoo()), playgroundItems, 1);
 
 		context.Setup(mapContext, playerHq, hqs, cells.All());
 		//make hq cells visible, need context to be setup :<, has to fix it one day

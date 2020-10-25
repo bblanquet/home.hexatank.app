@@ -86,7 +86,7 @@ export class MultiSelectionContext implements IInteractionContext {
 
 		if (item instanceof Cell) {
 			const cell = <Cell>item;
-			if (this._cells.Get(cell.GetCoordinate()) === null) {
+			if (this._cells.Get(cell.GetHexCoo()) === null) {
 				this._cells.Add(cell);
 				const displayPath = new BasicItem(
 					cell.GetBoundingBox(),

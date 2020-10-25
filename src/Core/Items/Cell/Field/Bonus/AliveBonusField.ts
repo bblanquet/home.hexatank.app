@@ -33,11 +33,11 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 			obj.visible = this.GetCell().IsVisible();
 		});
 		this._animator = new BouncingScaleAnimator(this);
-		this.Energy = this.Hq.GetCellEnergy(cell.GetCoordinate());
+		this.Energy = this.Hq.GetCellEnergy(cell.GetHexCoo());
 	}
 
 	protected GetReactorsPower(hq: Headquarter): number {
-		const connectedReactors = hq.GetReactors().filter((f) => f.GetInternal().Exist(this.GetCell().GetCoordinate()));
+		const connectedReactors = hq.GetReactors().filter((f) => f.GetInternal().Exist(this.GetCell().GetHexCoo()));
 		const sum = connectedReactors.map((i) => i.GetPower()).reduce((a, b) => a + b, 0);
 		return sum;
 	}

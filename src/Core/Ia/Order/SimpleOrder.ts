@@ -138,7 +138,7 @@ export class SimpleOrder extends Order {
 		if (this.FinalGoal.GetAllNeighbourhood().some((c) => c === vehiculeCell)) {
 			return this.Vehicle.GetCurrentCell();
 		} else {
-			const cells = this.FinalGoal.GetNeighbourhood().map((c) => <Cell>c);
+			const cells = this.FinalGoal.GetNeighbourhood();
 			if (cells.length === 0) {
 				return null;
 			} else {

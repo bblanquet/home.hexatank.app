@@ -34,8 +34,8 @@ export class KingdomArea {
 		this.Troops = new Array<TroopDecisionMaker>();
 		let range = 1;
 		let isFound = false;
-		let areas = this._areaSearch.GetAreaRange(this._hq.GetCell().GetCoordinate(), range);
-		const co = this._spot.GetCentralCell().GetCoordinate();
+		let areas = this._areaSearch.GetAreaRange(this._hq.GetCell().GetHexCoo(), range);
+		const co = this._spot.GetCentralCell().GetHexCoo();
 
 		while (!isFound) {
 			if (areas.indexOf(co) !== -1) {
@@ -43,7 +43,7 @@ export class KingdomArea {
 				this._range = range;
 			} else {
 				range += 1;
-				areas = this._areaSearch.GetAreaRange(this._hq.GetCell().GetCoordinate(), range);
+				areas = this._areaSearch.GetAreaRange(this._hq.GetCell().GetHexCoo(), range);
 			}
 
 			if (areas.length === 0) {
@@ -121,7 +121,7 @@ export class KingdomArea {
 	}
 
 	public GetDistanceFromHq(): number {
-		return DistanceHelper.GetDistance(this.GetCentralCell().GetCoordinate(), this._hq.GetCell().GetCoordinate());
+		return DistanceHelper.GetDistance(this.GetCentralCell().GetHexCoo(), this._hq.GetCell().GetHexCoo());
 	}
 
 	public GetCentralCell(): Cell {
@@ -150,8 +150,8 @@ export class KingdomArea {
 		this.GetSpot()
 			.GetCells()
 			.sort((a, b) => {
-				const ditanceA = DistanceHelper.GetDistance(this._hq.GetCell().GetCoordinate(), a.GetCoordinate());
-				const ditanceB = DistanceHelper.GetDistance(this._hq.GetCell().GetCoordinate(), b.GetCoordinate());
+				const ditanceA = DistanceHelper.GetDistance(this._hq.GetCell().GetHexCoo(), a.GetHexCoo());
+				const ditanceB = DistanceHelper.GetDistance(this._hq.GetCell().GetHexCoo(), b.GetHexCoo());
 
 				if (ditanceA < ditanceB) {
 					return -1;
@@ -235,7 +235,7 @@ export class KingdomArea {
 
 	private HasRoad(cell: Cell, count: number): boolean {
 		const central = this.GetCentralCell();
-		const filter = (c: ICell) => {
+		const filter = (c: Cell) => {
 			let cell = c as Cell;
 			return (
 				cell !== null &&

@@ -70,11 +70,7 @@ export class TroopDecisionMaker {
 			if (this.IsCloseFromTarget()) {
 				return;
 			} else {
-				const availableCells = this._target
-					.GetCurrentCell()
-					.GetNeighbourhood()
-					.filter((c) => !(<Cell>c).IsBlocked())
-					.map((c) => <Cell>c);
+				const availableCells = this._target.GetCurrentCell().GetNeighbourhood().filter((c) => !c.IsBlocked());
 				if (0 < availableCells.length) {
 					this.CurrentPatrolDestination = availableCells[0];
 					return;

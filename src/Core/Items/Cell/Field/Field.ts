@@ -26,7 +26,7 @@ export abstract class Field extends Item implements IField {
 	}
 
 	protected GetReactorsPower(hq: Headquarter): number {
-		const connectedReactors = hq.GetReactors().filter((f) => f.GetInternal().Exist(this.GetCell().GetCoordinate()));
+		const connectedReactors = hq.GetReactors().filter((f) => f.GetInternal().Exist(this.GetCell().GetHexCoo()));
 		const sum = connectedReactors.map((i) => i.GetPower()).reduce((a, b) => a + b, 0);
 		return sum;
 	}

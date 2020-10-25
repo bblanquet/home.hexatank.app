@@ -12,7 +12,7 @@ export class CellStateSetter {
 		const territoty = gameContext.GetMainHq().GetReactors().map((f) => f.GetInternal());
 
 		let isContained = false;
-		territoty.some((c) => (isContained = c.Exist(cell.GetCoordinate())));
+		territoty.some((c) => (isContained = c.Exist(cell.GetHexCoo())));
 
 		if (isContained) {
 			cell.SetState(CellState.Visible);

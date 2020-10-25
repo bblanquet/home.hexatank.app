@@ -1,4 +1,4 @@
-import { ICoo } from './../../Items/Cell/ICoo';
+import { IHex } from './IHex';
 import { HexCube } from './HexCube';
 import { Point } from './Point';
 /* See   */
@@ -21,7 +21,7 @@ export class LightHexAxial {
 	}
 }
 
-export class HexAxial implements ICoo {
+export class HexAxial implements IHex<HexAxial> {
 	Q: number; //column
 	R: number; //row
 
@@ -29,13 +29,24 @@ export class HexAxial implements ICoo {
 		this.Q = q;
 		this.R = r;
 	}
+	IsEqualed(item: HexAxial): boolean {
+		return item.Q === this.Q && item.R === this.R;
+	}
+
+	GetNeighbourhood(): HexAxial[] {
+		return this.GetSpecificRange(1);
+	}
+
+	GetFilterNeighbourhood(filter: (hex: HexAxial) => boolean): HexAxial[] {
+		return this.GetSpecificRange(1).filter(filter);
+	}
 
 	ToString(): string {
 		return `(${[ this.Q, this.R ].toString()})`;
 	}
 
 	ToCube(): HexCube {
-		return new HexCube(this.Q, this.R, -this.Q - this.R);
+		return new HexCube(this.Q, -this.Q - this.R, this.R);
 	}
 
 	ToAxial(): HexAxial {
@@ -46,8 +57,8 @@ export class HexAxial implements ICoo {
 		return this.ToCube().ToOffset();
 	}
 
-	GetDistance(arg0: HexAxial): number {
-		throw new Error('Method not implemented.');
+	GetDistance(compare: HexAxial): number {
+		return this.ToCube().GetDistance(compare.ToCube());
 	}
 
 	GetNeighbour(direction: number): HexAxial {

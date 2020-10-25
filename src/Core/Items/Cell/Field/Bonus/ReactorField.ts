@@ -182,7 +182,7 @@ export class ReactorField extends Field implements ISelectable {
 
 			this.Appearance.Destroy();
 			this.GetCell().DestroyField();
-			this.GetCell().GetIncludedRange(2).map((c) => <Cell>c).forEach((c) => {
+			this.GetCell().GetIncludedRange(2).forEach((c) => {
 				if (TypeTranslator.IsBonusField(c.GetField())) {
 					c.DestroyField();
 					if (c.IsVisible()) {
@@ -297,7 +297,7 @@ export class ReactorField extends Field implements ISelectable {
 	}
 
 	public IsCovered(c: Cell): boolean {
-		return this.GetInternal().Exist(c.GetCoordinate());
+		return this.GetInternal().Exist(c.GetHexCoo());
 	}
 
 	private RefreshInternal() {

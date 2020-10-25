@@ -35,7 +35,6 @@ export class GameSettings {
 		this.TruckPrice = 4;
 		this.FieldPrice = 2;
 		this.PocketMoney = 20;
-		this.MapSize = 0;
 	}
 
 	public static SetNormalSpeed(): void {

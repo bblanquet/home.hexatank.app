@@ -2,7 +2,7 @@ import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { ICell } from './ICell';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 
-export class CellContext<T extends ICell> {
+export class CellContext<T extends ICell<T>> {
 	private Cells: { [id: string]: T } = {};
 
 	public Clear(): void {
@@ -17,7 +17,7 @@ export class CellContext<T extends ICell> {
 		const list = new Dictionnary<HexAxial>();
 		for (var key in this.Cells) {
 			let cell = this.Cells[key];
-			list.Add(cell.Coo(), cell.GetCoordinate());
+			list.Add(cell.Coo(), cell.GetHexCoo());
 		}
 		return list;
 	}

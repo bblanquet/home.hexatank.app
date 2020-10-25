@@ -27,9 +27,8 @@ import * as PIXI from 'pixi.js';
 import { MultiSelectionContext } from '../../Menu/Smart/MultiSelectionContext';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 import { BonusField } from './Field/Bonus/BonusField';
-import { ICoo } from './ICoo';
 
-export class Cell extends Item implements ICell, ISelectable {
+export class Cell extends Item implements ICell<Cell>, ISelectable {
 	public Properties: CellProperties;
 
 	public OnFieldChanged: ILiteEvent<Cell> = new LiteEvent<Cell>();
@@ -57,6 +56,13 @@ export class Cell extends Item implements ICell, ISelectable {
 			e.anchor.set(0.5);
 		});
 		this._circle = new PIXI.Circle(0, 0, GameSettings.Size / 2);
+	}
+	GetDistance(item: Cell): number {
+		return this.GetHexCoo().GetDistance(item.GetHexCoo());
+	}
+
+	IsEqualed(item: Cell): boolean {
+		return this === item;
 	}
 
 	public GetState(): CellState {
@@ -231,7 +237,7 @@ export class Cell extends Item implements ICell, ISelectable {
 	private SetHqState(state: CellState) {
 		let cells = new Array<Cell>();
 		cells.push(this._gameContext.GetMainHq().GetCell());
-		cells = cells.concat(this._gameContext.GetMainHq().GetCell().GetAllNeighbourhood().map((c) => <Cell>c));
+		cells = cells.concat(this._gameContext.GetMainHq().GetCell().GetAllNeighbourhood());
 		if (cells.indexOf(this) !== -1) {
 			state = CellState.Visible;
 		}
@@ -239,7 +245,7 @@ export class Cell extends Item implements ICell, ISelectable {
 	}
 
 	public Coo(): string {
-		return this.GetCoordinate().ToString();
+		return this.GetHexCoo().ToString();
 	}
 
 	public SetDecoration(sprite: string): void {
@@ -280,7 +286,7 @@ export class Cell extends Item implements ICell, ISelectable {
 		this.InitPosition(this.Properties.BoundingBox);
 	}
 
-	public GetCoordinate(): HexAxial {
+	public GetHexCoo(): HexAxial {
 		return this.Properties.Coordinate;
 	}
 
@@ -291,7 +297,7 @@ export class Cell extends Item implements ICell, ISelectable {
 	public GetAll(range: number = 1): Array<Cell> {
 		var cells = new Array<Cell>();
 		cells.push(this);
-		this.GetCoordinate().GetNeighbours(range).forEach((coordinate) => {
+		this.GetHexCoo().GetNeighbours(range).forEach((coordinate) => {
 			var cell = this._cells.Get(coordinate);
 			if (cell) {
 				cells.push(cell);
@@ -300,9 +306,9 @@ export class Cell extends Item implements ICell, ISelectable {
 		return cells;
 	}
 
-	public GetAllNeighbourhood(range: number = 1): Array<ICell> {
-		var cells = new Array<ICell>();
-		this.GetCoordinate().GetNeighbours(range).forEach((coordinate) => {
+	public GetAllNeighbourhood(range: number = 1): Array<Cell> {
+		var cells = new Array<Cell>();
+		this.GetHexCoo().GetNeighbours(range).forEach((coordinate) => {
 			var cell = this._cells.Get(coordinate);
 			if (cell) {
 				cells.push(cell);
@@ -311,10 +317,10 @@ export class Cell extends Item implements ICell, ISelectable {
 		return cells;
 	}
 
-	public GetIncludedRange(range: number = 1): Array<ICell> {
-		var cells = new Array<ICell>();
+	public GetIncludedRange(range: number = 1): Array<Cell> {
+		var cells = new Array<Cell>();
 		for (let index = 1; index <= range; index++) {
-			this.GetCoordinate().GetSpecificRange(index).forEach((coordinate) => {
+			this.GetHexCoo().GetSpecificRange(index).forEach((coordinate) => {
 				var cell = this._cells.Get(coordinate);
 				if (cell) {
 					cells.push(cell);
@@ -324,9 +330,9 @@ export class Cell extends Item implements ICell, ISelectable {
 		return cells;
 	}
 
-	public GetSpecificRange(range: number = 1): Array<ICell> {
-		var cells = new Array<ICell>();
-		this.GetCoordinate().GetSpecificRange(range).forEach((coordinate) => {
+	public GetSpecificRange(range: number = 1): Array<Cell> {
+		var cells = new Array<Cell>();
+		this.GetHexCoo().GetSpecificRange(range).forEach((coordinate) => {
 			var cell = this._cells.Get(coordinate);
 			if (cell) {
 				cells.push(cell);
@@ -335,9 +341,9 @@ export class Cell extends Item implements ICell, ISelectable {
 		return cells;
 	}
 
-	public GetNeighbourhood(range: number = 1): Array<ICell> {
-		let cells = new Array<ICell>();
-		this.GetCoordinate().GetNeighbours(range).forEach((coordinate) => {
+	public GetNeighbourhood(range: number = 1): Array<Cell> {
+		let cells = new Array<Cell>();
+		this.GetHexCoo().GetNeighbours(range).forEach((coordinate) => {
 			let cell = this._cells.Get(coordinate);
 			if (cell != null && !cell.IsBlocked()) {
 				cells.push(cell);
@@ -346,9 +352,9 @@ export class Cell extends Item implements ICell, ISelectable {
 		return cells;
 	}
 
-	public GetFilteredNeighbourhood(filter: (cell: ICell) => boolean): Array<ICell> {
-		let cells = new Array<ICell>();
-		this.GetCoordinate().GetNeighbours(1).forEach((coordinate) => {
+	public GetFilterNeighbourhood(filter: (cell: Cell) => boolean): Array<Cell> {
+		let cells = new Array<Cell>();
+		this.GetHexCoo().GetNeighbours(1).forEach((coordinate) => {
 			let cell = this._cells.Get(coordinate);
 			if (filter(cell)) {
 				cells.push(cell);
@@ -380,9 +386,9 @@ export class Cell extends Item implements ICell, ISelectable {
 
 		var isSelected = this._circle.contains(context.Point.x, context.Point.y);
 		if (isSelected) {
-			console.log(`%c Q:${this.GetCoordinate().Q} R:${this.GetCoordinate().R}`, 'color:blue;font-weight:bold;');
+			console.log(`%c Q:${this.GetHexCoo().Q} R:${this.GetHexCoo().R}`, 'color:blue;font-weight:bold;');
 			console.log(
-				`%c X:${this.GetCoordinate().ToOffset().M} Y:${this.GetCoordinate().ToOffset().N}`,
+				`%c X:${this.GetHexCoo().ToOffset().M} Y:${this.GetHexCoo().ToOffset().N}`,
 				'color:red;font-weight:bold;'
 			);
 			context.OnSelect(this);

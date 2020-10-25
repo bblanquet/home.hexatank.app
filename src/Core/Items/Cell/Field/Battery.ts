@@ -4,7 +4,7 @@ import { Headquarter } from './Hq/Headquarter';
 import { ReactorField } from './Bonus/ReactorField';
 import { BonusField } from './Bonus/BonusField';
 import { AliveBonusField } from './Bonus/AliveBonusField';
-import { ICell } from '../ICell';
+import { Cell } from '../Cell';
 
 export class Battery {
 	private _batteryFields: Array<BatteryField> = new Array<BatteryField>();
@@ -66,21 +66,21 @@ export class Battery {
 		return this.GetRemainingBatteries(this.GetCells(this.GetNearbyReactors()));
 	}
 
-	private GetRemainingBatteries(cells: CellContext<ICell>): Array<BatteryField> {
+	private GetRemainingBatteries(cells: CellContext<Cell>): Array<BatteryField> {
 		const result = new Array<BatteryField>();
 		this._hq.GetBatteryFields().filter((f) => !f.IsUsed()).forEach((battery) => {
-			if (cells.Exist(battery.GetCell().GetCoordinate())) {
+			if (cells.Exist(battery.GetCell().GetHexCoo())) {
 				result.push(battery);
 			}
 		});
 		return result;
 	}
 
-	private GetCells(reactors: Array<ReactorField>): CellContext<ICell> {
-		const result = new CellContext();
+	private GetCells(reactors: Array<ReactorField>): CellContext<Cell> {
+		const result = new CellContext<Cell>();
 		reactors.forEach((r) => {
 			r.GetInternal().All().forEach((cell) => {
-				if (!result.Exist(cell.GetCoordinate())) {
+				if (!result.Exist(cell.GetHexCoo())) {
 					result.Add(cell);
 				}
 			});
@@ -92,7 +92,7 @@ export class Battery {
 		const result = new Array<ReactorField>();
 		const internal = this._field.GetInternal();
 		this._hq.GetReactors().forEach((reactor) => {
-			if (internal.Exist(reactor.GetCell().GetCoordinate())) {
+			if (internal.Exist(reactor.GetCell().GetHexCoo())) {
 				result.push(reactor);
 			}
 		});

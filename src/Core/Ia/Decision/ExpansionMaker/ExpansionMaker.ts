@@ -71,8 +71,8 @@ export class ExpansionMaker implements IExpansionMaker {
 
 	private Log(areaDecision: AreaDecisionMaker) {
 		console.log(
-			`%c [NEW AREA]  Q:${areaDecision.Area.GetSpot().GetCentralCell().GetCoordinate()
-				.Q} R:${areaDecision.Area.GetSpot().GetCentralCell().GetCoordinate().R}}`,
+			`%c [NEW AREA]  Q:${areaDecision.Area.GetSpot().GetCentralCell().GetHexCoo()
+				.Q} R:${areaDecision.Area.GetSpot().GetCentralCell().GetHexCoo().R}}`,
 			'font-weight:bold;color:green;'
 		);
 	}

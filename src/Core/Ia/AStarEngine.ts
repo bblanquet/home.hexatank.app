@@ -1,8 +1,8 @@
 import { GameSettings } from '../Framework/GameSettings';
+import { IHex } from '../Utils/Geometry/IHex';
 import { AStarNode } from './AStarNode';
-import { ICell } from '../Items/Cell/ICell';
 
-export class AStarEngine<T extends ICell> {
+export class AStarEngine<T extends IHex<T>> {
 	constructor(private _cellFilter: (cell: T) => boolean, private _cellCost: (cell: T) => number) {}
 
 	private ConstructPath(node: AStarNode<T>): Array<T> {
@@ -27,13 +27,13 @@ export class AStarEngine<T extends ICell> {
 
 	private GetNode(cell: T, candidates: Array<AStarNode<T>>, path: Array<AStarNode<T>>): AStarNode<T> {
 		for (let candidate of candidates) {
-			if (candidate.Cell === cell) {
+			if (candidate.Cell.IsEqualed(cell)) {
 				return candidate;
 			}
 		}
 
 		for (let pathItem of path) {
-			if (pathItem.Cell === cell) {
+			if (pathItem.Cell.IsEqualed(cell)) {
 				return pathItem;
 			}
 		}
@@ -45,7 +45,7 @@ export class AStarEngine<T extends ICell> {
 		if (candidates.length === 0) {
 			candidates.push(currentNode);
 		} else {
-			for (var i = 0; i < candidates.length; i++) {
+			for (let i = 0; i < candidates.length; i++) {
 				if (currentNode.IsLessCostly(candidates[i])) {
 					candidates.splice(i, 0, currentNode);
 					return;
@@ -69,18 +69,18 @@ export class AStarEngine<T extends ICell> {
 		this.AddNodeIntoCandidates(candidates, start);
 
 		while (this.IsNotEmpty(candidates)) {
-			if (GameSettings.MapSize * 4 < path.length) {
+			if (GameSettings.MapSize < path.length) {
 				//console.log(`%c COULD NOT FIND ,opened nodes: ${candidates.length}`, 'color:purple;');
 				return null;
 			}
 
 			const bestCandidate = this.PopLessCostlyCandidate(candidates);
 
-			if (bestCandidate.Cell == goal.Cell) {
+			if (bestCandidate.Cell.IsEqualed(goal.Cell)) {
 				return this.ConstructPath(bestCandidate);
 			}
 
-			bestCandidate.Cell.GetFilteredNeighbourhood(this._cellFilter).forEach((nextCell) => {
+			bestCandidate.Cell.GetFilterNeighbourhood(this._cellFilter).forEach((nextCell) => {
 				const nextNode = this.GetNode(<T>nextCell, candidates, path);
 				const moveToNextCost =
 					bestCandidate.FromStartCost + bestCandidate.GetEstimatedCost(nextNode, fastestWay);

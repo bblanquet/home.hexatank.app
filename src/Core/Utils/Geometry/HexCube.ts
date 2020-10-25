@@ -38,7 +38,7 @@ export class HexCube {
 	}
 
 	ToOffset(): HexOffset {
-		var m = this.Z + (this.Y - Math.abs(this.X) % 2) / 2;
+		var m = this.Z + (this.X - Math.abs(this.X) % 2) / 2;
 		var n = this.X;
 		return new HexOffset(m, n);
 	}

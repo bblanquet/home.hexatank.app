@@ -1,11 +1,12 @@
-import { Dictionnary } from '../../Utils/Collections/Dictionnary';
+import { HexOffset } from './../../Utils/Geometry/HexOffset';
+import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 import { IPlaygroundBuilder } from './IPlaygroundBuilder';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 
-export class YMapBuilder implements IPlaygroundBuilder {
+export class RectangleMapBuilder implements IPlaygroundBuilder {
 	public GetRefCoo(ranges: number): HexAxial {
-		return new HexAxial(1, 1);
+		return new HexOffset(1, 1).ToAxial();
 	}
 
 	public GetAllCoos(ranges: number): HexAxial[] {
@@ -17,21 +18,14 @@ export class YMapBuilder implements IPlaygroundBuilder {
 			throw new Error();
 		}
 
-		const result = new Array<HexAxial>();
-		for (let r = 0; r < ranges; r++) {
-			const qRange = ranges - r;
-			for (let q = 0; q < qRange; q++) {
-				const half = Math.round(qRange / 2);
-				const quarter = Math.round(qRange / 4);
-				if (
-					!(ranges / 6 < quarter && Math.round(half - quarter / 2) < q && q < Math.round(half + quarter / 2))
-				) {
-					result.push(new HexAxial(q, r));
-				}
+		const result = new Array<HexOffset>();
+		for (let q = 0; q < ranges; q++) {
+			for (let r = 0; r < ranges; r++) {
+				result.push(new HexOffset(q, r));
 			}
 		}
 
-		return result;
+		return result.map((e) => e.ToAxial());
 	}
 
 	public GetAreaCoos(ranges: number): HexAxial[] {

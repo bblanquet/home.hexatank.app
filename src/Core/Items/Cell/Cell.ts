@@ -27,6 +27,7 @@ import * as PIXI from 'pixi.js';
 import { MultiSelectionContext } from '../../Menu/Smart/MultiSelectionContext';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 import { BonusField } from './Field/Bonus/BonusField';
+import { ICoo } from './ICoo';
 
 export class Cell extends Item implements ICell, ISelectable {
 	public Properties: CellProperties;
@@ -97,8 +98,7 @@ export class Cell extends Item implements ICell, ISelectable {
 	}
 
 	public SetField(field: IField) {
-
-		if(isNullOrUndefined(field)){
+		if (isNullOrUndefined(field)) {
 			throw 'not supposed to be there field';
 		}
 
@@ -381,6 +381,10 @@ export class Cell extends Item implements ICell, ISelectable {
 		var isSelected = this._circle.contains(context.Point.x, context.Point.y);
 		if (isSelected) {
 			console.log(`%c Q:${this.GetCoordinate().Q} R:${this.GetCoordinate().R}`, 'color:blue;font-weight:bold;');
+			console.log(
+				`%c X:${this.GetCoordinate().ToOffset().M} Y:${this.GetCoordinate().ToOffset().N}`,
+				'color:red;font-weight:bold;'
+			);
 			context.OnSelect(this);
 		}
 

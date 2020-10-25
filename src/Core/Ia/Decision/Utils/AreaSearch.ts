@@ -6,13 +6,21 @@ export class AreaSearch {
 	constructor(private _coordinates: Dictionnary<HexAxial>) {}
 
 	public GetAreas(coordinate: HexAxial): Array<HexAxial> {
+		if (isNullOrUndefined(coordinate)) {
+			throw 'error';
+		}
+
 		var result = new Array<HexAxial>();
 		this.GetAllAreas(coordinate, result);
 		return result;
 	}
 
 	private GetAllAreas(currentCoordinate: HexAxial, result: Array<HexAxial>): void {
-		if (result.filter((a) => a === currentCoordinate).length === 0) {
+		if (isNullOrUndefined(currentCoordinate)) {
+			throw 'error';
+		}
+
+		if (!result.some((a) => a === currentCoordinate)) {
 			result.push(currentCoordinate);
 			var neighs = this.GetRangeOne(currentCoordinate);
 			neighs.forEach((neigh) => {
@@ -45,9 +53,9 @@ export class AreaSearch {
 		];
 
 		shifts.forEach((shift) => {
-			let ngcell = this._coordinates.Get(new HexAxial(coordinate.Q + shift.Q, coordinate.R + shift.R).ToString());
-			if (!isNullOrUndefined(ngcell)) {
-				result.push(ngcell);
+			let ngCoo = this._coordinates.Get(new HexAxial(coordinate.Q + shift.Q, coordinate.R + shift.R).ToString());
+			if (!isNullOrUndefined(ngCoo)) {
+				result.push(ngCoo);
 			}
 		});
 

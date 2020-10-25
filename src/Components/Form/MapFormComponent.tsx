@@ -68,7 +68,7 @@ export default class MapFormComponent extends Component<
 						}}
 						DefaultValue={this.state.MapType.toString()}
 						Label={'Shape'}
-						Values={[ 'Flower', 'Donut', 'Cheese', 'Triangle' ]}
+						Values={[ 'Flower', 'Donut', 'Cheese', 'Triangle', 'Y', 'H', 'X', 'Rectangle' ]}
 					/>
 					<p />
 				</Visible>

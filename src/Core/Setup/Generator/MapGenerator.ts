@@ -1,3 +1,7 @@
+import { RectangleFlowerMapBuilder } from './../Builder/RectangleFlowerMapBuilder';
+import { YFlowerMapBuilder } from './../Builder/YFlowerMapBuilder';
+import { XFlowerMapBuilder } from './../Builder/XFlowerMapBuilder';
+import { HFlowerMapBuilder } from '../Builder/HFlowerMapBuilder';
 import { TriangleFlowerMapBuilder } from './../Builder/TriangleFlowerMapBuilder';
 import { CheeseFlowerMapBuilder } from './../Builder/CheeseFlowerMapBuilder';
 import { DonutFlowerMapBuilder } from './../Builder/DonutFlowerMapBuilder';
@@ -26,6 +30,10 @@ export class MapGenerator {
 		this._builders.Add('Cheese', new CheeseFlowerMapBuilder());
 		this._builders.Add('Donut', new DonutFlowerMapBuilder());
 		this._builders.Add('Triangle', new TriangleFlowerMapBuilder());
+		this._builders.Add('Y', new YFlowerMapBuilder());
+		this._builders.Add('H', new HFlowerMapBuilder());
+		this._builders.Add('X', new XFlowerMapBuilder());
+		this._builders.Add('Rectangle', new RectangleFlowerMapBuilder());
 	}
 
 	public GetMapDefinition(mapSize: number, mapType: string, hqCount: number, mapMode: MapEnv): MapContext {

@@ -1,3 +1,4 @@
+import { ICoo } from './../../Items/Cell/ICoo';
 import { HexCube } from './HexCube';
 import { Point } from './Point';
 /* See   */
@@ -20,7 +21,7 @@ export class LightHexAxial {
 	}
 }
 
-export class HexAxial {
+export class HexAxial implements ICoo {
 	Q: number; //column
 	R: number; //row
 
@@ -43,6 +44,10 @@ export class HexAxial {
 
 	ToOffset() {
 		return this.ToCube().ToOffset();
+	}
+
+	GetDistance(arg0: HexAxial): number {
+		throw new Error('Method not implemented.');
 	}
 
 	GetNeighbour(direction: number): HexAxial {

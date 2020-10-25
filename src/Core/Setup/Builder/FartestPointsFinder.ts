@@ -1,7 +1,15 @@
+import { AStarEngine } from './../../Ia/AStarEngine';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 import { DistanceHelper } from '../../Items/Unit/MotionHelpers/DistanceHelper';
+import { isNullOrUndefined } from '../../Utils/ToolBox';
 
 export class FartestPointsFinder {
+	private _astarEngine: AStarEngine;
+
+	constructor() {
+		this._astarEngine = new AStarEngine((e) => !isNullOrUndefined(e), (e) => 1);
+	}
+
 	public GetFartestPoints(currentPoint: HexAxial, points: Array<HexAxial>): Array<HexAxial> {
 		var longest = Math.trunc(Math.max(...points.map((p) => DistanceHelper.GetDistance(currentPoint, p)))) - 1;
 		return points.filter((p) => DistanceHelper.GetDistance(currentPoint, p) > longest);
@@ -20,7 +28,9 @@ export class FartestPointsFinder {
 		allPoints.forEach((point) => {
 			let candidate = new DistancePoint();
 			candidate.Point = point;
-			candidate.Distance = Math.min(...hqPoints.map((hqPoint) => DistanceHelper.GetDistance(point, hqPoint)));
+			candidate.Distance = Math.min(
+				...hqPoints.map((hqPoint) => this._astarEngine.GetPath(hqPoint, point).length)
+			);
 			candidates.push(candidate);
 		});
 		var longestInClosest = Math.max(...candidates.map((c) => c.Distance));
@@ -32,7 +42,9 @@ export class FartestPointsFinder {
 		allPoints.forEach((point) => {
 			let candidate = new DistancePoint();
 			candidate.Point = point;
-			candidate.Distance = Math.max(...allPoints.map((hqPoint) => DistanceHelper.GetDistance(point, hqPoint)));
+			candidate.Distance = Math.max(
+				...allPoints.map((hqPoint) => this._astarEngine.GetPath(hqPoint, point).length)
+			);
 			candidates.push(candidate);
 		});
 		var longestInClosest = Math.max(...candidates.map((c) => c.Distance));

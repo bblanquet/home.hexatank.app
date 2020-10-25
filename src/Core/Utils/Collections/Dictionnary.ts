@@ -55,6 +55,10 @@ export class Dictionnary<T> {
 		return Key in this._values;
 	}
 
+	AllExist(keys: string[]) {
+		return keys.every((key) => this.Exist(key));
+	}
+
 	public SetValues(jsObj: { [id: string]: T }) {
 		this._values = jsObj;
 	}

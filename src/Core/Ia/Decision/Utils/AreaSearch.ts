@@ -3,7 +3,7 @@ import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class AreaSearch {
-	constructor(private _coordinates: Dictionnary<HexAxial>) {}
+	constructor(private _hexCoos: Dictionnary<HexAxial>) {}
 
 	public GetAreas(coordinate: HexAxial): Array<HexAxial> {
 		if (isNullOrUndefined(coordinate)) {
@@ -15,18 +15,24 @@ export class AreaSearch {
 		return result;
 	}
 
-	private GetAllAreas(currentCoordinate: HexAxial, result: Array<HexAxial>): void {
-		if (isNullOrUndefined(currentCoordinate)) {
+	private GetAllAreas(currentCoo: HexAxial, result: Array<HexAxial>): void {
+		if (isNullOrUndefined(currentCoo)) {
 			throw 'error';
 		}
 
-		if (!result.some((a) => a === currentCoordinate)) {
-			result.push(currentCoordinate);
-			var neighs = this.GetRangeOne(currentCoordinate);
-			neighs.forEach((neigh) => {
-				this.GetAllAreas(neigh, result);
-			});
+		if (result.every((a) => !a.IsEqualed(currentCoo))) {
+			result.push(currentCoo);
 		}
+
+		if (currentCoo.Q === 2 && currentCoo.R === 10) {
+			const b = 0;
+		}
+
+		this.GetRangeOne(currentCoo).forEach((neigh) => {
+			if (result.every((a) => !a.IsEqualed(neigh))) {
+				this.GetAllAreas(neigh, result);
+			}
+		});
 	}
 
 	static IsBorder(coo: HexAxial, cells: Dictionnary<HexAxial>): boolean {
@@ -53,7 +59,8 @@ export class AreaSearch {
 		];
 
 		shifts.forEach((shift) => {
-			let ngCoo = this._coordinates.Get(new HexAxial(coordinate.Q + shift.Q, coordinate.R + shift.R).ToString());
+			const key = new HexAxial(coordinate.Q + shift.Q, coordinate.R + shift.R).ToString();
+			let ngCoo = this._hexCoos.Get(key);
 			if (!isNullOrUndefined(ngCoo)) {
 				result.push(ngCoo);
 			}

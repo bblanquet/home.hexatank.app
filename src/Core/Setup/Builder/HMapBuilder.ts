@@ -50,7 +50,7 @@ export class HMapBuilder implements IPlaygroundBuilder {
 			coordinates.Add(coordinate.ToString(), coordinate);
 		});
 		const areaSearch = new AreaSearch(coordinates);
-		var result = areaSearch.GetAreas(coordinates.Get(this.GetRefCoo(ranges).ToString()));
+		var result = areaSearch.GetAreas(this.GetRefCoo(ranges));
 		result.shift();
 		return result.filter((a) => a.GetNeighbours().length === 6);
 	}

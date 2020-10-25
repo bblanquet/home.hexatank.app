@@ -1,5 +1,5 @@
+import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { XMapBuilder } from './XMapBuilder';
-import { Dictionnary } from '../../Utils/Collections/Dictionnary';
 import { IPlaygroundBuilder } from './IPlaygroundBuilder';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
@@ -14,10 +14,7 @@ export class XFlowerMapBuilder implements IPlaygroundBuilder {
 	public GetAllCoos(ranges: number): HexAxial[] {
 		const r = ranges + 4;
 		const hMap = this._xBuilder.GetAllCoos(r);
-		const coordinates = new Dictionnary<HexAxial>();
-		hMap.forEach((initCoo) => {
-			coordinates.Add(initCoo.ToString(), initCoo);
-		});
+		const coordinates = Dictionnary.To((e) => e.ToString(), hMap);
 		const areaEngine = new AreaSearch(coordinates);
 		var areas = areaEngine.GetAreas(coordinates.Get(this.GetRefCoo(r).ToString()));
 		var result = new Array<HexAxial>();
@@ -39,14 +36,10 @@ export class XFlowerMapBuilder implements IPlaygroundBuilder {
 
 	public GetAreaCoos(ranges: number): Array<HexAxial> {
 		const r = ranges + 4;
-		const coordinates = new Dictionnary<HexAxial>();
-		const x = this._xBuilder.GetAllCoos(ranges);
-		x.forEach((coordinate) => {
-			coordinates.Add(coordinate.ToString(), coordinate);
-		});
+		const hMap = this._xBuilder.GetAllCoos(r);
+		const coordinates = Dictionnary.To((e) => e.ToString(), hMap);
 		const areaEngine = new AreaSearch(coordinates);
-		var result = areaEngine.GetAreas(coordinates.Get(this.GetRefCoo(r).ToString()));
-		result.shift();
-		return result.filter((a) => a.GetNeighbours().length === 6);
+		var areas = areaEngine.GetAreas(coordinates.Get(this.GetRefCoo(r).ToString()));
+		return areas;
 	}
 }

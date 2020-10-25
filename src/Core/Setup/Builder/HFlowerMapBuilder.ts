@@ -5,15 +5,15 @@ import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 import { HMapBuilder } from './HMapBuilder';
 
 export class HFlowerMapBuilder implements IPlaygroundBuilder {
-	private _xBuilder: HMapBuilder;
+	private _hBuilder: HMapBuilder;
 
 	constructor() {
-		this._xBuilder = new HMapBuilder();
+		this._hBuilder = new HMapBuilder();
 	}
 
 	public GetAllCoos(ranges: number): HexAxial[] {
 		const r = ranges + 4;
-		const hMap = this._xBuilder.GetAllCoos(r);
+		const hMap = this._hBuilder.GetAllCoos(r);
 		const coordinates = new Dictionnary<HexAxial>();
 		hMap.forEach((initCoo) => {
 			coordinates.Add(initCoo.ToString(), initCoo);
@@ -34,13 +34,13 @@ export class HFlowerMapBuilder implements IPlaygroundBuilder {
 	}
 
 	public GetRefCoo(ranges: number): HexAxial {
-		return this._xBuilder.GetRefCoo(ranges);
+		return this._hBuilder.GetRefCoo(ranges);
 	}
 
 	public GetAreaCoos(ranges: number): Array<HexAxial> {
 		const r = ranges + 4;
 		const coordinates = new Dictionnary<HexAxial>();
-		const x = this._xBuilder.GetAllCoos(ranges);
+		const x = this._hBuilder.GetAllCoos(r);
 		x.forEach((coordinate) => {
 			coordinates.Add(coordinate.ToString(), coordinate);
 		});

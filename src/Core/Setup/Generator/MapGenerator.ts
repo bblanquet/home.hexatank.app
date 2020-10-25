@@ -48,14 +48,8 @@ export class MapGenerator {
 		const cells = Dictionnary.To<HexAxial>((e) => e.ToString(), hexagonales);
 
 		const areas = mapBuilder.GetAreaCoos(mapSize);
-		const border = Dictionnary.To<HexAxial>(
-			(e) => e.ToString(),
-			areas.filter((a) => AreaSearch.IsBorder(a, cells))
-		);
 		const farthestPointManager = new FartestPointsFinder();
-
-		const borderAreas = areas.filter((a) => border.Exist(a.ToString()));
-		const hqPositions = farthestPointManager.GetPoints(borderAreas, cells, hqCount);
+		const hqPositions = farthestPointManager.GetPoints(areas, cells, hqCount);
 		const diamondPositions = this.GetDiamonds(hqPositions, cells, hqCount);
 
 		const excluded = new Dictionnary<HexAxial>();

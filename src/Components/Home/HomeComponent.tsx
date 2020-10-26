@@ -33,6 +33,10 @@ export default class HomeComponent extends Component<any, any> {
 		route('/OffJoin', true);
 	}
 
+	private ToBadge(): void {
+		route('/Badge', true);
+	}
+
 	componentDidMount() {}
 
 	componentWillUnmount() {}
@@ -59,8 +63,8 @@ export default class HomeComponent extends Component<any, any> {
 						<ButtonComponent color={ColorKind.Blue} callBack={() => this.ToRecord()}>
 							<Icon Value="fas fa-video" /> Record
 						</ButtonComponent>
-						<ButtonComponent color={ColorKind.Black} callBack={() => this.ToCampaign()}>
-							<Icon Value="fas fa-phone-square" /> Contact
+						<ButtonComponent color={ColorKind.Black} callBack={() => this.ToBadge()}>
+							<Icon Value="fas fa-award" /> Badge
 						</ButtonComponent>
 					</div>
 				</PanelComponent>

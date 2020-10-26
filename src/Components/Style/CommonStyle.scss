@@ -372,6 +372,14 @@ body {
 	margin: 5px;
 }
 
+.space-out-all {
+	margin: 5px 5px 5px 5px;
+}
+
+.space-out-horizontal {
+	margin: 5px 0px 5px 0px;
+}
+
 .darker {
 	background-color: #1f1f1f;
 	color: #dee1e6;
@@ -592,4 +600,16 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 	transform: translate(-50%, 0);
 	border-radius: 15px;
 	border: 3px solid #fff;
+}
+
+.text-detail {
+	position: relative;
+	width: auto;
+	color: white;
+	border: white solid 2px;
+	min-height: 30px;
+	margin: 5px 5px 5px 5px;
+	padding: 5px 5px 5px 5px;
+	background-color: rgb(37, 37, 37);
+	border-radius: 5px;
 }

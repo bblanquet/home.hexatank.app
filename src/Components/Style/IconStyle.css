@@ -569,6 +569,42 @@
 	background-image: url('{{}}components/program6Logo.svg');
 }
 
+.fill-diamond-badge {
+	width: 100px;
+	height: 100px;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/badge/diamondBadge.svg');
+}
+
+.fill-death-badge {
+	width: 100px;
+	height: 100px;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/badge/deathGrayBadge.svg');
+}
+
+.fill-hexa-badge {
+	width: 100px;
+	height: 100px;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/badge/hexaGrayBadge.svg');
+}
+
+.fill-tank-badge {
+	width: 100px;
+	height: 100px;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/badge/tankGrayBadge.svg');
+}
+
 body:after {
 	content: url('{{}}components/program6Logo.svg') url('{{}}components/program6LogoBackground.svg')
 		url('{{}}option.svg') url('{{}}nature/diamondStone.svg') url('{{}}nature/diamondStone.svg')

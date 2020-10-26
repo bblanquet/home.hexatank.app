@@ -6,6 +6,7 @@ import GameCanvasComponent from './Components/Canvas/Game/GameCanvasComponent';
 import RecordCanvasComponent from './Components/Canvas/Record/RecordCanvasComponent';
 import CampaignComponent from './Components/Campaign/CampaignComponent';
 import BlueCampaignComponent from './Components/Campaign/BlueCampaignComponent';
+import BadgeComponent from './Components/Badge/BagdeComponent';
 import GuestComponent from './Components/Network/Guest/GuestComponent';
 import CreatingHostComponent from './Components/Network/Creating/CreatingHostComponent';
 import HostingComponent from './Components/Network/Host/HostingComponent';
@@ -35,6 +36,7 @@ const Main = (e: any) => {
 			<CampaignComponent path="/Campaign" />
 			<BlueCampaignComponent path="/BlueCampaignComponent" />
 			<GameCanvasComponent path="/Canvas" />
+			<BadgeComponent path="/Badge" />
 			<RecordCanvasComponent path="/RecordCanvas" />
 			<CreatingHostComponent path="/CreatingHost" />
 			<HostingComponent path="/Hosting" />

@@ -1,89 +1,104 @@
-import { PeerPingObserver } from './Ping/PeerPingObserver';
-import { TimeoutPingObserver } from './Ping/TimeoutPingObserver';
-import { ConnectionStatus } from './../ConnectionStatus';
-import { PacketKind } from '../Message/PacketKind';
-import { NetworkMessage } from '../Message/NetworkMessage';
-import { ServerSocket } from '../Server/ServerSocket';
-import { ConnectionKind } from '../ConnectionKind';
-import { INetworkMessage } from '../Message/INetworkMessage';
-import { PingData } from './Ping/PingData';
+import { TcpSender } from './TcpSender';
+import { LatencyProvider } from './LatencyProvider';
 import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
 import { SimpleEvent } from '../../Core/Utils/Events/SimpleEvent';
-import { NetworkObserver } from '../NetworkObserver';
+import { ConnectionStatus } from '../ConnectionStatus';
+import { INetworkMessage } from '../Message/INetworkMessage';
+import { PeerPingObserver } from './Ping/PeerPingObserver';
+import { NetworkMessage } from '../Message/NetworkMessage';
+import { PacketKind } from '../Message/PacketKind';
+import { PingData } from './Ping/PingData';
 import { isNullOrUndefined } from '../../Core/Utils/ToolBox';
-import * as moment from 'moment';
+import { ConnectionKind } from '../ConnectionKind';
+import { PeerKernel } from './Kernel/PeerKernel';
+import { ProtocolKind } from '../Message/ProtocolKind';
 
-export abstract class PeerSocket {
-	protected Connection: RTCPeerConnection;
-	protected Channel: RTCDataChannel;
-	protected ServerSocket: ServerSocket;
-	protected ServerPing: TimeoutPingObserver;
-	protected PeerPing: PeerPingObserver;
+export class PeerSocket {
+	private _seqNum: number = 0;
+	private _tcpSenders: TcpSender[];
+	private _status: ConnectionStatus;
 
-	protected Owner: string;
-	protected Recipient: string;
-	public IsShutDown: boolean = false;
-
-	public OnReceivedMessage: LiteEvent<NetworkMessage<any>> = new LiteEvent<NetworkMessage<any>>();
 	public OnShutdown: SimpleEvent = new SimpleEvent();
 	public OnStateChanged: LiteEvent<ConnectionStatus> = new LiteEvent<ConnectionStatus>();
+	public OnReceivedMessage: LiteEvent<NetworkMessage<any>> = new LiteEvent<NetworkMessage<any>>();
 
-	private _candidateObserver: NetworkObserver;
-	private _offerObserver: NetworkObserver;
+	private _peerPing: PeerPingObserver;
+	private _latencyProvider: LatencyProvider;
 
-	private _shortestLatency: number | null = null;
-	private _dateDelta: number | null = null;
-	private _deltaSign: boolean | null = null;
+	constructor(private _kernel: PeerKernel) {
+		this._tcpSenders = new Array<TcpSender>();
+		this._latencyProvider = new LatencyProvider();
 
-	constructor(serverSocket: ServerSocket, owner: string, recipient: string) {
-		//basic info
-		this.Recipient = recipient;
-		this.Owner = owner;
+		this._kernel.OnChannelOpened.On(() => {
+			this.OnStateChanged.Invoke(this, this.GetConnectionStatus());
+		});
+		this._kernel.OnIceStateChanged.On(() => {
+			this.OnStateChanged.Invoke(this, this.GetConnectionStatus());
+		});
+		this._kernel.OnReceivedMessage.On((e: any, data: NetworkMessage<any>) => {
+			this.ReceivePacket(data);
+		});
 
-		//setup server
-		this.ServerSocket = serverSocket;
-		this._candidateObserver = new NetworkObserver(PacketKind.Candidate, this.ReceivedCandidate.bind(this));
-		this._offerObserver = new NetworkObserver(PacketKind.Offer, this.ReceivedOffer.bind(this));
-		this.ServerSocket.OnReceived.On(this._candidateObserver);
-		this.ServerSocket.OnReceived.On(this._offerObserver);
-
-		//setup ping
-		this.ServerPing = new TimeoutPingObserver(this.ServerSocket, this.Owner, this.GetRecipient(), 2000);
+		this._kernel.OnShutDown.On(() => this.ShutDown());
 	}
 
-	protected ReceivePacket(event: MessageEvent): void {
-		const packet = <INetworkMessage>JSON.parse(event.data);
+	public Send(message: INetworkMessage): void {
+		this._seqNum += 1;
+		message.SeqNum = this._seqNum;
 
-		if (!this.IsPing(packet.Kind)) {
-			console.log(`%c [${packet.Emitter}] > ${this.Owner}] ${PacketKind[packet.Kind]} <<<`, 'color:#ff7373;');
-
-			if (this._dateDelta !== null) {
-				let deviceRefEmittedDate: number = null;
-				if (this._deltaSign) {
-					deviceRefEmittedDate = moment(packet.EmittedDate)
-						.subtract(moment.duration(this._dateDelta, 'milliseconds'))
-						.toDate()
-						.getTime();
-				} else {
-					deviceRefEmittedDate = moment(packet.EmittedDate)
-						.add(moment.duration(this._dateDelta, 'milliseconds'))
-						.toDate()
-						.getTime();
-				}
-				const now = new Date().getTime();
-				const messageLatency = moment.duration(now - deviceRefEmittedDate);
-				console.log(`Message Latency ${moment.utc(messageLatency.asMilliseconds()).format('HH:mm:ss.SSS')}`);
-			}
+		if (this.IsTcp(message)) {
+			const tcpSender = new TcpSender(this._kernel, message);
+			tcpSender.OnDone.On(() => {
+				this._tcpSenders = this._tcpSenders.filter((t) => !t.IsDone());
+			});
+			this._tcpSenders.push(tcpSender);
+		} else {
+			this._kernel.Send(message);
 		}
-		if (packet.Recipient === PeerSocket.All() || packet.Recipient === this.Owner) {
-			const value = (packet as any).Content;
-			const message = new NetworkMessage<any>();
-			message.Recipient = packet.Recipient;
-			message.Emitter = packet.Emitter;
-			message.Kind = packet.Kind;
-			message.Content = isNullOrUndefined(value) ? null : value;
+	}
+
+	private IsTcp(message: INetworkMessage) {
+		return message.Protocol === ProtocolKind.Tcp && !message.IsAck;
+	}
+
+	// if (!this.IsPing(packet.Kind)) {
+	// 	console.log(
+	// 		`%c [${packet.Emitter}] > ${this._kernel.GetOwner()}] ${PacketKind[packet.Kind]} <<<`,
+	// 		'color:#ff7373;'
+	// 	);
+	// }
+
+	protected ReceivePacket(packet: NetworkMessage<any>): void {
+		console.log(
+			`%c [${packet.Emitter}] > ${this._kernel.GetOwner()}] ${PacketKind[packet.Kind]} <<<`,
+			'color:#ff7373;'
+		);
+
+		if (packet.Recipient === PeerSocket.All() || packet.Recipient === this._kernel.GetOwner()) {
+			const message = this.Convert(packet);
 			this.OnReceivedMessage.Invoke(this, message);
 		}
+
+		if (packet.Protocol === ProtocolKind.Tcp && !packet.IsAck) {
+			const message = this.Convert(packet);
+			message.Recipient = message.Emitter;
+			message.Emitter = this._kernel.GetOwner();
+			message.IsAck = true;
+			this.Send(message);
+		}
+	}
+
+	private Convert(packet: NetworkMessage<any>) {
+		const message = new NetworkMessage<any>();
+		message.Recipient = packet.Recipient;
+		message.Emitter = packet.Emitter;
+		message.Kind = packet.Kind;
+		message.Latency = this._latencyProvider.GetLatency(packet);
+		message.Content = (packet as any).Content;
+		message.SeqNum = packet.SeqNum;
+		message.IsAck = packet.IsAck;
+		message.Protocol = packet.Protocol;
+		return message;
 	}
 
 	public static All(): string {
@@ -98,91 +113,39 @@ export abstract class PeerSocket {
 		return type === PacketKind.OneWayPing || type === PacketKind.TwoWayPing;
 	}
 
-	protected GetRtcConnection(): RTCPeerConnection {
-		return new RTCPeerConnection({
-			iceServers: [
-				{
-					urls: [ 'stun:stun.l.google.com:19302', 'stun:stun.2talk.co.nz:3478' ]
-				}
-			]
-		});
-	}
-
-	private _candidate: RTCIceCandidate;
-
-	public async ReceivedCandidate(message: NetworkMessage<any>): Promise<void> {
-		if (message.Emitter === this.Recipient) {
-			console.log(`[${this.Recipient} -> ${this.Owner}] CANDIDATE <<<`);
-			let candidate = new RTCIceCandidate(message.Content);
-			await this.Connection.addIceCandidate(candidate);
-		}
-	}
-
-	public async ReceivedOffer(packet: NetworkMessage<any>): Promise<void> {
-		if (packet.Emitter === this.Recipient) {
-			try {
-				await this.Connection.setRemoteDescription(new RTCSessionDescription(packet.Content));
-				if (this._candidate) {
-					await this.Connection.addIceCandidate(this._candidate);
-					this._candidate = null;
-				}
-
-				this.LogMessage(packet);
-				if (this.Connection.remoteDescription.type === 'offer') {
-					var rtcDescriptionInit = await this.Connection.createAnswer();
-					await this.Connection.setLocalDescription(rtcDescriptionInit);
-
-					const message = this.GetTemplate<any>(PacketKind.Offer);
-					message.Content = this.Connection.localDescription;
-					this.ServerSocket.Emit(message);
-				}
-			} catch (error) {
-				console.log(error);
-			}
-		}
-	}
-
 	public GetLastPing(): PingData {
-		if (this.PeerPing) {
-			return this.PeerPing.GetLastPingData();
+		if (this._peerPing) {
+			return this._peerPing.GetLastPingData();
 		} else {
 			return new PingData();
 		}
 	}
 
-	private LogMessage(message: INetworkMessage) {
-		const data = `[${message.Emitter} -> ${this
-			.Owner}] ${this.Connection.remoteDescription.type.toUpperCase()} <<<`;
-		console.log(data);
+	private CreatePing() {
+		this._peerPing = new PeerPingObserver(this._kernel, this._kernel.GetOwner(), this._kernel.GetRecipient());
+		this._peerPing.OnTimeoutStateChanged.On((obj: any, state: boolean) => {
+			this.OnReceivedMessage.Invoke(this, this.GetMessage<boolean>(PacketKind.TimeOut, state));
+		});
+		this._peerPing.OnPingReceived.On((obj: any, data: PingData) => {
+			if (this._status && this._status.IsNotConnected()) {
+				//code for firefox
+				const connection = this.GetConnectionStatus();
+				if (!connection.IsNotConnected()) {
+					this.OnStateChanged.Invoke(this, connection);
+				}
+			}
+			this._latencyProvider.CalculateLatency(data);
+			this.OnReceivedMessage.Invoke(this, this.GetMessage<string>(PacketKind.Ping, data.Latency.toString()));
+		});
+		this._peerPing.Start();
 	}
 
-	private Fail(message: INetworkMessage) {
-		const data = `[${message.Emitter} -> ${this.Owner}] ${PacketKind[message.Kind]} ### FAILED`;
-		console.log(data);
-	}
-
-	protected OpenDataChannel(): void {
-		if (this.Channel.readyState === 'open') {
-			this.OnStateChanged.Invoke(this, this.GetConnectionStatus());
-		}
-	}
-
-	public GetRecipient(): string {
-		return this.Recipient;
-	}
-
-	private IsChannelReady(): boolean {
-		return this.Channel && this.Channel.readyState === 'open';
-	}
-
-	private _lastConnectionStatus: ConnectionStatus;
 	public GetConnectionStatus(): ConnectionStatus {
 		const connection = new ConnectionStatus();
-		let state = isNullOrUndefined(this.Connection) ? 'NA' : this.Connection.iceConnectionState;
-		connection.SetConnection(state);
-		connection.Type = this.GetType();
+		connection.SetConnection(this._kernel.GetIceState());
+		connection.Type = this._kernel.GetType();
 		if (connection.Kind === ConnectionKind.Ok) {
-			if (this.IsChannelReady()) {
+			if (this._kernel.IsChannelReady()) {
 				if (!this.HasPing()) {
 					this.CreatePing();
 				}
@@ -190,95 +153,39 @@ export abstract class PeerSocket {
 				connection.SetConnection('checking');
 			}
 		}
-		this._lastConnectionStatus = connection;
-		return connection;
-	}
-
-	private HasPing() {
-		return !isNullOrUndefined(this.PeerPing);
-	}
-
-	private CreatePing() {
-		this.PeerPing = new PeerPingObserver(this, this.Owner);
-		this.PeerPing.OnTimeoutStateChanged.On((obj: any, state: boolean) => {
-			this.OnReceivedMessage.Invoke(this, this.GetMessage<boolean>(PacketKind.TimeOut, state));
-		});
-		this.PeerPing.OnPingReceived.On((obj: any, data: PingData) => {
-			if (this._lastConnectionStatus && this._lastConnectionStatus.IsNotConnected()) {
-				//code for firefox
-				const connection = this.GetConnectionStatus();
-				if (!connection.IsNotConnected()) {
-					this.OnStateChanged.Invoke(this, connection);
-				}
-			}
-
-			this.HandleDelta(data);
-			this.OnReceivedMessage.Invoke(this, this.GetMessage<string>(PacketKind.Ping, data.Latency.toString()));
-		});
-		this.PeerPing.Start();
-	}
-
-	private HandleDelta(data: PingData) {
-		if (this._shortestLatency === null || data.Latency < this._shortestLatency) {
-			this._shortestLatency = data.Latency;
-			this._deltaSign = data.DeltaSign;
-			this._dateDelta = moment.duration(data.DateDelta).asMilliseconds();
-			console.log(`Delta Date ${moment.utc(this._dateDelta).format('HH:mm:ss.SSS')}`);
-			console.log(`Shortest latency ${moment(this._shortestLatency).format('HH:mm:ss.SSS')}`);
-		}
+		this._status = connection;
+		return this._status;
 	}
 
 	private GetMessage<T>(kind: PacketKind, data: T) {
 		const deltaMessage = new NetworkMessage<T>();
 		deltaMessage.Kind = kind;
 		deltaMessage.Emitter = this.GetRecipient();
-		deltaMessage.Recipient = this.Owner;
+		deltaMessage.Recipient = this._kernel.GetRecipient();
 		deltaMessage.Content = data;
 		return deltaMessage;
 	}
 
-	protected abstract GetType(): string;
+	public GetRecipient(): string {
+		return this._kernel.GetRecipient();
+	}
 
-	public Send(message: INetworkMessage): void {
-		console.log(
-			`%c [${message.Emitter} -> ${message.Recipient}] ${PacketKind[message.Kind]} >>>`,
-			'color:#73a9ff;'
-		);
-		if (this.Channel) {
-			this.Channel.send(JSON.stringify(message));
-		} else {
-			this.Fail(message);
-		}
+	private HasPing() {
+		return !isNullOrUndefined(this._peerPing);
 	}
 
 	public ShutDown(): void {
-		this.IsShutDown = true;
-		this.OnShutdown.Invoke();
-		this.ServerPing.Stop();
-		if (this.PeerPing) {
-			this.PeerPing.Stop();
+		if (!this._kernel.IsShutdown()) {
+			this._kernel.ShutDown();
 		}
-		this.ServerSocket.OnReceived.Off(this._candidateObserver);
-		this.ServerSocket.OnReceived.Off(this._offerObserver);
-		this.OnShutdown.Clear();
 		this.OnStateChanged.Invoke(this, this.GetConnectionStatus());
+		this.OnShutdown.Invoke();
+		this.OnShutdown.Clear();
 		this.OnReceivedMessage.Clear();
 		this.OnStateChanged.Clear();
-		if (this.Connection) {
-			this.Connection.close();
-			this.Connection = null;
-		}
-		if (this.Channel) {
-			this.Channel.close();
-			this.Channel = null;
-		}
 	}
 
-	protected GetTemplate<T>(kind: PacketKind): NetworkMessage<T> {
-		const message = new NetworkMessage<T>();
-		message.Kind = kind;
-		message.Emitter = this.Owner;
-		message.Recipient = this.Recipient;
-		return message;
+	public IsShutDown(): boolean {
+		return this._kernel.IsShutdown();
 	}
 }

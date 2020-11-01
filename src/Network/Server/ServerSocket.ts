@@ -44,7 +44,6 @@ export class ServerSocket {
 	}
 
 	public Kick(room: string, name: string) {
-		console.log(`[${this._name} -> ${name}] ${PacketKind[PacketKind.Kick]} >>>`);
 		this.Socket.emit(PacketKind[PacketKind.Kick], {
 			PlayerName: name,
 			RoomName: room
@@ -52,7 +51,6 @@ export class ServerSocket {
 	}
 
 	public Emit(packet: INetworkMessage): void {
-		console.log(`[${packet.Emitter} -> ${packet.Recipient}] ${PacketKind[packet.Kind]} >>>`);
 		packet.RoomName = this._room;
 		this.Socket.emit(PacketKind[packet.Kind], packet);
 	}

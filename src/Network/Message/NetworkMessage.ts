@@ -10,7 +10,10 @@ export class NetworkMessage<T> implements INetworkMessage {
 	public Emitter: string;
 	public Recipient: string;
 
+	public SeqNum: number;
 	public Protocol: ProtocolKind;
+	public IsAck: boolean;
+
 	public Kind: PacketKind;
 	public EmittedDate: number;
 	public Latency: number | null = null;

@@ -1,7 +1,7 @@
+import { Offerer } from './Peer/Kernel/Offerer';
 import { KindEvent } from './../Core/Utils/Events/KindEvent';
 import { ConnectionStatus } from './ConnectionStatus';
-import { ReceiverSocket } from './Peer/ReceiverSocket';
-import { OffererSocket } from './Peer/OffererSocket';
+import { Receiver } from './Peer/Kernel/Receiver';
 import { INetworkMessage } from './Message/INetworkMessage';
 import { ServerSocket } from './Server/ServerSocket';
 import { PeerSocket } from './Peer/PeerSocket';
@@ -11,6 +11,7 @@ import { Dictionnary } from '../Core/Utils/Collections/Dictionnary';
 import { LiteEvent } from '../Core/Utils/Events/LiteEvent';
 import { NetworkObserver } from './NetworkObserver';
 import { KindEventObserver } from '../Core/Utils/Events/KindEventObserver';
+import { ProtocolKind } from './Message/ProtocolKind';
 
 export class NetworkSocket {
 	protected PeerSockets: Dictionnary<PeerSocket> = new Dictionnary<PeerSocket>();
@@ -61,7 +62,7 @@ export class NetworkSocket {
 	}
 
 	private CreateOfferSocket(recipient: string) {
-		const offererSocket = new OffererSocket(this.ServerSocket, this.Owner, recipient);
+		const offererSocket = new PeerSocket(new Offerer(this.ServerSocket, this.Owner, recipient));
 		this.PeerSockets.Add(recipient, offererSocket);
 		//todo subscription
 		offererSocket.OnShutdown.On(this.OnShutdown.bind(this));
@@ -90,19 +91,20 @@ export class NetworkSocket {
 
 	private HandleOfferReceived(message: NetworkMessage<any>): void {
 		if (!this.PeerSockets.Exist(message.Emitter)) {
-			const receiverSocket = new ReceiverSocket(this.ServerSocket, this.Owner, message.Emitter);
+			const receiver = new Receiver(this.ServerSocket, this.Owner, message.Emitter);
+			const receiverSocket = new PeerSocket(receiver);
 			this.PeerSockets.Add(message.Emitter, receiverSocket);
 			//todo subscription
 			receiverSocket.OnShutdown.On(this.OnShutdown.bind(this));
 			receiverSocket.OnReceivedMessage.On(this.OnReceivedPeerMessage.bind(this));
 			receiverSocket.OnStateChanged.On(this.OnConnectionStatusChanged.bind(this));
-			receiverSocket.ReceivedOffer(message);
+			receiver.ReceivedOffer(message);
 		}
 	}
 
 	private OnShutdown(): void {
 		this.PeerSockets.Values().forEach((peer) => {
-			if (peer.IsShutDown) {
+			if (peer.IsShutDown()) {
 				console.log(`[PEER] [REMOVED] ${peer.GetRecipient()}`);
 				this.PeerSockets.Remove(peer.GetRecipient());
 			}
@@ -144,6 +146,7 @@ export class NetworkSocket {
 		message.Kind = kind;
 		message.Recipient = PeerSocket.All();
 		message.Emitter = this.Owner;
+		message.Protocol = ProtocolKind.Tcp;
 		this.Emit(message);
 	}
 

@@ -74,7 +74,11 @@ export default class LoadingPlayers extends Component<{ HostState: HostState; So
 			style = 'badge badge-info';
 			label = <Icon Value="fas fa-spinner"> Loading</Icon>;
 		}
-		return <span class={style}>{label}</span>;
+		return (
+			<span class={style}>
+				<div class={!player.IsLoaded ? 'spin' : ''}>{label}</div>
+			</span>
+		);
 	}
 
 	private GetConnection(player: Player) {

@@ -1,9 +1,8 @@
-import { PeerSocket } from './PeerSocket';
-import { ServerSocket } from '../Server/ServerSocket';
-import { PacketKind } from '../Message/PacketKind';
-import { ConnectionKind } from '../ConnectionKind';
+import { PacketKind } from '../../Message/PacketKind';
+import { ServerSocket } from '../../Server/ServerSocket';
+import { PeerKernel } from './PeerKernel';
 
-export class OffererSocket extends PeerSocket {
+export class Offerer extends PeerKernel {
 	private _timeOut: any;
 
 	constructor(serverSocket: ServerSocket, owner: string, recipient: string) {
@@ -17,7 +16,6 @@ export class OffererSocket extends PeerSocket {
 
 		this.Connection.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
 			if (event.candidate) {
-				console.log(`[${this.Recipient} -> ${this.Owner}] CANDIDATE <<<`);
 				const message = this.GetTemplate<any>(PacketKind.Candidate);
 				message.Content = event.candidate;
 				this.ServerSocket.Emit(message);
@@ -42,34 +40,29 @@ export class OffererSocket extends PeerSocket {
 		this._timeOut = setTimeout(() => this.TimeOut(), 6000);
 		this.Connection.oniceconnectionstatechange = (e: Event) => {
 			clearTimeout(this._timeOut);
-			const connection = this.GetConnectionStatus();
+			console.log(`[${this.Recipient} -> ${this.Owner}] CANDIDATE <<<`);
 
-			console.log(`ICE CHANGED: ${this.Recipient} ${connection.State} ${ConnectionKind[connection.Kind]}`);
-			if (connection.IsNotConnected()) {
+			if (!this.IsConnected()) {
 				this._timeOut = setTimeout(() => this.TimeOut(), 6000);
 			}
-			this.OnStateChanged.Invoke(this, connection);
+			this.OnIceStateChanged.Invoke();
 		};
 
 		this.ServerPing.PingReceived.On((obj: any, data: number) => {
-			if (this.GetConnectionStatus().IsNotConnected()) {
+			if (!this.IsConnected()) {
 				let message = this.GetTemplate(PacketKind.Reset);
 				this.ServerSocket.Emit(message);
 				this.ShutDown();
 			}
 		});
-
-		console.log(`[PEER] [OFFER] ${recipient}`);
 	}
 
-	protected GetType(): string {
+	public GetType(): string {
 		return 'O';
 	}
 
 	protected TimeOut(): void {
-		const connection = this.GetConnectionStatus();
-		if (connection.IsNotConnected() && !this.IsShutDown) {
-			console.log(`TIMEOUT: ${this.Recipient} ${connection.State} ${ConnectionKind[connection.Kind]}`);
+		if (!this.IsConnected() && !this.IsShutdown()) {
 			this.ServerPing.Start();
 		}
 	}

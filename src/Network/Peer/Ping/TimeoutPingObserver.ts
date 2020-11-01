@@ -1,15 +1,25 @@
 import { ServerPingObserver } from './ServerPingObserver';
 import { ServerSocket } from './../../Server/ServerSocket';
 import { LiteEvent } from '../../../Core/Utils/Events/LiteEvent';
+import { PeerKernel } from '../Kernel/PeerKernel';
 
 export class TimeoutPingObserver {
 	public PingReceived: LiteEvent<number> = new LiteEvent<number>();
 	private _obs: ServerPingObserver<number>;
 	private _isDone: boolean;
 
-	constructor(socket: ServerSocket, user: string, recipient: string, private Timeout: number) {
+	constructor(
+		peerSocket: PeerKernel,
+		socket: ServerSocket,
+		user: string,
+		recipient: string,
+		private Timeout: number
+	) {
 		this._isDone = false;
 		this._obs = new ServerPingObserver<number>(socket, user, recipient);
+		peerSocket.OnShutDown.On(() => {
+			this.Stop();
+		});
 		this._obs.PingReceived.On((e: any, data: number) => {
 			if (!this._isDone) {
 				let latency = Math.abs(new Date().getTime() - data);

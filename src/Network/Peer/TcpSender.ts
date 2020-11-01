@@ -1,3 +1,4 @@
+import { PacketKind } from '../Message/PacketKind';
 import { SimpleEvent } from './../../Core/Utils/Events/SimpleEvent';
 import { INetworkMessage } from './../Message/INetworkMessage';
 import { PeerKernel } from './Kernel/PeerKernel';
@@ -16,7 +17,7 @@ export class TcpSender {
 		this._socket.OnReceivedMessage.On(this._OnAckReceived);
 		this._socket.OnShutDown.On(this.Stop.bind(this));
 		this.OnDone = new SimpleEvent();
-		this.Stop();
+		this.Send();
 	}
 
 	private Send(): void {
@@ -31,7 +32,7 @@ export class TcpSender {
 		}, this._timeoutSleep);
 	}
 
-	private Stop() {
+	public Stop() {
 		this._isDone = true;
 		this._socket.OnShutDown.Off(this._OnAckReceived);
 		clearTimeout(this._timeOut);
@@ -39,8 +40,12 @@ export class TcpSender {
 		this.OnDone.Clear();
 	}
 
-	IsDone() {
+	public IsDone() {
 		return this._isDone;
+	}
+
+	public GetKind(): PacketKind {
+		return this._message.Kind;
 	}
 
 	private OnAckReceived(peer: any, packet: INetworkMessage): void {
@@ -48,7 +53,7 @@ export class TcpSender {
 			packet.Recipient === this._message.Emitter &&
 			packet.Kind === this._message.Kind &&
 			packet.SeqNum === this._message.SeqNum &&
-			packet.IsAck === this._message.IsAck
+			packet.IsAck
 		) {
 			this.Stop();
 		}

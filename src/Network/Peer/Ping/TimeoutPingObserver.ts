@@ -23,7 +23,6 @@ export class TimeoutPingObserver {
 		this._obs.PingReceived.On((e: any, data: number) => {
 			if (!this._isDone) {
 				let latency = Math.abs(new Date().getTime() - data);
-				console.log(`[PING] [${recipient}] ${latency}`);
 				if (latency < this.Timeout) {
 					this._isDone = true;
 					this.PingReceived.Invoke(this, latency);

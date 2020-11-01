@@ -43,39 +43,54 @@ export class PeerSocket {
 	}
 
 	public Send(message: INetworkMessage): void {
-		this._seqNum += 1;
-		message.SeqNum = this._seqNum;
+		if (!message.IsAck) {
+			this._seqNum += 1;
+			message.SeqNum = this._seqNum;
+		}
 
 		if (this.IsTcp(message)) {
-			const tcpSender = new TcpSender(this._kernel, message);
-			tcpSender.OnDone.On(() => {
-				this._tcpSenders = this._tcpSenders.filter((t) => !t.IsDone());
-			});
-			this._tcpSenders.push(tcpSender);
+			this.SentTcp(message);
 		} else {
 			this._kernel.Send(message);
 		}
+	}
+
+	private SentTcp(message: INetworkMessage) {
+		//override
+		this._tcpSenders.filter((t) => t.GetKind() === message.Kind).forEach((e) => e.Stop());
+		const tcpSender = new TcpSender(this._kernel, message);
+		//clean when done
+		tcpSender.OnDone.On(() => {
+			this._tcpSenders = this._tcpSenders.filter((t) => !t.IsDone());
+		});
+		//add
+		this._tcpSenders.push(tcpSender);
 	}
 
 	private IsTcp(message: INetworkMessage) {
 		return message.Protocol === ProtocolKind.Tcp && !message.IsAck;
 	}
 
-	// if (!this.IsPing(packet.Kind)) {
-	// 	console.log(
-	// 		`%c [${packet.Emitter}] > ${this._kernel.GetOwner()}] ${PacketKind[packet.Kind]} <<<`,
-	// 		'color:#ff7373;'
-	// 	);
-	// }
-
 	protected ReceivePacket(packet: NetworkMessage<any>): void {
-		console.log(
-			`%c [${packet.Emitter}] > ${this._kernel.GetOwner()}] ${PacketKind[packet.Kind]} <<<`,
-			'color:#ff7373;'
-		);
+		if (!this.IsPing(packet.Kind)) {
+			console.log(
+				`%c [${packet.Emitter}] > ${this._kernel.GetOwner()}] ${PacketKind[packet.Kind]} <<<`,
+				'color:#ff7373;'
+			);
+		}
+		if (packet.Protocol === ProtocolKind.Tcp && packet.IsAck) {
+			console.log(
+				`%c [${packet.Emitter}] > ${this._kernel.GetOwner()}] ${PacketKind[
+					packet.Kind
+				]} [ACK] [${packet.SeqNum}]<<<`,
+				'color:#581087;'
+			);
+			return;
+		}
 
 		if (packet.Recipient === PeerSocket.All() || packet.Recipient === this._kernel.GetOwner()) {
 			const message = this.Convert(packet);
+			message.Latency = this._latencyProvider.GetLatency(packet);
 			this.OnReceivedMessage.Invoke(this, message);
 		}
 
@@ -93,7 +108,6 @@ export class PeerSocket {
 		message.Recipient = packet.Recipient;
 		message.Emitter = packet.Emitter;
 		message.Kind = packet.Kind;
-		message.Latency = this._latencyProvider.GetLatency(packet);
 		message.Content = (packet as any).Content;
 		message.SeqNum = packet.SeqNum;
 		message.IsAck = packet.IsAck;

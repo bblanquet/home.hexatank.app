@@ -101,6 +101,7 @@ export default class HostingComponent extends Component<any, HostState> {
 						<ToastComponent socket={this._socket} Player={this.state.Player}>
 							<PanelComponent>
 								<LoadingPlayers Socket={this._socket} HostState={this.state} />
+								{this.GetBack()}
 							</PanelComponent>
 						</ToastComponent>
 					</Visible>
@@ -137,6 +138,16 @@ export default class HostingComponent extends Component<any, HostState> {
 		this.setState({
 			MapSetting: model
 		});
+	}
+
+	private GetBack() {
+		return (
+			<div class="container-center-horizontal">
+				<ButtonComponent callBack={() => this.Back()} color={ColorKind.Black}>
+					<Icon Value="fas fa-undo-alt" /> Back
+				</ButtonComponent>
+			</div>
+		);
 	}
 
 	private GetDownsideButton() {
@@ -217,23 +228,25 @@ export default class HostingComponent extends Component<any, HostState> {
 		if (this.state.Players.Values().every((e) => e.IsReady)) {
 			this._socket.EmitAll<any>(PacketKind.Loading, {});
 			this.SetLoading();
-			let hqCount = +this.state.MapSetting.IaCount + this.state.Players.Count();
-			if (this.ConvertSize() === 8 && 3 < hqCount) {
-				this.state.MapSetting.Size = 'Large';
-			} else if (this.ConvertSize() === 8 && 2 < hqCount) {
-				this.state.MapSetting.Size = 'Medium';
-			}
-			const mapContext = new MapGenerator().GetMapDefinition(
-				this.ConvertSize(),
-				this.state.MapSetting.MapType,
-				hqCount,
-				this.ConvertEnv()
-			);
-			mapContext.PlayerName = this.state.Player.Name;
-			this.AssignHqToPlayer(mapContext, this.state.Players.Values());
-			this.SetIa(mapContext);
-			this.Load(mapContext);
-			this._socket.EmitAll<MapContext>(PacketKind.Map, mapContext);
+			setTimeout(() => {
+				let hqCount = +this.state.MapSetting.IaCount + this.state.Players.Count();
+				if (this.ConvertSize() === 8 && 3 < hqCount) {
+					this.state.MapSetting.Size = 'Large';
+				} else if (this.ConvertSize() === 8 && 2 < hqCount) {
+					this.state.MapSetting.Size = 'Medium';
+				}
+				const mapContext = new MapGenerator().GetMapDefinition(
+					this.ConvertSize(),
+					this.state.MapSetting.MapType,
+					hqCount,
+					this.ConvertEnv()
+				);
+				mapContext.PlayerName = this.state.Player.Name;
+				this.AssignHqToPlayer(mapContext, this.state.Players.Values());
+				this.SetIa(mapContext);
+				this.Load(mapContext);
+				this._socket.EmitAll<MapContext>(PacketKind.Map, mapContext);
+			}, 10);
 		}
 	}
 

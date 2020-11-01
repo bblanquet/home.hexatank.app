@@ -105,7 +105,6 @@ export class NetworkSocket {
 	private OnShutdown(): void {
 		this.PeerSockets.Values().forEach((peer) => {
 			if (peer.IsShutDown()) {
-				console.log(`[PEER] [REMOVED] ${peer.GetRecipient()}`);
 				this.PeerSockets.Remove(peer.GetRecipient());
 			}
 		});
@@ -147,6 +146,7 @@ export class NetworkSocket {
 		message.Recipient = PeerSocket.All();
 		message.Emitter = this.Owner;
 		message.Protocol = ProtocolKind.Tcp;
+		message.IsAck = false;
 		this.Emit(message);
 	}
 

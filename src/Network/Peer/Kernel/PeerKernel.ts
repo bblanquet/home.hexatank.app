@@ -130,8 +130,8 @@ export abstract class PeerKernel {
 		return isNullOrUndefined(this.Connection) ? 'NA' : this.Connection.iceConnectionState;
 	}
 
-	protected IsConnected(): boolean {
-		return this.GetIceState() === '' || this.GetIceState() === '';
+	public IsConnected() {
+		return this.GetIceState() === 'connected' || this.GetIceState() === 'completed';
 	}
 
 	protected GetTemplate<T>(kind: PacketKind): NetworkMessage<T> {

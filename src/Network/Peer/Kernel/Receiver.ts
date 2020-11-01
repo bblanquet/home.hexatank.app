@@ -8,7 +8,7 @@ export class Receiver extends PeerKernel {
 		this.Connection = this.GetRtcConnection();
 
 		this.Connection.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
-			if (event.candidate) {
+			if (event.candidate && !this.IsConnected()) {
 				const message = this.GetTemplate(PacketKind.Candidate);
 				message.Content = event.candidate;
 				this.ServerSocket.Emit(message);
@@ -25,8 +25,6 @@ export class Receiver extends PeerKernel {
 		this.Connection.oniceconnectionstatechange = (e: Event) => {
 			this.OnIceStateChanged.Invoke();
 		};
-
-		console.log(`[PEER] [RECEIVER] ${recipient}`);
 	}
 
 	public GetType(): string {

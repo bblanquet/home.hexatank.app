@@ -32,7 +32,7 @@ export default class CircularComponent extends Component<{ OnCancel: () => void;
 			this.setState({});
 			setTimeout(() => {
 				this.SetPositions();
-			}, 200);
+			}, 10);
 		}
 	}
 

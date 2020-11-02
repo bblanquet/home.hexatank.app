@@ -7,7 +7,7 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 	private _item: T;
 	private _departureDate: number;
 	private _arrivalDate: number;
-	private _ratio: number;
+	private _ratio: number = 0;
 	private readonly milliseconds = 1000;
 
 	constructor(item: T) {
@@ -35,13 +35,7 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 		const distanceMiddle = arrivalMiddle - departureMiddle;
 		const distanceCenter = arrivalCenter - departureCenter;
 
-		if (isNullOrUndefined(this._arrivalDate)) {
-			this._ratio = 0;
-			this._departureDate = new Date().getTime();
-			this._arrivalDate =
-				new Date(this._departureDate + this._item.GetTranslationDuration() * this.milliseconds).getTime() -
-				this._departureDate;
-		}
+		this.Init();
 
 		const currentDate = new Date().getTime() - this._departureDate;
 		this._ratio = this.GetPercentage(this._arrivalDate, currentDate);
@@ -55,13 +49,26 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 			this._departureDate = null;
 			this._arrivalDate = null;
 			this._item.MoveNextCell();
+			this._ratio = 0;
+		}
+	}
+
+	private Init() {
+		if (isNullOrUndefined(this._arrivalDate)) {
+			this._ratio = 0;
+			this._departureDate = new Date().getTime();
+			this._arrivalDate =
+				new Date(this._departureDate + this._item.GetTranslationDuration() * this.milliseconds).getTime() -
+				this._departureDate;
 		}
 	}
 
 	Percentage(): number {
+		this.Init();
 		return Math.round(this._ratio * 100);
 	}
 	Duration(): number {
+		this.Init();
 		const duration = this._arrivalDate - this._departureDate;
 		return duration - this._ratio * duration;
 	}

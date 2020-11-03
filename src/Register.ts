@@ -1,3 +1,4 @@
+import { CampaignService } from './Services/Campaign/CampaignService';
 import { HostingService } from './Services/Hosting/HostingService';
 import { KeyService } from './Services/Key/KeyService';
 import { RecordInteractionService } from './Services/Interaction/RecordInteractionService';
@@ -24,3 +25,4 @@ Factory.Register(FactoryKey.Interaction, new InteractionService());
 Factory.Register(FactoryKey.RecordInteraction, new RecordInteractionService());
 Factory.Register(FactoryKey.App, new AppService());
 Factory.Register(FactoryKey.RecordApp, new RecordAppService());
+Factory.Register(FactoryKey.Campaign, new CampaignService());

@@ -2,7 +2,6 @@ import { IExpansionMaker } from './IExpansionMaker';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 import { Kingdom } from '../Kingdom';
 import { Area } from '../Utils/Area';
-import { Point } from '../../../Utils/Geometry/Point';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { AreaDecisionMaker } from '../Area/AreaDecisionMaker';
 import { KingdomArea } from '../Utils/KingdomArea';

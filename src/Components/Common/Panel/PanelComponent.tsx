@@ -9,16 +9,29 @@ export default class PanelComponent extends Component<any, any> {
 		return (
 			<div>
 				<nav class="navbar navbar-dark dark">
-					<div class="icon-badge" />
-					<div class="progress" style="width:50px;height:20px; border: 4px solid rgb(198, 198, 198);">
-						<div
-							class="progress-bar bg-danger"
-							role="progressbar"
-							style={'width:' + 30 + '%'}
-							aria-valuenow={30}
-							aria-valuemin="0"
-							aria-valuemax="100"
-						/>
+					<div class="d-flex justify-content-start">
+						<div class="icon-badge" style="margin-right:5px" />
+						<div class="progress" style="width:50px;height:25px; border: 4px solid rgb(198, 198, 198)">
+							<div
+								class="progress-bar bg-danger"
+								role="progressbar"
+								style={'width:' + 30 + '%'}
+								aria-valuenow={30}
+								aria-valuemin="0"
+								aria-valuemax="100"
+							/>
+						</div>
+						<div class="icon-badge" style="margin-right:5px;margin-left:5px" />
+						<div class="progress" style="width:50px;height:25px; border: 4px solid rgb(198, 198, 198)">
+							<div
+								class="progress-bar bg-dark"
+								role="progressbar"
+								style={'width:' + 70 + '%'}
+								aria-valuenow={30}
+								aria-valuemin="0"
+								aria-valuemax="100"
+							/>
+						</div>
 					</div>
 				</nav>
 				<div class="generalContainer absolute-center-middle">

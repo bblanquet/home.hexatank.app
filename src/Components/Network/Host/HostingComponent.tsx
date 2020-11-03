@@ -30,6 +30,7 @@ import Icon from '../../Common/Icon/IconComponent';
 import ActiveButtonComponent from '../../Common/Button/Stylish/ActiveButtonComponent';
 import * as moment from 'moment';
 import { MapSetting } from '../../Form/MapSetting';
+import { MapType } from '../../../Core/Setup/Generator/MapType';
 
 export default class HostingComponent extends Component<any, HostState> {
 	private _hasSettings: boolean = false;
@@ -237,7 +238,7 @@ export default class HostingComponent extends Component<any, HostState> {
 				}
 				const mapContext = new MapGenerator().GetMapDefinition(
 					this.ConvertSize(),
-					this.state.MapSetting.MapType,
+					this.ConvertMapType(),
 					hqCount,
 					this.ConvertEnv()
 				);
@@ -248,6 +249,17 @@ export default class HostingComponent extends Component<any, HostState> {
 				this._socket.EmitAll<MapContext>(PacketKind.Map, mapContext);
 			}, 10);
 		}
+	}
+
+	private ConvertMapType(): MapType {
+		if (this.state.MapSetting.MapType === 'Flower') return MapType.Flower;
+		if (this.state.MapSetting.MapType === 'Donut') return MapType.Donut;
+		if (this.state.MapSetting.MapType === 'Cheese') return MapType.Cheese;
+		if (this.state.MapSetting.MapType === 'Triangle') return MapType.Triangle;
+		if (this.state.MapSetting.MapType === 'Y') return MapType.Y;
+		if (this.state.MapSetting.MapType === 'H') return MapType.H;
+		if (this.state.MapSetting.MapType === 'X') return MapType.X;
+		return MapType.Rectangle;
 	}
 
 	private ConvertSize(): number {

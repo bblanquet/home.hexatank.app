@@ -1,3 +1,4 @@
+import { MapType } from './MapType';
 import { RectangleFlowerMapBuilder } from './../Builder/RectangleFlowerMapBuilder';
 import { YFlowerMapBuilder } from './../Builder/YFlowerMapBuilder';
 import { XFlowerMapBuilder } from './../Builder/XFlowerMapBuilder';
@@ -27,21 +28,21 @@ export class MapGenerator {
 	private _builders: Dictionnary<IPlaygroundBuilder>;
 	constructor() {
 		this._builders = new Dictionnary<IPlaygroundBuilder>();
-		this._builders.Add('Flower', new FlowerMapBuilder());
-		this._builders.Add('Cheese', new CheeseFlowerMapBuilder());
-		this._builders.Add('Donut', new DonutFlowerMapBuilder());
-		this._builders.Add('Triangle', new TriangleFlowerMapBuilder());
-		this._builders.Add('Y', new YFlowerMapBuilder());
-		this._builders.Add('H', new HFlowerMapBuilder());
-		this._builders.Add('X', new XFlowerMapBuilder());
-		this._builders.Add('Rectangle', new RectangleFlowerMapBuilder());
+		this._builders.Add(MapType.Flower.toString(), new FlowerMapBuilder());
+		this._builders.Add(MapType.Cheese.toString(), new CheeseFlowerMapBuilder());
+		this._builders.Add(MapType.Donut.toString(), new DonutFlowerMapBuilder());
+		this._builders.Add(MapType.Triangle.toString(), new TriangleFlowerMapBuilder());
+		this._builders.Add(MapType.Y.toString(), new YFlowerMapBuilder());
+		this._builders.Add(MapType.H.toString(), new HFlowerMapBuilder());
+		this._builders.Add(MapType.X.toString(), new XFlowerMapBuilder());
+		this._builders.Add(MapType.Rectangle.toString(), new RectangleFlowerMapBuilder());
 	}
 
-	public GetMapDefinition(mapSize: number, mapType: string, hqCount: number, mapMode: MapEnv): MapContext {
+	public GetMapDefinition(mapSize: number, mapType: MapType, hqCount: number, mapMode: MapEnv): MapContext {
 		const context = new MapContext();
 		context.MapMode = mapMode;
 		const mapItems = new Array<MapItem>();
-		const mapBuilder = this._builders.Get(mapType);
+		const mapBuilder = this._builders.Get(mapType.toString());
 		const hexagonales = mapBuilder.GetAllCoos(mapSize);
 		GameSettings.MapSize = hexagonales.length;
 

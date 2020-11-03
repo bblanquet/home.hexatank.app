@@ -11,6 +11,7 @@ import Redirect from '../Redirect/RedirectComponent';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
+import { MapType } from '../../Core/Setup/Generator/MapType';
 
 export default class SinglePlayerComponent extends Component<any, MapSetting> {
 	constructor(props: any) {
@@ -83,7 +84,7 @@ export default class SinglePlayerComponent extends Component<any, MapSetting> {
 
 		const mapContext = new MapGenerator().GetMapDefinition(
 			this.ConvertSize(),
-			this.state.MapType,
+			this.ConvertMapType(),
 			hqCount,
 			this.ConvertEnv()
 		);
@@ -97,5 +98,16 @@ export default class SinglePlayerComponent extends Component<any, MapSetting> {
 		});
 		Factory.Load<IAppService>(FactoryKey.App).Register(mapContext);
 		route('/Canvas', true);
+	}
+
+	private ConvertMapType(): MapType {
+		if (this.state.MapType === 'Flower') return MapType.Flower;
+		if (this.state.MapType === 'Donut') return MapType.Donut;
+		if (this.state.MapType === 'Cheese') return MapType.Cheese;
+		if (this.state.MapType === 'Triangle') return MapType.Triangle;
+		if (this.state.MapType === 'Y') return MapType.Y;
+		if (this.state.MapType === 'H') return MapType.H;
+		if (this.state.MapType === 'X') return MapType.X;
+		return MapType.Rectangle;
 	}
 }

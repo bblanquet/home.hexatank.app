@@ -71,10 +71,21 @@ export default class BadgeComponent extends Component<any, { text: string }> {
 								this._textDiv = e;
 							}}
 						>
-							<div class="container" style="padding-right:0px;padding-left:0px;">
-								<div class="row  justify-content-center">
-									{this._data.map((d, index) => this.Get(d, index))}
-								</div>
+							<div class="d-flex flex-wrap justify-content-center">
+								{this._data.map((d) => (
+									<div style="padding-left:5px;padding-right:5px;">
+										<Badge
+											Onclick={(e: string) => {
+												this.setState({
+													text: e
+												});
+											}}
+											icon={d.icon}
+											percentage={d.percentage}
+											text={d.text}
+										/>
+									</div>
+								))}
 							</div>
 							<hr />
 							<div class="container-center-horizontal">
@@ -95,41 +106,6 @@ export default class BadgeComponent extends Component<any, { text: string }> {
 				</PanelComponent>
 			</Redirect>
 		);
-	}
-
-	private Get(d: any, index: number) {
-		if (index !== 0 && index % 3 === 0) {
-			return [
-				<div class="w-100" />,
-				<div class="col-auto">
-					<Badge
-						Onclick={(e: string) => {
-							this.setState({
-								text: e
-							});
-						}}
-						icon={d.icon}
-						percentage={d.percentage}
-						text={d.text}
-					/>
-				</div>
-			];
-		} else {
-			return (
-				<div class="col-auto">
-					<Badge
-						Onclick={(e: string) => {
-							this.setState({
-								text: e
-							});
-						}}
-						icon={d.icon}
-						percentage={d.percentage}
-						text={d.text}
-					/>
-				</div>
-			);
-		}
 	}
 
 	private Back() {

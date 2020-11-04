@@ -10,6 +10,7 @@ import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import { CampaignKind } from '../../Services/Campaign/CampaignKind';
 import { FaceComponent } from './FaceComponent';
+import NavbarComponent from '../Common/Navbar/NavbarComponent';
 
 export default class BlueCampaignComponent extends Component<any, any> {
 	private _campaignService: ICampaignService;
@@ -22,44 +23,46 @@ export default class BlueCampaignComponent extends Component<any, any> {
 	render() {
 		return (
 			<Redirect>
-				<div class="generalContainer absolute-center-middle">
-					<div class="container-center">
-						<FaceComponent
-							eyes={[ 'fill-blueArmy-eyes', 'fill-blueArmy-eyes-blink' ]}
-							mouths={[ 'fill-blueArmy-mouth-1', 'fill-blueArmy-mouth-2', 'fill-blueArmy-mouth-3' ]}
-							face={'fill-blueArmy'}
-						/>
-					</div>
-					<div class="container-center">
-						<div class="container-center-horizontal">
+				<NavbarComponent>
+					<div class="generalContainer absolute-center-middle">
+						<div class="container-center">
+							<FaceComponent
+								eyes={[ 'fill-blueArmy-eyes', 'fill-blueArmy-eyes-blink' ]}
+								mouths={[ 'fill-blueArmy-mouth-1', 'fill-blueArmy-mouth-2', 'fill-blueArmy-mouth-3' ]}
+								face={'fill-blueArmy'}
+							/>
+						</div>
+						<div class="container-center">
+							<div class="container-center-horizontal">
+								<ButtonComponent
+									callBack={() => {
+										this.RedCampaign();
+									}}
+									color={ColorKind.Black}
+								>
+									<Icon Value="fas fa-long-arrow-alt-left" />
+								</ButtonComponent>
+							</div>
+							<div class="d-flex flex-wrap justify-content-center">
+								{this._campaignService.GetButtons(CampaignKind.blue).map((isPossible, index) => {
+									if (isPossible) {
+										return this.GetButton(index + 1);
+									} else {
+										return <LockButton />;
+									}
+								})}
+							</div>
 							<ButtonComponent
 								callBack={() => {
-									this.RedCampaign();
+									this.Back();
 								}}
 								color={ColorKind.Black}
 							>
-								<Icon Value="fas fa-long-arrow-alt-left" />
+								<Icon Value="fas fa-undo-alt" /> Back
 							</ButtonComponent>
 						</div>
-						<div class="d-flex flex-wrap justify-content-center">
-							{this._campaignService.GetButtons(CampaignKind.blue).map((isPossible, index) => {
-								if (isPossible) {
-									return this.GetButton(index + 1);
-								} else {
-									return <LockButton />;
-								}
-							})}
-						</div>
-						<ButtonComponent
-							callBack={() => {
-								this.Back();
-							}}
-							color={ColorKind.Black}
-						>
-							<Icon Value="fas fa-undo-alt" /> Back
-						</ButtonComponent>
 					</div>
-				</div>
+				</NavbarComponent>
 			</Redirect>
 		);
 	}

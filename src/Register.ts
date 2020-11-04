@@ -1,3 +1,4 @@
+import { ModelService } from './Services/Model/ModelService';
 import { CampaignService } from './Services/Campaign/CampaignService';
 import { HostingService } from './Services/Hosting/HostingService';
 import { KeyService } from './Services/Key/KeyService';
@@ -13,6 +14,7 @@ import { UpdateService } from './Services/Update/UpdateService';
 import { AppService } from './Services/App/AppService';
 import { Factory, FactoryKey } from './Factory';
 
+Factory.Register(FactoryKey.Model, new ModelService());
 Factory.Register(FactoryKey.Key, new KeyService());
 Factory.Register(FactoryKey.Hosting, new HostingService());
 Factory.Register(FactoryKey.Update, new UpdateService());

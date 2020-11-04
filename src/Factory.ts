@@ -25,7 +25,8 @@ export enum FactoryKey {
 	Network,
 	Record,
 	Update,
-	Campaign
+	Campaign,
+	Model
 }
 
 export interface IFactorisable {

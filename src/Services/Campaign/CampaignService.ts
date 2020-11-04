@@ -1,3 +1,5 @@
+import { Factory, FactoryKey } from './../../Factory';
+import { IModelService } from './../Model/IModelService';
 import { MapGenerator } from './../../Core/Setup/Generator/MapGenerator';
 import { Dictionnary } from './../../Core/Utils/Collections/Dictionnary';
 import { CampaignKind } from './CampaignKind';
@@ -9,8 +11,11 @@ import { ICampaignService } from './ICampaignService';
 export class CampaignService implements ICampaignService {
 	private _red: Dictionnary<MapContext>;
 	private _blue: Dictionnary<MapContext>;
+	private _modelService: IModelService;
 
 	constructor() {
+		this._modelService = Factory.Load<IModelService>(FactoryKey.Model);
+
 		this._red = new Dictionnary<MapContext>();
 		this._red.Add((1).toString(), new MapGenerator().GetMapDefinition(+6, MapType.Flower, 2, MapEnv.forest));
 		this._red.Add((2).toString(), new MapGenerator().GetMapDefinition(+6, MapType.Donut, 2, MapEnv.forest));
@@ -41,9 +46,13 @@ export class CampaignService implements ICampaignService {
 
 	public GetButtons(kind: CampaignKind): Array<boolean> {
 		if (kind === CampaignKind.blue) {
-			return [ true, false, false, false, false ];
+			return this._blue.Values().map((e, index) => {
+				return index < this._modelService.GetModel().BlueCampaign;
+			});
 		} else {
-			return [ true, true, false, false, false ];
+			return this._blue.Values().map((e, index) => {
+				return index < this._modelService.GetModel().RedCampaign;
+			});
 		}
 	}
 }

@@ -170,7 +170,14 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 	public GetShootableEntity(): AliveItem {
 		if (this._occupier != null) {
-			return <AliveItem>(this._occupier as any);
+			if (this._occupier instanceof Vehicle) {
+				const vehicle = this._occupier as Vehicle;
+				if (vehicle.GetCurrentCell() === this) {
+					return vehicle;
+				}
+			} else {
+				return <AliveItem>(this._occupier as any);
+			}
 		}
 
 		if (!isNullOrUndefined(this._field)) {

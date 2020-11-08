@@ -86,11 +86,7 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 		//find main target among surrounding enemies
 		if (!isNullOrUndefined(this._mainTarget)) {
 			var cells = this.GetCurrentCell().GetAllNeighbourhood();
-
-			let enemies = cells
-				.map((c) => (<Cell>c).GetShootableEntity())
-				.filter((aliveItem) => !isNullOrUndefined(aliveItem));
-
+			let enemies = cells.map((c) => c.GetShootableEntity()).filter((aliveItem) => !isNullOrUndefined(aliveItem));
 			return this.ContainsMainTarget(enemies);
 		}
 		return false;
@@ -103,9 +99,7 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 
 	public IsEnemyHqClose(): boolean {
 		var cells = this.GetCurrentCell().GetAllNeighbourhood();
-
-		let enemies = cells.map((c) => (<Cell>c).GetShootableEntity()).filter((c) => !isNullOrUndefined(c));
-
+		let enemies = cells.map((c) => c.GetShootableEntity()).filter((c) => !isNullOrUndefined(c));
 		//find hq among enemies
 		var hq = enemies.filter((c) => c instanceof Headquarter).map((c) => <Headquarter>c);
 		if (hq.length >= 1) {
@@ -142,7 +136,7 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 		const cells = this.GetCurrentCell().GetAllNeighbourhood();
 		//find random enemy among enemies
 		const enemies = cells
-			.map((cell) => <AliveItem>((<Cell>cell).GetOccupier() as any))
+			.map((cell) => <AliveItem>cell.GetShootableEntity())
 			.filter((aliveItem) => !isNullOrUndefined(aliveItem) && this.IsEnemy(aliveItem))
 			.filter((c) => (c instanceof Vehicle && !(<Vehicle>c).HasCamouflage) || c instanceof Headquarter);
 

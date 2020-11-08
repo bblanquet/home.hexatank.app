@@ -48,8 +48,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	public camouflagedSprites: Sprite[];
 
 	//movable
-	CurrentRadius: number;
-	GoalRadius: number;
+	public CurrentRadius: number;
+	public GoalRadius: number;
 	private _nextCell: Cell;
 	private _currentCell: Cell;
 

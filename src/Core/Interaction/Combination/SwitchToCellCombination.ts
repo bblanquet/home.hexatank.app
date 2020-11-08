@@ -1,3 +1,4 @@
+import { BasicField } from './../../Items/Cell/Field/BasicField';
 import { Cell } from '../../Items/Cell/Cell';
 import { CombinationContext } from './CombinationContext';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
@@ -24,8 +25,12 @@ export class SwitchToCellCombination extends AbstractSingleCombination {
 			const selectable = (context.Items[0] as any) as ISelectable;
 			selectable.SetSelected(false);
 			const cell = context.Items[1] as Cell;
-			cell.SetSelected(true);
-			context.Items.splice(0, 1);
+			if ((context.Items[1] as Cell).GetField() instanceof BasicField) {
+				cell.SetSelected(true);
+				context.Items.splice(0, 1);
+			} else {
+				context.Items.splice(1, 1);
+			}
 			return true;
 		}
 		return false;

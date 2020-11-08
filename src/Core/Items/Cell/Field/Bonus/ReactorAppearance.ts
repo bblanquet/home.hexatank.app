@@ -28,7 +28,7 @@ export class ReactorAppearance extends Item {
 		this.Reactor.OnPowerChanged.On((e: any, isFadeIn: boolean) => {
 			this._lightAnimator = isFadeIn
 				? new FadeInAnimation(this, this.Reactor.Hq.GetSkin().GetReactor(), 0, 1, 0.05)
-				: new FadeOutAnimation(this, this.Reactor.Hq.GetSkin().GetReactor(), 0, 1, 0.05);
+				: new FadeOutAnimation(this, this.Reactor.Hq.GetSkin().GetReactor(), 1, 0, 0.05);
 		});
 		this.GenerateSprite(Archive.bonus.coverBottom);
 		this.GenerateSprite(Archive.bonus.reactor.gray);
@@ -44,7 +44,7 @@ export class ReactorAppearance extends Item {
 		this.Reactor.GetCell().CellStateChanged.On(this._onCellStateChanged);
 		this._animator = new BouncingScaleAnimator(this);
 		this._rotator = new RotationAnimator(this, [ Archive.bonus.reactor.light ], true);
-		this._coverRotator = new RotationAnimator(this, [ Archive.bonus.reactor.rotationCover ], true, 0.002);
+		this._coverRotator = new RotationAnimator(this, [ Archive.bonus.reactor.rotationCover ], true, 0.016);
 
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.Reactor.GetCell().IsVisible();

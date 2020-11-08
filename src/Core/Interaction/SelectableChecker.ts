@@ -14,7 +14,7 @@ export class SelectableChecker implements ISelectableChecker {
 		} else if (item instanceof Vehicle) {
 			const vehicle = <Vehicle>item;
 			return !vehicle.IsEnemy(this._currentHq);
-		} else if (item instanceof ReactorField && !(item as ReactorField).IsLocked()) {
+		} else if (item instanceof ReactorField) {
 			const influenceField = <ReactorField>item;
 			return influenceField.Hq === this._currentHq;
 		} else if (item instanceof Headquarter) {

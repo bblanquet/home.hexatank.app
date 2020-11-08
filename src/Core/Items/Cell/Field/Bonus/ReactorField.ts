@@ -60,6 +60,7 @@ export class ReactorField extends Field implements ISelectable {
 		this.Hq.AddReactor(this);
 		this.Battery = new Battery(this.Hq, this);
 		this.GetCell().SetField(this);
+		this.Appearance = new ReactorAppearance(this, this._light);
 		this.GenerateSprite(Archive.selectionCell);
 		this.SetProperty(Archive.selectionCell, (e) => {
 			e.alpha = 0;
@@ -72,7 +73,6 @@ export class ReactorField extends Field implements ISelectable {
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});
-		this.Appearance = new ReactorAppearance(this, this._light);
 		this.RangeAnimation();
 		this.Hq.AddField(this);
 	}
@@ -151,11 +151,20 @@ export class ReactorField extends Field implements ISelectable {
 		return 0 < this.Battery.GetUsedPower();
 	}
 
+	private _endLockDate: number;
+
 	private SetLocked(l: boolean): void {
 		this._isLocked = l;
+
+		const duration = 30000;
 		if (this._isLocked) {
-			setTimeout(() => (this._isLocked = false), 30000);
+			this._endLockDate = new Date(new Date().getTime() + duration).getTime();
+			setTimeout(() => (this._isLocked = false), duration);
 		}
+	}
+
+	GetLockDate(): number {
+		return this._endLockDate;
 	}
 
 	private RangeAnimation(): void {

@@ -39,6 +39,7 @@ export class MapRender {
 		const hqs = hqRender.GetHq(context, cells, mapContext.Hqs, playgroundItems);
 
 		let playerHq = hqs.find((hq) => hq.PlayerName === mapContext.PlayerName);
+		playerHq.SetSelectionAnimation();
 
 		//insert elements into playground
 		this.SetHqLands(cells, Archive.nature.hq, hqs.map((h) => h.GetCell().GetHexCoo()), playgroundItems);

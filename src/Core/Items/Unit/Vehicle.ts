@@ -1,3 +1,4 @@
+import { BasicItem } from './../BasicItem';
 import { ShieldField } from './../Cell/Field/Bonus/ShieldField';
 import { ZKind } from './../ZKind';
 import { UiOrder } from './../../Ia/Order/UiOrder';
@@ -6,7 +7,6 @@ import { Cell } from './../Cell/Cell';
 import { GameSettings } from './../../Framework/GameSettings';
 import { GameContext } from './../../Framework/GameContext';
 import { CellStateSetter } from '../Cell/CellStateSetter';
-import { BasicItem } from '../BasicItem';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { Headquarter } from '../Cell/Field/Hq/Headquarter';
 import { Dust } from './Dust';
@@ -33,6 +33,7 @@ import { Point } from '../../Utils/Geometry/Point';
 import { ICancellable } from './ICancellable';
 import { Up } from './PowerUp/Up';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
+import { InfiniteFadeAnimation } from '../Animator/InfiniteFadeAnimation';
 
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable, ICancellable {
 	public PowerUps: Array<Up> = [];
@@ -120,6 +121,18 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this.OnCellChanged = new LiteEvent<Cell>();
 		this.Hq.AddVehicle(this);
 		this.SetProperty(Archive.wheels[0], (s) => (s.alpha = 1));
+		if (this.Hq === this.GameContext.GetMainHq()) {
+			this.SetSelectionAnimation();
+		}
+	}
+
+	private _blue: BasicItem;
+
+	public SetSelectionAnimation(): void {
+		this._blue = new BasicItem(this.GetBoundingBox(), Archive.selectionBlueVehicle, ZKind.BelowCell);
+		this._blue.SetAnimator(new InfiniteFadeAnimation(this._blue, Archive.selectionBlueVehicle, 0, 1, 0.05));
+		this._blue.SetVisible(() => this.IsAlive());
+		this._blue.SetAlive(() => this.IsAlive());
 	}
 
 	public IsMainCell(cell: Cell): boolean {
@@ -227,6 +240,9 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this.RootSprites.forEach((sprite) => {
 			this.SetProperty(sprite, (sp) => (sp.rotation = this.CurrentRadius));
 		});
+		if (!isNullOrUndefined(this._blue)) {
+			this._blue.SetProperty(Archive.selectionBlueVehicle, (sp) => (sp.rotation = this.CurrentRadius));
+		}
 	}
 
 	private HandleMovingEffect(): void {

@@ -26,14 +26,28 @@ export class ReactorAppearance extends Item {
 		this.Z = ZKind.Field;
 
 		this.Reactor.OnPowerChanged.On((e: any, isFadeIn: boolean) => {
-			this._lightAnimator = isFadeIn
-				? new FadeInAnimation(this, this.Reactor.Hq.GetSkin().GetReactor(), 0, 1, 0.05)
-				: new FadeOutAnimation(this, this.Reactor.Hq.GetSkin().GetReactor(), 1, 0, 0.05);
+			if (isFadeIn) {
+				this._lightAnimator = new FadeInAnimation(
+					this,
+					[ this.Reactor.Hq.GetSkin().GetReactor(), Archive.bonus.reactor.light ],
+					0,
+					1,
+					0.05
+				);
+			} else {
+				this._lightAnimator = new FadeOutAnimation(
+					this,
+					[ this.Reactor.Hq.GetSkin().GetReactor(), Archive.bonus.reactor.light ],
+					1,
+					0,
+					0.05
+				);
+			}
 		});
 		this.GenerateSprite(Archive.bonus.coverBottom);
 		this.GenerateSprite(Archive.bonus.reactor.gray);
 		this.GenerateSprite(this.Reactor.Hq.GetSkin().GetReactor(), (p) => (p.alpha = 0));
-		this.GenerateSprite(Archive.bonus.reactor.light);
+		this.GenerateSprite(Archive.bonus.reactor.light, (p) => (p.alpha = 0));
 		this.GenerateSprite(Archive.bonus.reactor.rotationCover);
 		this.GenerateSprite(Archive.bonus.reactor.cover);
 		this.GenerateSprite(this._light);
@@ -49,6 +63,8 @@ export class ReactorAppearance extends Item {
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.Reactor.GetCell().IsVisible();
 		});
+
+		this.SetProperty(Archive.bonus.reactor.light, (p) => (p.alpha = 0));
 	}
 
 	protected OnCellStateChanged(obj: any, cellState: CellState): void {

@@ -17,8 +17,8 @@ export class InfiniteFadeAnimation implements IAnimator {
 	) {
 		this._item.SetProperties([ this._sprite ], (e) => (e.alpha = this._start));
 		this._animators = [
-			new FadeInAnimation(_item, _sprite, _start, _end, _step),
-			new FadeOutAnimation(_item, _sprite, _end, _start, _step)
+			new FadeInAnimation(_item, [ this._sprite ], _start, _end, _step),
+			new FadeOutAnimation(_item, [ this._sprite ], _end, _start, _step)
 		];
 	}
 	Reset(): void {}

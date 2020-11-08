@@ -18,9 +18,9 @@ export class BatteryField extends BonusField {
 	public SetUsed(isUsed: boolean): void {
 		this._isUsed = isUsed;
 		if (this._isUsed) {
-			this._ani = new FadeInAnimation(this, Archive.bonus.redThunder, 0, 1, 0.005);
+			this._ani = new FadeInAnimation(this, [ Archive.bonus.redThunder ], 0, 1, 0.005);
 		} else {
-			this._ani = new FadeOutAnimation(this, Archive.bonus.redThunder, 1, 0, 0.005);
+			this._ani = new FadeOutAnimation(this, [ Archive.bonus.redThunder ], 1, 0, 0.005);
 		}
 	}
 

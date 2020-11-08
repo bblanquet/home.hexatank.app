@@ -1,5 +1,6 @@
+import { InfiniteFadeAnimation } from './../../../Animator/InfiniteFadeAnimation';
+import { BasicItem } from './../../../BasicItem';
 import { ZKind } from './../../../ZKind';
-import { ITimer } from './../../../../Utils/Timer/ITimer';
 import { BatteryField } from '../Bonus/BatteryField';
 import { GameContext } from '../../../../Framework/GameContext';
 import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
@@ -92,6 +93,17 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 			obj.visible = this._cell.IsVisible();
 		});
 	}
+
+	public SetSelectionAnimation(): void {
+		const blue = new BasicItem(this._cell.GetBoundingBox(), Archive.selectionBlueHq, ZKind.BelowCell);
+		blue.SetVisible(() => this.IsAlive());
+		blue.SetAlive(() => this.IsAlive());
+		const white = new BasicItem(this._cell.GetBoundingBox(), Archive.selectionWhiteHq, ZKind.BelowCell);
+		white.SetAnimator(new InfiniteFadeAnimation(white, Archive.selectionWhiteHq, 0, 1, 0.05));
+		white.SetVisible(() => this.IsAlive());
+		white.SetAlive(() => this.IsAlive());
+	}
+
 	SetPowerUp(vehicule: Vehicle): void {}
 	protected OncellStateChanged(obj: any, cellState: CellState): void {
 		this.GetCurrentSprites().Values().forEach((s) => {

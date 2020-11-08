@@ -26,6 +26,7 @@ import { HealUp } from '../../../Unit/PowerUp/HealUp';
 import { SpeedFieldMenuItem } from '../../../../Menu/Buttons/SpeedFieldMenuItem';
 import { SpeedUp } from '../../../Unit/PowerUp/SpeedUp';
 import { Explosion } from '../../../Unit/Explosion';
+import { InfiniteFadeAnimation } from '../../../Animator/InfiniteFadeAnimation';
 
 export class ReactorField extends Field implements ISelectable {
 	//state
@@ -75,6 +76,17 @@ export class ReactorField extends Field implements ISelectable {
 		});
 		this.RangeAnimation();
 		this.Hq.AddField(this);
+
+		if (this.GetHq() === this._context.GetMainHq()) {
+			this.SetSelectionAnimation();
+		}
+	}
+
+	public SetSelectionAnimation(): void {
+		const white = new BasicItem(this.GetCell().GetBoundingBox(), Archive.selectionBlueReactor, ZKind.BelowCell);
+		white.SetAnimator(new InfiniteFadeAnimation(white, Archive.selectionBlueReactor, 0, 1, 0.02));
+		white.SetVisible(() => this.IsUpdatable);
+		white.SetAlive(() => this.IsUpdatable);
 	}
 
 	public GetHq(): Headquarter {

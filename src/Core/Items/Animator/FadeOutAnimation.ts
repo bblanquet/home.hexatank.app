@@ -6,12 +6,12 @@ export class FadeOutAnimation implements IAnimator {
 	private _current: number;
 	public constructor(
 		private _item: Item,
-		private _sprite: string,
+		private _sprite: string[],
 		private _start: number,
 		private _end: number,
 		private _step: number
 	) {
-		this._item.SetProperties([ this._sprite ], (e) => (e.alpha = this._start));
+		this._item.SetProperties(this._sprite, (e) => (e.alpha = this._start));
 		this._current = this._start;
 	}
 	Reset(): void {
@@ -29,7 +29,7 @@ export class FadeOutAnimation implements IAnimator {
 			this.IsDone = true;
 		}
 
-		this._item.SetProperties([ this._sprite ], (obj) => {
+		this._item.SetProperties(this._sprite, (obj) => {
 			obj.alpha = this._current;
 		});
 	}

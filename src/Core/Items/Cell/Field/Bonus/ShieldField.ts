@@ -1,31 +1,46 @@
-import { TimeTimer } from './../../../../Utils/Timer/TimeTimer';
-import { ITimer } from './../../../../Utils/Timer/ITimer';
+import { ShieldAppearance } from './ShieldAppearance';
 import { Headquarter } from './../Hq/Headquarter';
 import { Cell } from '../../Cell';
 import { Archive } from '../../../../Framework/ResourceArchiver';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { AliveBonusField } from './AliveBonusField';
 import { AliveItem } from '../../../AliveItem';
-import { IAnimator } from '../../../Animator/IAnimator';
-import { InfiniteFadeAnimation } from '../../../Animator/InfiniteFadeAnimation';
 import { isNullOrUndefined } from '../../../../Utils/ToolBox';
+import { ITimer } from '../../../../Utils/Timer/ITimer';
+import { TimeTimer } from '../../../../Utils/Timer/TimeTimer';
+import { BouncingScaleDownAnimator } from '../../../Animator/BouncingScaleDownAnimator';
+import { BouncingScaleUpAnimator } from '../../../Animator/BouncingScaleUpAnimator';
 
 export class ShieldField extends AliveBonusField {
+	private _shieldAppearance: ShieldAppearance;
 	private _timer: ITimer;
-	private _fadeAnimator: IAnimator;
 
 	constructor(cell: Cell, hq: Headquarter) {
-		super(cell, [ Archive.bonus.shieldLight, Archive.bonus.shield ], hq);
+		super(cell, [], hq);
+		this._timer = new TimeTimer(3000);
 		if (isNullOrUndefined(hq)) {
 			throw 'not supposed to be there';
 		}
-		this._timer = new TimeTimer(3000);
-		this._fadeAnimator = new InfiniteFadeAnimation(this, Archive.bonus.shieldLight, 0.6, 1, 0.01);
-		if (this.Energy === 0) {
-			this.SetProperty(Archive.bonus.shield, (e) => (e.alpha = 0));
-			this.SetProperty(Archive.bonus.shieldLight, (e) => (e.alpha = 0));
-		}
+		this._shieldAppearance = new ShieldAppearance(this);
 		hq.AddField(this);
+	}
+
+	public EnergyChanged(isUp: boolean): void {
+		const formerEnergy = this.Energy;
+
+		this.Energy = isUp ? this.Energy + 1 : this.Energy - 1;
+
+		if (this.Energy === 1 && formerEnergy === 0) {
+			this._shieldAppearance.Animator = new BouncingScaleUpAnimator(this._shieldAppearance, [
+				Archive.bonus.shieldLight,
+				Archive.bonus.shield
+			]);
+		} else if (this.Energy === 0 && formerEnergy === 1) {
+			this._shieldAppearance.Animator = new BouncingScaleDownAnimator(this._shieldAppearance, [
+				Archive.bonus.shieldLight,
+				Archive.bonus.shield
+			]);
+		}
 	}
 
 	public GetHq(): Headquarter {
@@ -39,10 +54,6 @@ export class ShieldField extends AliveBonusField {
 	}
 
 	public Update(viewX: number, viewY: number): void {
-		if (0 < this.Energy) {
-			this._fadeAnimator.Update(viewX, viewY);
-		}
-
 		if (!this.IsAlive()) {
 			this.GetCell().DestroyField();
 			this.Destroy();
@@ -54,7 +65,6 @@ export class ShieldField extends AliveBonusField {
 					this.SetDamage(-(0.5 + bonus));
 				}
 			}
-
 			super.Update(viewX, viewY);
 		}
 	}

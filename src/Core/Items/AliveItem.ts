@@ -66,7 +66,7 @@ export abstract class AliveItem extends Item {
 		this._borderBar.visible = isVisible;
 	}
 
-	private UpdateDamage() {
+	protected UpdateDamage() {
 		if (0 < this.Life && this.Life < this.TotalLife) {
 			this.Show();
 		} else {

@@ -1,3 +1,4 @@
+import { ShieldField } from './../Cell/Field/Bonus/ShieldField';
 import { ZKind } from './../ZKind';
 import { UiOrder } from './../../Ia/Order/UiOrder';
 import { IOrder } from './../../Ia/Order/IOrder';
@@ -162,6 +163,17 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
 		if (!isNullOrUndefined(this._order)) {
 			this._order.Cancel();
+		}
+	}
+
+	public SetDamage(damage: number): void {
+		const field = this._currentCell.GetField();
+		if (field instanceof ShieldField) {
+			const shield = field as ShieldField;
+			shield.SetDamage(damage);
+		} else {
+			this.Life -= damage;
+			this.UpdateDamage();
 		}
 	}
 

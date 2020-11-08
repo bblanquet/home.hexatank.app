@@ -23,4 +23,19 @@ export class SelectableChecker implements ISelectableChecker {
 		}
 		return false;
 	}
+
+	public IsSelectableWithCell(item: Item, cell: Cell): boolean {
+		if (item instanceof Cell) {
+			return true;
+		} else if (item instanceof ReactorField) {
+			const influenceField = <ReactorField>item;
+			return influenceField.Hq === this._currentHq;
+		} else if (item instanceof Headquarter) {
+			const hq = <Headquarter>item;
+			return hq === this._currentHq;
+		} else if (item instanceof Vehicle && (item as Vehicle).IsMainCell(cell)) {
+			return !(item as Vehicle).IsEnemy(this._currentHq);
+		}
+		return false;
+	}
 }

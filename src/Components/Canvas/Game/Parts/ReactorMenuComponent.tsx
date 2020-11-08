@@ -22,7 +22,15 @@ export default class ReactorMenuComponent extends Component<
 		super();
 		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
 	}
+	componentDidMount(): void {
+		this.Check();
+	}
+
 	componentDidUpdate(): void {
+		this.Check();
+	}
+
+	private Check() {
 		const reactor = this.props.Item as ReactorField;
 		if (reactor.IsLocked()) {
 			setTimeout(() => {
@@ -61,7 +69,7 @@ export default class ReactorMenuComponent extends Component<
 							<button type="button" class="btn btn-light without-padding">
 								<div class="fill-overlocked max-width standard-space" />
 								<div class="max-width align-text-center overlocked">
-									{moment(this.state.timeout).format('ss.SSS')}
+									{moment(this.state.timeout).format('ss.SS')}
 								</div>
 							</button>
 							<button

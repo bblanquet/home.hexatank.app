@@ -122,6 +122,18 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this.SetProperty(Archive.wheels[0], (s) => (s.alpha = 1));
 	}
 
+	public IsMainCell(cell: Cell): boolean {
+		if (this.HasNextCell()) {
+			if (this._translationMaker.Percentage() < 50) {
+				return this.GetCurrentCell() === cell;
+			} else {
+				return this.GetNextCell() === cell;
+			}
+		} else {
+			return true;
+		}
+	}
+
 	GetNextCellProgression(): number {
 		return this._translationMaker.Duration();
 	}

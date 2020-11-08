@@ -1,3 +1,4 @@
+import { BasicField } from './../Items/Cell/Field/BasicField';
 import { InteractionInfo } from './InteractionInfo';
 import { LiteEvent } from './../Utils/Events/LiteEvent';
 import { IUpdateService } from './../../Services/Update/IUpdateService';
@@ -116,11 +117,16 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 		);
 	}
 
-	private GetSelectable(i: Cell): Item {
-		if (this._checker.IsSelectable(<Item>(<any>(<Cell>i).GetOccupier()))) {
-			return <Item>(<any>(<Cell>i).GetOccupier());
+	private GetSelectable(cell: Cell): Item {
+		const occupier = <Item>(<any>(<Cell>cell).GetOccupier());
+		if (this._checker.IsSelectableWithCell(occupier, cell)) {
+			return occupier;
 		} else {
-			return <Item>(<any>(<Cell>i).GetField());
+			if (cell.GetField() instanceof BasicField) {
+				return cell;
+			} else {
+				return <Item>(<any>(<Cell>cell).GetField());
+			}
 		}
 	}
 

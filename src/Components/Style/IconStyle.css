@@ -588,6 +588,17 @@
 	background-image: url('{{}}components/badge/deathBadge.svg');
 }
 
+.icon2-badge {
+	width: 25px;
+	height: 25px;
+	max-width: 25px;
+	max-height: 25px;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/badge/campaign.svg');
+}
+
 .fill-diamond-badge {
 	width: 50px;
 	height: 50px;
@@ -667,6 +678,15 @@
 	background-position: center;
 	background-repeat: no-repeat;
 	background-image: url('{{}}components/badge/badgeLight4.svg');
+}
+
+.fill-campaign-badge {
+	width: 50px;
+	height: 50px;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{}}components/badge/campaignBadge.svg');
 }
 
 body:after {

@@ -52,7 +52,7 @@ export default class NavbarComponent extends Component<any, any> {
 								aria-valuemax="100"
 							/>
 						</div>
-						<div class="icon-badge" style="margin-right:5px;margin-left:5px" />
+						<div class="icon2-badge" style="margin-right:5px;margin-left:5px" />
 						<div class="progress" style="width:50px;height:25px; border: 4px solid rgb(198, 198, 198)">
 							<div
 								class="progress-bar bg-dark"

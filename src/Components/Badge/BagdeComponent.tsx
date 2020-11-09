@@ -36,8 +36,8 @@ export default class BadgeComponent extends Component<any, { text: string }> {
 		},
 		{
 			text: 'ut aut reiciendis voluptatibus maiores alias consequatur .',
-			icon: 'fill-hexa-badge',
-			percentage: 10
+			icon: 'fill-campaign-badge',
+			percentage: 100
 		},
 		{
 			text: 'Quis autem vel eum iure reprehenderit qui in ea ',

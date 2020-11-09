@@ -69,9 +69,6 @@ export class TargetOrder extends Order {
 		super.Cancel();
 		this._currentOrder.Cancel();
 		this._targetUi.Destroy();
-		if (!this._target.IsAlive()) {
-			this._target.Destroy();
-		}
 	}
 
 	private ShowUi() {

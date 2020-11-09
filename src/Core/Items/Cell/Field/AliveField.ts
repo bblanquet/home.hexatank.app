@@ -13,12 +13,12 @@ export abstract class AliveField extends AliveItem implements IField {
 
 	constructor(private _cell: Cell) {
 		super();
-		this._onCellStateChanged = this.OnCellStateChanged.bind(this);
-		this._cell.CellStateChanged.On(this._onCellStateChanged);
+		this._onCellStateChanged = this.HandleCellStateChanged.bind(this);
+		this._cell.OnCellStateChanged.On(this._onCellStateChanged);
 	}
 	SetPowerUp(vehicule: Vehicle): void {}
 
-	protected OnCellStateChanged(obj: any, cellState: CellState): void {
+	protected HandleCellStateChanged(obj: any, cellState: CellState): void {
 		this.GetCurrentSprites().Values().forEach((s) => {
 			s.visible = cellState === CellState.Visible;
 		});
@@ -33,11 +33,7 @@ export abstract class AliveField extends AliveItem implements IField {
 	}
 
 	public Destroy(): void {
-		// PeerHandler.SendMessage(PacketKind.Destroyed, {
-		// 	cell: this._cell.GetCoordinate(),
-		// 	Name: 'field'
-		// });
 		super.Destroy();
-		this._cell.CellStateChanged.Off(this._onCellStateChanged);
+		this._cell.OnCellStateChanged.Off(this._onCellStateChanged);
 	}
 }

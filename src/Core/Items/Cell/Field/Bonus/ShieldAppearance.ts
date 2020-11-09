@@ -1,3 +1,4 @@
+import { CellState } from './../../CellState';
 import { IInteractionContext } from '../../../../Interaction/IInteractionContext';
 import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { Item } from '../../../Item';
@@ -18,15 +19,26 @@ export class ShieldAppearance extends Item {
 			this.GenerateSprite(b);
 		});
 		this.Z = ZKind.Sky;
-		this.InitPosition(this._shield.GetCell().GetBoundingBox());
-
-		if (this._shield.Energy === 0) {
-			this.SetProperty(Archive.bonus.shield, (e) => (e.alpha = 0));
-			this.SetProperty(Archive.bonus.shieldLight, (e) => (e.alpha = 0));
-		}
 
 		this.Animator = new BouncingScaleAnimator(this);
-		this._fadeAnimator = new InfiniteFadeAnimation(this, Archive.bonus.shieldLight, 0.6, 1, 0.01);
+		this._fadeAnimator = new InfiniteFadeAnimation(this, Archive.bonus.shieldLight, 0.2, 1, 0.01);
+		this.InitPosition(this._shield.GetCell().GetBoundingBox());
+		this._shield.GetCell().OnCellStateChanged.On(this.HandleCellStateChanged.bind(this));
+
+		if (this._shield.Energy === 0) {
+			this.SetProperty(Archive.bonus.shield, (e) => {
+				e.alpha = 0;
+			});
+			this.SetProperty(Archive.bonus.shieldLight, (e) => {
+				e.alpha = 0;
+			});
+		}
+	}
+
+	protected HandleCellStateChanged(obj: any, cellState: CellState): void {
+		this.GetCurrentSprites().Values().forEach((s) => {
+			s.visible = cellState === CellState.Visible;
+		});
 	}
 
 	public Update(viewX: number, viewY: number): void {

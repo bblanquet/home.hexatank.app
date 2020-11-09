@@ -54,7 +54,7 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 		}
 	}
 
-	protected OnCellStateChanged(cellState: CellState): void {
+	protected HandleCellStateChanged(cellState: CellState): void {
 		this.GetCurrentSprites().Values().forEach((s) => {
 			s.visible = cellState !== CellState.Hidden;
 		});

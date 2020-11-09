@@ -11,7 +11,7 @@ export abstract class Field extends Item implements IField {
 	constructor(private _cell: Cell) {
 		super();
 		this._onCellStateChanged = this.OnCellStateChanged.bind(this);
-		this._cell.CellStateChanged.On(this._onCellStateChanged);
+		this._cell.OnCellStateChanged.On(this._onCellStateChanged);
 	}
 
 	protected OnCellStateChanged(obj: any, cellState: CellState): void {
@@ -22,7 +22,7 @@ export abstract class Field extends Item implements IField {
 
 	public Destroy(): void {
 		super.Destroy();
-		this._cell.CellStateChanged.Off(this._onCellStateChanged);
+		this._cell.OnCellStateChanged.Off(this._onCellStateChanged);
 	}
 
 	protected GetReactorsPower(hq: Headquarter): number {

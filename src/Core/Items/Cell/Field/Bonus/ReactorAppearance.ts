@@ -55,7 +55,7 @@ export class ReactorAppearance extends Item {
 		this.InitPosition(this.Reactor.GetCell().GetBoundingBox());
 
 		this._onCellStateChanged = this.OnCellStateChanged.bind(this);
-		this.Reactor.GetCell().CellStateChanged.On(this._onCellStateChanged);
+		this.Reactor.GetCell().OnCellStateChanged.On(this._onCellStateChanged);
 		this._animator = new BouncingScaleAnimator(this);
 		this._rotator = new RotationAnimator(this, [ Archive.bonus.reactor.light ], true);
 		this._coverRotator = new RotationAnimator(this, [ Archive.bonus.reactor.rotationCover ], true, 0.016);
@@ -75,7 +75,7 @@ export class ReactorAppearance extends Item {
 
 	public Destroy(): void {
 		super.Destroy();
-		this.Reactor.GetCell().CellStateChanged.Off(this._onCellStateChanged);
+		this.Reactor.GetCell().OnCellStateChanged.Off(this._onCellStateChanged);
 	}
 
 	public GetBoundingBox(): BoundingBox {

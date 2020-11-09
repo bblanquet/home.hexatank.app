@@ -22,7 +22,7 @@ export class BlockingField extends AliveField {
 		});
 	}
 
-	protected OnCellStateChanged(ceilState: CellState): void {
+	protected HandleCellStateChanged(ceilState: CellState): void {
 		this.GetCurrentSprites().Values().forEach((s) => {
 			s.visible = ceilState !== CellState.Hidden;
 		});

@@ -86,7 +86,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 			this.Fields.push(new HeadQuarterField(this, <Cell>cell, skin.GetLight()));
 		});
 		this._onCellStateChanged = this.OncellStateChanged.bind(this);
-		this._cell.CellStateChanged.On(this._onCellStateChanged);
+		this._cell.OnCellStateChanged.On(this._onCellStateChanged);
 		this.InitPosition(cell.GetBoundingBox());
 
 		this.GetCurrentSprites().Values().forEach((obj) => {
@@ -231,7 +231,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 
 	public Destroy(): void {
 		super.Destroy();
-		this._cell.CellStateChanged.Off(this._onCellStateChanged);
+		this._cell.OnCellStateChanged.Off(this._onCellStateChanged);
 		this._cell.DestroyField();
 		this.IsUpdatable = false;
 		this.Fields.forEach((field) => {

@@ -43,7 +43,7 @@ export class Diamond extends AliveField {
 		});
 	}
 
-	protected OnCellStateChanged(cellState: CellState): void {
+	protected HandleCellStateChanged(cellState: CellState): void {
 		this.GetCurrentSprites().Values().forEach((s) => {
 			s.visible = cellState !== CellState.Hidden;
 		});

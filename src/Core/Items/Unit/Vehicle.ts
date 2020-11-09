@@ -362,7 +362,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
 	public MoveNextCell(): void {
 		let previouscell = this._currentCell;
-		this._currentCell.CellStateChanged.Off(this._handleCellStateChanged);
+		this._currentCell.OnCellStateChanged.Off(this._handleCellStateChanged);
 
 		if (previouscell.GetOccupier() === this) {
 			previouscell.SetOccupier(null);
@@ -372,7 +372,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
 		this.OnCellChanged.Invoke(this, previouscell);
 		this.HandleCellStateChanged(this, this._currentCell.GetState());
-		this._currentCell.CellStateChanged.On(this._handleCellStateChanged);
+		this._currentCell.OnCellStateChanged.On(this._handleCellStateChanged);
 		this._nextCell = null;
 
 		if (this._currentCell.GetField().constructor !== previouscell.GetField().constructor) {
@@ -461,7 +461,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this._currentCell = cell;
 		this._currentCell.SetOccupier(this);
 		if (!this.IsPacific) {
-			this._currentCell.CellStateChanged.On(this._handleCellStateChanged);
+			this._currentCell.OnCellStateChanged.On(this._handleCellStateChanged);
 			this._handleCellStateChanged(this, this._currentCell.GetState());
 			CellStateSetter.SetStates(this.GameContext, this._currentCell.GetAll());
 			this._currentCell.OnUnitChanged.Invoke(this, this);

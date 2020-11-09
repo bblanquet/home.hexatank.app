@@ -69,17 +69,17 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		return this._state;
 	}
 
-	public CellStateChanged: LiteEvent<CellState> = new LiteEvent<CellState>();
+	public OnCellStateChanged: LiteEvent<CellState> = new LiteEvent<CellState>();
 
-	private OncellStateChanged(state: CellState) {
+	private HandleCellStateChanged(state: CellState) {
 		if (this._isAlwaysVisible) {
 			this._state = CellState.Visible;
-			this.CellStateChanged.Invoke(this, this._state);
+			this.OnCellStateChanged.Invoke(this, this._state);
 			return;
 		}
 
 		this._state = state;
-		this.CellStateChanged.Invoke(this, this._state);
+		this.OnCellStateChanged.Invoke(this, this._state);
 	}
 
 	public IsVisible(): boolean {
@@ -228,7 +228,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		this.SetSelectedAppareance(isSelected);
 		state = this.SetHqState(state);
 
-		this.OncellStateChanged(state);
+		this.HandleCellStateChanged(state);
 
 		this._display[this._state].forEach((sprite) => {
 			this.SetProperty(sprite, (e) => (e.alpha = 1));

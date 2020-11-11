@@ -61,6 +61,8 @@ export class GameContext {
 			});
 		});
 
+		this.OnItemSelected.On(this.HandleSelection.bind(this));
+
 		this.StatsContext = new StatsContext(this);
 	}
 
@@ -110,6 +112,12 @@ export class GameContext {
 			throw 'synchronized issue';
 		}
 		return result;
+	}
+
+	private HandleSelection(src: any, vehicule: Item): void {
+		new Howl({
+			src: [ `./Res/${AudioContent.selection}` ]
+		}).play();
 	}
 
 	private DefineVehicleName(src: Headquarter, vehicule: Vehicle): void {

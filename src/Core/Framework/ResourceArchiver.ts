@@ -139,7 +139,6 @@ export const Archive = {
 		shieldLight: './floor/shieldLight.svg',
 		health: './floor/repair.svg',
 		poison: './floor/poison.svg',
-		slow: './floor/slowCell.svg',
 		emptyMoney: './floor/emptyDiamond.svg',
 		fullMoney: './floor/diamond.svg'
 	},

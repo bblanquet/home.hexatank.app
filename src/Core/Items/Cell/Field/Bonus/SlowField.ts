@@ -1,7 +1,6 @@
 import { Cell } from '../../Cell';
 import { Field } from '../Field';
 import { CellState } from '../../CellState';
-import { Archive } from '../../../../Framework/ResourceArchiver';
 import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../../../Interaction/InteractionContext';
 import { Vehicle } from '../../../Unit/Vehicle';
@@ -14,7 +13,7 @@ export class SlowField extends Field {
 		this.GetCell().SetField(this);
 		this.Z = ZKind.Field;
 
-		this.GenerateSprite(Archive.bonus.slow);
+		this.GenerateSprite('');
 		this.InitPosition(ceil.GetBoundingBox());
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();

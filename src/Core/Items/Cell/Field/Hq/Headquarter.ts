@@ -26,6 +26,7 @@ import { ReactorField } from '../Bonus/ReactorField';
 import { ISelectable } from '../../../../ISelectable';
 import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
 import { Item } from '../../../Item';
+import { Field } from '../Field';
 
 export class Headquarter extends AliveItem implements IField, ISelectable {
 	public Flagcell: FlagCell;
@@ -47,6 +48,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	public OnVehicleCreated: LiteEvent<Vehicle> = new LiteEvent<Vehicle>();
 	public OnDiamondCountChanged: LiteEvent<number> = new LiteEvent<number>();
 	public OnFieldCountchanged: LiteEvent<number> = new LiteEvent<number>();
+	public OnFieldAdded: LiteEvent<Cell> = new LiteEvent<Cell>();
 	public OnEnergyChanged: LiteEvent<number> = new LiteEvent<number>();
 	public OnReactorConquested: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
 	public OnReactorLost: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
@@ -113,8 +115,10 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 
 	private _fields: Array<Item> = new Array<Item>();
 
-	public AddField(field: Item) {
+	public AddField(field: Item, cell: Cell) {
 		this._fields.push(field);
+		this.OnFieldAdded.Invoke(this, cell);
+
 		field.OnDestroyed.On((src: any, itm: Item) => {
 			this._fields = this._fields.filter((t) => !t.IsUpdatable);
 			this.OnFieldCountchanged.Invoke(this, this._fields.length);

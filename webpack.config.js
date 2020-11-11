@@ -15,16 +15,6 @@ var getPostension = function(env) {
 	}
 };
 
-var getJsPostension = function(env) {
-	if (env.NODE_ENV === 'mottet') {
-		return '/Res/';
-	} else if (env.NODE_ENV === 'mobile') {
-		return '/Res/';
-	} else {
-		return '/Res/';
-	}
-};
-
 module.exports = (env) => {
 	// Entry point : first executed file
 	// This may be an array. It will result in many output files.
@@ -43,7 +33,7 @@ module.exports = (env) => {
 		output: {
 			path: distDir,
 			filename: 'main.js',
-			publicPath: './'
+			publicPath: '/'
 		},
 
 		optimization: {
@@ -60,15 +50,6 @@ module.exports = (env) => {
 					options: {
 						search: '{{}}',
 						replace: getPostension(env),
-						flags: 'g'
-					}
-				},
-				{
-					test: /SpriteProvider\.ts$/,
-					loader: 'string-replace-loader',
-					options: {
-						search: '{{pos}}',
-						replace: getJsPostension(env),
 						flags: 'g'
 					}
 				},

@@ -1,8 +1,13 @@
+import { Howl } from 'howler';
 import { h, Component } from 'preact';
+import { AudioContent } from '../../../../Core/Framework/AudioArchiver';
 import { Dictionnary } from '../../../../Core/Utils/Collections/Dictionnary';
 import { ColorKind } from './ColorKind';
 
-export default class ButtonComponent extends Component<{ callBack: () => void; color: ColorKind }, any> {
+export default class ButtonComponent extends Component<
+	{ callBack: () => void; color: ColorKind; isMute?: boolean },
+	any
+> {
 	constructor() {
 		super();
 		this._primary.Add(ColorKind[ColorKind.Black], 'black-primary');
@@ -27,7 +32,14 @@ export default class ButtonComponent extends Component<{ callBack: () => void; c
 					<div class={`custom-btn-layout-2 ${this._secondary.Get(ColorKind[this.props.color])} fit-content`}>
 						<div
 							class={`custom-btn-layout-1 ${this._primary.Get(ColorKind[this.props.color])} fit-content`}
-							onClick={() => this.props.callBack()}
+							onClick={() => {
+								if (!this.props.isMute) {
+									new Howl({
+										src: [ `./Res/${AudioContent.ok}` ]
+									}).play();
+								}
+								this.props.callBack();
+							}}
 						>
 							{this.props.children}
 						</div>

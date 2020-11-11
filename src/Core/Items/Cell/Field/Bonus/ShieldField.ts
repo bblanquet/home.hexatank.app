@@ -22,7 +22,7 @@ export class ShieldField extends AliveBonusField {
 			throw 'not supposed to be there';
 		}
 		this._shieldAppearance = new ShieldAppearance(this);
-		hq.AddField(this);
+		hq.AddField(this, cell);
 	}
 
 	public EnergyChanged(isUp: boolean): void {

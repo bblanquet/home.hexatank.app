@@ -75,7 +75,7 @@ export class ReactorField extends Field implements ISelectable {
 			obj.visible = this.GetCell().IsVisible();
 		});
 		this.RangeAnimation();
-		this.Hq.AddField(this);
+		this.Hq.AddField(this, cell);
 
 		if (this.GetHq() === this._context.GetMainHq()) {
 			this.SetSelectionAnimation();

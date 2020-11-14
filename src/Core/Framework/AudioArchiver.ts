@@ -3,5 +3,7 @@ export const AudioContent = {
 	unitPopup: './sounds/unitPopup.wav',
 	fieldPopup: './sounds/fieldPopup.mp3',
 	ok: './sounds/ok.ogg',
-	selection: './sounds/selection.wav'
+	selection: './sounds/selection.wav',
+	explosion: './sounds/explosion.wav',
+	tankMoving: './sounds/tankMoving.wav'
 };

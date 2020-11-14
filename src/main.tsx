@@ -43,7 +43,7 @@ const Main = (e: any) => {
 			<GuestComponent path="/OffJoin" />
 			<RecordComponent path="/Playback" />
 			<LoadingComponent path="/Loading" default />
-			<PopupComponent path="/Popup" curves={Context()} status={GameStatus.Won} context={{}} />
+			<PopupComponent path="/Popup" curves={Context()} status={GameStatus.Won} context={{ a: 1 }} />
 			<ComparerComponent path="/Comparer" />
 		</Router>
 	);

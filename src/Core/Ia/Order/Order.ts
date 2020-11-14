@@ -36,10 +36,11 @@ export abstract class Order implements IOrder {
 	}
 
 	protected SetState(state: OrderState): void {
+		const previousState = this._state;
 		this._state = state;
-		if (this.IsDone()) {
+		if (previousState !== state) {
+			this.OnStateChanged.Invoke(this, this._state);
 		}
-		this.OnStateChanged.Invoke(this, this._state);
 	}
 
 	abstract Do(): void;

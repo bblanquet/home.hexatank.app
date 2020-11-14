@@ -4,6 +4,7 @@ import Icon from './../../Icon/IconComponent';
 import { ColorKind } from './ColorKind';
 import { Howl } from 'howler';
 import { AudioContent } from '../../../../Core/Framework/AudioArchiver';
+import { SpriteProvider } from '../../../../Core/Framework/SpriteProvider';
 
 export class LockButton extends Component<any, any> {
 	private _lockDiv: any;
@@ -16,7 +17,7 @@ export class LockButton extends Component<any, any> {
 				}}
 				callBack={() => {
 					new Howl({
-						src: [ `./Res/${AudioContent.nok}` ]
+						src: [ `${SpriteProvider.Root()}${AudioContent.nok}` ]
 					}).play();
 
 					this._lockDiv.base.classList.remove('bounce');

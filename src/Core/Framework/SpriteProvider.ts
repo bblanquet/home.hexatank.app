@@ -83,10 +83,10 @@ export class SpriteProvider {
 	}
 
 	private static LoadAsset(data: AssetData, callBack: () => void) {
-		const res = new PIXI.resources.SVGResource(data.Name, { scale: data.Acc });
+		const res = new PIXI.resources.SVGResource(data.Source, { scale: data.Acc });
 		const key = data.ToString();
 		const otpions = { resourceOptions: { scale: 0.3 } };
-		let texture = new PIXI.Texture(new PIXI.BaseTexture(data.Name, otpions));
+		let texture = new PIXI.Texture(new PIXI.BaseTexture(data.Source, otpions));
 		texture.baseTexture.once('loaded', () => {
 			callBack();
 		});
@@ -116,18 +116,26 @@ export class SpriteProvider {
 		}
 	}
 
+	private static _root: string = null;
+	public static Root(): string {
+		if (this._root === null) {
+			this._root = `{{}}`;
+		}
+		return this._root;
+	}
+
 	private static GetPath(asset: string): string {
 		let path = asset;
 		path = path.slice(1); //remove dot
-		path = `.{{pos}}` + path;
+		path = this.Root() + path;
 		path = path.replace('//', '/');
 		return path;
 	}
 }
 
 export class AssetData {
-	constructor(public Acc: SpriteAccuracy, public Name: string) {}
+	constructor(public Acc: SpriteAccuracy, public Source: string) {}
 	public ToString(): string {
-		return `${this.Acc}${this.Name}`;
+		return `${this.Acc}${this.Source}`;
 	}
 }

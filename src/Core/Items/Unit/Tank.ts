@@ -1,3 +1,4 @@
+import { Missile } from './Missile';
 import { ZKind } from './../ZKind';
 import { LiteEvent } from './../../Utils/Events/LiteEvent';
 import { ICamouflageAble } from './ICamouflageAble';
@@ -20,8 +21,11 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 	public Turrel: Turrel;
 	private _currentTarget: AliveItem;
 	private _mainTarget: AliveItem;
-	public OnTargetChanged: LiteEvent<AliveItem> = new LiteEvent();
-	public OnCamouflageChanged: LiteEvent<AliveItem> = new LiteEvent();
+
+	public OnTargetChanged: LiteEvent<AliveItem> = new LiteEvent<AliveItem>();
+	public OnCamouflageChanged: LiteEvent<AliveItem> = new LiteEvent<AliveItem>();
+	public OnMissileLaunched: LiteEvent<Missile> = new LiteEvent<Missile>();
+
 	constructor(hq: Headquarter, gameContext: GameContext, isPacific: boolean = false) {
 		super(hq, gameContext);
 		this.IsPacific = isPacific;

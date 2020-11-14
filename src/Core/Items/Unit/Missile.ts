@@ -1,3 +1,4 @@
+import { LiteEvent } from './../../Utils/Events/LiteEvent';
 import { ZKind } from './../ZKind';
 import { Item } from '../Item';
 import { Explosion } from './Explosion';
@@ -9,12 +10,14 @@ import { GameSettings } from '../../Framework/GameSettings';
 import * as PIXI from 'pixi.js';
 
 export class Missile extends Item {
-	BoundingBox: BoundingBox;
-	Target: AliveItem;
-	Index: number;
-	IsReached: Boolean;
+	public BoundingBox: BoundingBox;
+	public Target: AliveItem;
+	public Index: number;
+	public IsReached: Boolean;
 	private _speed: number;
 	private _currentMissile: number = 0;
+
+	public OnExploded: LiteEvent<Missile> = new LiteEvent<Missile>();
 
 	constructor(boundingbox: BoundingBox, target: AliveItem, private _damage: number) {
 		super();
@@ -101,6 +104,7 @@ export class Missile extends Item {
 			if (!this.Target.IsAlive()) {
 				new Explosion(this.Target.GetBoundingBox(), [ Archive.skull ], 5, false, 50);
 			}
+			this.OnExploded.Invoke(this, this);
 			this.Destroy();
 		}
 	}

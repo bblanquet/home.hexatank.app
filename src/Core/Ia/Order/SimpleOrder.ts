@@ -55,6 +55,13 @@ export class SimpleOrder extends Order {
 		}
 	}
 
+	public IsDone(): boolean {
+		if (this.Vehicle.GetCurrentCell() === this.FinalGoal) {
+			this.SetState(OrderState.Passed);
+		}
+		return super.IsDone();
+	}
+
 	protected GoNextcell() {
 		this.CurrentGoal = this.GetNextGoal();
 		if (isNullOrUndefined(this.CurrentGoal)) {

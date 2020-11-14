@@ -1,6 +1,7 @@
 import { Howl } from 'howler';
 import { h, Component } from 'preact';
 import { AudioContent } from '../../../../Core/Framework/AudioArchiver';
+import { SpriteProvider } from '../../../../Core/Framework/SpriteProvider';
 import { Dictionnary } from '../../../../Core/Utils/Collections/Dictionnary';
 import { ColorKind } from './ColorKind';
 
@@ -35,7 +36,7 @@ export default class ButtonComponent extends Component<
 							onClick={() => {
 								if (!this.props.isMute) {
 									new Howl({
-										src: [ `./Res/${AudioContent.ok}` ]
+										src: [ `${SpriteProvider.Root()}${AudioContent.ok}` ]
 									}).play();
 								}
 								this.props.callBack();

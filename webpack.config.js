@@ -23,10 +23,6 @@ module.exports = (env) => {
 		stats: {
 			errorDetails: true // --display-error-details
 		},
-		// What files webpack will manage
-		resolve: {
-			extensions: [ '.ts', '.tsx' ]
-		},
 		// Make errors mor clear
 		devtool: 'inline-source-map',
 		// Configure output folder and file
@@ -39,20 +35,12 @@ module.exports = (env) => {
 		optimization: {
 			minimizer: [ new UglifyJsPlugin() ]
 		},
+		// What files webpack will manage
 		resolve: {
 			extensions: [ '.js', '.ts', '.tsx', 'jsx' ]
 		},
 		module: {
 			rules: [
-				{
-					test: /SpriteProvider\.ts$/,
-					loader: 'string-replace-loader',
-					options: {
-						search: '{{}}',
-						replace: getPostension(env),
-						flags: 'g'
-					}
-				},
 				{
 					test: /\.tsx?$/,
 					loader: 'ts-loader'
@@ -66,15 +54,6 @@ module.exports = (env) => {
 					use: [ 'style-loader', 'css-loader' ]
 				},
 				{
-					test: /\.(scss|css)$/,
-					loader: 'string-replace-loader',
-					options: {
-						search: '{{}}',
-						replace: getPostension(env),
-						flags: 'g'
-					}
-				},
-				{
 					test: /\.otf$/,
 					use: [
 						{
@@ -85,6 +64,15 @@ module.exports = (env) => {
 							}
 						}
 					]
+				},
+				{
+					test: /\.(scss|css|ts)$/,
+					loader: 'string-replace-loader',
+					options: {
+						search: '{{}}',
+						replace: getPostension(env),
+						flags: 'g'
+					}
 				}
 			]
 		},

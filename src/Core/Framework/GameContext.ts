@@ -11,8 +11,8 @@ import { Cell } from '../Items/Cell/Cell';
 import { Player } from '../../Network/Player';
 import { GameStatus } from './GameStatus';
 import { isNullOrUndefined } from '../Utils/ToolBox';
-import { Howl } from 'howler';
 import { AudioContent } from './AudioArchiver';
+import { SpriteProvider } from './SpriteProvider';
 
 export class GameContext {
 	public StatsContext: StatsContext;
@@ -49,7 +49,6 @@ export class GameContext {
 
 		this._hqs.forEach((hq) => {
 			hq.OnVehicleCreated.On(this.DefineVehicleName.bind(this));
-			hq.OnFieldAdded.On(this.HandleFieldChanged.bind(this));
 		});
 
 		const foes = this._hqs.filter((hq) => hq !== this._mainHq);
@@ -61,17 +60,7 @@ export class GameContext {
 			});
 		});
 
-		this.OnItemSelected.On(this.HandleSelection.bind(this));
-
 		this.StatsContext = new StatsContext(this);
-	}
-
-	private HandleFieldChanged(src: any, cell: Cell): void {
-		if (cell.IsVisible()) {
-			new Howl({
-				src: [ `./Res/${AudioContent.fieldPopup}` ]
-			}).play();
-		}
 	}
 
 	ExistUnit(id: string) {
@@ -114,21 +103,9 @@ export class GameContext {
 		return result;
 	}
 
-	private HandleSelection(src: any, vehicule: Item): void {
-		new Howl({
-			src: [ `./Res/${AudioContent.selection}` ]
-		}).play();
-	}
-
 	private DefineVehicleName(src: Headquarter, vehicule: Vehicle): void {
 		vehicule.Id = `${src.PlayerName}${this._vehicleCount}`;
 		this._vehicleCount += 1;
 		this._vehicles.Add(vehicule.Id, vehicule);
-
-		if (vehicule.GetCurrentCell().IsVisible()) {
-			new Howl({
-				src: [ `./Res/${AudioContent.unitPopup}` ]
-			}).play();
-		}
 	}
 }

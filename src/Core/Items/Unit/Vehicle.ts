@@ -1,3 +1,4 @@
+import { SimpleEvent } from './../../Utils/Events/SimpleEvent';
 import { BasicItem } from './../BasicItem';
 import { ShieldField } from './../Cell/Field/Bonus/ShieldField';
 import { ZKind } from './../ZKind';
@@ -75,6 +76,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	public OnCellChanged: LiteEvent<Cell> = new LiteEvent<Cell>();
 	public OnNextCellChanged: LiteEvent<Cell> = new LiteEvent<Cell>();
 	public OnOrderChanging: LiteEvent<IOrder> = new LiteEvent<IOrder>();
+	public OnStopping: LiteEvent<Vehicle> = new LiteEvent<Vehicle>();
 
 	constructor(public Hq: Headquarter, protected GameContext: GameContext) {
 		super();
@@ -374,6 +376,10 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this.HandleCellStateChanged(this, this._currentCell.GetState());
 		this._currentCell.OnCellStateChanged.On(this._handleCellStateChanged);
 		this._nextCell = null;
+
+		if (!this.HasOrder()) {
+			this.OnStopping.Invoke(this, this);
+		}
 
 		if (this._currentCell.GetField().constructor !== previouscell.GetField().constructor) {
 			this._currentCell.GetField().SetPowerUp(this);

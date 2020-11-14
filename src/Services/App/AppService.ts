@@ -1,3 +1,4 @@
+import { SoundManager } from './../../Core/Framework/Sound/SoundManager';
 import { HqRender } from './../../Core/Setup/Render/Hq/HqRender';
 import { IKeyService } from './../Key/IKeyService';
 import { GameSettings } from './../../Core/Framework/GameSettings';
@@ -18,6 +19,7 @@ export class AppService implements IAppService {
 	private _app: PIXI.Application;
 	private _appProvider: AppProvider;
 	private _interactionManager: PIXI.interaction.InteractionManager;
+	private _soundManager: SoundManager;
 
 	private _gameContextService: IGameContextService;
 	private _interactionService: IInteractionService;
@@ -52,6 +54,7 @@ export class AppService implements IAppService {
 		this._interactionService.Register(this._interactionManager, gameContext);
 		gameContext.TrackingContext = new RecordContext(mapContext, gameContext, this._interactionService.Publish());
 		this._app.start();
+		this._soundManager = new SoundManager(gameContext);
 	}
 
 	public Publish(): PIXI.Application {

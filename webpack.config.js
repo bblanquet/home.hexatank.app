@@ -15,6 +15,14 @@ var getPostension = function(env) {
 	}
 };
 
+var GetRoot = function(env) {
+	if (env.NODE_ENV === 'mottet') {
+		return './';
+	} else {
+		return '/';
+	}
+};
+
 module.exports = (env) => {
 	// Entry point : first executed file
 	// This may be an array. It will result in many output files.
@@ -29,7 +37,7 @@ module.exports = (env) => {
 		output: {
 			path: distDir,
 			filename: 'main.js',
-			publicPath: '/'
+			publicPath: GetRoot(env)
 		},
 
 		optimization: {

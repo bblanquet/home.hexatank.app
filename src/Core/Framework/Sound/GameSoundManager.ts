@@ -139,7 +139,7 @@ export class GameSoundManager {
 
 	private HandleFieldChanged(src: any, cell: Cell): void {
 		if (cell.IsVisible()) {
-			this.Play(AudioContent.unitPopup, 1);
+			this.Play(AudioContent.unitPopup, 0.2);
 		}
 	}
 

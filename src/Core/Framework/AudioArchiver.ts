@@ -14,6 +14,6 @@ export const AudioContent = {
 	shot3: './sounds/shot3.wav',
 	forestMusic: './sounds/Blazer Rail.wav',
 	sandMusic: './sounds/Marimba Boy.wav',
-	winterMusic: './sounds/Bobber Loop.wav',
+	iceMusic: './sounds/Bobber Loop.wav',
 	menuMusic: './sounds/Lounge Game2.wav'
 };

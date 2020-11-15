@@ -17,7 +17,8 @@ export class LockButton extends Component<any, any> {
 				}}
 				callBack={() => {
 					new Howl({
-						src: [ `${SpriteProvider.Root()}${AudioContent.nok}` ]
+						src: [ `${SpriteProvider.Root()}${AudioContent.nok}` ],
+						volume: 0.1
 					}).play();
 
 					this._lockDiv.base.classList.remove('bounce');

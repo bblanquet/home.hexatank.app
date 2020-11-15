@@ -71,6 +71,7 @@ export class AppService implements IAppService {
 
 	public Collect(): void {
 		this._soundManager.StopAll();
+		this._soundService.Collect();
 		this._interactionManager.destroy();
 		this._gameContextService.Collect();
 		this._interactionService.Collect();

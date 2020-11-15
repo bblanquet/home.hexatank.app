@@ -3,4 +3,5 @@ import { GameContext } from './../../Core/Framework/GameContext';
 export interface ISoundService {
 	Register(gameContext: GameContext): void;
 	GetSoundManager(): GameSoundManager;
+	Collect(): void;
 }

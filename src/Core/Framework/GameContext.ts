@@ -1,3 +1,4 @@
+import { MapEnv } from './../Setup/Generator/MapEnv';
 import { MapContext } from './../Setup/Generator/MapContext';
 import { RecordContext } from './Record/RecordContext';
 import { StatsContext } from './Stats/StatsContext';
@@ -11,8 +12,6 @@ import { Cell } from '../Items/Cell/Cell';
 import { Player } from '../../Network/Player';
 import { GameStatus } from './GameStatus';
 import { isNullOrUndefined } from '../Utils/ToolBox';
-import { AudioContent } from './AudioArchiver';
-import { SpriteProvider } from './SpriteProvider';
 
 export class GameContext {
 	public StatsContext: StatsContext;
@@ -38,8 +37,11 @@ export class GameContext {
 	//online
 	public Players: Player[];
 
+	private _mapContext: MapContext;
+
 	public Setup(mapContext: MapContext, mainHq: Headquarter, hqs: Headquarter[], cells: Cell[]) {
 		this._mainHq = mainHq;
+		this._mapContext = mapContext;
 		this._hqs = hqs;
 		this._cells = Dictionnary.To((c) => c.Coo(), cells);
 
@@ -63,7 +65,11 @@ export class GameContext {
 		this.StatsContext = new StatsContext(this);
 	}
 
-	ExistUnit(id: string) {
+	public GetMapMode(): MapEnv {
+		return this._mapContext.MapMode;
+	}
+
+	public ExistUnit(id: string): Boolean {
 		return this._vehicles.Exist(id);
 	}
 

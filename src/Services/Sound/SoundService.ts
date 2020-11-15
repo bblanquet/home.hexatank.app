@@ -9,6 +9,7 @@ import { GameContext } from '../../Core/Framework/GameContext';
 export class SoundService implements ISoundService {
 	private _sounds: Dictionnary<Howl>;
 	private _soundManager: GameSoundManager;
+	private _loungeMusic: number;
 	constructor() {
 		this._sounds = new Dictionnary<Howl>();
 		[
@@ -23,10 +24,22 @@ export class SoundService implements ISoundService {
 			AudioContent.shot,
 			AudioContent.shot2,
 			AudioContent.shot3,
+			AudioContent.menuMusic,
+			AudioContent.iceMusic,
+			AudioContent.sandMusic,
 			AudioContent.forestMusic
 		].forEach((content) => {
 			this.Add(content);
 		});
+
+		const lounge = this._sounds.Get(AudioContent.menuMusic);
+		lounge.loop(true);
+		lounge.volume(0.01);
+		this._loungeMusic = lounge.play();
+	}
+
+	Collect(): void {
+		this._sounds.Get(AudioContent.menuMusic).play(this._loungeMusic);
 	}
 
 	GetSoundManager(): GameSoundManager {
@@ -34,6 +47,7 @@ export class SoundService implements ISoundService {
 	}
 
 	Register(gameContext: GameContext): void {
+		this._sounds.Get(AudioContent.menuMusic).pause(this._loungeMusic);
 		const copy = new Dictionnary<Howl>();
 		this._sounds.Keys().forEach((k) => {
 			copy.Add(k, this._sounds.Get(k));

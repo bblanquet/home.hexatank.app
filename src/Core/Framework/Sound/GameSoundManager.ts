@@ -1,3 +1,4 @@
+import { MapEnv } from './../../Setup/Generator/MapEnv';
 import { Missile } from '../../Items/Unit/Missile';
 import { Tank } from '../../Items/Unit/Tank';
 import { GameContext } from '../GameContext';
@@ -16,16 +17,26 @@ export class GameSoundManager {
 
 	constructor(private _sounds: Dictionnary<Howl>, private _gameContext: GameContext) {
 		this._vehicleSounds = new Dictionnary<number>();
-		const forestMusic = this._sounds.Get(AudioContent.forestMusic);
-		forestMusic.volume(0.1);
-		forestMusic.loop(true);
-		forestMusic.play();
+		const music = this._sounds.Get(this.GetMusic());
+		music.volume(0.05);
+		music.loop(true);
+		music.play();
 
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		this._gameContext.GetHqs().forEach((hq) => {
 			hq.OnVehicleCreated.On(this.HandleVehicle.bind(this));
 			hq.OnFieldAdded.On(this.HandleFieldChanged.bind(this));
 		});
+	}
+
+	private GetMusic(): string {
+		if (this._gameContext.GetMapMode() === MapEnv.forest) {
+			return AudioContent.forestMusic;
+		} else if (this._gameContext.GetMapMode() === MapEnv.ice) {
+			return AudioContent.iceMusic;
+		} else if (this._gameContext.GetMapMode() === MapEnv.sand) {
+			return AudioContent.sandMusic;
+		}
 	}
 
 	private Play(def: string, volume: number = 1, loop: boolean = false): number {
@@ -39,28 +50,28 @@ export class GameSoundManager {
 	}
 
 	public StartMusic(): void {
-		const forestMusic = this._sounds.Get(AudioContent.forestMusic);
+		const forestMusic = this._sounds.Get(this.GetMusic());
 		forestMusic.volume(0.1);
 		forestMusic.loop(true);
 		this._music = forestMusic.play();
 	}
 
 	public PauseAll(): void {
-		this._sounds.Get(AudioContent.forestMusic).pause(this._music);
+		this._sounds.Get(this.GetMusic()).pause(this._music);
 		this._vehicleSounds.Values().forEach((vehicleSound) => {
 			this._sounds.Get(AudioContent.tankMoving).pause(vehicleSound);
 		});
 	}
 
 	public PlayAll(): void {
-		this._sounds.Get(AudioContent.forestMusic).play(this._music);
+		this._sounds.Get(this.GetMusic()).play(this._music);
 		this._vehicleSounds.Values().forEach((vehicleSound) => {
 			this._sounds.Get(AudioContent.tankMoving).play(vehicleSound);
 		});
 	}
 
 	public StopAll(): void {
-		this._sounds.Get(AudioContent.forestMusic).stop(this._music);
+		this._sounds.Get(this.GetMusic()).stop(this._music);
 		this._vehicleSounds.Values().forEach((vehicleSound) => {
 			this._sounds.Get(AudioContent.tankMoving).stop(vehicleSound);
 		});

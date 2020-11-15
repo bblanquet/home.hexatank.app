@@ -1,4 +1,5 @@
-import { SoundManager } from './../../Core/Framework/Sound/SoundManager';
+import { ISoundService } from './../Sound/ISoundService';
+import { GameSoundManager } from '../../Core/Framework/Sound/GameSoundManager';
 import { HqRender } from './../../Core/Setup/Render/Hq/HqRender';
 import { IKeyService } from './../Key/IKeyService';
 import { GameSettings } from './../../Core/Framework/GameSettings';
@@ -19,7 +20,7 @@ export class AppService implements IAppService {
 	private _app: PIXI.Application;
 	private _appProvider: AppProvider;
 	private _interactionManager: PIXI.interaction.InteractionManager;
-	private _soundManager: SoundManager;
+	private _soundManager: GameSoundManager;
 
 	private _gameContextService: IGameContextService;
 	private _interactionService: IInteractionService;
@@ -27,6 +28,7 @@ export class AppService implements IAppService {
 	private _updateService: IUpdateService;
 	private _networkService: INetworkService;
 	private _keyService: IKeyService;
+	private _soundService: ISoundService;
 
 	constructor() {
 		this._appProvider = new AppProvider();
@@ -36,6 +38,7 @@ export class AppService implements IAppService {
 		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
 		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
 		this._keyService = Factory.Load<IKeyService>(FactoryKey.Key);
+		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
 	}
 
 	public Register(mapContext: MapContext): void {
@@ -54,7 +57,8 @@ export class AppService implements IAppService {
 		this._interactionService.Register(this._interactionManager, gameContext);
 		gameContext.TrackingContext = new RecordContext(mapContext, gameContext, this._interactionService.Publish());
 		this._app.start();
-		this._soundManager = new SoundManager(gameContext);
+		this._soundService.Register(gameContext);
+		this._soundManager = this._soundService.GetSoundManager();
 	}
 
 	public Publish(): PIXI.Application {
@@ -66,6 +70,7 @@ export class AppService implements IAppService {
 	}
 
 	public Collect(): void {
+		this._soundManager.StopAll();
 		this._interactionManager.destroy();
 		this._gameContextService.Collect();
 		this._interactionService.Collect();

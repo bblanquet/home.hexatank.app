@@ -26,7 +26,8 @@ export enum FactoryKey {
 	Record,
 	Update,
 	Campaign,
-	Model
+	Model,
+	Sound
 }
 
 export interface IFactorisable {

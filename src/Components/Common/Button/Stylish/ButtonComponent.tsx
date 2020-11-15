@@ -35,9 +35,11 @@ export default class ButtonComponent extends Component<
 							class={`custom-btn-layout-1 ${this._primary.Get(ColorKind[this.props.color])} fit-content`}
 							onClick={() => {
 								if (!this.props.isMute) {
-									new Howl({
+									const h = new Howl({
 										src: [ `${SpriteProvider.Root()}${AudioContent.ok}` ]
-									}).play();
+									});
+									h.volume(0.2);
+									h.play();
 								}
 								this.props.callBack();
 							}}

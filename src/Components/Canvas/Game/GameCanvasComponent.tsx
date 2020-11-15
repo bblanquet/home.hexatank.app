@@ -28,6 +28,8 @@ import { IInteractionService } from '../../../Services/Interaction/IInteractionS
 import { Factory, FactoryKey } from '../../../Factory';
 import Redirect from '../../Redirect/RedirectComponent';
 import Icon from '../../Common/Icon/IconComponent';
+import { IAppService } from '../../../Services/App/IAppService';
+import { ISoundService } from '../../../Services/Sound/ISoundService';
 
 export default class GameCanvasComponent extends Component<
 	any,
@@ -47,6 +49,7 @@ export default class GameCanvasComponent extends Component<
 > {
 	private _diamonds: number;
 	private _gameContextService: IGameContextService;
+	private _soundService: ISoundService;
 	private _networkService: INetworkService;
 	private _interactionService: IInteractionService;
 
@@ -57,6 +60,7 @@ export default class GameCanvasComponent extends Component<
 	constructor() {
 		super();
 		this._gameContextService = Factory.Load<IGameContextService>(FactoryKey.GameContext);
+		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
 		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
 		this._gameContext = this._gameContextService.Publish();
@@ -191,6 +195,12 @@ export default class GameCanvasComponent extends Component<
 		this.setState({
 			HasMenu: newValue
 		});
+		if (newValue) {
+			this._soundService.GetSoundManager().PauseAll();
+		} else {
+			this._soundService.GetSoundManager().PlayAll();
+		}
+
 		if (!this._networkService.HasSocket()) {
 			GameSettings.IsPause = newValue;
 		}

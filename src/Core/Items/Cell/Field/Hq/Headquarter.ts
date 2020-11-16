@@ -51,6 +51,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	public OnFieldAdded: LiteEvent<Cell> = new LiteEvent<Cell>();
 	public OnEnergyChanged: LiteEvent<number> = new LiteEvent<number>();
 	public OnReactorConquested: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
+	public OnNewReactor: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
 	public OnReactorLost: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 	public OnTankRequestChanged: LiteEvent<number> = new LiteEvent<number>();
@@ -403,6 +404,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 
 	public AddReactor(reactor: ReactorField): void {
 		this._reactors.push(reactor);
+		this.OnNewReactor.Invoke(this, reactor);
 		reactor.OnPowerChanged.On((src: any, data: boolean) => {
 			this.OnEnergyChanged.Invoke(this, 0);
 		});

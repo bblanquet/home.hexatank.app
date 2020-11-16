@@ -24,6 +24,8 @@ export class SoundService implements ISoundService {
 			AudioContent.shot,
 			AudioContent.shot2,
 			AudioContent.shot3,
+			AudioContent.powerUp,
+			AudioContent.noMoney,
 			AudioContent.menuMusic,
 			AudioContent.iceMusic,
 			AudioContent.sandMusic,

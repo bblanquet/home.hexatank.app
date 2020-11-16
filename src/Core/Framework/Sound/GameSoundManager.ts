@@ -10,6 +10,7 @@ import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Item } from '../../Items/Item';
 import { Dictionnary } from '../../Utils/Collections/Dictionnary';
 import { Turrel } from '../../Items/Unit/Turrel';
+import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 
 export class GameSoundManager {
 	private _vehicleSounds: Dictionnary<number>;
@@ -23,6 +24,9 @@ export class GameSoundManager {
 		music.play();
 
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
+		const hq = this._gameContext.GetMainHq();
+		hq.OnNewReactor.On(this.HandleReactor.bind(this));
+		hq.OnCashMissing.On(this.HandleMissingCash.bind(this));
 		this._gameContext.GetHqs().forEach((hq) => {
 			hq.OnVehicleCreated.On(this.HandleVehicle.bind(this));
 			hq.OnFieldAdded.On(this.HandleFieldChanged.bind(this));
@@ -51,7 +55,7 @@ export class GameSoundManager {
 
 	public StartMusic(): void {
 		const forestMusic = this._sounds.Get(this.GetMusic());
-		forestMusic.volume(0.1);
+		forestMusic.volume(0.05);
 		forestMusic.loop(true);
 		this._music = forestMusic.play();
 	}
@@ -79,6 +83,18 @@ export class GameSoundManager {
 		this._vehicleSounds.Clear();
 	}
 
+	private HandleMissingCash(src: any, r: ReactorField): void {
+		this.Play(AudioContent.noMoney, 0.06);
+	}
+
+	private HandleReactor(src: any, r: ReactorField): void {
+		r.OnOverlocked.On(this.HandleOverlock.bind(this));
+	}
+
+	private HandleOverlock(s: any, kind: string): void {
+		this.Play(AudioContent.powerUp, 0.05);
+	}
+
 	private HandleVehicle(src: Headquarter, vehicule: Vehicle): void {
 		if (vehicule instanceof Tank) {
 			const t = vehicule as Tank;
@@ -86,7 +102,10 @@ export class GameSoundManager {
 		}
 
 		vehicule.OnNextCellChanged.On(this.HandleMusic.bind(this));
-		vehicule.OnStopping.On(this.HandleStop.bind(this));
+		vehicule.OnNextCellChanged.On(this.HandleMusic.bind(this));
+
+		vehicule.OnTranslateStarted.On(this.HandleMusic.bind(this));
+		vehicule.OnTranslateStopped.On(this.HandleStop.bind(this));
 		vehicule.OnDestroyed.On(this.HandleDestroyed.bind(this));
 
 		if (vehicule.GetCurrentCell().IsVisible()) {
@@ -122,7 +141,7 @@ export class GameSoundManager {
 	private HandleDestroyed(src: any, cell: Cell): void {
 		const vehicle = src as Vehicle;
 		this.StopEngine(vehicle);
-		this.Play(AudioContent.death2, 1);
+		this.Play(AudioContent.death2, 0.5);
 	}
 
 	private HandleStop(src: any, cell: Cell): void {

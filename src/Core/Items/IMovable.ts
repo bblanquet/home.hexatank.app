@@ -1,3 +1,4 @@
+import { LiteEvent } from '../Utils/Events/LiteEvent';
 import { Cell } from './Cell/Cell';
 
 export interface IMovable {
@@ -7,4 +8,6 @@ export interface IMovable {
 	GetCurrentCell(): Cell;
 	GetTranslationDuration(): number;
 	SetTranslationDuration(translation: number): void;
+	OnTranslateStarted: LiteEvent<Cell>;
+	OnTranslateStopped: LiteEvent<Cell>;
 }

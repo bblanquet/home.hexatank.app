@@ -4,14 +4,14 @@ import { IBoundingBoxContainer } from '../../../IBoundingBoxContainer';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implements ITranslationMaker {
-	private _item: T;
+	private _movableObject: T;
 	private _departureDate: number;
 	private _arrivalDate: number;
 	private _ratio: number = 0;
 	private readonly milliseconds = 1000;
 
 	constructor(item: T) {
-		this._item = item;
+		this._movableObject = item;
 	}
 
 	private GetPercentage(arrival: number, current: number): number {
@@ -22,9 +22,9 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 	}
 
 	public Translate(): void {
-		const departure = this._item.GetCurrentCell().GetBoundingBox();
-		const target = this._item.GetNextCell().GetBoundingBox();
-		const movable = this._item.GetBoundingBox();
+		const departure = this._movableObject.GetCurrentCell().GetBoundingBox();
+		const target = this._movableObject.GetNextCell().GetBoundingBox();
+		const movable = this._movableObject.GetBoundingBox();
 
 		const departureCenter = departure.GetCenter();
 		const departureMiddle = departure.GetMiddle();
@@ -44,12 +44,13 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 		movable.Y = departure.Y + this._ratio * distanceMiddle;
 
 		if (this._ratio === 1) {
-			movable.X = this._item.GetNextCell().GetBoundingBox().X;
-			movable.Y = this._item.GetNextCell().GetBoundingBox().Y;
+			movable.X = this._movableObject.GetNextCell().GetBoundingBox().X;
+			movable.Y = this._movableObject.GetNextCell().GetBoundingBox().Y;
 			this._departureDate = null;
 			this._arrivalDate = null;
-			this._item.MoveNextCell();
+			this._movableObject.MoveNextCell();
 			this._ratio = 0;
+			this._movableObject.OnTranslateStopped.Invoke(this._movableObject, this._movableObject.GetNextCell());
 		}
 	}
 
@@ -58,8 +59,10 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 			this._ratio = 0;
 			this._departureDate = new Date().getTime();
 			this._arrivalDate =
-				new Date(this._departureDate + this._item.GetTranslationDuration() * this.milliseconds).getTime() -
-				this._departureDate;
+				new Date(
+					this._departureDate + this._movableObject.GetTranslationDuration() * this.milliseconds
+				).getTime() - this._departureDate;
+			this._movableObject.OnTranslateStarted.Invoke(this._movableObject, this._movableObject.GetNextCell());
 		}
 	}
 

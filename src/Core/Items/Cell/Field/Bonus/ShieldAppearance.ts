@@ -24,6 +24,7 @@ export class ShieldAppearance extends Item {
 		this._fadeAnimator = new InfiniteFadeAnimation(this, Archive.bonus.shieldLight, 0.2, 1, 0.01);
 		this.InitPosition(this._shield.GetCell().GetBoundingBox());
 		this._shield.GetCell().OnCellStateChanged.On(this.HandleCellStateChanged.bind(this));
+		this.HandleCellStateChanged(this, this._shield.GetCell().GetState());
 
 		if (this._shield.Energy === 0) {
 			this.SetProperty(Archive.bonus.shield, (e) => {

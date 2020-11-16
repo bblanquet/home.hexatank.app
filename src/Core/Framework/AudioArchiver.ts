@@ -5,7 +5,7 @@ export const AudioContent = {
 	fieldPopup: './sounds/fieldPopup.mp3',
 	ok: './sounds/ok.ogg',
 	selection: './sounds/selection.wav',
-	explosion: './sounds/explosion.wav',
+	explosion: './sounds/explosion3.wav',
 	tankMoving: './sounds/tankMoving.wav',
 	death: './sounds/death.ogg',
 	death2: './sounds/death2.wav',

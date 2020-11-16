@@ -123,7 +123,7 @@ export class GameSoundManager {
 
 	private HandleDestroyedMissile(src: any, missible: Missile): void {
 		if (missible.Target.GetCurrentCell().IsVisible()) {
-			this.Play(AudioContent.explosion, 0.5);
+			this.Play(AudioContent.explosion, 1);
 		}
 	}
 

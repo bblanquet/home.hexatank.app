@@ -80,6 +80,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	public OnTranslateStarted: LiteEvent<Cell> = new LiteEvent<Cell>();
 	public OnTranslateStopped: LiteEvent<Cell> = new LiteEvent<Cell>();
 
+	private _infiniteAnimator: InfiniteFadeAnimation;
+
 	constructor(public Hq: Headquarter, protected GameContext: GameContext) {
 		super();
 		this.CurrentRadius = 0;
@@ -103,6 +105,12 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 			this.RootSprites.push(wheel);
 		});
 
+		if (this.Hq === this.GameContext.GetMainHq()) {
+			this.GenerateSprite(Archive.selectionBlueVehicle);
+			this._infiniteAnimator = new InfiniteFadeAnimation(this, Archive.selectionBlueVehicle, 0, 1, 0.05);
+			this.RootSprites.push(Archive.selectionBlueVehicle);
+		}
+
 		this.WheelIndex = 0;
 		this._dustTimer = new TickTimer(12);
 		this._dustIndex = 0;
@@ -125,18 +133,6 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this.OnCellChanged = new LiteEvent<Cell>();
 		this.Hq.AddVehicle(this);
 		this.SetProperty(Archive.wheels[0], (s) => (s.alpha = 1));
-		if (this.Hq === this.GameContext.GetMainHq()) {
-			this.SetSelectionAnimation();
-		}
-	}
-
-	private _blue: BasicItem;
-
-	public SetSelectionAnimation(): void {
-		this._blue = new BasicItem(this.GetBoundingBox(), Archive.selectionBlueVehicle, ZKind.BelowCell);
-		this._blue.SetAnimator(new InfiniteFadeAnimation(this._blue, Archive.selectionBlueVehicle, 0, 1, 0.05));
-		this._blue.SetVisible(() => this.IsAlive());
-		this._blue.SetAlive(() => this.IsAlive());
 	}
 
 	public IsMainCell(cell: Cell): boolean {
@@ -244,9 +240,6 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this.RootSprites.forEach((sprite) => {
 			this.SetProperty(sprite, (sp) => (sp.rotation = this.CurrentRadius));
 		});
-		if (!isNullOrUndefined(this._blue)) {
-			this._blue.SetProperty(Archive.selectionBlueVehicle, (sp) => (sp.rotation = this.CurrentRadius));
-		}
 	}
 
 	private HandleMovingEffect(): void {
@@ -414,6 +407,10 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	}
 
 	public Update(viewX: number, viewY: number): void {
+		if (this._infiniteAnimator) {
+			this._infiniteAnimator.Update(viewX, viewY);
+		}
+
 		if (!isNullOrUndefined(this.PowerUps)) {
 			this.PowerUps.forEach((powerUp) => {
 				powerUp.Animation.Update(viewX, viewY);

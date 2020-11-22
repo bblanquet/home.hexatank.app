@@ -196,7 +196,7 @@ export default class GameCanvasComponent extends Component<
 		});
 		if (newValue) {
 			this._soundService.GetSoundManager().PauseAll();
-		} else {
+		} else if (!this._soundService.IsMute()) {
 			this._soundService.GetSoundManager().PlayAll();
 		}
 

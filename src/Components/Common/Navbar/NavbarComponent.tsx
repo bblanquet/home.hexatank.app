@@ -82,7 +82,7 @@ export default class NavbarComponent extends Component<any, any> {
 							callBack={() => {
 								if (this._soundService.IsMute()) {
 									this._soundService.On();
-									this._soundService.PlayAgain(AudioContent.menuMusic);
+									this._soundService.PlayAgain(AudioContent.menuMusic, null, 0.005);
 								} else {
 									this._soundService.Off();
 									this._soundService.Pause(AudioContent.menuMusic);

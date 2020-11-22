@@ -12,9 +12,12 @@ export class SoundService implements ISoundService {
 	private _playingSounds: Dictionnary<number>;
 
 	constructor() {
-		this._sounds = new SoundProvider().GetContent();
+		this.Reload();
 		this._playingSounds = new Dictionnary<number>();
 		this._isMute = false;
+	}
+	Reload(): void {
+		this._sounds = new SoundProvider().GetContent();
 	}
 
 	Collect(): void {
@@ -51,7 +54,11 @@ export class SoundService implements ISoundService {
 			if (id) {
 				soundId = this._sounds.Get(content).play(id);
 			} else {
-				soundId = this._playingSounds.Get(content);
+				if (this._playingSounds.Exist(content)) {
+					soundId = this._playingSounds.Get(content);
+				} else {
+					soundId = this.Play(content, volume);
+				}
 				this._sounds.Get(content).play(soundId);
 			}
 
@@ -81,6 +88,10 @@ export class SoundService implements ISoundService {
 	}
 
 	Clear(): void {
+		this._sounds.Values().forEach((sound) => {
+			sound.unload();
+		});
+		this._playingSounds.Clear();
 		this._sounds.Clear();
 	}
 

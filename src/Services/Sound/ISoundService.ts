@@ -6,6 +6,7 @@ export interface ISoundService {
 	Collect(): void;
 	On(): void;
 	Off(): void;
+	Reload(): void;
 	IsMute(): boolean;
 	Play(content: string, volume: number, loop?: boolean): number | null;
 	Stop(content: string, volume: number): void;

@@ -80,5 +80,6 @@ export class AppService implements IAppService {
 		this._networkService.Collect();
 		this._app.destroy();
 		this._app = null;
+		this._soundService.Reload();
 	}
 }

@@ -189,8 +189,6 @@ export default class GameCanvasComponent extends Component<
 		return '';
 	}
 
-	componentDidUpdate() {}
-
 	private SetMenu(): void {
 		const newValue = !this.state.HasMenu;
 		this.setState({

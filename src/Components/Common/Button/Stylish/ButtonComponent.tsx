@@ -3,6 +3,8 @@ import { h, Component } from 'preact';
 import { AudioContent } from '../../../../Core/Framework/AudioArchiver';
 import { SpriteProvider } from '../../../../Core/Framework/SpriteProvider';
 import { Dictionnary } from '../../../../Core/Utils/Collections/Dictionnary';
+import { Factory, FactoryKey } from '../../../../Factory';
+import { ISoundService } from '../../../../Services/Sound/ISoundService';
 import { ColorKind } from './ColorKind';
 
 export default class ButtonComponent extends Component<
@@ -35,11 +37,7 @@ export default class ButtonComponent extends Component<
 							class={`custom-btn-layout-1 ${this._primary.Get(ColorKind[this.props.color])} fit-content`}
 							onClick={() => {
 								if (!this.props.isMute) {
-									const h = new Howl({
-										src: [ `${SpriteProvider.Root()}${AudioContent.ok}` ]
-									});
-									h.volume(0.2);
-									h.play();
+									Factory.Load<ISoundService>(FactoryKey.Sound).Play(`${AudioContent.ok}`, 0.2);
 								}
 								this.props.callBack();
 							}}

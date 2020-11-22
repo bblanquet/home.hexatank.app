@@ -9,13 +9,18 @@ import Icon from '../Common/Icon/IconComponent';
 import ActiveButtonComponent from '../Common/Button/Stylish/ActiveButtonComponent';
 import { Factory, FactoryKey } from '../../Factory';
 import { GameContextService } from '../../Services/GameContext/GameContextService';
+import { ISoundService } from '../../Services/Sound/ISoundService';
+import SmActiveButtonComponent from '../Common/Button/Stylish/SmActiveButtonComponent';
 
 export default class PopupMenuComponent extends Component<
 	{ status: GameStatus; callBack: () => void },
 	{ Kind: StatsKind }
 > {
+	private _soundService: ISoundService;
+
 	constructor() {
 		super();
+		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
 		this.setState({
 			Kind: StatsKind.Unit
 		});
@@ -77,6 +82,29 @@ export default class PopupMenuComponent extends Component<
 						rightColor={ColorKind.Red}
 						isActive={GameSettings.ShowEnemies}
 						callBack={() => this.Cheat()}
+					/>
+					<ActiveButtonComponent
+						left={
+							<span>
+								<Icon Value={'fas fa-volume-mute'} /> Mute
+							</span>
+						}
+						right={
+							<span>
+								<Icon Value={'fas fa-volume-up'} /> Unmute
+							</span>
+						}
+						leftColor={ColorKind.Black}
+						rightColor={ColorKind.Yellow}
+						callBack={() => {
+							if (this._soundService.IsMute()) {
+								this._soundService.On();
+							} else {
+								this._soundService.Off();
+							}
+							this.setState({});
+						}}
+						isActive={this._soundService.IsMute()}
 					/>
 					<ButtonComponent
 						callBack={() => {

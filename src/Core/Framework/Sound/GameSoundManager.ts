@@ -1,8 +1,9 @@
+import { Factory, FactoryKey } from './../../../Factory';
+import { ISoundService } from './../../../Services/Sound/ISoundService';
 import { MapEnv } from './../../Setup/Generator/MapEnv';
 import { Missile } from '../../Items/Unit/Missile';
 import { Tank } from '../../Items/Unit/Tank';
 import { GameContext } from '../GameContext';
-import { Howl } from 'howler';
 import { AudioContent } from '../AudioArchiver';
 import { Cell } from '../../Items/Cell/Cell';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
@@ -13,15 +14,13 @@ import { Turrel } from '../../Items/Unit/Turrel';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 
 export class GameSoundManager {
+	private _soundService: ISoundService;
 	private _vehicleSounds: Dictionnary<number>;
 	private _music: number;
 
-	constructor(private _sounds: Dictionnary<Howl>, private _gameContext: GameContext) {
+	constructor(private _gameContext: GameContext) {
 		this._vehicleSounds = new Dictionnary<number>();
-		const music = this._sounds.Get(this.GetMusic());
-		music.volume(0.05);
-		music.loop(true);
-		music.play();
+		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
 
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		const hq = this._gameContext.GetMainHq();
@@ -31,6 +30,10 @@ export class GameSoundManager {
 			hq.OnVehicleCreated.On(this.HandleVehicle.bind(this));
 			hq.OnFieldAdded.On(this.HandleFieldChanged.bind(this));
 		});
+	}
+
+	public StartMusic(): void {
+		this._soundService.Play(this.GetMusic(), 0.01, true);
 	}
 
 	private GetMusic(): string {
@@ -43,43 +46,33 @@ export class GameSoundManager {
 		}
 	}
 
-	private Play(def: string, volume: number = 1, loop: boolean = false): number {
-		if (this._sounds.Exist(def)) {
-			const sound = this._sounds.Get(def);
-			sound.loop(loop);
-			sound.volume(volume);
-			return sound.play();
+	private Play(def: string, volume: number = 1, loop: boolean = false): number | null {
+		if (this._soundService.Exist(def)) {
+			return this._soundService.Play(def, volume, loop);
 		}
-		return -1;
-	}
-
-	public StartMusic(): void {
-		const forestMusic = this._sounds.Get(this.GetMusic());
-		forestMusic.volume(0.05);
-		forestMusic.loop(true);
-		this._music = forestMusic.play();
+		return null;
 	}
 
 	public PauseAll(): void {
-		this._sounds.Get(this.GetMusic()).pause(this._music);
+		this._soundService.Pause(this.GetMusic(), this._music);
 		this._vehicleSounds.Values().forEach((vehicleSound) => {
-			this._sounds.Get(AudioContent.tankMoving).pause(vehicleSound);
+			this._soundService.Pause(AudioContent.tankMoving, vehicleSound);
 		});
 	}
 
 	public PlayAll(): void {
-		this._sounds.Get(this.GetMusic()).play(this._music);
+		this._soundService.PlayAgain(this.GetMusic(), this._music, 0.01);
 		this._vehicleSounds.Values().forEach((vehicleSound) => {
-			this._sounds.Get(AudioContent.tankMoving).play(vehicleSound);
+			this._soundService.PlayAgain(AudioContent.tankMoving, vehicleSound);
 		});
 	}
 
 	public StopAll(): void {
-		this._sounds.Get(this.GetMusic()).stop(this._music);
+		this._soundService.Stop(this.GetMusic(), this._music);
 		this._vehicleSounds.Values().forEach((vehicleSound) => {
-			this._sounds.Get(AudioContent.tankMoving).stop(vehicleSound);
+			this._soundService.Stop(AudioContent.tankMoving, vehicleSound);
 		});
-		this._sounds.Clear();
+		this._soundService.Clear();
 		this._vehicleSounds.Clear();
 	}
 
@@ -131,8 +124,7 @@ export class GameSoundManager {
 		const v = src as Vehicle;
 		if (v.GetCurrentCell().IsVisible()) {
 			if (!this._vehicleSounds.Exist(v.Id)) {
-				const soundId = this.Play(AudioContent.tankMoving, 0.3);
-				this._sounds.Get(AudioContent.tankMoving).loop(true, soundId);
+				const soundId = this.Play(AudioContent.tankMoving, 0.3, true);
 				this._vehicleSounds.Add(v.Id, soundId);
 			}
 		}
@@ -150,8 +142,8 @@ export class GameSoundManager {
 	}
 
 	private StopEngine(vehicle: Vehicle) {
-		if (this._sounds.Exist(AudioContent.tankMoving)) {
-			this._sounds.Get(AudioContent.tankMoving).stop(this._vehicleSounds.Get(vehicle.Id));
+		if (this._soundService.Exist(AudioContent.tankMoving)) {
+			this._soundService.Stop(AudioContent.tankMoving, this._vehicleSounds.Get(vehicle.Id));
 			this._vehicleSounds.Remove(vehicle.Id);
 		}
 	}

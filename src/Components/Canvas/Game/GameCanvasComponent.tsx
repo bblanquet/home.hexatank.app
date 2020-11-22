@@ -28,8 +28,8 @@ import { IInteractionService } from '../../../Services/Interaction/IInteractionS
 import { Factory, FactoryKey } from '../../../Factory';
 import Redirect from '../../Redirect/RedirectComponent';
 import Icon from '../../Common/Icon/IconComponent';
-import { IAppService } from '../../../Services/App/IAppService';
 import { ISoundService } from '../../../Services/Sound/ISoundService';
+import { AudioContent } from '../../../Core/Framework/AudioArchiver';
 
 export default class GameCanvasComponent extends Component<
 	any,
@@ -88,6 +88,7 @@ export default class GameCanvasComponent extends Component<
 	}
 
 	componentDidMount() {
+		this._soundService.Pause(AudioContent.menuMusic);
 		this._gameContext.GetMainHq().OnTruckChanged.On(this.HandleTruckChanged.bind(this));
 		this._gameContext.GetMainHq().OnTankRequestChanged.On(this.HandleTankChanged.bind(this));
 		this._gameContext.GetMainHq().OnDiamondCountChanged.On(this.HandleDiamondChanged.bind(this));

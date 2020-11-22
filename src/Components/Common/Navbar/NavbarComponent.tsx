@@ -1,14 +1,23 @@
 import { h, Component } from 'preact';
+import { AudioContent } from '../../../Core/Framework/AudioArchiver';
 import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
 import { Factory, FactoryKey } from '../../../Factory';
 import { IModelService } from '../../../Services/Model/IModelService';
 import { Model } from '../../../Services/Model/Model';
+import { ISoundService } from '../../../Services/Sound/ISoundService';
 import { ColorKind } from '../Button/Stylish/ColorKind';
+import SmActiveButtonComponent from '../Button/Stylish/SmActiveButtonComponent';
 import SmButtonComponent from '../Button/Stylish/SmButtonComponent';
 import SmUploadButtonComponent from '../Button/Stylish/SmUploadButtonComponent';
 import Icon from '../Icon/IconComponent';
 
 export default class NavbarComponent extends Component<any, any> {
+	private _soundService: ISoundService;
+	constructor() {
+		super();
+		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
+	}
+
 	private Upload(e: any): void {
 		var reader = new FileReader();
 		reader.readAsText(e.target.files[0], 'UTF-8');
@@ -65,6 +74,24 @@ export default class NavbarComponent extends Component<any, any> {
 						</div>
 					</div>
 					<div class="d-flex justify-content-start">
+						<SmActiveButtonComponent
+							left={<Icon Value={'fas fa-volume-mute'} />}
+							right={<Icon Value={'fas fa-volume-up'} />}
+							leftColor={ColorKind.Black}
+							rightColor={ColorKind.Yellow}
+							callBack={() => {
+								if (this._soundService.IsMute()) {
+									this._soundService.On();
+									this._soundService.PlayAgain(AudioContent.menuMusic);
+								} else {
+									this._soundService.Off();
+									this._soundService.Pause(AudioContent.menuMusic);
+								}
+								this.setState({});
+							}}
+							isActive={this._soundService.IsMute()}
+						/>
+						<div class="space-out" />
 						<SmUploadButtonComponent
 							callBack={(e: any) => this.Upload(e)}
 							color={ColorKind.Red}

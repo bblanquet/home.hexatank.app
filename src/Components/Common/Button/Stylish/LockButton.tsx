@@ -2,9 +2,9 @@ import { Component, h } from 'preact';
 import ButtonComponent from './ButtonComponent';
 import Icon from './../../Icon/IconComponent';
 import { ColorKind } from './ColorKind';
-import { Howl } from 'howler';
 import { AudioContent } from '../../../../Core/Framework/AudioArchiver';
-import { SpriteProvider } from '../../../../Core/Framework/SpriteProvider';
+import { Factory, FactoryKey } from '../../../../Factory';
+import { ISoundService } from '../../../../Services/Sound/ISoundService';
 
 export class LockButton extends Component<any, any> {
 	private _lockDiv: any;
@@ -16,11 +16,7 @@ export class LockButton extends Component<any, any> {
 					this._lockDiv = e;
 				}}
 				callBack={() => {
-					new Howl({
-						src: [ `${SpriteProvider.Root()}${AudioContent.nok}` ],
-						volume: 0.1
-					}).play();
-
+					Factory.Load<ISoundService>(FactoryKey.Sound).Play(`${AudioContent.nok}`, 0.1);
 					this._lockDiv.base.classList.remove('bounce');
 					setTimeout(() => {
 						this._lockDiv.base.classList.add('bounce');

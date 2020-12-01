@@ -12,10 +12,12 @@ import { Cell } from '../Items/Cell/Cell';
 import { Player } from '../../Network/Player';
 import { GameStatus } from './GameStatus';
 import { isNullOrUndefined } from '../Utils/ToolBox';
+import { MultiSelectionContext } from '../Menu/Smart/MultiSelectionContext';
 
 export class GameContext {
 	public StatsContext: StatsContext;
 	public TrackingContext: RecordContext;
+	public MultiSelectionContext: MultiSelectionContext;
 
 	//events
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();

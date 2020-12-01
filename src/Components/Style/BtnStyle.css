@@ -209,3 +209,16 @@
 	background-color: #ffe579;
 	color: black;
 }
+
+.blue-selection-secondary {
+	background: rgb(94,225,252);
+	background: linear-gradient(90deg, rgba(94,225,252,1) 0%, rgba(125,233,255,1) 10%, rgba(238,238,238,1) 50%, rgba(125,233,255,1) 90%, rgba(94,225,252,1) 100%);
+}
+
+.blue-selection-primary {
+	background-color: rgba(238,238,238, 1);
+}
+
+.blue-selection-hover-primary {
+	background-color: rgba(94,225,252,1);
+}

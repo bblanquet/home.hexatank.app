@@ -6,6 +6,7 @@ import { Factory, FactoryKey } from '../../Factory';
 import { ILayerService } from '../../Services/Layer/ILayerService';
 import { IGameContextService } from '../../Services/GameContext/IGameContextService';
 import { IKeyService } from '../../Services/Key/IKeyService';
+import { IsMobile } from '../../Core/Utils/ToolBox';
 
 export default class CanvasComponent extends Component<{}, {}> {
 	private _gameCanvas: HTMLDivElement;
@@ -32,6 +33,7 @@ export default class CanvasComponent extends Component<{}, {}> {
 		this._stop = false;
 		window.addEventListener('resize', () => this.ResizeTheCanvas());
 		window.addEventListener('DOMContentLoaded', () => this.ResizeTheCanvas());
+		window.addEventListener('scroll', () => this.ResizeTheCanvas());
 		this._gameCanvas.appendChild(this._appService.Publish().view);
 		this.ResizeTheCanvas();
 		this.SetCenter();
@@ -41,6 +43,7 @@ export default class CanvasComponent extends Component<{}, {}> {
 	componentWillUnmount() {
 		window.removeEventListener('resize', () => this.ResizeTheCanvas());
 		window.removeEventListener('DOMContentLoaded', () => this.ResizeTheCanvas());
+		window.removeEventListener('scroll', () => this.ResizeTheCanvas());
 		Factory.Load<IAppService>(this._keyService.GetAppKey()).Collect();
 	}
 
@@ -74,7 +77,7 @@ export default class CanvasComponent extends Component<{}, {}> {
 
 	public ResizeTheCanvas(): void {
 		const viewPort = this._layerService.GetViewport();
-		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+		if (IsMobile()) {
 			this._appService.Publish().renderer.resize(screen.width, screen.height);
 			viewPort.screenWidth = screen.width;
 			viewPort.screenHeight = screen.height;

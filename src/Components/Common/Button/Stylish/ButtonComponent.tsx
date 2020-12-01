@@ -1,7 +1,5 @@
-import { Howl } from 'howler';
 import { h, Component } from 'preact';
 import { AudioContent } from '../../../../Core/Framework/AudioArchiver';
-import { SpriteProvider } from '../../../../Core/Framework/SpriteProvider';
 import { Dictionnary } from '../../../../Core/Utils/Collections/Dictionnary';
 import { Factory, FactoryKey } from '../../../../Factory';
 import { ISoundService } from '../../../../Services/Sound/ISoundService';

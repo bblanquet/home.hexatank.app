@@ -30,6 +30,13 @@ import Redirect from '../../Redirect/RedirectComponent';
 import Icon from '../../Common/Icon/IconComponent';
 import { ISoundService } from '../../../Services/Sound/ISoundService';
 import { AudioContent } from '../../../Core/Framework/AudioArchiver';
+import ActiveLeftBottomCornerButton from './../../Common/Button/Corner/ActiveLeftBottomCornerButton';
+import ActiveRightBottomCornerButton from './../../Common/Button/Corner/ActiveRightBottomCornerButton';
+import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
+import { MultiTankMenuItem } from '../../../Core/Menu/Buttons/MultiTankMenuItem';
+import Visible from '../../Common/Visible/VisibleComponent';
+import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
+import { MultiCellMenuItem } from '../../../Core/Menu/Buttons/MultiCellMenuItem';
 
 export default class GameCanvasComponent extends Component<
 	any,
@@ -216,14 +223,32 @@ export default class GameCanvasComponent extends Component<
 	render() {
 		return (
 			<Redirect>
-				<div style="width=100%">
-					{this.TopLeftInfo()}
-					{this.TopMenuRender()}
-					{this.state.GameStatus === GameStatus.Pending ? '' : this.GetEndMessage()}
-					<CanvasComponent />
-					{this.state.HasMenu && this.state.GameStatus === GameStatus.Pending ? '' : this.LeftMenuRender()}
-					{this.state.HasMenu && this.state.GameStatus === GameStatus.Pending ? this.MenuRender() : ''}
-				</div>
+				{this.TopLeftInfo()}
+				{this.TopMenuRender()}
+				{this.state.GameStatus === GameStatus.Pending ? '' : this.GetEndMessage()}
+				<CanvasComponent />
+				<Visible
+					isVisible={
+						!this.state.HasMenu &&
+						isNullOrUndefined(this.state.Item) &&
+						this.state.GameStatus === GameStatus.Pending
+					}
+				>
+					<ActiveLeftBottomCornerButton
+						isActive={this._gameContext.MultiSelectionContext.IsListeningUnit()}
+						callBack={() => this.SendContext(new MultiTankMenuItem())}
+					/>
+					<ActiveRightBottomCornerButton
+						isActive={this._gameContext.MultiSelectionContext.IsListeningCell()}
+						callBack={() => this.SendContext(new MultiCellMenuItem())}
+					/>
+				</Visible>
+				<Visible isVisible={!(this.state.HasMenu && this.state.GameStatus === GameStatus.Pending)}>
+					{this.LeftMenuRender()}
+				</Visible>
+				<Visible isVisible={this.state.HasMenu && this.state.GameStatus === GameStatus.Pending}>
+					{this.MenuRender()}
+				</Visible>
 			</Redirect>
 		);
 	}
@@ -243,6 +268,12 @@ export default class GameCanvasComponent extends Component<
 				</div>
 			);
 		}
+	}
+
+	private SendContext(item: Item): void {
+		const interaction = this._interactionService.Publish();
+		interaction.Kind = InteractionKind.Up;
+		interaction.OnSelect(item);
 	}
 
 	private HasTimeout(player: Player) {

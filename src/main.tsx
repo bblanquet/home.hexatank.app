@@ -27,7 +27,7 @@ import '@fortawesome/fontawesome-free/js/regular';
 import '@fortawesome/fontawesome-free/js/brands';
 import { GameStatus } from './Core/Framework/GameStatus';
 import { Context } from './Context';
-
+//check
 const Main = (e: any) => {
 	return (
 		<Router>

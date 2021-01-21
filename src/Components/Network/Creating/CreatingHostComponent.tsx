@@ -22,7 +22,7 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 			RoomName: "John's room",
 			PlayerName: 'John'
 		});
-		this._socket = io('https://mottet.xyz:9117');
+		this._socket = io('https://kimchistudio.tech:5000');
 		this.Listen();
 	}
 

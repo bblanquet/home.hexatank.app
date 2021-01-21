@@ -35,7 +35,7 @@ export class NetworkSocket {
 		this._pingObserver = new KindEventObserver(PacketKind.Ping, this.HandlePing.bind(this));
 
 		this.Owner = owner;
-		this.ServerSocket = new ServerSocket('https://mottet.xyz', 9117, this.Owner, room);
+		this.ServerSocket = new ServerSocket('https://kimchistudio.tech:5000', this.Owner, room);
 		this.ServerSocket.OnReceived.On(this._playersObserver);
 		this.ServerSocket.OnReceived.On(this._offerObserver);
 		this.ServerSocket.OnReceived.On(this._resetObserver);

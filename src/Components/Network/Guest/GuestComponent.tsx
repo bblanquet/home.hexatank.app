@@ -12,19 +12,17 @@ import Redirect from '../../Redirect/RedirectComponent';
 import ButtonComponent from '../../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
 import Icon from '../../Common/Icon/IconComponent';
-
-const io = require('socket.io-client');
+import * as io from 'socket.io-client';
 
 export default class GuestComponent extends Component<any, { RoomNames: string[]; PlayerName: string }> {
-	private _socket: any;
-
+	private _socket: SocketIOClient.Socket;
 	constructor() {
 		super();
 		this.setState({
 			RoomNames: new Array<string>(),
 			PlayerName: 'Alice'
 		});
-		this._socket = io('https://mottet.xyz:9117');
+		this._socket = io('https://kimchistudio.tech:5000');
 		this.Listen();
 	}
 

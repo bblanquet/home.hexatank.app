@@ -13,8 +13,8 @@ export class ServerSocket {
 	private _roomKey: string;
 	public OnReceived: KindEvent<PacketKind, INetworkMessage>;
 
-	constructor(url: string, port: number, sender: string, room: string) {
-		this._address = `${url}:${port}`;
+	constructor(url: string, sender: string, room: string) {
+		this._address = `${url}`;
 		this.Socket = io(this._address);
 		this._name = sender;
 		this._room = room;

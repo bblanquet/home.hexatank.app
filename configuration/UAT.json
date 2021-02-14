@@ -1,0 +1,15 @@
+{
+	"root": "/",
+	"keys": [
+		{
+			"search": "{{p2pserver}}",
+			"replace": "https://kimchistudio.tech:5000",
+			"flags": "g"
+		},
+		{
+			"search": "{{postension}}",
+			"replace": "/Res/",
+			"flags": "g"
+		}
+	]
+}

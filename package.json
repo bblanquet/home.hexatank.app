@@ -1,12 +1,11 @@
 {
 	"name": "program_6",
-	"version": "1.0.0",
+	"version": "0.0.1",
 	"main": "index.js",
 	"scripts": {
-		"build": "webpack --env.NODE_ENV=pc",
-		"mottet": "webpack --env.NODE_ENV=mottet",
-		"mobile": "webpack --env.NODE_ENV=mobile",
-		"start": "webpack-dev-server --watch --watch-poll --env.NODE_ENV=pc",
+		"build": "webpack --env.NODE_ENV=UAT",
+		"android": "webpack --env.NODE_ENV=Android",
+		"start": "webpack-dev-server --watch --watch-poll --env.NODE_ENV=UAT",
 		"test": "mocha -r ts-node/register test/**/*.spec.ts"
 	},
 	"author": "BB",

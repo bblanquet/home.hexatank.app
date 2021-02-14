@@ -119,7 +119,7 @@ export class SpriteProvider {
 	private static _root: string = null;
 	public static Root(): string {
 		if (this._root === null) {
-			this._root = `{{}}`;
+			this._root = `{{postension}}`;
 		}
 		return this._root;
 	}

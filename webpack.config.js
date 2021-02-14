@@ -4,26 +4,18 @@ const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 var distDir = path.resolve(__dirname, 'dist');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const fs = require('fs');
 
-var getPostension = function(env) {
-	if (env.NODE_ENV === 'mottet') {
-		return '/BB/Res/';
-	} else if (env.NODE_ENV === 'mobile') {
-		return '/android_asset/www/Res/';
-	} else {
-		return '/Res/';
+var getVariables = function(env) {
+	if (env === 'Android') {
+		return fs.readFileSync('./configuration/Android.json');
 	}
-};
-
-var GetRoot = function(env) {
-	if (env.NODE_ENV === 'mottet') {
-		return './';
-	} else {
-		return '/';
-	}
+	return fs.readFileSync('./configuration/UAT.json');
 };
 
 module.exports = (env) => {
+	var variables = JSON.parse(getVariables(env));
+	console.log(JSON.stringify(variables));
 	// Entry point : first executed file
 	// This may be an array. It will result in many output files.
 	return {
@@ -37,7 +29,7 @@ module.exports = (env) => {
 		output: {
 			path: distDir,
 			filename: 'main.js',
-			publicPath: GetRoot(env)
+			publicPath: variables.root
 		},
 
 		optimization: {
@@ -74,12 +66,10 @@ module.exports = (env) => {
 					]
 				},
 				{
-					test: /\.(scss|css|ts)$/,
+					test: /\.(scss|css|ts|tsx)$/,
 					loader: 'string-replace-loader',
 					options: {
-						search: '{{}}',
-						replace: getPostension(env),
-						flags: 'g'
+						multiple: variables.keys
 					}
 				}
 			]

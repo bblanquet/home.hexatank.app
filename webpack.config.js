@@ -9,13 +9,16 @@ const fs = require('fs');
 var getVariables = function(env) {
 	if (env === 'Android') {
 		return fs.readFileSync('./configuration/Android.json');
+	} else if (env === 'DEV') {
+		return fs.readFileSync('./configuration/DEV.json');
 	}
 	return fs.readFileSync('./configuration/UAT.json');
 };
 
 module.exports = (env) => {
-	var variables = JSON.parse(getVariables(env));
-	console.log(JSON.stringify(variables));
+	var variables = JSON.parse(getVariables(env.NODE_ENV));
+	console.log('ENV: ' + env.NODE_ENV);
+	console.log('variables: ' + JSON.stringify(variables));
 	// Entry point : first executed file
 	// This may be an array. It will result in many output files.
 	return {

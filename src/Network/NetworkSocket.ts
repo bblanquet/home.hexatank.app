@@ -35,7 +35,7 @@ export class NetworkSocket {
 		this._pingObserver = new KindEventObserver(PacketKind.Ping, this.HandlePing.bind(this));
 
 		this.Owner = owner;
-		this.ServerSocket = new ServerSocket('{{p2pserver}}', this.Owner, room);
+		this.ServerSocket = new ServerSocket('{{p2pserver}}', '{{p2psubfolder}}', this.Owner, room);
 		this.ServerSocket.OnReceived.On(this._playersObserver);
 		this.ServerSocket.OnReceived.On(this._offerObserver);
 		this.ServerSocket.OnReceived.On(this._resetObserver);

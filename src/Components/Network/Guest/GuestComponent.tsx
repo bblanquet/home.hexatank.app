@@ -22,7 +22,7 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 			RoomNames: new Array<string>(),
 			PlayerName: 'Alice'
 		});
-		this._socket = io('{{p2pserver}}');
+		this._socket = io('{{p2pserver}}', { path: '{{p2psubfolder}}' });
 		this.Listen();
 	}
 

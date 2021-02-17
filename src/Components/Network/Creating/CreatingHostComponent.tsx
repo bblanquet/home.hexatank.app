@@ -22,7 +22,7 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 			RoomName: "John's room",
 			PlayerName: 'John'
 		});
-		this._socket = io('{{p2pserver}}');
+		this._socket = io('{{p2pserver}}', { path: '{{p2psubfolder}}' });
 		this.Listen();
 	}
 

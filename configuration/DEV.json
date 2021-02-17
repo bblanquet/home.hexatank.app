@@ -7,6 +7,11 @@
 			"flags": "g"
 		},
 		{
+			"search": "{{p2psubfolder}}",
+			"replace": "",
+			"flags": "g"
+		},
+		{
 			"search": "{{postension}}",
 			"replace": "/Res/",
 			"flags": "g"

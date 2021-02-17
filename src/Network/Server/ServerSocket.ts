@@ -3,7 +3,7 @@ import { INetworkMessage } from '../Message/INetworkMessage';
 import { PacketKind } from '../Message/PacketKind';
 import { NetworkMessage } from '../Message/NetworkMessage';
 import { KindEvent } from '../../Core/Utils/Events/KindEvent';
-const io = require('socket.io-client');
+import * as io from 'socket.io-client';
 
 export class ServerSocket {
 	private Socket: any;
@@ -13,9 +13,9 @@ export class ServerSocket {
 	private _roomKey: string;
 	public OnReceived: KindEvent<PacketKind, INetworkMessage>;
 
-	constructor(url: string, sender: string, room: string) {
+	constructor(url: string, subfolder: string, sender: string, room: string) {
 		this._address = `${url}`;
-		this.Socket = io(this._address);
+		this.Socket = io(this._address, { path: subfolder });
 		this._name = sender;
 		this._room = room;
 		this._roomKey = '';

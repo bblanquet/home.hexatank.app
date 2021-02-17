@@ -6,18 +6,11 @@ var distDir = path.resolve(__dirname, 'dist');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const fs = require('fs');
 
-var getVariables = function(env) {
-	if (env === 'Android') {
-		return fs.readFileSync('./configuration/Android.json');
-	} else if (env === 'DEV') {
-		return fs.readFileSync('./configuration/DEV.json');
-	}
-	return fs.readFileSync('./configuration/UAT.json');
-};
-
 module.exports = (env) => {
-	var variables = JSON.parse(getVariables(env.NODE_ENV));
+	var vpath = './configuration/' + env.NODE_ENV + '.json';
 	console.log('ENV: ' + env.NODE_ENV);
+	console.log('ENV PATH: ' + vpath);
+	var variables = JSON.parse(fs.readFileSync(vpath));
 	console.log('variables: ' + JSON.stringify(variables));
 	// Entry point : first executed file
 	// This may be an array. It will result in many output files.

@@ -3,7 +3,12 @@
 	"keys": [
 		{
 			"search": "{{p2pserver}}",
-			"replace": "https://kimchistudio.tech:5000",
+			"replace": "https://kimchistudio.tech",
+			"flags": "g"
+		},
+		{
+			"search": "{{p2psubfolder}}",
+			"replace": "/p2pserver",
 			"flags": "g"
 		},
 		{

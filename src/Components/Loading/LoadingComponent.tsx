@@ -43,7 +43,7 @@ export default class LoadingComponent extends Component<any, { percentage: numbe
 						callBack={() => {
 							this.ToHome();
 						}}
-						color={ColorKind.Red}
+						color={ColorKind.Yellow}
 					>
 						<Icon Value="fas fa-dungeon" /> Continue
 					</ButtonComponent>

@@ -13,8 +13,8 @@ import { ThunderMenuItem } from '../../../../Core/Menu/Buttons/ThunderMenuItem';
 import { Cell } from '../../../../Core/Items/Cell/Cell';
 import { PoisonMenuItem } from '../../../../Core/Menu/Buttons/PoisonMenuItem';
 import { CancelMenuItem } from '../../../../Core/Menu/Buttons/CancelMenuItem';
-import ExpCircularComponent from '../../../Common/Circular/CircularComponent';
-import SmDarkShopBtnComponent from '../../../Common/Button/Standard/SmDarkShopBtnComponent';
+import CircularV2Component from '../../../Common/CircularV2/CircularV2';
+import LightDarkBtn from '../../../Common/Button/Standard/LightDarkBtn';
 import { Point } from '../../../../Core/Utils/Geometry/Point';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
 import { Factory, FactoryKey } from '../../../../Factory';
@@ -27,56 +27,59 @@ export default class CellMenuComponent extends Component<{ Item: Item; GameConte
 	}
 	render() {
 		return (
-			<ExpCircularComponent OnCancel={() => this.Cancel()} isDark={true}>
-				<SmDarkShopBtnComponent
-					CallBack={() => this.SendContext(new InfluenceMenuItem())}
-					Amount={`${(this.props.GameContext.GetMainHq().GetReactorsCount() + 1) * GameSettings.FieldPrice}`}
-					Icon="fill-influence"
-					Point={new Point(0, 0)}
-				/>
-				<SmDarkShopBtnComponent
-					CallBack={() => this.SendContext(new ThunderMenuItem())}
-					Amount={`${GameSettings.FieldPrice}`}
-					Icon="fill-thunder"
-					Point={new Point(0, 0)}
-				/>
-				<SmDarkShopBtnComponent
-					CallBack={() => this.SendContext(new ShieldMenuItem())}
-					Amount={`${GameSettings.FieldPrice}`}
-					Icon="fill-shield"
-					Point={new Point(0, 0)}
-				/>
-				<SmDarkShopBtnComponent
-					CallBack={() => this.SendContext(new MoneyMenuItem())}
-					Amount={`${GameSettings.FieldPrice}`}
-					Icon="fill-money"
-					Point={new Point(0, 0)}
-				/>
-				<SmDarkShopBtnComponent
-					CallBack={() => this.SendContext(new AttackMenuItem())}
-					Amount={`${GameSettings.FieldPrice}`}
-					Icon="fill-power"
-					Point={new Point(0, 0)}
-				/>
-				<SmDarkShopBtnComponent
-					CallBack={() => this.SendContext(new PoisonMenuItem())}
-					Amount={`${GameSettings.FieldPrice}`}
-					Icon="fill-poison"
-					Point={new Point(0, 0)}
-				/>
-				<SmDarkShopBtnComponent
-					CallBack={() => this.SendContext(new SpeedFieldMenuItem())}
-					Amount={`${GameSettings.FieldPrice}`}
-					Icon="fill-speed"
-					Point={new Point(0, 0)}
-				/>
-				<SmDarkShopBtnComponent
-					CallBack={() => this.SendContext(new HealMenuItem())}
-					Amount={`${GameSettings.FieldPrice}`}
-					Icon="fill-medic"
-					Point={new Point(0, 0)}
-				/>
-			</ExpCircularComponent>
+			<div class="circle-menu">
+				<CircularV2Component OnCancel={() => this.Cancel()}>
+					<LightDarkBtn
+						CallBack={() => this.SendContext(new InfluenceMenuItem())}
+						Amount={`${(this.props.GameContext.GetMainHq().GetReactorsCount() + 1) *
+							GameSettings.FieldPrice}`}
+						Icon="fill-influence"
+						Point={new Point(0, 0)}
+					/>
+					<LightDarkBtn
+						CallBack={() => this.SendContext(new ThunderMenuItem())}
+						Amount={`${GameSettings.FieldPrice}`}
+						Icon="fill-thunder"
+						Point={new Point(0, 0)}
+					/>
+					<LightDarkBtn
+						CallBack={() => this.SendContext(new ShieldMenuItem())}
+						Amount={`${GameSettings.FieldPrice}`}
+						Icon="fill-shield"
+						Point={new Point(0, 0)}
+					/>
+					<LightDarkBtn
+						CallBack={() => this.SendContext(new MoneyMenuItem())}
+						Amount={`${GameSettings.FieldPrice}`}
+						Icon="fill-money"
+						Point={new Point(0, 0)}
+					/>
+					<LightDarkBtn
+						CallBack={() => this.SendContext(new AttackMenuItem())}
+						Amount={`${GameSettings.FieldPrice}`}
+						Icon="fill-power"
+						Point={new Point(0, 0)}
+					/>
+					<LightDarkBtn
+						CallBack={() => this.SendContext(new PoisonMenuItem())}
+						Amount={`${GameSettings.FieldPrice}`}
+						Icon="fill-poison"
+						Point={new Point(0, 0)}
+					/>
+					<LightDarkBtn
+						CallBack={() => this.SendContext(new SpeedFieldMenuItem())}
+						Amount={`${GameSettings.FieldPrice}`}
+						Icon="fill-speed"
+						Point={new Point(0, 0)}
+					/>
+					<LightDarkBtn
+						CallBack={() => this.SendContext(new HealMenuItem())}
+						Amount={`${GameSettings.FieldPrice}`}
+						Icon="fill-medic"
+						Point={new Point(0, 0)}
+					/>
+				</CircularV2Component>
+			</div>
 		);
 	}
 

@@ -3,8 +3,8 @@ import { Item } from '../../../../Core/Items/Item';
 import { MultiTankMenuItem } from '../../../../Core/Menu/Buttons/MultiTankMenuItem';
 import { MultiCellMenuItem } from '../../../../Core/Menu/Buttons/MultiCellMenuItem';
 import { InteractionKind } from '../../../../Core/Interaction/IInteractionContext';
-import ExpCircularComponent from '../../../Common/Circular/CircularComponent';
-import WhiteBtn from '../../../Common/Button/Standard/SmWhiteBtnComponent';
+import CircularV2Component from '../../../Common/CircularV2/CircularV2';
+import LightWhiteBtn from '../../../Common/Button/Standard/LightWhiteBtn';
 import { Point } from '../../../../Core/Utils/Geometry/Point';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
 import { Factory, FactoryKey } from '../../../../Factory';
@@ -17,18 +17,20 @@ export default class MultiMenuComponent extends Component<{ Item: Item }, {}> {
 	}
 	render() {
 		return (
-			<ExpCircularComponent OnCancel={() => this.Cancel()} isDark={false}>
-				<WhiteBtn
-					CallBack={() => this.SendContext(new MultiTankMenuItem())}
-					icon={'fill-multi-tank'}
-					Point={new Point(0, 0)}
-				/>
-				<WhiteBtn
-					CallBack={() => this.SendContext(new MultiCellMenuItem())}
-					icon={'fill-multi-cell'}
-					Point={new Point(0, 0)}
-				/>
-			</ExpCircularComponent>
+			<div class="circle-menu">
+				<CircularV2Component OnCancel={() => this.Cancel()}>
+					<LightWhiteBtn
+						CallBack={() => this.SendContext(new MultiTankMenuItem())}
+						Icon={'fill-multi-tank'}
+						Point={new Point(0, 0)}
+					/>
+					<LightWhiteBtn
+						CallBack={() => this.SendContext(new MultiCellMenuItem())}
+						Icon={'fill-multi-cell'}
+						Point={new Point(0, 0)}
+					/>
+				</CircularV2Component>
+			</div>
 		);
 	}
 

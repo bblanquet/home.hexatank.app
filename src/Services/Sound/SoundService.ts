@@ -8,13 +8,13 @@ import { Howl } from 'howler';
 export class SoundService implements ISoundService {
 	private _sounds: Dictionnary<Howl>;
 	private _soundManager: GameSoundManager;
-	private _isMute: boolean = false;
+	private _isMute: boolean = true;
 	private _playingSounds: Dictionnary<number>;
 
 	constructor() {
 		this.Reload();
 		this._playingSounds = new Dictionnary<number>();
-		this._isMute = false;
+		this._isMute = true;
 	}
 	Reload(): void {
 		this._sounds = new SoundProvider().GetContent();

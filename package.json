@@ -5,9 +5,9 @@
 	"scripts": {
 		"build": "webpack --env.NODE_ENV=UAT",
 		"android": "webpack --env.NODE_ENV=Android",
-		"dev": "webpack-dev-server --watch --watch-poll --port 8081 --env.NODE_ENV=DEV",
-		"dev2": "webpack-dev-server --watch --watch-poll --port 8081 --env.NODE_ENV=DEV2",
-		"start": "webpack-dev-server --watch --watch-poll --port 8081 --env.NODE_ENV=UAT",
+		"dev": "webpack-dev-server --watch --watch-poll --port 8080 --env.NODE_ENV=DEV",
+		"dev2": "webpack-dev-server --watch --watch-poll --port 8080 --env.NODE_ENV=DEV2",
+		"start": "webpack-dev-server --watch --watch-poll --port 8080 --env.NODE_ENV=UAT",
 		"test": "mocha -r ts-node/register test/**/*.spec.ts"
 	},
 	"author": "BB",

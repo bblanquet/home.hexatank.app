@@ -88,7 +88,7 @@
 
 .fill-power {
 	overflow: hidden;
-	background-size: cover;
+	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
 	background-image: url('{{postension}}menu/powerMenu.svg');
@@ -691,18 +691,21 @@
 
 body:after {
 	content: url('{{postension}}components/program6Logo.svg') url('{{postension}}components/program6LogoBackground.svg')
-		url('{{postension}}option.svg') url('{{postension}}nature/diamondStone.svg') url('{{postension}}nature/diamondStone.svg')
-		url('{{postension}}menu/SearchMoneyButton.svg') url('{{postension}}menu/AbortMenu.svg') url('{{postension}}menu/cancelButton.svg')
-		url('{{postension}}menu/patrolButton.svg') url('{{postension}}menu/targetButton.svg') url('{{postension}}menu/activeOrder.svg')
-		url('{{postension}}components/redArmyLeaderMouth3.svg') url('{{postension}}components/redArmyLeaderMouth2.svg')
-		url('{{postension}}components/redArmyLeaderMouth1.svg') url('{{postension}}components/redArmyLeaderBlink.svg')
-		url('{{postension}}components/redArmyLeaderEyes.svg') url('{{postension}}components/redArmyLeader.svg')
-		url('{{postension}}components/blueArmyLeaderMouth3.svg') url('{{postension}}components/blueArmyLeaderMouth2.svg')
+		url('{{postension}}option.svg') url('{{postension}}nature/diamondStone.svg')
+		url('{{postension}}nature/diamondStone.svg') url('{{postension}}menu/SearchMoneyButton.svg')
+		url('{{postension}}menu/AbortMenu.svg') url('{{postension}}menu/cancelButton.svg')
+		url('{{postension}}menu/patrolButton.svg') url('{{postension}}menu/targetButton.svg')
+		url('{{postension}}menu/activeOrder.svg') url('{{postension}}components/redArmyLeaderMouth3.svg')
+		url('{{postension}}components/redArmyLeaderMouth2.svg') url('{{postension}}components/redArmyLeaderMouth1.svg')
+		url('{{postension}}components/redArmyLeaderBlink.svg') url('{{postension}}components/redArmyLeaderEyes.svg')
+		url('{{postension}}components/redArmyLeader.svg') url('{{postension}}components/blueArmyLeaderMouth3.svg')
+		url('{{postension}}components/blueArmyLeaderMouth2.svg')
 		url('{{postension}}components/blueArmyLeaderMouth1.svg') url('{{postension}}components/blueArmyLeaderBlink.svg')
 		url('{{postension}}components/blueArmyLeaderEyes.svg') url('{{postension}}components/blueArmyLeader.svg')
-		url('{{postension}}menu/tankButton.svg') url('{{postension}}menu/truckButton.svg') url('{{postension}}menu/flagMenu.svg')
-		url('{{postension}}menu/activate.svg') url('{{postension}}menu/healEnergyMenu.svg') url('{{postension}}menu/powerEnergyMenu.svg')
-		url('{{postension}}menu/fastEnergyButton.svg') url('{{postension}}menu/plusButton.svg') url('{{postension}}menu/minusButton.svg')
-		url('{{postension}}menu/energyButton.svg');
+		url('{{postension}}menu/tankButton.svg') url('{{postension}}menu/truckButton.svg')
+		url('{{postension}}menu/flagMenu.svg') url('{{postension}}menu/activate.svg')
+		url('{{postension}}menu/healEnergyMenu.svg') url('{{postension}}menu/powerEnergyMenu.svg')
+		url('{{postension}}menu/fastEnergyButton.svg') url('{{postension}}menu/plusButton.svg')
+		url('{{postension}}menu/minusButton.svg') url('{{postension}}menu/energyButton.svg');
 	display: none;
 }

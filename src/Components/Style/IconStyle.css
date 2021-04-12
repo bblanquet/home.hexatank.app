@@ -505,6 +505,14 @@
 	background-image: url('{{postension}}menu/cancelButton.svg');
 }
 
+.fill-white-cancel {
+	overflow: hidden;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{postension}}menu/whiteCancelButton.svg');
+}
+
 .fill-abort {
 	overflow: hidden;
 	background-size: contain;

@@ -53,14 +53,13 @@ export default class CircularV2Component extends Component<{ OnCancel: () => voi
 					})}
 				</div>
 				<div
-					href="#"
 					class="center"
 					onClick={(e: any) => {
 						this.props.OnCancel();
 					}}
 				>
 					<div class="circleContainer">
-						<Icon Value={'fas fa-times fa-2x'} />
+						<div class="fill-white-cancel max-width standard-space" />
 					</div>
 				</div>
 			</div>

@@ -1,9 +1,7 @@
 FROM node:12
+RUN npm install -g http-server
 WORKDIR /app
-COPY *.json ./
-COPY webpack.config.js ./
-RUN npm install
-COPY . .
-ENV PORT=8000
-EXPOSE 8000
-CMD [ "npm","start" ]
+COPY /dist/ .
+ENV PORT=8080
+EXPOSE 8080
+CMD http-server -a 0.0.0.0 -p 8080

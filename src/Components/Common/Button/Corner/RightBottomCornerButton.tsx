@@ -1,7 +1,6 @@
 import { Component, h } from 'preact';
-
 export default class RightBottomCornerButton extends Component<
-	{ callBack: () => void; isMute?: boolean; isSelected: boolean },
+	{ callBack: () => void; isMute?: boolean; isSelected: boolean; logo: string },
 	any
 > {
 	render() {
@@ -14,7 +13,7 @@ export default class RightBottomCornerButton extends Component<
 							: 'blue-selection-primary'}  fit-content`}
 						onClick={this.props.callBack}
 					>
-						<div class={`fill-mult-cell `} />
+						<div class={this.props.logo} />
 					</div>
 				</div>
 			</div>

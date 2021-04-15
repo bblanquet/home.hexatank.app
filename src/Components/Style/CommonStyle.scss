@@ -601,12 +601,24 @@ hr {
 	transform: skew(8deg) rotate(3deg);
 }
 
-.custom-right-corner-sm-btn-layout-3 {
-	padding: 5px 0px 0px 5px;
+.right-bottom-menu {
 	position: fixed;
 	bottom: -2px;
 	right: -2px;
-	border-top-left-radius: 18px;
+	height: fit-content;
+	width: fit-content;
+	padding-left: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-top-left-radius: 22px;
+	border-bottom-left-radius: 22px;
+	background-color: #343a40;
+}
+
+.custom-right-corner-sm-btn-layout-3 {
+	padding: 3px 0px 3px 3px;
+	border-top-left-radius: 22px;
+	border-bottom-left-radius: 22px;
 	background: rgb(198, 198, 198);
 	background: linear-gradient(
 		90deg,
@@ -622,7 +634,8 @@ hr {
 .custom-right-corner-sm-btn-layout-2 {
 	border: #6b5e39 solid 1px;
 	border-top-left-radius: 18px;
-	padding: 3px 3px 0px 3px;
+	border-bottom-left-radius: 18px;
+	padding: 3px 0px 3px 0px;
 }
 
 .custom-right-corner-btn-layout-1 {
@@ -632,9 +645,11 @@ hr {
 	font-size: large;
 	text-align: center;
 	border-top-left-radius: 18px;
+	border-bottom-left-radius: 18px;
 	padding-left: 10px;
 	padding-right: 10px;
 	padding-top: 3px;
+	padding-bottom: 3px;
 }
 
 .custom-left-corner-sm-btn-layout-3 {

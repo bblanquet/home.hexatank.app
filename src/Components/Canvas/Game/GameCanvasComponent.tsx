@@ -234,14 +234,18 @@ export default class GameCanvasComponent extends Component<
 						this.state.GameStatus === GameStatus.Pending
 					}
 				>
-					<ActiveLeftBottomCornerButton
-						isActive={this._gameContext.MultiSelectionContext.IsListeningUnit()}
-						callBack={() => this.SendContext(new MultiTankMenuItem())}
-					/>
-					<ActiveRightBottomCornerButton
-						isActive={this._gameContext.MultiSelectionContext.IsListeningCell()}
-						callBack={() => this.SendContext(new MultiCellMenuItem())}
-					/>
+					<div class="right-bottom-menu">
+						<ActiveRightBottomCornerButton
+							isActive={this._gameContext.MultiSelectionContext.IsListeningUnit()}
+							callBack={() => this.SendContext(new MultiTankMenuItem())}
+							logo="fill-tank-multi-cell"
+						/>
+						<ActiveRightBottomCornerButton
+							isActive={this._gameContext.MultiSelectionContext.IsListeningCell()}
+							callBack={() => this.SendContext(new MultiCellMenuItem())}
+							logo="fill-mult-cell"
+						/>
+					</div>
 				</Visible>
 				<Visible isVisible={!(this.state.HasMenu && this.state.GameStatus === GameStatus.Pending)}>
 					{this.LeftMenuRender()}

@@ -108,17 +108,19 @@ export class GameSoundManager {
 		}
 	}
 	HandleOrder(src: Vehicle, order: IOrder): void {
-		const voices = [
-			AudioContent.ayaya,
-			AudioContent.copyThat,
-			AudioContent.engage,
-			AudioContent.fireAtWills,
-			AudioContent.sirYesSir,
-			AudioContent.transmissionReceived
-		];
-		if (src.GetCurrentCell().IsVisible()) {
-			var index = Math.round(Math.random() * (voices.length - 1));
-			this.Play(voices[index], 0.05);
+		if (!src.IsEnemy(this._gameContext.GetMainHq())) {
+			const voices = [
+				AudioContent.ayaya,
+				AudioContent.copyThat,
+				AudioContent.engage,
+				AudioContent.fireAtWills,
+				AudioContent.sirYesSir,
+				AudioContent.transmissionReceived
+			];
+			if (src.GetCurrentCell().IsVisible()) {
+				var index = Math.round(Math.random() * (voices.length - 1));
+				this.Play(voices[index], 0.05);
+			}
 		}
 	}
 

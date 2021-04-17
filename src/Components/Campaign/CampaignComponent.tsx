@@ -11,8 +11,13 @@ import Icon from '../Common/Icon/IconComponent';
 import { CampaignKind } from '../../Services/Campaign/CampaignKind';
 import { FaceComponent } from './FaceComponent';
 import NavbarComponent from '../Common/Navbar/NavbarComponent';
+import Visible from '../Common/Visible/VisibleComponent';
+import { Sentences } from './Sentences';
 
-export default class CampaignComponent extends Component<any, any> {
+export default class CampaignComponent extends Component<
+	any,
+	{ HasBubble: boolean; level: number; Sentence: string; CurrentSentence: string }
+> {
 	private _campaignService: ICampaignService;
 
 	constructor(props: any) {
@@ -32,34 +37,60 @@ export default class CampaignComponent extends Component<any, any> {
 								face={'fill-redArmy'}
 							/>
 						</div>
-						<div class="container-center">
+						<Visible isVisible={this.state.HasBubble}>
+							<div class="arrow-up" />
+							<p class="bubble">{this.state.CurrentSentence}</p>
 							<div class="container-center-horizontal">
 								<ButtonComponent
 									callBack={() => {
-										this.BlueCampaign();
+										this.setState({
+											HasBubble: !this.state.HasBubble
+										});
 									}}
 									color={ColorKind.Black}
 								>
-									<Icon Value="fas fa-long-arrow-alt-right" />
+									<Icon Value="fas fa-undo-alt" /> Back
+								</ButtonComponent>
+								<ButtonComponent
+									callBack={() => {
+										this.Start(this.state.level);
+									}}
+									color={ColorKind.Red}
+								>
+									<Icon Value="fas fa-fist-raised" /> Fight
 								</ButtonComponent>
 							</div>
-							<div class="d-flex flex-wrap justify-content-center">
-								{this._campaignService.GetButtons(CampaignKind.red).map((isPossible, index) => {
-									if (isPossible) {
-										return this.GetButton(index + 1);
-									} else {
-										return <LockButton />;
-									}
-								})}
-							</div>
-							<ButtonComponent
-								callBack={() => {
-									this.Back();
-								}}
-								color={ColorKind.Black}
-							>
-								<Icon Value="fas fa-undo-alt" /> Back
-							</ButtonComponent>
+						</Visible>
+						<div class="container-center">
+							<Visible isVisible={!this.state.HasBubble}>
+								<div class="container-center-horizontal">
+									<ButtonComponent
+										callBack={() => {
+											this.BlueCampaign();
+										}}
+										color={ColorKind.Black}
+									>
+										<Icon Value="fas fa-long-arrow-alt-right" />
+									</ButtonComponent>
+								</div>
+								<div class="d-flex flex-wrap justify-content-center">
+									{this._campaignService.GetButtons(CampaignKind.red).map((isPossible, index) => {
+										if (isPossible) {
+											return this.GetButton(index + 1);
+										} else {
+											return <LockButton />;
+										}
+									})}
+								</div>
+								<ButtonComponent
+									callBack={() => {
+										this.Back();
+									}}
+									color={ColorKind.Black}
+								>
+									<Icon Value="fas fa-undo-alt" /> Back
+								</ButtonComponent>
+							</Visible>
 						</div>
 					</div>
 				</NavbarComponent>
@@ -75,11 +106,33 @@ export default class CampaignComponent extends Component<any, any> {
 		route('/BlueCampaignComponent', true);
 	}
 
+	private TextAnimation(): void {
+		if (this.state.CurrentSentence.length < this.state.Sentence.length) {
+			this.setState({
+				CurrentSentence: this.state.Sentence.substring(0, this.state.CurrentSentence.length + 1)
+			});
+		}
+
+		if (this.state.CurrentSentence.length < this.state.Sentence.length) {
+			setTimeout(() => {
+				this.TextAnimation();
+			}, 50);
+		}
+	}
+
 	private GetButton(index: number) {
 		return (
 			<ButtonComponent
 				callBack={() => {
-					this.Start(index);
+					this.setState({
+						HasBubble: !this.state.HasBubble,
+						level: index,
+						Sentence: Sentences[Math.round((Sentences.length - 1) * Math.random())],
+						CurrentSentence: ''
+					});
+					setTimeout(() => {
+						this.TextAnimation();
+					}, 100);
 				}}
 				color={ColorKind.Red}
 			>

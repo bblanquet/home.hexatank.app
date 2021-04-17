@@ -603,7 +603,7 @@ hr {
 
 .right-bottom-menu {
 	position: fixed;
-	bottom: -2px;
+	bottom: 10px;
 	right: -2px;
 	height: fit-content;
 	width: fit-content;
@@ -706,4 +706,25 @@ hr {
 	height: 50px;
 	background-repeat: no-repeat;
 	background-image: url('{{postension}}menu/smartMenu/multiTank.svg');
+}
+
+p.bubble {
+	position: relative;
+	text-align: center;
+	line-height: 1.4em;
+	margin-top: -1px;
+	background-color: #fff;
+	border-radius: 30px;
+	font-family: sans-serif;
+	padding: 15px;
+	font-size: large;
+}
+.arrow-up {
+	width: 0;
+	height: 0;
+	margin-left: auto;
+	margin-right: auto;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-bottom: 10px solid #fff;
 }

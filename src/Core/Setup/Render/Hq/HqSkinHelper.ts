@@ -3,6 +3,17 @@ import { Archive } from '../../../Framework/ResourceArchiver';
 export class HqSkinHelper {
 	private _skins: ItemSkin[] = [
 		new ItemSkin(
+			Archive.team.yellow.tank,
+			Archive.team.yellow.turrel,
+			Archive.team.yellow.truck,
+			Archive.team.yellow.hq,
+			Archive.building.hq.yellow.field,
+			Archive.team.yellow.area,
+			Archive.bonus.light.yellow,
+			Archive.bonus.light.yellow,
+			'#C5B798'
+		),
+		new ItemSkin(
 			Archive.team.red.tank,
 			Archive.team.red.turrel,
 			Archive.team.red.truck,
@@ -34,17 +45,6 @@ export class HqSkinHelper {
 			Archive.bonus.light.purple,
 			Archive.bonus.reactor.purple,
 			'#51385E'
-		),
-		new ItemSkin(
-			Archive.team.yellow.tank,
-			Archive.team.yellow.turrel,
-			Archive.team.yellow.truck,
-			Archive.team.yellow.hq,
-			Archive.building.hq.yellow.field,
-			Archive.team.yellow.area,
-			Archive.bonus.light.yellow,
-			Archive.bonus.light.yellow,
-			'#C5B798'
 		)
 	];
 

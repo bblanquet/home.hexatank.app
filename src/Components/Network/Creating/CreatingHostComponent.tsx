@@ -12,6 +12,8 @@ import Redirect from '../../Redirect/RedirectComponent';
 import ButtonComponent from '../../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
 import Icon from '../../Common/Icon/IconComponent';
+import SmButtonComponent from '../../Common/Button/Stylish/SmButtonComponent';
+import { Usernames } from '../Names';
 
 export default class CreatingHostComponent extends Component<any, CreatingHostState> {
 	private _socket: SocketIOClient.Socket;
@@ -36,14 +38,29 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 		return (
 			<Redirect>
 				<PanelComponent>
-					<TextComponent
-						value={this.state.RoomName}
-						label={'Room name'}
-						isEditable={true}
-						onInput={(e: any) => {
-							this.setState({ RoomName: e.target.value });
-						}}
-					/>
+					<div class="container-center-horizontal">
+						<TextComponent
+							value={this.state.RoomName}
+							label={'Room name'}
+							isEditable={true}
+							onInput={(e: any) => {
+								this.setState({ RoomName: e.target.value });
+							}}
+						/>
+						<div class="space-out" />
+						<SmButtonComponent
+							callBack={() => {
+								const username = Usernames[Math.round(Math.random() * Usernames.length - 1)];
+								this.setState({
+									PlayerName: username,
+									RoomName: `${username}'s room`
+								});
+							}}
+							color={ColorKind.Blue}
+						>
+							<Icon Value="fas fa-random" />
+						</SmButtonComponent>
+					</div>
 					<TextComponent
 						value={this.state.PlayerName}
 						label={'Playername'}

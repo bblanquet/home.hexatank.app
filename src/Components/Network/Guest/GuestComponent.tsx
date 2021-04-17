@@ -12,6 +12,8 @@ import Redirect from '../../Redirect/RedirectComponent';
 import ButtonComponent from '../../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
 import Icon from '../../Common/Icon/IconComponent';
+import { Usernames } from '../Names';
+
 import * as io from 'socket.io-client';
 
 export default class GuestComponent extends Component<any, { RoomNames: string[]; PlayerName: string }> {
@@ -38,14 +40,27 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 		return (
 			<Redirect>
 				<PanelComponent>
-					<TextComponent
-						value={this.state.PlayerName}
-						label={'Playername'}
-						isEditable={true}
-						onInput={(e: any) => {
-							this.setState({ PlayerName: e.target.value });
-						}}
-					/>
+					<div class="container-center-horizontal">
+						<TextComponent
+							value={this.state.PlayerName}
+							label={'Playername'}
+							isEditable={true}
+							onInput={(e: any) => {
+								this.setState({ PlayerName: e.target.value });
+							}}
+						/>
+						<div class="space-out" />
+						<SmButtonComponent
+							callBack={() => {
+								this.setState({
+									PlayerName: Usernames[Math.round(Math.random() * Usernames.length - 1)]
+								});
+							}}
+							color={ColorKind.Blue}
+						>
+							<Icon Value="fas fa-random" />
+						</SmButtonComponent>
+					</div>
 					<GridComponent
 						left={this.Header()}
 						right={this.state.RoomNames.length === 0 ? this.EmptyGridContent() : this.GridContent()}

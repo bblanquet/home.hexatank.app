@@ -1,3 +1,4 @@
+import { IOrder } from './../../Ia/Order/IOrder';
 import { Factory, FactoryKey } from './../../../Factory';
 import { ISoundService } from './../../../Services/Sound/ISoundService';
 import { MapEnv } from './../../Setup/Generator/MapEnv';
@@ -96,6 +97,7 @@ export class GameSoundManager {
 
 		vehicule.OnNextCellChanged.On(this.HandleMusic.bind(this));
 		vehicule.OnNextCellChanged.On(this.HandleMusic.bind(this));
+		vehicule.OnOrderChanging.On(this.HandleOrder.bind(this));
 
 		vehicule.OnTranslateStarted.On(this.HandleMusic.bind(this));
 		vehicule.OnTranslateStopped.On(this.HandleStop.bind(this));
@@ -103,6 +105,20 @@ export class GameSoundManager {
 
 		if (vehicule.GetCurrentCell().IsVisible()) {
 			this.Play(AudioContent.unitPopup, 0.2);
+		}
+	}
+	HandleOrder(src: Vehicle, order: IOrder): void {
+		const voices = [
+			AudioContent.ayaya,
+			AudioContent.copyThat,
+			AudioContent.engage,
+			AudioContent.fireAtWills,
+			AudioContent.sirYesSir,
+			AudioContent.transmissionReceived
+		];
+		if (src.GetCurrentCell().IsVisible()) {
+			var index = Math.round(Math.random() * (voices.length - 1));
+			this.Play(voices[index], 0.05);
 		}
 	}
 
@@ -124,7 +140,7 @@ export class GameSoundManager {
 		const v = src as Vehicle;
 		if (v.GetCurrentCell().IsVisible()) {
 			if (!this._vehicleSounds.Exist(v.Id)) {
-				const soundId = this.Play(AudioContent.tankMoving, 0.3, true);
+				const soundId = this.Play(AudioContent.tankMoving, 0.075, true);
 				this._vehicleSounds.Add(v.Id, soundId);
 			}
 		}
@@ -150,7 +166,7 @@ export class GameSoundManager {
 
 	private HandleFieldChanged(src: any, cell: Cell): void {
 		if (cell.IsVisible()) {
-			this.Play(AudioContent.unitPopup, 0.2);
+			this.Play(AudioContent.construction, 0.1);
 		}
 	}
 

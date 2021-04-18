@@ -22,7 +22,7 @@ export class RecordInteractionService implements IInteractionService {
 		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
 	}
 
-	Register(manager: PIXI.interaction.InteractionManager, gameContext: GameContext): void {
+	Register(manager: PIXI.InteractionManager, gameContext: GameContext): void {
 		this._inputNotifier = new InputNotifier();
 		const checker = new TrackingSelectableChecker();
 		this._interaction = new InteractionContext(

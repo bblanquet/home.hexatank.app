@@ -29,7 +29,7 @@
 		"jsdom-global": "3.0.2",
 		"mocha": "^6.2.2",
 		"node-sass": "^4.14.1",
-		"pixi.js": "^5.2.4",
+		"pixi.js": "^5.3.9",
 		"sass-loader": "^8.0.0",
 		"script-loader": "^0.7.1",
 		"string-replace-loader": "^2.2.0",

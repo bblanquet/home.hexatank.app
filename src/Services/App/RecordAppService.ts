@@ -17,7 +17,7 @@ export class RecordAppService implements IAppService {
 	private _context: MapContext;
 	private _app: PIXI.Application;
 	private _appProvider: AppProvider;
-	private _interactionManager: PIXI.interaction.InteractionManager;
+	private _interactionManager: PIXI.InteractionManager;
 
 	private _gameContextService: IGameContextService;
 	private _interactionService: IInteractionService;
@@ -44,7 +44,7 @@ export class RecordAppService implements IAppService {
 		this._context = mapContext;
 		this._updateService.Register();
 		this._app = this._appProvider.Provide(mapContext);
-		this._interactionManager = new PIXI.interaction.InteractionManager(this._app.renderer);
+		this._interactionManager = new PIXI.InteractionManager(this._app.renderer);
 
 		this._layerService.Register(this._app);
 		this._gameContextService.Register(new DummyHqRender(), mapContext);

@@ -19,7 +19,7 @@ export class AppService implements IAppService {
 	private _context: MapContext;
 	private _app: PIXI.Application;
 	private _appProvider: AppProvider;
-	private _interactionManager: PIXI.interaction.InteractionManager;
+	private _interactionManager: PIXI.InteractionManager;
 	private _soundManager: GameSoundManager;
 
 	private _gameContextService: IGameContextService;
@@ -51,7 +51,7 @@ export class AppService implements IAppService {
 		this._app = this._appProvider.Provide(mapContext);
 
 		this._layerService.Register(this._app);
-		this._interactionManager = new PIXI.interaction.InteractionManager(this._app.renderer);
+		this._interactionManager = new PIXI.InteractionManager(this._app.renderer);
 		this._gameContextService.Register(new HqRender(), mapContext);
 		const gameContext = this._gameContextService.Publish();
 		this._interactionService.Register(this._interactionManager, gameContext);

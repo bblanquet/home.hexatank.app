@@ -37,7 +37,7 @@ export class InputNotifier {
 		this.DownEvent = new LiteEvent<Point>();
 	}
 
-	public HandleMouseMove(event: PIXI.interaction.InteractionEvent): void {
+	public HandleMouseMove(event: PIXI.InteractionEvent): void {
 		if (this._isDown) {
 			this._currentPoint.X = event.data.global.x;
 			this._currentPoint.Y = event.data.global.y;
@@ -45,7 +45,7 @@ export class InputNotifier {
 		}
 	}
 
-	public HandleMouseDown(event: PIXI.interaction.InteractionEvent): void {
+	public HandleMouseDown(event: PIXI.InteractionEvent): void {
 		this._isDown = true;
 		const pvsDownDate = this._downDate;
 		let pvsDownPoint: Point = null;
@@ -79,7 +79,7 @@ export class InputNotifier {
 		return pvsDownDate && Math.abs(pvsDownDate - this._downDate) < this._doubleClickLatency;
 	}
 
-	public HandleMouseUp(event: PIXI.interaction.InteractionEvent): void {
+	public HandleMouseUp(event: PIXI.InteractionEvent): void {
 		this._isDown = false;
 		this._currentPoint.X = event.data.global.x;
 		this._currentPoint.Y = event.data.global.y;

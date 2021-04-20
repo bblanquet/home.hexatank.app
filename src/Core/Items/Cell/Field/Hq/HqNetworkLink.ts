@@ -13,6 +13,7 @@ export class HqNetworkLink extends Item {
 	private _end: number;
 	private _step: number;
 	private _isFadeIn: boolean = true;
+	private blop: boolean;
 
 	public constructor(private _a: Cell, private _b: Cell) {
 		super();

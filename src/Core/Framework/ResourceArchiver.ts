@@ -126,7 +126,8 @@ export const Archive = {
 			blue: './floor/blueReactor.svg',
 			gray: './floor/grayReactor.svg',
 			red: './floor/redReactor.svg',
-			purple: './floor/purpleReactor.svg'
+			purple: './floor/purpleReactor.svg',
+			yellow: './floor/yellowReactor.svg'
 		},
 		coverBottom: './floor/coverBottom.svg',
 		coverTop: './floor/coverTop.svg',

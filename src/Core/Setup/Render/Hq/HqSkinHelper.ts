@@ -10,7 +10,7 @@ export class HqSkinHelper {
 			Archive.building.hq.yellow.field,
 			Archive.team.yellow.area,
 			Archive.bonus.light.yellow,
-			Archive.bonus.light.yellow,
+			Archive.bonus.reactor.yellow,
 			'#C5B798'
 		),
 		new ItemSkin(

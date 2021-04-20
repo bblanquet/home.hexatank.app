@@ -17,7 +17,7 @@ export class HqNetworkLink extends Item {
 	public constructor(private _a: Cell, private _b: Cell) {
 		super();
 		this.Z = ZKind.Ground;
-		this._start = 0;
+		this._start = 0.3;
 		this._end = 1;
 		this._step = 0.005;
 		this._current = this._start;

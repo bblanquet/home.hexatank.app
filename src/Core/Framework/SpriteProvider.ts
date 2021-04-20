@@ -31,7 +31,7 @@ export class SpriteProvider {
 		const total = assets.length;
 
 		PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
-		PIXI.settings.RENDER_OPTIONS.antialias = false;
+		PIXI.settings.RENDER_OPTIONS.antialias = true;
 		PIXI.settings.TARGET_FPMS = PIXI.TARGETS.TEXTURE_2D;
 
 		SpriteProvider.LoadByPeriod(assets, threshold, loaded, event, total);

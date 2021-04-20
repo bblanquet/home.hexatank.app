@@ -1,3 +1,4 @@
+import { HqNetwork } from './HqNetwork';
 import { InfiniteFadeAnimation } from './../../../Animator/InfiniteFadeAnimation';
 import { BasicItem } from './../../../BasicItem';
 import { ZKind } from './../../../ZKind';
@@ -26,7 +27,6 @@ import { ReactorField } from '../Bonus/ReactorField';
 import { ISelectable } from '../../../../ISelectable';
 import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
 import { Item } from '../../../Item';
-import { Field } from '../Field';
 
 export class Headquarter extends AliveItem implements IField, ISelectable {
 	public Flagcell: FlagCell;
@@ -37,6 +37,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	private _skin: ItemSkin;
 
 	private _tankRequestCount: number = 0;
+	private _network: HqNetwork;
 
 	//belongs
 	private _diamondCount: number = GameSettings.PocketMoney;
@@ -50,9 +51,11 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	public OnFieldCountchanged: LiteEvent<number> = new LiteEvent<number>();
 	public OnFieldAdded: LiteEvent<Cell> = new LiteEvent<Cell>();
 	public OnEnergyChanged: LiteEvent<number> = new LiteEvent<number>();
+
 	public OnReactorConquested: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
-	public OnNewReactor: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
+	public OnReactorAdded: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
 	public OnReactorLost: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
+
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 	public OnTankRequestChanged: LiteEvent<number> = new LiteEvent<number>();
 
@@ -95,6 +98,8 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this._cell.IsVisible();
 		});
+
+		this._network = new HqNetwork(this);
 	}
 
 	public SetSelectionAnimation(): void {
@@ -304,6 +309,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	}
 
 	public Update(viewX: number, viewY: number): void {
+		this._network.Update(viewX, viewY);
 		const truckPrice = GameSettings.TruckPrice * this.GetVehicleCount();
 		while (0 < this._truckRequestCount && truckPrice <= this._diamondCount) {
 			if (this.Buy(truckPrice)) {
@@ -404,7 +410,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 
 	public AddReactor(reactor: ReactorField): void {
 		this._reactors.push(reactor);
-		this.OnNewReactor.Invoke(this, reactor);
+		this.OnReactorAdded.Invoke(this, reactor);
 		reactor.OnPowerChanged.On((src: any, data: boolean) => {
 			this.OnEnergyChanged.Invoke(this, 0);
 		});

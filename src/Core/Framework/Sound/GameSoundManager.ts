@@ -25,7 +25,7 @@ export class GameSoundManager {
 
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		const hq = this._gameContext.GetMainHq();
-		hq.OnNewReactor.On(this.HandleReactor.bind(this));
+		hq.OnReactorAdded.On(this.HandleReactor.bind(this));
 		hq.OnCashMissing.On(this.HandleMissingCash.bind(this));
 		this._gameContext.GetHqs().forEach((hq) => {
 			hq.OnVehicleCreated.On(this.HandleVehicle.bind(this));

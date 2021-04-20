@@ -12,13 +12,13 @@ export class InfiniteFadeAnimation implements IAnimator {
 		private _item: Item,
 		private _sprite: string,
 		private _start: number,
-		private _end: number,
-		private _step: number
+		end: number,
+		step: number
 	) {
 		this._item.SetProperties([ this._sprite ], (e) => (e.alpha = this._start));
 		this._animators = [
-			new FadeInAnimation(_item, [ this._sprite ], _start, _end, _step),
-			new FadeOutAnimation(_item, [ this._sprite ], _end, _start, _step)
+			new FadeInAnimation(_item, [ this._sprite ], _start, end, step),
+			new FadeOutAnimation(_item, [ this._sprite ], end, _start, step)
 		];
 	}
 	Reset(): void {}

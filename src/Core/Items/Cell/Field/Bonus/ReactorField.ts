@@ -289,7 +289,7 @@ export class ReactorField extends Field implements ISelectable {
 		CellStateSetter.SetStates(this._context, this.GetCell().GetAll(range));
 	}
 
-	SetSelected(isSelected: boolean): void {
+	public SetSelected(isSelected: boolean): void {
 		this.SetProperty(Archive.selectionCell, (e) => (e.alpha = isSelected ? 1 : 0));
 		if (this.IsSelected()) {
 			this.CreateArea();

@@ -58,7 +58,6 @@ export class HqNetworkLink extends Item {
 	}
 
 	Destroy(): void {
-		this._graph.clear();
 		this._isDestroyed = true;
 		super.Destroy();
 	}

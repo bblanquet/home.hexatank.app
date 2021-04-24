@@ -1,4 +1,3 @@
-import { SimpleEvent } from './../../Utils/Events/SimpleEvent';
 import { BasicItem } from './../BasicItem';
 import { ShieldField } from './../Cell/Field/Bonus/ShieldField';
 import { ZKind } from './../ZKind';

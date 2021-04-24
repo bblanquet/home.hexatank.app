@@ -1,6 +1,6 @@
-import { IHex } from '../Utils/Geometry/IHex';
+import { ISpot } from '../Utils/Geometry/ISpot';
 
-export class AStarNode<T extends IHex<T>> {
+export class AStarNode<T extends ISpot<T>> {
 	Cell: T;
 	EstimatedGoalCost: number;
 	FromStartCost: number;

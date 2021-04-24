@@ -50,6 +50,7 @@ export const Archive = {
 		floorExplosion: './tank/floorExplosionTrace.svg'
 	},
 	loading: './loading.svg',
+	electon: './electron.svg',
 	hiddenCell: './hiddenCell.svg',
 	halfVisibleCell: './halfVisibleCell.svg',
 	selectionUnit: './selectionUnit.svg',

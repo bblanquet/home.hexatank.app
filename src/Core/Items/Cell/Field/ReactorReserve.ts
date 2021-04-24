@@ -1,28 +1,28 @@
-import { CellContext } from './../CellContext';
+import { ElectronNetwork } from './Hq/ElectronNetwork';
 import { BatteryField } from './Bonus/BatteryField';
 import { Headquarter } from './Hq/Headquarter';
 import { ReactorField } from './Bonus/ReactorField';
 import { BonusField } from './Bonus/BonusField';
 import { AliveBonusField } from './Bonus/AliveBonusField';
-import { Cell } from '../Cell';
 
-export class Battery {
+export class ReactorReserve {
 	private _batteryFields: Array<BatteryField> = new Array<BatteryField>();
 
-	constructor(private _hq: Headquarter, private _field: ReactorField) {}
+	constructor(private _hq: Headquarter, private _reactor: ReactorField) {}
 
 	GetUsedPower() {
 		return this._batteryFields.length;
 	}
 
 	public GetTotalBatteries(): number {
-		return this.GetRemains().length + this._batteryFields.length;
+		return this.GetAvailableBatteries().length + this._batteryFields.length;
 	}
 
 	public High(): void {
-		const remains = this.GetRemains();
+		const remains = this.GetAvailableBatteries();
 		if (0 < remains.length) {
 			const battery = remains.shift();
+			battery.SetElectron(new ElectronNetwork(this._hq, battery, this._reactor));
 			battery.SetUsed(true);
 			this._batteryFields.push(battery);
 			this.UpdateBonusCells(true);
@@ -35,7 +35,7 @@ export class Battery {
 	}
 
 	private UpdateBonusCells(isUp: boolean) {
-		this._field.GetInternal().All().forEach((cell) => {
+		this._reactor.GetInternal().All().forEach((cell) => {
 			if (cell.GetField() instanceof BonusField) {
 				const bonusField = cell.GetField() as BonusField;
 				if (bonusField.IsAlly(this._hq)) {
@@ -59,43 +59,14 @@ export class Battery {
 	}
 
 	public HasStock(): boolean {
-		return this.GetRemains().length > 0;
+		return this.GetAvailableBatteries().length > 0;
 	}
 
-	private GetRemains(): Array<BatteryField> {
-		return this.GetRemainingBatteries(this.GetCells(this.GetNearbyReactors()));
-	}
-
-	private GetRemainingBatteries(cells: CellContext<Cell>): Array<BatteryField> {
-		const result = new Array<BatteryField>();
-		this._hq.GetBatteryFields().filter((f) => !f.IsUsed()).forEach((battery) => {
-			if (cells.Exist(battery.GetCell().GetHexCoo())) {
-				result.push(battery);
-			}
-		});
-		return result;
-	}
-
-	private GetCells(reactors: Array<ReactorField>): CellContext<Cell> {
-		const result = new CellContext<Cell>();
-		reactors.forEach((r) => {
-			r.GetInternal().All().forEach((cell) => {
-				if (!result.Exist(cell.GetHexCoo())) {
-					result.Add(cell);
-				}
-			});
-		});
-		return result;
-	}
-
-	private GetNearbyReactors(): Array<ReactorField> {
-		const result = new Array<ReactorField>();
-		const internal = this._field.GetInternal();
-		this._hq.GetReactors().forEach((reactor) => {
-			if (internal.Exist(reactor.GetCell().GetHexCoo())) {
-				result.push(reactor);
-			}
-		});
-		return result;
+	private GetAvailableBatteries(): Array<BatteryField> {
+		const reactors = this._reactor
+			.GetConnectedReactors()
+			.map((e) => e.GetInternalBatteries())
+			.reduce((a, b) => a.concat(b), new Array<BatteryField>());
+		return Array.from(new Set(reactors));
 	}
 }

@@ -348,7 +348,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		return cells;
 	}
 
-	public GetNeighbourhood(range: number = 1): Array<Cell> {
+	public GetNearby(range: number = 1): Array<Cell> {
 		let cells = new Array<Cell>();
 		this.GetHexCoo().GetNeighbours(range).forEach((coordinate) => {
 			let cell = this._cells.Get(coordinate);

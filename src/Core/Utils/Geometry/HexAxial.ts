@@ -1,4 +1,4 @@
-import { IHex } from './IHex';
+import { ISpot } from './ISpot';
 import { HexCube } from './HexCube';
 import { Point } from './Point';
 /* See   */
@@ -21,7 +21,7 @@ export class LightHexAxial {
 	}
 }
 
-export class HexAxial implements IHex<HexAxial> {
+export class HexAxial implements ISpot<HexAxial> {
 	Q: number; //column
 	R: number; //row
 
@@ -33,7 +33,7 @@ export class HexAxial implements IHex<HexAxial> {
 		return item.Q === this.Q && item.R === this.R;
 	}
 
-	GetNeighbourhood(): HexAxial[] {
+	GetNearby(): HexAxial[] {
 		return this.GetSpecificRange(1);
 	}
 

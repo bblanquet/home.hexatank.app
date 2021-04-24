@@ -6,7 +6,7 @@ import { GameContext } from '../../../../Framework/GameContext';
 import { ReactorAppearance } from './ReactorAppearance';
 import { Archive } from '../../../../Framework/ResourceArchiver';
 import { CellStateSetter } from '../../CellStateSetter';
-import { Battery } from '../Battery';
+import { ReactorReserve } from '../ReactorReserve';
 import { BasicItem } from '../../../BasicItem';
 import { ISelectable } from '../../../../ISelectable';
 import { Headquarter } from '../Hq/Headquarter';
@@ -27,13 +27,18 @@ import { SpeedFieldMenuItem } from '../../../../Menu/Buttons/SpeedFieldMenuItem'
 import { SpeedUp } from '../../../Unit/PowerUp/SpeedUp';
 import { Explosion } from '../../../Unit/Explosion';
 import { InfiniteFadeAnimation } from '../../../Animator/InfiniteFadeAnimation';
+import { HqNetworkLink } from '../Hq/HqNetworkLink';
+import { Item } from '../../../Item';
+import { ISpot } from '../../../../Utils/Geometry/ISpot';
 
-export class ReactorField extends Field implements ISelectable {
+export class ReactorField extends Field implements ISelectable, ISpot<ReactorField> {
 	//state
-	public Battery: Battery;
+	public Reserve: ReactorReserve;
 	private _totalRange: number = 4;
 	private _isLocked: boolean;
 	private _range: number = 0;
+
+	public Links: Array<HqNetworkLink> = [];
 
 	//UI
 	public Appearance: ReactorAppearance;
@@ -59,7 +64,7 @@ export class ReactorField extends Field implements ISelectable {
 		super(cell);
 		this.Z = ZKind.Field;
 		this.Hq.AddReactor(this);
-		this.Battery = new Battery(this.Hq, this);
+		this.Reserve = new ReactorReserve(this.Hq, this);
 		this.GetCell().SetField(this);
 		this.Appearance = new ReactorAppearance(this, this._light);
 		this.GenerateSprite(Archive.selectionCell);
@@ -82,6 +87,11 @@ export class ReactorField extends Field implements ISelectable {
 		}
 	}
 
+	public AddLink(link: HqNetworkLink): void {
+		this.Links.push(link);
+		link.OnDestroyed.On((e: any, d: Item) => (this.Links = this.Links.filter((e) => !e.IsDestroyed())));
+	}
+
 	public SetSelectionAnimation(): void {
 		const white = new BasicItem(this.GetCell().GetBoundingBox(), Archive.selectionBlueReactor, ZKind.BelowCell);
 		white.SetAnimator(new InfiniteFadeAnimation(white, Archive.selectionBlueReactor, 0, 1, 0.02));
@@ -95,6 +105,22 @@ export class ReactorField extends Field implements ISelectable {
 
 	private StartOverclockAnimation(): void {
 		this._fireAnimation = new BasicRangeAnimator(this.GetCell(), this._totalRange);
+	}
+
+	public GetConnectedReactors(): Array<ReactorField> {
+		const result = new Array<ReactorField>();
+		this.GetAllReactors(this, result);
+		return result;
+	}
+
+	private GetAllReactors(currentReactor: ReactorField, result: Array<ReactorField>): void {
+		if (result.every((e) => e !== currentReactor)) {
+			result.push(currentReactor);
+			currentReactor.Links.forEach((link) => {
+				const r = link.GetReactors().filter((r) => r !== currentReactor)[0];
+				this.GetAllReactors(r, result);
+			});
+		}
 	}
 
 	public IsLocked(): boolean {
@@ -159,8 +185,8 @@ export class ReactorField extends Field implements ISelectable {
 		}
 	}
 
-	HasPower(): boolean {
-		return 0 < this.Battery.GetUsedPower();
+	public HasPower(): boolean {
+		return 0 < this.Reserve.GetUsedPower();
 	}
 
 	private _endLockDate: number;
@@ -175,7 +201,7 @@ export class ReactorField extends Field implements ISelectable {
 		}
 	}
 
-	GetLockDate(): number {
+	public GetLockDate(): number {
 		return this._endLockDate;
 	}
 
@@ -188,7 +214,7 @@ export class ReactorField extends Field implements ISelectable {
 		}
 	}
 
-	Support(vehicule: Vehicle): void {
+	public Support(vehicule: Vehicle): void {
 		if (this.IsPacific) {
 			return;
 		}
@@ -222,11 +248,11 @@ export class ReactorField extends Field implements ISelectable {
 		}
 	}
 
-	IsDesctrutible(): boolean {
+	public IsDesctrutible(): boolean {
 		return false;
 	}
 
-	IsBlocking(): boolean {
+	public IsBlocking(): boolean {
 		return false;
 	}
 
@@ -254,32 +280,42 @@ export class ReactorField extends Field implements ISelectable {
 		}
 	}
 
-	public PowerUp(): void {
-		const formerEnergy = this.Battery.GetUsedPower();
-		this.Battery.High();
+	public GetInternalBatteries(): Array<BatteryField> {
+		const result = new Array<BatteryField>();
+		this.Hq.GetBatteryFields().filter((f) => !f.IsUsed()).forEach((battery) => {
+			if (this._internalCells.Exist(battery.GetCell().GetHexCoo())) {
+				result.push(battery);
+			}
+		});
+		return result;
+	}
 
-		if (formerEnergy === 0 && this.Battery.GetUsedPower() === 1) {
+	public PowerUp(): void {
+		const formerEnergy = this.Reserve.GetUsedPower();
+		this.Reserve.High();
+
+		if (formerEnergy === 0 && this.Reserve.GetUsedPower() === 1) {
 			this.OnPowerChanged.Invoke(this, true);
 		}
 	}
 
 	public ForcePowerUp(battery: BatteryField) {
-		const formerEnergy = this.Battery.GetUsedPower();
-		this.Battery.ForceHigh(battery);
+		const formerEnergy = this.Reserve.GetUsedPower();
+		this.Reserve.ForceHigh(battery);
 
-		if (formerEnergy === 0 && this.Battery.GetUsedPower() === 1) {
+		if (formerEnergy === 0 && this.Reserve.GetUsedPower() === 1) {
 			this.OnPowerChanged.Invoke(this, true);
 		}
 	}
 
 	public GetPower(): number {
-		return this.Battery.GetUsedPower();
+		return this.Reserve.GetUsedPower();
 	}
 
 	public PowerDown(): void {
-		if (0 < this.Battery.GetUsedPower()) {
-			this.Battery.Low();
-			if (this.Battery.GetUsedPower() === 0) {
+		if (0 < this.Reserve.GetUsedPower()) {
+			this.Reserve.Low();
+			if (this.Reserve.GetUsedPower() === 0) {
 				this.OnPowerChanged.Invoke(this, false);
 			}
 		}
@@ -350,11 +386,26 @@ export class ReactorField extends Field implements ISelectable {
 		this._area = [];
 	}
 
-	HasStock(): boolean {
-		return this.Battery.HasStock();
+	public HasStock(): boolean {
+		return this.Reserve.HasStock();
 	}
 
-	IsSelected(): boolean {
+	public IsSelected(): boolean {
 		return this.GetCurrentSprites().Get(Archive.selectionCell).alpha === 1;
+	}
+
+	public GetNearby(): ReactorField[] {
+		const nearvyReactors = this.Links.map((l) => l.GetOpposite(this));
+		return nearvyReactors;
+	}
+	public GetFilterNeighbourhood(condition: (spot: ReactorField) => boolean): ReactorField[] {
+		const nearvyReactors = this.Links.map((l) => l.GetOpposite(this)).filter((r) => condition(r));
+		return nearvyReactors;
+	}
+	public GetDistance(spot: ReactorField): number {
+		return this.GetCell().GetHexCoo().GetDistance(spot.GetCell().GetHexCoo());
+	}
+	public IsEqualed(spot: ReactorField): boolean {
+		return spot.GetCell() === this.GetCell();
 	}
 }

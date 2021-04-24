@@ -19,7 +19,7 @@ export class HqNetwork extends Item {
 		const otherReactors = this._hq.GetReactors().filter((e) => e !== reactor);
 		otherReactors.forEach((otherReactor) => {
 			if (otherReactor.IsCovered(reactor.GetCell())) {
-				this._links.push(new HqNetworkLink(otherReactor.GetCell(), reactor.GetCell()));
+				this._links.push(new HqNetworkLink(otherReactor, reactor));
 			}
 		});
 	}

@@ -1,8 +1,8 @@
 import { GameSettings } from '../Framework/GameSettings';
-import { IHex } from '../Utils/Geometry/IHex';
+import { ISpot } from '../Utils/Geometry/ISpot';
 import { AStarNode } from './AStarNode';
 
-export class AStarEngine<T extends IHex<T>> {
+export class AStarEngine<T extends ISpot<T>> {
 	constructor(private _cellFilter: (cell: T) => boolean, private _cellCost: (cell: T) => number) {}
 
 	private ConstructPath(node: AStarNode<T>): Array<T> {

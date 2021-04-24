@@ -130,7 +130,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 	private GetAroundFoeCells(enemycells: Array<Cell>): Dictionnary<Cell> {
 		const enemyContactcells = new Dictionnary<Cell>();
 		enemycells.forEach((enemycell) => {
-			enemycell.GetNeighbourhood().forEach((cell) => {
+			enemycell.GetNearby().forEach((cell) => {
 				let coo = cell.Coo();
 				if (!enemyContactcells.Exist(coo)) {
 					enemyContactcells.Add(coo, cell as Cell);

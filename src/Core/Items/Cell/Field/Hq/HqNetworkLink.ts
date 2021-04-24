@@ -1,3 +1,5 @@
+import { ReactorField } from './../Bonus/ReactorField';
+import { ElectronLink } from './ElectronLink';
 import { Cell } from './../../Cell';
 import { IInteractionContext } from '../../../../Interaction/IInteractionContext';
 import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
@@ -13,9 +15,8 @@ export class HqNetworkLink extends Item {
 	private _end: number;
 	private _step: number;
 	private _isFadeIn: boolean = true;
-	private blop: boolean;
 
-	public constructor(private _a: Cell, private _b: Cell) {
+	public constructor(private _a: ReactorField, private _b: ReactorField) {
 		super();
 		this.Z = ZKind.Ground;
 		this._start = 0.3;
@@ -25,6 +26,8 @@ export class HqNetworkLink extends Item {
 		this._graph = new Graphics();
 		this.Push(this._graph);
 		this.InitPosition(this.GetBoundingBox());
+		this._a.AddLink(this);
+		this._b.AddLink(this);
 	}
 
 	public GetBoundingBox(): BoundingBox {
@@ -34,8 +37,21 @@ export class HqNetworkLink extends Item {
 		return false;
 	}
 
+	public GetReactors(): Array<ReactorField> {
+		return [ this._a, this._b ];
+	}
+
+	public GetOpposite(r: ReactorField): ReactorField {
+		if (this._a === r) {
+			return this._b;
+		} else if (this._b === r) {
+			return this._a;
+		}
+		throw console.error('aouthc');
+	}
+
 	public IsConnected(cell: Cell) {
-		return cell === this._a || cell === this._b;
+		return cell === this._a.GetCell() || cell === this._b.GetCell();
 	}
 
 	IsDestroyed(): boolean {

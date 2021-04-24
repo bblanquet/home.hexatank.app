@@ -28,7 +28,7 @@ export class Diamond extends AliveField {
 		this.Lights = new Light(this.GetBoundingBox());
 		this.Lights.Display();
 		this.Fields = new Array<DiamondField>();
-		var neighbours = this.GetCell().GetNeighbourhood();
+		var neighbours = this.GetCell().GetNearby();
 		neighbours.forEach((cell) => {
 			const field = new DiamondField(<Cell>cell);
 			this.Fields.push(field);

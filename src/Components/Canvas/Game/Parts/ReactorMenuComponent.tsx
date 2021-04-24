@@ -63,7 +63,7 @@ export default class ReactorMenuComponent extends Component<
 							<button type="button" class="btn btn-light without-padding">
 								<div class="fill-energy max-width standard-space" />
 								<div class="max-width align-text-center darker">
-									{reactor.Battery.GetUsedPower()}/{reactor.Battery.GetTotalBatteries()}
+									{reactor.Reserve.GetUsedPower()}/{reactor.Reserve.GetTotalBatteries()}
 								</div>
 							</button>
 							<button type="button" class="btn btn-light without-padding">
@@ -91,7 +91,7 @@ export default class ReactorMenuComponent extends Component<
 							<button type="button" class="btn btn-light without-padding">
 								<div class="fill-energy max-width standard-space" />
 								<div class="max-width align-text-center darker">
-									{reactor.Battery.GetUsedPower()}/{reactor.Battery.GetTotalBatteries()}
+									{reactor.Reserve.GetUsedPower()}/{reactor.Reserve.GetTotalBatteries()}
 								</div>
 							</button>
 							<button

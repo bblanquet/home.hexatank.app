@@ -1,5 +1,4 @@
 import { ReactorField } from './../Bonus/ReactorField';
-import { ElectronLink } from './ElectronLink';
 import { Cell } from './../../Cell';
 import { IInteractionContext } from '../../../../Interaction/IInteractionContext';
 import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
@@ -59,6 +58,7 @@ export class HqNetworkLink extends Item {
 	}
 
 	Destroy(): void {
+		this._graph.clear();
 		this._isDestroyed = true;
 		super.Destroy();
 	}

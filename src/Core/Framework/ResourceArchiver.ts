@@ -56,6 +56,8 @@ export const Archive = {
 	selectionUnit: './selectionUnit.svg',
 	selectionCell: './selectionCell.svg',
 	selectionPower: './selectionPowerUp.svg',
+	selectionBlueCell: './blueCellOverLight.svg',
+	selectionWhiteCell: './whiteCellOverLight.svg',
 	selectionBlueHq: './blueHqOverLight.svg',
 	selectionWhiteHq: './whiteHqOverLight.svg',
 	selectionBlueVehicle: './blueSelectionTank.svg',

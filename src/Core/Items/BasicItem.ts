@@ -47,10 +47,14 @@ export class BasicItem extends Item {
 	public Update(viewX: number, viewY: number): void {
 		if (this.IsUpdatable) {
 			super.Update(viewX, viewY);
-			if (this._animator && !this._animator.IsDone) {
-				this._animator.Update(viewX, viewY);
+			const visible = this._isVisible();
+			if (visible) {
+				if (this._animator && !this._animator.IsDone) {
+					this._animator.Update(viewX, viewY);
+				} else {
+					this.SetProperty(this._spriteName, (e) => (e.alpha = visible ? 1 : 0));
+				}
 			} else {
-				const visible = this._isVisible();
 				this.SetProperty(this._spriteName, (e) => (e.alpha = visible ? 1 : 0));
 			}
 

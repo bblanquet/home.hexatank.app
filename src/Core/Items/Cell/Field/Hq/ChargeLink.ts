@@ -10,7 +10,7 @@ import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
 import { Cell } from '../../Cell';
 import { GameSettings } from '../../../../Framework/GameSettings';
 
-export class ElectronLink extends Item implements IMovable {
+export class ChargeLink extends Item implements IMovable {
 	private _translateMaker: ITranslationMaker;
 	private _translatingDuration: number = GameSettings.TranslatinDuration * 3;
 	public OnTranslateStarted: LiteEvent<Cell> = new LiteEvent<Cell>();

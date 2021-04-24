@@ -27,6 +27,8 @@ import * as PIXI from 'pixi.js';
 import { MultiSelectionContext } from '../../Menu/Smart/MultiSelectionContext';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 import { BonusField } from './Field/Bonus/BonusField';
+import { InfiniteFadeAnimation } from '../Animator/InfiniteFadeAnimation';
+import { BasicItem } from '../BasicItem';
 
 export class Cell extends Item implements ICell<Cell>, ISelectable {
 	public Properties: CellProperties;
@@ -42,6 +44,8 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	private _circle: PIXI.Circle;
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 	private _animator: IAnimator = null;
+	private _blue: BasicItem;
+	private _white: BasicItem;
 
 	constructor(properties: CellProperties, private _cells: CellContext<Cell>, private _gameContext: GameContext) {
 		super();
@@ -56,7 +60,18 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 			e.anchor.set(0.5);
 		});
 		this._circle = new PIXI.Circle(0, 0, GameSettings.Size / 2);
+		this.SetSelectionAnimation();
 	}
+	public SetSelectionAnimation(): void {
+		// this._blue = new BasicItem(this.GetBoundingBox(), Archive.selectionBlueCell, ZKind.BelowCell);
+		// this._blue.SetVisible(() => this.IsVisible() && this._field instanceof BasicField);
+		// this._blue.SetAlive(() => true);
+		this._white = new BasicItem(this.GetBoundingBox(), Archive.selectionBlueCell, ZKind.BelowCell);
+		this._white.SetAnimator(new InfiniteFadeAnimation(this._white, Archive.selectionBlueCell, 0, 1, 0.02));
+		this._white.SetVisible(() => this.IsVisible() && this._field instanceof BasicField);
+		this._white.SetAlive(() => true);
+	}
+
 	GetDistance(item: Cell): number {
 		return this.GetHexCoo().GetDistance(item.GetHexCoo());
 	}
@@ -372,6 +387,9 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 	public Update(viewX: number, viewY: number): void {
 		super.Update(viewX, viewY);
+		this._white.Update(viewX, viewY);
+		// this._white.Update(viewX, viewY);
+
 		if (this._animator) {
 			if (this._animator.IsDone) {
 				this._animator = null;

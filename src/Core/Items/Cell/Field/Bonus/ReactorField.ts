@@ -1,3 +1,5 @@
+import { Dictionnary } from './../../../../Utils/Collections/Dictionnary';
+import { Charge } from '../Hq/Charge';
 import { ZKind } from './../../../ZKind';
 import { BatteryField } from './BatteryField';
 import { TypeTranslator } from '../TypeTranslator';
@@ -39,6 +41,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	private _range: number = 0;
 
 	public Links: Array<HqNetworkLink> = [];
+	public Charges: Dictionnary<Charge> = new Dictionnary<Charge>();
 
 	//UI
 	public Appearance: ReactorAppearance;
@@ -228,6 +231,10 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 			this.OnLost.Clear();
 
 			this.Appearance.Destroy();
+			this.Charges.Values().forEach((charge) => {
+				charge.Destroy();
+			});
+			this.Charges.Clear();
 			this.GetCell().DestroyField();
 			this.GetCell().GetIncludedRange(2).forEach((c) => {
 				if (TypeTranslator.IsBonusField(c.GetField())) {
@@ -278,6 +285,12 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		if (this._fireAnimation && !this._fireAnimation.IsDone) {
 			this._fireAnimation.Update(viewX, viewY);
 		}
+
+		if (this.Charges) {
+			this.Charges.Values().forEach((charge) => {
+				charge.Update(viewX, viewY);
+			});
+		}
 	}
 
 	public GetInternalBatteries(): Array<BatteryField> {
@@ -293,15 +306,6 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	public PowerUp(): void {
 		const formerEnergy = this.Reserve.GetUsedPower();
 		this.Reserve.High();
-
-		if (formerEnergy === 0 && this.Reserve.GetUsedPower() === 1) {
-			this.OnPowerChanged.Invoke(this, true);
-		}
-	}
-
-	public ForcePowerUp(battery: BatteryField) {
-		const formerEnergy = this.Reserve.GetUsedPower();
-		this.Reserve.ForceHigh(battery);
 
 		if (formerEnergy === 0 && this.Reserve.GetUsedPower() === 1) {
 			this.OnPowerChanged.Invoke(this, true);

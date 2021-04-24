@@ -1,3 +1,4 @@
+import { ReactorField } from './Field/Bonus/ReactorField';
 import { ZKind } from './../ZKind';
 import { ILiteEvent } from './../../Utils/Events/ILiteEvent';
 import { BouncingScaleDownAnimator } from './../Animator/BouncingScaleDownAnimator';
@@ -63,13 +64,14 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		this.SetSelectionAnimation();
 	}
 	public SetSelectionAnimation(): void {
-		// this._blue = new BasicItem(this.GetBoundingBox(), Archive.selectionBlueCell, ZKind.BelowCell);
-		// this._blue.SetVisible(() => this.IsVisible() && this._field instanceof BasicField);
-		// this._blue.SetAlive(() => true);
-		this._white = new BasicItem(this.GetBoundingBox(), Archive.selectionBlueCell, ZKind.BelowCell);
-		this._white.SetAnimator(new InfiniteFadeAnimation(this._white, Archive.selectionBlueCell, 0, 1, 0.02));
-		this._white.SetVisible(() => this.IsVisible() && this._field instanceof BasicField);
+		this._white = new BasicItem(this.GetBoundingBox(), Archive.selectionWhiteCell, ZKind.BelowCell);
+		this._white.SetVisible(() => this.IsSelectable());
 		this._white.SetAlive(() => true);
+
+		this._blue = new BasicItem(this.GetBoundingBox(), Archive.selectionBlueCell, ZKind.BelowCell);
+		this._blue.SetAnimator(new InfiniteFadeAnimation(this._blue, Archive.selectionBlueCell, 0, 1, 0.02));
+		this._blue.SetVisible(() => this.IsSelectable());
+		this._blue.SetAlive(() => true);
 	}
 
 	GetDistance(item: Cell): number {
@@ -78,6 +80,17 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 	IsEqualed(item: Cell): boolean {
 		return this === item;
+	}
+
+	public IsSelectable(): boolean {
+		const anyAlly =
+			this.GetFilterNeighbourhood(
+				(e) => e && (e.HasAlly(this._gameContext.GetMainHq()) || e.HasBonusAlly(this._gameContext.GetMainHq()))
+			).length > 0;
+		return (
+			(this.IsVisible() && this._field instanceof BasicField && anyAlly) ||
+			this.HasAlly(this._gameContext.GetMainHq())
+		);
 	}
 
 	public GetState(): CellState {
@@ -210,6 +223,17 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		}
 		if (this._field && this._field instanceof Headquarter) {
 			return !v.IsEnemy(this._field);
+		}
+		return false;
+	}
+
+	public HasBonusAlly(item: AliveItem): boolean {
+		if (this._field && this._field instanceof ReactorField) {
+			return !item.IsEnemy((this._field as ReactorField).GetHq());
+		}
+
+		if (this._field && this._field instanceof BonusField) {
+			return !item.IsEnemy((this._field as BonusField).GetHq());
 		}
 		return false;
 	}
@@ -388,7 +412,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	public Update(viewX: number, viewY: number): void {
 		super.Update(viewX, viewY);
 		this._white.Update(viewX, viewY);
-		// this._white.Update(viewX, viewY);
+		this._blue.Update(viewX, viewY);
 
 		if (this._animator) {
 			if (this._animator.IsDone) {
@@ -418,7 +442,6 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 			);
 			context.OnSelect(this);
 		}
-
 		return false;
 	}
 }

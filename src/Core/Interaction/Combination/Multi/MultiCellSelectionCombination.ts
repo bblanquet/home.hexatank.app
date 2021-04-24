@@ -24,7 +24,7 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 		if (this.IsMatching(context)) {
 			const cells = this._multiSelectionContext
 				.GetCells()
-				.filter((c) => c.GetField() instanceof BasicField && c.GetState() === CellState.Visible);
+				.filter((c) => c.GetField() instanceof BasicField && c.IsSelectable());
 			if (0 < cells.length) {
 				const cellGroup = new CellGroup();
 				cellGroup.SetCells(cells);

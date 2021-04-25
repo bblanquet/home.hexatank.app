@@ -20,6 +20,16 @@ export class FarmField extends BonusField {
 		this._lightItem.Hide();
 
 		this.SetProperty(Archive.bonus.fullMoney, (e) => (e.alpha = 0));
+		this.GetCell().OnCellStateChanged.On(this.HandleCellStateChanged.bind(this));
+		this._lightItem.GetCurrentSprites().Values().forEach((s) => {
+			s.visible = cell.GetState() !== CellState.Hidden;
+		});
+	}
+
+	protected HandleCellStateChanged(source: any, cellState: CellState): void {
+		this._lightItem.GetCurrentSprites().Values().forEach((s) => {
+			s.visible = cellState !== CellState.Hidden;
+		});
 	}
 
 	public IsFull(): boolean {

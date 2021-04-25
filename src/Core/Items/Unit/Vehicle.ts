@@ -146,32 +146,32 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		}
 	}
 
-	GetNextCellProgression(): number {
+	public GetNextCellProgression(): number {
 		return this._translationMaker.Duration();
 	}
 
-	GetTranslationDuration(): number {
+	public GetTranslationDuration(): number {
 		if (this._translatingDuration < GameSettings.GetFastestTranslation()) {
 			return GameSettings.GetFastestTranslation();
 		}
 		return this._translatingDuration;
 	}
-	SetTranslationDuration(translation: number): void {
+	public SetTranslationDuration(translation: number): void {
 		this._translatingDuration += translation;
 	}
-	GetRotatingDuration(): number {
+	public GetRotatingDuration(): number {
 		if (this._rotatingDuration < GameSettings.GetFastestRotation()) {
 			return GameSettings.GetFastestRotation();
 		}
 		return this._rotatingDuration;
 	}
-	SetRotatingDuration(rotation: number): void {
+	public SetRotatingDuration(rotation: number): void {
 		this._rotatingDuration += rotation;
 	}
 
 	protected abstract RemoveCamouflage(): void;
 
-	SetPowerUp(up: Up) {
+	public SetPowerUp(up: Up) {
 		if (0 < this.PowerUps.length) {
 			const last = this.PowerUps[this.PowerUps.length - 1];
 			up.Animation.SetCurrentRotation(last.Animation.GetCurrentRotation() + Math.PI * 2 * 60 / 360);

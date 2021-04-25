@@ -1,6 +1,5 @@
 import { Dictionnary } from './../Utils/Collections/Dictionnary';
 import { SpriteProvider } from './SpriteProvider';
-import { SpriteAccuracy } from './SpriteAccuracy';
 
 export class SpriteManager {
 	private _sprites: Dictionnary<PIXI.Sprite>;

@@ -8,6 +8,7 @@ import { IInteractionContext } from '../../../Interaction/IInteractionContext';
 import { Item } from '../../Item';
 import { Vehicle } from '../Vehicle';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
+import { Cell } from '../../Cell/Cell';
 
 export class UpAnimation extends Item {
 	private _rotationAnimator: RotationAnimator;
@@ -34,6 +35,17 @@ export class UpAnimation extends Item {
 		this.IsCentralRef = true;
 		this.InitPosition(this._vehicle.GetBoundingBox());
 		this._animatorAnimator = new BouncingScaleUpAnimator(this, this._images, 0.001);
+
+		this._vehicle.OnCellChanged.On(this.CellChanged.bind(this));
+		this.GetCurrentSprites().Values().forEach((s) => {
+			s.visible = this._vehicle.GetCurrentCell().IsVisible();
+		});
+	}
+
+	private CellChanged(source: any, cell: Cell): void {
+		this.GetCurrentSprites().Values().forEach((s) => {
+			s.visible = cell.IsVisible();
+		});
 	}
 
 	public GetCurrentRotation(): number {

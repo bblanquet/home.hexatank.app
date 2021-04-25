@@ -12,7 +12,7 @@ import { InteractionContext } from '../../../Interaction/InteractionContext';
 
 export class DiamondField extends Field {
 	private _timer: TickTimer;
-	IsFading: boolean;
+	public IsFading: boolean;
 	public Loaded: LiteEvent<{}> = new LiteEvent<{}>();
 
 	constructor(cell: Cell) {
@@ -47,7 +47,7 @@ export class DiamondField extends Field {
 		return false;
 	}
 
-	IsBlocking(): boolean {
+	public IsBlocking(): boolean {
 		return false;
 	}
 

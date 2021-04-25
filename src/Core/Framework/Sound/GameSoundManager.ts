@@ -115,6 +115,9 @@ export class GameSoundManager {
 				AudioContent.engage,
 				AudioContent.fireAtWills,
 				AudioContent.sirYesSir,
+				AudioContent.allClear,
+				AudioContent.moveOut,
+				AudioContent.understood,
 				AudioContent.transmissionReceived
 			];
 			if (src.GetCurrentCell().IsVisible()) {

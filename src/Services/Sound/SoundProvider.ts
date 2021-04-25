@@ -14,6 +14,9 @@ export class SoundProvider {
 			AudioContent.sirYesSir,
 			AudioContent.transmissionReceived,
 			AudioContent.construction,
+			AudioContent.allClear,
+			AudioContent.moveOut,
+			AudioContent.understood,
 
 			AudioContent.ok,
 			AudioContent.nok,

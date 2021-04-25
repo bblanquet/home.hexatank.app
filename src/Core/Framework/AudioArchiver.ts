@@ -6,6 +6,9 @@ export const AudioContent = {
 	fireAtWills: './sounds/fireAtWills.wav',
 	sirYesSir: './sounds/sirYesSir.wav',
 	transmissionReceived: './sounds/transmissionReceived.wav',
+	allClear: './sounds/allClear.wav',
+	moveOut: './sounds/moveOut.mp3',
+	understood: './sounds/understood.wav',
 
 	construction: './sounds/construction.wav',
 

@@ -15,6 +15,8 @@ import { isNullOrUndefined } from '../Utils/ToolBox';
 import { MultiSelectionContext } from '../Menu/Smart/MultiSelectionContext';
 
 export class GameContext {
+	public static Error: Error;
+
 	public StatsContext: StatsContext;
 	public TrackingContext: RecordContext;
 	public MultiSelectionContext: MultiSelectionContext;

@@ -1,6 +1,7 @@
 import './Register';
 import { h, render } from 'preact';
 import HomeComponent from './Components/Home/HomeComponent';
+import ErrorComponent from './Components/Error/ErrorComponent';
 import SinglePlayerComponent from './Components/SinglePlayer/SinglePlayerComponent';
 import GameCanvasComponent from './Components/Canvas/Game/GameCanvasComponent';
 import RecordCanvasComponent from './Components/Canvas/Record/RecordCanvasComponent';
@@ -28,11 +29,13 @@ import '@fortawesome/fontawesome-free/js/regular';
 import '@fortawesome/fontawesome-free/js/brands';
 import { GameStatus } from './Core/Framework/GameStatus';
 import { Context } from './Context';
-//check
-const Main = (e: any) => {
+
+const App = (e: any) => {
 	return (
 		<Router>
 			<HomeComponent path="/Home" />
+			<LoadingComponent path="/Loading" default />
+			<ErrorComponent path="/Error" />
 			<SinglePlayerComponent path="/SinglePlayer" />
 			<CampaignComponent path="/Campaign" />
 			<BlueCampaignComponent path="/BlueCampaignComponent" />
@@ -44,11 +47,10 @@ const Main = (e: any) => {
 			<GuestComponent path="/OffJoin" />
 			<RecordComponent path="/Playback" />
 			<PrototypeComponent path="/Prototype" />
-			<LoadingComponent path="/Loading" default />
 			<PopupComponent path="/Popup" curves={Context()} status={GameStatus.Won} context={{ a: 1 }} />
 			<ComparerComponent path="/Comparer" />
 		</Router>
 	);
 };
 
-render(<Main />, document.body);
+render(<App />, document.body);

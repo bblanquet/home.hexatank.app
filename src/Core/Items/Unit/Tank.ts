@@ -225,7 +225,9 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 			new CamouflageHandler().GetCamouflage(),
 			ZKind.AboveSky
 		);
-		this.Camouflage.SetVisible(() => this.IsAlive() && this.HasCamouflage);
+		this.Camouflage.SetVisible(() => {
+			return this.IsAlive() && this.HasCamouflage;
+		});
 		this.Camouflage.SetAlive(() => this.IsAlive() && this.HasCamouflage);
 
 		const explosion = new Explosion(

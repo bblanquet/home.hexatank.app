@@ -565,9 +565,29 @@ hr {
 	border-radius: 15px;
 }
 
+.sub-text-detail {
+	position: relative;
+	width: auto;
+	color: rgb(29, 29, 29);
+	min-height: 30px;
+	padding: 5px 5px 5px 5px;
+	background-color: #ffffff;
+	border-radius: 15px;
+}
+
 .dark {
 	background-color: #161616;
 	color: white;
+}
+
+.maxcontainer {
+	width: 80%;
+	max-width: 80%;
+}
+
+.maxHeight {
+	max-height: 200px;
+	overflow-y: scroll;
 }
 
 .effect7 {

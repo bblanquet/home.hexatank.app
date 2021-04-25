@@ -10,10 +10,6 @@ import Icon from '../Common/Icon/IconComponent';
 import PanelComponent from '../Common/Panel/PanelComponent';
 
 export default class LoadingComponent extends Component<any, { percentage: number }> {
-	constructor() {
-		super();
-	}
-
 	componentDidMount() {
 		Factory.Load<ISoundService>(FactoryKey.Sound).Play(AudioContent.menuMusic, 0.005, true);
 		setTimeout(() => {

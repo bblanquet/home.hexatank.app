@@ -21,7 +21,7 @@ export default class PendingPlayers extends Component<{ HostState: HostState; So
 	private GetHeader() {
 		return (
 			<thead>
-				<tr>
+				<tr class="d-flex">
 					<th scope="col">Player</th>
 					<th scope="col">Peer</th>
 					<th scope="col">Loading</th>
@@ -36,16 +36,9 @@ export default class PendingPlayers extends Component<{ HostState: HostState; So
 			<tbody>
 				{this.props.HostState.Players.Values().map((player) => {
 					return (
-						<tr class={this.props.HostState.Player.Name === player.Name ? 'row-blue' : ''}>
-							<td class="align-middle">
-								{player.Name} {this.GetReady(player)}
-							</td>
-							<td class="align-middle">
-								{this.GetType(player)} {this.GetConnection(player)} {this.GetTimeout(player)}
-							</td>
-							<td class="align-middle">{+player.GetLatency() === 0 ? '' : player.GetLatency()}</td>
+						<tr class={this.props.HostState.Player.Name === player.Name ? 'row-blue d-flex' : 'd-flex'}>
 							<Visible isVisible={this.props.HostState.IsAdmin}>
-								<td class="align-middle">
+								<td class="align-self-center">
 									<SmButtonComponent
 										callBack={() => this.MakeUserLeave(player.Name)}
 										color={ColorKind.Black}
@@ -54,6 +47,13 @@ export default class PendingPlayers extends Component<{ HostState: HostState; So
 									</SmButtonComponent>
 								</td>
 							</Visible>
+							<td class="align-self-center">
+								{player.Name} {this.GetReady(player)}
+							</td>
+							<td class="align-self-center">
+								{this.GetType(player)} {this.GetConnection(player)} {this.GetTimeout(player)}
+							</td>
+							<td class="align-self-center">{+player.GetLatency() === 0 ? '' : player.GetLatency()}</td>
 						</tr>
 					);
 				})}

@@ -13,18 +13,19 @@ import ButtonComponent from '../../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
 import Icon from '../../Common/Icon/IconComponent';
 import { Usernames } from '../Names';
-
+import { RoomInfo } from './RoomInfo';
 import * as io from 'socket.io-client';
 
-export default class GuestComponent extends Component<any, { RoomNames: string[]; PlayerName: string }> {
+export default class GuestComponent extends Component<any, { Rooms: RoomInfo[]; PlayerName: string }> {
 	private _socket: SocketIOClient.Socket;
 	constructor() {
 		super();
 		this.setState({
-			RoomNames: new Array<string>(),
+			Rooms: new Array<RoomInfo>(),
 			PlayerName: 'Alice'
 		});
 		this._socket = io('{{p2pserver}}', { path: '{{p2psubfolder}}' });
+		this._socket.connect();
 		this.Listen();
 	}
 
@@ -61,9 +62,16 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 							<Icon Value="fas fa-random" />
 						</SmButtonComponent>
 					</div>
+					<div class="container-center-horizontal">
+						<TextComponent value={''} label={'Filter'} isEditable={true} onInput={(e: any) => {}} />
+						<div class="space-out" />
+						<SmButtonComponent callBack={() => {}} color={ColorKind.Black}>
+							<Icon Value="fas fa-filter" />
+						</SmButtonComponent>
+					</div>
 					<GridComponent
 						left={this.Header()}
-						right={this.state.RoomNames.length === 0 ? this.EmptyGridContent() : this.GridContent()}
+						right={this.state.Rooms.length === 0 ? this.EmptyGridContent() : this.GridContent()}
 					/>
 					<div class="container-center-horizontal">
 						<ButtonComponent
@@ -92,7 +100,9 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 		return (
 			<thead>
 				<tr class="d-flex">
-					<th>Rooms</th>
+					<th scope="col">Name</th>
+					<th scope="col">Players</th>
+					<th scope="col" />
 				</tr>
 			</thead>
 		);
@@ -111,14 +121,17 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 	private GridContent() {
 		return (
 			<tbody>
-				{this.state.RoomNames.map((RoomName) => {
+				{this.state.Rooms.map((roomInfo) => {
 					return (
 						<tr class="d-flex">
-							<td class="align-self-center">{RoomName}</td>
 							<td class="align-self-center">
-								<SmButtonComponent callBack={() => this.Join(RoomName)} color={ColorKind.Black}>
+								<SmButtonComponent callBack={() => this.Join(roomInfo.Name)} color={ColorKind.Black}>
 									{'Join'}
 								</SmButtonComponent>
+							</td>
+							<td class="align-self-center">{roomInfo.Name}</td>
+							<td class="align-self-center">
+								{roomInfo.PlayerCount}/{roomInfo.Count}
 							</td>
 						</tr>
 					);
@@ -145,9 +158,18 @@ export default class GuestComponent extends Component<any, { RoomNames: string[]
 	private Listen(): void {
 		this._socket.on('connect', () => {
 			this._socket.emit(PacketKind[PacketKind.Rooms]);
-			this._socket.on(PacketKind[PacketKind.Rooms], (packet: { Content: string[] }) => {
+			this._socket.on(PacketKind[PacketKind.Rooms], (packet: { Content: RoomInfo[] }) => {
+				for (let index = 0; index < 100; index++) {
+					packet.Content.push(
+						new RoomInfo(
+							Usernames[Math.round(Math.random() * Usernames.length - 1)],
+							Math.round(Math.random() * 3),
+							4
+						)
+					);
+				}
 				this.setState({
-					RoomNames: packet.Content
+					Rooms: packet.Content
 				});
 			});
 			this._socket.on(PacketKind[PacketKind.Available], (data: { IsAvailable: boolean; RoomName: string }) => {

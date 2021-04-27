@@ -159,15 +159,15 @@ export default class GuestComponent extends Component<any, { Rooms: RoomInfo[]; 
 		this._socket.on('connect', () => {
 			this._socket.emit(PacketKind[PacketKind.Rooms]);
 			this._socket.on(PacketKind[PacketKind.Rooms], (packet: { Content: RoomInfo[] }) => {
-				for (let index = 0; index < 100; index++) {
-					packet.Content.push(
-						new RoomInfo(
-							Usernames[Math.round(Math.random() * Usernames.length - 1)],
-							Math.round(Math.random() * 3),
-							4
-						)
-					);
-				}
+				// for (let index = 0; index < 100; index++) {
+				// 	packet.Content.push(
+				// 		new RoomInfo(
+				// 			Usernames[Math.round(Math.random() * Usernames.length - 1)],
+				// 			Math.round(Math.random() * 3),
+				// 			4
+				// 		)
+				// 	);
+				// }
 				this.setState({
 					Rooms: packet.Content
 				});

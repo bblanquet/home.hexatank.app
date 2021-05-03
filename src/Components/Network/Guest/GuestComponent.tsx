@@ -3,6 +3,7 @@ import { route } from 'preact-router';
 import * as toastr from 'toastr';
 import { PacketKind } from '../../../Network/Message/PacketKind';
 import TextComponent from '../../Common/Text/TextComponent';
+import IconTextComponent from '../../Common/Text/IconTextComponent';
 import PanelComponent from '../../Common/Panel/PanelComponent';
 import GridComponent from '../../Common/Grid/GridComponent';
 import SmButtonComponent from '../../Common/Button/Stylish/SmButtonComponent';
@@ -16,20 +17,40 @@ import { Usernames } from '../Names';
 import { RoomInfo } from './RoomInfo';
 import * as io from 'socket.io-client';
 
-export default class GuestComponent extends Component<any, { Rooms: RoomInfo[]; PlayerName: string }> {
+export default class GuestComponent extends Component<
+	any,
+	{ Rooms: RoomInfo[]; DisplayableRooms: RoomInfo[]; PlayerName: string; filter: string }
+> {
 	private _socket: SocketIOClient.Socket;
 	constructor() {
 		super();
 		this.setState({
 			Rooms: new Array<RoomInfo>(),
-			PlayerName: 'Alice'
+			DisplayableRooms: new Array<RoomInfo>(),
+			PlayerName: 'Alice',
+			filter: ''
 		});
 		this._socket = io('{{p2pserver}}', { path: '{{p2psubfolder}}' });
 		this._socket.connect();
 		this.Listen();
 	}
 
-	componentDidMount() {}
+	componentDidUpdate() {
+		if (this.state.filter && 0 < this.state.filter.length) {
+			const newDisplayed = this.state.Rooms.filter((e) =>
+				e.Name.toLowerCase().includes(this.state.filter.toLowerCase())
+			);
+			if (newDisplayed.length !== this.state.DisplayableRooms.length) {
+				this.setState({
+					DisplayableRooms: newDisplayed
+				});
+			}
+		} else if (this.state.DisplayableRooms !== this.state.Rooms && this.state.filter.length === 0) {
+			this.setState({
+				DisplayableRooms: this.state.Rooms
+			});
+		}
+	}
 
 	componentWillUnmount() {
 		if (this._socket) {
@@ -47,7 +68,11 @@ export default class GuestComponent extends Component<any, { Rooms: RoomInfo[]; 
 							label={'Playername'}
 							isEditable={true}
 							onInput={(e: any) => {
-								this.setState({ PlayerName: e.target.value });
+								if (e.target.value) {
+									this.setState({ PlayerName: e.target.value });
+								} else {
+									this.setState({ PlayerName: '' });
+								}
 							}}
 						/>
 						<div class="space-out" />
@@ -63,11 +88,22 @@ export default class GuestComponent extends Component<any, { Rooms: RoomInfo[]; 
 						</SmButtonComponent>
 					</div>
 					<div class="container-center-horizontal">
-						<TextComponent value={''} label={'Filter'} isEditable={true} onInput={(e: any) => {}} />
-						<div class="space-out" />
-						<SmButtonComponent callBack={() => {}} color={ColorKind.Black}>
-							<Icon Value="fas fa-filter" />
-						</SmButtonComponent>
+						<IconTextComponent
+							value={this.state.filter}
+							icon={'fas fa-filter'}
+							isEditable={true}
+							onInput={(e: any) => {
+								if (e.target.value) {
+									this.setState({
+										filter: e.target.value
+									});
+								} else {
+									this.setState({
+										filter: ''
+									});
+								}
+							}}
+						/>
 					</div>
 					<GridComponent
 						left={this.Header()}
@@ -121,7 +157,7 @@ export default class GuestComponent extends Component<any, { Rooms: RoomInfo[]; 
 	private GridContent() {
 		return (
 			<tbody>
-				{this.state.Rooms.map((roomInfo) => {
+				{this.state.DisplayableRooms.map((roomInfo) => {
 					return (
 						<tr class="d-flex">
 							<td class="align-self-center">
@@ -159,15 +195,15 @@ export default class GuestComponent extends Component<any, { Rooms: RoomInfo[]; 
 		this._socket.on('connect', () => {
 			this._socket.emit(PacketKind[PacketKind.Rooms]);
 			this._socket.on(PacketKind[PacketKind.Rooms], (packet: { Content: RoomInfo[] }) => {
-				// for (let index = 0; index < 100; index++) {
-				// 	packet.Content.push(
-				// 		new RoomInfo(
-				// 			Usernames[Math.round(Math.random() * Usernames.length - 1)],
-				// 			Math.round(Math.random() * 3),
-				// 			4
-				// 		)
-				// 	);
-				// }
+				for (let index = 0; index < 100; index++) {
+					packet.Content.push(
+						new RoomInfo(
+							Usernames[Math.round(Math.random() * Usernames.length - 1)],
+							Math.round(Math.random() * 3),
+							4
+						)
+					);
+				}
 				this.setState({
 					Rooms: packet.Content
 				});

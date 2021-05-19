@@ -14,6 +14,8 @@ import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
 import Icon from '../../Common/Icon/IconComponent';
 import SmButtonComponent from '../../Common/Button/Stylish/SmButtonComponent';
 import { Usernames } from '../Names';
+import SmActiveButtonComponent from '../../Common/Button/Stylish/SmActiveButtonComponent';
+import Visible from '../../Common/Visible/VisibleComponent';
 
 export default class CreatingHostComponent extends Component<any, CreatingHostState> {
 	private _socket: SocketIOClient.Socket;
@@ -38,16 +40,7 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 		return (
 			<Redirect>
 				<PanelComponent>
-					<div class="container-center-horizontal">
-						<TextComponent
-							value={this.state.RoomName}
-							label={'Room name'}
-							isEditable={true}
-							onInput={(e: any) => {
-								this.setState({ RoomName: e.target.value });
-							}}
-						/>
-						<div class="space-out" />
+					<div class="container-center-horizontal" style="margin-bottom:10px">
 						<SmButtonComponent
 							callBack={() => {
 								const username = Usernames[Math.round(Math.random() * Usernames.length - 1)];
@@ -60,7 +53,29 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 						>
 							<Icon Value="fas fa-random" />
 						</SmButtonComponent>
+						<div class="space-out" />
+						<SmActiveButtonComponent
+							left={
+								<span>
+									<Icon Value="fas fa-lock-open" />
+								</span>
+							}
+							right={
+								<span>
+									<Icon Value="fas fa-lock" />
+								</span>
+							}
+							leftColor={ColorKind.Black}
+							rightColor={ColorKind.Yellow}
+							isActive={this.state.HasPassword}
+							callBack={() => {
+								this.setState({
+									HasPassword: !this.state.HasPassword
+								});
+							}}
+						/>
 					</div>
+
 					<TextComponent
 						value={this.state.PlayerName}
 						label={'Playername'}
@@ -69,6 +84,26 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 							this.setState({ PlayerName: e.target.value });
 						}}
 					/>
+					<TextComponent
+						value={this.state.RoomName}
+						label={'Room name'}
+						isEditable={true}
+						onInput={(e: any) => {
+							this.setState({ RoomName: e.target.value });
+						}}
+					/>
+					<div class="container-center-horizontal">
+						<Visible isVisible={this.state.HasPassword}>
+							<TextComponent
+								value={this.state.Password}
+								label={'Password'}
+								isEditable={false}
+								onInput={(e: any) => {
+									this.setState({ Password: e.target.value });
+								}}
+							/>
+						</Visible>
+					</div>
 					<div class="container-center-horizontal">
 						<ButtonComponent
 							callBack={() => {
@@ -99,6 +134,8 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 					Factory.Load<IHostingService>(FactoryKey.Hosting).Register(
 						this.state.PlayerName,
 						this.state.RoomName,
+						this.state.Password,
+						this.state.HasPassword,
 						true
 					);
 					route('/Hosting', true);

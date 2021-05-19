@@ -4,7 +4,7 @@ import * as toastr from 'toastr';
 import { PacketKind } from '../../../Network/Message/PacketKind';
 import TextComponent from '../../Common/Text/TextComponent';
 import IconTextComponent from '../../Common/Text/IconTextComponent';
-import PanelComponent from '../../Common/Panel/PanelComponent';
+import SmPanelComponent from '../../Common/Panel/SmPanelComponent';
 import GridComponent from '../../Common/Grid/GridComponent';
 import SmButtonComponent from '../../Common/Button/Stylish/SmButtonComponent';
 import { Factory, FactoryKey } from '../../../Factory';
@@ -16,10 +16,11 @@ import Icon from '../../Common/Icon/IconComponent';
 import { Usernames } from '../Names';
 import { RoomInfo } from './RoomInfo';
 import * as io from 'socket.io-client';
+import Visible from '../../Common/Visible/VisibleComponent';
 
 export default class GuestComponent extends Component<
 	any,
-	{ Rooms: RoomInfo[]; DisplayableRooms: RoomInfo[]; PlayerName: string; filter: string }
+	{ Rooms: RoomInfo[]; DisplayableRooms: RoomInfo[]; PlayerName: string; filter: string; Password: string }
 > {
 	private _socket: SocketIOClient.Socket;
 	constructor() {
@@ -28,7 +29,8 @@ export default class GuestComponent extends Component<
 			Rooms: new Array<RoomInfo>(),
 			DisplayableRooms: new Array<RoomInfo>(),
 			PlayerName: 'Alice',
-			filter: ''
+			filter: '',
+			Password: ''
 		});
 		this._socket = io('{{p2pserver}}', { path: '{{p2psubfolder}}' });
 		this._socket.connect();
@@ -61,7 +63,7 @@ export default class GuestComponent extends Component<
 	render() {
 		return (
 			<Redirect>
-				<PanelComponent>
+				<SmPanelComponent>
 					<div class="container-center-horizontal">
 						<TextComponent
 							value={this.state.PlayerName}
@@ -87,27 +89,42 @@ export default class GuestComponent extends Component<
 							<Icon Value="fas fa-random" />
 						</SmButtonComponent>
 					</div>
-					<div class="container-center-horizontal">
-						<IconTextComponent
-							value={this.state.filter}
-							icon={'fas fa-filter'}
-							isEditable={true}
-							onInput={(e: any) => {
-								if (e.target.value) {
-									this.setState({
-										filter: e.target.value
-									});
-								} else {
-									this.setState({
-										filter: ''
-									});
-								}
-							}}
-						/>
-					</div>
+					<IconTextComponent
+						value={this.state.filter}
+						icon={'fas fa-filter'}
+						isEditable={true}
+						onInput={(e: any) => {
+							if (e.target.value) {
+								this.setState({
+									filter: e.target.value
+								});
+							} else {
+								this.setState({
+									filter: ''
+								});
+							}
+						}}
+					/>
 					<GridComponent
-						left={this.Header()}
+						left={''}
 						right={this.state.Rooms.length === 0 ? this.EmptyGridContent() : this.GridContent()}
+					/>
+					<div style="margin-top:20px" />
+					<IconTextComponent
+						value={this.state.Password}
+						icon={'fas fa-lock'}
+						isEditable={true}
+						onInput={(e: any) => {
+							if (e.target.value) {
+								this.setState({
+									Password: e.target.value
+								});
+							} else {
+								this.setState({
+									Password: ''
+								});
+							}
+						}}
 					/>
 					<div class="container-center-horizontal">
 						<ButtonComponent
@@ -127,20 +144,8 @@ export default class GuestComponent extends Component<
 							<Icon Value="fas fa-sync-alt" /> Refresh
 						</ButtonComponent>
 					</div>
-				</PanelComponent>
+				</SmPanelComponent>
 			</Redirect>
-		);
-	}
-
-	private Header() {
-		return (
-			<thead>
-				<tr class="d-flex">
-					<th scope="col">Name</th>
-					<th scope="col">Players</th>
-					<th scope="col" />
-				</tr>
-			</thead>
 		);
 	}
 
@@ -165,7 +170,12 @@ export default class GuestComponent extends Component<
 									{'Join'}
 								</SmButtonComponent>
 							</td>
-							<td class="align-self-center">{roomInfo.Name}</td>
+							<td class="align-self-center">
+								<Visible isVisible={roomInfo.HasPassword}>
+									<Icon Value="fas fa-lock" />
+								</Visible>
+								{` ${roomInfo.Name}`}
+							</td>
 							<td class="align-self-center">
 								{roomInfo.PlayerCount}/{roomInfo.Count}
 							</td>
@@ -200,6 +210,7 @@ export default class GuestComponent extends Component<
 						new RoomInfo(
 							Usernames[Math.round(Math.random() * Usernames.length - 1)],
 							Math.round(Math.random() * 3),
+							Math.round(Math.random() * 2) > 1,
 							4
 						)
 					);
@@ -213,6 +224,8 @@ export default class GuestComponent extends Component<
 					Factory.Load<IHostingService>(FactoryKey.Hosting).Register(
 						this.state.PlayerName,
 						data.RoomName,
+						this.state.Password,
+						this.state.Password !== null && this.state.Password !== '',
 						false
 					);
 					route('/Hosting', true);

@@ -10,14 +10,19 @@ export class ServerSocket {
 	private _address: string;
 	private _name: string;
 	private _room: string;
+	private _password: string;
+	private _hasPassword: boolean;
 	private _roomKey: string;
+
 	public OnReceived: KindEvent<PacketKind, INetworkMessage>;
 
-	constructor(url: string, subfolder: string, sender: string, room: string) {
+	constructor(url: string, subfolder: string, sender: string, room: string, password: string, hasPassword: boolean) {
 		this._address = `${url}`;
 		this.Socket = io(this._address, { path: subfolder });
 		this._name = sender;
 		this._room = room;
+		this._hasPassword = hasPassword;
+		this._password = password;
 		this._roomKey = '';
 		this.OnReceived = new KindEvent<PacketKind, INetworkMessage>();
 		this.Listen();
@@ -30,7 +35,9 @@ export class ServerSocket {
 	public Start() {
 		this.Socket.emit(PacketKind[PacketKind.Join], {
 			PlayerName: this._name,
-			RoomName: this._room
+			RoomName: this._room,
+			Password: this._password,
+			HasPassword: this._hasPassword
 		});
 	}
 

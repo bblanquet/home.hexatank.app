@@ -28,14 +28,21 @@ export class NetworkSocket {
 	private _resetObserver: NetworkObserver;
 	private _pingObserver: NetworkObserver;
 
-	constructor(owner: string, room: string, private _isAdmin: boolean) {
+	constructor(owner: string, room: string, password: string, hasPassword: boolean, private _isAdmin: boolean) {
 		this._playersObserver = new KindEventObserver(PacketKind.Players, this.HandlePlayersReceived.bind(this));
 		this._offerObserver = new KindEventObserver(PacketKind.Offer, this.HandleOfferReceived.bind(this));
 		this._resetObserver = new KindEventObserver(PacketKind.Reset, this.HandleReset.bind(this));
 		this._pingObserver = new KindEventObserver(PacketKind.Ping, this.HandlePing.bind(this));
 
 		this.Owner = owner;
-		this.ServerSocket = new ServerSocket('{{p2pserver}}', '{{p2psubfolder}}', this.Owner, room);
+		this.ServerSocket = new ServerSocket(
+			'{{p2pserver}}',
+			'{{p2psubfolder}}',
+			this.Owner,
+			room,
+			password,
+			hasPassword
+		);
 		this.ServerSocket.OnReceived.On(this._playersObserver);
 		this.ServerSocket.OnReceived.On(this._offerObserver);
 		this.ServerSocket.OnReceived.On(this._resetObserver);

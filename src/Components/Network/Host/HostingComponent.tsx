@@ -28,7 +28,6 @@ import Visible from '../../Common/Visible/VisibleComponent';
 import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
 import Icon from '../../Common/Icon/IconComponent';
 import ActiveButtonComponent from '../../Common/Button/Stylish/ActiveButtonComponent';
-import * as moment from 'moment';
 import { MapSetting } from '../../Form/MapSetting';
 import { MapType } from '../../../Core/Setup/Generator/MapType';
 
@@ -72,7 +71,13 @@ export default class HostingComponent extends Component<any, HostState> {
 			new NetworkObserver(PacketKind.Start, this.HandleStart.bind(this))
 		];
 
-		this._socket = new NetworkSocket(model.Player.Name, model.RoomName, model.IsAdmin);
+		this._socket = new NetworkSocket(
+			model.Player.Name,
+			model.RoomName,
+			model.Password,
+			model.HasPassword,
+			model.IsAdmin
+		);
 		this._observers.forEach((obs) => {
 			this._socket.OnReceived.On(obs);
 		});

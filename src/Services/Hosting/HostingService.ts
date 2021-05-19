@@ -7,7 +7,13 @@ import { IHostingService } from './IHostingService';
 export class HostingService implements IHostingService {
 	private _hostState: HostState;
 
-	Register(playerName: string, roomName: string, isAdmin: boolean): void {
+	public Register(
+		playerName: string,
+		roomName: string,
+		password: string,
+		hasPassword: boolean,
+		isAdmin: boolean
+	): void {
 		this._hostState = new HostState();
 		this._hostState.MapSetting = new MapSetting();
 		this._hostState.MapSetting.IaCount = 0;
@@ -16,6 +22,8 @@ export class HostingService implements IHostingService {
 		this._hostState.Players = new Dictionnary<Player>();
 		this._hostState.Players.Add(playerName, this._hostState.Player);
 		this._hostState.RoomName = roomName;
+		this._hostState.Password = password;
+		this._hostState.HasPassword = hasPassword;
 		this._hostState.IsAdmin = isAdmin;
 	}
 	Publish(): HostState {

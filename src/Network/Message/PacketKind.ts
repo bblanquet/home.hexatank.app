@@ -7,6 +7,7 @@ export enum PacketKind {
 	Offer,
 
 	//setup
+	Password,
 	Join,
 	Joined,
 	Close,

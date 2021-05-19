@@ -187,9 +187,9 @@ export default class GuestComponent extends Component<
 	}
 
 	private Join(roomName: string): void {
-		this._socket.emit(PacketKind[PacketKind.Available], {
+		this._socket.emit(PacketKind[PacketKind.Password], {
 			RoomName: roomName,
-			PlayerName: this.state.PlayerName
+			Password: this.state.Password
 		});
 	}
 
@@ -205,16 +205,6 @@ export default class GuestComponent extends Component<
 		this._socket.on('connect', () => {
 			this._socket.emit(PacketKind[PacketKind.Rooms]);
 			this._socket.on(PacketKind[PacketKind.Rooms], (packet: { Content: RoomInfo[] }) => {
-				// for (let index = 0; index < 100; index++) {
-				// 	packet.Content.push(
-				// 		new RoomInfo(
-				// 			Usernames[Math.round(Math.random() * Usernames.length - 1)],
-				// 			Math.round(Math.random() * 3),
-				// 			Math.round(Math.random() * 2) > 1,
-				// 			4
-				// 		)
-				// 	);
-				// }
 				this.setState({
 					Rooms: packet.Content
 				});
@@ -235,9 +225,33 @@ export default class GuestComponent extends Component<
 					});
 				}
 			});
+
+			this._socket.on(PacketKind[PacketKind.Password], (data: { Password: boolean; RoomName: string }) => {
+				if (data.Password) {
+					this._socket.emit(PacketKind[PacketKind.Available], {
+						RoomName: data.RoomName,
+						PlayerName: this.state.PlayerName
+					});
+				} else {
+					toastr['warning'](`${this.state.Password} doesn't match ${data.RoomName}'s password`, 'WARNING', {
+						iconClass: 'toast-red'
+					});
+				}
+			});
 		});
 		this._socket.on('connect_error', (error: string) => {
 			toastr['warning'](`Server doesn't seem to be running.`, 'WARNING', { iconClass: 'toast-red' });
 		});
 	}
 }
+
+// for (let index = 0; index < 100; index++) {
+// 	packet.Content.push(
+// 		new RoomInfo(
+// 			Usernames[Math.round(Math.random() * Usernames.length - 1)],
+// 			Math.round(Math.random() * 3),
+// 			Math.round(Math.random() * 2) > 1,
+// 			4
+// 		)
+// 	);
+// }

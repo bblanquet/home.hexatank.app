@@ -97,7 +97,7 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 							<TextComponent
 								value={this.state.Password}
 								label={'Password'}
-								isEditable={false}
+								isEditable={true}
 								onInput={(e: any) => {
 									this.setState({ Password: e.target.value });
 								}}

@@ -105,11 +105,6 @@ export default class GuestComponent extends Component<
 							}
 						}}
 					/>
-					<GridComponent
-						left={''}
-						right={this.state.Rooms.length === 0 ? this.EmptyGridContent() : this.GridContent()}
-					/>
-					<div style="margin-top:20px" />
 					<IconTextComponent
 						value={this.state.Password}
 						icon={'fas fa-lock'}
@@ -125,6 +120,10 @@ export default class GuestComponent extends Component<
 								});
 							}
 						}}
+					/>
+					<GridComponent
+						left={''}
+						right={this.state.Rooms.length === 0 ? this.EmptyGridContent() : this.GridContent()}
 					/>
 					<div class="container-center-horizontal">
 						<ButtonComponent

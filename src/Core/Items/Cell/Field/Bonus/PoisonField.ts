@@ -16,8 +16,10 @@ export class PoisonField extends BonusField {
 	Support(vehicule: Vehicle): void {
 		if (this.poisonTimer.IsElapsed()) {
 			const energy = this.GetReactorsPower(this.hq);
-			const poison = new BonusValueProvider().GetPoison(energy);
-			vehicule.SetDamage(poison);
+			if (0 < energy) {
+				const poison = new BonusValueProvider().GetPoison(energy);
+				vehicule.SetDamage(poison);
+			}
 			vehicule.Attack = GameSettings.Attack;
 		}
 	}

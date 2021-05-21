@@ -36,6 +36,8 @@ export class DamageText extends Item {
 			fontFamily: 'AnimalSilence',
 			fontSize: 30,
 			fill: 0xba3131,
+			stroke: 'white',
+			strokeThickness: 2,
 			align: 'center'
 		});
 		this.AddSprite(this._key, this._text);

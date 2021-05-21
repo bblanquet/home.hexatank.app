@@ -191,6 +191,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	}
 
 	public SetDamage(damage: number): void {
+		damage = +damage.toFixed(2);
 		const field = this._currentCell.GetField();
 		if (field instanceof ShieldField) {
 			const shield = field as ShieldField;

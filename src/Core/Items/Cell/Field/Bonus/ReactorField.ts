@@ -358,7 +358,6 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		if (this._internalCells.IsEmpty()) {
 			this.RefreshInternal();
 		}
-		console.log('total ' + this._internalCells.All().length);
 		return this._internalCells;
 	}
 

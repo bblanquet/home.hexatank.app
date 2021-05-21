@@ -199,6 +199,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 			this.Life -= damage;
 			this.UpdateDamage();
 		}
+		this.OnDamageReceived.Invoke(this, damage);
 	}
 
 	public CancelOrder(): void {

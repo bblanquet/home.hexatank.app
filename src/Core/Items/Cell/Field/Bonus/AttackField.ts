@@ -12,7 +12,6 @@ import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
 
 export class AttackField extends BonusField {
 	SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
-	private _bonusValue: BonusValueProvider = new BonusValueProvider();
 	constructor(cell: Cell, hq: Headquarter) {
 		super(cell, [ Archive.bonus.strength ], hq, false);
 		this.GenerateSprite(Archive.selectionCell, (e) => {
@@ -29,7 +28,7 @@ export class AttackField extends BonusField {
 				return;
 			}
 			const energy = this.GetReactorsPower(this.hq);
-			const sum = this._bonusValue.GetPower(energy);
+			const sum = new BonusValueProvider().GetPower(energy);
 			if (0 < sum) {
 				const up = new AttackUp(vehicule, new CellUpCondition(vehicule), sum);
 				vehicule.SetPowerUp(up);

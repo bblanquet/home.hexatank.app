@@ -8,7 +8,6 @@ import { GameSettings } from '../../../../Framework/GameSettings';
 import { Headquarter } from '../Hq/Headquarter';
 
 export class PoisonField extends BonusField {
-	private _bonusValueProvider: BonusValueProvider = new BonusValueProvider();
 	private poisonTimer: TimeTimer;
 	constructor(cell: Cell, hq: Headquarter) {
 		super(cell, [ Archive.bonus.poison ], hq);
@@ -17,7 +16,7 @@ export class PoisonField extends BonusField {
 	Support(vehicule: Vehicle): void {
 		if (this.poisonTimer.IsElapsed()) {
 			const energy = this.GetReactorsPower(this.hq);
-			const poison = this._bonusValueProvider.GetPoison(energy);
+			const poison = new BonusValueProvider().GetPoison(energy);
 			vehicule.SetDamage(poison);
 			vehicule.Attack = GameSettings.Attack;
 		}

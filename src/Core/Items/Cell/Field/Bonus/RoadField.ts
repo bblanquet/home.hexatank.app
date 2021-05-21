@@ -8,7 +8,6 @@ import { Vehicle } from '../../../Unit/Vehicle';
 import { CellUpCondition } from '../../../Unit/PowerUp/Condition/CellUpCondition';
 
 export class RoadField extends BonusField {
-	private _bonusValueProvider: BonusValueProvider = new BonusValueProvider();
 	constructor(cell: Cell, hq: Headquarter) {
 		super(cell, [ Archive.bonus.speed ], hq);
 	}
@@ -20,8 +19,8 @@ export class RoadField extends BonusField {
 		}
 		const energy = this.GetReactorsPower(this.hq);
 		if (0 < energy) {
-			const tr = this._bonusValueProvider.GetSpeedTranslation(energy);
-			const rt = this._bonusValueProvider.GetSpeedRotation(energy);
+			const tr = new BonusValueProvider().GetSpeedTranslation(energy);
+			const rt = new BonusValueProvider().GetSpeedRotation(energy);
 			const up = new SpeedUp(vehicule, new CellUpCondition(vehicule), tr, rt);
 			vehicule.SetPowerUp(up);
 		}

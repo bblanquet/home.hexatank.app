@@ -13,7 +13,6 @@ import { BouncingScaleDownAnimator } from '../../../Animator/BouncingScaleDownAn
 import { BouncingScaleUpAnimator } from '../../../Animator/BouncingScaleUpAnimator';
 
 export class ShieldField extends AliveBonusField {
-	private _bonusValuProvider: BonusValueProvider = new BonusValueProvider();
 	private _shieldAppearance: ShieldAppearance;
 	private _fixTimer: ITimer;
 
@@ -63,7 +62,7 @@ export class ShieldField extends AliveBonusField {
 		} else {
 			if (this._fixTimer.IsElapsed()) {
 				if (this.HasDamage()) {
-					const fixValue = this._bonusValuProvider.GetFixValue(this.GetReactorsPower(this.Hq));
+					const fixValue = new BonusValueProvider().GetFixValue(this.GetReactorsPower(this.Hq));
 					this.SetDamage(-fixValue);
 				}
 			}

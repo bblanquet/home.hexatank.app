@@ -46,8 +46,8 @@ export class GameSettings {
 		this.RotatingDuration = 1000;
 		this.TurrelRotatingDuration = 1000;
 		this.TranslatinDuration = 1000;
-		this.DiamondLoading = 30;
-		this.FarmLoading = 10;
+		this.FarmLoading = 5000;
+		this.DiamondLoading = 300;
 		this.UnitLife = 100;
 		this.NatureLife = 40;
 	}

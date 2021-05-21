@@ -16,7 +16,14 @@ export class BouncingScaleUpAnimator implements IAnimator {
 		});
 		this._speed = speed;
 	}
-	Reset(): void {}
+	Reset(): void {
+		this._scale = 0;
+		this._item.SetProperties(this._sprites, (e) => {
+			e.alpha = 0;
+			e.width = 0;
+			e.height = 0;
+		});
+	}
 
 	Update(viewX: number, viewY: number): void {
 		if (this._isIncreasing) {

@@ -1,3 +1,4 @@
+import { BonusValueProvider } from './BonusValueProvider';
 import { CellUpCondition } from './../../../Unit/PowerUp/Condition/CellUpCondition';
 import { Tank } from './../../../Unit/Tank';
 import { AttackUp } from './../../../Unit/PowerUp/AttackUp';
@@ -11,7 +12,7 @@ import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
 
 export class AttackField extends BonusField {
 	SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
-
+	private _bonusValue: BonusValueProvider = new BonusValueProvider();
 	constructor(cell: Cell, hq: Headquarter) {
 		super(cell, [ Archive.bonus.strength ], hq, false);
 		this.GenerateSprite(Archive.selectionCell, (e) => {
@@ -27,7 +28,8 @@ export class AttackField extends BonusField {
 			if (vehicule.IsPacific) {
 				return;
 			}
-			const sum = this.GetReactorsPower(this.hq) * 5;
+			const energy = this.GetReactorsPower(this.hq);
+			const sum = this._bonusValue.GetPower(energy);
 			if (0 < sum) {
 				const up = new AttackUp(vehicule, new CellUpCondition(vehicule), sum);
 				vehicule.SetPowerUp(up);

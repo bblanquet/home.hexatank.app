@@ -1,3 +1,4 @@
+import { BonusValueProvider } from './BonusValueProvider';
 import { ShieldAppearance } from './ShieldAppearance';
 import { Headquarter } from './../Hq/Headquarter';
 import { Cell } from '../../Cell';
@@ -12,12 +13,13 @@ import { BouncingScaleDownAnimator } from '../../../Animator/BouncingScaleDownAn
 import { BouncingScaleUpAnimator } from '../../../Animator/BouncingScaleUpAnimator';
 
 export class ShieldField extends AliveBonusField {
+	private _bonusValuProvider: BonusValueProvider = new BonusValueProvider();
 	private _shieldAppearance: ShieldAppearance;
-	private _timer: ITimer;
+	private _fixTimer: ITimer;
 
 	constructor(cell: Cell, hq: Headquarter) {
 		super(cell, [], hq);
-		this._timer = new TimeTimer(3000);
+		this._fixTimer = new TimeTimer(1000);
 		if (isNullOrUndefined(hq)) {
 			throw 'not supposed to be there';
 		}
@@ -59,10 +61,10 @@ export class ShieldField extends AliveBonusField {
 			this.Destroy();
 			return;
 		} else {
-			if (this._timer.IsElapsed()) {
+			if (this._fixTimer.IsElapsed()) {
 				if (this.HasDamage()) {
-					const bonus = 0.5 * this.GetReactorsPower(this.Hq);
-					this.SetDamage(-(0.5 + bonus));
+					const fixValue = this._bonusValuProvider.GetFixValue(this.GetReactorsPower(this.Hq));
+					this.SetDamage(-fixValue);
 				}
 			}
 			super.Update(viewX, viewY);

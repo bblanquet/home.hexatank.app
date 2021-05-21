@@ -61,8 +61,12 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 		this._spriteManager.SetProperties(names, func);
 	}
 
-	protected Push(blop: PIXI.Graphics): void {
+	protected Push(blop: PIXI.DisplayObject): void {
 		this.DisplayObjects.push(blop);
+	}
+
+	protected AddSprite(key: string, sprite: PIXI.Sprite, func?: (sprite: PIXI.Sprite) => void): void {
+		this._spriteManager.AddSprite(key, sprite, func);
 	}
 
 	protected GenerateSprite(name: string, func?: (sprite: PIXI.Sprite) => void): void {
@@ -93,6 +97,10 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 			sprite.width = this.GetBoundingBox().Width;
 			sprite.height = this.GetBoundingBox().Height;
 		});
+		this._layerService.Publish().Add(this);
+	}
+
+	public Init(): void {
 		this._layerService.Publish().Add(this);
 	}
 

@@ -25,6 +25,13 @@ export class SpriteManager {
 		names.forEach((name) => this.SetProperty(name, func));
 	}
 
+	public AddSprite(name: string, sprite: PIXI.Sprite, func?: (sprite: PIXI.Sprite) => void) {
+		if (func) {
+			func(sprite);
+		}
+		this._sprites.Add(name, sprite);
+	}
+
 	public GenerateSprite(name: string, func?: (sprite: PIXI.Sprite) => void) {
 		const sprite = SpriteProvider.GetSprite(name);
 

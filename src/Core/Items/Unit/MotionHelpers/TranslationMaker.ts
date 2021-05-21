@@ -8,7 +8,6 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 	private _departureDate: number;
 	private _arrivalDate: number;
 	private _ratio: number = 0;
-	private readonly milliseconds = 1000;
 
 	constructor(item: T) {
 		this._movableObject = item;
@@ -59,9 +58,8 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 			this._ratio = 0;
 			this._departureDate = new Date().getTime();
 			this._arrivalDate =
-				new Date(
-					this._departureDate + this._movableObject.GetTranslationDuration() * this.milliseconds
-				).getTime() - this._departureDate;
+				new Date(this._departureDate + this._movableObject.GetTranslationDuration()).getTime() -
+				this._departureDate;
 			this._movableObject.OnTranslateStarted.Invoke(this._movableObject, this._movableObject.GetNextCell());
 		}
 	}

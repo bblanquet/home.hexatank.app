@@ -12,7 +12,7 @@ import { GameSettings } from '../../../../Framework/GameSettings';
 
 export class ChargeLink extends Item implements IMovable {
 	private _translateMaker: ITranslationMaker;
-	private _translatingDuration: number = GameSettings.TranslatinDuration * 3;
+	private _translatingDuration: number = GameSettings.TranslatinDuration;
 	public OnTranslateStarted: LiteEvent<Cell> = new LiteEvent<Cell>();
 	public OnTranslateStopped: LiteEvent<Cell> = new LiteEvent<Cell>();
 	private _boundingBox: BoundingBox;

@@ -1,11 +1,14 @@
+import { DamageText } from './Unit/DamageText';
+import { GameSettings } from './../Framework/GameSettings';
 import { Item } from './Item';
 import { Cell } from './Cell/Cell';
 import * as PIXI from 'pixi.js';
 import { LiteEvent } from '../Utils/Events/LiteEvent';
 
 export abstract class AliveItem extends Item {
-	protected Life: number = 40;
-	protected TotalLife: number = 40;
+	private _damageText: DamageText;
+	protected Life: number = GameSettings.UnitLife;
+	protected TotalLife: number = GameSettings.UnitLife;
 	private _totalLifeBar: PIXI.Graphics;
 	private _borderBar: PIXI.Graphics;
 	private _currentLifeBar: PIXI.Graphics;
@@ -37,6 +40,7 @@ export abstract class AliveItem extends Item {
 		this._lifeBars.push(this._borderBar);
 		this._lifeBars.push(this._totalLifeBar);
 		this._lifeBars.push(this._currentLifeBar);
+		this._damageText = new DamageText(this);
 	}
 
 	public HasDamage(): boolean {

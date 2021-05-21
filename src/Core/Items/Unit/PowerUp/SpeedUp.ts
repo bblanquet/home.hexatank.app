@@ -13,13 +13,13 @@ export class SpeedUp extends Up {
 	) {
 		super(condition, new UpAnimation(_vehicle, Archive.speedUp, Archive.speedUp));
 
-		this._vehicle.SetTranslationDuration(-this._transationUp);
-		this._vehicle.SetRotatingDuration(-this._rotationUp);
+		this._vehicle.SetTranslationDuration(this._transationUp);
+		this._vehicle.SetRotatingDuration(this._rotationUp);
 		condition.Done.On(() => {
 			condition.Done.Clear();
 			this.Animation.Destroy();
-			this._vehicle.SetTranslationDuration(this._transationUp);
-			this._vehicle.SetRotatingDuration(this._rotationUp);
+			this._vehicle.SetTranslationDuration(-this._transationUp);
+			this._vehicle.SetRotatingDuration(-this._rotationUp);
 			this._vehicle.PowerUps = this._vehicle.PowerUps.filter((p) => p !== this);
 		});
 

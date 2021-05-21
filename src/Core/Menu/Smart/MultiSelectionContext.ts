@@ -91,7 +91,7 @@ export class MultiSelectionContext implements IInteractionContext {
 				const displayPath = new BasicItem(
 					cell.GetBoundingBox(),
 					Archive.menu.smartMenu.multiCellSelection,
-					ZKind.AboveSky
+					ZKind.Sky
 				);
 				displayPath.SetAlive(() => true);
 				displayPath.SetVisible(() => true);

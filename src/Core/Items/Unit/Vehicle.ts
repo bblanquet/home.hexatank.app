@@ -1,3 +1,4 @@
+import { TimeTimer } from './../../Utils/Timer/TimeTimer';
 import { BasicItem } from './../BasicItem';
 import { ShieldField } from './../Cell/Field/Bonus/ShieldField';
 import { ZKind } from './../ZKind';
@@ -21,7 +22,6 @@ import { AngleFinder } from './MotionHelpers/AngleFinder';
 import { IRotatable } from './MotionHelpers/IRotatable';
 import { ISelectable } from '../../ISelectable';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
-import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { CellState } from '../Cell/CellState';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { CellProperties } from '../Cell/CellProperties';
@@ -65,7 +65,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	private _angleFinder: IAngleFinder;
 	private _pendingOrder: IOrder;
 
-	private _dustTimer: TickTimer;
+	private _dustTimer: TimeTimer;
 	private _dustIndex: number;
 	private _leftDusts: Array<Dust>;
 	private _rightDusts: Array<Dust>;
@@ -111,7 +111,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		}
 
 		this.WheelIndex = 0;
-		this._dustTimer = new TickTimer(12);
+		this._dustTimer = new TimeTimer(150);
 		this._dustIndex = 0;
 
 		this._translationMaker = new TranslationMaker<Vehicle>(this);
@@ -418,7 +418,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
 		if (!this.IsAlive() || !this.Hq.IsAlive()) {
 			if (!this.Hq.IsAlive()) {
-				new Explosion(this.GetBoundingBox(), Archive.explosions, ZKind.AboveSky, true, 20);
+				new Explosion(this.GetBoundingBox(), Archive.explosions, ZKind.Sky, true, 20);
 			}
 			this.Destroy();
 			new Crater(this.BoundingBox);

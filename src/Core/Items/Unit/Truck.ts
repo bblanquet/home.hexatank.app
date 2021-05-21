@@ -1,3 +1,4 @@
+import { TimeTimer } from './../../Utils/Timer/TimeTimer';
 import { GameSettings } from './../../Framework/GameSettings';
 import { Vehicle } from './Vehicle';
 import { IHqContainer } from './IHqContainer';
@@ -5,7 +6,6 @@ import { AliveItem } from '../AliveItem';
 import { Headquarter } from '../Cell/Field/Hq/Headquarter';
 import { Light } from '../Environment/Light';
 import { Archive } from '../../Framework/ResourceArchiver';
-import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { CellState } from '../Cell/CellState';
 import { ITimer } from '../../Utils/Timer/ITimer';
 import { GameContext } from '../../Framework/GameContext';
@@ -19,7 +19,7 @@ export class Truck extends Vehicle implements IHqContainer {
 	constructor(hq: Headquarter, gameContext: GameContext, isPacific: boolean = false) {
 		super(hq, gameContext);
 		this.IsPacific = isPacific;
-		this._dimaondTimer = new TickTimer(GameSettings.DiamondLoadingSpeed);
+		this._dimaondTimer = new TimeTimer(GameSettings.DiamondLoadingSpeed);
 
 		this._gatheredDiamonds = Archive.diamonds;
 

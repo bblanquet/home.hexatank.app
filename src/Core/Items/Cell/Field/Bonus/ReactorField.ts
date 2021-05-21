@@ -1,3 +1,4 @@
+import { BonusValueProvider } from './BonusValueProvider';
 import { Dictionnary } from './../../../../Utils/Collections/Dictionnary';
 import { Charge } from '../Hq/Charge';
 import { ZKind } from './../../../ZKind';
@@ -34,9 +35,10 @@ import { Item } from '../../../Item';
 import { ISpot } from '../../../../Utils/Geometry/ISpot';
 
 export class ReactorField extends Field implements ISelectable, ISpot<ReactorField> {
+	private _bonusValueProvider: BonusValueProvider = new BonusValueProvider();
 	//state
 	public Reserve: ReactorReserve;
-	private _totalRange: number = 4;
+	private _totalRange: number = 3;
 	private _isLocked: boolean;
 	private _range: number = 0;
 
@@ -131,17 +133,17 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	}
 
 	private GetVehicles(): Array<Vehicle> {
-		let vehicles = new Array<Vehicle>();
+		const vehicles = new Dictionnary<Vehicle>();
 
 		this.GetAllCells().forEach((c) => {
 			if (c.HasOccupier()) {
 				const vehicle = c.GetOccupier() as Vehicle;
-				if (!vehicle.IsEnemy(this.Hq)) {
-					vehicles.push(vehicle);
+				if (!vehicle.IsEnemy(this.Hq) && !vehicles.Exist(vehicle.Id)) {
+					vehicles.Add(vehicle.Id, vehicle);
 				}
 			}
 		});
-		return vehicles;
+		return vehicles.Values();
 	}
 
 	private GetPowerUp(type: any): string {
@@ -165,8 +167,8 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 					return;
 				}
 				if (v instanceof Tank) {
-					const sum = this.GetPower() * 5;
-					v.SetPowerUp(new AttackUp(v, new TimeUpCondition(), sum));
+					const powerUp = this._bonusValueProvider.GetPower(this.GetPower());
+					v.SetPowerUp(new AttackUp(v, new TimeUpCondition(), powerUp));
 				}
 			});
 		} else if (type instanceof HealMenuItem) {
@@ -174,16 +176,18 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 				if (v.IsPacific) {
 					return;
 				}
-				const sum = this.GetPower();
-				v.SetPowerUp(new HealUp(v, new TimeUpCondition(), sum));
+				const powerUp = this._bonusValueProvider.GetFixValue(this.GetPower());
+				v.SetPowerUp(new HealUp(v, new TimeUpCondition(), powerUp));
 			});
 		} else if (type instanceof SpeedFieldMenuItem) {
 			vehicles.forEach((v) => {
 				if (v.IsPacific) {
 					return;
 				}
-				const sum = this.GetPower() * 0.2;
-				v.SetPowerUp(new SpeedUp(v, new TimeUpCondition(), sum, sum));
+				const energy = this.GetPower();
+				const tr = this._bonusValueProvider.GetSpeedTranslation(energy);
+				const rt = this._bonusValueProvider.GetSpeedRotation(energy);
+				v.SetPowerUp(new SpeedUp(v, new TimeUpCondition(), tr, rt));
 			});
 		}
 	}
@@ -240,7 +244,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 				if (TypeTranslator.IsBonusField(c.GetField())) {
 					c.DestroyField();
 					if (c.IsVisible()) {
-						new Explosion(c.GetBoundingBox(), Archive.constructionEffects, ZKind.AboveSky, false, 5);
+						new Explosion(c.GetBoundingBox(), Archive.constructionEffects, ZKind.Sky, false, 5);
 					}
 				}
 			});
@@ -354,6 +358,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		if (this._internalCells.IsEmpty()) {
 			this.RefreshInternal();
 		}
+		console.log('total ' + this._internalCells.All().length);
 		return this._internalCells;
 	}
 

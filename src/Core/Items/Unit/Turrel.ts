@@ -1,3 +1,4 @@
+import { TimeTimer } from './../../Utils/Timer/TimeTimer';
 import { ZKind } from './../ZKind';
 import { Item } from '../Item';
 import { Tank } from './Tank';
@@ -42,8 +43,8 @@ export class Turrel extends Item implements IRotatable {
 		this.Z = ZKind.AboveCell;
 		this.Base = item;
 		this.Radius = 0;
-		this._coolingDownTimer = new TickTimer(100);
-		this._animationTimer = new TickTimer(5);
+		this._coolingDownTimer = new TimeTimer(GameSettings.TurrelCoolingDown);
+		this._animationTimer = new TimeTimer(10);
 
 		Archive.cannons.forEach((cannon) => {
 			this.GenerateSprite(cannon, (e) => {

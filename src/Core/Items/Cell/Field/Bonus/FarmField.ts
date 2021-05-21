@@ -1,6 +1,7 @@
+import { BonusValueProvider } from './BonusValueProvider';
+import { TimeTimer } from './../../../../Utils/Timer/TimeTimer';
 import { GameSettings } from '../../../../Framework/GameSettings';
 import { Cell } from '../../Cell';
-import { TickTimer } from '../../../../Utils/Timer/TickTimer';
 import { Light } from '../../../Environment/Light';
 import { Archive } from '../../../../Framework/ResourceArchiver';
 import { Vehicle } from '../../../Unit/Vehicle';
@@ -10,12 +11,13 @@ import { BonusField } from './BonusField';
 import { CellState } from '../../CellState';
 
 export class FarmField extends BonusField {
-	private _timer: TickTimer;
+	private _timer: TimeTimer;
 	private _lightItem: Light;
+	private _bonusProvider: BonusValueProvider = new BonusValueProvider();
 
 	constructor(cell: Cell, protected hq: Headquarter) {
 		super(cell, [ Archive.bonus.emptyMoney, Archive.bonus.fullMoney ], hq);
-		this._timer = new TickTimer(GameSettings.MoneyLoadingSpeed);
+		this._timer = new TimeTimer(GameSettings.MoneyLoadingSpeed);
 		this._lightItem = new Light(cell.GetBoundingBox());
 		this._lightItem.Hide();
 
@@ -44,10 +46,10 @@ export class FarmField extends BonusField {
 		if (this.IsFull()) {
 			if (vehicule instanceof Truck) {
 				let truck = vehicule as Truck;
-				const sum = this.GetReactorsPower(this.hq);
-				truck.Hq.Earn(sum);
+				const energy = this.GetReactorsPower(this.hq);
 				this.SetEmpty();
 				this._lightItem.Hide();
+				truck.Hq.Earn(this._bonusProvider.GetDiamondValue(energy));
 			}
 		}
 

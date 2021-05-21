@@ -179,13 +179,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		this.Fields.every((field) => {
 			if (!field.GetCell().IsBlocked()) {
 				if (field.GetCell().IsVisible()) {
-					new Explosion(
-						field.GetCell().GetBoundingBox(),
-						Archive.constructionEffects,
-						ZKind.AboveSky,
-						false,
-						5
-					);
+					new Explosion(field.GetCell().GetBoundingBox(), Archive.constructionEffects, ZKind.Sky, false, 5);
 				}
 				const tank = new Tank(this, this.GameContext);
 				tank.SetPosition(cell === null ? field.GetCell() : cell);

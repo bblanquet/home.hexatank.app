@@ -223,7 +223,7 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 		this.Camouflage = new BasicItem(
 			BoundingBox.CreateFromBox(this.GetBoundingBox()),
 			new CamouflageHandler().GetCamouflage(),
-			ZKind.AboveSky
+			ZKind.Sky
 		);
 		this.Camouflage.SetVisible(() => {
 			return this.IsAlive() && this.HasCamouflage;
@@ -233,7 +233,7 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 		const explosion = new Explosion(
 			BoundingBox.CreateFromBox(this.GetBoundingBox()),
 			Archive.constructionEffects,
-			ZKind.AboveSky,
+			ZKind.Sky,
 			false,
 			5
 		);

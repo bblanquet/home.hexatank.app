@@ -6,5 +6,6 @@ export enum ZKind {
 	Cell = 3,
 	AboveCell = 4,
 	Sky = 5,
-	AboveSky = 5
+	AboveSky = 6,
+	IntoSpace = 7
 }

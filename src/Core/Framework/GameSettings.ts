@@ -1,27 +1,32 @@
 export class GameSettings {
-	public static TurrelRotatingDuration: number = 1;
-	public static RotatingDuration: number = 2; //0.05
-	public static TranslatinDuration: number = 3; //1
-	public static DiamondLoadingSpeed: number = 3; //30
-	public static MoneyLoadingSpeed: number = 3; //10
-	public static GeneralLife: number = 20; //100
-
-	public static GetFastestRotation(): number {
-		return 0.3;
-	}
-
-	public static GetFastestTranslation(): number {
-		return 0.1;
-	}
-
-	public static Size: number = 50;
+	public static TurrelRotatingDuration: number = 1000;
+	public static RotatingDuration: number = 1000; //0.05
+	public static TranslatinDuration: number = 3000; //1
 	public static MissileTranslationSpeed: number = 5;
-	public static IsPause: boolean = false;
-	public static ShowEnemies: boolean = false;
+
+	public static DiamondLoadingSpeed: number = 300; //30
+	public static MoneyLoadingSpeed: number = 3; //10
+	public static UnitLife: number = 20; //100
+	public static NatureLife: number = 40; //100
+	public static TurrelCoolingDown: number = 3000; //100
 	public static Attack: number = 10;
+
 	public static TankPrice: number = 8;
 	public static TruckPrice: number = 4;
 	public static FieldPrice: number = 2;
+
+	public static GetFastestRotation(): number {
+		return 300;
+	}
+
+	public static GetFastestTranslation(): number {
+		return 500;
+	}
+
+	public static Size: number = 50;
+	public static IsPause: boolean = false;
+	public static ShowEnemies: boolean = false;
+
 	public static PocketMoney: number = 20;
 	public static MapSize: number = 0;
 
@@ -38,12 +43,13 @@ export class GameSettings {
 	}
 
 	public static SetNormalSpeed(): void {
-		this.RotatingDuration = 0.8;
-		this.TurrelRotatingDuration = 1;
-		this.TranslatinDuration = 1;
+		this.RotatingDuration = 1000;
+		this.TurrelRotatingDuration = 1000;
+		this.TranslatinDuration = 1000;
 		this.DiamondLoadingSpeed = 30;
 		this.MoneyLoadingSpeed = 10;
-		this.GeneralLife = 30;
+		this.UnitLife = 100;
+		this.NatureLife = 40;
 	}
 
 	public static SetFastSpeed(): void {
@@ -52,6 +58,7 @@ export class GameSettings {
 		this.TranslatinDuration = this.GetFastestTranslation();
 		this.DiamondLoadingSpeed = 3;
 		this.MoneyLoadingSpeed = 3;
-		this.GeneralLife = 20;
+		this.UnitLife = 20;
+		this.NatureLife = 5;
 	}
 }

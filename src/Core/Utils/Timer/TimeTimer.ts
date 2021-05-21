@@ -2,22 +2,22 @@ import { ITimer } from './ITimer';
 
 export class TimeTimer implements ITimer {
 	private _currentDate: number;
-	constructor(private _tick: number) {
-		this._currentDate = Date.now() + this._tick;
+	constructor(private _milliseconds: number) {
+		this._currentDate = Date.now() + this._milliseconds;
 	}
 
 	SetTicks(milliseconds: number): void {
 		if (milliseconds <= 1) {
 			throw 'has to be higher than 1';
 		}
-		this._tick = milliseconds;
-		this._currentDate = Date.now() + this._tick;
+		this._milliseconds = milliseconds;
+		this._currentDate = Date.now() + this._milliseconds;
 	}
 
 	IsElapsed(): boolean {
 		const result = this._currentDate < Date.now();
 		if (result) {
-			this._currentDate = Date.now() + this._tick;
+			this._currentDate = Date.now() + this._milliseconds;
 		}
 		return result;
 	}

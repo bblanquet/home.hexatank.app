@@ -9,14 +9,14 @@ import { InteractionContext } from '../../../Interaction/InteractionContext';
 import { ZKind } from '../../ZKind';
 
 export class BlockingField extends AliveField {
-	constructor(ceil: Cell, sprite: string) {
-		super(ceil);
-		this.TotalLife = GameSettings.GeneralLife;
-		this.Life = GameSettings.GeneralLife;
+	constructor(cell: Cell, sprite: string) {
+		super(cell);
+		this.TotalLife = GameSettings.NatureLife;
+		this.Life = GameSettings.NatureLife;
 		this.GetCell().SetField(this);
 		this.Z = ZKind.Field;
 		this.GenerateSprite(sprite);
-		this.InitPosition(ceil.GetBoundingBox());
+		this.InitPosition(cell.GetBoundingBox());
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});

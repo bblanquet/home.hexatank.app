@@ -6,6 +6,10 @@ export class TimeTimer implements ITimer {
 		this._currentDate = Date.now() + this._milliseconds;
 	}
 
+	Reset(): void {
+		this._currentDate = Date.now() + this._milliseconds;
+	}
+
 	SetTicks(milliseconds: number): void {
 		if (milliseconds <= 1) {
 			throw 'has to be higher than 1';

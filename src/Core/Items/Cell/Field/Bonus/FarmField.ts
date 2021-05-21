@@ -17,7 +17,7 @@ export class FarmField extends BonusField {
 
 	constructor(cell: Cell, protected hq: Headquarter) {
 		super(cell, [ Archive.bonus.emptyMoney, Archive.bonus.fullMoney ], hq);
-		this._timer = new TimeTimer(GameSettings.MoneyLoadingSpeed);
+		this._timer = new TimeTimer(GameSettings.FarmLoading);
 		this._lightItem = new Light(cell.GetBoundingBox());
 		this._lightItem.Hide();
 

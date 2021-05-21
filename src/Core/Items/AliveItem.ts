@@ -62,6 +62,7 @@ export abstract class AliveItem extends Item {
 	public SetDamage(damage: number): void {
 		this.Life -= damage;
 		this.UpdateDamage();
+		this.OnDamageReceived.Invoke(this, damage);
 	}
 
 	public SetVisible(isVisible: boolean): void {
@@ -83,7 +84,6 @@ export abstract class AliveItem extends Item {
 		if (this.TotalLife < this.Life) {
 			this.Life = this.TotalLife;
 		}
-		this.OnDamageReceived.Invoke(this, this.Life);
 	}
 
 	public Update(viewX: number, viewY: number): void {

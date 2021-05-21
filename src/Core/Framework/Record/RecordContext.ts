@@ -76,7 +76,7 @@ export class RecordContext {
 		);
 		this._data.Hqs.Get(src.PlayerName).Units.Add(vehicule.Id, trackingUnit);
 		vehicule.OnCellChanged.On(this.HandleVehicleCellChanged.bind(this));
-		vehicule.OnDamageReceived.On(this.HandleVehicleCellChanged.bind(this));
+		vehicule.OnDamageReceived.On(this.HandleVehicleDamaged.bind(this));
 		vehicule.OnDestroyed.On(this.HandleVehicleDestroyed.bind(this));
 	}
 
@@ -89,6 +89,19 @@ export class RecordContext {
 			.Actions.push(
 				new RecordAction(time, src.GetCurrentCell().GetHexCoo(), RecordKind.Destroyed, src.GetCurrentLife())
 			);
+	}
+
+	private HandleVehicleDamaged(src: Vehicle, formerCell: Cell): void {
+		if (src.IsAlive()) {
+			const time = this.GetTime();
+			this._data.Dates.push(time);
+			this._data.Hqs
+				.Get(src.Hq.PlayerName)
+				.Units.Get(src.Id)
+				.Actions.push(
+					new RecordAction(time, src.GetCurrentCell().GetHexCoo(), RecordKind.Damage, src.GetCurrentLife())
+				);
+		}
 	}
 
 	private HandleVehicleCellChanged(src: Vehicle, formerCell: Cell): void {

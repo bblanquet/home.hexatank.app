@@ -3,6 +3,7 @@ export enum RecordKind {
 	Created,
 	Moved,
 	Destroyed,
+	Damage,
 	Basic,
 	Attack,
 	Battery,

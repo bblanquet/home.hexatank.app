@@ -1,4 +1,5 @@
-export interface ITimer{
-    SetTicks(tick:number):void;
-    IsElapsed():boolean;
+export interface ITimer {
+	SetTicks(tick: number): void;
+	IsElapsed(): boolean;
+	Reset(): void;
 }

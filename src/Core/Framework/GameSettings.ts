@@ -4,8 +4,8 @@ export class GameSettings {
 	public static TranslatinDuration: number = 3000; //1
 	public static MissileTranslationSpeed: number = 5;
 
-	public static DiamondLoadingSpeed: number = 300; //30
-	public static MoneyLoadingSpeed: number = 3; //10
+	public static DiamondLoading: number = 300; //30
+	public static FarmLoading: number = 5000; //10
 	public static UnitLife: number = 20; //100
 	public static NatureLife: number = 40; //100
 	public static TurrelCoolingDown: number = 3000; //100
@@ -46,8 +46,8 @@ export class GameSettings {
 		this.RotatingDuration = 1000;
 		this.TurrelRotatingDuration = 1000;
 		this.TranslatinDuration = 1000;
-		this.DiamondLoadingSpeed = 30;
-		this.MoneyLoadingSpeed = 10;
+		this.DiamondLoading = 30;
+		this.FarmLoading = 10;
 		this.UnitLife = 100;
 		this.NatureLife = 40;
 	}
@@ -56,8 +56,8 @@ export class GameSettings {
 		this.RotatingDuration = this.GetFastestRotation();
 		this.TurrelRotatingDuration = 0.1;
 		this.TranslatinDuration = this.GetFastestTranslation();
-		this.DiamondLoadingSpeed = 3;
-		this.MoneyLoadingSpeed = 3;
+		this.DiamondLoading = 3;
+		this.FarmLoading = 3;
 		this.UnitLife = 20;
 		this.NatureLife = 5;
 	}

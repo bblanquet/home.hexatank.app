@@ -9,6 +9,10 @@ export class TickTimer implements ITimer {
 		this._current = this._tick - 1;
 	}
 
+	Reset(): void {
+		this._current = 0;
+	}
+
 	SetTicks(tick: number): void {
 		if (tick <= 1) {
 			throw 'has to be higher than 1';

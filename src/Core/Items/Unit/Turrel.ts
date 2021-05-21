@@ -130,6 +130,7 @@ export class Turrel extends Item implements IRotatable {
 				if (this._currentCanon == 0) {
 					this.IsAnimated = false;
 					this.IsCanonOverHeat = true;
+					this._coolingDownTimer.Reset();
 				}
 			}
 		}

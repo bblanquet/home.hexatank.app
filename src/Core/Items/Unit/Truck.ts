@@ -19,7 +19,7 @@ export class Truck extends Vehicle implements IHqContainer {
 	constructor(hq: Headquarter, gameContext: GameContext, isPacific: boolean = false) {
 		super(hq, gameContext);
 		this.IsPacific = isPacific;
-		this._dimaondTimer = new TimeTimer(GameSettings.DiamondLoadingSpeed);
+		this._dimaondTimer = new TimeTimer(GameSettings.DiamondLoading);
 
 		this._gatheredDiamonds = Archive.diamonds;
 

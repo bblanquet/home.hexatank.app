@@ -40,7 +40,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	public Id: string;
 	private _rotatingDuration: number = GameSettings.RotatingDuration;
 	private _translatingDuration: number = GameSettings.TranslatinDuration;
-	public Attack: number = 10;
+	public Attack: number = GameSettings.Attack;
 	public IsPacific: boolean = false;
 	protected RootSprites: Array<string>;
 	private WheelIndex: number;

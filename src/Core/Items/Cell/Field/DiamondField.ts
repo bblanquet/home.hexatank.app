@@ -34,8 +34,6 @@ export class DiamondField extends Field {
 	}
 
 	public Support(vehicule: Vehicle): void {
-		vehicule.Attack = GameSettings.Attack;
-
 		if (vehicule instanceof Truck) {
 			var truck = vehicule as Truck;
 			if (truck.Load()) {

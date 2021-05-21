@@ -34,7 +34,6 @@ export class SlowField extends Field {
 	}
 	Support(vehicule: Vehicle): void {
 		const sum = this.GetReactorsPower(null);
-		vehicule.Attack = GameSettings.Attack;
 	}
 
 	IsDesctrutible(): boolean {

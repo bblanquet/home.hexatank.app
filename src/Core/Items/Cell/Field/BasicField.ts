@@ -11,9 +11,7 @@ export class BasicField extends Field {
 		this.GetCell().SetField(this);
 	}
 
-	Support(vehicule: Vehicle): void {
-		vehicule.Attack = GameSettings.Attack;
-	}
+	Support(vehicule: Vehicle): void {}
 
 	IsDesctrutible(): boolean {
 		return false;

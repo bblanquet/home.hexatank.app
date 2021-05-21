@@ -52,7 +52,7 @@ export class DamageText extends Item {
 	}
 
 	private Damage(source: any, data: number): void {
-		if (this._aliveItem.IsUpdatable) {
+		if (this._aliveItem.IsUpdatable && this._aliveItem.GetCurrentCell().IsVisible()) {
 			this._amount = data * -1;
 			this._isVisible = true;
 			this._visibleTimer = new TimeTimer(1000);

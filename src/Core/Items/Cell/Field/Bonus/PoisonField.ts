@@ -20,7 +20,6 @@ export class PoisonField extends BonusField {
 				const poison = new BonusValueProvider().GetPoison(energy);
 				vehicule.SetDamage(poison);
 			}
-			vehicule.Attack = GameSettings.Attack;
 		}
 	}
 }

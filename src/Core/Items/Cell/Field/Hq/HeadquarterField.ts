@@ -33,8 +33,6 @@ export class HeadQuarterField extends Field {
 	}
 
 	public Support(vehicule: Vehicle): void {
-		vehicule.Attack = GameSettings.Attack;
-
 		if (vehicule instanceof Truck) {
 			var truck = vehicule as Truck;
 			if (!truck.IsEnemy(this._hq)) {

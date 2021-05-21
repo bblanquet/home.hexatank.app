@@ -52,8 +52,6 @@ export class FarmField extends BonusField {
 				truck.Hq.Earn(this._bonusProvider.GetDiamondValue(energy));
 			}
 		}
-
-		vehicule.Attack = GameSettings.Attack;
 	}
 
 	public Update(viewX: number, viewY: number): void {

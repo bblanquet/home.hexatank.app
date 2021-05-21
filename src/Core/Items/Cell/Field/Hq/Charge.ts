@@ -18,8 +18,10 @@ export class Charge extends Item {
 		const sources = hq.GetReactors().filter((r) => r.IsCovered(_battery.GetCell()));
 		sources.forEach((source) => {
 			var path = new AStarEngine<ReactorField>((e) => true, (e) => 1).GetPath(source, _target);
-			path.splice(0, 0, source);
-			reactorPaths.push(path);
+			if (path) {
+				path.splice(0, 0, source);
+				reactorPaths.push(path);
+			}
 		});
 
 		var min = Math.min(...reactorPaths.map((c) => c.length));

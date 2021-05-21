@@ -127,13 +127,13 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 		return Dictionnary.To<KingdomArea>((t) => t.GetCentralCell().Coo(), this.AreaDecisions.map((m) => m.Area));
 	}
 
-	public Do(): void {
+	public Update(): void {
 		if (this._idleTimer.IsElapsed()) {
 			this.Trucks = this.Trucks.filter((t) => t.IsAlive());
 			this.Tanks = this.Tanks.filter((t) => t.IsAlive());
 			this.Squads = this.Squads.filter((s) => !s.IsDone());
 			this.Squads.forEach((squad) => {
-				squad.Do();
+				squad.Update();
 			});
 			const areas = new Array<KingdomArea>();
 			this.AreaDecisions = this.AreaDecisions.filter((t) => !t.IsDestroyed());

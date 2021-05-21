@@ -26,7 +26,7 @@ export class Squad implements IDoable {
 		return this._tanks.length === 0;
 	}
 
-	public Do(): void {
+	public Update(): void {
 		if (this._mainTarget.IsDone()) {
 			this.DispatchAll();
 		} else {

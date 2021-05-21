@@ -17,6 +17,6 @@ export class IaHeadquarter extends Headquarter {
 
 	public Update(viewX: number, viewY: number): void {
 		super.Update(viewX, viewY);
-		this._decision.Do();
+		this._decision.Update();
 	}
 }

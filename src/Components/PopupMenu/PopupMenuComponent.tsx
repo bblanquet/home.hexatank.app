@@ -10,7 +10,6 @@ import ActiveButtonComponent from '../Common/Button/Stylish/ActiveButtonComponen
 import { Factory, FactoryKey } from '../../Factory';
 import { GameContextService } from '../../Services/GameContext/GameContextService';
 import { ISoundService } from '../../Services/Sound/ISoundService';
-import SmActiveButtonComponent from '../Common/Button/Stylish/SmActiveButtonComponent';
 
 export default class PopupMenuComponent extends Component<
 	{ status: GameStatus; callBack: () => void },
@@ -58,7 +57,7 @@ export default class PopupMenuComponent extends Component<
 					</div>
 					<div class="fill-logo" />{' '}
 				</div>
-				<div class="container-center">
+				<div class="container-center" style="margin-top: -2vh">
 					<ButtonComponent
 						callBack={() => {
 							this.props.callBack();

@@ -37,7 +37,7 @@ export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 		const vehicles = new Array<Vehicle>();
 		this._multiContext.GetCells().forEach((c) => {
 			let occupier = (<Cell>(<unknown>c)).GetOccupier();
-			if (occupier && occupier instanceof Vehicle && !this._gameContext.GetMainHq().IsEnemy(occupier)) {
+			if (occupier && occupier instanceof Vehicle && !this._gameContext.GetPlayerHq().IsEnemy(occupier)) {
 				vehicles.push(occupier);
 			}
 		});

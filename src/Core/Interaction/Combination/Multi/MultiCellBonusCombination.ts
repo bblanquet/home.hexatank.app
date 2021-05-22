@@ -53,28 +53,28 @@ export class MultiCellBonusCombination extends AbstractSingleCombination {
 			let cells = context.Items[0] as CellGroup;
 			let menuItem = context.Items[1];
 			const cost = GameSettings.FieldPrice * cells.GetCells().length;
-			if (menuItem && this._gameContext.GetMainHq().Buy(cost)) {
+			if (menuItem && this._gameContext.GetPlayerHq().Buy(cost)) {
 				if (menuItem instanceof HealMenuItem) {
-					this.SetMenuItem(cells, (c) => new MedicField(c, this._gameContext.GetMainHq()));
+					this.SetMenuItem(cells, (c) => new MedicField(c, this._gameContext.GetPlayerHq()));
 				} else if (menuItem instanceof AttackMenuItem) {
-					this.SetMenuItem(cells, (c) => new AttackField(c, this._gameContext.GetMainHq()));
+					this.SetMenuItem(cells, (c) => new AttackField(c, this._gameContext.GetPlayerHq()));
 				} else if (menuItem instanceof ShieldMenuItem) {
-					this.SetMenuItem(cells, (c) => new ShieldField(c, this._gameContext.GetMainHq()));
+					this.SetMenuItem(cells, (c) => new ShieldField(c, this._gameContext.GetPlayerHq()));
 				} else if (menuItem instanceof SpeedFieldMenuItem) {
-					this.SetMenuItem(cells, (c) => new RoadField(c, this._gameContext.GetMainHq()));
+					this.SetMenuItem(cells, (c) => new RoadField(c, this._gameContext.GetPlayerHq()));
 				} else if (menuItem instanceof PoisonMenuItem) {
-					this.SetMenuItem(cells, (c) => new PoisonField(c, this._gameContext.GetMainHq()));
+					this.SetMenuItem(cells, (c) => new PoisonField(c, this._gameContext.GetPlayerHq()));
 				} else if (menuItem instanceof ThunderMenuItem) {
-					this.SetMenuItem(cells, (c) => new BatteryField(c, this._gameContext.GetMainHq()));
+					this.SetMenuItem(cells, (c) => new BatteryField(c, this._gameContext.GetPlayerHq()));
 				} else if (menuItem instanceof NetworkMenuItem) {
-					this.SetMenuItem(cells, (c) => new NetworkField(c, this._gameContext.GetMainHq()));
+					this.SetMenuItem(cells, (c) => new NetworkField(c, this._gameContext.GetPlayerHq()));
 				} else if (menuItem instanceof SlowMenuItem) {
 					this.SetMenuItem(
 						cells,
-						(c) => new SlowField(c, this._gameContext.GetMainHq().GetSkin().GetLight())
+						(c) => new SlowField(c, this._gameContext.GetPlayerHq().GetSkin().GetLight())
 					);
 				} else if (menuItem instanceof MoneyMenuItem) {
-					this.SetMenuItem(cells, (c) => new FarmField(c, this._gameContext.GetMainHq()));
+					this.SetMenuItem(cells, (c) => new FarmField(c, this._gameContext.GetPlayerHq()));
 				}
 				cells.SetSelected(false);
 				this.ClearContext.Invoke();

@@ -24,9 +24,11 @@ export class GameSoundManager {
 		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
 
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
-		const hq = this._gameContext.GetMainHq();
-		hq.OnReactorAdded.On(this.HandleReactor.bind(this));
-		hq.OnCashMissing.On(this.HandleMissingCash.bind(this));
+		const playerHq = this._gameContext.GetPlayerHq();
+		if (playerHq) {
+			playerHq.OnReactorAdded.On(this.HandleReactor.bind(this));
+			playerHq.OnCashMissing.On(this.HandleMissingCash.bind(this));
+		}
 		this._gameContext.GetHqs().forEach((hq) => {
 			hq.OnVehicleCreated.On(this.HandleVehicle.bind(this));
 			hq.OnFieldAdded.On(this.HandleFieldChanged.bind(this));
@@ -108,21 +110,24 @@ export class GameSoundManager {
 		}
 	}
 	HandleOrder(src: Vehicle, order: IOrder): void {
-		if (!src.IsEnemy(this._gameContext.GetMainHq())) {
-			const voices = [
-				AudioContent.ayaya,
-				AudioContent.copyThat,
-				AudioContent.engage,
-				AudioContent.fireAtWills,
-				AudioContent.sirYesSir,
-				AudioContent.allClear,
-				AudioContent.moveOut,
-				AudioContent.understood,
-				AudioContent.transmissionReceived
-			];
-			if (src.GetCurrentCell().IsVisible()) {
-				var index = Math.round(Math.random() * (voices.length - 1));
-				this.Play(voices[index], 0.05);
+		const playerHq = this._gameContext.GetPlayerHq();
+		if (playerHq) {
+			if (!src.IsEnemy(playerHq)) {
+				const voices = [
+					AudioContent.ayaya,
+					AudioContent.copyThat,
+					AudioContent.engage,
+					AudioContent.fireAtWills,
+					AudioContent.sirYesSir,
+					AudioContent.allClear,
+					AudioContent.moveOut,
+					AudioContent.understood,
+					AudioContent.transmissionReceived
+				];
+				if (src.GetCurrentCell().IsVisible()) {
+					var index = Math.round(Math.random() * (voices.length - 1));
+					this.Play(voices[index], 0.05);
+				}
 			}
 		}
 	}

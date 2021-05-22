@@ -18,7 +18,7 @@ export class AddTruckCombination extends AbstractSingleCombination {
 
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
-			this._gameContext.GetMainHq().AddTruckRequest();
+			this._gameContext.GetPlayerHq().AddTruckRequest();
 			context.Items.splice(context.Items.length - 1, 1);
 			return true;
 		}

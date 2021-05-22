@@ -87,7 +87,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		this.RangeAnimation();
 		this.Hq.AddField(this, cell);
 
-		if (this.GetHq() === this._context.GetMainHq()) {
+		if (this.GetHq() === this._context.GetPlayerHq()) {
 			this.SetSelectionAnimation();
 		}
 	}

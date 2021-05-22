@@ -88,7 +88,9 @@ export default class SinglePlayerComponent extends Component<any, MapSetting> {
 			hqCount,
 			this.ConvertEnv()
 		);
-		mapContext.Hqs[0].PlayerName = mapContext.PlayerName;
+		if (!this.state.onylIa) {
+			mapContext.Hqs[0].PlayerName = mapContext.PlayerName;
+		}
 		mapContext.Hqs.forEach((hq, index) => {
 			if (!hq.PlayerName) {
 				hq.isIa = true;

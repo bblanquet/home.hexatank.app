@@ -103,47 +103,47 @@ export class CombinationProvider {
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof SpeedFieldMenuItem,
-				(e) => new RoadField(e, gameContext.GetMainHq())
+				(e) => new RoadField(e, gameContext.GetPlayerHq())
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof AttackMenuItem,
-				(e) => new AttackField(e, gameContext.GetMainHq())
+				(e) => new AttackField(e, gameContext.GetPlayerHq())
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof SlowMenuItem,
-				(e) => new SlowField(e, gameContext.GetMainHq().GetSkin().GetLight())
+				(e) => new SlowField(e, gameContext.GetPlayerHq().GetSkin().GetLight())
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof ShieldMenuItem,
-				(e) => new ShieldField(e, gameContext.GetMainHq())
+				(e) => new ShieldField(e, gameContext.GetPlayerHq())
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof PoisonMenuItem,
-				(e) => new PoisonField(e, gameContext.GetMainHq())
+				(e) => new PoisonField(e, gameContext.GetPlayerHq())
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof MoneyMenuItem,
-				(e) => new FarmField(e, gameContext.GetMainHq())
+				(e) => new FarmField(e, gameContext.GetPlayerHq())
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof ThunderMenuItem,
-				(e) => new BatteryField(e, gameContext.GetMainHq())
+				(e) => new BatteryField(e, gameContext.GetPlayerHq())
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof NetworkMenuItem,
-				(e) => new NetworkField(e, gameContext.GetMainHq())
+				(e) => new NetworkField(e, gameContext.GetPlayerHq())
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof HealMenuItem,
-				(e) => new MedicField(e, gameContext.GetMainHq())
+				(e) => new MedicField(e, gameContext.GetPlayerHq())
 			),
 
 			//REACTOR

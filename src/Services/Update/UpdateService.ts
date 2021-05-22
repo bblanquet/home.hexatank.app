@@ -20,8 +20,12 @@ export class UpdateService implements IUpdateService {
 
 	Collect(): void {
 		this._itemsUpdater.Items.forEach((item) => {
-			item.Destroy();
-			item = null;
+			try {
+				item.Destroy();
+				item = null;
+			} catch (error) {
+				console.log(error);
+			}
 		});
 		this._itemsUpdater.Items = [];
 	}

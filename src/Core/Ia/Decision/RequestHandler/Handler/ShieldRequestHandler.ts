@@ -1,5 +1,3 @@
-import { HexAxial } from './../../../../Utils/Geometry/HexAxial';
-import { KingdomArea } from './../../Utils/KingdomArea';
 import { ShieldField } from './../../../../Items/Cell/Field/Bonus/ShieldField';
 import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';

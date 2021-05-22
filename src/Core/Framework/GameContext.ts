@@ -27,7 +27,7 @@ export class GameContext {
 	public GameStatusChanged: LiteEvent<GameStatus> = new LiteEvent<GameStatus>();
 
 	//elements
-	private _mainHq: Headquarter;
+	private _playerHq: Headquarter;
 	private _hqs: Headquarter[];
 	private _cells: Dictionnary<Cell>;
 	private _vehicles: Dictionnary<Vehicle> = new Dictionnary<Vehicle>();
@@ -43,28 +43,28 @@ export class GameContext {
 
 	private _mapContext: MapContext;
 
-	public Setup(mapContext: MapContext, mainHq: Headquarter, hqs: Headquarter[], cells: Cell[]) {
-		this._mainHq = mainHq;
+	public Setup(mapContext: MapContext, hqs: Headquarter[], cells: Cell[], playerHq: Headquarter = null) {
+		this._playerHq = playerHq;
 		this._mapContext = mapContext;
 		this._hqs = hqs;
 		this._cells = Dictionnary.To((c) => c.Coo(), cells);
 
-		this._mainHq.OnDestroyed.On(() => {
-			this.GameStatusChanged.Invoke(this, GameStatus.Lost);
-		});
-
 		this._hqs.forEach((hq) => {
 			hq.OnVehicleCreated.On(this.DefineVehicleName.bind(this));
 		});
-
-		const foes = this._hqs.filter((hq) => hq !== this._mainHq);
-		foes.forEach((foe) => {
-			foe.OnDestroyed.On(() => {
-				if (foes.every((e) => !e.IsAlive())) {
-					this.GameStatusChanged.Invoke(this, GameStatus.Won);
-				}
+		if (this._playerHq) {
+			this._playerHq.OnDestroyed.On(() => {
+				this.GameStatusChanged.Invoke(this, GameStatus.Lost);
 			});
-		});
+			const foes = this._hqs.filter((hq) => hq !== this._playerHq);
+			foes.forEach((foe) => {
+				foe.OnDestroyed.On(() => {
+					if (foes.every((e) => !e.IsAlive())) {
+						this.GameStatusChanged.Invoke(this, GameStatus.Won);
+					}
+				});
+			});
+		}
 
 		this.StatsContext = new StatsContext(this);
 	}
@@ -77,8 +77,8 @@ export class GameContext {
 		return this._vehicles.Exist(id);
 	}
 
-	public GetMainHq(): Headquarter {
-		return this._mainHq;
+	public GetPlayerHq(): Headquarter {
+		return this._playerHq;
 	}
 
 	public GetHqs(): Headquarter[] {

@@ -29,7 +29,7 @@ export class GenericCellCombination extends AbstractSingleCombination {
 			let cell = <Cell>context.Items[0];
 			if (!isNullOrUndefined(cell)) {
 				if (cell.GetField() instanceof BasicField) {
-					if (this._gameContext.GetMainHq().Buy(GameSettings.FieldPrice)) {
+					if (this._gameContext.GetPlayerHq().Buy(GameSettings.FieldPrice)) {
 						this._create(cell);
 					}
 				}

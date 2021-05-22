@@ -210,7 +210,7 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 		this.camouflagedSprites = this.GetSprites().filter((s) => s.alpha !== 0);
 		this.camouflagedSprites.concat(this.Turrel.GetSprites().filter((s) => s.alpha !== 0));
 
-		if (this.GameContext.GetMainHq() === this.Hq) {
+		if (this.GameContext.GetPlayerHq() === this.Hq) {
 			this.camouflagedSprites.forEach((s) => {
 				s.alpha = 0.5;
 			});
@@ -245,7 +245,7 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 		if (this.HasCamouflage) {
 			this.HasCamouflage = false;
 
-			if (this.GameContext.GetMainHq() === this.Hq) {
+			if (this.GameContext.GetPlayerHq() === this.Hq) {
 				this.camouflagedSprites.forEach((s) => {
 					s.alpha = 1;
 				});

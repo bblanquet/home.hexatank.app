@@ -29,8 +29,8 @@ export class ReactorCombination extends AbstractSingleCombination {
 				if (cell.GetField() instanceof BasicField) {
 					if (
 						this._gameContext
-							.GetMainHq()
-							.Buy(GameSettings.TruckPrice * this._gameContext.GetMainHq().GetReactorsCount())
+							.GetPlayerHq()
+							.Buy(GameSettings.TruckPrice * this._gameContext.GetPlayerHq().GetReactorsCount())
 					) {
 						// PeerHandler.SendMessage(PacketKind.Field, {
 						// 	Hq: this._gameContext.GetMainHq().GetCurrentCell().GetCoordinate(),
@@ -39,9 +39,9 @@ export class ReactorCombination extends AbstractSingleCombination {
 						// });
 						new ReactorField(
 							cell,
-							this._gameContext.GetMainHq(),
+							this._gameContext.GetPlayerHq(),
 							this._gameContext,
-							this._gameContext.GetMainHq().GetSkin().GetLight()
+							this._gameContext.GetPlayerHq().GetSkin().GetLight()
 						);
 					}
 				}

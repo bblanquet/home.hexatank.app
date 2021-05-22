@@ -9,31 +9,36 @@ export class CellStateSetter {
 	}
 
 	public static SetState(gameContext: GameContext, cell: Cell): void {
-		const territoty = gameContext.GetMainHq().GetReactors().map((f) => f.GetInternal());
+		const playerHq = gameContext.GetPlayerHq();
+		if (playerHq !== null) {
+			const territoty = playerHq.GetReactors().map((f) => f.GetInternal());
 
-		let isContained = false;
-		territoty.some((c) => (isContained = c.Exist(cell.GetHexCoo())));
+			let isContained = false;
+			territoty.some((c) => (isContained = c.Exist(cell.GetHexCoo())));
 
-		if (isContained) {
-			cell.SetState(CellState.Visible);
-		} else {
-			if (GameSettings.ShowEnemies) {
-				if (cell.HasAroundOccupier()) {
-					cell.SetState(CellState.Visible);
-				} else {
-					if (cell.GetState() !== CellState.Hidden) {
-						cell.SetState(CellState.Mist);
-					}
-				}
+			if (isContained) {
+				cell.SetState(CellState.Visible);
 			} else {
-				if (cell.HasAroundAlly(gameContext.GetMainHq())) {
-					cell.SetState(CellState.Visible);
+				if (GameSettings.ShowEnemies) {
+					if (cell.HasAroundOccupier()) {
+						cell.SetState(CellState.Visible);
+					} else {
+						if (cell.GetState() !== CellState.Hidden) {
+							cell.SetState(CellState.Mist);
+						}
+					}
 				} else {
-					if (cell.GetState() !== CellState.Hidden) {
-						cell.SetState(CellState.Mist);
+					if (cell.HasAroundAlly(playerHq)) {
+						cell.SetState(CellState.Visible);
+					} else {
+						if (cell.GetState() !== CellState.Hidden) {
+							cell.SetState(CellState.Mist);
+						}
 					}
 				}
 			}
+		} else {
+			cell.SetState(CellState.Visible);
 		}
 	}
 }

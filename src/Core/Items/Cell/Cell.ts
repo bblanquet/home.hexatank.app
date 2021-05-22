@@ -83,13 +83,18 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	}
 
 	public IsSelectable(): boolean {
+		if (this._gameContext.GetPlayerHq() === null) {
+			return false;
+		}
+
 		const anyAlly =
 			this.GetFilterNeighbourhood(
-				(e) => e && (e.HasAlly(this._gameContext.GetMainHq()) || e.HasBonusAlly(this._gameContext.GetMainHq()))
+				(e) =>
+					e && (e.HasAlly(this._gameContext.GetPlayerHq()) || e.HasBonusAlly(this._gameContext.GetPlayerHq()))
 			).length > 0;
 		return (
 			(this.IsVisible() && this._field instanceof BasicField && anyAlly) ||
-			this.HasAlly(this._gameContext.GetMainHq())
+			this.HasAlly(this._gameContext.GetPlayerHq())
 		);
 	}
 
@@ -282,12 +287,17 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	//awfull
 	private SetHqState(state: CellState) {
 		let cells = new Array<Cell>();
-		cells.push(this._gameContext.GetMainHq().GetCell());
-		cells = cells.concat(this._gameContext.GetMainHq().GetCell().GetAllNeighbourhood());
-		if (cells.indexOf(this) !== -1) {
-			state = CellState.Visible;
+		const playerHq = this._gameContext.GetPlayerHq();
+		if (playerHq) {
+			cells.push(playerHq.GetCell());
+			cells = cells.concat(this._gameContext.GetPlayerHq().GetCell().GetAllNeighbourhood());
+			if (cells.indexOf(this) !== -1) {
+				state = CellState.Visible;
+			}
+			return state;
+		} else {
+			return CellState.Visible;
 		}
-		return state;
 	}
 
 	public Coo(): string {

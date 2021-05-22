@@ -68,11 +68,14 @@ export default class CanvasComponent extends Component<{}, {}> {
 	}
 
 	protected SetCenter(): void {
-		const hqPoint = this._gameContextService.Publish().GetMainHq().GetBoundingBox().GetCentralPoint();
-		const halfWidth = this._width / 2;
-		const halfHeight = this._height / 2;
-		this._updater.ViewContext.SetX(-(hqPoint.X - halfWidth));
-		this._updater.ViewContext.SetY(-(hqPoint.Y - halfHeight));
+		const player = this._gameContextService.Publish().GetPlayerHq();
+		if (player) {
+			const hqPoint = player.GetBoundingBox().GetCentralPoint();
+			const halfWidth = this._width / 2;
+			const halfHeight = this._height / 2;
+			this._updater.ViewContext.SetX(-(hqPoint.X - halfWidth));
+			this._updater.ViewContext.SetY(-(hqPoint.Y - halfHeight));
+		}
 	}
 
 	public ResizeTheCanvas(): void {

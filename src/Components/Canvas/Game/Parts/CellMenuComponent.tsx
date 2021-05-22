@@ -31,7 +31,7 @@ export default class CellMenuComponent extends Component<{ Item: Item; GameConte
 				<CircularV2Component OnCancel={() => this.Cancel()}>
 					<LightDarkBtn
 						CallBack={() => this.SendContext(new InfluenceMenuItem())}
-						Amount={`${(this.props.GameContext.GetMainHq().GetReactorsCount() + 1) *
+						Amount={`${(this.props.GameContext.GetPlayerHq().GetReactorsCount() + 1) *
 							GameSettings.FieldPrice}`}
 						Icon="fill-influence"
 						Point={new Point(0, 0)}
@@ -85,7 +85,7 @@ export default class CellMenuComponent extends Component<{ Item: Item; GameConte
 
 	private IsCovered(): boolean {
 		if (this.props.Item instanceof Cell) {
-			return this.props.GameContext.GetMainHq().IsCovered(this.props.Item as Cell);
+			return this.props.GameContext.GetPlayerHq().IsCovered(this.props.Item as Cell);
 		} else {
 			return false;
 		}

@@ -25,8 +25,8 @@ export class PowerUpCombination extends AbstractSingleCombination {
 			if (
 				field.HasStock() ||
 				this._gameContext
-					.GetMainHq()
-					.Buy(GameSettings.TruckPrice * this._gameContext.GetMainHq().GetTotalEnergy())
+					.GetPlayerHq()
+					.Buy(GameSettings.TruckPrice * this._gameContext.GetPlayerHq().GetTotalEnergy())
 			) {
 				field.PowerUp();
 			}

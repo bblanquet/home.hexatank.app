@@ -30,7 +30,6 @@ import Redirect from '../../Redirect/RedirectComponent';
 import Icon from '../../Common/Icon/IconComponent';
 import { ISoundService } from '../../../Services/Sound/ISoundService';
 import { AudioContent } from '../../../Core/Framework/AudioArchiver';
-import ActiveLeftBottomCornerButton from './../../Common/Button/Corner/ActiveLeftBottomCornerButton';
 import ActiveRightBottomCornerButton from './../../Common/Button/Corner/ActiveRightBottomCornerButton';
 import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
 import { MultiTankMenuItem } from '../../../Core/Menu/Buttons/MultiTankMenuItem';
@@ -96,12 +95,15 @@ export default class GameCanvasComponent extends Component<
 
 	componentDidMount() {
 		this._soundService.Pause(AudioContent.menuMusic);
-		this._gameContext.GetMainHq().OnTruckChanged.On(this.HandleTruckChanged.bind(this));
-		this._gameContext.GetMainHq().OnTankRequestChanged.On(this.HandleTankChanged.bind(this));
-		this._gameContext.GetMainHq().OnDiamondCountChanged.On(this.HandleDiamondChanged.bind(this));
+		const playerHq = this._gameContext.GetPlayerHq();
+		if (playerHq) {
+			playerHq.OnTruckChanged.On(this.HandleTruckChanged.bind(this));
+			playerHq.OnTankRequestChanged.On(this.HandleTankChanged.bind(this));
+			playerHq.OnDiamondCountChanged.On(this.HandleDiamondChanged.bind(this));
+			playerHq.OnCashMissing.On(this.HandleCashMissing.bind(this));
+		}
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
-		this._gameContext.GetMainHq().OnCashMissing.On(this.HandleCashMissing.bind(this));
 		this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
 		if (this._gameContext.Players) {

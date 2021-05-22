@@ -18,10 +18,10 @@ export class FlagCellCombination extends AbstractSingleCombination {
 		if (this.IsMatching(context)) {
 			let cell = <Cell>context.Items[0];
 			if (!isNullOrUndefined(cell) && this._gameContext.IsFlagingMode) {
-				if (!this._gameContext.GetMainHq().Flagcell) {
-					this._gameContext.GetMainHq().Flagcell = new FlagCell(cell);
+				if (!this._gameContext.GetPlayerHq().Flagcell) {
+					this._gameContext.GetPlayerHq().Flagcell = new FlagCell(cell);
 				} else {
-					this._gameContext.GetMainHq().Flagcell.SetCell(cell);
+					this._gameContext.GetPlayerHq().Flagcell.SetCell(cell);
 				}
 				this._gameContext.IsFlagingMode = false;
 			}

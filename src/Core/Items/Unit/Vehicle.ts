@@ -104,7 +104,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 			this.RootSprites.push(wheel);
 		});
 
-		if (this.Hq === this.GameContext.GetMainHq()) {
+		if (this.Hq === this.GameContext.GetPlayerHq()) {
 			this.GenerateSprite(Archive.selectionBlueVehicle);
 			this._infiniteAnimator = new InfiniteFadeAnimation(this, Archive.selectionBlueVehicle, 0, 1, 0.05);
 			this.RootSprites.push(Archive.selectionBlueVehicle);
@@ -337,17 +337,20 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	}
 
 	private SetUiOrder() {
-		if (!this.GameContext.GetMainHq().IsEnemy(this)) {
-			if (this._uiOrder && this.HasOrder() && this._uiOrder.HasOrder(this._order) && this.IsSelected()) {
-				return;
-			}
+		const playerHq = this.GameContext.GetPlayerHq();
+		if (playerHq) {
+			if (!playerHq.IsEnemy(this)) {
+				if (this._uiOrder && this.HasOrder() && this._uiOrder.HasOrder(this._order) && this.IsSelected()) {
+					return;
+				}
 
-			if (this._uiOrder) {
-				this._uiOrder.Clear();
-				this._uiOrder = null;
-			}
-			if (this.IsSelected() && this.HasOrder()) {
-				this._uiOrder = new UiOrder(this._order);
+				if (this._uiOrder) {
+					this._uiOrder.Clear();
+					this._uiOrder = null;
+				}
+				if (this.IsSelected() && this.HasOrder()) {
+					this._uiOrder = new UiOrder(this._order);
+				}
 			}
 		}
 	}

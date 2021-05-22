@@ -58,7 +58,7 @@ export class NetworkDispatcher {
 	}
 
 	private IsSpeakingHq(hq: Headquarter): boolean {
-		return hq.PlayerName === this._context.GetMainHq().PlayerName || hq instanceof IaHeadquarter;
+		return hq.PlayerName === this._context.GetPlayerHq().PlayerName || hq instanceof IaHeadquarter;
 	}
 
 	private HandleVehicleCreated(source: any, vehicle: Vehicle): void {
@@ -129,7 +129,7 @@ export class NetworkDispatcher {
 	private Message<T>(kind: PacketKind, content: T): NetworkMessage<T> {
 		const message = new NetworkMessage<T>();
 		message.Recipient = PeerSocket.All();
-		message.Emitter = this._context.GetMainHq().PlayerName;
+		message.Emitter = this._context.GetPlayerHq().PlayerName;
 		message.Kind = kind;
 		message.Content = content;
 		return message;

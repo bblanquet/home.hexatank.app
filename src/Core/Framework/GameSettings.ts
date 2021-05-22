@@ -6,6 +6,7 @@ export class GameSettings {
 
 	public static DiamondLoading: number = 300; //30
 	public static FarmLoading: number = 5000; //10
+
 	public static UnitLife: number = 20; //100
 	public static NatureLife: number = 40; //100
 	public static TurrelCoolingDown: number = 3000; //100
@@ -43,22 +44,32 @@ export class GameSettings {
 	}
 
 	public static SetNormalSpeed(): void {
-		this.RotatingDuration = 1000;
 		this.TurrelRotatingDuration = 1000;
+		this.RotatingDuration = 1000;
 		this.TranslatinDuration = 1000;
-		this.FarmLoading = 5000;
+		this.MissileTranslationSpeed = 5;
+
 		this.DiamondLoading = 300;
+		this.FarmLoading = 5000;
+
 		this.UnitLife = 100;
 		this.NatureLife = 40;
+		this.TurrelCoolingDown = 3000;
+		this.Attack = 10;
 	}
 
 	public static SetFastSpeed(): void {
-		this.RotatingDuration = this.GetFastestRotation();
-		this.TurrelRotatingDuration = 0.1;
-		this.TranslatinDuration = this.GetFastestTranslation();
-		this.DiamondLoading = 3;
-		this.FarmLoading = 3;
-		this.UnitLife = 20;
-		this.NatureLife = 5;
+		this.TurrelRotatingDuration = 200;
+		this.RotatingDuration = 200;
+		this.TranslatinDuration = 200;
+		this.MissileTranslationSpeed = 5;
+
+		this.DiamondLoading = 75;
+		this.FarmLoading = 1000;
+
+		this.UnitLife = 100;
+		this.NatureLife = 40;
+		this.TurrelCoolingDown = 750;
+		this.Attack = 50;
 	}
 }

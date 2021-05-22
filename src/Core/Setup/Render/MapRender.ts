@@ -38,19 +38,24 @@ export class MapRender {
 		this.AddClouds(playgroundItems);
 		const hqs = hqRender.GetHq(context, cells, mapContext.Hqs, playgroundItems);
 
-		let playerHq = hqs.find((hq) => hq.PlayerName === mapContext.PlayerName);
-		playerHq.SetSelectionAnimation();
-
 		//insert elements into playground
 		this.SetHqLands(cells, Archive.nature.hq, hqs.map((h) => h.GetCell().GetHexCoo()), playgroundItems);
 		this.SetHqLands(cells, Archive.nature.hq2, hqs.map((h) => h.GetCell().GetHexCoo()), playgroundItems, 1);
 
-		context.Setup(mapContext, playerHq, hqs, cells.All());
-		//make hq cells visible, need context to be setup :<, has to fix it one day
-		playerHq.GetCurrentCell().SetState(CellState.Visible);
-		playerHq.GetCurrentCell().GetAllNeighbourhood().forEach((cell) => {
-			(<Cell>cell).SetState(CellState.Visible);
-		});
+		//can be only AI
+		let playerHq = hqs.find((hq) => hq.PlayerName === mapContext.PlayerName);
+		if (playerHq) {
+			playerHq.SetSelectionAnimation();
+			context.Setup(mapContext, hqs, cells.All(), playerHq);
+			//make hq cells visible, need context to be setup :<, has to fix it one day
+			playerHq.GetCurrentCell().SetState(CellState.Visible);
+			playerHq.GetCurrentCell().GetAllNeighbourhood().forEach((cell) => {
+				(<Cell>cell).SetState(CellState.Visible);
+			});
+		} else {
+			context.Setup(mapContext, hqs, cells.All());
+		}
+
 		return context;
 	}
 

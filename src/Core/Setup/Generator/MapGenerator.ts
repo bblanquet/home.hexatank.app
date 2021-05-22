@@ -43,10 +43,10 @@ export class MapGenerator {
 		context.MapMode = mapMode;
 		const mapItems = new Array<MapItem>();
 		const mapBuilder = this._builders.Get(mapType.toString());
-		const hexagonales = mapBuilder.GetAllCoos(mapSize);
-		GameSettings.MapSize = hexagonales.length;
+		const coos = mapBuilder.GetAllCoos(mapSize);
+		GameSettings.MapSize = coos.length;
 
-		const cells = Dictionnary.To<HexAxial>((e) => e.ToString(), hexagonales);
+		const cells = Dictionnary.To<HexAxial>((e) => e.ToString(), coos);
 
 		const areas = mapBuilder.GetAreaCoos(mapSize);
 		const farthestPointManager = new FartestPointsFinder();
@@ -87,7 +87,7 @@ export class MapGenerator {
 
 		var decorator: Decorator = this.GetDecorator(mapMode);
 		//decorate tree, water, stone the map
-		hexagonales.forEach((coo) => {
+		coos.forEach((coo) => {
 			let mapItem = new MapItem();
 			mapItem.Position = coo;
 			if (!excluded.Exist(coo.ToString())) {
@@ -103,7 +103,6 @@ export class MapGenerator {
 
 		context.Items = mapItems;
 		context.CenterItem = mapItems[0];
-		//mapItems.filter((m) => m.Position.Q === center.Q && m.Position.R === center.R)[0];
 		return context;
 	}
 

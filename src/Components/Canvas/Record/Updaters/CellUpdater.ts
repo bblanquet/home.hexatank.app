@@ -49,7 +49,7 @@ export class CellUpdater {
 				const field = FieldTypeHelper.CreateTrackingField(
 					coos.Get(key).Action,
 					this._gameContext.GetCell(key),
-					this._gameContext.GetMainHq(),
+					this._gameContext.GetPlayerHq(),
 					this._gameContext
 				);
 				this._displayedFields.Add(key, field);

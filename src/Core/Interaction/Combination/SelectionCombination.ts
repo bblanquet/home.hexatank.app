@@ -38,7 +38,7 @@ export class SelectionCombination extends AbstractSingleCombination {
 					this._gameContext.OnItemSelected.Invoke(this, field);
 				} else if (
 					selectablecell.GetField() instanceof Headquarter &&
-					selectablecell.GetField() === this._gameContext.GetMainHq()
+					selectablecell.GetField() === this._gameContext.GetPlayerHq()
 				) {
 					const field = selectablecell.GetField() as Headquarter;
 					field.SetSelected(true);

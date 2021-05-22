@@ -22,7 +22,7 @@ export class InteractionService implements IInteractionService {
 
 	Register(manager: PIXI.InteractionManager, gameContext: GameContext): void {
 		this._inputNotifier = new InputNotifier();
-		const checker = new SelectableChecker(gameContext.GetMainHq());
+		const checker = new SelectableChecker(gameContext.GetPlayerHq());
 		this._interaction = new InteractionContext(
 			this._inputNotifier,
 			new CombinationProvider().GetCombination(checker, gameContext),

@@ -52,7 +52,7 @@ export class NetworkReceiver {
 		const hq = this._context.GetCell(coo).GetField() as Headquarter;
 		return (
 			!isNullOrUndefined(hq) &&
-			hq.PlayerName !== this._context.GetMainHq().PlayerName &&
+			hq.PlayerName !== this._context.GetPlayerHq().PlayerName &&
 			!(hq instanceof IaHeadquarter)
 		);
 	}

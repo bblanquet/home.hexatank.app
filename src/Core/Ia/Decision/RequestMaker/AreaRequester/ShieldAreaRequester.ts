@@ -3,10 +3,10 @@ import { RequestPriority } from './../../Utils/RequestPriority';
 import { RequestType } from './../../Utils/RequestType';
 import { AreaRequestMaker } from './../AreaRequestMaker';
 import { IAreaRequestMaker } from './../IAreaRequestMaker';
-import { KingdomArea } from '../../Utils/KingdomArea';
+import { IaArea } from '../../Utils/IaArea';
 import { AreaRequest } from '../../Utils/AreaRequest';
 export class ShieldAreaRequester implements IAreaRequestMaker {
-	GetRequest(area: KingdomArea): AreaRequest {
+	GetRequest(area: IaArea): AreaRequest {
 		if (
 			(area.GetRange() === 1 || area.GetRange() % 3 === 0) &&
 			area.GetClosesHqField(2).some((a) => a.GetField() instanceof BasicField)

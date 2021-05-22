@@ -1,16 +1,16 @@
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
-import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
+import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { MoneyOrder } from '../Order/Composite/MoneyOrder';
-import { Diamond } from './../../Items/Cell/Field/Diamond';
+import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { IExpansionMaker } from './ExpansionMaker/IExpansionMaker';
-import { IKingdomDecisionMaker } from './IKingdomDecisionMaker';
+import { IGlobalIa } from './IGlobalIa';
 import { IDoable } from './IDoable';
 import { Groups } from '../../Utils/Collections/Groups';
 import { Dictionnary } from '../../Utils/Collections/Dictionnary';
 import { IAreaDecisionMaker } from './Area/IAreaDecisionMaker';
 import { ExcessTankFinder } from './ExcessTankFinder';
 import { AreaRequest } from './Utils/AreaRequest';
-import { KingdomArea } from './Utils/KingdomArea';
+import { IaArea } from './Utils/IaArea';
 import { Truck } from '../../Items/Unit/Truck';
 import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { Vehicle } from '../../Items/Unit/Vehicle';
@@ -23,7 +23,7 @@ import { Cell } from '../../Items/Cell/Cell';
 import { Squad } from './Troop/Squad';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 
-export class Kingdom implements IDoable, IKingdomDecisionMaker {
+export class GlobalIa implements IDoable, IGlobalIa {
 	public AreaDecisions: IAreaDecisionMaker[];
 	public Squads: Squad[];
 	public Trucks: Array<Truck> = new Array<Truck>();
@@ -69,7 +69,7 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 
 		this.Hq.OnReactorLost.On((e: any, obj: ReactorField) => {
 			const c = obj.GetCell();
-			let foundArea: KingdomArea = null;
+			let foundArea: IaArea = null;
 			this.GetKingdomAreas().Values().some((area) => {
 				if (!area.HasCell(c)) {
 					foundArea = area;
@@ -87,7 +87,7 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 		this._diamond.OnDestroyed.On(this.DiamondDestroyed.bind(this));
 	}
 
-	public GetArea(cell: Cell): KingdomArea {
+	public GetArea(cell: Cell): IaArea {
 		const areas = this.AreaDecisions.filter((c) => c.Area.HasCell(cell));
 		if (0 < areas.length) {
 			return areas[0].Area;
@@ -123,8 +123,8 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 		this._generalRequestMaker = generalRequestMaker;
 	}
 
-	public GetKingdomAreas(): Dictionnary<KingdomArea> {
-		return Dictionnary.To<KingdomArea>((t) => t.GetCentralCell().Coo(), this.AreaDecisions.map((m) => m.Area));
+	public GetKingdomAreas(): Dictionnary<IaArea> {
+		return Dictionnary.To<IaArea>((t) => t.GetCentralCell().Coo(), this.AreaDecisions.map((m) => m.Area));
 	}
 
 	public Update(): void {
@@ -135,7 +135,7 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 			this.Squads.forEach((squad) => {
 				squad.Update();
 			});
-			const areas = new Array<KingdomArea>();
+			const areas = new Array<IaArea>();
 			this.AreaDecisions = this.AreaDecisions.filter((t) => !t.IsDestroyed());
 			this.AreaDecisions.forEach((areaDecision) => {
 				areaDecision.Area.CalculateFoes();
@@ -155,7 +155,7 @@ export class Kingdom implements IDoable, IKingdomDecisionMaker {
 		}
 	}
 
-	private GetRequests(areas: KingdomArea[]) {
+	private GetRequests(areas: IaArea[]) {
 		const requests = new Groups<AreaRequest>();
 		this._generalRequestMaker.GetResquest(this).forEach((r) => {
 			requests.Add(r.Priority, r);

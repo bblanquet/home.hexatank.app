@@ -2,7 +2,7 @@ import { AttackMenuItem } from '../../../Menu/Buttons/AttackMenuItem';
 import { IAreaDecisionMaker } from './IAreaDecisionMaker';
 import { AStarHelper } from '../../AStarHelper';
 import { AttackField } from '../../../Items/Cell/Field/Bonus/AttackField';
-import { KingdomArea } from '../Utils/KingdomArea';
+import { IaArea } from '../Utils/IaArea';
 import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
 import { TroopRoads } from '../Troop/TroopRoads';
 import { Cell } from '../../../Items/Cell/Cell';
@@ -20,7 +20,7 @@ import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class AreaDecisionMaker implements IAreaDecisionMaker {
 	public HasReceivedRequest: boolean;
-	constructor(private _hq: Headquarter, public Area: KingdomArea) {}
+	constructor(private _hq: Headquarter, public Area: IaArea) {}
 
 	private _isDestroyed: boolean = false;
 

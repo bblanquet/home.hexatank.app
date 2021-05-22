@@ -4,7 +4,7 @@ import { Area } from './../../Utils/Area';
 import { RequestType } from './../../Utils/RequestType';
 import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
-import { KingdomArea } from '../../Utils/KingdomArea';
+import { IaArea } from '../../Utils/IaArea';
 import { AStarEngine } from '../../../AStarEngine';
 import { Cell } from '../../../../Items/Cell/Cell';
 import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
@@ -56,7 +56,7 @@ export class RoadRequestHandler implements ISimpleRequestHandler {
 		}
 	}
 
-	private GetFarthestAraFromHq(area: KingdomArea): Area {
+	private GetFarthestAraFromHq(area: IaArea): Area {
 		const aroundAreas = area.GetSpot().GetAroundAreas().filter((a) => a.GetStatus().HasField(BasicField.name));
 		if (aroundAreas.length === 0) {
 			return null;
@@ -71,7 +71,7 @@ export class RoadRequestHandler implements ISimpleRequestHandler {
 		}
 	}
 
-	private GetRoadToFarthestAreaFromHq(area: KingdomArea): Cell[] {
+	private GetRoadToFarthestAreaFromHq(area: IaArea): Cell[] {
 		const destination = this.GetFarthestAraFromHq(area);
 		if (destination) {
 			let nextCell = destination.GetCentralCell();
@@ -86,7 +86,7 @@ export class RoadRequestHandler implements ISimpleRequestHandler {
 		return [];
 	}
 
-	private GetRoadToConnectingArea(allyAreas: KingdomArea[], central: Cell): Cell[] {
+	private GetRoadToConnectingArea(allyAreas: IaArea[], central: Cell): Cell[] {
 		const areaByHqDistance = this.GetAreaByHqDistance(allyAreas);
 		const closestHqArea = Math.min(...areaByHqDistance.Keys().map((k) => +k));
 		const connectingArea = areaByHqDistance.Get(closestHqArea.toString())[0];
@@ -104,8 +104,8 @@ export class RoadRequestHandler implements ISimpleRequestHandler {
 		}
 	}
 
-	private GetAreaByHqDistance(allyAreas: KingdomArea[]) {
-		const groups = new Groups<KingdomArea>();
+	private GetAreaByHqDistance(allyAreas: IaArea[]) {
+		const groups = new Groups<IaArea>();
 		allyAreas.forEach((area) => {
 			groups.Add(area.GetDistanceFromHq().toString(), area);
 		});

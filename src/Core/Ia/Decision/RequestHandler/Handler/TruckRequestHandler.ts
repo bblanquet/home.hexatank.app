@@ -1,5 +1,5 @@
 import { MoneyOrder } from '../../../Order/Composite/MoneyOrder';
-import { IKingdomDecisionMaker } from './../../IKingdomDecisionMaker';
+import { IGlobalIa } from '../../IGlobalIa';
 import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 import { DiamondTruckOrder } from '../../../Order/Composite/Diamond/DiamondTruckOrder';
 import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
@@ -11,7 +11,7 @@ import { DiamondFieldOrder } from '../../../Order/Composite/Diamond/DiamondField
 import { RequestType } from '../../Utils/RequestType';
 
 export class TruckRequestHandler implements ISimpleRequestHandler {
-	constructor(private _hq: Headquarter, private _kingdom: IKingdomDecisionMaker) {}
+	constructor(private _hq: Headquarter, private _kingdom: IGlobalIa) {}
 
 	Type(): RequestType {
 		return RequestType.Truck;

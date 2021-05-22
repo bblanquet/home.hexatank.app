@@ -1,5 +1,5 @@
 import { RequestType } from './RequestType';
-import { KingdomArea } from './KingdomArea';
+import { IaArea } from './IaArea';
 import { RequestPriority } from './RequestPriority';
 
 export class AreaRequest {
@@ -7,6 +7,6 @@ export class AreaRequest {
 		public RequestType: RequestType,
 		public Priority: RequestPriority,
 		public RequestCount: number,
-		public Area: KingdomArea
+		public Area: IaArea
 	) {}
 }

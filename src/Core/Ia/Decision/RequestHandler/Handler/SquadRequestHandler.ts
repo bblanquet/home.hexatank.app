@@ -1,6 +1,6 @@
 import { MapObserver } from './../../MapObserver';
 import { Squad } from '../../Troop/Squad';
-import { Kingdom } from '../../Kingdom';
+import { GlobalIa } from '../../GlobalIa';
 import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
 import { RequestType } from '../../Utils/RequestType';
 import { AreaRequest } from '../../Utils/AreaRequest';
@@ -8,7 +8,7 @@ import { GameContext } from '../../../../Framework/GameContext';
 import { SquadRoad } from '../../Troop/SquadRoad';
 
 export class SquadRequestHandler implements ISimpleRequestHandler {
-	constructor(private _gameContex: GameContext, private _kingdom: Kingdom) {}
+	constructor(private _gameContex: GameContext, private _kingdom: GlobalIa) {}
 
 	Handle(request: AreaRequest): void {
 		const foes = this._gameContex.GetHqs().filter((h) => h !== this._kingdom.Hq);

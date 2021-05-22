@@ -3,7 +3,7 @@ import { TimeTimer } from './../../../Utils/Timer/TimeTimer';
 import { ITimer } from '../../../Utils/Timer/ITimer';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Tank } from '../../../Items/Unit/Tank';
-import { KingdomArea } from '../Utils/KingdomArea';
+import { IaArea } from '../Utils/IaArea';
 import { TickTimer } from '../../../Utils/Timer/TickTimer';
 import { SimpleOrder } from '../../Order/SimpleOrder';
 import { AliveItem } from '../../../Items/AliveItem';
@@ -17,7 +17,7 @@ export class TroopDecisionMaker {
 	private readonly IsPratrolDone = this.Tank.GetCurrentCell() === this.CurrentPatrolDestination;
 	private _target: AliveItem;
 
-	constructor(public CurrentPatrolDestination: Cell, public Tank: Tank, public Area: KingdomArea) {
+	constructor(public CurrentPatrolDestination: Cell, public Tank: Tank, public Area: IaArea) {
 		if (isNullOrUndefined(this.CurrentPatrolDestination)) {
 			throw 'invalid destination';
 		}

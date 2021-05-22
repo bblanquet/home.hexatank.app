@@ -1,9 +1,9 @@
-import { KingdomArea } from './../Utils/KingdomArea';
+import { IaArea } from '../Utils/IaArea';
 
 export interface IAreaDecisionMaker {
 	IsDestroyed(): boolean;
 	Destroy(): void;
 	Update(): void;
-	Area: KingdomArea;
+	Area: IaArea;
 	HasReceivedRequest: boolean;
 }

@@ -1,8 +1,8 @@
 import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
-import { Kingdom } from '../../Kingdom';
-import { KingdomArea } from '../../Utils/KingdomArea';
+import { GlobalIa } from '../../GlobalIa';
+import { IaArea } from '../../Utils/IaArea';
 import { GameSettings } from '../../../../Framework/GameSettings';
 import { Vehicle } from '../../../../Items/Unit/Vehicle';
 import { Tank } from '../../../../Items/Unit/Tank';
@@ -10,7 +10,7 @@ import { RequestType } from '../../Utils/RequestType';
 import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 
 export class TankMediumRequestHandler implements ISimpleRequestHandler {
-	constructor(private _kingdom: Kingdom, private _hq: Headquarter) {}
+	constructor(private _kingdom: GlobalIa, private _hq: Headquarter) {}
 
 	Type(): RequestType {
 		return RequestType.Tank;
@@ -54,7 +54,7 @@ export class TankMediumRequestHandler implements ISimpleRequestHandler {
 		}
 	}
 
-	public BuyTank(area: KingdomArea): boolean {
+	public BuyTank(area: IaArea): boolean {
 		let isCreated = false;
 		const cell = area.GetRandomFreeUnitCell();
 		if (!isNullOrUndefined(cell) && this._hq.Buy(GameSettings.TankPrice)) {

@@ -1,6 +1,6 @@
 import { TimeTimer } from '../../../../../Utils/Timer/TimeTimer';
 import { IGeneralRequester } from '../IGeneralRequester';
-import { Kingdom } from '../../../Kingdom';
+import { GlobalIa } from '../../../GlobalIa';
 import { AreaRequest } from '../../../Utils/AreaRequest';
 import { RequestType } from '../../../Utils/RequestType';
 import { RequestPriority } from '../../../Utils/RequestPriority';
@@ -12,7 +12,7 @@ export class GeneralSquadRequest implements IGeneralRequester {
 		this._raidTimer = new TimeTimer(8000);
 	}
 
-	GetResquest(kingdom: Kingdom): AreaRequest {
+	GetResquest(kingdom: GlobalIa): AreaRequest {
 		const kingdomAreas = kingdom.AreaDecisions.map((a) => a.Area);
 		const farmAreas = kingdomAreas.filter((a) => a.HasFarmField());
 		if (this._raidTimer.IsElapsed()) {

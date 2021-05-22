@@ -1,13 +1,13 @@
 import { RequestPriority } from './../../Utils/RequestPriority';
 import { IAreaRequestMaker } from './../IAreaRequestMaker';
-import { KingdomArea } from '../../Utils/KingdomArea';
+import { IaArea } from '../../Utils/IaArea';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { RequestType } from '../../Utils/RequestType';
-import { Kingdom } from '../../Kingdom';
+import { GlobalIa } from '../../GlobalIa';
 export class HealUnitRequester implements IAreaRequestMaker {
-	constructor(private _kingdom: Kingdom) {}
+	constructor(private _kingdom: GlobalIa) {}
 
-	GetRequest(area: KingdomArea): AreaRequest {
+	GetRequest(area: IaArea): AreaRequest {
 		const hasHealing = this._kingdom.GetKingdomAreas().Values().some((a) => a.HasMedic());
 		if (
 			hasHealing &&

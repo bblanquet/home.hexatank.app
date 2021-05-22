@@ -1,6 +1,6 @@
 import { Tank } from './../../../../Items/Unit/Tank';
-import { KingdomArea } from './../../Utils/KingdomArea';
-import { Kingdom } from './../../Kingdom';
+import { IaArea } from '../../Utils/IaArea';
+import { GlobalIa } from '../../GlobalIa';
 import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { RequestType } from '../../Utils/RequestType';
@@ -8,7 +8,7 @@ import { CellHelper } from '../../../../Items/Cell/CellHelper';
 import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 
 export class TankHighRequestHandler implements ISimpleRequestHandler {
-	constructor(private _kingdom: Kingdom, private _mediumRequest: ISimpleRequestHandler) {}
+	constructor(private _kingdom: GlobalIa, private _mediumRequest: ISimpleRequestHandler) {}
 
 	Type(): RequestType {
 		return RequestType.Tank;
@@ -59,7 +59,7 @@ export class TankHighRequestHandler implements ISimpleRequestHandler {
 	}
 
 	private GetReinforcement(request: AreaRequest) {
-		const troopAreas = new Array<KingdomArea>();
+		const troopAreas = new Array<IaArea>();
 		const kgAreas = this._kingdom.GetKingdomAreas();
 		const cells = CellHelper.OrderByDistance(
 			kgAreas.Values().map((c) => c.GetCentralCell()),

@@ -1,16 +1,16 @@
-import { ShieldField } from './../../../Items/Cell/Field/Bonus/ShieldField';
-import { MedicField } from './../../../Items/Cell/Field/Bonus/MedicField';
-import { BasicField } from './../../../Items/Cell/Field/BasicField';
-import { FarmField } from './../../../Items/Cell/Field/Bonus/FarmField';
-import { BlockingField } from './../../../Items/Cell/Field/BlockingField';
-import { TroopDecisionMaker } from './../Troop/TroopDecisionMaker';
-import { Diamond } from './../../../Items/Cell/Field/Diamond';
-import { DistanceHelper } from './../../../Items/Unit/MotionHelpers/DistanceHelper';
+import { ShieldField } from '../../../Items/Cell/Field/Bonus/ShieldField';
+import { MedicField } from '../../../Items/Cell/Field/Bonus/MedicField';
+import { BasicField } from '../../../Items/Cell/Field/BasicField';
+import { FarmField } from '../../../Items/Cell/Field/Bonus/FarmField';
+import { BlockingField } from '../../../Items/Cell/Field/BlockingField';
+import { TroopDecisionMaker } from '../Troop/TroopDecisionMaker';
+import { Diamond } from '../../../Items/Cell/Field/Diamond';
+import { DistanceHelper } from '../../../Items/Unit/MotionHelpers/DistanceHelper';
 import { HeadQuarterField } from '../../../Items/Cell/Field/Hq/HeadquarterField';
 import { RoadField } from '../../../Items/Cell/Field/Bonus/RoadField';
-import { ICell } from './../../../Items/Cell/ICell';
-import { AStarEngine } from './../../AStarEngine';
-import { IKingdomDecisionMaker } from '../IKingdomDecisionMaker';
+import { ICell } from '../../../Items/Cell/ICell';
+import { AStarEngine } from '../../AStarEngine';
+import { IGlobalIa } from '../IGlobalIa';
 import { Area } from './Area';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
@@ -20,7 +20,7 @@ import { ReactorAreaState } from './ReactorAreaState';
 import { AreaSearch } from './AreaSearch';
 import { AStarHelper } from '../../AStarHelper';
 
-export class KingdomArea {
+export class IaArea {
 	public Troops: Array<TroopDecisionMaker>;
 	public Truck: Truck;
 	private _range: number = 0; //range from HQ
@@ -28,7 +28,7 @@ export class KingdomArea {
 	constructor(
 		private _hq: Headquarter,
 		private _spot: Area,
-		private _kindgom: IKingdomDecisionMaker,
+		private _kindgom: IGlobalIa,
 		private _areaSearch: AreaSearch
 	) {
 		this.Troops = new Array<TroopDecisionMaker>();
@@ -170,9 +170,9 @@ export class KingdomArea {
 		return result;
 	}
 
-	public GetAllyAreas(): KingdomArea[] {
+	public GetAllyAreas(): IaArea[] {
 		const spots = this._spot.GetAroundAreas();
-		const allySpots = new Array<KingdomArea>();
+		const allySpots = new Array<IaArea>();
 		const kingdom = this._kindgom.GetKingdomAreas();
 		spots.forEach((s) => {
 			const coo = s.GetCentralCell().Coo();

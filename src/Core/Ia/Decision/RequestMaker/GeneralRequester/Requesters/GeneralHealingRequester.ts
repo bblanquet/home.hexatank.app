@@ -1,11 +1,11 @@
 import { IGeneralRequester } from '../IGeneralRequester';
 import { AreaRequest } from '../../../Utils/AreaRequest';
-import { Kingdom } from '../../../Kingdom';
+import { GlobalIa } from '../../../GlobalIa';
 import { RequestType } from '../../../Utils/RequestType';
 import { RequestPriority } from '../../../Utils/RequestPriority';
 
 export class GeneralHealingRequester implements IGeneralRequester {
-	GetResquest(kingdom: Kingdom): AreaRequest {
+	GetResquest(kingdom: GlobalIa): AreaRequest {
 		const kingdomAreas = kingdom.AreaDecisions.map((a) => a.Area);
 		const candidates = kingdomAreas.filter((a) => !a.IsImportant() && a.HasFreeFields() && a.HasRoadField());
 		const healingArea = kingdomAreas.filter((a) => a.HasMedic());

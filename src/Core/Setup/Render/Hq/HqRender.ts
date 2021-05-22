@@ -1,3 +1,4 @@
+import { BrainProvider } from './../../../Ia/Brains/BrainProvider';
 import { GeneralRequestProvider } from './../../../Ia/Decision/Providers/GeneralRequestProvider';
 import { RequestHandlerProvider } from './../../../Ia/Decision/Providers/RequestHandlerProvider';
 import { RequestMakerProvider } from './../../../Ia/Decision/Providers/RequestMakerProvider';
@@ -7,7 +8,7 @@ import { GeneralRequester } from '../../../Ia/Decision/RequestMaker/GeneralReque
 import { AreaRequestMaker } from '../../../Ia/Decision/RequestMaker/AreaRequestMaker';
 import { ExpansionMaker } from '../../../Ia/Decision/ExpansionMaker/ExpansionMaker';
 import { RequestHandler } from '../../../Ia/Decision/RequestHandler/RequestHandler';
-import { Kingdom } from '../../../Ia/Decision/Kingdom';
+import { GlobalIa } from '../../../Ia/Decision/GlobalIa';
 import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
 import { IaHeadquarter } from '../../../Ia/IaHeadquarter';
 import { Diamond } from '../../../Items/Cell/Field/Diamond';
@@ -42,20 +43,9 @@ export class HqRender extends AbstractHqRender {
 				.map((coo) => areaByCoo.Get(coo.ToString()));
 			a.SetAround(around);
 		});
-
 		const hq = new IaHeadquarter(skin, cell, context);
-		const kingdom = new Kingdom(hq, areas);
-
-		kingdom.Setup(
-			new AreaRequestMaker(new RequestMakerProvider(kingdom).Get()),
-			new RequestHandler(new RequestHandlerProvider(hq, kingdom, context).Get()),
-			new ExpansionMaker(hq, kingdom, areaSearch),
-			new GeneralRequester(new GeneralRequestProvider().Get())
-		);
-
-		kingdom.SetDiamond(diamond);
-		hq.SetDoable(kingdom);
-
+		const brain = new BrainProvider().GetBrain1(hq, context, areas, areaSearch, diamond);
+		hq.InjectBrain(brain);
 		items.push(diamond);
 		items.push(hq);
 		return hq;

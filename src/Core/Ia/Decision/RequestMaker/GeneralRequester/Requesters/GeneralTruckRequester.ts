@@ -1,11 +1,11 @@
 import { IGeneralRequester } from '../IGeneralRequester';
 import { AreaRequest } from '../../../Utils/AreaRequest';
-import { Kingdom } from '../../../Kingdom';
+import { GlobalIa } from '../../../GlobalIa';
 import { RequestType } from '../../../Utils/RequestType';
 import { RequestPriority } from '../../../Utils/RequestPriority';
 
 export class GeneralTruckRequester implements IGeneralRequester {
-	GetResquest(kingdom: Kingdom): AreaRequest {
+	GetResquest(kingdom: GlobalIa): AreaRequest {
 		const kingdomAreas = kingdom.AreaDecisions.map((a) => a.Area);
 		const farmAreas = kingdomAreas.filter((a) => a.HasFarmField());
 		if (0 < farmAreas.length && kingdom.Trucks.length * 2 <= farmAreas.length) {

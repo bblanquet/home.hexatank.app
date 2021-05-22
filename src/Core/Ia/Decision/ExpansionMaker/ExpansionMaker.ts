@@ -1,15 +1,15 @@
 import { IExpansionMaker } from './IExpansionMaker';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
-import { Kingdom } from '../Kingdom';
+import { GlobalIa } from '../GlobalIa';
 import { Area } from '../Utils/Area';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { AreaDecisionMaker } from '../Area/AreaDecisionMaker';
-import { KingdomArea } from '../Utils/KingdomArea';
+import { IaArea } from '../Utils/IaArea';
 import { AreaSearch } from '../Utils/AreaSearch';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class ExpansionMaker implements IExpansionMaker {
-	constructor(private _hq: Headquarter, private _kingdom: Kingdom, private _areaSearch: AreaSearch) {}
+	constructor(private _hq: Headquarter, private _kingdom: GlobalIa, private _areaSearch: AreaSearch) {}
 
 	public Expand(): void {
 		if (this._kingdom.AreaDecisions.filter((a) => a.Area.HasFreeFields()).length < 3) {
@@ -26,7 +26,7 @@ export class ExpansionMaker implements IExpansionMaker {
 		this._kingdom.Areas.splice(this._kingdom.Areas.indexOf(area), 1);
 		const areaDecision = new AreaDecisionMaker(
 			this._hq,
-			new KingdomArea(this._hq, area, this._kingdom, this._areaSearch)
+			new IaArea(this._hq, area, this._kingdom, this._areaSearch)
 		);
 		this._kingdom.AreaDecisions.push(areaDecision);
 		this._kingdom.CellAreas.Add(area.GetCentralCell().Coo(), areaDecision);

@@ -1,6 +1,6 @@
-import { KingdomArea } from '../Utils/KingdomArea';
+import { IaArea } from '../Utils/IaArea';
 import { AreaRequest } from '../Utils/AreaRequest';
 
 export interface IAreaRequestMaker {
-	GetRequest(area: KingdomArea): AreaRequest;
+	GetRequest(area: IaArea): AreaRequest;
 }

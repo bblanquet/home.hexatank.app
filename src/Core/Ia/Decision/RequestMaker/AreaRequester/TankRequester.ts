@@ -1,12 +1,12 @@
 import { AreaRequestMaker } from '../AreaRequestMaker';
 import { IAreaRequestMaker } from '../IAreaRequestMaker';
-import { KingdomArea } from '../../Utils/KingdomArea';
+import { IaArea } from '../../Utils/IaArea';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { RequestType } from '../../Utils/RequestType';
 import { RequestPriority } from '../../Utils/RequestPriority';
 
 export class TankRequester implements IAreaRequestMaker {
-	public GetRequest(area: KingdomArea): AreaRequest {
+	public GetRequest(area: IaArea): AreaRequest {
 		const foes = area.GetFoesCount();
 
 		if (foes === 0) {

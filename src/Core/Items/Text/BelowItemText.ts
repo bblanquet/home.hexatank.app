@@ -1,10 +1,10 @@
-import { IInteractionContext } from '../Interaction/IInteractionContext';
-import { BoundingBox } from '../Utils/Geometry/BoundingBox';
-import { TimeTimer } from '../Utils/Timer/TimeTimer';
-import { BouncingScaleUpAnimator } from './Animator/BouncingScaleUpAnimator';
-import { IAnimator } from './Animator/IAnimator';
-import { Item } from './Item';
-import { ZKind } from './ZKind';
+import { IInteractionContext } from '../../Interaction/IInteractionContext';
+import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
+import { TimeTimer } from '../../Utils/Timer/TimeTimer';
+import { BouncingScaleUpAnimator } from './../Animator/BouncingScaleUpAnimator';
+import { IAnimator } from './../Animator/IAnimator';
+import { Item } from './../Item';
+import { ZKind } from './../ZKind';
 import * as PIXI from 'pixi.js';
 
 export class BelowItemText extends Item {

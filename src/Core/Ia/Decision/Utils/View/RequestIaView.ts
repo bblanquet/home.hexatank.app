@@ -1,6 +1,6 @@
+import { BelowItemText } from './../../../../Items/Text/BelowItemText';
 import { IaArea } from './../IaArea';
 import { Item } from '../../../../Items/Item';
-import { BelowItemText } from './../../../../Items/BelowItemText';
 export class RequestIaView {
 	private _aboveText: BelowItemText;
 	private _amount: number;

@@ -1,3 +1,5 @@
+import { ReactorShieldHandler } from './../Decision/RequestHandler/Handler/ReactorShieldHandler';
+import { ReactorShieldRequester } from './../Decision/RequestMaker/AreaRequester/ReactorShieldRequester';
 import { FoeReactorRequester } from './../Decision/RequestMaker/AreaRequester/FoeReactorRequester';
 import { EnemyReactorHandler } from './../Decision/RequestHandler/Handler/EnemyReactorHandler';
 import { DiamondRoadRequest } from './../Decision/RequestMaker/GeneralRequester/Requesters/DiamondRoadRequest';
@@ -57,32 +59,32 @@ export class BobBrain implements IBrain {
 
 		const handlers = new Groups<ISimpleRequestHandler>();
 		handlers.Add('10', new EnemyReactorHandler());
-
 		handlers.Add('10', new ClearRequestHandler());
 		handlers.Add('10', new ReactorRequestHandler(hq, context));
+		handlers.Add('10', new TankHighRequestHandler(brain, new TankMediumRequestHandler(brain, hq)));
+		handlers.Add('10', new TruckRequestHandler(hq, brain));
+
+		handlers.Add('9', new ReactorShieldHandler(hq));
+
 		handlers.Add('8', new EnergyRequestHandler(hq));
 
 		handlers.Add('7', new DiamondRoadHandler(brain, hq));
 		handlers.Add('7', new SpeedUpHandler());
-
-		handlers.Add('5', new FarmRequestHandler(hq));
-
-		//defense
-		handlers.Add('10', new TankHighRequestHandler(brain, new TankMediumRequestHandler(brain, hq)));
-		handlers.Add('5', new TankMediumRequestHandler(brain, hq));
-		handlers.Add('1', new TankMediumRequestHandler(brain, hq));
-
-		//attack
 		handlers.Add('7', new SquadRequestHandler(context, brain));
 
+		handlers.Add('5', new FarmRequestHandler(hq));
+		handlers.Add('5', new TankMediumRequestHandler(brain, hq));
 		handlers.Add('5', new ShieldBorderRequestHandler(hq));
 		handlers.Add('5', new ShieldRequestHandler(hq));
+
 		handlers.Add('2', new HealUnitRequestHandler(brain));
 		handlers.Add('2', new HealingRequestHandler(hq));
-		handlers.Add('2', new TruckRequestHandler(hq, brain));
+
+		handlers.Add('1', new TankMediumRequestHandler(brain, hq));
 
 		brain.Setup(
 			new AreaRequestMaker([
+				new ReactorShieldRequester(9),
 				new ShieldBorderRequester(5),
 				new SpeedUpRequester(brain, 7),
 				new ReactorRequester(10),
@@ -90,7 +92,7 @@ export class BobBrain implements IBrain {
 				new ShieldAreaRequester(5),
 				new HealUnitRequester(brain, 2),
 				new ClearAreaRequester(10),
-				new TruckRequest(2),
+				new TruckRequest(10),
 				new FarmRequester(5),
 				new TankRequester(10),
 				new TankMediumRequester(5),
@@ -99,7 +101,7 @@ export class BobBrain implements IBrain {
 			new RequestHandler(handlers),
 			new DiamondExpansionMaker(hq, brain, areaSearch),
 			new GeneralRequester([
-				new GeneralTruckRequester(2),
+				new GeneralTruckRequester(10),
 				new DiamondRoadRequest(7),
 				new GeneralHealingRequester(2),
 				new GeneralUpEnergyRequester(8),

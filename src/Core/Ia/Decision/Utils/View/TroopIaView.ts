@@ -1,4 +1,4 @@
-import { AboveItemText } from '../../../../Items/AboveItemText';
+import { AboveItemText } from '../../../../Items/Text/AboveItemText';
 import { Item } from '../../../../Items/Item';
 import { IaArea } from './../IaArea';
 

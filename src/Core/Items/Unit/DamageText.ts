@@ -1,4 +1,4 @@
-import { AboveItemText } from '../AboveItemText';
+import { AboveItemText } from '../Text/AboveItemText';
 import { AliveItem } from './../AliveItem';
 
 export class DamageText {

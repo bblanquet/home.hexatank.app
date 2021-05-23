@@ -22,6 +22,7 @@ import { Truck } from '../../../Items/Unit/Truck';
 import { ReactorAreaState } from './ReactorAreaState';
 import { AreaSearch } from './AreaSearch';
 import { AStarHelper } from '../../AStarHelper';
+import { GlobalIa } from '../GlobalIa';
 
 export class IaArea {
 	public Troops: Array<TroopDecisionMaker>;
@@ -31,13 +32,16 @@ export class IaArea {
 
 	private _range: number = 0; //range from HQ
 	private _viewArea: IaAreaView;
-
+	private _letters: string = 'abcdefghijklmnopqrstuvwxyz';
+	private _name: string;
 	constructor(
 		private _hq: Headquarter,
 		private _spot: Area,
-		private _kindgom: IGlobalIa,
+		private _globalIa: GlobalIa,
 		private _areaSearch: AreaSearch
 	) {
+		this._name =
+			this._hq.PlayerName[this._hq.PlayerName.length - 1] + this._letters[_globalIa.AreaDecisions.length];
 		this.OnTroopsChanged = new LiteEvent<number>();
 		this.OnRequestAdded = new LiteEvent<string>();
 		this._viewArea = new IaAreaView(this._hq, this);
@@ -62,6 +66,10 @@ export class IaArea {
 		}
 	}
 
+	GetName(): string {
+		return this._name.toUpperCase();
+	}
+
 	ContainsTroop(): boolean {
 		return this.GetSpot().GetStatus().HasUnit(this._hq);
 	}
@@ -77,17 +85,24 @@ export class IaArea {
 	public IsBorder(): boolean {
 		return this._spot
 			.GetAroundAreas()
-			.some((aroundArea) => !this._kindgom.GetIaAreaByCell().Exist(aroundArea.GetCentralCell().Coo()));
+			.some((aroundArea) => !this._globalIa.GetIaAreaByCell().Exist(aroundArea.GetCentralCell().Coo()));
 	}
 
 	public IsIsolated(): boolean {
 		return this._spot
 			.GetAroundAreas()
-			.every((aroundArea) => !this._kindgom.GetIaAreaByCell().Exist(aroundArea.GetCentralCell().Coo()));
+			.every((aroundArea) => !this._globalIa.GetIaAreaByCell().Exist(aroundArea.GetCentralCell().Coo()));
 	}
 
 	public HasHq(): boolean {
 		return this._spot.GetStatus().HasField(HeadQuarterField.name);
+	}
+
+	public GetReactor(): Cell {
+		const cells = this._spot.GetCells();
+		return cells.find((cell) => {
+			TypeTranslator.IsReactorField(cell.GetField()) && !TypeTranslator.IsEnemy(cell.GetField(), this._hq);
+		});
 	}
 
 	public GetFoeReactor(): Cell {
@@ -190,7 +205,7 @@ export class IaArea {
 	public GetAllyAreas(): IaArea[] {
 		const spots = this._spot.GetAroundAreas();
 		const allySpots = new Array<IaArea>();
-		const kingdom = this._kindgom.GetIaAreaByCell();
+		const kingdom = this._globalIa.GetIaAreaByCell();
 		spots.forEach((s) => {
 			const coo = s.GetCentralCell().Coo();
 			if (kingdom.Exist(coo)) {

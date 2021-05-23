@@ -1,3 +1,4 @@
+import { IaNameView } from './IaNameView';
 import { RequestIaView } from './RequestIaView';
 import { TroopIaView } from './TroopIaView';
 import { ZKind } from '../../../../Items/ZKind';
@@ -9,6 +10,7 @@ import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 
 export class IaAreaView extends Item {
 	private _troopsView: TroopIaView;
+	private _nameView: IaNameView;
 	private _requestView: RequestIaView;
 	constructor(private _hq: Headquarter, private _area: IaArea) {
 		super();
@@ -21,6 +23,7 @@ export class IaAreaView extends Item {
 		this.InitPosition(this._area.GetCentralCell().GetBoundingBox());
 		this._troopsView = new TroopIaView(this, this._area);
 		this._requestView = new RequestIaView(this, this._area);
+		this._nameView = new IaNameView(this, this._area);
 	}
 
 	public GetBoundingBox(): BoundingBox {

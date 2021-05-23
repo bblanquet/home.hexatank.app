@@ -7,7 +7,6 @@ import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
 import { TroopRoads } from '../Troop/TroopRoads';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Area } from '../Utils/Area';
-import { SimpleOrder } from '../../Order/SimpleOrder';
 import { Tank } from '../../../Items/Unit/Tank';
 import { Groups } from '../../../Utils/Collections/Groups';
 import { TroopDestination } from '../Utils/TroopDestination';
@@ -17,18 +16,19 @@ import { BasicField } from '../../../Items/Cell/Field/BasicField';
 import { AStarEngine } from '../../AStarEngine';
 import { ReactorAreaState } from '../Utils/ReactorAreaState';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
+import { SmartSimpleOrder } from '../../Order/Composite/SmartSimpleOrder';
 
 export class AreaDecisionMaker implements IAreaDecisionMaker {
 	public HasReceivedRequest: boolean;
-	constructor(private _hq: Headquarter, public Area: IaArea) {}
-
 	private _isDestroyed: boolean = false;
+
+	constructor(private _hq: Headquarter, public Area: IaArea) {}
 
 	public Update(): void {
 		this.Area.Troops = this.Area.Troops.filter((t) => t.Tank.IsAlive());
 
 		if (0 < this.Area.GetFoesCount()) {
-			this.Do();
+			this.Dispatch();
 		} else {
 			this.Area.Troops.forEach((troop) => {
 				troop.Update();
@@ -44,7 +44,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 		this._isDestroyed = true;
 	}
 
-	private Do(): void {
+	private Dispatch(): void {
 		if (0 < this.Area.GetTroops().length) {
 			this.LogTroopCount();
 			const ally = this.Area.GetTroops()[0].Tank;
@@ -79,7 +79,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 				.GetReactors()
 				.filter((r) => !r.IsLocked() && r.IsCovered(this.Area.GetCentralCell()))
 				.forEach((r) => {
-					r.StartLocked(new AttackMenuItem());
+					r.Overlock(new AttackMenuItem());
 				});
 		}
 	}
@@ -120,7 +120,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 				bestTroopRoads.Get(coordinate).forEach((troopSituation) => {
 					this.LogOrder(troopSituation);
 					troopSituation.Troop.Tank.SetOrder(
-						new SimpleOrder(troopSituation.CurrentDestination.Destination, troopSituation.Troop.Tank)
+						new SmartSimpleOrder(troopSituation.CurrentDestination.Destination, troopSituation.Troop.Tank)
 					);
 				});
 			});

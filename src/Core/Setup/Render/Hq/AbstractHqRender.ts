@@ -11,7 +11,7 @@ import { Cell } from '../../../Items/Cell/Cell';
 
 export abstract class AbstractHqRender {
 	private _skins: HqSkinHelper = new HqSkinHelper();
-	public GetHq(
+	public GetHqList(
 		context: GameContext,
 		cells: CellContext<Cell>,
 		hqDefinitions: Array<DiamondHq>,
@@ -19,8 +19,7 @@ export abstract class AbstractHqRender {
 	): Array<Headquarter> {
 		var hqs = new Array<Headquarter>();
 
-		hqDefinitions.forEach((hqDefinition) => {
-			let index = hqDefinitions.indexOf(hqDefinition);
+		hqDefinitions.forEach((hqDefinition, index) => {
 			let hq = {};
 
 			if (hqDefinition.isIa) {
@@ -30,7 +29,8 @@ export abstract class AbstractHqRender {
 					new HexAxial(hqDefinition.Hq.Position.Q, hqDefinition.Hq.Position.R),
 					new HexAxial(hqDefinition.Diamond.Position.Q, hqDefinition.Diamond.Position.R),
 					playgroundItems,
-					this._skins.GetSkin(index)
+					this._skins.GetSkin(index),
+					index
 				);
 			} else {
 				hq = this.CreateHq(
@@ -74,6 +74,7 @@ export abstract class AbstractHqRender {
 		hqcell: HexAxial,
 		diamondcell: HexAxial,
 		items: Item[],
-		skin: ItemSkin
+		skin: ItemSkin,
+		e: number
 	): Headquarter;
 }

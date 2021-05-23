@@ -2,7 +2,6 @@ import { IAreaRequestMaker } from './IAreaRequestMaker';
 import { IAreaRequestListMaker } from './IAreaRequestListMaker';
 import { RequestType } from '../Utils/RequestType';
 import { IaArea } from '../Utils/IaArea';
-import { RequestPriority } from '../Utils/RequestPriority';
 import { AreaRequest } from '../Utils/AreaRequest';
 
 export class AreaRequestMaker implements IAreaRequestListMaker {
@@ -13,7 +12,7 @@ export class AreaRequestMaker implements IAreaRequestListMaker {
 
 		this._requesters.forEach((r) => {
 			let request = r.GetRequest(area);
-			if (request.Priority !== RequestPriority.None) {
+			if (request.Priority !== '0') {
 				requests.push(request);
 			}
 		});
@@ -22,6 +21,6 @@ export class AreaRequestMaker implements IAreaRequestListMaker {
 	}
 
 	public static NoRequest(area: IaArea): AreaRequest {
-		return new AreaRequest(RequestType.None, RequestPriority.None, 0, area);
+		return new AreaRequest(RequestType.None, '0', 0, area);
 	}
 }

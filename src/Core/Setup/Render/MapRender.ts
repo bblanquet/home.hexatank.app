@@ -36,7 +36,7 @@ export class MapRender {
 		);
 		this.SetLands(cells, mapContext.MapMode, areas, playgroundItems);
 		this.AddClouds(playgroundItems);
-		const hqs = hqRender.GetHq(context, cells, mapContext.Hqs, playgroundItems);
+		const hqs = hqRender.GetHqList(context, cells, mapContext.Hqs, playgroundItems);
 
 		//insert elements into playground
 		this.SetHqLands(cells, Archive.nature.hq, hqs.map((h) => h.GetCell().GetHexCoo()), playgroundItems);

@@ -156,7 +156,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		}
 	}
 
-	public StartLocked(type: any): void {
+	public Overlock(type: any): void {
 		this.OnOverlocked.Invoke(this, this.GetPowerUp(type));
 		this.StartOverclockAnimation();
 		this.SetLocked(true);

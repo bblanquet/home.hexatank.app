@@ -18,7 +18,8 @@ export class DummyHqRender extends HqRender {
 		hqcell: HexAxial,
 		diamondcell: HexAxial,
 		items: Item[],
-		skin: ItemSkin
+		skin: ItemSkin,
+		e: number
 	): Headquarter {
 		const cell = cells.Get(hqcell);
 		const diamond = new Diamond(cells.Get(diamondcell));

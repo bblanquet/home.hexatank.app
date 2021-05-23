@@ -1,15 +1,15 @@
-import { Dictionnary } from './../../../../../Utils/Collections/Dictionnary';
+import { Dictionnary } from '../../../../../Utils/Collections/Dictionnary';
 import { IaArea } from '../../../Utils/IaArea';
-import { IGeneralRequester } from './../IGeneralRequester';
+import { IGeneralRequester } from '../IGeneralRequester';
 import { GlobalIa } from '../../../GlobalIa';
 import { AreaRequest } from '../../../Utils/AreaRequest';
 import { RequestType } from '../../../Utils/RequestType';
 
-export class GeneralEnergyRequester implements IGeneralRequester {
+export class GeneralUpEnergyRequester implements IGeneralRequester {
 	constructor(private _priority: number) {}
 
 	GetResquest(kingdom: GlobalIa): AreaRequest {
-		const reactors = kingdom.Hq.GetReactors().filter((r) => r.GetPower() === 0 && r.HasStock() === false);
+		const reactors = kingdom.Hq.GetReactors().filter((r) => r.GetPower() < 2);
 		if (0 < reactors.length) {
 			const reactor = reactors[0];
 			const kingdomAreas = kingdom.CellAreas.Values().map((c) => c.Area).filter((a) => a.HasFreeFields());
@@ -24,7 +24,7 @@ export class GeneralEnergyRequester implements IGeneralRequester {
 			);
 
 			if (!candidates.IsEmpty()) {
-				return new AreaRequest(RequestType.Energy, '10', 1, candidates.Values()[0]);
+				return new AreaRequest(RequestType.Energy, this._priority.toString(), 1, candidates.Values()[0]);
 			}
 		}
 		return new AreaRequest(RequestType.None, '0', 0, null);

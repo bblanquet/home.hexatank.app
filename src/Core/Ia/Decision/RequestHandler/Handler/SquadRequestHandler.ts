@@ -21,7 +21,7 @@ export class SquadRequestHandler implements ISimpleRequestHandler {
 			const hasTarget = squad.SetMainTarget();
 
 			if (hasTarget) {
-				const areas = this._kingdom.GetKingdomAreas().Values().filter((a) => a.HasTroop());
+				const areas = this._kingdom.GetIaAreaByCell().Values().filter((a) => a.HasTroop());
 				const total = 2;
 				areas.some((area) => {
 					squad.AddTank(area.DropTroop());

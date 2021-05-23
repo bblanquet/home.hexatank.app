@@ -7,12 +7,26 @@ import { AreaDecisionMaker } from '../Area/AreaDecisionMaker';
 import { IaArea } from '../Utils/IaArea';
 import { AreaSearch } from '../Utils/AreaSearch';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
+import { Cell } from '../../../Items/Cell/Cell';
+import { AStarEngine } from '../../AStarEngine';
 
-export class ExpansionMaker implements IExpansionMaker {
+export class DiamondExpansionMaker implements IExpansionMaker {
+	private _diamondRoad: Area[];
+
 	constructor(private _hq: Headquarter, private _global: GlobalIa, private _areaSearch: AreaSearch) {}
 
+	private GetDiamondRoad(global: GlobalIa): Area[] {
+		const departure = global.Hq.GetCell();
+		const arrival = global.GetDiamond().GetCell();
+		const engine = new AStarEngine<Cell>((c: Cell) => c !== null, (c: Cell) => 1);
+		const road = engine.GetPath(departure, arrival);
+		const result = global.Areas.filter((a) => road.some((c) => a.Contains(c)));
+		//excule diamond & hq areas;
+		return result.filter((r) => r.Contains(arrival));
+	}
+
 	public Expand(): void {
-		if (15 <= this._hq.GetAmount() && this._global.AreaDecisions.filter((a) => a.Area.HasFreeFields()).length < 3) {
+		if (this._global.AreaDecisions.filter((a) => a.Area.HasFreeFields()).length < 3) {
 			const area = this.FindArea();
 			if (!isNullOrUndefined(area)) {
 				if (GameSettings.TankPrice <= this._hq.GetAmount()) {
@@ -44,9 +58,13 @@ export class ExpansionMaker implements IExpansionMaker {
 			return null;
 		}
 
-		if (0 === this._global.AreaDecisions.length) {
-			const diamondCell = this._global.GetDiamond().GetCell();
-			return this._global.Areas.filter((a) => a.GetCentralCell() === diamondCell)[0];
+		if (!this._diamondRoad) {
+			this._diamondRoad = this.GetDiamondRoad(this._global);
+		}
+
+		if (this._diamondRoad.some((a) => !this._global.IsConquested(a))) {
+			const a = this._diamondRoad.find((a) => !this._global.IsConquested(a));
+			return a;
 		}
 
 		return this.GetClosestArea();

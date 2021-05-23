@@ -8,6 +8,7 @@ import { TickTimer } from '../../../Utils/Timer/TickTimer';
 import { SimpleOrder } from '../../Order/SimpleOrder';
 import { AliveItem } from '../../../Items/AliveItem';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
+import { SmartSimpleOrder } from '../../Order/Composite/SmartSimpleOrder';
 
 export class TroopDecisionMaker {
 	private _changePositionTimer: ITimer;
@@ -52,7 +53,7 @@ export class TroopDecisionMaker {
 			if (this.Tank.HasTarget() || this._idleTimer.IsElapsed()) {
 				this._idleTimer = null;
 				this.SetNextDestination();
-				this.Tank.SetOrder(new SimpleOrder(this.CurrentPatrolDestination, this.Tank));
+				this.Tank.SetOrder(new SmartSimpleOrder(this.CurrentPatrolDestination, this.Tank));
 			}
 		} else {
 			if (this._cancelOrderTimer.IsElapsed()) {

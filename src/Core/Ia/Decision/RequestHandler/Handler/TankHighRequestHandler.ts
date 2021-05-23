@@ -22,6 +22,7 @@ export class TankHighRequestHandler implements ISimpleRequestHandler {
 				if (request.RequestCount === 0) {
 					return;
 				}
+				console.log('reinforce');
 				if (!this.Assign(request, () => area.DropTroop())) {
 					return;
 				}
@@ -60,7 +61,7 @@ export class TankHighRequestHandler implements ISimpleRequestHandler {
 
 	private GetReinforcement(request: AreaRequest) {
 		const troopAreas = new Array<IaArea>();
-		const kgAreas = this._kingdom.GetKingdomAreas();
+		const kgAreas = this._kingdom.GetIaAreaByCell();
 		const cells = CellHelper.OrderByDistance(
 			kgAreas.Values().map((c) => c.GetCentralCell()),
 			request.Area.GetCentralCell()

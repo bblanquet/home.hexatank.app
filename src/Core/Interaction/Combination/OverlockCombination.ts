@@ -27,7 +27,7 @@ export class OverlockCombination extends AbstractSingleCombination {
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
 			const reactor = context.Items[0] as ReactorField;
-			reactor.StartLocked(context.Items[1]);
+			reactor.Overlock(context.Items[1]);
 			this.UnSelectItem(context.Items[0]);
 			this.ClearContext.Invoke();
 			return true;

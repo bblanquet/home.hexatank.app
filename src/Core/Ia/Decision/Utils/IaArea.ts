@@ -1,3 +1,6 @@
+import { LiteEvent } from './../../../Utils/Events/LiteEvent';
+import { IaAreaView } from './View/IaAreaView';
+import { ReactorField } from './../../../Items/Cell/Field/Bonus/ReactorField';
 import { ShieldField } from '../../../Items/Cell/Field/Bonus/ShieldField';
 import { MedicField } from '../../../Items/Cell/Field/Bonus/MedicField';
 import { BasicField } from '../../../Items/Cell/Field/BasicField';
@@ -8,7 +11,6 @@ import { Diamond } from '../../../Items/Cell/Field/Diamond';
 import { DistanceHelper } from '../../../Items/Unit/MotionHelpers/DistanceHelper';
 import { HeadQuarterField } from '../../../Items/Cell/Field/Hq/HeadquarterField';
 import { RoadField } from '../../../Items/Cell/Field/Bonus/RoadField';
-import { ICell } from '../../../Items/Cell/ICell';
 import { AStarEngine } from '../../AStarEngine';
 import { IGlobalIa } from '../IGlobalIa';
 import { Area } from './Area';
@@ -23,7 +25,11 @@ import { AStarHelper } from '../../AStarHelper';
 export class IaArea {
 	public Troops: Array<TroopDecisionMaker>;
 	public Truck: Truck;
+	public OnTroopsChanged: LiteEvent<number>;
+	public OnRequestAdded: LiteEvent<string>;
+
 	private _range: number = 0; //range from HQ
+	private _viewArea: IaAreaView;
 
 	constructor(
 		private _hq: Headquarter,
@@ -31,6 +37,9 @@ export class IaArea {
 		private _kindgom: IGlobalIa,
 		private _areaSearch: AreaSearch
 	) {
+		this.OnTroopsChanged = new LiteEvent<number>();
+		this.OnRequestAdded = new LiteEvent<string>();
+		this._viewArea = new IaAreaView(this._hq, this);
 		this.Troops = new Array<TroopDecisionMaker>();
 		let range = 1;
 		let isFound = false;
@@ -67,13 +76,13 @@ export class IaArea {
 	public IsBorder(): boolean {
 		return this._spot
 			.GetAroundAreas()
-			.some((aroundArea) => !this._kindgom.GetKingdomAreas().Exist(aroundArea.GetCentralCell().Coo()));
+			.some((aroundArea) => !this._kindgom.GetIaAreaByCell().Exist(aroundArea.GetCentralCell().Coo()));
 	}
 
 	public IsIsolated(): boolean {
 		return this._spot
 			.GetAroundAreas()
-			.every((aroundArea) => !this._kindgom.GetKingdomAreas().Exist(aroundArea.GetCentralCell().Coo()));
+			.every((aroundArea) => !this._kindgom.GetIaAreaByCell().Exist(aroundArea.GetCentralCell().Coo()));
 	}
 
 	HasHq(): boolean {
@@ -173,7 +182,7 @@ export class IaArea {
 	public GetAllyAreas(): IaArea[] {
 		const spots = this._spot.GetAroundAreas();
 		const allySpots = new Array<IaArea>();
-		const kingdom = this._kindgom.GetKingdomAreas();
+		const kingdom = this._kindgom.GetIaAreaByCell();
 		spots.forEach((s) => {
 			const coo = s.GetCentralCell().Coo();
 			if (kingdom.Exist(coo)) {
@@ -181,6 +190,10 @@ export class IaArea {
 			}
 		});
 		return allySpots;
+	}
+
+	public HasReactor(): boolean {
+		return this._spot.GetStatus().HasField(ReactorField.name);
 	}
 
 	public HasFarmField(): boolean {
@@ -328,6 +341,7 @@ export class IaArea {
 		if (this.Troops.some((t) => t === troop)) {
 			this.Troops = this.Troops.filter((t) => t !== troop);
 			troop.Cancel();
+			this.OnTroopsChanged.Invoke(this, this.Troops.length);
 			return true;
 		}
 		return false;
@@ -335,6 +349,7 @@ export class IaArea {
 
 	public AddTroop(tank: Tank, cell: Cell): void {
 		this.Troops.push(new TroopDecisionMaker(cell, tank, this));
+		this.OnTroopsChanged.Invoke(this, this.Troops.length);
 	}
 
 	public GetFreeUnitCellCount(): number {

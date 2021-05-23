@@ -3,12 +3,11 @@ import { IGeneralRequester } from '../IGeneralRequester';
 import { GlobalIa } from '../../../GlobalIa';
 import { AreaRequest } from '../../../Utils/AreaRequest';
 import { RequestType } from '../../../Utils/RequestType';
-import { RequestPriority } from '../../../Utils/RequestPriority';
 
 export class GeneralSquadRequest implements IGeneralRequester {
 	private _raidTimer: TimeTimer;
 
-	constructor() {
+	constructor(private _priority: number) {
 		this._raidTimer = new TimeTimer(8000);
 	}
 
@@ -16,10 +15,10 @@ export class GeneralSquadRequest implements IGeneralRequester {
 		const kingdomAreas = kingdom.AreaDecisions.map((a) => a.Area);
 		const farmAreas = kingdomAreas.filter((a) => a.HasFarmField());
 		if (this._raidTimer.IsElapsed()) {
-			if (kingdom.GetKingdomAreas().Values().filter((a) => a.HasTroop()).length >= 4) {
-				return new AreaRequest(RequestType.Raid, RequestPriority.High, 2, farmAreas[0]);
+			if (kingdom.GetIaAreaByCell().Values().filter((a) => a.HasTroop()).length >= 4) {
+				return new AreaRequest(RequestType.Raid, this._priority.toString(), 2, farmAreas[0]);
 			}
 		}
-		return new AreaRequest(RequestType.None, RequestPriority.None, 0, null);
+		return new AreaRequest(RequestType.None, '0', 0, null);
 	}
 }

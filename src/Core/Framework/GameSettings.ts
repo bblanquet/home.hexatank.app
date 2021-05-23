@@ -59,17 +59,17 @@ export class GameSettings {
 	}
 
 	public static SetFastSpeed(): void {
-		this.TurrelRotatingDuration = 200;
-		this.RotatingDuration = 200;
-		this.TranslatinDuration = 200;
+		this.TurrelRotatingDuration = 100;
+		this.RotatingDuration = 100;
+		this.TranslatinDuration = 100;
 		this.MissileTranslationSpeed = 5;
 
 		this.DiamondLoading = 75;
-		this.FarmLoading = 1000;
+		this.FarmLoading = 500;
 
 		this.UnitLife = 100;
 		this.NatureLife = 40;
-		this.TurrelCoolingDown = 750;
+		this.TurrelCoolingDown = 500;
 		this.Attack = 50;
 	}
 }

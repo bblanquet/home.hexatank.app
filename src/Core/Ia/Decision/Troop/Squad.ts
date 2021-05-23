@@ -57,13 +57,13 @@ export class Squad implements IDoable {
 
 	private Dispatch(tank: Tank): void {
 		const candidates = this._kg
-			.GetKingdomAreas()
+			.GetIaAreaByCell()
 			.Values()
 			.filter((a) => 0 < a.GetFreeUnitCellCount())
 			.map((c) => c.GetCentralCell());
 		if (0 < candidates.length) {
 			const closestCell = CellHelper.GetClosest(candidates, tank.GetCurrentCell());
-			const area = this._kg.GetKingdomAreas().Get(closestCell.Coo());
+			const area = this._kg.GetIaAreaByCell().Get(closestCell.Coo());
 			area.AddTroop(tank, area.GetRandomFreeUnitCell());
 		}
 	}

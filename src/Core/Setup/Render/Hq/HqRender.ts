@@ -1,14 +1,7 @@
-import { BrainProvider } from './../../../Ia/Brains/BrainProvider';
-import { GeneralRequestProvider } from './../../../Ia/Decision/Providers/GeneralRequestProvider';
-import { RequestHandlerProvider } from './../../../Ia/Decision/Providers/RequestHandlerProvider';
-import { RequestMakerProvider } from './../../../Ia/Decision/Providers/RequestMakerProvider';
+import { BobBrain } from './../../../Ia/Brains/BobBrain';
+import { Brain } from '../../../Ia/Brains/Brain';
 import { Item } from '../../../Items/Item';
 import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
-import { GeneralRequester } from '../../../Ia/Decision/RequestMaker/GeneralRequester/GeneralRequester';
-import { AreaRequestMaker } from '../../../Ia/Decision/RequestMaker/AreaRequestMaker';
-import { ExpansionMaker } from '../../../Ia/Decision/ExpansionMaker/ExpansionMaker';
-import { RequestHandler } from '../../../Ia/Decision/RequestHandler/RequestHandler';
-import { GlobalIa } from '../../../Ia/Decision/GlobalIa';
 import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
 import { IaHeadquarter } from '../../../Ia/IaHeadquarter';
 import { Diamond } from '../../../Items/Cell/Field/Diamond';
@@ -28,7 +21,8 @@ export class HqRender extends AbstractHqRender {
 		hqcell: HexAxial,
 		diamondcell: HexAxial,
 		items: Item[],
-		skin: ItemSkin
+		skin: ItemSkin,
+		e: number
 	): Headquarter {
 		const cell = cells.Get(hqcell);
 		const diamond = new Diamond(cells.Get(diamondcell));
@@ -44,8 +38,13 @@ export class HqRender extends AbstractHqRender {
 			a.SetAround(around);
 		});
 		const hq = new IaHeadquarter(skin, cell, context);
-		const brain = new BrainProvider().GetBrain1(hq, context, areas, areaSearch, diamond);
-		hq.InjectBrain(brain);
+
+		if (e === 0) {
+			hq.InjectBrain(new Brain().GetBrain(hq, context, areas, areaSearch, diamond));
+		} else {
+			hq.InjectBrain(new BobBrain().GetBrain(hq, context, areas, areaSearch, diamond));
+		}
+
 		items.push(diamond);
 		items.push(hq);
 		return hq;

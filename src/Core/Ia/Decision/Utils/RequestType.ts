@@ -13,5 +13,7 @@ export enum RequestType {
 	Reactor = 'Reactor',
 	Energy = 'Energy',
 	Raid = 'Raid',
-	Shield = 'Shield'
+	Shield = 'Shield',
+	DiamondRoad = 'DiamondRoad',
+	SpeedUp = 'SpeedUp'
 }

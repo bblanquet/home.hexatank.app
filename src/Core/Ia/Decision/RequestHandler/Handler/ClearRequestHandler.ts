@@ -5,7 +5,8 @@ import { RequestType } from '../../Utils/RequestType';
 export class ClearRequestHandler implements ISimpleRequestHandler {
 	Handle(request: AreaRequest): void {
 		if (request.Area.HasTroop() && request.Area.HasNature() && !request.Area.IsTroopFighting()) {
-			request.Area.GetTroops()[0].SetTarget(request.Area.GetNatures()[0]);
+			const tank = request.Area.GetTroops()[0];
+			tank.SetTarget(request.Area.GetNatures()[0]);
 		}
 	}
 	Type(): RequestType {

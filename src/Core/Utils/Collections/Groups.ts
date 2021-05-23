@@ -24,6 +24,10 @@ export class Groups<TData> {
 		return this._list.Keys();
 	}
 
+	public Values(): TData[] {
+		return this._list.Values().reduce((a, b) => a.concat(b), new Array<TData>());
+	}
+
 	public Get(key: string): TData[] {
 		return this._list.Get(key);
 	}

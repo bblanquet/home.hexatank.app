@@ -2,9 +2,10 @@ import { IGeneralRequester } from '../IGeneralRequester';
 import { AreaRequest } from '../../../Utils/AreaRequest';
 import { GlobalIa } from '../../../GlobalIa';
 import { RequestType } from '../../../Utils/RequestType';
-import { RequestPriority } from '../../../Utils/RequestPriority';
 
 export class GeneralHealingRequester implements IGeneralRequester {
+	constructor(private _priority: number) {}
+
 	GetResquest(kingdom: GlobalIa): AreaRequest {
 		const kingdomAreas = kingdom.AreaDecisions.map((a) => a.Area);
 		const candidates = kingdomAreas.filter((a) => !a.IsImportant() && a.HasFreeFields() && a.HasRoadField());
@@ -12,8 +13,8 @@ export class GeneralHealingRequester implements IGeneralRequester {
 		const total = Math.floor(kingdomAreas.length / 8);
 
 		if (healingArea.length < total && 0 < candidates.length) {
-			return new AreaRequest(RequestType.Heal, RequestPriority.High, 2, candidates[0]);
+			return new AreaRequest(RequestType.Heal, '10', 2, candidates[0]);
 		}
-		return new AreaRequest(RequestType.None, RequestPriority.None, 0, null);
+		return new AreaRequest(RequestType.None, '0', 0, null);
 	}
 }

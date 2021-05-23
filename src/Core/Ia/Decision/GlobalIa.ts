@@ -4,7 +4,6 @@ import { MoneyOrder } from '../Order/Composite/MoneyOrder';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { IExpansionMaker } from './ExpansionMaker/IExpansionMaker';
 import { IGlobalIa } from './IGlobalIa';
-import { IDoable } from './IDoable';
 import { Groups } from '../../Utils/Collections/Groups';
 import { Dictionnary } from '../../Utils/Collections/Dictionnary';
 import { IAreaDecisionMaker } from './Area/IAreaDecisionMaker';
@@ -23,7 +22,7 @@ import { Cell } from '../../Items/Cell/Cell';
 import { Squad } from './Troop/Squad';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 
-export class GlobalIa implements IDoable, IGlobalIa {
+export class GlobalIa implements IGlobalIa {
 	public AreaDecisions: IAreaDecisionMaker[];
 	public Squads: Squad[];
 	public Trucks: Array<Truck> = new Array<Truck>();
@@ -31,6 +30,7 @@ export class GlobalIa implements IDoable, IGlobalIa {
 	public CellAreas: Dictionnary<IAreaDecisionMaker>;
 	public IdleTanks: ExcessTankFinder;
 
+	public HasDiamondRoad: boolean = false;
 	private _diamond: Diamond;
 	private _idleTimer: TickTimer = new TickTimer(25);
 	private _requestMaker: IAreaRequestListMaker;
@@ -70,16 +70,20 @@ export class GlobalIa implements IDoable, IGlobalIa {
 		this.Hq.OnReactorLost.On((e: any, obj: ReactorField) => {
 			const c = obj.GetCell();
 			let foundArea: IaArea = null;
-			this.GetKingdomAreas().Values().some((area) => {
+			this.GetIaAreaByCell().Values().some((area) => {
 				if (!area.HasCell(c)) {
 					foundArea = area;
 					return true;
 				}
 				return false;
 			});
-			this.GetKingdomAreas().Remove(foundArea.GetCentralCell().Coo());
+			this.GetIaAreaByCell().Remove(foundArea.GetCentralCell().Coo());
 			this.Areas.push(foundArea.GetSpot());
 		});
+	}
+
+	public IsConquested(area: Area): boolean {
+		return this.AreaDecisions.some((e) => e.Area.GetSpot() === area);
 	}
 
 	public SetDiamond(diamond: Diamond): void {
@@ -87,7 +91,7 @@ export class GlobalIa implements IDoable, IGlobalIa {
 		this._diamond.OnDestroyed.On(this.DiamondDestroyed.bind(this));
 	}
 
-	public GetArea(cell: Cell): IaArea {
+	public GetDecisionArea(cell: Cell): IaArea {
 		const areas = this.AreaDecisions.filter((c) => c.Area.HasCell(cell));
 		if (0 < areas.length) {
 			return areas[0].Area;
@@ -123,7 +127,7 @@ export class GlobalIa implements IDoable, IGlobalIa {
 		this._generalRequestMaker = generalRequestMaker;
 	}
 
-	public GetKingdomAreas(): Dictionnary<IaArea> {
+	public GetIaAreaByCell(): Dictionnary<IaArea> {
 		return Dictionnary.To<IaArea>((t) => t.GetCentralCell().Coo(), this.AreaDecisions.map((m) => m.Area));
 	}
 
@@ -149,9 +153,7 @@ export class GlobalIa implements IDoable, IGlobalIa {
 			if (requests.Any()) {
 				this._requestHandler.HandleRequests(requests);
 			}
-			if (15 <= this.Hq.GetAmount()) {
-				this._expansionMaker.Expand();
-			}
+			this._expansionMaker.Expand();
 		}
 	}
 

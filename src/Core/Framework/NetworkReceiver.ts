@@ -143,7 +143,7 @@ export class NetworkReceiver {
 		const hq = isNullOrUndefined(message.Content.HqCoo) ? null : this._context.GetHq(message.Content.HqCoo);
 		if (this.IsListenedHq(message.Content.HqCoo)) {
 			const reactor = cell.GetField() as ReactorField;
-			reactor.StartLocked(TypeTranslator.GetPowerUp(message.Content.PowerUp));
+			reactor.Overlock(TypeTranslator.GetPowerUp(message.Content.PowerUp));
 		}
 	}
 }

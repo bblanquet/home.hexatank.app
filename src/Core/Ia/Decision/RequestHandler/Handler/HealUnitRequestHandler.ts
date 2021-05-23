@@ -7,7 +7,7 @@ export class HealUnitRequestHandler implements ISimpleRequestHandler {
 	constructor(private _kingdom: GlobalIa) {}
 
 	Handle(request: AreaRequest): void {
-		const healingAreas = this._kingdom.GetKingdomAreas().Values().filter((a) => a.HasMedic());
+		const healingAreas = this._kingdom.GetIaAreaByCell().Values().filter((a) => a.HasMedic());
 		const damagedTroops = request.Area.GetTroops().filter((t) => t.Tank.HasDamage());
 		let currentArea = healingAreas.pop();
 		damagedTroops.forEach((t) => {

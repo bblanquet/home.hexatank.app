@@ -99,10 +99,12 @@ export class IaArea {
 	}
 
 	public GetReactor(): Cell {
-		const cells = this._spot.GetCells();
-		return cells.find((cell) => {
-			TypeTranslator.IsReactorField(cell.GetField()) && !TypeTranslator.IsEnemy(cell.GetField(), this._hq);
-		});
+		const r = this._hq.GetReactors().find((r) => this._spot.Contains(r.GetCell()));
+		if (r) {
+			return r.GetCell();
+		} else {
+			return null;
+		}
 	}
 
 	public GetFoeReactor(): Cell {

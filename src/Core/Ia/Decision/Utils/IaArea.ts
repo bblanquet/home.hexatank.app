@@ -1,3 +1,4 @@
+import { TypeTranslator } from './../../../Items/Cell/Field/TypeTranslator';
 import { LiteEvent } from './../../../Utils/Events/LiteEvent';
 import { IaAreaView } from './View/IaAreaView';
 import { ReactorField } from './../../../Items/Cell/Field/Bonus/ReactorField';
@@ -85,8 +86,15 @@ export class IaArea {
 			.every((aroundArea) => !this._kindgom.GetIaAreaByCell().Exist(aroundArea.GetCentralCell().Coo()));
 	}
 
-	HasHq(): boolean {
+	public HasHq(): boolean {
 		return this._spot.GetStatus().HasField(HeadQuarterField.name);
+	}
+
+	public GetFoeReactor(): Cell {
+		const cells = this._spot.GetCells();
+		return cells.find((cell) => {
+			TypeTranslator.IsReactorField(cell.GetField()) && TypeTranslator.IsEnemy(cell.GetField(), this._hq);
+		});
 	}
 
 	public IsCovered(): ReactorAreaState {

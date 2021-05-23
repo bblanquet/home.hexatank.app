@@ -1,3 +1,5 @@
+import { FoeReactorRequester } from './../Decision/RequestMaker/AreaRequester/FoeReactorRequester';
+import { EnemyReactorHandler } from './../Decision/RequestHandler/Handler/EnemyReactorHandler';
 import { DiamondRoadRequest } from './../Decision/RequestMaker/GeneralRequester/Requesters/DiamondRoadRequest';
 import { DiamondRoadHandler } from './../Decision/RequestHandler/Handler/DiamondRoadHandler';
 import { SpeedUpRequester } from './../Decision/RequestMaker/AreaRequester/SpeedUpRequester';
@@ -54,6 +56,8 @@ export class BobBrain implements IBrain {
 		const brain = new GlobalIa(hq, areas);
 
 		const handlers = new Groups<ISimpleRequestHandler>();
+		handlers.Add('10', new EnemyReactorHandler());
+
 		handlers.Add('10', new ClearRequestHandler());
 		handlers.Add('10', new ReactorRequestHandler(hq, context));
 		handlers.Add('8', new EnergyRequestHandler(hq));
@@ -82,6 +86,7 @@ export class BobBrain implements IBrain {
 				new ShieldBorderRequester(5),
 				new SpeedUpRequester(brain, 7),
 				new ReactorRequester(10),
+				new FoeReactorRequester(10),
 				new ShieldAreaRequester(5),
 				new HealUnitRequester(brain, 2),
 				new ClearAreaRequester(10),
@@ -98,7 +103,7 @@ export class BobBrain implements IBrain {
 				new DiamondRoadRequest(7),
 				new GeneralHealingRequester(2),
 				new GeneralUpEnergyRequester(8),
-				new GeneralSquadRequest(10)
+				new GeneralSquadRequest(7)
 			])
 		);
 

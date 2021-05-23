@@ -14,7 +14,6 @@ export class DiamondRoadHandler implements ISimpleRequestHandler {
 
 	Handle(request: AreaRequest): void {
 		if (!request.Area.HasRoadField()) {
-			console.log('make road');
 			const cells = this.GetCells(this._global);
 			const areaCells = cells.filter((c) => request.Area.GetSpot().Contains(c));
 			const price = areaCells.length * GameSettings.FieldPrice;

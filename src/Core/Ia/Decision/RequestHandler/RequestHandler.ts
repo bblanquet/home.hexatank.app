@@ -12,7 +12,11 @@ export class RequestHandler implements IRequestHandler {
 			const priority = priorities[index].toString();
 			requests.Get(priority).forEach((request) => {
 				console.log(`[${index}] ${request.RequestType} ${request.Priority}`);
-				request.Area.OnRequestAdded.Invoke(this, request.RequestType);
+
+				if (request.Area) {
+					request.Area.OnRequestAdded.Invoke(this, request.RequestType);
+				}
+
 				const handler = this._handlers.Get(request.Priority).find((d) => d.Type() === request.RequestType);
 				if (!handler) {
 					console.log(`could not find ${request.RequestType} ${request.Priority}`);

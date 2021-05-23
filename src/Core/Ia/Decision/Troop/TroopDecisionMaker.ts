@@ -32,8 +32,12 @@ export class TroopDecisionMaker {
 	}
 
 	public SetTarget(cell: Cell): void {
-		this._target = cell.GetShootableEntity();
-		this.Tank.SetMainTarget(this._target);
+		if (cell.IsShootable()) {
+			this._target = cell.GetShootableEntity();
+			this.Tank.SetMainTarget(this._target);
+		} else {
+			this.Tank.SetOrder(new SmartSimpleOrder(cell, this.Tank));
+		}
 	}
 
 	public Update(): void {

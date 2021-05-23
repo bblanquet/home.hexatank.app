@@ -33,6 +33,10 @@ export class TypeTranslator {
 		);
 	}
 
+	public static IsReactorField(field: IField): boolean {
+		return field instanceof ReactorField;
+	}
+
 	public static IsBonusField(cell: IField): boolean {
 		return cell instanceof BonusField || cell instanceof ReactorField || cell instanceof ShieldField;
 	}

@@ -240,8 +240,13 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 			});
 			this.Charges.Clear();
 			this.GetCell().DestroyField();
-			this.GetCell().GetIncludedRange(2).forEach((c) => {
-				if (TypeTranslator.IsBonusField(c.GetField())) {
+
+			this.GetCell().GetIncludedRange(this._totalRange).forEach((c) => {
+				if (
+					TypeTranslator.IsBonusField(c.GetField()) &&
+					this.Hq.IsCovered(c) &&
+					!TypeTranslator.IsEnemy(c.GetField(), this.Hq)
+				) {
 					c.DestroyField();
 					if (c.IsVisible()) {
 						new Explosion(c.GetBoundingBox(), Archive.constructionEffects, ZKind.Sky, false, 5);

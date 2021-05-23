@@ -11,6 +11,8 @@ import { ITimer } from '../../../../Utils/Timer/ITimer';
 import { TimeTimer } from '../../../../Utils/Timer/TimeTimer';
 import { BouncingScaleDownAnimator } from '../../../Animator/BouncingScaleDownAnimator';
 import { BouncingScaleUpAnimator } from '../../../Animator/BouncingScaleUpAnimator';
+import { Explosion } from '../../../Unit/Explosion';
+import { ZKind } from '../../../ZKind';
 
 export class ShieldField extends AliveBonusField {
 	private _shieldAppearance: ShieldAppearance;
@@ -24,6 +26,12 @@ export class ShieldField extends AliveBonusField {
 		}
 		this._shieldAppearance = new ShieldAppearance(this);
 		hq.AddField(this, cell);
+		if (!hq.IsCovered(cell)) {
+			cell.DestroyField();
+			if (cell.IsVisible()) {
+				new Explosion(cell.GetBoundingBox(), Archive.constructionEffects, ZKind.Sky, false, 5);
+			}
+		}
 	}
 
 	public EnergyChanged(isUp: boolean): void {

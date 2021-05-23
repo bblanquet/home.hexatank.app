@@ -11,6 +11,7 @@ import { InteractionContext } from '../../../../Interaction/InteractionContext';
 import { IActiveContainer } from '../IActiveContainer';
 import { AliveItem } from '../../../AliveItem';
 import { ZKind } from '../../../ZKind';
+import { Explosion } from '../../../Unit/Explosion';
 
 export abstract class BonusField extends Field implements IActiveContainer {
 	private _animator: IAnimator;
@@ -26,7 +27,6 @@ export abstract class BonusField extends Field implements IActiveContainer {
 			this.GenerateSprite(b);
 		});
 		this.GenerateSprite(this.hq.GetSkin().GetLight());
-		// this.GenerateSprite(Archive.bonus.coverTop);
 		this.Energy = this.hq.GetCellEnergy(cell.GetHexCoo());
 		this.hq.AddField(this, cell);
 		this.GetCurrentSprites().Values().forEach((obj) => {
@@ -36,6 +36,12 @@ export abstract class BonusField extends Field implements IActiveContainer {
 			this.InitPosition(cell.GetBoundingBox());
 		}
 		this._animator = new BouncingScaleAnimator(this);
+		if (!hq.IsCovered(cell)) {
+			cell.DestroyField();
+			if (cell.IsVisible()) {
+				new Explosion(cell.GetBoundingBox(), Archive.constructionEffects, ZKind.Sky, false, 5);
+			}
+		}
 	}
 
 	public GetHq(): Headquarter {

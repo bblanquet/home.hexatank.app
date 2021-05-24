@@ -22,10 +22,7 @@ export default class PendingPlayers extends Component<{ HostState: HostState; So
 		return (
 			<thead>
 				<tr class="d-flex">
-					<th scope="col">Player</th>
-					<th scope="col">Peer</th>
-					<th scope="col">Loading</th>
-					{this.props.HostState.IsAdmin ? <th scope="col">*</th> : ''}
+					<th scope="col">Players</th>
 				</tr>
 			</thead>
 		);

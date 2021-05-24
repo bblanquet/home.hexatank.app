@@ -7,8 +7,13 @@ import { PeerSocket } from '../../../Network/Peer/PeerSocket';
 import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
 import Icon from '../../Common/Icon/IconComponent';
 import { Player } from '../../../Network/Player';
+import { Message } from '../../Network/Message';
+import { LiteEvent } from '../../../Core/Utils/Events/LiteEvent';
 
-export default class ToastComponent extends Component<{ socket: NetworkSocket; Player: Player }, { Message: string }> {
+export default class ToastComponent extends Component<
+	{ socket: NetworkSocket; Player: Player; onMessage: LiteEvent<Message> },
+	{ Message: string }
+> {
 	private _toastObserver: NetworkObserver;
 	private _input: HTMLInputElement;
 	constructor(props: any) {
@@ -71,8 +76,10 @@ export default class ToastComponent extends Component<{ socket: NetworkSocket; P
 
 	private OnToastReceived(message: NetworkMessage<string>): void {
 		if (message) {
-			toastr['success'](message.Content, `> ${message.Emitter}`, { iconClass: 'toast-gray' });
-			document.getElementById('toastMessageBox').focus();
+			const m = new Message();
+			m.Content = message.Content;
+			m.Name = message.Emitter;
+			this.props.onMessage.Invoke(this, m);
 		}
 	}
 
@@ -82,12 +89,16 @@ export default class ToastComponent extends Component<{ socket: NetworkSocket; P
 		message.Recipient = PeerSocket.All();
 		message.Content = this.state.Message;
 		message.Kind = PacketKind.Toast;
+
+		const m = new Message();
+		m.Content = this.state.Message;
+		m.Name = message.Emitter;
+
+		this.props.onMessage.Invoke(this, m);
+		this.props.socket.Emit(message);
+
 		this.setState({
 			Message: ''
 		});
-
-		toastr['success'](message.Content, `> ${message.Emitter}`, { iconClass: 'toast-white' });
-		this.props.socket.Emit(message);
-		document.getElementById('toastMessageBox').focus();
 	}
 }

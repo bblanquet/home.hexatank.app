@@ -1,6 +1,7 @@
 import { MapSetting } from './../Form/MapSetting';
 import { Player } from '../../Network/Player';
 import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
+import { Message } from './Message';
 
 export class HostState {
 	public RoomName: string;
@@ -11,4 +12,5 @@ export class HostState {
 	public Player: Player;
 	public Message: string;
 	public MapSetting: MapSetting;
+	public Messages: Message[] = [];
 }

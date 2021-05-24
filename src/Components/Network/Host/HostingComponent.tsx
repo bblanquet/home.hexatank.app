@@ -5,6 +5,7 @@ import { Component, h } from 'preact';
 import { route } from 'preact-router';
 import { PacketKind } from '../../../Network/Message/PacketKind';
 import PendingPlayers from './Players/PendingPlayersComponent';
+import ChatComponent from './Chat/ChatComponent';
 import LoadingPlayers from './Players/LoadingPlayersComponent';
 import { NetworkObserver } from '../../../Network/NetworkObserver';
 import { NetworkSocket } from '../../../Network/NetworkSocket';
@@ -28,11 +29,14 @@ import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
 import Icon from '../../Common/Icon/IconComponent';
 import ActiveButtonComponent from '../../Common/Button/Stylish/ActiveButtonComponent';
 import { MapSetting } from '../../Form/MapSetting';
+import { HostingMode } from '../HostingMode';
 import { MapType } from '../../../Core/Setup/Generator/MapType';
 import SmPanelComponent from '../../Common/Panel/SmPanelComponent';
+import { LiteEvent } from '../../../Core/Utils/Events/LiteEvent';
+import { Message } from '../Message';
 
 export default class HostingComponent extends Component<any, HostState> {
-	private _hasSettings: boolean = false;
+	private _mode: HostingMode = HostingMode.pending;
 	private _isLoading: boolean = false;
 
 	private _appService: IAppService;
@@ -40,6 +44,7 @@ export default class HostingComponent extends Component<any, HostState> {
 	private _networkService: INetworkService;
 	private _gameContextService: IGameContextService;
 
+	private _onMessageReceived: LiteEvent<Message>;
 	private _socket: NetworkSocket;
 	private _observers: NetworkObserver[];
 
@@ -82,6 +87,8 @@ export default class HostingComponent extends Component<any, HostState> {
 			this._socket.OnReceived.On(obs);
 		});
 		this._socket.OnPeerConnectionChanged.On(this.PeerConnectionChanged.bind(this));
+		this._onMessageReceived = new LiteEvent<Message>();
+		this._onMessageReceived.On(this.OnMessage.bind(this));
 	}
 
 	componentWillUnmount() {
@@ -102,30 +109,39 @@ export default class HostingComponent extends Component<any, HostState> {
 	render() {
 		return (
 			<Redirect>
-				<Visible isVisible={SpriteProvider.IsLoaded()}>
-					<Visible isVisible={this._isLoading}>
-						<ToastComponent socket={this._socket} Player={this.state.Player}>
+				<ToastComponent socket={this._socket} Player={this.state.Player} onMessage={this._onMessageReceived}>
+					<Visible isVisible={SpriteProvider.IsLoaded()}>
+						<Visible isVisible={this._isLoading}>
 							<SmPanelComponent>
 								<LoadingPlayers Socket={this._socket} HostState={this.state} />
 								{this.GetBack()}
 							</SmPanelComponent>
-						</ToastComponent>
-					</Visible>
-					<Visible isVisible={!this._isLoading}>
-						<Visible isVisible={this._hasSettings}>
-							<OptionComponent Update={this.Update.bind(this)} Model={this.state.MapSetting} />
 						</Visible>
-						<Visible isVisible={!this._hasSettings}>
-							<ToastComponent socket={this._socket} Player={this.state.Player}>
+						<Visible isVisible={!this._isLoading}>
+							<Visible isVisible={this._mode === HostingMode.setting}>
+								<SmPanelComponent>
+									{this.GetUpdsideButton()}
+									<OptionComponent Update={this.Update.bind(this)} Model={this.state.MapSetting} />
+									{this.GetDownsideButton()}
+								</SmPanelComponent>
+							</Visible>
+							<Visible isVisible={this._mode === HostingMode.pending}>
 								<SmPanelComponent>
 									{this.GetUpdsideButton()}
 									<PendingPlayers Socket={this._socket} HostState={this.state} />
 									{this.GetDownsideButton()}
 								</SmPanelComponent>
-							</ToastComponent>
+							</Visible>
+							<Visible isVisible={this._mode === HostingMode.chat}>
+								<SmPanelComponent>
+									{this.GetUpdsideButton()}
+									<ChatComponent messages={this.state.Messages} player={this.state.Player.Name} />
+									{this.GetDownsideButton()}
+								</SmPanelComponent>
+							</Visible>
 						</Visible>
 					</Visible>
-				</Visible>
+				</ToastComponent>
 			</Redirect>
 		);
 	}
@@ -140,7 +156,7 @@ export default class HostingComponent extends Component<any, HostState> {
 		}
 	}
 	private Update(model: MapSetting): void {
-		this._hasSettings = false;
+		this._mode = HostingMode.pending;
 		this.setState({
 			MapSetting: model
 		});
@@ -190,28 +206,78 @@ export default class HostingComponent extends Component<any, HostState> {
 		return (
 			<div class="container-center-horizontal">
 				{this.state.IsAdmin ? (
-					<ButtonComponent
+					<ActiveButtonComponent
+						isActive={this._mode === HostingMode.setting}
+						leftColor={ColorKind.Red}
+						rightColor={ColorKind.Black}
+						left={
+							<span>
+								<Icon Value={'fas fa-cogs'} />
+							</span>
+						}
+						right={
+							<span>
+								<Icon Value={'fas fa-cogs'} />
+							</span>
+						}
 						callBack={() => {
-							this._hasSettings = true;
+							this._mode = HostingMode.setting;
 							this.setState({});
 						}}
-						color={ColorKind.Black}
-					>
-						<Icon Value="fas fa-cog" /> Setup
-					</ButtonComponent>
+					/>
 				) : (
 					''
 				)}
 
 				<ActiveButtonComponent
+					isActive={this._mode === HostingMode.pending}
+					leftColor={ColorKind.Red}
+					rightColor={ColorKind.Black}
 					left={
 						<span>
-							<Icon Value={'fas fa-toggle-on'} /> ON
+							<Icon Value={'fas fa-clipboard-list'} />
 						</span>
 					}
 					right={
 						<span>
-							<Icon Value={'fas fa-toggle-off'} /> OFF
+							<Icon Value={'fas fa-clipboard-list'} />
+						</span>
+					}
+					callBack={() => {
+						this._mode = HostingMode.pending;
+						this.setState({});
+					}}
+				/>
+
+				<ActiveButtonComponent
+					isActive={this._mode === HostingMode.chat}
+					leftColor={ColorKind.Red}
+					rightColor={ColorKind.Black}
+					left={
+						<span>
+							<Icon Value={'fas fa-comments'} />
+						</span>
+					}
+					right={
+						<span>
+							<Icon Value={'fas fa-comments'} />
+						</span>
+					}
+					callBack={() => {
+						this._mode = HostingMode.chat;
+						this.setState({});
+					}}
+				/>
+
+				<ActiveButtonComponent
+					left={
+						<span>
+							<Icon Value={'fas fa-toggle-on'} />
+						</span>
+					}
+					right={
+						<span>
+							<Icon Value={'fas fa-toggle-off'} />
 						</span>
 					}
 					leftColor={ColorKind.Gray}
@@ -386,5 +452,11 @@ export default class HostingComponent extends Component<any, HostState> {
 	private Back(): void {
 		this._socket.Stop();
 		route('/Home', true);
+	}
+
+	private OnMessage(source: any, message: Message): void {
+		this.setState({
+			Messages: this.state.Messages.concat(message)
+		});
 	}
 }

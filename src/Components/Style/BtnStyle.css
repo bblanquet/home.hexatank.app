@@ -152,23 +152,23 @@
 }
 
 .green-secondary {
-	background: rgb(136, 187, 36);
+	background: rgb(40, 167, 69);
 	background: linear-gradient(
 		90deg,
-		rgba(136, 187, 36, 1) 0%,
-		rgba(178, 242, 103, 1) 25%,
-		rgba(231, 241, 52, 1) 50%,
-		rgba(178, 242, 103, 1) 75%,
-		rgba(136, 187, 36, 1) 100%
+		rgba(40, 167, 69, 1) 0%,
+		rgb(63, 173, 89) 25%,
+		rgb(134, 214, 96) 50%,
+		rgb(63, 173, 89) 75%,
+		rgba(40, 167, 69, 1) 100%
 	);
 }
 
 .green-primary {
-	background-color: #a7f232;
+	background-color: #28a745;
 }
 
 .green-primary:hover {
-	background-color: #a7f232;
+	background-color: #45cc64;
 }
 
 .white-secondary {

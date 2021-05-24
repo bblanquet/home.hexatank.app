@@ -16,16 +16,7 @@ export default class LoadingPlayers extends Component<{ HostState: HostState; So
 	}
 
 	private GetHeader() {
-		return (
-			<thead>
-				<tr>
-					<th scope="col">Player</th>
-					<th scope="col">Peer</th>
-					<th scope="col">Loading</th>
-					{this.props.HostState.IsAdmin ? <th scope="col">*</th> : ''}
-				</tr>
-			</thead>
-		);
+		return <thead />;
 	}
 
 	private GetContent() {
@@ -33,15 +24,15 @@ export default class LoadingPlayers extends Component<{ HostState: HostState; So
 			<tbody>
 				{this.props.HostState.Players.Values().map((player) => {
 					return (
-						<tr class={this.props.HostState.Player.Name === player.Name ? 'row-blue' : ''}>
-							<td class="align-middle">
+						<tr class={this.props.HostState.Player.Name === player.Name ? 'd-flex" row-blue' : 'd-flex"'}>
+							<td class="align-self-center">
 								{player.Name} {this.GetReady(player)}
 							</td>
-							<td class="align-middle">
+							<td class="align-self-center">
 								{this.GetType(player)} {this.GetConnection(player)} {this.GetTimeout(player)}
 							</td>
-							<td class="align-middle">{+player.GetLatency() === 0 ? '' : player.GetLatency()}</td>
-							<td class="align-middle">{this.GetLoadingInfo(player)}</td>
+							<td class="align-self-center">{+player.GetLatency() === 0 ? '' : player.GetLatency()}</td>
+							<td class="align-self-center">{this.GetLoadingInfo(player)}</td>
 						</tr>
 					);
 				})}

@@ -121,7 +121,7 @@ export default class HostingComponent extends Component<any, HostState> {
 							<Visible isVisible={this._mode === HostingMode.setting}>
 								<SmPanelComponent>
 									{this.GetUpdsideButton()}
-									<OptionComponent Update={this.Update.bind(this)} Model={this.state.MapSetting} />
+									<OptionComponent Model={this.state.MapSetting} />
 									{this.GetDownsideButton()}
 								</SmPanelComponent>
 							</Visible>

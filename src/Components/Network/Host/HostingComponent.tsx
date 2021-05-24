@@ -456,7 +456,7 @@ export default class HostingComponent extends Component<any, HostState> {
 
 	private OnMessage(source: any, message: Message): void {
 		this.setState({
-			Messages: this.state.Messages.concat(message)
+			Messages: [ message ].concat(this.state.Messages)
 		});
 	}
 }

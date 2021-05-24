@@ -34,7 +34,6 @@ export class ShieldBorderRequestHandler implements ISimpleRequestHandler {
 	private CreateShield(road: Cell[]) {
 		const price = road.length * GameSettings.FieldPrice;
 		if (price < this._hq.GetAmount()) {
-			console.log(`%c [SHIELD] `, 'font-weight:bold;color:blue;');
 			road.forEach((c) => {
 				if (c.GetField() instanceof BasicField) {
 					new ShieldField(c, this._hq);

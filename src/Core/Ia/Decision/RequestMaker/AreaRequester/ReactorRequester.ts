@@ -8,10 +8,11 @@ export class ReactorRequester implements IAreaRequestMaker {
 	constructor(private _priority: number) {}
 
 	public GetRequest(area: IaArea): AreaRequest {
-		if (!area.IsImportant() && area.IsCovered() !== ReactorAreaState.All && area.ContainsTroop()) {
-			return new AreaRequest(RequestType.Reactor, this._priority.toString(), 0, area);
-		} else {
-			return AreaRequestMaker.NoRequest(area);
+		if (area.GetInnerFoeCount() === 0) {
+			if (!area.IsImportant() && area.IsCovered() !== ReactorAreaState.All && area.ContainsTroop()) {
+				return new AreaRequest(RequestType.Reactor, this._priority.toString(), 0, area);
+			}
 		}
+		return AreaRequestMaker.NoRequest(area);
 	}
 }

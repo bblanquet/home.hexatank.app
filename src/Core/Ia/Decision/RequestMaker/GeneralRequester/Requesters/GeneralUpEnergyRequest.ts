@@ -1,18 +1,21 @@
 import { Dictionnary } from '../../../../../Utils/Collections/Dictionnary';
 import { IaArea } from '../../../Utils/IaArea';
 import { IGeneralRequester } from '../IGeneralRequester';
-import { GlobalIa } from '../../../GlobalIa';
+import { Brain } from '../../../Brain';
 import { AreaRequest } from '../../../Utils/AreaRequest';
 import { RequestType } from '../../../Utils/RequestType';
 
 export class GeneralUpEnergyRequester implements IGeneralRequester {
 	constructor(private _priority: number) {}
 
-	GetResquest(kingdom: GlobalIa): AreaRequest {
+	GetResquest(kingdom: Brain): AreaRequest {
 		const reactors = kingdom.Hq.GetReactors().filter((r) => r.GetPower() < 2);
 		if (0 < reactors.length) {
 			const reactor = reactors[0];
-			const kingdomAreas = kingdom.CellAreas.Values().map((c) => c.Area).filter((a) => a.HasFreeFields());
+			const kingdomAreas = kingdom.CellAreas
+				.Values()
+				.map((c) => c.Area)
+				.filter((a) => a.HasFreeFields() && a.GetInnerFoeCount() === 0);
 			const candidates = new Dictionnary<IaArea>();
 
 			reactor.GetInternal().All().forEach((c) =>

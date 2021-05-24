@@ -8,10 +8,11 @@ export class FarmRequester implements IAreaRequestMaker {
 	constructor(private _priority: number) {}
 
 	GetRequest(area: IaArea): AreaRequest {
-		if (!area.IsImportant() && area.HasFreeFields() && !area.HasFarmField() && area.HasRoadField()) {
-			return new AreaRequest(RequestType.Farm, this._priority.toString(), 1, area);
-		} else {
-			return AreaRequestMaker.NoRequest(area);
+		if (area.GetInnerFoeCount() === 0) {
+			if (!area.IsImportant() && area.HasFreeFields() && !area.HasFarmField() && area.HasRoadField()) {
+				return new AreaRequest(RequestType.Farm, this._priority.toString(), 1, area);
+			}
 		}
+		return AreaRequestMaker.NoRequest(area);
 	}
 }

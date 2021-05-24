@@ -1,7 +1,7 @@
 import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
-import { GlobalIa } from '../../GlobalIa';
+import { Brain } from '../../Brain';
 import { IaArea } from '../../Utils/IaArea';
 import { GameSettings } from '../../../../Framework/GameSettings';
 import { Vehicle } from '../../../../Items/Unit/Vehicle';
@@ -10,7 +10,7 @@ import { RequestType } from '../../Utils/RequestType';
 import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 
 export class TankMediumRequestHandler implements ISimpleRequestHandler {
-	constructor(private _kingdom: GlobalIa, private _hq: Headquarter) {}
+	constructor(private _kingdom: Brain, private _hq: Headquarter) {}
 
 	Type(): RequestType {
 		return RequestType.Tank;
@@ -57,7 +57,7 @@ export class TankMediumRequestHandler implements ISimpleRequestHandler {
 	public BuyTank(area: IaArea): boolean {
 		let isCreated = false;
 		const cell = area.GetRandomFreeUnitCell();
-		if (!isNullOrUndefined(cell) && this._hq.Buy(GameSettings.TankPrice)) {
+		if (!isNullOrUndefined(cell) && this._hq.Buy(GameSettings.TankPrice * this._hq.GetTankCount())) {
 			var lambda: any = (obj: any, vehicle: Vehicle) => {
 				if (vehicle instanceof Tank) {
 					const tank = vehicle as Tank;

@@ -1,9 +1,9 @@
+import { IaHeadquarter } from '../IaHeadquarter';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
-import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { MoneyOrder } from '../Order/Composite/MoneyOrder';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { IExpansionMaker } from './ExpansionMaker/IExpansionMaker';
-import { IGlobalIa } from './IGlobalIa';
+import { IBrain } from './IBrain';
 import { Groups } from '../../Utils/Collections/Groups';
 import { Dictionnary } from '../../Utils/Collections/Dictionnary';
 import { IAreaDecisionMaker } from './Area/IAreaDecisionMaker';
@@ -22,7 +22,7 @@ import { Cell } from '../../Items/Cell/Cell';
 import { Squad } from './Troop/Squad';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 
-export class GlobalIa implements IGlobalIa {
+export class Brain implements IBrain {
 	public AreaDecisions: IAreaDecisionMaker[];
 	public Squads: Squad[];
 	public Trucks: Array<Truck> = new Array<Truck>();
@@ -39,7 +39,7 @@ export class GlobalIa implements IGlobalIa {
 	private _generalRequestMaker: IGeneralListRequester;
 	public AllAreas: Area[];
 
-	constructor(public Hq: Headquarter, public Areas: Area[]) {
+	constructor(public Hq: IaHeadquarter, public Areas: Area[]) {
 		this.AreaDecisions = new Array<IAreaDecisionMaker>();
 		this.Squads = new Array<Squad>();
 		this.CellAreas = new Dictionnary<IAreaDecisionMaker>();
@@ -157,7 +157,7 @@ export class GlobalIa implements IGlobalIa {
 		}
 	}
 
-	private GetRequests(areas: IaArea[]) {
+	private GetRequests(areas: IaArea[]): Groups<AreaRequest> {
 		const requests = new Groups<AreaRequest>();
 		this._generalRequestMaker.GetResquest(this).forEach((r) => {
 			requests.Add(r.Priority, r);
@@ -180,10 +180,10 @@ export class GlobalIa implements IGlobalIa {
 		// const mTypes = requests.Exist(RequestPriority.Medium)
 		// 	? requests.Get(RequestPriority.Medium).map((c) => c.RequestType)
 		// 	: '';
-		// console.log(
-		// 	`%c [MONEY] ${this.Hq.GetAmount()} [A] ${this.AreaDecisions.length}`,
-		// 	'font-weight:bold;color:#940c0c;'
-		// );
+		console.log(
+			`%c [MONEY] ${this.Hq.PlayerName[this.Hq.PlayerName.length - 1]} - ${this.Hq.GetAmount()}`,
+			'font-weight:bold;color:#940c0c;'
+		);
 		// console.log(`%c [H] ${hCount} ${hTypes.toString()} `, 'font-weight:bold;color:#94570c;');
 		// console.log(`%c [M] ${mCount} ${mTypes.toString()} `, 'font-weight:bold;color:#94770c;');
 		// console.log(`%c ----------------------- `, 'font-weight:bold;color:#94770c;');

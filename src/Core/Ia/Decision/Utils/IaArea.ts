@@ -13,7 +13,7 @@ import { DistanceHelper } from '../../../Items/Unit/MotionHelpers/DistanceHelper
 import { HeadQuarterField } from '../../../Items/Cell/Field/Hq/HeadquarterField';
 import { RoadField } from '../../../Items/Cell/Field/Bonus/RoadField';
 import { AStarEngine } from '../../AStarEngine';
-import { IGlobalIa } from '../IGlobalIa';
+import { IBrain } from '../IBrain';
 import { Area } from './Area';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
@@ -22,11 +22,11 @@ import { Truck } from '../../../Items/Unit/Truck';
 import { ReactorAreaState } from './ReactorAreaState';
 import { AreaSearch } from './AreaSearch';
 import { AStarHelper } from '../../AStarHelper';
-import { GlobalIa } from '../GlobalIa';
+import { Brain } from '../Brain';
 
 export class IaArea {
 	public Troops: Array<TroopDecisionMaker>;
-	public Truck: Truck;
+	private _trucks: Truck[] = [];
 	public OnTroopsChanged: LiteEvent<number>;
 	public OnRequestAdded: LiteEvent<string>;
 
@@ -37,7 +37,7 @@ export class IaArea {
 	constructor(
 		private _hq: Headquarter,
 		private _spot: Area,
-		private _globalIa: GlobalIa,
+		private _globalIa: Brain,
 		private _areaSearch: AreaSearch
 	) {
 		this._name =
@@ -64,6 +64,15 @@ export class IaArea {
 				isFound = true;
 			}
 		}
+	}
+
+	AddTruck(truck: Truck) {
+		this._trucks.push(truck);
+	}
+
+	public GetTrucks(): Truck[] {
+		this._trucks = this._trucks.filter((t) => t.IsAlive());
+		return this._trucks;
 	}
 
 	GetName(): string {
@@ -131,7 +140,11 @@ export class IaArea {
 	}
 
 	public IsImportant(): boolean {
-		return this._spot.GetStatus().HasField(Diamond.name) || this._spot.GetStatus().HasField(HeadQuarterField.name);
+		return (
+			this._spot.GetStatus().HasField(Diamond.name) ||
+			this._spot.GetStatus().HasField(HeadQuarterField.name) ||
+			this._spot.GetStatus().HasField(ReactorField.name)
+		);
 	}
 
 	public HasCell(cell: Cell) {
@@ -148,6 +161,10 @@ export class IaArea {
 
 	public HasMedic(): boolean {
 		return this.GetSpot().GetStatus().HasField(MedicField.name);
+	}
+
+	public HasDiamond(): boolean {
+		return this.GetSpot().GetStatus().HasField(Diamond.name);
 	}
 
 	public GetTroops(): Array<TroopDecisionMaker> {

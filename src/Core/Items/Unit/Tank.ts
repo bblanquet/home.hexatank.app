@@ -43,7 +43,7 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 	}
 
 	public HasTarget(): boolean {
-		return !isNullOrUndefined(this._mainTarget);
+		return this._mainTarget && this._mainTarget.IsAlive();
 	}
 
 	protected HandleCellStateChanged(obj: any, cellState: CellState): void {

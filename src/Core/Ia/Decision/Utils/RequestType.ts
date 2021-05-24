@@ -17,5 +17,6 @@ export enum RequestType {
 	DiamondRoad = 'DiamondRoad',
 	SpeedUp = 'SpeedUp',
 	FoeReactor = 'FoeReactor',
-	ReactorShield = 'ReactorShield'
+	ReactorShield = 'ReactorShield',
+	DiamondRoadCleaning = 'DiamondRoadCleaning'
 }

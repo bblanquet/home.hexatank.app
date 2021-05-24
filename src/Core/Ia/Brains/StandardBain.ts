@@ -1,17 +1,15 @@
-import { TankMediumRequester } from './../Decision/RequestMaker/AreaRequester/TankMediumRequester';
-import { TankLowRequester } from './../Decision/RequestMaker/AreaRequester/TankLowRequester';
-import { IBrain } from './IBrain';
-import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
+import { IaHeadquarter } from '../IaHeadquarter';
+import { TankMediumRequester } from '../Decision/RequestMaker/AreaRequester/TankMediumRequester';
+import { TankLowRequester } from '../Decision/RequestMaker/AreaRequester/TankLowRequester';
+import { IBrainProvider } from './IBrain';
 import { GameContext } from '../../Framework/GameContext';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { ExpansionMaker } from '../Decision/ExpansionMaker/ExpansionMaker';
-import { GlobalIa } from '../Decision/GlobalIa';
 import { RequestHandler } from '../Decision/RequestHandler/RequestHandler';
 import { AreaRequestMaker } from '../Decision/RequestMaker/AreaRequestMaker';
 import { GeneralRequester } from '../Decision/RequestMaker/GeneralRequester/GeneralRequester';
 import { Area } from '../Decision/Utils/Area';
 import { AreaSearch } from '../Decision/Utils/AreaSearch';
-import { IGlobalIa } from '../Decision/IGlobalIa';
 import { GeneralEnergyRequester } from '../Decision/RequestMaker/GeneralRequester/Requesters/GeneralEnergyRequester';
 import { GeneralHealingRequester } from '../Decision/RequestMaker/GeneralRequester/Requesters/GeneralHealingRequester';
 import { GeneralSquadRequest } from '../Decision/RequestMaker/GeneralRequester/Requesters/GeneralSquadRequest';
@@ -40,16 +38,12 @@ import { ShieldAreaRequester } from '../Decision/RequestMaker/AreaRequester/Shie
 import { ShieldBorderRequester } from '../Decision/RequestMaker/AreaRequester/ShieldBorderRequester';
 import { TankRequester } from '../Decision/RequestMaker/AreaRequester/TankHighRequester';
 import { TruckRequest } from '../Decision/RequestMaker/AreaRequester/TruckRequester';
+import { Brain } from '../Decision/Brain';
+import { IBrain } from '../Decision/IBrain';
 
-export class Brain implements IBrain {
-	GetBrain(
-		hq: Headquarter,
-		context: GameContext,
-		areas: Area[],
-		areaSearch: AreaSearch,
-		diamond: Diamond
-	): IGlobalIa {
-		const brain = new GlobalIa(hq, areas);
+export class StandardBain implements IBrainProvider {
+	GetBrain(hq: IaHeadquarter, context: GameContext, areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
+		const brain = new Brain(hq, areas);
 
 		const handlers = new Groups<ISimpleRequestHandler>();
 		handlers.Add('10', new TankHighRequestHandler(brain, new TankMediumRequestHandler(brain, hq)));
@@ -77,7 +71,7 @@ export class Brain implements IBrain {
 				new ShieldAreaRequester(10),
 				new HealUnitRequester(brain, 10),
 				new ClearAreaRequester(10),
-				new TruckRequest(10),
+				new TruckRequest(10, 1),
 				new RoadRequester(5),
 				new FarmRequester(10),
 				new TankRequester(10),
@@ -90,7 +84,7 @@ export class Brain implements IBrain {
 				new GeneralTruckRequester(10),
 				new GeneralHealingRequester(10),
 				new GeneralEnergyRequester(10),
-				new GeneralSquadRequest(10)
+				new GeneralSquadRequest(10, 8000, 2)
 			])
 		);
 

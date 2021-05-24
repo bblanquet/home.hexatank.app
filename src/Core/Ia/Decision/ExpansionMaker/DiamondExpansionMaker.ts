@@ -1,6 +1,6 @@
 import { IExpansionMaker } from './IExpansionMaker';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
-import { GlobalIa } from '../GlobalIa';
+import { Brain } from '../Brain';
 import { Area } from '../Utils/Area';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { AreaDecisionMaker } from '../Area/AreaDecisionMaker';
@@ -13,9 +13,9 @@ import { AStarEngine } from '../../AStarEngine';
 export class DiamondExpansionMaker implements IExpansionMaker {
 	private _diamondRoad: Area[];
 
-	constructor(private _hq: Headquarter, private _global: GlobalIa, private _areaSearch: AreaSearch) {}
+	constructor(private _hq: Headquarter, private _global: Brain, private _areaSearch: AreaSearch) {}
 
-	private GetDiamondRoad(global: GlobalIa): Area[] {
+	private GetDiamondRoad(global: Brain): Area[] {
 		const departure = global.Hq.GetCell();
 		const arrival = global.GetDiamond().GetCell();
 		const engine = new AStarEngine<Cell>((c: Cell) => c !== null, (c: Cell) => 1);
@@ -44,7 +44,6 @@ export class DiamondExpansionMaker implements IExpansionMaker {
 		);
 		this._global.AreaDecisions.push(areaDecision);
 		this._global.CellAreas.Add(area.GetCentralCell().Coo(), areaDecision);
-		this.Log(areaDecision);
 	}
 
 	public RemoveArea(area: Area): void {
@@ -84,13 +83,5 @@ export class DiamondExpansionMaker implements IExpansionMaker {
 			}
 		});
 		return currentArea;
-	}
-
-	private Log(areaDecision: AreaDecisionMaker) {
-		console.log(
-			`%c [NEW AREA]  Q:${areaDecision.Area.GetSpot().GetCentralCell().GetHexCoo()
-				.Q} R:${areaDecision.Area.GetSpot().GetCentralCell().GetHexCoo().R}}`,
-			'font-weight:bold;color:green;'
-		);
 	}
 }

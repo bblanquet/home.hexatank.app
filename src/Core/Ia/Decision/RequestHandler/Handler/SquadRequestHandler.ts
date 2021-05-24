@@ -1,6 +1,6 @@
 import { MapObserver } from './../../MapObserver';
 import { Squad } from '../../Troop/Squad';
-import { GlobalIa } from '../../GlobalIa';
+import { Brain } from '../../Brain';
 import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
 import { RequestType } from '../../Utils/RequestType';
 import { AreaRequest } from '../../Utils/AreaRequest';
@@ -8,20 +8,20 @@ import { GameContext } from '../../../../Framework/GameContext';
 import { SquadRoad } from '../../Troop/SquadRoad';
 
 export class SquadRequestHandler implements ISimpleRequestHandler {
-	constructor(private _gameContex: GameContext, private _kingdom: GlobalIa) {}
+	constructor(private _gameContext: GameContext, private _global: Brain) {}
 
 	Handle(request: AreaRequest): void {
-		const foes = this._gameContex.GetHqs().filter((h) => h !== this._kingdom.Hq);
-		if (0 < foes.length) {
+		const foeHqs = this._gameContext.GetHqs().filter((h) => h !== this._global.Hq);
+		if (0 < foeHqs.length) {
 			const squad = new Squad(
-				new SquadRoad(this._kingdom.Hq),
-				new MapObserver(this._kingdom.AllAreas, this._kingdom.Hq),
-				this._kingdom
+				new SquadRoad(this._global.Hq),
+				new MapObserver(this._global.AllAreas, this._global.Hq),
+				this._global
 			);
 			const hasTarget = squad.SetMainTarget();
 
 			if (hasTarget) {
-				const areas = this._kingdom.GetIaAreaByCell().Values().filter((a) => a.HasTroop());
+				const areas = this._global.GetIaAreaByCell().Values().filter((a) => a.HasTroop());
 				const total = 2;
 				areas.some((area) => {
 					squad.AddTank(area.DropTroop());
@@ -30,7 +30,7 @@ export class SquadRequestHandler implements ISimpleRequestHandler {
 					}
 					return false;
 				});
-				this._kingdom.Squads.push(squad);
+				this._global.Squads.push(squad);
 			}
 		}
 	}

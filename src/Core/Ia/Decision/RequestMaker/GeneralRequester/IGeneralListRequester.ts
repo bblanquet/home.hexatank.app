@@ -1,6 +1,6 @@
-import { GlobalIa } from '../../GlobalIa';
+import { Brain } from '../../Brain';
 import { AreaRequest } from '../../Utils/AreaRequest';
 
 export interface IGeneralListRequester {
-	GetResquest(kingdom: GlobalIa): AreaRequest[];
+	GetResquest(kingdom: Brain): AreaRequest[];
 }

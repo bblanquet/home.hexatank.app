@@ -36,6 +36,10 @@ export class Groups<TData> {
 		return !this._list.IsEmpty();
 	}
 
+	public Count(): number {
+		return this.Keys().length;
+	}
+
 	public Exist(key: string): boolean {
 		return this._list.Exist(key);
 	}

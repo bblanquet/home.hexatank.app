@@ -1,15 +1,16 @@
-import { IBrain } from './IBrain';
+import { IaHeadquarter } from './../IaHeadquarter';
+import { IBrainProvider } from './IBrain';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { GameContext } from '../../Framework/GameContext';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { ExpansionMaker } from '../Decision/ExpansionMaker/ExpansionMaker';
-import { GlobalIa } from '../Decision/GlobalIa';
+import { Brain } from '../Decision/Brain';
 import { RequestHandler } from '../Decision/RequestHandler/RequestHandler';
 import { AreaRequestMaker } from '../Decision/RequestMaker/AreaRequestMaker';
 import { GeneralRequester } from '../Decision/RequestMaker/GeneralRequester/GeneralRequester';
 import { Area } from '../Decision/Utils/Area';
 import { AreaSearch } from '../Decision/Utils/AreaSearch';
-import { IGlobalIa } from '../Decision/IGlobalIa';
+import { IBrain } from '../Decision/IBrain';
 import { GeneralEnergyRequester } from '../Decision/RequestMaker/GeneralRequester/Requesters/GeneralEnergyRequester';
 import { GeneralHealingRequester } from '../Decision/RequestMaker/GeneralRequester/Requesters/GeneralHealingRequester';
 import { GeneralSquadRequest } from '../Decision/RequestMaker/GeneralRequester/Requesters/GeneralSquadRequest';
@@ -37,15 +38,9 @@ import { ShieldBorderRequester } from '../Decision/RequestMaker/AreaRequester/Sh
 import { TankRequester } from '../Decision/RequestMaker/AreaRequester/TankHighRequester';
 import { TruckRequest } from '../Decision/RequestMaker/AreaRequester/TruckRequester';
 
-export class DummyBrain implements IBrain {
-	GetBrain(
-		hq: Headquarter,
-		context: GameContext,
-		areas: Area[],
-		areaSearch: AreaSearch,
-		diamond: Diamond
-	): IGlobalIa {
-		const brain = new GlobalIa(hq, areas);
+export class DummyBrain implements IBrainProvider {
+	GetBrain(hq: IaHeadquarter, context: GameContext, areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
+		const brain = new Brain(hq, areas);
 
 		const handlers = new Groups<ISimpleRequestHandler>();
 		handlers.Add('10', new ShieldBorderRequestHandler(hq));
@@ -69,7 +64,7 @@ export class DummyBrain implements IBrain {
 				new ShieldAreaRequester(1),
 				new HealUnitRequester(brain, 1),
 				new ClearAreaRequester(1),
-				new TruckRequest(1),
+				new TruckRequest(1, 1),
 				new FarmRequester(1),
 				new TankRequester(1)
 			]),
@@ -79,7 +74,7 @@ export class DummyBrain implements IBrain {
 				new GeneralTruckRequester(10),
 				new GeneralHealingRequester(10),
 				new GeneralEnergyRequester(10),
-				new GeneralSquadRequest(10)
+				new GeneralSquadRequest(10, 1, 1)
 			])
 		);
 

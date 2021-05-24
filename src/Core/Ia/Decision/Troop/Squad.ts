@@ -3,7 +3,7 @@ import { ISquadTarget } from './Target/ISquadTarget';
 import { IDoable } from './../IDoable';
 import { SquadRoad } from './SquadRoad';
 import { MapObserver } from '../MapObserver';
-import { GlobalIa } from '../GlobalIa';
+import { Brain } from '../Brain';
 import { CellHelper } from '../../../Items/Cell/CellHelper';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
@@ -12,7 +12,7 @@ export class Squad implements IDoable {
 	private _targets: ISquadTarget[];
 	private _mainTarget: ISquadTarget;
 	private _currentTarget: ISquadTarget;
-	public constructor(private _road: SquadRoad, private _mapObserver: MapObserver, private _kg: GlobalIa) {}
+	public constructor(private _road: SquadRoad, private _mapObserver: MapObserver, private _kg: Brain) {}
 
 	HasTank(): boolean {
 		return 0 < this._tanks.length;

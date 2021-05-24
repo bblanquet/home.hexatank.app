@@ -1,7 +1,7 @@
 import { Cell } from './../../../../../Items/Cell/Cell';
 import { AStarEngine } from './../../../../AStarEngine';
 import { IGeneralRequester } from './../IGeneralRequester';
-import { GlobalIa } from '../../../GlobalIa';
+import { Brain } from '../../../Brain';
 import { AreaRequest } from '../../../Utils/AreaRequest';
 import { RequestType } from '../../../Utils/RequestType';
 import { IaArea } from '../../../Utils/IaArea';
@@ -9,7 +9,7 @@ import { IaArea } from '../../../Utils/IaArea';
 export class DiamondRoadRequest implements IGeneralRequester {
 	constructor(private _priority: number) {}
 
-	GetResquest(global: GlobalIa): AreaRequest {
+	GetResquest(global: Brain): AreaRequest {
 		if (!global.HasDiamondRoad && global.GetDiamond().IsAlive()) {
 			const diamondAreas = this.GetDiamondAreas(global);
 			if (0 < diamondAreas.length) {
@@ -26,7 +26,7 @@ export class DiamondRoadRequest implements IGeneralRequester {
 		return new AreaRequest(RequestType.DiamondRoad, '0', 0, null);
 	}
 
-	private GetDiamondAreas(global: GlobalIa): IaArea[] {
+	private GetDiamondAreas(global: Brain): IaArea[] {
 		const departure = global.Hq.GetCell();
 		const arrival = global.GetDiamond().GetCell();
 		const engine = new AStarEngine<Cell>((c: Cell) => c !== null, (c: Cell) => 1);

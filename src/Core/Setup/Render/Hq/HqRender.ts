@@ -1,5 +1,5 @@
+import { StandardBain } from './../../../Ia/Brains/StandardBain';
 import { BobBrain } from './../../../Ia/Brains/BobBrain';
-import { Brain } from '../../../Ia/Brains/Brain';
 import { Item } from '../../../Items/Item';
 import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
 import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
@@ -40,9 +40,9 @@ export class HqRender extends AbstractHqRender {
 		const hq = new IaHeadquarter(skin, cell, context);
 
 		if (e === 0) {
-			hq.InjectBrain(new Brain().GetBrain(hq, context, areas, areaSearch, diamond));
-		} else {
 			hq.InjectBrain(new BobBrain().GetBrain(hq, context, areas, areaSearch, diamond));
+		} else {
+			hq.InjectBrain(new StandardBain().GetBrain(hq, context, areas, areaSearch, diamond));
 		}
 
 		items.push(diamond);

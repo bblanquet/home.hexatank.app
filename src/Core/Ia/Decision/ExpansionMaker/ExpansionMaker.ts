@@ -1,6 +1,6 @@
 import { IExpansionMaker } from './IExpansionMaker';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
-import { GlobalIa } from '../GlobalIa';
+import { Brain } from '../Brain';
 import { Area } from '../Utils/Area';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { AreaDecisionMaker } from '../Area/AreaDecisionMaker';
@@ -9,7 +9,7 @@ import { AreaSearch } from '../Utils/AreaSearch';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class ExpansionMaker implements IExpansionMaker {
-	constructor(private _hq: Headquarter, private _global: GlobalIa, private _areaSearch: AreaSearch) {}
+	constructor(private _hq: Headquarter, private _global: Brain, private _areaSearch: AreaSearch) {}
 
 	public Expand(): void {
 		if (15 <= this._hq.GetAmount() && this._global.AreaDecisions.filter((a) => a.Area.HasFreeFields()).length < 3) {
@@ -30,7 +30,6 @@ export class ExpansionMaker implements IExpansionMaker {
 		);
 		this._global.AreaDecisions.push(areaDecision);
 		this._global.CellAreas.Add(area.GetCentralCell().Coo(), areaDecision);
-		this.Log(areaDecision);
 	}
 
 	public RemoveArea(area: Area): void {
@@ -66,13 +65,5 @@ export class ExpansionMaker implements IExpansionMaker {
 			}
 		});
 		return currentArea;
-	}
-
-	private Log(areaDecision: AreaDecisionMaker) {
-		console.log(
-			`%c [NEW AREA]  Q:${areaDecision.Area.GetSpot().GetCentralCell().GetHexCoo()
-				.Q} R:${areaDecision.Area.GetSpot().GetCentralCell().GetHexCoo().R}}`,
-			'font-weight:bold;color:green;'
-		);
 	}
 }

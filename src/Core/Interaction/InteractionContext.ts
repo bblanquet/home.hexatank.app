@@ -145,7 +145,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 			info.ItemsCount = this._selectedItem.length;
 			info.Items = this._selectedItem.map((s) => s.constructor.name);
 			this.OnInteractionChanged.Invoke(this, info);
-			console.log(`%c ${this.GetMessage()}`, 'font-weight:bold;color:red;');
+			//console.log(`%c ${this.GetMessage()}`, 'font-weight:bold;color:red;');
 		}
 
 		let context = new CombinationContext();

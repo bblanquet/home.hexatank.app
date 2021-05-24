@@ -8,7 +8,7 @@ export class TankLowRequester implements IAreaRequestMaker {
 	constructor(private _priority: number) {}
 
 	public GetRequest(area: IaArea): AreaRequest {
-		if (!area.HasTroop()) {
+		if (!area.HasTroop() && (area.HasNature() || (area.IsImportant() && area.IsBorder()))) {
 			return new AreaRequest(RequestType.Tank, this._priority.toString(), 1, area);
 		}
 		return AreaRequestMaker.NoRequest(area);

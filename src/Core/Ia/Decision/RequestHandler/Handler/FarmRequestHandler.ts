@@ -14,7 +14,6 @@ export class FarmRequestHandler implements ISimpleRequestHandler {
 
 		const price = cells.length * GameSettings.FieldPrice;
 		if (price < this._hq.GetAmount()) {
-			console.log(`%c [FARM] `, 'font-weight:bold;color:blue;');
 			cells.forEach((c) => {
 				if (c.GetField() instanceof BasicField) {
 					new FarmField(c, this._hq);

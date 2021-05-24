@@ -1,3 +1,5 @@
+import { DiamondField } from './DiamondField';
+import { BlockingField } from './BlockingField';
 import { TargetOrder } from '../../../Ia/Order/Composite/TargetOrder';
 import { PatrolOrder } from '../../../Ia/Order/Composite/PatrolOrder';
 import { DiamondTruckOrder } from '../../../Ia/Order/Composite/Diamond/DiamondTruckOrder';
@@ -63,6 +65,14 @@ export class TypeTranslator {
 		} else if (kind === OrderKind.Money) {
 			v.SetOrder(new MoneyOrder(v));
 		}
+	}
+
+	public static IsNatureField(e: IField): boolean {
+		return e instanceof BlockingField;
+	}
+
+	public static IsDiamond(e: IField): boolean {
+		return e instanceof DiamondField;
 	}
 
 	public static IsEnemy(e: IField, item: AliveItem): boolean {

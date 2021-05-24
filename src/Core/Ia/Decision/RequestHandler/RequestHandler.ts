@@ -11,8 +11,6 @@ export class RequestHandler implements IRequestHandler {
 		for (let index = priorities.length - 1; index > -1; index--) {
 			const priority = priorities[index].toString();
 			requests.Get(priority).forEach((request) => {
-				console.log(`[${index}] ${request.RequestType} ${request.Priority}`);
-
 				if (request.Area) {
 					request.Area.OnRequestAdded.Invoke(this, request.RequestType);
 				}

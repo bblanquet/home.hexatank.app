@@ -1,6 +1,6 @@
 import { RoadField } from './../../../../Items/Cell/Field/Bonus/RoadField';
 import { BasicField } from './../../../../Items/Cell/Field/BasicField';
-import { GlobalIa } from './../../GlobalIa';
+import { Brain } from '../../Brain';
 import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { RequestType } from '../../Utils/RequestType';
@@ -10,7 +10,7 @@ import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 import { GameSettings } from '../../../../Framework/GameSettings';
 
 export class DiamondRoadHandler implements ISimpleRequestHandler {
-	constructor(private _global: GlobalIa, private _hq: Headquarter) {}
+	constructor(private _global: Brain, private _hq: Headquarter) {}
 
 	Handle(request: AreaRequest): void {
 		if (!request.Area.HasRoadField()) {
@@ -31,7 +31,7 @@ export class DiamondRoadHandler implements ISimpleRequestHandler {
 		return RequestType.DiamondRoad;
 	}
 
-	private GetCells(global: GlobalIa): Cell[] {
+	private GetCells(global: Brain): Cell[] {
 		const departure = global.Hq.GetCell();
 		const arrival = global.GetDiamond().GetCell();
 		const engine = new AStarEngine<Cell>((c: Cell) => c !== null, (c: Cell) => 1);

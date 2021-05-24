@@ -48,6 +48,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	private _onCellStateChanged: (obj: any, cellState: CellState) => void;
 	public OnVehicleCreated: LiteEvent<Vehicle> = new LiteEvent<Vehicle>();
 	public OnDiamondCountChanged: LiteEvent<number> = new LiteEvent<number>();
+	public OnDiamondEarned: LiteEvent<number> = new LiteEvent<number>();
 	public OnFieldCountchanged: LiteEvent<number> = new LiteEvent<number>();
 	public OnFieldAdded: LiteEvent<Cell> = new LiteEvent<Cell>();
 	public OnEnergyChanged: LiteEvent<number> = new LiteEvent<number>();
@@ -361,6 +362,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		if (amount !== 0) {
 			this._diamondCount += amount;
 			this.OnDiamondCountChanged.Invoke(this, this._diamondCount);
+			if (0 < amount) {
+				this.OnDiamondEarned.Invoke(this, amount);
+			}
 		}
 	}
 

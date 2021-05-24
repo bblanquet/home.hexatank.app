@@ -1,6 +1,6 @@
 import { Tank } from './../../../../Items/Unit/Tank';
 import { IaArea } from '../../Utils/IaArea';
-import { GlobalIa } from '../../GlobalIa';
+import { Brain } from '../../Brain';
 import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { RequestType } from '../../Utils/RequestType';
@@ -8,7 +8,7 @@ import { CellHelper } from '../../../../Items/Cell/CellHelper';
 import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 
 export class TankHighRequestHandler implements ISimpleRequestHandler {
-	constructor(private _kingdom: GlobalIa, private _mediumRequest: ISimpleRequestHandler) {}
+	constructor(private _kingdom: Brain, private _mediumRequest: ISimpleRequestHandler) {}
 
 	Type(): RequestType {
 		return RequestType.Tank;

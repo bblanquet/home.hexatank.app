@@ -1,11 +1,11 @@
-import { GlobalIa } from './../../GlobalIa';
+import { Brain } from '../../Brain';
 import { AreaRequestMaker } from '../AreaRequestMaker';
 import { IAreaRequestMaker } from '../IAreaRequestMaker';
 import { IaArea } from '../../Utils/IaArea';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { RequestType } from '../../Utils/RequestType';
 export class SpeedUpRequester implements IAreaRequestMaker {
-	constructor(private _global: GlobalIa, private _priority: number) {}
+	constructor(private _global: Brain, private _priority: number) {}
 
 	GetRequest(area: IaArea): AreaRequest {
 		const areas = area.GetSpot().GetAroundAreas();

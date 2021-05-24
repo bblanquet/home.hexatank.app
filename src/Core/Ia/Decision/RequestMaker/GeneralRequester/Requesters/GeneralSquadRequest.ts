@@ -1,22 +1,17 @@
 import { TimeTimer } from '../../../../../Utils/Timer/TimeTimer';
 import { IGeneralRequester } from '../IGeneralRequester';
-import { GlobalIa } from '../../../GlobalIa';
+import { Brain } from '../../../Brain';
 import { AreaRequest } from '../../../Utils/AreaRequest';
 import { RequestType } from '../../../Utils/RequestType';
+import { GameSettings } from '../../../../../Framework/GameSettings';
 
 export class GeneralSquadRequest implements IGeneralRequester {
-	private _raidTimer: TimeTimer;
+	constructor(private _priority: number, private _duration: number, private _tankCount: number) {}
 
-	constructor(private _priority: number) {
-		this._raidTimer = new TimeTimer(8000);
-	}
-
-	GetResquest(kingdom: GlobalIa): AreaRequest {
-		const kingdomAreas = kingdom.AreaDecisions.map((a) => a.Area);
-		const farmAreas = kingdomAreas.filter((a) => a.HasFarmField());
-		if (this._raidTimer.IsElapsed()) {
-			if (kingdom.GetIaAreaByCell().Values().filter((a) => a.HasTroop()).length >= 4) {
-				return new AreaRequest(RequestType.Raid, this._priority.toString(), 2, farmAreas[0]);
+	GetResquest(global: Brain): AreaRequest {
+		if (global.Hq.GetEarnedDiamond(this._duration) > GameSettings.TankPrice * this._tankCount) {
+			if (global.GetIaAreaByCell().Values().filter((a) => a.HasTroop()).length >= this._tankCount * 2) {
+				return new AreaRequest(RequestType.Raid, this._priority.toString(), this._tankCount, null);
 			}
 		}
 		return new AreaRequest(RequestType.None, '0', 0, null);

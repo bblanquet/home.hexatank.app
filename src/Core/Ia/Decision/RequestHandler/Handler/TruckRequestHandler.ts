@@ -1,5 +1,5 @@
 import { MoneyOrder } from '../../../Order/Composite/MoneyOrder';
-import { IGlobalIa } from '../../IGlobalIa';
+import { IBrain } from '../../IBrain';
 import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 import { DiamondTruckOrder } from '../../../Order/Composite/Diamond/DiamondTruckOrder';
 import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
@@ -11,14 +11,13 @@ import { DiamondFieldOrder } from '../../../Order/Composite/Diamond/DiamondField
 import { RequestType } from '../../Utils/RequestType';
 
 export class TruckRequestHandler implements ISimpleRequestHandler {
-	constructor(private _hq: Headquarter, private _kingdom: IGlobalIa) {}
+	constructor(private _hq: Headquarter, private _kingdom: IBrain) {}
 
 	Type(): RequestType {
 		return RequestType.Truck;
 	}
 
 	public Handle(request: AreaRequest): void {
-		console.log(`%c [TRUCK] `, 'font-weight:bold;color:blue;');
 		var lambda: any = (obj: any, vehicle: Vehicle) => {
 			if (vehicle instanceof Truck) {
 				const truck = vehicle as Truck;
@@ -34,7 +33,7 @@ export class TruckRequestHandler implements ISimpleRequestHandler {
 					truck.SetOrder(new MoneyOrder(truck));
 				}
 
-				request.Area.Truck = truck;
+				request.Area.AddTruck(truck);
 			}
 		};
 		this._hq.OnVehicleCreated.On(lambda);

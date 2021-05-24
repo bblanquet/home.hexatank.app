@@ -1,10 +1,10 @@
 import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { RequestType } from '../../Utils/RequestType';
-import { GlobalIa } from '../../GlobalIa';
+import { Brain } from '../../Brain';
 
 export class HealUnitRequestHandler implements ISimpleRequestHandler {
-	constructor(private _kingdom: GlobalIa) {}
+	constructor(private _kingdom: Brain) {}
 
 	Handle(request: AreaRequest): void {
 		const healingAreas = this._kingdom.GetIaAreaByCell().Values().filter((a) => a.HasMedic());

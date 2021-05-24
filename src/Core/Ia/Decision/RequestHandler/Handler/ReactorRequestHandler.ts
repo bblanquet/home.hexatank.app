@@ -25,7 +25,6 @@ export class ReactorRequestHandler implements ISimpleRequestHandler {
 				);
 				this._hq.AddReactor(reactor);
 				this._hq.Buy((this._hq.GetReactorsCount() + 1) * GameSettings.FieldPrice);
-				console.log(`%c [REACTOR] `, 'font-weight:bold;color:blue;');
 			}
 		}
 	}

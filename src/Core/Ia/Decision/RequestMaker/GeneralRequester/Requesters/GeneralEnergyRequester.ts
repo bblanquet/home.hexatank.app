@@ -1,14 +1,14 @@
 import { Dictionnary } from './../../../../../Utils/Collections/Dictionnary';
 import { IaArea } from '../../../Utils/IaArea';
 import { IGeneralRequester } from './../IGeneralRequester';
-import { GlobalIa } from '../../../GlobalIa';
+import { Brain } from '../../../Brain';
 import { AreaRequest } from '../../../Utils/AreaRequest';
 import { RequestType } from '../../../Utils/RequestType';
 
 export class GeneralEnergyRequester implements IGeneralRequester {
 	constructor(private _priority: number) {}
 
-	GetResquest(kingdom: GlobalIa): AreaRequest {
+	GetResquest(kingdom: Brain): AreaRequest {
 		const reactors = kingdom.Hq.GetReactors().filter((r) => r.GetPower() === 0 && r.HasStock() === false);
 		if (0 < reactors.length) {
 			const reactor = reactors[0];

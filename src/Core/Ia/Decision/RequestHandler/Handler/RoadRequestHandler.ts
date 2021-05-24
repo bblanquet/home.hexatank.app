@@ -46,7 +46,6 @@ export class RoadRequestHandler implements ISimpleRequestHandler {
 	private CreateRoad(road: Cell[]) {
 		const price = road.length * GameSettings.FieldPrice;
 		if (price < this._hq.GetAmount()) {
-			console.log(`%c [ROAD] `, 'font-weight:bold;color:blue;');
 			road.forEach((c) => {
 				if (c.GetField() instanceof BasicField) {
 					new RoadField(c, this._hq);

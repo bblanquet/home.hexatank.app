@@ -44,6 +44,7 @@ export default class MapFormComponent extends Component<
 							Label={'IA'}
 							Values={[ '0', '1', '2', '3' ]}
 						/>
+						<div class="space-out" />
 						<SmActiveButtonComponent
 							isActive={this.state.onylIa}
 							left={<Icon Value={'fas fa-brain'} />}

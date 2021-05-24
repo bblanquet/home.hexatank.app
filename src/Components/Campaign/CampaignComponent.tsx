@@ -66,6 +66,14 @@ export default class CampaignComponent extends Component<
 								<div class="container-center-horizontal">
 									<ButtonComponent
 										callBack={() => {
+											this.Training();
+										}}
+										color={ColorKind.Black}
+									>
+										<Icon Value="fas fa-long-arrow-alt-left" />
+									</ButtonComponent>
+									<ButtonComponent
+										callBack={() => {
 											this.BlueCampaign();
 										}}
 										color={ColorKind.Black}
@@ -104,6 +112,10 @@ export default class CampaignComponent extends Component<
 
 	private BlueCampaign() {
 		route('/BlueCampaignComponent', true);
+	}
+
+	private Training() {
+		route('/Training', true);
 	}
 
 	private TextAnimation(): void {

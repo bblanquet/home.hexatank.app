@@ -1,4 +1,5 @@
 export enum CampaignKind {
 	red,
-	blue
+	blue,
+	training
 }

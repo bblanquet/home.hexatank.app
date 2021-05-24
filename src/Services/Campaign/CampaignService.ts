@@ -9,12 +9,16 @@ import { MapType } from '../../Core/Setup/Generator/MapType';
 import { ICampaignService } from './ICampaignService';
 
 export class CampaignService implements ICampaignService {
+	private _training: Dictionnary<MapContext>;
 	private _red: Dictionnary<MapContext>;
 	private _blue: Dictionnary<MapContext>;
 	private _modelService: IModelService;
 
 	constructor() {
 		this._modelService = Factory.Load<IModelService>(FactoryKey.Model);
+
+		this._training = new Dictionnary<MapContext>();
+		this._training.Add((1).toString(), new MapGenerator().GetMapDefinition(+6, MapType.Flower, 2, MapEnv.forest));
 
 		this._red = new Dictionnary<MapContext>();
 		this._red.Add((1).toString(), new MapGenerator().GetMapDefinition(+6, MapType.Flower, 2, MapEnv.forest));
@@ -30,8 +34,15 @@ export class CampaignService implements ICampaignService {
 	}
 
 	public GetMapContext(kind: CampaignKind, index: number): MapContext {
-		let mapContext: MapContext =
-			kind === CampaignKind.blue ? this._blue.Get(index.toString()) : this._red.Get(index.toString());
+		let mapContext: MapContext;
+
+		if (kind === CampaignKind.red) {
+			mapContext = this._red.Get(index.toString());
+		} else if (kind === CampaignKind.blue) {
+			mapContext = this._blue.Get(index.toString());
+		} else if (kind === CampaignKind.training) {
+			mapContext = this._training.Get(index.toString());
+		}
 
 		mapContext.Hqs[0].PlayerName = mapContext.PlayerName;
 		mapContext.Hqs.forEach((hq, index) => {
@@ -48,6 +59,10 @@ export class CampaignService implements ICampaignService {
 		if (kind === CampaignKind.blue) {
 			return this._blue.Values().map((e, index) => {
 				return index < this._modelService.GetModel().BlueCampaign;
+			});
+		} else if (kind === CampaignKind.training) {
+			return this._training.Values().map((e, index) => {
+				return index < this._modelService.GetModel().Training;
 			});
 		} else {
 			return this._blue.Values().map((e, index) => {

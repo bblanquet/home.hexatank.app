@@ -20,7 +20,6 @@ import { MapContext } from '../../../Core/Setup/Generator/MapContext';
 import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
 import { Factory, FactoryKey } from '../../../Factory';
-import PanelComponent from '../../Common/Panel/PanelComponent';
 import Redirect from '../../Redirect/RedirectComponent';
 import { SpriteProvider } from '../../../Core/Framework/SpriteProvider';
 import ButtonComponent from '../../Common/Button/Stylish/ButtonComponent';
@@ -30,6 +29,7 @@ import Icon from '../../Common/Icon/IconComponent';
 import ActiveButtonComponent from '../../Common/Button/Stylish/ActiveButtonComponent';
 import { MapSetting } from '../../Form/MapSetting';
 import { MapType } from '../../../Core/Setup/Generator/MapType';
+import SmPanelComponent from '../../Common/Panel/SmPanelComponent';
 
 export default class HostingComponent extends Component<any, HostState> {
 	private _hasSettings: boolean = false;
@@ -105,10 +105,10 @@ export default class HostingComponent extends Component<any, HostState> {
 				<Visible isVisible={SpriteProvider.IsLoaded()}>
 					<Visible isVisible={this._isLoading}>
 						<ToastComponent socket={this._socket} Player={this.state.Player}>
-							<PanelComponent>
+							<SmPanelComponent>
 								<LoadingPlayers Socket={this._socket} HostState={this.state} />
 								{this.GetBack()}
-							</PanelComponent>
+							</SmPanelComponent>
 						</ToastComponent>
 					</Visible>
 					<Visible isVisible={!this._isLoading}>
@@ -117,11 +117,11 @@ export default class HostingComponent extends Component<any, HostState> {
 						</Visible>
 						<Visible isVisible={!this._hasSettings}>
 							<ToastComponent socket={this._socket} Player={this.state.Player}>
-								<PanelComponent>
+								<SmPanelComponent>
 									{this.GetUpdsideButton()}
 									<PendingPlayers Socket={this._socket} HostState={this.state} />
 									{this.GetDownsideButton()}
-								</PanelComponent>
+								</SmPanelComponent>
 							</ToastComponent>
 						</Visible>
 					</Visible>

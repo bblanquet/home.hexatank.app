@@ -9,7 +9,7 @@ export default class SmPanelComponent extends Component<any, any> {
 	render() {
 		return (
 			<NavbarComponent>
-				<div class="generalContainer absolute-center-middle">
+				<div class="container-column-center-horizontal">
 					<div class="sm-logo-container">
 						<div class="fill-logo-back-container">
 							<div class="sm-fill-logo-back spin-fade" />

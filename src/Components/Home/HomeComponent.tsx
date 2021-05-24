@@ -18,7 +18,7 @@ export default class HomeComponent extends Component<any, any> {
 	}
 
 	private ToCampaign(): void {
-		route('/Campaign', true);
+		route('/Training', true);
 	}
 
 	private ToHost(): void {

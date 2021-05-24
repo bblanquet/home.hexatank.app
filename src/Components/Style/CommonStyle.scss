@@ -485,6 +485,14 @@ body {
 	align-items: baseline;
 }
 
+.container-column-center-horizontal {
+	flex-direction: column;
+	display: flex;
+	justify-content: center;
+	margin: auto;
+	width: 80%;
+}
+
 .logo-container {
 	position: relative;
 	width: 100%;

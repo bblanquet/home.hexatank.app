@@ -1,6 +1,7 @@
 import './Register';
 import { h, render } from 'preact';
 import HomeComponent from './Components/Home/HomeComponent';
+import TrainingComponent from './Components/Campaign/TrainingComponent';
 import ErrorComponent from './Components/Error/ErrorComponent';
 import SinglePlayerComponent from './Components/SinglePlayer/SinglePlayerComponent';
 import GameCanvasComponent from './Components/Canvas/Game/GameCanvasComponent';
@@ -38,6 +39,7 @@ const App = (e: any) => {
 			<ErrorComponent path="/Error" />
 			<SinglePlayerComponent path="/SinglePlayer" />
 			<CampaignComponent path="/Campaign" />
+			<TrainingComponent path="/Training" />
 			<BlueCampaignComponent path="/BlueCampaignComponent" />
 			<GameCanvasComponent path="/Canvas" />
 			<BadgeComponent path="/Badge" />

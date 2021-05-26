@@ -11,9 +11,10 @@ export class PlayerProfilService implements IPlayerProfilService {
 
 	constructor() {}
 
-	AddPoint(point: number): void {
+	AddPoint(point: number): number {
 		this._profil.Points += point;
 		this.OnPointChanged.Invoke();
+		return this._profil.Points;
 	}
 
 	SetProfil(profil: PlayerProfil): void {
@@ -55,7 +56,7 @@ export class PlayerProfilService implements IPlayerProfilService {
 		return Math.round(this._profil.Points / 50);
 	}
 	GetNextLevelPercentage(): number {
-		return (this._profil.Points % 50) / 50 * 100;
+		return (this._profil.Points % 50) * 2;
 	}
 
 	GetColorLevel(): string {

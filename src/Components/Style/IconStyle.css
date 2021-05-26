@@ -617,7 +617,7 @@
 	background-size: auto;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/won.svg');
+	background-image: url('{{postension}}components/victory.svg');
 	pointer-events: none;
 }
 

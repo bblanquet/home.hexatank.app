@@ -16,12 +16,11 @@ import ProgressComponent from '../Common/Progress/ProgressComponent';
 
 export default class PopupComponent extends Component<
 	{ curves: Groups<Curve>; context: RecordObject; status: GameStatus; points: number },
-	{ Kind: StatsKind }
+	{ Kind: StatsKind; points: number }
 > {
 	private _chartProvider: ChartProvider;
 	private _canvas: HTMLCanvasElement;
 	private _profilService: IPlayerProfilService;
-	private _points: number;
 	constructor() {
 		super();
 		this._chartProvider = new ChartProvider();
@@ -33,7 +32,9 @@ export default class PopupComponent extends Component<
 	}
 
 	componentDidMount() {
-		this._points = this.props.points;
+		this.setState({
+			points: this.props.points
+		});
 		this._chartProvider.AttachChart(
 			StatsKind[this.state.Kind],
 			this.props.curves.Get(StatsKind[this.state.Kind]),
@@ -44,9 +45,11 @@ export default class PopupComponent extends Component<
 
 	private AddPoint() {
 		setTimeout(() => {
-			this._points -= 1;
-			this._profilService.AddPoint(1);
-			if (0 < this._points) {
+			//this._points -= 1;
+			this.setState({
+				points: this._profilService.AddPoint(1)
+			});
+			if (0 < this.state.points) {
 				this.AddPoint();
 			}
 		}, 100);
@@ -78,7 +81,11 @@ export default class PopupComponent extends Component<
 		return (
 			<div class="generalContainer absolute-center-middle-menu menu-container fit-content">
 				<div class="title-popup-container">
-					{this.props.status === GameStatus.Won ? <div class="fill-won" /> : <div class="fill-defeat" />}
+					{this.props.status === GameStatus.Won ? (
+						<div class="fill-won light-bounce" />
+					) : (
+						<div class="fill-defeat light-bounce" />
+					)}
 				</div>
 				<div class="container-center">
 					<div class="container-center-horizontal" style="margin-top:15px;margin-bottom:15px;width:100%">

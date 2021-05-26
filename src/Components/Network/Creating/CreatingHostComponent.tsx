@@ -4,7 +4,7 @@ import * as toastr from 'toastr';
 import * as io from 'socket.io-client';
 import { CreatingHostState } from './CreatingHostState';
 import { PacketKind } from '../../../Network/Message/PacketKind';
-import PanelComponent from '../../Common/Panel/PanelComponent';
+import MdPanelComponent from '../../Common/Panel/MdPanelComponent';
 import TextComponent from '../../Common/Text/TextComponent';
 import { Factory, FactoryKey } from '../../../Factory';
 import { IHostingService } from '../../../Services/Hosting/IHostingService';
@@ -42,7 +42,7 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 	render() {
 		return (
 			<Redirect>
-				<PanelComponent>
+				<MdPanelComponent>
 					<div class="container-center-horizontal" style="margin-bottom:10px">
 						<SmButtonComponent
 							callBack={() => {
@@ -125,7 +125,7 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 							<Icon Value="far fa-play-circle" /> Start
 						</ButtonComponent>
 					</div>
-				</PanelComponent>
+				</MdPanelComponent>
 			</Redirect>
 		);
 	}

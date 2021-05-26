@@ -3,7 +3,7 @@ import { route } from 'preact-router';
 import { MapSetting } from '../Form/MapSetting';
 import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
 import { MapEnv } from '../../Core/Setup/Generator/MapEnv';
-import PanelComponent from '../Common/Panel/PanelComponent';
+import MdPanelComponent from '../Common/Panel/MdPanelComponent';
 import MapFormComponent from '../Form/MapFormComponent';
 import { IAppService } from '../../Services/App/IAppService';
 import { Factory, FactoryKey } from '../../Factory';
@@ -29,7 +29,7 @@ export default class SinglePlayerComponent extends Component<any, MapSetting> {
 	render() {
 		return (
 			<Redirect>
-				<PanelComponent>
+				<MdPanelComponent>
 					<div class="container-center">
 						<MapFormComponent Model={this.state} CallBack={this.Update.bind(this)} />
 						<div class="container-center-horizontal">
@@ -51,7 +51,7 @@ export default class SinglePlayerComponent extends Component<any, MapSetting> {
 							</ButtonComponent>
 						</div>
 					</div>
-				</PanelComponent>
+				</MdPanelComponent>
 			</Redirect>
 		);
 	}

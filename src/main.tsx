@@ -10,7 +10,6 @@ import CampaignComponent from './Components/Campaign/CampaignComponent';
 import BlueCampaignComponent from './Components/Campaign/BlueCampaignComponent';
 import BadgeComponent from './Components/Badge/BagdeComponent';
 import GuestComponent from './Components/Network/Guest/GuestComponent';
-import PrototypeComponent from './Components/Prototype/Prototype';
 import CreatingHostComponent from './Components/Network/Creating/CreatingHostComponent';
 import HostingComponent from './Components/Network/Host/HostingComponent';
 import LoadingComponent from './Components/Loading/LoadingComponent';
@@ -49,7 +48,6 @@ const App = (e: any) => {
 			<HostingComponent path="/Hosting" />
 			<GuestComponent path="/OffJoin" />
 			<RecordComponent path="/Record" />
-			<PrototypeComponent path="/Prototype" />
 			<PopupComponent
 				path="/Popup"
 				points={10}

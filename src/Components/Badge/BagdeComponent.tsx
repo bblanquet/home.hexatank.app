@@ -5,7 +5,7 @@ import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import Badge from './Badge';
-import PanelComponent from '../Common/Panel/PanelComponent';
+import SmPanelComponent from '../Common/Panel/SmPanelComponent';
 
 export default class BadgeComponent extends Component<any, { text: string }> {
 	private _data: any[] = [
@@ -63,7 +63,7 @@ export default class BadgeComponent extends Component<any, { text: string }> {
 	render() {
 		return (
 			<Redirect>
-				<PanelComponent>
+				<SmPanelComponent>
 					<div class="container-center">
 						<div
 							class="text-detail effect7"
@@ -103,7 +103,7 @@ export default class BadgeComponent extends Component<any, { text: string }> {
 							</ButtonComponent>
 						</div>
 					</div>
-				</PanelComponent>
+				</SmPanelComponent>
 			</Redirect>
 		);
 	}

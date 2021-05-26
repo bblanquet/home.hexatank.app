@@ -14,7 +14,6 @@ import { CellState } from '../Cell/CellState';
 import { BasicItem } from '../BasicItem';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Explosion } from './Explosion';
-import { GameContext } from '../../Framework/GameContext';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 
 export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
@@ -26,8 +25,8 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 	public OnCamouflageChanged: LiteEvent<AliveItem> = new LiteEvent<AliveItem>();
 	public OnMissileLaunched: LiteEvent<Missile> = new LiteEvent<Missile>();
 
-	constructor(hq: Headquarter, gameContext: GameContext, isPacific: boolean = false) {
-		super(hq, gameContext);
+	constructor(hq: Headquarter, isPlayer: boolean, isPacific: boolean = false) {
+		super(hq, isPlayer);
 		this.IsPacific = isPacific;
 		this.RootSprites.push(this.Hq.GetSkin().GetBottomTankSprite());
 		this.GenerateSprite(this.Hq.GetSkin().GetBottomTankSprite());
@@ -210,7 +209,7 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 		this.camouflagedSprites = this.GetSprites().filter((s) => s.alpha !== 0);
 		this.camouflagedSprites.concat(this.Turrel.GetSprites().filter((s) => s.alpha !== 0));
 
-		if (this.GameContext.GetPlayerHq() === this.Hq) {
+		if (this.isPlayer) {
 			this.camouflagedSprites.forEach((s) => {
 				s.alpha = 0.5;
 			});
@@ -245,7 +244,7 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 		if (this.HasCamouflage) {
 			this.HasCamouflage = false;
 
-			if (this.GameContext.GetPlayerHq() === this.Hq) {
+			if (this.isPlayer) {
 				this.camouflagedSprites.forEach((s) => {
 					s.alpha = 1;
 				});

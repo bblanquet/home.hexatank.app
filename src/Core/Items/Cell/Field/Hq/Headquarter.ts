@@ -66,8 +66,8 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 	public OnTankRequestChanged: LiteEvent<number> = new LiteEvent<number>();
-
-	constructor(skin: ItemSkin, cell: Cell, public GameContext: GameContext) {
+	public IsPlayer: boolean;
+	constructor(skin: ItemSkin, cell: Cell) {
 		super();
 		this._skin = skin;
 		this.Z = ZKind.Cell;
@@ -192,7 +192,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 				if (field.GetCell().IsVisible()) {
 					new Explosion(field.GetCell().GetBoundingBox(), Archive.constructionEffects, ZKind.Sky, false, 5);
 				}
-				const tank = new Tank(this, this.GameContext);
+				const tank = new Tank(this, this.IsPlayer);
 				tank.SetPosition(cell === null ? field.GetCell() : cell);
 				this.OnVehicleCreated.Invoke(this, tank);
 
@@ -215,7 +215,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 				if (field.GetCell().IsVisible()) {
 					new Explosion(field.GetCell().GetBoundingBox(), Archive.constructionEffects, 5, false, 5);
 				}
-				let truck = new Truck(this, this.GameContext);
+				let truck = new Truck(this, this.IsPlayer);
 				truck.SetPosition(cell || field.GetCell());
 				this.OnVehicleCreated.Invoke(this, truck);
 
@@ -459,7 +459,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	public GetCellEnergy(coo: HexAxial): number {
 		let result = 0;
 		this._reactors.forEach((r) => {
-			if (r.GetInternal().Exist(coo)) {
+			if (r.GetInternal().Exist(coo.ToString())) {
 				result += r.GetPower();
 			}
 		});

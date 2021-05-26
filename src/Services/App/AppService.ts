@@ -66,7 +66,7 @@ export class AppService implements IAppService {
 			this._gameContext,
 			this._interactionService.Publish()
 		);
-		//new BrainInjecter().Inject();
+		new BrainInjecter().Inject(this._gameContext, mapContext);
 		this._app.start();
 		this._soundService.Register(this._gameContext);
 		this._soundManager = this._soundService.GetSoundManager();

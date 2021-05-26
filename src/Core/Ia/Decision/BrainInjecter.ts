@@ -1,20 +1,22 @@
+import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { HexAxial } from './../../Utils/Geometry/HexAxial';
 import { MapContext } from './../../Setup/Generator/MapContext';
-import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
 import { GameContext } from './../../Framework/GameContext';
 import { BobBrain } from '../Brains/BobBrain';
-import { Dictionnary } from '../../Utils/Collections/Dictionnary';
 import { Area } from './Utils/Area';
 import { AreaSearch } from './Utils/AreaSearch';
 import { Cell } from '../../Items/Cell/Cell';
-import { CellContext } from '../../Items/Cell/CellContext';
 import { DiamondHq } from '../../Setup/Generator/DiamondHq';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 export class BrainInjecter {
-	public Inject(cells: CellContext<Cell>, gameContext: GameContext, mapContext: MapContext): void {
+	public Inject(gameContext: GameContext, mapContext: MapContext): void {
+		const coos = Dictionnary.To<HexAxial>((e) => e.ToString(), gameContext.GetCells().map((e) => e.GetHexCoo()));
+		const cells = Dictionnary.To<Cell>((e) => e.Coo(), gameContext.GetCells().map((e) => e));
 		gameContext.GetHqs().forEach((hq) => {
-			const areaSearch = new AreaSearch(cells.Keys());
-			const areas = areaSearch.GetAreas(hq.GetCell().GetHexCoo()).map((coo) => new Area(cells.Get(coo)));
+			const areaSearch = new AreaSearch(coos);
+			const areas = areaSearch
+				.GetAreas(hq.GetCell().GetHexCoo())
+				.map((coo) => new Area(cells.Get(coo.ToString())));
 			const areaByCoo = Dictionnary.To((e: Area) => e.GetCentralCell().Coo(), areas);
 			areas.forEach((a) => {
 				const around = areaSearch
@@ -31,10 +33,10 @@ export class BrainInjecter {
 		});
 	}
 
-	private GetDiamondHex(diamondHqs: DiamondHq[], coo: HexAxial): HexAxial {
+	private GetDiamondHex(diamondHqs: DiamondHq[], coo: HexAxial): string {
 		const diamondPosition = diamondHqs.find((d) => d.Hq.Position.Q == coo.Q && d.Hq.Position.R == coo.R).Diamond
 			.Position;
-		return new HexAxial(diamondPosition.Q, diamondPosition.R);
+		return new HexAxial(diamondPosition.Q, diamondPosition.R).ToString();
 	}
 
 	private IsIa(diamondHqs: DiamondHq[], coo: HexAxial): boolean {

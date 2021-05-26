@@ -19,7 +19,6 @@ import { Vehicle } from '../../../Unit/Vehicle';
 import { IInteractionContext } from '../../../../Interaction/IInteractionContext';
 import { Cell } from '../../Cell';
 import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
-import { CellContext } from '../../CellContext';
 import { AttackMenuItem } from '../../../../Menu/Buttons/AttackMenuItem';
 import { Tank } from '../../../Unit/Tank';
 import { AttackUp } from '../../../Unit/PowerUp/AttackUp';
@@ -51,7 +50,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 
 	//cells
 	private _area: Array<BasicItem> = new Array<BasicItem>();
-	private _internalCells: CellContext<Cell> = new CellContext<Cell>();
+	private _internalCells: Dictionnary<Cell> = new Dictionnary<Cell>();
 
 	//events
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
@@ -305,7 +304,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	public GetInternalBatteries(): Array<BatteryField> {
 		const result = new Array<BatteryField>();
 		this.Hq.GetBatteryFields().filter((f) => !f.IsUsed()).forEach((battery) => {
-			if (this._internalCells.Exist(battery.GetCell().GetHexCoo())) {
+			if (this._internalCells.Exist(battery.GetCell().Coo())) {
 				result.push(battery);
 			}
 		});
@@ -335,7 +334,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	}
 
 	private UpdateCellStates(range: number) {
-		CellStateSetter.SetStates(this._context, this.GetCell().GetAll(range));
+		CellStateSetter.SetStates(this.GetCell().GetAll(range));
 	}
 
 	public SetSelected(isSelected: boolean): void {
@@ -359,7 +358,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		});
 	}
 
-	public GetInternal(): CellContext<Cell> {
+	public GetInternal(): Dictionnary<Cell> {
 		if (this._internalCells.IsEmpty()) {
 			this.RefreshInternal();
 		}
@@ -367,15 +366,15 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	}
 
 	public IsCovered(c: Cell): boolean {
-		return this.GetInternal().Exist(c.GetHexCoo());
+		return this.GetInternal().Exist(c.Coo());
 	}
 
 	private RefreshInternal() {
 		this._internalCells.Clear();
 		this.GetCell().GetAllNeighbourhood(this._totalRange).forEach((cell) => {
-			this._internalCells.Add(cell as Cell);
+			this._internalCells.Add(cell.Coo(), cell as Cell);
 		});
-		this._internalCells.Add(this.GetCell());
+		this._internalCells.Add(this.GetCell().Coo(), this.GetCell());
 	}
 
 	public GetAllCells(): Cell[] {

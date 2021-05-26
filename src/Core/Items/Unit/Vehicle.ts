@@ -81,7 +81,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
 	private _infiniteAnimator: InfiniteFadeAnimation;
 
-	constructor(public Hq: Headquarter, protected GameContext: GameContext) {
+	constructor(public Hq: Headquarter, protected isPlayer: boolean) {
 		super();
 		this.CurrentRadius = 0;
 		this.BoundingBox = new BoundingBox();
@@ -104,7 +104,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 			this.RootSprites.push(wheel);
 		});
 
-		if (this.Hq === this.GameContext.GetPlayerHq()) {
+		if (this.isPlayer) {
 			this.GenerateSprite(Archive.selectionBlueVehicle);
 			this._infiniteAnimator = new InfiniteFadeAnimation(this, Archive.selectionBlueVehicle, 0, 1, 0.05);
 			this.RootSprites.push(Archive.selectionBlueVehicle);
@@ -337,20 +337,17 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	}
 
 	private SetUiOrder() {
-		const playerHq = this.GameContext.GetPlayerHq();
-		if (playerHq) {
-			if (!playerHq.IsEnemy(this)) {
-				if (this._uiOrder && this.HasOrder() && this._uiOrder.HasOrder(this._order) && this.IsSelected()) {
-					return;
-				}
+		if (this.isPlayer) {
+			if (this._uiOrder && this.HasOrder() && this._uiOrder.HasOrder(this._order) && this.IsSelected()) {
+				return;
+			}
 
-				if (this._uiOrder) {
-					this._uiOrder.Clear();
-					this._uiOrder = null;
-				}
-				if (this.IsSelected() && this.HasOrder()) {
-					this._uiOrder = new UiOrder(this._order);
-				}
+			if (this._uiOrder) {
+				this._uiOrder.Clear();
+				this._uiOrder = null;
+			}
+			if (this.IsSelected() && this.HasOrder()) {
+				this._uiOrder = new UiOrder(this._order);
 			}
 		}
 	}
@@ -384,8 +381,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 			this._currentCell.GetField().SetPowerUp(this);
 		}
 
-		CellStateSetter.SetStates(this.GameContext, previouscell.GetAll());
-		CellStateSetter.SetStates(this.GameContext, this._currentCell.GetAll());
+		CellStateSetter.SetStates(previouscell.GetAll());
+		CellStateSetter.SetStates(this._currentCell.GetAll());
 	}
 
 	public Destroy(): void {
@@ -407,7 +404,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this._rightDusts.forEach((ld) => ld.Destroy());
 		this._leftDusts = [];
 		this._rightDusts = [];
-		CellStateSetter.SetStates(this.GameContext, this._currentCell.GetAll());
+		CellStateSetter.SetStates(this._currentCell.GetAll());
 	}
 
 	public Update(viewX: number, viewY: number): void {
@@ -472,7 +469,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		if (!this.IsPacific) {
 			this._currentCell.OnCellStateChanged.On(this._handleCellStateChanged);
 			this._handleCellStateChanged(this, this._currentCell.GetState());
-			CellStateSetter.SetStates(this.GameContext, this._currentCell.GetAll());
+			CellStateSetter.SetStates(this._currentCell.GetAll());
 			this._currentCell.OnUnitChanged.Invoke(this, this);
 		}
 	}

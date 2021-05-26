@@ -1,10 +1,10 @@
+import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { ZKind } from './../../Items/ZKind';
 import { ILayerService } from './../../../Services/Layer/ILayerService';
 import { IUpdateService } from '../../../Services/Update/IUpdateService';
 import { InteractionKind } from '../../Interaction/IInteractionContext';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { BasicItem } from '../../Items/BasicItem';
-import { CellContext } from '../../Items/Cell/CellContext';
 import { IInteractionContext } from '../../Interaction/IInteractionContext';
 import { Point } from '../../Utils/Geometry/Point';
 import { Cell } from '../../Items/Cell/Cell';
@@ -19,7 +19,7 @@ export class MultiSelectionContext implements IInteractionContext {
 	private _layerService: ILayerService;
 	public Kind: InteractionKind;
 	public Point: PIXI.Point;
-	private _cells: CellContext<Cell>;
+	private _cells: Dictionnary<Cell>;
 	private _enlightCells: BasicItem[];
 	private _isOn: boolean;
 	public View: ViewContext;
@@ -29,7 +29,7 @@ export class MultiSelectionContext implements IInteractionContext {
 		this._updateService = Factory.Load<IUpdateService>(FactoryKey.Update);
 		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
 		this._viewport = this._layerService.GetViewport();
-		this._cells = new CellContext<Cell>();
+		this._cells = new Dictionnary<Cell>();
 		this._enlightCells = new Array<BasicItem>();
 	}
 
@@ -69,12 +69,12 @@ export class MultiSelectionContext implements IInteractionContext {
 	}
 
 	public GetCells(): Cell[] {
-		return this._cells.All();
+		return this._cells.Values();
 	}
 
 	public Close(): void {
 		this._isOn = false;
-		this._cells = new CellContext();
+		this._cells = new Dictionnary<Cell>();
 		this._enlightCells.forEach((c) => c.Destroy());
 		this._enlightCells = [];
 	}
@@ -86,8 +86,8 @@ export class MultiSelectionContext implements IInteractionContext {
 
 		if (item instanceof Cell) {
 			const cell = <Cell>item;
-			if (this._cells.Get(cell.GetHexCoo()) === null) {
-				this._cells.Add(cell);
+			if (this._cells.Get(cell.Coo()) === null) {
+				this._cells.Add(cell.Coo(), cell);
 				const displayPath = new BasicItem(
 					cell.GetBoundingBox(),
 					Archive.menu.smartMenu.multiCellSelection,

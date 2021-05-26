@@ -38,7 +38,7 @@ export class ReactorReserve {
 	}
 
 	private UpdateBonusCells(isUp: boolean) {
-		this._reactor.GetInternal().All().forEach((cell) => {
+		this._reactor.GetInternal().Values().forEach((cell) => {
 			if (cell.GetField() instanceof BonusField) {
 				const bonusField = cell.GetField() as BonusField;
 				if (bonusField.IsAlly(this._hq)) {

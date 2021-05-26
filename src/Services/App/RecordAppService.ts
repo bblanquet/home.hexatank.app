@@ -53,8 +53,7 @@ export class RecordAppService implements IAppService {
 		gameContext.GetCells().forEach((c) => {
 			c.AlwaysVisible();
 		});
-		CellStateSetter.SetStates(gameContext, gameContext.GetCells());
-
+		CellStateSetter.SetStates(gameContext.GetCells());
 		this._app.start();
 	}
 

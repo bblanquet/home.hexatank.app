@@ -1,5 +1,5 @@
+import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { SimpleFloor } from './../../Items/Environment/SimpleFloor';
-import { CellContext } from './../../Items/Cell/CellContext';
 import { GameContext } from './../../Framework/GameContext';
 import { GameSettings } from '../../Framework/GameSettings';
 import { ForestDecorator } from '../../Items/Cell/Decorator/ForestDecorator';
@@ -18,41 +18,41 @@ import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 import { HqRender } from './Hq/HqRender';
 export class MapRender {
 	public Render(mapContext: MapContext): GameContext {
-		const cells = new CellContext<Cell>();
+		const cells = new Dictionnary<Cell>();
 		const context = new GameContext();
-		const playgroundItems = new Array<Item>();
+		const updatableItem = new Array<Item>();
 
 		mapContext.Items.forEach((item) => {
 			let cell = new Cell(new CellProperties(new HexAxial(item.Position.Q, item.Position.R)), cells, context);
-			ForestDecorator.SetDecoration(playgroundItems, cell, item.Type);
+			ForestDecorator.SetDecoration(updatableItem, cell, item.Type);
 			cell.SetSprite();
-			cells.Add(cell);
-			playgroundItems.push(cell);
+			cells.Add(cell.Coo(), cell);
+			updatableItem.push(cell);
 		});
 
-		let areas = new AreaSearch(cells.Keys()).GetAreas(
-			new HexAxial(mapContext.CenterItem.Position.Q, mapContext.CenterItem.Position.R)
-		);
-		this.SetLands(cells, mapContext.MapMode, areas, playgroundItems);
-		this.AddClouds(playgroundItems);
-		const hqs = new HqRender().Render(context, cells, mapContext.Hqs, playgroundItems);
+		let areas = new AreaSearch(
+			Dictionnary.To((c) => c.ToString(), cells.Values().map((c) => c.GetHexCoo()))
+		).GetAreas(new HexAxial(mapContext.CenterItem.Position.Q, mapContext.CenterItem.Position.R));
+		this.SetLands(cells, mapContext.MapMode, areas, updatableItem);
+		this.AddClouds(updatableItem);
+		const hqs = new HqRender().Render(cells, mapContext.Hqs, updatableItem);
 
 		//insert elements into playground
-		this.SetHqLands(cells, Archive.nature.hq, hqs.map((h) => h.GetCell().GetHexCoo()), playgroundItems);
-		this.SetHqLands(cells, Archive.nature.hq2, hqs.map((h) => h.GetCell().GetHexCoo()), playgroundItems, 1);
+		this.SetHqLands(cells, Archive.nature.hq, hqs.map((h) => h.GetCell().GetHexCoo()), updatableItem);
+		this.SetHqLands(cells, Archive.nature.hq2, hqs.map((h) => h.GetCell().GetHexCoo()), updatableItem, 1);
 
 		//can be only AI
 		let playerHq = hqs.find((hq) => hq.PlayerName === mapContext.PlayerName);
 		if (playerHq) {
 			playerHq.SetSelectionAnimation();
-			context.Setup(mapContext, hqs, cells.All(), playerHq);
+			context.Setup(mapContext, hqs, cells.Values(), playerHq);
 			//make hq cells visible, need context to be setup :<, has to fix it one day
 			playerHq.GetCurrentCell().SetState(CellState.Visible);
 			playerHq.GetCurrentCell().GetAllNeighbourhood().forEach((cell) => {
 				(<Cell>cell).SetState(CellState.Visible);
 			});
 		} else {
-			context.Setup(mapContext, hqs, cells.All());
+			context.Setup(mapContext, hqs, cells.Values());
 		}
 
 		return context;
@@ -66,9 +66,9 @@ export class MapRender {
 		items.push(new Cloud(1200, 20 * GameSettings.Size, 1600, Archive.nature.clouds[4]));
 	}
 
-	private SetLands(cells: CellContext<Cell>, mode: MapEnv, middleAreas: HexAxial[], items: Item[]) {
+	private SetLands(cells: Dictionnary<Cell>, mode: MapEnv, middleAreas: HexAxial[], items: Item[]) {
 		middleAreas.forEach((corner) => {
-			const cell = cells.Get(corner);
+			const cell = cells.Get(corner.ToString());
 			const boundingBox = new BoundingBox();
 			boundingBox.Width = GameSettings.Size * 6;
 			boundingBox.Height = GameSettings.Size * 6;
@@ -90,14 +90,14 @@ export class MapRender {
 	}
 
 	private SetHqLands(
-		cells: CellContext<Cell>,
+		cells: Dictionnary<Cell>,
 		sprite: string,
 		middleAreas: HexAxial[],
 		items: Item[],
 		z: number = 0
 	) {
 		middleAreas.forEach((corner) => {
-			const cell = cells.Get(corner);
+			const cell = cells.Get(corner.ToString());
 			const boundingBox = new BoundingBox();
 			boundingBox.Width = GameSettings.Size * 6;
 			boundingBox.Height = GameSettings.Size * 6;

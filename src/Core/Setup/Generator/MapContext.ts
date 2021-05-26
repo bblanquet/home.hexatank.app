@@ -8,4 +8,5 @@ export class MapContext {
 	public Hqs: Array<DiamondHq>;
 	public MapMode: MapEnv;
 	public PlayerName: string = 'Unit ';
+	constructor() {}
 }

@@ -26,7 +26,7 @@ export default class HomeComponent extends Component<any, any> {
 	}
 
 	private ToRecord(): void {
-		route('/Playback', true);
+		route('/Record', true);
 	}
 
 	private ToGuest(): void {

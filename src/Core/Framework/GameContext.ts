@@ -13,12 +13,16 @@ import { Player } from '../../Network/Player';
 import { GameStatus } from './GameStatus';
 import { isNullOrUndefined } from '../Utils/ToolBox';
 import { MultiSelectionContext } from '../Menu/Smart/MultiSelectionContext';
+import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
+import { Factory, FactoryKey } from '../../Factory';
 
 export class GameContext {
+	private _playerProfilService: IPlayerProfilService;
+
 	public static Error: Error;
 
 	public StatsContext: StatsContext;
-	public TrackingContext: RecordContext;
+	public RecordContext: RecordContext;
 	public MultiSelectionContext: MultiSelectionContext;
 
 	//events
@@ -43,6 +47,10 @@ export class GameContext {
 
 	private _mapContext: MapContext;
 
+	constructor() {
+		this._playerProfilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
+	}
+
 	public Setup(mapContext: MapContext, hqs: Headquarter[], cells: Cell[], playerHq: Headquarter = null) {
 		this._playerHq = playerHq;
 		this._mapContext = mapContext;
@@ -54,12 +62,14 @@ export class GameContext {
 		});
 		if (this._playerHq) {
 			this._playerHq.OnDestroyed.On(() => {
+				this.SaveRecord();
 				this.GameStatusChanged.Invoke(this, GameStatus.Lost);
 			});
 			const foes = this._hqs.filter((hq) => hq !== this._playerHq);
 			foes.forEach((foe) => {
 				foe.OnDestroyed.On(() => {
 					if (foes.every((e) => !e.IsAlive())) {
+						this.SaveRecord();
 						this.GameStatusChanged.Invoke(this, GameStatus.Won);
 					}
 				});
@@ -67,6 +77,12 @@ export class GameContext {
 		}
 
 		this.StatsContext = new StatsContext(this);
+	}
+
+	private SaveRecord() {
+		const record = this.RecordContext.GetRecord();
+		const profil = this._playerProfilService.GetProfil();
+		profil.Records.push(record);
 	}
 
 	public GetMapMode(): MapEnv {

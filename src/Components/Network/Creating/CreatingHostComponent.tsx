@@ -16,15 +16,18 @@ import SmButtonComponent from '../../Common/Button/Stylish/SmButtonComponent';
 import { Usernames } from '../Names';
 import SmActiveButtonComponent from '../../Common/Button/Stylish/SmActiveButtonComponent';
 import Visible from '../../Common/Visible/VisibleComponent';
+import { IPlayerProfilService } from '../../../Services/PlayerProfil/IPlayerProfilService';
 
 export default class CreatingHostComponent extends Component<any, CreatingHostState> {
 	private _socket: SocketIOClient.Socket;
+	private _profilService: IPlayerProfilService;
 
 	constructor() {
 		super();
+		this._profilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
 		this.setState({
-			RoomName: "John's room",
-			PlayerName: 'John'
+			RoomName: `${this._profilService.GetProfil().LastPlayerName}'s room`,
+			PlayerName: this._profilService.GetProfil().LastPlayerName
 		});
 		this._socket = io('{{p2pserver}}', { path: '{{p2psubfolder}}' });
 		this.Listen();

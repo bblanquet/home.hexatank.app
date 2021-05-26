@@ -1,35 +1,55 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { GameStatus } from '../../Core/Framework/GameStatus';
+import { RecordObject } from '../../Core/Framework/Record/RecordObject';
 import { Groups } from '../../Core/Utils/Collections/Groups';
 import { Curve } from '../../Core/Utils/Stats/Curve';
 import { StatsKind } from '../../Core/Utils/Stats/StatsKind';
+import { Factory, FactoryKey } from '../../Factory';
+import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import SmActiveButtonComponent from '../Common/Button/Stylish/SmActiveButtonComponent';
 import { ChartProvider } from '../Common/ChartProvider';
 import Icon from '../Common/Icon/IconComponent';
+import ProgressComponent from '../Common/Progress/ProgressComponent';
 
 export default class PopupComponent extends Component<
-	{ curves: Groups<Curve>; context: any; status: GameStatus },
+	{ curves: Groups<Curve>; context: RecordObject; status: GameStatus; points: number },
 	{ Kind: StatsKind }
 > {
 	private _chartProvider: ChartProvider;
 	private _canvas: HTMLCanvasElement;
+	private _profilService: IPlayerProfilService;
+	private _points: number;
 	constructor() {
 		super();
 		this._chartProvider = new ChartProvider();
 		this.setState({
 			Kind: StatsKind.Unit
 		});
+		this._profilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
+		this._profilService.OnPointChanged.On(() => this.setState({ Kind: this.state.Kind }));
 	}
 
 	componentDidMount() {
+		this._points = this.props.points;
 		this._chartProvider.AttachChart(
 			StatsKind[this.state.Kind],
 			this.props.curves.Get(StatsKind[this.state.Kind]),
 			this._canvas
 		);
+		this.AddPoint();
+	}
+
+	private AddPoint() {
+		setTimeout(() => {
+			this._points -= 1;
+			this._profilService.AddPoint(1);
+			if (0 < this._points) {
+				this.AddPoint();
+			}
+		}, 100);
 	}
 
 	componentDidUpdate() {
@@ -41,6 +61,7 @@ export default class PopupComponent extends Component<
 	}
 
 	private Quit(): void {
+		this._profilService.Update();
 		route('/Home', true);
 	}
 
@@ -60,20 +81,8 @@ export default class PopupComponent extends Component<
 					{this.props.status === GameStatus.Won ? <div class="fill-won" /> : <div class="fill-defeat" />}
 				</div>
 				<div class="container-center">
-					<div class="input-group mb-3" style="padding-left:20%;padding-right:20%">
-						<div class="input-group-prepend">
-							<span class="input-group-text custom-black-btn" id="inputGroup-sizing-default">
-								Score
-							</span>
-						</div>
-						<input
-							disabled
-							type="text"
-							value="3000"
-							class="form-control"
-							aria-label="Default"
-							aria-describedby="inputGroup-sizing-default"
-						/>
+					<div class="container-center-horizontal" style="margin-top:15px;margin-bottom:15px;width:100%">
+						<ProgressComponent width={80} />
 					</div>
 
 					<div class="container-center-horizontal">
@@ -145,9 +154,9 @@ export default class PopupComponent extends Component<
 							callBack={() => {
 								this.Save();
 							}}
-							color={ColorKind.Red}
+							color={ColorKind.Blue}
 						>
-							<Icon Value="fas fa-save" /> Save
+							<Icon Value="fas fa-file-export" /> Export
 						</ButtonComponent>
 					</div>
 				</div>

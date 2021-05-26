@@ -34,6 +34,10 @@ export class Dictionnary<T> {
 		delete this._values[key];
 	}
 
+	GetFromIndex(index: number): T {
+		return this.Get(this.Keys()[index]);
+	}
+
 	Get(key: string): T {
 		if (key in this._values) {
 			return this._values[key];

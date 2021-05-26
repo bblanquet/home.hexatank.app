@@ -1,5 +1,5 @@
 import { Factory, FactoryKey } from './../../Factory';
-import { IModelService } from './../Model/IModelService';
+import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
 import { MapGenerator } from './../../Core/Setup/Generator/MapGenerator';
 import { Dictionnary } from './../../Core/Utils/Collections/Dictionnary';
 import { CampaignKind } from './CampaignKind';
@@ -12,10 +12,10 @@ export class CampaignService implements ICampaignService {
 	private _training: Dictionnary<MapContext>;
 	private _red: Dictionnary<MapContext>;
 	private _blue: Dictionnary<MapContext>;
-	private _modelService: IModelService;
+	private _modelService: IPlayerProfilService;
 
 	constructor() {
-		this._modelService = Factory.Load<IModelService>(FactoryKey.Model);
+		this._modelService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
 
 		this._training = new Dictionnary<MapContext>();
 		this._training.Add((1).toString(), new MapGenerator().GetMapDefinition(+6, MapType.Flower, 2, MapEnv.forest));
@@ -58,15 +58,15 @@ export class CampaignService implements ICampaignService {
 	public GetButtons(kind: CampaignKind): Array<boolean> {
 		if (kind === CampaignKind.blue) {
 			return this._blue.Values().map((e, index) => {
-				return index < this._modelService.GetModel().BlueCampaign;
+				return index < this._modelService.GetProfil().BlueLevel;
 			});
 		} else if (kind === CampaignKind.training) {
 			return this._training.Values().map((e, index) => {
-				return index < this._modelService.GetModel().Training;
+				return index < this._modelService.GetProfil().TrainingLevel;
 			});
 		} else {
 			return this._blue.Values().map((e, index) => {
-				return index < this._modelService.GetModel().RedCampaign;
+				return index < this._modelService.GetProfil().RedLevel;
 			});
 		}
 	}

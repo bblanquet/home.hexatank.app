@@ -4,7 +4,6 @@ import { route } from 'preact-router';
 import { CompChartProvider } from '../Common/CompChartProvider';
 import { RecordData } from '../../Core/Framework/Record/RecordData';
 import { RecordComparer } from './Comparers/RecordComparer';
-import PanelComponent from '../Common/Panel/PanelComponent';
 import DropDownComponent from '../Common/DropDown/DropDownComponent';
 import { DeltaRecordCurve } from './Comparers/DeltaRecordCurve';
 import TextComponent from '../Common/Text/TextComponent';
@@ -13,6 +12,7 @@ import Redirect from '../Redirect/RedirectComponent';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
+import SmPanelComponent from '../Common/Panel/SmPanelComponent';
 
 export default class ComparerComponent extends Component<
 	{},
@@ -82,7 +82,7 @@ export default class ComparerComponent extends Component<
 	render() {
 		return (
 			<Redirect>
-				<PanelComponent>
+				<SmPanelComponent>
 					<div class="container-center">
 						<div class="container-center-horizontal">
 							<DropDownComponent
@@ -150,7 +150,7 @@ export default class ComparerComponent extends Component<
 							</ButtonComponent>
 						</div>
 					</div>
-				</PanelComponent>
+				</SmPanelComponent>
 			</Redirect>
 		);
 	}

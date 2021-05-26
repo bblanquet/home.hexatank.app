@@ -45,7 +45,7 @@ export class FieldTypeHelper {
 		throw 'not found';
 	}
 
-	public static GetTrackingDescription(obj: IField): RecordKind {
+	public static GetRecordDescription(obj: IField): RecordKind {
 		if (obj instanceof AttackField) {
 			return RecordKind.Attack;
 		} else if (obj instanceof BatteryField) {
@@ -76,7 +76,7 @@ export class FieldTypeHelper {
 		return RecordKind.None;
 	}
 
-	public static CreateTrackingField(action: RecordKind, cell: Cell, hq: Headquarter, context: GameContext): IField {
+	public static CreateRecordField(action: RecordKind, cell: Cell, hq: Headquarter, context: GameContext): IField {
 		if (action === RecordKind.Attack) {
 			return new AttackField(cell, hq);
 		} else if (action === RecordKind.Battery) {

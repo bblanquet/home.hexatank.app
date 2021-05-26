@@ -17,18 +17,22 @@ import { Usernames } from '../Names';
 import { RoomInfo } from './RoomInfo';
 import * as io from 'socket.io-client';
 import Visible from '../../Common/Visible/VisibleComponent';
+import { IPlayerProfilService } from '../../../Services/PlayerProfil/IPlayerProfilService';
 
 export default class GuestComponent extends Component<
 	any,
 	{ Rooms: RoomInfo[]; DisplayableRooms: RoomInfo[]; PlayerName: string; filter: string; Password: string }
 > {
 	private _socket: SocketIOClient.Socket;
+	private _profilService: IPlayerProfilService;
+
 	constructor() {
 		super();
+		this._profilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
 		this.setState({
 			Rooms: new Array<RoomInfo>(),
 			DisplayableRooms: new Array<RoomInfo>(),
-			PlayerName: 'Alice',
+			PlayerName: this._profilService.GetProfil().LastPlayerName,
 			filter: '',
 			Password: ''
 		});

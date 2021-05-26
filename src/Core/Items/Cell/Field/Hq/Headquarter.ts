@@ -101,6 +101,8 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		});
 
 		this._network = new HqNetwork(this);
+		this.TotalLife = 10;
+		this.Life = 10;
 	}
 
 	public SetSelectionAnimation(): void {

@@ -1,36 +1,42 @@
 import { IAppService } from '../../Services/App/IAppService';
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
-import PanelComponent from '../Common/Panel/PanelComponent';
 import UploadButtonComponent from '../Common/Button/Stylish/UploadButtonComponent';
-import { RecordObject } from '../../Core/Framework/Record/RecordObject';
-import { RecordHq } from '../../Core/Framework/Record/RecordHq';
-import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
-import { RecordUnit } from '../../Core/Framework/Record/RecordUnit';
 import { RecordData } from '../../Core/Framework/Record/RecordData';
-import { RecordCell } from '../../Core/Framework/Record/RecordCell';
 import GridComponent from '../Common/Grid/GridComponent';
 import { IRecordService } from '../../Services/Record/IRecordService';
 import { ICompareService } from '../../Services/Compare/ICompareService';
 import { Factory, FactoryKey } from '../../Factory';
 import Redirect from '../Redirect/RedirectComponent';
 import Icon from '../Common/Icon/IconComponent';
+import { RecordSelection } from './RecordSelection';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import SmButtonComponent from '../Common/Button/Stylish/SmButtonComponent';
+import SmPanelComponent from '../Common/Panel/SmPanelComponent';
+import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
+import SmActiveButtonComponent from '../Common/Button/Stylish/SmActiveButtonComponent';
+import Visible from '../Common/Visible/VisibleComponent';
 
-export default class RecordComponent extends Component<any, { Records: RecordObject[] }> {
+export default class RecordComponent extends Component<
+	any,
+	{ Records: RecordSelection[]; SelectedRecords: RecordSelection[] }
+> {
 	private _appService: IAppService;
 	private _recordService: IRecordService;
 	private _compareService: ICompareService;
+	private _playerProfilService: IPlayerProfilService;
 
 	constructor() {
 		super();
 		this._appService = Factory.Load<IAppService>(FactoryKey.RecordApp);
+		this._playerProfilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
 		this._recordService = Factory.Load<IRecordService>(FactoryKey.Record);
 		this._compareService = Factory.Load<ICompareService>(FactoryKey.Compare);
+		const records = this._playerProfilService.GetRecords();
 		this.setState({
-			Records: []
+			Records: records.map((r) => new RecordSelection(false, r)),
+			SelectedRecords: []
 		});
 	}
 
@@ -39,46 +45,22 @@ export default class RecordComponent extends Component<any, { Records: RecordObj
 	}
 
 	private ToCompare(): void {
-		const record = this.ToTracking(this.state.Records[0]);
-		const compare = this.ToTracking(this.state.Records[1]);
-		this._compareService.Register(record, compare);
+		this._compareService.Register(this.state.Records[0].Record, this.state.Records[1].Record);
 		route('/Comparer', true);
 	}
 
-	private Play(data: RecordObject): void {
-		const record = this.ToTracking(data);
+	private Play(data: RecordData): void {
 		this._appService.Register(data.MapContext);
-		this._recordService.Register(record);
-
+		this._recordService.Register(data);
 		route('/RecordCanvas', true);
-	}
-
-	public ToTracking(e: RecordObject): RecordData {
-		const hqs = new Dictionnary<RecordHq>();
-		hqs.SetValues(e.Hqs);
-
-		hqs.Values().forEach((hq) => {
-			const units = hq.Units as any;
-			hq.Units = new Dictionnary<RecordUnit>();
-			hq.Units.SetValues(units);
-		});
-
-		const cells = new Dictionnary<RecordCell>();
-		cells.SetValues(e.Cells);
-
-		const result = new RecordData();
-		result.Hqs = hqs;
-		result.Cells = cells;
-		result.Dates = e.Points;
-		return result;
 	}
 
 	private Upload(e: any): void {
 		var reader = new FileReader();
 		reader.readAsText(e.target.files[0], 'UTF-8');
 		reader.onload = (ev: ProgressEvent<FileReader>) => {
-			const context = JSON.parse(ev.target.result as string);
-			this.state.Records.push(context);
+			const data = JSON.parse(ev.target.result as string);
+			this.state.Records.push(new RecordSelection(false, RecordData.To(data)));
 			this.setState({
 				Records: this.state.Records
 			});
@@ -108,16 +90,32 @@ export default class RecordComponent extends Component<any, { Records: RecordObj
 	private GridContent() {
 		return (
 			<tbody>
-				{this.state.Records.map((data, i) => {
+				{this.state.Records.map((record) => {
 					return (
 						<tr class="d-flex">
-							<td class="align-self-center">{data}</td>
 							<td class="align-self-center">
 								<div class="container-center-horizontal">
-									<div class="small-right-margin">{data.Title} </div>
-									<SmButtonComponent callBack={() => this.Play(data)} color={ColorKind.Black}>
+									<SmActiveButtonComponent
+										left={<Icon Value={'fas fa-toggle-off'} />}
+										right={<Icon Value={'fas fa-toggle-on'} />}
+										leftColor={ColorKind.Red}
+										rightColor={ColorKind.Black}
+										callBack={() => {
+											record.IsSelected = !record.IsSelected;
+											this.setState({
+												SelectedRecords: this.state.Records.filter((e) => e.IsSelected)
+											});
+										}}
+										isActive={record.IsSelected}
+									/>
+									<div class="very-small-left-margin" />
+									<SmButtonComponent
+										callBack={() => this.Play(record.Record)}
+										color={ColorKind.Black}
+									>
 										<Icon Value="fas fa-play-circle" />
 									</SmButtonComponent>
+									<div class="very-small-left-margin">{record.Record.Title} </div>
 								</div>
 							</td>
 						</tr>
@@ -130,29 +128,50 @@ export default class RecordComponent extends Component<any, { Records: RecordObj
 	render() {
 		return (
 			<Redirect>
-				<PanelComponent>
+				<SmPanelComponent>
 					<div class="container-center-horizontal">
+						<UploadButtonComponent
+							icon={'fas fa-upload'}
+							title={''}
+							callBack={(e: any) => this.Upload(e)}
+						/>
 						<ButtonComponent
 							callBack={() => {
+								this.state.SelectedRecords.map((r) => r.Record.Title).forEach((name) => {
+									this._playerProfilService.DeleteRecord(name);
+								});
+								const records = this._playerProfilService.GetRecords();
 								this.setState({
-									Records: []
+									Records: records.map((r) => new RecordSelection(false, r)),
+									SelectedRecords: new Array<RecordSelection>()
 								});
 							}}
 							color={ColorKind.Black}
 						>
-							<Icon Value="fas fa-trash" /> Clear
+							<Icon Value="fas fa-trash" /> {this.state.SelectedRecords.length}
 						</ButtonComponent>
 
-						<UploadButtonComponent
-							icon={'fas fa-upload'}
-							title={'Upload'}
-							callBack={(e: any) => this.Upload(e)}
-						/>
+						<Visible isVisible={this.state.SelectedRecords.length === 2}>
+							<ButtonComponent
+								callBack={() => {
+									this.ToCompare();
+								}}
+								color={ColorKind.Red}
+							>
+								<Icon Value="fas fa-chart-line" />
+							</ButtonComponent>
+						</Visible>
 					</div>
 
 					<GridComponent
 						left={this.Header()}
-						right={this.state.Records.length === 0 ? this.EmptyGridContent() : this.GridContent()}
+						right={
+							this.state.Records && this.state.Records.length === 0 ? (
+								this.EmptyGridContent()
+							) : (
+								this.GridContent()
+							)
+						}
 					/>
 
 					<div class="container-center-horizontal">
@@ -164,20 +183,8 @@ export default class RecordComponent extends Component<any, { Records: RecordObj
 						>
 							<Icon Value="fas fa-undo-alt" /> Back
 						</ButtonComponent>
-						{this.state.Records.length === 2 ? (
-							<ButtonComponent
-								callBack={() => {
-									this.ToCompare();
-								}}
-								color={ColorKind.Red}
-							>
-								<Icon Value="fas fa-chart-line" /> Compare
-							</ButtonComponent>
-						) : (
-							''
-						)}
 					</div>
-				</PanelComponent>
+				</SmPanelComponent>
 			</Redirect>
 		);
 	}

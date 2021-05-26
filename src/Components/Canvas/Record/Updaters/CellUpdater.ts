@@ -44,9 +44,9 @@ export class CellUpdater {
 
 	private UpdateActiveField(coos: Dictionnary<{ Axial: HexAxial; Action: RecordKind }>) {
 		coos.Keys().forEach((key) => {
-			const fieldAction = FieldTypeHelper.GetTrackingDescription(this._displayedFields.Get(key));
+			const fieldAction = FieldTypeHelper.GetRecordDescription(this._displayedFields.Get(key));
 			if (fieldAction !== coos.Get(key).Action) {
-				const field = FieldTypeHelper.CreateTrackingField(
+				const field = FieldTypeHelper.CreateRecordField(
 					coos.Get(key).Action,
 					this._gameContext.GetCell(key),
 					this._gameContext.GetPlayerHq(),

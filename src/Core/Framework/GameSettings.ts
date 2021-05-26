@@ -5,7 +5,7 @@ export class GameSettings {
 	public static MissileTranslationSpeed: number = 5;
 
 	public static DiamondLoading: number = 300; //30
-	public static FarmLoading: number = 5000; //10
+	public static FarmLoading: number = 500; //10
 
 	public static UnitLife: number = 20; //100
 	public static NatureLife: number = 40; //100

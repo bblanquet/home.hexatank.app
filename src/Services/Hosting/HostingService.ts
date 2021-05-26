@@ -1,7 +1,9 @@
 import { MapSetting } from '../../Components/Form/MapSetting';
 import { HostState } from '../../Components/Network/HostState';
 import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
+import { Factory, FactoryKey } from '../../Factory';
 import { Player } from '../../Network/Player';
+import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
 import { IHostingService } from './IHostingService';
 
 export class HostingService implements IHostingService {
@@ -25,7 +27,14 @@ export class HostingService implements IHostingService {
 		this._hostState.Password = password;
 		this._hostState.HasPassword = hasPassword;
 		this._hostState.IsAdmin = isAdmin;
+		this.UpdatePlayerName(playerName);
 	}
+	private UpdatePlayerName(playerName: string) {
+		const playerProfilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
+		playerProfilService.GetProfil().LastPlayerName = playerName;
+		playerProfilService.Update();
+	}
+
 	Publish(): HostState {
 		return this._hostState;
 	}

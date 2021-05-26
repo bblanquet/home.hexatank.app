@@ -1,5 +1,5 @@
 import { SoundService } from './Services/Sound/SoundService';
-import { ModelService } from './Services/Model/ModelService';
+import { PlayerProfilService } from './Services/PlayerProfil/PlayerProfilService';
 import { CampaignService } from './Services/Campaign/CampaignService';
 import { HostingService } from './Services/Hosting/HostingService';
 import { KeyService } from './Services/Key/KeyService';
@@ -16,7 +16,7 @@ import { AppService } from './Services/App/AppService';
 import { Factory, FactoryKey } from './Factory';
 
 Factory.Register(FactoryKey.Sound, new SoundService());
-Factory.Register(FactoryKey.Model, new ModelService());
+Factory.Register(FactoryKey.PlayerProfil, new PlayerProfilService());
 Factory.Register(FactoryKey.Key, new KeyService());
 Factory.Register(FactoryKey.Hosting, new HostingService());
 Factory.Register(FactoryKey.Update, new UpdateService());

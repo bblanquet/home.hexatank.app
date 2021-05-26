@@ -37,7 +37,7 @@ export class RecordContext {
 		const time = this.GetTime();
 		this._data.Dates.push(time);
 		this._gameContext.GetCells().forEach((cell) => {
-			const action = new RecordField(time, FieldTypeHelper.GetTrackingDescription(cell.GetField()));
+			const action = new RecordField(time, FieldTypeHelper.GetRecordDescription(cell.GetField()));
 			if (action.kind !== RecordKind.None) {
 				const trackingCell = new RecordCell();
 				trackingCell.Actions = new Array<RecordField>();
@@ -61,7 +61,7 @@ export class RecordContext {
 	private HandleFieldChanged(src: any, cell: Cell): void {
 		const time = this.GetTime();
 		this._data.Dates.push(time);
-		const action = new RecordField(time, FieldTypeHelper.GetTrackingDescription(cell.GetField()));
+		const action = new RecordField(time, FieldTypeHelper.GetRecordDescription(cell.GetField()));
 		this._data.Cells.Get(cell.Coo()).Actions.push(action);
 	}
 
@@ -117,7 +117,7 @@ export class RecordContext {
 		}
 	}
 
-	public GetTrackingObject(): RecordObject {
+	public GetRecord(): RecordObject {
 		const players: any = {};
 		this._data.Hqs.Keys().map((key) => {
 			players[key] = this._data.Hqs.Get(key).GetJsonObject();

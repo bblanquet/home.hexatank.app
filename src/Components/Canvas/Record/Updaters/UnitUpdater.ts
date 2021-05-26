@@ -21,11 +21,6 @@ export class UnitUpdater {
 
 	public Update(date: number) {
 		const unitDeltas = this.GetActiveUnits(date);
-
-		if (unitDeltas.Exist('IA-11')) {
-			const a = 0;
-		}
-
 		this.UpdateActiveUnits(unitDeltas);
 	}
 
@@ -70,17 +65,19 @@ export class UnitUpdater {
 		}>();
 		this._ref.Hqs.Values().forEach((hq) => {
 			hq.Units.Keys().forEach((key) => {
-				const dates = hq.Units.Get(key).Actions.map((a) => a.X);
-				const dateIndex = this._indexFinder.GetIndex(date, dates);
-				if (!isNullOrUndefined(dateIndex)) {
-					const action = hq.Units.Get(key).Actions[dateIndex];
-					if (+action.kind !== RecordKind.Destroyed) {
-						coos.Add(key, {
-							Axial: new HexAxial(action.Amount.Q, action.Amount.R),
-							Hq: this._gameContext.GetHqs().find((c) => c.PlayerName === hq.Name),
-							IsTank: hq.Units.Get(key).IsTank,
-							Life: action.life
-						});
+				if (hq.Units.Get(key).Actions) {
+					const dates = hq.Units.Get(key).Actions.map((a) => a.X);
+					const dateIndex = this._indexFinder.GetIndex(date, dates);
+					if (!isNullOrUndefined(dateIndex)) {
+						const action = hq.Units.Get(key).Actions[dateIndex];
+						if (+action.kind !== RecordKind.Destroyed) {
+							coos.Add(key, {
+								Axial: new HexAxial(action.Amount.Q, action.Amount.R),
+								Hq: this._gameContext.GetHqs().find((c) => c.PlayerName === hq.Name),
+								IsTank: hq.Units.Get(key).IsTank,
+								Life: action.life
+							});
+						}
 					}
 				}
 			});

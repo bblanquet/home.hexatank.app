@@ -63,7 +63,7 @@ export class FarmField extends BonusField {
 
 		if (!this.IsFull() && this.Energy > 0) {
 			if (this._timer.IsElapsed()) {
-				this.SetProperty(Archive.bonus.fullMoney, (s) => (s.alpha += 0.02));
+				this.SetProperty(Archive.bonus.fullMoney, (s) => (s.alpha += 0.1));
 				if (this.GetCurrentSprites().Get(Archive.bonus.fullMoney).alpha >= 1) {
 					this._lightItem.Display();
 				}

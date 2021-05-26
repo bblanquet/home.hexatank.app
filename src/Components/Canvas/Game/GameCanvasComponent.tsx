@@ -36,6 +36,7 @@ import { MultiTankMenuItem } from '../../../Core/Menu/Buttons/MultiTankMenuItem'
 import Visible from '../../Common/Visible/VisibleComponent';
 import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
 import { MultiCellMenuItem } from '../../../Core/Menu/Buttons/MultiCellMenuItem';
+import { IPlayerProfilService } from '../../../Services/PlayerProfil/IPlayerProfilService';
 
 export default class GameCanvasComponent extends Component<
 	any,
@@ -339,9 +340,10 @@ export default class GameCanvasComponent extends Component<
 		if ([ GameStatus.Won, GameStatus.Lost ].some((e) => e === this.state.GameStatus)) {
 			return (
 				<PopupComponent
+					points={10}
 					status={this.state.GameStatus}
 					curves={this._gameContext.StatsContext.GetCurves()}
-					context={this._gameContext.TrackingContext.GetTrackingObject()}
+					context={this._gameContext.RecordContext.GetRecord()}
 				/>
 			);
 		}

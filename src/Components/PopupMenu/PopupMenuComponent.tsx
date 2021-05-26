@@ -37,9 +37,7 @@ export default class PopupMenuComponent extends Component<
 	}
 
 	private Save(): void {
-		const data = Factory.Load<GameContextService>(FactoryKey.GameContext)
-			.Publish()
-			.TrackingContext.GetTrackingObject();
+		const data = Factory.Load<GameContextService>(FactoryKey.GameContext).Publish().RecordContext.GetRecord();
 		const url = document.createElement('a');
 		const file = new Blob([ JSON.stringify(data) ], { type: 'application/json' });
 		url.href = URL.createObjectURL(file);

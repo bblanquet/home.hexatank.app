@@ -6,5 +6,6 @@ export class RecordObject {
 	public Hqs: any;
 	public Cells: any;
 	public Title: string;
+	public Date: Date;
 	public Interactions: InteractionInfo[];
 }

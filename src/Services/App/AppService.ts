@@ -55,7 +55,7 @@ export class AppService implements IAppService {
 		this._gameContextService.Register(new HqRender(), mapContext);
 		const gameContext = this._gameContextService.Publish();
 		this._interactionService.Register(this._interactionManager, gameContext);
-		gameContext.TrackingContext = new RecordContext(mapContext, gameContext, this._interactionService.Publish());
+		gameContext.RecordContext = new RecordContext(mapContext, gameContext, this._interactionService.Publish());
 		this._app.start();
 		this._soundService.Register(gameContext);
 		this._soundManager = this._soundService.GetSoundManager();

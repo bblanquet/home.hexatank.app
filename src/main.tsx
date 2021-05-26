@@ -30,6 +30,7 @@ import '@fortawesome/fontawesome-free/js/regular';
 import '@fortawesome/fontawesome-free/js/brands';
 import { GameStatus } from './Core/Framework/GameStatus';
 import { Context } from './Context';
+import { RecordObject } from './Core/Framework/Record/RecordObject';
 
 const App = (e: any) => {
 	return (
@@ -47,9 +48,15 @@ const App = (e: any) => {
 			<CreatingHostComponent path="/CreatingHost" />
 			<HostingComponent path="/Hosting" />
 			<GuestComponent path="/OffJoin" />
-			<RecordComponent path="/Playback" />
+			<RecordComponent path="/Record" />
 			<PrototypeComponent path="/Prototype" />
-			<PopupComponent path="/Popup" curves={Context()} status={GameStatus.Won} context={{ a: 1 }} />
+			<PopupComponent
+				path="/Popup"
+				points={10}
+				curves={Context()}
+				status={GameStatus.Won}
+				context={new RecordObject()}
+			/>
 			<ComparerComponent path="/Comparer" />
 		</Router>
 	);

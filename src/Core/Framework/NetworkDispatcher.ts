@@ -20,7 +20,6 @@ import { CreatingUnitPacket } from './Packets/CreatingUnitPacket';
 import { FieldPacket } from './Packets/FieldPacket';
 import { BonusField } from '../Items/Cell/Field/Bonus/BonusField';
 import { AliveItem } from '../Items/AliveItem';
-import { IaHeadquarter } from '../Ia/IaHeadquarter';
 import { OrderPacket } from './Packets/OrderPacket';
 import { isNullOrUndefined } from '../Utils/ToolBox';
 
@@ -58,7 +57,7 @@ export class NetworkDispatcher {
 	}
 
 	private IsSpeakingHq(hq: Headquarter): boolean {
-		return hq.PlayerName === this._context.GetPlayerHq().PlayerName || hq instanceof IaHeadquarter;
+		return hq.PlayerName === this._context.GetPlayerHq().PlayerName || hq.IsIa();
 	}
 
 	private HandleVehicleCreated(source: any, vehicle: Vehicle): void {

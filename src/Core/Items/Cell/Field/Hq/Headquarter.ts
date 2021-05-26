@@ -1,3 +1,4 @@
+import { IBrain } from './../../../../Ia/Decision/IBrain';
 import { HqNetwork } from './HqNetwork';
 import { InfiniteFadeAnimation } from './../../../Animator/InfiniteFadeAnimation';
 import { BasicItem } from './../../../BasicItem';
@@ -27,6 +28,9 @@ import { ReactorField } from '../Bonus/ReactorField';
 import { ISelectable } from '../../../../ISelectable';
 import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
 import { Item } from '../../../Item';
+import { Curve } from '../../../../Utils/Stats/Curve';
+import { DateValue } from '../../../../Utils/Stats/DateValue';
+import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 
 export class Headquarter extends AliveItem implements IField, ISelectable {
 	public Flagcell: FlagCell;
@@ -38,6 +42,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 
 	private _tankRequestCount: number = 0;
 	private _network: HqNetwork;
+	private _brain: IBrain;
+
+	private _diamondCurve: Curve = new Curve([], '');
 
 	//belongs
 	private _diamondCount: number = GameSettings.PocketMoney;
@@ -93,6 +100,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 			this.Fields.push(new HeadQuarterField(this, <Cell>cell, skin.GetLight()));
 		});
 		this._onCellStateChanged = this.OncellStateChanged.bind(this);
+		this.OnDiamondEarned.On(this.HandleDiamondChanged.bind(this));
 		this._cell.OnCellStateChanged.On(this._onCellStateChanged);
 		this.InitPosition(cell.GetBoundingBox());
 
@@ -305,7 +313,18 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		}, 3000);
 	}
 
+	public IsIa(): boolean {
+		return !isNullOrUndefined(this._brain);
+	}
+
+	public Inject(brain: IBrain): void {
+		this._brain = brain;
+	}
+
 	public Update(viewX: number, viewY: number): void {
+		if (this._brain) {
+			this._brain.Update();
+		}
 		this._network.Update(viewX, viewY);
 		const truckPrice = GameSettings.TruckPrice * this.GetVehicleCount();
 		while (0 < this._truckRequestCount && truckPrice <= this._diamondCount) {
@@ -335,8 +354,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 
 		if (!this.IsAlive()) {
 			this.Destroy();
-			let crater = new Crater(this._boundingBox);
-
+			new Crater(this._boundingBox);
 			return;
 		}
 
@@ -456,5 +474,19 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 			}
 		});
 		return result;
+	}
+
+	private HandleDiamondChanged(src: Headquarter, diamond: number): void {
+		this._diamondCurve.Points.push(new DateValue(new Date().getTime(), diamond));
+	}
+
+	public GetEarnedDiamond(milliseconds: number) {
+		const d = Date.now() - milliseconds;
+		const ps = this._diamondCurve.Points.filter((p) => d < p.X);
+		if (0 < ps.length) {
+			return ps.map((p) => p.Amount).reduce((a, b) => a + b);
+		} else {
+			return 0;
+		}
 	}
 }

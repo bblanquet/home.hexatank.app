@@ -1,4 +1,4 @@
-import { IaHeadquarter } from '../IaHeadquarter';
+import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { MoneyOrder } from '../Order/Composite/MoneyOrder';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
@@ -39,7 +39,7 @@ export class Brain implements IBrain {
 	private _generalRequestMaker: IGeneralListRequester;
 	public AllAreas: Area[];
 
-	constructor(public Hq: IaHeadquarter, public Areas: Area[]) {
+	constructor(public Hq: Headquarter, public Areas: Area[]) {
 		this.AreaDecisions = new Array<IAreaDecisionMaker>();
 		this.Squads = new Array<Squad>();
 		this.CellAreas = new Dictionnary<IAreaDecisionMaker>();

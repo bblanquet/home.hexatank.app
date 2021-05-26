@@ -1,6 +1,5 @@
-import { IaHeadquarter } from './../IaHeadquarter';
+import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
 import { IBrainProvider } from './IBrain';
-import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { GameContext } from '../../Framework/GameContext';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { ExpansionMaker } from '../Decision/ExpansionMaker/ExpansionMaker';
@@ -39,7 +38,7 @@ import { TankRequester } from '../Decision/RequestMaker/AreaRequester/TankHighRe
 import { TruckRequest } from '../Decision/RequestMaker/AreaRequester/TruckRequester';
 
 export class DummyBrain implements IBrainProvider {
-	GetBrain(hq: IaHeadquarter, context: GameContext, areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
+	GetBrain(hq: Headquarter, context: GameContext, areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
 		const brain = new Brain(hq, areas);
 
 		const handlers = new Groups<ISimpleRequestHandler>();

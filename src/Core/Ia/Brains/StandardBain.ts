@@ -1,4 +1,4 @@
-import { IaHeadquarter } from '../IaHeadquarter';
+import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
 import { TankMediumRequester } from '../Decision/RequestMaker/AreaRequester/TankMediumRequester';
 import { TankLowRequester } from '../Decision/RequestMaker/AreaRequester/TankLowRequester';
 import { IBrainProvider } from './IBrain';
@@ -42,7 +42,7 @@ import { Brain } from '../Decision/Brain';
 import { IBrain } from '../Decision/IBrain';
 
 export class StandardBain implements IBrainProvider {
-	GetBrain(hq: IaHeadquarter, context: GameContext, areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
+	GetBrain(hq: Headquarter, context: GameContext, areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
 		const brain = new Brain(hq, areas);
 
 		const handlers = new Groups<ISimpleRequestHandler>();

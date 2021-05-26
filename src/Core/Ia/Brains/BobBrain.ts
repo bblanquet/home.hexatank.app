@@ -1,7 +1,7 @@
+import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
 import { DiamondRoadRequester } from './../Decision/RequestMaker/AreaRequester/DiamondRoadRequester';
 import { DiamondRoadCleaningHandler } from './../Decision/RequestHandler/Handler/DiamondRoadCleaningHandler';
 import { SimpleFarmRequester } from './../Decision/RequestMaker/AreaRequester/SimpleFarmRequester';
-import { IaHeadquarter } from './../IaHeadquarter';
 import { ReactorShieldHandler } from './../Decision/RequestHandler/Handler/ReactorShieldHandler';
 import { ReactorShieldRequester } from './../Decision/RequestMaker/AreaRequester/ReactorShieldRequester';
 import { FoeReactorRequester } from './../Decision/RequestMaker/AreaRequester/FoeReactorRequester';
@@ -37,7 +37,6 @@ import { TankMediumRequestHandler } from '../Decision/RequestHandler/Handler/Tan
 import { TruckRequestHandler } from '../Decision/RequestHandler/Handler/TruckRequestHandler';
 import { ISimpleRequestHandler } from '../Decision/RequestHandler/ISimpleRequestHandler';
 import { ClearAreaRequester } from '../Decision/RequestMaker/AreaRequester/ClearAreaRequester';
-import { FarmRequester } from '../Decision/RequestMaker/AreaRequester/FarmRequester';
 import { HealUnitRequester } from '../Decision/RequestMaker/AreaRequester/HealUnitRequester';
 import { ReactorRequester } from '../Decision/RequestMaker/AreaRequester/ReactorRequester';
 import { ShieldAreaRequester } from '../Decision/RequestMaker/AreaRequester/ShieldAreaRequester';
@@ -49,7 +48,7 @@ import { TankMediumRequester } from '../Decision/RequestMaker/AreaRequester/Tank
 import { IBrain } from '../Decision/IBrain';
 
 export class BobBrain implements IBrainProvider {
-	GetBrain(hq: IaHeadquarter, context: GameContext, areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
+	GetBrain(hq: Headquarter, context: GameContext, areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
 		const brain = new Brain(hq, areas);
 
 		const handlers = new Groups<ISimpleRequestHandler>();

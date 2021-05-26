@@ -15,10 +15,9 @@ import { Archive } from '../../Framework/ResourceArchiver';
 import { MapContext } from '../Generator/MapContext';
 import { MapEnv } from '../Generator/MapEnv';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
-import { AbstractHqRender } from './Hq/AbstractHqRender';
-
+import { HqRender } from './Hq/HqRender';
 export class MapRender {
-	public Render(hqRender: AbstractHqRender, mapContext: MapContext): GameContext {
+	public Render(mapContext: MapContext): GameContext {
 		const cells = new CellContext<Cell>();
 		const context = new GameContext();
 		const playgroundItems = new Array<Item>();
@@ -36,7 +35,7 @@ export class MapRender {
 		);
 		this.SetLands(cells, mapContext.MapMode, areas, playgroundItems);
 		this.AddClouds(playgroundItems);
-		const hqs = hqRender.GetHqList(context, cells, mapContext.Hqs, playgroundItems);
+		const hqs = new HqRender().Render(context, cells, mapContext.Hqs, playgroundItems);
 
 		//insert elements into playground
 		this.SetHqLands(cells, Archive.nature.hq, hqs.map((h) => h.GetCell().GetHexCoo()), playgroundItems);

@@ -1,4 +1,3 @@
-import { DummyHqRender } from './../../Core/Setup/Render/Hq/DummyHqRender';
 import { GameSettings } from './../../Core/Framework/GameSettings';
 import { IInteractionService } from './../Interaction/IInteractionService';
 import { INetworkService } from './../Network/INetworkService';
@@ -47,7 +46,7 @@ export class RecordAppService implements IAppService {
 		this._interactionManager = new PIXI.InteractionManager(this._app.renderer);
 
 		this._layerService.Register(this._app);
-		this._gameContextService.Register(new DummyHqRender(), mapContext);
+		this._gameContextService.Register(mapContext);
 		const gameContext = this._gameContextService.Publish();
 		this._interactionService.Register(this._interactionManager, gameContext);
 

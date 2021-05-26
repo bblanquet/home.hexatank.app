@@ -13,8 +13,6 @@ import { Player } from '../../Network/Player';
 import { GameStatus } from './GameStatus';
 import { isNullOrUndefined } from '../Utils/ToolBox';
 import { MultiSelectionContext } from '../Menu/Smart/MultiSelectionContext';
-import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
-import { Factory, FactoryKey } from '../../Factory';
 
 export class GameContext {
 	public static Error: Error;

@@ -1,7 +1,6 @@
 import { OverlockedPacket } from './Packets/OverlockedPacket';
 import { ReactorField } from './../Items/Cell/Field/Bonus/ReactorField';
 import { Headquarter } from './../Items/Cell/Field/Hq/Headquarter';
-import { IaHeadquarter } from './../Ia/IaHeadquarter';
 import { FieldTypeHelper } from './Packets/FieldTypeHelper';
 import { OrderPacket } from './Packets/OrderPacket';
 import { PacketKind } from './../../Network/Message/PacketKind';
@@ -50,11 +49,7 @@ export class NetworkReceiver {
 
 	private IsListenedHq(coo: string): boolean {
 		const hq = this._context.GetCell(coo).GetField() as Headquarter;
-		return (
-			!isNullOrUndefined(hq) &&
-			hq.PlayerName !== this._context.GetPlayerHq().PlayerName &&
-			!(hq instanceof IaHeadquarter)
-		);
+		return !isNullOrUndefined(hq) && hq.PlayerName !== this._context.GetPlayerHq().PlayerName && !hq.IsIa();
 	}
 
 	private HandleCreatingUnit(message: NetworkMessage<CreatingUnitPacket>): void {

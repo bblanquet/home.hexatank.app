@@ -33,7 +33,7 @@ export class CamouflageAppService implements IAppService {
 		this._updateService = Factory.Load<IUpdateService>(FactoryKey.Update);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
 		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
-		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.RecordInteraction);
+		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.CamouflageInteraction);
 		this._keyService = Factory.Load<IKeyService>(FactoryKey.Key);
 	}
 

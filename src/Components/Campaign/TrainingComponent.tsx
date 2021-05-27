@@ -96,6 +96,6 @@ export default class TrainingComponent extends Component<any, any> {
 	Start(index: number): void {
 		const mapContext = this._campaignService.GetMapContext(CampaignKind.training, index);
 		Factory.Load<IAppService>(FactoryKey.CamouflageApp).Register(mapContext);
-		route('/Canvas', true);
+		route('/Camouflage', true);
 	}
 }

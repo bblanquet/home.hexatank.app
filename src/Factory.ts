@@ -14,21 +14,22 @@ export class Factory {
 export enum FactoryKey {
 	None,
 	Key,
-	App,
 	Hosting,
 	RecordApp,
 	Compare,
 	GameContext,
-	Interaction,
-	RecordInteraction,
 	Layer,
 	Network,
-	Record,
 	Update,
 	Campaign,
 	PlayerProfil,
 	Sound,
-	CamouflageApp
+	Record,
+	App,
+	Interaction,
+	RecordInteraction,
+	CamouflageApp,
+	CamouflageInteraction
 }
 
 export interface IFactorisable {

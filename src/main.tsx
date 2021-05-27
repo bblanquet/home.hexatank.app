@@ -6,6 +6,7 @@ import ErrorComponent from './Components/Error/ErrorComponent';
 import SinglePlayerComponent from './Components/SinglePlayer/SinglePlayerComponent';
 import GameCanvasComponent from './Components/Canvas/Game/GameCanvasComponent';
 import RecordCanvasComponent from './Components/Canvas/Record/RecordCanvasComponent';
+import CamouflageComponent from './Components/Canvas/Camouflage/CamouflageComponent';
 import CampaignComponent from './Components/Campaign/CampaignComponent';
 import BlueCampaignComponent from './Components/Campaign/BlueCampaignComponent';
 import BadgeComponent from './Components/Badge/BagdeComponent';
@@ -46,6 +47,7 @@ const App = (e: any) => {
 			<RecordCanvasComponent path="/RecordCanvas" />
 			<CreatingHostComponent path="/CreatingHost" />
 			<HostingComponent path="/Hosting" />
+			<CamouflageComponent path="/Camouflage" />
 			<GuestComponent path="/OffJoin" />
 			<RecordComponent path="/Record" />
 			<PopupComponent

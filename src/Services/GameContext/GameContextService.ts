@@ -1,24 +1,19 @@
 import { GameContext } from './../../Core/Framework/GameContext';
 import { MapContext } from '../../Core/Setup/Generator/MapContext';
-import { MapRender } from '../../Core/Setup/Render/MapRender';
+import { Renderer } from '../../Core/Setup/Render/Renderer';
 import { IGameContextService } from './IGameContextService';
 
 export class GameContextService implements IGameContextService {
 	private _gameContext: GameContext;
 
 	Register(mapContext: MapContext): void {
-		this._gameContext = new MapRender().Render(mapContext);
+		this._gameContext = new Renderer().Render(mapContext);
 	}
 	Publish(): GameContext {
 		return this._gameContext;
 	}
 
 	Collect(): void {
-		if (this._gameContext.Players) {
-			this._gameContext.Players.forEach((p) => {
-				p.OnChanged.Clear();
-			});
-		}
 		this._gameContext = null;
 	}
 }

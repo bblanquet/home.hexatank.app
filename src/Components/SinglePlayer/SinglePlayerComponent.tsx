@@ -85,8 +85,8 @@ export default class SinglePlayerComponent extends Component<any, MapSetting> {
 		const mapContext = new MapGenerator().GetMapDefinition(
 			this.ConvertSize(),
 			this.ConvertMapType(),
-			hqCount,
-			this.ConvertEnv()
+			this.ConvertEnv(),
+			hqCount
 		);
 		if (!this.state.onylIa) {
 			mapContext.Hqs[0].PlayerName = mapContext.PlayerName;

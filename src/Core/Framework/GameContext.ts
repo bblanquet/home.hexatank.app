@@ -1,3 +1,4 @@
+import { IGameContext } from './IGameContext';
 import { MapEnv } from './../Setup/Generator/MapEnv';
 import { MapContext } from './../Setup/Generator/MapContext';
 import { RecordContext } from './Record/RecordContext';
@@ -9,21 +10,16 @@ import { Vehicle } from './../Items/Unit/Vehicle';
 import { LiteEvent } from '../Utils/Events/LiteEvent';
 import { Item } from '../Items/Item';
 import { Cell } from '../Items/Cell/Cell';
-import { Player } from '../../Network/Player';
 import { GameStatus } from './GameStatus';
 import { isNullOrUndefined } from '../Utils/ToolBox';
-import { MultiSelectionContext } from '../Menu/Smart/MultiSelectionContext';
 
-export class GameContext {
+export class GameContext implements IGameContext {
+	//should not be here
 	public static Error: Error;
-
-	public StatsContext: StatsContext;
-	public RecordContext: RecordContext;
-	public MultiSelectionContext: MultiSelectionContext;
-
-	//events
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
 	public OnPatrolSetting: LiteEvent<Boolean> = new LiteEvent<Boolean>();
+
+	//ok
 	public GameStatusChanged: LiteEvent<GameStatus> = new LiteEvent<GameStatus>();
 
 	//elements
@@ -31,29 +27,18 @@ export class GameContext {
 	private _hqs: Headquarter[];
 	private _cells: Dictionnary<Cell>;
 	private _vehicles: Dictionnary<Vehicle> = new Dictionnary<Vehicle>();
-
-	//context
-	public IsFlagingMode: boolean;
-
-	//stats
 	private _vehicleCount: number = 0;
-
-	//online
-	public Players: Player[];
-
-	private _mapContext: MapContext;
-
-	constructor() {}
-
-	public Setup(mapContext: MapContext, hqs: Headquarter[], cells: Cell[], playerHq: Headquarter = null) {
+	constructor(cells: Cell[], hqs: Headquarter[] = null, playerHq: Headquarter = null) {
 		this._playerHq = playerHq;
-		this._mapContext = mapContext;
 		this._hqs = hqs;
 		this._cells = Dictionnary.To((c) => c.Coo(), cells);
 
-		this._hqs.forEach((hq) => {
-			hq.OnVehicleCreated.On(this.DefineVehicleName.bind(this));
-		});
+		if (hqs) {
+			this._hqs.forEach((hq) => {
+				hq.OnVehicleCreated.On(this.DefineVehicleName.bind(this));
+			});
+		}
+
 		if (this._playerHq) {
 			this._playerHq.OnDestroyed.On(() => {
 				this.GameStatusChanged.Invoke(this, GameStatus.Lost);
@@ -67,12 +52,6 @@ export class GameContext {
 				});
 			});
 		}
-
-		this.StatsContext = new StatsContext(this);
-	}
-
-	public GetMapMode(): MapEnv {
-		return this._mapContext.MapMode;
 	}
 
 	public ExistUnit(id: string): Boolean {
@@ -99,7 +78,7 @@ export class GameContext {
 		return this._hqs.find((e) => e.GetCell().Coo() === coo);
 	}
 
-	GetTank(id: string): Tank {
+	public GetTank(id: string): Tank {
 		const result = this._vehicles.Get(id);
 		if (isNullOrUndefined(result) || !(result instanceof Tank)) {
 			throw 'synchronized issue';
@@ -107,7 +86,7 @@ export class GameContext {
 		return result as Tank;
 	}
 
-	GetUnit(id: string): Vehicle {
+	public GetUnit(id: string): Vehicle {
 		const result = this._vehicles.Get(id);
 		if (isNullOrUndefined(result)) {
 			throw 'synchronized issue';

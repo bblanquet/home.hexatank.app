@@ -3,7 +3,7 @@ import { NetworkSocket } from '../../../../Network/NetworkSocket';
 import { HostState } from '../../HostState';
 import GridComponent from '../../../Common/Grid/GridComponent';
 import { ConnectionKind } from '../../../../Network/ConnectionKind';
-import { Player } from '../../../../Network/Player';
+import { OnlinePlayer } from '../../../../Network/OnlinePlayer';
 import Icon from '../../../Common/Icon/IconComponent';
 
 export default class LoadingPlayers extends Component<{ HostState: HostState; Socket: NetworkSocket }, {}> {
@@ -40,11 +40,11 @@ export default class LoadingPlayers extends Component<{ HostState: HostState; So
 		);
 	}
 
-	private GetType(player: Player) {
+	private GetType(player: OnlinePlayer) {
 		return <span class="badge badge-light">{player.GetConnection().Type}</span>;
 	}
 
-	private GetTimeout(player: Player) {
+	private GetTimeout(player: OnlinePlayer) {
 		if (player.HasTimeOut()) {
 			return (
 				<span
@@ -58,7 +58,7 @@ export default class LoadingPlayers extends Component<{ HostState: HostState; So
 		return '';
 	}
 
-	private GetLoadingInfo(player: Player) {
+	private GetLoadingInfo(player: OnlinePlayer) {
 		let style = 'badge badge-success';
 		let label: any = <Icon Value="fas fa-check"> Loaded</Icon>;
 		if (!player.IsLoaded) {
@@ -72,7 +72,7 @@ export default class LoadingPlayers extends Component<{ HostState: HostState; So
 		);
 	}
 
-	private GetConnection(player: Player) {
+	private GetConnection(player: OnlinePlayer) {
 		let style = 'badge badge-success';
 		if (player.GetConnection().Kind === ConnectionKind.Nok) {
 			style = 'badge badge-danger';
@@ -82,7 +82,7 @@ export default class LoadingPlayers extends Component<{ HostState: HostState; So
 		return <span class={style}>{player.GetConnection().State.substring(0, 3)}</span>;
 	}
 
-	private GetReady(player: Player) {
+	private GetReady(player: OnlinePlayer) {
 		if (player.IsReady) {
 			return <span class="badge badge-success">ON</span>;
 		} else {

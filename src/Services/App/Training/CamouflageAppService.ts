@@ -1,20 +1,20 @@
-import { GameSettings } from './../../Core/Framework/GameSettings';
-import { IInteractionService } from './../Interaction/IInteractionService';
-import { INetworkService } from './../Network/INetworkService';
-import { ILayerService } from './../Layer/ILayerService';
-import { IUpdateService } from './../Update/IUpdateService';
-import { IGameContextService } from './../GameContext/IGameContextService';
-import { AppProvider } from './../../Core/App/AppProvider';
-import { MapContext } from './../../Core/Setup/Generator/MapContext';
-import { IAppService } from './IAppService';
-import { Factory, FactoryKey } from '../../Factory';
+import { RecordContext } from './../../../Core/Framework/Record/RecordContext';
+import { StatsContext } from './../../../Core/Framework/Stats/StatsContext';
+import { IInteractionService } from './../../Interaction/IInteractionService';
+import { INetworkService } from './../../Network/INetworkService';
+import { ILayerService } from './../../Layer/ILayerService';
+import { IUpdateService } from './../../Update/IUpdateService';
+import { IGameContextService } from './../../GameContext/IGameContextService';
+import { AppProvider } from './../../../Core/App/AppProvider';
+import { MapContext } from './../../../Core/Setup/Generator/MapContext';
+import { IAppService } from '../IAppService';
+import { Factory, FactoryKey } from '../../../Factory';
 import * as PIXI from 'pixi.js';
-import { IKeyService } from '../Key/IKeyService';
-import { CellStateSetter } from '../../Core/Items/Cell/CellStateSetter';
-import { RecordContext } from '../../Core/Framework/Record/RecordContext';
-import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
+import { IKeyService } from '../../Key/IKeyService';
+import { CellStateSetter } from '../../../Core/Items/Cell/CellStateSetter';
+import { GameSettings } from '../../../Core/Framework/GameSettings';
 
-export class RecordAppService implements IAppService {
+export class CamouflageAppService implements IAppService {
 	private _context: MapContext;
 	private _app: PIXI.Application;
 	private _appProvider: AppProvider;
@@ -35,12 +35,6 @@ export class RecordAppService implements IAppService {
 		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
 		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.RecordInteraction);
 		this._keyService = Factory.Load<IKeyService>(FactoryKey.Key);
-	}
-	GetStats(): StatsContext {
-		return null;
-	}
-	GetRecord(): RecordContext {
-		return null;
 	}
 
 	public Register(mapContext: MapContext): void {
@@ -63,6 +57,13 @@ export class RecordAppService implements IAppService {
 		});
 		CellStateSetter.SetStates(gameContext.GetCells());
 		this._app.start();
+	}
+
+	GetStats(): StatsContext {
+		return null;
+	}
+	GetRecord(): RecordContext {
+		return null;
 	}
 
 	public Publish(): PIXI.Application {

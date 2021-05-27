@@ -1,3 +1,4 @@
+import { MapContext } from './../../Setup/Generator/MapContext';
 import { IOrder } from './../../Ia/Order/IOrder';
 import { Factory, FactoryKey } from './../../../Factory';
 import { ISoundService } from './../../../Services/Sound/ISoundService';
@@ -19,7 +20,7 @@ export class GameSoundManager {
 	private _vehicleSounds: Dictionnary<number>;
 	private _music: number;
 
-	constructor(private _gameContext: GameContext) {
+	constructor(private _mapContext: MapContext, private _gameContext: GameContext) {
 		this._vehicleSounds = new Dictionnary<number>();
 		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
 
@@ -40,11 +41,11 @@ export class GameSoundManager {
 	}
 
 	private GetMusic(): string {
-		if (this._gameContext.GetMapMode() === MapEnv.forest) {
+		if (this._mapContext.MapMode === MapEnv.forest) {
 			return AudioContent.forestMusic;
-		} else if (this._gameContext.GetMapMode() === MapEnv.ice) {
+		} else if (this._mapContext.MapMode === MapEnv.ice) {
 			return AudioContent.iceMusic;
-		} else if (this._gameContext.GetMapMode() === MapEnv.sand) {
+		} else if (this._mapContext.MapMode === MapEnv.sand) {
 			return AudioContent.sandMusic;
 		}
 	}

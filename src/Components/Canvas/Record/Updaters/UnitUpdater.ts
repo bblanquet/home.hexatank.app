@@ -34,8 +34,8 @@ export class UnitUpdater {
 				}
 			} else {
 				let v: Vehicle = units.Get(unitId).IsTank
-					? new Tank(units.Get(unitId).Hq, true)
-					: new Truck(units.Get(unitId).Hq, true);
+					? new Tank(units.Get(unitId).Hq, true, true)
+					: new Truck(units.Get(unitId).Hq, true, true);
 				v.Id = unitId;
 				v.SetPosition(cell);
 				this._displayedUnits.Add(unitId, v);

@@ -11,6 +11,7 @@ import * as PIXI from 'pixi.js';
 import { CancelCombination } from '../../Core/Interaction/Combination/CancelCombination';
 import { ClearTrashCombination } from '../../Core/Interaction/Combination/ClearTrashCombination';
 import { SelectionCombination } from '../../Core/Interaction/Combination/SelectionCombination';
+import { MultiSelectionContext } from '../../Core/Menu/Smart/MultiSelectionContext';
 
 export class RecordInteractionService implements IInteractionService {
 	private _inputNotifier: InputNotifier;
@@ -41,6 +42,10 @@ export class RecordInteractionService implements IInteractionService {
 		manager.on('pointermove', this._inputNotifier.HandleMouseMove.bind(this._inputNotifier), false);
 		manager.on('pointerup', this._inputNotifier.HandleMouseUp.bind(this._inputNotifier), false);
 		manager.autoPreventDefault = false;
+	}
+
+	GetMultiSelectionContext(): MultiSelectionContext {
+		return null;
 	}
 
 	Publish(): InteractionContext {

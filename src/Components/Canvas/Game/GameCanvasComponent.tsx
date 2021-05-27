@@ -19,7 +19,7 @@ import ReactorMenuComponent from './Parts/ReactorMenuComponent';
 import PopupMenuComponent from '../../PopupMenu/PopupMenuComponent';
 import { UnitGroup } from '../../../Core/Items/UnitGroup';
 import { GameStatus } from '../../../Core/Framework/GameStatus';
-import { Player } from '../../../Network/Player';
+import { OnlinePlayer } from '../../../Network/OnlinePlayer';
 import { CellGroup } from '../../../Core/Items/CellGroup';
 import PopupComponent from '../../Popup/PopupComponent';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
@@ -36,7 +36,9 @@ import { MultiTankMenuItem } from '../../../Core/Menu/Buttons/MultiTankMenuItem'
 import Visible from '../../Common/Visible/VisibleComponent';
 import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
 import { MultiCellMenuItem } from '../../../Core/Menu/Buttons/MultiCellMenuItem';
-import { IPlayerProfilService } from '../../../Services/PlayerProfil/IPlayerProfilService';
+import { IAppService } from '../../../Services/App/IAppService';
+import { FlagCellCombination } from '../../../Core/Interaction/Combination/FlagCellCombination';
+import { CombinationProvider } from '../../../Core/Interaction/CombinationProvider';
 
 export default class GameCanvasComponent extends Component<
 	any,
@@ -49,7 +51,7 @@ export default class GameCanvasComponent extends Component<
 		TruckRequestCount: number;
 		Amount: number;
 		Item: Item;
-		Players: Player[];
+		Players: OnlinePlayer[];
 		GameStatus: GameStatus;
 		IsSettingPatrol: boolean;
 	}
@@ -59,7 +61,7 @@ export default class GameCanvasComponent extends Component<
 	private _soundService: ISoundService;
 	private _networkService: INetworkService;
 	private _interactionService: IInteractionService;
-
+	private _appService: IAppService;
 	private _gameContext: GameContext;
 
 	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
@@ -70,6 +72,7 @@ export default class GameCanvasComponent extends Component<
 		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
 		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
+		this._appService = Factory.Load<IAppService>(FactoryKey.App);
 		this._gameContext = this._gameContextService.Publish();
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
 		this.setState({
@@ -107,9 +110,9 @@ export default class GameCanvasComponent extends Component<
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
-		if (this._gameContext.Players) {
-			this._gameContext.Players.forEach((player) => {
-				player.OnChanged.On(() => {
+		if (this._networkService.HasSocket()) {
+			this._networkService.GetOnlinePlayers().forEach((onlinePlayers) => {
+				onlinePlayers.OnChanged.On(() => {
 					this.setState({});
 				});
 			});
@@ -216,10 +219,10 @@ export default class GameCanvasComponent extends Component<
 	}
 
 	private SetFlag(): void {
-		this._gameContext.IsFlagingMode = !this._gameContext.IsFlagingMode;
+		FlagCellCombination.IsFlagingMode = !FlagCellCombination.IsFlagingMode;
 		this.setState({
 			...this.state,
-			HasFlag: this._gameContext.IsFlagingMode
+			HasFlag: FlagCellCombination.IsFlagingMode
 		});
 	}
 
@@ -239,12 +242,12 @@ export default class GameCanvasComponent extends Component<
 				>
 					<div class="right-bottom-menu">
 						<ActiveRightBottomCornerButton
-							isActive={this._gameContext.MultiSelectionContext.IsListeningUnit()}
+							isActive={this._interactionService.GetMultiSelectionContext().IsListeningUnit()}
 							callBack={() => this.SendContext(new MultiTankMenuItem())}
 							logo="fill-tank-multi-cell"
 						/>
 						<ActiveRightBottomCornerButton
-							isActive={this._gameContext.MultiSelectionContext.IsListeningCell()}
+							isActive={this._interactionService.GetMultiSelectionContext().IsListeningCell()}
 							callBack={() => this.SendContext(new MultiCellMenuItem())}
 							logo="fill-mult-cell"
 						/>
@@ -264,7 +267,7 @@ export default class GameCanvasComponent extends Component<
 		if (this._networkService.HasSocket()) {
 			return (
 				<div style="position: fixed;left: 0%; color:white;">
-					{this._gameContext.Players.map((player) => {
+					{this._networkService.GetOnlinePlayers().map((player) => {
 						return (
 							<div>
 								{player.Name} <span class="badge badge-info">{player.GetLatency()}</span>{' '}
@@ -283,7 +286,7 @@ export default class GameCanvasComponent extends Component<
 		interaction.OnSelect(item);
 	}
 
-	private HasTimeout(player: Player) {
+	private HasTimeout(player: OnlinePlayer) {
 		if (player.HasTimeOut()) {
 			return (
 				<span
@@ -342,8 +345,8 @@ export default class GameCanvasComponent extends Component<
 				<PopupComponent
 					points={10}
 					status={this.state.GameStatus}
-					curves={this._gameContext.StatsContext.GetCurves()}
-					context={this._gameContext.RecordContext.GetRecord()}
+					curves={this._appService.GetStats().GetCurves()}
+					context={this._appService.GetRecord().GetRecord()}
 				/>
 			);
 		}

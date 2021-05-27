@@ -5,13 +5,14 @@ import { NetworkSocket } from './../../Network/NetworkSocket';
 import { GameContext } from './GameContext';
 import { PacketKind } from '../../Network/Message/PacketKind';
 import { NetworkObserver } from '../../Network/NetworkObserver';
+import { OnlinePlayer } from '../../Network/OnlinePlayer';
 export class NetworkContext {
 	private _receiver: NetworkReceiver;
 	private _dispatcher: NetworkDispatcher;
 	private _pingObserver: NetworkObserver;
 	private _timeOutObserver: NetworkObserver;
 
-	constructor(private _gameContext: GameContext, private _socket: NetworkSocket) {
+	constructor(private _socket: NetworkSocket, private _gameContext: GameContext, private _players: OnlinePlayer[]) {
 		this._pingObserver = new NetworkObserver(PacketKind.Ping, this.HandlePing.bind(this));
 		this._timeOutObserver = new NetworkObserver(PacketKind.TimeOut, this.HandleTimeout.bind(this));
 		this._receiver = new NetworkReceiver(this._socket, this._gameContext);
@@ -21,14 +22,14 @@ export class NetworkContext {
 	}
 
 	private HandlePing(message: NetworkMessage<string>): void {
-		if (this._gameContext.Players.some((p) => p.Name === message.Emitter)) {
-			this._gameContext.Players.find((p) => p.Name === message.Emitter).SetLatency(message.Content);
+		if (this._players.some((p) => p.Name === message.Emitter)) {
+			this._players.find((p) => p.Name === message.Emitter).SetLatency(message.Content);
 		}
 	}
 
 	private HandleTimeout(message: NetworkMessage<boolean>): void {
-		if (this._gameContext.Players.some((p) => p.Name === message.Emitter)) {
-			this._gameContext.Players.find((p) => p.Name === message.Emitter).SetTimeOut(message.Content);
+		if (this._players.some((p) => p.Name === message.Emitter)) {
+			this._players.find((p) => p.Name === message.Emitter).SetTimeOut(message.Content);
 		}
 	}
 

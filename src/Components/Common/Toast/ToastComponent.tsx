@@ -6,12 +6,12 @@ import { NetworkSocket } from '../../../Network/NetworkSocket';
 import { PeerSocket } from '../../../Network/Peer/PeerSocket';
 import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
 import Icon from '../../Common/Icon/IconComponent';
-import { Player } from '../../../Network/Player';
+import { OnlinePlayer } from '../../../Network/OnlinePlayer';
 import { Message } from '../../Network/Message';
 import { LiteEvent } from '../../../Core/Utils/Events/LiteEvent';
 
 export default class ToastComponent extends Component<
-	{ socket: NetworkSocket; Player: Player; onMessage: LiteEvent<Message> },
+	{ socket: NetworkSocket; Player: OnlinePlayer; onMessage: LiteEvent<Message> },
 	{ Message: string }
 > {
 	private _toastObserver: NetworkObserver;

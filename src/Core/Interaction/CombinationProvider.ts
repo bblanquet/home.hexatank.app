@@ -56,9 +56,12 @@ import { SpeedFieldMenuItem } from '../Menu/Buttons/SpeedFieldMenuItem';
 import { RoadField } from '../Items/Cell/Field/Bonus/RoadField';
 
 export class CombinationProvider {
-	GetCombination(checker: ISelectableChecker, gameContext: GameContext): ICombination[] {
-		const multiSelectionContext = new MultiSelectionContext();
-		gameContext.MultiSelectionContext = multiSelectionContext;
+	public Multiselection: MultiSelectionContext;
+	GetCombination(
+		checker: ISelectableChecker,
+		multiSelectionContext: MultiSelectionContext,
+		gameContext: GameContext
+	): ICombination[] {
 		return [
 			//CLEAR
 			new CancelCombination(),

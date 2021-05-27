@@ -4,6 +4,7 @@ import { Dictionnary } from './../../Core/Utils/Collections/Dictionnary';
 import { ISoundService } from './ISoundService';
 import { GameContext } from '../../Core/Framework/GameContext';
 import { Howl } from 'howler';
+import { MapContext } from '../../Core/Setup/Generator/MapContext';
 
 export class SoundService implements ISoundService {
 	private _sounds: Dictionnary<Howl>;
@@ -95,12 +96,12 @@ export class SoundService implements ISoundService {
 		this._sounds.Clear();
 	}
 
-	Register(gameContext: GameContext): void {
+	Register(mapContext: MapContext, gameContext: GameContext): void {
 		const copy = new Dictionnary<Howl>();
 		this._sounds.Keys().forEach((k) => {
 			copy.Add(k, this._sounds.Get(k));
 		});
-		this._soundManager = new GameSoundManager(gameContext);
+		this._soundManager = new GameSoundManager(mapContext, gameContext);
 		if (!this.IsMute()) {
 			this._soundManager.StartMusic();
 		}

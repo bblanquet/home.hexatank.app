@@ -1,3 +1,4 @@
+import { CamouflageAppService } from './../App/Training/CamouflageAppService';
 import { RecordAppService } from './../App/RecordAppService';
 import { AppService } from './../App/AppService';
 import { FactoryKey } from './../../Factory';
@@ -16,6 +17,8 @@ export class KeyService implements IKeyService {
 			this._key = FactoryKey.App;
 		} else if (appService instanceof RecordAppService) {
 			this._key = FactoryKey.RecordApp;
+		} else if (appService instanceof CamouflageAppService) {
+			this._key = FactoryKey.CamouflageApp;
 		} else {
 			throw new Error('Has to be an app service.');
 		}

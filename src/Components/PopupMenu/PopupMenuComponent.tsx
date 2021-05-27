@@ -10,6 +10,7 @@ import ActiveButtonComponent from '../Common/Button/Stylish/ActiveButtonComponen
 import { Factory, FactoryKey } from '../../Factory';
 import { GameContextService } from '../../Services/GameContext/GameContextService';
 import { ISoundService } from '../../Services/Sound/ISoundService';
+import { AppService } from '../../Services/App/AppService';
 
 export default class PopupMenuComponent extends Component<
 	{ status: GameStatus; callBack: () => void },
@@ -37,7 +38,7 @@ export default class PopupMenuComponent extends Component<
 	}
 
 	private Save(): void {
-		const data = Factory.Load<GameContextService>(FactoryKey.GameContext).Publish().RecordContext.GetRecord();
+		const data = Factory.Load<AppService>(FactoryKey.App).GetRecord().GetRecord();
 		const url = document.createElement('a');
 		const file = new Blob([ JSON.stringify(data) ], { type: 'application/json' });
 		url.href = URL.createObjectURL(file);

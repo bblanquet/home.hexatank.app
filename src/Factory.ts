@@ -27,7 +27,8 @@ export enum FactoryKey {
 	Update,
 	Campaign,
 	PlayerProfil,
-	Sound
+	Sound,
+	CamouflageApp
 }
 
 export interface IFactorisable {

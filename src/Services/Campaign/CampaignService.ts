@@ -18,19 +18,19 @@ export class CampaignService implements ICampaignService {
 		this._modelService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
 
 		this._training = new Dictionnary<MapContext>();
-		this._training.Add((1).toString(), new MapGenerator().GetMapDefinition(+6, MapType.Flower, 2, MapEnv.forest));
+		this._training.Add((1).toString(), new MapGenerator().GetMapDefinition(+6, MapType.Rectangle, MapEnv.forest));
 
 		this._red = new Dictionnary<MapContext>();
-		this._red.Add((1).toString(), new MapGenerator().GetMapDefinition(+6, MapType.Flower, 2, MapEnv.forest));
-		this._red.Add((2).toString(), new MapGenerator().GetMapDefinition(+6, MapType.Donut, 2, MapEnv.forest));
-		this._red.Add((3).toString(), new MapGenerator().GetMapDefinition(+6, MapType.H, 2, MapEnv.forest));
-		this._red.Add((4).toString(), new MapGenerator().GetMapDefinition(+6, MapType.Triangle, 2, MapEnv.forest));
+		this._red.Add((1).toString(), new MapGenerator().GetMapDefinition(+6, MapType.Flower, MapEnv.forest, 2));
+		this._red.Add((2).toString(), new MapGenerator().GetMapDefinition(+6, MapType.Donut, MapEnv.forest, 2));
+		this._red.Add((3).toString(), new MapGenerator().GetMapDefinition(+6, MapType.H, MapEnv.forest, 2));
+		this._red.Add((4).toString(), new MapGenerator().GetMapDefinition(+6, MapType.Triangle, MapEnv.forest, 2));
 
 		this._blue = new Dictionnary<MapContext>();
-		this._blue.Add((1).toString(), new MapGenerator().GetMapDefinition(+6, MapType.Flower, 2, MapEnv.sand));
-		this._blue.Add((2).toString(), new MapGenerator().GetMapDefinition(+6, MapType.Donut, 2, MapEnv.sand));
-		this._blue.Add((3).toString(), new MapGenerator().GetMapDefinition(+6, MapType.H, 2, MapEnv.sand));
-		this._blue.Add((4).toString(), new MapGenerator().GetMapDefinition(+6, MapType.Triangle, 2, MapEnv.sand));
+		this._blue.Add((1).toString(), new MapGenerator().GetMapDefinition(+6, MapType.Flower, MapEnv.sand, 2));
+		this._blue.Add((2).toString(), new MapGenerator().GetMapDefinition(+6, MapType.Donut, MapEnv.sand, 2));
+		this._blue.Add((3).toString(), new MapGenerator().GetMapDefinition(+6, MapType.H, MapEnv.sand, 2));
+		this._blue.Add((4).toString(), new MapGenerator().GetMapDefinition(+6, MapType.Triangle, MapEnv.sand, 2));
 	}
 
 	public GetMapContext(kind: CampaignKind, index: number): MapContext {
@@ -44,14 +44,17 @@ export class CampaignService implements ICampaignService {
 			mapContext = this._training.Get(index.toString());
 		}
 
-		mapContext.Hqs[0].PlayerName = mapContext.PlayerName;
-		mapContext.Hqs.forEach((hq, index) => {
-			if (!hq.PlayerName) {
-				hq.isIa = true;
-				hq.PlayerName = `IA-${index}`;
-			}
-			index += 1;
-		});
+		if (mapContext.Hqs) {
+			mapContext.Hqs[0].PlayerName = mapContext.PlayerName;
+			mapContext.Hqs.forEach((hq, index) => {
+				if (!hq.PlayerName) {
+					hq.isIa = true;
+					hq.PlayerName = `IA-${index}`;
+				}
+				index += 1;
+			});
+		}
+
 		return mapContext;
 	}
 

@@ -2,7 +2,7 @@ import { MapSetting } from '../../Components/Form/MapSetting';
 import { HostState } from '../../Components/Network/HostState';
 import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
 import { Factory, FactoryKey } from '../../Factory';
-import { Player } from '../../Network/Player';
+import { OnlinePlayer } from '../../Network/OnlinePlayer';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
 import { IHostingService } from './IHostingService';
 
@@ -19,9 +19,9 @@ export class HostingService implements IHostingService {
 		this._hostState = new HostState();
 		this._hostState.MapSetting = new MapSetting();
 		this._hostState.MapSetting.IaCount = 0;
-		this._hostState.Player = new Player(playerName);
+		this._hostState.Player = new OnlinePlayer(playerName);
 		this._hostState.Player.IsReady = false;
-		this._hostState.Players = new Dictionnary<Player>();
+		this._hostState.Players = new Dictionnary<OnlinePlayer>();
 		this._hostState.Players.Add(playerName, this._hostState.Player);
 		this._hostState.RoomName = roomName;
 		this._hostState.Password = password;

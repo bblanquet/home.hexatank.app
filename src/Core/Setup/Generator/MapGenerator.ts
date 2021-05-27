@@ -38,52 +38,52 @@ export class MapGenerator {
 		this._builders.Add(MapType.Rectangle.toString(), new RectangleFlowerMapBuilder());
 	}
 
-	public GetMapDefinition(mapSize: number, mapType: MapType, hqCount: number, mapMode: MapEnv): MapContext {
+	public GetMapDefinition(mapSize: number, mapType: MapType, mapMode: MapEnv, hqCount: number = 0): MapContext {
 		const context = new MapContext();
 		context.MapMode = mapMode;
 		const mapItems = new Array<MapItem>();
 		const mapBuilder = this._builders.Get(mapType.toString());
 		const coos = mapBuilder.GetAllCoos(mapSize);
 		GameSettings.MapSize = coos.length;
-
 		const cells = Dictionnary.To<HexAxial>((e) => e.ToString(), coos);
-
 		const areas = mapBuilder.GetAreaCoos(mapSize);
 		const farthestPointManager = new FartestPointsFinder();
-		const hqPositions = farthestPointManager.GetPoints(areas, cells, hqCount);
-		const diamondPositions = this.GetDiamonds(hqPositions, cells, hqCount);
-
 		const excluded = new Dictionnary<HexAxial>();
-		let hqs = new Array<MapItem>();
-		//add hqs
-		hqPositions.forEach((hq) => {
-			let hqMapItem = new MapItem();
-			hqMapItem.Position = hq;
-			hqMapItem.Type = DecorationType.Hq;
-			mapItems.push(hqMapItem);
-			excluded.Add(hq.ToString(), hq);
-			hq.GetNeighbours().forEach((p) => {
-				excluded.Add(p.ToString(), p);
-			});
-			hqs.push(hqMapItem);
-		});
 
-		context.Hqs = new Array<DiamondHq>();
-		//add diamonds and join them to hq
-		diamondPositions.forEach((diamondCoo) => {
-			let diamonMapItem = new MapItem();
-			diamonMapItem.Position = diamondCoo;
-			diamonMapItem.Type = DecorationType.Hq;
-			mapItems.push(diamonMapItem);
-			excluded.Add(diamondCoo.ToString(), diamondCoo);
-			diamondCoo.GetNeighbours().forEach((p) => {
-				excluded.Add(p.ToString(), p);
+		if (0 < hqCount) {
+			const hqPositions = farthestPointManager.GetPoints(areas, cells, hqCount);
+			const diamondPositions = this.GetDiamonds(hqPositions, cells, hqCount);
+			let hqs = new Array<MapItem>();
+			//add hqs
+			hqPositions.forEach((hq) => {
+				let hqMapItem = new MapItem();
+				hqMapItem.Position = hq;
+				hqMapItem.Type = DecorationType.Hq;
+				mapItems.push(hqMapItem);
+				excluded.Add(hq.ToString(), hq);
+				hq.GetNeighbours().forEach((p) => {
+					excluded.Add(p.ToString(), p);
+				});
+				hqs.push(hqMapItem);
 			});
-			let hqDiamond = new DiamondHq();
-			hqDiamond.Diamond = diamonMapItem;
-			hqDiamond.Hq = hqs[diamondPositions.indexOf(diamondCoo)];
-			context.Hqs.push(hqDiamond);
-		});
+
+			context.Hqs = new Array<DiamondHq>();
+			//add diamonds and join them to hq
+			diamondPositions.forEach((diamondCoo) => {
+				let diamonMapItem = new MapItem();
+				diamonMapItem.Position = diamondCoo;
+				diamonMapItem.Type = DecorationType.Hq;
+				mapItems.push(diamonMapItem);
+				excluded.Add(diamondCoo.ToString(), diamondCoo);
+				diamondCoo.GetNeighbours().forEach((p) => {
+					excluded.Add(p.ToString(), p);
+				});
+				let hqDiamond = new DiamondHq();
+				hqDiamond.Diamond = diamonMapItem;
+				hqDiamond.Hq = hqs[diamondPositions.indexOf(diamondCoo)];
+				context.Hqs.push(hqDiamond);
+			});
+		}
 
 		var decorator: Decorator = this.GetDecorator(mapMode);
 		//decorate tree, water, stone the map

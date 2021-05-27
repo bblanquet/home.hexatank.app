@@ -1,6 +1,6 @@
-import { SimpleEvent } from './../Core/Utils/Events/SimpleEvent';
+import { SimpleEvent } from '../Core/Utils/Events/SimpleEvent';
 import { ConnectionStatus } from './ConnectionStatus';
-export class Player {
+export class OnlinePlayer {
 	public Name: string;
 
 	private _connection: ConnectionStatus;

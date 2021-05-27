@@ -47,8 +47,10 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	private _animator: IAnimator = null;
 	private _blue: BasicItem;
 	private _white: BasicItem;
+	private _isAlwaysVisible: boolean = false;
+	private _playerHq: Headquarter = null;
 
-	constructor(properties: CellProperties, private _cells: Dictionnary<Cell>, private _gameContext: GameContext) {
+	constructor(properties: CellProperties, private _cells: Dictionnary<Cell>) {
 		super();
 		this.Z = ZKind.Cell;
 		this._display = [];
@@ -63,6 +65,11 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		this._circle = new PIXI.Circle(0, 0, GameSettings.Size / 2);
 		this.SetSelectionAnimation();
 	}
+
+	public SetPlayerHq(playerHq: Headquarter): void {
+		this._playerHq = playerHq;
+	}
+
 	public SetSelectionAnimation(): void {
 		this._white = new BasicItem(this.GetBoundingBox(), Archive.selectionWhiteCell, ZKind.BelowCell);
 		this._white.SetVisible(() => this.IsSelectable());
@@ -83,19 +90,14 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	}
 
 	public IsSelectable(): boolean {
-		if (this._gameContext.GetPlayerHq() === null) {
+		if (!this._playerHq) {
 			return false;
 		}
 
 		const anyAlly =
-			this.GetFilterNeighbourhood(
-				(e) =>
-					e && (e.HasAlly(this._gameContext.GetPlayerHq()) || e.HasBonusAlly(this._gameContext.GetPlayerHq()))
-			).length > 0;
-		return (
-			(this.IsVisible() && this._field instanceof BasicField && anyAlly) ||
-			this.HasAlly(this._gameContext.GetPlayerHq())
-		);
+			this.GetFilterNeighbourhood((e) => e && (e.HasAlly(this._playerHq) || e.HasBonusAlly(this._playerHq)))
+				.length > 0;
+		return (this.IsVisible() && this._field instanceof BasicField && anyAlly) || this.HasAlly(this._playerHq);
 	}
 
 	public GetState(): CellState {
@@ -157,8 +159,6 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		}
 		this.OnFieldChanged.Invoke(this, this);
 	}
-
-	private _isAlwaysVisible: boolean = false;
 
 	public AlwaysVisible() {
 		this._isAlwaysVisible = true;
@@ -287,10 +287,9 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	//awfull
 	private SetHqState(state: CellState) {
 		let cells = new Array<Cell>();
-		const playerHq = this._gameContext.GetPlayerHq();
-		if (playerHq) {
-			cells.push(playerHq.GetCell());
-			cells = cells.concat(this._gameContext.GetPlayerHq().GetCell().GetAllNeighbourhood());
+		if (this._playerHq) {
+			cells.push(this._playerHq.GetCell());
+			cells = cells.concat(this._playerHq.GetCell().GetAllNeighbourhood());
 			if (cells.indexOf(this) !== -1) {
 				state = CellState.Visible;
 			}

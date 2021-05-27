@@ -1,7 +1,8 @@
 import { GameSoundManager } from '../../Core/Framework/Sound/GameSoundManager';
+import { MapContext } from '../../Core/Setup/Generator/MapContext';
 import { GameContext } from './../../Core/Framework/GameContext';
 export interface ISoundService {
-	Register(gameContext: GameContext): void;
+	Register(mapContext: MapContext, gameContext: GameContext): void;
 	GetSoundManager(): GameSoundManager;
 	Collect(): void;
 	On(): void;

@@ -1,6 +1,6 @@
-import { Dictionnary } from './../../Utils/Collections/Dictionnary';
-import { SimpleFloor } from './../../Items/Environment/SimpleFloor';
-import { GameContext } from './../../Framework/GameContext';
+import { Dictionnary } from '../../Utils/Collections/Dictionnary';
+import { SimpleFloor } from '../../Items/Environment/SimpleFloor';
+import { GameContext } from '../../Framework/GameContext';
 import { GameSettings } from '../../Framework/GameSettings';
 import { ForestDecorator } from '../../Items/Cell/Decorator/ForestDecorator';
 import { CellProperties } from '../../Items/Cell/CellProperties';
@@ -16,14 +16,16 @@ import { MapContext } from '../Generator/MapContext';
 import { MapEnv } from '../Generator/MapEnv';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 import { HqRender } from './Hq/HqRender';
-export class MapRender {
+import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
+export class Renderer {
 	public Render(mapContext: MapContext): GameContext {
 		const cells = new Dictionnary<Cell>();
-		const context = new GameContext();
 		const updatableItem = new Array<Item>();
+		let playerHq: Headquarter = null;
+		let hqs: Headquarter[] = null;
 
 		mapContext.Items.forEach((item) => {
-			const cell = new Cell(new CellProperties(new HexAxial(item.Position.Q, item.Position.R)), cells, context);
+			const cell = new Cell(new CellProperties(new HexAxial(item.Position.Q, item.Position.R)), cells);
 			ForestDecorator.SetDecoration(updatableItem, cell, item.Type);
 			cell.SetSprite();
 			cells.Add(cell.Coo(), cell);
@@ -35,26 +37,26 @@ export class MapRender {
 		).GetAreas(new HexAxial(mapContext.CenterItem.Position.Q, mapContext.CenterItem.Position.R));
 		this.SetLands(cells, mapContext.MapMode, areas, updatableItem);
 		this.AddClouds(updatableItem);
-		const hqs = new HqRender().Render(cells, mapContext.Hqs, updatableItem);
+		if (mapContext.Hqs) {
+			hqs = new HqRender().Render(cells, mapContext.Hqs, updatableItem);
 
-		//insert elements into playground
-		this.SetHqLand(cells, Archive.nature.hq, hqs.map((h) => h.GetCell().GetHexCoo()), updatableItem);
-		this.SetHqLand(cells, Archive.nature.hq2, hqs.map((h) => h.GetCell().GetHexCoo()), updatableItem, 1);
+			//insert elements into playground
+			this.SetHqLand(cells, Archive.nature.hq, hqs.map((h) => h.GetCell().GetHexCoo()), updatableItem);
+			this.SetHqLand(cells, Archive.nature.hq2, hqs.map((h) => h.GetCell().GetHexCoo()), updatableItem, 1);
 
-		const playerHq = hqs.find((hq) => hq.PlayerName === mapContext.PlayerName);
-		if (playerHq) {
-			playerHq.SetSelectionAnimation();
-			context.Setup(mapContext, hqs, cells.Values(), playerHq);
-			//make hq cells visible, need context to be setup :<, has to fix it one day
-			playerHq.GetCurrentCell().SetState(CellState.Visible);
-			playerHq.GetCurrentCell().GetAllNeighbourhood().forEach((cell) => {
-				(<Cell>cell).SetState(CellState.Visible);
-			});
-		} else {
-			context.Setup(mapContext, hqs, cells.Values());
+			playerHq = hqs.find((hq) => hq.PlayerName === mapContext.PlayerName);
+			if (playerHq) {
+				playerHq.SetSelectionAnimation();
+				//make hq cells visible, need context to be setup :<, has to fix it one day
+				playerHq.GetCurrentCell().SetState(CellState.Visible);
+				playerHq.GetCurrentCell().GetAllNeighbourhood().forEach((cell) => {
+					(<Cell>cell).SetState(CellState.Visible);
+				});
+				cells.Values().forEach((cell) => cell.SetPlayerHq(playerHq));
+			}
 		}
 
-		return context;
+		return new GameContext(cells.Values(), hqs, playerHq);
 	}
 
 	public AddClouds(items: Item[]) {

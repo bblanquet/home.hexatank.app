@@ -6,6 +6,8 @@ import { GameContext } from '../../Framework/GameContext';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 
 export class FlagCellCombination extends AbstractSingleCombination {
+	//don't have better option
+	public static IsFlagingMode: boolean = false;
 	constructor(private _gameContext: GameContext) {
 		super();
 	}
@@ -17,13 +19,13 @@ export class FlagCellCombination extends AbstractSingleCombination {
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
 			let cell = <Cell>context.Items[0];
-			if (!isNullOrUndefined(cell) && this._gameContext.IsFlagingMode) {
+			if (!isNullOrUndefined(cell) && FlagCellCombination.IsFlagingMode) {
 				if (!this._gameContext.GetPlayerHq().Flagcell) {
 					this._gameContext.GetPlayerHq().Flagcell = new FlagCell(cell);
 				} else {
 					this._gameContext.GetPlayerHq().Flagcell.SetCell(cell);
 				}
-				this._gameContext.IsFlagingMode = false;
+				FlagCellCombination.IsFlagingMode = false;
 			}
 		}
 		return false;

@@ -11,7 +11,7 @@ import { NetworkObserver } from '../../../Network/NetworkObserver';
 import { NetworkSocket } from '../../../Network/NetworkSocket';
 import { PeerSocket } from '../../../Network/Peer/PeerSocket';
 import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
-import { Player } from '../../../Network/Player';
+import { OnlinePlayer } from '../../../Network/OnlinePlayer';
 import OptionComponent from './Options/OptionComponent';
 import ToastComponent from './../../Common/Toast/ToastComponent';
 import { HostState } from '../HostState';
@@ -310,8 +310,8 @@ export default class HostingComponent extends Component<any, HostState> {
 				const mapContext = new MapGenerator().GetMapDefinition(
 					this.ConvertSize(),
 					this.ConvertMapType(),
-					hqCount,
-					this.ConvertEnv()
+					this.ConvertEnv(),
+					hqCount
 				);
 				mapContext.PlayerName = this.state.Player.Name;
 				this.AssignHqToPlayer(mapContext, this.state.Players.Values());
@@ -358,7 +358,7 @@ export default class HostingComponent extends Component<any, HostState> {
 		});
 	}
 
-	public AssignHqToPlayer(mapContext: MapContext, players: Player[]): void {
+	public AssignHqToPlayer(mapContext: MapContext, players: OnlinePlayer[]): void {
 		if (mapContext.Hqs.length < players.length) {
 			throw new Error('not enough hq');
 		}
@@ -372,8 +372,7 @@ export default class HostingComponent extends Component<any, HostState> {
 	private Load(mapContext: MapContext) {
 		this._appService.Register(mapContext);
 		const context = this._gameContextService.Publish();
-		context.Players = this.state.Players.Values();
-		this._networkService.Register(this._socket, context);
+		this._networkService.Register(this._socket, context, this.state.Players.Values());
 		this.state.Player.IsLoaded = true;
 		this._socket.EmitAll<boolean>(PacketKind.Loaded, true);
 	}
@@ -413,7 +412,7 @@ export default class HostingComponent extends Component<any, HostState> {
 	private HandlePlayers(message: NetworkMessage<string[]>): void {
 		message.Content.forEach((playerName) => {
 			if (!this.state.Players.Exist(playerName)) {
-				this.state.Players.Add(playerName, new Player(playerName));
+				this.state.Players.Add(playerName, new OnlinePlayer(playerName));
 			}
 		});
 

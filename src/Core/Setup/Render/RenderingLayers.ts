@@ -1,4 +1,4 @@
-import { Dictionnary } from './../../Utils/Collections/Dictionnary';
+import { Dictionnary } from '../../Utils/Collections/Dictionnary';
 import * as PIXI from 'pixi.js';
 import { Item } from '../../Items/Item';
 

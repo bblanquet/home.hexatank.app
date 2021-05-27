@@ -1,3 +1,4 @@
+import { StatsContext } from './../../Core/Framework/Stats/StatsContext';
 import { BrainInjecter } from './../../Core/Ia/Decision/BrainInjecter';
 import { GameContext } from './../../Core/Framework/GameContext';
 import { ISoundService } from './../Sound/ISoundService';
@@ -21,6 +22,8 @@ import { GameStatus } from '../../Core/Framework/GameStatus';
 export class AppService implements IAppService {
 	private _context: MapContext;
 	private _gameContext: GameContext;
+	private _recordContext: RecordContext;
+	private _statContext: StatsContext;
 	private _app: PIXI.Application;
 	private _appProvider: AppProvider;
 	private _interactionManager: PIXI.InteractionManager;
@@ -46,6 +49,12 @@ export class AppService implements IAppService {
 		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
 		this._playerProfilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
 	}
+	GetStats(): StatsContext {
+		return this._statContext;
+	}
+	GetRecord(): RecordContext {
+		return this._recordContext;
+	}
 
 	public Register(mapContext: MapContext): void {
 		this._keyService.DefineKey(this);
@@ -61,21 +70,18 @@ export class AppService implements IAppService {
 		this._gameContextService.Register(mapContext);
 		this._gameContext = this._gameContextService.Publish();
 		this._interactionService.Register(this._interactionManager, this._gameContext);
-		this._gameContext.RecordContext = new RecordContext(
-			mapContext,
-			this._gameContext,
-			this._interactionService.Publish()
-		);
+		this._recordContext = new RecordContext(mapContext, this._gameContext, this._interactionService.Publish());
+		this._statContext = new StatsContext(this._gameContext);
 		new BrainInjecter().Inject(this._gameContext, mapContext);
 		this._app.start();
-		this._soundService.Register(this._gameContext);
+		this._soundService.Register(mapContext, this._gameContext);
 		this._soundManager = this._soundService.GetSoundManager();
 		this._gameContext.GameStatusChanged.On(this.SaveRecord.bind(this));
 	}
 
 	private SaveRecord(e: any, status: GameStatus) {
 		if (status === GameStatus.Lost || status === GameStatus.Won) {
-			const record = this._gameContext.RecordContext.GetRecord();
+			const record = this._recordContext.GetRecord();
 			const profil = this._playerProfilService.GetProfil();
 			profil.Records.push(record);
 		}

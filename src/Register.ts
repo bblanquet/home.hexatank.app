@@ -1,3 +1,4 @@
+import { CamouflageAppService } from './Services/App/Training/CamouflageAppService';
 import { SoundService } from './Services/Sound/SoundService';
 import { PlayerProfilService } from './Services/PlayerProfil/PlayerProfilService';
 import { CampaignService } from './Services/Campaign/CampaignService';
@@ -29,4 +30,5 @@ Factory.Register(FactoryKey.Interaction, new InteractionService());
 Factory.Register(FactoryKey.RecordInteraction, new RecordInteractionService());
 Factory.Register(FactoryKey.App, new AppService());
 Factory.Register(FactoryKey.RecordApp, new RecordAppService());
+Factory.Register(FactoryKey.CamouflageApp, new CamouflageAppService());
 Factory.Register(FactoryKey.Campaign, new CampaignService());

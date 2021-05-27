@@ -32,16 +32,11 @@ export class ReactorCombination extends AbstractSingleCombination {
 							.GetPlayerHq()
 							.Buy(GameSettings.TruckPrice * this._gameContext.GetPlayerHq().GetReactorsCount())
 					) {
-						// PeerHandler.SendMessage(PacketKind.Field, {
-						// 	Hq: this._gameContext.GetMainHq().GetCurrentCell().GetCoordinate(),
-						// 	cell: cell.GetCoordinate(),
-						// 	Type: 'Reactor'
-						// });
 						new ReactorField(
 							cell,
 							this._gameContext.GetPlayerHq(),
 							this._gameContext,
-							this._gameContext.GetPlayerHq().GetSkin().GetLight()
+							this._gameContext.GetPlayerHq().Identity.Skin.GetLight()
 						);
 					}
 				}

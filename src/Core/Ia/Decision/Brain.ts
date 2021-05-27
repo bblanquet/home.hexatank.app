@@ -181,7 +181,7 @@ export class Brain implements IBrain {
 		// 	? requests.Get(RequestPriority.Medium).map((c) => c.RequestType)
 		// 	: '';
 		console.log(
-			`%c [MONEY] ${this.Hq.PlayerName[this.Hq.PlayerName.length - 1]} - ${this.Hq.GetAmount()}`,
+			`%c [MONEY] ${this.Hq.Identity.Name[this.Hq.Identity.Name.length - 1]} - ${this.Hq.GetAmount()}`,
 			'font-weight:bold;color:#940c0c;'
 		);
 		// console.log(`%c [H] ${hCount} ${hTypes.toString()} `, 'font-weight:bold;color:#94570c;');

@@ -92,7 +92,7 @@ export class FieldTypeHelper {
 		} else if (action === RecordKind.Poison) {
 			return new PoisonField(cell, hq);
 		} else if (action === RecordKind.Reactor) {
-			return new ReactorField(cell, hq, context, hq.GetSkin().GetLight(), true);
+			return new ReactorField(cell, hq, context, hq.Identity.Skin.GetLight(), true);
 		} else if (action === RecordKind.Road) {
 			return new RoadField(cell, hq);
 		} else if (action === RecordKind.Shield) {
@@ -123,7 +123,7 @@ export class FieldTypeHelper {
 		} else if (obj === 'PoisonField') {
 			return new PoisonField(cell, hq);
 		} else if (obj === 'ReactorField') {
-			return new ReactorField(cell, hq, context, hq.GetSkin().GetLight());
+			return new ReactorField(cell, hq, context, hq.Identity.Skin.GetLight());
 		} else if (obj === 'RoadField') {
 			return new RoadField(cell, hq);
 		} else if (obj === 'ShieldField') {

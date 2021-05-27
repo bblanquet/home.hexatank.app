@@ -1,3 +1,4 @@
+import { Identity } from './Identity';
 import { DamageText } from './Unit/DamageText';
 import { GameSettings } from './../Framework/GameSettings';
 import { Item } from './Item';
@@ -13,7 +14,7 @@ export abstract class AliveItem extends Item {
 	private _borderBar: PIXI.Graphics;
 	private _currentLifeBar: PIXI.Graphics;
 	private _lifeBars: Array<PIXI.Graphics>;
-
+	public Identity: Identity;
 	public OnDamageReceived: LiteEvent<number> = new LiteEvent<number>();
 
 	constructor() {

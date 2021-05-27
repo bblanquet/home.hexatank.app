@@ -44,7 +44,7 @@ export class BattleRenderer {
 			this.SetHqLand(cells, Archive.nature.hq, hqs.map((h) => h.GetCell().GetHexCoo()), updatableItem);
 			this.SetHqLand(cells, Archive.nature.hq2, hqs.map((h) => h.GetCell().GetHexCoo()), updatableItem, 1);
 
-			playerHq = hqs.find((hq) => hq.PlayerName === blueprint.PlayerName);
+			playerHq = hqs.find((hq) => hq.Identity.Name === blueprint.PlayerName);
 			if (playerHq) {
 				playerHq.SetSelectionAnimation();
 				//make hq cells visible, need context to be setup :<, has to fix it one day

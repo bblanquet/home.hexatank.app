@@ -1,29 +1,28 @@
+import { Identity } from './../Identity';
 import { TimeTimer } from './../../Utils/Timer/TimeTimer';
 import { GameSettings } from './../../Framework/GameSettings';
 import { Vehicle } from './Vehicle';
-import { IHqContainer } from './IHqContainer';
 import { AliveItem } from '../AliveItem';
-import { Headquarter } from '../Cell/Field/Hq/Headquarter';
 import { Light } from '../Environment/Light';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { CellState } from '../Cell/CellState';
 import { ITimer } from '../../Utils/Timer/ITimer';
 
-export class Truck extends Vehicle implements IHqContainer {
+export class Truck extends Vehicle {
 	private _light: Light;
 	private _gatheredDiamonds: Array<string>;
 	private _dimaondTimer: ITimer;
 	private _diamondsCount: number = 0;
 
-	constructor(hq: Headquarter, isPlayer: boolean, isPacific: boolean = false) {
-		super(hq, isPlayer);
+	constructor(identity: Identity, isPacific: boolean = false) {
+		super(identity);
 		this.IsPacific = isPacific;
 		this._dimaondTimer = new TimeTimer(GameSettings.DiamondLoading);
 
 		this._gatheredDiamonds = Archive.diamonds;
 
-		this.GenerateSprite(this.Hq.GetSkin().GetTruck());
-		this.RootSprites.push(this.Hq.GetSkin().GetTruck());
+		this.GenerateSprite(this.Identity.Skin.GetTruck());
+		this.RootSprites.push(this.Identity.Skin.GetTruck());
 
 		this._gatheredDiamonds.forEach((diamond) => {
 			this.GenerateSprite(diamond, (e) => (e.alpha = 0));
@@ -48,17 +47,8 @@ export class Truck extends Vehicle implements IHqContainer {
 		this._light.Destroy();
 	}
 
-	private IsHqContainer(item: any): item is IHqContainer {
-		return 'Hq' in item;
-	}
-
 	public IsEnemy(item: AliveItem): boolean {
-		if (this.IsHqContainer(item as any)) {
-			return (<IHqContainer>(item as any)).Hq !== this.Hq;
-		} else if (item instanceof Headquarter) {
-			return <Headquarter>(item as any) !== this.Hq;
-		}
-		return false;
+		return !(item.Identity && item.Identity.Name === this.Identity.Name);
 	}
 
 	public Load(): boolean {

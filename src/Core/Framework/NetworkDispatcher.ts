@@ -57,11 +57,12 @@ export class NetworkDispatcher {
 	}
 
 	private IsSpeakingHq(hq: Headquarter): boolean {
-		return hq.PlayerName === this._context.GetPlayerHq().PlayerName || hq.IsIa();
+		return hq.Identity.Name === this._context.GetPlayerHq().Identity.Name || hq.IsIa();
 	}
 
 	private HandleVehicleCreated(source: any, vehicle: Vehicle): void {
-		if (this.IsSpeakingHq(vehicle.Hq)) {
+		const hq = this._context.GetHqFromId(vehicle.Identity);
+		if (this.IsSpeakingHq(hq)) {
 			if (vehicle instanceof Tank) {
 				const tank = vehicle as Tank;
 				tank.OnTargetChanged.On(this.HandleTargetChanged.bind(this));
@@ -128,16 +129,17 @@ export class NetworkDispatcher {
 	private Message<T>(kind: PacketKind, content: T): NetworkMessage<T> {
 		const message = new NetworkMessage<T>();
 		message.Recipient = PeerSocket.All();
-		message.Emitter = this._context.GetPlayerHq().PlayerName;
+		message.Emitter = this._context.GetPlayerHq().Identity.Name;
 		message.Kind = kind;
 		message.Content = content;
 		return message;
 	}
 
 	private GetCreatingUnitMessage(v: Vehicle) {
+		const hq = this._context.GetHqFromId(v.Identity);
 		const content = new CreatingUnitPacket();
 		content.Coo = v.GetCurrentCell().Coo();
-		content.HqCoo = v.Hq.GetCell().Coo();
+		content.HqCoo = hq.GetCell().Coo();
 		content.Id = v.Id;
 		content.Kind = v instanceof Tank ? 'Tank' : 'Truck';
 		return content;

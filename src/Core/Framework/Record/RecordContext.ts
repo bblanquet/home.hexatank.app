@@ -30,7 +30,7 @@ export class RecordContext {
 		this._data = new RecordData();
 
 		this._gameContext.GetHqs().forEach((hq) => {
-			this._data.Hqs.Add(hq.PlayerName, new RecordHq(hq.PlayerName, hq.GetSkin().GetColor()));
+			this._data.Hqs.Add(hq.Identity.Name, new RecordHq(hq.Identity.Name, hq.Identity.Skin.GetColor()));
 			hq.OnVehicleCreated.On(this.HandleVehicleCreated.bind(this));
 		});
 
@@ -74,7 +74,7 @@ export class RecordContext {
 		trackingUnit.Actions.push(
 			new RecordAction(time, vehicule.GetCurrentCell().GetHexCoo(), RecordKind.Created, src.GetCurrentLife())
 		);
-		this._data.Hqs.Get(src.PlayerName).Units.Add(vehicule.Id, trackingUnit);
+		this._data.Hqs.Get(src.Identity.Name).Units.Add(vehicule.Id, trackingUnit);
 		vehicule.OnCellChanged.On(this.HandleVehicleCellChanged.bind(this));
 		vehicule.OnDamageReceived.On(this.HandleVehicleDamaged.bind(this));
 		vehicule.OnDestroyed.On(this.HandleVehicleDestroyed.bind(this));
@@ -84,7 +84,7 @@ export class RecordContext {
 		const time = this.GetTime();
 		this._data.Dates.push(time);
 		this._data.Hqs
-			.Get(src.Hq.PlayerName)
+			.Get(src.Identity.Name)
 			.Units.Get(src.Id)
 			.Actions.push(
 				new RecordAction(time, src.GetCurrentCell().GetHexCoo(), RecordKind.Destroyed, src.GetCurrentLife())
@@ -96,7 +96,7 @@ export class RecordContext {
 			const time = this.GetTime();
 			this._data.Dates.push(time);
 			this._data.Hqs
-				.Get(src.Hq.PlayerName)
+				.Get(src.Identity.Name)
 				.Units.Get(src.Id)
 				.Actions.push(
 					new RecordAction(time, src.GetCurrentCell().GetHexCoo(), RecordKind.Damage, src.GetCurrentLife())
@@ -109,7 +109,7 @@ export class RecordContext {
 			const time = this.GetTime();
 			this._data.Dates.push(time);
 			this._data.Hqs
-				.Get(src.Hq.PlayerName)
+				.Get(src.Identity.Name)
 				.Units.Get(src.Id)
 				.Actions.push(
 					new RecordAction(time, src.GetCurrentCell().GetHexCoo(), RecordKind.Moved, src.GetCurrentLife())

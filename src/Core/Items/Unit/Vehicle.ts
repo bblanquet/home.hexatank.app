@@ -1,3 +1,4 @@
+import { Identity } from './../Identity';
 import { TimeTimer } from './../../Utils/Timer/TimeTimer';
 import { BasicItem } from './../BasicItem';
 import { ShieldField } from './../Cell/Field/Bonus/ShieldField';
@@ -6,10 +7,8 @@ import { UiOrder } from './../../Ia/Order/UiOrder';
 import { IOrder } from './../../Ia/Order/IOrder';
 import { Cell } from './../Cell/Cell';
 import { GameSettings } from './../../Framework/GameSettings';
-import { GameContext } from './../../Framework/GameContext';
 import { CellStateSetter } from '../Cell/CellStateSetter';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
-import { Headquarter } from '../Cell/Field/Hq/Headquarter';
 import { Dust } from './Dust';
 import { AliveItem } from '../AliveItem';
 import { ITranslationMaker } from './MotionHelpers/ITranslationMaker';
@@ -81,8 +80,9 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 
 	private _infiniteAnimator: InfiniteFadeAnimation;
 
-	constructor(public Hq: Headquarter, protected isPlayer: boolean) {
+	constructor(identity: Identity) {
 		super();
+		this.Identity = identity;
 		this.CurrentRadius = 0;
 		this.BoundingBox = new BoundingBox();
 
@@ -104,7 +104,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 			this.RootSprites.push(wheel);
 		});
 
-		if (this.isPlayer) {
+		if (this.Identity.IsPlayer) {
 			this.GenerateSprite(Archive.selectionBlueVehicle);
 			this._infiniteAnimator = new InfiniteFadeAnimation(this, Archive.selectionBlueVehicle, 0, 1, 0.05);
 			this.RootSprites.push(Archive.selectionBlueVehicle);
@@ -130,7 +130,6 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 			new Dust(new BoundingBox())
 		];
 		this.OnCellChanged = new LiteEvent<Cell>();
-		this.Hq.AddVehicle(this);
 		this.SetProperty(Archive.wheels[0], (s) => (s.alpha = 1));
 	}
 
@@ -337,7 +336,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	}
 
 	private SetUiOrder() {
-		if (this.isPlayer) {
+		if (this.Identity.IsPlayer) {
 			if (this._uiOrder && this.HasOrder() && this._uiOrder.HasOrder(this._order) && this.IsSelected()) {
 				return;
 			}
@@ -416,16 +415,6 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 			this.PowerUps.forEach((powerUp) => {
 				powerUp.Animation.Update(viewX, viewY);
 			});
-		}
-
-		if (!this.IsAlive() || !this.Hq.IsAlive()) {
-			if (!this.Hq.IsAlive()) {
-				new Explosion(this.GetBoundingBox(), Archive.explosions, ZKind.Sky, true, 20);
-			}
-			this.Destroy();
-			new Crater(this.BoundingBox);
-
-			return;
 		}
 
 		this.Switch();

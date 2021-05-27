@@ -21,7 +21,7 @@ export class ReactorRequestHandler implements ISimpleRequestHandler {
 					isolatedCell,
 					this._hq,
 					this._gameContext,
-					this._hq.GetSkin().GetLight()
+					this._hq.Identity.Skin.GetLight()
 				);
 				this._hq.AddReactor(reactor);
 				this._hq.Buy((this._hq.GetReactorsCount() + 1) * GameSettings.FieldPrice);

@@ -1,10 +1,10 @@
+import { Identity } from './../../../Identity';
 import { IBrain } from './../../../../Ia/Decision/IBrain';
 import { HqNetwork } from './HqNetwork';
 import { InfiniteFadeAnimation } from './../../../Animator/InfiniteFadeAnimation';
 import { BasicItem } from './../../../BasicItem';
 import { ZKind } from './../../../ZKind';
 import { BatteryField } from '../Bonus/BatteryField';
-import { GameContext } from '../../../../Framework/GameContext';
 import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
 import { FlagCell } from '../../FlagCell';
 import { Tank } from '../../../Unit/Tank';
@@ -17,8 +17,6 @@ import { Crater } from '../../../Environment/Crater';
 import { Archive } from '../../../../Framework/ResourceArchiver';
 import { CellState } from '../../CellState';
 import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
-import { ItemSkin } from '../../../ItemSkin';
-import { IHqContainer } from '../../../Unit/IHqContainer';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { Explosion } from '../../../Unit/Explosion';
 import { Truck } from '../../../Unit/Truck';
@@ -36,9 +34,8 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	public Flagcell: FlagCell;
 	private _boundingBox: BoundingBox;
 	private _cell: Cell;
-	public PlayerName: string;
 	public Fields: Array<HeadQuarterField>;
-	private _skin: ItemSkin;
+	public IsPlayer: boolean;
 
 	private _tankRequestCount: number = 0;
 	private _network: HqNetwork;
@@ -66,10 +63,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 	public OnTankRequestChanged: LiteEvent<number> = new LiteEvent<number>();
-	public IsPlayer: boolean;
-	constructor(skin: ItemSkin, cell: Cell) {
+	constructor(identity: Identity, cell: Cell) {
 		super();
-		this._skin = skin;
+		this.Identity = identity;
 		this.Z = ZKind.Cell;
 		this._cell = cell;
 		this._cell.SetField(this);
@@ -83,7 +79,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		this._boundingBox.X = this._cell.GetBoundingBox().X;
 		this._boundingBox.Y = this._cell.GetBoundingBox().Y;
 
-		this.GenerateSprite(this.GetSkin().GetHq());
+		this.GenerateSprite(this.Identity.Skin.GetHq());
 		this.GenerateSprite(Archive.building.hq.bottom);
 		this.GenerateSprite(Archive.building.hq.top);
 
@@ -97,7 +93,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		var neighbours = this._cell.GetNearby();
 		this.Fields = new Array<HeadQuarterField>();
 		neighbours.forEach((cell) => {
-			this.Fields.push(new HeadQuarterField(this, <Cell>cell, skin.GetLight()));
+			this.Fields.push(new HeadQuarterField(this, <Cell>cell, identity.Skin.GetLight()));
 		});
 		this._onCellStateChanged = this.OncellStateChanged.bind(this);
 		this.OnDiamondEarned.On(this.HandleDiamondChanged.bind(this));
@@ -109,8 +105,8 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		});
 
 		this._network = new HqNetwork(this);
-		this.TotalLife = 10;
-		this.Life = 10;
+		this.TotalLife = 200;
+		this.Life = 200;
 	}
 
 	public SetSelectionAnimation(): void {
@@ -151,21 +147,12 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		return this._cell;
 	}
 
-	private IsHqContainer(item: any): item is IHqContainer {
-		return 'Hq' in item;
-	}
-
 	public GetDiamondCount(): number {
 		return this._diamondCount;
 	}
 
 	public IsEnemy(item: AliveItem): boolean {
-		if (this.IsHqContainer(item as any)) {
-			return (<IHqContainer>(item as any)).Hq !== this;
-		} else if (item instanceof Headquarter) {
-			return <Headquarter>(item as any) !== this;
-		}
-		return false;
+		return !(item.Identity && item.Identity.Name === this.Identity.Name);
 	}
 
 	Support(vehicule: Vehicle): void {}
@@ -181,10 +168,6 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		return true;
 	}
 
-	public GetSkin(): ItemSkin {
-		return this._skin;
-	}
-
 	public CreateTank(cell: Cell = null): boolean {
 		let isCreated = false;
 		this.Fields.every((field) => {
@@ -192,7 +175,8 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 				if (field.GetCell().IsVisible()) {
 					new Explosion(field.GetCell().GetBoundingBox(), Archive.constructionEffects, ZKind.Sky, false, 5);
 				}
-				const tank = new Tank(this, this.IsPlayer);
+				const tank = new Tank(this.Identity);
+				this.AddVehicle(tank);
 				tank.SetPosition(cell === null ? field.GetCell() : cell);
 				this.OnVehicleCreated.Invoke(this, tank);
 
@@ -215,7 +199,8 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 				if (field.GetCell().IsVisible()) {
 					new Explosion(field.GetCell().GetBoundingBox(), Archive.constructionEffects, 5, false, 5);
 				}
-				let truck = new Truck(this, this.IsPlayer);
+				let truck = new Truck(this.Identity);
+				this.AddVehicle(truck);
 				truck.SetPosition(cell || field.GetCell());
 				this.OnVehicleCreated.Invoke(this, truck);
 
@@ -252,6 +237,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		this.Fields.forEach((field) => {
 			field.Destroy();
 		});
+		this._vehicles.forEach((v) => v.SetDamage(v.GetCurrentLife()));
 	}
 
 	public GetTankRequests(): number {

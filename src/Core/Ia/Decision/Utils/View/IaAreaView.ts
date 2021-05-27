@@ -14,7 +14,7 @@ export class IaAreaView extends Item {
 	private _requestView: RequestIaView;
 	constructor(private _hq: Headquarter, private _area: IaArea) {
 		super();
-		this.GenerateSprite(this._hq.GetSkin().GetArea(), (e) => {
+		this.GenerateSprite(this._hq.Identity.Skin.GetArea(), (e) => {
 			e.alpha = 1;
 			e.anchor.set(0.5);
 		});

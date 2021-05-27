@@ -93,7 +93,7 @@ export class CombinationProvider {
 
 			//VEHICLE
 			new AbortCombination(),
-			new TruckDiamondCombination(),
+			new TruckDiamondCombination(gameContext),
 			new TruckCombination(),
 			new CamouflageCombination(),
 			new TankCombination(),
@@ -116,7 +116,7 @@ export class CombinationProvider {
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof SlowMenuItem,
-				(e) => new SlowField(e, gameContext.GetPlayerHq().GetSkin().GetLight())
+				(e) => new SlowField(e, gameContext.GetPlayerHq().Identity.Skin.GetLight())
 			),
 			new GenericCellCombination(
 				gameContext,

@@ -34,8 +34,8 @@ export class UnitUpdater {
 				}
 			} else {
 				let v: Vehicle = units.Get(unitId).IsTank
-					? new Tank(units.Get(unitId).Hq, true, true)
-					: new Truck(units.Get(unitId).Hq, true, true);
+					? new Tank(units.Get(unitId).Hq.Identity, true)
+					: new Truck(units.Get(unitId).Hq.Identity, true);
 				v.Id = unitId;
 				v.SetPosition(cell);
 				this._displayedUnits.Add(unitId, v);
@@ -73,7 +73,7 @@ export class UnitUpdater {
 						if (+action.kind !== RecordKind.Destroyed) {
 							coos.Add(key, {
 								Axial: new HexAxial(action.Amount.Q, action.Amount.R),
-								Hq: this._gameContext.GetHqs().find((c) => c.PlayerName === hq.Name),
+								Hq: this._gameContext.GetHqs().find((c) => c.Identity.Name === hq.Name),
 								IsTank: hq.Units.Get(key).IsTank,
 								Life: action.life
 							});

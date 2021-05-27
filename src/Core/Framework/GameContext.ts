@@ -1,3 +1,4 @@
+import { Identity } from './../Items/Identity';
 import { IGameContext } from './IGameContext';
 import { Tank } from './../Items/Unit/Tank';
 import { Headquarter } from './../Items/Cell/Field/Hq/Headquarter';
@@ -66,16 +67,20 @@ export class GameContext implements IGameContext {
 		return this._hqs;
 	}
 
+	public GetHq(coo: string) {
+		return this._hqs.find((e) => e.GetCell().Coo() === coo);
+	}
+
+	public GetHqFromId(id: Identity) {
+		return this._hqs.find((hq) => hq.Identity.Name === id.Name);
+	}
+
 	public GetCells(): Cell[] {
 		return this._cells.Values();
 	}
 
 	public GetCell(coo: string): Cell {
 		return this._cells.Get(coo);
-	}
-
-	public GetHq(coo: string) {
-		return this._hqs.find((e) => e.GetCell().Coo() === coo);
 	}
 
 	public GetTank(id: string): Tank {
@@ -95,7 +100,7 @@ export class GameContext implements IGameContext {
 	}
 
 	private DefineVehicleName(src: Headquarter, vehicule: Vehicle): void {
-		vehicule.Id = `${src.PlayerName}${this._vehicleCount}`;
+		vehicule.Id = `${src.Identity.Name}${this._vehicleCount}`;
 		this._vehicleCount += 1;
 		this._vehicles.Add(vehicule.Id, vehicule);
 	}

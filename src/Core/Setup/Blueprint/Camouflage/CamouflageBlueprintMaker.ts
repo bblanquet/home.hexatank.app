@@ -60,17 +60,17 @@ export class CamouflageBluePrintMaker {
 				excluded.Add(p.ToString(), p);
 			});
 			if (index === 0) {
-				blueprint.StartItem = new MapItem();
-				blueprint.StartItem.Position = new LightHexAxial();
-				blueprint.StartItem.Position.Q = spot.Q;
-				blueprint.StartItem.Position.R = spot.R;
+				blueprint.Departure = new MapItem();
+				blueprint.Departure.Position = new LightHexAxial();
+				blueprint.Departure.Position.Q = spot.Q;
+				blueprint.Departure.Position.R = spot.R;
 			}
 
 			if (index === 1) {
-				blueprint.EndItem = new MapItem();
-				blueprint.EndItem.Position = new LightHexAxial();
-				blueprint.EndItem.Position.Q = spot.Q;
-				blueprint.EndItem.Position.R = spot.R;
+				blueprint.Arrival = new MapItem();
+				blueprint.Arrival.Position = new LightHexAxial();
+				blueprint.Arrival.Position.Q = spot.Q;
+				blueprint.Arrival.Position.R = spot.R;
 			}
 		});
 

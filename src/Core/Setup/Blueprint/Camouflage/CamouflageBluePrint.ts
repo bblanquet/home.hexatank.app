@@ -5,8 +5,8 @@ import { MapItem } from '../MapItem';
 export class CamouflageBluePrint implements IBlueprint {
 	public Items: Array<MapItem>;
 	public CenterItem: MapItem;
-	public StartItem: MapItem;
-	public EndItem: MapItem;
+	public Departure: MapItem;
+	public Arrival: MapItem;
 	public MapMode: MapEnv;
 	public PlayerName: string = '';
 	constructor() {}

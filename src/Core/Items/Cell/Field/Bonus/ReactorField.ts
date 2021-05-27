@@ -225,7 +225,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 			return;
 		}
 
-		if (vehicule.Hq != this.Hq) {
+		if (vehicule.Identity.Name != this.Hq.Identity.Name) {
 			this.SetSelected(false);
 			while (this.HasPower()) {
 				this.PowerDown();
@@ -253,13 +253,9 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 				}
 			});
 
-			var reactor = new ReactorField(
-				this.GetCell(),
-				vehicule.Hq,
-				this._context,
-				vehicule.Hq.GetSkin().GetLight()
-			);
-			vehicule.Hq.OnReactorConquested.Invoke(this, reactor);
+			const hq = this._context.GetHqFromId(vehicule.Identity);
+			var reactor = new ReactorField(this.GetCell(), hq, this._context, hq.Identity.Skin.GetLight());
+			hq.OnReactorConquested.Invoke(this, reactor);
 		}
 	}
 
@@ -350,7 +346,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	private CreateArea() {
 		this.GetCell().GetSpecificRange(this._range).forEach((cell) => {
 			const b = BoundingBox.CreateFromBox((<Cell>cell).GetBoundingBox());
-			const area = new BasicItem(b, this.Hq.GetSkin().GetArea(), ZKind.AboveCell);
+			const area = new BasicItem(b, this.Hq.Identity.Skin.GetArea(), ZKind.AboveCell);
 			area.SetVisible(() => true);
 			area.SetAlive(() => true);
 

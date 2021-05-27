@@ -49,7 +49,7 @@ export class NetworkReceiver {
 
 	private IsListenedHq(coo: string): boolean {
 		const hq = this._context.GetCell(coo).GetField() as Headquarter;
-		return !isNullOrUndefined(hq) && hq.PlayerName !== this._context.GetPlayerHq().PlayerName && !hq.IsIa();
+		return !isNullOrUndefined(hq) && hq.Identity.Name !== this._context.GetPlayerHq().Identity.Name && !hq.IsIa();
 	}
 
 	private HandleCreatingUnit(message: NetworkMessage<CreatingUnitPacket>): void {
@@ -70,12 +70,13 @@ export class NetworkReceiver {
 
 	private HandleOrderChanged(message: NetworkMessage<OrderPacket>): void {
 		const unit = this._context.GetUnit(message.Content.Id);
+		const hq = this._context.GetHqFromId(unit.Identity);
 		const cells = new Array<Cell>();
 		message.Content.Coos.forEach((coo) => {
 			cells.push(this._context.GetCell(coo));
 		});
 
-		if (this.IsListenedHq(unit.Hq.GetCell().Coo())) {
+		if (this.IsListenedHq(hq.GetCell().Coo())) {
 			TypeTranslator.SetOrder(unit, cells, message.Content.Kind);
 		}
 	}
@@ -83,7 +84,8 @@ export class NetworkReceiver {
 	private HandleTarget(message: NetworkMessage<TargetPacket>): void {
 		const content = message.Content;
 		const tank = this._context.GetTank(content.Id);
-		if (this.IsListenedHq(tank.Hq.GetCell().Coo())) {
+		const hq = this._context.GetHqFromId(tank.Identity);
+		if (this.IsListenedHq(hq.GetCell().Coo())) {
 			if (content.HasTarget && content.TagertCoo) {
 				const cell = this._context.GetCell(content.TagertCoo);
 				tank.SetMainTarget(cell.GetShootableEntity());
@@ -95,7 +97,8 @@ export class NetworkReceiver {
 
 	private HandleCamouflage(message: NetworkMessage<string>): void {
 		const unit = this._context.GetTank(message.Content);
-		if (this.IsListenedHq(unit.Hq.GetCell().Coo())) {
+		const hq = this._context.GetHqFromId(unit.Identity);
+		if (this.IsListenedHq(hq.GetCell().Coo())) {
 			unit.SetCamouflage();
 		}
 	}
@@ -103,8 +106,9 @@ export class NetworkReceiver {
 	private HandleNextCell(message: NetworkMessage<NextCellPacket>): void {
 		const unit = this._context.GetUnit(message.Content.Id);
 		const cell = this._context.GetCell(message.Content.Coo);
+		const hq = this._context.GetHqFromId(unit.Identity);
 
-		if (this.IsListenedHq(unit.Hq.GetCell().Coo())) {
+		if (this.IsListenedHq(hq.GetCell().Coo())) {
 			unit.SetNextCell(cell);
 		}
 	}

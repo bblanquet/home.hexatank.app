@@ -27,7 +27,7 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 		this._bonus.forEach((b) => {
 			this.GenerateSprite(b);
 		});
-		this.GenerateSprite(this.Hq.GetSkin().GetLight());
+		this.GenerateSprite(this.Hq.Identity.Skin.GetLight());
 		this.InitPosition(cell.GetBoundingBox());
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
@@ -76,7 +76,7 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 
 	private AnimateLight() {
 		if (0 < this.Energy) {
-			this.SetProperty(this.Hq.GetSkin().GetLight(), (s) => {
+			this.SetProperty(this.Hq.Identity.Skin.GetLight(), (s) => {
 				if (s.alpha < 0.1) {
 					this._isIncreasingOpacity = true;
 				}
@@ -86,7 +86,7 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 				s.alpha += this._isIncreasingOpacity ? 0.01 : -0.01;
 			});
 		} else {
-			this.SetProperty(this.Hq.GetSkin().GetLight(), (e) => (e.alpha = 0));
+			this.SetProperty(this.Hq.Identity.Skin.GetLight(), (e) => (e.alpha = 0));
 		}
 	}
 

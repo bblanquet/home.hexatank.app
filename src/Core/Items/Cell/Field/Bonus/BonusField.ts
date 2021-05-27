@@ -26,7 +26,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 		this._bonus.forEach((b) => {
 			this.GenerateSprite(b);
 		});
-		this.GenerateSprite(this.hq.GetSkin().GetLight());
+		this.GenerateSprite(this.hq.Identity.Skin.GetLight());
 		this.Energy = this.hq.GetCellEnergy(cell.GetHexCoo());
 		this.hq.AddField(this, cell);
 		this.GetCurrentSprites().Values().forEach((obj) => {
@@ -76,7 +76,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 			super.Update(viewX, viewY);
 		}
 		if (0 < this.Energy) {
-			this.SetProperty(this.hq.GetSkin().GetLight(), (s) => {
+			this.SetProperty(this.hq.Identity.Skin.GetLight(), (s) => {
 				if (s.alpha < 0.1) {
 					this._isIncreasingOpacity = true;
 				}
@@ -88,7 +88,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 				s.alpha += this._isIncreasingOpacity ? 0.01 : -0.01;
 			});
 		} else {
-			this.SetProperty(this.hq.GetSkin().GetLight(), (e) => (e.alpha = 0));
+			this.SetProperty(this.hq.Identity.Skin.GetLight(), (e) => (e.alpha = 0));
 		}
 	}
 

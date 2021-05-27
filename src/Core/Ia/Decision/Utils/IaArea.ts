@@ -41,7 +41,7 @@ export class IaArea {
 		private _areaSearch: AreaSearch
 	) {
 		this._name =
-			this._hq.PlayerName[this._hq.PlayerName.length - 1] + this._letters[_globalIa.AreaDecisions.length];
+			this._hq.Identity.Name[this._hq.Identity.Name.length - 1] + this._letters[_globalIa.AreaDecisions.length];
 		this.OnTroopsChanged = new LiteEvent<number>();
 		this.OnRequestAdded = new LiteEvent<string>();
 		this._viewArea = new IaAreaView(this._hq, this);

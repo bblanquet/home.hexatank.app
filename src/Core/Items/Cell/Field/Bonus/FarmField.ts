@@ -49,7 +49,9 @@ export class FarmField extends BonusField {
 				const energy = this.GetReactorsPower(this.hq);
 				this.SetEmpty();
 				this._lightItem.Hide();
-				truck.Hq.Earn(this._bonusProvider.GetDiamondValue(energy));
+				if (truck.IsEnemy(this.hq)) {
+					this.hq.Earn(this._bonusProvider.GetDiamondValue(energy));
+				}
 			}
 		}
 	}

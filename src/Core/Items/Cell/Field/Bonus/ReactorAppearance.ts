@@ -29,7 +29,7 @@ export class ReactorAppearance extends Item {
 			if (isFadeIn) {
 				this._lightAnimator = new FadeInAnimation(
 					this,
-					[ this.Reactor.Hq.GetSkin().GetReactor(), Archive.bonus.reactor.light ],
+					[ this.Reactor.Hq.Identity.Skin.GetReactor(), Archive.bonus.reactor.light ],
 					0,
 					1,
 					0.05
@@ -37,7 +37,7 @@ export class ReactorAppearance extends Item {
 			} else {
 				this._lightAnimator = new FadeOutAnimation(
 					this,
-					[ this.Reactor.Hq.GetSkin().GetReactor(), Archive.bonus.reactor.light ],
+					[ this.Reactor.Hq.Identity.Skin.GetReactor(), Archive.bonus.reactor.light ],
 					1,
 					0,
 					0.05
@@ -46,7 +46,7 @@ export class ReactorAppearance extends Item {
 		});
 		this.GenerateSprite(Archive.bonus.coverBottom);
 		this.GenerateSprite(Archive.bonus.reactor.gray);
-		this.GenerateSprite(this.Reactor.Hq.GetSkin().GetReactor(), (p) => (p.alpha = 0));
+		this.GenerateSprite(this.Reactor.Hq.Identity.Skin.GetReactor(), (p) => (p.alpha = 0));
 		this.GenerateSprite(Archive.bonus.reactor.light, (p) => (p.alpha = 0));
 		this.GenerateSprite(Archive.bonus.reactor.rotationCover);
 		this.GenerateSprite(Archive.bonus.reactor.cover);

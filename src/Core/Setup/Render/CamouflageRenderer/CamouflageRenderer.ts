@@ -1,3 +1,5 @@
+import { HqSkinHelper } from './../Hq/HqSkinHelper';
+import { Truck } from './../../../Items/Unit/Truck';
 import { SimpleFloor } from './../../../Items/Environment/SimpleFloor';
 import { Cloud } from './../../../Items/Environment/Cloud';
 import { ForestDecorator } from './../../../Items/Cell/Decorator/ForestDecorator';
@@ -16,6 +18,7 @@ import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { HexAxial } from '../../../Utils/Geometry/HexAxial';
 import { MapEnv } from '../../Blueprint/MapEnv';
 import { Floor } from '../../../Items/Environment/Floor';
+import { Identity } from '../../../Items/Identity';
 
 export class CamouflageRenderer {
 	public Render(blueprint: CamouflageBluePrint): CamouflageGameContext {
@@ -36,12 +39,16 @@ export class CamouflageRenderer {
 		this.SetLands(cells, blueprint.MapMode, areas, updatableItem);
 		this.AddClouds(updatableItem);
 
-		const spots = [ new HexAxial(blueprint.StartItem.Position.Q, blueprint.StartItem.Position.R) ].concat(
-			new HexAxial(blueprint.EndItem.Position.Q, blueprint.EndItem.Position.R)
-		);
+		const departure = new HexAxial(blueprint.Departure.Position.Q, blueprint.Departure.Position.R);
+		const arrival = new HexAxial(blueprint.Arrival.Position.Q, blueprint.Arrival.Position.R);
+		const spots = [ departure, arrival ];
 
 		this.SetHqLand(cells, Archive.nature.hq, spots, updatableItem);
 		this.SetHqLand(cells, Archive.nature.hq2, spots, updatableItem, 1);
+
+		const truck = new Truck(new Identity('player', new HqSkinHelper().GetSkin(0), true));
+		truck.SetPosition(cells.Get(departure.ToString()));
+		updatableItem.push(truck);
 
 		return new CamouflageGameContext(cells.Values());
 	}

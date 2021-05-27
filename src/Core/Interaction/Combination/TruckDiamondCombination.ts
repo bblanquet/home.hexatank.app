@@ -1,3 +1,4 @@
+import { GameContext } from './../../Framework/GameContext';
 import { DiamondFieldOrder } from '../../Ia/Order/Composite/Diamond/DiamondFieldOrder';
 import { DiamondTruckOrder } from '../../Ia/Order/Composite/Diamond/DiamondTruckOrder';
 import { Item } from '../../Items/Item';
@@ -10,6 +11,10 @@ import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 
 export class TruckDiamondCombination extends AbstractSingleCombination {
+	constructor(public _gameContext: GameContext) {
+		super();
+	}
+
 	IsMatching(context: CombinationContext): boolean {
 		return (
 			context.Items.length >= 2 &&
@@ -25,7 +30,7 @@ export class TruckDiamondCombination extends AbstractSingleCombination {
 			let diamond = <Diamond>(context.Items[1] as Cell).GetField();
 			let order = new DiamondTruckOrder(
 				truck,
-				new HqFieldOrder(truck.Hq, truck),
+				new HqFieldOrder(this._gameContext.GetHqFromId(truck.Identity), truck),
 				new DiamondFieldOrder(diamond, truck)
 			);
 			truck.SetOrder(order);

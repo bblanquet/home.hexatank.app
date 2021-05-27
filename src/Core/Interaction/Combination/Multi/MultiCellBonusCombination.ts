@@ -71,7 +71,7 @@ export class MultiCellBonusCombination extends AbstractSingleCombination {
 				} else if (menuItem instanceof SlowMenuItem) {
 					this.SetMenuItem(
 						cells,
-						(c) => new SlowField(c, this._gameContext.GetPlayerHq().GetSkin().GetLight())
+						(c) => new SlowField(c, this._gameContext.GetPlayerHq().Identity.Skin.GetLight())
 					);
 				} else if (menuItem instanceof MoneyMenuItem) {
 					this.SetMenuItem(cells, (c) => new FarmField(c, this._gameContext.GetPlayerHq()));

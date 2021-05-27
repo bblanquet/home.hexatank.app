@@ -1,3 +1,4 @@
+import { Identity } from './../../../Items/Identity';
 import { Dictionnary } from './../../../Utils/Collections/Dictionnary';
 import { HqSkinHelper } from './HqSkinHelper';
 import { HexAxial } from '../../../Utils/Geometry/HexAxial';
@@ -8,19 +9,15 @@ import { DiamondHq } from '../../Blueprint/Battle/DiamondHq';
 import { Cell } from '../../../Items/Cell/Cell';
 
 export class HqRender {
-	public Render(cells: Dictionnary<Cell>, hqDefinitions: Array<DiamondHq>, items: Item[]): Array<Headquarter> {
+	public Render(cells: Dictionnary<Cell>, hqBlueprints: Array<DiamondHq>, items: Item[]): Array<Headquarter> {
 		var hqs = new Array<Headquarter>();
 
-		hqDefinitions.forEach((hqDefinition, index) => {
-			const diamond = new Diamond(cells.Get(this.DiamondCoo(hqDefinition)));
-			const hq = new Headquarter(new HqSkinHelper().GetSkin(index), cells.Get(this.HqCoo(hqDefinition)));
+		hqBlueprints.forEach((blueprint, index) => {
+			const diamond = new Diamond(cells.Get(this.DiamondCoo(blueprint)));
+			const id = new Identity(blueprint.PlayerName, new HqSkinHelper().GetSkin(index), !blueprint.isIa);
+			const hq = new Headquarter(id, cells.Get(this.HqCoo(blueprint)));
 			items.push(diamond);
 			items.push(hq);
-
-			if (hqDefinition.PlayerName) {
-				hq.PlayerName = hqDefinition.PlayerName;
-			}
-
 			hqs.push(hq);
 		});
 

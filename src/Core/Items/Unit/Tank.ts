@@ -1,3 +1,4 @@
+import { Identity } from './../Identity';
 import { Missile } from './Missile';
 import { ZKind } from './../ZKind';
 import { LiteEvent } from './../../Utils/Events/LiteEvent';
@@ -7,7 +8,6 @@ import { Cell } from '../Cell/Cell';
 import { Vehicle } from './Vehicle';
 import { Turrel } from './Turrel';
 import { AliveItem } from '../AliveItem';
-import { IHqContainer } from './IHqContainer';
 import { Headquarter } from '../Cell/Field/Hq/Headquarter';
 import { Archive } from '../../Framework/ResourceArchiver';
 import { CellState } from '../Cell/CellState';
@@ -16,7 +16,7 @@ import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Explosion } from './Explosion';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 
-export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
+export class Tank extends Vehicle implements ICamouflageAble {
 	public Turrel: Turrel;
 	private _currentTarget: AliveItem;
 	private _mainTarget: AliveItem;
@@ -25,13 +25,13 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 	public OnCamouflageChanged: LiteEvent<AliveItem> = new LiteEvent<AliveItem>();
 	public OnMissileLaunched: LiteEvent<Missile> = new LiteEvent<Missile>();
 
-	constructor(hq: Headquarter, isPlayer: boolean, isPacific: boolean = false) {
-		super(hq, isPlayer);
+	constructor(identity: Identity, isPacific: boolean = false) {
+		super(identity);
 		this.IsPacific = isPacific;
-		this.RootSprites.push(this.Hq.GetSkin().GetBottomTankSprite());
-		this.GenerateSprite(this.Hq.GetSkin().GetBottomTankSprite());
+		this.RootSprites.push(identity.Skin.GetBottomTankSprite());
+		this.GenerateSprite(identity.Skin.GetBottomTankSprite());
 
-		this.Turrel = new Turrel(this.Hq.GetSkin(), this);
+		this.Turrel = new Turrel(identity.Skin, this);
 
 		//make pivot sprite center
 		this.GetSprites().forEach((sprite) => {
@@ -172,17 +172,8 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 		return enemies.filter((e) => e === this._mainTarget).length === 1;
 	}
 
-	private IsHqContainer(item: any): item is IHqContainer {
-		return 'Hq' in item;
-	}
-
 	public IsEnemy(item: AliveItem): boolean {
-		if (this.IsHqContainer(item as any)) {
-			return (<IHqContainer>(item as any)).Hq !== this.Hq;
-		} else if (item instanceof Headquarter) {
-			return <Headquarter>(item as any) !== this.Hq;
-		}
-		return false;
+		return !(item.Identity && item.Identity.Name === this.Identity.Name);
 	}
 
 	public GetTarget(): AliveItem {
@@ -209,7 +200,7 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 		this.camouflagedSprites = this.GetSprites().filter((s) => s.alpha !== 0);
 		this.camouflagedSprites.concat(this.Turrel.GetSprites().filter((s) => s.alpha !== 0));
 
-		if (this.isPlayer) {
+		if (this.Identity.IsPlayer) {
 			this.camouflagedSprites.forEach((s) => {
 				s.alpha = 0.5;
 			});
@@ -244,7 +235,7 @@ export class Tank extends Vehicle implements IHqContainer, ICamouflageAble {
 		if (this.HasCamouflage) {
 			this.HasCamouflage = false;
 
-			if (this.isPlayer) {
+			if (this.Identity.IsPlayer) {
 				this.camouflagedSprites.forEach((s) => {
 					s.alpha = 1;
 				});

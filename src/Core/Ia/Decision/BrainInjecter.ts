@@ -29,7 +29,7 @@ export class BrainInjecter {
 				hq.Inject(
 					new BobBrain().GetBrain(hq, gameContext, areas, areaSearch, diamondCell.GetField() as Diamond)
 				);
-			} else if (hq.PlayerName === mapContext.PlayerName) {
+			} else if (hq.Identity.Name === mapContext.PlayerName) {
 				hq.IsPlayer = true;
 			}
 		});

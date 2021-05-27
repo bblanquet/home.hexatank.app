@@ -23,14 +23,14 @@ export class MapRender {
 		const updatableItem = new Array<Item>();
 
 		mapContext.Items.forEach((item) => {
-			let cell = new Cell(new CellProperties(new HexAxial(item.Position.Q, item.Position.R)), cells, context);
+			const cell = new Cell(new CellProperties(new HexAxial(item.Position.Q, item.Position.R)), cells, context);
 			ForestDecorator.SetDecoration(updatableItem, cell, item.Type);
 			cell.SetSprite();
 			cells.Add(cell.Coo(), cell);
 			updatableItem.push(cell);
 		});
 
-		let areas = new AreaSearch(
+		const areas = new AreaSearch(
 			Dictionnary.To((c) => c.ToString(), cells.Values().map((c) => c.GetHexCoo()))
 		).GetAreas(new HexAxial(mapContext.CenterItem.Position.Q, mapContext.CenterItem.Position.R));
 		this.SetLands(cells, mapContext.MapMode, areas, updatableItem);
@@ -38,11 +38,10 @@ export class MapRender {
 		const hqs = new HqRender().Render(cells, mapContext.Hqs, updatableItem);
 
 		//insert elements into playground
-		this.SetHqLands(cells, Archive.nature.hq, hqs.map((h) => h.GetCell().GetHexCoo()), updatableItem);
-		this.SetHqLands(cells, Archive.nature.hq2, hqs.map((h) => h.GetCell().GetHexCoo()), updatableItem, 1);
+		this.SetHqLand(cells, Archive.nature.hq, hqs.map((h) => h.GetCell().GetHexCoo()), updatableItem);
+		this.SetHqLand(cells, Archive.nature.hq2, hqs.map((h) => h.GetCell().GetHexCoo()), updatableItem, 1);
 
-		//can be only AI
-		let playerHq = hqs.find((hq) => hq.PlayerName === mapContext.PlayerName);
+		const playerHq = hqs.find((hq) => hq.PlayerName === mapContext.PlayerName);
 		if (playerHq) {
 			playerHq.SetSelectionAnimation();
 			context.Setup(mapContext, hqs, cells.Values(), playerHq);
@@ -89,13 +88,7 @@ export class MapRender {
 		});
 	}
 
-	private SetHqLands(
-		cells: Dictionnary<Cell>,
-		sprite: string,
-		middleAreas: HexAxial[],
-		items: Item[],
-		z: number = 0
-	) {
+	private SetHqLand(cells: Dictionnary<Cell>, sprite: string, middleAreas: HexAxial[], items: Item[], z: number = 0) {
 		middleAreas.forEach((corner) => {
 			const cell = cells.Get(corner.ToString());
 			const boundingBox = new BoundingBox();

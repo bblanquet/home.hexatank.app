@@ -1,9 +1,9 @@
 import { Dictionnary } from './../../Utils/Collections/Dictionnary';
-import { IPlaygroundBuilder } from './IPlaygroundBuilder';
+import { IMapBuilder } from './IPlaygroundBuilder';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 
-export class CircleMapBuilder implements IPlaygroundBuilder {
+export class CircleMapBuilder implements IMapBuilder {
 	public GetRefCoo(ranges: number): HexAxial {
 		return new HexAxial(ranges / 2, ranges / 2);
 	}

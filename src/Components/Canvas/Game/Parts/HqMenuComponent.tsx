@@ -19,10 +19,10 @@ export default class HqMenuComponent extends Component<
 	},
 	{}
 > {
-	private _interactionService: IInteractionService;
+	private _interactionService: IInteractionService<GameContext>;
 	constructor() {
 		super();
-		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
+		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.Interaction);
 	}
 	render() {
 		return (

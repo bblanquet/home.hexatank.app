@@ -8,12 +8,13 @@ import LightWhiteBtn from '../../../Common/Button/Standard/LightWhiteBtn';
 import { Point } from '../../../../Core/Utils/Geometry/Point';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
 import { Factory, FactoryKey } from '../../../../Factory';
+import { GameContext } from '../../../../Core/Framework/GameContext';
 
 export default class MultiMenuComponent extends Component<{ Item: Item }, {}> {
-	private _interactionService: IInteractionService;
+	private _interactionService: IInteractionService<GameContext>;
 	constructor() {
 		super();
-		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
+		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.Interaction);
 	}
 	render() {
 		return (

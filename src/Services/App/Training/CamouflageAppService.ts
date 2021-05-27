@@ -1,3 +1,5 @@
+import { CamouflageGameContext } from './../../../Core/Framework/CamouflageGameContext';
+import { CamouflageBluePrint } from './../../../Core/Setup/Blueprint/Camouflage/CamouflageBluePrint';
 import { RecordContext } from './../../../Core/Framework/Record/RecordContext';
 import { StatsContext } from './../../../Core/Framework/Stats/StatsContext';
 import { IInteractionService } from './../../Interaction/IInteractionService';
@@ -6,7 +8,6 @@ import { ILayerService } from './../../Layer/ILayerService';
 import { IUpdateService } from './../../Update/IUpdateService';
 import { IGameContextService } from './../../GameContext/IGameContextService';
 import { AppProvider } from './../../../Core/App/AppProvider';
-import { MapContext } from './../../../Core/Setup/Generator/MapContext';
 import { IAppService } from '../IAppService';
 import { Factory, FactoryKey } from '../../../Factory';
 import * as PIXI from 'pixi.js';
@@ -14,14 +15,14 @@ import { IKeyService } from '../../Key/IKeyService';
 import { CellStateSetter } from '../../../Core/Items/Cell/CellStateSetter';
 import { GameSettings } from '../../../Core/Framework/GameSettings';
 
-export class CamouflageAppService implements IAppService {
-	private _context: MapContext;
+export class CamouflageAppService implements IAppService<CamouflageBluePrint> {
+	private _context: CamouflageBluePrint;
 	private _app: PIXI.Application;
 	private _appProvider: AppProvider;
 	private _interactionManager: PIXI.InteractionManager;
 
-	private _gameContextService: IGameContextService;
-	private _interactionService: IInteractionService;
+	private _gameContextService: IGameContextService<CamouflageBluePrint, CamouflageGameContext>;
+	private _interactionService: IInteractionService<CamouflageGameContext>;
 	private _layerService: ILayerService;
 	private _updateService: IUpdateService;
 	private _networkService: INetworkService;
@@ -29,15 +30,19 @@ export class CamouflageAppService implements IAppService {
 
 	constructor() {
 		this._appProvider = new AppProvider();
-		this._gameContextService = Factory.Load<IGameContextService>(FactoryKey.GameContext);
+		this._gameContextService = Factory.Load<IGameContextService<CamouflageBluePrint, CamouflageGameContext>>(
+			FactoryKey.CamouflageGameContext
+		);
 		this._updateService = Factory.Load<IUpdateService>(FactoryKey.Update);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
 		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
-		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.CamouflageInteraction);
+		this._interactionService = Factory.Load<IInteractionService<CamouflageGameContext>>(
+			FactoryKey.CamouflageInteraction
+		);
 		this._keyService = Factory.Load<IKeyService>(FactoryKey.Key);
 	}
 
-	public Register(mapContext: MapContext): void {
+	public Register(mapContext: CamouflageBluePrint): void {
 		this._keyService.DefineKey(this);
 
 		GameSettings.Init();
@@ -70,7 +75,7 @@ export class CamouflageAppService implements IAppService {
 		return this._app;
 	}
 
-	public Context(): MapContext {
+	public Context(): CamouflageBluePrint {
 		return this._context;
 	}
 

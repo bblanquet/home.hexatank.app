@@ -1,15 +1,15 @@
-import { MapContext } from '../Setup/Generator/MapContext';
+import { IBlueprint } from './../Setup/Blueprint/IBlueprint';
 import * as PIXI from 'pixi.js';
-import { MapEnv } from '../Setup/Generator/MapEnv';
+import { MapEnv } from '../Setup/Blueprint/MapEnv';
 
 export class AppProvider {
-	public Provide(mapContext: MapContext): PIXI.Application {
+	public Provide(mapContext: IBlueprint): PIXI.Application {
 		const app = new PIXI.Application({});
 		app.renderer.backgroundColor = this.GetColor(mapContext);
 		return app;
 	}
 
-	private GetColor(mapContext: MapContext): number {
+	private GetColor(mapContext: IBlueprint): number {
 		let color = 0x00a651;
 		if (mapContext.MapMode === MapEnv.sand) {
 			color = 0xfece63;

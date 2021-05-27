@@ -1,8 +1,8 @@
-import { MapContext } from './../../Setup/Generator/MapContext';
+import { BattleBlueprint } from '../../Setup/Blueprint/Battle/BattleBlueprint';
 import { IOrder } from './../../Ia/Order/IOrder';
 import { Factory, FactoryKey } from './../../../Factory';
 import { ISoundService } from './../../../Services/Sound/ISoundService';
-import { MapEnv } from './../../Setup/Generator/MapEnv';
+import { MapEnv } from '../../Setup/Blueprint/MapEnv';
 import { Missile } from '../../Items/Unit/Missile';
 import { Tank } from '../../Items/Unit/Tank';
 import { GameContext } from '../GameContext';
@@ -20,7 +20,7 @@ export class GameSoundManager {
 	private _vehicleSounds: Dictionnary<number>;
 	private _music: number;
 
-	constructor(private _mapContext: MapContext, private _gameContext: GameContext) {
+	constructor(private _mapContext: BattleBlueprint, private _gameContext: GameContext) {
 		this._vehicleSounds = new Dictionnary<number>();
 		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
 

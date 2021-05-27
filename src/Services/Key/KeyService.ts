@@ -2,7 +2,6 @@ import { CamouflageAppService } from './../App/Training/CamouflageAppService';
 import { RecordAppService } from './../App/RecordAppService';
 import { AppService } from './../App/AppService';
 import { FactoryKey } from './../../Factory';
-import { IAppService } from '../App/IAppService';
 import { IKeyService } from './IKeyService';
 export class KeyService implements IKeyService {
 	private _key: FactoryKey = FactoryKey.None;
@@ -12,7 +11,7 @@ export class KeyService implements IKeyService {
 		}
 		return this._key;
 	}
-	DefineKey(appService: IAppService): void {
+	DefineKey(appService: any): void {
 		if (appService instanceof AppService) {
 			this._key = FactoryKey.App;
 		} else if (appService instanceof RecordAppService) {

@@ -38,7 +38,7 @@ import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
 import { MultiCellMenuItem } from '../../../Core/Menu/Buttons/MultiCellMenuItem';
 import { IAppService } from '../../../Services/App/IAppService';
 import { FlagCellCombination } from '../../../Core/Interaction/Combination/FlagCellCombination';
-import { CombinationProvider } from '../../../Core/Interaction/CombinationProvider';
+import { BattleBlueprint } from '../../../Core/Setup/Blueprint/Battle/BattleBlueprint';
 
 export default class GameCanvasComponent extends Component<
 	any,
@@ -57,22 +57,24 @@ export default class GameCanvasComponent extends Component<
 	}
 > {
 	private _diamonds: number;
-	private _gameContextService: IGameContextService;
+	private _gameContextService: IGameContextService<BattleBlueprint, GameContext>;
 	private _soundService: ISoundService;
 	private _networkService: INetworkService;
-	private _interactionService: IInteractionService;
-	private _appService: IAppService;
+	private _interactionService: IInteractionService<GameContext>;
+	private _appService: IAppService<BattleBlueprint>;
 	private _gameContext: GameContext;
 
 	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
 
 	constructor() {
 		super();
-		this._gameContextService = Factory.Load<IGameContextService>(FactoryKey.GameContext);
+		this._gameContextService = Factory.Load<IGameContextService<BattleBlueprint, GameContext>>(
+			FactoryKey.GameContext
+		);
 		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
-		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
-		this._appService = Factory.Load<IAppService>(FactoryKey.App);
+		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.Interaction);
+		this._appService = Factory.Load<IAppService<BattleBlueprint>>(FactoryKey.App);
 		this._gameContext = this._gameContextService.Publish();
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
 		this.setState({

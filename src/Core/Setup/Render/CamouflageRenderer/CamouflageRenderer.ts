@@ -1,30 +1,28 @@
-import { Dictionnary } from '../../Utils/Collections/Dictionnary';
-import { SimpleFloor } from '../../Items/Environment/SimpleFloor';
-import { GameContext } from '../../Framework/GameContext';
-import { GameSettings } from '../../Framework/GameSettings';
-import { ForestDecorator } from '../../Items/Cell/Decorator/ForestDecorator';
-import { CellProperties } from '../../Items/Cell/CellProperties';
-import { Cloud } from '../../Items/Environment/Cloud';
-import { CellState } from '../../Items/Cell/CellState';
-import { Cell } from '../../Items/Cell/Cell';
-import { Item } from '../../Items/Item';
-import { HexAxial } from '../../Utils/Geometry/HexAxial';
-import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
-import { Floor } from '../../Items/Environment/Floor';
-import { Archive } from '../../Framework/ResourceArchiver';
-import { MapContext } from '../Generator/MapContext';
-import { MapEnv } from '../Generator/MapEnv';
-import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
-import { HqRender } from './Hq/HqRender';
-import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
-export class Renderer {
-	public Render(mapContext: MapContext): GameContext {
+import { SimpleFloor } from './../../../Items/Environment/SimpleFloor';
+import { Cloud } from './../../../Items/Environment/Cloud';
+import { ForestDecorator } from './../../../Items/Cell/Decorator/ForestDecorator';
+import { Headquarter } from './../../../Items/Cell/Field/Hq/Headquarter';
+import { CamouflageBluePrint } from './../../Blueprint/Camouflage/CamouflageBluePrint';
+import { CamouflageGameContext } from '../../../Framework/CamouflageGameContext';
+import { GameContext } from '../../../Framework/GameContext';
+import { GameSettings } from '../../../Framework/GameSettings';
+import { Archive } from '../../../Framework/ResourceArchiver';
+import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
+import { Cell } from '../../../Items/Cell/Cell';
+import { CellProperties } from '../../../Items/Cell/CellProperties';
+import { Item } from '../../../Items/Item';
+import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
+import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
+import { HexAxial } from '../../../Utils/Geometry/HexAxial';
+import { MapEnv } from '../../Blueprint/MapEnv';
+import { Floor } from '../../../Items/Environment/Floor';
+
+export class CamouflageRenderer {
+	public Render(blueprint: CamouflageBluePrint): CamouflageGameContext {
 		const cells = new Dictionnary<Cell>();
 		const updatableItem = new Array<Item>();
-		let playerHq: Headquarter = null;
-		let hqs: Headquarter[] = null;
 
-		mapContext.Items.forEach((item) => {
+		blueprint.Items.forEach((item) => {
 			const cell = new Cell(new CellProperties(new HexAxial(item.Position.Q, item.Position.R)), cells);
 			ForestDecorator.SetDecoration(updatableItem, cell, item.Type);
 			cell.SetSprite();
@@ -34,29 +32,18 @@ export class Renderer {
 
 		const areas = new AreaSearch(
 			Dictionnary.To((c) => c.ToString(), cells.Values().map((c) => c.GetHexCoo()))
-		).GetAreas(new HexAxial(mapContext.CenterItem.Position.Q, mapContext.CenterItem.Position.R));
-		this.SetLands(cells, mapContext.MapMode, areas, updatableItem);
+		).GetAreas(new HexAxial(blueprint.CenterItem.Position.Q, blueprint.CenterItem.Position.R));
+		this.SetLands(cells, blueprint.MapMode, areas, updatableItem);
 		this.AddClouds(updatableItem);
-		if (mapContext.Hqs) {
-			hqs = new HqRender().Render(cells, mapContext.Hqs, updatableItem);
 
-			//insert elements into playground
-			this.SetHqLand(cells, Archive.nature.hq, hqs.map((h) => h.GetCell().GetHexCoo()), updatableItem);
-			this.SetHqLand(cells, Archive.nature.hq2, hqs.map((h) => h.GetCell().GetHexCoo()), updatableItem, 1);
+		const spots = [ new HexAxial(blueprint.StartItem.Position.Q, blueprint.StartItem.Position.R) ].concat(
+			new HexAxial(blueprint.EndItem.Position.Q, blueprint.EndItem.Position.R)
+		);
 
-			playerHq = hqs.find((hq) => hq.PlayerName === mapContext.PlayerName);
-			if (playerHq) {
-				playerHq.SetSelectionAnimation();
-				//make hq cells visible, need context to be setup :<, has to fix it one day
-				playerHq.GetCurrentCell().SetState(CellState.Visible);
-				playerHq.GetCurrentCell().GetAllNeighbourhood().forEach((cell) => {
-					(<Cell>cell).SetState(CellState.Visible);
-				});
-				cells.Values().forEach((cell) => cell.SetPlayerHq(playerHq));
-			}
-		}
+		this.SetHqLand(cells, Archive.nature.hq, spots, updatableItem);
+		this.SetHqLand(cells, Archive.nature.hq2, spots, updatableItem, 1);
 
-		return new GameContext(cells.Values(), hqs, playerHq);
+		return new CamouflageGameContext(cells.Values());
 	}
 
 	public AddClouds(items: Item[]) {

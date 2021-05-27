@@ -4,14 +4,15 @@ import { MultiCellMenuItem } from '../../../Menu/Buttons/MultiCellMenuItem';
 import { MultiTankMenuItem } from '../../../Menu/Buttons/MultiTankMenuItem';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
 import { Factory, FactoryKey } from '../../../../Factory';
+import { GameContext } from '../../../Framework/GameContext';
 
 export class ClearMultiSelectionMenuCombination extends AbstractSingleCombination {
 	private _isShowing: boolean = false;
-	private _interactionService: IInteractionService;
+	private _interactionService: IInteractionService<GameContext>;
 
 	constructor() {
 		super();
-		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
+		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.Interaction);
 		this._interactionService.OnMultiMenuShowed.On((src: any, isShowing) => {
 			this._isShowing = isShowing;
 		});

@@ -1,7 +1,7 @@
-import { GameContext } from './../../Core/Framework/GameContext';
-import { MapContext } from '../../Core/Setup/Generator/MapContext';
+import { IGameContext } from './../../Core/Framework/IGameContext';
+import { IBlueprint } from './../../Core/Setup/Blueprint/IBlueprint';
 import { IGarbage } from '../IGarbage';
-export interface IGameContextService extends IGarbage {
-	Register(mapContext: MapContext): void;
-	Publish(): GameContext;
+export interface IGameContextService<T extends IBlueprint, T1 extends IGameContext> extends IGarbage {
+	Register(mapContext: T): void;
+	Publish(): T1;
 }

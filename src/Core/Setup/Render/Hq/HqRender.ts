@@ -4,7 +4,7 @@ import { HexAxial } from '../../../Utils/Geometry/HexAxial';
 import { Item } from '../../../Items/Item';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 import { Diamond } from '../../../Items/Cell/Field/Diamond';
-import { DiamondHq } from '../../Generator/DiamondHq';
+import { DiamondHq } from '../../Blueprint/Battle/DiamondHq';
 import { Cell } from '../../../Items/Cell/Cell';
 
 export class HqRender {

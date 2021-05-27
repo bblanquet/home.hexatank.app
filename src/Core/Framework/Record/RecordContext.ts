@@ -5,7 +5,7 @@ import { RecordUnit } from './RecordUnit';
 import { RecordKind } from './RecordKind';
 import { RecordObject } from './RecordObject';
 import { GameContext } from '../GameContext';
-import { MapContext } from '../../Setup/Generator/MapContext';
+import { BattleBlueprint } from '../../Setup/Blueprint/Battle/BattleBlueprint';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { RecordHq } from './RecordHq';
@@ -22,7 +22,7 @@ export class RecordContext {
 	private _refDate: number;
 
 	constructor(
-		private _mapContext: MapContext,
+		private _mapContext: BattleBlueprint,
 		private _gameContext: GameContext,
 		private _interactionContext: InteractionContext
 	) {

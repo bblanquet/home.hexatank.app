@@ -1,6 +1,5 @@
 import { InputNotifier } from './../../Core/Interaction/InputNotifier';
 import { SelectableChecker } from './../../Core/Interaction/SelectableChecker';
-import { GameContext } from './../../Core/Framework/GameContext';
 import { InteractionContext } from '../../Core/Interaction/InteractionContext';
 import { IInteractionService } from './IInteractionService';
 import { ILayerService } from '../Layer/ILayerService';
@@ -11,8 +10,9 @@ import { MultiSelectionContext } from '../../Core/Menu/Smart/MultiSelectionConte
 import { CancelCombination } from '../../Core/Interaction/Combination/CancelCombination';
 import { ClearTrashCombination } from '../../Core/Interaction/Combination/ClearTrashCombination';
 import { SelectionCombination } from '../../Core/Interaction/Combination/SelectionCombination';
+import { CamouflageGameContext } from '../../Core/Framework/CamouflageGameContext';
 
-export class CamouflageInteractionService implements IInteractionService {
+export class CamouflageInteractionService implements IInteractionService<CamouflageGameContext> {
 	private _layerService: ILayerService;
 	private _multiSelectionContext: MultiSelectionContext;
 	private _inputNotifier: InputNotifier;
@@ -23,10 +23,10 @@ export class CamouflageInteractionService implements IInteractionService {
 		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
 	}
 
-	Register(manager: PIXI.InteractionManager, gameContext: GameContext): void {
+	Register(manager: PIXI.InteractionManager, gameContext: CamouflageGameContext): void {
 		this._multiSelectionContext = new MultiSelectionContext();
 		this._inputNotifier = new InputNotifier();
-		const checker = new SelectableChecker(gameContext.GetPlayerHq());
+		const checker = new SelectableChecker(gameContext.GetPlayer());
 		this._interaction = new InteractionContext(
 			this._inputNotifier,
 			[

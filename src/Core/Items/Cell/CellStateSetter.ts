@@ -1,3 +1,4 @@
+import { BattleBlueprint } from './../../Setup/Blueprint/Battle/BattleBlueprint';
 import { GameContext } from './../../Framework/GameContext';
 import { Factory, FactoryKey } from '../../../Factory';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
@@ -7,8 +8,14 @@ import { CellState } from './CellState';
 
 export class CellStateSetter {
 	public static SetStates(cells: Array<Cell>): void {
-		const gameContextService = Factory.Load<IGameContextService>(FactoryKey.GameContext);
-		cells.forEach((cell) => this.SetState(gameContextService.Publish(), cell));
+		const gameContextService = Factory.Load<IGameContextService<BattleBlueprint, GameContext>>(
+			FactoryKey.GameContext
+		);
+		if (gameContextService.Publish()) {
+			cells.forEach((cell) => this.SetState(gameContextService.Publish(), cell));
+		} else {
+			cells.forEach((cell) => cell.SetState(CellState.Visible));
+		}
 	}
 
 	public static SetState(gameContext: GameContext, cell: Cell): void {

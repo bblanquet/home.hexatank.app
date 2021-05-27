@@ -6,14 +6,15 @@ import { MultiCellMenuItem } from '../../../Menu/Buttons/MultiCellMenuItem';
 import { MultiTankMenuItem } from '../../../Menu/Buttons/MultiTankMenuItem';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
 import { Factory, FactoryKey } from '../../../../Factory';
+import { GameContext } from '../../../Framework/GameContext';
 
 export class ActiveMultiSelectionCombination extends AbstractSingleCombination {
-	private _interactionService: IInteractionService;
+	private _interactionService: IInteractionService<GameContext>;
 	private _layerService: ILayerService;
 
 	constructor(private _multiContext: MultiSelectionContext) {
 		super();
-		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
+		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.Interaction);
 		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
 	}
 

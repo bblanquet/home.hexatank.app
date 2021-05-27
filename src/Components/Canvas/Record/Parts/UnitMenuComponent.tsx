@@ -5,11 +5,12 @@ import { Item } from '../../../../Core/Items/Item';
 import { InteractionKind } from '../../../../Core/Interaction/IInteractionContext';
 import { Vehicle } from '../../../../Core/Items/Unit/Vehicle';
 import { Factory, FactoryKey } from '../../../../Factory';
+import { GameContext } from '../../../../Core/Framework/GameContext';
 
 export default class UnitMenuComponent extends Component<{ Vehicle: Vehicle }, {}> {
-	private _interactionService: IInteractionService;
+	private _interactionService: IInteractionService<GameContext>;
 	componentDidMount(): void {
-		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.RecordInteraction);
+		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.RecordInteraction);
 	}
 
 	render() {

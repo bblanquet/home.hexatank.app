@@ -1,3 +1,4 @@
+import { BattleBlueprint } from './../../Core/Setup/Blueprint/Battle/BattleBlueprint';
 import { GameSettings } from './../../Core/Framework/GameSettings';
 import { IInteractionService } from './../Interaction/IInteractionService';
 import { INetworkService } from './../Network/INetworkService';
@@ -5,7 +6,6 @@ import { ILayerService } from './../Layer/ILayerService';
 import { IUpdateService } from './../Update/IUpdateService';
 import { IGameContextService } from './../GameContext/IGameContextService';
 import { AppProvider } from './../../Core/App/AppProvider';
-import { MapContext } from './../../Core/Setup/Generator/MapContext';
 import { IAppService } from './IAppService';
 import { Factory, FactoryKey } from '../../Factory';
 import * as PIXI from 'pixi.js';
@@ -13,15 +13,16 @@ import { IKeyService } from '../Key/IKeyService';
 import { CellStateSetter } from '../../Core/Items/Cell/CellStateSetter';
 import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
+import { GameContext } from '../../Core/Framework/GameContext';
 
-export class RecordAppService implements IAppService {
-	private _context: MapContext;
+export class RecordAppService implements IAppService<BattleBlueprint> {
+	private _context: BattleBlueprint;
 	private _app: PIXI.Application;
 	private _appProvider: AppProvider;
 	private _interactionManager: PIXI.InteractionManager;
 
-	private _gameContextService: IGameContextService;
-	private _interactionService: IInteractionService;
+	private _gameContextService: IGameContextService<BattleBlueprint, GameContext>;
+	private _interactionService: IInteractionService<GameContext>;
 	private _layerService: ILayerService;
 	private _updateService: IUpdateService;
 	private _networkService: INetworkService;
@@ -29,11 +30,13 @@ export class RecordAppService implements IAppService {
 
 	constructor() {
 		this._appProvider = new AppProvider();
-		this._gameContextService = Factory.Load<IGameContextService>(FactoryKey.GameContext);
+		this._gameContextService = Factory.Load<IGameContextService<BattleBlueprint, GameContext>>(
+			FactoryKey.GameContext
+		);
 		this._updateService = Factory.Load<IUpdateService>(FactoryKey.Update);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
 		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
-		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.RecordInteraction);
+		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.RecordInteraction);
 		this._keyService = Factory.Load<IKeyService>(FactoryKey.Key);
 	}
 	GetStats(): StatsContext {
@@ -43,7 +46,7 @@ export class RecordAppService implements IAppService {
 		return null;
 	}
 
-	public Register(mapContext: MapContext): void {
+	public Register(mapContext: BattleBlueprint): void {
 		this._keyService.DefineKey(this);
 
 		GameSettings.Init();
@@ -69,7 +72,7 @@ export class RecordAppService implements IAppService {
 		return this._app;
 	}
 
-	public Context(): MapContext {
+	public Context(): BattleBlueprint {
 		return this._context;
 	}
 

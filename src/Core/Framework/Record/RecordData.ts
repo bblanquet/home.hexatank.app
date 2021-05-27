@@ -4,9 +4,9 @@ import { RecordHq } from './RecordHq';
 import { Dictionnary } from '../../Utils/Collections/Dictionnary';
 import { RecordObject } from './RecordObject';
 import { RecordUnit } from './RecordUnit';
-import { MapContext } from '../../Setup/Generator/MapContext';
+import { BattleBlueprint } from '../../Setup/Blueprint/Battle/BattleBlueprint';
 export class RecordData {
-	public MapContext: MapContext;
+	public MapContext: BattleBlueprint;
 	public Dates: number[] = [];
 	public Hqs: Dictionnary<RecordHq> = new Dictionnary<RecordHq>();
 	public Cells: Dictionnary<RecordCell> = new Dictionnary<RecordCell>();

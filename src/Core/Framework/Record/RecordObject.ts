@@ -1,7 +1,7 @@
 import { InteractionInfo } from './../../Interaction/InteractionInfo';
-import { MapContext } from '../../Setup/Generator/MapContext';
+import { BattleBlueprint } from '../../Setup/Blueprint/Battle/BattleBlueprint';
 export class RecordObject {
-	public MapContext: MapContext;
+	public MapContext: BattleBlueprint;
 	public Points: number[];
 	public Hqs: any;
 	public Cells: any;

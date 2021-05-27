@@ -11,7 +11,7 @@ import { ILayerService } from './../Layer/ILayerService';
 import { IUpdateService } from './../Update/IUpdateService';
 import { IGameContextService } from './../GameContext/IGameContextService';
 import { AppProvider } from './../../Core/App/AppProvider';
-import { MapContext } from './../../Core/Setup/Generator/MapContext';
+import { BattleBlueprint } from '../../Core/Setup/Blueprint/Battle/BattleBlueprint';
 import { IAppService } from './IAppService';
 import { Factory, FactoryKey } from '../../Factory';
 import * as PIXI from 'pixi.js';
@@ -19,8 +19,8 @@ import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 
-export class AppService implements IAppService {
-	private _context: MapContext;
+export class AppService implements IAppService<BattleBlueprint> {
+	private _context: BattleBlueprint;
 	private _gameContext: GameContext;
 	private _recordContext: RecordContext;
 	private _statContext: StatsContext;
@@ -29,8 +29,8 @@ export class AppService implements IAppService {
 	private _interactionManager: PIXI.InteractionManager;
 	private _soundManager: GameSoundManager;
 
-	private _gameContextService: IGameContextService;
-	private _interactionService: IInteractionService;
+	private _gameContextService: IGameContextService<BattleBlueprint, GameContext>;
+	private _interactionService: IInteractionService<GameContext>;
 	private _layerService: ILayerService;
 	private _updateService: IUpdateService;
 	private _networkService: INetworkService;
@@ -40,11 +40,13 @@ export class AppService implements IAppService {
 
 	constructor() {
 		this._appProvider = new AppProvider();
-		this._gameContextService = Factory.Load<IGameContextService>(FactoryKey.GameContext);
+		this._gameContextService = Factory.Load<IGameContextService<BattleBlueprint, GameContext>>(
+			FactoryKey.GameContext
+		);
 		this._updateService = Factory.Load<IUpdateService>(FactoryKey.Update);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
 		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
-		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
+		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.Interaction);
 		this._keyService = Factory.Load<IKeyService>(FactoryKey.Key);
 		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
 		this._playerProfilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
@@ -56,7 +58,7 @@ export class AppService implements IAppService {
 		return this._recordContext;
 	}
 
-	public Register(mapContext: MapContext): void {
+	public Register(mapContext: BattleBlueprint): void {
 		this._keyService.DefineKey(this);
 
 		GameSettings.Init();
@@ -91,7 +93,7 @@ export class AppService implements IAppService {
 		return this._app;
 	}
 
-	public Context(): MapContext {
+	public Context(): BattleBlueprint {
 		return this._context;
 	}
 

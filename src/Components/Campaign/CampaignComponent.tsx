@@ -13,6 +13,7 @@ import { FaceComponent } from './FaceComponent';
 import NavbarComponent from '../Common/Navbar/NavbarComponent';
 import Visible from '../Common/Visible/VisibleComponent';
 import { Sentences } from './Sentences';
+import { BattleBlueprint } from '../../Core/Setup/Blueprint/Battle/BattleBlueprint';
 
 export default class CampaignComponent extends Component<
 	any,
@@ -155,7 +156,7 @@ export default class CampaignComponent extends Component<
 
 	Start(index: number): void {
 		const mapContext = this._campaignService.GetMapContext(CampaignKind.red, index);
-		Factory.Load<IAppService>(FactoryKey.App).Register(mapContext);
+		Factory.Load<IAppService<BattleBlueprint>>(FactoryKey.App).Register(mapContext);
 		route('/Canvas', true);
 	}
 }

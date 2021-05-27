@@ -1,3 +1,5 @@
+import { CamouflageGameContextService } from './Services/GameContext/CamouflageGameContextService';
+import { CamouflageGameContext } from './Core/Framework/CamouflageGameContext';
 import { CamouflageInteractionService } from './Services/Interaction/CamouflageInteractionService';
 import { CamouflageAppService } from './Services/App/Training/CamouflageAppService';
 import { SoundService } from './Services/Sound/SoundService';
@@ -24,6 +26,7 @@ Factory.Register(FactoryKey.Hosting, new HostingService());
 Factory.Register(FactoryKey.Update, new UpdateService());
 Factory.Register(FactoryKey.Compare, new CompareService());
 Factory.Register(FactoryKey.GameContext, new GameContextService());
+Factory.Register(FactoryKey.CamouflageGameContext, new CamouflageGameContextService());
 Factory.Register(FactoryKey.Layer, new LayerService());
 Factory.Register(FactoryKey.Network, new NetworkService());
 Factory.Register(FactoryKey.Record, new RecordService());

@@ -15,9 +15,9 @@ import { OnlinePlayer } from '../../../Network/OnlinePlayer';
 import OptionComponent from './Options/OptionComponent';
 import ToastComponent from './../../Common/Toast/ToastComponent';
 import { HostState } from '../HostState';
-import { MapGenerator } from '../../../Core/Setup/Generator/MapGenerator';
-import { MapEnv } from '../../../Core/Setup/Generator/MapEnv';
-import { MapContext } from '../../../Core/Setup/Generator/MapContext';
+import { BattleBluePrintMaker } from '../../../Core/Setup/Blueprint/Battle/BattleBluePrintMaker';
+import { MapEnv } from '../../../Core/Setup/Blueprint/MapEnv';
+import { BattleBlueprint } from '../../../Core/Setup/Blueprint/Battle/BattleBlueprint';
 import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
 import { Factory, FactoryKey } from '../../../Factory';
@@ -30,19 +30,20 @@ import Icon from '../../Common/Icon/IconComponent';
 import ActiveButtonComponent from '../../Common/Button/Stylish/ActiveButtonComponent';
 import { MapSetting } from '../../Form/MapSetting';
 import { HostingMode } from '../HostingMode';
-import { MapType } from '../../../Core/Setup/Generator/MapType';
+import { MapType } from '../../../Core/Setup/Blueprint/MapType';
 import SmPanelComponent from '../../Common/Panel/SmPanelComponent';
 import { LiteEvent } from '../../../Core/Utils/Events/LiteEvent';
 import { Message } from '../Message';
+import { GameContext } from '../../../Core/Framework/GameContext';
 
 export default class HostingComponent extends Component<any, HostState> {
 	private _mode: HostingMode = HostingMode.pending;
 	private _isLoading: boolean = false;
 
-	private _appService: IAppService;
+	private _appService: IAppService<BattleBlueprint>;
 	private _hostingService: IHostingService;
 	private _networkService: INetworkService;
-	private _gameContextService: IGameContextService;
+	private _gameContextService: IGameContextService<BattleBlueprint, GameContext>;
 
 	private _onMessageReceived: LiteEvent<Message>;
 	private _socket: NetworkSocket;
@@ -55,9 +56,11 @@ export default class HostingComponent extends Component<any, HostState> {
 			return;
 		}
 
-		this._appService = Factory.Load<IAppService>(FactoryKey.App);
+		this._appService = Factory.Load<IAppService<BattleBlueprint>>(FactoryKey.App);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
-		this._gameContextService = Factory.Load<IGameContextService>(FactoryKey.GameContext);
+		this._gameContextService = Factory.Load<IGameContextService<BattleBlueprint, GameContext>>(
+			FactoryKey.GameContext
+		);
 		this._hostingService = Factory.Load<IHostingService>(FactoryKey.Hosting);
 
 		const model = this._hostingService.Publish();
@@ -307,7 +310,7 @@ export default class HostingComponent extends Component<any, HostState> {
 				} else if (this.ConvertSize() === 8 && 2 < hqCount) {
 					this.state.MapSetting.Size = 'Medium';
 				}
-				const mapContext = new MapGenerator().GetMapDefinition(
+				const mapContext = new BattleBluePrintMaker().GetBluePrint(
 					this.ConvertSize(),
 					this.ConvertMapType(),
 					this.ConvertEnv(),
@@ -317,7 +320,7 @@ export default class HostingComponent extends Component<any, HostState> {
 				this.AssignHqToPlayer(mapContext, this.state.Players.Values());
 				this.SetIa(mapContext);
 				this.Load(mapContext);
-				this._socket.EmitAll<MapContext>(PacketKind.Map, mapContext);
+				this._socket.EmitAll<BattleBlueprint>(PacketKind.Map, mapContext);
 			}, 10);
 		}
 	}
@@ -347,7 +350,7 @@ export default class HostingComponent extends Component<any, HostState> {
 		return MapEnv.forest;
 	}
 
-	public SetIa(mapContext: MapContext): void {
+	public SetIa(mapContext: BattleBlueprint): void {
 		let index = 0;
 		mapContext.Hqs.forEach((hq) => {
 			if (isNullOrUndefined(hq.PlayerName)) {
@@ -358,7 +361,7 @@ export default class HostingComponent extends Component<any, HostState> {
 		});
 	}
 
-	public AssignHqToPlayer(mapContext: MapContext, players: OnlinePlayer[]): void {
+	public AssignHqToPlayer(mapContext: BattleBlueprint, players: OnlinePlayer[]): void {
 		if (mapContext.Hqs.length < players.length) {
 			throw new Error('not enough hq');
 		}
@@ -369,7 +372,7 @@ export default class HostingComponent extends Component<any, HostState> {
 		});
 	}
 
-	private Load(mapContext: MapContext) {
+	private Load(mapContext: BattleBlueprint) {
 		this._appService.Register(mapContext);
 		const context = this._gameContextService.Publish();
 		this._networkService.Register(this._socket, context, this.state.Players.Values());
@@ -398,7 +401,7 @@ export default class HostingComponent extends Component<any, HostState> {
 		}
 	}
 
-	private HandleMap(data: NetworkMessage<MapContext>): void {
+	private HandleMap(data: NetworkMessage<BattleBlueprint>): void {
 		this.setState({});
 		const mapContext = data.Content;
 		mapContext.PlayerName = this.state.Player.Name;

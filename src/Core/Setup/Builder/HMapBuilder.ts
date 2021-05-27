@@ -1,10 +1,10 @@
 import { HexOffset } from '../../Utils/Geometry/HexOffset';
 import { Dictionnary } from '../../Utils/Collections/Dictionnary';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
-import { IPlaygroundBuilder } from './IPlaygroundBuilder';
+import { IMapBuilder } from './IPlaygroundBuilder';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 
-export class HMapBuilder implements IPlaygroundBuilder {
+export class HMapBuilder implements IMapBuilder {
 	public GetRefCoo(ranges: number): HexAxial {
 		return new HexOffset(1, 1).ToAxial();
 	}

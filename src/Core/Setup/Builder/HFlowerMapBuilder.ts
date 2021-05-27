@@ -1,10 +1,10 @@
 import { Dictionnary } from '../../Utils/Collections/Dictionnary';
-import { IPlaygroundBuilder } from './IPlaygroundBuilder';
+import { IMapBuilder } from './IPlaygroundBuilder';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 import { HMapBuilder } from './HMapBuilder';
 
-export class HFlowerMapBuilder implements IPlaygroundBuilder {
+export class HFlowerMapBuilder implements IMapBuilder {
 	private _hBuilder: HMapBuilder;
 
 	constructor() {

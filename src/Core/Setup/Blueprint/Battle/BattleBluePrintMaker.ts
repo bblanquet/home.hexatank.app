@@ -1,33 +1,33 @@
-import { MapType } from './MapType';
-import { RectangleFlowerMapBuilder } from './../Builder/RectangleFlowerMapBuilder';
-import { YFlowerMapBuilder } from './../Builder/YFlowerMapBuilder';
-import { XFlowerMapBuilder } from './../Builder/XFlowerMapBuilder';
-import { HFlowerMapBuilder } from '../Builder/HFlowerMapBuilder';
-import { TriangleFlowerMapBuilder } from './../Builder/TriangleFlowerMapBuilder';
-import { CheeseFlowerMapBuilder } from './../Builder/CheeseFlowerMapBuilder';
-import { DonutFlowerMapBuilder } from './../Builder/DonutFlowerMapBuilder';
-import { Dictionnary } from './../../Utils/Collections/Dictionnary';
-import { SandDecorator } from '../../Items/Cell/Decorator/SandDecorator';
-import { IceDecorator } from '../../Items/Cell/Decorator/IceDecorator';
-import { MapEnv } from './MapEnv';
-import { HexAxial } from '../../Utils/Geometry/HexAxial';
-import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
-import { ForestDecorator } from '../../Items/Cell/Decorator/ForestDecorator';
-import { DistanceHelper } from '../../Items/Unit/MotionHelpers/DistanceHelper';
-import { MapContext } from './MapContext';
-import { MapItem } from './MapItem';
-import { FlowerMapBuilder } from '../Builder/FlowerMapBuilder';
-import { FartestPointsFinder } from '../Builder/FartestPointsFinder';
-import { DecorationType } from './DecorationType';
+import { MapType } from '../MapType';
+import { RectangleFlowerMapBuilder } from '../../Builder/RectangleFlowerMapBuilder';
+import { YFlowerMapBuilder } from '../../Builder/YFlowerMapBuilder';
+import { XFlowerMapBuilder } from '../../Builder/XFlowerMapBuilder';
+import { HFlowerMapBuilder } from '../../Builder/HFlowerMapBuilder';
+import { TriangleFlowerMapBuilder } from '../../Builder/TriangleFlowerMapBuilder';
+import { CheeseFlowerMapBuilder } from '../../Builder/CheeseFlowerMapBuilder';
+import { DonutFlowerMapBuilder } from '../../Builder/DonutFlowerMapBuilder';
+import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
+import { SandDecorator } from '../../../Items/Cell/Decorator/SandDecorator';
+import { IceDecorator } from '../../../Items/Cell/Decorator/IceDecorator';
+import { MapEnv } from '../MapEnv';
+import { HexAxial } from '../../../Utils/Geometry/HexAxial';
+import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
+import { ForestDecorator } from '../../../Items/Cell/Decorator/ForestDecorator';
+import { DistanceHelper } from '../../../Items/Unit/MotionHelpers/DistanceHelper';
+import { BattleBlueprint } from './BattleBlueprint';
+import { MapItem } from '../MapItem';
+import { FlowerMapBuilder } from '../../Builder/FlowerMapBuilder';
+import { FartestPointsFinder } from '../../Builder/FartestPointsFinder';
+import { DecorationType } from '../DecorationType';
 import { DiamondHq } from './DiamondHq';
-import { Decorator } from '../../Items/Cell/Decorator/Decorator';
-import { IPlaygroundBuilder } from '../Builder/IPlaygroundBuilder';
-import { GameSettings } from '../../Framework/GameSettings';
+import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
+import { IMapBuilder } from '../../Builder/IPlaygroundBuilder';
+import { GameSettings } from '../../../Framework/GameSettings';
 
-export class MapGenerator {
-	private _builders: Dictionnary<IPlaygroundBuilder>;
+export class BattleBluePrintMaker {
+	private _builders: Dictionnary<IMapBuilder>;
 	constructor() {
-		this._builders = new Dictionnary<IPlaygroundBuilder>();
+		this._builders = new Dictionnary<IMapBuilder>();
 		this._builders.Add(MapType.Flower.toString(), new FlowerMapBuilder());
 		this._builders.Add(MapType.Cheese.toString(), new CheeseFlowerMapBuilder());
 		this._builders.Add(MapType.Donut.toString(), new DonutFlowerMapBuilder());
@@ -38,8 +38,8 @@ export class MapGenerator {
 		this._builders.Add(MapType.Rectangle.toString(), new RectangleFlowerMapBuilder());
 	}
 
-	public GetMapDefinition(mapSize: number, mapType: MapType, mapMode: MapEnv, hqCount: number = 0): MapContext {
-		const context = new MapContext();
+	public GetBluePrint(mapSize: number, mapType: MapType, mapMode: MapEnv, hqCount: number): BattleBlueprint {
+		const context = new BattleBlueprint();
 		context.MapMode = mapMode;
 		const mapItems = new Array<MapItem>();
 		const mapBuilder = this._builders.Get(mapType.toString());
@@ -50,40 +50,38 @@ export class MapGenerator {
 		const farthestPointManager = new FartestPointsFinder();
 		const excluded = new Dictionnary<HexAxial>();
 
-		if (0 < hqCount) {
-			const hqPositions = farthestPointManager.GetPoints(areas, cells, hqCount);
-			const diamondPositions = this.GetDiamonds(hqPositions, cells, hqCount);
-			let hqs = new Array<MapItem>();
-			//add hqs
-			hqPositions.forEach((hq) => {
-				let hqMapItem = new MapItem();
-				hqMapItem.Position = hq;
-				hqMapItem.Type = DecorationType.Hq;
-				mapItems.push(hqMapItem);
-				excluded.Add(hq.ToString(), hq);
-				hq.GetNeighbours().forEach((p) => {
-					excluded.Add(p.ToString(), p);
-				});
-				hqs.push(hqMapItem);
+		const hqPositions = farthestPointManager.GetPoints(areas, cells, hqCount);
+		const diamondPositions = this.GetDiamonds(hqPositions, cells, hqCount);
+		let hqs = new Array<MapItem>();
+		//add hqs
+		hqPositions.forEach((hq) => {
+			let hqMapItem = new MapItem();
+			hqMapItem.Position = hq;
+			hqMapItem.Type = DecorationType.Hq;
+			mapItems.push(hqMapItem);
+			excluded.Add(hq.ToString(), hq);
+			hq.GetNeighbours().forEach((p) => {
+				excluded.Add(p.ToString(), p);
 			});
+			hqs.push(hqMapItem);
+		});
 
-			context.Hqs = new Array<DiamondHq>();
-			//add diamonds and join them to hq
-			diamondPositions.forEach((diamondCoo) => {
-				let diamonMapItem = new MapItem();
-				diamonMapItem.Position = diamondCoo;
-				diamonMapItem.Type = DecorationType.Hq;
-				mapItems.push(diamonMapItem);
-				excluded.Add(diamondCoo.ToString(), diamondCoo);
-				diamondCoo.GetNeighbours().forEach((p) => {
-					excluded.Add(p.ToString(), p);
-				});
-				let hqDiamond = new DiamondHq();
-				hqDiamond.Diamond = diamonMapItem;
-				hqDiamond.Hq = hqs[diamondPositions.indexOf(diamondCoo)];
-				context.Hqs.push(hqDiamond);
+		context.Hqs = new Array<DiamondHq>();
+		//add diamonds and join them to hq
+		diamondPositions.forEach((diamondCoo) => {
+			let diamonMapItem = new MapItem();
+			diamonMapItem.Position = diamondCoo;
+			diamonMapItem.Type = DecorationType.Hq;
+			mapItems.push(diamonMapItem);
+			excluded.Add(diamondCoo.ToString(), diamondCoo);
+			diamondCoo.GetNeighbours().forEach((p) => {
+				excluded.Add(p.ToString(), p);
 			});
-		}
+			let hqDiamond = new DiamondHq();
+			hqDiamond.Diamond = diamonMapItem;
+			hqDiamond.Hq = hqs[diamondPositions.indexOf(diamondCoo)];
+			context.Hqs.push(hqDiamond);
+		});
 
 		var decorator: Decorator = this.GetDecorator(mapMode);
 		//decorate tree, water, stone the map

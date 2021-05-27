@@ -1,10 +1,10 @@
 import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { XMapBuilder } from './XMapBuilder';
-import { IPlaygroundBuilder } from './IPlaygroundBuilder';
+import { IMapBuilder } from './IPlaygroundBuilder';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 
-export class XFlowerMapBuilder implements IPlaygroundBuilder {
+export class XFlowerMapBuilder implements IMapBuilder {
 	private _xBuilder: XMapBuilder;
 
 	constructor() {

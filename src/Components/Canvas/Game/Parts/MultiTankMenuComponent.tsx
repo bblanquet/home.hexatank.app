@@ -8,12 +8,13 @@ import { MultiOrderMenuItem } from '../../../../Core/Menu/Buttons/MultiOrderMenu
 import { UnitGroup } from '../../../../Core/Items/UnitGroup';
 import { Factory, FactoryKey } from '../../../../Factory';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
+import { GameContext } from '../../../../Core/Framework/GameContext';
 
 export default class MultiTankMenuComponent extends Component<{ item: UnitGroup }, {}> {
-	private _interactionService: IInteractionService;
+	private _interactionService: IInteractionService<GameContext>;
 	constructor() {
 		super();
-		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
+		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.Interaction);
 	}
 	private SendContext(item: Item): void {
 		const interaction = this._interactionService.Publish();

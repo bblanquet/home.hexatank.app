@@ -35,6 +35,8 @@ import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
 import { MultiCellMenuItem } from '../../../Core/Menu/Buttons/MultiCellMenuItem';
 import { IAppService } from '../../../Services/App/IAppService';
 import { FlagCellCombination } from '../../../Core/Interaction/Combination/FlagCellCombination';
+import { BattleBlueprint } from '../../../Core/Setup/Blueprint/Battle/BattleBlueprint';
+import { CamouflageGameContext } from '../../../Core/Framework/CamouflageGameContext';
 
 export default class CamouflageCanvasComponent extends Component<
 	any,
@@ -53,22 +55,26 @@ export default class CamouflageCanvasComponent extends Component<
 	}
 > {
 	private _diamonds: number;
-	private _gameContextService: IGameContextService;
+	private _gameContextService: IGameContextService<BattleBlueprint, CamouflageGameContext>;
 	private _soundService: ISoundService;
 	private _networkService: INetworkService;
-	private _interactionService: IInteractionService;
-	private _appService: IAppService;
-	private _gameContext: GameContext;
+	private _interactionService: IInteractionService<CamouflageGameContext>;
+	private _appService: IAppService<BattleBlueprint>;
+	private _gameContext: CamouflageGameContext;
 
 	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
 
 	constructor() {
 		super();
-		this._gameContextService = Factory.Load<IGameContextService>(FactoryKey.GameContext);
+		this._gameContextService = Factory.Load<IGameContextService<BattleBlueprint, CamouflageGameContext>>(
+			FactoryKey.CamouflageGameContext
+		);
 		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
-		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.CamouflageInteraction);
-		this._appService = Factory.Load<IAppService>(FactoryKey.App);
+		this._interactionService = Factory.Load<IInteractionService<CamouflageGameContext>>(
+			FactoryKey.CamouflageInteraction
+		);
+		this._appService = Factory.Load<IAppService<BattleBlueprint>>(FactoryKey.CamouflageApp);
 		this._gameContext = this._gameContextService.Publish();
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
 		this.setState({
@@ -95,13 +101,6 @@ export default class CamouflageCanvasComponent extends Component<
 
 	componentDidMount() {
 		this._soundService.Pause(AudioContent.menuMusic);
-		const playerHq = this._gameContext.GetPlayerHq();
-		if (playerHq) {
-			playerHq.OnTruckChanged.On(this.HandleTruckChanged.bind(this));
-			playerHq.OnTankRequestChanged.On(this.HandleTankChanged.bind(this));
-			playerHq.OnDiamondCountChanged.On(this.HandleDiamondChanged.bind(this));
-			playerHq.OnCashMissing.On(this.HandleCashMissing.bind(this));
-		}
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));
@@ -121,25 +120,6 @@ export default class CamouflageCanvasComponent extends Component<
 		});
 	}
 
-	private HandleTruckChanged(obj: any, request: number): void {
-		this.setState({
-			TruckRequestCount: request
-		});
-	}
-
-	private HandleTankChanged(obj: any, request: number): void {
-		this.setState({
-			TankRequestCount: request
-		});
-	}
-
-	private HandleDiamondChanged(obj: any, amount: number): void {
-		this._diamonds = amount;
-		this.setState({
-			Amount: amount
-		});
-	}
-
 	private HandleSelection(obj: any, selectedItem: Item): void {
 		((selectedItem as unknown) as ISelectable).OnSelectionChanged.On(this._onItemSelectionChanged);
 		this.setState({
@@ -151,14 +131,6 @@ export default class CamouflageCanvasComponent extends Component<
 		this.setState({
 			IsSettingPatrol: isSettingPatrol
 		});
-	}
-
-	private HandleCashMissing(obj: any, e: boolean): void {
-		if (e !== this.state.HasWarning) {
-			this.setState({
-				HasWarning: e
-			});
-		}
 	}
 
 	private HandleGameStatus(obj: any, e: GameStatus): void {
@@ -181,18 +153,20 @@ export default class CamouflageCanvasComponent extends Component<
 	}
 
 	private SetMenu(): void {
-		const newValue = !this.state.HasMenu;
+		const hasMenu = !this.state.HasMenu;
 		this.setState({
-			HasMenu: newValue
+			HasMenu: hasMenu
 		});
-		if (newValue) {
-			this._soundService.GetSoundManager().PauseAll();
-		} else if (!this._soundService.IsMute()) {
-			this._soundService.GetSoundManager().PlayAll();
+		if (this._soundService.GetSoundManager()) {
+			if (hasMenu) {
+				this._soundService.GetSoundManager().PauseAll();
+			} else if (!this._soundService.IsMute()) {
+				this._soundService.GetSoundManager().PlayAll();
+			}
 		}
 
 		if (!this._networkService.HasSocket()) {
-			GameSettings.IsPause = newValue;
+			GameSettings.IsPause = hasMenu;
 		}
 	}
 

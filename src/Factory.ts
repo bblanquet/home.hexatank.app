@@ -18,6 +18,7 @@ export enum FactoryKey {
 	RecordApp,
 	Compare,
 	GameContext,
+	CamouflageGameContext,
 	Layer,
 	Network,
 	Update,

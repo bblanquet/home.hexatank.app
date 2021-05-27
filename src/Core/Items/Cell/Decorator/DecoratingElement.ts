@@ -1,4 +1,4 @@
-import { DecorationType } from '../../../Setup/Generator/DecorationType';
+import { DecorationType } from '../../../Setup/Blueprint/DecorationType';
 
 export class DecoratingElement {
 	public Count: number = 0;

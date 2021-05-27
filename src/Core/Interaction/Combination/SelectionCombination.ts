@@ -1,18 +1,18 @@
+import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
+import { IGameContext } from './../../Framework/IGameContext';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { ISelectable } from '../../ISelectable';
 import { Cell } from '../../Items/Cell/Cell';
 import { BasicField } from '../../Items/Cell/Field/BasicField';
 import { CellState } from '../../Items/Cell/CellState';
 import { CombinationContext } from './CombinationContext';
-import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { ISelectableChecker } from '../ISelectableChecker';
-import { GameContext } from '../../Framework/GameContext';
 
 export class SelectionCombination extends AbstractSingleCombination {
 	private _checker: ISelectableChecker;
 
-	constructor(isSelectable: ISelectableChecker, private _gameContext: GameContext) {
+	constructor(isSelectable: ISelectableChecker, private _gameContext: IGameContext) {
 		super();
 		this._checker = isSelectable;
 	}
@@ -38,7 +38,7 @@ export class SelectionCombination extends AbstractSingleCombination {
 					this._gameContext.OnItemSelected.Invoke(this, field);
 				} else if (
 					selectablecell.GetField() instanceof Headquarter &&
-					selectablecell.GetField() === this._gameContext.GetPlayerHq()
+					(selectablecell.GetField() as Headquarter) === this._gameContext.GetPlayer()
 				) {
 					const field = selectablecell.GetField() as Headquarter;
 					field.SetSelected(true);

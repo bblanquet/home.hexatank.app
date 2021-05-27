@@ -4,9 +4,10 @@ import { Item } from '../Items/Item';
 import { Cell } from '../Items/Cell/Cell';
 import { Vehicle } from '../Items/Unit/Vehicle';
 import { ReactorField } from '../Items/Cell/Field/Bonus/ReactorField';
+import { AliveItem } from '../Items/AliveItem';
 
 export class SelectableChecker implements ISelectableChecker {
-	constructor(private _currentHq: Headquarter) {}
+	constructor(private _currentHq: AliveItem) {}
 
 	public IsSelectable(item: Item): boolean {
 		if (item instanceof Cell) {

@@ -10,7 +10,7 @@ import { Factory, FactoryKey } from '../../Factory';
 import * as PIXI from 'pixi.js';
 import { MultiSelectionContext } from '../../Core/Menu/Smart/MultiSelectionContext';
 
-export class InteractionService implements IInteractionService {
+export class InteractionService implements IInteractionService<GameContext> {
 	private _layerService: ILayerService;
 	private _multiSelectionContext: MultiSelectionContext;
 	private _inputNotifier: InputNotifier;

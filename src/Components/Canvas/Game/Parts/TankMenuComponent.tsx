@@ -9,12 +9,13 @@ import { InteractionKind } from '../../../../Core/Interaction/IInteractionContex
 import { Vehicle } from '../../../../Core/Items/Unit/Vehicle';
 import { Factory, FactoryKey } from '../../../../Factory';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
+import { GameContext } from '../../../../Core/Framework/GameContext';
 
 export default class TankMenuComponent extends Component<{ Tank: Vehicle; isSettingPatrol: boolean }, {}> {
-	private _interactionService: IInteractionService;
+	private _interactionService: IInteractionService<GameContext>;
 	constructor() {
 		super();
-		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
+		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.Interaction);
 	}
 	private SendContext(item: Item): void {
 		const interaction = this._interactionService.Publish();

@@ -1,10 +1,10 @@
 import { RectangleMapBuilder } from './RectangleMapBuilder';
 import { Dictionnary } from './../../Utils/Collections/Dictionnary';
-import { IPlaygroundBuilder } from './IPlaygroundBuilder';
+import { IMapBuilder } from './IPlaygroundBuilder';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 
-export class RectangleFlowerMapBuilder implements IPlaygroundBuilder {
+export class RectangleFlowerMapBuilder implements IMapBuilder {
 	private _rectangleBuilder: RectangleMapBuilder;
 
 	constructor() {

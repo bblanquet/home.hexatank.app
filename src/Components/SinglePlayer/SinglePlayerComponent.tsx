@@ -1,8 +1,8 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { MapSetting } from '../Form/MapSetting';
-import { MapGenerator } from '../../Core/Setup/Generator/MapGenerator';
-import { MapEnv } from '../../Core/Setup/Generator/MapEnv';
+import { BattleBluePrintMaker } from '../../Core/Setup/Blueprint/Battle/BattleBluePrintMaker';
+import { MapEnv } from '../../Core/Setup/Blueprint/MapEnv';
 import MdPanelComponent from '../Common/Panel/MdPanelComponent';
 import MapFormComponent from '../Form/MapFormComponent';
 import { IAppService } from '../../Services/App/IAppService';
@@ -11,11 +11,16 @@ import Redirect from '../Redirect/RedirectComponent';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
-import { MapType } from '../../Core/Setup/Generator/MapType';
+import { MapType } from '../../Core/Setup/Blueprint/MapType';
+import { BattleBlueprint } from '../../Core/Setup/Blueprint/Battle/BattleBlueprint';
+import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 
 export default class SinglePlayerComponent extends Component<any, MapSetting> {
+	private _profilService: IPlayerProfilService;
+
 	constructor(props: any) {
 		super(props);
+		this._profilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
 		this.setState(new MapSetting());
 	}
 
@@ -82,14 +87,14 @@ export default class SinglePlayerComponent extends Component<any, MapSetting> {
 			hqCount += 1;
 		}
 
-		const mapContext = new MapGenerator().GetMapDefinition(
+		const mapContext = new BattleBluePrintMaker().GetBluePrint(
 			this.ConvertSize(),
 			this.ConvertMapType(),
 			this.ConvertEnv(),
 			hqCount
 		);
 		if (!this.state.onylIa) {
-			mapContext.Hqs[0].PlayerName = mapContext.PlayerName;
+			mapContext.Hqs[0].PlayerName = this._profilService.GetProfil().LastPlayerName;
 		}
 		mapContext.Hqs.forEach((hq, index) => {
 			if (!hq.PlayerName) {
@@ -98,7 +103,7 @@ export default class SinglePlayerComponent extends Component<any, MapSetting> {
 			}
 			index += 1;
 		});
-		Factory.Load<IAppService>(FactoryKey.App).Register(mapContext);
+		Factory.Load<IAppService<BattleBlueprint>>(FactoryKey.App).Register(mapContext);
 		route('/Canvas', true);
 	}
 

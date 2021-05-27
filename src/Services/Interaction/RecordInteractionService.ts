@@ -13,7 +13,7 @@ import { ClearTrashCombination } from '../../Core/Interaction/Combination/ClearT
 import { SelectionCombination } from '../../Core/Interaction/Combination/SelectionCombination';
 import { MultiSelectionContext } from '../../Core/Menu/Smart/MultiSelectionContext';
 
-export class RecordInteractionService implements IInteractionService {
+export class RecordInteractionService implements IInteractionService<GameContext> {
 	private _inputNotifier: InputNotifier;
 	private _interaction: InteractionContext;
 	public OnMultiMenuShowed: LiteEvent<boolean> = new LiteEvent<boolean>();

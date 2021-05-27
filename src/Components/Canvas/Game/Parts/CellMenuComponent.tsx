@@ -20,10 +20,10 @@ import { IInteractionService } from '../../../../Services/Interaction/IInteracti
 import { Factory, FactoryKey } from '../../../../Factory';
 
 export default class CellMenuComponent extends Component<{ Item: Item; GameContext: GameContext }, {}> {
-	private _interactionService: IInteractionService;
+	private _interactionService: IInteractionService<GameContext>;
 	constructor() {
 		super();
-		this._interactionService = Factory.Load<IInteractionService>(FactoryKey.Interaction);
+		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.Interaction);
 	}
 	render() {
 		return (

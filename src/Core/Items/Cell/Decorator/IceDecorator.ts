@@ -1,6 +1,6 @@
 import { DecoratingElement } from './DecoratingElement';
 import { Decorator } from './Decorator';
-import { DecorationType } from '../../../Setup/Generator/DecorationType';
+import { DecorationType } from '../../../Setup/Blueprint/DecorationType';
 
 export class IceDecorator extends Decorator {
 	constructor() {

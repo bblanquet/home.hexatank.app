@@ -1,3 +1,4 @@
+import { Tank } from './../../../Items/Unit/Tank';
 import { SvgArchive } from './../../../Framework/SvgArchiver';
 import { AboveItem } from './../../../Items/AboveItem';
 import { HqSkinHelper } from './../Hq/HqSkinHelper';
@@ -18,7 +19,7 @@ import { HexAxial } from '../../../Utils/Geometry/HexAxial';
 import { MapEnv } from '../../Blueprint/MapEnv';
 import { Floor } from '../../../Items/Environment/Floor';
 import { Identity } from '../../../Items/Identity';
-import { BouncingScaleAnimator } from '../../../Items/Animator/BouncingScaleAnimator';
+import { PatrolOrder } from '../../../Ia/Order/Composite/PatrolOrder';
 
 export class CamouflageRenderer {
 	public Render(blueprint: CamouflageBluePrint): CamouflageGameContext {
@@ -39,18 +40,30 @@ export class CamouflageRenderer {
 		this.SetLands(cells, blueprint.MapMode, areas, updatableItem);
 		this.AddClouds(updatableItem);
 
-		const departure = new HexAxial(blueprint.Departure.Position.Q, blueprint.Departure.Position.R);
-		const arrival = new HexAxial(blueprint.Arrival.Position.Q, blueprint.Arrival.Position.R);
+		const departure = new HexAxial(blueprint.Goal.Departure.Position.Q, blueprint.Goal.Departure.Position.R);
+		const arrival = new HexAxial(blueprint.Goal.Arrival.Position.Q, blueprint.Goal.Arrival.Position.R);
 		const spots = [ departure, arrival ];
 
 		this.SetHqLand(cells, SvgArchive.nature.hq, spots, updatableItem);
 		this.SetHqLand(cells, SvgArchive.nature.hq2, spots, updatableItem, 1);
 
 		const truck = new Truck(new Identity('player', new HqSkinHelper().GetSkin(0), true));
+		truck.OverrideLife(10, 10);
 		truck.SetPosition(cells.Get(departure.ToString()));
 		updatableItem.push(truck);
 		const arrivalCell = cells.Get(arrival.ToString());
 		updatableItem.push(new AboveItem(arrivalCell, SvgArchive.arrow));
+
+		const iaId = new Identity('ia', new HqSkinHelper().GetSkin(1), false);
+		blueprint.Patrols.forEach((patrol) => {
+			const tank = new Tank(iaId, false);
+			const d = new HexAxial(patrol.Departure.Position.Q, patrol.Departure.Position.R);
+			const a = new HexAxial(patrol.Arrival.Position.Q, patrol.Arrival.Position.R);
+			const dCell = cells.Get(d.ToString());
+			const aCell = cells.Get(a.ToString());
+			tank.SetPosition(dCell);
+			tank.SetOrder(new PatrolOrder([ aCell, dCell ], tank));
+		});
 
 		return new CamouflageGameContext(cells.Values(), truck, arrivalCell);
 	}

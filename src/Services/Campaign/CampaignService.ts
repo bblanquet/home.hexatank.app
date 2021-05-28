@@ -20,10 +20,7 @@ export class CampaignService implements ICampaignService {
 		this._playerProfil = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
 
 		this._training = new Dictionnary<CamouflageBluePrint>();
-		this._training.Add(
-			(1).toString(),
-			new CamouflageBluePrintMaker().GetBluePrint(+6, MapType.Rectangle, MapEnv.forest)
-		);
+		this._training.Add((1).toString(), new CamouflageBluePrintMaker().GetBluePrint());
 
 		this._red = new Dictionnary<BattleBlueprint>();
 		this._red.Add((1).toString(), new BattleBluePrintMaker().GetBluePrint(+6, MapType.Flower, MapEnv.forest, 2));

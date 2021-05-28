@@ -117,6 +117,11 @@ export abstract class AliveItem extends Item {
 		this.UpdateDamage();
 	}
 
+	public OverrideLife(life: number, currentLife: number): void {
+		this.Life = life;
+		this.TotalLife = currentLife;
+	}
+
 	public abstract IsEnemy(item: AliveItem): boolean;
 
 	public abstract GetCurrentCell(): Cell;

@@ -27,16 +27,7 @@ export default class TrainingComponent extends Component<any, any> {
 				<NavbarComponent>
 					<div class="generalContainer absolute-center-middle">
 						<div class="container-center">
-							<FaceComponent
-								eyes={[]}
-								mouths={[
-									'fill-training-flag-1',
-									'fill-training-flag-2',
-									'fill-training-flag-3',
-									'fill-training-flag-4'
-								]}
-								face={'fill-training'}
-							/>
+							<FaceComponent eyes={[]} mouths={[]} face={'fill-training'} />
 						</div>
 						<div class="container-center">
 							<div class="container-center-horizontal">

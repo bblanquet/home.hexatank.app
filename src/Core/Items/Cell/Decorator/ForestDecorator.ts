@@ -5,7 +5,7 @@ import { DecorationType } from '../../../Setup/Blueprint/DecorationType';
 export class ForestDecorator extends Decorator {
 	constructor() {
 		super();
-		this._blockingCells = [
+		this.BlockingCells = [
 			new DecoratingElement(DecorationType.Rock),
 			new DecoratingElement(DecorationType.Tree),
 			new DecoratingElement(DecorationType.DarkTree),
@@ -13,7 +13,7 @@ export class ForestDecorator extends Decorator {
 			new DecoratingElement(DecorationType.Volcano, 1)
 		];
 
-		this._decorationCells = [
+		this.DecorationCells = [
 			new DecoratingElement(DecorationType.Stone),
 			new DecoratingElement(DecorationType.Bush),
 			new DecoratingElement(DecorationType.Leaf),

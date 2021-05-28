@@ -8,18 +8,18 @@ import { Item } from '../../Item';
 import { SvgArchive } from '../../../Framework/SvgArchiver';
 
 export abstract class Decorator {
-	protected _blockingCells = new Array<DecoratingElement>();
-	protected _decorationCells = new Array<DecoratingElement>();
+	public BlockingCells = new Array<DecoratingElement>();
+	public DecorationCells = new Array<DecoratingElement>();
 
 	public GetDecoration(): DecorationType {
 		var random = Math.random();
 		if (random <= 0.25) {
-			const bc = this._blockingCells.filter((i) => i.IsUnderLimit());
+			const bc = this.BlockingCells.filter((i) => i.IsUnderLimit());
 			var element = bc.find((i) => i.Count === Math.min(...bc.map((c) => c.Count)));
 			element.Count += 1;
 			return element.Kind;
 		} else {
-			const bc = this._decorationCells.filter((i) => i.IsUnderLimit());
+			const bc = this.DecorationCells.filter((i) => i.IsUnderLimit());
 			var element = bc.find((i) => i.Count === Math.min(...bc.map((c) => c.Count)));
 			element.Count += 1;
 			return element.Kind;

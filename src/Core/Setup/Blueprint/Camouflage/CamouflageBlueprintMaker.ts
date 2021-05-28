@@ -1,4 +1,4 @@
-import { LightHexAxial } from './../../../Utils/Geometry/HexAxial';
+import { MapItemPair } from './MapItemPair';
 import { MapType } from '../MapType';
 import { RectangleFlowerMapBuilder } from '../../Builder/RectangleFlowerMapBuilder';
 import { YFlowerMapBuilder } from '../../Builder/YFlowerMapBuilder';
@@ -36,19 +36,34 @@ export class CamouflageBluePrintMaker {
 		this._builders.Add(MapType.Rectangle.toString(), new RectangleFlowerMapBuilder());
 	}
 
-	public GetBluePrint(mapSize: number, mapType: MapType, mapMode: MapEnv): CamouflageBluePrint {
+	public GetBluePrint(): CamouflageBluePrint {
 		const blueprint = new CamouflageBluePrint();
-		blueprint.MapMode = mapMode;
+		blueprint.MapMode = MapEnv.forest;
 		const mapItems = new Array<MapItem>();
-		const mapBuilder = this._builders.Get(mapType.toString());
-		const coos = mapBuilder.GetAllCoos(mapSize);
+		const mapBuilder = this._builders.Get(MapType.Rectangle.toString());
+		const coos = mapBuilder.GetAllCoos(6);
 		GameSettings.MapSize = coos.length;
 		const cells = Dictionnary.To<HexAxial>((e) => e.ToString(), coos);
-		const areas = mapBuilder.GetAreaCoos(mapSize);
+		const areas = mapBuilder.GetAreaCoos(6);
 		const farthestPointManager = new FartestPointsFinder();
 		const excluded = new Dictionnary<HexAxial>();
 
+		const patrolCells = [
+			MapItem.Create(1, 5),
+			MapItem.Create(6, 6),
+			MapItem.Create(8, 4),
+			MapItem.Create(2, 3),
+			MapItem.Create(2, 1),
+			MapItem.Create(8, 1)
+		];
+		blueprint.Patrols = [
+			MapItemPair.Create(patrolCells[0], patrolCells[1]),
+			MapItemPair.Create(patrolCells[2], patrolCells[3]),
+			MapItemPair.Create(patrolCells[4], patrolCells[5])
+		];
+
 		const spots = farthestPointManager.GetPoints(areas, cells, 2);
+		blueprint.Goal = new MapItemPair();
 		//add hqs
 		spots.forEach((spot, index) => {
 			let hqMapItem = new MapItem();
@@ -60,27 +75,27 @@ export class CamouflageBluePrintMaker {
 				excluded.Add(p.ToString(), p);
 			});
 			if (index === 0) {
-				blueprint.Departure = new MapItem();
-				blueprint.Departure.Position = new LightHexAxial();
-				blueprint.Departure.Position.Q = spot.Q;
-				blueprint.Departure.Position.R = spot.R;
+				blueprint.Goal.Departure = MapItem.Create(spot.Q, spot.R);
 			}
 
 			if (index === 1) {
-				blueprint.Arrival = new MapItem();
-				blueprint.Arrival.Position = new LightHexAxial();
-				blueprint.Arrival.Position.Q = spot.Q;
-				blueprint.Arrival.Position.R = spot.R;
+				blueprint.Goal.Arrival = MapItem.Create(spot.Q, spot.R);
 			}
 		});
 
-		var decorator: Decorator = this.GetDecorator(mapMode);
+		var decorator: Decorator = this.GetDecorator(MapEnv.forest);
 		//decorate tree, water, stone the map
 		coos.forEach((coo) => {
 			let mapItem = new MapItem();
 			mapItem.Position = coo;
-			if (!excluded.Exist(coo.ToString())) {
+			if (
+				!excluded.Exist(coo.ToString()) &&
+				!patrolCells.some((p) => p.Position.Q === mapItem.Position.Q && p.Position.R === mapItem.Position.R)
+			) {
 				mapItem.Type = decorator.GetDecoration();
+				if (this.IsBlockingItem(decorator, mapItem) && !this.IsAroundEmpty(coo, mapItems, decorator)) {
+					mapItem.Type = DecorationType.None;
+				}
 			} else {
 				mapItem.Type = DecorationType.None;
 			}
@@ -93,6 +108,21 @@ export class CamouflageBluePrintMaker {
 		blueprint.Items = mapItems;
 		blueprint.CenterItem = mapItems[0];
 		return blueprint;
+	}
+
+	public IsAroundEmpty(coo: HexAxial, mapItems: MapItem[], decorator: Decorator): boolean {
+		let isEmpty = true;
+		coo.GetNeighbours(1).forEach((n) => {
+			const mapItem = mapItems.find((m) => m.Position.ToString() === n.ToString());
+			if (mapItem && this.IsBlockingItem(decorator, mapItem)) {
+				isEmpty = false;
+			}
+		});
+		return isEmpty;
+	}
+
+	private IsBlockingItem(decorator: Decorator, mapItem: MapItem): boolean {
+		return decorator.BlockingCells.some((e) => e.Kind === mapItem.Type);
 	}
 
 	private GetDecorator(mapMode: MapEnv) {

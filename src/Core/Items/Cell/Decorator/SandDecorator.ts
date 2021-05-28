@@ -4,14 +4,14 @@ import { DecorationType } from '../../../Setup/Blueprint/DecorationType';
 export class SandDecorator extends Decorator {
 	constructor() {
 		super();
-		this._blockingCells = [
+		this.BlockingCells = [
 			new DecoratingElement(DecorationType.SandRock),
 			new DecoratingElement(DecorationType.palmTree),
 			new DecoratingElement(DecorationType.SandCactus),
 			new DecoratingElement(DecorationType.Water)
 		];
 
-		this._decorationCells = [
+		this.DecorationCells = [
 			new DecoratingElement(DecorationType.SandStone),
 			new DecoratingElement(DecorationType.SandCactusPlants),
 			new DecoratingElement(DecorationType.Bush),

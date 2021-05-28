@@ -1,4 +1,4 @@
-import { GameContext } from './../../Framework/GameContext';
+import { GameContext } from '../../Setup/Context/GameContext';
 import { TankMenuItem } from '../../Menu/Buttons/TankMenuItem';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { CombinationContext } from './CombinationContext';

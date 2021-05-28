@@ -5,7 +5,7 @@ import { Cell } from '../../../Items/Cell/Cell';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
-import { GameContext } from '../../../Framework/GameContext';
+import { GameContext } from '../../../Setup/Context/GameContext';
 import { Factory, FactoryKey } from '../../../../Factory';
 
 export class MultiUnitSelectionCombination extends AbstractSingleCombination {

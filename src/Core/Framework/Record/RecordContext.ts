@@ -4,7 +4,7 @@ import { Tank } from '../../Items/Unit/Tank';
 import { RecordUnit } from './RecordUnit';
 import { RecordKind } from './RecordKind';
 import { RecordObject } from './RecordObject';
-import { GameContext } from '../GameContext';
+import { GameContext } from '../../Setup/Context/GameContext';
 import { BattleBlueprint } from '../../Setup/Blueprint/Battle/BattleBlueprint';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { Vehicle } from '../../Items/Unit/Vehicle';

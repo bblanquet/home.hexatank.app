@@ -11,7 +11,7 @@ import { TargetPacket } from './Packets/TargetPacket';
 import { PacketKind } from './../../Network/Message/PacketKind';
 import { NetworkMessage } from './../../Network/Message/NetworkMessage';
 import { NetworkSocket } from './../../Network/NetworkSocket';
-import { GameContext } from './GameContext';
+import { GameContext } from '../Setup/Context/GameContext';
 import { Vehicle } from '../Items/Unit/Vehicle';
 import { Cell } from '../Items/Cell/Cell';
 import { PeerSocket } from '../../Network/Peer/PeerSocket';

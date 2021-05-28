@@ -4,7 +4,7 @@ import { MultiCellMenuItem } from '../../../Menu/Buttons/MultiCellMenuItem';
 import { MultiTankMenuItem } from '../../../Menu/Buttons/MultiTankMenuItem';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
 import { Factory, FactoryKey } from '../../../../Factory';
-import { GameContext } from '../../../Framework/GameContext';
+import { GameContext } from '../../../Setup/Context/GameContext';
 
 export class ClearMultiSelectionMenuCombination extends AbstractSingleCombination {
 	private _isShowing: boolean = false;

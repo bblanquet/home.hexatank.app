@@ -1,7 +1,7 @@
 import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { HexAxial } from './../../Utils/Geometry/HexAxial';
 import { BattleBlueprint } from '../../Setup/Blueprint/Battle/BattleBlueprint';
-import { GameContext } from './../../Framework/GameContext';
+import { GameContext } from '../../Setup/Context/GameContext';
 import { BobBrain } from '../Brains/BobBrain';
 import { Area } from './Utils/Area';
 import { AreaSearch } from './Utils/AreaSearch';

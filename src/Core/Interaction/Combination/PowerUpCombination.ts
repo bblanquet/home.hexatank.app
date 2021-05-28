@@ -3,7 +3,7 @@ import { CombinationContext } from './CombinationContext';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { GameSettings } from '../../Framework/GameSettings';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
-import { GameContext } from '../../Framework/GameContext';
+import { GameContext } from '../../Setup/Context/GameContext';
 
 export class PowerUpCombination extends AbstractSingleCombination {
 	constructor(private _gameContext: GameContext) {

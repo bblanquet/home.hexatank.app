@@ -8,7 +8,7 @@ import { IGameContextService } from '../../Services/GameContext/IGameContextServ
 import { IKeyService } from '../../Services/Key/IKeyService';
 import { IsMobile } from '../../Core/Utils/ToolBox';
 import { BattleBlueprint } from '../../Core/Setup/Blueprint/Battle/BattleBlueprint';
-import { IGameContext } from '../../Core/Framework/IGameContext';
+import { IGameContext } from '../../Core/Setup/Context/IGameContext';
 import { IBlueprint } from '../../Core/Setup/Blueprint/IBlueprint';
 
 export default class CanvasComponent extends Component<
@@ -30,9 +30,6 @@ export default class CanvasComponent extends Component<
 		this._keyService = Factory.Load<IKeyService>(FactoryKey.Key);
 		this._appService = Factory.Load<IAppService<BattleBlueprint>>(this._keyService.GetAppKey());
 		this._updater = Factory.Load<IUpdateService>(FactoryKey.Update).Publish();
-		// this._gameContextService = Factory.Load<IGameContextService<BattleBlueprint, GameContext>>(
-		// 	FactoryKey.GameContext
-		// );
 		this._stop = true;
 	}
 
@@ -76,7 +73,7 @@ export default class CanvasComponent extends Component<
 
 	protected SetCenter(): void {
 		const gameContext = this.props.gameContext.Publish();
-		if (gameContext) {
+		if (gameContext && gameContext.GetPlayer()) {
 			const player = gameContext.GetPlayer();
 			const hqPoint = player.GetBoundingBox().GetCentralPoint();
 			const halfWidth = this._width / 2;

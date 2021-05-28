@@ -9,7 +9,6 @@ import TruckMenuComponent from '../Game/Parts/TruckMenuComponent';
 import PopupMenuComponent from '../../PopupMenu/PopupMenuComponent';
 import { GameStatus } from '../../../Core/Framework/GameStatus';
 import { OnlinePlayer } from '../../../Network/OnlinePlayer';
-import PopupComponent from '../../Popup/PopupComponent';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
 import { INetworkService } from '../../../Services/Network/INetworkService';
 import { IInteractionService } from '../../../Services/Interaction/IInteractionService';
@@ -24,11 +23,10 @@ import { MultiTankMenuItem } from '../../../Core/Menu/Buttons/MultiTankMenuItem'
 import Visible from '../../Common/Visible/VisibleComponent';
 import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
 import { MultiCellMenuItem } from '../../../Core/Menu/Buttons/MultiCellMenuItem';
-import { IAppService } from '../../../Services/App/IAppService';
-import { FlagCellCombination } from '../../../Core/Interaction/Combination/FlagCellCombination';
 import { BattleBlueprint } from '../../../Core/Setup/Blueprint/Battle/BattleBlueprint';
-import { CamouflageGameContext } from '../../../Core/Framework/CamouflageGameContext';
 import SmPopupComponent from '../../SmPopup/SmPopupComponent';
+import { CamouflageContext } from '../../../Core/Setup/Context/CamouflageContext';
+import { CamouflageBlueprint } from '../../../Core/Setup/Blueprint/Camouflage/CamouflageBlueprint';
 
 export default class CamouflageCanvasComponent extends Component<
 	any,
@@ -46,27 +44,24 @@ export default class CamouflageCanvasComponent extends Component<
 		IsSettingPatrol: boolean;
 	}
 > {
-	private _diamonds: number;
-	private _gameContextService: IGameContextService<BattleBlueprint, CamouflageGameContext>;
+	private _gameContextService: IGameContextService<CamouflageBlueprint, CamouflageContext>;
 	private _soundService: ISoundService;
 	private _networkService: INetworkService;
-	private _interactionService: IInteractionService<CamouflageGameContext>;
-	private _appService: IAppService<BattleBlueprint>;
-	private _gameContext: CamouflageGameContext;
+	private _interactionService: IInteractionService<CamouflageContext>;
+	private _gameContext: CamouflageContext;
 
 	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
 
 	constructor() {
 		super();
-		this._gameContextService = Factory.Load<IGameContextService<BattleBlueprint, CamouflageGameContext>>(
+		this._gameContextService = Factory.Load<IGameContextService<CamouflageBlueprint, CamouflageContext>>(
 			FactoryKey.CamouflageGameContext
 		);
 		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
-		this._interactionService = Factory.Load<IInteractionService<CamouflageGameContext>>(
+		this._interactionService = Factory.Load<IInteractionService<CamouflageContext>>(
 			FactoryKey.CamouflageInteraction
 		);
-		this._appService = Factory.Load<IAppService<BattleBlueprint>>(FactoryKey.CamouflageApp);
 		this._gameContext = this._gameContextService.Publish();
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
 		this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));
@@ -80,7 +75,6 @@ export default class CamouflageCanvasComponent extends Component<
 			GameStatus: GameStatus.Pending,
 			IsSettingPatrol: false
 		});
-		this._diamonds = GameSettings.PocketMoney;
 	}
 	private OnItemSelectionChanged(obj: any, item: ISelectable): void {
 		if (!item.IsSelected()) {

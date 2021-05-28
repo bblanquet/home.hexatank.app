@@ -9,7 +9,7 @@ import { InteractionKind } from '../../../../Core/Interaction/IInteractionContex
 import { Vehicle } from '../../../../Core/Items/Unit/Vehicle';
 import { Factory, FactoryKey } from '../../../../Factory';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
-import { GameContext } from '../../../../Core/Framework/GameContext';
+import { GameContext } from '../../../../Core/Setup/Context/GameContext';
 
 export default class TankMenuComponent extends Component<{ Tank: Vehicle; isSettingPatrol: boolean }, {}> {
 	private _interactionService: IInteractionService<GameContext>;

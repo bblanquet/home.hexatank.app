@@ -5,7 +5,7 @@ import { Item } from '../../../../Core/Items/Item';
 import { InteractionKind } from '../../../../Core/Interaction/IInteractionContext';
 import { TankMenuItem } from '../../../../Core/Menu/Buttons/TankMenuItem';
 import { TruckMenuItem } from '../../../../Core/Menu/Buttons/TruckMenuItem';
-import { GameContext } from '../../../../Core/Framework/GameContext';
+import { GameContext } from '../../../../Core/Setup/Context/GameContext';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
 import { Factory, FactoryKey } from '../../../../Factory';
 

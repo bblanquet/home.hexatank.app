@@ -1,6 +1,6 @@
 import { Component, h } from 'preact';
 import { Item } from '../../../Core/Items/Item';
-import { GameContext } from '../../../Core/Framework/GameContext';
+import { GameContext } from '../../../Core/Setup/Context/GameContext';
 import { Tank } from '../../../Core/Items/Unit/Tank';
 import { Truck } from '../../../Core/Items/Unit/Truck';
 import { Cell } from '../../../Core/Items/Cell/Cell';

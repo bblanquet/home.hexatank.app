@@ -1,4 +1,4 @@
-import { GameContext } from './../GameContext';
+import { GameContext } from '../../Setup/Context/GameContext';
 import { Groups } from '../../Utils/Collections/Groups';
 import { Curve } from '../../Utils/Stats/Curve';
 import { DateValue } from '../../Utils/Stats/DateValue';

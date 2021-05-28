@@ -5,7 +5,7 @@ import { ISoundService } from './../../../Services/Sound/ISoundService';
 import { MapEnv } from '../../Setup/Blueprint/MapEnv';
 import { Missile } from '../../Items/Unit/Missile';
 import { Tank } from '../../Items/Unit/Tank';
-import { GameContext } from '../GameContext';
+import { GameContext } from '../../Setup/Context/GameContext';
 import { AudioContent } from '../AudioArchiver';
 import { Cell } from '../../Items/Cell/Cell';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';

@@ -1,4 +1,4 @@
-import { GameContext } from './../../Core/Framework/GameContext';
+import { GameContext } from '../../Core/Setup/Context/GameContext';
 import { NetworkSocket } from '../../Network/NetworkSocket';
 import { IGarbage } from '../IGarbage';
 import { OnlinePlayer } from '../../Network/OnlinePlayer';

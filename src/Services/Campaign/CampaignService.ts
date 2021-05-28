@@ -1,3 +1,5 @@
+import { IBlueprint } from './../../Core/Setup/Blueprint/IBlueprint';
+import { PowerBluePrintMaker } from './../../Core/Setup/Blueprint/Power/PowerBlueprintMaker';
 import { CamouflageBluePrintMaker } from './../../Core/Setup/Blueprint/Camouflage/CamouflageBlueprintMaker';
 import { Factory, FactoryKey } from './../../Factory';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
@@ -8,10 +10,9 @@ import { BattleBlueprint } from '../../Core/Setup/Blueprint/Battle/BattleBluepri
 import { MapEnv } from '../../Core/Setup/Blueprint/MapEnv';
 import { MapType } from '../../Core/Setup/Blueprint/MapType';
 import { ICampaignService } from './ICampaignService';
-import { CamouflageBluePrint } from '../../Core/Setup/Blueprint/Camouflage/CamouflageBluePrint';
 
 export class CampaignService implements ICampaignService {
-	private _training: Dictionnary<CamouflageBluePrint>;
+	private _training: Dictionnary<IBlueprint>;
 	private _red: Dictionnary<BattleBlueprint>;
 	private _blue: Dictionnary<BattleBlueprint>;
 	private _playerProfil: IPlayerProfilService;
@@ -19,8 +20,9 @@ export class CampaignService implements ICampaignService {
 	constructor() {
 		this._playerProfil = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
 
-		this._training = new Dictionnary<CamouflageBluePrint>();
+		this._training = new Dictionnary<IBlueprint>();
 		this._training.Add((1).toString(), new CamouflageBluePrintMaker().GetBluePrint());
+		this._training.Add((2).toString(), new PowerBluePrintMaker().GetBluePrint());
 
 		this._red = new Dictionnary<BattleBlueprint>();
 		this._red.Add((1).toString(), new BattleBluePrintMaker().GetBluePrint(+6, MapType.Flower, MapEnv.forest, 2));

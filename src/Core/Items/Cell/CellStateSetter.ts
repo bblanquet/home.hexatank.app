@@ -1,5 +1,5 @@
 import { BattleBlueprint } from './../../Setup/Blueprint/Battle/BattleBlueprint';
-import { GameContext } from './../../Framework/GameContext';
+import { GameContext } from '../../Setup/Context/GameContext';
 import { Factory, FactoryKey } from '../../../Factory';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
 import { GameSettings } from '../../Framework/GameSettings';

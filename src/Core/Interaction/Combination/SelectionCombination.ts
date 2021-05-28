@@ -1,5 +1,5 @@
 import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
-import { IGameContext } from './../../Framework/IGameContext';
+import { IGameContext } from '../../Setup/Context/IGameContext';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { ISelectable } from '../../ISelectable';
 import { Cell } from '../../Items/Cell/Cell';

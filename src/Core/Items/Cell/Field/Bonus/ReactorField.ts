@@ -5,7 +5,7 @@ import { ZKind } from './../../../ZKind';
 import { BatteryField } from './BatteryField';
 import { TypeTranslator } from '../TypeTranslator';
 import { BasicRangeAnimator } from '../../../Animator/BasicRangeAnimator';
-import { GameContext } from '../../../../Framework/GameContext';
+import { GameContext } from '../../../../Setup/Context/GameContext';
 import { ReactorAppearance } from './ReactorAppearance';
 import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { CellStateSetter } from '../../CellStateSetter';

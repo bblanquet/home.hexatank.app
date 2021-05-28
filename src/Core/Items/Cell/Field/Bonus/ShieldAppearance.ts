@@ -5,15 +5,15 @@ import { Item } from '../../../Item';
 import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { InfiniteFadeAnimation } from '../../../Animator/InfiniteFadeAnimation';
 import { IAnimator } from '../../../Animator/IAnimator';
-import { ShieldField } from './ShieldField';
 import { ZKind } from '../../../ZKind';
 import { BouncingScaleAnimator } from '../../../Animator/BouncingScaleAnimator';
+import { AliveBonusField } from './AliveBonusField';
 
 export class ShieldAppearance extends Item {
 	private _fadeAnimator: IAnimator;
 	public Animator: IAnimator;
 
-	constructor(private _shield: ShieldField) {
+	constructor(private _aliveItem: AliveBonusField) {
 		super();
 		[ SvgArchive.bonus.shieldLight, SvgArchive.bonus.shield ].forEach((b) => {
 			this.GenerateSprite(b);
@@ -22,11 +22,11 @@ export class ShieldAppearance extends Item {
 
 		this.Animator = new BouncingScaleAnimator(this);
 		this._fadeAnimator = new InfiniteFadeAnimation(this, SvgArchive.bonus.shieldLight, 0.2, 1, 0.01);
-		this.InitPosition(this._shield.GetCell().GetBoundingBox());
-		this._shield.GetCell().OnCellStateChanged.On(this.HandleCellStateChanged.bind(this));
-		this.HandleCellStateChanged(this, this._shield.GetCell().GetState());
+		this.InitPosition(this._aliveItem.GetBoundingBox());
+		this._aliveItem.GetCell().OnCellStateChanged.On(this.HandleCellStateChanged.bind(this));
+		this.HandleCellStateChanged(this, this._aliveItem.GetCell().GetState());
 
-		if (this._shield.Energy === 0) {
+		if (this._aliveItem.Energy === 0) {
 			this.SetProperty(SvgArchive.bonus.shield, (e) => {
 				e.alpha = 0;
 			});
@@ -43,8 +43,8 @@ export class ShieldAppearance extends Item {
 	}
 
 	public Update(viewX: number, viewY: number): void {
-		if (this._shield.IsAlive()) {
-			if (0 < this._shield.Energy) {
+		if (this._aliveItem.IsAlive()) {
+			if (0 < this._aliveItem.Energy) {
 				this._fadeAnimator.Update(viewX, viewY);
 			}
 			super.Update(viewX, viewY);
@@ -57,7 +57,7 @@ export class ShieldAppearance extends Item {
 	}
 
 	public GetBoundingBox(): BoundingBox {
-		return this._shield.GetBoundingBox();
+		return this._aliveItem.GetBoundingBox();
 	}
 	public Select(context: IInteractionContext): boolean {
 		return false;

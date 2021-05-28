@@ -3,7 +3,7 @@ import { CellGroup } from './../../../Items/CellGroup';
 import { CombinationContext } from '../CombinationContext';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
-import { GameContext } from '../../../Framework/GameContext';
+import { GameContext } from '../../../Setup/Context/GameContext';
 import { ILayerService } from '../../../../Services/Layer/ILayerService';
 import { Factory, FactoryKey } from '../../../../Factory';
 import { CellState } from '../../../Items/Cell/CellState';

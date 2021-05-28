@@ -1,6 +1,6 @@
 import { StatsContext } from './../../Core/Framework/Stats/StatsContext';
 import { BrainInjecter } from './../../Core/Ia/Decision/BrainInjecter';
-import { GameContext } from './../../Core/Framework/GameContext';
+import { GameContext } from '../../Core/Setup/Context/GameContext';
 import { ISoundService } from './../Sound/ISoundService';
 import { GameSoundManager } from '../../Core/Framework/Sound/GameSoundManager';
 import { IKeyService } from './../Key/IKeyService';

@@ -3,7 +3,7 @@ import { BasicField } from '../../Items/Cell/Field/BasicField';
 import { CombinationContext } from './CombinationContext';
 import { GameSettings } from '../../Framework/GameSettings';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
-import { GameContext } from '../../Framework/GameContext';
+import { GameContext } from '../../Setup/Context/GameContext';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 
 export class GenericCellCombination extends AbstractSingleCombination {

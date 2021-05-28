@@ -34,7 +34,7 @@ import { MapType } from '../../../Core/Setup/Blueprint/MapType';
 import SmPanelComponent from '../../Common/Panel/SmPanelComponent';
 import { LiteEvent } from '../../../Core/Utils/Events/LiteEvent';
 import { Message } from '../Message';
-import { GameContext } from '../../../Core/Framework/GameContext';
+import { GameContext } from '../../../Core/Setup/Context/GameContext';
 
 export default class HostingComponent extends Component<any, HostState> {
 	private _mode: HostingMode = HostingMode.pending;

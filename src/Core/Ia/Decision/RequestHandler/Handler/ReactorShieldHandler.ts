@@ -16,7 +16,7 @@ export class ReactorShieldHandler implements ISimpleRequestHandler {
 			const price = cells.length * GameSettings.FieldPrice;
 			if (price <= this._hq.GetAmount()) {
 				cells.forEach((c) => {
-					new ShieldField(c, this._hq);
+					new ShieldField(c, this._hq.Identity, this._hq);
 					this._hq.Buy(GameSettings.FieldPrice);
 				});
 			}

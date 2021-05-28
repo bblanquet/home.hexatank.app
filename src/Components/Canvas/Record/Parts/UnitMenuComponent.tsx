@@ -5,7 +5,7 @@ import { Item } from '../../../../Core/Items/Item';
 import { InteractionKind } from '../../../../Core/Interaction/IInteractionContext';
 import { Vehicle } from '../../../../Core/Items/Unit/Vehicle';
 import { Factory, FactoryKey } from '../../../../Factory';
-import { GameContext } from '../../../../Core/Framework/GameContext';
+import { GameContext } from '../../../../Core/Setup/Context/GameContext';
 
 export default class UnitMenuComponent extends Component<{ Vehicle: Vehicle }, {}> {
 	private _interactionService: IInteractionService<GameContext>;

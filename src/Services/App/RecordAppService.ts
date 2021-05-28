@@ -13,7 +13,7 @@ import { IKeyService } from '../Key/IKeyService';
 import { CellStateSetter } from '../../Core/Items/Cell/CellStateSetter';
 import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
-import { GameContext } from '../../Core/Framework/GameContext';
+import { GameContext } from '../../Core/Setup/Context/GameContext';
 
 export class RecordAppService implements IAppService<BattleBlueprint> {
 	private _context: BattleBlueprint;

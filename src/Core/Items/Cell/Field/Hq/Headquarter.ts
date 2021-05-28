@@ -1,3 +1,4 @@
+import { ICellEnergyProvider } from './ICellEnergyProvider';
 import { Identity } from './../../../Identity';
 import { IBrain } from './../../../../Ia/Decision/IBrain';
 import { HqNetwork } from './HqNetwork';
@@ -30,7 +31,7 @@ import { Curve } from '../../../../Utils/Stats/Curve';
 import { DateValue } from '../../../../Utils/Stats/DateValue';
 import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 
-export class Headquarter extends AliveItem implements IField, ISelectable {
+export class Headquarter extends AliveItem implements IField, ISelectable, ICellEnergyProvider {
 	public Flagcell: FlagCell;
 	private _boundingBox: BoundingBox;
 	private _cell: Cell;

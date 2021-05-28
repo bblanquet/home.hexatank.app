@@ -4,7 +4,7 @@ import { Brain } from '../../Brain';
 import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
 import { RequestType } from '../../Utils/RequestType';
 import { AreaRequest } from '../../Utils/AreaRequest';
-import { GameContext } from '../../../../Framework/GameContext';
+import { GameContext } from '../../../../Setup/Context/GameContext';
 import { SquadRoad } from '../../Troop/SquadRoad';
 
 export class SquadRequestHandler implements ISimpleRequestHandler {

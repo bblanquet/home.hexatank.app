@@ -5,7 +5,7 @@ import { CancelMenuItem } from '../../../../Core/Menu/Buttons/CancelMenuItem';
 import { ReactorField } from '../../../../Core/Items/Cell/Field/Bonus/ReactorField';
 import { Item } from '../../../../Core/Items/Item';
 import { InteractionKind } from '../../../../Core/Interaction/IInteractionContext';
-import { GameContext } from '../../../../Core/Framework/GameContext';
+import { GameContext } from '../../../../Core/Setup/Context/GameContext';
 import { AttackMenuItem } from '../../../../Core/Menu/Buttons/AttackMenuItem';
 import { SpeedFieldMenuItem } from '../../../../Core/Menu/Buttons/SpeedFieldMenuItem';
 import { HealMenuItem } from '../../../../Core/Menu/Buttons/HealMenuItem';

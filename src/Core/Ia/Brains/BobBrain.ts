@@ -10,7 +10,7 @@ import { SpeedUpRequester } from './../Decision/RequestMaker/AreaRequester/Speed
 import { SpeedUpHandler } from './../Decision/RequestHandler/Handler/SpeedUpHandler';
 import { DiamondExpansionMaker } from './../Decision/ExpansionMaker/DiamondExpansionMaker';
 import { IBrainProvider } from './IBrain';
-import { GameContext } from '../../Framework/GameContext';
+import { GameContext } from '../../Setup/Context/GameContext';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { Brain } from '../Decision/Brain';
 import { RequestHandler } from '../Decision/RequestHandler/RequestHandler';

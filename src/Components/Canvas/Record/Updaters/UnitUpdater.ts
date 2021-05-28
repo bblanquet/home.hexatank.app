@@ -6,7 +6,7 @@ import { Vehicle } from '../../../../Core/Items/Unit/Vehicle';
 import { Dictionnary } from '../../../../Core/Utils/Collections/Dictionnary';
 import { Tank } from '../../../../Core/Items/Unit/Tank';
 import { Truck } from '../../../../Core/Items/Unit/Truck';
-import { GameContext } from '../../../../Core/Framework/GameContext';
+import { GameContext } from '../../../../Core/Setup/Context/GameContext';
 import { RecordData } from '../../../../Core/Framework/Record/RecordData';
 import { isNullOrUndefined } from '../../../../Core/Utils/ToolBox';
 

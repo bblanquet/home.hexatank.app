@@ -20,7 +20,7 @@ import { DecorationType } from '../DecorationType';
 import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
 import { IMapBuilder } from '../../Builder/IPlaygroundBuilder';
 import { GameSettings } from '../../../Framework/GameSettings';
-import { CamouflageBluePrint } from './CamouflageBluePrint';
+import { CamouflageBlueprint } from './CamouflageBlueprint';
 
 export class CamouflageBluePrintMaker {
 	private _builders: Dictionnary<IMapBuilder>;
@@ -36,8 +36,8 @@ export class CamouflageBluePrintMaker {
 		this._builders.Add(MapType.Rectangle.toString(), new RectangleFlowerMapBuilder());
 	}
 
-	public GetBluePrint(): CamouflageBluePrint {
-		const blueprint = new CamouflageBluePrint();
+	public GetBluePrint(): CamouflageBlueprint {
+		const blueprint = new CamouflageBlueprint();
 		blueprint.MapMode = MapEnv.forest;
 		const mapItems = new Array<MapItem>();
 		const mapBuilder = this._builders.Get(MapType.Rectangle.toString());

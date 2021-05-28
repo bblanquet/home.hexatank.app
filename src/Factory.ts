@@ -15,10 +15,7 @@ export enum FactoryKey {
 	None,
 	Key,
 	Hosting,
-	RecordApp,
 	Compare,
-	GameContext,
-	CamouflageGameContext,
 	Layer,
 	Network,
 	Update,
@@ -26,11 +23,20 @@ export enum FactoryKey {
 	PlayerProfil,
 	Sound,
 	Record,
+
 	App,
+	RecordApp,
+	CamouflageApp,
+	PowerApp,
+
+	GameContext,
+	CamouflageGameContext,
+	PowerGameContext,
+
 	Interaction,
 	RecordInteraction,
-	CamouflageApp,
-	CamouflageInteraction
+	CamouflageInteraction,
+	PowerInteraction
 }
 
 export interface IFactorisable {

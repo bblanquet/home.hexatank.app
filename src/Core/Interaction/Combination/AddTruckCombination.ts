@@ -1,7 +1,7 @@
 import { TruckMenuItem } from '../../Menu/Buttons/TruckMenuItem';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { CombinationContext } from './CombinationContext';
-import { GameContext } from '../../Framework/GameContext';
+import { GameContext } from '../../Setup/Context/GameContext';
 
 export class AddTruckCombination extends AbstractSingleCombination {
 	constructor(private _gameContext: GameContext) {

@@ -1,15 +1,15 @@
-import { Tank } from './../Items/Unit/Tank';
-import { Dictionnary } from './../Utils/Collections/Dictionnary';
-import { Vehicle } from './../Items/Unit/Vehicle';
-import { LiteEvent } from '../Utils/Events/LiteEvent';
-import { Item } from '../Items/Item';
-import { Cell } from '../Items/Cell/Cell';
-import { GameStatus } from './GameStatus';
-import { isNullOrUndefined } from '../Utils/ToolBox';
+import { isNullOrUndefined } from 'util';
+import { GameStatus } from '../../Framework/GameStatus';
+import { AliveItem } from '../../Items/AliveItem';
+import { Cell } from '../../Items/Cell/Cell';
+import { Item } from '../../Items/Item';
+import { Tank } from '../../Items/Unit/Tank';
+import { Vehicle } from '../../Items/Unit/Vehicle';
+import { Dictionnary } from '../../Utils/Collections/Dictionnary';
+import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { IGameContext } from './IGameContext';
-import { AliveItem } from '../Items/AliveItem';
 
-export class CamouflageGameContext implements IGameContext {
+export class CamouflageContext implements IGameContext {
 	private _unit: Vehicle;
 
 	//should not be here

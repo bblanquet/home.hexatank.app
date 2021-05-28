@@ -1,5 +1,5 @@
 import { Dictionnary } from './../../../../Utils/Collections/Dictionnary';
-import { GameContext } from './../../../../Framework/GameContext';
+import { GameContext } from '../../../../Setup/Context/GameContext';
 import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { RequestType } from '../../Utils/RequestType';

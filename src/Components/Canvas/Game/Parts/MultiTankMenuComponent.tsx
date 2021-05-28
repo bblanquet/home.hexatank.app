@@ -8,7 +8,7 @@ import { MultiOrderMenuItem } from '../../../../Core/Menu/Buttons/MultiOrderMenu
 import { UnitGroup } from '../../../../Core/Items/UnitGroup';
 import { Factory, FactoryKey } from '../../../../Factory';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
-import { GameContext } from '../../../../Core/Framework/GameContext';
+import { GameContext } from '../../../../Core/Setup/Context/GameContext';
 
 export default class MultiTankMenuComponent extends Component<{ item: UnitGroup }, {}> {
 	private _interactionService: IInteractionService<GameContext>;

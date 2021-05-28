@@ -1,3 +1,5 @@
+import { ICellEnergyProvider } from './../Hq/ICellEnergyProvider';
+import { Identity } from './../../../Identity';
 import { BonusValueProvider } from './BonusValueProvider';
 import { ShieldAppearance } from './ShieldAppearance';
 import { Headquarter } from './../Hq/Headquarter';
@@ -18,15 +20,15 @@ export class ShieldField extends AliveBonusField {
 	private _shieldAppearance: ShieldAppearance;
 	private _fixTimer: ITimer;
 
-	constructor(cell: Cell, hq: Headquarter) {
-		super(cell, [], hq);
+	constructor(cell: Cell, id: Identity, protected Hq: Headquarter) {
+		super(cell, [], id, Hq);
 		this._fixTimer = new TimeTimer(1000);
-		if (isNullOrUndefined(hq)) {
+		if (isNullOrUndefined(Hq)) {
 			throw 'not supposed to be there';
 		}
 		this._shieldAppearance = new ShieldAppearance(this);
-		hq.AddField(this, cell);
-		if (!hq.IsCovered(cell)) {
+		Hq.AddField(this, cell);
+		if (!Hq.IsCovered(cell)) {
 			cell.DestroyField();
 			if (cell.IsVisible()) {
 				new Explosion(cell.GetBoundingBox(), SvgArchive.constructionEffects, ZKind.Sky, false, 5);

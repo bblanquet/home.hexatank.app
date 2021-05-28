@@ -12,7 +12,7 @@ import { Factory, FactoryKey } from '../../../Factory';
 import { route } from 'preact-router';
 import Redirect from '../../Redirect/RedirectComponent';
 import { BattleBlueprint } from '../../../Core/Setup/Blueprint/Battle/BattleBlueprint';
-import { GameContext } from '../../../Core/Framework/GameContext';
+import { GameContext } from '../../../Core/Setup/Context/GameContext';
 
 export default class RecordCanvasComponent extends Component<
 	{},

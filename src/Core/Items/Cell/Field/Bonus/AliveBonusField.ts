@@ -13,13 +13,20 @@ import { BouncingScaleAnimator } from '../../../Animator/BouncingScaleAnimator';
 import { CellState } from '../../CellState';
 import { Headquarter } from '../Hq/Headquarter';
 import { ZKind } from '../../../ZKind';
+import { ICellEnergyProvider } from '../Hq/ICellEnergyProvider';
+import { Identity } from '../../../Identity';
 
 export abstract class AliveBonusField extends AliveField implements IActiveContainer {
 	private _animator: IAnimator;
 	private _isIncreasingOpacity: boolean = false;
 	public Energy: number = 0;
 
-	constructor(cell: Cell, private _bonus: string[], protected Hq: Headquarter) {
+	constructor(
+		cell: Cell,
+		private _bonus: string[],
+		private _id: Identity,
+		protected energyProvider: ICellEnergyProvider
+	) {
 		super(cell);
 		this.GetCell().SetField(this);
 		this.Z = ZKind.Field;
@@ -27,13 +34,13 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 		this._bonus.forEach((b) => {
 			this.GenerateSprite(b);
 		});
-		this.GenerateSprite(this.Hq.Identity.Skin.GetLight());
+		this.GenerateSprite(this._id.Skin.GetLight());
 		this.InitPosition(cell.GetBoundingBox());
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});
 		this._animator = new BouncingScaleAnimator(this);
-		this.Energy = this.Hq.GetCellEnergy(cell.GetHexCoo());
+		this.Energy = this.energyProvider.GetCellEnergy(cell.GetHexCoo());
 	}
 
 	protected GetReactorsPower(hq: Headquarter): number {
@@ -76,7 +83,7 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 
 	private AnimateLight() {
 		if (0 < this.Energy) {
-			this.SetProperty(this.Hq.Identity.Skin.GetLight(), (s) => {
+			this.SetProperty(this._id.Skin.GetLight(), (s) => {
 				if (s.alpha < 0.1) {
 					this._isIncreasingOpacity = true;
 				}
@@ -86,7 +93,7 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 				s.alpha += this._isIncreasingOpacity ? 0.01 : -0.01;
 			});
 		} else {
-			this.SetProperty(this.Hq.Identity.Skin.GetLight(), (e) => (e.alpha = 0));
+			this.SetProperty(this._id.Skin.GetLight(), (e) => (e.alpha = 0));
 		}
 	}
 

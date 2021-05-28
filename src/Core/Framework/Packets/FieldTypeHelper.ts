@@ -2,7 +2,7 @@ import { SvgArchive } from '../SvgArchiver';
 import { DiamondField } from './../../Items/Cell/Field/DiamondField';
 import { BlockingField } from './../../Items/Cell/Field/BlockingField';
 import { BasicField } from './../../Items/Cell/Field/BasicField';
-import { GameContext } from './../GameContext';
+import { GameContext } from '../../Setup/Context/GameContext';
 import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
 import { IField } from './../../Items/Cell/Field/IField';
 import { FarmField } from './../../Items/Cell/Field/Bonus/FarmField';
@@ -96,7 +96,7 @@ export class FieldTypeHelper {
 		} else if (action === RecordKind.Road) {
 			return new RoadField(cell, hq);
 		} else if (action === RecordKind.Shield) {
-			return new ShieldField(cell, hq);
+			return new ShieldField(cell, hq.Identity, hq);
 		} else if (action === RecordKind.DiamondField) {
 			return new DiamondField(cell);
 		} else if (action === RecordKind.Diamond) {
@@ -127,7 +127,7 @@ export class FieldTypeHelper {
 		} else if (obj === 'RoadField') {
 			return new RoadField(cell, hq);
 		} else if (obj === 'ShieldField') {
-			return new ShieldField(cell, hq);
+			return new ShieldField(cell, hq.Identity, hq);
 		}
 		throw 'not found';
 	}

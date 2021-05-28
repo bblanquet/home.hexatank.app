@@ -1,7 +1,7 @@
 import { TypeTranslator } from '../../../Items/Cell/Field/TypeTranslator';
 import { IField } from './../../../Items/Cell/Field/IField';
 import { ReactorAppearance } from '../../../Items/Cell/Field/Bonus/ReactorAppearance';
-import { GameContext } from './../../../Framework/GameContext';
+import { GameContext } from '../../../Setup/Context/GameContext';
 import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
 import { Area } from './Area';
 import { Vehicle } from '../../../Items/Unit/Vehicle';

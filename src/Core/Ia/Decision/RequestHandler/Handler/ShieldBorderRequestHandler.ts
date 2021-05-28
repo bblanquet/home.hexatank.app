@@ -36,7 +36,7 @@ export class ShieldBorderRequestHandler implements ISimpleRequestHandler {
 		if (price < this._hq.GetAmount()) {
 			road.forEach((c) => {
 				if (c.GetField() instanceof BasicField) {
-					new ShieldField(c, this._hq);
+					new ShieldField(c, this._hq.Identity, this._hq);
 					this._hq.Buy(GameSettings.FieldPrice);
 				}
 			});

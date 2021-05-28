@@ -7,7 +7,7 @@ import { NetworkMenuItem } from './../Menu/Buttons/NetworkMenuItem';
 import { ThunderMenuItem } from './../Menu/Buttons/ThunderMenuItem';
 import { AttackField } from '../Items/Cell/Field/Bonus/AttackField';
 import { GenericCellCombination } from './Combination/GenericCellCombination';
-import { GameContext } from './../Framework/GameContext';
+import { GameContext } from '../Setup/Context/GameContext';
 import { ISelectableChecker } from './ISelectableChecker';
 import { ICombination } from './Combination/ICombination';
 import { UnselectCombination } from './Combination/UnselectCombination';
@@ -121,7 +121,7 @@ export class CombinationProvider {
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof ShieldMenuItem,
-				(e) => new ShieldField(e, gameContext.GetPlayerHq())
+				(e) => new ShieldField(e, gameContext.GetPlayerHq().Identity, gameContext.GetPlayerHq())
 			),
 			new GenericCellCombination(
 				gameContext,

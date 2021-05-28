@@ -6,7 +6,7 @@ import { OrderPacket } from './Packets/OrderPacket';
 import { PacketKind } from './../../Network/Message/PacketKind';
 import { TargetPacket } from './Packets/TargetPacket';
 import { NetworkMessage } from './../../Network/Message/NetworkMessage';
-import { GameContext } from './GameContext';
+import { GameContext } from '../Setup/Context/GameContext';
 import { CreatingUnitPacket } from './Packets/CreatingUnitPacket';
 import { NetworkObserver } from '../../Network/NetworkObserver';
 import { NetworkSocket } from '../../Network/NetworkSocket';

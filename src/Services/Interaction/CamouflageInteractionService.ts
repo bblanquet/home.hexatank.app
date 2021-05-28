@@ -10,13 +10,13 @@ import { MultiSelectionContext } from '../../Core/Menu/Smart/MultiSelectionConte
 import { CancelCombination } from '../../Core/Interaction/Combination/CancelCombination';
 import { ClearTrashCombination } from '../../Core/Interaction/Combination/ClearTrashCombination';
 import { SelectionCombination } from '../../Core/Interaction/Combination/SelectionCombination';
-import { CamouflageGameContext } from '../../Core/Framework/CamouflageGameContext';
 import { AbortCombination } from '../../Core/Interaction/Combination/AbortCombination';
 import { TruckCombination } from '../../Core/Interaction/Combination/TruckCombination';
 import { CamouflageCombination } from '../../Core/Interaction/Combination/CamouflageCombination';
 import { UnselectCombination } from '../../Core/Interaction/Combination/UnselectCombination';
+import { CamouflageContext } from '../../Core/Setup/Context/CamouflageContext';
 
-export class CamouflageInteractionService implements IInteractionService<CamouflageGameContext> {
+export class CamouflageInteractionService implements IInteractionService<CamouflageContext> {
 	private _layerService: ILayerService;
 	private _multiSelectionContext: MultiSelectionContext;
 	private _inputNotifier: InputNotifier;
@@ -27,7 +27,7 @@ export class CamouflageInteractionService implements IInteractionService<Camoufl
 		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
 	}
 
-	Register(manager: PIXI.InteractionManager, gameContext: CamouflageGameContext): void {
+	Register(manager: PIXI.InteractionManager, gameContext: CamouflageContext): void {
 		this._multiSelectionContext = new MultiSelectionContext();
 		this._inputNotifier = new InputNotifier();
 		const checker = new SelectableChecker(gameContext.GetPlayer());

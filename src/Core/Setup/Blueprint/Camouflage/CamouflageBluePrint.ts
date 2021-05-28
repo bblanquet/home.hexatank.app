@@ -3,7 +3,7 @@ import { IBlueprint } from '../IBlueprint';
 import { MapEnv } from '../MapEnv';
 import { MapItem } from '../MapItem';
 
-export class CamouflageBluePrint implements IBlueprint {
+export class CamouflageBlueprint implements IBlueprint {
 	public Items: Array<MapItem>;
 	public CenterItem: MapItem;
 	public Goal: MapItemPair;

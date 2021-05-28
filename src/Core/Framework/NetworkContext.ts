@@ -2,7 +2,7 @@ import { NetworkMessage } from './../../Network/Message/NetworkMessage';
 import { NetworkDispatcher } from './NetworkDispatcher';
 import { NetworkReceiver } from './NetworkReceiver';
 import { NetworkSocket } from './../../Network/NetworkSocket';
-import { GameContext } from './GameContext';
+import { GameContext } from '../Setup/Context/GameContext';
 import { PacketKind } from '../../Network/Message/PacketKind';
 import { NetworkObserver } from '../../Network/NetworkObserver';
 import { OnlinePlayer } from '../../Network/OnlinePlayer';

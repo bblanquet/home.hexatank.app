@@ -1,6 +1,6 @@
 import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
 import { SimpleFloor } from '../../../Items/Environment/SimpleFloor';
-import { GameContext } from '../../../Framework/GameContext';
+import { GameContext } from '../../Context/GameContext';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { ForestDecorator } from '../../../Items/Cell/Decorator/ForestDecorator';
 import { CellProperties } from '../../../Items/Cell/CellProperties';
@@ -17,7 +17,7 @@ import { MapEnv } from '../../Blueprint/MapEnv';
 import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
 import { HqRender } from '../Hq/HqRender';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
-export class BattleRenderer {
+export class GameRenderer {
 	public Render(blueprint: BattleBlueprint): GameContext {
 		const cells = new Dictionnary<Cell>();
 		const updatableItem = new Array<Item>();

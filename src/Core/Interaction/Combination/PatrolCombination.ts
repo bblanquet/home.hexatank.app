@@ -8,7 +8,7 @@ import { Cell } from '../../Items/Cell/Cell';
 import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { ZKind } from '../../Items/ZKind';
-import { GameContext } from '../../Framework/GameContext';
+import { GameContext } from '../../Setup/Context/GameContext';
 
 export class PatrolCombination extends AbstractSingleCombination {
 	private _indicators: Array<BasicItem> = [];

@@ -1,15 +1,15 @@
-import { CamouflageBluePrint } from './../../Core/Setup/Blueprint/Camouflage/CamouflageBluePrint';
+import { CamouflageBlueprint } from '../../Core/Setup/Blueprint/Camouflage/CamouflageBlueprint';
+import { CamouflageContext } from '../../Core/Setup/Context/CamouflageContext';
 import { CamouflageRenderer } from './../../Core/Setup/Render/CamouflageRenderer/CamouflageRenderer';
-import { CamouflageGameContext } from './../../Core/Framework/CamouflageGameContext';
 import { IGameContextService } from './IGameContextService';
 
-export class CamouflageGameContextService implements IGameContextService<CamouflageBluePrint, CamouflageGameContext> {
-	private _gameContext: CamouflageGameContext;
+export class CamouflageGameContextService implements IGameContextService<CamouflageBlueprint, CamouflageContext> {
+	private _gameContext: CamouflageContext;
 
-	Register(mapContext: CamouflageBluePrint): void {
+	Register(mapContext: CamouflageBlueprint): void {
 		this._gameContext = new CamouflageRenderer().Render(mapContext);
 	}
-	Publish(): CamouflageGameContext {
+	Publish(): CamouflageContext {
 		return this._gameContext;
 	}
 

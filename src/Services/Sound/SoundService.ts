@@ -2,7 +2,7 @@ import { SoundProvider } from './SoundProvider';
 import { GameSoundManager } from './../../Core/Framework/Sound/GameSoundManager';
 import { Dictionnary } from './../../Core/Utils/Collections/Dictionnary';
 import { ISoundService } from './ISoundService';
-import { GameContext } from '../../Core/Framework/GameContext';
+import { GameContext } from '../../Core/Setup/Context/GameContext';
 import { Howl } from 'howler';
 import { BattleBlueprint } from '../../Core/Setup/Blueprint/Battle/BattleBlueprint';
 

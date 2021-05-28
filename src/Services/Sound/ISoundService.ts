@@ -1,6 +1,6 @@
 import { GameSoundManager } from '../../Core/Framework/Sound/GameSoundManager';
 import { BattleBlueprint } from '../../Core/Setup/Blueprint/Battle/BattleBlueprint';
-import { GameContext } from './../../Core/Framework/GameContext';
+import { GameContext } from '../../Core/Setup/Context/GameContext';
 export interface ISoundService {
 	Register(mapContext: BattleBlueprint, gameContext: GameContext): void;
 	GetSoundManager(): GameSoundManager;

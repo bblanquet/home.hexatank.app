@@ -1,15 +1,15 @@
-import { Identity } from './../Items/Identity';
+import { Identity } from '../../Items/Identity';
 import { IGameContext } from './IGameContext';
-import { Tank } from './../Items/Unit/Tank';
-import { Headquarter } from './../Items/Cell/Field/Hq/Headquarter';
-import { Dictionnary } from './../Utils/Collections/Dictionnary';
-import { Vehicle } from './../Items/Unit/Vehicle';
-import { LiteEvent } from '../Utils/Events/LiteEvent';
-import { Item } from '../Items/Item';
-import { Cell } from '../Items/Cell/Cell';
-import { GameStatus } from './GameStatus';
-import { isNullOrUndefined } from '../Utils/ToolBox';
-import { AliveItem } from '../Items/AliveItem';
+import { Tank } from '../../Items/Unit/Tank';
+import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
+import { Dictionnary } from '../../Utils/Collections/Dictionnary';
+import { Vehicle } from '../../Items/Unit/Vehicle';
+import { LiteEvent } from '../../Utils/Events/LiteEvent';
+import { Item } from '../../Items/Item';
+import { Cell } from '../../Items/Cell/Cell';
+import { GameStatus } from '../../Framework/GameStatus';
+import { isNullOrUndefined } from '../../Utils/ToolBox';
+import { AliveItem } from '../../Items/AliveItem';
 
 export class GameContext implements IGameContext {
 	//should not be here

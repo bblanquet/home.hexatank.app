@@ -1,5 +1,5 @@
 import { UnitGroup } from '../../Items/UnitGroup';
-import { GameContext } from './../../Framework/GameContext';
+import { GameContext } from '../../Setup/Context/GameContext';
 import { ISelectable } from '../../ISelectable';
 import { Cell } from '../../Items/Cell/Cell';
 import { Vehicle } from '../../Items/Unit/Vehicle';

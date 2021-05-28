@@ -1,3 +1,4 @@
+import { CamouflageContext } from '../../Context/CamouflageContext';
 import { Tank } from './../../../Items/Unit/Tank';
 import { SvgArchive } from './../../../Framework/SvgArchiver';
 import { AboveItem } from './../../../Items/AboveItem';
@@ -6,8 +7,7 @@ import { Truck } from './../../../Items/Unit/Truck';
 import { SimpleFloor } from './../../../Items/Environment/SimpleFloor';
 import { Cloud } from './../../../Items/Environment/Cloud';
 import { ForestDecorator } from './../../../Items/Cell/Decorator/ForestDecorator';
-import { CamouflageBluePrint } from './../../Blueprint/Camouflage/CamouflageBluePrint';
-import { CamouflageGameContext } from '../../../Framework/CamouflageGameContext';
+import { CamouflageBlueprint } from '../../Blueprint/Camouflage/CamouflageBlueprint';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
 import { Cell } from '../../../Items/Cell/Cell';
@@ -22,7 +22,7 @@ import { Identity } from '../../../Items/Identity';
 import { PatrolOrder } from '../../../Ia/Order/Composite/PatrolOrder';
 
 export class CamouflageRenderer {
-	public Render(blueprint: CamouflageBluePrint): CamouflageGameContext {
+	public Render(blueprint: CamouflageBlueprint): CamouflageContext {
 		const cells = new Dictionnary<Cell>();
 		const updatableItem = new Array<Item>();
 
@@ -65,7 +65,7 @@ export class CamouflageRenderer {
 			tank.SetOrder(new PatrolOrder([ aCell, dCell ], tank));
 		});
 
-		return new CamouflageGameContext(cells.Values(), truck, arrivalCell);
+		return new CamouflageContext(cells.Values(), truck, arrivalCell);
 	}
 
 	public AddClouds(items: Item[]) {

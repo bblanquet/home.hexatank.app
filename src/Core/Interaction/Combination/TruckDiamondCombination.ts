@@ -1,4 +1,4 @@
-import { GameContext } from './../../Framework/GameContext';
+import { GameContext } from '../../Setup/Context/GameContext';
 import { DiamondFieldOrder } from '../../Ia/Order/Composite/Diamond/DiamondFieldOrder';
 import { DiamondTruckOrder } from '../../Ia/Order/Composite/Diamond/DiamondTruckOrder';
 import { Item } from '../../Items/Item';

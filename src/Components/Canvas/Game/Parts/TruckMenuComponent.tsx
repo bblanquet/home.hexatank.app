@@ -7,7 +7,7 @@ import { AbortMenuItem } from '../../../../Core/Menu/Buttons/AbortMenuItem';
 import { CancelMenuItem } from '../../../../Core/Menu/Buttons/CancelMenuItem';
 import { Vehicle } from '../../../../Core/Items/Unit/Vehicle';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
-import { IGameContext } from '../../../../Core/Framework/IGameContext';
+import { IGameContext } from '../../../../Core/Setup/Context/IGameContext';
 
 export default class TruckMenuComponent extends Component<
 	{ Truck: Vehicle; isSettingPatrol: boolean; interaction: IInteractionService<IGameContext> },

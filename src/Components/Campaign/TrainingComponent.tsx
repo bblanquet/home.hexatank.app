@@ -11,7 +11,8 @@ import Icon from '../Common/Icon/IconComponent';
 import { CampaignKind } from '../../Services/Campaign/CampaignKind';
 import { FaceComponent } from './FaceComponent';
 import NavbarComponent from '../Common/Navbar/NavbarComponent';
-import { CamouflageBluePrint } from '../../Core/Setup/Blueprint/Camouflage/CamouflageBluePrint';
+import { CamouflageBlueprint } from '../../Core/Setup/Blueprint/Camouflage/CamouflageBlueprint';
+import { PowerBlueprint } from '../../Core/Setup/Blueprint/Power/PowerBlueprint';
 
 export default class TrainingComponent extends Component<any, any> {
 	private _campaignService: ICampaignService;
@@ -95,8 +96,13 @@ export default class TrainingComponent extends Component<any, any> {
 	}
 
 	Start(index: number): void {
-		const mapContext = this._campaignService.GetMapContext(CampaignKind.training, index);
-		Factory.Load<IAppService<CamouflageBluePrint>>(FactoryKey.CamouflageApp).Register(mapContext);
-		route('/Camouflage', true);
+		const blueprint = this._campaignService.GetMapContext(CampaignKind.training, index);
+		if (blueprint instanceof CamouflageBlueprint) {
+			Factory.Load<IAppService<CamouflageBlueprint>>(FactoryKey.CamouflageApp).Register(blueprint);
+			route('/Camouflage', true);
+		} else if (blueprint instanceof PowerBlueprint) {
+			Factory.Load<IAppService<PowerBlueprint>>(FactoryKey.PowerApp).Register(blueprint);
+			route('/Power', true);
+		}
 	}
 }

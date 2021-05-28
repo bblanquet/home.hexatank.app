@@ -1,5 +1,5 @@
 import { OnlinePlayer } from '../../Network/OnlinePlayer';
-import { GameContext } from '../../Core/Framework/GameContext';
+import { GameContext } from '../../Core/Setup/Context/GameContext';
 import { NetworkContext } from '../../Core/Framework/NetworkContext';
 import { NetworkSocket } from '../../Network/NetworkSocket';
 import { INetworkService } from './INetworkService';

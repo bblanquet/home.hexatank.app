@@ -1,7 +1,7 @@
 import { InputNotifier } from './../../Core/Interaction/InputNotifier';
 import { CombinationProvider } from './../../Core/Interaction/CombinationProvider';
 import { SelectableChecker } from './../../Core/Interaction/SelectableChecker';
-import { GameContext } from './../../Core/Framework/GameContext';
+import { GameContext } from '../../Core/Setup/Context/GameContext';
 import { InteractionContext } from '../../Core/Interaction/InteractionContext';
 import { IInteractionService } from './IInteractionService';
 import { ILayerService } from '../Layer/ILayerService';

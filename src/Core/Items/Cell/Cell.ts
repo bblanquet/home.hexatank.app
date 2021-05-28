@@ -4,7 +4,7 @@ import { ZKind } from './../ZKind';
 import { ILiteEvent } from './../../Utils/Events/ILiteEvent';
 import { BouncingScaleDownAnimator } from './../Animator/BouncingScaleDownAnimator';
 import { IAnimator } from './../Animator/IAnimator';
-import { GameContext } from './../../Framework/GameContext';
+import { GameContext } from '../../Setup/Context/GameContext';
 import { Item } from '../Item';
 import { CellProperties } from './CellProperties';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';

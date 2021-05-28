@@ -24,15 +24,14 @@ import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { CellState } from '../Cell/CellState';
 import { SvgArchive } from '../../Framework/SvgArchiver';
 import { CellProperties } from '../Cell/CellProperties';
-import { Crater } from '../Environment/Crater';
 import { InteractionContext } from '../../Interaction/InteractionContext';
-import { Explosion } from './Explosion';
 import { Sprite } from 'pixi.js';
 import { Point } from '../../Utils/Geometry/Point';
 import { ICancellable } from './ICancellable';
 import { Up } from './PowerUp/Up';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 import { InfiniteFadeAnimation } from '../Animator/InfiniteFadeAnimation';
+import { Crater } from '../Environment/Crater';
 
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable, ICancellable {
 	public PowerUps: Array<Up> = [];
@@ -407,6 +406,12 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	}
 
 	public Update(viewX: number, viewY: number): void {
+		if (!this.IsAlive()) {
+			this.Destroy();
+			new Crater(this.BoundingBox);
+			return;
+		}
+
 		if (this._infiniteAnimator) {
 			this._infiniteAnimator.Update(viewX, viewY);
 		}

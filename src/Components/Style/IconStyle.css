@@ -293,7 +293,7 @@
 	background-image: url('{{postension}}components/training.svg');
 }
 
-.fill-training-flag-1 {
+.fill-training-mouth-1 {
 	width: 100%;
 	height: 100%;
 	position: absolute;
@@ -302,10 +302,10 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/trainingFlag1.svg');
+	background-image: url('{{postension}}components/trainingMouth1.svg');
 }
 
-.fill-training-flag-2 {
+.fill-training-mouth-2 {
 	width: 100%;
 	height: 100%;
 	position: absolute;
@@ -314,10 +314,10 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/trainingFlag2.svg');
+	background-image: url('{{postension}}components/trainingMouth2.svg');
 }
 
-.fill-training-flag-3 {
+.fill-training-mouth-3 {
 	width: 100%;
 	height: 100%;
 	position: absolute;
@@ -326,10 +326,10 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/trainingFlag3.svg');
+	background-image: url('{{postension}}components/trainingMouth3.svg');
 }
 
-.fill-training-flag-4 {
+.fill-training-mouth-4 {
 	width: 100%;
 	height: 100%;
 	position: absolute;
@@ -338,7 +338,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/trainingFlag4.svg');
+	background-image: url('{{postension}}components/trainingMouth4.svg');
 }
 
 .fill-blueArmy {

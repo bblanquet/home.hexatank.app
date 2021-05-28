@@ -48,7 +48,7 @@ export class CamouflageRenderer {
 		this.SetHqLand(cells, SvgArchive.nature.hq2, spots, updatableItem, 1);
 
 		const truck = new Truck(new Identity('player', new HqSkinHelper().GetSkin(0), true));
-		truck.OverrideLife(10, 10);
+		truck.OverrideLife(1);
 		truck.SetPosition(cells.Get(departure.ToString()));
 		updatableItem.push(truck);
 		const arrivalCell = cells.Get(arrival.ToString());

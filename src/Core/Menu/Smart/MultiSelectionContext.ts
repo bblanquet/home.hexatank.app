@@ -3,7 +3,7 @@ import { ZKind } from './../../Items/ZKind';
 import { ILayerService } from './../../../Services/Layer/ILayerService';
 import { IUpdateService } from '../../../Services/Update/IUpdateService';
 import { InteractionKind } from '../../Interaction/IInteractionContext';
-import { Archive } from '../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../Framework/SvgArchiver';
 import { BasicItem } from '../../Items/BasicItem';
 import { IInteractionContext } from '../../Interaction/IInteractionContext';
 import { Point } from '../../Utils/Geometry/Point';
@@ -90,7 +90,7 @@ export class MultiSelectionContext implements IInteractionContext {
 				this._cells.Add(cell.Coo(), cell);
 				const displayPath = new BasicItem(
 					cell.GetBoundingBox(),
-					Archive.menu.smartMenu.multiCellSelection,
+					SvgArchive.menu.smartMenu.multiCellSelection,
 					ZKind.Sky
 				);
 				displayPath.SetAlive(() => true);

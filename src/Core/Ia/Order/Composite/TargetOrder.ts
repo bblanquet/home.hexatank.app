@@ -1,5 +1,5 @@
 import { ZKind } from '../../../Items/ZKind';
-import { Archive } from '../../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../../Framework/SvgArchiver';
 import { AliveItem } from '../../../Items/AliveItem';
 import { BasicItem } from '../../../Items/BasicItem';
 import { Cell } from '../../../Items/Cell/Cell';
@@ -72,7 +72,7 @@ export class TargetOrder extends Order {
 	}
 
 	private ShowUi() {
-		this._targetUi = new BasicItem(this._target.GetBoundingBox(), Archive.direction.target, ZKind.Sky);
+		this._targetUi = new BasicItem(this._target.GetBoundingBox(), SvgArchive.direction.target, ZKind.Sky);
 		this._targetUi.SetVisible(this._v.IsSelected.bind(this._v));
 		this._targetUi.SetAlive(
 			() => this._v.IsAlive() && this._target.IsAlive() && this._v.GetMainTarget() === this._target

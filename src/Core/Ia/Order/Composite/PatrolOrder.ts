@@ -2,7 +2,7 @@ import { OrderState } from '../OrderState';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Order } from '../Order';
 import { BasicItem } from '../../../Items/BasicItem';
-import { Archive } from '../../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../../Framework/SvgArchiver';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { OrderKind } from '../OrderKind';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
@@ -49,7 +49,7 @@ export class PatrolOrder extends Order {
 	private CreatePath(): void {
 		if (!isNullOrUndefined(this._patrolcells) && 0 < this._patrolcells.length) {
 			this._patrolcells.forEach((cell) => {
-				const pathItem = new BasicItem(cell.GetBoundingBox(), Archive.direction.moving);
+				const pathItem = new BasicItem(cell.GetBoundingBox(), SvgArchive.direction.moving);
 
 				pathItem.SetVisible(this._v.IsSelected.bind(this._v));
 				pathItem.SetAlive(this._v.IsAlive.bind(this._v));

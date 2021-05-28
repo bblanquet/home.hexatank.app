@@ -1,6 +1,6 @@
 import { ZKind } from './../ZKind';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
-import { Archive } from '../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../Framework/SvgArchiver';
 import { Cell } from './Cell';
 import { Item } from '../Item';
 import { InteractionContext } from '../../Interaction/InteractionContext';
@@ -12,7 +12,7 @@ export class FlagCell extends Item {
 	constructor(cell: Cell) {
 		super();
 		this.Z = ZKind.Cell;
-		this.GenerateSprite(Archive.flagCell, (e) => {
+		this.GenerateSprite(SvgArchive.flagCell, (e) => {
 			e.anchor.set(0.5);
 			e.alpha = 0;
 		});
@@ -38,7 +38,7 @@ export class FlagCell extends Item {
 	public Update(viewX: number, viewY: number): void {
 		super.Update(viewX, viewY);
 
-		this.SetProperty(Archive.flagCell, (s) => {
+		this.SetProperty(SvgArchive.flagCell, (s) => {
 			if (s.alpha < 0) {
 				this._isIncreasingOpacity = true;
 			}

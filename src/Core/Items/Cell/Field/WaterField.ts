@@ -1,7 +1,7 @@
 import { Cell } from '../Cell';
 import { Field } from './Field';
 import { CellState } from '../CellState';
-import { Archive } from '../../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../../Framework/SvgArchiver';
 import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../../Interaction/InteractionContext';
 import { Vehicle } from '../../Unit/Vehicle';
@@ -14,9 +14,9 @@ export class WaterField extends Field {
 		super(ceil);
 		this.GetCell().SetField(this);
 		this.Z = ZKind.Field;
-		this.GenerateSprite(Archive.nature.water.middle.background);
-		this.GenerateSprite(Archive.nature.water.middle.wave);
-		this.GenerateSprite(Archive.nature.water.leaf);
+		this.GenerateSprite(SvgArchive.nature.water.middle.background);
+		this.GenerateSprite(SvgArchive.nature.water.middle.wave);
+		this.GenerateSprite(SvgArchive.nature.water.leaf);
 
 		this.GetSprites().forEach((sprite) => {
 			(sprite.width = this.GetCell().GetBoundingBox().Width),
@@ -40,9 +40,9 @@ export class WaterField extends Field {
 
 	public Update(viewX: number, viewY: number): void {
 		super.Update(viewX, viewY);
-		this.SetProperty(Archive.nature.water.leaf, (s) => (s.rotation += 0.005));
+		this.SetProperty(SvgArchive.nature.water.leaf, (s) => (s.rotation += 0.005));
 
-		this.SetProperty(Archive.nature.water.middle.wave, (s) => {
+		this.SetProperty(SvgArchive.nature.water.middle.wave, (s) => {
 			if (s.alpha < 0.4) {
 				this._isIncreasingOpacity = true;
 			}

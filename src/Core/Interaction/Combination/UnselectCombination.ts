@@ -8,12 +8,12 @@ import { CombinationContext } from './CombinationContext';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { ISelectableChecker } from '../ISelectableChecker';
-import { GameContext } from '../../Framework/GameContext';
+import { IGameContext } from '../../Framework/IGameContext';
 
 export class UnselectCombination extends AbstractSingleCombination {
 	private _checker: ISelectableChecker;
 
-	constructor(isSelectable: ISelectableChecker, private _gameContext: GameContext) {
+	constructor(isSelectable: ISelectableChecker, private _gameContext: IGameContext) {
 		super();
 		this._checker = isSelectable;
 	}

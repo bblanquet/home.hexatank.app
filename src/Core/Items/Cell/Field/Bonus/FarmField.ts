@@ -3,7 +3,7 @@ import { TimeTimer } from './../../../../Utils/Timer/TimeTimer';
 import { GameSettings } from '../../../../Framework/GameSettings';
 import { Cell } from '../../Cell';
 import { Light } from '../../../Environment/Light';
-import { Archive } from '../../../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { Truck } from '../../../Unit/Truck';
 import { Headquarter } from '../Hq/Headquarter';
@@ -16,12 +16,12 @@ export class FarmField extends BonusField {
 	private _bonusProvider: BonusValueProvider = new BonusValueProvider();
 
 	constructor(cell: Cell, protected hq: Headquarter) {
-		super(cell, [ Archive.bonus.emptyMoney, Archive.bonus.fullMoney ], hq);
+		super(cell, [ SvgArchive.bonus.emptyMoney, SvgArchive.bonus.fullMoney ], hq);
 		this._timer = new TimeTimer(GameSettings.FarmLoading);
 		this._lightItem = new Light(cell.GetBoundingBox());
 		this._lightItem.Hide();
 
-		this.SetProperty(Archive.bonus.fullMoney, (e) => (e.alpha = 0));
+		this.SetProperty(SvgArchive.bonus.fullMoney, (e) => (e.alpha = 0));
 		this.GetCell().OnCellStateChanged.On(this.HandleCellStateChanged.bind(this));
 		this._lightItem.GetCurrentSprites().Values().forEach((s) => {
 			s.visible = cell.GetState() !== CellState.Hidden;
@@ -35,11 +35,11 @@ export class FarmField extends BonusField {
 	}
 
 	public IsFull(): boolean {
-		return this.GetCurrentSprites().Get(Archive.bonus.fullMoney).alpha >= 1;
+		return this.GetCurrentSprites().Get(SvgArchive.bonus.fullMoney).alpha >= 1;
 	}
 
 	private SetEmpty(): void {
-		this.SetProperty(Archive.bonus.fullMoney, (s) => (s.alpha = 0));
+		this.SetProperty(SvgArchive.bonus.fullMoney, (s) => (s.alpha = 0));
 	}
 
 	Support(vehicule: Vehicle): void {
@@ -65,8 +65,8 @@ export class FarmField extends BonusField {
 
 		if (!this.IsFull() && this.Energy > 0) {
 			if (this._timer.IsElapsed()) {
-				this.SetProperty(Archive.bonus.fullMoney, (s) => (s.alpha += 0.1));
-				if (this.GetCurrentSprites().Get(Archive.bonus.fullMoney).alpha >= 1) {
+				this.SetProperty(SvgArchive.bonus.fullMoney, (s) => (s.alpha += 0.1));
+				if (this.GetCurrentSprites().Get(SvgArchive.bonus.fullMoney).alpha >= 1) {
 					this._lightItem.Display();
 				}
 			}

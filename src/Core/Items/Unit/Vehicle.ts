@@ -22,7 +22,7 @@ import { IRotatable } from './MotionHelpers/IRotatable';
 import { ISelectable } from '../../ISelectable';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { CellState } from '../Cell/CellState';
-import { Archive } from '../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../Framework/SvgArchiver';
 import { CellProperties } from '../Cell/CellProperties';
 import { Crater } from '../Environment/Crater';
 import { InteractionContext } from '../../Interaction/InteractionContext';
@@ -86,8 +86,8 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this.CurrentRadius = 0;
 		this.BoundingBox = new BoundingBox();
 
-		this.GenerateSprite(Archive.selectionUnit);
-		this.SetProperties([ Archive.selectionUnit ], (sprite) => (sprite.alpha = 0));
+		this.GenerateSprite(SvgArchive.selectionUnit);
+		this.SetProperties([ SvgArchive.selectionUnit ], (sprite) => (sprite.alpha = 0));
 
 		this.Z = ZKind.Cell;
 		this.Size = GameSettings.Size;
@@ -96,18 +96,18 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 		this._handleCellStateChanged = this.HandleCellStateChanged.bind(this);
 		this.RootSprites = new Array<string>();
 
-		this.GenerateSprite(Archive.wheel);
-		this.RootSprites.push(Archive.wheel);
+		this.GenerateSprite(SvgArchive.wheel);
+		this.RootSprites.push(SvgArchive.wheel);
 
-		Archive.wheels.forEach((wheel) => {
+		SvgArchive.wheels.forEach((wheel) => {
 			this.GenerateSprite(wheel, (s) => (s.alpha = 0));
 			this.RootSprites.push(wheel);
 		});
 
 		if (this.Identity.IsPlayer) {
-			this.GenerateSprite(Archive.selectionBlueVehicle);
-			this._infiniteAnimator = new InfiniteFadeAnimation(this, Archive.selectionBlueVehicle, 0, 1, 0.05);
-			this.RootSprites.push(Archive.selectionBlueVehicle);
+			this.GenerateSprite(SvgArchive.selectionBlueVehicle);
+			this._infiniteAnimator = new InfiniteFadeAnimation(this, SvgArchive.selectionBlueVehicle, 0, 1, 0.05);
+			this.RootSprites.push(SvgArchive.selectionBlueVehicle);
 		}
 
 		this.WheelIndex = 0;
@@ -130,7 +130,7 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 			new Dust(new BoundingBox())
 		];
 		this.OnCellChanged = new LiteEvent<Cell>();
-		this.SetProperty(Archive.wheels[0], (s) => (s.alpha = 1));
+		this.SetProperty(SvgArchive.wheels[0], (s) => (s.alpha = 1));
 	}
 
 	public IsMainCell(cell: Cell): boolean {
@@ -248,11 +248,11 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	}
 
 	private HandleWheels(): void {
-		var previousWheel = Archive.wheels[this.WheelIndex];
+		var previousWheel = SvgArchive.wheels[this.WheelIndex];
 
-		this.WheelIndex = (this.WheelIndex + 1) % Archive.wheels.length;
+		this.WheelIndex = (this.WheelIndex + 1) % SvgArchive.wheels.length;
 
-		this.SetProperty(Archive.wheels[this.WheelIndex], (e) => (e.alpha = 1));
+		this.SetProperty(SvgArchive.wheels[this.WheelIndex], (e) => (e.alpha = 1));
 		this.SetProperty(previousWheel, (e) => (e.alpha = 0));
 	}
 
@@ -324,13 +324,13 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	}
 
 	public IsSelected(): boolean {
-		return this.GetCurrentSprites().Get(Archive.selectionUnit).alpha === 1;
+		return this.GetCurrentSprites().Get(SvgArchive.selectionUnit).alpha === 1;
 	}
 
 	//is it the right place???
 	private _uiOrder: UiOrder;
 	public SetSelected(isSelected: boolean): void {
-		this.SetProperty(Archive.selectionUnit, (e) => (e.alpha = isSelected ? 1 : 0));
+		this.SetProperty(SvgArchive.selectionUnit, (e) => (e.alpha = isSelected ? 1 : 0));
 		this.SetUiOrder();
 		this.OnSelectionChanged.Invoke(this, this);
 	}

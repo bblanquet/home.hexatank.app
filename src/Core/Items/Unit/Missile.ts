@@ -4,7 +4,7 @@ import { Item } from '../Item';
 import { Explosion } from './Explosion';
 import { AliveItem } from '../AliveItem';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
-import { Archive } from '../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../Framework/SvgArchiver';
 import { InteractionContext } from '../../Interaction/InteractionContext';
 import { GameSettings } from '../../Framework/GameSettings';
 import * as PIXI from 'pixi.js';
@@ -27,7 +27,7 @@ export class Missile extends Item {
 		this.IsReached = false;
 		var radius = this.GetAngle();
 
-		Archive.missiles.forEach((missile) => {
+		SvgArchive.missiles.forEach((missile) => {
 			this.GenerateSprite(missile);
 		});
 
@@ -94,15 +94,15 @@ export class Missile extends Item {
 			this.GetBoundingBox().X += speedY * 1.5;
 			this.GetBoundingBox().Y += speedX * 1.5;
 
-			this.SetProperty(Archive.missiles[this._currentMissile], (e) => (e.alpha = 0));
-			this._currentMissile = (this._currentMissile + 1) % Archive.missiles.length;
-			this.SetProperty(Archive.missiles[this._currentMissile], (e) => (e.alpha = 1));
+			this.SetProperty(SvgArchive.missiles[this._currentMissile], (e) => (e.alpha = 0));
+			this._currentMissile = (this._currentMissile + 1) % SvgArchive.missiles.length;
+			this.SetProperty(SvgArchive.missiles[this._currentMissile], (e) => (e.alpha = 1));
 		} else {
 			this.Target.SetDamage(this._damage);
-			new Explosion(this.Target.GetBoundingBox(), Archive.explosions, 5, true, 20);
+			new Explosion(this.Target.GetBoundingBox(), SvgArchive.explosions, 5, true, 20);
 
 			if (!this.Target.IsAlive()) {
-				new Explosion(this.Target.GetBoundingBox(), [ Archive.skull ], 5, false, 50);
+				new Explosion(this.Target.GetBoundingBox(), [ SvgArchive.skull ], 5, false, 50);
 			}
 			this.OnExploded.Invoke(this, this);
 			this.Destroy();

@@ -1,7 +1,7 @@
 import { ZKind } from './../ZKind';
 import { BasicItem } from './../BasicItem';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
-import { Archive } from '../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../Framework/SvgArchiver';
 import { TickTimer } from '../../Utils/Timer/TickTimer';
 
 export class Floor extends BasicItem {
@@ -13,7 +13,7 @@ export class Floor extends BasicItem {
 	constructor(boundingBox: BoundingBox, sprite: string) {
 		super(boundingBox, sprite, ZKind.Ground);
 		this._grassIndex = 0;
-		Archive.nature.grass.forEach((g) => {
+		SvgArchive.nature.grass.forEach((g) => {
 			this.GenerateSprite(g, (e) => {
 				e.anchor.set(0.5);
 				e.alpha = 0;
@@ -33,10 +33,10 @@ export class Floor extends BasicItem {
 		}
 
 		if (this._idleTimer.IsElapsed()) {
-			this.SetProperty(Archive.nature.grass[this._grassIndex], (s) => {
-				this.SetProperty(Archive.nature.grass[this._grassIndex], (s) => (s.alpha = 0));
+			this.SetProperty(SvgArchive.nature.grass[this._grassIndex], (s) => {
+				this.SetProperty(SvgArchive.nature.grass[this._grassIndex], (s) => (s.alpha = 0));
 				this.SetNextIndex();
-				this.SetProperty(Archive.nature.grass[this._grassIndex], (s) => (s.alpha = 1));
+				this.SetProperty(SvgArchive.nature.grass[this._grassIndex], (s) => (s.alpha = 1));
 			});
 		}
 	}
@@ -61,8 +61,8 @@ export class Floor extends BasicItem {
 			this._isIncreasing = true;
 		}
 
-		if (Archive.nature.grass.length <= index) {
-			index = Archive.nature.grass.length - 2;
+		if (SvgArchive.nature.grass.length <= index) {
+			index = SvgArchive.nature.grass.length - 2;
 			this._isIncreasing = false;
 		}
 

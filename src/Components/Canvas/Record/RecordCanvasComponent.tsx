@@ -65,7 +65,7 @@ export default class RecordCanvasComponent extends Component<
 							onChange={(e: number) => this.HandleRangeChanged(e)}
 						/>
 					</div>
-					<CanvasComponent />
+					<CanvasComponent gameContext={this._gameService} />
 					{this.LeftMenuRender()}
 				</div>
 			</Redirect>

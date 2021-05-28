@@ -3,7 +3,7 @@ import { Field } from './Field';
 import { TickTimer } from '../../../Utils/Timer/TickTimer';
 import { LiteEvent } from '../../../Utils/Events/LiteEvent';
 import { Cell } from '../Cell';
-import { Archive } from '../../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../../Framework/SvgArchiver';
 import { Vehicle } from '../../Unit/Vehicle';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { Truck } from '../../Unit/Truck';
@@ -20,7 +20,7 @@ export class DiamondField extends Field {
 		this.GetCell().SetField(this);
 		this.Z = ZKind.Field;
 		this._timer = new TickTimer(3);
-		this.GenerateSprite(Archive.diamondCell);
+		this.GenerateSprite(SvgArchive.diamondCell);
 		this.InitPosition(cell.GetBoundingBox());
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();

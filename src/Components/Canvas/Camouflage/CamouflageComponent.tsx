@@ -1,23 +1,14 @@
 import { Component, h } from 'preact';
 import { Item } from '../../../Core/Items/Item';
-import { GameContext } from '../../../Core/Framework/GameContext';
-import { Tank } from '../../../Core/Items/Unit/Tank';
 import { Truck } from '../../../Core/Items/Unit/Truck';
-import { Cell } from '../../../Core/Items/Cell/Cell';
 import { ISelectable } from '../../../Core/ISelectable';
-import { ReactorField } from '../../../Core/Items/Cell/Field/Bonus/ReactorField';
 import { GameSettings } from '../../../Core/Framework/GameSettings';
-import { Headquarter } from '../../../Core/Items/Cell/Field/Hq/Headquarter';
 import CanvasComponent from '../CanvasComponent';
-import CellMenuComponent from '../Game/Parts/CellMenuComponent';
 import MultiMenuComponent from '../Game/Parts/MultiMenuComponent';
 import TruckMenuComponent from '../Game/Parts/TruckMenuComponent';
-import ReactorMenuComponent from '../Game/Parts/ReactorMenuComponent';
 import PopupMenuComponent from '../../PopupMenu/PopupMenuComponent';
-import { UnitGroup } from '../../../Core/Items/UnitGroup';
 import { GameStatus } from '../../../Core/Framework/GameStatus';
 import { OnlinePlayer } from '../../../Network/OnlinePlayer';
-import { CellGroup } from '../../../Core/Items/CellGroup';
 import PopupComponent from '../../Popup/PopupComponent';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
 import { INetworkService } from '../../../Services/Network/INetworkService';
@@ -37,6 +28,7 @@ import { IAppService } from '../../../Services/App/IAppService';
 import { FlagCellCombination } from '../../../Core/Interaction/Combination/FlagCellCombination';
 import { BattleBlueprint } from '../../../Core/Setup/Blueprint/Battle/BattleBlueprint';
 import { CamouflageGameContext } from '../../../Core/Framework/CamouflageGameContext';
+import SmPopupComponent from '../../SmPopup/SmPopupComponent';
 
 export default class CamouflageCanvasComponent extends Component<
 	any,
@@ -77,6 +69,7 @@ export default class CamouflageCanvasComponent extends Component<
 		this._appService = Factory.Load<IAppService<BattleBlueprint>>(FactoryKey.CamouflageApp);
 		this._gameContext = this._gameContextService.Publish();
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
+		this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this.setState({
 			HasMenu: false,
 			TankRequestCount: 0,
@@ -146,7 +139,13 @@ export default class CamouflageCanvasComponent extends Component<
 			return <MultiMenuComponent Item={this.state.Item} />;
 		} else if (this.state.Item) {
 			if (this.state.Item instanceof Truck) {
-				return <TruckMenuComponent Truck={this.state.Item} isSettingPatrol={this.state.IsSettingPatrol} />;
+				return (
+					<TruckMenuComponent
+						interaction={this._interactionService}
+						Truck={this.state.Item}
+						isSettingPatrol={this.state.IsSettingPatrol}
+					/>
+				);
 			}
 		}
 		return '';
@@ -170,21 +169,13 @@ export default class CamouflageCanvasComponent extends Component<
 		}
 	}
 
-	private SetFlag(): void {
-		FlagCellCombination.IsFlagingMode = !FlagCellCombination.IsFlagingMode;
-		this.setState({
-			...this.state,
-			HasFlag: FlagCellCombination.IsFlagingMode
-		});
-	}
-
 	render() {
 		return (
 			<Redirect>
 				{this.TopLeftInfo()}
 				{this.TopMenuRender()}
 				{this.state.GameStatus === GameStatus.Pending ? '' : this.GetEndMessage()}
-				<CanvasComponent />
+				<CanvasComponent gameContext={this._gameContextService} />
 				<Visible
 					isVisible={
 						!this.state.HasMenu &&
@@ -274,14 +265,7 @@ export default class CamouflageCanvasComponent extends Component<
 
 	private GetEndMessage() {
 		if ([ GameStatus.Won, GameStatus.Lost ].some((e) => e === this.state.GameStatus)) {
-			return (
-				<PopupComponent
-					points={10}
-					status={this.state.GameStatus}
-					curves={this._appService.GetStats().GetCurves()}
-					context={this._appService.GetRecord().GetRecord()}
-				/>
-			);
+			return <SmPopupComponent points={10} status={this.state.GameStatus} />;
 		}
 		return '';
 	}

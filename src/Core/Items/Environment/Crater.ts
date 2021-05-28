@@ -3,7 +3,7 @@ import { Item } from '../Item';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../Interaction/InteractionContext';
 import { TickTimer } from '../../Utils/Timer/TickTimer';
-import { Archive } from '../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../Framework/SvgArchiver';
 
 export class Crater extends Item {
 	BoundingBox: BoundingBox;
@@ -16,8 +16,8 @@ export class Crater extends Item {
 		this.BoundingBox = boundingbox;
 		this._timer = new TickTimer(120);
 
-		this.GenerateSprite(Archive.destruction.floorExplosion, (s) => (s.alpha = 0.6));
-		this.GenerateSprite(Archive.destruction.debris);
+		this.GenerateSprite(SvgArchive.destruction.floorExplosion, (s) => (s.alpha = 0.6));
+		this.GenerateSprite(SvgArchive.destruction.debris);
 		this.InitPosition(boundingbox);
 	}
 
@@ -42,8 +42,8 @@ export class Crater extends Item {
 		}
 
 		if (this._timer.IsElapsed()) {
-			this.GetCurrentSprites().Get(Archive.destruction.floorExplosion).alpha -= 0.05;
-			if (this.GetCurrentSprites().Get(Archive.destruction.floorExplosion).alpha <= 0) {
+			this.GetCurrentSprites().Get(SvgArchive.destruction.floorExplosion).alpha -= 0.05;
+			if (this.GetCurrentSprites().Get(SvgArchive.destruction.floorExplosion).alpha <= 0) {
 				this._isDone = true;
 			}
 		}

@@ -5,7 +5,7 @@ import { Cell } from '../Cell';
 import { DecoratingElement } from './DecoratingElement';
 import { DecorationType } from '../../../Setup/Blueprint/DecorationType';
 import { Item } from '../../Item';
-import { Archive } from '../../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../../Framework/SvgArchiver';
 
 export abstract class Decorator {
 	protected _blockingCells = new Array<DecoratingElement>();
@@ -29,31 +29,31 @@ export abstract class Decorator {
 	public static SetDecoration(items: Array<Item>, cell: Cell, type: DecorationType): void {
 		switch (type) {
 			case DecorationType.Stone: {
-				cell.SetDecoration(Archive.nature.stone);
+				cell.SetDecoration(SvgArchive.nature.stone);
 				break;
 			}
 			case DecorationType.SandStone: {
-				cell.SetDecoration(Archive.nature.sandStone);
+				cell.SetDecoration(SvgArchive.nature.sandStone);
 				break;
 			}
 			case DecorationType.Bush: {
-				cell.SetDecoration(Archive.nature.bush);
+				cell.SetDecoration(SvgArchive.nature.bush);
 				break;
 			}
 			case DecorationType.SandCactusPlants: {
-				cell.SetDecoration(Archive.nature.cactusPlants);
+				cell.SetDecoration(SvgArchive.nature.cactusPlants);
 				break;
 			}
 			case DecorationType.SandCactus: {
-				items.push(new BlockingField(cell, Archive.nature.cactus));
+				items.push(new BlockingField(cell, SvgArchive.nature.cactus));
 				break;
 			}
 			case DecorationType.WhiteSkull: {
-				cell.SetDecoration(Archive.nature.whiteSkull);
+				cell.SetDecoration(SvgArchive.nature.whiteSkull);
 				break;
 			}
 			case DecorationType.SandPlants: {
-				cell.SetDecoration(Archive.nature.sandPlants);
+				cell.SetDecoration(SvgArchive.nature.sandPlants);
 				break;
 			}
 			case DecorationType.Water: {
@@ -65,59 +65,59 @@ export abstract class Decorator {
 				break;
 			}
 			case DecorationType.Tree: {
-				items.push(new BlockingField(cell, Archive.nature.tree));
+				items.push(new BlockingField(cell, SvgArchive.nature.tree));
 				break;
 			}
 			case DecorationType.DarkTree: {
-				items.push(new BlockingField(cell, Archive.nature.darkTree));
+				items.push(new BlockingField(cell, SvgArchive.nature.darkTree));
 				break;
 			}
 			case DecorationType.palmTree: {
-				items.push(new BlockingField(cell, Archive.nature.palmTree));
+				items.push(new BlockingField(cell, SvgArchive.nature.palmTree));
 				break;
 			}
 			case DecorationType.Rock: {
-				items.push(new BlockingField(cell, Archive.nature.rock));
+				items.push(new BlockingField(cell, SvgArchive.nature.rock));
 				break;
 			}
 			case DecorationType.IceTree: {
-				items.push(new BlockingField(cell, Archive.nature.iceTree));
+				items.push(new BlockingField(cell, SvgArchive.nature.iceTree));
 				break;
 			}
 			case DecorationType.IceTree2: {
-				items.push(new BlockingField(cell, Archive.nature.iceTree2));
+				items.push(new BlockingField(cell, SvgArchive.nature.iceTree2));
 				break;
 			}
 			case DecorationType.IceStone: {
-				cell.SetDecoration(Archive.nature.iceStone);
+				cell.SetDecoration(SvgArchive.nature.iceStone);
 				break;
 			}
 			case DecorationType.IceRock: {
-				items.push(new BlockingField(cell, Archive.nature.iceRock));
+				items.push(new BlockingField(cell, SvgArchive.nature.iceRock));
 				break;
 			}
 			case DecorationType.SandRock: {
-				items.push(new BlockingField(cell, Archive.nature.sandRock));
+				items.push(new BlockingField(cell, SvgArchive.nature.sandRock));
 				break;
 			}
 			case DecorationType.Puddle: {
-				cell.SetDecoration(Archive.nature.puddle);
+				cell.SetDecoration(SvgArchive.nature.puddle);
 				break;
 			}
 			case DecorationType.IcePlants: {
-				cell.SetDecoration(Archive.nature.icePlants);
+				cell.SetDecoration(SvgArchive.nature.icePlants);
 				break;
 			}
 			case DecorationType.IcePlants2: {
-				cell.SetDecoration(Archive.nature.icePlants2);
+				cell.SetDecoration(SvgArchive.nature.icePlants2);
 				break;
 			}
 			case DecorationType.Leaf: {
-				cell.SetDecoration(Archive.nature.ForestLeaf);
+				cell.SetDecoration(SvgArchive.nature.ForestLeaf);
 				break;
 			}
 			case DecorationType.Leaf2: {
-				cell.SetDecoration(Archive.nature.ForestLeaf2);
+				cell.SetDecoration(SvgArchive.nature.ForestLeaf2);
 				break;
 			}
 		}

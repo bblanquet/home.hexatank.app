@@ -14,7 +14,7 @@ import { HeadQuarterField } from './HeadquarterField';
 import { AliveItem } from '../../../AliveItem';
 import { IField } from '../IField';
 import { Crater } from '../../../Environment/Crater';
-import { Archive } from '../../../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { CellState } from '../../CellState';
 import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { Vehicle } from '../../../Unit/Vehicle';
@@ -70,8 +70,8 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		this._cell = cell;
 		this._cell.SetField(this);
 
-		this.GenerateSprite(Archive.selectionUnit);
-		this.SetProperty(Archive.selectionUnit, (e) => (e.alpha = 0));
+		this.GenerateSprite(SvgArchive.selectionUnit);
+		this.SetProperty(SvgArchive.selectionUnit, (e) => (e.alpha = 0));
 
 		this._boundingBox = new BoundingBox();
 		this._boundingBox.Width = this._cell.GetBoundingBox().Width;
@@ -80,8 +80,8 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		this._boundingBox.Y = this._cell.GetBoundingBox().Y;
 
 		this.GenerateSprite(this.Identity.Skin.GetHq());
-		this.GenerateSprite(Archive.building.hq.bottom);
-		this.GenerateSprite(Archive.building.hq.top);
+		this.GenerateSprite(SvgArchive.building.hq.bottom);
+		this.GenerateSprite(SvgArchive.building.hq.top);
 
 		this.GetSprites().forEach((obj) => {
 			obj.width = this._boundingBox.Width;
@@ -110,11 +110,11 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	}
 
 	public SetSelectionAnimation(): void {
-		const blue = new BasicItem(this._cell.GetBoundingBox(), Archive.selectionBlueHq, ZKind.BelowCell);
+		const blue = new BasicItem(this._cell.GetBoundingBox(), SvgArchive.selectionBlueHq, ZKind.BelowCell);
 		blue.SetVisible(() => this.IsAlive());
 		blue.SetAlive(() => this.IsAlive());
-		const white = new BasicItem(this._cell.GetBoundingBox(), Archive.selectionWhiteHq, ZKind.BelowCell);
-		white.SetAnimator(new InfiniteFadeAnimation(white, Archive.selectionWhiteHq, 0, 1, 0.05));
+		const white = new BasicItem(this._cell.GetBoundingBox(), SvgArchive.selectionWhiteHq, ZKind.BelowCell);
+		white.SetAnimator(new InfiniteFadeAnimation(white, SvgArchive.selectionWhiteHq, 0, 1, 0.05));
 		white.SetVisible(() => this.IsAlive());
 		white.SetAlive(() => this.IsAlive());
 	}
@@ -173,7 +173,13 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		this.Fields.every((field) => {
 			if (!field.GetCell().IsBlocked()) {
 				if (field.GetCell().IsVisible()) {
-					new Explosion(field.GetCell().GetBoundingBox(), Archive.constructionEffects, ZKind.Sky, false, 5);
+					new Explosion(
+						field.GetCell().GetBoundingBox(),
+						SvgArchive.constructionEffects,
+						ZKind.Sky,
+						false,
+						5
+					);
 				}
 				const tank = new Tank(this.Identity);
 				this.AddVehicle(tank);
@@ -197,7 +203,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 		this.Fields.every((field) => {
 			if (!field.GetCell().IsBlocked()) {
 				if (field.GetCell().IsVisible()) {
-					new Explosion(field.GetCell().GetBoundingBox(), Archive.constructionEffects, 5, false, 5);
+					new Explosion(field.GetCell().GetBoundingBox(), SvgArchive.constructionEffects, 5, false, 5);
 				}
 				let truck = new Truck(this.Identity);
 				this.AddVehicle(truck);
@@ -214,11 +220,11 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 	}
 
 	SetSelected(isSelected: boolean): void {
-		this.SetProperty(Archive.selectionUnit, (e) => (e.alpha = isSelected ? 1 : 0));
+		this.SetProperty(SvgArchive.selectionUnit, (e) => (e.alpha = isSelected ? 1 : 0));
 		this.OnSelectionChanged.Invoke(this, this);
 	}
 	IsSelected(): boolean {
-		return this.GetCurrentSprites().Get(Archive.selectionUnit).alpha === 1;
+		return this.GetCurrentSprites().Get(SvgArchive.selectionUnit).alpha === 1;
 	}
 
 	public GetBoundingBox(): BoundingBox {
@@ -336,7 +342,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable {
 			}
 		}
 
-		this.SetProperty(Archive.building.hq.bottom, (sprite) => (sprite.rotation += 0.1));
+		this.SetProperty(SvgArchive.building.hq.bottom, (sprite) => (sprite.rotation += 0.1));
 
 		if (!this.IsAlive()) {
 			this.Destroy();

@@ -1,7 +1,7 @@
 import { PatrolMenuItem } from '../../Menu/Buttons/PatrolMenuItem';
 import { PatrolOrder } from '../../Ia/Order/Composite/PatrolOrder';
 import { BasicItem } from '../../Items/BasicItem';
-import { Archive } from '../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../Framework/SvgArchiver';
 import { Item } from '../../Items/Item';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Cell } from '../../Items/Cell/Cell';
@@ -63,7 +63,7 @@ export class PatrolCombination extends AbstractSingleCombination {
 			if (context.Items[context.Items.length - 1] instanceof Cell) {
 				const indicator = new BasicItem(
 					context.Items[context.Items.length - 1].GetBoundingBox(),
-					Archive.direction.moving,
+					SvgArchive.direction.moving,
 					ZKind.AboveCell
 				);
 				indicator.SetVisible(() => true);

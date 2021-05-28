@@ -2,7 +2,7 @@ import { BonusValueProvider } from './BonusValueProvider';
 import { ShieldAppearance } from './ShieldAppearance';
 import { Headquarter } from './../Hq/Headquarter';
 import { Cell } from '../../Cell';
-import { Archive } from '../../../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { AliveBonusField } from './AliveBonusField';
 import { AliveItem } from '../../../AliveItem';
@@ -29,7 +29,7 @@ export class ShieldField extends AliveBonusField {
 		if (!hq.IsCovered(cell)) {
 			cell.DestroyField();
 			if (cell.IsVisible()) {
-				new Explosion(cell.GetBoundingBox(), Archive.constructionEffects, ZKind.Sky, false, 5);
+				new Explosion(cell.GetBoundingBox(), SvgArchive.constructionEffects, ZKind.Sky, false, 5);
 			}
 		}
 	}
@@ -41,13 +41,13 @@ export class ShieldField extends AliveBonusField {
 
 		if (this.Energy === 1 && formerEnergy === 0) {
 			this._shieldAppearance.Animator = new BouncingScaleUpAnimator(this._shieldAppearance, [
-				Archive.bonus.shieldLight,
-				Archive.bonus.shield
+				SvgArchive.bonus.shieldLight,
+				SvgArchive.bonus.shield
 			]);
 		} else if (this.Energy === 0 && formerEnergy === 1) {
 			this._shieldAppearance.Animator = new BouncingScaleDownAnimator(this._shieldAppearance, [
-				Archive.bonus.shieldLight,
-				Archive.bonus.shield
+				SvgArchive.bonus.shieldLight,
+				SvgArchive.bonus.shield
 			]);
 		}
 	}

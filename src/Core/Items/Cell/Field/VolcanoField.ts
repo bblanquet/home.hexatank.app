@@ -1,7 +1,7 @@
 import { Cell } from '../Cell';
 import { Field } from './Field';
 import { CellState } from '../CellState';
-import { Archive } from '../../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../../Framework/SvgArchiver';
 import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../../Interaction/InteractionContext';
 import { Vehicle } from '../../Unit/Vehicle';
@@ -14,8 +14,8 @@ export class VolcanoField extends Field {
 		super(ceil);
 		this.GetCell().SetField(this);
 		this.Z = ZKind.Field;
-		this.GenerateSprite(Archive.nature.volcano);
-		this.GenerateSprite(Archive.nature.volcanaoAnimation);
+		this.GenerateSprite(SvgArchive.nature.volcano);
+		this.GenerateSprite(SvgArchive.nature.volcanaoAnimation);
 
 		this.GetSprites().forEach((sprite) => {
 			(sprite.width = this.GetCell().GetBoundingBox().Width),
@@ -40,7 +40,7 @@ export class VolcanoField extends Field {
 	public Update(viewX: number, viewY: number): void {
 		super.Update(viewX, viewY);
 
-		this.SetProperty(Archive.nature.volcanaoAnimation, (s) => {
+		this.SetProperty(SvgArchive.nature.volcanaoAnimation, (s) => {
 			if (s.alpha < 0) {
 				this._isIncreasingOpacity = true;
 			}

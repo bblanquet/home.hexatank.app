@@ -3,7 +3,7 @@ import { BouncingScaleDownAnimator } from './../../../Animator/BouncingScaleDown
 import { IAnimator } from './../../../Animator/IAnimator';
 import { IActiveContainer } from './../IActiveContainer';
 import { Cell } from '../../Cell';
-import { Archive } from '../../../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { AliveField } from '../AliveField';
 import { AliveItem } from '../../../AliveItem';
@@ -23,7 +23,7 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 		super(cell);
 		this.GetCell().SetField(this);
 		this.Z = ZKind.Field;
-		this.GenerateSprite(Archive.bonus.coverBottom);
+		this.GenerateSprite(SvgArchive.bonus.coverBottom);
 		this._bonus.forEach((b) => {
 			this.GenerateSprite(b);
 		});

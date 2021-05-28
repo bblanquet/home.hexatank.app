@@ -2,7 +2,7 @@ import { OrderState } from './OrderState';
 import { Cell } from './../../Items/Cell/Cell';
 import { BasicItem } from '../../Items/BasicItem';
 import { Dictionnary } from '../../Utils/Collections/Dictionnary';
-import { Archive } from '../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../Framework/SvgArchiver';
 import { BouncingScaleUpAnimator } from '../../Items/Animator/BouncingScaleUpAnimator';
 import { IOrder } from './IOrder';
 import { ZKind } from '../../Items/ZKind';
@@ -38,8 +38,8 @@ export class UiOrder {
 		//add new keys
 		cells.forEach((cell) => {
 			if (!this._items.Exist(cell.Coo())) {
-				var pathItem = new BasicItem(cell.GetBoundingBox(), Archive.direction.moving, ZKind.Cell);
-				pathItem.SetAnimator(new BouncingScaleUpAnimator(pathItem, [ Archive.direction.moving ]));
+				var pathItem = new BasicItem(cell.GetBoundingBox(), SvgArchive.direction.moving, ZKind.Cell);
+				pathItem.SetAnimator(new BouncingScaleUpAnimator(pathItem, [ SvgArchive.direction.moving ]));
 				pathItem.SetVisible(() => true);
 				pathItem.SetAlive(() => true);
 				this._items.Add(cell.Coo(), pathItem);

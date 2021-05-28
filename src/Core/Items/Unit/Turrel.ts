@@ -10,7 +10,7 @@ import { IRotationMaker } from './MotionHelpers/IRotationMaker';
 import { RotationMaker } from './MotionHelpers/RotationMaker';
 import { ItemSkin } from '../ItemSkin';
 import { TickTimer } from '../../Utils/Timer/TickTimer';
-import { Archive } from '../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../Framework/SvgArchiver';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../Interaction/InteractionContext';
 import { GameSettings } from '../../Framework/GameSettings';
@@ -46,13 +46,13 @@ export class Turrel extends Item implements IRotatable {
 		this._coolingDownTimer = new TimeTimer(GameSettings.TurrelCoolingDown);
 		this._animationTimer = new TimeTimer(10);
 
-		Archive.cannons.forEach((cannon) => {
+		SvgArchive.cannons.forEach((cannon) => {
 			this.GenerateSprite(cannon, (e) => {
 				e.alpha = 0;
 			});
 		});
 
-		this.SetProperty(Archive.cannons[0], (e) => (e.alpha = 1));
+		this.SetProperty(SvgArchive.cannons[0], (e) => (e.alpha = 1));
 		this._top = this._skin.GetTopTankSprite();
 		this.GenerateSprite(this._top);
 
@@ -123,9 +123,9 @@ export class Turrel extends Item implements IRotatable {
 	private CanonAnimation(): void {
 		if (this.IsAnimated) {
 			if (this._animationTimer.IsElapsed()) {
-				this.SetProperty(Archive.cannons[this._currentCanon], (e) => (e.alpha = 0));
-				this._currentCanon = (1 + this._currentCanon) % Archive.cannons.length;
-				this.SetProperty(Archive.cannons[this._currentCanon], (e) => (e.alpha = 1));
+				this.SetProperty(SvgArchive.cannons[this._currentCanon], (e) => (e.alpha = 0));
+				this._currentCanon = (1 + this._currentCanon) % SvgArchive.cannons.length;
+				this.SetProperty(SvgArchive.cannons[this._currentCanon], (e) => (e.alpha = 1));
 
 				if (this._currentCanon == 0) {
 					this.IsAnimated = false;

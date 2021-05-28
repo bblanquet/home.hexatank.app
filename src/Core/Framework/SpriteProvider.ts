@@ -2,7 +2,7 @@ import { LiteEvent } from './../Utils/Events/LiteEvent';
 import { Dictionnary } from './../Utils/Collections/Dictionnary';
 import { SpriteAccuracy } from './SpriteAccuracy';
 import * as PIXI from 'pixi.js';
-import { Archive } from './ResourceArchiver';
+import { SvgArchive } from './SvgArchiver';
 
 export class SpriteProvider {
 	constructor() {}
@@ -97,7 +97,7 @@ export class SpriteProvider {
 
 	private static GetAssets(): string[] {
 		const keys = new Array<string>();
-		this.GetPaths(Archive, keys);
+		this.GetPaths(SvgArchive, keys);
 		return keys;
 	}
 

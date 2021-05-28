@@ -2,7 +2,7 @@ import { CellState } from './../../CellState';
 import { IInteractionContext } from '../../../../Interaction/IInteractionContext';
 import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { Item } from '../../../Item';
-import { Archive } from '../../../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { InfiniteFadeAnimation } from '../../../Animator/InfiniteFadeAnimation';
 import { IAnimator } from '../../../Animator/IAnimator';
 import { ShieldField } from './ShieldField';
@@ -15,22 +15,22 @@ export class ShieldAppearance extends Item {
 
 	constructor(private _shield: ShieldField) {
 		super();
-		[ Archive.bonus.shieldLight, Archive.bonus.shield ].forEach((b) => {
+		[ SvgArchive.bonus.shieldLight, SvgArchive.bonus.shield ].forEach((b) => {
 			this.GenerateSprite(b);
 		});
 		this.Z = ZKind.Sky;
 
 		this.Animator = new BouncingScaleAnimator(this);
-		this._fadeAnimator = new InfiniteFadeAnimation(this, Archive.bonus.shieldLight, 0.2, 1, 0.01);
+		this._fadeAnimator = new InfiniteFadeAnimation(this, SvgArchive.bonus.shieldLight, 0.2, 1, 0.01);
 		this.InitPosition(this._shield.GetCell().GetBoundingBox());
 		this._shield.GetCell().OnCellStateChanged.On(this.HandleCellStateChanged.bind(this));
 		this.HandleCellStateChanged(this, this._shield.GetCell().GetState());
 
 		if (this._shield.Energy === 0) {
-			this.SetProperty(Archive.bonus.shield, (e) => {
+			this.SetProperty(SvgArchive.bonus.shield, (e) => {
 				e.alpha = 0;
 			});
-			this.SetProperty(Archive.bonus.shieldLight, (e) => {
+			this.SetProperty(SvgArchive.bonus.shieldLight, (e) => {
 				e.alpha = 0;
 			});
 		}

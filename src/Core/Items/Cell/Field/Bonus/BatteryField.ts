@@ -3,7 +3,7 @@ import { FadeOutAnimation } from '../../../Animator/FadeOutAnimation';
 import { FadeInAnimation } from '../../../Animator/FadeInAnimation';
 import { IAnimator } from '../../../Animator/IAnimator';
 import { Cell } from '../../Cell';
-import { Archive } from '../../../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { BonusField } from './BonusField';
 import { Vehicle } from '../../../Unit/Vehicle';
 
@@ -12,8 +12,8 @@ export class BatteryField extends BonusField {
 	private _ani: IAnimator;
 
 	constructor(cell: Cell, hq: Headquarter) {
-		super(cell, [ Archive.bonus.thunder, Archive.bonus.redThunder ], hq);
-		this.SetProperty(Archive.bonus.redThunder, (e) => (e.alpha = 0));
+		super(cell, [ SvgArchive.bonus.thunder, SvgArchive.bonus.redThunder ], hq);
+		this.SetProperty(SvgArchive.bonus.redThunder, (e) => (e.alpha = 0));
 		hq.AddBatteryField(this);
 	}
 
@@ -24,9 +24,9 @@ export class BatteryField extends BonusField {
 	public SetUsed(isUsed: boolean): void {
 		this._isUsed = isUsed;
 		if (this._isUsed) {
-			this._ani = new FadeInAnimation(this, [ Archive.bonus.redThunder ], 0, 1, 0.005);
+			this._ani = new FadeInAnimation(this, [ SvgArchive.bonus.redThunder ], 0, 1, 0.005);
 		} else {
-			this._ani = new FadeOutAnimation(this, [ Archive.bonus.redThunder ], 1, 0, 0.005);
+			this._ani = new FadeOutAnimation(this, [ SvgArchive.bonus.redThunder ], 1, 0, 0.005);
 		}
 	}
 

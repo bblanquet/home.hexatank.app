@@ -1,7 +1,7 @@
 import { UpAnimation } from './UpAnimation';
 import { Up } from './Up';
 import { UpCondition } from './Condition/UpCondition';
-import { Archive } from '../../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../../Framework/SvgArchiver';
 import { Vehicle } from '../Vehicle';
 
 export class SpeedUp extends Up {
@@ -11,7 +11,7 @@ export class SpeedUp extends Up {
 		private _transationUp: number,
 		private _rotationUp: number
 	) {
-		super(condition, new UpAnimation(_vehicle, Archive.speedUp, Archive.speedUp));
+		super(condition, new UpAnimation(_vehicle, SvgArchive.speedUp, SvgArchive.speedUp));
 
 		this._vehicle.SetTranslationDuration(this._transationUp);
 		this._vehicle.SetRotatingDuration(this._rotationUp);

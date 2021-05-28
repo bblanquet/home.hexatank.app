@@ -4,7 +4,7 @@ import { GameSettings } from './../../Framework/GameSettings';
 import { Vehicle } from './Vehicle';
 import { AliveItem } from '../AliveItem';
 import { Light } from '../Environment/Light';
-import { Archive } from '../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../Framework/SvgArchiver';
 import { CellState } from '../Cell/CellState';
 import { ITimer } from '../../Utils/Timer/ITimer';
 
@@ -19,7 +19,7 @@ export class Truck extends Vehicle {
 		this.IsPacific = isPacific;
 		this._dimaondTimer = new TimeTimer(GameSettings.DiamondLoading);
 
-		this._gatheredDiamonds = Archive.diamonds;
+		this._gatheredDiamonds = SvgArchive.diamonds;
 
 		this.GenerateSprite(this.Identity.Skin.GetTruck());
 		this.RootSprites.push(this.Identity.Skin.GetTruck());

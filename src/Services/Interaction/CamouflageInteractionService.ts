@@ -11,6 +11,10 @@ import { CancelCombination } from '../../Core/Interaction/Combination/CancelComb
 import { ClearTrashCombination } from '../../Core/Interaction/Combination/ClearTrashCombination';
 import { SelectionCombination } from '../../Core/Interaction/Combination/SelectionCombination';
 import { CamouflageGameContext } from '../../Core/Framework/CamouflageGameContext';
+import { AbortCombination } from '../../Core/Interaction/Combination/AbortCombination';
+import { TruckCombination } from '../../Core/Interaction/Combination/TruckCombination';
+import { CamouflageCombination } from '../../Core/Interaction/Combination/CamouflageCombination';
+import { UnselectCombination } from '../../Core/Interaction/Combination/UnselectCombination';
 
 export class CamouflageInteractionService implements IInteractionService<CamouflageGameContext> {
 	private _layerService: ILayerService;
@@ -31,6 +35,10 @@ export class CamouflageInteractionService implements IInteractionService<Camoufl
 			this._inputNotifier,
 			[
 				new CancelCombination(),
+				new AbortCombination(),
+				new TruckCombination(),
+				new UnselectCombination(checker, gameContext),
+				new CamouflageCombination(),
 				new ClearTrashCombination(checker),
 				new SelectionCombination(checker, gameContext)
 			],

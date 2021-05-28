@@ -15,6 +15,7 @@ import CreatingHostComponent from './Components/Network/Creating/CreatingHostCom
 import HostingComponent from './Components/Network/Host/HostingComponent';
 import LoadingComponent from './Components/Loading/LoadingComponent';
 import ComparerComponent from './Components/Comparer/ComparerComponent';
+import SmPopupComponent from './Components/SmPopup/SmPopupComponent';
 import PopupComponent from './Components/Popup/PopupComponent';
 import RecordComponent from './Components/Record/RecordComponent';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -57,6 +58,7 @@ const App = (e: any) => {
 				status={GameStatus.Won}
 				context={new RecordObject()}
 			/>
+			<SmPopupComponent path="/SmPopup" points={10} status={GameStatus.Won} />
 			<ComparerComponent path="/Comparer" />
 		</Router>
 	);

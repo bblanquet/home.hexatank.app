@@ -1,7 +1,7 @@
 import { CellUpCondition } from './../../../Unit/PowerUp/Condition/CellUpCondition';
 import { HealUp } from './../../../Unit/PowerUp/HealUp';
 import { Cell } from '../../Cell';
-import { Archive } from '../../../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { BonusField } from './BonusField';
 import { Headquarter } from '../Hq/Headquarter';
@@ -9,7 +9,7 @@ import { BonusValueProvider } from './BonusValueProvider';
 
 export class MedicField extends BonusField {
 	constructor(cell: Cell, hq: Headquarter) {
-		super(cell, [ Archive.bonus.health ], hq);
+		super(cell, [ SvgArchive.bonus.health ], hq);
 	}
 
 	Support(vehicule: Vehicle): void {}

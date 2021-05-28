@@ -4,7 +4,7 @@ import { BoundingBox } from './../../Utils/Geometry/BoundingBox';
 import { BasicItem } from './../BasicItem';
 import { IAnimator } from './IAnimator';
 import { Cell } from './../Cell/Cell';
-import { Archive } from '../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../Framework/SvgArchiver';
 export class BasicRangeAnimator implements IAnimator {
 	public IsDone: boolean = false;
 	private _items: BasicItem[];
@@ -52,10 +52,10 @@ export class BasicRangeAnimator implements IAnimator {
 			newCells.forEach((c) => {
 				let item = new BasicItem(
 					BoundingBox.CreateFromBox(c.GetBoundingBox()),
-					Archive.selectionPower,
+					SvgArchive.selectionPower,
 					ZKind.Cell
 				);
-				let animator = new FadeInOutAnimation(item, Archive.selectionPower, 0, 1, 0.02);
+				let animator = new FadeInOutAnimation(item, SvgArchive.selectionPower, 0, 1, 0.02);
 				item.SetAnimator(animator);
 				item.SetAlive(() => true);
 				item.SetVisible(() => true);

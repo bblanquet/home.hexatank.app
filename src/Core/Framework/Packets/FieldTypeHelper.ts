@@ -1,4 +1,4 @@
-import { Archive } from './../ResourceArchiver';
+import { SvgArchive } from '../SvgArchiver';
 import { DiamondField } from './../../Items/Cell/Field/DiamondField';
 import { BlockingField } from './../../Items/Cell/Field/BlockingField';
 import { BasicField } from './../../Items/Cell/Field/BasicField';
@@ -102,7 +102,7 @@ export class FieldTypeHelper {
 		} else if (action === RecordKind.Diamond) {
 			return new Diamond(cell);
 		} else if (action === RecordKind.Blocking) {
-			return new BlockingField(cell, Archive.nature.tree);
+			return new BlockingField(cell, SvgArchive.nature.tree);
 		}
 		throw 'not found';
 	}

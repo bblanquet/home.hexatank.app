@@ -10,6 +10,8 @@ import { IGameContext } from './IGameContext';
 import { AliveItem } from '../Items/AliveItem';
 
 export class CamouflageGameContext implements IGameContext {
+	private _unit: Vehicle;
+
 	//should not be here
 	public static Error: Error;
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
@@ -21,8 +23,18 @@ export class CamouflageGameContext implements IGameContext {
 	//elements
 	private _cells: Dictionnary<Cell>;
 	private _vehicles: Dictionnary<Vehicle> = new Dictionnary<Vehicle>();
-	constructor(cells: Cell[]) {
+	constructor(cells: Cell[], unit: Vehicle, arrivelCell: Cell) {
 		this._cells = Dictionnary.To((c) => c.Coo(), cells);
+		this._unit = unit;
+
+		this._unit.OnDestroyed.On(() => {
+			this.GameStatusChanged.Invoke(this, GameStatus.Lost);
+		});
+		this._unit.OnCellChanged.On((source: any, cell: Cell) => {
+			if (this._unit.GetCurrentCell() === arrivelCell) {
+				this.GameStatusChanged.Invoke(this, GameStatus.Won);
+			}
+		});
 	}
 
 	public ExistUnit(id: string): Boolean {
@@ -54,6 +66,6 @@ export class CamouflageGameContext implements IGameContext {
 	}
 
 	GetPlayer(): AliveItem {
-		return null;
+		return this._unit;
 	}
 }

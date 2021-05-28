@@ -6,7 +6,7 @@ import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { Item } from '../../../Item';
 import { IInteractionContext } from '../../../../Interaction/IInteractionContext';
 import { CellState } from '../../CellState';
-import { Archive } from '../../../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { BouncingScaleAnimator } from '../../../Animator/BouncingScaleAnimator';
 import { ReactorField } from './ReactorField';
 import { AliveItem } from '../../../AliveItem';
@@ -29,7 +29,7 @@ export class ReactorAppearance extends Item {
 			if (isFadeIn) {
 				this._lightAnimator = new FadeInAnimation(
 					this,
-					[ this.Reactor.Hq.Identity.Skin.GetReactor(), Archive.bonus.reactor.light ],
+					[ this.Reactor.Hq.Identity.Skin.GetReactor(), SvgArchive.bonus.reactor.light ],
 					0,
 					1,
 					0.05
@@ -37,34 +37,34 @@ export class ReactorAppearance extends Item {
 			} else {
 				this._lightAnimator = new FadeOutAnimation(
 					this,
-					[ this.Reactor.Hq.Identity.Skin.GetReactor(), Archive.bonus.reactor.light ],
+					[ this.Reactor.Hq.Identity.Skin.GetReactor(), SvgArchive.bonus.reactor.light ],
 					1,
 					0,
 					0.05
 				);
 			}
 		});
-		this.GenerateSprite(Archive.bonus.coverBottom);
-		this.GenerateSprite(Archive.bonus.reactor.gray);
+		this.GenerateSprite(SvgArchive.bonus.coverBottom);
+		this.GenerateSprite(SvgArchive.bonus.reactor.gray);
 		this.GenerateSprite(this.Reactor.Hq.Identity.Skin.GetReactor(), (p) => (p.alpha = 0));
-		this.GenerateSprite(Archive.bonus.reactor.light, (p) => (p.alpha = 0));
-		this.GenerateSprite(Archive.bonus.reactor.rotationCover);
-		this.GenerateSprite(Archive.bonus.reactor.cover);
+		this.GenerateSprite(SvgArchive.bonus.reactor.light, (p) => (p.alpha = 0));
+		this.GenerateSprite(SvgArchive.bonus.reactor.rotationCover);
+		this.GenerateSprite(SvgArchive.bonus.reactor.cover);
 		this.GenerateSprite(this._light);
-		this.GenerateSprite(Archive.bonus.coverTop);
+		this.GenerateSprite(SvgArchive.bonus.coverTop);
 		this.InitPosition(this.Reactor.GetCell().GetBoundingBox());
 
 		this._onCellStateChanged = this.OnCellStateChanged.bind(this);
 		this.Reactor.GetCell().OnCellStateChanged.On(this._onCellStateChanged);
 		this._animator = new BouncingScaleAnimator(this);
-		this._rotator = new RotationAnimator(this, [ Archive.bonus.reactor.light ], true);
-		this._coverRotator = new RotationAnimator(this, [ Archive.bonus.reactor.rotationCover ], true, 0.016);
+		this._rotator = new RotationAnimator(this, [ SvgArchive.bonus.reactor.light ], true);
+		this._coverRotator = new RotationAnimator(this, [ SvgArchive.bonus.reactor.rotationCover ], true, 0.016);
 
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.Reactor.GetCell().IsVisible();
 		});
 
-		this.SetProperty(Archive.bonus.reactor.light, (p) => (p.alpha = 0));
+		this.SetProperty(SvgArchive.bonus.reactor.light, (p) => (p.alpha = 0));
 	}
 
 	protected OnCellStateChanged(obj: any, cellState: CellState): void {

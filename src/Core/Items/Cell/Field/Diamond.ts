@@ -3,7 +3,7 @@ import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { Light } from '../../Environment/Light';
 import { DiamondField } from './DiamondField';
 import { Cell } from '../Cell';
-import { Archive } from '../../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../../Framework/SvgArchiver';
 import { CellState } from '../CellState';
 import { Vehicle } from '../../Unit/Vehicle';
 import { AliveItem } from '../../AliveItem';
@@ -23,7 +23,7 @@ export class Diamond extends AliveField {
 		this.Z = ZKind.Field;
 		this.GetCell().SetField(this);
 		this.BoundingBox = this.GetCell().GetBoundingBox();
-		this.GenerateSprite(Archive.nature.diamond);
+		this.GenerateSprite(SvgArchive.nature.diamond);
 
 		this.Lights = new Light(this.GetBoundingBox());
 		this.Lights.Display();

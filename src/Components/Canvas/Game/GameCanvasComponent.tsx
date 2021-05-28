@@ -182,7 +182,13 @@ export default class GameCanvasComponent extends Component<
 			if (this.state.Item instanceof Tank) {
 				return <TankMenuComponent Tank={this.state.Item} isSettingPatrol={this.state.IsSettingPatrol} />;
 			} else if (this.state.Item instanceof Truck) {
-				return <TruckMenuComponent Truck={this.state.Item} isSettingPatrol={this.state.IsSettingPatrol} />;
+				return (
+					<TruckMenuComponent
+						interaction={this._interactionService}
+						Truck={this.state.Item}
+						isSettingPatrol={this.state.IsSettingPatrol}
+					/>
+				);
 			} else if (this.state.Item instanceof UnitGroup) {
 				return <MultiTankMenuComponent item={this.state.Item} />;
 			} else if (this.state.Item instanceof Headquarter) {
@@ -234,7 +240,7 @@ export default class GameCanvasComponent extends Component<
 				{this.TopLeftInfo()}
 				{this.TopMenuRender()}
 				{this.state.GameStatus === GameStatus.Pending ? '' : this.GetEndMessage()}
-				<CanvasComponent />
+				<CanvasComponent gameContext={this._gameContextService} />
 				<Visible
 					isVisible={
 						!this.state.HasMenu &&

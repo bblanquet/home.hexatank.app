@@ -8,13 +8,16 @@ import { IGameContextService } from '../../Services/GameContext/IGameContextServ
 import { IKeyService } from '../../Services/Key/IKeyService';
 import { IsMobile } from '../../Core/Utils/ToolBox';
 import { BattleBlueprint } from '../../Core/Setup/Blueprint/Battle/BattleBlueprint';
-import { GameContext } from '../../Core/Framework/GameContext';
+import { IGameContext } from '../../Core/Framework/IGameContext';
+import { IBlueprint } from '../../Core/Setup/Blueprint/IBlueprint';
 
-export default class CanvasComponent extends Component<{}, {}> {
+export default class CanvasComponent extends Component<
+	{ gameContext: IGameContextService<IBlueprint, IGameContext> },
+	{}
+> {
 	private _gameCanvas: HTMLDivElement;
 	private _updater: ItemsUpdater;
 	private _appService: IAppService<BattleBlueprint>;
-	private _gameContextService: IGameContextService<BattleBlueprint, GameContext>;
 	private _keyService: IKeyService;
 	private _layerService: ILayerService;
 	private _stop: boolean;
@@ -27,9 +30,9 @@ export default class CanvasComponent extends Component<{}, {}> {
 		this._keyService = Factory.Load<IKeyService>(FactoryKey.Key);
 		this._appService = Factory.Load<IAppService<BattleBlueprint>>(this._keyService.GetAppKey());
 		this._updater = Factory.Load<IUpdateService>(FactoryKey.Update).Publish();
-		this._gameContextService = Factory.Load<IGameContextService<BattleBlueprint, GameContext>>(
-			FactoryKey.GameContext
-		);
+		// this._gameContextService = Factory.Load<IGameContextService<BattleBlueprint, GameContext>>(
+		// 	FactoryKey.GameContext
+		// );
 		this._stop = true;
 	}
 
@@ -72,9 +75,9 @@ export default class CanvasComponent extends Component<{}, {}> {
 	}
 
 	protected SetCenter(): void {
-		const gameContext = this._gameContextService.Publish();
+		const gameContext = this.props.gameContext.Publish();
 		if (gameContext) {
-			const player = gameContext.GetPlayerHq();
+			const player = gameContext.GetPlayer();
 			const hqPoint = player.GetBoundingBox().GetCentralPoint();
 			const halfWidth = this._width / 2;
 			const halfHeight = this._height / 2;

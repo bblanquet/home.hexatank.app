@@ -3,7 +3,7 @@ import { Field } from '../Field';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { IAnimator } from '../../../Animator/IAnimator';
 import { Cell } from '../../Cell';
-import { Archive } from '../../../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { BouncingScaleAnimator } from '../../../Animator/BouncingScaleAnimator';
 import { CellState } from '../../CellState';
 import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
@@ -22,7 +22,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 		super(cell);
 		this.GetCell().SetField(this);
 		this.Z = ZKind.Field;
-		this.GenerateSprite(Archive.bonus.coverBottom);
+		this.GenerateSprite(SvgArchive.bonus.coverBottom);
 		this._bonus.forEach((b) => {
 			this.GenerateSprite(b);
 		});
@@ -39,7 +39,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 		if (!hq.IsCovered(cell)) {
 			cell.DestroyField();
 			if (cell.IsVisible()) {
-				new Explosion(cell.GetBoundingBox(), Archive.constructionEffects, ZKind.Sky, false, 5);
+				new Explosion(cell.GetBoundingBox(), SvgArchive.constructionEffects, ZKind.Sky, false, 5);
 			}
 		}
 	}

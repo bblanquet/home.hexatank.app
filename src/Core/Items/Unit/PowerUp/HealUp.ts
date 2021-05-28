@@ -1,14 +1,14 @@
 import { UpAnimation } from './UpAnimation';
 import { Up } from './Up';
 import { UpCondition } from './Condition/UpCondition';
-import { Archive } from '../../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../../Framework/SvgArchiver';
 import { Vehicle } from '../Vehicle';
 
 export class HealUp extends Up {
 	private _isDone: boolean = false;
 
 	constructor(private _vehicle: Vehicle, condition: UpCondition, private _healing: number) {
-		super(condition, new UpAnimation(_vehicle, Archive.healUp, Archive.healUp));
+		super(condition, new UpAnimation(_vehicle, SvgArchive.healUp, SvgArchive.healUp));
 		condition.Done.On(() => {
 			condition.Done.Clear();
 			this.Animation.Destroy();

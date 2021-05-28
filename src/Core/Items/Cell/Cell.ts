@@ -12,7 +12,7 @@ import { IField } from './Field/IField';
 import { AliveItem } from '../AliveItem';
 import { BasicField } from './Field/BasicField';
 import { CellState } from './CellState';
-import { Archive } from '../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../Framework/SvgArchiver';
 import { ISelectable } from '../../ISelectable';
 import { Headquarter } from './Field/Hq/Headquarter';
 import { ICell } from './ICell';
@@ -57,8 +57,8 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		this.Properties = properties;
 		new BasicField(this);
 		this.IsCentralRef = true;
-		this.GenerateSprite(Archive.selectionCell);
-		this.SetProperty(Archive.selectionCell, (e) => {
+		this.GenerateSprite(SvgArchive.selectionCell);
+		this.SetProperty(SvgArchive.selectionCell, (e) => {
 			e.alpha = 0;
 			e.anchor.set(0.5);
 		});
@@ -71,12 +71,12 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	}
 
 	public SetSelectionAnimation(): void {
-		this._white = new BasicItem(this.GetBoundingBox(), Archive.selectionWhiteCell, ZKind.BelowCell);
+		this._white = new BasicItem(this.GetBoundingBox(), SvgArchive.selectionWhiteCell, ZKind.BelowCell);
 		this._white.SetVisible(() => this.IsSelectable());
 		this._white.SetAlive(() => true);
 
-		this._blue = new BasicItem(this.GetBoundingBox(), Archive.selectionBlueCell, ZKind.BelowCell);
-		this._blue.SetAnimator(new InfiniteFadeAnimation(this._blue, Archive.selectionBlueCell, 0, 1, 0.02));
+		this._blue = new BasicItem(this.GetBoundingBox(), SvgArchive.selectionBlueCell, ZKind.BelowCell);
+		this._blue.SetAnimator(new InfiniteFadeAnimation(this._blue, SvgArchive.selectionBlueCell, 0, 1, 0.02));
 		this._blue.SetVisible(() => this.IsSelectable());
 		this._blue.SetAlive(() => true);
 	}
@@ -126,7 +126,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		this.OnSelectionChanged.Invoke(this, this);
 	}
 	public IsSelected(): boolean {
-		return this.GetCurrentSprites().Get(Archive.selectionCell).alpha === 1;
+		return this.GetCurrentSprites().Get(SvgArchive.selectionCell).alpha === 1;
 	}
 
 	public GetField(): IField {
@@ -261,7 +261,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	}
 
 	protected SetSelectedAppareance(isSelected: boolean) {
-		this.SetProperty(Archive.selectionCell, (e) => (e.alpha = isSelected ? 1 : 0));
+		this.SetProperty(SvgArchive.selectionCell, (e) => (e.alpha = isSelected ? 1 : 0));
 	}
 
 	public SetState(state: CellState): void {
@@ -279,8 +279,8 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		});
 
 		if (isDiscovered) {
-			this.SetProperty(Archive.hiddenCell, (e) => (e.alpha = 1));
-			this._animator = new BouncingScaleDownAnimator(this, [ Archive.hiddenCell ]);
+			this.SetProperty(SvgArchive.hiddenCell, (e) => (e.alpha = 1));
+			this._animator = new BouncingScaleDownAnimator(this, [ SvgArchive.hiddenCell ]);
 		}
 	}
 
@@ -314,29 +314,29 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	}
 
 	public SetSprite(): void {
-		this.GenerateSprite(Archive.hiddenCell, (s) => {
+		this.GenerateSprite(SvgArchive.hiddenCell, (s) => {
 			s.anchor.set(0.5);
 			s.alpha = 1;
 		});
 
-		this.GenerateSprite(Archive.halfVisibleCell, (s) => {
+		this.GenerateSprite(SvgArchive.halfVisibleCell, (s) => {
 			s.anchor.set(0.5);
 			s.alpha = 0;
 		});
 
-		this.GenerateSprite(Archive.cell, (s) => {
+		this.GenerateSprite(SvgArchive.cell, (s) => {
 			s.anchor.set(0.5);
 			s.alpha = 0;
 		});
 
-		this._display[CellState.Hidden] = [ Archive.hiddenCell ];
+		this._display[CellState.Hidden] = [ SvgArchive.hiddenCell ];
 
 		if (isNullOrUndefined(this._decorationSprite)) {
-			this._display[CellState.Mist] = [ Archive.halfVisibleCell, Archive.cell ];
-			this._display[CellState.Visible] = [ Archive.cell ];
+			this._display[CellState.Mist] = [ SvgArchive.halfVisibleCell, SvgArchive.cell ];
+			this._display[CellState.Visible] = [ SvgArchive.cell ];
 		} else {
-			this._display[CellState.Mist] = [ Archive.halfVisibleCell, this._decorationSprite, Archive.cell ];
-			this._display[CellState.Visible] = [ this._decorationSprite, Archive.cell ];
+			this._display[CellState.Mist] = [ SvgArchive.halfVisibleCell, this._decorationSprite, SvgArchive.cell ];
+			this._display[CellState.Visible] = [ this._decorationSprite, SvgArchive.cell ];
 		}
 		this.InitPosition(this.Properties.BoundingBox);
 	}

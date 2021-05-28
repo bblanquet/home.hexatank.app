@@ -11,7 +11,7 @@ import { Item } from '../../../Items/Item';
 import { HexAxial } from '../../../Utils/Geometry/HexAxial';
 import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { Floor } from '../../../Items/Environment/Floor';
-import { Archive } from '../../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../../Framework/SvgArchiver';
 import { BattleBlueprint } from '../../Blueprint/Battle/BattleBlueprint';
 import { MapEnv } from '../../Blueprint/MapEnv';
 import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
@@ -41,8 +41,8 @@ export class BattleRenderer {
 			hqs = new HqRender().Render(cells, blueprint.Hqs, updatableItem);
 
 			//insert elements into playground
-			this.SetHqLand(cells, Archive.nature.hq, hqs.map((h) => h.GetCell().GetHexCoo()), updatableItem);
-			this.SetHqLand(cells, Archive.nature.hq2, hqs.map((h) => h.GetCell().GetHexCoo()), updatableItem, 1);
+			this.SetHqLand(cells, SvgArchive.nature.hq, hqs.map((h) => h.GetCell().GetHexCoo()), updatableItem);
+			this.SetHqLand(cells, SvgArchive.nature.hq2, hqs.map((h) => h.GetCell().GetHexCoo()), updatableItem, 1);
 
 			playerHq = hqs.find((hq) => hq.Identity.Name === blueprint.PlayerName);
 			if (playerHq) {
@@ -60,11 +60,11 @@ export class BattleRenderer {
 	}
 
 	public AddClouds(items: Item[]) {
-		items.push(new Cloud(200, 20 * GameSettings.Size, 800, Archive.nature.clouds[0]));
-		items.push(new Cloud(400, 20 * GameSettings.Size, 1200, Archive.nature.clouds[1]));
-		items.push(new Cloud(600, 20 * GameSettings.Size, 1600, Archive.nature.clouds[2]));
-		items.push(new Cloud(800, 20 * GameSettings.Size, 800, Archive.nature.clouds[3]));
-		items.push(new Cloud(1200, 20 * GameSettings.Size, 1600, Archive.nature.clouds[4]));
+		items.push(new Cloud(200, 20 * GameSettings.Size, 800, SvgArchive.nature.clouds[0]));
+		items.push(new Cloud(400, 20 * GameSettings.Size, 1200, SvgArchive.nature.clouds[1]));
+		items.push(new Cloud(600, 20 * GameSettings.Size, 1600, SvgArchive.nature.clouds[2]));
+		items.push(new Cloud(800, 20 * GameSettings.Size, 800, SvgArchive.nature.clouds[3]));
+		items.push(new Cloud(1200, 20 * GameSettings.Size, 1600, SvgArchive.nature.clouds[4]));
 	}
 
 	private SetLands(cells: Dictionnary<Cell>, mode: MapEnv, middleAreas: HexAxial[], items: Item[]) {
@@ -76,11 +76,11 @@ export class BattleRenderer {
 			boundingBox.X = cell.GetBoundingBox().X - (boundingBox.Width / 2 - cell.GetBoundingBox().Width / 2);
 			boundingBox.Y = cell.GetBoundingBox().Y - (boundingBox.Height / 2 - cell.GetBoundingBox().Height / 2);
 
-			let floor = Archive.nature.forest;
+			let floor = SvgArchive.nature.forest;
 			if (mode === MapEnv.ice) {
-				floor = Archive.nature.ice;
+				floor = SvgArchive.nature.ice;
 			} else if (mode === MapEnv.sand) {
-				floor = Archive.nature.sand;
+				floor = SvgArchive.nature.sand;
 			}
 
 			const land = new Floor(boundingBox, floor);

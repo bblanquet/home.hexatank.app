@@ -2,7 +2,7 @@ import { ZKind } from './../ZKind';
 import { Item } from '../Item';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { TickTimer } from '../../Utils/Timer/TickTimer';
-import { Archive } from '../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../Framework/SvgArchiver';
 import { InteractionContext } from '../../Interaction/InteractionContext';
 
 export class Dust extends Item {
@@ -19,7 +19,7 @@ export class Dust extends Item {
 		this._timer = new TickTimer(15);
 
 		this.BoundingBox = boundingBox;
-		Archive.dusts.forEach((dust) => {
+		SvgArchive.dusts.forEach((dust) => {
 			this.GenerateSprite(dust);
 		});
 		this.GetSprites().forEach((sp) => {
@@ -45,9 +45,9 @@ export class Dust extends Item {
 
 		super.Update(viewX, viewY);
 
-		if (0 <= this.currentDust && this.currentDust < Archive.dusts.length) {
-			this.SetProperty(Archive.dusts[this.currentDust], (s) => (s.rotation += 0.1));
-			this.SetProperty(Archive.dusts[this.currentDust], (s) => (s.alpha += this.currentAlpha));
+		if (0 <= this.currentDust && this.currentDust < SvgArchive.dusts.length) {
+			this.SetProperty(SvgArchive.dusts[this.currentDust], (s) => (s.rotation += 0.1));
+			this.SetProperty(SvgArchive.dusts[this.currentDust], (s) => (s.alpha += this.currentAlpha));
 		}
 
 		this.currentAlpha -= 0.01;
@@ -61,13 +61,13 @@ export class Dust extends Item {
 				var previous = this.currentDust;
 				this.currentDust += 1;
 
-				if (Archive.dusts.length == this.currentDust) {
-					this.SetProperty(Archive.dusts[previous], (s) => (s.alpha = 0));
+				if (SvgArchive.dusts.length == this.currentDust) {
+					this.SetProperty(SvgArchive.dusts[previous], (s) => (s.alpha = 0));
 				} else {
 					if (-1 < previous) {
-						this.SetProperty(Archive.dusts[previous], (s) => (s.alpha = 0));
+						this.SetProperty(SvgArchive.dusts[previous], (s) => (s.alpha = 0));
 					}
-					this.SetProperty(Archive.dusts[this.currentDust], (s) => (s.alpha = this.currentAlpha));
+					this.SetProperty(SvgArchive.dusts[this.currentDust], (s) => (s.alpha = this.currentAlpha));
 				}
 			}
 		}
@@ -84,7 +84,7 @@ export class Dust extends Item {
 	}
 
 	public IsDone() {
-		return Archive.dusts.length == this.currentDust;
+		return SvgArchive.dusts.length == this.currentDust;
 	}
 
 	public Destroy() {

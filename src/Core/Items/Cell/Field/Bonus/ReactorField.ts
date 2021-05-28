@@ -7,7 +7,7 @@ import { TypeTranslator } from '../TypeTranslator';
 import { BasicRangeAnimator } from '../../../Animator/BasicRangeAnimator';
 import { GameContext } from '../../../../Framework/GameContext';
 import { ReactorAppearance } from './ReactorAppearance';
-import { Archive } from '../../../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { CellStateSetter } from '../../CellStateSetter';
 import { ReactorReserve } from '../ReactorReserve';
 import { BasicItem } from '../../../BasicItem';
@@ -71,8 +71,8 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		this.Reserve = new ReactorReserve(this.Hq, this);
 		this.GetCell().SetField(this);
 		this.Appearance = new ReactorAppearance(this, this._light);
-		this.GenerateSprite(Archive.selectionCell);
-		this.SetProperty(Archive.selectionCell, (e) => {
+		this.GenerateSprite(SvgArchive.selectionCell);
+		this.SetProperty(SvgArchive.selectionCell, (e) => {
 			e.alpha = 0;
 			e.anchor.set(0.5);
 		});
@@ -97,8 +97,8 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	}
 
 	public SetSelectionAnimation(): void {
-		const white = new BasicItem(this.GetCell().GetBoundingBox(), Archive.selectionBlueReactor, ZKind.BelowCell);
-		white.SetAnimator(new InfiniteFadeAnimation(white, Archive.selectionBlueReactor, 0, 1, 0.02));
+		const white = new BasicItem(this.GetCell().GetBoundingBox(), SvgArchive.selectionBlueReactor, ZKind.BelowCell);
+		white.SetAnimator(new InfiniteFadeAnimation(white, SvgArchive.selectionBlueReactor, 0, 1, 0.02));
 		white.SetVisible(() => this.IsUpdatable);
 		white.SetAlive(() => this.IsUpdatable);
 	}
@@ -248,7 +248,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 				) {
 					c.DestroyField();
 					if (c.IsVisible()) {
-						new Explosion(c.GetBoundingBox(), Archive.constructionEffects, ZKind.Sky, false, 5);
+						new Explosion(c.GetBoundingBox(), SvgArchive.constructionEffects, ZKind.Sky, false, 5);
 					}
 				}
 			});
@@ -334,7 +334,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	}
 
 	public SetSelected(isSelected: boolean): void {
-		this.SetProperty(Archive.selectionCell, (e) => (e.alpha = isSelected ? 1 : 0));
+		this.SetProperty(SvgArchive.selectionCell, (e) => (e.alpha = isSelected ? 1 : 0));
 		if (this.IsSelected()) {
 			this.CreateArea();
 		} else {
@@ -399,7 +399,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	}
 
 	public IsSelected(): boolean {
-		return this.GetCurrentSprites().Get(Archive.selectionCell).alpha === 1;
+		return this.GetCurrentSprites().Get(SvgArchive.selectionCell).alpha === 1;
 	}
 
 	public GetNearby(): ReactorField[] {

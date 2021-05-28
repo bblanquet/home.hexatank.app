@@ -9,7 +9,7 @@ import { Vehicle } from './Vehicle';
 import { Turrel } from './Turrel';
 import { AliveItem } from '../AliveItem';
 import { Headquarter } from '../Cell/Field/Hq/Headquarter';
-import { Archive } from '../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../Framework/SvgArchiver';
 import { CellState } from '../Cell/CellState';
 import { BasicItem } from '../BasicItem';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
@@ -222,7 +222,7 @@ export class Tank extends Vehicle implements ICamouflageAble {
 
 		const explosion = new Explosion(
 			BoundingBox.CreateFromBox(this.GetBoundingBox()),
-			Archive.constructionEffects,
+			SvgArchive.constructionEffects,
 			ZKind.Sky,
 			false,
 			5

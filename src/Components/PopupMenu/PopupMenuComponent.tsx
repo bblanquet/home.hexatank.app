@@ -8,7 +8,6 @@ import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import ActiveButtonComponent from '../Common/Button/Stylish/ActiveButtonComponent';
 import { Factory, FactoryKey } from '../../Factory';
-import { GameContextService } from '../../Services/GameContext/GameContextService';
 import { ISoundService } from '../../Services/Sound/ISoundService';
 import { AppService } from '../../Services/App/AppService';
 

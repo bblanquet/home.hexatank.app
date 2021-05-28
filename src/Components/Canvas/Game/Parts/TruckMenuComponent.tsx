@@ -6,18 +6,18 @@ import { SearchMoneyMenuItem } from '../../../../Core/Menu/Buttons/SearchMoneyMe
 import { AbortMenuItem } from '../../../../Core/Menu/Buttons/AbortMenuItem';
 import { CancelMenuItem } from '../../../../Core/Menu/Buttons/CancelMenuItem';
 import { Vehicle } from '../../../../Core/Items/Unit/Vehicle';
-import { Factory, FactoryKey } from '../../../../Factory';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
-import { GameContext } from '../../../../Core/Framework/GameContext';
+import { IGameContext } from '../../../../Core/Framework/IGameContext';
 
-export default class TruckMenuComponent extends Component<{ Truck: Vehicle; isSettingPatrol: boolean }, {}> {
-	private _interactionService: IInteractionService<GameContext>;
+export default class TruckMenuComponent extends Component<
+	{ Truck: Vehicle; isSettingPatrol: boolean; interaction: IInteractionService<IGameContext> },
+	{}
+> {
 	constructor() {
 		super();
-		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.Interaction);
 	}
 	private SendContext(item: Item): void {
-		const interaction = this._interactionService.Publish();
+		const interaction = this.props.interaction.Publish();
 		interaction.Kind = InteractionKind.Up;
 		return interaction.OnSelect(item);
 	}

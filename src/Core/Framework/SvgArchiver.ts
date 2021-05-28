@@ -1,4 +1,4 @@
-export const Archive = {
+export const SvgArchive = {
 	constructionEffects: [
 		'./construction/dust1.svg',
 		'./construction/dust2.svg',
@@ -49,6 +49,7 @@ export const Archive = {
 		debris: './tank/debris.svg',
 		floorExplosion: './tank/floorExplosionTrace.svg'
 	},
+	arrow: './arrow.svg',
 	loading: './loading.svg',
 	electon: './electron.svg',
 	hiddenCell: './hiddenCell.svg',

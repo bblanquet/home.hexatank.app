@@ -1,6 +1,6 @@
 import { TranslationMaker } from '../../../Unit/MotionHelpers/TranslationMaker';
 import { ITranslationMaker } from '../../../Unit/MotionHelpers/ITranslationMaker';
-import { Archive } from '../../../../Framework/ResourceArchiver';
+import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { ZKind } from '../../../ZKind';
 import { IInteractionContext } from '../../../../Interaction/IInteractionContext';
 import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
@@ -21,7 +21,7 @@ export class ChargeLink extends Item implements IMovable {
 		super();
 		this._boundingBox = BoundingBox.CreateFromBox(this._departure.GetBoundingBox());
 		this.Z = ZKind.Sky;
-		this.GenerateSprite(Archive.electon, (e) => {
+		this.GenerateSprite(SvgArchive.electon, (e) => {
 			e.anchor.set(0.5);
 			e.alpha = 1;
 		});

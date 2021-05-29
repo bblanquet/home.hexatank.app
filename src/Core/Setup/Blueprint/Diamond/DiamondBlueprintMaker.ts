@@ -20,6 +20,9 @@ import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
 import { IMapBuilder } from '../../Builder/IPlaygroundBuilder';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { DiamondBlueprint } from './DiamondBlueprint';
+import { DiamondHq } from '../Game/DiamondHq';
+import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
+import { DistanceHelper } from '../../../Items/Unit/MotionHelpers/DistanceHelper';
 
 export class DiamondBlueprintMaker {
 	private _builders: Dictionnary<IMapBuilder>;
@@ -43,22 +46,34 @@ export class DiamondBlueprintMaker {
 		const coos = mapBuilder.GetAllCoos(4);
 		GameSettings.MapSize = coos.length;
 		const cells = Dictionnary.To<HexAxial>((e) => e.ToString(), coos);
-		const areas = mapBuilder.GetAreaCoos(4);
-		const farthestPointManager = new FartestPointsFinder();
 		const excluded = new Dictionnary<HexAxial>();
 
-		const spots = farthestPointManager.GetPoints(areas, cells, 2);
-		//add hqs
-		spots.forEach((spot, index) => {
-			let hqMapItem = new MapItem();
-			hqMapItem.Position = spot;
-			hqMapItem.Type = DecorationType.Hq;
-			mapItems.push(hqMapItem);
-			excluded.Add(spot.ToString(), spot);
-			spot.GetNeighbours().forEach((p) => {
-				excluded.Add(p.ToString(), p);
-			});
+		const diamondHq = new DiamondHq();
+		diamondHq.Diamond = MapItem.Create(5, 1);
+		diamondHq.Hq = MapItem.Create(1, 0);
+		diamondHq.isIa = false;
+		diamondHq.PlayerName = '';
+
+		let hqMapItem = new MapItem();
+		hqMapItem.Position = diamondHq.Hq.Position;
+		hqMapItem.Type = DecorationType.Hq;
+		mapItems.push(hqMapItem);
+		excluded.Add(diamondHq.Hq.Position.ToString(), cells.Get(diamondHq.Hq.Position.ToString()));
+		cells.Get(diamondHq.Hq.Position.ToString()).GetNeighbours().forEach((p) => {
+			excluded.Add(p.ToString(), p);
 		});
+
+		//add diamonds and join them to hq
+		let diamonMapItem = new MapItem();
+		diamonMapItem.Position = diamondHq.Diamond.Position;
+		diamonMapItem.Type = DecorationType.Hq;
+		mapItems.push(diamonMapItem);
+		excluded.Add(diamondHq.Diamond.Position.ToString(), cells.Get(diamondHq.Diamond.Position.ToString()));
+		cells.Get(diamondHq.Diamond.Position.ToString()).GetNeighbours().forEach((p) => {
+			excluded.Add(p.ToString(), p);
+		});
+
+		blueprint.HqDiamond = diamondHq;
 
 		var decorator: Decorator = this.GetDecorator(MapEnv.sand);
 		//decorate tree, water, stone the map

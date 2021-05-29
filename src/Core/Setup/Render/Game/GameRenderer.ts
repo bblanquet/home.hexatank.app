@@ -22,7 +22,7 @@ export class GameRenderer {
 		const cells = new Dictionnary<Cell>();
 		const updatableItem = new Array<Item>();
 		let playerHq: Headquarter = null;
-		let hqs: Headquarter[] = null;
+		let hqs: Headquarter[] = [];
 
 		blueprint.Items.forEach((item) => {
 			const cell = new Cell(new CellProperties(new HexAxial(item.Position.Q, item.Position.R)), cells);
@@ -38,7 +38,9 @@ export class GameRenderer {
 		this.SetLands(cells, blueprint.MapMode, areas, updatableItem);
 		this.AddClouds(updatableItem);
 		if (blueprint.Hqs) {
-			hqs = new HqRender().Render(cells, blueprint.Hqs, updatableItem);
+			blueprint.Hqs.forEach((hq, index) => {
+				hqs.push(new HqRender().Render(cells, hq, updatableItem, index));
+			});
 
 			//insert elements into playground
 			this.SetHqLand(cells, SvgArchive.nature.hq, hqs.map((h) => h.GetCell().GetHexCoo()), updatableItem);

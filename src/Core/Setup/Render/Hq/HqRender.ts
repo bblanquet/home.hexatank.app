@@ -9,19 +9,13 @@ import { DiamondHq } from '../../Blueprint/Game/DiamondHq';
 import { Cell } from '../../../Items/Cell/Cell';
 
 export class HqRender {
-	public Render(cells: Dictionnary<Cell>, hqBlueprints: Array<DiamondHq>, items: Item[]): Array<Headquarter> {
-		var hqs = new Array<Headquarter>();
-
-		hqBlueprints.forEach((blueprint, index) => {
-			const diamond = new Diamond(cells.Get(this.DiamondCoo(blueprint)));
-			const id = new Identity(blueprint.PlayerName, new HqSkinHelper().GetSkin(index), !blueprint.isIa);
-			const hq = new Headquarter(id, cells.Get(this.HqCoo(blueprint)));
-			items.push(diamond);
-			items.push(hq);
-			hqs.push(hq);
-		});
-
-		return hqs;
+	public Render(cells: Dictionnary<Cell>, blueprint: DiamondHq, items: Item[], index: number): Headquarter {
+		const diamond = new Diamond(cells.Get(this.DiamondCoo(blueprint)));
+		const id = new Identity(blueprint.PlayerName, new HqSkinHelper().GetSkin(index), !blueprint.isIa);
+		const hq = new Headquarter(id, cells.Get(this.HqCoo(blueprint)));
+		items.push(diamond);
+		items.push(hq);
+		return hq;
 	}
 
 	private HqCoo(hqDefinition: DiamondHq): string {

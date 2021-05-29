@@ -1,7 +1,5 @@
 import { DiamondBlueprint } from './../../Blueprint/Diamond/DiamondBlueprint';
 import { DiamondContext } from './../../Context/DiamondContext';
-import { Tank } from './../../../Items/Unit/Tank';
-import { PowerBlueprint } from './../../Blueprint/Power/PowerBlueprint';
 import { SvgArchive } from './../../../Framework/SvgArchiver';
 import { Cloud } from './../../../Items/Environment/Cloud';
 import { ForestDecorator } from './../../../Items/Cell/Decorator/ForestDecorator';
@@ -15,9 +13,8 @@ import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { HexAxial } from '../../../Utils/Geometry/HexAxial';
 import { MapEnv } from '../../Blueprint/MapEnv';
 import { Floor } from '../../../Items/Environment/Floor';
-import { Identity } from '../../../Items/Identity';
-import { HqSkinHelper } from '../Hq/HqSkinHelper';
-import { AboveItem } from '../../../Items/AboveItem';
+import { HqRender } from '../Hq/HqRender';
+import { SimpleFloor } from '../../../Items/Environment/SimpleFloor';
 
 export class DiamondRenderer {
 	public Render(blueprint: DiamondBlueprint): DiamondContext {
@@ -37,19 +34,11 @@ export class DiamondRenderer {
 		).GetAreas(new HexAxial(blueprint.CenterItem.Position.Q, blueprint.CenterItem.Position.R));
 		this.SetLands(cells, blueprint.MapMode, areas, updatableItem);
 		this.AddClouds(updatableItem);
+		const hq = new HqRender().Render(cells, blueprint.HqDiamond, updatableItem, 0);
+		this.SetHqLand(cells, SvgArchive.nature.hq, [ hq.GetCell().GetHexCoo() ], updatableItem);
+		this.SetHqLand(cells, SvgArchive.nature.hq2, [ hq.GetCell().GetHexCoo() ], updatableItem, 1);
 
-		// const goal = new HexAxial(blueprint.Goal.Position.Q, blueprint.Goal.Position.R);
-		// const goalCell = cells.Get(goal.ToString());
-		// updatableItem.push(new AboveItem(goalCell, SvgArchive.arrow));
-
-		// const arrival = new HexAxial(blueprint.Arrival.Position.Q, blueprint.Arrival.Position.R);
-		// const arrivalCell = cells.Get(arrival.ToString());
-		// const id = new Identity('Player', new HqSkinHelper().GetSkin(1), true);
-		// const tank = new Tank(id);
-		// tank.SetPosition(arrivalCell);
-		// updatableItem.push(tank);
-
-		return new DiamondContext(cells.Values());
+		return new DiamondContext(cells.Values(), hq);
 	}
 
 	public AddClouds(items: Item[]) {
@@ -77,6 +66,22 @@ export class DiamondRenderer {
 			}
 
 			const land = new Floor(boundingBox, floor);
+			land.SetVisible(() => true);
+			land.SetAlive(() => true);
+			items.push(land);
+		});
+	}
+
+	private SetHqLand(cells: Dictionnary<Cell>, sprite: string, middleAreas: HexAxial[], items: Item[], z: number = 0) {
+		middleAreas.forEach((corner) => {
+			const cell = cells.Get(corner.ToString());
+			const boundingBox = new BoundingBox();
+			boundingBox.Width = GameSettings.Size * 6;
+			boundingBox.Height = GameSettings.Size * 6;
+			boundingBox.X = cell.GetBoundingBox().X - (boundingBox.Width / 2 - cell.GetBoundingBox().Width / 2);
+			boundingBox.Y = cell.GetBoundingBox().Y - (boundingBox.Height / 2 - cell.GetBoundingBox().Height / 2);
+
+			const land = new SimpleFloor(boundingBox, sprite, z);
 			land.SetVisible(() => true);
 			land.SetAlive(() => true);
 			items.push(land);

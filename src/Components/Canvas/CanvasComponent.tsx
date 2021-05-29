@@ -17,7 +17,7 @@ export default class CanvasComponent extends Component<
 > {
 	private _gameCanvas: HTMLDivElement;
 	private _updater: ItemsUpdater;
-	private _appService: IAppService<GameBlueprint>;
+	private _appService: IAppService<IBlueprint>;
 	private _keyService: IKeyService;
 	private _layerService: ILayerService;
 	private _stop: boolean;
@@ -28,7 +28,7 @@ export default class CanvasComponent extends Component<
 		super();
 		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
 		this._keyService = Factory.Load<IKeyService>(FactoryKey.Key);
-		this._appService = Factory.Load<IAppService<GameBlueprint>>(this._keyService.GetAppKey());
+		this._appService = Factory.Load<IAppService<IBlueprint>>(this._keyService.GetAppKey());
 		this._updater = Factory.Load<IUpdateService>(FactoryKey.Update).Publish();
 		this._stop = true;
 	}
@@ -48,7 +48,7 @@ export default class CanvasComponent extends Component<
 		window.removeEventListener('resize', () => this.ResizeTheCanvas());
 		window.removeEventListener('DOMContentLoaded', () => this.ResizeTheCanvas());
 		window.removeEventListener('scroll', () => this.ResizeTheCanvas());
-		Factory.Load<IAppService<GameBlueprint>>(this._keyService.GetAppKey()).Collect();
+		Factory.Load<IAppService<IBlueprint>>(this._keyService.GetAppKey()).Collect();
 	}
 
 	private GameLoop(): void {

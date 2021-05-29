@@ -22,6 +22,18 @@ import Visible from '../../Common/Visible/VisibleComponent';
 import SmPopupComponent from '../../SmPopup/SmPopupComponent';
 import { DiamondContext } from '../../../Core/Setup/Context/DiamondContext';
 import { DiamondBlueprint } from '../../../Core/Setup/Blueprint/Diamond/DiamondBlueprint';
+import { Cell } from '../../../Core/Items/Cell/Cell';
+import { ReactorField } from '../../../Core/Items/Cell/Field/Bonus/ReactorField';
+import { Headquarter } from '../../../Core/Items/Cell/Field/Hq/Headquarter';
+import { CellGroup } from '../../../Core/Items/CellGroup';
+import { Tank } from '../../../Core/Items/Unit/Tank';
+import { UnitGroup } from '../../../Core/Items/UnitGroup';
+import CellMenuComponent from '../Game/Parts/CellMenuComponent';
+import HqMenuComponent from '../Game/Parts/HqMenuComponent';
+import MultiTankMenuComponent from '../Game/Parts/MultiTankMenuComponent';
+import ReactorMenuComponent from '../Game/Parts/ReactorMenuComponent';
+import TankMenuComponent from '../Game/Parts/TankMenuComponent';
+import { FlagCellCombination } from '../../../Core/Interaction/Combination/FlagCellCombination';
 
 export default class DiamondCanvasComponent extends Component<
 	any,
@@ -50,11 +62,11 @@ export default class DiamondCanvasComponent extends Component<
 	constructor() {
 		super();
 		this._gameContextService = Factory.Load<IGameContextService<DiamondBlueprint, DiamondContext>>(
-			FactoryKey.CamouflageGameContext
+			FactoryKey.DiamondGameContext
 		);
 		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
-		this._interactionService = Factory.Load<IInteractionService<DiamondContext>>(FactoryKey.CamouflageInteraction);
+		this._interactionService = Factory.Load<IInteractionService<DiamondContext>>(FactoryKey.DiamondInteraction);
 		this._gameContext = this._gameContextService.Publish();
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
 		//this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));
@@ -125,7 +137,15 @@ export default class DiamondCanvasComponent extends Component<
 		if (this.state.HasMultiMenu) {
 			return <MultiMenuComponent Item={this.state.Item} />;
 		} else if (this.state.Item) {
-			if (this.state.Item instanceof Truck) {
+			if (this.state.Item instanceof Tank) {
+				return (
+					<TankMenuComponent
+						Interaction={this._interactionService.Publish()}
+						Tank={this.state.Item}
+						isSettingPatrol={this.state.IsSettingPatrol}
+					/>
+				);
+			} else if (this.state.Item instanceof Truck) {
 				return (
 					<TruckMenuComponent
 						interaction={this._interactionService}
@@ -133,9 +153,45 @@ export default class DiamondCanvasComponent extends Component<
 						isSettingPatrol={this.state.IsSettingPatrol}
 					/>
 				);
+			} else if (this.state.Item instanceof UnitGroup) {
+				return <MultiTankMenuComponent item={this.state.Item} />;
+			} else if (this.state.Item instanceof Headquarter) {
+				return (
+					<HqMenuComponent
+						SetFlag={this.SetFlag.bind(this)}
+						TankRequestCount={this.state.TankRequestCount}
+						TruckRequestCount={this.state.TruckRequestCount}
+						HasFlag={this.state.HasFlag}
+						VehicleCount={this._gameContext.GetPlayerHq().GetVehicleCount()}
+					/>
+				);
+			} else if (this.state.Item instanceof ReactorField) {
+				return (
+					<ReactorMenuComponent
+						Item={this.state.Item}
+						GameContext={this._gameContext}
+						Interaction={this._interactionService.Publish()}
+					/>
+				);
+			} else if (this.state.Item instanceof Cell || this.state.Item instanceof CellGroup) {
+				return (
+					<CellMenuComponent
+						Item={this.state.Item}
+						Interaction={this._interactionService.Publish()}
+						ReactorCount={this._gameContext.GetPlayerHq().GetReactorsCount()}
+					/>
+				);
 			}
 		}
 		return '';
+	}
+
+	private SetFlag(): void {
+		FlagCellCombination.IsFlagingMode = !FlagCellCombination.IsFlagingMode;
+		this.setState({
+			...this.state,
+			HasFlag: FlagCellCombination.IsFlagingMode
+		});
 	}
 
 	private SetMenu(): void {

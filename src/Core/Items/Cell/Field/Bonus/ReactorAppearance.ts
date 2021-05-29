@@ -1,3 +1,4 @@
+import { Identity } from './../../../Identity';
 import { FadeOutAnimation } from '../../../Animator/FadeOutAnimation';
 import { FadeInAnimation } from '../../../Animator/FadeInAnimation';
 import { RotationAnimator } from '../../../Animator/RotationAnimator';
@@ -121,7 +122,7 @@ export class ReactorAppearance extends Item {
 		});
 	}
 
-	public IsEnemy(item: AliveItem): boolean {
+	public IsEnemy(item: Identity): boolean {
 		return this.Reactor.Hq.IsEnemy(item);
 	}
 

@@ -38,7 +38,7 @@ export class CellStateSetter {
 						}
 					}
 				} else {
-					if (cell.HasAroundAlly(playerHq)) {
+					if (cell.HasAroundAlly(gameContext.GetPlayer())) {
 						cell.SetState(CellState.Visible);
 					} else {
 						if (cell.GetState() !== CellState.Hidden) {

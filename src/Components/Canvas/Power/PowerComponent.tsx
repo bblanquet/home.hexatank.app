@@ -26,6 +26,15 @@ import { MultiCellMenuItem } from '../../../Core/Menu/Buttons/MultiCellMenuItem'
 import SmPopupComponent from '../../SmPopup/SmPopupComponent';
 import { PowerBlueprint } from '../../../Core/Setup/Blueprint/Power/PowerBlueprint';
 import { PowerContext } from '../../../Core/Setup/Context/PowerContext';
+import TankMenuComponent from '../Game/Parts/TankMenuComponent';
+import { Tank } from '../../../Core/Items/Unit/Tank';
+import { Cell } from '../../../Core/Items/Cell/Cell';
+import { ReactorField } from '../../../Core/Items/Cell/Field/Bonus/ReactorField';
+import { CellGroup } from '../../../Core/Items/CellGroup';
+import { UnitGroup } from '../../../Core/Items/UnitGroup';
+import CellMenuComponent from '../Game/Parts/CellMenuComponent';
+import MultiTankMenuComponent from '../Game/Parts/MultiTankMenuComponent';
+import ReactorMenuComponent from '../Game/Parts/ReactorMenuComponent';
 
 export default class PowerCanvasComponent extends Component<
 	any,
@@ -129,7 +138,15 @@ export default class PowerCanvasComponent extends Component<
 		if (this.state.HasMultiMenu) {
 			return <MultiMenuComponent Item={this.state.Item} />;
 		} else if (this.state.Item) {
-			if (this.state.Item instanceof Truck) {
+			if (this.state.Item instanceof Tank) {
+				return (
+					<TankMenuComponent
+						Interaction={this._interactionService.Publish()}
+						Tank={this.state.Item}
+						isSettingPatrol={this.state.IsSettingPatrol}
+					/>
+				);
+			} else if (this.state.Item instanceof Truck) {
 				return (
 					<TruckMenuComponent
 						interaction={this._interactionService}
@@ -137,6 +154,18 @@ export default class PowerCanvasComponent extends Component<
 						isSettingPatrol={this.state.IsSettingPatrol}
 					/>
 				);
+			} else if (this.state.Item instanceof UnitGroup) {
+				return <MultiTankMenuComponent item={this.state.Item} />;
+			} else if (this.state.Item instanceof ReactorField) {
+				return (
+					<ReactorMenuComponent
+						Item={this.state.Item}
+						GameContext={this._gameContext}
+						Interaction={this._interactionService.Publish()}
+					/>
+				);
+			} else if (this.state.Item instanceof Cell || this.state.Item instanceof CellGroup) {
+				return <CellMenuComponent Item={this.state.Item} ReactorCount={1} />;
 			}
 		}
 		return '';

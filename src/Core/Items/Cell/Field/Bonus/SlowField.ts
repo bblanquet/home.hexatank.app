@@ -4,7 +4,6 @@ import { CellState } from '../../CellState';
 import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../../../Interaction/InteractionContext';
 import { Vehicle } from '../../../Unit/Vehicle';
-import { GameSettings } from '../../../../Framework/GameSettings';
 import { ZKind } from '../../../ZKind';
 
 export class SlowField extends Field {

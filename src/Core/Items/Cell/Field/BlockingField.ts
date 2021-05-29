@@ -1,3 +1,4 @@
+import { Identity } from './../../Identity';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { Cell } from '../Cell';
 import { AliveField } from './AliveField';
@@ -39,7 +40,7 @@ export class BlockingField extends AliveField {
 		return true;
 	}
 
-	public IsEnemy(item: AliveItem): boolean {
+	public IsEnemy(item: Identity): boolean {
 		return true;
 	}
 

@@ -1,5 +1,5 @@
+import { IHqGameContext } from './IHqGameContext';
 import { Identity } from '../../Items/Identity';
-import { IGameContext } from './IGameContext';
 import { Tank } from '../../Items/Unit/Tank';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { Dictionnary } from '../../Utils/Collections/Dictionnary';
@@ -10,8 +10,9 @@ import { Cell } from '../../Items/Cell/Cell';
 import { GameStatus } from '../../Framework/GameStatus';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 import { AliveItem } from '../../Items/AliveItem';
+import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
 
-export class GameContext implements IGameContext {
+export class GameContext implements IHqGameContext {
 	//should not be here
 	public static Error: Error;
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
@@ -59,7 +60,7 @@ export class GameContext implements IGameContext {
 		return this._vehicles.Exist(id);
 	}
 
-	public GetPlayerHq(): Headquarter {
+	public GetPlayerHq(): IHeadquarter {
 		return this._playerHq;
 	}
 

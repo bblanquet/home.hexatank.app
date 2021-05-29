@@ -30,7 +30,7 @@ export class TankCombination extends AbstractSingleCombination {
 
 			if (
 				cell.GetShootableEntity() !== null &&
-				cell.GetShootableEntity().IsEnemy(tank) &&
+				cell.GetShootableEntity().IsEnemy(tank.Identity) &&
 				cell.GetState() === CellState.Visible
 			) {
 				const order = new TargetOrder(tank, cell.GetShootableEntity());

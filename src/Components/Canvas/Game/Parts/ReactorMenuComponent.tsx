@@ -9,18 +9,16 @@ import { GameContext } from '../../../../Core/Setup/Context/GameContext';
 import { AttackMenuItem } from '../../../../Core/Menu/Buttons/AttackMenuItem';
 import { SpeedFieldMenuItem } from '../../../../Core/Menu/Buttons/SpeedFieldMenuItem';
 import { HealMenuItem } from '../../../../Core/Menu/Buttons/HealMenuItem';
-import { Factory, FactoryKey } from '../../../../Factory';
-import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
 import * as moment from 'moment';
+import { InteractionContext } from '../../../../Core/Interaction/InteractionContext';
+import { IGameContext } from '../../../../Core/Setup/Context/IGameContext';
 
 export default class ReactorMenuComponent extends Component<
-	{ Item: ReactorField; GameContext: GameContext },
+	{ Item: ReactorField; GameContext: IGameContext; Interaction: InteractionContext },
 	{ timeout: number }
 > {
-	private _interactionService: IInteractionService<GameContext>;
 	constructor() {
 		super();
-		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.Interaction);
 	}
 	componentDidMount(): void {
 		this.Check();
@@ -174,8 +172,7 @@ export default class ReactorMenuComponent extends Component<
 	}
 
 	private SendContext(item: Item): void {
-		const interaction = this._interactionService.Publish();
-		interaction.Kind = InteractionKind.Up;
-		interaction.OnSelect(item);
+		this.props.Interaction.Kind = InteractionKind.Up;
+		this.props.Interaction.OnSelect(item);
 	}
 }

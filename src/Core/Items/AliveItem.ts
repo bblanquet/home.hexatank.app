@@ -122,7 +122,7 @@ export abstract class AliveItem extends Item {
 		this.TotalLife = life;
 	}
 
-	public abstract IsEnemy(item: AliveItem): boolean;
+	public abstract IsEnemy(id: Identity): boolean;
 
 	public abstract GetCurrentCell(): Cell;
 }

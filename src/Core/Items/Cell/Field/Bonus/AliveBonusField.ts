@@ -11,9 +11,8 @@ import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { IInteractionContext } from '../../../../Interaction/IInteractionContext';
 import { BouncingScaleAnimator } from '../../../Animator/BouncingScaleAnimator';
 import { CellState } from '../../CellState';
-import { Headquarter } from '../Hq/Headquarter';
 import { ZKind } from '../../../ZKind';
-import { ICellEnergyProvider } from '../Hq/ICellEnergyProvider';
+import { IHeadquarter } from '../Hq/IHeadquarter';
 import { Identity } from '../../../Identity';
 
 export abstract class AliveBonusField extends AliveField implements IActiveContainer {
@@ -21,14 +20,9 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 	private _isIncreasingOpacity: boolean = false;
 	public Energy: number = 0;
 
-	constructor(
-		cell: Cell,
-		private _bonus: string[],
-		private _id: Identity,
-		protected energyProvider: ICellEnergyProvider
-	) {
+	constructor(cell: Cell, private _bonus: string[], private _id: Identity, protected energyProvider: IHeadquarter) {
 		super(cell);
-		this.GetCell().SetField(this);
+		this.Identity = this._id;
 		this.Z = ZKind.Field;
 		this.GenerateSprite(SvgArchive.bonus.coverBottom);
 		this._bonus.forEach((b) => {
@@ -43,7 +37,7 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 		this.Energy = this.energyProvider.GetCellEnergy(cell.GetHexCoo());
 	}
 
-	protected GetReactorsPower(hq: Headquarter): number {
+	protected GetReactorsPower(hq: IHeadquarter): number {
 		const connectedReactors = hq.GetReactors().filter((f) => f.GetInternal().Exist(this.GetCell().Coo()));
 		const sum = connectedReactors.map((i) => i.GetPower()).reduce((a, b) => a + b, 0);
 		return sum;
@@ -105,7 +99,7 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 	}
 
 	public abstract Support(vehicule: Vehicle): void;
-	public abstract IsEnemy(item: AliveItem): boolean;
+	public abstract IsEnemy(item: Identity): boolean;
 	public Select(context: IInteractionContext): boolean {
 		return false;
 	}

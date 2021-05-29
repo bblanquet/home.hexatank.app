@@ -32,8 +32,12 @@ import { InfiniteFadeAnimation } from '../../../Animator/InfiniteFadeAnimation';
 import { HqNetworkLink } from '../Hq/HqNetworkLink';
 import { Item } from '../../../Item';
 import { ISpot } from '../../../../Utils/Geometry/ISpot';
+import { IHeadquarter } from '../Hq/IHeadquarter';
+import { Identity } from '../../../Identity';
+import { IHqGameContext } from '../../../../Setup/Context/IHqGameContext';
 
 export class ReactorField extends Field implements ISelectable, ISpot<ReactorField> {
+	public Identity: Identity;
 	private _bonusValueProvider: BonusValueProvider = new BonusValueProvider();
 	//state
 	public Reserve: ReactorReserve;
@@ -60,12 +64,13 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 
 	constructor(
 		cell: Cell,
-		public Hq: Headquarter,
-		private _context: GameContext,
+		public Hq: IHeadquarter,
+		private _context: IHqGameContext,
 		private _light: string,
 		public IsPacific: boolean = false
 	) {
 		super(cell);
+		this.Identity = this.Hq.Identity;
 		this.Z = ZKind.Field;
 		this.Hq.AddReactor(this);
 		this.Reserve = new ReactorReserve(this.Hq, this);
@@ -103,7 +108,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		white.SetAlive(() => this.IsUpdatable);
 	}
 
-	public GetHq(): Headquarter {
+	public GetHq(): IHeadquarter {
 		return this.Hq;
 	}
 
@@ -137,7 +142,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		this.GetAllCells().forEach((c) => {
 			if (c.HasOccupier()) {
 				const vehicle = c.GetOccupier() as Vehicle;
-				if (!vehicle.IsEnemy(this.Hq) && !vehicles.Exist(vehicle.Id)) {
+				if (!vehicle.IsEnemy(this.Hq.Identity) && !vehicles.Exist(vehicle.Id)) {
 					vehicles.Add(vehicle.Id, vehicle);
 				}
 			}
@@ -244,7 +249,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 				if (
 					TypeTranslator.IsBonusField(c.GetField()) &&
 					this.Hq.IsCovered(c) &&
-					!TypeTranslator.IsEnemy(c.GetField(), this.Hq)
+					!TypeTranslator.IsEnemy(c.GetField(), this.Hq.Identity)
 				) {
 					c.DestroyField();
 					if (c.IsVisible()) {

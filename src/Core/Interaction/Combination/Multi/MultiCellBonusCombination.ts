@@ -1,3 +1,4 @@
+import { IHqGameContext } from './../../../Setup/Context/IHqGameContext';
 import { CellGroup } from './../../../Items/CellGroup';
 import { NetworkMenuItem } from './../../../Menu/Buttons/NetworkMenuItem';
 import { NetworkField } from './../../../Items/Cell/Field/Bonus/NetworkField';
@@ -31,7 +32,7 @@ import { Factory, FactoryKey } from '../../../../Factory';
 export class MultiCellBonusCombination extends AbstractSingleCombination {
 	private _layerService: ILayerService;
 
-	constructor(private _gameContext: GameContext) {
+	constructor(private _gameContext: IHqGameContext) {
 		super();
 		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
 	}

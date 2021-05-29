@@ -1,13 +1,12 @@
-import { ICellEnergyProvider } from './../Hq/ICellEnergyProvider';
+import { HeadQuarterField } from './../Hq/HeadquarterField';
+import { IHeadquarter } from '../Hq/IHeadquarter';
 import { Identity } from './../../../Identity';
 import { BonusValueProvider } from './BonusValueProvider';
 import { ShieldAppearance } from './ShieldAppearance';
-import { Headquarter } from './../Hq/Headquarter';
 import { Cell } from '../../Cell';
 import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { AliveBonusField } from './AliveBonusField';
-import { AliveItem } from '../../../AliveItem';
 import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 import { ITimer } from '../../../../Utils/Timer/ITimer';
 import { TimeTimer } from '../../../../Utils/Timer/TimeTimer';
@@ -20,20 +19,21 @@ export class ShieldField extends AliveBonusField {
 	private _shieldAppearance: ShieldAppearance;
 	private _fixTimer: ITimer;
 
-	constructor(cell: Cell, id: Identity, protected Hq: Headquarter) {
+	constructor(cell: Cell, id: Identity, protected Hq: IHeadquarter) {
 		super(cell, [], id, Hq);
 		this._fixTimer = new TimeTimer(1000);
-		if (isNullOrUndefined(Hq)) {
-			throw 'not supposed to be there';
+		if (isNullOrUndefined(this.Hq)) {
+			throw `ShieldField not supposed to be there`;
 		}
 		this._shieldAppearance = new ShieldAppearance(this);
-		Hq.AddField(this, cell);
-		if (!Hq.IsCovered(cell)) {
+		this.Hq.AddField(this, cell);
+		if (!this.Hq.IsCovered(cell)) {
 			cell.DestroyField();
 			if (cell.IsVisible()) {
 				new Explosion(cell.GetBoundingBox(), SvgArchive.constructionEffects, ZKind.Sky, false, 5);
 			}
 		}
+		this.GetCell().SetField(this);
 	}
 
 	public EnergyChanged(isUp: boolean): void {
@@ -54,13 +54,16 @@ export class ShieldField extends AliveBonusField {
 		}
 	}
 
-	public GetHq(): Headquarter {
+	public GetHq(): IHeadquarter {
+		if (isNullOrUndefined(this.Hq)) {
+			throw `ShieldField not supposed to be there`;
+		}
 		return this.Hq;
 	}
 
 	Support(vehicule: Vehicle): void {}
 
-	public IsEnemy(item: AliveItem): boolean {
+	public IsEnemy(item: Identity): boolean {
 		return this.Hq.IsEnemy(item);
 	}
 

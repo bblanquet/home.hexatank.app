@@ -1,7 +1,6 @@
 import { TypeTranslator } from '../../../Items/Cell/Field/TypeTranslator';
 import { IField } from './../../../Items/Cell/Field/IField';
 import { ReactorAppearance } from '../../../Items/Cell/Field/Bonus/ReactorAppearance';
-import { GameContext } from '../../../Setup/Context/GameContext';
 import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
 import { Area } from './Area';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
@@ -12,7 +11,6 @@ export class AreaStatus {
 	private _fields: Dictionnary<Array<Cell>>;
 	private _units: Dictionnary<Vehicle>;
 	private _hqFields: Dictionnary<Array<Cell>>;
-	private _gameContext: GameContext;
 
 	constructor(private _area: Area) {
 		this._area.GetCells().forEach((c) => {
@@ -41,11 +39,11 @@ export class AreaStatus {
 	}
 
 	HasUnit(item: AliveItem): boolean {
-		return this._units.Values().some((c) => !c.IsEnemy(item));
+		return this._units.Values().some((c) => !c.IsEnemy(item.Identity));
 	}
 
 	public HasFoesOf(item: AliveItem): boolean {
-		const hasUnitFoes = this._units.Values().some((c) => c.IsEnemy(item));
+		const hasUnitFoes = this._units.Values().some((c) => c.IsEnemy(item.Identity));
 		if (hasUnitFoes) {
 			return true;
 		}
@@ -57,7 +55,7 @@ export class AreaStatus {
 		const fields = this._hqFields.Values().reduce((e, x) => e.concat(x)).map((c) => c.GetField());
 		const hasFoeCell = fields
 			.filter((e: IField) => TypeTranslator.IsSpecialField(e))
-			.some((e) => TypeTranslator.IsEnemy(e, item));
+			.some((e) => TypeTranslator.IsEnemy(e, item.Identity));
 		return hasFoeCell;
 	}
 
@@ -106,7 +104,7 @@ export class AreaStatus {
 
 	private RemoveNewBonusField(cell: Cell) {
 		if (TypeTranslator.IsSpecialField(cell.GetField())) {
-			const hq = TypeTranslator.GetHq(cell.GetField());
+			const hq = cell.GetField();
 			let hqCo = hq.GetCell().Coo();
 			if (this._hqFields.Exist(hqCo)) {
 				const newHqList = this._hqFields.Get(hqCo).filter((c) => c !== cell);
@@ -121,11 +119,11 @@ export class AreaStatus {
 	private AddSpecialField(cell: Cell) {
 		if (TypeTranslator.IsSpecialField(cell.GetField())) {
 			const hq = TypeTranslator.GetHq(cell.GetField());
-			let co = hq.GetCell().Coo();
-			if (this._hqFields.Exist(co)) {
-				this._hqFields.Get(co).push(cell);
+			let coo = hq.GetCell().Coo();
+			if (this._hqFields.Exist(coo)) {
+				this._hqFields.Get(coo).push(cell);
 			} else {
-				this._hqFields.Add(co, [ cell ]);
+				this._hqFields.Add(coo, [ cell ]);
 			}
 		}
 	}
@@ -146,22 +144,6 @@ export class AreaStatus {
 		return fields.some((field) => this._fields.Exist(field));
 	}
 
-	public HasFoeField(item: AliveItem): boolean {
-		const hqsCells = this._hqFields.Keys();
-		return 0 < hqsCells.length && hqsCells.some((e) => item.IsEnemy(this._gameContext.GetHq(e)));
-	}
-
-	public HasFoeReactor(item: AliveItem): boolean {
-		if (this.HasFoeField(item)) {
-			if (this.HasField(ReactorAppearance.name)) {
-				return this.GetCells(ReactorAppearance.name)
-					.map((c) => (c.GetField() as any) as ReactorAppearance)
-					.some((e) => e.IsEnemy(item));
-			}
-		}
-		return false;
-	}
-
 	public CleanDeadUnits(): void {
 		this._units.Values().forEach((u) => {
 			if (!u.IsUpdatable) {
@@ -172,12 +154,12 @@ export class AreaStatus {
 
 	public HasFoeVehicle(item: AliveItem): boolean {
 		this.CleanDeadUnits();
-		return this._units.Values().some((e) => e.IsEnemy(item));
+		return this._units.Values().some((e) => e.IsEnemy(item.Identity));
 	}
 
 	public GetFoeVehicleCount(item: AliveItem): number {
 		this.CleanDeadUnits();
-		return this._units.Values().filter((e) => e.IsEnemy(item)).length;
+		return this._units.Values().filter((e) => e.IsEnemy(item.Identity)).length;
 	}
 
 	public GetCells(field: string): Cell[] {

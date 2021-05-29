@@ -47,8 +47,8 @@ export class Truck extends Vehicle {
 		this._light.Destroy();
 	}
 
-	public IsEnemy(item: AliveItem): boolean {
-		return !(item.Identity && item.Identity.Name === this.Identity.Name);
+	public IsEnemy(id: Identity): boolean {
+		return !(id && id.Name === this.Identity.Name);
 	}
 
 	public Load(): boolean {

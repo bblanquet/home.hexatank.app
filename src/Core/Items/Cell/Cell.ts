@@ -140,13 +140,13 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 	public SetField(field: IField) {
 		if (isNullOrUndefined(field)) {
-			throw 'not supposed to be there field';
+			throw `Cell not supposed to be there`;
 		}
 
 		if (!isNullOrUndefined(this._field)) {
 			let field = this._field;
 			if (field instanceof BasicField && this._field instanceof BonusField) {
-				throw 'not supposed to be there field';
+				throw `Cell not supposed to be there`;
 			}
 			this._field = null;
 			(<Field>field).Destroy();
@@ -224,21 +224,21 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 	public HasAlly(v: AliveItem): boolean {
 		if (this._occupier && this._occupier instanceof AliveItem) {
-			return !v.IsEnemy(this._occupier);
+			return !v.IsEnemy(this._occupier.Identity);
 		}
 		if (this._field && this._field instanceof Headquarter) {
-			return !v.IsEnemy(this._field);
+			return !v.IsEnemy(this._field.Identity);
 		}
 		return false;
 	}
 
 	public HasBonusAlly(item: AliveItem): boolean {
 		if (this._field && this._field instanceof ReactorField) {
-			return !item.IsEnemy((this._field as ReactorField).GetHq());
+			return !item.IsEnemy((this._field as ReactorField).Hq.Identity);
 		}
 
 		if (this._field && this._field instanceof BonusField) {
-			return !item.IsEnemy((this._field as BonusField).GetHq());
+			return !item.IsEnemy((this._field as BonusField).GetHq().Identity);
 		}
 		return false;
 	}
@@ -248,10 +248,10 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 			if (v instanceof Vehicle && (<Vehicle>v).HasCamouflage) {
 				return false;
 			}
-			return v.IsEnemy(this._occupier);
+			return v.IsEnemy(this._occupier.Identity);
 		}
 		if (this._field && this._field instanceof Headquarter) {
-			return v.IsEnemy(this._field);
+			return v.IsEnemy(this._field.Identity);
 		}
 		return false;
 	}

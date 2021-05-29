@@ -62,7 +62,7 @@ export class WaterField extends Field {
 		return false;
 	}
 	Support(vehicule: Vehicle): void {
-		throw new Error('not supposed to happen');
+		throw `WaterField not supposed to be there`;
 	}
 
 	IsDesctrutible(): boolean {

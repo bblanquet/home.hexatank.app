@@ -1,5 +1,5 @@
 import { Tank } from './../../../Items/Unit/Tank';
-import { CellEnergyProvider } from './CellEnergyProvider';
+import { FakeHeadquarter } from './FakeHeadquarter';
 import { HqLessShieldField } from './../../../Items/Cell/Field/Bonus/HqLessShieldField';
 import { PowerBlueprint } from './../../Blueprint/Power/PowerBlueprint';
 import { PowerContext } from './../../Context/PowerContext';
@@ -45,7 +45,7 @@ export class PowerRenderer {
 		const hqShield = new HqLessShieldField(
 			goalCell,
 			new Identity('IA', new HqSkinHelper().GetSkin(0), false),
-			new CellEnergyProvider()
+			new FakeHeadquarter()
 		);
 		updatableItem.push(hqShield);
 		updatableItem.push(new AboveItem(goalCell, SvgArchive.arrow));

@@ -1,3 +1,4 @@
+import { IHeadquarter } from './../../Items/Cell/Field/Hq/IHeadquarter';
 import { SvgArchive } from '../SvgArchiver';
 import { DiamondField } from './../../Items/Cell/Field/DiamondField';
 import { BlockingField } from './../../Items/Cell/Field/BlockingField';
@@ -76,7 +77,7 @@ export class FieldTypeHelper {
 		return RecordKind.None;
 	}
 
-	public static CreateRecordField(action: RecordKind, cell: Cell, hq: Headquarter, context: GameContext): IField {
+	public static CreateRecordField(action: RecordKind, cell: Cell, hq: IHeadquarter, context: GameContext): IField {
 		if (action === RecordKind.Attack) {
 			return new AttackField(cell, hq);
 		} else if (action === RecordKind.Battery) {
@@ -107,7 +108,7 @@ export class FieldTypeHelper {
 		throw 'not found';
 	}
 
-	public static CreateField(obj: string, cell: Cell, hq: Headquarter, context: GameContext): IField {
+	public static CreateField(obj: string, cell: Cell, hq: IHeadquarter, context: GameContext): IField {
 		if (obj === 'AttackField') {
 			return new AttackField(cell, hq);
 		} else if (obj === 'BatteryField') {

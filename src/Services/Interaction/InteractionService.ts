@@ -24,7 +24,7 @@ export class InteractionService implements IInteractionService<GameContext> {
 	Register(manager: PIXI.InteractionManager, gameContext: GameContext): void {
 		this._multiSelectionContext = new MultiSelectionContext();
 		this._inputNotifier = new InputNotifier();
-		const checker = new SelectableChecker(gameContext.GetPlayerHq());
+		const checker = new SelectableChecker(gameContext.GetPlayerHq().Identity);
 		this._interaction = new InteractionContext(
 			this._inputNotifier,
 			new CombinationProvider().GetCombination(checker, this._multiSelectionContext, gameContext),

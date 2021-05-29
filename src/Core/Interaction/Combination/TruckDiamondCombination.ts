@@ -9,9 +9,10 @@ import { HqFieldOrder } from '../../Ia/Order/Composite/Diamond/HqFieldOrder';
 import { ISelectable } from '../../ISelectable';
 import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
+import { IHqGameContext } from '../../Setup/Context/IHqGameContext';
 
 export class TruckDiamondCombination extends AbstractSingleCombination {
-	constructor(public _gameContext: GameContext) {
+	constructor(public _gameContext: IHqGameContext) {
 		super();
 	}
 

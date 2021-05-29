@@ -19,7 +19,9 @@ import { Point } from '../../../../Core/Utils/Geometry/Point';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
 import { Factory, FactoryKey } from '../../../../Factory';
 
-export default class CellMenuComponent extends Component<{ Item: Item; GameContext: GameContext }, {}> {
+//this.props.Headquarter.IsCovered(this.props.Item as Cell);
+//this.props.Headquarter.GetReactorsCount()
+export default class CellMenuComponent extends Component<{ Item: Item; ReactorCount: number }, {}> {
 	private _interactionService: IInteractionService<GameContext>;
 	constructor() {
 		super();
@@ -31,8 +33,7 @@ export default class CellMenuComponent extends Component<{ Item: Item; GameConte
 				<CircularV2Component OnCancel={() => this.Cancel()}>
 					<LightDarkBtn
 						CallBack={() => this.SendContext(new InfluenceMenuItem())}
-						Amount={`${(this.props.GameContext.GetPlayerHq().GetReactorsCount() + 1) *
-							GameSettings.FieldPrice}`}
+						Amount={`${(this.props.ReactorCount + 1) * GameSettings.FieldPrice}`}
 						Icon="fill-influence"
 						Point={new Point(0, 0)}
 					/>
@@ -81,14 +82,6 @@ export default class CellMenuComponent extends Component<{ Item: Item; GameConte
 				</CircularV2Component>
 			</div>
 		);
-	}
-
-	private IsCovered(): boolean {
-		if (this.props.Item instanceof Cell) {
-			return this.props.GameContext.GetPlayerHq().IsCovered(this.props.Item as Cell);
-		} else {
-			return false;
-		}
 	}
 
 	private SendContext(item: Item): void {

@@ -1,4 +1,4 @@
-import { Headquarter } from './../Hq/Headquarter';
+import { IHeadquarter } from './../Hq/IHeadquarter';
 import { FadeOutAnimation } from '../../../Animator/FadeOutAnimation';
 import { FadeInAnimation } from '../../../Animator/FadeInAnimation';
 import { IAnimator } from '../../../Animator/IAnimator';
@@ -11,7 +11,7 @@ export class BatteryField extends BonusField {
 	private _isUsed: boolean;
 	private _ani: IAnimator;
 
-	constructor(cell: Cell, hq: Headquarter) {
+	constructor(cell: Cell, hq: IHeadquarter) {
 		super(cell, [ SvgArchive.bonus.thunder, SvgArchive.bonus.redThunder ], hq);
 		this.SetProperty(SvgArchive.bonus.redThunder, (e) => (e.alpha = 0));
 		hq.AddBatteryField(this);

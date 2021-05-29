@@ -1,3 +1,4 @@
+import { Identity } from './../../Identity';
 import { AliveField } from './AliveField';
 import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { Light } from '../../Environment/Light';
@@ -62,7 +63,7 @@ export class Diamond extends AliveField {
 		return true;
 	}
 
-	public IsEnemy(item: AliveItem): boolean {
+	public IsEnemy(item: Identity): boolean {
 		return true;
 	}
 

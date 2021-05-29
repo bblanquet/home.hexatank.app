@@ -1,7 +1,7 @@
+import { IHeadquarter } from './Hq/IHeadquarter';
 import { IField } from './IField';
 import { Cell } from '../Cell';
 import { Vehicle } from '../../Unit/Vehicle';
-import { Headquarter } from './Hq/Headquarter';
 import { CellState } from '../CellState';
 import { Item } from '../../Item';
 
@@ -25,7 +25,7 @@ export abstract class Field extends Item implements IField {
 		this._cell.OnCellStateChanged.Off(this._onCellStateChanged);
 	}
 
-	protected GetReactorsPower(hq: Headquarter): number {
+	protected GetReactorsPower(hq: IHeadquarter): number {
 		const connectedReactors = hq.GetReactors().filter((f) => f.GetInternal().Exist(this.GetCell().Coo()));
 		const sum = connectedReactors.map((i) => i.GetPower()).reduce((a, b) => a + b, 0);
 		return sum;

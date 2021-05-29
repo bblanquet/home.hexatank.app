@@ -9,13 +9,14 @@ import { Truck } from '../../../Unit/Truck';
 import { Headquarter } from '../Hq/Headquarter';
 import { BonusField } from './BonusField';
 import { CellState } from '../../CellState';
+import { IHeadquarter } from '../Hq/IHeadquarter';
 
 export class FarmField extends BonusField {
 	private _timer: TimeTimer;
 	private _lightItem: Light;
 	private _bonusProvider: BonusValueProvider = new BonusValueProvider();
 
-	constructor(cell: Cell, protected hq: Headquarter) {
+	constructor(cell: Cell, protected hq: IHeadquarter) {
 		super(cell, [ SvgArchive.bonus.emptyMoney, SvgArchive.bonus.fullMoney ], hq);
 		this._timer = new TimeTimer(GameSettings.FarmLoading);
 		this._lightItem = new Light(cell.GetBoundingBox());
@@ -49,7 +50,7 @@ export class FarmField extends BonusField {
 				const energy = this.GetReactorsPower(this.hq);
 				this.SetEmpty();
 				this._lightItem.Hide();
-				if (truck.IsEnemy(this.hq)) {
+				if (truck.IsEnemy(this.hq.Identity)) {
 					this.hq.Earn(this._bonusProvider.GetDiamondValue(energy));
 				}
 			}

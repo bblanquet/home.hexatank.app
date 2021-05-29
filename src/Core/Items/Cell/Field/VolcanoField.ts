@@ -60,7 +60,7 @@ export class VolcanoField extends Field {
 		return false;
 	}
 	Support(vehicule: Vehicle): void {
-		throw new Error('not supposed to happen');
+		throw `VolcanoField not supposed to be there`;
 	}
 
 	IsDesctrutible(): boolean {

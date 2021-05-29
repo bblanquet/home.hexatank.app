@@ -15,7 +15,7 @@ export default class HqMenuComponent extends Component<
 		TruckRequestCount: number;
 		HasFlag: boolean;
 		SetFlag: () => void;
-		GameContext: GameContext;
+		VehicleCount: number;
 	},
 	{}
 > {
@@ -37,7 +37,7 @@ export default class HqMenuComponent extends Component<
 							<div class="white-background">{this.props.TankRequestCount}</div>
 							<div class="fill-tank max-width standard-space" />
 							<div class="max-width align-text-center darker">
-								{GameSettings.TankPrice * this.props.GameContext.GetPlayerHq().GetVehicleCount()}{' '}
+								{GameSettings.TankPrice * this.props.VehicleCount}{' '}
 								<span class="fill-diamond badge very-small-space middle"> </span>
 							</div>
 						</button>
@@ -49,7 +49,7 @@ export default class HqMenuComponent extends Component<
 							<div class="white-background">{this.props.TruckRequestCount}</div>
 							<div class="fill-truck max-width standard-space" />
 							<div class="max-width align-text-center darker">
-								{GameSettings.TruckPrice * this.props.GameContext.GetPlayerHq().GetVehicleCount()}{' '}
+								{GameSettings.TruckPrice * this.props.VehicleCount}{' '}
 								<span class="fill-diamond badge very-small-space middle"> </span>
 							</div>
 						</button>

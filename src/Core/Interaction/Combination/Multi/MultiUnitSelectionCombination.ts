@@ -1,3 +1,4 @@
+import { IHqGameContext } from './../../../Setup/Context/IHqGameContext';
 import { ILayerService } from './../../../../Services/Layer/ILayerService';
 import { UnitGroup } from '../../../Items/UnitGroup';
 import { CombinationContext } from '../CombinationContext';
@@ -12,7 +13,7 @@ export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 	private _group: UnitGroup;
 	private _layerService: ILayerService;
 
-	constructor(private _multiContext: MultiSelectionContext, private _gameContext: GameContext) {
+	constructor(private _multiContext: MultiSelectionContext, private _gameContext: IHqGameContext) {
 		super();
 		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
 		this._group = new UnitGroup(this._multiContext);
@@ -37,7 +38,11 @@ export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 		const vehicles = new Array<Vehicle>();
 		this._multiContext.GetCells().forEach((c) => {
 			let occupier = (<Cell>(<unknown>c)).GetOccupier();
-			if (occupier && occupier instanceof Vehicle && !this._gameContext.GetPlayerHq().IsEnemy(occupier)) {
+			if (
+				occupier &&
+				occupier instanceof Vehicle &&
+				!this._gameContext.GetPlayerHq().IsEnemy(occupier.Identity)
+			) {
 				vehicles.push(occupier);
 			}
 		});

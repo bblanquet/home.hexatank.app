@@ -22,7 +22,7 @@ export class SquadRoad {
 	public GetTargets(tanks: Array<Tank>, mainTarget: ISquadTarget): Array<ISquadTarget> {
 		const road = this.GetRoad(tanks[0].GetCurrentCell(), mainTarget.GetCell());
 		const condition = (c: Cell) =>
-			c.GetField() instanceof ShieldField && (c.GetField() as ShieldField).IsEnemy(this._hq);
+			c.GetField() instanceof ShieldField && (c.GetField() as ShieldField).IsEnemy(this._hq.Identity);
 		const targets = road.filter(condition);
 		let allTargets: ISquadTarget[] = targets.map((c) => new AliveSquadTarget(c.GetField() as ShieldField));
 		allTargets.push(mainTarget);

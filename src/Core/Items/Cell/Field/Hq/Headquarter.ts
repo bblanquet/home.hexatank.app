@@ -1,4 +1,4 @@
-import { ICellEnergyProvider } from './ICellEnergyProvider';
+import { IHeadquarter } from './IHeadquarter';
 import { Identity } from './../../../Identity';
 import { IBrain } from './../../../../Ia/Decision/IBrain';
 import { HqNetwork } from './HqNetwork';
@@ -31,7 +31,7 @@ import { Curve } from '../../../../Utils/Stats/Curve';
 import { DateValue } from '../../../../Utils/Stats/DateValue';
 import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 
-export class Headquarter extends AliveItem implements IField, ISelectable, ICellEnergyProvider {
+export class Headquarter extends AliveItem implements IField, ISelectable, IHeadquarter {
 	public Flagcell: FlagCell;
 	private _boundingBox: BoundingBox;
 	private _cell: Cell;
@@ -152,8 +152,8 @@ export class Headquarter extends AliveItem implements IField, ISelectable, ICell
 		return this._diamondCount;
 	}
 
-	public IsEnemy(item: AliveItem): boolean {
-		return !(item.Identity && item.Identity.Name === this.Identity.Name);
+	public IsEnemy(id: Identity): boolean {
+		return !(id && id.Name === this.Identity.Name);
 	}
 
 	Support(vehicule: Vehicle): void {}

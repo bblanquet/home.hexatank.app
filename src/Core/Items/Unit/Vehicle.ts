@@ -1,7 +1,5 @@
 import { Identity } from './../Identity';
-import { TimeTimer } from './../../Utils/Timer/TimeTimer';
 import { BasicItem } from './../BasicItem';
-import { ShieldField } from './../Cell/Field/Bonus/ShieldField';
 import { ZKind } from './../ZKind';
 import { UiOrder } from './../../Ia/Order/UiOrder';
 import { IOrder } from './../../Ia/Order/IOrder';
@@ -32,6 +30,8 @@ import { Up } from './PowerUp/Up';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 import { InfiniteFadeAnimation } from '../Animator/InfiniteFadeAnimation';
 import { Crater } from '../Environment/Crater';
+import { TimeTimer } from '../../Utils/Timer/TimeTimer';
+import { ShieldField } from '../Cell/Field/Bonus/ShieldField';
 
 export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable, ICancellable {
 	public PowerUps: Array<Up> = [];

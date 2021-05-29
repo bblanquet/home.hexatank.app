@@ -6,12 +6,12 @@ import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { GameContext } from '../../../Setup/Context/GameContext';
 import { ILayerService } from '../../../../Services/Layer/ILayerService';
 import { Factory, FactoryKey } from '../../../../Factory';
-import { CellState } from '../../../Items/Cell/CellState';
+import { IGameContext } from '../../../Setup/Context/IGameContext';
 
 export class MultiCellSelectionCombination extends AbstractSingleCombination {
 	private _layerService: ILayerService;
 
-	constructor(private _multiSelectionContext: MultiSelectionContext, private _gameContext: GameContext) {
+	constructor(private _multiSelectionContext: MultiSelectionContext, private _gameContext: IGameContext) {
 		super();
 		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
 	}

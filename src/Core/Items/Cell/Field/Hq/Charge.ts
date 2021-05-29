@@ -1,4 +1,3 @@
-import { Headquarter } from './Headquarter';
 import { ReactorField } from '../Bonus/ReactorField';
 import { BatteryField } from '../Bonus/BatteryField';
 import { ChargeLink } from './ChargeLink';
@@ -7,12 +6,13 @@ import { IInteractionContext } from '../../../../Interaction/IInteractionContext
 import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { AStarEngine } from '../../../../Ia/AStarEngine';
 import { Cell } from '../../Cell';
+import { IHeadquarter } from './IHeadquarter';
 
 export class Charge extends Item {
 	private _links: ChargeLink[] = new Array<ChargeLink>();
 	private _reactorPath: ReactorField[];
 	private _ref: any;
-	constructor(hq: Headquarter, private _battery: BatteryField, private _target: ReactorField) {
+	constructor(hq: IHeadquarter, private _battery: BatteryField, private _target: ReactorField) {
 		super();
 		const reactorPaths: ReactorField[][] = [];
 		const sources = hq.GetReactors().filter((r) => r.IsCovered(_battery.GetCell()));

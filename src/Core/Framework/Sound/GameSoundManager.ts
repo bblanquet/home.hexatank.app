@@ -113,7 +113,7 @@ export class GameSoundManager {
 	HandleOrder(src: Vehicle, order: IOrder): void {
 		const playerHq = this._gameContext.GetPlayerHq();
 		if (playerHq) {
-			if (!src.IsEnemy(playerHq)) {
+			if (!src.IsEnemy(playerHq.Identity)) {
 				const voices = [
 					AudioContent.ayaya,
 					AudioContent.copyThat,

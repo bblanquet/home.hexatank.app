@@ -30,7 +30,7 @@ export class CamouflageInteractionService implements IInteractionService<Camoufl
 	Register(manager: PIXI.InteractionManager, gameContext: CamouflageContext): void {
 		this._multiSelectionContext = new MultiSelectionContext();
 		this._inputNotifier = new InputNotifier();
-		const checker = new SelectableChecker(gameContext.GetPlayer());
+		const checker = new SelectableChecker(gameContext.GetPlayer().Identity);
 		this._interaction = new InteractionContext(
 			this._inputNotifier,
 			[

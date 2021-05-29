@@ -1,3 +1,4 @@
+import { Identity } from './../../../../Items/Identity';
 import { SmartSimpleOrder } from '../SmartSimpleOrder';
 import { Cell } from '../../../../Items/Cell/Cell';
 import { Diamond } from '../../../../Items/Cell/Field/Diamond';
@@ -43,7 +44,7 @@ export class DiamondFieldOrder extends SmartSimpleOrder {
 		const field = c.GetField();
 		if (field instanceof ShieldField) {
 			const shield = field as ShieldField;
-			return !shield.IsEnemy(this.Vehicle);
+			return !shield.IsEnemy(this.Vehicle.Identity);
 		}
 		if (field === this.Diamond) {
 			return true;

@@ -119,7 +119,8 @@ export class IaArea {
 	public GetFoeReactor(): Cell {
 		const cells = this._spot.GetCells();
 		return cells.find((cell) => {
-			TypeTranslator.IsReactorField(cell.GetField()) && TypeTranslator.IsEnemy(cell.GetField(), this._hq);
+			TypeTranslator.IsReactorField(cell.GetField()) &&
+				TypeTranslator.IsEnemy(cell.GetField(), this._hq.Identity);
 		});
 	}
 

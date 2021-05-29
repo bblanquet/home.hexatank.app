@@ -1,6 +1,5 @@
 import { IOrder } from './../Ia/Order/IOrder';
 import { TypeTranslator } from '../Items/Cell/Field/TypeTranslator';
-import { Headquarter } from './../Items/Cell/Field/Hq/Headquarter';
 import { PowerFieldPacket } from './Packets/PowerFieldPacket';
 import { OverlockedPacket } from './Packets/OverlockedPacket';
 import { ShieldField } from './../Items/Cell/Field/Bonus/ShieldField';
@@ -22,6 +21,7 @@ import { BonusField } from '../Items/Cell/Field/Bonus/BonusField';
 import { AliveItem } from '../Items/AliveItem';
 import { OrderPacket } from './Packets/OrderPacket';
 import { isNullOrUndefined } from '../Utils/ToolBox';
+import { IHeadquarter } from '../Items/Cell/Field/Hq/IHeadquarter';
 
 export class NetworkDispatcher {
 	public constructor(private _context: GameContext, private _socket: NetworkSocket) {
@@ -36,7 +36,10 @@ export class NetworkDispatcher {
 
 	private HandleChangedField(source: any, c: Cell): void {
 		const field = c.GetField();
-		if (!TypeTranslator.IsSpecialField(field) || this.IsSpeakingHq(TypeTranslator.GetHq(field))) {
+		if (
+			!TypeTranslator.IsSpecialField(field) ||
+			this.IsSpeakingHq(this._context.GetHqFromId(TypeTranslator.GetIdentity(field)))
+		) {
 			const fieldPacket = new FieldPacket();
 			fieldPacket.Coo = c.Coo();
 			fieldPacket.Type = FieldTypeHelper.GetDescription(field);
@@ -56,7 +59,7 @@ export class NetworkDispatcher {
 		}
 	}
 
-	private IsSpeakingHq(hq: Headquarter): boolean {
+	private IsSpeakingHq(hq: IHeadquarter): boolean {
 		return hq.Identity.Name === this._context.GetPlayerHq().Identity.Name || hq.IsIa();
 	}
 

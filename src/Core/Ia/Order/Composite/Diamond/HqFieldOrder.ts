@@ -1,3 +1,4 @@
+import { IHeadquarter } from './../../../../Items/Cell/Field/Hq/IHeadquarter';
 import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 import { SmartSimpleOrder } from '../SmartSimpleOrder';
 import { Cell } from '../../../../Items/Cell/Cell';
@@ -8,7 +9,7 @@ import { AStarEngine } from '../../../AStarEngine';
 import { AStarHelper } from '../../../AStarHelper';
 
 export class HqFieldOrder extends SmartSimpleOrder {
-	constructor(public Hq: Headquarter, vehicle: Vehicle) {
+	constructor(public Hq: IHeadquarter, vehicle: Vehicle) {
 		super(Hq.GetCell(), vehicle);
 	}
 
@@ -23,7 +24,7 @@ export class HqFieldOrder extends SmartSimpleOrder {
 		}
 	}
 
-	private GetHqPath(hq: Headquarter): Array<Cell> {
+	private GetHqPath(hq: IHeadquarter): Array<Cell> {
 		const filter = (c: Cell) => !isNullOrUndefined(c) && this.IsHqAccessible(c);
 		const cost = (c: Cell) => AStarHelper.GetBasicCost(c);
 		const cells = new AStarEngine<Cell>(filter, cost).GetPath(this.Vehicle.GetCurrentCell(), hq.GetCell(), true);
@@ -35,9 +36,9 @@ export class HqFieldOrder extends SmartSimpleOrder {
 		const field = c.GetField();
 		if (field instanceof ShieldField) {
 			const shield = field as ShieldField;
-			return !shield.IsEnemy(this.Vehicle);
+			return !shield.IsEnemy(this.Vehicle.Identity);
 		}
-		if (field === this.Hq) {
+		if (field instanceof Headquarter && (field as Headquarter) === this.Hq) {
 			return true;
 		}
 		return !c.IsBlocked();

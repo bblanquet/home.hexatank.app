@@ -54,12 +54,15 @@ export class CamouflageBluePrintMaker {
 			MapItem.Create(8, 4),
 			MapItem.Create(2, 3),
 			MapItem.Create(2, 1),
-			MapItem.Create(8, 1)
+			MapItem.Create(8, 1),
+			MapItem.Create(4, 0),
+			MapItem.Create(7, 0)
 		];
 		blueprint.Patrols = [
 			MapItemPair.Create(patrolCells[0], patrolCells[1]),
 			MapItemPair.Create(patrolCells[2], patrolCells[3]),
-			MapItemPair.Create(patrolCells[4], patrolCells[5])
+			MapItemPair.Create(patrolCells[4], patrolCells[5]),
+			MapItemPair.Create(patrolCells[6], patrolCells[7])
 		];
 
 		const spots = farthestPointManager.GetPoints(areas, cells, 2);

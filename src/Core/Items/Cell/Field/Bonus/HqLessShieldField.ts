@@ -1,12 +1,11 @@
 import { Identity } from './../../../Identity';
-import { ICellEnergyProvider } from './../Hq/ICellEnergyProvider';
+import { IHeadquarter } from '../Hq/IHeadquarter';
 import { BonusValueProvider } from './BonusValueProvider';
 import { ShieldAppearance } from './ShieldAppearance';
 import { Cell } from '../../Cell';
 import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { AliveBonusField } from './AliveBonusField';
-import { AliveItem } from '../../../AliveItem';
 import { ITimer } from '../../../../Utils/Timer/ITimer';
 import { TimeTimer } from '../../../../Utils/Timer/TimeTimer';
 import { BouncingScaleDownAnimator } from '../../../Animator/BouncingScaleDownAnimator';
@@ -16,10 +15,11 @@ export class HqLessShieldField extends AliveBonusField {
 	private _shieldAppearance: ShieldAppearance;
 	private _fixTimer: ITimer;
 
-	constructor(cell: Cell, id: Identity, energy: ICellEnergyProvider) {
+	constructor(cell: Cell, id: Identity, energy: IHeadquarter) {
 		super(cell, [], id, energy);
 		this._fixTimer = new TimeTimer(1000);
 		this._shieldAppearance = new ShieldAppearance(this);
+		this.GetCell().SetField(this);
 	}
 
 	public EnergyChanged(isUp: boolean): void {
@@ -42,8 +42,8 @@ export class HqLessShieldField extends AliveBonusField {
 
 	Support(vehicule: Vehicle): void {}
 
-	public IsEnemy(item: AliveItem): boolean {
-		return !(item.Identity && item.Identity.Name === this.Identity.Name);
+	public IsEnemy(id: Identity): boolean {
+		return !(id && id.Name === this.Identity.Name);
 	}
 
 	public Update(viewX: number, viewY: number): void {

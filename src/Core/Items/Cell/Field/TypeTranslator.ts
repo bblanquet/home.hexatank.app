@@ -1,3 +1,5 @@
+import { IHeadquarter } from './Hq/IHeadquarter';
+import { Identity } from './../../Identity';
 import { DiamondField } from './DiamondField';
 import { BlockingField } from './BlockingField';
 import { TargetOrder } from '../../../Ia/Order/Composite/TargetOrder';
@@ -75,7 +77,7 @@ export class TypeTranslator {
 		return e instanceof DiamondField;
 	}
 
-	public static IsEnemy(e: IField, item: AliveItem): boolean {
+	public static IsEnemy(e: IField, item: Identity): boolean {
 		if (e instanceof BonusField) {
 			return (e as BonusField).GetHq().IsEnemy(item);
 		} else if (e instanceof ShieldField) {
@@ -85,10 +87,10 @@ export class TypeTranslator {
 		} else if (e instanceof Headquarter) {
 			return (e as Headquarter).IsEnemy(item);
 		}
-		throw 'not supposed to be there';
+		throw `TypeTranslator not supposed to be there`;
 	}
 
-	public static GetHq(e: IField): Headquarter {
+	public static GetHq(e: IField): IHeadquarter {
 		if (e instanceof BonusField) {
 			return (e as BonusField).GetHq();
 		} else if (e instanceof ShieldField) {
@@ -98,7 +100,20 @@ export class TypeTranslator {
 		} else if (e instanceof Headquarter) {
 			return e as Headquarter;
 		}
-		throw 'not supposed to be there';
+		throw `TypeTranslator not supposed to be there`;
+	}
+
+	public static GetIdentity(e: IField): Identity {
+		if (e instanceof BonusField) {
+			return (e as BonusField).Identity;
+		} else if (e instanceof ShieldField) {
+			return (e as ShieldField).Identity;
+		} else if (e instanceof ReactorField) {
+			return (e as ReactorField).Identity;
+		} else if (e instanceof Headquarter) {
+			return (e as Headquarter).Identity;
+		}
+		throw `TypeTranslator not supposed to be there`;
 	}
 
 	public static GetPowerUp(type: string): any {
@@ -109,6 +124,6 @@ export class TypeTranslator {
 		} else if (type === 'SpeedFieldMenuItem') {
 			return new SpeedFieldMenuItem();
 		}
-		throw 'not supposed to be there';
+		throw 'TypeTranslator not supposed to be there';
 	}
 }

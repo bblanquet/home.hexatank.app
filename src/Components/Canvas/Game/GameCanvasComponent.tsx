@@ -180,7 +180,13 @@ export default class GameCanvasComponent extends Component<
 			return <MultiMenuComponent Item={this.state.Item} />;
 		} else if (this.state.Item) {
 			if (this.state.Item instanceof Tank) {
-				return <TankMenuComponent Tank={this.state.Item} isSettingPatrol={this.state.IsSettingPatrol} />;
+				return (
+					<TankMenuComponent
+						Interaction={this._interactionService.Publish()}
+						Tank={this.state.Item}
+						isSettingPatrol={this.state.IsSettingPatrol}
+					/>
+				);
 			} else if (this.state.Item instanceof Truck) {
 				return (
 					<TruckMenuComponent
@@ -198,13 +204,24 @@ export default class GameCanvasComponent extends Component<
 						TankRequestCount={this.state.TankRequestCount}
 						TruckRequestCount={this.state.TruckRequestCount}
 						HasFlag={this.state.HasFlag}
-						GameContext={this._gameContext}
+						VehicleCount={this._gameContext.GetPlayerHq().GetVehicleCount()}
 					/>
 				);
 			} else if (this.state.Item instanceof ReactorField) {
-				return <ReactorMenuComponent Item={this.state.Item} GameContext={this._gameContext} />;
+				return (
+					<ReactorMenuComponent
+						Item={this.state.Item}
+						GameContext={this._gameContext}
+						Interaction={this._interactionService.Publish()}
+					/>
+				);
 			} else if (this.state.Item instanceof Cell || this.state.Item instanceof CellGroup) {
-				return <CellMenuComponent Item={this.state.Item} GameContext={this._gameContext} />;
+				return (
+					<CellMenuComponent
+						Item={this.state.Item}
+						ReactorCount={this._gameContext.GetPlayerHq().GetReactorsCount()}
+					/>
+				);
 			}
 		}
 		return '';

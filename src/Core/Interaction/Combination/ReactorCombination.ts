@@ -5,11 +5,11 @@ import { BasicField } from '../../Items/Cell/Field/BasicField';
 import { CombinationContext } from './CombinationContext';
 import { GameSettings } from '../../Framework/GameSettings';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
-import { GameContext } from '../../Setup/Context/GameContext';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
+import { IHqGameContext } from '../../Setup/Context/IHqGameContext';
 
 export class ReactorCombination extends AbstractSingleCombination {
-	constructor(private _gameContext: GameContext) {
+	constructor(private _gameContext: IHqGameContext) {
 		super();
 	}
 

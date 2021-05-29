@@ -7,12 +7,12 @@ import { Cell } from '../../Cell';
 import { BonusField } from './BonusField';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { SvgArchive } from '../../../../Framework/SvgArchiver';
-import { Headquarter } from '../Hq/Headquarter';
 import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
+import { IHeadquarter } from '../Hq/IHeadquarter';
 
 export class AttackField extends BonusField {
 	SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
-	constructor(cell: Cell, hq: Headquarter) {
+	constructor(cell: Cell, hq: IHeadquarter) {
 		super(cell, [ SvgArchive.bonus.strength ], hq, false);
 		this.GenerateSprite(SvgArchive.selectionCell, (e) => {
 			e.alpha = 0;

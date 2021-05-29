@@ -107,7 +107,7 @@ export class Tank extends Vehicle implements ICamouflageAble {
 		var hq = enemies.filter((c) => c instanceof Headquarter).map((c) => <Headquarter>c);
 		if (hq.length >= 1) {
 			return hq.some((element) => {
-				if (element.IsEnemy(this)) {
+				if (element.IsEnemy(this.Identity)) {
 					return true;
 				}
 				return false;
@@ -140,7 +140,7 @@ export class Tank extends Vehicle implements ICamouflageAble {
 		//find random enemy among enemies
 		const enemies = cells
 			.map((cell) => <AliveItem>cell.GetShootableEntity())
-			.filter((aliveItem) => !isNullOrUndefined(aliveItem) && this.IsEnemy(aliveItem))
+			.filter((aliveItem) => !isNullOrUndefined(aliveItem) && this.IsEnemy(aliveItem.Identity))
 			.filter((c) => (c instanceof Vehicle && !(<Vehicle>c).HasCamouflage) || c instanceof Headquarter);
 
 		if (!isNullOrUndefined(this._currentTarget)) {
@@ -160,7 +160,7 @@ export class Tank extends Vehicle implements ICamouflageAble {
 		const enemies = cells.map((c) => (<Cell>c).GetShootableEntity()).filter((c) => !isNullOrUndefined(c));
 		const hqs = enemies.filter((c) => c instanceof Headquarter).map((c) => <Headquarter>c);
 		hqs.some((element) => {
-			if (element.IsEnemy(this)) {
+			if (element.IsEnemy(this.Identity)) {
 				this._currentTarget = element;
 				return true;
 			}
@@ -172,8 +172,8 @@ export class Tank extends Vehicle implements ICamouflageAble {
 		return enemies.filter((e) => e === this._mainTarget).length === 1;
 	}
 
-	public IsEnemy(item: AliveItem): boolean {
-		return !(item.Identity && item.Identity.Name === this.Identity.Name);
+	public IsEnemy(id: Identity): boolean {
+		return !(id && id.Name === this.Identity.Name);
 	}
 
 	public GetTarget(): AliveItem {
@@ -181,7 +181,7 @@ export class Tank extends Vehicle implements ICamouflageAble {
 	}
 
 	public SetMainTarget(item: AliveItem): void {
-		if (!isNullOrUndefined(item) && !item.IsEnemy(this)) {
+		if (!isNullOrUndefined(item) && !item.IsEnemy(this.Identity)) {
 			throw 'should not be there';
 		}
 		this._mainTarget = item;

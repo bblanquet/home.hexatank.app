@@ -4,11 +4,12 @@ import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { GameContext } from '../../Setup/Context/GameContext';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
+import { IHqGameContext } from '../../Setup/Context/IHqGameContext';
 
 export class FlagCellCombination extends AbstractSingleCombination {
 	//don't have better option
 	public static IsFlagingMode: boolean = false;
-	constructor(private _gameContext: GameContext) {
+	constructor(private _gameContext: IHqGameContext) {
 		super();
 	}
 

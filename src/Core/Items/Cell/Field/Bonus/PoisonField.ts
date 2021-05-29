@@ -4,12 +4,11 @@ import { Cell } from '../../Cell';
 import { BonusField } from './BonusField';
 import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { Vehicle } from '../../../Unit/Vehicle';
-import { GameSettings } from '../../../../Framework/GameSettings';
-import { Headquarter } from '../Hq/Headquarter';
+import { IHeadquarter } from '../Hq/IHeadquarter';
 
 export class PoisonField extends BonusField {
 	private poisonTimer: TimeTimer;
-	constructor(cell: Cell, hq: Headquarter) {
+	constructor(cell: Cell, hq: IHeadquarter) {
 		super(cell, [ SvgArchive.bonus.poison ], hq);
 		this.poisonTimer = new TimeTimer(1000);
 	}

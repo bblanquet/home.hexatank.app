@@ -1,3 +1,4 @@
+import { IHqGameContext } from './../Setup/Context/IHqGameContext';
 import { ActiveMultiSelectionCombination } from './Combination/Multi/ActiveMultiSelectionCombination';
 import { OverlockCombination } from './Combination/OverlockCombination';
 import { SwithcMultiCombination } from './Combination/SwitchMultiCombination';
@@ -60,7 +61,7 @@ export class CombinationProvider {
 	GetCombination(
 		checker: ISelectableChecker,
 		multiSelectionContext: MultiSelectionContext,
-		gameContext: GameContext
+		gameContext: IHqGameContext
 	): ICombination[] {
 		return [
 			//CLEAR

@@ -2,10 +2,10 @@ import { Cell } from '../../Cell';
 import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { BonusField } from './BonusField';
-import { Headquarter } from '../Hq/Headquarter';
+import { IHeadquarter } from '../Hq/IHeadquarter';
 
 export class NetworkField extends BonusField {
-	constructor(cell: Cell, hq: Headquarter) {
+	constructor(cell: Cell, hq: IHeadquarter) {
 		super(cell, [ SvgArchive.bonus.network ], hq);
 	}
 

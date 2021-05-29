@@ -111,7 +111,7 @@ export class SimpleOrder extends Order {
 		const field = c.GetField();
 		if (field instanceof ShieldField) {
 			const shield = field as ShieldField;
-			return !shield.IsEnemy(this.Vehicle) && !c.HasOccupier();
+			return !shield.IsEnemy(this.Vehicle.Identity) && !c.HasOccupier();
 		}
 		return !c.IsBlocked();
 	}

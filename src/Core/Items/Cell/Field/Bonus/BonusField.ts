@@ -1,4 +1,5 @@
-import { Headquarter } from './../Hq/Headquarter';
+import { IHeadquarter } from './../Hq/IHeadquarter';
+import { Identity } from './../../../Identity';
 import { Field } from '../Field';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { IAnimator } from '../../../Animator/IAnimator';
@@ -9,7 +10,6 @@ import { CellState } from '../../CellState';
 import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../../../Interaction/InteractionContext';
 import { IActiveContainer } from '../IActiveContainer';
-import { AliveItem } from '../../../AliveItem';
 import { ZKind } from '../../../ZKind';
 import { Explosion } from '../../../Unit/Explosion';
 
@@ -17,9 +17,11 @@ export abstract class BonusField extends Field implements IActiveContainer {
 	private _animator: IAnimator;
 	private _isIncreasingOpacity: boolean = false;
 	public Energy: number = 0;
+	public Identity: Identity;
 
-	constructor(cell: Cell, private _bonus: string[], protected hq: Headquarter, override: boolean = true) {
+	constructor(cell: Cell, private _bonus: string[], protected hq: IHeadquarter, override: boolean = true) {
 		super(cell);
+		this.Identity = hq.Identity;
 		this.GetCell().SetField(this);
 		this.Z = ZKind.Field;
 		this.GenerateSprite(SvgArchive.bonus.coverBottom);
@@ -44,7 +46,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 		}
 	}
 
-	public GetHq(): Headquarter {
+	public GetHq(): IHeadquarter {
 		return this.hq;
 	}
 
@@ -52,8 +54,8 @@ export abstract class BonusField extends Field implements IActiveContainer {
 		this.Energy = isUp ? this.Energy + 1 : this.Energy - 1;
 	}
 
-	public IsAlly(aliveItem: AliveItem): boolean {
-		return !this.hq.IsEnemy(aliveItem);
+	public IsAlly(id: Identity): boolean {
+		return !this.hq.IsEnemy(id);
 	}
 
 	protected OnCellStateChanged(cellState: CellState): void {

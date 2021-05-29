@@ -1,14 +1,14 @@
 import { Charge } from './Hq/Charge';
 import { BatteryField } from './Bonus/BatteryField';
-import { Headquarter } from './Hq/Headquarter';
 import { ReactorField } from './Bonus/ReactorField';
 import { BonusField } from './Bonus/BonusField';
 import { AliveBonusField } from './Bonus/AliveBonusField';
 import { Item } from '../../Item';
+import { IHeadquarter } from './Hq/IHeadquarter';
 
 export class ReactorReserve {
 	private _ref: any;
-	constructor(private _hq: Headquarter, private _reactor: ReactorField) {
+	constructor(private _hq: IHeadquarter, private _reactor: ReactorField) {
 		this._ref = this.ChargeDestroyed.bind(this);
 	}
 
@@ -41,12 +41,12 @@ export class ReactorReserve {
 		this._reactor.GetInternal().Values().forEach((cell) => {
 			if (cell.GetField() instanceof BonusField) {
 				const bonusField = cell.GetField() as BonusField;
-				if (bonusField.IsAlly(this._hq)) {
+				if (bonusField.IsAlly(this._hq.Identity)) {
 					bonusField.EnergyChanged(isUp);
 				}
 			} else if (cell.GetField() instanceof AliveBonusField) {
 				const bonusField = cell.GetField() as AliveBonusField;
-				if (!bonusField.IsEnemy(this._hq)) {
+				if (!bonusField.IsEnemy(this._hq.Identity)) {
 					bonusField.EnergyChanged(isUp);
 				}
 			}

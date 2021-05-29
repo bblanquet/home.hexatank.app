@@ -1,10 +1,10 @@
+import { IHqGameContext } from './../../Setup/Context/IHqGameContext';
 import { TruckMenuItem } from '../../Menu/Buttons/TruckMenuItem';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { CombinationContext } from './CombinationContext';
-import { GameContext } from '../../Setup/Context/GameContext';
 
 export class AddTruckCombination extends AbstractSingleCombination {
-	constructor(private _gameContext: GameContext) {
+	constructor(private _gameContext: IHqGameContext) {
 		super();
 	}
 

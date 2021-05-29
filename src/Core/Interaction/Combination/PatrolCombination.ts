@@ -1,3 +1,4 @@
+import { IHqGameContext } from './../../Setup/Context/IHqGameContext';
 import { PatrolMenuItem } from '../../Menu/Buttons/PatrolMenuItem';
 import { PatrolOrder } from '../../Ia/Order/Composite/PatrolOrder';
 import { BasicItem } from '../../Items/BasicItem';
@@ -8,12 +9,11 @@ import { Cell } from '../../Items/Cell/Cell';
 import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { ZKind } from '../../Items/ZKind';
-import { GameContext } from '../../Setup/Context/GameContext';
 
 export class PatrolCombination extends AbstractSingleCombination {
 	private _indicators: Array<BasicItem> = [];
 
-	constructor(private _gameContext: GameContext) {
+	constructor(private _gameContext: IHqGameContext) {
 		super();
 	}
 

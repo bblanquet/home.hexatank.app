@@ -170,26 +170,6 @@ export default class CamouflageCanvasComponent extends Component<
 				{this.TopMenuRender()}
 				{this.state.GameStatus === GameStatus.Pending ? '' : this.GetEndMessage()}
 				<CanvasComponent gameContext={this._gameContextService} />
-				<Visible
-					isVisible={
-						!this.state.HasMenu &&
-						isNullOrUndefined(this.state.Item) &&
-						this.state.GameStatus === GameStatus.Pending
-					}
-				>
-					<div class="right-bottom-menu">
-						<ActiveRightBottomCornerButton
-							isActive={this._interactionService.GetMultiSelectionContext().IsListeningUnit()}
-							callBack={() => this.SendContext(new MultiTankMenuItem())}
-							logo="fill-tank-multi-cell"
-						/>
-						<ActiveRightBottomCornerButton
-							isActive={this._interactionService.GetMultiSelectionContext().IsListeningCell()}
-							callBack={() => this.SendContext(new MultiCellMenuItem())}
-							logo="fill-mult-cell"
-						/>
-					</div>
-				</Visible>
 				<Visible isVisible={!(this.state.HasMenu && this.state.GameStatus === GameStatus.Pending)}>
 					{this.LeftMenuRender()}
 				</Visible>

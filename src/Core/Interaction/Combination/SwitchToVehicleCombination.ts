@@ -1,5 +1,5 @@
+import { IHqGameContext } from './../../Setup/Context/IHqGameContext';
 import { UnitGroup } from '../../Items/UnitGroup';
-import { GameContext } from '../../Setup/Context/GameContext';
 import { ISelectable } from '../../ISelectable';
 import { Cell } from '../../Items/Cell/Cell';
 import { Vehicle } from '../../Items/Unit/Vehicle';
@@ -9,7 +9,7 @@ import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 
 export class SwitchToVehicleCombination extends AbstractSingleCombination {
-	constructor(private _gameContext: GameContext) {
+	constructor(private _gameContext: IHqGameContext) {
 		super();
 	}
 

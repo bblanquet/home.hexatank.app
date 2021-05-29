@@ -7,7 +7,7 @@ import { SmartSimpleOrder } from '../../../Order/Composite/SmartSimpleOrder';
 export class AliveSquadTarget implements ISquadTarget {
 	constructor(private _item: AliveItem) {
 		if (!(this._item instanceof AliveItem)) {
-			throw 'not supposed to be there';
+			throw `AliveSquadTarget not supposed to be there`;
 		}
 	}
 	Attack(tank: Tank): void {

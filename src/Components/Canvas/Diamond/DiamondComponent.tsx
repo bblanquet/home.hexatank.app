@@ -148,7 +148,7 @@ export default class DiamondCanvasComponent extends Component<
 			} else if (this.state.Item instanceof Truck) {
 				return (
 					<TruckMenuComponent
-						interaction={this._interactionService}
+						Interaction={this._interactionService.Publish()}
 						Truck={this.state.Item}
 						isSettingPatrol={this.state.IsSettingPatrol}
 					/>
@@ -162,6 +162,7 @@ export default class DiamondCanvasComponent extends Component<
 						TankRequestCount={this.state.TankRequestCount}
 						TruckRequestCount={this.state.TruckRequestCount}
 						HasFlag={this.state.HasFlag}
+						Interaction={this._interactionService.Publish()}
 						VehicleCount={this._gameContext.GetPlayerHq().GetVehicleCount()}
 					/>
 				);

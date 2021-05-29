@@ -40,7 +40,7 @@ export class DiamondBlueprintMaker {
 
 	public GetBluePrint(): DiamondBlueprint {
 		const blueprint = new DiamondBlueprint();
-		blueprint.MapMode = MapEnv.sand;
+		blueprint.MapMode = MapEnv.ice;
 		const mapItems = new Array<MapItem>();
 		const mapBuilder = this._builders.Get(MapType.Flower.toString());
 		const coos = mapBuilder.GetAllCoos(4);
@@ -75,7 +75,7 @@ export class DiamondBlueprintMaker {
 
 		blueprint.HqDiamond = diamondHq;
 
-		var decorator: Decorator = this.GetDecorator(MapEnv.sand);
+		var decorator: Decorator = this.GetDecorator(MapEnv.ice);
 		//decorate tree, water, stone the map
 		coos.forEach((coo) => {
 			let mapItem = new MapItem();

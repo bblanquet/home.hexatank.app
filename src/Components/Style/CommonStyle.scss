@@ -876,9 +876,12 @@ p.bubble {
 	font-size: small;
 	color: white;
 	line-height: 16px;
-	width: 35px;
-	max-width: 35px;
+	width: 24px;
+	max-width: 24px;
+	min-width: 24px;
 	height: 24px;
+	max-height: 24px;
+	min-height: 24px;
 	border-radius: 50%;
 	margin-right: 10px;
 	text-shadow: 0 0 3px #000; /* horizontal-offset vertical-offset 'blur' colour */

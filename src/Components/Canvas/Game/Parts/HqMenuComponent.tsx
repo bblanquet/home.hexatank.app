@@ -8,6 +8,7 @@ import { TruckMenuItem } from '../../../../Core/Menu/Buttons/TruckMenuItem';
 import { GameContext } from '../../../../Core/Setup/Context/GameContext';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
 import { Factory, FactoryKey } from '../../../../Factory';
+import { InteractionContext } from '../../../../Core/Interaction/InteractionContext';
 
 export default class HqMenuComponent extends Component<
 	{
@@ -16,14 +17,10 @@ export default class HqMenuComponent extends Component<
 		HasFlag: boolean;
 		SetFlag: () => void;
 		VehicleCount: number;
+		Interaction: InteractionContext;
 	},
 	{}
 > {
-	private _interactionService: IInteractionService<GameContext>;
-	constructor() {
-		super();
-		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.Interaction);
-	}
 	render() {
 		return (
 			<div class="left-column">
@@ -75,8 +72,7 @@ export default class HqMenuComponent extends Component<
 	}
 
 	private SendContext(item: Item): void {
-		const interaction = this._interactionService.Publish();
-		interaction.Kind = InteractionKind.Up;
-		interaction.OnSelect(item);
+		this.props.Interaction.Kind = InteractionKind.Up;
+		this.props.Interaction.OnSelect(item);
 	}
 }

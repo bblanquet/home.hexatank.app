@@ -135,7 +135,7 @@ export default class CamouflageCanvasComponent extends Component<
 			if (this.state.Item instanceof Truck) {
 				return (
 					<TruckMenuComponent
-						interaction={this._interactionService}
+						Interaction={this._interactionService.Publish()}
 						Truck={this.state.Item}
 						isSettingPatrol={this.state.IsSettingPatrol}
 					/>

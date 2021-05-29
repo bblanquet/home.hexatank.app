@@ -6,20 +6,21 @@ import { Item } from '../../../../Core/Items/Item';
 import { InteractionKind } from '../../../../Core/Interaction/IInteractionContext';
 import { MultiOrderMenuItem } from '../../../../Core/Menu/Buttons/MultiOrderMenuItem';
 import { UnitGroup } from '../../../../Core/Items/UnitGroup';
-import { Factory, FactoryKey } from '../../../../Factory';
-import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
-import { GameContext } from '../../../../Core/Setup/Context/GameContext';
+import { InteractionContext } from '../../../../Core/Interaction/InteractionContext';
 
-export default class MultiTankMenuComponent extends Component<{ item: UnitGroup }, {}> {
-	private _interactionService: IInteractionService<GameContext>;
+export default class MultiTankMenuComponent extends Component<
+	{
+		item: UnitGroup;
+		Interaction: InteractionContext;
+	},
+	{}
+> {
 	constructor() {
 		super();
-		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.Interaction);
 	}
 	private SendContext(item: Item): void {
-		const interaction = this._interactionService.Publish();
-		interaction.Kind = InteractionKind.Up;
-		interaction.OnSelect(item);
+		this.props.Interaction.Kind = InteractionKind.Up;
+		this.props.Interaction.OnSelect(item);
 	}
 
 	render() {

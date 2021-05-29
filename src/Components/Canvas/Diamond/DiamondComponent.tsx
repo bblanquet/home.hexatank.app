@@ -1,14 +1,20 @@
 import { Component, h } from 'preact';
 import { Item } from '../../../Core/Items/Item';
+import { GameContext } from '../../../Core/Setup/Context/GameContext';
+import { Tank } from '../../../Core/Items/Unit/Tank';
 import { Truck } from '../../../Core/Items/Unit/Truck';
+import { Cell } from '../../../Core/Items/Cell/Cell';
 import { ISelectable } from '../../../Core/ISelectable';
+import { ReactorField } from '../../../Core/Items/Cell/Field/Bonus/ReactorField';
 import { GameSettings } from '../../../Core/Framework/GameSettings';
+import { Headquarter } from '../../../Core/Items/Cell/Field/Hq/Headquarter';
 import CanvasComponent from '../CanvasComponent';
-import MultiMenuComponent from '../Game/Parts/MultiMenuComponent';
-import TruckMenuComponent from '../Game/Parts/TruckMenuComponent';
 import PopupMenuComponent from '../../PopupMenu/PopupMenuComponent';
+import { UnitGroup } from '../../../Core/Items/UnitGroup';
 import { GameStatus } from '../../../Core/Framework/GameStatus';
 import { OnlinePlayer } from '../../../Network/OnlinePlayer';
+import { CellGroup } from '../../../Core/Items/CellGroup';
+import PopupComponent from '../../Popup/PopupComponent';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
 import { INetworkService } from '../../../Services/Network/INetworkService';
 import { IInteractionService } from '../../../Services/Interaction/IInteractionService';
@@ -17,23 +23,23 @@ import Redirect from '../../Redirect/RedirectComponent';
 import Icon from '../../Common/Icon/IconComponent';
 import { ISoundService } from '../../../Services/Sound/ISoundService';
 import { AudioContent } from '../../../Core/Framework/AudioArchiver';
+import ActiveRightBottomCornerButton from './../../Common/Button/Corner/ActiveRightBottomCornerButton';
 import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
+import { MultiTankMenuItem } from '../../../Core/Menu/Buttons/MultiTankMenuItem';
 import Visible from '../../Common/Visible/VisibleComponent';
-import SmPopupComponent from '../../SmPopup/SmPopupComponent';
-import { DiamondContext } from '../../../Core/Setup/Context/DiamondContext';
+import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
+import { MultiCellMenuItem } from '../../../Core/Menu/Buttons/MultiCellMenuItem';
+import { IAppService } from '../../../Services/App/IAppService';
+import { FlagCellCombination } from '../../../Core/Interaction/Combination/FlagCellCombination';
 import { DiamondBlueprint } from '../../../Core/Setup/Blueprint/Diamond/DiamondBlueprint';
-import { Cell } from '../../../Core/Items/Cell/Cell';
-import { ReactorField } from '../../../Core/Items/Cell/Field/Bonus/ReactorField';
-import { Headquarter } from '../../../Core/Items/Cell/Field/Hq/Headquarter';
-import { CellGroup } from '../../../Core/Items/CellGroup';
-import { Tank } from '../../../Core/Items/Unit/Tank';
-import { UnitGroup } from '../../../Core/Items/UnitGroup';
+import { DiamondContext } from '../../../Core/Setup/Context/DiamondContext';
+import MultiMenuComponent from '../Game/Parts/MultiMenuComponent';
 import CellMenuComponent from '../Game/Parts/CellMenuComponent';
 import HqMenuComponent from '../Game/Parts/HqMenuComponent';
 import MultiTankMenuComponent from '../Game/Parts/MultiTankMenuComponent';
 import ReactorMenuComponent from '../Game/Parts/ReactorMenuComponent';
 import TankMenuComponent from '../Game/Parts/TankMenuComponent';
-import { FlagCellCombination } from '../../../Core/Interaction/Combination/FlagCellCombination';
+import TruckMenuComponent from '../Game/Parts/TruckMenuComponent';
 
 export default class DiamondCanvasComponent extends Component<
 	any,
@@ -51,10 +57,12 @@ export default class DiamondCanvasComponent extends Component<
 		IsSettingPatrol: boolean;
 	}
 > {
+	private _diamonds: number;
 	private _gameContextService: IGameContextService<DiamondBlueprint, DiamondContext>;
 	private _soundService: ISoundService;
 	private _networkService: INetworkService;
-	private _interactionService: IInteractionService<DiamondContext>;
+	private _interactionService: IInteractionService<GameContext>;
+	private _appService: IAppService<DiamondBlueprint>;
 	private _gameContext: DiamondContext;
 
 	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
@@ -66,10 +74,10 @@ export default class DiamondCanvasComponent extends Component<
 		);
 		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
-		this._interactionService = Factory.Load<IInteractionService<DiamondContext>>(FactoryKey.DiamondInteraction);
+		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.DiamondInteraction);
+		this._appService = Factory.Load<IAppService<DiamondBlueprint>>(FactoryKey.DiamondApp);
 		this._gameContext = this._gameContextService.Publish();
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
-		//this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this.setState({
 			HasMenu: false,
 			TankRequestCount: 0,
@@ -80,6 +88,7 @@ export default class DiamondCanvasComponent extends Component<
 			GameStatus: GameStatus.Pending,
 			IsSettingPatrol: false
 		});
+		this._diamonds = GameSettings.PocketMoney;
 	}
 	private OnItemSelectionChanged(obj: any, item: ISelectable): void {
 		if (!item.IsSelected()) {
@@ -93,6 +102,13 @@ export default class DiamondCanvasComponent extends Component<
 
 	componentDidMount() {
 		this._soundService.Pause(AudioContent.menuMusic);
+		const playerHq = this._gameContext.GetPlayerHq();
+		if (playerHq) {
+			playerHq.OnTruckChanged.On(this.HandleTruckChanged.bind(this));
+			playerHq.OnTankRequestChanged.On(this.HandleTankChanged.bind(this));
+			playerHq.OnDiamondCountChanged.On(this.HandleDiamondChanged.bind(this));
+			playerHq.OnCashMissing.On(this.HandleCashMissing.bind(this));
+		}
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		//this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));
@@ -112,6 +128,25 @@ export default class DiamondCanvasComponent extends Component<
 		});
 	}
 
+	private HandleTruckChanged(obj: any, request: number): void {
+		this.setState({
+			TruckRequestCount: request
+		});
+	}
+
+	private HandleTankChanged(obj: any, request: number): void {
+		this.setState({
+			TankRequestCount: request
+		});
+	}
+
+	private HandleDiamondChanged(obj: any, amount: number): void {
+		this._diamonds = amount;
+		this.setState({
+			Amount: amount
+		});
+	}
+
 	private HandleSelection(obj: any, selectedItem: Item): void {
 		((selectedItem as unknown) as ISelectable).OnSelectionChanged.On(this._onItemSelectionChanged);
 		this.setState({
@@ -123,6 +158,14 @@ export default class DiamondCanvasComponent extends Component<
 		this.setState({
 			IsSettingPatrol: isSettingPatrol
 		});
+	}
+
+	private HandleCashMissing(obj: any, e: boolean): void {
+		if (e !== this.state.HasWarning) {
+			this.setState({
+				HasWarning: e
+			});
+		}
 	}
 
 	private HandleGameStatus(obj: any, e: GameStatus): void {
@@ -154,15 +197,17 @@ export default class DiamondCanvasComponent extends Component<
 					/>
 				);
 			} else if (this.state.Item instanceof UnitGroup) {
-				return <MultiTankMenuComponent item={this.state.Item} />;
+				return (
+					<MultiTankMenuComponent Interaction={this._interactionService.Publish()} item={this.state.Item} />
+				);
 			} else if (this.state.Item instanceof Headquarter) {
 				return (
 					<HqMenuComponent
+						Interaction={this._interactionService.Publish()}
 						SetFlag={this.SetFlag.bind(this)}
 						TankRequestCount={this.state.TankRequestCount}
 						TruckRequestCount={this.state.TruckRequestCount}
 						HasFlag={this.state.HasFlag}
-						Interaction={this._interactionService.Publish()}
 						VehicleCount={this._gameContext.GetPlayerHq().GetVehicleCount()}
 					/>
 				);
@@ -187,30 +232,28 @@ export default class DiamondCanvasComponent extends Component<
 		return '';
 	}
 
+	private SetMenu(): void {
+		const newValue = !this.state.HasMenu;
+		this.setState({
+			HasMenu: newValue
+		});
+		if (newValue) {
+			this._soundService.GetSoundManager().PauseAll();
+		} else if (!this._soundService.IsMute()) {
+			this._soundService.GetSoundManager().PlayAll();
+		}
+
+		if (!this._networkService.HasSocket()) {
+			GameSettings.IsPause = newValue;
+		}
+	}
+
 	private SetFlag(): void {
 		FlagCellCombination.IsFlagingMode = !FlagCellCombination.IsFlagingMode;
 		this.setState({
 			...this.state,
 			HasFlag: FlagCellCombination.IsFlagingMode
 		});
-	}
-
-	private SetMenu(): void {
-		const hasMenu = !this.state.HasMenu;
-		this.setState({
-			HasMenu: hasMenu
-		});
-		if (this._soundService.GetSoundManager()) {
-			if (hasMenu) {
-				this._soundService.GetSoundManager().PauseAll();
-			} else if (!this._soundService.IsMute()) {
-				this._soundService.GetSoundManager().PlayAll();
-			}
-		}
-
-		if (!this._networkService.HasSocket()) {
-			GameSettings.IsPause = hasMenu;
-		}
 	}
 
 	render() {
@@ -220,6 +263,26 @@ export default class DiamondCanvasComponent extends Component<
 				{this.TopMenuRender()}
 				{this.state.GameStatus === GameStatus.Pending ? '' : this.GetEndMessage()}
 				<CanvasComponent gameContext={this._gameContextService} />
+				<Visible
+					isVisible={
+						!this.state.HasMenu &&
+						isNullOrUndefined(this.state.Item) &&
+						this.state.GameStatus === GameStatus.Pending
+					}
+				>
+					<div class="right-bottom-menu">
+						<ActiveRightBottomCornerButton
+							isActive={this._interactionService.GetMultiSelectionContext().IsListeningUnit()}
+							callBack={() => this.SendContext(new MultiTankMenuItem())}
+							logo="fill-tank-multi-cell"
+						/>
+						<ActiveRightBottomCornerButton
+							isActive={this._interactionService.GetMultiSelectionContext().IsListeningCell()}
+							callBack={() => this.SendContext(new MultiCellMenuItem())}
+							logo="fill-mult-cell"
+						/>
+					</div>
+				</Visible>
 				<Visible isVisible={!(this.state.HasMenu && this.state.GameStatus === GameStatus.Pending)}>
 					{this.LeftMenuRender()}
 				</Visible>
@@ -274,6 +337,13 @@ export default class DiamondCanvasComponent extends Component<
 
 		return (
 			<div style="position: fixed;left: 50%;transform: translateX(-50%);">
+				<button type="button" class="btn btn-dark space-out">
+					{this.ShowNoMoney()}
+					{this._diamonds.toPrecision(2)}
+					<span class="fill-diamond badge badge-secondary very-small-space middle very-small-left-margin very-small-right-margin">
+						{' '}
+					</span>
+				</button>
 				<button
 					type="button"
 					class="btn btn-dark small-space space-out fill-option"
@@ -283,13 +353,32 @@ export default class DiamondCanvasComponent extends Component<
 		);
 	}
 
+	private ShowNoMoney() {
+		if (this.state.HasWarning) {
+			return (
+				<span class="fill-noMoney badge badge-warning very-small-space middle very-small-right-margin blink_me">
+					{' '}
+				</span>
+			);
+		} else {
+			return '';
+		}
+	}
+
 	private MenuRender() {
 		return <PopupMenuComponent status={this.state.GameStatus} callBack={() => this.SetMenu()} />;
 	}
 
 	private GetEndMessage() {
 		if ([ GameStatus.Won, GameStatus.Lost ].some((e) => e === this.state.GameStatus)) {
-			return <SmPopupComponent points={10} status={this.state.GameStatus} />;
+			return (
+				<PopupComponent
+					points={10}
+					status={this.state.GameStatus}
+					curves={this._appService.GetStats().GetCurves()}
+					context={this._appService.GetRecord().GetRecord()}
+				/>
+			);
 		}
 		return '';
 	}

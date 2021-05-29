@@ -196,7 +196,9 @@ export default class GameCanvasComponent extends Component<
 					/>
 				);
 			} else if (this.state.Item instanceof UnitGroup) {
-				return <MultiTankMenuComponent item={this.state.Item} />;
+				return (
+					<MultiTankMenuComponent Interaction={this._interactionService.Publish()} item={this.state.Item} />
+				);
 			} else if (this.state.Item instanceof Headquarter) {
 				return (
 					<HqMenuComponent

@@ -11,7 +11,7 @@ import { ILayerService } from './../Layer/ILayerService';
 import { IUpdateService } from './../Update/IUpdateService';
 import { IGameContextService } from './../GameContext/IGameContextService';
 import { AppProvider } from './../../Core/App/AppProvider';
-import { BattleBlueprint } from '../../Core/Setup/Blueprint/Battle/BattleBlueprint';
+import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
 import { IAppService } from './IAppService';
 import { Factory, FactoryKey } from '../../Factory';
 import * as PIXI from 'pixi.js';
@@ -19,8 +19,8 @@ import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 
-export class AppService implements IAppService<BattleBlueprint> {
-	private _context: BattleBlueprint;
+export class AppService implements IAppService<GameBlueprint> {
+	private _context: GameBlueprint;
 	private _gameContext: GameContext;
 	private _recordContext: RecordContext;
 	private _statContext: StatsContext;
@@ -29,7 +29,7 @@ export class AppService implements IAppService<BattleBlueprint> {
 	private _interactionManager: PIXI.InteractionManager;
 	private _soundManager: GameSoundManager;
 
-	private _gameContextService: IGameContextService<BattleBlueprint, GameContext>;
+	private _gameContextService: IGameContextService<GameBlueprint, GameContext>;
 	private _interactionService: IInteractionService<GameContext>;
 	private _layerService: ILayerService;
 	private _updateService: IUpdateService;
@@ -40,7 +40,7 @@ export class AppService implements IAppService<BattleBlueprint> {
 
 	constructor() {
 		this._appProvider = new AppProvider();
-		this._gameContextService = Factory.Load<IGameContextService<BattleBlueprint, GameContext>>(
+		this._gameContextService = Factory.Load<IGameContextService<GameBlueprint, GameContext>>(
 			FactoryKey.GameContext
 		);
 		this._updateService = Factory.Load<IUpdateService>(FactoryKey.Update);
@@ -58,7 +58,7 @@ export class AppService implements IAppService<BattleBlueprint> {
 		return this._recordContext;
 	}
 
-	public Register(mapContext: BattleBlueprint): void {
+	public Register(mapContext: GameBlueprint): void {
 		this._keyService.DefineKey(this);
 
 		GameSettings.Init();
@@ -93,7 +93,7 @@ export class AppService implements IAppService<BattleBlueprint> {
 		return this._app;
 	}
 
-	public Context(): BattleBlueprint {
+	public Context(): GameBlueprint {
 		return this._context;
 	}
 

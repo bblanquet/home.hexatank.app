@@ -1,6 +1,9 @@
+import { DiamondContextService } from './Services/GameContext/DiamondContextService';
 import { PowerContextService } from './Services/GameContext/PowerContextService';
 import { PowerInteractionService } from './Services/Interaction/PowerInteractionService';
+import { DiamondInteractionService } from './Services/Interaction/DiamondInteractionService';
 import { PowerAppService } from './Services/App/PowerAppService';
+import { DiamondAppService } from './Services/App/DiamondAppService';
 import { CamouflageGameContextService } from './Services/GameContext/CamouflageGameContextService';
 import { CamouflageInteractionService } from './Services/Interaction/CamouflageInteractionService';
 import { CamouflageAppService } from './Services/App/CamouflageAppService';
@@ -34,15 +37,18 @@ Factory.Register(FactoryKey.Record, new RecordService());
 Factory.Register(FactoryKey.GameContext, new GameContextService());
 Factory.Register(FactoryKey.CamouflageGameContext, new CamouflageGameContextService());
 Factory.Register(FactoryKey.PowerGameContext, new PowerContextService());
+Factory.Register(FactoryKey.DiamondGameContext, new DiamondContextService());
 
 Factory.Register(FactoryKey.Interaction, new InteractionService());
 Factory.Register(FactoryKey.RecordInteraction, new RecordInteractionService());
 Factory.Register(FactoryKey.CamouflageInteraction, new CamouflageInteractionService());
 Factory.Register(FactoryKey.PowerInteraction, new PowerInteractionService());
+Factory.Register(FactoryKey.DiamondInteraction, new DiamondInteractionService());
 
 Factory.Register(FactoryKey.App, new AppService());
 Factory.Register(FactoryKey.RecordApp, new RecordAppService());
 Factory.Register(FactoryKey.CamouflageApp, new CamouflageAppService());
 Factory.Register(FactoryKey.PowerApp, new PowerAppService());
+Factory.Register(FactoryKey.DiamondApp, new DiamondAppService());
 
 Factory.Register(FactoryKey.Campaign, new CampaignService());

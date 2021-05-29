@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { MapSetting } from '../Form/MapSetting';
-import { BattleBluePrintMaker } from '../../Core/Setup/Blueprint/Battle/BattleBluePrintMaker';
+import { GameBlueprintMaker } from '../../Core/Setup/Blueprint/Game/GameBlueprintMaker';
 import { MapEnv } from '../../Core/Setup/Blueprint/MapEnv';
 import MdPanelComponent from '../Common/Panel/MdPanelComponent';
 import MapFormComponent from '../Form/MapFormComponent';
@@ -12,7 +12,7 @@ import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import { MapType } from '../../Core/Setup/Blueprint/MapType';
-import { BattleBlueprint } from '../../Core/Setup/Blueprint/Battle/BattleBlueprint';
+import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 
 export default class SinglePlayerComponent extends Component<any, MapSetting> {
@@ -87,7 +87,7 @@ export default class SinglePlayerComponent extends Component<any, MapSetting> {
 			hqCount += 1;
 		}
 
-		const mapContext = new BattleBluePrintMaker().GetBluePrint(
+		const mapContext = new GameBlueprintMaker().GetBluePrint(
 			this.ConvertSize(),
 			this.ConvertMapType(),
 			this.ConvertEnv(),
@@ -103,7 +103,7 @@ export default class SinglePlayerComponent extends Component<any, MapSetting> {
 			}
 			index += 1;
 		});
-		Factory.Load<IAppService<BattleBlueprint>>(FactoryKey.App).Register(mapContext);
+		Factory.Load<IAppService<GameBlueprint>>(FactoryKey.App).Register(mapContext);
 		route('/Canvas', true);
 	}
 

@@ -18,7 +18,10 @@ export default class ProgressComponent extends Component<{ width: number }, any>
 				<div class="bagde-container" style={`background-color:${this._profilService.GetColorLevel()}`}>
 					{this._profilService.GetLevel()}
 				</div>
-				<div class="progress" style={`width:100%;height:25px; border: 4px solid rgb(198, 198, 198)`}>
+				<div
+					class="progress"
+					style={`width:100%;max-width:150px;height:25px; border: 4px solid rgb(198, 198, 198)`}
+				>
 					<div
 						class="progress-bar bg-danger"
 						role="progressbar"

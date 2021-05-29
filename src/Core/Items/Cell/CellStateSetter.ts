@@ -1,4 +1,4 @@
-import { BattleBlueprint } from './../../Setup/Blueprint/Battle/BattleBlueprint';
+import { GameBlueprint } from '../../Setup/Blueprint/Game/GameBlueprint';
 import { GameContext } from '../../Setup/Context/GameContext';
 import { Factory, FactoryKey } from '../../../Factory';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
@@ -8,7 +8,7 @@ import { CellState } from './CellState';
 
 export class CellStateSetter {
 	public static SetStates(cells: Array<Cell>): void {
-		const gameContextService = Factory.Load<IGameContextService<BattleBlueprint, GameContext>>(
+		const gameContextService = Factory.Load<IGameContextService<GameBlueprint, GameContext>>(
 			FactoryKey.GameContext
 		);
 		if (gameContextService.Publish()) {
@@ -38,7 +38,7 @@ export class CellStateSetter {
 						}
 					}
 				} else {
-					if (cell.HasAroundAlly(gameContext.GetPlayer())) {
+					if (cell.HasAroundAlly(gameContext.GetPlayer().Identity)) {
 						cell.SetState(CellState.Visible);
 					} else {
 						if (cell.GetState() !== CellState.Hidden) {

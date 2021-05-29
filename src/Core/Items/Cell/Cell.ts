@@ -1,3 +1,4 @@
+import { Identity } from './../Identity';
 import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { ReactorField } from './Field/Bonus/ReactorField';
 import { ZKind } from './../ZKind';
@@ -30,6 +31,7 @@ import { isNullOrUndefined } from '../../Utils/ToolBox';
 import { BonusField } from './Field/Bonus/BonusField';
 import { InfiniteFadeAnimation } from '../Animator/InfiniteFadeAnimation';
 import { BasicItem } from '../BasicItem';
+import { IHeadquarter } from './Field/Hq/IHeadquarter';
 
 export class Cell extends Item implements ICell<Cell>, ISelectable {
 	public Properties: CellProperties;
@@ -48,7 +50,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	private _blue: BasicItem;
 	private _white: BasicItem;
 	private _isAlwaysVisible: boolean = false;
-	private _playerHq: Headquarter = null;
+	private _playerHq: IHeadquarter = null;
 
 	constructor(properties: CellProperties, private _cells: Dictionnary<Cell>) {
 		super();
@@ -66,7 +68,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		this.SetSelectionAnimation();
 	}
 
-	public SetPlayerHq(playerHq: Headquarter): void {
+	public SetPlayerHq(playerHq: IHeadquarter): void {
 		this._playerHq = playerHq;
 	}
 
@@ -93,11 +95,11 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		if (!this._playerHq) {
 			return false;
 		}
+		const identity = this._playerHq.Identity;
 
 		const anyAlly =
-			this.GetFilterNeighbourhood((e) => e && (e.HasAlly(this._playerHq) || e.HasBonusAlly(this._playerHq)))
-				.length > 0;
-		return (this.IsVisible() && this._field instanceof BasicField && anyAlly) || this.HasAlly(this._playerHq);
+			this.GetFilterNeighbourhood((e) => e && (e.HasAlly(identity) || e.HasBonusAlly(identity))).length > 0;
+		return (this.IsVisible() && this._field instanceof BasicField && anyAlly) || this.HasAlly(identity);
 	}
 
 	public GetState(): CellState {
@@ -177,7 +179,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		return this.HasOccupier() || this.GetAllNeighbourhood().filter((c) => (<Cell>c).HasOccupier()).length > 0;
 	}
 
-	public HasAroundAlly(a: AliveItem): boolean {
+	public HasAroundAlly(a: Identity): boolean {
 		return this.HasAlly(a) || this.GetAllNeighbourhood().filter((c) => (<Cell>c).HasAlly(a)).length > 0;
 	}
 
@@ -222,23 +224,23 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		return null;
 	}
 
-	public HasAlly(v: AliveItem): boolean {
+	public HasAlly(id: Identity): boolean {
 		if (this._occupier && this._occupier instanceof AliveItem) {
-			return !v.IsEnemy(this._occupier.Identity);
+			return !this._occupier.IsEnemy(id);
 		}
 		if (this._field && this._field instanceof Headquarter) {
-			return !v.IsEnemy(this._field.Identity);
+			return !this._field.IsEnemy(id);
 		}
 		return false;
 	}
 
-	public HasBonusAlly(item: AliveItem): boolean {
+	public HasBonusAlly(identity: Identity): boolean {
 		if (this._field && this._field instanceof ReactorField) {
-			return !item.IsEnemy((this._field as ReactorField).Hq.Identity);
+			return !(this._field as ReactorField).Hq.IsEnemy(identity);
 		}
 
 		if (this._field && this._field instanceof BonusField) {
-			return !item.IsEnemy((this._field as BonusField).GetHq().Identity);
+			return !(this._field as BonusField).GetHq().IsEnemy(identity);
 		}
 		return false;
 	}
@@ -287,7 +289,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	//awfull
 	private SetHqState(state: CellState) {
 		let cells = new Array<Cell>();
-		if (this._playerHq) {
+		if (this._playerHq && this._playerHq.GetCell()) {
 			cells.push(this._playerHq.GetCell());
 			cells = cells.concat(this._playerHq.GetCell().GetAllNeighbourhood());
 			if (cells.indexOf(this) !== -1) {

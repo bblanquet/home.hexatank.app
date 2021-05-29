@@ -16,16 +16,16 @@ import { CancelMenuItem } from '../../../../Core/Menu/Buttons/CancelMenuItem';
 import CircularV2Component from '../../../Common/CircularV2/CircularV2';
 import LightDarkBtn from '../../../Common/Button/Standard/LightDarkBtn';
 import { Point } from '../../../../Core/Utils/Geometry/Point';
-import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
-import { Factory, FactoryKey } from '../../../../Factory';
+import { InteractionContext } from '../../../../Core/Interaction/InteractionContext';
 
 //this.props.Headquarter.IsCovered(this.props.Item as Cell);
 //this.props.Headquarter.GetReactorsCount()
-export default class CellMenuComponent extends Component<{ Item: Item; ReactorCount: number }, {}> {
-	private _interactionService: IInteractionService<GameContext>;
+export default class CellMenuComponent extends Component<
+	{ Item: Item; ReactorCount: number; Interaction: InteractionContext },
+	{}
+> {
 	constructor() {
 		super();
-		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.Interaction);
 	}
 	render() {
 		return (
@@ -85,9 +85,8 @@ export default class CellMenuComponent extends Component<{ Item: Item; ReactorCo
 	}
 
 	private SendContext(item: Item): void {
-		const interaction = this._interactionService.Publish();
-		interaction.Kind = InteractionKind.Up;
-		interaction.OnSelect(item);
+		this.props.Interaction.Kind = InteractionKind.Up;
+		this.props.Interaction.OnSelect(item);
 	}
 
 	private Cancel(): void {

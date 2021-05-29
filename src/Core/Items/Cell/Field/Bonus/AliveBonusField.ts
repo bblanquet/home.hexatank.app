@@ -6,7 +6,6 @@ import { Cell } from '../../Cell';
 import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { AliveField } from '../AliveField';
-import { AliveItem } from '../../../AliveItem';
 import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { IInteractionContext } from '../../../../Interaction/IInteractionContext';
 import { BouncingScaleAnimator } from '../../../Animator/BouncingScaleAnimator';

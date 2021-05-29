@@ -4,7 +4,7 @@ import { Item } from '../../Items/Item';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
 
 export interface IGameContext {
-	GetCells(): Cell[];
 	OnItemSelected: LiteEvent<Item>;
+	GetCells(): Cell[];
 	GetPlayer(): AliveItem;
 }

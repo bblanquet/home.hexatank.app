@@ -17,20 +17,20 @@ import SmPanelComponent from '../Common/Panel/SmPanelComponent';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 import SmActiveButtonComponent from '../Common/Button/Stylish/SmActiveButtonComponent';
 import Visible from '../Common/Visible/VisibleComponent';
-import { BattleBlueprint } from '../../Core/Setup/Blueprint/Battle/BattleBlueprint';
+import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
 
 export default class RecordComponent extends Component<
 	any,
 	{ Records: RecordSelection[]; SelectedRecords: RecordSelection[] }
 > {
-	private _appService: IAppService<BattleBlueprint>;
+	private _appService: IAppService<GameBlueprint>;
 	private _recordService: IRecordService;
 	private _compareService: ICompareService;
 	private _playerProfilService: IPlayerProfilService;
 
 	constructor() {
 		super();
-		this._appService = Factory.Load<IAppService<BattleBlueprint>>(FactoryKey.RecordApp);
+		this._appService = Factory.Load<IAppService<GameBlueprint>>(FactoryKey.RecordApp);
 		this._playerProfilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
 		this._recordService = Factory.Load<IRecordService>(FactoryKey.Record);
 		this._compareService = Factory.Load<ICompareService>(FactoryKey.Compare);

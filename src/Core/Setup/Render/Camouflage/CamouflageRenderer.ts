@@ -1,28 +1,30 @@
-import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
-import { SimpleFloor } from '../../../Items/Environment/SimpleFloor';
-import { GameContext } from '../../Context/GameContext';
-import { GameSettings } from '../../../Framework/GameSettings';
-import { ForestDecorator } from '../../../Items/Cell/Decorator/ForestDecorator';
-import { CellProperties } from '../../../Items/Cell/CellProperties';
-import { Cloud } from '../../../Items/Environment/Cloud';
-import { CellState } from '../../../Items/Cell/CellState';
-import { Cell } from '../../../Items/Cell/Cell';
-import { Item } from '../../../Items/Item';
-import { HexAxial } from '../../../Utils/Geometry/HexAxial';
-import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
-import { Floor } from '../../../Items/Environment/Floor';
+import { CamouflageContext } from '../../Context/CamouflageContext';
+import { Tank } from '../../../Items/Unit/Tank';
 import { SvgArchive } from '../../../Framework/SvgArchiver';
-import { GameBlueprint } from '../../Blueprint/Game/GameBlueprint';
-import { MapEnv } from '../../Blueprint/MapEnv';
+import { AboveItem } from '../../../Items/AboveItem';
+import { HqSkinHelper } from '../Hq/HqSkinHelper';
+import { Truck } from '../../../Items/Unit/Truck';
+import { SimpleFloor } from '../../../Items/Environment/SimpleFloor';
+import { Cloud } from '../../../Items/Environment/Cloud';
+import { ForestDecorator } from '../../../Items/Cell/Decorator/ForestDecorator';
+import { CamouflageBlueprint } from '../../Blueprint/Camouflage/CamouflageBlueprint';
+import { GameSettings } from '../../../Framework/GameSettings';
 import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
-import { HqRender } from '../Hq/HqRender';
-import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
-export class GameRenderer {
-	public Render(blueprint: GameBlueprint): GameContext {
+import { Cell } from '../../../Items/Cell/Cell';
+import { CellProperties } from '../../../Items/Cell/CellProperties';
+import { Item } from '../../../Items/Item';
+import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
+import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
+import { HexAxial } from '../../../Utils/Geometry/HexAxial';
+import { MapEnv } from '../../Blueprint/MapEnv';
+import { Floor } from '../../../Items/Environment/Floor';
+import { Identity } from '../../../Items/Identity';
+import { PatrolOrder } from '../../../Ia/Order/Composite/PatrolOrder';
+
+export class CamouflageRenderer {
+	public Render(blueprint: CamouflageBlueprint): CamouflageContext {
 		const cells = new Dictionnary<Cell>();
 		const updatableItem = new Array<Item>();
-		let playerHq: Headquarter = null;
-		let hqs: Headquarter[] = null;
 
 		blueprint.Items.forEach((item) => {
 			const cell = new Cell(new CellProperties(new HexAxial(item.Position.Q, item.Position.R)), cells);
@@ -37,26 +39,33 @@ export class GameRenderer {
 		).GetAreas(new HexAxial(blueprint.CenterItem.Position.Q, blueprint.CenterItem.Position.R));
 		this.SetLands(cells, blueprint.MapMode, areas, updatableItem);
 		this.AddClouds(updatableItem);
-		if (blueprint.Hqs) {
-			hqs = new HqRender().Render(cells, blueprint.Hqs, updatableItem);
 
-			//insert elements into playground
-			this.SetHqLand(cells, SvgArchive.nature.hq, hqs.map((h) => h.GetCell().GetHexCoo()), updatableItem);
-			this.SetHqLand(cells, SvgArchive.nature.hq2, hqs.map((h) => h.GetCell().GetHexCoo()), updatableItem, 1);
+		const departure = new HexAxial(blueprint.Goal.Departure.Position.Q, blueprint.Goal.Departure.Position.R);
+		const arrival = new HexAxial(blueprint.Goal.Arrival.Position.Q, blueprint.Goal.Arrival.Position.R);
+		const spots = [ departure, arrival ];
 
-			playerHq = hqs.find((hq) => hq.Identity.Name === blueprint.PlayerName);
-			if (playerHq) {
-				playerHq.SetSelectionAnimation();
-				//make hq cells visible, need context to be setup :<, has to fix it one day
-				playerHq.GetCurrentCell().SetState(CellState.Visible);
-				playerHq.GetCurrentCell().GetAllNeighbourhood().forEach((cell) => {
-					(<Cell>cell).SetState(CellState.Visible);
-				});
-				cells.Values().forEach((cell) => cell.SetPlayerHq(playerHq));
-			}
-		}
+		this.SetHqLand(cells, SvgArchive.nature.hq, spots, updatableItem);
+		this.SetHqLand(cells, SvgArchive.nature.hq2, spots, updatableItem, 1);
 
-		return new GameContext(cells.Values(), hqs, playerHq);
+		const truck = new Truck(new Identity('player', new HqSkinHelper().GetSkin(0), true));
+		truck.OverrideLife(1);
+		truck.SetPosition(cells.Get(departure.ToString()));
+		updatableItem.push(truck);
+		const arrivalCell = cells.Get(arrival.ToString());
+		updatableItem.push(new AboveItem(arrivalCell, SvgArchive.arrow));
+
+		const iaId = new Identity('ia', new HqSkinHelper().GetSkin(1), false);
+		blueprint.Patrols.forEach((patrol) => {
+			const tank = new Tank(iaId, false);
+			const d = new HexAxial(patrol.Departure.Position.Q, patrol.Departure.Position.R);
+			const a = new HexAxial(patrol.Arrival.Position.Q, patrol.Arrival.Position.R);
+			const dCell = cells.Get(d.ToString());
+			const aCell = cells.Get(a.ToString());
+			tank.SetPosition(dCell);
+			tank.SetOrder(new PatrolOrder([ aCell, dCell ], tank));
+		});
+
+		return new CamouflageContext(cells.Values(), truck, arrivalCell);
 	}
 
 	public AddClouds(items: Item[]) {

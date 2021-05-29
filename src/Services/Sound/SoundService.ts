@@ -4,7 +4,7 @@ import { Dictionnary } from './../../Core/Utils/Collections/Dictionnary';
 import { ISoundService } from './ISoundService';
 import { GameContext } from '../../Core/Setup/Context/GameContext';
 import { Howl } from 'howler';
-import { BattleBlueprint } from '../../Core/Setup/Blueprint/Battle/BattleBlueprint';
+import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
 
 export class SoundService implements ISoundService {
 	private _sounds: Dictionnary<Howl>;
@@ -96,7 +96,7 @@ export class SoundService implements ISoundService {
 		this._sounds.Clear();
 	}
 
-	Register(mapContext: BattleBlueprint, gameContext: GameContext): void {
+	Register(mapContext: GameBlueprint, gameContext: GameContext): void {
 		const copy = new Dictionnary<Howl>();
 		this._sounds.Keys().forEach((k) => {
 			copy.Add(k, this._sounds.Get(k));

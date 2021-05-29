@@ -1,6 +1,6 @@
 import { CamouflageBlueprint } from '../../Core/Setup/Blueprint/Camouflage/CamouflageBlueprint';
 import { CamouflageContext } from '../../Core/Setup/Context/CamouflageContext';
-import { CamouflageRenderer } from './../../Core/Setup/Render/CamouflageRenderer/CamouflageRenderer';
+import { CamouflageRenderer } from '../../Core/Setup/Render/Camouflage/CamouflageRenderer';
 import { IGameContextService } from './IGameContextService';
 
 export class CamouflageGameContextService implements IGameContextService<CamouflageBlueprint, CamouflageContext> {

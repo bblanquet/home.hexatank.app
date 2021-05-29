@@ -13,6 +13,7 @@ import { FaceComponent } from './FaceComponent';
 import NavbarComponent from '../Common/Navbar/NavbarComponent';
 import { CamouflageBlueprint } from '../../Core/Setup/Blueprint/Camouflage/CamouflageBlueprint';
 import { PowerBlueprint } from '../../Core/Setup/Blueprint/Power/PowerBlueprint';
+import { DiamondBlueprint } from '../../Core/Setup/Blueprint/Diamond/DiamondBlueprint';
 
 export default class TrainingComponent extends Component<any, any> {
 	private _campaignService: ICampaignService;
@@ -103,6 +104,9 @@ export default class TrainingComponent extends Component<any, any> {
 		} else if (blueprint instanceof PowerBlueprint) {
 			Factory.Load<IAppService<PowerBlueprint>>(FactoryKey.PowerApp).Register(blueprint);
 			route('/Power', true);
+		} else if (blueprint instanceof DiamondBlueprint) {
+			Factory.Load<IAppService<DiamondBlueprint>>(FactoryKey.DiamondApp).Register(blueprint);
+			route('/Diamond', true);
 		}
 	}
 }

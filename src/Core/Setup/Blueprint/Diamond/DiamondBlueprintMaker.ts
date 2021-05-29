@@ -11,20 +11,17 @@ import { SandDecorator } from '../../../Items/Cell/Decorator/SandDecorator';
 import { IceDecorator } from '../../../Items/Cell/Decorator/IceDecorator';
 import { MapEnv } from '../MapEnv';
 import { HexAxial } from '../../../Utils/Geometry/HexAxial';
-import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
 import { ForestDecorator } from '../../../Items/Cell/Decorator/ForestDecorator';
-import { DistanceHelper } from '../../../Items/Unit/MotionHelpers/DistanceHelper';
-import { BattleBlueprint } from './BattleBlueprint';
 import { MapItem } from '../MapItem';
 import { FlowerMapBuilder } from '../../Builder/FlowerMapBuilder';
 import { FartestPointsFinder } from '../../Builder/FartestPointsFinder';
 import { DecorationType } from '../DecorationType';
-import { DiamondHq } from './DiamondHq';
 import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
 import { IMapBuilder } from '../../Builder/IPlaygroundBuilder';
 import { GameSettings } from '../../../Framework/GameSettings';
+import { DiamondBlueprint } from './DiamondBlueprint';
 
-export class BattleBluePrintMaker {
+export class DiamondBlueprintMaker {
 	private _builders: Dictionnary<IMapBuilder>;
 	constructor() {
 		this._builders = new Dictionnary<IMapBuilder>();
@@ -38,58 +35,41 @@ export class BattleBluePrintMaker {
 		this._builders.Add(MapType.Rectangle.toString(), new RectangleFlowerMapBuilder());
 	}
 
-	public GetBluePrint(mapSize: number, mapType: MapType, mapMode: MapEnv, hqCount: number): BattleBlueprint {
-		const context = new BattleBlueprint();
-		context.MapMode = mapMode;
+	public GetBluePrint(): DiamondBlueprint {
+		const blueprint = new DiamondBlueprint();
+		blueprint.MapMode = MapEnv.sand;
 		const mapItems = new Array<MapItem>();
-		const mapBuilder = this._builders.Get(mapType.toString());
-		const coos = mapBuilder.GetAllCoos(mapSize);
+		const mapBuilder = this._builders.Get(MapType.Flower.toString());
+		const coos = mapBuilder.GetAllCoos(4);
 		GameSettings.MapSize = coos.length;
 		const cells = Dictionnary.To<HexAxial>((e) => e.ToString(), coos);
-		const areas = mapBuilder.GetAreaCoos(mapSize);
+		const areas = mapBuilder.GetAreaCoos(4);
 		const farthestPointManager = new FartestPointsFinder();
 		const excluded = new Dictionnary<HexAxial>();
 
-		const hqPositions = farthestPointManager.GetPoints(areas, cells, hqCount);
-		const diamondPositions = this.GetDiamonds(hqPositions, cells, hqCount);
-		let hqs = new Array<MapItem>();
+		const spots = farthestPointManager.GetPoints(areas, cells, 2);
 		//add hqs
-		hqPositions.forEach((hq) => {
+		spots.forEach((spot, index) => {
 			let hqMapItem = new MapItem();
-			hqMapItem.Position = hq;
+			hqMapItem.Position = spot;
 			hqMapItem.Type = DecorationType.Hq;
 			mapItems.push(hqMapItem);
-			excluded.Add(hq.ToString(), hq);
-			hq.GetNeighbours().forEach((p) => {
+			excluded.Add(spot.ToString(), spot);
+			spot.GetNeighbours().forEach((p) => {
 				excluded.Add(p.ToString(), p);
 			});
-			hqs.push(hqMapItem);
 		});
 
-		context.Hqs = new Array<DiamondHq>();
-		//add diamonds and join them to hq
-		diamondPositions.forEach((diamondCoo) => {
-			let diamonMapItem = new MapItem();
-			diamonMapItem.Position = diamondCoo;
-			diamonMapItem.Type = DecorationType.Hq;
-			mapItems.push(diamonMapItem);
-			excluded.Add(diamondCoo.ToString(), diamondCoo);
-			diamondCoo.GetNeighbours().forEach((p) => {
-				excluded.Add(p.ToString(), p);
-			});
-			let hqDiamond = new DiamondHq();
-			hqDiamond.Diamond = diamonMapItem;
-			hqDiamond.Hq = hqs[diamondPositions.indexOf(diamondCoo)];
-			context.Hqs.push(hqDiamond);
-		});
-
-		var decorator: Decorator = this.GetDecorator(mapMode);
+		var decorator: Decorator = this.GetDecorator(MapEnv.sand);
 		//decorate tree, water, stone the map
 		coos.forEach((coo) => {
 			let mapItem = new MapItem();
 			mapItem.Position = coo;
 			if (!excluded.Exist(coo.ToString())) {
 				mapItem.Type = decorator.GetDecoration();
+				if (this.IsBlockingItem(decorator, mapItem) && !this.IsAroundEmpty(coo, mapItems, decorator)) {
+					mapItem.Type = DecorationType.None;
+				}
 			} else {
 				mapItem.Type = DecorationType.None;
 			}
@@ -98,10 +78,24 @@ export class BattleBluePrintMaker {
 				mapItems.push(mapItem);
 			}
 		});
+		blueprint.CenterItem = mapItems[0];
+		blueprint.Items = mapItems;
+		return blueprint;
+	}
 
-		context.Items = mapItems;
-		context.CenterItem = mapItems[0];
-		return context;
+	public IsAroundEmpty(coo: HexAxial, mapItems: MapItem[], decorator: Decorator): boolean {
+		let isEmpty = true;
+		coo.GetNeighbours(1).forEach((n) => {
+			const mapItem = mapItems.find((m) => m.Position.ToString() === n.ToString());
+			if (mapItem && this.IsBlockingItem(decorator, mapItem)) {
+				isEmpty = false;
+			}
+		});
+		return isEmpty;
+	}
+
+	private IsBlockingItem(decorator: Decorator, mapItem: MapItem): boolean {
+		return decorator.BlockingCells.some((e) => e.Kind === mapItem.Type);
 	}
 
 	private GetDecorator(mapMode: MapEnv) {
@@ -114,38 +108,5 @@ export class BattleBluePrintMaker {
 			decorator = new SandDecorator();
 		}
 		return decorator;
-	}
-
-	private GetDiamonds(
-		hqcells: Array<HexAxial>,
-		coordinates: Dictionnary<HexAxial>,
-		hqCount: number
-	): Array<HexAxial> {
-		const diamonds = new Array<HexAxial>();
-		const areaEngine = new AreaSearch(coordinates);
-		let forbiddencells = new Array<HexAxial>();
-		hqcells.forEach((hqcell) => {
-			forbiddencells = forbiddencells.concat(areaEngine.GetIncludedFirstRange(hqcell));
-		});
-		for (let i = 0; i < hqCount; i++) {
-			diamonds.push(this.GetDiamondPosition(hqcells[i], forbiddencells, coordinates));
-		}
-		return diamonds;
-	}
-
-	private GetDiamondPosition(
-		cell: HexAxial,
-		forbiddencells: HexAxial[],
-		coordinates: Dictionnary<HexAxial>
-	): HexAxial {
-		const areaEngine = new AreaSearch(coordinates);
-		const secondRange = areaEngine
-			.GetIncludedSecondRange(cell)
-			.filter((c) => !forbiddencells.some((fc) => fc.Q == c.Q && fc.R == c.R));
-		var result = DistanceHelper.GetRandomElement(secondRange);
-		secondRange.forEach((c) => {
-			forbiddencells.push(c);
-		});
-		return result;
 	}
 }

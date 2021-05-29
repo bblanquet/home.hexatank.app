@@ -1,28 +1,28 @@
-import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
-import { GameSettings } from './../../Core/Framework/GameSettings';
-import { IInteractionService } from './../Interaction/IInteractionService';
-import { INetworkService } from './../Network/INetworkService';
-import { ILayerService } from './../Layer/ILayerService';
-import { IUpdateService } from './../Update/IUpdateService';
-import { IGameContextService } from './../GameContext/IGameContextService';
-import { AppProvider } from './../../Core/App/AppProvider';
+import { DiamondBlueprint } from './../../Core/Setup/Blueprint/Diamond/DiamondBlueprint';
+import { DiamondContext } from './../../Core/Setup/Context/DiamondContext';
+import { RecordContext } from '../../Core/Framework/Record/RecordContext';
+import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
+import { IInteractionService } from '../Interaction/IInteractionService';
+import { INetworkService } from '../Network/INetworkService';
+import { ILayerService } from '../Layer/ILayerService';
+import { IUpdateService } from '../Update/IUpdateService';
+import { IGameContextService } from '../GameContext/IGameContextService';
+import { AppProvider } from '../../Core/App/AppProvider';
 import { IAppService } from './IAppService';
 import { Factory, FactoryKey } from '../../Factory';
 import * as PIXI from 'pixi.js';
 import { IKeyService } from '../Key/IKeyService';
 import { CellStateSetter } from '../../Core/Items/Cell/CellStateSetter';
-import { RecordContext } from '../../Core/Framework/Record/RecordContext';
-import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
-import { GameContext } from '../../Core/Setup/Context/GameContext';
+import { GameSettings } from '../../Core/Framework/GameSettings';
 
-export class RecordAppService implements IAppService<GameBlueprint> {
-	private _context: GameBlueprint;
+export class DiamondAppService implements IAppService<DiamondBlueprint> {
+	private _blueprint: DiamondBlueprint;
 	private _app: PIXI.Application;
 	private _appProvider: AppProvider;
 	private _interactionManager: PIXI.InteractionManager;
 
-	private _gameContextService: IGameContextService<GameBlueprint, GameContext>;
-	private _interactionService: IInteractionService<GameContext>;
+	private _gameContextService: IGameContextService<DiamondBlueprint, DiamondContext>;
+	private _interactionService: IInteractionService<DiamondContext>;
 	private _layerService: ILayerService;
 	private _updateService: IUpdateService;
 	private _networkService: INetworkService;
@@ -30,34 +30,28 @@ export class RecordAppService implements IAppService<GameBlueprint> {
 
 	constructor() {
 		this._appProvider = new AppProvider();
-		this._gameContextService = Factory.Load<IGameContextService<GameBlueprint, GameContext>>(
-			FactoryKey.GameContext
+		this._gameContextService = Factory.Load<IGameContextService<DiamondBlueprint, DiamondContext>>(
+			FactoryKey.DiamondGameContext
 		);
 		this._updateService = Factory.Load<IUpdateService>(FactoryKey.Update);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
 		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
-		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.RecordInteraction);
+		this._interactionService = Factory.Load<IInteractionService<DiamondContext>>(FactoryKey.DiamondInteraction);
 		this._keyService = Factory.Load<IKeyService>(FactoryKey.Key);
 	}
-	GetStats(): StatsContext {
-		return null;
-	}
-	GetRecord(): RecordContext {
-		return null;
-	}
 
-	public Register(mapContext: GameBlueprint): void {
+	public Register(blueprint: DiamondBlueprint): void {
 		this._keyService.DefineKey(this);
 
 		GameSettings.Init();
 		GameSettings.SetNormalSpeed();
-		this._context = mapContext;
+		this._blueprint = blueprint;
 		this._updateService.Register();
-		this._app = this._appProvider.Provide(mapContext);
+		this._app = this._appProvider.Provide(blueprint);
 		this._interactionManager = new PIXI.InteractionManager(this._app.renderer);
 
 		this._layerService.Register(this._app);
-		this._gameContextService.Register(mapContext);
+		this._gameContextService.Register(blueprint);
 		const gameContext = this._gameContextService.Publish();
 		this._interactionService.Register(this._interactionManager, gameContext);
 
@@ -68,12 +62,19 @@ export class RecordAppService implements IAppService<GameBlueprint> {
 		this._app.start();
 	}
 
+	GetStats(): StatsContext {
+		return null;
+	}
+	GetRecord(): RecordContext {
+		return null;
+	}
+
 	public Publish(): PIXI.Application {
 		return this._app;
 	}
 
-	public Context(): GameBlueprint {
-		return this._context;
+	public Context(): DiamondBlueprint {
+		return this._blueprint;
 	}
 
 	public Collect(): void {

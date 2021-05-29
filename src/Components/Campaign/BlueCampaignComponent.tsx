@@ -11,7 +11,7 @@ import Icon from '../Common/Icon/IconComponent';
 import { CampaignKind } from '../../Services/Campaign/CampaignKind';
 import { FaceComponent } from './FaceComponent';
 import NavbarComponent from '../Common/Navbar/NavbarComponent';
-import { BattleBlueprint } from '../../Core/Setup/Blueprint/Battle/BattleBlueprint';
+import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
 
 export default class BlueCampaignComponent extends Component<any, any> {
 	private _campaignService: ICampaignService;
@@ -91,7 +91,7 @@ export default class BlueCampaignComponent extends Component<any, any> {
 
 	Start(index: number): void {
 		const mapContext = this._campaignService.GetMapContext(CampaignKind.blue, index);
-		Factory.Load<IAppService<BattleBlueprint>>(FactoryKey.App).Register(mapContext);
+		Factory.Load<IAppService<GameBlueprint>>(FactoryKey.App).Register(mapContext);
 		route('/Canvas', true);
 	}
 }

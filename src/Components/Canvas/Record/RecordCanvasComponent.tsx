@@ -11,7 +11,7 @@ import { IRecordService } from '../../../Services/Record/IRecordService';
 import { Factory, FactoryKey } from '../../../Factory';
 import { route } from 'preact-router';
 import Redirect from '../../Redirect/RedirectComponent';
-import { BattleBlueprint } from '../../../Core/Setup/Blueprint/Battle/BattleBlueprint';
+import { GameBlueprint } from '../../../Core/Setup/Blueprint/Game/GameBlueprint';
 import { GameContext } from '../../../Core/Setup/Context/GameContext';
 
 export default class RecordCanvasComponent extends Component<
@@ -21,13 +21,13 @@ export default class RecordCanvasComponent extends Component<
 	}
 > {
 	private _recordService: IRecordService;
-	private _gameService: IGameContextService<BattleBlueprint, GameContext>;
+	private _gameService: IGameContextService<GameBlueprint, GameContext>;
 	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
 	private _updater: RecordCanvasUpdater;
 
 	constructor() {
 		super();
-		this._gameService = Factory.Load<IGameContextService<BattleBlueprint, GameContext>>(FactoryKey.GameContext);
+		this._gameService = Factory.Load<IGameContextService<GameBlueprint, GameContext>>(FactoryKey.GameContext);
 		this._recordService = Factory.Load<IRecordService>(FactoryKey.Record);
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
 	}

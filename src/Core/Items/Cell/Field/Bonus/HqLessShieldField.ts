@@ -15,8 +15,8 @@ export class HqLessShieldField extends AliveBonusField {
 	private _shieldAppearance: ShieldAppearance;
 	private _fixTimer: ITimer;
 
-	constructor(cell: Cell, id: Identity, energy: IHeadquarter) {
-		super(cell, [], id, energy);
+	constructor(cell: Cell, id: Identity, hq: IHeadquarter) {
+		super(cell, [], id, hq);
 		this._fixTimer = new TimeTimer(1000);
 		this._shieldAppearance = new ShieldAppearance(this);
 		this.GetCell().SetField(this);

@@ -165,7 +165,13 @@ export default class PowerCanvasComponent extends Component<
 					/>
 				);
 			} else if (this.state.Item instanceof Cell || this.state.Item instanceof CellGroup) {
-				return <CellMenuComponent Item={this.state.Item} ReactorCount={1} />;
+				return (
+					<CellMenuComponent
+						Interaction={this._interactionService.Publish()}
+						Item={this.state.Item}
+						ReactorCount={1}
+					/>
+				);
 			}
 		}
 		return '';

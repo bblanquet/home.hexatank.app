@@ -4,6 +4,7 @@ import { RecordAppService } from './../App/RecordAppService';
 import { AppService } from './../App/AppService';
 import { FactoryKey } from './../../Factory';
 import { IKeyService } from './IKeyService';
+import { DiamondAppService } from '../App/DiamondAppService';
 export class KeyService implements IKeyService {
 	private _key: FactoryKey = FactoryKey.None;
 	GetAppKey(): FactoryKey {
@@ -21,6 +22,8 @@ export class KeyService implements IKeyService {
 			this._key = FactoryKey.CamouflageApp;
 		} else if (appService instanceof PowerAppService) {
 			this._key = FactoryKey.PowerApp;
+		} else if (appService instanceof DiamondAppService) {
+			this._key = FactoryKey.DiamondApp;
 		} else {
 			throw new Error('Has to be an app service.');
 		}

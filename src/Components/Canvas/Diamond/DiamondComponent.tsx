@@ -17,18 +17,13 @@ import Redirect from '../../Redirect/RedirectComponent';
 import Icon from '../../Common/Icon/IconComponent';
 import { ISoundService } from '../../../Services/Sound/ISoundService';
 import { AudioContent } from '../../../Core/Framework/AudioArchiver';
-import ActiveRightBottomCornerButton from '../../Common/Button/Corner/ActiveRightBottomCornerButton';
 import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
-import { MultiTankMenuItem } from '../../../Core/Menu/Buttons/MultiTankMenuItem';
 import Visible from '../../Common/Visible/VisibleComponent';
-import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
-import { MultiCellMenuItem } from '../../../Core/Menu/Buttons/MultiCellMenuItem';
-import { GameBlueprint } from '../../../Core/Setup/Blueprint/Game/GameBlueprint';
 import SmPopupComponent from '../../SmPopup/SmPopupComponent';
-import { CamouflageContext } from '../../../Core/Setup/Context/CamouflageContext';
-import { CamouflageBlueprint } from '../../../Core/Setup/Blueprint/Camouflage/CamouflageBlueprint';
+import { DiamondContext } from '../../../Core/Setup/Context/DiamondContext';
+import { DiamondBlueprint } from '../../../Core/Setup/Blueprint/Diamond/DiamondBlueprint';
 
-export default class CamouflageCanvasComponent extends Component<
+export default class DiamondCanvasComponent extends Component<
 	any,
 	{
 		HasMenu: boolean;
@@ -44,27 +39,25 @@ export default class CamouflageCanvasComponent extends Component<
 		IsSettingPatrol: boolean;
 	}
 > {
-	private _gameContextService: IGameContextService<CamouflageBlueprint, CamouflageContext>;
+	private _gameContextService: IGameContextService<DiamondBlueprint, DiamondContext>;
 	private _soundService: ISoundService;
 	private _networkService: INetworkService;
-	private _interactionService: IInteractionService<CamouflageContext>;
-	private _gameContext: CamouflageContext;
+	private _interactionService: IInteractionService<DiamondContext>;
+	private _gameContext: DiamondContext;
 
 	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
 
 	constructor() {
 		super();
-		this._gameContextService = Factory.Load<IGameContextService<CamouflageBlueprint, CamouflageContext>>(
+		this._gameContextService = Factory.Load<IGameContextService<DiamondBlueprint, DiamondContext>>(
 			FactoryKey.CamouflageGameContext
 		);
 		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
-		this._interactionService = Factory.Load<IInteractionService<CamouflageContext>>(
-			FactoryKey.CamouflageInteraction
-		);
+		this._interactionService = Factory.Load<IInteractionService<DiamondContext>>(FactoryKey.CamouflageInteraction);
 		this._gameContext = this._gameContextService.Publish();
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
-		this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));
+		//this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this.setState({
 			HasMenu: false,
 			TankRequestCount: 0,
@@ -90,7 +83,7 @@ export default class CamouflageCanvasComponent extends Component<
 		this._soundService.Pause(AudioContent.menuMusic);
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
-		this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));
+		//this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
 		if (this._networkService.HasSocket()) {
 			this._networkService.GetOnlinePlayers().forEach((onlinePlayers) => {

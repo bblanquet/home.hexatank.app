@@ -6,7 +6,7 @@ export class PlayerProfil {
 	public Points: number = 0;
 
 	//levels
-	public TrainingLevel: number = 2;
+	public TrainingLevel: number = 3;
 	public BlueLevel: number = 0;
 	public RedLevel: number = 1;
 

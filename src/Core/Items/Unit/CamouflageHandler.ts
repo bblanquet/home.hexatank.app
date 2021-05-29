@@ -2,13 +2,13 @@ import { Factory, FactoryKey } from './../../../Factory';
 import { IAppService } from '../../../Services/App/IAppService';
 import { SvgArchive } from '../../Framework/SvgArchiver';
 import { MapEnv } from '../../Setup/Blueprint/MapEnv';
-import { BattleBlueprint } from '../../Setup/Blueprint/Battle/BattleBlueprint';
+import { GameBlueprint } from '../../Setup/Blueprint/Game/GameBlueprint';
 
 export class CamouflageHandler {
-	private _appService: IAppService<BattleBlueprint>;
+	private _appService: IAppService<GameBlueprint>;
 
 	constructor() {
-		this._appService = Factory.Load<IAppService<BattleBlueprint>>(FactoryKey.App);
+		this._appService = Factory.Load<IAppService<GameBlueprint>>(FactoryKey.App);
 	}
 
 	public GetCamouflage(): string {

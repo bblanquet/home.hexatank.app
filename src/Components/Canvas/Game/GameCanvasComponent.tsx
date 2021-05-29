@@ -38,7 +38,7 @@ import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
 import { MultiCellMenuItem } from '../../../Core/Menu/Buttons/MultiCellMenuItem';
 import { IAppService } from '../../../Services/App/IAppService';
 import { FlagCellCombination } from '../../../Core/Interaction/Combination/FlagCellCombination';
-import { BattleBlueprint } from '../../../Core/Setup/Blueprint/Battle/BattleBlueprint';
+import { GameBlueprint } from '../../../Core/Setup/Blueprint/Game/GameBlueprint';
 
 export default class GameCanvasComponent extends Component<
 	any,
@@ -57,24 +57,24 @@ export default class GameCanvasComponent extends Component<
 	}
 > {
 	private _diamonds: number;
-	private _gameContextService: IGameContextService<BattleBlueprint, GameContext>;
+	private _gameContextService: IGameContextService<GameBlueprint, GameContext>;
 	private _soundService: ISoundService;
 	private _networkService: INetworkService;
 	private _interactionService: IInteractionService<GameContext>;
-	private _appService: IAppService<BattleBlueprint>;
+	private _appService: IAppService<GameBlueprint>;
 	private _gameContext: GameContext;
 
 	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
 
 	constructor() {
 		super();
-		this._gameContextService = Factory.Load<IGameContextService<BattleBlueprint, GameContext>>(
+		this._gameContextService = Factory.Load<IGameContextService<GameBlueprint, GameContext>>(
 			FactoryKey.GameContext
 		);
 		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
 		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.Interaction);
-		this._appService = Factory.Load<IAppService<BattleBlueprint>>(FactoryKey.App);
+		this._appService = Factory.Load<IAppService<GameBlueprint>>(FactoryKey.App);
 		this._gameContext = this._gameContextService.Publish();
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
 		this.setState({
@@ -219,6 +219,7 @@ export default class GameCanvasComponent extends Component<
 				return (
 					<CellMenuComponent
 						Item={this.state.Item}
+						Interaction={this._interactionService.Publish()}
 						ReactorCount={this._gameContext.GetPlayerHq().GetReactorsCount()}
 					/>
 				);

@@ -7,6 +7,7 @@ import SinglePlayerComponent from './Components/SinglePlayer/SinglePlayerCompone
 import GameCanvasComponent from './Components/Canvas/Game/GameCanvasComponent';
 import RecordCanvasComponent from './Components/Canvas/Record/RecordCanvasComponent';
 import CamouflageComponent from './Components/Canvas/Camouflage/CamouflageComponent';
+import DiamondComponent from './Components/Canvas/Diamond/DiamondComponent';
 import PowerComponent from './Components/Canvas/Power/PowerComponent';
 import CampaignComponent from './Components/Campaign/CampaignComponent';
 import BlueCampaignComponent from './Components/Campaign/BlueCampaignComponent';
@@ -50,6 +51,7 @@ const App = (e: any) => {
 			<CreatingHostComponent path="/CreatingHost" />
 			<HostingComponent path="/Hosting" />
 			<CamouflageComponent path="/Camouflage" />
+			<DiamondComponent path="/Diamond" />
 			<PowerComponent path="/Power" />
 			<GuestComponent path="/OffJoin" />
 			<RecordComponent path="/Record" />

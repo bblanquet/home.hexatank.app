@@ -15,9 +15,9 @@ import { OnlinePlayer } from '../../../Network/OnlinePlayer';
 import OptionComponent from './Options/OptionComponent';
 import ToastComponent from './../../Common/Toast/ToastComponent';
 import { HostState } from '../HostState';
-import { BattleBluePrintMaker } from '../../../Core/Setup/Blueprint/Battle/BattleBluePrintMaker';
+import { GameBlueprintMaker } from '../../../Core/Setup/Blueprint/Game/GameBlueprintMaker';
 import { MapEnv } from '../../../Core/Setup/Blueprint/MapEnv';
-import { BattleBlueprint } from '../../../Core/Setup/Blueprint/Battle/BattleBlueprint';
+import { GameBlueprint } from '../../../Core/Setup/Blueprint/Game/GameBlueprint';
 import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
 import { Factory, FactoryKey } from '../../../Factory';
@@ -40,10 +40,10 @@ export default class HostingComponent extends Component<any, HostState> {
 	private _mode: HostingMode = HostingMode.pending;
 	private _isLoading: boolean = false;
 
-	private _appService: IAppService<BattleBlueprint>;
+	private _appService: IAppService<GameBlueprint>;
 	private _hostingService: IHostingService;
 	private _networkService: INetworkService;
-	private _gameContextService: IGameContextService<BattleBlueprint, GameContext>;
+	private _gameContextService: IGameContextService<GameBlueprint, GameContext>;
 
 	private _onMessageReceived: LiteEvent<Message>;
 	private _socket: NetworkSocket;
@@ -56,9 +56,9 @@ export default class HostingComponent extends Component<any, HostState> {
 			return;
 		}
 
-		this._appService = Factory.Load<IAppService<BattleBlueprint>>(FactoryKey.App);
+		this._appService = Factory.Load<IAppService<GameBlueprint>>(FactoryKey.App);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
-		this._gameContextService = Factory.Load<IGameContextService<BattleBlueprint, GameContext>>(
+		this._gameContextService = Factory.Load<IGameContextService<GameBlueprint, GameContext>>(
 			FactoryKey.GameContext
 		);
 		this._hostingService = Factory.Load<IHostingService>(FactoryKey.Hosting);
@@ -310,7 +310,7 @@ export default class HostingComponent extends Component<any, HostState> {
 				} else if (this.ConvertSize() === 8 && 2 < hqCount) {
 					this.state.MapSetting.Size = 'Medium';
 				}
-				const mapContext = new BattleBluePrintMaker().GetBluePrint(
+				const mapContext = new GameBlueprintMaker().GetBluePrint(
 					this.ConvertSize(),
 					this.ConvertMapType(),
 					this.ConvertEnv(),
@@ -320,7 +320,7 @@ export default class HostingComponent extends Component<any, HostState> {
 				this.AssignHqToPlayer(mapContext, this.state.Players.Values());
 				this.SetIa(mapContext);
 				this.Load(mapContext);
-				this._socket.EmitAll<BattleBlueprint>(PacketKind.Map, mapContext);
+				this._socket.EmitAll<GameBlueprint>(PacketKind.Map, mapContext);
 			}, 10);
 		}
 	}
@@ -350,7 +350,7 @@ export default class HostingComponent extends Component<any, HostState> {
 		return MapEnv.forest;
 	}
 
-	public SetIa(mapContext: BattleBlueprint): void {
+	public SetIa(mapContext: GameBlueprint): void {
 		let index = 0;
 		mapContext.Hqs.forEach((hq) => {
 			if (isNullOrUndefined(hq.PlayerName)) {
@@ -361,7 +361,7 @@ export default class HostingComponent extends Component<any, HostState> {
 		});
 	}
 
-	public AssignHqToPlayer(mapContext: BattleBlueprint, players: OnlinePlayer[]): void {
+	public AssignHqToPlayer(mapContext: GameBlueprint, players: OnlinePlayer[]): void {
 		if (mapContext.Hqs.length < players.length) {
 			throw new Error('not enough hq');
 		}
@@ -372,7 +372,7 @@ export default class HostingComponent extends Component<any, HostState> {
 		});
 	}
 
-	private Load(mapContext: BattleBlueprint) {
+	private Load(mapContext: GameBlueprint) {
 		this._appService.Register(mapContext);
 		const context = this._gameContextService.Publish();
 		this._networkService.Register(this._socket, context, this.state.Players.Values());
@@ -401,7 +401,7 @@ export default class HostingComponent extends Component<any, HostState> {
 		}
 	}
 
-	private HandleMap(data: NetworkMessage<BattleBlueprint>): void {
+	private HandleMap(data: NetworkMessage<GameBlueprint>): void {
 		this.setState({});
 		const mapContext = data.Content;
 		mapContext.PlayerName = this.state.Player.Name;

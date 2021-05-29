@@ -1,5 +1,6 @@
-import { Tank } from './../../../Items/Unit/Tank';
 import { FakeHeadquarter } from './FakeHeadquarter';
+import { Tank } from './../../../Items/Unit/Tank';
+import { CellLessHeadquarter } from './CellLessHeadquarter';
 import { HqLessShieldField } from './../../../Items/Cell/Field/Bonus/HqLessShieldField';
 import { PowerBlueprint } from './../../Blueprint/Power/PowerBlueprint';
 import { PowerContext } from './../../Context/PowerContext';
@@ -52,11 +53,17 @@ export class PowerRenderer {
 
 		const arrival = new HexAxial(blueprint.Arrival.Position.Q, blueprint.Arrival.Position.R);
 		const arrivalCell = cells.Get(arrival.ToString());
-		const tank = new Tank(new Identity('Player', new HqSkinHelper().GetSkin(1), true));
+		const id = new Identity('Player', new HqSkinHelper().GetSkin(1), true);
+		const tank = new Tank(id);
 		tank.SetPosition(arrivalCell);
 		updatableItem.push(tank);
 
-		return new PowerContext(cells.Values(), tank);
+		const hq = new CellLessHeadquarter();
+		hq.Identity = id;
+
+		cells.Values().forEach((cell) => cell.SetPlayerHq(hq));
+
+		return new PowerContext(cells.Values(), tank, hq, hqShield);
 	}
 
 	public AddClouds(items: Item[]) {

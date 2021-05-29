@@ -1,15 +1,15 @@
 import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { HexAxial } from './../../Utils/Geometry/HexAxial';
-import { BattleBlueprint } from '../../Setup/Blueprint/Battle/BattleBlueprint';
+import { GameBlueprint } from '../../Setup/Blueprint/Game/GameBlueprint';
 import { GameContext } from '../../Setup/Context/GameContext';
 import { BobBrain } from '../Brains/BobBrain';
 import { Area } from './Utils/Area';
 import { AreaSearch } from './Utils/AreaSearch';
 import { Cell } from '../../Items/Cell/Cell';
-import { DiamondHq } from '../../Setup/Blueprint/Battle/DiamondHq';
+import { DiamondHq } from '../../Setup/Blueprint/Game/DiamondHq';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 export class BrainInjecter {
-	public Inject(gameContext: GameContext, mapContext: BattleBlueprint): void {
+	public Inject(gameContext: GameContext, mapContext: GameBlueprint): void {
 		const coos = Dictionnary.To<HexAxial>((e) => e.ToString(), gameContext.GetCells().map((e) => e.GetHexCoo()));
 		const cells = Dictionnary.To<Cell>((e) => e.Coo(), gameContext.GetCells().map((e) => e));
 		gameContext.GetHqs().forEach((hq) => {

@@ -28,15 +28,18 @@ export enum FactoryKey {
 	RecordApp,
 	CamouflageApp,
 	PowerApp,
+	DiamondApp,
 
 	GameContext,
 	CamouflageGameContext,
 	PowerGameContext,
+	DiamondGameContext,
 
 	Interaction,
 	RecordInteraction,
 	CamouflageInteraction,
-	PowerInteraction
+	PowerInteraction,
+	DiamondInteraction
 }
 
 export interface IFactorisable {

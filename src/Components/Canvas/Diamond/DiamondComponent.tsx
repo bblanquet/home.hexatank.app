@@ -21,6 +21,7 @@ import { IInteractionService } from '../../../Services/Interaction/IInteractionS
 import { Factory, FactoryKey } from '../../../Factory';
 import Redirect from '../../Redirect/RedirectComponent';
 import Icon from '../../Common/Icon/IconComponent';
+import { TimerComponent } from '../../Common/Timer/TimerComponent';
 import { ISoundService } from '../../../Services/Sound/ISoundService';
 import { AudioContent } from '../../../Core/Framework/AudioArchiver';
 import ActiveRightBottomCornerButton from './../../Common/Button/Corner/ActiveRightBottomCornerButton';
@@ -40,6 +41,7 @@ import MultiTankMenuComponent from '../Game/Parts/MultiTankMenuComponent';
 import ReactorMenuComponent from '../Game/Parts/ReactorMenuComponent';
 import TankMenuComponent from '../Game/Parts/TankMenuComponent';
 import TruckMenuComponent from '../Game/Parts/TruckMenuComponent';
+import SmPopupComponent from '../../SmPopup/SmPopupComponent';
 
 export default class DiamondCanvasComponent extends Component<
 	any,
@@ -111,7 +113,7 @@ export default class DiamondCanvasComponent extends Component<
 		}
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
-		//this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));
+		this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
 		if (this._networkService.HasSocket()) {
 			this._networkService.GetOnlinePlayers().forEach((onlinePlayers) => {
@@ -336,7 +338,7 @@ export default class DiamondCanvasComponent extends Component<
 		}
 
 		return (
-			<div style="position: fixed;left: 50%;transform: translateX(-50%);">
+			<div style="position: fixed;">
 				<button type="button" class="btn btn-dark space-out">
 					{this.ShowNoMoney()}
 					{this._diamonds.toPrecision(2)}
@@ -349,6 +351,7 @@ export default class DiamondCanvasComponent extends Component<
 					class="btn btn-dark small-space space-out fill-option"
 					onClick={() => this.SetMenu()}
 				/>
+				<TimerComponent Duration={this._gameContext.Duration} OnTimerDone={this._gameContext.OnTimerDone} />
 			</div>
 		);
 	}
@@ -371,14 +374,7 @@ export default class DiamondCanvasComponent extends Component<
 
 	private GetEndMessage() {
 		if ([ GameStatus.Won, GameStatus.Lost ].some((e) => e === this.state.GameStatus)) {
-			return (
-				<PopupComponent
-					points={10}
-					status={this.state.GameStatus}
-					curves={this._appService.GetStats().GetCurves()}
-					context={this._appService.GetRecord().GetRecord()}
-				/>
-			);
+			return <SmPopupComponent points={10} status={this.state.GameStatus} />;
 		}
 		return '';
 	}

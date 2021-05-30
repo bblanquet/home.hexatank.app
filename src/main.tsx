@@ -9,7 +9,7 @@ import RecordCanvasComponent from './Components/Canvas/Record/RecordCanvasCompon
 import CamouflageComponent from './Components/Canvas/Camouflage/CamouflageComponent';
 import DiamondComponent from './Components/Canvas/Diamond/DiamondComponent';
 import PowerComponent from './Components/Canvas/Power/PowerComponent';
-import CampaignComponent from './Components/Campaign/CampaignComponent';
+import RedCampaignComponent from './Components/Campaign/RedCampaignComponent';
 import BlueCampaignComponent from './Components/Campaign/BlueCampaignComponent';
 import BadgeComponent from './Components/Badge/BagdeComponent';
 import GuestComponent from './Components/Network/Guest/GuestComponent';
@@ -42,7 +42,7 @@ const App = (e: any) => {
 			<LoadingComponent path="/Loading" default />
 			<ErrorComponent path="/Error" />
 			<SinglePlayerComponent path="/SinglePlayer" />
-			<CampaignComponent path="/Campaign" />
+			<RedCampaignComponent path="/Campaign" />
 			<TrainingComponent path="/Training" />
 			<BlueCampaignComponent path="/BlueCampaignComponent" />
 			<GameCanvasComponent path="/Canvas" />

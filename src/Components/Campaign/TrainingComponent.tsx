@@ -14,6 +14,8 @@ import NavbarComponent from '../Common/Navbar/NavbarComponent';
 import { CamouflageBlueprint } from '../../Core/Setup/Blueprint/Camouflage/CamouflageBlueprint';
 import { PowerBlueprint } from '../../Core/Setup/Blueprint/Power/PowerBlueprint';
 import { DiamondBlueprint } from '../../Core/Setup/Blueprint/Diamond/DiamondBlueprint';
+import { Sentences } from './Sentences';
+import Visible from '../Common/Visible/VisibleComponent';
 
 export default class TrainingComponent extends Component<any, any> {
 	private _campaignService: ICampaignService;
@@ -40,35 +42,63 @@ export default class TrainingComponent extends Component<any, any> {
 								face={'fill-training'}
 							/>
 						</div>
-						<div class="container-center">
+						<Visible isVisible={this.state.HasBubble}>
+							<div class="arrow-up" />
+							<p class="bubble">{this.state.CurrentSentence}</p>
 							<div class="container-center-horizontal">
 								<ButtonComponent
 									callBack={() => {
-										this.RedCampaign();
+										this.setState({
+											HasBubble: !this.state.HasBubble
+										});
 									}}
 									color={ColorKind.Black}
 								>
-									<Icon Value="fas fa-long-arrow-alt-right" />
+									<Icon Value="fas fa-undo-alt" /> Back
+								</ButtonComponent>
+								<ButtonComponent
+									callBack={() => {
+										this.Start(this.state.level);
+									}}
+									color={ColorKind.Green}
+								>
+									<Icon Value="fas fa-fist-raised" /> Train
 								</ButtonComponent>
 							</div>
-							<div class="d-flex flex-wrap justify-content-center">
-								{this._campaignService.GetButtons(CampaignKind.training).map((isPossible, index) => {
-									if (isPossible) {
-										return this.GetButton(index + 1);
-									} else {
-										return <LockButton />;
-									}
-								})}
+						</Visible>
+						<Visible isVisible={!this.state.HasBubble}>
+							<div class="container-center">
+								<div class="container-center-horizontal">
+									<ButtonComponent
+										callBack={() => {
+											this.RedCampaign();
+										}}
+										color={ColorKind.Black}
+									>
+										<Icon Value="fas fa-long-arrow-alt-right" />
+									</ButtonComponent>
+								</div>
+								<div class="d-flex flex-wrap justify-content-center">
+									{this._campaignService
+										.GetButtons(CampaignKind.training)
+										.map((isPossible, index) => {
+											if (isPossible) {
+												return this.GetButton(index + 1);
+											} else {
+												return <LockButton />;
+											}
+										})}
+								</div>
+								<ButtonComponent
+									callBack={() => {
+										this.Back();
+									}}
+									color={ColorKind.Black}
+								>
+									<Icon Value="fas fa-undo-alt" /> Back
+								</ButtonComponent>
 							</div>
-							<ButtonComponent
-								callBack={() => {
-									this.Back();
-								}}
-								color={ColorKind.Black}
-							>
-								<Icon Value="fas fa-undo-alt" /> Back
-							</ButtonComponent>
-						</div>
+						</Visible>
 					</div>
 				</NavbarComponent>
 			</Redirect>
@@ -87,13 +117,55 @@ export default class TrainingComponent extends Component<any, any> {
 		return (
 			<ButtonComponent
 				callBack={() => {
-					this.Start(index);
+					this.setState({
+						HasBubble: !this.state.HasBubble,
+						level: index,
+						Sentence: this.GetSentence(index),
+						CurrentSentence: ''
+					});
+					setTimeout(() => {
+						this.TextAnimation();
+					}, 100);
 				}}
 				color={ColorKind.Green}
 			>
-				<Icon Value="fas fa-arrow-alt-circle-right" /> {index}
+				{this.GetIcon(index)}
 			</ButtonComponent>
 		);
+	}
+
+	private GetIcon(index: number) {
+		if (index === 1) {
+			return <div class="fill-sm-hexa max-width icon-space" />;
+		} else if (index === 2) {
+			return <div class="fill-sm-tank max-width icon-space" />;
+		} else {
+			return <div class="fill-sm-diam max-width icon-space" />;
+		}
+	}
+
+	private GetSentence(index: number) {
+		if (index === 1) {
+			return 'Make a vehicle reach a specific destination.';
+		} else if (index === 2) {
+			return 'Make a tank destroy a shield, to reach that goal, you will need to create powerup cells.';
+		} else {
+			return 'Retrieve at least 50 diamonds for your headquarter, you got 30 seconds solider.';
+		}
+	}
+
+	private TextAnimation(): void {
+		if (this.state.CurrentSentence.length < this.state.Sentence.length) {
+			this.setState({
+				CurrentSentence: this.state.Sentence.substring(0, this.state.CurrentSentence.length + 1)
+			});
+		}
+
+		if (this.state.CurrentSentence.length < this.state.Sentence.length) {
+			setTimeout(() => {
+				this.TextAnimation();
+			}, 50);
+		}
 	}
 
 	Start(index: number): void {

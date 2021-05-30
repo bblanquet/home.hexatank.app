@@ -15,6 +15,7 @@ import { MapEnv } from '../../Blueprint/MapEnv';
 import { Floor } from '../../../Items/Environment/Floor';
 import { HqRender } from '../Hq/HqRender';
 import { SimpleFloor } from '../../../Items/Environment/SimpleFloor';
+import { AboveItem } from '../../../Items/AboveItem';
 
 export class DiamondRenderer {
 	public Render(blueprint: DiamondBlueprint): DiamondContext {
@@ -37,6 +38,9 @@ export class DiamondRenderer {
 		const hq = new HqRender().Render(cells, blueprint.HqDiamond, updatableItem, 0);
 		this.SetHqLand(cells, SvgArchive.nature.hq, [ hq.GetCell().GetHexCoo() ], updatableItem);
 		this.SetHqLand(cells, SvgArchive.nature.hq2, [ hq.GetCell().GetHexCoo() ], updatableItem, 1);
+
+		const arrivalCell = cells.Get(blueprint.HqDiamond.Diamond.Position.ToString());
+		updatableItem.push(new AboveItem(arrivalCell, SvgArchive.arrow));
 
 		return new DiamondContext(cells.Values(), hq);
 	}

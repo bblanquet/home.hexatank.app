@@ -197,12 +197,6 @@ export default class CamouflageCanvasComponent extends Component<
 		}
 	}
 
-	private SendContext(item: Item): void {
-		const interaction = this._interactionService.Publish();
-		interaction.Kind = InteractionKind.Up;
-		interaction.OnSelect(item);
-	}
-
 	private HasTimeout(player: OnlinePlayer) {
 		if (player.HasTimeOut()) {
 			return (

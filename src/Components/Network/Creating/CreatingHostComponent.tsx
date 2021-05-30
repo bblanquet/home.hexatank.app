@@ -81,7 +81,7 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 
 					<TextComponent
 						value={this.state.PlayerName}
-						label={'Playername'}
+						label={'Name'}
 						isEditable={true}
 						onInput={(e: any) => {
 							this.setState({ PlayerName: e.target.value });

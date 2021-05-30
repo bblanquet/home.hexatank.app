@@ -94,7 +94,9 @@ export default class SinglePlayerComponent extends Component<any, MapSetting> {
 			hqCount
 		);
 		if (!this.state.onylIa) {
-			mapContext.Hqs[0].PlayerName = this._profilService.GetProfil().LastPlayerName;
+			const playerName = this._profilService.GetProfil().LastPlayerName;
+			mapContext.Hqs[0].PlayerName = playerName;
+			mapContext.PlayerName = playerName;
 		}
 		mapContext.Hqs.forEach((hq, index) => {
 			if (!hq.PlayerName) {

@@ -74,7 +74,7 @@ export default class NavbarComponent extends Component<any, { profil: PlayerProf
 							}}
 							isActive={this._soundService.IsMute()}
 						/>
-						<div class="space-out" />
+						{/* <div class="space-out" />
 						<SmUploadButtonComponent
 							callBack={(e: any) => this.Upload(e)}
 							color={ColorKind.Red}
@@ -88,7 +88,7 @@ export default class NavbarComponent extends Component<any, { profil: PlayerProf
 							color={ColorKind.Blue}
 						>
 							<Icon Value={'fas fa-file-export'} />
-						</SmButtonComponent>
+						</SmButtonComponent> */}
 					</div>
 				</nav>
 				{this.props.children}

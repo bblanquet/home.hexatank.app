@@ -71,7 +71,7 @@ export default class GuestComponent extends Component<
 					<div class="container-center-horizontal">
 						<TextComponent
 							value={this.state.PlayerName}
-							label={'Playername'}
+							label={'Name'}
 							isEditable={true}
 							onInput={(e: any) => {
 								if (e.target.value) {

@@ -7,13 +7,27 @@ import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { IHqGameContext } from './IHqGameContext';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
+import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
+import { GameStatus } from '../../Framework/GameStatus';
 export class DiamondContext implements IHqGameContext {
+	public GameStatusChanged: LiteEvent<GameStatus> = new LiteEvent<GameStatus>();
 	public OnPatrolSetting: LiteEvent<Boolean> = new LiteEvent<Boolean>();
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
+	public OnTimerDone: SimpleEvent;
+	public Duration: number = 30;
+
 	private _cells: Dictionnary<Cell>;
 
 	constructor(cells: Cell[], private _hq: Headquarter) {
 		this._cells = Dictionnary.To((c) => c.Coo(), cells);
+		this.OnTimerDone = new SimpleEvent();
+		this.OnTimerDone.On(() => {
+			if (50 < this._hq.GetDiamondCount()) {
+				this.GameStatusChanged.Invoke(this, GameStatus.Won);
+			} else {
+				this.GameStatusChanged.Invoke(this, GameStatus.Lost);
+			}
+		});
 	}
 
 	GetPlayerHq(): IHeadquarter {

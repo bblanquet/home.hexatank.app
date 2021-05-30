@@ -15,7 +15,7 @@ import Visible from '../Common/Visible/VisibleComponent';
 import { Sentences } from './Sentences';
 import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
 
-export default class CampaignComponent extends Component<
+export default class RedCampaignComponent extends Component<
 	any,
 	{ HasBubble: boolean; level: number; Sentence: string; CurrentSentence: string }
 > {

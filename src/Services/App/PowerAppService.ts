@@ -1,6 +1,6 @@
 import { PowerContext } from './../../Core/Setup/Context/PowerContext';
 import { PowerBlueprint } from './../../Core/Setup/Blueprint/Power/PowerBlueprint';
-import { CamouflageBlueprint } from '../../Core/Setup/Blueprint/Camouflage/CamouflageBlueprint';
+import { CamouflageBlueprint } from '../../Core/Setup/Blueprint/Cam/CamouflageBlueprint';
 import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
 import { IInteractionService } from '../Interaction/IInteractionService';

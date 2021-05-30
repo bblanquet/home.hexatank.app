@@ -1,4 +1,4 @@
-import { CamouflageBlueprint } from '../../Core/Setup/Blueprint/Camouflage/CamouflageBlueprint';
+import { CamouflageBlueprint } from '../../Core/Setup/Blueprint/Cam/CamouflageBlueprint';
 import { CamouflageContext } from '../../Core/Setup/Context/CamouflageContext';
 import { CamouflageRenderer } from '../../Core/Setup/Render/Camouflage/CamouflageRenderer';
 import { IGameContextService } from './IGameContextService';

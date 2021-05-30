@@ -7,7 +7,7 @@ import { Truck } from '../../../Items/Unit/Truck';
 import { SimpleFloor } from '../../../Items/Environment/SimpleFloor';
 import { Cloud } from '../../../Items/Environment/Cloud';
 import { ForestDecorator } from '../../../Items/Cell/Decorator/ForestDecorator';
-import { CamouflageBlueprint } from '../../Blueprint/Camouflage/CamouflageBlueprint';
+import { CamouflageBlueprint } from '../../Blueprint/Cam/CamouflageBlueprint';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
 import { Cell } from '../../../Items/Cell/Cell';

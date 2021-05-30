@@ -11,10 +11,9 @@ import Icon from '../Common/Icon/IconComponent';
 import { CampaignKind } from '../../Services/Campaign/CampaignKind';
 import { FaceComponent } from './FaceComponent';
 import NavbarComponent from '../Common/Navbar/NavbarComponent';
-import { CamouflageBlueprint } from '../../Core/Setup/Blueprint/Camouflage/CamouflageBlueprint';
+import { CamouflageBlueprint } from '../../Core/Setup/Blueprint/Cam/CamouflageBlueprint';
 import { PowerBlueprint } from '../../Core/Setup/Blueprint/Power/PowerBlueprint';
 import { DiamondBlueprint } from '../../Core/Setup/Blueprint/Diamond/DiamondBlueprint';
-import { Sentences } from './Sentences';
 import Visible from '../Common/Visible/VisibleComponent';
 
 export default class TrainingComponent extends Component<any, any> {

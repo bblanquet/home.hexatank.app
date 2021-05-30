@@ -1,6 +1,6 @@
 import { IBlueprint } from './../../Core/Setup/Blueprint/IBlueprint';
 import { PowerBluePrintMaker } from './../../Core/Setup/Blueprint/Power/PowerBlueprintMaker';
-import { CamouflageBluePrintMaker } from './../../Core/Setup/Blueprint/Camouflage/CamouflageBlueprintMaker';
+import { CamouflageBluePrintMaker } from '../../Core/Setup/Blueprint/Cam/CamouflageBlueprintMaker';
 import { DiamondBlueprintMaker } from './../../Core/Setup/Blueprint/Diamond/DiamondBlueprintMaker';
 import { Factory, FactoryKey } from './../../Factory';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';

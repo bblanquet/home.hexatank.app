@@ -26,7 +26,7 @@ import { MultiCellMenuItem } from '../../../Core/Menu/Buttons/MultiCellMenuItem'
 import { GameBlueprint } from '../../../Core/Setup/Blueprint/Game/GameBlueprint';
 import SmPopupComponent from '../../SmPopup/SmPopupComponent';
 import { CamouflageContext } from '../../../Core/Setup/Context/CamouflageContext';
-import { CamouflageBlueprint } from '../../../Core/Setup/Blueprint/Camouflage/CamouflageBlueprint';
+import { CamouflageBlueprint } from '../../../Core/Setup/Blueprint/Cam/CamouflageBlueprint';
 
 export default class CamouflageCanvasComponent extends Component<
 	any,

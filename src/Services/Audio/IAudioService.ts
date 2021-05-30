@@ -1,9 +1,9 @@
-import { GameSoundManager } from '../../Core/Framework/Sound/GameSoundManager';
+import { GameAudioManager } from '../../Core/Framework/Sound/GameAudioManager';
 import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
 import { GameContext } from '../../Core/Setup/Context/GameContext';
-export interface ISoundService {
+export interface IAudioService {
 	Register(mapContext: GameBlueprint, gameContext: GameContext): void;
-	GetSoundManager(): GameSoundManager;
+	GetSoundManager(): GameAudioManager;
 	Collect(): void;
 	On(): void;
 	Off(): void;

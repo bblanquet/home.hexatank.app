@@ -1,8 +1,8 @@
+import { IAudioService } from './../Audio/IAudioService';
 import { StatsContext } from './../../Core/Framework/Stats/StatsContext';
 import { BrainInjecter } from './../../Core/Ia/Decision/BrainInjecter';
 import { GameContext } from '../../Core/Setup/Context/GameContext';
-import { ISoundService } from './../Sound/ISoundService';
-import { GameSoundManager } from '../../Core/Framework/Sound/GameSoundManager';
+import { GameAudioManager } from '../../Core/Framework/Sound/GameAudioManager';
 import { IKeyService } from './../Key/IKeyService';
 import { GameSettings } from './../../Core/Framework/GameSettings';
 import { IInteractionService } from './../Interaction/IInteractionService';
@@ -27,7 +27,7 @@ export class AppService implements IAppService<GameBlueprint> {
 	private _app: PIXI.Application;
 	private _appProvider: AppProvider;
 	private _interactionManager: PIXI.InteractionManager;
-	private _soundManager: GameSoundManager;
+	private _soundManager: GameAudioManager;
 
 	private _gameContextService: IGameContextService<GameBlueprint, GameContext>;
 	private _interactionService: IInteractionService<GameContext>;
@@ -35,7 +35,7 @@ export class AppService implements IAppService<GameBlueprint> {
 	private _updateService: IUpdateService;
 	private _networkService: INetworkService;
 	private _keyService: IKeyService;
-	private _soundService: ISoundService;
+	private _audioService: IAudioService;
 	private _playerProfilService: IPlayerProfilService;
 
 	constructor() {
@@ -48,7 +48,7 @@ export class AppService implements IAppService<GameBlueprint> {
 		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
 		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.Interaction);
 		this._keyService = Factory.Load<IKeyService>(FactoryKey.Key);
-		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
+		this._audioService = Factory.Load<IAudioService>(FactoryKey.Audio);
 		this._playerProfilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
 	}
 	GetStats(): StatsContext {
@@ -76,8 +76,8 @@ export class AppService implements IAppService<GameBlueprint> {
 		this._statContext = new StatsContext(this._gameContext);
 		new BrainInjecter().Inject(this._gameContext, mapContext);
 		this._app.start();
-		this._soundService.Register(mapContext, this._gameContext);
-		this._soundManager = this._soundService.GetSoundManager();
+		this._audioService.Register(mapContext, this._gameContext);
+		this._soundManager = this._audioService.GetSoundManager();
 		this._gameContext.GameStatusChanged.On(this.SaveRecord.bind(this));
 	}
 
@@ -99,7 +99,7 @@ export class AppService implements IAppService<GameBlueprint> {
 
 	public Collect(): void {
 		this._soundManager.StopAll();
-		this._soundService.Collect();
+		this._audioService.Collect();
 		this._interactionManager.destroy();
 		this._gameContextService.Collect();
 		this._interactionService.Collect();
@@ -108,6 +108,6 @@ export class AppService implements IAppService<GameBlueprint> {
 		this._networkService.Collect();
 		this._app.destroy();
 		this._app = null;
-		this._soundService.Reload();
+		this._audioService.Reload();
 	}
 }

@@ -1,14 +1,14 @@
-import { SoundProvider } from './SoundProvider';
-import { GameSoundManager } from './../../Core/Framework/Sound/GameSoundManager';
+import { GameAudioManager } from './../../Core/Framework/Sound/GameAudioManager';
+import { IAudioService } from './IAudioService';
 import { Dictionnary } from './../../Core/Utils/Collections/Dictionnary';
-import { ISoundService } from './ISoundService';
 import { GameContext } from '../../Core/Setup/Context/GameContext';
 import { Howl } from 'howler';
 import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
+import { AudioProvider } from './AudioProvider';
 
-export class SoundService implements ISoundService {
+export class AudioService implements IAudioService {
 	private _sounds: Dictionnary<Howl>;
-	private _soundManager: GameSoundManager;
+	private _soundManager: GameAudioManager;
 	private _isMute: boolean = true;
 	private _playingSounds: Dictionnary<number>;
 
@@ -18,14 +18,14 @@ export class SoundService implements ISoundService {
 		this._isMute = true;
 	}
 	Reload(): void {
-		this._sounds = new SoundProvider().GetContent();
+		this._sounds = new AudioProvider().GetContent();
 	}
 
 	Collect(): void {
 		this.On();
 	}
 
-	GetSoundManager(): GameSoundManager {
+	GetSoundManager(): GameAudioManager {
 		return this._soundManager;
 	}
 
@@ -101,7 +101,7 @@ export class SoundService implements ISoundService {
 		this._sounds.Keys().forEach((k) => {
 			copy.Add(k, this._sounds.Get(k));
 		});
-		this._soundManager = new GameSoundManager(mapContext, gameContext);
+		this._soundManager = new GameAudioManager(mapContext, gameContext);
 		if (!this.IsMute()) {
 			this._soundManager.StartMusic();
 		}

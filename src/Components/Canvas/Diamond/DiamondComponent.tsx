@@ -22,7 +22,6 @@ import { Factory, FactoryKey } from '../../../Factory';
 import Redirect from '../../Redirect/RedirectComponent';
 import Icon from '../../Common/Icon/IconComponent';
 import { TimerComponent } from '../../Common/Timer/TimerComponent';
-import { ISoundService } from '../../../Services/Sound/ISoundService';
 import { AudioContent } from '../../../Core/Framework/AudioArchiver';
 import ActiveRightBottomCornerButton from './../../Common/Button/Corner/ActiveRightBottomCornerButton';
 import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
@@ -42,6 +41,7 @@ import ReactorMenuComponent from '../Game/Parts/ReactorMenuComponent';
 import TankMenuComponent from '../Game/Parts/TankMenuComponent';
 import TruckMenuComponent from '../Game/Parts/TruckMenuComponent';
 import SmPopupComponent from '../../SmPopup/SmPopupComponent';
+import { IAudioService } from '../../../Services/Audio/IAudioService';
 
 export default class DiamondCanvasComponent extends Component<
 	any,
@@ -61,7 +61,7 @@ export default class DiamondCanvasComponent extends Component<
 > {
 	private _diamonds: number;
 	private _gameContextService: IGameContextService<DiamondBlueprint, DiamondContext>;
-	private _soundService: ISoundService;
+	private _soundService: IAudioService;
 	private _networkService: INetworkService;
 	private _interactionService: IInteractionService<GameContext>;
 	private _appService: IAppService<DiamondBlueprint>;
@@ -74,7 +74,7 @@ export default class DiamondCanvasComponent extends Component<
 		this._gameContextService = Factory.Load<IGameContextService<DiamondBlueprint, DiamondContext>>(
 			FactoryKey.DiamondGameContext
 		);
-		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
+		this._soundService = Factory.Load<IAudioService>(FactoryKey.Audio);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
 		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.DiamondInteraction);
 		this._appService = Factory.Load<IAppService<DiamondBlueprint>>(FactoryKey.DiamondApp);

@@ -3,7 +3,7 @@ import { route } from 'preact-router';
 import { AudioContent } from '../../Core/Framework/AudioArchiver';
 import { SpriteProvider } from '../../Core/Framework/SpriteProvider';
 import { Factory, FactoryKey } from '../../Factory';
-import { ISoundService } from '../../Services/Sound/ISoundService';
+import { IAudioService } from '../../Services/Audio/IAudioService';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
@@ -11,7 +11,10 @@ import PanelComponent from '../Common/Panel/PanelComponent';
 
 export default class LoadingComponent extends Component<any, { percentage: number }> {
 	componentDidMount() {
-		Factory.Load<ISoundService>(FactoryKey.Sound).Play(AudioContent.menuMusic, 0.005, true);
+		const audio = Factory.Load<IAudioService>(FactoryKey.Audio);
+		if (audio) {
+			audio.Play(AudioContent.menuMusic, 0.005, true);
+		}
 		setTimeout(() => {
 			const listener = SpriteProvider.LoadAll();
 			listener.On((obj: any, percentage: number) => {

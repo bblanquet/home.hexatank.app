@@ -1,9 +1,9 @@
-import { SpriteProvider } from './../../Core/Framework/SpriteProvider';
-import { Dictionnary } from './../../Core/Utils/Collections/Dictionnary';
+import { SpriteProvider } from '../../Core/Framework/SpriteProvider';
+import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
 import { AudioContent } from '../../Core/Framework/AudioArchiver';
 import { Howl } from 'howler';
 
-export class SoundProvider {
+export class AudioProvider {
 	public GetContent(): Dictionnary<Howl> {
 		const sounds = new Dictionnary<Howl>();
 		[

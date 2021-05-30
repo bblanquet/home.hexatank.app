@@ -4,20 +4,18 @@ import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
 import { Factory, FactoryKey } from '../../../Factory';
 import { IPlayerProfilService } from '../../../Services/PlayerProfil/IPlayerProfilService';
 import { PlayerProfil } from '../../../Services/PlayerProfil/PlayerProfil';
-import { ISoundService } from '../../../Services/Sound/ISoundService';
 import { ColorKind } from '../Button/Stylish/ColorKind';
 import SmActiveButtonComponent from '../Button/Stylish/SmActiveButtonComponent';
 import ProgressComponent from '../Progress/ProgressComponent';
-import SmButtonComponent from '../Button/Stylish/SmButtonComponent';
-import SmUploadButtonComponent from '../Button/Stylish/SmUploadButtonComponent';
 import Icon from '../Icon/IconComponent';
+import { IAudioService } from '../../../Services/Audio/IAudioService';
 
 export default class NavbarComponent extends Component<any, { profil: PlayerProfil }> {
-	private _soundService: ISoundService;
+	private _soundService: IAudioService;
 	private _profilService: IPlayerProfilService;
 	constructor() {
 		super();
-		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
+		this._soundService = Factory.Load<IAudioService>(FactoryKey.Audio);
 		this._profilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
 		this.setState({
 			profil: this._profilService.GetProfil()
@@ -72,7 +70,7 @@ export default class NavbarComponent extends Component<any, { profil: PlayerProf
 								}
 								this.setState({});
 							}}
-							isActive={this._soundService.IsMute()}
+							isActive={this._soundService && this._soundService.IsMute()}
 						/>
 						{/* <div class="space-out" />
 						<SmUploadButtonComponent

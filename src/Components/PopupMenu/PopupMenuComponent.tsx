@@ -8,18 +8,18 @@ import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import ActiveButtonComponent from '../Common/Button/Stylish/ActiveButtonComponent';
 import { Factory, FactoryKey } from '../../Factory';
-import { ISoundService } from '../../Services/Sound/ISoundService';
+import { IAudioService } from '../../Services/Audio/IAudioService';
 import { AppService } from '../../Services/App/AppService';
 
 export default class PopupMenuComponent extends Component<
 	{ status: GameStatus; callBack: () => void },
 	{ Kind: StatsKind }
 > {
-	private _soundService: ISoundService;
+	private _soundService: IAudioService;
 
 	constructor() {
 		super();
-		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
+		this._soundService = Factory.Load<IAudioService>(FactoryKey.Audio);
 		this.setState({
 			Kind: StatsKind.Unit
 		});

@@ -21,7 +21,7 @@ export enum FactoryKey {
 	Update,
 	Campaign,
 	PlayerProfil,
-	Sound,
+	Audio,
 	Record,
 
 	App,

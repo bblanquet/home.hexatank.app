@@ -15,7 +15,6 @@ import { IInteractionService } from '../../../Services/Interaction/IInteractionS
 import { Factory, FactoryKey } from '../../../Factory';
 import Redirect from '../../Redirect/RedirectComponent';
 import Icon from '../../Common/Icon/IconComponent';
-import { ISoundService } from '../../../Services/Sound/ISoundService';
 import { AudioContent } from '../../../Core/Framework/AudioArchiver';
 import ActiveRightBottomCornerButton from '../../Common/Button/Corner/ActiveRightBottomCornerButton';
 import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
@@ -35,6 +34,7 @@ import { UnitGroup } from '../../../Core/Items/UnitGroup';
 import CellMenuComponent from '../Game/Parts/CellMenuComponent';
 import MultiTankMenuComponent from '../Game/Parts/MultiTankMenuComponent';
 import ReactorMenuComponent from '../Game/Parts/ReactorMenuComponent';
+import { IAudioService } from '../../../Services/Audio/IAudioService';
 
 export default class PowerCanvasComponent extends Component<
 	any,
@@ -53,7 +53,7 @@ export default class PowerCanvasComponent extends Component<
 	}
 > {
 	private _gameContextService: IGameContextService<PowerBlueprint, PowerContext>;
-	private _soundService: ISoundService;
+	private _soundService: IAudioService;
 	private _networkService: INetworkService;
 	private _interactionService: IInteractionService<PowerContext>;
 	private _gameContext: PowerContext;
@@ -65,7 +65,7 @@ export default class PowerCanvasComponent extends Component<
 		this._gameContextService = Factory.Load<IGameContextService<PowerBlueprint, PowerContext>>(
 			FactoryKey.PowerGameContext
 		);
-		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
+		this._soundService = Factory.Load<IAudioService>(FactoryKey.Audio);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
 		this._interactionService = Factory.Load<IInteractionService<PowerContext>>(FactoryKey.PowerInteraction);
 		this._gameContext = this._gameContextService.Publish();

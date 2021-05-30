@@ -1,7 +1,6 @@
 import { GameBlueprint } from '../../Setup/Blueprint/Game/GameBlueprint';
-import { IOrder } from './../../Ia/Order/IOrder';
-import { Factory, FactoryKey } from './../../../Factory';
-import { ISoundService } from './../../../Services/Sound/ISoundService';
+import { IOrder } from '../../Ia/Order/IOrder';
+import { Factory, FactoryKey } from '../../../Factory';
 import { MapEnv } from '../../Setup/Blueprint/MapEnv';
 import { Missile } from '../../Items/Unit/Missile';
 import { Tank } from '../../Items/Unit/Tank';
@@ -14,15 +13,16 @@ import { Item } from '../../Items/Item';
 import { Dictionnary } from '../../Utils/Collections/Dictionnary';
 import { Turrel } from '../../Items/Unit/Turrel';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
+import { IAudioService } from '../../../Services/Audio/IAudioService';
 
-export class GameSoundManager {
-	private _soundService: ISoundService;
+export class GameAudioManager {
+	private _soundService: IAudioService;
 	private _vehicleSounds: Dictionnary<number>;
 	private _music: number;
 
 	constructor(private _mapContext: GameBlueprint, private _gameContext: GameContext) {
 		this._vehicleSounds = new Dictionnary<number>();
-		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
+		this._soundService = Factory.Load<IAudioService>(FactoryKey.Audio);
 
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		const playerHq = this._gameContext.GetPlayerHq();

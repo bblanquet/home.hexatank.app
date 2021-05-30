@@ -28,7 +28,6 @@ import { IInteractionService } from '../../../Services/Interaction/IInteractionS
 import { Factory, FactoryKey } from '../../../Factory';
 import Redirect from '../../Redirect/RedirectComponent';
 import Icon from '../../Common/Icon/IconComponent';
-import { ISoundService } from '../../../Services/Sound/ISoundService';
 import { AudioContent } from '../../../Core/Framework/AudioArchiver';
 import ActiveRightBottomCornerButton from './../../Common/Button/Corner/ActiveRightBottomCornerButton';
 import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
@@ -39,6 +38,7 @@ import { MultiCellMenuItem } from '../../../Core/Menu/Buttons/MultiCellMenuItem'
 import { IAppService } from '../../../Services/App/IAppService';
 import { FlagCellCombination } from '../../../Core/Interaction/Combination/FlagCellCombination';
 import { GameBlueprint } from '../../../Core/Setup/Blueprint/Game/GameBlueprint';
+import { IAudioService } from '../../../Services/Audio/IAudioService';
 
 export default class GameCanvasComponent extends Component<
 	any,
@@ -58,7 +58,7 @@ export default class GameCanvasComponent extends Component<
 > {
 	private _diamonds: number;
 	private _gameContextService: IGameContextService<GameBlueprint, GameContext>;
-	private _soundService: ISoundService;
+	private _soundService: IAudioService;
 	private _networkService: INetworkService;
 	private _interactionService: IInteractionService<GameContext>;
 	private _appService: IAppService<GameBlueprint>;
@@ -71,7 +71,7 @@ export default class GameCanvasComponent extends Component<
 		this._gameContextService = Factory.Load<IGameContextService<GameBlueprint, GameContext>>(
 			FactoryKey.GameContext
 		);
-		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
+		this._soundService = Factory.Load<IAudioService>(FactoryKey.Audio);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
 		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.Interaction);
 		this._appService = Factory.Load<IAppService<GameBlueprint>>(FactoryKey.App);

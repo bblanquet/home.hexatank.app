@@ -15,18 +15,12 @@ import { IInteractionService } from '../../../Services/Interaction/IInteractionS
 import { Factory, FactoryKey } from '../../../Factory';
 import Redirect from '../../Redirect/RedirectComponent';
 import Icon from '../../Common/Icon/IconComponent';
-import { ISoundService } from '../../../Services/Sound/ISoundService';
 import { AudioContent } from '../../../Core/Framework/AudioArchiver';
-import ActiveRightBottomCornerButton from '../../Common/Button/Corner/ActiveRightBottomCornerButton';
-import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
-import { MultiTankMenuItem } from '../../../Core/Menu/Buttons/MultiTankMenuItem';
 import Visible from '../../Common/Visible/VisibleComponent';
-import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
-import { MultiCellMenuItem } from '../../../Core/Menu/Buttons/MultiCellMenuItem';
-import { GameBlueprint } from '../../../Core/Setup/Blueprint/Game/GameBlueprint';
 import SmPopupComponent from '../../SmPopup/SmPopupComponent';
 import { CamouflageContext } from '../../../Core/Setup/Context/CamouflageContext';
 import { CamouflageBlueprint } from '../../../Core/Setup/Blueprint/Cam/CamouflageBlueprint';
+import { IAudioService } from '../../../Services/Audio/IAudioService';
 
 export default class CamouflageCanvasComponent extends Component<
 	any,
@@ -45,7 +39,7 @@ export default class CamouflageCanvasComponent extends Component<
 	}
 > {
 	private _gameContextService: IGameContextService<CamouflageBlueprint, CamouflageContext>;
-	private _soundService: ISoundService;
+	private _soundService: IAudioService;
 	private _networkService: INetworkService;
 	private _interactionService: IInteractionService<CamouflageContext>;
 	private _gameContext: CamouflageContext;
@@ -57,7 +51,7 @@ export default class CamouflageCanvasComponent extends Component<
 		this._gameContextService = Factory.Load<IGameContextService<CamouflageBlueprint, CamouflageContext>>(
 			FactoryKey.CamouflageGameContext
 		);
-		this._soundService = Factory.Load<ISoundService>(FactoryKey.Sound);
+		this._soundService = Factory.Load<IAudioService>(FactoryKey.Audio);
 		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
 		this._interactionService = Factory.Load<IInteractionService<CamouflageContext>>(
 			FactoryKey.CamouflageInteraction

@@ -2,7 +2,7 @@ import { h, Component } from 'preact';
 import { AudioContent } from '../../../../Core/Framework/AudioArchiver';
 import { Dictionnary } from '../../../../Core/Utils/Collections/Dictionnary';
 import { Factory, FactoryKey } from '../../../../Factory';
-import { ISoundService } from '../../../../Services/Sound/ISoundService';
+import { IAudioService } from '../../../../Services/Audio/IAudioService';
 import { ColorKind } from './ColorKind';
 
 export default class ButtonComponent extends Component<
@@ -35,7 +35,7 @@ export default class ButtonComponent extends Component<
 							class={`custom-btn-layout-1 ${this._primary.Get(ColorKind[this.props.color])} fit-content`}
 							onClick={() => {
 								if (!this.props.isMute) {
-									Factory.Load<ISoundService>(FactoryKey.Sound).Play(`${AudioContent.ok}`, 0.2);
+									Factory.Load<IAudioService>(FactoryKey.Audio).Play(`${AudioContent.ok}`, 0.2);
 								}
 								this.props.callBack();
 							}}

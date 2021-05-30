@@ -1,3 +1,4 @@
+import { AudioService } from './Services/Audio/SoundService';
 import { DiamondContextService } from './Services/GameContext/DiamondContextService';
 import { PowerContextService } from './Services/GameContext/PowerContextService';
 import { PowerInteractionService } from './Services/Interaction/PowerInteractionService';
@@ -7,7 +8,6 @@ import { DiamondAppService } from './Services/App/DiamondAppService';
 import { CamouflageGameContextService } from './Services/GameContext/CamouflageGameContextService';
 import { CamouflageInteractionService } from './Services/Interaction/CamouflageInteractionService';
 import { CamouflageAppService } from './Services/App/CamouflageAppService';
-import { SoundService } from './Services/Sound/SoundService';
 import { PlayerProfilService } from './Services/PlayerProfil/PlayerProfilService';
 import { CampaignService } from './Services/Campaign/CampaignService';
 import { HostingService } from './Services/Hosting/HostingService';
@@ -24,7 +24,6 @@ import { UpdateService } from './Services/Update/UpdateService';
 import { AppService } from './Services/App/AppService';
 import { Factory, FactoryKey } from './Factory';
 
-Factory.Register(FactoryKey.Sound, new SoundService());
 Factory.Register(FactoryKey.PlayerProfil, new PlayerProfilService());
 Factory.Register(FactoryKey.Key, new KeyService());
 Factory.Register(FactoryKey.Hosting, new HostingService());
@@ -52,3 +51,7 @@ Factory.Register(FactoryKey.PowerApp, new PowerAppService());
 Factory.Register(FactoryKey.DiamondApp, new DiamondAppService());
 
 Factory.Register(FactoryKey.Campaign, new CampaignService());
+
+window.onload = function() {
+	//Factory.Register(FactoryKey.Audio, new AudioService());
+};

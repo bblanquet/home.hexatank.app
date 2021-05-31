@@ -7,6 +7,7 @@ import { AbortMenuItem } from '../../../../Core/Menu/Buttons/AbortMenuItem';
 import { CancelMenuItem } from '../../../../Core/Menu/Buttons/CancelMenuItem';
 import { Vehicle } from '../../../../Core/Items/Unit/Vehicle';
 import { InteractionContext } from '../../../../Core/Interaction/InteractionContext';
+import { CamouflageMenuItem } from '../../../../Core/Menu/Buttons/CamouflageMenutItem';
 
 export default class TruckMenuComponent extends Component<
 	{ Truck: Vehicle; isSettingPatrol: boolean; Interaction: InteractionContext },
@@ -49,6 +50,13 @@ export default class TruckMenuComponent extends Component<
 							onClick={(e: any) => this.SendContext(new SearchMoneyMenuItem())}
 						>
 							<div class="fill-searchMoney max-width standard-space" />
+						</button>
+						<button
+							type="button"
+							class="btn btn-dark without-padding"
+							onClick={(e: any) => this.SendContext(new CamouflageMenuItem())}
+						>
+							<div class="fill-camouflage max-width standard-space" />
 						</button>
 						<button
 							type="button"

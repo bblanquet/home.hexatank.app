@@ -2,13 +2,13 @@ import { UnitGroup } from '../../Items/UnitGroup';
 import { ICamouflageAble } from './../../Items/Unit/ICamouflageAble';
 import { CamouflageMenuItem } from '../../Menu/Buttons/CamouflageMenutItem';
 import { CombinationContext } from './CombinationContext';
-import { Tank } from '../../Items/Unit/Tank';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
+import { Vehicle } from '../../Items/Unit/Vehicle';
 
 export class CamouflageCombination extends AbstractSingleCombination {
 	IsMatching(context: CombinationContext): boolean {
 		return (
-			(context.Items[0] instanceof Tank || context.Items[0] instanceof UnitGroup) &&
+			(context.Items[0] instanceof Vehicle || context.Items[0] instanceof UnitGroup) &&
 			context.Items[context.Items.length - 1] instanceof CamouflageMenuItem
 		);
 	}

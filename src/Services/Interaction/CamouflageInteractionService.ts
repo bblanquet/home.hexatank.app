@@ -1,3 +1,4 @@
+import { SimpleSelectionCombination } from './../../Core/Interaction/Combination/SimpleSelectionCombination';
 import { InputNotifier } from './../../Core/Interaction/InputNotifier';
 import { SelectableChecker } from './../../Core/Interaction/SelectableChecker';
 import { InteractionContext } from '../../Core/Interaction/InteractionContext';
@@ -9,11 +10,10 @@ import * as PIXI from 'pixi.js';
 import { MultiSelectionContext } from '../../Core/Menu/Smart/MultiSelectionContext';
 import { CancelCombination } from '../../Core/Interaction/Combination/CancelCombination';
 import { ClearTrashCombination } from '../../Core/Interaction/Combination/ClearTrashCombination';
-import { SelectionCombination } from '../../Core/Interaction/Combination/SelectionCombination';
 import { AbortCombination } from '../../Core/Interaction/Combination/AbortCombination';
 import { TruckCombination } from '../../Core/Interaction/Combination/TruckCombination';
 import { CamouflageCombination } from '../../Core/Interaction/Combination/CamouflageCombination';
-import { UnselectCombination } from '../../Core/Interaction/Combination/UnselectCombination';
+import { SimpleUnselectCombination } from '../../Core/Interaction/Combination/SimpleUnselectCombination';
 import { CamouflageContext } from '../../Core/Setup/Context/CamouflageContext';
 
 export class CamouflageInteractionService implements IInteractionService<CamouflageContext> {
@@ -37,10 +37,10 @@ export class CamouflageInteractionService implements IInteractionService<Camoufl
 				new CancelCombination(),
 				new AbortCombination(),
 				new TruckCombination(),
-				new UnselectCombination(checker, gameContext),
+				new SimpleUnselectCombination(checker, gameContext),
 				new CamouflageCombination(),
 				new ClearTrashCombination(checker),
-				new SelectionCombination(checker, gameContext)
+				new SimpleSelectionCombination(checker, gameContext)
 			],
 			checker,
 			this._layerService.GetViewport()

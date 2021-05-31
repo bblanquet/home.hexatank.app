@@ -7,7 +7,6 @@ import { ILayerService } from '../../Services/Layer/ILayerService';
 import { IGameContextService } from '../../Services/GameContext/IGameContextService';
 import { IKeyService } from '../../Services/Key/IKeyService';
 import { IsMobile } from '../../Core/Utils/ToolBox';
-import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
 import { IGameContext } from '../../Core/Setup/Context/IGameContext';
 import { IBlueprint } from '../../Core/Setup/Blueprint/IBlueprint';
 

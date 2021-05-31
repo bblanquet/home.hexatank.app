@@ -2,7 +2,6 @@ import { Identity } from './../Identity';
 import { Missile } from './Missile';
 import { ZKind } from './../ZKind';
 import { LiteEvent } from './../../Utils/Events/LiteEvent';
-import { ICamouflageAble } from './ICamouflageAble';
 import { CamouflageHandler } from './CamouflageHandler';
 import { Cell } from '../Cell/Cell';
 import { Vehicle } from './Vehicle';
@@ -16,7 +15,7 @@ import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Explosion } from './Explosion';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 
-export class Tank extends Vehicle implements ICamouflageAble {
+export class Tank extends Vehicle {
 	public Turrel: Turrel;
 	private _currentTarget: AliveItem;
 	private _mainTarget: AliveItem;

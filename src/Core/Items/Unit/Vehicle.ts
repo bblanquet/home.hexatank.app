@@ -32,8 +32,12 @@ import { InfiniteFadeAnimation } from '../Animator/InfiniteFadeAnimation';
 import { Crater } from '../Environment/Crater';
 import { TimeTimer } from '../../Utils/Timer/TimeTimer';
 import { ShieldField } from '../Cell/Field/Bonus/ShieldField';
+import { CamouflageHandler } from './CamouflageHandler';
+import { Explosion } from './Explosion';
+import { ICamouflageAble } from './ICamouflageAble';
 
-export abstract class Vehicle extends AliveItem implements IMovable, IRotatable, ISelectable, ICancellable {
+export abstract class Vehicle extends AliveItem
+	implements IMovable, IRotatable, ISelectable, ICancellable, ICamouflageAble {
 	public PowerUps: Array<Up> = [];
 	public Id: string;
 	private _rotatingDuration: number = GameSettings.RotatingDuration;
@@ -166,8 +170,6 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	public SetRotatingDuration(rotation: number): void {
 		this._rotatingDuration += rotation;
 	}
-
-	protected abstract RemoveCamouflage(): void;
 
 	public SetPowerUp(up: Up) {
 		if (0 < this.PowerUps.length) {
@@ -489,5 +491,65 @@ export abstract class Vehicle extends AliveItem implements IMovable, IRotatable,
 	}
 	public GetCurrentCell(): Cell {
 		return this._currentCell;
+	}
+	SetCamouflage(): boolean {
+		if (this.HasNextCell()) {
+			return false;
+		}
+		this.HasCamouflage = true;
+		this.camouflagedSprites = this.GetSprites().filter((s) => s.alpha !== 0);
+
+		if (this.Identity.IsPlayer) {
+			this.camouflagedSprites.forEach((s) => {
+				s.alpha = 0.5;
+			});
+		} else {
+			this.camouflagedSprites.forEach((s) => {
+				s.alpha = 0;
+			});
+		}
+
+		this.Camouflage = new BasicItem(
+			BoundingBox.CreateFromBox(this.GetBoundingBox()),
+			new CamouflageHandler().GetCamouflage(),
+			ZKind.Sky
+		);
+		this.Camouflage.SetVisible(() => {
+			return this.IsAlive() && this.HasCamouflage;
+		});
+		this.Camouflage.SetAlive(() => this.IsAlive() && this.HasCamouflage);
+
+		new Explosion(
+			BoundingBox.CreateFromBox(this.GetBoundingBox()),
+			SvgArchive.constructionEffects,
+			ZKind.Sky,
+			false,
+			5
+		);
+
+		return true;
+	}
+
+	RemoveCamouflage() {
+		if (this.HasCamouflage) {
+			this.HasCamouflage = false;
+
+			if (this.Identity.IsPlayer) {
+				this.camouflagedSprites.forEach((s) => {
+					s.alpha = 1;
+				});
+			} else {
+				if (this.GetCurrentCell().GetState() === CellState.Visible) {
+					this.camouflagedSprites.forEach((s) => {
+						s.alpha = 1;
+					});
+				} else {
+					this.camouflagedSprites.forEach((s) => {
+						s.alpha = 0;
+					});
+				}
+			}
+			this.camouflagedSprites = [];
+		}
 	}
 }

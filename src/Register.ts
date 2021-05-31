@@ -44,7 +44,6 @@ Factory.Register(FactoryKey.CamouflageInteraction, new CamouflageInteractionServ
 Factory.Register(FactoryKey.PowerInteraction, new PowerInteractionService());
 Factory.Register(FactoryKey.DiamondInteraction, new DiamondInteractionService());
 
-Factory.Register(FactoryKey.App, new AppService());
 Factory.Register(FactoryKey.RecordApp, new RecordAppService());
 Factory.Register(FactoryKey.CamouflageApp, new CamouflageAppService());
 Factory.Register(FactoryKey.PowerApp, new PowerAppService());
@@ -54,4 +53,5 @@ Factory.Register(FactoryKey.Campaign, new CampaignService());
 
 window.onload = function() {
 	Factory.Register(FactoryKey.Audio, new AudioService());
+	Factory.Register(FactoryKey.App, new AppService());
 };

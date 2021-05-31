@@ -2,7 +2,6 @@ import { Identity } from './../Identity';
 import { TimeTimer } from './../../Utils/Timer/TimeTimer';
 import { GameSettings } from './../../Framework/GameSettings';
 import { Vehicle } from './Vehicle';
-import { AliveItem } from '../AliveItem';
 import { Light } from '../Environment/Light';
 import { SvgArchive } from '../../Framework/SvgArchiver';
 import { CellState } from '../Cell/CellState';
@@ -99,5 +98,4 @@ export class Truck extends Vehicle {
 		this._light.GetSprites().forEach((s) => (s.visible = this.GetCurrentCell().IsVisible()));
 		this._light.Update(viewX, viewY);
 	}
-	protected RemoveCamouflage(): void {}
 }

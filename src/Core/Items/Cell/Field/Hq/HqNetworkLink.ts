@@ -5,6 +5,7 @@ import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { Item } from '../../../Item';
 import { Graphics } from 'pixi.js';
 import { ZKind } from '../../../ZKind';
+import { CellState } from '../../CellState';
 
 export class HqNetworkLink extends Item {
 	private _graph: Graphics;
@@ -14,6 +15,7 @@ export class HqNetworkLink extends Item {
 	private _end: number;
 	private _step: number;
 	private _isFadeIn: boolean = true;
+	private _isVisible: boolean = false;
 
 	public constructor(private _a: ReactorField, private _b: ReactorField) {
 		super();
@@ -27,6 +29,22 @@ export class HqNetworkLink extends Item {
 		this.InitPosition(this.GetBoundingBox());
 		this._a.AddLink(this);
 		this._b.AddLink(this);
+		this._a.GetCell().OnCellStateChanged.On(this.CellStateChanged.bind(this));
+		this._b.GetCell().OnCellStateChanged.On(this.CellStateChanged.bind(this));
+		this.SetVisibility();
+	}
+
+	private CellStateChanged(src: any, cellState: CellState): void {
+		this.SetVisibility();
+	}
+
+	private SetVisibility() {
+		if (this._a.GetCell().IsVisible() && this._b.GetCell().IsVisible()) {
+			this._isVisible = true;
+		} else {
+			this._isVisible = false;
+			this._graph.clear();
+		}
 	}
 
 	public GetBoundingBox(): BoundingBox {
@@ -66,26 +84,28 @@ export class HqNetworkLink extends Item {
 		if (this._isDestroyed) {
 			return;
 		}
-		if (this._end < this._current) {
-			this._isFadeIn = false;
-			this._current = this._end;
-		}
+		if (this._isVisible) {
+			if (this._end < this._current) {
+				this._isFadeIn = false;
+				this._current = this._end;
+			}
 
-		if (this._current < this._start) {
-			this._isFadeIn = true;
-			this._current = this._start;
-		}
+			if (this._current < this._start) {
+				this._isFadeIn = true;
+				this._current = this._start;
+			}
 
-		if (this._isFadeIn) {
-			this._current += this._step;
-		} else {
-			this._current -= this._step;
-		}
+			if (this._isFadeIn) {
+				this._current += this._step;
+			} else {
+				this._current -= this._step;
+			}
 
-		this._graph.clear();
-		this._graph.lineStyle(3, 0x68c7f1, this._current);
-		var aPoint = this._a.GetBoundingBox().GetCentralPoint();
-		var bPoint = this._b.GetBoundingBox().GetCentralPoint();
-		this._graph.moveTo(aPoint.X, aPoint.Y).lineTo(bPoint.X, bPoint.Y);
+			this._graph.clear();
+			this._graph.lineStyle(3, 0x68c7f1, this._current);
+			var aPoint = this._a.GetBoundingBox().GetCentralPoint();
+			var bPoint = this._b.GetBoundingBox().GetCentralPoint();
+			this._graph.moveTo(aPoint.X, aPoint.Y).lineTo(bPoint.X, bPoint.Y);
+		}
 	}
 }

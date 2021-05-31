@@ -1,3 +1,4 @@
+import { CellState } from './../../CellState';
 import { TranslationMaker } from '../../../Unit/MotionHelpers/TranslationMaker';
 import { ITranslationMaker } from '../../../Unit/MotionHelpers/ITranslationMaker';
 import { SvgArchive } from '../../../../Framework/SvgArchiver';
@@ -28,6 +29,20 @@ export class ChargeLink extends Item implements IMovable {
 		this.InitPosition(this.GetBoundingBox());
 		this.IsCentralRef = true;
 		this._translateMaker = new TranslationMaker(this);
+		this._departure.OnCellStateChanged.On(this.CellStateChanged.bind(this));
+		this.SetVisible();
+	}
+
+	private CellStateChanged(src: any, cellState: CellState): void {
+		this.SetVisible();
+	}
+
+	private SetVisible() {
+		if (this._arrival.IsVisible() && this._departure.IsVisible()) {
+			this.SetProperty(SvgArchive.electon, (e) => (e.alpha = 1));
+		} else {
+			this.SetProperty(SvgArchive.electon, (e) => (e.alpha = 0));
+		}
 	}
 
 	public IsDone(): boolean {

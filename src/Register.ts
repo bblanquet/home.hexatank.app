@@ -53,5 +53,5 @@ Factory.Register(FactoryKey.DiamondApp, new DiamondAppService());
 Factory.Register(FactoryKey.Campaign, new CampaignService());
 
 window.onload = function() {
-	//Factory.Register(FactoryKey.Audio, new AudioService());
+	Factory.Register(FactoryKey.Audio, new AudioService());
 };

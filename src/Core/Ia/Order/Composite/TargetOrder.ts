@@ -19,7 +19,7 @@ export class TargetOrder extends Order {
 		this._v.SetMainTarget(this._target);
 	}
 
-	public GetGoals(): Cell[] {
+	public GetArrivals(): Cell[] {
 		return [ this._v.GetCurrentCell() ];
 	}
 

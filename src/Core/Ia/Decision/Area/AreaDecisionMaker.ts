@@ -104,9 +104,6 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 
 		//#4 classify cell dangerous
 		const cellsByDanger = this.ClassifyCellDanger(aroundFoeCells, ally);
-		for (let danger in cellsByDanger) {
-			this.LogDanger(danger, cellsByDanger);
-		}
 
 		//#5 find path to reach cells and classify them
 		const troopRoads = this.GetTroopRoads(cellsByDanger);
@@ -289,17 +286,6 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 			`%c tank get order to go to ${troopSituation.CurrentDestination.Destination.Coo()}`,
 			'font-weight:bold;color:red;'
 		);
-	}
-
-	private LogDanger(danger: string, dangerLevelcells: { [id: number]: Dictionnary<Cell> }) {
-		console.log(
-			`%c danger lvl ${danger} - cells count ${Object.keys(dangerLevelcells[+danger]).length}`,
-			'font-weight:bold;color:brown;'
-		);
-	}
-
-	private LogPosition() {
-		console.log(`%c AREA  ${this.Area.Troops.length} -> ${this.Area.GetCentralCell().Coo()}`, 'font-weight:bold;');
 	}
 
 	private LogTroopCount() {

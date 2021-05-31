@@ -1,4 +1,3 @@
-import { Identity } from './../../../../Items/Identity';
 import { SmartSimpleOrder } from '../SmartSimpleOrder';
 import { Cell } from '../../../../Items/Cell/Cell';
 import { Diamond } from '../../../../Items/Cell/Field/Diamond';
@@ -24,7 +23,7 @@ export class DiamondFieldOrder extends SmartSimpleOrder {
 		}
 	}
 
-	public GetGoals(): Cell[] {
+	public GetArrivals(): Cell[] {
 		return [ this.Diamond.GetCell() ];
 	}
 

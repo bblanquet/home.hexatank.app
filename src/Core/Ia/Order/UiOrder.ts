@@ -11,22 +11,22 @@ export class UiOrder {
 	private _items: Dictionnary<BasicItem>;
 
 	constructor(private _order: IOrder) {
-		this._order.OnPathCreated.On(this.HandleCreatedGoals.bind(this));
-		this._order.OnNextCell.On(this.HandleNextCell.bind(this));
-		this._order.OnStateChanged.On(this.HandleStateChanged.bind(this));
+		this._order.OnPathCreated.On(this.PathCreated.bind(this));
+		this._order.OnNextCell.On(this.NextCell.bind(this));
+		this._order.OnStateChanged.On(this.StateChanged.bind(this));
 		this._items = new Dictionnary<BasicItem>();
-		this.SetCells(this._order.GetCells());
+		this.SetCellUi(this._order.GetCells());
 	}
 
 	public HasOrder(order: IOrder): boolean {
 		return order === this._order;
 	}
 
-	private HandleCreatedGoals(src: any, cells: Cell[]): void {
-		this.SetCells(cells);
+	private PathCreated(src: any, cells: Cell[]): void {
+		this.SetCellUi(cells);
 	}
 
-	private SetCells(cells: Cell[]) {
+	private SetCellUi(cells: Cell[]) {
 		const keys = cells.map((c) => c.Coo());
 		//remove old keys
 		this._items.Keys().forEach((key) => {
@@ -47,10 +47,10 @@ export class UiOrder {
 		});
 	}
 
-	private HandleNextCell(src: any, cell: Cell): void {
+	private NextCell(src: any, cell: Cell): void {
 		this.Destroy(cell.Coo());
 	}
-	private HandleStateChanged(src: any, state: OrderState): void {
+	private StateChanged(src: any, state: OrderState): void {
 		if (this._order.IsDone()) {
 			this.Clear();
 		}

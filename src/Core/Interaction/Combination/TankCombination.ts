@@ -1,3 +1,4 @@
+import { OrderMonitor } from './../../Ia/Order/OrderMonitor';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { TargetOrder } from '../../Ia/Order/Composite/TargetOrder';
 import { Tank } from '../../Items/Unit/Tank';
@@ -5,7 +6,6 @@ import { Cell } from '../../Items/Cell/Cell';
 import { CombinationContext } from './CombinationContext';
 import { CellState } from '../../Items/Cell/CellState';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
-import { SmartSimpleOrder } from '../../Ia/Order/Composite/SmartSimpleOrder';
 
 export class TankCombination extends AbstractSingleCombination {
 	IsMatching(context: CombinationContext): boolean {
@@ -37,7 +37,7 @@ export class TankCombination extends AbstractSingleCombination {
 				tank.SetOrder(order);
 				context.Items.splice(1, 1);
 			} else {
-				const order = new SmartSimpleOrder(cell, tank);
+				const order = new OrderMonitor(cell, tank);
 				tank.SetOrder(order);
 				context.Items.splice(1, 1);
 			}

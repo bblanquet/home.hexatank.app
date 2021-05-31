@@ -332,11 +332,11 @@ export abstract class Vehicle extends AliveItem
 	private _uiOrder: UiOrder;
 	public SetSelected(isSelected: boolean): void {
 		this.SetProperty(SvgArchive.selectionUnit, (e) => (e.alpha = isSelected ? 1 : 0));
-		this.SetUiOrder();
+		this.UpdateUiOrder();
 		this.OnSelectionChanged.Invoke(this, this);
 	}
 
-	private SetUiOrder() {
+	private UpdateUiOrder() {
 		if (this.Identity.IsPlayer) {
 			if (this._uiOrder && this.HasOrder() && this._uiOrder.HasOrder(this._order) && this.IsSelected()) {
 				return;
@@ -424,7 +424,7 @@ export abstract class Vehicle extends AliveItem
 			});
 		}
 
-		this.Switch();
+		this.ChangeOrder();
 		if (this.HasOrder()) {
 			this._order.Do();
 		}
@@ -438,11 +438,11 @@ export abstract class Vehicle extends AliveItem
 		super.Update(viewX, viewY);
 	}
 
-	private Switch() {
+	private ChangeOrder() {
 		if (!this.HasOrder() && !this.HasNextCell() && this._pendingOrder) {
 			this._order = this._pendingOrder;
 			this._pendingOrder = null;
-			this.SetUiOrder();
+			this.UpdateUiOrder();
 		}
 	}
 

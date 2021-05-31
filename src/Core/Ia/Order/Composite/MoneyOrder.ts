@@ -12,9 +12,9 @@ export class MoneyOrder extends Order {
 		super();
 	}
 
-	public GetGoals(): Cell[] {
+	public GetArrivals(): Cell[] {
 		if (this._currentOrder) {
-			return this._currentOrder.GetGoals();
+			return this._currentOrder.GetArrivals();
 		}
 		return [];
 	}

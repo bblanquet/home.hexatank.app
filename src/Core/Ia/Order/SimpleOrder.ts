@@ -12,7 +12,7 @@ import { isNullOrUndefined } from '../../Utils/ToolBox';
 export class SimpleOrder extends Order {
 	protected CellFinder: CellFinder;
 	protected GoalCells: Array<Cell>;
-	protected CurrentGoal: Cell;
+	protected CurrentStep: Cell;
 	protected FinalGoal: Cell;
 
 	constructor(protected FinalOriginalGoal: Cell, protected Vehicle: Vehicle) {
@@ -25,7 +25,7 @@ export class SimpleOrder extends Order {
 		this.CellFinder = new CellFinder();
 	}
 
-	GetGoals(): Cell[] {
+	GetArrivals(): Cell[] {
 		return [ this.FinalOriginalGoal ];
 	}
 
@@ -45,9 +45,9 @@ export class SimpleOrder extends Order {
 			return;
 		}
 
-		if (this.CurrentGoal === this.Vehicle.GetCurrentCell()) {
-			this.OnNextCell.Invoke(this, this.CurrentGoal);
-			if (this.CurrentGoal === this.FinalGoal) {
+		if (this.CurrentStep === this.Vehicle.GetCurrentCell()) {
+			this.OnNextCell.Invoke(this, this.CurrentStep);
+			if (this.CurrentStep === this.FinalGoal) {
 				this.SetState(this.FinalGoal === this.FinalOriginalGoal ? OrderState.Passed : OrderState.Failed);
 			} else {
 				this.GoNextcell();
@@ -63,17 +63,17 @@ export class SimpleOrder extends Order {
 	}
 
 	protected GoNextcell() {
-		this.CurrentGoal = this.GetNextGoal();
-		if (isNullOrUndefined(this.CurrentGoal)) {
+		this.CurrentStep = this.GetNextGoal();
+		if (isNullOrUndefined(this.CurrentStep)) {
 			this.SetState(OrderState.Failed);
 		} else {
-			this.Vehicle.SetNextCell(this.CurrentGoal);
+			this.Vehicle.SetNextCell(this.CurrentStep);
 		}
 	}
 
 	protected Init(): boolean {
 		if (this.GetState() === OrderState.None) {
-			if (this.CreateGoalCells()) {
+			if (this.UpdateRoad()) {
 				this.GoNextcell();
 				this.SetState(OrderState.Pending);
 			} else {
@@ -91,7 +91,7 @@ export class SimpleOrder extends Order {
 
 		const candidate = this.GoalCells.splice(0, 1)[0];
 		if (!this.IsAccessible(candidate)) {
-			if (this.CreateGoalCells()) {
+			if (this.UpdateRoad()) {
 				return this.GetNextGoal();
 			} else {
 				return null;
@@ -116,7 +116,7 @@ export class SimpleOrder extends Order {
 		return !c.IsBlocked();
 	}
 
-	protected CreateGoalCells(): boolean {
+	protected UpdateRoad(): boolean {
 		if (!this.IsAccessible(this.FinalGoal)) {
 			this.FinalGoal = this.GetClosestCell();
 			if (isNullOrUndefined(this.FinalGoal)) {

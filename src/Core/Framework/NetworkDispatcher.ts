@@ -115,7 +115,7 @@ export class NetworkDispatcher {
 	private HandleOrderChanging(source: Vehicle, order: IOrder): void {
 		const content = new OrderPacket();
 		content.Id = source.Id;
-		content.Coos = order.GetGoals().map((dest) => dest.Coo());
+		content.Coos = order.GetArrivals().map((dest) => dest.Coo());
 		content.Kind = order.GetKind();
 		const message = this.Message<OrderPacket>(PacketKind.OrderChanging, content);
 		this._socket.Emit(message);

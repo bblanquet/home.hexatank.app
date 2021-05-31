@@ -19,7 +19,7 @@ export class PatrolOrder extends Order {
 		this.CreatePath();
 	}
 
-	public GetGoals(): Cell[] {
+	public GetArrivals(): Cell[] {
 		return this._patrolcells;
 	}
 

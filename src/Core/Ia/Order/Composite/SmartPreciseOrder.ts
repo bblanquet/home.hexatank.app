@@ -13,12 +13,12 @@ export class SmartPreciseOrder extends SimpleOrder {
 			return;
 		}
 
-		if (this.CurrentGoal === this.Vehicle.GetCurrentCell()) {
-			this.OnNextCell.Invoke(this, this.CurrentGoal);
-			if (this.CurrentGoal === this.FinalGoal) {
+		if (this.CurrentStep === this.Vehicle.GetCurrentCell()) {
+			this.OnNextCell.Invoke(this, this.CurrentStep);
+			if (this.CurrentStep === this.FinalGoal) {
 				this.SetState(this.FinalGoal === this.FinalOriginalGoal ? OrderState.Passed : OrderState.Failed);
 			} else {
-				if (this.CreateGoalCells()) {
+				if (this.UpdateRoad()) {
 					this.GoNextcell();
 				} else {
 					this.SetState(OrderState.Failed);

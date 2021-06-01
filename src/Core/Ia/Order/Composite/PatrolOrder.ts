@@ -6,11 +6,11 @@ import { SvgArchive } from '../../../Framework/SvgArchiver';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { OrderKind } from '../OrderKind';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
-import { SmartPreciseOrder } from './SmartPreciseOrder';
+import { MonitoredOrder } from '../MonitoredOrder';
 
 export class PatrolOrder extends Order {
 	private _currentPatrolcell: Cell;
-	private _currentOrder: SmartPreciseOrder;
+	private _currentOrder: MonitoredOrder;
 	private _patrolPathDisplay: Array<BasicItem>;
 
 	constructor(private _patrolcells: Array<Cell>, private _v: Vehicle) {
@@ -76,11 +76,11 @@ export class PatrolOrder extends Order {
 	}
 
 	private StartMoving() {
-		this.SetCurrentOrder(new SmartPreciseOrder(this._currentPatrolcell, this._v));
+		this.SetCurrentOrder(new MonitoredOrder(this._currentPatrolcell, this._v));
 		this._currentOrder.Do();
 	}
 
-	private SetCurrentOrder(order: SmartPreciseOrder): void {
+	private SetCurrentOrder(order: MonitoredOrder): void {
 		this.Clear();
 		this._currentOrder = order;
 		this._currentOrder.OnPathCreated.On(this.InvokePathCreated.bind(this));

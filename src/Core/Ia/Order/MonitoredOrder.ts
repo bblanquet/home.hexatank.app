@@ -9,15 +9,23 @@ import { Vehicle } from '../../Items/Unit/Vehicle';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 import { ShieldField } from '../../Items/Cell/Field/Bonus/ShieldField';
 
-export class OrderMonitor extends Order {
+export class MonitoredOrder extends Order {
 	private _order: BasicOrder;
 	constructor(protected Destination: Cell, protected Vehicle: Vehicle) {
 		super();
-		const result = this.GetPath();
-		if (result) {
-			this.SetCurrentOrder(new BasicOrder(this.Vehicle, result));
+		this.Reset();
+	}
+
+	public Reset(): void {
+		if (this.Vehicle.GetCurrentCell() === this.Destination) {
+			this.SetState(OrderState.Passed);
 		} else {
-			this.SetState(OrderState.Failed);
+			const result = this.GetPath();
+			if (result) {
+				this.SetCurrentOrder(new BasicOrder(this.Vehicle, result));
+			} else {
+				this.SetState(OrderState.Failed);
+			}
 		}
 	}
 

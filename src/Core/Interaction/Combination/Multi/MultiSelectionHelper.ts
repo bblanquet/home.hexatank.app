@@ -1,4 +1,4 @@
-import { SmartSimpleOrder } from '../../../Ia/Order/Composite/SmartSimpleOrder';
+import { MonitoredOrder } from './../../../Ia/Order/MonitoredOrder';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
@@ -9,7 +9,7 @@ export class MultiSelectionHelper {
 		if (selectedCells.length < vehicles.length) {
 			for (let index = 0; index < vehicles.length; index++) {
 				let modulo = index % selectedCells.length;
-				vehicles[index].SetOrder(new SmartSimpleOrder(selectedCells[modulo], vehicles[index]));
+				vehicles[index].SetOrder(new MonitoredOrder(selectedCells[modulo], vehicles[index]));
 			}
 		} else if (vehicles.length < selectedCells.length) {
 			let cells = new Array<Cell>();
@@ -24,7 +24,7 @@ export class MultiSelectionHelper {
 		let pathsVehicleList = this.GetVehiclePathsList(vehicles, selectedCells);
 		for (let index = 0; index < pathsVehicleList.length; index++) {
 			let cell = pathsVehicleList[index].Pop();
-			pathsVehicleList[index].GetVehicle().SetOrder(new SmartSimpleOrder(cell, vehicles[index]));
+			pathsVehicleList[index].GetVehicle().SetOrder(new MonitoredOrder(cell, vehicles[index]));
 			pathsVehicleList.forEach((pathVehicle) => {
 				pathVehicle.Remove(cell.Coo());
 			});

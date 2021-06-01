@@ -1,3 +1,4 @@
+import { MonitoredOrder } from './../../../../Ia/Order/MonitoredOrder';
 import { IHeadquarter } from './IHeadquarter';
 import { Identity } from './../../../Identity';
 import { IBrain } from './../../../../Ia/Decision/IBrain';
@@ -21,7 +22,6 @@ import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { Explosion } from '../../../Unit/Explosion';
 import { Truck } from '../../../Unit/Truck';
-import { SimpleOrder } from '../../../../Ia/Order/SimpleOrder';
 import { GameSettings } from '../../../../Framework/GameSettings';
 import { ReactorField } from '../Bonus/ReactorField';
 import { ISelectable } from '../../../../ISelectable';
@@ -189,7 +189,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 
 				isCreated = true;
 				if (this.Flagcell) {
-					tank.SetOrder(new SimpleOrder(this.Flagcell.GetCell(), tank));
+					tank.SetOrder(new MonitoredOrder(this.Flagcell.GetCell(), tank));
 				}
 				return false;
 			}

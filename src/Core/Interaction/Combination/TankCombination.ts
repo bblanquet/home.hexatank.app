@@ -1,4 +1,4 @@
-import { OrderMonitor } from './../../Ia/Order/OrderMonitor';
+import { MonitoredOrder } from '../../Ia/Order/MonitoredOrder';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { TargetOrder } from '../../Ia/Order/Composite/TargetOrder';
 import { Tank } from '../../Items/Unit/Tank';
@@ -37,7 +37,7 @@ export class TankCombination extends AbstractSingleCombination {
 				tank.SetOrder(order);
 				context.Items.splice(1, 1);
 			} else {
-				const order = new OrderMonitor(cell, tank);
+				const order = new MonitoredOrder(cell, tank);
 				tank.SetOrder(order);
 				context.Items.splice(1, 1);
 			}

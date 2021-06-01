@@ -5,9 +5,7 @@ import { BlockingField } from './BlockingField';
 import { TargetOrder } from '../../../Ia/Order/Composite/TargetOrder';
 import { PatrolOrder } from '../../../Ia/Order/Composite/PatrolOrder';
 import { DiamondTruckOrder } from '../../../Ia/Order/Composite/Diamond/DiamondTruckOrder';
-import { SmartPreciseOrder } from '../../../Ia/Order/Composite/SmartPreciseOrder';
 import { MoneyOrder } from '../../../Ia/Order/Composite/MoneyOrder';
-import { SimpleOrder } from '../../../Ia/Order/SimpleOrder';
 import { Headquarter } from './Hq/Headquarter';
 import { IField } from './IField';
 import { BonusField } from './Bonus/BonusField';
@@ -20,12 +18,12 @@ import { SpeedFieldMenuItem } from '../../../Menu/Buttons/SpeedFieldMenuItem';
 import { OrderKind } from '../../../Ia/Order/OrderKind';
 import { Vehicle } from '../../Unit/Vehicle';
 import { Cell } from '../Cell';
-import { SmartSimpleOrder } from '../../../Ia/Order/Composite/SmartSimpleOrder';
 import { Truck } from '../../Unit/Truck';
 import { HqFieldOrder } from '../../../Ia/Order/Composite/Diamond/HqFieldOrder';
 import { DiamondFieldOrder } from '../../../Ia/Order/Composite/Diamond/DiamondFieldOrder';
 import { Diamond } from './Diamond';
 import { Tank } from '../../Unit/Tank';
+import { MonitoredOrder } from '../../../Ia/Order/MonitoredOrder';
 
 export class TypeTranslator {
 	public static IsSpecialField(cell: IField): boolean {
@@ -46,12 +44,10 @@ export class TypeTranslator {
 	}
 
 	public static SetOrder(v: Vehicle, dest: Cell[], kind: OrderKind): void {
-		if (kind === OrderKind.Simple) {
-			v.SetOrder(new SimpleOrder(dest[0], v));
-		} else if (kind === OrderKind.Smart) {
-			v.SetOrder(new SmartPreciseOrder(dest[0], v));
+		if (kind === OrderKind.Smart) {
+			v.SetOrder(new MonitoredOrder(dest[0], v));
 		} else if (kind === OrderKind.SimpleSmart) {
-			v.SetOrder(new SmartSimpleOrder(dest[0], v));
+			v.SetOrder(new MonitoredOrder(dest[0], v));
 		} else if (kind === OrderKind.Target) {
 			v.SetOrder(new TargetOrder(v as Tank, (dest[0].GetOccupier() as any) as AliveItem));
 		} else if (kind === OrderKind.Patrol) {

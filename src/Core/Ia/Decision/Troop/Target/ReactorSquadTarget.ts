@@ -4,13 +4,13 @@ import { ISquadTarget } from './ISquadTarget';
 import { Cell } from '../../../../Items/Cell/Cell';
 import { BasicField } from '../../../../Items/Cell/Field/BasicField';
 import { Tank } from '../../../../Items/Unit/Tank';
-import { SmartSimpleOrder } from '../../../Order/Composite/SmartSimpleOrder';
+import { MonitoredOrder } from '../../../Order/MonitoredOrder';
 
 export class ReactorSquadTarget implements ISquadTarget {
 	constructor(private _cell: Cell, private _hqSquad: Headquarter) {}
 
 	Attack(tank: Tank): void {
-		tank.SetOrder(new SmartSimpleOrder(this._cell, tank));
+		tank.SetOrder(new MonitoredOrder(this._cell, tank));
 	}
 
 	GetCell(): Cell {

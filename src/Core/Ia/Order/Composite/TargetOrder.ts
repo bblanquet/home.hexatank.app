@@ -7,11 +7,11 @@ import { Tank } from '../../../Items/Unit/Tank';
 import { Order } from '../Order';
 import { OrderKind } from '../OrderKind';
 import { OrderState } from '../OrderState';
-import { SmartSimpleOrder } from './SmartSimpleOrder';
+import { MonitoredOrder } from '../MonitoredOrder';
 
 export class TargetOrder extends Order {
 	private _targetUi: BasicItem;
-	private _currentOrder: SmartSimpleOrder;
+	private _currentOrder: MonitoredOrder;
 	private _currentcell: Cell;
 
 	constructor(private _v: Tank, private _target: AliveItem) {
@@ -42,7 +42,7 @@ export class TargetOrder extends Order {
 
 		if (this.GetState() === OrderState.None) {
 			this._currentcell = this._target.GetCurrentCell();
-			this.SetCurrentOrder(new SmartSimpleOrder(this._currentcell, this._v));
+			this.SetCurrentOrder(new MonitoredOrder(this._currentcell, this._v));
 			this.SetState(OrderState.Pending);
 			this.ShowUi();
 		}
@@ -50,12 +50,12 @@ export class TargetOrder extends Order {
 		if (this._target.GetCurrentCell() !== this._currentcell && !this._v.HasNextCell()) {
 			this._currentOrder.Cancel();
 			this._currentcell = this._target.GetCurrentCell();
-			this.SetCurrentOrder(new SmartSimpleOrder(this._currentcell, this._v));
+			this.SetCurrentOrder(new MonitoredOrder(this._currentcell, this._v));
 		}
 
 		if (this._currentOrder.IsDone()) {
 			if (this._currentOrder.GetState() !== OrderState.Passed) {
-				this.SetCurrentOrder(new SmartSimpleOrder(this._currentcell, this._v));
+				this.SetCurrentOrder(new MonitoredOrder(this._currentcell, this._v));
 			} else {
 				this.SetState(OrderState.Passed);
 				return;
@@ -79,7 +79,7 @@ export class TargetOrder extends Order {
 		);
 	}
 
-	private SetCurrentOrder(order: SmartSimpleOrder): void {
+	private SetCurrentOrder(order: MonitoredOrder): void {
 		this.Clear();
 		this._currentOrder = order;
 		this._currentOrder.OnPathCreated.On(this.InvokePathCreated.bind(this));

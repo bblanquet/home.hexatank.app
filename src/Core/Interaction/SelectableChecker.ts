@@ -10,6 +10,9 @@ export class SelectableChecker implements ISelectableChecker {
 	constructor(private _playerIdentity: Identity) {}
 
 	public IsSelectable(item: Item): boolean {
+		if (!this._playerIdentity) {
+			return false;
+		}
 		if (item instanceof Cell) {
 			return true;
 		} else if (item instanceof Vehicle) {
@@ -26,6 +29,9 @@ export class SelectableChecker implements ISelectableChecker {
 	}
 
 	public IsSelectableWithCell(item: Item, cell: Cell): boolean {
+		if (!this._playerIdentity) {
+			return false;
+		}
 		if (item instanceof Cell) {
 			return true;
 		} else if (item instanceof ReactorField) {

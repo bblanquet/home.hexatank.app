@@ -1,4 +1,4 @@
-import { SmartPreciseOrder } from './SmartPreciseOrder';
+import { MonitoredOrder } from '../MonitoredOrder';
 import { Order } from './../Order';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { Cell } from '../../../Items/Cell/Cell';
@@ -6,7 +6,7 @@ import { FarmField } from '../../../Items/Cell/Field/Bonus/FarmField';
 import { OrderKind } from './../OrderKind';
 
 export class MoneyOrder extends Order {
-	private _currentOrder: SmartPreciseOrder;
+	private _currentOrder: MonitoredOrder;
 
 	constructor(private _v: Vehicle) {
 		super();
@@ -71,13 +71,13 @@ export class MoneyOrder extends Order {
 		for (let i = 1; i < 6; i++) {
 			if (this.HasFullMoneyCell(i)) {
 				const cell = this.GetFirstFullMoneyCell(i);
-				this.SetCurrentOrder(new SmartPreciseOrder(cell, this._v));
+				this.SetCurrentOrder(new MonitoredOrder(cell, this._v));
 				return;
 			}
 		}
 	}
 
-	private SetCurrentOrder(order: SmartPreciseOrder): void {
+	private SetCurrentOrder(order: MonitoredOrder): void {
 		this.Clear();
 		this._currentOrder = order;
 		this._currentOrder.OnPathCreated.On(this.InvokePathCreated.bind(this));

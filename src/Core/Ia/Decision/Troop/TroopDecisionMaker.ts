@@ -5,10 +5,9 @@ import { Cell } from '../../../Items/Cell/Cell';
 import { Tank } from '../../../Items/Unit/Tank';
 import { IaArea } from '../Utils/IaArea';
 import { TickTimer } from '../../../Utils/Timer/TickTimer';
-import { SimpleOrder } from '../../Order/SimpleOrder';
 import { AliveItem } from '../../../Items/AliveItem';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
-import { SmartSimpleOrder } from '../../Order/Composite/SmartSimpleOrder';
+import { MonitoredOrder } from '../../Order/MonitoredOrder';
 
 export class TroopDecisionMaker {
 	private _changePositionTimer: ITimer;
@@ -36,7 +35,7 @@ export class TroopDecisionMaker {
 			this._target = cell.GetShootableEntity();
 			this.Tank.SetMainTarget(this._target);
 		} else {
-			this.Tank.SetOrder(new SmartSimpleOrder(cell, this.Tank));
+			this.Tank.SetOrder(new MonitoredOrder(cell, this.Tank));
 		}
 	}
 
@@ -57,7 +56,7 @@ export class TroopDecisionMaker {
 			if (this.Tank.HasTarget() || this._idleTimer.IsElapsed()) {
 				this._idleTimer = null;
 				this.SetNextDestination();
-				this.Tank.SetOrder(new SmartSimpleOrder(this.CurrentPatrolDestination, this.Tank));
+				this.Tank.SetOrder(new MonitoredOrder(this.CurrentPatrolDestination, this.Tank));
 			}
 		} else {
 			if (this._cancelOrderTimer.IsElapsed()) {

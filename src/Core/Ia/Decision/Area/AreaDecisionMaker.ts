@@ -1,3 +1,4 @@
+import { MonitoredOrder } from '../../Order/MonitoredOrder';
 import { AttackMenuItem } from '../../../Menu/Buttons/AttackMenuItem';
 import { IAreaDecisionMaker } from './IAreaDecisionMaker';
 import { AStarHelper } from '../../AStarHelper';
@@ -16,7 +17,6 @@ import { BasicField } from '../../../Items/Cell/Field/BasicField';
 import { AStarEngine } from '../../AStarEngine';
 import { ReactorAreaState } from '../Utils/ReactorAreaState';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
-import { SmartSimpleOrder } from '../../Order/Composite/SmartSimpleOrder';
 
 export class AreaDecisionMaker implements IAreaDecisionMaker {
 	public HasReceivedRequest: boolean;
@@ -117,7 +117,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 				bestTroopRoads.Get(coordinate).forEach((troopSituation) => {
 					this.LogOrder(troopSituation);
 					troopSituation.Troop.Tank.SetOrder(
-						new SmartSimpleOrder(troopSituation.CurrentDestination.Destination, troopSituation.Troop.Tank)
+						new MonitoredOrder(troopSituation.CurrentDestination.Destination, troopSituation.Troop.Tank)
 					);
 				});
 			});

@@ -1,9 +1,9 @@
-import { SmartSimpleOrder } from '../../Ia/Order/Composite/SmartSimpleOrder';
 import { Truck } from '../../Items/Unit/Truck';
 import { Cell } from '../../Items/Cell/Cell';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
+import { MonitoredOrder } from '../../Ia/Order/MonitoredOrder';
 
 export class TruckCombination extends AbstractSingleCombination {
 	IsMatching(context: CombinationContext): boolean {
@@ -18,7 +18,7 @@ export class TruckCombination extends AbstractSingleCombination {
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
 			var vehicle = <Vehicle>context.Items[0];
-			var order = new SmartSimpleOrder(<Cell>context.Items[1], vehicle);
+			var order = new MonitoredOrder(<Cell>context.Items[1], vehicle);
 			vehicle.SetOrder(order);
 			context.Items.splice(1, 1);
 			return true;

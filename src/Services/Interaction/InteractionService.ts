@@ -24,13 +24,14 @@ export class InteractionService implements IInteractionService<GameContext> {
 	Register(manager: PIXI.InteractionManager, gameContext: GameContext): void {
 		this._multiSelectionContext = new MultiSelectionContext();
 		this._inputNotifier = new InputNotifier();
-		const checker = new SelectableChecker(gameContext.GetPlayerHq().Identity);
+		const checker = new SelectableChecker(gameContext.GetPlayerHq() ? gameContext.GetPlayerHq().Identity : null);
 		this._interaction = new InteractionContext(
 			this._inputNotifier,
 			new CombinationProvider().GetCombination(checker, this._multiSelectionContext, gameContext),
 			checker,
 			this._layerService.GetViewport()
 		);
+
 		this._interaction.Listen();
 		manager.on('pointerdown', this._inputNotifier.HandleMouseDown.bind(this._inputNotifier), false);
 		manager.on('pointermove', this._inputNotifier.HandleMouseMove.bind(this._inputNotifier), false);

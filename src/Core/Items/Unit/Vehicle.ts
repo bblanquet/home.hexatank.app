@@ -426,7 +426,7 @@ export abstract class Vehicle extends AliveItem
 
 		this.ChangeOrder();
 		if (this.HasOrder()) {
-			this._order.Do();
+			this._order.Update();
 		}
 
 		this._currentCell.GetField().Support(this);

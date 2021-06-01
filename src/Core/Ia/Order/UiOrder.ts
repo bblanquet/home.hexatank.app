@@ -11,8 +11,8 @@ export class UiOrder {
 	private _items: Dictionnary<BasicItem>;
 
 	constructor(private _order: IOrder) {
-		this._order.OnPathCreated.On(this.PathCreated.bind(this));
-		this._order.OnNextCell.On(this.NextCell.bind(this));
+		this._order.OnPathFound.On(this.PathCreated.bind(this));
+		this._order.OnNextStep.On(this.NextCell.bind(this));
 		this._order.OnStateChanged.On(this.StateChanged.bind(this));
 		this._items = new Dictionnary<BasicItem>();
 		this.SetCellUi(this._order.GetCells());
@@ -66,8 +66,8 @@ export class UiOrder {
 
 	public Clear() {
 		if (this._order) {
-			this._order.OnPathCreated.Clear();
-			this._order.OnNextCell.Clear();
+			this._order.OnPathFound.Clear();
+			this._order.OnNextStep.Clear();
 			this._order.OnStateChanged.Clear();
 		}
 		if (this._items) {

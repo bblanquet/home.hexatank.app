@@ -6,8 +6,8 @@ import { OrderState } from './OrderState';
 
 export abstract class Order implements IOrder {
 	private _state: OrderState;
-	public OnPathCreated: LiteEvent<Cell[]> = new LiteEvent<Cell[]>();
-	public OnNextCell: LiteEvent<Cell> = new LiteEvent<Cell>();
+	public OnPathFound: LiteEvent<Cell[]> = new LiteEvent<Cell[]>();
+	public OnNextStep: LiteEvent<Cell> = new LiteEvent<Cell>();
 	public OnStateChanged: LiteEvent<OrderState> = new LiteEvent<OrderState>();
 	constructor() {
 		this._state = OrderState.None;
@@ -23,7 +23,9 @@ export abstract class Order implements IOrder {
 
 	public IsDone(): boolean {
 		return (
-			this._state === OrderState.Failed || this._state === OrderState.Passed || this._state === OrderState.Cancel
+			this.GetState() === OrderState.Failed ||
+			this.GetState() === OrderState.Passed ||
+			this.GetState() === OrderState.Cancel
 		);
 	}
 
@@ -35,7 +37,7 @@ export abstract class Order implements IOrder {
 		this.SetState(OrderState.Cancel);
 	}
 
-	protected SetState(state: OrderState): void {
+	public SetState(state: OrderState): void {
 		const previousState = this._state;
 		this._state = state;
 		if (previousState !== state) {
@@ -43,5 +45,5 @@ export abstract class Order implements IOrder {
 		}
 	}
 
-	abstract Do(): void;
+	abstract Update(): void;
 }

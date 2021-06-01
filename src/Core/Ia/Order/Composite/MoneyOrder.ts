@@ -1,41 +1,35 @@
 import { MonitoredOrder } from '../MonitoredOrder';
-import { Order } from './../Order';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { Cell } from '../../../Items/Cell/Cell';
 import { FarmField } from '../../../Items/Cell/Field/Bonus/FarmField';
-import { OrderKind } from './../OrderKind';
+import { ParentOrder } from '../ParentOrder';
 
-export class MoneyOrder extends Order {
-	private _currentOrder: MonitoredOrder;
-
+export class MoneyOrder extends ParentOrder {
 	constructor(private _v: Vehicle) {
 		super();
 	}
 
 	public GetArrivals(): Cell[] {
-		if (this._currentOrder) {
-			return this._currentOrder.GetArrivals();
+		if (this.CurrentOrder) {
+			return this.CurrentOrder.GetArrivals();
 		}
 		return [];
 	}
 
-	public GetKind(): OrderKind {
-		return OrderKind.Money;
-	}
 	public GetCells(): Cell[] {
-		if (this._currentOrder) {
-			return this._currentOrder.GetCells();
+		if (this.CurrentOrder) {
+			return this.CurrentOrder.GetCells();
 		} else {
 			return [];
 		}
 	}
 
-	Do(): void {
-		if (this._currentOrder) {
-			if (this._currentOrder.IsDone()) {
+	Update(): void {
+		if (this.CurrentOrder) {
+			if (this.CurrentOrder.IsDone()) {
 				this.TryToFindMoneyField();
 			} else {
-				this._currentOrder.Do();
+				this.CurrentOrder.Update();
 			}
 		} else {
 			this.TryToFindMoneyField();
@@ -44,8 +38,8 @@ export class MoneyOrder extends Order {
 
 	public Cancel(): void {
 		super.Cancel();
-		if (this._currentOrder) {
-			this._currentOrder.Cancel();
+		if (this.CurrentOrder) {
+			this.CurrentOrder.Cancel();
 		}
 	}
 
@@ -75,27 +69,5 @@ export class MoneyOrder extends Order {
 				return;
 			}
 		}
-	}
-
-	private SetCurrentOrder(order: MonitoredOrder): void {
-		this.Clear();
-		this._currentOrder = order;
-		this._currentOrder.OnPathCreated.On(this.InvokePathCreated.bind(this));
-		this._currentOrder.OnNextCell.On(this.InvokeNextCell.bind(this));
-	}
-
-	private Clear() {
-		if (this._currentOrder) {
-			this._currentOrder.OnPathCreated.Off(this.InvokePathCreated.bind(this));
-			this._currentOrder.OnNextCell.Off(this.InvokeNextCell.bind(this));
-		}
-	}
-
-	private InvokePathCreated(src: any, cells: Cell[]): void {
-		this.OnPathCreated.Invoke(this, cells);
-	}
-
-	private InvokeNextCell(src: any, cell: Cell): void {
-		this.OnNextCell.Invoke(this, cell);
 	}
 }

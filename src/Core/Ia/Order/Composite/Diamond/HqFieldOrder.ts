@@ -2,14 +2,12 @@ import { HeadQuarterField } from './../../../../Items/Cell/Field/Hq/HeadquarterF
 import { IHeadquarter } from './../../../../Items/Cell/Field/Hq/IHeadquarter';
 import { Cell } from '../../../../Items/Cell/Cell';
 import { Vehicle } from '../../../../Items/Unit/Vehicle';
-import { isNullOrUndefined } from '../../../../Utils/ToolBox';
-import { ShieldField } from '../../../../Items/Cell/Field/Bonus/ShieldField';
 import { AStarEngine } from '../../../AStarEngine';
 import { AStarHelper } from '../../../AStarHelper';
 import { MonitoredOrder } from '../../MonitoredOrder';
+import { TypeTranslator } from '../../../../Items/Cell/Field/TypeTranslator';
 
 export class HqFieldOrder {
-	private _monitoredOrder: MonitoredOrder;
 	private _hq: IHeadquarter;
 	private _vehicule: Vehicle;
 
@@ -19,13 +17,12 @@ export class HqFieldOrder {
 	}
 
 	public GetOrder(): MonitoredOrder {
-		const cell = this.GetHqField();
-		if (cell) {
-			this._monitoredOrder = new MonitoredOrder(cell, this._vehicule);
+		const hqField = this.GetHqField();
+		if (hqField) {
+			return new MonitoredOrder(hqField, this._vehicule);
 		} else {
-			this._monitoredOrder = new MonitoredOrder(this._vehicule.GetCurrentCell(), this._vehicule);
+			return null;
 		}
-		return this._monitoredOrder;
 	}
 
 	private GetHqField(): Cell {
@@ -38,26 +35,19 @@ export class HqFieldOrder {
 	}
 
 	private GetHqRoad(): Array<Cell> {
-		const filter = (c: Cell) => !isNullOrUndefined(c) && this.IsHqAccess(c);
-		const cost = (c: Cell) => AStarHelper.GetBasicCost(c);
-		const cells = new AStarEngine<Cell>(filter, cost).GetPath(
-			this._vehicule.GetCurrentCell(),
-			this._hq.GetCell(),
-			true
-		);
-
+		let cells = new Array<Cell>();
+		const around = this._hq.GetCell().GetAllNeighbourhood(1);
+		const candidateRoads = around.map((n) => this.GetRoad(n)).filter((n) => n);
+		if (0 < candidateRoads.length) {
+			const shortest = Math.min(...candidateRoads.map((c) => c.length));
+			cells = candidateRoads.find((r) => r.length === shortest);
+		}
 		return cells;
 	}
 
-	private IsHqAccess(cell: Cell): boolean {
-		const field = cell.GetField();
-		if (field instanceof ShieldField) {
-			const shield = field as ShieldField;
-			return !shield.IsEnemy(this._vehicule.Identity);
-		}
-		if (this._hq.GetCell() === cell) {
-			return true;
-		}
-		return !cell.IsBlocked();
+	private GetRoad(cell: Cell) {
+		const filter = (c: Cell) => c && TypeTranslator.IsAccessible(c, this._vehicule.Identity);
+		const cost = (c: Cell) => AStarHelper.GetBasicCost(c);
+		return new AStarEngine<Cell>(filter, cost).GetPath(this._vehicule.GetCurrentCell(), cell, true);
 	}
 }

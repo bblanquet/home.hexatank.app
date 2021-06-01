@@ -1,12 +1,12 @@
+import { TypeTranslator } from './../../../../Items/Cell/Field/TypeTranslator';
 import { DiamondField } from './../../../../Items/Cell/Field/DiamondField';
 import { MonitoredOrder } from './../../MonitoredOrder';
 import { Cell } from '../../../../Items/Cell/Cell';
 import { Diamond } from '../../../../Items/Cell/Field/Diamond';
 import { Vehicle } from '../../../../Items/Unit/Vehicle';
-import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 import { AStarEngine } from '../../../AStarEngine';
 import { AStarHelper } from '../../../AStarHelper';
-import { ShieldField } from '../../../../Items/Cell/Field/Bonus/ShieldField';
+import { Order } from '../../Order';
 
 export class DiamondFieldOrder {
 	private _monitoredOrder: MonitoredOrder;
@@ -18,17 +18,20 @@ export class DiamondFieldOrder {
 		this._diamond = diamond;
 	}
 
-	public GetOrder(): MonitoredOrder {
-		const cell = this.GetDiamondField();
-		if (cell) {
-			this._monitoredOrder = new MonitoredOrder(cell, this._vehicule);
-		} else {
-			this._monitoredOrder = new MonitoredOrder(this._vehicule.GetCurrentCell(), this._vehicule);
-		}
-		return this._monitoredOrder;
+	public GetDiamond(): Diamond {
+		return this._diamond;
 	}
 
-	public IsOrder(order: MonitoredOrder) {
+	public GetOrder(): MonitoredOrder {
+		const diamondField = this.GetDiamondField();
+		if (diamondField) {
+			this._monitoredOrder = new MonitoredOrder(diamondField, this._vehicule);
+			return this._monitoredOrder;
+		}
+		return null;
+	}
+
+	public IsOrder(order: Order) {
 		return this._monitoredOrder === order;
 	}
 
@@ -41,26 +44,18 @@ export class DiamondFieldOrder {
 	}
 
 	private GetDiamondRoad(): Array<Cell> {
-		const filter = (c: Cell) => !isNullOrUndefined(c) && this.IsDiamondAccessible(c);
-		const cost = (c: Cell) => AStarHelper.GetBasicCost(c);
-		const cells = new AStarEngine<Cell>(filter, cost).GetPath(
-			this._vehicule.GetCurrentCell(),
-			this._diamond.GetCell(),
-			true
-		);
-
+		let cells = new Array<Cell>();
+		const around = this._diamond.GetCell().GetAllNeighbourhood(1);
+		const candidateRoads = around.map((n) => this.GetRoad(n)).filter((n) => n);
+		if (0 < candidateRoads.length) {
+			const shortest = Math.min(...candidateRoads.map((c) => c.length));
+			cells = candidateRoads.find((r) => r.length === shortest);
+		}
 		return cells;
 	}
-
-	private IsDiamondAccessible(cell: Cell): boolean {
-		const field = cell.GetField();
-		if (field instanceof ShieldField) {
-			const shield = field as ShieldField;
-			return !shield.IsEnemy(this._vehicule.Identity);
-		}
-		if (field === this._diamond) {
-			return true;
-		}
-		return !cell.IsBlocked();
+	private GetRoad(cell: Cell) {
+		const filter = (c: Cell) => c && TypeTranslator.IsAccessible(c, this._vehicule.Identity);
+		const cost = (c: Cell) => AStarHelper.GetBasicCost(c);
+		return new AStarEngine<Cell>(filter, cost).GetPath(this._vehicule.GetCurrentCell(), cell, true);
 	}
 }

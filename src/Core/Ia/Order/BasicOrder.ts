@@ -1,10 +1,10 @@
+import { TypeTranslator } from './../../Items/Cell/Field/TypeTranslator';
 import { OrderState } from './OrderState';
 import { Order } from './Order';
 import { Cell } from '../../Items/Cell/Cell';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { OrderKind } from './OrderKind';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
-import { ShieldField } from '../../Items/Cell/Field/Bonus/ShieldField';
 
 export class BasicOrder extends Order {
 	protected CurrentStep: Cell;
@@ -16,7 +16,6 @@ export class BasicOrder extends Order {
 			throw 'invalid road';
 		}
 		this.Destination = Road[Road.length - 1];
-		this.SetState(OrderState.None);
 	}
 
 	GetArrivals(): Cell[] {
@@ -34,13 +33,13 @@ export class BasicOrder extends Order {
 		super.Cancel();
 	}
 
-	public Do(): void {
-		if (this.GetState() === OrderState.None) {
+	public Update(): void {
+		if (!this.CurrentStep) {
 			this.SetNextStep();
-			this.SetState(OrderState.Pending);
 		}
+
 		if (this.CurrentStep === this.Vehicle.GetCurrentCell()) {
-			this.OnNextCell.Invoke(this, this.CurrentStep);
+			this.OnNextStep.Invoke(this, this.CurrentStep);
 			if (this.CurrentStep === this.Destination) {
 				this.SetState(OrderState.Passed);
 			} else {
@@ -66,29 +65,16 @@ export class BasicOrder extends Order {
 	}
 
 	private GetNextStep(): Cell {
-		if (isNullOrUndefined(this.Road) || this.Road.length === 0) {
-			return null;
-		}
-
 		const candidate = this.Road.splice(0, 1)[0];
-		if (!this.IsAccessible(candidate)) {
+		if (TypeTranslator.IsAccessible(candidate, this.Vehicle.Identity)) {
+			return candidate;
+		} else {
 			return null;
 		}
-
-		return candidate;
 	}
 
 	public Reset(): void {
 		super.Reset();
 		this.SetState(OrderState.None);
-	}
-
-	private IsAccessible(c: Cell): boolean {
-		const field = c.GetField();
-		if (field instanceof ShieldField) {
-			const shield = field as ShieldField;
-			return !shield.IsEnemy(this.Vehicle.Identity) && !c.HasOccupier();
-		}
-		return !c.IsBlocked();
 	}
 }

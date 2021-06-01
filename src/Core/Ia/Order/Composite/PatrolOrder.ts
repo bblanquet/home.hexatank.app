@@ -59,7 +59,7 @@ export class PatrolOrder extends Order {
 		}
 	}
 
-	public Do(): void {
+	public Update(): void {
 		if (this.GetState() === OrderState.None) {
 			this._currentPatrolcell = this._patrolcells[0];
 			this.SetState(OrderState.Pending);
@@ -71,34 +71,34 @@ export class PatrolOrder extends Order {
 			this._currentPatrolcell = this._patrolcells[index];
 			this.StartMoving();
 		} else {
-			this._currentOrder.Do();
+			this._currentOrder.Update();
 		}
 	}
 
 	private StartMoving() {
 		this.SetCurrentOrder(new MonitoredOrder(this._currentPatrolcell, this._v));
-		this._currentOrder.Do();
+		this._currentOrder.Update();
 	}
 
 	private SetCurrentOrder(order: MonitoredOrder): void {
 		this.Clear();
 		this._currentOrder = order;
-		this._currentOrder.OnPathCreated.On(this.InvokePathCreated.bind(this));
-		this._currentOrder.OnNextCell.On(this.InvokeNextCell.bind(this));
+		this._currentOrder.OnPathFound.On(this.InvokePathCreated.bind(this));
+		this._currentOrder.OnNextStep.On(this.InvokeNextCell.bind(this));
 	}
 
 	private Clear() {
 		if (this._currentOrder) {
-			this._currentOrder.OnPathCreated.Off(this.InvokePathCreated.bind(this));
-			this._currentOrder.OnNextCell.Off(this.InvokeNextCell.bind(this));
+			this._currentOrder.OnPathFound.Off(this.InvokePathCreated.bind(this));
+			this._currentOrder.OnNextStep.Off(this.InvokeNextCell.bind(this));
 		}
 	}
 
 	private InvokePathCreated(src: any, cells: Cell[]): void {
-		this.OnPathCreated.Invoke(this, cells);
+		this.OnPathFound.Invoke(this, cells);
 	}
 
 	private InvokeNextCell(src: any, cell: Cell): void {
-		this.OnNextCell.Invoke(this, cell);
+		this.OnNextStep.Invoke(this, cell);
 	}
 }

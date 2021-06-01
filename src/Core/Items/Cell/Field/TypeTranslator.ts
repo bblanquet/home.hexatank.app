@@ -92,7 +92,9 @@ export class TypeTranslator {
 		}
 
 		const field = cell.GetField();
-		if (field instanceof BonusField) {
+		if (field instanceof BlockingField) {
+			return (field as BlockingField).IsEnemy(item);
+		} else if (field instanceof BonusField) {
 			return (field as BonusField).GetHq().IsEnemy(item);
 		} else if (field instanceof ShieldField) {
 			return (field as ShieldField).GetHq().IsEnemy(item);
@@ -115,6 +117,15 @@ export class TypeTranslator {
 			return e as Headquarter;
 		}
 		throw `TypeTranslator not supposed to be there`;
+	}
+
+	public static IsAccessible(c: Cell, id: Identity): boolean {
+		const field = c.GetField();
+		if (field instanceof ShieldField) {
+			const shield = field as ShieldField;
+			return !shield.IsEnemy(id) && !c.HasOccupier();
+		}
+		return !c.IsBlocked();
 	}
 
 	public static GetIdentity(e: IField): Identity {

@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 
 export default class TextComponent extends Component<
-	{ label: string; value: string; isEditable: boolean; onInput: (e: any) => void },
+	{ label: string; value: string; isEditable: boolean; onInput: (e: any) => void; max: number },
 	{}
 > {
 	constructor() {
@@ -17,6 +17,7 @@ export default class TextComponent extends Component<
 					</span>
 				</div>
 				<input
+					maxLength={this.props.max}
 					type="text"
 					value={this.props.value}
 					onInput={(e: any) => this.props.onInput(e)}

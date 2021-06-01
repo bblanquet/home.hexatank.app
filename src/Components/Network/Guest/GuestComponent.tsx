@@ -70,12 +70,13 @@ export default class GuestComponent extends Component<
 				<SmPanelComponent>
 					<div class="container-center-horizontal">
 						<TextComponent
+							max={15}
 							value={this.state.PlayerName}
 							label={'Name'}
 							isEditable={true}
 							onInput={(e: any) => {
 								if (e.target.value) {
-									this.setState({ PlayerName: e.target.value });
+									this.setState({ PlayerName: (e.target.value as string).substring(0, 15) });
 								} else {
 									this.setState({ PlayerName: '' });
 								}

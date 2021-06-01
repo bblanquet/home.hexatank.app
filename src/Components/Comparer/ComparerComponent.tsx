@@ -126,6 +126,7 @@ export default class ComparerComponent extends Component<
 
 						<div class="container-center-horizontal">
 							<TextComponent
+								max={15}
 								onInput={(e: any) => {}}
 								label={'D1'}
 								isEditable={false}
@@ -133,6 +134,7 @@ export default class ComparerComponent extends Component<
 							/>
 							<div class="small-right-margin" />
 							<TextComponent
+								max={15}
 								onInput={(e: any) => {}}
 								label={'D2'}
 								isEditable={false}

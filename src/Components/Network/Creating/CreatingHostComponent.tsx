@@ -80,29 +80,32 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 					</div>
 
 					<TextComponent
+						max={15}
 						value={this.state.PlayerName}
 						label={'Name'}
 						isEditable={true}
 						onInput={(e: any) => {
-							this.setState({ PlayerName: e.target.value });
+							this.setState({ PlayerName: (e.target.value as string).substring(0, 15) });
 						}}
 					/>
 					<TextComponent
+						max={15}
 						value={this.state.RoomName}
 						label={'Room name'}
 						isEditable={true}
 						onInput={(e: any) => {
-							this.setState({ RoomName: e.target.value });
+							this.setState({ RoomName: (e.target.value as string).substring(0, 15) });
 						}}
 					/>
 					<div class="container-center-horizontal">
 						<Visible isVisible={this.state.HasPassword}>
 							<TextComponent
+								max={15}
 								value={this.state.Password}
 								label={'Password'}
 								isEditable={true}
 								onInput={(e: any) => {
-									this.setState({ Password: e.target.value });
+									this.setState({ Password: (e.target.value as string).substring(0, 15) });
 								}}
 							/>
 						</Visible>

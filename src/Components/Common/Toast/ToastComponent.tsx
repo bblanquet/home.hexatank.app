@@ -36,6 +36,7 @@ export default class ToastComponent extends Component<
 				<div class="absolute-center-bottom full-width">
 					<div class="input-group">
 						<input
+							max={100}
 							type="text"
 							class="form-control no-radius"
 							id="toastMessageBox"

@@ -86,6 +86,24 @@ export class TypeTranslator {
 		throw `TypeTranslator not supposed to be there`;
 	}
 
+	public static HasEnemy(cell: Cell, item: Identity): boolean {
+		if (cell.HasOccupier()) {
+			return ((cell.GetOccupier() as any) as AliveItem).IsEnemy(item);
+		}
+
+		const field = cell.GetField();
+		if (field instanceof BonusField) {
+			return (field as BonusField).GetHq().IsEnemy(item);
+		} else if (field instanceof ShieldField) {
+			return (field as ShieldField).GetHq().IsEnemy(item);
+		} else if (field instanceof ReactorField) {
+			return (field as ReactorField).GetHq().IsEnemy(item);
+		} else if (field instanceof Headquarter) {
+			return (field as Headquarter).IsEnemy(item);
+		}
+		return false;
+	}
+
 	public static GetHq(e: IField): IHeadquarter {
 		if (e instanceof BonusField) {
 			return (e as BonusField).GetHq();

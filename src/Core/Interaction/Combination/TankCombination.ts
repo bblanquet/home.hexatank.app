@@ -1,3 +1,4 @@
+import { TargetMonitoredOrder } from './../../Ia/Order/TargetMonitoredOrder';
 import { MonitoredOrder } from '../../Ia/Order/MonitoredOrder';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { TargetOrder } from '../../Ia/Order/Composite/TargetOrder';
@@ -33,11 +34,11 @@ export class TankCombination extends AbstractSingleCombination {
 				cell.GetShootableEntity().IsEnemy(tank.Identity) &&
 				cell.GetState() === CellState.Visible
 			) {
-				const order = new TargetOrder(tank, cell.GetShootableEntity());
+				const order = new TargetMonitoredOrder(cell, tank);
 				tank.SetOrder(order);
 				context.Items.splice(1, 1);
 			} else {
-				const order = new MonitoredOrder(cell, tank);
+				const order = new TargetMonitoredOrder(cell, tank);
 				tank.SetOrder(order);
 				context.Items.splice(1, 1);
 			}

@@ -1,8 +1,6 @@
+import { PowerContext } from '../../Setup/Context/PowerContext';
+import { PowerBlueprint } from '../../Setup/Blueprint/Power/PowerBlueprint';
 import { IGameAudioManager } from './IGameAudioManager';
-import { GameBlueprint } from './../../Setup/Blueprint/Game/GameBlueprint';
-import { GameContext } from './../../Setup/Context/GameContext';
-import { IBlueprint } from './../../Setup/Blueprint/IBlueprint';
-import { IGameContext } from './../../Setup/Context/IGameContext';
 import { IOrder } from '../../Ia/Order/IOrder';
 import { Factory, FactoryKey } from '../../../Factory';
 import { MapEnv } from '../../Setup/Blueprint/MapEnv';
@@ -10,18 +8,18 @@ import { Missile } from '../../Items/Unit/Missile';
 import { Tank } from '../../Items/Unit/Tank';
 import { AudioArchive } from '../AudioArchiver';
 import { Cell } from '../../Items/Cell/Cell';
-import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Item } from '../../Items/Item';
 import { Turrel } from '../../Items/Unit/Turrel';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { IAudioService } from '../../../Services/Audio/IAudioService';
+import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
 
-export class GameAudioManager implements IGameAudioManager {
+export class PowerAudioManager implements IGameAudioManager {
 	private _soundService: IAudioService;
 	private _audioId: number;
 
-	constructor(private _mapContext: GameBlueprint, private _gameContext: GameContext) {
+	constructor(private _mapContext: PowerBlueprint, private _gameContext: PowerContext) {
 		this._soundService = Factory.Load<IAudioService>(FactoryKey.Audio);
 
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
@@ -30,10 +28,11 @@ export class GameAudioManager implements IGameAudioManager {
 			playerHq.OnReactorAdded.On(this.HandleReactor.bind(this));
 			playerHq.OnCashMissing.On(this.HandleMissingCash.bind(this));
 		}
-		this._gameContext.GetHqs().forEach((hq) => {
-			hq.OnVehicleCreated.On(this.HandleVehicle.bind(this));
-			hq.OnFieldAdded.On(this.HandleFieldChanged.bind(this));
-		});
+
+		this._gameContext.GetPlayerHq().OnVehicleCreated.On(this.HandleVehicle.bind(this));
+		this._gameContext.GetPlayerHq().OnFieldAdded.On(this.HandleFieldChanged.bind(this));
+
+		this.HandleVehicle(this._gameContext.GetPlayerHq(), this._gameContext.GetPlayer() as Tank);
 	}
 
 	public PlayMusic(): void {
@@ -82,7 +81,7 @@ export class GameAudioManager implements IGameAudioManager {
 		this.Play(AudioArchive.powerUp, 0.05);
 	}
 
-	private HandleVehicle(src: Headquarter, vehicule: Vehicle): void {
+	private HandleVehicle(src: IHeadquarter, vehicule: Vehicle): void {
 		if (vehicule instanceof Tank) {
 			const t = vehicule as Tank;
 			t.OnMissileLaunched.On(this.HandleMissile.bind(this));

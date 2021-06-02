@@ -3,7 +3,7 @@ import { IAudioService } from './../Audio/IAudioService';
 import { StatsContext } from './../../Core/Framework/Stats/StatsContext';
 import { BrainInjecter } from './../../Core/Ia/Decision/BrainInjecter';
 import { GameContext } from '../../Core/Setup/Context/GameContext';
-import { GameAudioManager } from '../../Core/Framework/Sound/GameAudioManager';
+import { GameAudioManager } from '../../Core/Framework/Audio/GameAudioManager';
 import { IKeyService } from './../Key/IKeyService';
 import { GameSettings } from './../../Core/Framework/GameSettings';
 import { IInteractionService } from './../Interaction/IInteractionService';

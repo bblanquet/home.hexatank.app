@@ -5,7 +5,7 @@ import { AudioProvider } from './AudioProvider';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
 import { Factory, FactoryKey } from '../../Factory';
-import { IGameAudioManager } from '../../Core/Framework/Sound/IGameAudioManager';
+import { IGameAudioManager } from '../../Core/Framework/Audio/IGameAudioManager';
 
 export class AudioService implements IAudioService {
 	private _sounds: Dictionnary<Howl>;

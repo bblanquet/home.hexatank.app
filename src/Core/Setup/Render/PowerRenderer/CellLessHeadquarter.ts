@@ -80,7 +80,9 @@ export class CellLessHeadquarter implements IHeadquarter {
 	public GetReactors(): Array<ReactorField> {
 		return this._reactors;
 	}
-	AddField(field: Item, cell: Cell): void {}
+	AddField(field: Item, cell: Cell): void {
+		this.OnFieldAdded.Invoke(this, cell);
+	}
 	GetCellEnergy(coo: HexAxial): number {
 		let result = 0;
 		this._reactors.forEach((r) => {

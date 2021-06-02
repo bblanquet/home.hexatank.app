@@ -1,6 +1,6 @@
+import { CamouflageContext } from '../../Setup/Context/CamouflageContext';
 import { IGameAudioManager } from './IGameAudioManager';
-import { IBlueprint } from './../../Setup/Blueprint/IBlueprint';
-import { IGameContext } from './../../Setup/Context/IGameContext';
+import { IBlueprint } from '../../Setup/Blueprint/IBlueprint';
 import { IOrder } from '../../Ia/Order/IOrder';
 import { Factory, FactoryKey } from '../../../Factory';
 import { MapEnv } from '../../Setup/Blueprint/MapEnv';
@@ -17,10 +17,10 @@ export class CamouflageAudioManager implements IGameAudioManager {
 	private _soundService: IAudioService;
 	private _audioId: number;
 
-	constructor(private _mapContext: IBlueprint, private _vehicles: Vehicle[], private _gameContext: IGameContext) {
+	constructor(private _mapContext: IBlueprint, private _gameContext: CamouflageContext) {
 		this._soundService = Factory.Load<IAudioService>(FactoryKey.Audio);
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
-		this._vehicles.forEach((v) => {
+		this._gameContext.GetVehicles().forEach((v) => {
 			this.HandleVehicle(null, v);
 		});
 	}
@@ -56,10 +56,6 @@ export class CamouflageAudioManager implements IGameAudioManager {
 	public StopAll(): void {
 		this._soundService.Stop(this.GetMusic(), this._audioId);
 		this._soundService.Clear();
-	}
-
-	private HandleOverlock(s: any, kind: string): void {
-		this.Play(AudioArchive.powerUp, 0.05);
 	}
 
 	private HandleVehicle(src: Headquarter, vehicule: Vehicle): void {

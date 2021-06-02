@@ -1,4 +1,4 @@
-import { CamouflageAudioManager } from './../../Core/Framework/Sound/CamouflageAudioManager';
+import { CamouflageAudioManager } from '../../Core/Framework/Audio/CamouflageAudioManager';
 import { CamouflageBlueprint } from '../../Core/Setup/Blueprint/Cam/CamouflageBlueprint';
 import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
@@ -16,7 +16,6 @@ import { CellStateSetter } from '../../Core/Items/Cell/CellStateSetter';
 import { GameSettings } from '../../Core/Framework/GameSettings';
 import { CamouflageContext } from '../../Core/Setup/Context/CamouflageContext';
 import { IAudioService } from '../Audio/IAudioService';
-import { GameAudioManager } from '../../Core/Framework/Sound/GameAudioManager';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 
@@ -65,7 +64,7 @@ export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 		this._gameContextService.Register(mapContext);
 		const gameContext = this._gameContextService.Publish();
 		this._interactionService.Register(this._interactionManager, gameContext);
-		this._gameAudioService = new CamouflageAudioManager(mapContext, gameContext.GetVehicles(), gameContext);
+		this._gameAudioService = new CamouflageAudioManager(mapContext, gameContext);
 		this._audioService.Register(this._gameAudioService);
 		gameContext.OnGameStatusChanged.On(this.GameStatusChanged.bind(this));
 

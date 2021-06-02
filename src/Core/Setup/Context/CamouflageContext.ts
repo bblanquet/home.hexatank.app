@@ -1,9 +1,7 @@
-import { isNullOrUndefined } from 'util';
 import { GameStatus } from '../../Framework/GameStatus';
 import { AliveItem } from '../../Items/AliveItem';
 import { Cell } from '../../Items/Cell/Cell';
 import { Item } from '../../Items/Item';
-import { Tank } from '../../Items/Unit/Tank';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Dictionnary } from '../../Utils/Collections/Dictionnary';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
@@ -22,11 +20,11 @@ export class CamouflageContext implements IGameContext {
 
 	//elements
 	private _cells: Dictionnary<Cell>;
-	private _vehicles: Dictionnary<Vehicle> = new Dictionnary<Vehicle>();
+	private _vehicles: Vehicle[];
 	constructor(cells: Cell[], unit: Vehicle, vehicles: Vehicle[], arrivelCell: Cell) {
 		this._cells = Dictionnary.To((c) => c.Coo(), cells);
 		this._unit = unit;
-		this._vehicles = Dictionnary.To((e) => e.Id, vehicles);
+		this._vehicles = vehicles;
 
 		this._unit.OnDestroyed.On(() => {
 			this.OnGameStatusChanged.Invoke(this, GameStatus.Defeat);
@@ -39,11 +37,7 @@ export class CamouflageContext implements IGameContext {
 	}
 
 	public GetVehicles(): Vehicle[] {
-		return this._vehicles.Values();
-	}
-
-	public ExistUnit(id: string): Boolean {
-		return this._vehicles.Exist(id);
+		return this._vehicles;
 	}
 
 	public GetCells(): Cell[] {
@@ -52,22 +46,6 @@ export class CamouflageContext implements IGameContext {
 
 	public GetCell(coo: string): Cell {
 		return this._cells.Get(coo);
-	}
-
-	public GetTank(id: string): Tank {
-		const result = this._vehicles.Get(id);
-		if (isNullOrUndefined(result) || !(result instanceof Tank)) {
-			throw 'synchronized issue';
-		}
-		return result as Tank;
-	}
-
-	public GetUnit(id: string): Vehicle {
-		const result = this._vehicles.Get(id);
-		if (isNullOrUndefined(result)) {
-			throw 'synchronized issue';
-		}
-		return result;
 	}
 
 	GetPlayer(): AliveItem {

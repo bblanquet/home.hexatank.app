@@ -1,3 +1,4 @@
+import { DiamondAudioManager } from './../../Core/Framework/Audio/DiamondAudioManager';
 import { DiamondBlueprint } from './../../Core/Setup/Blueprint/Diamond/DiamondBlueprint';
 import { DiamondContext } from './../../Core/Setup/Context/DiamondContext';
 import { RecordContext } from '../../Core/Framework/Record/RecordContext';
@@ -14,12 +15,16 @@ import * as PIXI from 'pixi.js';
 import { IKeyService } from '../Key/IKeyService';
 import { CellStateSetter } from '../../Core/Items/Cell/CellStateSetter';
 import { GameSettings } from '../../Core/Framework/GameSettings';
+import { IAudioService } from '../Audio/IAudioService';
+import { AudioArchive } from '../../Core/Framework/AudioArchiver';
+import { GameStatus } from '../../Core/Framework/GameStatus';
 
 export class DiamondAppService implements IAppService<DiamondBlueprint> {
 	private _blueprint: DiamondBlueprint;
 	private _app: PIXI.Application;
 	private _appProvider: AppProvider;
 	private _interactionManager: PIXI.InteractionManager;
+	private _gameAudioService: DiamondAudioManager;
 
 	private _gameContextService: IGameContextService<DiamondBlueprint, DiamondContext>;
 	private _interactionService: IInteractionService<DiamondContext>;
@@ -27,6 +32,7 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 	private _updateService: IUpdateService;
 	private _networkService: INetworkService;
 	private _keyService: IKeyService;
+	private _audioService: IAudioService;
 
 	constructor() {
 		this._appProvider = new AppProvider();
@@ -38,6 +44,7 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
 		this._interactionService = Factory.Load<IInteractionService<DiamondContext>>(FactoryKey.DiamondInteraction);
 		this._keyService = Factory.Load<IKeyService>(FactoryKey.Key);
+		this._audioService = Factory.Load<IAudioService>(FactoryKey.Audio);
 	}
 
 	public Register(blueprint: DiamondBlueprint): void {
@@ -55,11 +62,25 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 		const gameContext = this._gameContextService.Publish();
 		this._interactionService.Register(this._interactionManager, gameContext);
 
+		this._gameAudioService = new DiamondAudioManager(blueprint, gameContext);
+		this._audioService.Register(this._gameAudioService);
+		gameContext.OnGameStatusChanged.On(this.GameStatusChanged.bind(this));
+
 		gameContext.GetCells().forEach((c) => {
 			c.AlwaysVisible();
 		});
 		CellStateSetter.SetStates(gameContext.GetCells());
 		this._app.start();
+	}
+
+	private GameStatusChanged(e: any, status: GameStatus) {
+		if (status === GameStatus.Defeat) {
+			this._audioService.Play(AudioArchive.defeat, 0.5, false);
+		}
+
+		if (status === GameStatus.Victory) {
+			this._audioService.Play(AudioArchive.victory, 0.5, false);
+		}
 	}
 
 	GetStats(): StatsContext {
@@ -78,6 +99,8 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 	}
 
 	public Collect(): void {
+		this._gameAudioService.StopAll();
+		this._audioService.Collect();
 		this._interactionManager.destroy();
 		this._gameContextService.Collect();
 		this._interactionService.Collect();
@@ -86,5 +109,6 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 		this._networkService.Collect();
 		this._app.destroy();
 		this._app = null;
+		this._audioService.Reload();
 	}
 }

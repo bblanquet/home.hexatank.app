@@ -1,4 +1,4 @@
-import { AudioService } from './Services/Audio/SoundService';
+import { AudioService } from './Services/Audio/AudioService';
 import { DiamondContextService } from './Services/GameContext/DiamondContextService';
 import { PowerContextService } from './Services/GameContext/PowerContextService';
 import { PowerInteractionService } from './Services/Interaction/PowerInteractionService';
@@ -51,7 +51,6 @@ Factory.Register(FactoryKey.DiamondApp, new DiamondAppService());
 
 Factory.Register(FactoryKey.Campaign, new CampaignService());
 
-window.onload = function() {
-	Factory.Register(FactoryKey.Audio, new AudioService());
-	Factory.Register(FactoryKey.App, new AppService());
-};
+var context = new AudioContext();
+Factory.Register(FactoryKey.Audio, new AudioService());
+Factory.Register(FactoryKey.App, new AppService());

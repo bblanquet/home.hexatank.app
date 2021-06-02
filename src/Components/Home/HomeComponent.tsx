@@ -36,11 +36,6 @@ export default class HomeComponent extends Component<any, any> {
 	private ToBadge(): void {
 		route('/Badge', true);
 	}
-
-	componentDidMount() {}
-
-	componentWillUnmount() {}
-
 	render() {
 		return (
 			<Redirect>

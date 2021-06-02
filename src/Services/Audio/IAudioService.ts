@@ -15,4 +15,5 @@ export interface IAudioService {
 	Exist(content: string): boolean;
 	Clear(): void;
 	Pause(content: string, id?: number): void;
+	PlayLoungeMusic(): void;
 }

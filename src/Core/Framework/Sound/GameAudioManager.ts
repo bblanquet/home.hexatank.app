@@ -10,18 +10,15 @@ import { Cell } from '../../Items/Cell/Cell';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Item } from '../../Items/Item';
-import { Dictionnary } from '../../Utils/Collections/Dictionnary';
 import { Turrel } from '../../Items/Unit/Turrel';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { IAudioService } from '../../../Services/Audio/IAudioService';
 
 export class GameAudioManager {
 	private _soundService: IAudioService;
-	private _vehicleSounds: Dictionnary<number>;
 	private _music: number;
 
 	constructor(private _mapContext: GameBlueprint, private _gameContext: GameContext) {
-		this._vehicleSounds = new Dictionnary<number>();
 		this._soundService = Factory.Load<IAudioService>(FactoryKey.Audio);
 
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
@@ -59,25 +56,15 @@ export class GameAudioManager {
 
 	public PauseAll(): void {
 		this._soundService.Pause(this.GetMusic(), this._music);
-		this._vehicleSounds.Values().forEach((vehicleSound) => {
-			this._soundService.Pause(AudioContent.tankMoving, vehicleSound);
-		});
 	}
 
 	public PlayAll(): void {
 		this._soundService.PlayAgain(this.GetMusic(), this._music, 0.01);
-		this._vehicleSounds.Values().forEach((vehicleSound) => {
-			this._soundService.PlayAgain(AudioContent.tankMoving, vehicleSound);
-		});
 	}
 
 	public StopAll(): void {
 		this._soundService.Stop(this.GetMusic(), this._music);
-		this._vehicleSounds.Values().forEach((vehicleSound) => {
-			this._soundService.Stop(AudioContent.tankMoving, vehicleSound);
-		});
 		this._soundService.Clear();
-		this._vehicleSounds.Clear();
 	}
 
 	private HandleMissingCash(src: any, r: ReactorField): void {
@@ -98,13 +85,7 @@ export class GameAudioManager {
 			t.OnMissileLaunched.On(this.HandleMissile.bind(this));
 		}
 
-		vehicule.OnNextCellChanged.On(this.HandleMusic.bind(this));
-		vehicule.OnNextCellChanged.On(this.HandleMusic.bind(this));
 		vehicule.OnOrderChanging.On(this.HandleOrder.bind(this));
-
-		vehicule.OnTranslateStarted.On(this.HandleMusic.bind(this));
-		vehicule.OnTranslateStopped.On(this.HandleStop.bind(this));
-		vehicule.OnDestroyed.On(this.HandleDestroyed.bind(this));
 
 		if (vehicule.GetCurrentCell().IsVisible()) {
 			this.Play(AudioContent.unitPopup, 0.2);
@@ -147,34 +128,6 @@ export class GameAudioManager {
 		}
 	}
 
-	private HandleMusic(src: any, cell: Cell): void {
-		const v = src as Vehicle;
-		if (v.GetCurrentCell().IsVisible()) {
-			if (!this._vehicleSounds.Exist(v.Id)) {
-				const soundId = this.Play(AudioContent.tankMoving, 0.075, true);
-				this._vehicleSounds.Add(v.Id, soundId);
-			}
-		}
-	}
-
-	private HandleDestroyed(src: any, cell: Cell): void {
-		const vehicle = src as Vehicle;
-		this.StopEngine(vehicle);
-		this.Play(AudioContent.death2, 0.5);
-	}
-
-	private HandleStop(src: any, cell: Cell): void {
-		const vehicle = src as Vehicle;
-		this.StopEngine(vehicle);
-	}
-
-	private StopEngine(vehicle: Vehicle) {
-		if (this._soundService.Exist(AudioContent.tankMoving)) {
-			this._soundService.Stop(AudioContent.tankMoving, this._vehicleSounds.Get(vehicle.Id));
-			this._vehicleSounds.Remove(vehicle.Id);
-		}
-	}
-
 	private HandleFieldChanged(src: any, cell: Cell): void {
 		if (cell.IsVisible()) {
 			this.Play(AudioContent.construction, 0.1);
@@ -182,6 +135,6 @@ export class GameAudioManager {
 	}
 
 	private HandleSelection(src: any, vehicule: Item): void {
-		this.Play(AudioContent.selection, 0.2);
+		this.Play(AudioContent.selection, 0.5);
 	}
 }

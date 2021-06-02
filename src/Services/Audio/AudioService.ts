@@ -1,24 +1,35 @@
-import { GameAudioManager } from './../../Core/Framework/Sound/GameAudioManager';
+import { GameAudioManager } from '../../Core/Framework/Sound/GameAudioManager';
 import { IAudioService } from './IAudioService';
-import { Dictionnary } from './../../Core/Utils/Collections/Dictionnary';
+import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
 import { GameContext } from '../../Core/Setup/Context/GameContext';
 import { Howl } from 'howler';
 import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
 import { AudioProvider } from './AudioProvider';
+import { AudioContent } from '../../Core/Framework/AudioArchiver';
+import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
+import { Factory, FactoryKey } from '../../Factory';
 
 export class AudioService implements IAudioService {
 	private _sounds: Dictionnary<Howl>;
 	private _soundManager: GameAudioManager;
-	private _isMute: boolean = true;
+	private _isMute: boolean = false;
 	private _playingSounds: Dictionnary<number>;
+	private _profilService: IPlayerProfilService;
 
 	constructor() {
-		this.Reload();
 		this._playingSounds = new Dictionnary<number>();
-		this._isMute = true;
+		this._profilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
+		this.Reload();
+	}
+	PlayLoungeMusic(): void {
+		this.Play(AudioContent.menuMusic, 0.005, true);
 	}
 	Reload(): void {
 		this._sounds = new AudioProvider().GetContent();
+		this._isMute = this._profilService.GetProfil().IsMute;
+		if (!this._isMute) {
+			this.PlayLoungeMusic();
+		}
 	}
 
 	Collect(): void {
@@ -31,10 +42,14 @@ export class AudioService implements IAudioService {
 
 	On(): void {
 		this._isMute = false;
+		this._profilService.GetProfil().IsMute = this._isMute;
+		this._profilService.Update();
 	}
 
 	Off(): void {
 		this._isMute = true;
+		this._profilService.GetProfil().IsMute = this._isMute;
+		this._profilService.Update();
 	}
 
 	IsMute(): boolean {
@@ -75,9 +90,9 @@ export class AudioService implements IAudioService {
 
 	Play(content: string, volume: number, loop?: boolean): number | null {
 		if (!this._isMute) {
-			const sound = this._sounds.Get(content).play();
 			this._sounds.Get(content).volume(volume);
 			this._sounds.Get(content).loop(loop);
+			const sound = this._sounds.Get(content).play();
 			this._playingSounds.Add(content, sound);
 			return sound;
 		}

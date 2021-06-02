@@ -12,7 +12,7 @@ export const AudioContent = {
 
 	construction: './audio/construction.wav',
 
-	tankMoving: './audio/tankMoving.wav',
+	tankMoving: './audio/engine.wav',
 	vehicle: './audio/vehicle.wav',
 
 	shot: './audio/shot.wav',
@@ -25,7 +25,7 @@ export const AudioContent = {
 	unitPopup: './audio/unitPopup.wav',
 	unitPopup2: './audio/shotNoise.wav',
 	fieldPopup: './audio/fieldPopup.mp3',
-	selection: './audio/selection.wav',
+	selection: './audio/blop.mp3',
 	explosion: './audio/explosion3.wav',
 	death: './audio/death.ogg',
 	death2: './audio/death2.wav',

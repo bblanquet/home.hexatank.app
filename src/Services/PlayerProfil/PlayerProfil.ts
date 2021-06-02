@@ -1,6 +1,7 @@
 import { RecordObject } from './../../Core/Framework/Record/RecordObject';
 export class PlayerProfil {
 	public LastPlayerName: string = 'John doe';
+	public IsMute: boolean = false;
 
 	public Records: RecordObject[] = [];
 	public Points: number = 0;
@@ -13,5 +14,6 @@ export class PlayerProfil {
 	//stats
 	public CellCount: number = 0;
 	public DeadCount: number = 0;
+	public VictoryCount: number = 0;
 	constructor() {}
 }

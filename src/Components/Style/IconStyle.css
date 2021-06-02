@@ -743,7 +743,7 @@
 	background-image: url('{{postension}}svg/components/badge/campaignBadge.svg');
 }
 
-body:after {
+body:before {
 	content: url('{{postension}}svg/components/program6Logo.svg')
 		url('{{postension}}svg/components/program6LogoBackground.svg') url('{{postension}}svg/components/option.svg')
 		url('{{postension}}svg/nature/diamondStone.svg') url('{{postension}}svg/nature/diamondStone.svg')

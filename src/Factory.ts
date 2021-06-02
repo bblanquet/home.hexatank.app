@@ -39,7 +39,9 @@ export enum FactoryKey {
 	RecordInteraction,
 	CamouflageInteraction,
 	PowerInteraction,
-	DiamondInteraction
+	DiamondInteraction,
+
+	Analyze
 }
 
 export interface IFactorisable {

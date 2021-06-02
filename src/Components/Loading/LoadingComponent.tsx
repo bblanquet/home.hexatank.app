@@ -1,13 +1,23 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { SpriteProvider } from '../../Core/Framework/SpriteProvider';
+import { Factory, FactoryKey } from '../../Factory';
+import { IAnalyzeService } from '../../Services/Analyse/IAnalyzeService';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import PanelComponent from '../Common/Panel/PanelComponent';
 
 export default class LoadingComponent extends Component<any, { percentage: number }> {
+	private _analyzerService: IAnalyzeService;
+
+	constructor() {
+		super();
+		this._analyzerService = Factory.Load<IAnalyzeService>(FactoryKey.Analyze);
+	}
+
 	componentDidMount() {
+		this._analyzerService.Analyze('main page');
 		setTimeout(() => {
 			const listener = SpriteProvider.LoadAll();
 			listener.On((obj: any, percentage: number) => {

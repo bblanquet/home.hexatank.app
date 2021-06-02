@@ -45,13 +45,16 @@
 		"webpack-dev-server": "^3.11.0"
 	},
 	"dependencies": {
+		"@analytics/google-analytics": "^0.5.3",
 		"@fortawesome/fontawesome-free": "^5.12.1",
 		"@popperjs/core": "^2.5.3",
 		"@types/chart.js": "^2.9.24",
+		"@types/google.analytics": "0.0.41",
 		"@types/lodash.isequal": "^4.5.5",
 		"@types/socket.io-client": "^1.4.35",
 		"@types/svg-sprite-loader": "^3.9.1",
 		"@types/toastr": "^2.1.37",
+		"analytics": "^0.7.5",
 		"bootstrap": "^4.5.2",
 		"chart.js": "^2.9.4",
 		"howler": "^2.2.1",

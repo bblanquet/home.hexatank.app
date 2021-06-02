@@ -1,3 +1,4 @@
+import { AnalyzeService } from './Services/Analyse/AnalyzeService';
 import { AudioService } from './Services/Audio/AudioService';
 import { DiamondContextService } from './Services/GameContext/DiamondContextService';
 import { PowerContextService } from './Services/GameContext/PowerContextService';
@@ -54,3 +55,4 @@ Factory.Register(FactoryKey.PowerApp, new PowerAppService());
 Factory.Register(FactoryKey.DiamondApp, new DiamondAppService());
 
 Factory.Register(FactoryKey.Campaign, new CampaignService());
+Factory.Register(FactoryKey.Analyze, new AnalyzeService());

@@ -12,7 +12,7 @@ import { Identity } from '../../Items/Identity';
 
 export class PowerContext implements IHqGameContext {
 	public OnPatrolSetting: LiteEvent<Boolean> = new LiteEvent<Boolean>();
-	public GameStatusChanged: LiteEvent<GameStatus> = new LiteEvent<GameStatus>();
+	public OnGameStatusChanged: LiteEvent<GameStatus> = new LiteEvent<GameStatus>();
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
 	private _cells: Dictionnary<Cell>;
 	constructor(
@@ -23,7 +23,7 @@ export class PowerContext implements IHqGameContext {
 	) {
 		this._cells = Dictionnary.To((c) => c.Coo(), cells);
 		this._target.OnDestroyed.On((source: any, data: Item) => {
-			this.GameStatusChanged.Invoke(this, GameStatus.Won);
+			this.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
 		});
 	}
 

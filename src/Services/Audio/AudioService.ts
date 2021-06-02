@@ -1,17 +1,15 @@
-import { GameAudioManager } from '../../Core/Framework/Sound/GameAudioManager';
 import { IAudioService } from './IAudioService';
 import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
-import { GameContext } from '../../Core/Setup/Context/GameContext';
 import { Howl } from 'howler';
-import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
 import { AudioProvider } from './AudioProvider';
-import { AudioContent } from '../../Core/Framework/AudioArchiver';
+import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
 import { Factory, FactoryKey } from '../../Factory';
+import { IGameAudioManager } from '../../Core/Framework/Sound/IGameAudioManager';
 
 export class AudioService implements IAudioService {
 	private _sounds: Dictionnary<Howl>;
-	private _soundManager: GameAudioManager;
+	private _gameAudioManager: IGameAudioManager;
 	private _isMute: boolean = false;
 	private _playingSounds: Dictionnary<number>;
 	private _profilService: IPlayerProfilService;
@@ -22,7 +20,7 @@ export class AudioService implements IAudioService {
 		this.Reload();
 	}
 	PlayLoungeMusic(): void {
-		this.Play(AudioContent.menuMusic, 0.005, true);
+		this.Play(AudioArchive.menuMusic, 0.005, true);
 	}
 	Reload(): void {
 		this._sounds = new AudioProvider().GetContent();
@@ -36,8 +34,8 @@ export class AudioService implements IAudioService {
 		this.On();
 	}
 
-	GetSoundManager(): GameAudioManager {
-		return this._soundManager;
+	GetGameAudioManager(): IGameAudioManager {
+		return this._gameAudioManager;
 	}
 
 	On(): void {
@@ -111,14 +109,14 @@ export class AudioService implements IAudioService {
 		this._sounds.Clear();
 	}
 
-	Register(mapContext: GameBlueprint, gameContext: GameContext): void {
+	Register(gameAudioManager: IGameAudioManager): void {
 		const copy = new Dictionnary<Howl>();
 		this._sounds.Keys().forEach((k) => {
 			copy.Add(k, this._sounds.Get(k));
 		});
-		this._soundManager = new GameAudioManager(mapContext, gameContext);
+		this._gameAudioManager = gameAudioManager;
 		if (!this.IsMute()) {
-			this._soundManager.StartMusic();
+			this._gameAudioManager.PlayMusic();
 		}
 	}
 }

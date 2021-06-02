@@ -1,47 +1,50 @@
 import { SpriteProvider } from '../../Core/Framework/SpriteProvider';
 import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
-import { AudioContent } from '../../Core/Framework/AudioArchiver';
+import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 import { Howl } from 'howler';
 
 export class AudioProvider {
 	public GetContent(): Dictionnary<Howl> {
 		const sounds = new Dictionnary<Howl>();
 		[
-			AudioContent.ayaya,
-			AudioContent.copyThat,
-			AudioContent.engage,
-			AudioContent.fireAtWills,
-			AudioContent.sirYesSir,
-			AudioContent.transmissionReceived,
-			AudioContent.construction,
-			AudioContent.allClear,
-			AudioContent.moveOut,
-			AudioContent.understood,
+			AudioArchive.ayaya,
+			AudioArchive.copyThat,
+			AudioArchive.engage,
+			AudioArchive.fireAtWills,
+			AudioArchive.sirYesSir,
+			AudioArchive.transmissionReceived,
+			AudioArchive.construction,
+			AudioArchive.allClear,
+			AudioArchive.moveOut,
+			AudioArchive.understood,
 
-			AudioContent.ok,
-			AudioContent.nok,
-			AudioContent.unitPopup,
-			AudioContent.unitPopup2,
-			AudioContent.fieldPopup,
-			AudioContent.selection,
-			AudioContent.explosion,
-			AudioContent.tankMoving,
-			AudioContent.vehicle,
+			AudioArchive.ok,
+			AudioArchive.nok,
+			AudioArchive.unitPopup,
+			AudioArchive.unitPopup2,
+			AudioArchive.fieldPopup,
+			AudioArchive.selection,
+			AudioArchive.explosion,
+			AudioArchive.tankMoving,
+			AudioArchive.vehicle,
 
-			AudioContent.death,
-			AudioContent.death2,
+			AudioArchive.death,
+			AudioArchive.death2,
 
-			AudioContent.shot,
-			AudioContent.shot2,
-			AudioContent.shot3,
-			AudioContent.powerUp,
-			AudioContent.powerUp2,
-			AudioContent.noMoney,
+			AudioArchive.shot,
+			AudioArchive.shot2,
+			AudioArchive.shot3,
+			AudioArchive.powerUp,
+			AudioArchive.powerUp2,
+			AudioArchive.noMoney,
 
-			AudioContent.menuMusic,
-			AudioContent.iceMusic,
-			AudioContent.sandMusic,
-			AudioContent.forestMusic
+			AudioArchive.menuMusic,
+			AudioArchive.iceMusic,
+			AudioArchive.sandMusic,
+			AudioArchive.forestMusic,
+
+			AudioArchive.victory,
+			AudioArchive.defeat
 		].forEach((content) => {
 			this.Add(content, sounds);
 		});

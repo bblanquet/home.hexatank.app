@@ -10,7 +10,7 @@ import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { GameStatus } from '../../Framework/GameStatus';
 export class DiamondContext implements IHqGameContext {
-	public GameStatusChanged: LiteEvent<GameStatus> = new LiteEvent<GameStatus>();
+	public OnGameStatusChanged: LiteEvent<GameStatus> = new LiteEvent<GameStatus>();
 	public OnPatrolSetting: LiteEvent<Boolean> = new LiteEvent<Boolean>();
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
 	public OnTimerDone: SimpleEvent;
@@ -23,9 +23,9 @@ export class DiamondContext implements IHqGameContext {
 		this.OnTimerDone = new SimpleEvent();
 		this.OnTimerDone.On(() => {
 			if (50 < this._hq.GetDiamondCount()) {
-				this.GameStatusChanged.Invoke(this, GameStatus.Won);
+				this.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
 			} else {
-				this.GameStatusChanged.Invoke(this, GameStatus.Lost);
+				this.OnGameStatusChanged.Invoke(this, GameStatus.Defeat);
 			}
 		});
 	}

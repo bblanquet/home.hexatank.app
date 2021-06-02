@@ -20,11 +20,13 @@ import { MapEnv } from '../../Blueprint/MapEnv';
 import { Floor } from '../../../Items/Environment/Floor';
 import { Identity } from '../../../Items/Identity';
 import { PatrolOrder } from '../../../Ia/Order/Composite/PatrolOrder';
+import { Vehicle } from '../../../Items/Unit/Vehicle';
 
 export class CamouflageRenderer {
 	public Render(blueprint: CamouflageBlueprint): CamouflageContext {
 		const cells = new Dictionnary<Cell>();
 		const updatableItem = new Array<Item>();
+		const vehicles = new Array<Vehicle>();
 
 		blueprint.Items.forEach((item) => {
 			const cell = new Cell(new CellProperties(new HexAxial(item.Position.Q, item.Position.R)), cells);
@@ -50,6 +52,7 @@ export class CamouflageRenderer {
 		const truck = new Truck(new Identity('player', new HqSkinHelper().GetSkin(0), true));
 		truck.OverrideLife(1);
 		truck.SetPosition(cells.Get(departure.ToString()));
+		vehicles.push(truck);
 		updatableItem.push(truck);
 		const arrivalCell = cells.Get(arrival.ToString());
 		updatableItem.push(new AboveItem(arrivalCell, SvgArchive.arrow));
@@ -63,9 +66,10 @@ export class CamouflageRenderer {
 			const aCell = cells.Get(a.ToString());
 			tank.SetPosition(dCell);
 			tank.SetOrder(new PatrolOrder([ aCell, dCell ], tank));
+			vehicles.push(tank);
 		});
 
-		return new CamouflageContext(cells.Values(), truck, arrivalCell);
+		return new CamouflageContext(cells.Values(), truck, vehicles, arrivalCell);
 	}
 
 	public AddClouds(items: Item[]) {

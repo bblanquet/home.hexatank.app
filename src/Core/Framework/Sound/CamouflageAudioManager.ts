@@ -1,6 +1,4 @@
 import { IGameAudioManager } from './IGameAudioManager';
-import { GameBlueprint } from './../../Setup/Blueprint/Game/GameBlueprint';
-import { GameContext } from './../../Setup/Context/GameContext';
 import { IBlueprint } from './../../Setup/Blueprint/IBlueprint';
 import { IGameContext } from './../../Setup/Context/IGameContext';
 import { IOrder } from '../../Ia/Order/IOrder';
@@ -9,34 +7,24 @@ import { MapEnv } from '../../Setup/Blueprint/MapEnv';
 import { Missile } from '../../Items/Unit/Missile';
 import { Tank } from '../../Items/Unit/Tank';
 import { AudioArchive } from '../AudioArchiver';
-import { Cell } from '../../Items/Cell/Cell';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Item } from '../../Items/Item';
 import { Turrel } from '../../Items/Unit/Turrel';
-import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { IAudioService } from '../../../Services/Audio/IAudioService';
 
-export class GameAudioManager implements IGameAudioManager {
+export class CamouflageAudioManager implements IGameAudioManager {
 	private _soundService: IAudioService;
 	private _audioId: number;
 
-	constructor(private _mapContext: GameBlueprint, private _gameContext: GameContext) {
+	constructor(private _mapContext: IBlueprint, private _vehicles: Vehicle[], private _gameContext: IGameContext) {
 		this._soundService = Factory.Load<IAudioService>(FactoryKey.Audio);
-
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
-		const playerHq = this._gameContext.GetPlayerHq();
-		if (playerHq) {
-			playerHq.OnReactorAdded.On(this.HandleReactor.bind(this));
-			playerHq.OnCashMissing.On(this.HandleMissingCash.bind(this));
-		}
-		this._gameContext.GetHqs().forEach((hq) => {
-			hq.OnVehicleCreated.On(this.HandleVehicle.bind(this));
-			hq.OnFieldAdded.On(this.HandleFieldChanged.bind(this));
+		this._vehicles.forEach((v) => {
+			this.HandleVehicle(null, v);
 		});
 	}
-
-	public PlayMusic(): void {
+	PlayMusic(): void {
 		this._soundService.Play(this.GetMusic(), 0.01, true);
 	}
 
@@ -70,14 +58,6 @@ export class GameAudioManager implements IGameAudioManager {
 		this._soundService.Clear();
 	}
 
-	private HandleMissingCash(src: any, r: ReactorField): void {
-		this.Play(AudioArchive.noMoney, 0.06);
-	}
-
-	private HandleReactor(src: any, r: ReactorField): void {
-		r.OnOverlocked.On(this.HandleOverlock.bind(this));
-	}
-
 	private HandleOverlock(s: any, kind: string): void {
 		this.Play(AudioArchive.powerUp, 0.05);
 	}
@@ -95,7 +75,7 @@ export class GameAudioManager implements IGameAudioManager {
 		}
 	}
 	HandleOrder(src: Vehicle, order: IOrder): void {
-		const playerHq = this._gameContext.GetPlayerHq();
+		const playerHq = this._gameContext.GetPlayer();
 		if (playerHq) {
 			if (!src.IsEnemy(playerHq.Identity)) {
 				const voices = [
@@ -128,12 +108,6 @@ export class GameAudioManager implements IGameAudioManager {
 	private HandleDestroyedMissile(src: any, missible: Missile): void {
 		if (missible.Target.GetCurrentCell().IsVisible()) {
 			this.Play(AudioArchive.explosion, 1);
-		}
-	}
-
-	private HandleFieldChanged(src: any, cell: Cell): void {
-		if (cell.IsVisible()) {
-			this.Play(AudioArchive.construction, 0.1);
 		}
 	}
 

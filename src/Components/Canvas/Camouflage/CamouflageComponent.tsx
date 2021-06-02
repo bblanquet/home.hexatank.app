@@ -15,7 +15,7 @@ import { IInteractionService } from '../../../Services/Interaction/IInteractionS
 import { Factory, FactoryKey } from '../../../Factory';
 import Redirect from '../../Redirect/RedirectComponent';
 import Icon from '../../Common/Icon/IconComponent';
-import { AudioContent } from '../../../Core/Framework/AudioArchiver';
+import { AudioArchive } from '../../../Core/Framework/AudioArchiver';
 import Visible from '../../Common/Visible/VisibleComponent';
 import SmPopupComponent from '../../SmPopup/SmPopupComponent';
 import { CamouflageContext } from '../../../Core/Setup/Context/CamouflageContext';
@@ -58,7 +58,7 @@ export default class CamouflageCanvasComponent extends Component<
 		);
 		this._gameContext = this._gameContextService.Publish();
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
-		this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));
+		this._gameContext.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this.setState({
 			HasMenu: false,
 			TankRequestCount: 0,
@@ -81,10 +81,10 @@ export default class CamouflageCanvasComponent extends Component<
 	}
 
 	componentDidMount() {
-		this._soundService.Pause(AudioContent.menuMusic);
+		this._soundService.Pause(AudioArchive.menuMusic);
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
-		this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));
+		this._gameContext.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
 		if (this._networkService.HasSocket()) {
 			this._networkService.GetOnlinePlayers().forEach((onlinePlayers) => {
@@ -144,11 +144,11 @@ export default class CamouflageCanvasComponent extends Component<
 		this.setState({
 			HasMenu: hasMenu
 		});
-		if (this._soundService.GetSoundManager()) {
+		if (this._soundService.GetGameAudioManager()) {
 			if (hasMenu) {
-				this._soundService.GetSoundManager().PauseAll();
+				this._soundService.GetGameAudioManager().PauseAll();
 			} else if (!this._soundService.IsMute()) {
-				this._soundService.GetSoundManager().PlayAll();
+				this._soundService.GetGameAudioManager().PlayAll();
 			}
 		}
 
@@ -226,7 +226,7 @@ export default class CamouflageCanvasComponent extends Component<
 	}
 
 	private GetEndMessage() {
-		if ([ GameStatus.Won, GameStatus.Lost ].some((e) => e === this.state.GameStatus)) {
+		if ([ GameStatus.Victory, GameStatus.Defeat ].some((e) => e === this.state.GameStatus)) {
 			return <SmPopupComponent points={10} status={this.state.GameStatus} />;
 		}
 		return '';

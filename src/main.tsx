@@ -59,10 +59,10 @@ const App = (e: any) => {
 				path="/Popup"
 				points={10}
 				curves={Context()}
-				status={GameStatus.Won}
+				status={GameStatus.Victory}
 				context={new RecordObject()}
 			/>
-			<SmPopupComponent path="/SmPopup" points={10} status={GameStatus.Won} />
+			<SmPopupComponent path="/SmPopup" points={10} status={GameStatus.Victory} />
 			<ComparerComponent path="/Comparer" />
 		</Router>
 	);

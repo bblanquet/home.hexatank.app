@@ -1,5 +1,5 @@
 import { h, Component } from 'preact';
-import { AudioContent } from '../../../Core/Framework/AudioArchiver';
+import { AudioArchive } from '../../../Core/Framework/AudioArchiver';
 import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
 import { Factory, FactoryKey } from '../../../Factory';
 import { IPlayerProfilService } from '../../../Services/PlayerProfil/IPlayerProfilService';
@@ -53,7 +53,7 @@ export default class NavbarComponent extends Component<any, { profil: PlayerProf
 		return (
 			<div>
 				<nav class="navbar navbar-dark dark">
-					<ProgressComponent width={30} />
+					<ProgressComponent width={30} maxWidth={150} />
 					<div class="d-flex justify-content-start">
 						<SmActiveButtonComponent
 							left={<Icon Value={'fas fa-volume-mute'} />}
@@ -63,10 +63,10 @@ export default class NavbarComponent extends Component<any, { profil: PlayerProf
 							callBack={() => {
 								if (this._soundService.IsMute()) {
 									this._soundService.On();
-									this._soundService.PlayAgain(AudioContent.menuMusic, null, 0.005);
+									this._soundService.PlayAgain(AudioArchive.menuMusic, null, 0.005);
 								} else {
 									this._soundService.Off();
-									this._soundService.Pause(AudioContent.menuMusic);
+									this._soundService.Pause(AudioArchive.menuMusic);
 								}
 								this.setState({});
 							}}

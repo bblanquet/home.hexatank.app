@@ -2,7 +2,7 @@ import { Component, h } from 'preact';
 import ButtonComponent from './ButtonComponent';
 import Icon from './../../Icon/IconComponent';
 import { ColorKind } from './ColorKind';
-import { AudioContent } from '../../../../Core/Framework/AudioArchiver';
+import { AudioArchive } from '../../../../Core/Framework/AudioArchiver';
 import { Factory, FactoryKey } from '../../../../Factory';
 import { IAudioService } from '../../../../Services/Audio/IAudioService';
 
@@ -16,7 +16,7 @@ export class LockButton extends Component<any, any> {
 					this._lockDiv = e;
 				}}
 				callBack={() => {
-					Factory.Load<IAudioService>(FactoryKey.Audio).Play(`${AudioContent.nok}`, 0.1);
+					Factory.Load<IAudioService>(FactoryKey.Audio).Play(`${AudioArchive.nok}`, 0.1);
 					this._lockDiv.base.classList.remove('bounce');
 					setTimeout(() => {
 						this._lockDiv.base.classList.add('bounce');

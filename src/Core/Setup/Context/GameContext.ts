@@ -19,7 +19,7 @@ export class GameContext implements IHqGameContext {
 	public OnPatrolSetting: LiteEvent<Boolean> = new LiteEvent<Boolean>();
 
 	//ok
-	public GameStatusChanged: LiteEvent<GameStatus> = new LiteEvent<GameStatus>();
+	public OnGameStatusChanged: LiteEvent<GameStatus> = new LiteEvent<GameStatus>();
 
 	//elements
 	private _playerHq: Headquarter;
@@ -40,13 +40,13 @@ export class GameContext implements IHqGameContext {
 
 		if (this._playerHq) {
 			this._playerHq.OnDestroyed.On(() => {
-				this.GameStatusChanged.Invoke(this, GameStatus.Lost);
+				this.OnGameStatusChanged.Invoke(this, GameStatus.Defeat);
 			});
 			const foes = this._hqs.filter((hq) => hq !== this._playerHq);
 			foes.forEach((foe) => {
 				foe.OnDestroyed.On(() => {
 					if (foes.every((e) => !e.IsAlive())) {
-						this.GameStatusChanged.Invoke(this, GameStatus.Won);
+						this.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
 					}
 				});
 			});

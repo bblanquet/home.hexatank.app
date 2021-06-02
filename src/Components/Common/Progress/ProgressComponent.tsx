@@ -1,8 +1,9 @@
 import { h, Component } from 'preact';
 import { IPlayerProfilService } from '../../../Services/PlayerProfil/IPlayerProfilService';
 import { Factory, FactoryKey } from '../../../Factory';
+import Side from '../Visible/SideComponent';
 
-export default class ProgressComponent extends Component<{ width: number }, any> {
+export default class ProgressComponent extends Component<{ width: number; maxWidth: number }, any> {
 	private _profilService: IPlayerProfilService;
 	constructor() {
 		super();
@@ -18,19 +19,37 @@ export default class ProgressComponent extends Component<{ width: number }, any>
 				<div class="bagde-container" style={`background-color:${this._profilService.GetColorLevel()}`}>
 					{this._profilService.GetLevel()}
 				</div>
-				<div
-					class="progress"
-					style={`width:100%;max-width:150px;height:25px; border: 4px solid rgb(198, 198, 198)`}
-				>
-					<div
-						class="progress-bar bg-danger"
-						role="progressbar"
-						style={'width:' + this._profilService.GetNextLevelPercentage() + '%'}
-						aria-valuenow={this._profilService.GetNextLevelPercentage()}
-						aria-valuemin="0"
-						aria-valuemax="100"
-					/>
-				</div>
+				<Side
+					isVisible={this.props.maxWidth === 0}
+					left={
+						<div class="progress" style={`width:100%;height:25px; border: 4px solid rgb(198, 198, 198)`}>
+							<div
+								class="progress-bar bg-danger"
+								role="progressbar"
+								style={'width:' + this._profilService.GetNextLevelPercentage() + '%'}
+								aria-valuenow={this._profilService.GetNextLevelPercentage()}
+								aria-valuemin="0"
+								aria-valuemax="100"
+							/>
+						</div>
+					}
+					right={
+						<div
+							class="progress"
+							style={`width:100%;max-width:${this.props
+								.maxWidth}px;height:25px; border: 4px solid rgb(198, 198, 198)`}
+						>
+							<div
+								class="progress-bar bg-danger"
+								role="progressbar"
+								style={'width:' + this._profilService.GetNextLevelPercentage() + '%'}
+								aria-valuenow={this._profilService.GetNextLevelPercentage()}
+								aria-valuemin="0"
+								aria-valuemax="100"
+							/>
+						</div>
+					}
+				/>
 			</div>
 		);
 	}

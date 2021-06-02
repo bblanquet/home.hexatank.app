@@ -81,7 +81,7 @@ export default class PopupComponent extends Component<
 		return (
 			<div class="generalContainer absolute-center-middle-menu menu-container fit-content">
 				<div class="title-popup-container">
-					{this.props.status === GameStatus.Won ? (
+					{this.props.status === GameStatus.Victory ? (
 						<div class="fill-won light-bounce" />
 					) : (
 						<div class="fill-defeat light-bounce" />
@@ -89,7 +89,7 @@ export default class PopupComponent extends Component<
 				</div>
 				<div class="container-center">
 					<div class="container-center-horizontal" style="margin-top:15px;margin-bottom:15px;width:100%">
-						<ProgressComponent width={80} />
+						<ProgressComponent width={80} maxWidth={0} />
 					</div>
 
 					<div class="container-center-horizontal">

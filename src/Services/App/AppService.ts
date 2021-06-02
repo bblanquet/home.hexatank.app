@@ -1,3 +1,4 @@
+import { AudioArchive } from './../../Core/Framework/AudioArchiver';
 import { IAudioService } from './../Audio/IAudioService';
 import { StatsContext } from './../../Core/Framework/Stats/StatsContext';
 import { BrainInjecter } from './../../Core/Ia/Decision/BrainInjecter';
@@ -27,7 +28,7 @@ export class AppService implements IAppService<GameBlueprint> {
 	private _app: PIXI.Application;
 	private _appProvider: AppProvider;
 	private _interactionManager: PIXI.InteractionManager;
-	private _soundManager: GameAudioManager;
+	private _gameAudioService: GameAudioManager;
 
 	private _gameContextService: IGameContextService<GameBlueprint, GameContext>;
 	private _interactionService: IInteractionService<GameContext>;
@@ -76,13 +77,21 @@ export class AppService implements IAppService<GameBlueprint> {
 		this._statContext = new StatsContext(this._gameContext);
 		new BrainInjecter().Inject(this._gameContext, mapContext);
 		this._app.start();
-		this._audioService.Register(mapContext, this._gameContext);
-		this._soundManager = this._audioService.GetSoundManager();
-		this._gameContext.GameStatusChanged.On(this.SaveRecord.bind(this));
+		this._gameAudioService = new GameAudioManager(mapContext, this._gameContext);
+		this._audioService.Register(this._gameAudioService);
+		this._gameContext.OnGameStatusChanged.On(this.GameStatusChanged.bind(this));
 	}
 
-	private SaveRecord(e: any, status: GameStatus) {
-		if (status === GameStatus.Lost || status === GameStatus.Won) {
+	private GameStatusChanged(e: any, status: GameStatus) {
+		if (status === GameStatus.Defeat) {
+			this._audioService.Play(AudioArchive.defeat, 0.5, false);
+		}
+
+		if (status === GameStatus.Victory) {
+			this._audioService.Play(AudioArchive.victory, 0.5, false);
+		}
+
+		if (status === GameStatus.Defeat || status === GameStatus.Victory) {
 			const record = this._recordContext.GetRecord();
 			const profil = this._playerProfilService.GetProfil();
 			profil.Records.push(record);
@@ -98,7 +107,7 @@ export class AppService implements IAppService<GameBlueprint> {
 	}
 
 	public Collect(): void {
-		this._soundManager.StopAll();
+		this._gameAudioService.StopAll();
 		this._audioService.Collect();
 		this._interactionManager.destroy();
 		this._gameContextService.Collect();

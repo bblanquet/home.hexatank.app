@@ -33,6 +33,9 @@ Factory.Register(FactoryKey.Layer, new LayerService());
 Factory.Register(FactoryKey.Network, new NetworkService());
 Factory.Register(FactoryKey.Record, new RecordService());
 
+var context = new AudioContext();
+Factory.Register(FactoryKey.Audio, new AudioService());
+
 Factory.Register(FactoryKey.GameContext, new GameContextService());
 Factory.Register(FactoryKey.CamouflageGameContext, new CamouflageGameContextService());
 Factory.Register(FactoryKey.PowerGameContext, new PowerContextService());
@@ -44,13 +47,10 @@ Factory.Register(FactoryKey.CamouflageInteraction, new CamouflageInteractionServ
 Factory.Register(FactoryKey.PowerInteraction, new PowerInteractionService());
 Factory.Register(FactoryKey.DiamondInteraction, new DiamondInteractionService());
 
+Factory.Register(FactoryKey.App, new AppService());
 Factory.Register(FactoryKey.RecordApp, new RecordAppService());
 Factory.Register(FactoryKey.CamouflageApp, new CamouflageAppService());
 Factory.Register(FactoryKey.PowerApp, new PowerAppService());
 Factory.Register(FactoryKey.DiamondApp, new DiamondAppService());
 
 Factory.Register(FactoryKey.Campaign, new CampaignService());
-
-var context = new AudioContext();
-Factory.Register(FactoryKey.Audio, new AudioService());
-Factory.Register(FactoryKey.App, new AppService());

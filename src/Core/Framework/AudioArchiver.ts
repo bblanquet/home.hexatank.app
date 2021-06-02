@@ -1,4 +1,4 @@
-export const AudioContent = {
+export const AudioArchive = {
 	//voice
 	ayaya: './audio/ayaya.wav',
 	copyThat: './audio/copyThat.wav',
@@ -38,5 +38,8 @@ export const AudioContent = {
 	sandMusic: './audio/Marimba Boy.wav',
 	forestMusic: './audio/Blazer Rail.wav',
 	iceMusic: './audio/Bobber Loop.wav',
-	menuMusic: './audio/Lounge Game2.wav'
+	menuMusic: './audio/Lounge Game2.wav',
+
+	victory: './audio/victory.mp3',
+	defeat: './audio/defeat.mp3'
 };

@@ -22,7 +22,7 @@ import { Factory, FactoryKey } from '../../../Factory';
 import Redirect from '../../Redirect/RedirectComponent';
 import Icon from '../../Common/Icon/IconComponent';
 import { TimerComponent } from '../../Common/Timer/TimerComponent';
-import { AudioContent } from '../../../Core/Framework/AudioArchiver';
+import { AudioArchive } from '../../../Core/Framework/AudioArchiver';
 import ActiveRightBottomCornerButton from './../../Common/Button/Corner/ActiveRightBottomCornerButton';
 import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
 import { MultiTankMenuItem } from '../../../Core/Menu/Buttons/MultiTankMenuItem';
@@ -103,7 +103,7 @@ export default class DiamondCanvasComponent extends Component<
 	}
 
 	componentDidMount() {
-		this._soundService.Pause(AudioContent.menuMusic);
+		this._soundService.Pause(AudioArchive.menuMusic);
 		const playerHq = this._gameContext.GetPlayerHq();
 		if (playerHq) {
 			playerHq.OnTruckChanged.On(this.HandleTruckChanged.bind(this));
@@ -113,7 +113,7 @@ export default class DiamondCanvasComponent extends Component<
 		}
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
-		this._gameContext.GameStatusChanged.On(this.HandleGameStatus.bind(this));
+		this._gameContext.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
 		if (this._networkService.HasSocket()) {
 			this._networkService.GetOnlinePlayers().forEach((onlinePlayers) => {
@@ -240,9 +240,9 @@ export default class DiamondCanvasComponent extends Component<
 			HasMenu: newValue
 		});
 		if (newValue) {
-			this._soundService.GetSoundManager().PauseAll();
+			this._soundService.GetGameAudioManager().PauseAll();
 		} else if (!this._soundService.IsMute()) {
-			this._soundService.GetSoundManager().PlayAll();
+			this._soundService.GetGameAudioManager().PlayAll();
 		}
 
 		if (!this._networkService.HasSocket()) {
@@ -377,7 +377,7 @@ export default class DiamondCanvasComponent extends Component<
 	}
 
 	private GetEndMessage() {
-		if ([ GameStatus.Won, GameStatus.Lost ].some((e) => e === this.state.GameStatus)) {
+		if ([ GameStatus.Victory, GameStatus.Defeat ].some((e) => e === this.state.GameStatus)) {
 			return <SmPopupComponent points={10} status={this.state.GameStatus} />;
 		}
 		return '';

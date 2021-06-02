@@ -18,23 +18,28 @@ export class CamouflageContext implements IGameContext {
 	public OnPatrolSetting: LiteEvent<Boolean> = new LiteEvent<Boolean>();
 
 	//ok
-	public GameStatusChanged: LiteEvent<GameStatus> = new LiteEvent<GameStatus>();
+	public OnGameStatusChanged: LiteEvent<GameStatus> = new LiteEvent<GameStatus>();
 
 	//elements
 	private _cells: Dictionnary<Cell>;
 	private _vehicles: Dictionnary<Vehicle> = new Dictionnary<Vehicle>();
-	constructor(cells: Cell[], unit: Vehicle, arrivelCell: Cell) {
+	constructor(cells: Cell[], unit: Vehicle, vehicles: Vehicle[], arrivelCell: Cell) {
 		this._cells = Dictionnary.To((c) => c.Coo(), cells);
 		this._unit = unit;
+		this._vehicles = Dictionnary.To((e) => e.Id, vehicles);
 
 		this._unit.OnDestroyed.On(() => {
-			this.GameStatusChanged.Invoke(this, GameStatus.Lost);
+			this.OnGameStatusChanged.Invoke(this, GameStatus.Defeat);
 		});
 		this._unit.OnCellChanged.On((source: any, cell: Cell) => {
 			if (this._unit.GetCurrentCell() === arrivelCell) {
-				this.GameStatusChanged.Invoke(this, GameStatus.Won);
+				this.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
 			}
 		});
+	}
+
+	public GetVehicles(): Vehicle[] {
+		return this._vehicles.Values();
 	}
 
 	public ExistUnit(id: string): Boolean {

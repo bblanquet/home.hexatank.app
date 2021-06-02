@@ -13,7 +13,7 @@
 		},
 		{
 			"search": "{{postension}}",
-			"replace": "/Res/",
+			"replace": "/",
 			"flags": "g"
 		}
 	]

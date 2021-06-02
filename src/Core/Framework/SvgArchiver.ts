@@ -1,244 +1,263 @@
 export const SvgArchive = {
 	constructionEffects: [
-		'./construction/dust1.svg',
-		'./construction/dust2.svg',
-		'./construction/dust3.svg',
-		'./construction/dust4.svg',
-		'./construction/dust5.svg',
-		'./construction/dust6.svg',
-		'./construction/dust7.svg'
+		'./svg/construction/dust1.svg',
+		'./svg/construction/dust2.svg',
+		'./svg/construction/dust3.svg',
+		'./svg/construction/dust4.svg',
+		'./svg/construction/dust5.svg',
+		'./svg/construction/dust6.svg',
+		'./svg/construction/dust7.svg'
 	],
-	dusts: [ './explosion/dust1.svg', './explosion/dust2.svg', './explosion/dust3.svg', './explosion/dust4.svg' ],
+	dusts: [
+		'./svg/explosion/dust1.svg',
+		'./svg/explosion/dust2.svg',
+		'./svg/explosion/dust3.svg',
+		'./svg/explosion/dust4.svg'
+	],
 	explosions: [
-		'./explosion/explosion1.svg',
-		'./explosion/explosion2.svg',
-		'./explosion/explosion3.svg',
-		'./explosion/explosion4.svg',
-		'./explosion/explosion5.svg',
-		'./explosion/explosion6.svg',
-		'./explosion/explosion7.svg'
+		'./svg/explosion/explosion1.svg',
+		'./svg/explosion/explosion2.svg',
+		'./svg/explosion/explosion3.svg',
+		'./svg/explosion/explosion4.svg',
+		'./svg/explosion/explosion5.svg',
+		'./svg/explosion/explosion6.svg',
+		'./svg/explosion/explosion7.svg'
 	],
-	skull: './explosion/skull.svg',
+	skull: './svg/explosion/skull.svg',
 	menu: {
 		smartMenu: {
-			multiCellSelection: './menu/smartMenu/multiSelectionCell.svg'
+			multiCellSelection: './svg/menu/smartMenu/multiSelectionCell.svg'
 		}
 	},
 	missiles: [
-		'./tank/missile/missile.svg',
-		'./tank/missile/missile2.svg',
-		'./tank/missile/missile3.svg',
-		'./tank/missile/missile4.svg'
+		'./svg/tank/missile/missile.svg',
+		'./svg/tank/missile/missile2.svg',
+		'./svg/tank/missile/missile3.svg',
+		'./svg/tank/missile/missile4.svg'
 	],
 	cannons: [
-		'./tank/cannon.svg',
-		'./tank/cannon1.svg',
-		'./tank/cannon2.svg',
-		'./tank/cannon3.svg',
-		'./tank/cannon4.svg'
+		'./svg/tank/cannon.svg',
+		'./svg/tank/cannon1.svg',
+		'./svg/tank/cannon2.svg',
+		'./svg/tank/cannon3.svg',
+		'./svg/tank/cannon4.svg'
 	],
 	diamonds: [
-		'./truck/diamonds/diamonds1.svg',
-		'./truck/diamonds/diamonds2.svg',
-		'./truck/diamonds/diamonds3.svg',
-		'./truck/diamonds/diamonds4.svg',
-		'./truck/diamonds/diamonds5.svg',
-		'./truck/diamonds/diamonds6.svg'
+		'./svg/truck/diamonds/diamonds1.svg',
+		'./svg/truck/diamonds/diamonds2.svg',
+		'./svg/truck/diamonds/diamonds3.svg',
+		'./svg/truck/diamonds/diamonds4.svg',
+		'./svg/truck/diamonds/diamonds5.svg',
+		'./svg/truck/diamonds/diamonds6.svg'
 	],
 	destruction: {
-		debris: './tank/debris.svg',
-		floorExplosion: './tank/floorExplosionTrace.svg'
+		debris: './svg/tank/debris.svg',
+		floorExplosion: './svg/tank/floorExplosionTrace.svg'
 	},
-	arrow: './arrow.svg',
-	loading: './loading.svg',
-	electon: './electron.svg',
-	hiddenCell: './hiddenCell.svg',
-	halfVisibleCell: './halfVisibleCell.svg',
-	selectionUnit: './selectionUnit.svg',
-	selectionCell: './selectionCell.svg',
-	selectionPower: './selectionPowerUp.svg',
-	selectionBlueCell: './blueCellOverLight.svg',
-	selectionWhiteCell: './whiteCellOverLight.svg',
-	selectionBlueHq: './blueHqOverLight.svg',
-	selectionWhiteHq: './whiteHqOverLight.svg',
-	selectionBlueVehicle: './blueSelectionTank.svg',
-	selectionWhiteVehicle: './whiteSelectionTank.svg',
-	selectionBlueReactor: './blueSelectionReactor.svg',
-	selectionWhiteReactor: './whiteSelectionReactor.svg',
-	cell: './cell.svg',
-	healUp: [ './healUp.svg', './healUp2.svg', './healUp3.svg', './healUp4.svg', './healUp5.svg' ],
-	speedUp: [ './speedUp.svg', './speedUp2.svg', './speedUp3.svg' ],
+	arrow: './svg/interaction/arrow.svg',
+	electon: './svg/bonus/electron.svg',
+	hiddenCell: './svg/interaction/hiddenCell.svg',
+	halfVisibleCell: './svg/interaction/halfVisibleCell.svg',
+	selectionUnit: './svg/interaction/selectionUnit.svg',
+	selectionCell: './svg/interaction/selectionCell.svg',
+	selectionPower: './svg/interaction/selectionPowerUp.svg',
+	selectionBlueCell: './svg/interaction/blueCellOverLight.svg',
+	selectionWhiteCell: './svg/interaction/whiteCellOverLight.svg',
+	selectionBlueHq: './svg/interaction/blueHqOverLight.svg',
+	selectionWhiteHq: './svg/interaction/whiteHqOverLight.svg',
+	selectionBlueVehicle: './svg/interaction/blueSelectionTank.svg',
+	selectionWhiteVehicle: './svg/interaction/whiteSelectionTank.svg',
+	selectionBlueReactor: './svg/interaction/blueSelectionReactor.svg',
+	selectionWhiteReactor: './svg/interaction/whiteSelectionReactor.svg',
+	cell: './svg/interaction/cell.svg',
+	healUp: [
+		'./svg/bonus/powerUp/healUp.svg',
+		'./svg/bonus/powerUp/healUp2.svg',
+		'./svg/bonus/powerUp/healUp3.svg',
+		'./svg/bonus/powerUp/healUp4.svg',
+		'./svg/bonus/powerUp/healUp5.svg'
+	],
+	speedUp: [
+		'./svg/bonus/powerUp/speedUp.svg',
+		'./svg/bonus/powerUp/speedUp2.svg',
+		'./svg/bonus/powerUp/speedUp3.svg'
+	],
 	powerUpR: [
-		'./powerup1.svg',
-		'./powerup2.svg',
-		'./powerup3.svg',
-		'./powerup4.svg',
-		'./powerup5.svg',
-		'./powerup6.svg',
-		'./powerup7.svg'
+		'./svg/bonus/powerUp/powerup1.svg',
+		'./svg/bonus/powerUp/powerup2.svg',
+		'./svg/bonus/powerUp/powerup3.svg',
+		'./svg/bonus/powerUp/powerup4.svg',
+		'./svg/bonus/powerUp/powerup5.svg',
+		'./svg/bonus/powerUp/powerup6.svg',
+		'./svg/bonus/powerUp/powerup7.svg'
 	],
 	powerUp: [
-		'./powerup1.svg',
-		'./powerup2.svg',
-		'./powerup3.svg',
-		'./powerup4.svg',
-		'./powerup5.svg',
-		'./powerup6.svg',
-		'./powerup7.svg',
-		'./powerup6.svg',
-		'./powerup5.svg',
-		'./powerup4.svg',
-		'./powerup3.svg',
-		'./powerup2.svg'
+		'./svg/bonus/powerUp/powerup1.svg',
+		'./svg/bonus/powerUp/powerup2.svg',
+		'./svg/bonus/powerUp/powerup3.svg',
+		'./svg/bonus/powerUp/powerup4.svg',
+		'./svg/bonus/powerUp/powerup5.svg',
+		'./svg/bonus/powerUp/powerup6.svg',
+		'./svg/bonus/powerUp/powerup7.svg',
+		'./svg/bonus/powerUp/powerup6.svg',
+		'./svg/bonus/powerUp/powerup5.svg',
+		'./svg/bonus/powerUp/powerup4.svg',
+		'./svg/bonus/powerUp/powerup3.svg',
+		'./svg/bonus/powerUp/powerup2.svg'
 	],
-	diamondCell: './diamondCell.svg',
-	flagCell: './flagCell.svg',
-	option: './option.svg',
+	diamondCell: './svg/interaction/diamondCell.svg',
+	flagCell: './svg/interaction/flagCell.svg',
+	option: './svg/components/option.svg',
 	direction: {
-		target: './direction/target.svg',
-		moving: './direction/motion.svg'
+		target: './svg/direction/target.svg',
+		moving: './svg/direction/motion.svg'
 	},
 	building: {
 		hq: {
-			bottom: './building/hqMiddle.svg',
-			top: './building/hqTop.svg',
+			bottom: './svg/building/hqMiddle.svg',
+			top: './svg/building/hqTop.svg',
 			red: {
-				field: './building/hqRedCell.svg'
+				field: './svg/building/hqRedCell.svg'
 			},
 			blue: {
-				field: './building/hqBlueCell.svg'
+				field: './svg/building/hqBlueCell.svg'
 			},
 			yellow: {
-				field: './building/hqYellowCell.svg'
+				field: './svg/building/hqYellowCell.svg'
 			},
 			purple: {
-				field: './building/hqPurpleCell.svg'
+				field: './svg/building/hqPurpleCell.svg'
 			}
 		}
 	},
 	bonus: {
 		light: {
-			blue: './tank/blue/light.svg',
-			red: './tank/red/light.svg',
-			yellow: './tank/yellow/light.svg',
-			purple: './tank/purple/light.svg'
+			blue: './svg/tank/blue/light.svg',
+			red: './svg/tank/red/light.svg',
+			yellow: './svg/tank/yellow/light.svg',
+			purple: './svg/tank/purple/light.svg'
 		},
 		reactor: {
-			cover: './floor/reactorCover2.svg',
-			rotationCover: './floor/reactorCover.svg',
-			light: './floor/reactorDarkLight.svg',
-			blue: './floor/blueReactor.svg',
-			gray: './floor/grayReactor.svg',
-			red: './floor/redReactor.svg',
-			purple: './floor/purpleReactor.svg',
-			yellow: './floor/yellowReactor.svg'
+			cover: './svg/bonus/reactorCover2.svg',
+			rotationCover: './svg/bonus/reactorCover.svg',
+			light: './svg/bonus/reactorDarkLight.svg',
+			blue: './svg/bonus/blueReactor.svg',
+			gray: './svg/bonus/grayReactor.svg',
+			red: './svg/bonus/redReactor.svg',
+			purple: './svg/bonus/purpleReactor.svg',
+			yellow: './svg/bonus/yellowReactor.svg'
 		},
-		coverBottom: './floor/coverBottom.svg',
-		coverTop: './floor/coverTop.svg',
-		strength: './floor/power.svg',
-		speed: './floor/speed.svg',
-		network: './floor/network.svg',
-		thunder: './floor/energy.svg',
-		redThunder: './floor/lowEnergy.svg',
-		shield: './floor/shield.svg',
-		shieldLight: './floor/shieldLight.svg',
-		health: './floor/repair.svg',
-		poison: './floor/poison.svg',
-		emptyMoney: './floor/emptyDiamond.svg',
-		fullMoney: './floor/diamond.svg'
+		coverBottom: './svg/bonus/coverBottom.svg',
+		coverTop: './svg/bonus/coverTop.svg',
+		strength: './svg/bonus/power.svg',
+		speed: './svg/bonus/speed.svg',
+		network: './svg/bonus/network.svg',
+		thunder: './svg/bonus/energy.svg',
+		redThunder: './svg/bonus/lowEnergy.svg',
+		shield: './svg/bonus/shield.svg',
+		shieldLight: './svg/bonus/shieldLight.svg',
+		health: './svg/bonus/repair.svg',
+		poison: './svg/bonus/poison.svg',
+		emptyMoney: './svg/bonus/emptyDiamond.svg',
+		fullMoney: './svg/bonus/diamond.svg'
 	},
-	lights: [ './lights/light1.svg', './lights/light2.svg', './lights/light3.svg', './lights/light4.svg' ],
+	lights: [
+		'./svg/lights/light1.svg',
+		'./svg/lights/light2.svg',
+		'./svg/lights/light3.svg',
+		'./svg/lights/light4.svg'
+	],
 	nature: {
 		clouds: [
-			'./nature/cloud1.svg',
-			'./nature/cloud2.svg',
-			'./nature/cloud3.svg',
-			'./nature/cloud4.svg',
-			'./nature/cloud5.svg'
+			'./svg/nature/cloud1.svg',
+			'./svg/nature/cloud2.svg',
+			'./svg/nature/cloud3.svg',
+			'./svg/nature/cloud4.svg',
+			'./svg/nature/cloud5.svg'
 		],
 		grass: [
-			'./nature/grassAnimation.svg',
-			'./nature/grassAnimation1.svg',
-			'./nature/grassAnimation2.svg',
-			'./nature/grassAnimation3.svg'
+			'./svg/nature/grassAnimation.svg',
+			'./svg/nature/grassAnimation1.svg',
+			'./svg/nature/grassAnimation2.svg',
+			'./svg/nature/grassAnimation3.svg'
 		],
-		volcano: './nature/volcano.svg',
-		volcanaoAnimation: './nature/volcanoAnimation.svg',
-		diamondStone: './nature/diamondStone.svg',
-		stone: './nature/forestStone.svg',
-		iceStone: './nature/IceStones.svg',
-		icePlants: './nature/IcePlants.svg',
-		icePlants2: './nature/IcePlants2.svg',
-		sandStone: './nature/sandStones.svg',
-		puddle: './nature/waterPuddle.svg',
-		bush: './nature/ForestLeafs2.svg',
-		cactus: './nature/sandCactus.svg',
-		cactusPlants: './nature/cactusPlants.svg',
-		whiteSkull: './nature/WhiteSkull.svg',
-		rock: './nature/forestRock.svg',
-		sandRock: './nature/sandRock.svg',
-		forest: './nature/forestFloor.svg',
-		ice: './nature/iceFloor.svg',
-		hq: './nature/hqFloor.svg',
-		hq2: './nature/hqFloor2.svg',
-		iceRock: './nature/iceRock.svg',
-		sand: './nature/sandFloor.svg',
-		sandPlants: './nature/sandPlants.svg',
-		palmTree: './nature/palmTree.svg',
-		iceTree: './nature/iceTree.svg',
-		iceTree2: './nature/IceTree2.svg',
-		tree: './nature/forestTree2.svg',
-		ForestLeaf: './nature/ForestLeafs.svg',
-		ForestLeaf2: './nature/ForestLeafs3.svg',
-		darkTree: './nature/ForestDarkTree.svg',
+		volcano: './svg/nature/volcano.svg',
+		volcanaoAnimation: './svg/nature/volcanoAnimation.svg',
+		diamondStone: './svg/nature/diamondStone.svg',
+		stone: './svg/nature/forestStone.svg',
+		iceStone: './svg/nature/IceStones.svg',
+		icePlants: './svg/nature/IcePlants.svg',
+		icePlants2: './svg/nature/IcePlants2.svg',
+		sandStone: './svg/nature/sandStones.svg',
+		puddle: './svg/nature/waterPuddle.svg',
+		bush: './svg/nature/ForestLeafs2.svg',
+		cactus: './svg/nature/sandCactus.svg',
+		cactusPlants: './svg/nature/cactusPlants.svg',
+		whiteSkull: './svg/nature/WhiteSkull.svg',
+		rock: './svg/nature/forestRock.svg',
+		sandRock: './svg/nature/sandRock.svg',
+		forest: './svg/nature/forestFloor.svg',
+		ice: './svg/nature/iceFloor.svg',
+		hq: './svg/nature/hqFloor.svg',
+		hq2: './svg/nature/hqFloor2.svg',
+		iceRock: './svg/nature/iceRock.svg',
+		sand: './svg/nature/sandFloor.svg',
+		sandPlants: './svg/nature/sandPlants.svg',
+		palmTree: './svg/nature/palmTree.svg',
+		iceTree: './svg/nature/iceTree.svg',
+		iceTree2: './svg/nature/IceTree2.svg',
+		tree: './svg/nature/forestTree2.svg',
+		ForestLeaf: './svg/nature/ForestLeafs.svg',
+		ForestLeaf2: './svg/nature/ForestLeafs3.svg',
+		darkTree: './svg/nature/ForestDarkTree.svg',
 		water: {
-			leaf: './nature/waterleaf.svg',
+			leaf: './svg/nature/waterleaf.svg',
 			middle: {
-				background: './nature/water.svg',
-				wave: './nature/wave.svg'
+				background: './svg/nature/water.svg',
+				wave: './svg/nature/wave.svg'
 			}
 		},
-		diamond: './nature/diamond.svg'
+		diamond: './svg/nature/diamond.svg'
 	},
 	team: {
 		red: {
-			tank: './tank/red/body.svg',
-			turrel: './tank/red/head.svg',
-			truck: './truck/truck.svg',
-			hq: './building/redHqBottom.svg',
-			area: './building/redAreaEnergy.svg'
+			tank: './svg/tank/red/body.svg',
+			turrel: './svg/tank/red/head.svg',
+			truck: './svg/truck/truck.svg',
+			hq: './svg/building/redHqBottom.svg',
+			area: './svg/building/redAreaEnergy.svg'
 		},
 		blue: {
-			tank: './tank/blue/body.svg',
-			turrel: './tank/blue/head.svg',
-			truck: './truck/blueTruck.svg',
-			hq: './building/blueHqBottom.svg',
-			area: './building/blueAreaEnergy.svg'
+			tank: './svg/tank/blue/body.svg',
+			turrel: './svg/tank/blue/head.svg',
+			truck: './svg/truck/blueTruck.svg',
+			hq: './svg/building/blueHqBottom.svg',
+			area: './svg/building/blueAreaEnergy.svg'
 		},
 		yellow: {
-			tank: './tank/yellow/body.svg',
-			turrel: './tank/yellow/head.svg',
-			truck: './truck/yellowTruck.svg',
-			hq: './building/yellowHqBottom.svg',
-			area: './building/yellowAreaEnergy.svg'
+			tank: './svg/tank/yellow/body.svg',
+			turrel: './svg/tank/yellow/head.svg',
+			truck: './svg/truck/yellowTruck.svg',
+			hq: './svg/building/yellowHqBottom.svg',
+			area: './svg/building/yellowAreaEnergy.svg'
 		},
 		purple: {
-			tank: './tank/purple/body.svg',
-			turrel: './tank/purple/head.svg',
-			truck: './truck/purpleTruck.svg',
-			hq: './building/purpleHqBottom.svg',
-			area: './building/purpleAreaEnergy.svg'
+			tank: './svg/tank/purple/body.svg',
+			turrel: './svg/tank/purple/head.svg',
+			truck: './svg/truck/purpleTruck.svg',
+			hq: './svg/building/purpleHqBottom.svg',
+			area: './svg/building/purpleAreaEnergy.svg'
 		}
 	},
-	wheel: './tank/wheel.svg',
+	wheel: './svg/tank/wheel.svg',
 	wheels: [
-		'./tank/wheel1.svg',
-		'./tank/wheel2.svg',
-		'./tank/wheel3.svg',
-		'./tank/wheel4.svg',
-		'./tank/wheel5.svg',
-		'./tank/wheel6.svg',
-		'./tank/wheel7.svg',
-		'./tank/wheel8.svg'
+		'./svg/tank/wheel1.svg',
+		'./svg/tank/wheel2.svg',
+		'./svg/tank/wheel3.svg',
+		'./svg/tank/wheel4.svg',
+		'./svg/tank/wheel5.svg',
+		'./svg/tank/wheel6.svg',
+		'./svg/tank/wheel7.svg',
+		'./svg/tank/wheel8.svg'
 	]
 };

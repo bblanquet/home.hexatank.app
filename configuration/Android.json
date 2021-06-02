@@ -13,7 +13,7 @@
 		},
 		{
 			"search": "{{postension}}",
-			"replace": "/android_asset/www/Res/",
+			"replace": "/android_asset/www/",
 			"flags": "g"
 		}
 	]

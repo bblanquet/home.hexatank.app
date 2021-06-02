@@ -1,42 +1,42 @@
 export const AudioContent = {
 	//voice
-	ayaya: './sounds/ayaya.wav',
-	copyThat: './sounds/copyThat.wav',
-	engage: './sounds/engage.wav',
-	fireAtWills: './sounds/fireAtWills.wav',
-	sirYesSir: './sounds/sirYesSir.wav',
-	transmissionReceived: './sounds/transmissionReceived.wav',
-	allClear: './sounds/allClear.wav',
-	moveOut: './sounds/moveOut.mp3',
-	understood: './sounds/understood.wav',
+	ayaya: './audio/ayaya.wav',
+	copyThat: './audio/copyThat.wav',
+	engage: './audio/engage.wav',
+	fireAtWills: './audio/fireAtWills.wav',
+	sirYesSir: './audio/sirYesSir.wav',
+	transmissionReceived: './audio/transmissionReceived.wav',
+	allClear: './audio/allClear.wav',
+	moveOut: './audio/moveOut.mp3',
+	understood: './audio/understood.wav',
 
-	construction: './sounds/construction.wav',
+	construction: './audio/construction.wav',
 
-	tankMoving: './sounds/tankMoving.wav',
-	vehicle: './sounds/vehicle.wav',
+	tankMoving: './audio/tankMoving.wav',
+	vehicle: './audio/vehicle.wav',
 
-	shot: './sounds/shot.wav',
-	shot2: './sounds/shot2.wav',
-	shot3: './sounds/shot3.wav',
+	shot: './audio/shot.wav',
+	shot2: './audio/shot2.wav',
+	shot3: './audio/shot3.wav',
 
-	nok: './sounds/nok.ogg',
-	ok: './sounds/ok.ogg',
+	nok: './audio/nok.ogg',
+	ok: './audio/ok.ogg',
 
-	unitPopup: './sounds/unitPopup.wav',
-	unitPopup2: './sounds/shotNoise.wav',
-	fieldPopup: './sounds/fieldPopup.mp3',
-	selection: './sounds/selection.wav',
-	explosion: './sounds/explosion3.wav',
-	death: './sounds/death.ogg',
-	death2: './sounds/death2.wav',
+	unitPopup: './audio/unitPopup.wav',
+	unitPopup2: './audio/shotNoise.wav',
+	fieldPopup: './audio/fieldPopup.mp3',
+	selection: './audio/selection.wav',
+	explosion: './audio/explosion3.wav',
+	death: './audio/death.ogg',
+	death2: './audio/death2.wav',
 
-	powerUp: './sounds/powerup.wav',
-	powerUp2: './sounds/shortPowerUp.wav',
+	powerUp: './audio/powerup.wav',
+	powerUp2: './audio/shortPowerUp.wav',
 
-	noMoney: './sounds/noMoney.wav',
+	noMoney: './audio/noMoney.wav',
 
-	sandMusic: './sounds/Marimba Boy.wav',
-	forestMusic: './sounds/Blazer Rail.wav',
-	iceMusic: './sounds/Bobber Loop.wav',
-	menuMusic: './sounds/Lounge Game2.wav'
+	sandMusic: './audio/Marimba Boy.wav',
+	forestMusic: './audio/Blazer Rail.wav',
+	iceMusic: './audio/Bobber Loop.wav',
+	menuMusic: './audio/Lounge Game2.wav'
 };

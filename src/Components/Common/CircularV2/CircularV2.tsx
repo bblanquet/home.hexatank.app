@@ -1,6 +1,6 @@
 import { h, Component, toChildArray, cloneElement } from 'preact';
-import Icon from '../Icon/IconComponent';
 import { Point } from '../../../Core/Utils/Geometry/Point';
+
 export default class CircularV2Component extends Component<{ OnCancel: () => void }, {}> {
 	private _positions: Point[] = [];
 	private _parentDiv: HTMLDivElement;
@@ -36,7 +36,6 @@ export default class CircularV2Component extends Component<{ OnCancel: () => voi
 
 	componentWillUnmount() {
 		this._parentDiv = null;
-		console.log('unmount');
 	}
 
 	render() {

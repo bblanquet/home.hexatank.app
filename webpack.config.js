@@ -78,7 +78,7 @@ module.exports = (env) => {
 			new HtmlWebpackPlugin({
 				template: 'src/index.html'
 			}),
-			new CopyPlugin([ { from: './Resources', to: 'Res' } ])
+			new CopyPlugin([ { from: './asset', to: '' } ])
 		]
 	};
 };

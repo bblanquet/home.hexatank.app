@@ -3,7 +3,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/tankButton.svg');
+	background-image: url('{{postension}}svg/menu/tankButton.svg');
 }
 
 .fill-truck {
@@ -11,7 +11,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/truckButton.svg');
+	background-image: url('{{postension}}svg/menu/truckButton.svg');
 }
 
 .fill-flag {
@@ -19,7 +19,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/flagMenu.svg');
+	background-image: url('{{postension}}svg/menu/flagMenu.svg');
 }
 
 .fill-money {
@@ -27,7 +27,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/moneyMenu.svg');
+	background-image: url('{{postension}}svg/menu/moneyMenu.svg');
 }
 
 .fill-multi-tank {
@@ -35,7 +35,7 @@
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/smartMenu/multiTank.svg');
+	background-image: url('{{postension}}svg/menu/smartMenu/multiTank.svg');
 }
 
 .fill-multi-cell {
@@ -43,7 +43,7 @@
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/smartMenu/multiCell.svg');
+	background-image: url('{{postension}}svg/menu/smartMenu/multiCell.svg');
 }
 
 .fill-medic {
@@ -51,7 +51,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/healthMenu.svg');
+	background-image: url('{{postension}}svg/menu/healthMenu.svg');
 }
 
 .fill-speed {
@@ -59,7 +59,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/speedMenu.svg');
+	background-image: url('{{postension}}svg/menu/speedMenu.svg');
 }
 
 .fill-energy-speed {
@@ -67,7 +67,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/fastEnergyButton.svg');
+	background-image: url('{{postension}}svg/menu/fastEnergyButton.svg');
 }
 
 .fill-energy-power {
@@ -75,7 +75,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/powerEnergyMenu.svg');
+	background-image: url('{{postension}}svg/menu/powerEnergyMenu.svg');
 }
 
 .fill-energy-heal {
@@ -83,7 +83,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/healEnergyMenu.svg');
+	background-image: url('{{postension}}svg/menu/healEnergyMenu.svg');
 }
 
 .fill-power {
@@ -91,7 +91,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/powerMenu.svg');
+	background-image: url('{{postension}}svg/menu/powerMenu.svg');
 }
 
 .fill-poison {
@@ -99,7 +99,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/poisonMenu.svg');
+	background-image: url('{{postension}}svg/menu/poisonMenu.svg');
 }
 
 .fill-slow {
@@ -107,7 +107,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/slowMenu.svg');
+	background-image: url('{{postension}}svg/menu/slowMenu.svg');
 }
 
 .fill-thunder {
@@ -115,7 +115,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/thunder.svg');
+	background-image: url('{{postension}}svg/menu/thunder.svg');
 }
 
 .fill-network {
@@ -123,7 +123,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/network.svg');
+	background-image: url('{{postension}}svg/menu/network.svg');
 }
 
 .end-message {
@@ -139,14 +139,14 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/RIP.svg');
+	background-image: url('{{postension}}svg/menu/RIP.svg');
 }
 
 .fill-victory {
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/victory.svg');
+	background-image: url('{{postension}}svg/menu/victory.svg');
 }
 
 .fill-shield {
@@ -154,7 +154,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/shield.svg');
+	background-image: url('{{postension}}svg/menu/shield.svg');
 }
 
 .fill-camouflage {
@@ -162,7 +162,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/camouflageMenu.svg');
+	background-image: url('{{postension}}svg/menu/camouflageMenu.svg');
 }
 
 .fill-noMoney {
@@ -170,7 +170,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/noMoney.svg');
+	background-image: url('{{postension}}svg/menu/noMoney.svg');
 }
 
 .fill-lightIcon {
@@ -178,7 +178,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/elecIcon.svg');
+	background-image: url('{{postension}}svg/menu/elecIcon.svg');
 }
 
 .fill-influence {
@@ -186,7 +186,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/influenceButton.svg');
+	background-image: url('{{postension}}svg/menu/influenceButton.svg');
 }
 
 .fill-big {
@@ -194,7 +194,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/biggingMenu.svg');
+	background-image: url('{{postension}}svg/menu/biggingMenu.svg');
 }
 
 .fill-small {
@@ -202,7 +202,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/smallingMenu.svg');
+	background-image: url('{{postension}}svg/menu/smallingMenu.svg');
 }
 
 .fill-energy {
@@ -210,7 +210,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/energyButton.svg');
+	background-image: url('{{postension}}svg/menu/energyButton.svg');
 }
 
 .fill-overlocked {
@@ -218,7 +218,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/overlocked.svg');
+	background-image: url('{{postension}}svg/menu/overlocked.svg');
 }
 
 .fill-active {
@@ -226,7 +226,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/activate.svg');
+	background-image: url('{{postension}}svg/menu/activate.svg');
 }
 
 .fill-minus {
@@ -234,7 +234,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/minusButton.svg');
+	background-image: url('{{postension}}svg/menu/minusButton.svg');
 }
 
 .fill-plus {
@@ -242,7 +242,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/plusButton.svg');
+	background-image: url('{{postension}}svg/menu/plusButton.svg');
 }
 
 .fill-effect {
@@ -250,7 +250,7 @@
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/containerEffect.svg');
+	background-image: url('{{postension}}svg/components/containerEffect.svg');
 }
 
 .fill-battle {
@@ -260,7 +260,7 @@
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/battle.svg');
+	background-image: url('{{postension}}svg/components/battle.svg');
 }
 
 .fill-exception {
@@ -270,7 +270,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/exception.svg');
+	background-image: url('{{postension}}svg/components/exception.svg');
 }
 
 .fill-redArmy {
@@ -280,7 +280,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/redArmyLeader.svg');
+	background-image: url('{{postension}}svg/components/redArmyLeader.svg');
 }
 
 .fill-training {
@@ -290,7 +290,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/training.svg');
+	background-image: url('{{postension}}svg/components/training.svg');
 }
 
 .fill-training-mouth-1 {
@@ -302,7 +302,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/trainingMouth1.svg');
+	background-image: url('{{postension}}svg/components/trainingMouth1.svg');
 }
 
 .fill-training-mouth-2 {
@@ -314,7 +314,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/trainingMouth2.svg');
+	background-image: url('{{postension}}svg/components/trainingMouth2.svg');
 }
 
 .fill-training-mouth-3 {
@@ -326,7 +326,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/trainingMouth3.svg');
+	background-image: url('{{postension}}svg/components/trainingMouth3.svg');
 }
 
 .fill-training-mouth-4 {
@@ -338,7 +338,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/trainingMouth4.svg');
+	background-image: url('{{postension}}svg/components/trainingMouth4.svg');
 }
 
 .fill-blueArmy {
@@ -348,7 +348,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/blueArmyLeader.svg');
+	background-image: url('{{postension}}svg/components/blueArmyLeader.svg');
 }
 
 .fill-redArmy-eyes {
@@ -360,7 +360,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/redArmyLeaderEyes.svg');
+	background-image: url('{{postension}}svg/components/redArmyLeaderEyes.svg');
 }
 
 .fill-redArmy-eyes-blink {
@@ -372,7 +372,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/redArmyLeaderBlink.svg');
+	background-image: url('{{postension}}svg/components/redArmyLeaderBlink.svg');
 }
 
 .fill-redArmy-mouth-1 {
@@ -384,7 +384,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/redArmyLeaderMouth1.svg');
+	background-image: url('{{postension}}svg/components/redArmyLeaderMouth1.svg');
 }
 
 .fill-redArmy-mouth-2 {
@@ -396,7 +396,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/redArmyLeaderMouth2.svg');
+	background-image: url('{{postension}}svg/components/redArmyLeaderMouth2.svg');
 }
 
 .fill-redArmy-mouth-3 {
@@ -408,7 +408,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/redArmyLeaderMouth3.svg');
+	background-image: url('{{postension}}svg/components/redArmyLeaderMouth3.svg');
 }
 
 .fill-blueArmy-eyes {
@@ -420,7 +420,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/blueArmyLeaderEyes.svg');
+	background-image: url('{{postension}}svg/components/blueArmyLeaderEyes.svg');
 }
 
 .fill-blueArmy-eyes-blink {
@@ -432,7 +432,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/blueArmyLeaderBlink.svg');
+	background-image: url('{{postension}}svg/components/blueArmyLeaderBlink.svg');
 }
 
 .fill-blueArmy-mouth-1 {
@@ -444,7 +444,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/blueArmyLeaderMouth1.svg');
+	background-image: url('{{postension}}svg/components/blueArmyLeaderMouth1.svg');
 }
 
 .fill-blueArmy-mouth-2 {
@@ -456,7 +456,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/blueArmyLeaderMouth2.svg');
+	background-image: url('{{postension}}svg/components/blueArmyLeaderMouth2.svg');
 }
 
 .fill-blueArmy-mouth-3 {
@@ -468,7 +468,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/blueArmyLeaderMouth3.svg');
+	background-image: url('{{postension}}svg/components/blueArmyLeaderMouth3.svg');
 }
 
 .fill-red-building-1 {
@@ -478,7 +478,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/redBuilding1.svg');
+	background-image: url('{{postension}}svg/components/redBuilding1.svg');
 }
 
 .fill-red-building-2 {
@@ -488,7 +488,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/redBuilding2.svg');
+	background-image: url('{{postension}}svg/components/redBuilding2.svg');
 }
 
 .fill-red-building-3 {
@@ -498,7 +498,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/redBuilding3.svg');
+	background-image: url('{{postension}}svg/components/redBuilding3.svg');
 }
 
 .fill-order {
@@ -506,7 +506,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/order.svg');
+	background-image: url('{{postension}}svg/menu/order.svg');
 }
 
 .fill-active-order {
@@ -514,7 +514,7 @@
 	background-size: contain;
 	background-position: bottom;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/activeOrder.svg');
+	background-image: url('{{postension}}svg/menu/activeOrder.svg');
 }
 
 .fill-target {
@@ -522,7 +522,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/targetButton.svg');
+	background-image: url('{{postension}}svg/menu/targetButton.svg');
 }
 
 .fill-sm-hexa {
@@ -530,7 +530,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/hexaIcon.svg');
+	background-image: url('{{postension}}svg/components/hexaIcon.svg');
 }
 
 .fill-sm-diam {
@@ -538,7 +538,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/diamIcon.svg');
+	background-image: url('{{postension}}svg/components/diamIcon.svg');
 }
 
 .fill-sm-power {
@@ -546,7 +546,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/powerIcon.svg');
+	background-image: url('{{postension}}svg/components/powerIcon.svg');
 }
 
 .fill-sm-tank {
@@ -554,7 +554,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/tanIcon.svg');
+	background-image: url('{{postension}}svg/components/tanIcon.svg');
 }
 
 .fill-patrol {
@@ -562,7 +562,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/patrolButton.svg');
+	background-image: url('{{postension}}svg/menu/patrolButton.svg');
 }
 
 .fill-cancel {
@@ -570,7 +570,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/cancelButton.svg');
+	background-image: url('{{postension}}svg/menu/cancelButton.svg');
 }
 
 .fill-white-cancel {
@@ -578,7 +578,7 @@
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/whiteCancelButton.svg');
+	background-image: url('{{postension}}svg/menu/whiteCancelButton.svg');
 }
 
 .fill-abort {
@@ -586,7 +586,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/AbortMenu.svg');
+	background-image: url('{{postension}}svg/menu/AbortMenu.svg');
 }
 
 .fill-searchMoney {
@@ -594,21 +594,21 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}menu/SearchMoneyButton.svg');
+	background-image: url('{{postension}}svg/menu/SearchMoneyButton.svg');
 }
 
 .fill-diamond {
 	overflow: hidden;
 	background-size: cover;
 	background-position: center;
-	background-image: url('{{postension}}nature/diamondStone.svg');
+	background-image: url('{{postension}}svg/nature/diamondStone.svg');
 }
 
 .fill-option {
 	overflow: hidden;
 	background-size: cover;
 	background-position: center;
-	background-image: url('{{postension}}option.svg');
+	background-image: url('{{postension}}svg/components/option.svg');
 }
 
 .fill-won {
@@ -617,7 +617,7 @@
 	background-size: auto;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/victory.svg');
+	background-image: url('{{postension}}svg/components/victory.svg');
 	pointer-events: none;
 }
 
@@ -627,7 +627,7 @@
 	background-size: auto;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/defeat.svg');
+	background-image: url('{{postension}}svg/components/defeat.svg');
 	pointer-events: none;
 }
 
@@ -639,7 +639,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/badge/deathBadge.svg');
+	background-image: url('{{postension}}svg/components/badge/deathBadge.svg');
 }
 
 .icon2-badge {
@@ -650,7 +650,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/badge/campaign.svg');
+	background-image: url('{{postension}}svg/components/badge/campaign.svg');
 }
 
 .fill-diamond-badge {
@@ -659,7 +659,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/badge/diamondBadge.svg');
+	background-image: url('{{postension}}svg/components/badge/diamondBadge.svg');
 }
 
 .fill-death-badge {
@@ -668,7 +668,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/badge/deathBadge.svg');
+	background-image: url('{{postension}}svg/components/badge/deathBadge.svg');
 }
 
 .fill-death-badge-gray {
@@ -677,7 +677,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/badge/deathGrayBadge.svg');
+	background-image: url('{{postension}}svg/components/badge/deathGrayBadge.svg');
 }
 
 .fill-hexa-badge {
@@ -686,7 +686,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/badge/hexaGrayBadge.svg');
+	background-image: url('{{postension}}svg/components/badge/hexaGrayBadge.svg');
 }
 
 .fill-tank-badge {
@@ -695,7 +695,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/badge/tankGrayBadge.svg');
+	background-image: url('{{postension}}svg/components/badge/tankGrayBadge.svg');
 }
 
 .fill-light1-badge {
@@ -704,7 +704,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/badge/badgeLight1.svg');
+	background-image: url('{{postension}}svg/components/badge/badgeLight1.svg');
 }
 
 .fill-light2-badge {
@@ -713,7 +713,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/badge/badgeLight2.svg');
+	background-image: url('{{postension}}svg/components/badge/badgeLight2.svg');
 }
 
 .fill-light3-badge {
@@ -722,7 +722,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/badge/badgeLight3.svg');
+	background-image: url('{{postension}}svg/components/badge/badgeLight3.svg');
 }
 
 .fill-light4-badge {
@@ -731,7 +731,7 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/badge/badgeLight4.svg');
+	background-image: url('{{postension}}svg/components/badge/badgeLight4.svg');
 }
 
 .fill-campaign-badge {
@@ -740,26 +740,31 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}components/badge/campaignBadge.svg');
+	background-image: url('{{postension}}svg/components/badge/campaignBadge.svg');
 }
 
 body:after {
-	content: url('{{postension}}components/program6Logo.svg') url('{{postension}}components/program6LogoBackground.svg')
-		url('{{postension}}option.svg') url('{{postension}}nature/diamondStone.svg')
-		url('{{postension}}nature/diamondStone.svg') url('{{postension}}menu/SearchMoneyButton.svg')
-		url('{{postension}}menu/AbortMenu.svg') url('{{postension}}menu/cancelButton.svg')
-		url('{{postension}}menu/patrolButton.svg') url('{{postension}}menu/targetButton.svg')
-		url('{{postension}}menu/activeOrder.svg') url('{{postension}}components/redArmyLeaderMouth3.svg')
-		url('{{postension}}components/redArmyLeaderMouth2.svg') url('{{postension}}components/redArmyLeaderMouth1.svg')
-		url('{{postension}}components/redArmyLeaderBlink.svg') url('{{postension}}components/redArmyLeaderEyes.svg')
-		url('{{postension}}components/redArmyLeader.svg') url('{{postension}}components/blueArmyLeaderMouth3.svg')
-		url('{{postension}}components/blueArmyLeaderMouth2.svg')
-		url('{{postension}}components/blueArmyLeaderMouth1.svg') url('{{postension}}components/blueArmyLeaderBlink.svg')
-		url('{{postension}}components/blueArmyLeaderEyes.svg') url('{{postension}}components/blueArmyLeader.svg')
-		url('{{postension}}menu/tankButton.svg') url('{{postension}}menu/truckButton.svg')
-		url('{{postension}}menu/flagMenu.svg') url('{{postension}}menu/activate.svg')
-		url('{{postension}}menu/healEnergyMenu.svg') url('{{postension}}menu/powerEnergyMenu.svg')
-		url('{{postension}}menu/fastEnergyButton.svg') url('{{postension}}menu/plusButton.svg')
-		url('{{postension}}menu/minusButton.svg') url('{{postension}}menu/energyButton.svg');
+	content: url('{{postension}}svg/components/program6Logo.svg')
+		url('{{postension}}svg/components/program6LogoBackground.svg') url('{{postension}}svg/components/option.svg')
+		url('{{postension}}svg/nature/diamondStone.svg') url('{{postension}}svg/nature/diamondStone.svg')
+		url('{{postension}}svg/menu/SearchMoneyButton.svg') url('{{postension}}svg/menu/AbortMenu.svg')
+		url('{{postension}}svg/menu/cancelButton.svg') url('{{postension}}svg/menu/patrolButton.svg')
+		url('{{postension}}svg/menu/targetButton.svg') url('{{postension}}svg/menu/activeOrder.svg')
+		url('{{postension}}svg/components/redArmyLeaderMouth3.svg')
+		url('{{postension}}svg/components/redArmyLeaderMouth2.svg')
+		url('{{postension}}svg/components/redArmyLeaderMouth1.svg')
+		url('{{postension}}svg/components/redArmyLeaderBlink.svg')
+		url('{{postension}}svg/components/redArmyLeaderEyes.svg') url('{{postension}}svg/components/redArmyLeader.svg')
+		url('{{postension}}svg/components/blueArmyLeaderMouth3.svg')
+		url('{{postension}}svg/components/blueArmyLeaderMouth2.svg')
+		url('{{postension}}svg/components/blueArmyLeaderMouth1.svg')
+		url('{{postension}}svg/components/blueArmyLeaderBlink.svg')
+		url('{{postension}}svg/components/blueArmyLeaderEyes.svg')
+		url('{{postension}}svg/components/blueArmyLeader.svg') url('{{postension}}svg/menu/tankButton.svg')
+		url('{{postension}}svg/menu/truckButton.svg') url('{{postension}}svg/menu/flagMenu.svg')
+		url('{{postension}}svg/menu/activate.svg') url('{{postension}}svg/menu/healEnergyMenu.svg')
+		url('{{postension}}svg/menu/powerEnergyMenu.svg') url('{{postension}}svg/menu/fastEnergyButton.svg')
+		url('{{postension}}svg/menu/plusButton.svg') url('{{postension}}svg/menu/minusButton.svg')
+		url('{{postension}}svg/menu/energyButton.svg');
 	display: none;
 }

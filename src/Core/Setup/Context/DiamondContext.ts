@@ -14,7 +14,7 @@ export class DiamondContext implements IHqGameContext {
 	public OnPatrolSetting: LiteEvent<Boolean> = new LiteEvent<Boolean>();
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
 	public OnTimerDone: SimpleEvent;
-	public Duration: number = 30;
+	public Duration: number = 120;
 
 	private _cells: Dictionnary<Cell>;
 

@@ -1,7 +1,7 @@
 import { MoneyOrder } from '../../../Order/Composite/MoneyOrder';
 import { IBrain } from '../../IBrain';
 import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
-import { DiamondTruckOrder } from '../../../Order/Composite/Diamond/DiamondTruckOrder';
+import { TruckPatrolOrder } from '../../../Order/Composite/Diamond/TruckPatrolOrder';
 import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { Vehicle } from '../../../../Items/Unit/Vehicle';
@@ -23,7 +23,7 @@ export class TruckRequestHandler implements ISimpleRequestHandler {
 				const truck = vehicle as Truck;
 				if (this._kingdom.GetDiamond().IsAlive()) {
 					truck.SetOrder(
-						new DiamondTruckOrder(
+						new TruckPatrolOrder(
 							truck,
 							new HqFieldOrder(this._hq, truck),
 							new DiamondFieldOrder(this._kingdom.GetDiamond(), truck)

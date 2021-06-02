@@ -1,3 +1,4 @@
+import { IdleOrder } from './../../IdleOrder';
 import { TypeTranslator } from './../../../../Items/Cell/Field/TypeTranslator';
 import { DiamondField } from './../../../../Items/Cell/Field/DiamondField';
 import { MonitoredOrder } from './../../MonitoredOrder';
@@ -7,9 +8,10 @@ import { Vehicle } from '../../../../Items/Unit/Vehicle';
 import { AStarEngine } from '../../../AStarEngine';
 import { AStarHelper } from '../../../AStarHelper';
 import { Order } from '../../Order';
+import { OrderState } from '../../OrderState';
 
 export class DiamondFieldOrder {
-	private _monitoredOrder: MonitoredOrder;
+	private _currentOrder: Order;
 	private _diamond: Diamond;
 	private _vehicule: Vehicle;
 
@@ -22,17 +24,23 @@ export class DiamondFieldOrder {
 		return this._diamond;
 	}
 
-	public GetOrder(): MonitoredOrder {
-		const diamondField = this.GetDiamondField();
-		if (diamondField) {
-			this._monitoredOrder = new MonitoredOrder(diamondField, this._vehicule);
-			return this._monitoredOrder;
+	public GetOrder(): Order {
+		if (this.GetDiamond().GetCell().GetAllNeighbourhood(1).some((c) => c === this._vehicule.GetCurrentCell())) {
+			this._currentOrder = new IdleOrder();
+			this._currentOrder.SetState(OrderState.Passed);
+			return this._currentOrder;
+		} else {
+			const diamondField = this.GetDiamondField();
+			if (diamondField) {
+				this._currentOrder = new MonitoredOrder(diamondField, this._vehicule);
+				return this._currentOrder;
+			}
+			return null;
 		}
-		return null;
 	}
 
 	public IsOrder(order: Order) {
-		return this._monitoredOrder === order;
+		return this._currentOrder === order;
 	}
 
 	private GetDiamondField(): Cell {

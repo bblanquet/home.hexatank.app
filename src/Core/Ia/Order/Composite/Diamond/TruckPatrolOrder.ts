@@ -5,7 +5,7 @@ import { Truck } from '../../../../Items/Unit/Truck';
 import { DiamondField } from '../../../../Items/Cell/Field/DiamondField';
 import { ParentOrder } from '../../ParentOrder';
 
-export class DiamondTruckOrder extends ParentOrder {
+export class TruckPatrolOrder extends ParentOrder {
 	constructor(private truck: Truck, private _hqOrder: HqFieldOrder, private _diamondFieldOrder: DiamondFieldOrder) {
 		super();
 		this.SetState(OrderState.Pending);
@@ -21,7 +21,10 @@ export class DiamondTruckOrder extends ParentOrder {
 
 	Update(): void {
 		if (!this.CurrentOrder) {
-			this.SetCurrentOrder(this._diamondFieldOrder.GetOrder());
+			const order = this._diamondFieldOrder.GetOrder();
+			if (order) {
+				this.SetCurrentOrder(order);
+			}
 		}
 
 		if (this.CurrentOrder && this.CurrentOrder.IsDone()) {

@@ -335,7 +335,12 @@ export default class GameCanvasComponent extends Component<
 		}
 
 		return (
-			<div style="position: fixed;left: 50%;transform: translateX(-50%);">
+			<div style="position: fixed;">
+				<button
+					type="button"
+					class="btn btn-dark small-space space-out fill-option"
+					onClick={() => this.SetMenu()}
+				/>
 				<button type="button" class="btn btn-dark space-out">
 					{this.ShowNoMoney()}
 					{this._diamonds.toPrecision(2)}
@@ -343,11 +348,6 @@ export default class GameCanvasComponent extends Component<
 						{' '}
 					</span>
 				</button>
-				<button
-					type="button"
-					class="btn btn-dark small-space space-out fill-option"
-					onClick={() => this.SetMenu()}
-				/>
 			</div>
 		);
 	}

@@ -4,7 +4,7 @@ import { DiamondField } from './DiamondField';
 import { BlockingField } from './BlockingField';
 import { TargetOrder } from '../../../Ia/Order/Composite/TargetOrder';
 import { PatrolOrder } from '../../../Ia/Order/Composite/PatrolOrder';
-import { DiamondTruckOrder } from '../../../Ia/Order/Composite/Diamond/DiamondTruckOrder';
+import { TruckPatrolOrder } from '../../../Ia/Order/Composite/Diamond/TruckPatrolOrder';
 import { MoneyOrder } from '../../../Ia/Order/Composite/MoneyOrder';
 import { Headquarter } from './Hq/Headquarter';
 import { IField } from './IField';
@@ -54,7 +54,7 @@ export class TypeTranslator {
 			v.SetOrder(new PatrolOrder(dest, v));
 		} else if (kind === OrderKind.Truck) {
 			v.SetOrder(
-				new DiamondTruckOrder(
+				new TruckPatrolOrder(
 					v as Truck,
 					new HqFieldOrder(dest[0].GetField() as Headquarter, v),
 					new DiamondFieldOrder(dest[1].GetField() as Diamond, v)

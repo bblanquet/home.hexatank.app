@@ -92,7 +92,7 @@ export default class RecordCanvasComponent extends Component<
 
 	private TopMenuRender() {
 		return (
-			<div style="position: fixed;left: 50%;transform: translateX(-50%);">
+			<div style="position: fixed;">
 				<button
 					type="button"
 					class="btn btn-dark small-space space-out fill-option"

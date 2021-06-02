@@ -339,6 +339,11 @@ export default class DiamondCanvasComponent extends Component<
 
 		return (
 			<div style="position: fixed;">
+				<button
+					type="button"
+					class="btn btn-dark small-space space-out fill-option"
+					onClick={() => this.SetMenu()}
+				/>
 				<button type="button" class="btn btn-dark space-out">
 					{this.ShowNoMoney()}
 					{this._diamonds.toPrecision(2)}
@@ -346,12 +351,11 @@ export default class DiamondCanvasComponent extends Component<
 						{' '}
 					</span>
 				</button>
-				<button
-					type="button"
-					class="btn btn-dark small-space space-out fill-option"
-					onClick={() => this.SetMenu()}
+				<TimerComponent
+					Duration={this._gameContext.Duration}
+					OnTimerDone={this._gameContext.OnTimerDone}
+					isPause={this.state.HasMenu}
 				/>
-				<TimerComponent Duration={this._gameContext.Duration} OnTimerDone={this._gameContext.OnTimerDone} />
 			</div>
 		);
 	}

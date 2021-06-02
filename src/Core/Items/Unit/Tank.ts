@@ -1,3 +1,5 @@
+import { FollowingItem } from './../FollowingItem';
+import { BasicItem } from './../BasicItem';
 import { Identity } from './../Identity';
 import { Missile } from './Missile';
 import { ZKind } from './../ZKind';
@@ -10,7 +12,6 @@ import { AliveItem } from '../AliveItem';
 import { Headquarter } from '../Cell/Field/Hq/Headquarter';
 import { SvgArchive } from '../../Framework/SvgArchiver';
 import { CellState } from '../Cell/CellState';
-import { BasicItem } from '../BasicItem';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Explosion } from './Explosion';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
@@ -19,6 +20,7 @@ export class Tank extends Vehicle {
 	public Turrel: Turrel;
 	private _currentTarget: AliveItem;
 	private _mainTarget: AliveItem;
+	private _targetUi: FollowingItem;
 
 	public OnTargetChanged: LiteEvent<AliveItem> = new LiteEvent<AliveItem>();
 	public OnCamouflageChanged: LiteEvent<AliveItem> = new LiteEvent<AliveItem>();
@@ -183,8 +185,19 @@ export class Tank extends Vehicle {
 		if (!isNullOrUndefined(item) && !item.IsEnemy(this.Identity)) {
 			throw 'should not be there';
 		}
+
+		if (this._targetUi) {
+			this._targetUi.Destroy();
+		}
+
 		this._mainTarget = item;
 		this.OnTargetChanged.Invoke(this, this._mainTarget);
+
+		if (this._mainTarget) {
+			this._targetUi = new FollowingItem(this._mainTarget, SvgArchive.direction.target, ZKind.Sky);
+			this._targetUi.SetVisible(this.IsSelected.bind(this));
+			this._targetUi.SetAlive(() => this.IsAlive() && this._mainTarget && this._mainTarget.IsAlive());
+		}
 	}
 
 	public GetMainTarget(): AliveItem {

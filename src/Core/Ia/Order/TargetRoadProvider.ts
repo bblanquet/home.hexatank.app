@@ -17,7 +17,7 @@ export class TargetRoadProvider {
 	}
 
 	public GetTargetRoad(): TargetRoad {
-		if (this.IsAround()) {
+		if (this.IsAround() && !TypeTranslator.IsAccessible(this.Destination, this.Tank.Identity)) {
 			return new TargetRoad(this.Destination, []);
 		}
 

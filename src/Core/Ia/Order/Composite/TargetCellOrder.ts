@@ -18,7 +18,6 @@ export class TargetCellOrder extends ParentOrder {
 		super();
 		this._tank.SetMainTarget(this.GetTarget());
 		this.SetCurrentOrder(order);
-		this.ShowUi();
 	}
 
 	public IsIdle(): boolean {
@@ -44,6 +43,7 @@ export class TargetCellOrder extends ParentOrder {
 
 	public Update(): void {
 		if (!this.GetTarget()) {
+			console.log('target destroyed');
 			this.SetState(OrderState.Passed);
 			return;
 		}
@@ -57,18 +57,5 @@ export class TargetCellOrder extends ParentOrder {
 		super.Cancel();
 		this.CurrentOrder.Cancel();
 		this._targetUi.Destroy();
-	}
-
-	private ShowUi() {
-		this._targetUi = new BasicItem(this._targetCell.GetBoundingBox(), SvgArchive.direction.target, ZKind.Sky);
-		this._targetUi.SetVisible(this._tank.IsSelected.bind(this._tank));
-		this._targetUi.SetAlive(
-			() =>
-				this._tank &&
-				this._tank.IsAlive() &&
-				this.GetTarget() &&
-				this.GetTarget().IsAlive() &&
-				this._tank.GetMainTarget() === this.GetTarget()
-		);
 	}
 }

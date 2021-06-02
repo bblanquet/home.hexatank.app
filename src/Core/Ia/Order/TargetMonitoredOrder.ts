@@ -1,3 +1,4 @@
+import { TimeTimer } from './../../Utils/Timer/TimeTimer';
 import { BasicOrder } from './BasicOrder';
 import { TargetRoad, TargetRoadProvider } from './TargetRoadProvider';
 import { Tank } from './../../Items/Unit/Tank';
@@ -10,12 +11,14 @@ import { TypeTranslator } from '../../Items/Cell/Field/TypeTranslator';
 
 export class TargetMonitoredOrder extends ParentOrder {
 	private _vehicleCellChanged: boolean;
+	private _idleTimer: TimeTimer;
 	constructor(protected Destination: Cell, protected Tank: Tank) {
 		super();
 		this.SetCurrentOrder(new IdleOrder());
 		this._vehicleCellChanged = true;
 		this.Tank.OnCellChanged.On(this.VehicleCellChange.bind(this));
 		this.SetState(OrderState.Pending);
+		this._idleTimer = new TimeTimer(1000);
 	}
 
 	private VehicleCellChange(src: any, cell: Cell): void {
@@ -34,12 +37,15 @@ export class TargetMonitoredOrder extends ParentOrder {
 		const targetRoad = new TargetRoadProvider(this.Tank, this.Destination).GetTargetRoad();
 		if (targetRoad) {
 			if (this.HasTarget(targetRoad.Target)) {
+				console.log('TargetCellOrder');
 				this.SetCurrentOrder(new TargetCellOrder(this.Tank, targetRoad.Target, this.GetChildOrder(targetRoad)));
 			} else {
+				console.log('BasicOrder');
 				this.SetCurrentOrder(new BasicOrder(this.Tank, targetRoad.Road));
 			}
 			this.OnPathFound.Invoke(this, targetRoad.Road);
 		} else {
+			console.log('IdleOrder');
 			this.Clear();
 			this.SetCurrentOrder(new IdleOrder());
 			this.SetState(OrderState.Failed);
@@ -68,7 +74,9 @@ export class TargetMonitoredOrder extends ParentOrder {
 			return;
 		}
 
-		if (this._vehicleCellChanged || this.IsIdle()) {
+		if (this._vehicleCellChanged || (this.IsIdle() && this._idleTimer.IsElapsed())) {
+			//because of idle it does loop a lot here
+			//can be updated?
 			this._vehicleCellChanged = false;
 			this.Clear();
 			this.Reset();

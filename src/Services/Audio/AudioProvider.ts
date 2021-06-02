@@ -38,7 +38,7 @@ export class AudioProvider {
 			AudioArchive.powerUp2,
 			AudioArchive.noMoney,
 
-			AudioArchive.menuMusic,
+			AudioArchive.loungeMusic,
 			AudioArchive.iceMusic,
 			AudioArchive.sandMusic,
 			AudioArchive.forestMusic,

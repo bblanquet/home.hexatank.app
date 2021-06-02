@@ -38,7 +38,7 @@ export const AudioArchive = {
 	sandMusic: './audio/Marimba Boy.wav',
 	forestMusic: './audio/Blazer Rail.wav',
 	iceMusic: './audio/Bobber Loop.wav',
-	menuMusic: './audio/Lounge Game2.wav',
+	loungeMusic: './audio/star.wav',
 
 	victory: './audio/victory.mp3',
 	defeat: './audio/defeat.mp3'

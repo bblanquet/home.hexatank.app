@@ -81,7 +81,7 @@ export default class CamouflageCanvasComponent extends Component<
 	}
 
 	componentDidMount() {
-		this._soundService.Pause(AudioArchive.menuMusic);
+		this._soundService.Pause(AudioArchive.loungeMusic);
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));

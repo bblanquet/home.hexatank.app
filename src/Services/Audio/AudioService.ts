@@ -20,7 +20,7 @@ export class AudioService implements IAudioService {
 		this.Reload();
 	}
 	PlayLoungeMusic(): void {
-		this.Play(AudioArchive.menuMusic, 0.005, true);
+		this.Play(AudioArchive.loungeMusic, 0.1, true);
 	}
 	Reload(): void {
 		this._sounds = new AudioProvider().GetContent();

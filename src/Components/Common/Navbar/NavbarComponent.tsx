@@ -63,10 +63,10 @@ export default class NavbarComponent extends Component<any, { profil: PlayerProf
 							callBack={() => {
 								if (this._soundService.IsMute()) {
 									this._soundService.On();
-									this._soundService.PlayAgain(AudioArchive.menuMusic, null, 0.005);
+									this._soundService.PlayLoungeMusic();
 								} else {
 									this._soundService.Off();
-									this._soundService.Pause(AudioArchive.menuMusic);
+									this._soundService.Pause(AudioArchive.loungeMusic);
 								}
 								this.setState({});
 							}}

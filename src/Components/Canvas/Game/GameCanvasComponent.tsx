@@ -100,7 +100,7 @@ export default class GameCanvasComponent extends Component<
 	}
 
 	componentDidMount() {
-		this._soundService.Pause(AudioArchive.menuMusic);
+		this._soundService.Pause(AudioArchive.loungeMusic);
 		const playerHq = this._gameContext.GetPlayerHq();
 		if (playerHq) {
 			playerHq.OnTruckChanged.On(this.HandleTruckChanged.bind(this));

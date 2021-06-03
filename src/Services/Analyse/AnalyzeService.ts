@@ -1,20 +1,21 @@
 import googleAnalytics from '@analytics/google-analytics';
-import { Analytics } from 'analytics';
+import { Analytics, AnalyticsInstance } from 'analytics';
 import { IAnalyzeService } from './IAnalyzeService';
 
 export class AnalyzeService implements IAnalyzeService {
-	private _analytics: any;
+	private _analytics: AnalyticsInstance;
 	constructor() {
 		this._analytics = Analytics({
 			app: 'kimchi studio',
 			plugins: [
 				googleAnalytics({
-					trackingId: 'G-9KRF08871W'
+					trackingId: 'UA-198570575-1'
 				})
 			]
 		});
 	}
 	Analyze(message: string): void {
-		this._analytics.page({ url: message });
+		this._analytics.track(message);
+		this._analytics.page();
 	}
 }

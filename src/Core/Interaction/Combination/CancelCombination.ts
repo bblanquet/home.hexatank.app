@@ -3,14 +3,14 @@ import { CancelMenuItem } from '../../Menu/Buttons/CancelMenuItem';
 import { Item } from '../../Items/Item';
 import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
-import { Factory, FactoryKey } from '../../../Factory';
+import { Singletons, SingletonKey } from '../../../Singletons';
 import { ILayerService } from '../../../Services/Layer/ILayerService';
 
 export class CancelCombination extends AbstractSingleCombination {
 	private _layerService: ILayerService;
 	constructor() {
 		super();
-		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
+		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}
 
 	IsMatching(context: CombinationContext): boolean {

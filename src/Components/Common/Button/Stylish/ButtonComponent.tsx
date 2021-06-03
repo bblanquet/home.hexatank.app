@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 import { AudioArchive } from '../../../../Core/Framework/AudioArchiver';
 import { Dictionnary } from '../../../../Core/Utils/Collections/Dictionnary';
-import { Factory, FactoryKey } from '../../../../Factory';
+import { Singletons, SingletonKey } from '../../../../Singletons';
 import { IAudioService } from '../../../../Services/Audio/IAudioService';
 import { ColorKind } from './ColorKind';
 
@@ -35,7 +35,7 @@ export default class ButtonComponent extends Component<
 							class={`custom-btn-layout-1 ${this._primary.Get(ColorKind[this.props.color])} fit-content`}
 							onClick={() => {
 								if (!this.props.isMute) {
-									Factory.Load<IAudioService>(FactoryKey.Audio).Play(`${AudioArchive.ok}`, 0.2);
+									Singletons.Load<IAudioService>(SingletonKey.Audio).Play(`${AudioArchive.ok}`, 0.2);
 								}
 								this.props.callBack();
 							}}

@@ -23,9 +23,9 @@ import { OnlinePlayer } from '../../../Network/OnlinePlayer';
 import { CellGroup } from '../../../Core/Items/CellGroup';
 import PopupComponent from '../../Popup/PopupComponent';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
-import { INetworkService } from '../../../Services/Network/INetworkService';
+import { INetworkContextService } from '../../../Services/Network/INetworkContextService';
 import { IInteractionService } from '../../../Services/Interaction/IInteractionService';
-import { Factory, FactoryKey } from '../../../Factory';
+import { Singletons, SingletonKey } from '../../../Singletons';
 import Redirect from '../../Redirect/RedirectComponent';
 import Icon from '../../Common/Icon/IconComponent';
 import { AudioArchive } from '../../../Core/Framework/AudioArchiver';
@@ -59,7 +59,7 @@ export default class GameCanvasComponent extends Component<
 	private _diamonds: number;
 	private _gameContextService: IGameContextService<GameBlueprint, GameContext>;
 	private _soundService: IAudioService;
-	private _networkService: INetworkService;
+	private _networkService: INetworkContextService;
 	private _interactionService: IInteractionService<GameContext>;
 	private _appService: IAppService<GameBlueprint>;
 	private _gameContext: GameContext;
@@ -68,13 +68,13 @@ export default class GameCanvasComponent extends Component<
 
 	constructor() {
 		super();
-		this._gameContextService = Factory.Load<IGameContextService<GameBlueprint, GameContext>>(
-			FactoryKey.GameContext
+		this._gameContextService = Singletons.Load<IGameContextService<GameBlueprint, GameContext>>(
+			SingletonKey.GameContext
 		);
-		this._soundService = Factory.Load<IAudioService>(FactoryKey.Audio);
-		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
-		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.Interaction);
-		this._appService = Factory.Load<IAppService<GameBlueprint>>(FactoryKey.App);
+		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
+		this._networkService = Singletons.Load<INetworkContextService>(SingletonKey.Network);
+		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.Interaction);
+		this._appService = Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App);
 		this._gameContext = this._gameContextService.Publish();
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
 		this.setState({

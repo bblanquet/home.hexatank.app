@@ -2,7 +2,7 @@ import { IAppService } from '../../Services/App/IAppService';
 import { IUpdateService } from '../../Services/Update/IUpdateService';
 import { ItemsUpdater } from '../../Core/ItemsUpdater';
 import { Component, h } from 'preact';
-import { Factory, FactoryKey } from '../../Factory';
+import { Singletons, SingletonKey } from '../../Singletons';
 import { ILayerService } from '../../Services/Layer/ILayerService';
 import { IGameContextService } from '../../Services/GameContext/IGameContextService';
 import { IKeyService } from '../../Services/Key/IKeyService';
@@ -25,10 +25,10 @@ export default class CanvasComponent extends Component<
 
 	constructor() {
 		super();
-		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
-		this._keyService = Factory.Load<IKeyService>(FactoryKey.Key);
-		this._appService = Factory.Load<IAppService<IBlueprint>>(this._keyService.GetAppKey());
-		this._updater = Factory.Load<IUpdateService>(FactoryKey.Update).Publish();
+		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
+		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
+		this._appService = Singletons.Load<IAppService<IBlueprint>>(this._keyService.GetAppKey());
+		this._updater = Singletons.Load<IUpdateService>(SingletonKey.Update).Publish();
 		this._stop = true;
 	}
 
@@ -47,7 +47,7 @@ export default class CanvasComponent extends Component<
 		window.removeEventListener('resize', () => this.ResizeTheCanvas());
 		window.removeEventListener('DOMContentLoaded', () => this.ResizeTheCanvas());
 		window.removeEventListener('scroll', () => this.ResizeTheCanvas());
-		Factory.Load<IAppService<IBlueprint>>(this._keyService.GetAppKey()).Collect();
+		Singletons.Load<IAppService<IBlueprint>>(this._keyService.GetAppKey()).Collect();
 	}
 
 	private GameLoop(): void {

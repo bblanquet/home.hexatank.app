@@ -8,7 +8,7 @@ import UnitMenuComponent from './Parts/UnitMenuComponent';
 import { Vehicle } from '../../../Core/Items/Unit/Vehicle';
 import CanvasComponent from '../CanvasComponent';
 import { IRecordService } from '../../../Services/Record/IRecordService';
-import { Factory, FactoryKey } from '../../../Factory';
+import { Singletons, SingletonKey } from '../../../Singletons';
 import { route } from 'preact-router';
 import Redirect from '../../Redirect/RedirectComponent';
 import { GameBlueprint } from '../../../Core/Setup/Blueprint/Game/GameBlueprint';
@@ -27,8 +27,8 @@ export default class RecordCanvasComponent extends Component<
 
 	constructor() {
 		super();
-		this._gameService = Factory.Load<IGameContextService<GameBlueprint, GameContext>>(FactoryKey.GameContext);
-		this._recordService = Factory.Load<IRecordService>(FactoryKey.Record);
+		this._gameService = Singletons.Load<IGameContextService<GameBlueprint, GameContext>>(SingletonKey.GameContext);
+		this._recordService = Singletons.Load<IRecordService>(SingletonKey.Record);
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
 	}
 	private OnItemSelectionChanged(obj: any, item: ISelectable): void {

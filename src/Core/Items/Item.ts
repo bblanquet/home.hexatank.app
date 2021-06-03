@@ -1,4 +1,4 @@
-import { Factory, FactoryKey } from './../../Factory';
+import { Singletons, SingletonKey } from '../../Singletons';
 import { ILayerService } from './../../Services/Layer/ILayerService';
 import { IUpdateService } from './../../Services/Update/IUpdateService';
 import { LiteEvent } from './../Utils/Events/LiteEvent';
@@ -24,8 +24,8 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 	public IsCentralRef: boolean = false;
 
 	constructor(isUpdatable: boolean = true) {
-		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
-		this._updateService = Factory.Load<IUpdateService>(FactoryKey.Update);
+		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
+		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
 		this._spriteManager = new SpriteManager();
 		this.DisplayObjects = new Array<PIXI.DisplayObject>();
 		this.IsUpdatable = isUpdatable;

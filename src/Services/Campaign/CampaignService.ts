@@ -2,7 +2,7 @@ import { IBlueprint } from './../../Core/Setup/Blueprint/IBlueprint';
 import { PowerBluePrintMaker } from './../../Core/Setup/Blueprint/Power/PowerBlueprintMaker';
 import { CamouflageBluePrintMaker } from '../../Core/Setup/Blueprint/Cam/CamouflageBlueprintMaker';
 import { DiamondBlueprintMaker } from './../../Core/Setup/Blueprint/Diamond/DiamondBlueprintMaker';
-import { Factory, FactoryKey } from './../../Factory';
+import { Singletons, SingletonKey } from '../../Singletons';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
 import { GameBlueprintMaker } from '../../Core/Setup/Blueprint/Game/GameBlueprintMaker';
 import { Dictionnary } from './../../Core/Utils/Collections/Dictionnary';
@@ -19,7 +19,7 @@ export class CampaignService implements ICampaignService {
 	private _playerProfil: IPlayerProfilService;
 
 	constructor() {
-		this._playerProfil = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
+		this._playerProfil = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 
 		this._training = new Dictionnary<IBlueprint>();
 		this._training.Add((1).toString(), new CamouflageBluePrintMaker().GetBluePrint());

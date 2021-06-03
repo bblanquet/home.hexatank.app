@@ -7,7 +7,7 @@ import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { GameContext } from '../../../Setup/Context/GameContext';
-import { Factory, FactoryKey } from '../../../../Factory';
+import { Singletons, SingletonKey } from '../../../../Singletons';
 
 export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 	private _group: UnitGroup;
@@ -15,7 +15,7 @@ export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 
 	constructor(private _multiContext: MultiSelectionContext, private _gameContext: IHqGameContext) {
 		super();
-		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
+		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 		this._group = new UnitGroup(this._multiContext);
 	}
 

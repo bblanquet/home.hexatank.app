@@ -17,7 +17,7 @@ import { IInteractionContext, InteractionKind } from './IInteractionContext';
 import { ISelectableChecker } from './ISelectableChecker';
 import { ViewContext } from '../Utils/Geometry/ViewContext';
 import { isNullOrUndefined } from '../Utils/ToolBox';
-import { Factory, FactoryKey } from '../../Factory';
+import { Singletons, SingletonKey } from '../../Singletons';
 
 export class InteractionContext implements IContextContainer, IInteractionContext {
 	private _updateService: IUpdateService;
@@ -34,7 +34,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 		private _checker: ISelectableChecker,
 		private _viewPort: any
 	) {
-		this._updateService = Factory.Load<IUpdateService>(FactoryKey.Update);
+		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
 		this._selectedItem = [];
 		this._dispatcher = new CombinationDispatcher(combinations);
 		combinations.forEach((c) => {

@@ -6,7 +6,7 @@ import { RecordData } from '../../Core/Framework/Record/RecordData';
 import GridComponent from '../Common/Grid/GridComponent';
 import { IRecordService } from '../../Services/Record/IRecordService';
 import { ICompareService } from '../../Services/Compare/ICompareService';
-import { Factory, FactoryKey } from '../../Factory';
+import { Singletons, SingletonKey } from '../../Singletons';
 import Redirect from '../Redirect/RedirectComponent';
 import Icon from '../Common/Icon/IconComponent';
 import { RecordSelection } from './RecordSelection';
@@ -30,10 +30,10 @@ export default class RecordComponent extends Component<
 
 	constructor() {
 		super();
-		this._appService = Factory.Load<IAppService<GameBlueprint>>(FactoryKey.RecordApp);
-		this._playerProfilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
-		this._recordService = Factory.Load<IRecordService>(FactoryKey.Record);
-		this._compareService = Factory.Load<ICompareService>(FactoryKey.Compare);
+		this._appService = Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.RecordApp);
+		this._playerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+		this._recordService = Singletons.Load<IRecordService>(SingletonKey.Record);
+		this._compareService = Singletons.Load<ICompareService>(SingletonKey.Compare);
 		const records = this._playerProfilService.GetRecords();
 		this.setState({
 			Records: records.map((r) => new RecordSelection(false, r)),

@@ -2,7 +2,7 @@ import { CamouflageContext } from '../../Setup/Context/CamouflageContext';
 import { IGameAudioManager } from './IGameAudioManager';
 import { IBlueprint } from '../../Setup/Blueprint/IBlueprint';
 import { IOrder } from '../../Ia/Order/IOrder';
-import { Factory, FactoryKey } from '../../../Factory';
+import { Singletons, SingletonKey } from '../../../Singletons';
 import { MapEnv } from '../../Setup/Blueprint/MapEnv';
 import { Missile } from '../../Items/Unit/Missile';
 import { Tank } from '../../Items/Unit/Tank';
@@ -18,7 +18,7 @@ export class CamouflageAudioManager implements IGameAudioManager {
 	private _audioId: number;
 
 	constructor(private _mapContext: IBlueprint, private _gameContext: CamouflageContext) {
-		this._soundService = Factory.Load<IAudioService>(FactoryKey.Audio);
+		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		this._gameContext.GetVehicles().forEach((v) => {
 			this.HandleVehicle(null, v);

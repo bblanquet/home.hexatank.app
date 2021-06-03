@@ -1,6 +1,6 @@
 import { IGarbage } from './../IGarbage';
-import { FactoryKey } from './../../Factory';
+import { SingletonKey } from '../../Singletons';
 export interface IKeyService extends IGarbage {
-	GetAppKey(): FactoryKey;
+	GetAppKey(): SingletonKey;
 	DefineKey(appService: any): void;
 }

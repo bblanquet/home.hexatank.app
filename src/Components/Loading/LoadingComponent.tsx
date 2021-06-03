@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { SpriteProvider } from '../../Core/Framework/SpriteProvider';
-import { Factory, FactoryKey } from '../../Factory';
+import { Singletons, SingletonKey } from '../../Singletons';
 import { IAnalyzeService } from '../../Services/Analyse/IAnalyzeService';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
@@ -13,7 +13,7 @@ export default class LoadingComponent extends Component<any, { percentage: numbe
 
 	constructor() {
 		super();
-		this._analyzerService = Factory.Load<IAnalyzeService>(FactoryKey.Analyze);
+		this._analyzerService = Singletons.Load<IAnalyzeService>(SingletonKey.Analyze);
 	}
 
 	componentDidMount() {

@@ -2,7 +2,7 @@ import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import { StatsKind } from '../../Core/Utils/Stats/StatsKind';
-import { Factory, FactoryKey } from '../../Factory';
+import { Singletons, SingletonKey } from '../../Singletons';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
@@ -19,7 +19,7 @@ export default class SmPopupComponent extends Component<
 		this.setState({
 			Kind: StatsKind.Unit
 		});
-		this._profilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
+		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this._profilService.OnPointChanged.On(() => this.setState({ Kind: this.state.Kind }));
 	}
 

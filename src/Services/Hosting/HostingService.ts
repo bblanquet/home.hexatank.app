@@ -1,7 +1,7 @@
 import { MapSetting } from '../../Components/Form/MapSetting';
 import { HostState } from '../../Components/Network/HostState';
 import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
-import { Factory, FactoryKey } from '../../Factory';
+import { Singletons, SingletonKey } from '../../Singletons';
 import { OnlinePlayer } from '../../Network/OnlinePlayer';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
 import { IHostingService } from './IHostingService';
@@ -30,7 +30,7 @@ export class HostingService implements IHostingService {
 		this.UpdatePlayerName(playerName);
 	}
 	private UpdatePlayerName(playerName: string) {
-		const playerProfilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
+		const playerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		playerProfilService.GetProfil().LastPlayerName = playerName;
 		playerProfilService.Update();
 	}

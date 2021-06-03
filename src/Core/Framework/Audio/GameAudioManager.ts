@@ -2,7 +2,7 @@ import { IGameAudioManager } from './IGameAudioManager';
 import { GameBlueprint } from '../../Setup/Blueprint/Game/GameBlueprint';
 import { GameContext } from '../../Setup/Context/GameContext';
 import { IOrder } from '../../Ia/Order/IOrder';
-import { Factory, FactoryKey } from '../../../Factory';
+import { Singletons, SingletonKey } from '../../../Singletons';
 import { MapEnv } from '../../Setup/Blueprint/MapEnv';
 import { Missile } from '../../Items/Unit/Missile';
 import { Tank } from '../../Items/Unit/Tank';
@@ -20,7 +20,7 @@ export class GameAudioManager implements IGameAudioManager {
 	private _audioId: number;
 
 	constructor(private _mapContext: GameBlueprint, private _gameContext: GameContext) {
-		this._soundService = Factory.Load<IAudioService>(FactoryKey.Audio);
+		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		const playerHq = this._gameContext.GetPlayerHq();

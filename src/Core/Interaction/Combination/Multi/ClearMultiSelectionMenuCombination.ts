@@ -3,7 +3,7 @@ import { CombinationContext } from '../CombinationContext';
 import { MultiCellMenuItem } from '../../../Menu/Buttons/MultiCellMenuItem';
 import { MultiTankMenuItem } from '../../../Menu/Buttons/MultiTankMenuItem';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
-import { Factory, FactoryKey } from '../../../../Factory';
+import { Singletons, SingletonKey } from '../../../../Singletons';
 import { GameContext } from '../../../Setup/Context/GameContext';
 
 export class ClearMultiSelectionMenuCombination extends AbstractSingleCombination {
@@ -12,7 +12,7 @@ export class ClearMultiSelectionMenuCombination extends AbstractSingleCombinatio
 
 	constructor() {
 		super();
-		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.Interaction);
+		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.Interaction);
 		this._interactionService.OnMultiMenuShowed.On((src: any, isShowing) => {
 			this._isShowing = isShowing;
 		});

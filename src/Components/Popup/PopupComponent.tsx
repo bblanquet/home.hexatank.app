@@ -5,7 +5,7 @@ import { RecordObject } from '../../Core/Framework/Record/RecordObject';
 import { Groups } from '../../Core/Utils/Collections/Groups';
 import { Curve } from '../../Core/Utils/Stats/Curve';
 import { StatsKind } from '../../Core/Utils/Stats/StatsKind';
-import { Factory, FactoryKey } from '../../Factory';
+import { Singletons, SingletonKey } from '../../Singletons';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
@@ -27,7 +27,7 @@ export default class PopupComponent extends Component<
 		this.setState({
 			Kind: StatsKind.Unit
 		});
-		this._profilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
+		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this._profilService.OnPointChanged.On(() => this.setState({ Kind: this.state.Kind }));
 	}
 

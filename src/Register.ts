@@ -18,41 +18,41 @@ import { RecordAppService } from './Services/App/RecordAppService';
 import { CompareService } from './Services/Compare/CompareService';
 import { GameContextService } from './Services/GameContext/GameContextService';
 import { LayerService } from './Services/Layer/LayerService';
-import { NetworkService } from './Services/Network/NetworkService';
+import { NetworkContextService } from './Services/Network/NetworkContextService';
 import { InteractionService } from './Services/Interaction/InteractionService';
 import { RecordService } from './Services/Record/RecordService';
 import { UpdateService } from './Services/Update/UpdateService';
 import { AppService } from './Services/App/AppService';
-import { Factory, FactoryKey } from './Factory';
+import { Singletons, SingletonKey } from './Singletons';
 
-Factory.Register(FactoryKey.PlayerProfil, new PlayerProfilService());
-Factory.Register(FactoryKey.Key, new KeyService());
-Factory.Register(FactoryKey.Hosting, new HostingService());
-Factory.Register(FactoryKey.Update, new UpdateService());
-Factory.Register(FactoryKey.Compare, new CompareService());
-Factory.Register(FactoryKey.Layer, new LayerService());
-Factory.Register(FactoryKey.Network, new NetworkService());
-Factory.Register(FactoryKey.Record, new RecordService());
+Singletons.Register(SingletonKey.PlayerProfil, new PlayerProfilService());
+Singletons.Register(SingletonKey.Key, new KeyService());
+Singletons.Register(SingletonKey.Hosting, new HostingService());
+Singletons.Register(SingletonKey.Update, new UpdateService());
+Singletons.Register(SingletonKey.Compare, new CompareService());
+Singletons.Register(SingletonKey.Layer, new LayerService());
+Singletons.Register(SingletonKey.Network, new NetworkContextService());
+Singletons.Register(SingletonKey.Record, new RecordService());
 
 var context = new AudioContext();
-Factory.Register(FactoryKey.Audio, new AudioService());
+Singletons.Register(SingletonKey.Audio, new AudioService());
 
-Factory.Register(FactoryKey.GameContext, new GameContextService());
-Factory.Register(FactoryKey.CamouflageGameContext, new CamouflageGameContextService());
-Factory.Register(FactoryKey.PowerGameContext, new PowerContextService());
-Factory.Register(FactoryKey.DiamondGameContext, new DiamondContextService());
+Singletons.Register(SingletonKey.GameContext, new GameContextService());
+Singletons.Register(SingletonKey.CamouflageGameContext, new CamouflageGameContextService());
+Singletons.Register(SingletonKey.PowerGameContext, new PowerContextService());
+Singletons.Register(SingletonKey.DiamondGameContext, new DiamondContextService());
 
-Factory.Register(FactoryKey.Interaction, new InteractionService());
-Factory.Register(FactoryKey.RecordInteraction, new RecordInteractionService());
-Factory.Register(FactoryKey.CamouflageInteraction, new CamouflageInteractionService());
-Factory.Register(FactoryKey.PowerInteraction, new PowerInteractionService());
-Factory.Register(FactoryKey.DiamondInteraction, new DiamondInteractionService());
+Singletons.Register(SingletonKey.Interaction, new InteractionService());
+Singletons.Register(SingletonKey.RecordInteraction, new RecordInteractionService());
+Singletons.Register(SingletonKey.CamouflageInteraction, new CamouflageInteractionService());
+Singletons.Register(SingletonKey.PowerInteraction, new PowerInteractionService());
+Singletons.Register(SingletonKey.DiamondInteraction, new DiamondInteractionService());
 
-Factory.Register(FactoryKey.App, new AppService());
-Factory.Register(FactoryKey.RecordApp, new RecordAppService());
-Factory.Register(FactoryKey.CamouflageApp, new CamouflageAppService());
-Factory.Register(FactoryKey.PowerApp, new PowerAppService());
-Factory.Register(FactoryKey.DiamondApp, new DiamondAppService());
+Singletons.Register(SingletonKey.App, new AppService());
+Singletons.Register(SingletonKey.RecordApp, new RecordAppService());
+Singletons.Register(SingletonKey.CamouflageApp, new CamouflageAppService());
+Singletons.Register(SingletonKey.PowerApp, new PowerAppService());
+Singletons.Register(SingletonKey.DiamondApp, new DiamondAppService());
 
-Factory.Register(FactoryKey.Campaign, new CampaignService());
-Factory.Register(FactoryKey.Analyze, new AnalyzeService());
+Singletons.Register(SingletonKey.Campaign, new CampaignService());
+Singletons.Register(SingletonKey.Analyze, new AnalyzeService());

@@ -4,13 +4,13 @@ import { PowerBlueprint } from './../../Core/Setup/Blueprint/Power/PowerBlueprin
 import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
 import { IInteractionService } from '../Interaction/IInteractionService';
-import { INetworkService } from '../Network/INetworkService';
+import { INetworkContextService } from '../Network/INetworkContextService';
 import { ILayerService } from '../Layer/ILayerService';
 import { IUpdateService } from '../Update/IUpdateService';
 import { IGameContextService } from '../GameContext/IGameContextService';
 import { AppProvider } from '../../Core/App/AppProvider';
 import { IAppService } from './IAppService';
-import { Factory, FactoryKey } from '../../Factory';
+import { Singletons, SingletonKey } from '../../Singletons';
 import * as PIXI from 'pixi.js';
 import { IKeyService } from '../Key/IKeyService';
 import { CellStateSetter } from '../../Core/Items/Cell/CellStateSetter';
@@ -30,21 +30,21 @@ export class PowerAppService implements IAppService<PowerBlueprint> {
 	private _interactionService: IInteractionService<PowerContext>;
 	private _layerService: ILayerService;
 	private _updateService: IUpdateService;
-	private _networkService: INetworkService;
+	private _networkService: INetworkContextService;
 	private _keyService: IKeyService;
 	private _audioService: IAudioService;
 
 	constructor() {
 		this._appProvider = new AppProvider();
-		this._gameContextService = Factory.Load<IGameContextService<PowerBlueprint, PowerContext>>(
-			FactoryKey.PowerGameContext
+		this._gameContextService = Singletons.Load<IGameContextService<PowerBlueprint, PowerContext>>(
+			SingletonKey.PowerGameContext
 		);
-		this._updateService = Factory.Load<IUpdateService>(FactoryKey.Update);
-		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
-		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
-		this._interactionService = Factory.Load<IInteractionService<PowerContext>>(FactoryKey.PowerInteraction);
-		this._keyService = Factory.Load<IKeyService>(FactoryKey.Key);
-		this._audioService = Factory.Load<IAudioService>(FactoryKey.Audio);
+		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
+		this._networkService = Singletons.Load<INetworkContextService>(SingletonKey.Network);
+		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
+		this._interactionService = Singletons.Load<IInteractionService<PowerContext>>(SingletonKey.PowerInteraction);
+		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
+		this._audioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 	}
 
 	public Register(blueprint: PowerBlueprint): void {

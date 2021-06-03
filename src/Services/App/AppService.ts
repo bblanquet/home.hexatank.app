@@ -7,14 +7,14 @@ import { GameAudioManager } from '../../Core/Framework/Audio/GameAudioManager';
 import { IKeyService } from './../Key/IKeyService';
 import { GameSettings } from './../../Core/Framework/GameSettings';
 import { IInteractionService } from './../Interaction/IInteractionService';
-import { INetworkService } from './../Network/INetworkService';
+import { INetworkContextService } from '../Network/INetworkContextService';
 import { ILayerService } from './../Layer/ILayerService';
 import { IUpdateService } from './../Update/IUpdateService';
 import { IGameContextService } from './../GameContext/IGameContextService';
 import { AppProvider } from './../../Core/App/AppProvider';
 import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
 import { IAppService } from './IAppService';
-import { Factory, FactoryKey } from '../../Factory';
+import { Singletons, SingletonKey } from '../../Singletons';
 import * as PIXI from 'pixi.js';
 import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
@@ -34,23 +34,23 @@ export class AppService implements IAppService<GameBlueprint> {
 	private _interactionService: IInteractionService<GameContext>;
 	private _layerService: ILayerService;
 	private _updateService: IUpdateService;
-	private _networkService: INetworkService;
+	private _networkService: INetworkContextService;
 	private _keyService: IKeyService;
 	private _audioService: IAudioService;
 	private _playerProfilService: IPlayerProfilService;
 
 	constructor() {
 		this._appProvider = new AppProvider();
-		this._gameContextService = Factory.Load<IGameContextService<GameBlueprint, GameContext>>(
-			FactoryKey.GameContext
+		this._gameContextService = Singletons.Load<IGameContextService<GameBlueprint, GameContext>>(
+			SingletonKey.GameContext
 		);
-		this._updateService = Factory.Load<IUpdateService>(FactoryKey.Update);
-		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
-		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
-		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.Interaction);
-		this._keyService = Factory.Load<IKeyService>(FactoryKey.Key);
-		this._audioService = Factory.Load<IAudioService>(FactoryKey.Audio);
-		this._playerProfilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
+		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
+		this._networkService = Singletons.Load<INetworkContextService>(SingletonKey.Network);
+		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
+		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.Interaction);
+		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
+		this._audioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
+		this._playerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 	}
 	GetStats(): StatsContext {
 		return this._statContext;

@@ -2,10 +2,10 @@ import { OnlinePlayer } from '../../Network/OnlinePlayer';
 import { GameContext } from '../../Core/Setup/Context/GameContext';
 import { NetworkContext } from '../../Core/Framework/NetworkContext';
 import { NetworkSocket } from '../../Network/NetworkSocket';
-import { INetworkService } from './INetworkService';
+import { INetworkContextService } from './INetworkContextService';
 import { isNullOrUndefined } from '../../Core/Utils/ToolBox';
 
-export class NetworkService implements INetworkService {
+export class NetworkContextService implements INetworkContextService {
 	//use for network
 	private _networkContext: NetworkContext;
 	private _socket: NetworkSocket;

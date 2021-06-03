@@ -5,7 +5,7 @@ import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { GameContext } from '../../../Setup/Context/GameContext';
 import { ILayerService } from '../../../../Services/Layer/ILayerService';
-import { Factory, FactoryKey } from '../../../../Factory';
+import { Singletons, SingletonKey } from '../../../../Singletons';
 import { IGameContext } from '../../../Setup/Context/IGameContext';
 
 export class MultiCellSelectionCombination extends AbstractSingleCombination {
@@ -13,7 +13,7 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 
 	constructor(private _multiSelectionContext: MultiSelectionContext, private _gameContext: IGameContext) {
 		super();
-		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
+		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}
 
 	IsMatching(context: CombinationContext): boolean {

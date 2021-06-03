@@ -2,7 +2,7 @@ import { PowerContext } from '../../Setup/Context/PowerContext';
 import { PowerBlueprint } from '../../Setup/Blueprint/Power/PowerBlueprint';
 import { IGameAudioManager } from './IGameAudioManager';
 import { IOrder } from '../../Ia/Order/IOrder';
-import { Factory, FactoryKey } from '../../../Factory';
+import { Singletons, SingletonKey } from '../../../Singletons';
 import { MapEnv } from '../../Setup/Blueprint/MapEnv';
 import { Missile } from '../../Items/Unit/Missile';
 import { Tank } from '../../Items/Unit/Tank';
@@ -20,7 +20,7 @@ export class PowerAudioManager implements IGameAudioManager {
 	private _audioId: number;
 
 	constructor(private _mapContext: PowerBlueprint, private _gameContext: PowerContext) {
-		this._soundService = Factory.Load<IAudioService>(FactoryKey.Audio);
+		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		const playerHq = this._gameContext.GetPlayerHq();

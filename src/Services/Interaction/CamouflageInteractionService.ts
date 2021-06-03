@@ -5,7 +5,7 @@ import { InteractionContext } from '../../Core/Interaction/InteractionContext';
 import { IInteractionService } from './IInteractionService';
 import { ILayerService } from '../Layer/ILayerService';
 import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
-import { Factory, FactoryKey } from '../../Factory';
+import { Singletons, SingletonKey } from '../../Singletons';
 import * as PIXI from 'pixi.js';
 import { MultiSelectionContext } from '../../Core/Menu/Smart/MultiSelectionContext';
 import { CancelCombination } from '../../Core/Interaction/Combination/CancelCombination';
@@ -24,7 +24,7 @@ export class CamouflageInteractionService implements IInteractionService<Camoufl
 	public OnMultiMenuShowed: LiteEvent<boolean> = new LiteEvent<boolean>();
 
 	constructor() {
-		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
+		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}
 
 	Register(manager: PIXI.InteractionManager, gameContext: CamouflageContext): void {

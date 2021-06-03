@@ -5,7 +5,7 @@ import { Item } from '../../../Items/Item';
 import { ISelectable } from '../../../ISelectable';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
-import { Factory, FactoryKey } from '../../../../Factory';
+import { Singletons, SingletonKey } from '../../../../Singletons';
 import { ILayerService } from '../../../../Services/Layer/ILayerService';
 import { GameContext } from '../../../Setup/Context/GameContext';
 
@@ -15,8 +15,8 @@ export class DisplayMultiMenuCombination extends AbstractSingleCombination {
 
 	constructor(private _multiSelectionContext: MultiSelectionContext) {
 		super();
-		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.Interaction);
-		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
+		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.Interaction);
+		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}
 
 	IsMatching(context: CombinationContext): boolean {

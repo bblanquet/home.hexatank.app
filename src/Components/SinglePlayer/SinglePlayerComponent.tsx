@@ -6,7 +6,7 @@ import { MapEnv } from '../../Core/Setup/Blueprint/MapEnv';
 import MdPanelComponent from '../Common/Panel/MdPanelComponent';
 import MapFormComponent from '../Form/MapFormComponent';
 import { IAppService } from '../../Services/App/IAppService';
-import { Factory, FactoryKey } from '../../Factory';
+import { Singletons, SingletonKey } from '../../Singletons';
 import Redirect from '../Redirect/RedirectComponent';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
@@ -20,7 +20,7 @@ export default class SinglePlayerComponent extends Component<any, MapSetting> {
 
 	constructor(props: any) {
 		super(props);
-		this._profilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
+		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this.setState(new MapSetting());
 	}
 
@@ -105,7 +105,7 @@ export default class SinglePlayerComponent extends Component<any, MapSetting> {
 			}
 			index += 1;
 		});
-		Factory.Load<IAppService<GameBlueprint>>(FactoryKey.App).Register(mapContext);
+		Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App).Register(mapContext);
 		route('/Canvas', true);
 	}
 

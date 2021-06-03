@@ -1,13 +1,13 @@
 import { h, Component } from 'preact';
 import { IPlayerProfilService } from '../../../Services/PlayerProfil/IPlayerProfilService';
-import { Factory, FactoryKey } from '../../../Factory';
+import { Singletons, SingletonKey } from '../../../Singletons';
 import Side from '../Visible/SideComponent';
 
 export default class ProgressComponent extends Component<{ width: number; maxWidth: number }, any> {
 	private _profilService: IPlayerProfilService;
 	constructor() {
 		super();
-		this._profilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
+		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this.setState({
 			profil: this._profilService.GetProfil()
 		});

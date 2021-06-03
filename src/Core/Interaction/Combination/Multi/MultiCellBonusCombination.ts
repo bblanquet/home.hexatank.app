@@ -27,14 +27,14 @@ import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { GameContext } from '../../../Setup/Context/GameContext';
 import { IField } from '../../../Items/Cell/Field/IField';
 import { ILayerService } from '../../../../Services/Layer/ILayerService';
-import { Factory, FactoryKey } from '../../../../Factory';
+import { Singletons, SingletonKey } from '../../../../Singletons';
 
 export class MultiCellBonusCombination extends AbstractSingleCombination {
 	private _layerService: ILayerService;
 
 	constructor(private _gameContext: IHqGameContext) {
 		super();
-		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
+		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}
 
 	IsMatching(context: CombinationContext): boolean {

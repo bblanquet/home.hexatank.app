@@ -2,7 +2,7 @@ import { Component, h } from 'preact';
 import { route } from 'preact-router';
 import { IAppService } from '../../Services/App/IAppService';
 import { ICampaignService } from '../../Services/Campaign/ICampaignService';
-import { Factory, FactoryKey } from '../../Factory';
+import { Singletons, SingletonKey } from '../../Singletons';
 import Redirect from '../Redirect/RedirectComponent';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { LockButton } from '../Common/Button/Stylish/LockButton';
@@ -21,7 +21,7 @@ export default class TrainingComponent extends Component<any, any> {
 
 	constructor(props: any) {
 		super(props);
-		this._campaignService = Factory.Load<ICampaignService>(FactoryKey.Campaign);
+		this._campaignService = Singletons.Load<ICampaignService>(SingletonKey.Campaign);
 	}
 
 	render() {
@@ -170,13 +170,13 @@ export default class TrainingComponent extends Component<any, any> {
 	Start(index: number): void {
 		const blueprint = this._campaignService.GetMapContext(CampaignKind.training, index);
 		if (blueprint instanceof CamouflageBlueprint) {
-			Factory.Load<IAppService<CamouflageBlueprint>>(FactoryKey.CamouflageApp).Register(blueprint);
+			Singletons.Load<IAppService<CamouflageBlueprint>>(SingletonKey.CamouflageApp).Register(blueprint);
 			route('/Camouflage', true);
 		} else if (blueprint instanceof PowerBlueprint) {
-			Factory.Load<IAppService<PowerBlueprint>>(FactoryKey.PowerApp).Register(blueprint);
+			Singletons.Load<IAppService<PowerBlueprint>>(SingletonKey.PowerApp).Register(blueprint);
 			route('/Power', true);
 		} else if (blueprint instanceof DiamondBlueprint) {
-			Factory.Load<IAppService<DiamondBlueprint>>(FactoryKey.DiamondApp).Register(blueprint);
+			Singletons.Load<IAppService<DiamondBlueprint>>(SingletonKey.DiamondApp).Register(blueprint);
 			route('/Diamond', true);
 		}
 	}

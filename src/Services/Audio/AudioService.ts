@@ -4,7 +4,7 @@ import { Howl } from 'howler';
 import { AudioProvider } from './AudioProvider';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
-import { Factory, FactoryKey } from '../../Factory';
+import { Singletons, SingletonKey } from '../../Singletons';
 import { IGameAudioManager } from '../../Core/Framework/Audio/IGameAudioManager';
 
 export class AudioService implements IAudioService {
@@ -16,7 +16,7 @@ export class AudioService implements IAudioService {
 
 	constructor() {
 		this._playingSounds = new Dictionnary<number>();
-		this._profilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
+		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this.Reload();
 	}
 	PlayLoungeMusic(): void {

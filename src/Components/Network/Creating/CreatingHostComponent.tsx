@@ -6,7 +6,7 @@ import { CreatingHostState } from './CreatingHostState';
 import { PacketKind } from '../../../Network/Message/PacketKind';
 import MdPanelComponent from '../../Common/Panel/MdPanelComponent';
 import TextComponent from '../../Common/Text/TextComponent';
-import { Factory, FactoryKey } from '../../../Factory';
+import { Singletons, SingletonKey } from '../../../Singletons';
 import { IHostingService } from '../../../Services/Hosting/IHostingService';
 import Redirect from '../../Redirect/RedirectComponent';
 import ButtonComponent from '../../Common/Button/Stylish/ButtonComponent';
@@ -24,7 +24,7 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 
 	constructor() {
 		super();
-		this._profilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
+		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this.setState({
 			RoomName: `${this._profilService.GetProfil().LastPlayerName}'s room`,
 			PlayerName: this._profilService.GetProfil().LastPlayerName
@@ -137,7 +137,7 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 		this._socket.on('connect', () => {
 			this._socket.on(PacketKind[PacketKind.Exist], (data: { Exist: boolean; RoomName: string }) => {
 				if (!data.Exist) {
-					Factory.Load<IHostingService>(FactoryKey.Hosting).Register(
+					Singletons.Load<IHostingService>(SingletonKey.Hosting).Register(
 						this.state.PlayerName,
 						this.state.RoomName,
 						this.state.Password,

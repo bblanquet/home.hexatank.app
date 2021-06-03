@@ -4,13 +4,13 @@ import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { CombinationContext } from './CombinationContext';
 import { UnitGroup } from '../../Items/UnitGroup';
 import { ILayerService } from '../../../Services/Layer/ILayerService';
-import { Factory, FactoryKey } from '../../../Factory';
+import { Singletons, SingletonKey } from '../../../Singletons';
 
 export class SwithcMultiCombination extends AbstractSingleCombination {
 	private _layerService: ILayerService;
 	constructor(private _multiContext: MultiSelectionContext) {
 		super();
-		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
+		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}
 
 	IsMatching(context: CombinationContext): boolean {

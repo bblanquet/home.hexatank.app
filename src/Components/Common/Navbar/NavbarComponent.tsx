@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 import { AudioArchive } from '../../../Core/Framework/AudioArchiver';
 import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
-import { Factory, FactoryKey } from '../../../Factory';
+import { Singletons, SingletonKey } from '../../../Singletons';
 import { IPlayerProfilService } from '../../../Services/PlayerProfil/IPlayerProfilService';
 import { PlayerProfil } from '../../../Services/PlayerProfil/PlayerProfil';
 import { ColorKind } from '../Button/Stylish/ColorKind';
@@ -15,8 +15,8 @@ export default class NavbarComponent extends Component<any, { profil: PlayerProf
 	private _profilService: IPlayerProfilService;
 	constructor() {
 		super();
-		this._soundService = Factory.Load<IAudioService>(FactoryKey.Audio);
-		this._profilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
+		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
+		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this.setState({
 			profil: this._profilService.GetProfil()
 		});
@@ -31,7 +31,7 @@ export default class NavbarComponent extends Component<any, { profil: PlayerProf
 			if (this.GetProfil(context)) {
 				model = context as PlayerProfil;
 			}
-			Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil).SetProfil(model);
+			Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil).SetProfil(model);
 		};
 	}
 
@@ -40,7 +40,7 @@ export default class NavbarComponent extends Component<any, { profil: PlayerProf
 	}
 
 	private Save(): void {
-		const data = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil).GetProfil();
+		const data = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil).GetProfil();
 		const url = document.createElement('a');
 		const file = new Blob([ JSON.stringify(data) ], { type: 'application/json' });
 		url.href = URL.createObjectURL(file);

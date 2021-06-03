@@ -7,7 +7,7 @@ import { RecordComparer } from './Comparers/RecordComparer';
 import DropDownComponent from '../Common/DropDown/DropDownComponent';
 import { DeltaRecordCurve } from './Comparers/DeltaRecordCurve';
 import TextComponent from '../Common/Text/TextComponent';
-import { Factory, FactoryKey } from '../../Factory';
+import { Singletons, SingletonKey } from '../../Singletons';
 import Redirect from '../Redirect/RedirectComponent';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
@@ -43,7 +43,7 @@ export default class ComparerComponent extends Component<
 			SelectedUnitId: '',
 			CurveIndex: null
 		});
-		this._compareService = Factory.Load<ICompareService>(FactoryKey.Compare);
+		this._compareService = Singletons.Load<ICompareService>(SingletonKey.Compare);
 	}
 
 	componentWillMount() {

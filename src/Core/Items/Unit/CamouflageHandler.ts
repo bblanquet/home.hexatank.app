@@ -1,6 +1,6 @@
 import { IBlueprint } from './../../Setup/Blueprint/IBlueprint';
 import { IKeyService } from './../../../Services/Key/IKeyService';
-import { Factory, FactoryKey } from './../../../Factory';
+import { Singletons, SingletonKey } from '../../../Singletons';
 import { IAppService } from '../../../Services/App/IAppService';
 import { SvgArchive } from '../../Framework/SvgArchiver';
 import { MapEnv } from '../../Setup/Blueprint/MapEnv';
@@ -9,8 +9,8 @@ export class CamouflageHandler {
 	private _appService: IAppService<IBlueprint>;
 
 	constructor() {
-		const key = Factory.Load<IKeyService>(FactoryKey.Key).GetAppKey();
-		this._appService = Factory.Load<IAppService<IBlueprint>>(key);
+		const key = Singletons.Load<IKeyService>(SingletonKey.Key).GetAppKey();
+		this._appService = Singletons.Load<IAppService<IBlueprint>>(key);
 	}
 
 	public GetCamouflage(): string {

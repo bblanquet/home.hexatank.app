@@ -3,14 +3,14 @@ import { CombinationContext } from '../CombinationContext';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { ILayerService } from '../../../../Services/Layer/ILayerService';
-import { Factory, FactoryKey } from '../../../../Factory';
+import { Singletons, SingletonKey } from '../../../../Singletons';
 
 export class MultiUnitOrderCombination extends AbstractSingleCombination {
 	private _layerService: ILayerService;
 
 	constructor(private _multiContext: MultiSelectionContext) {
 		super();
-		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
+		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}
 
 	IsMatching(context: CombinationContext): boolean {

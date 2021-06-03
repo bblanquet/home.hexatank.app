@@ -2,7 +2,7 @@ import { Component, h } from 'preact';
 import { route } from 'preact-router';
 import { IAppService } from '../../Services/App/IAppService';
 import { ICampaignService } from '../../Services/Campaign/ICampaignService';
-import { Factory, FactoryKey } from '../../Factory';
+import { Singletons, SingletonKey } from '../../Singletons';
 import Redirect from '../Redirect/RedirectComponent';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { LockButton } from '../Common/Button/Stylish/LockButton';
@@ -23,7 +23,7 @@ export default class RedCampaignComponent extends Component<
 
 	constructor(props: any) {
 		super(props);
-		this._campaignService = Factory.Load<ICampaignService>(FactoryKey.Campaign);
+		this._campaignService = Singletons.Load<ICampaignService>(SingletonKey.Campaign);
 	}
 
 	render() {
@@ -156,7 +156,7 @@ export default class RedCampaignComponent extends Component<
 
 	Start(index: number): void {
 		const mapContext = this._campaignService.GetMapContext(CampaignKind.red, index);
-		Factory.Load<IAppService<GameBlueprint>>(FactoryKey.App).Register(mapContext);
+		Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App).Register(mapContext);
 		route('/Canvas', true);
 	}
 }

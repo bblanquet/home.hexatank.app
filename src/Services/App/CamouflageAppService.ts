@@ -3,13 +3,13 @@ import { CamouflageBlueprint } from '../../Core/Setup/Blueprint/Cam/CamouflageBl
 import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
 import { IInteractionService } from '../Interaction/IInteractionService';
-import { INetworkService } from '../Network/INetworkService';
+import { INetworkContextService } from '../Network/INetworkContextService';
 import { ILayerService } from '../Layer/ILayerService';
 import { IUpdateService } from '../Update/IUpdateService';
 import { IGameContextService } from '../GameContext/IGameContextService';
 import { AppProvider } from '../../Core/App/AppProvider';
 import { IAppService } from './IAppService';
-import { Factory, FactoryKey } from '../../Factory';
+import { Singletons, SingletonKey } from '../../Singletons';
 import * as PIXI from 'pixi.js';
 import { IKeyService } from '../Key/IKeyService';
 import { CellStateSetter } from '../../Core/Items/Cell/CellStateSetter';
@@ -29,25 +29,25 @@ export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 	private _interactionService: IInteractionService<CamouflageContext>;
 	private _layerService: ILayerService;
 	private _updateService: IUpdateService;
-	private _networkService: INetworkService;
+	private _networkService: INetworkContextService;
 	private _keyService: IKeyService;
 	private _audioService: IAudioService;
 	private _gameAudioService: CamouflageAudioManager;
 
 	constructor() {
 		this._appProvider = new AppProvider();
-		this._gameContextService = Factory.Load<IGameContextService<CamouflageBlueprint, CamouflageContext>>(
-			FactoryKey.CamouflageGameContext
+		this._gameContextService = Singletons.Load<IGameContextService<CamouflageBlueprint, CamouflageContext>>(
+			SingletonKey.CamouflageGameContext
 		);
-		this._updateService = Factory.Load<IUpdateService>(FactoryKey.Update);
-		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
-		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
-		this._audioService = Factory.Load<IAudioService>(FactoryKey.Audio);
+		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
+		this._networkService = Singletons.Load<INetworkContextService>(SingletonKey.Network);
+		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
+		this._audioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 
-		this._interactionService = Factory.Load<IInteractionService<CamouflageContext>>(
-			FactoryKey.CamouflageInteraction
+		this._interactionService = Singletons.Load<IInteractionService<CamouflageContext>>(
+			SingletonKey.CamouflageInteraction
 		);
-		this._keyService = Factory.Load<IKeyService>(FactoryKey.Key);
+		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 	}
 
 	public Register(mapContext: CamouflageBlueprint): void {

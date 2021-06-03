@@ -7,7 +7,7 @@ import { TankMenuItem } from '../../../../Core/Menu/Buttons/TankMenuItem';
 import { TruckMenuItem } from '../../../../Core/Menu/Buttons/TruckMenuItem';
 import { GameContext } from '../../../../Core/Setup/Context/GameContext';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
-import { Factory, FactoryKey } from '../../../../Factory';
+import { Singletons, SingletonKey } from '../../../../Singletons';
 import { InteractionContext } from '../../../../Core/Interaction/InteractionContext';
 
 export default class HqMenuComponent extends Component<

@@ -1,6 +1,6 @@
 import { GameBlueprint } from '../../Setup/Blueprint/Game/GameBlueprint';
 import { GameContext } from '../../Setup/Context/GameContext';
-import { Factory, FactoryKey } from '../../../Factory';
+import { Singletons, SingletonKey } from '../../../Singletons';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
 import { GameSettings } from '../../Framework/GameSettings';
 import { Cell } from './Cell';
@@ -8,8 +8,8 @@ import { CellState } from './CellState';
 
 export class CellStateSetter {
 	public static SetStates(cells: Array<Cell>): void {
-		const gameContextService = Factory.Load<IGameContextService<GameBlueprint, GameContext>>(
-			FactoryKey.GameContext
+		const gameContextService = Singletons.Load<IGameContextService<GameBlueprint, GameContext>>(
+			SingletonKey.GameContext
 		);
 		if (gameContextService.Publish()) {
 			cells.forEach((cell) => this.SetState(gameContextService.Publish(), cell));

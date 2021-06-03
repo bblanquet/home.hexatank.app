@@ -10,9 +10,9 @@ import PopupMenuComponent from '../../PopupMenu/PopupMenuComponent';
 import { GameStatus } from '../../../Core/Framework/GameStatus';
 import { OnlinePlayer } from '../../../Network/OnlinePlayer';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
-import { INetworkService } from '../../../Services/Network/INetworkService';
+import { INetworkContextService } from '../../../Services/Network/INetworkContextService';
 import { IInteractionService } from '../../../Services/Interaction/IInteractionService';
-import { Factory, FactoryKey } from '../../../Factory';
+import { Singletons, SingletonKey } from '../../../Singletons';
 import Redirect from '../../Redirect/RedirectComponent';
 import Icon from '../../Common/Icon/IconComponent';
 import { AudioArchive } from '../../../Core/Framework/AudioArchiver';
@@ -40,7 +40,7 @@ export default class CamouflageCanvasComponent extends Component<
 > {
 	private _gameContextService: IGameContextService<CamouflageBlueprint, CamouflageContext>;
 	private _soundService: IAudioService;
-	private _networkService: INetworkService;
+	private _networkService: INetworkContextService;
 	private _interactionService: IInteractionService<CamouflageContext>;
 	private _gameContext: CamouflageContext;
 
@@ -48,13 +48,13 @@ export default class CamouflageCanvasComponent extends Component<
 
 	constructor() {
 		super();
-		this._gameContextService = Factory.Load<IGameContextService<CamouflageBlueprint, CamouflageContext>>(
-			FactoryKey.CamouflageGameContext
+		this._gameContextService = Singletons.Load<IGameContextService<CamouflageBlueprint, CamouflageContext>>(
+			SingletonKey.CamouflageGameContext
 		);
-		this._soundService = Factory.Load<IAudioService>(FactoryKey.Audio);
-		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
-		this._interactionService = Factory.Load<IInteractionService<CamouflageContext>>(
-			FactoryKey.CamouflageInteraction
+		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
+		this._networkService = Singletons.Load<INetworkContextService>(SingletonKey.Network);
+		this._interactionService = Singletons.Load<IInteractionService<CamouflageContext>>(
+			SingletonKey.CamouflageInteraction
 		);
 		this._gameContext = this._gameContextService.Publish();
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);

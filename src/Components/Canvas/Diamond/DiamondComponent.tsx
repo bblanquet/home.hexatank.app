@@ -16,9 +16,9 @@ import { OnlinePlayer } from '../../../Network/OnlinePlayer';
 import { CellGroup } from '../../../Core/Items/CellGroup';
 import PopupComponent from '../../Popup/PopupComponent';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
-import { INetworkService } from '../../../Services/Network/INetworkService';
+import { INetworkContextService } from '../../../Services/Network/INetworkContextService';
 import { IInteractionService } from '../../../Services/Interaction/IInteractionService';
-import { Factory, FactoryKey } from '../../../Factory';
+import { Singletons, SingletonKey } from '../../../Singletons';
 import Redirect from '../../Redirect/RedirectComponent';
 import Icon from '../../Common/Icon/IconComponent';
 import { TimerComponent } from '../../Common/Timer/TimerComponent';
@@ -62,7 +62,7 @@ export default class DiamondCanvasComponent extends Component<
 	private _diamonds: number;
 	private _gameContextService: IGameContextService<DiamondBlueprint, DiamondContext>;
 	private _soundService: IAudioService;
-	private _networkService: INetworkService;
+	private _networkService: INetworkContextService;
 	private _interactionService: IInteractionService<GameContext>;
 	private _appService: IAppService<DiamondBlueprint>;
 	private _gameContext: DiamondContext;
@@ -71,13 +71,13 @@ export default class DiamondCanvasComponent extends Component<
 
 	constructor() {
 		super();
-		this._gameContextService = Factory.Load<IGameContextService<DiamondBlueprint, DiamondContext>>(
-			FactoryKey.DiamondGameContext
+		this._gameContextService = Singletons.Load<IGameContextService<DiamondBlueprint, DiamondContext>>(
+			SingletonKey.DiamondGameContext
 		);
-		this._soundService = Factory.Load<IAudioService>(FactoryKey.Audio);
-		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
-		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.DiamondInteraction);
-		this._appService = Factory.Load<IAppService<DiamondBlueprint>>(FactoryKey.DiamondApp);
+		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
+		this._networkService = Singletons.Load<INetworkContextService>(SingletonKey.Network);
+		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.DiamondInteraction);
+		this._appService = Singletons.Load<IAppService<DiamondBlueprint>>(SingletonKey.DiamondApp);
 		this._gameContext = this._gameContextService.Publish();
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
 		this.setState({

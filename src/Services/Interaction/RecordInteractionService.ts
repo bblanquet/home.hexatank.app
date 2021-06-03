@@ -6,7 +6,7 @@ import { InteractionContext } from '../../Core/Interaction/InteractionContext';
 import { IInteractionService } from './IInteractionService';
 import { ILayerService } from '../Layer/ILayerService';
 import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
-import { Factory, FactoryKey } from '../../Factory';
+import { Singletons, SingletonKey } from '../../Singletons';
 import * as PIXI from 'pixi.js';
 import { CancelCombination } from '../../Core/Interaction/Combination/CancelCombination';
 import { ClearTrashCombination } from '../../Core/Interaction/Combination/ClearTrashCombination';
@@ -20,7 +20,7 @@ export class RecordInteractionService implements IInteractionService<GameContext
 	private _layerService: ILayerService;
 
 	constructor() {
-		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
+		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}
 
 	Register(manager: PIXI.InteractionManager, gameContext: GameContext): void {

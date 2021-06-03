@@ -6,7 +6,7 @@ import { InputNotifier } from '../../Core/Interaction/InputNotifier';
 import { InteractionContext } from '../../Core/Interaction/InteractionContext';
 import { MultiSelectionContext } from '../../Core/Menu/Smart/MultiSelectionContext';
 import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
-import { Factory, FactoryKey } from '../../Factory';
+import { Singletons, SingletonKey } from '../../Singletons';
 import { ILayerService } from '../Layer/ILayerService';
 
 export class DiamondInteractionService implements IInteractionService<DiamondContext> {
@@ -17,7 +17,7 @@ export class DiamondInteractionService implements IInteractionService<DiamondCon
 	public OnMultiMenuShowed: LiteEvent<boolean> = new LiteEvent<boolean>();
 
 	constructor() {
-		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
+		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}
 
 	Register(manager: PIXI.InteractionManager, gameContext: DiamondContext): void {

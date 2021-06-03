@@ -7,7 +7,7 @@ import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import ActiveButtonComponent from '../Common/Button/Stylish/ActiveButtonComponent';
-import { Factory, FactoryKey } from '../../Factory';
+import { Singletons, SingletonKey } from '../../Singletons';
 import { IAudioService } from '../../Services/Audio/IAudioService';
 import { AppService } from '../../Services/App/AppService';
 
@@ -19,7 +19,7 @@ export default class PopupMenuComponent extends Component<
 
 	constructor() {
 		super();
-		this._soundService = Factory.Load<IAudioService>(FactoryKey.Audio);
+		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		this.setState({
 			Kind: StatsKind.Unit
 		});
@@ -37,7 +37,7 @@ export default class PopupMenuComponent extends Component<
 	}
 
 	private Save(): void {
-		const data = Factory.Load<AppService>(FactoryKey.App).GetRecord().GetRecord();
+		const data = Singletons.Load<AppService>(SingletonKey.App).GetRecord().GetRecord();
 		const url = document.createElement('a');
 		const file = new Blob([ JSON.stringify(data) ], { type: 'application/json' });
 		url.href = URL.createObjectURL(file);

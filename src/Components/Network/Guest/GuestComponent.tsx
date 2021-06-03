@@ -7,7 +7,7 @@ import IconTextComponent from '../../Common/Text/IconTextComponent';
 import SmPanelComponent from '../../Common/Panel/SmPanelComponent';
 import GridComponent from '../../Common/Grid/GridComponent';
 import SmButtonComponent from '../../Common/Button/Stylish/SmButtonComponent';
-import { Factory, FactoryKey } from '../../../Factory';
+import { Singletons, SingletonKey } from '../../../Singletons';
 import { IHostingService } from '../../../Services/Hosting/IHostingService';
 import Redirect from '../../Redirect/RedirectComponent';
 import ButtonComponent from '../../Common/Button/Stylish/ButtonComponent';
@@ -28,7 +28,7 @@ export default class GuestComponent extends Component<
 
 	constructor() {
 		super();
-		this._profilService = Factory.Load<IPlayerProfilService>(FactoryKey.PlayerProfil);
+		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this.setState({
 			Rooms: new Array<RoomInfo>(),
 			DisplayableRooms: new Array<RoomInfo>(),
@@ -215,7 +215,7 @@ export default class GuestComponent extends Component<
 			});
 			this._socket.on(PacketKind[PacketKind.Available], (data: { IsAvailable: boolean; RoomName: string }) => {
 				if (data.IsAvailable) {
-					Factory.Load<IHostingService>(FactoryKey.Hosting).Register(
+					Singletons.Load<IHostingService>(SingletonKey.Hosting).Register(
 						this.state.PlayerName,
 						data.RoomName,
 						this.state.Password,

@@ -4,13 +4,13 @@ import { CancelMenuItem } from '../../../../Core/Menu/Buttons/CancelMenuItem';
 import { Item } from '../../../../Core/Items/Item';
 import { InteractionKind } from '../../../../Core/Interaction/IInteractionContext';
 import { Vehicle } from '../../../../Core/Items/Unit/Vehicle';
-import { Factory, FactoryKey } from '../../../../Factory';
+import { Singletons, SingletonKey } from '../../../../Singletons';
 import { GameContext } from '../../../../Core/Setup/Context/GameContext';
 
 export default class UnitMenuComponent extends Component<{ Vehicle: Vehicle }, {}> {
 	private _interactionService: IInteractionService<GameContext>;
 	componentDidMount(): void {
-		this._interactionService = Factory.Load<IInteractionService<GameContext>>(FactoryKey.RecordInteraction);
+		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.RecordInteraction);
 	}
 
 	render() {

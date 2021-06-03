@@ -12,7 +12,7 @@ import { Item } from '../../Items/Item';
 import { ViewContext } from '../../Utils/Geometry/ViewContext';
 import * as PIXI from 'pixi.js';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
-import { Factory, FactoryKey } from '../../../Factory';
+import { Singletons, SingletonKey } from '../../../Singletons';
 
 export class MultiSelectionContext implements IInteractionContext {
 	private _updateService: IUpdateService;
@@ -26,8 +26,8 @@ export class MultiSelectionContext implements IInteractionContext {
 	public _isUnitSelection: boolean;
 	private _viewport: any;
 	constructor() {
-		this._updateService = Factory.Load<IUpdateService>(FactoryKey.Update);
-		this._layerService = Factory.Load<ILayerService>(FactoryKey.Layer);
+		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
+		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 		this._viewport = this._layerService.GetViewport();
 		this._cells = new Dictionnary<Cell>();
 		this._enlightCells = new Array<BasicItem>();

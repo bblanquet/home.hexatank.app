@@ -1,5 +1,5 @@
 import { IAppService } from '../../../Services/App/IAppService';
-import { INetworkService } from '../../../Services/Network/INetworkService';
+import { INetworkContextService } from '../../../Services/Network/INetworkContextService';
 import { IHostingService } from '../../../Services/Hosting/IHostingService';
 import { Component, h } from 'preact';
 import { route } from 'preact-router';
@@ -20,7 +20,7 @@ import { MapEnv } from '../../../Core/Setup/Blueprint/MapEnv';
 import { GameBlueprint } from '../../../Core/Setup/Blueprint/Game/GameBlueprint';
 import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
-import { Factory, FactoryKey } from '../../../Factory';
+import { Singletons, SingletonKey } from '../../../Singletons';
 import Redirect from '../../Redirect/RedirectComponent';
 import { SpriteProvider } from '../../../Core/Framework/SpriteProvider';
 import ButtonComponent from '../../Common/Button/Stylish/ButtonComponent';
@@ -42,7 +42,7 @@ export default class HostingComponent extends Component<any, HostState> {
 
 	private _appService: IAppService<GameBlueprint>;
 	private _hostingService: IHostingService;
-	private _networkService: INetworkService;
+	private _networkService: INetworkContextService;
 	private _gameContextService: IGameContextService<GameBlueprint, GameContext>;
 
 	private _onMessageReceived: LiteEvent<Message>;
@@ -56,12 +56,12 @@ export default class HostingComponent extends Component<any, HostState> {
 			return;
 		}
 
-		this._appService = Factory.Load<IAppService<GameBlueprint>>(FactoryKey.App);
-		this._networkService = Factory.Load<INetworkService>(FactoryKey.Network);
-		this._gameContextService = Factory.Load<IGameContextService<GameBlueprint, GameContext>>(
-			FactoryKey.GameContext
+		this._appService = Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App);
+		this._networkService = Singletons.Load<INetworkContextService>(SingletonKey.Network);
+		this._gameContextService = Singletons.Load<IGameContextService<GameBlueprint, GameContext>>(
+			SingletonKey.GameContext
 		);
-		this._hostingService = Factory.Load<IHostingService>(FactoryKey.Hosting);
+		this._hostingService = Singletons.Load<IHostingService>(SingletonKey.Hosting);
 
 		const model = this._hostingService.Publish();
 		this.setState(model);

@@ -1,9 +1,9 @@
 import { PacketKind } from '../../Message/PacketKind';
 import { PeerKernel } from './PeerKernel';
-import { ServerSocket } from '../../Server/ServerSocket';
+import { RoomSocket } from '../../Server/RoomSocket';
 
 export class Receiver extends PeerKernel {
-	constructor(serverSocket: ServerSocket, owner: string, recipient: string) {
+	constructor(serverSocket: RoomSocket, owner: string, recipient: string) {
 		super(serverSocket, owner, recipient);
 		this.Connection = this.GetRtcConnection();
 

@@ -1,4 +1,4 @@
-import { ServerSocket } from './../../Server/ServerSocket';
+import { RoomSocket } from '../../Server/RoomSocket';
 import { PacketKind } from '../../Message/PacketKind';
 import { NetworkMessage } from '../../Message/NetworkMessage';
 import { LiteEvent } from '../../../Core/Utils/Events/LiteEvent';
@@ -9,7 +9,7 @@ export class ServerPingObserver<T> {
 	private _oneWayObserver: KindEventObserver<PacketKind, NetworkMessage<any>>;
 	private _twoWayObserver: KindEventObserver<PacketKind, NetworkMessage<any>>;
 
-	constructor(private _socket: ServerSocket, private _user: string, private _recipient: string) {
+	constructor(private _socket: RoomSocket, private _user: string, private _recipient: string) {
 		this._oneWayObserver = new KindEventObserver<PacketKind, NetworkMessage<any>>(
 			PacketKind.OneWayPing,
 			this.OnOneWayPingReceived.bind(this)

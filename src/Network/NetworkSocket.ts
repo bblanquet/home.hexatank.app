@@ -3,7 +3,7 @@ import { KindEvent } from './../Core/Utils/Events/KindEvent';
 import { ConnectionStatus } from './ConnectionStatus';
 import { Receiver } from './Peer/Kernel/Receiver';
 import { INetworkMessage } from './Message/INetworkMessage';
-import { ServerSocket } from './Server/ServerSocket';
+import { RoomSocket } from './Server/RoomSocket';
 import { PeerSocket } from './Peer/PeerSocket';
 import { NetworkMessage } from './Message/NetworkMessage';
 import { PacketKind } from './Message/PacketKind';
@@ -15,7 +15,7 @@ import { ProtocolKind } from './Message/ProtocolKind';
 
 export class NetworkSocket {
 	protected PeerSockets: Dictionnary<PeerSocket> = new Dictionnary<PeerSocket>();
-	protected ServerSocket: ServerSocket;
+	protected ServerSocket: RoomSocket;
 	protected Owner: string;
 
 	private _isConnected: boolean;
@@ -35,14 +35,7 @@ export class NetworkSocket {
 		this._pingObserver = new KindEventObserver(PacketKind.Ping, this.HandlePing.bind(this));
 
 		this.Owner = owner;
-		this.ServerSocket = new ServerSocket(
-			'{{p2pserver}}',
-			'{{p2psubfolder}}',
-			this.Owner,
-			room,
-			password,
-			hasPassword
-		);
+		this.ServerSocket = new RoomSocket(this.Owner, room, password, hasPassword);
 		this.ServerSocket.OnReceived.On(this._playersObserver);
 		this.ServerSocket.OnReceived.On(this._offerObserver);
 		this.ServerSocket.OnReceived.On(this._resetObserver);

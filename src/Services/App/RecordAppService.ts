@@ -1,7 +1,7 @@
 import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
 import { GameSettings } from './../../Core/Framework/GameSettings';
 import { IInteractionService } from './../Interaction/IInteractionService';
-import { INetworkContextService } from '../Network/INetworkContextService';
+import { INetworkContextService } from '../NetworkContext/INetworkContextService';
 import { ILayerService } from './../Layer/ILayerService';
 import { IUpdateService } from './../Update/IUpdateService';
 import { IGameContextService } from './../GameContext/IGameContextService';

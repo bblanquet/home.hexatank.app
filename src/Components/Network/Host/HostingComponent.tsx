@@ -1,5 +1,5 @@
 import { IAppService } from '../../../Services/App/IAppService';
-import { INetworkContextService } from '../../../Services/Network/INetworkContextService';
+import { INetworkContextService } from '../../../Services/NetworkContext/INetworkContextService';
 import { IHostingService } from '../../../Services/Hosting/IHostingService';
 import { Component, h } from 'preact';
 import { route } from 'preact-router';
@@ -63,8 +63,16 @@ export default class HostingComponent extends Component<any, HostState> {
 		);
 		this._hostingService = Singletons.Load<IHostingService>(SingletonKey.Hosting);
 
-		const model = this._hostingService.Publish();
-		this.setState(model);
+		const roomProfil = this._hostingService.Publish();
+		this.setState(roomProfil);
+
+		this._socket = new NetworkSocket(
+			roomProfil.Player.Name,
+			roomProfil.RoomName,
+			roomProfil.Password,
+			roomProfil.HasPassword,
+			roomProfil.IsAdmin
+		);
 
 		this._observers = [
 			new NetworkObserver(PacketKind.Ready, this.HandleReady.bind(this)),
@@ -79,13 +87,6 @@ export default class HostingComponent extends Component<any, HostState> {
 			new NetworkObserver(PacketKind.Start, this.HandleStart.bind(this))
 		];
 
-		this._socket = new NetworkSocket(
-			model.Player.Name,
-			model.RoomName,
-			model.Password,
-			model.HasPassword,
-			model.IsAdmin
-		);
 		this._observers.forEach((obs) => {
 			this._socket.OnReceived.On(obs);
 		});

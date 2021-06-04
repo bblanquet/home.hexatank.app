@@ -1,3 +1,4 @@
+import { SocketService } from './Services/Socket/SocketService';
 import { AnalyzeService } from './Services/Analyse/AnalyzeService';
 import { AudioService } from './Services/Audio/AudioService';
 import { DiamondContextService } from './Services/GameContext/DiamondContextService';
@@ -18,7 +19,7 @@ import { RecordAppService } from './Services/App/RecordAppService';
 import { CompareService } from './Services/Compare/CompareService';
 import { GameContextService } from './Services/GameContext/GameContextService';
 import { LayerService } from './Services/Layer/LayerService';
-import { NetworkContextService } from './Services/Network/NetworkContextService';
+import { NetworkContextService } from './Services/NetworkContext/NetworkContextService';
 import { InteractionService } from './Services/Interaction/InteractionService';
 import { RecordService } from './Services/Record/RecordService';
 import { UpdateService } from './Services/Update/UpdateService';
@@ -31,8 +32,10 @@ Singletons.Register(SingletonKey.Hosting, new HostingService());
 Singletons.Register(SingletonKey.Update, new UpdateService());
 Singletons.Register(SingletonKey.Compare, new CompareService());
 Singletons.Register(SingletonKey.Layer, new LayerService());
-Singletons.Register(SingletonKey.Network, new NetworkContextService());
 Singletons.Register(SingletonKey.Record, new RecordService());
+
+Singletons.Register(SingletonKey.Network, new NetworkContextService());
+Singletons.Register(SingletonKey.Socket, new SocketService());
 
 var context = new AudioContext();
 Singletons.Register(SingletonKey.Audio, new AudioService());

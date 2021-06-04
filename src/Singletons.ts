@@ -20,12 +20,14 @@ export enum SingletonKey {
 	Hosting,
 	Compare,
 	Layer,
-	Network,
 	Update,
 	Campaign,
 	PlayerProfil,
 	Audio,
 	Record,
+
+	Network,
+	Socket,
 
 	App,
 	RecordApp,

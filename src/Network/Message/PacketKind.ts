@@ -1,4 +1,11 @@
 export enum PacketKind {
+	connect,
+	connect_error,
+	connection,
+	disconnect,
+	Remove,
+	Create,
+
 	//reseting peer connection
 	Reset,
 

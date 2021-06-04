@@ -4,7 +4,7 @@ import { DiamondContext } from './../../Core/Setup/Context/DiamondContext';
 import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
 import { IInteractionService } from '../Interaction/IInteractionService';
-import { INetworkContextService } from '../Network/INetworkContextService';
+import { INetworkContextService } from '../NetworkContext/INetworkContextService';
 import { ILayerService } from '../Layer/ILayerService';
 import { IUpdateService } from '../Update/IUpdateService';
 import { IGameContextService } from '../GameContext/IGameContextService';

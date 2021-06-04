@@ -1,5 +1,5 @@
 import { ServerPingObserver } from './ServerPingObserver';
-import { ServerSocket } from './../../Server/ServerSocket';
+import { RoomSocket } from '../../Server/RoomSocket';
 import { LiteEvent } from '../../../Core/Utils/Events/LiteEvent';
 import { PeerKernel } from '../Kernel/PeerKernel';
 
@@ -8,13 +8,7 @@ export class TimeoutPingObserver {
 	private _obs: ServerPingObserver<number>;
 	private _isDone: boolean;
 
-	constructor(
-		peerSocket: PeerKernel,
-		socket: ServerSocket,
-		user: string,
-		recipient: string,
-		private Timeout: number
-	) {
+	constructor(peerSocket: PeerKernel, socket: RoomSocket, user: string, recipient: string, private Timeout: number) {
 		this._isDone = false;
 		this._obs = new ServerPingObserver<number>(socket, user, recipient);
 		peerSocket.OnShutDown.On(() => {

@@ -23,7 +23,7 @@ import { OnlinePlayer } from '../../../Network/OnlinePlayer';
 import { CellGroup } from '../../../Core/Items/CellGroup';
 import PopupComponent from '../../Popup/PopupComponent';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
-import { INetworkContextService } from '../../../Services/Network/INetworkContextService';
+import { INetworkContextService } from '../../../Services/NetworkContext/INetworkContextService';
 import { IInteractionService } from '../../../Services/Interaction/IInteractionService';
 import { Singletons, SingletonKey } from '../../../Singletons';
 import Redirect from '../../Redirect/RedirectComponent';

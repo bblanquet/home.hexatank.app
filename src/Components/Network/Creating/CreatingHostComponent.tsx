@@ -1,7 +1,6 @@
 import { Component, h } from 'preact';
 import { route } from 'preact-router';
 import * as toastr from 'toastr';
-import * as io from 'socket.io-client';
 import { CreatingHostState } from './CreatingHostState';
 import { PacketKind } from '../../../Network/Message/PacketKind';
 import MdPanelComponent from '../../Common/Panel/MdPanelComponent';
@@ -17,26 +16,54 @@ import { Usernames } from '../Names';
 import SmActiveButtonComponent from '../../Common/Button/Stylish/SmActiveButtonComponent';
 import Visible from '../../Common/Visible/VisibleComponent';
 import { IPlayerProfilService } from '../../../Services/PlayerProfil/IPlayerProfilService';
+import { IServerSocket } from '../../../Network/IServerSocket';
+import { ISocketService } from '../../../Services/Socket/ISocketService';
+import { NetworkObserver } from '../../../Network/NetworkObserver';
+import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
 
 export default class CreatingHostComponent extends Component<any, CreatingHostState> {
-	private _socket: SocketIOClient.Socket;
 	private _profilService: IPlayerProfilService;
-
+	private _socket: IServerSocket;
 	constructor() {
 		super();
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+		this._socket = Singletons.Load<ISocketService>(SingletonKey.Socket).Publish();
 		this.setState({
 			RoomName: `${this._profilService.GetProfil().LastPlayerName}'s room`,
-			PlayerName: this._profilService.GetProfil().LastPlayerName
+			PlayerName: this._profilService.GetProfil().LastPlayerName,
+			Password: '',
+			HasPassword: false
 		});
-		this._socket = io('{{p2pserver}}', { path: '{{p2psubfolder}}' });
-		this.Listen();
+
+		this._socket.On([
+			new NetworkObserver(PacketKind.Exist, this.OnExist.bind(this)),
+			new NetworkObserver(PacketKind.connect_error, this.OnError.bind(this))
+		]);
 	}
 
-	componentWillUnmount() {
-		if (this._socket) {
-			this._socket.close();
+	private OnExist(message: NetworkMessage<{ Exist: boolean; RoomName: string }>): void {
+		if (!message.Content.Exist) {
+			Singletons.Load<IHostingService>(SingletonKey.Hosting).Register(
+				this.state.PlayerName,
+				this.state.RoomName,
+				this.state.Password === undefined ? '' : this.state.Password,
+				this.state.HasPassword === undefined ? false : this.state.HasPassword,
+				true
+			);
+			route('/Hosting', true);
+		} else {
+			toastr['warning'](`${message.Content.RoomName} is already used.`, 'WARNING', {
+				iconClass: 'toast-red'
+			});
 		}
+	}
+
+	private OnError(message: NetworkMessage<any>): void {
+		toastr['warning'](`Server doesn't seem to be running.`, 'WARNING', { iconClass: 'toast-red' });
+	}
+
+	componentWillUnmount(): void {
+		this._socket.Off([ PacketKind.Exist, PacketKind.connect_error ]);
 	}
 
 	render() {
@@ -133,30 +160,8 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 		);
 	}
 
-	private Listen(): void {
-		this._socket.on('connect', () => {
-			this._socket.on(PacketKind[PacketKind.Exist], (data: { Exist: boolean; RoomName: string }) => {
-				if (!data.Exist) {
-					Singletons.Load<IHostingService>(SingletonKey.Hosting).Register(
-						this.state.PlayerName,
-						this.state.RoomName,
-						this.state.Password,
-						this.state.HasPassword,
-						true
-					);
-					route('/Hosting', true);
-				} else {
-					toastr['warning'](`${data.RoomName} is already used.`, 'WARNING', { iconClass: 'toast-red' });
-				}
-			});
-		});
-		this._socket.on('connect_error', (error: string) => {
-			toastr['warning'](`Server doesn't seem to be running.`, 'WARNING', { iconClass: 'toast-red' });
-		});
-	}
-
 	private Start(): void {
-		this._socket.emit(PacketKind[PacketKind.Exist], { RoomName: this.state.RoomName });
+		this._socket.Emit(NetworkMessage.Create(PacketKind.Exist, { RoomName: this.state.RoomName }));
 	}
 
 	private Back() {

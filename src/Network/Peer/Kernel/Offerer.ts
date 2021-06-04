@@ -1,11 +1,11 @@
 import { PacketKind } from '../../Message/PacketKind';
-import { ServerSocket } from '../../Server/ServerSocket';
+import { RoomSocket } from '../../Server/RoomSocket';
 import { PeerKernel } from './PeerKernel';
 
 export class Offerer extends PeerKernel {
 	private _timeOut: any;
 
-	constructor(serverSocket: ServerSocket, owner: string, recipient: string) {
+	constructor(serverSocket: RoomSocket, owner: string, recipient: string) {
 		super(serverSocket, owner, recipient);
 		this.Connection = this.GetRtcConnection();
 

@@ -5,7 +5,7 @@ import { INetworkMessage } from '../../Message/INetworkMessage';
 import { NetworkMessage } from '../../Message/NetworkMessage';
 import { PacketKind } from '../../Message/PacketKind';
 import { NetworkObserver } from '../../NetworkObserver';
-import { ServerSocket } from '../../Server/ServerSocket';
+import { RoomSocket } from '../../Server/RoomSocket';
 import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
 
 export abstract class PeerKernel {
@@ -16,7 +16,7 @@ export abstract class PeerKernel {
 	private _offerObserver: NetworkObserver;
 	protected ServerPing: TimeoutPingObserver;
 
-	protected ServerSocket: ServerSocket;
+	protected ServerSocket: RoomSocket;
 	protected Owner: string;
 	protected Recipient: string;
 
@@ -27,7 +27,7 @@ export abstract class PeerKernel {
 	public OnIceStateChanged: SimpleEvent = new SimpleEvent();
 	public OnReceivedMessage: LiteEvent<NetworkMessage<any>> = new LiteEvent<NetworkMessage<any>>();
 
-	constructor(serverSocket: ServerSocket, owner: string, recipient: string) {
+	constructor(serverSocket: RoomSocket, owner: string, recipient: string) {
 		//basic info
 		this.Recipient = recipient;
 		this.Owner = owner;

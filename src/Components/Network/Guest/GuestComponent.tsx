@@ -15,20 +15,24 @@ import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
 import Icon from '../../Common/Icon/IconComponent';
 import { Usernames } from '../Names';
 import { RoomInfo } from './RoomInfo';
-import * as io from 'socket.io-client';
 import Visible from '../../Common/Visible/VisibleComponent';
 import { IPlayerProfilService } from '../../../Services/PlayerProfil/IPlayerProfilService';
+import { IServerSocket } from '../../../Network/IServerSocket';
+import { ISocketService } from '../../../Services/Socket/ISocketService';
+import { NetworkObserver } from '../../../Network/NetworkObserver';
+import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
 
 export default class GuestComponent extends Component<
 	any,
 	{ Rooms: RoomInfo[]; DisplayableRooms: RoomInfo[]; PlayerName: string; filter: string; Password: string }
 > {
-	private _socket: SocketIOClient.Socket;
+	private _socket: IServerSocket;
 	private _profilService: IPlayerProfilService;
 
 	constructor() {
 		super();
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+
 		this.setState({
 			Rooms: new Array<RoomInfo>(),
 			DisplayableRooms: new Array<RoomInfo>(),
@@ -36,9 +40,14 @@ export default class GuestComponent extends Component<
 			filter: '',
 			Password: ''
 		});
-		this._socket = io('{{p2pserver}}', { path: '{{p2psubfolder}}' });
-		this._socket.connect();
-		this.Listen();
+		this._socket = Singletons.Load<ISocketService>(SingletonKey.Socket).Publish();
+		this._socket.On([
+			new NetworkObserver(PacketKind.Available, this.OnAvailable.bind(this)),
+			new NetworkObserver(PacketKind.Rooms, this.OnRoom.bind(this)),
+			new NetworkObserver(PacketKind.connect, this.OnConnect.bind(this)),
+			new NetworkObserver(PacketKind.Password, this.OnPassword.bind(this)),
+			new NetworkObserver(PacketKind.connect_error, this.OnConnectError.bind(this))
+		]);
 	}
 
 	componentDidUpdate() {
@@ -58,10 +67,14 @@ export default class GuestComponent extends Component<
 		}
 	}
 
-	componentWillUnmount() {
-		if (this._socket) {
-			this._socket.close();
-		}
+	componentWillUnmount(): void {
+		this._socket.Off([
+			PacketKind.Available,
+			PacketKind.Rooms,
+			PacketKind.connect,
+			PacketKind.Password,
+			PacketKind.connect_error
+		]);
 	}
 
 	render() {
@@ -191,10 +204,9 @@ export default class GuestComponent extends Component<
 	}
 
 	private Join(roomName: string): void {
-		this._socket.emit(PacketKind[PacketKind.Password], {
-			RoomName: roomName,
-			Password: this.state.Password
-		});
+		this._socket.Emit(
+			NetworkMessage.Create<any>(PacketKind.Password, { Password: this.state.Password, RoomName: roomName })
+		);
 	}
 
 	private Back() {
@@ -202,50 +214,53 @@ export default class GuestComponent extends Component<
 	}
 
 	private Refresh() {
-		this._socket.emit(PacketKind[PacketKind.Rooms]);
+		this._socket.Emit(NetworkMessage.Create(PacketKind.Rooms, {}));
 	}
 
-	private Listen(): void {
-		this._socket.on('connect', () => {
-			this._socket.emit(PacketKind[PacketKind.Rooms]);
-			this._socket.on(PacketKind[PacketKind.Rooms], (packet: { Content: RoomInfo[] }) => {
-				this.setState({
-					Rooms: packet.Content
-				});
+	public OnAvailable(message: NetworkMessage<{ IsAvailable: boolean; RoomName: string }>): void {
+		if (message.Content.IsAvailable) {
+			Singletons.Load<IHostingService>(SingletonKey.Hosting).Register(
+				this.state.PlayerName,
+				message.Content.RoomName,
+				this.state.Password,
+				this.state.Password !== null && this.state.Password !== '',
+				false
+			);
+			route('/Hosting', true);
+		} else {
+			toastr['warning'](`${this.state.PlayerName} is already used in ${message.Content.RoomName}`, 'WARNING', {
+				iconClass: 'toast-red'
 			});
-			this._socket.on(PacketKind[PacketKind.Available], (data: { IsAvailable: boolean; RoomName: string }) => {
-				if (data.IsAvailable) {
-					Singletons.Load<IHostingService>(SingletonKey.Hosting).Register(
-						this.state.PlayerName,
-						data.RoomName,
-						this.state.Password,
-						this.state.Password !== null && this.state.Password !== '',
-						false
-					);
-					route('/Hosting', true);
-				} else {
-					toastr['warning'](`${this.state.PlayerName} is already used in ${data.RoomName}`, 'WARNING', {
-						iconClass: 'toast-red'
-					});
-				}
-			});
+		}
+	}
 
-			this._socket.on(PacketKind[PacketKind.Password], (data: { Password: boolean; RoomName: string }) => {
-				if (data.Password) {
-					this._socket.emit(PacketKind[PacketKind.Available], {
-						RoomName: data.RoomName,
-						PlayerName: this.state.PlayerName
-					});
-				} else {
-					toastr['warning'](`${this.state.Password} doesn't match ${data.RoomName}'s password`, 'WARNING', {
-						iconClass: 'toast-red'
-					});
-				}
+	private OnRoom(message: NetworkMessage<RoomInfo[]>): void {
+		this.setState({
+			Rooms: message.Content
+		});
+	}
+
+	private OnConnect(m: NetworkMessage<any>): void {
+		this._socket.Emit(NetworkMessage.Create<any>(PacketKind.Rooms, {}));
+	}
+
+	private OnPassword(m: NetworkMessage<{ Password: boolean; RoomName: string }>): void {
+		if (m.Content.Password) {
+			this._socket.Emit(
+				NetworkMessage.Create<any>(PacketKind.Available, {
+					RoomName: m.Content.RoomName,
+					PlayerName: this.state.PlayerName
+				})
+			);
+		} else {
+			toastr['warning'](`${this.state.Password} doesn't match ${m.Content.RoomName}'s password`, 'WARNING', {
+				iconClass: 'toast-red'
 			});
-		});
-		this._socket.on('connect_error', (error: string) => {
-			toastr['warning'](`Server doesn't seem to be running.`, 'WARNING', { iconClass: 'toast-red' });
-		});
+		}
+	}
+
+	private OnConnectError(m: any): void {
+		toastr['warning'](`Server doesn't seem to be running.`, 'WARNING', { iconClass: 'toast-red' });
 	}
 }
 

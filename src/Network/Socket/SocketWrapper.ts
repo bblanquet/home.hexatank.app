@@ -26,7 +26,7 @@ export class SocketWrapper implements ISocketWrapper {
 	public OnPeerConnectionChanged: LiteEvent<PeerSocket> = new LiteEvent<PeerSocket>();
 	public OnReceived: KindEvent<PacketKind, INetworkMessage> = new KindEvent<PacketKind, INetworkMessage>();
 
-	constructor(serverSocket: IServerSocket, roomName: string, owner: string, private _isAdmin: boolean) {
+	constructor(serverSocket: IServerSocket, roomName: string, owner: string, private _isShy: boolean) {
 		this.Owner = owner;
 		this.RoomName = roomName;
 		this.ServerSocket = serverSocket;
@@ -44,7 +44,8 @@ export class SocketWrapper implements ISocketWrapper {
 			this.PeerSockets.Get(name).ShutDown();
 		});
 
-		if (!this._isAdmin) {
+		if (!this._isShy) {
+			this._isShy = true;
 			if (this.PeerSockets.IsEmpty()) {
 				message.Content.forEach((recipient) => {
 					if (recipient !== this.Owner) {
@@ -53,7 +54,6 @@ export class SocketWrapper implements ISocketWrapper {
 				});
 			}
 		}
-		this.OnReceived.Invoke(PacketKind.Players, message);
 	}
 
 	private CreateOfferSocket(recipient: string) {
@@ -88,7 +88,7 @@ export class SocketWrapper implements ISocketWrapper {
 	}
 
 	private HandleOffer(message: NetworkMessage<any>): void {
-		if (!this.PeerSockets.Exist(message.Emitter)) {
+		if (!this.PeerSockets.Exist(message.Emitter) && message.Recipient === this.Owner) {
 			const receiver = new RtcReceiver(
 				new PeerContext(this.ServerSocket, this.RoomName, this.Owner, message.Emitter)
 			);
@@ -111,7 +111,7 @@ export class SocketWrapper implements ISocketWrapper {
 	}
 
 	private HandleReset(message: NetworkMessage<any>): void {
-		if (this.PeerSockets.Exist(message.Emitter)) {
+		if (this.PeerSockets.Exist(message.Emitter) && message.Recipient === this.Owner) {
 			this.PeerSockets.Get(message.Emitter).ShutDown();
 		}
 		this.CreateOfferSocket(message.Emitter);

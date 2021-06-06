@@ -8,7 +8,11 @@ export class PeerContext {
 		public RoomName: string,
 		public Owner: string,
 		public Recipient: string
-	) {}
+	) {
+		if (this.Owner === this.Recipient) {
+			throw 'whats going on';
+		}
+	}
 
 	public GetTemplate<T>(kind: PacketKind): NetworkMessage<T> {
 		const message = new NetworkMessage<T>();

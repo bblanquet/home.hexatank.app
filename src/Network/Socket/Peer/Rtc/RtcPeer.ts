@@ -58,14 +58,18 @@ export abstract class RtcPeer {
 	}
 
 	public async HandleCandidate(message: NetworkMessage<any>): Promise<void> {
-		if (message.Emitter === this.Context.Recipient) {
+		if (this.IsOk(message)) {
 			let candidate = new RTCIceCandidate(message.Content);
 			await this.Connection.addIceCandidate(candidate);
 		}
 	}
 
+	private IsOk(message: NetworkMessage<any>) {
+		return message.Emitter === this.Context.Recipient && message.Recipient === this.Context.Owner;
+	}
+
 	public async HandleOffer(packet: NetworkMessage<any>): Promise<void> {
-		if (packet.Emitter === this.Context.Recipient) {
+		if (this.IsOk(packet)) {
 			try {
 				await this.Connection.setRemoteDescription(new RTCSessionDescription(packet.Content));
 				if (this._candidate) {
@@ -79,6 +83,9 @@ export abstract class RtcPeer {
 
 					const message = this.Context.GetTemplate<any>(PacketKind.Offer);
 					message.Content = this.Connection.localDescription;
+					if (message.Recipient === message.Emitter) {
+						throw 'whats going on';
+					}
 					this.Context.ServerSocket.Emit(message);
 				}
 			} catch (error) {

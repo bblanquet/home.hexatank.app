@@ -32,7 +32,7 @@ export class LatencyProvider {
 			}
 			const now = new Date().getTime();
 			const messageLatency = moment.duration(now - deviceRefEmittedDate);
-			console.log(`Message Latency ${moment.utc(messageLatency.asMilliseconds()).format('HH:mm:ss.SSS')}`);
+			//console.log(`Message Latency ${moment.utc(messageLatency.asMilliseconds()).format('HH:mm:ss.SSS')}`);
 			return messageLatency.asMilliseconds();
 		}
 		return 0;

@@ -7,13 +7,13 @@ export class RtcOfferer extends RtcPeer {
 		super(context);
 
 		//setup channel
-		this.Channel = this.Connection.createDataChannel(context.Recipient);
+		this.Channel = this.Connection.createDataChannel(this.Context.Recipient);
 		this.Channel.onopen = () => this.OpenDataChannel();
 		this.Channel.onmessage = (event: MessageEvent) => this.ReceivePacket(event);
 
 		this.Connection.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
 			if (event.candidate) {
-				const message = context.GetTemplate<any>(PacketKind.Candidate);
+				const message = this.Context.GetTemplate<any>(PacketKind.Candidate);
 				message.Content = event.candidate;
 				this.Context.ServerSocket.Emit(message);
 			}
@@ -25,8 +25,11 @@ export class RtcOfferer extends RtcPeer {
 				const offer = await this.Connection.createOffer();
 				await this.Connection.setLocalDescription(offer);
 				// send the offer to the other peer
-				const message = context.GetTemplate<any>(PacketKind.Offer);
+				const message = this.Context.GetTemplate<any>(PacketKind.Offer);
 				message.Content = this.Connection.localDescription;
+				if (message.Recipient === message.Emitter) {
+					throw 'whats going on';
+				}
 				this.Context.ServerSocket.Emit(message);
 			} catch (err) {
 				console.error(err);

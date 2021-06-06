@@ -1,9 +1,10 @@
+import { TimeoutPeerHandler } from './Peer/TimeoutHandler';
 import { ISocketWrapper } from './INetworkSocket';
 import { IServerSocket } from './Server/IServerSocket';
-import { Offerer } from './Peer/Rtc/Offerer';
+import { RtcOfferer } from './Peer/Rtc/RtcOfferer';
 import { KindEvent } from '../../Core/Utils/Events/KindEvent';
 import { ConnectionStatus } from '../ConnectionStatus';
-import { Receiver } from './Peer/Rtc/Receiver';
+import { RtcReceiver } from './Peer/Rtc/RtcReceiver';
 import { INetworkMessage } from '../Message/INetworkMessage';
 import { PeerSocket } from './Peer/PeerSocket';
 import { NetworkMessage } from '../Message/NetworkMessage';
@@ -12,6 +13,7 @@ import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
 import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
 import { KindEventObserver } from '../../Core/Utils/Events/KindEventObserver';
 import { ProtocolKind } from '../Message/ProtocolKind';
+import { PeerContext } from './Peer/PeerContext';
 
 export class SocketWrapper implements ISocketWrapper {
 	protected PeerSockets: Dictionnary<PeerSocket> = new Dictionnary<PeerSocket>();
@@ -55,7 +57,10 @@ export class SocketWrapper implements ISocketWrapper {
 	}
 
 	private CreateOfferSocket(recipient: string) {
-		const offererSocket = new PeerSocket(new Offerer(this.ServerSocket, this.RoomName, this.Owner, recipient));
+		const context = new PeerContext(this.ServerSocket, this.RoomName, this.Owner, recipient);
+		const offerer = new RtcOfferer(context);
+		const offererSocket = new PeerSocket(offerer);
+		new TimeoutPeerHandler(offerer, context);
 		this.PeerSockets.Add(recipient, offererSocket);
 		//todo subscription
 		offererSocket.OnShutdown.On(this.OnShutdown.bind(this));
@@ -70,12 +75,12 @@ export class SocketWrapper implements ISocketWrapper {
 		}
 	}
 
-	private OnConnectionStatusChanged(peer: any, connection: ConnectionStatus): void {
+	private OnConnectionStatusChanged(src: PeerSocket, connection: ConnectionStatus): void {
 		const isNotAllConnected = this.PeerSockets.Values().some((p) => p.GetConnectionStatus().IsNotConnected());
 		if (isNotAllConnected) {
 			this.SetConnection(false);
 		}
-		this.OnPeerConnectionChanged.Invoke(this, peer);
+		this.OnPeerConnectionChanged.Invoke(this, src);
 	}
 
 	private OnReceivedPeerMessage(peer: any, message: NetworkMessage<any>): void {
@@ -84,7 +89,9 @@ export class SocketWrapper implements ISocketWrapper {
 
 	private HandleOffer(message: NetworkMessage<any>): void {
 		if (!this.PeerSockets.Exist(message.Emitter)) {
-			const receiver = new Receiver(this.ServerSocket, this.RoomName, this.Owner, message.Emitter);
+			const receiver = new RtcReceiver(
+				new PeerContext(this.ServerSocket, this.RoomName, this.Owner, message.Emitter)
+			);
 			const receiverSocket = new PeerSocket(receiver);
 			this.PeerSockets.Add(message.Emitter, receiverSocket);
 			//todo subscription
@@ -111,16 +118,18 @@ export class SocketWrapper implements ISocketWrapper {
 	}
 
 	private HandlePing(message: NetworkMessage<any>): void {
-		if (!this._isConnected) {
-			const now = new Date();
-			const twoSecondsEarlierThanNow = now.setSeconds(now.getSeconds() - 2);
-			const pingPackets = this.PeerSockets.Values().map((p) => p.GetLastPing());
-			const isAllFreshPing = pingPackets.filter((ping) => ping.PingDate < twoSecondsEarlierThanNow).length === 0;
-			const isAllGoodPing = pingPackets.filter((ping) => 1000 < ping.Latency).length === 0;
-			if (isAllFreshPing && isAllGoodPing) {
-				this.SetConnection(true);
-			}
+		if (!this._isConnected && this.IsAllPeerConnected()) {
+			this.SetConnection(true);
 		}
+	}
+
+	private IsAllPeerConnected() {
+		const now = new Date();
+		const twoSecondsEarlierThanNow = now.setSeconds(now.getSeconds() - 2);
+		const pingPackets = this.PeerSockets.Values().map((p) => p.GetLastPing());
+		const isAllFreshPing = pingPackets.filter((ping) => ping.PingDate < twoSecondsEarlierThanNow).length === 0;
+		const isAllGoodPing = pingPackets.filter((ping) => 1000 < ping.Latency).length === 0;
+		return isAllFreshPing && isAllGoodPing;
 	}
 
 	public EmitAll<T>(kind: PacketKind, content: T): void {

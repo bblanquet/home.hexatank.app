@@ -1,23 +1,23 @@
+import { PeerContext } from './../PeerContext';
 import { NetworkObserver } from '../../../NetworkObserver';
 import { SimpleEvent } from '../../../../Core/Utils/Events/SimpleEvent';
-import { TimeoutPingObserver } from '../Ping/TimeoutPingObserver';
 import { LiteEvent } from '../../../../Core/Utils/Events/LiteEvent';
 import { INetworkMessage } from '../../../Message/INetworkMessage';
 import { NetworkMessage } from '../../../Message/NetworkMessage';
 import { PacketKind } from '../../../Message/PacketKind';
 import { isNullOrUndefined } from '../../../../Core/Utils/ToolBox';
-import { IServerSocket } from '../../Server/IServerSocket';
+
+//ice:
+//it is the location of the peer (interaction connectivity establishment)
+//setLocalDescription():
+//prepares the offer, changes the local description associated with the connection
 
 export abstract class RtcPeer {
 	protected Connection: RTCPeerConnection;
 	protected Channel: RTCDataChannel;
 	private _candidate: RTCIceCandidate;
-	protected ServerPing: TimeoutPingObserver;
 
-	protected ServerSocket: IServerSocket;
-	protected Owner: string;
-	protected RoomName: string;
-	protected Recipient: string;
+	protected Context: PeerContext;
 
 	private _isShutDown: boolean = false;
 
@@ -28,22 +28,18 @@ export abstract class RtcPeer {
 
 	private _obs: NetworkObserver[];
 
-	constructor(serverSocket: IServerSocket, roomName: string, owner: string, recipient: string) {
-		//basic info
-		this.Recipient = recipient;
-		this.Owner = owner;
-		this.RoomName = roomName;
-
-		//setup server
-		this.ServerSocket = serverSocket;
+	constructor(context: PeerContext) {
+		this.Context = context;
 		this._obs = [
 			new NetworkObserver(PacketKind.Candidate, this.HandleCandidate.bind(this)),
 			new NetworkObserver(PacketKind.Offer, this.HandleOffer.bind(this))
 		];
-		this.ServerSocket.On(this._obs);
+		this.Context.ServerSocket.On(this._obs);
 
-		//setup ping
-		this.ServerPing = new TimeoutPingObserver(this, this.ServerSocket, this.RoomName, this.Owner, recipient, 2000);
+		this.Connection = this.GetRtcConnection();
+		this.Connection.oniceconnectionstatechange = (e: Event) => {
+			this.OnIceStateChanged.Invoke();
+		};
 	}
 
 	protected ReceivePacket(event: MessageEvent): void {
@@ -51,6 +47,7 @@ export abstract class RtcPeer {
 	}
 
 	protected GetRtcConnection(): RTCPeerConnection {
+		//represents a connection between the local device and a remote peer
 		return new RTCPeerConnection({
 			iceServers: [
 				{
@@ -61,14 +58,14 @@ export abstract class RtcPeer {
 	}
 
 	public async HandleCandidate(message: NetworkMessage<any>): Promise<void> {
-		if (message.Emitter === this.Recipient) {
+		if (message.Emitter === this.Context.Recipient) {
 			let candidate = new RTCIceCandidate(message.Content);
 			await this.Connection.addIceCandidate(candidate);
 		}
 	}
 
 	public async HandleOffer(packet: NetworkMessage<any>): Promise<void> {
-		if (packet.Emitter === this.Recipient) {
+		if (packet.Emitter === this.Context.Recipient) {
 			try {
 				await this.Connection.setRemoteDescription(new RTCSessionDescription(packet.Content));
 				if (this._candidate) {
@@ -80,9 +77,9 @@ export abstract class RtcPeer {
 					var rtcDescriptionInit = await this.Connection.createAnswer();
 					await this.Connection.setLocalDescription(rtcDescriptionInit);
 
-					const message = this.GetTemplate<any>(PacketKind.Offer);
+					const message = this.Context.GetTemplate<any>(PacketKind.Offer);
 					message.Content = this.Connection.localDescription;
-					this.ServerSocket.Emit(message);
+					this.Context.ServerSocket.Emit(message);
 				}
 			} catch (error) {
 				console.log(error);
@@ -112,7 +109,7 @@ export abstract class RtcPeer {
 		this._isShutDown = true;
 		this.OnShutDown.Invoke();
 		this.OnShutDown.Clear();
-		this.ServerSocket.Off(this._obs);
+		this.Context.ServerSocket.Off(this._obs);
 		this.OnReceived.Clear();
 		if (this.Connection) {
 			this.Connection.close();
@@ -132,24 +129,15 @@ export abstract class RtcPeer {
 		return this.GetIceState() === 'connected' || this.GetIceState() === 'completed';
 	}
 
-	protected GetTemplate<T>(kind: PacketKind): NetworkMessage<T> {
-		const message = new NetworkMessage<T>();
-		message.Kind = kind;
-		message.Emitter = this.Owner;
-		message.Recipient = this.Recipient;
-		message.RoomName = this.RoomName;
-		return message;
-	}
-
 	public IsShutdown(): boolean {
 		return this._isShutDown;
 	}
 
 	public GetRecipient(): string {
-		return this.Recipient;
+		return this.Context.Recipient;
 	}
 
 	public GetOwner(): string {
-		return this.Owner;
+		return this.Context.Owner;
 	}
 }

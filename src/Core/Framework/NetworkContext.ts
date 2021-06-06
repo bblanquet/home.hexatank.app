@@ -1,7 +1,7 @@
 import { NetworkMessage } from './../../Network/Message/NetworkMessage';
 import { NetworkDispatcher } from './NetworkDispatcher';
 import { NetworkReceiver } from './NetworkReceiver';
-import { NetworkSocket } from './../../Network/NetworkSocket';
+import { SocketWrapper } from '../../Network/Socket/SocketWrapper';
 import { GameContext } from '../Setup/Context/GameContext';
 import { PacketKind } from '../../Network/Message/PacketKind';
 import { NetworkObserver } from '../../Network/NetworkObserver';
@@ -12,7 +12,7 @@ export class NetworkContext {
 	private _pingObserver: NetworkObserver;
 	private _timeOutObserver: NetworkObserver;
 
-	constructor(private _socket: NetworkSocket, private _gameContext: GameContext, private _players: OnlinePlayer[]) {
+	constructor(private _socket: SocketWrapper, private _gameContext: GameContext, private _players: OnlinePlayer[]) {
 		this._pingObserver = new NetworkObserver(PacketKind.Ping, this.HandlePing.bind(this));
 		this._timeOutObserver = new NetworkObserver(PacketKind.TimeOut, this.HandleTimeout.bind(this));
 		this._receiver = new NetworkReceiver(this._socket, this._gameContext);

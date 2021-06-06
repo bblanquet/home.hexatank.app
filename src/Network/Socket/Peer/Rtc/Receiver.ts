@@ -1,10 +1,10 @@
-import { PacketKind } from '../../Message/PacketKind';
-import { PeerKernel } from './PeerKernel';
-import { RoomSocket } from '../../Server/RoomSocket';
+import { PacketKind } from '../../../Message/PacketKind';
+import { IServerSocket } from '../../Server/IServerSocket';
+import { RtcPeer } from './RtcPeer';
 
-export class Receiver extends PeerKernel {
-	constructor(serverSocket: RoomSocket, owner: string, recipient: string) {
-		super(serverSocket, owner, recipient);
+export class Receiver extends RtcPeer {
+	constructor(serverSocket: IServerSocket, roomName: string, owner: string, recipient: string) {
+		super(serverSocket, roomName, owner, recipient);
 		this.Connection = this.GetRtcConnection();
 
 		this.Connection.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
@@ -16,7 +16,6 @@ export class Receiver extends PeerKernel {
 		};
 
 		this.Connection.ondatachannel = (event: RTCDataChannelEvent) => {
-			console.log(`[${this.Recipient} -> server -> ${this.Owner}] CHANNEL <<<`);
 			this.Channel = event.channel;
 			this.Channel.onopen = () => this.OpenDataChannel();
 			this.Channel.onmessage = (event: MessageEvent) => this.ReceivePacket(event);

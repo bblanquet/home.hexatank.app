@@ -1,6 +1,4 @@
 import { h, Component } from 'preact';
-import { NetworkSocket } from '../../../../Network/NetworkSocket';
-import { HostState } from '../../HostState';
 import GridComponent from '../../../Common/Grid/GridComponent';
 import SmButtonComponent from '../../../Common/Button/Stylish/SmButtonComponent';
 import { ConnectionKind } from '../../../../Network/ConnectionKind';
@@ -8,8 +6,12 @@ import { OnlinePlayer } from '../../../../Network/OnlinePlayer';
 import Icon from '../../../Common/Icon/IconComponent';
 import { ColorKind } from '../../../Common/Button/Stylish/ColorKind';
 import Visible from '../../../Common/Visible/VisibleComponent';
+import { ILobbyManager } from '../../../../Network/Lobby/ILobbyManager';
 
-export default class PendingPlayers extends Component<{ HostState: HostState; Socket: NetworkSocket }, {}> {
+export default class PendingPlayers extends Component<
+	{ Player: OnlinePlayer; Players: OnlinePlayer[]; Lobby: ILobbyManager },
+	{}
+> {
 	constructor() {
 		super();
 	}
@@ -31,10 +33,10 @@ export default class PendingPlayers extends Component<{ HostState: HostState; So
 	private GetContent() {
 		return (
 			<tbody>
-				{this.props.HostState.Players.Values().map((player) => {
+				{this.props.Players.map((player) => {
 					return (
-						<tr class={this.props.HostState.Player.Name === player.Name ? 'row-blue d-flex' : 'd-flex'}>
-							<Visible isVisible={this.props.HostState.IsAdmin}>
+						<tr class={this.props.Player.Name === player.Name ? 'row-blue d-flex' : 'd-flex'}>
+							<Visible isVisible={this.props.Player.IsAdmin}>
 								<td class="align-self-center">
 									<SmButtonComponent
 										callBack={() => this.MakeUserLeave(player.Name)}
@@ -47,10 +49,14 @@ export default class PendingPlayers extends Component<{ HostState: HostState; So
 							<td class="align-self-center">
 								{player.Name} {this.GetReady(player)}
 							</td>
-							<td class="align-self-center">
-								{this.GetType(player)} {this.GetConnection(player)} {this.GetTimeout(player)}
-							</td>
-							<td class="align-self-center">{+player.GetLatency() === 0 ? '' : player.GetLatency()}</td>
+							<Visible isVisible={this.props.Player.Name !== player.Name}>
+								<td class="align-self-center">
+									{this.GetType(player)} {this.GetConnection(player)} {this.GetTimeout(player)}
+								</td>
+								<td class="align-self-center">
+									{+player.GetLatency() === 0 ? '' : player.GetLatency()}
+								</td>
+							</Visible>
 						</tr>
 					);
 				})}
@@ -95,6 +101,6 @@ export default class PendingPlayers extends Component<{ HostState: HostState; So
 	}
 
 	private MakeUserLeave(playerName: string): void {
-		this.props.Socket.Kick(this.props.HostState.RoomName, playerName);
+		this.props.Lobby.Kick(playerName);
 	}
 }

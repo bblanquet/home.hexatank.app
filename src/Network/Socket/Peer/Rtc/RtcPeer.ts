@@ -1,23 +1,22 @@
-import { SimpleEvent } from './../../../Core/Utils/Events/SimpleEvent';
+import { NetworkObserver } from '../../../NetworkObserver';
+import { SimpleEvent } from '../../../../Core/Utils/Events/SimpleEvent';
 import { TimeoutPingObserver } from '../Ping/TimeoutPingObserver';
-import { LiteEvent } from '../../../Core/Utils/Events/LiteEvent';
-import { INetworkMessage } from '../../Message/INetworkMessage';
-import { NetworkMessage } from '../../Message/NetworkMessage';
-import { PacketKind } from '../../Message/PacketKind';
-import { NetworkObserver } from '../../NetworkObserver';
-import { RoomSocket } from '../../Server/RoomSocket';
-import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
+import { LiteEvent } from '../../../../Core/Utils/Events/LiteEvent';
+import { INetworkMessage } from '../../../Message/INetworkMessage';
+import { NetworkMessage } from '../../../Message/NetworkMessage';
+import { PacketKind } from '../../../Message/PacketKind';
+import { isNullOrUndefined } from '../../../../Core/Utils/ToolBox';
+import { IServerSocket } from '../../Server/IServerSocket';
 
-export abstract class PeerKernel {
+export abstract class RtcPeer {
 	protected Connection: RTCPeerConnection;
 	protected Channel: RTCDataChannel;
 	private _candidate: RTCIceCandidate;
-	private _candidateObserver: NetworkObserver;
-	private _offerObserver: NetworkObserver;
 	protected ServerPing: TimeoutPingObserver;
 
-	protected ServerSocket: RoomSocket;
+	protected ServerSocket: IServerSocket;
 	protected Owner: string;
+	protected RoomName: string;
 	protected Recipient: string;
 
 	private _isShutDown: boolean = false;
@@ -25,26 +24,30 @@ export abstract class PeerKernel {
 	public OnShutDown: SimpleEvent = new SimpleEvent();
 	public OnChannelOpened: SimpleEvent = new SimpleEvent();
 	public OnIceStateChanged: SimpleEvent = new SimpleEvent();
-	public OnReceivedMessage: LiteEvent<NetworkMessage<any>> = new LiteEvent<NetworkMessage<any>>();
+	public OnReceived: LiteEvent<NetworkMessage<any>> = new LiteEvent<NetworkMessage<any>>();
 
-	constructor(serverSocket: RoomSocket, owner: string, recipient: string) {
+	private _obs: NetworkObserver[];
+
+	constructor(serverSocket: IServerSocket, roomName: string, owner: string, recipient: string) {
 		//basic info
 		this.Recipient = recipient;
 		this.Owner = owner;
+		this.RoomName = roomName;
 
 		//setup server
 		this.ServerSocket = serverSocket;
-		this._candidateObserver = new NetworkObserver(PacketKind.Candidate, this.ReceivedCandidate.bind(this));
-		this._offerObserver = new NetworkObserver(PacketKind.Offer, this.ReceivedOffer.bind(this));
-		this.ServerSocket.OnReceived.On(this._candidateObserver);
-		this.ServerSocket.OnReceived.On(this._offerObserver);
+		this._obs = [
+			new NetworkObserver(PacketKind.Candidate, this.HandleCandidate.bind(this)),
+			new NetworkObserver(PacketKind.Offer, this.HandleOffer.bind(this))
+		];
+		this.ServerSocket.On(this._obs);
 
 		//setup ping
-		this.ServerPing = new TimeoutPingObserver(this, this.ServerSocket, this.Owner, recipient, 2000);
+		this.ServerPing = new TimeoutPingObserver(this, this.ServerSocket, this.RoomName, this.Owner, recipient, 2000);
 	}
 
 	protected ReceivePacket(event: MessageEvent): void {
-		this.OnReceivedMessage.Invoke(this, JSON.parse(event.data));
+		this.OnReceived.Invoke(this, JSON.parse(event.data));
 	}
 
 	protected GetRtcConnection(): RTCPeerConnection {
@@ -57,19 +60,15 @@ export abstract class PeerKernel {
 		});
 	}
 
-	public async ReceivedCandidate(message: NetworkMessage<any>): Promise<void> {
+	public async HandleCandidate(message: NetworkMessage<any>): Promise<void> {
 		if (message.Emitter === this.Recipient) {
-			console.log(
-				`[${message.Emitter} -> Server -> ${message.Recipient}] ${PacketKind[PacketKind.Candidate]} <<<`
-			);
 			let candidate = new RTCIceCandidate(message.Content);
 			await this.Connection.addIceCandidate(candidate);
 		}
 	}
 
-	public async ReceivedOffer(packet: NetworkMessage<any>): Promise<void> {
+	public async HandleOffer(packet: NetworkMessage<any>): Promise<void> {
 		if (packet.Emitter === this.Recipient) {
-			console.log(`[${packet.Emitter} -> Server -> ${packet.Recipient}] ${PacketKind[PacketKind.Offer]} <<<`);
 			try {
 				await this.Connection.setRemoteDescription(new RTCSessionDescription(packet.Content));
 				if (this._candidate) {
@@ -113,9 +112,8 @@ export abstract class PeerKernel {
 		this._isShutDown = true;
 		this.OnShutDown.Invoke();
 		this.OnShutDown.Clear();
-		this.ServerSocket.OnReceived.Off(this._candidateObserver);
-		this.ServerSocket.OnReceived.Off(this._offerObserver);
-		this.OnReceivedMessage.Clear();
+		this.ServerSocket.Off(this._obs);
+		this.OnReceived.Clear();
 		if (this.Connection) {
 			this.Connection.close();
 			this.Connection = null;
@@ -139,6 +137,7 @@ export abstract class PeerKernel {
 		message.Kind = kind;
 		message.Emitter = this.Owner;
 		message.Recipient = this.Recipient;
+		message.RoomName = this.RoomName;
 		return message;
 	}
 

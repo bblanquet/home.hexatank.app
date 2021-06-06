@@ -1,5 +1,5 @@
 import * as moment from 'moment';
-import { INetworkMessage } from './../Message/INetworkMessage';
+import { INetworkMessage } from '../../Message/INetworkMessage';
 import { PingData } from './Ping/PingData';
 export class LatencyProvider {
 	private _shortestLatency: number | null = null;

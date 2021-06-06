@@ -33,7 +33,6 @@ export enum PacketKind {
 	Context,
 	Toast,
 	Ready,
-	Message,
 	Kick,
 	Hide,
 

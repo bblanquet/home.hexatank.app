@@ -8,7 +8,7 @@ import SmPanelComponent from '../../Common/Panel/SmPanelComponent';
 import GridComponent from '../../Common/Grid/GridComponent';
 import SmButtonComponent from '../../Common/Button/Stylish/SmButtonComponent';
 import { Singletons, SingletonKey } from '../../../Singletons';
-import { IHostingService } from '../../../Services/Hosting/IHostingService';
+import { ILobbyService } from '../../../Services/Hosting/ILobbyService';
 import Redirect from '../../Redirect/RedirectComponent';
 import ButtonComponent from '../../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
@@ -17,10 +17,10 @@ import { Usernames } from '../Names';
 import { RoomInfo } from './RoomInfo';
 import Visible from '../../Common/Visible/VisibleComponent';
 import { IPlayerProfilService } from '../../../Services/PlayerProfil/IPlayerProfilService';
-import { IServerSocket } from '../../../Network/IServerSocket';
 import { ISocketService } from '../../../Services/Socket/ISocketService';
 import { NetworkObserver } from '../../../Network/NetworkObserver';
 import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
+import { IServerSocket } from '../../../Network/Socket/Server/IServerSocket';
 
 export default class GuestComponent extends Component<
 	any,
@@ -28,7 +28,7 @@ export default class GuestComponent extends Component<
 > {
 	private _socket: IServerSocket;
 	private _profilService: IPlayerProfilService;
-
+	private _obs: NetworkObserver[];
 	constructor() {
 		super();
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
@@ -40,14 +40,16 @@ export default class GuestComponent extends Component<
 			filter: '',
 			Password: ''
 		});
-		this._socket = Singletons.Load<ISocketService>(SingletonKey.Socket).Publish();
-		this._socket.On([
+
+		this._obs = [
 			new NetworkObserver(PacketKind.Available, this.OnAvailable.bind(this)),
 			new NetworkObserver(PacketKind.Rooms, this.OnRoom.bind(this)),
 			new NetworkObserver(PacketKind.connect, this.OnConnect.bind(this)),
 			new NetworkObserver(PacketKind.Password, this.OnPassword.bind(this)),
 			new NetworkObserver(PacketKind.connect_error, this.OnConnectError.bind(this))
-		]);
+		];
+		this._socket = Singletons.Load<ISocketService>(SingletonKey.Socket).Publish();
+		this._socket.On(this._obs);
 	}
 
 	componentDidUpdate() {
@@ -68,13 +70,7 @@ export default class GuestComponent extends Component<
 	}
 
 	componentWillUnmount(): void {
-		this._socket.Off([
-			PacketKind.Available,
-			PacketKind.Rooms,
-			PacketKind.connect,
-			PacketKind.Password,
-			PacketKind.connect_error
-		]);
+		this._socket.Off(this._obs);
 	}
 
 	render() {
@@ -219,14 +215,14 @@ export default class GuestComponent extends Component<
 
 	public OnAvailable(message: NetworkMessage<{ IsAvailable: boolean; RoomName: string }>): void {
 		if (message.Content.IsAvailable) {
-			Singletons.Load<IHostingService>(SingletonKey.Hosting).Register(
+			Singletons.Load<ILobbyService>(SingletonKey.Lobby).Register(
 				this.state.PlayerName,
 				message.Content.RoomName,
 				this.state.Password,
 				this.state.Password !== null && this.state.Password !== '',
 				false
 			);
-			route('/Hosting', true);
+			route('/Lobby', true);
 		} else {
 			toastr['warning'](`${this.state.PlayerName} is already used in ${message.Content.RoomName}`, 'WARNING', {
 				iconClass: 'toast-red'

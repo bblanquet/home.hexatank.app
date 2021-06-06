@@ -1,12 +1,12 @@
-import { PacketKind } from '../../Message/PacketKind';
-import { RoomSocket } from '../../Server/RoomSocket';
-import { PeerKernel } from './PeerKernel';
+import { PacketKind } from '../../../Message/PacketKind';
+import { IServerSocket } from '../../Server/IServerSocket';
+import { RtcPeer } from './RtcPeer';
 
-export class Offerer extends PeerKernel {
+export class Offerer extends RtcPeer {
 	private _timeOut: any;
 
-	constructor(serverSocket: RoomSocket, owner: string, recipient: string) {
-		super(serverSocket, owner, recipient);
+	constructor(serverSocket: IServerSocket, roomName: string, owner: string, recipient: string) {
+		super(serverSocket, roomName, owner, recipient);
 		this.Connection = this.GetRtcConnection();
 
 		//setup channel
@@ -40,15 +40,13 @@ export class Offerer extends PeerKernel {
 		this._timeOut = setTimeout(() => this.TimeOut(), 6000);
 		this.Connection.oniceconnectionstatechange = (e: Event) => {
 			clearTimeout(this._timeOut);
-			console.log(`[${this.Recipient} -> ${this.Owner}] CANDIDATE <<<`);
-
 			if (!this.IsConnected()) {
 				this._timeOut = setTimeout(() => this.TimeOut(), 6000);
 			}
 			this.OnIceStateChanged.Invoke();
 		};
 
-		this.ServerPing.PingReceived.On((obj: any, data: number) => {
+		this.ServerPing.OnPingReceived.On((obj: any, data: number) => {
 			if (!this.IsConnected()) {
 				let message = this.GetTemplate(PacketKind.Reset);
 				this.ServerSocket.Emit(message);

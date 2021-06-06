@@ -9,11 +9,11 @@ import { NextCellPacket } from './Packets/NextCellPacket';
 import { TargetPacket } from './Packets/TargetPacket';
 import { PacketKind } from './../../Network/Message/PacketKind';
 import { NetworkMessage } from './../../Network/Message/NetworkMessage';
-import { NetworkSocket } from './../../Network/NetworkSocket';
+import { SocketWrapper } from '../../Network/Socket/SocketWrapper';
 import { GameContext } from '../Setup/Context/GameContext';
 import { Vehicle } from '../Items/Unit/Vehicle';
 import { Cell } from '../Items/Cell/Cell';
-import { PeerSocket } from '../../Network/Peer/PeerSocket';
+import { PeerSocket } from '../../Network/Socket/Peer/PeerSocket';
 import { Tank } from '../Items/Unit/Tank';
 import { CreatingUnitPacket } from './Packets/CreatingUnitPacket';
 import { FieldPacket } from './Packets/FieldPacket';
@@ -24,7 +24,7 @@ import { isNullOrUndefined } from '../Utils/ToolBox';
 import { IHeadquarter } from '../Items/Cell/Field/Hq/IHeadquarter';
 
 export class NetworkDispatcher {
-	public constructor(private _context: GameContext, private _socket: NetworkSocket) {
+	public constructor(private _context: GameContext, private _socket: SocketWrapper) {
 		this._context.GetCells().forEach((cell) => {
 			cell.OnFieldChanged.On(this.HandleChangedField.bind(this));
 		});

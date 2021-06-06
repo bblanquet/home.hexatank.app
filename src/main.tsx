@@ -14,7 +14,8 @@ import BlueCampaignComponent from './Components/Campaign/BlueCampaignComponent';
 import BadgeComponent from './Components/Badge/BagdeComponent';
 import GuestComponent from './Components/Network/Guest/GuestComponent';
 import CreatingHostComponent from './Components/Network/Creating/CreatingHostComponent';
-import HostingComponent from './Components/Network/Host/HostingComponent';
+import LobbyComponent from './Components/Network/Lobby/LobbyComponent';
+import LoadingPlayers from './Components/Network/Lobby/Players/LoadingPlayersComponent';
 import LoadingComponent from './Components/Loading/LoadingComponent';
 import ComparerComponent from './Components/Comparer/ComparerComponent';
 import SmPopupComponent from './Components/SmPopup/SmPopupComponent';
@@ -49,12 +50,13 @@ const App = (e: any) => {
 			<BadgeComponent path="/Badge" />
 			<RecordCanvasComponent path="/RecordCanvas" />
 			<CreatingHostComponent path="/CreatingHost" />
-			<HostingComponent path="/Hosting" />
+			<LobbyComponent path="/Lobby" />
 			<CamouflageComponent path="/Camouflage" />
 			<DiamondComponent path="/Diamond" />
 			<PowerComponent path="/Power" />
 			<GuestComponent path="/OffJoin" />
 			<RecordComponent path="/Record" />
+			<LoadingPlayers path="/Launching" />
 			<PopupComponent
 				path="/Popup"
 				points={10}

@@ -9,7 +9,7 @@ import { NetworkMessage } from './../../Network/Message/NetworkMessage';
 import { GameContext } from '../Setup/Context/GameContext';
 import { CreatingUnitPacket } from './Packets/CreatingUnitPacket';
 import { NetworkObserver } from '../../Network/NetworkObserver';
-import { NetworkSocket } from '../../Network/NetworkSocket';
+import { SocketWrapper } from '../../Network/Socket/SocketWrapper';
 import { NextCellPacket } from './Packets/NextCellPacket';
 import { FieldPacket } from './Packets/FieldPacket';
 import { TypeTranslator } from '../Items/Cell/Field/TypeTranslator';
@@ -27,7 +27,7 @@ export class NetworkReceiver {
 	private _overlockedObserver: NetworkObserver;
 	private _orderChangedObserver: NetworkObserver;
 
-	constructor(private _socket: NetworkSocket, private _context: GameContext) {
+	constructor(private _socket: SocketWrapper, private _context: GameContext) {
 		this._creatingUnitObserver = new NetworkObserver(PacketKind.UnitCreated, this.HandleCreatingUnit.bind(this));
 		this._targetObserver = new NetworkObserver(PacketKind.Target, this.HandleTarget.bind(this));
 		this._camouflageObserver = new NetworkObserver(PacketKind.Camouflage, this.HandleCamouflage.bind(this));

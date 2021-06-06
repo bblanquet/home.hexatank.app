@@ -1,9 +1,9 @@
 import { PingContent } from './PingContent';
-import { LiteEvent } from './../../../Core/Utils/Events/LiteEvent';
+import { LiteEvent } from '../../../../Core/Utils/Events/LiteEvent';
 import { PingData } from './PingData';
-import { PacketKind } from '../../Message/PacketKind';
-import { NetworkMessage } from '../../Message/NetworkMessage';
-import { PeerKernel } from '../Kernel/PeerKernel';
+import { PacketKind } from '../../../Message/PacketKind';
+import { NetworkMessage } from '../../../Message/NetworkMessage';
+import { RtcPeer } from '../Rtc/RtcPeer';
 
 export class PeerPingObserver {
 	public OnPingReceived: LiteEvent<PingData> = new LiteEvent<PingData>();
@@ -14,10 +14,10 @@ export class PeerPingObserver {
 	private _timeoutSleep: number = 1000;
 	private _pingInterval: number = 2000;
 
-	constructor(private _socket: PeerKernel, private _owner: string, private _recipient: string) {
-		this._socket.OnReceivedMessage.On(this.OnOneWayPingReceived.bind(this));
-		this._socket.OnReceivedMessage.On(this.OnTwoWayPingReceived.bind(this));
-		this._socket.OnShutDown.On(() => this.Stop());
+	constructor(private _peer: RtcPeer, private _owner: string, private _recipient: string) {
+		this._peer.OnReceived.On(this.OnOneWayPingReceived.bind(this));
+		this._peer.OnReceived.On(this.OnTwoWayPingReceived.bind(this));
+		this._peer.OnShutDown.On(() => this.Stop());
 	}
 
 	public Start(): void {
@@ -28,7 +28,7 @@ export class PeerPingObserver {
 			message.Recipient = this._recipient;
 			message.Emitter = this._owner;
 			message.Kind = PacketKind.OneWayPing;
-			this._socket.Send(message);
+			this._peer.Send(message);
 
 			this._timeOut = setTimeout(() => {
 				this.OnTimeoutStateChanged.Invoke(this, true);
@@ -71,7 +71,7 @@ export class PeerPingObserver {
 			message.Content.EmittedDate = packet.Content.EmittedDate;
 			message.Content.ReceivedDate = new Date().getTime();
 			message.Kind = PacketKind.TwoWayPing;
-			this._socket.Send(message);
+			this._peer.Send(message);
 		}
 	}
 }

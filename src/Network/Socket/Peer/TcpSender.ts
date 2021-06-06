@@ -1,7 +1,7 @@
-import { PacketKind } from '../Message/PacketKind';
-import { SimpleEvent } from './../../Core/Utils/Events/SimpleEvent';
-import { INetworkMessage } from './../Message/INetworkMessage';
-import { PeerKernel } from './Kernel/PeerKernel';
+import { PacketKind } from '../../Message/PacketKind';
+import { SimpleEvent } from '../../../Core/Utils/Events/SimpleEvent';
+import { INetworkMessage } from '../../Message/INetworkMessage';
+import { RtcPeer } from './Rtc/RtcPeer';
 
 export class TcpSender {
 	private _timeOut: NodeJS.Timeout;
@@ -12,9 +12,9 @@ export class TcpSender {
 	private _isDone: boolean = false;
 	public OnDone: SimpleEvent;
 
-	constructor(private _socket: PeerKernel, private _message: INetworkMessage) {
+	constructor(private _socket: RtcPeer, private _message: INetworkMessage) {
 		this._OnAckReceived = this.OnAckReceived.bind(this);
-		this._socket.OnReceivedMessage.On(this._OnAckReceived);
+		this._socket.OnReceived.On(this._OnAckReceived);
 		this._socket.OnShutDown.On(this.Stop.bind(this));
 		this.OnDone = new SimpleEvent();
 		this.Send();

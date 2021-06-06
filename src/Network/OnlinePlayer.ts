@@ -9,6 +9,7 @@ export class OnlinePlayer {
 
 	public IsLoaded: boolean;
 	public IsReady: boolean;
+	public IsAdmin: boolean;
 
 	public OnChanged: SimpleEvent = new SimpleEvent();
 

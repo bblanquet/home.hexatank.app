@@ -12,7 +12,7 @@ import { CamouflageInteractionService } from './Services/Interaction/CamouflageI
 import { CamouflageAppService } from './Services/App/CamouflageAppService';
 import { PlayerProfilService } from './Services/PlayerProfil/PlayerProfilService';
 import { CampaignService } from './Services/Campaign/CampaignService';
-import { HostingService } from './Services/Hosting/HostingService';
+import { LobbyService } from './Services/Hosting/LobbyService';
 import { KeyService } from './Services/Key/KeyService';
 import { RecordInteractionService } from './Services/Interaction/RecordInteractionService';
 import { RecordAppService } from './Services/App/RecordAppService';
@@ -28,7 +28,7 @@ import { Singletons, SingletonKey } from './Singletons';
 
 Singletons.Register(SingletonKey.PlayerProfil, new PlayerProfilService());
 Singletons.Register(SingletonKey.Key, new KeyService());
-Singletons.Register(SingletonKey.Hosting, new HostingService());
+Singletons.Register(SingletonKey.Lobby, new LobbyService());
 Singletons.Register(SingletonKey.Update, new UpdateService());
 Singletons.Register(SingletonKey.Compare, new CompareService());
 Singletons.Register(SingletonKey.Layer, new LayerService());

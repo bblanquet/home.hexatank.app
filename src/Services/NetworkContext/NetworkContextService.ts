@@ -1,17 +1,17 @@
 import { OnlinePlayer } from '../../Network/OnlinePlayer';
 import { GameContext } from '../../Core/Setup/Context/GameContext';
 import { NetworkContext } from '../../Core/Framework/NetworkContext';
-import { NetworkSocket } from '../../Network/NetworkSocket';
+import { SocketWrapper } from '../../Network/Socket/SocketWrapper';
 import { INetworkContextService } from './INetworkContextService';
 import { isNullOrUndefined } from '../../Core/Utils/ToolBox';
 
 export class NetworkContextService implements INetworkContextService {
 	//use for network
 	private _networkContext: NetworkContext;
-	private _socket: NetworkSocket;
+	private _socket: SocketWrapper;
 	private _players: OnlinePlayer[];
 
-	Register(networkSocket: NetworkSocket, game: GameContext, players: OnlinePlayer[]): void {
+	Register(networkSocket: SocketWrapper, game: GameContext, players: OnlinePlayer[]): void {
 		this._players = players;
 		this._socket = networkSocket;
 		this._networkContext = new NetworkContext(this._socket, game, players);

@@ -6,7 +6,7 @@ import { PacketKind } from '../../../Network/Message/PacketKind';
 import MdPanelComponent from '../../Common/Panel/MdPanelComponent';
 import TextComponent from '../../Common/Text/TextComponent';
 import { Singletons, SingletonKey } from '../../../Singletons';
-import { IHostingService } from '../../../Services/Hosting/IHostingService';
+import { ILobbyService } from '../../../Services/Hosting/ILobbyService';
 import Redirect from '../../Redirect/RedirectComponent';
 import ButtonComponent from '../../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
@@ -16,14 +16,16 @@ import { Usernames } from '../Names';
 import SmActiveButtonComponent from '../../Common/Button/Stylish/SmActiveButtonComponent';
 import Visible from '../../Common/Visible/VisibleComponent';
 import { IPlayerProfilService } from '../../../Services/PlayerProfil/IPlayerProfilService';
-import { IServerSocket } from '../../../Network/IServerSocket';
 import { ISocketService } from '../../../Services/Socket/ISocketService';
 import { NetworkObserver } from '../../../Network/NetworkObserver';
 import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
+import { IServerSocket } from '../../../Network/Socket/Server/IServerSocket';
 
 export default class CreatingHostComponent extends Component<any, CreatingHostState> {
 	private _profilService: IPlayerProfilService;
 	private _socket: IServerSocket;
+	private _obs: NetworkObserver[];
+
 	constructor() {
 		super();
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
@@ -34,23 +36,24 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 			Password: '',
 			HasPassword: false
 		});
-
-		this._socket.On([
+		this._obs = [
 			new NetworkObserver(PacketKind.Exist, this.OnExist.bind(this)),
 			new NetworkObserver(PacketKind.connect_error, this.OnError.bind(this))
-		]);
+		];
+
+		this._socket.On(this._obs);
 	}
 
 	private OnExist(message: NetworkMessage<{ Exist: boolean; RoomName: string }>): void {
 		if (!message.Content.Exist) {
-			Singletons.Load<IHostingService>(SingletonKey.Hosting).Register(
+			Singletons.Load<ILobbyService>(SingletonKey.Lobby).Register(
 				this.state.PlayerName,
 				this.state.RoomName,
 				this.state.Password === undefined ? '' : this.state.Password,
 				this.state.HasPassword === undefined ? false : this.state.HasPassword,
 				true
 			);
-			route('/Hosting', true);
+			route('/Lobby', true);
 		} else {
 			toastr['warning'](`${message.Content.RoomName} is already used.`, 'WARNING', {
 				iconClass: 'toast-red'
@@ -63,7 +66,7 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 	}
 
 	componentWillUnmount(): void {
-		this._socket.Off([ PacketKind.Exist, PacketKind.connect_error ]);
+		this._socket.Off(this._obs);
 	}
 
 	render() {

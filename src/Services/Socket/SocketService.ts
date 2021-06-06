@@ -1,5 +1,5 @@
-import { ServerSocket } from './../../Network/ServerSocket';
-import { IServerSocket } from './../../Network/IServerSocket';
+import { ServerSocket } from './../../Network/Socket/Server/ServerSocket';
+import { IServerSocket } from '../../Network/Socket/Server/IServerSocket';
 import { ISocketService } from './ISocketService';
 
 export class SocketService implements ISocketService {

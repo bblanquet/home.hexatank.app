@@ -1,18 +1,26 @@
 import { h, Component } from 'preact';
-import { NetworkSocket } from '../../../../Network/NetworkSocket';
-import { HostState } from '../../HostState';
 import GridComponent from '../../../Common/Grid/GridComponent';
 import { ConnectionKind } from '../../../../Network/ConnectionKind';
 import { OnlinePlayer } from '../../../../Network/OnlinePlayer';
 import Icon from '../../../Common/Icon/IconComponent';
+import { SingletonKey, Singletons } from '../../../../Singletons';
+import { INetworkContextService } from '../../../../Services/NetworkContext/INetworkContextService';
+import SmPanelComponent from '../../../Common/Panel/SmPanelComponent';
+import { MapContextManager } from '../../../../Network/Map/MapContextManager';
 
-export default class LoadingPlayers extends Component<{ HostState: HostState; Socket: NetworkSocket }, {}> {
+export default class LoadingPlayers extends Component<any, any> {
+	private _mapContext: MapContextManager;
 	constructor() {
 		super();
+		const networkContext = Singletons.Load<INetworkContextService>(SingletonKey.Network);
 	}
 
 	render() {
-		return <GridComponent left={this.GetHeader()} right={this.GetContent()} />;
+		return (
+			<SmPanelComponent>
+				<GridComponent left={this.GetHeader()} right={this.GetContent()} />
+			</SmPanelComponent>
+		);
 	}
 
 	private GetHeader() {
@@ -22,7 +30,7 @@ export default class LoadingPlayers extends Component<{ HostState: HostState; So
 	private GetContent() {
 		return (
 			<tbody>
-				{this.props.HostState.Players.Values().map((player) => {
+				{this.props.HostState.Players.Values().map((player: any) => {
 					return (
 						<tr class={this.props.HostState.Player.Name === player.Name ? 'd-flex" row-blue' : 'd-flex"'}>
 							<td class="align-self-center">

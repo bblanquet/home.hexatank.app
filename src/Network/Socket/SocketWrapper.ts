@@ -1,49 +1,42 @@
-import { Offerer } from './Peer/Kernel/Offerer';
-import { KindEvent } from './../Core/Utils/Events/KindEvent';
-import { ConnectionStatus } from './ConnectionStatus';
-import { Receiver } from './Peer/Kernel/Receiver';
-import { INetworkMessage } from './Message/INetworkMessage';
-import { RoomSocket } from './Server/RoomSocket';
+import { ISocketWrapper } from './INetworkSocket';
+import { IServerSocket } from './Server/IServerSocket';
+import { Offerer } from './Peer/Rtc/Offerer';
+import { KindEvent } from '../../Core/Utils/Events/KindEvent';
+import { ConnectionStatus } from '../ConnectionStatus';
+import { Receiver } from './Peer/Rtc/Receiver';
+import { INetworkMessage } from '../Message/INetworkMessage';
 import { PeerSocket } from './Peer/PeerSocket';
-import { NetworkMessage } from './Message/NetworkMessage';
-import { PacketKind } from './Message/PacketKind';
-import { Dictionnary } from '../Core/Utils/Collections/Dictionnary';
-import { LiteEvent } from '../Core/Utils/Events/LiteEvent';
-import { NetworkObserver } from './NetworkObserver';
-import { KindEventObserver } from '../Core/Utils/Events/KindEventObserver';
-import { ProtocolKind } from './Message/ProtocolKind';
+import { NetworkMessage } from '../Message/NetworkMessage';
+import { PacketKind } from '../Message/PacketKind';
+import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
+import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
+import { KindEventObserver } from '../../Core/Utils/Events/KindEventObserver';
+import { ProtocolKind } from '../Message/ProtocolKind';
 
-export class NetworkSocket {
+export class SocketWrapper implements ISocketWrapper {
 	protected PeerSockets: Dictionnary<PeerSocket> = new Dictionnary<PeerSocket>();
-	protected ServerSocket: RoomSocket;
+	protected ServerSocket: IServerSocket;
 	protected Owner: string;
+	protected RoomName: string;
 
 	private _isConnected: boolean;
 	public OnConnectedChanged: LiteEvent<boolean> = new LiteEvent<boolean>();
 	public OnPeerConnectionChanged: LiteEvent<PeerSocket> = new LiteEvent<PeerSocket>();
 	public OnReceived: KindEvent<PacketKind, INetworkMessage> = new KindEvent<PacketKind, INetworkMessage>();
 
-	private _playersObserver: NetworkObserver;
-	private _offerObserver: NetworkObserver;
-	private _resetObserver: NetworkObserver;
-	private _pingObserver: NetworkObserver;
-
-	constructor(owner: string, room: string, password: string, hasPassword: boolean, private _isAdmin: boolean) {
-		this._playersObserver = new KindEventObserver(PacketKind.Players, this.HandlePlayersReceived.bind(this));
-		this._offerObserver = new KindEventObserver(PacketKind.Offer, this.HandleOfferReceived.bind(this));
-		this._resetObserver = new KindEventObserver(PacketKind.Reset, this.HandleReset.bind(this));
-		this._pingObserver = new KindEventObserver(PacketKind.Ping, this.HandlePing.bind(this));
-
+	constructor(serverSocket: IServerSocket, roomName: string, owner: string, private _isAdmin: boolean) {
 		this.Owner = owner;
-		this.ServerSocket = new RoomSocket(this.Owner, room, password, hasPassword);
-		this.ServerSocket.OnReceived.On(this._playersObserver);
-		this.ServerSocket.OnReceived.On(this._offerObserver);
-		this.ServerSocket.OnReceived.On(this._resetObserver);
-		this.OnReceived.On(this._pingObserver);
-		this.ServerSocket.Start();
+		this.RoomName = roomName;
+		this.ServerSocket = serverSocket;
+		this.ServerSocket.On([
+			new KindEventObserver(PacketKind.Players, this.HandlePlayersChanged.bind(this)),
+			new KindEventObserver(PacketKind.Offer, this.HandleOffer.bind(this)),
+			new KindEventObserver(PacketKind.Reset, this.HandleReset.bind(this))
+		]);
+		this.OnReceived.On(new KindEventObserver(PacketKind.Ping, this.HandlePing.bind(this)));
 	}
 
-	private HandlePlayersReceived(message: NetworkMessage<Array<string>>): void {
+	private HandlePlayersChanged(message: NetworkMessage<Array<string>>): void {
 		//remove potentially kicked players
 		this.PeerSockets.Keys().filter((name) => !message.Content.includes(name)).forEach((name) => {
 			this.PeerSockets.Get(name).ShutDown();
@@ -62,7 +55,7 @@ export class NetworkSocket {
 	}
 
 	private CreateOfferSocket(recipient: string) {
-		const offererSocket = new PeerSocket(new Offerer(this.ServerSocket, this.Owner, recipient));
+		const offererSocket = new PeerSocket(new Offerer(this.ServerSocket, this.RoomName, this.Owner, recipient));
 		this.PeerSockets.Add(recipient, offererSocket);
 		//todo subscription
 		offererSocket.OnShutdown.On(this.OnShutdown.bind(this));
@@ -89,16 +82,16 @@ export class NetworkSocket {
 		this.OnReceived.Invoke(message.Kind, message);
 	}
 
-	private HandleOfferReceived(message: NetworkMessage<any>): void {
+	private HandleOffer(message: NetworkMessage<any>): void {
 		if (!this.PeerSockets.Exist(message.Emitter)) {
-			const receiver = new Receiver(this.ServerSocket, this.Owner, message.Emitter);
+			const receiver = new Receiver(this.ServerSocket, this.RoomName, this.Owner, message.Emitter);
 			const receiverSocket = new PeerSocket(receiver);
 			this.PeerSockets.Add(message.Emitter, receiverSocket);
 			//todo subscription
 			receiverSocket.OnShutdown.On(this.OnShutdown.bind(this));
 			receiverSocket.OnReceivedMessage.On(this.OnReceivedPeerMessage.bind(this));
 			receiverSocket.OnStateChanged.On(this.OnConnectionStatusChanged.bind(this));
-			receiver.ReceivedOffer(message);
+			receiver.HandleOffer(message);
 		}
 	}
 
@@ -128,15 +121,6 @@ export class NetworkSocket {
 				this.SetConnection(true);
 			}
 		}
-	}
-
-	public EmitServer<T>(kind: PacketKind, content: T): void {
-		const message = new NetworkMessage<T>();
-		message.Content = content;
-		message.Kind = kind;
-		message.Recipient = PeerSocket.Server();
-		message.Emitter = this.Owner;
-		this.Emit(message);
 	}
 
 	public EmitAll<T>(kind: PacketKind, content: T): void {
@@ -169,14 +153,10 @@ export class NetworkSocket {
 		this.OnConnectedChanged.Clear();
 		this.OnPeerConnectionChanged.Clear();
 		this.OnReceived.Clear();
-		this.ServerSocket.Stop();
+		this.ServerSocket.Close();
 		this.PeerSockets.Values().forEach((peer) => {
 			peer.ShutDown();
 		});
 		this.PeerSockets.Clear();
-	}
-
-	public Kick(room: string, name: string): void {
-		this.ServerSocket.Kick(room, name);
 	}
 }

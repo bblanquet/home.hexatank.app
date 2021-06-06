@@ -1,19 +1,20 @@
+import { IPeerSocket } from './IPeerSocket';
 import { TcpSender } from './TcpSender';
 import { LatencyProvider } from './LatencyProvider';
-import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
-import { SimpleEvent } from '../../Core/Utils/Events/SimpleEvent';
-import { ConnectionStatus } from '../ConnectionStatus';
-import { INetworkMessage } from '../Message/INetworkMessage';
+import { LiteEvent } from '../../../Core/Utils/Events/LiteEvent';
+import { SimpleEvent } from '../../../Core/Utils/Events/SimpleEvent';
+import { ConnectionStatus } from '../../ConnectionStatus';
+import { INetworkMessage } from '../../Message/INetworkMessage';
 import { PeerPingObserver } from './Ping/PeerPingObserver';
-import { NetworkMessage } from '../Message/NetworkMessage';
-import { PacketKind } from '../Message/PacketKind';
+import { NetworkMessage } from '../../Message/NetworkMessage';
+import { PacketKind } from '../../Message/PacketKind';
 import { PingData } from './Ping/PingData';
-import { isNullOrUndefined } from '../../Core/Utils/ToolBox';
-import { ConnectionKind } from '../ConnectionKind';
-import { PeerKernel } from './Kernel/PeerKernel';
-import { ProtocolKind } from '../Message/ProtocolKind';
+import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
+import { ConnectionKind } from '../../ConnectionKind';
+import { ProtocolKind } from '../../Message/ProtocolKind';
+import { RtcPeer } from './Rtc/RtcPeer';
 
-export class PeerSocket {
+export class PeerSocket implements IPeerSocket {
 	private _seqNum: number = 0;
 	private _tcpSenders: TcpSender[];
 	private _status: ConnectionStatus;
@@ -25,21 +26,21 @@ export class PeerSocket {
 	private _peerPing: PeerPingObserver;
 	private _latencyProvider: LatencyProvider;
 
-	constructor(private _kernel: PeerKernel) {
+	constructor(private _rtcPeer: RtcPeer) {
 		this._tcpSenders = new Array<TcpSender>();
 		this._latencyProvider = new LatencyProvider();
 
-		this._kernel.OnChannelOpened.On(() => {
+		this._rtcPeer.OnChannelOpened.On(() => {
 			this.OnStateChanged.Invoke(this, this.GetConnectionStatus());
 		});
-		this._kernel.OnIceStateChanged.On(() => {
+		this._rtcPeer.OnIceStateChanged.On(() => {
 			this.OnStateChanged.Invoke(this, this.GetConnectionStatus());
 		});
-		this._kernel.OnReceivedMessage.On((e: any, data: NetworkMessage<any>) => {
+		this._rtcPeer.OnReceived.On((e: any, data: NetworkMessage<any>) => {
 			this.ReceivePacket(data);
 		});
 
-		this._kernel.OnShutDown.On(() => this.ShutDown());
+		this._rtcPeer.OnShutDown.On(() => this.ShutDown());
 	}
 
 	public Send(message: INetworkMessage): void {
@@ -51,14 +52,14 @@ export class PeerSocket {
 		if (this.IsTcp(message)) {
 			this.SentTcp(message);
 		} else {
-			this._kernel.Send(message);
+			this._rtcPeer.Send(message);
 		}
 	}
 
 	private SentTcp(message: INetworkMessage) {
 		//override
 		this._tcpSenders.filter((t) => t.GetKind() === message.Kind).forEach((e) => e.Stop());
-		const tcpSender = new TcpSender(this._kernel, message);
+		const tcpSender = new TcpSender(this._rtcPeer, message);
 		//clean when done
 		tcpSender.OnDone.On(() => {
 			this._tcpSenders = this._tcpSenders.filter((t) => !t.IsDone());
@@ -74,13 +75,13 @@ export class PeerSocket {
 	protected ReceivePacket(packet: NetworkMessage<any>): void {
 		if (!this.IsPing(packet.Kind)) {
 			console.log(
-				`%c [${packet.Emitter}] > ${this._kernel.GetOwner()}] ${PacketKind[packet.Kind]} <<<`,
+				`%c [${packet.Emitter}] > ${this._rtcPeer.GetOwner()}] ${PacketKind[packet.Kind]} <<<`,
 				'color:#ff7373;'
 			);
 		}
 		if (packet.Protocol === ProtocolKind.Tcp && packet.IsAck) {
 			console.log(
-				`%c [${packet.Emitter}] > ${this._kernel.GetOwner()}] ${PacketKind[
+				`%c [${packet.Emitter}] > ${this._rtcPeer.GetOwner()}] ${PacketKind[
 					packet.Kind
 				]} [ACK] [${packet.SeqNum}]<<<`,
 				'color:#581087;'
@@ -88,7 +89,7 @@ export class PeerSocket {
 			return;
 		}
 
-		if (packet.Recipient === PeerSocket.All() || packet.Recipient === this._kernel.GetOwner()) {
+		if (packet.Recipient === PeerSocket.All() || packet.Recipient === this._rtcPeer.GetOwner()) {
 			const message = this.Convert(packet);
 			message.Latency = this._latencyProvider.GetLatency(packet);
 			this.OnReceivedMessage.Invoke(this, message);
@@ -97,7 +98,7 @@ export class PeerSocket {
 		if (packet.Protocol === ProtocolKind.Tcp && !packet.IsAck) {
 			const message = this.Convert(packet);
 			message.Recipient = message.Emitter;
-			message.Emitter = this._kernel.GetOwner();
+			message.Emitter = this._rtcPeer.GetOwner();
 			message.IsAck = true;
 			this.Send(message);
 		}
@@ -136,7 +137,7 @@ export class PeerSocket {
 	}
 
 	private CreatePing() {
-		this._peerPing = new PeerPingObserver(this._kernel, this._kernel.GetOwner(), this._kernel.GetRecipient());
+		this._peerPing = new PeerPingObserver(this._rtcPeer, this._rtcPeer.GetOwner(), this._rtcPeer.GetRecipient());
 		this._peerPing.OnTimeoutStateChanged.On((obj: any, state: boolean) => {
 			this.OnReceivedMessage.Invoke(this, this.GetMessage<boolean>(PacketKind.TimeOut, state));
 		});
@@ -156,10 +157,10 @@ export class PeerSocket {
 
 	public GetConnectionStatus(): ConnectionStatus {
 		const connection = new ConnectionStatus();
-		connection.SetConnection(this._kernel.GetIceState());
-		connection.Type = this._kernel.GetType();
+		connection.SetConnection(this._rtcPeer.GetIceState());
+		connection.Type = this._rtcPeer.GetType();
 		if (connection.Kind === ConnectionKind.Ok) {
-			if (this._kernel.IsChannelReady()) {
+			if (this._rtcPeer.IsChannelReady()) {
 				if (!this.HasPing()) {
 					this.CreatePing();
 				}
@@ -175,13 +176,13 @@ export class PeerSocket {
 		const deltaMessage = new NetworkMessage<T>();
 		deltaMessage.Kind = kind;
 		deltaMessage.Emitter = this.GetRecipient();
-		deltaMessage.Recipient = this._kernel.GetRecipient();
+		deltaMessage.Recipient = this._rtcPeer.GetRecipient();
 		deltaMessage.Content = data;
 		return deltaMessage;
 	}
 
 	public GetRecipient(): string {
-		return this._kernel.GetRecipient();
+		return this._rtcPeer.GetRecipient();
 	}
 
 	private HasPing() {
@@ -189,8 +190,8 @@ export class PeerSocket {
 	}
 
 	public ShutDown(): void {
-		if (!this._kernel.IsShutdown()) {
-			this._kernel.ShutDown();
+		if (!this._rtcPeer.IsShutdown()) {
+			this._rtcPeer.ShutDown();
 		}
 		this.OnStateChanged.Invoke(this, this.GetConnectionStatus());
 		this.OnShutdown.Invoke();
@@ -200,6 +201,6 @@ export class PeerSocket {
 	}
 
 	public IsShutDown(): boolean {
-		return this._kernel.IsShutdown();
+		return this._rtcPeer.IsShutdown();
 	}
 }

@@ -17,7 +17,7 @@ export class Singletons {
 export enum SingletonKey {
 	None,
 	Key,
-	Hosting,
+	Lobby,
 	Compare,
 	Layer,
 	Update,

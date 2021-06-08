@@ -36,7 +36,7 @@ export class TruckPatrolOrder extends ParentOrder {
 			} else if (this.CurrentOrder.GetState() === OrderState.Failed) {
 				this.Reset();
 			}
-		} else {
+		} else if (this.CurrentOrder) {
 			this.CurrentOrder.Update();
 		}
 	}

@@ -20,18 +20,16 @@ export class AudioService implements IAudioService {
 		this.Reload();
 	}
 	PlayLoungeMusic(): void {
-		this.Play(AudioArchive.loungeMusic, 0.1, true);
+		if (!this._isMute) {
+			this.Play(AudioArchive.loungeMusic, 0.1, true);
+		} else {
+			this.Pause(AudioArchive.loungeMusic);
+		}
 	}
 	Reload(): void {
 		this._sounds = new AudioProvider().GetContent();
 		this._isMute = this._profilService.GetProfil().IsMute;
-		if (!this._isMute) {
-			this.PlayLoungeMusic();
-		}
-	}
-
-	Collect(): void {
-		this.On();
+		this.PlayLoungeMusic();
 	}
 
 	GetGameAudioManager(): IGameAudioManager {

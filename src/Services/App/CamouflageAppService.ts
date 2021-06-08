@@ -104,7 +104,7 @@ export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 		this._interactionService.Collect();
 		this._layerService.Collect();
 		this._updateService.Collect();
-		this._audioService.Collect();
+		this._audioService.Clear();
 		this._app.destroy();
 		this._app = null;
 		this._audioService.Reload();

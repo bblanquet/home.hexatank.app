@@ -99,7 +99,7 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 
 	public Collect(): void {
 		this._gameAudioService.StopAll();
-		this._audioService.Collect();
+		this._audioService.Clear();
 		this._interactionManager.destroy();
 		this._gameContextService.Collect();
 		this._interactionService.Collect();

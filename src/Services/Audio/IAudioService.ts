@@ -2,7 +2,6 @@ import { IGameAudioManager } from '../../Core/Framework/Audio/IGameAudioManager'
 export interface IAudioService {
 	Register(gameAudioManager: IGameAudioManager): void;
 	GetGameAudioManager(): IGameAudioManager;
-	Collect(): void;
 	On(): void;
 	Off(): void;
 	Reload(): void;

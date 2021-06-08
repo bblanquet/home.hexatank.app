@@ -87,17 +87,26 @@ export class OnlineService implements IOnlineService {
 	}
 
 	Collect(): void {
-		this._onlinePlayerManager.Clear();
-		this._lobbyManager.Clear();
-		this._onlineGameContext.Clear();
+		if (this._onlinePlayerManager) {
+			this._onlinePlayerManager.Clear();
+			this._onlinePlayerManager = null;
+		}
+		if (this._lobbyManager) {
+			this._lobbyManager.Clear();
+			this._lobbyManager = null;
+		}
+		if (this._onlineGameContext) {
+			this._onlineGameContext.Clear();
+			this._onlineGameContext = null;
+		}
 		if (this._runtime) {
 			this._runtime.Clear();
+			this._runtime = null;
 		}
-
-		this._onlinePlayerManager = null;
-		this._lobbyManager = null;
-		this._onlineGameContext = null;
-		this._runtime = null;
+		if (this._socketWrapper) {
+			this._socketWrapper.Stop();
+			this._socketWrapper = null;
+		}
 
 		Singletons.Load<ISocketService>(SingletonKey.Socket).Collect();
 	}

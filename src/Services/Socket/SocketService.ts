@@ -12,7 +12,9 @@ export class SocketService implements ISocketService {
 		return this._socket;
 	}
 	Collect(): void {
-		this._socket.Close();
-		this._socket = null;
+		if (this._socket) {
+			this._socket.Close();
+			this._socket = null;
+		}
 	}
 }

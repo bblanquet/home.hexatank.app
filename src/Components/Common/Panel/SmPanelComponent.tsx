@@ -14,6 +14,7 @@ export default class SmPanelComponent extends Component<any, any> {
 						<div class="fill-logo-back-container">
 							<div class="sm-fill-logo-back spin-fade" />
 						</div>
+						<div class="fill-tank-logo slow-bounce" />
 						<div class="fill-logo" />
 					</div>
 					{this.props.children}

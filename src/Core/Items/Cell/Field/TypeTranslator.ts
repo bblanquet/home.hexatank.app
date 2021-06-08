@@ -44,9 +44,7 @@ export class TypeTranslator {
 	}
 
 	public static SetOrder(v: Vehicle, dest: Cell[], kind: OrderKind): void {
-		if (kind === OrderKind.Smart) {
-			v.SetOrder(new MonitoredOrder(dest[0], v));
-		} else if (kind === OrderKind.SimpleSmart) {
+		if (kind === OrderKind.Monitored) {
 			v.SetOrder(new MonitoredOrder(dest[0], v));
 		} else if (kind === OrderKind.Target) {
 			v.SetOrder(new TargetOrder(v as Tank, (dest[0].GetOccupier() as any) as AliveItem));

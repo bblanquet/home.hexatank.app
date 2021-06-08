@@ -26,6 +26,25 @@
 	letter-spacing: 0.2em;
 }
 
+.slow-bounce {
+	animation: slow-bounce 0.5s linear;
+}
+
+@keyframes slow-bounce {
+	0% {
+		transform: scale(0.6);
+	}
+	60% {
+		transform: scale(1.2);
+	}
+	80% {
+		transform: scale(0.8);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
 .bounce {
 	animation: bounce 0.5s linear;
 }
@@ -566,13 +585,25 @@ body {
 	background-image: url('{{postension}}svg/components/program6Logo.svg');
 }
 
+.fill-tank-logo {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	background-size: auto;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{postension}}svg/components/program6TankLogo.svg');
+}
+
 .fill-logo-back {
 	width: 100%;
 	height: 30vh;
 	background-size: auto;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}svg/components/program6LogoBackground.svg');
+	background-image: url('{{postension}}svg/components/program6FireLogo.svg');
 	pointer-events: none;
 }
 
@@ -590,7 +621,7 @@ body {
 	background-size: auto;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}svg/components/program6LogoBackground.svg');
+	background-image: url('{{postension}}svg/components/program6FireLogo.svg');
 	pointer-events: none;
 }
 

@@ -53,6 +53,7 @@ export default class PopupMenuComponent extends Component<
 					<div class="fill-logo-back-container">
 						<div class="fill-logo-back spin-fade" />
 					</div>
+					<div class="fill-tank-logo slow-bounce" />
 					<div class="fill-logo" />{' '}
 				</div>
 				<div class="container-center" style="margin-top: -2vh">

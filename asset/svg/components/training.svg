@@ -7,7 +7,7 @@
 	.st1{display:inline;fill:#BBAB8E;}
 	.st2{opacity:5.000000e-002;fill:#FFFFFF;enable-background:new    ;}
 	.st3{fill:#010202;}
-	.st4{fill:url(#XMLID_29_);stroke:#1A3A1D;stroke-width:3;stroke-miterlimit:10;}
+	.st4{fill:url(#XMLID_72_);stroke:#1A3A1D;stroke-width:3;stroke-miterlimit:10;}
 	.st5{fill:#1C3A1F;}
 	.st6{fill:#030405;}
 	.st7{fill:#343434;}
@@ -22,21 +22,21 @@
 	.st16{fill:#563D1E;stroke:#000000;stroke-width:3;stroke-miterlimit:10;}
 	.st17{opacity:0.1;}
 	.st18{fill:#E0BE90;stroke:#000000;stroke-width:3;stroke-miterlimit:10;}
-	.st19{opacity:0.3;fill:#FFFFFF;}
-	.st20{fill:url(#XMLID_57_);stroke:#0F1911;stroke-width:2;stroke-miterlimit:10;}
-	.st21{stroke:#000000;stroke-width:5;stroke-miterlimit:10;}
-	.st22{stroke:#009640;stroke-miterlimit:10;}
-	.st23{opacity:0.15;fill:#555550;}
-	.st24{fill:url(#XMLID_66_);stroke:#101913;stroke-width:3;stroke-miterlimit:10;}
-	.st25{fill:url(#XMLID_67_);stroke:#0F1911;stroke-width:3;stroke-miterlimit:10;}
-	.st26{fill:url(#XMLID_69_);stroke:#0F1911;stroke-width:3;stroke-miterlimit:10;}
-	.st27{fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
+	.st19{fill:url(#XMLID_73_);stroke:#101913;stroke-width:3;stroke-miterlimit:10;}
+	.st20{fill:url(#XMLID_74_);stroke:#0F1911;stroke-width:3;stroke-miterlimit:10;}
+	.st21{fill:url(#XMLID_75_);stroke:#0F1911;stroke-width:3;stroke-miterlimit:10;}
+	.st22{opacity:0.3;fill:#FFFFFF;}
+	.st23{fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
+	.st24{display:inline;}
+	.st25{fill:#563D1E;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
+	.st26{fill:#FFFFFF;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
+	.st27{fill:#009FE3;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
 	.st28{display:inline;fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
 	.st29{opacity:0.25;fill:#020304;}
-	.st30{fill:url(#XMLID_70_);stroke:#1A3A1D;stroke-width:3;stroke-miterlimit:10;}
-	.st31{fill:url(#XMLID_71_);stroke:#1A3A1D;stroke-width:3;stroke-miterlimit:10;}
+	.st30{fill:url(#XMLID_76_);stroke:#1A3A1D;stroke-width:3;stroke-miterlimit:10;}
+	.st31{fill:url(#XMLID_77_);stroke:#1A3A1D;stroke-width:3;stroke-miterlimit:10;}
 	.st32{fill:#020304;}
-	.st33{fill:url(#XMLID_72_);}
+	.st33{fill:url(#XMLID_78_);}
 	.st34{fill:none;stroke:#1A3A1D;stroke-width:3;stroke-miterlimit:10;}
 	.st35{fill:#FFFFFF;}
 </style>
@@ -74,7 +74,7 @@
 		<g id="Calque_4_2_">
 			<path id="XMLID_6_" class="st3" d="M234,223.1c-17.5-31.6-47.7-52.5-82.2-52.5c-35.2,0-66.1,21.8-83.4,54.6l39.9,30h84.1
 				L234,223.1z"/>
-			<radialGradient id="XMLID_29_" cx="151.2924" cy="215.3465" r="61.7788" gradientUnits="userSpaceOnUse">
+			<radialGradient id="XMLID_72_" cx="151.2924" cy="215.3465" r="61.7788" gradientUnits="userSpaceOnUse">
 				<stop  offset="0" style="stop-color:#009640"/>
 				<stop  offset="1" style="stop-color:#007936"/>
 			</radialGradient>
@@ -142,52 +142,20 @@
 				<path id="XMLID_35_" class="st18" d="M196.3,139.5c2.8-0.7,5.8-0.7,8.6,0c0.6,0.1,1.3,0.3,1.8,0.8c0.7,0.6,0.8,1.6,0.9,2.5
 					c0.2,2.3-0.3,4.7-1.1,6.9c-0.7,1.9-1.6,3.7-3.2,5c-0.7,0.6-1.5,1-2.3,1.3c-2.6,1.1-5.5,1.5-8.4,1.2"/>
 			</g>
-			<g id="Calque_4_-_copie" class="st0">
-				<path id="XMLID_14_" class="st1" d="M193.8,107.9v52.5c0,16.2-13.2,29.4-29.4,29.4h-22.7c-16.2,0-29.4-13.2-29.4-29.4v-52.5
-					c-3,4.6-4.8,10.1-4.8,16v40.3c0,16.2,13.2,29.4,29.4,29.4h32.2c16.2,0,29.4-13.2,29.4-29.4v-40.3
-					C198.5,118,196.7,112.5,193.8,107.9z"/>
-			</g>
-			<ellipse id="XMLID_23_" class="st19" cx="128.8" cy="161" rx="6" ry="2.9"/>
-			<ellipse id="XMLID_32_" class="st19" cx="177" cy="160.4" rx="6" ry="2.9"/>
-			<g id="Calque_6_-_copie">
-				
-					<radialGradient id="XMLID_57_" cx="152.3964" cy="138.9697" r="11.4238" gradientTransform="matrix(1 0 0 1.2311 0 -31.3248)" gradientUnits="userSpaceOnUse">
-					<stop  offset="0" style="stop-color:#009640"/>
-					<stop  offset="1" style="stop-color:#007936"/>
-				</radialGradient>
-				<path id="XMLID_25_" class="st20" d="M166.8,142H138c-0.9,0-1.7-0.8-1.7-1.7v-1.1c0-0.9,0.8-1.7,1.7-1.7h28.8
-					c0.9,0,1.7,0.8,1.7,1.7v1.1C168.5,141.2,167.7,142,166.8,142z"/>
-				<g id="Calque_10_-_copie_2">
-					<path id="XMLID_36_" class="st21" d="M177.6,152.8h-6.7c-4.6,0-8.4-3.8-8.4-8.4v-2.4c0-4.6,3.8-8.4,8.4-8.4h6.7
-						c4.6,0,8.4,3.8,8.4,8.4v2.4C186,149,182.2,152.8,177.6,152.8z"/>
-					<path id="XMLID_28_" class="st22" d="M177.6,152.8h-6.7c-4.6,0-8.4-3.8-8.4-8.4v-2.4c0-4.6,3.8-8.4,8.4-8.4h6.7
-						c4.6,0,8.4,3.8,8.4,8.4v2.4C186,149,182.2,152.8,177.6,152.8z"/>
-					<path id="XMLID_26_" class="st23" d="M162.4,141.6v4.6c0,3.6,2.9,6.6,6.6,6.6h10.5c3.6,0,6.6-2.9,6.6-6.6v-4.6l-7.1,1.2
-						c-3,0.5-6,0.5-8.9,0L162.4,141.6z"/>
-				</g>
-				<g id="Calque_10_-_copie_4">
-					<path id="XMLID_56_" class="st21" d="M134.4,152.8h-6.7c-4.6,0-8.4-3.8-8.4-8.4v-2.4c0-4.6,3.8-8.4,8.4-8.4h6.7
-						c4.6,0,8.4,3.8,8.4,8.4v2.4C142.8,149,139,152.8,134.4,152.8z"/>
-					<path id="XMLID_53_" class="st22" d="M134.4,152.8h-6.7c-4.6,0-8.4-3.8-8.4-8.4v-2.4c0-4.6,3.8-8.4,8.4-8.4h6.7
-						c4.6,0,8.4,3.8,8.4,8.4v2.4C142.8,149,139,152.8,134.4,152.8z"/>
-					<path id="XMLID_34_" class="st23" d="M119.2,141.6v4.6c0,3.6,2.9,6.6,6.6,6.6h10.5c3.6,0,6.6-2.9,6.6-6.6v-4.6l-7.1,1.2
-						c-3,0.5-6,0.5-8.9,0L119.2,141.6z"/>
-				</g>
-			</g>
 			<g id="Calque_9">
-				<radialGradient id="XMLID_66_" cx="152.1114" cy="122.6383" r="26.4699" gradientUnits="userSpaceOnUse">
+				<radialGradient id="XMLID_73_" cx="152.1114" cy="122.6383" r="26.4699" gradientUnits="userSpaceOnUse">
 					<stop  offset="0" style="stop-color:#009640"/>
 					<stop  offset="1" style="stop-color:#007936"/>
 				</radialGradient>
-				<path id="XMLID_15_" class="st24" d="M124.5,134.7l26.7-2.5c0.7-0.1,1.5-0.1,2.2,0l26.1,2.5c0.8,0.1,1.6,0.1,2.5,0
+				<path id="XMLID_15_" class="st19" d="M124.5,134.7l26.7-2.5c0.7-0.1,1.5-0.1,2.2,0l26.1,2.5c0.8,0.1,1.6,0.1,2.5,0
 					c4.4-0.7,6.9-4.3,4.7-7.3l-10.1-14.1c-1.2-1.7-3.6-2.8-6.2-2.8h-36.7c-2.6,0-5,1.1-6.2,2.8l-10,14.1c-2.3,3.2,0.7,7,5.5,7.4
 					C123.5,134.8,124,134.8,124.5,134.7z"/>
 				
-					<radialGradient id="XMLID_67_" cx="153.7471" cy="92.7927" r="29.974" gradientTransform="matrix(1.27 0 0 1 -41.4892 0)" gradientUnits="userSpaceOnUse">
+					<radialGradient id="XMLID_74_" cx="153.7471" cy="92.7927" r="29.974" gradientTransform="matrix(1.27 0 0 1 -41.4892 0)" gradientUnits="userSpaceOnUse">
 					<stop  offset="0" style="stop-color:#009640"/>
 					<stop  offset="1" style="stop-color:#007936"/>
 				</radialGradient>
-				<path id="XMLID_12_" class="st25" d="M197.8,104.1c0,7.1-19.8,12.9-44.1,12.9s-44.1-5.8-44.1-12.9c0-0.8,0.3-26.6,0.8-27.4
+				<path id="XMLID_12_" class="st20" d="M197.8,104.1c0,7.1-19.8,12.9-44.1,12.9s-44.1-5.8-44.1-12.9c0-0.8,0.3-26.6,0.8-27.4
 					c3.9-5.9,21.8-8,43.3-8c21.3,0,40,2.2,44.1,8C198.4,77.5,197.8,103.2,197.8,104.1z"/>
 				<path id="XMLID_22_" class="st5" d="M188.4,71.3c-0.3,0.8-0.4,1.7-0.1,2.6c0.4,1.1,1.2,1.8,1.8,2.7c1.9,2.7,1.8,6.6-0.1,9.3
 					c-2.3,3.1-6.5,4.2-8.8,7.3c-1.6,2.1-1.9,4.9-2.1,7.7c-0.1,1.2-0.2,2.4,0.3,3.6c0.5,1.2,1.6,2,2.7,1.8c1.6-0.2,2.2-1.9,3.1-3.2
@@ -198,41 +166,111 @@
 					c-2.4-0.4-4.3-3.2-6.8-2.8c-2.2,0.4-3.1,3.2-3.4,5.4c-0.3,2.2-9.1-7.8-11.4-7.6c-3.1,0.3-5.5-4.3-8.5-3.4
 					c-2.6,0.8-2.4,4.7-4.3,6.5c-1.3,1.4-3.5,1.5-5.1,2.6C111,104.9,111,104.9,110.9,105z"/>
 				
-					<radialGradient id="XMLID_69_" cx="153.6438" cy="76.7008" r="26.2026" gradientTransform="matrix(1.27 0 0 1 -41.4892 0)" gradientUnits="userSpaceOnUse">
+					<radialGradient id="XMLID_75_" cx="153.6438" cy="76.7008" r="26.2026" gradientTransform="matrix(1.27 0 0 1 -41.4892 0)" gradientUnits="userSpaceOnUse">
 					<stop  offset="0" style="stop-color:#009640"/>
 					<stop  offset="1" style="stop-color:#007936"/>
 				</radialGradient>
-				<ellipse id="XMLID_30_" class="st26" cx="153.6" cy="76.7" rx="44.1" ry="12.9"/>
+				<ellipse id="XMLID_30_" class="st21" cx="153.6" cy="76.7" rx="44.1" ry="12.9"/>
 				<path id="XMLID_33_" class="st5" d="M113.2,73.3c0,0,0,0.1-0.1,0.3c1.1,0,1.9-0.1,2.3-0.4c2.8-1.7,6.7-0.1,8.4,2.7
 					c0.5,0.8,1,1.8,1.9,2.4c1.8,1.1,4-0.5,5.5-1.9c1.5-1.5,3.3-3.2,5.4-2.6c2.8,0.8,3.6,5.4,6.5,5.3c2-0.2,2.9-2.6,3.3-4.7
 					c0.4-2,1.5-4.5,3.6-4.3c0.7,0.1,1.3,0.5,2,0.8c2.2,0.8,5-0.2,5.9-2.3c0.4-1,0.2-2.2-0.4-3.2c-0.3,0-0.6,0-1,0
 					C135.1,65.2,117.2,67.3,113.2,73.3z"/>
 			</g>
-			<path id="XMLID_54_" class="st19" d="M163.2,119.7l12.8-1.3l6.6,10.3c0,0,0.6,3.5-3.8,2.9c-4.4-0.6-19.1-2.2-19.1-2.2
-				L163.2,119.7z"/>
-			<path id="XMLID_21_" class="st19" d="M149.3,181.3c5.4-1.2,5.8,1.3,5.8,2.7c-0.1,1.4-3.9,2.3-6,2.3c-2.1-0.1-3.8-1.3-3.7-2.6
-				C145.4,182.2,147.3,181.7,149.3,181.3z"/>
-			<path id="XMLID_24_" class="st19" d="M160.8,159.7c1.2,4.2-1.9,4.3-3.6,4.1c-1.7-0.2-2.8-3.2-2.6-4.8c0.2-1.6,1.7-2.7,3.4-2.5
-				C159.7,156.7,160.3,158.2,160.8,159.7z"/>
+			<g id="light">
+				<path id="XMLID_54_" class="st22" d="M163.2,119.7l12.8-1.3l6.6,10.3c0,0,0.6,3.5-3.8,2.9c-4.4-0.6-19.1-2.2-19.1-2.2
+					L163.2,119.7z"/>
+				<path id="XMLID_21_" class="st22" d="M149.3,181.3c5.4-1.2,5.8,1.3,5.8,2.7c-0.1,1.4-3.9,2.3-6,2.3c-2.1-0.1-3.8-1.3-3.7-2.6
+					C145.4,182.2,147.3,181.7,149.3,181.3z"/>
+				<path id="XMLID_24_" class="st22" d="M160.8,159.7c1.2,4.2-1.9,4.3-3.6,4.1c-1.7-0.2-2.8-3.2-2.6-4.8c0.2-1.6,1.7-2.7,3.4-2.5
+					C159.7,156.7,160.3,158.2,160.8,159.7z"/>
+				<ellipse id="XMLID_23_" class="st22" cx="128.8" cy="161" rx="6" ry="2.9"/>
+				<ellipse id="XMLID_32_" class="st22" cx="177" cy="160.4" rx="6" ry="2.9"/>
+				<g id="Calque_4_-_copie" class="st0">
+					<path id="XMLID_14_" class="st1" d="M193.8,107.9v52.5c0,16.2-13.2,29.4-29.4,29.4h-22.7c-16.2,0-29.4-13.2-29.4-29.4v-52.5
+						c-3,4.6-4.8,10.1-4.8,16v40.3c0,16.2,13.2,29.4,29.4,29.4h32.2c16.2,0,29.4-13.2,29.4-29.4v-40.3
+						C198.5,118,196.7,112.5,193.8,107.9z"/>
+				</g>
+			</g>
 			<g id="Calque_11">
-				<path id="XMLID_10_" class="st27" d="M146.1,155.8c-3.4,3-3,6.8-3,6.9c-0.1,2,3,3,4.1,3c2.1,0,6.9,0,10.5,0
+				<path id="XMLID_10_" class="st23" d="M146.1,155.8c-3.4,3-3,6.8-3,6.9c-0.1,2,3,3,4.1,3c2.1,0,6.9,0,10.5,0
 					c2.2,0,3.6-1.6,3.8-3.5c0.3-2.5-0.8-5.4-2.7-7.3"/>
 			</g>
 		</g>
 	</g>
 </g>
-<g id="Calque_21" class="st0">
+<g id="Calque_32" class="st0">
+	<g id="Calque_24" class="st24">
+		<g id="Calque_23">
+			<g id="Calque_22">
+				<path id="XMLID_29_" class="st17" d="M128.2,140.5c0.7,0.2,1.4,0.3,2.2,0.4c1.9,0.2,3.7-0.1,5.6-0.2c1.9-0.1,3.8,0,5.4,1
+					s2.8,2.9,2.3,4.7c-0.2,0.9-0.8,1.6-1.4,2.3c-0.8,0.9-1.6,1.9-2.6,2.6c-0.8,0.5-1.8,0.8-2.7,1.1c-1.8,0.5-3.9,1-5.6,0
+					c-1.6-0.9-2.3-2.8-2.8-4.5c-0.5-1.9-1-3.9-1.2-5.9"/>
+				<path id="XMLID_34_" class="st25" d="M127.7,133c2.4,2.8,6.3,3.8,10,3.8c1.1,0,2.2,0,3.3,0.3c1,0.3,2,0.9,2.6,1.7
+					c0.3,0.4,0.6,0.8,1.1,0.8c0.2-1.4,0.3-2.9-0.5-4.1c-0.6-0.9-1.6-1.4-2.6-1.7c-1-0.3-2.1-0.5-3-0.9c-1.5-0.7-2.8-1.9-4-3
+					c-1.3-1.1-2.8-2.1-4.5-2.1c-0.3,0-0.6,0-0.8,0.2c-0.2,0.1-0.4,0.4-0.6,0.6c-0.4,0.6-0.9,1.2-1.3,1.8c-0.4,0.6-0.8,1.3-0.4,1.9"
+					/>
+			</g>
+			<path id="XMLID_26_" class="st26" d="M119.6,139c1.5,0.2,3,0.2,4.5,0.1c0.9-0.1,2.7-0.1,3.5-0.1c0.8,0.1,2.4,1.2,4.8,1.7
+				c1.1,0.2,5.4-0.6,6.2,0.1c1.7,1.3,2.4,5,0.6,7.1c-3,2.3-7.6,2.7-11.1,1.1c-1.5-0.7-2.9-1.8-3.4-3.2c-0.6-1.4-2-5.7-0.8-6.8"/>
+			<ellipse id="XMLID_28_" class="st27" cx="133.2" cy="144.9" rx="2.7" ry="3.6"/>
+		</g>
+		<g id="Calque_23_-_copie_2">
+			<g id="Calque_22_-_copie">
+				<path id="XMLID_57_" class="st17" d="M175.7,140.5c-0.7,0.2-1.4,0.3-2.2,0.4c-1.9,0.2-3.7-0.1-5.6-0.2c-1.9-0.1-3.8,0-5.4,1
+					s-2.8,2.9-2.3,4.7c0.2,0.9,0.8,1.6,1.4,2.3c0.8,0.9,1.6,1.9,2.6,2.6c0.8,0.5,1.8,0.8,2.7,1.1c1.8,0.5,3.9,1,5.6,0
+					c1.6-0.9,2.3-2.8,2.8-4.5c0.5-1.9,1-3.9,1.2-5.9"/>
+				<path id="XMLID_56_" class="st25" d="M176.1,133c-2.4,2.8-6.3,3.8-10,3.8c-1.1,0-2.2,0-3.3,0.3c-1,0.3-2,0.9-2.6,1.7
+					c-0.3,0.4-0.6,0.8-1.1,0.8c-0.2-1.4-0.3-2.9,0.5-4.1c0.6-0.9,1.6-1.4,2.6-1.7c1-0.3,2.1-0.5,3-0.9c1.5-0.7,2.8-1.9,4-3
+					c1.3-1.1,2.8-2.1,4.5-2.1c0.3,0,0.6,0,0.8,0.2c0.2,0.1,0.4,0.4,0.6,0.6c0.4,0.6,0.9,1.2,1.3,1.8c0.4,0.6,0.8,1.3,0.4,1.9"/>
+			</g>
+			<path id="XMLID_66_" class="st26" d="M184.3,139c-1.5,0.2-3,0.2-4.5,0.1c-0.9-0.1-2.7-0.1-3.5-0.1c-0.8,0.1-2.4,1.2-4.8,1.7
+				c-1.1,0.2-5.4-0.6-6.2,0.1c-1.7,1.3-2.4,5-0.6,7.1c3,2.3,7.6,2.7,11.1,1.1c1.5-0.7,2.9-1.8,3.4-3.2c0.6-1.4,2-5.7,0.8-6.8"/>
+			<ellipse id="XMLID_53_" class="st27" cx="170.7" cy="144.9" rx="2.7" ry="3.6"/>
+		</g>
+	</g>
+	<g id="Calque_34" class="st24">
+		<g id="Calque_23_-_copie_3">
+			<g id="Calque_22_-_copie_2">
+				<path id="XMLID_37_" class="st17" d="M175.7,140.5c-0.7,0.2-1.4,0.3-2.2,0.4c-1.9,0.2-3.7-0.1-5.6-0.2c-1.9-0.1-3.8,0-5.4,1
+					s-2.8,2.9-2.3,4.7c0.2,0.9,0.8,1.6,1.4,2.3c0.8,0.9,1.6,1.9,2.6,2.6c0.8,0.5,1.8,0.8,2.7,1.1c1.8,0.5,3.9,1,5.6,0
+					c1.6-0.9,2.3-2.8,2.8-4.5c0.5-1.9,1-3.9,1.2-5.9"/>
+				<path id="XMLID_36_" class="st25" d="M176.9,136.3c-1.7,2.9-7.1,4.5-10.8,4.5c-1.1,0-2.2,0-3.3,0.3c-1,0.3-2,0.9-2.6,1.7
+					c-0.3,0.4-0.6,0.8-1.1,0.8c-0.2-1.4-0.3-2.9,0.5-4.1c0.6-0.9,1.6-1.4,2.6-1.7c1-0.3,2.1-0.5,3-0.9c1.5-0.7,2.8-1.9,4-3
+					c1.3-1.1,2.8-2.1,4.5-2.1c0.3,0,0.6,0,0.8,0.2c0.2,0.1,0.4,0.4,0.6,0.6c0.4,0.6,0.9,1.2,1.3,1.8
+					C176.8,135,177.3,135.7,176.9,136.3"/>
+				<g id="Calque_30">
+				</g>
+				<path id="XMLID_13_" class="st23" d="M163.7,146.3c-1.2,1.4,1.7,2.5,2.3,2.6c1.9,0.3,7.7-1.2,8.5-1.5s1.9-1.8,0.5-2.9"/>
+			</g>
+		</g>
+		<g id="Calque_23_-_copie_4">
+			<g id="Calque_22_-_copie_3">
+				<path id="XMLID_71_" class="st17" d="M128.3,140.5c0.7,0.2,1.4,0.3,2.2,0.4c1.9,0.2,3.7-0.1,5.6-0.2c1.9-0.1,3.8,0,5.4,1
+					s2.8,2.9,2.3,4.7c-0.2,0.9-0.8,1.6-1.4,2.3c-0.8,0.9-1.6,1.9-2.6,2.6c-0.8,0.5-1.8,0.8-2.7,1.1c-1.8,0.5-3.9,1-5.6,0
+					c-1.6-0.9-2.3-2.8-2.8-4.5c-0.5-1.9-1-3.9-1.2-5.9"/>
+				<path id="XMLID_70_" class="st25" d="M127.1,136.3c1.7,2.9,7.1,4.5,10.8,4.5c1.1,0,2.2,0,3.3,0.3c1,0.3,2,0.9,2.6,1.7
+					c0.3,0.4,0.6,0.8,1.1,0.8c0.2-1.4,0.3-2.9-0.5-4.1c-0.6-0.9-1.6-1.4-2.6-1.7c-1-0.3-2.1-0.5-3-0.9c-1.5-0.7-2.8-1.9-4-3
+					c-1.3-1.1-2.8-2.1-4.5-2.1c-0.3,0-0.6,0-0.8,0.2c-0.2,0.1-0.4,0.4-0.6,0.6c-0.4,0.6-0.9,1.2-1.3,1.8
+					C127.1,135,126.7,135.7,127.1,136.3"/>
+				<g id="Calque_30_-_copie">
+				</g>
+				<path id="XMLID_25_" class="st23" d="M140.2,146.3c1.2,1.4-1.7,2.5-2.3,2.6c-1.9,0.3-7.7-1.2-8.5-1.5s-1.9-1.8-0.5-2.9"/>
+			</g>
+		</g>
+	</g>
+</g>
+<g id="mouth" class="st0">
 	<path id="XMLID_11_" class="st28" d="M141.1,177c1.6,2.3,3.6,4.8,6.3,5c2.6,0.2,5.2-1.7,7.6-0.8"/>
-	<path id="XMLID_37_" class="st27" d="M141.1,177c1.6,2.3,4.1,3.3,6.8,3.5c2.6,0.2,4.7-0.2,7.1,0.7"/>
-	<path id="XMLID_38_" class="st27" d="M141.1,177c1.6,2.3,4.1,3.3,6.8,3.5c2.6,0.2,6.3-1.1,8.7-0.2"/>
-	<path id="XMLID_51_" class="st27" d="M141.1,177c1.6,2.3,4.1,3.3,6.8,3.5c2.6,0.2,7.6,1.2,10.7-1"/>
+	<path id="XMLID_67_" class="st28" d="M140,178.1c1.6,2.3,4.6,3.7,7.4,3.9c2.6,0.2,5.2-1.7,7.6-0.8"/>
+	<path id="XMLID_51_" class="st28" d="M141.1,177c1.6,2.3,3.6,3.7,6.3,3.9c2.6,0.2,5.2-0.7,7.6,0.2"/>
+	<path id="XMLID_38_" class="st28" d="M141.1,177c1.6,2.3,3.6,4.8,6.3,5c2.6,0.2,6.2-1.4,8.6-1.7"/>
 </g>
 <g id="Calque_5">
 	<path id="XMLID_59_" class="st29" d="M239.3,68l28.5,8.3c3.1,0.9,13.5,2.7,15.5,0.3c1.2-1.4-7.4-8.2-8.9-9.1l-9.1-7.1
 		c-2.4-2.5-4-4.8,1-7.1l9.2-1.3c6.9-0.8,15.2-0.4,14.9-2.2c-0.4-3.1-10.1-4.8-13.2-5.7l-28.5-8.3c-5.7-1.7-11.8,1.9-13.6,7.9
 		l-3,10.5c-0.9,3.1-2.7,7.4-1.3,10C232.1,66.4,236.6,67.2,239.3,68z"/>
 	
-		<radialGradient id="XMLID_70_" cx="255.9904" cy="-16132.5332" r="26.0126" gradientTransform="matrix(1 0 0 -1 0 -16082)" gradientUnits="userSpaceOnUse">
+		<radialGradient id="XMLID_76_" cx="255.9904" cy="-16132.5332" r="26.0126" gradientTransform="matrix(1 0 0 -1 0 -16082)" gradientUnits="userSpaceOnUse">
 		<stop  offset="0" style="stop-color:#009640"/>
 		<stop  offset="1" style="stop-color:#007936"/>
 	</radialGradient>
@@ -243,7 +281,7 @@
 		c2.4-2.5,4-4.8-1-7.1L24.6,51c-6.9-0.8-15.2-0.4-14.9-2.2c0.4-3.1,10.1-4.8,13.2-5.7l28.5-8.3c5.7-1.7,11.8,1.9,13.6,7.9l3,10.5
 		c0.9,3.1,2.7,7.4,1.3,10C67.9,65.5,63.4,66.2,60.7,67z"/>
 	
-		<radialGradient id="XMLID_71_" cx="518.7751" cy="49.5615" r="26.0126" gradientTransform="matrix(-1 0 0 1 562.7847 0)" gradientUnits="userSpaceOnUse">
+		<radialGradient id="XMLID_77_" cx="518.7751" cy="49.5615" r="26.0126" gradientTransform="matrix(-1 0 0 1 562.7847 0)" gradientUnits="userSpaceOnUse">
 		<stop  offset="0" style="stop-color:#009640"/>
 		<stop  offset="1" style="stop-color:#007936"/>
 	</radialGradient>
@@ -256,7 +294,7 @@
 			c-1.4,4.4-2.9,8.9-4.3,13.3C249.4,54.9,242.5,58.3,236,56.5z"/>
 	</g>
 	<g id="XMLID_55_">
-		<radialGradient id="XMLID_72_" cx="150.3696" cy="27.4743" r="77.0222" gradientUnits="userSpaceOnUse">
+		<radialGradient id="XMLID_78_" cx="150.3696" cy="27.4743" r="77.0222" gradientUnits="userSpaceOnUse">
 			<stop  offset="0" style="stop-color:#009640"/>
 			<stop  offset="1" style="stop-color:#007936"/>
 		</radialGradient>

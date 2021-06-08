@@ -24,7 +24,7 @@ export class PatrolOrder extends Order {
 	}
 
 	public GetKind(): OrderKind {
-		return OrderKind.SimpleSmart;
+		return OrderKind.Patrol;
 	}
 	public GetCells(): Cell[] {
 		if (this._currentOrder) {

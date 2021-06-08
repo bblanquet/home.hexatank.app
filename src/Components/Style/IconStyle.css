@@ -293,6 +293,30 @@
 	background-image: url('{{postension}}svg/components/training.svg');
 }
 
+.fill-eyes-training {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	overflow: hidden;
+	background-size: contain;
+	background-position: bottom;
+	background-repeat: no-repeat;
+	background-image: url('{{postension}}svg/components/trainingEyes.svg');
+}
+
+.fill-blink-training {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	overflow: hidden;
+	background-size: contain;
+	background-position: bottom;
+	background-repeat: no-repeat;
+	background-image: url('{{postension}}svg/components/trainingBlinks.svg');
+}
+
 .fill-training-mouth-1 {
 	width: 100%;
 	height: 100%;
@@ -744,13 +768,14 @@
 }
 
 body:before {
-	content: url('{{postension}}svg/components/program6Logo.svg')
-		url('{{postension}}svg/components/program6LogoBackground.svg') url('{{postension}}svg/components/option.svg')
-		url('{{postension}}svg/nature/diamondStone.svg') url('{{postension}}svg/nature/diamondStone.svg')
-		url('{{postension}}svg/menu/SearchMoneyButton.svg') url('{{postension}}svg/menu/AbortMenu.svg')
-		url('{{postension}}svg/menu/cancelButton.svg') url('{{postension}}svg/menu/patrolButton.svg')
-		url('{{postension}}svg/menu/targetButton.svg') url('{{postension}}svg/menu/activeOrder.svg')
-		url('{{postension}}svg/components/redArmyLeaderMouth3.svg')
+	content: url('{{postension}}svg/components/program6Logo.svg') url('{{postension}}svg/components/training.svg')
+		url('{{postension}}svg/components/program6TankLogo.svg') url('{{postension}}svg/components/trainingEyes.svg')
+		url('{{postension}}svg/components/trainingBlinks.svg') url('{{postension}}svg/components/program6FireLogo.svg')
+		url('{{postension}}svg/components/option.svg') url('{{postension}}svg/nature/diamondStone.svg')
+		url('{{postension}}svg/nature/diamondStone.svg') url('{{postension}}svg/menu/SearchMoneyButton.svg')
+		url('{{postension}}svg/menu/AbortMenu.svg') url('{{postension}}svg/menu/cancelButton.svg')
+		url('{{postension}}svg/menu/patrolButton.svg') url('{{postension}}svg/menu/targetButton.svg')
+		url('{{postension}}svg/menu/activeOrder.svg') url('{{postension}}svg/components/redArmyLeaderMouth3.svg')
 		url('{{postension}}svg/components/redArmyLeaderMouth2.svg')
 		url('{{postension}}svg/components/redArmyLeaderMouth1.svg')
 		url('{{postension}}svg/components/redArmyLeaderBlink.svg')

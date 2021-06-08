@@ -18,33 +18,21 @@ import { isNullOrUndefined } from '../Utils/ToolBox';
 import { ISocketWrapper } from '../../Network/Socket/INetworkSocket';
 
 export class OnlineRuntimeReceiver {
-	private _creatingUnitObserver: NetworkObserver;
-	private _targetObserver: NetworkObserver;
-	private _camouflageObserver: NetworkObserver;
-	private _nextCellObserver: NetworkObserver;
-	private _fieldObserver: NetworkObserver;
-	private _powerObserver: NetworkObserver;
-	private _overlockedObserver: NetworkObserver;
-	private _orderChangedObserver: NetworkObserver;
-
+	private _obs: NetworkObserver[];
 	constructor(private _socket: ISocketWrapper, private _context: GameContext) {
-		this._creatingUnitObserver = new NetworkObserver(PacketKind.UnitCreated, this.HandleCreatingUnit.bind(this));
-		this._targetObserver = new NetworkObserver(PacketKind.Target, this.HandleTarget.bind(this));
-		this._camouflageObserver = new NetworkObserver(PacketKind.Camouflage, this.HandleCamouflage.bind(this));
-		this._nextCellObserver = new NetworkObserver(PacketKind.NextCell, this.HandleNextCell.bind(this));
-		this._fieldObserver = new NetworkObserver(PacketKind.FieldChanged, this.HandleChangedField.bind(this));
-		this._powerObserver = new NetworkObserver(PacketKind.PowerChanged, this.HandlePowerChanged.bind(this));
-		this._overlockedObserver = new NetworkObserver(PacketKind.Overlocked, this.HandleOverlocked.bind(this));
-		this._orderChangedObserver = new NetworkObserver(PacketKind.OrderChanging, this.HandleOrderChanged.bind(this));
-
-		this._socket.OnReceived.On(this._creatingUnitObserver);
-		this._socket.OnReceived.On(this._targetObserver);
-		this._socket.OnReceived.On(this._camouflageObserver);
-		this._socket.OnReceived.On(this._nextCellObserver);
-		this._socket.OnReceived.On(this._fieldObserver);
-		this._socket.OnReceived.On(this._powerObserver);
-		this._socket.OnReceived.On(this._overlockedObserver);
-		this._socket.OnReceived.On(this._orderChangedObserver);
+		this._obs = [
+			new NetworkObserver(PacketKind.UnitCreated, this.HandleCreatingUnit.bind(this)),
+			new NetworkObserver(PacketKind.Target, this.HandleTarget.bind(this)),
+			new NetworkObserver(PacketKind.Camouflage, this.HandleCamouflage.bind(this)),
+			new NetworkObserver(PacketKind.NextCell, this.HandleNextCell.bind(this)),
+			new NetworkObserver(PacketKind.FieldChanged, this.HandleChangedField.bind(this)),
+			new NetworkObserver(PacketKind.PowerChanged, this.HandlePowerChanged.bind(this)),
+			new NetworkObserver(PacketKind.Overlocked, this.HandleOverlocked.bind(this)),
+			new NetworkObserver(PacketKind.OrderChanging, this.HandleOrderChanged.bind(this))
+		];
+		this._obs.forEach((ob) => {
+			this._socket.OnReceived.On(ob);
+		});
 	}
 
 	private IsListenedHq(coo: string): boolean {

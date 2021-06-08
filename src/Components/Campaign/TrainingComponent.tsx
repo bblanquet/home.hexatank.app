@@ -31,13 +31,13 @@ export default class TrainingComponent extends Component<any, any> {
 					<div class="generalContainer absolute-center-middle">
 						<div class="container-center">
 							<FaceComponent
-								eyes={[
+								eyes={[ 'fill-eyes-training', 'fill-blink-training' ]}
+								mouths={[
 									'fill-training-mouth-1',
 									'fill-training-mouth-2',
 									'fill-training-mouth-3',
 									'fill-training-mouth-4'
 								]}
-								mouths={[]}
 								face={'fill-training'}
 							/>
 						</div>

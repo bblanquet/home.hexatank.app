@@ -1,11 +1,9 @@
 export enum OrderKind {
 	None,
-	Persistent,
+	Monitored,
 	Simple,
-	SimpleSmart,
 	Target,
 	Money,
 	Truck,
-	Patrol,
-	Smart
+	Patrol
 }

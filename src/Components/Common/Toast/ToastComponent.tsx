@@ -1,7 +1,7 @@
 import { Component, h } from 'preact';
 import Icon from '../../Common/Icon/IconComponent';
 import { OnlinePlayer } from '../../../Network/OnlinePlayer';
-import { ILobbyManager } from '../../../Network/Lobby/ILobbyManager';
+import { ILobbyManager } from '../../../Network/Manager/ILobbyManager';
 
 export default class ToastComponent extends Component<
 	{ _lobby: ILobbyManager; Player: OnlinePlayer },

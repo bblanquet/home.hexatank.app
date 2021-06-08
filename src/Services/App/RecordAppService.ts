@@ -1,7 +1,6 @@
 import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
 import { GameSettings } from './../../Core/Framework/GameSettings';
 import { IInteractionService } from './../Interaction/IInteractionService';
-import { INetworkContextService } from '../NetworkContext/INetworkContextService';
 import { ILayerService } from './../Layer/ILayerService';
 import { IUpdateService } from './../Update/IUpdateService';
 import { IGameContextService } from './../GameContext/IGameContextService';
@@ -25,7 +24,6 @@ export class RecordAppService implements IAppService<GameBlueprint> {
 	private _interactionService: IInteractionService<GameContext>;
 	private _layerService: ILayerService;
 	private _updateService: IUpdateService;
-	private _networkService: INetworkContextService;
 	private _keyService: IKeyService;
 
 	constructor() {
@@ -34,7 +32,6 @@ export class RecordAppService implements IAppService<GameBlueprint> {
 			SingletonKey.GameContext
 		);
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
-		this._networkService = Singletons.Load<INetworkContextService>(SingletonKey.Network);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.RecordInteraction);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
@@ -82,7 +79,6 @@ export class RecordAppService implements IAppService<GameBlueprint> {
 		this._interactionService.Collect();
 		this._layerService.Collect();
 		this._updateService.Collect();
-		this._networkService.Collect();
 		this._app.destroy();
 		this._app = null;
 	}

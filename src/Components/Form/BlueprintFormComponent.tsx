@@ -1,5 +1,5 @@
 import { h, Component } from 'preact';
-import { MapSetting } from './MapSetting';
+import { BlueprintSetup } from './BlueprintSetup';
 import DropDownComponent from '../Common/DropDown/DropDownComponent';
 import Redirect from '../Redirect/RedirectComponent';
 import Visible from '../Common/Visible/VisibleComponent';
@@ -9,13 +9,13 @@ import SmActiveButtonComponent from '../Common/Button/Stylish/SmActiveButtonComp
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 
-export default class MapFormComponent extends Component<
-	{ Model: MapSetting; CallBack: (model: MapSetting) => void },
-	MapSetting
+export default class BlueprintFormComponent extends Component<
+	{ Model: BlueprintSetup; CallBack: (model: BlueprintSetup) => void },
+	BlueprintSetup
 > {
 	constructor() {
 		super();
-		this.setState(new MapSetting());
+		this.setState(new BlueprintSetup());
 	}
 	componentDidMount() {
 		if (!isEqual(this.state, this.props.Model)) {

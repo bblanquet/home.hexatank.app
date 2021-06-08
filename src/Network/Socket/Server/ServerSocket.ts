@@ -4,7 +4,7 @@ import { Dictionnary } from '../../../Core/Utils/Collections/Dictionnary';
 import { IServerSocket } from './IServerSocket';
 import * as io from 'socket.io-client';
 import { INetworkMessage } from '../../Message/INetworkMessage';
-import { NetworkObserver } from '../../NetworkObserver';
+import { NetworkObserver } from '../../../Core/Utils/Events/NetworkObserver';
 
 export class ServerSocket implements IServerSocket {
 	private _socket: SocketIOClient.Socket;

@@ -1,10 +1,10 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
-import { MapSetting } from '../Form/MapSetting';
+import { BlueprintSetup } from '../Form/BlueprintSetup';
 import { GameBlueprintMaker } from '../../Core/Setup/Blueprint/Game/GameBlueprintMaker';
 import { MapEnv } from '../../Core/Setup/Blueprint/MapEnv';
 import MdPanelComponent from '../Common/Panel/MdPanelComponent';
-import MapFormComponent from '../Form/MapFormComponent';
+import BlueprintFormComponent from '../Form/BlueprintFormComponent';
 import { IAppService } from '../../Services/App/IAppService';
 import { Singletons, SingletonKey } from '../../Singletons';
 import Redirect from '../Redirect/RedirectComponent';
@@ -15,16 +15,16 @@ import { MapType } from '../../Core/Setup/Blueprint/MapType';
 import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 
-export default class SinglePlayerComponent extends Component<any, MapSetting> {
+export default class SinglePlayerComponent extends Component<any, BlueprintSetup> {
 	private _profilService: IPlayerProfilService;
 
 	constructor(props: any) {
 		super(props);
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
-		this.setState(new MapSetting());
+		this.setState(new BlueprintSetup());
 	}
 
-	private Update(m: MapSetting): void {
+	private Update(m: BlueprintSetup): void {
 		if (m.IaCount === 0) {
 			m.IaCount = 1;
 		}
@@ -36,7 +36,7 @@ export default class SinglePlayerComponent extends Component<any, MapSetting> {
 			<Redirect>
 				<MdPanelComponent>
 					<div class="container-center">
-						<MapFormComponent Model={this.state} CallBack={this.Update.bind(this)} />
+						<BlueprintFormComponent Model={this.state} CallBack={this.Update.bind(this)} />
 						<div class="container-center-horizontal">
 							<ButtonComponent
 								callBack={() => {
@@ -87,7 +87,7 @@ export default class SinglePlayerComponent extends Component<any, MapSetting> {
 			hqCount += 1;
 		}
 
-		const mapContext = new GameBlueprintMaker().GetBluePrint(
+		const blueprint = new GameBlueprintMaker().GetBluePrint(
 			this.ConvertSize(),
 			this.ConvertMapType(),
 			this.ConvertEnv(),
@@ -95,17 +95,17 @@ export default class SinglePlayerComponent extends Component<any, MapSetting> {
 		);
 		if (!this.state.onylIa) {
 			const playerName = this._profilService.GetProfil().LastPlayerName;
-			mapContext.Hqs[0].PlayerName = playerName;
-			mapContext.PlayerName = playerName;
+			blueprint.Hqs[0].PlayerName = playerName;
+			blueprint.PlayerName = playerName;
 		}
-		mapContext.Hqs.forEach((hq, index) => {
+		blueprint.Hqs.forEach((hq, index) => {
 			if (!hq.PlayerName) {
 				hq.isIa = true;
 				hq.PlayerName = `IA-${index}`;
 			}
 			index += 1;
 		});
-		Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App).Register(mapContext);
+		Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App).Register(blueprint);
 		route('/Canvas', true);
 	}
 

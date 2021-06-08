@@ -3,7 +3,6 @@ import { CamouflageBlueprint } from '../../Core/Setup/Blueprint/Cam/CamouflageBl
 import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
 import { IInteractionService } from '../Interaction/IInteractionService';
-import { INetworkContextService } from '../NetworkContext/INetworkContextService';
 import { ILayerService } from '../Layer/ILayerService';
 import { IUpdateService } from '../Update/IUpdateService';
 import { IGameContextService } from '../GameContext/IGameContextService';
@@ -29,7 +28,6 @@ export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 	private _interactionService: IInteractionService<CamouflageContext>;
 	private _layerService: ILayerService;
 	private _updateService: IUpdateService;
-	private _networkService: INetworkContextService;
 	private _keyService: IKeyService;
 	private _audioService: IAudioService;
 	private _gameAudioService: CamouflageAudioManager;
@@ -40,7 +38,6 @@ export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 			SingletonKey.CamouflageGameContext
 		);
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
-		this._networkService = Singletons.Load<INetworkContextService>(SingletonKey.Network);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 		this._audioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 
@@ -107,7 +104,6 @@ export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 		this._interactionService.Collect();
 		this._layerService.Collect();
 		this._updateService.Collect();
-		this._networkService.Collect();
 		this._audioService.Collect();
 		this._app.destroy();
 		this._app = null;

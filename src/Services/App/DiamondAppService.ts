@@ -4,7 +4,6 @@ import { DiamondContext } from './../../Core/Setup/Context/DiamondContext';
 import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
 import { IInteractionService } from '../Interaction/IInteractionService';
-import { INetworkContextService } from '../NetworkContext/INetworkContextService';
 import { ILayerService } from '../Layer/ILayerService';
 import { IUpdateService } from '../Update/IUpdateService';
 import { IGameContextService } from '../GameContext/IGameContextService';
@@ -30,7 +29,6 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 	private _interactionService: IInteractionService<DiamondContext>;
 	private _layerService: ILayerService;
 	private _updateService: IUpdateService;
-	private _networkService: INetworkContextService;
 	private _keyService: IKeyService;
 	private _audioService: IAudioService;
 
@@ -40,7 +38,6 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 			SingletonKey.DiamondGameContext
 		);
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
-		this._networkService = Singletons.Load<INetworkContextService>(SingletonKey.Network);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 		this._interactionService = Singletons.Load<IInteractionService<DiamondContext>>(
 			SingletonKey.DiamondInteraction
@@ -108,7 +105,6 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 		this._interactionService.Collect();
 		this._layerService.Collect();
 		this._updateService.Collect();
-		this._networkService.Collect();
 		this._app.destroy();
 		this._app = null;
 		this._audioService.Reload();

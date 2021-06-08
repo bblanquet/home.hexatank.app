@@ -6,7 +6,7 @@ import { PacketKind } from '../../../Network/Message/PacketKind';
 import MdPanelComponent from '../../Common/Panel/MdPanelComponent';
 import TextComponent from '../../Common/Text/TextComponent';
 import { Singletons, SingletonKey } from '../../../Singletons';
-import { ILobbyService } from '../../../Services/Hosting/ILobbyService';
+import { IOnlineService } from '../../../Services/Online/IOnlineService';
 import Redirect from '../../Redirect/RedirectComponent';
 import ButtonComponent from '../../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
@@ -17,7 +17,7 @@ import SmActiveButtonComponent from '../../Common/Button/Stylish/SmActiveButtonC
 import Visible from '../../Common/Visible/VisibleComponent';
 import { IPlayerProfilService } from '../../../Services/PlayerProfil/IPlayerProfilService';
 import { ISocketService } from '../../../Services/Socket/ISocketService';
-import { NetworkObserver } from '../../../Network/NetworkObserver';
+import { NetworkObserver } from '../../../Core/Utils/Events/NetworkObserver';
 import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
 import { IServerSocket } from '../../../Network/Socket/Server/IServerSocket';
 
@@ -46,7 +46,7 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 
 	private OnExist(message: NetworkMessage<{ Exist: boolean; RoomName: string }>): void {
 		if (!message.Content.Exist) {
-			Singletons.Load<ILobbyService>(SingletonKey.Lobby).Register(
+			Singletons.Load<IOnlineService>(SingletonKey.Online).Register(
 				this.state.PlayerName,
 				this.state.RoomName,
 				this.state.Password === undefined ? '' : this.state.Password,

@@ -6,7 +6,7 @@ import { OnlinePlayer } from '../../../../Network/OnlinePlayer';
 import Icon from '../../../Common/Icon/IconComponent';
 import { ColorKind } from '../../../Common/Button/Stylish/ColorKind';
 import Visible from '../../../Common/Visible/VisibleComponent';
-import { ILobbyManager } from '../../../../Network/Lobby/ILobbyManager';
+import { ILobbyManager } from '../../../../Network/Manager/ILobbyManager';
 
 export default class PendingPlayers extends Component<
 	{ Player: OnlinePlayer; Players: OnlinePlayer[]; Lobby: ILobbyManager },

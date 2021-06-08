@@ -12,14 +12,13 @@ import { CamouflageInteractionService } from './Services/Interaction/CamouflageI
 import { CamouflageAppService } from './Services/App/CamouflageAppService';
 import { PlayerProfilService } from './Services/PlayerProfil/PlayerProfilService';
 import { CampaignService } from './Services/Campaign/CampaignService';
-import { LobbyService } from './Services/Hosting/LobbyService';
+import { OnlineService } from './Services/Online/OnlineService';
 import { KeyService } from './Services/Key/KeyService';
 import { RecordInteractionService } from './Services/Interaction/RecordInteractionService';
 import { RecordAppService } from './Services/App/RecordAppService';
 import { CompareService } from './Services/Compare/CompareService';
 import { GameContextService } from './Services/GameContext/GameContextService';
 import { LayerService } from './Services/Layer/LayerService';
-import { NetworkContextService } from './Services/NetworkContext/NetworkContextService';
 import { InteractionService } from './Services/Interaction/InteractionService';
 import { RecordService } from './Services/Record/RecordService';
 import { UpdateService } from './Services/Update/UpdateService';
@@ -28,13 +27,12 @@ import { Singletons, SingletonKey } from './Singletons';
 
 Singletons.Register(SingletonKey.PlayerProfil, new PlayerProfilService());
 Singletons.Register(SingletonKey.Key, new KeyService());
-Singletons.Register(SingletonKey.Lobby, new LobbyService());
+Singletons.Register(SingletonKey.Online, new OnlineService());
 Singletons.Register(SingletonKey.Update, new UpdateService());
 Singletons.Register(SingletonKey.Compare, new CompareService());
 Singletons.Register(SingletonKey.Layer, new LayerService());
 Singletons.Register(SingletonKey.Record, new RecordService());
 
-Singletons.Register(SingletonKey.Network, new NetworkContextService());
 Singletons.Register(SingletonKey.Socket, new SocketService());
 
 var context = new AudioContext();

@@ -17,7 +17,7 @@ export class Singletons {
 export enum SingletonKey {
 	None,
 	Key,
-	Lobby,
+	Online,
 	Compare,
 	Layer,
 	Update,
@@ -26,7 +26,6 @@ export enum SingletonKey {
 	Audio,
 	Record,
 
-	Network,
 	Socket,
 
 	App,

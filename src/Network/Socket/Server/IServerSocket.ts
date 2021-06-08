@@ -1,5 +1,5 @@
 import { INetworkMessage } from '../../Message/INetworkMessage';
-import { NetworkObserver } from '../../NetworkObserver';
+import { NetworkObserver } from '../../../Core/Utils/Events/NetworkObserver';
 
 export interface IServerSocket {
 	On(obs: NetworkObserver[]): void;

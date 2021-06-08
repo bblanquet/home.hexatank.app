@@ -16,7 +16,6 @@ import { OnlinePlayer } from '../../../Network/OnlinePlayer';
 import { CellGroup } from '../../../Core/Items/CellGroup';
 import PopupComponent from '../../Popup/PopupComponent';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
-import { INetworkContextService } from '../../../Services/NetworkContext/INetworkContextService';
 import { IInteractionService } from '../../../Services/Interaction/IInteractionService';
 import { Singletons, SingletonKey } from '../../../Singletons';
 import Redirect from '../../Redirect/RedirectComponent';
@@ -62,7 +61,6 @@ export default class DiamondCanvasComponent extends Component<
 	private _diamonds: number;
 	private _gameContextService: IGameContextService<DiamondBlueprint, DiamondContext>;
 	private _soundService: IAudioService;
-	private _networkService: INetworkContextService;
 	private _interactionService: IInteractionService<GameContext>;
 	private _appService: IAppService<DiamondBlueprint>;
 	private _gameContext: DiamondContext;
@@ -75,7 +73,6 @@ export default class DiamondCanvasComponent extends Component<
 			SingletonKey.DiamondGameContext
 		);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-		this._networkService = Singletons.Load<INetworkContextService>(SingletonKey.Network);
 		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.DiamondInteraction);
 		this._appService = Singletons.Load<IAppService<DiamondBlueprint>>(SingletonKey.DiamondApp);
 		this._gameContext = this._gameContextService.Publish();
@@ -115,13 +112,6 @@ export default class DiamondCanvasComponent extends Component<
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
-		if (this._networkService.HasSocket()) {
-			this._networkService.GetOnlinePlayers().forEach((onlinePlayers) => {
-				onlinePlayers.OnChanged.On(() => {
-					this.setState({});
-				});
-			});
-		}
 	}
 
 	private HandleMultiMenuShowed(src: any, isDisplayed: boolean): void {
@@ -245,9 +235,7 @@ export default class DiamondCanvasComponent extends Component<
 			this._soundService.GetGameAudioManager().PlayAll();
 		}
 
-		if (!this._networkService.HasSocket()) {
-			GameSettings.IsPause = newValue;
-		}
+		GameSettings.IsPause = newValue;
 	}
 
 	private SetFlag(): void {
@@ -261,7 +249,6 @@ export default class DiamondCanvasComponent extends Component<
 	render() {
 		return (
 			<Redirect>
-				{this.TopLeftInfo()}
 				{this.TopMenuRender()}
 				{this.state.GameStatus === GameStatus.Pending ? '' : this.GetEndMessage()}
 				<CanvasComponent gameContext={this._gameContextService} />
@@ -293,23 +280,6 @@ export default class DiamondCanvasComponent extends Component<
 				</Visible>
 			</Redirect>
 		);
-	}
-
-	private TopLeftInfo() {
-		if (this._networkService.HasSocket()) {
-			return (
-				<div style="position: fixed;left: 0%; color:white;">
-					{this._networkService.GetOnlinePlayers().map((player) => {
-						return (
-							<div>
-								{player.Name} <span class="badge badge-info">{player.GetLatency()}</span>{' '}
-								{this.HasTimeout(player)}
-							</div>
-						);
-					})}
-				</div>
-			);
-		}
 	}
 
 	private SendContext(item: Item): void {

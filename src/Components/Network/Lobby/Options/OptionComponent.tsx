@@ -1,8 +1,8 @@
 import { h, Component } from 'preact';
-import MapFormComponent from '../../../Form/MapFormComponent';
-import { MapSetting } from '../../../Form/MapSetting';
+import BlueprintFormComponent from '../../../Form/BlueprintFormComponent';
+import { BlueprintSetup } from '../../../Form/BlueprintSetup';
 
-export default class OptionComponent extends Component<{ Model: MapSetting }> {
+export default class OptionComponent extends Component<{ Model: BlueprintSetup }> {
 	constructor() {
 		super();
 	}
@@ -12,9 +12,9 @@ export default class OptionComponent extends Component<{ Model: MapSetting }> {
 			<div class="custom-grid-layout-4">
 				<div class="custom-grid-layout-3 ">
 					<div class="custom-table" style="padding:10px">
-						<MapFormComponent
+						<BlueprintFormComponent
 							Model={this.props.Model}
-							CallBack={(m: MapSetting) => {
+							CallBack={(m: BlueprintSetup) => {
 								this.props.Model.Env = m.Env;
 								this.props.Model.IaCount = m.IaCount;
 								this.props.Model.MapType = m.MapType;

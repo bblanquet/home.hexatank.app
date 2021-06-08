@@ -10,7 +10,6 @@ import PopupMenuComponent from '../../PopupMenu/PopupMenuComponent';
 import { GameStatus } from '../../../Core/Framework/GameStatus';
 import { OnlinePlayer } from '../../../Network/OnlinePlayer';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
-import { INetworkContextService } from '../../../Services/NetworkContext/INetworkContextService';
 import { IInteractionService } from '../../../Services/Interaction/IInteractionService';
 import { Singletons, SingletonKey } from '../../../Singletons';
 import Redirect from '../../Redirect/RedirectComponent';
@@ -40,7 +39,6 @@ export default class CamouflageCanvasComponent extends Component<
 > {
 	private _gameContextService: IGameContextService<CamouflageBlueprint, CamouflageContext>;
 	private _soundService: IAudioService;
-	private _networkService: INetworkContextService;
 	private _interactionService: IInteractionService<CamouflageContext>;
 	private _gameContext: CamouflageContext;
 
@@ -52,7 +50,6 @@ export default class CamouflageCanvasComponent extends Component<
 			SingletonKey.CamouflageGameContext
 		);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-		this._networkService = Singletons.Load<INetworkContextService>(SingletonKey.Network);
 		this._interactionService = Singletons.Load<IInteractionService<CamouflageContext>>(
 			SingletonKey.CamouflageInteraction
 		);
@@ -86,13 +83,6 @@ export default class CamouflageCanvasComponent extends Component<
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
-		if (this._networkService.HasSocket()) {
-			this._networkService.GetOnlinePlayers().forEach((onlinePlayers) => {
-				onlinePlayers.OnChanged.On(() => {
-					this.setState({});
-				});
-			});
-		}
 	}
 
 	private HandleMultiMenuShowed(src: any, isDisplayed: boolean): void {
@@ -152,15 +142,12 @@ export default class CamouflageCanvasComponent extends Component<
 			}
 		}
 
-		if (!this._networkService.HasSocket()) {
-			GameSettings.IsPause = hasMenu;
-		}
+		GameSettings.IsPause = hasMenu;
 	}
 
 	render() {
 		return (
 			<Redirect>
-				{this.TopLeftInfo()}
 				{this.TopMenuRender()}
 				{this.state.GameStatus === GameStatus.Pending ? '' : this.GetEndMessage()}
 				<CanvasComponent gameContext={this._gameContextService} />
@@ -172,37 +159,6 @@ export default class CamouflageCanvasComponent extends Component<
 				</Visible>
 			</Redirect>
 		);
-	}
-
-	private TopLeftInfo() {
-		if (this._networkService.HasSocket()) {
-			return (
-				<div style="position: fixed;left: 0%; color:white;">
-					{this._networkService.GetOnlinePlayers().map((player) => {
-						return (
-							<div>
-								{player.Name} <span class="badge badge-info">{player.GetLatency()}</span>{' '}
-								{this.HasTimeout(player)}
-							</div>
-						);
-					})}
-				</div>
-			);
-		}
-	}
-
-	private HasTimeout(player: OnlinePlayer) {
-		if (player.HasTimeOut()) {
-			return (
-				<span
-					class="badge badge-danger align-text-center blink_me"
-					style="background-color:#ff0062; border: white solid 0.5px"
-				>
-					<Icon Value={'fas fa-exclamation-circle'} />
-				</span>
-			);
-		}
-		return '';
 	}
 
 	private TopMenuRender() {

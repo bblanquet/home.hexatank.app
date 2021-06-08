@@ -1,23 +1,23 @@
 import { OverlockedPacket } from './Packets/OverlockedPacket';
-import { ReactorField } from './../Items/Cell/Field/Bonus/ReactorField';
-import { Headquarter } from './../Items/Cell/Field/Hq/Headquarter';
+import { ReactorField } from '../Items/Cell/Field/Bonus/ReactorField';
+import { Headquarter } from '../Items/Cell/Field/Hq/Headquarter';
 import { FieldTypeHelper } from './Packets/FieldTypeHelper';
 import { OrderPacket } from './Packets/OrderPacket';
-import { PacketKind } from './../../Network/Message/PacketKind';
+import { PacketKind } from '../../Network/Message/PacketKind';
 import { TargetPacket } from './Packets/TargetPacket';
-import { NetworkMessage } from './../../Network/Message/NetworkMessage';
+import { NetworkMessage } from '../../Network/Message/NetworkMessage';
 import { GameContext } from '../Setup/Context/GameContext';
 import { CreatingUnitPacket } from './Packets/CreatingUnitPacket';
-import { NetworkObserver } from '../../Network/NetworkObserver';
-import { SocketWrapper } from '../../Network/Socket/SocketWrapper';
+import { NetworkObserver } from '../Utils/Events/NetworkObserver';
 import { NextCellPacket } from './Packets/NextCellPacket';
 import { FieldPacket } from './Packets/FieldPacket';
 import { TypeTranslator } from '../Items/Cell/Field/TypeTranslator';
 import { PowerFieldPacket } from './Packets/PowerFieldPacket';
 import { Cell } from '../Items/Cell/Cell';
 import { isNullOrUndefined } from '../Utils/ToolBox';
+import { ISocketWrapper } from '../../Network/Socket/INetworkSocket';
 
-export class NetworkReceiver {
+export class OnlineRuntimeReceiver {
 	private _creatingUnitObserver: NetworkObserver;
 	private _targetObserver: NetworkObserver;
 	private _camouflageObserver: NetworkObserver;
@@ -27,7 +27,7 @@ export class NetworkReceiver {
 	private _overlockedObserver: NetworkObserver;
 	private _orderChangedObserver: NetworkObserver;
 
-	constructor(private _socket: SocketWrapper, private _context: GameContext) {
+	constructor(private _socket: ISocketWrapper, private _context: GameContext) {
 		this._creatingUnitObserver = new NetworkObserver(PacketKind.UnitCreated, this.HandleCreatingUnit.bind(this));
 		this._targetObserver = new NetworkObserver(PacketKind.Target, this.HandleTarget.bind(this));
 		this._camouflageObserver = new NetworkObserver(PacketKind.Camouflage, this.HandleCamouflage.bind(this));

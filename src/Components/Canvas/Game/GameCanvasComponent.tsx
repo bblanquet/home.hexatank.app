@@ -23,7 +23,6 @@ import { OnlinePlayer } from '../../../Network/OnlinePlayer';
 import { CellGroup } from '../../../Core/Items/CellGroup';
 import PopupComponent from '../../Popup/PopupComponent';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
-import { INetworkContextService } from '../../../Services/NetworkContext/INetworkContextService';
 import { IInteractionService } from '../../../Services/Interaction/IInteractionService';
 import { Singletons, SingletonKey } from '../../../Singletons';
 import Redirect from '../../Redirect/RedirectComponent';
@@ -39,6 +38,8 @@ import { IAppService } from '../../../Services/App/IAppService';
 import { FlagCellCombination } from '../../../Core/Interaction/Combination/FlagCellCombination';
 import { GameBlueprint } from '../../../Core/Setup/Blueprint/Game/GameBlueprint';
 import { IAudioService } from '../../../Services/Audio/IAudioService';
+import { IOnlineService } from '../../../Services/Online/IOnlineService';
+import { Dictionnary } from '../../../Core/Utils/Collections/Dictionnary';
 
 export default class GameCanvasComponent extends Component<
 	any,
@@ -59,7 +60,7 @@ export default class GameCanvasComponent extends Component<
 	private _diamonds: number;
 	private _gameContextService: IGameContextService<GameBlueprint, GameContext>;
 	private _soundService: IAudioService;
-	private _networkService: INetworkContextService;
+	private _onelineService: IOnlineService;
 	private _interactionService: IInteractionService<GameContext>;
 	private _appService: IAppService<GameBlueprint>;
 	private _gameContext: GameContext;
@@ -72,7 +73,7 @@ export default class GameCanvasComponent extends Component<
 			SingletonKey.GameContext
 		);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-		this._networkService = Singletons.Load<INetworkContextService>(SingletonKey.Network);
+		this._onelineService = Singletons.Load<IOnlineService>(SingletonKey.Online);
 		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.Interaction);
 		this._appService = Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App);
 		this._gameContext = this._gameContextService.Publish();
@@ -112,12 +113,12 @@ export default class GameCanvasComponent extends Component<
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
-		if (this._networkService.HasSocket()) {
-			this._networkService.GetOnlinePlayers().forEach((onlinePlayers) => {
-				onlinePlayers.OnChanged.On(() => {
+		if (this._onelineService.GetOnlinePlayerManager()) {
+			this._onelineService
+				.GetOnlinePlayerManager()
+				.OnPlayersChanged.On((src: any, p: Dictionnary<OnlinePlayer>) => {
 					this.setState({});
 				});
-			});
 		}
 	}
 
@@ -242,7 +243,7 @@ export default class GameCanvasComponent extends Component<
 			this._soundService.GetGameAudioManager().PlayAll();
 		}
 
-		if (!this._networkService.HasSocket()) {
+		if (!this._onelineService.GetOnlinePlayerManager()) {
 			GameSettings.IsPause = newValue;
 		}
 	}
@@ -258,7 +259,7 @@ export default class GameCanvasComponent extends Component<
 	render() {
 		return (
 			<Redirect>
-				{this.TopLeftInfo()}
+				{this.TopRightInfo()}
 				{this.TopMenuRender()}
 				{this.state.GameStatus === GameStatus.Pending ? '' : this.GetEndMessage()}
 				<CanvasComponent gameContext={this._gameContextService} />
@@ -292,15 +293,15 @@ export default class GameCanvasComponent extends Component<
 		);
 	}
 
-	private TopLeftInfo() {
-		if (this._networkService.HasSocket()) {
+	private TopRightInfo() {
+		if (this._onelineService.GetOnlinePlayerManager()) {
 			return (
-				<div style="position: fixed;left: 0%; color:white;">
-					{this._networkService.GetOnlinePlayers().map((player) => {
+				<div style="position: fixed;right: 0%; color:white;">
+					{this._onelineService.GetOnlinePlayerManager().Players.Values().map((player) => {
 						return (
 							<div>
-								{player.Name} <span class="badge badge-info">{player.GetLatency()}</span>{' '}
-								{this.HasTimeout(player)}
+								<span class="badge badge-info">{player.GetLatency()}</span> {this.HasTimeout(player)}
+								{player.Name}{' '}
 							</div>
 						);
 					})}

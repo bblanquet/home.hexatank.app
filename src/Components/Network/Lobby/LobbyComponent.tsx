@@ -1,4 +1,4 @@
-import { ILobbyService } from '../../../Services/Hosting/ILobbyService';
+import { IOnlineService } from '../../../Services/Online/IOnlineService';
 import { Component, h } from 'preact';
 import { route } from 'preact-router';
 import PendingPlayers from './Players/PendingPlayersComponent';
@@ -19,12 +19,14 @@ import { HostingMode } from '../HostingMode';
 import { Message } from '../Message';
 import SmPanelComponent from '../../Common/Panel/SmPanelComponent';
 import { Dictionnary } from '../../../Core/Utils/Collections/Dictionnary';
-import { ILobbyManager } from '../../../Network/Lobby/ILobbyManager';
-import { MapSetting } from '../../Form/MapSetting';
+import { ILobbyManager } from '../../../Network/Manager/ILobbyManager';
+import { BlueprintSetup } from '../../Form/BlueprintSetup';
+import { IOnlinePlayerManager } from '../../../Network/Manager/IOnlinePlayerManager';
 
 export default class LobbyComponent extends Component<any, LobbyState> {
 	//SERVICE
 	private _lobbyManager: ILobbyManager;
+	private _onlinePlayer: IOnlinePlayerManager;
 	private _mode: HostingMode = HostingMode.pending;
 
 	constructor(props: any) {
@@ -33,19 +35,24 @@ export default class LobbyComponent extends Component<any, LobbyState> {
 		if (!SpriteProvider.IsLoaded()) {
 			return;
 		}
-
-		this._lobbyManager = Singletons.Load<ILobbyService>(SingletonKey.Lobby).Publish();
+		const lobbyService = Singletons.Load<IOnlineService>(SingletonKey.Online);
+		this._lobbyManager = lobbyService.GetLobbyManager();
+		this._onlinePlayer = lobbyService.GetOnlinePlayerManager();
 		this.setState({
-			Player: this._lobbyManager.Player,
-			Players: this._lobbyManager.Players,
+			Player: this._onlinePlayer.Player,
+			Players: this._onlinePlayer.Players,
 			Messages: [],
 			Message: '',
-			MapSetting: new MapSetting()
+			MapSetting: this._lobbyManager.GetSetup()
 		});
 
 		this._lobbyManager.OnKicked.On(this.Back.bind(this));
 		this._lobbyManager.OnMessageReceived.On(this.OnMessage.bind(this));
-		this._lobbyManager.OnPlayersChanged.On(this.UpdateState.bind(this));
+		this._onlinePlayer.OnPlayersChanged.On(this.UpdateState.bind(this));
+		this._lobbyManager.OnStarting.On(() => {
+			this._lobbyManager.Clear();
+			route('/Launching', true);
+		});
 	}
 
 	public UpdateState(src: any, players: Dictionnary<OnlinePlayer>): void {
@@ -206,13 +213,12 @@ export default class LobbyComponent extends Component<any, LobbyState> {
 	}
 
 	private Back(): void {
-		this._lobbyManager.Leave();
+		this._lobbyManager.Stop();
 		route('/Home', true);
 	}
 
 	private Launching(): void {
-		this._lobbyManager.Close();
-		route('/Launching', true);
+		this._lobbyManager.Start();
 	}
 
 	private OnMessage(source: any, message: Message): void {

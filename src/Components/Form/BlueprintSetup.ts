@@ -1,4 +1,4 @@
-export class MapSetting {
+export class BlueprintSetup {
 	public onylIa: boolean;
 	public IaCount: number;
 	public Env: string;

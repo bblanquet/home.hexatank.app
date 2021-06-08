@@ -4,7 +4,6 @@ import { PowerBlueprint } from './../../Core/Setup/Blueprint/Power/PowerBlueprin
 import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
 import { IInteractionService } from '../Interaction/IInteractionService';
-import { INetworkContextService } from '../NetworkContext/INetworkContextService';
 import { ILayerService } from '../Layer/ILayerService';
 import { IUpdateService } from '../Update/IUpdateService';
 import { IGameContextService } from '../GameContext/IGameContextService';
@@ -30,7 +29,6 @@ export class PowerAppService implements IAppService<PowerBlueprint> {
 	private _interactionService: IInteractionService<PowerContext>;
 	private _layerService: ILayerService;
 	private _updateService: IUpdateService;
-	private _networkService: INetworkContextService;
 	private _keyService: IKeyService;
 	private _audioService: IAudioService;
 
@@ -40,7 +38,6 @@ export class PowerAppService implements IAppService<PowerBlueprint> {
 			SingletonKey.PowerGameContext
 		);
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
-		this._networkService = Singletons.Load<INetworkContextService>(SingletonKey.Network);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 		this._interactionService = Singletons.Load<IInteractionService<PowerContext>>(SingletonKey.PowerInteraction);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
@@ -106,7 +103,6 @@ export class PowerAppService implements IAppService<PowerBlueprint> {
 		this._interactionService.Collect();
 		this._layerService.Collect();
 		this._updateService.Collect();
-		this._networkService.Collect();
 		this._app.destroy();
 		this._app = null;
 		this._audioService.Reload();

@@ -1,4 +1,4 @@
-import { MapSetting } from '../Form/MapSetting';
+import { BlueprintSetup } from '../Form/BlueprintSetup';
 import { OnlinePlayer } from '../../Network/OnlinePlayer';
 import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
 import { Message } from './Message';
@@ -12,5 +12,5 @@ export class LobbyState {
 	public Messages: Message[] = [];
 
 	//???
-	public MapSetting: MapSetting = new MapSetting();
+	public MapSetting: BlueprintSetup = new BlueprintSetup();
 }

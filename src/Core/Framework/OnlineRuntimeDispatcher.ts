@@ -1,15 +1,15 @@
-import { IOrder } from './../Ia/Order/IOrder';
+import { ISocketWrapper } from '../../Network/Socket/INetworkSocket';
+import { IOrder } from '../Ia/Order/IOrder';
 import { TypeTranslator } from '../Items/Cell/Field/TypeTranslator';
 import { PowerFieldPacket } from './Packets/PowerFieldPacket';
 import { OverlockedPacket } from './Packets/OverlockedPacket';
-import { ShieldField } from './../Items/Cell/Field/Bonus/ShieldField';
-import { ReactorField } from './../Items/Cell/Field/Bonus/ReactorField';
+import { ShieldField } from '../Items/Cell/Field/Bonus/ShieldField';
+import { ReactorField } from '../Items/Cell/Field/Bonus/ReactorField';
 import { FieldTypeHelper } from './Packets/FieldTypeHelper';
 import { NextCellPacket } from './Packets/NextCellPacket';
 import { TargetPacket } from './Packets/TargetPacket';
-import { PacketKind } from './../../Network/Message/PacketKind';
-import { NetworkMessage } from './../../Network/Message/NetworkMessage';
-import { SocketWrapper } from '../../Network/Socket/SocketWrapper';
+import { PacketKind } from '../../Network/Message/PacketKind';
+import { NetworkMessage } from '../../Network/Message/NetworkMessage';
 import { GameContext } from '../Setup/Context/GameContext';
 import { Vehicle } from '../Items/Unit/Vehicle';
 import { Cell } from '../Items/Cell/Cell';
@@ -23,8 +23,8 @@ import { OrderPacket } from './Packets/OrderPacket';
 import { isNullOrUndefined } from '../Utils/ToolBox';
 import { IHeadquarter } from '../Items/Cell/Field/Hq/IHeadquarter';
 
-export class NetworkDispatcher {
-	public constructor(private _context: GameContext, private _socket: SocketWrapper) {
+export class OnlineRuntimeDispatcher {
+	public constructor(private _socket: ISocketWrapper, private _context: GameContext) {
 		this._context.GetCells().forEach((cell) => {
 			cell.OnFieldChanged.On(this.HandleChangedField.bind(this));
 		});

@@ -10,7 +10,6 @@ import PopupMenuComponent from '../../PopupMenu/PopupMenuComponent';
 import { GameStatus } from '../../../Core/Framework/GameStatus';
 import { OnlinePlayer } from '../../../Network/OnlinePlayer';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
-import { INetworkContextService } from '../../../Services/NetworkContext/INetworkContextService';
 import { IInteractionService } from '../../../Services/Interaction/IInteractionService';
 import { Singletons, SingletonKey } from '../../../Singletons';
 import Redirect from '../../Redirect/RedirectComponent';
@@ -54,7 +53,6 @@ export default class PowerCanvasComponent extends Component<
 > {
 	private _gameContextService: IGameContextService<PowerBlueprint, PowerContext>;
 	private _soundService: IAudioService;
-	private _networkService: INetworkContextService;
 	private _interactionService: IInteractionService<PowerContext>;
 	private _gameContext: PowerContext;
 
@@ -66,7 +64,6 @@ export default class PowerCanvasComponent extends Component<
 			SingletonKey.PowerGameContext
 		);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-		this._networkService = Singletons.Load<INetworkContextService>(SingletonKey.Network);
 		this._interactionService = Singletons.Load<IInteractionService<PowerContext>>(SingletonKey.PowerInteraction);
 		this._gameContext = this._gameContextService.Publish();
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
@@ -98,13 +95,6 @@ export default class PowerCanvasComponent extends Component<
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
-		if (this._networkService.HasSocket()) {
-			this._networkService.GetOnlinePlayers().forEach((onlinePlayers) => {
-				onlinePlayers.OnChanged.On(() => {
-					this.setState({});
-				});
-			});
-		}
 	}
 
 	private HandleMultiMenuShowed(src: any, isDisplayed: boolean): void {
@@ -192,15 +182,12 @@ export default class PowerCanvasComponent extends Component<
 			}
 		}
 
-		if (!this._networkService.HasSocket()) {
-			GameSettings.IsPause = hasMenu;
-		}
+		GameSettings.IsPause = hasMenu;
 	}
 
 	render() {
 		return (
 			<Redirect>
-				{this.TopLeftInfo()}
 				{this.TopMenuRender()}
 				{this.state.GameStatus === GameStatus.Pending ? '' : this.GetEndMessage()}
 				<CanvasComponent gameContext={this._gameContextService} />
@@ -232,23 +219,6 @@ export default class PowerCanvasComponent extends Component<
 				</Visible>
 			</Redirect>
 		);
-	}
-
-	private TopLeftInfo() {
-		if (this._networkService.HasSocket()) {
-			return (
-				<div style="position: fixed;left: 0%; color:white;">
-					{this._networkService.GetOnlinePlayers().map((player) => {
-						return (
-							<div>
-								{player.Name} <span class="badge badge-info">{player.GetLatency()}</span>{' '}
-								{this.HasTimeout(player)}
-							</div>
-						);
-					})}
-				</div>
-			);
-		}
 	}
 
 	private SendContext(item: Item): void {

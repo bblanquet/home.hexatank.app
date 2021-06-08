@@ -40,7 +40,7 @@ export enum PacketKind {
 	Start,
 	Loading,
 	Loaded,
-	Map,
+	Blueprint,
 	UnitDestroyed,
 	UnitCreated,
 	Target,

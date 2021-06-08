@@ -1,5 +1,5 @@
 import { IServerPinger } from './IServerPinger';
-import { NetworkObserver } from '../../../NetworkObserver';
+import { NetworkObserver } from '../../../../Core/Utils/Events/NetworkObserver';
 import { PacketKind } from '../../../Message/PacketKind';
 import { NetworkMessage } from '../../../Message/NetworkMessage';
 import { LiteEvent } from '../../../../Core/Utils/Events/LiteEvent';

@@ -8,7 +8,7 @@ import SmPanelComponent from '../../Common/Panel/SmPanelComponent';
 import GridComponent from '../../Common/Grid/GridComponent';
 import SmButtonComponent from '../../Common/Button/Stylish/SmButtonComponent';
 import { Singletons, SingletonKey } from '../../../Singletons';
-import { ILobbyService } from '../../../Services/Hosting/ILobbyService';
+import { IOnlineService } from '../../../Services/Online/IOnlineService';
 import Redirect from '../../Redirect/RedirectComponent';
 import ButtonComponent from '../../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
@@ -18,7 +18,7 @@ import { RoomInfo } from './RoomInfo';
 import Visible from '../../Common/Visible/VisibleComponent';
 import { IPlayerProfilService } from '../../../Services/PlayerProfil/IPlayerProfilService';
 import { ISocketService } from '../../../Services/Socket/ISocketService';
-import { NetworkObserver } from '../../../Network/NetworkObserver';
+import { NetworkObserver } from '../../../Core/Utils/Events/NetworkObserver';
 import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
 import { IServerSocket } from '../../../Network/Socket/Server/IServerSocket';
 
@@ -215,7 +215,7 @@ export default class GuestComponent extends Component<
 
 	public OnAvailable(message: NetworkMessage<{ IsAvailable: boolean; RoomName: string }>): void {
 		if (message.Content.IsAvailable) {
-			Singletons.Load<ILobbyService>(SingletonKey.Lobby).Register(
+			Singletons.Load<IOnlineService>(SingletonKey.Online).Register(
 				this.state.PlayerName,
 				message.Content.RoomName,
 				this.state.Password,

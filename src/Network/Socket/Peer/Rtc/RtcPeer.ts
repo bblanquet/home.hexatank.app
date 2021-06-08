@@ -1,5 +1,5 @@
 import { PeerContext } from './../PeerContext';
-import { NetworkObserver } from '../../../NetworkObserver';
+import { NetworkObserver } from '../../../../Core/Utils/Events/NetworkObserver';
 import { SimpleEvent } from '../../../../Core/Utils/Events/SimpleEvent';
 import { LiteEvent } from '../../../../Core/Utils/Events/LiteEvent';
 import { INetworkMessage } from '../../../Message/INetworkMessage';

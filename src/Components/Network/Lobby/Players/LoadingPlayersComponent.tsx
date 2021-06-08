@@ -4,15 +4,27 @@ import { ConnectionKind } from '../../../../Network/ConnectionKind';
 import { OnlinePlayer } from '../../../../Network/OnlinePlayer';
 import Icon from '../../../Common/Icon/IconComponent';
 import { SingletonKey, Singletons } from '../../../../Singletons';
-import { INetworkContextService } from '../../../../Services/NetworkContext/INetworkContextService';
 import SmPanelComponent from '../../../Common/Panel/SmPanelComponent';
-import { MapContextManager } from '../../../../Network/Map/MapContextManager';
+import { IOnlineService } from '../../../../Services/Online/IOnlineService';
+import { Dictionnary } from '../../../../Core/Utils/Collections/Dictionnary';
 
-export default class LoadingPlayers extends Component<any, any> {
-	private _mapContext: MapContextManager;
+export default class LoadingPlayers extends Component<any, { Players: OnlinePlayer[]; Player: OnlinePlayer }> {
 	constructor() {
 		super();
-		const networkContext = Singletons.Load<INetworkContextService>(SingletonKey.Network);
+		const onlinePlayerManager = Singletons.Load<IOnlineService>(SingletonKey.Online).GetOnlinePlayerManager();
+		const onlineGameContextManager = Singletons.Load<IOnlineService>(
+			SingletonKey.Online
+		).GetOnlineGameContextManager();
+		this.setState({
+			Player: onlinePlayerManager.Player,
+			Players: onlinePlayerManager.Players.Values()
+		});
+		onlinePlayerManager.OnPlayersChanged.On(this.UpdateState.bind(this));
+		onlineGameContextManager.Start();
+	}
+
+	public UpdateState(src: any, players: Dictionnary<OnlinePlayer>): void {
+		this.setState({ Players: players.Values() });
 	}
 
 	render() {
@@ -24,15 +36,22 @@ export default class LoadingPlayers extends Component<any, any> {
 	}
 
 	private GetHeader() {
-		return <thead />;
+		return (
+			<thead>
+				<tr class="d-flex">
+					<th scope="col">Players</th>
+				</tr>
+			</thead>
+		);
 	}
 
 	private GetContent() {
 		return (
 			<tbody>
-				{this.props.HostState.Players.Values().map((player: any) => {
+				{this.state.Players.map((player: any) => {
 					return (
-						<tr class={this.props.HostState.Player.Name === player.Name ? 'd-flex" row-blue' : 'd-flex"'}>
+						<tr class={this.state.Player.Name === player.Name ? 'd-flex row-blue' : 'd-flex'}>
+							<td class="align-self-center">{this.GetLoadingInfo(player)}</td>
 							<td class="align-self-center">
 								{player.Name} {this.GetReady(player)}
 							</td>
@@ -40,7 +59,6 @@ export default class LoadingPlayers extends Component<any, any> {
 								{this.GetType(player)} {this.GetConnection(player)} {this.GetTimeout(player)}
 							</td>
 							<td class="align-self-center">{+player.GetLatency() === 0 ? '' : player.GetLatency()}</td>
-							<td class="align-self-center">{this.GetLoadingInfo(player)}</td>
 						</tr>
 					);
 				})}

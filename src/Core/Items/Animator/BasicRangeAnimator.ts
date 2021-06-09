@@ -22,6 +22,8 @@ export class BasicRangeAnimator implements IAnimator {
 				e.Destroy();
 			});
 		}
+		this._items = [];
+		this._animators = [];
 	}
 
 	Reset(): void {

@@ -1,13 +1,14 @@
-import { Dictionnary } from './../../../../Utils/Collections/Dictionnary';
-import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
-import { AreaRequest } from '../../Utils/AreaRequest';
-import { RequestType } from '../../Utils/RequestType';
-import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
-import { Cell } from '../../../../Items/Cell/Cell';
-import { GameSettings } from '../../../../Framework/GameSettings';
-import { BasicField } from '../../../../Items/Cell/Field/BasicField';
-import { ShieldField } from '../../../../Items/Cell/Field/Bonus/ShieldField';
-export class ShieldBorderRequestHandler implements ISimpleRequestHandler {
+import { GameSettings } from '../../../../../Framework/GameSettings';
+import { Cell } from '../../../../../Items/Cell/Cell';
+import { BasicField } from '../../../../../Items/Cell/Field/BasicField';
+import { ShieldField } from '../../../../../Items/Cell/Field/Bonus/ShieldField';
+import { Headquarter } from '../../../../../Items/Cell/Field/Hq/Headquarter';
+import { Dictionnary } from '../../../../../Utils/Collections/Dictionnary';
+import { AreaRequest } from '../../../Utils/AreaRequest';
+import { RequestType } from '../../../Utils/RequestType';
+import { ISimpleRequestHandler } from '../../ISimpleRequestHandler';
+
+export class ShieldFieldBorderRequestHandler implements ISimpleRequestHandler {
 	constructor(private _hq: Headquarter) {}
 
 	Handle(request: AreaRequest): void {

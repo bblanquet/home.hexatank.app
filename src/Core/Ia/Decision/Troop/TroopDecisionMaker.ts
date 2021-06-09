@@ -1,3 +1,4 @@
+import { TargetMonitoredOrder } from './../../Order/TargetMonitoredOrder';
 import { MedicField } from '../../../Items/Cell/Field/Bonus/MedicField';
 import { TimeTimer } from './../../../Utils/Timer/TimeTimer';
 import { ITimer } from '../../../Utils/Timer/ITimer';
@@ -56,7 +57,7 @@ export class TroopDecisionMaker {
 			if (this.Tank.HasTarget() || this._idleTimer.IsElapsed()) {
 				this._idleTimer = null;
 				this.SetNextDestination();
-				this.Tank.SetOrder(new MonitoredOrder(this.CurrentPatrolDestination, this.Tank));
+				this.Tank.SetOrder(new TargetMonitoredOrder(this.CurrentPatrolDestination, this.Tank));
 			}
 		} else {
 			if (this._cancelOrderTimer.IsElapsed()) {

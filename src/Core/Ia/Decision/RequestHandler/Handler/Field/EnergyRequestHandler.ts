@@ -1,17 +1,17 @@
-import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
-import { AreaRequest } from '../../Utils/AreaRequest';
-import { RequestType } from '../../Utils/RequestType';
-import { BasicField } from '../../../../Items/Cell/Field/BasicField';
-import { GameSettings } from '../../../../Framework/GameSettings';
-import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
-import { BatteryField } from '../../../../Items/Cell/Field/Bonus/BatteryField';
+import { ISimpleRequestHandler } from '../../ISimpleRequestHandler';
+import { AreaRequest } from '../../../Utils/AreaRequest';
+import { RequestType } from '../../../Utils/RequestType';
+import { BasicField } from '../../../../../Items/Cell/Field/BasicField';
+import { GameSettings } from '../../../../../Framework/GameSettings';
+import { Headquarter } from '../../../../../Items/Cell/Field/Hq/Headquarter';
+import { BatteryField } from '../../../../../Items/Cell/Field/Bonus/BatteryField';
 
 export class EnergyRequestHandler implements ISimpleRequestHandler {
 	constructor(private _hq: Headquarter) {}
 
 	Handle(request: AreaRequest): void {
 		if (GameSettings.FieldPrice < this._hq.GetAmount()) {
-			const cells = request.Area.GetSpot().GetCells().filter((c) => c.GetField() instanceof BasicField);
+			const cells = request.Area.GetFreeCoveredCells();
 			cells.some((c) => {
 				if (c.GetField() instanceof BasicField) {
 					const bf = new BatteryField(c, this._hq);

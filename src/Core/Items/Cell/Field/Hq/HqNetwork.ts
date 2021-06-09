@@ -12,7 +12,6 @@ export class HqNetwork extends Item {
 		super();
 		this._links = new Array<HqNetworkLink>();
 		this._hq.OnReactorAdded.On(this.ReactorAdded.bind(this));
-		this._hq.OnReactorLost.On(this.ReactorRemoved.bind(this));
 	}
 
 	private ReactorAdded(source: any, reactor: ReactorField): void {
@@ -22,13 +21,6 @@ export class HqNetwork extends Item {
 				this._links.push(new HqNetworkLink(otherReactor, reactor));
 			}
 		});
-	}
-
-	private ReactorRemoved(source: any, reactor: ReactorField): void {
-		this._links.filter((link) => link.IsConnected(reactor.GetCell())).forEach((link) => {
-			link.Destroy();
-		});
-		this._links = this._links.filter((e) => e.IsDestroyed());
 	}
 
 	public GetBoundingBox(): BoundingBox {

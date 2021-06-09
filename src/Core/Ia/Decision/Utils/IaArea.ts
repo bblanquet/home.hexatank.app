@@ -140,6 +140,20 @@ export class IaArea {
 		}
 	}
 
+	public GetFreeCoveredCells(): Cell[] {
+		const result = new Array<Cell>();
+		this.GetSpot().GetCells().forEach((c) => {
+			if (this._hq.IsCovered(c) && !this.HasFoe(c) && c.GetField() instanceof BasicField) {
+				result.push(c);
+			}
+		});
+		return result;
+	}
+
+	private HasFoe(cell: Cell): boolean {
+		return cell.GetAll(1).some((c) => TypeTranslator.HasEnemy(c, this._hq.Identity));
+	}
+
 	public IsImportant(): boolean {
 		return (
 			this._spot.GetStatus().HasField(Diamond.name) ||

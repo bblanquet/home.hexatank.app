@@ -58,7 +58,6 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 			console.log(`%c [DETECTED FOE] ${foeCells.length}`, 'font-weight:bold;color:blue;');
 
 			this.FireCell();
-			this.PowerUp();
 			this.SendTroops(foeCells, ally);
 		}
 	}
@@ -71,17 +70,6 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 		as.push(area);
 
 		return as;
-	}
-
-	private PowerUp(): void {
-		if (this.Area.IsCovered() !== ReactorAreaState.None) {
-			this._hq
-				.GetReactors()
-				.filter((r) => !r.IsLocked() && r.IsCovered(this.Area.GetCentralCell()))
-				.forEach((r) => {
-					r.Overlock(new AttackMenuItem());
-				});
-		}
 	}
 
 	private FireCell(): void {

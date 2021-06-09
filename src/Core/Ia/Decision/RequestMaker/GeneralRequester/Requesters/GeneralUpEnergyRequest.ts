@@ -16,7 +16,7 @@ export class GeneralUpEnergyRequester implements IGeneralRequester {
 				.Values()
 				.map((c) => c.Area)
 				.filter((a) => a.HasFreeFields() && a.GetInnerFoeCount() === 0);
-			const candidates = new Dictionnary<IaArea>();
+			let candidates = new Dictionnary<IaArea>();
 
 			reactor.GetInternal().Values().forEach((c) =>
 				kingdomAreas.filter((a) => a.HasCell(c)).forEach((a) => {
@@ -25,9 +25,9 @@ export class GeneralUpEnergyRequester implements IGeneralRequester {
 					}
 				})
 			);
-
-			if (!candidates.IsEmpty()) {
-				return new AreaRequest(RequestType.Energy, this._priority.toString(), 1, candidates.Values()[0]);
+			const areas = candidates.Values().filter((a) => 0 < a.GetFreeCoveredCells().length);
+			if (0 < areas.length) {
+				return new AreaRequest(RequestType.Energy, this._priority.toString(), 1, areas[0]);
 			}
 		}
 		return new AreaRequest(RequestType.None, '0', 0, null);

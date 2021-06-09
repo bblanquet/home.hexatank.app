@@ -1,10 +1,10 @@
-import { MedicField } from '../../../../Items/Cell/Field/Bonus/MedicField';
-import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
-import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
-import { AreaRequest } from '../../Utils/AreaRequest';
-import { BasicField } from '../../../../Items/Cell/Field/BasicField';
-import { GameSettings } from '../../../../Framework/GameSettings';
-import { RequestType } from '../../Utils/RequestType';
+import { MedicField } from '../../../../../Items/Cell/Field/Bonus/MedicField';
+import { ISimpleRequestHandler } from '../../ISimpleRequestHandler';
+import { Headquarter } from '../../../../../Items/Cell/Field/Hq/Headquarter';
+import { AreaRequest } from '../../../Utils/AreaRequest';
+import { BasicField } from '../../../../../Items/Cell/Field/BasicField';
+import { GameSettings } from '../../../../../Framework/GameSettings';
+import { RequestType } from '../../../Utils/RequestType';
 
 export class HealingRequestHandler implements ISimpleRequestHandler {
 	constructor(private _hq: Headquarter) {}

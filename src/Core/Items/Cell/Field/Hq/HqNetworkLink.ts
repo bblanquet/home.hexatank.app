@@ -17,7 +17,7 @@ export class HqNetworkLink extends Item {
 	private _isFadeIn: boolean = true;
 	private _isVisible: boolean = false;
 
-	public constructor(private _a: ReactorField, private _b: ReactorField) {
+	public constructor(private _leftReactorField: ReactorField, private _rightReactorField: ReactorField) {
 		super();
 		this.Z = ZKind.Ground;
 		this._start = 0.3;
@@ -27,10 +27,10 @@ export class HqNetworkLink extends Item {
 		this._graph = new Graphics();
 		this.Push(this._graph);
 		this.InitPosition(this.GetBoundingBox());
-		this._a.AddLink(this);
-		this._b.AddLink(this);
-		this._a.GetCell().OnCellStateChanged.On(this.CellStateChanged.bind(this));
-		this._b.GetCell().OnCellStateChanged.On(this.CellStateChanged.bind(this));
+		this._leftReactorField.AddLink(this);
+		this._rightReactorField.AddLink(this);
+		this._leftReactorField.GetCell().OnCellStateChanged.On(this.CellStateChanged.bind(this));
+		this._rightReactorField.GetCell().OnCellStateChanged.On(this.CellStateChanged.bind(this));
 		this.SetVisibility();
 	}
 
@@ -39,7 +39,7 @@ export class HqNetworkLink extends Item {
 	}
 
 	private SetVisibility() {
-		if (this._a.GetCell().IsVisible() && this._b.GetCell().IsVisible()) {
+		if (this._leftReactorField.GetCell().IsVisible() && this._rightReactorField.GetCell().IsVisible()) {
 			this._isVisible = true;
 		} else {
 			this._isVisible = false;
@@ -55,20 +55,20 @@ export class HqNetworkLink extends Item {
 	}
 
 	public GetReactors(): Array<ReactorField> {
-		return [ this._a, this._b ];
+		return [ this._leftReactorField, this._rightReactorField ];
 	}
 
 	public GetOpposite(r: ReactorField): ReactorField {
-		if (this._a === r) {
-			return this._b;
-		} else if (this._b === r) {
-			return this._a;
+		if (this._leftReactorField === r) {
+			return this._rightReactorField;
+		} else if (this._rightReactorField === r) {
+			return this._leftReactorField;
 		}
 		throw console.error('aouthc');
 	}
 
-	public IsConnected(cell: Cell) {
-		return cell === this._a.GetCell() || cell === this._b.GetCell();
+	public IsConnected(r: ReactorField) {
+		return r === this._leftReactorField || r === this._rightReactorField;
 	}
 
 	IsDestroyed(): boolean {
@@ -103,8 +103,8 @@ export class HqNetworkLink extends Item {
 
 			this._graph.clear();
 			this._graph.lineStyle(3, 0x68c7f1, this._current);
-			var aPoint = this._a.GetBoundingBox().GetCentralPoint();
-			var bPoint = this._b.GetBoundingBox().GetCentralPoint();
+			var aPoint = this._leftReactorField.GetBoundingBox().GetCentralPoint();
+			var bPoint = this._rightReactorField.GetBoundingBox().GetCentralPoint();
 			this._graph.moveTo(aPoint.X, aPoint.Y).lineTo(bPoint.X, bPoint.Y);
 		}
 	}

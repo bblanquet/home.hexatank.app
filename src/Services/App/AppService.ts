@@ -19,6 +19,7 @@ import * as PIXI from 'pixi.js';
 import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
 import { GameStatus } from '../../Core/Framework/GameStatus';
+import { CellStateSetter } from '../../Core/Items/Cell/CellStateSetter';
 
 export class AppService implements IAppService<GameBlueprint> {
 	private _context: GameBlueprint;
@@ -63,7 +64,7 @@ export class AppService implements IAppService<GameBlueprint> {
 		this._keyService.DefineKey(this);
 
 		GameSettings.Init();
-		GameSettings.SetNormalSpeed();
+		GameSettings.SetFastSpeed();
 		this._context = mapContext;
 		this._updateService.Register();
 		this._app = this._appProvider.Provide(mapContext);
@@ -80,6 +81,11 @@ export class AppService implements IAppService<GameBlueprint> {
 		this._gameAudioService = new GameAudioManager(mapContext, this._gameContext);
 		this._audioService.Register(this._gameAudioService);
 		this._gameContext.OnGameStatusChanged.On(this.GameStatusChanged.bind(this));
+
+		this._gameContext.GetCells().forEach((c) => {
+			c.AlwaysVisible();
+		});
+		CellStateSetter.SetStates(this._gameContext.GetCells());
 	}
 
 	private GameStatusChanged(e: any, status: GameStatus) {

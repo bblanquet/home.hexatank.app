@@ -1,10 +1,10 @@
-import { BasicField } from './../../../../Items/Cell/Field/BasicField';
-import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
-import { AreaRequest } from '../../Utils/AreaRequest';
-import { RequestType } from '../../Utils/RequestType';
-import { GameSettings } from '../../../../Framework/GameSettings';
-import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
-import { ShieldField } from '../../../../Items/Cell/Field/Bonus/ShieldField';
+import { BasicField } from '../../../../../Items/Cell/Field/BasicField';
+import { ISimpleRequestHandler } from '../../ISimpleRequestHandler';
+import { AreaRequest } from '../../../Utils/AreaRequest';
+import { RequestType } from '../../../Utils/RequestType';
+import { GameSettings } from '../../../../../Framework/GameSettings';
+import { Headquarter } from '../../../../../Items/Cell/Field/Hq/Headquarter';
+import { ShieldField } from '../../../../../Items/Cell/Field/Bonus/ShieldField';
 
 export class ReactorShieldHandler implements ISimpleRequestHandler {
 	constructor(private _hq: Headquarter) {}

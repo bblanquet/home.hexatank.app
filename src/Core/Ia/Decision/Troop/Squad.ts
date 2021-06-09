@@ -1,20 +1,24 @@
 import { Tank } from './../../../Items/Unit/Tank';
 import { ISquadTarget } from './Target/ISquadTarget';
 import { IDoable } from './../IDoable';
-import { SquadRoad } from './SquadRoad';
 import { MapObserver } from '../MapObserver';
 import { Brain } from '../Brain';
 import { CellHelper } from '../../../Items/Cell/CellHelper';
-import { isNullOrUndefined } from '../../../Utils/ToolBox';
+import { TargetMonitoredOrder } from '../../Order/TargetMonitoredOrder';
 
 export class Squad implements IDoable {
 	private _tanks: Tank[] = new Array<Tank>();
-	private _targets: ISquadTarget[];
 	private _mainTarget: ISquadTarget;
-	private _currentTarget: ISquadTarget;
-	public constructor(private _road: SquadRoad, private _mapObserver: MapObserver, private _kg: Brain) {}
+	public constructor(private _mapObserver: MapObserver, private _brain: Brain) {}
 
-	HasTank(): boolean {
+	public AddTank(tank: Tank): void {
+		this._tanks.push(tank);
+	}
+	public GetTankCount(): number {
+		return this._tanks.length;
+	}
+
+	public HasTank(): boolean {
 		return 0 < this._tanks.length;
 	}
 
@@ -27,56 +31,48 @@ export class Squad implements IDoable {
 	}
 
 	public Update(): void {
-		if (this._mainTarget.IsDone()) {
-			this.DispatchAll();
-		} else {
-			if (this.HasNoTarget()) {
-				if (!this._mainTarget.IsDone()) {
-					this._targets = this._road.GetTargets(this._tanks, this._mainTarget);
-					if (0 < this._targets.length) {
-						this._currentTarget = this._targets.shift();
-					}
-				}
+		if (!this._mainTarget || (this._mainTarget && this._mainTarget.IsDone())) {
+			if (!this.SetMainTarget()) {
+				this.RetreatAll();
 			} else {
 				this._tanks.forEach((tank) => {
-					this._currentTarget.Attack(tank);
+					tank.SetOrder(new TargetMonitoredOrder(this._mainTarget.GetCell(), tank));
 				});
 			}
+		} else if (this._mainTarget) {
+			this._tanks.forEach((tank) => {
+				if (!tank.HasOrder()) {
+					tank.SetOrder(new TargetMonitoredOrder(this._mainTarget.GetCell(), tank));
+				}
+			});
 		}
 	}
 
-	private HasNoTarget() {
-		return isNullOrUndefined(this._currentTarget);
-	}
-
-	private DispatchAll() {
+	private RetreatAll() {
 		this._tanks.forEach((t) => {
-			this.Dispatch(t);
+			this.Retreat(t);
 		});
 	}
 
-	private Dispatch(tank: Tank): void {
-		const candidates = this._kg
+	private Retreat(tank: Tank): void {
+		const candidates = this._brain
 			.GetIaAreaByCell()
 			.Values()
 			.filter((a) => 0 < a.GetFreeUnitCellCount())
 			.map((c) => c.GetCentralCell());
 		if (0 < candidates.length) {
 			const closestCell = CellHelper.GetClosest(candidates, tank.GetCurrentCell());
-			const area = this._kg.GetIaAreaByCell().Get(closestCell.Coo());
+			const area = this._brain.GetIaAreaByCell().Get(closestCell.Coo());
 			area.AddTroop(tank, area.GetRandomFreeUnitCell());
 		}
 	}
 
 	public SetMainTarget(): boolean {
-		this._mainTarget = this._mapObserver.GetShortestImportantFields(this._kg.Hq.GetCell());
-		return this._mainTarget !== null;
-	}
-
-	GetTankCount(): number {
-		return this._tanks.length;
-	}
-	public AddTank(tank: Tank): void {
-		this._tanks.push(tank);
+		this._mainTarget = this._mapObserver.GetShortestFoe(this._brain.Hq.GetCell());
+		const hasTarget = this._mainTarget !== null;
+		if (!hasTarget) {
+			console.log('could not find target');
+		}
+		return hasTarget;
 	}
 }

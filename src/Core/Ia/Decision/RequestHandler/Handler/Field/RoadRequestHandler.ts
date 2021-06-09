@@ -1,18 +1,18 @@
-import { BasicField } from './../../../../Items/Cell/Field/BasicField';
-import { ShieldField } from './../../../../Items/Cell/Field/Bonus/ShieldField';
-import { Area } from './../../Utils/Area';
-import { RequestType } from './../../Utils/RequestType';
-import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
-import { AreaRequest } from '../../Utils/AreaRequest';
-import { IaArea } from '../../Utils/IaArea';
-import { AStarEngine } from '../../../AStarEngine';
-import { Cell } from '../../../../Items/Cell/Cell';
-import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
-import { GameSettings } from '../../../../Framework/GameSettings';
-import { RoadField } from '../../../../Items/Cell/Field/Bonus/RoadField';
-import { Groups } from './../../../../Utils/Collections/Groups';
-import { AStarHelper } from '../../../AStarHelper';
-import { isNullOrUndefined } from '../../../../Utils/ToolBox';
+import { BasicField } from '../../../../../Items/Cell/Field/BasicField';
+import { ShieldField } from '../../../../../Items/Cell/Field/Bonus/ShieldField';
+import { Area } from '../../../Utils/Area';
+import { RequestType } from '../../../Utils/RequestType';
+import { ISimpleRequestHandler } from '../../ISimpleRequestHandler';
+import { AreaRequest } from '../../../Utils/AreaRequest';
+import { IaArea } from '../../../Utils/IaArea';
+import { AStarEngine } from '../../../../AStarEngine';
+import { Cell } from '../../../../../Items/Cell/Cell';
+import { Headquarter } from '../../../../../Items/Cell/Field/Hq/Headquarter';
+import { GameSettings } from '../../../../../Framework/GameSettings';
+import { RoadField } from '../../../../../Items/Cell/Field/Bonus/RoadField';
+import { Groups } from '../../../../../Utils/Collections/Groups';
+import { AStarHelper } from '../../../../AStarHelper';
+import { isNullOrUndefined } from '../../../../../Utils/ToolBox';
 
 export class RoadRequestHandler implements ISimpleRequestHandler {
 	constructor(private _hq: Headquarter) {}

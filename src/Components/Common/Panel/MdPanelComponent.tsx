@@ -17,7 +17,7 @@ export default class MdPanelComponent extends Component<any, any> {
 						<div class="fill-tank-logo slow-bounce" />
 						<div class="fill-logo" />
 					</div>
-					<div style="margin-top:-20px">{this.props.children}</div>
+					<div>{this.props.children}</div>
 				</div>
 			</NavbarComponent>
 		);

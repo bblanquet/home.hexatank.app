@@ -47,8 +47,8 @@ export default class BlueprintFormComponent extends Component<
 						<div class="space-out" />
 						<SmActiveButtonComponent
 							isActive={this.state.onylIa}
-							left={<Icon Value={'fas fa-brain'} />}
 							right={<Icon Value={'fas fa-code-branch'} />}
+							left={<Icon Value={'fas fa-brain'} />}
 							leftColor={ColorKind.Black}
 							rightColor={ColorKind.Red}
 							callBack={() => {

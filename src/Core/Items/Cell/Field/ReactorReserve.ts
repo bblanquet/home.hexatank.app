@@ -12,8 +12,16 @@ export class ReactorReserve {
 		this._ref = this.ChargeDestroyed.bind(this);
 	}
 
-	GetUsedPower() {
+	GetUsedPower(): number {
 		return this._reactor.Charges.Values().length;
+	}
+
+	Clear(): void {
+		this._reactor.Charges.Values().forEach((c) => {
+			c.Destroy();
+			this.UpdateBonusCells(false);
+		});
+		this._reactor.Charges.Clear();
 	}
 
 	public GetTotalBatteries(): number {

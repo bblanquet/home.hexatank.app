@@ -35,7 +35,7 @@ export class TargetMonitoredOrder extends ParentOrder {
 
 	private UpdateOrder() {
 		const targetRoad = new TargetRoadProvider(this.Tank, this.Destination).GetTargetRoad();
-		if (targetRoad) {
+		if (targetRoad && 0 < targetRoad.Road.length) {
 			if (this.HasTarget(targetRoad.Target)) {
 				console.log('TargetCellOrder');
 				this.SetCurrentOrder(new TargetCellOrder(this.Tank, targetRoad.Target, this.GetChildOrder(targetRoad)));

@@ -13,7 +13,7 @@ export class MapObserver {
 
 	constructor(private _area: Area[], private _hq: Headquarter) {}
 
-	public Observe(): void {
+	private Observe(): void {
 		this.NeutralAreas = [];
 		this.FoeAreas = [];
 		this._area.forEach((a) => {
@@ -25,9 +25,11 @@ export class MapObserver {
 		});
 	}
 
-	public GetImportantFields(): Cell[] {
+	public GetFoeList(): Cell[] {
 		this.Observe();
-		const areas = this.FoeAreas.filter((a) => a.GetStatus().HasFields([ ReactorField.name, Headquarter.name ]));
+		const areas = this.FoeAreas.filter((a) =>
+			a.GetStatus().HasFoeFields([ ReactorField.name, Headquarter.name ], this._hq.Identity)
+		);
 		if (0 === areas.length) {
 			return [];
 		}
@@ -37,8 +39,8 @@ export class MapObserver {
 			.reduce((x, y) => x.concat(y));
 	}
 
-	public GetShortestImportantFields(origin: Cell): ISquadTarget {
-		const cells = this.GetImportantFields();
+	public GetShortestFoe(origin: Cell): ISquadTarget {
+		const cells = this.GetFoeList();
 		if (cells.length === 0) {
 			return null;
 		}

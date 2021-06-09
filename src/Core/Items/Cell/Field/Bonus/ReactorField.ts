@@ -48,7 +48,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 
 	//UI
 	public Appearance: ReactorAppearance;
-	private _fireAnimation: BasicRangeAnimator;
+	private _overlockAnimation: BasicRangeAnimator;
 
 	//cells
 	private _area: Array<BasicItem> = new Array<BasicItem>();
@@ -111,7 +111,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	}
 
 	private StartOverclockAnimation(): void {
-		this._fireAnimation = new BasicRangeAnimator(this.GetCell(), this._totalRange);
+		this._overlockAnimation = new BasicRangeAnimator(this.GetCell(), this._totalRange);
 	}
 
 	public GetConnectedReactors(): Array<ReactorField> {
@@ -159,44 +159,48 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	}
 
 	public Overlock(type: any): void {
-		this.OnOverlocked.Invoke(this, this.GetPowerUp(type));
-		this.StartOverclockAnimation();
-		this.SetLocked(true);
-		const vehicles = this.GetVehicles();
-		if (type instanceof AttackMenuItem) {
-			vehicles.forEach((v) => {
-				if (v.IsPacific) {
-					return;
-				}
-				if (v instanceof Tank) {
-					const powerUp = this._bonusValueProvider.GetPower(this.GetPower());
-					v.SetPowerUp(new AttackUp(v, new TimeUpCondition(), powerUp));
-				}
-			});
-		} else if (type instanceof HealMenuItem) {
-			vehicles.forEach((v) => {
-				if (v.IsPacific) {
-					return;
-				}
-				const powerUp = this._bonusValueProvider.GetFixValue(this.GetPower());
-				v.SetPowerUp(new HealUp(v, new TimeUpCondition(), powerUp));
-			});
-		} else if (type instanceof SpeedFieldMenuItem) {
-			vehicles.forEach((v) => {
-				if (v.IsPacific) {
-					return;
-				}
-				const energy = this.GetPower();
-				const tr = this._bonusValueProvider.GetSpeedTranslation(energy);
-				const rt = this._bonusValueProvider.GetSpeedRotation(energy);
-				v.SetPowerUp(new SpeedUp(v, new TimeUpCondition(), tr, rt));
-			});
+		if (!this._isLocked) {
+			this.OnOverlocked.Invoke(this, this.GetPowerUp(type));
+			this.StartOverclockAnimation();
+			this.SetLocked(true);
+			const vehicles = this.GetVehicles();
+			if (type instanceof AttackMenuItem) {
+				vehicles.forEach((v) => {
+					if (v.IsPacific) {
+						return;
+					}
+					if (v instanceof Tank) {
+						const powerUp = this._bonusValueProvider.GetPower(this.GetPower());
+						v.SetPowerUp(new AttackUp(v, new TimeUpCondition(), powerUp));
+					}
+				});
+			} else if (type instanceof HealMenuItem) {
+				vehicles.forEach((v) => {
+					if (v.IsPacific) {
+						return;
+					}
+					const powerUp = this._bonusValueProvider.GetFixValue(this.GetPower());
+					v.SetPowerUp(new HealUp(v, new TimeUpCondition(), powerUp));
+				});
+			} else if (type instanceof SpeedFieldMenuItem) {
+				vehicles.forEach((v) => {
+					if (v.IsPacific) {
+						return;
+					}
+					const energy = this.GetPower();
+					const tr = this._bonusValueProvider.GetSpeedTranslation(energy);
+					const rt = this._bonusValueProvider.GetSpeedRotation(energy);
+					v.SetPowerUp(new SpeedUp(v, new TimeUpCondition(), tr, rt));
+				});
+			}
 		}
 	}
 
 	public HasPower(): boolean {
 		return 0 < this.Reserve.GetUsedPower();
 	}
+
+	public ClearPower(): void {}
 
 	private _endLockDate: number;
 
@@ -230,9 +234,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 
 		if (vehicule.Identity.Name != this.Hq.Identity.Name) {
 			this.SetSelected(false);
-			while (this.HasPower()) {
-				this.PowerDown();
-			}
+			this.Reserve.Clear();
 			this.OnLost.Invoke(this, this);
 			this.OnLost.Clear();
 
@@ -246,7 +248,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 			this.GetCell().GetIncludedRange(this._totalRange).forEach((c) => {
 				if (
 					TypeTranslator.IsBonusField(c.GetField()) &&
-					this.Hq.IsCovered(c) &&
+					!this.Hq.IsCovered(c) &&
 					!TypeTranslator.IsEnemy(c.GetField(), this.Hq.Identity)
 				) {
 					c.DestroyField();
@@ -289,8 +291,8 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 			});
 		}
 
-		if (this._fireAnimation && !this._fireAnimation.IsDone) {
-			this._fireAnimation.Update(viewX, viewY);
+		if (this._overlockAnimation && !this._overlockAnimation.IsDone) {
+			this._overlockAnimation.Update(viewX, viewY);
 		}
 
 		if (this.Charges) {
@@ -382,8 +384,10 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 
 	public Destroy(): void {
 		super.Destroy();
-		if (this._fireAnimation) {
-			this._fireAnimation.Destroy();
+		this.Links.forEach((l) => l.Destroy());
+		this.Links = [];
+		if (this._overlockAnimation) {
+			this._overlockAnimation.Destroy();
 		}
 		if (this.Appearance) {
 			this.Appearance.Destroy();

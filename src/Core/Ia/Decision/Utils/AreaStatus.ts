@@ -1,6 +1,6 @@
-import { TypeTranslator } from '../../../Items/Cell/Field/TypeTranslator';
+import { TypeTranslator } from './../../../Items/Cell/Field/TypeTranslator';
+import { Identity } from './../../../Items/Identity';
 import { IField } from './../../../Items/Cell/Field/IField';
-import { ReactorAppearance } from '../../../Items/Cell/Field/Bonus/ReactorAppearance';
 import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
 import { Area } from './Area';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
@@ -142,6 +142,15 @@ export class AreaStatus {
 
 	public HasFields(fields: string[]): boolean {
 		return fields.some((field) => this._fields.Exist(field));
+	}
+
+	public HasFoeFields(fields: string[], identity: Identity): boolean {
+		return fields.some((field) => {
+			return (
+				this._fields.Exist(field) &&
+				this._fields.Get(field).some((e) => TypeTranslator.IsEnemy(e.GetField(), identity))
+			);
+		});
 	}
 
 	public CleanDeadUnits(): void {

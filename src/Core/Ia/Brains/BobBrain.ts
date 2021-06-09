@@ -1,13 +1,16 @@
+import { PowerUpRequester } from './../Decision/RequestMaker/AreaRequester/PowerUpRequester';
+import { ShieldFieldBorderRequestHandler } from './../Decision/RequestHandler/Handler/Field/ShieldFieldBorderRequestHandler';
 import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
 import { DiamondRoadRequester } from './../Decision/RequestMaker/AreaRequester/DiamondRoadRequester';
 import { DiamondRoadCleaningHandler } from './../Decision/RequestHandler/Handler/DiamondRoadCleaningHandler';
-import { SimpleFarmRequester } from './../Decision/RequestMaker/AreaRequester/SimpleFarmRequester';
-import { ReactorShieldHandler } from './../Decision/RequestHandler/Handler/ReactorShieldHandler';
-import { ReactorShieldRequester } from './../Decision/RequestMaker/AreaRequester/ReactorShieldRequester';
+import { SimpleFarmFieldRequester } from '../Decision/RequestMaker/AreaRequester/Field/SimpleFarmFieldRequester';
+import { ReactorShieldHandler } from '../Decision/RequestHandler/Handler/Field/ReactorShieldHandler';
+import { ReactorShieldRequester } from '../Decision/RequestMaker/AreaRequester/Field/ReactorShieldRequester';
 import { FoeReactorRequester } from './../Decision/RequestMaker/AreaRequester/FoeReactorRequester';
 import { EnemyReactorHandler } from './../Decision/RequestHandler/Handler/EnemyReactorHandler';
 import { SpeedUpRequester } from './../Decision/RequestMaker/AreaRequester/SpeedUpRequester';
 import { SpeedUpHandler } from './../Decision/RequestHandler/Handler/SpeedUpHandler';
+import { PowerUpRequestHandler } from './../Decision/RequestHandler/Handler/PowerUpRequestHandler';
 import { DiamondExpansionMaker } from './../Decision/ExpansionMaker/DiamondExpansionMaker';
 import { IBrainProvider } from './IBrain';
 import { GameContext } from '../../Setup/Context/GameContext';
@@ -24,13 +27,12 @@ import { GeneralSquadRequest } from '../Decision/RequestMaker/GeneralRequester/R
 import { GeneralTruckRequester } from '../Decision/RequestMaker/GeneralRequester/Requesters/GeneralTruckRequester';
 import { Groups } from '../../Utils/Collections/Groups';
 import { ClearRequestHandler } from '../Decision/RequestHandler/Handler/ClearRequestHandler';
-import { EnergyRequestHandler } from '../Decision/RequestHandler/Handler/EnergyRequestHandler';
-import { FarmRequestHandler } from '../Decision/RequestHandler/Handler/FarmRequestHandler';
-import { HealingRequestHandler } from '../Decision/RequestHandler/Handler/HealingRequestHandler';
+import { EnergyRequestHandler } from '../Decision/RequestHandler/Handler/Field/EnergyRequestHandler';
+import { FarmFieldRequestHandler } from '../Decision/RequestHandler/Handler/Field/FarmFieldRequestHandler';
+import { HealingRequestHandler } from '../Decision/RequestHandler/Handler/Field/HealingRequestHandler';
 import { HealUnitRequestHandler } from '../Decision/RequestHandler/Handler/HealUnitRequestHandler';
 import { ReactorRequestHandler } from '../Decision/RequestHandler/Handler/ReactorRequestHandler';
-import { ShieldBorderRequestHandler } from '../Decision/RequestHandler/Handler/ShieldBorderRequestHandler';
-import { ShieldRequestHandler } from '../Decision/RequestHandler/Handler/ShieldRequestHandler';
+import { ShieldRequestHandler } from '../Decision/RequestHandler/Handler/Field/ShieldRequestHandler';
 import { SquadRequestHandler } from '../Decision/RequestHandler/Handler/SquadRequestHandler';
 import { TankHighRequestHandler } from '../Decision/RequestHandler/Handler/TankHighRequestHandler';
 import { TankMediumRequestHandler } from '../Decision/RequestHandler/Handler/TankMediumRequestHandler';
@@ -38,9 +40,9 @@ import { TruckRequestHandler } from '../Decision/RequestHandler/Handler/TruckReq
 import { ISimpleRequestHandler } from '../Decision/RequestHandler/ISimpleRequestHandler';
 import { ClearAreaRequester } from '../Decision/RequestMaker/AreaRequester/ClearAreaRequester';
 import { HealUnitRequester } from '../Decision/RequestMaker/AreaRequester/HealUnitRequester';
-import { ReactorRequester } from '../Decision/RequestMaker/AreaRequester/ReactorRequester';
-import { ShieldAreaRequester } from '../Decision/RequestMaker/AreaRequester/ShieldAreaRequester';
-import { ShieldBorderRequester } from '../Decision/RequestMaker/AreaRequester/ShieldBorderRequester';
+import { ReactorFieldRequester } from '../Decision/RequestMaker/AreaRequester/Field/ReactorFieldRequester';
+import { ShieldFieldAreaRequester } from '../Decision/RequestMaker/AreaRequester/Field/ShieldFieldAreaRequester';
+import { ShieldBorderRequester } from '../Decision/RequestMaker/AreaRequester/Field/ShieldBorderRequester';
 import { TankRequester } from '../Decision/RequestMaker/AreaRequester/TankHighRequester';
 import { TruckRequest } from '../Decision/RequestMaker/AreaRequester/TruckRequester';
 import { TankLowRequester } from '../Decision/RequestMaker/AreaRequester/TankLowRequester';
@@ -53,6 +55,7 @@ export class BobBrain implements IBrainProvider {
 
 		const handlers = new Groups<ISimpleRequestHandler>();
 		handlers.Add('10', new EnemyReactorHandler());
+		handlers.Add('10', new PowerUpRequestHandler());
 		handlers.Add('10', new ClearRequestHandler());
 		handlers.Add('10', new ReactorRequestHandler(hq, context));
 		handlers.Add('10', new TankHighRequestHandler(brain, new TankMediumRequestHandler(brain, hq)));
@@ -67,9 +70,9 @@ export class BobBrain implements IBrainProvider {
 		handlers.Add('7', new SpeedUpHandler());
 		handlers.Add('7', new SquadRequestHandler(context, brain));
 
-		handlers.Add('5', new FarmRequestHandler(hq));
+		handlers.Add('5', new FarmFieldRequestHandler(hq));
 		handlers.Add('5', new TankMediumRequestHandler(brain, hq));
-		handlers.Add('5', new ShieldBorderRequestHandler(hq));
+		handlers.Add('5', new ShieldFieldBorderRequestHandler(hq));
 		handlers.Add('5', new ShieldRequestHandler(hq));
 
 		handlers.Add('2', new HealUnitRequestHandler(brain));
@@ -79,17 +82,18 @@ export class BobBrain implements IBrainProvider {
 
 		brain.Setup(
 			new AreaRequestMaker([
+				new PowerUpRequester(brain, 10),
 				new ReactorShieldRequester(9),
 				new DiamondRoadRequester(7, brain),
 				new ShieldBorderRequester(5),
 				new SpeedUpRequester(brain, 7),
-				new ReactorRequester(10),
+				new ReactorFieldRequester(10),
 				new FoeReactorRequester(10),
-				new ShieldAreaRequester(5),
+				new ShieldFieldAreaRequester(5),
 				new HealUnitRequester(brain, 2),
 				new ClearAreaRequester(10),
 				new TruckRequest(10, 2),
-				new SimpleFarmRequester(5),
+				new SimpleFarmFieldRequester(5),
 				new TankRequester(10),
 				new TankMediumRequester(5),
 				new TankLowRequester(1)

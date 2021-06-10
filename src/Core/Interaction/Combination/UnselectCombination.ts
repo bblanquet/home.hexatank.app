@@ -22,12 +22,16 @@ export class UnselectCombination extends AbstractSingleCombination {
 		return (
 			this.IsNormalMode(context) &&
 			context.Items.filter((i) => this._checker.IsSelectable(i)).length >= 2 &&
-			(context.Items.filter((i) => this._checker.IsSelectable(i)).length ===
-				context.Items.filter((i) => i instanceof Cell).length ||
-				context.Items.filter((i) => this._checker.IsSelectable(i)).length ===
-					context.Items.filter((i) => i instanceof Vehicle).length ||
-				context.Items.filter((i) => this._checker.IsSelectable(i)).length ===
-					context.Items.filter((i) => i instanceof ReactorField).length)
+			(this.SameKind(context, Cell.name) ||
+				this.SameKind(context, Vehicle.name) ||
+				this.SameKind(context, ReactorField.name))
+		);
+	}
+
+	private SameKind(context: CombinationContext, type: string): boolean {
+		return (
+			context.Items.filter((i) => this._checker.IsSelectable(i)).length ===
+			context.Items.filter((i) => i.constructor.name === type).length
 		);
 	}
 

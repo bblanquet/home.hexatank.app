@@ -18,10 +18,6 @@ export class CancelCombination extends AbstractSingleCombination {
 	}
 
 	Combine(context: CombinationContext): boolean {
-		if (context.Items.filter((i) => i instanceof CancelMenuItem).length >= 1) {
-			console.log('');
-		}
-
 		if (this.IsMatching(context)) {
 			this._layerService.StartNavigation();
 			this.UnSelectItem(context.Items[0]);

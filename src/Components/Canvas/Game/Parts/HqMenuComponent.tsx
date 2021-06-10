@@ -53,14 +53,6 @@ export default class HqMenuComponent extends Component<
 						<button
 							type="button"
 							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.props.SetFlag()}
-						>
-							<div class="white-background">{this.props.HasFlag ? 'ON' : 'OFF'}</div>
-							<div class="fill-flag max-width standard-space" />
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
 							onClick={(e: any) => this.SendContext(new CancelMenuItem())}
 						>
 							<div class="fill-cancel max-width standard-space" />
@@ -75,4 +67,15 @@ export default class HqMenuComponent extends Component<
 		this.props.Interaction.Kind = InteractionKind.Up;
 		this.props.Interaction.OnSelect(item);
 	}
+}
+
+{
+	/* <button
+							type="button"
+							class="btn btn-dark without-padding"
+							onClick={(e: any) => this.props.SetFlag()}
+						>
+							<div class="white-background">{this.props.HasFlag ? 'ON' : 'OFF'}</div>
+							<div class="fill-flag max-width standard-space" />
+						</button> */
 }

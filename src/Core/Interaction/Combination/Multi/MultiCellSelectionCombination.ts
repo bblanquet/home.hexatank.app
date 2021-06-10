@@ -3,7 +3,6 @@ import { CellGroup } from './../../../Items/CellGroup';
 import { CombinationContext } from '../CombinationContext';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
-import { GameContext } from '../../../Setup/Context/GameContext';
 import { ILayerService } from '../../../../Services/Layer/ILayerService';
 import { Singletons, SingletonKey } from '../../../../Singletons';
 import { IGameContext } from '../../../Setup/Context/IGameContext';

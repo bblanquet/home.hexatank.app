@@ -6,8 +6,12 @@ import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { ISelectable } from '../../ISelectable';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { UnitGroup } from '../../Items/UnitGroup';
+import { IHqGameContext } from '../../Setup/Context/IHqGameContext';
 
-export class SwitchToInfluenceCombination extends AbstractSingleCombination {
+export class SwitchToReactorCombination extends AbstractSingleCombination {
+	constructor(private _gameContext: IHqGameContext) {
+		super();
+	}
 	IsMatching(context: CombinationContext): boolean {
 		return (
 			this.IsNormalMode(context) &&
@@ -31,6 +35,7 @@ export class SwitchToInfluenceCombination extends AbstractSingleCombination {
 				selectable.SetSelected(false);
 				const cell = context.Items[1] as Cell;
 				cell.SetSelected(true);
+				this._gameContext.OnItemSelected.Invoke(this, cell);
 				context.Items.splice(0, 1);
 				return true;
 			}

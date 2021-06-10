@@ -1,5 +1,4 @@
 import { Component, h } from 'preact';
-import { PatrolMenuItem } from '../../../../Core/Menu/Buttons/PatrolMenuItem';
 import { TargetMenuItem } from '../../../../Core/Menu/Buttons/TargetMenuItem';
 import { CamouflageMenuItem } from '../../../../Core/Menu/Buttons/CamouflageMenutItem';
 import { AbortMenuItem } from '../../../../Core/Menu/Buttons/AbortMenuItem';
@@ -28,20 +27,6 @@ export default class TankMenuComponent extends Component<
 					<div class="btn-group-vertical max-width">
 						<button type="button" class="btn btn-light without-padding">
 							{this.props.Tank.Id}
-						</button>
-						<button
-							type="button"
-							class={
-								this.props.isSettingPatrol ? (
-									'btn btn-light without-padding'
-								) : (
-									'btn btn-dark without-padding'
-								)
-							}
-							onClick={(e: any) => this.SendContext(new PatrolMenuItem())}
-						>
-							<div class="white-background">{this.props.isSettingPatrol ? 'ON' : 'OFF'}</div>
-							<div class="fill-patrol max-width standard-space" />
 						</button>
 						<button
 							type="button"

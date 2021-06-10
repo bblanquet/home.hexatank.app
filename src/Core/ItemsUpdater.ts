@@ -14,12 +14,7 @@ export class ItemsUpdater implements IItemsUpdater {
 	}
 
 	public Select(event: IInteractionContext): void {
-		for (let index = 0; index < this.Items.length; index++) {
-			if (this.Items[index].Select(event)) {
-				return;
-			}
-		}
-		event.OnSelect(null);
+		this.Items.some((item) => item.Select(event));
 	}
 
 	public Update(): void {

@@ -15,7 +15,7 @@ export class GeneralEnergyRequester implements IGeneralRequester {
 			const kingdomAreas = kingdom.CellAreas.Values().map((c) => c.Area).filter((a) => a.HasFreeFields());
 			const candidates = new Dictionnary<IaArea>();
 
-			reactor.GetInternal().All().forEach((c) =>
+			reactor.GetInternal().Values().forEach((c) =>
 				kingdomAreas.filter((a) => a.HasCell(c)).forEach((a) => {
 					if (!candidates.Exist(a.GetCentralCell().Coo())) {
 						candidates.Add(a.GetCentralCell().Coo(), a);

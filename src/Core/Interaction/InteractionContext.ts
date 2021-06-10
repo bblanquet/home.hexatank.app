@@ -6,17 +6,14 @@ import { UnitGroup } from '../Items/UnitGroup';
 import { ICombination } from './Combination/ICombination';
 import { InputNotifier } from './InputNotifier';
 import { CombinationContext } from './Combination/CombinationContext';
-import { CombinationDispatcher } from './CombinationDispatcher';
 import { IContextContainer } from './IContextContainer';
 import * as PIXI from 'pixi.js';
 import { Item } from '../Items/Item';
 import { Cell } from '../Items/Cell/Cell';
-import { ICombinationDispatcher } from './ICombinationDispatcher';
 import { Point } from '../Utils/Geometry/Point';
 import { IInteractionContext, InteractionKind } from './IInteractionContext';
 import { ISelectableChecker } from './ISelectableChecker';
 import { ViewContext } from '../Utils/Geometry/ViewContext';
-import { isNullOrUndefined } from '../Utils/ToolBox';
 import { Singletons, SingletonKey } from '../../Singletons';
 
 export class InteractionContext implements IContextContainer, IInteractionContext {
@@ -25,21 +22,19 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 	public Point: PIXI.Point;
 	public View: ViewContext;
 	private _selectedItem: Array<Item>;
-	private _dispatcher: ICombinationDispatcher;
 	public OnInteractionChanged: LiteEvent<InteractionInfo> = new LiteEvent<InteractionInfo>();
 
 	constructor(
 		private _inputNotifier: InputNotifier,
-		combinations: ICombination[],
+		private _combinations: ICombination[],
 		private _checker: ISelectableChecker,
 		private _viewPort: any
 	) {
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
 		this._selectedItem = [];
-		this._dispatcher = new CombinationDispatcher(combinations);
-		combinations.forEach((c) => {
-			c.ClearContext.On(this.HandleClearContext.bind(this));
-			c.ForcingSelectedItem.On(this.HandleForcingSelectedItem.bind(this));
+		this._combinations.forEach((combination) => {
+			combination.ClearContext.On(this.HandleClearContext.bind(this));
+			combination.ForcingSelectedItem.On(this.HandleForcingSelectedItem.bind(this));
 		});
 	}
 
@@ -131,11 +126,9 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 	}
 
 	public OnSelect(item: Item): void {
-		if (!isNullOrUndefined(item)) {
-			if (item instanceof Cell) {
-				if (this.ContainsSelectable(item)) {
-					item = this.GetSelectable(item);
-				}
+		if (item) {
+			if (item instanceof Cell && this.ContainsSelectable(item)) {
+				item = this.GetSelectable(item);
 			}
 			this._selectedItem.push(item);
 		}
@@ -152,7 +145,16 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 		context.Items = this._selectedItem;
 		context.InteractionKind = this.Kind;
 		context.Point = this.Point;
-		this._dispatcher.Check(context);
+
+		console.log(`%c FIRE ${InteractionKind[this.Kind]}`, 'color:red;font-weight:bold;');
+
+		this._combinations.some((combination) => {
+			if (combination.Combine(context)) {
+				console.log(`%c combination: ${combination.constructor.name}`, 'font-weight:bold;color:green;');
+				return true;
+			}
+			return false;
+		});
 	}
 
 	private GetMessage() {

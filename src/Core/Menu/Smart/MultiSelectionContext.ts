@@ -20,7 +20,7 @@ export class MultiSelectionContext implements IInteractionContext {
 	public Kind: InteractionKind;
 	public Point: PIXI.Point;
 	private _cells: Dictionnary<Cell>;
-	private _enlightCells: BasicItem[];
+	private _highlightingCells: BasicItem[];
 	private _isOn: boolean;
 	public View: ViewContext;
 	public _isUnitSelection: boolean;
@@ -30,7 +30,7 @@ export class MultiSelectionContext implements IInteractionContext {
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 		this._viewport = this._layerService.GetViewport();
 		this._cells = new Dictionnary<Cell>();
-		this._enlightCells = new Array<BasicItem>();
+		this._highlightingCells = new Array<BasicItem>();
 	}
 
 	public Listen(isUnit: boolean): void {
@@ -75,8 +75,8 @@ export class MultiSelectionContext implements IInteractionContext {
 	public Close(): void {
 		this._isOn = false;
 		this._cells = new Dictionnary<Cell>();
-		this._enlightCells.forEach((c) => c.Destroy());
-		this._enlightCells = [];
+		this._highlightingCells.forEach((c) => c.Destroy());
+		this._highlightingCells = [];
 	}
 
 	public OnSelect(item: Item): void {
@@ -95,7 +95,7 @@ export class MultiSelectionContext implements IInteractionContext {
 				);
 				displayPath.SetAlive(() => true);
 				displayPath.SetVisible(() => true);
-				this._enlightCells.push(displayPath);
+				this._highlightingCells.push(displayPath);
 			}
 		}
 	}

@@ -1,5 +1,7 @@
+import { MultiUnitOneCellOrderCombination } from './Combination/Multi/MultiUnitOneCellOrderCombination';
 import { IHqGameContext } from './../Setup/Context/IHqGameContext';
 import { ActiveMultiSelectionCombination } from './Combination/Multi/ActiveMultiSelectionCombination';
+import { ClearActiveMultiSelectionCombnation } from './Combination/Multi/ClearActiveMultiSelectionCombnation';
 import { OverlockCombination } from './Combination/OverlockCombination';
 import { SwithcMultiCombination } from './Combination/SwitchMultiCombination';
 import { BatteryField } from '../Items/Cell/Field/Bonus/BatteryField';
@@ -8,14 +10,12 @@ import { NetworkMenuItem } from './../Menu/Buttons/NetworkMenuItem';
 import { ThunderMenuItem } from './../Menu/Buttons/ThunderMenuItem';
 import { AttackField } from '../Items/Cell/Field/Bonus/AttackField';
 import { GenericCellCombination } from './Combination/GenericCellCombination';
-import { GameContext } from '../Setup/Context/GameContext';
 import { ISelectableChecker } from './ISelectableChecker';
 import { ICombination } from './Combination/ICombination';
 import { UnselectCombination } from './Combination/UnselectCombination';
 import { ClearTrashCombination } from './Combination/ClearTrashCombination';
 import { TruckCombination } from './Combination/TruckCombination';
 import { TankCombination } from './Combination/TankCombination';
-import { PatrolCombination } from './Combination/PatrolCombination';
 import { SelectionCombination } from './Combination/SelectionCombination';
 import { CancelCombination } from './Combination/CancelCombination';
 import { TargetCombination } from './Combination/TargetCombination';
@@ -32,7 +32,7 @@ import { ClearMultiCellBonusCombination } from './Combination/Multi/ClearMultiCe
 import { MultiCellBonusCombination } from './Combination/Multi/MultiCellBonusCombination';
 import { MultiSelectionCombination } from './Combination/Multi/MultiSelectionCombination';
 import { DisplayMultiMenuCombination } from './Combination/Multi/DisplayMultiMenuCombination';
-import { SwitchToInfluenceCombination } from './Combination/SwitchToInfluenceCombination';
+import { SwitchToReactorCombination } from './Combination/SwitchToReactorCombination';
 import { SwitchToCellCombination } from './Combination/SwitchToCellCombination';
 import { FarmCombination } from './Combination/FarmCombination';
 import { AbortCombination } from './Combination/AbortCombination';
@@ -65,19 +65,21 @@ export class CombinationProvider {
 	): ICombination[] {
 		return [
 			//CLEAR
+			new ClearActiveMultiSelectionCombnation(multiSelectionContext),
 			new CancelCombination(),
 			new ClearMultiCellBonusCombination(),
 			new ClearMultiSelectionMenuCombination(),
 
 			//SINGLE SELECTION
-			new SwitchToCellCombination(),
+			new SwitchToCellCombination(gameContext),
 			new SwitchToVehicleCombination(gameContext),
-			new SwitchToInfluenceCombination(),
-			new SwitchToHeadquarterCombination(),
+			new SwitchToReactorCombination(gameContext),
+			new SwitchToHeadquarterCombination(gameContext),
 			new UnselectCombination(checker, gameContext),
 			new SelectionCombination(checker, gameContext),
 
 			//MULTI SELECTION
+			new MultiUnitOneCellOrderCombination(multiSelectionContext),
 			new DisplayMultiMenuCombination(multiSelectionContext),
 			new ActiveMultiSelectionCombination(multiSelectionContext),
 			new MultiSelectionCombination(multiSelectionContext),
@@ -98,7 +100,6 @@ export class CombinationProvider {
 			new TruckCombination(),
 			new CamouflageCombination(),
 			new TankCombination(),
-			new PatrolCombination(gameContext),
 			new TargetCombination(),
 			new FarmCombination(),
 

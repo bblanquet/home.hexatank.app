@@ -6,8 +6,12 @@ import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
+import { IHqGameContext } from '../../Setup/Context/IHqGameContext';
 
 export class SwitchToHeadquarterCombination extends AbstractSingleCombination {
+	constructor(private _gameContext: IHqGameContext) {
+		super();
+	}
 	IsMatching(context: CombinationContext): boolean {
 		return (
 			this.IsNormalMode(context) &&
@@ -22,10 +26,11 @@ export class SwitchToHeadquarterCombination extends AbstractSingleCombination {
 
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
-			const hq = (context.Items[0] as any) as ISelectable;
-			hq.SetSelected(false);
-			const vehicle = context.Items[1] as Headquarter;
-			vehicle.SetSelected(true);
+			const selectable = (context.Items[0] as any) as ISelectable;
+			selectable.SetSelected(false);
+			const hq = context.Items[1] as Headquarter;
+			hq.SetSelected(true);
+			this._gameContext.OnItemSelected.Invoke(this, hq);
 			context.Items.splice(0, 1);
 			return true;
 		}

@@ -288,20 +288,6 @@ export default class DiamondCanvasComponent extends Component<
 		interaction.OnSelect(item);
 	}
 
-	private HasTimeout(player: OnlinePlayer) {
-		if (player.HasTimeOut()) {
-			return (
-				<span
-					class="badge badge-danger align-text-center blink_me"
-					style="background-color:#ff0062; border: white solid 0.5px"
-				>
-					<Icon Value={'fas fa-exclamation-circle'} />
-				</span>
-			);
-		}
-		return '';
-	}
-
 	private TopMenuRender() {
 		if (this.state.GameStatus !== GameStatus.Pending) {
 			return '';

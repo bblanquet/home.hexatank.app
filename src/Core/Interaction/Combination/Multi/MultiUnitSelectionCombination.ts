@@ -6,7 +6,6 @@ import { Cell } from '../../../Items/Cell/Cell';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
-import { GameContext } from '../../../Setup/Context/GameContext';
 import { Singletons, SingletonKey } from '../../../../Singletons';
 
 export class MultiUnitSelectionCombination extends AbstractSingleCombination {
@@ -47,16 +46,14 @@ export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 			}
 		});
 		this._group.SetUnits(vehicles);
-		this._multiContext.Close();
-
-		if (!this._group.Any()) {
-			this._layerService.StartNavigation();
-		} else {
-			this._multiContext.Listen(true);
+		if (this._group.Any()) {
 			this._group.SetSelected(true);
 			this._gameContext.OnItemSelected.Invoke(this, this._group);
 			this.ForcingSelectedItem.Invoke(null, { item: this._group, isForced: true });
-			this._group.IsListeningOrder = true;
+			this._group.IsListeningOrder = false;
 		}
+
+		this._multiContext.Close();
+		this._layerService.StartNavigation();
 	}
 }

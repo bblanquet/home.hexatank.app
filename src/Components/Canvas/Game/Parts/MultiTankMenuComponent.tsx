@@ -32,9 +32,9 @@ export default class MultiTankMenuComponent extends Component<
 							type="button"
 							class={
 								!this.props.item.IsListeningOrder ? (
-									'btn btn-dark without-padding'
-								) : (
 									'btn btn-light without-padding'
+								) : (
+									'btn btn-primary without-padding'
 								)
 							}
 							onClick={(e: any) => this.SendContext(new MultiOrderMenuItem())}

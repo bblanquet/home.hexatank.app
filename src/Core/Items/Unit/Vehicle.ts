@@ -420,7 +420,9 @@ export abstract class Vehicle extends AliveItem
 
 		if (!isNullOrUndefined(this.PowerUps)) {
 			this.PowerUps.forEach((powerUp) => {
-				powerUp.Animation.Update(viewX, viewY);
+				if (powerUp.Animation) {
+					powerUp.Animation.Update(viewX, viewY);
+				}
 			});
 		}
 

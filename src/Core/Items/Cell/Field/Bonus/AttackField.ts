@@ -28,11 +28,8 @@ export class AttackField extends BonusField {
 				return;
 			}
 			const energy = this.GetReactorsPower(this.hq);
-			const sum = new BonusValueProvider().GetPower(energy);
-			if (0 < sum) {
-				const up = new AttackUp(vehicule, new CellUpCondition(vehicule), sum);
-				vehicule.SetPowerUp(up);
-			}
+			const up = new AttackUp(vehicule, new CellUpCondition(vehicule), energy, this.OnEnergyChanged);
+			vehicule.SetPowerUp(up);
 		}
 	}
 }

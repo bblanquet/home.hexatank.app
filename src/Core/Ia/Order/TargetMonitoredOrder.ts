@@ -8,6 +8,7 @@ import { TargetCellOrder } from './Composite/TargetCellOrder';
 import { ParentOrder } from './ParentOrder';
 import { IdleOrder } from './IdleOrder';
 import { TypeTranslator } from '../../Items/Cell/Field/TypeTranslator';
+import { AliveItem } from '../../Items/AliveItem';
 
 export class TargetMonitoredOrder extends ParentOrder {
 	private _vehicleCellChanged: boolean;
@@ -34,6 +35,11 @@ export class TargetMonitoredOrder extends ParentOrder {
 	}
 
 	private UpdateOrder() {
+		const foe = this.GetTarget();
+		if (foe) {
+			this.Tank.SetMainTarget(foe);
+		}
+
 		const targetRoad = new TargetRoadProvider(this.Tank, this.Destination).GetTargetRoad();
 		if (targetRoad && 0 < targetRoad.Road.length) {
 			if (this.HasTarget(targetRoad.Target)) {
@@ -50,6 +56,23 @@ export class TargetMonitoredOrder extends ParentOrder {
 			this.SetCurrentOrder(new IdleOrder());
 			this.SetState(OrderState.Failed);
 		}
+	}
+
+	private GetTarget(): AliveItem {
+		if (this.Destination.HasOccupier()) {
+			const t = (this.Destination.GetOccupier() as any) as AliveItem;
+			if (t.IsEnemy(this.Tank.Identity)) {
+				return t;
+			}
+		}
+
+		if (this.Destination.GetField() instanceof AliveItem) {
+			const shield = (this.Destination.GetField() as any) as AliveItem;
+			if (shield.IsEnemy(this.Tank.Identity)) {
+				return shield;
+			}
+		}
+		return null;
 	}
 
 	private GetChildOrder(targetCell: TargetRoad) {

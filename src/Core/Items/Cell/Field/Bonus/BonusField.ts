@@ -1,3 +1,4 @@
+import { LiteEvent } from './../../../../Utils/Events/LiteEvent';
 import { IHeadquarter } from './../Hq/IHeadquarter';
 import { Identity } from './../../../Identity';
 import { Field } from '../Field';
@@ -18,6 +19,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 	private _isIncreasingOpacity: boolean = false;
 	public Energy: number = 0;
 	public Identity: Identity;
+	public OnEnergyChanged: LiteEvent<number> = new LiteEvent<number>();
 
 	constructor(cell: Cell, private _bonus: string[], protected hq: IHeadquarter, override: boolean = true) {
 		super(cell);
@@ -50,8 +52,9 @@ export abstract class BonusField extends Field implements IActiveContainer {
 		return this.hq;
 	}
 
-	EnergyChanged(isUp: boolean): void {
+	public ChangeEnergy(isUp: boolean): void {
 		this.Energy = isUp ? this.Energy + 1 : this.Energy - 1;
+		this.OnEnergyChanged.Invoke(this, this.Energy);
 	}
 
 	public IsAlly(id: Identity): boolean {

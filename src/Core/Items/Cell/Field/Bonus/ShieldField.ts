@@ -36,7 +36,7 @@ export class ShieldField extends AliveBonusField {
 		this.GetCell().SetField(this);
 	}
 
-	public EnergyChanged(isUp: boolean): void {
+	public ChangeEnergy(isUp: boolean): void {
 		const formerEnergy = this.Energy;
 
 		this.Energy = isUp ? this.Energy + 1 : this.Energy - 1;

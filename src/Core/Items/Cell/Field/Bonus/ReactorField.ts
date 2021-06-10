@@ -187,10 +187,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 					if (v.IsPacific) {
 						return;
 					}
-					const energy = this.GetPower();
-					const tr = this._bonusValueProvider.GetSpeedTranslation(energy);
-					const rt = this._bonusValueProvider.GetSpeedRotation(energy);
-					v.SetPowerUp(new SpeedUp(v, new TimeUpCondition(), tr, rt));
+					v.SetPowerUp(new SpeedUp(v, new TimeUpCondition(), this.GetPower()));
 				});
 			}
 		}

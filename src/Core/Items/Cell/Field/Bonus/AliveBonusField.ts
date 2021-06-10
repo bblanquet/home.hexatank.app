@@ -42,7 +42,7 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 		return sum;
 	}
 
-	public EnergyChanged(isUp: boolean): void {
+	public ChangeEnergy(isUp: boolean): void {
 		const formerEnergy = this.Energy;
 
 		this.Energy = isUp ? this.Energy + 1 : this.Energy - 1;

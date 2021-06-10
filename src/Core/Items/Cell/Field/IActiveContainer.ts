@@ -1,4 +1,4 @@
 export interface IActiveContainer {
 	Energy: number;
-	EnergyChanged(isUp: boolean): void;
+	ChangeEnergy(isUp: boolean): void;
 }

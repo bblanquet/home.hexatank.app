@@ -50,12 +50,12 @@ export class ReactorReserve {
 			if (cell.GetField() instanceof BonusField) {
 				const bonusField = cell.GetField() as BonusField;
 				if (bonusField.IsAlly(this._hq.Identity)) {
-					bonusField.EnergyChanged(isUp);
+					bonusField.ChangeEnergy(isUp);
 				}
 			} else if (cell.GetField() instanceof AliveBonusField) {
 				const bonusField = cell.GetField() as AliveBonusField;
 				if (!bonusField.IsEnemy(this._hq.Identity)) {
-					bonusField.EnergyChanged(isUp);
+					bonusField.ChangeEnergy(isUp);
 				}
 			}
 		});

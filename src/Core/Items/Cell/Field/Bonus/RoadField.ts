@@ -18,11 +18,12 @@ export class RoadField extends BonusField {
 			return;
 		}
 		const energy = this.GetReactorsPower(this.hq);
-		if (0 < energy) {
-			const tr = new BonusValueProvider().GetSpeedTranslation(energy);
-			const rt = new BonusValueProvider().GetSpeedRotation(energy);
-			const up = new SpeedUp(vehicule, new CellUpCondition(vehicule), tr, rt);
-			vehicule.SetPowerUp(up);
-		}
+		const up = new SpeedUp(
+			vehicule,
+			new CellUpCondition(vehicule),
+			this.GetReactorsPower(this.hq),
+			this.OnEnergyChanged
+		);
+		vehicule.SetPowerUp(up);
 	}
 }

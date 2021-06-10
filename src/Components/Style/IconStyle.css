@@ -525,14 +525,6 @@
 	background-image: url('{{postension}}svg/components/redBuilding3.svg');
 }
 
-.fill-order {
-	width: 100%;
-	background-size: contain;
-	background-position: bottom;
-	background-repeat: no-repeat;
-	background-image: url('{{postension}}svg/menu/order.svg');
-}
-
 .fill-active-order {
 	width: 100%;
 	background-size: contain;

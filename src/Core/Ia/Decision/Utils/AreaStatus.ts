@@ -15,7 +15,7 @@ export class AreaStatus {
 	constructor(private _area: Area) {
 		this._area.GetCells().forEach((c) => {
 			c.OnFieldChanged.On(this.FieldChanged.bind(this));
-			c.OnUnitChanged.On(this.UnitChanged.bind(this));
+			c.OnVehicleChanged.On(this.UnitChanged.bind(this));
 		});
 		this.Refresh();
 	}
@@ -123,16 +123,18 @@ export class AreaStatus {
 			if (this._hqFields.Exist(coo)) {
 				this._hqFields.Get(coo).push(cell);
 			} else {
-				this._hqFields.Add(coo, [ cell ]);
+				this._hqFields.Add(coo, [cell]);
 			}
 		}
 	}
 
-	private UnitChanged(obj: any, v: Vehicle): void {
-		const cell = v.GetNextCell();
-		this._units.Remove(v.Id);
-		if (this._area.Contains(cell)) {
-			this._units.Add(v.Id, v);
+	private UnitChanged(obj: any, vehicule: Vehicle): void {
+		if (vehicule !== null) {
+			const cell = vehicule.GetNextCell();
+			this._units.Remove(vehicule.Id);
+			if (this._area.Contains(cell)) {
+				this._units.Add(vehicule.Id, vehicule);
+			}
 		}
 	}
 
@@ -186,5 +188,5 @@ export class AreaStatus {
 		return result;
 	}
 
-	public Destroy(): void {}
+	public Destroy(): void { }
 }

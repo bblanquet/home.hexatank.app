@@ -3,7 +3,7 @@ import { ISpot } from '../Utils/Geometry/ISpot';
 import { AStarNode } from './AStarNode';
 
 export class AStarEngine<T extends ISpot<T>> {
-	constructor(private _cellFilter: (cell: T) => boolean, private _cellCost: (cell: T) => number) {}
+	constructor(private _cellFilter: (cell: T) => boolean, private _cellCost: (cell: T) => number) { }
 
 	private ConstructPath(node: AStarNode<T>): Array<T> {
 		var cells = new Array<T>();
@@ -80,7 +80,7 @@ export class AStarEngine<T extends ISpot<T>> {
 				return this.ConstructPath(bestCandidate);
 			}
 
-			bestCandidate.Cell.GetFilterNeighbourhood(this._cellFilter).forEach((nextCell) => {
+			bestCandidate.Cell.GetFilteredNearby(this._cellFilter).forEach((nextCell) => {
 				const nextNode = this.GetNode(<T>nextCell, candidates, path);
 				const moveToNextCost =
 					bestCandidate.FromStartCost + bestCandidate.GetEstimatedCost(nextNode, fastestWay);

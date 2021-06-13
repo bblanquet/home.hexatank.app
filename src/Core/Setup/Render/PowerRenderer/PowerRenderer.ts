@@ -29,7 +29,7 @@ export class PowerRenderer {
 		blueprint.Items.forEach((item) => {
 			const cell = new Cell(new CellProperties(new HexAxial(item.Position.Q, item.Position.R)), cells);
 			ForestDecorator.SetDecoration(updatableItem, cell, item.Type);
-			cell.SetSprite();
+			cell.InitSprite();
 			cells.Add(cell.Coo(), cell);
 			updatableItem.push(cell);
 		});

@@ -49,7 +49,7 @@ export class BasicRangeAnimator implements IAnimator {
 			let newCells = new Array<Cell>();
 
 			for (let range = 0; range <= this._totalRange; range++) {
-				newCells = newCells.concat(this._origin.GetSpecificRange(range).map((c) => c as Cell));
+				newCells = newCells.concat(this._origin.GetRange(range).map((c) => c as Cell));
 			}
 			newCells.forEach((c) => {
 				let item = new BasicItem(

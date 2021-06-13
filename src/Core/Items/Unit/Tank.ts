@@ -89,7 +89,7 @@ export class Tank extends Vehicle {
 	public IsMainTargetClose(): boolean {
 		//find main target among surrounding enemies
 		if (!isNullOrUndefined(this._mainTarget)) {
-			var cells = this.GetCurrentCell().GetAllNeighbourhood();
+			var cells = this.GetCurrentCell().GetNearby();
 			let enemies = cells.map((c) => c.GetShootableEntity()).filter((aliveItem) => !isNullOrUndefined(aliveItem));
 			return this.ContainsMainTarget(enemies);
 		}
@@ -102,7 +102,7 @@ export class Tank extends Vehicle {
 	}
 
 	public IsEnemyHqClose(): boolean {
-		var cells = this.GetCurrentCell().GetAllNeighbourhood();
+		var cells = this.GetCurrentCell().GetNearby();
 		let enemies = cells.map((c) => c.GetShootableEntity()).filter((c) => !isNullOrUndefined(c));
 		//find hq among enemies
 		var hq = enemies.filter((c) => c instanceof Headquarter).map((c) => <Headquarter>c);
@@ -137,7 +137,7 @@ export class Tank extends Vehicle {
 	}
 
 	private FindRandomEnemy() {
-		const cells = this.GetCurrentCell().GetAllNeighbourhood();
+		const cells = this.GetCurrentCell().GetNearby();
 		//find random enemy among enemies
 		const enemies = cells
 			.map((cell) => <AliveItem>cell.GetShootableEntity())
@@ -157,7 +157,7 @@ export class Tank extends Vehicle {
 	}
 
 	private SetHqTarget(): void {
-		const cells = this.GetCurrentCell().GetAllNeighbourhood();
+		const cells = this.GetCurrentCell().GetNearby();
 		const enemies = cells.map((c) => (<Cell>c).GetShootableEntity()).filter((c) => !isNullOrUndefined(c));
 		const hqs = enemies.filter((c) => c instanceof Headquarter).map((c) => <Headquarter>c);
 		hqs.some((element) => {

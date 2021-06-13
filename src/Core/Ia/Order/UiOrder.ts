@@ -15,7 +15,7 @@ export class UiOrder {
 		this._order.OnNextStep.On(this.NextCell.bind(this));
 		this._order.OnStateChanged.On(this.StateChanged.bind(this));
 		this._items = new Dictionnary<BasicItem>();
-		this.SetCellUi(this._order.GetCells());
+		this.SetCellUi(this._order.GetPath());
 	}
 
 	public HasOrder(order: IOrder): boolean {
@@ -39,7 +39,7 @@ export class UiOrder {
 		cells.forEach((cell) => {
 			if (!this._items.Exist(cell.Coo())) {
 				var pathItem = new BasicItem(cell.GetBoundingBox(), SvgArchive.direction.moving, ZKind.Cell);
-				pathItem.SetAnimator(new BouncingScaleUpAnimator(pathItem, [ SvgArchive.direction.moving ]));
+				pathItem.SetAnimator(new BouncingScaleUpAnimator(pathItem, [SvgArchive.direction.moving]));
 				pathItem.SetVisible(() => true);
 				pathItem.SetAlive(() => true);
 				this._items.Add(cell.Coo(), pathItem);

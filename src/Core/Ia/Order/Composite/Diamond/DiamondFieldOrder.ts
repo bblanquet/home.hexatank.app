@@ -25,7 +25,7 @@ export class DiamondFieldOrder {
 	}
 
 	public GetOrder(): Order {
-		if (this.GetDiamond().GetCell().GetAllNeighbourhood(1).some((c) => c === this._vehicule.GetCurrentCell())) {
+		if (this.GetDiamond().GetCell().GetNearby(1).some((c) => c === this._vehicule.GetCurrentCell())) {
 			this._currentOrder = new IdleOrder();
 			this._currentOrder.SetState(OrderState.Passed);
 			return this._currentOrder;
@@ -53,7 +53,7 @@ export class DiamondFieldOrder {
 
 	private GetDiamondRoad(): Array<Cell> {
 		let cells = new Array<Cell>();
-		const around = this._diamond.GetCell().GetAllNeighbourhood(1);
+		const around = this._diamond.GetCell().GetNearby(1);
 		const candidateRoads = around.map((n) => this.GetRoad(n)).filter((n) => n);
 		if (0 < candidateRoads.length) {
 			const shortest = Math.min(...candidateRoads.map((c) => c.length));

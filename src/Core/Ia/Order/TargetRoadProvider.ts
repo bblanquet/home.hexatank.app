@@ -6,14 +6,14 @@ import { AStarEngine } from '../AStarEngine';
 import { AStarHelper } from '../AStarHelper';
 
 export class TargetRoad {
-	constructor(public Target: Cell, public Road: Cell[]) {}
+	constructor(public Target: Cell, public Road: Cell[]) { }
 }
 
 export class TargetRoadProvider {
-	constructor(protected Tank: Vehicle, protected Destination: Cell) {}
+	constructor(protected Tank: Vehicle, protected Destination: Cell) { }
 
 	private IsAround() {
-		return this.Tank.GetCurrentCell().GetAllNeighbourhood().some((c) => c === this.Destination);
+		return this.Tank.GetCurrentCell().GetNearby().some((c) => c === this.Destination);
 	}
 
 	public GetTargetRoad(): TargetRoad {
@@ -29,7 +29,7 @@ export class TargetRoadProvider {
 				result = new TargetRoad(candidate, road);
 				return true;
 			} else {
-				const around = candidate.GetAllNeighbourhood(1);
+				const around = candidate.GetNearby(1);
 				const candidateRoads = around.map((n) => this.GetRoad(n)).filter((n) => n);
 				if (0 < candidateRoads.length) {
 					const shortest = Math.min(...candidateRoads.map((c) => c.length));

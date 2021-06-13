@@ -11,20 +11,5 @@ export class OnlineRuntimeManager {
 		this._dispatcher = new OnlineRuntimeDispatcher(this._socket, this._gameContext);
 	}
 
-	public Clear(): void {}
+	public Clear(): void { }
 }
-
-// this._socket.OnReceived.On(this._pingObserver);
-// this._socket.OnReceived.On(this._timeOutObserver);
-
-// private HandlePing(message: NetworkMessage<string>): void {
-// 	if (this._players.some((p) => p.Name === message.Emitter)) {
-// 		this._players.find((p) => p.Name === message.Emitter).SetLatency(message.Content);
-// 	}
-// }
-
-// private HandleTimeout(message: NetworkMessage<boolean>): void {
-// 	if (this._players.some((p) => p.Name === message.Emitter)) {
-// 		this._players.find((p) => p.Name === message.Emitter).SetTimeOut(message.Content);
-// 	}
-// }

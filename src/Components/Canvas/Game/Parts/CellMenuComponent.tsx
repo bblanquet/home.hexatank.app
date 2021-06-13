@@ -8,9 +8,7 @@ import { HealMenuItem } from '../../../../Core/Menu/Buttons/HealMenuItem';
 import { MoneyMenuItem } from '../../../../Core/Menu/Buttons/MoneyMenuItem';
 import { ShieldMenuItem } from '../../../../Core/Menu/Buttons/ShieldMenuItem';
 import { InteractionKind } from '../../../../Core/Interaction/IInteractionContext';
-import { GameContext } from '../../../../Core/Setup/Context/GameContext';
 import { ThunderMenuItem } from '../../../../Core/Menu/Buttons/ThunderMenuItem';
-import { Cell } from '../../../../Core/Items/Cell/Cell';
 import { PoisonMenuItem } from '../../../../Core/Menu/Buttons/PoisonMenuItem';
 import { CancelMenuItem } from '../../../../Core/Menu/Buttons/CancelMenuItem';
 import CircularV2Component from '../../../Common/CircularV2/CircularV2';
@@ -18,8 +16,6 @@ import LightDarkBtn from '../../../Common/Button/Standard/LightDarkBtn';
 import { Point } from '../../../../Core/Utils/Geometry/Point';
 import { InteractionContext } from '../../../../Core/Interaction/InteractionContext';
 
-//this.props.Headquarter.IsCovered(this.props.Item as Cell);
-//this.props.Headquarter.GetReactorsCount()
 export default class CellMenuComponent extends Component<
 	{ Item: Item; ReactorCount: number; Interaction: InteractionContext },
 	{}
@@ -93,18 +89,3 @@ export default class CellMenuComponent extends Component<
 		this.SendContext(new CancelMenuItem());
 	}
 }
-
-// private DisplayNetwork() {
-// 	return (
-// 		<button
-// 			type="button"
-// 			class="btn btn-dark without-padding"
-// 			onClick={(e: any) => this.SendContext(new NetworkMenuItem())}
-// 		>
-// 			<div class="fill-network max-width standard-space" />
-// 			<div class="max-width align-text-center darker">
-// 				{GameSettings.FieldPrice} <span class="fill-diamond badge very-small-space middle"> </span>
-// 			</div>
-// 		</button>
-// 	);
-// }

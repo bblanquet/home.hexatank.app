@@ -366,11 +366,17 @@ export default class GameCanvasComponent extends Component<
 	}
 
 	private MenuRender() {
-		return <PopupMenuComponent status={this.state.GameStatus} callBack={() => this.SetMenu()} />;
+		return <PopupMenuComponent Status={this.state.GameStatus} Resume={() => this.SetMenu()} Quit={() => {
+			GameSettings.IsPause = true;
+			this.setState({
+				HasMenu: false,
+				GameStatus: GameStatus.Defeat
+			});
+		}} />;
 	}
 
 	private GetEndMessage() {
-		if ([ GameStatus.Victory, GameStatus.Defeat ].some((e) => e === this.state.GameStatus)) {
+		if ([GameStatus.Victory, GameStatus.Defeat].some((e) => e === this.state.GameStatus)) {
 			return (
 				<PopupComponent
 					points={10}

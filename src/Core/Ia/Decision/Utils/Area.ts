@@ -42,14 +42,14 @@ export class Area {
 	}
 
 	public GetCells(): Cell[] {
-		const cells = this.GetCentralCell().GetAllNeighbourhood();
+		const cells = this.GetCentralCell().GetNearby();
 		cells.push(this.GetCentralCell());
 		return cells;
 	}
 
 	public GetFoeCells(v: AliveItem): Cell[] {
 		const result = new Array<Cell>();
-		const cells = this._centralCell.GetAllNeighbourhood().filter((c) => !isNullOrUndefined(c));
+		const cells = this._centralCell.GetNearby().filter((c) => !isNullOrUndefined(c));
 		cells.push(this.GetCentralCell());
 		cells.forEach((cell) => {
 			if (cell.HasEnemy(v)) {
@@ -60,7 +60,7 @@ export class Area {
 	}
 
 	public GetFreeUnitCells(): Cell[] {
-		const cells = this._centralCell.GetAllNeighbourhood().filter((c) => !isNullOrUndefined(c) && !c.IsBlocked());
+		const cells = this._centralCell.GetNearby().filter((c) => !isNullOrUndefined(c) && !c.IsBlocked());
 		const centralcell = this.GetCentralCell();
 		if (!centralcell.IsBlocked()) {
 			cells.push(centralcell);

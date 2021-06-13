@@ -5,7 +5,6 @@ import { ZKind } from './../ZKind';
 import { ILiteEvent } from './../../Utils/Events/ILiteEvent';
 import { BouncingScaleDownAnimator } from './../Animator/BouncingScaleDownAnimator';
 import { IAnimator } from './../Animator/IAnimator';
-import { GameContext } from '../../Setup/Context/GameContext';
 import { Item } from '../Item';
 import { CellProperties } from './CellProperties';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
@@ -34,28 +33,35 @@ import { BasicItem } from '../BasicItem';
 import { IHeadquarter } from './Field/Hq/IHeadquarter';
 
 export class Cell extends Item implements ICell<Cell>, ISelectable {
+
+	private _selectionCircle: PIXI.Circle;
 	public Properties: CellProperties;
 
-	public OnFieldChanged: ILiteEvent<Cell> = new LiteEvent<Cell>();
-	public OnUnitChanged: ILiteEvent<Vehicle> = new LiteEvent<Vehicle>();
-
+	//state
 	private _state: CellState = CellState.Hidden;
-	private _display: { [id: number]: Array<string> };
+	private _isAlwaysVisible: boolean = false;
+	private _isSelectable = false;
 	private _field: IField;
+
+	//events
+	public OnFieldChanged: ILiteEvent<Cell> = new LiteEvent<Cell>();
+	public OnVehicleChanged: ILiteEvent<Vehicle> = new LiteEvent<Vehicle>();
+	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
+
+	private _cellStateSprites: Dictionnary<Array<string>>;
 	private _occupier: IMovable;
 	private _decorationSprite: string;
-	private _circle: PIXI.Circle;
-	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
-	private _animator: IAnimator = null;
-	private _blue: BasicItem;
-	private _white: BasicItem;
-	private _isAlwaysVisible: boolean = false;
+	private _shadowAnimator: IAnimator = null;
+
+	private _blueSelection: BasicItem;
+	private _whiteSelection: BasicItem;
+
 	private _playerHq: IHeadquarter = null;
 
 	constructor(properties: CellProperties, private _cells: Dictionnary<Cell>) {
 		super();
 		this.Z = ZKind.Cell;
-		this._display = [];
+		this._cellStateSprites = new Dictionnary<Array<string>>();
 		this.Properties = properties;
 		new BasicField(this);
 		this.IsCentralRef = true;
@@ -64,23 +70,37 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 			e.alpha = 0;
 			e.anchor.set(0.5);
 		});
-		this._circle = new PIXI.Circle(0, 0, GameSettings.Size / 2);
+		this._selectionCircle = new PIXI.Circle(0, 0, GameSettings.Size / 2);
 		this.SetSelectionAnimation();
+	}
+
+	Listen() {
+		this.OnFieldChanged.On(this.UpdateSelectable.bind(this))
+		this.GetNearby(1).forEach(cell => {
+			cell.OnFieldChanged.On(this.UpdateSelectable.bind(this))
+			cell.OnVehicleChanged.On(this.UpdateSelectable.bind(this))
+		});
 	}
 
 	public SetPlayerHq(playerHq: IHeadquarter): void {
 		this._playerHq = playerHq;
 	}
 
-	public SetSelectionAnimation(): void {
-		this._white = new BasicItem(this.GetBoundingBox(), SvgArchive.selectionWhiteCell, ZKind.BelowCell);
-		this._white.SetVisible(() => this.IsSelectable());
-		this._white.SetAlive(() => true);
+	public IsSelectable(): boolean {
+		return this._isSelectable;
+	}
 
-		this._blue = new BasicItem(this.GetBoundingBox(), SvgArchive.selectionBlueCell, ZKind.BelowCell);
-		this._blue.SetAnimator(new InfiniteFadeAnimation(this._blue, SvgArchive.selectionBlueCell, 0, 1, 0.02));
-		this._blue.SetVisible(() => this.IsSelectable());
-		this._blue.SetAlive(() => true);
+	public SetSelectionAnimation(): void {
+		this._whiteSelection = new BasicItem(this.GetBoundingBox(), SvgArchive.selectionWhiteCell, ZKind.BelowCell);
+		this._whiteSelection.SetVisible(() => this._isSelectable);
+		this._whiteSelection.SetAlive(() => true);
+
+		this._blueSelection = new BasicItem(this.GetBoundingBox(), SvgArchive.selectionBlueCell, ZKind.BelowCell);
+		this._blueSelection.SetAnimator(new InfiniteFadeAnimation(this._blueSelection, SvgArchive.selectionBlueCell, 0, 1, 0.02));
+		this._blueSelection.SetVisible(() => this._isSelectable);
+		this._blueSelection.SetAlive(() => true);
+
+		this.GetUnblockedRange()
 	}
 
 	GetDistance(item: Cell): number {
@@ -91,15 +111,15 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		return this === item;
 	}
 
-	public IsSelectable(): boolean {
+	public UpdateSelectable(src: any, data: any): void {
 		if (!this._playerHq) {
-			return false;
+			this._isSelectable = false;
+		} else {
+			const identity = this._playerHq.Identity;
+			const filter = (cell: Cell) => cell && (cell.HasAlly(identity) || cell.HasBonusAlly(identity));
+			const anyAlly = this.GetFilteredNearby(filter).length > 0;
+			this._isSelectable = (this.IsVisible() && this._field instanceof BasicField && anyAlly) || this.HasAlly(identity);
 		}
-		const identity = this._playerHq.Identity;
-
-		const anyAlly =
-			this.GetFilterNeighbourhood((e) => e && (e.HasAlly(identity) || e.HasBonusAlly(identity))).length > 0;
-		return (this.IsVisible() && this._field instanceof BasicField && anyAlly) || this.HasAlly(identity);
 	}
 
 	public GetState(): CellState {
@@ -176,11 +196,11 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	}
 
 	public HasAroundOccupier(): boolean {
-		return this.HasOccupier() || this.GetAllNeighbourhood().filter((c) => (<Cell>c).HasOccupier()).length > 0;
+		return this.HasOccupier() || this.GetNearby().filter((c) => (<Cell>c).HasOccupier()).length > 0;
 	}
 
 	public HasAroundAlly(a: Identity): boolean {
-		return this.HasAlly(a) || this.GetAllNeighbourhood().filter((c) => (<Cell>c).HasAlly(a)).length > 0;
+		return this.HasAlly(a) || this.GetNearby().filter((c) => (<Cell>c).HasAlly(a)).length > 0;
 	}
 
 	public SetOccupier(movable: IMovable) {
@@ -276,13 +296,13 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 		this.HandleCellStateChanged(state);
 
-		this._display[this._state].forEach((sprite) => {
+		this._cellStateSprites.Get(CellState[this._state]).forEach(sprite => {
 			this.SetProperty(sprite, (e) => (e.alpha = 1));
-		});
+		})
 
 		if (isDiscovered) {
 			this.SetProperty(SvgArchive.hiddenCell, (e) => (e.alpha = 1));
-			this._animator = new BouncingScaleDownAnimator(this, [ SvgArchive.hiddenCell ]);
+			this._shadowAnimator = new BouncingScaleDownAnimator(this, [SvgArchive.hiddenCell]);
 		}
 	}
 
@@ -291,7 +311,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		let cells = new Array<Cell>();
 		if (this._playerHq && this._playerHq.GetCell()) {
 			cells.push(this._playerHq.GetCell());
-			cells = cells.concat(this._playerHq.GetCell().GetAllNeighbourhood());
+			cells = cells.concat(this._playerHq.GetCell().GetNearby());
 			if (cells.indexOf(this) !== -1) {
 				state = CellState.Visible;
 			}
@@ -315,7 +335,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		this._decorationSprite = sprite;
 	}
 
-	public SetSprite(): void {
+	public InitSprite(): void {
 		this.GenerateSprite(SvgArchive.hiddenCell, (s) => {
 			s.anchor.set(0.5);
 			s.alpha = 1;
@@ -331,14 +351,14 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 			s.alpha = 0;
 		});
 
-		this._display[CellState.Hidden] = [ SvgArchive.hiddenCell ];
+		this._cellStateSprites.Add(CellState[CellState.Hidden], [SvgArchive.hiddenCell]);
 
 		if (isNullOrUndefined(this._decorationSprite)) {
-			this._display[CellState.Mist] = [ SvgArchive.halfVisibleCell, SvgArchive.cell ];
-			this._display[CellState.Visible] = [ SvgArchive.cell ];
+			this._cellStateSprites.Add(CellState[CellState.Mist], [SvgArchive.halfVisibleCell, SvgArchive.cell]);
+			this._cellStateSprites.Add(CellState[CellState.Visible], [SvgArchive.cell]);
 		} else {
-			this._display[CellState.Mist] = [ SvgArchive.halfVisibleCell, this._decorationSprite, SvgArchive.cell ];
-			this._display[CellState.Visible] = [ this._decorationSprite, SvgArchive.cell ];
+			this._cellStateSprites.Add(CellState[CellState.Mist], [SvgArchive.halfVisibleCell, this._decorationSprite, SvgArchive.cell]);
+			this._cellStateSprites.Add(CellState[CellState.Visible], [this._decorationSprite, SvgArchive.cell]);
 		}
 		this.InitPosition(this.Properties.BoundingBox);
 	}
@@ -363,16 +383,6 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		return cells;
 	}
 
-	public GetAllNeighbourhood(range: number = 1): Array<Cell> {
-		var cells = new Array<Cell>();
-		this.GetHexCoo().GetNeighbours(range).forEach((coo) => {
-			var cell = this._cells.Get(coo.ToString());
-			if (cell) {
-				cells.push(cell);
-			}
-		});
-		return cells;
-	}
 
 	public GetIncludedRange(range: number = 1): Array<Cell> {
 		var cells = new Array<Cell>();
@@ -387,7 +397,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		return cells;
 	}
 
-	public GetSpecificRange(range: number = 1): Array<Cell> {
+	public GetRange(range: number = 1): Array<Cell> {
 		var cells = new Array<Cell>();
 		this.GetHexCoo().GetSpecificRange(range).forEach((coo) => {
 			var cell = this._cells.Get(coo.ToString());
@@ -398,7 +408,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		return cells;
 	}
 
-	public GetNearby(range: number = 1): Array<Cell> {
+	public GetUnblockedRange(range: number = 1): Array<Cell> {
 		let cells = new Array<Cell>();
 		this.GetHexCoo().GetNeighbours(range).forEach((coo) => {
 			let cell = this._cells.Get(coo.ToString());
@@ -409,7 +419,18 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		return cells;
 	}
 
-	public GetFilterNeighbourhood(filter: (cell: Cell) => boolean): Array<Cell> {
+	public GetNearby(range: number = 1): Array<Cell> {
+		var cells = new Array<Cell>();
+		this.GetHexCoo().GetNeighbours(range).forEach((coo) => {
+			var cell = this._cells.Get(coo.ToString());
+			if (cell) {
+				cells.push(cell);
+			}
+		});
+		return cells;
+	}
+
+	public GetFilteredNearby(filter: (cell: Cell) => boolean): Array<Cell> {
 		let cells = new Array<Cell>();
 		this.GetHexCoo().GetNeighbours(1).forEach((coo) => {
 			let cell = this._cells.Get(coo.ToString());
@@ -422,14 +443,14 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 	public Update(viewX: number, viewY: number): void {
 		super.Update(viewX, viewY);
-		this._white.Update(viewX, viewY);
-		this._blue.Update(viewX, viewY);
+		this._whiteSelection.Update(viewX, viewY);
+		this._blueSelection.Update(viewX, viewY);
 
-		if (this._animator) {
-			if (this._animator.IsDone) {
-				this._animator = null;
+		if (this._shadowAnimator) {
+			if (this._shadowAnimator.IsDone) {
+				this._shadowAnimator = null;
 			} else {
-				this._animator.Update(viewX, viewY);
+				this._shadowAnimator.Update(viewX, viewY);
 			}
 		}
 	}
@@ -437,14 +458,14 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	public Select(context: IInteractionContext): boolean {
 		if (context.View) {
 			let scale = context.View.Scale;
-			this._circle.radius = //a bit ulgy MultiSelectionContext
+			this._selectionCircle.radius = //a bit ulgy MultiSelectionContext
 				context instanceof MultiSelectionContext ? GameSettings.Size / 2 * scale : GameSettings.Size * scale;
-			this._circle.radius = GameSettings.Size * scale;
-			this._circle.x = (this.GetSprites()[0].x - context.View.GetX()) * scale;
-			this._circle.y = (this.GetSprites()[0].y - context.View.GetY()) * scale;
+			this._selectionCircle.radius = GameSettings.Size * scale;
+			this._selectionCircle.x = (this.GetSprites()[0].x - context.View.GetX()) * scale;
+			this._selectionCircle.y = (this.GetSprites()[0].y - context.View.GetY()) * scale;
 		}
 
-		var isSelected = this._circle.contains(context.Point.x, context.Point.y);
+		var isSelected = this._selectionCircle.contains(context.Point.x, context.Point.y);
 		if (isSelected) {
 			console.log(`%c Q:${this.GetHexCoo().Q} R:${this.GetHexCoo().R}`, 'color:blue;font-weight:bold;');
 			// console.log(

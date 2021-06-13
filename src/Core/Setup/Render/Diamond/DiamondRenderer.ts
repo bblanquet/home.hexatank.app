@@ -25,7 +25,7 @@ export class DiamondRenderer {
 		blueprint.Items.forEach((item) => {
 			const cell = new Cell(new CellProperties(new HexAxial(item.Position.Q, item.Position.R)), cells);
 			ForestDecorator.SetDecoration(updatableItem, cell, item.Type);
-			cell.SetSprite();
+			cell.InitSprite();
 			cells.Add(cell.Coo(), cell);
 			updatableItem.push(cell);
 		});
@@ -36,8 +36,8 @@ export class DiamondRenderer {
 		this.SetLands(cells, blueprint.MapMode, areas, updatableItem);
 		this.AddClouds(updatableItem);
 		const hq = new HqRender().Render(cells, blueprint.HqDiamond, updatableItem, 0);
-		this.SetHqLand(cells, SvgArchive.nature.hq, [ hq.GetCell().GetHexCoo() ], updatableItem);
-		this.SetHqLand(cells, SvgArchive.nature.hq2, [ hq.GetCell().GetHexCoo() ], updatableItem, 1);
+		this.SetHqLand(cells, SvgArchive.nature.hq, [hq.GetCell().GetHexCoo()], updatableItem);
+		this.SetHqLand(cells, SvgArchive.nature.hq2, [hq.GetCell().GetHexCoo()], updatableItem, 1);
 
 		const arrivalCell = cells.Get(blueprint.HqDiamond.Diamond.Position.ToString());
 		updatableItem.push(new AboveItem(arrivalCell, SvgArchive.arrow));

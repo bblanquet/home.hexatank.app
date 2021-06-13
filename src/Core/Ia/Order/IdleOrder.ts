@@ -6,11 +6,8 @@ export class IdleOrder extends Order {
 	GetKind(): OrderKind {
 		return OrderKind.None;
 	}
-	GetCells(): Cell[] {
+	GetPath(): Cell[] {
 		return [];
 	}
-	GetArrivals(): Cell[] {
-		return [];
-	}
-	Update(): void {}
+	Update(): void { }
 }

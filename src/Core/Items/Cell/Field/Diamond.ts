@@ -29,7 +29,7 @@ export class Diamond extends AliveField {
 		this.Lights = new Light(this.GetBoundingBox());
 		this.Lights.Display();
 		this.Fields = new Array<DiamondField>();
-		var neighbours = this.GetCell().GetNearby();
+		var neighbours = this.GetCell().GetUnblockedRange();
 		neighbours.forEach((cell) => {
 			const field = new DiamondField(<Cell>cell);
 			this.Fields.push(field);
@@ -57,7 +57,7 @@ export class Diamond extends AliveField {
 		this.SetDamage(1);
 	}
 
-	Support(vehicule: Vehicle): void {}
+	Support(vehicule: Vehicle): void { }
 
 	IsDesctrutible(): boolean {
 		return true;

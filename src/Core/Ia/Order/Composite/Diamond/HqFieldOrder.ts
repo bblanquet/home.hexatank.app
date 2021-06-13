@@ -36,7 +36,7 @@ export class HqFieldOrder {
 
 	private GetHqRoad(): Array<Cell> {
 		let cells = new Array<Cell>();
-		const around = this._hq.GetCell().GetAllNeighbourhood(1);
+		const around = this._hq.GetCell().GetNearby(1);
 		const candidateRoads = around.map((n) => this.GetRoad(n)).filter((n) => n);
 		if (0 < candidateRoads.length) {
 			const shortest = Math.min(...candidateRoads.map((c) => c.length));

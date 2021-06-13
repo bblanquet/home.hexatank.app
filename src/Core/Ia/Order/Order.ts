@@ -14,8 +14,7 @@ export abstract class Order implements IOrder {
 	}
 
 	abstract GetKind(): OrderKind;
-	abstract GetCells(): Cell[];
-	abstract GetArrivals(): Cell[];
+	abstract GetPath(): Cell[];
 
 	public Reset(): void {
 		this._state = OrderState.None;

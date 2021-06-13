@@ -17,7 +17,7 @@ export class LightHexAxial {
 	Q: number; //column
 	R: number; //row
 	ToString(): string {
-		return `(${[ this.Q, this.R ].toString()})`;
+		return `(${[this.Q, this.R].toString()})`;
 	}
 }
 
@@ -33,16 +33,16 @@ export class HexAxial implements ISpot<HexAxial> {
 		return item.Q === this.Q && item.R === this.R;
 	}
 
-	GetNearby(): HexAxial[] {
+	GetUnblockedRange(): HexAxial[] {
 		return this.GetSpecificRange(1);
 	}
 
-	GetFilterNeighbourhood(filter: (hex: HexAxial) => boolean): HexAxial[] {
+	GetFilteredNearby(filter: (hex: HexAxial) => boolean): HexAxial[] {
 		return this.GetSpecificRange(1).filter(filter);
 	}
 
 	ToString(): string {
-		return `(${[ this.Q, this.R ].toString()})`;
+		return `(${[this.Q, this.R].toString()})`;
 	}
 
 	ToCube(): HexCube {
@@ -62,7 +62,7 @@ export class HexAxial implements ISpot<HexAxial> {
 	}
 
 	GetNeighbour(direction: number): HexAxial {
-		var deltas = [ [ +1, -1 ], [ +1, 0 ], [ 0, +1 ], [ -1, +1 ], [ -1, 0 ], [ 0, -1 ] ];
+		var deltas = [[+1, -1], [+1, 0], [0, +1], [-1, +1], [-1, 0], [0, -1]];
 		return new HexAxial(this.Q + deltas[direction][0], this.R + deltas[direction][1]);
 	}
 
@@ -83,7 +83,7 @@ export class HexAxial implements ISpot<HexAxial> {
 
 	GetSpecificRange(range: number = 1): HexAxial[] {
 		if (range === 0) {
-			return [ this ];
+			return [this];
 		}
 
 		var results = new Array<HexCube>();

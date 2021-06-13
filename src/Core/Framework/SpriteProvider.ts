@@ -5,7 +5,7 @@ import * as PIXI from 'pixi.js';
 import { SvgArchive } from './SvgArchiver';
 
 export class SpriteProvider {
-	constructor() {}
+	constructor() { }
 
 	private static _isLoaded: boolean = false;
 	public static IsLoaded(): boolean {
@@ -71,7 +71,7 @@ export class SpriteProvider {
 	private static Assets(): Array<AssetData> {
 		const assets = new Array<AssetData>();
 		const unique = new Set<string>();
-		[ SpriteAccuracy.high ].forEach((accuracy) => {
+		[SpriteAccuracy.high].forEach((accuracy) => {
 			SpriteProvider.GetAssets().forEach((name) => {
 				if (!unique.has(name)) {
 					assets.push(new AssetData(accuracy, name));
@@ -134,7 +134,7 @@ export class SpriteProvider {
 }
 
 export class AssetData {
-	constructor(public Acc: SpriteAccuracy, public Source: string) {}
+	constructor(public Acc: SpriteAccuracy, public Source: string) { }
 	public ToString(): string {
 		return `${this.Acc}${this.Source}`;
 	}

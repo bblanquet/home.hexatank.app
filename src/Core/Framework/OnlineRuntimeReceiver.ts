@@ -28,7 +28,6 @@ export class OnlineRuntimeReceiver {
 			new NetworkObserver(PacketKind.FieldChanged, this.HandleChangedField.bind(this)),
 			new NetworkObserver(PacketKind.PowerChanged, this.HandlePowerChanged.bind(this)),
 			new NetworkObserver(PacketKind.Overlocked, this.HandleOverlocked.bind(this)),
-			new NetworkObserver(PacketKind.OrderChanging, this.HandleOrderChanged.bind(this))
 		];
 		this._obs.forEach((ob) => {
 			this._socket.OnReceived.On(ob);

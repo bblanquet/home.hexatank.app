@@ -12,7 +12,7 @@ import { IAudioService } from '../../Services/Audio/IAudioService';
 import { AppService } from '../../Services/App/AppService';
 
 export default class PopupMenuComponent extends Component<
-	{ status: GameStatus; callBack: () => void },
+	{ Status: GameStatus; Resume: () => void, Quit: () => void },
 	{ Kind: StatsKind }
 > {
 	private _soundService: IAudioService;
@@ -25,7 +25,7 @@ export default class PopupMenuComponent extends Component<
 		});
 	}
 
-	componentDidMount() {}
+	componentDidMount() { }
 
 	private Quit(): void {
 		route('/Home', true);
@@ -39,7 +39,7 @@ export default class PopupMenuComponent extends Component<
 	private Save(): void {
 		const data = Singletons.Load<AppService>(SingletonKey.App).GetRecord().GetRecord();
 		const url = document.createElement('a');
-		const file = new Blob([ JSON.stringify(data) ], { type: 'application/json' });
+		const file = new Blob([JSON.stringify(data)], { type: 'application/json' });
 		url.href = URL.createObjectURL(file);
 		url.download = `${data.Title}.json`;
 		url.click();
@@ -59,7 +59,7 @@ export default class PopupMenuComponent extends Component<
 				<div class="container-center" style="margin-top: -2vh">
 					<ButtonComponent
 						callBack={() => {
-							this.props.callBack();
+							this.props.Resume();
 						}}
 						color={ColorKind.Red}
 					>

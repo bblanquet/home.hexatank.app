@@ -75,7 +75,7 @@ export class TroopDecisionMaker {
 			if (this.IsCloseFromTarget()) {
 				return;
 			} else {
-				const availableCells = this._target.GetCurrentCell().GetNearby().filter((c) => !c.IsBlocked());
+				const availableCells = this._target.GetCurrentCell().GetUnblockedRange().filter((c) => !c.IsBlocked());
 				if (0 < availableCells.length) {
 					this.CurrentPatrolDestination = availableCells[0];
 					return;
@@ -103,13 +103,13 @@ export class TroopDecisionMaker {
 	public IsCloseFromEnemy(): boolean {
 		return this.Tank
 			.GetCurrentCell()
-			.GetAllNeighbourhood()
+			.GetNearby()
 			.some((c) => (c as Cell).HasEnemy(this.Tank) && (c as Cell).HasOccupier());
 	}
 
 	private IsCloseFromTarget() {
 		if (this._target && this._target.IsAlive()) {
-			return this._target.GetCurrentCell().GetAllNeighbourhood().some((c) => c === this.Tank.GetCurrentCell());
+			return this._target.GetCurrentCell().GetNearby().some((c) => c === this.Tank.GetCurrentCell());
 		} else {
 			return false;
 		}

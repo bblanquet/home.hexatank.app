@@ -19,7 +19,6 @@ import { CreatingUnitPacket } from './Packets/CreatingUnitPacket';
 import { FieldPacket } from './Packets/FieldPacket';
 import { BonusField } from '../Items/Cell/Field/Bonus/BonusField';
 import { AliveItem } from '../Items/AliveItem';
-import { OrderPacket } from './Packets/OrderPacket';
 import { isNullOrUndefined } from '../Utils/ToolBox';
 import { IHeadquarter } from '../Items/Cell/Field/Hq/IHeadquarter';
 
@@ -72,7 +71,6 @@ export class OnlineRuntimeDispatcher {
 				tank.OnCamouflageChanged.On(this.HandleCamouflageChanged.bind(this));
 			}
 			vehicle.OnNextCellChanged.On(this.HandleNextCellChanged.bind(this));
-			vehicle.OnOrderChanging.On(this.HandleOrderChanging.bind(this));
 			vehicle.OnDestroyed.On(this.HandleVehicleDestroyed.bind(this));
 			const message = this.Message<CreatingUnitPacket>(
 				PacketKind.UnitCreated,
@@ -109,15 +107,6 @@ export class OnlineRuntimeDispatcher {
 
 	private HandleCamouflageChanged(source: any, t: Tank): void {
 		const message = this.Message<string>(PacketKind.Camouflage, t.Id);
-		this._socket.Emit(message);
-	}
-
-	private HandleOrderChanging(source: Vehicle, order: IOrder): void {
-		const content = new OrderPacket();
-		content.Id = source.Id;
-		content.Coos = order.GetArrivals().map((dest) => dest.Coo());
-		content.Kind = order.GetKind();
-		const message = this.Message<OrderPacket>(PacketKind.OrderChanging, content);
 		this._socket.Emit(message);
 	}
 

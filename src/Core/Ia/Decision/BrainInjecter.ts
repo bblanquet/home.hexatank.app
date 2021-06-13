@@ -19,13 +19,13 @@ export class BrainInjecter {
 				const areas = this.GetAreas(areaSearch, hq, cells);
 				const diamondCell = cells.Get(this.GetDiamondHex(mapContext.Hqs, hq.GetCell().GetHexCoo()));
 				if (index === 0) {
-					hq.Inject(
-						new DummyBrain().GetBrain(hq, gameContext, areas, areaSearch, diamondCell.GetField() as Diamond)
-					);
+					// hq.Inject(
+					// 	new DummyBrain().GetBrain(hq, gameContext, areas, areaSearch, diamondCell.GetField() as Diamond)
+					// );
 				} else {
-					hq.Inject(
-						new DummyBrain().GetBrain(hq, gameContext, areas, areaSearch, diamondCell.GetField() as Diamond)
-					);
+					// hq.Inject(
+					// 	new DummyBrain().GetBrain(hq, gameContext, areas, areaSearch, diamondCell.GetField() as Diamond)
+					// );
 				}
 			} else if (hq.Identity.Name === mapContext.PlayerName) {
 				hq.IsPlayer = true;

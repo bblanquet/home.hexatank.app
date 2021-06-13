@@ -31,7 +31,7 @@ export class CamouflageRenderer {
 		blueprint.Items.forEach((item) => {
 			const cell = new Cell(new CellProperties(new HexAxial(item.Position.Q, item.Position.R)), cells);
 			ForestDecorator.SetDecoration(updatableItem, cell, item.Type);
-			cell.SetSprite();
+			cell.InitSprite();
 			cells.Add(cell.Coo(), cell);
 			updatableItem.push(cell);
 		});
@@ -44,7 +44,7 @@ export class CamouflageRenderer {
 
 		const departure = new HexAxial(blueprint.Goal.Departure.Position.Q, blueprint.Goal.Departure.Position.R);
 		const arrival = new HexAxial(blueprint.Goal.Arrival.Position.Q, blueprint.Goal.Arrival.Position.R);
-		const spots = [ departure, arrival ];
+		const spots = [departure, arrival];
 
 		this.SetHqLand(cells, SvgArchive.nature.hq, spots, updatableItem);
 		this.SetHqLand(cells, SvgArchive.nature.hq2, spots, updatableItem, 1);
@@ -65,7 +65,7 @@ export class CamouflageRenderer {
 			const dCell = cells.Get(d.ToString());
 			const aCell = cells.Get(a.ToString());
 			tank.SetPosition(dCell);
-			tank.SetOrder(new PatrolOrder([ aCell, dCell ], tank));
+			tank.SetOrder(new PatrolOrder([aCell, dCell], tank));
 			vehicles.push(tank);
 		});
 

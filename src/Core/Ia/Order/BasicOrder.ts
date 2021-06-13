@@ -18,14 +18,10 @@ export class BasicOrder extends Order {
 		this.Destination = Road[Road.length - 1];
 	}
 
-	GetArrivals(): Cell[] {
-		return [ this.Destination ];
-	}
-
 	public GetKind(): OrderKind {
 		return OrderKind.Simple;
 	}
-	public GetCells(): Cell[] {
+	public GetPath(): Cell[] {
 		return this.Road;
 	}
 

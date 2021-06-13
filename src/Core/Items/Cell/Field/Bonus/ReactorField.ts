@@ -197,7 +197,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		return 0 < this.Reserve.GetUsedPower();
 	}
 
-	public ClearPower(): void {}
+	public ClearPower(): void { }
 
 	private _endLockDate: number;
 
@@ -346,7 +346,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	}
 
 	private CreateArea() {
-		this.GetCell().GetSpecificRange(this._range).forEach((cell) => {
+		this.GetCell().GetRange(this._range).forEach((cell) => {
 			const b = BoundingBox.CreateFromBox((<Cell>cell).GetBoundingBox());
 			const area = new BasicItem(b, this.Hq.Identity.Skin.GetArea(), ZKind.AboveCell);
 			area.SetVisible(() => true);
@@ -369,14 +369,14 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 
 	private RefreshInternal() {
 		this._internalCells.Clear();
-		this.GetCell().GetAllNeighbourhood(this._totalRange).forEach((cell) => {
+		this.GetCell().GetNearby(this._totalRange).forEach((cell) => {
 			this._internalCells.Add(cell.Coo(), cell as Cell);
 		});
 		this._internalCells.Add(this.GetCell().Coo(), this.GetCell());
 	}
 
 	public GetAllCells(): Cell[] {
-		return this.GetCell().GetAllNeighbourhood(this._totalRange).map((c) => c as Cell);
+		return this.GetCell().GetNearby(this._totalRange).map((c) => c as Cell);
 	}
 
 	public Destroy(): void {
@@ -406,11 +406,11 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		return this.GetCurrentSprites().Get(SvgArchive.selectionCell).alpha === 1;
 	}
 
-	public GetNearby(): ReactorField[] {
+	public GetUnblockedRange(): ReactorField[] {
 		const nearvyReactors = this.Links.map((l) => l.GetOpposite(this));
 		return nearvyReactors;
 	}
-	public GetFilterNeighbourhood(condition: (spot: ReactorField) => boolean): ReactorField[] {
+	public GetFilteredNearby(condition: (spot: ReactorField) => boolean): ReactorField[] {
 		const nearvyReactors = this.Links.map((l) => l.GetOpposite(this)).filter((r) => condition(r));
 		return nearvyReactors;
 	}

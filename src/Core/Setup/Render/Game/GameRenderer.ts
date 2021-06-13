@@ -27,10 +27,13 @@ export class GameRenderer {
 		blueprint.Items.forEach((item) => {
 			const cell = new Cell(new CellProperties(new HexAxial(item.Position.Q, item.Position.R)), cells);
 			ForestDecorator.SetDecoration(updatableItem, cell, item.Type);
-			cell.SetSprite();
+			cell.InitSprite();
 			cells.Add(cell.Coo(), cell);
 			updatableItem.push(cell);
 		});
+		cells.Values().forEach(cell => {
+			cell.Listen();
+		})
 
 		const areas = new AreaSearch(
 			Dictionnary.To((c) => c.ToString(), cells.Values().map((c) => c.GetHexCoo()))
@@ -51,7 +54,7 @@ export class GameRenderer {
 				playerHq.SetSelectionAnimation();
 				//make hq cells visible, need context to be setup :<, has to fix it one day
 				playerHq.GetCurrentCell().SetState(CellState.Visible);
-				playerHq.GetCurrentCell().GetAllNeighbourhood().forEach((cell) => {
+				playerHq.GetCurrentCell().GetNearby().forEach((cell) => {
 					(<Cell>cell).SetState(CellState.Visible);
 				});
 				cells.Values().forEach((cell) => cell.SetPlayerHq(playerHq));

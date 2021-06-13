@@ -5,9 +5,6 @@ import { Item } from '../../../../Core/Items/Item';
 import { InteractionKind } from '../../../../Core/Interaction/IInteractionContext';
 import { TankMenuItem } from '../../../../Core/Menu/Buttons/TankMenuItem';
 import { TruckMenuItem } from '../../../../Core/Menu/Buttons/TruckMenuItem';
-import { GameContext } from '../../../../Core/Setup/Context/GameContext';
-import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
-import { Singletons, SingletonKey } from '../../../../Singletons';
 import { InteractionContext } from '../../../../Core/Interaction/InteractionContext';
 
 export default class HqMenuComponent extends Component<
@@ -67,15 +64,4 @@ export default class HqMenuComponent extends Component<
 		this.props.Interaction.Kind = InteractionKind.Up;
 		this.props.Interaction.OnSelect(item);
 	}
-}
-
-{
-	/* <button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.props.SetFlag()}
-						>
-							<div class="white-background">{this.props.HasFlag ? 'ON' : 'OFF'}</div>
-							<div class="fill-flag max-width standard-space" />
-						</button> */
 }

@@ -9,16 +9,9 @@ export class MoneyOrder extends ParentOrder {
 		super();
 	}
 
-	public GetArrivals(): Cell[] {
+	public GetPath(): Cell[] {
 		if (this.CurrentOrder) {
-			return this.CurrentOrder.GetArrivals();
-		}
-		return [];
-	}
-
-	public GetCells(): Cell[] {
-		if (this.CurrentOrder) {
-			return this.CurrentOrder.GetCells();
+			return this.CurrentOrder.GetPath();
 		} else {
 			return [];
 		}
@@ -46,7 +39,7 @@ export class MoneyOrder extends ParentOrder {
 	public HasFullMoneyCell(range: number): boolean {
 		return this._v
 			.GetCurrentCell()
-			.GetSpecificRange(range)
+			.GetRange(range)
 			.map((c) => c as Cell)
 			.some((c) => c.GetField() instanceof FarmField && (<FarmField>c.GetField()).IsFull() && !c.IsBlocked());
 	}
@@ -54,7 +47,7 @@ export class MoneyOrder extends ParentOrder {
 	public GetFirstFullMoneyCell(range: number): Cell {
 		return this._v
 			.GetCurrentCell()
-			.GetSpecificRange(range)
+			.GetRange(range)
 			.map((c) => c as Cell)
 			.filter(
 				(c) => c.GetField() instanceof FarmField && (<FarmField>c.GetField()).IsFull() && !c.IsBlocked()

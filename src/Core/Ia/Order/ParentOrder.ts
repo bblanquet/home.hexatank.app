@@ -33,11 +33,8 @@ export abstract class ParentOrder extends Order {
 	GetKind(): OrderKind {
 		return this.CurrentOrder.GetKind();
 	}
-	GetCells(): Cell[] {
-		return this.CurrentOrder.GetCells();
-	}
-	GetArrivals(): Cell[] {
-		return this.CurrentOrder.GetArrivals();
+	GetPath(): Cell[] {
+		return this.CurrentOrder.GetPath();
 	}
 
 	abstract Update(): void;

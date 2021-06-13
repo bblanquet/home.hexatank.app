@@ -26,9 +26,9 @@ export class PatrolOrder extends Order {
 	public GetKind(): OrderKind {
 		return OrderKind.Patrol;
 	}
-	public GetCells(): Cell[] {
+	public GetPath(): Cell[] {
 		if (this._currentOrder) {
-			return this._currentOrder.GetCells();
+			return this._currentOrder.GetPath();
 		} else {
 			return [];
 		}

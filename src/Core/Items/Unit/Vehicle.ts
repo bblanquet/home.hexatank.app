@@ -90,7 +90,7 @@ export abstract class Vehicle extends AliveItem
 		this.BoundingBox = new BoundingBox();
 
 		this.GenerateSprite(SvgArchive.selectionUnit);
-		this.SetProperties([ SvgArchive.selectionUnit ], (sprite) => (sprite.alpha = 0));
+		this.SetProperties([SvgArchive.selectionUnit], (sprite) => (sprite.alpha = 0));
 
 		this.Z = ZKind.Cell;
 		this.Size = GameSettings.Size;
@@ -364,6 +364,7 @@ export abstract class Vehicle extends AliveItem
 
 		if (previouscell.GetOccupier() === this) {
 			previouscell.SetOccupier(null);
+			previouscell.OnVehicleChanged.Invoke(this, null);
 		}
 
 		this._currentCell = this._nextCell;
@@ -468,7 +469,7 @@ export abstract class Vehicle extends AliveItem
 			this._currentCell.OnCellStateChanged.On(this._handleCellStateChanged);
 			this._handleCellStateChanged(this, this._currentCell.GetState());
 			CellStateSetter.SetStates(this._currentCell.GetAll());
-			this._currentCell.OnUnitChanged.Invoke(this, this);
+			this._currentCell.OnVehicleChanged.Invoke(this, this);
 		}
 	}
 
@@ -488,7 +489,7 @@ export abstract class Vehicle extends AliveItem
 		this._nextCell = cell;
 		this.OnNextCellChanged.Invoke(this, this._nextCell);
 		this._nextCell.SetOccupier(this);
-		this._nextCell.OnUnitChanged.Invoke(this, this);
+		this._nextCell.OnVehicleChanged.Invoke(this, this);
 		this._angleFinder.SetAngle(this._nextCell);
 	}
 	public GetCurrentCell(): Cell {

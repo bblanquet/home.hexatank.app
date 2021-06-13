@@ -91,7 +91,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 		});
 		this.IsCentralRef = true;
 
-		var neighbours = this._cell.GetNearby();
+		var neighbours = this._cell.GetUnblockedRange();
 		this.Fields = new Array<HeadQuarterField>();
 		neighbours.forEach((cell) => {
 			this.Fields.push(new HeadQuarterField(this, <Cell>cell, identity.Skin.GetLight()));
@@ -120,7 +120,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 		white.SetAlive(() => this.IsAlive());
 	}
 
-	SetPowerUp(vehicule: Vehicle): void {}
+	SetPowerUp(vehicule: Vehicle): void { }
 	protected OncellStateChanged(obj: any, cellState: CellState): void {
 		this.GetCurrentSprites().Values().forEach((s) => {
 			s.visible = cellState !== CellState.Hidden;
@@ -156,7 +156,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 		return !(id && id.Name === this.Identity.Name);
 	}
 
-	Support(vehicule: Vehicle): void {}
+	Support(vehicule: Vehicle): void { }
 
 	IsDesctrutible(): boolean {
 		return true;

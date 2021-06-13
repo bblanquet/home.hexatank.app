@@ -13,6 +13,5 @@ export interface IOrder {
 	Update(): void;
 	Cancel(): void;
 	GetKind(): OrderKind;
-	GetCells(): Cell[];
-	GetArrivals(): Cell[];
+	GetPath(): Cell[];
 }

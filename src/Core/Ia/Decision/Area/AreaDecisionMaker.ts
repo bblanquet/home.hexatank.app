@@ -22,7 +22,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 	public HasReceivedRequest: boolean;
 	private _isDestroyed: boolean = false;
 
-	constructor(private _hq: Headquarter, public Area: IaArea) {}
+	constructor(private _hq: Headquarter, public Area: IaArea) { }
 
 	public Update(): void {
 		this.Area.Troops = this.Area.Troops.filter((t) => t.Tank.IsAlive());
@@ -115,7 +115,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 	private GetAroundFoeCells(enemycells: Array<Cell>): Dictionnary<Cell> {
 		const enemyContactcells = new Dictionnary<Cell>();
 		enemycells.forEach((enemycell) => {
-			enemycell.GetNearby().forEach((cell) => {
+			enemycell.GetUnblockedRange().forEach((cell) => {
 				let coo = cell.Coo();
 				if (!enemyContactcells.Exist(coo)) {
 					enemyContactcells.Add(coo, cell as Cell);
@@ -146,7 +146,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 
 	private GetAroundCellFoes(currentcell: Cell, ally: Tank) {
 		return currentcell
-			.GetAllNeighbourhood()
+			.GetNearby()
 			.map((c) => c as Cell)
 			.filter((c) => !isNullOrUndefined(c) && c.HasEnemy(ally)).length;
 	}
@@ -251,7 +251,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 
 		var cost = Math.max.apply(
 			Math,
-			troops.map(function(o) {
+			troops.map(function (o) {
 				return o.GetPotentialCost();
 			})
 		);

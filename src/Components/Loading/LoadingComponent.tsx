@@ -30,7 +30,7 @@ export default class LoadingComponent extends Component<any, { percentage: numbe
 					listener.Clear();
 				}
 			});
-		}, 1000);
+		}, 2000);
 	}
 
 	private ToHome(): void {

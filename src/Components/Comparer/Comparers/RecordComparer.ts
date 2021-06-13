@@ -1,11 +1,11 @@
 import { RecordData } from '../../../Core/Framework/Record/RecordData';
 import { RecordPoint } from './RecordPoint';
 export class RecordComparer {
-	constructor(private _d1: RecordData, private _d2: RecordData) {}
+	constructor(public Record: RecordData, public ComparedRecord: RecordData) { }
 
 	public GetDelta(hqId: string, unitId: string): RecordPoint[] {
-		const d1Unit = this._d1.Hqs.Get(hqId).Units.Get(unitId);
-		const d2Unit = this._d2.Hqs.Get(hqId).Units.Get(unitId);
+		const d1Unit = this.Record.Hqs.Get(hqId).Units.Get(unitId);
+		const d2Unit = this.ComparedRecord.Hqs.Get(hqId).Units.Get(unitId);
 		const deltas = new Array<RecordPoint>();
 
 		d1Unit.Actions.forEach((data, index) => {

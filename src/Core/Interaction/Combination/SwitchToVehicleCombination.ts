@@ -20,6 +20,7 @@ export class SwitchToVehicleCombination extends AbstractSingleCombination {
 			(context.Items[0] instanceof Cell ||
 				context.Items[0] instanceof ReactorField ||
 				context.Items[0] instanceof UnitGroup ||
+				context.Items[0] instanceof Vehicle ||
 				context.Items[0] instanceof Headquarter) &&
 			context.Items[1] instanceof Vehicle
 		);

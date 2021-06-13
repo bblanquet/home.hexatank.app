@@ -59,7 +59,7 @@ const App = (e: any) => {
 			<LoadingPlayers path="/Launching" />
 			<PopupComponent
 				path="/Popup"
-				points={10}
+				points={30}
 				curves={Context()}
 				status={GameStatus.Victory}
 				context={new RecordObject()}

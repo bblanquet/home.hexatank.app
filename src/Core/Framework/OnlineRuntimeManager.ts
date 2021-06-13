@@ -11,5 +11,8 @@ export class OnlineRuntimeManager {
 		this._dispatcher = new OnlineRuntimeDispatcher(this._socket, this._gameContext);
 	}
 
-	public Clear(): void { }
+	public Clear(): void {
+		this._receiver.Clear();
+		this._dispatcher.Clear();
+	}
 }

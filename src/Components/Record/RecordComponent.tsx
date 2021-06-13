@@ -46,7 +46,7 @@ export default class RecordComponent extends Component<
 	}
 
 	private ToCompare(): void {
-		this._compareService.Register(this.state.Records[0].Record, this.state.Records[1].Record);
+		this._compareService.Register(this.state.SelectedRecords[0].Record, this.state.SelectedRecords[1].Record);
 		route('/Comparer', true);
 	}
 

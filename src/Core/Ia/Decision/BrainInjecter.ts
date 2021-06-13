@@ -1,4 +1,5 @@
 import { DummyBrain } from './../Brains/DummyBrain';
+import { BobBrain } from './../Brains/BobBrain';
 import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { HexAxial } from './../../Utils/Geometry/HexAxial';
 import { GameBlueprint } from '../../Setup/Blueprint/Game/GameBlueprint';
@@ -9,6 +10,7 @@ import { Cell } from '../../Items/Cell/Cell';
 import { DiamondHq } from '../../Setup/Blueprint/Game/DiamondHq';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
+
 export class BrainInjecter {
 	public Inject(gameContext: GameContext, mapContext: GameBlueprint): void {
 		const coos = Dictionnary.To<HexAxial>((e) => e.ToString(), gameContext.GetCells().map((e) => e.GetHexCoo()));
@@ -19,13 +21,13 @@ export class BrainInjecter {
 				const areas = this.GetAreas(areaSearch, hq, cells);
 				const diamondCell = cells.Get(this.GetDiamondHex(mapContext.Hqs, hq.GetCell().GetHexCoo()));
 				if (index === 0) {
-					// hq.Inject(
-					// 	new DummyBrain().GetBrain(hq, gameContext, areas, areaSearch, diamondCell.GetField() as Diamond)
-					// );
+					hq.Inject(
+						new BobBrain().GetBrain(hq, gameContext, areas, areaSearch, diamondCell.GetField() as Diamond)
+					);
 				} else {
-					// hq.Inject(
-					// 	new DummyBrain().GetBrain(hq, gameContext, areas, areaSearch, diamondCell.GetField() as Diamond)
-					// );
+					hq.Inject(
+						new BobBrain().GetBrain(hq, gameContext, areas, areaSearch, diamondCell.GetField() as Diamond)
+					);
 				}
 			} else if (hq.Identity.Name === mapContext.PlayerName) {
 				hq.IsPlayer = true;

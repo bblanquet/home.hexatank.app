@@ -6,14 +6,21 @@ import { PlayerProfil } from './PlayerProfil';
 export class PlayerProfilService implements IPlayerProfilService {
 	private _key: string = 'program6';
 	private _profil: PlayerProfil;
-	private _colors: string[] = [ '#fcba03', '#5cd1ff', '#f54ce1', '#f53361', '#6beb4b', '#5571ed', '#ed8f55' ];
+	private _colors: string[] = ['#fcba03', '#5cd1ff', '#f54ce1', '#f53361', '#6beb4b', '#5571ed', '#ed8f55'];
 	public OnPointChanged: SimpleEvent = new SimpleEvent();
+	public OnLevelUp: SimpleEvent = new SimpleEvent();
 
-	constructor() {}
+	constructor() {
+		this.Init();
+	}
 
 	AddPoint(point: number): number {
+		const previousLevel = this.GetLevel();
 		this._profil.Points += point;
 		this.OnPointChanged.Invoke();
+		if (previousLevel < this.GetLevel()) {
+			this.OnLevelUp.Invoke();
+		}
 		return this._profil.Points;
 	}
 
@@ -23,28 +30,29 @@ export class PlayerProfilService implements IPlayerProfilService {
 	}
 
 	GetProfil(): PlayerProfil {
-		if (this._profil) {
-			return this._profil;
-		} else {
-			let profil: PlayerProfil = null;
-			const blob = window.localStorage.getItem(this._key);
-			const parsedProfil = JSON.parse(blob as string);
-			if (parsedProfil) {
-				profil = parsedProfil as PlayerProfil;
-			} else {
-				profil = new PlayerProfil();
-			}
-			this.SetProfil(profil);
-
-			return profil;
+		if (!this._profil) {
+			this.Init();
 		}
+		return this._profil;
+
+	}
+
+	public Init(): void {
+		let profil: PlayerProfil = null;
+		const blob = window.localStorage.getItem(this._key);
+		const parsedProfil = JSON.parse(blob as string);
+		if (parsedProfil) {
+			profil = parsedProfil as PlayerProfil;
+		} else {
+			profil = new PlayerProfil();
+		}
+		this.SetProfil(profil);
 	}
 
 	public GetRecords(): RecordData[] {
 		const p = this.GetProfil();
 		const result: RecordData[] = [];
 		if (p.Records) {
-			console.log('format');
 			p.Records.forEach((r) => {
 				result.push(RecordData.To(r));
 			});
@@ -53,10 +61,11 @@ export class PlayerProfilService implements IPlayerProfilService {
 	}
 
 	GetLevel(): number {
-		return Math.round(this._profil.Points / 50);
+		return Math.trunc(this._profil.Points / 50);
 	}
 	GetNextLevelPercentage(): number {
-		return (this._profil.Points % 50) * 2;
+		const percentage = (this._profil.Points % 50) * 2;
+		return percentage;
 	}
 
 	GetColorLevel(): string {

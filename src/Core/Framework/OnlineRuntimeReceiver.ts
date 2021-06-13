@@ -2,7 +2,6 @@ import { OverlockedPacket } from './Packets/OverlockedPacket';
 import { ReactorField } from '../Items/Cell/Field/Bonus/ReactorField';
 import { Headquarter } from '../Items/Cell/Field/Hq/Headquarter';
 import { FieldTypeHelper } from './Packets/FieldTypeHelper';
-import { OrderPacket } from './Packets/OrderPacket';
 import { PacketKind } from '../../Network/Message/PacketKind';
 import { TargetPacket } from './Packets/TargetPacket';
 import { NetworkMessage } from '../../Network/Message/NetworkMessage';
@@ -13,7 +12,6 @@ import { NextCellPacket } from './Packets/NextCellPacket';
 import { FieldPacket } from './Packets/FieldPacket';
 import { TypeTranslator } from '../Items/Cell/Field/TypeTranslator';
 import { PowerFieldPacket } from './Packets/PowerFieldPacket';
-import { Cell } from '../Items/Cell/Cell';
 import { isNullOrUndefined } from '../Utils/ToolBox';
 import { ISocketWrapper } from '../../Network/Socket/INetworkSocket';
 
@@ -31,6 +29,12 @@ export class OnlineRuntimeReceiver {
 		];
 		this._obs.forEach((ob) => {
 			this._socket.OnReceived.On(ob);
+		});
+	}
+
+	public Clear(): void {
+		this._obs.forEach((ob) => {
+			this._socket.OnReceived.Off(ob);
 		});
 	}
 
@@ -52,19 +56,6 @@ export class OnlineRuntimeReceiver {
 					hq.CreateTruck(pos);
 				}
 			}
-		}
-	}
-
-	private HandleOrderChanged(message: NetworkMessage<OrderPacket>): void {
-		const unit = this._context.GetUnit(message.Content.Id);
-		const hq = this._context.GetHqFromId(unit.Identity);
-		const cells = new Array<Cell>();
-		message.Content.Coos.forEach((coo) => {
-			cells.push(this._context.GetCell(coo));
-		});
-
-		if (this.IsListenedHq(hq.GetCell().Coo())) {
-			TypeTranslator.SetOrder(unit, cells, message.Content.Kind);
 		}
 	}
 

@@ -25,13 +25,11 @@ export default class ComparerComponent extends Component<
 	}
 > {
 	private _compareService: ICompareService;
-	private _trackingComparer: RecordComparer;
+	private _recordComparer: RecordComparer;
 	private _chartProvider: CompChartProvider;
 
 	private _canvas: HTMLCanvasElement;
 	private _chart: Chart;
-	private _d1: RecordData;
-	private _d2: RecordData;
 
 	constructor() {
 		super();
@@ -48,25 +46,19 @@ export default class ComparerComponent extends Component<
 
 	componentWillMount() {
 		if (this._compareService) {
-			const result = this._compareService.Publish();
-			if (result) {
-				[ this._d1, this._d2 ] = result;
-			}
+			this._recordComparer = this._compareService.Publish();
 		}
 	}
 
 	componentDidMount() {
-		if (this._d1 && this._d2) {
-			this._trackingComparer = new RecordComparer(this._d1, this._d2);
-			const hqId = this._d1.Hqs.Keys()[0];
-			const unitId = this._d1.Hqs.Get(hqId).Units.Keys()[0];
-			this.setState({
-				HqIds: this._d1.Hqs.Keys(),
-				SelectedHqId: hqId,
-				SelectedUnitId: unitId,
-				UnitIds: this._d1.Hqs.Get(hqId).Units.Keys()
-			});
-		}
+		const hqId = this._recordComparer.ComparedRecord.Hqs.Keys()[0];
+		const unitId = this._recordComparer.ComparedRecord.Hqs.Get(hqId).Units.Keys()[0];
+		this.setState({
+			HqIds: this._recordComparer.ComparedRecord.Hqs.Keys(),
+			SelectedHqId: hqId,
+			SelectedUnitId: unitId,
+			UnitIds: this._recordComparer.ComparedRecord.Hqs.Get(hqId).Units.Keys()
+		});
 	}
 
 	componentDidUpdate() {
@@ -89,7 +81,7 @@ export default class ComparerComponent extends Component<
 								OnInput={(e: any) =>
 									this.setState({
 										SelectedHqId: e.target.value,
-										SelectedUnitId: this._d1.Hqs.Get(e.target.value).Units.Keys()[0]
+										SelectedUnitId: this._recordComparer.ComparedRecord.Hqs.Get(e.target.value).Units.Keys()[0]
 									})}
 								DefaultValue={this.state.SelectedHqId}
 								Label={'Hq'}
@@ -127,7 +119,7 @@ export default class ComparerComponent extends Component<
 						<div class="container-center-horizontal">
 							<TextComponent
 								max={15}
-								onInput={(e: any) => {}}
+								onInput={(e: any) => { }}
 								label={'D1'}
 								isEditable={false}
 								value={this.GetD1()}
@@ -135,7 +127,7 @@ export default class ComparerComponent extends Component<
 							<div class="small-right-margin" />
 							<TextComponent
 								max={15}
-								onInput={(e: any) => {}}
+								onInput={(e: any) => { }}
 								label={'D2'}
 								isEditable={false}
 								value={this.GetD2()}
@@ -158,11 +150,11 @@ export default class ComparerComponent extends Component<
 	}
 
 	private GetD1(): string {
-		return this.GetCoo(this._d1);
+		return this.GetCoo(this._recordComparer.ComparedRecord);
 	}
 
 	private GetD2(): string {
-		return this.GetCoo(this._d2);
+		return this.GetCoo(this._recordComparer.Record);
 	}
 
 	private GetCoo(d: RecordData): string {
@@ -173,15 +165,15 @@ export default class ComparerComponent extends Component<
 		const action = unit.Actions[this.state.CurveIndex];
 		if (action !== undefined) {
 			const data = action.Amount;
-			return `(${[ data.Q, data.R ].toString()})`;
+			return `(${[data.Q, data.R].toString()})`;
 		} else {
 			return '';
 		}
 	}
 
 	private UpdateCurve(unitId: string) {
-		if (!this._d1.Hqs.Get(this.state.SelectedHqId).Units.IsEmpty()) {
-			const points = this._trackingComparer.GetDelta(this.state.SelectedHqId, unitId);
+		if (!this._recordComparer.ComparedRecord.Hqs.Get(this.state.SelectedHqId).Units.IsEmpty()) {
+			const points = this._recordComparer.GetDelta(this.state.SelectedHqId, unitId);
 			const trackingCurve = new DeltaRecordCurve();
 			trackingCurve.Points = points;
 			trackingCurve.Title = unitId;
@@ -193,6 +185,6 @@ export default class ComparerComponent extends Component<
 		if (this.state.SelectedHqId === '') {
 			return [];
 		}
-		return this._d1.Hqs.Get(this.state.SelectedHqId).Units.Keys();
+		return this._recordComparer.ComparedRecord.Hqs.Get(this.state.SelectedHqId).Units.Keys();
 	}
 }

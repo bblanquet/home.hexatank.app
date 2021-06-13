@@ -11,6 +11,8 @@ export interface IPlayerProfilService {
 	GetNextLevelPercentage(): number;
 	GetColorLevel(): string;
 	Update(): void;
+	Init(): void;
 	AddPoint(point: number): number;
 	OnPointChanged: SimpleEvent;
+	OnLevelUp: SimpleEvent;
 }

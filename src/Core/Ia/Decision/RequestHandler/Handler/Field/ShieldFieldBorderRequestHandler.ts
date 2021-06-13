@@ -9,7 +9,7 @@ import { RequestType } from '../../../Utils/RequestType';
 import { ISimpleRequestHandler } from '../../ISimpleRequestHandler';
 
 export class ShieldFieldBorderRequestHandler implements ISimpleRequestHandler {
-	constructor(private _hq: Headquarter) {}
+	constructor(private _hq: Headquarter) { }
 
 	Handle(request: AreaRequest): void {
 		const road = this.GetCells(request);
@@ -25,7 +25,7 @@ export class ShieldFieldBorderRequestHandler implements ISimpleRequestHandler {
 		const dic = Dictionnary.To((e) => e.Coo(), foeCells);
 		const road = new Array<Cell>();
 		request.Area.GetSpot().GetCells().forEach((c) => {
-			if (c.GetAllNeighbourhood().some((c) => dic.Exist(c.Coo()))) {
+			if (c.GetNearby().some((c) => dic.Exist(c.Coo()))) {
 				road.push(c);
 			}
 		});

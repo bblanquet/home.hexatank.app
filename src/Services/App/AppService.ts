@@ -99,8 +99,10 @@ export class AppService implements IAppService<GameBlueprint> {
 
 		if (status === GameStatus.Defeat || status === GameStatus.Victory) {
 			const record = this._recordContext.GetRecord();
+			this._playerProfilService.Init();
 			const profil = this._playerProfilService.GetProfil();
 			profil.Records.push(record);
+			this._playerProfilService.Update();
 		}
 	}
 

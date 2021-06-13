@@ -16,7 +16,7 @@ import ProgressComponent from '../Common/Progress/ProgressComponent';
 
 export default class PopupComponent extends Component<
 	{ curves: Groups<Curve>; context: RecordObject; status: GameStatus; points: number },
-	{ Kind: StatsKind; points: number }
+	{ Kind: StatsKind; points: number, remainingPoints: number }
 > {
 	private _chartProvider: ChartProvider;
 	private _canvas: HTMLCanvasElement;
@@ -33,7 +33,8 @@ export default class PopupComponent extends Component<
 
 	componentDidMount() {
 		this.setState({
-			points: this.props.points
+			points: this.props.points,
+			remainingPoints: this.props.points
 		});
 		this._chartProvider.AttachChart(
 			StatsKind[this.state.Kind],
@@ -45,14 +46,15 @@ export default class PopupComponent extends Component<
 
 	private AddPoint() {
 		setTimeout(() => {
-			//this._points -= 1;
+			const remainingPoints = this.state.remainingPoints - 1;
 			this.setState({
-				points: this._profilService.AddPoint(1)
+				points: this._profilService.AddPoint(1),
+				remainingPoints: remainingPoints
 			});
-			if (0 < this.state.points) {
+			if (0 < this.state.remainingPoints) {
 				this.AddPoint();
 			}
-		}, 100);
+		}, 200);
 	}
 
 	componentDidUpdate() {
@@ -64,17 +66,8 @@ export default class PopupComponent extends Component<
 	}
 
 	private Quit(): void {
-		this._profilService.Update();
+		//this._profilService.Update();
 		route('/Home', true);
-	}
-
-	private Save(): void {
-		const url = document.createElement('a');
-		const file = new Blob([ JSON.stringify(this.props.context) ], { type: 'application/json' });
-		url.href = URL.createObjectURL(file);
-		url.download = `${this.props.context.Title}.json`;
-		url.click();
-		URL.revokeObjectURL(url.href);
 	}
 
 	render() {
@@ -156,14 +149,6 @@ export default class PopupComponent extends Component<
 							color={ColorKind.Black}
 						>
 							<Icon Value="fas fa-undo-alt" /> Back
-						</ButtonComponent>
-						<ButtonComponent
-							callBack={() => {
-								this.Save();
-							}}
-							color={ColorKind.Blue}
-						>
-							<Icon Value="fas fa-file-export" /> Export
 						</ButtonComponent>
 					</div>
 				</div>

@@ -43,26 +43,6 @@ export class TypeTranslator {
 		return cell instanceof BonusField || cell instanceof ReactorField || cell instanceof ShieldField;
 	}
 
-	public static SetOrder(v: Vehicle, dest: Cell[], kind: OrderKind): void {
-		if (kind === OrderKind.Monitored) {
-			v.SetOrder(new MonitoredOrder(dest[0], v));
-		} else if (kind === OrderKind.Target) {
-			v.SetOrder(new TargetOrder(v as Tank, (dest[0].GetOccupier() as any) as AliveItem));
-		} else if (kind === OrderKind.Patrol) {
-			v.SetOrder(new PatrolOrder(dest, v));
-		} else if (kind === OrderKind.Truck) {
-			v.SetOrder(
-				new TruckPatrolOrder(
-					v as Truck,
-					new HqFieldOrder(dest[0].GetField() as Headquarter, v),
-					new DiamondFieldOrder(dest[1].GetField() as Diamond, v)
-				)
-			);
-		} else if (kind === OrderKind.Money) {
-			v.SetOrder(new MoneyOrder(v));
-		}
-	}
-
 	public static IsNatureField(e: IField): boolean {
 		return e instanceof BlockingField;
 	}

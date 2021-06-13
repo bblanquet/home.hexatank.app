@@ -43,7 +43,7 @@ export default class SmPopupComponent extends Component<
 	}
 
 	private Quit(): void {
-		this._profilService.Update();
+		//this._profilService.Update();
 		route('/Home', true);
 	}
 

@@ -1,3 +1,4 @@
+import { RecordComparer } from '../../Components/Comparer/Comparers/RecordComparer';
 import { RecordData } from '../../Core/Framework/Record/RecordData';
 import { ICompareService } from './ICompareService';
 
@@ -9,11 +10,11 @@ export class CompareService implements ICompareService {
 		this._record = recordData;
 		this._compareRecord = compareDate;
 	}
-	Publish(): RecordData[] {
-		return [ this._record, this._compareRecord ];
+	Publish(): RecordComparer {
+		const comparer = new RecordComparer(this._record, this._compareRecord);
+		return comparer;
 	}
 
 	Collect(): void {
-		throw new Error('Method not implemented.');
 	}
 }

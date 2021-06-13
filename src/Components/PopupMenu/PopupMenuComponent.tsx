@@ -1,5 +1,4 @@
 import { h, Component } from 'preact';
-import { route } from 'preact-router';
 import { StatsKind } from '../../Core/Utils/Stats/StatsKind';
 import { GameSettings } from '../../Core/Framework/GameSettings';
 import { GameStatus } from '../../Core/Framework/GameStatus';
@@ -26,10 +25,6 @@ export default class PopupMenuComponent extends Component<
 	}
 
 	componentDidMount() { }
-
-	private Quit(): void {
-		route('/Home', true);
-	}
 
 	private Cheat(): void {
 		GameSettings.ShowEnemies = !GameSettings.ShowEnemies;
@@ -114,7 +109,7 @@ export default class PopupMenuComponent extends Component<
 					</ButtonComponent>
 					<ButtonComponent
 						callBack={() => {
-							this.Quit();
+							this.props.Quit();
 						}}
 						color={ColorKind.Black}
 					>

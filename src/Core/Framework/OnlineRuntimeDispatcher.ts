@@ -23,13 +23,26 @@ import { isNullOrUndefined } from '../Utils/ToolBox';
 import { IHeadquarter } from '../Items/Cell/Field/Hq/IHeadquarter';
 
 export class OnlineRuntimeDispatcher {
+	private _handleField: any = this.HandleChangedField.bind(this);
+	private _handleVehicle: any = this.HandleVehicleCreated.bind(this);
+
 	public constructor(private _socket: ISocketWrapper, private _context: GameContext) {
 		this._context.GetCells().forEach((cell) => {
-			cell.OnFieldChanged.On(this.HandleChangedField.bind(this));
+			cell.OnFieldChanged.On(this._handleField);
 		});
 
 		this._context.GetHqs().forEach((hq) => {
-			hq.OnVehicleCreated.On(this.HandleVehicleCreated.bind(this));
+			hq.OnVehicleCreated.On(this._handleVehicle);
+		});
+	}
+
+	public Clear(): void {
+		this._context.GetCells().forEach((cell) => {
+			cell.OnFieldChanged.Off(this._handleField);
+		});
+
+		this._context.GetHqs().forEach((hq) => {
+			hq.OnVehicleCreated.Off(this._handleVehicle);
 		});
 	}
 

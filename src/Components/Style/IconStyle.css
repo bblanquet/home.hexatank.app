@@ -760,7 +760,7 @@
 }
 
 body:before {
-	content: url('{{postension}}svg/components/program6Logo.svg') url('{{postension}}svg/components/training.svg')
+	content:url('{{postension}}svg/components/victory.svg') url('{{postension}}svg/components/defeat.svg') url('{{postension}}svg/components/program6Logo.svg') url('{{postension}}svg/components/training.svg')
 		url('{{postension}}svg/components/program6TankLogo.svg') url('{{postension}}svg/components/trainingEyes.svg')
 		url('{{postension}}svg/components/trainingBlinks.svg') url('{{postension}}svg/components/program6FireLogo.svg')
 		url('{{postension}}svg/components/option.svg') url('{{postension}}svg/nature/diamondStone.svg')

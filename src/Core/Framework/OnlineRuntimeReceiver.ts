@@ -6,7 +6,7 @@ import { PacketKind } from '../../Network/Message/PacketKind';
 import { TargetPacket } from './Packets/TargetPacket';
 import { NetworkMessage } from '../../Network/Message/NetworkMessage';
 import { GameContext } from '../Setup/Context/GameContext';
-import { CreatingUnitPacket } from './Packets/CreatingUnitPacket';
+import { VehiclePacket } from './Packets/CreatingUnitPacket';
 import { NetworkObserver } from '../Utils/Events/NetworkObserver';
 import { NextCellPacket } from './Packets/NextCellPacket';
 import { FieldPacket } from './Packets/FieldPacket';
@@ -21,13 +21,14 @@ export class OnlineRuntimeReceiver {
 	private _obs: NetworkObserver[];
 	constructor(private _socket: ISocketWrapper, private _context: GameContext) {
 		this._obs = [
-			new NetworkObserver(PacketKind.UnitCreated, this.HandleCreatingUnit.bind(this)),
+			new NetworkObserver(PacketKind.VehicleCreated, this.HandleVehicleCreated.bind(this)),
+			new NetworkObserver(PacketKind.VehicleDestroyed, this.HandleVehicleDestroyed.bind(this)),
 			new NetworkObserver(PacketKind.Target, this.HandleTarget.bind(this)),
 			new NetworkObserver(PacketKind.Camouflage, this.HandleCamouflage.bind(this)),
 			new NetworkObserver(PacketKind.PathChanged, this.HandlePathChanged.bind(this)),
 			new NetworkObserver(PacketKind.FieldChanged, this.HandleChangedField.bind(this)),
 			new NetworkObserver(PacketKind.PowerChanged, this.HandlePowerChanged.bind(this)),
-			new NetworkObserver(PacketKind.Overlocked, this.HandleOverlocked.bind(this)),
+			new NetworkObserver(PacketKind.Overlocked, this.HandleOverlocked.bind(this))
 		];
 		this._obs.forEach((ob) => {
 			this._socket.OnReceived.On(ob);
@@ -45,7 +46,14 @@ export class OnlineRuntimeReceiver {
 		return !isNullOrUndefined(hq) && hq.Identity.Name !== this._context.GetPlayerHq().Identity.Name && !hq.IsIa();
 	}
 
-	private HandleCreatingUnit(message: NetworkMessage<CreatingUnitPacket>): void {
+	private HandleVehicleDestroyed(message: NetworkMessage<VehiclePacket>): void {
+		const vehicle = this._context.GetVehicle(message.Content.Id);
+		if (vehicle.IsAlive()) {
+			vehicle.SetCurrentLife(0);
+		}
+	}
+
+	private HandleVehicleCreated(message: NetworkMessage<VehiclePacket>): void {
 		const packet = message.Content;
 
 		if (this.IsListenedHq(packet.HqCoo)) {
@@ -89,13 +97,18 @@ export class OnlineRuntimeReceiver {
 
 		if (this.IsListenedHq(hq.GetCell().Coo())) {
 			const dic = this._context.GetCellDictionary();
-			const path = message.Content.Path.map(coo => dic.Get(coo));
+			const path = message.Content.Path.map((coo) => dic.Get(coo));
 			if (0 < path.length) {
-				if (vehicle.GetCurrentCell().Coo() === message.Content.CC && this.IsNextCellEqualed(vehicle, message.Content.NC)) {
+				if (
+					vehicle.GetCurrentCell().Coo() === message.Content.CC &&
+					this.IsNextCellEqualed(vehicle, message.Content.NC)
+				) {
 					vehicle.GiveOrder(new BasicOrder(vehicle, path));
-				} else if (vehicle.GetCurrentCell().Coo() === message.Content.CC
-					&& !this.IsNextCellEqualed(vehicle, message.Content.NC)) {
-					vehicle.ForceCancel(new BasicOrder(vehicle, path))
+				} else if (
+					vehicle.GetCurrentCell().Coo() === message.Content.CC &&
+					!this.IsNextCellEqualed(vehicle, message.Content.NC)
+				) {
+					vehicle.ForceCancel(new BasicOrder(vehicle, path));
 				} else if (vehicle.GetCurrentCell().Coo() !== message.Content.CC) {
 					const cell = dic.Get(message.Content.CC);
 					vehicle.ForceCell(cell, new BasicOrder(vehicle, path));

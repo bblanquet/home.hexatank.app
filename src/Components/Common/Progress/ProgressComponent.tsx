@@ -6,6 +6,7 @@ import Side from '../Visible/SideComponent';
 export default class ProgressComponent extends Component<{ width: number; maxWidth: number }, { Percentage: number }> {
 	private _profilService: IPlayerProfilService;
 	private _iconDiv: HTMLDivElement;
+	private _bounceFunc: any = this.BounceBadge.bind(this);
 
 	constructor() {
 		super();
@@ -13,19 +14,31 @@ export default class ProgressComponent extends Component<{ width: number; maxWid
 		this._profilService.OnPointChanged.On(() => {
 			this.setState({
 				Percentage: this._profilService.GetNextLevelPercentage()
-			})
-		})
-		this._profilService.OnLevelUp.On(() => {
+			});
+		});
+		this._profilService.OnLevelUp.On(this._bounceFunc);
+	}
+
+	private BounceBadge(): void {
+		if (this._iconDiv) {
 			this._iconDiv.classList.add('slow-bounce');
-		})
+		}
+	}
+
+	componentWillMount() {
+		this._profilService.OnLevelUp.Off(this._bounceFunc);
 	}
 
 	render() {
 		return (
 			<div class="d-flex justify-content-start" style={`width:${this.props.width}%`}>
-				<div ref={(dom) => {
-					this._iconDiv = dom;
-				}} class="bagde-container" style={`background-color:${this._profilService.GetColorLevel()}`}>
+				<div
+					ref={(dom) => {
+						this._iconDiv = dom;
+					}}
+					class="bagde-container"
+					style={`background-color:${this._profilService.GetColorLevel()}`}
+				>
 					{this._profilService.GetLevel()}
 				</div>
 				<Side

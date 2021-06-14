@@ -9,37 +9,20 @@ import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import ProgressComponent from '../Common/Progress/ProgressComponent';
 
-export default class SmPopupComponent extends Component<
-	{ status: GameStatus; points: number },
-	{ Kind: StatsKind; points: number }
-> {
+export default class SmPopupComponent extends Component<{ status: GameStatus; points: number }, { Kind: StatsKind }> {
 	private _profilService: IPlayerProfilService;
+
 	constructor() {
 		super();
 		this.setState({
 			Kind: StatsKind.Unit
 		});
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
-		this._profilService.OnPointChanged.On(() => this.setState({ Kind: this.state.Kind }));
 	}
 
 	componentDidMount() {
-		this.setState({
-			points: this.props.points
-		});
-		this.AddPoint();
-	}
-
-	private AddPoint() {
-		setTimeout(() => {
-			//this._points -= 1;
-			this.setState({
-				points: this._profilService.AddPoint(1)
-			});
-			if (0 < this.state.points) {
-				this.AddPoint();
-			}
-		}, 100);
+		this.setState({});
+		this._profilService.AddPoints(this.props.points);
 	}
 
 	private Quit(): void {

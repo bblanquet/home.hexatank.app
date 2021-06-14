@@ -1,4 +1,5 @@
 import { RecordData } from '../../Core/Framework/Record/RecordData';
+import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
 import { SimpleEvent } from '../../Core/Utils/Events/SimpleEvent';
 import { IPlayerProfilService } from './IPlayerProfilService';
 import { PlayerProfil } from './PlayerProfil';
@@ -6,21 +7,24 @@ import { PlayerProfil } from './PlayerProfil';
 export class PlayerProfilService implements IPlayerProfilService {
 	private _key: string = 'program6';
 	private _profil: PlayerProfil;
-	private _colors: string[] = ['#fcba03', '#5cd1ff', '#f54ce1', '#f53361', '#6beb4b', '#5571ed', '#ed8f55'];
-	public OnPointChanged: SimpleEvent = new SimpleEvent();
+	private _colors: string[] = [ '#fcba03', '#5cd1ff', '#f54ce1', '#f53361', '#6beb4b', '#5571ed', '#ed8f55' ];
+	public OnPointChanged: LiteEvent<number> = new LiteEvent<number>();
 	public OnLevelUp: SimpleEvent = new SimpleEvent();
 
 	constructor() {
 		this.Init();
 	}
 
-	AddPoint(point: number): number {
+	private AddPoint(point: number): void {
 		const previousLevel = this.GetLevel();
 		this._profil.Points += point;
-		this.OnPointChanged.Invoke();
+		this.OnPointChanged.Invoke(this, this._profil.Points);
 		if (previousLevel < this.GetLevel()) {
 			this.OnLevelUp.Invoke();
 		}
+	}
+
+	GetPoints(): number {
 		return this._profil.Points;
 	}
 
@@ -34,7 +38,6 @@ export class PlayerProfilService implements IPlayerProfilService {
 			this.Init();
 		}
 		return this._profil;
-
 	}
 
 	public Init(): void {
@@ -80,5 +83,18 @@ export class PlayerProfilService implements IPlayerProfilService {
 	DeleteRecord(name: string): void {
 		this._profil.Records = this._profil.Records.filter((r) => r.Title !== name);
 		this.Update();
+	}
+
+	AddPoints(points: number): void {
+		this.Animation(points);
+	}
+	private Animation(remainingPoints: number) {
+		setTimeout(() => {
+			remainingPoints--;
+			this.AddPoint(1);
+			if (0 < remainingPoints) {
+				this.Animation(remainingPoints);
+			}
+		}, 200);
 	}
 }

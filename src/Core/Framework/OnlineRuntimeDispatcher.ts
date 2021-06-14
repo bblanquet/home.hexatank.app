@@ -1,5 +1,4 @@
 import { ISocketWrapper } from '../../Network/Socket/INetworkSocket';
-import { IOrder } from '../Ia/Order/IOrder';
 import { TypeTranslator } from '../Items/Cell/Field/TypeTranslator';
 import { PowerFieldPacket } from './Packets/PowerFieldPacket';
 import { OverlockedPacket } from './Packets/OverlockedPacket';
@@ -15,7 +14,7 @@ import { Vehicle } from '../Items/Unit/Vehicle';
 import { Cell } from '../Items/Cell/Cell';
 import { PeerSocket } from '../../Network/Socket/Peer/PeerSocket';
 import { Tank } from '../Items/Unit/Tank';
-import { CreatingUnitPacket } from './Packets/CreatingUnitPacket';
+import { VehiclePacket } from './Packets/CreatingUnitPacket';
 import { FieldPacket } from './Packets/FieldPacket';
 import { BonusField } from '../Items/Cell/Field/Bonus/BonusField';
 import { AliveItem } from '../Items/AliveItem';
@@ -83,13 +82,11 @@ export class OnlineRuntimeDispatcher {
 				tank.OnTargetChanged.On(this.HandleTargetChanged.bind(this));
 				tank.OnCamouflageChanged.On(this.HandleCamouflageChanged.bind(this));
 			}
-					vehicle.OnPathFound.On(this.HandlePathChanged.bind(this));
+			vehicle.OnDestroyed.On(this.HandleDestroyedVehicle.bind(this));
+			vehicle.OnPathFound.On(this.HandlePathChanged.bind(this));
 			vehicle.OnOrdered.On(this.HandlePathChanged.bind(this));
 			vehicle.OnDestroyed.On(this.HandleVehicleDestroyed.bind(this));
-			const message = this.Message<CreatingUnitPacket>(
-				PacketKind.UnitCreated,
-				this.GetCreatingUnitMessage(vehicle)
-			);
+			const message = this.Message<VehiclePacket>(PacketKind.VehicleCreated, this.GetVehiclePacket(vehicle));
 			this._socket.Emit(message);
 		}
 	}
@@ -102,7 +99,7 @@ export class OnlineRuntimeDispatcher {
 			tank.OnOrdering.Clear();
 			tank.OnNextCellChanged.Clear();
 		}
-		const message = this.Message<string>(PacketKind.UnitDestroyed, v.Id);
+		const message = this.Message<string>(PacketKind.VehicleDestroyed, v.Id);
 		this._socket.Emit(message);
 	}
 
@@ -124,16 +121,21 @@ export class OnlineRuntimeDispatcher {
 		this._socket.Emit(message);
 	}
 
+	private HandleDestroyedVehicle(src: any, v: Vehicle): void {
+		const message = this.Message<VehiclePacket>(PacketKind.VehicleDestroyed, this.GetVehiclePacket(v));
+		this._socket.Emit(message);
+	}
+
 	private HandlePathChanged(source: Vehicle, cell: Cell[]): void {
 		const content = new NextCellPacket();
 		content.Id = source.Id;
 		content.CC = source.GetCurrentCell().Coo();
-		if(source.GetNextCell()){
+		if (source.GetNextCell()) {
 			content.NC = source.GetNextCell().Coo();
-		}else{
+		} else {
 			content.NC = '';
 		}
-		content.Path = cell.map(c => c.Coo());
+		content.Path = cell.map((c) => c.Coo());
 		const message = this.Message<NextCellPacket>(PacketKind.PathChanged, content);
 		this._socket.Emit(message);
 	}
@@ -147,9 +149,9 @@ export class OnlineRuntimeDispatcher {
 		return message;
 	}
 
-	private GetCreatingUnitMessage(v: Vehicle) {
+	private GetVehiclePacket(v: Vehicle) {
 		const hq = this._context.GetHqFromId(v.Identity);
-		const content = new CreatingUnitPacket();
+		const content = new VehiclePacket();
 		content.Coo = v.GetCurrentCell().Coo();
 		content.HqCoo = hq.GetCell().Coo();
 		content.Id = v.Id;

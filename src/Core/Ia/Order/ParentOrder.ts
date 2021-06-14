@@ -11,22 +11,22 @@ export abstract class ParentOrder extends Order {
 	protected SetCurrentOrder(order: Order): void {
 		this.ClearChild();
 		this.CurrentOrder = order;
-		this.CurrentOrder.OnPathFound.On(this.InvokePathCreated.bind(this));
-		this.CurrentOrder.OnNextStep.On(this.InvokeNextStep.bind(this));
+		this.CurrentOrder.OnPathFound.On(this.HandlePathFound.bind(this));
+		this.CurrentOrder.OnNextStep.On(this.HandleNextStep.bind(this));
 	}
 
 	protected ClearChild() {
 		if (this.CurrentOrder) {
-			this.CurrentOrder.OnPathFound.Off(this.InvokePathCreated.bind(this));
-			this.CurrentOrder.OnNextStep.Off(this.InvokeNextStep.bind(this));
+			this.CurrentOrder.OnPathFound.Off(this.HandlePathFound.bind(this));
+			this.CurrentOrder.OnNextStep.Off(this.HandleNextStep.bind(this));
 		}
 	}
 
-	protected InvokePathCreated(src: any, cells: Cell[]): void {
+	protected HandlePathFound(src: any, cells: Cell[]): void {
 		this.OnPathFound.Invoke(this, cells);
 	}
 
-	protected InvokeNextStep(src: any, cell: Cell): void {
+	protected HandleNextStep(src: any, cell: Cell): void {
 		this.OnNextStep.Invoke(this, cell);
 	}
 
@@ -34,9 +34,9 @@ export abstract class ParentOrder extends Order {
 		return this.CurrentOrder.GetKind();
 	}
 	GetPath(): Cell[] {
-		if(this.CurrentOrder){
+		if (this.CurrentOrder) {
 			return this.CurrentOrder.GetPath();
-		}else{
+		} else {
 			return [];
 		}
 	}

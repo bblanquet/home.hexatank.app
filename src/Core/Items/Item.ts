@@ -17,11 +17,12 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 
 	private DisplayObjects: Array<PIXI.DisplayObject>;
 	private _spriteManager: SpriteManager;
-	public OnDestroyed: LiteEvent<Item> = new LiteEvent();
 
 	public Z: number;
 	public IsUpdatable: boolean;
 	public IsCentralRef: boolean = false;
+
+	public OnDestroyed: LiteEvent<Item> = new LiteEvent();
 
 	constructor(isUpdatable: boolean = true) {
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
@@ -88,7 +89,7 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 		this._layerService.Publish().Add(this);
 	}
 
-	protected InitCell(pos: { X: number; Y: number; }) {
+	protected InitCell(pos: { X: number; Y: number }) {
 		this.GetBoundingBox().X = pos.X;
 		this.GetBoundingBox().Y = pos.Y;
 		const ref = this.GetRef();

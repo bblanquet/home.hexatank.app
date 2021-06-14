@@ -19,12 +19,12 @@ export class HealUp extends Up {
 	) {
 		super(condition);
 		condition.Done.On(() => {
+			this._vehicle.Ups = this._vehicle.Ups.filter((p) => p !== this);
 			if (this._energyChanged) {
 				this._energyChanged.Off(this._ref);
 			}
 			condition.Done.Clear();
 			this.Animation.Destroy();
-			this._vehicle.PowerUps = this._vehicle.PowerUps.filter((p) => p !== this);
 			this._isDone = true;
 		});
 

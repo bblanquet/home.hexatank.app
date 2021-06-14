@@ -6,10 +6,13 @@ import { SvgArchive } from '../../Framework/SvgArchiver';
 import { BouncingScaleUpAnimator } from '../../Items/Animator/BouncingScaleUpAnimator';
 import { IOrder } from './IOrder';
 import { ZKind } from '../../Items/ZKind';
+import { Vehicle } from '../../Items/Unit/Vehicle';
 
 export class UiOrder {
 	private _items: Dictionnary<BasicItem>;
 	private _order: IOrder;
+
+	constructor(private _v: Vehicle) {}
 
 	public HasOrder(order: IOrder): boolean {
 		return order === this._order;
@@ -32,8 +35,8 @@ export class UiOrder {
 		cells.forEach((cell) => {
 			if (!this._items.Exist(cell.Coo())) {
 				var pathItem = new BasicItem(cell.GetBoundingBox(), SvgArchive.direction.moving, ZKind.Cell);
-				pathItem.SetAnimator(new BouncingScaleUpAnimator(pathItem, [SvgArchive.direction.moving]));
-				pathItem.SetVisible(() => true);
+				pathItem.SetAnimator(new BouncingScaleUpAnimator(pathItem, [ SvgArchive.direction.moving ]));
+				pathItem.SetVisible(() => this._v.IsSelected());
 				pathItem.SetAlive(() => true);
 				this._items.Add(cell.Coo(), pathItem);
 			}

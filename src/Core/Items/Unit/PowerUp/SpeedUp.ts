@@ -17,6 +17,7 @@ export class SpeedUp extends Up {
 	) {
 		super(condition);
 		condition.Done.On(() => {
+			this._vehicle.Ups = this._vehicle.Ups.filter((p) => p !== this);
 			if (this._energyChanged) {
 				this._energyChanged.Off(this._ref);
 			}
@@ -24,7 +25,6 @@ export class SpeedUp extends Up {
 			this.Animation.Destroy();
 			this._vehicle.SetTranslationDuration(-this._bonus.GetSpeedTranslation(this._energy));
 			this._vehicle.SetRotatingDuration(-this._bonus.GetSpeedRotation(this._energy));
-			this._vehicle.PowerUps = this._vehicle.PowerUps.filter((p) => p !== this);
 		});
 
 		if (this._energyChanged) {

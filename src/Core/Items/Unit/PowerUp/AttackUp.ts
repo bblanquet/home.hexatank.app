@@ -19,13 +19,14 @@ export class AttackUp extends Up {
 		super(condition);
 		this._tank.Attack += this._bonusValueProvider.GetPower(this._energy);
 		condition.Done.On(() => {
+			this._tank.Ups = this._tank.Ups.filter((p) => p !== this);
+
 			if (this._energyChanged) {
 				this._energyChanged.Off(this._ref);
 			}
 			condition.Done.Clear();
 			this.Animation.Destroy();
 			this._tank.Attack -= this._bonusValueProvider.GetPower(this._energy);
-			this._tank.PowerUps = this._tank.PowerUps.filter((p) => p !== this);
 		});
 
 		if (this._energyChanged) {

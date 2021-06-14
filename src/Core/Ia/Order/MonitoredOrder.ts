@@ -44,7 +44,7 @@ export class MonitoredOrder extends ParentOrder {
 
 		if (this._vehicleCellChanged) {
 			this._vehicleCellChanged = false;
-			this.Clear();
+			this.ClearChild();
 			this.Reset();
 		}
 
@@ -54,7 +54,7 @@ export class MonitoredOrder extends ParentOrder {
 			this.CurrentOrder.GetState() === OrderState.Passed ||
 			this.CurrentOrder.GetState() === OrderState.Cancel
 		) {
-			this.Clear();
+			this.ClearChild();
 		} else {
 			this.CurrentOrder.Update();
 		}

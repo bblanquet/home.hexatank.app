@@ -7,6 +7,8 @@ import * as PIXI from 'pixi.js';
 import { LiteEvent } from '../Utils/Events/LiteEvent';
 
 export abstract class AliveItem extends Item {
+	public OnDamageReceived: LiteEvent<number> = new LiteEvent<number>();
+
 	private _damageText: DamageText;
 	protected Life: number = GameSettings.UnitLife;
 	protected TotalLife: number = GameSettings.UnitLife;
@@ -15,7 +17,6 @@ export abstract class AliveItem extends Item {
 	private _currentLifeBar: PIXI.Graphics;
 	private _lifeBars: Array<PIXI.Graphics>;
 	public Identity: Identity;
-	public OnDamageReceived: LiteEvent<number> = new LiteEvent<number>();
 
 	constructor() {
 		super();

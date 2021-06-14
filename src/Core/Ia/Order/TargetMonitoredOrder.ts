@@ -43,16 +43,12 @@ export class TargetMonitoredOrder extends ParentOrder {
 		const targetRoad = new TargetRoadProvider(this.Tank, this.Destination).GetTargetRoad();
 		if (targetRoad && 0 < targetRoad.Road.length) {
 			if (this.HasTarget(targetRoad.Target)) {
-				console.log('TargetCellOrder');
 				this.SetCurrentOrder(new TargetCellOrder(this.Tank, targetRoad.Target, this.GetChildOrder(targetRoad)));
 			} else {
-				console.log('BasicOrder');
 				this.SetCurrentOrder(new BasicOrder(this.Tank, targetRoad.Road));
 			}
 			this.OnPathFound.Invoke(this, targetRoad.Road);
 		} else {
-			console.log('IdleOrder');
-			this.Clear();
 			this.SetCurrentOrder(new IdleOrder());
 			this.SetState(OrderState.Failed);
 		}
@@ -101,7 +97,7 @@ export class TargetMonitoredOrder extends ParentOrder {
 			//because of idle it does loop a lot here
 			//can be updated?
 			this._vehicleCellChanged = false;
-			this.Clear();
+			this.ClearChild();
 			this.Reset();
 		}
 
@@ -111,7 +107,7 @@ export class TargetMonitoredOrder extends ParentOrder {
 			this.CurrentOrder.GetState() === OrderState.Passed ||
 			this.CurrentOrder.GetState() === OrderState.Cancel
 		) {
-			this.Clear();
+			this.ClearChild();
 		} else {
 			this.CurrentOrder.Update();
 		}

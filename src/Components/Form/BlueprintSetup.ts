@@ -6,7 +6,7 @@ export class BlueprintSetup {
 	public MapType: string;
 	constructor() {
 		this.onylIa = false;
-		this.IaCount = 0;
+		this.IaCount = 1;
 		this.Env = 'Forest';
 		this.MapType = 'Flower';
 		this.Size = 'Small';

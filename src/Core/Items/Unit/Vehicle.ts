@@ -39,7 +39,7 @@ import { BasicOrder } from '../../Ia/Order/BasicOrder';
 
 export abstract class Vehicle extends AliveItem
 	implements IMovable, IRotatable, ISelectable, ICancellable, ICamouflageAble {
-	public PowerUps: Array<Up> = [];
+	public Ups: Array<Up> = [];
 	public Id: string;
 	private _rotatingDuration: number = GameSettings.RotatingDuration;
 	private _translatingDuration: number = GameSettings.TranslatinDuration;
@@ -67,7 +67,7 @@ export abstract class Vehicle extends AliveItem
 	private _rotationMaker: IRotationMaker;
 	private _angleFinder: IAngleFinder;
 	private _nextOrder: IOrder;
-	private _uiOrder: UiOrder = new UiOrder();
+	private _uiOrder: UiOrder = new UiOrder(this);
 
 	private _dustTimer: TimeTimer;
 	private _dustIndex: number;
@@ -94,7 +94,7 @@ export abstract class Vehicle extends AliveItem
 		this.BoundingBox = new BoundingBox();
 
 		this.GenerateSprite(SvgArchive.selectionUnit);
-		this.SetProperties([SvgArchive.selectionUnit], (sprite) => (sprite.alpha = 0));
+		this.SetProperties([ SvgArchive.selectionUnit ], (sprite) => (sprite.alpha = 0));
 
 		this.Z = ZKind.Cell;
 		this.Size = GameSettings.Size;
@@ -176,11 +176,11 @@ export abstract class Vehicle extends AliveItem
 	}
 
 	public SetPowerUp(up: Up) {
-		if (0 < this.PowerUps.length) {
-			const last = this.PowerUps[this.PowerUps.length - 1];
+		if (0 < this.Ups.length) {
+			const last = this.Ups[this.Ups.length - 1];
 			up.Animation.SetCurrentRotation(last.Animation.GetCurrentRotation() + Math.PI * 2 * 60 / 360);
 		}
-		this.PowerUps.push(up);
+		this.Ups.push(up);
 	}
 
 	public GiveOrder(order: IOrder): void {
@@ -214,7 +214,7 @@ export abstract class Vehicle extends AliveItem
 	}
 
 	//only online
-	public ForceCell(cell:Cell,order:BasicOrder):void{
+	public ForceCell(cell: Cell, order: BasicOrder): void {
 		this._currentCell.SetOccupier(null);
 		this._currentCell = null;
 		this._currentCell = cell;
@@ -224,10 +224,12 @@ export abstract class Vehicle extends AliveItem
 	}
 
 	//only online
-	public ForceCancel(order:IOrder):void{
+	public ForceCancel(order: IOrder): void {
 		this._translationMaker.Reset();
-		this._nextCell.SetOccupier(null);
-		this._nextCell = null;
+		if (this._nextCell) {
+			this._nextCell.SetOccupier(null);
+			this._nextCell = null;
+		}
 		this._nextOrder = order;
 		this._currentOrder.Cancel();
 		this.SetCurrentOrder();
@@ -360,10 +362,12 @@ export abstract class Vehicle extends AliveItem
 	}
 
 	private UpdateUiOrder() {
-		if (this.Identity.IsPlayer &&
+		if (
+			this.Identity.IsPlayer &&
 			this.IsSelected() &&
 			this.HasOrder() &&
-			!this._uiOrder.HasOrder(this._currentOrder)) {
+			!this._uiOrder.HasOrder(this._currentOrder)
+		) {
 			this._uiOrder.AddOrder(this._currentOrder);
 		}
 	}
@@ -435,8 +439,8 @@ export abstract class Vehicle extends AliveItem
 			this._infiniteAnimator.Update(viewX, viewY);
 		}
 
-		if (!isNullOrUndefined(this.PowerUps)) {
-			this.PowerUps.forEach((powerUp) => {
+		if (!isNullOrUndefined(this.Ups)) {
+			this.Ups.forEach((powerUp) => {
 				if (powerUp.Animation) {
 					powerUp.Animation.Update(viewX, viewY);
 				}
@@ -460,7 +464,7 @@ export abstract class Vehicle extends AliveItem
 	private SetCurrentOrder() {
 		if (!this.HasOrder() && !this.HasNextCell() && this._nextOrder) {
 			if (this._currentOrder) {
-				this._currentOrder.Clear()
+				this._currentOrder.Clear();
 			}
 
 			this._currentOrder = this._nextOrder;

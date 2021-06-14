@@ -16,7 +16,7 @@ import ProgressComponent from '../Common/Progress/ProgressComponent';
 
 export default class PopupComponent extends Component<
 	{ curves: Groups<Curve>; context: RecordObject; status: GameStatus; points: number },
-	{ Kind: StatsKind; points: number, remainingPoints: number }
+	{ Kind: StatsKind }
 > {
 	private _chartProvider: ChartProvider;
 	private _canvas: HTMLCanvasElement;
@@ -28,33 +28,16 @@ export default class PopupComponent extends Component<
 			Kind: StatsKind.Unit
 		});
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
-		this._profilService.OnPointChanged.On(() => this.setState({ Kind: this.state.Kind }));
 	}
 
 	componentDidMount() {
-		this.setState({
-			points: this.props.points,
-			remainingPoints: this.props.points
-		});
+		this._profilService.AddPoints(this.props.points);
+
 		this._chartProvider.AttachChart(
 			StatsKind[this.state.Kind],
 			this.props.curves.Get(StatsKind[this.state.Kind]),
 			this._canvas
 		);
-		this.AddPoint();
-	}
-
-	private AddPoint() {
-		setTimeout(() => {
-			const remainingPoints = this.state.remainingPoints - 1;
-			this.setState({
-				points: this._profilService.AddPoint(1),
-				remainingPoints: remainingPoints
-			});
-			if (0 < this.state.remainingPoints) {
-				this.AddPoint();
-			}
-		}, 200);
 	}
 
 	componentDidUpdate() {

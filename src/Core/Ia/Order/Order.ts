@@ -12,6 +12,11 @@ export abstract class Order implements IOrder {
 	constructor() {
 		this._state = OrderState.None;
 	}
+	public Clear(): void {
+		this.OnPathFound.Clear();
+		this.OnNextStep.Clear();
+		this.OnStateChanged.Clear();
+	}
 
 	abstract GetKind(): OrderKind;
 	abstract GetPath(): Cell[];

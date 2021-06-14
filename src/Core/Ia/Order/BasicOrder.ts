@@ -22,7 +22,10 @@ export class BasicOrder extends Order {
 		return OrderKind.Simple;
 	}
 	public GetPath(): Cell[] {
-		return this.Road;
+		if(this.Road){
+			return this.Road;
+		}
+		return [];
 	}
 
 	public Cancel(): void {

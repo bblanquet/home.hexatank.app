@@ -104,7 +104,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 			bestTroopRoads.Keys().forEach((coordinate) => {
 				bestTroopRoads.Get(coordinate).forEach((troopSituation) => {
 					this.LogOrder(troopSituation);
-					troopSituation.Troop.Tank.SetOrder(
+					troopSituation.Troop.Tank.GiveOrder(
 						new MonitoredOrder(troopSituation.CurrentDestination.Destination, troopSituation.Troop.Tank)
 					);
 				});

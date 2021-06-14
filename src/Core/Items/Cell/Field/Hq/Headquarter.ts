@@ -189,7 +189,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 
 				isCreated = true;
 				if (this.Flagcell) {
-					tank.SetOrder(new MonitoredOrder(this.Flagcell.GetCell(), tank));
+					tank.GiveOrder(new MonitoredOrder(this.Flagcell.GetCell(), tank));
 				}
 				return false;
 			}

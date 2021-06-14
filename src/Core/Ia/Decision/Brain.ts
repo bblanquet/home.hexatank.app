@@ -103,7 +103,7 @@ export class Brain implements IBrain {
 		this._diamond.OnDestroyed.Clear();
 		this.Trucks.forEach((truck) => {
 			truck.CancelOrder();
-			truck.SetOrder(new MoneyOrder(truck));
+			truck.GiveOrder(new MoneyOrder(truck));
 		});
 	}
 

@@ -84,6 +84,11 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 	public abstract GetBoundingBox(): BoundingBox;
 
 	public InitPosition(pos: { X: number; Y: number }): void {
+		this.InitCell(pos);
+		this._layerService.Publish().Add(this);
+	}
+
+	protected InitCell(pos: { X: number; Y: number; }) {
 		this.GetBoundingBox().X = pos.X;
 		this.GetBoundingBox().Y = pos.Y;
 		const ref = this.GetRef();
@@ -97,7 +102,6 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 			sprite.width = this.GetBoundingBox().Width;
 			sprite.height = this.GetBoundingBox().Height;
 		});
-		this._layerService.Publish().Add(this);
 	}
 
 	public Init(): void {

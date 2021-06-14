@@ -19,7 +19,7 @@ export class TruckCombination extends AbstractSingleCombination {
 		if (this.IsMatching(context)) {
 			var vehicle = <Vehicle>context.Items[0];
 			var order = new MonitoredOrder(<Cell>context.Items[1], vehicle);
-			vehicle.SetOrder(order);
+			vehicle.GiveOrder(order);
 			context.Items.splice(1, 1);
 			return true;
 		}

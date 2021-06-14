@@ -51,7 +51,7 @@ export abstract class RtcPeer {
 		return new RTCPeerConnection({
 			iceServers: [
 				{
-					urls: [ 'stun:stun.l.google.com:19302', 'stun:stun.2talk.co.nz:3478' ]
+					urls: ['stun:stun.l.google.com:19302', 'stun:stun.2talk.co.nz:3478']
 				}
 			]
 		});
@@ -108,7 +108,11 @@ export abstract class RtcPeer {
 
 	public Send(message: INetworkMessage): void {
 		if (this.Channel) {
-			this.Channel.send(JSON.stringify(message));
+			try {
+				this.Channel.send(JSON.stringify(message));
+			} catch (error) {
+				console.log(error);
+			}
 		}
 	}
 

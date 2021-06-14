@@ -34,7 +34,7 @@ export class TruckDiamondCombination extends AbstractSingleCombination {
 				new HqFieldOrder(this._gameContext.GetHqFromId(truck.Identity), truck),
 				new DiamondFieldOrder(diamond, truck)
 			);
-			truck.SetOrder(order);
+			truck.GiveOrder(order);
 			this.UnSelectItem(context.Items[0]);
 			this.ClearContext.Invoke();
 			return true;

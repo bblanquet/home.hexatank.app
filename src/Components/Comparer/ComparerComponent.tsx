@@ -162,13 +162,14 @@ export default class ComparerComponent extends Component<
 			return '';
 		}
 		const unit = d.Hqs.Get(this.state.SelectedHqId).Units.Get(this.state.SelectedUnitId);
-		const action = unit.Actions[this.state.CurveIndex];
-		if (action !== undefined) {
-			const data = action.Amount;
-			return `(${[data.Q, data.R].toString()})`;
-		} else {
-			return '';
+		if (unit) {
+			const action = unit.Actions[this.state.CurveIndex];
+			if (action !== undefined) {
+				const data = action.Amount;
+				return `(${[data.Q, data.R].toString()})`;
+			}
 		}
+		return '';
 	}
 
 	private UpdateCurve(unitId: string) {

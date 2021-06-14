@@ -11,7 +11,7 @@ export class AliveSquadTarget implements ISquadTarget {
 		}
 	}
 	Attack(tank: Tank): void {
-		tank.SetOrder(new MonitoredOrder(this._item.GetCurrentCell(), tank));
+		tank.GiveOrder(new MonitoredOrder(this._item.GetCurrentCell(), tank));
 		tank.SetMainTarget(this._item);
 	}
 

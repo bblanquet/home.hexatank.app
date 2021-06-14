@@ -50,7 +50,7 @@ export class OnlineRuntimeDispatcher {
 		const field = c.GetField();
 		if (
 			!TypeTranslator.IsSpecialField(field) ||
-			this.IsSpeakingHq(this._context.GetHqFromId(TypeTranslator.GetIdentity(field)))
+			this.IsListenedHq(this._context.GetHqFromId(TypeTranslator.GetIdentity(field)))
 		) {
 			const fieldPacket = new FieldPacket();
 			fieldPacket.Coo = c.Coo();
@@ -59,7 +59,7 @@ export class OnlineRuntimeDispatcher {
 				fieldPacket.HqCoo = field.GetHq().GetCell().Coo();
 			} else if (field instanceof ReactorField) {
 				fieldPacket.HqCoo = field.GetHq().GetCell().Coo();
-				if (this.IsSpeakingHq(field.GetHq())) {
+				if (this.IsListenedHq(field.GetHq())) {
 					field.OnOverlocked.On(this.HandleOverlockChanged.bind(this));
 					field.OnPowerChanged.On(this.HandlePowerChanged.bind(this));
 				}
@@ -71,19 +71,20 @@ export class OnlineRuntimeDispatcher {
 		}
 	}
 
-	private IsSpeakingHq(hq: IHeadquarter): boolean {
+	private IsListenedHq(hq: IHeadquarter): boolean {
 		return hq.Identity.Name === this._context.GetPlayerHq().Identity.Name || hq.IsIa();
 	}
 
 	private HandleVehicleCreated(source: any, vehicle: Vehicle): void {
 		const hq = this._context.GetHqFromId(vehicle.Identity);
-		if (this.IsSpeakingHq(hq)) {
+		if (this.IsListenedHq(hq)) {
 			if (vehicle instanceof Tank) {
 				const tank = vehicle as Tank;
 				tank.OnTargetChanged.On(this.HandleTargetChanged.bind(this));
 				tank.OnCamouflageChanged.On(this.HandleCamouflageChanged.bind(this));
 			}
-			vehicle.OnNextCellChanged.On(this.HandleNextCellChanged.bind(this));
+					vehicle.OnPathFound.On(this.HandlePathChanged.bind(this));
+			vehicle.OnOrdered.On(this.HandlePathChanged.bind(this));
 			vehicle.OnDestroyed.On(this.HandleVehicleDestroyed.bind(this));
 			const message = this.Message<CreatingUnitPacket>(
 				PacketKind.UnitCreated,
@@ -98,7 +99,7 @@ export class OnlineRuntimeDispatcher {
 			const tank = v as Tank;
 			tank.OnTargetChanged.Clear();
 			tank.OnCamouflageChanged.Clear();
-			tank.OnOrderChanging.Clear();
+			tank.OnOrdering.Clear();
 			tank.OnNextCellChanged.Clear();
 		}
 		const message = this.Message<string>(PacketKind.UnitDestroyed, v.Id);
@@ -123,11 +124,17 @@ export class OnlineRuntimeDispatcher {
 		this._socket.Emit(message);
 	}
 
-	private HandleNextCellChanged(source: Vehicle, cell: Cell): void {
+	private HandlePathChanged(source: Vehicle, cell: Cell[]): void {
 		const content = new NextCellPacket();
 		content.Id = source.Id;
-		content.Coo = cell.Coo();
-		const message = this.Message<NextCellPacket>(PacketKind.NextCell, content);
+		content.CC = source.GetCurrentCell().Coo();
+		if(source.GetNextCell()){
+			content.NC = source.GetNextCell().Coo();
+		}else{
+			content.NC = '';
+		}
+		content.Path = cell.map(c => c.Coo());
+		const message = this.Message<NextCellPacket>(PacketKind.PathChanged, content);
 		this._socket.Emit(message);
 	}
 

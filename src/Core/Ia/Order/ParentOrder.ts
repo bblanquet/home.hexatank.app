@@ -9,13 +9,13 @@ export abstract class ParentOrder extends Order {
 	}
 
 	protected SetCurrentOrder(order: Order): void {
-		this.Clear();
+		this.ClearChild();
 		this.CurrentOrder = order;
 		this.CurrentOrder.OnPathFound.On(this.InvokePathCreated.bind(this));
 		this.CurrentOrder.OnNextStep.On(this.InvokeNextStep.bind(this));
 	}
 
-	protected Clear() {
+	protected ClearChild() {
 		if (this.CurrentOrder) {
 			this.CurrentOrder.OnPathFound.Off(this.InvokePathCreated.bind(this));
 			this.CurrentOrder.OnNextStep.Off(this.InvokeNextStep.bind(this));
@@ -34,7 +34,11 @@ export abstract class ParentOrder extends Order {
 		return this.CurrentOrder.GetKind();
 	}
 	GetPath(): Cell[] {
-		return this.CurrentOrder.GetPath();
+		if(this.CurrentOrder){
+			return this.CurrentOrder.GetPath();
+		}else{
+			return [];
+		}
 	}
 
 	abstract Update(): void;

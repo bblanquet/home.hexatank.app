@@ -80,6 +80,10 @@ export class GameContext implements IHqGameContext {
 		return this._cells.Values();
 	}
 
+	public GetCellDictionary(): Dictionnary<Cell> {
+		return this._cells;
+	}
+
 	public GetCell(coo: string): Cell {
 		return this._cells.Get(coo);
 	}
@@ -92,7 +96,7 @@ export class GameContext implements IHqGameContext {
 		return result as Tank;
 	}
 
-	public GetUnit(id: string): Vehicle {
+	public GetVehicle(id: string): Vehicle {
 		const result = this._vehicles.Get(id);
 		if (isNullOrUndefined(result)) {
 			throw 'synchronized issue';

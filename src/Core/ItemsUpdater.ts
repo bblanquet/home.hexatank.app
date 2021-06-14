@@ -19,16 +19,20 @@ export class ItemsUpdater implements IItemsUpdater {
 
 	public Update(): void {
 		if (!GameSettings.IsPause) {
-			try {
-				this.Items = this.Items.filter((item) => item.IsUpdatable);
-				this.Items.forEach((item) => {
-					item.Update(this.ViewContext.GetX(), this.ViewContext.GetY());
-				});
-			} catch (e) {
-				if (e instanceof Error) {
-					this.OnError.Invoke(this, e);
-				}
-			}
+			this.Items = this.Items.filter((item) => item.IsUpdatable);
+			this.Items.forEach((item) => {
+				item.Update(this.ViewContext.GetX(), this.ViewContext.GetY());
+			});
+			// try {
+			// 	this.Items = this.Items.filter((item) => item.IsUpdatable);
+			// 	this.Items.forEach((item) => {
+			// 		item.Update(this.ViewContext.GetX(), this.ViewContext.GetY());
+			// 	});
+			// } catch (e) {
+			// 	if (e instanceof Error) {
+			// 		this.OnError.Invoke(this, e);
+			// 	}
+			// }
 		}
 	}
 }

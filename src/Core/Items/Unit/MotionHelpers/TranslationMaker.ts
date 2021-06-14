@@ -13,6 +13,7 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 		this._movableObject = item;
 	}
 
+
 	private GetPercentage(arrival: number, current: number): number {
 		if (arrival <= current) {
 			return 1;
@@ -62,6 +63,10 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 				this._departureDate;
 			this._movableObject.OnTranslateStarted.Invoke(this._movableObject, this._movableObject.GetNextCell());
 		}
+	}
+
+	Reset(): void {
+		this._arrivalDate = null;
 	}
 
 	Percentage(): number {

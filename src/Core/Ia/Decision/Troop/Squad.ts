@@ -9,7 +9,7 @@ import { TargetMonitoredOrder } from '../../Order/TargetMonitoredOrder';
 export class Squad implements IDoable {
 	private _tanks: Tank[] = new Array<Tank>();
 	private _mainTarget: ISquadTarget;
-	public constructor(private _mapObserver: MapObserver, private _brain: Brain) {}
+	public constructor(private _mapObserver: MapObserver, private _brain: Brain) { }
 
 	public AddTank(tank: Tank): void {
 		this._tanks.push(tank);
@@ -36,13 +36,13 @@ export class Squad implements IDoable {
 				this.RetreatAll();
 			} else {
 				this._tanks.forEach((tank) => {
-					tank.SetOrder(new TargetMonitoredOrder(this._mainTarget.GetCell(), tank));
+					tank.GiveOrder(new TargetMonitoredOrder(this._mainTarget.GetCell(), tank));
 				});
 			}
 		} else if (this._mainTarget) {
 			this._tanks.forEach((tank) => {
 				if (!tank.HasOrder()) {
-					tank.SetOrder(new TargetMonitoredOrder(this._mainTarget.GetCell(), tank));
+					tank.GiveOrder(new TargetMonitoredOrder(this._mainTarget.GetCell(), tank));
 				}
 			});
 		}

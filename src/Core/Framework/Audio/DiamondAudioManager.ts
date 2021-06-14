@@ -86,7 +86,7 @@ export class DiamondAudioManager implements IGameAudioManager {
 			t.OnMissileLaunched.On(this.HandleMissile.bind(this));
 		}
 
-		vehicule.OnOrderChanging.On(this.HandleOrder.bind(this));
+		vehicule.OnOrdering.On(this.HandleOrder.bind(this));
 
 		if (vehicule.GetCurrentCell().IsVisible()) {
 			this.Play(AudioArchive.unitPopup, 0.2);

@@ -35,11 +35,11 @@ export class TankCombination extends AbstractSingleCombination {
 				cell.GetState() === CellState.Visible
 			) {
 				const order = new TargetMonitoredOrder(cell, tank);
-				tank.SetOrder(order);
+				tank.GiveOrder(order);
 				context.Items.splice(1, 1);
 			} else {
 				const order = new TargetMonitoredOrder(cell, tank);
-				tank.SetOrder(order);
+				tank.GiveOrder(order);
 				context.Items.splice(1, 1);
 			}
 			return true;

@@ -36,7 +36,7 @@ export class TroopDecisionMaker {
 			this._target = cell.GetShootableEntity();
 			this.Tank.SetMainTarget(this._target);
 		} else {
-			this.Tank.SetOrder(new MonitoredOrder(cell, this.Tank));
+			this.Tank.GiveOrder(new MonitoredOrder(cell, this.Tank));
 		}
 	}
 
@@ -57,7 +57,7 @@ export class TroopDecisionMaker {
 			if (this.Tank.HasTarget() || this._idleTimer.IsElapsed()) {
 				this._idleTimer = null;
 				this.SetNextDestination();
-				this.Tank.SetOrder(new TargetMonitoredOrder(this.CurrentPatrolDestination, this.Tank));
+				this.Tank.GiveOrder(new TargetMonitoredOrder(this.CurrentPatrolDestination, this.Tank));
 			}
 		} else {
 			if (this._cancelOrderTimer.IsElapsed()) {
@@ -67,7 +67,7 @@ export class TroopDecisionMaker {
 	}
 
 	public IsIdle(): boolean {
-		return !(this.Tank.IsExecutingOrder() || this.Tank.HasPendingOrder() || this.IsCloseFromTarget());
+		return !(this.Tank.HasCurrentOrder() || this.Tank.HasNextOrder() || this.IsCloseFromTarget());
 	}
 
 	private SetNextDestination(): void {

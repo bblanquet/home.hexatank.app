@@ -17,7 +17,7 @@ export class FarmCombination extends AbstractSingleCombination {
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
 			const vehicle = context.Items[0] as Truck;
-			vehicle.SetOrder(new MoneyOrder(vehicle));
+			vehicle.GiveOrder(new MoneyOrder(vehicle));
 			context.Items.splice(context.Items.length - 1, 1);
 			return true;
 		}

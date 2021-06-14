@@ -81,13 +81,13 @@ export class PatrolOrder extends Order {
 	}
 
 	private SetCurrentOrder(order: MonitoredOrder): void {
-		this.Clear();
+		this.ClearChild();
 		this._currentOrder = order;
 		this._currentOrder.OnPathFound.On(this.InvokePathCreated.bind(this));
 		this._currentOrder.OnNextStep.On(this.InvokeNextCell.bind(this));
 	}
 
-	private Clear() {
+	private ClearChild() {
 		if (this._currentOrder) {
 			this._currentOrder.OnPathFound.Off(this.InvokePathCreated.bind(this));
 			this._currentOrder.OnNextStep.Off(this.InvokeNextCell.bind(this));

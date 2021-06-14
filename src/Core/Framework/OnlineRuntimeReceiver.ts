@@ -14,6 +14,8 @@ import { TypeTranslator } from '../Items/Cell/Field/TypeTranslator';
 import { PowerFieldPacket } from './Packets/PowerFieldPacket';
 import { isNullOrUndefined } from '../Utils/ToolBox';
 import { ISocketWrapper } from '../../Network/Socket/INetworkSocket';
+import { BasicOrder } from '../Ia/Order/BasicOrder';
+import { Vehicle } from '../Items/Unit/Vehicle';
 
 export class OnlineRuntimeReceiver {
 	private _obs: NetworkObserver[];
@@ -22,7 +24,7 @@ export class OnlineRuntimeReceiver {
 			new NetworkObserver(PacketKind.UnitCreated, this.HandleCreatingUnit.bind(this)),
 			new NetworkObserver(PacketKind.Target, this.HandleTarget.bind(this)),
 			new NetworkObserver(PacketKind.Camouflage, this.HandleCamouflage.bind(this)),
-			new NetworkObserver(PacketKind.NextCell, this.HandleNextCell.bind(this)),
+			new NetworkObserver(PacketKind.PathChanged, this.HandlePathChanged.bind(this)),
 			new NetworkObserver(PacketKind.FieldChanged, this.HandleChangedField.bind(this)),
 			new NetworkObserver(PacketKind.PowerChanged, this.HandlePowerChanged.bind(this)),
 			new NetworkObserver(PacketKind.Overlocked, this.HandleOverlocked.bind(this)),
@@ -81,13 +83,32 @@ export class OnlineRuntimeReceiver {
 		}
 	}
 
-	private HandleNextCell(message: NetworkMessage<NextCellPacket>): void {
-		const unit = this._context.GetUnit(message.Content.Id);
-		const cell = this._context.GetCell(message.Content.Coo);
-		const hq = this._context.GetHqFromId(unit.Identity);
+	private HandlePathChanged(message: NetworkMessage<NextCellPacket>): void {
+		const vehicle = this._context.GetVehicle(message.Content.Id);
+		const hq = this._context.GetHqFromId(vehicle.Identity);
 
 		if (this.IsListenedHq(hq.GetCell().Coo())) {
-			unit.SetNextCell(cell);
+			const dic = this._context.GetCellDictionary();
+			const path = message.Content.Path.map(coo => dic.Get(coo));
+			if (0 < path.length) {
+				if (vehicle.GetCurrentCell().Coo() === message.Content.CC && this.IsNextCellEqualed(vehicle, message.Content.NC)) {
+					vehicle.GiveOrder(new BasicOrder(vehicle, path));
+				} else if (vehicle.GetCurrentCell().Coo() === message.Content.CC
+					&& !this.IsNextCellEqualed(vehicle, message.Content.NC)) {
+					vehicle.ForceCancel(new BasicOrder(vehicle, path))
+				} else if (vehicle.GetCurrentCell().Coo() !== message.Content.CC) {
+					const cell = dic.Get(message.Content.CC);
+					vehicle.ForceCell(cell, new BasicOrder(vehicle, path));
+				}
+			}
+		}
+	}
+
+	private IsNextCellEqualed(v: Vehicle, coo: string): boolean {
+		if (v.GetNextCell()) {
+			return v.GetNextCell().Coo() === coo;
+		} else {
+			return coo === '';
 		}
 	}
 

@@ -11,7 +11,7 @@ import { DiamondFieldOrder } from '../../../Order/Composite/Diamond/DiamondField
 import { RequestType } from '../../Utils/RequestType';
 
 export class TruckRequestHandler implements ISimpleRequestHandler {
-	constructor(private _hq: Headquarter, private _kingdom: IBrain) {}
+	constructor(private _hq: Headquarter, private _kingdom: IBrain) { }
 
 	Type(): RequestType {
 		return RequestType.Truck;
@@ -22,7 +22,7 @@ export class TruckRequestHandler implements ISimpleRequestHandler {
 			if (vehicle instanceof Truck) {
 				const truck = vehicle as Truck;
 				if (this._kingdom.GetDiamond().IsAlive()) {
-					truck.SetOrder(
+					truck.GiveOrder(
 						new TruckPatrolOrder(
 							truck,
 							new HqFieldOrder(this._hq, truck),
@@ -30,7 +30,7 @@ export class TruckRequestHandler implements ISimpleRequestHandler {
 						)
 					);
 				} else {
-					truck.SetOrder(new MoneyOrder(truck));
+					truck.GiveOrder(new MoneyOrder(truck));
 				}
 
 				request.Area.AddTruck(truck);

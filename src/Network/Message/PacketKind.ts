@@ -47,6 +47,6 @@ export enum PacketKind {
 	Overlocked,
 	PowerChanged,
 	Camouflage,
-	NextCell,
+	PathChanged,
 	FieldChanged
 }

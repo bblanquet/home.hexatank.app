@@ -9,14 +9,7 @@ import { ZKind } from '../../Items/ZKind';
 
 export class UiOrder {
 	private _items: Dictionnary<BasicItem>;
-
-	constructor(private _order: IOrder) {
-		this._order.OnPathFound.On(this.PathCreated.bind(this));
-		this._order.OnNextStep.On(this.NextCell.bind(this));
-		this._order.OnStateChanged.On(this.StateChanged.bind(this));
-		this._items = new Dictionnary<BasicItem>();
-		this.SetCellUi(this._order.GetPath());
-	}
+	private _order: IOrder;
 
 	public HasOrder(order: IOrder): boolean {
 		return order === this._order;
@@ -64,7 +57,19 @@ export class UiOrder {
 		}
 	}
 
-	public Clear() {
+	public AddOrder(order: IOrder) {
+		if (this._order) {
+			this.Clear();
+		}
+		this._order = order;
+		this._order.OnPathFound.On(this.PathCreated.bind(this));
+		this._order.OnNextStep.On(this.NextCell.bind(this));
+		this._order.OnStateChanged.On(this.StateChanged.bind(this));
+		this._items = new Dictionnary<BasicItem>();
+		this.SetCellUi(this._order.GetPath());
+	}
+
+	private Clear() {
 		if (this._order) {
 			this._order.OnPathFound.Clear();
 			this._order.OnNextStep.Clear();

@@ -35,6 +35,7 @@ import { ShieldField } from '../Cell/Field/Bonus/ShieldField';
 import { CamouflageHandler } from './CamouflageHandler';
 import { Explosion } from './Explosion';
 import { ICamouflageAble } from './ICamouflageAble';
+import { BasicOrder } from '../../Ia/Order/BasicOrder';
 
 export abstract class Vehicle extends AliveItem
 	implements IMovable, IRotatable, ISelectable, ICancellable, ICamouflageAble {
@@ -57,7 +58,7 @@ export abstract class Vehicle extends AliveItem
 	private _nextCell: Cell;
 	private _currentCell: Cell;
 
-	private _order: IOrder = null;
+	private _currentOrder: IOrder = null;
 
 	protected BoundingBox: BoundingBox;
 	private Size: number;
@@ -65,7 +66,8 @@ export abstract class Vehicle extends AliveItem
 	private _translationMaker: ITranslationMaker;
 	private _rotationMaker: IRotationMaker;
 	private _angleFinder: IAngleFinder;
-	private _pendingOrder: IOrder;
+	private _nextOrder: IOrder;
+	private _uiOrder: UiOrder = new UiOrder();
 
 	private _dustTimer: TimeTimer;
 	private _dustIndex: number;
@@ -76,7 +78,9 @@ export abstract class Vehicle extends AliveItem
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 	public OnCellChanged: LiteEvent<Cell> = new LiteEvent<Cell>();
 	public OnNextCellChanged: LiteEvent<Cell> = new LiteEvent<Cell>();
-	public OnOrderChanging: LiteEvent<IOrder> = new LiteEvent<IOrder>();
+	public OnOrdering: LiteEvent<Cell[]> = new LiteEvent<Cell[]>();
+	public OnOrdered: LiteEvent<Cell[]> = new LiteEvent<Cell[]>();
+	public OnPathFound: LiteEvent<Cell[]> = new LiteEvent<Cell[]>();
 	public OnOrderStopped: LiteEvent<Vehicle> = new LiteEvent<Vehicle>();
 	public OnTranslateStarted: LiteEvent<Cell> = new LiteEvent<Cell>();
 	public OnTranslateStopped: LiteEvent<Cell> = new LiteEvent<Cell>();
@@ -179,14 +183,14 @@ export abstract class Vehicle extends AliveItem
 		this.PowerUps.push(up);
 	}
 
-	public SetOrder(order: IOrder): void {
-		this.OnOrderChanging.Invoke(this, order);
+	public GiveOrder(order: IOrder): void {
+		this.OnOrdering.Invoke(this, order.GetPath());
 
 		this.RemoveCamouflage();
-		this._pendingOrder = order;
+		this._nextOrder = order;
 
-		if (!isNullOrUndefined(this._order)) {
-			this._order.Cancel();
+		if (!isNullOrUndefined(this._currentOrder)) {
+			this._currentOrder.Cancel();
 		}
 	}
 
@@ -204,16 +208,36 @@ export abstract class Vehicle extends AliveItem
 	}
 
 	public CancelOrder(): void {
-		if (this._order) {
-			this._order.Cancel();
+		if (this._currentOrder) {
+			this._currentOrder.Cancel();
 		}
 	}
 
+	//only online
+	public ForceCell(cell:Cell,order:BasicOrder):void{
+		this._currentCell.SetOccupier(null);
+		this._currentCell = null;
+		this._currentCell = cell;
+		this._currentCell.SetOccupier(this);
+		this.InitCell(this._currentCell.GetBoundingBox());
+		this.ForceCancel(order);
+	}
+
+	//only online
+	public ForceCancel(order:IOrder):void{
+		this._translationMaker.Reset();
+		this._nextCell.SetOccupier(null);
+		this._nextCell = null;
+		this._nextOrder = order;
+		this._currentOrder.Cancel();
+		this.SetCurrentOrder();
+	}
+
 	public HasOrder(): boolean {
-		if (isNullOrUndefined(this._order)) {
+		if (isNullOrUndefined(this._currentOrder)) {
 			return false;
 		}
-		return !this._order.IsDone();
+		return !this._currentOrder.IsDone();
 	}
 
 	public GetBoundingBox(): BoundingBox {
@@ -329,7 +353,6 @@ export abstract class Vehicle extends AliveItem
 	}
 
 	//is it the right place???
-	private _uiOrder: UiOrder;
 	public SetSelected(isSelected: boolean): void {
 		this.SetProperty(SvgArchive.selectionUnit, (e) => (e.alpha = isSelected ? 1 : 0));
 		this.UpdateUiOrder();
@@ -337,18 +360,11 @@ export abstract class Vehicle extends AliveItem
 	}
 
 	private UpdateUiOrder() {
-		if (this.Identity.IsPlayer) {
-			if (this._uiOrder && this.HasOrder() && this._uiOrder.HasOrder(this._order) && this.IsSelected()) {
-				return;
-			}
-
-			if (this._uiOrder) {
-				this._uiOrder.Clear();
-				this._uiOrder = null;
-			}
-			if (this.IsSelected() && this.HasOrder()) {
-				this._uiOrder = new UiOrder(this._order);
-			}
+		if (this.Identity.IsPlayer &&
+			this.IsSelected() &&
+			this.HasOrder() &&
+			!this._uiOrder.HasOrder(this._currentOrder)) {
+			this._uiOrder.AddOrder(this._currentOrder);
 		}
 	}
 
@@ -389,11 +405,11 @@ export abstract class Vehicle extends AliveItem
 	public Destroy(): void {
 		this.OnDestroyed.Invoke(this, this);
 		this.OnDestroyed.Clear();
-		if (this._order) {
-			this._order.Cancel();
+		if (this._currentOrder) {
+			this._currentOrder.Cancel();
 		}
-		if (this._pendingOrder) {
-			this._pendingOrder.Cancel();
+		if (this._nextOrder) {
+			this._nextOrder.Cancel();
 		}
 		super.Destroy();
 		this._currentCell.SetOccupier(null);
@@ -427,9 +443,9 @@ export abstract class Vehicle extends AliveItem
 			});
 		}
 
-		this.ChangeOrder();
+		this.SetCurrentOrder();
 		if (this.HasOrder()) {
-			this._order.Update();
+			this._currentOrder.Update();
 		}
 
 		this._currentCell.GetField().Support(this);
@@ -441,24 +457,30 @@ export abstract class Vehicle extends AliveItem
 		super.Update(viewX, viewY);
 	}
 
-	private ChangeOrder() {
-		if (!this.HasOrder() && !this.HasNextCell() && this._pendingOrder) {
-			this._order = this._pendingOrder;
-			this._pendingOrder = null;
+	private SetCurrentOrder() {
+		if (!this.HasOrder() && !this.HasNextCell() && this._nextOrder) {
+			if (this._currentOrder) {
+				this._currentOrder.Clear()
+			}
+
+			this._currentOrder = this._nextOrder;
+			this._nextOrder = null;
+
+			this.OnOrdered.Invoke(this, this._currentOrder.GetPath());
+			this._currentOrder.OnPathFound.On((src: any, cells: Cell[]) => {
+				this.OnPathFound.Invoke(this, cells);
+			});
+
 			this.UpdateUiOrder();
 		}
 	}
 
-	public ExistsOrder(): boolean {
-		return !isNullOrUndefined(this._order);
+	public HasCurrentOrder(): boolean {
+		return !isNullOrUndefined(this._currentOrder) && !this._currentOrder.IsDone();
 	}
 
-	public IsExecutingOrder(): boolean {
-		return !isNullOrUndefined(this._order) && !this._order.IsDone();
-	}
-
-	public HasPendingOrder(): boolean {
-		return !isNullOrUndefined(this._pendingOrder);
+	public HasNextOrder(): boolean {
+		return !isNullOrUndefined(this._nextOrder);
 	}
 
 	public SetPosition(cell: Cell): void {

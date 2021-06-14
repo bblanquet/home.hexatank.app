@@ -65,7 +65,7 @@ export class CamouflageRenderer {
 			const dCell = cells.Get(d.ToString());
 			const aCell = cells.Get(a.ToString());
 			tank.SetPosition(dCell);
-			tank.SetOrder(new PatrolOrder([aCell, dCell], tank));
+			tank.GiveOrder(new PatrolOrder([aCell, dCell], tank));
 			vehicles.push(tank);
 		});
 

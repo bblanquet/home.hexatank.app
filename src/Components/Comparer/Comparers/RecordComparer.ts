@@ -4,15 +4,15 @@ export class RecordComparer {
 	constructor(public Record: RecordData, public ComparedRecord: RecordData) { }
 
 	public GetDelta(hqId: string, unitId: string): RecordPoint[] {
-		const d1Unit = this.Record.Hqs.Get(hqId).Units.Get(unitId);
-		const d2Unit = this.ComparedRecord.Hqs.Get(hqId).Units.Get(unitId);
+		const vehicle = this.Record.Hqs.Get(hqId).Units.Get(unitId);
+		const comparedVehicle = this.ComparedRecord.Hqs.Get(hqId).Units.Get(unitId);
 		const deltas = new Array<RecordPoint>();
 
-		d1Unit.Actions.forEach((data, index) => {
-			if (index <= d2Unit.Actions.length - 1) {
+		vehicle.Actions.forEach((data, index) => {
+			if (index <= comparedVehicle.Actions.length - 1) {
 				const delta = new RecordPoint();
 				delta.D1 = data;
-				delta.D2 = d2Unit.Actions[index];
+				delta.D2 = comparedVehicle.Actions[index];
 				delta.Y = delta.D1.X - delta.D2.X;
 				delta.X = delta.D1.X;
 				delta.IsEqualed = delta.D1.Amount.Q === delta.D2.Amount.Q && delta.D1.Amount.R === delta.D2.Amount.R;

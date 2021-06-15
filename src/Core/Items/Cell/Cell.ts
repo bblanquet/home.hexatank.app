@@ -33,7 +33,6 @@ import { BasicItem } from '../BasicItem';
 import { IHeadquarter } from './Field/Hq/IHeadquarter';
 
 export class Cell extends Item implements ICell<Cell>, ISelectable {
-
 	private _selectionCircle: PIXI.Circle;
 	public Properties: CellProperties;
 
@@ -75,10 +74,10 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	}
 
 	Listen() {
-		this.OnFieldChanged.On(this.UpdateSelectable.bind(this))
-		this.GetNearby(1).forEach(cell => {
-			cell.OnFieldChanged.On(this.UpdateSelectable.bind(this))
-			cell.OnVehicleChanged.On(this.UpdateSelectable.bind(this))
+		this.OnFieldChanged.On(this.UpdateSelectable.bind(this));
+		this.GetNearby(1).forEach((cell) => {
+			cell.OnFieldChanged.On(this.UpdateSelectable.bind(this));
+			cell.OnVehicleChanged.On(this.UpdateSelectable.bind(this));
 		});
 	}
 
@@ -96,11 +95,13 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		this._whiteSelection.SetAlive(() => true);
 
 		this._blueSelection = new BasicItem(this.GetBoundingBox(), SvgArchive.selectionBlueCell, ZKind.BelowCell);
-		this._blueSelection.SetAnimator(new InfiniteFadeAnimation(this._blueSelection, SvgArchive.selectionBlueCell, 0, 1, 0.02));
+		this._blueSelection.SetAnimator(
+			new InfiniteFadeAnimation(this._blueSelection, SvgArchive.selectionBlueCell, 0, 1, 0.02)
+		);
 		this._blueSelection.SetVisible(() => this._isSelectable);
 		this._blueSelection.SetAlive(() => true);
 
-		this.GetUnblockedRange()
+		this.GetUnblockedRange();
 	}
 
 	GetDistance(item: Cell): number {
@@ -118,7 +119,8 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 			const identity = this._playerHq.Identity;
 			const filter = (cell: Cell) => cell && (cell.HasAlly(identity) || cell.HasBonusAlly(identity));
 			const anyAlly = this.GetFilteredNearby(filter).length > 0;
-			this._isSelectable = (this.IsVisible() && this._field instanceof BasicField && anyAlly) || this.HasAlly(identity);
+			this._isSelectable =
+				(this.IsVisible() && this._field instanceof BasicField && anyAlly) || this.HasAlly(identity);
 		}
 	}
 
@@ -157,7 +159,6 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 	public DestroyField() {
 		new BasicField(this);
-		this.OnFieldChanged.Invoke(this, this);
 	}
 
 	public SetField(field: IField) {
@@ -296,13 +297,13 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 		this.HandleCellStateChanged(state);
 
-		this._cellStateSprites.Get(CellState[this._state]).forEach(sprite => {
+		this._cellStateSprites.Get(CellState[this._state]).forEach((sprite) => {
 			this.SetProperty(sprite, (e) => (e.alpha = 1));
-		})
+		});
 
 		if (isDiscovered) {
 			this.SetProperty(SvgArchive.hiddenCell, (e) => (e.alpha = 1));
-			this._shadowAnimator = new BouncingScaleDownAnimator(this, [SvgArchive.hiddenCell]);
+			this._shadowAnimator = new BouncingScaleDownAnimator(this, [ SvgArchive.hiddenCell ]);
 		}
 	}
 
@@ -351,14 +352,18 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 			s.alpha = 0;
 		});
 
-		this._cellStateSprites.Add(CellState[CellState.Hidden], [SvgArchive.hiddenCell]);
+		this._cellStateSprites.Add(CellState[CellState.Hidden], [ SvgArchive.hiddenCell ]);
 
 		if (isNullOrUndefined(this._decorationSprite)) {
-			this._cellStateSprites.Add(CellState[CellState.Mist], [SvgArchive.halfVisibleCell, SvgArchive.cell]);
-			this._cellStateSprites.Add(CellState[CellState.Visible], [SvgArchive.cell]);
+			this._cellStateSprites.Add(CellState[CellState.Mist], [ SvgArchive.halfVisibleCell, SvgArchive.cell ]);
+			this._cellStateSprites.Add(CellState[CellState.Visible], [ SvgArchive.cell ]);
 		} else {
-			this._cellStateSprites.Add(CellState[CellState.Mist], [SvgArchive.halfVisibleCell, this._decorationSprite, SvgArchive.cell]);
-			this._cellStateSprites.Add(CellState[CellState.Visible], [this._decorationSprite, SvgArchive.cell]);
+			this._cellStateSprites.Add(CellState[CellState.Mist], [
+				SvgArchive.halfVisibleCell,
+				this._decorationSprite,
+				SvgArchive.cell
+			]);
+			this._cellStateSprites.Add(CellState[CellState.Visible], [ this._decorationSprite, SvgArchive.cell ]);
 		}
 		this.InitPosition(this.Properties.BoundingBox);
 	}
@@ -382,7 +387,6 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		});
 		return cells;
 	}
-
 
 	public GetIncludedRange(range: number = 1): Array<Cell> {
 		var cells = new Array<Cell>();

@@ -43,7 +43,7 @@ export enum PacketKind {
 	Blueprint,
 	VehicleDestroyed,
 	VehicleCreated,
-	OnFieldDestroyed,
+	FieldDestroyed,
 	Target,
 	Overlocked,
 	PowerChanged,

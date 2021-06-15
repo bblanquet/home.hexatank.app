@@ -2,10 +2,6 @@ import { IHeadquarter } from './Hq/IHeadquarter';
 import { Identity } from './../../Identity';
 import { DiamondField } from './DiamondField';
 import { BlockingField } from './BlockingField';
-import { TargetOrder } from '../../../Ia/Order/Composite/TargetOrder';
-import { PatrolOrder } from '../../../Ia/Order/Composite/PatrolOrder';
-import { TruckPatrolOrder } from '../../../Ia/Order/Composite/Diamond/TruckPatrolOrder';
-import { MoneyOrder } from '../../../Ia/Order/Composite/MoneyOrder';
 import { Headquarter } from './Hq/Headquarter';
 import { IField } from './IField';
 import { BonusField } from './Bonus/BonusField';
@@ -15,15 +11,7 @@ import { AliveItem } from '../../AliveItem';
 import { AttackMenuItem } from '../../../Menu/Buttons/AttackMenuItem';
 import { HealMenuItem } from '../../../Menu/Buttons/HealMenuItem';
 import { SpeedFieldMenuItem } from '../../../Menu/Buttons/SpeedFieldMenuItem';
-import { OrderKind } from '../../../Ia/Order/OrderKind';
-import { Vehicle } from '../../Unit/Vehicle';
 import { Cell } from '../Cell';
-import { Truck } from '../../Unit/Truck';
-import { HqFieldOrder } from '../../../Ia/Order/Composite/Diamond/HqFieldOrder';
-import { DiamondFieldOrder } from '../../../Ia/Order/Composite/Diamond/DiamondFieldOrder';
-import { Diamond } from './Diamond';
-import { Tank } from '../../Unit/Tank';
-import { MonitoredOrder } from '../../../Ia/Order/MonitoredOrder';
 
 export class TypeTranslator {
 	public static IsSpecialField(cell: IField): boolean {

@@ -16,6 +16,10 @@ import { isNullOrUndefined } from '../Utils/ToolBox';
 import { ISocketWrapper } from '../../Network/Socket/INetworkSocket';
 import { BasicOrder } from '../Ia/Order/BasicOrder';
 import { Vehicle } from '../Items/Unit/Vehicle';
+import { BlockingField } from '../Items/Cell/Field/BlockingField';
+import { LatencyUp } from '../Items/Unit/PowerUp/LatencyUp';
+import { LatencyCondition } from '../Items/Unit/PowerUp/Condition/LatencyCondition';
+import { Cell } from '../Items/Cell/Cell';
 
 export class OnlineRuntimeReceiver {
 	private _obs: NetworkObserver[];
@@ -27,6 +31,7 @@ export class OnlineRuntimeReceiver {
 			new NetworkObserver(PacketKind.Camouflage, this.HandleCamouflage.bind(this)),
 			new NetworkObserver(PacketKind.PathChanged, this.HandlePathChanged.bind(this)),
 			new NetworkObserver(PacketKind.FieldChanged, this.HandleChangedField.bind(this)),
+			new NetworkObserver(PacketKind.FieldDestroyed, this.HandleDestroyedField.bind(this)),
 			new NetworkObserver(PacketKind.PowerChanged, this.HandlePowerChanged.bind(this)),
 			new NetworkObserver(PacketKind.Overlocked, this.HandleOverlocked.bind(this))
 		];
@@ -55,7 +60,6 @@ export class OnlineRuntimeReceiver {
 
 	private HandleVehicleCreated(message: NetworkMessage<VehiclePacket>): void {
 		const packet = message.Content;
-
 		if (this.IsListenedHq(packet.HqCoo)) {
 			if (!this._context.ExistUnit(packet.Id)) {
 				const hq = this._context.GetCell(packet.HqCoo).GetField() as Headquarter;
@@ -92,6 +96,7 @@ export class OnlineRuntimeReceiver {
 	}
 
 	private HandlePathChanged(message: NetworkMessage<NextCellPacket>): void {
+		const latency = message.Latency;
 		const vehicle = this._context.GetVehicle(message.Content.Id);
 		const hq = this._context.GetHqFromId(vehicle.Identity);
 
@@ -103,17 +108,29 @@ export class OnlineRuntimeReceiver {
 					vehicle.GetCurrentCell().Coo() === message.Content.CC &&
 					this.IsNextCellEqualed(vehicle, message.Content.NC)
 				) {
-					vehicle.GiveOrder(new BasicOrder(vehicle, path));
+					const order = new BasicOrder(vehicle, path);
+					vehicle.GiveOrder(order);
+					this.LatencyCompensation(latency, vehicle, order, path);
 				} else if (
 					vehicle.GetCurrentCell().Coo() === message.Content.CC &&
 					!this.IsNextCellEqualed(vehicle, message.Content.NC)
 				) {
-					vehicle.ForceCancel(new BasicOrder(vehicle, path));
+					const order = new BasicOrder(vehicle, path);
+					vehicle.ForceCancel(order);
+					this.LatencyCompensation(latency, vehicle, order, path);
 				} else if (vehicle.GetCurrentCell().Coo() !== message.Content.CC) {
 					const cell = dic.Get(message.Content.CC);
-					vehicle.ForceCell(cell, new BasicOrder(vehicle, path));
+					const order = new BasicOrder(vehicle, path);
+					vehicle.ForceCell(cell, order);
+					this.LatencyCompensation(latency, vehicle, order, path);
 				}
 			}
+		}
+	}
+
+	private LatencyCompensation(latency: number, vehicle: Vehicle, order: BasicOrder, path: Cell[]) {
+		if (latency && 0 < latency) {
+			vehicle.SetPowerUp(new LatencyUp(vehicle, new LatencyCondition(vehicle, order), latency / path.length));
 		}
 	}
 
@@ -122,6 +139,16 @@ export class OnlineRuntimeReceiver {
 			return v.GetNextCell().Coo() === coo;
 		} else {
 			return coo === '';
+		}
+	}
+
+	private HandleDestroyedField(message: NetworkMessage<string>): void {
+		const field = this._context.GetCell(message.Content).GetField();
+		if (field instanceof BlockingField) {
+			const blockingField = field as BlockingField;
+			if (blockingField.IsAlive()) {
+				blockingField.Destroy();
+			}
 		}
 	}
 

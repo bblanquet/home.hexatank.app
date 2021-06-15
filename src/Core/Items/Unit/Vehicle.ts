@@ -176,11 +176,17 @@ export abstract class Vehicle extends AliveItem
 	}
 
 	public SetPowerUp(up: Up) {
-		if (0 < this.Ups.length) {
-			const last = this.Ups[this.Ups.length - 1];
-			up.Animation.SetCurrentRotation(last.Animation.GetCurrentRotation() + Math.PI * 2 * 60 / 360);
-		}
 		this.Ups.push(up);
+	}
+
+	public GetUpAngle(): number {
+		const animatedUps = this.Ups.filter((u) => u.Animation);
+		if (0 < animatedUps.length) {
+			const last = animatedUps[this.Ups.length - 1];
+			return last.Animation.GetCurrentRotation() + Math.PI * 2 * 60 / 360;
+		} else {
+			return 0;
+		}
 	}
 
 	public GiveOrder(order: IOrder): void {
@@ -481,6 +487,14 @@ export abstract class Vehicle extends AliveItem
 
 	public HasCurrentOrder(): boolean {
 		return !isNullOrUndefined(this._currentOrder) && !this._currentOrder.IsDone();
+	}
+
+	public IsCurrentOrderEqualed(order: IOrder): boolean {
+		return this._currentOrder === order;
+	}
+
+	public IsNextOrderEqualed(order: IOrder): boolean {
+		return this._nextOrder === order;
 	}
 
 	public HasNextOrder(): boolean {

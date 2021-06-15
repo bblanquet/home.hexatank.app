@@ -20,14 +20,20 @@ import { BonusField } from '../Items/Cell/Field/Bonus/BonusField';
 import { AliveItem } from '../Items/AliveItem';
 import { isNullOrUndefined } from '../Utils/ToolBox';
 import { IHeadquarter } from '../Items/Cell/Field/Hq/IHeadquarter';
+import { BlockingField } from '../Items/Cell/Field/BlockingField';
+import { Item } from '../Items/Item';
 
 export class OnlineRuntimeDispatcher {
 	private _handleField: any = this.HandleChangedField.bind(this);
 	private _handleVehicle: any = this.HandleVehicleCreated.bind(this);
+	private _handleDestroyedField: any = this.HandleDestroyedField.bind(this);
 
 	public constructor(private _socket: ISocketWrapper, private _context: GameContext) {
 		this._context.GetCells().forEach((cell) => {
 			cell.OnFieldChanged.On(this._handleField);
+			if (cell.GetField() instanceof BlockingField) {
+				(cell.GetField() as BlockingField).OnDestroyed.On(this._handleDestroyedField);
+			}
 		});
 
 		this._context.GetHqs().forEach((hq) => {
@@ -72,6 +78,12 @@ export class OnlineRuntimeDispatcher {
 
 	private IsListenedHq(hq: IHeadquarter): boolean {
 		return hq.Identity.Name === this._context.GetPlayerHq().Identity.Name || hq.IsIa();
+	}
+
+	private HandleDestroyedField(source: any, item: Item): void {
+		const blockingField = item as BlockingField;
+		const message = this.Message<string>(PacketKind.FieldDestroyed, blockingField.GetCell().Coo());
+		this._socket.Emit(message);
 	}
 
 	private HandleVehicleCreated(source: any, vehicle: Vehicle): void {

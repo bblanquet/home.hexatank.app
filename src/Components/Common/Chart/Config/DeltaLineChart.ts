@@ -27,7 +27,11 @@ export class DeltaLineChart {
 				};
 			}),
 			pointBackgroundColor: function(context: any) {
-				return (context.dataset.data[context.dataIndex] as any).isEqualed ? 'white' : 'red';
+				if (0 < (context.dataset.data as []).length) {
+					return (context.dataset.data[context.dataIndex] as any).isEqualed ? 'white' : 'red';
+				} else {
+					return 'white';
+				}
 			}
 		});
 		return datasets;

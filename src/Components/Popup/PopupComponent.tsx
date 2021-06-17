@@ -10,46 +10,48 @@ import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilS
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import SmActiveButtonComponent from '../Common/Button/Stylish/SmActiveButtonComponent';
-import { ChartProvider } from '../Common/ChartProvider';
+import { LineChart } from '../Common/Chart/Config/LineChart';
 import Icon from '../Common/Icon/IconComponent';
 import ProgressComponent from '../Common/Progress/ProgressComponent';
+import ChartContainer from '../../Components/Common/Chart/ChartContainer';
 
 export default class PopupComponent extends Component<
 	{ curves: Groups<Curve>; context: RecordObject; status: GameStatus; points: number },
-	{ Kind: StatsKind }
+	{ Kind: StatsKind; Canvas: HTMLCanvasElement }
 > {
-	private _chartProvider: ChartProvider;
-	private _canvas: HTMLCanvasElement;
-	private _profilService: IPlayerProfilService;
+	private _chart: LineChart = new LineChart();
+	private _profilService: IPlayerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+
 	constructor() {
 		super();
-		this._chartProvider = new ChartProvider();
 		this.setState({
 			Kind: StatsKind.Unit
 		});
-		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 	}
 
 	componentDidMount() {
 		this._profilService.AddPoints(this.props.points);
-
-		this._chartProvider.AttachChart(
-			StatsKind[this.state.Kind],
-			this.props.curves.Get(StatsKind[this.state.Kind]),
-			this._canvas
-		);
+		if (!this.state.Canvas) {
+			this.UpdateState(this.state.Kind);
+		}
+	}
+	componentDidUpdate() {
+		if (!this.state.Canvas) {
+			this.UpdateState(this.state.Kind);
+		}
 	}
 
-	componentDidUpdate() {
-		this._chartProvider.AttachChart(
-			StatsKind[this.state.Kind],
-			this.props.curves.Get(StatsKind[this.state.Kind]),
-			this._canvas
-		);
+	private UpdateState(kind: StatsKind): void {
+		const curves = this.props.curves.Get(StatsKind[kind]);
+		if (curves) {
+			this.setState({
+				Kind: kind,
+				Canvas: this._chart.GetChart(StatsKind[kind], curves)
+			});
+		}
 	}
 
 	private Quit(): void {
-		//this._profilService.Update();
 		route('/Home', true);
 	}
 
@@ -76,9 +78,7 @@ export default class PopupComponent extends Component<
 							rightColor={ColorKind.Red}
 							isActive={this.state.Kind === StatsKind.Unit}
 							callBack={() => {
-								this.setState({
-									Kind: StatsKind.Unit
-								});
+								this.UpdateState(StatsKind.Unit);
 							}}
 						/>
 						<SmActiveButtonComponent
@@ -88,9 +88,7 @@ export default class PopupComponent extends Component<
 							rightColor={ColorKind.Red}
 							isActive={this.state.Kind === StatsKind.Cell}
 							callBack={() => {
-								this.setState({
-									Kind: StatsKind.Cell
-								});
+								this.UpdateState(StatsKind.Cell);
 							}}
 						/>
 						<SmActiveButtonComponent
@@ -100,9 +98,7 @@ export default class PopupComponent extends Component<
 							rightColor={ColorKind.Red}
 							isActive={this.state.Kind === StatsKind.Diamond}
 							callBack={() => {
-								this.setState({
-									Kind: StatsKind.Diamond
-								});
+								this.UpdateState(StatsKind.Diamond);
 							}}
 						/>
 						<SmActiveButtonComponent
@@ -112,18 +108,11 @@ export default class PopupComponent extends Component<
 							rightColor={ColorKind.Red}
 							isActive={this.state.Kind === StatsKind.Energy}
 							callBack={() => {
-								this.setState({
-									Kind: StatsKind.Energy
-								});
+								this.UpdateState(StatsKind.Energy);
 							}}
 						/>
 					</div>
-					<canvas
-						style="border-radius: 10px; margin-top:30px; margin-bottom:20px"
-						ref={(e) => {
-							this._canvas = e;
-						}}
-					/>
+					<ChartContainer canvas={this.state.Canvas} height={null} />
 					<div class="container-center-horizontal">
 						<ButtonComponent
 							callBack={() => {

@@ -54,7 +54,7 @@ export function Context() {
 			[
 				new DateValue(GetDuration(0), 0),
 				new DateValue(GetDuration(2), 2),
-				new DateValue(GetDuration(6), 5),
+				new DateValue(GetDuration(6), 300),
 				new DateValue(GetDuration(8), 3)
 			],
 			'#f542f5'

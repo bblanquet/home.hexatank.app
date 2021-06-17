@@ -17,7 +17,8 @@ import CreatingHostComponent from './Components/Network/Creating/CreatingHostCom
 import LobbyComponent from './Components/Network/Lobby/LobbyComponent';
 import LoadingPlayers from './Components/Network/Lobby/Players/LoadingPlayersComponent';
 import LoadingComponent from './Components/Loading/LoadingComponent';
-import ComparerComponent from './Components/Comparer/ComparerComponent';
+import LineComparisonComponent from './Components/Comparer/LineComparisonComponent';
+import BarComparisonComponent from './Components/Comparer/BarComparisonComponent';
 import SmPopupComponent from './Components/SmPopup/SmPopupComponent';
 import PopupComponent from './Components/Popup/PopupComponent';
 import RecordComponent from './Components/Record/RecordComponent';
@@ -65,7 +66,8 @@ const App = (e: any) => {
 				context={new RecordObject()}
 			/>
 			<SmPopupComponent path="/SmPopup" points={10} status={GameStatus.Victory} />
-			<ComparerComponent path="/Comparer" />
+			<LineComparisonComponent path="/LineComparison" />
+			<BarComparisonComponent path="/BarComparison" />
 		</Router>
 	);
 };

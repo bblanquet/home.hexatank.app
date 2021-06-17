@@ -15,6 +15,5 @@ export class CompareService implements ICompareService {
 		return comparer;
 	}
 
-	Collect(): void {
-	}
+	Collect(): void {}
 }

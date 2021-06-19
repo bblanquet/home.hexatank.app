@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { GameStatus } from '../../Core/Framework/GameStatus';
-import { RecordObject } from '../../Core/Framework/Record/RecordObject';
+import { RecordJson } from '../../Core/Framework/Record/RecordJson';
 import { Groups } from '../../Core/Utils/Collections/Groups';
 import { Curve } from '../../Core/Utils/Stats/Curve';
 import { StatsKind } from '../../Core/Utils/Stats/StatsKind';
@@ -16,7 +16,7 @@ import ProgressComponent from '../Common/Progress/ProgressComponent';
 import ChartContainer from '../../Components/Common/Chart/ChartContainer';
 
 export default class PopupComponent extends Component<
-	{ curves: Groups<Curve>; context: RecordObject; status: GameStatus; points: number },
+	{ curves: Groups<Curve>; context: RecordJson; status: GameStatus; points: number },
 	{ Kind: StatsKind; Canvas: HTMLCanvasElement }
 > {
 	private _chart: LineChart = new LineChart();
@@ -46,7 +46,7 @@ export default class PopupComponent extends Component<
 		if (curves) {
 			this.setState({
 				Kind: kind,
-				Canvas: this._chart.GetChart(StatsKind[kind], curves)
+				Canvas: this._chart.GetCanvas(StatsKind[kind], curves)
 			});
 		}
 	}

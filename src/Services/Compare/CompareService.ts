@@ -15,5 +15,9 @@ export class CompareService implements ICompareService {
 		return comparer;
 	}
 
+	GetRecords(): RecordData[] {
+		return [ this._record, this._compareRecord ];
+	}
+
 	Collect(): void {}
 }

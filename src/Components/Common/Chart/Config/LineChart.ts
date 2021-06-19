@@ -2,9 +2,10 @@ import * as Chart from 'chart.js';
 import * as Zoom from 'chartjs-plugin-zoom';
 import { Dictionnary } from '../../../../Core/Utils/Collections/Dictionnary';
 import { Curve } from '../../../../Core/Utils/Stats/Curve';
+import { IChart } from './IChart';
 import 'chartjs-adapter-moment';
 
-export class LineChart {
+export class LineChart implements IChart<Curve[]> {
 	private _charts: Dictionnary<HTMLCanvasElement>;
 
 	constructor() {
@@ -37,7 +38,7 @@ export class LineChart {
 		return datasets;
 	}
 
-	public GetChart(chartKey: string, curves: Curve[]): HTMLCanvasElement {
+	public GetCanvas(chartKey: string, curves: Curve[]): HTMLCanvasElement {
 		if (this._charts.Exist(chartKey)) {
 			return this._charts.Get(chartKey);
 		} else {

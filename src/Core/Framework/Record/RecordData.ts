@@ -2,7 +2,7 @@ import { InteractionInfo } from './../../Interaction/InteractionInfo';
 import { RecordCell } from './RecordCell';
 import { RecordHq } from './RecordHq';
 import { Dictionnary } from '../../Utils/Collections/Dictionnary';
-import { RecordObject } from './RecordObject';
+import { RecordJson } from './RecordJson';
 import { RecordUnit } from './RecordUnit';
 import { GameBlueprint } from '../../Setup/Blueprint/Game/GameBlueprint';
 export class RecordData {
@@ -12,10 +12,10 @@ export class RecordData {
 	public Cells: Dictionnary<RecordCell> = new Dictionnary<RecordCell>();
 	public Interactions: InteractionInfo[] = [];
 	public Title: string;
-	public Date: Date;
+	public RefDate: number;
 	constructor() {}
 
-	public static To(origObject: RecordObject): RecordData {
+	public static To(origObject: RecordJson): RecordData {
 		const copyObject = JSON.parse(JSON.stringify(origObject));
 
 		const hqs = new Dictionnary<RecordHq>();
@@ -31,11 +31,11 @@ export class RecordData {
 		cells.SetValues(copyObject.Cells);
 
 		const result = new RecordData();
+		result.RefDate = copyObject.RefDate;
 		result.Hqs = hqs;
 		result.Cells = cells;
 		result.Dates = copyObject.Points;
 		result.Title = copyObject.Title;
-		result.Date = copyObject.Date;
 		result.MapContext = copyObject.MapContext;
 		return result;
 	}

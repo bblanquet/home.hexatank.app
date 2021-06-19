@@ -1,12 +1,15 @@
+import { DateTime } from 'luxon';
+
 export class Duration {
 	constructor(public Start: number, public End: number) {}
 
 	public GetSum(): number {
-		return this.End - this.Start;
+		const diff = DateTime.fromJSDate(new Date(this.End)).diff(DateTime.fromJSDate(new Date(this.Start))).toObject();
+		return diff.milliseconds / 1000;
 	}
 
 	public Intersects(value: Duration) {
-		return (value.Start < this.Start && this.Start < value.End) || (value.Start < this.End && this.End < value.End);
+		return this.Start <= value.End && value.Start <= this.End;
 	}
 
 	public Includes(value: Duration) {

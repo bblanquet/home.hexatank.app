@@ -1,9 +1,9 @@
-import { RecordObject } from './../../Core/Framework/Record/RecordObject';
+import { RecordJson } from '../../Core/Framework/Record/RecordJson';
 export class PlayerProfil {
 	public LastPlayerName: string = 'John doe';
 	public IsMute: boolean = false;
 
-	public Records: RecordObject[] = [];
+	public Records: RecordJson[] = [];
 	public Points: number = 0;
 
 	//levels

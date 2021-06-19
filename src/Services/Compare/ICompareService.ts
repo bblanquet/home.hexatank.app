@@ -5,4 +5,5 @@ import { IGarbage } from '../IGarbage';
 export interface ICompareService extends IGarbage {
 	Register(recordData: RecordData, compareDate: RecordData): void;
 	Publish(): RecordComparer;
+	GetRecords(): RecordData[];
 }

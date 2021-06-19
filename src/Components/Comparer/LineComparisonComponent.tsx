@@ -135,7 +135,7 @@ export default class LineComparisonComponent extends Component<
 			const curve = new DeltaRecordCurve();
 			curve.Points = points;
 			curve.Title = unitId;
-			return this._chartProvider.GetChart(curve);
+			return this._chartProvider.GetCanvas(`${hqId}-${unitId}`, curve);
 		} else {
 			return null;
 		}

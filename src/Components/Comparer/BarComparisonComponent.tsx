@@ -8,17 +8,17 @@ import Icon from '../Common/Icon/IconComponent';
 import SmPanelComponent from '../Common/Panel/SmPanelComponent';
 import ChartContainer from '../Common/Chart/ChartContainer';
 import { DurationStateFormater } from '../Common/Chart/Formater/DurationStateFormater';
-import { RecordData } from '../../Core/Framework/Record/RecordData';
-import { contextA } from '../../contextA';
-import { contextB } from '../../contextB';
-import { RecordObject } from '../../Core/Framework/Record/RecordObject';
+import { ICompareService } from '../../Services/Compare/ICompareService';
+import { Singletons, SingletonKey } from '../../Singletons';
 
 export default class BarComparisonComponent extends Component<{}, { Canvas: HTMLCanvasElement }> {
 	private _chartProvider: BarChart;
+	private _compareService: ICompareService;
 
 	constructor() {
 		super();
 		this._chartProvider = new BarChart();
+		this._compareService = Singletons.Load<ICompareService>(SingletonKey.Compare);
 	}
 
 	componentDidMount() {
@@ -27,12 +27,12 @@ export default class BarComparisonComponent extends Component<{}, { Canvas: HTML
 
 	private UpdateCanvas() {
 		if (!this.state.Canvas) {
+			const records = this._compareService.GetRecords();
+
 			this.setState({
-				Canvas: this._chartProvider.GetChart(
-					new DurationStateFormater().Format(
-						RecordData.To(contextA as RecordObject),
-						RecordData.To(contextB as RecordObject)
-					)
+				Canvas: this._chartProvider.GetCanvas(
+					records[0].Title,
+					new DurationStateFormater().Format(records[0], records[1])
 				)
 			});
 		}

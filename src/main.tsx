@@ -35,7 +35,7 @@ import '@fortawesome/fontawesome-free/js/regular';
 import '@fortawesome/fontawesome-free/js/brands';
 import { GameStatus } from './Core/Framework/GameStatus';
 import { Context } from './Context';
-import { RecordObject } from './Core/Framework/Record/RecordObject';
+import { RecordJson } from './Core/Framework/Record/RecordJson';
 
 const App = (e: any) => {
 	return (
@@ -63,7 +63,7 @@ const App = (e: any) => {
 				points={30}
 				curves={Context()}
 				status={GameStatus.Victory}
-				context={new RecordObject()}
+				context={new RecordJson()}
 			/>
 			<SmPopupComponent path="/SmPopup" points={10} status={GameStatus.Victory} />
 			<LineComparisonComponent path="/LineComparison" />

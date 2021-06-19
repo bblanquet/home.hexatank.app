@@ -82,7 +82,9 @@ export default class RangeComponent extends Component<
 								this._toolTip = dom;
 							}}
 						>
-							<div class="btn-space">{moment(new Date(this.state.value)).format('mm:ss')}</div>
+							<div class="btn-space">
+								{moment(new Date(this.state.value - this.props.dataSet[0])).format('mm:ss')}
+							</div>
 						</div>
 						<input
 							ref={(dom) => {

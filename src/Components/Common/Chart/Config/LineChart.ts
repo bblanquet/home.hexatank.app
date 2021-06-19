@@ -4,9 +4,11 @@ import { Dictionnary } from '../../../../Core/Utils/Collections/Dictionnary';
 import { Curve } from '../../../../Core/Utils/Stats/Curve';
 import { IChart } from './IChart';
 import 'chartjs-adapter-moment';
+import { LiteEvent } from '../../../../Core/Utils/Events/LiteEvent';
 
 export class LineChart implements IChart<Curve[]> {
 	private _charts: Dictionnary<HTMLCanvasElement>;
+	public OnClickElement: LiteEvent<string>;
 
 	constructor() {
 		Chart.Chart.register(

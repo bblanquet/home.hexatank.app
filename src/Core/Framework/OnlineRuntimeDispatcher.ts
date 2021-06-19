@@ -1,6 +1,6 @@
 import { ISocketWrapper } from '../../Network/Socket/INetworkSocket';
 import { TypeTranslator } from '../Items/Cell/Field/TypeTranslator';
-import { PowerFieldPacket } from './Packets/PowerFieldPacket';
+import { EnergyPacket } from './Packets/PowerFieldPacket';
 import { OverlockedPacket } from './Packets/OverlockedPacket';
 import { ShieldField } from '../Items/Cell/Field/Bonus/ShieldField';
 import { ReactorField } from '../Items/Cell/Field/Bonus/ReactorField';
@@ -173,12 +173,12 @@ export class OnlineRuntimeDispatcher {
 
 	private HandlePowerChanged(source: any, power: boolean): void {
 		const reactor = source as ReactorField;
-		const packet = new PowerFieldPacket();
+		const packet = new EnergyPacket();
 		packet.Coo = reactor.GetCell().Coo();
-		packet.Power = power;
+		packet.IsEnergyUp = power;
 		packet.HqCoo = reactor.Hq.GetCell().Coo();
 		packet.Type = 'ReactorField';
-		const message = this.Message<PowerFieldPacket>(PacketKind.PowerChanged, packet);
+		const message = this.Message<EnergyPacket>(PacketKind.PowerChanged, packet);
 		this._socket.Emit(message);
 	}
 

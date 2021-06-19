@@ -1,12 +1,14 @@
 import * as Chart from 'chart.js';
 import * as Zoom from 'chartjs-plugin-zoom';
-import * as moment from 'moment';
 import { Dictionnary } from '../../../../Core/Utils/Collections/Dictionnary';
+import { LiteEvent } from '../../../../Core/Utils/Events/LiteEvent';
 import { DurationState } from '../Model/DurationState';
 import { StatusDuration } from '../Model/StatusDuration';
 import { IChart } from './IChart';
 
 export class BarChart implements IChart<Dictionnary<StatusDuration[]>> {
+	public OnClickElement: LiteEvent<string>;
+
 	private _charts: Dictionnary<HTMLCanvasElement>;
 	private _colors: Dictionnary<string>;
 	constructor() {
@@ -20,6 +22,7 @@ export class BarChart implements IChart<Dictionnary<StatusDuration[]>> {
 			Chart.Title,
 			Zoom.default
 		);
+		this.OnClickElement = new LiteEvent<string>();
 		this._charts = new Dictionnary<HTMLCanvasElement>();
 		this._colors = new Dictionnary<string>();
 		this._colors.Add(DurationState[DurationState.None], 'rgba(0,0,0,0)');
@@ -55,14 +58,21 @@ export class BarChart implements IChart<Dictionnary<StatusDuration[]>> {
 				labels: durations.Keys(),
 				datasets: this.Format(durations)
 			};
-
+			const that = this;
 			const chart = new Chart.Chart(canvas, {
 				type: 'bar',
 				data: graph,
 				options: {
 					onClick(event: Chart.ChartEvent, elements: Chart.ActiveElement[], chart: Chart.Chart) {
 						if (event.type === 'click') {
-							chart.resetZoom();
+							const clickElement = elements.find((element) =>
+								(element.element as Chart.BarElement).inRange(event.x, event.y)
+							);
+							if (clickElement) {
+								that.OnClickElement.Invoke(this, chart.data.datasets[clickElement.datasetIndex].label);
+							} else {
+								chart.resetZoom();
+							}
 						}
 					},
 					plugins: {
@@ -123,9 +133,7 @@ export class BarChart implements IChart<Dictionnary<StatusDuration[]>> {
 					const duration = unitDurations.Get(unit)[index];
 					lines.push({
 						data: this.GetData(unitDurations.Keys(), unit, duration.GetSum()),
-						label: `${duration.Coo.ToString()} ${this.SetFormat(duration.Start)}/${this.SetFormat(
-							duration.End
-						)}`,
+						label: duration.Label,
 						backgroundColor: this.GetColor(duration.Status)
 					});
 				}
@@ -137,9 +145,5 @@ export class BarChart implements IChart<Dictionnary<StatusDuration[]>> {
 
 	private GetColor(state: DurationState): string {
 		return this._colors.Get(DurationState[state]);
-	}
-
-	private SetFormat(item: number) {
-		return moment(item).format('ss.SSS');
 	}
 }

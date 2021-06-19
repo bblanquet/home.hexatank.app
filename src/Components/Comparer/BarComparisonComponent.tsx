@@ -10,19 +10,32 @@ import ChartContainer from '../Common/Chart/ChartContainer';
 import { DurationStateFormater } from '../Common/Chart/Formater/DurationStateFormater';
 import { ICompareService } from '../../Services/Compare/ICompareService';
 import { Singletons, SingletonKey } from '../../Singletons';
+import Visible from '../Common/Visible/VisibleComponent';
 
-export default class BarComparisonComponent extends Component<{}, { Canvas: HTMLCanvasElement }> {
-	private _chartProvider: BarChart;
+export default class BarComparisonComponent extends Component<{}, { Canvas: HTMLCanvasElement; Label: string }> {
+	private _chart: BarChart;
 	private _compareService: ICompareService;
+	private _func: any = this.OnClicked.bind(this);
 
 	constructor() {
 		super();
-		this._chartProvider = new BarChart();
+		this._chart = new BarChart();
+		this._chart.OnClickElement.On(this._func);
 		this._compareService = Singletons.Load<ICompareService>(SingletonKey.Compare);
+	}
+
+	private OnClicked(src: any, label: string): void {
+		this.setState({
+			Label: label
+		});
 	}
 
 	componentDidMount() {
 		this.UpdateCanvas();
+	}
+
+	componentWillUnmount() {
+		this._chart.OnClickElement.Off(this._func);
 	}
 
 	private UpdateCanvas() {
@@ -30,7 +43,7 @@ export default class BarComparisonComponent extends Component<{}, { Canvas: HTML
 			const records = this._compareService.GetRecords();
 
 			this.setState({
-				Canvas: this._chartProvider.GetCanvas(
+				Canvas: this._chart.GetCanvas(
 					records[0].Title,
 					new DurationStateFormater().Format(records[0], records[1])
 				)
@@ -40,6 +53,10 @@ export default class BarComparisonComponent extends Component<{}, { Canvas: HTML
 
 	componentDidUpdate() {
 		this.UpdateCanvas();
+		if (this.state.Canvas) {
+			this.state.Canvas.autofocus = true;
+			this.state.Canvas.focus();
+		}
 	}
 
 	render() {
@@ -49,6 +66,12 @@ export default class BarComparisonComponent extends Component<{}, { Canvas: HTML
 					<div class="statContainer container-center-horizontal menu-container">
 						<div class="container-center">
 							<ChartContainer canvas={this.state.Canvas} height={40} />
+							<span class="badge badge-light">
+								<Visible isVisible={this.state.Label !== undefined && this.state.Label !== null}>
+									{this.state.Label}
+								</Visible>
+							</span>
+
 							<div class="container-center-horizontal">
 								<ButtonComponent
 									callBack={() => {

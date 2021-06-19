@@ -1,10 +1,7 @@
 import { DurationState } from './DurationState';
 import { Duration } from './Duration';
-import { HexAxial } from '../../../../Core/Utils/Geometry/HexAxial';
 export class StatusDuration extends Duration {
-	public Coo: HexAxial;
-	constructor(public Status: DurationState, public Start: number, public End: number, amount: HexAxial) {
+	constructor(public Status: DurationState, public Start: number, public End: number, public Label: string) {
 		super(Start, End);
-		this.Coo = new HexAxial(amount.Q, amount.R);
 	}
 }

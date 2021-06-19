@@ -1,4 +1,4 @@
 import { FieldPacket } from './FieldPacket';
-export class PowerFieldPacket extends FieldPacket {
-	Power: boolean;
+export class EnergyPacket extends FieldPacket {
+	IsEnergyUp: boolean;
 }

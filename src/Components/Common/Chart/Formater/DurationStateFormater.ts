@@ -82,23 +82,37 @@ export class DurationStateFormater {
 		emptyDurations.forEach((emptyDuration) => {
 			let index = this.GetOverlappedIndex(emptyDuration, durations);
 			let comparedIndex = this.GetOverlappedIndex(emptyDuration, comparedDurations);
-
+			let label = 'nok';
 			let state = DurationState.Wrong;
 			if (index !== null && comparedIndex !== null) {
 				if (isEqual(durations[index].Action.Amount, comparedDurations[comparedIndex].Action.Amount)) {
 					state = DurationState.Ok;
+					label = `${this.GetStringPos(durations[index].Action)} ok ${this.GetStringPos(
+						comparedDurations[comparedIndex].Action
+					)}`;
 				} else if (
 					(0 < index &&
 						isEqual(durations[index - 1].Action.Amount, comparedDurations[comparedIndex].Action.Amount)) ||
 					(0 < comparedIndex &&
 						isEqual(durations[index].Action.Amount, comparedDurations[comparedIndex - 1].Action.Amount))
 				) {
+					label = `${this.GetStringPos(durations[index].Action)} late ${this.GetStringPos(
+						comparedDurations[comparedIndex].Action
+					)}`;
 					state = DurationState.Late;
+				} else {
+					label = `${this.GetStringPos(durations[index].Action)} nok ${this.GetStringPos(
+						comparedDurations[comparedIndex].Action
+					)}`;
 				}
 			}
 
-			result.push(new StatusDuration(state, emptyDuration.Start, emptyDuration.End, new HexAxial(1, 1)));
+			result.push(new StatusDuration(state, emptyDuration.Start, emptyDuration.End, label));
 		});
-		return [ new StatusDuration(DurationState.None, refDate, result[0].Start, new HexAxial(1, 1)) ].concat(result);
+		return [ new StatusDuration(DurationState.None, refDate, result[0].Start, '') ].concat(result);
+	}
+
+	private GetStringPos(action: RecordAction): string {
+		return `[${action.Amount.Q},${action.Amount.R}]`;
 	}
 }

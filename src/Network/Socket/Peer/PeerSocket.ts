@@ -74,18 +74,18 @@ export class PeerSocket implements IPeerSocket {
 
 	protected ReceivePacket(packet: NetworkMessage<any>): void {
 		if (!this.IsPing(packet.Kind)) {
-			console.log(
-				`%c [${packet.Emitter}] > ${this._rtcPeer.GetOwner()}] ${PacketKind[packet.Kind]} <<<`,
-				'color:#ff7373;'
-			);
+			// console.log(
+			// 	`%c [${packet.Emitter}] > ${this._rtcPeer.GetOwner()}] ${PacketKind[packet.Kind]} <<<`,
+			// 	'color:#ff7373;'
+			// );
 		}
 		if (packet.Protocol === ProtocolKind.Tcp && packet.IsAck) {
-			console.log(
-				`%c [${packet.Emitter}] > ${this._rtcPeer.GetOwner()}] ${PacketKind[
-					packet.Kind
-				]} [ACK] [${packet.SeqNum}]<<<`,
-				'color:#581087;'
-			);
+			// console.log(
+			// 	`%c [${packet.Emitter}] > ${this._rtcPeer.GetOwner()}] ${PacketKind[
+			// 		packet.Kind
+			// 	]} [ACK] [${packet.SeqNum}]<<<`,
+			// 	'color:#581087;'
+			// );
 			return;
 		}
 

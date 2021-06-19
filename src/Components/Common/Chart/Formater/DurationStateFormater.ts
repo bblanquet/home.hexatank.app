@@ -39,17 +39,19 @@ export class DurationStateFormater {
 		return durations;
 	}
 
-	private GetOverlapped(step: Duration, list: ActionDuration[]): ActionDuration[] {
-		const result = new Array<ActionDuration>();
-		list.forEach((item) => {
+	private GetOverlappedIndex(step: Duration, list: ActionDuration[]): number {
+		let result = null;
+		list.some((item, index) => {
 			if (step.Intersects(item)) {
-				result.push(item);
+				result = index;
+				return true;
 			}
+			return false;
 		});
 		return result;
 	}
 
-	public GetDates(data: RecordUnit, compared: RecordUnit): number[] {
+	private GetDates(data: RecordUnit, compared: RecordUnit): number[] {
 		let dates = new Array<number>();
 		data.Actions.forEach((action) => {
 			dates.push(action.X);
@@ -60,7 +62,7 @@ export class DurationStateFormater {
 		return dates.filter((x, i, a) => a.indexOf(x) === i).sort();
 	}
 
-	public GetEmptyDurations(dates: number[]): Duration[] {
+	private GetEmptyDurations(dates: number[]): Duration[] {
 		const durations = new Array<Duration>();
 		dates.forEach((date, index) => {
 			if (index + 1 < dates.length) {
@@ -78,17 +80,23 @@ export class DurationStateFormater {
 		const comparedDurations = this.GetActionDurations(compared.Actions);
 
 		emptyDurations.forEach((emptyDuration) => {
-			let duration = this.GetOverlapped(emptyDuration, durations);
-			let comparedDuration = this.GetOverlapped(emptyDuration, comparedDurations);
+			let index = this.GetOverlappedIndex(emptyDuration, durations);
+			let comparedIndex = this.GetOverlappedIndex(emptyDuration, comparedDurations);
 
 			let state = DurationState.Wrong;
-			if (
-				0 < duration.length &&
-				0 < comparedDuration.length &&
-				isEqual(duration[0].Action.Amount, comparedDuration[0].Action.Amount)
-			) {
-				state = DurationState.Ok;
+			if (index !== null && comparedIndex !== null) {
+				if (isEqual(durations[index].Action.Amount, comparedDurations[comparedIndex].Action.Amount)) {
+					state = DurationState.Ok;
+				} else if (
+					(0 < index &&
+						isEqual(durations[index - 1].Action.Amount, comparedDurations[comparedIndex].Action.Amount)) ||
+					(0 < comparedIndex &&
+						isEqual(durations[index].Action.Amount, comparedDurations[comparedIndex - 1].Action.Amount))
+				) {
+					state = DurationState.Late;
+				}
 			}
+
 			result.push(new StatusDuration(state, emptyDuration.Start, emptyDuration.End, new HexAxial(1, 1)));
 		});
 		return [ new StatusDuration(DurationState.None, refDate, result[0].Start, new HexAxial(1, 1)) ].concat(result);

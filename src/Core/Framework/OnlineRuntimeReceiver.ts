@@ -111,6 +111,7 @@ export class OnlineRuntimeReceiver {
 					const order = new BasicOrder(vehicle, path);
 					vehicle.GiveOrder(order);
 					this.LatencyCompensation(latency, vehicle, order, path);
+					console.log(`%c latency compensation ${latency}`, 'color:#68b81d;font-weight:bold;');
 				} else if (
 					vehicle.GetCurrentCell().Coo() === message.Content.CC &&
 					!this.IsNextCellEqualed(vehicle, message.Content.NC)
@@ -118,11 +119,13 @@ export class OnlineRuntimeReceiver {
 					const order = new BasicOrder(vehicle, path);
 					vehicle.ForceCancel(order);
 					this.LatencyCompensation(latency, vehicle, order, path);
+					console.log(`%c [FORCE CANCEL] latency compensation ${latency}`, 'color:#b8631d;font-weight:bold;');
 				} else if (vehicle.GetCurrentCell().Coo() !== message.Content.CC) {
 					const cell = dic.Get(message.Content.CC);
 					const order = new BasicOrder(vehicle, path);
 					vehicle.ForceCell(cell, order);
 					this.LatencyCompensation(latency, vehicle, order, path);
+					console.log(`%c [FORCE CELL] latency compensation ${latency}`, 'color:#a81b1b;font-weight:bold;');
 				}
 			}
 		}

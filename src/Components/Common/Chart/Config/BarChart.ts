@@ -58,18 +58,20 @@ export class BarChart implements IChart<Dictionnary<StatusDuration[]>> {
 				labels: durations.Keys(),
 				datasets: this.Format(durations)
 			};
-			const that = this;
+			const self = this;
 			const chart = new Chart.Chart(canvas, {
 				type: 'bar',
 				data: graph,
 				options: {
+					animation: false,
+					normalized: true,
 					onClick(event: Chart.ChartEvent, elements: Chart.ActiveElement[], chart: Chart.Chart) {
 						if (event.type === 'click') {
 							const clickElement = elements.find((element) =>
 								(element.element as Chart.BarElement).inRange(event.x, event.y)
 							);
 							if (clickElement) {
-								that.OnClickElement.Invoke(this, chart.data.datasets[clickElement.datasetIndex].label);
+								self.OnClickElement.Invoke(this, chart.data.datasets[clickElement.datasetIndex].label);
 							} else {
 								chart.resetZoom();
 							}
@@ -83,7 +85,7 @@ export class BarChart implements IChart<Dictionnary<StatusDuration[]>> {
 								modifierKey: 'shift',
 								threshold: 10,
 								onPanRejected: function({ chart }) {
-									console.log(`pan is rejected!!!`);
+									console.log(`pan is rejected!!! (shift)`);
 								}
 							},
 							zoom: {
@@ -100,7 +102,7 @@ export class BarChart implements IChart<Dictionnary<StatusDuration[]>> {
 								},
 								mode: 'x',
 								onZoomRejected: function({ chart }) {
-									console.log(`zoom is rejected!!!`);
+									console.log(`zoom is rejected!!! (shift)`);
 								}
 							}
 						}

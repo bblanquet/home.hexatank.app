@@ -8,7 +8,7 @@ import { RecordData } from '../../../../Core/Framework/Record/RecordData';
 import { isEqual } from 'lodash';
 import { RecordKind } from '../../../../Core/Framework/Record/RecordKind';
 import { Duration } from '../Model/Duration';
-import { HexAxial } from '../../../../Core/Utils/Geometry/HexAxial';
+import * as luxon from 'luxon';
 
 export class DurationStateFormater {
 	public Format(data: RecordData, comparedData: RecordData): Dictionnary<StatusDuration[]> {
@@ -42,7 +42,7 @@ export class DurationStateFormater {
 	private GetOverlappedIndex(step: Duration, list: ActionDuration[]): number {
 		let result = null;
 		list.some((item, index) => {
-			if (step.Intersects(item)) {
+			if (item.Includes(step)) {
 				result = index;
 				return true;
 			}
@@ -87,8 +87,13 @@ export class DurationStateFormater {
 			if (index !== null && comparedIndex !== null) {
 				if (isEqual(durations[index].Action.Amount, comparedDurations[comparedIndex].Action.Amount)) {
 					state = DurationState.Ok;
-					label = `${this.GetStringPos(durations[index].Action)} ok ${this.GetStringPos(
-						comparedDurations[comparedIndex].Action
+					label = `ok ${this.GetLabel(
+						durations,
+						index,
+						comparedDurations,
+						comparedIndex,
+						emptyDuration,
+						refDate
 					)}`;
 				} else if (
 					(0 < index &&
@@ -96,13 +101,23 @@ export class DurationStateFormater {
 					(0 < comparedIndex &&
 						isEqual(durations[index].Action.Amount, comparedDurations[comparedIndex - 1].Action.Amount))
 				) {
-					label = `${this.GetStringPos(durations[index].Action)} late ${this.GetStringPos(
-						comparedDurations[comparedIndex].Action
+					label = `late ${this.GetLabel(
+						durations,
+						index,
+						comparedDurations,
+						comparedIndex,
+						emptyDuration,
+						refDate
 					)}`;
 					state = DurationState.Late;
 				} else {
-					label = `${this.GetStringPos(durations[index].Action)} nok ${this.GetStringPos(
-						comparedDurations[comparedIndex].Action
+					label = `nok ${this.GetLabel(
+						durations,
+						index,
+						comparedDurations,
+						comparedIndex,
+						emptyDuration,
+						refDate
 					)}`;
 				}
 			}
@@ -112,7 +127,26 @@ export class DurationStateFormater {
 		return [ new StatusDuration(DurationState.None, refDate, result[0].Start, '') ].concat(result);
 	}
 
+	private GetLabel(
+		durations: ActionDuration[],
+		index: number,
+		comparedDurations: ActionDuration[],
+		comparedIndex: number,
+		emptyDuration: Duration,
+		refDate: number
+	): string {
+		return `[${this.GetStringPos(durations[index].Action)}   ${this.GetStringPos(
+			comparedDurations[comparedIndex].Action
+		)}] ${this.GetDuration(emptyDuration.Start, emptyDuration.End, refDate)}`;
+	}
+
 	private GetStringPos(action: RecordAction): string {
-		return `[${action.Amount.Q},${action.Amount.R}]`;
+		return `${action.Amount.Q} ${action.Amount.R}`;
+	}
+
+	private GetDuration(start: number, end: number, refDate: number): string {
+		return `[${luxon.DateTime.fromJSDate(new Date(start - refDate)).toFormat('ss.S')} ${luxon.DateTime
+			.fromJSDate(new Date(end - refDate))
+			.toFormat('ss.S')}]`;
 	}
 }

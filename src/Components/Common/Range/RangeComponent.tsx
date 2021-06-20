@@ -83,7 +83,7 @@ export default class RangeComponent extends Component<
 							}}
 						>
 							<div class="btn-space">
-								{moment(new Date(this.state.value - this.props.dataSet[0])).format('mm:ss')}
+								{moment(new Date(this.state.value - this.props.dataSet[0])).format('mm:ss.S')}
 							</div>
 						</div>
 						<input

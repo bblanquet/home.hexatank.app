@@ -1,7 +1,7 @@
-import { BonusValueProvider } from './BonusValueProvider';
+import { UpCalculator } from './UpCalculator';
 import { CellUpCondition } from './../../../Unit/PowerUp/Condition/CellUpCondition';
 import { Tank } from './../../../Unit/Tank';
-import { AttackUp } from './../../../Unit/PowerUp/AttackUp';
+import { FireUp } from '../../../Unit/PowerUp/FireUp';
 import { ISelectable } from './../../../../ISelectable';
 import { Cell } from '../../Cell';
 import { BonusField } from './BonusField';
@@ -28,8 +28,8 @@ export class AttackField extends BonusField {
 				return;
 			}
 			const energy = this.GetReactorsPower(this.hq);
-			const up = new AttackUp(vehicule, new CellUpCondition(vehicule), energy, this.OnEnergyChanged);
-			vehicule.SetPowerUp(up);
+			const up = new FireUp(vehicule, new CellUpCondition(vehicule), energy, this.OnEnergyChanged);
+			vehicule.AddPowerUp(up);
 		}
 	}
 }

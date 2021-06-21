@@ -10,7 +10,7 @@ export class GameSettings {
 	public static UnitLife: number = 20; //100
 	public static NatureLife: number = 40; //100
 	public static TurrelCoolingDown: number = 3000; //100
-	public static Attack: number = 10;
+	public static Fire: number = 10;
 
 	public static TankPrice: number = 8;
 	public static TruckPrice: number = 4;
@@ -36,7 +36,7 @@ export class GameSettings {
 		this.MissileTranslationSpeed = 5;
 		this.IsPause = false;
 		this.ShowEnemies = false;
-		this.Attack = 10;
+		this.Fire = 10;
 		this.TankPrice = 8;
 		this.TruckPrice = 4;
 		this.FieldPrice = 2;
@@ -55,7 +55,7 @@ export class GameSettings {
 		this.UnitLife = 100;
 		this.NatureLife = 40;
 		this.TurrelCoolingDown = 3000;
-		this.Attack = 10;
+		this.Fire = 10;
 	}
 
 	public static SetFastSpeed(): void {
@@ -70,6 +70,6 @@ export class GameSettings {
 		this.UnitLife = 100;
 		this.NatureLife = 40;
 		this.TurrelCoolingDown = 500;
-		this.Attack = 50;
+		this.Fire = 50;
 	}
 }

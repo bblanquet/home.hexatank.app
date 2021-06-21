@@ -36,14 +36,14 @@ import { CamouflageHandler } from './CamouflageHandler';
 import { Explosion } from './Explosion';
 import { ICamouflageAble } from './ICamouflageAble';
 import { BasicOrder } from '../../Ia/Order/BasicOrder';
+import { UpCalculator } from '../Cell/Field/Bonus/UpCalculator';
+import { FireUp } from './PowerUp/FireUp';
+import { SpeedUp } from './PowerUp/SpeedUp';
+import { HealUp } from './PowerUp/HealUp';
 
 export abstract class Vehicle extends AliveItem
 	implements IMovable, IRotatable, ISelectable, ICancellable, ICamouflageAble {
-	public Ups: Array<Up> = [];
 	public Id: string;
-	private _rotatingDuration: number = GameSettings.RotatingDuration;
-	private _translatingDuration: number = GameSettings.TranslatinDuration;
-	public Attack: number = GameSettings.Attack;
 	public IsPacific: boolean = false;
 	protected RootSprites: Array<string>;
 	private WheelIndex: number;
@@ -57,11 +57,12 @@ export abstract class Vehicle extends AliveItem
 	public GoalRadius: number;
 	private _nextCell: Cell;
 	private _currentCell: Cell;
-
 	private _currentOrder: IOrder = null;
 
 	protected BoundingBox: BoundingBox;
-	private Size: number;
+
+	//stats
+	private _upCalculator: UpCalculator = new UpCalculator();
 
 	private _translationMaker: ITranslationMaker;
 	private _rotationMaker: IRotationMaker;
@@ -74,7 +75,9 @@ export abstract class Vehicle extends AliveItem
 	private _leftDusts: Array<Dust>;
 	private _rightDusts: Array<Dust>;
 
-	private _handleCellStateChanged: (obj: any, cellState: CellState) => void;
+	private _ups: Array<Up> = [];
+
+	private _handleCellStateChanged: any = this.HandleCellStateChanged.bind(this);
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 	public OnCellChanged: LiteEvent<Cell> = new LiteEvent<Cell>();
 	public OnNextCellChanged: LiteEvent<Cell> = new LiteEvent<Cell>();
@@ -84,6 +87,8 @@ export abstract class Vehicle extends AliveItem
 	public OnOrderStopped: LiteEvent<Vehicle> = new LiteEvent<Vehicle>();
 	public OnTranslateStarted: LiteEvent<Cell> = new LiteEvent<Cell>();
 	public OnTranslateStopped: LiteEvent<Cell> = new LiteEvent<Cell>();
+	public OnPowerUp: LiteEvent<Up> = new LiteEvent<Up>();
+	public OnPowerDown: LiteEvent<Up> = new LiteEvent<Up>();
 
 	private _infiniteAnimator: InfiniteFadeAnimation;
 
@@ -97,10 +102,8 @@ export abstract class Vehicle extends AliveItem
 		this.SetProperties([ SvgArchive.selectionUnit ], (sprite) => (sprite.alpha = 0));
 
 		this.Z = ZKind.Cell;
-		this.Size = GameSettings.Size;
-		this.BoundingBox.Width = CellProperties.GetWidth(this.Size);
-		this.BoundingBox.Height = CellProperties.GetHeight(this.Size);
-		this._handleCellStateChanged = this.HandleCellStateChanged.bind(this);
+		this.BoundingBox.Width = CellProperties.GetWidth(GameSettings.Size);
+		this.BoundingBox.Height = CellProperties.GetHeight(GameSettings.Size);
 		this.RootSprites = new Array<string>();
 
 		this.GenerateSprite(SvgArchive.wheel);
@@ -157,32 +160,50 @@ export abstract class Vehicle extends AliveItem
 	}
 
 	public GetTranslationDuration(): number {
-		if (this._translatingDuration < GameSettings.GetFastestTranslation()) {
+		let speed = GameSettings.TranslatinDuration;
+		this._ups.filter((up) => up instanceof SpeedUp).forEach((up) => {
+			speed -= this._upCalculator.GetSpeedTranslation(up.GetCurrentEnergy());
+		});
+
+		if (speed < GameSettings.GetFastestTranslation()) {
 			return GameSettings.GetFastestTranslation();
 		}
-		return this._translatingDuration;
-	}
-	public SetTranslationDuration(translation: number): void {
-		this._translatingDuration += translation;
+		return speed;
 	}
 	public GetRotatingDuration(): number {
-		if (this._rotatingDuration < GameSettings.GetFastestRotation()) {
+		let speed = GameSettings.RotatingDuration;
+		this._ups.filter((up) => up instanceof SpeedUp).forEach((up) => {
+			speed -= this._upCalculator.GetSpeedRotation(up.GetCurrentEnergy());
+		});
+
+		if (speed < GameSettings.GetFastestRotation()) {
 			return GameSettings.GetFastestRotation();
 		}
-		return this._rotatingDuration;
-	}
-	public SetRotatingDuration(rotation: number): void {
-		this._rotatingDuration += rotation;
+		return speed;
 	}
 
-	public SetPowerUp(up: Up) {
-		this.Ups.push(up);
+	public GetFire(): number {
+		let fire = GameSettings.Fire;
+		this._ups.filter((up) => up instanceof FireUp).forEach((up) => {
+			fire += this._upCalculator.GetAttack(up.GetCurrentEnergy());
+		});
+		return fire;
+	}
+
+	public AddPowerUp(up: Up): void {
+		this._ups.push(up);
+		this.OnPowerUp.Invoke(this, up);
+	}
+
+	public DeletePowerUp(up: Up): void {
+		this._ups = this._ups.filter((u) => up !== u);
+		this.OnPowerDown.Invoke(this, up);
 	}
 
 	public GetUpAngle(): number {
-		const animatedUps = this.Ups.filter((u) => u.Animation);
+		const animatedUps = this._ups.filter((u) => u.Animation);
 		if (0 < animatedUps.length) {
-			const last = animatedUps[this.Ups.length - 1];
+			const last = animatedUps[this._ups.length - 1];
 			return last.Animation.GetCurrentRotation() + Math.PI * 2 * 60 / 360;
 		} else {
 			return 0;
@@ -384,7 +405,7 @@ export abstract class Vehicle extends AliveItem
 
 	protected abstract HandleCellStateChanged(obj: any, cellState: CellState): void;
 
-	public MoveNextCell(): void {
+	public GoNextCell(): void {
 		let previouscell = this._currentCell;
 		this._currentCell.OnCellStateChanged.Off(this._handleCellStateChanged);
 
@@ -445,11 +466,9 @@ export abstract class Vehicle extends AliveItem
 			this._infiniteAnimator.Update(viewX, viewY);
 		}
 
-		if (!isNullOrUndefined(this.Ups)) {
-			this.Ups.forEach((powerUp) => {
-				if (powerUp.Animation) {
-					powerUp.Animation.Update(viewX, viewY);
-				}
+		if (!isNullOrUndefined(this._ups)) {
+			this._ups.forEach((up) => {
+				up.Update(viewX, viewY);
 			});
 		}
 

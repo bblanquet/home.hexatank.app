@@ -83,10 +83,7 @@ export class BarChart implements IChart<Dictionnary<StatusDuration[]>> {
 								enabled: true,
 								mode: 'x',
 								modifierKey: 'shift',
-								threshold: 10,
-								onPanRejected: function({ chart }) {
-									console.log(`pan is rejected!!! (shift)`);
-								}
+								threshold: 10
 							},
 							zoom: {
 								pinch: {
@@ -100,10 +97,7 @@ export class BarChart implements IChart<Dictionnary<StatusDuration[]>> {
 									enabled: true,
 									modifierKey: 'shift'
 								},
-								mode: 'x',
-								onZoomRejected: function({ chart }) {
-									console.log(`zoom is rejected!!! (shift)`);
-								}
+								mode: 'x'
 							}
 						}
 					},

@@ -22,7 +22,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 	public HasReceivedRequest: boolean;
 	private _isDestroyed: boolean = false;
 
-	constructor(private _hq: Headquarter, public Area: IaArea) { }
+	constructor(private _hq: Headquarter, public Area: IaArea) {}
 
 	public Update(): void {
 		this.Area.Troops = this.Area.Troops.filter((t) => t.Tank.IsAlive());
@@ -55,7 +55,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 			//#2 get enemies cells
 			const foeCells = this.GetFoeCells(areas, ally);
 
-			console.log(`%c [DETECTED FOE] ${foeCells.length}`, 'font-weight:bold;color:blue;');
+			//console.log(`%c [DETECTED FOE] ${foeCells.length}`, 'font-weight:bold;color:blue;');
 
 			this.FireCell();
 			this.SendTroops(foeCells, ally);
@@ -88,7 +88,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 		//#3 get enemy contact cells
 		const aroundFoeCells = this.GetAroundFoeCells(foeCells);
 
-		console.log(`%c [FREE FOE CELL] ${Object.keys(aroundFoeCells).length}`, 'font-weight:bold;color:red;');
+		//console.log(`%c [FREE FOE CELL] ${Object.keys(aroundFoeCells).length}`, 'font-weight:bold;color:red;');
 
 		//#4 classify cell dangerous
 		const cellsByDanger = this.ClassifyCellDanger(aroundFoeCells, ally);
@@ -145,10 +145,8 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 	}
 
 	private GetAroundCellFoes(currentcell: Cell, ally: Tank) {
-		return currentcell
-			.GetNearby()
-			.map((c) => c as Cell)
-			.filter((c) => !isNullOrUndefined(c) && c.HasEnemy(ally)).length;
+		return currentcell.GetNearby().map((c) => c as Cell).filter((c) => !isNullOrUndefined(c) && c.HasEnemy(ally))
+			.length;
 	}
 
 	private FindBestRoads(troopRoads: TroopRoads[]): Groups<TroopRoads> {
@@ -251,7 +249,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 
 		var cost = Math.max.apply(
 			Math,
-			troops.map(function (o) {
+			troops.map(function(o) {
 				return o.GetPotentialCost();
 			})
 		);
@@ -270,13 +268,13 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 	}
 
 	private LogOrder(troopSituation: TroopRoads) {
-		console.log(
-			`%c tank get order to go to ${troopSituation.CurrentDestination.Destination.Coo()}`,
-			'font-weight:bold;color:red;'
-		);
+		// console.log(
+		// 	`%c tank get order to go to ${troopSituation.CurrentDestination.Destination.Coo()}`,
+		// 	'font-weight:bold;color:red;'
+		// );
 	}
 
 	private LogTroopCount() {
-		console.log(`%c [ALERT] troops count ${this.Area.GetTroops().length}`, 'font-weight:bold;color:red;');
+		// console.log(`%c [ALERT] troops count ${this.Area.GetTroops().length}`, 'font-weight:bold;color:red;');
 	}
 }

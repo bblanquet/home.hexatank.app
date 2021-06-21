@@ -1,4 +1,4 @@
-import { BonusValueProvider } from './BonusValueProvider';
+import { UpCalculator } from './UpCalculator';
 import { TimeTimer } from './../../../../Utils/Timer/TimeTimer';
 import { GameSettings } from '../../../../Framework/GameSettings';
 import { Cell } from '../../Cell';
@@ -14,7 +14,7 @@ import { IHeadquarter } from '../Hq/IHeadquarter';
 export class FarmField extends BonusField {
 	private _timer: TimeTimer;
 	private _lightItem: Light;
-	private _bonusProvider: BonusValueProvider = new BonusValueProvider();
+	private _bonusProvider: UpCalculator = new UpCalculator();
 
 	constructor(cell: Cell, protected hq: IHeadquarter) {
 		super(cell, [ SvgArchive.bonus.emptyMoney, SvgArchive.bonus.fullMoney ], hq);

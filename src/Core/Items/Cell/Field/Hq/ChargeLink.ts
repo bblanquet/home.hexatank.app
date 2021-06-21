@@ -49,7 +49,7 @@ export class ChargeLink extends Item implements IMovable {
 		return this._arrival === this._departure;
 	}
 
-	public MoveNextCell(): void {
+	public GoNextCell(): void {
 		this._boundingBox.X = this._departure.GetBoundingBox().X;
 		this._boundingBox.Y = this._departure.GetBoundingBox().Y;
 	}

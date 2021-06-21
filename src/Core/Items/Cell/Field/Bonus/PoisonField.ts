@@ -1,5 +1,5 @@
 import { TimeTimer } from './../../../../Utils/Timer/TimeTimer';
-import { BonusValueProvider } from './BonusValueProvider';
+import { UpCalculator } from './UpCalculator';
 import { Cell } from '../../Cell';
 import { BonusField } from './BonusField';
 import { SvgArchive } from '../../../../Framework/SvgArchiver';
@@ -16,7 +16,7 @@ export class PoisonField extends BonusField {
 		if (this.poisonTimer.IsElapsed()) {
 			const energy = this.GetReactorsPower(this.hq);
 			if (0 < energy) {
-				const poison = new BonusValueProvider().GetPoison(energy);
+				const poison = new UpCalculator().GetPoison(energy);
 				vehicule.SetDamage(poison);
 			}
 		}

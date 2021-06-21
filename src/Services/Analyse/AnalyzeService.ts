@@ -1,6 +1,7 @@
-import googleAnalytics from '@analytics/google-analytics';
+import '../../typings/google';
 import { Analytics, AnalyticsInstance } from 'analytics';
 import { IAnalyzeService } from './IAnalyzeService';
+import googleAnalytics from '@analytics/google-analytics';
 
 export class AnalyzeService implements IAnalyzeService {
 	private _analytics: AnalyticsInstance;

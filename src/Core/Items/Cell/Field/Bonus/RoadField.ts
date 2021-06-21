@@ -1,4 +1,4 @@
-import { BonusValueProvider } from './BonusValueProvider';
+import { UpCalculator } from './UpCalculator';
 import { SpeedUp } from './../../../Unit/PowerUp/SpeedUp';
 import { Cell } from '../../Cell';
 import { BonusField } from './BonusField';
@@ -24,6 +24,6 @@ export class RoadField extends BonusField {
 			this.GetReactorsPower(this.hq),
 			this.OnEnergyChanged
 		);
-		vehicule.SetPowerUp(up);
+		vehicule.AddPowerUp(up);
 	}
 }

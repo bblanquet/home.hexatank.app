@@ -138,7 +138,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 			info.ItemsCount = this._selectedItem.length;
 			info.Items = this._selectedItem.map((s) => s.constructor.name);
 			this.OnInteractionChanged.Invoke(this, info);
-			console.log(`%c ${this.GetMessage()}`, 'font-weight:bold;color:red;');
+			// console.log(`%c ${this.GetMessage()}`, 'font-weight:bold;color:red;');
 		}
 
 		let context = new CombinationContext();
@@ -146,11 +146,11 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 		context.InteractionKind = this.Kind;
 		context.Point = this.Point;
 
-		console.log(`%c FIRE ${InteractionKind[this.Kind]}`, 'color:red;font-weight:bold;');
+		// console.log(`%c FIRE ${InteractionKind[this.Kind]}`, 'color:red;font-weight:bold;');
 
 		this._combinations.some((combination) => {
 			if (combination.Combine(context)) {
-				console.log(`%c combination: ${combination.constructor.name}`, 'font-weight:bold;color:green;');
+				// console.log(`%c combination: ${combination.constructor.name}`, 'font-weight:bold;color:green;');
 				return true;
 			}
 			return false;

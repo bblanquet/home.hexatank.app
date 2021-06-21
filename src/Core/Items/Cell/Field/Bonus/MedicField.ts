@@ -4,7 +4,7 @@ import { Cell } from '../../Cell';
 import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { BonusField } from './BonusField';
-import { BonusValueProvider } from './BonusValueProvider';
+import { UpCalculator } from './UpCalculator';
 import { IHeadquarter } from '../Hq/IHeadquarter';
 
 export class MedicField extends BonusField {
@@ -15,8 +15,8 @@ export class MedicField extends BonusField {
 	Support(vehicule: Vehicle): void {}
 
 	public SetPowerUp(vehicule: Vehicle): void {
-		const powerUp = new BonusValueProvider().GetFixValue(this.GetReactorsPower(this.hq));
+		const powerUp = new UpCalculator().GetHeal(this.GetReactorsPower(this.hq));
 		const up = new HealUp(vehicule, new CellUpCondition(vehicule), powerUp, this.OnEnergyChanged);
-		vehicule.SetPowerUp(up);
+		vehicule.AddPowerUp(up);
 	}
 }

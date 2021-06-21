@@ -57,11 +57,7 @@ export class DeltaLineChart implements IChart<DeltaRecordCurve> {
 					datasets: this.Convert(curves)
 				},
 				options: {
-					onClick(event: Chart.ChartEvent, elements: Chart.ActiveElement[], chart: Chart.Chart) {
-						if (event.type === 'click') {
-							console.log('hello');
-						}
-					},
+					onClick(event: Chart.ChartEvent, elements: Chart.ActiveElement[], chart: Chart.Chart) {},
 					maintainAspectRatio: false,
 					responsive: true,
 					elements: {

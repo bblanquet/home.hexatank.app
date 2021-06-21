@@ -108,7 +108,7 @@ export class Turrel extends Item implements IRotatable {
 				this.GetBoundingBox().Height
 			),
 			this.Base.GetTarget(),
-			this.Base.Attack
+			this.Base.GetFire()
 		);
 		missile.GetSprites().forEach((s) => (s.visible = this.Base.GetCurrentCell().IsVisible()));
 		this.Base.OnMissileLaunched.Invoke(this, missile);

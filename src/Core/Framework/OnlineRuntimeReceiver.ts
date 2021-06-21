@@ -134,7 +134,7 @@ export class OnlineRuntimeReceiver {
 
 	private LatencyCompensation(latency: number, vehicle: Vehicle, order: BasicOrder, path: Cell[]) {
 		if (latency && 0 < latency) {
-			vehicle.SetPowerUp(new LatencyUp(vehicle, new LatencyCondition(vehicle, order), latency / path.length));
+			vehicle.AddPowerUp(new LatencyUp(vehicle, new LatencyCondition(vehicle, order), latency / path.length));
 		}
 	}
 

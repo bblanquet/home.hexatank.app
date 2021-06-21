@@ -1,5 +1,4 @@
 import { ReactorField } from './../Bonus/ReactorField';
-import { Cell } from './../../Cell';
 import { IInteractionContext } from '../../../../Interaction/IInteractionContext';
 import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { Item } from '../../../Item';
@@ -43,7 +42,9 @@ export class HqNetworkLink extends Item {
 			this._isVisible = true;
 		} else {
 			this._isVisible = false;
-			this._graph.clear();
+			if (this._graph) {
+				this._graph.clear();
+			}
 		}
 	}
 

@@ -1,6 +1,6 @@
 import { Identity } from './../../../Identity';
 import { IHeadquarter } from '../Hq/IHeadquarter';
-import { BonusValueProvider } from './BonusValueProvider';
+import { UpCalculator } from './UpCalculator';
 import { ShieldAppearance } from './ShieldAppearance';
 import { Cell } from '../../Cell';
 import { SvgArchive } from '../../../../Framework/SvgArchiver';
@@ -54,7 +54,7 @@ export class HqLessShieldField extends AliveBonusField {
 		} else {
 			if (this._fixTimer.IsElapsed()) {
 				if (this.HasDamage()) {
-					const fixValue = new BonusValueProvider().GetFixValue(5);
+					const fixValue = new UpCalculator().GetHeal(5);
 					this.SetDamage(-fixValue);
 				}
 			}

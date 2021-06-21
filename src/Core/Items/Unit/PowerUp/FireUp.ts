@@ -1,11 +1,11 @@
-import { LiteEvent } from './../../../Utils/Events/LiteEvent';
+import { LiteEvent } from '../../../Utils/Events/LiteEvent';
 import { UpAnimation } from './UpAnimation';
 import { Tank } from '../Tank';
 import { Up } from './Up';
 import { UpCondition } from './Condition/UpCondition';
 import { SvgArchive } from '../../../Framework/SvgArchiver';
 
-export class AttackUp extends Up {
+export class FireUp extends Up {
 	constructor(tank: Tank, condition: UpCondition, energy: number, energyChanged: LiteEvent<number> = null) {
 		super(tank, condition, energy, energyChanged);
 	}
@@ -17,8 +17,5 @@ export class AttackUp extends Up {
 		} else if (energy === 0 && 0 < previousEnergy) {
 			this.Animation.Destroy();
 		}
-
-		(this.Vehicle as Tank).Attack -= this.Bonus.GetPower(previousEnergy);
-		(this.Vehicle as Tank).Attack += this.Bonus.GetPower(energy);
 	}
 }

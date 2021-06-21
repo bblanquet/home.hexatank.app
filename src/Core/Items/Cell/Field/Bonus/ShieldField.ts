@@ -1,7 +1,7 @@
 import { HeadQuarterField } from './../Hq/HeadquarterField';
 import { IHeadquarter } from '../Hq/IHeadquarter';
 import { Identity } from './../../../Identity';
-import { BonusValueProvider } from './BonusValueProvider';
+import { UpCalculator } from './UpCalculator';
 import { ShieldAppearance } from './ShieldAppearance';
 import { Cell } from '../../Cell';
 import { SvgArchive } from '../../../../Framework/SvgArchiver';
@@ -75,7 +75,7 @@ export class ShieldField extends AliveBonusField {
 		} else {
 			if (this._fixTimer.IsElapsed()) {
 				if (this.HasDamage()) {
-					const fixValue = new BonusValueProvider().GetFixValue(this.GetReactorsPower(this.Hq));
+					const fixValue = new UpCalculator().GetHeal(this.GetReactorsPower(this.Hq));
 					this.SetDamage(-fixValue);
 				}
 			}

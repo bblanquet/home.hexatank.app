@@ -471,7 +471,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 		var isSelected = this._selectionCircle.contains(context.Point.x, context.Point.y);
 		if (isSelected) {
-			console.log(`%c Q:${this.GetHexCoo().Q} R:${this.GetHexCoo().R}`, 'color:blue;font-weight:bold;');
+			// console.log(`%c Q:${this.GetHexCoo().Q} R:${this.GetHexCoo().R}`, 'color:blue;font-weight:bold;');
 			// console.log(
 			// 	`%c X:${this.GetHexCoo().ToOffset().M} Y:${this.GetHexCoo().ToOffset().N}`,
 			// 	'color:red;font-weight:bold;'

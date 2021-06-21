@@ -31,10 +31,6 @@ module.exports = (env) => {
 		optimization: {
 			minimizer: [ new UglifyJsPlugin() ]
 		},
-		// What files webpack will manage
-		resolve: {
-			extensions: [ '.js', '.ts', '.tsx', 'jsx' ]
-		},
 		module: {
 			rules: [
 				{
@@ -69,6 +65,10 @@ module.exports = (env) => {
 					}
 				}
 			]
+		},
+		// What files webpack will manage
+		resolve: {
+			extensions: [ '.js', '.ts', '.tsx', 'jsx' ]
 		},
 		devServer: {
 			historyApiFallback: true

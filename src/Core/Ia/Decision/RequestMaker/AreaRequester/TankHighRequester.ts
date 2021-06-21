@@ -13,12 +13,12 @@ export class TankRequester implements IAreaRequestMaker {
 			let requestTroops = area.Troops.length - area.GetFoesCount();
 			if (0 <= requestTroops) {
 				if (0 < area.GetInnerFoeCount()) {
-					console.log('tank foes');
+					// console.log('tank foes');
 					return new AreaRequest(RequestType.Tank, this._priority.toString(), requestTroops + 1, area);
 				}
 			}
 		} else if (area.Troops.length === 0 && area.HasNature()) {
-			console.log('tank clear');
+			// console.log('tank clear');
 			return new AreaRequest(RequestType.Tank, this._priority.toString(), 1, area);
 		}
 		return AreaRequestMaker.NoRequest(area);

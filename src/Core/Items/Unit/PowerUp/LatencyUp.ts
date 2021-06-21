@@ -7,8 +7,5 @@ export class LatencyUp extends Up {
 		super(vehicle, condition, speed);
 	}
 
-	public OnEnergyChanged(formerSpeed: number, speed: number): void {
-		this.Vehicle.SetTranslationDuration(formerSpeed);
-		this.Vehicle.SetTranslationDuration(-speed);
-	}
+	public OnEnergyChanged(formerSpeed: number, speed: number): void {}
 }

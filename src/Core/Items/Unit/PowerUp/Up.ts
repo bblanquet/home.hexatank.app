@@ -1,12 +1,10 @@
 import { LiteEvent } from '../../../Utils/Events/LiteEvent';
-import { BonusValueProvider } from '../../Cell/Field/Bonus/BonusValueProvider';
 import { Item } from '../../Item';
 import { Vehicle } from '../Vehicle';
 import { UpCondition } from './Condition/UpCondition';
 import { UpAnimation } from './UpAnimation';
 
 export abstract class Up {
-	protected Bonus: BonusValueProvider = new BonusValueProvider();
 	private _handleEnergyChanged: any = this.EnergyChanged.bind(this);
 	private _handleStop: any = this.OnStop.bind(this);
 	public Animation: UpAnimation;
@@ -30,8 +28,14 @@ export abstract class Up {
 		}
 	}
 
+	public Update(viewX: number, viewY: number): void {
+		if (this.Animation) {
+			this.Animation.Update(viewX, viewY);
+		}
+	}
+
 	protected abstract OnEnergyChanged(previousEnery: number, energy: number): void;
-	protected GetCurrentEnergy(): number {
+	public GetCurrentEnergy(): number {
 		return this._currentEnergy;
 	}
 	private EnergyChanged(src: any, nextEnergy: number): void {
@@ -43,7 +47,7 @@ export abstract class Up {
 		this.isDone = true;
 		this._condition.Done.Off(this._handleStop);
 		this.Vehicle.OnDestroyed.Off(this._handleStop);
-		this.Vehicle.Ups = this.Vehicle.Ups.filter((p) => p !== this);
+		this.Vehicle.DeletePowerUp(this);
 		if (this._energyChanged) {
 			this._energyChanged.Off(this._handleEnergyChanged);
 		}

@@ -17,10 +17,5 @@ export class SpeedUp extends Up {
 		} else if (energy === 0 && 0 < previousEnery) {
 			this.Animation.Destroy();
 		}
-
-		this.Vehicle.SetTranslationDuration(-this.Bonus.GetSpeedTranslation(previousEnery));
-		this.Vehicle.SetRotatingDuration(-this.Bonus.GetSpeedRotation(previousEnery));
-		this.Vehicle.SetTranslationDuration(this.Bonus.GetSpeedTranslation(energy));
-		this.Vehicle.SetRotatingDuration(this.Bonus.GetSpeedRotation(energy));
 	}
 }

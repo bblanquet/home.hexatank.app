@@ -1,4 +1,4 @@
-import { BonusValueProvider } from './BonusValueProvider';
+import { UpCalculator } from './UpCalculator';
 import { Dictionnary } from './../../../../Utils/Collections/Dictionnary';
 import { Charge } from '../Hq/Charge';
 import { ZKind } from './../../../ZKind';
@@ -19,7 +19,7 @@ import { Cell } from '../../Cell';
 import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
 import { AttackMenuItem } from '../../../../Menu/Buttons/AttackMenuItem';
 import { Tank } from '../../../Unit/Tank';
-import { AttackUp } from '../../../Unit/PowerUp/AttackUp';
+import { FireUp } from '../../../Unit/PowerUp/FireUp';
 import { TimeUpCondition } from '../../../Unit/PowerUp/Condition/TimeUpCondition';
 import { HealMenuItem } from '../../../../Menu/Buttons/HealMenuItem';
 import { HealUp } from '../../../Unit/PowerUp/HealUp';
@@ -36,7 +36,7 @@ import { IHqGameContext } from '../../../../Setup/Context/IHqGameContext';
 
 export class ReactorField extends Field implements ISelectable, ISpot<ReactorField> {
 	public Identity: Identity;
-	private _bonusValueProvider: BonusValueProvider = new BonusValueProvider();
+	private _bonusValueProvider: UpCalculator = new UpCalculator();
 	//state
 	public Reserve: ReactorReserve;
 	private _totalRange: number = 3;
@@ -170,8 +170,8 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 						return;
 					}
 					if (v instanceof Tank) {
-						const powerUp = this._bonusValueProvider.GetPower(this.GetPower());
-						v.SetPowerUp(new AttackUp(v, new TimeUpCondition(), powerUp));
+						const powerUp = this._bonusValueProvider.GetAttack(this.GetPower());
+						v.AddPowerUp(new FireUp(v, new TimeUpCondition(), powerUp));
 					}
 				});
 			} else if (type instanceof HealMenuItem) {
@@ -179,15 +179,15 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 					if (v.IsPacific) {
 						return;
 					}
-					const powerUp = this._bonusValueProvider.GetFixValue(this.GetPower());
-					v.SetPowerUp(new HealUp(v, new TimeUpCondition(), powerUp));
+					const powerUp = this._bonusValueProvider.GetHeal(this.GetPower());
+					v.AddPowerUp(new HealUp(v, new TimeUpCondition(), powerUp));
 				});
 			} else if (type instanceof SpeedFieldMenuItem) {
 				vehicles.forEach((v) => {
 					if (v.IsPacific) {
 						return;
 					}
-					v.SetPowerUp(new SpeedUp(v, new TimeUpCondition(), this.GetPower()));
+					v.AddPowerUp(new SpeedUp(v, new TimeUpCondition(), this.GetPower()));
 				});
 			}
 		}
@@ -197,7 +197,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		return 0 < this.Reserve.GetUsedPower();
 	}
 
-	public ClearPower(): void { }
+	public ClearPower(): void {}
 
 	private _endLockDate: number;
 

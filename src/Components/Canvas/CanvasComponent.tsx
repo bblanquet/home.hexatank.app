@@ -32,11 +32,13 @@ export default class CanvasComponent extends Component<
 		this._stop = true;
 	}
 
+	private _resizeFunc: any = this.ResizeTheCanvas.bind(this);
+
 	componentDidMount() {
 		this._stop = false;
-		window.addEventListener('resize', () => this.ResizeTheCanvas());
-		window.addEventListener('DOMContentLoaded', () => this.ResizeTheCanvas());
-		window.addEventListener('scroll', () => this.ResizeTheCanvas());
+		window.addEventListener('resize', this._resizeFunc);
+		window.addEventListener('DOMContentLoaded', this._resizeFunc);
+		window.addEventListener('scroll', this._resizeFunc);
 		this._gameCanvas.appendChild(this._appService.Publish().view);
 		this.ResizeTheCanvas();
 		this.SetCenter();
@@ -44,9 +46,9 @@ export default class CanvasComponent extends Component<
 	}
 
 	componentWillUnmount() {
-		window.removeEventListener('resize', () => this.ResizeTheCanvas());
-		window.removeEventListener('DOMContentLoaded', () => this.ResizeTheCanvas());
-		window.removeEventListener('scroll', () => this.ResizeTheCanvas());
+		window.removeEventListener('resize', this._resizeFunc);
+		window.removeEventListener('DOMContentLoaded', this._resizeFunc);
+		window.removeEventListener('scroll', this._resizeFunc);
 		Singletons.Load<IAppService<IBlueprint>>(this._keyService.GetAppKey()).Collect();
 	}
 

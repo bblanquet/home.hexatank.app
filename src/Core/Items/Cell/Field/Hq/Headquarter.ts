@@ -64,9 +64,8 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 	public OnTankRequestChanged: LiteEvent<number> = new LiteEvent<number>();
-	constructor(identity: Identity, cell: Cell) {
+	constructor(public Identity: Identity, cell: Cell) {
 		super();
-		this.Identity = identity;
 		this.Z = ZKind.Cell;
 		this._cell = cell;
 		this._cell.SetField(this);
@@ -94,7 +93,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 		var neighbours = this._cell.GetUnblockedRange();
 		this.Fields = new Array<HeadQuarterField>();
 		neighbours.forEach((cell) => {
-			this.Fields.push(new HeadQuarterField(this, <Cell>cell, identity.Skin.GetLight()));
+			this.Fields.push(new HeadQuarterField(this, <Cell>cell, this.Identity.Skin.GetLight()));
 		});
 		this._onCellStateChanged = this.OncellStateChanged.bind(this);
 		this.OnDiamondEarned.On(this.HandleDiamondChanged.bind(this));
@@ -110,6 +109,10 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 		this.Life = 200;
 	}
 
+	public GetIdentity(): Identity {
+		return this.Identity;
+	}
+
 	public SetSelectionAnimation(): void {
 		const blue = new BasicItem(this._cell.GetBoundingBox(), SvgArchive.selectionBlueHq, ZKind.BelowCell);
 		blue.SetVisible(() => this.IsAlive());
@@ -120,7 +123,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 		white.SetAlive(() => this.IsAlive());
 	}
 
-	SetPowerUp(vehicule: Vehicle): void { }
+	SetPowerUp(vehicule: Vehicle): void {}
 	protected OncellStateChanged(obj: any, cellState: CellState): void {
 		this.GetCurrentSprites().Values().forEach((s) => {
 			s.visible = cellState !== CellState.Hidden;
@@ -153,10 +156,10 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 	}
 
 	public IsEnemy(id: Identity): boolean {
-		return !(id && id.Name === this.Identity.Name);
+		return this.Identity.IsEnemy(id);
 	}
 
-	Support(vehicule: Vehicle): void { }
+	Support(vehicule: Vehicle): void {}
 
 	IsDesctrutible(): boolean {
 		return true;
@@ -239,7 +242,6 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 	public Destroy(): void {
 		super.Destroy();
 		this._cell.OnCellStateChanged.Off(this._onCellStateChanged);
-		this._cell.DestroyField();
 		this.IsUpdatable = false;
 		this.Fields.forEach((field) => {
 			field.Destroy();

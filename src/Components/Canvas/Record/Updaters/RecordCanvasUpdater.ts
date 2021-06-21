@@ -1,12 +1,12 @@
 import { CellUpdater } from './CellUpdater';
 import { UnitUpdater } from './UnitUpdater';
-import { RecordData } from '../../../../Core/Framework/Record/RecordData';
+import { RecordContent } from '../../../../Core/Framework/Record/Model/RecordContent';
 import { GameContext } from '../../../../Core/Setup/Context/GameContext';
 export class RecordCanvasUpdater {
 	private _unitUpdater: UnitUpdater;
 	private _cellUpdater: CellUpdater;
 
-	constructor(private _ref: RecordData, private _gameContext: GameContext) {
+	constructor(private _ref: RecordContent, private _gameContext: GameContext) {
 		this._unitUpdater = new UnitUpdater(this._ref, this._gameContext);
 		this._cellUpdater = new CellUpdater(this._ref, this._gameContext);
 	}

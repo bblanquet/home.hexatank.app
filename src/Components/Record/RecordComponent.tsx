@@ -2,7 +2,7 @@ import { IAppService } from '../../Services/App/IAppService';
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import UploadButtonComponent from '../Common/Button/Stylish/UploadButtonComponent';
-import { RecordData } from '../../Core/Framework/Record/RecordData';
+import { RecordContent } from '../../Core/Framework/Record/Model/RecordContent';
 import GridComponent from '../Common/Grid/GridComponent';
 import { IRecordService } from '../../Services/Record/IRecordService';
 import { ICompareService } from '../../Services/Compare/ICompareService';
@@ -50,7 +50,7 @@ export default class RecordComponent extends Component<
 		route('/LineComparison', true);
 	}
 
-	private Play(data: RecordData): void {
+	private Play(data: RecordContent): void {
 		this._appService.Register(data.MapContext);
 		this._recordService.Register(data);
 		route('/RecordCanvas', true);
@@ -61,7 +61,7 @@ export default class RecordComponent extends Component<
 		reader.readAsText(e.target.files[0], 'UTF-8');
 		reader.onload = (ev: ProgressEvent<FileReader>) => {
 			const data = JSON.parse(ev.target.result as string);
-			this.state.Records.push(new RecordSelection(false, RecordData.To(data)));
+			this.state.Records.push(new RecordSelection(false, RecordContent.To(data)));
 			this.setState({
 				Records: this.state.Records
 			});

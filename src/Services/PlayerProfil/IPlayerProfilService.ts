@@ -1,4 +1,4 @@
-import { RecordData } from '../../Core/Framework/Record/RecordData';
+import { RecordContent } from '../../Core/Framework/Record/Model/RecordContent';
 import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
 import { SimpleEvent } from './../../Core/Utils/Events/SimpleEvent';
 import { PlayerProfil } from './PlayerProfil';
@@ -7,7 +7,7 @@ export interface IPlayerProfilService {
 	DeleteRecord(name: string): void;
 	SetProfil(model: PlayerProfil): void;
 	GetProfil(): PlayerProfil;
-	GetRecords(): RecordData[];
+	GetRecords(): RecordContent[];
 	GetLevel(): number;
 	GetNextLevelPercentage(): number;
 	GetColorLevel(): string;

@@ -13,13 +13,13 @@ export class HeadQuarterField extends Field {
 	IsFading: boolean;
 	Diamonds: number = 0;
 
-	constructor(private _hq: Headquarter, ceil: Cell, sprite: string) {
-		super(ceil);
+	constructor(private _hq: Headquarter, cell: Cell, sprite: string) {
+		super(cell, _hq.Identity);
 		this.GetCell().SetField(this);
 		this.Z = ZKind.Field;
 		this._timer = new TickTimer(3);
 		this.GenerateSprite(sprite);
-		this.InitPosition(ceil.GetBoundingBox());
+		this.InitPosition(cell.GetBoundingBox());
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});
@@ -28,7 +28,6 @@ export class HeadQuarterField extends Field {
 	public Destroy(): void {
 		super.Destroy();
 		this.IsUpdatable = false;
-		this.GetCell().DestroyField();
 	}
 
 	public Support(vehicule: Vehicle): void {

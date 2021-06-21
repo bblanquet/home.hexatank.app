@@ -13,6 +13,7 @@ import { InteractionContext } from '../../../../Interaction/InteractionContext';
 import { IActiveContainer } from '../IActiveContainer';
 import { ZKind } from '../../../ZKind';
 import { Explosion } from '../../../Unit/Explosion';
+import { BasicField } from '../BasicField';
 
 export abstract class BonusField extends Field implements IActiveContainer {
 	private _animator: IAnimator;
@@ -22,7 +23,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 	public OnEnergyChanged: LiteEvent<number> = new LiteEvent<number>();
 
 	constructor(cell: Cell, private _bonus: string[], protected hq: IHeadquarter, override: boolean = true) {
-		super(cell);
+		super(cell, hq.Identity);
 		this.Identity = hq.Identity;
 		this.GetCell().SetField(this);
 		this.Z = ZKind.Field;
@@ -41,7 +42,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 		}
 		this._animator = new BouncingScaleAnimator(this);
 		if (!hq.IsCovered(cell)) {
-			cell.DestroyField();
+			new BasicField(cell);
 			if (cell.IsVisible()) {
 				new Explosion(cell.GetBoundingBox(), SvgArchive.constructionEffects, ZKind.Sky, false, 5);
 			}

@@ -7,7 +7,6 @@ import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import SmPanelComponent from '../Common/Panel/SmPanelComponent';
 import ChartContainer from '../Common/Chart/ChartContainer';
-import { DurationStateFormater } from '../Common/Chart/Formater/DurationStateFormater';
 import { ICompareService } from '../../Services/Compare/ICompareService';
 import { Singletons, SingletonKey } from '../../Singletons';
 
@@ -41,13 +40,8 @@ export default class BarComparisonComponent extends Component<{}, { Canvas: HTML
 
 	private UpdateCanvas() {
 		if (!this.state.Canvas) {
-			const records = this._compareService.GetRecords();
-
 			this.setState({
-				Canvas: this._chart.GetCanvas(
-					records[0].Title,
-					new DurationStateFormater().Format(records[0], records[1])
-				)
+				Canvas: this._chart.GetCanvas('', this._compareService.GetCellDelta())
 			});
 		}
 	}

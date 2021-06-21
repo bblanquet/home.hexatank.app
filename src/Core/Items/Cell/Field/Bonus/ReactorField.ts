@@ -33,6 +33,7 @@ import { ISpot } from '../../../../Utils/Geometry/ISpot';
 import { IHeadquarter } from '../Hq/IHeadquarter';
 import { Identity } from '../../../Identity';
 import { IHqGameContext } from '../../../../Setup/Context/IHqGameContext';
+import { BasicField } from '../BasicField';
 
 export class ReactorField extends Field implements ISelectable, ISpot<ReactorField> {
 	public Identity: Identity;
@@ -67,7 +68,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		private _light: string,
 		public IsPacific: boolean = false
 	) {
-		super(cell);
+		super(cell, Hq.Identity);
 		this.Identity = this.Hq.Identity;
 		this.Z = ZKind.Field;
 		this.Hq.AddReactor(this);
@@ -240,15 +241,15 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 				charge.Destroy();
 			});
 			this.Charges.Clear();
-			this.GetCell().DestroyField();
+			new BasicField(this.GetCell());
 
 			this.GetCell().GetIncludedRange(this._totalRange).forEach((c) => {
 				if (
 					TypeTranslator.IsBonusField(c.GetField()) &&
 					!this.Hq.IsCovered(c) &&
-					!TypeTranslator.IsEnemy(c.GetField(), this.Hq.Identity)
+					!this.Hq.Identity.IsEnemy(c.GetField().GetIdentity())
 				) {
-					c.DestroyField();
+					new BasicField(c);
 					if (c.IsVisible()) {
 						new Explosion(c.GetBoundingBox(), SvgArchive.constructionEffects, ZKind.Sky, false, 5);
 					}

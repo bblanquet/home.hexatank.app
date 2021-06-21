@@ -20,6 +20,7 @@ import { BlockingField } from '../Items/Cell/Field/BlockingField';
 import { LatencyUp } from '../Items/Unit/PowerUp/LatencyUp';
 import { LatencyCondition } from '../Items/Unit/PowerUp/Condition/LatencyCondition';
 import { Cell } from '../Items/Cell/Cell';
+import { Identity } from '../Items/Identity';
 
 export class OnlineRuntimeReceiver {
 	private _obs: NetworkObserver[];
@@ -46,8 +47,8 @@ export class OnlineRuntimeReceiver {
 		});
 	}
 
-	private IsListenedHq(coo: string): boolean {
-		const hq = this._context.GetCell(coo).GetField() as Headquarter;
+	private IsListenedHq(hqName: string): boolean {
+		const hq = this._context.GetHqFromId(new Identity(hqName, null, null));
 		return !isNullOrUndefined(hq) && hq.Identity.Name !== this._context.GetPlayerHq().Identity.Name && !hq.IsIa();
 	}
 
@@ -60,9 +61,9 @@ export class OnlineRuntimeReceiver {
 
 	private HandleVehicleCreated(message: NetworkMessage<VehiclePacket>): void {
 		const packet = message.Content;
-		if (this.IsListenedHq(packet.HqCoo)) {
+		if (this.IsListenedHq(packet.HqName)) {
 			if (!this._context.ExistUnit(packet.Id)) {
-				const hq = this._context.GetCell(packet.HqCoo).GetField() as Headquarter;
+				const hq = this._context.GetHqFromId(new Identity(packet.HqName, null, null));
 				const pos = this._context.GetCell(packet.Coo);
 				if (packet.Kind === 'Tank') {
 					hq.CreateTank(pos);
@@ -161,16 +162,22 @@ export class OnlineRuntimeReceiver {
 			return;
 		}
 		const cell = this._context.GetCell(message.Content.Coo);
-		const hq = isNullOrUndefined(message.Content.HqCoo) ? null : this._context.GetHq(message.Content.HqCoo);
-		if (this.IsListenedHq(message.Content.HqCoo)) {
+		const hq = this.GetHq(message);
+		if (this.IsListenedHq(hq.Identity.Name)) {
 			const field = FieldTypeHelper.CreateField(message.Content.Type, cell, hq, this._context);
 		}
 	}
 
+	private GetHq(message: NetworkMessage<FieldPacket>) {
+		return isNullOrUndefined(message.Content.IdentityName)
+			? null
+			: this._context.GetHqFromId(new Identity(message.Content.IdentityName, null, null));
+	}
+
 	private HandleEnergyChanged(message: NetworkMessage<EnergyPacket>): void {
 		const cell = this._context.GetCell(message.Content.Coo);
-		const hq = isNullOrUndefined(message.Content.HqCoo) ? null : this._context.GetHq(message.Content.HqCoo);
-		if (this.IsListenedHq(message.Content.HqCoo)) {
+		const hq = this.GetHq(message);
+		if (this.IsListenedHq(hq.Identity.Name)) {
 			const reactor = cell.GetField() as ReactorField;
 			if (message.Content.IsEnergyUp) {
 				reactor.PowerUp();
@@ -182,8 +189,8 @@ export class OnlineRuntimeReceiver {
 
 	private HandleOverlocked(message: NetworkMessage<OverlockedPacket>): void {
 		const cell = this._context.GetCell(message.Content.Coo);
-		const hq = isNullOrUndefined(message.Content.HqCoo) ? null : this._context.GetHq(message.Content.HqCoo);
-		if (this.IsListenedHq(message.Content.HqCoo)) {
+		const hq = this.GetHq(message);
+		if (this.IsListenedHq(hq.Identity.Name)) {
 			const reactor = cell.GetField() as ReactorField;
 			reactor.Overlock(TypeTranslator.GetPowerUp(message.Content.PowerUp));
 		}

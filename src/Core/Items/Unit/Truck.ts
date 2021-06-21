@@ -47,7 +47,7 @@ export class Truck extends Vehicle {
 	}
 
 	public IsEnemy(id: Identity): boolean {
-		return !(id && id.Name === this.Identity.Name);
+		return this.Identity.IsEnemy(id);
 	}
 
 	public Load(): boolean {

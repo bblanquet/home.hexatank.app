@@ -10,8 +10,8 @@ import { ZKind } from '../../ZKind';
 export class VolcanoField extends Field {
 	private _isIncreasingOpacity: boolean = false;
 
-	constructor(ceil: Cell) {
-		super(ceil);
+	constructor(cell: Cell) {
+		super(cell, null);
 		this.GetCell().SetField(this);
 		this.Z = ZKind.Field;
 		this.GenerateSprite(SvgArchive.nature.volcano);
@@ -25,7 +25,7 @@ export class VolcanoField extends Field {
 
 		this.IsCentralRef = true;
 
-		this.InitPosition(ceil.GetBoundingBox());
+		this.InitPosition(cell.GetBoundingBox());
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});

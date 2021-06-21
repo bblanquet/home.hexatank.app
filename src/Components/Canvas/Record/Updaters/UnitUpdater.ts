@@ -1,5 +1,5 @@
 import { IndexFinder } from './IndexFinder';
-import { RecordKind } from '../../../../Core/Framework/Record/RecordKind';
+import { RecordKind } from '../../../../Core/Framework/Record/Model/Item/State/RecordKind';
 import { Headquarter } from '../../../../Core/Items/Cell/Field/Hq/Headquarter';
 import { HexAxial } from '../../../../Core/Utils/Geometry/HexAxial';
 import { Vehicle } from '../../../../Core/Items/Unit/Vehicle';
@@ -7,14 +7,14 @@ import { Dictionnary } from '../../../../Core/Utils/Collections/Dictionnary';
 import { Tank } from '../../../../Core/Items/Unit/Tank';
 import { Truck } from '../../../../Core/Items/Unit/Truck';
 import { GameContext } from '../../../../Core/Setup/Context/GameContext';
-import { RecordData } from '../../../../Core/Framework/Record/RecordData';
+import { RecordContent } from '../../../../Core/Framework/Record/Model/RecordContent';
 import { isNullOrUndefined } from '../../../../Core/Utils/ToolBox';
 
 export class UnitUpdater {
 	private _displayedUnits: Dictionnary<Vehicle>;
 	private _indexFinder: IndexFinder;
 
-	constructor(private _ref: RecordData, private _gameContext: GameContext) {
+	constructor(private _ref: RecordContent, private _gameContext: GameContext) {
 		this._indexFinder = new IndexFinder();
 		this._displayedUnits = new Dictionnary<Vehicle>();
 	}
@@ -65,11 +65,11 @@ export class UnitUpdater {
 		}>();
 		this._ref.Hqs.Values().forEach((hq) => {
 			hq.Units.Keys().forEach((key) => {
-				if (hq.Units.Get(key).Actions) {
-					const dates = hq.Units.Get(key).Actions.map((a) => a.X);
+				if (hq.Units.Get(key).States) {
+					const dates = hq.Units.Get(key).States.map((a) => a.X);
 					const dateIndex = this._indexFinder.GetIndex(date, dates);
 					if (!isNullOrUndefined(dateIndex)) {
-						const action = hq.Units.Get(key).Actions[dateIndex];
+						const action = hq.Units.Get(key).States[dateIndex];
 						if (+action.kind !== RecordKind.Destroyed) {
 							coos.Add(key, {
 								Axial: new HexAxial(action.Amount.Q, action.Amount.R),

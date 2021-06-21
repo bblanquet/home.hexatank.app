@@ -1,4 +1,3 @@
-import { GameSettings } from '../../../Framework/GameSettings';
 import { InteractionContext } from '../../../Interaction/InteractionContext';
 import { Cell } from '../Cell';
 import { Field } from './Field';
@@ -7,8 +6,8 @@ import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 
 export class BasicField extends Field {
 	constructor(cell: Cell) {
-		super(cell);
-		this.GetCell().SetField(this);
+		super(cell, null);
+		cell.SetField(this);
 	}
 
 	Support(vehicule: Vehicle): void {}

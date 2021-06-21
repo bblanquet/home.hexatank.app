@@ -1,5 +1,5 @@
 export class FieldPacket {
 	public Coo: string;
-	public HqCoo: string;
+	public IdentityName: string;
 	public Type: string;
 }

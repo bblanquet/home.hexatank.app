@@ -174,7 +174,7 @@ export class Tank extends Vehicle {
 	}
 
 	public IsEnemy(id: Identity): boolean {
-		return !(id && id.Name === this.Identity.Name);
+		return this.IsEnemy(id);
 	}
 
 	public GetTarget(): AliveItem {

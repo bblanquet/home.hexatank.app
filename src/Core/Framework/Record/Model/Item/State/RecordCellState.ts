@@ -1,5 +1,6 @@
+import { IRecordState } from './IRecordState';
 import { RecordKind } from './RecordKind';
 
-export class RecordField {
+export class RecordCellState implements IRecordState {
 	constructor(public X: number, public kind: RecordKind) {}
 }

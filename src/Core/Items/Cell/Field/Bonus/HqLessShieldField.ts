@@ -10,6 +10,7 @@ import { ITimer } from '../../../../Utils/Timer/ITimer';
 import { TimeTimer } from '../../../../Utils/Timer/TimeTimer';
 import { BouncingScaleDownAnimator } from '../../../Animator/BouncingScaleDownAnimator';
 import { BouncingScaleUpAnimator } from '../../../Animator/BouncingScaleUpAnimator';
+import { BasicField } from '../BasicField';
 
 export class HqLessShieldField extends AliveBonusField {
 	private _shieldAppearance: ShieldAppearance;
@@ -19,7 +20,6 @@ export class HqLessShieldField extends AliveBonusField {
 		super(cell, [], id, hq);
 		this._fixTimer = new TimeTimer(1000);
 		this._shieldAppearance = new ShieldAppearance(this);
-		this.GetCell().SetField(this);
 	}
 
 	public ChangeEnergy(isUp: boolean): void {
@@ -43,12 +43,12 @@ export class HqLessShieldField extends AliveBonusField {
 	Support(vehicule: Vehicle): void {}
 
 	public IsEnemy(id: Identity): boolean {
-		return !(id && id.Name === this.Identity.Name);
+		return this.Identity.IsEnemy(id);
 	}
 
 	public Update(viewX: number, viewY: number): void {
 		if (!this.IsAlive()) {
-			this.GetCell().DestroyField();
+			new BasicField(this.GetCell());
 			this.Destroy();
 			return;
 		} else {

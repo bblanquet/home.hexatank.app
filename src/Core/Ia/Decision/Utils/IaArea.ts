@@ -13,7 +13,6 @@ import { DistanceHelper } from '../../../Items/Unit/MotionHelpers/DistanceHelper
 import { HeadQuarterField } from '../../../Items/Cell/Field/Hq/HeadquarterField';
 import { RoadField } from '../../../Items/Cell/Field/Bonus/RoadField';
 import { AStarEngine } from '../../AStarEngine';
-import { IBrain } from '../IBrain';
 import { Area } from './Area';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
@@ -119,8 +118,7 @@ export class IaArea {
 	public GetFoeReactor(): Cell {
 		const cells = this._spot.GetCells();
 		return cells.find((cell) => {
-			TypeTranslator.IsReactorField(cell.GetField()) &&
-				TypeTranslator.IsEnemy(cell.GetField(), this._hq.Identity);
+			TypeTranslator.IsReactorField(cell.GetField()) && this._hq.Identity.IsEnemy(cell.GetField().GetIdentity());
 		});
 	}
 

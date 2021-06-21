@@ -18,7 +18,7 @@ export class Diamond extends AliveField {
 	Fields: Array<DiamondField>;
 
 	constructor(cell: Cell) {
-		super(cell);
+		super(cell, null);
 		this.TotalLife = 150;
 		this.Life = 150;
 		this.Z = ZKind.Field;
@@ -57,7 +57,7 @@ export class Diamond extends AliveField {
 		this.SetDamage(1);
 	}
 
-	Support(vehicule: Vehicle): void { }
+	Support(vehicule: Vehicle): void {}
 
 	IsDesctrutible(): boolean {
 		return true;
@@ -82,7 +82,6 @@ export class Diamond extends AliveField {
 			field.Destroy();
 		});
 		super.Destroy();
-		this.GetCell().DestroyField();
 		this.Lights.Destroy();
 	}
 

@@ -1,4 +1,4 @@
-import { RecordData } from '../../Core/Framework/Record/RecordData';
+import { RecordContent } from '../../Core/Framework/Record/Model/RecordContent';
 import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
 import { SimpleEvent } from '../../Core/Utils/Events/SimpleEvent';
 import { IPlayerProfilService } from './IPlayerProfilService';
@@ -52,12 +52,12 @@ export class PlayerProfilService implements IPlayerProfilService {
 		this.SetProfil(profil);
 	}
 
-	public GetRecords(): RecordData[] {
+	public GetRecords(): RecordContent[] {
 		const p = this.GetProfil();
-		const result: RecordData[] = [];
+		const result: RecordContent[] = [];
 		if (p.Records) {
 			p.Records.forEach((r) => {
-				result.push(RecordData.To(r));
+				result.push(RecordContent.To(r));
 			});
 		}
 		return result;

@@ -16,7 +16,7 @@ export class DiamondField extends Field {
 	public Loaded: LiteEvent<{}> = new LiteEvent<{}>();
 
 	constructor(cell: Cell) {
-		super(cell);
+		super(cell, null);
 		this.GetCell().SetField(this);
 		this.Z = ZKind.Field;
 		this._timer = new TickTimer(3);
@@ -30,7 +30,6 @@ export class DiamondField extends Field {
 	public Destroy(): void {
 		this.IsUpdatable = false;
 		super.Destroy();
-		this.GetCell().DestroyField();
 	}
 
 	public Support(vehicule: Vehicle): void {

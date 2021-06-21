@@ -1,6 +1,6 @@
-import { RecordData } from '../../Core/Framework/Record/RecordData';
+import { RecordContent } from '../../Core/Framework/Record/Model/RecordContent';
 
 export interface IRecordService {
-	Register(recordData: RecordData): void;
-	Publish(): RecordData;
+	Register(recordData: RecordContent): void;
+	Publish(): RecordContent;
 }

@@ -19,7 +19,6 @@ import { ICell } from './ICell';
 import { IMovable } from '../IMovable';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Point } from '../../Utils/Geometry/Point';
-import { Field } from './Field/Field';
 import { IInteractionContext } from '../../Interaction/IInteractionContext';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { Vehicle } from '../Unit/Vehicle';
@@ -31,6 +30,7 @@ import { BonusField } from './Field/Bonus/BonusField';
 import { InfiniteFadeAnimation } from '../Animator/InfiniteFadeAnimation';
 import { BasicItem } from '../BasicItem';
 import { IHeadquarter } from './Field/Hq/IHeadquarter';
+import { TypeTranslator } from './Field/TypeTranslator';
 
 export class Cell extends Item implements ICell<Cell>, ISelectable {
 	private _selectionCircle: PIXI.Circle;
@@ -73,7 +73,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		this.SetSelectionAnimation();
 	}
 
-	Listen() {
+	public Listen(): void {
 		this.OnFieldChanged.On(this.UpdateSelectable.bind(this));
 		this.GetNearby(1).forEach((cell) => {
 			cell.OnFieldChanged.On(this.UpdateSelectable.bind(this));
@@ -117,7 +117,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 			this._isSelectable = false;
 		} else {
 			const identity = this._playerHq.Identity;
-			const filter = (cell: Cell) => cell && (cell.HasAlly(identity) || cell.HasBonusAlly(identity));
+			const filter = (cell: Cell) => cell && (cell.HasAlly(identity) || !cell.IsFoeField(identity));
 			const anyAlly = this.GetFilteredNearby(filter).length > 0;
 			this._isSelectable =
 				(this.IsVisible() && this._field instanceof BasicField && anyAlly) || this.HasAlly(identity);
@@ -153,36 +153,6 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		return this.GetCurrentSprites().Get(SvgArchive.selectionCell).alpha === 1;
 	}
 
-	public GetField(): IField {
-		return this._field;
-	}
-
-	public DestroyField() {
-		new BasicField(this);
-	}
-
-	public SetField(field: IField) {
-		if (isNullOrUndefined(field)) {
-			throw `Cell not supposed to be there`;
-		}
-
-		if (!isNullOrUndefined(this._field)) {
-			let field = this._field;
-			if (field instanceof BasicField && this._field instanceof BonusField) {
-				throw `Cell not supposed to be there`;
-			}
-			this._field = null;
-			(<Field>field).Destroy();
-		}
-
-		this._field = field;
-		const occ = this.GetOccupier() as any;
-		if (occ instanceof Vehicle) {
-			this._field.SetPowerUp(occ);
-		}
-		this.OnFieldChanged.Invoke(this, this);
-	}
-
 	public AlwaysVisible() {
 		this._isAlwaysVisible = true;
 		this._state = CellState.Visible;
@@ -190,6 +160,18 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 	public GetOccupier(): IMovable {
 		return this._occupier;
+	}
+
+	public GetField(): IField {
+		return this._field;
+	}
+
+	public SetField(field: IField): void {
+		this._field = field;
+		const occ = this.GetOccupier();
+		if (occ instanceof Vehicle) {
+			this._field.SetPowerUp(occ);
+		}
 	}
 
 	public HasOccupier(): boolean {
@@ -255,15 +237,8 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		return false;
 	}
 
-	public HasBonusAlly(identity: Identity): boolean {
-		if (this._field && this._field instanceof ReactorField) {
-			return !(this._field as ReactorField).Hq.IsEnemy(identity);
-		}
-
-		if (this._field && this._field instanceof BonusField) {
-			return !(this._field as BonusField).GetHq().IsEnemy(identity);
-		}
-		return false;
+	public IsFoeField(identity: Identity): boolean {
+		return identity.IsEnemy(this.GetField().GetIdentity());
 	}
 
 	public HasEnemy(v: AliveItem): boolean {

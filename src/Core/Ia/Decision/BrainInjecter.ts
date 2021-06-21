@@ -1,4 +1,3 @@
-import { DummyBrain } from './../Brains/DummyBrain';
 import { BobBrain } from './../Brains/BobBrain';
 import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { HexAxial } from './../../Utils/Geometry/HexAxial';

@@ -1,6 +1,6 @@
 import { FieldTypeHelper } from '../../../../Core/Framework/Packets/FieldTypeHelper';
-import { RecordKind } from '../../../../Core/Framework/Record/RecordKind';
-import { RecordData } from '../../../../Core/Framework/Record/RecordData';
+import { RecordKind } from '../../../../Core/Framework/Record/Model/Item/State/RecordKind';
+import { RecordContent } from '../../../../Core/Framework/Record/Model/RecordContent';
 import { GameContext } from '../../../../Core/Setup/Context/GameContext';
 import { HexAxial } from '../../../../Core/Utils/Geometry/HexAxial';
 import { Dictionnary } from '../../../../Core/Utils/Collections/Dictionnary';
@@ -12,7 +12,7 @@ export class CellUpdater {
 	private _displayedFields: Dictionnary<IField>;
 	private _indexFinder: IndexFinder;
 
-	constructor(private _ref: RecordData, private _gameContext: GameContext) {
+	constructor(private _ref: RecordContent, private _gameContext: GameContext) {
 		this._indexFinder = new IndexFinder();
 		this._displayedFields = new Dictionnary<IField>();
 		this._gameContext.GetCells().forEach((c) => {
@@ -29,10 +29,10 @@ export class CellUpdater {
 		const coos = new Dictionnary<{ Axial: HexAxial; Action: RecordKind }>();
 		this._ref.Cells.Keys().forEach((coo) => {
 			const cell = this._ref.Cells.Get(coo);
-			const dates = cell.Actions.map((a) => a.X);
+			const dates = cell.States.map((a) => a.X);
 			const dateIndex = this._indexFinder.GetIndex(date, dates);
 			if (!isNullOrUndefined(dateIndex)) {
-				const action = cell.Actions[dateIndex];
+				const action = cell.States[dateIndex];
 				coos.Add(coo, {
 					Axial: this._gameContext.GetCell(coo).GetHexCoo(),
 					Action: action.kind

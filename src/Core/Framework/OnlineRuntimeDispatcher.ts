@@ -55,21 +55,21 @@ export class OnlineRuntimeDispatcher {
 		const field = c.GetField();
 		if (
 			!TypeTranslator.IsSpecialField(field) ||
-			this.IsListenedHq(this._context.GetHqFromId(TypeTranslator.GetIdentity(field)))
+			this.IsListenedHq(this._context.GetHqFromId(field.GetIdentity()))
 		) {
 			const fieldPacket = new FieldPacket();
 			fieldPacket.Coo = c.Coo();
 			fieldPacket.Type = FieldTypeHelper.GetDescription(field);
 			if (field instanceof BonusField) {
-				fieldPacket.HqCoo = field.GetHq().GetCell().Coo();
+				fieldPacket.IdentityName = field.Identity.Name;
 			} else if (field instanceof ReactorField) {
-				fieldPacket.HqCoo = field.GetHq().GetCell().Coo();
+				fieldPacket.IdentityName = field.Identity.Name;
 				if (this.IsListenedHq(field.GetHq())) {
 					field.OnOverlocked.On(this.HandleOverlockChanged.bind(this));
 					field.OnPowerChanged.On(this.HandlePowerChanged.bind(this));
 				}
 			} else if (field instanceof ShieldField) {
-				fieldPacket.HqCoo = field.GetHq().GetCell().Coo();
+				fieldPacket.IdentityName = field.Identity.Name;
 			}
 			const message = this.Message<FieldPacket>(PacketKind.FieldChanged, fieldPacket);
 			this._socket.Emit(message);
@@ -165,7 +165,7 @@ export class OnlineRuntimeDispatcher {
 		const hq = this._context.GetHqFromId(v.Identity);
 		const content = new VehiclePacket();
 		content.Coo = v.GetCurrentCell().Coo();
-		content.HqCoo = hq.GetCell().Coo();
+		content.HqName = hq.Identity.Name;
 		content.Id = v.Id;
 		content.Kind = v instanceof Tank ? 'Tank' : 'Truck';
 		return content;
@@ -176,7 +176,7 @@ export class OnlineRuntimeDispatcher {
 		const packet = new EnergyPacket();
 		packet.Coo = reactor.GetCell().Coo();
 		packet.IsEnergyUp = power;
-		packet.HqCoo = reactor.Hq.GetCell().Coo();
+		packet.IdentityName = reactor.Identity.Name;
 		packet.Type = 'ReactorField';
 		const message = this.Message<EnergyPacket>(PacketKind.PowerChanged, packet);
 		this._socket.Emit(message);
@@ -187,7 +187,7 @@ export class OnlineRuntimeDispatcher {
 		const packet = new OverlockedPacket();
 		packet.Coo = reactor.GetCell().Coo();
 		packet.PowerUp = powerUp;
-		packet.HqCoo = reactor.Hq.GetCell().Coo();
+		packet.IdentityName = reactor.Identity.Name;
 		packet.Type = 'ReactorField';
 		const message = this.Message<OverlockedPacket>(PacketKind.Overlocked, packet);
 		this._socket.Emit(message);

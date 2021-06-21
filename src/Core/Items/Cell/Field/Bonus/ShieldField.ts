@@ -14,6 +14,7 @@ import { BouncingScaleDownAnimator } from '../../../Animator/BouncingScaleDownAn
 import { BouncingScaleUpAnimator } from '../../../Animator/BouncingScaleUpAnimator';
 import { Explosion } from '../../../Unit/Explosion';
 import { ZKind } from '../../../ZKind';
+import { BasicField } from '../BasicField';
 
 export class ShieldField extends AliveBonusField {
 	private _shieldAppearance: ShieldAppearance;
@@ -28,7 +29,7 @@ export class ShieldField extends AliveBonusField {
 		this._shieldAppearance = new ShieldAppearance(this);
 		this.Hq.AddField(this, cell);
 		if (!this.Hq.IsCovered(cell)) {
-			cell.DestroyField();
+			new BasicField(this.GetCell());
 			if (cell.IsVisible()) {
 				new Explosion(cell.GetBoundingBox(), SvgArchive.constructionEffects, ZKind.Sky, false, 5);
 			}
@@ -69,7 +70,7 @@ export class ShieldField extends AliveBonusField {
 
 	public Update(viewX: number, viewY: number): void {
 		if (!this.IsAlive()) {
-			this.GetCell().DestroyField();
+			new BasicField(this.GetCell());
 			this.Destroy();
 			return;
 		} else {

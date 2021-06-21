@@ -7,10 +7,11 @@ import { Vehicle } from '../../Unit/Vehicle';
 import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../../Interaction/InteractionContext';
 import { ZKind } from '../../ZKind';
+import { BasicField } from './BasicField';
 
 export class BlockingField extends AliveField {
 	constructor(cell: Cell, sprite: string) {
-		super(cell);
+		super(cell, null);
 		this.TotalLife = GameSettings.NatureLife;
 		this.Life = GameSettings.NatureLife;
 		this.GetCell().SetField(this);
@@ -54,13 +55,13 @@ export class BlockingField extends AliveField {
 	public Update(viewX: number, viewY: number): void {
 		if (!this.IsAlive()) {
 			this.Destroy();
+			new BasicField(this.GetCell());
 			return;
 		}
 		super.Update(viewX, viewY);
 	}
 
 	public Destroy(): void {
-		this.GetCell().DestroyField();
 		super.Destroy();
 		this.IsUpdatable = false;
 	}

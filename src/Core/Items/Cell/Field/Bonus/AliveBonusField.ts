@@ -20,8 +20,7 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 	public Energy: number = 0;
 
 	constructor(cell: Cell, private _bonus: string[], private _id: Identity, protected energyProvider: IHeadquarter) {
-		super(cell);
-		this.Identity = this._id;
+		super(cell, _id);
 		this.Z = ZKind.Field;
 		this.GenerateSprite(SvgArchive.bonus.coverBottom);
 		this._bonus.forEach((b) => {

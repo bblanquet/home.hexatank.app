@@ -16,7 +16,7 @@ import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { RoadField } from '../../Items/Cell/Field/Bonus/RoadField';
 import { ShieldField } from '../../Items/Cell/Field/Bonus/ShieldField';
 import { Cell } from '../../Items/Cell/Cell';
-import { RecordKind } from '../Record/RecordKind';
+import { RecordKind } from '../Record/Model/Item/State/RecordKind';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 export class FieldTypeHelper {
 	public static GetDescription(obj: IField): string {

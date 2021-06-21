@@ -39,24 +39,10 @@ export class TypeTranslator {
 		return e instanceof DiamondField;
 	}
 
-	public static IsEnemy(e: IField, item: Identity): boolean {
-		if (e instanceof BonusField) {
-			return (e as BonusField).GetHq().IsEnemy(item);
-		} else if (e instanceof ShieldField) {
-			return (e as ShieldField).GetHq().IsEnemy(item);
-		} else if (e instanceof ReactorField) {
-			return (e as ReactorField).GetHq().IsEnemy(item);
-		} else if (e instanceof Headquarter) {
-			return (e as Headquarter).IsEnemy(item);
-		}
-		throw `TypeTranslator not supposed to be there`;
-	}
-
 	public static HasEnemy(cell: Cell, item: Identity): boolean {
 		if (cell.HasOccupier()) {
 			return ((cell.GetOccupier() as any) as AliveItem).IsEnemy(item);
 		}
-
 		const field = cell.GetField();
 		if (field instanceof BlockingField) {
 			return (field as BlockingField).IsEnemy(item);
@@ -92,19 +78,6 @@ export class TypeTranslator {
 			return !shield.IsEnemy(id) && !c.HasOccupier();
 		}
 		return !c.IsBlocked();
-	}
-
-	public static GetIdentity(e: IField): Identity {
-		if (e instanceof BonusField) {
-			return (e as BonusField).Identity;
-		} else if (e instanceof ShieldField) {
-			return (e as ShieldField).Identity;
-		} else if (e instanceof ReactorField) {
-			return (e as ReactorField).Identity;
-		} else if (e instanceof Headquarter) {
-			return (e as Headquarter).Identity;
-		}
-		throw `TypeTranslator not supposed to be there`;
 	}
 
 	public static GetPowerUp(type: string): any {

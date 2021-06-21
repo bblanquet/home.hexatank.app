@@ -1,19 +1,19 @@
-import { RecordData } from '../../../Core/Framework/Record/RecordData';
+import { RecordContent } from '../../../Core/Framework/Record/Model/RecordContent';
 import { RecordPoint } from './RecordPoint';
 export class RecordComparer {
-	constructor(public Record: RecordData, public ComparedRecord: RecordData) {}
+	constructor(public Record: RecordContent, public ComparedRecord: RecordContent) {}
 
 	public GetDelta(hqId: string, unitId: string): RecordPoint[] {
 		const vehicle = this.Record.Hqs.Get(hqId).Units.Get(unitId);
 		const comparedVehicle = this.ComparedRecord.Hqs.Get(hqId).Units.Get(unitId);
 		const deltas = new Array<RecordPoint>();
 
-		if (vehicle && vehicle.Actions) {
-			vehicle.Actions.forEach((data, index) => {
-				if (index <= comparedVehicle.Actions.length - 1) {
+		if (vehicle && vehicle.States) {
+			vehicle.States.forEach((data, index) => {
+				if (index <= comparedVehicle.States.length - 1) {
 					const delta = new RecordPoint();
 					delta.D1 = data;
-					delta.D2 = comparedVehicle.Actions[index];
+					delta.D2 = comparedVehicle.States[index];
 					delta.Y = delta.D1.X - delta.D2.X;
 					delta.X = delta.D1.X;
 					delta.IsEqualed =

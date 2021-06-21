@@ -55,7 +55,7 @@ export class AreaStatus {
 		const fields = this._hqFields.Values().reduce((e, x) => e.concat(x)).map((c) => c.GetField());
 		const hasFoeCell = fields
 			.filter((e: IField) => TypeTranslator.IsSpecialField(e))
-			.some((e) => TypeTranslator.IsEnemy(e, item.Identity));
+			.some((e) => item.Identity.IsEnemy(e.GetIdentity()));
 		return hasFoeCell;
 	}
 
@@ -104,13 +104,12 @@ export class AreaStatus {
 
 	private RemoveNewBonusField(cell: Cell) {
 		if (TypeTranslator.IsSpecialField(cell.GetField())) {
-			const hq = cell.GetField();
-			let hqCo = hq.GetCell().Coo();
-			if (this._hqFields.Exist(hqCo)) {
-				const newHqList = this._hqFields.Get(hqCo).filter((c) => c !== cell);
-				this._hqFields.Remove(hqCo);
+			const idName = cell.GetField().GetIdentity().Name;
+			if (this._hqFields.Exist(idName)) {
+				const newHqList = this._hqFields.Get(idName).filter((c) => c !== cell);
+				this._hqFields.Remove(idName);
 				if (0 < newHqList.length) {
-					this._hqFields.Add(hqCo, newHqList);
+					this._hqFields.Add(idName, newHqList);
 				}
 			}
 		}
@@ -118,12 +117,11 @@ export class AreaStatus {
 
 	private AddSpecialField(cell: Cell) {
 		if (TypeTranslator.IsSpecialField(cell.GetField())) {
-			const hq = TypeTranslator.GetHq(cell.GetField());
-			let coo = hq.GetCell().Coo();
-			if (this._hqFields.Exist(coo)) {
-				this._hqFields.Get(coo).push(cell);
+			const idName = cell.GetField().GetIdentity().Name;
+			if (this._hqFields.Exist(idName)) {
+				this._hqFields.Get(idName).push(cell);
 			} else {
-				this._hqFields.Add(coo, [cell]);
+				this._hqFields.Add(idName, [ cell ]);
 			}
 		}
 	}
@@ -150,12 +148,12 @@ export class AreaStatus {
 		return fields.some((field) => {
 			return (
 				this._fields.Exist(field) &&
-				this._fields.Get(field).some((e) => TypeTranslator.IsEnemy(e.GetField(), identity))
+				this._fields.Get(field).some((e) => identity.IsEnemy(e.GetField().GetIdentity()))
 			);
 		});
 	}
 
-	public CleanDeadUnits(): void {
+	public ClearDestroyedVehicle(): void {
 		this._units.Values().forEach((u) => {
 			if (!u.IsUpdatable) {
 				this._units.Remove(u.Id);
@@ -164,12 +162,12 @@ export class AreaStatus {
 	}
 
 	public HasFoeVehicle(item: AliveItem): boolean {
-		this.CleanDeadUnits();
+		this.ClearDestroyedVehicle();
 		return this._units.Values().some((e) => e.IsEnemy(item.Identity));
 	}
 
 	public GetFoeVehicleCount(item: AliveItem): number {
-		this.CleanDeadUnits();
+		this.ClearDestroyedVehicle();
 		return this._units.Values().filter((e) => e.IsEnemy(item.Identity)).length;
 	}
 
@@ -188,5 +186,5 @@ export class AreaStatus {
 		return result;
 	}
 
-	public Destroy(): void { }
+	public Destroy(): void {}
 }

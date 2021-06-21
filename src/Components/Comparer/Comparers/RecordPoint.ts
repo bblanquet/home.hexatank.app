@@ -1,9 +1,9 @@
-import { RecordAction } from '../../../Core/Framework/Record/RecordAction';
+import { RecordVehicleState } from '../../../Core/Framework/Record/Model/Item/State/RecordVehicleState';
 
 export class RecordPoint {
 	public X: number;
 	public Y: number;
 	public IsEqualed: boolean;
-	public D1: RecordAction;
-	public D2: RecordAction;
+	public D1: RecordVehicleState;
+	public D2: RecordVehicleState;
 }

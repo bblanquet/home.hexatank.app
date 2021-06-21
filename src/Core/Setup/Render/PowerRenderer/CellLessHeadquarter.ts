@@ -59,7 +59,7 @@ export class CellLessHeadquarter implements IHeadquarter {
 		return null;
 	}
 	IsEnemy(item: Identity): boolean {
-		return this.Identity.Name === item.Name;
+		return this.Identity.IsEnemy(item);
 	}
 	IsCovered(cell: Cell): boolean {
 		return this._reactors.filter((c) => c.IsCovered(cell)).length > 0;

@@ -82,10 +82,10 @@ export class AppService implements IAppService<GameBlueprint> {
 		this._audioService.Register(this._gameAudioService);
 		this._gameContext.OnGameStatusChanged.On(this.GameStatusChanged.bind(this));
 
-		// this._gameContext.GetCells().forEach((c) => {
-		// 	c.AlwaysVisible();
-		// });
-		// CellStateSetter.SetStates(this._gameContext.GetCells());
+		this._gameContext.GetCells().forEach((c) => {
+			c.AlwaysVisible();
+		});
+		CellStateSetter.SetStates(this._gameContext.GetCells());
 	}
 
 	private GameStatusChanged(e: any, status: GameStatus) {

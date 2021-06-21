@@ -77,71 +77,67 @@ export class DurationStateFormater {
 		const dates = this.GetDates(data, compared);
 		const emptyDurations = this.GetEmptyDurations(dates);
 		const durations = this.GetActionDurations(data.Actions);
-		const comparedDurations = this.GetActionDurations(compared.Actions);
+		const compDurations = this.GetActionDurations(compared.Actions);
 
-		emptyDurations.forEach((emptyDuration) => {
+		emptyDurations.some((emptyDuration) => {
 			let index = this.GetOverlappedIndex(emptyDuration, durations);
-			let comparedIndex = this.GetOverlappedIndex(emptyDuration, comparedDurations);
-			let label = 'nok';
-			let state = DurationState.Wrong;
-			if (index !== null && comparedIndex !== null) {
-				if (isEqual(durations[index].Action.Amount, comparedDurations[comparedIndex].Action.Amount)) {
-					state = DurationState.Ok;
-					label = `ok ${this.GetLabel(
-						durations,
-						index,
-						comparedDurations,
-						comparedIndex,
-						emptyDuration,
-						refDate
-					)}`;
-				} else if (
-					(0 < index &&
-						isEqual(durations[index - 1].Action.Amount, comparedDurations[comparedIndex].Action.Amount)) ||
-					(0 < comparedIndex &&
-						isEqual(durations[index].Action.Amount, comparedDurations[comparedIndex - 1].Action.Amount))
-				) {
-					label = `late ${this.GetLabel(
-						durations,
-						index,
-						comparedDurations,
-						comparedIndex,
-						emptyDuration,
-						refDate
-					)}`;
-					state = DurationState.Late;
-				} else {
-					label = `nok ${this.GetLabel(
-						durations,
-						index,
-						comparedDurations,
-						comparedIndex,
-						emptyDuration,
-						refDate
-					)}`;
+			let compIndex = this.GetOverlappedIndex(emptyDuration, compDurations);
+			if (index === null && compIndex === null) {
+				return true;
+			} else {
+				let state = DurationState.Wrong;
+				if (index !== null && compIndex !== null) {
+					if (isEqual(durations[index].Action.Amount, compDurations[compIndex].Action.Amount)) {
+						state = DurationState.Ok;
+					} else if (this.IsLate(index, compIndex, durations, compDurations)) {
+						state = DurationState.Late;
+					}
 				}
-			}
+				const label = `${DurationState[state]} ${this.GetLabel(
+					index < durations.length ? durations[index] : null,
+					compIndex < compDurations.length ? compDurations[compIndex] : null,
+					emptyDuration,
+					refDate
+				)}`;
 
-			result.push(new StatusDuration(state, emptyDuration.Start, emptyDuration.End, label));
+				result.push(new StatusDuration(state, emptyDuration.Start, emptyDuration.End, label));
+				return false;
+			}
 		});
 		return [ new StatusDuration(DurationState.None, refDate, result[0].Start, '') ].concat(result);
 	}
 
-	private GetLabel(
-		durations: ActionDuration[],
+	private IsLate(
 		index: number,
-		comparedDurations: ActionDuration[],
-		comparedIndex: number,
+		compIndex: number,
+		durations: ActionDuration[],
+		compDuration: ActionDuration[]
+	): boolean {
+		return (
+			(0 < index && isEqual(durations[index - 1].Action.Amount, compDuration[compIndex].Action.Amount)) ||
+			(0 < compIndex && isEqual(durations[index].Action.Amount, compDuration[compIndex - 1].Action.Amount))
+		);
+	}
+
+	private GetLabel(
+		duration: ActionDuration,
+		compAction: ActionDuration,
 		emptyDuration: Duration,
 		refDate: number
 	): string {
-		return `[${this.GetStringPos(durations[index].Action)}   ${this.GetStringPos(
-			comparedDurations[comparedIndex].Action
-		)}] ${this.GetDuration(emptyDuration.Start, emptyDuration.End, refDate)}`;
+		return `[${this.GetCoo(duration)}   ${this.GetCoo(compAction)}] ${this.GetDuration(
+			emptyDuration.Start,
+			emptyDuration.End,
+			refDate
+		)}`;
 	}
 
-	private GetStringPos(action: RecordAction): string {
-		return `${action.Amount.Q} ${action.Amount.R}`;
+	private GetCoo(duration: ActionDuration): string {
+		if (duration) {
+			return `${duration.Action.Amount.Q} ${duration.Action.Amount.R}`;
+		} else {
+			return `none`;
+		}
 	}
 
 	private GetDuration(start: number, end: number, refDate: number): string {

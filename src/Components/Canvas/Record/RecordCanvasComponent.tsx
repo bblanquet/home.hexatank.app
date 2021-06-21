@@ -98,6 +98,7 @@ export default class RecordCanvasComponent extends Component<
 					class="btn btn-dark small-space space-out fill-option"
 					onClick={() => this.SetMenu()}
 				/>
+				<span class="badge badge-primary">{this.GetRecord().Title}</span>
 			</div>
 		);
 	}

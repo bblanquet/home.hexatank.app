@@ -3,30 +3,29 @@ import { IRotatable } from './IRotatable';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class RotationMaker<T extends IRotatable> implements IRotationMaker {
-	private _movable: T;
+	private _vehicle: T;
 
 	private _departureDate: number;
-	private departureRotation: number;
+	private departureRadius: number;
 
 	private _duration: number;
-	private arrivalRotation: number;
+	private arrivalRadius: number;
 
 	private _arrivalDate: number = 0;
-	private _ratio: number = 0;
-	private _angle: number;
-	private _fullRotation: number = Math.PI * 2;
+	private _progress: number = 0;
+	private _deltaRadius: number;
 
 	constructor(movable: T) {
-		this._movable = movable;
+		this._vehicle = movable;
 	}
 
 	private Extra() {
-		const angleRatio = Math.abs(this._angle / this._fullRotation);
-		const milliseconds = this._movable.GetRotatingDuration();
-		return milliseconds * angleRatio;
+		const radius = Math.abs(this._deltaRadius / (Math.PI * 2));
+		const milliseconds = this._vehicle.GetRotatingDuration();
+		return milliseconds * radius;
 	}
 
-	private GetRatio(arrival: number, current: number): number {
+	private GetProgress(arrival: number, current: number): number {
 		if (arrival <= current) {
 			return 1;
 		}
@@ -34,37 +33,56 @@ export class RotationMaker<T extends IRotatable> implements IRotationMaker {
 	}
 
 	public Rotate(): void {
+		this.Init();
+
+		const currentDate = new Date().getTime() - this._departureDate;
+		this._progress = this.GetProgress(this._duration, currentDate);
+
+		if (this._progress === 1) {
+			this._duration = null;
+			this._vehicle.CurrentRadius = this.arrivalRadius;
+		} else {
+			this._vehicle.CurrentRadius = this.departureRadius + this._deltaRadius * this._progress;
+		}
+	}
+
+	Update(): void {
+		if (this._duration && this._departureDate) {
+			this.departureRadius = this._vehicle.CurrentRadius;
+			this.arrivalRadius = this._vehicle.GoalRadius;
+
+			this._deltaRadius = Math.atan2(
+				Math.sin(this.arrivalRadius - this.departureRadius),
+				Math.cos(this.arrivalRadius - this.departureRadius)
+			);
+
+			this._arrivalDate = this._departureDate + this.Extra();
+			this._duration = new Date(this._arrivalDate).getTime() - this._departureDate;
+		}
+	}
+
+	private Init() {
 		if (isNullOrUndefined(this._duration)) {
-			this._ratio = 0;
+			this._progress = 0;
 
-			this.departureRotation = this._movable.CurrentRadius;
-			this.arrivalRotation = this._movable.GoalRadius;
+			this.departureRadius = this._vehicle.CurrentRadius;
+			this.arrivalRadius = this._vehicle.GoalRadius;
 
-			this._angle = Math.atan2(
-				Math.sin(this.arrivalRotation - this.departureRotation),
-				Math.cos(this.arrivalRotation - this.departureRotation)
+			this._deltaRadius = Math.atan2(
+				Math.sin(this.arrivalRadius - this.departureRadius),
+				Math.cos(this.arrivalRadius - this.departureRadius)
 			);
 
 			this._departureDate = new Date().getTime();
 			this._arrivalDate = this._departureDate + this.Extra();
 			this._duration = new Date(this._arrivalDate).getTime() - this._departureDate;
 		}
-
-		const currentDate = new Date().getTime() - this._departureDate;
-		this._ratio = this.GetRatio(this._duration, currentDate);
-
-		if (this._ratio === 1) {
-			this._duration = null;
-			this._movable.CurrentRadius = this.arrivalRotation;
-		} else {
-			this._movable.CurrentRadius = this.departureRotation + this._angle * this._ratio;
-		}
 	}
 
 	public Percentage(): number {
-		return Math.round(this._ratio * 100);
+		return Math.round(this._progress * 100);
 	}
 	public Duration(): number {
-		return this._duration - this._duration * this._ratio;
+		return this._duration - this._duration * this._progress;
 	}
 }

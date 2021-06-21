@@ -160,26 +160,26 @@ export abstract class Vehicle extends AliveItem
 	}
 
 	public GetTranslationDuration(): number {
-		let speed = GameSettings.TranslatinDuration;
+		let translationDuration = GameSettings.TranslatinDuration;
 		this._ups.filter((up) => up instanceof SpeedUp).forEach((up) => {
-			speed -= this._upCalculator.GetSpeedTranslation(up.GetCurrentEnergy());
+			translationDuration += this._upCalculator.GetTranslationUp(up.GetCurrentEnergy());
 		});
 
-		if (speed < GameSettings.GetFastestTranslation()) {
+		if (translationDuration < GameSettings.GetFastestTranslation()) {
 			return GameSettings.GetFastestTranslation();
 		}
-		return speed;
+		return translationDuration;
 	}
 	public GetRotatingDuration(): number {
-		let speed = GameSettings.RotatingDuration;
+		let rotationDuration = GameSettings.RotatingDuration;
 		this._ups.filter((up) => up instanceof SpeedUp).forEach((up) => {
-			speed -= this._upCalculator.GetSpeedRotation(up.GetCurrentEnergy());
+			rotationDuration += this._upCalculator.GetRotationUp(up.GetCurrentEnergy());
 		});
 
-		if (speed < GameSettings.GetFastestRotation()) {
+		if (rotationDuration < GameSettings.GetFastestRotation()) {
 			return GameSettings.GetFastestRotation();
 		}
-		return speed;
+		return rotationDuration;
 	}
 
 	public GetFire(): number {
@@ -193,11 +193,15 @@ export abstract class Vehicle extends AliveItem
 	public AddPowerUp(up: Up): void {
 		this._ups.push(up);
 		this.OnPowerUp.Invoke(this, up);
+		this._translationMaker.Update();
+		this._rotationMaker.Update();
 	}
 
 	public DeletePowerUp(up: Up): void {
 		this._ups = this._ups.filter((u) => up !== u);
 		this.OnPowerDown.Invoke(this, up);
+		this._translationMaker.Update();
+		this._rotationMaker.Update();
 	}
 
 	public GetUpAngle(): number {

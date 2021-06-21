@@ -15,7 +15,6 @@ import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { BasicField } from '../../../Items/Cell/Field/BasicField';
 import { AStarEngine } from '../../AStarEngine';
-import { ReactorAreaState } from '../Utils/ReactorAreaState';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class AreaDecisionMaker implements IAreaDecisionMaker {

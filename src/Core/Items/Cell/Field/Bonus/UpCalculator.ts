@@ -22,11 +22,11 @@ export class UpCalculator {
 		return this.GetAttack(energy) * 0.5;
 	}
 
-	public GetSpeedTranslation(energy: number): number {
+	public GetTranslationUp(energy: number): number {
 		return -energy * 250;
 	}
 
-	public GetSpeedRotation(energy: number): number {
+	public GetRotationUp(energy: number): number {
 		return -energy * 75;
 	}
 }

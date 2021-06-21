@@ -4,13 +4,13 @@ import { IBoundingBoxContainer } from '../../../IBoundingBoxContainer';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implements ITranslationMaker {
-	private _movableObject: T;
+	private _vehicle: T;
 	private _departureDate: number;
 	private _arrivalDate: number;
 	private _progress: number = 0;
 
 	constructor(item: T) {
-		this._movableObject = item;
+		this._vehicle = item;
 	}
 
 	private GetPercentage(arrival: number, current: number): number {
@@ -21,9 +21,9 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 	}
 
 	public Translate(): void {
-		const departure = this._movableObject.GetCurrentCell().GetBoundingBox();
-		const arrival = this._movableObject.GetNextCell().GetBoundingBox();
-		const vehicle = this._movableObject.GetBoundingBox();
+		const departure = this._vehicle.GetCurrentCell().GetBoundingBox();
+		const arrival = this._vehicle.GetNextCell().GetBoundingBox();
+		const vehicle = this._vehicle.GetBoundingBox();
 
 		const departurePoint = departure.GetCentralPoint();
 		const arrivalPoint = arrival.GetCentralPoint();
@@ -40,13 +40,25 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 		vehicle.Y = departure.Y + this._progress * yDistance;
 
 		if (this._progress === 1) {
-			vehicle.X = this._movableObject.GetNextCell().GetBoundingBox().X;
-			vehicle.Y = this._movableObject.GetNextCell().GetBoundingBox().Y;
+			vehicle.X = this._vehicle.GetNextCell().GetBoundingBox().X;
+			vehicle.Y = this._vehicle.GetNextCell().GetBoundingBox().Y;
 			this._departureDate = null;
 			this._arrivalDate = null;
-			this._movableObject.GoNextCell();
+			this._vehicle.GoNextCell();
 			this._progress = 0;
-			this._movableObject.OnTranslateStopped.Invoke(this._movableObject, this._movableObject.GetNextCell());
+			this._vehicle.OnTranslateStopped.Invoke(this._vehicle, this._vehicle.GetNextCell());
+		}
+	}
+
+	Update(): void {
+		if (this._departureDate) {
+			const alreadyDone = this._progress * (this._arrivalDate - this._departureDate);
+			const nextDuration = this._vehicle.GetTranslationDuration() - alreadyDone;
+			if (nextDuration < 0) {
+				this._arrivalDate = new Date(this._departureDate + nextDuration).getTime() - this._departureDate;
+			} else {
+				this._arrivalDate = new Date(this._departureDate).getTime() - this._departureDate;
+			}
 		}
 	}
 
@@ -55,9 +67,8 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 			this._progress = 0;
 			this._departureDate = new Date().getTime();
 			this._arrivalDate =
-				new Date(this._departureDate + this._movableObject.GetTranslationDuration()).getTime() -
-				this._departureDate;
-			this._movableObject.OnTranslateStarted.Invoke(this._movableObject, this._movableObject.GetNextCell());
+				new Date(this._departureDate + this._vehicle.GetTranslationDuration()).getTime() - this._departureDate;
+			this._vehicle.OnTranslateStarted.Invoke(this._vehicle, this._vehicle.GetNextCell());
 		}
 	}
 

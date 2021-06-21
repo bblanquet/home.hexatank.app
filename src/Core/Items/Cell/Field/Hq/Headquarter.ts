@@ -68,7 +68,6 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 		super();
 		this.Z = ZKind.Cell;
 		this._cell = cell;
-		this._cell.SetField(this);
 
 		this.GenerateSprite(SvgArchive.selectionUnit);
 		this.SetProperty(SvgArchive.selectionUnit, (e) => (e.alpha = 0));
@@ -93,7 +92,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 		var neighbours = this._cell.GetUnblockedRange();
 		this.Fields = new Array<HeadQuarterField>();
 		neighbours.forEach((cell) => {
-			this.Fields.push(new HeadQuarterField(this, <Cell>cell, this.Identity.Skin.GetLight()));
+			this.Fields.push(cell.SetField(new HeadQuarterField(this, <Cell>cell, this.Identity.Skin.GetLight())));
 		});
 		this._onCellStateChanged = this.OncellStateChanged.bind(this);
 		this.OnDiamondEarned.On(this.HandleDiamondChanged.bind(this));

@@ -17,7 +17,6 @@ export class DiamondField extends Field {
 
 	constructor(cell: Cell) {
 		super(cell, null);
-		this.GetCell().SetField(this);
 		this.Z = ZKind.Field;
 		this._timer = new TickTimer(3);
 		this.GenerateSprite(SvgArchive.diamondCell);

@@ -118,12 +118,12 @@ export class CombinationProvider {
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof SlowMenuItem,
-				(e) => new SlowField(e, gameContext.GetPlayerHq().Identity.Skin.GetLight())
+				(e) => e.SetField(new SlowField(e))
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof ShieldMenuItem,
-				(e) => new ShieldField(e, gameContext.GetPlayerHq().Identity, gameContext.GetPlayerHq())
+				(e) => e.SetField(new ShieldField(e, gameContext.GetPlayerHq().Identity, gameContext.GetPlayerHq()))
 			),
 			new GenericCellCombination(
 				gameContext,

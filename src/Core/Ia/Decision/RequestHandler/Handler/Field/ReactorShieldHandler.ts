@@ -7,7 +7,7 @@ import { Headquarter } from '../../../../../Items/Cell/Field/Hq/Headquarter';
 import { ShieldField } from '../../../../../Items/Cell/Field/Bonus/ShieldField';
 
 export class ReactorShieldHandler implements ISimpleRequestHandler {
-	constructor(private _hq: Headquarter) { }
+	constructor(private _hq: Headquarter) {}
 
 	Handle(request: AreaRequest): void {
 		const reactor = request.Area.GetReactor();
@@ -16,7 +16,7 @@ export class ReactorShieldHandler implements ISimpleRequestHandler {
 			const price = cells.length * GameSettings.FieldPrice;
 			if (price <= this._hq.GetAmount()) {
 				cells.forEach((c) => {
-					new ShieldField(c, this._hq.Identity, this._hq);
+					c.SetField(new ShieldField(c, this._hq.Identity, this._hq));
 					this._hq.Buy(GameSettings.FieldPrice);
 				});
 			}

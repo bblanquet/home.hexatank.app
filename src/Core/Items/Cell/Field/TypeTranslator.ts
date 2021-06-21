@@ -39,23 +39,11 @@ export class TypeTranslator {
 		return e instanceof DiamondField;
 	}
 
-	public static HasEnemy(cell: Cell, item: Identity): boolean {
+	public static HasEnemy(cell: Cell, identity: Identity): boolean {
 		if (cell.HasOccupier()) {
-			return ((cell.GetOccupier() as any) as AliveItem).IsEnemy(item);
+			return ((cell.GetOccupier() as any) as AliveItem).IsEnemy(identity);
 		}
-		const field = cell.GetField();
-		if (field instanceof BlockingField) {
-			return (field as BlockingField).IsEnemy(item);
-		} else if (field instanceof BonusField) {
-			return (field as BonusField).GetHq().IsEnemy(item);
-		} else if (field instanceof ShieldField) {
-			return (field as ShieldField).GetHq().IsEnemy(item);
-		} else if (field instanceof ReactorField) {
-			return (field as ReactorField).GetHq().IsEnemy(item);
-		} else if (field instanceof Headquarter) {
-			return (field as Headquarter).IsEnemy(item);
-		}
-		return false;
+		return identity.IsEnemy(cell.GetField().GetIdentity());
 	}
 
 	public static GetHq(e: IField): IHeadquarter {

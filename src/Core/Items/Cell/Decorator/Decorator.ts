@@ -45,7 +45,7 @@ export abstract class Decorator {
 				break;
 			}
 			case DecorationType.SandCactus: {
-				items.push(new BlockingField(cell, SvgArchive.nature.cactus));
+				items.push(cell.SetField(new BlockingField(cell, SvgArchive.nature.cactus)));
 				break;
 			}
 			case DecorationType.WhiteSkull: {
@@ -57,35 +57,35 @@ export abstract class Decorator {
 				break;
 			}
 			case DecorationType.Water: {
-				items.push(new WaterField(cell));
+				items.push(cell.SetField(new WaterField(cell)));
 				break;
 			}
 			case DecorationType.Volcano: {
-				items.push(new VolcanoField(cell));
+				items.push(cell.SetField(new VolcanoField(cell)));
 				break;
 			}
 			case DecorationType.Tree: {
-				items.push(new BlockingField(cell, SvgArchive.nature.tree));
+				items.push(cell.SetField(new BlockingField(cell, SvgArchive.nature.tree)));
 				break;
 			}
 			case DecorationType.DarkTree: {
-				items.push(new BlockingField(cell, SvgArchive.nature.darkTree));
+				items.push(cell.SetField(new BlockingField(cell, SvgArchive.nature.darkTree)));
 				break;
 			}
 			case DecorationType.palmTree: {
-				items.push(new BlockingField(cell, SvgArchive.nature.palmTree));
+				items.push(cell.SetField(new BlockingField(cell, SvgArchive.nature.palmTree)));
 				break;
 			}
 			case DecorationType.Rock: {
-				items.push(new BlockingField(cell, SvgArchive.nature.rock));
+				items.push(cell.SetField(new BlockingField(cell, SvgArchive.nature.rock)));
 				break;
 			}
 			case DecorationType.IceTree: {
-				items.push(new BlockingField(cell, SvgArchive.nature.iceTree));
+				items.push(cell.SetField(new BlockingField(cell, SvgArchive.nature.iceTree)));
 				break;
 			}
 			case DecorationType.IceTree2: {
-				items.push(new BlockingField(cell, SvgArchive.nature.iceTree2));
+				items.push(cell.SetField(new BlockingField(cell, SvgArchive.nature.iceTree2)));
 				break;
 			}
 			case DecorationType.IceStone: {
@@ -93,11 +93,11 @@ export abstract class Decorator {
 				break;
 			}
 			case DecorationType.IceRock: {
-				items.push(new BlockingField(cell, SvgArchive.nature.iceRock));
+				items.push(cell.SetField(new BlockingField(cell, SvgArchive.nature.iceRock)));
 				break;
 			}
 			case DecorationType.SandRock: {
-				items.push(new BlockingField(cell, SvgArchive.nature.sandRock));
+				items.push(cell.SetField(new BlockingField(cell, SvgArchive.nature.sandRock)));
 				break;
 			}
 			case DecorationType.Puddle: {

@@ -12,7 +12,6 @@ export class VolcanoField extends Field {
 
 	constructor(cell: Cell) {
 		super(cell, null);
-		this.GetCell().SetField(this);
 		this.Z = ZKind.Field;
 		this.GenerateSprite(SvgArchive.nature.volcano);
 		this.GenerateSprite(SvgArchive.nature.volcanaoAnimation);

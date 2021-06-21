@@ -12,7 +12,6 @@ export class WaterField extends Field {
 
 	constructor(cell: Cell) {
 		super(cell, null);
-		this.GetCell().SetField(this);
 		this.Z = ZKind.Field;
 		this.GenerateSprite(SvgArchive.nature.water.middle.background);
 		this.GenerateSprite(SvgArchive.nature.water.middle.wave);

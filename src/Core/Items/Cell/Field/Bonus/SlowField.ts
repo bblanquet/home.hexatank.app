@@ -7,11 +7,9 @@ import { Vehicle } from '../../../Unit/Vehicle';
 import { ZKind } from '../../../ZKind';
 
 export class SlowField extends Field {
-	constructor(cell: Cell, private _light: string) {
+	constructor(cell: Cell) {
 		super(cell, null);
-		this.GetCell().SetField(this);
 		this.Z = ZKind.Field;
-
 		this.GenerateSprite('');
 		this.InitPosition(cell.GetBoundingBox());
 		this.GetCurrentSprites().Values().forEach((obj) => {

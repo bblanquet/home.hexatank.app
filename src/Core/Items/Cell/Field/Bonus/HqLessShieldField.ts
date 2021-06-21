@@ -10,7 +10,6 @@ import { ITimer } from '../../../../Utils/Timer/ITimer';
 import { TimeTimer } from '../../../../Utils/Timer/TimeTimer';
 import { BouncingScaleDownAnimator } from '../../../Animator/BouncingScaleDownAnimator';
 import { BouncingScaleUpAnimator } from '../../../Animator/BouncingScaleUpAnimator';
-import { BasicField } from '../BasicField';
 
 export class HqLessShieldField extends AliveBonusField {
 	private _shieldAppearance: ShieldAppearance;
@@ -48,7 +47,6 @@ export class HqLessShieldField extends AliveBonusField {
 
 	public Update(viewX: number, viewY: number): void {
 		if (!this.IsAlive()) {
-			new BasicField(this.GetCell());
 			this.Destroy();
 			return;
 		} else {

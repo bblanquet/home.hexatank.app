@@ -26,11 +26,9 @@ import { GameSettings } from '../../Framework/GameSettings';
 import * as PIXI from 'pixi.js';
 import { MultiSelectionContext } from '../../Menu/Smart/MultiSelectionContext';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
-import { BonusField } from './Field/Bonus/BonusField';
 import { InfiniteFadeAnimation } from '../Animator/InfiniteFadeAnimation';
 import { BasicItem } from '../BasicItem';
 import { IHeadquarter } from './Field/Hq/IHeadquarter';
-import { TypeTranslator } from './Field/TypeTranslator';
 
 export class Cell extends Item implements ICell<Cell>, ISelectable {
 	private _selectionCircle: PIXI.Circle;
@@ -57,12 +55,14 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 	private _playerHq: IHeadquarter = null;
 
+	private _destroyedFieldFunc: any = this.HandleFieldDestroyed.bind(this);
+
 	constructor(properties: CellProperties, private _cells: Dictionnary<Cell>) {
 		super();
 		this.Z = ZKind.Cell;
 		this._cellStateSprites = new Dictionnary<Array<string>>();
 		this.Properties = properties;
-		new BasicField(this);
+		this.SetField(new BasicField(this));
 		this.IsCentralRef = true;
 		this.GenerateSprite(SvgArchive.selectionCell);
 		this.SetProperty(SvgArchive.selectionCell, (e) => {
@@ -71,6 +71,13 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		});
 		this._selectionCircle = new PIXI.Circle(0, 0, GameSettings.Size / 2);
 		this.SetSelectionAnimation();
+	}
+
+	private HandleFieldDestroyed(src: any, field: Item): void {
+		field.OnDestroyed.Off(this._destroyedFieldFunc);
+		if (this.IsUpdatable) {
+			this.SetField(new BasicField(this));
+		}
 	}
 
 	public Listen(): void {
@@ -166,12 +173,25 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		return this._field;
 	}
 
-	public SetField(field: IField): void {
-		this._field = field;
+	public SetField<T extends IField>(nextField: T): T {
+		if (!nextField) {
+			throw `Cannot replace field with null`;
+		}
+		if (this._field) {
+			if (nextField instanceof BasicField === this._field instanceof BasicField) {
+				throw `Cannot replace field with another same type field`;
+			}
+			this._field.OnDestroyed.Off(this._destroyedFieldFunc);
+			((this._field as unknown) as Item).Destroy();
+		}
+		this._field = nextField;
+		this._field.OnDestroyed.On(this._destroyedFieldFunc);
 		const occ = this.GetOccupier();
 		if (occ instanceof Vehicle) {
 			this._field.SetPowerUp(occ);
 		}
+		this.OnFieldChanged.Invoke(this, this);
+		return nextField;
 	}
 
 	public HasOccupier(): boolean {

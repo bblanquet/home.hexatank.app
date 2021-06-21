@@ -25,9 +25,9 @@ export class ShieldRequestHandler implements ISimpleRequestHandler {
 	private CreateShield(road: Cell[]) {
 		const price = road.length * GameSettings.FieldPrice;
 		if (price < this._hq.GetAmount()) {
-			road.forEach((c) => {
-				if (c.GetField() instanceof BasicField) {
-					new ShieldField(c, this._hq.Identity, this._hq);
+			road.forEach((cell) => {
+				if (cell.GetField() instanceof BasicField) {
+					cell.SetField(new ShieldField(cell, this._hq.Identity, this._hq));
 					this._hq.Buy(GameSettings.FieldPrice);
 				}
 			});

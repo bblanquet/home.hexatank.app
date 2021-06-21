@@ -43,7 +43,7 @@ export class IaArea {
 			this._hq.Identity.Name[this._hq.Identity.Name.length - 1] + this._letters[_globalIa.AreaDecisions.length];
 		this.OnTroopsChanged = new LiteEvent<number>();
 		this.OnRequestAdded = new LiteEvent<string>();
-		//this._viewArea = new IaAreaView(this._hq, this);
+		this._viewArea = new IaAreaView(this._hq, this);
 		this.Troops = new Array<TroopDecisionMaker>();
 		let range = 1;
 		let isFound = false;

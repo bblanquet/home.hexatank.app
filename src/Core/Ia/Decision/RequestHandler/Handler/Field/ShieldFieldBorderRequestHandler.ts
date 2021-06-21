@@ -9,7 +9,7 @@ import { RequestType } from '../../../Utils/RequestType';
 import { ISimpleRequestHandler } from '../../ISimpleRequestHandler';
 
 export class ShieldFieldBorderRequestHandler implements ISimpleRequestHandler {
-	constructor(private _hq: Headquarter) { }
+	constructor(private _hq: Headquarter) {}
 
 	Handle(request: AreaRequest): void {
 		const road = this.GetCells(request);
@@ -37,7 +37,7 @@ export class ShieldFieldBorderRequestHandler implements ISimpleRequestHandler {
 		if (price < this._hq.GetAmount()) {
 			road.forEach((c) => {
 				if (c.GetField() instanceof BasicField) {
-					new ShieldField(c, this._hq.Identity, this._hq);
+					c.SetField(new ShieldField(c, this._hq.Identity, this._hq));
 					this._hq.Buy(GameSettings.FieldPrice);
 				}
 			});

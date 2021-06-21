@@ -123,7 +123,7 @@ export class ReactorAppearance extends Item {
 	}
 
 	public IsEnemy(item: Identity): boolean {
-		return this.Reactor.Hq.IsEnemy(item);
+		return this.Reactor.GetIdentity().IsEnemy(item);
 	}
 
 	private ChangeReferential(viewX: number, viewY: number) {

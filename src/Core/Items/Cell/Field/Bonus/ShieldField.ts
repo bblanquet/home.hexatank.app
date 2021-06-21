@@ -1,4 +1,3 @@
-import { HeadQuarterField } from './../Hq/HeadquarterField';
 import { IHeadquarter } from '../Hq/IHeadquarter';
 import { Identity } from './../../../Identity';
 import { UpCalculator } from './UpCalculator';
@@ -14,7 +13,6 @@ import { BouncingScaleDownAnimator } from '../../../Animator/BouncingScaleDownAn
 import { BouncingScaleUpAnimator } from '../../../Animator/BouncingScaleUpAnimator';
 import { Explosion } from '../../../Unit/Explosion';
 import { ZKind } from '../../../ZKind';
-import { BasicField } from '../BasicField';
 
 export class ShieldField extends AliveBonusField {
 	private _shieldAppearance: ShieldAppearance;
@@ -29,12 +27,11 @@ export class ShieldField extends AliveBonusField {
 		this._shieldAppearance = new ShieldAppearance(this);
 		this.Hq.AddField(this, cell);
 		if (!this.Hq.IsCovered(cell)) {
-			new BasicField(this.GetCell());
+			this.Destroy();
 			if (cell.IsVisible()) {
 				new Explosion(cell.GetBoundingBox(), SvgArchive.constructionEffects, ZKind.Sky, false, 5);
 			}
 		}
-		this.GetCell().SetField(this);
 	}
 
 	public ChangeEnergy(isUp: boolean): void {
@@ -65,12 +62,11 @@ export class ShieldField extends AliveBonusField {
 	Support(vehicule: Vehicle): void {}
 
 	public IsEnemy(item: Identity): boolean {
-		return this.Hq.IsEnemy(item);
+		return this.GetIdentity().IsEnemy(item);
 	}
 
 	public Update(viewX: number, viewY: number): void {
 		if (!this.IsAlive()) {
-			new BasicField(this.GetCell());
 			this.Destroy();
 			return;
 		} else {

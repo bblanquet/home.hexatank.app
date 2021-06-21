@@ -55,23 +55,23 @@ export class MultiCellBonusCombination extends AbstractSingleCombination {
 			if (menuItem && this._gameContext.GetPlayerHq().Buy(cost)) {
 				const hq = this._gameContext.GetPlayerHq();
 				if (menuItem instanceof HealMenuItem) {
-					this.SetMenuItem(cells, (c) => new MedicField(c, hq));
+					this.SetMenuItem(cells, (c) => c.SetField(new MedicField(c, hq)));
 				} else if (menuItem instanceof AttackMenuItem) {
-					this.SetMenuItem(cells, (c) => new AttackField(c, hq));
+					this.SetMenuItem(cells, (c) => c.SetField(new AttackField(c, hq)));
 				} else if (menuItem instanceof ShieldMenuItem) {
-					this.SetMenuItem(cells, (c) => new ShieldField(c, hq.Identity, hq));
+					this.SetMenuItem(cells, (c) => c.SetField(new ShieldField(c, hq.Identity, hq)));
 				} else if (menuItem instanceof SpeedFieldMenuItem) {
-					this.SetMenuItem(cells, (c) => new RoadField(c, hq));
+					this.SetMenuItem(cells, (c) => c.SetField(new RoadField(c, hq)));
 				} else if (menuItem instanceof PoisonMenuItem) {
-					this.SetMenuItem(cells, (c) => new PoisonField(c, hq));
+					this.SetMenuItem(cells, (c) => c.SetField(new PoisonField(c, hq)));
 				} else if (menuItem instanceof ThunderMenuItem) {
-					this.SetMenuItem(cells, (c) => new BatteryField(c, hq));
+					this.SetMenuItem(cells, (c) => c.SetField(new BatteryField(c, hq)));
 				} else if (menuItem instanceof NetworkMenuItem) {
-					this.SetMenuItem(cells, (c) => new NetworkField(c, hq));
+					this.SetMenuItem(cells, (c) => c.SetField(new NetworkField(c, hq)));
 				} else if (menuItem instanceof SlowMenuItem) {
-					this.SetMenuItem(cells, (c) => new SlowField(c, hq.Identity.Skin.GetLight()));
+					this.SetMenuItem(cells, (c) => c.SetField(new SlowField(c)));
 				} else if (menuItem instanceof MoneyMenuItem) {
-					this.SetMenuItem(cells, (c) => new FarmField(c, hq));
+					this.SetMenuItem(cells, (c) => c.SetField(new FarmField(c, hq)));
 				}
 				cells.SetSelected(false);
 				this.ClearContext.Invoke();

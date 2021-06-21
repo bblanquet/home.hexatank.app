@@ -10,12 +10,11 @@ import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 
 export class HeadQuarterField extends Field {
 	private _timer: TickTimer;
-	IsFading: boolean;
-	Diamonds: number = 0;
+	private _isFading: boolean;
+	public Diamonds: number = 0;
 
 	constructor(private _hq: Headquarter, cell: Cell, sprite: string) {
 		super(cell, _hq.Identity);
-		this.GetCell().SetField(this);
 		this.Z = ZKind.Field;
 		this._timer = new TickTimer(3);
 		this.GenerateSprite(sprite);
@@ -61,18 +60,18 @@ export class HeadQuarterField extends Field {
 
 			if (this._timer.IsElapsed()) {
 				if (this.GetSprites()[0].alpha < 0.25) {
-					this.IsFading = false;
+					this._isFading = false;
 				}
 
 				if (1 < this.GetSprites()[0].alpha) {
-					this.IsFading = true;
+					this._isFading = true;
 				}
 
-				if (this.IsFading) {
+				if (this._isFading) {
 					this.GetSprites()[0].alpha -= 0.01;
 				}
 
-				if (!this.IsFading) {
+				if (!this._isFading) {
 					this.GetSprites()[0].alpha += 0.01;
 				}
 			}

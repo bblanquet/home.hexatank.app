@@ -25,7 +25,6 @@ export abstract class BonusField extends Field implements IActiveContainer {
 	constructor(cell: Cell, private _bonus: string[], protected hq: IHeadquarter, override: boolean = true) {
 		super(cell, hq.Identity);
 		this.Identity = hq.Identity;
-		this.GetCell().SetField(this);
 		this.Z = ZKind.Field;
 		this.GenerateSprite(SvgArchive.bonus.coverBottom);
 		this._bonus.forEach((b) => {
@@ -42,7 +41,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 		}
 		this._animator = new BouncingScaleAnimator(this);
 		if (!hq.IsCovered(cell)) {
-			new BasicField(cell);
+			this.Destroy();
 			if (cell.IsVisible()) {
 				new Explosion(cell.GetBoundingBox(), SvgArchive.constructionEffects, ZKind.Sky, false, 5);
 			}

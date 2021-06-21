@@ -4,7 +4,6 @@ import { DiamondField } from './../../Items/Cell/Field/DiamondField';
 import { BlockingField } from './../../Items/Cell/Field/BlockingField';
 import { BasicField } from './../../Items/Cell/Field/BasicField';
 import { GameContext } from '../../Setup/Context/GameContext';
-import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
 import { IField } from './../../Items/Cell/Field/IField';
 import { FarmField } from './../../Items/Cell/Field/Bonus/FarmField';
 import { MedicField } from './../../Items/Cell/Field/Bonus/MedicField';
@@ -79,56 +78,56 @@ export class FieldTypeHelper {
 
 	public static CreateRecordField(action: RecordKind, cell: Cell, hq: IHeadquarter, context: GameContext): IField {
 		if (action === RecordKind.Attack) {
-			return new AttackField(cell, hq);
+			return cell.SetField(new AttackField(cell, hq));
 		} else if (action === RecordKind.Battery) {
-			return new BatteryField(cell, hq);
+			return cell.SetField(new BatteryField(cell, hq));
 		} else if (action === RecordKind.Basic) {
-			return new BasicField(cell);
+			return cell.SetField(new BasicField(cell));
 		} else if (action === RecordKind.Farm) {
-			return new FarmField(cell, hq);
+			return cell.SetField(new FarmField(cell, hq));
 		} else if (action === RecordKind.Medic) {
-			return new MedicField(cell, hq);
+			return cell.SetField(new MedicField(cell, hq));
 		} else if (action === RecordKind.Network) {
-			return new NetworkField(cell, hq);
+			return cell.SetField(new NetworkField(cell, hq));
 		} else if (action === RecordKind.Poison) {
-			return new PoisonField(cell, hq);
+			return cell.SetField(new PoisonField(cell, hq));
 		} else if (action === RecordKind.Reactor) {
-			return new ReactorField(cell, hq, context, hq.Identity.Skin.GetLight(), true);
+			return cell.SetField(new ReactorField(cell, hq, context, hq.Identity.Skin.GetLight(), true));
 		} else if (action === RecordKind.Road) {
-			return new RoadField(cell, hq);
+			return cell.SetField(new RoadField(cell, hq));
 		} else if (action === RecordKind.Shield) {
-			return new ShieldField(cell, hq.Identity, hq);
+			return cell.SetField(new ShieldField(cell, hq.Identity, hq));
 		} else if (action === RecordKind.DiamondField) {
-			return new DiamondField(cell);
+			return cell.SetField(new DiamondField(cell));
 		} else if (action === RecordKind.Diamond) {
-			return new Diamond(cell);
+			return cell.SetField(new Diamond(cell));
 		} else if (action === RecordKind.Blocking) {
-			return new BlockingField(cell, SvgArchive.nature.tree);
+			return cell.SetField(new BlockingField(cell, SvgArchive.nature.tree));
 		}
 		throw 'not found';
 	}
 
 	public static CreateField(obj: string, cell: Cell, hq: IHeadquarter, context: GameContext): IField {
 		if (obj === 'AttackField') {
-			return new AttackField(cell, hq);
+			return cell.SetField(new AttackField(cell, hq));
 		} else if (obj === 'BatteryField') {
-			return new BatteryField(cell, hq);
+			return cell.SetField(new BatteryField(cell, hq));
 		} else if (obj === 'BasicField') {
-			return new BasicField(cell);
+			return cell.SetField(new BasicField(cell));
 		} else if (obj === 'FarmField') {
-			return new FarmField(cell, hq);
+			return cell.SetField(new FarmField(cell, hq));
 		} else if (obj === 'MedicField') {
-			return new MedicField(cell, hq);
+			return cell.SetField(new MedicField(cell, hq));
 		} else if (obj === 'NetworkField') {
-			return new NetworkField(cell, hq);
+			return cell.SetField(new NetworkField(cell, hq));
 		} else if (obj === 'PoisonField') {
-			return new PoisonField(cell, hq);
+			return cell.SetField(new PoisonField(cell, hq));
 		} else if (obj === 'ReactorField') {
-			return new ReactorField(cell, hq, context, hq.Identity.Skin.GetLight());
+			return cell.SetField(new ReactorField(cell, hq, context, hq.Identity.Skin.GetLight()));
 		} else if (obj === 'RoadField') {
-			return new RoadField(cell, hq);
+			return cell.SetField(new RoadField(cell, hq));
 		} else if (obj === 'ShieldField') {
-			return new ShieldField(cell, hq.Identity, hq);
+			return cell.SetField(new ShieldField(cell, hq.Identity, hq));
 		}
 		throw 'not found';
 	}

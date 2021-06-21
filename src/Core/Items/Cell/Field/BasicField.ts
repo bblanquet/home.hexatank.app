@@ -7,7 +7,6 @@ import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 export class BasicField extends Field {
 	constructor(cell: Cell) {
 		super(cell, null);
-		cell.SetField(this);
 	}
 
 	Support(vehicule: Vehicle): void {}

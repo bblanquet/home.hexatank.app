@@ -10,9 +10,11 @@ import { Cell } from '../../../Items/Cell/Cell';
 
 export class HqRender {
 	public Render(cells: Dictionnary<Cell>, blueprint: DiamondHq, items: Item[], index: number): Headquarter {
-		const diamond = new Diamond(cells.Get(this.DiamondCoo(blueprint)));
+		const diamondCell = cells.Get(this.DiamondCoo(blueprint));
+		const diamond = diamondCell.SetField(new Diamond(diamondCell));
 		const id = new Identity(blueprint.PlayerName, new HqSkinHelper().GetSkin(index), !blueprint.isIa);
-		const hq = new Headquarter(id, cells.Get(this.HqCoo(blueprint)));
+		const cell = cells.Get(this.HqCoo(blueprint));
+		const hq = cell.SetField(new Headquarter(id, cell));
 		items.push(diamond);
 		items.push(hq);
 		return hq;

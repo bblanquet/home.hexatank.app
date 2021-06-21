@@ -33,7 +33,6 @@ import { ISpot } from '../../../../Utils/Geometry/ISpot';
 import { IHeadquarter } from '../Hq/IHeadquarter';
 import { Identity } from '../../../Identity';
 import { IHqGameContext } from '../../../../Setup/Context/IHqGameContext';
-import { BasicField } from '../BasicField';
 
 export class ReactorField extends Field implements ISelectable, ISpot<ReactorField> {
 	public Identity: Identity;
@@ -73,7 +72,6 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		this.Z = ZKind.Field;
 		this.Hq.AddReactor(this);
 		this.Reserve = new ReactorReserve(this.Hq, this);
-		this.GetCell().SetField(this);
 		this.Appearance = new ReactorAppearance(this, this._light);
 		this.GenerateSprite(SvgArchive.selectionCell);
 		this.SetProperty(SvgArchive.selectionCell, (e) => {
@@ -241,7 +239,6 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 				charge.Destroy();
 			});
 			this.Charges.Clear();
-			new BasicField(this.GetCell());
 
 			this.GetCell().GetIncludedRange(this._totalRange).forEach((c) => {
 				if (
@@ -249,7 +246,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 					!this.Hq.IsCovered(c) &&
 					!this.Hq.Identity.IsEnemy(c.GetField().GetIdentity())
 				) {
-					new BasicField(c);
+					c.GetField().Destroy();
 					if (c.IsVisible()) {
 						new Explosion(c.GetBoundingBox(), SvgArchive.constructionEffects, ZKind.Sky, false, 5);
 					}
@@ -257,7 +254,8 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 			});
 
 			const hq = this._context.GetHqFromId(vehicule.Identity);
-			var reactor = new ReactorField(this.GetCell(), hq, this._context, hq.Identity.Skin.GetLight());
+			const cell = this.GetCell();
+			var reactor = cell.SetField(new ReactorField(cell, hq, this._context, hq.Identity.Skin.GetLight()));
 			hq.OnReactorConquested.Invoke(this, reactor);
 		}
 	}

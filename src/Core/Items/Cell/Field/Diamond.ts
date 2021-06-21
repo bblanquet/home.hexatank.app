@@ -22,16 +22,15 @@ export class Diamond extends AliveField {
 		this.TotalLife = 150;
 		this.Life = 150;
 		this.Z = ZKind.Field;
-		this.GetCell().SetField(this);
 		this.BoundingBox = this.GetCell().GetBoundingBox();
 		this.GenerateSprite(SvgArchive.nature.diamond);
 
 		this.Lights = new Light(this.GetBoundingBox());
 		this.Lights.Display();
 		this.Fields = new Array<DiamondField>();
-		var neighbours = this.GetCell().GetUnblockedRange();
-		neighbours.forEach((cell) => {
-			const field = new DiamondField(<Cell>cell);
+		var nearbyCell = this.GetCell().GetUnblockedRange();
+		nearbyCell.forEach((cell) => {
+			const field = cell.SetField(new DiamondField(cell));
 			this.Fields.push(field);
 			field.Loaded.On(this.OnLoaded.bind(this));
 		});

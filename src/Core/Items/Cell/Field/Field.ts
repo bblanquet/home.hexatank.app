@@ -13,7 +13,6 @@ export abstract class Field extends Item implements IField {
 		super();
 		this._onCellStateChanged = this.OnCellStateChanged.bind(this);
 		this._cell.OnCellStateChanged.On(this._onCellStateChanged);
-		this.SetField();
 	}
 	GetIdentity(): Identity {
 		return this.Identity;
@@ -42,18 +41,5 @@ export abstract class Field extends Item implements IField {
 	public SetPowerUp(vehicule: Vehicle): void {}
 	GetCell(): Cell {
 		return this._cell;
-	}
-
-	public SetField(): void {
-		const currentField = this._cell.GetField();
-		if (currentField) {
-			if (this.constructor.name === currentField.constructor.name) {
-				throw `Cannot replace field with another same type field`;
-			}
-			(<any>currentField).Destroy();
-		}
-
-		this._cell.SetField(this);
-		this._cell.OnFieldChanged.Invoke(this, this._cell);
 	}
 }

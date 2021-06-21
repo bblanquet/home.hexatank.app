@@ -10,18 +10,15 @@ import { ReactorField } from '../../../../Items/Cell/Field/Bonus/ReactorField';
 import { Cell } from '../../../../Items/Cell/Cell';
 
 export class ReactorRequestHandler implements ISimpleRequestHandler {
-	constructor(private _hq: Headquarter, private _gameContext: GameContext) { }
+	constructor(private _hq: Headquarter, private _gameContext: GameContext) {}
 
 	Handle(request: AreaRequest): void {
 		if (GameSettings.FieldPrice < this._hq.GetAmount() && request.Area.ContainsTroop()) {
 			const cells = request.Area.GetSpot().GetCells().filter((c) => c.GetField() instanceof BasicField);
 			if (0 < cells.length) {
 				const isolatedCell = this.GetMostIsolatedCell(cells);
-				const reactor = new ReactorField(
-					isolatedCell,
-					this._hq,
-					this._gameContext,
-					this._hq.Identity.Skin.GetLight()
+				const reactor = isolatedCell.SetField(
+					new ReactorField(isolatedCell, this._hq, this._gameContext, this._hq.Identity.Skin.GetLight())
 				);
 				this._hq.AddReactor(reactor);
 				this._hq.Buy((this._hq.GetReactorsCount() + 1) * GameSettings.FieldPrice);
@@ -40,7 +37,7 @@ export class ReactorRequestHandler implements ISimpleRequestHandler {
 			if (cs.Exist(key)) {
 				cs.Get(key).push(c);
 			} else {
-				cs.Add(key, [c]);
+				cs.Add(key, [ c ]);
 			}
 		});
 		const c = cs.Keys().map((e) => +e).sort();

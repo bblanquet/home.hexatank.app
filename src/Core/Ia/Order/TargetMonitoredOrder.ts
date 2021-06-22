@@ -20,7 +20,7 @@ export class TargetMonitoredOrder extends ParentOrder {
 		this._vehicleCellChanged = true;
 		this.Tank.OnCellChanged.On(this.VehicleCellChange.bind(this));
 		this.SetState(OrderState.Pending);
-		this._idleTimer = new TimeTimer(1000);
+		this._idleTimer = new TimeTimer(Math.random() * 1000);
 	}
 
 	private VehicleCellChange(src: any, cell: Cell): void {
@@ -97,6 +97,7 @@ export class TargetMonitoredOrder extends ParentOrder {
 		}
 
 		if (this._vehicleCellChanged || (this.IsIdle() && this._idleTimer.IsElapsed())) {
+			this.ResetIdleTimer();
 			//because of idle it does loop a lot here
 			//can be updated?
 			this._vehicleCellChanged = false;
@@ -108,6 +109,12 @@ export class TargetMonitoredOrder extends ParentOrder {
 			this.ClearChild();
 		} else {
 			this.CurrentOrder.Update();
+		}
+	}
+
+	private ResetIdleTimer() {
+		if (this.IsIdle) {
+			this._idleTimer = new TimeTimer(Math.random() * 1000);
 		}
 	}
 }

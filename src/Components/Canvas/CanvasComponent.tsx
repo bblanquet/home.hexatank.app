@@ -56,8 +56,8 @@ export default class CanvasComponent extends Component<
 		if (this._stop) {
 			return;
 		}
-		requestAnimationFrame(() => this.GameLoop());
 		this._updater.Update();
+		requestAnimationFrame(() => this.GameLoop());
 	}
 
 	componentDidUpdate() {}

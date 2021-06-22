@@ -92,10 +92,6 @@ export class Diamond extends AliveField {
 		}
 
 		super.Update(viewX, viewY);
-		this.Fields.forEach((field) => {
-			field.Update(viewX, viewY);
-		});
-
 		this.Lights.Update(viewX, viewY);
 	}
 

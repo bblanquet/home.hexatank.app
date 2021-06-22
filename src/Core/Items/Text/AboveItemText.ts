@@ -18,6 +18,9 @@ export class AboveItemText extends Item {
 	private _textMetrics: PIXI.TextMetrics;
 
 	public GetBoundingBox(): BoundingBox {
+		if (!this._textMetrics) {
+			this.UpdateText();
+		}
 		return BoundingBox.Create(
 			this._item.GetBoundingBox().X + this._item.GetBoundingBox().Width / 2 - this._textMetrics.width / 2,
 			this._item.GetBoundingBox().Y - this._textMetrics.height / 2,
@@ -74,15 +77,17 @@ export class AboveItemText extends Item {
 	}
 
 	public Update(viewX: number, viewY: number): void {
-		if (this._item.IsUpdatable) {
-			this.UpdateText();
-			super.Update(viewX, viewY);
-			if (this._isVisible) {
-				this._animator.Update(viewX, viewY);
-				if (this._visibleTimer && this._visibleTimer.IsElapsed()) {
-					this._isVisible = false;
-				}
-			}
-		}
+		// if (this._item.IsUpdatable) {
+		// 	super.Update(viewX, viewY);
+		// 	if (this._isVisible) {
+		// 		this._animator.Update(viewX, viewY);
+		// 		if (!this._animator.IsDone) {
+		// 			this.UpdateText();
+		// 		}
+		// 		if (this._visibleTimer && this._visibleTimer.IsElapsed()) {
+		// 			this._isVisible = false;
+		// 		}
+		// 	}
+		// }
 	}
 }

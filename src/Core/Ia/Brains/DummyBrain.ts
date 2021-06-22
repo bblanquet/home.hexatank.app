@@ -27,6 +27,6 @@ export class DummyBrain implements IBrainProvider {
 		);
 
 		brain.SetDiamond(diamond);
-		return brain;
+		return null;
 	}
 }

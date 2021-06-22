@@ -355,7 +355,6 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 		super.Update(viewX, viewY);
 
 		this.Fields.forEach((field) => {
-			field.Update(viewX, viewY);
 			this.Earn(field.Diamonds);
 			field.Diamonds = 0;
 		});

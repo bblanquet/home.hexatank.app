@@ -18,6 +18,10 @@ export class BelowItemText extends Item {
 	private _textMetrics: PIXI.TextMetrics;
 
 	public GetBoundingBox(): BoundingBox {
+		if (!this._textMetrics) {
+			this.UpdateText();
+		}
+
 		let x = this._item.GetBoundingBox().X + this._item.GetBoundingBox().Width / 2 - this._textMetrics.width / 2;
 
 		return BoundingBox.Create(
@@ -77,10 +81,12 @@ export class BelowItemText extends Item {
 
 	public Update(viewX: number, viewY: number): void {
 		if (this._item.IsUpdatable) {
-			this.UpdateText();
 			super.Update(viewX, viewY);
 			if (this._isVisible) {
 				this._animator.Update(viewX, viewY);
+				if (!this._animator.IsDone) {
+					this.UpdateText();
+				}
 				if (this._visibleTimer && this._visibleTimer.IsElapsed()) {
 					this._isVisible = false;
 				}

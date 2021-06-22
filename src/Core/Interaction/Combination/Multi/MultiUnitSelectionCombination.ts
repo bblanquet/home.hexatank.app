@@ -7,6 +7,7 @@ import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { Singletons, SingletonKey } from '../../../../Singletons';
+import { Relationship } from '../../../Items/Identity';
 
 export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 	private _group: UnitGroup;
@@ -40,7 +41,7 @@ export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 			if (
 				occupier &&
 				occupier instanceof Vehicle &&
-				!this._gameContext.GetPlayerHq().IsEnemy(occupier.Identity)
+				this._gameContext.GetPlayerHq().GetRelation(occupier.Identity) === Relationship.Ally
 			) {
 				vehicles.push(occupier);
 			}

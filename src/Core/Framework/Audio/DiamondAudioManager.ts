@@ -16,6 +16,7 @@ import { Item } from '../../Items/Item';
 import { Turrel } from '../../Items/Unit/Turrel';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { IAudioService } from '../../../Services/Audio/IAudioService';
+import { Relationship } from '../../Items/Identity';
 
 export class DiamondAudioManager implements IGameAudioManager {
 	private _soundService: IAudioService;
@@ -95,7 +96,7 @@ export class DiamondAudioManager implements IGameAudioManager {
 	HandleOrder(src: Vehicle, order: IOrder): void {
 		const playerHq = this._gameContext.GetPlayerHq();
 		if (playerHq) {
-			if (!src.IsEnemy(playerHq.Identity)) {
+			if (src.GetRelation(playerHq.Identity) === Relationship.Ally) {
 				const voices = [
 					AudioArchive.ayaya,
 					AudioArchive.copyThat,

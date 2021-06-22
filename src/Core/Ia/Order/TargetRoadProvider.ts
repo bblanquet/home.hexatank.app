@@ -6,18 +6,18 @@ import { AStarEngine } from '../AStarEngine';
 import { AStarHelper } from '../AStarHelper';
 
 export class TargetRoad {
-	constructor(public Target: Cell, public Road: Cell[]) { }
+	constructor(public Target: Cell, public Road: Cell[]) {}
 }
 
 export class TargetRoadProvider {
-	constructor(protected Tank: Vehicle, protected Destination: Cell) { }
+	constructor(protected Tank: Vehicle, protected Destination: Cell) {}
 
 	private IsAround() {
 		return this.Tank.GetCurrentCell().GetNearby().some((c) => c === this.Destination);
 	}
 
 	public GetTargetRoad(): TargetRoad {
-		if (this.IsAround() && !TypeTranslator.IsAccessible(this.Destination, this.Tank.Identity)) {
+		if (this.IsAround() && !TypeTranslator.IsAccessible(this.Destination, this.Tank)) {
 			return new TargetRoad(this.Destination, []);
 		}
 
@@ -44,7 +44,7 @@ export class TargetRoadProvider {
 	}
 
 	private GetRoad(cell: Cell) {
-		const filter = (c: Cell) => c && TypeTranslator.IsAccessible(c, this.Tank.Identity);
+		const filter = (c: Cell) => c && TypeTranslator.IsAccessible(c, this.Tank);
 		const cost = (c: Cell) => AStarHelper.GetBasicCost(c);
 		return new AStarEngine<Cell>(filter, cost).GetPath(this.Tank.GetCurrentCell(), cell, true);
 	}

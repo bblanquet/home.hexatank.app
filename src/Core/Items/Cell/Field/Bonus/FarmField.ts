@@ -10,6 +10,7 @@ import { Headquarter } from '../Hq/Headquarter';
 import { BonusField } from './BonusField';
 import { CellState } from '../../CellState';
 import { IHeadquarter } from '../Hq/IHeadquarter';
+import { Relationship } from '../../../Identity';
 
 export class FarmField extends BonusField {
 	private _timer: TimeTimer;
@@ -50,7 +51,7 @@ export class FarmField extends BonusField {
 				const energy = this.GetReactorsPower(this.hq);
 				this.SetEmpty();
 				this._lightItem.Hide();
-				if (truck.IsEnemy(this.hq.Identity)) {
+				if (truck.GetRelation(this.hq.Identity) === Relationship.Ally) {
 					this.hq.Earn(this._bonusProvider.GetDiamondValue(energy));
 				}
 			}

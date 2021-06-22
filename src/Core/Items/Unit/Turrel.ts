@@ -9,7 +9,6 @@ import { IRotatable } from './MotionHelpers/IRotatable';
 import { IRotationMaker } from './MotionHelpers/IRotationMaker';
 import { RotationMaker } from './MotionHelpers/RotationMaker';
 import { ItemSkin } from '../ItemSkin';
-import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { SvgArchive } from '../../Framework/SvgArchiver';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../Interaction/InteractionContext';

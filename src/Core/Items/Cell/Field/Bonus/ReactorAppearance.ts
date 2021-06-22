@@ -1,4 +1,4 @@
-import { Identity } from './../../../Identity';
+import { Identity, Relationship } from './../../../Identity';
 import { FadeOutAnimation } from '../../../Animator/FadeOutAnimation';
 import { FadeInAnimation } from '../../../Animator/FadeInAnimation';
 import { RotationAnimator } from '../../../Animator/RotationAnimator';
@@ -10,7 +10,6 @@ import { CellState } from '../../CellState';
 import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { BouncingScaleAnimator } from '../../../Animator/BouncingScaleAnimator';
 import { ReactorField } from './ReactorField';
-import { AliveItem } from '../../../AliveItem';
 import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 import { ZKind } from '../../../ZKind';
 
@@ -122,8 +121,8 @@ export class ReactorAppearance extends Item {
 		});
 	}
 
-	public IsEnemy(item: Identity): boolean {
-		return this.Reactor.GetIdentity().IsEnemy(item);
+	public GetRelation(item: Identity): Relationship {
+		return this.Reactor.GetIdentity().GetRelation(item);
 	}
 
 	private ChangeReferential(viewX: number, viewY: number) {

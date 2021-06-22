@@ -6,8 +6,9 @@ import { AStarEngine } from '../../../AStarEngine';
 import { AStarHelper } from '../../../AStarHelper';
 import { MonitoredOrder } from '../../MonitoredOrder';
 import { TypeTranslator } from '../../../../Items/Cell/Field/TypeTranslator';
+import { IOrderGiver } from './IOrderGiver';
 
-export class HqFieldOrder {
+export class HqFieldOrder implements IOrderGiver {
 	private _hq: IHeadquarter;
 	private _vehicule: Vehicle;
 
@@ -46,7 +47,7 @@ export class HqFieldOrder {
 	}
 
 	private GetRoad(cell: Cell) {
-		const filter = (c: Cell) => c && TypeTranslator.IsAccessible(c, this._vehicule.Identity);
+		const filter = (c: Cell) => c && TypeTranslator.IsAccessible(c, this._vehicule);
 		const cost = (c: Cell) => AStarHelper.GetBasicCost(c);
 		return new AStarEngine<Cell>(filter, cost).GetPath(this._vehicule.GetCurrentCell(), cell, true);
 	}

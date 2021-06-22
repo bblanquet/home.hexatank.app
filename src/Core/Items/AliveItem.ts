@@ -1,4 +1,4 @@
-import { Identity } from './Identity';
+import { Identity, Relationship } from './Identity';
 import { DamageText } from './Unit/DamageText';
 import { GameSettings } from './../Framework/GameSettings';
 import { Item } from './Item';
@@ -123,7 +123,7 @@ export abstract class AliveItem extends Item {
 		this.TotalLife = life;
 	}
 
-	public abstract IsEnemy(id: Identity): boolean;
+	public abstract GetRelation(id: Identity): Relationship;
 
 	public abstract GetCurrentCell(): Cell;
 }

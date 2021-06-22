@@ -10,6 +10,7 @@ import { OrderState } from '../OrderState';
 import { AliveItem } from '../../../Items/AliveItem';
 import { ParentOrder } from '../ParentOrder';
 import { Order } from '../Order';
+import { Relationship } from '../../../Items/Identity';
 
 export class TargetCellOrder extends ParentOrder {
 	private _targetUi: BasicItem;
@@ -27,14 +28,14 @@ export class TargetCellOrder extends ParentOrder {
 	public GetTarget(): AliveItem {
 		if (this._targetCell.HasOccupier()) {
 			const t = (this._targetCell.GetOccupier() as any) as AliveItem;
-			if (t.IsEnemy(this._tank.Identity)) {
+			if (t.GetRelation(this._tank.Identity) !== Relationship.Ally) {
 				return t;
 			}
 		}
 
 		if (this._targetCell.GetField() instanceof AliveItem) {
 			const shield = (this._targetCell.GetField() as any) as AliveItem;
-			if (shield.IsEnemy(this._tank.Identity)) {
+			if (shield.GetRelation(this._tank.Identity) !== Relationship.Ally) {
 				return shield;
 			}
 		}

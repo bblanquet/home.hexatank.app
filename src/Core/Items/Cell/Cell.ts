@@ -1,4 +1,4 @@
-import { Identity } from './../Identity';
+import { Identity, Relationship } from './../Identity';
 import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { ReactorField } from './Field/Bonus/ReactorField';
 import { ZKind } from './../ZKind';
@@ -249,29 +249,16 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 	public HasAlly(id: Identity): boolean {
 		if (this._occupier && this._occupier instanceof AliveItem) {
-			return !this._occupier.IsEnemy(id);
+			return this._occupier.GetRelation(id) === Relationship.Ally;
 		}
 		if (this._field && this._field instanceof Headquarter) {
-			return !this._field.IsEnemy(id);
+			return this._field.GetRelation(id) === Relationship.Ally;
 		}
 		return false;
 	}
 
-	public IsFoeField(identity: Identity): boolean {
-		return identity.IsEnemy(this.GetField().GetIdentity());
-	}
-
-	public HasEnemy(v: AliveItem): boolean {
-		if (this._occupier && this._occupier instanceof AliveItem) {
-			if (v instanceof Vehicle && (<Vehicle>v).HasCamouflage) {
-				return false;
-			}
-			return v.IsEnemy(this._occupier.Identity);
-		}
-		if (this._field && this._field instanceof Headquarter) {
-			return v.IsEnemy(this._field.Identity);
-		}
-		return false;
+	private IsFoeField(identity: Identity): boolean {
+		return identity.GetRelation(this.GetField().GetIdentity()) === Relationship.Enemy;
 	}
 
 	public GetBoundingBox(): BoundingBox {

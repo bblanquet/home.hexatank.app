@@ -1,5 +1,5 @@
 import { IHeadquarter } from '../Hq/IHeadquarter';
-import { Identity } from './../../../Identity';
+import { Identity, Relationship } from './../../../Identity';
 import { UpCalculator } from './UpCalculator';
 import { ShieldAppearance } from './ShieldAppearance';
 import { Cell } from '../../Cell';
@@ -61,8 +61,8 @@ export class ShieldField extends AliveBonusField {
 
 	Support(vehicule: Vehicle): void {}
 
-	public IsEnemy(item: Identity): boolean {
-		return this.GetIdentity().IsEnemy(item);
+	public GetRelation(item: Identity): Relationship {
+		return this.GetIdentity().GetRelation(item);
 	}
 
 	public Update(viewX: number, viewY: number): void {

@@ -7,6 +7,7 @@ import { Field } from '../Field';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { Truck } from '../../../Unit/Truck';
 import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
+import { Relationship } from '../../../Identity';
 
 export class HeadQuarterField extends Field {
 	private _timer: TickTimer;
@@ -32,7 +33,7 @@ export class HeadQuarterField extends Field {
 	public Support(vehicule: Vehicle): void {
 		if (vehicule instanceof Truck) {
 			var truck = vehicule as Truck;
-			if (!truck.IsEnemy(this._hq.Identity)) {
+			if (truck.GetRelation(this._hq.Identity) === Relationship.Ally) {
 				this.Diamonds = truck.Unload();
 			}
 		}

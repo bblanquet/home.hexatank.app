@@ -1,4 +1,4 @@
-import { Identity } from './../Identity';
+import { Identity, Relationship } from './../Identity';
 import { TimeTimer } from './../../Utils/Timer/TimeTimer';
 import { GameSettings } from './../../Framework/GameSettings';
 import { Vehicle } from './Vehicle';
@@ -46,8 +46,8 @@ export class Truck extends Vehicle {
 		this._light.Destroy();
 	}
 
-	public IsEnemy(id: Identity): boolean {
-		return this.Identity.IsEnemy(id);
+	public GetRelation(id: Identity): Relationship {
+		return this.Identity.GetRelation(id);
 	}
 
 	public Load(): boolean {

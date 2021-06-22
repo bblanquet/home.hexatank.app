@@ -22,7 +22,7 @@ export class RoadProvider {
 	}
 
 	private GetRoad(candidate: Cell) {
-		const filter = (c: Cell) => c && TypeTranslator.IsAccessible(c, this.Vehicle.Identity);
+		const filter = (c: Cell) => c && TypeTranslator.IsAccessible(c, this.Vehicle);
 		const cost = (c: Cell) => AStarHelper.GetBasicCost(c);
 		const nextcells = new AStarEngine<Cell>(filter, cost).GetPath(this.Vehicle.GetCurrentCell(), candidate, true);
 		return nextcells;

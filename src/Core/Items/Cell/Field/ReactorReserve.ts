@@ -5,6 +5,7 @@ import { BonusField } from './Bonus/BonusField';
 import { AliveBonusField } from './Bonus/AliveBonusField';
 import { Item } from '../../Item';
 import { IHeadquarter } from './Hq/IHeadquarter';
+import { Relationship } from '../../Identity';
 
 export class ReactorReserve {
 	private _ref: any;
@@ -54,7 +55,7 @@ export class ReactorReserve {
 				}
 			} else if (cell.GetField() instanceof AliveBonusField) {
 				const bonusField = cell.GetField() as AliveBonusField;
-				if (!bonusField.IsEnemy(this._hq.Identity)) {
+				if (bonusField.GetRelation(this._hq.Identity) === Relationship.Ally) {
 					bonusField.ChangeEnergy(isUp);
 				}
 			}

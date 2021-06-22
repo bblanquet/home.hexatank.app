@@ -1,9 +1,10 @@
 import { AreaStatus } from './AreaStatus';
 import { Diamond } from '../../../Items/Cell/Field/Diamond';
 import { Cell } from '../../../Items/Cell/Cell';
-import { AliveItem } from '../../../Items/AliveItem';
 import { DistanceHelper } from '../../../Items/Unit/MotionHelpers/DistanceHelper';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
+import { Identity } from '../../../Items/Identity';
+import { TypeTranslator } from '../../../Items/Cell/Field/TypeTranslator';
 
 export class Area {
 	private _aroudnAreas: Area[];
@@ -47,12 +48,12 @@ export class Area {
 		return cells;
 	}
 
-	public GetFoeCells(v: AliveItem): Cell[] {
+	public GetVehicleFoeCells(id: Identity): Cell[] {
 		const result = new Array<Cell>();
 		const cells = this._centralCell.GetNearby().filter((c) => !isNullOrUndefined(c));
 		cells.push(this.GetCentralCell());
 		cells.forEach((cell) => {
-			if (cell.HasEnemy(v)) {
+			if (TypeTranslator.HasFoeVehicle(cell, id)) {
 				result.push(cell);
 			}
 		});

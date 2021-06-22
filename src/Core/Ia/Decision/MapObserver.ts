@@ -35,7 +35,7 @@ export class MapObserver {
 		}
 
 		return areas
-			.map((a) => a.GetStatus().GetKindCells([ ReactorField.name, Headquarter.name ]))
+			.map((a) => a.GetStatus().GetCells([ ReactorField.name, Headquarter.name ]))
 			.reduce((x, y) => x.concat(y));
 	}
 

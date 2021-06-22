@@ -1,6 +1,6 @@
 import { FollowingItem } from './../FollowingItem';
 import { BasicItem } from './../BasicItem';
-import { Identity } from './../Identity';
+import { Identity, Relationship } from './../Identity';
 import { Missile } from './Missile';
 import { ZKind } from './../ZKind';
 import { LiteEvent } from './../../Utils/Events/LiteEvent';
@@ -103,18 +103,10 @@ export class Tank extends Vehicle {
 
 	public IsEnemyHqClose(): boolean {
 		var cells = this.GetCurrentCell().GetNearby();
-		let enemies = cells.map((c) => c.GetShootableEntity()).filter((c) => !isNullOrUndefined(c));
+		let enemies = cells.map((c) => c.GetShootableEntity()).filter((shootable) => shootable);
 		//find hq among enemies
-		var hq = enemies.filter((c) => c instanceof Headquarter).map((c) => <Headquarter>c);
-		if (hq.length >= 1) {
-			return hq.some((element) => {
-				if (element.IsEnemy(this.Identity)) {
-					return true;
-				}
-				return false;
-			});
-		}
-		return false;
+		var hq = enemies.find((c) => c && c instanceof Headquarter);
+		return hq && hq.GetRelation(this.Identity) === Relationship.Enemy;
 	}
 
 	private FindTargets() {
@@ -141,8 +133,8 @@ export class Tank extends Vehicle {
 		//find random enemy among enemies
 		const enemies = cells
 			.map((cell) => <AliveItem>cell.GetShootableEntity())
-			.filter((aliveItem) => !isNullOrUndefined(aliveItem) && this.IsEnemy(aliveItem.Identity))
-			.filter((c) => (c instanceof Vehicle && !(<Vehicle>c).HasCamouflage) || c instanceof Headquarter);
+			.filter((aliveItem) => aliveItem && this.GetRelation(aliveItem.Identity) === Relationship.Enemy)
+			.filter((c) => (c instanceof Vehicle && !(c as Vehicle).HasCamouflage) || c instanceof Headquarter);
 
 		if (!isNullOrUndefined(this._currentTarget)) {
 			var exist = enemies.indexOf(this._currentTarget) === -1 ? false : true;
@@ -160,9 +152,9 @@ export class Tank extends Vehicle {
 		const cells = this.GetCurrentCell().GetNearby();
 		const enemies = cells.map((c) => (<Cell>c).GetShootableEntity()).filter((c) => !isNullOrUndefined(c));
 		const hqs = enemies.filter((c) => c instanceof Headquarter).map((c) => <Headquarter>c);
-		hqs.some((element) => {
-			if (element.IsEnemy(this.Identity)) {
-				this._currentTarget = element;
+		hqs.some((hq) => {
+			if (hq.GetRelation(this.Identity) === Relationship.Enemy) {
+				this._currentTarget = hq;
 				return true;
 			}
 			return false;
@@ -173,8 +165,8 @@ export class Tank extends Vehicle {
 		return enemies.filter((e) => e === this._mainTarget).length === 1;
 	}
 
-	public IsEnemy(id: Identity): boolean {
-		return this.Identity.IsEnemy(id);
+	public GetRelation(id: Identity): Relationship {
+		return this.Identity.GetRelation(id);
 	}
 
 	public GetTarget(): AliveItem {
@@ -182,7 +174,7 @@ export class Tank extends Vehicle {
 	}
 
 	public SetMainTarget(item: AliveItem): void {
-		if (!isNullOrUndefined(item) && !item.IsEnemy(this.Identity)) {
+		if (item && item.GetRelation(this.Identity) === Relationship.Ally) {
 			throw 'should not be there';
 		}
 

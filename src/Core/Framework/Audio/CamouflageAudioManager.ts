@@ -12,6 +12,7 @@ import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Item } from '../../Items/Item';
 import { Turrel } from '../../Items/Unit/Turrel';
 import { IAudioService } from '../../../Services/Audio/IAudioService';
+import { Relationship } from '../../Items/Identity';
 
 export class CamouflageAudioManager implements IGameAudioManager {
 	private _soundService: IAudioService;
@@ -73,7 +74,7 @@ export class CamouflageAudioManager implements IGameAudioManager {
 	HandleOrder(src: Vehicle, order: IOrder): void {
 		const playerHq = this._gameContext.GetPlayer();
 		if (playerHq) {
-			if (!src.IsEnemy(playerHq.Identity)) {
+			if (src.GetRelation(playerHq.Identity) === Relationship.Ally) {
 				const voices = [
 					AudioArchive.ayaya,
 					AudioArchive.copyThat,

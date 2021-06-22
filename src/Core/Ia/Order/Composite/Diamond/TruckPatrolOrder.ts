@@ -4,10 +4,16 @@ import { DiamondFieldOrder } from './DiamondFieldOrder';
 import { Truck } from '../../../../Items/Unit/Truck';
 import { DiamondField } from '../../../../Items/Cell/Field/DiamondField';
 import { ParentOrder } from '../../ParentOrder';
+import { TimeTimer } from '../../../../Utils/Timer/TimeTimer';
+import { IOrderGiver } from './IOrderGiver';
 
 export class TruckPatrolOrder extends ParentOrder {
+	private _idleTimer: TimeTimer;
+	private _isIdle: boolean;
 	constructor(private truck: Truck, private _hqOrder: HqFieldOrder, private _diamondFieldOrder: DiamondFieldOrder) {
 		super();
+		this._idleTimer = new TimeTimer(1000);
+		this._isIdle = false;
 		this.SetState(OrderState.Pending);
 	}
 
@@ -21,10 +27,7 @@ export class TruckPatrolOrder extends ParentOrder {
 
 	Update(): void {
 		if (!this.CurrentOrder) {
-			const order = this._diamondFieldOrder.GetOrder();
-			if (order) {
-				this.SetCurrentOrder(order);
-			}
+			this.TryToSetNextOrder(this._diamondFieldOrder);
 		}
 
 		if (this.CurrentOrder && this.CurrentOrder.IsDone()) {
@@ -42,20 +45,27 @@ export class TruckPatrolOrder extends ParentOrder {
 	}
 
 	private SwitchOrder(): void {
-		const nextOrder = this._diamondFieldOrder.IsOrder(this.CurrentOrder)
-			? this._hqOrder.GetOrder()
-			: this._diamondFieldOrder.GetOrder();
-		if (nextOrder) {
-			this.SetCurrentOrder(nextOrder);
+		const orderGiver = this._diamondFieldOrder.IsOrder(this.CurrentOrder) ? this._hqOrder : this._diamondFieldOrder;
+		this.TryToSetNextOrder(orderGiver);
+	}
+
+	private TryToSetNextOrder(order: IOrderGiver) {
+		if (!this._isIdle || (this._isIdle && this._idleTimer.IsElapsed())) {
+			const nextOrder = order.GetOrder();
+			this._isIdle = false;
+
+			if (nextOrder) {
+				this.SetCurrentOrder(nextOrder);
+			} else {
+				this._isIdle = true;
+				this._idleTimer.Reset();
+			}
 		}
 	}
 
 	public Reset(): void {
-		const orderMaker = this._diamondFieldOrder.IsOrder(this.CurrentOrder) ? this._diamondFieldOrder : this._hqOrder;
-		const order = orderMaker.GetOrder();
-		if (order) {
-			this.SetCurrentOrder(order);
-		}
+		const orderGiver = this._diamondFieldOrder.IsOrder(this.CurrentOrder) ? this._diamondFieldOrder : this._hqOrder;
+		this.TryToSetNextOrder(orderGiver);
 	}
 	private IsLoadingDiamonds() {
 		return this.truck.GetCurrentCell().GetField() instanceof DiamondField && !this.truck.IsLoaded();

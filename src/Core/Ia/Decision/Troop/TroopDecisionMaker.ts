@@ -5,10 +5,10 @@ import { ITimer } from '../../../Utils/Timer/ITimer';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Tank } from '../../../Items/Unit/Tank';
 import { IaArea } from '../Utils/IaArea';
-import { TickTimer } from '../../../Utils/Timer/TickTimer';
 import { AliveItem } from '../../../Items/AliveItem';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 import { MonitoredOrder } from '../../Order/MonitoredOrder';
+import { TypeTranslator } from '../../../Items/Cell/Field/TypeTranslator';
 
 export class TroopDecisionMaker {
 	private _changePositionTimer: ITimer;
@@ -26,8 +26,8 @@ export class TroopDecisionMaker {
 			throw 'not possible';
 		}
 
-		this._changePositionTimer = new TickTimer(20);
-		this._cancelOrderTimer = new TickTimer(20);
+		this._changePositionTimer = new TimeTimer(3000);
+		this._cancelOrderTimer = new TimeTimer(3000);
 		this._idleTimer = new TimeTimer(0);
 	}
 
@@ -101,10 +101,7 @@ export class TroopDecisionMaker {
 	}
 
 	public IsCloseFromEnemy(): boolean {
-		return this.Tank
-			.GetCurrentCell()
-			.GetNearby()
-			.some((c) => (c as Cell).HasEnemy(this.Tank) && (c as Cell).HasOccupier());
+		return this.Tank.GetCurrentCell().GetNearby().some((c) => TypeTranslator.HasFoeVehicle(c, this.Tank.Identity));
 	}
 
 	private IsCloseFromTarget() {

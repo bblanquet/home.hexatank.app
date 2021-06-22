@@ -12,7 +12,7 @@ import { BouncingScaleAnimator } from '../../../Animator/BouncingScaleAnimator';
 import { CellState } from '../../CellState';
 import { ZKind } from '../../../ZKind';
 import { IHeadquarter } from '../Hq/IHeadquarter';
-import { Identity } from '../../../Identity';
+import { Identity, Relationship } from '../../../Identity';
 
 export abstract class AliveBonusField extends AliveField implements IActiveContainer {
 	private _animator: IAnimator;
@@ -97,7 +97,7 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 	}
 
 	public abstract Support(vehicule: Vehicle): void;
-	public abstract IsEnemy(item: Identity): boolean;
+	public abstract GetRelation(item: Identity): Relationship;
 	public Select(context: IInteractionContext): boolean {
 		return false;
 	}

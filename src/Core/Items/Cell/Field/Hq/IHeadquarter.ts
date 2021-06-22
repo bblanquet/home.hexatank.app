@@ -1,4 +1,4 @@
-import { Identity } from './../../../Identity';
+import { Identity, Relationship } from './../../../Identity';
 import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
 import { ReactorField } from '../Bonus/ReactorField';
 import { Cell } from '../../Cell';
@@ -29,7 +29,7 @@ export interface IHeadquarter {
 	OnSelectionChanged: LiteEvent<ISelectable>;
 
 	Identity: Identity;
-	IsEnemy(id: Identity): boolean;
+	GetRelation(id: Identity): Relationship;
 
 	Buy(amount: number): boolean;
 	Earn(amount: number): void;

@@ -1,4 +1,4 @@
-import { Identity } from '../../../Items/Identity';
+import { Identity, Relationship } from '../../../Items/Identity';
 import { HexAxial } from '../../../Utils/Geometry/HexAxial';
 import { IHeadquarter } from '../../../Items/Cell/Field/Hq/IHeadquarter';
 import { Cell } from '../../../Items/Cell/Cell';
@@ -58,8 +58,8 @@ export class CellLessHeadquarter implements IHeadquarter {
 	GetCell(): Cell {
 		return null;
 	}
-	IsEnemy(item: Identity): boolean {
-		return this.Identity.IsEnemy(item);
+	GetRelation(item: Identity): Relationship {
+		return this.Identity.GetRelation(item);
 	}
 	IsCovered(cell: Cell): boolean {
 		return this._reactors.filter((c) => c.IsCovered(cell)).length > 0;

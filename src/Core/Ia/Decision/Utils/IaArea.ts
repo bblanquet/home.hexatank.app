@@ -22,6 +22,7 @@ import { ReactorAreaState } from './ReactorAreaState';
 import { AreaSearch } from './AreaSearch';
 import { AStarHelper } from '../../AStarHelper';
 import { Brain } from '../Brain';
+import { Relationship } from '../../../Items/Identity';
 
 export class IaArea {
 	public Troops: Array<TroopDecisionMaker>;
@@ -118,7 +119,8 @@ export class IaArea {
 	public GetFoeReactor(): Cell {
 		const cells = this._spot.GetCells();
 		return cells.find((cell) => {
-			TypeTranslator.IsReactorField(cell.GetField()) && this._hq.Identity.IsEnemy(cell.GetField().GetIdentity());
+			TypeTranslator.IsReactorField(cell.GetField()) &&
+				this._hq.Identity.GetRelation(cell.GetField().GetIdentity()) === Relationship.Enemy;
 		});
 	}
 
@@ -149,7 +151,7 @@ export class IaArea {
 	}
 
 	private HasFoe(cell: Cell): boolean {
-		return cell.GetAll(1).some((c) => TypeTranslator.HasEnemy(c, this._hq.Identity));
+		return cell.GetAll(1).some((c) => TypeTranslator.GetRelation(c, this._hq.Identity) === Relationship.Enemy);
 	}
 
 	public IsImportant(): boolean {
@@ -200,7 +202,7 @@ export class IaArea {
 				return this.GetRoadFields()[0];
 			} else {
 				if (this._spot.GetStatus().HasField(BasicField.name)) {
-					return this._spot.GetStatus().GetCells(BasicField.name)[0];
+					return this._spot.GetStatus().GetCells([ BasicField.name ])[0];
 				} else {
 					return null;
 				}
@@ -260,7 +262,7 @@ export class IaArea {
 	}
 
 	public GetRoadFields(): Cell[] {
-		return this._spot.GetStatus().GetCells(RoadField.name);
+		return this._spot.GetStatus().GetCells([ RoadField.name ]);
 	}
 
 	public HasNature(): boolean {
@@ -271,7 +273,7 @@ export class IaArea {
 	}
 
 	public GetNatures(): Cell[] {
-		return this._spot.GetStatus().GetCells(BlockingField.name);
+		return this._spot.GetStatus().GetCells([ BlockingField.name ]);
 	}
 
 	private _isUnconnectable: boolean = false;

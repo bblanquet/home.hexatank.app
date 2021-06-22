@@ -7,6 +7,7 @@ import { Cell } from '../../Items/Cell/Cell';
 import { CombinationContext } from './CombinationContext';
 import { CellState } from '../../Items/Cell/CellState';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
+import { Relationship } from '../../Items/Identity';
 
 export class TankCombination extends AbstractSingleCombination {
 	IsMatching(context: CombinationContext): boolean {
@@ -31,7 +32,7 @@ export class TankCombination extends AbstractSingleCombination {
 
 			if (
 				cell.GetShootableEntity() !== null &&
-				cell.GetShootableEntity().IsEnemy(tank.Identity) &&
+				cell.GetShootableEntity().GetRelation(tank.Identity) !== Relationship.Ally &&
 				cell.GetState() === CellState.Visible
 			) {
 				const order = new TargetMonitoredOrder(cell, tank);

@@ -1,5 +1,4 @@
 import { MonitoredOrder } from '../../Order/MonitoredOrder';
-import { AttackMenuItem } from '../../../Menu/Buttons/AttackMenuItem';
 import { IAreaDecisionMaker } from './IAreaDecisionMaker';
 import { AStarHelper } from '../../AStarHelper';
 import { AttackField } from '../../../Items/Cell/Field/Bonus/AttackField';
@@ -16,6 +15,7 @@ import { GameSettings } from '../../../Framework/GameSettings';
 import { BasicField } from '../../../Items/Cell/Field/BasicField';
 import { AStarEngine } from '../../AStarEngine';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
+import { TypeTranslator } from '../../../Items/Cell/Field/TypeTranslator';
 
 export class AreaDecisionMaker implements IAreaDecisionMaker {
 	public HasReceivedRequest: boolean;
@@ -52,7 +52,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 			const areas = this.GetAround(this.Area.GetSpot());
 
 			//#2 get enemies cells
-			const foeCells = this.GetFoeCells(areas, ally);
+			const foeCells = this.GetFoeVehicleCells(areas, ally);
 
 			//console.log(`%c [DETECTED FOE] ${foeCells.length}`, 'font-weight:bold;color:blue;');
 
@@ -143,9 +143,11 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 		return dangerLevelcells;
 	}
 
-	private GetAroundCellFoes(currentcell: Cell, ally: Tank) {
-		return currentcell.GetNearby().map((c) => c as Cell).filter((c) => !isNullOrUndefined(c) && c.HasEnemy(ally))
-			.length;
+	private GetAroundCellFoes(currentcell: Cell, tank: Tank) {
+		return currentcell
+			.GetNearby()
+			.map((c) => c as Cell)
+			.filter((c) => c && TypeTranslator.HasFoeVehicle(c, tank.Identity)).length;
 	}
 
 	private FindBestRoads(troopRoads: TroopRoads[]): Groups<TroopRoads> {
@@ -231,10 +233,10 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 		return new AStarEngine<Cell>(filter, cost).GetPath(departure, destination);
 	}
 
-	private GetFoeCells(areas: Area[], ally: Tank): Array<Cell> {
+	private GetFoeVehicleCells(areas: Area[], ally: Tank): Array<Cell> {
 		const enemycells = new Array<Cell>();
 		areas.forEach((area) => {
-			area.GetFoeCells(ally).forEach((enemycell) => {
+			area.GetVehicleFoeCells(ally.Identity).forEach((enemycell) => {
 				enemycells.push(enemycell);
 			});
 		});

@@ -3,7 +3,7 @@ import { Cell } from '../../../Items/Cell/Cell';
 import { BatteryField } from '../../../Items/Cell/Field/Bonus/BatteryField';
 import { ReactorField } from '../../../Items/Cell/Field/Bonus/ReactorField';
 import { FlagCell } from '../../../Items/Cell/FlagCell';
-import { Identity } from '../../../Items/Identity';
+import { Identity, Relationship } from '../../../Items/Identity';
 import { Item } from '../../../Items/Item';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { LiteEvent } from '../../../Utils/Events/LiteEvent';
@@ -24,7 +24,7 @@ export class FakeHeadquarter implements IHeadquarter {
 	OnReactorLost: LiteEvent<ReactorField>;
 	OnSelectionChanged: LiteEvent<ISelectable>;
 	Identity: Identity;
-	IsEnemy(id: Identity): boolean {
+	GetRelation(id: Identity): Relationship {
 		throw new Error('Method not implemented.');
 	}
 	Buy(amount: number): boolean {

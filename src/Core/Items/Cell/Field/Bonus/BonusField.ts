@@ -1,6 +1,6 @@
 import { LiteEvent } from './../../../../Utils/Events/LiteEvent';
 import { IHeadquarter } from './../Hq/IHeadquarter';
-import { Identity } from './../../../Identity';
+import { Identity, Relationship } from './../../../Identity';
 import { Field } from '../Field';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { IAnimator } from '../../../Animator/IAnimator';
@@ -58,7 +58,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 	}
 
 	public IsAlly(id: Identity): boolean {
-		return !this.hq.IsEnemy(id);
+		return this.hq.GetRelation(id) === Relationship.Ally;
 	}
 
 	protected OnCellStateChanged(cellState: CellState): void {

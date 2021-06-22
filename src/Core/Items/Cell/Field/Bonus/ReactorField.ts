@@ -31,7 +31,7 @@ import { HqNetworkLink } from '../Hq/HqNetworkLink';
 import { Item } from '../../../Item';
 import { ISpot } from '../../../../Utils/Geometry/ISpot';
 import { IHeadquarter } from '../Hq/IHeadquarter';
-import { Identity } from '../../../Identity';
+import { Identity, Relationship } from '../../../Identity';
 import { IHqGameContext } from '../../../../Setup/Context/IHqGameContext';
 
 export class ReactorField extends Field implements ISelectable, ISpot<ReactorField> {
@@ -139,7 +139,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		this.GetAllCells().forEach((c) => {
 			if (c.HasOccupier()) {
 				const vehicle = c.GetOccupier() as Vehicle;
-				if (!vehicle.IsEnemy(this.Hq.Identity) && !vehicles.Exist(vehicle.Id)) {
+				if (vehicle.GetRelation(this.Hq.Identity) === Relationship.Ally && !vehicles.Exist(vehicle.Id)) {
 					vehicles.Add(vehicle.Id, vehicle);
 				}
 			}
@@ -244,7 +244,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 				if (
 					TypeTranslator.IsBonusField(c.GetField()) &&
 					!this.Hq.IsCovered(c) &&
-					!this.Hq.Identity.IsEnemy(c.GetField().GetIdentity())
+					this.Hq.GetRelation(c.GetField().GetIdentity()) === Relationship.Ally
 				) {
 					c.GetField().Destroy();
 					if (c.IsVisible()) {

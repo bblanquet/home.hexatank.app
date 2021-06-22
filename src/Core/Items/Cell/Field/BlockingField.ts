@@ -1,4 +1,4 @@
-import { Identity } from './../../Identity';
+import { Identity, Relationship } from './../../Identity';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { Cell } from '../Cell';
 import { AliveField } from './AliveField';
@@ -38,8 +38,8 @@ export class BlockingField extends AliveField {
 		return true;
 	}
 
-	public IsEnemy(item: Identity): boolean {
-		return true;
+	public GetRelation(item: Identity): Relationship {
+		return Relationship.Neutral;
 	}
 
 	public GetBoundingBox(): BoundingBox {

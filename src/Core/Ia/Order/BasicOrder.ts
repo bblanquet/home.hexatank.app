@@ -22,7 +22,7 @@ export class BasicOrder extends Order {
 		return OrderKind.Simple;
 	}
 	public GetPath(): Cell[] {
-		if(this.Road){
+		if (this.Road) {
 			return this.Road;
 		}
 		return [];
@@ -65,7 +65,7 @@ export class BasicOrder extends Order {
 
 	private GetNextStep(): Cell {
 		const candidate = this.Road.splice(0, 1)[0];
-		if (TypeTranslator.IsAccessible(candidate, this.Vehicle.Identity)) {
+		if (TypeTranslator.IsAccessible(candidate, this.Vehicle)) {
 			return candidate;
 		} else {
 			return null;

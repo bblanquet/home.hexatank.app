@@ -68,10 +68,6 @@ export class GameContext implements IHqGameContext {
 		return this._hqs;
 	}
 
-	public GetHq(coo: string) {
-		return this._hqs.find((e) => e.GetCell().Coo() === coo);
-	}
-
 	public GetHqFromId(id: Identity) {
 		return this._hqs.find((hq) => hq.Identity.Name === id.Name);
 	}

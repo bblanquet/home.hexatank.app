@@ -1,4 +1,4 @@
-import { Identity } from './../../Identity';
+import { Identity, Relationship } from './../../Identity';
 import { AliveField } from './AliveField';
 import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { Light } from '../../Environment/Light';
@@ -62,8 +62,8 @@ export class Diamond extends AliveField {
 		return true;
 	}
 
-	public IsEnemy(item: Identity): boolean {
-		return true;
+	public GetRelation(item: Identity): Relationship {
+		return Relationship.Neutral;
 	}
 
 	IsBlocking(): boolean {

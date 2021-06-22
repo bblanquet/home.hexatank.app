@@ -1,6 +1,6 @@
 import { MonitoredOrder } from './../../../../Ia/Order/MonitoredOrder';
 import { IHeadquarter } from './IHeadquarter';
-import { Identity } from './../../../Identity';
+import { Identity, Relationship } from './../../../Identity';
 import { IBrain } from './../../../../Ia/Decision/IBrain';
 import { HqNetwork } from './HqNetwork';
 import { InfiniteFadeAnimation } from './../../../Animator/InfiniteFadeAnimation';
@@ -154,8 +154,8 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 		return this._diamondCount;
 	}
 
-	public IsEnemy(id: Identity): boolean {
-		return this.Identity.IsEnemy(id);
+	public GetRelation(id: Identity): Relationship {
+		return this.Identity.GetRelation(id);
 	}
 
 	Support(vehicule: Vehicle): void {}

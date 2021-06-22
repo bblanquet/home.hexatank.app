@@ -1,5 +1,5 @@
 import { TypeTranslator } from './../../../Items/Cell/Field/TypeTranslator';
-import { Identity } from './../../../Items/Identity';
+import { Identity, Relationship } from './../../../Items/Identity';
 import { IField } from './../../../Items/Cell/Field/IField';
 import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
 import { Area } from './Area';
@@ -17,16 +17,16 @@ export class AreaStatus {
 			c.OnFieldChanged.On(this.FieldChanged.bind(this));
 			c.OnVehicleChanged.On(this.UnitChanged.bind(this));
 		});
-		this.Refresh();
+		this.Snapshot();
 	}
 
-	public Refresh(): void {
+	private Snapshot(): void {
 		this._fields = new Dictionnary<Array<Cell>>();
 		this._units = new Dictionnary<Vehicle>();
 		this._hqFields = new Dictionnary<Array<Cell>>();
 
 		this._area.GetCells().forEach((c) => {
-			this.Update(c, true);
+			this.Update(c);
 			if (c.HasOccupier()) {
 				const vehicule = c.GetOccupier() as Vehicle;
 				this._units.Add(vehicule.Id, vehicule);
@@ -34,88 +34,59 @@ export class AreaStatus {
 		});
 	}
 
-	public IsNeutral(): boolean {
-		return this._units.IsEmpty() && this._hqFields.IsEmpty();
+	private FieldChanged(obj: any, cell: Cell): void {
+		this.Update(cell);
 	}
 
-	HasUnit(item: AliveItem): boolean {
-		return this._units.Values().some((c) => !c.IsEnemy(item.Identity));
-	}
-
-	public HasFoesOf(item: AliveItem): boolean {
-		const hasUnitFoes = this._units.Values().some((c) => c.IsEnemy(item.Identity));
-		if (hasUnitFoes) {
-			return true;
-		}
-
-		if (this._hqFields.IsEmpty()) {
-			return false;
-		}
-
-		const fields = this._hqFields.Values().reduce((e, x) => e.concat(x)).map((c) => c.GetField());
-		const hasFoeCell = fields
-			.filter((e: IField) => TypeTranslator.IsSpecialField(e))
-			.some((e) => item.Identity.IsEnemy(e.GetIdentity()));
-		return hasFoeCell;
-	}
-
-	private FieldChanged(obj: any, field: Cell): void {
-		this.Update(field, true);
-	}
-
-	private RemoveCellFromFields(cell: Cell): void {
-		this._fields.Keys().forEach((k) => {
-			const cells = this._fields.Get(k);
+	private DetachFromFields(cell: Cell): void {
+		this._fields.Keys().forEach((key) => {
+			let cells = this._fields.Get(key);
 			if (cells.some((c) => c === cell)) {
-				this._fields.Remove(k);
-				const newCells = cells.filter((c) => c !== cell);
-				if (0 < newCells.length) {
-					this._fields.Add(k, newCells);
+				this._fields.Remove(key);
+				cells = cells.filter((c) => c !== cell);
+				if (0 < cells.length) {
+					this._fields.Add(key, cells);
 				}
 			}
 		});
 	}
 
-	private Update(cell: Cell, isNew: boolean): void {
+	private Update(cell: Cell): void {
 		const key = cell.GetField().constructor.name;
 
-		this.RemoveCellFromFields(cell);
-		this.RemoveNewBonusField(cell);
+		this.DetachFromFields(cell);
+		this.DetachFromHqField(cell);
 
-		if (!this._fields.Exist(key)) {
-			this._fields.Add(key, []);
-		}
-
-		this._fields.Get(key).push(cell);
-		this.AddSpecialField(cell);
+		this.AttachField(key, cell);
+		this.AttachHqField(cell);
 
 		if (7 < this.GetCellCount()) {
 			throw 'it should not happen';
 		}
 	}
 
-	public GetCellCount(): number {
-		const fields = this._fields.Values();
-		if (fields.length === 0) {
-			return 0;
+	private AttachField(key: string, cell: Cell) {
+		if (!this._fields.Exist(key)) {
+			this._fields.Add(key, []);
 		}
-		return fields.reduce((e, x) => e.concat(x)).length;
+
+		this._fields.Get(key).push(cell);
 	}
 
-	private RemoveNewBonusField(cell: Cell) {
+	private DetachFromHqField(cell: Cell) {
 		if (TypeTranslator.IsSpecialField(cell.GetField())) {
-			const idName = cell.GetField().GetIdentity().Name;
-			if (this._hqFields.Exist(idName)) {
-				const newHqList = this._hqFields.Get(idName).filter((c) => c !== cell);
-				this._hqFields.Remove(idName);
-				if (0 < newHqList.length) {
-					this._hqFields.Add(idName, newHqList);
+			const name = cell.GetField().GetIdentity().Name;
+			if (this._hqFields.Exist(name)) {
+				const cells = this._hqFields.Get(name).filter((c) => c !== cell);
+				this._hqFields.Remove(name);
+				if (0 < cells.length) {
+					this._hqFields.Add(name, cells);
 				}
 			}
 		}
 	}
 
-	private AddSpecialField(cell: Cell) {
+	private AttachHqField(cell: Cell) {
 		if (TypeTranslator.IsSpecialField(cell.GetField())) {
 			const idName = cell.GetField().GetIdentity().Name;
 			if (this._hqFields.Exist(idName)) {
@@ -136,6 +107,39 @@ export class AreaStatus {
 		}
 	}
 
+	public IsNeutral(): boolean {
+		return this._units.IsEmpty() && this._hqFields.IsEmpty();
+	}
+
+	public HasUnit(item: AliveItem): boolean {
+		return this._units.Values().some((c) => c.GetRelation(item.Identity) === Relationship.Ally);
+	}
+
+	public HasFoesOf(item: AliveItem): boolean {
+		const hasUnitFoes = this._units.Values().some((c) => c.GetRelation(item.Identity) == Relationship.Enemy);
+		if (hasUnitFoes) {
+			return true;
+		}
+
+		if (this._hqFields.IsEmpty()) {
+			return false;
+		}
+
+		const fields = this._hqFields.Values().reduce((e, x) => e.concat(x)).map((c) => c.GetField());
+		const hasFoeCell = fields
+			.filter((e: IField) => TypeTranslator.IsSpecialField(e))
+			.some((e) => item.Identity.GetRelation(e.GetIdentity()) === Relationship.Enemy);
+		return hasFoeCell;
+	}
+
+	public GetCellCount(): number {
+		const fields = this._fields.Values();
+		if (fields.length === 0) {
+			return 0;
+		}
+		return fields.reduce((e, x) => e.concat(x)).length;
+	}
+
 	public HasField(field: string): boolean {
 		return this._fields.Exist(field);
 	}
@@ -148,12 +152,14 @@ export class AreaStatus {
 		return fields.some((field) => {
 			return (
 				this._fields.Exist(field) &&
-				this._fields.Get(field).some((e) => identity.IsEnemy(e.GetField().GetIdentity()))
+				this._fields
+					.Get(field)
+					.some((e) => identity.GetRelation(e.GetField().GetIdentity()) === Relationship.Enemy)
 			);
 		});
 	}
 
-	public ClearDestroyedVehicle(): void {
+	private ClearDestroyedVehicle(): void {
 		this._units.Values().forEach((u) => {
 			if (!u.IsUpdatable) {
 				this._units.Remove(u.Id);
@@ -163,25 +169,25 @@ export class AreaStatus {
 
 	public HasFoeVehicle(item: AliveItem): boolean {
 		this.ClearDestroyedVehicle();
-		return this._units.Values().some((e) => e.IsEnemy(item.Identity));
+		return this._units.Values().some((e) => e.GetRelation(item.Identity) === Relationship.Enemy);
 	}
 
 	public GetFoeVehicleCount(item: AliveItem): number {
 		this.ClearDestroyedVehicle();
-		return this._units.Values().filter((e) => e.IsEnemy(item.Identity)).length;
+		return this._units.Values().filter((e) => e.GetRelation(item.Identity) === Relationship.Enemy).length;
 	}
 
-	public GetCells(field: string): Cell[] {
+	private GetCellsFromField(field: string): Cell[] {
 		if (!this._fields.Exist(field)) {
 			return [];
 		}
 		return this._fields.Get(field);
 	}
 
-	public GetKindCells(fields: string[]): Cell[] {
+	public GetCells(fields: string[]): Cell[] {
 		var result = new Array<Cell>();
 		fields.forEach((f) => {
-			result = result.concat(this.GetCells(f));
+			result = result.concat(this.GetCellsFromField(f));
 		});
 		return result;
 	}

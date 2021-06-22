@@ -1,4 +1,4 @@
-import { Identity } from './../../../Identity';
+import { Identity, Relationship } from './../../../Identity';
 import { IHeadquarter } from '../Hq/IHeadquarter';
 import { UpCalculator } from './UpCalculator';
 import { ShieldAppearance } from './ShieldAppearance';
@@ -41,8 +41,8 @@ export class HqLessShieldField extends AliveBonusField {
 
 	Support(vehicule: Vehicle): void {}
 
-	public IsEnemy(id: Identity): boolean {
-		return this.Identity.IsEnemy(id);
+	public GetRelation(id: Identity): Relationship {
+		return this.Identity.GetRelation(id);
 	}
 
 	public Update(viewX: number, viewY: number): void {

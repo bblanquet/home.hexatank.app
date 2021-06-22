@@ -39,7 +39,6 @@ import { BasicOrder } from '../../Ia/Order/BasicOrder';
 import { UpCalculator } from '../Cell/Field/Bonus/UpCalculator';
 import { FireUp } from './PowerUp/FireUp';
 import { SpeedUp } from './PowerUp/SpeedUp';
-import { HealUp } from './PowerUp/HealUp';
 
 export abstract class Vehicle extends AliveItem
 	implements IMovable, IRotatable, ISelectable, ICancellable, ICamouflageAble {

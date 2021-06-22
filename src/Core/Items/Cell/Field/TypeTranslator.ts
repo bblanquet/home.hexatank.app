@@ -1,5 +1,5 @@
 import { IHeadquarter } from './Hq/IHeadquarter';
-import { Identity } from './../../Identity';
+import { Identity, Relationship } from './../../Identity';
 import { DiamondField } from './DiamondField';
 import { BlockingField } from './BlockingField';
 import { Headquarter } from './Hq/Headquarter';
@@ -12,6 +12,7 @@ import { AttackMenuItem } from '../../../Menu/Buttons/AttackMenuItem';
 import { HealMenuItem } from '../../../Menu/Buttons/HealMenuItem';
 import { SpeedFieldMenuItem } from '../../../Menu/Buttons/SpeedFieldMenuItem';
 import { Cell } from '../Cell';
+import { Vehicle } from '../../Unit/Vehicle';
 
 export class TypeTranslator {
 	public static IsSpecialField(cell: IField): boolean {
@@ -39,11 +40,18 @@ export class TypeTranslator {
 		return e instanceof DiamondField;
 	}
 
-	public static HasEnemy(cell: Cell, identity: Identity): boolean {
+	public static HasFoeVehicle(cell: Cell, identity: Identity): boolean {
 		if (cell.HasOccupier()) {
-			return ((cell.GetOccupier() as any) as AliveItem).IsEnemy(identity);
+			return ((cell.GetOccupier() as any) as AliveItem).GetRelation(identity) === Relationship.Enemy;
 		}
-		return identity.IsEnemy(cell.GetField().GetIdentity());
+		return false;
+	}
+
+	public static GetRelation(cell: Cell, identity: Identity): Relationship {
+		if (cell.HasOccupier()) {
+			return ((cell.GetOccupier() as any) as AliveItem).GetRelation(identity);
+		}
+		return identity.GetRelation(cell.GetField().GetIdentity());
 	}
 
 	public static GetHq(e: IField): IHeadquarter {
@@ -59,12 +67,17 @@ export class TypeTranslator {
 		throw `TypeTranslator not supposed to be there`;
 	}
 
-	public static IsAccessible(c: Cell, id: Identity): boolean {
+	public static IsAccessible(c: Cell, vehicle: Vehicle): boolean {
+		if (c.GetOccupier() === vehicle) {
+			return true;
+		}
+
 		const field = c.GetField();
 		if (field instanceof ShieldField) {
 			const shield = field as ShieldField;
-			return !shield.IsEnemy(id) && !c.HasOccupier();
+			return shield.GetRelation(vehicle.Identity) === Relationship.Ally && !c.HasOccupier();
 		}
+
 		return !c.IsBlocked();
 	}
 

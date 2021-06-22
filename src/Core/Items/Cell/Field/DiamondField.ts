@@ -5,7 +5,6 @@ import { LiteEvent } from '../../../Utils/Events/LiteEvent';
 import { Cell } from '../Cell';
 import { SvgArchive } from '../../../Framework/SvgArchiver';
 import { Vehicle } from '../../Unit/Vehicle';
-import { GameSettings } from '../../../Framework/GameSettings';
 import { Truck } from '../../Unit/Truck';
 import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../../Interaction/InteractionContext';

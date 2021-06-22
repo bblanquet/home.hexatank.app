@@ -5,9 +5,11 @@ import { Cell } from '../../Items/Cell/Cell';
 import { ParentOrder } from './ParentOrder';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { IdleOrder } from './IdleOrder';
+import { TimeTimer } from '../../Utils/Timer/TimeTimer';
 
 export class MonitoredOrder extends ParentOrder {
 	private _vehicleCellChanged: boolean;
+	private _idleTimer: TimeTimer;
 
 	constructor(protected Destination: Cell, protected Vehicle: Vehicle) {
 		super();
@@ -15,7 +17,7 @@ export class MonitoredOrder extends ParentOrder {
 		this.SetCurrentOrder(new IdleOrder());
 		this._vehicleCellChanged = true;
 		this.Vehicle.OnCellChanged.On(this.VehicleCellChange.bind(this));
-		this.SetState(OrderState.Pending);
+		this._idleTimer = new TimeTimer(1000);
 	}
 
 	private VehicleCellChange(src: any, cell: Cell): void {
@@ -31,9 +33,13 @@ export class MonitoredOrder extends ParentOrder {
 				this.SetCurrentOrder(new BasicOrder(this.Vehicle, road));
 				this.OnPathFound.Invoke(this, road);
 			} else {
-				this.SetState(OrderState.Failed);
+				this.SetCurrentOrder(new IdleOrder());
 			}
 		}
+	}
+
+	private IsIdle(): boolean {
+		return this.CurrentOrder instanceof IdleOrder;
 	}
 
 	Update(): void {
@@ -42,18 +48,13 @@ export class MonitoredOrder extends ParentOrder {
 			return;
 		}
 
-		if (this._vehicleCellChanged) {
+		if (this._vehicleCellChanged || (this.IsIdle() && this._idleTimer.IsElapsed())) {
 			this._vehicleCellChanged = false;
 			this.ClearChild();
 			this.Reset();
 		}
 
-		if (this.CurrentOrder.GetState() === OrderState.Failed) {
-			this.Reset();
-		} else if (
-			this.CurrentOrder.GetState() === OrderState.Passed ||
-			this.CurrentOrder.GetState() === OrderState.Cancel
-		) {
+		if (this.CurrentOrder.GetState() === OrderState.Passed || this.CurrentOrder.GetState() === OrderState.Cancel) {
 			this.ClearChild();
 		} else {
 			this.CurrentOrder.Update();

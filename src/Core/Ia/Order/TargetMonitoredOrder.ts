@@ -9,6 +9,7 @@ import { ParentOrder } from './ParentOrder';
 import { IdleOrder } from './IdleOrder';
 import { TypeTranslator } from '../../Items/Cell/Field/TypeTranslator';
 import { AliveItem } from '../../Items/AliveItem';
+import { Relationship } from '../../Items/Identity';
 
 export class TargetMonitoredOrder extends ParentOrder {
 	private _vehicleCellChanged: boolean;
@@ -35,9 +36,9 @@ export class TargetMonitoredOrder extends ParentOrder {
 	}
 
 	private UpdateOrder() {
-		const foe = this.GetTarget();
-		if (foe) {
-			this.Tank.SetMainTarget(foe);
+		const enemy = this.GetTarget();
+		if (enemy) {
+			this.Tank.SetMainTarget(enemy);
 		}
 
 		const targetRoad = new TargetRoadProvider(this.Tank, this.Destination).GetTargetRoad();
@@ -50,21 +51,20 @@ export class TargetMonitoredOrder extends ParentOrder {
 			this.OnPathFound.Invoke(this, targetRoad.Road);
 		} else {
 			this.SetCurrentOrder(new IdleOrder());
-			this.SetState(OrderState.Failed);
 		}
 	}
 
 	private GetTarget(): AliveItem {
 		if (this.Destination.HasOccupier()) {
 			const t = (this.Destination.GetOccupier() as any) as AliveItem;
-			if (t.IsEnemy(this.Tank.Identity)) {
+			if (t.GetRelation(this.Tank.Identity) !== Relationship.Ally) {
 				return t;
 			}
 		}
 
 		if (this.Destination.GetField() instanceof AliveItem) {
 			const shield = (this.Destination.GetField() as any) as AliveItem;
-			if (shield.IsEnemy(this.Tank.Identity)) {
+			if (shield.GetRelation(this.Tank.Identity) !== Relationship.Ally) {
 				return shield;
 			}
 		}
@@ -80,11 +80,14 @@ export class TargetMonitoredOrder extends ParentOrder {
 	}
 
 	private HasTarget(cell: Cell): boolean {
-		return cell.IsBlocked() && TypeTranslator.HasEnemy(cell, this.Tank.Identity);
+		return cell.IsBlocked() && TypeTranslator.GetRelation(cell, this.Tank.Identity) !== Relationship.Ally;
 	}
 
 	private IsIdle(): boolean {
-		return this.CurrentOrder instanceof TargetCellOrder && (this.CurrentOrder as TargetCellOrder).IsIdle();
+		return (
+			this.CurrentOrder instanceof IdleOrder ||
+			(this.CurrentOrder instanceof TargetCellOrder && (this.CurrentOrder as TargetCellOrder).IsIdle())
+		);
 	}
 
 	Update(): void {
@@ -101,12 +104,7 @@ export class TargetMonitoredOrder extends ParentOrder {
 			this.Reset();
 		}
 
-		if (this.CurrentOrder.GetState() === OrderState.Failed) {
-			this.Reset();
-		} else if (
-			this.CurrentOrder.GetState() === OrderState.Passed ||
-			this.CurrentOrder.GetState() === OrderState.Cancel
-		) {
+		if (this.CurrentOrder.GetState() === OrderState.Passed || this.CurrentOrder.GetState() === OrderState.Cancel) {
 			this.ClearChild();
 		} else {
 			this.CurrentOrder.Update();

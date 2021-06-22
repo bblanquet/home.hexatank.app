@@ -9,8 +9,9 @@ import { AStarEngine } from '../../../AStarEngine';
 import { AStarHelper } from '../../../AStarHelper';
 import { Order } from '../../Order';
 import { OrderState } from '../../OrderState';
+import { IOrderGiver } from './IOrderGiver';
 
-export class DiamondFieldOrder {
+export class DiamondFieldOrder implements IOrderGiver {
 	private _currentOrder: Order;
 	private _diamond: Diamond;
 	private _vehicule: Vehicle;
@@ -62,7 +63,7 @@ export class DiamondFieldOrder {
 		return cells;
 	}
 	private GetRoad(cell: Cell) {
-		const filter = (c: Cell) => c && TypeTranslator.IsAccessible(c, this._vehicule.Identity);
+		const filter = (c: Cell) => c && TypeTranslator.IsAccessible(c, this._vehicule);
 		const cost = (c: Cell) => AStarHelper.GetBasicCost(c);
 		return new AStarEngine<Cell>(filter, cost).GetPath(this._vehicule.GetCurrentCell(), cell, true);
 	}

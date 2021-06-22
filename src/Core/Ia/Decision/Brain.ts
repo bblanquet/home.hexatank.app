@@ -11,7 +11,6 @@ import { ExcessTankFinder } from './ExcessTankFinder';
 import { AreaRequest } from './Utils/AreaRequest';
 import { IaArea } from './Utils/IaArea';
 import { Truck } from '../../Items/Unit/Truck';
-import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Area } from './Utils/Area';
 import { IRequestHandler } from './RequestHandler/IRequestHandler';
@@ -21,6 +20,8 @@ import { IGeneralListRequester } from './RequestMaker/GeneralRequester/IGeneralL
 import { Cell } from '../../Items/Cell/Cell';
 import { Squad } from './Troop/Squad';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
+import { TimeTimer } from '../../Utils/Timer/TimeTimer';
+import { ITimer } from '../../Utils/Timer/ITimer';
 
 export class Brain implements IBrain {
 	public AreaDecisions: IAreaDecisionMaker[];
@@ -32,7 +33,7 @@ export class Brain implements IBrain {
 
 	public HasDiamondRoad: boolean = false;
 	private _diamond: Diamond;
-	private _idleTimer: TickTimer = new TickTimer(25);
+	private _idleTimer: ITimer = new TimeTimer(1000);
 	private _requestMaker: IAreaRequestListMaker;
 	private _requestHandler: IRequestHandler;
 	private _expansionMaker: IExpansionMaker;

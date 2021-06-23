@@ -115,7 +115,14 @@ export class SpriteProvider {
 		return `{{subpath}}`;
 	}
 
-	public static GetAssetPath() {
+	public static AssetPath(): string {
+		if (this.GetSubPath() !== this.GetAssetPath()) {
+			return `{{asset_path}}`;
+		}
+		return '';
+	}
+
+	private static GetAssetPath() {
 		return `{{asset_path}}`;
 	}
 

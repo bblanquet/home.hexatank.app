@@ -1,12 +1,9 @@
 import { LiteEvent } from './../Utils/Events/LiteEvent';
 import { Dictionnary } from './../Utils/Collections/Dictionnary';
-import { SpriteAccuracy } from './SpriteAccuracy';
 import * as PIXI from 'pixi.js';
 import { SvgArchive } from './SvgArchiver';
 
 export class SpriteProvider {
-	constructor() { }
-
 	private static _isLoaded: boolean = false;
 	public static IsLoaded(): boolean {
 		return this._isLoaded;
@@ -20,7 +17,7 @@ export class SpriteProvider {
 
 	public static GetSprite(name: string): PIXI.Sprite {
 		const otpions = { resourceOptions: { scale: 0.3 } };
-		return new PIXI.Sprite(PIXI.Texture.from(`${SpriteAccuracy.high}${this.GetPath(name)}`, otpions));
+		return new PIXI.Sprite(PIXI.Texture.from(this.GetPath(name), otpions));
 	}
 
 	public static LoadAll(): LiteEvent<number> {
@@ -71,19 +68,17 @@ export class SpriteProvider {
 	private static Assets(): Array<AssetData> {
 		const assets = new Array<AssetData>();
 		const unique = new Set<string>();
-		[SpriteAccuracy.high].forEach((accuracy) => {
-			SpriteProvider.GetAssets().forEach((name) => {
-				if (!unique.has(name)) {
-					assets.push(new AssetData(accuracy, name));
-					unique.add(name);
-				}
-			});
+		SpriteProvider.GetAssets().forEach((name) => {
+			if (!unique.has(name)) {
+				assets.push(new AssetData(name));
+				unique.add(name);
+			}
 		});
 		return assets;
 	}
 
 	private static LoadAsset(data: AssetData, callBack: () => void) {
-		const res = new PIXI.resources.SVGResource(data.Source, { scale: data.Acc });
+		const res = new PIXI.resources.SVGResource(data.Source);
 		const key = data.ToString();
 		const otpions = { resourceOptions: { scale: 0.3 } };
 		let texture = new PIXI.Texture(new PIXI.BaseTexture(data.Source, otpions));
@@ -116,26 +111,28 @@ export class SpriteProvider {
 		}
 	}
 
-	private static _root: string = null;
-	public static Root(): string {
-		if (this._root === null) {
-			this._root = `{{postension}}`;
-		}
-		return this._root;
+	private static GetSubPath() {
+		return `{{subpath}}`;
+	}
+
+	public static GetAssetPath() {
+		return `{{asset_path}}`;
 	}
 
 	private static GetPath(asset: string): string {
 		let path = asset;
 		path = path.slice(1); //remove dot
-		path = this.Root() + path;
-		path = path.replace('//', '/');
+		if (this.GetSubPath() !== this.GetAssetPath()) {
+			path = this.GetAssetPath() + path;
+			path = path.replace('//', '/');
+		}
 		return path;
 	}
 }
 
 export class AssetData {
-	constructor(public Acc: SpriteAccuracy, public Source: string) { }
+	constructor(public Source: string) {}
 	public ToString(): string {
-		return `${this.Acc}${this.Source}`;
+		return this.Source;
 	}
 }

@@ -63,7 +63,7 @@ export default class LineComparisonComponent extends Component<
 	}
 
 	private Quit(): void {
-		route('/Home', true);
+		route('{{sub_path}}Home', true);
 	}
 
 	render() {
@@ -115,7 +115,7 @@ export default class LineComparisonComponent extends Component<
 								</ButtonComponent>
 								<ButtonComponent
 									callBack={() => {
-										route('/BarComparison', true);
+										route('{{sub_path}}BarComparison', true);
 									}}
 									color={ColorKind.Blue}
 								>

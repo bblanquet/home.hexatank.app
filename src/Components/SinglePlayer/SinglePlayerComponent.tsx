@@ -62,7 +62,7 @@ export default class SinglePlayerComponent extends Component<any, BlueprintSetup
 	}
 
 	private Back() {
-		route('/Home', true);
+		route('{{sub_path}}Home', true);
 	}
 
 	private ConvertSize(): number {
@@ -106,7 +106,7 @@ export default class SinglePlayerComponent extends Component<any, BlueprintSetup
 			index += 1;
 		});
 		Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App).Register(blueprint);
-		route('/Canvas', true);
+		route('{{sub_path}}Canvas', true);
 	}
 
 	private ConvertMapType(): MapType {

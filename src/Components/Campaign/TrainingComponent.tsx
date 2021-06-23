@@ -105,11 +105,11 @@ export default class TrainingComponent extends Component<any, any> {
 	}
 
 	private Back() {
-		route('/Home', true);
+		route('{{sub_path}}Home', true);
 	}
 
 	private RedCampaign() {
-		route('/Campaign', true);
+		route('{{sub_path}}Campaign', true);
 	}
 
 	private GetButton(index: number) {
@@ -171,13 +171,13 @@ export default class TrainingComponent extends Component<any, any> {
 		const blueprint = this._campaignService.GetMapContext(CampaignKind.training, index);
 		if (blueprint instanceof CamouflageBlueprint) {
 			Singletons.Load<IAppService<CamouflageBlueprint>>(SingletonKey.CamouflageApp).Register(blueprint);
-			route('/Camouflage', true);
+			route('{{sub_path}}Camouflage', true);
 		} else if (blueprint instanceof PowerBlueprint) {
 			Singletons.Load<IAppService<PowerBlueprint>>(SingletonKey.PowerApp).Register(blueprint);
-			route('/Power', true);
+			route('{{sub_path}}Power', true);
 		} else if (blueprint instanceof DiamondBlueprint) {
 			Singletons.Load<IAppService<DiamondBlueprint>>(SingletonKey.DiamondApp).Register(blueprint);
-			route('/Diamond', true);
+			route('{{sub_path}}Diamond', true);
 		}
 	}
 }

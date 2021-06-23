@@ -10,7 +10,7 @@ export class UpdateService implements IUpdateService {
 		this._itemsUpdater = new ItemsUpdater();
 		this._itemsUpdater.OnError.On((src: any, data: Error) => {
 			GameContext.Error = data;
-			route('/Error', true);
+			route('{{sub_path}}Error', true);
 		});
 	}
 

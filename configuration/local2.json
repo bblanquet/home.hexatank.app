@@ -2,17 +2,22 @@
 	"root": "/",
 	"keys": [
 		{
-			"search": "{{p2pserver}}",
+			"search": "{{p2p_url}}",
 			"replace": "https://kimchistudio.tech",
 			"flags": "g"
 		},
-        {
-			"search": "{{p2psubfolder}}",
+		{
+			"search": "{{p2p_sub_path}}",
 			"replace": "/p2pserver",
 			"flags": "g"
 		},
 		{
-			"search": "{{postension}}",
+			"search": "{{asset_path}}",
+			"replace": "/",
+			"flags": "g"
+		},
+		{
+			"search": "{{sub_path}}",
 			"replace": "/",
 			"flags": "g"
 		}

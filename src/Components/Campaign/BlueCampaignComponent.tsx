@@ -69,11 +69,11 @@ export default class BlueCampaignComponent extends Component<any, any> {
 	}
 
 	private Back() {
-		route('/Home', true);
+		route('{{sub_path}}Home', true);
 	}
 
 	private RedCampaign() {
-		route('/Campaign', true);
+		route('{{sub_path}}Campaign', true);
 	}
 
 	private GetButton(index: number) {
@@ -92,6 +92,6 @@ export default class BlueCampaignComponent extends Component<any, any> {
 	Start(index: number): void {
 		const mapContext = this._campaignService.GetMapContext(CampaignKind.blue, index);
 		Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App).Register(mapContext);
-		route('/Canvas', true);
+		route('{{sub_path}}Canvas', true);
 	}
 }

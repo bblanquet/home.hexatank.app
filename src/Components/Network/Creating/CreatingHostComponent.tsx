@@ -53,7 +53,7 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 				this.state.HasPassword === undefined ? false : this.state.HasPassword,
 				true
 			);
-			route('/Lobby', true);
+			route('{{sub_path}}Lobby', true);
 		} else {
 			toastr['warning'](`${message.Content.RoomName} is already used.`, 'WARNING', {
 				iconClass: 'toast-red'
@@ -168,6 +168,6 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 	}
 
 	private Back() {
-		route('/Home', true);
+		route('{{sub_path}}Home', true);
 	}
 }

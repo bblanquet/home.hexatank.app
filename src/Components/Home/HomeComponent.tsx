@@ -14,27 +14,27 @@ export default class HomeComponent extends Component<any, any> {
 	}
 
 	private ToSinglePlayer(): void {
-		route('/SinglePlayer', true);
+		route('{{sub_path}}SinglePlayer', true);
 	}
 
 	private ToCampaign(): void {
-		route('/Training', true);
+		route('{{sub_path}}Training', true);
 	}
 
 	private ToHost(): void {
-		route('/CreatingHost', true);
+		route('{{sub_path}}CreatingHost', true);
 	}
 
 	private ToRecord(): void {
-		route('/Record', true);
+		route('{{sub_path}}Record', true);
 	}
 
 	private ToGuest(): void {
-		route('/OffJoin', true);
+		route('{{sub_path}}OffJoin', true);
 	}
 
 	private ToBadge(): void {
-		route('/Badge', true);
+		route('{{sub_path}}Badge', true);
 	}
 	render() {
 		return (

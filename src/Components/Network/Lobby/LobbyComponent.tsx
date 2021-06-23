@@ -51,7 +51,7 @@ export default class LobbyComponent extends Component<any, LobbyState> {
 		this._onlinePlayer.OnPlayersChanged.On(this.UpdateState.bind(this));
 		this._lobbyManager.OnStarting.On(() => {
 			this._lobbyManager.Clear();
-			route('/Launching', true);
+			route('{{sub_path}}Launching', true);
 		});
 	}
 
@@ -214,7 +214,7 @@ export default class LobbyComponent extends Component<any, LobbyState> {
 
 	private Back(): void {
 		this._lobbyManager.Stop();
-		route('/Home', true);
+		route('{{sub_path}}Home', true);
 	}
 
 	private Launching(): void {

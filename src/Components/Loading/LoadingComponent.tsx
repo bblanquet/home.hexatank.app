@@ -34,7 +34,7 @@ export default class LoadingComponent extends Component<any, { percentage: numbe
 	}
 
 	private ToHome(): void {
-		route('/Home', true);
+		route('{{sub_path}}Home', true);
 	}
 
 	private Continue() {

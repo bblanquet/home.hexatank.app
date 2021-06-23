@@ -12,7 +12,7 @@ export class ServerSocket implements IServerSocket {
 
 	constructor() {
 		this._obs = new Dictionnary<NetworkObserver[]>();
-		this._socket = io('{{p2pserver}}', { path: '{{p2psubfolder}}' });
+		this._socket = io('{{p2p_url}}', { path: '{{p2p_sub_path}}' });
 	}
 	Connect(): void {
 		if (!this._socket.connected) {

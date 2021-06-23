@@ -80,7 +80,7 @@ export default class RecordCanvasComponent extends Component<
 	}
 
 	private SetMenu(): void {
-		route('/Home', true);
+		route('{{sub_path}}Home', true);
 	}
 
 	private UpdateSelection(obj: any, selectedItem: Item): void {

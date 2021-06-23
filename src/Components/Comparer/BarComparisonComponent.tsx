@@ -65,7 +65,7 @@ export default class BarComparisonComponent extends Component<{}, { Canvas: HTML
 							<div class="container-center-horizontal">
 								<ButtonComponent
 									callBack={() => {
-										route('/Home', true);
+										route('{{sub_path}}Home', true);
 									}}
 									color={ColorKind.Black}
 								>
@@ -73,7 +73,7 @@ export default class BarComparisonComponent extends Component<{}, { Canvas: HTML
 								</ButtonComponent>
 								<ButtonComponent
 									callBack={() => {
-										route('/LineComparison', true);
+										route('{{sub_path}}LineComparison', true);
 									}}
 									color={ColorKind.Blue}
 								>

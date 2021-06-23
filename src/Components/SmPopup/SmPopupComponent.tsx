@@ -27,7 +27,7 @@ export default class SmPopupComponent extends Component<{ status: GameStatus; po
 
 	private Quit(): void {
 		//this._profilService.Update();
-		route('/Home', true);
+		route('{{sub_path}}Home', true);
 	}
 
 	render() {

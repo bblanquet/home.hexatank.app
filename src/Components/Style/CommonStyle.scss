@@ -22,7 +22,7 @@
 
 @font-face {
 	font-family: 'AnimalSilence';
-	src: url('{{postension}}fonts/AnimalSilence.otf') format("opentype");
+	src: url('{{asset_path}}fonts/AnimalSilence.otf') format("opentype");
 	letter-spacing: 0.2em;
 }
 
@@ -589,7 +589,7 @@ body {
 	background-size: auto;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}svg/components/program6Logo.svg');
+	background-image: url('{{asset_path}}svg/components/program6Logo.svg');
 }
 
 .fill-tank-logo {
@@ -601,7 +601,7 @@ body {
 	background-size: auto;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}svg/components/program6TankLogo.svg');
+	background-image: url('{{asset_path}}svg/components/program6TankLogo.svg');
 }
 
 .fill-logo-back {
@@ -610,7 +610,7 @@ body {
 	background-size: auto;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}svg/components/program6FireLogo.svg');
+	background-image: url('{{asset_path}}svg/components/program6FireLogo.svg');
 	pointer-events: none;
 }
 
@@ -628,7 +628,7 @@ body {
 	background-size: auto;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}svg/components/program6FireLogo.svg');
+	background-image: url('{{asset_path}}svg/components/program6FireLogo.svg');
 	pointer-events: none;
 }
 
@@ -873,7 +873,7 @@ hr {
 	width: 50px;
 	height: 50px;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}svg/menu/smartMenu/multiCell.svg');
+	background-image: url('{{asset_path}}svg/menu/smartMenu/multiCell.svg');
 }
 
 .fill-tank-multi-cell {
@@ -883,7 +883,7 @@ hr {
 	width: 50px;
 	height: 50px;
 	background-repeat: no-repeat;
-	background-image: url('{{postension}}svg/menu/smartMenu/multiTank.svg');
+	background-image: url('{{asset_path}}svg/menu/smartMenu/multiTank.svg');
 }
 
 p.bubble {

@@ -3,12 +3,12 @@
 	"keys": [
 		{
 			"search": "{{p2p_url}}",
-			"replace": "https://kimchistudio.tech",
+			"replace": "http://localhost:5000",
 			"flags": "g"
 		},
 		{
 			"search": "{{p2p_sub_path}}",
-			"replace": "/p2pserver",
+			"replace": "",
 			"flags": "g"
 		},
 		{

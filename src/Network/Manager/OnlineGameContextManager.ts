@@ -42,7 +42,7 @@ export class OnlineGameContextManager implements IOnlineGameContextManager {
 
 	private HandleStart(data: NetworkMessage<any>): void {
 		this.Clear();
-		route('/Canvas', true);
+		route('{{sub_path}}Canvas', true);
 	}
 
 	private HandleLoaded(data: NetworkMessage<boolean>): void {
@@ -52,7 +52,7 @@ export class OnlineGameContextManager implements IOnlineGameContextManager {
 			this._onlinePlayerManager.Players.Values().every((p) => p.IsLoaded)
 		) {
 			this._socket.EmitAll<any>(PacketKind.Start, {});
-			route('/Canvas', true);
+			route('{{sub_path}}Canvas', true);
 		}
 	}
 

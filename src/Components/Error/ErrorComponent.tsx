@@ -10,7 +10,7 @@ import Redirect from '../Redirect/RedirectComponent';
 
 export default class ErrorComponent extends Component<any, any> {
 	private Back() {
-		route('/Home', true);
+		route('{{sub_path}}Home', true);
 	}
 
 	render() {

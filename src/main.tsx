@@ -40,34 +40,34 @@ import { RecordAny } from './Core/Framework/Record/Model/RecordAny';
 const App = (e: any) => {
 	return (
 		<Router>
-			<HomeComponent path="/Home" />
-			<LoadingComponent path="/Loading" default />
-			<ErrorComponent path="/Error" />
-			<SinglePlayerComponent path="/SinglePlayer" />
-			<RedCampaignComponent path="/Campaign" />
-			<TrainingComponent path="/Training" />
-			<BlueCampaignComponent path="/BlueCampaignComponent" />
-			<GameCanvasComponent path="/Canvas" />
-			<BadgeComponent path="/Badge" />
-			<RecordCanvasComponent path="/RecordCanvas" />
-			<CreatingHostComponent path="/CreatingHost" />
-			<LobbyComponent path="/Lobby" />
-			<CamouflageComponent path="/Camouflage" />
-			<DiamondComponent path="/Diamond" />
-			<PowerComponent path="/Power" />
-			<GuestComponent path="/OffJoin" />
-			<RecordComponent path="/Record" />
-			<LoadingPlayers path="/Launching" />
+			<HomeComponent path="{{sub_path}}Home" />
+			<LoadingComponent path="{{sub_path}}Loading" default />
+			<ErrorComponent path="{{sub_path}}Error" />
+			<SinglePlayerComponent path="{{sub_path}}SinglePlayer" />
+			<RedCampaignComponent path="{{sub_path}}Campaign" />
+			<TrainingComponent path="{{sub_path}}Training" />
+			<BlueCampaignComponent path="{{sub_path}}BlueCampaignComponent" />
+			<GameCanvasComponent path="{{sub_path}}Canvas" />
+			<BadgeComponent path="{{sub_path}}Badge" />
+			<RecordCanvasComponent path="{{sub_path}}RecordCanvas" />
+			<CreatingHostComponent path="{{sub_path}}CreatingHost" />
+			<LobbyComponent path="{{sub_path}}Lobby" />
+			<CamouflageComponent path="{{sub_path}}Camouflage" />
+			<DiamondComponent path="{{sub_path}}Diamond" />
+			<PowerComponent path="{{sub_path}}Power" />
+			<GuestComponent path="{{sub_path}}OffJoin" />
+			<RecordComponent path="{{sub_path}}Record" />
+			<LoadingPlayers path="{{sub_path}}Launching" />
 			<PopupComponent
-				path="/Popup"
+				path="{{sub_path}}Popup"
 				points={30}
 				curves={Context()}
 				status={GameStatus.Victory}
 				context={new RecordAny()}
 			/>
-			<SmPopupComponent path="/SmPopup" points={10} status={GameStatus.Victory} />
-			<LineComparisonComponent path="/LineComparison" />
-			<BarComparisonComponent path="/BarComparison" />
+			<SmPopupComponent path="{{sub_path}}SmPopup" points={10} status={GameStatus.Victory} />
+			<LineComparisonComponent path="{{sub_path}}LineComparison" />
+			<BarComparisonComponent path="{{sub_path}}BarComparison" />
 		</Router>
 	);
 };

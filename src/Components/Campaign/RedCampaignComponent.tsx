@@ -108,15 +108,15 @@ export default class RedCampaignComponent extends Component<
 	}
 
 	private Back() {
-		route('/Home', true);
+		route('{{sub_path}}Home', true);
 	}
 
 	private BlueCampaign() {
-		route('/BlueCampaignComponent', true);
+		route('{{sub_path}}BlueCampaignComponent', true);
 	}
 
 	private Training() {
-		route('/Training', true);
+		route('{{sub_path}}Training', true);
 	}
 
 	private TextAnimation(): void {
@@ -157,6 +157,6 @@ export default class RedCampaignComponent extends Component<
 	Start(index: number): void {
 		const mapContext = this._campaignService.GetMapContext(CampaignKind.red, index);
 		Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App).Register(mapContext);
-		route('/Canvas', true);
+		route('{{sub_path}}Canvas', true);
 	}
 }

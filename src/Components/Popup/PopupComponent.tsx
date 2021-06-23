@@ -52,7 +52,7 @@ export default class PopupComponent extends Component<
 	}
 
 	private Quit(): void {
-		route('/Home', true);
+		route('{{sub_path}}Home', true);
 	}
 
 	render() {

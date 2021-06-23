@@ -206,7 +206,7 @@ export default class GuestComponent extends Component<
 	}
 
 	private Back() {
-		route('/Home', true);
+		route('{{sub_path}}Home', true);
 	}
 
 	private Refresh() {
@@ -222,7 +222,7 @@ export default class GuestComponent extends Component<
 				this.state.Password !== null && this.state.Password !== '',
 				false
 			);
-			route('/Lobby', true);
+			route('{{sub_path}}Lobby', true);
 		} else {
 			toastr['warning'](`${this.state.PlayerName} is already used in ${message.Content.RoomName}`, 'WARNING', {
 				iconClass: 'toast-red'

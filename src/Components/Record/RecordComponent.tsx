@@ -42,18 +42,18 @@ export default class RecordComponent extends Component<
 	}
 
 	private ToHome(): void {
-		route('/Home', true);
+		route('{{sub_path}}Home', true);
 	}
 
 	private ToCompare(): void {
 		this._compareService.Register(this.state.SelectedRecords[0].Record, this.state.SelectedRecords[1].Record);
-		route('/LineComparison', true);
+		route('{{sub_path}}LineComparison', true);
 	}
 
 	private Play(data: RecordContent): void {
 		this._appService.Register(data.MapContext);
 		this._recordService.Register(data);
-		route('/RecordCanvas', true);
+		route('{{sub_path}}RecordCanvas', true);
 	}
 
 	private Upload(e: any): void {

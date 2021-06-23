@@ -52,6 +52,6 @@ export class AudioProvider {
 	}
 
 	private Add(content: string, sounds: Dictionnary<Howl>) {
-		sounds.Add(content, new Howl({ src: [ `${SpriteProvider.Root()}${content}` ] }));
+		sounds.Add(content, new Howl({ src: [ `${SpriteProvider.GetAssetPath()}${content}` ] }));
 	}
 }

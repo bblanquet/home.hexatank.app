@@ -109,6 +109,6 @@ export default class BadgeComponent extends Component<any, { text: string }> {
 	}
 
 	private Back() {
-		route('/Home', true);
+		route('{{sub_path}}Home', true);
 	}
 }

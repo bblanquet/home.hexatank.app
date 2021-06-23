@@ -20,7 +20,6 @@ import { Message } from '../Message';
 import SmPanelComponent from '../../Common/Panel/SmPanelComponent';
 import { Dictionnary } from '../../../Core/Utils/Collections/Dictionnary';
 import { ILobbyManager } from '../../../Network/Manager/ILobbyManager';
-import { BlueprintSetup } from '../../Form/BlueprintSetup';
 import { IOnlinePlayerManager } from '../../../Network/Manager/IOnlinePlayerManager';
 
 export default class LobbyComponent extends Component<any, LobbyState> {
@@ -131,16 +130,8 @@ export default class LobbyComponent extends Component<any, LobbyState> {
 						isActive={this._mode === HostingMode.setting}
 						leftColor={ColorKind.Red}
 						rightColor={ColorKind.Black}
-						left={
-							<span>
-								<Icon Value={'fas fa-cogs'} />
-							</span>
-						}
-						right={
-							<span>
-								<Icon Value={'fas fa-cogs'} />
-							</span>
-						}
+						left={<Icon Value={'fas fa-cogs'} />}
+						right={<Icon Value={'fas fa-cogs'} />}
 						callBack={() => {
 							this._mode = HostingMode.setting;
 							this.setState({});
@@ -152,16 +143,8 @@ export default class LobbyComponent extends Component<any, LobbyState> {
 					isActive={this._mode === HostingMode.pending}
 					leftColor={ColorKind.Red}
 					rightColor={ColorKind.Black}
-					left={
-						<span>
-							<Icon Value={'fas fa-clipboard-list'} />
-						</span>
-					}
-					right={
-						<span>
-							<Icon Value={'fas fa-clipboard-list'} />
-						</span>
-					}
+					left={<Icon Value={'fas fa-clipboard-list'} />}
+					right={<Icon Value={'fas fa-clipboard-list'} />}
 					callBack={() => {
 						this._mode = HostingMode.pending;
 						this.setState({});
@@ -172,16 +155,8 @@ export default class LobbyComponent extends Component<any, LobbyState> {
 					isActive={this._mode === HostingMode.chat}
 					leftColor={ColorKind.Red}
 					rightColor={ColorKind.Black}
-					left={
-						<span>
-							<Icon Value={'fas fa-comments'} />
-						</span>
-					}
-					right={
-						<span>
-							<Icon Value={'fas fa-comments'} />
-						</span>
-					}
+					left={<Icon Value={'fas fa-comments'} />}
+					right={<Icon Value={'fas fa-comments'} />}
 					callBack={() => {
 						this._mode = HostingMode.chat;
 						this.setState({});

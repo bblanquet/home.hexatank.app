@@ -129,10 +129,8 @@ export class SpriteProvider {
 	private static GetPath(asset: string): string {
 		let path = asset;
 		path = path.slice(1); //remove dot
-		if (this.GetSubPath() !== this.GetAssetPath()) {
-			path = this.GetAssetPath() + path;
-			path = path.replace('//', '/');
-		}
+		path = this.GetAssetPath() + path;
+		path = path.replace('//', '/');
 		return path;
 	}
 }

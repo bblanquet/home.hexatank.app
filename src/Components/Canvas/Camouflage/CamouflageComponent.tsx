@@ -26,7 +26,6 @@ export default class CamouflageCanvasComponent extends Component<
 	{
 		HasMenu: boolean;
 		HasMultiMenu: boolean;
-		HasFlag: boolean;
 		HasWarning: boolean;
 		TankRequestCount: number;
 		TruckRequestCount: number;
@@ -61,7 +60,6 @@ export default class CamouflageCanvasComponent extends Component<
 			TankRequestCount: 0,
 			TruckRequestCount: 0,
 			Amount: GameSettings.PocketMoney,
-			HasFlag: false,
 			HasWarning: false,
 			GameStatus: GameStatus.Pending,
 			IsSettingPatrol: false
@@ -178,17 +176,23 @@ export default class CamouflageCanvasComponent extends Component<
 	}
 
 	private MenuRender() {
-		return <PopupMenuComponent Status={this.state.GameStatus} Resume={() => this.SetMenu()} Quit={() => {
-			GameSettings.IsPause = true;
-			this.setState({
-				HasMenu: false,
-				GameStatus: GameStatus.Defeat
-			});
-		}} />;
+		return (
+			<PopupMenuComponent
+				Status={this.state.GameStatus}
+				Resume={() => this.SetMenu()}
+				Quit={() => {
+					GameSettings.IsPause = true;
+					this.setState({
+						HasMenu: false,
+						GameStatus: GameStatus.Defeat
+					});
+				}}
+			/>
+		);
 	}
 
 	private GetEndMessage() {
-		if ([GameStatus.Victory, GameStatus.Defeat].some((e) => e === this.state.GameStatus)) {
+		if ([ GameStatus.Victory, GameStatus.Defeat ].some((e) => e === this.state.GameStatus)) {
 			return <SmPopupComponent points={10} status={this.state.GameStatus} />;
 		}
 		return '';

@@ -11,8 +11,6 @@ export default class HqMenuComponent extends Component<
 	{
 		TankRequestCount: number;
 		TruckRequestCount: number;
-		HasFlag: boolean;
-		SetFlag: () => void;
 		VehicleCount: number;
 		Interaction: InteractionContext;
 	},

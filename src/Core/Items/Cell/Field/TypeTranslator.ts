@@ -72,10 +72,8 @@ export class TypeTranslator {
 			return true;
 		}
 
-		const field = c.GetField();
-		if (field instanceof ShieldField) {
-			const shield = field as ShieldField;
-			return shield.GetRelation(vehicle.Identity) === Relationship.Ally && !c.HasOccupier();
+		if (!c.HasOccupier() && c.GetField() instanceof ShieldField) {
+			return (c.GetField() as ShieldField).GetRelation(vehicle.Identity) === Relationship.Ally;
 		}
 
 		return !c.IsBlocked();

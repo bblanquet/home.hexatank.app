@@ -38,9 +38,10 @@ import { IAudioService } from '../../../Services/Audio/IAudioService';
 export default class PowerCanvasComponent extends Component<
 	any,
 	{
+		IsHoverMultiTank: boolean;
+		IsHoverMultiCell: boolean;
 		HasMenu: boolean;
 		HasMultiMenu: boolean;
-		HasFlag: boolean;
 		HasWarning: boolean;
 		TankRequestCount: number;
 		TruckRequestCount: number;
@@ -56,7 +57,8 @@ export default class PowerCanvasComponent extends Component<
 	private _interactionService: IInteractionService<PowerContext>;
 	private _gameContext: PowerContext;
 
-	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
+	private _onItemSelectionChanged: any = this.OnItemSelectionChanged.bind(this);
+	private _onSelectionChanged: any = this.OnSelectionChanged.bind(this);
 
 	constructor() {
 		super();
@@ -66,27 +68,16 @@ export default class PowerCanvasComponent extends Component<
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		this._interactionService = Singletons.Load<IInteractionService<PowerContext>>(SingletonKey.PowerInteraction);
 		this._gameContext = this._gameContextService.Publish();
-		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
 		this._gameContext.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this.setState({
 			HasMenu: false,
 			TankRequestCount: 0,
 			TruckRequestCount: 0,
 			Amount: GameSettings.PocketMoney,
-			HasFlag: false,
 			HasWarning: false,
 			GameStatus: GameStatus.Pending,
 			IsSettingPatrol: false
 		});
-	}
-	private OnItemSelectionChanged(obj: any, item: ISelectable): void {
-		if (!item.IsSelected()) {
-			item.OnSelectionChanged.Off(this._onItemSelectionChanged);
-			this.setState({
-				...this.state,
-				Item: null
-			});
-		}
 	}
 
 	componentDidMount() {
@@ -95,6 +86,23 @@ export default class PowerCanvasComponent extends Component<
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
+		this._interactionService.GetMultiSelectionContext().OnSelectionChanged.On(this._onSelectionChanged);
+	}
+
+	private OnItemSelectionChanged(obj: any, item: ISelectable): void {
+		if (!item.IsSelected()) {
+			item.OnSelectionChanged.Off(this._onItemSelectionChanged);
+			this.setState({
+				Item: null
+			});
+		}
+	}
+
+	private OnSelectionChanged(): void {
+		this.setState({
+			IsHoverMultiCell: this._interactionService.GetMultiSelectionContext().IsListeningCell(),
+			IsHoverMultiTank: this._interactionService.GetMultiSelectionContext().IsListeningUnit()
+		});
 	}
 
 	private HandleMultiMenuShowed(src: any, isDisplayed: boolean): void {
@@ -116,10 +124,10 @@ export default class PowerCanvasComponent extends Component<
 		});
 	}
 
-	private HandleGameStatus(obj: any, e: GameStatus): void {
-		if (e !== this.state.GameStatus) {
+	private HandleGameStatus(obj: any, gs: GameStatus): void {
+		if (gs !== this.state.GameStatus) {
 			this.setState({
-				GameStatus: e
+				GameStatus: gs
 			});
 		}
 	}
@@ -200,12 +208,12 @@ export default class PowerCanvasComponent extends Component<
 				>
 					<div class="right-bottom-menu">
 						<ActiveRightBottomCornerButton
-							isActive={this._interactionService.GetMultiSelectionContext().IsListeningUnit()}
+							isActive={this.state.IsHoverMultiTank}
 							callBack={() => this.SendContext(new MultiTankMenuItem())}
 							logo="fill-tank-multi-cell"
 						/>
 						<ActiveRightBottomCornerButton
-							isActive={this._interactionService.GetMultiSelectionContext().IsListeningCell()}
+							isActive={this.state.IsHoverMultiCell}
 							callBack={() => this.SendContext(new MultiCellMenuItem())}
 							logo="fill-mult-cell"
 						/>
@@ -227,20 +235,6 @@ export default class PowerCanvasComponent extends Component<
 		interaction.OnSelect(item);
 	}
 
-	private HasTimeout(player: OnlinePlayer) {
-		if (player.HasTimeOut()) {
-			return (
-				<span
-					class="badge badge-danger align-text-center blink_me"
-					style="background-color:#ff0062; border: white solid 0.5px"
-				>
-					<Icon Value={'fas fa-exclamation-circle'} />
-				</span>
-			);
-		}
-		return '';
-	}
-
 	private TopMenuRender() {
 		if (this.state.GameStatus !== GameStatus.Pending) {
 			return '';
@@ -258,17 +252,23 @@ export default class PowerCanvasComponent extends Component<
 	}
 
 	private MenuRender() {
-		return <PopupMenuComponent Status={this.state.GameStatus} Resume={() => this.SetMenu()} Quit={() => {
-			GameSettings.IsPause = true;
-			this.setState({
-				HasMenu: false,
-				GameStatus: GameStatus.Defeat
-			});
-		}} />;
+		return (
+			<PopupMenuComponent
+				Status={this.state.GameStatus}
+				Resume={() => this.SetMenu()}
+				Quit={() => {
+					GameSettings.IsPause = true;
+					this.setState({
+						HasMenu: false,
+						GameStatus: GameStatus.Defeat
+					});
+				}}
+			/>
+		);
 	}
 
 	private GetEndMessage() {
-		if ([GameStatus.Victory, GameStatus.Defeat].some((e) => e === this.state.GameStatus)) {
+		if ([ GameStatus.Victory, GameStatus.Defeat ].some((e) => e === this.state.GameStatus)) {
 			return <SmPopupComponent points={10} status={this.state.GameStatus} />;
 		}
 		return '';

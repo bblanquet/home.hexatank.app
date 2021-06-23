@@ -7,6 +7,7 @@ export interface IOnlineService extends IGarbage {
 	Register(playerName: string, roomName: string, password: string, hasPassword: boolean, isAdmin: boolean): void;
 	GetLobbyManager(): ILobbyManager;
 	GetOnlinePlayerManager(): IOnlinePlayerManager;
+	IsOnline(): boolean;
 	GetOnlineGameContextManager(): IOnlineGameContextManager;
 	Publish(runtime: OnlineRuntimeManager): void;
 }

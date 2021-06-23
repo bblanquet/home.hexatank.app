@@ -13,18 +13,24 @@ import { ViewContext } from '../../Utils/Geometry/ViewContext';
 import * as PIXI from 'pixi.js';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 import { Singletons, SingletonKey } from '../../../Singletons';
+import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 
 export class MultiSelectionContext implements IInteractionContext {
 	private _updateService: IUpdateService;
 	private _layerService: ILayerService;
+
+	private _isOn: boolean;
+	public _isUnitSelection: boolean;
 	public Kind: InteractionKind;
+
 	public Point: PIXI.Point;
 	private _cells: Dictionnary<Cell>;
 	private _highlightingCells: BasicItem[];
-	private _isOn: boolean;
 	public View: ViewContext;
-	public _isUnitSelection: boolean;
 	private _viewport: any;
+
+	public OnSelectionChanged: SimpleEvent = new SimpleEvent();
+
 	constructor() {
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
@@ -36,6 +42,7 @@ export class MultiSelectionContext implements IInteractionContext {
 	public Listen(isUnit: boolean): void {
 		this._isOn = true;
 		this._isUnitSelection = isUnit;
+		this.OnSelectionChanged.Invoke();
 	}
 
 	public IsListening(): boolean {
@@ -77,6 +84,7 @@ export class MultiSelectionContext implements IInteractionContext {
 		this._cells = new Dictionnary<Cell>();
 		this._highlightingCells.forEach((c) => c.Destroy());
 		this._highlightingCells = [];
+		this.OnSelectionChanged.Invoke();
 	}
 
 	public OnSelect(item: Item): void {

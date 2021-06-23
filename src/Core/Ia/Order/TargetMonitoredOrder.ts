@@ -63,9 +63,9 @@ export class TargetMonitoredOrder extends ParentOrder {
 		}
 
 		if (this.Destination.GetField() instanceof AliveItem) {
-			const shield = (this.Destination.GetField() as any) as AliveItem;
-			if (shield.GetRelation(this.Tank.Identity) !== Relationship.Ally) {
-				return shield;
+			const field = (this.Destination.GetField() as any) as AliveItem;
+			if (field.GetRelation(this.Tank.Identity) !== Relationship.Ally) {
+				return field;
 			}
 		}
 		return null;
@@ -98,8 +98,6 @@ export class TargetMonitoredOrder extends ParentOrder {
 
 		if (this._vehicleCellChanged || (this.IsIdle() && this._idleTimer.IsElapsed())) {
 			this.ResetIdleTimer();
-			//because of idle it does loop a lot here
-			//can be updated?
 			this._vehicleCellChanged = false;
 			this.ClearChild();
 			this.Reset();

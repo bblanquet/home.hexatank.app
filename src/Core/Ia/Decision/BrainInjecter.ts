@@ -1,5 +1,4 @@
 import { BobBrain } from './../Brains/BobBrain';
-import { DummyBrain } from './../Brains/DummyBrain';
 import { Dictionnary } from './../../Utils/Collections/Dictionnary';
 import { HexAxial } from './../../Utils/Geometry/HexAxial';
 import { GameBlueprint } from '../../Setup/Blueprint/Game/GameBlueprint';
@@ -22,11 +21,11 @@ export class BrainInjecter {
 				const diamondCell = cells.Get(this.GetDiamondHex(mapContext.Hqs, hq.GetCell().GetHexCoo()));
 				if (index === 0) {
 					hq.Inject(
-						new DummyBrain().GetBrain(hq, gameContext, areas, areaSearch, diamondCell.GetField() as Diamond)
+						new BobBrain().GetBrain(hq, gameContext, areas, areaSearch, diamondCell.GetField() as Diamond)
 					);
 				} else {
 					hq.Inject(
-						new DummyBrain().GetBrain(hq, gameContext, areas, areaSearch, diamondCell.GetField() as Diamond)
+						new BobBrain().GetBrain(hq, gameContext, areas, areaSearch, diamondCell.GetField() as Diamond)
 					);
 				}
 			} else if (hq.Identity.Name === mapContext.PlayerName) {

@@ -83,10 +83,10 @@ export class BelowItemText extends Item {
 		if (this._item.IsUpdatable) {
 			super.Update(viewX, viewY);
 			if (this._isVisible) {
-				this._animator.Update(viewX, viewY);
 				if (!this._animator.IsDone) {
 					this.UpdateText();
 				}
+				this._animator.Update(viewX, viewY);
 				if (this._visibleTimer && this._visibleTimer.IsElapsed()) {
 					this._isVisible = false;
 				}

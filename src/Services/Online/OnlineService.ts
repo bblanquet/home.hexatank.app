@@ -70,6 +70,10 @@ export class OnlineService implements IOnlineService {
 		playerProfilService.Update();
 	}
 
+	IsOnline(): boolean {
+		return this._onlinePlayerManager !== null && this._onlinePlayerManager !== undefined;
+	}
+
 	GetLobbyManager(): ILobbyManager {
 		return this._lobbyManager;
 	}

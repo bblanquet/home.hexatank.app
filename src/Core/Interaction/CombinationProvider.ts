@@ -22,7 +22,6 @@ import { TargetCombination } from './Combination/TargetCombination';
 import { SwitchToVehicleCombination } from './Combination/SwitchToVehicleCombination';
 import { AddTruckCombination } from './Combination/AddTruckCombination';
 import { AddTankCombination } from './Combination/AddTankCombination';
-import { FlagCellCombination } from './Combination/FlagCellCombination';
 import { TruckDiamondCombination } from './Combination/TruckDiamondCombination';
 import { MultiCellSelectionCombination } from './Combination/Multi/MultiCellSelectionCombination';
 import { MultiUnitOrderCombination } from './Combination/Multi/MultiUnitOrderCombination';
@@ -92,7 +91,6 @@ export class CombinationProvider {
 			//HQ
 			new AddTankCombination(gameContext),
 			new AddTruckCombination(gameContext),
-			new FlagCellCombination(gameContext),
 
 			//VEHICLE
 			new AbortCombination(),

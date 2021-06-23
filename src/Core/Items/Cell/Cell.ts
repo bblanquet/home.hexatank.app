@@ -1,6 +1,5 @@
 import { Identity, Relationship } from './../Identity';
 import { Dictionnary } from './../../Utils/Collections/Dictionnary';
-import { ReactorField } from './Field/Bonus/ReactorField';
 import { ZKind } from './../ZKind';
 import { ILiteEvent } from './../../Utils/Events/ILiteEvent';
 import { BouncingScaleDownAnimator } from './../Animator/BouncingScaleDownAnimator';
@@ -14,7 +13,6 @@ import { BasicField } from './Field/BasicField';
 import { CellState } from './CellState';
 import { SvgArchive } from '../../Framework/SvgArchiver';
 import { ISelectable } from '../../ISelectable';
-import { Headquarter } from './Field/Hq/Headquarter';
 import { ICell } from './ICell';
 import { IMovable } from '../IMovable';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
@@ -29,6 +27,7 @@ import { isNullOrUndefined } from '../../Utils/ToolBox';
 import { InfiniteFadeAnimation } from '../Animator/InfiniteFadeAnimation';
 import { BasicItem } from '../BasicItem';
 import { IHeadquarter } from './Field/Hq/IHeadquarter';
+import { TypeTranslator } from './Field/TypeTranslator';
 
 export class Cell extends Item implements ICell<Cell>, ISelectable {
 	private _selectionCircle: PIXI.Circle;
@@ -124,10 +123,10 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 			this._isSelectable = false;
 		} else {
 			const identity = this._playerHq.Identity;
-			const filter = (cell: Cell) => cell && (cell.HasAlly(identity) || !cell.IsFoeField(identity));
-			const anyAlly = this.GetFilteredNearby(filter).length > 0;
+			const hasFoeFilter = (cell: Cell) => cell && TypeTranslator.HasFoeVehicle(cell, identity);
+			const noFoe = this.GetFilteredNearby(hasFoeFilter).length === 0;
 			this._isSelectable =
-				(this.IsVisible() && this._field instanceof BasicField && anyAlly) || this.HasAlly(identity);
+				this._field instanceof BasicField && this.IsVisible() && noFoe && this.HasAllyNearby(identity);
 		}
 	}
 
@@ -202,7 +201,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		return this.HasOccupier() || this.GetNearby().filter((c) => (<Cell>c).HasOccupier()).length > 0;
 	}
 
-	public HasAroundAlly(a: Identity): boolean {
+	public HasAllyNearby(a: Identity): boolean {
 		return this.HasAlly(a) || this.GetNearby().filter((c) => (<Cell>c).HasAlly(a)).length > 0;
 	}
 
@@ -249,16 +248,12 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 	public HasAlly(id: Identity): boolean {
 		if (this._occupier && this._occupier instanceof AliveItem) {
-			return this._occupier.GetRelation(id) === Relationship.Ally;
+			return id.GetRelation(this._occupier.Identity) === Relationship.Ally;
 		}
-		if (this._field && this._field instanceof Headquarter) {
-			return this._field.GetRelation(id) === Relationship.Ally;
+		if (this._field) {
+			return id.GetRelation(this._field.GetIdentity()) === Relationship.Ally;
 		}
 		return false;
-	}
-
-	private IsFoeField(identity: Identity): boolean {
-		return identity.GetRelation(this.GetField().GetIdentity()) === Relationship.Enemy;
 	}
 
 	public GetBoundingBox(): BoundingBox {

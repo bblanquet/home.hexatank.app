@@ -6,10 +6,14 @@ export default class LeftBottomCornerButton extends Component<
 	render() {
 		return (
 			<div class="custom-left-corner-sm-btn-layout-3 fit-content">
-				<div class={`custom-left-corner-sm-btn-layout-2 blue-selection-secondary fit-content`}>
+				<div
+					class={`custom-left-corner-sm-btn-layout-2 ${this.props.isSelected
+						? 'blue-secondary'
+						: 'blue-selection-secondary'}fit-content`}
+				>
 					<div
 						class={`custom-left-corner-btn-layout-1 ${this.props.isSelected
-							? 'blue-selection-hover-primary'
+							? 'blue-primary'
 							: 'blue-selection-primary'} fit-content`}
 						onClick={this.props.callBack}
 					>

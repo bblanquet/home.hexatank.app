@@ -29,7 +29,6 @@ import Visible from '../../Common/Visible/VisibleComponent';
 import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
 import { MultiCellMenuItem } from '../../../Core/Menu/Buttons/MultiCellMenuItem';
 import { IAppService } from '../../../Services/App/IAppService';
-import { FlagCellCombination } from '../../../Core/Interaction/Combination/FlagCellCombination';
 import { DiamondBlueprint } from '../../../Core/Setup/Blueprint/Diamond/DiamondBlueprint';
 import { DiamondContext } from '../../../Core/Setup/Context/DiamondContext';
 import MultiMenuComponent from '../Game/Parts/MultiMenuComponent';
@@ -47,7 +46,6 @@ export default class DiamondCanvasComponent extends Component<
 	{
 		HasMenu: boolean;
 		HasMultiMenu: boolean;
-		HasFlag: boolean;
 		HasWarning: boolean;
 		TankRequestCount: number;
 		TruckRequestCount: number;
@@ -82,7 +80,6 @@ export default class DiamondCanvasComponent extends Component<
 			TankRequestCount: 0,
 			TruckRequestCount: 0,
 			Amount: GameSettings.PocketMoney,
-			HasFlag: false,
 			HasWarning: false,
 			GameStatus: GameStatus.Pending,
 			IsSettingPatrol: false
@@ -196,10 +193,8 @@ export default class DiamondCanvasComponent extends Component<
 				return (
 					<HqMenuComponent
 						Interaction={this._interactionService.Publish()}
-						SetFlag={this.SetFlag.bind(this)}
 						TankRequestCount={this.state.TankRequestCount}
 						TruckRequestCount={this.state.TruckRequestCount}
-						HasFlag={this.state.HasFlag}
 						VehicleCount={this._gameContext.GetPlayerHq().GetVehicleCount()}
 					/>
 				);
@@ -236,14 +231,6 @@ export default class DiamondCanvasComponent extends Component<
 		}
 
 		GameSettings.IsPause = newValue;
-	}
-
-	private SetFlag(): void {
-		FlagCellCombination.IsFlagingMode = !FlagCellCombination.IsFlagingMode;
-		this.setState({
-			...this.state,
-			HasFlag: FlagCellCombination.IsFlagingMode
-		});
 	}
 
 	render() {
@@ -329,17 +316,23 @@ export default class DiamondCanvasComponent extends Component<
 	}
 
 	private MenuRender() {
-		return <PopupMenuComponent Status={this.state.GameStatus} Resume={() => this.SetMenu()} Quit={() => {
-			GameSettings.IsPause = true;
-			this.setState({
-				HasMenu: false,
-				GameStatus: GameStatus.Defeat
-			});
-		}} />;
+		return (
+			<PopupMenuComponent
+				Status={this.state.GameStatus}
+				Resume={() => this.SetMenu()}
+				Quit={() => {
+					GameSettings.IsPause = true;
+					this.setState({
+						HasMenu: false,
+						GameStatus: GameStatus.Defeat
+					});
+				}}
+			/>
+		);
 	}
 
 	private GetEndMessage() {
-		if ([GameStatus.Victory, GameStatus.Defeat].some((e) => e === this.state.GameStatus)) {
+		if ([ GameStatus.Victory, GameStatus.Defeat ].some((e) => e === this.state.GameStatus)) {
 			return <SmPopupComponent points={10} status={this.state.GameStatus} />;
 		}
 		return '';

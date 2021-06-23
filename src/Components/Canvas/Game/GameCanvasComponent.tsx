@@ -35,7 +35,6 @@ import Visible from '../../Common/Visible/VisibleComponent';
 import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
 import { MultiCellMenuItem } from '../../../Core/Menu/Buttons/MultiCellMenuItem';
 import { IAppService } from '../../../Services/App/IAppService';
-import { FlagCellCombination } from '../../../Core/Interaction/Combination/FlagCellCombination';
 import { GameBlueprint } from '../../../Core/Setup/Blueprint/Game/GameBlueprint';
 import { IAudioService } from '../../../Services/Audio/IAudioService';
 import { IOnlineService } from '../../../Services/Online/IOnlineService';
@@ -46,7 +45,6 @@ export default class GameCanvasComponent extends Component<
 	{
 		HasMenu: boolean;
 		HasMultiMenu: boolean;
-		HasFlag: boolean;
 		HasWarning: boolean;
 		TankRequestCount: number;
 		TruckRequestCount: number;
@@ -60,7 +58,7 @@ export default class GameCanvasComponent extends Component<
 	private _diamonds: number;
 	private _gameContextService: IGameContextService<GameBlueprint, GameContext>;
 	private _soundService: IAudioService;
-	private _onelineService: IOnlineService;
+	private _onlineService: IOnlineService;
 	private _interactionService: IInteractionService<GameContext>;
 	private _appService: IAppService<GameBlueprint>;
 	private _gameContext: GameContext;
@@ -73,7 +71,7 @@ export default class GameCanvasComponent extends Component<
 			SingletonKey.GameContext
 		);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-		this._onelineService = Singletons.Load<IOnlineService>(SingletonKey.Online);
+		this._onlineService = Singletons.Load<IOnlineService>(SingletonKey.Online);
 		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.Interaction);
 		this._appService = Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App);
 		this._gameContext = this._gameContextService.Publish();
@@ -83,7 +81,6 @@ export default class GameCanvasComponent extends Component<
 			TankRequestCount: 0,
 			TruckRequestCount: 0,
 			Amount: GameSettings.PocketMoney,
-			HasFlag: false,
 			HasWarning: false,
 			GameStatus: GameStatus.Pending,
 			IsSettingPatrol: false
@@ -113,8 +110,8 @@ export default class GameCanvasComponent extends Component<
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
-		if (this._onelineService.GetOnlinePlayerManager()) {
-			this._onelineService
+		if (this._onlineService.GetOnlinePlayerManager()) {
+			this._onlineService
 				.GetOnlinePlayerManager()
 				.OnPlayersChanged.On((src: any, p: Dictionnary<OnlinePlayer>) => {
 					this.setState({});
@@ -176,7 +173,7 @@ export default class GameCanvasComponent extends Component<
 		}
 	}
 
-	private LeftMenuRender() {
+	private LeftSide() {
 		if (this.state.HasMultiMenu) {
 			return <MultiMenuComponent Item={this.state.Item} />;
 		} else if (this.state.Item) {
@@ -204,10 +201,8 @@ export default class GameCanvasComponent extends Component<
 				return (
 					<HqMenuComponent
 						Interaction={this._interactionService.Publish()}
-						SetFlag={this.SetFlag.bind(this)}
 						TankRequestCount={this.state.TankRequestCount}
 						TruckRequestCount={this.state.TruckRequestCount}
-						HasFlag={this.state.HasFlag}
 						VehicleCount={this._gameContext.GetPlayerHq().GetVehicleCount()}
 					/>
 				);
@@ -243,24 +238,43 @@ export default class GameCanvasComponent extends Component<
 			this._soundService.GetGameAudioManager().PlayAll();
 		}
 
-		if (!this._onelineService.GetOnlinePlayerManager()) {
+		if (!this._onlineService.IsOnline()) {
 			GameSettings.IsPause = newValue;
 		}
-	}
-
-	private SetFlag(): void {
-		FlagCellCombination.IsFlagingMode = !FlagCellCombination.IsFlagingMode;
-		this.setState({
-			...this.state,
-			HasFlag: FlagCellCombination.IsFlagingMode
-		});
 	}
 
 	render() {
 		return (
 			<Redirect>
-				{this.TopRightInfo()}
-				{this.TopMenuRender()}
+				<Visible isVisible={this._onlineService.IsOnline()}>
+					<div style="position: fixed;right: 0%; color:white;">
+						{this.GetPlayers().map((player) => {
+							return (
+								<div>
+									<span class="badge badge-info">{player.GetLatency()}</span>{' '}
+									{this.HasTimeout(player)}
+									{player.Name}{' '}
+								</div>
+							);
+						})}
+					</div>
+				</Visible>
+				<Visible isVisible={this.state.GameStatus === GameStatus.Pending}>
+					<div style="position: fixed;">
+						<button
+							type="button"
+							class="btn btn-dark small-space space-out fill-option"
+							onClick={() => this.SetMenu()}
+						/>
+						<button type="button" class="btn btn-dark space-out">
+							{this.ShowNoMoney()}
+							{this._diamonds.toPrecision(2)}
+							<span class="fill-diamond badge badge-secondary very-small-space middle very-small-left-margin very-small-right-margin">
+								{' '}
+							</span>
+						</button>
+					</div>
+				</Visible>
 				{this.state.GameStatus === GameStatus.Pending ? '' : this.GetEndMessage()}
 				<CanvasComponent gameContext={this._gameContextService} />
 				<Visible
@@ -284,29 +298,20 @@ export default class GameCanvasComponent extends Component<
 					</div>
 				</Visible>
 				<Visible isVisible={!(this.state.HasMenu && this.state.GameStatus === GameStatus.Pending)}>
-					{this.LeftMenuRender()}
+					{this.LeftSide()}
 				</Visible>
 				<Visible isVisible={this.state.HasMenu && this.state.GameStatus === GameStatus.Pending}>
-					{this.MenuRender()}
+					{this.Popup()}
 				</Visible>
 			</Redirect>
 		);
 	}
 
-	private TopRightInfo() {
-		if (this._onelineService.GetOnlinePlayerManager()) {
-			return (
-				<div style="position: fixed;right: 0%; color:white;">
-					{this._onelineService.GetOnlinePlayerManager().Players.Values().map((player) => {
-						return (
-							<div>
-								<span class="badge badge-info">{player.GetLatency()}</span> {this.HasTimeout(player)}
-								{player.Name}{' '}
-							</div>
-						);
-					})}
-				</div>
-			);
+	private GetPlayers() {
+		if (this._onlineService.IsOnline()) {
+			return this._onlineService.GetOnlinePlayerManager().Players.Values();
+		} else {
+			return [];
 		}
 	}
 
@@ -330,29 +335,6 @@ export default class GameCanvasComponent extends Component<
 		return '';
 	}
 
-	private TopMenuRender() {
-		if (this.state.GameStatus !== GameStatus.Pending) {
-			return '';
-		}
-
-		return (
-			<div style="position: fixed;">
-				<button
-					type="button"
-					class="btn btn-dark small-space space-out fill-option"
-					onClick={() => this.SetMenu()}
-				/>
-				<button type="button" class="btn btn-dark space-out">
-					{this.ShowNoMoney()}
-					{this._diamonds.toPrecision(2)}
-					<span class="fill-diamond badge badge-secondary very-small-space middle very-small-left-margin very-small-right-margin">
-						{' '}
-					</span>
-				</button>
-			</div>
-		);
-	}
-
 	private ShowNoMoney() {
 		if (this.state.HasWarning) {
 			return (
@@ -365,18 +347,24 @@ export default class GameCanvasComponent extends Component<
 		}
 	}
 
-	private MenuRender() {
-		return <PopupMenuComponent Status={this.state.GameStatus} Resume={() => this.SetMenu()} Quit={() => {
-			GameSettings.IsPause = true;
-			this.setState({
-				HasMenu: false,
-				GameStatus: GameStatus.Defeat
-			});
-		}} />;
+	private Popup() {
+		return (
+			<PopupMenuComponent
+				Status={this.state.GameStatus}
+				Resume={() => this.SetMenu()}
+				Quit={() => {
+					GameSettings.IsPause = true;
+					this.setState({
+						HasMenu: false,
+						GameStatus: GameStatus.Defeat
+					});
+				}}
+			/>
+		);
 	}
 
 	private GetEndMessage() {
-		if ([GameStatus.Victory, GameStatus.Defeat].some((e) => e === this.state.GameStatus)) {
+		if ([ GameStatus.Victory, GameStatus.Defeat ].some((e) => e === this.state.GameStatus)) {
 			return (
 				<PopupComponent
 					points={10}

@@ -77,17 +77,17 @@ export class AboveItemText extends Item {
 	}
 
 	public Update(viewX: number, viewY: number): void {
-		// if (this._item.IsUpdatable) {
-		// 	super.Update(viewX, viewY);
-		// 	if (this._isVisible) {
-		// 		this._animator.Update(viewX, viewY);
-		// 		if (!this._animator.IsDone) {
-		// 			this.UpdateText();
-		// 		}
-		// 		if (this._visibleTimer && this._visibleTimer.IsElapsed()) {
-		// 			this._isVisible = false;
-		// 		}
-		// 	}
-		// }
+		if (this._item.IsUpdatable) {
+			super.Update(viewX, viewY);
+			if (this._isVisible) {
+				if (!this._animator.IsDone) {
+					this.UpdateText();
+				}
+				this._animator.Update(viewX, viewY);
+				if (this._visibleTimer && this._visibleTimer.IsElapsed()) {
+					this._isVisible = false;
+				}
+			}
+		}
 	}
 }

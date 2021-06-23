@@ -25,37 +25,34 @@ import { Vehicle } from '../../../Items/Unit/Vehicle';
 export class CamouflageRenderer {
 	public Render(blueprint: CamouflageBlueprint): CamouflageContext {
 		const cells = new Dictionnary<Cell>();
-		const updatableItem = new Array<Item>();
 		const vehicles = new Array<Vehicle>();
 
 		blueprint.Items.forEach((item) => {
 			const cell = new Cell(new CellProperties(new HexAxial(item.Position.Q, item.Position.R)), cells);
-			ForestDecorator.SetDecoration(updatableItem, cell, item.Type);
+			ForestDecorator.SetDecoration(cell, item.Type);
 			cell.InitSprite();
 			cells.Add(cell.Coo(), cell);
-			updatableItem.push(cell);
 		});
 
 		const areas = new AreaSearch(
 			Dictionnary.To((c) => c.ToString(), cells.Values().map((c) => c.GetHexCoo()))
 		).GetAreas(new HexAxial(blueprint.CenterItem.Position.Q, blueprint.CenterItem.Position.R));
-		this.SetLands(cells, blueprint.MapMode, areas, updatableItem);
-		this.AddClouds(updatableItem);
+		this.SetLands(cells, blueprint.MapMode, areas);
+		this.AddClouds();
 
 		const departure = new HexAxial(blueprint.Goal.Departure.Position.Q, blueprint.Goal.Departure.Position.R);
 		const arrival = new HexAxial(blueprint.Goal.Arrival.Position.Q, blueprint.Goal.Arrival.Position.R);
-		const spots = [departure, arrival];
+		const spots = [ departure, arrival ];
 
-		this.SetHqLand(cells, SvgArchive.nature.hq, spots, updatableItem);
-		this.SetHqLand(cells, SvgArchive.nature.hq2, spots, updatableItem, 1);
+		this.SetHqLand(cells, SvgArchive.nature.hq, spots);
+		this.SetHqLand(cells, SvgArchive.nature.hq2, spots, 1);
 
 		const truck = new Truck(new Identity('player', new HqSkinHelper().GetSkin(0), true));
 		truck.OverrideLife(1);
 		truck.SetPosition(cells.Get(departure.ToString()));
 		vehicles.push(truck);
-		updatableItem.push(truck);
 		const arrivalCell = cells.Get(arrival.ToString());
-		updatableItem.push(new AboveItem(arrivalCell, SvgArchive.arrow));
+		new AboveItem(arrivalCell, SvgArchive.arrow);
 
 		const iaId = new Identity('ia', new HqSkinHelper().GetSkin(1), false);
 		blueprint.Patrols.forEach((patrol) => {
@@ -65,22 +62,22 @@ export class CamouflageRenderer {
 			const dCell = cells.Get(d.ToString());
 			const aCell = cells.Get(a.ToString());
 			tank.SetPosition(dCell);
-			tank.GiveOrder(new PatrolOrder([aCell, dCell], tank));
+			tank.GiveOrder(new PatrolOrder([ aCell, dCell ], tank));
 			vehicles.push(tank);
 		});
 
 		return new CamouflageContext(cells.Values(), truck, vehicles, arrivalCell);
 	}
 
-	public AddClouds(items: Item[]) {
-		items.push(new Cloud(200, 20 * GameSettings.Size, 800, SvgArchive.nature.clouds[0]));
-		items.push(new Cloud(400, 20 * GameSettings.Size, 1200, SvgArchive.nature.clouds[1]));
-		items.push(new Cloud(600, 20 * GameSettings.Size, 1600, SvgArchive.nature.clouds[2]));
-		items.push(new Cloud(800, 20 * GameSettings.Size, 800, SvgArchive.nature.clouds[3]));
-		items.push(new Cloud(1200, 20 * GameSettings.Size, 1600, SvgArchive.nature.clouds[4]));
+	public AddClouds() {
+		new Cloud(200, 20 * GameSettings.Size, 800, SvgArchive.nature.clouds[0]);
+		new Cloud(400, 20 * GameSettings.Size, 1200, SvgArchive.nature.clouds[1]);
+		new Cloud(600, 20 * GameSettings.Size, 1600, SvgArchive.nature.clouds[2]);
+		new Cloud(800, 20 * GameSettings.Size, 800, SvgArchive.nature.clouds[3]);
+		new Cloud(1200, 20 * GameSettings.Size, 1600, SvgArchive.nature.clouds[4]);
 	}
 
-	private SetLands(cells: Dictionnary<Cell>, mode: MapEnv, middleAreas: HexAxial[], items: Item[]) {
+	private SetLands(cells: Dictionnary<Cell>, mode: MapEnv, middleAreas: HexAxial[]) {
 		middleAreas.forEach((corner) => {
 			const cell = cells.Get(corner.ToString());
 			const boundingBox = new BoundingBox();
@@ -99,11 +96,10 @@ export class CamouflageRenderer {
 			const land = new Floor(boundingBox, floor);
 			land.SetVisible(() => true);
 			land.SetAlive(() => true);
-			items.push(land);
 		});
 	}
 
-	private SetHqLand(cells: Dictionnary<Cell>, sprite: string, middleAreas: HexAxial[], items: Item[], z: number = 0) {
+	private SetHqLand(cells: Dictionnary<Cell>, sprite: string, middleAreas: HexAxial[], z: number = 0) {
 		middleAreas.forEach((corner) => {
 			const cell = cells.Get(corner.ToString());
 			const boundingBox = new BoundingBox();
@@ -115,7 +111,6 @@ export class CamouflageRenderer {
 			const land = new SimpleFloor(boundingBox, sprite, z);
 			land.SetVisible(() => true);
 			land.SetAlive(() => true);
-			items.push(land);
 		});
 	}
 }

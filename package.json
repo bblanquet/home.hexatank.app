@@ -4,8 +4,8 @@
 	"main": "index.js",
 	"scripts": {
 		"build": "webpack --env.NODE_ENV=PRD",
-		"build dev": "webpack --env.NODE_ENV=DEV",
-		"android": "webpack --env.NODE_ENV=Android",
+		"build:dev": "webpack --env.NODE_ENV=DEV",
+		"build:android": "webpack --env.NODE_ENV=Android",
 		"local": "webpack-dev-server --watch --watch-poll --port 8080 --env.NODE_ENV=local",
 		"local2": "webpack-dev-server --watch --watch-poll --port 8080 --env.NODE_ENV=local2",
 		"start": "webpack-dev-server --watch --watch-poll --port 8080 --env.NODE_ENV=UAT",

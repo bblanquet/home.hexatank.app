@@ -106,12 +106,12 @@ export class CombinationProvider {
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof SpeedFieldMenuItem,
-				(e) => new RoadField(e, gameContext.GetPlayerHq())
+				(e) => e.SetField(new RoadField(e, gameContext.GetPlayerHq()))
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof AttackMenuItem,
-				(e) => new AttackField(e, gameContext.GetPlayerHq())
+				(e) => e.SetField(new AttackField(e, gameContext.GetPlayerHq()))
 			),
 			new GenericCellCombination(
 				gameContext,
@@ -126,27 +126,27 @@ export class CombinationProvider {
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof PoisonMenuItem,
-				(e) => new PoisonField(e, gameContext.GetPlayerHq())
+				(e) => e.SetField(new PoisonField(e, gameContext.GetPlayerHq()))
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof MoneyMenuItem,
-				(e) => new FarmField(e, gameContext.GetPlayerHq())
+				(e) => e.SetField(new FarmField(e, gameContext.GetPlayerHq()))
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof ThunderMenuItem,
-				(e) => new BatteryField(e, gameContext.GetPlayerHq())
+				(e) => e.SetField(new BatteryField(e, gameContext.GetPlayerHq()))
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof NetworkMenuItem,
-				(e) => new NetworkField(e, gameContext.GetPlayerHq())
+				(e) => e.SetField(new NetworkField(e, gameContext.GetPlayerHq()))
 			),
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof HealMenuItem,
-				(e) => new MedicField(e, gameContext.GetPlayerHq())
+				(e) => e.SetField(new MedicField(e, gameContext.GetPlayerHq()))
 			),
 
 			//REACTOR

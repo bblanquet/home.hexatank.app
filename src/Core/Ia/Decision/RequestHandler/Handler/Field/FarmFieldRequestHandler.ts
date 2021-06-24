@@ -16,7 +16,7 @@ export class FarmFieldRequestHandler implements ISimpleRequestHandler {
 		if (price < this._hq.GetAmount()) {
 			cells.forEach((c) => {
 				if (c.GetField() instanceof BasicField) {
-					new FarmField(c, this._hq);
+					c.SetField(new FarmField(c, this._hq));
 					this._hq.Buy(GameSettings.FieldPrice);
 				}
 			});

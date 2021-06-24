@@ -14,7 +14,7 @@ export class EnergyRequestHandler implements ISimpleRequestHandler {
 			const cells = request.Area.GetFreeCoveredCells();
 			cells.some((c) => {
 				if (c.GetField() instanceof BasicField) {
-					const bf = new BatteryField(c, this._hq);
+					const bf = c.SetField(new BatteryField(c, this._hq));
 					this._hq.Buy(GameSettings.FieldPrice);
 					this._hq.AddBatteryField(bf);
 					return true;

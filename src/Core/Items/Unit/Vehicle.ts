@@ -39,7 +39,6 @@ import { BasicOrder } from '../../Ia/Order/BasicOrder';
 import { UpCalculator } from '../Cell/Field/Bonus/UpCalculator';
 import { FireUp } from './PowerUp/FireUp';
 import { SpeedUp } from './PowerUp/SpeedUp';
-import { LatencyUp } from './PowerUp/LatencyUp';
 
 export abstract class Vehicle extends AliveItem
 	implements IMovable, IRotatable, ISelectable, ICancellable, ICamouflageAble {
@@ -196,7 +195,7 @@ export abstract class Vehicle extends AliveItem
 		this.OnPowerUp.Invoke(this, up);
 		this._translationMaker.Update();
 		this._rotationMaker.Update();
-		if (!(up instanceof LatencyUp)) {
+		if (up.HasAnimation) {
 			this._upAngle += Math.PI * 2 * 60 / 360;
 		}
 	}
@@ -206,7 +205,7 @@ export abstract class Vehicle extends AliveItem
 		this.OnPowerDown.Invoke(this, up);
 		this._translationMaker.Update();
 		this._rotationMaker.Update();
-		if (!(up instanceof LatencyUp)) {
+		if (up.HasAnimation) {
 			this._upAngle -= Math.PI * 2 * 60 / 360;
 		}
 	}

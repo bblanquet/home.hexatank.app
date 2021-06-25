@@ -9,6 +9,7 @@ export abstract class Up {
 	private _handleStop: any = this.OnStop.bind(this);
 	public Animation: UpAnimation;
 	protected isDone: boolean = false;
+	public HasAnimation: boolean = true;
 
 	constructor(
 		protected Vehicle: Vehicle,

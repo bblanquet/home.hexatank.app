@@ -8,8 +8,19 @@ import { RecordUnit } from '../src/Core/Framework/Record/Model/Item/RecordUnit';
 import { RecordVehicleState } from '../src/Core/Framework/Record/Model/Item/State/RecordVehicleState';
 import { HexAxial } from '../src/Core/Utils/Geometry/HexAxial';
 import { RecordKind } from '../src/Core/Framework/Record/Model/Item/State/RecordKind';
+import { LogMessage } from '../src/Core/Utils/Logger/LogMessage';
+import { LogKind } from '../src/Core/Utils/Logger/LogKind';
 
-export function Context() {
+export function Logs() {
+	return [
+		LogMessage.New(LogKind.info, Date.now(), 'defe', 'Dany'),
+		LogMessage.New(LogKind.success, Date.now(), 'allo', 'Dany'),
+		LogMessage.New(LogKind.dangerous, Date.now(), 'allo', 'Dany'),
+		LogMessage.New(LogKind.warning, Date.now(), 'allo', 'Dany')
+	];
+}
+
+export function DeltaCurves() {
 	const c = new Groups<Curve>();
 	c.Add(
 		StatsKind[StatsKind.Cell],

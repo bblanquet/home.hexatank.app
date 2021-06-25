@@ -18,6 +18,7 @@ import LobbyComponent from './Components/Network/Lobby/LobbyComponent';
 import LoadingPlayers from './Components/Network/Lobby/Players/LoadingPlayersComponent';
 import LoadingComponent from './Components/Loading/LoadingComponent';
 import ComparisonComponent from './Components/Comparer/ComparisonComponent';
+import LogComponent from './Components/Comparer/LogComponent';
 import SmPopupComponent from './Components/SmPopup/SmPopupComponent';
 import PopupComponent from './Components/Popup/PopupComponent';
 import RecordComponent from './Components/Record/RecordComponent';
@@ -33,7 +34,7 @@ import '@fortawesome/fontawesome-free/js/solid';
 import '@fortawesome/fontawesome-free/js/regular';
 import '@fortawesome/fontawesome-free/js/brands';
 import { GameStatus } from './Core/Framework/GameStatus';
-import { Context } from '../test/Context';
+import { DeltaCurves, Logs } from '../test/Variables';
 import { RecordAny } from './Core/Framework/Record/Model/RecordAny';
 
 const App = (e: any) => {
@@ -60,12 +61,13 @@ const App = (e: any) => {
 			<PopupComponent
 				path="{{sub_path}}Popup"
 				points={30}
-				curves={Context()}
+				curves={DeltaCurves()}
 				status={GameStatus.Victory}
 				context={new RecordAny()}
 			/>
 			<SmPopupComponent path="{{sub_path}}SmPopup" points={10} status={GameStatus.Victory} />
 			<ComparisonComponent path="{{sub_path}}Comparison" />
+			<LogComponent path="{{sub_path}}Log" messages={Logs()} />
 		</Router>
 	);
 };

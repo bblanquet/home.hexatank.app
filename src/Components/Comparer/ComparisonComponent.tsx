@@ -10,6 +10,7 @@ import Icon from '../Common/Icon/IconComponent';
 import { route } from 'preact-router';
 import LineComparisonComponent from './LineComparisonComponent';
 import ActiveButtonComponent from '../Common/Button/Stylish/ActiveButtonComponent';
+import LogComponent from './LogComponent';
 
 export default class ComparisonComponent extends Component<{}, { Value: ComparisonState }> {
 	private _compareService: ICompareService;
@@ -25,9 +26,10 @@ export default class ComparisonComponent extends Component<{}, { Value: Comparis
 		return (
 			<SmPanelComponent>
 				<div class="container-center-horizontal">
-					{this.Button(ComparisonState.Cell, 'far fa-chart-bar')}
+					{this.Button(ComparisonState.Cell, 'far fa-map')}
 					{this.Button(ComparisonState.Curve, 'fas fa-chart-line')}
-					{this.Button(ComparisonState.Vehicle, 'fas fa-chart-bar')}
+					{this.Button(ComparisonState.Vehicle, 'fas fa-arrows-alt')}
+					{this.Button(ComparisonState.Logs, 'fas fa-stream')}
 				</div>
 
 				<Visible isVisible={this.state.Value === ComparisonState.Cell}>
@@ -38,6 +40,9 @@ export default class ComparisonComponent extends Component<{}, { Value: Comparis
 				</Visible>
 				<Visible isVisible={this.state.Value === ComparisonState.Curve}>
 					<LineComparisonComponent />
+				</Visible>
+				<Visible isVisible={this.state.Value === ComparisonState.Logs}>
+					<LogComponent messages={this._compareService.GetLogs()} />
 				</Visible>
 				<div class="container-center-horizontal">
 					<ButtonComponent callBack={() => route('{{sub_path}}Home', true)} color={ColorKind.Black}>
@@ -69,5 +74,6 @@ export default class ComparisonComponent extends Component<{}, { Value: Comparis
 export enum ComparisonState {
 	Vehicle,
 	Cell,
-	Curve
+	Curve,
+	Logs
 }

@@ -76,18 +76,10 @@ export class PeerSocket implements IPeerSocket {
 
 	protected ReceivePacket(packet: NetworkMessage<any>): void {
 		if (!this.IsPing(packet.Kind)) {
-			StaticLogger.Log(
-				LogKind.info,
-				`[${packet.Emitter}] > ${this._rtcPeer.GetOwner()}] ${PacketKind[packet.Kind]} <<<`
-			);
+			StaticLogger.Log(LogKind.info, `${packet.Emitter} > ${PacketKind[packet.Kind]}`);
 		}
 		if (packet.Protocol === ProtocolKind.Tcp && packet.IsAck) {
-			StaticLogger.Log(
-				LogKind.info,
-				`[${packet.Emitter}] > ${this._rtcPeer.GetOwner()}] ${PacketKind[
-					packet.Kind
-				]} [ACK] [${packet.SeqNum}]<<<`
-			);
+			StaticLogger.Log(LogKind.info, `${packet.Emitter} > ${PacketKind[packet.Kind]} [ACK] [${packet.SeqNum}]`);
 			return;
 		}
 

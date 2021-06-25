@@ -1,14 +1,17 @@
 import * as luxon from 'luxon';
 import { Env } from '../../../Env';
 import { Dictionnary } from '../Collections/Dictionnary';
+import { LiteEvent } from '../Events/LiteEvent';
 import { LogKind } from './LogKind';
+import { LogMessage } from './LogMessage';
 
 export class StaticLogger {
-	private static _messages: string[] = [];
+	public static OnMessage: LiteEvent<LogMessage> = new LiteEvent<LogMessage>();
+	private static _messages: LogMessage[] = [];
 	private static Anonymous: string = 'anonymous';
 	private static _excludes: string[] = [ 'Interac', StaticLogger.Anonymous, 'LatencyProvider' ];
 
-	private static _colors: Dictionnary<string> = Dictionnary.New([
+	public static Colors: Dictionnary<string> = Dictionnary.New([
 		{ key: LogKind[LogKind.none], value: '#000000' },
 		{ key: LogKind[LogKind.info], value: '#36a6e3' },
 		{ key: LogKind[LogKind.success], value: '#8fe336' },
@@ -25,19 +28,26 @@ export class StaticLogger {
 		{ key: LogKind[LogKind.dangerous], value: 'bolder' }
 	]);
 
-	public static Log(logKind: LogKind, message: string) {
+	public static Icons: Dictionnary<string> = Dictionnary.New([
+		{ key: LogKind[LogKind.none], value: 'fas fa-sticky-note' },
+		{ key: LogKind[LogKind.info], value: 'fas fa-info-circle' },
+		{ key: LogKind[LogKind.success], value: 'fa fa-check-circle' },
+		{ key: LogKind[LogKind.warning], value: 'fas fa-exclamation-triangle' },
+		{ key: LogKind[LogKind.dangerous], value: 'fas fa-radiation' },
+		{ key: LogKind[LogKind.error], value: 'fas fa-times' }
+	]);
+
+	public static Log(logKind: LogKind, content: string) {
 		if (!Env.IsPrd()) {
 			const caller = this.CallerName();
 			if (!this._excludes.some((exclude) => caller.includes(exclude))) {
-				let content = message;
-				content = this.AddStyle(content);
-				content = this.AddCaller(caller, content);
-				content = this.AddTime(content);
-				this._messages.push(content);
+				const message = new LogMessage(logKind, Date.now(), content);
+				this._messages.push(message);
 				console.log(
-					`${content}`,
-					`color:${this._colors.Get(LogKind[logKind])};font-weight:${this._style.Get(LogKind[logKind])};`
+					`${this.Format(caller, message)}`,
+					`color:${this.Colors.Get(LogKind[logKind])};font-weight:${this._style.Get(LogKind[logKind])};`
 				);
+				this.OnMessage.Invoke(this, message);
 			}
 		}
 	}
@@ -59,19 +69,13 @@ export class StaticLogger {
 		return sCallerName;
 	}
 
-	private static AddCaller(caller: string, content: string) {
-		return `[${caller}] ${content}`;
+	private static Format(caller: string, message: LogMessage): string {
+		return `[${luxon.DateTime
+			.now()
+			.toLocaleString(luxon.DateTime.TIME_WITH_SECONDS)}] [${caller}] %c${message.Content}`;
 	}
 
-	private static AddTime(message: string): string {
-		return `[${luxon.DateTime.now().toLocaleString(luxon.DateTime.TIME_WITH_SECONDS)}] ${message}`;
-	}
-
-	private static AddStyle(message: string): string {
-		return `%c${message}`;
-	}
-
-	public static GetLogs(): string[] {
+	public static GetLogs(): LogMessage[] {
 		return this._messages;
 	}
 }

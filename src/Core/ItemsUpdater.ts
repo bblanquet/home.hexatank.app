@@ -10,6 +10,8 @@ export class ItemsUpdater implements IItemsUpdater {
 	public OnError: LiteEvent<Error> = new LiteEvent<Error>();
 	public Items: Array<Item> = new Array<Item>();
 	public ViewContext: ViewContext;
+	public static UpdateSpan: number = 15;
+	private _lastUpdate: number = undefined;
 	constructor() {
 		this.ViewContext = new ViewContext();
 	}
@@ -19,6 +21,11 @@ export class ItemsUpdater implements IItemsUpdater {
 	}
 
 	public Update(): void {
+		if (this._lastUpdate) {
+			const nextUpdate = Date.now();
+			ItemsUpdater.UpdateSpan = nextUpdate - this._lastUpdate;
+			this._lastUpdate = nextUpdate;
+		}
 		if (!GameSettings.IsPause) {
 			if (Env.IsPrd()) {
 				try {

@@ -1,19 +1,21 @@
-import { InteractionInfo } from '../../../Interaction/InteractionInfo';
 import { RecordCell } from './Item/RecordCell';
 import { RecordHq } from './RecordHq';
 import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
 import { RecordAny } from './RecordAny';
 import { RecordUnit } from './Item/RecordUnit';
 import { GameBlueprint } from '../../../Setup/Blueprint/Game/GameBlueprint';
+import { LogMessage } from '../../../Utils/Logger/LogMessage';
 export class RecordContent {
 	public MapContext: GameBlueprint;
 	public Dates: number[] = [];
 	public Hqs: Dictionnary<RecordHq> = new Dictionnary<RecordHq>();
 	public Cells: Dictionnary<RecordCell> = new Dictionnary<RecordCell>();
-	public Interactions: InteractionInfo[] = [];
 	public Title: string;
+	public PlayerName: string;
 	public StartDate: number;
 	public EndDate: number;
+	public IsVictory: boolean;
+	public Messages: LogMessage[] = [];
 	constructor() {}
 
 	public static To(origObject: RecordAny): RecordContent {
@@ -39,6 +41,9 @@ export class RecordContent {
 		result.Dates = copyObject.Points;
 		result.Title = copyObject.Title;
 		result.MapContext = copyObject.MapContext;
+		result.Messages = copyObject.Messages;
+		result.PlayerName = copyObject.PlayerName;
+		result.IsVictory = copyObject.IsVictory;
 		return result;
 	}
 }

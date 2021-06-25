@@ -22,6 +22,7 @@ import { OverlockedPacket } from './Packets/OverlockedPacket';
 import { LatencyCondition } from '../../Items/Unit/PowerUp/Condition/LatencyCondition';
 import { StaticLogger } from '../../Utils/Logger/StaticLogger';
 import { LogKind } from '../../Utils/Logger/LogKind';
+import { ItemsUpdater } from '../../ItemsUpdater';
 
 export class OnlineRuntimeReceiver {
 	private _obs: NetworkObserver[];
@@ -98,8 +99,9 @@ export class OnlineRuntimeReceiver {
 	}
 
 	private HandlePathChanged(message: NetworkMessage<NextCellPacket>): void {
-		const latency = message.Latency;
-		const vehicle = this._context.GetVehicle(message.Content.Id);
+		const latency = message.Latency + Math.round(ItemsUpdater.UpdateSpan / 2);
+		const vehicleId = message.Content.Id;
+		const vehicle = this._context.GetVehicle(vehicleId);
 		const hq = this._context.GetHqFromId(vehicle.Identity);
 
 		if (this.IsListened(hq.Identity.Name)) {
@@ -113,22 +115,22 @@ export class OnlineRuntimeReceiver {
 				) {
 					const order = new BasicOrder(vehicle, path);
 					vehicle.GiveOrder(order);
-					this.LatencyCompensation(latency + 10, vehicle, order, path);
-					StaticLogger.Log(LogKind.info, `latency compensation ${latency}`);
+					this.LatencyCompensation(latency, vehicle, order, path);
+					StaticLogger.Log(LogKind.info, `${vehicleId} ORDER ${latency}ms`);
 				} else if (
 					vehicle.GetCurrentCell().Coo() === message.Content.CC &&
 					!this.IsNextCellEqualed(vehicle, message.Content.NC)
 				) {
 					const order = new BasicOrder(vehicle, path);
 					vehicle.ForceCancel(order);
-					this.LatencyCompensation(latency + 10, vehicle, order, path);
-					StaticLogger.Log(LogKind.warning, `[FORCE CANCEL] latency compensation ${latency}`);
+					this.LatencyCompensation(latency, vehicle, order, path);
+					StaticLogger.Log(LogKind.warning, `[FORCE CANCEL] ${vehicleId} ORDER ${latency}ms`);
 				} else if (vehicle.GetCurrentCell().Coo() !== message.Content.CC) {
 					const cell = dic.Get(message.Content.CC);
 					const order = new BasicOrder(vehicle, path);
 					vehicle.ForceCell(cell, order);
-					this.LatencyCompensation(latency + 10, vehicle, order, path);
-					StaticLogger.Log(LogKind.warning, `[FORCE CELL] latency compensation ${latency}`);
+					this.LatencyCompensation(latency, vehicle, order, path);
+					StaticLogger.Log(LogKind.dangerous, `[FORCE CELL] ${vehicleId} ORDER ${latency}ms`);
 				}
 			}
 		}

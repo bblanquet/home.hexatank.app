@@ -1,3 +1,3 @@
 export interface IRecordContext {
-	Stop(): void;
+	Stop(isVictory: boolean): void;
 }

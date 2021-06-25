@@ -1,5 +1,6 @@
 import { InteractionInfo } from '../../../Interaction/InteractionInfo';
 import { GameBlueprint } from '../../../Setup/Blueprint/Game/GameBlueprint';
+import { LogMessage } from '../../../Utils/Logger/LogMessage';
 import { RecordContent } from './RecordContent';
 export class RecordAny {
 	public MapContext: GameBlueprint;
@@ -10,6 +11,9 @@ export class RecordAny {
 	public StartDate: number;
 	public EndDate: number;
 	public Interactions: InteractionInfo[];
+	public Messages: LogMessage[];
+	public IsVictory: boolean;
+	public PlayerName: string;
 
 	public static To(data: RecordContent): RecordAny {
 		const players: any = {};
@@ -24,8 +28,10 @@ export class RecordAny {
 		json.EndDate = data.EndDate;
 		json.Cells = data.Cells.GetValues();
 		json.Hqs = players;
-		json.Interactions = data.Interactions;
 		json.Points = data.Dates;
+		json.Messages = data.Messages;
+		json.PlayerName = data.PlayerName;
+		json.IsVictory = data.IsVictory;
 		return json;
 	}
 }

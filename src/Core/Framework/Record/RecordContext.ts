@@ -1,4 +1,3 @@
-import { InteractionContext } from './../../Interaction/InteractionContext';
 import { RecordCell } from './Model/Item/RecordCell';
 import { Tank } from '../../Items/Unit/Tank';
 import { RecordUnit } from './Model/Item/RecordUnit';
@@ -16,20 +15,18 @@ import { FieldTypeHelper } from '../FieldTypeHelper';
 import { RecordCellState } from './Model/Item/State/RecordCellState';
 import { RecordContent } from './Model/RecordContent';
 import { IRecordContext } from './IRecordContext';
-import { InteractionInfo } from '../../Interaction/InteractionInfo';
+import { StaticLogger } from '../../Utils/Logger/StaticLogger';
+import { LogMessage } from '../../Utils/Logger/LogMessage';
 
 export class RecordContext implements IRecordContext {
 	private _record: RecordContent;
 	private _handleVehicle: any = this.HandleVehicleCreated.bind(this);
 	private _handleField: any = this.HandleFieldChanged.bind(this);
-	private _handleInteraction: any = this.HandleInteractionChanged.bind(this);
+	private _handleLog: any = this.HandleLogs.bind(this);
 
-	constructor(
-		mapContext: GameBlueprint,
-		private _gameContext: GameContext,
-		private _interactionContext: InteractionContext
-	) {
+	constructor(mapContext: GameBlueprint, private _gameContext: GameContext) {
 		this._record = new RecordContent();
+		this._record.PlayerName = this._gameContext.GetPlayer().Identity.Name;
 		this._record.MapContext = mapContext;
 		this._record.StartDate = Date.now();
 		this._gameContext.GetHqs().forEach((hq) => {
@@ -51,12 +48,11 @@ export class RecordContext implements IRecordContext {
 				cell.OnFieldChanged.On(this._handleField);
 			}
 		});
-
-		this._interactionContext.OnInteractionChanged.On(this._handleInteraction);
+		StaticLogger.OnMessage.On(this._handleLog);
 	}
 
-	private HandleInteractionChanged(src: any, message: InteractionInfo): void {
-		this._record.Interactions.push(message);
+	private HandleLogs(src: any, log: LogMessage): void {
+		this._record.Messages.push(log);
 	}
 
 	private HandleFieldChanged(src: any, cell: Cell): void {
@@ -157,7 +153,9 @@ export class RecordContext implements IRecordContext {
 		return this._record.EndDate === null || this._record.EndDate === undefined;
 	}
 
-	public Stop(): void {
+	public Stop(isVictory: boolean): void {
+		StaticLogger.OnMessage.Off(this._handleLog);
 		this._record.EndDate = Date.now();
+		this._record.IsVictory = isVictory;
 	}
 }

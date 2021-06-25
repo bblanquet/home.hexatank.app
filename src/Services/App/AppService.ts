@@ -74,7 +74,7 @@ export class AppService implements IAppService<GameBlueprint> {
 		this._gameContextService.Register(mapContext);
 		this._gameContext = this._gameContextService.Publish();
 		this._interactionService.Register(this._interactionManager, this._gameContext);
-		this._recordContext = new RecordContext(mapContext, this._gameContext, this._interactionService.Publish());
+		this._recordContext = new RecordContext(mapContext, this._gameContext);
 		this._statContext = new StatsContext(this._gameContext);
 		new BrainInjecter().Inject(this._gameContext, mapContext);
 		this._app.start();
@@ -98,7 +98,7 @@ export class AppService implements IAppService<GameBlueprint> {
 		}
 
 		if (status === GameStatus.Defeat || status === GameStatus.Victory) {
-			this._recordContext.Stop();
+			this._recordContext.Stop(status === GameStatus.Victory);
 			const record = this._recordContext.GetRecord();
 			this._playerProfilService.Init();
 			const profil = this._playerProfilService.GetProfil();

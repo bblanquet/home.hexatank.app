@@ -37,7 +37,7 @@ export class LatencyProvider {
 			const messageLatency = moment.duration(now - deviceRefEmittedDate);
 			StaticLogger.Log(
 				LogKind.info,
-				`Message Latency ${moment.utc(messageLatency.asMilliseconds()).format('HH:mm:ss.SSS')}`
+				`latency ${moment.utc(messageLatency.asMilliseconds()).format('HH:mm:ss.SSS')}`
 			);
 			return messageLatency.asMilliseconds();
 		}

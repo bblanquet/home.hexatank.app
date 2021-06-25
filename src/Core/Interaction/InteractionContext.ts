@@ -15,6 +15,8 @@ import { IInteractionContext, InteractionKind } from './IInteractionContext';
 import { ISelectableChecker } from './ISelectableChecker';
 import { ViewContext } from '../Utils/Geometry/ViewContext';
 import { Singletons, SingletonKey } from '../../Singletons';
+import { StaticLogger } from '../Utils/Logger/StaticLogger';
+import { LogKind } from '../Utils/Logger/LogKind';
 
 export class InteractionContext implements IContextContainer, IInteractionContext {
 	private _updateService: IUpdateService;
@@ -138,7 +140,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 			info.ItemsCount = this._selectedItem.length;
 			info.Items = this._selectedItem.map((s) => s.constructor.name);
 			this.OnInteractionChanged.Invoke(this, info);
-			console.log(`%c ${this.GetMessage()}`, 'font-weight:bold;color:red;');
+			StaticLogger.Log(LogKind.info, this.GetInteractionInfo());
 		}
 
 		let context = new CombinationContext();
@@ -146,18 +148,18 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 		context.InteractionKind = this.Kind;
 		context.Point = this.Point;
 
-		//console.log(`%c FIRE ${InteractionKind[this.Kind]}`, 'color:red;font-weight:bold;');
+		StaticLogger.Log(LogKind.info, `%c TRIGGER ${InteractionKind[this.Kind]}`);
 
 		this._combinations.some((combination) => {
 			if (combination.Combine(context)) {
-				console.log(`%c combination: ${combination.constructor.name}`, 'font-weight:bold;color:green;');
+				StaticLogger.Log(LogKind.success, `combination: ${combination.constructor.name}`);
 				return true;
 			}
 			return false;
 		});
 	}
 
-	private GetMessage() {
+	private GetInteractionInfo() {
 		return `COUNT[${this._selectedItem.length}] ITEMS[ ${this._selectedItem.map(
 			(e) => `${e.constructor.name} `
 		)}] INT[${InteractionKind[this.Kind]}] ${this.GetDetail(this._selectedItem)}`;

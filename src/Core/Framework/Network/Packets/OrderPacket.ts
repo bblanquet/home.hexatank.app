@@ -1,4 +1,4 @@
-import { OrderKind } from '../../Ia/Order/OrderKind';
+import { OrderKind } from '../../../Ia/Order/OrderKind';
 
 export class OrderPacket {
 	public Id: string;

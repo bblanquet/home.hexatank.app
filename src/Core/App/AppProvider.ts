@@ -3,9 +3,9 @@ import * as PIXI from 'pixi.js';
 import { MapEnv } from '../Setup/Blueprint/MapEnv';
 
 export class AppProvider {
-	public Provide(mapContext: IBlueprint): PIXI.Application {
+	public Provide(blueprint: IBlueprint): PIXI.Application {
 		const app = new PIXI.Application({});
-		app.renderer.backgroundColor = this.GetColor(mapContext);
+		app.renderer.backgroundColor = this.GetColor(blueprint);
 		return app;
 	}
 

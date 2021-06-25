@@ -1,9 +1,11 @@
 import { Dictionnary } from './Core/Utils/Collections/Dictionnary';
+import { LogKind } from './Core/Utils/Logger/LogKind';
+import { StaticLogger } from './Core/Utils/Logger/StaticLogger';
 
 export class Singletons {
 	private static _singletons: Dictionnary<any> = new Dictionnary<any>();
 	public static Register(key: SingletonKey, obj: any): void {
-		console.log(`register ${SingletonKey[key]}`);
+		StaticLogger.Log(LogKind.info, `${SingletonKey[key]}`);
 		if (this._singletons.Exist(SingletonKey[key])) {
 			throw 'Singleton is already created';
 		}

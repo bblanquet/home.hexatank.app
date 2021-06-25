@@ -1,4 +1,4 @@
-import { FieldTypeHelper } from '../../../../Core/Framework/Packets/FieldTypeHelper';
+import { FieldTypeHelper } from '../../../../Core/Framework/FieldTypeHelper';
 import { RecordKind } from '../../../../Core/Framework/Record/Model/Item/State/RecordKind';
 import { RecordContent } from '../../../../Core/Framework/Record/Model/RecordContent';
 import { GameContext } from '../../../../Core/Setup/Context/GameContext';

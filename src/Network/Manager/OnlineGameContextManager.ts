@@ -1,4 +1,4 @@
-import { OnlineRuntimeManager } from './../../Core/Framework/OnlineRuntimeManager';
+import { OnlineRuntimeManager } from './../../Core/Framework/Network/OnlineRuntimeManager';
 import { IOnlineService } from '../../Services/Online/IOnlineService';
 import { OnlineBlueprintMaker } from './OnlineBlueprintMaker';
 import { ISocketWrapper } from './../Socket/INetworkSocket';

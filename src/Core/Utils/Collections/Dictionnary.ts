@@ -72,9 +72,17 @@ export class Dictionnary<T> {
 	}
 
 	public static To<T>(key: (d: T) => string, list: T[]): Dictionnary<T> {
+		const dictionary = new Dictionnary<T>();
+		list.forEach((item) => {
+			dictionary.Add(key(item), item);
+		});
+		return dictionary;
+	}
+
+	public static New<T>(list: { key: string; value: T }[]): Dictionnary<T> {
 		const dictionnary = new Dictionnary<T>();
 		list.forEach((item) => {
-			dictionnary.Add(key(item), item);
+			dictionnary.Add(item.key, item.value);
 		});
 		return dictionnary;
 	}

@@ -35,20 +35,22 @@ export class ShieldField extends AliveBonusField {
 	}
 
 	public ChangeEnergy(isUp: boolean): void {
-		const formerEnergy = this.Energy;
+		if (this.IsUpdatable) {
+			const formerEnergy = this.Energy;
 
-		this.Energy = isUp ? this.Energy + 1 : this.Energy - 1;
+			this.Energy = isUp ? this.Energy + 1 : this.Energy - 1;
 
-		if (this.Energy === 1 && formerEnergy === 0) {
-			this._shieldAppearance.Animator = new BouncingScaleUpAnimator(this._shieldAppearance, [
-				SvgArchive.bonus.shieldLight,
-				SvgArchive.bonus.shield
-			]);
-		} else if (this.Energy === 0 && formerEnergy === 1) {
-			this._shieldAppearance.Animator = new BouncingScaleDownAnimator(this._shieldAppearance, [
-				SvgArchive.bonus.shieldLight,
-				SvgArchive.bonus.shield
-			]);
+			if (this.Energy === 1 && formerEnergy === 0) {
+				this._shieldAppearance.Animator = new BouncingScaleUpAnimator(this._shieldAppearance, [
+					SvgArchive.bonus.shieldLight,
+					SvgArchive.bonus.shield
+				]);
+			} else if (this.Energy === 0 && formerEnergy === 1) {
+				this._shieldAppearance.Animator = new BouncingScaleDownAnimator(this._shieldAppearance, [
+					SvgArchive.bonus.shieldLight,
+					SvgArchive.bonus.shield
+				]);
+			}
 		}
 	}
 

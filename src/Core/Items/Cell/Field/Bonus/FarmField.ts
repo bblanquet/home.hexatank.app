@@ -6,7 +6,6 @@ import { Light } from '../../../Environment/Light';
 import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { Truck } from '../../../Unit/Truck';
-import { Headquarter } from '../Hq/Headquarter';
 import { BonusField } from './BonusField';
 import { CellState } from '../../CellState';
 import { IHeadquarter } from '../Hq/IHeadquarter';

@@ -15,7 +15,7 @@ import { Lobby } from '../../Network/Manager/Lobby';
 import { SocketWrapper } from '../../Network/Socket/SocketWrapper';
 import { OnlineGameContextManager } from '../../Network/Manager/OnlineGameContextManager';
 import { IOnlineGameContextManager } from '../../Network/Manager/IOnlineGameContextManager';
-import { OnlineRuntimeManager } from '../../Core/Framework/OnlineRuntimeManager';
+import { OnlineRuntimeManager } from '../../Core/Framework/Network/OnlineRuntimeManager';
 
 export class OnlineService implements IOnlineService {
 	private _servSocket: IServerSocket;

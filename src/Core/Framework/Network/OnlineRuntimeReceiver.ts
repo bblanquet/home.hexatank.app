@@ -1,26 +1,27 @@
-import { OverlockedPacket } from './Packets/OverlockedPacket';
-import { ReactorField } from '../Items/Cell/Field/Bonus/ReactorField';
-import { Headquarter } from '../Items/Cell/Field/Hq/Headquarter';
-import { FieldTypeHelper } from './Packets/FieldTypeHelper';
-import { PacketKind } from '../../Network/Message/PacketKind';
-import { TargetPacket } from './Packets/TargetPacket';
-import { NetworkMessage } from '../../Network/Message/NetworkMessage';
-import { GameContext } from '../Setup/Context/GameContext';
+import { isNullOrUndefined } from 'util';
+import { BasicOrder } from '../../Ia/Order/BasicOrder';
+import { Cell } from '../../Items/Cell/Cell';
+import { BlockingField } from '../../Items/Cell/Field/BlockingField';
+import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
+import { TypeTranslator } from '../../Items/Cell/Field/TypeTranslator';
+import { Identity } from '../../Items/Identity';
+import { LatencyUp } from '../../Items/Unit/PowerUp/LatencyUp';
+import { Vehicle } from '../../Items/Unit/Vehicle';
+import { GameContext } from '../../Setup/Context/GameContext';
+import { FieldTypeHelper } from '../FieldTypeHelper';
+import { ISocketWrapper } from '../../../Network/Socket/INetworkSocket';
+import { PacketKind } from '../../../Network/Message/PacketKind';
+import { NetworkObserver } from '../../Utils/Events/NetworkObserver';
+import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
 import { VehiclePacket } from './Packets/CreatingUnitPacket';
-import { NetworkObserver } from '../Utils/Events/NetworkObserver';
-import { NextCellPacket } from './Packets/NextCellPacket';
 import { FieldPacket } from './Packets/FieldPacket';
-import { TypeTranslator } from '../Items/Cell/Field/TypeTranslator';
+import { NextCellPacket } from './Packets/NextCellPacket';
 import { EnergyPacket } from './Packets/PowerFieldPacket';
-import { isNullOrUndefined } from '../Utils/ToolBox';
-import { ISocketWrapper } from '../../Network/Socket/INetworkSocket';
-import { BasicOrder } from '../Ia/Order/BasicOrder';
-import { Vehicle } from '../Items/Unit/Vehicle';
-import { BlockingField } from '../Items/Cell/Field/BlockingField';
-import { LatencyUp } from '../Items/Unit/PowerUp/LatencyUp';
-import { LatencyCondition } from '../Items/Unit/PowerUp/Condition/LatencyCondition';
-import { Cell } from '../Items/Cell/Cell';
-import { Identity } from '../Items/Identity';
+import { TargetPacket } from './Packets/TargetPacket';
+import { OverlockedPacket } from './Packets/OverlockedPacket';
+import { LatencyCondition } from '../../Items/Unit/PowerUp/Condition/LatencyCondition';
+import { StaticLogger } from '../../Utils/Logger/StaticLogger';
+import { LogKind } from '../../Utils/Logger/LogKind';
 
 export class OnlineRuntimeReceiver {
 	private _obs: NetworkObserver[];
@@ -112,22 +113,22 @@ export class OnlineRuntimeReceiver {
 				) {
 					const order = new BasicOrder(vehicle, path);
 					vehicle.GiveOrder(order);
-					this.LatencyCompensation(latency, vehicle, order, path);
-					console.log(`%c latency compensation ${latency}`, 'color:#68b81d;font-weight:bold;');
+					this.LatencyCompensation(latency + 10, vehicle, order, path);
+					StaticLogger.Log(LogKind.info, `latency compensation ${latency}`);
 				} else if (
 					vehicle.GetCurrentCell().Coo() === message.Content.CC &&
 					!this.IsNextCellEqualed(vehicle, message.Content.NC)
 				) {
 					const order = new BasicOrder(vehicle, path);
 					vehicle.ForceCancel(order);
-					this.LatencyCompensation(latency, vehicle, order, path);
-					console.log(`%c [FORCE CANCEL] latency compensation ${latency}`, 'color:#b8631d;font-weight:bold;');
+					this.LatencyCompensation(latency + 10, vehicle, order, path);
+					StaticLogger.Log(LogKind.warning, `[FORCE CANCEL] latency compensation ${latency}`);
 				} else if (vehicle.GetCurrentCell().Coo() !== message.Content.CC) {
 					const cell = dic.Get(message.Content.CC);
 					const order = new BasicOrder(vehicle, path);
 					vehicle.ForceCell(cell, order);
-					this.LatencyCompensation(latency, vehicle, order, path);
-					console.log(`%c [FORCE CELL] latency compensation ${latency}`, 'color:#a81b1b;font-weight:bold;');
+					this.LatencyCompensation(latency + 10, vehicle, order, path);
+					StaticLogger.Log(LogKind.warning, `[FORCE CELL] latency compensation ${latency}`);
 				}
 			}
 		}

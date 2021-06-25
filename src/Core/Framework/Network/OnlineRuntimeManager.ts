@@ -1,7 +1,8 @@
-import { ISocketWrapper } from '../../Network/Socket/INetworkSocket';
 import { OnlineRuntimeDispatcher } from './OnlineRuntimeDispatcher';
 import { OnlineRuntimeReceiver } from './OnlineRuntimeReceiver';
-import { GameContext } from '../Setup/Context/GameContext';
+import { ISocketWrapper } from '../../../Network/Socket/INetworkSocket';
+import { GameContext } from '../../Setup/Context/GameContext';
+
 export class OnlineRuntimeManager {
 	private _receiver: OnlineRuntimeReceiver;
 	private _dispatcher: OnlineRuntimeDispatcher;

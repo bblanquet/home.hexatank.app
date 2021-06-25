@@ -39,6 +39,7 @@ import { BasicOrder } from '../../Ia/Order/BasicOrder';
 import { UpCalculator } from '../Cell/Field/Bonus/UpCalculator';
 import { FireUp } from './PowerUp/FireUp';
 import { SpeedUp } from './PowerUp/SpeedUp';
+import { LatencyUp } from './PowerUp/LatencyUp';
 
 export abstract class Vehicle extends AliveItem
 	implements IMovable, IRotatable, ISelectable, ICancellable, ICamouflageAble {
@@ -75,6 +76,7 @@ export abstract class Vehicle extends AliveItem
 	private _rightDusts: Array<Dust>;
 
 	private _ups: Array<Up> = [];
+	private _upAngle: number = 0;
 
 	private _handleCellStateChanged: any = this.HandleCellStateChanged.bind(this);
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
@@ -194,6 +196,9 @@ export abstract class Vehicle extends AliveItem
 		this.OnPowerUp.Invoke(this, up);
 		this._translationMaker.Update();
 		this._rotationMaker.Update();
+		if (!(up instanceof LatencyUp)) {
+			this._upAngle += Math.PI * 2 * 60 / 360;
+		}
 	}
 
 	public DeletePowerUp(up: Up): void {
@@ -201,16 +206,13 @@ export abstract class Vehicle extends AliveItem
 		this.OnPowerDown.Invoke(this, up);
 		this._translationMaker.Update();
 		this._rotationMaker.Update();
+		if (!(up instanceof LatencyUp)) {
+			this._upAngle -= Math.PI * 2 * 60 / 360;
+		}
 	}
 
 	public GetUpAngle(): number {
-		const animatedUps = this._ups.filter((u) => u.Animation);
-		if (0 < animatedUps.length) {
-			const last = animatedUps[this._ups.length - 1];
-			return last.Animation.GetCurrentRotation() + Math.PI * 2 * 60 / 360;
-		} else {
-			return 0;
-		}
+		return this._upAngle;
 	}
 
 	public GiveOrder(order: IOrder): void {

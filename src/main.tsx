@@ -33,7 +33,7 @@ import '@fortawesome/fontawesome-free/js/solid';
 import '@fortawesome/fontawesome-free/js/regular';
 import '@fortawesome/fontawesome-free/js/brands';
 import { GameStatus } from './Core/Framework/GameStatus';
-import { Context } from './Context';
+import { Context } from '../test/Context';
 import { RecordAny } from './Core/Framework/Record/Model/RecordAny';
 
 const App = (e: any) => {

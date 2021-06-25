@@ -1,13 +1,13 @@
-import { Groups } from './Core/Utils/Collections/Groups';
-import { Curve } from './Core/Utils/Stats/Curve';
-import { StatsKind } from './Core/Utils/Stats/StatsKind';
-import { DateValue } from './Core/Utils/Stats/DateValue';
-import { RecordContent } from './Core/Framework/Record/Model/RecordContent';
-import { RecordHq } from './Core/Framework/Record/Model/RecordHq';
-import { RecordUnit } from './Core/Framework/Record/Model/Item/RecordUnit';
-import { RecordVehicleState } from './Core/Framework/Record/Model/Item/State/RecordVehicleState';
-import { HexAxial } from './Core/Utils/Geometry/HexAxial';
-import { RecordKind } from './Core/Framework/Record/Model/Item/State/RecordKind';
+import { Groups } from '../src/Core/Utils/Collections/Groups';
+import { Curve } from '../src/Core/Utils/Stats/Curve';
+import { StatsKind } from '../src/Core/Utils/Stats/StatsKind';
+import { DateValue } from '../src/Core/Utils/Stats/DateValue';
+import { RecordContent } from '../src/Core/Framework/Record/Model/RecordContent';
+import { RecordHq } from '../src/Core/Framework/Record/Model/RecordHq';
+import { RecordUnit } from '../src/Core/Framework/Record/Model/Item/RecordUnit';
+import { RecordVehicleState } from '../src/Core/Framework/Record/Model/Item/State/RecordVehicleState';
+import { HexAxial } from '../src/Core/Utils/Geometry/HexAxial';
+import { RecordKind } from '../src/Core/Framework/Record/Model/Item/State/RecordKind';
 
 export function Context() {
 	const c = new Groups<Curve>();

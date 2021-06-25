@@ -12,7 +12,7 @@ import { RecordHq } from './Model/RecordHq';
 import { Cell } from '../../Items/Cell/Cell';
 import { RecordVehicleState } from './Model/Item/State/RecordVehicleState';
 import { Item } from '../../Items/Item';
-import { FieldTypeHelper } from '../Packets/FieldTypeHelper';
+import { FieldTypeHelper } from '../FieldTypeHelper';
 import { RecordCellState } from './Model/Item/State/RecordCellState';
 import { RecordContent } from './Model/RecordContent';
 import { IRecordContext } from './IRecordContext';

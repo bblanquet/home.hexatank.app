@@ -20,6 +20,11 @@
 			"search": "{{sub_path}}",
 			"replace": "/DEV/",
 			"flags": "g"
+		},
+		{
+			"search": "{{current_env}}",
+			"replace": "DEV",
+			"flags": "g"
 		}
 	]
 }

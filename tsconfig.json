@@ -12,10 +12,10 @@
   },
   "include": [
     "src/*.ts",
-    "src/*.tsx"],
+    "src/*.tsx", "test/Context.ts"],
   "files": [ 
     "./src/typings/custom.d.ts", 
-    "./src/Context.ts" 
+    "test/Context.ts" 
   ],
   "mocha.requires": [
     "ts-node/register"

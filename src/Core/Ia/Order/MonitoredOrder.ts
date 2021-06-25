@@ -6,6 +6,7 @@ import { ParentOrder } from './ParentOrder';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { IdleOrder } from './IdleOrder';
 import { TimeTimer } from '../../Utils/Timer/TimeTimer';
+import { TypeTranslator } from '../../Items/Cell/Field/TypeTranslator';
 
 export class MonitoredOrder extends ParentOrder {
 	private _vehicleCellChanged: boolean;
@@ -28,14 +29,33 @@ export class MonitoredOrder extends ParentOrder {
 		if (this.Vehicle.GetCurrentCell() === this.Destination) {
 			this.SetState(OrderState.Passed);
 		} else {
-			const road = new RoadProvider(this.Vehicle, this.Destination).GetBestRoad();
-			if (road && 0 < road.length) {
-				this.SetCurrentOrder(new BasicOrder(this.Vehicle, road));
-				this.OnPathFound.Invoke(this, road);
+			const nextRoad = new RoadProvider(this.Vehicle, this.Destination).GetBestRoad();
+			const road = this.CurrentOrder.GetPath();
+			if (this.HasNext(nextRoad)) {
+				if (this.IsNextBetter(nextRoad)) {
+					this.SetCurrentOrder(new BasicOrder(this.Vehicle, nextRoad));
+					this.OnPathFound.Invoke(this, nextRoad);
+				}
 			} else {
 				this.SetCurrentOrder(new IdleOrder());
 			}
 		}
+	}
+
+	private HasNext(nextRoad: Cell[]) {
+		return nextRoad && 0 < nextRoad.length;
+	}
+
+	private IsNextBetter(nextRoad: Cell[]): boolean {
+		if (this.CurrentOrder instanceof IdleOrder) {
+			return true;
+		}
+		const road = this.CurrentOrder.GetPath();
+		return !this.HasAccess(road) || nextRoad.length + 1 < road.length;
+	}
+
+	private HasAccess(path: Cell[]): boolean {
+		return path.every((p) => TypeTranslator.IsAccessible(p, this.Vehicle));
 	}
 
 	private IsIdle(): boolean {

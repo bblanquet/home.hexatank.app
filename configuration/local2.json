@@ -20,6 +20,11 @@
 			"search": "{{sub_path}}",
 			"replace": "/",
 			"flags": "g"
+		},
+		{
+			"search": "{{current_env}}",
+			"replace": "LOCAL",
+			"flags": "g"
 		}
 	]
 }

@@ -41,17 +41,34 @@ export class TargetMonitoredOrder extends ParentOrder {
 			this.Tank.SetMainTarget(enemy);
 		}
 
-		const targetRoad = new TargetRoadProvider(this.Tank, this.Destination).GetTargetRoad();
-		if (targetRoad && 0 < targetRoad.Road.length) {
-			if (this.HasTarget(targetRoad.Target)) {
-				this.SetCurrentOrder(new TargetCellOrder(this.Tank, targetRoad.Target, this.GetChildOrder(targetRoad)));
-			} else {
-				this.SetCurrentOrder(new BasicOrder(this.Tank, targetRoad.Road));
+		const nextRoad = new TargetRoadProvider(this.Tank, this.Destination).GetTargetRoad();
+		if (this.HasNext(nextRoad)) {
+			if (this.IsNextBetter(nextRoad)) {
+				if (this.HasTarget(nextRoad.Target)) {
+					this.SetCurrentOrder(new TargetCellOrder(this.Tank, nextRoad.Target, this.GetChildOrder(nextRoad)));
+				} else {
+					this.SetCurrentOrder(new BasicOrder(this.Tank, nextRoad.Road));
+				}
+				this.OnPathFound.Invoke(this, nextRoad.Road);
 			}
-			this.OnPathFound.Invoke(this, targetRoad.Road);
 		} else {
 			this.SetCurrentOrder(new IdleOrder());
 		}
+	}
+
+	private HasNext(nextRoad: TargetRoad) {
+		return nextRoad && 0 < nextRoad.Road.length;
+	}
+
+	private IsNextBetter(nextRoad: TargetRoad): boolean {
+		if (this.CurrentOrder instanceof IdleOrder) {
+			return true;
+		}
+		const road = this.CurrentOrder.GetPath();
+		return !this.HasAccess(road) || nextRoad.Road.length + 1 < road.length;
+	}
+	private HasAccess(path: Cell[]): boolean {
+		return path.every((p) => TypeTranslator.IsAccessible(p, this.Tank));
 	}
 
 	private GetTarget(): AliveItem {

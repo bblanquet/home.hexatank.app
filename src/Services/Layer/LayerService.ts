@@ -22,10 +22,10 @@ export class LayerService implements ILayerService {
 		});
 		this._viewPort.on('zoomed', (e: any) => {
 			if (this._viewPort.scale.x < 0.7) {
-				this._viewPort.setZoom(0.7, true); //this._viewPort.center
+				this._viewPort.setZoom(0.7, true);
 				return;
 			} else if (this._viewPort.scale.x > 1.5) {
-				this._viewPort.setZoom(1.5, true); //this._viewPort.center
+				this._viewPort.setZoom(1.5, true);
 				return;
 			}
 		});
@@ -51,6 +51,13 @@ export class LayerService implements ILayerService {
 	}
 
 	Collect(): void {
+		this._viewPort.plugins.remove('drag');
+		this._viewPort.plugins.remove('zoom');
+		this._viewPort.plugins.remove('pinch');
+		this._viewPort.plugins.remove('wheel');
+		this._viewPort.plugins.remove('decelerate');
+		this._viewPort.removeAllListeners();
+		this._viewPort.destroy();
 		this._rendering.Clear();
 	}
 }

@@ -42,14 +42,16 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 	}
 
 	public ChangeEnergy(isUp: boolean): void {
-		const formerEnergy = this.Energy;
+		if (this.IsUpdatable) {
+			const formerEnergy = this.Energy;
 
-		this.Energy = isUp ? this.Energy + 1 : this.Energy - 1;
+			this.Energy = isUp ? this.Energy + 1 : this.Energy - 1;
 
-		if (this.Energy === 1 && formerEnergy === 0) {
-			this._animator = new BouncingScaleUpAnimator(this, this._bonus);
-		} else if (this.Energy === 0 && formerEnergy === 1) {
-			this._animator = new BouncingScaleDownAnimator(this, this._bonus);
+			if (this.Energy === 1 && formerEnergy === 0) {
+				this._animator = new BouncingScaleUpAnimator(this, this._bonus);
+			} else if (this.Energy === 0 && formerEnergy === 1) {
+				this._animator = new BouncingScaleDownAnimator(this, this._bonus);
+			}
 		}
 	}
 

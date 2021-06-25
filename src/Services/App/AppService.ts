@@ -64,7 +64,7 @@ export class AppService implements IAppService<GameBlueprint> {
 		this._keyService.DefineKey(this);
 
 		GameSettings.Init();
-		GameSettings.SetFastSpeed();
+		GameSettings.SetNormalSpeed();
 		this._context = mapContext;
 		this._updateService.Register();
 		this._app = this._appProvider.Provide(mapContext);

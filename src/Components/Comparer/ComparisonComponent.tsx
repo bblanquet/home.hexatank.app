@@ -42,7 +42,7 @@ export default class ComparisonComponent extends Component<{}, { Value: Comparis
 					<LineComparisonComponent />
 				</Visible>
 				<Visible isVisible={this.state.Value === ComparisonState.Logs}>
-					<LogComponent messages={this._compareService.GetLogs()} />
+					<LogComponent Messages={this._compareService.GetLogs()} />
 				</Visible>
 				<div class="container-center-horizontal">
 					<ButtonComponent callBack={() => route('{{sub_path}}Home', true)} color={ColorKind.Black}>

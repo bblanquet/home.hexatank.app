@@ -67,7 +67,7 @@ const App = (e: any) => {
 			/>
 			<SmPopupComponent path="{{sub_path}}SmPopup" points={10} status={GameStatus.Victory} />
 			<ComparisonComponent path="{{sub_path}}Comparison" />
-			<LogComponent path="{{sub_path}}Log" messages={Logs()} />
+			<LogComponent path="{{sub_path}}Log" Messages={Logs()} />
 		</Router>
 	);
 };

@@ -1,16 +1,12 @@
 import { h, Component } from 'preact';
 
-export default class TextComponent extends Component<
-	{ label: string; value: string; isEditable: boolean; onInput: (e: any) => void; max: number },
+export default class InputComponent extends Component<
+	{ type: string; label: string; value: string; isEditable: boolean; onInput: (e: any) => void; max: number },
 	{}
 > {
-	constructor() {
-		super();
-	}
-
 	render() {
 		return (
-			<div class="input-group mb-3">
+			<div class="input-group mb-3" style="padding-left:5px;padding-right:5px;">
 				<div class="input-group-prepend">
 					<span class="input-group-text black-primary custom-btn-layout-1" id="inputGroup-sizing-default">
 						{this.props.label}
@@ -18,7 +14,7 @@ export default class TextComponent extends Component<
 				</div>
 				<input
 					maxLength={this.props.max}
-					type="text"
+					type={this.props.type}
 					value={this.props.value}
 					onInput={(e: any) => this.props.onInput(e)}
 					disabled={!this.props.isEditable}

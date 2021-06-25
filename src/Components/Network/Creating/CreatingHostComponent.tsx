@@ -4,7 +4,7 @@ import * as toastr from 'toastr';
 import { CreatingHostState } from './CreatingHostState';
 import { PacketKind } from '../../../Network/Message/PacketKind';
 import MdPanelComponent from '../../Common/Panel/MdPanelComponent';
-import TextComponent from '../../Common/Text/TextComponent';
+import InputComponent from '../../Common/Text/TextComponent';
 import { Singletons, SingletonKey } from '../../../Singletons';
 import { IOnlineService } from '../../../Services/Online/IOnlineService';
 import Redirect from '../../Redirect/RedirectComponent';
@@ -109,17 +109,19 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 						/>
 					</div>
 
-					<TextComponent
+					<InputComponent
 						max={15}
 						value={this.state.PlayerName}
 						label={'Name'}
+						type={'text'}
 						isEditable={true}
 						onInput={(e: any) => {
 							this.setState({ PlayerName: (e.target.value as string).substring(0, 15) });
 						}}
 					/>
-					<TextComponent
+					<InputComponent
 						max={15}
+						type={'text'}
 						value={this.state.RoomName}
 						label={'Room name'}
 						isEditable={true}
@@ -129,8 +131,9 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 					/>
 					<div class="container-center-horizontal">
 						<Visible isVisible={this.state.HasPassword}>
-							<TextComponent
+							<InputComponent
 								max={15}
+								type={'text'}
 								value={this.state.Password}
 								label={'Password'}
 								isEditable={true}

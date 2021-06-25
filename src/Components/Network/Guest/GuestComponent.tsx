@@ -2,8 +2,8 @@ import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import * as toastr from 'toastr';
 import { PacketKind } from '../../../Network/Message/PacketKind';
-import TextComponent from '../../Common/Text/TextComponent';
-import IconTextComponent from '../../Common/Text/IconTextComponent';
+import InputComponent from '../../Common/Text/TextComponent';
+import IconInputComponent from '../../Common/Text/IconTextComponent';
 import SmPanelComponent from '../../Common/Panel/SmPanelComponent';
 import GridComponent from '../../Common/Grid/GridComponent';
 import SmButtonComponent from '../../Common/Button/Stylish/SmButtonComponent';
@@ -78,8 +78,9 @@ export default class GuestComponent extends Component<
 			<Redirect>
 				<SmPanelComponent>
 					<div class="container-center-horizontal">
-						<TextComponent
+						<InputComponent
 							max={15}
+							type={'text'}
 							value={this.state.PlayerName}
 							label={'Name'}
 							isEditable={true}
@@ -103,7 +104,8 @@ export default class GuestComponent extends Component<
 							<Icon Value="fas fa-random" />
 						</SmButtonComponent>
 					</div>
-					<IconTextComponent
+					<IconInputComponent
+						type={'text'}
 						value={this.state.filter}
 						icon={'fas fa-filter'}
 						isEditable={true}
@@ -119,7 +121,8 @@ export default class GuestComponent extends Component<
 							}
 						}}
 					/>
-					<IconTextComponent
+					<IconInputComponent
+						type={'text'}
 						value={this.state.Password}
 						icon={'fas fa-lock'}
 						isEditable={true}
@@ -259,14 +262,3 @@ export default class GuestComponent extends Component<
 		toastr['warning'](`Server doesn't seem to be running.`, 'WARNING', { iconClass: 'toast-red' });
 	}
 }
-
-// for (let index = 0; index < 100; index++) {
-// 	packet.Content.push(
-// 		new RoomInfo(
-// 			Usernames[Math.round(Math.random() * Usernames.length - 1)],
-// 			Math.round(Math.random() * 3),
-// 			Math.round(Math.random() * 2) > 1,
-// 			4
-// 		)
-// 	);
-// }

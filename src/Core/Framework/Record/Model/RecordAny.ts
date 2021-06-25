@@ -22,7 +22,7 @@ export class RecordAny {
 		});
 
 		const json = new RecordAny();
-		json.Title = `save_${new Date().toLocaleTimeString()}`;
+		json.Title = `${data.PlayerName}_${new Date().toLocaleTimeString()}`;
 		json.MapContext = data.MapContext;
 		json.StartDate = data.StartDate;
 		json.EndDate = data.EndDate;

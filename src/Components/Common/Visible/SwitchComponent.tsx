@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 
-export default class Side extends Component<{ isVisible: boolean; left: any; right: any }, any> {
+export default class Switch extends Component<{ isVisible: boolean; left: any; right: any }, any> {
 	constructor() {
 		super();
 	}

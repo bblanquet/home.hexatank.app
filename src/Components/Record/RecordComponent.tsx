@@ -18,6 +18,7 @@ import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilS
 import SmActiveButtonComponent from '../Common/Button/Stylish/SmActiveButtonComponent';
 import Visible from '../Common/Visible/VisibleComponent';
 import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
+import Switch from '../Common/Visible/SwitchComponent';
 
 export default class RecordComponent extends Component<
 	any,
@@ -72,7 +73,10 @@ export default class RecordComponent extends Component<
 		return (
 			<thead>
 				<tr class="d-flex">
-					<th>Records</th>
+					<th>
+						Last games {this.state.Records.filter((e) => e.Record.IsVictory).length} {this.VictoryIcon()} /{' '}
+						{this.state.Records.filter((e) => !e.Record.IsVictory).length} {this.DefeatIcon()}
+					</th>
 				</tr>
 			</thead>
 		);
@@ -116,13 +120,36 @@ export default class RecordComponent extends Component<
 									>
 										<Icon Value="fas fa-play-circle" />
 									</SmButtonComponent>
-									<div class="very-small-left-margin">{record.Record.Title} </div>
+									<div class="very-small-left-margin">
+										<Switch
+											isVisible={record.Record.IsVictory}
+											left={this.VictoryIcon()}
+											right={this.DefeatIcon()}
+										/>{' '}
+										{record.Record.Title}
+									</div>
 								</div>
 							</td>
 						</tr>
 					);
 				})}
 			</tbody>
+		);
+	}
+
+	private DefeatIcon(): any {
+		return (
+			<span style="color:#d93232">
+				<Icon Value={'fas fa-minus-square'} />
+			</span>
+		);
+	}
+
+	private VictoryIcon(): any {
+		return (
+			<span style="color:#8fe336">
+				<Icon Value={'fas fa-plus-square'} />
+			</span>
 		);
 	}
 
@@ -159,7 +186,7 @@ export default class RecordComponent extends Component<
 								}}
 								color={ColorKind.Red}
 							>
-								<Icon Value="fas fa-chart-line" />
+								<Icon Value="fas fa-not-equal" />
 							</ButtonComponent>
 						</Visible>
 					</div>

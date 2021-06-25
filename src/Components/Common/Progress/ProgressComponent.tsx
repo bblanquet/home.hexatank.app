@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 import { IPlayerProfilService } from '../../../Services/PlayerProfil/IPlayerProfilService';
 import { Singletons, SingletonKey } from '../../../Singletons';
-import Side from '../Visible/SideComponent';
+import Switch from '../Visible/SwitchComponent';
 
 export default class ProgressComponent extends Component<{ width: number; maxWidth: number }, { Percentage: number }> {
 	private _profilService: IPlayerProfilService;
@@ -41,7 +41,7 @@ export default class ProgressComponent extends Component<{ width: number; maxWid
 				>
 					{this._profilService.GetLevel()}
 				</div>
-				<Side
+				<Switch
 					isVisible={this.props.maxWidth === 0}
 					left={
 						<div class="progress" style={`width:100%;height:25px; border: 4px solid rgb(198, 198, 198)`}>

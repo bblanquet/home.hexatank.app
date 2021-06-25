@@ -10,11 +10,22 @@ import { ICompareService } from './ICompareService';
 export class CompareService implements ICompareService {
 	private _record: RecordContent;
 	private _compareRecord: RecordContent;
+	private _logs: LogMessage[];
 
 	Register(recordData: RecordContent, compareDate: RecordContent): void {
 		this._record = recordData;
 		this._compareRecord = compareDate;
+		this.SetData(this._record.PlayerName, this._record.Messages);
+		this.SetData(this._compareRecord.PlayerName, this._compareRecord.Messages);
+		this._logs = this._record.Messages.concat(this._compareRecord.Messages).sort((a, b) => a.Date - b.Date);
 	}
+	private SetData(author: string, messages: LogMessage[]) {
+		messages.forEach((m) => {
+			m.Author = author;
+			m.Date = m.Date - this._record.StartDate;
+		});
+	}
+
 	Publish(): RecordComparer {
 		const comparer = new RecordComparer(this._record, this._compareRecord);
 		return comparer;
@@ -29,9 +40,7 @@ export class CompareService implements ICompareService {
 	}
 
 	GetLogs(): LogMessage[] {
-		this._record.Messages.forEach((m) => (m.Author = this._record.PlayerName));
-		this._compareRecord.Messages.forEach((m) => (m.Author = this._compareRecord.PlayerName));
-		return this._record.Messages.concat(this._compareRecord.Messages).sort((a, b) => a.Date - b.Date);
+		return this._logs;
 	}
 
 	Collect(): void {}

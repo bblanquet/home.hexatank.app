@@ -56,7 +56,7 @@ export default class HomeComponent extends Component<any, any> {
 							]}
 						/>
 						<ButtonComponent color={ColorKind.Blue} callBack={() => this.ToRecord()}>
-							<Icon Value="fas fa-video" /> Record
+							<Icon Value="fas fa-user-circle" /> Profil
 						</ButtonComponent>
 						<ButtonComponent color={ColorKind.Black} callBack={() => this.ToBadge()}>
 							<Icon Value="fas fa-award" /> Badge

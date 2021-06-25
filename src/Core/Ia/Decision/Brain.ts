@@ -150,7 +150,6 @@ export class Brain implements IBrain {
 			});
 			this.IdleTanks.CalculateExcess(areas);
 			const requests = this.GetRequests(areas);
-			this.Log(requests);
 			if (requests.Any()) {
 				this._requestHandler.HandleRequests(requests);
 			}
@@ -171,25 +170,4 @@ export class Brain implements IBrain {
 		});
 		return requests;
 	}
-
-	private Log(requests: Groups<AreaRequest>) {
-		// const hCount = requests.Exist(RequestPriority.High) ? requests.Get(RequestPriority.High).length : 0;
-		// const hTypes = requests.Exist(RequestPriority.High)
-		// 	? requests.Get(RequestPriority.High).map((c) => c.RequestType)
-		// 	: '';
-		// const mCount = requests.Exist(RequestPriority.Medium) ? requests.Get(RequestPriority.Medium).length : 0;
-		// const mTypes = requests.Exist(RequestPriority.Medium)
-		// 	? requests.Get(RequestPriority.Medium).map((c) => c.RequestType)
-		// 	: '';
-		// console.log(
-		// 	`%c [MONEY] ${this.Hq.Identity.Name[this.Hq.Identity.Name.length - 1]} - ${this.Hq.GetAmount()}`,
-		// 	'font-weight:bold;color:#940c0c;'
-		// );
-		// console.log(`%c [H] ${hCount} ${hTypes.toString()} `, 'font-weight:bold;color:#94570c;');
-		// console.log(`%c [M] ${mCount} ${mTypes.toString()} `, 'font-weight:bold;color:#94770c;');
-		// console.log(`%c ----------------------- `, 'font-weight:bold;color:#94770c;');
-	}
 }
-
-// const mCount = requests.Exist(RequestPriority.Medium) ? requests.Get(RequestPriority.Medium).length : 0;
-// const lCount = requests.Exist(RequestPriority.Low) ? requests.Get(RequestPriority.Low).length : 0;

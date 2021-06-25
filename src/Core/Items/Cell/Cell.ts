@@ -28,6 +28,8 @@ import { InfiniteFadeAnimation } from '../Animator/InfiniteFadeAnimation';
 import { BasicItem } from '../BasicItem';
 import { IHeadquarter } from './Field/Hq/IHeadquarter';
 import { TypeTranslator } from './Field/TypeTranslator';
+import { StaticLogger } from '../../Utils/Logger/StaticLogger';
+import { LogKind } from '../../Utils/Logger/LogKind';
 
 export class Cell extends Item implements ICell<Cell>, ISelectable {
 	private _selectionCircle: PIXI.Circle;
@@ -448,11 +450,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 		var isSelected = this._selectionCircle.contains(context.Point.x, context.Point.y);
 		if (isSelected) {
-			// console.log(`%c Q:${this.GetHexCoo().Q} R:${this.GetHexCoo().R}`, 'color:blue;font-weight:bold;');
-			// console.log(
-			// 	`%c X:${this.GetHexCoo().ToOffset().M} Y:${this.GetHexCoo().ToOffset().N}`,
-			// 	'color:red;font-weight:bold;'
-			// );
+			StaticLogger.Log(LogKind.info, `Q:${this.GetHexCoo().Q} R:${this.GetHexCoo().R}`);
 			context.OnSelect(this);
 		}
 		return false;

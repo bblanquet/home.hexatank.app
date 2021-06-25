@@ -44,7 +44,6 @@ export class TargetCellOrder extends ParentOrder {
 
 	public Update(): void {
 		if (!this.GetTarget()) {
-			console.log('target destroyed');
 			this.SetState(OrderState.Passed);
 			return;
 		}

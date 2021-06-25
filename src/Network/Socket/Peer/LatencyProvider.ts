@@ -1,5 +1,8 @@
 import * as moment from 'moment';
+import { LogKind } from '../../../Core/Utils/Logger/LogKind';
+import { StaticLogger } from '../../../Core/Utils/Logger/StaticLogger';
 import { INetworkMessage } from '../../Message/INetworkMessage';
+import { PacketKind } from '../../Message/PacketKind';
 import { PingData } from './Ping/PingData';
 export class LatencyProvider {
 	private _shortestLatency: number | null = null;
@@ -32,7 +35,10 @@ export class LatencyProvider {
 			}
 			const now = new Date().getTime();
 			const messageLatency = moment.duration(now - deviceRefEmittedDate);
-			//console.log(`Message Latency ${moment.utc(messageLatency.asMilliseconds()).format('HH:mm:ss.SSS')}`);
+			StaticLogger.Log(
+				LogKind.info,
+				`Message Latency ${moment.utc(messageLatency.asMilliseconds()).format('HH:mm:ss.SSS')}`
+			);
 			return messageLatency.asMilliseconds();
 		}
 		return 0;

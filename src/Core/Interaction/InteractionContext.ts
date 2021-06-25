@@ -148,7 +148,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 		context.InteractionKind = this.Kind;
 		context.Point = this.Point;
 
-		StaticLogger.Log(LogKind.info, `%c TRIGGER ${InteractionKind[this.Kind]}`);
+		StaticLogger.Log(LogKind.info, `TRIGGER ${InteractionKind[this.Kind]}`);
 
 		this._combinations.some((combination) => {
 			if (combination.Combine(context)) {

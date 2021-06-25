@@ -13,6 +13,8 @@ import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
 import { ConnectionKind } from '../../ConnectionKind';
 import { ProtocolKind } from '../../Message/ProtocolKind';
 import { RtcPeer } from './Rtc/RtcPeer';
+import { StaticLogger } from '../../../Core/Utils/Logger/StaticLogger';
+import { LogKind } from '../../../Core/Utils/Logger/LogKind';
 
 export class PeerSocket implements IPeerSocket {
 	private _seqNum: number = 0;
@@ -74,18 +76,18 @@ export class PeerSocket implements IPeerSocket {
 
 	protected ReceivePacket(packet: NetworkMessage<any>): void {
 		if (!this.IsPing(packet.Kind)) {
-			// console.log(
-			// 	`%c [${packet.Emitter}] > ${this._rtcPeer.GetOwner()}] ${PacketKind[packet.Kind]} <<<`,
-			// 	'color:#ff7373;'
-			// );
+			StaticLogger.Log(
+				LogKind.info,
+				`[${packet.Emitter}] > ${this._rtcPeer.GetOwner()}] ${PacketKind[packet.Kind]} <<<`
+			);
 		}
 		if (packet.Protocol === ProtocolKind.Tcp && packet.IsAck) {
-			// console.log(
-			// 	`%c [${packet.Emitter}] > ${this._rtcPeer.GetOwner()}] ${PacketKind[
-			// 		packet.Kind
-			// 	]} [ACK] [${packet.SeqNum}]<<<`,
-			// 	'color:#581087;'
-			// );
+			StaticLogger.Log(
+				LogKind.info,
+				`[${packet.Emitter}] > ${this._rtcPeer.GetOwner()}] ${PacketKind[
+					packet.Kind
+				]} [ACK] [${packet.SeqNum}]<<<`
+			);
 			return;
 		}
 

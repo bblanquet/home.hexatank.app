@@ -5,11 +5,14 @@ import { MapObserver } from '../MapObserver';
 import { Brain } from '../Brain';
 import { CellHelper } from '../../../Items/Cell/CellHelper';
 import { TargetMonitoredOrder } from '../../Order/TargetMonitoredOrder';
+import * as moment from 'moment';
+import { LogKind } from '../../../Utils/Logger/LogKind';
+import { StaticLogger } from '../../../Utils/Logger/StaticLogger';
 
 export class Squad implements IDoable {
 	private _tanks: Tank[] = new Array<Tank>();
 	private _mainTarget: ISquadTarget;
-	public constructor(private _mapObserver: MapObserver, private _brain: Brain) { }
+	public constructor(private _mapObserver: MapObserver, private _brain: Brain) {}
 
 	public AddTank(tank: Tank): void {
 		this._tanks.push(tank);
@@ -71,7 +74,7 @@ export class Squad implements IDoable {
 		this._mainTarget = this._mapObserver.GetShortestFoe(this._brain.Hq.GetCell());
 		const hasTarget = this._mainTarget !== null;
 		if (!hasTarget) {
-			console.log('could not find target');
+			StaticLogger.Log(LogKind.error, `could not find target`);
 		}
 		return hasTarget;
 	}

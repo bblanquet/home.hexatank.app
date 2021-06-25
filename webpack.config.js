@@ -7,11 +7,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const fs = require('fs');
 
 module.exports = (env) => {
-	var vpath = './configuration/' + env.NODE_ENV + '.json';
-	console.log('ENV: ' + env.NODE_ENV);
-	console.log('ENV PATH: ' + vpath);
-	var variables = JSON.parse(fs.readFileSync(vpath));
-	console.log('variables: ' + JSON.stringify(variables));
+	var variables = Variables(env);
 	// Entry point : first executed file
 	// This may be an array. It will result in many output files.
 	return {
@@ -82,3 +78,11 @@ module.exports = (env) => {
 		]
 	};
 };
+function Variables(env) {
+	var vpath = './configuration/' + env.NODE_ENV + '.json';
+	console.log('ENV: ' + env.NODE_ENV);
+	console.log('ENV PATH: ' + vpath);
+	var variables = JSON.parse(fs.readFileSync(vpath));
+	console.log('variables: ' + JSON.stringify(variables));
+	return variables;
+}

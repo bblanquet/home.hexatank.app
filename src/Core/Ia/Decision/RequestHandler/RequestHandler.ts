@@ -2,6 +2,8 @@ import { ISimpleRequestHandler } from './ISimpleRequestHandler';
 import { Groups } from '../../../Utils/Collections/Groups';
 import { IRequestHandler } from './IRequestHandler';
 import { AreaRequest } from '../Utils/AreaRequest';
+import { StaticLogger } from '../../../Utils/Logger/StaticLogger';
+import { LogKind } from '../../../Utils/Logger/LogKind';
 
 export class RequestHandler implements IRequestHandler {
 	constructor(private _handlers: Groups<ISimpleRequestHandler>) {}
@@ -17,7 +19,7 @@ export class RequestHandler implements IRequestHandler {
 
 				const handler = this._handlers.Get(request.Priority).find((d) => d.Type() === request.RequestType);
 				if (!handler) {
-					console.log(`could not find ${request.RequestType} ${request.Priority}`);
+					StaticLogger.Log(LogKind.error, `could not find ${request.RequestType} ${request.Priority}`);
 				}
 				handler.Handle(request);
 			});

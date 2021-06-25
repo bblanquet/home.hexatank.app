@@ -16,6 +16,8 @@ import { BasicField } from '../../../Items/Cell/Field/BasicField';
 import { AStarEngine } from '../../AStarEngine';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 import { TypeTranslator } from '../../../Items/Cell/Field/TypeTranslator';
+import { LogKind } from '../../../Utils/Logger/LogKind';
+import { StaticLogger } from '../../../Utils/Logger/StaticLogger';
 
 export class AreaDecisionMaker implements IAreaDecisionMaker {
 	public HasReceivedRequest: boolean;
@@ -53,8 +55,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 
 			//#2 get enemies cells
 			const foeCells = this.GetFoeVehicleCells(areas, ally);
-
-			//console.log(`%c [DETECTED FOE] ${foeCells.length}`, 'font-weight:bold;color:blue;');
+			StaticLogger.Log(LogKind.info, `[DETECTED FOE] ${foeCells.length}`);
 
 			this.FireCell();
 			this.SendTroops(foeCells, ally);
@@ -87,7 +88,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 		//#3 get enemy contact cells
 		const aroundFoeCells = this.GetAroundFoeCells(foeCells);
 
-		//console.log(`%c [FREE FOE CELL] ${Object.keys(aroundFoeCells).length}`, 'font-weight:bold;color:red;');
+		StaticLogger.Log(LogKind.info, `[FREE FOE CELL] ${Object.keys(aroundFoeCells).length}`);
 
 		//#4 classify cell dangerous
 		const cellsByDanger = this.ClassifyCellDanger(aroundFoeCells, ally);
@@ -269,13 +270,13 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 	}
 
 	private LogOrder(troopSituation: TroopRoads) {
-		// console.log(
-		// 	`%c tank get order to go to ${troopSituation.CurrentDestination.Destination.Coo()}`,
-		// 	'font-weight:bold;color:red;'
-		// );
+		StaticLogger.Log(
+			LogKind.info,
+			`tank get order to go to ${troopSituation.CurrentDestination.Destination.Coo()}`
+		);
 	}
 
 	private LogTroopCount() {
-		// console.log(`%c [ALERT] troops count ${this.Area.GetTroops().length}`, 'font-weight:bold;color:red;');
+		StaticLogger.Log(LogKind.info, `[ALERT] troops count ${this.Area.GetTroops().length}`);
 	}
 }

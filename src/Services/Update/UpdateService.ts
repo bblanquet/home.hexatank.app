@@ -2,6 +2,8 @@ import { GameContext } from '../../Core/Setup/Context/GameContext';
 import { ItemsUpdater } from '../../Core/ItemsUpdater';
 import { IUpdateService } from './IUpdateService';
 import { route } from 'preact-router';
+import { StaticLogger } from '../../Core/Utils/Logger/StaticLogger';
+import { LogKind } from '../../Core/Utils/Logger/LogKind';
 
 export class UpdateService implements IUpdateService {
 	private _itemsUpdater: ItemsUpdater;
@@ -24,7 +26,7 @@ export class UpdateService implements IUpdateService {
 				item.Destroy();
 				item = null;
 			} catch (error) {
-				console.log(error);
+				StaticLogger.Log(LogKind.error, error);
 			}
 		});
 		this._itemsUpdater.Items = [];

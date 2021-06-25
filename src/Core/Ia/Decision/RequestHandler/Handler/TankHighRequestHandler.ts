@@ -14,7 +14,6 @@ export class TankHighRequestHandler implements ISimpleRequestHandler {
 		return RequestType.Tank;
 	}
 	Handle(request: AreaRequest): void {
-		// console.log(`%c [H TANK] `, 'font-weight:bold;color:blue;');
 		var troopAreas = this.GetReinforcement(request);
 
 		troopAreas.forEach((area) => {
@@ -22,7 +21,6 @@ export class TankHighRequestHandler implements ISimpleRequestHandler {
 				if (request.RequestCount === 0) {
 					return;
 				}
-				// console.log('reinforce');
 				if (!this.Assign(request, () => area.DropTroop())) {
 					return;
 				}

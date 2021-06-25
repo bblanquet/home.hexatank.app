@@ -6,7 +6,7 @@ import { LogKind } from './LogKind';
 export class StaticLogger {
 	private static _messages: string[] = [];
 	private static Anonymous: string = 'anonymous';
-	private static _excludes: string[] = [ 'Interac', StaticLogger.Anonymous ];
+	private static _excludes: string[] = [ 'Interac', StaticLogger.Anonymous, 'LatencyProvider' ];
 
 	private static _colors: Dictionnary<string> = Dictionnary.New([
 		{ key: LogKind[LogKind.none], value: '#000000' },

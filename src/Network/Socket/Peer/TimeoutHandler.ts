@@ -2,6 +2,8 @@ import { PeerContext } from './PeerContext';
 import { ServerPinger } from './Ping/ServerPinger';
 import { RtcPeer } from './Rtc/RtcPeer';
 import { PacketKind } from '../../Message/PacketKind';
+import { StaticLogger } from '../../../Core/Utils/Logger/StaticLogger';
+import { LogKind } from '../../../Core/Utils/Logger/LogKind';
 
 export class TimeoutPeerHandler {
 	private _servPinger: ServerPinger;
@@ -17,7 +19,7 @@ export class TimeoutPeerHandler {
 
 	protected TimeOut(): void {
 		if (!this._peer.IsConnected() && !this._peer.IsShutdown()) {
-			console.log(`Timeout ${this._context.Owner} <> ${this._context.Recipient}`);
+			StaticLogger.Log(LogKind.warning, `Timeout ${this._context.Owner} <> ${this._context.Recipient}`);
 			this._servPinger.Start();
 		}
 	}
@@ -31,7 +33,7 @@ export class TimeoutPeerHandler {
 
 	private HandlePingReceived(obj: any, data: number): void {
 		if (!this._peer.IsConnected()) {
-			console.log(`RESET ${this._context.Owner} <> ${this._context.Recipient}`);
+			StaticLogger.Log(LogKind.warning, `RESET ${this._context.Owner} <> ${this._context.Recipient}`);
 			const message = this._context.GetTemplate<any>(PacketKind.Reset);
 			this._context.ServerSocket.Emit(message);
 			this._peer.ShutDown();

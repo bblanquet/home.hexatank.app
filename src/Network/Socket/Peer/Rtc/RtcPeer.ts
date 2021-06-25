@@ -6,6 +6,8 @@ import { INetworkMessage } from '../../../Message/INetworkMessage';
 import { NetworkMessage } from '../../../Message/NetworkMessage';
 import { PacketKind } from '../../../Message/PacketKind';
 import { isNullOrUndefined } from '../../../../Core/Utils/ToolBox';
+import { LogKind } from '../../../../Core/Utils/Logger/LogKind';
+import { StaticLogger } from '../../../../Core/Utils/Logger/StaticLogger';
 
 //ice:
 //it is the location of the peer (interaction connectivity establishment)
@@ -51,7 +53,7 @@ export abstract class RtcPeer {
 		return new RTCPeerConnection({
 			iceServers: [
 				{
-					urls: ['stun:stun.l.google.com:19302', 'stun:stun.2talk.co.nz:3478']
+					urls: [ 'stun:stun.l.google.com:19302', 'stun:stun.2talk.co.nz:3478' ]
 				}
 			]
 		});
@@ -89,7 +91,7 @@ export abstract class RtcPeer {
 					this.Context.ServerSocket.Emit(message);
 				}
 			} catch (error) {
-				console.log(error);
+				StaticLogger.Log(LogKind.error, error);
 			}
 		}
 	}
@@ -111,7 +113,7 @@ export abstract class RtcPeer {
 			try {
 				this.Channel.send(JSON.stringify(message));
 			} catch (error) {
-				console.log(error);
+				StaticLogger.Log(LogKind.error, error);
 			}
 		}
 	}

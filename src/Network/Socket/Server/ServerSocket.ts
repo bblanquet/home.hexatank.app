@@ -5,6 +5,8 @@ import { IServerSocket } from './IServerSocket';
 import * as io from 'socket.io-client';
 import { INetworkMessage } from '../../Message/INetworkMessage';
 import { NetworkObserver } from '../../../Core/Utils/Events/NetworkObserver';
+import { StaticLogger } from '../../../Core/Utils/Logger/StaticLogger';
+import { LogKind } from '../../../Core/Utils/Logger/LogKind';
 
 export class ServerSocket implements IServerSocket {
 	private _socket: SocketIOClient.Socket;
@@ -28,19 +30,19 @@ export class ServerSocket implements IServerSocket {
 			} else {
 				this._obs.Add(key, [ observer ]);
 				this._socket.on(key, (payload: NetworkMessage<any>) => {
-					console.log(`[RECEIVED] [${key}] [${payload ? payload.Emitter : 'undefined'}]`);
+					StaticLogger.Log(LogKind.info, `[RECEIVED] [${key}] [${payload ? payload.Emitter : 'undefined'}]`);
 					this._obs.Get(key).forEach((obs) => {
 						obs.Handler(payload);
 					});
 				});
 			}
-			console.log(`[ADDED OBS] ${key}`);
+			StaticLogger.Log(LogKind.info, `[ADDED OBS] ${key}`);
 		});
 	}
 
 	Off(obsList: NetworkObserver[] = []): void {
 		if (this.IsClear(obsList)) {
-			console.log(`[REMOVED ALL OBS]`);
+			StaticLogger.Log(LogKind.info, '[REMOVED ALL OBS]');
 			this._obs.Keys().forEach((obsKey) => {
 				this._socket.off(obsKey);
 				this._obs.Remove(obsKey);
@@ -55,9 +57,9 @@ export class ServerSocket implements IServerSocket {
 						this._socket.off(PacketKind[obs.Value]);
 						this._obs.Remove(PacketKind[obs.Value]);
 					}
-					console.log(`[REMOVED OBS] ${PacketKind[obs.Value]}`);
+					StaticLogger.Log(LogKind.info, `[REMOVED OBS] ${PacketKind[obs.Value]}`);
 				} else {
-					console.log(`[TRY TO REMOVE UNEXISTING OBS] ${PacketKind[obs.Value]}`);
+					StaticLogger.Log(LogKind.info, `[TRY TO REMOVE UNEXISTING OBS] ${PacketKind[obs.Value]}`);
 				}
 			});
 		}
@@ -68,7 +70,10 @@ export class ServerSocket implements IServerSocket {
 	}
 
 	Emit(packet: INetworkMessage): void {
-		console.log(`[SENT] [${PacketKind[packet.Kind]}] [${packet.RoomName}] [${packet.Recipient}]`);
+		StaticLogger.Log(
+			LogKind.info,
+			`[SENT] [${PacketKind[packet.Kind]}] [${packet.RoomName}] [${packet.Recipient}]`
+		);
 		this._socket.emit(PacketKind[packet.Kind], packet);
 	}
 	Close(): void {

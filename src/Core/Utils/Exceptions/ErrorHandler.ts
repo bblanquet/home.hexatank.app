@@ -29,9 +29,7 @@ export class ErrorHandler {
 
 	public static Throw(error: Error): void {
 		this.Log(error);
-		if (!Env.IsPrd()) {
-			Singletons.Load<IAnalyzeService>(SingletonKey.Analyze).Analyze('exception', error);
-		}
+		this.Record(error);
 		throw error;
 	}
 
@@ -39,9 +37,7 @@ export class ErrorHandler {
 		if (obj === undefined || obj === null) {
 			const error = new Error('null exception');
 			this.Log(error);
-			if (Env.IsPrd()) {
-				Singletons.Load<IAnalyzeService>(SingletonKey.Analyze).Analyze('exception', error);
-			}
+			this.Record(error);
 			throw error;
 		}
 	}
@@ -50,10 +46,14 @@ export class ErrorHandler {
 		if (obj === undefined || obj === null || obj.length === 0) {
 			const error = new Error('null/empty exception');
 			this.Log(error);
-			if (Env.IsPrd()) {
-				Singletons.Load<IAnalyzeService>(SingletonKey.Analyze).Analyze('exception', error);
-			}
+			this.Record(error);
 			throw error;
+		}
+	}
+
+	private static Record(error: Error) {
+		if (Env.IsPrd()) {
+			Singletons.Load<IAnalyzeService>(SingletonKey.Analyze).Event('exception', error);
 		}
 	}
 

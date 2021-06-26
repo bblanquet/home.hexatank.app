@@ -12,7 +12,7 @@ export default class Analyze extends Component<any, any> {
 
 	componentDidMount() {
 		if (this.props) {
-			this._analyzerService.Analyze('page');
+			this._analyzerService.Page();
 		}
 	}
 

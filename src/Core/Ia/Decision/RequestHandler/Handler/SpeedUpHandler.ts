@@ -9,7 +9,7 @@ export class SpeedUpHandler implements ISimpleRequestHandler {
 		const cell = request.Area.GetSpot().GetCells().find((e) => e.GetField() instanceof ReactorField);
 		if (cell) {
 			const reactor = cell.GetField() as ReactorField;
-			reactor.Overlock(new SpeedFieldMenuItem());
+			reactor.Overclock(new SpeedFieldMenuItem());
 		}
 	}
 

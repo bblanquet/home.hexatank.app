@@ -16,7 +16,7 @@ export class PowerDownCombination extends AbstractSingleCombination {
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
 			let field = <ReactorField>context.Items[0];
-			field.PowerDown();
+			field.EnergyDown();
 			context.Items.splice(1, 1);
 			return true;
 		}

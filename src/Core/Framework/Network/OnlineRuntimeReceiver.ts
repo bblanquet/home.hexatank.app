@@ -13,16 +13,13 @@ import { ISocketWrapper } from '../../../Network/Socket/INetworkSocket';
 import { PacketKind } from '../../../Network/Message/PacketKind';
 import { NetworkObserver } from '../../Utils/Events/NetworkObserver';
 import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
-import { VehiclePacket } from './Packets/CreatingUnitPacket';
-import { FieldPacket } from './Packets/FieldPacket';
-import { NextCellPacket } from './Packets/NextCellPacket';
-import { EnergyPacket } from './Packets/PowerFieldPacket';
-import { TargetPacket } from './Packets/TargetPacket';
-import { OverlockedPacket } from './Packets/OverlockedPacket';
+import { NextCellContent } from './Contents/NextCellContent';
+import { TargetContent } from './Contents/TargetContent';
 import { LatencyCondition } from '../../Items/Unit/PowerUp/Condition/LatencyCondition';
 import { StaticLogger } from '../../Utils/Logger/StaticLogger';
 import { LogKind } from '../../Utils/Logger/LogKind';
 import { ItemsUpdater } from '../../ItemsUpdater';
+import { PacketContent } from './Contents/PacketContent';
 
 export class OnlineRuntimeReceiver {
 	private _obs: NetworkObserver[];
@@ -36,7 +33,7 @@ export class OnlineRuntimeReceiver {
 			new NetworkObserver(PacketKind.FieldChanged, this.HandleChangedField.bind(this)),
 			new NetworkObserver(PacketKind.FieldDestroyed, this.HandleDestroyedField.bind(this)),
 			new NetworkObserver(PacketKind.PowerChanged, this.HandleEnergyChanged.bind(this)),
-			new NetworkObserver(PacketKind.Overlocked, this.HandleOverlocked.bind(this))
+			new NetworkObserver(PacketKind.Overclocked, this.HandleOverlocked.bind(this))
 		];
 		this._obs.forEach((ob) => {
 			this._socket.OnReceived.On(ob);
@@ -49,88 +46,95 @@ export class OnlineRuntimeReceiver {
 		});
 	}
 
-	private IsListened(name: string): boolean {
-		const hq = this._context.GetHqFromId(new Identity(name, null, null));
+	private GetId(id: string): Identity {
+		return new Identity(id, null, null);
+	}
+
+	private IsEmitingHq(name: string): boolean {
+		const hq = this._context.GetHqFromId(this.GetId(name));
 		return hq && hq.Identity.Name !== this._context.GetPlayerHq().Identity.Name && !hq.IsIa();
 	}
 
-	private HandleVehicleDestroyed(message: NetworkMessage<VehiclePacket>): void {
-		const vehicle = this._context.GetVehicle(message.Content.Id);
+	private HandleVehicleDestroyed(message: NetworkMessage<PacketContent<any>>): void {
+		const vehicle = this._context.GetVehicle(message.Content.VId);
 		if (vehicle.IsAlive()) {
 			vehicle.SetCurrentLife(0);
+			StaticLogger.Log(LogKind.info, `[DESTROY] ${message.Content.VId}`);
 		}
 	}
 
-	private HandleVehicleCreated(message: NetworkMessage<VehiclePacket>): void {
-		const packet = message.Content;
-		if (this.IsListened(packet.HqName)) {
-			if (!this._context.ExistUnit(packet.Id)) {
-				const hq = this._context.GetHqFromId(new Identity(packet.HqName, null, null));
-				const pos = this._context.GetCell(packet.Coo);
-				if (packet.Kind === 'Tank') {
-					hq.CreateTank(pos);
-				} else if (packet.Kind === 'Truck') {
-					hq.CreateTruck(pos);
+	private HandleVehicleCreated(message: NetworkMessage<PacketContent<any>>): void {
+		if (this.IsEmitingHq(message.Content.Id)) {
+			if (!this._context.ExistUnit(message.Content.VId)) {
+				const hq = this._context.GetHqFromId(this.GetId(message.Content.Id));
+				const coo = this._context.GetCell(message.Content.CId);
+				if (message.Content.Type === 'Tank') {
+					hq.CreateTank(coo);
+				} else if (message.Content.Type === 'Truck') {
+					hq.CreateTruck(coo);
 				}
+			} else {
+				StaticLogger.Log(LogKind.error, `[CONSISTENCY] ${message.Content.VId} already exists`);
 			}
 		}
 	}
 
-	private HandleTarget(message: NetworkMessage<TargetPacket>): void {
+	private HandleTarget(message: NetworkMessage<PacketContent<TargetContent>>): void {
 		const content = message.Content;
-		const tank = this._context.GetTank(content.Id);
-		const hq = this._context.GetHqFromId(tank.Identity);
-		if (this.IsListened(hq.Identity.Name)) {
-			if (content.HasTarget && content.TagertCoo) {
-				const cell = this._context.GetCell(content.TagertCoo);
+		const tank = this._context.GetTank(content.VId);
+		if (this.IsEmitingHq(message.Content.Id)) {
+			if (content.Extra.HasTarget && content.Extra.TargetCId) {
+				const cell = this._context.GetCell(content.Extra.TargetCId);
 				tank.SetMainTarget(cell.GetShootableEntity());
 			} else {
 				tank.SetMainTarget(null);
 			}
+			StaticLogger.Log(LogKind.info, `[TARGET] ${message.Content.VId}`);
 		}
 	}
 
 	private HandleCamouflage(message: NetworkMessage<string>): void {
 		const unit = this._context.GetTank(message.Content);
 		const hq = this._context.GetHqFromId(unit.Identity);
-		if (this.IsListened(hq.Identity.Name)) {
+		if (this.IsEmitingHq(hq.Identity.Name)) {
 			unit.SetCamouflage();
+			StaticLogger.Log(LogKind.info, `[CAMOUFLAGE] ${unit.Id}`);
 		}
 	}
 
-	private HandlePathChanged(message: NetworkMessage<NextCellPacket>): void {
+	private HandlePathChanged(message: NetworkMessage<PacketContent<NextCellContent>>): void {
 		const latency = message.Latency + Math.round(ItemsUpdater.UpdateSpan / 2);
-		const vehicleId = message.Content.Id;
-		const vehicle = this._context.GetVehicle(vehicleId);
+		const vId = message.Content.VId;
+		const vehicle = this._context.GetVehicle(vId);
 		const hq = this._context.GetHqFromId(vehicle.Identity);
 
-		if (this.IsListened(hq.Identity.Name)) {
-			const dic = this._context.GetCellDictionary();
-			const path = message.Content.Path.map((coo) => dic.Get(coo));
+		if (this.IsEmitingHq(hq.Identity.Name)) {
+			const cells = this._context.GetCellDictionary();
+			const path = message.Content.Extra.Path.map((coo) => cells.Get(coo));
 			if (0 < path.length) {
 				if (
-					(vehicle.GetCurrentCell().Coo() === message.Content.CC &&
-						this.IsNextCellEqualed(vehicle, message.Content.NC)) ||
-					vehicle.GetCurrentCell().Coo() === message.Content.NC
+					(vehicle.GetCurrentCell().Coo() === message.Content.CId &&
+						this.IsNextCellEqualed(vehicle, message.Content.Extra.NextCId)) ||
+					vehicle.GetCurrentCell().Coo() === message.Content.Extra.NextCId
 				) {
 					const order = new BasicOrder(vehicle, path);
 					vehicle.GiveOrder(order);
 					this.LatencyCompensation(latency, vehicle, order, path);
-					StaticLogger.Log(LogKind.info, `${vehicleId} ORDER ${latency}ms`);
+					StaticLogger.Log(LogKind.info, `[ORDER] ${vId} ${latency}ms`);
 				} else if (
-					vehicle.GetCurrentCell().Coo() === message.Content.CC &&
-					!this.IsNextCellEqualed(vehicle, message.Content.NC)
+					vehicle.GetCurrentCell().Coo() === message.Content.CId &&
+					!this.IsNextCellEqualed(vehicle, message.Content.Extra.NextCId)
 				) {
 					const order = new BasicOrder(vehicle, path);
 					vehicle.ForceCancel(order);
 					this.LatencyCompensation(latency, vehicle, order, path);
-					StaticLogger.Log(LogKind.warning, `[FORCE CANCEL] ${vehicleId} ORDER ${latency}ms`);
-				} else if (vehicle.GetCurrentCell().Coo() !== message.Content.CC) {
-					const cell = dic.Get(message.Content.CC);
+					StaticLogger.Log(LogKind.warning, `[FORCE ORDER] ${vId} ${latency}ms`);
+				} else if (vehicle.GetCurrentCell().Coo() !== message.Content.CId) {
+					const cell = cells.Get(message.Content.CId);
 					const order = new BasicOrder(vehicle, path);
 					vehicle.ForceCell(cell, order);
 					this.LatencyCompensation(latency, vehicle, order, path);
-					StaticLogger.Log(LogKind.dangerous, `[FORCE CELL] ${vehicleId} ORDER ${latency}ms`);
+					StaticLogger.Log(LogKind.dangerous, `[FORCE CELL ORDER] ${vId} ${latency}ms`);
 				}
 			}
 		}
@@ -156,46 +160,48 @@ export class OnlineRuntimeReceiver {
 			const blockingField = field as BlockingField;
 			if (blockingField.IsAlive()) {
 				blockingField.Destroy();
+				StaticLogger.Log(LogKind.info, `[DESTROY] ${message.Content}`);
 			}
 		}
 	}
 
-	private HandleChangedField(message: NetworkMessage<FieldPacket>): void {
+	private HandleChangedField(message: NetworkMessage<PacketContent<any>>): void {
 		if (message.Content.Type === 'BasicField') {
 			return;
 		}
-		const cell = this._context.GetCell(message.Content.Coo);
+		const cell = this._context.GetCell(message.Content.CId);
 		const hq = this.GetHq(message);
-		if (this.IsListened(hq.Identity.Name)) {
+		if (this.IsEmitingHq(hq.Identity.Name)) {
 			const field = FieldTypeHelper.CreateField(message.Content.Type, cell, hq, this._context);
+			StaticLogger.Log(LogKind.info, `[CREATE] ${message.Content.CId} ${message.Content.Type}`);
 		}
 	}
 
-	private GetHq(message: NetworkMessage<FieldPacket>) {
-		return isNullOrUndefined(message.Content.IdentityName)
-			? null
-			: this._context.GetHqFromId(new Identity(message.Content.IdentityName, null, null));
+	private GetHq(message: NetworkMessage<PacketContent<any>>) {
+		return message.Content.Id ? this._context.GetHqFromId(this.GetId(message.Content.Id)) : null;
 	}
 
-	private HandleEnergyChanged(message: NetworkMessage<EnergyPacket>): void {
-		const cell = this._context.GetCell(message.Content.Coo);
+	private HandleEnergyChanged(message: NetworkMessage<PacketContent<boolean>>): void {
 		const hq = this.GetHq(message);
-		if (this.IsListened(hq.Identity.Name)) {
+		if (this.IsEmitingHq(hq.Identity.Name)) {
+			const cell = this._context.GetCell(message.Content.CId);
 			const reactor = cell.GetField() as ReactorField;
-			if (message.Content.IsEnergyUp) {
-				reactor.PowerUp();
+			if (message.Content.Extra) {
+				reactor.EnergyUp();
 			} else {
-				reactor.PowerDown();
+				reactor.EnergyDown();
 			}
+			StaticLogger.Log(LogKind.info, `[ENERGY] ${message.Content.CId} ${message.Content.Type}`);
 		}
 	}
 
-	private HandleOverlocked(message: NetworkMessage<OverlockedPacket>): void {
-		const cell = this._context.GetCell(message.Content.Coo);
+	private HandleOverlocked(message: NetworkMessage<PacketContent<string>>): void {
 		const hq = this.GetHq(message);
-		if (this.IsListened(hq.Identity.Name)) {
+		if (this.IsEmitingHq(hq.Identity.Name)) {
+			const cell = this._context.GetCell(message.Content.CId);
 			const reactor = cell.GetField() as ReactorField;
-			reactor.Overlock(TypeTranslator.GetPowerUp(message.Content.PowerUp));
+			reactor.Overclock(TypeTranslator.GetPowerUp(message.Content.Extra));
+			StaticLogger.Log(LogKind.info, `[OVERCLOCK] ${message.Content.CId} ${message.Content.Type}`);
 		}
 	}
 }

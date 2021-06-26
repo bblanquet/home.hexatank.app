@@ -157,7 +157,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		}
 	}
 
-	public Overlock(type: any): void {
+	public Overclock(type: any): void {
 		if (!this._isLocked) {
 			this.OnOverlocked.Invoke(this, this.GetPowerUp(type));
 			this.StartOverclockAnimation();
@@ -308,7 +308,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		return result;
 	}
 
-	public PowerUp(): void {
+	public EnergyUp(): void {
 		const formerEnergy = this.Reserve.GetUsedPower();
 		this.Reserve.High();
 
@@ -321,7 +321,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		return this.Reserve.GetUsedPower();
 	}
 
-	public PowerDown(): void {
+	public EnergyDown(): void {
 		if (0 < this.Reserve.GetUsedPower()) {
 			this.Reserve.Low();
 			if (this.Reserve.GetUsedPower() === 0) {

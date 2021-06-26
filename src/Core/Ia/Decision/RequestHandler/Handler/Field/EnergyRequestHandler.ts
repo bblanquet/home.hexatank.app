@@ -24,7 +24,7 @@ export class EnergyRequestHandler implements ISimpleRequestHandler {
 
 			this._hq.GetReactors().forEach((r) => {
 				if (r.GetPower() < 4) {
-					r.PowerUp();
+					r.EnergyUp();
 				}
 			});
 		}

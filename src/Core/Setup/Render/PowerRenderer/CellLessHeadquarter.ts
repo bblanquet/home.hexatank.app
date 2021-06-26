@@ -35,7 +35,7 @@ export class CellLessHeadquarter implements IHeadquarter {
 		this._batteryFields.push(energyField);
 		const reactors = this._reactors.filter((c) => c.IsCovered(energyField.GetCell()));
 		if (reactors.length === 1) {
-			reactors[0].PowerUp();
+			reactors[0].EnergyUp();
 		}
 	}
 

@@ -9,6 +9,7 @@ import { IKeyService } from '../../Services/Key/IKeyService';
 import { IsMobile } from '../../Core/Utils/ToolBox';
 import { IGameContext } from '../../Core/Setup/Context/IGameContext';
 import { IBlueprint } from '../../Core/Setup/Blueprint/IBlueprint';
+import Analyze from '../Analyze/AnalyzeComponent';
 
 export default class CanvasComponent extends Component<
 	{ gameContext: IGameContextService<IBlueprint, IGameContext> },
@@ -64,11 +65,13 @@ export default class CanvasComponent extends Component<
 
 	render() {
 		return (
-			<div
-				ref={(dom) => {
-					this._gameCanvas = dom;
-				}}
-			/>
+			<Analyze>
+				<div
+					ref={(dom) => {
+						this._gameCanvas = dom;
+					}}
+				/>
+			</Analyze>
 		);
 	}
 

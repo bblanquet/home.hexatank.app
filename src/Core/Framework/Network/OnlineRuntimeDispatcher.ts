@@ -1,11 +1,7 @@
-import { isNullOrUndefined } from 'util';
 import { AliveItem } from '../../Items/AliveItem';
 import { Cell } from '../../Items/Cell/Cell';
 import { BlockingField } from '../../Items/Cell/Field/BlockingField';
-import { BonusField } from '../../Items/Cell/Field/Bonus/BonusField';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
-import { ShieldField } from '../../Items/Cell/Field/Bonus/ShieldField';
-import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
 import { TypeTranslator } from '../../Items/Cell/Field/TypeTranslator';
 import { Item } from '../../Items/Item';
 import { Tank } from '../../Items/Unit/Tank';
@@ -13,15 +9,13 @@ import { Vehicle } from '../../Items/Unit/Vehicle';
 import { GameContext } from '../../Setup/Context/GameContext';
 import { FieldTypeHelper } from '../FieldTypeHelper';
 import { ISocketWrapper } from '../../../Network/Socket/INetworkSocket';
-import { FieldPacket } from './Packets/FieldPacket';
 import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
 import { PacketKind } from '../../../Network/Message/PacketKind';
 import { PeerSocket } from '../../../Network/Socket/Peer/PeerSocket';
-import { VehiclePacket } from './Packets/CreatingUnitPacket';
-import { NextCellPacket } from './Packets/NextCellPacket';
-import { OverlockedPacket } from './Packets/OverlockedPacket';
-import { EnergyPacket } from './Packets/PowerFieldPacket';
-import { TargetPacket } from './Packets/TargetPacket';
+import { NextCellContent } from './Contents/NextCellContent';
+import { TargetContent } from './Contents/TargetContent';
+import { PacketContent } from './Contents/PacketContent';
+import { Identity } from '../../Items/Identity';
 
 export class OnlineRuntimeDispatcher {
 	private _handleField: any = this.HandleChangedField.bind(this);
@@ -53,42 +47,33 @@ export class OnlineRuntimeDispatcher {
 
 	private HandleChangedField(source: any, c: Cell): void {
 		const field = c.GetField();
-		if (
-			!TypeTranslator.IsSpecialField(field) ||
-			this.IsListenedHq(this._context.GetHqFromId(field.GetIdentity()))
-		) {
-			const fieldPacket = new FieldPacket();
-			fieldPacket.Coo = c.Coo();
-			fieldPacket.Type = FieldTypeHelper.GetDescription(field);
-			if (field instanceof BonusField) {
-				fieldPacket.IdentityName = field.Identity.Name;
-			} else if (field instanceof ReactorField) {
-				fieldPacket.IdentityName = field.Identity.Name;
-				if (this.IsListenedHq(field.GetHq())) {
-					field.OnOverlocked.On(this.HandleOverlockChanged.bind(this));
-					field.OnPowerChanged.On(this.HandlePowerChanged.bind(this));
-				}
-			} else if (field instanceof ShieldField) {
-				fieldPacket.IdentityName = field.Identity.Name;
+		if (!TypeTranslator.IsSpecialField(field) || this.IsEmiting(field.GetIdentity())) {
+			const content = new PacketContent<any>();
+			content.CId = c.Coo();
+			content.Type = FieldTypeHelper.GetDescription(field);
+			content.Id = field.GetIdentity() ? field.GetIdentity().Name : '';
+			if (field instanceof ReactorField && this.IsEmiting(field.GetIdentity())) {
+				field.OnOverlocked.On(this.HandleOverlockChanged.bind(this));
+				field.OnPowerChanged.On(this.HandlePowerChanged.bind(this));
 			}
-			const message = this.Message<FieldPacket>(PacketKind.FieldChanged, fieldPacket);
+			const message = this.Wrap<PacketContent<any>>(PacketKind.FieldChanged, content);
 			this._socket.Emit(message);
 		}
 	}
 
-	private IsListenedHq(hq: IHeadquarter): boolean {
-		return hq.Identity.Name === this._context.GetPlayerHq().Identity.Name || hq.IsIa();
+	private IsEmiting(id: Identity): boolean {
+		const hq = this._context.GetHqFromId(id);
+		return id.Name === this._context.GetPlayerHq().Identity.Name || hq.IsIa();
 	}
 
 	private HandleDestroyedField(source: any, item: Item): void {
 		const blockingField = item as BlockingField;
-		const message = this.Message<string>(PacketKind.FieldDestroyed, blockingField.GetCell().Coo());
+		const message = this.Wrap<string>(PacketKind.FieldDestroyed, blockingField.GetCell().Coo());
 		this._socket.Emit(message);
 	}
 
 	private HandleVehicleCreated(source: any, vehicle: Vehicle): void {
-		const hq = this._context.GetHqFromId(vehicle.Identity);
-		if (this.IsListenedHq(hq)) {
+		if (this.IsEmiting(vehicle.Identity)) {
 			if (vehicle instanceof Tank) {
 				const tank = vehicle as Tank;
 				tank.OnTargetChanged.On(this.HandleTargetChanged.bind(this));
@@ -98,7 +83,7 @@ export class OnlineRuntimeDispatcher {
 			vehicle.OnPathFound.On(this.HandlePathChanged.bind(this));
 			vehicle.OnOrdered.On(this.HandlePathChanged.bind(this));
 			vehicle.OnDestroyed.On(this.HandleVehicleDestroyed.bind(this));
-			const message = this.Message<VehiclePacket>(PacketKind.VehicleCreated, this.GetVehiclePacket(vehicle));
+			const message = this.Wrap<PacketContent<any>>(PacketKind.VehicleCreated, this.GetVContent(vehicle));
 			this._socket.Emit(message);
 		}
 	}
@@ -111,48 +96,45 @@ export class OnlineRuntimeDispatcher {
 			tank.OnOrdering.Clear();
 			tank.OnNextCellChanged.Clear();
 		}
-		const message = this.Message<string>(PacketKind.VehicleDestroyed, v.Id);
+		const message = this.Wrap<string>(PacketKind.VehicleDestroyed, v.Id);
 		this._socket.Emit(message);
 	}
 
-	private HandleTargetChanged(source: any, target: AliveItem): void {
-		const targetPacket = new TargetPacket();
-		if (source instanceof Vehicle) {
-			targetPacket.Id = source.Id;
-		}
-		targetPacket.HasTarget = !isNullOrUndefined(target);
-		if (!isNullOrUndefined(target)) {
-			targetPacket.TagertCoo = target.GetCurrentCell().Coo();
-		}
-		const message = this.Message<TargetPacket>(PacketKind.Target, targetPacket);
+	private HandleTargetChanged(src: Tank, target: AliveItem): void {
+		const targetPacket = new PacketContent<TargetContent>();
+		targetPacket.Extra = new TargetContent();
+		targetPacket.VId = src.Id;
+		targetPacket.Id = src.Identity.Name;
+		targetPacket.CId = src.GetCurrentCell().Coo();
+		targetPacket.Extra.HasTarget = src.HasTarget();
+		targetPacket.Extra.TargetCId = src.HasTarget() ? target.GetCurrentCell().Coo() : '';
+		const message = this.Wrap<PacketContent<TargetContent>>(PacketKind.Target, targetPacket);
 		this._socket.Emit(message);
 	}
 
 	private HandleCamouflageChanged(source: any, t: Tank): void {
-		const message = this.Message<string>(PacketKind.Camouflage, t.Id);
+		const message = this.Wrap<string>(PacketKind.Camouflage, t.Id);
 		this._socket.Emit(message);
 	}
 
 	private HandleDestroyedVehicle(src: any, v: Vehicle): void {
-		const message = this.Message<VehiclePacket>(PacketKind.VehicleDestroyed, this.GetVehiclePacket(v));
+		const message = this.Wrap<PacketContent<any>>(PacketKind.VehicleDestroyed, this.GetVContent(v));
 		this._socket.Emit(message);
 	}
 
-	private HandlePathChanged(source: Vehicle, cell: Cell[]): void {
-		const content = new NextCellPacket();
-		content.Id = source.Id;
-		content.CC = source.GetCurrentCell().Coo();
-		if (source.GetNextCell()) {
-			content.NC = source.GetNextCell().Coo();
-		} else {
-			content.NC = '';
-		}
-		content.Path = cell.map((c) => c.Coo());
-		const message = this.Message<NextCellPacket>(PacketKind.PathChanged, content);
+	private HandlePathChanged(src: Vehicle, cell: Cell[]): void {
+		const content = new PacketContent<NextCellContent>();
+		content.Extra = new NextCellContent();
+		content.Id = src.Identity.Name;
+		content.VId = src.Id;
+		content.CId = src.GetCurrentCell().Coo();
+		content.Extra.NextCId = src.HasNextCell() ? src.GetNextCell().Coo() : '';
+		content.Extra.Path = cell.map((c) => c.Coo());
+		const message = this.Wrap<PacketContent<NextCellContent>>(PacketKind.PathChanged, content);
 		this._socket.Emit(message);
 	}
 
-	private Message<T>(kind: PacketKind, content: T): NetworkMessage<T> {
+	private Wrap<T>(kind: PacketKind, content: T): NetworkMessage<T> {
 		const message = new NetworkMessage<T>();
 		message.Recipient = PeerSocket.All();
 		message.Emitter = this._context.GetPlayerHq().Identity.Name;
@@ -161,35 +143,35 @@ export class OnlineRuntimeDispatcher {
 		return message;
 	}
 
-	private GetVehiclePacket(v: Vehicle) {
+	private GetVContent(v: Vehicle): PacketContent<any> {
 		const hq = this._context.GetHqFromId(v.Identity);
-		const content = new VehiclePacket();
-		content.Coo = v.GetCurrentCell().Coo();
-		content.HqName = hq.Identity.Name;
-		content.Id = v.Id;
-		content.Kind = v instanceof Tank ? 'Tank' : 'Truck';
+		const content = new PacketContent<any>();
+		content.CId = v.GetCurrentCell().Coo();
+		content.Id = hq.Identity.Name;
+		content.VId = v.Id;
+		content.Type = v instanceof Tank ? 'Tank' : 'Truck';
 		return content;
 	}
 
 	private HandlePowerChanged(source: any, power: boolean): void {
 		const reactor = source as ReactorField;
-		const packet = new EnergyPacket();
-		packet.Coo = reactor.GetCell().Coo();
-		packet.IsEnergyUp = power;
-		packet.IdentityName = reactor.Identity.Name;
-		packet.Type = 'ReactorField';
-		const message = this.Message<EnergyPacket>(PacketKind.PowerChanged, packet);
+		const content = new PacketContent<boolean>();
+		content.CId = reactor.GetCell().Coo();
+		content.Extra = power;
+		content.Id = reactor.Identity.Name;
+		content.Type = 'ReactorField';
+		const message = this.Wrap<PacketContent<boolean>>(PacketKind.PowerChanged, content);
 		this._socket.Emit(message);
 	}
 
 	private HandleOverlockChanged(source: any, powerUp: string): void {
 		const reactor = source as ReactorField;
-		const packet = new OverlockedPacket();
-		packet.Coo = reactor.GetCell().Coo();
-		packet.PowerUp = powerUp;
-		packet.IdentityName = reactor.Identity.Name;
+		const packet = new PacketContent<string>();
+		packet.CId = reactor.GetCell().Coo();
+		packet.Extra = powerUp;
+		packet.Id = reactor.Identity.Name;
 		packet.Type = 'ReactorField';
-		const message = this.Message<OverlockedPacket>(PacketKind.Overlocked, packet);
+		const message = this.Wrap<PacketContent<string>>(PacketKind.Overclocked, packet);
 		this._socket.Emit(message);
 	}
 }

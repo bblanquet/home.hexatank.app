@@ -28,7 +28,7 @@ export class PowerUpCombination extends AbstractSingleCombination {
 					.GetPlayerHq()
 					.Buy(GameSettings.TruckPrice * this._gameContext.GetPlayerHq().GetTotalEnergy())
 			) {
-				field.PowerUp();
+				field.EnergyUp();
 			}
 			context.Items.splice(1, 1);
 			return true;

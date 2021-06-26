@@ -9,7 +9,7 @@ export class PowerUpRequestHandler implements ISimpleRequestHandler {
 		const reactorCell = request.Area.GetSpot().GetCells().find((e) => e.GetField() instanceof ReactorField);
 		if (reactorCell) {
 			const reactor = reactorCell.GetField() as ReactorField;
-			reactor.Overlock(new AttackMenuItem());
+			reactor.Overclock(new AttackMenuItem());
 		}
 	}
 

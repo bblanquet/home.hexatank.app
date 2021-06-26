@@ -45,7 +45,7 @@ export enum PacketKind {
 	VehicleCreated,
 	FieldDestroyed,
 	Target,
-	Overlocked,
+	Overclocked,
 	PowerChanged,
 	Camouflage,
 	PathChanged,

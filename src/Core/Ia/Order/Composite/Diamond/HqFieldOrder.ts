@@ -7,6 +7,8 @@ import { AStarHelper } from '../../../AStarHelper';
 import { MonitoredOrder } from '../../MonitoredOrder';
 import { TypeTranslator } from '../../../../Items/Cell/Field/TypeTranslator';
 import { IOrderGiver } from './IOrderGiver';
+import { StaticLogger } from '../../../../Utils/Logger/StaticLogger';
+import { LogKind } from '../../../../Utils/Logger/LogKind';
 
 export class HqFieldOrder implements IOrderGiver {
 	private _hq: IHeadquarter;
@@ -22,6 +24,7 @@ export class HqFieldOrder implements IOrderGiver {
 		if (hqField) {
 			return new MonitoredOrder(hqField, this._vehicule);
 		} else {
+			StaticLogger.Log(LogKind.warning, `VId ${this._vehicule.Id} ${this.constructor.name} not found`);
 			return null;
 		}
 	}
@@ -46,7 +49,7 @@ export class HqFieldOrder implements IOrderGiver {
 		return cells;
 	}
 
-	private GetRoad(cell: Cell) {
+	private GetRoad(cell: Cell): Cell[] {
 		const filter = (c: Cell) => c && TypeTranslator.IsAccessible(c, this._vehicule);
 		const cost = (c: Cell) => AStarHelper.GetBasicCost(c);
 		return new AStarEngine<Cell>(filter, cost).GetPath(this._vehicule.GetCurrentCell(), cell, true);

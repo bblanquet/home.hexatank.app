@@ -65,6 +65,10 @@ export class TargetMonitoredOrder extends ParentOrder {
 			return true;
 		}
 		const road = this.CurrentOrder.GetPath();
+		if (road.length === 0) {
+			return true;
+		}
+
 		return !this.HasAccess(road) || nextRoad.Road.length + 1 < road.length;
 	}
 	private HasAccess(path: Cell[]): boolean {

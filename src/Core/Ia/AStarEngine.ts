@@ -1,7 +1,5 @@
 import { GameSettings } from '../Framework/GameSettings';
 import { ISpot } from '../Utils/Geometry/ISpot';
-import { LogKind } from '../Utils/Logger/LogKind';
-import { StaticLogger } from '../Utils/Logger/StaticLogger';
 import { AStarNode } from './AStarNode';
 
 export class AStarEngine<T extends ISpot<T>> {
@@ -72,7 +70,6 @@ export class AStarEngine<T extends ISpot<T>> {
 
 		while (this.IsNotEmpty(candidates)) {
 			if (GameSettings.MapSize < path.length) {
-				StaticLogger.Log(LogKind.warning, `could not find path, opened nodes: ${candidates.length}`);
 				return null;
 			}
 
@@ -103,7 +100,6 @@ export class AStarEngine<T extends ISpot<T>> {
 			});
 			path.push(bestCandidate);
 		}
-		StaticLogger.Log(LogKind.warning, `could not find path, opened nodes: ${candidates.length}`);
 		return null;
 	}
 

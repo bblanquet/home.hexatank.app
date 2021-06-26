@@ -178,6 +178,12 @@ export class OnlineRuntimeReceiver {
 		const cell = this._context.GetCell(message.Content.CId);
 		const hq = this.GetHq(message);
 		if (this.IsEmitingHq(hq.Identity.Name)) {
+			if (TypeTranslator.IsSpecialField(cell.GetField())) {
+				StaticLogger.Log(
+					LogKind.error,
+					`[CONSISTENCY] ${message.Content.Type} ${message.Content.CId} is not a basic field`
+				);
+			}
 			const field = FieldTypeHelper.CreateField(message.Content.Type, cell, hq, this._context);
 			StaticLogger.Log(LogKind.info, `[CREATE] ${message.Content.CId} ${message.Content.Type}`);
 		}

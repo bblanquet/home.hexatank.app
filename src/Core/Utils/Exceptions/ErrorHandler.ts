@@ -28,37 +28,36 @@ export class ErrorHandler {
 	]);
 
 	public static Throw(error: Error): void {
+		this.Log(error);
 		if (!Env.IsPrd()) {
-			this.Log(error);
-		} else {
 			Singletons.Load<IAnalyzeService>(SingletonKey.Analyze).Analyze('exception', error);
 		}
+		throw error;
 	}
 
 	public static ThrowNull(obj: any): void {
 		if (obj === undefined || obj === null) {
 			const error = new Error('null exception');
-			if (!Env.IsPrd()) {
-				this.Log(error);
-			} else {
+			this.Log(error);
+			if (Env.IsPrd()) {
 				Singletons.Load<IAnalyzeService>(SingletonKey.Analyze).Analyze('exception', error);
 			}
+			throw error;
 		}
 	}
 
 	public static ThrowNullOrEmpty(obj: any[]): void {
 		if (obj === undefined || obj === null || obj.length === 0) {
 			const error = new Error('null/empty exception');
-			if (!Env.IsPrd()) {
-				this.Log(error);
-			} else {
+			this.Log(error);
+			if (Env.IsPrd()) {
 				Singletons.Load<IAnalyzeService>(SingletonKey.Analyze).Analyze('exception', error);
 			}
+			throw error;
 		}
 	}
 
 	private static Log(error: Error) {
 		StaticLogger.Log(LogKind.error, `${error.message}\n${error.name}\n${error.stack}`);
-		throw error;
 	}
 }

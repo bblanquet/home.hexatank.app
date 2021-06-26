@@ -7,7 +7,6 @@ import { LogMessage } from './LogMessage';
 
 export class StaticLogger {
 	public static OnMessage: LiteEvent<LogMessage> = new LiteEvent<LogMessage>();
-	private static _messages: LogMessage[] = [];
 	private static Anonymous: string = 'anonymous';
 	private static _excludes: string[] = [ 'Interac', StaticLogger.Anonymous, 'LatencyProvider' ];
 
@@ -38,18 +37,17 @@ export class StaticLogger {
 	]);
 
 	public static Log(logKind: LogKind, content: string) {
+		const message = new LogMessage(logKind, Date.now(), content);
 		if (!Env.IsPrd()) {
 			const caller = this.CallerName();
 			if (!this._excludes.some((exclude) => caller.includes(exclude))) {
-				const message = new LogMessage(logKind, Date.now(), content);
-				this._messages.push(message);
 				console.log(
 					`${this.Format(caller, message)}`,
 					`color:${this.Colors.Get(LogKind[logKind])};font-weight:${this._style.Get(LogKind[logKind])};`
 				);
-				this.OnMessage.Invoke(this, message);
 			}
 		}
+		this.OnMessage.Invoke(this, message);
 	}
 
 	private static CallerName(): string {
@@ -73,9 +71,5 @@ export class StaticLogger {
 		return `[${luxon.DateTime
 			.now()
 			.toLocaleString(luxon.DateTime.TIME_WITH_SECONDS)}] [${caller}] %c${message.Content}`;
-	}
-
-	public static GetLogs(): LogMessage[] {
-		return this._messages;
 	}
 }

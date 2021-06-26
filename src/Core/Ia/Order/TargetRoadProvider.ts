@@ -58,8 +58,10 @@ export class TargetRoadProvider {
 	private SortLimitlessRoad(): Cell[] {
 		const sortLimitlessRoad = new Array<Cell>();
 		const limitlessPath = this.LimitlessRoad();
-		for (let index = limitlessPath.length - 1; -1 < index; index--) {
-			sortLimitlessRoad.push(limitlessPath[index]);
+		if (limitlessPath) {
+			for (let index = limitlessPath.length - 1; -1 < index; index--) {
+				sortLimitlessRoad.push(limitlessPath[index]);
+			}
 		}
 		return sortLimitlessRoad;
 	}

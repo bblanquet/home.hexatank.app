@@ -1,4 +1,4 @@
-import { Dictionnary } from './../src/Core/Utils/Collections/Dictionnary';
+import { Dictionary } from './../src/Core/Utils/Collections/Dictionary';
 import { GameSettings } from './../src/Core/Framework/GameSettings';
 import { CircleMapBuilder } from './../src/Core/Setup/Builder/CircleMapBuilder';
 import { AStarEngine } from './../src/Core/Ia/AStarEngine';
@@ -7,7 +7,7 @@ import { expect } from 'chai';
 import { HexAxial } from '../src/Core/Utils/Geometry/HexAxial';
 
 describe('Astar', () => {
-	var cells = new Dictionnary<HexAxial>();
+	var cells = new Dictionary<HexAxial>();
 
 	before(() => {
 		GameSettings.MapSize = 6;

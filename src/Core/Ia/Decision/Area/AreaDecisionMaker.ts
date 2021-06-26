@@ -3,7 +3,7 @@ import { IAreaDecisionMaker } from './IAreaDecisionMaker';
 import { AStarHelper } from '../../AStarHelper';
 import { AttackField } from '../../../Items/Cell/Field/Bonus/AttackField';
 import { IaArea } from '../Utils/IaArea';
-import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { TroopRoads } from '../Troop/TroopRoads';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Area } from '../Utils/Area';
@@ -112,8 +112,8 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 		}
 	}
 
-	private GetAroundFoeCells(enemycells: Array<Cell>): Dictionnary<Cell> {
-		const enemyContactcells = new Dictionnary<Cell>();
+	private GetAroundFoeCells(enemycells: Array<Cell>): Dictionary<Cell> {
+		const enemyContactcells = new Dictionary<Cell>();
 		enemycells.forEach((enemycell) => {
 			enemycell.GetUnblockedRange().forEach((cell) => {
 				let coo = cell.Coo();
@@ -125,8 +125,8 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 		return enemyContactcells;
 	}
 
-	private ClassifyCellDanger(aroundFoeCells: Dictionnary<Cell>, ally: Tank): { [danger: number]: Dictionnary<Cell> } {
-		var dangerLevelcells: { [danger: number]: Dictionnary<Cell> } = {};
+	private ClassifyCellDanger(aroundFoeCells: Dictionary<Cell>, ally: Tank): { [danger: number]: Dictionary<Cell> } {
+		var dangerLevelcells: { [danger: number]: Dictionary<Cell> } = {};
 
 		aroundFoeCells.Keys().forEach((key) => {
 			const currentcell = aroundFoeCells.Get(key);
@@ -134,7 +134,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 			const dangerLevel = this.GetAroundCellFoes(currentcell, ally);
 
 			if (!dangerLevelcells.hasOwnProperty(dangerLevel)) {
-				dangerLevelcells[dangerLevel] = new Dictionnary<Cell>();
+				dangerLevelcells[dangerLevel] = new Dictionary<Cell>();
 			}
 
 			if (!dangerLevelcells[dangerLevel].hasOwnProperty(coordinate)) {
@@ -155,7 +155,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 		this.SetTroopDestination(troopRoads);
 		let unresolvedCases = 0;
 		var hasConflicts = true;
-		const excludedcells = new Dictionnary<Cell>();
+		const excludedcells = new Dictionary<Cell>();
 		while (hasConflicts) {
 			if (unresolvedCases === 4) {
 				return null;
@@ -202,7 +202,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 		return troopsByDest;
 	}
 
-	private GetTroopRoads(cellsByDanger: { [id: number]: Dictionnary<Cell> }): Array<TroopRoads> {
+	private GetTroopRoads(cellsByDanger: { [id: number]: Dictionary<Cell> }): Array<TroopRoads> {
 		let allTroopRoads = new Array<TroopRoads>();
 
 		this.Area.GetTroops().filter((t) => !t.IsCloseFromEnemy()).forEach((troop) => {

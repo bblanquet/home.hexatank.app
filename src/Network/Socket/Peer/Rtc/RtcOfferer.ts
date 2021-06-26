@@ -28,7 +28,7 @@ export class RtcOfferer extends RtcPeer {
 				const message = this.Context.GetTemplate<any>(PacketKind.Offer);
 				message.Content = this.Connection.localDescription;
 				if (message.Recipient === message.Emitter) {
-					throw 'whats going on';
+					throw 'emitter === recipient';
 				}
 				this.Context.ServerSocket.Emit(message);
 			} catch (err) {

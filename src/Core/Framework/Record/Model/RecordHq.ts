@@ -1,10 +1,10 @@
 import { RecordUnit } from './Item/RecordUnit';
-import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 
 export class RecordHq {
-	public Units: Dictionnary<RecordUnit>;
+	public Units: Dictionary<RecordUnit>;
 	constructor(public Name: string, public Color: string) {
-		this.Units = new Dictionnary<RecordUnit>();
+		this.Units = new Dictionary<RecordUnit>();
 	}
 
 	GetJsonObject(): any {

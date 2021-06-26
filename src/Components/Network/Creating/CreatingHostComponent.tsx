@@ -167,7 +167,7 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 	}
 
 	private Start(): void {
-		this._socket.Emit(NetworkMessage.Create(PacketKind.Exist, { RoomName: this.state.RoomName }));
+		this._socket.Emit(NetworkMessage.New(PacketKind.Exist, { RoomName: this.state.RoomName }));
 	}
 
 	private Back() {

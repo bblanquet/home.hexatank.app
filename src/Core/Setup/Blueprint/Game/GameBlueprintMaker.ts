@@ -6,7 +6,7 @@ import { HFlowerMapBuilder } from '../../Builder/HFlowerMapBuilder';
 import { TriangleFlowerMapBuilder } from '../../Builder/TriangleFlowerMapBuilder';
 import { CheeseFlowerMapBuilder } from '../../Builder/CheeseFlowerMapBuilder';
 import { DonutFlowerMapBuilder } from '../../Builder/DonutFlowerMapBuilder';
-import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { SandDecorator } from '../../../Items/Cell/Decorator/SandDecorator';
 import { IceDecorator } from '../../../Items/Cell/Decorator/IceDecorator';
 import { MapEnv } from '../MapEnv';
@@ -25,9 +25,9 @@ import { IMapBuilder } from '../../Builder/IPlaygroundBuilder';
 import { GameSettings } from '../../../Framework/GameSettings';
 
 export class GameBlueprintMaker {
-	private _builders: Dictionnary<IMapBuilder>;
+	private _builders: Dictionary<IMapBuilder>;
 	constructor() {
-		this._builders = new Dictionnary<IMapBuilder>();
+		this._builders = new Dictionary<IMapBuilder>();
 		this._builders.Add(MapType.Flower.toString(), new FlowerMapBuilder());
 		this._builders.Add(MapType.Cheese.toString(), new CheeseFlowerMapBuilder());
 		this._builders.Add(MapType.Donut.toString(), new DonutFlowerMapBuilder());
@@ -45,10 +45,10 @@ export class GameBlueprintMaker {
 		const mapBuilder = this._builders.Get(mapType.toString());
 		const coos = mapBuilder.GetAllCoos(mapSize);
 		GameSettings.MapSize = coos.length;
-		const cells = Dictionnary.To<HexAxial>((e) => e.ToString(), coos);
+		const cells = Dictionary.To<HexAxial>((e) => e.ToString(), coos);
 		const areas = mapBuilder.GetAreaCoos(mapSize);
 		const farthestPointManager = new FartestPointsFinder();
-		const excluded = new Dictionnary<HexAxial>();
+		const excluded = new Dictionary<HexAxial>();
 
 		const hqPositions = farthestPointManager.GetPoints(areas, cells, hqCount);
 		const diamondPositions = this.GetDiamonds(hqPositions, cells, hqCount);
@@ -116,11 +116,7 @@ export class GameBlueprintMaker {
 		return decorator;
 	}
 
-	private GetDiamonds(
-		hqcells: Array<HexAxial>,
-		coordinates: Dictionnary<HexAxial>,
-		hqCount: number
-	): Array<HexAxial> {
+	private GetDiamonds(hqcells: Array<HexAxial>, coordinates: Dictionary<HexAxial>, hqCount: number): Array<HexAxial> {
 		const diamonds = new Array<HexAxial>();
 		const areaEngine = new AreaSearch(coordinates);
 		let forbiddencells = new Array<HexAxial>();
@@ -136,7 +132,7 @@ export class GameBlueprintMaker {
 	private GetDiamondPosition(
 		cell: HexAxial,
 		forbiddencells: HexAxial[],
-		coordinates: Dictionnary<HexAxial>
+		coordinates: Dictionary<HexAxial>
 	): HexAxial {
 		const areaEngine = new AreaSearch(coordinates);
 		const secondRange = areaEngine

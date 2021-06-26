@@ -20,7 +20,7 @@ export class MiddleItemText extends Item {
 	public GetBoundingBox(): BoundingBox {
 		let x = this._item.GetBoundingBox().X + this._item.GetBoundingBox().Width / 2 - this._textMetrics.width / 2;
 
-		return BoundingBox.Create(
+		return BoundingBox.New(
 			x,
 			this._item.GetBoundingBox().Y + this._item.GetBoundingBox().Height / 2 - this._textMetrics.height / 2,
 			this._textMetrics.width,

@@ -24,7 +24,7 @@ export class BelowItemText extends Item {
 
 		let x = this._item.GetBoundingBox().X + this._item.GetBoundingBox().Width / 2 - this._textMetrics.width / 2;
 
-		return BoundingBox.Create(
+		return BoundingBox.New(
 			x,
 			this._item.GetBoundingBox().Y + this._item.GetBoundingBox().Height - this._textMetrics.height,
 			this._textMetrics.width,

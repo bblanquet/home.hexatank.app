@@ -1,7 +1,8 @@
-import { Dictionnary } from '../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 import { IMapBuilder } from './IPlaygroundBuilder';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
+import { ErrorCat, ErrorHandler } from '../../Utils/Exceptions/ErrorHandler';
 
 export class YMapBuilder implements IMapBuilder {
 	public GetRefCoo(ranges: number): HexAxial {
@@ -10,11 +11,11 @@ export class YMapBuilder implements IMapBuilder {
 
 	public GetAllCoos(ranges: number): HexAxial[] {
 		if (ranges < 2) {
-			throw new Error();
+			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
 		}
 
 		if (ranges % 2 !== 0) {
-			throw new Error();
+			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
 		}
 
 		const result = new Array<HexAxial>();
@@ -35,7 +36,7 @@ export class YMapBuilder implements IMapBuilder {
 	}
 
 	public GetAreaCoos(ranges: number): HexAxial[] {
-		const coordinates = new Dictionnary<HexAxial>();
+		const coordinates = new Dictionary<HexAxial>();
 		this.GetAllCoos(ranges).forEach((coordinate) => {
 			coordinates.Add(coordinate.ToString(), coordinate);
 		});

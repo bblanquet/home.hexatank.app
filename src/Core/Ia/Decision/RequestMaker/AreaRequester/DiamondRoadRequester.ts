@@ -1,4 +1,4 @@
-import { Dictionnary } from './../../../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { TypeTranslator } from './../../../../Items/Cell/Field/TypeTranslator';
 import { Cell } from '../../../../Items/Cell/Cell';
 import { AStarEngine } from '../../../AStarEngine';
@@ -32,7 +32,7 @@ export class DiamondRoadRequester implements IAreaRequestMaker {
 		if (road === null) {
 			return [];
 		} else {
-			const result = new Dictionnary<Cell>();
+			const result = new Dictionary<Cell>();
 			road.forEach((r) => {
 				r
 					.GetAll(1)

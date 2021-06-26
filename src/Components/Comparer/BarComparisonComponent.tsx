@@ -4,10 +4,10 @@ import Redirect from '../Redirect/RedirectComponent';
 import SmPanelComponent from '../Common/Panel/SmPanelComponent';
 import ChartContainer from '../Common/Chart/ChartContainer';
 import { StatusDuration } from '../Common/Chart/Model/StatusDuration';
-import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
+import { Dictionary } from '../../Core/Utils/Collections/Dictionary';
 
 export default class BarComparisonComponent extends Component<
-	{ Data: Dictionnary<StatusDuration[]> },
+	{ Data: Dictionary<StatusDuration[]> },
 	{ Canvas: HTMLCanvasElement }
 > {
 	private _chart: BarChart;

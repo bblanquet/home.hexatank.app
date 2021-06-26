@@ -1,4 +1,4 @@
-import { Dictionnary } from './../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { AStarEngine } from './../../Ia/AStarEngine';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 import { DistanceHelper } from '../../Items/Unit/MotionHelpers/DistanceHelper';
@@ -12,7 +12,7 @@ export class FartestPointsFinder {
 		return points.filter((p) => DistanceHelper.GetDistance(currentPoint, p) > longest);
 	}
 
-	public GetPoints(points: Array<HexAxial>, cells: Dictionnary<HexAxial>, total: number): Array<HexAxial> {
+	public GetPoints(points: Array<HexAxial>, cells: Dictionary<HexAxial>, total: number): Array<HexAxial> {
 		this._astarEngine = new AStarEngine<HexAxial>((e) => {
 			return cells.Exist(e.ToString());
 		}, (e) => 1);

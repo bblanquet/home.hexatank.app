@@ -3,7 +3,7 @@ import { IServerSocket } from '../../Network/Socket/Server/IServerSocket';
 import { ISocketWrapper } from '../../Network/Socket/INetworkSocket';
 import { OnlinePlayerManager } from '../../Network/Manager/OnlinePlayerManager';
 import { IOnlinePlayerManager } from '../../Network/Manager/IOnlinePlayerManager';
-import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
+import { Dictionary } from '../../Core/Utils/Collections/Dictionary';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { OnlinePlayer } from '../../Network/OnlinePlayer';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
@@ -43,7 +43,7 @@ export class OnlineService implements IOnlineService {
 		player.IsReady = false;
 		player.IsAdmin = isAdmin;
 
-		const players = new Dictionnary<OnlinePlayer>();
+		const players = new Dictionary<OnlinePlayer>();
 		players.Add(playerName, player);
 
 		this._servSocket = Singletons.Load<ISocketService>(SingletonKey.Socket).Publish();

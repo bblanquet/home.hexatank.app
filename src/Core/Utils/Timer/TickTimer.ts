@@ -1,3 +1,4 @@
+import { ErrorCat, ErrorHandler } from '../Exceptions/ErrorHandler';
 import { ITimer } from './ITimer';
 
 export class TickTimer implements ITimer {
@@ -15,7 +16,7 @@ export class TickTimer implements ITimer {
 
 	SetTicks(tick: number): void {
 		if (tick <= 1) {
-			throw 'has to be higher than 1';
+			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
 		}
 
 		this._tick = tick;

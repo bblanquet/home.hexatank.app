@@ -21,7 +21,7 @@ export class AboveItemText extends Item {
 		if (!this._textMetrics) {
 			this.UpdateText();
 		}
-		return BoundingBox.Create(
+		return BoundingBox.New(
 			this._item.GetBoundingBox().X + this._item.GetBoundingBox().Width / 2 - this._textMetrics.width / 2,
 			this._item.GetBoundingBox().Y - this._textMetrics.height / 2,
 			this._textMetrics.width,

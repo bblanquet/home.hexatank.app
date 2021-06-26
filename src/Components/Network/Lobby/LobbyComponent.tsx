@@ -18,7 +18,7 @@ import ActiveButtonComponent from '../../Common/Button/Stylish/ActiveButtonCompo
 import { HostingMode } from '../HostingMode';
 import { Message } from '../Message';
 import SmPanelComponent from '../../Common/Panel/SmPanelComponent';
-import { Dictionnary } from '../../../Core/Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../Core/Utils/Collections/Dictionary';
 import { ILobbyManager } from '../../../Network/Manager/ILobbyManager';
 import { IOnlinePlayerManager } from '../../../Network/Manager/IOnlinePlayerManager';
 
@@ -54,7 +54,7 @@ export default class LobbyComponent extends Component<any, LobbyState> {
 		});
 	}
 
-	public UpdateState(src: any, players: Dictionnary<OnlinePlayer>): void {
+	public UpdateState(src: any, players: Dictionary<OnlinePlayer>): void {
 		this.setState({ Players: players });
 	}
 

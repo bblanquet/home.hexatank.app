@@ -67,7 +67,7 @@ export class LobbyManager implements ILobbyManager {
 
 	public Join() {
 		this._serverSocket.Emit(
-			NetworkMessage.Create<any>(PacketKind.Join, {
+			NetworkMessage.New<any>(PacketKind.Join, {
 				PlayerName: this._onlinePlayerManager.Player.Name,
 				RoomName: this._lobby.Name,
 				Password: this._lobby.Password,
@@ -79,7 +79,7 @@ export class LobbyManager implements ILobbyManager {
 
 	public Kick(playerName: string) {
 		this._serverSocket.Emit(
-			NetworkMessage.Create<any>(PacketKind.Kick, {
+			NetworkMessage.New<any>(PacketKind.Kick, {
 				PlayerName: playerName,
 				RoomName: this._lobby.Name
 			})
@@ -98,12 +98,12 @@ export class LobbyManager implements ILobbyManager {
 	}
 
 	private HandleMessage(message: NetworkMessage<string>): void {
-		this.OnMessageReceived.Invoke(this, Message.Create(message.Emitter, message.Content));
+		this.OnMessageReceived.Invoke(this, Message.New(message.Emitter, message.Content));
 	}
 
 	private HandleLoading(message: NetworkMessage<string>): void {
 		if (this._onlinePlayerManager.Player.IsAdmin) {
-			this._serverSocket.Emit(NetworkMessage.Create(PacketKind.Hide, {}));
+			this._serverSocket.Emit(NetworkMessage.New(PacketKind.Hide, {}));
 		}
 		this.OnStarting.Invoke();
 	}
@@ -114,7 +114,7 @@ export class LobbyManager implements ILobbyManager {
 
 	private HandleJoin(data: NetworkMessage<any>): void {
 		this._serverSocket.Emit(
-			NetworkMessage.Create<any>(PacketKind.Join, {
+			NetworkMessage.New<any>(PacketKind.Join, {
 				PlayerName: this._onlinePlayerManager.Player.Name,
 				RoomName: this._lobby,
 				Password: this._lobby.Password,
@@ -143,10 +143,10 @@ export class LobbyManager implements ILobbyManager {
 
 	Stop(): void {
 		if (this._onlinePlayerManager.Player.IsAdmin) {
-			this._serverSocket.Emit(NetworkMessage.Create(PacketKind.Hide, {}));
+			this._serverSocket.Emit(NetworkMessage.New(PacketKind.Hide, {}));
 		}
 		this._serverSocket.Emit(
-			NetworkMessage.Create<any>(PacketKind.Leave, {
+			NetworkMessage.New<any>(PacketKind.Leave, {
 				PlayerName: this._onlinePlayerManager.Player.Name,
 				RoomName: this._lobby.Name
 			})
@@ -156,7 +156,7 @@ export class LobbyManager implements ILobbyManager {
 
 	Start(): void {
 		if (this._onlinePlayerManager.Player.IsAdmin) {
-			this._serverSocket.Emit(NetworkMessage.Create(PacketKind.Hide, {}));
+			this._serverSocket.Emit(NetworkMessage.New(PacketKind.Hide, {}));
 			this._socketWrapper.EmitAll(PacketKind.Loading, {});
 			this.OnStarting.Invoke();
 		}

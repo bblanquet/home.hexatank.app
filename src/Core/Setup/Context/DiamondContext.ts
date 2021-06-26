@@ -2,7 +2,7 @@ import { AliveItem } from '../../Items/AliveItem';
 import { Cell } from '../../Items/Cell/Cell';
 import { Identity } from '../../Items/Identity';
 import { Item } from '../../Items/Item';
-import { Dictionnary } from '../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { IHqGameContext } from './IHqGameContext';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
@@ -16,10 +16,10 @@ export class DiamondContext implements IHqGameContext {
 	public OnTimerDone: SimpleEvent;
 	public Duration: number = 120;
 
-	private _cells: Dictionnary<Cell>;
+	private _cells: Dictionary<Cell>;
 
 	constructor(cells: Cell[], private _hq: Headquarter) {
-		this._cells = Dictionnary.To((c) => c.Coo(), cells);
+		this._cells = Dictionary.To((c) => c.Coo(), cells);
 		this.OnTimerDone = new SimpleEvent();
 		this.OnTimerDone.On(() => {
 			if (50 < this._hq.GetDiamondCount()) {

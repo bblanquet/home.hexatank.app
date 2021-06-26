@@ -1,4 +1,4 @@
-import { Dictionnary } from '../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { IMapBuilder } from './IPlaygroundBuilder';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
@@ -14,7 +14,7 @@ export class HFlowerMapBuilder implements IMapBuilder {
 	public GetAllCoos(ranges: number): HexAxial[] {
 		const r = ranges + 4;
 		const hMap = this._hBuilder.GetAllCoos(r);
-		const coordinates = new Dictionnary<HexAxial>();
+		const coordinates = new Dictionary<HexAxial>();
 		hMap.forEach((initCoo) => {
 			coordinates.Add(initCoo.ToString(), initCoo);
 		});
@@ -39,7 +39,7 @@ export class HFlowerMapBuilder implements IMapBuilder {
 
 	public GetAreaCoos(ranges: number): Array<HexAxial> {
 		const r = ranges + 4;
-		const coordinates = new Dictionnary<HexAxial>();
+		const coordinates = new Dictionary<HexAxial>();
 		const x = this._hBuilder.GetAllCoos(r);
 		x.forEach((coordinate) => {
 			coordinates.Add(coordinate.ToString(), coordinate);

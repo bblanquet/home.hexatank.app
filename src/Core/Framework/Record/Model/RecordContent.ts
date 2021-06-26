@@ -1,6 +1,6 @@
 import { RecordCell } from './Item/RecordCell';
 import { RecordHq } from './RecordHq';
-import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { RecordAny } from './RecordAny';
 import { RecordUnit } from './Item/RecordUnit';
 import { GameBlueprint } from '../../../Setup/Blueprint/Game/GameBlueprint';
@@ -8,8 +8,8 @@ import { LogMessage } from '../../../Utils/Logger/LogMessage';
 export class RecordContent {
 	public MapContext: GameBlueprint;
 	public Dates: number[] = [];
-	public Hqs: Dictionnary<RecordHq> = new Dictionnary<RecordHq>();
-	public Cells: Dictionnary<RecordCell> = new Dictionnary<RecordCell>();
+	public Hqs: Dictionary<RecordHq> = new Dictionary<RecordHq>();
+	public Cells: Dictionary<RecordCell> = new Dictionary<RecordCell>();
 	public Title: string;
 	public PlayerName: string;
 	public StartDate: number;
@@ -21,16 +21,16 @@ export class RecordContent {
 	public static To(origObject: RecordAny): RecordContent {
 		const copyObject = JSON.parse(JSON.stringify(origObject));
 
-		const hqs = new Dictionnary<RecordHq>();
+		const hqs = new Dictionary<RecordHq>();
 		hqs.SetValues(copyObject.Hqs);
 
 		hqs.Values().forEach((hq) => {
 			const units = hq.Units as any;
-			hq.Units = new Dictionnary<RecordUnit>();
+			hq.Units = new Dictionary<RecordUnit>();
 			hq.Units.SetValues(units);
 		});
 
-		const cells = new Dictionnary<RecordCell>();
+		const cells = new Dictionary<RecordCell>();
 		cells.SetValues(copyObject.Cells);
 
 		const result = new RecordContent();

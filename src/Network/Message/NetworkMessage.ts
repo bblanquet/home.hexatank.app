@@ -26,7 +26,7 @@ export class NetworkMessage<T> implements INetworkMessage {
 		return this.Content;
 	}
 
-	public static Create<T>(kind: PacketKind, content: T): NetworkMessage<T> {
+	public static New<T>(kind: PacketKind, content: T): NetworkMessage<T> {
 		const message = new NetworkMessage<T>();
 		message.Kind = kind;
 		message.Content = content;

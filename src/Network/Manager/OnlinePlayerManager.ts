@@ -1,6 +1,6 @@
 import { IServerSocket } from './../Socket/Server/IServerSocket';
 import { ISocketWrapper } from './../Socket/INetworkSocket';
-import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
+import { Dictionary } from '../../Core/Utils/Collections/Dictionary';
 import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
 import { OnlinePlayer } from '../OnlinePlayer';
 import { IOnlinePlayerManager } from './IOnlinePlayerManager';
@@ -10,7 +10,7 @@ import { NetworkMessage } from '../Message/NetworkMessage';
 import { PeerSocket } from '../Socket/Peer/PeerSocket';
 
 export class OnlinePlayerManager implements IOnlinePlayerManager {
-	public OnPlayersChanged: LiteEvent<Dictionnary<OnlinePlayer>>;
+	public OnPlayersChanged: LiteEvent<Dictionary<OnlinePlayer>>;
 	private _servObs: NetworkObserver[];
 	private _peerObs: NetworkObserver[];
 
@@ -18,9 +18,9 @@ export class OnlinePlayerManager implements IOnlinePlayerManager {
 		private _serverSocket: IServerSocket,
 		private _socketWrapper: ISocketWrapper,
 		public Player: OnlinePlayer,
-		public Players: Dictionnary<OnlinePlayer>
+		public Players: Dictionary<OnlinePlayer>
 	) {
-		this.OnPlayersChanged = new LiteEvent<Dictionnary<OnlinePlayer>>();
+		this.OnPlayersChanged = new LiteEvent<Dictionary<OnlinePlayer>>();
 
 		this._servObs = [
 			//room

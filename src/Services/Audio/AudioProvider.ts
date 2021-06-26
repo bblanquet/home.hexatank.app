@@ -1,11 +1,11 @@
 import { SpriteProvider } from '../../Core/Framework/SpriteProvider';
-import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
+import { Dictionary } from '../../Core/Utils/Collections/Dictionary';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 import { Howl } from 'howler';
 
 export class AudioProvider {
-	public GetContent(): Dictionnary<Howl> {
-		const sounds = new Dictionnary<Howl>();
+	public GetContent(): Dictionary<Howl> {
+		const sounds = new Dictionary<Howl>();
 		[
 			AudioArchive.ayaya,
 			AudioArchive.copyThat,
@@ -51,7 +51,7 @@ export class AudioProvider {
 		return sounds;
 	}
 
-	private Add(content: string, sounds: Dictionnary<Howl>) {
+	private Add(content: string, sounds: Dictionary<Howl>) {
 		sounds.Add(content, new Howl({ src: [ `${SpriteProvider.AssetPath()}${content}` ] }));
 	}
 }

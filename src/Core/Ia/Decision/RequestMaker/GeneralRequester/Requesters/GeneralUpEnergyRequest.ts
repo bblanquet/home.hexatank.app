@@ -1,4 +1,4 @@
-import { Dictionnary } from '../../../../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../../../Utils/Collections/Dictionary';
 import { IaArea } from '../../../Utils/IaArea';
 import { IGeneralRequester } from '../IGeneralRequester';
 import { Brain } from '../../../Brain';
@@ -16,7 +16,7 @@ export class GeneralUpEnergyRequester implements IGeneralRequester {
 				.Values()
 				.map((c) => c.Area)
 				.filter((a) => a.HasFreeFields() && a.GetInnerFoeCount() === 0);
-			let candidates = new Dictionnary<IaArea>();
+			let candidates = new Dictionary<IaArea>();
 
 			reactor.GetInternal().Values().forEach((c) =>
 				kingdomAreas.filter((a) => a.HasCell(c)).forEach((a) => {

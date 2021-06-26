@@ -3,7 +3,7 @@ import { RecordKind } from '../../../../Core/Framework/Record/Model/Item/State/R
 import { Headquarter } from '../../../../Core/Items/Cell/Field/Hq/Headquarter';
 import { HexAxial } from '../../../../Core/Utils/Geometry/HexAxial';
 import { Vehicle } from '../../../../Core/Items/Unit/Vehicle';
-import { Dictionnary } from '../../../../Core/Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../../Core/Utils/Collections/Dictionary';
 import { Tank } from '../../../../Core/Items/Unit/Tank';
 import { Truck } from '../../../../Core/Items/Unit/Truck';
 import { GameContext } from '../../../../Core/Setup/Context/GameContext';
@@ -11,12 +11,12 @@ import { RecordContent } from '../../../../Core/Framework/Record/Model/RecordCon
 import { isNullOrUndefined } from '../../../../Core/Utils/ToolBox';
 
 export class UnitUpdater {
-	private _displayedUnits: Dictionnary<Vehicle>;
+	private _displayedUnits: Dictionary<Vehicle>;
 	private _indexFinder: IndexFinder;
 
 	constructor(private _ref: RecordContent, private _gameContext: GameContext) {
 		this._indexFinder = new IndexFinder();
-		this._displayedUnits = new Dictionnary<Vehicle>();
+		this._displayedUnits = new Dictionary<Vehicle>();
 	}
 
 	public Update(date: number) {
@@ -24,7 +24,7 @@ export class UnitUpdater {
 		this.UpdateActiveUnits(unitDeltas);
 	}
 
-	private UpdateActiveUnits(units: Dictionnary<{ Axial: HexAxial; Hq: Headquarter; IsTank: boolean; Life: number }>) {
+	private UpdateActiveUnits(units: Dictionary<{ Axial: HexAxial; Hq: Headquarter; IsTank: boolean; Life: number }>) {
 		units.Keys().forEach((unitId) => {
 			const coo = units.Get(unitId).Axial.ToString();
 			const cell = this._gameContext.GetCell(coo);
@@ -57,7 +57,7 @@ export class UnitUpdater {
 	}
 
 	private GetActiveUnits(date: number) {
-		const coos = new Dictionnary<{
+		const coos = new Dictionary<{
 			Axial: HexAxial;
 			Hq: Headquarter;
 			IsTank: boolean;

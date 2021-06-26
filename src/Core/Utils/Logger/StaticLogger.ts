@@ -1,6 +1,6 @@
 import * as luxon from 'luxon';
 import { Env } from '../../../Env';
-import { Dictionnary } from '../Collections/Dictionnary';
+import { Dictionary } from '../Collections/Dictionary';
 import { LiteEvent } from '../Events/LiteEvent';
 import { LogKind } from './LogKind';
 import { LogMessage } from './LogMessage';
@@ -11,7 +11,7 @@ export class StaticLogger {
 	private static Anonymous: string = 'anonymous';
 	private static _excludes: string[] = [ 'Interac', StaticLogger.Anonymous, 'LatencyProvider' ];
 
-	public static Colors: Dictionnary<string> = Dictionnary.New([
+	public static Colors: Dictionary<string> = Dictionary.New([
 		{ key: LogKind[LogKind.none], value: '#000000' },
 		{ key: LogKind[LogKind.info], value: '#36a6e3' },
 		{ key: LogKind[LogKind.success], value: '#8fe336' },
@@ -19,7 +19,7 @@ export class StaticLogger {
 		{ key: LogKind[LogKind.error], value: '#8c2323' },
 		{ key: LogKind[LogKind.dangerous], value: '#d93232' }
 	]);
-	private static _style: Dictionnary<string> = Dictionnary.New([
+	private static _style: Dictionary<string> = Dictionary.New([
 		{ key: LogKind[LogKind.none], value: 'normal' },
 		{ key: LogKind[LogKind.info], value: 'bold' },
 		{ key: LogKind[LogKind.success], value: 'bold' },
@@ -28,7 +28,7 @@ export class StaticLogger {
 		{ key: LogKind[LogKind.dangerous], value: 'bolder' }
 	]);
 
-	public static Icons: Dictionnary<string> = Dictionnary.New([
+	public static Icons: Dictionary<string> = Dictionary.New([
 		{ key: LogKind[LogKind.none], value: 'fas fa-sticky-note' },
 		{ key: LogKind[LogKind.info], value: 'fas fa-info-circle' },
 		{ key: LogKind[LogKind.success], value: 'fa fa-check-circle' },

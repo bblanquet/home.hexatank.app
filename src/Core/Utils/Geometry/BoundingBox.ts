@@ -13,7 +13,7 @@ export class BoundingBox {
 		this.Height = 0;
 	}
 
-	public static Create(x: number, y: number, width: number, height: number): BoundingBox {
+	public static New(x: number, y: number, width: number, height: number): BoundingBox {
 		let b = new BoundingBox();
 		b.X = x;
 		b.Y = y;
@@ -22,7 +22,7 @@ export class BoundingBox {
 		return b;
 	}
 
-	public static CreateFromBox(a: BoundingBox): BoundingBox {
+	public static NewFromBox(a: BoundingBox): BoundingBox {
 		let b = new BoundingBox();
 		b.X = a.X;
 		b.Y = a.Y;
@@ -31,7 +31,7 @@ export class BoundingBox {
 		return b;
 	}
 
-	public static CreateFromBoxAndShift(a: BoundingBox, x: number, y: number): BoundingBox {
+	public static NewFromBoxAndPoint(a: BoundingBox, x: number, y: number): BoundingBox {
 		let b = new BoundingBox();
 		b.X = a.X + x;
 		b.Y = a.Y + y;

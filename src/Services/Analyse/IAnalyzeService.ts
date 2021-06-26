@@ -1,3 +1,3 @@
 export interface IAnalyzeService {
-	Analyze(message: string): void;
+	Analyze(message: string, payload?: any): void;
 }

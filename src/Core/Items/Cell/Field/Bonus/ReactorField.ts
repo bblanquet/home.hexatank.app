@@ -1,5 +1,5 @@
 import { UpCalculator } from './UpCalculator';
-import { Dictionnary } from './../../../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { Charge } from '../Hq/Charge';
 import { ZKind } from './../../../ZKind';
 import { BatteryField } from './BatteryField';
@@ -44,7 +44,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	private _range: number = 0;
 
 	public Links: Array<HqNetworkLink> = [];
-	public Charges: Dictionnary<Charge> = new Dictionnary<Charge>();
+	public Charges: Dictionary<Charge> = new Dictionary<Charge>();
 
 	//UI
 	public Appearance: ReactorAppearance;
@@ -52,7 +52,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 
 	//cells
 	private _area: Array<BasicItem> = new Array<BasicItem>();
-	private _internalCells: Dictionnary<Cell> = new Dictionnary<Cell>();
+	private _internalCells: Dictionary<Cell> = new Dictionary<Cell>();
 
 	//events
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
@@ -134,7 +134,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	}
 
 	private GetVehicles(): Array<Vehicle> {
-		const vehicles = new Dictionnary<Vehicle>();
+		const vehicles = new Dictionary<Vehicle>();
 
 		this.GetAllCells().forEach((c) => {
 			if (c.HasOccupier()) {
@@ -346,7 +346,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 
 	private CreateArea() {
 		this.GetCell().GetRange(this._range).forEach((cell) => {
-			const b = BoundingBox.CreateFromBox((<Cell>cell).GetBoundingBox());
+			const b = BoundingBox.NewFromBox((<Cell>cell).GetBoundingBox());
 			const area = new BasicItem(b, this.Hq.Identity.Skin.GetArea(), ZKind.AboveCell);
 			area.SetVisible(() => true);
 			area.SetAlive(() => true);
@@ -355,7 +355,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		});
 	}
 
-	public GetInternal(): Dictionnary<Cell> {
+	public GetInternal(): Dictionary<Cell> {
 		if (this._internalCells.IsEmpty()) {
 			this.RefreshInternal();
 		}

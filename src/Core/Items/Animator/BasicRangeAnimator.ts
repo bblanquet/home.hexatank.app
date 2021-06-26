@@ -53,7 +53,7 @@ export class BasicRangeAnimator implements IAnimator {
 			}
 			newCells.forEach((c) => {
 				let item = new BasicItem(
-					BoundingBox.CreateFromBox(c.GetBoundingBox()),
+					BoundingBox.NewFromBox(c.GetBoundingBox()),
 					SvgArchive.selectionPower,
 					ZKind.Cell
 				);

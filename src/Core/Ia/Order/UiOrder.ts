@@ -1,7 +1,7 @@
 import { OrderState } from './OrderState';
 import { Cell } from './../../Items/Cell/Cell';
 import { BasicItem } from '../../Items/BasicItem';
-import { Dictionnary } from '../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { SvgArchive } from '../../Framework/SvgArchiver';
 import { BouncingScaleUpAnimator } from '../../Items/Animator/BouncingScaleUpAnimator';
 import { IOrder } from './IOrder';
@@ -9,7 +9,7 @@ import { ZKind } from '../../Items/ZKind';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 
 export class UiOrder {
-	private _items: Dictionnary<BasicItem>;
+	private _items: Dictionary<BasicItem>;
 	private _order: IOrder;
 
 	constructor(private _v: Vehicle) {}
@@ -68,7 +68,7 @@ export class UiOrder {
 		this._order.OnPathFound.On(this.PathCreated.bind(this));
 		this._order.OnNextStep.On(this.NextCell.bind(this));
 		this._order.OnStateChanged.On(this.StateChanged.bind(this));
-		this._items = new Dictionnary<BasicItem>();
+		this._items = new Dictionary<BasicItem>();
 		this.SetCellUi(this._order.GetPath());
 	}
 

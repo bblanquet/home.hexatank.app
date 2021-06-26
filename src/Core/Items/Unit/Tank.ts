@@ -15,6 +15,7 @@ import { CellState } from '../Cell/CellState';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Explosion } from './Explosion';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
+import { ErrorCat, ErrorHandler } from '../../Utils/Exceptions/ErrorHandler';
 
 export class Tank extends Vehicle {
 	public Turrel: Turrel;
@@ -175,7 +176,7 @@ export class Tank extends Vehicle {
 
 	public SetMainTarget(item: AliveItem): void {
 		if (item && item.GetRelation(this.Identity) === Relationship.Ally) {
-			throw 'should not be there';
+			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidComputation])));
 		}
 
 		if (this._targetUi) {
@@ -215,7 +216,7 @@ export class Tank extends Vehicle {
 		}
 
 		this.Camouflage = new BasicItem(
-			BoundingBox.CreateFromBox(this.GetBoundingBox()),
+			BoundingBox.NewFromBox(this.GetBoundingBox()),
 			new CamouflageHandler().GetCamouflage(),
 			ZKind.Sky
 		);
@@ -225,7 +226,7 @@ export class Tank extends Vehicle {
 		this.Camouflage.SetAlive(() => this.IsAlive() && this.HasCamouflage);
 
 		const explosion = new Explosion(
-			BoundingBox.CreateFromBox(this.GetBoundingBox()),
+			BoundingBox.NewFromBox(this.GetBoundingBox()),
 			SvgArchive.constructionEffects,
 			ZKind.Sky,
 			false,

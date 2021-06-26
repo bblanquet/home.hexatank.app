@@ -6,7 +6,7 @@ import Icon from '../../../Common/Icon/IconComponent';
 import { SingletonKey, Singletons } from '../../../../Singletons';
 import SmPanelComponent from '../../../Common/Panel/SmPanelComponent';
 import { IOnlineService } from '../../../../Services/Online/IOnlineService';
-import { Dictionnary } from '../../../../Core/Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../../Core/Utils/Collections/Dictionary';
 
 export default class LoadingPlayers extends Component<any, { Players: OnlinePlayer[]; Player: OnlinePlayer }> {
 	constructor() {
@@ -23,7 +23,7 @@ export default class LoadingPlayers extends Component<any, { Players: OnlinePlay
 		onlineGameContextManager.Start();
 	}
 
-	public UpdateState(src: any, players: Dictionnary<OnlinePlayer>): void {
+	public UpdateState(src: any, players: Dictionary<OnlinePlayer>): void {
 		this.setState({ Players: players.Values() });
 	}
 

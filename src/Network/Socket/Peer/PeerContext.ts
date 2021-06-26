@@ -10,7 +10,7 @@ export class PeerContext {
 		public Recipient: string
 	) {
 		if (this.Owner === this.Recipient) {
-			throw 'whats going on';
+			throw 'emitter === recipient';
 		}
 	}
 

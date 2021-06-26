@@ -1,5 +1,5 @@
 import { IAudioService } from './IAudioService';
-import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
+import { Dictionary } from '../../Core/Utils/Collections/Dictionary';
 import { Howl } from 'howler';
 import { AudioProvider } from './AudioProvider';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';
@@ -8,14 +8,14 @@ import { Singletons, SingletonKey } from '../../Singletons';
 import { IGameAudioManager } from '../../Core/Framework/Audio/IGameAudioManager';
 
 export class AudioService implements IAudioService {
-	private _sounds: Dictionnary<Howl>;
+	private _sounds: Dictionary<Howl>;
 	private _gameAudioManager: IGameAudioManager;
 	private _isMute: boolean = false;
-	private _playingSounds: Dictionnary<number>;
+	private _playingSounds: Dictionary<number>;
 	private _profilService: IPlayerProfilService;
 
 	constructor() {
-		this._playingSounds = new Dictionnary<number>();
+		this._playingSounds = new Dictionary<number>();
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this.Reload();
 	}
@@ -108,7 +108,7 @@ export class AudioService implements IAudioService {
 	}
 
 	Register(gameAudioManager: IGameAudioManager): void {
-		const copy = new Dictionnary<Howl>();
+		const copy = new Dictionary<Howl>();
 		this._sounds.Keys().forEach((k) => {
 			copy.Add(k, this._sounds.Get(k));
 		});

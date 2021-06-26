@@ -1,7 +1,7 @@
 import { StatusDuration } from '../../Components/Common/Chart/Model/StatusDuration';
 import { RecordComparer } from '../../Components/Comparer/Comparers/RecordComparer';
 import { RecordContent } from '../../Core/Framework/Record/Model/RecordContent';
-import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
+import { Dictionary } from '../../Core/Utils/Collections/Dictionary';
 import { LogMessage } from '../../Core/Utils/Logger/LogMessage';
 import { CellDurationStateFormater } from './../../Components/Common/Chart/Formater/CellDurationStateFormater';
 import { VehicleDurationStateFormater } from './../../Components/Common/Chart/Formater/VehicleDurationStateFormater';
@@ -31,11 +31,11 @@ export class CompareService implements ICompareService {
 		return comparer;
 	}
 
-	GetCellDelta(): Dictionnary<StatusDuration[]> {
+	GetCellDelta(): Dictionary<StatusDuration[]> {
 		return new CellDurationStateFormater().Format(this._record, this._compareRecord);
 	}
 
-	GetVehicleDelta(): Dictionnary<StatusDuration[]> {
+	GetVehicleDelta(): Dictionary<StatusDuration[]> {
 		return new VehicleDurationStateFormater().Format(this._record, this._compareRecord);
 	}
 

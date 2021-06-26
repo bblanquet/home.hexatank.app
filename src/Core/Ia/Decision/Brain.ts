@@ -5,7 +5,7 @@ import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { IExpansionMaker } from './ExpansionMaker/IExpansionMaker';
 import { IBrain } from './IBrain';
 import { Groups } from '../../Utils/Collections/Groups';
-import { Dictionnary } from '../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { IAreaDecisionMaker } from './Area/IAreaDecisionMaker';
 import { ExcessTankFinder } from './ExcessTankFinder';
 import { AreaRequest } from './Utils/AreaRequest';
@@ -28,7 +28,7 @@ export class Brain implements IBrain {
 	public Squads: Squad[];
 	public Trucks: Array<Truck> = new Array<Truck>();
 	public Tanks: Array<Tank> = new Array<Tank>();
-	public CellAreas: Dictionnary<IAreaDecisionMaker>;
+	public CellAreas: Dictionary<IAreaDecisionMaker>;
 	public IdleTanks: ExcessTankFinder;
 
 	public HasDiamondRoad: boolean = false;
@@ -43,7 +43,7 @@ export class Brain implements IBrain {
 	constructor(public Hq: Headquarter, public Areas: Area[]) {
 		this.AreaDecisions = new Array<IAreaDecisionMaker>();
 		this.Squads = new Array<Squad>();
-		this.CellAreas = new Dictionnary<IAreaDecisionMaker>();
+		this.CellAreas = new Dictionary<IAreaDecisionMaker>();
 		this.IdleTanks = new ExcessTankFinder();
 
 		this.AllAreas = new Array<Area>();
@@ -128,8 +128,8 @@ export class Brain implements IBrain {
 		this._generalRequestMaker = generalRequestMaker;
 	}
 
-	public GetIaAreaByCell(): Dictionnary<IaArea> {
-		return Dictionnary.To<IaArea>((t) => t.GetCentralCell().Coo(), this.AreaDecisions.map((m) => m.Area));
+	public GetIaAreaByCell(): Dictionary<IaArea> {
+		return Dictionary.To<IaArea>((t) => t.GetCentralCell().Coo(), this.AreaDecisions.map((m) => m.Area));
 	}
 
 	public Update(): void {

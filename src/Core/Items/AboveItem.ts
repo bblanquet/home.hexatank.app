@@ -12,7 +12,7 @@ export class AboveItem extends Item {
 		super();
 		this.Z = ZKind.AboveCell;
 		this.GenerateSprite(this._sprite);
-		this._boundingBox = BoundingBox.Create(
+		this._boundingBox = BoundingBox.New(
 			this._item.GetBoundingBox().X,
 			this._item.GetBoundingBox().Y - AboveItem.shift,
 			this._item.GetBoundingBox().Width,

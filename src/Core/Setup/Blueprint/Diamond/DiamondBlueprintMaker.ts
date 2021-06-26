@@ -6,7 +6,7 @@ import { HFlowerMapBuilder } from '../../Builder/HFlowerMapBuilder';
 import { TriangleFlowerMapBuilder } from '../../Builder/TriangleFlowerMapBuilder';
 import { CheeseFlowerMapBuilder } from '../../Builder/CheeseFlowerMapBuilder';
 import { DonutFlowerMapBuilder } from '../../Builder/DonutFlowerMapBuilder';
-import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { SandDecorator } from '../../../Items/Cell/Decorator/SandDecorator';
 import { IceDecorator } from '../../../Items/Cell/Decorator/IceDecorator';
 import { MapEnv } from '../MapEnv';
@@ -25,9 +25,9 @@ import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
 import { DistanceHelper } from '../../../Items/Unit/MotionHelpers/DistanceHelper';
 
 export class DiamondBlueprintMaker {
-	private _builders: Dictionnary<IMapBuilder>;
+	private _builders: Dictionary<IMapBuilder>;
 	constructor() {
-		this._builders = new Dictionnary<IMapBuilder>();
+		this._builders = new Dictionary<IMapBuilder>();
 		this._builders.Add(MapType.Flower.toString(), new FlowerMapBuilder());
 		this._builders.Add(MapType.Cheese.toString(), new CheeseFlowerMapBuilder());
 		this._builders.Add(MapType.Donut.toString(), new DonutFlowerMapBuilder());
@@ -45,12 +45,12 @@ export class DiamondBlueprintMaker {
 		const mapBuilder = this._builders.Get(MapType.Flower.toString());
 		const coos = mapBuilder.GetAllCoos(4);
 		GameSettings.MapSize = coos.length;
-		const cells = Dictionnary.To<HexAxial>((e) => e.ToString(), coos);
-		const excluded = new Dictionnary<HexAxial>();
+		const cells = Dictionary.To<HexAxial>((e) => e.ToString(), coos);
+		const excluded = new Dictionary<HexAxial>();
 
 		const diamondHq = new DiamondHq();
-		diamondHq.Diamond = MapItem.Create(5, 1);
-		diamondHq.Hq = MapItem.Create(1, 0);
+		diamondHq.Diamond = MapItem.New(5, 1);
+		diamondHq.Hq = MapItem.New(1, 0);
 		diamondHq.isIa = false;
 		diamondHq.PlayerName = '';
 

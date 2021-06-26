@@ -38,7 +38,7 @@ import { IAppService } from '../../../Services/App/IAppService';
 import { GameBlueprint } from '../../../Core/Setup/Blueprint/Game/GameBlueprint';
 import { IAudioService } from '../../../Services/Audio/IAudioService';
 import { IOnlineService } from '../../../Services/Online/IOnlineService';
-import { Dictionnary } from '../../../Core/Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../Core/Utils/Collections/Dictionary';
 
 export default class GameCanvasComponent extends Component<
 	any,
@@ -113,7 +113,7 @@ export default class GameCanvasComponent extends Component<
 		if (this._onlineService.GetOnlinePlayerManager()) {
 			this._onlineService
 				.GetOnlinePlayerManager()
-				.OnPlayersChanged.On((src: any, p: Dictionnary<OnlinePlayer>) => {
+				.OnPlayersChanged.On((src: any, p: Dictionary<OnlinePlayer>) => {
 					this.setState({});
 				});
 		}

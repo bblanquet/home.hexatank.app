@@ -6,6 +6,7 @@ import { AreaRequest } from '../../Utils/AreaRequest';
 import { RequestType } from '../../Utils/RequestType';
 import { CellHelper } from '../../../../Items/Cell/CellHelper';
 import { isNullOrUndefined } from '../../../../Utils/ToolBox';
+import { ErrorHandler } from '../../../../Utils/Exceptions/ErrorHandler';
 
 export class TankHighRequestHandler implements ISimpleRequestHandler {
 	constructor(private _kingdom: Brain, private _mediumRequest: ISimpleRequestHandler) {}
@@ -46,9 +47,7 @@ export class TankHighRequestHandler implements ISimpleRequestHandler {
 		const freeCell = request.Area.GetRandomFreeUnitCell();
 		if (freeCell) {
 			const tank = drop();
-			if (isNullOrUndefined(tank)) {
-				throw 'not possible';
-			}
+			ErrorHandler.ThrowNull(tank);
 			request.Area.AddTroop(tank, freeCell);
 			request.RequestCount -= 1;
 			return true;

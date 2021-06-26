@@ -1,4 +1,4 @@
-export class Dictionnary<T> {
+export class Dictionary<T> {
 	private _values: { [id: string]: T } = {};
 
 	Values(): T[] {
@@ -71,16 +71,16 @@ export class Dictionnary<T> {
 		return this._values;
 	}
 
-	public static To<T>(key: (d: T) => string, list: T[]): Dictionnary<T> {
-		const dictionary = new Dictionnary<T>();
+	public static To<T>(key: (d: T) => string, list: T[]): Dictionary<T> {
+		const dictionary = new Dictionary<T>();
 		list.forEach((item) => {
 			dictionary.Add(key(item), item);
 		});
 		return dictionary;
 	}
 
-	public static New<T>(list: { key: string; value: T }[]): Dictionnary<T> {
-		const dictionnary = new Dictionnary<T>();
+	public static New<T>(list: { key: string; value: T }[]): Dictionary<T> {
+		const dictionnary = new Dictionary<T>();
 		list.forEach((item) => {
 			dictionnary.Add(item.key, item.value);
 		});

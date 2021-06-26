@@ -3,7 +3,7 @@ import { AliveItem } from '../../Items/AliveItem';
 import { Cell } from '../../Items/Cell/Cell';
 import { Item } from '../../Items/Item';
 import { Vehicle } from '../../Items/Unit/Vehicle';
-import { Dictionnary } from '../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { IGameContext } from './IGameContext';
 
@@ -19,10 +19,10 @@ export class CamouflageContext implements IGameContext {
 	public OnGameStatusChanged: LiteEvent<GameStatus> = new LiteEvent<GameStatus>();
 
 	//elements
-	private _cells: Dictionnary<Cell>;
+	private _cells: Dictionary<Cell>;
 	private _vehicles: Vehicle[];
 	constructor(cells: Cell[], unit: Vehicle, vehicles: Vehicle[], arrivelCell: Cell) {
-		this._cells = Dictionnary.To((c) => c.Coo(), cells);
+		this._cells = Dictionary.To((c) => c.Coo(), cells);
 		this._unit = unit;
 		this._vehicles = vehicles;
 

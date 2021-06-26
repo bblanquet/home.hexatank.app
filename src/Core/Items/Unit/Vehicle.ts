@@ -576,7 +576,7 @@ export abstract class Vehicle extends AliveItem
 		}
 
 		this.Camouflage = new BasicItem(
-			BoundingBox.CreateFromBox(this.GetBoundingBox()),
+			BoundingBox.NewFromBox(this.GetBoundingBox()),
 			new CamouflageHandler().GetCamouflage(),
 			ZKind.Sky
 		);
@@ -586,7 +586,7 @@ export abstract class Vehicle extends AliveItem
 		this.Camouflage.SetAlive(() => this.IsAlive() && this.HasCamouflage);
 
 		new Explosion(
-			BoundingBox.CreateFromBox(this.GetBoundingBox()),
+			BoundingBox.NewFromBox(this.GetBoundingBox()),
 			SvgArchive.constructionEffects,
 			ZKind.Sky,
 			false,

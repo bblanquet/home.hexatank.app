@@ -1,14 +1,13 @@
 import { HexAxial } from './../../../Utils/Geometry/HexAxial';
-import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
+import { ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
 
 export class AreaSearch {
-	constructor(private _hexCoos: Dictionnary<HexAxial>) {}
+	constructor(private _hexCoos: Dictionary<HexAxial>) {}
 
 	public GetAreas(coordinate: HexAxial): Array<HexAxial> {
-		if (isNullOrUndefined(coordinate)) {
-			throw 'error';
-		}
+		ErrorHandler.ThrowNull(coordinate);
 
 		var result = new Array<HexAxial>();
 		this.GetAllAreas(coordinate, result);
@@ -16,10 +15,7 @@ export class AreaSearch {
 	}
 
 	private GetAllAreas(currentCoo: HexAxial, result: Array<HexAxial>): void {
-		if (isNullOrUndefined(currentCoo)) {
-			throw 'error';
-		}
-
+		ErrorHandler.ThrowNull(currentCoo);
 		if (result.every((a) => !a.IsEqualed(currentCoo))) {
 			result.push(currentCoo);
 		}
@@ -35,7 +31,7 @@ export class AreaSearch {
 		});
 	}
 
-	static IsBorder(coo: HexAxial, cells: Dictionnary<HexAxial>): boolean {
+	static IsBorder(coo: HexAxial, cells: Dictionary<HexAxial>): boolean {
 		var shifts = [
 			{ Q: -1, R: -2 },
 			{ Q: 2, R: -3 },
@@ -70,9 +66,9 @@ export class AreaSearch {
 	}
 
 	public GetAreaRange(center: HexAxial, range: number): Array<HexAxial> {
-		let outer = new Dictionnary<HexAxial>();
-		let ignored = new Dictionnary<HexAxial>();
-		let inner = Dictionnary.To<HexAxial>((e) => e.ToString(), this.GetRangeOne(center));
+		let outer = new Dictionary<HexAxial>();
+		let ignored = new Dictionary<HexAxial>();
+		let inner = Dictionary.To<HexAxial>((e) => e.ToString(), this.GetRangeOne(center));
 		let currentRange = 1;
 
 		if (range === currentRange) {
@@ -104,7 +100,7 @@ export class AreaSearch {
 
 			if (currentRange < range) {
 				inner = outer;
-				outer = new Dictionnary<HexAxial>();
+				outer = new Dictionary<HexAxial>();
 			}
 		}
 

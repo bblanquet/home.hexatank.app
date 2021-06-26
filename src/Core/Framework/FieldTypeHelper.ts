@@ -17,8 +17,11 @@ import { ShieldField } from '../Items/Cell/Field/Bonus/ShieldField';
 import { Cell } from '../Items/Cell/Cell';
 import { RecordKind } from './Record/Model/Item/State/RecordKind';
 import { Diamond } from '../Items/Cell/Field/Diamond';
+import { ErrorCat, ErrorHandler } from '../Utils/Exceptions/ErrorHandler';
 export class FieldTypeHelper {
 	public static GetDescription(obj: IField): string {
+		ErrorHandler.ThrowNull(obj);
+
 		if (obj instanceof AttackField) {
 			return 'AttackField';
 		} else if (obj instanceof BatteryField) {
@@ -42,7 +45,7 @@ export class FieldTypeHelper {
 		} else if (obj instanceof BlockingField) {
 			return 'BlockingField';
 		}
-		throw 'not found';
+		ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.outOfRange])));
 	}
 
 	public static GetRecordDescription(obj: IField): RecordKind {
@@ -104,7 +107,7 @@ export class FieldTypeHelper {
 		} else if (action === RecordKind.Blocking) {
 			return cell.SetField(new BlockingField(cell, SvgArchive.nature.tree));
 		}
-		throw 'not found';
+		ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.outOfRange])));
 	}
 
 	public static CreateField(obj: string, cell: Cell, hq: IHeadquarter, context: GameContext): IField {
@@ -129,6 +132,6 @@ export class FieldTypeHelper {
 		} else if (obj === 'ShieldField') {
 			return cell.SetField(new ShieldField(cell, hq.Identity, hq));
 		}
-		throw 'not found';
+		ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.outOfRange])));
 	}
 }

@@ -1,6 +1,6 @@
 import { NetworkMessage } from './../../Message/NetworkMessage';
 import { PacketKind } from './../../Message/PacketKind';
-import { Dictionnary } from '../../../Core/Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../Core/Utils/Collections/Dictionary';
 import { IServerSocket } from './IServerSocket';
 import * as io from 'socket.io-client';
 import { INetworkMessage } from '../../Message/INetworkMessage';
@@ -10,10 +10,10 @@ import { LogKind } from '../../../Core/Utils/Logger/LogKind';
 
 export class ServerSocket implements IServerSocket {
 	private _socket: SocketIOClient.Socket;
-	private _obs: Dictionnary<NetworkObserver[]>;
+	private _obs: Dictionary<NetworkObserver[]>;
 
 	constructor() {
-		this._obs = new Dictionnary<NetworkObserver[]>();
+		this._obs = new Dictionary<NetworkObserver[]>();
 		this._socket = io('{{p2p_url}}', { path: '{{p2p_sub_path}}' });
 	}
 	Connect(): void {

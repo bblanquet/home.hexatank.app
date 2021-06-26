@@ -1,16 +1,17 @@
 import { TypeTranslator } from './../../../Items/Cell/Field/TypeTranslator';
 import { Identity, Relationship } from './../../../Items/Identity';
 import { IField } from './../../../Items/Cell/Field/IField';
-import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { Area } from './Area';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { Cell } from '../../../Items/Cell/Cell';
 import { AliveItem } from '../../../Items/AliveItem';
+import { ErrorCat, ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
 
 export class AreaStatus {
-	private _fields: Dictionnary<Array<Cell>>;
-	private _units: Dictionnary<Vehicle>;
-	private _hqFields: Dictionnary<Array<Cell>>;
+	private _fields: Dictionary<Array<Cell>>;
+	private _units: Dictionary<Vehicle>;
+	private _hqFields: Dictionary<Array<Cell>>;
 
 	constructor(private _area: Area) {
 		this._area.GetCells().forEach((c) => {
@@ -21,9 +22,9 @@ export class AreaStatus {
 	}
 
 	private Snapshot(): void {
-		this._fields = new Dictionnary<Array<Cell>>();
-		this._units = new Dictionnary<Vehicle>();
-		this._hqFields = new Dictionnary<Array<Cell>>();
+		this._fields = new Dictionary<Array<Cell>>();
+		this._units = new Dictionary<Vehicle>();
+		this._hqFields = new Dictionary<Array<Cell>>();
 
 		this._area.GetCells().forEach((c) => {
 			this.Update(c);
@@ -61,7 +62,7 @@ export class AreaStatus {
 		this.AttachHqField(cell);
 
 		if (7 < this.GetCellCount()) {
-			throw 'it should not happen';
+			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidType])));
 		}
 	}
 

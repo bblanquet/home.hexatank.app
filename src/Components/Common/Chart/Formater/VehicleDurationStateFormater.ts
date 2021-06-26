@@ -1,6 +1,6 @@
 import { StatusDuration } from '../Model/StatusDuration';
 import { RecordUnit } from '../../../../Core/Framework/Record/Model/Item/RecordUnit';
-import { Dictionnary } from '../../../../Core/Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../../Core/Utils/Collections/Dictionary';
 import { DurationState } from '../Model/DurationState';
 import { RecordStateDuration } from '../Model/RecordStateDuration';
 import { RecordVehicleState } from '../../../../Core/Framework/Record/Model/Item/State/RecordVehicleState';
@@ -12,8 +12,8 @@ import * as luxon from 'luxon';
 import { IDurationFormater } from './IDurationFormater';
 
 export class VehicleDurationStateFormater implements IDurationFormater {
-	public Format(record: RecordContent, compRecord: RecordContent): Dictionnary<StatusDuration[]> {
-		const result = new Dictionnary<StatusDuration[]>();
+	public Format(record: RecordContent, compRecord: RecordContent): Dictionary<StatusDuration[]> {
+		const result = new Dictionary<StatusDuration[]>();
 		const startDate = record.StartDate;
 		const endDate = record.EndDate < compRecord.EndDate ? record.EndDate : compRecord.EndDate;
 		record.Hqs.Keys().forEach((hqId) => {

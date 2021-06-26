@@ -7,7 +7,7 @@ import { HFlowerMapBuilder } from '../../Builder/HFlowerMapBuilder';
 import { TriangleFlowerMapBuilder } from '../../Builder/TriangleFlowerMapBuilder';
 import { CheeseFlowerMapBuilder } from '../../Builder/CheeseFlowerMapBuilder';
 import { DonutFlowerMapBuilder } from '../../Builder/DonutFlowerMapBuilder';
-import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { SandDecorator } from '../../../Items/Cell/Decorator/SandDecorator';
 import { IceDecorator } from '../../../Items/Cell/Decorator/IceDecorator';
 import { MapEnv } from '../MapEnv';
@@ -22,9 +22,9 @@ import { IMapBuilder } from '../../Builder/IPlaygroundBuilder';
 import { GameSettings } from '../../../Framework/GameSettings';
 
 export class PowerBluePrintMaker {
-	private _builders: Dictionnary<IMapBuilder>;
+	private _builders: Dictionary<IMapBuilder>;
 	constructor() {
-		this._builders = new Dictionnary<IMapBuilder>();
+		this._builders = new Dictionary<IMapBuilder>();
 		this._builders.Add(MapType.Flower.toString(), new FlowerMapBuilder());
 		this._builders.Add(MapType.Cheese.toString(), new CheeseFlowerMapBuilder());
 		this._builders.Add(MapType.Donut.toString(), new DonutFlowerMapBuilder());
@@ -42,10 +42,10 @@ export class PowerBluePrintMaker {
 		const mapBuilder = this._builders.Get(MapType.Flower.toString());
 		const coos = mapBuilder.GetAllCoos(4);
 		GameSettings.MapSize = coos.length;
-		const cells = Dictionnary.To<HexAxial>((e) => e.ToString(), coos);
+		const cells = Dictionary.To<HexAxial>((e) => e.ToString(), coos);
 		const areas = mapBuilder.GetAreaCoos(4);
 		const farthestPointManager = new FartestPointsFinder();
-		const excluded = new Dictionnary<HexAxial>();
+		const excluded = new Dictionary<HexAxial>();
 
 		const spots = farthestPointManager.GetPoints(areas, cells, 2);
 		//add hqs
@@ -59,11 +59,11 @@ export class PowerBluePrintMaker {
 				excluded.Add(p.ToString(), p);
 			});
 			if (index === 0) {
-				blueprint.Arrival = MapItem.Create(spot.Q, spot.R);
+				blueprint.Arrival = MapItem.New(spot.Q, spot.R);
 			}
 
 			if (index === 1) {
-				blueprint.Goal = MapItem.Create(spot.Q, spot.R);
+				blueprint.Goal = MapItem.New(spot.Q, spot.R);
 			}
 		});
 

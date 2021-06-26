@@ -1,10 +1,10 @@
 import { BlueprintSetup } from '../Form/BlueprintSetup';
 import { OnlinePlayer } from '../../Network/OnlinePlayer';
-import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
+import { Dictionary } from '../../Core/Utils/Collections/Dictionary';
 import { Message } from './Message';
 
 export class LobbyState {
-	public Players: Dictionnary<OnlinePlayer>;
+	public Players: Dictionary<OnlinePlayer>;
 	public Player: OnlinePlayer;
 
 	//???

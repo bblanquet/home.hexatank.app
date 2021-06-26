@@ -1,9 +1,9 @@
-import { Dictionnary } from './Dictionnary';
+import { Dictionary } from './Dictionary';
 export class Groups<TData> {
-	private _list: Dictionnary<Array<TData>>;
+	private _list: Dictionary<Array<TData>>;
 
 	constructor() {
-		this._list = new Dictionnary<Array<TData>>();
+		this._list = new Dictionary<Array<TData>>();
 	}
 
 	public Add(key: string, data: TData) {

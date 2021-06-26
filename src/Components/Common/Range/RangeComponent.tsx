@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 import { h, Component } from 'preact';
-import { Dictionnary } from '../../../Core/Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../Core/Utils/Collections/Dictionary';
 import { ColorKind } from '../Button/Stylish/ColorKind';
 import SmActiveButtonComponent from '../Button/Stylish/SmActiveButtonComponent';
 import Icon from '../Icon/IconComponent';
@@ -11,7 +11,7 @@ export default class RangeComponent extends Component<
 > {
 	private _toolTip: HTMLElement;
 	private _input: HTMLInputElement;
-	private _indexes: Dictionnary<number> = new Dictionnary<number>();
+	private _indexes: Dictionary<number> = new Dictionary<number>();
 	constructor() {
 		super();
 	}

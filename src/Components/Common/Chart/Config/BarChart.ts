@@ -1,16 +1,16 @@
 import * as Chart from 'chart.js';
 import * as Zoom from 'chartjs-plugin-zoom';
-import { Dictionnary } from '../../../../Core/Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../../Core/Utils/Collections/Dictionary';
 import { LiteEvent } from '../../../../Core/Utils/Events/LiteEvent';
 import { DurationState } from '../Model/DurationState';
 import { StatusDuration } from '../Model/StatusDuration';
 import { IChart } from './IChart';
 
-export class BarChart implements IChart<Dictionnary<StatusDuration[]>> {
+export class BarChart implements IChart<Dictionary<StatusDuration[]>> {
 	public OnClickElement: LiteEvent<string>;
 
-	private _charts: Dictionnary<HTMLCanvasElement>;
-	private _colors: Dictionnary<string>;
+	private _charts: Dictionary<HTMLCanvasElement>;
+	private _colors: Dictionary<string>;
 	constructor() {
 		Chart.Chart.register(
 			Chart.LineController,
@@ -23,15 +23,15 @@ export class BarChart implements IChart<Dictionnary<StatusDuration[]>> {
 			Zoom.default
 		);
 		this.OnClickElement = new LiteEvent<string>();
-		this._charts = new Dictionnary<HTMLCanvasElement>();
-		this._colors = new Dictionnary<string>();
+		this._charts = new Dictionary<HTMLCanvasElement>();
+		this._colors = new Dictionary<string>();
 		this._colors.Add(DurationState[DurationState.None], 'rgba(0,0,0,0)');
 		this._colors.Add(DurationState[DurationState.Ok], '#32CD32');
 		this._colors.Add(DurationState[DurationState.Wrong], '#DC143C');
 		this._colors.Add(DurationState[DurationState.Late], '#FF7F50');
 	}
 
-	public Exist(index: number, data: Dictionnary<StatusDuration[]>): boolean {
+	public Exist(index: number, data: Dictionary<StatusDuration[]>): boolean {
 		return data.Keys().some((key) => index < data.Get(key).length - 1);
 	}
 
@@ -47,7 +47,7 @@ export class BarChart implements IChart<Dictionnary<StatusDuration[]>> {
 		return result;
 	}
 
-	public GetCanvas(key: string, durations: Dictionnary<StatusDuration[]>): HTMLCanvasElement {
+	public GetCanvas(key: string, durations: Dictionary<StatusDuration[]>): HTMLCanvasElement {
 		if (this._charts.Exist(key)) {
 			return this._charts.Get(key);
 		} else {
@@ -120,7 +120,7 @@ export class BarChart implements IChart<Dictionnary<StatusDuration[]>> {
 		}
 	}
 
-	private Format(unitDurations: Dictionnary<StatusDuration[]>) {
+	private Format(unitDurations: Dictionary<StatusDuration[]>) {
 		const lines = new Array<any>();
 		let index = 0;
 		while (this.Exist(index, unitDurations)) {

@@ -9,14 +9,14 @@ import { INetworkMessage } from '../Message/INetworkMessage';
 import { PeerSocket } from './Peer/PeerSocket';
 import { NetworkMessage } from '../Message/NetworkMessage';
 import { PacketKind } from '../Message/PacketKind';
-import { Dictionnary } from '../../Core/Utils/Collections/Dictionnary';
+import { Dictionary } from '../../Core/Utils/Collections/Dictionary';
 import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
 import { KindEventObserver } from '../../Core/Utils/Events/KindEventObserver';
 import { ProtocolKind } from '../Message/ProtocolKind';
 import { PeerContext } from './Peer/PeerContext';
 
 export class SocketWrapper implements ISocketWrapper {
-	protected PeerSockets: Dictionnary<PeerSocket> = new Dictionnary<PeerSocket>();
+	protected PeerSockets: Dictionary<PeerSocket> = new Dictionary<PeerSocket>();
 	protected ServerSocket: IServerSocket;
 	protected Owner: string;
 	protected RoomName: string;

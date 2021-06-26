@@ -9,6 +9,7 @@ import { AliveItem } from '../../../Items/AliveItem';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 import { MonitoredOrder } from '../../Order/MonitoredOrder';
 import { TypeTranslator } from '../../../Items/Cell/Field/TypeTranslator';
+import { ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
 
 export class TroopDecisionMaker {
 	private _changePositionTimer: ITimer;
@@ -19,12 +20,8 @@ export class TroopDecisionMaker {
 	private _target: AliveItem;
 
 	constructor(public CurrentPatrolDestination: Cell, public Tank: Tank, public Area: IaArea) {
-		if (isNullOrUndefined(this.CurrentPatrolDestination)) {
-			throw 'invalid destination';
-		}
-		if (isNullOrUndefined(this.Tank)) {
-			throw 'not possible';
-		}
+		ErrorHandler.ThrowNull(this.CurrentPatrolDestination);
+		ErrorHandler.ThrowNull(this.Tank);
 
 		this._changePositionTimer = new TimeTimer(3000);
 		this._cancelOrderTimer = new TimeTimer(3000);
@@ -41,9 +38,7 @@ export class TroopDecisionMaker {
 	}
 
 	public Update(): void {
-		if (isNullOrUndefined(this.Tank)) {
-			throw 'not possible';
-		}
+		ErrorHandler.ThrowNull(this.Tank);
 
 		if (this.IsPratrolDone) {
 			if (this._changePositionTimer.IsElapsed()) {
@@ -113,10 +108,7 @@ export class TroopDecisionMaker {
 	}
 
 	public Cancel(): void {
-		if (isNullOrUndefined(this.Tank)) {
-			throw 'not possible';
-		}
-
+		ErrorHandler.ThrowNull(this.Tank);
 		this.Tank.CancelOrder();
 	}
 }

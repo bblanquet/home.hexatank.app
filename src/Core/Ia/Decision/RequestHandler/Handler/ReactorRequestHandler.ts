@@ -1,4 +1,4 @@
-import { Dictionnary } from './../../../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { GameContext } from '../../../../Setup/Context/GameContext';
 import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
@@ -30,7 +30,7 @@ export class ReactorRequestHandler implements ISimpleRequestHandler {
 	}
 
 	private GetMostIsolatedCell(cells: Cell[]): Cell {
-		const cs = new Dictionnary<Array<Cell>>();
+		const cs = new Dictionary<Array<Cell>>();
 		cells.forEach((c) => {
 			const aroundCount = c.GetFilteredNearby((e) => e && !e.IsBlocked()).length;
 			const key = aroundCount.toString();

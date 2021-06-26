@@ -1,4 +1,4 @@
-import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { SimpleFloor } from '../../../Items/Environment/SimpleFloor';
 import { GameContext } from '../../Context/GameContext';
 import { GameSettings } from '../../../Framework/GameSettings';
@@ -18,7 +18,7 @@ import { HqRender } from '../Hq/HqRender';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 export class GameRenderer {
 	public Render(blueprint: GameBlueprint): GameContext {
-		const cells = new Dictionnary<Cell>();
+		const cells = new Dictionary<Cell>();
 		let playerHq: Headquarter = null;
 		let hqs: Headquarter[] = [];
 
@@ -30,7 +30,7 @@ export class GameRenderer {
 		});
 
 		const areas = new AreaSearch(
-			Dictionnary.To((c) => c.ToString(), cells.Values().map((c) => c.GetHexCoo()))
+			Dictionary.To((c) => c.ToString(), cells.Values().map((c) => c.GetHexCoo()))
 		).GetAreas(new HexAxial(blueprint.CenterItem.Position.Q, blueprint.CenterItem.Position.R));
 		this.SetLands(cells, blueprint.MapMode, areas);
 		this.AddClouds();
@@ -69,7 +69,7 @@ export class GameRenderer {
 		new Cloud(1200, 20 * GameSettings.Size, 1600, SvgArchive.nature.clouds[4]);
 	}
 
-	private SetLands(cells: Dictionnary<Cell>, mode: MapEnv, middleAreas: HexAxial[]) {
+	private SetLands(cells: Dictionary<Cell>, mode: MapEnv, middleAreas: HexAxial[]) {
 		middleAreas.forEach((corner) => {
 			const cell = cells.Get(corner.ToString());
 			const boundingBox = new BoundingBox();
@@ -91,7 +91,7 @@ export class GameRenderer {
 		});
 	}
 
-	private SetHqLand(cells: Dictionnary<Cell>, sprite: string, middleAreas: HexAxial[], z: number = 0) {
+	private SetHqLand(cells: Dictionary<Cell>, sprite: string, middleAreas: HexAxial[], z: number = 0) {
 		middleAreas.forEach((corner) => {
 			const cell = cells.Get(corner.ToString());
 			const boundingBox = new BoundingBox();

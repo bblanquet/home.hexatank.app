@@ -5,7 +5,7 @@ import { DiamondBlueprintMaker } from './../../Core/Setup/Blueprint/Diamond/Diam
 import { Singletons, SingletonKey } from '../../Singletons';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
 import { GameBlueprintMaker } from '../../Core/Setup/Blueprint/Game/GameBlueprintMaker';
-import { Dictionnary } from './../../Core/Utils/Collections/Dictionnary';
+import { Dictionary } from '../../Core/Utils/Collections/Dictionary';
 import { CampaignKind } from './CampaignKind';
 import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
 import { MapEnv } from '../../Core/Setup/Blueprint/MapEnv';
@@ -13,26 +13,26 @@ import { MapType } from '../../Core/Setup/Blueprint/MapType';
 import { ICampaignService } from './ICampaignService';
 
 export class CampaignService implements ICampaignService {
-	private _training: Dictionnary<IBlueprint>;
-	private _red: Dictionnary<GameBlueprint>;
-	private _blue: Dictionnary<GameBlueprint>;
+	private _training: Dictionary<IBlueprint>;
+	private _red: Dictionary<GameBlueprint>;
+	private _blue: Dictionary<GameBlueprint>;
 	private _playerProfil: IPlayerProfilService;
 
 	constructor() {
 		this._playerProfil = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 
-		this._training = new Dictionnary<IBlueprint>();
+		this._training = new Dictionary<IBlueprint>();
 		this._training.Add((1).toString(), new CamouflageBluePrintMaker().GetBluePrint());
 		this._training.Add((2).toString(), new PowerBluePrintMaker().GetBluePrint());
 		this._training.Add((3).toString(), new DiamondBlueprintMaker().GetBluePrint());
 
-		this._red = new Dictionnary<GameBlueprint>();
+		this._red = new Dictionary<GameBlueprint>();
 		this._red.Add((1).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapType.Flower, MapEnv.forest, 2));
 		this._red.Add((2).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapType.Donut, MapEnv.forest, 2));
 		this._red.Add((3).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapType.H, MapEnv.forest, 2));
 		this._red.Add((4).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapType.Triangle, MapEnv.forest, 2));
 
-		this._blue = new Dictionnary<GameBlueprint>();
+		this._blue = new Dictionary<GameBlueprint>();
 		this._blue.Add((1).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapType.Flower, MapEnv.sand, 2));
 		this._blue.Add((2).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapType.Donut, MapEnv.sand, 2));
 		this._blue.Add((3).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapType.H, MapEnv.sand, 2));

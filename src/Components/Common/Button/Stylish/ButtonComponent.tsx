@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 import { AudioArchive } from '../../../../Core/Framework/AudioArchiver';
-import { Dictionnary } from '../../../../Core/Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../../Core/Utils/Collections/Dictionary';
 import { Singletons, SingletonKey } from '../../../../Singletons';
 import { IAudioService } from '../../../../Services/Audio/IAudioService';
 import { ColorKind } from './ColorKind';
@@ -48,6 +48,6 @@ export default class ButtonComponent extends Component<
 		);
 	}
 
-	private _primary: Dictionnary<string> = new Dictionnary<string>();
-	private _secondary: Dictionnary<string> = new Dictionnary<string>();
+	private _primary: Dictionary<string> = new Dictionary<string>();
+	private _secondary: Dictionary<string> = new Dictionary<string>();
 }

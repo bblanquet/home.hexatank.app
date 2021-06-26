@@ -5,7 +5,7 @@ export class MapItem {
 	public Type: DecorationType;
 	public Position: LightHexAxial;
 
-	public static Create(q: number, r: number): MapItem {
+	public static New(q: number, r: number): MapItem {
 		const m = new MapItem();
 		m.Position = new LightHexAxial();
 		m.Type = DecorationType.None;

@@ -2,7 +2,7 @@ import { IHqGameContext } from './IHqGameContext';
 import { Identity } from '../../Items/Identity';
 import { Tank } from '../../Items/Unit/Tank';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
-import { Dictionnary } from '../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { Item } from '../../Items/Item';
@@ -24,13 +24,13 @@ export class GameContext implements IHqGameContext {
 	//elements
 	private _playerHq: Headquarter;
 	private _hqs: Headquarter[];
-	private _cells: Dictionnary<Cell>;
-	private _vehicles: Dictionnary<Vehicle> = new Dictionnary<Vehicle>();
+	private _cells: Dictionary<Cell>;
+	private _vehicles: Dictionary<Vehicle> = new Dictionary<Vehicle>();
 	private _vehicleCount: number = 0;
 	constructor(cells: Cell[], hqs: Headquarter[] = null, playerHq: Headquarter = null) {
 		this._playerHq = playerHq;
 		this._hqs = hqs;
-		this._cells = Dictionnary.To((c) => c.Coo(), cells);
+		this._cells = Dictionary.To((c) => c.Coo(), cells);
 
 		if (hqs) {
 			this._hqs.forEach((hq) => {
@@ -76,7 +76,7 @@ export class GameContext implements IHqGameContext {
 		return this._cells.Values();
 	}
 
-	public GetCellDictionary(): Dictionnary<Cell> {
+	public GetCellDictionary(): Dictionary<Cell> {
 		return this._cells;
 	}
 

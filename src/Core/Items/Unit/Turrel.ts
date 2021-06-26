@@ -100,7 +100,7 @@ export class Turrel extends Item implements IRotatable {
 	private Shoot() {
 		this.IsAnimated = true;
 		const missile = new Missile(
-			BoundingBox.Create(
+			BoundingBox.New(
 				this.GetBoundingBox().X,
 				this.GetBoundingBox().Y,
 				this.GetBoundingBox().Width,

@@ -1,5 +1,5 @@
 import { Identity, Relationship } from './../Identity';
-import { Dictionnary } from './../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { ZKind } from './../ZKind';
 import { ILiteEvent } from './../../Utils/Events/ILiteEvent';
 import { BouncingScaleDownAnimator } from './../Animator/BouncingScaleDownAnimator';
@@ -30,6 +30,7 @@ import { IHeadquarter } from './Field/Hq/IHeadquarter';
 import { TypeTranslator } from './Field/TypeTranslator';
 import { StaticLogger } from '../../Utils/Logger/StaticLogger';
 import { LogKind } from '../../Utils/Logger/LogKind';
+import { ErrorCat, ErrorHandler } from '../../Utils/Exceptions/ErrorHandler';
 
 export class Cell extends Item implements ICell<Cell>, ISelectable {
 	private _selectionCircle: PIXI.Circle;
@@ -46,7 +47,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	public OnVehicleChanged: ILiteEvent<Vehicle> = new LiteEvent<Vehicle>();
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 
-	private _cellStateSprites: Dictionnary<Array<string>>;
+	private _cellStateSprites: Dictionary<Array<string>>;
 	private _occupier: IMovable;
 	private _decorationSprite: string;
 	private _shadowAnimator: IAnimator = null;
@@ -58,10 +59,10 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 	private _destroyedFieldFunc: any = this.HandleFieldDestroyed.bind(this);
 
-	constructor(properties: CellProperties, private _cells: Dictionnary<Cell>) {
+	constructor(properties: CellProperties, private _cells: Dictionary<Cell>) {
 		super();
 		this.Z = ZKind.Cell;
-		this._cellStateSprites = new Dictionnary<Array<string>>();
+		this._cellStateSprites = new Dictionary<Array<string>>();
 		this.Properties = properties;
 		this.SetField(new BasicField(this));
 		this.IsCentralRef = true;
@@ -176,11 +177,11 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 	public SetField<T extends IField>(nextField: T): T {
 		if (!nextField) {
-			throw `Cannot replace field with null`;
+			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
 		}
 		if (this._field) {
 			if (nextField instanceof BasicField === this._field instanceof BasicField) {
-				throw `Cannot replace field with another same type field`;
+				ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidType])));
 			}
 			this._field.OnDestroyed.Off(this._destroyedFieldFunc);
 			((this._field as unknown) as Item).Destroy();

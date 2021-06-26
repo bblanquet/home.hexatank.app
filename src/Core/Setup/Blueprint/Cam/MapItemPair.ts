@@ -4,7 +4,7 @@ export class MapItemPair {
 	Arrival: MapItem;
 	constructor() {}
 
-	public static Create(departure: MapItem, arrival: MapItem): MapItemPair {
+	public static New(departure: MapItem, arrival: MapItem): MapItemPair {
 		const mapitemPair = new MapItemPair();
 		mapitemPair.Arrival = arrival;
 		mapitemPair.Departure = departure;

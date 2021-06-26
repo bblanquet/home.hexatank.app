@@ -1,11 +1,11 @@
-import { Dictionnary } from '../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
 import * as PIXI from 'pixi.js';
 import { Item } from '../../Items/Item';
 
 export class RenderingLayers {
-	private _layers: Dictionnary<PIXI.Container>;
+	private _layers: Dictionary<PIXI.Container>;
 	constructor(viewportStage: any, stage: PIXI.Container) {
-		this._layers = new Dictionnary<PIXI.Container>();
+		this._layers = new Dictionary<PIXI.Container>();
 		[ -1, 0, 1, 2, 3, 4, 5 ].forEach((z) => {
 			var group = new PIXI.Container();
 			viewportStage.addChild(group);

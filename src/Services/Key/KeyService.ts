@@ -5,15 +5,17 @@ import { AppService } from './../App/AppService';
 import { SingletonKey } from '../../Singletons';
 import { IKeyService } from './IKeyService';
 import { DiamondAppService } from '../App/DiamondAppService';
+import { ErrorCat, ErrorHandler } from '../../Core/Utils/Exceptions/ErrorHandler';
 export class KeyService implements IKeyService {
 	private _key: SingletonKey = SingletonKey.None;
 	GetAppKey(): SingletonKey {
 		if (this._key === SingletonKey.None) {
-			throw new Error('Not supposed to ask key when app is not instantiated.');
+			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
 		}
 		return this._key;
 	}
 	DefineKey(appService: any): void {
+		ErrorHandler.ThrowNull(appService);
 		if (appService instanceof AppService) {
 			this._key = SingletonKey.App;
 		} else if (appService instanceof RecordAppService) {
@@ -25,7 +27,7 @@ export class KeyService implements IKeyService {
 		} else if (appService instanceof DiamondAppService) {
 			this._key = SingletonKey.DiamondApp;
 		} else {
-			throw new Error('Has to be an app service.');
+			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.outOfRange])));
 		}
 	}
 

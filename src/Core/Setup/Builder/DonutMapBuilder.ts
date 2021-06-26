@@ -1,8 +1,9 @@
-import { Dictionnary } from './../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { IMapBuilder } from './IPlaygroundBuilder';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 import { CircleMapBuilder } from './CircleMapBuilder';
+import { ErrorCat, ErrorHandler } from '../../Utils/Exceptions/ErrorHandler';
 
 export class DonutMapBuilder implements IMapBuilder {
 	public GetRefCoo(ranges: number): HexAxial {
@@ -12,11 +13,11 @@ export class DonutMapBuilder implements IMapBuilder {
 	public GetAllCoos(ranges: number): HexAxial[] {
 		const empty = ranges / 2;
 		if (ranges < 2) {
-			throw new Error();
+			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
 		}
 
 		if (ranges % 2 !== 0) {
-			throw new Error();
+			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
 		}
 
 		const cells = new Array<HexAxial>();
@@ -34,12 +35,12 @@ export class DonutMapBuilder implements IMapBuilder {
 	}
 
 	public GetAreaCoos(ranges: number): HexAxial[] {
-		const coordinates = new Dictionnary<HexAxial>();
+		const coordinates = new Dictionary<HexAxial>();
 		new CircleMapBuilder().GetAllCoos(ranges).forEach((coordinate) => {
 			coordinates.Add(coordinate.ToString(), coordinate);
 		});
 
-		const donutCoo = new Dictionnary<HexAxial>();
+		const donutCoo = new Dictionary<HexAxial>();
 		this.GetAllCoos(ranges).forEach((coordinate) => {
 			donutCoo.Add(coordinate.ToString(), coordinate);
 		});

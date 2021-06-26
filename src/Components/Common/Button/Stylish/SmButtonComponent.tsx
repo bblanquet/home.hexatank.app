@@ -1,10 +1,10 @@
 import { h, Component } from 'preact';
-import { Dictionnary } from '../../../../Core/Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../../Core/Utils/Collections/Dictionary';
 import { ColorKind } from './ColorKind';
 
 export default class SmButtonComponent extends Component<{ callBack: () => void; color: ColorKind }, any> {
-	private _primary: Dictionnary<string> = new Dictionnary<string>();
-	private _secondary: Dictionnary<string> = new Dictionnary<string>();
+	private _primary: Dictionary<string> = new Dictionary<string>();
+	private _secondary: Dictionary<string> = new Dictionary<string>();
 
 	constructor() {
 		super();

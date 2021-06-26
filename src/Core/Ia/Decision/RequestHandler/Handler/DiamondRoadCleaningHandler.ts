@@ -6,7 +6,7 @@ import { RequestType } from '../../Utils/RequestType';
 import { Cell } from '../../../../Items/Cell/Cell';
 import { AStarEngine } from '../../../AStarEngine';
 import { TypeTranslator } from '../../../../Items/Cell/Field/TypeTranslator';
-import { Dictionnary } from '../../../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { Tank } from '../../../../Items/Unit/Tank';
 
 export class DiamondRoadCleaningHandler implements ISimpleRequestHandler {
@@ -51,7 +51,7 @@ export class DiamondRoadCleaningHandler implements ISimpleRequestHandler {
 		if (road === null) {
 			return [];
 		} else {
-			const result = new Dictionnary<Cell>();
+			const result = new Dictionary<Cell>();
 			road.forEach((r) => {
 				r
 					.GetAll(1)

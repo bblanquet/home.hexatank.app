@@ -204,7 +204,7 @@ export default class GuestComponent extends Component<
 
 	private Join(roomName: string): void {
 		this._socket.Emit(
-			NetworkMessage.Create<any>(PacketKind.Password, { Password: this.state.Password, RoomName: roomName })
+			NetworkMessage.New<any>(PacketKind.Password, { Password: this.state.Password, RoomName: roomName })
 		);
 	}
 
@@ -213,7 +213,7 @@ export default class GuestComponent extends Component<
 	}
 
 	private Refresh() {
-		this._socket.Emit(NetworkMessage.Create(PacketKind.Rooms, {}));
+		this._socket.Emit(NetworkMessage.New(PacketKind.Rooms, {}));
 	}
 
 	public OnAvailable(message: NetworkMessage<{ IsAvailable: boolean; RoomName: string }>): void {
@@ -240,13 +240,13 @@ export default class GuestComponent extends Component<
 	}
 
 	private OnConnect(m: NetworkMessage<any>): void {
-		this._socket.Emit(NetworkMessage.Create<any>(PacketKind.Rooms, {}));
+		this._socket.Emit(NetworkMessage.New<any>(PacketKind.Rooms, {}));
 	}
 
 	private OnPassword(m: NetworkMessage<{ Password: boolean; RoomName: string }>): void {
 		if (m.Content.Password) {
 			this._socket.Emit(
-				NetworkMessage.Create<any>(PacketKind.Available, {
+				NetworkMessage.New<any>(PacketKind.Available, {
 					RoomName: m.Content.RoomName,
 					PlayerName: this.state.PlayerName
 				})

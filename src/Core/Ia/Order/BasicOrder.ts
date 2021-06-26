@@ -5,6 +5,7 @@ import { Cell } from '../../Items/Cell/Cell';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { OrderKind } from './OrderKind';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
+import { ErrorHandler } from '../../Utils/Exceptions/ErrorHandler';
 
 export class BasicOrder extends Order {
 	protected CurrentStep: Cell;
@@ -12,9 +13,7 @@ export class BasicOrder extends Order {
 
 	constructor(protected Vehicle: Vehicle, protected Road: Cell[]) {
 		super();
-		if (isNullOrUndefined(this.Road) || 0 === this.Road.length) {
-			throw 'invalid road';
-		}
+		ErrorHandler.ThrowNullOrEmpty(this.Road);
 		this.Destination = Road[Road.length - 1];
 	}
 

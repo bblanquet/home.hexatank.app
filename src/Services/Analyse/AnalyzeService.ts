@@ -15,8 +15,8 @@ export class AnalyzeService implements IAnalyzeService {
 			]
 		});
 	}
-	Analyze(message: string): void {
-		this._analytics.track(message);
+	Analyze(message: string, payload: any): void {
+		this._analytics.track(message, payload);
 		this._analytics.page();
 	}
 }

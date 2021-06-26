@@ -1,3 +1,4 @@
+import { ErrorCat, ErrorHandler } from '../Exceptions/ErrorHandler';
 import { HexAxial } from './HexAxial';
 import { HexOffset } from './HexOffset';
 import { Point } from './Point';
@@ -24,7 +25,7 @@ export class HexCube {
 		this.Y = y;
 		this.Z = z;
 		if (!this.IsLegal()) {
-			throw 'cube issue';
+			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
 		}
 	}
 

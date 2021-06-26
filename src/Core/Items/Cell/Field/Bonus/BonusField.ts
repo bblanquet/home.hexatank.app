@@ -13,6 +13,7 @@ import { InteractionContext } from '../../../../Interaction/InteractionContext';
 import { IActiveContainer } from '../IActiveContainer';
 import { ZKind } from '../../../ZKind';
 import { Explosion } from '../../../Unit/Explosion';
+import { ErrorCat, ErrorHandler } from '../../../../Utils/Exceptions/ErrorHandler';
 
 export abstract class BonusField extends Field implements IActiveContainer {
 	private _animator: IAnimator;
@@ -75,7 +76,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 
 	public Update(viewX: number, viewY: number): void {
 		if (this.GetCell().GetField() !== this) {
-			throw 'wrong field ' + this.constructor.name;
+			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidComputation])));
 		}
 
 		if (!this._animator.IsDone) {

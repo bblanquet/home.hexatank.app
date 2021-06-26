@@ -21,9 +21,6 @@ export class ShieldField extends AliveBonusField {
 	constructor(cell: Cell, id: Identity, protected Hq: IHeadquarter) {
 		super(cell, [], id, Hq);
 		this._fixTimer = new TimeTimer(1000);
-		if (isNullOrUndefined(this.Hq)) {
-			throw `ShieldField not supposed to be there`;
-		}
 		this._shieldAppearance = new ShieldAppearance(this);
 		this.Hq.AddField(this, cell);
 		if (!this.Hq.IsCovered(cell)) {

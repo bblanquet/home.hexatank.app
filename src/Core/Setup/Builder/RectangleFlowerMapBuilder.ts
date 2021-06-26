@@ -1,5 +1,5 @@
 import { RectangleMapBuilder } from './RectangleMapBuilder';
-import { Dictionnary } from './../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { IMapBuilder } from './IPlaygroundBuilder';
 import { HexAxial } from '../../Utils/Geometry/HexAxial';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
@@ -14,7 +14,7 @@ export class RectangleFlowerMapBuilder implements IMapBuilder {
 	public GetAllCoos(ranges: number): HexAxial[] {
 		const r = ranges + 4;
 		const rectangle = this._rectangleBuilder.GetAllCoos(r);
-		const coordinates = new Dictionnary<HexAxial>();
+		const coordinates = new Dictionary<HexAxial>();
 		rectangle.forEach((initCoo) => {
 			coordinates.Add(initCoo.ToString(), initCoo);
 		});
@@ -39,7 +39,7 @@ export class RectangleFlowerMapBuilder implements IMapBuilder {
 
 	public GetAreaCoos(ranges: number): Array<HexAxial> {
 		const r = ranges + 4;
-		const coordinates = new Dictionnary<HexAxial>();
+		const coordinates = new Dictionary<HexAxial>();
 		const rectangle = this.GetAllCoos(ranges);
 		rectangle.forEach((coordinate) => {
 			coordinates.Add(coordinate.ToString(), coordinate);

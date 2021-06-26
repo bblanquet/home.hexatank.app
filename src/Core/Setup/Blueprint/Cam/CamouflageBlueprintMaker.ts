@@ -7,7 +7,7 @@ import { HFlowerMapBuilder } from '../../Builder/HFlowerMapBuilder';
 import { TriangleFlowerMapBuilder } from '../../Builder/TriangleFlowerMapBuilder';
 import { CheeseFlowerMapBuilder } from '../../Builder/CheeseFlowerMapBuilder';
 import { DonutFlowerMapBuilder } from '../../Builder/DonutFlowerMapBuilder';
-import { Dictionnary } from '../../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { SandDecorator } from '../../../Items/Cell/Decorator/SandDecorator';
 import { IceDecorator } from '../../../Items/Cell/Decorator/IceDecorator';
 import { MapEnv } from '../MapEnv';
@@ -23,9 +23,9 @@ import { GameSettings } from '../../../Framework/GameSettings';
 import { CamouflageBlueprint } from './CamouflageBlueprint';
 
 export class CamouflageBluePrintMaker {
-	private _builders: Dictionnary<IMapBuilder>;
+	private _builders: Dictionary<IMapBuilder>;
 	constructor() {
-		this._builders = new Dictionnary<IMapBuilder>();
+		this._builders = new Dictionary<IMapBuilder>();
 		this._builders.Add(MapType.Flower.toString(), new FlowerMapBuilder());
 		this._builders.Add(MapType.Cheese.toString(), new CheeseFlowerMapBuilder());
 		this._builders.Add(MapType.Donut.toString(), new DonutFlowerMapBuilder());
@@ -43,26 +43,26 @@ export class CamouflageBluePrintMaker {
 		const mapBuilder = this._builders.Get(MapType.Rectangle.toString());
 		const coos = mapBuilder.GetAllCoos(6);
 		GameSettings.MapSize = coos.length;
-		const cells = Dictionnary.To<HexAxial>((e) => e.ToString(), coos);
+		const cells = Dictionary.To<HexAxial>((e) => e.ToString(), coos);
 		const areas = mapBuilder.GetAreaCoos(6);
 		const farthestPointManager = new FartestPointsFinder();
-		const excluded = new Dictionnary<HexAxial>();
+		const excluded = new Dictionary<HexAxial>();
 
 		const patrolCells = [
-			MapItem.Create(1, 5),
-			MapItem.Create(6, 6),
-			MapItem.Create(8, 4),
-			MapItem.Create(2, 3),
-			MapItem.Create(2, 1),
-			MapItem.Create(8, 1),
-			MapItem.Create(4, 0),
-			MapItem.Create(7, 0)
+			MapItem.New(1, 5),
+			MapItem.New(6, 6),
+			MapItem.New(8, 4),
+			MapItem.New(2, 3),
+			MapItem.New(2, 1),
+			MapItem.New(8, 1),
+			MapItem.New(4, 0),
+			MapItem.New(7, 0)
 		];
 		blueprint.Patrols = [
-			MapItemPair.Create(patrolCells[0], patrolCells[1]),
-			MapItemPair.Create(patrolCells[2], patrolCells[3]),
-			MapItemPair.Create(patrolCells[4], patrolCells[5]),
-			MapItemPair.Create(patrolCells[6], patrolCells[7])
+			MapItemPair.New(patrolCells[0], patrolCells[1]),
+			MapItemPair.New(patrolCells[2], patrolCells[3]),
+			MapItemPair.New(patrolCells[4], patrolCells[5]),
+			MapItemPair.New(patrolCells[6], patrolCells[7])
 		];
 
 		const spots = farthestPointManager.GetPoints(areas, cells, 2);
@@ -78,11 +78,11 @@ export class CamouflageBluePrintMaker {
 				excluded.Add(p.ToString(), p);
 			});
 			if (index === 0) {
-				blueprint.Goal.Departure = MapItem.Create(spot.Q, spot.R);
+				blueprint.Goal.Departure = MapItem.New(spot.Q, spot.R);
 			}
 
 			if (index === 1) {
-				blueprint.Goal.Arrival = MapItem.Create(spot.Q, spot.R);
+				blueprint.Goal.Arrival = MapItem.New(spot.Q, spot.R);
 			}
 		});
 

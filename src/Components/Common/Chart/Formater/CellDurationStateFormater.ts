@@ -1,5 +1,5 @@
 import { StatusDuration } from '../Model/StatusDuration';
-import { Dictionnary } from '../../../../Core/Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../../Core/Utils/Collections/Dictionary';
 import { DurationState } from '../Model/DurationState';
 import { RecordStateDuration } from '../Model/RecordStateDuration';
 import { RecordContent } from '../../../../Core/Framework/Record/Model/RecordContent';
@@ -12,8 +12,8 @@ import { RecordCellState } from '../../../../Core/Framework/Record/Model/Item/St
 import { IDurationFormater } from './IDurationFormater';
 
 export class CellDurationStateFormater implements IDurationFormater {
-	public Format(data: RecordContent, compData: RecordContent): Dictionnary<StatusDuration[]> {
-		const result = new Dictionnary<StatusDuration[]>();
+	public Format(data: RecordContent, compData: RecordContent): Dictionary<StatusDuration[]> {
+		const result = new Dictionary<StatusDuration[]>();
 		const startDate = data.StartDate;
 		const endDate = data.EndDate < compData.EndDate ? data.EndDate : compData.EndDate;
 		data.Cells.Keys().forEach((cellId) => {

@@ -2,11 +2,11 @@ import * as Chart from 'chart.js';
 import { DeltaRecordCurve } from '../../../Comparer/Comparers/DeltaRecordCurve';
 import 'chartjs-adapter-moment';
 import { IChart } from './IChart';
-import { Dictionnary } from '../../../../Core/Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../../Core/Utils/Collections/Dictionary';
 import { LiteEvent } from '../../../../Core/Utils/Events/LiteEvent';
 
 export class DeltaLineChart implements IChart<DeltaRecordCurve> {
-	private _charts: Dictionnary<HTMLCanvasElement>;
+	private _charts: Dictionary<HTMLCanvasElement>;
 	public OnClickElement: LiteEvent<string>;
 
 	constructor() {
@@ -19,7 +19,7 @@ export class DeltaLineChart implements IChart<DeltaRecordCurve> {
 			Chart.Title
 		);
 		Chart.defaults.color = 'white';
-		this._charts = new Dictionnary<HTMLCanvasElement>();
+		this._charts = new Dictionary<HTMLCanvasElement>();
 		this.OnClickElement = new LiteEvent<string>();
 	}
 

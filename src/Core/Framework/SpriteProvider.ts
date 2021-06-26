@@ -1,5 +1,5 @@
 import { LiteEvent } from './../Utils/Events/LiteEvent';
-import { Dictionnary } from './../Utils/Collections/Dictionnary';
+import { Dictionary } from '../Utils/Collections/Dictionary';
 import * as PIXI from 'pixi.js';
 import { SvgArchive } from './SvgArchiver';
 
@@ -13,7 +13,7 @@ export class SpriteProvider {
 		this._isLoaded = isLoaded;
 	}
 
-	private static _svgs: Dictionnary<PIXI.resources.SVGResource> = new Dictionnary<PIXI.resources.SVGResource>();
+	private static _svgs: Dictionary<PIXI.resources.SVGResource> = new Dictionary<PIXI.resources.SVGResource>();
 
 	public static GetSprite(name: string): PIXI.Sprite {
 		const otpions = { resourceOptions: { scale: 0.3 } };

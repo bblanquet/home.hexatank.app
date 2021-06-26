@@ -1,5 +1,5 @@
 import { Identity } from './../../../Items/Identity';
-import { Dictionnary } from './../../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { HqSkinHelper } from './HqSkinHelper';
 import { HexAxial } from '../../../Utils/Geometry/HexAxial';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
@@ -8,7 +8,7 @@ import { DiamondHq } from '../../Blueprint/Game/DiamondHq';
 import { Cell } from '../../../Items/Cell/Cell';
 
 export class HqRender {
-	public Render(cells: Dictionnary<Cell>, blueprint: DiamondHq, index: number): Headquarter {
+	public Render(cells: Dictionary<Cell>, blueprint: DiamondHq, index: number): Headquarter {
 		const diamondCell = cells.Get(this.DiamondCoo(blueprint));
 		diamondCell.SetField(new Diamond(diamondCell));
 		const id = new Identity(blueprint.PlayerName, new HqSkinHelper().GetSkin(index), !blueprint.isIa);

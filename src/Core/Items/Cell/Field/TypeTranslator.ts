@@ -13,6 +13,7 @@ import { HealMenuItem } from '../../../Menu/Buttons/HealMenuItem';
 import { SpeedFieldMenuItem } from '../../../Menu/Buttons/SpeedFieldMenuItem';
 import { Cell } from '../Cell';
 import { Vehicle } from '../../Unit/Vehicle';
+import { ErrorCat, ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
 
 export class TypeTranslator {
 	public static IsSpecialField(cell: IField): boolean {
@@ -64,7 +65,7 @@ export class TypeTranslator {
 		} else if (e instanceof Headquarter) {
 			return e as Headquarter;
 		}
-		throw `TypeTranslator not supposed to be there`;
+		ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.outOfRange])));
 	}
 
 	public static IsAccessible(c: Cell, vehicle: Vehicle): boolean {

@@ -1,4 +1,4 @@
-import { Dictionnary } from './../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { ZKind } from './../../Items/ZKind';
 import { ILayerService } from './../../../Services/Layer/ILayerService';
 import { IUpdateService } from '../../../Services/Update/IUpdateService';
@@ -24,7 +24,7 @@ export class MultiSelectionContext implements IInteractionContext {
 	public Kind: InteractionKind;
 
 	public Point: PIXI.Point;
-	private _cells: Dictionnary<Cell>;
+	private _cells: Dictionary<Cell>;
 	private _highlightingCells: BasicItem[];
 	public View: ViewContext;
 	private _viewport: any;
@@ -35,7 +35,7 @@ export class MultiSelectionContext implements IInteractionContext {
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 		this._viewport = this._layerService.GetViewport();
-		this._cells = new Dictionnary<Cell>();
+		this._cells = new Dictionary<Cell>();
 		this._highlightingCells = new Array<BasicItem>();
 	}
 
@@ -81,7 +81,7 @@ export class MultiSelectionContext implements IInteractionContext {
 
 	public Close(): void {
 		this._isOn = false;
-		this._cells = new Dictionnary<Cell>();
+		this._cells = new Dictionary<Cell>();
 		this._highlightingCells.forEach((c) => c.Destroy());
 		this._highlightingCells = [];
 		this.OnSelectionChanged.Invoke();

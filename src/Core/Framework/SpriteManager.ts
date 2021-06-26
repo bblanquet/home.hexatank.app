@@ -1,19 +1,19 @@
-import { Dictionnary } from './../Utils/Collections/Dictionnary';
+import { Dictionary } from '../Utils/Collections/Dictionary';
 import { SpriteProvider } from './SpriteProvider';
 
 export class SpriteManager {
-	private _sprites: Dictionnary<PIXI.Sprite>;
+	private _sprites: Dictionary<PIXI.Sprite>;
 	private _destroyed: boolean = false;
 
 	constructor() {
-		this._sprites = new Dictionnary<PIXI.Sprite>();
+		this._sprites = new Dictionary<PIXI.Sprite>();
 	}
 
 	public Destroyed(): void {
 		this._destroyed = true;
 	}
 
-	public GetCurrentSprites(): Dictionnary<PIXI.Sprite> {
+	public GetCurrentSprites(): Dictionary<PIXI.Sprite> {
 		return this._sprites;
 	}
 

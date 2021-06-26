@@ -20,7 +20,7 @@ export class ChargeLink extends Item implements IMovable {
 
 	constructor(private _departure: Cell, private _arrival: Cell) {
 		super();
-		this._boundingBox = BoundingBox.CreateFromBox(this._departure.GetBoundingBox());
+		this._boundingBox = BoundingBox.NewFromBox(this._departure.GetBoundingBox());
 		this.Z = ZKind.Sky;
 		this.GenerateSprite(SvgArchive.electon, (e) => {
 			e.anchor.set(0.5);

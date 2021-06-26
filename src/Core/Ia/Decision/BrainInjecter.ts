@@ -1,5 +1,5 @@
 import { BobBrain } from './../Brains/BobBrain';
-import { Dictionnary } from './../../Utils/Collections/Dictionnary';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { HexAxial } from './../../Utils/Geometry/HexAxial';
 import { GameBlueprint } from '../../Setup/Blueprint/Game/GameBlueprint';
 import { GameContext } from '../../Setup/Context/GameContext';
@@ -12,8 +12,8 @@ import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 
 export class BrainInjecter {
 	public Inject(gameContext: GameContext, mapContext: GameBlueprint): void {
-		const coos = Dictionnary.To<HexAxial>((e) => e.ToString(), gameContext.GetCells().map((e) => e.GetHexCoo()));
-		const cells = Dictionnary.To<Cell>((e) => e.Coo(), gameContext.GetCells().map((e) => e));
+		const coos = Dictionary.To<HexAxial>((e) => e.ToString(), gameContext.GetCells().map((e) => e.GetHexCoo()));
+		const cells = Dictionary.To<Cell>((e) => e.Coo(), gameContext.GetCells().map((e) => e));
 		gameContext.GetHqs().forEach((hq, index) => {
 			if (this.IsIa(mapContext.Hqs, hq.GetCell().GetHexCoo())) {
 				const areaSearch = new AreaSearch(coos);
@@ -34,9 +34,9 @@ export class BrainInjecter {
 		});
 	}
 
-	private GetAreas(areaSearch: AreaSearch, hq: Headquarter, cells: Dictionnary<Cell>) {
+	private GetAreas(areaSearch: AreaSearch, hq: Headquarter, cells: Dictionary<Cell>) {
 		const areas = areaSearch.GetAreas(hq.GetCell().GetHexCoo()).map((coo) => new Area(cells.Get(coo.ToString())));
-		const areaByCoo = Dictionnary.To((e: Area) => e.GetCentralCell().Coo(), areas);
+		const areaByCoo = Dictionary.To((e: Area) => e.GetCentralCell().Coo(), areas);
 		areas.forEach((a) => {
 			const around = areaSearch
 				.GetAreaRange(a.GetCentralCell().GetHexCoo(), 1)

@@ -3,7 +3,7 @@ import { ILayerService } from './../../Services/Layer/ILayerService';
 import { IUpdateService } from './../../Services/Update/IUpdateService';
 import { LiteEvent } from './../Utils/Events/LiteEvent';
 import { SpriteManager } from './../Framework/SpriteManager';
-import { Dictionnary } from './../Utils/Collections/Dictionnary';
+import { Dictionary } from '../Utils/Collections/Dictionary';
 import * as PIXI from 'pixi.js';
 import { BoundingBox } from '../Utils/Geometry/BoundingBox';
 import { IUpdatable } from '../IUpdatable';
@@ -35,7 +35,7 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 		}
 	}
 
-	public GetCurrentSprites(): Dictionnary<PIXI.Sprite> {
+	public GetCurrentSprites(): Dictionary<PIXI.Sprite> {
 		return this._spriteManager.GetCurrentSprites();
 	}
 

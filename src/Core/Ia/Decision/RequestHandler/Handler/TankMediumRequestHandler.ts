@@ -8,6 +8,7 @@ import { Vehicle } from '../../../../Items/Unit/Vehicle';
 import { Tank } from '../../../../Items/Unit/Tank';
 import { RequestType } from '../../Utils/RequestType';
 import { isNullOrUndefined } from '../../../../Utils/ToolBox';
+import { ErrorHandler } from '../../../../Utils/Exceptions/ErrorHandler';
 
 export class TankMediumRequestHandler implements ISimpleRequestHandler {
 	constructor(private _kingdom: Brain, private _hq: Headquarter) {}
@@ -32,9 +33,7 @@ export class TankMediumRequestHandler implements ISimpleRequestHandler {
 
 			if (cell) {
 				const tank = this._kingdom.IdleTanks.Pop();
-				if (isNullOrUndefined(tank)) {
-					throw 'not possible';
-				}
+				ErrorHandler.ThrowNull(tank);
 				request.Area.AddTroop(tank, cell);
 				request.RequestCount -= 1;
 			} else {

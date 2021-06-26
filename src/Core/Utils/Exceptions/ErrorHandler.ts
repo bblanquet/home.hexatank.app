@@ -12,7 +12,8 @@ export enum ErrorCat {
 	invalidParameter,
 	invalidType,
 	unsupportedVariable,
-	invalidComputation
+	invalidComputation,
+	methodNotImplemented
 }
 
 export class ErrorHandler {
@@ -22,7 +23,8 @@ export class ErrorHandler {
 		{ key: ErrorCat[ErrorCat.nullEmpty], value: 'null or empty array' },
 		{ key: ErrorCat[ErrorCat.invalidParameter], value: 'invalid parameter' },
 		{ key: ErrorCat[ErrorCat.invalidType], value: 'invalid type' },
-		{ key: ErrorCat[ErrorCat.invalidComputation], value: 'invalid computation' }
+		{ key: ErrorCat[ErrorCat.invalidComputation], value: 'invalid computation' },
+		{ key: ErrorCat[ErrorCat.methodNotImplemented], value: 'Method not implemented' }
 	]);
 
 	public static Throw(error: Error): void {

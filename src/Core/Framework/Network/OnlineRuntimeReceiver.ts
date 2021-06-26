@@ -1,4 +1,3 @@
-import { isNullOrUndefined } from 'util';
 import { BasicOrder } from '../../Ia/Order/BasicOrder';
 import { Cell } from '../../Items/Cell/Cell';
 import { BlockingField } from '../../Items/Cell/Field/BlockingField';
@@ -57,9 +56,13 @@ export class OnlineRuntimeReceiver {
 
 	private HandleVehicleDestroyed(message: NetworkMessage<PacketContent<any>>): void {
 		const vehicle = this._context.GetVehicle(message.Content.VId);
-		if (vehicle.IsAlive()) {
-			vehicle.SetCurrentLife(0);
-			StaticLogger.Log(LogKind.info, `[DESTROY] ${message.Content.VId}`);
+		if (vehicle) {
+			if (vehicle.IsAlive()) {
+				vehicle.SetCurrentLife(0);
+				StaticLogger.Log(LogKind.info, `[DESTROY] ${message.Content.VId}`);
+			}
+		} else {
+			StaticLogger.Log(LogKind.error, `[CONSISTENCY] ${message.Content.VId} not found`);
 		}
 	}
 
@@ -106,37 +109,40 @@ export class OnlineRuntimeReceiver {
 		const latency = message.Latency + Math.round(ItemsUpdater.UpdateSpan / 2);
 		const vId = message.Content.VId;
 		const vehicle = this._context.GetVehicle(vId);
-		const hq = this._context.GetHqFromId(vehicle.Identity);
-
-		if (this.IsEmitingHq(hq.Identity.Name)) {
-			const cells = this._context.GetCellDictionary();
-			const path = message.Content.Extra.Path.map((coo) => cells.Get(coo));
-			if (0 < path.length) {
-				if (
-					(vehicle.GetCurrentCell().Coo() === message.Content.CId &&
-						this.IsNextCellEqualed(vehicle, message.Content.Extra.NextCId)) ||
-					vehicle.GetCurrentCell().Coo() === message.Content.Extra.NextCId
-				) {
-					const order = new BasicOrder(vehicle, path);
-					vehicle.GiveOrder(order);
-					this.LatencyCompensation(latency, vehicle, order, path);
-					StaticLogger.Log(LogKind.info, `[ORDER] ${vId} ${latency}ms`);
-				} else if (
-					vehicle.GetCurrentCell().Coo() === message.Content.CId &&
-					!this.IsNextCellEqualed(vehicle, message.Content.Extra.NextCId)
-				) {
-					const order = new BasicOrder(vehicle, path);
-					vehicle.ForceCancel(order);
-					this.LatencyCompensation(latency, vehicle, order, path);
-					StaticLogger.Log(LogKind.warning, `[FORCE ORDER] ${vId} ${latency}ms`);
-				} else if (vehicle.GetCurrentCell().Coo() !== message.Content.CId) {
-					const cell = cells.Get(message.Content.CId);
-					const order = new BasicOrder(vehicle, path);
-					vehicle.ForceCell(cell, order);
-					this.LatencyCompensation(latency, vehicle, order, path);
-					StaticLogger.Log(LogKind.dangerous, `[FORCE CELL ORDER] ${vId} ${latency}ms`);
+		if (vehicle) {
+			const hq = this._context.GetHqFromId(vehicle.Identity);
+			if (this.IsEmitingHq(hq.Identity.Name)) {
+				const cells = this._context.GetCellDictionary();
+				const path = message.Content.Extra.Path.map((coo) => cells.Get(coo));
+				if (0 < path.length) {
+					if (
+						(vehicle.GetCurrentCell().Coo() === message.Content.CId &&
+							this.IsNextCIdOk(vehicle, message.Content.Extra.NextCId)) ||
+						vehicle.GetCurrentCell().Coo() === message.Content.Extra.NextCId
+					) {
+						const order = new BasicOrder(vehicle, path);
+						vehicle.GiveOrder(order);
+						this.LatencyCompensation(latency, vehicle, order, path);
+						StaticLogger.Log(LogKind.info, `[ORDER] ${vId} ${latency}ms`);
+					} else if (
+						vehicle.GetCurrentCell().Coo() === message.Content.CId &&
+						!this.IsNextCIdOk(vehicle, message.Content.Extra.NextCId)
+					) {
+						const order = new BasicOrder(vehicle, path);
+						vehicle.ForceCancel(order);
+						this.LatencyCompensation(latency, vehicle, order, path);
+						StaticLogger.Log(LogKind.warning, `[FORCE ORDER] ${vId} ${latency}ms`);
+					} else if (vehicle.GetCurrentCell().Coo() !== message.Content.CId) {
+						const cell = cells.Get(message.Content.CId);
+						const order = new BasicOrder(vehicle, path);
+						vehicle.ForceCell(cell, order);
+						this.LatencyCompensation(latency, vehicle, order, path);
+						StaticLogger.Log(LogKind.dangerous, `[FORCE CELL ORDER] ${vId} ${latency}ms`);
+					}
 				}
 			}
+		} else {
+			StaticLogger.Log(LogKind.error, `[CONSISTENCY] ${message.Content.VId} not found`);
 		}
 	}
 
@@ -146,7 +152,7 @@ export class OnlineRuntimeReceiver {
 		}
 	}
 
-	private IsNextCellEqualed(v: Vehicle, coo: string): boolean {
+	private IsNextCIdOk(v: Vehicle, coo: string): boolean {
 		if (v.GetNextCell()) {
 			return v.GetNextCell().Coo() === coo;
 		} else {

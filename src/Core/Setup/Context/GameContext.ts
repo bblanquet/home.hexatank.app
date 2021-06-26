@@ -85,19 +85,11 @@ export class GameContext implements IHqGameContext {
 	}
 
 	public GetTank(id: string): Tank {
-		const result = this._vehicles.Get(id);
-		if (isNullOrUndefined(result) || !(result instanceof Tank)) {
-			throw 'synchronized issue';
-		}
-		return result as Tank;
+		return this._vehicles.Get(id) as Tank;
 	}
 
 	public GetVehicle(id: string): Vehicle {
-		const result = this._vehicles.Get(id);
-		if (isNullOrUndefined(result)) {
-			throw 'synchronized issue';
-		}
-		return result;
+		return this._vehicles.Get(id);
 	}
 
 	private DefineVehicleName(src: Headquarter, vehicule: Vehicle): void {

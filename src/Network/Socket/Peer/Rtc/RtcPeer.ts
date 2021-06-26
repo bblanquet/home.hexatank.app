@@ -8,6 +8,7 @@ import { PacketKind } from '../../../Message/PacketKind';
 import { isNullOrUndefined } from '../../../../Core/Utils/ToolBox';
 import { LogKind } from '../../../../Core/Utils/Logger/LogKind';
 import { StaticLogger } from '../../../../Core/Utils/Logger/StaticLogger';
+import { ErrorCat, ErrorHandler } from '../../../../Core/Utils/Exceptions/ErrorHandler';
 
 //ice:
 //it is the location of the peer (interaction connectivity establishment)
@@ -72,26 +73,22 @@ export abstract class RtcPeer {
 
 	public async HandleOffer(packet: NetworkMessage<any>): Promise<void> {
 		if (this.IsOk(packet)) {
-			try {
-				await this.Connection.setRemoteDescription(new RTCSessionDescription(packet.Content));
-				if (this._candidate) {
-					await this.Connection.addIceCandidate(this._candidate);
-					this._candidate = null;
-				}
+			await this.Connection.setRemoteDescription(new RTCSessionDescription(packet.Content));
+			if (this._candidate) {
+				await this.Connection.addIceCandidate(this._candidate);
+				this._candidate = null;
+			}
 
-				if (this.Connection.remoteDescription.type === 'offer') {
-					var rtcDescriptionInit = await this.Connection.createAnswer();
-					await this.Connection.setLocalDescription(rtcDescriptionInit);
+			if (this.Connection.remoteDescription.type === 'offer') {
+				var rtcDescriptionInit = await this.Connection.createAnswer();
+				await this.Connection.setLocalDescription(rtcDescriptionInit);
 
-					const message = this.Context.GetTemplate<any>(PacketKind.Offer);
-					message.Content = this.Connection.localDescription;
-					if (message.Recipient === message.Emitter) {
-						throw 'emitter === recipient';
-					}
-					this.Context.ServerSocket.Emit(message);
+				const message = this.Context.GetTemplate<any>(PacketKind.Offer);
+				message.Content = this.Connection.localDescription;
+				if (message.Recipient === message.Emitter) {
+					ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
 				}
-			} catch (error) {
-				StaticLogger.Log(LogKind.error, error);
+				this.Context.ServerSocket.Emit(message);
 			}
 		}
 	}

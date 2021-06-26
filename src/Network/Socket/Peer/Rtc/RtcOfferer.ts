@@ -1,6 +1,7 @@
 import { PeerContext } from './../PeerContext';
 import { PacketKind } from '../../../Message/PacketKind';
 import { RtcPeer } from './RtcPeer';
+import { ErrorHandler, ErrorCat } from '../../../../Core/Utils/Exceptions/ErrorHandler';
 
 export class RtcOfferer extends RtcPeer {
 	constructor(context: PeerContext) {
@@ -21,19 +22,15 @@ export class RtcOfferer extends RtcPeer {
 
 		//create a negotiation offer
 		this.Connection.onnegotiationneeded = async () => {
-			try {
-				const offer = await this.Connection.createOffer();
-				await this.Connection.setLocalDescription(offer);
-				// send the offer to the other peer
-				const message = this.Context.GetTemplate<any>(PacketKind.Offer);
-				message.Content = this.Connection.localDescription;
-				if (message.Recipient === message.Emitter) {
-					throw 'emitter === recipient';
-				}
-				this.Context.ServerSocket.Emit(message);
-			} catch (err) {
-				console.error(err);
+			const offer = await this.Connection.createOffer();
+			await this.Connection.setLocalDescription(offer);
+			// send the offer to the other peer
+			const message = this.Context.GetTemplate<any>(PacketKind.Offer);
+			message.Content = this.Connection.localDescription;
+			if (message.Recipient === message.Emitter) {
+				ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
 			}
+			this.Context.ServerSocket.Emit(message);
 		};
 	}
 

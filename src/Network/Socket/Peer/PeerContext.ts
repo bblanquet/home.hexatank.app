@@ -1,3 +1,4 @@
+import { ErrorHandler, ErrorCat } from '../../../Core/Utils/Exceptions/ErrorHandler';
 import { NetworkMessage } from '../../Message/NetworkMessage';
 import { PacketKind } from '../../Message/PacketKind';
 import { IServerSocket } from '../Server/IServerSocket';
@@ -10,7 +11,7 @@ export class PeerContext {
 		public Recipient: string
 	) {
 		if (this.Owner === this.Recipient) {
-			throw 'emitter === recipient';
+			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
 		}
 	}
 

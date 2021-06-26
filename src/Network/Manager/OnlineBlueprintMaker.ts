@@ -5,6 +5,7 @@ import { MapType } from '../../Core/Setup/Blueprint/MapType';
 import { MapEnv } from '../../Core/Setup/Blueprint/MapEnv';
 import { BlueprintSetup } from '../../Components/Form/BlueprintSetup';
 import { IOnlinePlayerManager } from './IOnlinePlayerManager';
+import { ErrorHandler, ErrorCat } from '../../Core/Utils/Exceptions/ErrorHandler';
 export class OnlineBlueprintMaker {
 	constructor(private _onlinePlayerManager: IOnlinePlayerManager, private _blueprintSetup: BlueprintSetup) {}
 
@@ -62,7 +63,7 @@ export class OnlineBlueprintMaker {
 
 	private AssignHqToPlayer(blueprint: GameBlueprint, players: OnlinePlayer[]): void {
 		if (blueprint.Hqs.length < players.length) {
-			throw new Error('not enough hq');
+			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
 		}
 		blueprint.Hqs.forEach((hq, index) => {
 			if (index < players.length) {

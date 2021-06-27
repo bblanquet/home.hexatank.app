@@ -1,6 +1,6 @@
 import { Dictionary } from './../src/Core/Utils/Collections/Dictionary';
 import { GameSettings } from './../src/Core/Framework/GameSettings';
-import { CircleMapBuilder } from './../src/Core/Setup/Builder/CircleMapBuilder';
+import { CircleMapBuilder } from './../src/Core/Framework/Builder/CircleMapBuilder';
 import { AStarEngine } from './../src/Core/Ia/AStarEngine';
 import 'mocha';
 import { expect } from 'chai';

@@ -1,0 +1,114 @@
+.slow-bounce {
+	animation: slow-bounce 0.5s linear;
+}
+
+@keyframes slow-bounce {
+	0% {
+		transform: scale(0.6);
+	}
+	60% {
+		transform: scale(1.2);
+	}
+	80% {
+		transform: scale(0.8);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+.bounce {
+	animation: bounce 0.5s linear;
+}
+
+@keyframes bounce {
+	0% {
+		transform: scale(1);
+	}
+	20% {
+		transform: scale(0.6);
+	}
+	40% {
+		transform: scale(1.3);
+	}
+	60% {
+		transform: scale(0.8);
+	}
+	80% {
+		transform: scale(1.1);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+.light-bounce {
+	animation: light-bounce 0.5s linear;
+}
+
+@keyframes light-bounce {
+	0% {
+		transform: scale(0);
+	}
+	20% {
+		transform: scale(0.6);
+	}
+	40% {
+		transform: scale(1.3);
+	}
+	60% {
+		transform: scale(0.8);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+.blink_me {
+	animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+	50% {
+		opacity: 0;
+	}
+}
+
+@-webkit-keyframes opacity {
+	0% {
+		-webkit-transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(360deg);
+	}
+}
+
+.spin {
+	-webkit-animation: spin 5s linear infinite;
+}
+
+@-webkit-keyframes spin {
+	0% {
+		-webkit-transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(360deg);
+	}
+}
+
+@-webkit-keyframes fade {
+	0% {
+		opacity: 0.2;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.fade {
+	-webkit-animation: fade 1s linear infinite alternate;
+}
+
+.spin-fade {
+	-webkit-animation: fade 1s linear infinite alternate, spin 15s linear infinite;
+}

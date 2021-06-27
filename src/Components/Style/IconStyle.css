@@ -759,6 +759,70 @@
 	background-image: url('{{asset_path}}svg/components/badge/campaignBadge.svg');
 }
 
+.fill-logo {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	background-size: auto;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{asset_path}}svg/components/program6Logo.svg');
+}
+
+.fill-tank-logo {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	background-size: auto;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{asset_path}}svg/components/program6TankLogo.svg');
+}
+
+.fill-logo-back {
+	width: 100%;
+	height: 30vh;
+	background-size: auto;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{asset_path}}svg/components/program6FireLogo.svg');
+	pointer-events: none;
+}
+
+.sm-fill-logo-back {
+	width: 100%;
+	height: 15vh;
+	background-size: auto;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{asset_path}}svg/components/program6FireLogo.svg');
+	pointer-events: none;
+}
+
+.fill-mult-cell {
+	overflow: hidden;
+	background-size: auto;
+	background-position: center;
+	width: 50px;
+	height: 50px;
+	background-repeat: no-repeat;
+	background-image: url('{{asset_path}}svg/menu/smartMenu/multiCell.svg');
+}
+
+.fill-tank-multi-cell {
+	overflow: hidden;
+	background-size: auto;
+	background-position: center;
+	width: 50px;
+	height: 50px;
+	background-repeat: no-repeat;
+	background-image: url('{{asset_path}}svg/menu/smartMenu/multiTank.svg');
+}
+
 body:before {
 	content: url('{{asset_path}}svg/components/victory.svg') url('{{asset_path}}svg/components/defeat.svg')
 		url('{{asset_path}}svg/components/program6Logo.svg') url('{{asset_path}}svg/components/training.svg')

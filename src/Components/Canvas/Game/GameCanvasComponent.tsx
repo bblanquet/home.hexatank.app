@@ -1,32 +1,18 @@
 import { Component, h } from 'preact';
 import { Item } from '../../../Core/Items/Item';
+import OnlinePlayersComponent from './Parts/OnlinePlayersComponent';
 import { GameContext } from '../../../Core/Setup/Context/GameContext';
-import { Tank } from '../../../Core/Items/Unit/Tank';
-import { Truck } from '../../../Core/Items/Unit/Truck';
-import { Cell } from '../../../Core/Items/Cell/Cell';
 import { ISelectable } from '../../../Core/ISelectable';
-import { ReactorField } from '../../../Core/Items/Cell/Field/Bonus/ReactorField';
 import { GameSettings } from '../../../Core/Framework/GameSettings';
-import { Headquarter } from '../../../Core/Items/Cell/Field/Hq/Headquarter';
-import HqMenuComponent from './Parts/HqMenuComponent';
 import CanvasComponent from '../CanvasComponent';
-import TankMenuComponent from './Parts/TankMenuComponent';
-import MultiTankMenuComponent from './Parts/MultiTankMenuComponent';
-import CellMenuComponent from './Parts/CellMenuComponent';
-import MultiMenuComponent from './Parts/MultiMenuComponent';
-import TruckMenuComponent from './Parts/TruckMenuComponent';
-import ReactorMenuComponent from './Parts/ReactorMenuComponent';
 import PopupMenuComponent from '../../PopupMenu/PopupMenuComponent';
-import { UnitGroup } from '../../../Core/Items/UnitGroup';
 import { GameStatus } from '../../../Core/Framework/GameStatus';
 import { OnlinePlayer } from '../../../Network/OnlinePlayer';
-import { CellGroup } from '../../../Core/Items/CellGroup';
 import PopupComponent from '../../Popup/PopupComponent';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
 import { IInteractionService } from '../../../Services/Interaction/IInteractionService';
 import { Singletons, SingletonKey } from '../../../Singletons';
 import Redirect from '../../Redirect/RedirectComponent';
-import Icon from '../../Common/Icon/IconComponent';
 import { AudioArchive } from '../../../Core/Framework/AudioArchiver';
 import ActiveRightBottomCornerButton from './../../Common/Button/Corner/ActiveRightBottomCornerButton';
 import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
@@ -39,6 +25,8 @@ import { GameBlueprint } from '../../../Core/Setup/Blueprint/Game/GameBlueprint'
 import { IAudioService } from '../../../Services/Audio/IAudioService';
 import { IOnlineService } from '../../../Services/Online/IOnlineService';
 import { Dictionary } from '../../../Core/Utils/Collections/Dictionary';
+import MenuSwitcher from './Parts/MenuSwitcher';
+import Icon from '../../Common/Icon/IconComponent';
 
 export default class GameCanvasComponent extends Component<
 	any,
@@ -51,6 +39,7 @@ export default class GameCanvasComponent extends Component<
 		Amount: number;
 		Item: Item;
 		Players: OnlinePlayer[];
+		IsSynchronizing: boolean;
 		GameStatus: GameStatus;
 		IsSettingPatrol: boolean;
 	}
@@ -63,7 +52,7 @@ export default class GameCanvasComponent extends Component<
 	private _appService: IAppService<GameBlueprint>;
 	private _gameContext: GameContext;
 
-	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
+	private _onItemSelectionChanged: any = this.OnItemSelectionChanged.bind(this);
 
 	constructor() {
 		super();
@@ -75,7 +64,6 @@ export default class GameCanvasComponent extends Component<
 		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.Interaction);
 		this._appService = Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App);
 		this._gameContext = this._gameContextService.Publish();
-		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
 		this.setState({
 			HasMenu: false,
 			TankRequestCount: 0,
@@ -83,7 +71,8 @@ export default class GameCanvasComponent extends Component<
 			Amount: GameSettings.PocketMoney,
 			HasWarning: false,
 			GameStatus: GameStatus.Pending,
-			IsSettingPatrol: false
+			IsSettingPatrol: false,
+			IsSynchronizing: true
 		});
 		this._diamonds = GameSettings.PocketMoney;
 	}
@@ -91,7 +80,6 @@ export default class GameCanvasComponent extends Component<
 		if (!item.IsSelected()) {
 			item.OnSelectionChanged.Off(this._onItemSelectionChanged);
 			this.setState({
-				...this.state,
 				Item: null
 			});
 		}
@@ -117,6 +105,119 @@ export default class GameCanvasComponent extends Component<
 					this.setState({});
 				});
 		}
+	}
+
+	private SetMenu(): void {
+		const newValue = !this.state.HasMenu;
+		this.setState({
+			HasMenu: newValue
+		});
+		if (newValue) {
+			this._soundService.GetGameAudioManager().PauseAll();
+		} else if (!this._soundService.IsMute()) {
+			this._soundService.GetGameAudioManager().PlayAll();
+		}
+
+		if (!this._onlineService.IsOnline()) {
+			GameSettings.IsPause = newValue;
+		}
+	}
+
+	render() {
+		return (
+			<Redirect>
+				<OnlinePlayersComponent OnlineService={this._onlineService} />
+				<Visible isVisible={this.state.GameStatus === GameStatus.Pending}>
+					<div style="position: fixed;">
+						<button
+							type="button"
+							class="btn btn-dark small-space space-out fill-option"
+							onClick={() => this.SetMenu()}
+						/>
+						<button type="button" class="btn btn-dark space-out">
+							<Visible isVisible={this.state.HasWarning}>
+								<span class="fill-noMoney badge badge-warning very-small-space middle very-small-right-margin blink_me">
+									{' '}
+								</span>
+							</Visible>
+							{this._diamonds.toFixed(2)}
+							<span class="fill-diamond badge badge-secondary very-small-space middle very-small-left-margin very-small-right-margin">
+								{' '}
+							</span>
+						</button>
+					</div>
+				</Visible>
+				<Visible isVisible={this.state.GameStatus !== GameStatus.Pending}>
+					<PopupComponent
+						points={10}
+						status={this.state.GameStatus}
+						curves={this._appService.GetStats().GetCurves()}
+						context={this._appService.GetRecord().GetRecord()}
+					/>
+				</Visible>
+				<CanvasComponent gameContext={this._gameContextService} />
+				<Visible
+					isVisible={
+						!this.state.HasMenu &&
+						isNullOrUndefined(this.state.Item) &&
+						this.state.GameStatus === GameStatus.Pending
+					}
+				>
+					<div class="right-bottom-menu">
+						<ActiveRightBottomCornerButton
+							isActive={this._interactionService.GetMultiSelectionContext().IsListeningUnit()}
+							callBack={() => this.SendContext(new MultiTankMenuItem())}
+							logo="fill-tank-multi-cell"
+						/>
+						<ActiveRightBottomCornerButton
+							isActive={this._interactionService.GetMultiSelectionContext().IsListeningCell()}
+							callBack={() => this.SendContext(new MultiCellMenuItem())}
+							logo="fill-mult-cell"
+						/>
+					</div>
+				</Visible>
+				<Visible isVisible={!(this.state.HasMenu && this.state.GameStatus === GameStatus.Pending)}>
+					<MenuSwitcher
+						IsSettingPatrol={this.state.IsSettingPatrol}
+						TankRequestCount={this.state.TankRequestCount}
+						TruckRequestCount={this.state.TruckRequestCount}
+						VehicleCount={this._gameContext.GetPlayerHq().GetVehicleCount()}
+						ReactorCount={this._gameContext.GetPlayerHq().GetReactorsCount()}
+						Item={this.state.Item}
+						HasMultiMenu={this.state.HasMultiMenu}
+					/>
+				</Visible>
+				<Visible isVisible={this.state.HasMenu && this.state.GameStatus === GameStatus.Pending}>
+					<PopupMenuComponent
+						Status={this.state.GameStatus}
+						Resume={() => this.SetMenu()}
+						Quit={() => {
+							GameSettings.IsPause = true;
+							this.setState({
+								HasMenu: false,
+								GameStatus: GameStatus.Defeat
+							});
+						}}
+					/>
+				</Visible>
+				<Visible isVisible={this.state.IsSynchronizing}>
+					<div class="absolute-center-middle-menu dark-container container-center-horizontal">
+						<span class="fit-content fit-height space-out-all">
+							<div class="spin fit-content fit-height">
+								<Icon Value={'fas fa-circle-notch'} />
+							</div>
+						</span>
+						<div>Synchonizing...</div>
+					</div>
+				</Visible>
+			</Redirect>
+		);
+	}
+
+	private SendContext(item: Item): void {
+		const interaction = this._interactionService.Publish();
+		interaction.Kind = InteractionKind.Up;
+		interaction.OnSelect(item);
 	}
 
 	private HandleMultiMenuShowed(src: any, isDisplayed: boolean): void {
@@ -151,229 +252,25 @@ export default class GameCanvasComponent extends Component<
 		});
 	}
 
-	private HandleSettingPatrol(obj: any, isSettingPatrol: boolean): void {
+	private HandleSettingPatrol(obj: any, value: boolean): void {
 		this.setState({
-			IsSettingPatrol: isSettingPatrol
+			IsSettingPatrol: value
 		});
 	}
 
-	private HandleCashMissing(obj: any, e: boolean): void {
-		if (e !== this.state.HasWarning) {
+	private HandleCashMissing(obj: any, value: boolean): void {
+		if (value !== this.state.HasWarning) {
 			this.setState({
-				HasWarning: e
+				HasWarning: value
 			});
 		}
 	}
 
-	private HandleGameStatus(obj: any, e: GameStatus): void {
-		if (e !== this.state.GameStatus) {
+	private HandleGameStatus(obj: any, value: GameStatus): void {
+		if (value !== this.state.GameStatus) {
 			this.setState({
-				GameStatus: e
+				GameStatus: value
 			});
 		}
-	}
-
-	private LeftSide() {
-		if (this.state.HasMultiMenu) {
-			return <MultiMenuComponent Item={this.state.Item} />;
-		} else if (this.state.Item) {
-			if (this.state.Item instanceof Tank) {
-				return (
-					<TankMenuComponent
-						Interaction={this._interactionService.Publish()}
-						Tank={this.state.Item}
-						isSettingPatrol={this.state.IsSettingPatrol}
-					/>
-				);
-			} else if (this.state.Item instanceof Truck) {
-				return (
-					<TruckMenuComponent
-						Interaction={this._interactionService.Publish()}
-						Truck={this.state.Item}
-						isSettingPatrol={this.state.IsSettingPatrol}
-					/>
-				);
-			} else if (this.state.Item instanceof UnitGroup) {
-				return (
-					<MultiTankMenuComponent Interaction={this._interactionService.Publish()} item={this.state.Item} />
-				);
-			} else if (this.state.Item instanceof Headquarter) {
-				return (
-					<HqMenuComponent
-						Interaction={this._interactionService.Publish()}
-						TankRequestCount={this.state.TankRequestCount}
-						TruckRequestCount={this.state.TruckRequestCount}
-						VehicleCount={this._gameContext.GetPlayerHq().GetVehicleCount()}
-					/>
-				);
-			} else if (this.state.Item instanceof ReactorField) {
-				return (
-					<ReactorMenuComponent
-						Item={this.state.Item}
-						GameContext={this._gameContext}
-						Interaction={this._interactionService.Publish()}
-					/>
-				);
-			} else if (this.state.Item instanceof Cell || this.state.Item instanceof CellGroup) {
-				return (
-					<CellMenuComponent
-						Item={this.state.Item}
-						Interaction={this._interactionService.Publish()}
-						ReactorCount={this._gameContext.GetPlayerHq().GetReactorsCount()}
-					/>
-				);
-			}
-		}
-		return '';
-	}
-
-	private SetMenu(): void {
-		const newValue = !this.state.HasMenu;
-		this.setState({
-			HasMenu: newValue
-		});
-		if (newValue) {
-			this._soundService.GetGameAudioManager().PauseAll();
-		} else if (!this._soundService.IsMute()) {
-			this._soundService.GetGameAudioManager().PlayAll();
-		}
-
-		if (!this._onlineService.IsOnline()) {
-			GameSettings.IsPause = newValue;
-		}
-	}
-
-	render() {
-		return (
-			<Redirect>
-				<Visible isVisible={this._onlineService.IsOnline()}>
-					<div style="position: fixed;right: 0%; color:white;">
-						{this.GetPlayers().map((player) => {
-							return (
-								<div>
-									<span class="badge badge-info">{player.GetLatency()}</span>{' '}
-									{this.HasTimeout(player)}
-									{player.Name}{' '}
-								</div>
-							);
-						})}
-					</div>
-				</Visible>
-				<Visible isVisible={this.state.GameStatus === GameStatus.Pending}>
-					<div style="position: fixed;">
-						<button
-							type="button"
-							class="btn btn-dark small-space space-out fill-option"
-							onClick={() => this.SetMenu()}
-						/>
-						<button type="button" class="btn btn-dark space-out">
-							{this.ShowNoMoney()}
-							{this._diamonds.toPrecision(2)}
-							<span class="fill-diamond badge badge-secondary very-small-space middle very-small-left-margin very-small-right-margin">
-								{' '}
-							</span>
-						</button>
-					</div>
-				</Visible>
-				{this.state.GameStatus === GameStatus.Pending ? '' : this.GetEndMessage()}
-				<CanvasComponent gameContext={this._gameContextService} />
-				<Visible
-					isVisible={
-						!this.state.HasMenu &&
-						isNullOrUndefined(this.state.Item) &&
-						this.state.GameStatus === GameStatus.Pending
-					}
-				>
-					<div class="right-bottom-menu">
-						<ActiveRightBottomCornerButton
-							isActive={this._interactionService.GetMultiSelectionContext().IsListeningUnit()}
-							callBack={() => this.SendContext(new MultiTankMenuItem())}
-							logo="fill-tank-multi-cell"
-						/>
-						<ActiveRightBottomCornerButton
-							isActive={this._interactionService.GetMultiSelectionContext().IsListeningCell()}
-							callBack={() => this.SendContext(new MultiCellMenuItem())}
-							logo="fill-mult-cell"
-						/>
-					</div>
-				</Visible>
-				<Visible isVisible={!(this.state.HasMenu && this.state.GameStatus === GameStatus.Pending)}>
-					{this.LeftSide()}
-				</Visible>
-				<Visible isVisible={this.state.HasMenu && this.state.GameStatus === GameStatus.Pending}>
-					{this.Popup()}
-				</Visible>
-			</Redirect>
-		);
-	}
-
-	private GetPlayers() {
-		if (this._onlineService.IsOnline()) {
-			return this._onlineService.GetOnlinePlayerManager().Players.Values();
-		} else {
-			return [];
-		}
-	}
-
-	private SendContext(item: Item): void {
-		const interaction = this._interactionService.Publish();
-		interaction.Kind = InteractionKind.Up;
-		interaction.OnSelect(item);
-	}
-
-	private HasTimeout(player: OnlinePlayer) {
-		if (player.HasTimeOut()) {
-			return (
-				<span
-					class="badge badge-danger align-text-center blink_me"
-					style="background-color:#ff0062; border: white solid 0.5px"
-				>
-					<Icon Value={'fas fa-exclamation-circle'} />
-				</span>
-			);
-		}
-		return '';
-	}
-
-	private ShowNoMoney() {
-		if (this.state.HasWarning) {
-			return (
-				<span class="fill-noMoney badge badge-warning very-small-space middle very-small-right-margin blink_me">
-					{' '}
-				</span>
-			);
-		} else {
-			return '';
-		}
-	}
-
-	private Popup() {
-		return (
-			<PopupMenuComponent
-				Status={this.state.GameStatus}
-				Resume={() => this.SetMenu()}
-				Quit={() => {
-					GameSettings.IsPause = true;
-					this.setState({
-						HasMenu: false,
-						GameStatus: GameStatus.Defeat
-					});
-				}}
-			/>
-		);
-	}
-
-	private GetEndMessage() {
-		if ([ GameStatus.Victory, GameStatus.Defeat ].some((e) => e === this.state.GameStatus)) {
-			return (
-				<PopupComponent
-					points={10}
-					status={this.state.GameStatus}
-					curves={this._appService.GetStats().GetCurves()}
-					context={this._appService.GetRecord().GetRecord()}
-				/>
-			);
-		}
-		return '';
 	}
 }

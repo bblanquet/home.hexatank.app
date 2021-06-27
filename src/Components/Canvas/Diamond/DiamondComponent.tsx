@@ -199,13 +199,7 @@ export default class DiamondCanvasComponent extends Component<
 					/>
 				);
 			} else if (this.state.Item instanceof ReactorField) {
-				return (
-					<ReactorMenuComponent
-						Item={this.state.Item}
-						GameContext={this._gameContext}
-						Interaction={this._interactionService.Publish()}
-					/>
-				);
+				return <ReactorMenuComponent Item={this.state.Item} Interaction={this._interactionService.Publish()} />;
 			} else if (this.state.Item instanceof Cell || this.state.Item instanceof CellGroup) {
 				return (
 					<CellMenuComponent

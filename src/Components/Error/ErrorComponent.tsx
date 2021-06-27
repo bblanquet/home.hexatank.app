@@ -19,11 +19,11 @@ export default class ErrorComponent extends Component<any, any> {
 				<NavbarComponent>
 					<div class="container-center">
 						<FaceComponent eyes={[]} mouths={[]} face={'fill-exception'} />
-						<div class="text-detail effect7 maxcontainer">
+						<div class="text-detail shadowEffect width80percent">
 							<h5 class="card-title">OOPS an error occured</h5>
 							<div>{GameContext.Error.message}</div>
 							<p />
-							<div class="sub-text-detail maxHeight">{GameContext.Error.stack}</div>
+							<div class="sub-text-detail max200Height">{GameContext.Error.stack}</div>
 						</div>
 						<p />
 						<ButtonComponent

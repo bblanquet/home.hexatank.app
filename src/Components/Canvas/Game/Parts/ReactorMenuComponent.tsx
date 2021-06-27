@@ -5,16 +5,14 @@ import { CancelMenuItem } from '../../../../Core/Menu/Buttons/CancelMenuItem';
 import { ReactorField } from '../../../../Core/Items/Cell/Field/Bonus/ReactorField';
 import { Item } from '../../../../Core/Items/Item';
 import { InteractionKind } from '../../../../Core/Interaction/IInteractionContext';
-import { GameContext } from '../../../../Core/Setup/Context/GameContext';
 import { AttackMenuItem } from '../../../../Core/Menu/Buttons/AttackMenuItem';
 import { SpeedFieldMenuItem } from '../../../../Core/Menu/Buttons/SpeedFieldMenuItem';
 import { HealMenuItem } from '../../../../Core/Menu/Buttons/HealMenuItem';
 import * as moment from 'moment';
 import { InteractionContext } from '../../../../Core/Interaction/InteractionContext';
-import { IGameContext } from '../../../../Core/Setup/Context/IGameContext';
 
 export default class ReactorMenuComponent extends Component<
-	{ Item: ReactorField; GameContext: IGameContext; Interaction: InteractionContext },
+	{ Item: ReactorField; Interaction: InteractionContext },
 	{ timeout: number }
 > {
 	constructor() {

@@ -52,7 +52,7 @@ export default class NavbarComponent extends Component<any, { profil: PlayerProf
 	render() {
 		return (
 			<div>
-				<nav class="navbar navbar-dark dark">
+				<nav class="navbar dark">
 					<ProgressComponent width={30} maxWidth={150} />
 					<div class="d-flex justify-content-start">
 						<SmActiveButtonComponent

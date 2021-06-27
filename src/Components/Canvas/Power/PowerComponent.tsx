@@ -13,7 +13,6 @@ import { IGameContextService } from '../../../Services/GameContext/IGameContextS
 import { IInteractionService } from '../../../Services/Interaction/IInteractionService';
 import { Singletons, SingletonKey } from '../../../Singletons';
 import Redirect from '../../Redirect/RedirectComponent';
-import Icon from '../../Common/Icon/IconComponent';
 import { AudioArchive } from '../../../Core/Framework/AudioArchiver';
 import ActiveRightBottomCornerButton from '../../Common/Button/Corner/ActiveRightBottomCornerButton';
 import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
@@ -157,13 +156,7 @@ export default class PowerCanvasComponent extends Component<
 					<MultiTankMenuComponent Interaction={this._interactionService.Publish()} item={this.state.Item} />
 				);
 			} else if (this.state.Item instanceof ReactorField) {
-				return (
-					<ReactorMenuComponent
-						Item={this.state.Item}
-						GameContext={this._gameContext}
-						Interaction={this._interactionService.Publish()}
-					/>
-				);
+				return <ReactorMenuComponent Item={this.state.Item} Interaction={this._interactionService.Publish()} />;
 			} else if (this.state.Item instanceof Cell || this.state.Item instanceof CellGroup) {
 				return (
 					<CellMenuComponent

@@ -1,6 +1,6 @@
 import { DiamondHq } from '../Game/DiamondHq';
-import { MapEnv } from '../MapEnv';
-import { MapItem } from '../MapItem';
+import { MapEnv } from '../Items/MapEnv';
+import { MapItem } from '../Items/MapItem';
 import { IBlueprint } from './../IBlueprint';
 export class DiamondBlueprint implements IBlueprint {
 	public Items: MapItem[];

@@ -6,7 +6,7 @@ import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { Singletons, SingletonKey } from '../../../../Singletons';
 import { InteractionKind } from '../../IInteractionContext';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
-import { GameContext } from '../../../Setup/Context/GameContext';
+import { GameContext } from '../../../Framework/Context/GameContext';
 import { UnitGroup } from '../../../Items/UnitGroup';
 
 export class ClearActiveMultiSelectionCombnation extends AbstractSingleCombination {

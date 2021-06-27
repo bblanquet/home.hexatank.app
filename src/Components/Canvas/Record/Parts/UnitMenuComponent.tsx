@@ -5,7 +5,7 @@ import { Item } from '../../../../Core/Items/Item';
 import { InteractionKind } from '../../../../Core/Interaction/IInteractionContext';
 import { Vehicle } from '../../../../Core/Items/Unit/Vehicle';
 import { Singletons, SingletonKey } from '../../../../Singletons';
-import { GameContext } from '../../../../Core/Setup/Context/GameContext';
+import { GameContext } from '../../../../Core/Framework/Context/GameContext';
 
 export default class UnitMenuComponent extends Component<{ Vehicle: Vehicle }, {}> {
 	private _interactionService: IInteractionService<GameContext>;

@@ -1,4 +1,4 @@
-import { IHqGameContext } from './../../../Setup/Context/IHqGameContext';
+import { IHqGameContext } from './../../../Framework/Context/IHqGameContext';
 import { CellGroup } from './../../../Items/CellGroup';
 import { NetworkMenuItem } from './../../../Menu/Buttons/NetworkMenuItem';
 import { NetworkField } from './../../../Items/Cell/Field/Bonus/NetworkField';

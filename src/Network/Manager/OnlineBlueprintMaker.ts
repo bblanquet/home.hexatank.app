@@ -1,8 +1,8 @@
-import { GameBlueprintMaker } from '../../Core/Setup/Blueprint/Game/GameBlueprintMaker';
+import { GameBlueprintMaker } from '../../Core/Framework/Blueprint/Game/GameBlueprintMaker';
 import { OnlinePlayer } from '../OnlinePlayer';
-import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
-import { MapType } from '../../Core/Setup/Blueprint/MapType';
-import { MapEnv } from '../../Core/Setup/Blueprint/MapEnv';
+import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
+import { MapType } from '../../Core/Framework/Blueprint/Items/MapType';
+import { MapEnv } from '../../Core/Framework/Blueprint/Items/MapEnv';
 import { BlueprintSetup } from '../../Components/Form/BlueprintSetup';
 import { IOnlinePlayerManager } from './IOnlinePlayerManager';
 import { ErrorHandler, ErrorCat } from '../../Core/Utils/Exceptions/ErrorHandler';

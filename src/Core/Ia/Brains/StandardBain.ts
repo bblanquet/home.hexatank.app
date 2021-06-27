@@ -2,7 +2,7 @@ import { RoadFieldRequester } from './../Decision/RequestMaker/AreaRequester/Fie
 import { ShieldFieldBorderRequestHandler } from './../Decision/RequestHandler/Handler/Field/ShieldFieldBorderRequestHandler';
 import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
 import { IBrainProvider } from './IBrain';
-import { GameContext } from '../../Setup/Context/GameContext';
+import { GameContext } from '../../Framework/Context/GameContext';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { Brain } from '../Decision/Brain';
 import { RequestHandler } from '../Decision/RequestHandler/RequestHandler';

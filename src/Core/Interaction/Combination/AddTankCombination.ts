@@ -1,8 +1,7 @@
-import { GameContext } from '../../Setup/Context/GameContext';
 import { TankMenuItem } from '../../Menu/Buttons/TankMenuItem';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { CombinationContext } from './CombinationContext';
-import { IHqGameContext } from '../../Setup/Context/IHqGameContext';
+import { IHqGameContext } from '../../Framework/Context/IHqGameContext';
 
 export class AddTankCombination extends AbstractSingleCombination {
 	constructor(private _gameContext: IHqGameContext) {

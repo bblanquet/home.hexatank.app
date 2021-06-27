@@ -1,9 +1,9 @@
-import { IBlueprint } from './../../Setup/Blueprint/IBlueprint';
+import { IBlueprint } from './../../Framework/Blueprint/IBlueprint';
 import { IKeyService } from './../../../Services/Key/IKeyService';
 import { Singletons, SingletonKey } from '../../../Singletons';
 import { IAppService } from '../../../Services/App/IAppService';
 import { SvgArchive } from '../../Framework/SvgArchiver';
-import { MapEnv } from '../../Setup/Blueprint/MapEnv';
+import { MapEnv } from '../../Framework/Blueprint/Items/MapEnv';
 
 export class CamouflageHandler {
 	private _appService: IAppService<IBlueprint>;

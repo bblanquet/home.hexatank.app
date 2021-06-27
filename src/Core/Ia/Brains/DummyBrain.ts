@@ -11,7 +11,7 @@ import { AreaSearch } from '../Decision/Utils/AreaSearch';
 import { IBrain } from '../Decision/IBrain';
 import { Groups } from '../../Utils/Collections/Groups';
 import { ISimpleRequestHandler } from '../Decision/RequestHandler/ISimpleRequestHandler';
-import { GameContext } from '../../Setup/Context/GameContext';
+import { GameContext } from '../../Framework/Context/GameContext';
 
 export class DummyBrain implements IBrainProvider {
 	GetBrain(hq: Headquarter, context: GameContext, areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {

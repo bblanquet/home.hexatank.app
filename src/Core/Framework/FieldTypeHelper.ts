@@ -3,7 +3,7 @@ import { SvgArchive } from './SvgArchiver';
 import { DiamondField } from './../Items/Cell/Field/DiamondField';
 import { BlockingField } from './../Items/Cell/Field/BlockingField';
 import { BasicField } from './../Items/Cell/Field/BasicField';
-import { GameContext } from '../Setup/Context/GameContext';
+import { GameContext } from '../Framework/Context/GameContext';
 import { IField } from './../Items/Cell/Field/IField';
 import { FarmField } from './../Items/Cell/Field/Bonus/FarmField';
 import { MedicField } from './../Items/Cell/Field/Bonus/MedicField';

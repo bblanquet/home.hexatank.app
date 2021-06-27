@@ -1,7 +1,7 @@
-import { DiamondBlueprint } from './../../Core/Setup/Blueprint/Diamond/DiamondBlueprint';
-import { DiamondContext } from './../../Core/Setup/Context/DiamondContext';
+import { DiamondBlueprint } from './../../Core/Framework/Blueprint/Diamond/DiamondBlueprint';
+import { DiamondContext } from './../../Core/Framework/Context/DiamondContext';
 import { IGameContextService } from './IGameContextService';
-import { DiamondRenderer } from '../../Core/Setup/Render/Diamond/DiamondRenderer';
+import { DiamondRenderer } from '../../Core/Framework/Render/Diamond/DiamondRenderer';
 
 export class DiamondContextService implements IGameContextService<DiamondBlueprint, DiamondContext> {
 	private _gameContext: DiamondContext;

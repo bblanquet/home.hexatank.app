@@ -1,5 +1,5 @@
 import { InteractionInfo } from '../../../Interaction/InteractionInfo';
-import { GameBlueprint } from '../../../Setup/Blueprint/Game/GameBlueprint';
+import { GameBlueprint } from '../../Blueprint/Game/GameBlueprint';
 import { LogMessage } from '../../../Utils/Logger/LogMessage';
 import { RecordContent } from './RecordContent';
 export class RecordAny {

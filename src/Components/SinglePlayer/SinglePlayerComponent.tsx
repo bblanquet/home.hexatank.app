@@ -1,8 +1,8 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { BlueprintSetup } from '../Form/BlueprintSetup';
-import { GameBlueprintMaker } from '../../Core/Setup/Blueprint/Game/GameBlueprintMaker';
-import { MapEnv } from '../../Core/Setup/Blueprint/MapEnv';
+import { GameBlueprintMaker } from '../../Core/Framework/Blueprint/Game/GameBlueprintMaker';
+import { MapEnv } from '../../Core/Framework/Blueprint/Items/MapEnv';
 import MdPanelComponent from '../Common/Panel/MdPanelComponent';
 import BlueprintFormComponent from '../Form/BlueprintFormComponent';
 import { IAppService } from '../../Services/App/IAppService';
@@ -11,8 +11,8 @@ import Redirect from '../Redirect/RedirectComponent';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
-import { MapType } from '../../Core/Setup/Blueprint/MapType';
-import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
+import { MapType } from '../../Core/Framework/Blueprint/Items/MapType';
+import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 
 export default class SinglePlayerComponent extends Component<any, BlueprintSetup> {

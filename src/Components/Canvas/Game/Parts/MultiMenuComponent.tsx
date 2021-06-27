@@ -8,7 +8,7 @@ import LightWhiteBtn from '../../../Common/Button/Standard/LightWhiteBtn';
 import { Point } from '../../../../Core/Utils/Geometry/Point';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
 import { Singletons, SingletonKey } from '../../../../Singletons';
-import { GameContext } from '../../../../Core/Setup/Context/GameContext';
+import { GameContext } from '../../../../Core/Framework/Context/GameContext';
 
 export default class MultiMenuComponent extends Component<{ Item: Item }, {}> {
 	private _interactionService: IInteractionService<GameContext>;

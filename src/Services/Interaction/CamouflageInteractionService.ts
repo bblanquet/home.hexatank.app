@@ -14,7 +14,7 @@ import { AbortCombination } from '../../Core/Interaction/Combination/AbortCombin
 import { TruckCombination } from '../../Core/Interaction/Combination/TruckCombination';
 import { CamouflageCombination } from '../../Core/Interaction/Combination/CamouflageCombination';
 import { SimpleUnselectCombination } from '../../Core/Interaction/Combination/SimpleUnselectCombination';
-import { CamouflageContext } from '../../Core/Setup/Context/CamouflageContext';
+import { CamouflageContext } from '../../Core/Framework/Context/CamouflageContext';
 
 export class CamouflageInteractionService implements IInteractionService<CamouflageContext> {
 	private _layerService: ILayerService;

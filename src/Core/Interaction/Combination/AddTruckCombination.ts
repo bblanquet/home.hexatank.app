@@ -1,4 +1,4 @@
-import { IHqGameContext } from './../../Setup/Context/IHqGameContext';
+import { IHqGameContext } from './../../Framework/Context/IHqGameContext';
 import { TruckMenuItem } from '../../Menu/Buttons/TruckMenuItem';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { CombinationContext } from './CombinationContext';

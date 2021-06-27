@@ -1,7 +1,7 @@
 import { CellUpdater } from './CellUpdater';
 import { UnitUpdater } from './UnitUpdater';
 import { RecordContent } from '../../../../Core/Framework/Record/Model/RecordContent';
-import { GameContext } from '../../../../Core/Setup/Context/GameContext';
+import { GameContext } from '../../../../Core/Framework/Context/GameContext';
 export class RecordCanvasUpdater {
 	private _unitUpdater: UnitUpdater;
 	private _cellUpdater: CellUpdater;

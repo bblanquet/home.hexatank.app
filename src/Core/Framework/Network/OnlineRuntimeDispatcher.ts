@@ -6,7 +6,7 @@ import { TypeTranslator } from '../../Items/Cell/Field/TypeTranslator';
 import { Item } from '../../Items/Item';
 import { Tank } from '../../Items/Unit/Tank';
 import { Vehicle } from '../../Items/Unit/Vehicle';
-import { GameContext } from '../../Setup/Context/GameContext';
+import { GameContext } from '../../Framework/Context/GameContext';
 import { FieldTypeHelper } from '../FieldTypeHelper';
 import { ISocketWrapper } from '../../../Network/Socket/INetworkSocket';
 import { NetworkMessage } from '../../../Network/Message/NetworkMessage';

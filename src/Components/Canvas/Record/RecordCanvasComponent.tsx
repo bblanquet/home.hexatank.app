@@ -11,8 +11,8 @@ import { IRecordService } from '../../../Services/Record/IRecordService';
 import { Singletons, SingletonKey } from '../../../Singletons';
 import { route } from 'preact-router';
 import Redirect from '../../Redirect/RedirectComponent';
-import { GameBlueprint } from '../../../Core/Setup/Blueprint/Game/GameBlueprint';
-import { GameContext } from '../../../Core/Setup/Context/GameContext';
+import { GameBlueprint } from '../../../Core/Framework/Blueprint/Game/GameBlueprint';
+import { GameContext } from '../../../Core/Framework/Context/GameContext';
 
 export default class RecordCanvasComponent extends Component<
 	{},

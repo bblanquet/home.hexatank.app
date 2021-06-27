@@ -1,6 +1,6 @@
 import { Component, h } from 'preact';
 import { route } from 'preact-router';
-import { GameContext } from '../../Core/Setup/Context/GameContext';
+import { GameContext } from '../../Core/Framework/Context/GameContext';
 import { FaceComponent } from '../Campaign/FaceComponent';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';

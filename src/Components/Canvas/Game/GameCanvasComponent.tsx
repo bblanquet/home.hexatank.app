@@ -1,7 +1,7 @@
 import { Component, h } from 'preact';
 import { Item } from '../../../Core/Items/Item';
 import OnlinePlayersComponent from './Parts/OnlinePlayersComponent';
-import { GameContext } from '../../../Core/Setup/Context/GameContext';
+import { GameContext } from '../../../Core/Framework/Context/GameContext';
 import { ISelectable } from '../../../Core/ISelectable';
 import { GameSettings } from '../../../Core/Framework/GameSettings';
 import CanvasComponent from '../CanvasComponent';
@@ -21,7 +21,7 @@ import Visible from '../../Common/Visible/VisibleComponent';
 import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
 import { MultiCellMenuItem } from '../../../Core/Menu/Buttons/MultiCellMenuItem';
 import { IAppService } from '../../../Services/App/IAppService';
-import { GameBlueprint } from '../../../Core/Setup/Blueprint/Game/GameBlueprint';
+import { GameBlueprint } from '../../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { IAudioService } from '../../../Services/Audio/IAudioService';
 import { IOnlineService } from '../../../Services/Online/IOnlineService';
 import { Dictionary } from '../../../Core/Utils/Collections/Dictionary';

@@ -1,4 +1,4 @@
-import { IHqGameContext } from './../../../Setup/Context/IHqGameContext';
+import { IHqGameContext } from './../../../Framework/Context/IHqGameContext';
 import { ILayerService } from './../../../../Services/Layer/ILayerService';
 import { UnitGroup } from '../../../Items/UnitGroup';
 import { CombinationContext } from '../CombinationContext';

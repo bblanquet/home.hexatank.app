@@ -1,4 +1,4 @@
-import { RenderingLayers } from '../../Core/Setup/Render/RenderingLayers';
+import { RenderingLayers } from '../../Core/Framework/Render/RenderingLayers';
 import { IGarbage } from '../IGarbage';
 
 export interface ILayerService extends IGarbage {

@@ -1,13 +1,13 @@
 import { PowerAudioManager } from '../../Core/Framework/Audio/PowerAudioManager';
-import { PowerContext } from './../../Core/Setup/Context/PowerContext';
-import { PowerBlueprint } from './../../Core/Setup/Blueprint/Power/PowerBlueprint';
+import { PowerContext } from './../../Core/Framework/Context/PowerContext';
+import { PowerBlueprint } from './../../Core/Framework/Blueprint/Power/PowerBlueprint';
 import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
 import { IInteractionService } from '../Interaction/IInteractionService';
 import { ILayerService } from '../Layer/ILayerService';
 import { IUpdateService } from '../Update/IUpdateService';
 import { IGameContextService } from '../GameContext/IGameContextService';
-import { AppProvider } from '../../Core/App/AppProvider';
+import { AppProvider } from '../../Core/Framework/App/AppProvider';
 import { IAppService } from './IAppService';
 import { Singletons, SingletonKey } from '../../Singletons';
 import * as PIXI from 'pixi.js';

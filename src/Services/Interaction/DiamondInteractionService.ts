@@ -1,4 +1,4 @@
-import { DiamondContext } from './../../Core/Setup/Context/DiamondContext';
+import { DiamondContext } from './../../Core/Framework/Context/DiamondContext';
 import { CombinationProvider } from './../../Core/Interaction/CombinationProvider';
 import { SelectableChecker } from './../../Core/Interaction/SelectableChecker';
 import { IInteractionService } from './IInteractionService';

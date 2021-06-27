@@ -1,4 +1,4 @@
-import { IGameContext } from '../../Core/Setup/Context/IGameContext';
+import { IGameContext } from '../../Core/Framework/Context/IGameContext';
 import { InteractionContext } from './../../Core/Interaction/InteractionContext';
 import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
 import { IGarbage } from '../IGarbage';

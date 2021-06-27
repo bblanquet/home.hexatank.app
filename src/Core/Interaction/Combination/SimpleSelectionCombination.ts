@@ -1,4 +1,4 @@
-import { IGameContext } from '../../Setup/Context/IGameContext';
+import { IGameContext } from '../../Framework/Context/IGameContext';
 import { ISelectable } from '../../ISelectable';
 import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';

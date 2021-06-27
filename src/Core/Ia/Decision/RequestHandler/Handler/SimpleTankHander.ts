@@ -4,7 +4,7 @@ import { Brain } from '../../Brain';
 import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
 import { RequestType } from '../../Utils/RequestType';
 import { AreaRequest } from '../../Utils/AreaRequest';
-import { GameContext } from '../../../../Setup/Context/GameContext';
+import { GameContext } from '../../../../Framework/Context/GameContext';
 
 export class SimpleTankHander implements ISimpleRequestHandler {
 	constructor(private _gameContext: GameContext, private _brain: Brain) {}

@@ -1,4 +1,4 @@
-import { GameContext } from '../../Core/Setup/Context/GameContext';
+import { GameContext } from '../../Core/Framework/Context/GameContext';
 import { ItemsUpdater } from '../../Core/ItemsUpdater';
 import { IUpdateService } from './IUpdateService';
 import { route } from 'preact-router';

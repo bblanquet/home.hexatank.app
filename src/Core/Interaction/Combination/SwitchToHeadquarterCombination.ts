@@ -6,7 +6,7 @@ import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
-import { IHqGameContext } from '../../Setup/Context/IHqGameContext';
+import { IHqGameContext } from '../../Framework/Context/IHqGameContext';
 
 export class SwitchToHeadquarterCombination extends AbstractSingleCombination {
 	constructor(private _gameContext: IHqGameContext) {

@@ -1,5 +1,5 @@
-import { GameBlueprint } from '../../Setup/Blueprint/Game/GameBlueprint';
-import { GameContext } from '../../Setup/Context/GameContext';
+import { GameBlueprint } from '../../Framework/Blueprint/Game/GameBlueprint';
+import { GameContext } from '../../Framework/Context/GameContext';
 import { Singletons, SingletonKey } from '../../../Singletons';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
 import { GameSettings } from '../../Framework/GameSettings';

@@ -6,7 +6,7 @@ import { CombinationContext } from './CombinationContext';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { ISelectableChecker } from '../ISelectableChecker';
-import { IGameContext } from '../../Setup/Context/IGameContext';
+import { IGameContext } from '../../Framework/Context/IGameContext';
 
 export class SimpleUnselectCombination extends AbstractSingleCombination {
 	private _checker: ISelectableChecker;

@@ -1,4 +1,4 @@
-import { PowerContext } from './../../Core/Setup/Context/PowerContext';
+import { PowerContext } from './../../Core/Framework/Context/PowerContext';
 import { CombinationProvider } from './../../Core/Interaction/CombinationProvider';
 import { SelectableChecker } from './../../Core/Interaction/SelectableChecker';
 import { IInteractionService } from './IInteractionService';

@@ -1,4 +1,4 @@
-import { MapItem } from '../MapItem';
+import { MapItem } from '../Items/MapItem';
 
 export class DiamondHq {
 	public Hq: MapItem;

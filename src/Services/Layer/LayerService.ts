@@ -1,4 +1,4 @@
-import { RenderingLayers } from '../../Core/Setup/Render/RenderingLayers';
+import { RenderingLayers } from '../../Core/Framework/Render/RenderingLayers';
 import { ILayerService } from './ILayerService';
 import { Viewport } from 'pixi-viewport';
 

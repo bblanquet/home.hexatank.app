@@ -3,7 +3,7 @@ import { RequestHandler } from './../Decision/RequestHandler/RequestHandler';
 import { EnemyReactorHandler } from './../Decision/RequestHandler/Handler/EnemyReactorHandler';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
-import { GameContext } from '../../Setup/Context/GameContext';
+import { GameContext } from '../../Framework/Context/GameContext';
 import { Groups } from '../../Utils/Collections/Groups';
 import { Brain } from '../Decision/Brain';
 import { IBrain } from '../Decision/IBrain';

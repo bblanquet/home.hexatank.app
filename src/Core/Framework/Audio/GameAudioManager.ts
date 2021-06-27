@@ -1,9 +1,9 @@
 import { IGameAudioManager } from './IGameAudioManager';
-import { GameBlueprint } from '../../Setup/Blueprint/Game/GameBlueprint';
-import { GameContext } from '../../Setup/Context/GameContext';
+import { GameBlueprint } from '../../Framework/Blueprint/Game/GameBlueprint';
+import { GameContext } from '../../Framework/Context/GameContext';
 import { IOrder } from '../../Ia/Order/IOrder';
 import { Singletons, SingletonKey } from '../../../Singletons';
-import { MapEnv } from '../../Setup/Blueprint/MapEnv';
+import { MapEnv } from '../../Framework/Blueprint/Items/MapEnv';
 import { Missile } from '../../Items/Unit/Missile';
 import { Tank } from '../../Items/Unit/Tank';
 import { AudioArchive } from '../AudioArchiver';

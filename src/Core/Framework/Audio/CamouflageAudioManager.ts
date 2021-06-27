@@ -1,9 +1,9 @@
-import { CamouflageContext } from '../../Setup/Context/CamouflageContext';
+import { CamouflageContext } from '../../Framework/Context/CamouflageContext';
 import { IGameAudioManager } from './IGameAudioManager';
-import { IBlueprint } from '../../Setup/Blueprint/IBlueprint';
+import { IBlueprint } from '../../Framework/Blueprint/IBlueprint';
 import { IOrder } from '../../Ia/Order/IOrder';
 import { Singletons, SingletonKey } from '../../../Singletons';
-import { MapEnv } from '../../Setup/Blueprint/MapEnv';
+import { MapEnv } from '../../Framework/Blueprint/Items/MapEnv';
 import { Missile } from '../../Items/Unit/Missile';
 import { Tank } from '../../Items/Unit/Tank';
 import { AudioArchive } from '../AudioArchiver';

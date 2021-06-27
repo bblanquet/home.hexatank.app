@@ -1,15 +1,15 @@
-import { IBlueprint } from './../../Core/Setup/Blueprint/IBlueprint';
-import { PowerBluePrintMaker } from './../../Core/Setup/Blueprint/Power/PowerBlueprintMaker';
-import { CamouflageBluePrintMaker } from '../../Core/Setup/Blueprint/Cam/CamouflageBlueprintMaker';
-import { DiamondBlueprintMaker } from './../../Core/Setup/Blueprint/Diamond/DiamondBlueprintMaker';
+import { IBlueprint } from './../../Core/Framework/Blueprint/IBlueprint';
+import { PowerBluePrintMaker } from './../../Core/Framework/Blueprint/Power/PowerBlueprintMaker';
+import { CamouflageBluePrintMaker } from '../../Core/Framework/Blueprint/Cam/CamouflageBlueprintMaker';
+import { DiamondBlueprintMaker } from './../../Core/Framework/Blueprint/Diamond/DiamondBlueprintMaker';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
-import { GameBlueprintMaker } from '../../Core/Setup/Blueprint/Game/GameBlueprintMaker';
+import { GameBlueprintMaker } from '../../Core/Framework/Blueprint/Game/GameBlueprintMaker';
 import { Dictionary } from '../../Core/Utils/Collections/Dictionary';
 import { CampaignKind } from './CampaignKind';
-import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
-import { MapEnv } from '../../Core/Setup/Blueprint/MapEnv';
-import { MapType } from '../../Core/Setup/Blueprint/MapType';
+import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
+import { MapEnv } from '../../Core/Framework/Blueprint/Items/MapEnv';
+import { MapType } from '../../Core/Framework/Blueprint/Items/MapType';
 import { ICampaignService } from './ICampaignService';
 
 export class CampaignService implements ICampaignService {

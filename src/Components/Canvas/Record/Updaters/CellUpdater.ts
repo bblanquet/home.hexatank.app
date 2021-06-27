@@ -1,7 +1,7 @@
 import { FieldTypeHelper } from '../../../../Core/Framework/FieldTypeHelper';
 import { RecordKind } from '../../../../Core/Framework/Record/Model/Item/State/RecordKind';
 import { RecordContent } from '../../../../Core/Framework/Record/Model/RecordContent';
-import { GameContext } from '../../../../Core/Setup/Context/GameContext';
+import { GameContext } from '../../../../Core/Framework/Context/GameContext';
 import { HexAxial } from '../../../../Core/Utils/Geometry/HexAxial';
 import { Dictionary } from '../../../../Core/Utils/Collections/Dictionary';
 import { IField } from '../../../../Core/Items/Cell/Field/IField';

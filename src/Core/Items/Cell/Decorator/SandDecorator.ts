@@ -1,6 +1,6 @@
 import { DecoratingElement } from './DecoratingElement';
 import { Decorator } from './Decorator';
-import { DecorationType } from '../../../Setup/Blueprint/DecorationType';
+import { DecorationType } from '../../../Framework/Blueprint/Items/DecorationType';
 export class SandDecorator extends Decorator {
 	constructor() {
 		super();

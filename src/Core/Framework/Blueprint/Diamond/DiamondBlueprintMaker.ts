@@ -1,4 +1,4 @@
-import { MapType } from '../MapType';
+import { MapType } from '../Items/MapType';
 import { RectangleFlowerMapBuilder } from '../../Builder/RectangleFlowerMapBuilder';
 import { YFlowerMapBuilder } from '../../Builder/YFlowerMapBuilder';
 import { XFlowerMapBuilder } from '../../Builder/XFlowerMapBuilder';
@@ -9,20 +9,17 @@ import { DonutFlowerMapBuilder } from '../../Builder/DonutFlowerMapBuilder';
 import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { SandDecorator } from '../../../Items/Cell/Decorator/SandDecorator';
 import { IceDecorator } from '../../../Items/Cell/Decorator/IceDecorator';
-import { MapEnv } from '../MapEnv';
+import { MapEnv } from '../Items/MapEnv';
 import { HexAxial } from '../../../Utils/Geometry/HexAxial';
 import { ForestDecorator } from '../../../Items/Cell/Decorator/ForestDecorator';
-import { MapItem } from '../MapItem';
+import { MapItem } from '../Items/MapItem';
 import { FlowerMapBuilder } from '../../Builder/FlowerMapBuilder';
-import { FartestPointsFinder } from '../../Builder/FartestPointsFinder';
-import { DecorationType } from '../DecorationType';
+import { DecorationType } from '../Items/DecorationType';
 import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
 import { IMapBuilder } from '../../Builder/IPlaygroundBuilder';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { DiamondBlueprint } from './DiamondBlueprint';
 import { DiamondHq } from '../Game/DiamondHq';
-import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
-import { DistanceHelper } from '../../../Items/Unit/MotionHelpers/DistanceHelper';
 
 export class DiamondBlueprintMaker {
 	private _builders: Dictionary<IMapBuilder>;

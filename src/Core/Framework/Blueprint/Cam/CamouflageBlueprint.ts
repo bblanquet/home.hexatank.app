@@ -1,7 +1,7 @@
 import { MapItemPair } from './MapItemPair';
 import { IBlueprint } from '../IBlueprint';
-import { MapEnv } from '../MapEnv';
-import { MapItem } from '../MapItem';
+import { MapEnv } from '../Items/MapEnv';
+import { MapItem } from '../Items/MapItem';
 
 export class CamouflageBlueprint implements IBlueprint {
 	public Items: Array<MapItem>;

@@ -6,7 +6,7 @@ import { TypeTranslator } from '../../Items/Cell/Field/TypeTranslator';
 import { Identity } from '../../Items/Identity';
 import { LatencyUp } from '../../Items/Unit/PowerUp/LatencyUp';
 import { Vehicle } from '../../Items/Unit/Vehicle';
-import { GameContext } from '../../Setup/Context/GameContext';
+import { GameContext } from '../../Framework/Context/GameContext';
 import { FieldTypeHelper } from '../FieldTypeHelper';
 import { ISocketWrapper } from '../../../Network/Socket/INetworkSocket';
 import { PacketKind } from '../../../Network/Message/PacketKind';

@@ -7,8 +7,8 @@ import { ILayerService } from '../../Services/Layer/ILayerService';
 import { IGameContextService } from '../../Services/GameContext/IGameContextService';
 import { IKeyService } from '../../Services/Key/IKeyService';
 import { IsMobile } from '../../Core/Utils/ToolBox';
-import { IGameContext } from '../../Core/Setup/Context/IGameContext';
-import { IBlueprint } from '../../Core/Setup/Blueprint/IBlueprint';
+import { IGameContext } from '../../Core/Framework/Context/IGameContext';
+import { IBlueprint } from '../../Core/Framework/Blueprint/IBlueprint';
 import Analyze from '../Analyze/AnalyzeComponent';
 
 export default class CanvasComponent extends Component<

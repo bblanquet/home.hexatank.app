@@ -6,7 +6,7 @@ import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { ISelectable } from '../../ISelectable';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { UnitGroup } from '../../Items/UnitGroup';
-import { IHqGameContext } from '../../Setup/Context/IHqGameContext';
+import { IHqGameContext } from '../../Framework/Context/IHqGameContext';
 
 export class SwitchToCellCombination extends AbstractSingleCombination {
 	constructor(private _gameContext: IHqGameContext) {

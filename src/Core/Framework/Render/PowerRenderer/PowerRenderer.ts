@@ -14,7 +14,7 @@ import { CellProperties } from '../../../Items/Cell/CellProperties';
 import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { HexAxial } from '../../../Utils/Geometry/HexAxial';
-import { MapEnv } from '../../Blueprint/MapEnv';
+import { MapEnv } from '../../Blueprint/Items/MapEnv';
 import { Floor } from '../../../Items/Environment/Floor';
 import { Identity } from '../../../Items/Identity';
 import { HqSkinHelper } from '../Hq/HqSkinHelper';

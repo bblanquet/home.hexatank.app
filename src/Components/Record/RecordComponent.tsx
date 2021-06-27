@@ -17,7 +17,7 @@ import SmPanelComponent from '../Common/Panel/SmPanelComponent';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 import SmActiveButtonComponent from '../Common/Button/Stylish/SmActiveButtonComponent';
 import Visible from '../Common/Visible/VisibleComponent';
-import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
+import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import Switch from '../Common/Visible/SwitchComponent';
 
 export default class RecordComponent extends Component<

@@ -3,7 +3,7 @@ import { RecordHq } from './RecordHq';
 import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { RecordAny } from './RecordAny';
 import { RecordUnit } from './Item/RecordUnit';
-import { GameBlueprint } from '../../../Setup/Blueprint/Game/GameBlueprint';
+import { GameBlueprint } from '../../../Framework/Blueprint/Game/GameBlueprint';
 import { LogMessage } from '../../../Utils/Logger/LogMessage';
 export class RecordContent {
 	public MapContext: GameBlueprint;

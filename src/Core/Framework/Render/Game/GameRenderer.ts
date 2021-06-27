@@ -1,24 +1,26 @@
-import { DiamondBlueprint } from './../../Blueprint/Diamond/DiamondBlueprint';
-import { DiamondContext } from './../../Context/DiamondContext';
-import { SvgArchive } from './../../../Framework/SvgArchiver';
-import { Cloud } from './../../../Items/Environment/Cloud';
-import { ForestDecorator } from './../../../Items/Cell/Decorator/ForestDecorator';
-import { GameSettings } from '../../../Framework/GameSettings';
-import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
-import { Cell } from '../../../Items/Cell/Cell';
-import { CellProperties } from '../../../Items/Cell/CellProperties';
 import { Dictionary } from '../../../Utils/Collections/Dictionary';
-import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
-import { HexAxial } from '../../../Utils/Geometry/HexAxial';
-import { MapEnv } from '../../Blueprint/MapEnv';
-import { Floor } from '../../../Items/Environment/Floor';
-import { HqRender } from '../Hq/HqRender';
 import { SimpleFloor } from '../../../Items/Environment/SimpleFloor';
-import { AboveItem } from '../../../Items/AboveItem';
-
-export class DiamondRenderer {
-	public Render(blueprint: DiamondBlueprint): DiamondContext {
+import { GameContext } from '../../Context/GameContext';
+import { GameSettings } from '../../../Framework/GameSettings';
+import { ForestDecorator } from '../../../Items/Cell/Decorator/ForestDecorator';
+import { CellProperties } from '../../../Items/Cell/CellProperties';
+import { Cloud } from '../../../Items/Environment/Cloud';
+import { CellState } from '../../../Items/Cell/CellState';
+import { Cell } from '../../../Items/Cell/Cell';
+import { HexAxial } from '../../../Utils/Geometry/HexAxial';
+import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
+import { Floor } from '../../../Items/Environment/Floor';
+import { SvgArchive } from '../../../Framework/SvgArchiver';
+import { GameBlueprint } from '../../Blueprint/Game/GameBlueprint';
+import { MapEnv } from '../../Blueprint/Items/MapEnv';
+import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
+import { HqRender } from '../Hq/HqRender';
+import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
+export class GameRenderer {
+	public Render(blueprint: GameBlueprint): GameContext {
 		const cells = new Dictionary<Cell>();
+		let playerHq: Headquarter = null;
+		let hqs: Headquarter[] = [];
 
 		blueprint.Items.forEach((item) => {
 			const cell = new Cell(new CellProperties(new HexAxial(item.Position.Q, item.Position.R)), cells);
@@ -32,14 +34,31 @@ export class DiamondRenderer {
 		).GetAreas(new HexAxial(blueprint.CenterItem.Position.Q, blueprint.CenterItem.Position.R));
 		this.SetLands(cells, blueprint.MapMode, areas);
 		this.AddClouds();
-		const hq = new HqRender().Render(cells, blueprint.HqDiamond, 0);
-		this.SetHqLand(cells, SvgArchive.nature.hq, [ hq.GetCell().GetHexCoo() ]);
-		this.SetHqLand(cells, SvgArchive.nature.hq2, [ hq.GetCell().GetHexCoo() ], 1);
+		if (blueprint.Hqs) {
+			blueprint.Hqs.forEach((hq, index) => {
+				hqs.push(new HqRender().Render(cells, hq, index));
+			});
 
-		const arrivalCell = cells.Get(blueprint.HqDiamond.Diamond.Position.ToString());
-		new AboveItem(arrivalCell, SvgArchive.arrow);
+			//insert elements into playground
+			this.SetHqLand(cells, SvgArchive.nature.hq, hqs.map((h) => h.GetCell().GetHexCoo()));
+			this.SetHqLand(cells, SvgArchive.nature.hq2, hqs.map((h) => h.GetCell().GetHexCoo()), 1);
 
-		return new DiamondContext(cells.Values(), hq);
+			playerHq = hqs.find((hq) => hq.Identity.Name === blueprint.PlayerName);
+			if (playerHq) {
+				playerHq.SetSelectionAnimation();
+				cells.Values().forEach((cell) => {
+					cell.SetPlayerHq(playerHq);
+					cell.Listen();
+				});
+				//make hq cells visible, need context to be setup :<, has to fix it one day
+				playerHq.GetCurrentCell().SetState(CellState.Visible);
+				playerHq.GetCurrentCell().GetNearby().forEach((cell) => {
+					(<Cell>cell).SetState(CellState.Visible);
+				});
+			}
+		}
+
+		return new GameContext(cells.Values(), hqs, playerHq);
 	}
 
 	public AddClouds() {

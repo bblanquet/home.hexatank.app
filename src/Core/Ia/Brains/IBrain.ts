@@ -1,4 +1,4 @@
-import { GameContext } from '../../Setup/Context/GameContext';
+import { GameContext } from '../../Framework/Context/GameContext';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { Area } from '../Decision/Utils/Area';

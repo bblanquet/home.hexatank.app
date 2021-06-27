@@ -4,7 +4,7 @@ import { CombinationContext } from './CombinationContext';
 import { GameSettings } from '../../Framework/GameSettings';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
-import { IHqGameContext } from '../../Setup/Context/IHqGameContext';
+import { IHqGameContext } from '../../Framework/Context/IHqGameContext';
 
 export class GenericCellCombination extends AbstractSingleCombination {
 	constructor(

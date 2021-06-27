@@ -1,6 +1,6 @@
-import { IBlueprint } from './../Setup/Blueprint/IBlueprint';
+import { IBlueprint } from '../../Framework/Blueprint/IBlueprint';
 import * as PIXI from 'pixi.js';
-import { MapEnv } from '../Setup/Blueprint/MapEnv';
+import { MapEnv } from '../../Framework/Blueprint/Items/MapEnv';
 
 export class AppProvider {
 	public Provide(blueprint: IBlueprint): PIXI.Application {

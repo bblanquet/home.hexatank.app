@@ -1,4 +1,4 @@
-import { IBlueprint } from './../../Core/Setup/Blueprint/IBlueprint';
+import { IBlueprint } from './../../Core/Framework/Blueprint/IBlueprint';
 import { RecordContext } from './../../Core/Framework/Record/RecordContext';
 import { StatsContext } from './../../Core/Framework/Stats/StatsContext';
 import { IGarbage } from '../IGarbage';

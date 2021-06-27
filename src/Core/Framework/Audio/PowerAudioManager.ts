@@ -1,9 +1,9 @@
-import { PowerContext } from '../../Setup/Context/PowerContext';
-import { PowerBlueprint } from '../../Setup/Blueprint/Power/PowerBlueprint';
+import { PowerContext } from '../../Framework/Context/PowerContext';
+import { PowerBlueprint } from '../../Framework/Blueprint/Power/PowerBlueprint';
 import { IGameAudioManager } from './IGameAudioManager';
 import { IOrder } from '../../Ia/Order/IOrder';
 import { Singletons, SingletonKey } from '../../../Singletons';
-import { MapEnv } from '../../Setup/Blueprint/MapEnv';
+import { MapEnv } from '../../Framework/Blueprint/Items/MapEnv';
 import { Missile } from '../../Items/Unit/Missile';
 import { Tank } from '../../Items/Unit/Tank';
 import { AudioArchive } from '../AudioArchiver';

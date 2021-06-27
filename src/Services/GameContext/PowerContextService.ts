@@ -1,6 +1,6 @@
-import { PowerRenderer } from './../../Core/Setup/Render/PowerRenderer/PowerRenderer';
-import { PowerBlueprint } from './../../Core/Setup/Blueprint/Power/PowerBlueprint';
-import { PowerContext } from './../../Core/Setup/Context/PowerContext';
+import { PowerRenderer } from './../../Core/Framework/Render/PowerRenderer/PowerRenderer';
+import { PowerBlueprint } from './../../Core/Framework/Blueprint/Power/PowerBlueprint';
+import { PowerContext } from './../../Core/Framework/Context/PowerContext';
 import { IGameContextService } from './IGameContextService';
 
 export class PowerContextService implements IGameContextService<PowerBlueprint, PowerContext> {

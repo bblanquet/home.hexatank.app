@@ -15,7 +15,7 @@ import HqMenuComponent from './HqMenuComponent';
 import { CellGroup } from '../../../../Core/Items/CellGroup';
 import { Item } from '../../../../Core/Items/Item';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
-import { GameContext } from '../../../../Core/Setup/Context/GameContext';
+import { GameContext } from '../../../../Core/Framework/Context/GameContext';
 import { Singletons, SingletonKey } from '../../../../Singletons';
 
 export default class MenuSwitcher extends Component<

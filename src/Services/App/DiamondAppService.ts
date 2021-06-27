@@ -1,13 +1,13 @@
 import { DiamondAudioManager } from './../../Core/Framework/Audio/DiamondAudioManager';
-import { DiamondBlueprint } from './../../Core/Setup/Blueprint/Diamond/DiamondBlueprint';
-import { DiamondContext } from './../../Core/Setup/Context/DiamondContext';
+import { DiamondBlueprint } from './../../Core/Framework/Blueprint/Diamond/DiamondBlueprint';
+import { DiamondContext } from './../../Core/Framework/Context/DiamondContext';
 import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
 import { IInteractionService } from '../Interaction/IInteractionService';
 import { ILayerService } from '../Layer/ILayerService';
 import { IUpdateService } from '../Update/IUpdateService';
 import { IGameContextService } from '../GameContext/IGameContextService';
-import { AppProvider } from '../../Core/App/AppProvider';
+import { AppProvider } from '../../Core/Framework/App/AppProvider';
 import { IAppService } from './IAppService';
 import { Singletons, SingletonKey } from '../../Singletons';
 import * as PIXI from 'pixi.js';

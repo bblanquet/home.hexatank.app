@@ -1,4 +1,4 @@
-import { IHqGameContext } from './../../Setup/Context/IHqGameContext';
+import { IHqGameContext } from './../../Framework/Context/IHqGameContext';
 import { UnitGroup } from '../../Items/UnitGroup';
 import { ISelectable } from '../../ISelectable';
 import { Cell } from '../../Items/Cell/Cell';

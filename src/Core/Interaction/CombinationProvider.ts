@@ -1,5 +1,5 @@
 import { MultiUnitOneCellOrderCombination } from './Combination/Multi/MultiUnitOneCellOrderCombination';
-import { IHqGameContext } from './../Setup/Context/IHqGameContext';
+import { IHqGameContext } from './../Framework/Context/IHqGameContext';
 import { ActiveMultiSelectionCombination } from './Combination/Multi/ActiveMultiSelectionCombination';
 import { ClearActiveMultiSelectionCombnation } from './Combination/Multi/ClearActiveMultiSelectionCombnation';
 import { OverlockCombination } from './Combination/OverlockCombination';

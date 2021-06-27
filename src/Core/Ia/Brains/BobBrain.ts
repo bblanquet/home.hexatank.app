@@ -13,7 +13,7 @@ import { SpeedUpHandler } from './../Decision/RequestHandler/Handler/SpeedUpHand
 import { PowerUpRequestHandler } from './../Decision/RequestHandler/Handler/PowerUpRequestHandler';
 import { DiamondExpansionMaker } from './../Decision/ExpansionMaker/DiamondExpansionMaker';
 import { IBrainProvider } from './IBrain';
-import { GameContext } from '../../Setup/Context/GameContext';
+import { GameContext } from '../../Framework/Context/GameContext';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { Brain } from '../Decision/Brain';
 import { RequestHandler } from '../Decision/RequestHandler/RequestHandler';

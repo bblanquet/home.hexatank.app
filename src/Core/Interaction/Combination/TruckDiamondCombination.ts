@@ -1,4 +1,4 @@
-import { GameContext } from '../../Setup/Context/GameContext';
+import { GameContext } from '../../Framework/Context/GameContext';
 import { DiamondFieldOrder } from '../../Ia/Order/Composite/Diamond/DiamondFieldOrder';
 import { TruckPatrolOrder } from '../../Ia/Order/Composite/Diamond/TruckPatrolOrder';
 import { Item } from '../../Items/Item';
@@ -9,7 +9,7 @@ import { HqFieldOrder } from '../../Ia/Order/Composite/Diamond/HqFieldOrder';
 import { ISelectable } from '../../ISelectable';
 import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
-import { IHqGameContext } from '../../Setup/Context/IHqGameContext';
+import { IHqGameContext } from '../../Framework/Context/IHqGameContext';
 
 export class TruckDiamondCombination extends AbstractSingleCombination {
 	constructor(public _gameContext: IHqGameContext) {

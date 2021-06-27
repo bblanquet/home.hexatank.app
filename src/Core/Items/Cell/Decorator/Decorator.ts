@@ -3,7 +3,7 @@ import { VolcanoField } from '../Field/VolcanoField';
 import { WaterField } from '../Field/WaterField';
 import { Cell } from '../Cell';
 import { DecoratingElement } from './DecoratingElement';
-import { DecorationType } from '../../../Setup/Blueprint/DecorationType';
+import { DecorationType } from '../../../Framework/Blueprint/Items/DecorationType';
 import { Item } from '../../Item';
 import { SvgArchive } from '../../../Framework/SvgArchiver';
 

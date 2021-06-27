@@ -7,7 +7,7 @@ import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
 import { Singletons, SingletonKey } from '../../../../Singletons';
 import { ILayerService } from '../../../../Services/Layer/ILayerService';
-import { GameContext } from '../../../Setup/Context/GameContext';
+import { GameContext } from '../../../Framework/Context/GameContext';
 
 export class DisplayMultiMenuCombination extends AbstractSingleCombination {
 	private _interactionService: IInteractionService<GameContext>;

@@ -1,10 +1,10 @@
-import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
+import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { GameSettings } from './../../Core/Framework/GameSettings';
 import { IInteractionService } from './../Interaction/IInteractionService';
 import { ILayerService } from './../Layer/ILayerService';
 import { IUpdateService } from './../Update/IUpdateService';
 import { IGameContextService } from './../GameContext/IGameContextService';
-import { AppProvider } from './../../Core/App/AppProvider';
+import { AppProvider } from '../../Core/Framework/App/AppProvider';
 import { IAppService } from './IAppService';
 import { Singletons, SingletonKey } from '../../Singletons';
 import * as PIXI from 'pixi.js';
@@ -12,7 +12,7 @@ import { IKeyService } from '../Key/IKeyService';
 import { CellStateSetter } from '../../Core/Items/Cell/CellStateSetter';
 import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
-import { GameContext } from '../../Core/Setup/Context/GameContext';
+import { GameContext } from '../../Core/Framework/Context/GameContext';
 
 export class RecordAppService implements IAppService<GameBlueprint> {
 	private _context: GameBlueprint;

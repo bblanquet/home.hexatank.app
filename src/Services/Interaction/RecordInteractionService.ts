@@ -1,7 +1,7 @@
 import { TrackingClearTrashCombination } from './../../Core/Interaction/Combination/TrackingClearTrashCombination';
 import { TrackingSelectableChecker } from './../../Core/Interaction/TrackingSelectable';
 import { InputNotifier } from './../../Core/Interaction/InputNotifier';
-import { GameContext } from '../../Core/Setup/Context/GameContext';
+import { GameContext } from '../../Core/Framework/Context/GameContext';
 import { InteractionContext } from '../../Core/Interaction/InteractionContext';
 import { IInteractionService } from './IInteractionService';
 import { ILayerService } from '../Layer/ILayerService';

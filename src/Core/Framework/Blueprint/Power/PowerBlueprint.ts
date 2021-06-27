@@ -1,5 +1,5 @@
-import { MapEnv } from '../MapEnv';
-import { MapItem } from '../MapItem';
+import { MapEnv } from '../Items/MapEnv';
+import { MapItem } from '../Items/MapItem';
 import { IBlueprint } from './../IBlueprint';
 export class PowerBlueprint implements IBlueprint {
 	public Items: MapItem[];

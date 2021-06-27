@@ -17,8 +17,8 @@ import Icon from '../../Common/Icon/IconComponent';
 import { AudioArchive } from '../../../Core/Framework/AudioArchiver';
 import Visible from '../../Common/Visible/VisibleComponent';
 import SmPopupComponent from '../../SmPopup/SmPopupComponent';
-import { CamouflageContext } from '../../../Core/Setup/Context/CamouflageContext';
-import { CamouflageBlueprint } from '../../../Core/Setup/Blueprint/Cam/CamouflageBlueprint';
+import { CamouflageContext } from '../../../Core/Framework/Context/CamouflageContext';
+import { CamouflageBlueprint } from '../../../Core/Framework/Blueprint/Cam/CamouflageBlueprint';
 import { IAudioService } from '../../../Services/Audio/IAudioService';
 
 export default class CamouflageCanvasComponent extends Component<

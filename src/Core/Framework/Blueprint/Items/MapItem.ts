@@ -1,4 +1,4 @@
-import { LightHexAxial } from '../../Utils/Geometry/HexAxial';
+import { LightHexAxial } from '../../../Utils/Geometry/HexAxial';
 import { DecorationType } from './DecorationType';
 
 export class MapItem {

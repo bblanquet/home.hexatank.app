@@ -11,7 +11,7 @@ import Icon from '../Common/Icon/IconComponent';
 import { CampaignKind } from '../../Services/Campaign/CampaignKind';
 import { FaceComponent } from './FaceComponent';
 import NavbarComponent from '../Common/Navbar/NavbarComponent';
-import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
+import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 
 export default class BlueCampaignComponent extends Component<any, any> {
 	private _campaignService: ICampaignService;

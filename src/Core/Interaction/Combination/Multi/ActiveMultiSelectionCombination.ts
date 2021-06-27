@@ -6,7 +6,7 @@ import { MultiCellMenuItem } from '../../../Menu/Buttons/MultiCellMenuItem';
 import { MultiTankMenuItem } from '../../../Menu/Buttons/MultiTankMenuItem';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
 import { Singletons, SingletonKey } from '../../../../Singletons';
-import { GameContext } from '../../../Setup/Context/GameContext';
+import { GameContext } from '../../../Framework/Context/GameContext';
 
 export class ActiveMultiSelectionCombination extends AbstractSingleCombination {
 	private _interactionService: IInteractionService<GameContext>;

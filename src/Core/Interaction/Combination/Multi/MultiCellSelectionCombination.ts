@@ -5,7 +5,7 @@ import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { ILayerService } from '../../../../Services/Layer/ILayerService';
 import { Singletons, SingletonKey } from '../../../../Singletons';
-import { IGameContext } from '../../../Setup/Context/IGameContext';
+import { IGameContext } from '../../../Framework/Context/IGameContext';
 
 export class MultiCellSelectionCombination extends AbstractSingleCombination {
 	private _layerService: ILayerService;

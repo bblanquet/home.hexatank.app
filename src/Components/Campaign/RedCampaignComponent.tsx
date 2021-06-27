@@ -13,7 +13,7 @@ import { FaceComponent } from './FaceComponent';
 import NavbarComponent from '../Common/Navbar/NavbarComponent';
 import Visible from '../Common/Visible/VisibleComponent';
 import { Sentences } from './Sentences';
-import { GameBlueprint } from '../../Core/Setup/Blueprint/Game/GameBlueprint';
+import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 
 export default class RedCampaignComponent extends Component<
 	any,

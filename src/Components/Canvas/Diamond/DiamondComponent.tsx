@@ -1,6 +1,6 @@
 import { Component, h } from 'preact';
 import { Item } from '../../../Core/Items/Item';
-import { GameContext } from '../../../Core/Setup/Context/GameContext';
+import { GameContext } from '../../../Core/Framework/Context/GameContext';
 import { Tank } from '../../../Core/Items/Unit/Tank';
 import { Truck } from '../../../Core/Items/Unit/Truck';
 import { Cell } from '../../../Core/Items/Cell/Cell';
@@ -29,8 +29,8 @@ import Visible from '../../Common/Visible/VisibleComponent';
 import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
 import { MultiCellMenuItem } from '../../../Core/Menu/Buttons/MultiCellMenuItem';
 import { IAppService } from '../../../Services/App/IAppService';
-import { DiamondBlueprint } from '../../../Core/Setup/Blueprint/Diamond/DiamondBlueprint';
-import { DiamondContext } from '../../../Core/Setup/Context/DiamondContext';
+import { DiamondBlueprint } from '../../../Core/Framework/Blueprint/Diamond/DiamondBlueprint';
+import { DiamondContext } from '../../../Core/Framework/Context/DiamondContext';
 import MultiMenuComponent from '../Game/Parts/MultiMenuComponent';
 import CellMenuComponent from '../Game/Parts/CellMenuComponent';
 import HqMenuComponent from '../Game/Parts/HqMenuComponent';

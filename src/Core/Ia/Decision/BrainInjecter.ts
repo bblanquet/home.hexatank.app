@@ -1,12 +1,12 @@
 import { BobBrain } from './../Brains/BobBrain';
 import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { HexAxial } from './../../Utils/Geometry/HexAxial';
-import { GameBlueprint } from '../../Setup/Blueprint/Game/GameBlueprint';
-import { GameContext } from '../../Setup/Context/GameContext';
+import { GameBlueprint } from '../../Framework/Blueprint/Game/GameBlueprint';
+import { GameContext } from '../../Framework/Context/GameContext';
 import { Area } from './Utils/Area';
 import { AreaSearch } from './Utils/AreaSearch';
 import { Cell } from '../../Items/Cell/Cell';
-import { DiamondHq } from '../../Setup/Blueprint/Game/DiamondHq';
+import { DiamondHq } from '../../Framework/Blueprint/Game/DiamondHq';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 

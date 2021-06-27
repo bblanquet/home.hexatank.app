@@ -32,7 +32,7 @@ import { Item } from '../../../Item';
 import { ISpot } from '../../../../Utils/Geometry/ISpot';
 import { IHeadquarter } from '../Hq/IHeadquarter';
 import { Identity, Relationship } from '../../../Identity';
-import { IHqGameContext } from '../../../../Setup/Context/IHqGameContext';
+import { IHqGameContext } from '../../../../Framework/Context/IHqGameContext';
 
 export class ReactorField extends Field implements ISelectable, ISpot<ReactorField> {
 	public Identity: Identity;

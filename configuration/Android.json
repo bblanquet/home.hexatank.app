@@ -21,9 +21,15 @@
 			"replace": "/",
 			"flags": "g"
 		},
+
 		{
 			"search": "{{current_env}}",
 			"replace": "PRD",
+			"flags": "g"
+		},
+		{
+			"search": "{{title}}",
+			"replace": "program6Logo",
 			"flags": "g"
 		}
 	]

@@ -9,6 +9,7 @@ import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { GameStatus } from '../../Framework/GameStatus';
+import { Vehicle } from '../../Items/Unit/Vehicle';
 export class DiamondContext implements IHqGameContext {
 	public OnGameStatusChanged: LiteEvent<GameStatus> = new LiteEvent<GameStatus>();
 	public OnPatrolSetting: LiteEvent<Boolean> = new LiteEvent<Boolean>();
@@ -28,6 +29,9 @@ export class DiamondContext implements IHqGameContext {
 				this.OnGameStatusChanged.Invoke(this, GameStatus.Defeat);
 			}
 		});
+	}
+	GetVehicles(): Vehicle[] {
+		return [];
 	}
 
 	GetPlayerHq(): IHeadquarter {

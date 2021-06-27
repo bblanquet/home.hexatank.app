@@ -57,7 +57,6 @@ export abstract class Vehicle extends AliveItem
 	private _nextCell: Cell;
 	private _currentCell: Cell;
 	private _currentOrder: IOrder = null;
-
 	protected BoundingBox: BoundingBox;
 
 	//stats
@@ -225,6 +224,10 @@ export abstract class Vehicle extends AliveItem
 		}
 	}
 
+	GetCurrentPath(): Cell[] {
+		return this._currentOrder.GetPath();
+	}
+
 	public SetDamage(damage: number): void {
 		damage = +damage.toFixed(2);
 		const field = this._currentCell.GetField();
@@ -245,25 +248,33 @@ export abstract class Vehicle extends AliveItem
 	}
 
 	//only online
-	public ForceCell(cell: Cell, order: BasicOrder): void {
-		this._currentCell.SetOccupier(null);
-		this._currentCell = null;
-		this._currentCell = cell;
+	public ForceCell(cell: Cell, order: BasicOrder = null): void {
+		if (this._currentCell) {
+			this._currentCell.SetOccupier(null);
+			this._currentCell = null;
+			this._currentCell = cell;
+		}
 		this._currentCell.SetOccupier(this);
 		this.InitCell(this._currentCell.GetBoundingBox());
 		this.ForceCancel(order);
 	}
 
 	//only online
-	public ForceCancel(order: IOrder): void {
+	public ForceCancel(order: IOrder = null): void {
 		this._translationMaker.Reset();
 		if (this._nextCell) {
 			this._nextCell.SetOccupier(null);
 			this._nextCell = null;
 		}
-		this._nextOrder = order;
-		this._currentOrder.Cancel();
-		this.SetCurrentOrder();
+		if (order) {
+			this._nextOrder = order;
+			if (this._currentOrder) {
+				this._currentOrder.Cancel();
+			}
+			this.SetCurrentOrder();
+		} else if (this._currentOrder) {
+			this._currentOrder.Cancel();
+		}
 	}
 
 	public HasOrder(): boolean {

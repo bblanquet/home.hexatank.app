@@ -176,13 +176,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 		this.Fields.every((field) => {
 			if (!field.GetCell().IsBlocked()) {
 				if (field.GetCell().IsVisible()) {
-					new Explosion(
-						field.GetCell().GetBoundingBox(),
-						SvgArchive.constructionEffects,
-						ZKind.Sky,
-						false,
-						5
-					);
+					new Explosion(field.GetCell().GetBoundingBox(), SvgArchive.constructionEffects, ZKind.Sky, false);
 				}
 				const tank = new Tank(this.Identity);
 				this.AddVehicle(tank);
@@ -206,7 +200,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 		this.Fields.every((field) => {
 			if (!field.GetCell().IsBlocked()) {
 				if (field.GetCell().IsVisible()) {
-					new Explosion(field.GetCell().GetBoundingBox(), SvgArchive.constructionEffects, 5, false, 5);
+					new Explosion(field.GetCell().GetBoundingBox(), SvgArchive.constructionEffects, 5, false);
 				}
 				let truck = new Truck(this.Identity);
 				this.AddVehicle(truck);

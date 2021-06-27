@@ -1,13 +1,13 @@
 import { IBlueprint } from '../IBlueprint';
-import { MapEnv } from '../Items/MapEnv';
-import { MapItem } from '../Items/MapItem';
+import { MapKind } from '../Items/MapKind';
+import { CellPrint } from '../Items/CellPrint';
 import { DiamondHq } from './DiamondHq';
 
 export class GameBlueprint implements IBlueprint {
-	public Items: Array<MapItem>;
-	public CenterItem: MapItem;
+	public Cells: Array<CellPrint>;
+	public CenterItem: CellPrint;
 	public Hqs: Array<DiamondHq>;
-	public MapMode: MapEnv;
+	public MapMode: MapKind;
 	public PlayerName: string = '';
 	constructor() {}
 }

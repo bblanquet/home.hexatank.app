@@ -25,6 +25,11 @@
 			"search": "{{current_env}}",
 			"replace": "LOCAL",
 			"flags": "g"
+		},
+		{
+			"search": "{{title}}",
+			"replace": "program6Logo",
+			"flags": "g"
 		}
 	]
 }

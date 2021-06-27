@@ -228,7 +228,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 			return;
 		}
 
-		if (vehicule.Identity.Name != this.Hq.Identity.Name) {
+		if (vehicule.GetRelation(this.Identity) !== Relationship.Ally) {
 			this.SetSelected(false);
 			this.Reserve.Clear();
 			this.OnLost.Invoke(this, this);
@@ -239,20 +239,6 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 				charge.Destroy();
 			});
 			this.Charges.Clear();
-
-			this.GetCell().GetIncludedRange(this._totalRange).forEach((c) => {
-				if (
-					TypeTranslator.IsBonusField(c.GetField()) &&
-					!this.Hq.IsCovered(c) &&
-					this.Hq.GetRelation(c.GetField().GetIdentity()) === Relationship.Ally
-				) {
-					c.GetField().Destroy();
-					if (c.IsVisible()) {
-						new Explosion(c.GetBoundingBox(), SvgArchive.constructionEffects, ZKind.Sky, false, 5);
-					}
-				}
-			});
-
 			const hq = this._context.GetHqFromId(vehicule.Identity);
 			const cell = this.GetCell();
 			var reactor = cell.SetField(new ReactorField(cell, hq, this._context, hq.Identity.Skin.GetLight()));

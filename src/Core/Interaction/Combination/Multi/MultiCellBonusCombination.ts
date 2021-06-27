@@ -15,7 +15,7 @@ import { CombinationContext } from '../CombinationContext';
 import { HealMenuItem } from '../../../Menu/Buttons/HealMenuItem';
 import { MedicField } from '../../../Items/Cell/Field/Bonus/MedicField';
 import { AttackMenuItem } from '../../../Menu/Buttons/AttackMenuItem';
-import { AttackField } from '../../../Items/Cell/Field/Bonus/AttackField';
+import { FireField } from '../../../Items/Cell/Field/Bonus/FireField';
 import { SpeedFieldMenuItem } from '../../../Menu/Buttons/SpeedFieldMenuItem';
 import { FarmField } from '../../../Items/Cell/Field/Bonus/FarmField';
 import { MoneyMenuItem } from '../../../Menu/Buttons/MoneyMenuItem';
@@ -57,7 +57,7 @@ export class MultiCellBonusCombination extends AbstractSingleCombination {
 				if (menuItem instanceof HealMenuItem) {
 					this.SetMenuItem(cells, (c) => c.SetField(new MedicField(c, hq)));
 				} else if (menuItem instanceof AttackMenuItem) {
-					this.SetMenuItem(cells, (c) => c.SetField(new AttackField(c, hq)));
+					this.SetMenuItem(cells, (c) => c.SetField(new FireField(c, hq)));
 				} else if (menuItem instanceof ShieldMenuItem) {
 					this.SetMenuItem(cells, (c) => c.SetField(new ShieldField(c, hq.Identity, hq)));
 				} else if (menuItem instanceof SpeedFieldMenuItem) {

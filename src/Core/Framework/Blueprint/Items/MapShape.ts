@@ -1,4 +1,4 @@
-export enum MapType {
+export enum MapShape {
 	Flower = 0,
 	Donut = 1,
 	Cheese = 2,

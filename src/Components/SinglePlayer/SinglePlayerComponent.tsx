@@ -2,7 +2,7 @@ import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { BlueprintSetup } from '../Form/BlueprintSetup';
 import { GameBlueprintMaker } from '../../Core/Framework/Blueprint/Game/GameBlueprintMaker';
-import { MapEnv } from '../../Core/Framework/Blueprint/Items/MapEnv';
+import { MapKind } from '../../Core/Framework/Blueprint/Items/MapKind';
 import MdPanelComponent from '../Common/Panel/MdPanelComponent';
 import BlueprintFormComponent from '../Form/BlueprintFormComponent';
 import { IAppService } from '../../Services/App/IAppService';
@@ -11,7 +11,7 @@ import Redirect from '../Redirect/RedirectComponent';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
-import { MapType } from '../../Core/Framework/Blueprint/Items/MapType';
+import { MapShape } from '../../Core/Framework/Blueprint/Items/MapShape';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 
@@ -72,11 +72,11 @@ export default class SinglePlayerComponent extends Component<any, BlueprintSetup
 		return 8;
 	}
 
-	private ConvertEnv(): MapEnv {
-		if (this.state.Env === 'Sand') return MapEnv.sand;
-		if (this.state.Env === 'Forest') return MapEnv.forest;
-		if (this.state.Env === 'Ice') return MapEnv.ice;
-		return MapEnv.forest;
+	private ConvertEnv(): MapKind {
+		if (this.state.Env === 'Sand') return MapKind.sand;
+		if (this.state.Env === 'Forest') return MapKind.forest;
+		if (this.state.Env === 'Ice') return MapKind.ice;
+		return MapKind.forest;
 	}
 
 	Start(): void {
@@ -109,14 +109,14 @@ export default class SinglePlayerComponent extends Component<any, BlueprintSetup
 		route('{{sub_path}}Canvas', true);
 	}
 
-	private ConvertMapType(): MapType {
-		if (this.state.MapType === 'Flower') return MapType.Flower;
-		if (this.state.MapType === 'Donut') return MapType.Donut;
-		if (this.state.MapType === 'Cheese') return MapType.Cheese;
-		if (this.state.MapType === 'Triangle') return MapType.Triangle;
-		if (this.state.MapType === 'Y') return MapType.Y;
-		if (this.state.MapType === 'H') return MapType.H;
-		if (this.state.MapType === 'X') return MapType.X;
-		return MapType.Rectangle;
+	private ConvertMapType(): MapShape {
+		if (this.state.MapType === 'Flower') return MapShape.Flower;
+		if (this.state.MapType === 'Donut') return MapShape.Donut;
+		if (this.state.MapType === 'Cheese') return MapShape.Cheese;
+		if (this.state.MapType === 'Triangle') return MapShape.Triangle;
+		if (this.state.MapType === 'Y') return MapShape.Y;
+		if (this.state.MapType === 'H') return MapShape.H;
+		if (this.state.MapType === 'X') return MapShape.X;
+		return MapShape.Rectangle;
 	}
 }

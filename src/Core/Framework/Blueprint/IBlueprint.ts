@@ -1,7 +1,7 @@
-import { MapEnv } from './Items/MapEnv';
-import { MapItem } from './Items/MapItem';
+import { MapKind } from './Items/MapKind';
+import { CellPrint } from './Items/CellPrint';
 
 export interface IBlueprint {
-	Items: Array<MapItem>;
-	MapMode: MapEnv;
+	Cells: Array<CellPrint>;
+	MapMode: MapKind;
 }

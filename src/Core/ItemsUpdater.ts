@@ -26,7 +26,7 @@ export class ItemsUpdater implements IItemsUpdater {
 			ItemsUpdater.UpdateSpan = nextUpdate - this._lastUpdate;
 			this._lastUpdate = nextUpdate;
 		}
-		if (!GameSettings.IsPause) {
+		if (!GameSettings.IsPausing()) {
 			if (Env.IsPrd()) {
 				try {
 					this.Iterate();

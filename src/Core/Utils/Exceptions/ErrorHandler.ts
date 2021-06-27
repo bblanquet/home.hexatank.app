@@ -1,4 +1,3 @@
-import { Env } from '../../../Env';
 import { LogKind } from '../Logger/LogKind';
 import { StaticLogger } from '../Logger/StaticLogger';
 import { Singletons, SingletonKey } from '../../../Singletons';
@@ -28,16 +27,16 @@ export class ErrorHandler {
 	]);
 
 	public static Throw(error: Error): void {
-		this.Log(error);
-		this.Record(error);
+		StaticLogger.Log(LogKind.error, `${error.message}\n${error.name}\n${error.stack}`);
+		Singletons.Load<IAnalyzeService>(SingletonKey.Analyze).Event('exception', error);
 		throw error;
 	}
 
 	public static ThrowNull(obj: any): void {
 		if (obj === undefined || obj === null) {
 			const error = new Error('null exception');
-			this.Log(error);
-			this.Record(error);
+			StaticLogger.Log(LogKind.error, `${error.message}\n${error.name}\n${error.stack}`);
+			Singletons.Load<IAnalyzeService>(SingletonKey.Analyze).Event('exception', error);
 			throw error;
 		}
 	}
@@ -45,19 +44,9 @@ export class ErrorHandler {
 	public static ThrowNullOrEmpty(obj: any[]): void {
 		if (obj === undefined || obj === null || obj.length === 0) {
 			const error = new Error('null/empty exception');
-			this.Log(error);
-			this.Record(error);
+			StaticLogger.Log(LogKind.error, `${error.message}\n${error.name}\n${error.stack}`);
+			Singletons.Load<IAnalyzeService>(SingletonKey.Analyze).Event('exception', error);
 			throw error;
 		}
-	}
-
-	private static Record(error: Error) {
-		if (Env.IsPrd()) {
-			Singletons.Load<IAnalyzeService>(SingletonKey.Analyze).Event('exception', error);
-		}
-	}
-
-	private static Log(error: Error) {
-		StaticLogger.Log(LogKind.error, `${error.message}\n${error.name}\n${error.stack}`);
 	}
 }

@@ -1,10 +1,10 @@
 import { DiamondHq } from '../Game/DiamondHq';
-import { MapEnv } from '../Items/MapEnv';
-import { MapItem } from '../Items/MapItem';
+import { MapKind } from '../Items/MapKind';
+import { CellPrint } from '../Items/CellPrint';
 import { IBlueprint } from './../IBlueprint';
 export class DiamondBlueprint implements IBlueprint {
-	public Items: MapItem[];
-	public MapMode: MapEnv;
-	public CenterItem: MapItem;
+	public Cells: CellPrint[];
+	public MapMode: MapKind;
+	public CenterItem: CellPrint;
 	public HqDiamond: DiamondHq;
 }

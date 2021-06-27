@@ -3,6 +3,7 @@ import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { InteractionContext } from '../../Interaction/InteractionContext';
 import { ITimer } from '../../Utils/Timer/ITimer';
+import { TimeTimer } from '../../Utils/Timer/TimeTimer';
 
 export class Explosion extends Item {
 	BoundingBox: BoundingBox;
@@ -17,11 +18,11 @@ export class Explosion extends Item {
 		sprites: Array<string>,
 		z: number = 3,
 		private _effect: boolean = true,
-		timer: number = 30
+		timer: number = 100
 	) {
 		super();
 		this.Z = z;
-		this._timer = new TickTimer(timer);
+		this._timer = new TimeTimer(timer);
 		this.BoundingBox = new BoundingBox();
 		this.BoundingBox.X = boundingbox.X;
 		this.BoundingBox.Y = boundingbox.Y;

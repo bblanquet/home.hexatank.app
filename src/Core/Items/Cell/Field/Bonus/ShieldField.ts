@@ -13,22 +13,33 @@ import { BouncingScaleDownAnimator } from '../../../Animator/BouncingScaleDownAn
 import { BouncingScaleUpAnimator } from '../../../Animator/BouncingScaleUpAnimator';
 import { Explosion } from '../../../Unit/Explosion';
 import { ZKind } from '../../../ZKind';
+import { ReactorField } from './ReactorField';
 
 export class ShieldField extends AliveBonusField {
 	private _shieldAppearance: ShieldAppearance;
 	private _fixTimer: ITimer;
+	private HandleReactorLost: any = this.Handle.bind(this);
 
 	constructor(cell: Cell, id: Identity, protected Hq: IHeadquarter) {
 		super(cell, [], id, Hq);
 		this._fixTimer = new TimeTimer(1000);
 		this._shieldAppearance = new ShieldAppearance(this);
 		this.Hq.AddField(this, cell);
-		if (!this.Hq.IsCovered(cell)) {
+		this.Hq.OnReactorLost.On(this.HandleReactorLost);
+		this.Include(Hq, cell);
+	}
+
+	private Include(hq: IHeadquarter, cell: Cell) {
+		if (!hq.IsCovered(cell)) {
 			this.Destroy();
 			if (cell.IsVisible()) {
-				new Explosion(cell.GetBoundingBox(), SvgArchive.constructionEffects, ZKind.Sky, false, 5);
+				new Explosion(cell.GetBoundingBox(), SvgArchive.constructionEffects, ZKind.Sky, false);
 			}
 		}
+	}
+
+	private Handle(src: any, value: ReactorField): void {
+		this.Include(this.Hq, this.GetCell());
 	}
 
 	public ChangeEnergy(isUp: boolean): void {

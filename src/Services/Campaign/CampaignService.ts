@@ -8,8 +8,8 @@ import { GameBlueprintMaker } from '../../Core/Framework/Blueprint/Game/GameBlue
 import { Dictionary } from '../../Core/Utils/Collections/Dictionary';
 import { CampaignKind } from './CampaignKind';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
-import { MapEnv } from '../../Core/Framework/Blueprint/Items/MapEnv';
-import { MapType } from '../../Core/Framework/Blueprint/Items/MapType';
+import { MapKind } from '../../Core/Framework/Blueprint/Items/MapKind';
+import { MapShape } from '../../Core/Framework/Blueprint/Items/MapShape';
 import { ICampaignService } from './ICampaignService';
 
 export class CampaignService implements ICampaignService {
@@ -27,16 +27,16 @@ export class CampaignService implements ICampaignService {
 		this._training.Add((3).toString(), new DiamondBlueprintMaker().GetBluePrint());
 
 		this._red = new Dictionary<GameBlueprint>();
-		this._red.Add((1).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapType.Flower, MapEnv.forest, 2));
-		this._red.Add((2).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapType.Donut, MapEnv.forest, 2));
-		this._red.Add((3).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapType.H, MapEnv.forest, 2));
-		this._red.Add((4).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapType.Triangle, MapEnv.forest, 2));
+		this._red.Add((1).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapShape.Flower, MapKind.forest, 2));
+		this._red.Add((2).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapShape.Donut, MapKind.forest, 2));
+		this._red.Add((3).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapShape.H, MapKind.forest, 2));
+		this._red.Add((4).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapShape.Triangle, MapKind.forest, 2));
 
 		this._blue = new Dictionary<GameBlueprint>();
-		this._blue.Add((1).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapType.Flower, MapEnv.sand, 2));
-		this._blue.Add((2).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapType.Donut, MapEnv.sand, 2));
-		this._blue.Add((3).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapType.H, MapEnv.sand, 2));
-		this._blue.Add((4).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapType.Triangle, MapEnv.sand, 2));
+		this._blue.Add((1).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapShape.Flower, MapKind.sand, 2));
+		this._blue.Add((2).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapShape.Donut, MapKind.sand, 2));
+		this._blue.Add((3).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapShape.H, MapKind.sand, 2));
+		this._blue.Add((4).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapShape.Triangle, MapKind.sand, 2));
 	}
 
 	public GetMapContext(kind: CampaignKind, index: number): any {

@@ -1,5 +1,5 @@
 import { PowerBlueprint } from './PowerBlueprint';
-import { MapType } from '../Items/MapType';
+import { MapShape } from '../Items/MapShape';
 import { RectangleFlowerMapBuilder } from '../../Builder/RectangleFlowerMapBuilder';
 import { YFlowerMapBuilder } from '../../Builder/YFlowerMapBuilder';
 import { XFlowerMapBuilder } from '../../Builder/XFlowerMapBuilder';
@@ -8,38 +8,36 @@ import { TriangleFlowerMapBuilder } from '../../Builder/TriangleFlowerMapBuilder
 import { CheeseFlowerMapBuilder } from '../../Builder/CheeseFlowerMapBuilder';
 import { DonutFlowerMapBuilder } from '../../Builder/DonutFlowerMapBuilder';
 import { Dictionary } from '../../../Utils/Collections/Dictionary';
-import { SandDecorator } from '../../../Items/Cell/Decorator/SandDecorator';
-import { IceDecorator } from '../../../Items/Cell/Decorator/IceDecorator';
-import { MapEnv } from '../Items/MapEnv';
+import { MapKind } from '../Items/MapKind';
 import { HexAxial } from '../../../Utils/Geometry/HexAxial';
-import { ForestDecorator } from '../../../Items/Cell/Decorator/ForestDecorator';
-import { MapItem } from '../Items/MapItem';
+import { CellPrint } from '../Items/CellPrint';
 import { FlowerMapBuilder } from '../../Builder/FlowerMapBuilder';
 import { FartestPointsFinder } from '../../Builder/FartestPointsFinder';
-import { DecorationType } from '../Items/DecorationType';
-import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
+import { CellType } from '../Items/CellType';
 import { IMapBuilder } from '../../Builder/IPlaygroundBuilder';
 import { GameSettings } from '../../../Framework/GameSettings';
+import { DecoratingPrints } from '../../../Items/Cell/Decorator/DecoratingPrints';
+import { DecoratingFactory } from '../../../Items/Cell/Decorator/ForestFactory';
 
 export class PowerBluePrintMaker {
 	private _builders: Dictionary<IMapBuilder>;
 	constructor() {
 		this._builders = new Dictionary<IMapBuilder>();
-		this._builders.Add(MapType.Flower.toString(), new FlowerMapBuilder());
-		this._builders.Add(MapType.Cheese.toString(), new CheeseFlowerMapBuilder());
-		this._builders.Add(MapType.Donut.toString(), new DonutFlowerMapBuilder());
-		this._builders.Add(MapType.Triangle.toString(), new TriangleFlowerMapBuilder());
-		this._builders.Add(MapType.Y.toString(), new YFlowerMapBuilder());
-		this._builders.Add(MapType.H.toString(), new HFlowerMapBuilder());
-		this._builders.Add(MapType.X.toString(), new XFlowerMapBuilder());
-		this._builders.Add(MapType.Rectangle.toString(), new RectangleFlowerMapBuilder());
+		this._builders.Add(MapShape.Flower.toString(), new FlowerMapBuilder());
+		this._builders.Add(MapShape.Cheese.toString(), new CheeseFlowerMapBuilder());
+		this._builders.Add(MapShape.Donut.toString(), new DonutFlowerMapBuilder());
+		this._builders.Add(MapShape.Triangle.toString(), new TriangleFlowerMapBuilder());
+		this._builders.Add(MapShape.Y.toString(), new YFlowerMapBuilder());
+		this._builders.Add(MapShape.H.toString(), new HFlowerMapBuilder());
+		this._builders.Add(MapShape.X.toString(), new XFlowerMapBuilder());
+		this._builders.Add(MapShape.Rectangle.toString(), new RectangleFlowerMapBuilder());
 	}
 
 	public GetBluePrint(): PowerBlueprint {
 		const blueprint = new PowerBlueprint();
-		blueprint.MapMode = MapEnv.sand;
-		const mapItems = new Array<MapItem>();
-		const mapBuilder = this._builders.Get(MapType.Flower.toString());
+		blueprint.MapMode = MapKind.sand;
+		const mapItems = new Array<CellPrint>();
+		const mapBuilder = this._builders.Get(MapShape.Flower.toString());
 		const coos = mapBuilder.GetAllCoos(4);
 		GameSettings.MapSize = coos.length;
 		const cells = Dictionary.To<HexAxial>((e) => e.ToString(), coos);
@@ -50,35 +48,38 @@ export class PowerBluePrintMaker {
 		const spots = farthestPointManager.GetPoints(areas, cells, 2);
 		//add hqs
 		spots.forEach((spot, index) => {
-			let hqMapItem = new MapItem();
+			let hqMapItem = new CellPrint();
 			hqMapItem.Position = spot;
-			hqMapItem.Type = DecorationType.Hq;
+			hqMapItem.Type = CellType.Hq;
 			mapItems.push(hqMapItem);
 			excluded.Add(spot.ToString(), spot);
 			spot.GetNeighbours().forEach((p) => {
 				excluded.Add(p.ToString(), p);
 			});
 			if (index === 0) {
-				blueprint.Arrival = MapItem.New(spot.Q, spot.R);
+				blueprint.Arrival = CellPrint.New(spot.Q, spot.R);
 			}
 
 			if (index === 1) {
-				blueprint.Goal = MapItem.New(spot.Q, spot.R);
+				blueprint.Goal = CellPrint.New(spot.Q, spot.R);
 			}
 		});
 
-		var decorator: Decorator = this.GetDecorator(MapEnv.sand);
+		const decorator = new DecoratingPrints(
+			DecoratingFactory.Obstacles.Get(MapKind[MapKind.sand]),
+			DecoratingFactory.Decorations.Get(MapKind[MapKind.sand])
+		);
 		//decorate tree, water, stone the map
 		coos.forEach((coo) => {
-			let mapItem = new MapItem();
+			let mapItem = new CellPrint();
 			mapItem.Position = coo;
 			if (!excluded.Exist(coo.ToString())) {
 				mapItem.Type = decorator.GetDecoration();
 				if (this.IsBlockingItem(decorator, mapItem) && !this.IsAroundEmpty(coo, mapItems, decorator)) {
-					mapItem.Type = DecorationType.None;
+					mapItem.Type = CellType.None;
 				}
 			} else {
-				mapItem.Type = DecorationType.None;
+				mapItem.Type = CellType.None;
 			}
 
 			if (mapItems.filter((mi) => mi.Position.ToString() === mapItem.Position.ToString()).length === 0) {
@@ -86,12 +87,12 @@ export class PowerBluePrintMaker {
 			}
 		});
 
-		blueprint.Items = mapItems;
+		blueprint.Cells = mapItems;
 		blueprint.CenterItem = mapItems[0];
 		return blueprint;
 	}
 
-	public IsAroundEmpty(coo: HexAxial, mapItems: MapItem[], decorator: Decorator): boolean {
+	public IsAroundEmpty(coo: HexAxial, mapItems: CellPrint[], decorator: DecoratingPrints): boolean {
 		let isEmpty = true;
 		coo.GetNeighbours(1).forEach((n) => {
 			const mapItem = mapItems.find((m) => m.Position.ToString() === n.ToString());
@@ -102,19 +103,7 @@ export class PowerBluePrintMaker {
 		return isEmpty;
 	}
 
-	private IsBlockingItem(decorator: Decorator, mapItem: MapItem): boolean {
-		return decorator.BlockingCells.some((e) => e.Kind === mapItem.Type);
-	}
-
-	private GetDecorator(mapMode: MapEnv) {
-		var decorator: Decorator = null;
-		if (mapMode === MapEnv.forest) {
-			decorator = new ForestDecorator();
-		} else if (mapMode === MapEnv.ice) {
-			decorator = new IceDecorator();
-		} else {
-			decorator = new SandDecorator();
-		}
-		return decorator;
+	private IsBlockingItem(decorator: DecoratingPrints, mapItem: CellPrint): boolean {
+		return decorator.Obstacles.some((e) => e.Type === mapItem.Type);
 	}
 }

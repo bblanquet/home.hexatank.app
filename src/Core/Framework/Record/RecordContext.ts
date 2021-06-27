@@ -11,7 +11,7 @@ import { RecordHq } from './Model/RecordHq';
 import { Cell } from '../../Items/Cell/Cell';
 import { RecordVehicleState } from './Model/Item/State/RecordVehicleState';
 import { Item } from '../../Items/Item';
-import { FieldTypeHelper } from '../FieldTypeHelper';
+import { FieldHelper } from '../FieldTypeHelper';
 import { RecordCellState } from './Model/Item/State/RecordCellState';
 import { RecordContent } from './Model/RecordContent';
 import { IRecordContext } from './IRecordContext';
@@ -36,10 +36,7 @@ export class RecordContext implements IRecordContext {
 
 		this._record.Dates.push(this._record.StartDate);
 		this._gameContext.GetCells().forEach((cell) => {
-			const action = new RecordCellState(
-				this._record.StartDate,
-				FieldTypeHelper.GetRecordDescription(cell.GetField())
-			);
+			const action = new RecordCellState(this._record.StartDate, FieldHelper.GetRecordName(cell.GetField()));
 			if (action.kind !== RecordKind.None) {
 				const trackingCell = new RecordCell();
 				trackingCell.States = new Array<RecordCellState>();
@@ -59,7 +56,7 @@ export class RecordContext implements IRecordContext {
 		if (this.IsRecording()) {
 			const time = Date.now();
 			const actions = this._record.Cells.Get(cell.Coo());
-			const action = new RecordCellState(time, FieldTypeHelper.GetRecordDescription(cell.GetField()));
+			const action = new RecordCellState(time, FieldHelper.GetRecordName(cell.GetField()));
 			if (actions && actions.States[actions.States.length]) this._record.Dates.push(time);
 			this._record.Cells.Get(cell.Coo()).States.push(action);
 		}

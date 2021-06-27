@@ -15,7 +15,7 @@ import { Lobby } from '../../Network/Manager/Lobby';
 import { SocketWrapper } from '../../Network/Socket/SocketWrapper';
 import { OnlineGameContextManager } from '../../Network/Manager/OnlineGameContextManager';
 import { IOnlineGameContextManager } from '../../Network/Manager/IOnlineGameContextManager';
-import { OnlineRuntimeManager } from '../../Core/Framework/Network/OnlineRuntimeManager';
+import { OnlineManager } from '../../Core/Framework/Network/OnlineManager';
 
 export class OnlineService implements IOnlineService {
 	private _servSocket: IServerSocket;
@@ -23,7 +23,7 @@ export class OnlineService implements IOnlineService {
 	private _lobbyManager: ILobbyManager;
 	private _onlineGameContext: IOnlineGameContextManager;
 	private _onlinePlayerManager: IOnlinePlayerManager;
-	private _runtime: OnlineRuntimeManager;
+	private _runtime: OnlineManager;
 
 	public Register(
 		playerName: string,
@@ -86,7 +86,7 @@ export class OnlineService implements IOnlineService {
 		return this._onlineGameContext;
 	}
 
-	Publish(runtime: OnlineRuntimeManager): void {
+	Publish(runtime: OnlineManager): void {
 		this._runtime = runtime;
 	}
 

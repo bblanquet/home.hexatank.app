@@ -306,7 +306,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		return this.GetHexCoo().ToString();
 	}
 
-	public SetDecoration(sprite: string): void {
+	public Decorate(sprite: string): void {
 		const random = Math.random();
 		this.GenerateSprite(sprite, (s) => {
 			s.alpha = 0;

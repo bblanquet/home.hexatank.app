@@ -1,10 +1,10 @@
-import { MapItem } from '../Items/MapItem';
+import { CellPrint } from '../Items/CellPrint';
 export class MapItemPair {
-	Departure: MapItem;
-	Arrival: MapItem;
+	Departure: CellPrint;
+	Arrival: CellPrint;
 	constructor() {}
 
-	public static New(departure: MapItem, arrival: MapItem): MapItemPair {
+	public static New(departure: CellPrint, arrival: CellPrint): MapItemPair {
 		const mapitemPair = new MapItemPair();
 		mapitemPair.Arrival = arrival;
 		mapitemPair.Departure = departure;

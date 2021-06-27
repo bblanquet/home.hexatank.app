@@ -1,9 +1,9 @@
-import { DecorationType } from '../../../Framework/Blueprint/Items/DecorationType';
+import { CellType } from '../../../Framework/Blueprint/Items/CellType';
 
 export class DecoratingElement {
 	public Count: number = 0;
 	public Max: number = 0;
-	constructor(public Kind: DecorationType, max: number = 0) {
+	constructor(public Type: CellType, max: number = 0) {
 		this.Max = max;
 	}
 	public IsUnderLimit(): boolean {

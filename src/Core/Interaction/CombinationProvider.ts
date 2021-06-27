@@ -8,7 +8,7 @@ import { BatteryField } from '../Items/Cell/Field/Bonus/BatteryField';
 import { NetworkField } from '../Items/Cell/Field/Bonus/NetworkField';
 import { NetworkMenuItem } from './../Menu/Buttons/NetworkMenuItem';
 import { ThunderMenuItem } from './../Menu/Buttons/ThunderMenuItem';
-import { AttackField } from '../Items/Cell/Field/Bonus/AttackField';
+import { FireField } from '../Items/Cell/Field/Bonus/FireField';
 import { GenericCellCombination } from './Combination/GenericCellCombination';
 import { ISelectableChecker } from './ISelectableChecker';
 import { ICombination } from './Combination/ICombination';
@@ -111,7 +111,7 @@ export class CombinationProvider {
 			new GenericCellCombination(
 				gameContext,
 				(e) => e instanceof AttackMenuItem,
-				(e) => e.SetField(new AttackField(e, gameContext.GetPlayerHq()))
+				(e) => e.SetField(new FireField(e, gameContext.GetPlayerHq()))
 			),
 			new GenericCellCombination(
 				gameContext,

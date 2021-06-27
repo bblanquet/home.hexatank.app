@@ -2,122 +2,102 @@ import { BlockingField } from '../Field/BlockingField';
 import { VolcanoField } from '../Field/VolcanoField';
 import { WaterField } from '../Field/WaterField';
 import { Cell } from '../Cell';
-import { DecoratingElement } from './DecoratingElement';
-import { DecorationType } from '../../../Framework/Blueprint/Items/DecorationType';
-import { Item } from '../../Item';
+import { CellType } from '../../../Framework/Blueprint/Items/CellType';
 import { SvgArchive } from '../../../Framework/SvgArchiver';
 
 export abstract class Decorator {
-	public BlockingCells = new Array<DecoratingElement>();
-	public DecorationCells = new Array<DecoratingElement>();
-
-	public GetDecoration(): DecorationType {
-		var random = Math.random();
-		if (random <= 0.25) {
-			const bc = this.BlockingCells.filter((i) => i.IsUnderLimit());
-			var element = bc.find((i) => i.Count === Math.min(...bc.map((c) => c.Count)));
-			element.Count += 1;
-			return element.Kind;
-		} else {
-			const bc = this.DecorationCells.filter((i) => i.IsUnderLimit());
-			var element = bc.find((i) => i.Count === Math.min(...bc.map((c) => c.Count)));
-			element.Count += 1;
-			return element.Kind;
-		}
-	}
-
-	public static SetDecoration(cell: Cell, type: DecorationType): void {
+	public static Decorate(cell: Cell, type: CellType): void {
 		switch (type) {
-			case DecorationType.Stone: {
-				cell.SetDecoration(SvgArchive.nature.stone);
+			case CellType.Stone: {
+				cell.Decorate(SvgArchive.nature.stone);
 				break;
 			}
-			case DecorationType.SandStone: {
-				cell.SetDecoration(SvgArchive.nature.sandStone);
+			case CellType.SandStone: {
+				cell.Decorate(SvgArchive.nature.sandStone);
 				break;
 			}
-			case DecorationType.Bush: {
-				cell.SetDecoration(SvgArchive.nature.bush);
+			case CellType.Bush: {
+				cell.Decorate(SvgArchive.nature.bush);
 				break;
 			}
-			case DecorationType.SandCactusPlants: {
-				cell.SetDecoration(SvgArchive.nature.cactusPlants);
+			case CellType.SandCactusPlants: {
+				cell.Decorate(SvgArchive.nature.cactusPlants);
 				break;
 			}
-			case DecorationType.SandCactus: {
+			case CellType.SandCactus: {
 				cell.SetField(new BlockingField(cell, SvgArchive.nature.cactus));
 				break;
 			}
-			case DecorationType.WhiteSkull: {
-				cell.SetDecoration(SvgArchive.nature.whiteSkull);
+			case CellType.WhiteSkull: {
+				cell.Decorate(SvgArchive.nature.whiteSkull);
 				break;
 			}
-			case DecorationType.SandPlants: {
-				cell.SetDecoration(SvgArchive.nature.sandPlants);
+			case CellType.SandPlants: {
+				cell.Decorate(SvgArchive.nature.sandPlants);
 				break;
 			}
-			case DecorationType.Water: {
+			case CellType.Water: {
 				cell.SetField(new WaterField(cell));
 				break;
 			}
-			case DecorationType.Volcano: {
+			case CellType.Volcano: {
 				cell.SetField(new VolcanoField(cell));
 				break;
 			}
-			case DecorationType.Tree: {
+			case CellType.Tree: {
 				cell.SetField(new BlockingField(cell, SvgArchive.nature.tree));
 				break;
 			}
-			case DecorationType.DarkTree: {
+			case CellType.DarkTree: {
 				cell.SetField(new BlockingField(cell, SvgArchive.nature.darkTree));
 				break;
 			}
-			case DecorationType.palmTree: {
+			case CellType.palmTree: {
 				cell.SetField(new BlockingField(cell, SvgArchive.nature.palmTree));
 				break;
 			}
-			case DecorationType.Rock: {
+			case CellType.Rock: {
 				cell.SetField(new BlockingField(cell, SvgArchive.nature.rock));
 				break;
 			}
-			case DecorationType.IceTree: {
+			case CellType.IceTree: {
 				cell.SetField(new BlockingField(cell, SvgArchive.nature.iceTree));
 				break;
 			}
-			case DecorationType.IceTree2: {
+			case CellType.IceTree2: {
 				cell.SetField(new BlockingField(cell, SvgArchive.nature.iceTree2));
 				break;
 			}
-			case DecorationType.IceStone: {
-				cell.SetDecoration(SvgArchive.nature.iceStone);
+			case CellType.IceStone: {
+				cell.Decorate(SvgArchive.nature.iceStone);
 				break;
 			}
-			case DecorationType.IceRock: {
+			case CellType.IceRock: {
 				cell.SetField(new BlockingField(cell, SvgArchive.nature.iceRock));
 				break;
 			}
-			case DecorationType.SandRock: {
+			case CellType.SandRock: {
 				cell.SetField(new BlockingField(cell, SvgArchive.nature.sandRock));
 				break;
 			}
-			case DecorationType.Puddle: {
-				cell.SetDecoration(SvgArchive.nature.puddle);
+			case CellType.Puddle: {
+				cell.Decorate(SvgArchive.nature.puddle);
 				break;
 			}
-			case DecorationType.IcePlants: {
-				cell.SetDecoration(SvgArchive.nature.icePlants);
+			case CellType.IcePlants: {
+				cell.Decorate(SvgArchive.nature.icePlants);
 				break;
 			}
-			case DecorationType.IcePlants2: {
-				cell.SetDecoration(SvgArchive.nature.icePlants2);
+			case CellType.IcePlants2: {
+				cell.Decorate(SvgArchive.nature.icePlants2);
 				break;
 			}
-			case DecorationType.Leaf: {
-				cell.SetDecoration(SvgArchive.nature.ForestLeaf);
+			case CellType.Leaf: {
+				cell.Decorate(SvgArchive.nature.ForestLeaf);
 				break;
 			}
-			case DecorationType.Leaf2: {
-				cell.SetDecoration(SvgArchive.nature.ForestLeaf2);
+			case CellType.Leaf2: {
+				cell.Decorate(SvgArchive.nature.ForestLeaf2);
 				break;
 			}
 		}

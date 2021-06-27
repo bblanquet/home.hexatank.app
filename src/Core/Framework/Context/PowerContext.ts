@@ -9,6 +9,7 @@ import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
 import { Identity } from '../../Items/Identity';
+import { Vehicle } from '../../Items/Unit/Vehicle';
 
 export class PowerContext implements IHqGameContext {
 	public OnPatrolSetting: LiteEvent<Boolean> = new LiteEvent<Boolean>();
@@ -25,6 +26,10 @@ export class PowerContext implements IHqGameContext {
 		this._target.OnDestroyed.On((source: any, data: Item) => {
 			this.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
 		});
+	}
+
+	GetVehicles(): Vehicle[] {
+		return [];
 	}
 
 	public GetCells(): Cell[] {

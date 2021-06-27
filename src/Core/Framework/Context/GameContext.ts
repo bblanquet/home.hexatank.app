@@ -51,6 +51,9 @@ export class GameContext implements IHqGameContext {
 			});
 		}
 	}
+	GetVehicles(): Vehicle[] {
+		return this._vehicles.Values();
+	}
 	GetPlayer(): AliveItem {
 		return this._playerHq;
 	}

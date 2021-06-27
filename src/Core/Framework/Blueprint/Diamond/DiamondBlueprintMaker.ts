@@ -1,59 +1,57 @@
-import { MapType } from '../Items/MapType';
-import { RectangleFlowerMapBuilder } from '../../Builder/RectangleFlowerMapBuilder';
-import { YFlowerMapBuilder } from '../../Builder/YFlowerMapBuilder';
-import { XFlowerMapBuilder } from '../../Builder/XFlowerMapBuilder';
-import { HFlowerMapBuilder } from '../../Builder/HFlowerMapBuilder';
-import { TriangleFlowerMapBuilder } from '../../Builder/TriangleFlowerMapBuilder';
+import { GameSettings } from '../../../Framework/GameSettings';
+import { DecoratingPrints } from '../../../Items/Cell/Decorator/DecoratingPrints';
+import { DecoratingFactory } from '../../../Items/Cell/Decorator/ForestFactory';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
+import { HexAxial } from '../../../Utils/Geometry/HexAxial';
 import { CheeseFlowerMapBuilder } from '../../Builder/CheeseFlowerMapBuilder';
 import { DonutFlowerMapBuilder } from '../../Builder/DonutFlowerMapBuilder';
-import { Dictionary } from '../../../Utils/Collections/Dictionary';
-import { SandDecorator } from '../../../Items/Cell/Decorator/SandDecorator';
-import { IceDecorator } from '../../../Items/Cell/Decorator/IceDecorator';
-import { MapEnv } from '../Items/MapEnv';
-import { HexAxial } from '../../../Utils/Geometry/HexAxial';
-import { ForestDecorator } from '../../../Items/Cell/Decorator/ForestDecorator';
-import { MapItem } from '../Items/MapItem';
 import { FlowerMapBuilder } from '../../Builder/FlowerMapBuilder';
-import { DecorationType } from '../Items/DecorationType';
-import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
+import { HFlowerMapBuilder } from '../../Builder/HFlowerMapBuilder';
 import { IMapBuilder } from '../../Builder/IPlaygroundBuilder';
-import { GameSettings } from '../../../Framework/GameSettings';
-import { DiamondBlueprint } from './DiamondBlueprint';
+import { RectangleFlowerMapBuilder } from '../../Builder/RectangleFlowerMapBuilder';
+import { TriangleFlowerMapBuilder } from '../../Builder/TriangleFlowerMapBuilder';
+import { XFlowerMapBuilder } from '../../Builder/XFlowerMapBuilder';
+import { YFlowerMapBuilder } from '../../Builder/YFlowerMapBuilder';
 import { DiamondHq } from '../Game/DiamondHq';
+import { CellPrint } from '../Items/CellPrint';
+import { CellType } from '../Items/CellType';
+import { MapKind } from '../Items/MapKind';
+import { MapShape } from '../Items/MapShape';
+import { DiamondBlueprint } from './DiamondBlueprint';
 
 export class DiamondBlueprintMaker {
 	private _builders: Dictionary<IMapBuilder>;
 	constructor() {
 		this._builders = new Dictionary<IMapBuilder>();
-		this._builders.Add(MapType.Flower.toString(), new FlowerMapBuilder());
-		this._builders.Add(MapType.Cheese.toString(), new CheeseFlowerMapBuilder());
-		this._builders.Add(MapType.Donut.toString(), new DonutFlowerMapBuilder());
-		this._builders.Add(MapType.Triangle.toString(), new TriangleFlowerMapBuilder());
-		this._builders.Add(MapType.Y.toString(), new YFlowerMapBuilder());
-		this._builders.Add(MapType.H.toString(), new HFlowerMapBuilder());
-		this._builders.Add(MapType.X.toString(), new XFlowerMapBuilder());
-		this._builders.Add(MapType.Rectangle.toString(), new RectangleFlowerMapBuilder());
+		this._builders.Add(MapShape.Flower.toString(), new FlowerMapBuilder());
+		this._builders.Add(MapShape.Cheese.toString(), new CheeseFlowerMapBuilder());
+		this._builders.Add(MapShape.Donut.toString(), new DonutFlowerMapBuilder());
+		this._builders.Add(MapShape.Triangle.toString(), new TriangleFlowerMapBuilder());
+		this._builders.Add(MapShape.Y.toString(), new YFlowerMapBuilder());
+		this._builders.Add(MapShape.H.toString(), new HFlowerMapBuilder());
+		this._builders.Add(MapShape.X.toString(), new XFlowerMapBuilder());
+		this._builders.Add(MapShape.Rectangle.toString(), new RectangleFlowerMapBuilder());
 	}
 
 	public GetBluePrint(): DiamondBlueprint {
 		const blueprint = new DiamondBlueprint();
-		blueprint.MapMode = MapEnv.ice;
-		const mapItems = new Array<MapItem>();
-		const mapBuilder = this._builders.Get(MapType.Flower.toString());
+		blueprint.MapMode = MapKind.ice;
+		const mapItems = new Array<CellPrint>();
+		const mapBuilder = this._builders.Get(MapShape.Flower.toString());
 		const coos = mapBuilder.GetAllCoos(4);
 		GameSettings.MapSize = coos.length;
 		const cells = Dictionary.To<HexAxial>((e) => e.ToString(), coos);
 		const excluded = new Dictionary<HexAxial>();
 
 		const diamondHq = new DiamondHq();
-		diamondHq.Diamond = MapItem.New(5, 1);
-		diamondHq.Hq = MapItem.New(1, 0);
+		diamondHq.Diamond = CellPrint.New(5, 1);
+		diamondHq.Hq = CellPrint.New(1, 0);
 		diamondHq.isIa = false;
 		diamondHq.PlayerName = '';
 
-		let hqMapItem = new MapItem();
+		let hqMapItem = new CellPrint();
 		hqMapItem.Position = diamondHq.Hq.Position;
-		hqMapItem.Type = DecorationType.Hq;
+		hqMapItem.Type = CellType.Hq;
 		mapItems.push(hqMapItem);
 		excluded.Add(diamondHq.Hq.Position.ToString(), cells.Get(diamondHq.Hq.Position.ToString()));
 		cells.Get(diamondHq.Hq.Position.ToString()).GetNeighbours().forEach((p) => {
@@ -61,9 +59,9 @@ export class DiamondBlueprintMaker {
 		});
 
 		//add diamonds and join them to hq
-		let diamonMapItem = new MapItem();
+		let diamonMapItem = new CellPrint();
 		diamonMapItem.Position = diamondHq.Diamond.Position;
-		diamonMapItem.Type = DecorationType.Hq;
+		diamonMapItem.Type = CellType.Hq;
 		mapItems.push(diamonMapItem);
 		excluded.Add(diamondHq.Diamond.Position.ToString(), cells.Get(diamondHq.Diamond.Position.ToString()));
 		cells.Get(diamondHq.Diamond.Position.ToString()).GetNeighbours().forEach((p) => {
@@ -72,18 +70,21 @@ export class DiamondBlueprintMaker {
 
 		blueprint.HqDiamond = diamondHq;
 
-		var decorator: Decorator = this.GetDecorator(MapEnv.ice);
+		const decorator = new DecoratingPrints(
+			DecoratingFactory.Obstacles.Get(MapKind[MapKind.ice]),
+			DecoratingFactory.Decorations.Get(MapKind[MapKind.ice])
+		);
 		//decorate tree, water, stone the map
 		coos.forEach((coo) => {
-			let mapItem = new MapItem();
+			let mapItem = new CellPrint();
 			mapItem.Position = coo;
 			if (!excluded.Exist(coo.ToString())) {
 				mapItem.Type = decorator.GetDecoration();
 				if (this.IsBlockingItem(decorator, mapItem) && !this.IsAroundEmpty(coo, mapItems, decorator)) {
-					mapItem.Type = DecorationType.None;
+					mapItem.Type = CellType.None;
 				}
 			} else {
-				mapItem.Type = DecorationType.None;
+				mapItem.Type = CellType.None;
 			}
 
 			if (mapItems.filter((mi) => mi.Position.ToString() === mapItem.Position.ToString()).length === 0) {
@@ -91,11 +92,11 @@ export class DiamondBlueprintMaker {
 			}
 		});
 		blueprint.CenterItem = mapItems[0];
-		blueprint.Items = mapItems;
+		blueprint.Cells = mapItems;
 		return blueprint;
 	}
 
-	public IsAroundEmpty(coo: HexAxial, mapItems: MapItem[], decorator: Decorator): boolean {
+	public IsAroundEmpty(coo: HexAxial, mapItems: CellPrint[], decorator: DecoratingPrints): boolean {
 		let isEmpty = true;
 		coo.GetNeighbours(1).forEach((n) => {
 			const mapItem = mapItems.find((m) => m.Position.ToString() === n.ToString());
@@ -106,19 +107,7 @@ export class DiamondBlueprintMaker {
 		return isEmpty;
 	}
 
-	private IsBlockingItem(decorator: Decorator, mapItem: MapItem): boolean {
-		return decorator.BlockingCells.some((e) => e.Kind === mapItem.Type);
-	}
-
-	private GetDecorator(mapMode: MapEnv) {
-		var decorator: Decorator = null;
-		if (mapMode === MapEnv.forest) {
-			decorator = new ForestDecorator();
-		} else if (mapMode === MapEnv.ice) {
-			decorator = new IceDecorator();
-		} else {
-			decorator = new SandDecorator();
-		}
-		return decorator;
+	private IsBlockingItem(decorator: DecoratingPrints, mapItem: CellPrint): boolean {
+		return decorator.Obstacles.some((e) => e.Type === mapItem.Type);
 	}
 }

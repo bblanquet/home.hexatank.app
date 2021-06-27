@@ -99,10 +99,10 @@ export class Missile extends Item {
 			this.SetProperty(SvgArchive.missiles[this._currentMissile], (e) => (e.alpha = 1));
 		} else {
 			this.Target.SetDamage(this._damage);
-			new Explosion(this.Target.GetBoundingBox(), SvgArchive.explosions, 5, true, 20);
+			new Explosion(this.Target.GetBoundingBox(), SvgArchive.explosions, 5, true, 400);
 
 			if (!this.Target.IsAlive()) {
-				new Explosion(this.Target.GetBoundingBox(), [ SvgArchive.skull ], 5, false, 50);
+				new Explosion(this.Target.GetBoundingBox(), [ SvgArchive.skull ], 5, true, 400);
 			}
 			this.OnExploded.Invoke(this, this);
 			this.Destroy();

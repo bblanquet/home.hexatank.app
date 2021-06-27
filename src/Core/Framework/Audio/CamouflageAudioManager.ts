@@ -3,7 +3,7 @@ import { IGameAudioManager } from './IGameAudioManager';
 import { IBlueprint } from '../../Framework/Blueprint/IBlueprint';
 import { IOrder } from '../../Ia/Order/IOrder';
 import { Singletons, SingletonKey } from '../../../Singletons';
-import { MapEnv } from '../../Framework/Blueprint/Items/MapEnv';
+import { MapKind } from '../Blueprint/Items/MapKind';
 import { Missile } from '../../Items/Unit/Missile';
 import { Tank } from '../../Items/Unit/Tank';
 import { AudioArchive } from '../AudioArchiver';
@@ -30,11 +30,11 @@ export class CamouflageAudioManager implements IGameAudioManager {
 	}
 
 	private GetMusic(): string {
-		if (this._mapContext.MapMode === MapEnv.forest) {
+		if (this._mapContext.MapMode === MapKind.forest) {
 			return AudioArchive.forestMusic;
-		} else if (this._mapContext.MapMode === MapEnv.ice) {
+		} else if (this._mapContext.MapMode === MapKind.ice) {
 			return AudioArchive.iceMusic;
-		} else if (this._mapContext.MapMode === MapEnv.sand) {
+		} else if (this._mapContext.MapMode === MapKind.sand) {
 			return AudioArchive.sandMusic;
 		}
 	}

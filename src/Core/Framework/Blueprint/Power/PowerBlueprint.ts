@@ -1,10 +1,10 @@
-import { MapEnv } from '../Items/MapEnv';
-import { MapItem } from '../Items/MapItem';
+import { MapKind } from '../Items/MapKind';
+import { CellPrint } from '../Items/CellPrint';
 import { IBlueprint } from './../IBlueprint';
 export class PowerBlueprint implements IBlueprint {
-	public Items: MapItem[];
-	public MapMode: MapEnv;
-	public CenterItem: MapItem;
-	public Arrival: MapItem;
-	public Goal: MapItem;
+	public Cells: CellPrint[];
+	public MapMode: MapKind;
+	public CenterItem: CellPrint;
+	public Arrival: CellPrint;
+	public Goal: CellPrint;
 }

@@ -6,7 +6,7 @@ import { HqSkinHelper } from '../Hq/HqSkinHelper';
 import { Truck } from '../../../Items/Unit/Truck';
 import { SimpleFloor } from '../../../Items/Environment/SimpleFloor';
 import { Cloud } from '../../../Items/Environment/Cloud';
-import { ForestDecorator } from '../../../Items/Cell/Decorator/ForestDecorator';
+import { DecoratingFactory } from '../../../Items/Cell/Decorator/ForestFactory';
 import { CamouflageBlueprint } from '../../Blueprint/Cam/CamouflageBlueprint';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
@@ -16,20 +16,21 @@ import { Item } from '../../../Items/Item';
 import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { HexAxial } from '../../../Utils/Geometry/HexAxial';
-import { MapEnv } from '../../Blueprint/Items/MapEnv';
+import { MapKind } from '../../Blueprint/Items/MapKind';
 import { Floor } from '../../../Items/Environment/Floor';
 import { Identity } from '../../../Items/Identity';
 import { PatrolOrder } from '../../../Ia/Order/Composite/PatrolOrder';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
+import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
 
 export class CamouflageRenderer {
 	public Render(blueprint: CamouflageBlueprint): CamouflageContext {
 		const cells = new Dictionary<Cell>();
 		const vehicles = new Array<Vehicle>();
 
-		blueprint.Items.forEach((item) => {
+		blueprint.Cells.forEach((item) => {
 			const cell = new Cell(new CellProperties(new HexAxial(item.Position.Q, item.Position.R)), cells);
-			ForestDecorator.SetDecoration(cell, item.Type);
+			Decorator.Decorate(cell, item.Type);
 			cell.InitSprite();
 			cells.Add(cell.Coo(), cell);
 		});
@@ -77,7 +78,7 @@ export class CamouflageRenderer {
 		new Cloud(1200, 20 * GameSettings.Size, 1600, SvgArchive.nature.clouds[4]);
 	}
 
-	private SetLands(cells: Dictionary<Cell>, mode: MapEnv, middleAreas: HexAxial[]) {
+	private SetLands(cells: Dictionary<Cell>, mode: MapKind, middleAreas: HexAxial[]) {
 		middleAreas.forEach((corner) => {
 			const cell = cells.Get(corner.ToString());
 			const boundingBox = new BoundingBox();
@@ -87,9 +88,9 @@ export class CamouflageRenderer {
 			boundingBox.Y = cell.GetBoundingBox().Y - (boundingBox.Height / 2 - cell.GetBoundingBox().Height / 2);
 
 			let floor = SvgArchive.nature.forest;
-			if (mode === MapEnv.ice) {
+			if (mode === MapKind.ice) {
 				floor = SvgArchive.nature.ice;
-			} else if (mode === MapEnv.sand) {
+			} else if (mode === MapKind.sand) {
 				floor = SvgArchive.nature.sand;
 			}
 

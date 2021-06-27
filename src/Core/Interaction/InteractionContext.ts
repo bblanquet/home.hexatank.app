@@ -17,6 +17,7 @@ import { ViewContext } from '../Utils/Geometry/ViewContext';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { StaticLogger } from '../Utils/Logger/StaticLogger';
 import { LogKind } from '../Utils/Logger/LogKind';
+import { GameSettings } from '../Framework/GameSettings';
 
 export class InteractionContext implements IContextContainer, IInteractionContext {
 	private _updateService: IUpdateService;
@@ -128,35 +129,37 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 	}
 
 	public OnSelect(item: Item): void {
-		if (item) {
-			if (item instanceof Cell && this.ContainsSelectable(item)) {
-				item = this.GetSelectable(item);
+		if (!GameSettings.IsPausing()) {
+			if (item) {
+				if (item instanceof Cell && this.ContainsSelectable(item)) {
+					item = this.GetSelectable(item);
+				}
+				this._selectedItem.push(item);
 			}
-			this._selectedItem.push(item);
-		}
-		if (this.Kind !== InteractionKind.Moving) {
-			const info = new InteractionInfo();
-			info.InteractionKind = InteractionKind[this.Kind];
-			info.ItemsCount = this._selectedItem.length;
-			info.Items = this._selectedItem.map((s) => s.constructor.name);
-			this.OnInteractionChanged.Invoke(this, info);
-			StaticLogger.Log(LogKind.info, this.GetInteractionInfo());
-		}
-
-		let context = new CombinationContext();
-		context.Items = this._selectedItem;
-		context.InteractionKind = this.Kind;
-		context.Point = this.Point;
-
-		StaticLogger.Log(LogKind.info, `TRIGGER ${InteractionKind[this.Kind]}`);
-
-		this._combinations.some((combination) => {
-			if (combination.Combine(context)) {
-				StaticLogger.Log(LogKind.success, `combination: ${combination.constructor.name}`);
-				return true;
+			if (this.Kind !== InteractionKind.Moving) {
+				const info = new InteractionInfo();
+				info.InteractionKind = InteractionKind[this.Kind];
+				info.ItemsCount = this._selectedItem.length;
+				info.Items = this._selectedItem.map((s) => s.constructor.name);
+				this.OnInteractionChanged.Invoke(this, info);
+				StaticLogger.Log(LogKind.info, this.GetInteractionInfo());
 			}
-			return false;
-		});
+
+			let context = new CombinationContext();
+			context.Items = this._selectedItem;
+			context.InteractionKind = this.Kind;
+			context.Point = this.Point;
+
+			StaticLogger.Log(LogKind.info, `TRIGGER ${InteractionKind[this.Kind]}`);
+
+			this._combinations.some((combination) => {
+				if (combination.Combine(context)) {
+					StaticLogger.Log(LogKind.success, `combination: ${combination.constructor.name}`);
+					return true;
+				}
+				return false;
+			});
+		}
 	}
 
 	private GetInteractionInfo() {

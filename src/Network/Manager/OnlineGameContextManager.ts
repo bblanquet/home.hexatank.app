@@ -1,4 +1,4 @@
-import { OnlineRuntimeManager } from './../../Core/Framework/Network/OnlineRuntimeManager';
+import { OnlineManager } from '../../Core/Framework/Network/OnlineManager';
 import { IOnlineService } from '../../Services/Online/IOnlineService';
 import { OnlineBlueprintMaker } from './OnlineBlueprintMaker';
 import { ISocketWrapper } from './../Socket/INetworkSocket';
@@ -84,7 +84,7 @@ export class OnlineGameContextManager implements IOnlineGameContextManager {
 		const appService = Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App);
 		appService.Register(blueprint);
 		const context = this._gameContextService.Publish();
-		this._onlineService.Publish(new OnlineRuntimeManager(this._socket, context));
+		this._onlineService.Publish(new OnlineManager(this._socket, context, this._onlinePlayerManager));
 		this._onlinePlayerManager.Player.IsLoaded = true;
 		this._socket.EmitAll<boolean>(PacketKind.Loaded, true);
 	}

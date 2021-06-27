@@ -9,7 +9,7 @@ import { FarmField } from './../Items/Cell/Field/Bonus/FarmField';
 import { MedicField } from './../Items/Cell/Field/Bonus/MedicField';
 import { NetworkField } from './../Items/Cell/Field/Bonus/NetworkField';
 import { PoisonField } from './../Items/Cell/Field/Bonus/PoisonField';
-import { AttackField } from './../Items/Cell/Field/Bonus/AttackField';
+import { FireField } from '../Items/Cell/Field/Bonus/FireField';
 import { BatteryField } from '../Items/Cell/Field/Bonus/BatteryField';
 import { ReactorField } from '../Items/Cell/Field/Bonus/ReactorField';
 import { RoadField } from '../Items/Cell/Field/Bonus/RoadField';
@@ -18,12 +18,12 @@ import { Cell } from '../Items/Cell/Cell';
 import { RecordKind } from './Record/Model/Item/State/RecordKind';
 import { Diamond } from '../Items/Cell/Field/Diamond';
 import { ErrorCat, ErrorHandler } from '../Utils/Exceptions/ErrorHandler';
-export class FieldTypeHelper {
-	public static GetDescription(obj: IField): string {
+export class FieldHelper {
+	//has to use it because of ofuscator
+	public static GetName(obj: IField): string {
 		ErrorHandler.ThrowNull(obj);
-
-		if (obj instanceof AttackField) {
-			return 'AttackField';
+		if (obj instanceof FireField) {
+			return 'FireField';
 		} else if (obj instanceof BatteryField) {
 			return 'BatteryField';
 		} else if (obj instanceof FarmField) {
@@ -48,8 +48,8 @@ export class FieldTypeHelper {
 		ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.outOfRange])));
 	}
 
-	public static GetRecordDescription(obj: IField): RecordKind {
-		if (obj instanceof AttackField) {
+	public static GetRecordName(obj: IField): RecordKind {
+		if (obj instanceof FireField) {
 			return RecordKind.Attack;
 		} else if (obj instanceof BatteryField) {
 			return RecordKind.Battery;
@@ -79,9 +79,9 @@ export class FieldTypeHelper {
 		return RecordKind.None;
 	}
 
-	public static CreateRecordField(action: RecordKind, cell: Cell, hq: IHeadquarter, context: GameContext): IField {
+	public static NewFieldFromRecord(action: RecordKind, cell: Cell, hq: IHeadquarter, context: GameContext): IField {
 		if (action === RecordKind.Attack) {
-			return cell.SetField(new AttackField(cell, hq));
+			return cell.SetField(new FireField(cell, hq));
 		} else if (action === RecordKind.Battery) {
 			return cell.SetField(new BatteryField(cell, hq));
 		} else if (action === RecordKind.Basic) {
@@ -110,26 +110,26 @@ export class FieldTypeHelper {
 		ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.outOfRange])));
 	}
 
-	public static CreateField(obj: string, cell: Cell, hq: IHeadquarter, context: GameContext): IField {
-		if (obj === 'AttackField') {
-			return cell.SetField(new AttackField(cell, hq));
-		} else if (obj === 'BatteryField') {
+	public static NewField(name: string, cell: Cell, hq: IHeadquarter, context: GameContext): IField {
+		if (name === 'FireField') {
+			return cell.SetField(new FireField(cell, hq));
+		} else if (name === 'BatteryField') {
 			return cell.SetField(new BatteryField(cell, hq));
-		} else if (obj === 'BasicField') {
+		} else if (name === 'BasicField') {
 			return cell.SetField(new BasicField(cell));
-		} else if (obj === 'FarmField') {
+		} else if (name === 'FarmField') {
 			return cell.SetField(new FarmField(cell, hq));
-		} else if (obj === 'MedicField') {
+		} else if (name === 'MedicField') {
 			return cell.SetField(new MedicField(cell, hq));
-		} else if (obj === 'NetworkField') {
+		} else if (name === 'NetworkField') {
 			return cell.SetField(new NetworkField(cell, hq));
-		} else if (obj === 'PoisonField') {
+		} else if (name === 'PoisonField') {
 			return cell.SetField(new PoisonField(cell, hq));
-		} else if (obj === 'ReactorField') {
+		} else if (name === 'ReactorField') {
 			return cell.SetField(new ReactorField(cell, hq, context, hq.Identity.Skin.GetLight()));
-		} else if (obj === 'RoadField') {
+		} else if (name === 'RoadField') {
 			return cell.SetField(new RoadField(cell, hq));
-		} else if (obj === 'ShieldField') {
+		} else if (name === 'ShieldField') {
 			return cell.SetField(new ShieldField(cell, hq.Identity, hq));
 		}
 		ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.outOfRange])));

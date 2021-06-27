@@ -768,7 +768,7 @@
 	background-size: auto;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url('{{asset_path}}svg/components/program6Logo.svg');
+	background-image: url('{{asset_path}}svg/components/{{title}}.svg');
 }
 
 .fill-tank-logo {

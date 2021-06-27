@@ -6,8 +6,8 @@ import { TypeTranslator } from '../../Items/Cell/Field/TypeTranslator';
 import { Item } from '../../Items/Item';
 import { Tank } from '../../Items/Unit/Tank';
 import { Vehicle } from '../../Items/Unit/Vehicle';
-import { GameContext } from '../../Framework/Context/GameContext';
-import { FieldTypeHelper } from '../FieldTypeHelper';
+import { GameContext } from '../Context/GameContext';
+import { FieldHelper } from '../FieldTypeHelper';
 import { ISocketWrapper } from '../../../Network/Socket/INetworkSocket';
 import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
 import { PacketKind } from '../../../Network/Message/PacketKind';
@@ -17,7 +17,7 @@ import { TargetContent } from './Contents/TargetContent';
 import { PacketContent } from './Contents/PacketContent';
 import { Identity } from '../../Items/Identity';
 
-export class OnlineRuntimeDispatcher {
+export class OnlineSender {
 	private _handleField: any = this.HandleChangedField.bind(this);
 	private _handleVehicle: any = this.HandleVehicleCreated.bind(this);
 	private _handleDestroyedField: any = this.HandleDestroyedField.bind(this);
@@ -50,7 +50,7 @@ export class OnlineRuntimeDispatcher {
 		if (!TypeTranslator.IsSpecialField(field) || this.IsEmiting(field.GetIdentity())) {
 			const content = new PacketContent<any>();
 			content.CId = c.Coo();
-			content.Type = FieldTypeHelper.GetDescription(field);
+			content.Type = FieldHelper.GetName(field);
 			content.Id = field.GetIdentity() ? field.GetIdentity().Name : '';
 			if (field instanceof ReactorField && this.IsEmiting(field.GetIdentity())) {
 				field.OnOverlocked.On(this.HandleOverlockChanged.bind(this));

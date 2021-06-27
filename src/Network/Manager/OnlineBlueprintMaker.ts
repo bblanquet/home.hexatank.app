@@ -1,8 +1,8 @@
 import { GameBlueprintMaker } from '../../Core/Framework/Blueprint/Game/GameBlueprintMaker';
 import { OnlinePlayer } from '../OnlinePlayer';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
-import { MapType } from '../../Core/Framework/Blueprint/Items/MapType';
-import { MapEnv } from '../../Core/Framework/Blueprint/Items/MapEnv';
+import { MapShape } from '../../Core/Framework/Blueprint/Items/MapShape';
+import { MapKind } from '../../Core/Framework/Blueprint/Items/MapKind';
 import { BlueprintSetup } from '../../Components/Form/BlueprintSetup';
 import { IOnlinePlayerManager } from './IOnlinePlayerManager';
 import { ErrorHandler, ErrorCat } from '../../Core/Utils/Exceptions/ErrorHandler';
@@ -28,15 +28,15 @@ export class OnlineBlueprintMaker {
 		return mapContext;
 	}
 
-	private ConvertMapType(): MapType {
-		if (this._blueprintSetup.MapType === 'Flower') return MapType.Flower;
-		if (this._blueprintSetup.MapType === 'Donut') return MapType.Donut;
-		if (this._blueprintSetup.MapType === 'Cheese') return MapType.Cheese;
-		if (this._blueprintSetup.MapType === 'Triangle') return MapType.Triangle;
-		if (this._blueprintSetup.MapType === 'Y') return MapType.Y;
-		if (this._blueprintSetup.MapType === 'H') return MapType.H;
-		if (this._blueprintSetup.MapType === 'X') return MapType.X;
-		return MapType.Rectangle;
+	private ConvertMapType(): MapShape {
+		if (this._blueprintSetup.MapType === 'Flower') return MapShape.Flower;
+		if (this._blueprintSetup.MapType === 'Donut') return MapShape.Donut;
+		if (this._blueprintSetup.MapType === 'Cheese') return MapShape.Cheese;
+		if (this._blueprintSetup.MapType === 'Triangle') return MapShape.Triangle;
+		if (this._blueprintSetup.MapType === 'Y') return MapShape.Y;
+		if (this._blueprintSetup.MapType === 'H') return MapShape.H;
+		if (this._blueprintSetup.MapType === 'X') return MapShape.X;
+		return MapShape.Rectangle;
 	}
 
 	private ConvertSize(): number {
@@ -46,11 +46,11 @@ export class OnlineBlueprintMaker {
 		return 8;
 	}
 
-	private ConvertEnv(): MapEnv {
-		if (this._blueprintSetup.Env === 'Sand') return MapEnv.sand;
-		if (this._blueprintSetup.Env === 'Forest') return MapEnv.forest;
-		if (this._blueprintSetup.Env === 'Ice') return MapEnv.ice;
-		return MapEnv.forest;
+	private ConvertEnv(): MapKind {
+		if (this._blueprintSetup.Env === 'Sand') return MapKind.sand;
+		if (this._blueprintSetup.Env === 'Forest') return MapKind.forest;
+		if (this._blueprintSetup.Env === 'Ice') return MapKind.ice;
+		return MapKind.forest;
 	}
 
 	private AssignIa(blueprint: GameBlueprint): void {

@@ -1,6 +1,6 @@
 import { IBlueprint } from '../../Framework/Blueprint/IBlueprint';
 import * as PIXI from 'pixi.js';
-import { MapEnv } from '../../Framework/Blueprint/Items/MapEnv';
+import { MapKind } from '../Blueprint/Items/MapKind';
 
 export class AppProvider {
 	public Provide(blueprint: IBlueprint): PIXI.Application {
@@ -11,9 +11,9 @@ export class AppProvider {
 
 	private GetColor(mapContext: IBlueprint): number {
 		let color = 0x00a651;
-		if (mapContext.MapMode === MapEnv.sand) {
+		if (mapContext.MapMode === MapKind.sand) {
 			color = 0xfece63;
-		} else if (mapContext.MapMode === MapEnv.ice) {
+		} else if (mapContext.MapMode === MapKind.ice) {
 			color = 0xacddf3;
 		}
 		return color;

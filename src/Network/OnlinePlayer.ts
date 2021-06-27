@@ -10,6 +10,7 @@ export class OnlinePlayer {
 	public IsLoaded: boolean;
 	public IsReady: boolean;
 	public IsAdmin: boolean;
+	public IsSync: boolean;
 
 	public OnChanged: SimpleEvent = new SimpleEvent();
 
@@ -18,6 +19,7 @@ export class OnlinePlayer {
 		this._latency = '0';
 		this.IsLoaded = false;
 		this.IsReady = false;
+		this.IsSync = true;
 		this._connection = new ConnectionStatus();
 	}
 

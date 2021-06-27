@@ -1,4 +1,4 @@
-export enum DecorationType {
+export enum CellType {
 	None,
 	Stone,
 	SandStone,

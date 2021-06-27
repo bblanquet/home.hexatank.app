@@ -41,6 +41,7 @@ export enum PacketKind {
 	Loading,
 	Loaded,
 	Blueprint,
+	Sync,
 	VehicleDestroyed,
 	VehicleCreated,
 	FieldDestroyed,

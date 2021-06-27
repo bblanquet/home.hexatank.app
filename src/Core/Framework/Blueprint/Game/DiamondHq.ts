@@ -1,8 +1,8 @@
-import { MapItem } from '../Items/MapItem';
+import { CellPrint } from '../Items/CellPrint';
 
 export class DiamondHq {
-	public Hq: MapItem;
-	public Diamond: MapItem;
+	public Hq: CellPrint;
+	public Diamond: CellPrint;
 	public PlayerName: string;
 	public isIa: boolean = false;
 }

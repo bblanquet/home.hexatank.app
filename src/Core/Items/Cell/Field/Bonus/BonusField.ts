@@ -14,6 +14,7 @@ import { IActiveContainer } from '../IActiveContainer';
 import { ZKind } from '../../../ZKind';
 import { Explosion } from '../../../Unit/Explosion';
 import { ErrorCat, ErrorHandler } from '../../../../Utils/Exceptions/ErrorHandler';
+import { ReactorField } from './ReactorField';
 
 export abstract class BonusField extends Field implements IActiveContainer {
 	private _animator: IAnimator;
@@ -21,6 +22,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 	public Energy: number = 0;
 	public Identity: Identity;
 	public OnEnergyChanged: LiteEvent<number> = new LiteEvent<number>();
+	private HandleReactorLost: any = this.Handle.bind(this);
 
 	constructor(cell: Cell, private _bonus: string[], protected hq: IHeadquarter, override: boolean = true) {
 		super(cell, hq.Identity);
@@ -40,12 +42,21 @@ export abstract class BonusField extends Field implements IActiveContainer {
 			this.InitPosition(cell.GetBoundingBox());
 		}
 		this._animator = new BouncingScaleAnimator(this);
+		this.hq.OnReactorLost.On(this.HandleReactorLost);
+		this.Include(hq, cell);
+	}
+
+	private Include(hq: IHeadquarter, cell: Cell) {
 		if (!hq.IsCovered(cell)) {
 			this.Destroy();
 			if (cell.IsVisible()) {
-				new Explosion(cell.GetBoundingBox(), SvgArchive.constructionEffects, ZKind.Sky, false, 5);
+				new Explosion(cell.GetBoundingBox(), SvgArchive.constructionEffects, ZKind.Sky, false);
 			}
 		}
+	}
+
+	private Handle(src: any, value: ReactorField): void {
+		this.Include(this.hq, this.GetCell());
 	}
 
 	public GetHq(): IHeadquarter {

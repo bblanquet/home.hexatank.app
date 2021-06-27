@@ -1,7 +1,7 @@
 import { MonitoredOrder } from '../../Order/MonitoredOrder';
 import { IAreaDecisionMaker } from './IAreaDecisionMaker';
 import { AStarHelper } from '../../AStarHelper';
-import { AttackField } from '../../../Items/Cell/Field/Bonus/AttackField';
+import { FireField } from '../../../Items/Cell/Field/Bonus/FireField';
 import { IaArea } from '../Utils/IaArea';
 import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { TroopRoads } from '../Troop/TroopRoads';
@@ -77,7 +77,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 			let cell = t.Tank.GetCurrentCell();
 			if (GameSettings.FieldPrice < this._hq.GetAmount()) {
 				if (cell.GetField() instanceof BasicField && this._hq.IsCovered(cell)) {
-					new AttackField(cell, this._hq);
+					new FireField(cell, this._hq);
 					this._hq.Buy(GameSettings.FieldPrice);
 				}
 			}

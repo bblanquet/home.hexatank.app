@@ -39,7 +39,6 @@ export default class GameCanvasComponent extends Component<
 		Amount: number;
 		Item: Item;
 		Players: OnlinePlayer[];
-		IsSynchronizing: boolean;
 		GameStatus: GameStatus;
 		IsSettingPatrol: boolean;
 	}
@@ -71,8 +70,7 @@ export default class GameCanvasComponent extends Component<
 			Amount: GameSettings.PocketMoney,
 			HasWarning: false,
 			GameStatus: GameStatus.Pending,
-			IsSettingPatrol: false,
-			IsSynchronizing: true
+			IsSettingPatrol: false
 		});
 		this._diamonds = GameSettings.PocketMoney;
 	}
@@ -108,18 +106,18 @@ export default class GameCanvasComponent extends Component<
 	}
 
 	private SetMenu(): void {
-		const newValue = !this.state.HasMenu;
+		const IsPopupVisible = !this.state.HasMenu;
 		this.setState({
-			HasMenu: newValue
+			HasMenu: IsPopupVisible
 		});
-		if (newValue) {
+		if (IsPopupVisible) {
 			this._soundService.GetGameAudioManager().PauseAll();
 		} else if (!this._soundService.IsMute()) {
 			this._soundService.GetGameAudioManager().PlayAll();
 		}
 
 		if (!this._onlineService.IsOnline()) {
-			GameSettings.IsPause = newValue;
+			GameSettings.IsPause = IsPopupVisible;
 		}
 	}
 
@@ -200,7 +198,7 @@ export default class GameCanvasComponent extends Component<
 						}}
 					/>
 				</Visible>
-				<Visible isVisible={this.state.IsSynchronizing}>
+				<Visible isVisible={GameSettings.IsSynchronizing}>
 					<div class="absolute-center-middle-menu dark-container container-center-horizontal">
 						<span class="fit-content fit-height space-out-all">
 							<div class="spin fit-content fit-height">

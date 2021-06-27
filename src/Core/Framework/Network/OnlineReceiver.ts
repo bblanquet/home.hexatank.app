@@ -6,8 +6,8 @@ import { TypeTranslator } from '../../Items/Cell/Field/TypeTranslator';
 import { Identity } from '../../Items/Identity';
 import { LatencyUp } from '../../Items/Unit/PowerUp/LatencyUp';
 import { Vehicle } from '../../Items/Unit/Vehicle';
-import { GameContext } from '../../Framework/Context/GameContext';
-import { FieldTypeHelper } from '../FieldTypeHelper';
+import { GameContext } from '../Context/GameContext';
+import { FieldHelper } from '../FieldTypeHelper';
 import { ISocketWrapper } from '../../../Network/Socket/INetworkSocket';
 import { PacketKind } from '../../../Network/Message/PacketKind';
 import { NetworkObserver } from '../../Utils/Events/NetworkObserver';
@@ -20,7 +20,7 @@ import { LogKind } from '../../Utils/Logger/LogKind';
 import { ItemsUpdater } from '../../ItemsUpdater';
 import { PacketContent } from './Contents/PacketContent';
 
-export class OnlineRuntimeReceiver {
+export class OnlineReceiver {
 	private _obs: NetworkObserver[];
 	constructor(private _socket: ISocketWrapper, private _context: GameContext) {
 		this._obs = [
@@ -184,7 +184,7 @@ export class OnlineRuntimeReceiver {
 					`[CONSISTENCY] ${message.Content.Type} ${message.Content.CId} is not a basic field`
 				);
 			}
-			const field = FieldTypeHelper.CreateField(message.Content.Type, cell, hq, this._context);
+			const field = FieldHelper.NewField(message.Content.Type, cell, hq, this._context);
 			StaticLogger.Log(LogKind.info, `[CREATE] ${message.Content.CId} ${message.Content.Type}`);
 		}
 	}

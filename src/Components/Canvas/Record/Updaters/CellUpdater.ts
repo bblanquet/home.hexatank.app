@@ -1,4 +1,4 @@
-import { FieldTypeHelper } from '../../../../Core/Framework/FieldTypeHelper';
+import { FieldHelper } from '../../../../Core/Framework/FieldTypeHelper';
 import { RecordKind } from '../../../../Core/Framework/Record/Model/Item/State/RecordKind';
 import { RecordContent } from '../../../../Core/Framework/Record/Model/RecordContent';
 import { GameContext } from '../../../../Core/Framework/Context/GameContext';
@@ -44,9 +44,9 @@ export class CellUpdater {
 
 	private UpdateActiveField(coos: Dictionary<{ Axial: HexAxial; Action: RecordKind }>) {
 		coos.Keys().forEach((key) => {
-			const fieldAction = FieldTypeHelper.GetRecordDescription(this._displayedFields.Get(key));
+			const fieldAction = FieldHelper.GetRecordName(this._displayedFields.Get(key));
 			if (fieldAction !== coos.Get(key).Action) {
-				const field = FieldTypeHelper.CreateRecordField(
+				const field = FieldHelper.NewFieldFromRecord(
 					coos.Get(key).Action,
 					this._gameContext.GetCell(key),
 					this._gameContext.GetPlayerHq(),

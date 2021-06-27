@@ -1,14 +1,14 @@
 import { MapItemPair } from './MapItemPair';
 import { IBlueprint } from '../IBlueprint';
-import { MapEnv } from '../Items/MapEnv';
-import { MapItem } from '../Items/MapItem';
+import { MapKind } from '../Items/MapKind';
+import { CellPrint } from '../Items/CellPrint';
 
 export class CamouflageBlueprint implements IBlueprint {
-	public Items: Array<MapItem>;
-	public CenterItem: MapItem;
+	public Cells: Array<CellPrint>;
+	public CenterItem: CellPrint;
 	public Goal: MapItemPair;
 	public Patrols: MapItemPair[];
-	public MapMode: MapEnv;
+	public MapMode: MapKind;
 	public PlayerName: string = '';
 	constructor() {}
 }

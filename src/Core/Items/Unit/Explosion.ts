@@ -1,6 +1,5 @@
 import { Item } from '../Item';
 import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
-import { TickTimer } from '../../Utils/Timer/TickTimer';
 import { InteractionContext } from '../../Interaction/InteractionContext';
 import { ITimer } from '../../Utils/Timer/ITimer';
 import { TimeTimer } from '../../Utils/Timer/TimeTimer';

@@ -1,12 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.0" id="Calque_3" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 100 150" style="enable-background:new 0 0 100 150;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:#E2C23B;}
-	.st1{fill:#F9CB10;}
-</style>
-<polygon id="XMLID_4_" class="st0" points="58.8,46.4 58.8,41.7 26.7,79.7 26.7,84.4 50,84.4 44.4,107.6 44.4,112.3 77.3,74.7 
-	77.3,70 52.9,74.7 "/>
-<polygon id="XMLID_1_" class="st1" points="58.8,41.7 26.7,79.7 50,79.7 44.4,107.6 77.3,70 52.9,70 "/>
-</svg>
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 150" style="enable-background:new 0 0 100 150" xml:space="preserve"><path style="fill:#e2c23b" d="M58.8 46.4v-4.7l-32.1 38v4.7H50l-5.6 23.2v4.7l32.9-37.6V70l-24.4 4.7z"/><path style="fill:#f9cb10" d="m58.8 41.7-32.1 38H50l-5.6 27.9L77.3 70H52.9z"/></svg>

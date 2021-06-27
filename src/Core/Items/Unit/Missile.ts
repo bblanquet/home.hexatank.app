@@ -7,7 +7,7 @@ import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { SvgArchive } from '../../Framework/SvgArchiver';
 import { InteractionContext } from '../../Interaction/InteractionContext';
 import { GameSettings } from '../../Framework/GameSettings';
-import * as PIXI from 'pixi.js';
+import { Point } from '../../Utils/Geometry/Point';
 
 export class Missile extends Item {
 	public BoundingBox: BoundingBox;
@@ -71,11 +71,11 @@ export class Missile extends Item {
 	}
 
 	private GetAngle(): number {
-		var aPoint = new PIXI.Point(this.BoundingBox.GetCenter(), this.BoundingBox.GetMiddle());
-		var bPoint = new PIXI.Point(this.BoundingBox.GetCenter(), this.BoundingBox.GetMiddle() + 1);
-		var cPoint = new PIXI.Point(this.Target.GetBoundingBox().GetCenter(), this.Target.GetBoundingBox().GetMiddle());
+		var aPoint = new Point(this.BoundingBox.GetCenter(), this.BoundingBox.GetMiddle());
+		var bPoint = new Point(this.BoundingBox.GetCenter(), this.BoundingBox.GetMiddle() + 1);
+		var cPoint = new Point(this.Target.GetBoundingBox().GetCenter(), this.Target.GetBoundingBox().GetMiddle());
 		var radius =
-			Math.atan2(cPoint.y - bPoint.y, cPoint.x - bPoint.x) - Math.atan2(aPoint.y - bPoint.y, aPoint.x - bPoint.x);
+			Math.atan2(cPoint.Y - bPoint.Y, cPoint.X - bPoint.X) - Math.atan2(aPoint.Y - bPoint.Y, aPoint.X - bPoint.X);
 		return radius;
 	}
 

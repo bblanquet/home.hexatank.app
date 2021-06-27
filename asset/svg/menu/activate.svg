@@ -1,17 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.0" id="patrol_-_copie_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-	 y="0px" width="100px" height="150px" viewBox="0 0 100 150" style="enable-background:new 0 0 100 150;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:#6B8C4D;}
-	.st1{fill:#99C17A;}
-</style>
-<path id="XMLID_501_" class="st0" d="M73.2,50.9l-9.5,5.5l2,2c7.1,4.1,11.9,11.8,11.9,20.6c0,13.1-10.6,23.8-23.8,23.8
-	S30,92.1,30,79c0-8.8,4.8-16.5,11.9-20.6l-7.5-7.5C25.4,57,19.6,67.3,19.6,79c0,18.9,15.3,34.2,34.2,34.2S87.9,97.9,87.9,79
-	C87.9,67.3,82.1,57,73.2,50.9z"/>
-<path id="XMLID_503_" class="st1" d="M71.2,48.9l-7.5,7.5c7.1,4.1,11.9,11.8,11.9,20.6c0,13.1-10.6,23.8-23.8,23.8S28,90.1,28,77
-	c0-8.8,4.8-16.5,11.9-20.6l-7.5-7.5C23.4,55,17.6,65.3,17.6,77c0,18.9,15.3,34.2,34.2,34.2S85.9,95.9,85.9,77
-	C85.9,65.3,80.1,55,71.2,48.9z"/>
-<polygon id="XMLID_112_" class="st0" points="58.4,67.1 49.1,67.1 47.1,65.1 49.1,39.8 56.4,37.8 58.4,39.8 "/>
-<rect id="XMLID_506_" x="47.1" y="37.8" class="st1" width="9.3" height="27.4"/>
-</svg>
+<svg version="1.0" id="patrol_-_copie_2" xmlns="http://www.w3.org/2000/svg" x="0" y="0" width="100" height="150" style="enable-background:new 0 0 100 150" xml:space="preserve"><style>.st0{fill:#6b8c4d}.st1{fill:#99c17a}</style><path id="XMLID_501_" class="st0" d="m73.2 50.9-9.5 5.5 2 2c7.1 4.1 11.9 11.8 11.9 20.6 0 13.1-10.6 23.8-23.8 23.8S30 92.1 30 79c0-8.8 4.8-16.5 11.9-20.6l-7.5-7.5C25.4 57 19.6 67.3 19.6 79c0 18.9 15.3 34.2 34.2 34.2S87.9 97.9 87.9 79c0-11.7-5.8-22-14.7-28.1z"/><path id="XMLID_503_" class="st1" d="m71.2 48.9-7.5 7.5c7.1 4.1 11.9 11.8 11.9 20.6 0 13.1-10.6 23.8-23.8 23.8S28 90.1 28 77c0-8.8 4.8-16.5 11.9-20.6l-7.5-7.5C23.4 55 17.6 65.3 17.6 77c0 18.9 15.3 34.2 34.2 34.2S85.9 95.9 85.9 77c0-11.7-5.8-22-14.7-28.1z"/><path id="XMLID_112_" class="st0" d="M58.4 67.1h-9.3l-2-2 2-25.3 7.3-2 2 2z"/><path id="XMLID_506_" class="st1" d="M47.1 37.8h9.3v27.4h-9.3z"/></svg>

@@ -8,7 +8,7 @@ import { INetworkMessage } from '../../Message/INetworkMessage';
 import { PeerPingObserver } from './Ping/PeerPingObserver';
 import { NetworkMessage } from '../../Message/NetworkMessage';
 import { PacketKind } from '../../Message/PacketKind';
-import { PingData } from './Ping/PingData';
+import { JetlagData } from './Ping/JetlagData';
 import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
 import { ConnectionKind } from '../../ConnectionKind';
 import { ProtocolKind } from '../../Message/ProtocolKind';
@@ -122,11 +122,11 @@ export class PeerSocket implements IPeerSocket {
 		return type === PacketKind.OneWayPing || type === PacketKind.TwoWayPing;
 	}
 
-	public GetLastPing(): PingData {
+	public GetLastPing(): JetlagData {
 		if (this._peerPing) {
-			return this._peerPing.GetLastPingData();
+			return this._peerPing.GetJetlag();
 		} else {
-			return new PingData();
+			return new JetlagData();
 		}
 	}
 
@@ -135,7 +135,7 @@ export class PeerSocket implements IPeerSocket {
 		this._peerPing.OnTimeoutStateChanged.On((obj: any, state: boolean) => {
 			this.OnReceivedMessage.Invoke(this, this.GetMessage<boolean>(PacketKind.TimeOut, state));
 		});
-		this._peerPing.OnPingReceived.On((obj: any, data: PingData) => {
+		this._peerPing.OnPingReceived.On((obj: any, data: JetlagData) => {
 			if (this._status && this._status.IsNotConnected()) {
 				//code for firefox
 				const connection = this.GetConnectionStatus();

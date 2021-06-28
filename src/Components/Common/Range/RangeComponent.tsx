@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import * as luxon from 'luxon';
 import { h, Component } from 'preact';
 import { Dictionary } from '../../../Core/Utils/Collections/Dictionary';
 import { ColorKind } from '../Button/Stylish/ColorKind';
@@ -83,7 +83,11 @@ export default class RangeComponent extends Component<
 							}}
 						>
 							<div class="btn-space">
-								{moment(new Date(this.state.value - this.props.dataSet[0])).format('mm:ss.S')}
+								{luxon.Duration
+									.fromObject({
+										milliseconds: this.state.value ? this.state.value - this.props.dataSet[0] : 0
+									})
+									.toFormat('mm:ss.S')}
 							</div>
 						</div>
 						<input

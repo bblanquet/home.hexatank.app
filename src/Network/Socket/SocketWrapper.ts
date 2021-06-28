@@ -127,7 +127,8 @@ export class SocketWrapper implements ISocketWrapper {
 		const now = new Date();
 		const twoSecondsEarlierThanNow = now.setSeconds(now.getSeconds() - 2);
 		const pingPackets = this.PeerSockets.Values().map((p) => p.GetLastPing());
-		const isAllFreshPing = pingPackets.filter((ping) => ping.PingDate < twoSecondsEarlierThanNow).length === 0;
+		const isAllFreshPing =
+			pingPackets.filter((ping) => ping.CalculationDate < twoSecondsEarlierThanNow).length === 0;
 		const isAllGoodPing = pingPackets.filter((ping) => 1000 < ping.Latency).length === 0;
 		return isAllFreshPing && isAllGoodPing;
 	}

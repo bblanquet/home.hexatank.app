@@ -1,14 +1,14 @@
 import { PingContent } from './PingContent';
 import { LiteEvent } from '../../../../Core/Utils/Events/LiteEvent';
-import { PingData } from './PingData';
+import { JetlagData } from './JetlagData';
 import { PacketKind } from '../../../Message/PacketKind';
 import { NetworkMessage } from '../../../Message/NetworkMessage';
 import { RtcPeer } from '../Rtc/RtcPeer';
 
 export class PeerPingObserver {
-	public OnPingReceived: LiteEvent<PingData> = new LiteEvent<PingData>();
+	public OnPingReceived: LiteEvent<JetlagData> = new LiteEvent<JetlagData>();
 	public OnTimeoutStateChanged: LiteEvent<boolean> = new LiteEvent<boolean>();
-	private _pingData: PingData = new PingData();
+	private _jetlag: JetlagData = new JetlagData();
 	private _timeOut: NodeJS.Timeout;
 	private _shortSleep: number = 500;
 	private _timeoutSleep: number = 1000;
@@ -40,19 +40,20 @@ export class PeerPingObserver {
 		this.OnPingReceived.Clear();
 	}
 
-	public GetLastPingData(): PingData {
-		return this._pingData;
+	public GetJetlag(): JetlagData {
+		return this._jetlag;
 	}
 
 	private OnTwoWayPingReceived(peer: any, packet: NetworkMessage<PingContent>): void {
 		if (packet.Recipient === this._owner && packet.Kind === PacketKind.TwoWayPing) {
-			const data = new PingData();
-			data.PingDate = new Date().getTime();
-			data.Latency = Math.abs(data.PingDate - packet.Content.EmittedDate) / 2;
-			const recipientRefEmittedDate = packet.Content.ReceivedDate - data.Latency;
-			data.DateDelta = Math.abs(packet.Content.EmittedDate - recipientRefEmittedDate);
-			data.DeltaSign = packet.Content.EmittedDate < recipientRefEmittedDate;
-			this._pingData = data;
+			const data = new JetlagData();
+			data.CalculationDate = new Date().getTime();
+			data.Latency = Math.abs(data.CalculationDate - packet.Content.EmittedDate) / 2;
+			const emittedDateFromRecipientClock = packet.Content.ReceivedDate - data.Latency;
+			const emittedDate = packet.Content.EmittedDate;
+			data.Jetlag = Math.abs(emittedDate - emittedDateFromRecipientClock);
+			data.JetlagSign = emittedDate < emittedDateFromRecipientClock;
+			this._jetlag = data;
 			clearTimeout(this._timeOut);
 			this.OnTimeoutStateChanged.Invoke(this, false);
 			this.OnPingReceived.Invoke(this, data);

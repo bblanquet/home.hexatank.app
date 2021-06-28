@@ -1,6 +1,6 @@
 import * as Chart from 'chart.js';
 import { DeltaRecordCurve } from '../../../Comparer/Comparers/DeltaRecordCurve';
-import 'chartjs-adapter-moment';
+import 'chartjs-adapter-luxon';
 import { IChart } from './IChart';
 import { Dictionary } from '../../../../Core/Utils/Collections/Dictionary';
 import { LiteEvent } from '../../../../Core/Utils/Events/LiteEvent';

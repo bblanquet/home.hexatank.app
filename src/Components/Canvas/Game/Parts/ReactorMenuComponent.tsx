@@ -8,8 +8,8 @@ import { InteractionKind } from '../../../../Core/Interaction/IInteractionContex
 import { AttackMenuItem } from '../../../../Core/Menu/Buttons/AttackMenuItem';
 import { SpeedFieldMenuItem } from '../../../../Core/Menu/Buttons/SpeedFieldMenuItem';
 import { HealMenuItem } from '../../../../Core/Menu/Buttons/HealMenuItem';
-import * as moment from 'moment';
 import { InteractionContext } from '../../../../Core/Interaction/InteractionContext';
+import * as luxon from 'luxon';
 
 export default class ReactorMenuComponent extends Component<
 	{ Item: ReactorField; Interaction: InteractionContext },
@@ -65,7 +65,7 @@ export default class ReactorMenuComponent extends Component<
 							<button type="button" class="btn btn-light without-padding">
 								<div class="fill-overlocked max-width standard-space" />
 								<div class="max-width align-text-center overlocked">
-									{moment(this.state.timeout).format('ss.SS')}
+									{luxon.Duration.fromObject({ milliseconds: this.state.timeout }).toFormat('ss.SS')}
 								</div>
 							</button>
 							<button

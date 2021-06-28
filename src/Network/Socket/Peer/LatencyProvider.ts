@@ -1,45 +1,42 @@
-import * as moment from 'moment';
+import * as luxon from 'luxon';
 import { LogKind } from '../../../Core/Utils/Logger/LogKind';
 import { StaticLogger } from '../../../Core/Utils/Logger/StaticLogger';
 import { INetworkMessage } from '../../Message/INetworkMessage';
-import { PacketKind } from '../../Message/PacketKind';
-import { PingData } from './Ping/PingData';
+import { JetlagData } from './Ping/JetlagData';
 export class LatencyProvider {
 	private _shortestLatency: number | null = null;
-	private _dateDelta: number | null = null;
-	private _deltaSign: boolean | null = null;
+	//example Device A = > UTC +5H and Device B => UTC +3 so jetlag = 2H
+	private _jetLag: number | null = null;
+	private _jetlagSign: boolean | null = null;
 
 	constructor() {}
 
-	public CalculateLatency(data: PingData) {
+	public CalculateLatency(data: JetlagData) {
 		if (this._shortestLatency === null || data.Latency < this._shortestLatency) {
 			this._shortestLatency = data.Latency;
-			this._deltaSign = data.DeltaSign;
-			this._dateDelta = moment.duration(data.DateDelta).asMilliseconds();
+			this._jetlagSign = data.JetlagSign;
+			this._jetLag = data.Jetlag;
 		}
 	}
 
 	public GetLatency(packet: INetworkMessage): number {
-		if (this._dateDelta !== null) {
-			let deviceRefEmittedDate: number = null;
-			if (this._deltaSign) {
-				deviceRefEmittedDate = moment(packet.EmittedDate)
-					.subtract(moment.duration(this._dateDelta, 'milliseconds'))
-					.toDate()
-					.getTime();
-			} else {
-				deviceRefEmittedDate = moment(packet.EmittedDate)
-					.add(moment.duration(this._dateDelta, 'milliseconds'))
-					.toDate()
-					.getTime();
-			}
+		if (this._jetLag !== null) {
+			let calculatedEmittedDate = this._jetlagSign
+				? packet.EmittedDate - this._jetLag
+				: packet.EmittedDate + this._jetLag;
 			const now = new Date().getTime();
-			const messageLatency = moment.duration(now - deviceRefEmittedDate);
-			StaticLogger.Log(
-				LogKind.info,
-				`latency ${moment.utc(messageLatency.asMilliseconds()).format('HH:mm:ss.SSS')}`
-			);
-			return messageLatency.asMilliseconds();
+			let latency = 0;
+			if (calculatedEmittedDate < now) {
+				latency = now - calculatedEmittedDate;
+			} else {
+				StaticLogger.Log(
+					LogKind.warning,
+					`negative LAT ${luxon.Duration.fromMillis(latency).toFormat('ss.SSS')}`
+				);
+			}
+
+			StaticLogger.Log(LogKind.info, `LAT ${luxon.Duration.fromMillis(latency).toFormat('ss.SSS')}`);
+			return latency;
 		}
 		return 0;
 	}

@@ -3,7 +3,7 @@ import * as Zoom from 'chartjs-plugin-zoom';
 import { Dictionary } from '../../../../Core/Utils/Collections/Dictionary';
 import { Curve } from '../../../../Core/Utils/Stats/Curve';
 import { IChart } from './IChart';
-import 'chartjs-adapter-moment';
+import 'chartjs-adapter-luxon';
 import { LiteEvent } from '../../../../Core/Utils/Events/LiteEvent';
 
 export class LineChart implements IChart<Curve[]> {

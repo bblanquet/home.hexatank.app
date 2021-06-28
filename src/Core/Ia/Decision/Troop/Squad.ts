@@ -5,7 +5,6 @@ import { MapObserver } from '../MapObserver';
 import { Brain } from '../Brain';
 import { CellHelper } from '../../../Items/Cell/CellHelper';
 import { TargetMonitoredOrder } from '../../Order/TargetMonitoredOrder';
-import * as moment from 'moment';
 import { LogKind } from '../../../Utils/Logger/LogKind';
 import { StaticLogger } from '../../../Utils/Logger/StaticLogger';
 

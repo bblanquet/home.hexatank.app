@@ -127,6 +127,8 @@ export class OnlineReceiver {
 					)
 				) {
 					this.HandleConsistency(`[CONSISTENCY] ${message.Content.VId} wrong cell`);
+				} else {
+					StaticLogger.Log(LogKind.info, `[PATH CHANGED] ${message.Content.VId}`);
 				}
 			}
 		} else {

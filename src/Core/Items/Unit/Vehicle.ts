@@ -248,31 +248,25 @@ export abstract class Vehicle extends AliveItem
 	}
 
 	//only online
-	public ForceCell(cell: Cell, order: BasicOrder = null): void {
+	public ResetCell(cell: Cell, nextCell: Cell = null): void {
 		if (this._currentCell) {
 			this._currentCell.SetOccupier(null);
 			this._currentCell = null;
-			this._currentCell = cell;
 		}
+		this._currentCell = cell;
 		this._currentCell.SetOccupier(this);
 		this.InitCell(this._currentCell.GetBoundingBox());
-		this.ForceCancel(order);
-	}
-
-	//only online
-	public ForceCancel(order: IOrder = null): void {
-		this._translationMaker.Reset();
 		if (this._nextCell) {
 			this._nextCell.SetOccupier(null);
 			this._nextCell = null;
 		}
-		if (order) {
-			this._nextOrder = order;
-			if (this._currentOrder) {
-				this._currentOrder.Cancel();
-			}
-			this.SetCurrentOrder();
-		} else if (this._currentOrder) {
+		if (nextCell) {
+			this._nextCell = nextCell;
+			this._nextCell.SetOccupier(this);
+		}
+
+		this._translationMaker.Reset();
+		if (this._currentOrder) {
 			this._currentOrder.Cancel();
 		}
 	}

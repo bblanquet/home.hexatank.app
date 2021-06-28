@@ -1,28 +1,28 @@
-import { BasicOrder } from '../../Ia/Order/BasicOrder';
-import { Cell } from '../../Items/Cell/Cell';
 import { BlockingField } from '../../Items/Cell/Field/BlockingField';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { TypeTranslator } from '../../Items/Cell/Field/TypeTranslator';
 import { Identity } from '../../Items/Identity';
-import { LatencyUp } from '../../Items/Unit/PowerUp/LatencyUp';
-import { Vehicle } from '../../Items/Unit/Vehicle';
 import { GameContext } from '../Context/GameContext';
 import { FieldHelper } from '../FieldTypeHelper';
+import { PathResolver } from './PathResolver';
 import { ISocketWrapper } from '../../../Network/Socket/INetworkSocket';
 import { PacketKind } from '../../../Network/Message/PacketKind';
 import { NetworkObserver } from '../../Utils/Events/NetworkObserver';
 import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
 import { NextCellContent } from './Contents/NextCellContent';
 import { TargetContent } from './Contents/TargetContent';
-import { LatencyCondition } from '../../Items/Unit/PowerUp/Condition/LatencyCondition';
 import { StaticLogger } from '../../Utils/Logger/StaticLogger';
 import { LogKind } from '../../Utils/Logger/LogKind';
 import { ItemsUpdater } from '../../ItemsUpdater';
 import { PacketContent } from './Contents/PacketContent';
+import { LiteEvent } from '../../Utils/Events/LiteEvent';
 
 export class OnlineReceiver {
+	public OnInconsistency: LiteEvent<Date> = new LiteEvent<Date>();
+	private _pathResolver: PathResolver;
 	private _obs: NetworkObserver[];
 	constructor(private _socket: ISocketWrapper, private _context: GameContext) {
+		this._pathResolver = new PathResolver(this._context);
 		this._obs = [
 			new NetworkObserver(PacketKind.VehicleCreated, this.HandleVehicleCreated.bind(this)),
 			new NetworkObserver(PacketKind.VehicleDestroyed, this.HandleVehicleDestroyed.bind(this)),
@@ -62,8 +62,13 @@ export class OnlineReceiver {
 				StaticLogger.Log(LogKind.info, `[DESTROY] ${message.Content.VId}`);
 			}
 		} else {
-			StaticLogger.Log(LogKind.error, `[CONSISTENCY] ${message.Content.VId} not found`);
+			this.HandleConsistency(`[CONSISTENCY] ${message.Content.VId} not found`);
 		}
+	}
+
+	private HandleConsistency(message: string) {
+		StaticLogger.Log(LogKind.error, message);
+		this.OnInconsistency.Invoke(Date.now());
 	}
 
 	private HandleVehicleCreated(message: NetworkMessage<PacketContent<any>>): void {
@@ -77,7 +82,7 @@ export class OnlineReceiver {
 					hq.CreateTruck(coo);
 				}
 			} else {
-				StaticLogger.Log(LogKind.error, `[CONSISTENCY] ${message.Content.VId} already exists`);
+				this.HandleConsistency(`[CONSISTENCY] ${message.Content.VId} already exists`);
 			}
 		}
 	}
@@ -112,51 +117,20 @@ export class OnlineReceiver {
 		if (vehicle) {
 			const hq = this._context.GetHqFromId(vehicle.Identity);
 			if (this.IsEmitingHq(hq.Identity.Name)) {
-				const cells = this._context.GetCellDictionary();
-				const path = message.Content.Extra.Path.map((coo) => cells.Get(coo));
-				if (0 < path.length) {
-					if (
-						(vehicle.GetCurrentCell().Coo() === message.Content.CId &&
-							this.IsNextCIdOk(vehicle, message.Content.Extra.NextCId)) ||
-						vehicle.GetCurrentCell().Coo() === message.Content.Extra.NextCId
-					) {
-						const order = new BasicOrder(vehicle, path);
-						vehicle.GiveOrder(order);
-						this.LatencyCompensation(latency, vehicle, order, path);
-						StaticLogger.Log(LogKind.info, `[ORDER] ${vId} ${latency}ms`);
-					} else if (
-						vehicle.GetCurrentCell().Coo() === message.Content.CId &&
-						!this.IsNextCIdOk(vehicle, message.Content.Extra.NextCId)
-					) {
-						const order = new BasicOrder(vehicle, path);
-						vehicle.ForceCancel(order);
-						this.LatencyCompensation(latency, vehicle, order, path);
-						StaticLogger.Log(LogKind.warning, `[FORCE ORDER] ${vId} ${latency}ms`);
-					} else if (vehicle.GetCurrentCell().Coo() !== message.Content.CId) {
-						const cell = cells.Get(message.Content.CId);
-						const order = new BasicOrder(vehicle, path);
-						vehicle.ForceCell(cell, order);
-						this.LatencyCompensation(latency, vehicle, order, path);
-						StaticLogger.Log(LogKind.dangerous, `[FORCE CELL ORDER] ${vId} ${latency}ms`);
-					}
+				if (
+					this._pathResolver.Resolve(
+						vehicle,
+						message.Content.Extra.Path,
+						message.Content.CId,
+						message.Content.Extra.NextCId,
+						latency
+					)
+				) {
+					this.HandleConsistency(`[CONSISTENCY] ${message.Content.VId} wrong cell`);
 				}
 			}
 		} else {
-			StaticLogger.Log(LogKind.error, `[CONSISTENCY] ${message.Content.VId} not found`);
-		}
-	}
-
-	private LatencyCompensation(latency: number, vehicle: Vehicle, order: BasicOrder, path: Cell[]) {
-		if (latency && 0 < latency) {
-			vehicle.AddPowerUp(new LatencyUp(vehicle, new LatencyCondition(vehicle, order), latency / path.length));
-		}
-	}
-
-	private IsNextCIdOk(v: Vehicle, coo: string): boolean {
-		if (v.GetNextCell()) {
-			return v.GetNextCell().Coo() === coo;
-		} else {
-			return coo === '';
+			this.HandleConsistency(`[CONSISTENCY] ${message.Content.VId} not found`);
 		}
 	}
 
@@ -179,8 +153,7 @@ export class OnlineReceiver {
 		const hq = this.GetHq(message);
 		if (this.IsEmitingHq(hq.Identity.Name)) {
 			if (TypeTranslator.IsSpecialField(cell.GetField())) {
-				StaticLogger.Log(
-					LogKind.error,
+				this.HandleConsistency(
 					`[CONSISTENCY] ${message.Content.Type} ${message.Content.CId} is not a basic field`
 				);
 			}

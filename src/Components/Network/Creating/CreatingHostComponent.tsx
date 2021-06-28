@@ -1,6 +1,5 @@
 import { Component, h } from 'preact';
 import { route } from 'preact-router';
-import * as toastr from 'toastr';
 import { CreatingHostState } from './CreatingHostState';
 import { PacketKind } from '../../../Network/Message/PacketKind';
 import MdPanelComponent from '../../Common/Panel/MdPanelComponent';
@@ -10,6 +9,7 @@ import { IOnlineService } from '../../../Services/Online/IOnlineService';
 import Redirect from '../../Redirect/RedirectComponent';
 import ButtonComponent from '../../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
+import Notification from '../../Common/Notification/NotificationComponent';
 import Icon from '../../Common/Icon/IconComponent';
 import SmButtonComponent from '../../Common/Button/Stylish/SmButtonComponent';
 import { Usernames } from '../Names';
@@ -20,11 +20,15 @@ import { ISocketService } from '../../../Services/Socket/ISocketService';
 import { NetworkObserver } from '../../../Core/Utils/Events/NetworkObserver';
 import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
 import { IServerSocket } from '../../../Network/Socket/Server/IServerSocket';
+import { LogKind } from '../../../Core/Utils/Logger/LogKind';
+import { NotificationItem } from '../../Common/Notification/NotificationItem';
+import { LiteEvent } from '../../../Core/Utils/Events/LiteEvent';
 
 export default class CreatingHostComponent extends Component<any, CreatingHostState> {
 	private _profilService: IPlayerProfilService;
 	private _socket: IServerSocket;
 	private _obs: NetworkObserver[];
+	private _onNotification: LiteEvent<NotificationItem> = new LiteEvent<NotificationItem>();
 
 	constructor() {
 		super();
@@ -55,12 +59,15 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 			);
 			route('{{sub_path}}Lobby', true);
 		} else {
-			toastr.error(`${message.Content.RoomName} is already used.`, 'Error');
+			this._onNotification.Invoke(
+				this,
+				new NotificationItem(LogKind.warning, `${message.Content.RoomName} is already used.`)
+			);
 		}
 	}
 
 	private OnError(message: NetworkMessage<any>): void {
-		toastr.error(`Server doesn't seem to be running.`, 'Error');
+		this._onNotification.Invoke(this, new NotificationItem(LogKind.error, `Server doesn't seem to be running.`));
 	}
 
 	componentWillUnmount(): void {
@@ -70,96 +77,98 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 	render() {
 		return (
 			<Redirect>
-				<MdPanelComponent>
-					<div class="container-center-horizontal" style="margin-bottom:10px">
-						<SmButtonComponent
-							callBack={() => {
-								const username = Usernames[Math.round(Math.random() * Usernames.length - 1)];
-								this.setState({
-									PlayerName: username,
-									RoomName: `${username}'s room`
-								});
-							}}
-							color={ColorKind.Blue}
-						>
-							<Icon Value="fas fa-random" />
-						</SmButtonComponent>
-						<div class="space-out" />
-						<SmActiveButtonComponent
-							left={
-								<span>
-									<Icon Value="fas fa-lock-open" />
-								</span>
-							}
-							right={
-								<span>
-									<Icon Value="fas fa-lock" />
-								</span>
-							}
-							leftColor={ColorKind.Black}
-							rightColor={ColorKind.Yellow}
-							isActive={this.state.HasPassword}
-							callBack={() => {
-								this.setState({
-									HasPassword: !this.state.HasPassword
-								});
-							}}
-						/>
-					</div>
-
-					<InputComponent
-						max={15}
-						value={this.state.PlayerName}
-						label={'Name'}
-						type={'text'}
-						isEditable={true}
-						onInput={(e: any) => {
-							this.setState({ PlayerName: (e.target.value as string).substring(0, 15) });
-						}}
-					/>
-					<InputComponent
-						max={15}
-						type={'text'}
-						value={this.state.RoomName}
-						label={'Room name'}
-						isEditable={true}
-						onInput={(e: any) => {
-							this.setState({ RoomName: (e.target.value as string).substring(0, 15) });
-						}}
-					/>
-					<div class="container-center-horizontal">
-						<Visible isVisible={this.state.HasPassword}>
-							<InputComponent
-								max={15}
-								type={'text'}
-								value={this.state.Password}
-								label={'Password'}
-								isEditable={true}
-								onInput={(e: any) => {
-									this.setState({ Password: (e.target.value as string).substring(0, 15) });
+				<Notification OnNotification={this._onNotification}>
+					<MdPanelComponent>
+						<div class="container-center-horizontal" style="margin-bottom:10px">
+							<SmButtonComponent
+								callBack={() => {
+									const username = Usernames[Math.round(Math.random() * Usernames.length - 1)];
+									this.setState({
+										PlayerName: username,
+										RoomName: `${username}'s room`
+									});
+								}}
+								color={ColorKind.Blue}
+							>
+								<Icon Value="fas fa-random" />
+							</SmButtonComponent>
+							<div class="space-out" />
+							<SmActiveButtonComponent
+								left={
+									<span>
+										<Icon Value="fas fa-lock-open" />
+									</span>
+								}
+								right={
+									<span>
+										<Icon Value="fas fa-lock" />
+									</span>
+								}
+								leftColor={ColorKind.Black}
+								rightColor={ColorKind.Yellow}
+								isActive={this.state.HasPassword}
+								callBack={() => {
+									this.setState({
+										HasPassword: !this.state.HasPassword
+									});
 								}}
 							/>
-						</Visible>
-					</div>
-					<div class="container-center-horizontal">
-						<ButtonComponent
-							callBack={() => {
-								this.Back();
+						</div>
+
+						<InputComponent
+							max={15}
+							value={this.state.PlayerName}
+							label={'Name'}
+							type={'text'}
+							isEditable={true}
+							onInput={(e: any) => {
+								this.setState({ PlayerName: (e.target.value as string).substring(0, 15) });
 							}}
-							color={ColorKind.Black}
-						>
-							<Icon Value="fas fa-undo-alt" /> Back
-						</ButtonComponent>
-						<ButtonComponent
-							callBack={() => {
-								this.Start();
+						/>
+						<InputComponent
+							max={15}
+							type={'text'}
+							value={this.state.RoomName}
+							label={'Room name'}
+							isEditable={true}
+							onInput={(e: any) => {
+								this.setState({ RoomName: (e.target.value as string).substring(0, 15) });
 							}}
-							color={ColorKind.Red}
-						>
-							<Icon Value="far fa-play-circle" /> Start
-						</ButtonComponent>
-					</div>
-				</MdPanelComponent>
+						/>
+						<div class="container-center-horizontal">
+							<Visible isVisible={this.state.HasPassword}>
+								<InputComponent
+									max={15}
+									type={'text'}
+									value={this.state.Password}
+									label={'Password'}
+									isEditable={true}
+									onInput={(e: any) => {
+										this.setState({ Password: (e.target.value as string).substring(0, 15) });
+									}}
+								/>
+							</Visible>
+						</div>
+						<div class="container-center-horizontal">
+							<ButtonComponent
+								callBack={() => {
+									this.Back();
+								}}
+								color={ColorKind.Black}
+							>
+								<Icon Value="fas fa-undo-alt" /> Back
+							</ButtonComponent>
+							<ButtonComponent
+								callBack={() => {
+									this.Start();
+								}}
+								color={ColorKind.Red}
+							>
+								<Icon Value="far fa-play-circle" /> Start
+							</ButtonComponent>
+						</div>
+					</MdPanelComponent>
+				</Notification>
 			</Redirect>
 		);
 	}

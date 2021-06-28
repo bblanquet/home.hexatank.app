@@ -415,8 +415,25 @@ body {
 	transform: translate(-50%, 0%);
 }
 
-#toast-container > div {
-	opacity: 1;
+.toast-container {
+	position: absolute;
+	width: 100%;
+	justify-content: center;
+	bottom: 0px;
+	margin-bottom: 10px;
+	display: flex;
+	align-items: flex-end;
+}
+
+.my-toast {
+	position: absolute;
+	width: 80%;
+	color: white;
+	text-align: center;
+	padding: 5px;
+	font-weight: bold;
+	border-radius: 10px;
+	height: fit-content;
 }
 
 .menu-container {

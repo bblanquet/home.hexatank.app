@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
-import * as toastr from 'toastr';
+import Notification from '../../Common/Notification/NotificationComponent';
 import { PacketKind } from '../../../Network/Message/PacketKind';
 import InputComponent from '../../Common/Text/TextComponent';
 import IconInputComponent from '../../Common/Text/IconTextComponent';
@@ -21,14 +21,25 @@ import { ISocketService } from '../../../Services/Socket/ISocketService';
 import { NetworkObserver } from '../../../Core/Utils/Events/NetworkObserver';
 import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
 import { IServerSocket } from '../../../Network/Socket/Server/IServerSocket';
+import { LogKind } from '../../../Core/Utils/Logger/LogKind';
+import { NotificationItem } from '../../Common/Notification/NotificationItem';
+import { LiteEvent } from '../../../Core/Utils/Events/LiteEvent';
 
 export default class GuestComponent extends Component<
 	any,
-	{ Rooms: RoomInfo[]; DisplayableRooms: RoomInfo[]; PlayerName: string; filter: string; Password: string }
+	{
+		Rooms: RoomInfo[];
+		DisplayableRooms: RoomInfo[];
+		PlayerName: string;
+		filter: string;
+		Password: string;
+	}
 > {
 	private _socket: IServerSocket;
 	private _profilService: IPlayerProfilService;
 	private _obs: NetworkObserver[];
+	private _onNotification: LiteEvent<NotificationItem> = new LiteEvent<NotificationItem>();
+
 	constructor() {
 		super();
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
@@ -76,91 +87,93 @@ export default class GuestComponent extends Component<
 	render() {
 		return (
 			<Redirect>
-				<SmPanelComponent>
-					<div class="container-center-horizontal">
-						<InputComponent
-							max={15}
+				<Notification OnNotification={this._onNotification}>
+					<SmPanelComponent>
+						<div class="container-center-horizontal">
+							<InputComponent
+								max={15}
+								type={'text'}
+								value={this.state.PlayerName}
+								label={'Name'}
+								isEditable={true}
+								onInput={(e: any) => {
+									if (e.target.value) {
+										this.setState({ PlayerName: (e.target.value as string).substring(0, 15) });
+									} else {
+										this.setState({ PlayerName: '' });
+									}
+								}}
+							/>
+							<div class="space-out" />
+							<SmButtonComponent
+								callBack={() => {
+									this.setState({
+										PlayerName: Usernames[Math.round(Math.random() * Usernames.length - 1)]
+									});
+								}}
+								color={ColorKind.Blue}
+							>
+								<Icon Value="fas fa-random" />
+							</SmButtonComponent>
+						</div>
+						<IconInputComponent
 							type={'text'}
-							value={this.state.PlayerName}
-							label={'Name'}
+							value={this.state.filter}
+							icon={'fas fa-filter'}
 							isEditable={true}
 							onInput={(e: any) => {
 								if (e.target.value) {
-									this.setState({ PlayerName: (e.target.value as string).substring(0, 15) });
+									this.setState({
+										filter: e.target.value
+									});
 								} else {
-									this.setState({ PlayerName: '' });
+									this.setState({
+										filter: ''
+									});
 								}
 							}}
 						/>
-						<div class="space-out" />
-						<SmButtonComponent
-							callBack={() => {
-								this.setState({
-									PlayerName: Usernames[Math.round(Math.random() * Usernames.length - 1)]
-								});
+						<IconInputComponent
+							type={'text'}
+							value={this.state.Password}
+							icon={'fas fa-lock'}
+							isEditable={true}
+							onInput={(e: any) => {
+								if (e.target.value) {
+									this.setState({
+										Password: e.target.value
+									});
+								} else {
+									this.setState({
+										Password: ''
+									});
+								}
 							}}
-							color={ColorKind.Blue}
-						>
-							<Icon Value="fas fa-random" />
-						</SmButtonComponent>
-					</div>
-					<IconInputComponent
-						type={'text'}
-						value={this.state.filter}
-						icon={'fas fa-filter'}
-						isEditable={true}
-						onInput={(e: any) => {
-							if (e.target.value) {
-								this.setState({
-									filter: e.target.value
-								});
-							} else {
-								this.setState({
-									filter: ''
-								});
-							}
-						}}
-					/>
-					<IconInputComponent
-						type={'text'}
-						value={this.state.Password}
-						icon={'fas fa-lock'}
-						isEditable={true}
-						onInput={(e: any) => {
-							if (e.target.value) {
-								this.setState({
-									Password: e.target.value
-								});
-							} else {
-								this.setState({
-									Password: ''
-								});
-							}
-						}}
-					/>
-					<GridComponent
-						left={''}
-						right={this.state.Rooms.length === 0 ? this.EmptyGridContent() : this.GridContent()}
-					/>
-					<div class="container-center-horizontal">
-						<ButtonComponent
-							callBack={() => {
-								this.Back();
-							}}
-							color={ColorKind.Black}
-						>
-							<Icon Value="fas fa-undo-alt" /> Back
-						</ButtonComponent>
-						<ButtonComponent
-							callBack={() => {
-								this.Refresh();
-							}}
-							color={ColorKind.Red}
-						>
-							<Icon Value="fas fa-sync-alt" /> Refresh
-						</ButtonComponent>
-					</div>
-				</SmPanelComponent>
+						/>
+						<GridComponent
+							left={''}
+							right={this.state.Rooms.length === 0 ? this.EmptyGridContent() : this.GridContent()}
+						/>
+						<div class="container-center-horizontal">
+							<ButtonComponent
+								callBack={() => {
+									this.Back();
+								}}
+								color={ColorKind.Black}
+							>
+								<Icon Value="fas fa-undo-alt" /> Back
+							</ButtonComponent>
+							<ButtonComponent
+								callBack={() => {
+									this.Refresh();
+								}}
+								color={ColorKind.Red}
+							>
+								<Icon Value="fas fa-sync-alt" /> Refresh
+							</ButtonComponent>
+						</div>
+					</SmPanelComponent>
+				</Notification>
 			</Redirect>
 		);
 	}
@@ -227,9 +240,13 @@ export default class GuestComponent extends Component<
 			);
 			route('{{sub_path}}Lobby', true);
 		} else {
-			toastr['warning'](`${this.state.PlayerName} is already used in ${message.Content.RoomName}`, 'WARNING', {
-				iconClass: 'toast-red'
-			});
+			this._onNotification.Invoke(
+				this,
+				new NotificationItem(
+					LogKind.warning,
+					`${this.state.PlayerName} is already used in ${message.Content.RoomName}`
+				)
+			);
 		}
 	}
 
@@ -252,13 +269,17 @@ export default class GuestComponent extends Component<
 				})
 			);
 		} else {
-			toastr['warning'](`${this.state.Password} doesn't match ${m.Content.RoomName}'s password`, 'WARNING', {
-				iconClass: 'toast-red'
-			});
+			this._onNotification.Invoke(
+				this,
+				new NotificationItem(
+					LogKind.warning,
+					`${this.state.Password} doesn't match ${m.Content.RoomName}'s password`
+				)
+			);
 		}
 	}
 
 	private OnConnectError(m: any): void {
-		toastr['warning'](`Server doesn't seem to be running.`, 'WARNING', { iconClass: 'toast-red' });
+		this._onNotification.Invoke(this, new NotificationItem(LogKind.error, `Server doesn't seem to be running.`));
 	}
 }

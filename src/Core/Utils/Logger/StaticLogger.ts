@@ -33,7 +33,7 @@ export class StaticLogger {
 		{ key: LogKind[LogKind.success], value: 'fa fa-check-circle' },
 		{ key: LogKind[LogKind.warning], value: 'fas fa-exclamation-triangle' },
 		{ key: LogKind[LogKind.dangerous], value: 'fas fa-radiation' },
-		{ key: LogKind[LogKind.error], value: 'fas fa-times' }
+		{ key: LogKind[LogKind.error], value: 'fas fa-skull-crossbones' }
 	]);
 
 	public static Log(logKind: LogKind, content: string) {

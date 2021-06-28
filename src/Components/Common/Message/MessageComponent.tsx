@@ -1,9 +1,9 @@
 import { Component, h } from 'preact';
-import Icon from '../../Common/Icon/IconComponent';
+import Icon from '../Icon/IconComponent';
 import { OnlinePlayer } from '../../../Network/OnlinePlayer';
 import { ILobbyManager } from '../../../Network/Manager/ILobbyManager';
 
-export default class ToastComponent extends Component<
+export default class MessageComponent extends Component<
 	{ _lobby: ILobbyManager; Player: OnlinePlayer },
 	{ Message: string }
 > {

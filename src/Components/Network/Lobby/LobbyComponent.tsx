@@ -5,7 +5,7 @@ import PendingPlayers from './Players/PendingPlayersComponent';
 import ChatComponent from './Chat/ChatComponent';
 import { OnlinePlayer } from '../../../Network/OnlinePlayer';
 import OptionComponent from './Options/OptionComponent';
-import ToastComponent from '../../Common/Toast/ToastComponent';
+import MessageComponent from '../../Common/Message/MessageComponent';
 import { LobbyState } from '../RoomState';
 import { Singletons, SingletonKey } from '../../../Singletons';
 import Redirect from '../../Redirect/RedirectComponent';
@@ -61,7 +61,7 @@ export default class LobbyComponent extends Component<any, LobbyState> {
 	render() {
 		return (
 			<Redirect>
-				<ToastComponent _lobby={this._lobbyManager} Player={this.state.Player}>
+				<MessageComponent _lobby={this._lobbyManager} Player={this.state.Player}>
 					<Visible isVisible={SpriteProvider.IsLoaded()}>
 						<Visible isVisible={this._mode === HostingMode.setting}>
 							<SmPanelComponent>
@@ -89,7 +89,7 @@ export default class LobbyComponent extends Component<any, LobbyState> {
 							</SmPanelComponent>
 						</Visible>
 					</Visible>
-				</ToastComponent>
+				</MessageComponent>
 			</Redirect>
 		);
 	}

@@ -1,9 +1,9 @@
-import { RecordAny } from '../../Core/Framework/Record/Model/RecordAny';
+import { JsonRecordContent } from '../../Core/Framework/Record/Model/JsonRecordContent';
 export class PlayerProfil {
 	public LastPlayerName: string = 'John doe';
 	public IsMute: boolean = false;
 
-	public Records: RecordAny[] = [];
+	public Records: JsonRecordContent[] = [];
 	public Points: number = 0;
 
 	//levels

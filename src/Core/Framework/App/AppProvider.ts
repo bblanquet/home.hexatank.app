@@ -9,11 +9,11 @@ export class AppProvider {
 		return app;
 	}
 
-	private GetColor(mapContext: IBlueprint): number {
+	private GetColor(blueprint: IBlueprint): number {
 		let color = 0x00a651;
-		if (mapContext.MapMode === MapKind.sand) {
+		if (blueprint.MapMode === MapKind.sand) {
 			color = 0xfece63;
-		} else if (mapContext.MapMode === MapKind.ice) {
+		} else if (blueprint.MapMode === MapKind.ice) {
 			color = 0xacddf3;
 		}
 		return color;

@@ -2,7 +2,7 @@ import { RecordCell } from './Model/Item/RecordCell';
 import { Tank } from '../../Items/Unit/Tank';
 import { RecordUnit } from './Model/Item/RecordUnit';
 import { RecordKind } from './Model/Item/State/RecordKind';
-import { RecordAny } from './Model/RecordAny';
+import { JsonRecordContent } from './Model/JsonRecordContent';
 import { GameContext } from '../../Framework/Context/GameContext';
 import { GameBlueprint } from '../../Framework/Blueprint/Game/GameBlueprint';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
@@ -24,10 +24,10 @@ export class RecordContext implements IRecordContext {
 	private _handleField: any = this.HandleFieldChanged.bind(this);
 	private _handleLog: any = this.HandleLogs.bind(this);
 
-	constructor(mapContext: GameBlueprint, private _gameContext: GameContext) {
+	constructor(blueprint: GameBlueprint, private _gameContext: GameContext) {
 		this._record = new RecordContent();
 		this._record.PlayerName = this._gameContext.GetPlayer().Identity.Name;
-		this._record.MapContext = mapContext;
+		this._record.Blueprint = blueprint;
 		this._record.StartDate = Date.now();
 		this._gameContext.GetHqs().forEach((hq) => {
 			this._record.Hqs.Add(hq.Identity.Name, new RecordHq(hq.Identity.Name, hq.Identity.Skin.GetColor()));
@@ -142,8 +142,8 @@ export class RecordContext implements IRecordContext {
 		}
 	}
 
-	public GetRecord(): RecordAny {
-		return RecordAny.To(this._record);
+	public GetRecord(): JsonRecordContent {
+		return JsonRecordContent.To(this._record);
 	}
 
 	public IsRecording(): boolean {

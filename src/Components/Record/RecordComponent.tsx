@@ -19,6 +19,9 @@ import SmActiveButtonComponent from '../Common/Button/Stylish/SmActiveButtonComp
 import Visible from '../Common/Visible/VisibleComponent';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import Switch from '../Common/Visible/SwitchComponent';
+import { JsonRecordContent } from '../../Core/Framework/Record/Model/JsonRecordContent';
+import { StaticLogger } from '../../Core/Utils/Logger/StaticLogger';
+import { LogKind } from '../../Core/Utils/Logger/LogKind';
 
 export default class RecordComponent extends Component<
 	any,
@@ -52,21 +55,36 @@ export default class RecordComponent extends Component<
 	}
 
 	private Play(data: RecordContent): void {
-		this._appService.Register(data.MapContext);
+		this._appService.Register(data.Blueprint);
 		this._recordService.Register(data);
 		route('{{sub_path}}RecordCanvas', true);
 	}
 
 	private Upload(e: any): void {
 		var reader = new FileReader();
-		reader.readAsText(e.target.files[0], 'UTF-8');
-		reader.onload = (ev: ProgressEvent<FileReader>) => {
-			const data = JSON.parse(ev.target.result as string);
-			this.state.Records.push(new RecordSelection(false, RecordContent.To(data)));
-			this.setState({
-				Records: this.state.Records
-			});
-		};
+		if (e.target.files && 0 < e.target.files.length) {
+			reader.readAsText(e.target.files[0], 'UTF-8');
+			reader.onload = (ev: ProgressEvent<FileReader>) => {
+				const data = JSON.parse(ev.target.result as string);
+				const record = RecordContent.To(data);
+				this._playerProfilService.GetProfil().Records.push(JsonRecordContent.To(record, false));
+				this.state.Records.push(new RecordSelection(false, record));
+				this.setState({
+					Records: this.state.Records
+				});
+			};
+		}
+	}
+
+	private Download(): void {
+		const url = document.createElement('a');
+		const file = new Blob([ JSON.stringify(JsonRecordContent.To(this.state.SelectedRecords[0].Record, false)) ], {
+			type: 'application/json'
+		});
+		url.href = URL.createObjectURL(file);
+		url.download = `${this.state.SelectedRecords[0].Record.Title}.json`;
+		url.click();
+		URL.revokeObjectURL(url.href);
 	}
 
 	private Header() {
@@ -159,10 +177,15 @@ export default class RecordComponent extends Component<
 				<SmPanelComponent>
 					<div class="container-center-horizontal">
 						<UploadButtonComponent
-							icon={'fas fa-upload'}
+							icon={'fas fa-file-upload'}
 							title={''}
 							callBack={(e: any) => this.Upload(e)}
 						/>
+						<Visible isVisible={this.state.SelectedRecords.length === 1}>
+							<ButtonComponent callBack={() => this.Download()} color={ColorKind.Green}>
+								<Icon Value="fas fa-file-download" />
+							</ButtonComponent>
+						</Visible>
 						<ButtonComponent
 							callBack={() => {
 								this.state.SelectedRecords.map((r) => r.Record.Title).forEach((name) => {

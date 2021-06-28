@@ -36,7 +36,7 @@ import '@fortawesome/fontawesome-free/js/regular';
 import '@fortawesome/fontawesome-free/js/brands';
 import { GameStatus } from './Core/Framework/GameStatus';
 import { DeltaCurves, Logs } from '../test/Variables';
-import { RecordAny } from './Core/Framework/Record/Model/RecordAny';
+import { JsonRecordContent } from './Core/Framework/Record/Model/JsonRecordContent';
 
 const App = (e: any) => {
 	return (
@@ -64,7 +64,7 @@ const App = (e: any) => {
 				points={30}
 				curves={DeltaCurves()}
 				status={GameStatus.Victory}
-				context={new RecordAny()}
+				context={new JsonRecordContent()}
 			/>
 			<SmPopupComponent path="{{sub_path}}SmPopup" points={10} status={GameStatus.Victory} />
 			<ComparisonComponent path="{{sub_path}}Comparison" />

@@ -56,8 +56,8 @@ export class PlayerProfilService implements IPlayerProfilService {
 		const p = this.GetProfil();
 		const result: RecordContent[] = [];
 		if (p.Records) {
-			p.Records.forEach((r) => {
-				result.push(RecordContent.To(r));
+			p.Records.forEach((jsonRecord) => {
+				result.push(RecordContent.To(jsonRecord));
 			});
 		}
 		return result;

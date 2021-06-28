@@ -77,7 +77,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 			let cell = t.Tank.GetCurrentCell();
 			if (GameSettings.FieldPrice < this._hq.GetAmount()) {
 				if (cell.GetField() instanceof BasicField && this._hq.IsCovered(cell)) {
-					new FireField(cell, this._hq);
+					cell.SetField(new FireField(cell, this._hq));
 					this._hq.Buy(GameSettings.FieldPrice);
 				}
 			}

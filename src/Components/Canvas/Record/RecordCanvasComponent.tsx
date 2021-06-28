@@ -13,6 +13,7 @@ import { route } from 'preact-router';
 import Redirect from '../../Redirect/RedirectComponent';
 import { GameBlueprint } from '../../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { GameContext } from '../../../Core/Framework/Context/GameContext';
+import Icon from '../../Common/Icon/IconComponent';
 
 export default class RecordCanvasComponent extends Component<
 	{},
@@ -80,7 +81,7 @@ export default class RecordCanvasComponent extends Component<
 	}
 
 	private SetMenu(): void {
-		route('{{sub_path}}Home', true);
+		route('{{sub_path}}Record', true);
 	}
 
 	private UpdateSelection(obj: any, selectedItem: Item): void {
@@ -93,11 +94,9 @@ export default class RecordCanvasComponent extends Component<
 	private TopMenuRender() {
 		return (
 			<div style="position: fixed;">
-				<button
-					type="button"
-					class="btn btn-dark small-space space-out fill-option"
-					onClick={() => this.SetMenu()}
-				/>
+				<button type="button" class="btn btn-dark space-out " onClick={() => this.SetMenu()}>
+					<Icon Value="fas fa-undo-alt" />
+				</button>
 				<span class="badge badge-primary">{this.GetRecord().Title}</span>
 			</div>
 		);

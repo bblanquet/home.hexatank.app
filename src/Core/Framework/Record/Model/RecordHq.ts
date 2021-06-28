@@ -7,7 +7,7 @@ export class RecordHq {
 		this.Units = new Dictionary<RecordUnit>();
 	}
 
-	GetJsonObject(): any {
+	ToJsonObj(): any {
 		return {
 			Name: this.Name,
 			Color: this.Color,

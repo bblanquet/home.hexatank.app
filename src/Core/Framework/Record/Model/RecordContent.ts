@@ -1,12 +1,11 @@
 import { RecordCell } from './Item/RecordCell';
 import { RecordHq } from './RecordHq';
 import { Dictionary } from '../../../Utils/Collections/Dictionary';
-import { RecordAny } from './RecordAny';
-import { RecordUnit } from './Item/RecordUnit';
+import { JsonRecordContent } from './JsonRecordContent';
 import { GameBlueprint } from '../../../Framework/Blueprint/Game/GameBlueprint';
 import { LogMessage } from '../../../Utils/Logger/LogMessage';
 export class RecordContent {
-	public MapContext: GameBlueprint;
+	public Blueprint: GameBlueprint;
 	public Dates: number[] = [];
 	public Hqs: Dictionary<RecordHq> = new Dictionary<RecordHq>();
 	public Cells: Dictionary<RecordCell> = new Dictionary<RecordCell>();
@@ -18,32 +17,30 @@ export class RecordContent {
 	public Messages: LogMessage[] = [];
 	constructor() {}
 
-	public static To(origObject: RecordAny): RecordContent {
-		const copyObject = JSON.parse(JSON.stringify(origObject));
+	public static To(origObject: JsonRecordContent): RecordContent {
+		const jsonCopy: JsonRecordContent = JSON.parse(JSON.stringify(origObject));
 
-		const hqs = new Dictionary<RecordHq>();
-		hqs.SetValues(copyObject.Hqs);
-
-		hqs.Values().forEach((hq) => {
-			const units = hq.Units as any;
-			hq.Units = new Dictionary<RecordUnit>();
-			hq.Units.SetValues(units);
-		});
+		const newHqs = new Dictionary<RecordHq>();
+		for (var key in jsonCopy.Hqs) {
+			const copyHq = jsonCopy.Hqs[key];
+			newHqs.Add(copyHq.Name, new RecordHq(copyHq.Name, copyHq.Color));
+			newHqs.Get(copyHq.Name).Units.SetValues(copyHq.Units);
+		}
 
 		const cells = new Dictionary<RecordCell>();
-		cells.SetValues(copyObject.Cells);
+		cells.SetValues(jsonCopy.Cells);
 
-		const result = new RecordContent();
-		result.StartDate = copyObject.StartDate;
-		result.EndDate = copyObject.EndDate;
-		result.Hqs = hqs;
-		result.Cells = cells;
-		result.Dates = copyObject.Points;
-		result.Title = copyObject.Title;
-		result.MapContext = copyObject.MapContext;
-		result.Messages = copyObject.Messages;
-		result.PlayerName = copyObject.PlayerName;
-		result.IsVictory = copyObject.IsVictory;
-		return result;
+		const record = new RecordContent();
+		record.StartDate = jsonCopy.StartDate;
+		record.EndDate = jsonCopy.EndDate;
+		record.Hqs = newHqs;
+		record.Cells = cells;
+		record.Dates = jsonCopy.Dates;
+		record.Title = jsonCopy.Title;
+		record.Blueprint = jsonCopy.Blueprint;
+		record.Messages = jsonCopy.Messages;
+		record.PlayerName = jsonCopy.PlayerName;
+		record.IsVictory = jsonCopy.IsVictory;
+		return record;
 	}
 }

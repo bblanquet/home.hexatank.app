@@ -1,4 +1,6 @@
 import { h, Component } from 'preact';
+import { LogKind } from '../../../../Core/Utils/Logger/LogKind';
+import { StaticLogger } from '../../../../Core/Utils/Logger/StaticLogger';
 import Icon from '../../Icon/IconComponent';
 import ButtonComponent from './ButtonComponent';
 import { ColorKind } from './ColorKind';
@@ -8,31 +10,28 @@ export default class UploadButtonComponent extends Component<
 	any
 > {
 	private _fileInput: HTMLInputElement;
+	private _callback: any = (e: any) => this.props.callBack(e);
 	constructor() {
 		super();
 		this._fileInput = document.createElement('input') as HTMLInputElement;
 		this._fileInput.type = 'file';
 	}
 	componentDidMount() {
-		this._fileInput.onchange = (e: any) => this.props.callBack(e);
+		if (this._fileInput.onchange !== this._callback) {
+			this._fileInput.onchange = this._callback;
+		}
 	}
-
-	componentWillUnmount() {}
 
 	render() {
 		return (
 			<ButtonComponent
 				callBack={() => {
-					this.ForceFileClick();
+					this._fileInput.click();
 				}}
 				color={ColorKind.Blue}
 			>
 				<Icon Value={this.props.icon} /> {this.props.title}
 			</ButtonComponent>
 		);
-	}
-
-	private ForceFileClick(): void {
-		return this._fileInput.click();
 	}
 }

@@ -8,7 +8,8 @@ import { GameContext } from '../Context/GameContext';
 export class PathResolver {
 	constructor(private _context: GameContext) {}
 
-	public Resolve(vehicle: Vehicle, road: string[], cid: string, nextCid: string, latency: number): boolean {
+	public Resolve(vehicle: Vehicle, road: string[], cid: string, nextCid: string, latency: number): string {
+		let message = '';
 		let hasInconsistency = false;
 		const cells = this._context.GetCellDictionary();
 		const path = road.map((coo) => cells.Get(coo));
@@ -17,7 +18,7 @@ export class PathResolver {
 			const cell = cells.Get(cid);
 			const nextCell = nextCid ? cells.Get(nextCid) : null;
 			vehicle.ResetCell(cell, nextCell);
-			hasInconsistency = true;
+			message = `${vehicle.GetCurrentCell().Coo()} ! ${cid}`;
 		}
 
 		if (path && 0 < path.length) {
@@ -27,7 +28,7 @@ export class PathResolver {
 		} else {
 			vehicle.CancelOrder();
 		}
-		return hasInconsistency;
+		return message;
 	}
 
 	private LatencyCompensation(latency: number, vehicle: Vehicle, order: BasicOrder, path: Cell[]) {

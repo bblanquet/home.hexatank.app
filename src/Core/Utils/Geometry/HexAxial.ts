@@ -34,7 +34,7 @@ export class HexAxial implements ISpot<HexAxial> {
 	}
 
 	ToString(): string {
-		return `(${[ this.Q, this.R ].toString()})`;
+		return `${this.Q}.${this.R}`;
 	}
 
 	ToCube(): HexCube {

@@ -117,18 +117,20 @@ export class OnlineReceiver {
 		if (vehicle) {
 			const hq = this._context.GetHqFromId(vehicle.Identity);
 			if (this.IsEmitingHq(hq.Identity.Name)) {
-				if (
-					this._pathResolver.Resolve(
-						vehicle,
-						message.Content.Extra.Path,
-						message.Content.CId,
-						message.Content.Extra.NextCId,
-						latency
-					)
-				) {
-					this.HandleConsistency(`[CONSISTENCY] ${message.Content.VId} wrong cell`);
+				const unsync = this._pathResolver.Resolve(
+					vehicle,
+					message.Content.Extra.Path,
+					message.Content.CId,
+					message.Content.Extra.NextCId,
+					latency
+				);
+				if (0 < unsync.length) {
+					this.HandleConsistency(`[CONSISTENCY] ${message.Content.VId} wrong cell ${unsync}`);
 				} else {
-					StaticLogger.Log(LogKind.info, `[PATH CHANGED] ${message.Content.VId}`);
+					StaticLogger.Log(
+						LogKind.info,
+						`[PATH CHANGED] ${message.Content.VId} [${message.Content.Extra.Path.join('-')}]`
+					);
 				}
 			}
 		} else {

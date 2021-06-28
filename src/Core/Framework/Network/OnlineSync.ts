@@ -24,9 +24,9 @@ export class OnlineSync {
 		private _players: IOnlinePlayerManager
 	) {
 		this._obs = [
-			new KindEventObserver(PacketKind.Blueprint, this.HandleBlueprint.bind(this)),
-			new KindEventObserver(PacketKind.Loaded, this.HandleLoaded.bind(this)),
-			new KindEventObserver(PacketKind.Start, this.HandleStart.bind(this))
+			new KindEventObserver(PacketKind.SyncBlueprint, this.HandleBlueprint.bind(this)),
+			new KindEventObserver(PacketKind.SyncLoaded, this.HandleLoaded.bind(this)),
+			new KindEventObserver(PacketKind.SyncStart, this.HandleStart.bind(this))
 		];
 		this._obs.forEach((obs) => {
 			this._socket.OnReceived.On(obs);
@@ -66,7 +66,7 @@ export class OnlineSync {
 			}
 			this._pathResolver.Resolve(vehicle, vehiclePrint.Path, vehiclePrint.CId, vehiclePrint.NextCId, 0);
 		});
-		this._socket.EmitAll(PacketKind.Loaded, {});
+		this._socket.EmitAll(PacketKind.SyncLoaded, {});
 	}
 
 	private HandleStart(message: NetworkMessage<any>): void {
@@ -76,7 +76,7 @@ export class OnlineSync {
 	private HandleLoaded(message: NetworkMessage<any>): void {
 		this._players.Players.Get(message.Emitter).IsSync = true;
 		if (this._players.Player.IsAdmin && this._players.Players.Values().every((p) => p.IsSync)) {
-			this._socket.EmitAll(PacketKind.Start, {});
+			this._socket.EmitAll(PacketKind.SyncStart, {});
 			GameSettings.IsSynchronizing = true;
 		}
 	}
@@ -97,7 +97,7 @@ export class OnlineSync {
 						}
 					});
 					const blueprint = RuntimeBlueprint.New(this._context);
-					this._socket.EmitAll(PacketKind.Blueprint, blueprint);
+					this._socket.EmitAll(PacketKind.SyncBlueprint, blueprint);
 				}
 			}
 		}

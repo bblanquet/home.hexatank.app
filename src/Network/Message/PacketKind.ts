@@ -48,5 +48,8 @@ export enum PacketKind {
 	PowerChanged,
 	Camouflage,
 	PathChanged,
-	FieldChanged
+	FieldChanged,
+	SyncStart,
+	SyncLoaded,
+	SyncBlueprint
 }

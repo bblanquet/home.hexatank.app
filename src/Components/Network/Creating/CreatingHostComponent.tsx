@@ -55,14 +55,12 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 			);
 			route('{{sub_path}}Lobby', true);
 		} else {
-			toastr['warning'](`${message.Content.RoomName} is already used.`, 'WARNING', {
-				iconClass: 'toast-red'
-			});
+			toastr.error(`${message.Content.RoomName} is already used.`, 'Error');
 		}
 	}
 
 	private OnError(message: NetworkMessage<any>): void {
-		toastr['warning'](`Server doesn't seem to be running.`, 'WARNING', { iconClass: 'toast-red' });
+		toastr.error(`Server doesn't seem to be running.`, 'Error');
 	}
 
 	componentWillUnmount(): void {

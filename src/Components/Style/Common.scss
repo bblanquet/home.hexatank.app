@@ -314,30 +314,6 @@ body {
 	margin-bottom: 1rem;
 }
 
-#toast-container > div {
-	opacity: 1;
-}
-
-.toast-blue .toast-title {
-	color: white;
-}
-
-.toast-blue {
-	background-color: #343a40;
-	color: #12a1b7;
-	font-weight: bold;
-}
-
-.toast-white .toast-title {
-	color: #343a40;
-}
-
-.toast-white {
-	background-color: #dee1e6;
-	color: #12a1b7;
-	font-weight: bold;
-}
-
 .generalContainer {
 	z-index: 0;
 	width: 80%;
@@ -437,6 +413,10 @@ body {
 	left: 50%;
 	margin-top: -15vh;
 	transform: translate(-50%, 0%);
+}
+
+#toast-container > div {
+	opacity: 1;
 }
 
 .menu-container {

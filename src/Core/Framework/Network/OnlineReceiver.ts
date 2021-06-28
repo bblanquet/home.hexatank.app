@@ -129,7 +129,7 @@ export class OnlineReceiver {
 				} else {
 					StaticLogger.Log(
 						LogKind.info,
-						`[PATH CHANGED] ${message.Content.VId} [${message.Content.Extra.Path.join('-')}]`
+						`[PATH CHANGED] ${message.Content.VId} [${message.Content.Extra.Path.join('|')}]`
 					);
 				}
 			}

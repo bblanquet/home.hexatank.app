@@ -9,7 +9,7 @@ import { Truck } from '../../../Unit/Truck';
 import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { Relationship } from '../../../Identity';
 
-export class HeadQuarterField extends Field {
+export class HeadquarterField extends Field {
 	private _timer: TickTimer;
 	private _isFading: boolean;
 	public Diamonds: number = 0;

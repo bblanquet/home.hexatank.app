@@ -5,7 +5,6 @@ import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import PanelComponent from '../Common/Panel/PanelComponent';
-import Analyze from '../Analyze/AnalyzeComponent';
 
 export default class LoadingComponent extends Component<any, { percentage: number }> {
 	constructor() {

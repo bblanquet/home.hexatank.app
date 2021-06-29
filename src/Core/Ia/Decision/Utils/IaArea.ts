@@ -10,7 +10,7 @@ import { BlockingField } from '../../../Items/Cell/Field/BlockingField';
 import { TroopDecisionMaker } from '../Troop/TroopDecisionMaker';
 import { Diamond } from '../../../Items/Cell/Field/Diamond';
 import { DistanceHelper } from '../../../Items/Unit/MotionHelpers/DistanceHelper';
-import { HeadQuarterField } from '../../../Items/Cell/Field/Hq/HeadquarterField';
+import { HeadquarterField } from '../../../Items/Cell/Field/Hq/HeadquarterField';
 import { RoadField } from '../../../Items/Cell/Field/Bonus/RoadField';
 import { AStarEngine } from '../../AStarEngine';
 import { Area } from './Area';
@@ -104,7 +104,7 @@ export class IaArea {
 	}
 
 	public HasHq(): boolean {
-		return this._spot.GetStatus().HasField(HeadQuarterField.name);
+		return this._spot.GetStatus().HasField(HeadquarterField.name);
 	}
 
 	public GetReactor(): Cell {
@@ -157,7 +157,7 @@ export class IaArea {
 	public IsImportant(): boolean {
 		return (
 			this._spot.GetStatus().HasField(Diamond.name) ||
-			this._spot.GetStatus().HasField(HeadQuarterField.name) ||
+			this._spot.GetStatus().HasField(HeadquarterField.name) ||
 			this._spot.GetStatus().HasField(ReactorField.name)
 		);
 	}
@@ -311,7 +311,7 @@ export class IaArea {
 				cell !== null &&
 				(cell.GetField() instanceof RoadField ||
 					cell.GetField() instanceof ShieldField ||
-					cell.GetField() instanceof HeadQuarterField ||
+					cell.GetField() instanceof HeadquarterField ||
 					cell.GetField() instanceof Headquarter)
 			);
 		};

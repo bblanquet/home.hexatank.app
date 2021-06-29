@@ -1,4 +1,4 @@
-import { HeadQuarterField } from './../../../../Items/Cell/Field/Hq/HeadquarterField';
+import { HeadquarterField } from './../../../../Items/Cell/Field/Hq/HeadquarterField';
 import { IHeadquarter } from './../../../../Items/Cell/Field/Hq/IHeadquarter';
 import { Cell } from '../../../../Items/Cell/Cell';
 import { Vehicle } from '../../../../Items/Unit/Vehicle';
@@ -32,7 +32,7 @@ export class HqFieldOrder implements IOrderGiver {
 	private GetHqField(): Cell {
 		const cells = this.GetHqRoad();
 		if (cells) {
-			return cells.find((c) => c.GetField() instanceof HeadQuarterField);
+			return cells.find((c) => c.GetField() instanceof HeadquarterField);
 		} else {
 			return null;
 		}

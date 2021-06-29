@@ -26,11 +26,14 @@ import { IAudioService } from '../../../Services/Audio/IAudioService';
 import { IOnlineService } from '../../../Services/Online/IOnlineService';
 import { Dictionary } from '../../../Core/Utils/Collections/Dictionary';
 import MenuSwitcher from './Parts/MenuSwitcher';
-import Icon from '../../Common/Icon/IconComponent';
+import SynchronizingComponent from './Parts/SynchronizingComponent';
+import Switch from '../../Common/Visible/SwitchComponent';
+import { SimpleEvent } from '../../../Core/Utils/Events/SimpleEvent';
 
 export default class GameCanvasComponent extends Component<
 	any,
 	{
+		IsSynchronising: boolean;
 		IsSettingMenuVisible: boolean;
 		IsMultiMenuVisible: boolean;
 		HasWarning: boolean;
@@ -50,7 +53,7 @@ export default class GameCanvasComponent extends Component<
 	private _interactionService: IInteractionService<GameContext>;
 	private _appService: IAppService<GameBlueprint>;
 	private _gameContext: GameContext;
-
+	private _timeout: SimpleEvent = new SimpleEvent();
 	private _onItemSelectionChanged: any = this.OnItemSelectionChanged.bind(this);
 
 	constructor() {
@@ -70,9 +73,13 @@ export default class GameCanvasComponent extends Component<
 			Amount: GameSettings.PocketMoney,
 			HasWarning: false,
 			GameStatus: GameStatus.Pending,
-			IsSettingPatrol: false
+			IsSettingPatrol: false,
+			IsSynchronising: false
 		});
 		this._diamonds = GameSettings.PocketMoney;
+		this._timeout.On(() => {
+			this.Stop(true);
+		});
 	}
 	private OnItemSelectionChanged(obj: any, item: ISelectable): void {
 		if (!item.IsSelected()) {
@@ -99,8 +106,8 @@ export default class GameCanvasComponent extends Component<
 		if (this._onlineService.GetOnlinePlayerManager()) {
 			this._onlineService
 				.GetOnlinePlayerManager()
-				.OnPlayersChanged.On((src: any, p: Dictionary<OnlinePlayer>) => {
-					this.setState({});
+				.OnPlayersChanged.On((src: any, ps: Dictionary<OnlinePlayer>) => {
+					this.setState({ IsSynchronising: ps.Values().some((p) => !p.IsSync()) });
 				});
 		}
 	}
@@ -121,6 +128,14 @@ export default class GameCanvasComponent extends Component<
 		}
 	}
 
+	private Stop(isVictory: boolean): void {
+		this._gameContext.State.IsPause = true;
+		this.setState({
+			IsSettingMenuVisible: false,
+			GameStatus: isVictory ? GameStatus.Victory : GameStatus.Defeat
+		});
+	}
+
 	render() {
 		return (
 			<Redirect>
@@ -134,82 +149,86 @@ export default class GameCanvasComponent extends Component<
 					/>
 				</Visible>
 				<Visible isVisible={this.state.GameStatus === GameStatus.Pending}>
-					<Visible isVisible={!this.state.IsSettingMenuVisible}>
-						<div style="position: fixed;">
-							<button
-								type="button"
-								class="btn btn-dark small-space space-out fill-option"
-								onClick={() => this.SetMenu()}
+					<Switch
+						isVisible={this.state.IsSynchronising}
+						left={
+							<SynchronizingComponent
+								Timeout={this._timeout}
+								Quit={() => {
+									this.Stop(false);
+								}}
 							/>
-							<button type="button" class="btn btn-dark space-out">
-								<Visible isVisible={this.state.HasWarning}>
-									<span class="fill-noMoney badge badge-warning very-small-space middle very-small-right-margin blink_me">
-										{' '}
+						}
+						right={
+							<Switch
+								isVisible={this.state.IsSettingMenuVisible}
+								left={
+									<PopupMenuComponent
+										Status={this.state.GameStatus}
+										Resume={() => this.SetMenu()}
+										Quit={() => {
+											this.Stop(false);
+										}}
+									/>
+								}
+								right={
+									<span>
+										<div style="position: fixed;">
+											<button
+												type="button"
+												class="btn btn-dark small-space space-out fill-option"
+												onClick={() => this.SetMenu()}
+											/>
+											<button type="button" class="btn btn-dark space-out">
+												<Visible isVisible={this.state.HasWarning}>
+													<span class="fill-noMoney badge badge-warning very-small-space middle very-small-right-margin blink_me">
+														{' '}
+													</span>
+												</Visible>
+												{this._diamonds.toFixed(2)}
+												<span class="fill-diamond badge badge-secondary very-small-space middle very-small-left-margin very-small-right-margin">
+													{' '}
+												</span>
+											</button>
+										</div>
+										<Visible isVisible={isNullOrUndefined(this.state.Item)}>
+											<div class="right-bottom-menu">
+												<ActiveRightBottomCornerButton
+													isActive={this._interactionService
+														.GetMultiSelectionContext()
+														.IsListeningUnit()}
+													callBack={() => this.SendContext(new MultiTankMenuItem())}
+													logo="fill-tank-multi-cell"
+												/>
+												<ActiveRightBottomCornerButton
+													isActive={this._interactionService
+														.GetMultiSelectionContext()
+														.IsListeningCell()}
+													callBack={() => this.SendContext(new MultiCellMenuItem())}
+													logo="fill-mult-cell"
+												/>
+											</div>
+										</Visible>
+										<Visible isVisible={!isNullOrUndefined(this.state.Item)}>
+											<MenuSwitcher
+												IsSettingPatrol={this.state.IsSettingPatrol}
+												TankRequestCount={this.state.TankRequestCount}
+												TruckRequestCount={this.state.TruckRequestCount}
+												VehicleCount={this._gameContext.GetPlayerHq().GetVehicleCount()}
+												ReactorCount={this._gameContext.GetPlayerHq().GetReactorsCount()}
+												Item={this.state.Item}
+												HasMultiMenu={this.state.IsMultiMenuVisible}
+											/>
+										</Visible>
 									</span>
-								</Visible>
-								{this._diamonds.toFixed(2)}
-								<span class="fill-diamond badge badge-secondary very-small-space middle very-small-left-margin very-small-right-margin">
-									{' '}
-								</span>
-							</button>
-						</div>
-					</Visible>
-					<Visible isVisible={!this.state.IsSettingMenuVisible && isNullOrUndefined(this.state.Item)}>
-						<div class="right-bottom-menu">
-							<ActiveRightBottomCornerButton
-								isActive={this._interactionService.GetMultiSelectionContext().IsListeningUnit()}
-								callBack={() => this.SendContext(new MultiTankMenuItem())}
-								logo="fill-tank-multi-cell"
+								}
 							/>
-							<ActiveRightBottomCornerButton
-								isActive={this._interactionService.GetMultiSelectionContext().IsListeningCell()}
-								callBack={() => this.SendContext(new MultiCellMenuItem())}
-								logo="fill-mult-cell"
-							/>
-						</div>
-					</Visible>
-					<Visible isVisible={!this.state.IsSettingMenuVisible && !isNullOrUndefined(this.state.Item)}>
-						<MenuSwitcher
-							IsSettingPatrol={this.state.IsSettingPatrol}
-							TankRequestCount={this.state.TankRequestCount}
-							TruckRequestCount={this.state.TruckRequestCount}
-							VehicleCount={this._gameContext.GetPlayerHq().GetVehicleCount()}
-							ReactorCount={this._gameContext.GetPlayerHq().GetReactorsCount()}
-							Item={this.state.Item}
-							HasMultiMenu={this.state.IsMultiMenuVisible}
-						/>
-					</Visible>
-					<Visible isVisible={this.state.IsSettingMenuVisible}>
-						<PopupMenuComponent
-							Status={this.state.GameStatus}
-							Resume={() => this.SetMenu()}
-							Quit={() => {
-								this._gameContext.State.IsPause = true;
-								this.setState({
-									IsSettingMenuVisible: false,
-									GameStatus: GameStatus.Defeat
-								});
-							}}
-						/>
-					</Visible>
-					<Visible isVisible={this.IsSyncrhonisyng()}>
-						<div class="absolute-center-middle-menu dark-container container-center-horizontal">
-							<span class="fit-content fit-height space-out-all">
-								<div class="spin fit-content fit-height">
-									<Icon Value={'fas fa-circle-notch'} />
-								</div>
-							</span>
-							<div>Synchonizing...</div>
-						</div>
-					</Visible>
+						}
+					/>
 				</Visible>
 				<CanvasComponent gameContext={this._gameContextService} />
 			</Redirect>
 		);
-	}
-
-	private IsSyncrhonisyng(): boolean {
-		return this._onlineService.IsOnline() && !this._onlineService.GetOnlinePlayerManager().IsSync();
 	}
 
 	private SendContext(item: Item): void {

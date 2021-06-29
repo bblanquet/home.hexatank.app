@@ -22,14 +22,18 @@ export class TimerComponent extends Component<
 			if (current < 0) {
 				current = 0;
 			}
-			this._button.classList.remove('bounce');
-			setTimeout(() => {
-				this._button.classList.add('bounce');
-			}, 50);
+			if (this._button) {
+				this._button.classList.remove('slow-bounce');
+				setTimeout(() => {
+					if (this._button) {
+						this._button.classList.add('slow-bounce');
+					}
+				}, 50);
 
-			this.setState({
-				CurrentDuration: current
-			});
+				this.setState({
+					CurrentDuration: current
+				});
+			}
 		}
 
 		if (0 < current) {

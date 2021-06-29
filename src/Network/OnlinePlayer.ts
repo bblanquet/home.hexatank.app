@@ -30,7 +30,6 @@ export class OnlinePlayer {
 
 	public SetSync(value: boolean): void {
 		this._isSync = value;
-		//this.OnChanged.Invoke();
 	}
 
 	public GetLatency(): string {

@@ -86,6 +86,6 @@ export class OnlinePlayerManager implements IOnlinePlayerManager {
 	}
 
 	public IsSync(): boolean {
-		return this.Players.Values().every((p) => p.IsSync);
+		return this.Players.Values().every((p) => p.IsSync());
 	}
 }

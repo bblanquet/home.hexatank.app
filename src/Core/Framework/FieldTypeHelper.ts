@@ -20,6 +20,8 @@ import { Diamond } from '../Items/Cell/Field/Diamond';
 import { ErrorCat, ErrorHandler } from '../Utils/Exceptions/ErrorHandler';
 import { VolcanoField } from '../Items/Cell/Field/VolcanoField';
 import { WaterField } from '../Items/Cell/Field/WaterField';
+import { Headquarter } from '../Items/Cell/Field/Hq/Headquarter';
+import { HeadquarterField } from '../Items/Cell/Field/Hq/HeadquarterField';
 export class FieldHelper {
 	//has to use it because of ofuscator
 	public static GetName(obj: IField): string {
@@ -54,8 +56,12 @@ export class FieldHelper {
 			return 'DiamondField';
 		} else if (obj instanceof WaterField) {
 			return 'WaterField';
+		} else if (obj instanceof Headquarter) {
+			return 'Headquarter';
+		} else if (obj instanceof HeadquarterField) {
+			return 'HeadquarterField';
 		}
-		ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.outOfRange])));
+		ErrorHandler.Throw(new Error(`${ErrorHandler.Cat.Get(ErrorCat[ErrorCat.outOfRange])} ${obj.constructor.name}`));
 	}
 
 	public static GetRecordName(obj: IField): RecordKind {
@@ -117,7 +123,9 @@ export class FieldHelper {
 		} else if (action === RecordKind.Blocking) {
 			return cell.SetField(new BlockingField(cell, SvgArchive.nature.tree));
 		}
-		ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.outOfRange])));
+		ErrorHandler.Throw(
+			new Error(`${ErrorHandler.Cat.Get(ErrorCat[ErrorCat.outOfRange])} ${action.constructor.name}`)
+		);
 	}
 
 	public static NewField(name: string, cell: Cell, hq: IHeadquarter, context: GameContext): IField {
@@ -152,6 +160,6 @@ export class FieldHelper {
 		} else if (name === 'BlockingField') {
 			return cell.SetField(new BlockingField(cell, SvgArchive.nature.tree));
 		}
-		ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.outOfRange])));
+		ErrorHandler.Throw(new Error(`${ErrorHandler.Cat.Get(ErrorCat[ErrorCat.outOfRange])} ${name}`));
 	}
 }

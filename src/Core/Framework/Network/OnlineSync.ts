@@ -12,6 +12,8 @@ import { PathResolver } from './PathResolver';
 import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
 import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { OnlinePlayer } from '../../../Network/OnlinePlayer';
+import { StaticLogger } from '../../Utils/Logger/StaticLogger';
+import { LogKind } from '../../Utils/Logger/LogKind';
 
 export class OnlineSync {
 	private _obs: NetworkObserver[];
@@ -38,7 +40,6 @@ export class OnlineSync {
 
 	private HandleBlueprint(message: NetworkMessage<RuntimeBlueprint>): void {
 		this.SetUnsync();
-
 		message.Content.Cells.forEach((cellPrint) => {
 			const cell = this._context.GetCell(cellPrint.CId);
 			const field = cell.GetField();
@@ -94,7 +95,6 @@ export class OnlineSync {
 	private HandleConnection(src: any, players: Dictionary<OnlinePlayer>): void {
 		if (this.HasConnectionIssue() && this._players.IsSync()) {
 			this.SetUnsync();
-			this._context.State.IsPause = true;
 		} else if (!this.HasConnectionIssue() && !this._players.IsSync()) {
 			if (this._players.Player.IsAdmin) {
 				const blueprint = RuntimeBlueprint.New(this._context);
@@ -104,6 +104,7 @@ export class OnlineSync {
 	}
 
 	private SetUnsync() {
+		this._context.State.IsPause = true;
 		this._players.Players.Values().forEach((player) => {
 			if (player.Name !== this._players.Player.Name) {
 				player.SetSync(false);

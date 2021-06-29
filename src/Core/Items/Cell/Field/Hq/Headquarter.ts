@@ -12,7 +12,7 @@ import { FlagCell } from '../../FlagCell';
 import { Tank } from '../../../Unit/Tank';
 import { InteractionContext } from '../../../../Interaction/InteractionContext';
 import { Cell } from '../../Cell';
-import { HeadQuarterField } from './HeadquarterField';
+import { HeadquarterField } from './HeadquarterField';
 import { AliveItem } from '../../../AliveItem';
 import { IField } from '../IField';
 import { Crater } from '../../../Environment/Crater';
@@ -35,7 +35,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 	public Flagcell: FlagCell;
 	private _boundingBox: BoundingBox;
 	private _cell: Cell;
-	public Fields: Array<HeadQuarterField>;
+	public Fields: Array<HeadquarterField>;
 	public IsPlayer: boolean;
 
 	private _tankRequestCount: number = 0;
@@ -90,9 +90,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 		this.IsCentralRef = true;
 
 		var neighbours = this._cell.GetUnblockedRange();
-		this.Fields = new Array<HeadQuarterField>();
+		this.Fields = new Array<HeadquarterField>();
 		neighbours.forEach((cell) => {
-			this.Fields.push(cell.SetField(new HeadQuarterField(this, <Cell>cell, this.Identity.Skin.GetLight())));
+			this.Fields.push(cell.SetField(new HeadquarterField(this, <Cell>cell, this.Identity.Skin.GetLight())));
 		});
 		this._onCellStateChanged = this.OncellStateChanged.bind(this);
 		this.OnDiamondEarned.On(this.HandleDiamondChanged.bind(this));

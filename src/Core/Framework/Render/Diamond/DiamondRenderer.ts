@@ -16,9 +16,10 @@ import { HqRender } from '../Hq/HqRender';
 import { SimpleFloor } from '../../../Items/Environment/SimpleFloor';
 import { AboveItem } from '../../../Items/AboveItem';
 import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
+import { GameState } from '../../Context/GameState';
 
 export class DiamondRenderer {
-	public Render(blueprint: DiamondBlueprint): DiamondContext {
+	public Render(blueprint: DiamondBlueprint, gameState: GameState): DiamondContext {
 		const cells = new Dictionary<Cell>();
 
 		blueprint.Cells.forEach((item) => {
@@ -40,7 +41,7 @@ export class DiamondRenderer {
 		const arrivalCell = cells.Get(blueprint.HqDiamond.Diamond.Position.ToString());
 		new AboveItem(arrivalCell, SvgArchive.arrow);
 
-		return new DiamondContext(cells.Values(), hq);
+		return new DiamondContext(gameState, cells.Values(), hq);
 	}
 
 	public AddClouds() {

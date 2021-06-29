@@ -25,13 +25,7 @@ export class GameSettings {
 	}
 
 	public static Size: number = 50;
-	public static IsPause: boolean = false;
-	public static IsSynchronizing: boolean = false;
 	public static ShowEnemies: boolean = false;
-
-	public static IsPausing(): boolean {
-		return this.IsPause || this.IsSynchronizing;
-	}
 
 	public static PocketMoney: number = 20;
 	public static MapSize: number = 0;
@@ -39,7 +33,6 @@ export class GameSettings {
 	public static Init(): void {
 		this.Size = 50;
 		this.MissileTranslationSpeed = 5;
-		this.IsPause = false;
 		this.ShowEnemies = false;
 		this.Fire = 10;
 		this.TankPrice = 8;

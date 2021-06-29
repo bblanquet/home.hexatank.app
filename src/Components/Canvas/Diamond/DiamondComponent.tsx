@@ -107,7 +107,7 @@ export default class DiamondCanvasComponent extends Component<
 		}
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
-		this._gameContext.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
+		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
 	}
 
@@ -224,7 +224,7 @@ export default class DiamondCanvasComponent extends Component<
 			this._soundService.GetGameAudioManager().PlayAll();
 		}
 
-		GameSettings.IsPause = newValue;
+		this._gameContext.State.IsPause = newValue;
 	}
 
 	render() {
@@ -315,7 +315,7 @@ export default class DiamondCanvasComponent extends Component<
 				Status={this.state.GameStatus}
 				Resume={() => this.SetMenu()}
 				Quit={() => {
-					GameSettings.IsPause = true;
+					this._gameContext.State.IsPause = true;
 					this.setState({
 						HasMenu: false,
 						GameStatus: GameStatus.Defeat

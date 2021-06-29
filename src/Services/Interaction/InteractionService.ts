@@ -29,7 +29,8 @@ export class InteractionService implements IInteractionService<GameContext> {
 			this._inputNotifier,
 			new CombinationProvider().GetCombination(checker, this._multiSelectionContext, gameContext),
 			checker,
-			this._layerService.GetViewport()
+			this._layerService.GetViewport(),
+			gameContext
 		);
 
 		this._interaction.Listen();

@@ -67,7 +67,7 @@ export default class PowerCanvasComponent extends Component<
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		this._interactionService = Singletons.Load<IInteractionService<PowerContext>>(SingletonKey.PowerInteraction);
 		this._gameContext = this._gameContextService.Publish();
-		this._gameContext.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
+		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this.setState({
 			HasMenu: false,
 			TankRequestCount: 0,
@@ -83,7 +83,7 @@ export default class PowerCanvasComponent extends Component<
 		this._soundService.Pause(AudioArchive.loungeMusic);
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
-		this._gameContext.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
+		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
 		this._interactionService.GetMultiSelectionContext().OnSelectionChanged.On(this._onSelectionChanged);
 	}
@@ -183,7 +183,7 @@ export default class PowerCanvasComponent extends Component<
 			}
 		}
 
-		GameSettings.IsPause = hasMenu;
+		this._gameContext.State.IsPause = hasMenu;
 	}
 
 	render() {
@@ -250,7 +250,7 @@ export default class PowerCanvasComponent extends Component<
 				Status={this.state.GameStatus}
 				Resume={() => this.SetMenu()}
 				Quit={() => {
-					GameSettings.IsPause = true;
+					this._gameContext.State.IsPause = true;
 					this.setState({
 						HasMenu: false,
 						GameStatus: GameStatus.Defeat

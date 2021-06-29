@@ -6,6 +6,6 @@ export interface IOnlinePlayerManager {
 	Player: OnlinePlayer;
 	Players: Dictionary<OnlinePlayer>;
 	OnPlayersChanged: LiteEvent<Dictionary<OnlinePlayer>>;
-	OnConnectionChanged: LiteEvent<boolean>;
 	Clear(): void;
+	IsSync(): boolean;
 }

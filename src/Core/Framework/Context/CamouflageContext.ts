@@ -5,33 +5,32 @@ import { Item } from '../../Items/Item';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
+import { GameState } from './GameState';
 import { IGameContext } from './IGameContext';
 
 export class CamouflageContext implements IGameContext {
 	private _unit: Vehicle;
+	public State: GameState;
 
 	//should not be here
 	public static Error: Error;
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
 	public OnPatrolSetting: LiteEvent<Boolean> = new LiteEvent<Boolean>();
 
-	//ok
-	public OnGameStatusChanged: LiteEvent<GameStatus> = new LiteEvent<GameStatus>();
-
 	//elements
 	private _cells: Dictionary<Cell>;
 	private _vehicles: Vehicle[];
-	constructor(cells: Cell[], unit: Vehicle, vehicles: Vehicle[], arrivelCell: Cell) {
+	constructor(state: GameState, cells: Cell[], unit: Vehicle, vehicles: Vehicle[], arrivelCell: Cell) {
 		this._cells = Dictionary.To((c) => c.Coo(), cells);
 		this._unit = unit;
 		this._vehicles = vehicles;
-
+		this.State = state;
 		this._unit.OnDestroyed.On(() => {
-			this.OnGameStatusChanged.Invoke(this, GameStatus.Defeat);
+			this.State.OnGameStatusChanged.Invoke(this, GameStatus.Defeat);
 		});
 		this._unit.OnCellChanged.On((source: any, cell: Cell) => {
 			if (this._unit.GetCurrentCell() === arrivelCell) {
-				this.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
+				this.State.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
 			}
 		});
 	}

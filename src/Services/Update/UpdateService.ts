@@ -4,12 +4,13 @@ import { IUpdateService } from './IUpdateService';
 import { route } from 'preact-router';
 import { StaticLogger } from '../../Core/Utils/Logger/StaticLogger';
 import { LogKind } from '../../Core/Utils/Logger/LogKind';
+import { GameState } from '../../Core/Framework/Context/GameState';
 
 export class UpdateService implements IUpdateService {
 	private _itemsUpdater: ItemsUpdater;
 
-	Register(): void {
-		this._itemsUpdater = new ItemsUpdater();
+	Register(state: GameState): void {
+		this._itemsUpdater = new ItemsUpdater(state);
 		this._itemsUpdater.OnError.On((src: any, data: Error) => {
 			GameContext.Error = data;
 			route('{{sub_path}}Error', true);

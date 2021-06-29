@@ -13,6 +13,7 @@ import { CellStateSetter } from '../../Core/Items/Cell/CellStateSetter';
 import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
 import { GameContext } from '../../Core/Framework/Context/GameContext';
+import { GameState } from '../../Core/Framework/Context/GameState';
 
 export class RecordAppService implements IAppService<GameBlueprint> {
 	private _context: GameBlueprint;
@@ -43,18 +44,19 @@ export class RecordAppService implements IAppService<GameBlueprint> {
 		return null;
 	}
 
-	public Register(mapContext: GameBlueprint): void {
+	public Register(blueprint: GameBlueprint): void {
 		this._keyService.DefineKey(this);
 
 		GameSettings.Init();
 		GameSettings.SetNormalSpeed();
-		this._context = mapContext;
-		this._updateService.Register();
-		this._app = this._appProvider.Provide(mapContext);
-		this._interactionManager = new PIXI.InteractionManager(this._app.renderer);
+		const gameState = new GameState();
 
+		this._context = blueprint;
+		this._app = this._appProvider.Provide(blueprint);
+		this._interactionManager = new PIXI.InteractionManager(this._app.renderer);
+		this._updateService.Register(gameState);
 		this._layerService.Register(this._app);
-		this._gameContextService.Register(mapContext);
+		this._gameContextService.Register(blueprint, gameState);
 		const gameContext = this._gameContextService.Publish();
 		this._interactionService.Register(this._interactionManager, gameContext);
 

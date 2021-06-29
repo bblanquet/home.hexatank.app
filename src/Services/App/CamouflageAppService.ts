@@ -17,6 +17,7 @@ import { CamouflageContext } from '../../Core/Framework/Context/CamouflageContex
 import { IAudioService } from '../Audio/IAudioService';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 import { GameStatus } from '../../Core/Framework/GameStatus';
+import { GameState } from '../../Core/Framework/Context/GameState';
 
 export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 	private _blueprint: CamouflageBlueprint;
@@ -52,18 +53,18 @@ export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 
 		GameSettings.Init();
 		GameSettings.SetNormalSpeed();
+		const gameState = new GameState();
 		this._blueprint = mapContext;
-		this._updateService.Register();
 		this._app = this._appProvider.Provide(mapContext);
 		this._interactionManager = new PIXI.InteractionManager(this._app.renderer);
-
+		this._updateService.Register(gameState);
 		this._layerService.Register(this._app);
-		this._gameContextService.Register(mapContext);
+		this._gameContextService.Register(mapContext, gameState);
 		const gameContext = this._gameContextService.Publish();
 		this._interactionService.Register(this._interactionManager, gameContext);
 		this._gameAudioService = new CamouflageAudioManager(mapContext, gameContext);
 		this._audioService.Register(this._gameAudioService);
-		gameContext.OnGameStatusChanged.On(this.GameStatusChanged.bind(this));
+		gameContext.State.OnGameStatusChanged.On(this.GameStatusChanged.bind(this));
 
 		gameContext.GetCells().forEach((c) => {
 			c.AlwaysVisible();

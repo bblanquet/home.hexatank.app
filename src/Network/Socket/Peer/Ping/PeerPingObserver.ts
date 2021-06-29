@@ -11,7 +11,7 @@ export class PeerPingObserver {
 	private _jetlag: JetlagData = new JetlagData();
 	private _timeOut: NodeJS.Timeout;
 	private _shortSleep: number = 500;
-	private _timeoutSleep: number = 1000;
+	private _timeoutSleep: number = 1500;
 	private _pingInterval: number = 2000;
 
 	constructor(private _peer: RtcPeer, private _owner: string, private _recipient: string) {

@@ -28,7 +28,8 @@ export class PowerInteractionService implements IInteractionService<PowerContext
 			this._inputNotifier,
 			new CombinationProvider().GetCombination(checker, this._multiSelectionContext, gameContext),
 			checker,
-			this._layerService.GetViewport()
+			this._layerService.GetViewport(),
+			gameContext
 		);
 		this._interaction.Listen();
 		manager.on('pointerdown', this._inputNotifier.HandleMouseDown.bind(this._inputNotifier), false);

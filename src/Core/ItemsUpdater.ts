@@ -1,10 +1,10 @@
 import { LiteEvent } from './Utils/Events/LiteEvent';
 import { ViewContext } from './Utils/Geometry/ViewContext';
-import { GameSettings } from './Framework/GameSettings';
 import { IItemsUpdater } from './IItemsUpdater';
 import { Item } from './Items/Item';
 import { IInteractionContext } from './Interaction/IInteractionContext';
 import { Env } from '../Env';
+import { GameState } from './Framework/Context/GameState';
 
 export class ItemsUpdater implements IItemsUpdater {
 	public OnError: LiteEvent<Error> = new LiteEvent<Error>();
@@ -12,7 +12,7 @@ export class ItemsUpdater implements IItemsUpdater {
 	public ViewContext: ViewContext;
 	public static UpdateSpan: number = 15;
 	private _lastUpdate: number = undefined;
-	constructor() {
+	constructor(private _state: GameState) {
 		this.ViewContext = new ViewContext();
 	}
 
@@ -26,7 +26,7 @@ export class ItemsUpdater implements IItemsUpdater {
 			ItemsUpdater.UpdateSpan = nextUpdate - this._lastUpdate;
 			this._lastUpdate = nextUpdate;
 		}
-		if (!GameSettings.IsPausing()) {
+		if (!this._state.IsPause) {
 			if (Env.IsPrd()) {
 				try {
 					this.Iterate();

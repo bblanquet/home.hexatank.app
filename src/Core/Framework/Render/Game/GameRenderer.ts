@@ -16,8 +16,9 @@ import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
 import { HqRender } from '../Hq/HqRender';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
+import { GameState } from '../../Context/GameState';
 export class GameRenderer {
-	public Render(blueprint: GameBlueprint): GameContext {
+	public Render(blueprint: GameBlueprint, gameState: GameState): GameContext {
 		const cells = new Dictionary<Cell>();
 		let playerHq: Headquarter = null;
 		let hqs: Headquarter[] = [];
@@ -58,7 +59,7 @@ export class GameRenderer {
 			}
 		}
 
-		return new GameContext(cells.Values(), hqs, playerHq);
+		return new GameContext(gameState, cells.Values(), hqs, playerHq);
 	}
 
 	public AddClouds() {

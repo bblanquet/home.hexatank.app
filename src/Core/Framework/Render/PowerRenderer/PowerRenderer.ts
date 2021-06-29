@@ -6,7 +6,6 @@ import { PowerBlueprint } from './../../Blueprint/Power/PowerBlueprint';
 import { PowerContext } from './../../Context/PowerContext';
 import { SvgArchive } from './../../../Framework/SvgArchiver';
 import { Cloud } from './../../../Items/Environment/Cloud';
-import { DecoratingFactory } from '../../../Items/Cell/Decorator/ForestFactory';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
 import { Cell } from '../../../Items/Cell/Cell';
@@ -20,9 +19,10 @@ import { Identity } from '../../../Items/Identity';
 import { HqSkinHelper } from '../Hq/HqSkinHelper';
 import { AboveItem } from '../../../Items/AboveItem';
 import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
+import { GameState } from '../../Context/GameState';
 
 export class PowerRenderer {
-	public Render(blueprint: PowerBlueprint): PowerContext {
+	public Render(blueprint: PowerBlueprint, gameState: GameState): PowerContext {
 		const cells = new Dictionary<Cell>();
 
 		blueprint.Cells.forEach((item) => {
@@ -57,7 +57,7 @@ export class PowerRenderer {
 
 		cells.Values().forEach((cell) => cell.SetPlayerHq(hq));
 
-		return new PowerContext(cells.Values(), tank, hq, shield);
+		return new PowerContext(gameState, cells.Values(), tank, hq, shield);
 	}
 
 	public AddClouds() {

@@ -10,23 +10,25 @@ import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { GameStatus } from '../../Framework/GameStatus';
 import { Vehicle } from '../../Items/Unit/Vehicle';
+import { GameState } from './GameState';
 export class DiamondContext implements IHqGameContext {
-	public OnGameStatusChanged: LiteEvent<GameStatus> = new LiteEvent<GameStatus>();
 	public OnPatrolSetting: LiteEvent<Boolean> = new LiteEvent<Boolean>();
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
 	public OnTimerDone: SimpleEvent;
 	public Duration: number = 120;
+	public State: GameState;
 
 	private _cells: Dictionary<Cell>;
 
-	constructor(cells: Cell[], private _hq: Headquarter) {
+	constructor(state: GameState, cells: Cell[], private _hq: Headquarter) {
 		this._cells = Dictionary.To((c) => c.Coo(), cells);
+		this.State = state;
 		this.OnTimerDone = new SimpleEvent();
 		this.OnTimerDone.On(() => {
 			if (50 < this._hq.GetDiamondCount()) {
-				this.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
+				this.State.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
 			} else {
-				this.OnGameStatusChanged.Invoke(this, GameStatus.Defeat);
+				this.State.OnGameStatusChanged.Invoke(this, GameStatus.Defeat);
 			}
 		});
 	}
@@ -37,6 +39,7 @@ export class DiamondContext implements IHqGameContext {
 	GetPlayerHq(): IHeadquarter {
 		return this._hq;
 	}
+
 	GetHqFromId(identity: Identity): IHeadquarter {
 		if (this._hq.Identity.Name === identity.Name) {
 			return this._hq;

@@ -43,7 +43,8 @@ export class CamouflageInteractionService implements IInteractionService<Camoufl
 				new SimpleSelectionCombination(checker, gameContext)
 			],
 			checker,
-			this._layerService.GetViewport()
+			this._layerService.GetViewport(),
+			gameContext
 		);
 		this._interaction.Listen();
 		manager.on('pointerdown', this._inputNotifier.HandleMouseDown.bind(this._inputNotifier), false);

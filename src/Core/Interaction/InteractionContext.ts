@@ -18,6 +18,7 @@ import { Singletons, SingletonKey } from '../../Singletons';
 import { StaticLogger } from '../Utils/Logger/StaticLogger';
 import { LogKind } from '../Utils/Logger/LogKind';
 import { GameSettings } from '../Framework/GameSettings';
+import { IGameContext } from '../Framework/Context/IGameContext';
 
 export class InteractionContext implements IContextContainer, IInteractionContext {
 	private _updateService: IUpdateService;
@@ -31,7 +32,8 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 		private _inputNotifier: InputNotifier,
 		private _combinations: ICombination[],
 		private _checker: ISelectableChecker,
-		private _viewPort: any
+		private _viewPort: any,
+		private _gameContext: IGameContext
 	) {
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
 		this._selectedItem = [];
@@ -129,7 +131,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 	}
 
 	public OnSelect(item: Item): void {
-		if (!GameSettings.IsPausing()) {
+		if (!this._gameContext.State.IsPause) {
 			if (item) {
 				if (item instanceof Cell && this.ContainsSelectable(item)) {
 					item = this.GetSelectable(item);

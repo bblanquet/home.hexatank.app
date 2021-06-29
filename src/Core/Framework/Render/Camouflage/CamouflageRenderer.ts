@@ -22,9 +22,10 @@ import { Identity } from '../../../Items/Identity';
 import { PatrolOrder } from '../../../Ia/Order/Composite/PatrolOrder';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
+import { GameState } from '../../Context/GameState';
 
 export class CamouflageRenderer {
-	public Render(blueprint: CamouflageBlueprint): CamouflageContext {
+	public Render(blueprint: CamouflageBlueprint, gameState: GameState): CamouflageContext {
 		const cells = new Dictionary<Cell>();
 		const vehicles = new Array<Vehicle>();
 
@@ -67,7 +68,7 @@ export class CamouflageRenderer {
 			vehicles.push(tank);
 		});
 
-		return new CamouflageContext(cells.Values(), truck, vehicles, arrivalCell);
+		return new CamouflageContext(gameState, cells.Values(), truck, vehicles, arrivalCell);
 	}
 
 	public AddClouds() {

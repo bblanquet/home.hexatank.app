@@ -18,6 +18,8 @@ import { Cell } from '../Items/Cell/Cell';
 import { RecordKind } from './Record/Model/Item/State/RecordKind';
 import { Diamond } from '../Items/Cell/Field/Diamond';
 import { ErrorCat, ErrorHandler } from '../Utils/Exceptions/ErrorHandler';
+import { VolcanoField } from '../Items/Cell/Field/VolcanoField';
+import { WaterField } from '../Items/Cell/Field/WaterField';
 export class FieldHelper {
 	//has to use it because of ofuscator
 	public static GetName(obj: IField): string {
@@ -44,6 +46,14 @@ export class FieldHelper {
 			return 'BasicField';
 		} else if (obj instanceof BlockingField) {
 			return 'BlockingField';
+		} else if (obj instanceof VolcanoField) {
+			return 'VolcanoField';
+		} else if (obj instanceof Diamond) {
+			return 'Diamond';
+		} else if (obj instanceof DiamondField) {
+			return 'DiamondField';
+		} else if (obj instanceof WaterField) {
+			return 'WaterField';
 		}
 		ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.outOfRange])));
 	}
@@ -131,6 +141,16 @@ export class FieldHelper {
 			return cell.SetField(new RoadField(cell, hq));
 		} else if (name === 'ShieldField') {
 			return cell.SetField(new ShieldField(cell, hq.Identity, hq));
+		} else if (name === 'VolcanoField') {
+			return cell.SetField(new VolcanoField(cell));
+		} else if (name === 'Diamond') {
+			return cell.SetField(new Diamond(cell));
+		} else if (name === 'DiamondField') {
+			return cell.SetField(new DiamondField(cell));
+		} else if (name === 'WaterField') {
+			return cell.SetField(new WaterField(cell));
+		} else if (name === 'BlockingField') {
+			return cell.SetField(new BlockingField(cell, SvgArchive.nature.tree));
 		}
 		ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.outOfRange])));
 	}

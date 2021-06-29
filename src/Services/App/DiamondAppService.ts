@@ -17,6 +17,7 @@ import { GameSettings } from '../../Core/Framework/GameSettings';
 import { IAudioService } from '../Audio/IAudioService';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 import { GameStatus } from '../../Core/Framework/GameStatus';
+import { GameState } from '../../Core/Framework/Context/GameState';
 
 export class DiamondAppService implements IAppService<DiamondBlueprint> {
 	private _blueprint: DiamondBlueprint;
@@ -51,19 +52,20 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 
 		GameSettings.Init();
 		GameSettings.SetNormalSpeed();
+		const gameState = new GameState();
+
 		this._blueprint = blueprint;
-		this._updateService.Register();
 		this._app = this._appProvider.Provide(blueprint);
 		this._interactionManager = new PIXI.InteractionManager(this._app.renderer);
-
+		this._updateService.Register(gameState);
 		this._layerService.Register(this._app);
-		this._gameContextService.Register(blueprint);
+		this._gameContextService.Register(blueprint, gameState);
 		const gameContext = this._gameContextService.Publish();
 		this._interactionService.Register(this._interactionManager, gameContext);
 
 		this._gameAudioService = new DiamondAudioManager(blueprint, gameContext);
 		this._audioService.Register(this._gameAudioService);
-		gameContext.OnGameStatusChanged.On(this.GameStatusChanged.bind(this));
+		gameContext.State.OnGameStatusChanged.On(this.GameStatusChanged.bind(this));
 
 		gameContext.GetCells().forEach((c) => {
 			c.AlwaysVisible();

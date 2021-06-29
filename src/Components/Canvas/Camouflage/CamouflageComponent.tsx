@@ -54,7 +54,7 @@ export default class CamouflageCanvasComponent extends Component<
 		);
 		this._gameContext = this._gameContextService.Publish();
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
-		this._gameContext.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
+		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this.setState({
 			HasMenu: false,
 			TankRequestCount: 0,
@@ -79,7 +79,7 @@ export default class CamouflageCanvasComponent extends Component<
 		this._soundService.Pause(AudioArchive.loungeMusic);
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
-		this._gameContext.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
+		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
 	}
 
@@ -140,7 +140,7 @@ export default class CamouflageCanvasComponent extends Component<
 			}
 		}
 
-		GameSettings.IsPause = hasMenu;
+		this._gameContext.State.IsPause = hasMenu;
 	}
 
 	render() {
@@ -181,7 +181,7 @@ export default class CamouflageCanvasComponent extends Component<
 				Status={this.state.GameStatus}
 				Resume={() => this.SetMenu()}
 				Quit={() => {
-					GameSettings.IsPause = true;
+					this._gameContext.State.IsPause = true;
 					this.setState({
 						HasMenu: false,
 						GameStatus: GameStatus.Defeat

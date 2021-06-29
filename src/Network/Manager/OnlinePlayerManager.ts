@@ -10,7 +10,6 @@ import { NetworkMessage } from '../Message/NetworkMessage';
 import { PeerSocket } from '../Socket/Peer/PeerSocket';
 
 export class OnlinePlayerManager implements IOnlinePlayerManager {
-	public OnConnectionChanged: LiteEvent<boolean> = new LiteEvent<boolean>();
 	public OnPlayersChanged: LiteEvent<Dictionary<OnlinePlayer>>;
 	private _servObs: NetworkObserver[];
 	private _peerObs: NetworkObserver[];
@@ -35,7 +34,6 @@ export class OnlinePlayerManager implements IOnlinePlayerManager {
 			new NetworkObserver(PacketKind.TimeOut, this.HandleTimeout.bind(this))
 		];
 		this._socketWrapper.OnPeerConnectionChanged.On(this.PeerConnectionChanged.bind(this));
-		this._socketWrapper.OnPeerConnectionChanged.On(this.HandleConnectionChanged.bind(this));
 
 		this._peerObs.forEach((obs) => {
 			this._socketWrapper.OnReceived.On(obs);
@@ -50,10 +48,6 @@ export class OnlinePlayerManager implements IOnlinePlayerManager {
 				this.OnPlayersChanged.Invoke(this, this.Players);
 			}
 		}
-	}
-
-	private HandleConnectionChanged(obj: any, isConnected: boolean): void {
-		this.OnConnectionChanged.Invoke(this, isConnected);
 	}
 
 	private HandlePing(message: NetworkMessage<string>): void {
@@ -83,11 +77,15 @@ export class OnlinePlayerManager implements IOnlinePlayerManager {
 		this.OnPlayersChanged.Invoke(this, this.Players);
 	}
 
-	Clear(): void {
+	public Clear(): void {
 		this._serverSocket.Off(this._servObs);
 		this._peerObs.forEach((obs) => {
 			this._socketWrapper.OnReceived.Off(obs);
 		});
 		this._socketWrapper.OnPeerConnectionChanged.Clear();
+	}
+
+	public IsSync(): boolean {
+		return this.Players.Values().every((p) => p.IsSync);
 	}
 }

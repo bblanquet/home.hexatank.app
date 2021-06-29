@@ -10,21 +10,25 @@ import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
 import { Identity } from '../../Items/Identity';
 import { Vehicle } from '../../Items/Unit/Vehicle';
+import { GameState } from './GameState';
 
 export class PowerContext implements IHqGameContext {
 	public OnPatrolSetting: LiteEvent<Boolean> = new LiteEvent<Boolean>();
-	public OnGameStatusChanged: LiteEvent<GameStatus> = new LiteEvent<GameStatus>();
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
 	private _cells: Dictionary<Cell>;
+	public State: GameState;
+
 	constructor(
+		state: GameState,
 		cells: Cell[],
 		private _unit: AliveItem,
 		private _fakeHq: CellLessHeadquarter,
 		private _target: HqLessShieldField
 	) {
 		this._cells = Dictionary.To((c) => c.Coo(), cells);
+		this.State = state;
 		this._target.OnDestroyed.On((source: any, data: Item) => {
-			this.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
+			this.State.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
 		});
 	}
 

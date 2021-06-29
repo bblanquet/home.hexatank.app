@@ -20,6 +20,7 @@ import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import { CellStateSetter } from '../../Core/Items/Cell/CellStateSetter';
+import { GameState } from '../../Core/Framework/Context/GameState';
 
 export class AppService implements IAppService<GameBlueprint> {
 	private _context: GameBlueprint;
@@ -60,27 +61,27 @@ export class AppService implements IAppService<GameBlueprint> {
 		return this._recordContext;
 	}
 
-	public Register(mapContext: GameBlueprint): void {
+	public Register(blueprint: GameBlueprint): void {
 		this._keyService.DefineKey(this);
 
 		GameSettings.Init();
 		GameSettings.SetNormalSpeed();
-		this._context = mapContext;
-		this._updateService.Register();
-		this._app = this._appProvider.Provide(mapContext);
-
+		const gameState = new GameState();
+		this._context = blueprint;
+		this._app = this._appProvider.Provide(blueprint);
 		this._layerService.Register(this._app);
+		this._updateService.Register(gameState);
 		this._interactionManager = new PIXI.InteractionManager(this._app.renderer);
-		this._gameContextService.Register(mapContext);
+		this._gameContextService.Register(blueprint, gameState);
 		this._gameContext = this._gameContextService.Publish();
 		this._interactionService.Register(this._interactionManager, this._gameContext);
-		this._recordContext = new RecordContext(mapContext, this._gameContext);
+		this._recordContext = new RecordContext(blueprint, this._gameContext);
 		this._statContext = new StatsContext(this._gameContext);
-		new BrainInjecter().Inject(this._gameContext, mapContext);
+		new BrainInjecter().Inject(this._gameContext, blueprint);
 		this._app.start();
-		this._gameAudioService = new GameAudioManager(mapContext, this._gameContext);
+		this._gameAudioService = new GameAudioManager(blueprint, this._gameContext);
 		this._audioService.Register(this._gameAudioService);
-		this._gameContext.OnGameStatusChanged.On(this.GameStatusChanged.bind(this));
+		this._gameContext.State.OnGameStatusChanged.On(this.GameStatusChanged.bind(this));
 
 		this._gameContext.GetCells().forEach((c) => {
 			c.AlwaysVisible();

@@ -1,7 +1,7 @@
 import { RectangleMapBuilder } from './RectangleMapBuilder';
-import { Dictionary } from '../../Utils/Collections/Dictionary';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { IMapBuilder } from './IPlaygroundBuilder';
-import { HexAxial } from '../../Utils/Geometry/HexAxial';
+import { HexAxial } from '../../../Utils/Geometry/HexAxial';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 
 export class RectangleFlowerMapBuilder implements IMapBuilder {

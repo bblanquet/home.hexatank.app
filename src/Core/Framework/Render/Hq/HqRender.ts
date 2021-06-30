@@ -1,7 +1,7 @@
 import { Identity } from './../../../Items/Identity';
-import { Dictionary } from '../../../Utils/Collections/Dictionary';
+import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { HqSkinHelper } from './HqSkinHelper';
-import { HexAxial } from '../../../Utils/Geometry/HexAxial';
+import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 import { Diamond } from '../../../Items/Cell/Field/Diamond';
 import { DiamondHq } from '../../Blueprint/Game/DiamondHq';

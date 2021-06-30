@@ -1,14 +1,14 @@
 import { PeerContext } from './../PeerContext';
-import { NetworkObserver } from '../../../../Core/Utils/Events/NetworkObserver';
-import { SimpleEvent } from '../../../../Core/Utils/Events/SimpleEvent';
-import { LiteEvent } from '../../../../Core/Utils/Events/LiteEvent';
+import { NetworkObserver } from '../../../../Utils/Events/NetworkObserver';
+import { SimpleEvent } from '../../../../Utils/Events/SimpleEvent';
+import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
 import { INetworkMessage } from '../../../Message/INetworkMessage';
 import { NetworkMessage } from '../../../Message/NetworkMessage';
 import { PacketKind } from '../../../Message/PacketKind';
-import { isNullOrUndefined } from '../../../../Core/Utils/ToolBox';
-import { LogKind } from '../../../../Core/Utils/Logger/LogKind';
-import { StaticLogger } from '../../../../Core/Utils/Logger/StaticLogger';
-import { ErrorCat, ErrorHandler } from '../../../../Core/Utils/Exceptions/ErrorHandler';
+import { isNullOrUndefined } from '../../../../Utils/ToolBox';
+import { LogKind } from '../../../../Utils/Logger/LogKind';
+import { StaticLogger } from '../../../../Utils/Logger/StaticLogger';
+import { ErrorCat, ErrorHandler } from '../../../../Utils/Exceptions/ErrorHandler';
 
 //ice:
 //it is the location of the peer (interaction connectivity establishment)

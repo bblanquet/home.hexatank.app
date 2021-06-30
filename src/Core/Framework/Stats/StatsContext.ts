@@ -1,8 +1,8 @@
 import { GameContext } from '../../Framework/Context/GameContext';
-import { Groups } from '../../Utils/Collections/Groups';
-import { Curve } from '../../Utils/Stats/Curve';
-import { DateValue } from '../../Utils/Stats/DateValue';
-import { StatsKind } from '../../Utils/Stats/StatsKind';
+import { Groups } from '../../../Utils/Collections/Groups';
+import { Curve } from '../../../Utils/Stats/Curve';
+import { DateValue } from '../../../Utils/Stats/DateValue';
+import { StatsKind } from '../../../Utils/Stats/StatsKind';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 

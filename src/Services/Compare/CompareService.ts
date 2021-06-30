@@ -1,7 +1,7 @@
 import { StatusDuration } from '../../UI/Common/Chart/Model/StatusDuration';
 import { RecordContent } from '../../Core/Framework/Record/Model/RecordContent';
-import { Dictionary } from '../../Core/Utils/Collections/Dictionary';
-import { LogMessage } from '../../Core/Utils/Logger/LogMessage';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
+import { LogMessage } from '../../Utils/Logger/LogMessage';
 import { CellDurationStateFormater } from '../../UI/Common/Chart/Formater/CellDurationStateFormater';
 import { VehicleDurationStateFormater } from '../../UI/Common/Chart/Formater/VehicleDurationStateFormater';
 import { ICompareService } from './ICompareService';

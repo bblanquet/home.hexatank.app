@@ -1,5 +1,5 @@
 import { h, Component } from 'preact';
-import { Dictionary } from '../../../../Core/Utils/Collections/Dictionary';
+import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { ColorKind } from './ColorKind';
 
 export default class SmButtonComponent extends Component<{ callBack: () => void; color: ColorKind }, any> {

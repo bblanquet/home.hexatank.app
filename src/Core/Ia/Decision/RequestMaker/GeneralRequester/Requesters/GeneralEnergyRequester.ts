@@ -1,9 +1,9 @@
-import { Dictionnary } from './../../../../../Utils/Collections/Dictionnary';
-import { IaArea } from '../../../Utils/IaArea';
+import { Dictionnary } from './../../../../../../Utils/Collections/Dictionnary';
+import { IaArea } from '../../../../Utils/IaArea';
 import { IGeneralRequester } from './../IGeneralRequester';
 import { Brain } from '../../../Brain';
-import { AreaRequest } from '../../../Utils/AreaRequest';
-import { RequestType } from '../../../Utils/RequestType';
+import { AreaRequest } from '../../../../Utils/AreaRequest';
+import { RequestType } from '../../../../Utils/RequestType';
 
 export class GeneralEnergyRequester implements IGeneralRequester {
 	constructor(private _priority: number) {}

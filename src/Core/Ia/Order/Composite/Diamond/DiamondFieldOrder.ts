@@ -10,8 +10,8 @@ import { AStarHelper } from '../../../AStarHelper';
 import { Order } from '../../Order';
 import { OrderState } from '../../OrderState';
 import { IOrderGiver } from './IOrderGiver';
-import { LogKind } from '../../../../Utils/Logger/LogKind';
-import { StaticLogger } from '../../../../Utils/Logger/StaticLogger';
+import { LogKind } from '../../../../../Utils/Logger/LogKind';
+import { StaticLogger } from '../../../../../Utils/Logger/StaticLogger';
 
 export class DiamondFieldOrder implements IOrderGiver {
 	private _currentOrder: Order;

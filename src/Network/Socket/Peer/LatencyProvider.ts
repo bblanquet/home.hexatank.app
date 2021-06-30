@@ -1,6 +1,6 @@
 import * as luxon from 'luxon';
-import { LogKind } from '../../../Core/Utils/Logger/LogKind';
-import { StaticLogger } from '../../../Core/Utils/Logger/StaticLogger';
+import { LogKind } from '../../../Utils/Logger/LogKind';
+import { StaticLogger } from '../../../Utils/Logger/StaticLogger';
 import { INetworkMessage } from '../../Message/INetworkMessage';
 import { JetlagData } from './Ping/JetlagData';
 export class LatencyProvider {

@@ -3,7 +3,7 @@ import { BlueprintSetup } from './BlueprintSetup';
 import DropDownComponent from '../../Common/DropDown/DropDownComponent';
 import Redirect from '../RedirectComponent';
 import Visible from '../VisibleComponent';
-import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
+import { isNullOrUndefined } from '../../../Utils/ToolBox';
 import { isEqual } from 'lodash';
 import SmActiveButtonComponent from '../../Common/Button/Stylish/SmActiveButtonComponent';
 import { ColorKind } from '../../Common/Button/Stylish/ColorKind';

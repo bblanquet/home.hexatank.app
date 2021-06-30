@@ -1,7 +1,7 @@
 import { OrderState } from './OrderState';
 import { Cell } from './../../Items/Cell/Cell';
 import { BasicItem } from '../../Items/BasicItem';
-import { Dictionary } from '../../Utils/Collections/Dictionary';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { SvgArchive } from '../../Framework/SvgArchiver';
 import { BouncingScaleUpAnimator } from '../../Items/Animator/BouncingScaleUpAnimator';
 import { IOrder } from './IOrder';

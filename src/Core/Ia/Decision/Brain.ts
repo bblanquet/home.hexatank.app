@@ -4,8 +4,8 @@ import { MoneyOrder } from '../Order/Composite/MoneyOrder';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { IExpansionMaker } from './ExpansionMaker/IExpansionMaker';
 import { IBrain } from './IBrain';
-import { Groups } from '../../Utils/Collections/Groups';
-import { Dictionary } from '../../Utils/Collections/Dictionary';
+import { Groups } from '../../../Utils/Collections/Groups';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { IAreaDecisionMaker } from './Area/IAreaDecisionMaker';
 import { ExcessTankFinder } from './ExcessTankFinder';
 import { AreaRequest } from './Utils/AreaRequest';
@@ -19,9 +19,9 @@ import { IAreaRequestListMaker } from './RequestMaker/IAreaRequestListMaker';
 import { IGeneralListRequester } from './RequestMaker/GeneralRequester/IGeneralListRequester';
 import { Cell } from '../../Items/Cell/Cell';
 import { Squad } from './Troop/Squad';
-import { isNullOrUndefined } from '../../Utils/ToolBox';
-import { TimeTimer } from '../../Utils/Timer/TimeTimer';
-import { ITimer } from '../../Utils/Timer/ITimer';
+import { isNullOrUndefined } from '../../../Utils/ToolBox';
+import { TimeTimer } from '../../../Utils/Timer/TimeTimer';
+import { ITimer } from '../../../Utils/Timer/ITimer';
 
 export class Brain implements IBrain {
 	public AreaDecisions: IAreaDecisionMaker[];

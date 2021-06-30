@@ -3,7 +3,7 @@ import { BatteryField } from '../Bonus/BatteryField';
 import { ChargeLink } from './ChargeLink';
 import { Item } from '../../../Item';
 import { IInteractionContext } from '../../../../Interaction/IInteractionContext';
-import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../../../Utils/Geometry/BoundingBox';
 import { AStarEngine } from '../../../../Ia/AStarEngine';
 import { Cell } from '../../Cell';
 import { IHeadquarter } from './IHeadquarter';

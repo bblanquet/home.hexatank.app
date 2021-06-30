@@ -1,5 +1,5 @@
-import { SimpleEvent } from './../../Utils/Events/SimpleEvent';
-import { ILiteEvent } from './../../Utils/Events/ILiteEvent';
+import { SimpleEvent } from './../../../Utils/Events/SimpleEvent';
+import { ILiteEvent } from './../../../Utils/Events/ILiteEvent';
 import { CombinationContext } from './CombinationContext';
 import { Item } from '../../Items/Item';
 

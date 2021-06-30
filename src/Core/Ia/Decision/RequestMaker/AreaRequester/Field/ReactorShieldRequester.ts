@@ -6,7 +6,7 @@ import { AreaRequestMaker } from '../../AreaRequestMaker';
 import { BasicField } from '../../../../../Items/Cell/Field/BasicField';
 
 export class ReactorShieldRequester implements IAreaRequestMaker {
-	constructor(private _priority: number) { }
+	constructor(private _priority: number) {}
 
 	GetRequest(area: IaArea): AreaRequest {
 		if (area.GetInnerFoeCount() === 0 && 0 < area.GetFreeCoveredCells().length) {

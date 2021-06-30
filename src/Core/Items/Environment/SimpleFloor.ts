@@ -1,5 +1,5 @@
 import { BasicItem } from './../BasicItem';
-import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { SvgArchive } from '../../Framework/SvgArchiver';
 
 export class SimpleFloor extends BasicItem {

@@ -1,5 +1,5 @@
 import { GameStatus } from '../../Framework/GameStatus';
-import { LiteEvent } from '../../Utils/Events/LiteEvent';
+import { LiteEvent } from '../../../Utils/Events/LiteEvent';
 
 export class GameState {
 	GameStatus: GameStatus = GameStatus.Pending;

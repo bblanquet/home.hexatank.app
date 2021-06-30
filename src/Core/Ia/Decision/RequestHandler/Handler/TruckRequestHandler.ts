@@ -11,7 +11,7 @@ import { DiamondFieldOrder } from '../../../Order/Composite/Diamond/DiamondField
 import { RequestType } from '../../Utils/RequestType';
 
 export class TruckRequestHandler implements ISimpleRequestHandler {
-	constructor(private _hq: Headquarter, private _kingdom: IBrain) { }
+	constructor(private _hq: Headquarter, private _kingdom: IBrain) {}
 
 	Type(): RequestType {
 		return RequestType.Truck;

@@ -5,7 +5,7 @@ import { Cell } from '../../Items/Cell/Cell';
 import { ParentOrder } from './ParentOrder';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { IdleOrder } from './IdleOrder';
-import { TimeTimer } from '../../Utils/Timer/TimeTimer';
+import { TimeTimer } from '../../../Utils/Timer/TimeTimer';
 import { TypeTranslator } from '../../Items/Cell/Field/TypeTranslator';
 
 export class MonitoredOrder extends ParentOrder {

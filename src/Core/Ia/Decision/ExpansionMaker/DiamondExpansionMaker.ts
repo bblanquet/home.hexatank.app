@@ -6,7 +6,7 @@ import { GameSettings } from '../../../Framework/GameSettings';
 import { AreaDecisionMaker } from '../Area/AreaDecisionMaker';
 import { IaArea } from '../Utils/IaArea';
 import { AreaSearch } from '../Utils/AreaSearch';
-import { isNullOrUndefined } from '../../../Utils/ToolBox';
+import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 import { Cell } from '../../../Items/Cell/Cell';
 import { AStarEngine } from '../../AStarEngine';
 

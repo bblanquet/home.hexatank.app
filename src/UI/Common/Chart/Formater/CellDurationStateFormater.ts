@@ -1,5 +1,5 @@
 import { StatusDuration } from '../Model/StatusDuration';
-import { Dictionary } from '../../../../Core/Utils/Collections/Dictionary';
+import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { DurationState } from '../Model/DurationState';
 import { RecordStateDuration } from '../Model/RecordStateDuration';
 import { RecordContent } from '../../../../Core/Framework/Record/Model/RecordContent';

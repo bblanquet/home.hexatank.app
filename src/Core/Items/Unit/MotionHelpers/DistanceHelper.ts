@@ -1,4 +1,4 @@
-import { HexAxial } from '../../../Utils/Geometry/HexAxial';
+import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
 
 export class DistanceHelper {
 	public static GetDistance(a: HexAxial, b: HexAxial): number {

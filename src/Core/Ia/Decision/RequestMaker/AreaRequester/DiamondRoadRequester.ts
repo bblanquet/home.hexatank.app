@@ -1,4 +1,4 @@
-import { Dictionary } from '../../../../Utils/Collections/Dictionary';
+import { Dictionary } from '../../../../../Utils/Collections/Dictionary';
 import { TypeTranslator } from './../../../../Items/Cell/Field/TypeTranslator';
 import { Cell } from '../../../../Items/Cell/Cell';
 import { AStarEngine } from '../../../AStarEngine';

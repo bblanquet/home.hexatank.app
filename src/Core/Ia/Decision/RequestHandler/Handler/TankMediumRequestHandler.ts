@@ -7,8 +7,8 @@ import { GameSettings } from '../../../../Framework/GameSettings';
 import { Vehicle } from '../../../../Items/Unit/Vehicle';
 import { Tank } from '../../../../Items/Unit/Tank';
 import { RequestType } from '../../Utils/RequestType';
-import { isNullOrUndefined } from '../../../../Utils/ToolBox';
-import { ErrorHandler } from '../../../../Utils/Exceptions/ErrorHandler';
+import { isNullOrUndefined } from '../../../../../Utils/ToolBox';
+import { ErrorHandler } from '../../../../../Utils/Exceptions/ErrorHandler';
 
 export class TankMediumRequestHandler implements ISimpleRequestHandler {
 	constructor(private _kingdom: Brain, private _hq: Headquarter) {}

@@ -1,5 +1,5 @@
 import { SpriteProvider } from '../../Core/Framework/SpriteProvider';
-import { Dictionary } from '../../Core/Utils/Collections/Dictionary';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 import { Howl } from 'howler';
 

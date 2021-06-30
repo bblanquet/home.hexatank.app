@@ -2,7 +2,7 @@ import { AreaStatus } from './AreaStatus';
 import { Diamond } from '../../../Items/Cell/Field/Diamond';
 import { Cell } from '../../../Items/Cell/Cell';
 import { DistanceHelper } from '../../../Items/Unit/MotionHelpers/DistanceHelper';
-import { isNullOrUndefined } from '../../../Utils/ToolBox';
+import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 import { Identity } from '../../../Items/Identity';
 import { TypeTranslator } from '../../../Items/Cell/Field/TypeTranslator';
 

@@ -1,5 +1,5 @@
 import { Component, h } from 'preact';
-import { SimpleEvent } from '../../../Core/Utils/Events/SimpleEvent';
+import { SimpleEvent } from '../../../Utils/Events/SimpleEvent';
 import Icon from '../../Common/Icon/IconComponent';
 import TimerComponent from '../../Common/Timer/TimerComponent';
 

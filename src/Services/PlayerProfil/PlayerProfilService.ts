@@ -1,6 +1,6 @@
 import { RecordContent } from '../../Core/Framework/Record/Model/RecordContent';
-import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
-import { SimpleEvent } from '../../Core/Utils/Events/SimpleEvent';
+import { LiteEvent } from '../../Utils/Events/LiteEvent';
+import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { IPlayerProfilService } from './IPlayerProfilService';
 import { PlayerProfil } from './PlayerProfil';
 

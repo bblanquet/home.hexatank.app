@@ -1,6 +1,6 @@
 import { Identity, Relationship } from './../../Identity';
 import { AliveField } from './AliveField';
-import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { Light } from '../../Environment/Light';
 import { DiamondField } from './DiamondField';
 import { Cell } from '../Cell';

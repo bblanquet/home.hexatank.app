@@ -6,7 +6,7 @@ import { Singletons, SingletonKey } from '../../Singletons';
 import { ILayerService } from '../../Services/Layer/ILayerService';
 import { IGameContextService } from '../../Services/GameContext/IGameContextService';
 import { IKeyService } from '../../Services/Key/IKeyService';
-import { IsMobile } from '../../Core/Utils/ToolBox';
+import { IsMobile } from '../../Utils/ToolBox';
 import { IGameContext } from '../../Core/Framework/Context/IGameContext';
 import { IBlueprint } from '../../Core/Framework/Blueprint/IBlueprint';
 import PageAnalyser from '../Components/PageAnalyser';

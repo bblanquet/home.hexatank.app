@@ -6,8 +6,8 @@ import { Cell } from '../../Cell';
 import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { AliveBonusField } from './AliveBonusField';
-import { ITimer } from '../../../../Utils/Timer/ITimer';
-import { TimeTimer } from '../../../../Utils/Timer/TimeTimer';
+import { ITimer } from '../../../../../Utils/Timer/ITimer';
+import { TimeTimer } from '../../../../../Utils/Timer/TimeTimer';
 import { BouncingScaleDownAnimator } from '../../../Animator/BouncingScaleDownAnimator';
 import { BouncingScaleUpAnimator } from '../../../Animator/BouncingScaleUpAnimator';
 

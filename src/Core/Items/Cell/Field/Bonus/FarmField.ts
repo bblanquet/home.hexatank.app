@@ -1,5 +1,5 @@
 import { UpCalculator } from './UpCalculator';
-import { TimeTimer } from './../../../../Utils/Timer/TimeTimer';
+import { TimeTimer } from './../../../../../Utils/Timer/TimeTimer';
 import { GameSettings } from '../../../../Framework/GameSettings';
 import { Cell } from '../../Cell';
 import { Light } from '../../../Environment/Light';

@@ -1,12 +1,12 @@
 import { NetworkMessage } from './../../Message/NetworkMessage';
 import { PacketKind } from './../../Message/PacketKind';
-import { Dictionary } from '../../../Core/Utils/Collections/Dictionary';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { IServerSocket } from './IServerSocket';
 import * as io from 'socket.io-client';
 import { INetworkMessage } from '../../Message/INetworkMessage';
-import { NetworkObserver } from '../../../Core/Utils/Events/NetworkObserver';
-import { StaticLogger } from '../../../Core/Utils/Logger/StaticLogger';
-import { LogKind } from '../../../Core/Utils/Logger/LogKind';
+import { NetworkObserver } from '../../../Utils/Events/NetworkObserver';
+import { StaticLogger } from '../../../Utils/Logger/StaticLogger';
+import { LogKind } from '../../../Utils/Logger/LogKind';
 
 export class ServerSocket implements IServerSocket {
 	private _socket: SocketIOClient.Socket;

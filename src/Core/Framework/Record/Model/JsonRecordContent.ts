@@ -1,5 +1,5 @@
 import { GameBlueprint } from '../../Blueprint/Game/GameBlueprint';
-import { LogMessage } from '../../../Utils/Logger/LogMessage';
+import { LogMessage } from '../../../../Utils/Logger/LogMessage';
 import { RecordContent } from './RecordContent';
 export class JsonRecordContent {
 	public Blueprint: GameBlueprint;

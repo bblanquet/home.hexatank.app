@@ -1,12 +1,12 @@
 import { ZKind } from './../../../ZKind';
 import { InteractionContext } from '../../../../Interaction/InteractionContext';
 import { Cell } from '../../Cell';
-import { TickTimer } from '../../../../Utils/Timer/TickTimer';
+import { TickTimer } from '../../../../../Utils/Timer/TickTimer';
 import { Headquarter } from './Headquarter';
 import { Field } from '../Field';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { Truck } from '../../../Unit/Truck';
-import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../../../Utils/Geometry/BoundingBox';
 import { Relationship } from '../../../Identity';
 
 export class HeadquarterField extends Field {

@@ -1,7 +1,7 @@
-import { Dictionary } from './Core/Utils/Collections/Dictionary';
-import { LogKind } from './Core/Utils/Logger/LogKind';
-import { StaticLogger } from './Core/Utils/Logger/StaticLogger';
-import { ErrorCat, ErrorHandler } from './Core/Utils/Exceptions/ErrorHandler';
+import { Dictionary } from './Utils/Collections/Dictionary';
+import { LogKind } from './Utils/Logger/LogKind';
+import { StaticLogger } from './Utils/Logger/StaticLogger';
+import { ErrorCat, ErrorHandler } from './Utils/Exceptions/ErrorHandler';
 
 export class Singletons {
 	private static _singletons: Dictionary<any> = new Dictionary<any>();

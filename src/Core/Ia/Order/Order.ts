@@ -1,5 +1,5 @@
 import { Cell } from '../../Items/Cell/Cell';
-import { LiteEvent } from '../../Utils/Events/LiteEvent';
+import { LiteEvent } from '../../../Utils/Events/LiteEvent';
 import { IOrder } from './IOrder';
 import { OrderKind } from './OrderKind';
 import { OrderState } from './OrderState';

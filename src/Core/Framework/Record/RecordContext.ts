@@ -15,8 +15,8 @@ import { FieldHelper } from '../FieldTypeHelper';
 import { RecordCellState } from './Model/Item/State/RecordCellState';
 import { RecordContent } from './Model/RecordContent';
 import { IRecordContext } from './IRecordContext';
-import { StaticLogger } from '../../Utils/Logger/StaticLogger';
-import { LogMessage } from '../../Utils/Logger/LogMessage';
+import { StaticLogger } from '../../../Utils/Logger/StaticLogger';
+import { LogMessage } from '../../../Utils/Logger/LogMessage';
 
 export class RecordContext implements IRecordContext {
 	private _record: RecordContent;

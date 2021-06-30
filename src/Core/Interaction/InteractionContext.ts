@@ -1,6 +1,6 @@
 import { BasicField } from './../Items/Cell/Field/BasicField';
 import { InteractionInfo } from './InteractionInfo';
-import { LiteEvent } from './../Utils/Events/LiteEvent';
+import { LiteEvent } from './../../Utils/Events/LiteEvent';
 import { IUpdateService } from './../../Services/Update/IUpdateService';
 import { UnitGroup } from '../Items/UnitGroup';
 import { ICombination } from './Combination/ICombination';
@@ -10,14 +10,13 @@ import { IContextContainer } from './IContextContainer';
 import * as PIXI from 'pixi.js';
 import { Item } from '../Items/Item';
 import { Cell } from '../Items/Cell/Cell';
-import { Point } from '../Utils/Geometry/Point';
+import { Point } from '../../Utils/Geometry/Point';
 import { IInteractionContext, InteractionKind } from './IInteractionContext';
 import { ISelectableChecker } from './ISelectableChecker';
-import { ViewContext } from '../Utils/Geometry/ViewContext';
+import { ViewContext } from '../../Utils/Geometry/ViewContext';
 import { Singletons, SingletonKey } from '../../Singletons';
-import { StaticLogger } from '../Utils/Logger/StaticLogger';
-import { LogKind } from '../Utils/Logger/LogKind';
-import { GameSettings } from '../Framework/GameSettings';
+import { StaticLogger } from '../../Utils/Logger/StaticLogger';
+import { LogKind } from '../../Utils/Logger/LogKind';
 import { IGameContext } from '../Framework/Context/IGameContext';
 
 export class InteractionContext implements IContextContainer, IInteractionContext {

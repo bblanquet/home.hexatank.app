@@ -1,7 +1,7 @@
 import { IAnimator } from './Animator/IAnimator';
 import { InteractionContext } from './../Interaction/InteractionContext';
 import { Item } from './Item';
-import { BoundingBox } from '../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 
 export class BasicItem extends Item {
 	private _isVisible: { (): boolean };

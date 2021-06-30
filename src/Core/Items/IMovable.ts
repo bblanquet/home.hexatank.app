@@ -1,4 +1,4 @@
-import { LiteEvent } from '../Utils/Events/LiteEvent';
+import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { Cell } from './Cell/Cell';
 
 export interface IMovable {

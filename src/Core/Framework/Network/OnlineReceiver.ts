@@ -7,15 +7,15 @@ import { FieldHelper } from '../FieldTypeHelper';
 import { PathResolver } from './PathResolver';
 import { ISocketWrapper } from '../../../Network/Socket/INetworkSocket';
 import { PacketKind } from '../../../Network/Message/PacketKind';
-import { NetworkObserver } from '../../Utils/Events/NetworkObserver';
+import { NetworkObserver } from '../../../Utils/Events/NetworkObserver';
 import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
 import { NextCellContent } from './Contents/NextCellContent';
 import { TargetContent } from './Contents/TargetContent';
-import { StaticLogger } from '../../Utils/Logger/StaticLogger';
-import { LogKind } from '../../Utils/Logger/LogKind';
+import { StaticLogger } from '../../../Utils/Logger/StaticLogger';
+import { LogKind } from '../../../Utils/Logger/LogKind';
 import { ItemsUpdater } from '../../ItemsUpdater';
 import { PacketContent } from './Contents/PacketContent';
-import { LiteEvent } from '../../Utils/Events/LiteEvent';
+import { LiteEvent } from '../../../Utils/Events/LiteEvent';
 
 export class OnlineReceiver {
 	public OnInconsistency: LiteEvent<Date> = new LiteEvent<Date>();

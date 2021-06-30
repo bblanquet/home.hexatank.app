@@ -6,7 +6,7 @@ import { ISquadTarget } from './Troop/Target/ISquadTarget';
 import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
 import { Area } from './Utils/Area';
 import { Cell } from '../../Items/Cell/Cell';
-import { ErrorCat, ErrorHandler } from '../../Utils/Exceptions/ErrorHandler';
+import { ErrorCat, ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
 
 export class MapObserver {
 	public NeutralAreas: Area[];

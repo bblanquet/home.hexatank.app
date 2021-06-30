@@ -5,8 +5,8 @@ import { MapObserver } from '../MapObserver';
 import { Brain } from '../Brain';
 import { CellHelper } from '../../../Items/Cell/CellHelper';
 import { TargetMonitoredOrder } from '../../Order/TargetMonitoredOrder';
-import { LogKind } from '../../../Utils/Logger/LogKind';
-import { StaticLogger } from '../../../Utils/Logger/StaticLogger';
+import { LogKind } from '../../../../Utils/Logger/LogKind';
+import { StaticLogger } from '../../../../Utils/Logger/StaticLogger';
 
 export class Squad implements IDoable {
 	private _tanks: Tank[] = new Array<Tank>();

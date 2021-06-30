@@ -13,7 +13,7 @@ import { HealMenuItem } from '../../../Menu/Buttons/HealMenuItem';
 import { SpeedFieldMenuItem } from '../../../Menu/Buttons/SpeedFieldMenuItem';
 import { Cell } from '../Cell';
 import { Vehicle } from '../../Unit/Vehicle';
-import { ErrorCat, ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
+import { ErrorCat, ErrorHandler } from '../../../../Utils/Exceptions/ErrorHandler';
 
 export class TypeTranslator {
 	public static IsSpecialField(cell: IField): boolean {

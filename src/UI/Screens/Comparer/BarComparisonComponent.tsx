@@ -3,7 +3,7 @@ import { BarChart } from '../../Common/Chart/Config/BarChart';
 import Redirect from '../../Components/RedirectComponent';
 import ChartContainer from '../../Common/Chart/ChartContainer';
 import { StatusDuration } from '../../Common/Chart/Model/StatusDuration';
-import { Dictionary } from '../../../Core/Utils/Collections/Dictionary';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 
 export default class BarComparisonComponent extends Component<
 	{ Data: Dictionary<StatusDuration[]> },

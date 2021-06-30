@@ -1,12 +1,12 @@
 import { ZKind } from './../../ZKind';
 import { Field } from './Field';
-import { TickTimer } from '../../../Utils/Timer/TickTimer';
-import { LiteEvent } from '../../../Utils/Events/LiteEvent';
+import { TickTimer } from '../../../../Utils/Timer/TickTimer';
+import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
 import { Cell } from '../Cell';
 import { SvgArchive } from '../../../Framework/SvgArchiver';
 import { Vehicle } from '../../Unit/Vehicle';
 import { Truck } from '../../Unit/Truck';
-import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../../Interaction/InteractionContext';
 
 export class DiamondField extends Field {

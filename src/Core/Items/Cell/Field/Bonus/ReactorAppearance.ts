@@ -3,14 +3,14 @@ import { FadeOutAnimation } from '../../../Animator/FadeOutAnimation';
 import { FadeInAnimation } from '../../../Animator/FadeInAnimation';
 import { RotationAnimator } from '../../../Animator/RotationAnimator';
 import { IAnimator } from '../../../Animator/IAnimator';
-import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../../../Utils/Geometry/BoundingBox';
 import { Item } from '../../../Item';
 import { IInteractionContext } from '../../../../Interaction/IInteractionContext';
 import { CellState } from '../../CellState';
 import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { BouncingScaleAnimator } from '../../../Animator/BouncingScaleAnimator';
 import { ReactorField } from './ReactorField';
-import { isNullOrUndefined } from '../../../../Utils/ToolBox';
+import { isNullOrUndefined } from '../../../../../Utils/ToolBox';
 import { ZKind } from '../../../ZKind';
 
 export class ReactorAppearance extends Item {

@@ -1,5 +1,5 @@
 import { h, Component } from 'preact';
-import { StatsKind } from '../../Core/Utils/Stats/StatsKind';
+import { StatsKind } from '../../Utils/Stats/StatsKind';
 import { GameSettings } from '../../Core/Framework/GameSettings';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';

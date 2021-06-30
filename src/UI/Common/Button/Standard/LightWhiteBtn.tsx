@@ -1,5 +1,5 @@
 import { h, Component } from 'preact';
-import { Point } from '../../../../Core/Utils/Geometry/Point';
+import { Point } from '../../../../Utils/Geometry/Point';
 
 export default class LightDarkBtn extends Component<{ CallBack: () => void; Icon: string; Point: Point }, {}> {
 	constructor() {

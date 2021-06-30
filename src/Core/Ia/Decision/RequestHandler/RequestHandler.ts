@@ -1,9 +1,9 @@
 import { ISimpleRequestHandler } from './ISimpleRequestHandler';
-import { Groups } from '../../../Utils/Collections/Groups';
+import { Groups } from '../../../../Utils/Collections/Groups';
 import { IRequestHandler } from './IRequestHandler';
 import { AreaRequest } from '../Utils/AreaRequest';
-import { StaticLogger } from '../../../Utils/Logger/StaticLogger';
-import { LogKind } from '../../../Utils/Logger/LogKind';
+import { StaticLogger } from '../../../../Utils/Logger/StaticLogger';
+import { LogKind } from '../../../../Utils/Logger/LogKind';
 
 export class RequestHandler implements IRequestHandler {
 	constructor(private _handlers: Groups<ISimpleRequestHandler>) {}

@@ -1,9 +1,9 @@
 import { RecordCell } from './Item/RecordCell';
 import { RecordHq } from './RecordHq';
-import { Dictionary } from '../../../Utils/Collections/Dictionary';
+import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { JsonRecordContent } from './JsonRecordContent';
 import { GameBlueprint } from '../../../Framework/Blueprint/Game/GameBlueprint';
-import { LogMessage } from '../../../Utils/Logger/LogMessage';
+import { LogMessage } from '../../../../Utils/Logger/LogMessage';
 export class RecordContent {
 	public Blueprint: GameBlueprint;
 	public Dates: number[] = [];

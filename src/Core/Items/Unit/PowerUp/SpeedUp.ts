@@ -3,7 +3,7 @@ import { Up } from './Up';
 import { UpCondition } from './Condition/UpCondition';
 import { SvgArchive } from '../../../Framework/SvgArchiver';
 import { Vehicle } from '../Vehicle';
-import { LiteEvent } from '../../../Utils/Events/LiteEvent';
+import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
 
 export class SpeedUp extends Up {
 	constructor(vehicle: Vehicle, condition: UpCondition, energy: number, energyChanged: LiteEvent<number> = null) {

@@ -1,4 +1,4 @@
-import { Dictionary } from '../../../Core/Utils/Collections/Dictionary';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { OnlinePlayer } from '../../../Network/OnlinePlayer';
 import { BlueprintSetup } from '../../Components/Form/BlueprintSetup';
 import { Message } from './Message';

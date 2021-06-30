@@ -4,14 +4,14 @@ import { EnemyReactorHandler } from './../Decision/RequestHandler/Handler/EnemyR
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { GameContext } from '../../Framework/Context/GameContext';
-import { Groups } from '../../Utils/Collections/Groups';
+import { Groups } from '../../../Utils/Collections/Groups';
 import { Brain } from '../Decision/Brain';
 import { IBrain } from '../Decision/IBrain';
 import { ISimpleRequestHandler } from '../Decision/RequestHandler/ISimpleRequestHandler';
 import { AreaRequestMaker } from '../Decision/RequestMaker/AreaRequestMaker';
 import { GeneralRequester } from '../Decision/RequestMaker/GeneralRequester/GeneralRequester';
-import { Area } from '../Decision/Utils/Area';
-import { AreaSearch } from '../Decision/Utils/AreaSearch';
+import { Area } from '../Decision/../Utils/Area';
+import { AreaSearch } from '../Decision/../Utils/AreaSearch';
 import { IBrainProvider } from './IBrain';
 import { GeneralRaidRequester } from '../Decision/RequestMaker/GeneralRequester/Requesters/GeneralRaidRequester';
 import { SimpleTankHander } from '../Decision/RequestHandler/Handler/SimpleTankHander';

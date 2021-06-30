@@ -1,4 +1,4 @@
-import { ISpot } from '../Utils/Geometry/ISpot';
+import { ISpot } from '../../Utils/Geometry/ISpot';
 
 export class AStarNode<T extends ISpot<T>> {
 	Cell: T;

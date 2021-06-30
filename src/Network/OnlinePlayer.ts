@@ -1,4 +1,4 @@
-import { SimpleEvent } from '../Core/Utils/Events/SimpleEvent';
+import { SimpleEvent } from '../Utils/Events/SimpleEvent';
 import { ConnectionStatus } from './ConnectionStatus';
 export class OnlinePlayer {
 	public Name: string;

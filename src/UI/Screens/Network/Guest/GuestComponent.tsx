@@ -1,8 +1,8 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
-import { LiteEvent } from '../../../../Core/Utils/Events/LiteEvent';
-import { NetworkObserver } from '../../../../Core/Utils/Events/NetworkObserver';
-import { LogKind } from '../../../../Core/Utils/Logger/LogKind';
+import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
+import { NetworkObserver } from '../../../../Utils/Events/NetworkObserver';
+import { LogKind } from '../../../../Utils/Logger/LogKind';
 import { NetworkMessage } from '../../../../Network/Message/NetworkMessage';
 import { PacketKind } from '../../../../Network/Message/PacketKind';
 import { IServerSocket } from '../../../../Network/Socket/Server/IServerSocket';

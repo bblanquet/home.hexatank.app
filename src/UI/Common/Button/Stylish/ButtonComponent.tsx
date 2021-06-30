@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 import { AudioArchive } from '../../../../Core/Framework/AudioArchiver';
-import { Dictionary } from '../../../../Core/Utils/Collections/Dictionary';
+import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { Singletons, SingletonKey } from '../../../../Singletons';
 import { IAudioService } from '../../../../Services/Audio/IAudioService';
 import { ColorKind } from './ColorKind';

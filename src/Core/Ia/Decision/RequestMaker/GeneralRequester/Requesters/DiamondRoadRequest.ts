@@ -2,9 +2,9 @@ import { Cell } from './../../../../../Items/Cell/Cell';
 import { AStarEngine } from './../../../../AStarEngine';
 import { IGeneralRequester } from './../IGeneralRequester';
 import { Brain } from '../../../Brain';
-import { AreaRequest } from '../../../Utils/AreaRequest';
-import { RequestType } from '../../../Utils/RequestType';
-import { IaArea } from '../../../Utils/IaArea';
+import { AreaRequest } from '../../../../Utils/AreaRequest';
+import { RequestType } from '../../../../Utils/RequestType';
+import { IaArea } from '../../../../Utils/IaArea';
 
 export class DiamondRoadRequest implements IGeneralRequester {
 	constructor(private _priority: number) {}

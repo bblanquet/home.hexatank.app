@@ -1,8 +1,8 @@
 import { GameSettings } from '../../../Framework/GameSettings';
 import { DecoratingPrints } from '../../../Items/Cell/Decorator/DecoratingPrints';
 import { DecoratingFactory } from '../../../Items/Cell/Decorator/ForestFactory';
-import { Dictionary } from '../../../Utils/Collections/Dictionary';
-import { HexAxial } from '../../../Utils/Geometry/HexAxial';
+import { Dictionary } from '../../../../Utils/Collections/Dictionary';
+import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
 import { CheeseFlowerMapBuilder } from '../../Builder/CheeseFlowerMapBuilder';
 import { DonutFlowerMapBuilder } from '../../Builder/DonutFlowerMapBuilder';
 import { FartestPointsFinder } from '../../Builder/FartestPointsFinder';

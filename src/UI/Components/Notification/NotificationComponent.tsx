@@ -1,8 +1,8 @@
 import { h, Component } from 'preact';
-import { LogKind } from '../../../Core/Utils/Logger/LogKind';
-import { StaticLogger } from '../../../Core/Utils/Logger/StaticLogger';
+import { LogKind } from '../../../Utils/Logger/LogKind';
+import { StaticLogger } from '../../../Utils/Logger/StaticLogger';
 import { NotificationItem } from './NotificationItem';
-import { LiteEvent } from '../../../Core/Utils/Events/LiteEvent';
+import { LiteEvent } from '../../../Utils/Events/LiteEvent';
 import Icon from '../../Common/Icon/IconComponent';
 import Visible from '../VisibleComponent';
 

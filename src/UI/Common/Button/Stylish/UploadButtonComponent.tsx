@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
-import { LogKind } from '../../../../Core/Utils/Logger/LogKind';
-import { StaticLogger } from '../../../../Core/Utils/Logger/StaticLogger';
+import { LogKind } from '../../../../Utils/Logger/LogKind';
+import { StaticLogger } from '../../../../Utils/Logger/StaticLogger';
 import Icon from '../../Icon/IconComponent';
 import ButtonComponent from './ButtonComponent';
 import { ColorKind } from './ColorKind';

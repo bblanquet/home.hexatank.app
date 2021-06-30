@@ -1,6 +1,6 @@
 import { DistanceHelper } from './../Unit/MotionHelpers/DistanceHelper';
 import { Cell } from './Cell';
-import { Groups } from './../../Utils/Collections/Groups';
+import { Groups } from './../../../Utils/Collections/Groups';
 
 export class CellHelper {
 	public static GetClosest(candidates: Cell[], source: Cell): Cell {

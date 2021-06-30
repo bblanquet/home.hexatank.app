@@ -1,11 +1,11 @@
 import { Identity, Relationship } from './../Identity';
-import { TimeTimer } from './../../Utils/Timer/TimeTimer';
+import { TimeTimer } from './../../../Utils/Timer/TimeTimer';
 import { GameSettings } from './../../Framework/GameSettings';
 import { Vehicle } from './Vehicle';
 import { Light } from '../Environment/Light';
 import { SvgArchive } from '../../Framework/SvgArchiver';
 import { CellState } from '../Cell/CellState';
-import { ITimer } from '../../Utils/Timer/ITimer';
+import { ITimer } from '../../../Utils/Timer/ITimer';
 
 export class Truck extends Vehicle {
 	private _light: Light;

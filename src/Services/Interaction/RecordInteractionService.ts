@@ -5,7 +5,7 @@ import { GameContext } from '../../Core/Framework/Context/GameContext';
 import { InteractionContext } from '../../Core/Interaction/InteractionContext';
 import { IInteractionService } from './IInteractionService';
 import { ILayerService } from '../Layer/ILayerService';
-import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
+import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { Singletons, SingletonKey } from '../../Singletons';
 import * as PIXI from 'pixi.js';
 import { CancelCombination } from '../../Core/Interaction/Combination/CancelCombination';

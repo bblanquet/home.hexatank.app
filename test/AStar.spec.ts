@@ -1,10 +1,10 @@
-import { Dictionary } from './../src/Core/Utils/Collections/Dictionary';
+import { Dictionary } from './../src/Utils/Collections/Dictionary';
 import { GameSettings } from './../src/Core/Framework/GameSettings';
 import { CircleMapBuilder } from './../src/Core/Framework/Builder/CircleMapBuilder';
 import { AStarEngine } from './../src/Core/Ia/AStarEngine';
 import 'mocha';
 import { expect } from 'chai';
-import { HexAxial } from '../src/Core/Utils/Geometry/HexAxial';
+import { HexAxial } from '../src/Utils/Geometry/HexAxial';
 
 describe('Astar', () => {
 	var cells = new Dictionary<HexAxial>();

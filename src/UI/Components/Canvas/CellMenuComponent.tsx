@@ -14,7 +14,7 @@ import { SpeedFieldMenuItem } from '../../../Core/Menu/Buttons/SpeedFieldMenuIte
 import { ThunderMenuItem } from '../../../Core/Menu/Buttons/ThunderMenuItem';
 import CircularV2Component from '../../Common/CircularV2/CircularV2';
 import LightDarkBtn from '../../Common/Button/Standard/LightDarkBtn';
-import { Point } from '../../../Core/Utils/Geometry/Point';
+import { Point } from '../../../Utils/Geometry/Point';
 
 export default class CellMenuComponent extends Component<
 	{ Item: Item; ReactorCount: number; Interaction: InteractionContext },

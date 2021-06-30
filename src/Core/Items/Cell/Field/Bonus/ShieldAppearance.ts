@@ -1,6 +1,6 @@
 import { CellState } from './../../CellState';
 import { IInteractionContext } from '../../../../Interaction/IInteractionContext';
-import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../../../Utils/Geometry/BoundingBox';
 import { Item } from '../../../Item';
 import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { InfiniteFadeAnimation } from '../../../Animator/InfiniteFadeAnimation';

@@ -1,6 +1,6 @@
 import { PeerContext } from './../PeerContext';
 import { BasicServerPinger } from './BasicServerPinger';
-import { LiteEvent } from '../../../../Core/Utils/Events/LiteEvent';
+import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
 
 export class ServerPinger {
 	public OnPingReceived: LiteEvent<number> = new LiteEvent<number>();

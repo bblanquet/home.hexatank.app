@@ -3,7 +3,7 @@ import { Cell } from '../../../../../Items/Cell/Cell';
 import { BasicField } from '../../../../../Items/Cell/Field/BasicField';
 import { ShieldField } from '../../../../../Items/Cell/Field/Bonus/ShieldField';
 import { Headquarter } from '../../../../../Items/Cell/Field/Hq/Headquarter';
-import { Dictionary } from '../../../../../Utils/Collections/Dictionary';
+import { Dictionary } from '../../../../../../Utils/Collections/Dictionary';
 import { AreaRequest } from '../../../Utils/AreaRequest';
 import { RequestType } from '../../../Utils/RequestType';
 import { ISimpleRequestHandler } from '../../ISimpleRequestHandler';

@@ -1,15 +1,15 @@
-import { Groups } from '../src/Core/Utils/Collections/Groups';
-import { Curve } from '../src/Core/Utils/Stats/Curve';
-import { StatsKind } from '../src/Core/Utils/Stats/StatsKind';
-import { DateValue } from '../src/Core/Utils/Stats/DateValue';
+import { Groups } from '../src/Utils/Collections/Groups';
+import { Curve } from '../src/Utils/Stats/Curve';
+import { StatsKind } from '../src/Utils/Stats/StatsKind';
+import { DateValue } from '../src/Utils/Stats/DateValue';
 import { RecordContent } from '../src/Core/Framework/Record/Model/RecordContent';
 import { RecordHq } from '../src/Core/Framework/Record/Model/RecordHq';
 import { RecordUnit } from '../src/Core/Framework/Record/Model/Item/RecordUnit';
 import { RecordVehicleState } from '../src/Core/Framework/Record/Model/Item/State/RecordVehicleState';
-import { HexAxial } from '../src/Core/Utils/Geometry/HexAxial';
+import { HexAxial } from '../src/Utils/Geometry/HexAxial';
 import { RecordKind } from '../src/Core/Framework/Record/Model/Item/State/RecordKind';
-import { LogMessage } from '../src/Core/Utils/Logger/LogMessage';
-import { LogKind } from '../src/Core/Utils/Logger/LogKind';
+import { LogMessage } from '../src/Utils/Logger/LogMessage';
+import { LogKind } from '../src/Utils/Logger/LogKind';
 
 export function Logs() {
 	return [

@@ -1,7 +1,7 @@
-import { Dictionary } from '../../Utils/Collections/Dictionary';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { XMapBuilder } from './XMapBuilder';
 import { IMapBuilder } from './IPlaygroundBuilder';
-import { HexAxial } from '../../Utils/Geometry/HexAxial';
+import { HexAxial } from '../../../Utils/Geometry/HexAxial';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 
 export class XFlowerMapBuilder implements IMapBuilder {

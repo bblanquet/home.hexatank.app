@@ -1,5 +1,5 @@
 import { Component, h } from 'preact';
-import { SimpleEvent } from '../../../Core/Utils/Events/SimpleEvent';
+import { SimpleEvent } from '../../../Utils/Events/SimpleEvent';
 
 export default class TimerComponent extends Component<
 	{ Duration: number; OnTimerDone: SimpleEvent; isPause: boolean },

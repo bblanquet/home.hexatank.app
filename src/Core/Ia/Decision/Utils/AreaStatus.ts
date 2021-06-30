@@ -1,12 +1,12 @@
 import { TypeTranslator } from './../../../Items/Cell/Field/TypeTranslator';
 import { Identity, Relationship } from './../../../Items/Identity';
 import { IField } from './../../../Items/Cell/Field/IField';
-import { Dictionary } from '../../../Utils/Collections/Dictionary';
+import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { Area } from './Area';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { Cell } from '../../../Items/Cell/Cell';
 import { AliveItem } from '../../../Items/AliveItem';
-import { ErrorCat, ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
+import { ErrorCat, ErrorHandler } from '../../../../Utils/Exceptions/ErrorHandler';
 
 export class AreaStatus {
 	private _fields: Dictionary<Array<Cell>>;

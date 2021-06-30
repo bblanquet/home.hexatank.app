@@ -1,4 +1,4 @@
-import { ErrorHandler, ErrorCat } from '../../../Core/Utils/Exceptions/ErrorHandler';
+import { ErrorHandler, ErrorCat } from '../../../Utils/Exceptions/ErrorHandler';
 import { NetworkMessage } from '../../Message/NetworkMessage';
 import { PacketKind } from '../../Message/PacketKind';
 import { IServerSocket } from '../Server/IServerSocket';

@@ -3,8 +3,8 @@ import { Up } from './Up';
 import { UpCondition } from './Condition/UpCondition';
 import { SvgArchive } from '../../../Framework/SvgArchiver';
 import { Vehicle } from '../Vehicle';
-import { LiteEvent } from '../../../Utils/Events/LiteEvent';
-import { TimeTimer } from '../../../Utils/Timer/TimeTimer';
+import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
+import { TimeTimer } from '../../../../Utils/Timer/TimeTimer';
 import { UpCalculator } from '../../Cell/Field/Bonus/UpCalculator';
 
 export class HealUp extends Up {

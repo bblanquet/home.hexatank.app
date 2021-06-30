@@ -4,7 +4,7 @@ import { DiamondFieldOrder } from './DiamondFieldOrder';
 import { Truck } from '../../../../Items/Unit/Truck';
 import { DiamondField } from '../../../../Items/Cell/Field/DiamondField';
 import { ParentOrder } from '../../ParentOrder';
-import { TimeTimer } from '../../../../Utils/Timer/TimeTimer';
+import { TimeTimer } from '../../../../../Utils/Timer/TimeTimer';
 import { IOrderGiver } from './IOrderGiver';
 
 export class TruckPatrolOrder extends ParentOrder {

@@ -1,14 +1,14 @@
 import { IndexFinder } from './IndexFinder';
 import { RecordKind } from '../../../../Core/Framework/Record/Model/Item/State/RecordKind';
 import { Headquarter } from '../../../../Core/Items/Cell/Field/Hq/Headquarter';
-import { HexAxial } from '../../../../Core/Utils/Geometry/HexAxial';
+import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
 import { Vehicle } from '../../../../Core/Items/Unit/Vehicle';
-import { Dictionary } from '../../../../Core/Utils/Collections/Dictionary';
+import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { Tank } from '../../../../Core/Items/Unit/Tank';
 import { Truck } from '../../../../Core/Items/Unit/Truck';
 import { GameContext } from '../../../../Core/Framework/Context/GameContext';
 import { RecordContent } from '../../../../Core/Framework/Record/Model/RecordContent';
-import { isNullOrUndefined } from '../../../../Core/Utils/ToolBox';
+import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 
 export class UnitUpdater {
 	private _displayedUnits: Dictionary<Vehicle>;

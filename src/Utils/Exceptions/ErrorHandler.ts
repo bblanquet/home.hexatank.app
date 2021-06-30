@@ -1,7 +1,7 @@
 import { LogKind } from '../Logger/LogKind';
 import { StaticLogger } from '../Logger/StaticLogger';
-import { Singletons, SingletonKey } from '../../../Singletons';
-import { IAnalyzeService } from '../../../Services/Analyse/IAnalyzeService';
+import { Singletons, SingletonKey } from '../../Singletons';
+import { IAnalyzeService } from '../../Services/Analyse/IAnalyzeService';
 import { Dictionary } from '../Collections/Dictionary';
 
 export enum ErrorCat {

@@ -1,6 +1,6 @@
 import { InfiniteTransitionAnimator } from './Animator/InfiniteTransitionAnimator';
 import { ZKind } from './ZKind';
-import { BoundingBox } from '../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { Item } from './Item';
 import { IInteractionContext } from '../Interaction/IInteractionContext';
 

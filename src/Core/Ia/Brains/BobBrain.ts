@@ -25,7 +25,7 @@ import { GeneralUpEnergyRequester } from '../Decision/RequestMaker/GeneralReques
 import { GeneralHealingRequester } from '../Decision/RequestMaker/GeneralRequester/Requesters/GeneralHealingRequester';
 import { GeneralSquadRequest } from '../Decision/RequestMaker/GeneralRequester/Requesters/GeneralSquadRequest';
 import { GeneralTruckRequester } from '../Decision/RequestMaker/GeneralRequester/Requesters/GeneralTruckRequester';
-import { Groups } from '../../Utils/Collections/Groups';
+import { Groups } from '../../../Utils/Collections/Groups';
 import { ClearRequestHandler } from '../Decision/RequestHandler/Handler/ClearRequestHandler';
 import { EnergyRequestHandler } from '../Decision/RequestHandler/Handler/Field/EnergyRequestHandler';
 import { FarmFieldRequestHandler } from '../Decision/RequestHandler/Handler/Field/FarmFieldRequestHandler';

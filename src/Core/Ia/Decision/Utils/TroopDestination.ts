@@ -1,5 +1,5 @@
 import { Cell } from '../../../Items/Cell/Cell';
-import { isNullOrUndefined } from '../../../Utils/ToolBox';
+import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 
 export class TroopDestination {
 	constructor(public Destination: Cell, public Path: Array<Cell>) {}

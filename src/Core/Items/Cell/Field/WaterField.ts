@@ -2,7 +2,7 @@ import { Cell } from '../Cell';
 import { Field } from './Field';
 import { CellState } from '../CellState';
 import { SvgArchive } from '../../../Framework/SvgArchiver';
-import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../../Interaction/InteractionContext';
 import { Vehicle } from '../../Unit/Vehicle';
 import { ZKind } from '../../ZKind';

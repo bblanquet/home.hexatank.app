@@ -1,5 +1,5 @@
 import { h, Component, toChildArray, cloneElement } from 'preact';
-import { Point } from '../../../Core/Utils/Geometry/Point';
+import { Point } from '../../../Utils/Geometry/Point';
 
 export default class CircularV2Component extends Component<{ OnCancel: () => void }, {}> {
 	private _positions: Point[] = [];

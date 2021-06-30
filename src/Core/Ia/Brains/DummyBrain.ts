@@ -6,10 +6,10 @@ import { Brain } from '../Decision/Brain';
 import { RequestHandler } from '../Decision/RequestHandler/RequestHandler';
 import { AreaRequestMaker } from '../Decision/RequestMaker/AreaRequestMaker';
 import { GeneralRequester } from '../Decision/RequestMaker/GeneralRequester/GeneralRequester';
-import { Area } from '../Decision/Utils/Area';
-import { AreaSearch } from '../Decision/Utils/AreaSearch';
+import { Area } from '../Decision/../Utils/Area';
+import { AreaSearch } from '../Decision/../Utils/AreaSearch';
 import { IBrain } from '../Decision/IBrain';
-import { Groups } from '../../Utils/Collections/Groups';
+import { Groups } from '../../../Utils/Collections/Groups';
 import { ISimpleRequestHandler } from '../Decision/RequestHandler/ISimpleRequestHandler';
 import { GameContext } from '../../Framework/Context/GameContext';
 

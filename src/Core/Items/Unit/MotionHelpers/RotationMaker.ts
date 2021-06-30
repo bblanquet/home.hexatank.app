@@ -1,6 +1,6 @@
 import { IRotationMaker } from './IRotationMaker';
 import { IRotatable } from './IRotatable';
-import { isNullOrUndefined } from '../../../Utils/ToolBox';
+import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 
 export class RotationMaker<T extends IRotatable> implements IRotationMaker {
 	private _vehicle: T;

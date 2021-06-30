@@ -1,7 +1,7 @@
 import * as Chart from 'chart.js';
 import * as Zoom from 'chartjs-plugin-zoom';
-import { Dictionary } from '../../../../Core/Utils/Collections/Dictionary';
-import { LiteEvent } from '../../../../Core/Utils/Events/LiteEvent';
+import { Dictionary } from '../../../../Utils/Collections/Dictionary';
+import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
 import { DurationState } from '../Model/DurationState';
 import { StatusDuration } from '../Model/StatusDuration';
 import { IChart } from './IChart';

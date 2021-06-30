@@ -1,7 +1,7 @@
 import { Cell } from '../Cell';
 import { Vehicle } from '../../Unit/Vehicle';
 import { Identity } from '../../Identity';
-import { LiteEvent } from '../../../Utils/Events/LiteEvent';
+import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
 import { Item } from '../../Item';
 
 export interface IField {

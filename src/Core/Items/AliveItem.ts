@@ -4,7 +4,7 @@ import { GameSettings } from './../Framework/GameSettings';
 import { Item } from './Item';
 import { Cell } from './Cell/Cell';
 import * as PIXI from 'pixi.js';
-import { LiteEvent } from '../Utils/Events/LiteEvent';
+import { LiteEvent } from '../../Utils/Events/LiteEvent';
 
 export abstract class AliveItem extends Item {
 	public OnDamageReceived: LiteEvent<number> = new LiteEvent<number>();

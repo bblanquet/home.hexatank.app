@@ -5,7 +5,7 @@ import { BasicItem } from '../../../Items/BasicItem';
 import { SvgArchive } from '../../../Framework/SvgArchiver';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { OrderKind } from '../OrderKind';
-import { isNullOrUndefined } from '../../../Utils/ToolBox';
+import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 import { MonitoredOrder } from '../MonitoredOrder';
 
 export class PatrolOrder extends Order {

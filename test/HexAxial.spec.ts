@@ -1,6 +1,6 @@
 import 'mocha';
 import { expect } from 'chai';
-import { HexAxial } from '../src/Core/Utils/Geometry/HexAxial';
+import { HexAxial } from '../src/Utils/Geometry/HexAxial';
 
 describe('HexAxial', () => {
 	it('it should get all neighbours range 1', () => {

@@ -1,7 +1,7 @@
 import { ReactorField } from './../Bonus/ReactorField';
 import { Headquarter } from './Headquarter';
 import { IInteractionContext } from '../../../../Interaction/IInteractionContext';
-import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../../../Utils/Geometry/BoundingBox';
 import { Item } from '../../../Item';
 import { HqNetworkLink } from './HqNetworkLink';
 

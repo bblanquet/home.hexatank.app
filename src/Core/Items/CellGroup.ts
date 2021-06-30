@@ -1,7 +1,7 @@
 import { ISelectable } from '../ISelectable';
 import { Item } from './Item';
-import { LiteEvent } from '../Utils/Events/LiteEvent';
-import { BoundingBox } from '../Utils/Geometry/BoundingBox';
+import { LiteEvent } from '../../Utils/Events/LiteEvent';
+import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { IInteractionContext } from '../Interaction/IInteractionContext';
 import { Cell } from './Cell/Cell';
 

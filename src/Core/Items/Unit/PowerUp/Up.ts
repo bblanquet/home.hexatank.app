@@ -1,4 +1,4 @@
-import { LiteEvent } from '../../../Utils/Events/LiteEvent';
+import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
 import { Item } from '../../Item';
 import { Vehicle } from '../Vehicle';
 import { UpCondition } from './Condition/UpCondition';

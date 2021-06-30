@@ -7,7 +7,7 @@ import { InfiniteFadeAnimation } from './../../../Animator/InfiniteFadeAnimation
 import { BasicItem } from './../../../BasicItem';
 import { ZKind } from './../../../ZKind';
 import { BatteryField } from '../Bonus/BatteryField';
-import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
+import { LiteEvent } from '../../../../../Utils/Events/LiteEvent';
 import { FlagCell } from '../../FlagCell';
 import { Tank } from '../../../Unit/Tank';
 import { InteractionContext } from '../../../../Interaction/InteractionContext';
@@ -18,18 +18,18 @@ import { IField } from '../IField';
 import { Crater } from '../../../Environment/Crater';
 import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { CellState } from '../../CellState';
-import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../../../Utils/Geometry/BoundingBox';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { Explosion } from '../../../Unit/Explosion';
 import { Truck } from '../../../Unit/Truck';
 import { GameSettings } from '../../../../Framework/GameSettings';
 import { ReactorField } from '../Bonus/ReactorField';
 import { ISelectable } from '../../../../ISelectable';
-import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
+import { HexAxial } from '../../../../../Utils/Geometry/HexAxial';
 import { Item } from '../../../Item';
-import { Curve } from '../../../../Utils/Stats/Curve';
-import { DateValue } from '../../../../Utils/Stats/DateValue';
-import { isNullOrUndefined } from '../../../../Utils/ToolBox';
+import { Curve } from '../../../../../Utils/Stats/Curve';
+import { DateValue } from '../../../../../Utils/Stats/DateValue';
+import { isNullOrUndefined } from '../../../../../Utils/ToolBox';
 
 export class Headquarter extends AliveItem implements IField, ISelectable, IHeadquarter {
 	public Flagcell: FlagCell;

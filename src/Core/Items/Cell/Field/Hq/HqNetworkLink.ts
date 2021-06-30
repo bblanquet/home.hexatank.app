@@ -1,6 +1,6 @@
 import { ReactorField } from './../Bonus/ReactorField';
 import { IInteractionContext } from '../../../../Interaction/IInteractionContext';
-import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../../../Utils/Geometry/BoundingBox';
 import { Item } from '../../../Item';
 import { Graphics } from 'pixi.js';
 import { ZKind } from '../../../ZKind';

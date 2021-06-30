@@ -3,8 +3,8 @@ import { AliveItem } from '../../Items/AliveItem';
 import { Cell } from '../../Items/Cell/Cell';
 import { Item } from '../../Items/Item';
 import { Vehicle } from '../../Items/Unit/Vehicle';
-import { Dictionary } from '../../Utils/Collections/Dictionary';
-import { LiteEvent } from '../../Utils/Events/LiteEvent';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
+import { LiteEvent } from '../../../Utils/Events/LiteEvent';
 import { GameState } from './GameState';
 import { IGameContext } from './IGameContext';
 

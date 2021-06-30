@@ -1,5 +1,5 @@
 import { GameSettings } from '../Framework/GameSettings';
-import { ISpot } from '../Utils/Geometry/ISpot';
+import { ISpot } from '../../Utils/Geometry/ISpot';
 import { AStarNode } from './AStarNode';
 
 export class AStarEngine<T extends ISpot<T>> {

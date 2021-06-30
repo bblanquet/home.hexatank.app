@@ -17,7 +17,7 @@ import { ShieldField } from '../Items/Cell/Field/Bonus/ShieldField';
 import { Cell } from '../Items/Cell/Cell';
 import { RecordKind } from './Record/Model/Item/State/RecordKind';
 import { Diamond } from '../Items/Cell/Field/Diamond';
-import { ErrorCat, ErrorHandler } from '../Utils/Exceptions/ErrorHandler';
+import { ErrorCat, ErrorHandler } from '../../Utils/Exceptions/ErrorHandler';
 import { VolcanoField } from '../Items/Cell/Field/VolcanoField';
 import { WaterField } from '../Items/Cell/Field/WaterField';
 import { Headquarter } from '../Items/Cell/Field/Hq/Headquarter';

@@ -1,8 +1,7 @@
 import { MonitoredOrder } from './../../../Ia/Order/MonitoredOrder';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
-import { isNullOrUndefined } from '../../../Utils/ToolBox';
-import { ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
+import { ErrorHandler } from '../../../../Utils/Exceptions/ErrorHandler';
 
 export class MultiSelectionHelper {
 	public GiveOrders(vehicles: Vehicle[], selectedCells: Cell[]) {

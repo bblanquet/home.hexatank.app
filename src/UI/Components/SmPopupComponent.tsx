@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { GameStatus } from '../../Core/Framework/GameStatus';
-import { StatsKind } from '../../Core/Utils/Stats/StatsKind';
+import { StatsKind } from '../../Utils/Stats/StatsKind';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 import { Singletons, SingletonKey } from '../../Singletons';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';

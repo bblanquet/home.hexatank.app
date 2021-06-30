@@ -6,7 +6,7 @@ import { Cell } from '../../Cell';
 import { BonusField } from './BonusField';
 import { Vehicle } from '../../../Unit/Vehicle';
 import { SvgArchive } from '../../../../Framework/SvgArchiver';
-import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
+import { LiteEvent } from '../../../../../Utils/Events/LiteEvent';
 import { IHeadquarter } from '../Hq/IHeadquarter';
 
 export class FireField extends BonusField {

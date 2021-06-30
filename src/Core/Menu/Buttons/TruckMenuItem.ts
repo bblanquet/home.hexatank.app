@@ -1,5 +1,5 @@
 import { Item } from '../../Items/Item';
-import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { IInteractionContext } from '../../Interaction/IInteractionContext';
 
 export class TruckMenuItem extends Item {

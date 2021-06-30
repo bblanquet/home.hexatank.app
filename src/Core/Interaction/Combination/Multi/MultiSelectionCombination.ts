@@ -1,6 +1,6 @@
 import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
 import { CombinationContext } from '../CombinationContext';
-import { Point } from '../../../Utils/Geometry/Point';
+import { Point } from '../../../../Utils/Geometry/Point';
 import { InteractionKind } from '../../IInteractionContext';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 

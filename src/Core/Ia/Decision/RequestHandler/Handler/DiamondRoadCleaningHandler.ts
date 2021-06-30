@@ -6,7 +6,7 @@ import { RequestType } from '../../Utils/RequestType';
 import { Cell } from '../../../../Items/Cell/Cell';
 import { AStarEngine } from '../../../AStarEngine';
 import { TypeTranslator } from '../../../../Items/Cell/Field/TypeTranslator';
-import { Dictionary } from '../../../../Utils/Collections/Dictionary';
+import { Dictionary } from '../../../../../Utils/Collections/Dictionary';
 import { Tank } from '../../../../Items/Unit/Tank';
 
 export class DiamondRoadCleaningHandler implements ISimpleRequestHandler {

@@ -1,6 +1,6 @@
 import { ZKind } from './../ZKind';
 import { Item } from '../Item';
-import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../Interaction/InteractionContext';
 import { SvgArchive } from '../../Framework/SvgArchiver';
 

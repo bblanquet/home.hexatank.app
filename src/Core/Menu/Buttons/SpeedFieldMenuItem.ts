@@ -1,6 +1,6 @@
 import { Item } from '../../Items/Item';
 import { IInteractionContext } from '../../Interaction/IInteractionContext';
-import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 
 export class SpeedFieldMenuItem extends Item {
 	public GetBoundingBox(): BoundingBox {

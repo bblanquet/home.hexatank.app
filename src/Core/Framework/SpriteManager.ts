@@ -1,4 +1,4 @@
-import { Dictionary } from '../Utils/Collections/Dictionary';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { SpriteProvider } from './SpriteProvider';
 
 export class SpriteManager {

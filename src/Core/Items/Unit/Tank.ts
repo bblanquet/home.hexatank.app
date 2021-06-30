@@ -3,7 +3,7 @@ import { BasicItem } from './../BasicItem';
 import { Identity, Relationship } from './../Identity';
 import { Missile } from './Missile';
 import { ZKind } from './../ZKind';
-import { LiteEvent } from './../../Utils/Events/LiteEvent';
+import { LiteEvent } from './../../../Utils/Events/LiteEvent';
 import { CamouflageHandler } from './CamouflageHandler';
 import { Cell } from '../Cell/Cell';
 import { Vehicle } from './Vehicle';
@@ -12,10 +12,10 @@ import { AliveItem } from '../AliveItem';
 import { Headquarter } from '../Cell/Field/Hq/Headquarter';
 import { SvgArchive } from '../../Framework/SvgArchiver';
 import { CellState } from '../Cell/CellState';
-import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { Explosion } from './Explosion';
-import { isNullOrUndefined } from '../../Utils/ToolBox';
-import { ErrorCat, ErrorHandler } from '../../Utils/Exceptions/ErrorHandler';
+import { isNullOrUndefined } from '../../../Utils/ToolBox';
+import { ErrorCat, ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
 
 export class Tank extends Vehicle {
 	public Turrel: Turrel;

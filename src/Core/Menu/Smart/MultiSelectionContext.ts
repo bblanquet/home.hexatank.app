@@ -1,4 +1,4 @@
-import { Dictionary } from '../../Utils/Collections/Dictionary';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { ZKind } from './../../Items/ZKind';
 import { ILayerService } from './../../../Services/Layer/ILayerService';
 import { IUpdateService } from '../../../Services/Update/IUpdateService';
@@ -6,14 +6,14 @@ import { InteractionKind } from '../../Interaction/IInteractionContext';
 import { SvgArchive } from '../../Framework/SvgArchiver';
 import { BasicItem } from '../../Items/BasicItem';
 import { IInteractionContext } from '../../Interaction/IInteractionContext';
-import { Point } from '../../Utils/Geometry/Point';
+import { Point } from '../../../Utils/Geometry/Point';
 import { Cell } from '../../Items/Cell/Cell';
 import { Item } from '../../Items/Item';
-import { ViewContext } from '../../Utils/Geometry/ViewContext';
+import { ViewContext } from '../../../Utils/Geometry/ViewContext';
 import * as PIXI from 'pixi.js';
-import { isNullOrUndefined } from '../../Utils/ToolBox';
+import { isNullOrUndefined } from '../../../Utils/ToolBox';
 import { Singletons, SingletonKey } from '../../../Singletons';
-import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
+import { SimpleEvent } from '../../../Utils/Events/SimpleEvent';
 
 export class MultiSelectionContext implements IInteractionContext {
 	private _updateService: IUpdateService;

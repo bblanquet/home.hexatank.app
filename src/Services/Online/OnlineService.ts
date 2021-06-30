@@ -2,7 +2,7 @@ import { IServerSocket } from '../../Network/Socket/Server/IServerSocket';
 import { ISocketWrapper } from '../../Network/Socket/INetworkSocket';
 import { OnlinePlayerManager } from '../../Network/Manager/OnlinePlayerManager';
 import { IOnlinePlayerManager } from '../../Network/Manager/IOnlinePlayerManager';
-import { Dictionary } from '../../Core/Utils/Collections/Dictionary';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { OnlinePlayer } from '../../Network/OnlinePlayer';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';

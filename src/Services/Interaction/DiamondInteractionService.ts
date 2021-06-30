@@ -5,7 +5,7 @@ import { IInteractionService } from './IInteractionService';
 import { InputNotifier } from '../../Core/Interaction/InputNotifier';
 import { InteractionContext } from '../../Core/Interaction/InteractionContext';
 import { MultiSelectionContext } from '../../Core/Menu/Smart/MultiSelectionContext';
-import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
+import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { ILayerService } from '../Layer/ILayerService';
 

@@ -1,6 +1,6 @@
 import { StatusDuration } from '../Model/StatusDuration';
 import { RecordUnit } from '../../../../Core/Framework/Record/Model/Item/RecordUnit';
-import { Dictionary } from '../../../../Core/Utils/Collections/Dictionary';
+import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { DurationState } from '../Model/DurationState';
 import { RecordStateDuration } from '../Model/RecordStateDuration';
 import { RecordVehicleState } from '../../../../Core/Framework/Record/Model/Item/State/RecordVehicleState';

@@ -4,7 +4,7 @@ import { SelectableChecker } from './../../Core/Interaction/SelectableChecker';
 import { InteractionContext } from '../../Core/Interaction/InteractionContext';
 import { IInteractionService } from './IInteractionService';
 import { ILayerService } from '../Layer/ILayerService';
-import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
+import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { Singletons, SingletonKey } from '../../Singletons';
 import * as PIXI from 'pixi.js';
 import { MultiSelectionContext } from '../../Core/Menu/Smart/MultiSelectionContext';

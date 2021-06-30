@@ -1,4 +1,4 @@
-import { LiteEvent } from './Utils/Events/LiteEvent';
+import { LiteEvent } from '../Utils/Events/LiteEvent';
 
 export interface ISelectable {
 	SetSelected(visible: boolean): void;

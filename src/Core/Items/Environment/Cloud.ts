@@ -1,10 +1,10 @@
 import { ZKind } from './../ZKind';
 import { GameSettings } from '../../Framework/GameSettings';
 import { Item } from '../Item';
-import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../Interaction/InteractionContext';
-import { TickTimer } from '../../Utils/Timer/TickTimer';
-import { ITimer } from '../../Utils/Timer/ITimer';
+import { TickTimer } from '../../../Utils/Timer/TickTimer';
+import { ITimer } from '../../../Utils/Timer/ITimer';
 
 export class Cloud extends Item {
 	private _timer: ITimer;

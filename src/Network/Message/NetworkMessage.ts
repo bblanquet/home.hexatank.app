@@ -1,5 +1,5 @@
 import { ProtocolKind } from './ProtocolKind';
-import { isNullOrUndefined } from '../../Core/Utils/ToolBox';
+import { isNullOrUndefined } from '../../Utils/ToolBox';
 import { INetworkMessage } from './INetworkMessage';
 import { PacketKind } from './PacketKind';
 

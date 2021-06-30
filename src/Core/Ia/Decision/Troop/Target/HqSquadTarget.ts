@@ -3,7 +3,7 @@ import { Cell } from '../../../../Items/Cell/Cell';
 import { AliveItem } from '../../../../Items/AliveItem';
 import { Tank } from '../../../../Items/Unit/Tank';
 import { MonitoredOrder } from '../../../Order/MonitoredOrder';
-import { ErrorCat, ErrorHandler } from '../../../../Utils/Exceptions/ErrorHandler';
+import { ErrorCat, ErrorHandler } from '../../../../../Utils/Exceptions/ErrorHandler';
 
 export class AliveSquadTarget implements ISquadTarget {
 	constructor(private _item: AliveItem) {

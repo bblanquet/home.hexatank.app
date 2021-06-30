@@ -1,4 +1,4 @@
-import { ViewContext } from './../Utils/Geometry/ViewContext';
+import { ViewContext } from './../../Utils/Geometry/ViewContext';
 import { Item } from '../Items/Item';
 
 export interface IInteractionContext {

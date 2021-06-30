@@ -1,4 +1,3 @@
-import { BasicField } from '../../../../../Items/Cell/Field/BasicField';
 import { ShieldField } from '../../../../../Items/Cell/Field/Bonus/ShieldField';
 import { Area } from '../../../Utils/Area';
 import { RequestType } from '../../../Utils/RequestType';
@@ -10,9 +9,10 @@ import { Cell } from '../../../../../Items/Cell/Cell';
 import { Headquarter } from '../../../../../Items/Cell/Field/Hq/Headquarter';
 import { GameSettings } from '../../../../../Framework/GameSettings';
 import { RoadField } from '../../../../../Items/Cell/Field/Bonus/RoadField';
-import { Groups } from '../../../../../Utils/Collections/Groups';
+import { Groups } from '../../../../../../Utils/Collections/Groups';
 import { AStarHelper } from '../../../../AStarHelper';
-import { isNullOrUndefined } from '../../../../../Utils/ToolBox';
+import { isNullOrUndefined } from '../../../../../../Utils/ToolBox';
+import { BasicField } from '../../../../../Items/Cell/Field/BasicField';
 
 export class RoadRequestHandler implements ISimpleRequestHandler {
 	constructor(private _hq: Headquarter) {}
@@ -75,7 +75,7 @@ export class RoadRequestHandler implements ISimpleRequestHandler {
 		if (destination) {
 			let nextCell = destination.GetCentralCell();
 			if (nextCell.IsBlocked()) {
-				nextCell = destination.GetStatus().GetCells(BasicField.name)[0];
+				nextCell = destination.GetStatus().GetCells([ BasicField.name ])[0];
 			}
 			const road = this.GetRoad(area.GetCentralCell(), nextCell);
 			if (road) {

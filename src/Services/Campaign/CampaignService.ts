@@ -5,7 +5,7 @@ import { DiamondBlueprintMaker } from './../../Core/Framework/Blueprint/Diamond/
 import { Singletons, SingletonKey } from '../../Singletons';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
 import { GameBlueprintMaker } from '../../Core/Framework/Blueprint/Game/GameBlueprintMaker';
-import { Dictionary } from '../../Core/Utils/Collections/Dictionary';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { CampaignKind } from './CampaignKind';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { MapKind } from '../../Core/Framework/Blueprint/Items/MapKind';

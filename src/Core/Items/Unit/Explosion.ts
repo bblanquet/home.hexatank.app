@@ -1,8 +1,8 @@
 import { Item } from '../Item';
-import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../Interaction/InteractionContext';
-import { ITimer } from '../../Utils/Timer/ITimer';
-import { TimeTimer } from '../../Utils/Timer/TimeTimer';
+import { ITimer } from '../../../Utils/Timer/ITimer';
+import { TimeTimer } from '../../../Utils/Timer/TimeTimer';
 
 export class Explosion extends Item {
 	BoundingBox: BoundingBox;

@@ -1,9 +1,9 @@
 import { isEqual } from 'lodash';
 import * as luxon from 'luxon';
 import { Component, h } from 'preact';
-import { LogKind } from '../../../Core/Utils/Logger/LogKind';
-import { LogMessage } from '../../../Core/Utils/Logger/LogMessage';
-import { StaticLogger } from '../../../Core/Utils/Logger/StaticLogger';
+import { LogKind } from '../../../Utils/Logger/LogKind';
+import { LogMessage } from '../../../Utils/Logger/LogMessage';
+import { StaticLogger } from '../../../Utils/Logger/StaticLogger';
 import GridComponent from '../../Common/Grid/GridComponent';
 import IconInputComponent from '../../Common/Text/IconTextComponent';
 

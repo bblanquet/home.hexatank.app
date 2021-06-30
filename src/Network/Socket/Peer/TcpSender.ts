@@ -1,5 +1,5 @@
 import { PacketKind } from '../../Message/PacketKind';
-import { SimpleEvent } from '../../../Core/Utils/Events/SimpleEvent';
+import { SimpleEvent } from '../../../Utils/Events/SimpleEvent';
 import { INetworkMessage } from '../../Message/INetworkMessage';
 import { RtcPeer } from './Rtc/RtcPeer';
 

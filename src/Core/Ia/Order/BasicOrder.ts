@@ -4,8 +4,8 @@ import { Order } from './Order';
 import { Cell } from '../../Items/Cell/Cell';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { OrderKind } from './OrderKind';
-import { isNullOrUndefined } from '../../Utils/ToolBox';
-import { ErrorHandler } from '../../Utils/Exceptions/ErrorHandler';
+import { isNullOrUndefined } from '../../../Utils/ToolBox';
+import { ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
 
 export class BasicOrder extends Order {
 	protected CurrentStep: Cell;

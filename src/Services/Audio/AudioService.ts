@@ -1,5 +1,5 @@
 import { IAudioService } from './IAudioService';
-import { Dictionary } from '../../Core/Utils/Collections/Dictionary';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { Howl } from 'howler';
 import { AudioProvider } from './AudioProvider';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';

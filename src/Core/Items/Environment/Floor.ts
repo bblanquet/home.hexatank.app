@@ -1,8 +1,8 @@
 import { ZKind } from './../ZKind';
 import { BasicItem } from './../BasicItem';
-import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { SvgArchive } from '../../Framework/SvgArchiver';
-import { TickTimer } from '../../Utils/Timer/TickTimer';
+import { TickTimer } from '../../../Utils/Timer/TickTimer';
 
 export class Floor extends BasicItem {
 	private _grassIndex: number;

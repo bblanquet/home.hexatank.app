@@ -1,5 +1,5 @@
-import { Point } from '../Utils/Geometry/Point';
-import { LiteEvent } from '../Utils/Events/LiteEvent';
+import { Point } from '../../Utils/Geometry/Point';
+import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import * as PIXI from 'pixi.js';
 import { GameSettings } from '../Framework/GameSettings';
 

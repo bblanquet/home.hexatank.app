@@ -5,7 +5,7 @@ import { AppService } from './../App/AppService';
 import { SingletonKey } from '../../Singletons';
 import { IKeyService } from './IKeyService';
 import { DiamondAppService } from '../App/DiamondAppService';
-import { ErrorCat, ErrorHandler } from '../../Core/Utils/Exceptions/ErrorHandler';
+import { ErrorCat, ErrorHandler } from '../../Utils/Exceptions/ErrorHandler';
 export class KeyService implements IKeyService {
 	private _key: SingletonKey = SingletonKey.None;
 	GetAppKey(): SingletonKey {

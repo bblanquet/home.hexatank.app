@@ -7,8 +7,8 @@ import { AStarHelper } from '../../../AStarHelper';
 import { MonitoredOrder } from '../../MonitoredOrder';
 import { TypeTranslator } from '../../../../Items/Cell/Field/TypeTranslator';
 import { IOrderGiver } from './IOrderGiver';
-import { StaticLogger } from '../../../../Utils/Logger/StaticLogger';
-import { LogKind } from '../../../../Utils/Logger/LogKind';
+import { StaticLogger } from '../../../../../Utils/Logger/StaticLogger';
+import { LogKind } from '../../../../../Utils/Logger/LogKind';
 
 export class HqFieldOrder implements IOrderGiver {
 	private _hq: IHeadquarter;

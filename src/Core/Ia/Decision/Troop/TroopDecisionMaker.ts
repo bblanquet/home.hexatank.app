@@ -1,15 +1,15 @@
 import { TargetMonitoredOrder } from './../../Order/TargetMonitoredOrder';
 import { MedicField } from '../../../Items/Cell/Field/Bonus/MedicField';
-import { TimeTimer } from './../../../Utils/Timer/TimeTimer';
-import { ITimer } from '../../../Utils/Timer/ITimer';
+import { TimeTimer } from './../../../../Utils/Timer/TimeTimer';
+import { ITimer } from '../../../../Utils/Timer/ITimer';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Tank } from '../../../Items/Unit/Tank';
 import { IaArea } from '../Utils/IaArea';
 import { AliveItem } from '../../../Items/AliveItem';
-import { isNullOrUndefined } from '../../../Utils/ToolBox';
+import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 import { MonitoredOrder } from '../../Order/MonitoredOrder';
 import { TypeTranslator } from '../../../Items/Cell/Field/TypeTranslator';
-import { ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
+import { ErrorHandler } from '../../../../Utils/Exceptions/ErrorHandler';
 
 export class TroopDecisionMaker {
 	private _changePositionTimer: ITimer;

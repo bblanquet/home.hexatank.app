@@ -1,7 +1,7 @@
 import { GameSettings } from '../../Framework/GameSettings';
-import { HexAxial } from '../../Utils/Geometry/HexAxial';
-import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
-import { Point } from '../../Utils/Geometry/Point';
+import { HexAxial } from '../../../Utils/Geometry/HexAxial';
+import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
+import { Point } from '../../../Utils/Geometry/Point';
 
 export class CellProperties {
 	Coordinate: HexAxial;

@@ -1,8 +1,8 @@
 import * as Chart from 'chart.js';
 import 'chartjs-adapter-luxon';
 import { IChart } from './IChart';
-import { Dictionary } from '../../../../Core/Utils/Collections/Dictionary';
-import { LiteEvent } from '../../../../Core/Utils/Events/LiteEvent';
+import { Dictionary } from '../../../../Utils/Collections/Dictionary';
+import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
 import { DeltaRecordCurve } from '../../../Screens/Comparer/Comparers/DeltaRecordCurve';
 
 export class DeltaLineChart implements IChart<DeltaRecordCurve> {

@@ -2,7 +2,7 @@ import { InteractionContext } from '../../../Interaction/InteractionContext';
 import { Cell } from '../Cell';
 import { Field } from './Field';
 import { Vehicle } from '../../Unit/Vehicle';
-import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 
 export class BasicField extends Field {
 	constructor(cell: Cell) {

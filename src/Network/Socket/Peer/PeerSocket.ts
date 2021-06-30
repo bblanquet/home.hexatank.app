@@ -1,20 +1,20 @@
 import { IPeerSocket } from './IPeerSocket';
 import { TcpSender } from './TcpSender';
 import { LatencyProvider } from './LatencyProvider';
-import { LiteEvent } from '../../../Core/Utils/Events/LiteEvent';
-import { SimpleEvent } from '../../../Core/Utils/Events/SimpleEvent';
+import { LiteEvent } from '../../../Utils/Events/LiteEvent';
+import { SimpleEvent } from '../../../Utils/Events/SimpleEvent';
 import { ConnectionStatus } from '../../ConnectionStatus';
 import { INetworkMessage } from '../../Message/INetworkMessage';
 import { PeerPingObserver } from './Ping/PeerPingObserver';
 import { NetworkMessage } from '../../Message/NetworkMessage';
 import { PacketKind } from '../../Message/PacketKind';
 import { JetlagData } from './Ping/JetlagData';
-import { isNullOrUndefined } from '../../../Core/Utils/ToolBox';
+import { isNullOrUndefined } from '../../../Utils/ToolBox';
 import { ConnectionKind } from '../../ConnectionKind';
 import { ProtocolKind } from '../../Message/ProtocolKind';
 import { RtcPeer } from './Rtc/RtcPeer';
-import { StaticLogger } from '../../../Core/Utils/Logger/StaticLogger';
-import { LogKind } from '../../../Core/Utils/Logger/LogKind';
+import { StaticLogger } from '../../../Utils/Logger/StaticLogger';
+import { LogKind } from '../../../Utils/Logger/LogKind';
 
 export class PeerSocket implements IPeerSocket {
 	private _seqNum: number = 0;

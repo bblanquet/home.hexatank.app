@@ -4,7 +4,7 @@ import { Cell } from '../Cell';
 import { AliveField } from './AliveField';
 import { CellState } from '../CellState';
 import { Vehicle } from '../../Unit/Vehicle';
-import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../../Interaction/InteractionContext';
 import { ZKind } from '../../ZKind';
 

@@ -1,5 +1,5 @@
 import { TypeTranslator } from './../../../Items/Cell/Field/TypeTranslator';
-import { LiteEvent } from './../../../Utils/Events/LiteEvent';
+import { LiteEvent } from './../../../../Utils/Events/LiteEvent';
 import { IaAreaView } from './View/IaAreaView';
 import { ReactorField } from './../../../Items/Cell/Field/Bonus/ReactorField';
 import { ShieldField } from '../../../Items/Cell/Field/Bonus/ShieldField';

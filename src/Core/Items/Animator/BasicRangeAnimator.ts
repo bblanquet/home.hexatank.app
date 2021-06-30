@@ -1,6 +1,6 @@
 import { ZKind } from './../ZKind';
 import { FadeInOutAnimation } from './FadeInOutAnimation';
-import { BoundingBox } from './../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from './../../../Utils/Geometry/BoundingBox';
 import { BasicItem } from './../BasicItem';
 import { IAnimator } from './IAnimator';
 import { Cell } from './../Cell/Cell';

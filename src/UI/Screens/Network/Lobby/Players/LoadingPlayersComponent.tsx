@@ -1,5 +1,5 @@
 import { h, Component } from 'preact';
-import { Dictionary } from '../../../../../Core/Utils/Collections/Dictionary';
+import { Dictionary } from '../../../../../Utils/Collections/Dictionary';
 import { ConnectionKind } from '../../../../../Network/ConnectionKind';
 import { OnlinePlayer } from '../../../../../Network/OnlinePlayer';
 import { IOnlineService } from '../../../../../Services/Online/IOnlineService';

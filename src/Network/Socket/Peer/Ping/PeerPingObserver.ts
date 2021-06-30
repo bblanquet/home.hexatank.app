@@ -1,5 +1,5 @@
 import { PingContent } from './PingContent';
-import { LiteEvent } from '../../../../Core/Utils/Events/LiteEvent';
+import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
 import { JetlagData } from './JetlagData';
 import { PacketKind } from '../../../Message/PacketKind';
 import { NetworkMessage } from '../../../Message/NetworkMessage';

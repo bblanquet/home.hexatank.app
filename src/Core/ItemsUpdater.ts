@@ -1,5 +1,5 @@
-import { LiteEvent } from './Utils/Events/LiteEvent';
-import { ViewContext } from './Utils/Geometry/ViewContext';
+import { LiteEvent } from '../Utils/Events/LiteEvent';
+import { ViewContext } from '../Utils/Geometry/ViewContext';
 import { IItemsUpdater } from './IItemsUpdater';
 import { Item } from './Items/Item';
 import { IInteractionContext } from './Interaction/IInteractionContext';

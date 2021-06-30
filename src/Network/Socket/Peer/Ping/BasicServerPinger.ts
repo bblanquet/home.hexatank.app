@@ -1,8 +1,8 @@
 import { IServerPinger } from './IServerPinger';
-import { NetworkObserver } from '../../../../Core/Utils/Events/NetworkObserver';
+import { NetworkObserver } from '../../../../Utils/Events/NetworkObserver';
 import { PacketKind } from '../../../Message/PacketKind';
 import { NetworkMessage } from '../../../Message/NetworkMessage';
-import { LiteEvent } from '../../../../Core/Utils/Events/LiteEvent';
+import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
 import { PeerContext } from '../PeerContext';
 
 export class BasicServerPinger<T> implements IServerPinger<T> {

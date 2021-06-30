@@ -1,6 +1,6 @@
 import { DecoratingElement } from './DecoratingElement';
 import { CellType } from '../../../Framework/Blueprint/Items/CellType';
-import { Dictionary } from '../../../Utils/Collections/Dictionary';
+import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { MapKind } from '../../../Framework/Blueprint/Items/MapKind';
 
 export class DecoratingFactory {

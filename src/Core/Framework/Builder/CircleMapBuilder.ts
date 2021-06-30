@@ -1,8 +1,8 @@
-import { Dictionary } from '../../Utils/Collections/Dictionary';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { IMapBuilder } from './IPlaygroundBuilder';
-import { HexAxial } from '../../Utils/Geometry/HexAxial';
+import { HexAxial } from '../../../Utils/Geometry/HexAxial';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
-import { ErrorCat, ErrorHandler } from '../../Utils/Exceptions/ErrorHandler';
+import { ErrorCat, ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
 
 export class CircleMapBuilder implements IMapBuilder {
 	public GetRefCoo(ranges: number): HexAxial {

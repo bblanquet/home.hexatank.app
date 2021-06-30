@@ -3,17 +3,15 @@ import { ISocketWrapper } from '../../../Network/Socket/INetworkSocket';
 import { GameContext } from '../../Framework/Context/GameContext';
 import { IOnlinePlayerManager } from '../../../Network/Manager/IOnlinePlayerManager';
 import { PacketKind } from '../../../Network/Message/PacketKind';
-import { KindEventObserver } from '../../Utils/Events/KindEventObserver';
+import { KindEventObserver } from '../../../Utils/Events/KindEventObserver';
 import { RuntimeBlueprint } from '../../Framework/Blueprint/RuntimeBlueprint';
-import { NetworkObserver } from '../../Utils/Events/NetworkObserver';
+import { NetworkObserver } from '../../../Utils/Events/NetworkObserver';
 import { FieldHelper } from '../FieldTypeHelper';
 import { Identity } from '../../Items/Identity';
 import { PathResolver } from './PathResolver';
 import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
-import { Dictionary } from '../../Utils/Collections/Dictionary';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { OnlinePlayer } from '../../../Network/OnlinePlayer';
-import { StaticLogger } from '../../Utils/Logger/StaticLogger';
-import { LogKind } from '../../Utils/Logger/LogKind';
 
 export class OnlineSync {
 	private _obs: NetworkObserver[];

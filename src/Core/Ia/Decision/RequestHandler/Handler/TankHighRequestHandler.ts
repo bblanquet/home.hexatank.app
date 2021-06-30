@@ -5,8 +5,7 @@ import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { RequestType } from '../../Utils/RequestType';
 import { CellHelper } from '../../../../Items/Cell/CellHelper';
-import { isNullOrUndefined } from '../../../../Utils/ToolBox';
-import { ErrorHandler } from '../../../../Utils/Exceptions/ErrorHandler';
+import { ErrorHandler } from '../../../../../Utils/Exceptions/ErrorHandler';
 
 export class TankHighRequestHandler implements ISimpleRequestHandler {
 	constructor(private _kingdom: Brain, private _mediumRequest: ISimpleRequestHandler) {}

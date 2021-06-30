@@ -3,21 +3,21 @@ import { IAreaDecisionMaker } from './IAreaDecisionMaker';
 import { AStarHelper } from '../../AStarHelper';
 import { FireField } from '../../../Items/Cell/Field/Bonus/FireField';
 import { IaArea } from '../Utils/IaArea';
-import { Dictionary } from '../../../Utils/Collections/Dictionary';
+import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { TroopRoads } from '../Troop/TroopRoads';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Area } from '../Utils/Area';
 import { Tank } from '../../../Items/Unit/Tank';
-import { Groups } from '../../../Utils/Collections/Groups';
+import { Groups } from '../../../../Utils/Collections/Groups';
 import { TroopDestination } from '../Utils/TroopDestination';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { BasicField } from '../../../Items/Cell/Field/BasicField';
 import { AStarEngine } from '../../AStarEngine';
-import { isNullOrUndefined } from '../../../Utils/ToolBox';
+import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 import { TypeTranslator } from '../../../Items/Cell/Field/TypeTranslator';
-import { LogKind } from '../../../Utils/Logger/LogKind';
-import { StaticLogger } from '../../../Utils/Logger/StaticLogger';
+import { LogKind } from '../../../../Utils/Logger/LogKind';
+import { StaticLogger } from '../../../../Utils/Logger/StaticLogger';
 
 export class AreaDecisionMaker implements IAreaDecisionMaker {
 	public HasReceivedRequest: boolean;

@@ -1,7 +1,7 @@
 import { ZKind } from './../ZKind';
 import { Item } from '../Item';
-import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
-import { TickTimer } from '../../Utils/Timer/TickTimer';
+import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
+import { TickTimer } from '../../../Utils/Timer/TickTimer';
 import { SvgArchive } from '../../Framework/SvgArchiver';
 import { InteractionContext } from '../../Interaction/InteractionContext';
 

@@ -4,10 +4,10 @@ import { ITranslationMaker } from '../../../Unit/MotionHelpers/ITranslationMaker
 import { SvgArchive } from '../../../../Framework/SvgArchiver';
 import { ZKind } from '../../../ZKind';
 import { IInteractionContext } from '../../../../Interaction/IInteractionContext';
-import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../../../Utils/Geometry/BoundingBox';
 import { Item } from '../../../Item';
 import { IMovable } from '../../../IMovable';
-import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
+import { LiteEvent } from '../../../../../Utils/Events/LiteEvent';
 import { Cell } from '../../Cell';
 import { GameSettings } from '../../../../Framework/GameSettings';
 

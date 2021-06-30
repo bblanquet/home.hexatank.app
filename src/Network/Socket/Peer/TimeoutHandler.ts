@@ -2,8 +2,8 @@ import { PeerContext } from './PeerContext';
 import { ServerPinger } from './Ping/ServerPinger';
 import { RtcPeer } from './Rtc/RtcPeer';
 import { PacketKind } from '../../Message/PacketKind';
-import { StaticLogger } from '../../../Core/Utils/Logger/StaticLogger';
-import { LogKind } from '../../../Core/Utils/Logger/LogKind';
+import { StaticLogger } from '../../../Utils/Logger/StaticLogger';
+import { LogKind } from '../../../Utils/Logger/LogKind';
 
 export class TimeoutPeerHandler {
 	private _servPinger: ServerPinger;

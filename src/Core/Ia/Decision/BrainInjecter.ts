@@ -1,6 +1,6 @@
 import { BobBrain } from './../Brains/BobBrain';
-import { Dictionary } from '../../Utils/Collections/Dictionary';
-import { HexAxial } from './../../Utils/Geometry/HexAxial';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
+import { HexAxial } from './../../../Utils/Geometry/HexAxial';
 import { GameBlueprint } from '../../Framework/Blueprint/Game/GameBlueprint';
 import { GameContext } from '../../Framework/Context/GameContext';
 import { Area } from './Utils/Area';

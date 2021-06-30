@@ -1,4 +1,4 @@
-import { HexAxial } from '../../Utils/Geometry/HexAxial';
+import { HexAxial } from '../../../Utils/Geometry/HexAxial';
 
 export interface IMapBuilder {
 	GetAllCoos(ranges: number): Array<HexAxial>;

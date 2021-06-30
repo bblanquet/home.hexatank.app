@@ -1,6 +1,6 @@
 import { NetworkMessage } from './../Message/NetworkMessage';
-import { KindEvent } from '../../Core/Utils/Events/KindEvent';
-import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
+import { KindEvent } from '../../Utils/Events/KindEvent';
+import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { PacketKind } from '../Message/PacketKind';
 import { PeerSocket } from './Peer/PeerSocket';
 

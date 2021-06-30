@@ -1,4 +1,4 @@
-import { Dictionary } from '../../../../../Utils/Collections/Dictionary';
+import { Dictionary } from '../../../../../../Utils/Collections/Dictionary';
 import { IaArea } from '../../../Utils/IaArea';
 import { IGeneralRequester } from '../IGeneralRequester';
 import { Brain } from '../../../Brain';

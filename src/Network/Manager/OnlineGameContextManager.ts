@@ -4,7 +4,7 @@ import { OnlineBlueprintMaker } from './OnlineBlueprintMaker';
 import { ISocketWrapper } from './../Socket/INetworkSocket';
 import { IOnlineGameContextManager } from './IOnlineGameContextManager';
 import { IAppService } from '../../Services/App/IAppService';
-import { NetworkObserver } from '../../Core/Utils/Events/NetworkObserver';
+import { NetworkObserver } from '../../Utils/Events/NetworkObserver';
 import { PacketKind } from '../Message/PacketKind';
 import { route } from 'preact-router';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';

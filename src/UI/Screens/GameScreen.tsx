@@ -18,17 +18,17 @@ import ActiveRightBottomCornerButton from '../Common/Button/Corner/ActiveRightBo
 import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
 import { MultiTankMenuItem } from '../../Core/Menu/Buttons/MultiTankMenuItem';
 import Visible from '../Components/VisibleComponent';
-import { isNullOrUndefined } from '../../Core/Utils/ToolBox';
+import { isNullOrUndefined } from '../../Utils/ToolBox';
 import { MultiCellMenuItem } from '../../Core/Menu/Buttons/MultiCellMenuItem';
 import { IAppService } from '../../Services/App/IAppService';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { IAudioService } from '../../Services/Audio/IAudioService';
 import { IOnlineService } from '../../Services/Online/IOnlineService';
-import { Dictionary } from '../../Core/Utils/Collections/Dictionary';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
 import MenuSwitcher from '../Components/Canvas/MenuSwitcher';
 import SynchronizingComponent from '../Components/Canvas/SynchronizingComponent';
 import Switch from '../Components/SwitchComponent';
-import { SimpleEvent } from '../../Core/Utils/Events/SimpleEvent';
+import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 
 export default class GameScreen extends Component<
 	any,

@@ -1,7 +1,7 @@
-import { HexAxial } from './../../../Utils/Geometry/HexAxial';
-import { Dictionary } from '../../../Utils/Collections/Dictionary';
-import { isNullOrUndefined } from '../../../Utils/ToolBox';
-import { ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
+import { HexAxial } from './../../../../Utils/Geometry/HexAxial';
+import { Dictionary } from '../../../../Utils/Collections/Dictionary';
+import { isNullOrUndefined } from '../../../../Utils/ToolBox';
+import { ErrorHandler } from '../../../../Utils/Exceptions/ErrorHandler';
 
 export class AreaSearch {
 	constructor(private _hexCoos: Dictionary<HexAxial>) {}

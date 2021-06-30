@@ -1,5 +1,5 @@
 import { RecordUnit } from './Item/RecordUnit';
-import { Dictionary } from '../../../Utils/Collections/Dictionary';
+import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 
 export class RecordHq {
 	public Units: Dictionary<RecordUnit>;

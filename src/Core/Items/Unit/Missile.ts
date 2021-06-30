@@ -1,13 +1,13 @@
-import { LiteEvent } from './../../Utils/Events/LiteEvent';
+import { LiteEvent } from './../../../Utils/Events/LiteEvent';
 import { ZKind } from './../ZKind';
 import { Item } from '../Item';
 import { Explosion } from './Explosion';
 import { AliveItem } from '../AliveItem';
-import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { SvgArchive } from '../../Framework/SvgArchiver';
 import { InteractionContext } from '../../Interaction/InteractionContext';
 import { GameSettings } from '../../Framework/GameSettings';
-import { Point } from '../../Utils/Geometry/Point';
+import { Point } from '../../../Utils/Geometry/Point';
 
 export class Missile extends Item {
 	public BoundingBox: BoundingBox;

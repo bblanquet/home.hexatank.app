@@ -1,13 +1,13 @@
 import { Singletons, SingletonKey } from '../../Singletons';
 import { ILayerService } from './../../Services/Layer/ILayerService';
 import { IUpdateService } from './../../Services/Update/IUpdateService';
-import { LiteEvent } from './../Utils/Events/LiteEvent';
+import { LiteEvent } from './../../Utils/Events/LiteEvent';
 import { SpriteManager } from './../Framework/SpriteManager';
-import { Dictionary } from '../Utils/Collections/Dictionary';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
 import * as PIXI from 'pixi.js';
-import { BoundingBox } from '../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
 import { IUpdatable } from '../IUpdatable';
-import { Point } from '../Utils/Geometry/Point';
+import { Point } from '../../Utils/Geometry/Point';
 import { IBoundingBoxContainer } from '../IBoundingBoxContainer';
 import { IInteractionContext } from '../Interaction/IInteractionContext';
 

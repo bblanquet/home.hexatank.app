@@ -1,10 +1,10 @@
 import { IServerSocket } from './../Socket/Server/IServerSocket';
 import { ISocketWrapper } from './../Socket/INetworkSocket';
-import { Dictionary } from '../../Core/Utils/Collections/Dictionary';
-import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
+import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { OnlinePlayer } from '../OnlinePlayer';
 import { IOnlinePlayerManager } from './IOnlinePlayerManager';
-import { NetworkObserver } from '../../Core/Utils/Events/NetworkObserver';
+import { NetworkObserver } from '../../Utils/Events/NetworkObserver';
 import { PacketKind } from '../Message/PacketKind';
 import { NetworkMessage } from '../Message/NetworkMessage';
 import { PeerSocket } from '../Socket/Peer/PeerSocket';

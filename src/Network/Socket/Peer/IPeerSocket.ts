@@ -1,5 +1,5 @@
-import { LiteEvent } from '../../../Core/Utils/Events/LiteEvent';
-import { SimpleEvent } from '../../../Core/Utils/Events/SimpleEvent';
+import { LiteEvent } from '../../../Utils/Events/LiteEvent';
+import { SimpleEvent } from '../../../Utils/Events/SimpleEvent';
 import { ConnectionStatus } from '../../ConnectionStatus';
 import { INetworkMessage } from '../../Message/INetworkMessage';
 import { NetworkMessage } from '../../Message/NetworkMessage';

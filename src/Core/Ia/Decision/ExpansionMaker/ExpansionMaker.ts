@@ -1,12 +1,12 @@
 import { IExpansionMaker } from './IExpansionMaker';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 import { Brain } from '../Brain';
-import { Area } from '../Utils/Area';
+import { Area } from '../../Utils/Area';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { AreaDecisionMaker } from '../Area/AreaDecisionMaker';
-import { IaArea } from '../Utils/IaArea';
-import { AreaSearch } from '../Utils/AreaSearch';
-import { isNullOrUndefined } from '../../../Utils/ToolBox';
+import { IaArea } from '../../Utils/IaArea';
+import { AreaSearch } from '../../Utils/AreaSearch';
+import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 
 export class ExpansionMaker implements IExpansionMaker {
 	constructor(private _hq: Headquarter, private _global: Brain, private _areaSearch: AreaSearch) {}

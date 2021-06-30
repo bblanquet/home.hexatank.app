@@ -1,8 +1,8 @@
-import { Dictionary } from '../../Utils/Collections/Dictionary';
-import { HexAxial } from '../../Utils/Geometry/HexAxial';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
+import { HexAxial } from '../../../Utils/Geometry/HexAxial';
 import { IMapBuilder } from './IPlaygroundBuilder';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
-import { ErrorCat, ErrorHandler } from '../../Utils/Exceptions/ErrorHandler';
+import { ErrorCat, ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
 
 export class TriangleMapBuilder implements IMapBuilder {
 	public GetRefCoo(ranges: number): HexAxial {

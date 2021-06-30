@@ -1,4 +1,4 @@
-import { TimeTimer } from './../../../../Utils/Timer/TimeTimer';
+import { TimeTimer } from './../../../../../Utils/Timer/TimeTimer';
 import { UpCalculator } from './UpCalculator';
 import { Cell } from '../../Cell';
 import { BonusField } from './BonusField';

@@ -1,5 +1,5 @@
-import { Dictionary } from '../../Core/Utils/Collections/Dictionary';
-import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
+import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { OnlinePlayer } from '../OnlinePlayer';
 
 export interface IOnlinePlayerManager {

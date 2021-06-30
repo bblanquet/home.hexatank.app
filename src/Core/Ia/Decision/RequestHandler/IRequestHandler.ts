@@ -1,4 +1,4 @@
-import { Groups } from '../../../Utils/Collections/Groups';
+import { Groups } from '../../../../Utils/Collections/Groups';
 import { AreaRequest } from '../Utils/AreaRequest';
 
 export interface IRequestHandler {

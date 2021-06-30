@@ -1,5 +1,5 @@
 import { ZKind } from './../ZKind';
-import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { SvgArchive } from '../../Framework/SvgArchiver';
 import { Cell } from './Cell';
 import { Item } from '../Item';

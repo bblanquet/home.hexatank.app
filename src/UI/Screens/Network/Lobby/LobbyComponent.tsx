@@ -3,7 +3,7 @@ import { route } from 'preact-router';
 import PendingPlayers from './Players/PendingPlayersComponent';
 import ChatComponent from './Chat/ChatComponent';
 import { SpriteProvider } from '../../../../Core/Framework/SpriteProvider';
-import { Dictionary } from '../../../../Core/Utils/Collections/Dictionary';
+import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { ILobbyManager } from '../../../../Network/Manager/ILobbyManager';
 import { IOnlinePlayerManager } from '../../../../Network/Manager/IOnlinePlayerManager';
 import { OnlinePlayer } from '../../../../Network/OnlinePlayer';

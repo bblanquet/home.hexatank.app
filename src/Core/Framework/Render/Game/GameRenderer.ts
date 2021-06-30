@@ -1,4 +1,4 @@
-import { Dictionary } from '../../../Utils/Collections/Dictionary';
+import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { SimpleFloor } from '../../../Items/Environment/SimpleFloor';
 import { GameContext } from '../../Context/GameContext';
 import { GameSettings } from '../../../Framework/GameSettings';
@@ -6,8 +6,8 @@ import { CellProperties } from '../../../Items/Cell/CellProperties';
 import { Cloud } from '../../../Items/Environment/Cloud';
 import { CellState } from '../../../Items/Cell/CellState';
 import { Cell } from '../../../Items/Cell/Cell';
-import { HexAxial } from '../../../Utils/Geometry/HexAxial';
-import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
+import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
+import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { Floor } from '../../../Items/Environment/Floor';
 import { SvgArchive } from '../../../Framework/SvgArchiver';
 import { GameBlueprint } from '../../Blueprint/Game/GameBlueprint';

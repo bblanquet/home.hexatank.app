@@ -1,8 +1,8 @@
-import { Dictionary } from '../../Utils/Collections/Dictionary';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { AStarEngine } from './../../Ia/AStarEngine';
-import { HexAxial } from '../../Utils/Geometry/HexAxial';
+import { HexAxial } from '../../../Utils/Geometry/HexAxial';
 import { DistanceHelper } from '../../Items/Unit/MotionHelpers/DistanceHelper';
-import { isNullOrUndefined } from '../../Utils/ToolBox';
+import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class FartestPointsFinder {
 	private _astarEngine: AStarEngine<HexAxial>;

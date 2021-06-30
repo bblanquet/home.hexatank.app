@@ -1,12 +1,12 @@
 import { Identity, Relationship } from './../../../Identity';
-import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
+import { HexAxial } from '../../../../../Utils/Geometry/HexAxial';
 import { ReactorField } from '../Bonus/ReactorField';
 import { Cell } from '../../Cell';
 import { Item } from '../../../Item';
 import { BatteryField } from '../Bonus/BatteryField';
 import { FlagCell } from '../../FlagCell';
 import { ISelectable } from '../../../../ISelectable';
-import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
+import { LiteEvent } from '../../../../../Utils/Events/LiteEvent';
 import { Vehicle } from '../../../Unit/Vehicle';
 
 export interface IHeadquarter {

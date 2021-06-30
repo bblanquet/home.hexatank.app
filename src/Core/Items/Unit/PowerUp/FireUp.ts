@@ -1,4 +1,4 @@
-import { LiteEvent } from '../../../Utils/Events/LiteEvent';
+import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
 import { UpAnimation } from './UpAnimation';
 import { Tank } from '../Tank';
 import { Up } from './Up';

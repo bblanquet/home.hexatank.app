@@ -1,4 +1,4 @@
-import { TimeTimer } from './../../Utils/Timer/TimeTimer';
+import { TimeTimer } from './../../../Utils/Timer/TimeTimer';
 import { ZKind } from './../ZKind';
 import { Item } from '../Item';
 import { Tank } from './Tank';
@@ -10,10 +10,10 @@ import { IRotationMaker } from './MotionHelpers/IRotationMaker';
 import { RotationMaker } from './MotionHelpers/RotationMaker';
 import { ItemSkin } from '../ItemSkin';
 import { SvgArchive } from '../../Framework/SvgArchiver';
-import { BoundingBox } from '../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../Interaction/InteractionContext';
 import { GameSettings } from '../../Framework/GameSettings';
-import { ITimer } from '../../Utils/Timer/ITimer';
+import { ITimer } from '../../../Utils/Timer/ITimer';
 
 export class Turrel extends Item implements IRotatable {
 	CurrentRadius: number;

@@ -6,7 +6,7 @@ import { IaArea } from '../IaArea';
 import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 import { IInteractionContext } from '../../../../Interaction/IInteractionContext';
 import { Item } from '../../../../Items/Item';
-import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../../../Utils/Geometry/BoundingBox';
 
 export class IaAreaView extends Item {
 	private _troopsView: TroopIaView;

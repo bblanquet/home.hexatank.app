@@ -1,5 +1,5 @@
-import { LiteEvent } from './../Utils/Events/LiteEvent';
-import { Dictionary } from '../Utils/Collections/Dictionary';
+import { LiteEvent } from './../../Utils/Events/LiteEvent';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
 import * as PIXI from 'pixi.js';
 import { SvgArchive } from './SvgArchiver';
 

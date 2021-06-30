@@ -1,13 +1,13 @@
 import { ZKind } from './../../ZKind';
 import { RotationAnimator } from '../../Animator/RotationAnimator';
 import { IAnimator } from '../../Animator/IAnimator';
-import { TickTimer } from '../../../Utils/Timer/TickTimer';
+import { TickTimer } from '../../../../Utils/Timer/TickTimer';
 import { BouncingScaleUpAnimator } from '../../Animator/BouncingScaleUpAnimator';
-import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
+import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { IInteractionContext } from '../../../Interaction/IInteractionContext';
 import { Item } from '../../Item';
 import { Vehicle } from '../Vehicle';
-import { isNullOrUndefined } from '../../../Utils/ToolBox';
+import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 import { Cell } from '../../Cell/Cell';
 
 export class UpAnimation extends Item {

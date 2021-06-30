@@ -1,7 +1,7 @@
 import { PeerContext } from './../PeerContext';
 import { PacketKind } from '../../../Message/PacketKind';
 import { RtcPeer } from './RtcPeer';
-import { ErrorHandler, ErrorCat } from '../../../../Core/Utils/Exceptions/ErrorHandler';
+import { ErrorHandler, ErrorCat } from '../../../../Utils/Exceptions/ErrorHandler';
 
 export class RtcOfferer extends RtcPeer {
 	constructor(context: PeerContext) {

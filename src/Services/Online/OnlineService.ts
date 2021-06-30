@@ -1,4 +1,3 @@
-import { BlueprintSetup } from './../../Components/Form/BlueprintSetup';
 import { IServerSocket } from '../../Network/Socket/Server/IServerSocket';
 import { ISocketWrapper } from '../../Network/Socket/INetworkSocket';
 import { OnlinePlayerManager } from '../../Network/Manager/OnlinePlayerManager';
@@ -16,6 +15,7 @@ import { SocketWrapper } from '../../Network/Socket/SocketWrapper';
 import { OnlineGameContextManager } from '../../Network/Manager/OnlineGameContextManager';
 import { IOnlineGameContextManager } from '../../Network/Manager/IOnlineGameContextManager';
 import { OnlineManager } from '../../Core/Framework/Network/OnlineManager';
+import { BlueprintSetup } from '../../UI/Components/Form/BlueprintSetup';
 
 export class OnlineService implements IOnlineService {
 	private _servSocket: IServerSocket;

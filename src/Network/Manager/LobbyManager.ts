@@ -1,6 +1,6 @@
 import { IOnlinePlayerManager } from './IOnlinePlayerManager';
 import { ISocketWrapper } from './../Socket/INetworkSocket';
-import { Message } from './../../Components/Network/Message';
+import { Message } from '../../UI/Screens/Network/Message';
 import { ILobbyManager } from './ILobbyManager';
 import { LiteEvent } from '../../Core/Utils/Events/LiteEvent';
 import { Lobby } from './Lobby';
@@ -10,7 +10,7 @@ import { NetworkObserver } from '../../Core/Utils/Events/NetworkObserver';
 import { SimpleEvent } from '../../Core/Utils/Events/SimpleEvent';
 import { IServerSocket } from '../Socket/Server/IServerSocket';
 import { PeerSocket } from '../Socket/Peer/PeerSocket';
-import { BlueprintSetup } from '../../Components/Form/BlueprintSetup';
+import { BlueprintSetup } from '../../UI/Components/Form/BlueprintSetup';
 
 export class LobbyManager implements ILobbyManager {
 	public OnKicked: SimpleEvent = new SimpleEvent();

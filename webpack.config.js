@@ -1,17 +1,17 @@
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
-var distDir = path.resolve(__dirname, 'dist');
+const distDir = path.resolve(__dirname, 'dist');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const fs = require('fs');
 
 module.exports = (env) => {
-	var variables = Variables(env);
+	const variables = Variables(env);
 	// Entry point : first executed file
 	// This may be an array. It will result in many output files.
 	return {
-		entry: [ './src/main.tsx' ],
+		entry: [ './src/App.tsx' ],
 		stats: {
 			errorDetails: true // --display-error-details
 		},
@@ -20,7 +20,7 @@ module.exports = (env) => {
 		// Configure output folder and file
 		output: {
 			path: distDir,
-			filename: 'main.js',
+			filename: 'app.js',
 			publicPath: variables.root
 		},
 
@@ -79,10 +79,10 @@ module.exports = (env) => {
 	};
 };
 function Variables(env) {
-	var vpath = './configuration/' + env.NODE_ENV + '.json';
+	const vpath = './configuration/' + env.NODE_ENV + '.json';
 	console.log('ENV: ' + env.NODE_ENV);
 	console.log('ENV PATH: ' + vpath);
-	var variables = JSON.parse(fs.readFileSync(vpath));
+	const variables = JSON.parse(fs.readFileSync(vpath));
 	console.log('variables: ' + JSON.stringify(variables));
 	return variables;
 }

@@ -280,6 +280,9 @@ export default class GuestComponent extends Component<
 	}
 
 	private OnConnectError(m: any): void {
-		this._onNotification.Invoke(this, new NotificationItem(LogKind.error, `Server doesn't seem to be running.`));
+		this._onNotification.Invoke(
+			this,
+			new NotificationItem(LogKind.error, `OOPS Server doesn't seem to be running.`)
+		);
 	}
 }

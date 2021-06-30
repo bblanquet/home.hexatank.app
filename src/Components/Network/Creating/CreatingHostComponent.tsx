@@ -67,7 +67,10 @@ export default class CreatingHostComponent extends Component<any, CreatingHostSt
 	}
 
 	private OnError(message: NetworkMessage<any>): void {
-		this._onNotification.Invoke(this, new NotificationItem(LogKind.error, `Server doesn't seem to be running.`));
+		this._onNotification.Invoke(
+			this,
+			new NotificationItem(LogKind.error, `OOPS Server doesn't seem to be running.`)
+		);
 	}
 
 	componentWillUnmount(): void {

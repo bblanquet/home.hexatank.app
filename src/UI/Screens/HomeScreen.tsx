@@ -6,7 +6,7 @@ import DropDownButtonComponent from '../Common/Button/Stylish/DropDownButtonComp
 import { ButtonOption } from '../Common/Button/ButtonOption';
 import Icon from '../Common/Icon/IconComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
-import Redirect from '../Components/RedirectComponent';
+import Redirect from '../Components/Redirect';
 
 export default class HomeScreen extends Component<any, any> {
 	constructor() {

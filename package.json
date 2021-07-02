@@ -56,6 +56,7 @@
 		"@types/socket.io-client": "^1.4.35",
 		"@types/svg-sprite-loader": "^3.9.1",
 		"analytics": "^0.7.5",
+		"axios": "^0.21.1",
 		"bootstrap": "^4.5.2",
 		"chart.js": "^3.3.2",
 		"chartjs-adapter-luxon": "^1.0.0",

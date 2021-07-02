@@ -13,7 +13,7 @@ import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilS
 import BlueprintFormComponent from '../Components/Form/BlueprintFormComponent';
 import { BlueprintSetup } from '../Components/Form/BlueprintSetup';
 import MdPanelComponent from '../Components/Panel/MdPanelComponent';
-import Redirect from '../Components/RedirectComponent';
+import Redirect from '../Components/Redirect';
 
 export default class SingleplayerScreen extends Component<any, BlueprintSetup> {
 	private _profilService: IPlayerProfilService;

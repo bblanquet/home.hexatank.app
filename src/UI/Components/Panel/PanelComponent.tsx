@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 import PageAnalyser from '../../Components/PageAnalyser';
-import NavbarComponent from '../NavbarComponent';
+import Navbar from '../Navbar';
 
 export default class PanelComponent extends Component<any, any> {
 	constructor() {
@@ -10,7 +10,7 @@ export default class PanelComponent extends Component<any, any> {
 	render() {
 		return (
 			<PageAnalyser>
-				<NavbarComponent>
+				<Navbar>
 					<div class="generalContainer absolute-center-middle">
 						<div class="logo-container">
 							<div class="fill-logo-back-container">
@@ -21,7 +21,7 @@ export default class PanelComponent extends Component<any, any> {
 						</div>
 						{this.props.children}
 					</div>
-				</NavbarComponent>
+				</Navbar>
 			</PageAnalyser>
 		);
 	}

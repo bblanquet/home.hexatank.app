@@ -1,8 +1,8 @@
 import { h, Component } from 'preact';
 import { BlueprintSetup } from './BlueprintSetup';
 import DropDownComponent from '../../Common/DropDown/DropDownComponent';
-import Redirect from '../RedirectComponent';
-import Visible from '../VisibleComponent';
+import Redirect from '../Redirect';
+import Visible from '../Visible';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 import { isEqual } from 'lodash';
 import SmActiveButtonComponent from '../../Common/Button/Stylish/SmActiveButtonComponent';

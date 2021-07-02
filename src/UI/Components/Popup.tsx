@@ -15,7 +15,7 @@ import Icon from '../Common/Icon/IconComponent';
 import ProgressComponent from '../Common/Progress/ProgressComponent';
 import ChartContainer from '../Common/Chart/ChartContainer';
 
-export default class PopupComponent extends Component<
+export default class Popup extends Component<
 	{ curves: Groups<Curve>; context: JsonRecordContent; status: GameStatus; points: number },
 	{ Kind: StatsKind; Canvas: HTMLCanvasElement }
 > {

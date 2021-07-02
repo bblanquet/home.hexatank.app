@@ -1,6 +1,6 @@
 import { Component, h } from 'preact';
 import { route } from 'preact-router';
-import Redirect from '../Components/RedirectComponent';
+import Redirect from '../Components/Redirect';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';

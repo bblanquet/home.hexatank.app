@@ -12,9 +12,9 @@ import { CamouflageBlueprint } from '../../Core/Framework/Blueprint/Cam/Camoufla
 import { PowerBlueprint } from '../../Core/Framework/Blueprint/Power/PowerBlueprint';
 import { DiamondBlueprint } from '../../Core/Framework/Blueprint/Diamond/DiamondBlueprint';
 import { Face } from '../Components/Face';
-import NavbarComponent from '../Components/NavbarComponent';
-import Redirect from '../Components/RedirectComponent';
-import Visible from '../Components/VisibleComponent';
+import Navbar from '../Components/Navbar';
+import Redirect from '../Components/Redirect';
+import Visible from '../Components/Visible';
 
 export default class TrainingScreen extends Component<any, any> {
 	private _campaignService: ICampaignService;
@@ -27,7 +27,7 @@ export default class TrainingScreen extends Component<any, any> {
 	render() {
 		return (
 			<Redirect>
-				<NavbarComponent>
+				<Navbar>
 					<div class="generalContainer absolute-center-middle">
 						<div class="container-center">
 							<Face
@@ -99,7 +99,7 @@ export default class TrainingScreen extends Component<any, any> {
 							</div>
 						</Visible>
 					</div>
-				</NavbarComponent>
+				</Navbar>
 			</Redirect>
 		);
 	}

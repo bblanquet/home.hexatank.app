@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 import { BarChart } from '../../Common/Chart/Config/BarChart';
-import Redirect from '../../Components/RedirectComponent';
+import Redirect from '../../Components/Redirect';
 import ChartContainer from '../../Common/Chart/ChartContainer';
 import { StatusDuration } from '../../Common/Chart/Model/StatusDuration';
 import { Dictionary } from '../../../Utils/Collections/Dictionary';

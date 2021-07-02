@@ -8,7 +8,7 @@ import ProgressComponent from '../Common/Progress/ProgressComponent';
 import Icon from '../Common/Icon/IconComponent';
 import { IAudioService } from '../../Services/Audio/IAudioService';
 
-export default class NavbarComponent extends Component<any, { profil: PlayerProfil }> {
+export default class Navbar extends Component<any, { profil: PlayerProfil }> {
 	private _soundService: IAudioService;
 	private _profilService: IPlayerProfilService;
 	constructor() {

@@ -1,5 +1,5 @@
 import { Component, h } from 'preact';
-import Visible from '../../../Components/VisibleComponent';
+import Visible from '../../../Components/Visible';
 import { ColorKind } from '../Stylish/ColorKind';
 import SmButtonComponent from '../Stylish/SmButtonComponent';
 import AnimatedIcon from './AnimatedIcon';

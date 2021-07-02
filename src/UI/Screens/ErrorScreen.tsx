@@ -5,8 +5,8 @@ import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import { Face } from '../Components/Face';
-import NavbarComponent from '../Components/NavbarComponent';
-import Redirect from '../Components/RedirectComponent';
+import Navbar from '../Components/Navbar';
+import Redirect from '../Components/Redirect';
 
 export default class ErrorScreen extends Component<any, any> {
 	private Back() {
@@ -16,7 +16,7 @@ export default class ErrorScreen extends Component<any, any> {
 	render() {
 		return (
 			<Redirect>
-				<NavbarComponent>
+				<Navbar>
 					<div class="container-center">
 						<Face eyes={[]} mouths={[]} face={'fill-exception'} />
 						<div class="text-detail shadowEffect width80percent">
@@ -35,7 +35,7 @@ export default class ErrorScreen extends Component<any, any> {
 							<Icon Value="fas fa-undo-alt" /> Back
 						</ButtonComponent>
 					</div>
-				</NavbarComponent>
+				</Navbar>
 			</Redirect>
 		);
 	}

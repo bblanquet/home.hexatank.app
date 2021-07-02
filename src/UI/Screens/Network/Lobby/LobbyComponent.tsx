@@ -13,9 +13,9 @@ import ButtonComponent from '../../../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../../../Common/Button/Stylish/ColorKind';
 import Icon from '../../../Common/Icon/IconComponent';
 import SmPanelComponent from '../../../Components/Panel/SmPanelComponent';
-import Redirect from '../../../Components/RedirectComponent';
-import MessageComponent from '../../../Components/MessageComponent';
-import Visible from '../../../Components/VisibleComponent';
+import Redirect from '../../../Components/Redirect';
+import MessageEmitter from '../../../Components/MessageEmitter';
+import Visible from '../../../Components/Visible';
 import { Message } from '../Message';
 import { IOnlineService } from '../../../../Services/Online/IOnlineService';
 import OptionComponent from './Options/OptionComponent';
@@ -61,7 +61,7 @@ export default class LobbyComponent extends Component<any, LobbyState> {
 	render() {
 		return (
 			<Redirect>
-				<MessageComponent _lobby={this._lobbyManager} Player={this.state.Player}>
+				<MessageEmitter _lobby={this._lobbyManager} Player={this.state.Player}>
 					<Visible isVisible={SpriteProvider.IsLoaded()}>
 						<Visible isVisible={this._mode === HostingMode.setting}>
 							<SmPanelComponent>
@@ -89,7 +89,7 @@ export default class LobbyComponent extends Component<any, LobbyState> {
 							</SmPanelComponent>
 						</Visible>
 					</Visible>
-				</MessageComponent>
+				</MessageEmitter>
 			</Redirect>
 		);
 	}

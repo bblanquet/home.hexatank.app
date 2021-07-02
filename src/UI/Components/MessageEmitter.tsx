@@ -3,7 +3,7 @@ import Icon from '../Common/Icon/IconComponent';
 import { OnlinePlayer } from '../../Network/OnlinePlayer';
 import { ILobbyManager } from '../../Network/Manager/ILobbyManager';
 
-export default class MessageComponent extends Component<
+export default class MessageEmitter extends Component<
 	{ _lobby: ILobbyManager; Player: OnlinePlayer },
 	{ Message: string }
 > {

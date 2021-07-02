@@ -3,7 +3,7 @@ import { Item } from '../../Core/Items/Item';
 import { Truck } from '../../Core/Items/Unit/Truck';
 import { ISelectable } from '../../Core/ISelectable';
 import { GameSettings } from '../../Core/Framework/GameSettings';
-import CanvasComponent from '../Components/CanvasComponent';
+import GameCanvas from '../Components/GameCanvas';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import { OnlinePlayer } from '../../Network/OnlinePlayer';
 import { Singletons, SingletonKey } from '../../Singletons';
@@ -15,10 +15,10 @@ import { IGameContextService } from '../../Services/GameContext/IGameContextServ
 import { IInteractionService } from '../../Services/Interaction/IInteractionService';
 import MultiMenuComponent from '../Components/Canvas/MultiMenuComponent';
 import TruckMenuComponent from '../Components/Canvas/TruckMenuComponent';
-import PopupMenuComponent from '../Components/PopupMenuComponent';
-import Redirect from '../Components/RedirectComponent';
-import SmPopupComponent from '../Components/SmPopupComponent';
-import Visible from '../Components/VisibleComponent';
+import OptionPopup from '../Components/OptionPopup';
+import Redirect from '../Components/Redirect';
+import SmPopup from '../Components/SmPopup';
+import Visible from '../Components/Visible';
 
 export default class CamouflageScreen extends Component<
 	any,
@@ -147,7 +147,7 @@ export default class CamouflageScreen extends Component<
 			<Redirect>
 				{this.TopMenuRender()}
 				{this.state.GameStatus === GameStatus.Pending ? '' : this.GetEndMessage()}
-				<CanvasComponent gameContext={this._gameContextService} />
+				<GameCanvas gameContext={this._gameContextService} />
 				<Visible isVisible={!(this.state.HasMenu && this.state.GameStatus === GameStatus.Pending)}>
 					{this.LeftMenuRender()}
 				</Visible>
@@ -176,7 +176,7 @@ export default class CamouflageScreen extends Component<
 
 	private MenuRender() {
 		return (
-			<PopupMenuComponent
+			<OptionPopup
 				Status={this.state.GameStatus}
 				Resume={() => this.SetMenu()}
 				Quit={() => {
@@ -192,7 +192,7 @@ export default class CamouflageScreen extends Component<
 
 	private GetEndMessage() {
 		if ([ GameStatus.Victory, GameStatus.Defeat ].some((e) => e === this.state.GameStatus)) {
-			return <SmPopupComponent points={10} status={this.state.GameStatus} />;
+			return <SmPopup points={10} status={this.state.GameStatus} />;
 		}
 		return '';
 	}

@@ -6,7 +6,7 @@ import { ColorKind } from '../../../../Common/Button/Stylish/ColorKind';
 import SmButtonComponent from '../../../../Common/Button/Stylish/SmButtonComponent';
 import GridComponent from '../../../../Common/Grid/GridComponent';
 import Icon from '../../../../Common/Icon/IconComponent';
-import Visible from '../../../../Components/VisibleComponent';
+import Visible from '../../../../Components/Visible';
 
 export default class PendingPlayers extends Component<
 	{ Player: OnlinePlayer; Players: OnlinePlayer[]; Lobby: ILobbyManager },

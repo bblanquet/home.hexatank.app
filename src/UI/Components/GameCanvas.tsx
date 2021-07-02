@@ -9,12 +9,9 @@ import { IKeyService } from '../../Services/Key/IKeyService';
 import { IsMobile } from '../../Utils/ToolBox';
 import { IGameContext } from '../../Core/Framework/Context/IGameContext';
 import { IBlueprint } from '../../Core/Framework/Blueprint/IBlueprint';
-import PageAnalyser from '../Components/PageAnalyser';
+import PageAnalyser from './PageAnalyser';
 
-export default class CanvasComponent extends Component<
-	{ gameContext: IGameContextService<IBlueprint, IGameContext> },
-	{}
-> {
+export default class GameCanvas extends Component<{ gameContext: IGameContextService<IBlueprint, IGameContext> }, {}> {
 	private _gameCanvas: HTMLDivElement;
 	private _updater: ItemsUpdater;
 	private _appService: IAppService<IBlueprint>;

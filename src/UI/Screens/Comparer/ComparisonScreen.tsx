@@ -7,7 +7,7 @@ import ButtonComponent from '../../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
 import Icon from '../../Common/Icon/IconComponent';
 import SmPanelComponent from '../../Components/Panel/SmPanelComponent';
-import Visible from '../../Components/VisibleComponent';
+import Visible from '../../Components/Visible';
 import LineComparisonComponent from './LineComparisonComponent';
 import BarComparisonComponent from './BarComparisonComponent';
 import LogComponent from './LogComponent';

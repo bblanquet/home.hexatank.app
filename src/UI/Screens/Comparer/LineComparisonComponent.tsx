@@ -5,7 +5,7 @@ import { RecordComparer } from './Comparers/RecordComparer';
 import DropDownComponent from '../../Common/DropDown/DropDownComponent';
 import { DeltaRecordCurve } from './Comparers/DeltaRecordCurve';
 import { Singletons, SingletonKey } from '../../../Singletons';
-import Redirect from '../../Components/RedirectComponent';
+import Redirect from '../../Components/Redirect';
 import ChartContainer from '../../Common/Chart/ChartContainer';
 
 export default class LineComparisonComponent extends Component<

@@ -4,20 +4,20 @@ import OnlinePlayersComponent from '../Components/Canvas/OnlinePlayersComponent'
 import { GameContext } from '../../Core/Framework/Context/GameContext';
 import { ISelectable } from '../../Core/ISelectable';
 import { GameSettings } from '../../Core/Framework/GameSettings';
-import CanvasComponent from '../Components/CanvasComponent';
-import PopupMenuComponent from '../Components/PopupMenuComponent';
+import GameCanvas from '../Components/GameCanvas';
+import OptionPopup from '../Components/OptionPopup';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import { OnlinePlayer } from '../../Network/OnlinePlayer';
-import PopupComponent from '../Components/PopupComponent';
+import Popup from '../Components/Popup';
 import { IGameContextService } from '../../Services/GameContext/IGameContextService';
 import { IInteractionService } from '../../Services/Interaction/IInteractionService';
 import { Singletons, SingletonKey } from '../../Singletons';
-import Redirect from '../Components/RedirectComponent';
+import Redirect from '../Components/Redirect';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 import ActiveRightBottomCornerButton from '../Common/Button/Corner/ActiveRightBottomCornerButton';
 import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
 import { MultiTankMenuItem } from '../../Core/Menu/Buttons/MultiTankMenuItem';
-import Visible from '../Components/VisibleComponent';
+import Visible from '../Components/Visible';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 import { MultiCellMenuItem } from '../../Core/Menu/Buttons/MultiCellMenuItem';
 import { IAppService } from '../../Services/App/IAppService';
@@ -27,7 +27,7 @@ import { IOnlineService } from '../../Services/Online/IOnlineService';
 import { Dictionary } from '../../Utils/Collections/Dictionary';
 import MenuSwitcher from '../Components/Canvas/MenuSwitcher';
 import SynchronizingComponent from '../Components/Canvas/SynchronizingComponent';
-import Switch from '../Components/SwitchComponent';
+import Switch from '../Components/Switch';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 
 export default class GameScreen extends Component<
@@ -46,7 +46,6 @@ export default class GameScreen extends Component<
 		IsSettingPatrol: boolean;
 	}
 > {
-	private _diamonds: number;
 	private _gameContextService: IGameContextService<GameBlueprint, GameContext>;
 	private _soundService: IAudioService;
 	private _onlineService: IOnlineService;
@@ -76,7 +75,6 @@ export default class GameScreen extends Component<
 			IsSettingPatrol: false,
 			IsSynchronising: false
 		});
-		this._diamonds = GameSettings.PocketMoney;
 		this._timeout.On(() => {
 			this.Stop(true);
 		});
@@ -141,7 +139,7 @@ export default class GameScreen extends Component<
 			<Redirect>
 				<OnlinePlayersComponent OnlineService={this._onlineService} />
 				<Visible isVisible={this.state.GameStatus !== GameStatus.Pending}>
-					<PopupComponent
+					<Popup
 						points={10}
 						status={this.state.GameStatus}
 						curves={this._appService.GetStats().GetCurves()}
@@ -163,7 +161,7 @@ export default class GameScreen extends Component<
 							<Switch
 								isVisible={this.state.IsSettingMenuVisible}
 								left={
-									<PopupMenuComponent
+									<OptionPopup
 										Status={this.state.GameStatus}
 										Resume={() => this.SetMenu()}
 										Quit={() => {
@@ -185,7 +183,7 @@ export default class GameScreen extends Component<
 														{' '}
 													</span>
 												</Visible>
-												{this._diamonds.toFixed(2)}
+												{this.state.Amount.toFixed(2)}
 												<span class="fill-diamond badge badge-secondary very-small-space middle very-small-left-margin very-small-right-margin">
 													{' '}
 												</span>
@@ -226,7 +224,7 @@ export default class GameScreen extends Component<
 						}
 					/>
 				</Visible>
-				<CanvasComponent gameContext={this._gameContextService} />
+				<GameCanvas gameContext={this._gameContextService} />
 			</Redirect>
 		);
 	}
@@ -256,7 +254,6 @@ export default class GameScreen extends Component<
 	}
 
 	private HandleDiamondChanged(obj: any, amount: number): void {
-		this._diamonds = amount;
 		this.setState({
 			Amount: amount
 		});

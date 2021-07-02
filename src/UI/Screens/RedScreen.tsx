@@ -11,9 +11,9 @@ import { CampaignKind } from '../../Services/Campaign/CampaignKind';
 import { Sentences } from './Sentences';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { Face } from '../Components/Face';
-import NavbarComponent from '../Components/NavbarComponent';
-import Redirect from '../Components/RedirectComponent';
-import Visible from '../Components/VisibleComponent';
+import Navbar from '../Components/Navbar';
+import Redirect from '../Components/Redirect';
+import Visible from '../Components/Visible';
 
 export default class RedScreen extends Component<
 	any,
@@ -29,7 +29,7 @@ export default class RedScreen extends Component<
 	render() {
 		return (
 			<Redirect>
-				<NavbarComponent>
+				<Navbar>
 					<div class="generalContainer absolute-center-middle">
 						<div class="container-center">
 							<Face
@@ -102,7 +102,7 @@ export default class RedScreen extends Component<
 							</Visible>
 						</div>
 					</div>
-				</NavbarComponent>
+				</Navbar>
 			</Redirect>
 		);
 	}

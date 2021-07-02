@@ -4,7 +4,7 @@ import { StaticLogger } from '../../../Utils/Logger/StaticLogger';
 import { NotificationItem } from './NotificationItem';
 import { LiteEvent } from '../../../Utils/Events/LiteEvent';
 import Icon from '../../Common/Icon/IconComponent';
-import Visible from '../VisibleComponent';
+import Visible from '../Visible';
 
 export default class Notification extends Component<
 	{ OnNotification: LiteEvent<NotificationItem> },

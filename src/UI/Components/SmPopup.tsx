@@ -9,7 +9,7 @@ import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import ProgressComponent from '../Common/Progress/ProgressComponent';
 
-export default class SmPopupComponent extends Component<{ status: GameStatus; points: number }, { Kind: StatsKind }> {
+export default class SmPopup extends Component<{ status: GameStatus; points: number }, { Kind: StatsKind }> {
 	private _profilService: IPlayerProfilService;
 
 	constructor() {

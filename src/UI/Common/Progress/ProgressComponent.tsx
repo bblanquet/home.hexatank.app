@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 import { IPlayerProfilService } from '../../../Services/PlayerProfil/IPlayerProfilService';
 import { Singletons, SingletonKey } from '../../../Singletons';
-import Switch from '../../Components/SwitchComponent';
+import Switch from '../../Components/Switch';
 
 export default class ProgressComponent extends Component<{ width: number; maxWidth: number }, { Percentage: number }> {
 	private _profilService: IPlayerProfilService;

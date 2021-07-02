@@ -16,9 +16,9 @@ import UploadButtonComponent from '../../Common/Button/Stylish/UploadButtonCompo
 import GridComponent from '../../Common/Grid/GridComponent';
 import Icon from '../../Common/Icon/IconComponent';
 import SmPanelComponent from '../../Components/Panel/SmPanelComponent';
-import Redirect from '../../Components/RedirectComponent';
-import Switch from '../../Components/SwitchComponent';
-import Visible from '../../Components/VisibleComponent';
+import Redirect from '../../Components/Redirect';
+import Switch from '../../Components/Switch';
+import Visible from '../../Components/Visible';
 import { RecordSelection } from './RecordSelection';
 
 export default class ProfilScreen extends Component<

@@ -16,8 +16,8 @@ import SmButtonComponent from '../../../Common/Button/Stylish/SmButtonComponent'
 import GridComponent from '../../../Common/Grid/GridComponent';
 import Icon from '../../../Common/Icon/IconComponent';
 import SmPanelComponent from '../../../Components/Panel/SmPanelComponent';
-import Redirect from '../../../Components/RedirectComponent';
-import Visible from '../../../Components/VisibleComponent';
+import Redirect from '../../../Components/Redirect';
+import Visible from '../../../Components/Visible';
 import { Usernames } from '../Names';
 import { NotificationItem } from '../../../Components/Notification/NotificationItem';
 import Notification from '../../../Components/Notification/NotificationComponent';

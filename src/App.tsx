@@ -34,16 +34,17 @@ import FireScreen from './UI/Screens/FireScreen';
 import GuestScreen from './UI/Screens/Network/Guest/GuestComponent';
 import RecordScreen from './UI/Screens/Record/PlayerScreen';
 import LoadingPlayers from './UI/Screens/Network/Lobby/Players/LoadingPlayersComponent';
-import PopupComponent from './UI/Components/PopupComponent';
-import SmPopupComponent from './UI/Components/SmPopupComponent';
+import Popup from './UI/Components/Popup';
+import SmPopup from './UI/Components/SmPopup';
 import ComparisonScreen from './UI/Screens/Comparer/ComparisonScreen';
 import LogComponent from './UI/Screens/Comparer/LogComponent';
+import CustomerScreen from './UI/Screens/CustomerScreen';
 
 const App = (e: any) => {
 	return (
 		<Router>
 			<HomeScreen path="{{sub_path}}Home" />
-			<LoadingScreen path="{{sub_path}}Loading" default />
+			<LoadingScreen path="{{sub_path}}Loading" />
 			<ErrorScreen path="{{sub_path}}Error" />
 			<SinglePlayerScreen path="{{sub_path}}SinglePlayer" />
 			<RedScreen path="{{sub_path}}Red" />
@@ -61,15 +62,16 @@ const App = (e: any) => {
 			<GuestScreen path="{{sub_path}}OffJoin" />
 			<RecordScreen path="{{sub_path}}Record" />
 			<LoadingPlayers path="{{sub_path}}Launching" />
-			<PopupComponent
+			<Popup
 				path="{{sub_path}}Popup"
 				points={30}
 				curves={DeltaCurves()}
 				status={GameStatus.Victory}
 				context={new JsonRecordContent()}
 			/>
-			<SmPopupComponent path="{{sub_path}}SmPopup" points={10} status={GameStatus.Victory} />
+			<SmPopup path="{{sub_path}}SmPopup" points={10} status={GameStatus.Victory} />
 			<ComparisonScreen path="{{sub_path}}Comparison" />
+			<CustomerScreen path="{{sub_path}}Customer" default />
 			<LogComponent path="{{sub_path}}Log" Messages={Logs()} />
 		</Router>
 	);

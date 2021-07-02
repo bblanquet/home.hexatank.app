@@ -3,14 +3,14 @@ import { route } from 'preact-router';
 import { IAppService } from '../../Services/App/IAppService';
 import { ICampaignService } from '../../Services/Campaign/ICampaignService';
 import { Singletons, SingletonKey } from '../../Singletons';
-import Redirect from '../Components/RedirectComponent';
+import Redirect from '../Components/Redirect';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { LockButton } from '../Common/Button/Stylish/LockButton';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import { CampaignKind } from '../../Services/Campaign/CampaignKind';
 import { Face } from '../Components/Face';
-import NavbarComponent from '../Components/NavbarComponent';
+import Navbar from '../Components/Navbar';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 
 export default class BlueScreen extends Component<any, any> {
@@ -19,12 +19,13 @@ export default class BlueScreen extends Component<any, any> {
 	constructor(props: any) {
 		super(props);
 		this._campaignService = Singletons.Load<ICampaignService>(SingletonKey.Campaign);
+		const a = '';
 	}
 
 	render() {
 		return (
 			<Redirect>
-				<NavbarComponent>
+				<Navbar>
 					<div class="generalContainer absolute-center-middle">
 						<div class="container-center">
 							<Face
@@ -63,7 +64,7 @@ export default class BlueScreen extends Component<any, any> {
 							</ButtonComponent>
 						</div>
 					</div>
-				</NavbarComponent>
+				</Navbar>
 			</Redirect>
 		);
 	}

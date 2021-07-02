@@ -2,7 +2,7 @@ import { Component, h } from 'preact';
 import { OnlinePlayer } from '../../../Network/OnlinePlayer';
 import { IOnlineService } from '../../../Services/Online/IOnlineService';
 import Icon from '../../Common/Icon/IconComponent';
-import Visible from '../VisibleComponent';
+import Visible from '../Visible';
 
 export default class OnlinePlayersComponent extends Component<{ OnlineService: IOnlineService }, {}> {
 	render() {

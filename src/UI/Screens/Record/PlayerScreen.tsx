@@ -6,11 +6,11 @@ import RangeComponent from '../../Common/Range/RangeComponent';
 import { Item } from '../../../Core/Items/Item';
 import UnitMenuComponent from './Parts/UnitMenuComponent';
 import { Vehicle } from '../../../Core/Items/Unit/Vehicle';
-import CanvasComponent from '../../Components/CanvasComponent';
+import GameCanvas from '../../Components/GameCanvas';
 import { IRecordService } from '../../../Services/Record/IRecordService';
 import { Singletons, SingletonKey } from '../../../Singletons';
 import { route } from 'preact-router';
-import Redirect from '../../Components/RedirectComponent';
+import Redirect from '../../Components/Redirect';
 import { GameBlueprint } from '../../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { GameContext } from '../../../Core/Framework/Context/GameContext';
 import Icon from '../../Common/Icon/IconComponent';
@@ -23,14 +23,13 @@ export default class PlayerScreen extends Component<
 > {
 	private _recordService: IRecordService;
 	private _gameService: IGameContextService<GameBlueprint, GameContext>;
-	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
+	private _onItemSelectionChanged: any = this.OnItemSelectionChanged.bind(this);
 	private _updater: RecordCanvasUpdater;
 
 	constructor() {
 		super();
 		this._gameService = Singletons.Load<IGameContextService<GameBlueprint, GameContext>>(SingletonKey.GameContext);
 		this._recordService = Singletons.Load<IRecordService>(SingletonKey.Record);
-		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
 	}
 	private OnItemSelectionChanged(obj: any, item: ISelectable): void {
 		if (!item.IsSelected()) {
@@ -51,10 +50,6 @@ export default class PlayerScreen extends Component<
 		return this._recordService.Publish();
 	}
 
-	componentWillUnmount() {}
-
-	componentDidUpdate() {}
-
 	render() {
 		return (
 			<Redirect>
@@ -66,7 +61,7 @@ export default class PlayerScreen extends Component<
 							onChange={(e: number) => this.HandleRangeChanged(e)}
 						/>
 					</div>
-					<CanvasComponent gameContext={this._gameService} />
+					<GameCanvas gameContext={this._gameService} />
 					{this.LeftMenuRender()}
 				</div>
 			</Redirect>

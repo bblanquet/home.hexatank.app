@@ -33,11 +33,11 @@ import MultiTankMenuComponent from '../Components/Canvas/MultiTankMenuComponent'
 import ReactorMenuComponent from '../Components/Canvas/ReactorMenuComponent';
 import TankMenuComponent from '../Components/Canvas/TankMenuComponent';
 import TruckMenuComponent from '../Components/Canvas/TruckMenuComponent';
-import CanvasComponent from '../Components/CanvasComponent';
-import PopupMenuComponent from '../Components/PopupMenuComponent';
-import Redirect from '../Components/RedirectComponent';
-import SmPopupComponent from '../Components/SmPopupComponent';
-import Visible from '../Components/VisibleComponent';
+import GameCanvas from '../Components/GameCanvas';
+import OptionPopup from '../Components/OptionPopup';
+import Redirect from '../Components/Redirect';
+import SmPopup from '../Components/SmPopup';
+import Visible from '../Components/Visible';
 
 export default class DiamondScreen extends Component<
 	any,
@@ -230,7 +230,7 @@ export default class DiamondScreen extends Component<
 			<Redirect>
 				{this.TopMenuRender()}
 				{this.state.GameStatus === GameStatus.Pending ? '' : this.GetEndMessage()}
-				<CanvasComponent gameContext={this._gameContextService} />
+				<GameCanvas gameContext={this._gameContextService} />
 				<Visible
 					isVisible={
 						!this.state.HasMenu &&
@@ -309,7 +309,7 @@ export default class DiamondScreen extends Component<
 
 	private MenuRender() {
 		return (
-			<PopupMenuComponent
+			<OptionPopup
 				Status={this.state.GameStatus}
 				Resume={() => this.SetMenu()}
 				Quit={() => {
@@ -325,7 +325,7 @@ export default class DiamondScreen extends Component<
 
 	private GetEndMessage() {
 		if ([ GameStatus.Victory, GameStatus.Defeat ].some((e) => e === this.state.GameStatus)) {
-			return <SmPopupComponent points={10} status={this.state.GameStatus} />;
+			return <SmPopup points={10} status={this.state.GameStatus} />;
 		}
 		return '';
 	}

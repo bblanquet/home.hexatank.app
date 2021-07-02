@@ -8,7 +8,7 @@ import { Face } from '../Components/Face';
 import Navbar from '../Components/Navbar';
 import Redirect from '../Components/Redirect';
 
-export default class ErrorScreen extends Component<any, any> {
+export default class ErrorScreen extends Component {
 	private Back() {
 		route('{{sub_path}}Home', true);
 	}

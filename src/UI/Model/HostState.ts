@@ -1,4 +1,4 @@
-export class HostModel {
+export class HostState {
 	public RoomName: string = '';
 	public PlayerName: string = '';
 	public Password: string = '';
@@ -11,7 +11,7 @@ export class HostModel {
 		this.HasPassword = hasPassword;
 	}
 
-	public static New(model: HostModel): HostModel {
-		return new HostModel(model.RoomName, model.PlayerName, model.Password, model.HasPassword);
+	public static New(model: HostState): HostState {
+		return new HostState(model.RoomName, model.PlayerName, model.Password, model.HasPassword);
 	}
 }

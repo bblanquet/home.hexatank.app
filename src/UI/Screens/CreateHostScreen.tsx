@@ -12,7 +12,7 @@ import InputComponent from '../Common/Text/TextComponent';
 import { CreateHostHook } from '../Hooks/CreateHostHook';
 import { useState } from 'preact/hooks';
 
-export default class CreateHostScreen extends Component<{}, {}> {
+export default class CreateHostScreen extends Component {
 	private _hook: CreateHostHook;
 	constructor() {
 		super();

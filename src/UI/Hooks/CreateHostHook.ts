@@ -8,19 +8,19 @@ import { NetworkMessage } from '../../Network/Message/NetworkMessage';
 import { IOnlineService } from '../../Services/Online/IOnlineService';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 import { Singletons, SingletonKey } from '../../Singletons';
-import { HostModel } from '../Model/HostModel';
+import { HostState } from '../Model/HostState';
 import { NotificationItem } from '../Components/Notification/NotificationItem';
 import { Hook } from './Hook';
 import { route } from 'preact-router';
 import { StateUpdater } from 'preact/hooks';
 import { Usernames } from '../Model/Names';
 
-export class CreateHostHook extends Hook<HostModel> {
+export class CreateHostHook extends Hook<HostState> {
 	private _socket: IServerSocket;
 	private _obs: NetworkObserver[];
 	public OnNotification: LiteEvent<NotificationItem> = new LiteEvent<NotificationItem>();
 
-	constructor(data: HostModel, protected SetState: StateUpdater<HostModel>) {
+	constructor(data: HostState, protected SetState: StateUpdater<HostState>) {
 		super(data, SetState);
 		this._socket = Singletons.Load<ISocketService>(SingletonKey.Socket).Publish();
 		this._obs = [
@@ -34,9 +34,9 @@ export class CreateHostHook extends Hook<HostModel> {
 		this._socket.Off(this._obs);
 	}
 
-	public static DefaultState(): HostModel {
+	public static DefaultState(): HostState {
 		const profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
-		return new HostModel(
+		return new HostState(
 			`${profilService.GetProfil().LastPlayerName}'s room`,
 			profilService.GetProfil().LastPlayerName,
 			'',

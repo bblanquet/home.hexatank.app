@@ -1,3 +1,4 @@
+import 'preact/debug';
 import './Register';
 import { h, render } from 'preact';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -25,13 +26,13 @@ import BlueScreen from './UI/Screens/BlueScreen';
 import GameScreen from './UI/Screens/GameScreen';
 import BadgeScreen from './UI/Screens/BadgeScreen';
 import PlayerScreen from './UI/Screens/Record/PlayerScreen';
-import CreatingHostScreen from './UI/Screens/Network/Creating/CreatingHostComponent';
+import CreatingHostScreen from './UI/Screens/CreateHostScreen';
 import LobbyScreen from './UI/Screens/Network/Lobby/LobbyComponent';
 import CamouflageScreen from './UI/Screens/CamouflageScreen';
 import ProfilScreen from './UI/Screens/Profil/ProfilScreen';
 import DiamondScreen from './UI/Screens/DiamondScreen';
 import FireScreen from './UI/Screens/FireScreen';
-import GuestScreen from './UI/Screens/Network/Guest/GuestComponent';
+import GuestScreen from './UI/Screens/GuestScreen';
 import RecordScreen from './UI/Screens/Record/PlayerScreen';
 import LoadingPlayers from './UI/Screens/Network/Lobby/Players/LoadingPlayersComponent';
 import Popup from './UI/Components/Popup';
@@ -44,7 +45,7 @@ const App = (e: any) => {
 	return (
 		<Router>
 			<HomeScreen path="{{sub_path}}Home" />
-			<LoadingScreen path="{{sub_path}}Loading" />
+			<LoadingScreen path="{{sub_path}}Loading" default />
 			<ErrorScreen path="{{sub_path}}Error" />
 			<SinglePlayerScreen path="{{sub_path}}SinglePlayer" />
 			<RedScreen path="{{sub_path}}Red" />
@@ -71,7 +72,7 @@ const App = (e: any) => {
 			/>
 			<SmPopup path="{{sub_path}}SmPopup" points={10} status={GameStatus.Victory} />
 			<ComparisonScreen path="{{sub_path}}Comparison" />
-			<CustomerScreen path="{{sub_path}}Customer" default />
+			<CustomerScreen path="{{sub_path}}Customer" />
 			<LogComponent path="{{sub_path}}Log" Messages={Logs()} />
 		</Router>
 	);

@@ -8,7 +8,7 @@ import { LockButton } from '../Common/Button/Stylish/LockButton';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import { CampaignKind } from '../../Services/Campaign/CampaignKind';
-import { Sentences } from './Sentences';
+import { Sentences } from '../Model/Sentences';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { Face } from '../Components/Face';
 import Navbar from '../Components/Navbar';

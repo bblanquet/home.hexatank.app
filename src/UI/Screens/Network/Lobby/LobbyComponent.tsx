@@ -164,16 +164,8 @@ export default class LobbyComponent extends Component<any, LobbyState> {
 				/>
 
 				<ActiveButtonComponent
-					left={
-						<span>
-							<Icon Value={'fas fa-toggle-on'} />
-						</span>
-					}
-					right={
-						<span>
-							<Icon Value={'fas fa-toggle-off'} />
-						</span>
-					}
+					left={<Icon Value={'fas fa-toggle-on'} />}
+					right={<Icon Value={'fas fa-toggle-off'} />}
 					leftColor={ColorKind.Gray}
 					rightColor={ColorKind.Green}
 					callBack={() => this.ChangeReady()}

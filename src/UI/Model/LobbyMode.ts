@@ -1,4 +1,4 @@
-export enum HostingMode {
+export enum LobbyMode {
 	chat,
 	setting,
 	pending

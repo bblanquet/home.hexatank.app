@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
-import Icon from '../../../../Common/Icon/IconComponent';
-import { Message } from '../../Message';
+import Icon from '../Common/Icon/IconComponent';
+import { Message } from '../Model/Message';
 
 export default class ChatComponent extends Component<{ messages: Message[]; player: string }, {}> {
 	constructor() {

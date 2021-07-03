@@ -1,4 +1,4 @@
-import { h, Component } from 'preact';
+import { h, JSX } from 'preact';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import SmButtonComponent from '../Common/Button/Stylish/SmButtonComponent';
@@ -13,20 +13,20 @@ import IconInputComponent from '../Common/Text/IconTextComponent';
 import { GuestHook } from '../Hooks/GuestHook';
 import { useState } from 'preact/hooks';
 import Switch from '../Components/Switch';
+import { GuestState } from '../Model/GuestState';
+import { HookedComponent } from '../Hooks/HookedComponent';
 
-export default class GuestComponent extends Component {
-	private _hook: GuestHook;
-	constructor() {
-		super();
-		const [ state, setState ] = useState(GuestHook.DefaultState());
-		this._hook = new GuestHook(state, setState);
-	}
-
+export default class GuestComponent extends HookedComponent<{}, GuestHook, GuestState> {
 	componentWillUnmount() {
-		this._hook.Unmount();
+		this.Hook.Unmount();
 	}
 
-	render() {
+	public GetDefaultHook(): GuestHook {
+		const [ state, setState ] = useState(GuestHook.DefaultState());
+		return new GuestHook(state, setState);
+	}
+
+	public Rendering(): JSX.Element {
 		return (
 			<Redirect>
 				<SmPanelComponent>
@@ -34,35 +34,35 @@ export default class GuestComponent extends Component {
 						<InputComponent
 							max={15}
 							type={'text'}
-							value={this._hook.State.PlayerName}
+							value={this.Hook.State.PlayerName}
 							label={'Name'}
 							isEditable={true}
-							onInput={(e: any) => this._hook.SetUsername(e.target.value as string)}
+							onInput={(e: any) => this.Hook.SetUsername(e.target.value as string)}
 						/>
 						<div class="space-out" />
-						<SmButtonComponent callBack={() => this._hook.Randomize()} color={ColorKind.Blue}>
+						<SmButtonComponent callBack={() => this.Hook.Randomize()} color={ColorKind.Blue}>
 							<Icon Value="fas fa-random" />
 						</SmButtonComponent>
 					</div>
 					<IconInputComponent
 						type={'text'}
-						value={this._hook.State.filter}
+						value={this.Hook.State.filter}
 						icon={'fas fa-filter'}
 						isEditable={true}
-						onInput={(e: any) => this._hook.SetFilter(e.target.value)}
+						onInput={(e: any) => this.Hook.SetFilter(e.target.value)}
 					/>
 					<IconInputComponent
 						type={'text'}
-						value={this._hook.State.Password}
+						value={this.Hook.State.Password}
 						icon={'fas fa-lock'}
 						isEditable={true}
-						onInput={(e: any) => this._hook.SetPassword(e.target.value)}
+						onInput={(e: any) => this.Hook.SetPassword(e.target.value)}
 					/>
 					<GridComponent
 						left={''}
 						right={
 							<Switch
-								isVisible={this._hook.State.Rooms.length === 0}
+								isVisible={this.Hook.State.Rooms.length === 0}
 								left={
 									<tbody>
 										<tr class="d-flex">
@@ -72,12 +72,12 @@ export default class GuestComponent extends Component {
 								}
 								right={
 									<tbody>
-										{this._hook.State.DisplayableRooms.map((roomInfo) => {
+										{this.Hook.State.DisplayableRooms.map((roomInfo) => {
 											return (
 												<tr class="d-flex">
 													<td class="align-self-center">
 														<SmButtonComponent
-															callBack={() => this._hook.Join(roomInfo.Name)}
+															callBack={() => this.Hook.Join(roomInfo.Name)}
 															color={ColorKind.Black}
 														>
 															Join
@@ -103,7 +103,7 @@ export default class GuestComponent extends Component {
 					<div class="container-center-horizontal">
 						<ButtonComponent
 							callBack={() => {
-								this._hook.Back();
+								this.Hook.Back();
 							}}
 							color={ColorKind.Black}
 						>
@@ -111,7 +111,7 @@ export default class GuestComponent extends Component {
 						</ButtonComponent>
 						<ButtonComponent
 							callBack={() => {
-								this._hook.Refresh();
+								this.Hook.Refresh();
 							}}
 							color={ColorKind.Red}
 						>
@@ -119,7 +119,7 @@ export default class GuestComponent extends Component {
 						</ButtonComponent>
 					</div>
 				</SmPanelComponent>
-				<Notification OnNotification={this._hook.OnNotification} />
+				<Notification OnNotification={this.Hook.OnNotification} />
 			</Redirect>
 		);
 	}

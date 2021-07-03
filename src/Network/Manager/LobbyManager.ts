@@ -1,6 +1,6 @@
 import { IOnlinePlayerManager } from './IOnlinePlayerManager';
 import { ISocketWrapper } from './../Socket/INetworkSocket';
-import { Message } from '../../UI/Screens/Network/Message';
+import { Message } from '../../UI/Model/Message';
 import { ILobbyManager } from './ILobbyManager';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { Lobby } from './Lobby';

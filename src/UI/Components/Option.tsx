@@ -1,8 +1,8 @@
 import { h, Component } from 'preact';
-import { BlueprintSetup } from '../../../../Components/Form/BlueprintSetup';
-import BlueprintFormComponent from '../../../../Components/Form/BlueprintFormComponent';
+import { BlueprintSetup } from './Form/BlueprintSetup';
+import BlueprintFormComponent from './Form/BlueprintFormComponent';
 
-export default class OptionComponent extends Component<{ Model: BlueprintSetup }> {
+export default class Option extends Component<{ Model: BlueprintSetup }> {
 	constructor() {
 		super();
 	}

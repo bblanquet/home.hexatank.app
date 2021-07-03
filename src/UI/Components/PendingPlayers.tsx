@@ -1,17 +1,18 @@
 import { h, Component } from 'preact';
-import { ConnectionKind } from '../../../../../Network/ConnectionKind';
-import { ILobbyManager } from '../../../../../Network/Manager/ILobbyManager';
-import { OnlinePlayer } from '../../../../../Network/OnlinePlayer';
-import { ColorKind } from '../../../../Common/Button/Stylish/ColorKind';
-import SmButtonComponent from '../../../../Common/Button/Stylish/SmButtonComponent';
-import GridComponent from '../../../../Common/Grid/GridComponent';
-import Icon from '../../../../Common/Icon/IconComponent';
-import Visible from '../../../../Components/Visible';
+import { ConnectionKind } from '../../Network/ConnectionKind';
+import { ILobbyManager } from '../../Network/Manager/ILobbyManager';
+import { OnlinePlayer } from '../../Network/OnlinePlayer';
+import { ColorKind } from '../Common/Button/Stylish/ColorKind';
+import SmButtonComponent from '../Common/Button/Stylish/SmButtonComponent';
+import GridComponent from '../Common/Grid/GridComponent';
+import Icon from '../Common/Icon/IconComponent';
+import Visible from './Visible';
 
-export default class PendingPlayers extends Component<
-	{ Player: OnlinePlayer; Players: OnlinePlayer[]; Lobby: ILobbyManager },
-	{}
-> {
+export default class PendingPlayers extends Component<{
+	Player: OnlinePlayer;
+	Players: OnlinePlayer[];
+	Lobby: ILobbyManager;
+}> {
 	constructor() {
 		super();
 	}

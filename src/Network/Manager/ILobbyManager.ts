@@ -1,7 +1,7 @@
 import { BlueprintSetup } from '../../UI/Components/Form/BlueprintSetup';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
-import { Message } from '../../UI/Screens/Network/Message';
+import { Message } from '../../UI/Model/Message';
 export interface ILobbyManager {
 	OnMessageReceived: LiteEvent<Message>;
 	OnKicked: SimpleEvent;

@@ -1,12 +1,7 @@
 import { Component, h } from 'preact';
 import Icon from '../Common/Icon/IconComponent';
-import { OnlinePlayer } from '../../Network/OnlinePlayer';
-import { ILobbyManager } from '../../Network/Manager/ILobbyManager';
 
-export default class MessageEmitter extends Component<
-	{ _lobby: ILobbyManager; Player: OnlinePlayer },
-	{ Message: string }
-> {
+export default class MessageEmitter extends Component<{ callBack: (e: string) => void }, { Message: string }> {
 	private _input: HTMLInputElement;
 	constructor(props: any) {
 		super(props);
@@ -61,7 +56,7 @@ export default class MessageEmitter extends Component<
 	}
 
 	private SendMessage(): void {
-		this.props._lobby.SendMessage(this.state.Message);
+		this.props.callBack(this.state.Message);
 		this.setState({
 			Message: ''
 		});

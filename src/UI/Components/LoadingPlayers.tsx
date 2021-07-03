@@ -1,12 +1,12 @@
 import { h, Component } from 'preact';
-import { Dictionary } from '../../../../../Utils/Collections/Dictionary';
-import { ConnectionKind } from '../../../../../Network/ConnectionKind';
-import { OnlinePlayer } from '../../../../../Network/OnlinePlayer';
-import { IOnlineService } from '../../../../../Services/Online/IOnlineService';
-import { Singletons, SingletonKey } from '../../../../../Singletons';
-import Icon from '../../../../Common/Icon/IconComponent';
-import GridComponent from '../../../../Common/Grid/GridComponent';
-import SmPanelComponent from '../../../../Components/Panel/SmPanelComponent';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
+import { ConnectionKind } from '../../Network/ConnectionKind';
+import { OnlinePlayer } from '../../Network/OnlinePlayer';
+import { IOnlineService } from '../../Services/Online/IOnlineService';
+import { Singletons, SingletonKey } from '../../Singletons';
+import Icon from '../Common/Icon/IconComponent';
+import GridComponent from '../Common/Grid/GridComponent';
+import SmPanelComponent from './Panel/SmPanelComponent';
 
 export default class LoadingPlayers extends Component<any, { Players: OnlinePlayer[]; Player: OnlinePlayer }> {
 	constructor() {

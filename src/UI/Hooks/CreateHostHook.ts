@@ -9,7 +9,7 @@ import { IOnlineService } from '../../Services/Online/IOnlineService';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { HostState } from '../Model/HostState';
-import { NotificationItem } from '../Components/Notification/NotificationItem';
+import { NotificationState } from '../Model/NotificationState';
 import { Hook } from './Hook';
 import { route } from 'preact-router';
 import { StateUpdater } from 'preact/hooks';
@@ -18,10 +18,10 @@ import { Usernames } from '../Model/Names';
 export class CreateHostHook extends Hook<HostState> {
 	private _socket: IServerSocket;
 	private _obs: NetworkObserver[];
-	public OnNotification: LiteEvent<NotificationItem> = new LiteEvent<NotificationItem>();
+	public OnNotification: LiteEvent<NotificationState> = new LiteEvent<NotificationState>();
 
-	constructor(data: HostState, protected SetState: StateUpdater<HostState>) {
-		super(data, SetState);
+	constructor(d: [HostState, StateUpdater<HostState>]) {
+		super(d[0], d[1]);
 		this._socket = Singletons.Load<ISocketService>(SingletonKey.Socket).Publish();
 		this._obs = [
 			new NetworkObserver(PacketKind.Exist, this.OnExist.bind(this)),
@@ -89,7 +89,7 @@ export class CreateHostHook extends Hook<HostState> {
 		} else {
 			this.OnNotification.Invoke(
 				this,
-				new NotificationItem(LogKind.warning, `${message.Content.RoomName} is already used.`)
+				new NotificationState(LogKind.warning, `${message.Content.RoomName} is already used.`)
 			);
 		}
 	}
@@ -97,7 +97,7 @@ export class CreateHostHook extends Hook<HostState> {
 	private OnError(message: NetworkMessage<any>): void {
 		this.OnNotification.Invoke(
 			this,
-			new NotificationItem(LogKind.error, `OOPS Server doesn't seem to be running.`)
+			new NotificationState(LogKind.error, `OOPS Server doesn't seem to be running.`)
 		);
 	}
 }

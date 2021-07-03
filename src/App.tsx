@@ -40,6 +40,9 @@ import SmPopup from './UI/Components/SmPopup';
 import ComparisonScreen from './UI/Screens/Comparer/ComparisonScreen';
 import LogComponent from './UI/Screens/Comparer/LogComponent';
 import CustomerScreen from './UI/Screens/CustomerScreen';
+import Notification from './UI/Components/Notification';
+import { LiteEvent } from './Utils/Events/LiteEvent';
+import { NotificationState } from './UI/Model/NotificationState';
 
 const App = (e: any) => {
 	return (
@@ -74,6 +77,7 @@ const App = (e: any) => {
 			<ComparisonScreen path="{{sub_path}}Comparison" />
 			<CustomerScreen path="{{sub_path}}Customer" />
 			<LogComponent path="{{sub_path}}Log" Messages={Logs()} />
+			<Notification path="{{sub_path}}Log" OnNotification={new LiteEvent<NotificationState>()} />
 		</Router>
 	);
 };

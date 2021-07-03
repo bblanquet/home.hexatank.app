@@ -1,4 +1,4 @@
-import { PowerContext } from './../../Core/Framework/Context/PowerContext';
+import { FireContext } from '../../Core/Framework/Context/FireContext';
 import { CombinationProvider } from './../../Core/Interaction/CombinationProvider';
 import { SelectableChecker } from './../../Core/Interaction/SelectableChecker';
 import { IInteractionService } from './IInteractionService';
@@ -9,7 +9,7 @@ import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { ILayerService } from '../Layer/ILayerService';
 
-export class PowerInteractionService implements IInteractionService<PowerContext> {
+export class PowerInteractionService implements IInteractionService<FireContext> {
 	private _layerService: ILayerService;
 	private _multiSelectionContext: MultiSelectionContext;
 	private _inputNotifier: InputNotifier;
@@ -20,7 +20,7 @@ export class PowerInteractionService implements IInteractionService<PowerContext
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}
 
-	Register(manager: PIXI.InteractionManager, gameContext: PowerContext): void {
+	Register(manager: PIXI.InteractionManager, gameContext: FireContext): void {
 		this._multiSelectionContext = new MultiSelectionContext();
 		this._inputNotifier = new InputNotifier();
 		const checker = new SelectableChecker(gameContext.GetPlayer().Identity);

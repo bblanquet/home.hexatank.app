@@ -1,7 +1,7 @@
-import { HqLessShieldField } from './../../Items/Cell/Field/Bonus/HqLessShieldField';
-import { CellLessHeadquarter } from '../Render/PowerRenderer/CellLessHeadquarter';
+import { HqLessShieldField } from '../../Items/Cell/Field/Bonus/HqLessShieldField';
+import { CellLessHeadquarter } from '../Render/Fire/CellLessHeadquarter';
 import { IHqGameContext } from './IHqGameContext';
-import { GameStatus } from '../../Framework/GameStatus';
+import { GameStatus } from '../GameStatus';
 import { AliveItem } from '../../Items/AliveItem';
 import { Cell } from '../../Items/Cell/Cell';
 import { Item } from '../../Items/Item';
@@ -12,7 +12,7 @@ import { Identity } from '../../Items/Identity';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { GameState } from './GameState';
 
-export class PowerContext implements IHqGameContext {
+export class FireContext implements IHqGameContext {
 	public OnPatrolSetting: LiteEvent<Boolean> = new LiteEvent<Boolean>();
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
 	private _cells: Dictionary<Cell>;

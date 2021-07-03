@@ -9,7 +9,7 @@ import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import { CampaignKind } from '../../Services/Campaign/CampaignKind';
 import { CamouflageBlueprint } from '../../Core/Framework/Blueprint/Cam/CamouflageBlueprint';
-import { PowerBlueprint } from '../../Core/Framework/Blueprint/Power/PowerBlueprint';
+import { FireBlueprint } from '../../Core/Framework/Blueprint/Fire/FireBlueprint';
 import { DiamondBlueprint } from '../../Core/Framework/Blueprint/Diamond/DiamondBlueprint';
 import { Face } from '../Components/Face';
 import Navbar from '../Components/Navbar';
@@ -172,9 +172,9 @@ export default class TrainingScreen extends Component<any, any> {
 		if (blueprint instanceof CamouflageBlueprint) {
 			Singletons.Load<IAppService<CamouflageBlueprint>>(SingletonKey.CamouflageApp).Register(blueprint);
 			route('{{sub_path}}Camouflage', true);
-		} else if (blueprint instanceof PowerBlueprint) {
-			Singletons.Load<IAppService<PowerBlueprint>>(SingletonKey.PowerApp).Register(blueprint);
-			route('{{sub_path}}Power', true);
+		} else if (blueprint instanceof FireBlueprint) {
+			Singletons.Load<IAppService<FireBlueprint>>(SingletonKey.PowerApp).Register(blueprint);
+			route('{{sub_path}}Fire', true);
 		} else if (blueprint instanceof DiamondBlueprint) {
 			Singletons.Load<IAppService<DiamondBlueprint>>(SingletonKey.DiamondApp).Register(blueprint);
 			route('{{sub_path}}Diamond', true);

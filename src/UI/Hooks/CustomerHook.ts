@@ -3,13 +3,13 @@ import { CustomerState } from '../Model/CustomerState';
 import { Hook } from './Hook';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ErrorDetail } from '../Model/ErrorDetail';
-import { NotificationItem } from '../Components/Notification/NotificationItem';
+import { NotificationState } from '../Model/NotificationState';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { LogKind } from '../../Utils/Logger/LogKind';
 import { route } from 'preact-router';
 
 export class CustomerHook extends Hook<CustomerState> {
-	public OnNotification: LiteEvent<NotificationItem> = new LiteEvent<NotificationItem>();
+	public OnNotification: LiteEvent<NotificationState> = new LiteEvent<NotificationState>();
 
 	constructor(state: CustomerState, setState: StateUpdater<CustomerState>) {
 		super(state, setState);
@@ -31,7 +31,7 @@ export class CustomerHook extends Hook<CustomerState> {
 				this.SetProp((e) => {
 					e.Errors = [];
 				});
-				this.OnNotification.Invoke(this, new NotificationItem(LogKind.error, error.message));
+				this.OnNotification.Invoke(this, new NotificationState(LogKind.error, error.message));
 			});
 	}
 

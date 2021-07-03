@@ -8,7 +8,7 @@ import { Item } from '../../../Items/Item';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
 import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
-import { IHeadquarter } from './../../../Items/Cell/Field/Hq/IHeadquarter';
+import { IHeadquarter } from '../../../Items/Cell/Field/Hq/IHeadquarter';
 export class FakeHeadquarter implements IHeadquarter {
 	OnCashMissing: LiteEvent<Boolean>;
 	OnDiamondCountChanged: LiteEvent<number>;

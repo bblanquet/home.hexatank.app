@@ -11,8 +11,8 @@ import { IAudioService } from '../../Services/Audio/IAudioService';
 export default class Navbar extends Component<any, { profil: PlayerProfil }> {
 	private _soundService: IAudioService;
 	private _profilService: IPlayerProfilService;
-	constructor() {
-		super();
+
+	componentDidMount() {
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this.setState({

@@ -84,6 +84,7 @@ export class MiddleItemText extends Item {
 				this._animator.Update(viewX, viewY);
 				if (this._visibleTimer && this._visibleTimer.IsElapsed()) {
 					this._isVisible = false;
+					this._text.visible = false;
 				}
 			}
 		}

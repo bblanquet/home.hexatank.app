@@ -1,4 +1,4 @@
-import { PowerBlueprint } from './PowerBlueprint';
+import { FireBlueprint } from './FireBlueprint';
 import { MapShape } from '../Items/MapShape';
 import { RectangleFlowerMapBuilder } from '../../Builder/RectangleFlowerMapBuilder';
 import { YFlowerMapBuilder } from '../../Builder/YFlowerMapBuilder';
@@ -15,11 +15,11 @@ import { FlowerMapBuilder } from '../../Builder/FlowerMapBuilder';
 import { FartestPointsFinder } from '../../Builder/FartestPointsFinder';
 import { CellType } from '../Items/CellType';
 import { IMapBuilder } from '../../Builder/IPlaygroundBuilder';
-import { GameSettings } from '../../../Framework/GameSettings';
+import { GameSettings } from '../../GameSettings';
 import { DecoratingPrints } from '../../../Items/Cell/Decorator/DecoratingPrints';
 import { DecoratingFactory } from '../../../Items/Cell/Decorator/ForestFactory';
 
-export class PowerBluePrintMaker {
+export class FireBluePrintMaker {
 	private _builders: Dictionary<IMapBuilder>;
 	constructor() {
 		this._builders = new Dictionary<IMapBuilder>();
@@ -33,8 +33,8 @@ export class PowerBluePrintMaker {
 		this._builders.Add(MapShape.Rectangle.toString(), new RectangleFlowerMapBuilder());
 	}
 
-	public GetBluePrint(): PowerBlueprint {
-		const blueprint = new PowerBlueprint();
+	public GetBluePrint(): FireBlueprint {
+		const blueprint = new FireBlueprint();
 		blueprint.MapMode = MapKind.sand;
 		const mapItems = new Array<CellPrint>();
 		const mapBuilder = this._builders.Get(MapShape.Flower.toString());

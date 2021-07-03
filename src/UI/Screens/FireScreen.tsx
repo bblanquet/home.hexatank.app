@@ -1,8 +1,8 @@
 import { Component, h } from 'preact';
 import { isNullOrUndefined } from 'util';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';
-import { PowerBlueprint } from '../../Core/Framework/Blueprint/Power/PowerBlueprint';
-import { PowerContext } from '../../Core/Framework/Context/PowerContext';
+import { FireBlueprint } from '../../Core/Framework/Blueprint/Fire/FireBlueprint';
+import { FireContext } from '../../Core/Framework/Context/FireContext';
 import { GameSettings } from '../../Core/Framework/GameSettings';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
@@ -51,21 +51,21 @@ export default class FireScreen extends Component<
 		IsSettingPatrol: boolean;
 	}
 > {
-	private _gameContextService: IGameContextService<PowerBlueprint, PowerContext>;
+	private _gameContextService: IGameContextService<FireBlueprint, FireContext>;
 	private _soundService: IAudioService;
-	private _interactionService: IInteractionService<PowerContext>;
-	private _gameContext: PowerContext;
+	private _interactionService: IInteractionService<FireContext>;
+	private _gameContext: FireContext;
 
 	private _onItemSelectionChanged: any = this.OnItemSelectionChanged.bind(this);
 	private _onSelectionChanged: any = this.OnSelectionChanged.bind(this);
 
 	constructor() {
 		super();
-		this._gameContextService = Singletons.Load<IGameContextService<PowerBlueprint, PowerContext>>(
+		this._gameContextService = Singletons.Load<IGameContextService<FireBlueprint, FireContext>>(
 			SingletonKey.PowerGameContext
 		);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-		this._interactionService = Singletons.Load<IInteractionService<PowerContext>>(SingletonKey.PowerInteraction);
+		this._interactionService = Singletons.Load<IInteractionService<FireContext>>(SingletonKey.PowerInteraction);
 		this._gameContext = this._gameContextService.Publish();
 		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this.setState({

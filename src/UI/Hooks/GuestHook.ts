@@ -11,7 +11,7 @@ import { IOnlineService } from '../../Services/Online/IOnlineService';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 import { ISocketService } from '../../Services/Socket/ISocketService';
 import { Singletons, SingletonKey } from '../../Singletons';
-import { NotificationItem } from '../Components/Notification/NotificationItem';
+import { NotificationState } from '../Model/NotificationState';
 import { StateUpdater } from 'preact/hooks';
 import { GuestState } from '../Model/GuestState';
 import { Usernames } from '../Model/Names';
@@ -19,7 +19,7 @@ import { Usernames } from '../Model/Names';
 export class GuestHook extends Hook<GuestState> {
 	private _socket: IServerSocket;
 	private _obs: NetworkObserver[];
-	public OnNotification: LiteEvent<NotificationItem> = new LiteEvent<NotificationItem>();
+	public OnNotification: LiteEvent<NotificationState> = new LiteEvent<NotificationState>();
 
 	constructor(data: GuestState, protected SetState: StateUpdater<GuestState>) {
 		super(data, SetState);
@@ -94,7 +94,7 @@ export class GuestHook extends Hook<GuestState> {
 		} else {
 			this.OnNotification.Invoke(
 				this,
-				new NotificationItem(
+				new NotificationState(
 					LogKind.warning,
 					`${this.State.PlayerName} is already used in ${message.Content.RoomName}`
 				)
@@ -103,17 +103,17 @@ export class GuestHook extends Hook<GuestState> {
 	}
 
 	private OnRoom(message: NetworkMessage<RoomState[]>): void {
-		this.SetProp((e) => {
-			e.Rooms = message.Content;
+		this.SetProp((data) => {
+			data.Rooms = message.Content;
 			if (this.State.filter && 0 < this.State.filter.length) {
 				const newDisplayed = this.State.Rooms.filter((e) =>
 					e.Name.toLowerCase().includes(this.State.filter.toLowerCase())
 				);
 				if (newDisplayed.length !== this.State.DisplayableRooms.length) {
-					this.State.DisplayableRooms = newDisplayed;
+					data.DisplayableRooms = newDisplayed;
 				}
 			} else if (this.State.DisplayableRooms !== this.State.Rooms && this.State.filter.length === 0) {
-				this.State.DisplayableRooms = this.State.Rooms;
+				data.DisplayableRooms = this.State.Rooms;
 			}
 		});
 	}
@@ -133,7 +133,7 @@ export class GuestHook extends Hook<GuestState> {
 		} else {
 			this.OnNotification.Invoke(
 				this,
-				new NotificationItem(
+				new NotificationState(
 					LogKind.warning,
 					`${this.State.Password} doesn't match ${m.Content.RoomName}'s password`
 				)
@@ -144,7 +144,7 @@ export class GuestHook extends Hook<GuestState> {
 	private OnConnectError(m: any): void {
 		this.OnNotification.Invoke(
 			this,
-			new NotificationItem(LogKind.error, `OOPS Server doesn't seem to be running.`)
+			new NotificationState(LogKind.error, `OOPS Server doesn't seem to be running.`)
 		);
 	}
 }

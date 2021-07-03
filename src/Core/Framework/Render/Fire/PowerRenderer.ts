@@ -1,12 +1,12 @@
 import { FakeHeadquarter } from './FakeHeadquarter';
-import { Tank } from './../../../Items/Unit/Tank';
+import { Tank } from '../../../Items/Unit/Tank';
 import { CellLessHeadquarter } from './CellLessHeadquarter';
-import { HqLessShieldField } from './../../../Items/Cell/Field/Bonus/HqLessShieldField';
-import { PowerBlueprint } from './../../Blueprint/Power/PowerBlueprint';
-import { PowerContext } from './../../Context/PowerContext';
-import { SvgArchive } from './../../../Framework/SvgArchiver';
-import { Cloud } from './../../../Items/Environment/Cloud';
-import { GameSettings } from '../../../Framework/GameSettings';
+import { HqLessShieldField } from '../../../Items/Cell/Field/Bonus/HqLessShieldField';
+import { FireBlueprint } from '../../Blueprint/Fire/FireBlueprint';
+import { FireContext } from '../../Context/FireContext';
+import { SvgArchive } from '../../SvgArchiver';
+import { Cloud } from '../../../Items/Environment/Cloud';
+import { GameSettings } from '../../GameSettings';
 import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
 import { Cell } from '../../../Items/Cell/Cell';
 import { CellProperties } from '../../../Items/Cell/CellProperties';
@@ -21,8 +21,8 @@ import { AboveItem } from '../../../Items/AboveItem';
 import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
 import { GameState } from '../../Context/GameState';
 
-export class PowerRenderer {
-	public Render(blueprint: PowerBlueprint, gameState: GameState): PowerContext {
+export class FireRenderer {
+	public Render(blueprint: FireBlueprint, gameState: GameState): FireContext {
 		const cells = new Dictionary<Cell>();
 
 		blueprint.Cells.forEach((item) => {
@@ -57,7 +57,7 @@ export class PowerRenderer {
 
 		cells.Values().forEach((cell) => cell.SetPlayerHq(hq));
 
-		return new PowerContext(gameState, cells.Values(), tank, hq, shield);
+		return new FireContext(gameState, cells.Values(), tank, hq, shield);
 	}
 
 	public AddClouds() {

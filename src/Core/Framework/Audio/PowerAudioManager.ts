@@ -1,5 +1,5 @@
-import { PowerContext } from '../../Framework/Context/PowerContext';
-import { PowerBlueprint } from '../../Framework/Blueprint/Power/PowerBlueprint';
+import { FireContext } from '../Context/FireContext';
+import { FireBlueprint } from '../Blueprint/Fire/FireBlueprint';
 import { IGameAudioManager } from './IGameAudioManager';
 import { IOrder } from '../../Ia/Order/IOrder';
 import { Singletons, SingletonKey } from '../../../Singletons';
@@ -20,7 +20,7 @@ export class PowerAudioManager implements IGameAudioManager {
 	private _soundService: IAudioService;
 	private _audioId: number;
 
-	constructor(private _mapContext: PowerBlueprint, private _gameContext: PowerContext) {
+	constructor(private _mapContext: FireBlueprint, private _gameContext: FireContext) {
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));

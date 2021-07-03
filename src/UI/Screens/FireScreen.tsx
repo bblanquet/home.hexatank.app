@@ -163,6 +163,13 @@ export default class FireScreen extends Component<
 						Interaction={this._interactionService.Publish()}
 						Item={this.state.Item}
 						ReactorCount={1}
+						isCovered={
+							this.state.Item instanceof Cell ? (
+								this._gameContext.GetPlayerHq().IsCovered(this.state.Item)
+							) : (
+								true
+							)
+						}
 					/>
 				);
 			}

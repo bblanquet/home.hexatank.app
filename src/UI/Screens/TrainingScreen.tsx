@@ -153,6 +153,12 @@ export default class TrainingScreen extends Component<any, any> {
 		}
 	}
 
+	private _timeout: NodeJS.Timeout;
+
+	componentWillUnmount(): void {
+		clearTimeout(this._timeout);
+	}
+
 	private TextAnimation(): void {
 		if (this.state.CurrentSentence.length < this.state.Sentence.length) {
 			this.setState({
@@ -161,7 +167,7 @@ export default class TrainingScreen extends Component<any, any> {
 		}
 
 		if (this.state.CurrentSentence.length < this.state.Sentence.length) {
-			setTimeout(() => {
+			this._timeout = setTimeout(() => {
 				this.TextAnimation();
 			}, 50);
 		}

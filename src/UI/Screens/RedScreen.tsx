@@ -119,6 +119,12 @@ export default class RedScreen extends Component<
 		route('{{sub_path}}Training', true);
 	}
 
+	private _timeout: NodeJS.Timeout;
+
+	componentWillUnmount(): void {
+		clearTimeout(this._timeout);
+	}
+
 	private TextAnimation(): void {
 		if (this.state.CurrentSentence.length < this.state.Sentence.length) {
 			this.setState({
@@ -127,7 +133,7 @@ export default class RedScreen extends Component<
 		}
 
 		if (this.state.CurrentSentence.length < this.state.Sentence.length) {
-			setTimeout(() => {
+			this._timeout = setTimeout(() => {
 				this.TextAnimation();
 			}, 50);
 		}

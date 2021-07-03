@@ -29,6 +29,7 @@ import MenuSwitcher from '../Components/Canvas/MenuSwitcher';
 import SynchronizingComponent from '../Components/Canvas/SynchronizingComponent';
 import Switch from '../Components/Switch';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
+import { Cell } from '../../Core/Items/Cell/Cell';
 
 export default class GameScreen extends Component<
 	any,
@@ -216,6 +217,13 @@ export default class GameScreen extends Component<
 												ReactorCount={this._gameContext.GetPlayerHq().GetReactorsCount()}
 												Item={this.state.Item}
 												HasMultiMenu={this.state.IsMultiMenuVisible}
+												IsCovered={
+													this.state.Item instanceof Cell ? (
+														this._gameContext.GetPlayerHq().IsCovered(this.state.Item)
+													) : (
+														true
+													)
+												}
 											/>
 										</Visible>
 									</span>

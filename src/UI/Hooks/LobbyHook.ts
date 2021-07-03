@@ -28,7 +28,7 @@ export class LobbyHook extends Hook<LobbyState> {
 
 		this.LobbyManager.OnKicked.On(this.Back.bind(this));
 		this.LobbyManager.OnMessageReceived.On(this.OnMessage.bind(this));
-		this.OnlineManager.OnPlayersChanged.On(this.UpdateState.bind(this));
+		this.OnlineManager.OnPlayersChanged.On(this.UpdatePlayers.bind(this));
 		this.LobbyManager.OnStarting.On(() => {
 			this.LobbyManager.Clear();
 			route('{{sub_path}}Launching', true);
@@ -48,7 +48,7 @@ export class LobbyHook extends Hook<LobbyState> {
 		return state;
 	}
 
-	public UpdateState(src: any, players: Dictionary<OnlinePlayer>): void {
+	public UpdatePlayers(src: any, players: Dictionary<OnlinePlayer>): void {
 		this.SetProp((e) => {
 			e.Players = players;
 		});

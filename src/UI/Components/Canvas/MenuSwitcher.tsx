@@ -26,6 +26,7 @@ export default class MenuSwitcher extends Component<
 		VehicleCount: number;
 		ReactorCount: number;
 		HasMultiMenu: boolean;
+		IsCovered: boolean;
 		Item: Item;
 	},
 	{}
@@ -76,6 +77,7 @@ export default class MenuSwitcher extends Component<
 				return (
 					<CellMenuComponent
 						Item={this.props.Item}
+						isCovered={this.props.IsCovered}
 						Interaction={this._interactionService.Publish()}
 						ReactorCount={this.props.ReactorCount}
 					/>

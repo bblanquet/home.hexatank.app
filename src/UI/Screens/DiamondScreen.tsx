@@ -204,6 +204,13 @@ export default class DiamondScreen extends Component<
 						Item={this.state.Item}
 						Interaction={this._interactionService.Publish()}
 						ReactorCount={this._gameContext.GetPlayerHq().GetReactorsCount()}
+						isCovered={
+							this.state.Item instanceof Cell ? (
+								this._gameContext.GetPlayerHq().IsCovered(this.state.Item)
+							) : (
+								true
+							)
+						}
 					/>
 				);
 			}

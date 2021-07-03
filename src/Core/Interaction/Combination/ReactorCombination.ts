@@ -1,5 +1,5 @@
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
-import { InfluenceMenuItem } from '../../Menu/Buttons/InfluenceMenuItem';
+import { ReactorMenuItem } from '../../Menu/Buttons/ReactorMenuItem';
 import { Cell } from '../../Items/Cell/Cell';
 import { BasicField } from '../../Items/Cell/Field/BasicField';
 import { CombinationContext } from './CombinationContext';
@@ -18,7 +18,7 @@ export class ReactorCombination extends AbstractSingleCombination {
 			this.IsNormalMode(context) &&
 			context.Items.length >= 2 &&
 			context.Items[0] instanceof Cell &&
-			context.Items[1] instanceof InfluenceMenuItem
+			context.Items[1] instanceof ReactorMenuItem
 		);
 	}
 

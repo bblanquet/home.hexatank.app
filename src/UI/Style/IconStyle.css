@@ -181,7 +181,7 @@
 	background-image: url('{{asset_path}}svg/menu/elecIcon.svg');
 }
 
-.fill-influence {
+.fill-reactor {
 	overflow: hidden;
 	background-size: contain;
 	background-position: center;

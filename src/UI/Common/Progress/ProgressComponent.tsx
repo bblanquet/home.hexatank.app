@@ -25,7 +25,7 @@ export default class ProgressComponent extends Component<{ width: number; maxWid
 		}
 	}
 
-	componentWillMount() {
+	componentWillUnmount() {
 		this._profilService.OnLevelUp.Off(this._bounceFunc);
 	}
 

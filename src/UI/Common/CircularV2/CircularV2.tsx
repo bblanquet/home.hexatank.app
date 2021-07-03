@@ -1,5 +1,6 @@
 import { h, Component, toChildArray, cloneElement } from 'preact';
 import { Point } from '../../../Utils/Geometry/Point';
+import Switch from '../../Components/Switch';
 
 export default class CircularV2Component extends Component<{ OnCancel: () => void }, {}> {
 	private _positions: Point[] = [];
@@ -9,12 +10,22 @@ export default class CircularV2Component extends Component<{ OnCancel: () => voi
 			const children = this.props.children as any[];
 			const total = children.length;
 			this._positions = [];
-			children.forEach((child, i) => {
-				const x = +(50 - 35 * Math.cos(-0.5 * Math.PI - 2 * (1 / total) * i * Math.PI)).toFixed(4);
-				const y = +(50 + 35 * Math.sin(-0.5 * Math.PI - 2 * (1 / total) * i * Math.PI)).toFixed(4);
+			if (Array.isArray(children)) {
+				children.forEach((child, i) => {
+					const x = +(50 - 35 * Math.cos(this.GetRadius(total, i))).toFixed(4);
+					const y = +(50 + 35 * Math.sin(this.GetRadius(total, i))).toFixed(4);
+					this._positions.push(new Point(x, y));
+				});
+			} else {
+				const x = +(50 - 35 * Math.cos(this.GetRadius(1, 1))).toFixed(4);
+				const y = +(50 + 35 * Math.sin(this.GetRadius(1, 1))).toFixed(4);
 				this._positions.push(new Point(x, y));
-			});
+			}
 		}
+	}
+
+	private GetRadius(total: number, i: number): number {
+		return -0.5 * Math.PI - 2 * (1 / total) * i * Math.PI;
 	}
 
 	Convert(child: any, index: number) {
@@ -47,9 +58,13 @@ export default class CircularV2Component extends Component<{ OnCancel: () => voi
 				}}
 			>
 				<div class="ring">
-					{toChildArray(this.props.children).map((child, i) => {
-						return this.Convert(child, i);
-					})}
+					<Switch
+						isVisible={Array.isArray(this.props.children)}
+						left={toChildArray(this.props.children).map((child, i) => {
+							return this.Convert(child, i);
+						})}
+						right={this.Convert(this.props.children, 0)}
+					/>
 				</div>
 				<div
 					class="center"

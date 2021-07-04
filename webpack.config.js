@@ -11,7 +11,7 @@ module.exports = (env) => {
 	// Entry point : first executed file
 	// This may be an array. It will result in many output files.
 	return {
-		entry: [ './src/App.tsx' ],
+		entry: [ './src/index.tsx' ],
 		stats: {
 			errorDetails: true // --display-error-details
 		},

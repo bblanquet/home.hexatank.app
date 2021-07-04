@@ -24,12 +24,7 @@ export default class Badge extends Component<
 					<div class={`${this.props.icon} max-width`}>
 						<Visible isVisible={this.props.percentage === 100}>
 							<AnimatedIcon
-								values={[
-									'fill-light1-badge',
-									'fill-light2-badge',
-									'fill-light3-badge',
-									'fill-light4-badge'
-								]}
+								values={[ 'fill-light-1', 'fill-light-2', 'fill-light-3', 'fill-light-4' ]}
 								frequency={1000}
 							/>
 						</Visible>

@@ -33,9 +33,9 @@ export default class RedScreen extends Component<
 					<div class="generalContainer absolute-center-middle">
 						<div class="container-center">
 							<Face
-								eyes={[ 'fill-redArmy-eyes', 'fill-redArmy-eyes-blink' ]}
-								mouths={[ 'fill-redArmy-mouth-1', 'fill-redArmy-mouth-2', 'fill-redArmy-mouth-3' ]}
-								face={'fill-redArmy'}
+								eyes={[ 'fill-red-eyes-1', 'fill-red-eyes-2' ]}
+								mouths={[ 'fill-red-mouth-1', 'fill-red-mouth-2', 'fill-red-mouth-3' ]}
+								face={'fill-red-face'}
 							/>
 						</div>
 						<Visible isVisible={this.state.HasBubble}>

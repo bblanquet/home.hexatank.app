@@ -28,7 +28,7 @@
 		},
 		{
 			"search": "{{title}}",
-			"replace": "program6LogoDev",
+			"replace": "devTitle",
 			"flags": "g"
 		}
 	]

@@ -16,11 +16,11 @@ export class CamouflageHandler {
 	public GetCamouflage(): string {
 		const random = Math.floor(Math.random() * 2) + 1;
 		if (this._appService.Context().MapMode === MapKind.forest) {
-			return random === 1 ? SvgArchive.nature.tree : SvgArchive.nature.rock;
+			return random === 1 ? SvgArchive.nature.forest.tree : SvgArchive.nature.forest.rock;
 		} else if (this._appService.Context().MapMode === MapKind.sand) {
-			return random === 1 ? SvgArchive.nature.sandRock : SvgArchive.nature.palmTree;
+			return random === 1 ? SvgArchive.nature.sand.rock : SvgArchive.nature.sand.palmTree;
 		} else if (this._appService.Context().MapMode === MapKind.ice) {
-			return random === 1 ? SvgArchive.nature.iceTree : SvgArchive.nature.rock;
+			return random === 1 ? SvgArchive.nature.ice.tree : SvgArchive.nature.ice.rock;
 		}
 	}
 }

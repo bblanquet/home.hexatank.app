@@ -60,11 +60,11 @@ export class DiamondRenderer {
 			boundingBox.X = cell.GetBoundingBox().X - (boundingBox.Width / 2 - cell.GetBoundingBox().Width / 2);
 			boundingBox.Y = cell.GetBoundingBox().Y - (boundingBox.Height / 2 - cell.GetBoundingBox().Height / 2);
 
-			let floor = SvgArchive.nature.forest;
+			let floor = SvgArchive.nature.forest.floor;
 			if (mode === MapKind.ice) {
-				floor = SvgArchive.nature.ice;
+				floor = SvgArchive.nature.ice.floor;
 			} else if (mode === MapKind.sand) {
-				floor = SvgArchive.nature.sand;
+				floor = SvgArchive.nature.sand.floor;
 			}
 
 			const land = new Floor(boundingBox, floor);

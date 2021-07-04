@@ -121,7 +121,7 @@ export class FieldHelper {
 		} else if (action === RecordKind.Diamond) {
 			return cell.SetField(new Diamond(cell));
 		} else if (action === RecordKind.Blocking) {
-			return cell.SetField(new BlockingField(cell, SvgArchive.nature.tree));
+			return cell.SetField(new BlockingField(cell, SvgArchive.nature.forest.darkTree));
 		}
 		ErrorHandler.Throw(
 			new Error(`${ErrorHandler.Cat.Get(ErrorCat[ErrorCat.outOfRange])} ${action.constructor.name}`)
@@ -158,7 +158,7 @@ export class FieldHelper {
 		} else if (name === 'WaterField') {
 			return cell.SetField(new WaterField(cell));
 		} else if (name === 'BlockingField') {
-			return cell.SetField(new BlockingField(cell, SvgArchive.nature.tree));
+			return cell.SetField(new BlockingField(cell, SvgArchive.nature.forest.darkTree));
 		}
 		ErrorHandler.Throw(new Error(`${ErrorHandler.Cat.Get(ErrorCat[ErrorCat.outOfRange])} ${name}`));
 	}

@@ -9,31 +9,31 @@ export abstract class Decorator {
 	public static Decorate(cell: Cell, type: CellType): void {
 		switch (type) {
 			case CellType.Stone: {
-				cell.Decorate(SvgArchive.nature.stone);
+				cell.Decorate(SvgArchive.nature.forest.stone);
 				break;
 			}
 			case CellType.SandStone: {
-				cell.Decorate(SvgArchive.nature.sandStone);
+				cell.Decorate(SvgArchive.nature.sand.stone);
 				break;
 			}
 			case CellType.Bush: {
-				cell.Decorate(SvgArchive.nature.bush);
+				cell.Decorate(SvgArchive.nature.forest.bush);
 				break;
 			}
 			case CellType.SandCactusPlants: {
-				cell.Decorate(SvgArchive.nature.cactusPlants);
+				cell.Decorate(SvgArchive.nature.sand.cactusPlants);
 				break;
 			}
 			case CellType.SandCactus: {
-				cell.SetField(new BlockingField(cell, SvgArchive.nature.cactus));
+				cell.SetField(new BlockingField(cell, SvgArchive.nature.sand.cactus));
 				break;
 			}
 			case CellType.WhiteSkull: {
-				cell.Decorate(SvgArchive.nature.whiteSkull);
+				cell.Decorate(SvgArchive.nature.sand.whiteSkull);
 				break;
 			}
 			case CellType.SandPlants: {
-				cell.Decorate(SvgArchive.nature.sandPlants);
+				cell.Decorate(SvgArchive.nature.sand.plants);
 				break;
 			}
 			case CellType.Water: {
@@ -45,59 +45,55 @@ export abstract class Decorator {
 				break;
 			}
 			case CellType.Tree: {
-				cell.SetField(new BlockingField(cell, SvgArchive.nature.tree));
+				cell.SetField(new BlockingField(cell, SvgArchive.nature.forest.tree));
 				break;
 			}
 			case CellType.DarkTree: {
-				cell.SetField(new BlockingField(cell, SvgArchive.nature.darkTree));
+				cell.SetField(new BlockingField(cell, SvgArchive.nature.forest.darkTree));
 				break;
 			}
 			case CellType.palmTree: {
-				cell.SetField(new BlockingField(cell, SvgArchive.nature.palmTree));
+				cell.SetField(new BlockingField(cell, SvgArchive.nature.sand.palmTree));
 				break;
 			}
 			case CellType.Rock: {
-				cell.SetField(new BlockingField(cell, SvgArchive.nature.rock));
+				cell.SetField(new BlockingField(cell, SvgArchive.nature.forest.rock));
 				break;
 			}
 			case CellType.IceTree: {
-				cell.SetField(new BlockingField(cell, SvgArchive.nature.iceTree));
+				cell.SetField(new BlockingField(cell, SvgArchive.nature.ice.tree));
 				break;
 			}
 			case CellType.IceTree2: {
-				cell.SetField(new BlockingField(cell, SvgArchive.nature.iceTree2));
+				cell.SetField(new BlockingField(cell, SvgArchive.nature.ice.tree2));
 				break;
 			}
 			case CellType.IceStone: {
-				cell.Decorate(SvgArchive.nature.iceStone);
+				cell.Decorate(SvgArchive.nature.ice.stone);
 				break;
 			}
 			case CellType.IceRock: {
-				cell.SetField(new BlockingField(cell, SvgArchive.nature.iceRock));
+				cell.SetField(new BlockingField(cell, SvgArchive.nature.ice.rock));
 				break;
 			}
 			case CellType.SandRock: {
-				cell.SetField(new BlockingField(cell, SvgArchive.nature.sandRock));
-				break;
-			}
-			case CellType.Puddle: {
-				cell.Decorate(SvgArchive.nature.puddle);
+				cell.SetField(new BlockingField(cell, SvgArchive.nature.sand.rock));
 				break;
 			}
 			case CellType.IcePlants: {
-				cell.Decorate(SvgArchive.nature.icePlants);
+				cell.Decorate(SvgArchive.nature.ice.plants);
 				break;
 			}
 			case CellType.IcePlants2: {
-				cell.Decorate(SvgArchive.nature.icePlants2);
+				cell.Decorate(SvgArchive.nature.ice.plants2);
 				break;
 			}
 			case CellType.Leaf: {
-				cell.Decorate(SvgArchive.nature.ForestLeaf);
+				cell.Decorate(SvgArchive.nature.forest.leaf);
 				break;
 			}
 			case CellType.Leaf2: {
-				cell.Decorate(SvgArchive.nature.ForestLeaf2);
+				cell.Decorate(SvgArchive.nature.forest.leaf2);
 				break;
 			}
 		}

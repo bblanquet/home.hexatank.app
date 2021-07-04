@@ -35,7 +35,7 @@ export default class SmPopup extends Component<{ status: GameStatus; points: num
 			<div class="generalContainer absolute-center-middle-menu menu-container fit-content">
 				<div class="title-popup-container">
 					{this.props.status === GameStatus.Victory ? (
-						<div class="fill-won light-bounce" />
+						<div class="fill-victory light-bounce" />
 					) : (
 						<div class="fill-defeat light-bounce" />
 					)}

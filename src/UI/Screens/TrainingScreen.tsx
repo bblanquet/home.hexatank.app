@@ -31,14 +31,14 @@ export default class TrainingScreen extends Component<any, any> {
 					<div class="generalContainer absolute-center-middle">
 						<div class="container-center">
 							<Face
-								eyes={[ 'fill-eyes-training', 'fill-blink-training' ]}
+								eyes={[ 'fill-green-eyes1', 'fill-green-eyes2' ]}
 								mouths={[
-									'fill-training-mouth-1',
-									'fill-training-mouth-2',
-									'fill-training-mouth-3',
-									'fill-training-mouth-4'
+									'fill-green-mouth-1',
+									'fill-green-mouth-2',
+									'fill-green-mouth-3',
+									'fill-green-mouth-4'
 								]}
-								face={'fill-training'}
+								face={'fill-green-face'}
 							/>
 						</div>
 						<Visible isVisible={this.state.HasBubble}>

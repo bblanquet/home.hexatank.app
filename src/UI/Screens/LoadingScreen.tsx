@@ -5,6 +5,7 @@ import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import PanelComponent from '../Components/Panel/PanelComponent';
+import { AssetLoader } from '../../Core/Framework/AssetLoader';
 
 export default class LoadingScreen extends Component<any, { percentage: number }> {
 	constructor() {
@@ -13,15 +14,15 @@ export default class LoadingScreen extends Component<any, { percentage: number }
 
 	componentDidMount() {
 		setTimeout(() => {
-			const listener = SpriteProvider.LoadAll();
-			listener.On((obj: any, percentage: number) => {
+			const onLoaded = new AssetLoader().LoadAll();
+			onLoaded.On((obj: any, percentage: number) => {
 				this.setState({
 					percentage: percentage
 				});
 
 				if (percentage === 100) {
 					SpriteProvider.SetLoaded(true);
-					listener.Clear();
+					onLoaded.Clear();
 				}
 			});
 		}, 2000);

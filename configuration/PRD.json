@@ -28,7 +28,7 @@
 		},
 		{
 			"search": "{{title}}",
-			"replace": "program6Logo",
+			"replace": "title",
 			"flags": "g"
 		}
 	]

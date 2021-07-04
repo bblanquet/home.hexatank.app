@@ -4,7 +4,6 @@ export enum CellType {
 	SandStone,
 	Water,
 	Volcano,
-	Puddle,
 	Bush,
 	WhiteSkull,
 	SandPlants,

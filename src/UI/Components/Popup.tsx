@@ -60,7 +60,7 @@ export default class Popup extends Component<
 			<div class="generalContainer absolute-center-middle-menu menu-container fit-content">
 				<div class="title-popup-container">
 					{this.props.status === GameStatus.Victory ? (
-						<div class="fill-won light-bounce" />
+						<div class="fill-victory light-bounce" />
 					) : (
 						<div class="fill-defeat light-bounce" />
 					)}
@@ -102,8 +102,8 @@ export default class Popup extends Component<
 							}}
 						/>
 						<SmActiveButtonComponent
-							left={<div class="fill-sm-power max-width icon-space" />}
-							right={<div class="fill-sm-power max-width icon-space" />}
+							left={<div class="fill-sm-fire max-width icon-space" />}
+							right={<div class="fill-sm-fire max-width icon-space" />}
 							leftColor={ColorKind.Black}
 							rightColor={ColorKind.Red}
 							isActive={this.state.Kind === StatsKind.Energy}

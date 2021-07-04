@@ -29,9 +29,9 @@ export default class BlueScreen extends Component<any, any> {
 					<div class="generalContainer absolute-center-middle">
 						<div class="container-center">
 							<Face
-								eyes={[ 'fill-blueArmy-eyes', 'fill-blueArmy-eyes-blink' ]}
-								mouths={[ 'fill-blueArmy-mouth-1', 'fill-blueArmy-mouth-2', 'fill-blueArmy-mouth-3' ]}
-								face={'fill-blueArmy'}
+								eyes={[ 'fill-blue-eyes-1', 'fill-blue-eyes-2' ]}
+								mouths={[ 'fill-blue-mouth-1', 'fill-blue-mouth-2', 'fill-blue-mouth-3' ]}
+								face={'fill-blue-face'}
 							/>
 						</div>
 						<div class="container-center">

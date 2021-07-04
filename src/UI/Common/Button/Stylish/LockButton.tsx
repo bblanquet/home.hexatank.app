@@ -1,6 +1,6 @@
 import { Component, h } from 'preact';
 import ButtonComponent from './ButtonComponent';
-import Icon from './../../Icon/IconComponent';
+import Icon from '../../Icon/IconComponent';
 import { ColorKind } from './ColorKind';
 import { AudioArchive } from '../../../../Core/Framework/AudioArchiver';
 import { Singletons, SingletonKey } from '../../../../Singletons';

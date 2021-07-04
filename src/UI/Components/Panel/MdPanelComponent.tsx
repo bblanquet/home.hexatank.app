@@ -1,5 +1,5 @@
 import { h, Component } from 'preact';
-import PageAnalyser from '../../Components/PageAnalyser';
+import PageAnalyser from '../PageAnalyser';
 import Navbar from '../Navbar';
 
 export default class MdPanelComponent extends Component<any, any> {

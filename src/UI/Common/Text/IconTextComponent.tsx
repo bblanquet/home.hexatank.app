@@ -1,5 +1,5 @@
 import { h, Component } from 'preact';
-import Icon from '../../Common/Icon/IconComponent';
+import Icon from '../Icon/IconComponent';
 
 export default class IconInputComponent extends Component<
 	{ type: string; icon: string; value: any; isEditable: boolean; onInput: (e: any) => void },

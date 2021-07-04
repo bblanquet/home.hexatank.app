@@ -1,11 +1,11 @@
-import { StatusDuration } from '../../UI/Common/Chart/Model/StatusDuration';
+import { StatusDuration } from '../../Ui/Common/Chart/Model/StatusDuration';
 import { RecordContent } from '../../Core/Framework/Record/Model/RecordContent';
 import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { LogMessage } from '../../Utils/Logger/LogMessage';
-import { CellDurationStateFormater } from '../../UI/Common/Chart/Formater/CellDurationStateFormater';
-import { VehicleDurationStateFormater } from '../../UI/Common/Chart/Formater/VehicleDurationStateFormater';
+import { CellDurationStateFormater } from '../../Ui/Common/Chart/Formater/CellDurationStateFormater';
+import { VehicleDurationStateFormater } from '../../Ui/Common/Chart/Formater/VehicleDurationStateFormater';
 import { ICompareService } from './ICompareService';
-import { RecordComparer } from '../../UI/Screens/Comparer/Comparers/RecordComparer';
+import { RecordComparer } from '../../Ui/Screens/Comparer/Comparers/RecordComparer';
 
 export class CompareService implements ICompareService {
 	private _record: RecordContent;

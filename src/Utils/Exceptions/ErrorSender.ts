@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { ErrorDetail } from '../../Components/Model/ErrorDetail';
 import { SingletonKey, Singletons } from '../../Singletons';
-import { IRecordService } from '../../Services/Record/IRecordService';
+import { IAppService } from '../../Services/App/IAppService';
+import { IBlueprint } from '../../Core/Framework/Blueprint/IBlueprint';
+import { IKeyService } from '../../Services/Key/IKeyService';
 
 export class ErrorSender {
 	public Send(name: string, stacktrace: string): void {
@@ -9,8 +11,9 @@ export class ErrorSender {
 		payload.date = new Date();
 		payload.name = name;
 		payload.stacktrace = stacktrace;
-		const recordService = Singletons.Load<IRecordService>(SingletonKey.Record);
-		payload.content = JSON.stringify(recordService.Publish());
+		const appKey = Singletons.Load<IKeyService>(SingletonKey.Key).GetAppKey();
+		const record = Singletons.Load<IAppService<IBlueprint>>(appKey).GetRecord();
+		payload.content = record ? JSON.stringify(record.GetRecord()) : '';
 		axios.post('{{p2p_url}}/server/exception/Add', payload);
 	}
 }

@@ -74,6 +74,10 @@ export class Tank extends Vehicle {
 	public Update(viewX: number, viewY: number): void {
 		super.Update(viewX, viewY);
 
+		if (this.IsSelected()) {
+			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidComputation])));
+		}
+
 		if (this._mainTarget != null && !this._mainTarget.IsAlive()) {
 			this._mainTarget = null;
 		}

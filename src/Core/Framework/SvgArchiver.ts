@@ -54,6 +54,7 @@ export const SvgArchive = {
 		},
 		exception: './svg/UI/exception/face.svg',
 		icons: {
+			level: './svg/UI/icon/level.svg',
 			abort: './svg/UI/icon/abort.svg',
 			activate: './svg/UI/icon/activate.svg',
 			activateOff: './svg/UI/icon/activateOff.svg',
@@ -102,7 +103,9 @@ export const SvgArchive = {
 		},
 		status: {
 			defeat: './svg/UI/status/defeat.svg',
-			victory: './svg/UI/status/victory.svg'
+			defeatEyes: './svg/UI/status/defeatEyes.svg',
+			victory: './svg/UI/status/victory.svg',
+			victoryStar: './svg/UI/status/victoryStar.svg'
 		}
 	},
 	constructionEffects: [

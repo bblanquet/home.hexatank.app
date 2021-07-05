@@ -24,7 +24,7 @@ export default class Navbar extends Component<any, { profil: PlayerProfil }> {
 		return (
 			<div>
 				<nav class="navbar dark">
-					<ProgressComponent width={30} maxWidth={150} />
+					<ProgressComponent width={35} maxWidth={150} />
 					<div class="d-flex justify-content-start">
 						<SmActiveButtonComponent
 							left={<Icon Value={'fas fa-volume-mute'} />}

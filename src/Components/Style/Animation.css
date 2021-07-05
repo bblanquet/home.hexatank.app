@@ -1,3 +1,25 @@
+.infinite-bounce {
+	animation: infinite-bounce 2s linear infinite;
+}
+
+@keyframes infinite-bounce {
+	0% {
+		transform: scale(1);
+	}
+	25% {
+		transform: scale(1.2);
+	}
+	50% {
+		transform: scale(1);
+	}
+	75% {
+		transform: scale(0.8);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
 .slow-bounce {
 	animation: slow-bounce 0.5s linear;
 }

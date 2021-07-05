@@ -90,14 +90,6 @@ export class AppService implements IAppService<GameBlueprint> {
 	}
 
 	private GameStatusChanged(e: any, status: GameStatus) {
-		if (status === GameStatus.Defeat) {
-			this._audioService.Play(AudioArchive.defeat, 0.5, false);
-		}
-
-		if (status === GameStatus.Victory) {
-			this._audioService.Play(AudioArchive.victory, 0.5, false);
-		}
-
 		if (status === GameStatus.Defeat || status === GameStatus.Victory) {
 			this._recordContext.Stop(status === GameStatus.Victory);
 			const record = this._recordContext.GetRecord();

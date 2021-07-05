@@ -8,12 +8,12 @@ export const RedSentences = [
 
 export const LoadingSentences = [
 	'Designing nice trophies...',
+	'Setting satellites up for communication between troops...',
 	'Importing ammo from abroad...',
 	'Analyzing vehicle blueprints',
 	'Adding shining effects to precious resources...',
 	'Loading very manly sound effects...',
 	'Manufacturing vehicle parts...',
-	'Setting satellites up for communication between troops...',
 	'Recruting some vilains...',
 	'Planting battlefield trees...',
 	'Painting vehicles with fancy colors...'

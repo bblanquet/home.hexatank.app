@@ -608,25 +608,38 @@ p.bubble {
 }
 
 .bagde-container {
+	position: relative;
+	width: 45px;
+	min-width: 45px;
+	min-height: 45px;
+	height: 45px;
+}
+
+.bagde-background {
+	position: absolute;
+	top: 4%;
+	left: 4%;
+	width: 92%;
+	height: 92%;
+	border-radius: 50%;
+}
+
+.bagde-frontground {
+	position: absolute;
+	top: 4%;
+	left: 4%;
+	width: 92%;
+	height: 92%;
 	text-align: center;
 	vertical-align: middle;
-	font-style: bold;
+	font-weight: 800;
 	font-size: small;
 	color: white;
-	line-height: 18px;
-	width: 24px;
-	max-width: 24px;
-	min-width: 24px;
-	height: 24px;
-	max-height: 24px;
-	min-height: 24px;
-	border-radius: 50%;
-	margin-right: 10px;
+	line-height: 40px;
 	text-shadow: 0 0 3px #000; /* horizontal-offset vertical-offset 'blur' colour */
 	-moz-text-shadow: 0 0 3px #000;
 	-webkit-text-shadow: 0 0 3px #000;
-	-webkit-text-stroke: 2px black;
-	border: white 3px solid;
+	-webkit-text-stroke: 1px black;
 }
 
 .shadowEffect {

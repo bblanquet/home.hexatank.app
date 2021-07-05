@@ -8,21 +8,25 @@ import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import ProgressComponent from '../Common/Progress/ProgressComponent';
+import { IAudioService } from '../../Services/Audio/IAudioService';
+import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 
 export default class SmPopup extends Component<{ status: GameStatus; points: number }, { Kind: StatsKind }> {
-	private _profilService: IPlayerProfilService;
+	private _profilService: IPlayerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+	private _audioService: IAudioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 
-	constructor() {
-		super();
+	componentDidMount() {
 		this.setState({
 			Kind: StatsKind.Unit
 		});
-		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
-	}
-
-	componentDidMount() {
-		this.setState({});
 		this._profilService.AddPoints(this.props.points);
+		if (this.props.status === GameStatus.Victory) {
+			this._audioService.Play(AudioArchive.victory, 0.1, false);
+		}
+
+		if (this.props.status === GameStatus.Defeat) {
+			this._audioService.Play(AudioArchive.defeat, 0.1, false);
+		}
 	}
 
 	private Quit(): void {
@@ -32,7 +36,10 @@ export default class SmPopup extends Component<{ status: GameStatus; points: num
 
 	render() {
 		return (
-			<div class="generalContainer absolute-center-middle-menu menu-container fit-content">
+			<div
+				class="generalContainer absolute-center-middle-menu menu-container fit-content"
+				style={`border:${this.props.status === GameStatus.Victory ? 'gold' : 'crimson'} 5px solid`}
+			>
 				<div class="title-popup-container">
 					{this.props.status === GameStatus.Victory ? (
 						<div class="fill-victory light-bounce" />

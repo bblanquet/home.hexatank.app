@@ -14,6 +14,8 @@ import { LineChart } from '../Common/Chart/Config/LineChart';
 import Icon from '../Common/Icon/IconComponent';
 import ProgressComponent from '../Common/Progress/ProgressComponent';
 import ChartContainer from '../Common/Chart/ChartContainer';
+import { AudioArchive } from '../../Core/Framework/AudioArchiver';
+import { IAudioService } from '../../Services/Audio/IAudioService';
 
 export default class Popup extends Component<
 	{ curves: Groups<Curve>; context: JsonRecordContent; status: GameStatus; points: number },
@@ -21,18 +23,22 @@ export default class Popup extends Component<
 > {
 	private _chart: LineChart = new LineChart();
 	private _profilService: IPlayerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+	private _audioService: IAudioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 
-	constructor() {
-		super();
+	componentDidMount() {
 		this.setState({
 			Kind: StatsKind.Unit
 		});
-	}
-
-	componentDidMount() {
 		this._profilService.AddPoints(this.props.points);
 		if (!this.state.Canvas) {
 			this.UpdateState(this.state.Kind);
+		}
+		if (this.props.status === GameStatus.Victory) {
+			this._audioService.Play(AudioArchive.victory, 0.1, false);
+		}
+
+		if (this.props.status === GameStatus.Defeat) {
+			this._audioService.Play(AudioArchive.defeat, 0.1, false);
 		}
 	}
 	componentDidUpdate() {
@@ -57,12 +63,19 @@ export default class Popup extends Component<
 
 	render() {
 		return (
-			<div class="generalContainer absolute-center-middle-menu menu-container fit-content">
+			<div
+				class="generalContainer absolute-center-middle-menu menu-container fit-content"
+				style={`border:${this.props.status === GameStatus.Victory ? 'gold' : 'crimson'} 5px solid`}
+			>
 				<div class="title-popup-container">
 					{this.props.status === GameStatus.Victory ? (
-						<div class="fill-victory light-bounce" />
+						<div class="fill-victory light-bounce">
+							<div class="fill-victory-star infinite-bounce" />
+						</div>
 					) : (
-						<div class="fill-defeat light-bounce" />
+						<div class="fill-defeat light-bounce">
+							<div class="fill-defeat-eyes fade" />
+						</div>
 					)}
 				</div>
 				<div class="container-center">

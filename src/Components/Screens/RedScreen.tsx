@@ -8,7 +8,7 @@ import { LockButton } from '../Common/Button/Stylish/LockButton';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import { CampaignKind } from '../../Services/Campaign/CampaignKind';
-import { Sentences } from '../Model/Sentences';
+import { RedSentences } from '../Model/Text';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { Face } from '../Components/Face';
 import Navbar from '../Components/Navbar';
@@ -146,7 +146,7 @@ export default class RedScreen extends Component<
 					this.setState({
 						HasBubble: !this.state.HasBubble,
 						level: index,
-						Sentence: Sentences[Math.round((Sentences.length - 1) * Math.random())],
+						Sentence: RedSentences[Math.round((RedSentences.length - 1) * Math.random())],
 						CurrentSentence: ''
 					});
 					setTimeout(() => {

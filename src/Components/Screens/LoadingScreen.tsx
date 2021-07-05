@@ -6,8 +6,12 @@ import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import PanelComponent from '../Components/Panel/PanelComponent';
 import { AssetLoader } from '../../Core/Framework/AssetLoader';
+import Visible from '../Components/Visible';
+import { LoadingSentences } from '../Model/Text';
 
 export default class LoadingScreen extends Component<any, { percentage: number }> {
+	private _sentenceIndex: number = 0;
+	private _sentencePercentage: number = 0;
 	constructor() {
 		super();
 	}
@@ -16,38 +20,26 @@ export default class LoadingScreen extends Component<any, { percentage: number }
 		setTimeout(() => {
 			const onLoaded = new AssetLoader().LoadAll();
 			onLoaded.On((obj: any, percentage: number) => {
-				this.setState({
-					percentage: percentage
-				});
+				const roundedPercentage = Math.round(percentage);
+				if (roundedPercentage % 10 === 0 && roundedPercentage !== this._sentencePercentage) {
+					this._sentencePercentage = roundedPercentage;
+					this._sentenceIndex = (this._sentenceIndex + 1) % LoadingSentences.length;
+				}
 
 				if (percentage === 100) {
 					SpriteProvider.SetLoaded(true);
 					onLoaded.Clear();
 				}
+
+				this.setState({
+					percentage: percentage
+				});
 			});
 		}, 2000);
 	}
 
 	private ToHome(): void {
 		route('{{sub_path}}Home', true);
-	}
-
-	private Continue() {
-		if (this.state.percentage === 100) {
-			return (
-				<div class="container-center">
-					<ButtonComponent
-						callBack={() => {
-							this.ToHome();
-						}}
-						color={ColorKind.Red}
-					>
-						<Icon Value="fas fa-dungeon" /> Continue
-					</ButtonComponent>
-				</div>
-			);
-		}
-		return '';
 	}
 
 	render() {
@@ -63,7 +55,23 @@ export default class LoadingScreen extends Component<any, { percentage: number }
 						aria-valuemax="100"
 					/>
 				</div>
-				{this.Continue()}
+				<Visible isVisible={this.state.percentage < 100}>
+					<div class="container-center" style="color:white;font-weight:bold;">
+						{LoadingSentences[this._sentenceIndex]}
+					</div>
+				</Visible>
+				<Visible isVisible={this.state.percentage === 100}>
+					<div class="container-center">
+						<ButtonComponent
+							callBack={() => {
+								this.ToHome();
+							}}
+							color={ColorKind.Red}
+						>
+							<Icon Value="fas fa-dungeon" /> Continue
+						</ButtonComponent>
+					</div>
+				</Visible>
 			</PanelComponent>
 		);
 	}

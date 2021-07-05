@@ -15,6 +15,7 @@ import { Face } from '../Components/Face';
 import Navbar from '../Components/Navbar';
 import Redirect from '../Components/Redirect';
 import Visible from '../Components/Visible';
+import { GreenSentences } from '../Model/Text';
 
 export default class GreenScreen extends Component<any, any> {
 	private _campaignService: ICampaignService;
@@ -119,7 +120,7 @@ export default class GreenScreen extends Component<any, any> {
 					this.setState({
 						HasBubble: !this.state.HasBubble,
 						level: index,
-						Sentence: this.GetSentence(index),
+						Sentence: GreenSentences(index),
 						CurrentSentence: ''
 					});
 					setTimeout(() => {
@@ -140,16 +141,6 @@ export default class GreenScreen extends Component<any, any> {
 			return <div class="fill-sm-tank max-width icon-space" />;
 		} else {
 			return <div class="fill-sm-diam max-width icon-space" />;
-		}
-	}
-
-	private GetSentence(index: number) {
-		if (index === 1) {
-			return 'Make a vehicle reach a specific destination.';
-		} else if (index === 2) {
-			return 'Make a tank destroy a shield, to reach that goal, you will need to create powerup cells.';
-		} else {
-			return 'Retrieve at least 50 diamonds for your headquarter, you got 120 seconds soldier.';
 		}
 	}
 

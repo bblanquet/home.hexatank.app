@@ -57,7 +57,7 @@ export class AssetLoader {
 	}
 
 	private LoadAsset(path: string, onLoaded: () => void) {
-		if (path.includes('.svg/Assets/UI/')) {
+		if (path.includes('/UI/')) {
 			new Image().src = path;
 			onLoaded();
 		} else {

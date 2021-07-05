@@ -15,7 +15,7 @@ import { BlueprintSetup } from '../Components/Form/BlueprintSetup';
 import MdPanelComponent from '../Components/Panel/MdPanelComponent';
 import Redirect from '../Components/Redirect';
 
-export default class SingleplayerScreen extends Component<any, BlueprintSetup> {
+export default class SingleScreen extends Component<any, BlueprintSetup> {
 	private _profilService: IPlayerProfilService;
 
 	constructor(props: any) {

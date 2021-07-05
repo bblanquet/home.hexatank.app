@@ -19,9 +19,9 @@ import { JsonRecordContent } from './Core/Framework/Record/Model/JsonRecordConte
 import HomeScreen from './Components/Screens/HomeScreen';
 import LoadingScreen from './Components/Screens/LoadingScreen';
 import ErrorScreen from './Components/Screens/ErrorScreen';
-import SinglePlayerScreen from './Components/Screens/SinglePlayerScreen';
+import SinglePlayerScreen from './Components/Screens/SingleScreen';
 import RedScreen from './Components/Screens/RedScreen';
-import TrainingScreen from './Components/Screens/TrainingScreen';
+import GreenScreen from './Components/Screens/GreenScreen';
 import BlueScreen from './Components/Screens/BlueScreen';
 import GameScreen from './Components/Screens/GameScreen';
 import BadgeScreen from './Components/Screens/BadgeScreen';
@@ -52,7 +52,7 @@ const App = (e: any) => {
 			<ErrorScreen path="{{sub_path}}Error" />
 			<SinglePlayerScreen path="{{sub_path}}SinglePlayer" />
 			<RedScreen path="{{sub_path}}Red" />
-			<TrainingScreen path="{{sub_path}}Training" />
+			<GreenScreen path="{{sub_path}}Training" />
 			<BlueScreen path="{{sub_path}}Blue" />
 			<GameScreen path="{{sub_path}}Canvas" />
 			<BadgeScreen path="{{sub_path}}Badge" />

@@ -16,7 +16,7 @@ import Navbar from '../Components/Navbar';
 import Redirect from '../Components/Redirect';
 import Visible from '../Components/Visible';
 
-export default class TrainingScreen extends Component<any, any> {
+export default class GreenScreen extends Component<any, any> {
 	private _campaignService: ICampaignService;
 
 	constructor(props: any) {

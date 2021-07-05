@@ -36,6 +36,10 @@ export default class HomeScreen extends Component<any, any> {
 	private ToBadge(): void {
 		route('{{sub_path}}Badge', true);
 	}
+
+	private ToMonitoring(): void {
+		route('{{sub_path}}Customer', true);
+	}
 	render() {
 		return (
 			<Redirect>
@@ -55,11 +59,14 @@ export default class HomeScreen extends Component<any, any> {
 								new ButtonOption('Host', () => this.ToHost())
 							]}
 						/>
-						<ButtonComponent color={ColorKind.Blue} callBack={() => this.ToRecord()}>
+						<ButtonComponent color={ColorKind.Black} callBack={() => this.ToRecord()}>
 							<Icon Value="fas fa-user-circle" /> Profil
 						</ButtonComponent>
 						<ButtonComponent color={ColorKind.Black} callBack={() => this.ToBadge()}>
 							<Icon Value="fas fa-award" /> Badge
+						</ButtonComponent>
+						<ButtonComponent color={ColorKind.Blue} callBack={() => this.ToMonitoring()}>
+							<Icon Value="fab fa-watchman-monitoring" /> Monitoring
 						</ButtonComponent>
 					</div>
 				</MdPanelComponent>

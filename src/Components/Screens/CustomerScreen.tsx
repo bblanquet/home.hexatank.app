@@ -1,4 +1,4 @@
-import { Component, h } from 'preact';
+import { JSX, h } from 'preact';
 import { useState } from 'preact/hooks';
 import { CustomerHook } from '../Hooks/CustomerHook';
 import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
@@ -8,27 +8,25 @@ import Icon from '../Common/Icon/IconComponent';
 import SmPanelComponent from '../Components/Panel/SmPanelComponent';
 import Notification from '../Components/Notification';
 import Switch from '../Components/Switch';
+import { HookedComponent } from '../Hooks/HookedComponent';
+import { CustomerState } from '../Model/CustomerState';
+import * as luxon from 'luxon';
+import { DateTime } from 'luxon';
 
-export default class CustomerScreen extends Component {
-	private _hook: CustomerHook;
-	constructor() {
-		super();
+export default class CustomerScreen extends HookedComponent<{}, CustomerHook, CustomerState> {
+	public GetDefaultHook(): CustomerHook {
 		const [ state, setState ] = useState(CustomerHook.DefaultState());
-		this._hook = new CustomerHook(state, setState);
+		return new CustomerHook(state, setState);
 	}
 
-	componentWillUnmount() {
-		this._hook.Unmount();
-	}
-
-	render() {
+	public Rendering(): JSX.Element {
 		return (
 			<SmPanelComponent>
 				<GridComponent
 					left={''}
 					right={
 						<Switch
-							isVisible={this._hook.State.Errors.length === 0}
+							isVisible={this.Hook.State.Errors.length === 0}
 							left={
 								<tbody>
 									<tr class="d-flex">
@@ -38,9 +36,14 @@ export default class CustomerScreen extends Component {
 							}
 							right={
 								<tbody>
-									{this._hook.State.Errors.map((error) => {
+									{this.Hook.State.Errors.map((error) => {
 										return (
 											<tr class="d-flex">
+												<td class="align-self-center">
+													{luxon.DateTime
+														.fromJSDate(new Date(error.date))
+														.toLocaleString(DateTime.DATE_FULL)}
+												</td>
 												<td class="align-self-center">{error.name}</td>
 											</tr>
 										);
@@ -51,14 +54,14 @@ export default class CustomerScreen extends Component {
 					}
 				/>
 				<div class="container-center-horizontal">
-					<ButtonComponent callBack={() => this._hook.Back()} color={ColorKind.Black}>
+					<ButtonComponent callBack={() => this.Hook.Back()} color={ColorKind.Black}>
 						<Icon Value="fas fa-undo-alt" /> Back
 					</ButtonComponent>
-					<ButtonComponent callBack={() => this._hook.Refresh()} color={ColorKind.Red}>
+					<ButtonComponent callBack={() => this.Hook.Refresh()} color={ColorKind.Red}>
 						<Icon Value="fas fa-sync-alt" /> Refresh
 					</ButtonComponent>
 				</div>
-				<Notification OnNotification={this._hook.OnNotification} />
+				<Notification OnNotification={this.Hook.OnNotification} />
 			</SmPanelComponent>
 		);
 	}

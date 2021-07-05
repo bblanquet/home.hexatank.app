@@ -187,6 +187,21 @@ export const SvgArchive = {
 		'./svg/bonus/Up/medic/5.svg'
 	],
 	speedUp: [ './svg/bonus/Up/speed/1.svg', './svg/bonus/Up/speed/2.svg', './svg/bonus/Up/speed/3.svg' ],
+	poisonUp: [
+		'./svg/bonus/Up/poison/1.svg',
+		'./svg/bonus/Up/poison/2.svg',
+		'./svg/bonus/Up/poison/3.svg',
+		'./svg/bonus/Up/poison/4.svg',
+		'./svg/bonus/Up/poison/3.svg',
+		'./svg/bonus/Up/poison/3.svg',
+		'./svg/bonus/Up/poison/2.svg'
+	],
+	poisonUpR: [
+		'./svg/bonus/Up/poison/1.svg',
+		'./svg/bonus/Up/poison/2.svg',
+		'./svg/bonus/Up/poison/3.svg',
+		'./svg/bonus/Up/poison/4.svg'
+	],
 	powerUpR: [
 		'./svg/bonus/Up/fire/1.svg',
 		'./svg/bonus/Up/fire/2.svg',

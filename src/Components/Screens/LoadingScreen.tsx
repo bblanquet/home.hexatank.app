@@ -56,7 +56,7 @@ export default class LoadingScreen extends Component<any, { percentage: number }
 					/>
 				</div>
 				<Visible isVisible={this.state.percentage < 100}>
-					<div class="container-center" style="color:white;font-weight:bold;">
+					<div class="container-center" style="color:white;font-weight:bold;text-align:center;">
 						{LoadingSentences[this._sentenceIndex]}
 					</div>
 				</Visible>

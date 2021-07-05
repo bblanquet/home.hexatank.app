@@ -3,8 +3,8 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const distDir = path.resolve(__dirname, 'dist');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const fs = require('fs');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = (env) => {
 	const variables = Variables(env);
@@ -25,7 +25,8 @@ module.exports = (env) => {
 		},
 
 		optimization: {
-			minimizer: [ new UglifyJsPlugin() ]
+			minimize: !env.NODE_ENV.includes('local'),
+			minimizer: [ new TerserPlugin() ]
 		},
 		module: {
 			rules: [

@@ -1,5 +1,4 @@
 import { Component, h } from 'preact';
-import { isNullOrUndefined } from 'util';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 import { DiamondBlueprint } from '../../Core/Framework/Blueprint/Diamond/DiamondBlueprint';
 import { DiamondContext } from '../../Core/Framework/Context/DiamondContext';
@@ -239,11 +238,7 @@ export default class DiamondScreen extends Component<
 				{this.state.GameStatus === GameStatus.Pending ? '' : this.GetEndMessage()}
 				<GameCanvas gameContext={this._gameContextService} />
 				<Visible
-					isVisible={
-						!this.state.HasMenu &&
-						isNullOrUndefined(this.state.Item) &&
-						this.state.GameStatus === GameStatus.Pending
-					}
+					isVisible={!this.state.HasMenu && !this.state.Item && this.state.GameStatus === GameStatus.Pending}
 				>
 					<div class="right-bottom-menu">
 						<ActiveRightBottomCornerButton

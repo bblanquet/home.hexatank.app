@@ -3,9 +3,9 @@
 	"version": "0.0.1",
 	"main": "index.js",
 	"scripts": {
-		"build": "webpack --env.NODE_ENV=PRD --mode=production",
-		"build:dev": "webpack --env.NODE_ENV=DEV --mode=production",
-		"build:android": "webpack --env.NODE_ENV=Android --mode=production",
+		"build": "webpack --env NODE_ENV=PRD --mode=production",
+		"build:dev": "webpack --env NODE_ENV=DEV --mode=production",
+		"build:android": "webpack --env NODE_ENV=Android --mode=production",
 		"local": "webpack serve --config webpack.config.js --port 8080 --env NODE_ENV=local --mode=development",
 		"local2": "webpack serve --config webpack.config.js --port 8080 --env NODE_ENV=local2 --mode=development",
 		"start": "webpack serve --config webpack.config.js --port 8080 --env NODE_ENV=UAT --mode=development",

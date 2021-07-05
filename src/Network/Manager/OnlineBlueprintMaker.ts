@@ -3,7 +3,7 @@ import { OnlinePlayer } from '../OnlinePlayer';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { MapShape } from '../../Core/Framework/Blueprint/Items/MapShape';
 import { MapKind } from '../../Core/Framework/Blueprint/Items/MapKind';
-import { BlueprintSetup } from '../../Ui/Components/Form/BlueprintSetup';
+import { BlueprintSetup } from '../../Components/Components/Form/BlueprintSetup';
 import { IOnlinePlayerManager } from './IOnlinePlayerManager';
 import { ErrorHandler, ErrorCat } from '../../Utils/Exceptions/ErrorHandler';
 export class OnlineBlueprintMaker {

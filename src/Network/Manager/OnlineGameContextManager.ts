@@ -13,7 +13,7 @@ import { NetworkMessage } from '../Message/NetworkMessage';
 import { GameContext } from '../../Core/Framework/Context/GameContext';
 import { IGameContextService } from '../../Services/GameContext/IGameContextService';
 import { IOnlinePlayerManager } from './IOnlinePlayerManager';
-import { BlueprintSetup } from '../../Ui/Components/Form/BlueprintSetup';
+import { BlueprintSetup } from '../../Components/Components/Form/BlueprintSetup';
 export class OnlineGameContextManager implements IOnlineGameContextManager {
 	private _peerObs: NetworkObserver[];
 	private _onlineService: IOnlineService;

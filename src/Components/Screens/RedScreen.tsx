@@ -3,7 +3,7 @@ import { route } from 'preact-router';
 import { IAppService } from '../../Services/App/IAppService';
 import { ICampaignService } from '../../Services/Campaign/ICampaignService';
 import { Singletons, SingletonKey } from '../../Singletons';
-import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
+import Btn from '../Common/Button/Stylish/Btn';
 import { LockButton } from '../Common/Button/Stylish/LockButton';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
@@ -11,9 +11,10 @@ import { CampaignKind } from '../../Services/Campaign/CampaignKind';
 import { RedSentences } from '../Model/Text';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { Face } from '../Components/Face';
-import Navbar from '../Components/Navbar';
+import StatBar from '../Components/StatBar';
 import Redirect from '../Components/Redirect';
 import Visible from '../Components/Visible';
+import Background from '../Components/Background';
 
 export default class RedScreen extends Component<
 	any,
@@ -29,7 +30,8 @@ export default class RedScreen extends Component<
 	render() {
 		return (
 			<Redirect>
-				<Navbar>
+				<Background>
+					<StatBar />
 					<div class="generalContainer absolute-center-middle">
 						<div class="container-center">
 							<Face
@@ -42,7 +44,7 @@ export default class RedScreen extends Component<
 							<div class="arrow-up" />
 							<p class="bubble">{this.state.CurrentSentence}</p>
 							<div class="container-center-horizontal">
-								<ButtonComponent
+								<Btn
 									callBack={() => {
 										this.setState({
 											HasBubble: !this.state.HasBubble
@@ -51,36 +53,36 @@ export default class RedScreen extends Component<
 									color={ColorKind.Black}
 								>
 									<Icon Value="fas fa-undo-alt" /> Back
-								</ButtonComponent>
-								<ButtonComponent
+								</Btn>
+								<Btn
 									callBack={() => {
 										this.Start(this.state.level);
 									}}
 									color={ColorKind.Red}
 								>
 									<Icon Value="fas fa-fist-raised" /> Fight
-								</ButtonComponent>
+								</Btn>
 							</div>
 						</Visible>
 						<div class="container-center">
 							<Visible isVisible={!this.state.HasBubble}>
 								<div class="container-center-horizontal">
-									<ButtonComponent
+									<Btn
 										callBack={() => {
 											this.Training();
 										}}
 										color={ColorKind.Black}
 									>
 										<Icon Value="fas fa-long-arrow-alt-left" />
-									</ButtonComponent>
-									<ButtonComponent
+									</Btn>
+									<Btn
 										callBack={() => {
 											this.BlueCampaign();
 										}}
 										color={ColorKind.Black}
 									>
 										<Icon Value="fas fa-long-arrow-alt-right" />
-									</ButtonComponent>
+									</Btn>
 								</div>
 								<div class="d-flex flex-wrap justify-content-center">
 									{this._campaignService.GetButtons(CampaignKind.red).map((isPossible, index) => {
@@ -91,18 +93,18 @@ export default class RedScreen extends Component<
 										}
 									})}
 								</div>
-								<ButtonComponent
+								<Btn
 									callBack={() => {
 										this.Back();
 									}}
 									color={ColorKind.Black}
 								>
 									<Icon Value="fas fa-undo-alt" /> Back
-								</ButtonComponent>
+								</Btn>
 							</Visible>
 						</div>
 					</div>
-				</Navbar>
+				</Background>
 			</Redirect>
 		);
 	}
@@ -141,7 +143,7 @@ export default class RedScreen extends Component<
 
 	private GetButton(index: number) {
 		return (
-			<ButtonComponent
+			<Btn
 				callBack={() => {
 					this.setState({
 						HasBubble: !this.state.HasBubble,
@@ -156,7 +158,7 @@ export default class RedScreen extends Component<
 				color={ColorKind.Red}
 			>
 				<Icon Value="fas fa-arrow-alt-circle-right" /> {index}
-			</ButtonComponent>
+			</Btn>
 		);
 	}
 

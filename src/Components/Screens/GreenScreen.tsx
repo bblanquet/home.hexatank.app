@@ -3,7 +3,7 @@ import { route } from 'preact-router';
 import { IAppService } from '../../Services/App/IAppService';
 import { ICampaignService } from '../../Services/Campaign/ICampaignService';
 import { Singletons, SingletonKey } from '../../Singletons';
-import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
+import Btn from '../Common/Button/Stylish/Btn';
 import { LockButton } from '../Common/Button/Stylish/LockButton';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
@@ -12,10 +12,11 @@ import { CamouflageBlueprint } from '../../Core/Framework/Blueprint/Cam/Camoufla
 import { FireBlueprint } from '../../Core/Framework/Blueprint/Fire/FireBlueprint';
 import { DiamondBlueprint } from '../../Core/Framework/Blueprint/Diamond/DiamondBlueprint';
 import { Face } from '../Components/Face';
-import Navbar from '../Components/Navbar';
+import StatBar from '../Components/StatBar';
 import Redirect from '../Components/Redirect';
 import Visible from '../Components/Visible';
 import { GreenSentences } from '../Model/Text';
+import Background from '../Components/Background';
 
 export default class GreenScreen extends Component<any, any> {
 	private _campaignService: ICampaignService;
@@ -28,7 +29,8 @@ export default class GreenScreen extends Component<any, any> {
 	render() {
 		return (
 			<Redirect>
-				<Navbar>
+				<Background>
+					<StatBar />
 					<div class="generalContainer absolute-center-middle">
 						<div class="container-center">
 							<Face
@@ -46,7 +48,7 @@ export default class GreenScreen extends Component<any, any> {
 							<div class="arrow-up" />
 							<p class="bubble">{this.state.CurrentSentence}</p>
 							<div class="container-center-horizontal">
-								<ButtonComponent
+								<Btn
 									callBack={() => {
 										this.setState({
 											HasBubble: !this.state.HasBubble
@@ -55,28 +57,28 @@ export default class GreenScreen extends Component<any, any> {
 									color={ColorKind.Black}
 								>
 									<Icon Value="fas fa-undo-alt" /> Back
-								</ButtonComponent>
-								<ButtonComponent
+								</Btn>
+								<Btn
 									callBack={() => {
 										this.Start(this.state.level);
 									}}
 									color={ColorKind.Green}
 								>
 									<Icon Value="fas fa-fist-raised" /> Train
-								</ButtonComponent>
+								</Btn>
 							</div>
 						</Visible>
 						<Visible isVisible={!this.state.HasBubble}>
 							<div class="container-center">
 								<div class="container-center-horizontal">
-									<ButtonComponent
+									<Btn
 										callBack={() => {
 											this.RedCampaign();
 										}}
 										color={ColorKind.Black}
 									>
 										<Icon Value="fas fa-long-arrow-alt-right" />
-									</ButtonComponent>
+									</Btn>
 								</div>
 								<div class="d-flex flex-wrap justify-content-center">
 									{this._campaignService
@@ -89,18 +91,18 @@ export default class GreenScreen extends Component<any, any> {
 											}
 										})}
 								</div>
-								<ButtonComponent
+								<Btn
 									callBack={() => {
 										this.Back();
 									}}
 									color={ColorKind.Black}
 								>
 									<Icon Value="fas fa-undo-alt" /> Back
-								</ButtonComponent>
+								</Btn>
 							</div>
 						</Visible>
 					</div>
-				</Navbar>
+				</Background>
 			</Redirect>
 		);
 	}
@@ -115,7 +117,7 @@ export default class GreenScreen extends Component<any, any> {
 
 	private GetButton(index: number) {
 		return (
-			<ButtonComponent
+			<Btn
 				callBack={() => {
 					this.setState({
 						HasBubble: !this.state.HasBubble,
@@ -130,7 +132,7 @@ export default class GreenScreen extends Component<any, any> {
 				color={ColorKind.Green}
 			>
 				{this.GetIcon(index)}
-			</ButtonComponent>
+			</Btn>
 		);
 	}
 

@@ -49,6 +49,10 @@ export class GuestHook extends Hook<GuestState> {
 		};
 	}
 
+	private static FakeRooms(): RoomState[] {
+		return Usernames.map((e) => new RoomState(e, 2, false, 2));
+	}
+
 	public Join(roomName: string): void {
 		this._socket.Emit(
 			NetworkMessage.New<any>(PacketKind.Password, { Password: this.State.Password, RoomName: roomName })

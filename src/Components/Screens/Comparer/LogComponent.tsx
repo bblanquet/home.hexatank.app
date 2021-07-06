@@ -169,25 +169,20 @@ export default class LogComponent extends Component<
 	private GetContent() {
 		return (
 			<tbody>
-				{this.state.FilteredMsgs.map((message: LogMessage) => {
-					return (
-						<tr class="d-flex">
-							<td
-								class="align-self-center"
-								style={`color:${StaticLogger.Colors.Get(LogKind[message.Kind])}`}
-							>
-								&#11044;
-							</td>
-							<td class="align-self-center">
-								{luxon.DateTime.fromJSDate(new Date(message.Date)).toFormat('mm:ss.S')}
-							</td>
-							<td class="align-self-center">
-								<span class="badge badge-light">{message.Author}</span>
-							</td>
-							<td class="align-self-center">{message.Content}</td>
-						</tr>
-					);
-				})}
+				{this.state.FilteredMsgs.map((message: LogMessage) => (
+					<tr class="d-flex">
+						<td class="align-self-center" style={`color:${StaticLogger.Colors.Get(LogKind[message.Kind])}`}>
+							&#11044;
+						</td>
+						<td class="align-self-center">
+							{luxon.DateTime.fromJSDate(new Date(message.Date)).toFormat('mm:ss.S')}
+						</td>
+						<td class="align-self-center">
+							<span class="badge badge-light">{message.Author}</span>
+						</td>
+						<td class="align-self-center">{message.Content}</td>
+					</tr>
+				))}
 			</tbody>
 		);
 	}

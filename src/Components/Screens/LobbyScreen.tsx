@@ -1,14 +1,10 @@
 import { h, JSX } from 'preact';
 import PendingPlayers from '../Components/PendingPlayers';
 import ChatComponent from '../Components/ChatComponent';
-import { SpriteProvider } from '../../Core/Framework/SpriteProvider';
-import ActiveButtonComponent from '../Common/Button/Stylish/ActiveButtonComponent';
-import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
+import ActiveBtn from '../Common/Button/Stylish/ActiveBtn';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
-import SmPanelComponent from '../Components/Panel/SmPanelComponent';
 import Redirect from '../Components/Redirect';
-import MessageEmitter from '../Components/MessageEmitter';
 import Visible from '../Components/Visible';
 import Option from '../Components/Option';
 import { LobbyMode } from '../Model/LobbyMode';
@@ -16,6 +12,12 @@ import { LobbyState } from '../Model/LobbyState';
 import { HookedComponent } from '../Hooks/HookedComponent';
 import { LobbyHook } from '../Hooks/LobbyHook';
 import { useState } from 'preact/hooks';
+import Struct from '../Components/Struct';
+import Navbar from '../Components/Navbar';
+import SmBtn from '../Common/Button/Stylish/SmBtn';
+import SmActiveBtn from '../Common/Button/Stylish/SmActiveBtn';
+import MessageEmitter from '../Components/MessageEmitter';
+import Switch from '../Components/Switch';
 
 export default class LobbyScreen extends HookedComponent<{}, LobbyHook, LobbyState> {
 	public GetDefaultHook(): LobbyHook {
@@ -25,11 +27,11 @@ export default class LobbyScreen extends HookedComponent<{}, LobbyHook, LobbySta
 	public Rendering(): JSX.Element {
 		return (
 			<Redirect>
-				<MessageEmitter callBack={(m: string) => this.Hook.Send(m)}>
-					<SmPanelComponent>
-						<div class="container-center-horizontal">
+				<Struct
+					header={
+						<Navbar>
 							<Visible isVisible={this.Hook.State.Player.IsAdmin}>
-								<ActiveButtonComponent
+								<ActiveBtn
 									isActive={this.Hook.State.Mode === LobbyMode.setting}
 									leftColor={ColorKind.Red}
 									rightColor={ColorKind.Black}
@@ -41,7 +43,7 @@ export default class LobbyScreen extends HookedComponent<{}, LobbyHook, LobbySta
 								/>
 							</Visible>
 
-							<ActiveButtonComponent
+							<ActiveBtn
 								isActive={this.Hook.State.Mode === LobbyMode.pending}
 								leftColor={ColorKind.Red}
 								rightColor={ColorKind.Black}
@@ -52,7 +54,7 @@ export default class LobbyScreen extends HookedComponent<{}, LobbyHook, LobbySta
 								}}
 							/>
 
-							<ActiveButtonComponent
+							<ActiveBtn
 								isActive={this.Hook.State.Mode === LobbyMode.chat}
 								leftColor={ColorKind.Red}
 								rightColor={ColorKind.Black}
@@ -63,7 +65,7 @@ export default class LobbyScreen extends HookedComponent<{}, LobbyHook, LobbySta
 								}}
 							/>
 
-							<ActiveButtonComponent
+							<ActiveBtn
 								left={<Icon Value={'fas fa-toggle-on'} />}
 								right={<Icon Value={'fas fa-toggle-off'} />}
 								leftColor={ColorKind.Gray}
@@ -71,8 +73,10 @@ export default class LobbyScreen extends HookedComponent<{}, LobbyHook, LobbySta
 								callBack={() => this.Hook.ChangeReady()}
 								isActive={this.Hook.State.Player.IsReady}
 							/>
-						</div>
-						<Visible isVisible={SpriteProvider.IsLoaded()}>
+						</Navbar>
+					}
+					content={
+						<div>
 							<Visible isVisible={this.Hook.State.Mode === LobbyMode.setting}>
 								<Option Model={this.Hook.State.MapSetting} />
 							</Visible>
@@ -89,32 +93,46 @@ export default class LobbyScreen extends HookedComponent<{}, LobbyHook, LobbySta
 									player={this.Hook.State.Player.Name}
 								/>
 							</Visible>
-						</Visible>
-						<div class="container-center-horizontal">
-							<ButtonComponent callBack={() => this.Hook.Back()} color={ColorKind.Black}>
-								<Icon Value="fas fa-undo-alt" /> Back
-							</ButtonComponent>
-							<Visible isVisible={this.Hook.State.Player.IsAdmin}>
-								<ActiveButtonComponent
-									left={
-										<span>
-											<Icon Value={'far fa-play-circle'} /> START
-										</span>
-									}
-									right={
-										<span>
-											<Icon Value={'far fa-play-circle'} /> START
-										</span>
-									}
-									leftColor={ColorKind.Red}
-									rightColor={ColorKind.Gray}
-									callBack={() => this.Hook.Launching()}
-									isActive={this.Hook.State.Players.Values().every((e) => e.IsReady)}
-								/>
-							</Visible>
 						</div>
-					</SmPanelComponent>
-				</MessageEmitter>
+					}
+					footer={
+						<div>
+							<Switch
+								isVisible={this.Hook.State.Mode === LobbyMode.chat}
+								left={<MessageEmitter callBack={(m: string) => this.Hook.Send(m)} />}
+								right={
+									<div class="navbar nav-inner">
+										<div class="left">
+											<SmBtn callBack={() => this.Hook.Back()} color={ColorKind.Black}>
+												<Icon Value="fas fa-undo-alt" /> Back
+											</SmBtn>
+										</div>
+										<div class="right">
+											<Visible isVisible={this.Hook.State.Player.IsAdmin}>
+												<SmActiveBtn
+													left={
+														<span>
+															<Icon Value={'far fa-play-circle'} /> START
+														</span>
+													}
+													right={
+														<span>
+															<Icon Value={'far fa-play-circle'} /> START
+														</span>
+													}
+													leftColor={ColorKind.Red}
+													rightColor={ColorKind.Gray}
+													callBack={() => this.Hook.Launching()}
+													isActive={this.Hook.State.Players.Values().every((e) => e.IsReady)}
+												/>
+											</Visible>
+										</div>
+									</div>
+								}
+							/>
+						</div>
+					}
+				/>
 			</Redirect>
 		);
 	}

@@ -2,10 +2,10 @@ import { h, Component } from 'preact';
 import { StatsKind } from '../../Utils/Stats/StatsKind';
 import { GameSettings } from '../../Core/Framework/GameSettings';
 import { GameStatus } from '../../Core/Framework/GameStatus';
-import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
+import Btn from '../Common/Button/Stylish/Btn';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
-import ActiveButtonComponent from '../Common/Button/Stylish/ActiveButtonComponent';
+import ActiveBtn from '../Common/Button/Stylish/ActiveBtn';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { IAudioService } from '../../Services/Audio/IAudioService';
 import { AppService } from '../../Services/App/AppService';
@@ -52,15 +52,15 @@ export default class OptionPopup extends Component<
 					<div class="fill-logo" />{' '}
 				</div>
 				<div class="container-center" style="margin-top: -2vh">
-					<ButtonComponent
+					<Btn
 						callBack={() => {
 							this.props.Resume();
 						}}
 						color={ColorKind.Red}
 					>
 						<Icon Value="fas fa-arrow-alt-circle-right" /> Resume
-					</ButtonComponent>
-					<ActiveButtonComponent
+					</Btn>
+					<ActiveBtn
 						left={
 							<span>
 								<Icon Value="fas fa-eye" /> Cheat
@@ -76,7 +76,7 @@ export default class OptionPopup extends Component<
 						isActive={GameSettings.ShowEnemies}
 						callBack={() => this.Cheat()}
 					/>
-					<ActiveButtonComponent
+					<ActiveBtn
 						left={
 							<span>
 								<Icon Value={'fas fa-volume-mute'} /> Mute
@@ -99,22 +99,22 @@ export default class OptionPopup extends Component<
 						}}
 						isActive={this._soundService.IsMute()}
 					/>
-					<ButtonComponent
+					<Btn
 						callBack={() => {
 							this.Save();
 						}}
 						color={ColorKind.Blue}
 					>
 						<Icon Value="fas fa-save" /> Save
-					</ButtonComponent>
-					<ButtonComponent
+					</Btn>
+					<Btn
 						callBack={() => {
 							this.props.Quit();
 						}}
 						color={ColorKind.Black}
 					>
 						<Icon Value="fas fa-undo-alt" /> Quit
-					</ButtonComponent>
+					</Btn>
 				</div>
 			</div>
 		);

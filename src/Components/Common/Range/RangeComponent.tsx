@@ -2,7 +2,7 @@ import * as luxon from 'luxon';
 import { h, Component } from 'preact';
 import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { ColorKind } from '../Button/Stylish/ColorKind';
-import SmActiveButtonComponent from '../Button/Stylish/SmActiveButtonComponent';
+import SmActiveBtn from '../Button/Stylish/SmActiveBtn';
 import Icon from '../Icon/IconComponent';
 
 export default class RangeComponent extends Component<
@@ -67,7 +67,7 @@ export default class RangeComponent extends Component<
 		return (
 			<div>
 				<div class="container-center-horizontal" style={this.GetStyle()}>
-					<SmActiveButtonComponent
+					<SmActiveBtn
 						left={<Icon Value={'fas fa-play'} />}
 						right={<Icon Value={'fas fa-pause'} />}
 						leftColor={ColorKind.Black}

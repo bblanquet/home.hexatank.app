@@ -1,50 +1,22 @@
 import { h, Component } from 'preact';
-import { Singletons, SingletonKey } from '../../Singletons';
-import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
-import { PlayerProfil } from '../../Services/PlayerProfil/PlayerProfil';
-import { ColorKind } from '../Common/Button/Stylish/ColorKind';
-import SmActiveButtonComponent from '../Common/Button/Stylish/SmActiveButtonComponent';
-import ProgressComponent from '../Common/Progress/ProgressComponent';
-import Icon from '../Common/Icon/IconComponent';
-import { IAudioService } from '../../Services/Audio/IAudioService';
 
-export default class Navbar extends Component<any, { profil: PlayerProfil }> {
-	private _soundService: IAudioService;
-	private _profilService: IPlayerProfilService;
-
-	componentDidMount() {
-		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
-		this.setState({
-			profil: this._profilService.GetProfil()
-		});
-	}
-
+export default class Navbar extends Component<any, any> {
 	render() {
 		return (
-			<div>
-				<nav class="navbar dark">
-					<ProgressComponent width={35} maxWidth={150} />
-					<div class="d-flex justify-content-start">
-						<SmActiveButtonComponent
-							left={<Icon Value={'fas fa-volume-mute'} />}
-							right={<Icon Value={'fas fa-volume-up'} />}
-							leftColor={ColorKind.Black}
-							rightColor={ColorKind.Yellow}
-							callBack={() => {
-								if (this._soundService.IsMute()) {
-									this._soundService.On();
-								} else {
-									this._soundService.Off();
-								}
-								this._soundService.PlayLoungeMusic();
-								this.setState({});
-							}}
-							isActive={this._soundService && this._soundService.IsMute()}
-						/>
+			<div class="navbar nav-inner">
+				<div
+					class="d-flex justify-content-start"
+					style="flex-direction:row;align-content:space-between;flex-direction:row;align-items:center;"
+				>
+					<div class="x-sm-logo-container">
+						<div class="fill-logo-back-container">
+							<div class="x-sm-fill-logo-back spin-fade" />
+						</div>
+						<div class="fill-tank-logo slow-bounce" />
+						<div class="fill-logo" />
 					</div>
-				</nav>
-				{this.props.children}
+				</div>
+				<div class="d-flex justify-content-start">{this.props.children}</div>
 			</div>
 		);
 	}

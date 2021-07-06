@@ -8,13 +8,11 @@ export default class GridComponent extends Component<any, any> {
 	render() {
 		return (
 			<div class="container-center-horizontal">
-				<div class="custom-grid-layout-4">
-					<div class="custom-grid-layout-3 ">
-						<table class="table table-dark table-striped table-borderless custom-table">
-							{this.props.left}
-							{this.props.right}
-						</table>
-					</div>
+				<div class="custom-grid-layout-3">
+					<table class="table table-dark table-striped table-borderless custom-table">
+						{this.props.left}
+						{this.props.right}
+					</table>
 				</div>
 			</div>
 		);

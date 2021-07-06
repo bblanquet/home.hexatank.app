@@ -1,8 +1,8 @@
 import { h, Component, JSX } from 'preact';
 import { ColorKind } from './ColorKind';
-import ButtonComponent from './ButtonComponent';
+import Btn from './Btn';
 
-export default class ActiveButtonComponent extends Component<
+export default class ActiveBtn extends Component<
 	{
 		left: JSX.Element;
 		right: JSX.Element;
@@ -16,15 +16,15 @@ export default class ActiveButtonComponent extends Component<
 	render() {
 		if (this.props.isActive) {
 			return (
-				<ButtonComponent color={this.props.leftColor} callBack={this.props.callBack}>
+				<Btn color={this.props.leftColor} callBack={this.props.callBack}>
 					{this.props.right}
-				</ButtonComponent>
+				</Btn>
 			);
 		} else {
 			return (
-				<ButtonComponent color={this.props.rightColor} callBack={this.props.callBack}>
+				<Btn color={this.props.rightColor} callBack={this.props.callBack}>
 					{this.props.left}
-				</ButtonComponent>
+				</Btn>
 			);
 		}
 	}

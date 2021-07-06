@@ -4,7 +4,7 @@ import { GameStatus } from '../../Core/Framework/GameStatus';
 import { StatsKind } from '../../Utils/Stats/StatsKind';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 import { Singletons, SingletonKey } from '../../Singletons';
-import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
+import Btn from '../Common/Button/Stylish/Btn';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import ProgressComponent from '../Common/Progress/ProgressComponent';
@@ -53,14 +53,14 @@ export default class SmPopup extends Component<{ status: GameStatus; points: num
 					</div>
 
 					<div class="container-center-horizontal">
-						<ButtonComponent
+						<Btn
 							callBack={() => {
 								this.Quit();
 							}}
 							color={ColorKind.Black}
 						>
 							<Icon Value="fas fa-undo-alt" /> Back
-						</ButtonComponent>
+						</Btn>
 					</div>
 				</div>
 			</div>

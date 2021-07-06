@@ -60,40 +60,42 @@ export default class LineComparisonComponent extends Component<
 	render() {
 		return (
 			<Redirect>
-				<div class="statContainer container-center-horizontal menu-container">
-					<div class="container-center">
-						<div class="container-center-horizontal">
-							<DropDownComponent
-								OnInput={(e: any) => {
-									const hqId = e.target.value as string;
-									const units = this._recordComparer.ComparedRecord.Hqs.Get(hqId).Units;
-									const unitId = units.IsEmpty() ? '' : units.Keys()[0];
-									this.setState({
-										SelectedHqId: hqId,
-										SelectedUnitId: unitId,
-										Canvas: this.GetCanvas(hqId, unitId)
-									});
-								}}
-								DefaultValue={this.state.SelectedHqId}
-								Label={'Hq'}
-								Values={this.state.HqIds}
-							/>
-							<div class="small-right-margin" />
-							<DropDownComponent
-								OnInput={(e: any) => {
-									const unitId = e.target.value as string;
-									this.setState({
-										SelectedUnitId: unitId,
-										Canvas: this.GetCanvas(this.state.SelectedHqId, unitId)
-									});
-								}}
-								Label={'Unit'}
-								DefaultValue={this.state.SelectedUnitId}
-								Values={this.GetUnitIds()}
-							/>
-						</div>
+				<div class="container-center-horizontal">
+					<div class="statContainer menu-container">
+						<div class="container-center">
+							<div class="container-center-horizontal">
+								<DropDownComponent
+									OnInput={(e: any) => {
+										const hqId = e.target.value as string;
+										const units = this._recordComparer.ComparedRecord.Hqs.Get(hqId).Units;
+										const unitId = units.IsEmpty() ? '' : units.Keys()[0];
+										this.setState({
+											SelectedHqId: hqId,
+											SelectedUnitId: unitId,
+											Canvas: this.GetCanvas(hqId, unitId)
+										});
+									}}
+									DefaultValue={this.state.SelectedHqId}
+									Label={'Hq'}
+									Values={this.state.HqIds}
+								/>
+								<div class="small-right-margin" />
+								<DropDownComponent
+									OnInput={(e: any) => {
+										const unitId = e.target.value as string;
+										this.setState({
+											SelectedUnitId: unitId,
+											Canvas: this.GetCanvas(this.state.SelectedHqId, unitId)
+										});
+									}}
+									Label={'Unit'}
+									DefaultValue={this.state.SelectedUnitId}
+									Values={this.GetUnitIds()}
+								/>
+							</div>
 
-						<ChartContainer canvas={this.state.Canvas} height={40} />
+							<ChartContainer canvas={this.state.Canvas} height={40} />
+						</div>
 					</div>
 				</div>
 			</Redirect>

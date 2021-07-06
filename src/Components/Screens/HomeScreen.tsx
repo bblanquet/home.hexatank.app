@@ -1,8 +1,8 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import MdPanelComponent from '../Components/Panel/MdPanelComponent';
-import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
-import DropDownButtonComponent from '../Common/Button/Stylish/DropDownButtonComponent';
+import Btn from '../Common/Button/Stylish/Btn';
+import DropDownBtn from '../Common/Button/Stylish/DropDownBtn';
 import { ButtonOption } from '../Common/Button/ButtonOption';
 import Icon from '../Common/Icon/IconComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
@@ -45,13 +45,13 @@ export default class HomeScreen extends Component<any, any> {
 			<Redirect>
 				<MdPanelComponent>
 					<div class="container-center">
-						<ButtonComponent color={ColorKind.Red} callBack={() => this.ToCampaign()}>
+						<Btn color={ColorKind.Red} callBack={() => this.ToCampaign()}>
 							<Icon Value="fas fa-dungeon" /> Campaign
-						</ButtonComponent>
-						<ButtonComponent color={ColorKind.Red} callBack={() => this.ToSinglePlayer()}>
+						</Btn>
+						<Btn color={ColorKind.Red} callBack={() => this.ToSinglePlayer()}>
 							<Icon Value="fas fa-gamepad" /> Play
-						</ButtonComponent>
-						<DropDownButtonComponent
+						</Btn>
+						<DropDownBtn
 							icon={'fas fa-network-wired'}
 							title={'Multiplayers'}
 							items={[
@@ -59,15 +59,15 @@ export default class HomeScreen extends Component<any, any> {
 								new ButtonOption('Host', () => this.ToHost())
 							]}
 						/>
-						<ButtonComponent color={ColorKind.Black} callBack={() => this.ToRecord()}>
+						<Btn color={ColorKind.Black} callBack={() => this.ToRecord()}>
 							<Icon Value="fas fa-user-circle" /> Profil
-						</ButtonComponent>
-						<ButtonComponent color={ColorKind.Black} callBack={() => this.ToBadge()}>
+						</Btn>
+						{/* <ButtonComponent color={ColorKind.Black} callBack={() => this.ToBadge()}>
 							<Icon Value="fas fa-award" /> Badge
-						</ButtonComponent>
-						<ButtonComponent color={ColorKind.Blue} callBack={() => this.ToMonitoring()}>
+						</ButtonComponent> */}
+						<Btn color={ColorKind.Blue} callBack={() => this.ToMonitoring()}>
 							<Icon Value="fab fa-watchman-monitoring" /> Monitoring
-						</ButtonComponent>
+						</Btn>
 					</div>
 				</MdPanelComponent>
 			</Redirect>

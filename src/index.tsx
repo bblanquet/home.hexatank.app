@@ -1,10 +1,9 @@
-import 'preact/debug';
-import './Register';
 import { h, render } from 'preact';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 import Router from 'preact-router';
 import './Components/Style/Common.scss';
+import './Components/Style/exp.scss';
 import './Components/Style/CircularMenu.css';
 import './Components/Style/IconStyle.css';
 import './Components/Style/Animation.css';
@@ -29,7 +28,7 @@ import PlayerScreen from './Components/Screens/Record/PlayerScreen';
 import CreatingHostScreen from './Components/Screens/CreateHostScreen';
 import LobbyScreen from './Components/Screens/LobbyScreen';
 import CamouflageScreen from './Components/Screens/CamouflageScreen';
-import ProfilScreen from './Components/Screens/Profil/ProfilScreen';
+import ProfilScreen from './Components/Screens/ProfilScreen';
 import DiamondScreen from './Components/Screens/DiamondScreen';
 import FireScreen from './Components/Screens/FireScreen';
 import GuestScreen from './Components/Screens/GuestScreen';
@@ -39,7 +38,7 @@ import Popup from './Components/Components/Popup';
 import SmPopup from './Components/Components/SmPopup';
 import ComparisonScreen from './Components/Screens/Comparer/ComparisonScreen';
 import LogComponent from './Components/Screens/Comparer/LogComponent';
-import CustomerScreen from './Components/Screens/CustomerScreen';
+import MonitorScreen from './Components/Screens/MonitorScreen';
 import Notification from './Components/Components/Notification';
 import { LiteEvent } from './Utils/Events/LiteEvent';
 import { NotificationState } from './Components/Model/NotificationState';
@@ -75,7 +74,7 @@ const App = (e: any) => {
 			/>
 			<SmPopup path="{{sub_path}}SmPopup" points={10} status={GameStatus.Victory} />
 			<ComparisonScreen path="{{sub_path}}Comparison" />
-			<CustomerScreen path="{{sub_path}}Customer" />
+			<MonitorScreen path="{{sub_path}}Customer" />
 			<LogComponent path="{{sub_path}}Log" Messages={Logs()} />
 			<Notification path="{{sub_path}}Log" OnNotification={new LiteEvent<NotificationState>()} />
 		</Router>

@@ -1,5 +1,5 @@
 import { Component, h } from 'preact';
-import ButtonComponent from './ButtonComponent';
+import Btn from './Btn';
 import Icon from '../../Icon/IconComponent';
 import { ColorKind } from './ColorKind';
 import { AudioArchive } from '../../../../Core/Framework/AudioArchiver';
@@ -11,7 +11,7 @@ export class LockButton extends Component<any, any> {
 
 	render() {
 		return (
-			<ButtonComponent
+			<Btn
 				ref={(e: any) => {
 					this._lockDiv = e;
 				}}
@@ -26,7 +26,7 @@ export class LockButton extends Component<any, any> {
 				isMute={true}
 			>
 				<Icon Value="fas fa-lock" />
-			</ButtonComponent>
+			</Btn>
 		);
 	}
 }

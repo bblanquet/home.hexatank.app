@@ -1,14 +1,9 @@
 import { h, Component } from 'preact';
-import { LogKind } from '../../../../Utils/Logger/LogKind';
-import { StaticLogger } from '../../../../Utils/Logger/StaticLogger';
 import Icon from '../../Icon/IconComponent';
-import ButtonComponent from './ButtonComponent';
+import Btn from './Btn';
 import { ColorKind } from './ColorKind';
 
-export default class UploadButtonComponent extends Component<
-	{ callBack: (e: any) => void; title: string; icon: string },
-	any
-> {
+export default class UploadBtn extends Component<{ callBack: (e: any) => void; title: string; icon: string }, any> {
 	private _fileInput: HTMLInputElement;
 	private _callback: any = (e: any) => this.props.callBack(e);
 	constructor() {
@@ -24,14 +19,14 @@ export default class UploadButtonComponent extends Component<
 
 	render() {
 		return (
-			<ButtonComponent
+			<Btn
 				callBack={() => {
 					this._fileInput.click();
 				}}
 				color={ColorKind.Blue}
 			>
 				<Icon Value={this.props.icon} /> {this.props.title}
-			</ButtonComponent>
+			</Btn>
 		);
 	}
 }

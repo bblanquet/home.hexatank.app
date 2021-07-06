@@ -7,12 +7,21 @@ import { NotificationState } from '../Model/NotificationState';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { LogKind } from '../../Utils/Logger/LogKind';
 import { route } from 'preact-router';
+import { RecordContent } from '../../Core/Framework/Record/Model/RecordContent';
+import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
+import { IAppService } from '../../Services/App/IAppService';
+import { IRecordService } from '../../Services/Record/IRecordService';
+import { Singletons, SingletonKey } from '../../Singletons';
 
 export class CustomerHook extends Hook<CustomerState> {
 	public OnNotification: LiteEvent<NotificationState> = new LiteEvent<NotificationState>();
+	private _appService: IAppService<GameBlueprint>;
+	private _recordService: IRecordService;
 
 	constructor(state: CustomerState, setState: StateUpdater<CustomerState>) {
 		super(state, setState);
+		this._appService = Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.RecordApp);
+		this._recordService = Singletons.Load<IRecordService>(SingletonKey.Record);
 		this.Refresh();
 	}
 
@@ -37,6 +46,13 @@ export class CustomerHook extends Hook<CustomerState> {
 
 	static DefaultState(): any {
 		return new CustomerState();
+	}
+
+	public Play(error: ErrorDetail): void {
+		const data = RecordContent.To(JSON.parse(error.content));
+		this._appService.Register(data.Blueprint);
+		this._recordService.Register(data);
+		route('{{sub_path}}Player', true);
 	}
 
 	public Unmount(): void {}

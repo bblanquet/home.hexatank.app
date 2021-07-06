@@ -6,6 +6,7 @@ import { CellDurationStateFormater } from '../../Components/Common/Chart/Formate
 import { VehicleDurationStateFormater } from '../../Components/Common/Chart/Formater/VehicleDurationStateFormater';
 import { ICompareService } from './ICompareService';
 import { RecordComparer } from '../../Components/Screens/Comparer/Comparers/RecordComparer';
+import { LogKind } from '../../Utils/Logger/LogKind';
 
 export class CompareService implements ICompareService {
 	private _record: RecordContent;
@@ -18,7 +19,25 @@ export class CompareService implements ICompareService {
 		this.SetData(this._record.PlayerName, this._record.Messages);
 		this.SetData(this._compareRecord.PlayerName, this._compareRecord.Messages);
 		this._logs = this._record.Messages.concat(this._compareRecord.Messages).sort((a, b) => a.Date - b.Date);
+		this.Formater();
 	}
+	private Formater() {
+		this._logs.forEach((l) => {
+			if (l.Kind === undefined || l.Kind === null) {
+				l.Kind = LogKind.info;
+			}
+			if (l.Author === undefined || l.Author === null) {
+				l.Author = 'none';
+			}
+			if (l.Content === undefined || l.Content === null) {
+				l.Content = 'none';
+			}
+			if (l.Date === undefined || l.Date === null) {
+				l.Date = new Date().getTime();
+			}
+		});
+	}
+
 	private SetData(author: string, messages: LogMessage[]) {
 		messages.forEach((m) => {
 			m.Author = author;

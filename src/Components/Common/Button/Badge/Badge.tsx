@@ -1,7 +1,7 @@
 import { Component, h } from 'preact';
 import Visible from '../../../Components/Visible';
 import { ColorKind } from '../Stylish/ColorKind';
-import SmButtonComponent from '../Stylish/SmButtonComponent';
+import SmBtn from '../Stylish/SmBtn';
 import AnimatedIcon from './AnimatedIcon';
 
 export default class Badge extends Component<
@@ -15,7 +15,7 @@ export default class Badge extends Component<
 	render() {
 		return (
 			<div class="space-out-horizontal">
-				<SmButtonComponent
+				<SmBtn
 					callBack={() => {
 						this.props.Onclick(this.props.text);
 					}}
@@ -39,7 +39,7 @@ export default class Badge extends Component<
 							aria-valuemax="100"
 						/>
 					</div>
-				</SmButtonComponent>
+				</SmBtn>
 			</div>
 		);
 	}

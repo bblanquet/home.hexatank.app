@@ -1,7 +1,7 @@
 import { Component, h } from 'preact';
 import { route } from 'preact-router';
 import Redirect from '../Components/Redirect';
-import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
+import Btn from '../Common/Button/Stylish/Btn';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import Badge from '../Common/Button/Badge/Badge';
@@ -93,14 +93,14 @@ export default class BadgeScreen extends Component<any, { text: string }> {
 							</div>
 						</div>
 						<div class="container-center-horizontal">
-							<ButtonComponent
+							<Btn
 								callBack={() => {
 									this.Back();
 								}}
 								color={ColorKind.Black}
 							>
 								<Icon Value="fas fa-undo-alt" /> Back
-							</ButtonComponent>
+							</Btn>
 						</div>
 					</div>
 				</SmPanelComponent>

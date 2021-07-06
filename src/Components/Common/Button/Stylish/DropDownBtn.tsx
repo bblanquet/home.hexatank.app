@@ -2,10 +2,7 @@ import { h, Component } from 'preact';
 import Icon from '../../Icon/IconComponent';
 import { ButtonOption } from '../ButtonOption';
 
-export default class DropDownButtonComponent extends Component<
-	{ title: string; icon: string; items: ButtonOption[] },
-	any
-> {
+export default class DropDownBtn extends Component<{ title: string; icon: string; items: ButtonOption[] }, any> {
 	constructor() {
 		super();
 	}

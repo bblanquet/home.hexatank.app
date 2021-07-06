@@ -1,11 +1,11 @@
 import { Component, h } from 'preact';
 import { route } from 'preact-router';
 import { GameContext } from '../../Core/Framework/Context/GameContext';
-import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
+import Btn from '../Common/Button/Stylish/Btn';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import { Face } from '../Components/Face';
-import Navbar from '../Components/Navbar';
+import StatBar from '../Components/StatBar';
 import Redirect from '../Components/Redirect';
 
 export default class ErrorScreen extends Component {
@@ -16,7 +16,7 @@ export default class ErrorScreen extends Component {
 	render() {
 		return (
 			<Redirect>
-				<Navbar>
+				<StatBar>
 					<div class="container-center">
 						<Face eyes={[]} mouths={[]} face={'fill-exception'} />
 						<div class="text-detail shadowEffect width80percent">
@@ -26,16 +26,16 @@ export default class ErrorScreen extends Component {
 							<div class="sub-text-detail max200Height">{GameContext.Error.stack}</div>
 						</div>
 						<p />
-						<ButtonComponent
+						<Btn
 							callBack={() => {
 								this.Back();
 							}}
 							color={ColorKind.Black}
 						>
 							<Icon Value="fas fa-undo-alt" /> Back
-						</ButtonComponent>
+						</Btn>
 					</div>
-				</Navbar>
+				</StatBar>
 			</Redirect>
 		);
 	}

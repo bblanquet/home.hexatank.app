@@ -5,7 +5,7 @@ import Redirect from '../Redirect';
 import Visible from '../Visible';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 import { isEqual } from 'lodash';
-import SmActiveButtonComponent from '../../Common/Button/Stylish/SmActiveButtonComponent';
+import SmActiveBtn from '../../Common/Button/Stylish/SmActiveBtn';
 import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
 import Icon from '../../Common/Icon/IconComponent';
 
@@ -45,7 +45,7 @@ export default class BlueprintFormComponent extends Component<
 							Values={[ '0', '1', '2', '3' ]}
 						/>
 						<div class="space-out" />
-						<SmActiveButtonComponent
+						<SmActiveBtn
 							isActive={this.state.onylIa}
 							right={<Icon Value={'fas fa-code-branch'} />}
 							left={<Icon Value={'fas fa-brain'} />}

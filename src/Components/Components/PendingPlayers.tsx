@@ -3,7 +3,7 @@ import { ConnectionKind } from '../../Network/ConnectionKind';
 import { ILobbyManager } from '../../Network/Manager/ILobbyManager';
 import { OnlinePlayer } from '../../Network/OnlinePlayer';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
-import SmButtonComponent from '../Common/Button/Stylish/SmButtonComponent';
+import SmBtn from '../Common/Button/Stylish/SmBtn';
 import GridComponent from '../Common/Grid/GridComponent';
 import Icon from '../Common/Icon/IconComponent';
 import Visible from './Visible';
@@ -39,12 +39,9 @@ export default class PendingPlayers extends Component<{
 						<tr class={this.props.Player.Name === player.Name ? 'row-blue d-flex' : 'd-flex'}>
 							<Visible isVisible={this.props.Player.IsAdmin}>
 								<td class="align-self-center">
-									<SmButtonComponent
-										callBack={() => this.MakeUserLeave(player.Name)}
-										color={ColorKind.Black}
-									>
+									<SmBtn callBack={() => this.MakeUserLeave(player.Name)} color={ColorKind.Black}>
 										<Icon Value={'fas fa-user-slash'} />
-									</SmButtonComponent>
+									</SmBtn>
 								</td>
 							</Visible>
 							<td class="align-self-center">

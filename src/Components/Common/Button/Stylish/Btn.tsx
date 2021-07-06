@@ -5,10 +5,7 @@ import { Singletons, SingletonKey } from '../../../../Singletons';
 import { IAudioService } from '../../../../Services/Audio/IAudioService';
 import { ColorKind } from './ColorKind';
 
-export default class ButtonComponent extends Component<
-	{ callBack: () => void; color: ColorKind; isMute?: boolean },
-	any
-> {
+export default class Btn extends Component<{ callBack: () => void; color: ColorKind; isMute?: boolean }, any> {
 	constructor() {
 		super();
 		this._primary.Add(ColorKind[ColorKind.Black], 'black-primary');

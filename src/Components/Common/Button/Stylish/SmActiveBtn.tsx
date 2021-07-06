@@ -1,8 +1,8 @@
 import { h, Component, JSX } from 'preact';
 import { ColorKind } from './ColorKind';
-import SmButtonComponent from './SmButtonComponent';
+import SmBtn from './SmBtn';
 
-export default class SmActiveButtonComponent extends Component<
+export default class SmActiveBtn extends Component<
 	{
 		left: JSX.Element;
 		right: JSX.Element;
@@ -16,15 +16,15 @@ export default class SmActiveButtonComponent extends Component<
 	render() {
 		if (this.props.isActive) {
 			return (
-				<SmButtonComponent color={this.props.leftColor} callBack={this.props.callBack}>
+				<SmBtn color={this.props.leftColor} callBack={this.props.callBack}>
 					{this.props.right}
-				</SmButtonComponent>
+				</SmBtn>
 			);
 		} else {
 			return (
-				<SmButtonComponent color={this.props.rightColor} callBack={this.props.callBack}>
+				<SmBtn color={this.props.rightColor} callBack={this.props.callBack}>
 					{this.props.left}
-				</SmButtonComponent>
+				</SmBtn>
 			);
 		}
 	}

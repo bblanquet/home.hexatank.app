@@ -4,7 +4,7 @@ import { GameBlueprintMaker } from '../../Core/Framework/Blueprint/Game/GameBlue
 import { MapKind } from '../../Core/Framework/Blueprint/Items/MapKind';
 import { IAppService } from '../../Services/App/IAppService';
 import { Singletons, SingletonKey } from '../../Singletons';
-import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
+import Btn from '../Common/Button/Stylish/Btn';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import { MapShape } from '../../Core/Framework/Blueprint/Items/MapShape';
@@ -38,22 +38,22 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 					<div class="container-center">
 						<BlueprintFormComponent Model={this.state} CallBack={this.Update.bind(this)} />
 						<div class="container-center-horizontal">
-							<ButtonComponent
+							<Btn
 								callBack={() => {
 									this.Back();
 								}}
 								color={ColorKind.Black}
 							>
 								<Icon Value="fas fa-undo-alt" /> Back
-							</ButtonComponent>
-							<ButtonComponent
+							</Btn>
+							<Btn
 								callBack={() => {
 									this.Start();
 								}}
 								color={ColorKind.Red}
 							>
 								<Icon Value="fas fa-arrow-alt-circle-right" /> Play
-							</ButtonComponent>
+							</Btn>
 						</div>
 					</div>
 				</MdPanelComponent>

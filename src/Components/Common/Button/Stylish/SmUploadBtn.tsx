@@ -1,9 +1,9 @@
 import { h, Component } from 'preact';
 import Icon from '../../Icon/IconComponent';
 import { ColorKind } from './ColorKind';
-import SmButtonComponent from './SmButtonComponent';
+import SmBtn from './SmBtn';
 
-export default class SmUploadButtonComponent extends Component<
+export default class SmUploadBtn extends Component<
 	{ callBack: (e: any) => void; icon: string; color: ColorKind },
 	any
 > {
@@ -21,14 +21,14 @@ export default class SmUploadButtonComponent extends Component<
 
 	render() {
 		return (
-			<SmButtonComponent
+			<SmBtn
 				callBack={() => {
 					this.ForceFileClick();
 				}}
 				color={this.props.color}
 			>
 				<Icon Value={this.props.icon} />
-			</SmButtonComponent>
+			</SmBtn>
 		);
 	}
 

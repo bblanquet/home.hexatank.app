@@ -1,6 +1,7 @@
 import { h, Component } from 'preact';
 import PageAnalyser from '../PageAnalyser';
-import Navbar from '../Navbar';
+import StatBar from '../StatBar';
+import Background from '../Background';
 
 export default class SmPanelComponent extends Component<any, any> {
 	constructor() {
@@ -10,7 +11,8 @@ export default class SmPanelComponent extends Component<any, any> {
 	render() {
 		return (
 			<PageAnalyser>
-				<Navbar>
+				<Background>
+					<StatBar />
 					<div class="container-column-center-horizontal">
 						<div class="sm-logo-container">
 							<div class="fill-logo-back-container">
@@ -21,7 +23,7 @@ export default class SmPanelComponent extends Component<any, any> {
 						</div>
 						{this.props.children}
 					</div>
-				</Navbar>
+				</Background>
 			</PageAnalyser>
 		);
 	}

@@ -7,9 +7,9 @@ import { Curve } from '../../Utils/Stats/Curve';
 import { StatsKind } from '../../Utils/Stats/StatsKind';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
-import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
+import Btn from '../Common/Button/Stylish/Btn';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
-import SmActiveButtonComponent from '../Common/Button/Stylish/SmActiveButtonComponent';
+import SmActiveBtn from '../Common/Button/Stylish/SmActiveBtn';
 import { LineChart } from '../Common/Chart/Config/LineChart';
 import Icon from '../Common/Icon/IconComponent';
 import ProgressComponent from '../Common/Progress/ProgressComponent';
@@ -84,7 +84,7 @@ export default class Popup extends Component<
 					</div>
 
 					<div class="container-center-horizontal">
-						<SmActiveButtonComponent
+						<SmActiveBtn
 							left={<div class="fill-sm-tank max-width icon-space" />}
 							right={<div class="fill-sm-tank max-width icon-space" />}
 							leftColor={ColorKind.Black}
@@ -94,7 +94,7 @@ export default class Popup extends Component<
 								this.UpdateState(StatsKind.Unit);
 							}}
 						/>
-						<SmActiveButtonComponent
+						<SmActiveBtn
 							left={<div class="fill-sm-hexa max-width icon-space" />}
 							right={<div class="fill-sm-hexa max-width icon-space" />}
 							leftColor={ColorKind.Black}
@@ -104,7 +104,7 @@ export default class Popup extends Component<
 								this.UpdateState(StatsKind.Cell);
 							}}
 						/>
-						<SmActiveButtonComponent
+						<SmActiveBtn
 							left={<div class="fill-sm-diam max-width icon-space" />}
 							right={<div class="fill-sm-diam max-width icon-space" />}
 							leftColor={ColorKind.Black}
@@ -114,7 +114,7 @@ export default class Popup extends Component<
 								this.UpdateState(StatsKind.Diamond);
 							}}
 						/>
-						<SmActiveButtonComponent
+						<SmActiveBtn
 							left={<div class="fill-sm-fire max-width icon-space" />}
 							right={<div class="fill-sm-fire max-width icon-space" />}
 							leftColor={ColorKind.Black}
@@ -127,14 +127,14 @@ export default class Popup extends Component<
 					</div>
 					<ChartContainer canvas={this.state.Canvas} height={null} />
 					<div class="container-center-horizontal">
-						<ButtonComponent
+						<Btn
 							callBack={() => {
 								this.Quit();
 							}}
 							color={ColorKind.Black}
 						>
 							<Icon Value="fas fa-undo-alt" /> Back
-						</ButtonComponent>
+						</Btn>
 					</div>
 				</div>
 			</div>

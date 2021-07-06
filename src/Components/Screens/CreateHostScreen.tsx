@@ -1,8 +1,8 @@
 import { JSX, h } from 'preact';
-import ButtonComponent from '../Common/Button/Stylish/ButtonComponent';
+import Btn from '../Common/Button/Stylish/Btn';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
-import SmActiveButtonComponent from '../Common/Button/Stylish/SmActiveButtonComponent';
-import SmButtonComponent from '../Common/Button/Stylish/SmButtonComponent';
+import SmActiveBtn from '../Common/Button/Stylish/SmActiveBtn';
+import SmBtn from '../Common/Button/Stylish/SmBtn';
 import Icon from '../Common/Icon/IconComponent';
 import MdPanelComponent from '../Components/Panel/MdPanelComponent';
 import Redirect from '../Components/Redirect';
@@ -24,11 +24,11 @@ export default class CreateHostScreen extends HookedComponent<{}, CreateHostHook
 			<Redirect>
 				<MdPanelComponent>
 					<div class="container-center-horizontal" style="margin-bottom:10px">
-						<SmButtonComponent callBack={() => this.Hook.Randomize()} color={ColorKind.Blue}>
+						<SmBtn callBack={() => this.Hook.Randomize()} color={ColorKind.Blue}>
 							<Icon Value="fas fa-random" />
-						</SmButtonComponent>
+						</SmBtn>
 						<div class="space-out" />
-						<SmActiveButtonComponent
+						<SmActiveBtn
 							left={<Icon Value="fas fa-lock-open" />}
 							right={<Icon Value="fas fa-lock" />}
 							leftColor={ColorKind.Black}
@@ -67,12 +67,12 @@ export default class CreateHostScreen extends HookedComponent<{}, CreateHostHook
 						</Visible>
 					</div>
 					<div class="container-center-horizontal">
-						<ButtonComponent callBack={() => this.Hook.Back()} color={ColorKind.Black}>
+						<Btn callBack={() => this.Hook.Back()} color={ColorKind.Black}>
 							<Icon Value="fas fa-undo-alt" /> Back
-						</ButtonComponent>
-						<ButtonComponent callBack={() => this.Hook.Start()} color={ColorKind.Red}>
+						</Btn>
+						<Btn callBack={() => this.Hook.Start()} color={ColorKind.Red}>
 							<Icon Value="far fa-play-circle" /> Start
-						</ButtonComponent>
+						</Btn>
 					</div>
 				</MdPanelComponent>
 				<Notification OnNotification={this.Hook.OnNotification} />

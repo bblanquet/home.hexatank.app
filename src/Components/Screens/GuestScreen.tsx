@@ -4,7 +4,7 @@ import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
 import GridComponent from '../Common/Grid/GridComponent';
 import Icon from '../Common/Icon/IconComponent';
-import SmPanelComponent from '../Components/Panel/SmPanelComponent';
+import SmPanel from '../Components/Panel/SmPanel';
 import Redirect from '../Components/Redirect';
 import Visible from '../Components/Visible';
 import Notification from '../Components/Notification';

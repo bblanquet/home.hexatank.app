@@ -1,25 +1,17 @@
-import * as PIXI from 'pixi.js';
-import { LiteEvent } from './../../Utils/Events/LiteEvent';
-import { Dictionary } from '../../Utils/Collections/Dictionary';
-import { AssetExplorer } from './AssetExplorer';
+import { LiteEvent } from '../../Utils/Events/LiteEvent';
+import { ILoader } from './ILoader';
 
 export class AssetLoader {
-	private _svgs: Dictionary<PIXI.resources.SVGResource> = new Dictionary<PIXI.resources.SVGResource>();
-	private _threshold: number = 200;
 	private _isLoaded: boolean = false;
+
+	constructor(private _loader: ILoader, private _threshold: number) {}
 
 	public Loaded(): boolean {
 		return this._isLoaded;
 	}
 
-	public LoadAll(): LiteEvent<number> {
+	public LoadAll(assets: string[]): LiteEvent<number> {
 		const event = new LiteEvent<number>();
-		const assets = new AssetExplorer().GetAssets();
-
-		PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
-		PIXI.settings.RENDER_OPTIONS.antialias = true;
-		PIXI.settings.TARGET_FPMS = PIXI.TARGETS.TEXTURE_2D;
-
 		this.Load(assets, this._threshold, assets.length, 0, event);
 		return event;
 	}
@@ -57,20 +49,6 @@ export class AssetLoader {
 	}
 
 	private LoadAsset(path: string, onLoaded: () => void) {
-		if (path.includes('/UI/')) {
-			new Image().src = path;
-			onLoaded();
-		} else {
-			const res = new PIXI.resources.SVGResource(path);
-			const key = path;
-			const otpions = { resourceOptions: { scale: 0.3 } };
-			let texture = new PIXI.Texture(new PIXI.BaseTexture(path, otpions));
-			texture.baseTexture.once('loaded', () => {
-				onLoaded();
-			});
-			PIXI.BaseTexture.addToCache(texture.baseTexture, key);
-			PIXI.Texture.addToCache(texture, key);
-			this._svgs.Add(key, res);
-		}
+		this._loader.Loading(path, onLoaded);
 	}
 }

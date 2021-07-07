@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
-import MdPanelComponent from '../Components/Panel/MdPanelComponent';
+import MdPanel from '../Components/Panel/MdPanel';
 import Btn from '../Common/Button/Stylish/Btn';
 import DropDownBtn from '../Common/Button/Stylish/DropDownBtn';
 import { ButtonOption } from '../Common/Button/ButtonOption';
@@ -43,7 +43,7 @@ export default class HomeScreen extends Component<any, any> {
 	render() {
 		return (
 			<Redirect>
-				<MdPanelComponent>
+				<MdPanel>
 					<div class="container-center">
 						<Btn color={ColorKind.Red} callBack={() => this.ToCampaign()}>
 							<Icon Value="fas fa-dungeon" /> Campaign
@@ -69,7 +69,7 @@ export default class HomeScreen extends Component<any, any> {
 							<Icon Value="fab fa-watchman-monitoring" /> Monitoring
 						</Btn>
 					</div>
-				</MdPanelComponent>
+				</MdPanel>
 			</Redirect>
 		);
 	}

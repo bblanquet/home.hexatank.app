@@ -5,12 +5,18 @@ import Btn from '../Common/Button/Stylish/Btn';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import { AssetLoader } from '../../Core/Framework/AssetLoader';
+import { AssetExplorer } from '../../Core/Framework/AssetExplorer';
+import { SvgLoader } from '../../Core/Framework/SvgLoader';
 import Visible from '../Components/Visible';
 import { LoadingSentences } from '../Model/Text';
 import { Register } from '../../Register';
 import Background from '../Components/Background';
+import { AudioLoader } from '../../Core/Framework/AudioLoader';
 
-export default class LoadingScreen extends Component<any, { percentage: number }> {
+export default class LoadingScreen extends Component<
+	any,
+	{ SvgPercentage: number; AudioPercentage: number; Percentage: number }
+> {
 	private _sentenceIndex: number = 0;
 	private _sentencePercentage: number = 0;
 	constructor() {
@@ -18,26 +24,50 @@ export default class LoadingScreen extends Component<any, { percentage: number }
 	}
 
 	componentDidMount() {
-		setTimeout(() => {
+		const svgLoad = new SvgLoader();
+		const onLoaded = new AssetLoader(svgLoad, 50).LoadAll(new AssetExplorer().GetAssets());
+		onLoaded.On((obj: any, percentage: number) => {
+			const roundedPercentage = Math.round(percentage);
+			if (roundedPercentage % 10 === 0 && roundedPercentage !== this._sentencePercentage) {
+				this._sentencePercentage = roundedPercentage;
+				this._sentenceIndex = (this._sentenceIndex + 1) % LoadingSentences.length;
+			}
+			this.SetSvg(percentage);
+		});
+
+		const audioLoader = new AudioLoader();
+		const onAudioLoaded = new AssetLoader(audioLoader, 2).LoadAll(audioLoader.Audios());
+		onAudioLoaded.On((obj: any, percentage: number) => {
+			const roundedPercentage = Math.round(percentage);
+			if (roundedPercentage % 10 === 0 && roundedPercentage !== this._sentencePercentage) {
+				this._sentencePercentage = roundedPercentage;
+				this._sentenceIndex = (this._sentenceIndex + 1) % LoadingSentences.length;
+			}
+			this.SetAudio(percentage);
+		});
+	}
+
+	componentDidUpdate() {
+		if (this.state.Percentage === 100) {
 			new Register().Do();
-			const onLoaded = new AssetLoader().LoadAll();
-			onLoaded.On((obj: any, percentage: number) => {
-				const roundedPercentage = Math.round(percentage);
-				if (roundedPercentage % 10 === 0 && roundedPercentage !== this._sentencePercentage) {
-					this._sentencePercentage = roundedPercentage;
-					this._sentenceIndex = (this._sentenceIndex + 1) % LoadingSentences.length;
-				}
+			SpriteProvider.SetLoaded(true);
+		}
+	}
 
-				if (percentage === 100) {
-					SpriteProvider.SetLoaded(true);
-					onLoaded.Clear();
-				}
+	private SetSvg(svg: number): void {
+		const percentage = svg / 2 + this.state.AudioPercentage / 2;
+		this.setState({
+			Percentage: percentage,
+			SvgPercentage: svg
+		});
+	}
 
-				this.setState({
-					percentage: percentage
-				});
-			});
-		}, 2000);
+	private SetAudio(audio: number): void {
+		const percentage = audio / 2 + this.state.SvgPercentage / 2;
+		this.setState({
+			Percentage: percentage,
+			AudioPercentage: audio
+		});
 	}
 
 	private ToHome(): void {
@@ -59,18 +89,18 @@ export default class LoadingScreen extends Component<any, { percentage: number }
 						<div
 							class="progress-bar bg-danger "
 							role="progressbar"
-							style={'width:' + this.state.percentage + '%'}
+							style={'width:' + this.state.Percentage + '%'}
 							aria-valuenow="100"
 							aria-valuemin="0"
 							aria-valuemax="100"
 						/>
 					</div>
-					<Visible isVisible={this.state.percentage < 100}>
+					<Visible isVisible={this.state.Percentage < 100}>
 						<div class="container-center" style="color:white;font-weight:bold;text-align:center;">
 							{LoadingSentences[this._sentenceIndex]}
 						</div>
 					</Visible>
-					<Visible isVisible={this.state.percentage === 100}>
+					<Visible isVisible={this.state.Percentage === 100}>
 						<div class="container-center">
 							<Btn
 								callBack={() => {

@@ -14,7 +14,8 @@ import { Face } from '../Components/Face';
 import StatBar from '../Components/StatBar';
 import Redirect from '../Components/Redirect';
 import Visible from '../Components/Visible';
-import Background from '../Components/Background';
+import Struct from '../Components/Struct';
+import SmBtn from '../Common/Button/Stylish/SmBtn';
 
 export default class RedScreen extends Component<
 	any,
@@ -30,81 +31,87 @@ export default class RedScreen extends Component<
 	render() {
 		return (
 			<Redirect>
-				<Background>
-					<StatBar />
-					<div class="generalContainer absolute-center-middle">
-						<div class="container-center">
-							<Face
-								eyes={[ 'fill-red-eyes-1', 'fill-red-eyes-2' ]}
-								mouths={[ 'fill-red-mouth-1', 'fill-red-mouth-2', 'fill-red-mouth-3' ]}
-								face={'fill-red-face'}
-							/>
-						</div>
-						<Visible isVisible={this.state.HasBubble}>
-							<div class="arrow-up" />
-							<p class="bubble">{this.state.CurrentSentence}</p>
-							<div class="container-center-horizontal">
-								<Btn
-									callBack={() => {
-										this.setState({
-											HasBubble: !this.state.HasBubble
-										});
-									}}
-									color={ColorKind.Black}
-								>
-									<Icon Value="fas fa-undo-alt" /> Back
-								</Btn>
-								<Btn
-									callBack={() => {
-										this.Start(this.state.level);
-									}}
-									color={ColorKind.Red}
-								>
-									<Icon Value="fas fa-fist-raised" /> Fight
-								</Btn>
+				<Struct
+					header={<StatBar />}
+					content={
+						<div class="container-center-horizontal">
+							<div style="width:80%">
+								{' '}
+								<div class="container-center">
+									<Face
+										eyes={[ 'fill-red-eyes-1', 'fill-red-eyes-2' ]}
+										mouths={[ 'fill-red-mouth-1', 'fill-red-mouth-2', 'fill-red-mouth-3' ]}
+										face={'fill-red-face'}
+									/>
+								</div>
+								<Visible isVisible={this.state.HasBubble}>
+									<div class="arrow-up" />
+									<p class="bubble">{this.state.CurrentSentence}</p>
+									<div class="container-center-horizontal">
+										<Btn
+											callBack={() => {
+												this.setState({
+													HasBubble: !this.state.HasBubble
+												});
+											}}
+											color={ColorKind.Black}
+										>
+											<Icon Value="fas fa-undo-alt" /> Back
+										</Btn>
+										<Btn
+											callBack={() => {
+												this.Start(this.state.level);
+											}}
+											color={ColorKind.Red}
+										>
+											<Icon Value="fas fa-fist-raised" /> Fight
+										</Btn>
+									</div>
+								</Visible>
+								<div class="container-center">
+									<Visible isVisible={!this.state.HasBubble}>
+										<div class="container-center-horizontal">
+											<Btn
+												callBack={() => {
+													this.Training();
+												}}
+												color={ColorKind.Black}
+											>
+												<Icon Value="fas fa-long-arrow-alt-left" />
+											</Btn>
+											<Btn
+												callBack={() => {
+													this.BlueCampaign();
+												}}
+												color={ColorKind.Black}
+											>
+												<Icon Value="fas fa-long-arrow-alt-right" />
+											</Btn>
+										</div>
+										<div class="d-flex flex-wrap justify-content-center">
+											{this._campaignService
+												.GetButtons(CampaignKind.red)
+												.map((isPossible, index) => {
+													if (isPossible) {
+														return this.GetButton(index + 1);
+													} else {
+														return <LockButton />;
+													}
+												})}
+										</div>
+									</Visible>
+								</div>
 							</div>
-						</Visible>
-						<div class="container-center">
-							<Visible isVisible={!this.state.HasBubble}>
-								<div class="container-center-horizontal">
-									<Btn
-										callBack={() => {
-											this.Training();
-										}}
-										color={ColorKind.Black}
-									>
-										<Icon Value="fas fa-long-arrow-alt-left" />
-									</Btn>
-									<Btn
-										callBack={() => {
-											this.BlueCampaign();
-										}}
-										color={ColorKind.Black}
-									>
-										<Icon Value="fas fa-long-arrow-alt-right" />
-									</Btn>
-								</div>
-								<div class="d-flex flex-wrap justify-content-center">
-									{this._campaignService.GetButtons(CampaignKind.red).map((isPossible, index) => {
-										if (isPossible) {
-											return this.GetButton(index + 1);
-										} else {
-											return <LockButton />;
-										}
-									})}
-								</div>
-								<Btn
-									callBack={() => {
-										this.Back();
-									}}
-									color={ColorKind.Black}
-								>
-									<Icon Value="fas fa-undo-alt" /> Back
-								</Btn>
-							</Visible>
 						</div>
-					</div>
-				</Background>
+					}
+					footer={
+						<div class="navbar nav-inner">
+							<SmBtn callBack={() => this.Back()} color={ColorKind.Black}>
+								<Icon Value="fas fa-undo-alt" /> Back
+							</SmBtn>
+						</div>
+					}
+				/>
 			</Redirect>
 		);
 	}

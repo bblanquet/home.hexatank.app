@@ -12,6 +12,8 @@ import { CampaignKind } from '../../Services/Campaign/CampaignKind';
 import { Face } from '../Components/Face';
 import StatBar from '../Components/StatBar';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
+import SmBtn from '../Common/Button/Stylish/SmBtn';
+import Struct from '../Components/Struct';
 
 export default class BlueScreen extends Component<any, any> {
 	private _campaignService: ICampaignService;
@@ -24,45 +26,52 @@ export default class BlueScreen extends Component<any, any> {
 	render() {
 		return (
 			<Redirect>
-				<StatBar />
-				<div class="generalContainer absolute-center-middle">
-					<div class="container-center">
-						<Face
-							eyes={[ 'fill-blue-eyes-1', 'fill-blue-eyes-2' ]}
-							mouths={[ 'fill-blue-mouth-1', 'fill-blue-mouth-2', 'fill-blue-mouth-3' ]}
-							face={'fill-blue-face'}
-						/>
-					</div>
-					<div class="container-center">
+				<Struct
+					header={<StatBar />}
+					content={
 						<div class="container-center-horizontal">
-							<Btn
-								callBack={() => {
-									this.RedCampaign();
-								}}
-								color={ColorKind.Black}
-							>
-								<Icon Value="fas fa-long-arrow-alt-left" />
-							</Btn>
+							<div style="width:80%">
+								<div class="container-center">
+									<Face
+										eyes={[ 'fill-blue-eyes-1', 'fill-blue-eyes-2' ]}
+										mouths={[ 'fill-blue-mouth-1', 'fill-blue-mouth-2', 'fill-blue-mouth-3' ]}
+										face={'fill-blue-face'}
+									/>
+								</div>
+								<div class="container-center">
+									<div class="container-center-horizontal">
+										<Btn
+											callBack={() => {
+												this.RedCampaign();
+											}}
+											color={ColorKind.Black}
+										>
+											<Icon Value="fas fa-long-arrow-alt-left" />
+										</Btn>
+									</div>
+									<div class="d-flex flex-wrap justify-content-center">
+										{this._campaignService
+											.GetButtons(CampaignKind.blue)
+											.map((isPossible, index) => {
+												if (isPossible) {
+													return this.GetButton(index + 1);
+												} else {
+													return <LockButton />;
+												}
+											})}
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="d-flex flex-wrap justify-content-center">
-							{this._campaignService.GetButtons(CampaignKind.blue).map((isPossible, index) => {
-								if (isPossible) {
-									return this.GetButton(index + 1);
-								} else {
-									return <LockButton />;
-								}
-							})}
+					}
+					footer={
+						<div class="navbar nav-inner">
+							<SmBtn callBack={() => this.Back()} color={ColorKind.Black}>
+								<Icon Value="fas fa-undo-alt" /> Back
+							</SmBtn>
 						</div>
-						<Btn
-							callBack={() => {
-								this.Back();
-							}}
-							color={ColorKind.Black}
-						>
-							<Icon Value="fas fa-undo-alt" /> Back
-						</Btn>
-					</div>
-				</div>
+					}
+				/>
 			</Redirect>
 		);
 	}

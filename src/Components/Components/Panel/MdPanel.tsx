@@ -3,7 +3,7 @@ import PageAnalyser from '../PageAnalyser';
 import StatBar from '../StatBar';
 import Background from '../Background';
 
-export default class SmPanelComponent extends Component<any, any> {
+export default class MdPanel extends Component<any, any> {
 	constructor() {
 		super();
 	}
@@ -14,14 +14,14 @@ export default class SmPanelComponent extends Component<any, any> {
 				<Background>
 					<StatBar />
 					<div class="container-column-center-horizontal">
-						<div class="sm-logo-container">
+						<div class="logo-container">
 							<div class="fill-logo-back-container">
-								<div class="sm-fill-logo-back spin-fade" />
+								<div class="fill-logo-back spin-fade" />
 							</div>
 							<div class="fill-tank-logo slow-bounce" />
 							<div class="fill-logo" />
 						</div>
-						{this.props.children}
+						<div>{this.props.children}</div>
 					</div>
 				</Background>
 			</PageAnalyser>

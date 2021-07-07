@@ -1,12 +1,12 @@
-import { SpriteProvider } from '../../Core/Framework/SpriteProvider';
 import { Dictionary } from '../../Utils/Collections/Dictionary';
-import { AudioArchive } from '../../Core/Framework/AudioArchiver';
+import { AudioArchive } from './AudioArchiver';
 import { Howl } from 'howler';
+import { ILoader } from './ILoader';
 
-export class AudioProvider {
-	public GetContent(): Dictionary<Howl> {
-		const sounds = new Dictionary<Howl>();
-		[
+export class AudioLoader implements ILoader {
+	public static Assets: Dictionary<Howl> = new Dictionary<Howl>();
+	public Audios(): string[] {
+		return [
 			AudioArchive.ayaya,
 			AudioArchive.copyThat,
 			AudioArchive.engage,
@@ -45,13 +45,12 @@ export class AudioProvider {
 
 			AudioArchive.victory,
 			AudioArchive.defeat
-		].forEach((content) => {
-			this.Add(content, sounds);
-		});
-		return sounds;
+		];
 	}
 
-	private Add(content: string, sounds: Dictionary<Howl>) {
-		sounds.Add(content, new Howl({ src: [ `${SpriteProvider.AssetPath()}${content}` ] }));
+	public Loading(path: string, onLoaded: () => void): void {
+		const howler = new Howl({ src: [ path ] });
+		howler.on('load', onLoaded);
+		AudioLoader.Assets.Add(path, howler);
 	}
 }

@@ -3,7 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 import Router from 'preact-router';
 import './Components/Style/Common.scss';
-import './Components/Style/exp.scss';
 import './Components/Style/CircularMenu.css';
 import './Components/Style/IconStyle.css';
 import './Components/Style/Animation.css';

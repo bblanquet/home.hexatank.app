@@ -4,7 +4,7 @@ import { GameBlueprintMaker } from '../../Core/Framework/Blueprint/Game/GameBlue
 import { MapKind } from '../../Core/Framework/Blueprint/Items/MapKind';
 import { IAppService } from '../../Services/App/IAppService';
 import { Singletons, SingletonKey } from '../../Singletons';
-import Btn from '../Common/Button/Stylish/Btn';
+import SmBtn from '../Common/Button/Stylish/SmBtn';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import { MapShape } from '../../Core/Framework/Blueprint/Items/MapShape';
@@ -12,7 +12,7 @@ import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 import BlueprintFormComponent from '../Components/Form/BlueprintFormComponent';
 import { BlueprintSetup } from '../Components/Form/BlueprintSetup';
-import MdPanelComponent from '../Components/Panel/MdPanelComponent';
+import Panel from '../Components/Panel/Panel';
 import Redirect from '../Components/Redirect';
 
 export default class SingleScreen extends Component<any, BlueprintSetup> {
@@ -34,29 +34,27 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 	render() {
 		return (
 			<Redirect>
-				<MdPanelComponent>
-					<div class="container-center">
-						<BlueprintFormComponent Model={this.state} CallBack={this.Update.bind(this)} />
-						<div class="container-center-horizontal">
-							<Btn
-								callBack={() => {
-									this.Back();
-								}}
-								color={ColorKind.Black}
-							>
-								<Icon Value="fas fa-undo-alt" /> Back
-							</Btn>
-							<Btn
-								callBack={() => {
-									this.Start();
-								}}
-								color={ColorKind.Red}
-							>
-								<Icon Value="fas fa-arrow-alt-circle-right" /> Play
-							</Btn>
+				<Panel
+					content={
+						<div class="container-center">
+							<BlueprintFormComponent Model={this.state} CallBack={this.Update.bind(this)} />
 						</div>
-					</div>
-				</MdPanelComponent>
+					}
+					footer={
+						<div class="navbar nav-inner">
+							<div class="left">
+								<SmBtn callBack={() => this.Back()} color={ColorKind.Black}>
+									<Icon Value="fas fa-undo-alt" /> Back
+								</SmBtn>
+							</div>
+							<div class="right">
+								<SmBtn callBack={() => this.Start()} color={ColorKind.Red}>
+									<Icon Value="fas fa-arrow-alt-circle-right" /> Play
+								</SmBtn>
+							</div>
+						</div>
+					}
+				/>
 			</Redirect>
 		);
 	}

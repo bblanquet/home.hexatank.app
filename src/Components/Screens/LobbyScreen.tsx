@@ -65,7 +65,7 @@ export default class LobbyScreen extends HookedComponent<{}, LobbyHook, LobbySta
 								}}
 							/>
 
-							<ActiveBtn
+							<SmActiveBtn
 								left={<Icon Value={'fas fa-toggle-on'} />}
 								right={<Icon Value={'fas fa-toggle-off'} />}
 								leftColor={ColorKind.Gray}
@@ -96,41 +96,39 @@ export default class LobbyScreen extends HookedComponent<{}, LobbyHook, LobbySta
 						</div>
 					}
 					footer={
-						<div>
-							<Switch
-								isVisible={this.Hook.State.Mode === LobbyMode.chat}
-								left={<MessageEmitter callBack={(m: string) => this.Hook.Send(m)} />}
-								right={
-									<div class="navbar nav-inner">
-										<div class="left">
-											<SmBtn callBack={() => this.Hook.Back()} color={ColorKind.Black}>
-												<Icon Value="fas fa-undo-alt" /> Back
-											</SmBtn>
-										</div>
-										<div class="right">
-											<Visible isVisible={this.Hook.State.Player.IsAdmin}>
-												<SmActiveBtn
-													left={
-														<span>
-															<Icon Value={'far fa-play-circle'} /> START
-														</span>
-													}
-													right={
-														<span>
-															<Icon Value={'far fa-play-circle'} /> START
-														</span>
-													}
-													leftColor={ColorKind.Red}
-													rightColor={ColorKind.Gray}
-													callBack={() => this.Hook.Launching()}
-													isActive={this.Hook.State.Players.Values().every((e) => e.IsReady)}
-												/>
-											</Visible>
-										</div>
+						<Switch
+							isVisible={this.Hook.State.Mode === LobbyMode.chat}
+							left={<MessageEmitter callBack={(m: string) => this.Hook.Send(m)} />}
+							right={
+								<div class="navbar nav-inner">
+									<div class="left">
+										<SmBtn callBack={() => this.Hook.Back()} color={ColorKind.Black}>
+											<Icon Value="fas fa-undo-alt" /> Back
+										</SmBtn>
 									</div>
-								}
-							/>
-						</div>
+									<div class="right">
+										<Visible isVisible={this.Hook.State.Player.IsAdmin}>
+											<SmActiveBtn
+												left={
+													<span>
+														<Icon Value={'far fa-play-circle'} /> START
+													</span>
+												}
+												right={
+													<span>
+														<Icon Value={'far fa-play-circle'} /> START
+													</span>
+												}
+												leftColor={ColorKind.Red}
+												rightColor={ColorKind.Gray}
+												callBack={() => this.Hook.Launching()}
+												isActive={this.Hook.State.Players.Values().every((e) => e.IsReady)}
+											/>
+										</Visible>
+									</div>
+								</div>
+							}
+						/>
 					}
 				/>
 			</Redirect>

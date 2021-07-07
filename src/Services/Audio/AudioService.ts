@@ -1,7 +1,7 @@
 import { IAudioService } from './IAudioService';
 import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { Howl } from 'howler';
-import { AudioProvider } from './AudioProvider';
+import { AudioLoader } from '../../Core/Framework/AudioLoader';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
 import { Singletons, SingletonKey } from '../../Singletons';
@@ -27,7 +27,7 @@ export class AudioService implements IAudioService {
 		}
 	}
 	Reload(): void {
-		this._sounds = new AudioProvider().GetContent();
+		this._sounds = AudioLoader.Assets;
 		this._isMute = this._profilService.GetProfil().IsMute;
 		this.PlayLoungeMusic();
 	}
@@ -101,10 +101,9 @@ export class AudioService implements IAudioService {
 
 	Clear(): void {
 		this._sounds.Values().forEach((sound) => {
-			sound.unload();
+			sound.stop();
 		});
 		this._playingSounds.Clear();
-		this._sounds.Clear();
 	}
 
 	Register(gameAudioManager: IGameAudioManager): void {

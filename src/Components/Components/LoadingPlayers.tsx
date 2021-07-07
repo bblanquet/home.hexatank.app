@@ -6,7 +6,7 @@ import { IOnlineService } from '../../Services/Online/IOnlineService';
 import { Singletons, SingletonKey } from '../../Singletons';
 import Icon from '../Common/Icon/IconComponent';
 import GridComponent from '../Common/Grid/GridComponent';
-import SmPanelComponent from './Panel/SmPanelComponent';
+import SmPanel from './Panel/SmPanel';
 
 export default class LoadingPlayers extends Component<any, { Players: OnlinePlayer[]; Player: OnlinePlayer }> {
 	constructor() {
@@ -29,9 +29,9 @@ export default class LoadingPlayers extends Component<any, { Players: OnlinePlay
 
 	render() {
 		return (
-			<SmPanelComponent>
+			<SmPanel>
 				<GridComponent left={this.GetHeader()} right={this.GetContent()} />
-			</SmPanelComponent>
+			</SmPanel>
 		);
 	}
 

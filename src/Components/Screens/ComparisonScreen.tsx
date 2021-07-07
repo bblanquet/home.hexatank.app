@@ -1,20 +1,20 @@
 import { JSX, h } from 'preact';
 import { route } from 'preact-router';
-import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
-import Icon from '../../Common/Icon/IconComponent';
-import Visible from '../../Components/Visible';
-import LineComparisonComponent from './LineComparisonComponent';
-import BarComparisonComponent from './BarComparisonComponent';
-import LogComponent from './LogComponent';
-import { ComparisonState } from '../../Model/ComparisonState';
-import { ComparisonHook } from '../../Hooks/ComparisonHook';
-import { HookedComponent } from '../../Hooks/HookedComponent';
+import { ColorKind } from '../Common/Button/Stylish/ColorKind';
+import Icon from '../Common/Icon/IconComponent';
+import Visible from '../Components/Visible';
+import LineComparisonComponent from '../Components/LineComparisonComponent';
+import BarComparisonComponent from '../Components/BarComparisonComponent';
+import LogComponent from '../Components/LogComponent';
+import { ComparisonState } from '../Model/ComparisonState';
+import { ComparisonHook } from '../Hooks/ComparisonHook';
+import { HookedComponent } from '../Hooks/HookedComponent';
 import { useState } from 'preact/hooks';
-import Struct from '../../Components/Struct';
-import Navbar from '../../Components/Navbar';
-import SmBtn from '../../Common/Button/Stylish/SmBtn';
-import SmActiveBtn from '../../Common/Button/Stylish/SmActiveBtn';
-import { ComparisonKind } from '../../Model/ComparisonKind';
+import Struct from '../Components/Struct';
+import Navbar from '../Components/Navbar';
+import SmBtn from '../Common/Button/Stylish/SmBtn';
+import SmActiveBtn from '../Common/Button/Stylish/SmActiveBtn';
+import { ComparisonKind } from '../Model/ComparisonKind';
 
 export default class ComparisonScreen extends HookedComponent<{}, ComparisonHook, ComparisonState> {
 	public GetDefaultHook(): ComparisonHook {

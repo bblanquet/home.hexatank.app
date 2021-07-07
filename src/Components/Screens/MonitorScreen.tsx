@@ -1,7 +1,6 @@
 import { JSX, h } from 'preact';
 import { useState } from 'preact/hooks';
-import { CustomerHook } from '../Hooks/CustomerHook';
-import Btn from '../Common/Button/Stylish/Btn';
+import { MonitoringHook } from '../Hooks/CustomerHook';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import GridComponent from '../Common/Grid/GridComponent';
 import Icon from '../Common/Icon/IconComponent';
@@ -15,10 +14,10 @@ import SmBtn from '../Common/Button/Stylish/SmBtn';
 import Struct from '../Components/Struct';
 import Navbar from '../Components/Navbar';
 
-export default class MonitorScreen extends HookedComponent<{}, CustomerHook, CustomerState> {
-	public GetDefaultHook(): CustomerHook {
-		const [ state, setState ] = useState(CustomerHook.DefaultState());
-		return new CustomerHook(state, setState);
+export default class MonitorScreen extends HookedComponent<{}, MonitoringHook, CustomerState> {
+	public GetDefaultHook(): MonitoringHook {
+		const [ state, setState ] = useState(MonitoringHook.DefaultState());
+		return new MonitoringHook(state, setState);
 	}
 
 	public Rendering(): JSX.Element {
@@ -35,7 +34,9 @@ export default class MonitorScreen extends HookedComponent<{}, CustomerHook, Cus
 									left={
 										<tbody>
 											<tr class="d-flex">
-												<td class="align-self-center">No errors...</td>
+												<td class="align-self-center">
+													<Icon Value="fas fa-spinner" /> Loading
+												</td>
 											</tr>
 										</tbody>
 									}
@@ -46,7 +47,7 @@ export default class MonitorScreen extends HookedComponent<{}, CustomerHook, Cus
 													<tr class="d-flex">
 														<td class="align-self-center">
 															<SmBtn
-																callBack={() => this.Hook.Play(error)}
+																callBack={() => this.Hook.Play(error.id)}
 																color={ColorKind.Black}
 															>
 																<Icon Value="fas fa-play-circle" />

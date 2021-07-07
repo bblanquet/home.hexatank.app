@@ -5,7 +5,7 @@ import { LogMessage } from '../../Utils/Logger/LogMessage';
 import { CellDurationStateFormater } from '../../Components/Common/Chart/Formater/CellDurationStateFormater';
 import { VehicleDurationStateFormater } from '../../Components/Common/Chart/Formater/VehicleDurationStateFormater';
 import { ICompareService } from './ICompareService';
-import { RecordComparer } from '../../Components/Screens/Comparer/Comparers/RecordComparer';
+import { RecordComparer } from '../../Components/Model/RecordComparer';
 import { LogKind } from '../../Utils/Logger/LogKind';
 
 export class CompareService implements ICompareService {

@@ -11,8 +11,12 @@ import { IGameContext } from '../../Core/Framework/Context/IGameContext';
 import { IBlueprint } from '../../Core/Framework/Blueprint/IBlueprint';
 import PageAnalyser from './PageAnalyser';
 
-export default class GameCanvas extends Component<{ gameContext: IGameContextService<IBlueprint, IGameContext> }, {}> {
+export default class GameCanvas extends Component<
+	{ gameContext: IGameContextService<IBlueprint, IGameContext>; uncollect?: boolean },
+	{}
+> {
 	private _gameCanvas: HTMLDivElement;
+	private _resizeFunc: any = this.ResizeTheCanvas.bind(this);
 	private _updater: ItemsUpdater;
 	private _appService: IAppService<IBlueprint>;
 	private _keyService: IKeyService;
@@ -30,8 +34,6 @@ export default class GameCanvas extends Component<{ gameContext: IGameContextSer
 		this._stop = true;
 	}
 
-	private _resizeFunc: any = this.ResizeTheCanvas.bind(this);
-
 	componentDidMount() {
 		this._stop = false;
 		window.addEventListener('resize', this._resizeFunc);
@@ -47,7 +49,9 @@ export default class GameCanvas extends Component<{ gameContext: IGameContextSer
 		window.removeEventListener('resize', this._resizeFunc);
 		window.removeEventListener('DOMContentLoaded', this._resizeFunc);
 		window.removeEventListener('scroll', this._resizeFunc);
-		Singletons.Load<IAppService<IBlueprint>>(this._keyService.GetAppKey()).Collect();
+		if (!this.props.uncollect) {
+			Singletons.Load<IAppService<IBlueprint>>(this._keyService.GetAppKey()).Collect();
+		}
 	}
 
 	private GameLoop(): void {
@@ -57,8 +61,6 @@ export default class GameCanvas extends Component<{ gameContext: IGameContextSer
 		this._updater.Update();
 		requestAnimationFrame(() => this.GameLoop());
 	}
-
-	componentDidUpdate() {}
 
 	render() {
 		return (

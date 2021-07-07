@@ -14,6 +14,6 @@ export class ErrorSender {
 		const appKey = Singletons.Load<IKeyService>(SingletonKey.Key).GetAppKey();
 		const record = Singletons.Load<IAppService<IBlueprint>>(appKey).GetRecord();
 		payload.content = record ? JSON.stringify(record.GetRecord()) : '';
-		axios.post('{{p2p_url}}/server/exception/Add', payload);
+		axios.post('{{error_url}}/server/Exception/Add', payload);
 	}
 }

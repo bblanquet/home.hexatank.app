@@ -1,5 +1,5 @@
 import { StatusDuration } from '../../Components/Common/Chart/Model/StatusDuration';
-import { RecordComparer } from '../../Components/Screens/Comparer/Comparers/RecordComparer';
+import { RecordComparer } from '../../Components/Model/RecordComparer';
 import { RecordContent } from '../../Core/Framework/Record/Model/RecordContent';
 import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { LogMessage } from '../../Utils/Logger/LogMessage';

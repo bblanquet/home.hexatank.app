@@ -2,6 +2,11 @@
 	"root": "/",
 	"keys": [
 		{
+			"search": "{{error_url}}",
+			"replace": "http://localhost:49158",
+			"flags": "g"
+		},
+		{
 			"search": "{{p2p_url}}",
 			"replace": "http://localhost:5000",
 			"flags": "g"

@@ -13,7 +13,7 @@ import { IAppService } from '../../Services/App/IAppService';
 import { IRecordService } from '../../Services/Record/IRecordService';
 import { Singletons, SingletonKey } from '../../Singletons';
 
-export class CustomerHook extends Hook<CustomerState> {
+export class MonitoringHook extends Hook<CustomerState> {
 	public OnNotification: LiteEvent<NotificationState> = new LiteEvent<NotificationState>();
 	private _appService: IAppService<GameBlueprint>;
 	private _recordService: IRecordService;
@@ -30,7 +30,7 @@ export class CustomerHook extends Hook<CustomerState> {
 	}
 	Refresh() {
 		axios
-			.get('{{p2p_url}}/server/exception/list')
+			.get('{{error_url}}/server/Exception/List')
 			.then((response: AxiosResponse<ErrorDetail[]>) => {
 				this.SetProp((e) => {
 					e.Errors = response.data;
@@ -48,11 +48,28 @@ export class CustomerHook extends Hook<CustomerState> {
 		return new CustomerState();
 	}
 
-	public Play(error: ErrorDetail): void {
-		const data = RecordContent.To(JSON.parse(error.content));
-		this._appService.Register(data.Blueprint);
-		this._recordService.Register(data);
-		route('{{sub_path}}Player', true);
+	public Play(errorId: number): void {
+		axios
+			.get(`{{error_url}}/server/Exception/Get&id=${errorId}`)
+			.then((response: AxiosResponse<ErrorDetail>) => {
+				try {
+					const data = RecordContent.To(JSON.parse(response.data.content));
+					this._appService.Register(data.Blueprint);
+					this._recordService.Register(data);
+					route('{{sub_path}}Player', true);
+				} catch (error) {
+					this.OnNotification.Invoke(
+						this,
+						new NotificationState(LogKind.error, `Could not parse data from error ${errorId} `)
+					);
+				}
+			})
+			.catch((error: AxiosError) => {
+				this.SetProp((e) => {
+					e.Errors = [];
+				});
+				this.OnNotification.Invoke(this, new NotificationState(LogKind.error, error.message));
+			});
 	}
 
 	public Unmount(): void {}

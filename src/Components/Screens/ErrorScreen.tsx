@@ -16,26 +16,25 @@ export default class ErrorScreen extends Component {
 	render() {
 		return (
 			<Redirect>
-				<StatBar>
-					<div class="container-center">
-						<Face eyes={[]} mouths={[]} face={'fill-exception'} />
-						<div class="text-detail shadowEffect width80percent">
-							<h5 class="card-title">OOPS an error occured</h5>
-							<div>{GameContext.Error.message}</div>
-							<p />
-							<div class="sub-text-detail max200Height">{GameContext.Error.stack}</div>
-						</div>
+				<StatBar />
+				<div class="container-center">
+					<Face eyes={[]} mouths={[]} face={'fill-exception'} />
+					<div class="text-detail shadowEffect width80percent">
+						<h5 class="card-title">OOPS an error occured</h5>
+						<div>{GameContext.Error.message}</div>
 						<p />
-						<Btn
-							callBack={() => {
-								this.Back();
-							}}
-							color={ColorKind.Black}
-						>
-							<Icon Value="fas fa-undo-alt" /> Back
-						</Btn>
+						<div class="sub-text-detail max200Height">{GameContext.Error.stack}</div>
 					</div>
-				</StatBar>
+					<p />
+					<Btn
+						callBack={() => {
+							this.Back();
+						}}
+						color={ColorKind.Black}
+					>
+						<Icon Value="fas fa-undo-alt" /> Back
+					</Btn>
+				</div>
 			</Redirect>
 		);
 	}

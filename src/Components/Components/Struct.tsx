@@ -2,7 +2,10 @@ import { h, Component, JSX } from 'preact';
 import PageAnalyser from './PageAnalyser';
 import Background from './Background';
 
-export default class Struct extends Component<{ header: JSX.Element; content: JSX.Element; footer: JSX.Element }, any> {
+export default class Struct extends Component<
+	{ header: JSX.Element; content: JSX.Element; footer: JSX.Element; noScrollbar?: boolean },
+	any
+> {
 	constructor() {
 		super();
 	}
@@ -17,7 +20,9 @@ export default class Struct extends Component<{ header: JSX.Element; content: JS
 						</div>
 						<div class="content">
 							<div class="inner">
-								<div class="scrollable">{this.props.content}</div>
+								<div class="scrollable" style={this.props.noScrollbar ? 'overflow:hidden' : ''}>
+									{this.props.content}
+								</div>
 							</div>
 						</div>
 						<div class="footer">

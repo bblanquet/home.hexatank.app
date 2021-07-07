@@ -1,4 +1,4 @@
-import { RecordContent } from '../../../../Core/Framework/Record/Model/RecordContent';
+import { RecordContent } from '../../Core/Framework/Record/Model/RecordContent';
 import { RecordPoint } from './RecordPoint';
 export class RecordComparer {
 	constructor(public Record: RecordContent, public ComparedRecord: RecordContent) {}

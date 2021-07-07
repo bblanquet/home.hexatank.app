@@ -1,11 +1,11 @@
 import { isEqual } from 'lodash';
 import * as luxon from 'luxon';
 import { Component, h } from 'preact';
-import { LogKind } from '../../../Utils/Logger/LogKind';
-import { LogMessage } from '../../../Utils/Logger/LogMessage';
-import { StaticLogger } from '../../../Utils/Logger/StaticLogger';
-import GridComponent from '../../Common/Grid/GridComponent';
-import IconInputComponent from '../../Common/Text/IconTextComponent';
+import { LogKind } from '../../Utils/Logger/LogKind';
+import { LogMessage } from '../../Utils/Logger/LogMessage';
+import { StaticLogger } from '../../Utils/Logger/StaticLogger';
+import GridComponent from '../Common/Grid/GridComponent';
+import IconInputComponent from '../Common/Text/IconTextComponent';
 
 export default class LogComponent extends Component<
 	{ Messages: LogMessage[] },

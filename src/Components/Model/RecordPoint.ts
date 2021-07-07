@@ -1,4 +1,4 @@
-import { RecordVehicleState } from '../../../../Core/Framework/Record/Model/Item/State/RecordVehicleState';
+import { RecordVehicleState } from '../../Core/Framework/Record/Model/Item/State/RecordVehicleState';
 
 export class RecordPoint {
 	public X: number;

@@ -14,11 +14,21 @@ import Redirect from '../../Components/Redirect';
 import { GameBlueprint } from '../../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { GameContext } from '../../../Core/Framework/Context/GameContext';
 import Icon from '../../Common/Icon/IconComponent';
+import Struct from '../../Components/Struct';
+import Navbar from '../../Components/Navbar';
+import Visible from '../../Components/Visible';
+import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
+import SmActiveBtn from '../../Common/Button/Stylish/SmActiveBtn';
+import SmBtn from '../../Common/Button/Stylish/SmBtn';
+import Switch from '../../Components/Switch';
+import LogComponent from '../../Components/LogComponent';
+import { RecordContent } from '../../../Core/Framework/Record/Model/RecordContent';
 
 export default class PlayerScreen extends Component<
 	{},
 	{
 		Item: Item;
+		IsLog: boolean;
 	}
 > {
 	private _recordService: IRecordService;
@@ -44,35 +54,72 @@ export default class PlayerScreen extends Component<
 		const context = this._gameService.Publish();
 		this._updater = new RecordCanvasUpdater(this.GetRecord(), context);
 		context.OnItemSelected.On(this.UpdateSelection.bind(this));
+		this.setState({ IsLog: false });
 	}
 
-	private GetRecord() {
+	componentWillUnmount() {
+		this._gameService.Collect();
+	}
+
+	private GetRecord(): RecordContent {
 		return this._recordService.Publish();
+	}
+
+	private Button(state: boolean, icon: string) {
+		return (
+			<SmActiveBtn
+				isActive={this.state.IsLog === state}
+				leftColor={ColorKind.Red}
+				rightColor={ColorKind.Black}
+				left={<Icon Value={icon} />}
+				right={<Icon Value={icon} />}
+				callBack={() => this.setState({ IsLog: state })}
+			/>
+		);
 	}
 
 	render() {
 		return (
 			<Redirect>
-				<div style="width=100%">
-					{this.TopMenuRender()}
-					<div class="absolute-center-bottom full-width">
+				<Struct
+					noScrollbar={!this.state.IsLog}
+					header={
+						<span>
+							<Navbar>
+								{this.Button(false, 'far fa-map')}
+								{this.Button(true, 'fas fa-stream')}
+								<SmBtn color={ColorKind.Black} callBack={() => this.SetMenu()}>
+									<Icon Value="fas fa-undo-alt" />
+								</SmBtn>
+							</Navbar>
+							<span class="badge badge-primary" style="width:100%;border-radius:0px;margin:0px">
+								{this.GetRecord().Title}
+							</span>
+						</span>
+					}
+					content={
+						<Switch
+							isVisible={this.state.IsLog}
+							left={<LogComponent Messages={this.GetRecord().Messages} />}
+							right={
+								<span>
+									<GameCanvas gameContext={this._gameService} uncollect={true} />
+									<Visible isVisible={this.state.Item !== null && this.state.Item !== undefined}>
+										<UnitMenuComponent Vehicle={this.state.Item as Vehicle} />
+									</Visible>
+								</span>
+							}
+						/>
+					}
+					footer={
 						<RangeComponent
 							dataSet={this.GetRecord().Dates}
 							onChange={(e: number) => this.HandleRangeChanged(e)}
 						/>
-					</div>
-					<GameCanvas gameContext={this._gameService} />
-					{this.LeftMenuRender()}
-				</div>
+					}
+				/>
 			</Redirect>
 		);
-	}
-
-	private LeftMenuRender() {
-		if (this.state.Item) {
-			return <UnitMenuComponent Vehicle={this.state.Item as Vehicle} />;
-		}
-		return '';
 	}
 
 	private SetMenu(): void {
@@ -84,17 +131,6 @@ export default class PlayerScreen extends Component<
 		this.setState({
 			Item: selectedItem
 		});
-	}
-
-	private TopMenuRender() {
-		return (
-			<div style="position: fixed;">
-				<button type="button" class="btn btn-dark space-out " onClick={() => this.SetMenu()}>
-					<Icon Value="fas fa-undo-alt" />
-				</button>
-				<span class="badge badge-primary">{this.GetRecord().Title}</span>
-			</div>
-		);
 	}
 
 	private HandleRangeChanged(e: number): void {

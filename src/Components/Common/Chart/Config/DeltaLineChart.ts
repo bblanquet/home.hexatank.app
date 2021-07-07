@@ -3,7 +3,7 @@ import 'chartjs-adapter-luxon';
 import { IChart } from './IChart';
 import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
-import { DeltaRecordCurve } from '../../../Screens/Comparer/Comparers/DeltaRecordCurve';
+import { DeltaRecordCurve } from '../../../Model/DeltaRecordCurve';
 
 export class DeltaLineChart implements IChart<DeltaRecordCurve> {
 	private _charts: Dictionary<HTMLCanvasElement>;

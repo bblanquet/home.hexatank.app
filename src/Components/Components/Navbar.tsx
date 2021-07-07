@@ -16,7 +16,9 @@ export default class Navbar extends Component<any, any> {
 						<div class="fill-logo" />
 					</div>
 				</div>
-				<div class="d-flex justify-content-start">{this.props.children}</div>
+				<div class="d-flex justify-content-start" style="flex-direction: row; align-items: center;">
+					{this.props.children}
+				</div>
 			</div>
 		);
 	}

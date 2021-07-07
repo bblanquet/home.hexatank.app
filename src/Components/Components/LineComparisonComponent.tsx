@@ -1,12 +1,12 @@
-import { ICompareService } from '../../../Services/Compare/ICompareService';
+import { ICompareService } from '../../Services/Compare/ICompareService';
 import { h, Component } from 'preact';
-import { DeltaLineChart } from '../../Common/Chart/Config/DeltaLineChart';
-import { RecordComparer } from './Comparers/RecordComparer';
-import DropDownComponent from '../../Common/DropDown/DropDownComponent';
-import { DeltaRecordCurve } from './Comparers/DeltaRecordCurve';
-import { Singletons, SingletonKey } from '../../../Singletons';
-import Redirect from '../../Components/Redirect';
-import ChartContainer from '../../Common/Chart/ChartContainer';
+import { DeltaLineChart } from '../Common/Chart/Config/DeltaLineChart';
+import { RecordComparer } from '../Model/RecordComparer';
+import DropDownComponent from '../Common/DropDown/DropDownComponent';
+import { DeltaRecordCurve } from '../Model/DeltaRecordCurve';
+import { Singletons, SingletonKey } from '../../Singletons';
+import Redirect from '../Components/Redirect';
+import ChartContainer from '../Common/Chart/ChartContainer';
 
 export default class LineComparisonComponent extends Component<
 	{},

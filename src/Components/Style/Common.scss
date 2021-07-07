@@ -34,8 +34,14 @@
 	border: #c2c2c2 solid 3px;
 }
 
+.custom-grid-layout-4 {
+	width: 95%;
+	border-radius: 15px;
+	background-color: rgba(0, 0, 0, 0);
+	border-bottom: rgba(0, 0, 0, 0.75) solid 6px;
+}
+
 .custom-grid-layout-3 {
-	margin: 15px;
 	padding: 3px 2px 3px 2px;
 	border-radius: 18px;
 	background: rgb(198, 198, 198);
@@ -47,18 +53,13 @@
 		rgba(219, 219, 219, 1) 51%,
 		rgba(219, 219, 219, 1) 100%
 	);
-	width: 100%;
-}
-
-.custom-grid-layout-2 {
-	background: rgb(173, 11, 11);
-	border-radius: 16px;
+	border-bottom: #9c9b9b solid 4px;
 }
 
 .custom-table {
-	table-layout: fixed;
 	background: linear-gradient(90deg, rgba(173, 11, 11, 1) 0%, rgba(168, 39, 32, 1) 50%, rgba(144, 19, 44, 1) 100%);
 	border-radius: 16px;
+	margin-bottom: 0px;
 }
 
 .half-white {

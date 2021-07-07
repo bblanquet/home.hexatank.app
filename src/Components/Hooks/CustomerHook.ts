@@ -50,7 +50,7 @@ export class MonitoringHook extends Hook<CustomerState> {
 
 	public Play(errorId: number): void {
 		axios
-			.get(`{{error_url}}/server/Exception/Get&id=${errorId}`)
+			.get(`{{error_url}}/server/Exception/Get?id=${errorId}`)
 			.then((response: AxiosResponse<ErrorDetail>) => {
 				try {
 					const data = RecordContent.To(JSON.parse(response.data.content));

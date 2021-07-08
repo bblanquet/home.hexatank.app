@@ -1,9 +1,10 @@
 import { ViewContext } from './../../Utils/Geometry/ViewContext';
 import { Item } from '../Items/Item';
+import { Point } from 'pixi.js';
 
 export interface IInteractionContext {
 	Kind: InteractionKind;
-	Point: PIXI.Point;
+	Point: Point;
 	OnSelect(item: Item): void;
 	View: ViewContext;
 }

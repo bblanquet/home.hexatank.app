@@ -1,38 +1,39 @@
+import { Sprite } from 'pixi.js';
 import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { SpriteProvider } from './SpriteProvider';
 
 export class SpriteManager {
-	private _sprites: Dictionary<PIXI.Sprite>;
+	private _sprites: Dictionary<Sprite>;
 	private _destroyed: boolean = false;
 
 	constructor() {
-		this._sprites = new Dictionary<PIXI.Sprite>();
+		this._sprites = new Dictionary<Sprite>();
 	}
 
 	public Destroyed(): void {
 		this._destroyed = true;
 	}
 
-	public GetCurrentSprites(): Dictionary<PIXI.Sprite> {
+	public GetCurrentSprites(): Dictionary<Sprite> {
 		return this._sprites;
 	}
 
-	public SetProperty(name: string, func: (sprite: PIXI.Sprite) => void) {
+	public SetProperty(name: string, func: (sprite: Sprite) => void) {
 		func(this._sprites.Get(name));
 	}
 
-	public SetProperties(names: string[], func: (sprite: PIXI.Sprite) => void) {
+	public SetProperties(names: string[], func: (sprite: Sprite) => void) {
 		names.forEach((name) => this.SetProperty(name, func));
 	}
 
-	public AddSprite(name: string, sprite: PIXI.Sprite, func?: (sprite: PIXI.Sprite) => void) {
+	public AddSprite(name: string, sprite: Sprite, func?: (sprite: Sprite) => void) {
 		if (func) {
 			func(sprite);
 		}
 		this._sprites.Add(name, sprite);
 	}
 
-	public GenerateSprite(name: string, func?: (sprite: PIXI.Sprite) => void) {
+	public GenerateSprite(name: string, func?: (sprite: Sprite) => void) {
 		const sprite = SpriteProvider.GetSprite(name);
 
 		if (func) {
@@ -50,8 +51,8 @@ export class SpriteManager {
 		});
 	}
 
-	public GetAll(): Array<PIXI.Sprite> {
-		const result = new Array<PIXI.Sprite>();
+	public GetAll(): Array<Sprite> {
+		const result = new Array<Sprite>();
 		if (this._destroyed) {
 			return result;
 		}

@@ -47,9 +47,9 @@ export class CamouflageInteractionService implements IInteractionService<Camoufl
 			gameContext
 		);
 		this._interaction.Listen();
-		manager.on('pointerdown', this._inputNotifier.HandleMouseDown.bind(this._inputNotifier), false);
-		manager.on('pointermove', this._inputNotifier.HandleMouseMove.bind(this._inputNotifier), false);
-		manager.on('pointerup', this._inputNotifier.HandleMouseUp.bind(this._inputNotifier), false);
+		(manager as any).on('pointerdown', this._inputNotifier.HandleMouseDown.bind(this._inputNotifier), false);
+		(manager as any).on('pointermove', this._inputNotifier.HandleMouseMove.bind(this._inputNotifier), false);
+		(manager as any).on('pointerup', this._inputNotifier.HandleMouseUp.bind(this._inputNotifier), false);
 		manager.autoPreventDefault = false;
 	}
 

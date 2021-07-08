@@ -1,18 +1,19 @@
 import { RenderingLayers } from '../../Core/Framework/Render/RenderingLayers';
 import { ILayerService } from './ILayerService';
 import { Viewport } from 'pixi-viewport';
+import { Application } from 'pixi.js';
 
 export class LayerService implements ILayerService {
 	private _rendering: RenderingLayers;
 	private _viewPort: Viewport;
 
-	Register(app: PIXI.Application): void {
+	Register(app: Application): void {
 		this.SetViewport(app);
 		this._rendering = new RenderingLayers(this._viewPort, app.stage);
 		this.StartNavigation();
 		app.stage.addChild(this._viewPort);
 	}
-	private SetViewport(app: PIXI.Application) {
+	private SetViewport(app: Application) {
 		this._viewPort = new Viewport({
 			screenWidth: window.innerWidth,
 			screenHeight: window.innerHeight,
@@ -56,7 +57,6 @@ export class LayerService implements ILayerService {
 		this._viewPort.plugins.remove('pinch');
 		this._viewPort.plugins.remove('wheel');
 		this._viewPort.plugins.remove('decelerate');
-		this._viewPort.removeAllListeners();
 		this._viewPort.destroy();
 		this._rendering.Clear();
 	}

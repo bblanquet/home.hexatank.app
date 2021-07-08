@@ -8,6 +8,7 @@ import { MultiSelectionContext } from '../../Core/Menu/Smart/MultiSelectionConte
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { ILayerService } from '../Layer/ILayerService';
+import { InteractionManager } from 'pixi.js';
 
 export class PowerInteractionService implements IInteractionService<FireContext> {
 	private _layerService: ILayerService;
@@ -20,7 +21,7 @@ export class PowerInteractionService implements IInteractionService<FireContext>
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}
 
-	Register(manager: PIXI.InteractionManager, gameContext: FireContext): void {
+	Register(manager: InteractionManager, gameContext: FireContext): void {
 		this._multiSelectionContext = new MultiSelectionContext();
 		this._inputNotifier = new InputNotifier();
 		const checker = new SelectableChecker(gameContext.GetPlayer().Identity);
@@ -32,9 +33,9 @@ export class PowerInteractionService implements IInteractionService<FireContext>
 			gameContext
 		);
 		this._interaction.Listen();
-		manager.on('pointerdown', this._inputNotifier.HandleMouseDown.bind(this._inputNotifier), false);
-		manager.on('pointermove', this._inputNotifier.HandleMouseMove.bind(this._inputNotifier), false);
-		manager.on('pointerup', this._inputNotifier.HandleMouseUp.bind(this._inputNotifier), false);
+		(manager as any).on('pointerdown', this._inputNotifier.HandleMouseDown.bind(this._inputNotifier), false);
+		(manager as any).on('pointermove', this._inputNotifier.HandleMouseMove.bind(this._inputNotifier), false);
+		(manager as any).on('pointerup', this._inputNotifier.HandleMouseUp.bind(this._inputNotifier), false);
 		manager.autoPreventDefault = false;
 	}
 

@@ -16,7 +16,6 @@ module.exports = (env) => {
 			errorDetails: true // --display-error-details
 		},
 		// Make errors mor clear
-		devtool: 'inline-source-map',
 		// Configure output folder and file
 		output: {
 			path: distDir,

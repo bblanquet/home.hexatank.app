@@ -13,7 +13,8 @@ export class SvgLoader implements ILoader {
 
 	public Loading(path: string, onLoaded: () => void) {
 		if (path.includes('/UI/')) {
-			new Image().src = path;
+			const img = document.createElement('img');
+			img.src = path;
 			onLoaded();
 		} else {
 			const res = new PIXI.resources.SVGResource(path);

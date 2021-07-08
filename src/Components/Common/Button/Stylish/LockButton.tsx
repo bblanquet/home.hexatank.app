@@ -1,32 +1,35 @@
 import { Component, h } from 'preact';
-import Btn from './Btn';
-import Icon from '../../Icon/IconComponent';
-import { ColorKind } from './ColorKind';
 import { AudioArchive } from '../../../../Core/Framework/AudioArchiver';
 import { Singletons, SingletonKey } from '../../../../Singletons';
 import { IAudioService } from '../../../../Services/Audio/IAudioService';
+import Icon from '../../Icon/IconComponent';
 
 export class LockButton extends Component<any, any> {
 	private _lockDiv: any;
 
 	render() {
 		return (
-			<Btn
+			<div
+				class="custom-btn-layout-4 fit-content btn-space"
 				ref={(e: any) => {
 					this._lockDiv = e;
 				}}
-				callBack={() => {
-					Singletons.Load<IAudioService>(SingletonKey.Audio).Play(`${AudioArchive.nok}`, 0.1);
-					this._lockDiv.base.classList.remove('bounce');
-					setTimeout(() => {
-						this._lockDiv.base.classList.add('bounce');
-					}, 10);
-				}}
-				color={ColorKind.Yellow}
-				isMute={true}
 			>
-				<Icon Value="fas fa-lock" />
-			</Btn>
+				<div class={`custom-btn-layout-2 yellow-secondary fit-content`}>
+					<div
+						class={`custom-btn-layout-1 yellow-primary fit-content`}
+						onClick={() => {
+							Singletons.Load<IAudioService>(SingletonKey.Audio).Play(`${AudioArchive.nok}`, 0.1);
+							this._lockDiv.classList.remove('bounce');
+							setTimeout(() => {
+								this._lockDiv.classList.add('bounce');
+							}, 10);
+						}}
+					>
+						<Icon Value="fas fa-lock" />
+					</div>
+				</div>
+			</div>
 		);
 	}
 }

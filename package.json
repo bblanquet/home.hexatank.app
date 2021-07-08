@@ -1,7 +1,6 @@
 {
 	"name": "program_6",
 	"version": "0.8.0",
-	"main": "src/index.tsx",
 	"scripts": {
 		"build": "webpack --env NODE_ENV=PRD --mode=production",
 		"build:dev": "webpack --env NODE_ENV=DEV --mode=production",

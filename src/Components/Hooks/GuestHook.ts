@@ -43,7 +43,6 @@ export class GuestHook extends Hook<GuestState> {
 		const profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		return {
 			Rooms: new Array<RoomState>(),
-			DisplayableRooms: new Array<RoomState>(),
 			PlayerName: profilService.GetProfil().LastPlayerName,
 			filter: '',
 			Password: ''
@@ -87,7 +86,7 @@ export class GuestHook extends Hook<GuestState> {
 	}
 
 	public Refresh() {
-		this._socket.Emit(NetworkMessage.New(PacketKind.Rooms, {}));
+		this._socket.Emit(NetworkMessage.New<string>(PacketKind.Rooms, this.State.filter));
 	}
 
 	public OnAvailable(message: NetworkMessage<{ IsAvailable: boolean; RoomName: string }>): void {
@@ -114,16 +113,6 @@ export class GuestHook extends Hook<GuestState> {
 	private OnRoom(message: NetworkMessage<RoomState[]>): void {
 		this.SetProp((data) => {
 			data.Rooms = message.Content;
-			if (this.State.filter && 0 < this.State.filter.length) {
-				const newDisplayed = this.State.Rooms.filter((e) =>
-					e.Name.toLowerCase().includes(this.State.filter.toLowerCase())
-				);
-				if (newDisplayed.length !== this.State.DisplayableRooms.length) {
-					data.DisplayableRooms = newDisplayed;
-				}
-			} else if (this.State.DisplayableRooms !== this.State.Rooms && this.State.filter.length === 0) {
-				data.DisplayableRooms = this.State.Rooms;
-			}
 		});
 	}
 

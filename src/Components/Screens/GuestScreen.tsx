@@ -80,7 +80,7 @@ export default class GuestComponent extends HookedComponent<{}, GuestHook, Guest
 									}
 									right={
 										<tbody>
-											{this.Hook.State.DisplayableRooms.map((roomInfo) => {
+											{this.Hook.State.Rooms.map((roomInfo) => {
 												return (
 													<tr class="d-flex">
 														<td class="align-self-center">
@@ -92,17 +92,17 @@ export default class GuestComponent extends HookedComponent<{}, GuestHook, Guest
 															</SmBtn>
 														</td>
 														<td class="align-self-center">
-															<Visible isVisible={roomInfo.HasPassword}>
-																<Icon Value="fas fa-lock" />
-															</Visible>
-															{` ${roomInfo.Name}`}
-														</td>
-														<td class="align-self-center">
 															<Visible isVisible={roomInfo.Country !== 'na'}>
 																<span
 																	class={`fp fp-rounded ${roomInfo.Country.toLocaleLowerCase()}`}
 																/>
 															</Visible>
+														</td>
+														<td class="align-self-center">
+															<Visible isVisible={roomInfo.HasPassword}>
+																<Icon Value="fas fa-lock" />
+															</Visible>
+															{` ${roomInfo.Name}`}
 														</td>
 														<td class="align-self-center">
 															{roomInfo.PlayerCount}/{roomInfo.Count}

@@ -42,7 +42,34 @@ export default class LobbyScreen extends HookedComponent<{}, LobbyHook, LobbySta
 									}}
 								/>
 							</Visible>
-
+							<ActiveBtn
+								isActive={this.Hook.State.Mode === LobbyMode.chat}
+								leftColor={ColorKind.Red}
+								rightColor={ColorKind.Black}
+								left={
+									<span>
+										<Visible isVisible={this.Hook.State.HasReceivedMessage}>
+											<span class="blink_me" style="margin:1px">
+												<Icon Value={'fas fa-exclamation'} />
+											</span>
+										</Visible>
+										<Icon Value={'fas fa-comments'} />
+									</span>
+								}
+								right={
+									<span>
+										<Visible isVisible={this.Hook.State.HasReceivedMessage}>
+											<span class="blink_me" style="margin:1px">
+												<Icon Value={'fas fa-exclamation'} />
+											</span>
+										</Visible>
+										<Icon Value={'fas fa-comments'} />
+									</span>
+								}
+								callBack={() => {
+									this.Hook.SetMode(LobbyMode.chat);
+								}}
+							/>
 							<ActiveBtn
 								isActive={this.Hook.State.Mode === LobbyMode.pending}
 								leftColor={ColorKind.Red}
@@ -52,26 +79,6 @@ export default class LobbyScreen extends HookedComponent<{}, LobbyHook, LobbySta
 								callBack={() => {
 									this.Hook.SetMode(LobbyMode.pending);
 								}}
-							/>
-
-							<ActiveBtn
-								isActive={this.Hook.State.Mode === LobbyMode.chat}
-								leftColor={ColorKind.Red}
-								rightColor={ColorKind.Black}
-								left={<Icon Value={'fas fa-comments'} />}
-								right={<Icon Value={'fas fa-comments'} />}
-								callBack={() => {
-									this.Hook.SetMode(LobbyMode.chat);
-								}}
-							/>
-
-							<SmActiveBtn
-								left={<Icon Value={'fas fa-toggle-on'} />}
-								right={<Icon Value={'fas fa-toggle-off'} />}
-								leftColor={ColorKind.Gray}
-								rightColor={ColorKind.Green}
-								callBack={() => this.Hook.ChangeReady()}
-								isActive={this.Hook.State.Player.IsReady}
 							/>
 						</Navbar>
 					}
@@ -107,24 +114,14 @@ export default class LobbyScreen extends HookedComponent<{}, LobbyHook, LobbySta
 										</SmBtn>
 									</div>
 									<div class="right">
-										<Visible isVisible={this.Hook.State.Player.IsAdmin}>
-											<SmActiveBtn
-												left={
-													<span>
-														<Icon Value={'far fa-play-circle'} /> START
-													</span>
-												}
-												right={
-													<span>
-														<Icon Value={'far fa-play-circle'} /> START
-													</span>
-												}
-												leftColor={ColorKind.Red}
-												rightColor={ColorKind.Gray}
-												callBack={() => this.Hook.Launching()}
-												isActive={this.Hook.State.Players.Values().every((e) => e.IsReady)}
-											/>
-										</Visible>
+										<SmActiveBtn
+											left={<Icon Value={'fas fa-toggle-on'} />}
+											right={<Icon Value={'fas fa-toggle-off'} />}
+											leftColor={ColorKind.Gray}
+											rightColor={ColorKind.Green}
+											callBack={() => this.Hook.ChangeReady()}
+											isActive={this.Hook.State.Player.IsReady}
+										/>
 									</div>
 								</div>
 							}

@@ -1,10 +1,8 @@
 import { h, JSX } from 'preact';
-import Btn from '../Common/Button/Stylish/Btn';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
 import GridComponent from '../Common/Grid/GridComponent';
 import Icon from '../Common/Icon/IconComponent';
-import SmPanel from '../Components/Panel/SmPanel';
 import Redirect from '../Components/Redirect';
 import Visible from '../Components/Visible';
 import Notification from '../Components/Notification';
@@ -98,6 +96,11 @@ export default class GuestComponent extends HookedComponent<{}, GuestHook, Guest
 																<Icon Value="fas fa-lock" />
 															</Visible>
 															{` ${roomInfo.Name}`}
+														</td>
+														<td class="align-self-center">
+															<Visible isVisible={roomInfo.Country !== 'na'}>
+																<span class={`fp fp-rounded ${roomInfo.Country}`} />
+															</Visible>
 														</td>
 														<td class="align-self-center">
 															{roomInfo.PlayerCount}/{roomInfo.Count}

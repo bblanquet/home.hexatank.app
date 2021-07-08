@@ -20,15 +20,6 @@ export class NotificationHook extends Hook<NotificationState> {
 		return new NotificationState(LogKind.error, '');
 	}
 
-	private counter: number = 0;
-
-	Update(): void {
-		this.counter++;
-		const r = new NotificationState(LogKind.info, 'pouette ' + this.counter);
-		this.State = r;
-		this.SetState(r);
-	}
-
 	private HandleNotification(src: any, notification: NotificationState): void {
 		this.SetProp((e) => {
 			e.Kind = notification.Kind;

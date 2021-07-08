@@ -30,8 +30,7 @@ export class LobbyManager implements ILobbyManager {
 		this._servObs = [
 			//room
 			new NetworkObserver(PacketKind.Joined, this.HandleJoined.bind(this)),
-			new NetworkObserver(PacketKind.Close, this.HandleClose.bind(this)),
-			new NetworkObserver(PacketKind.Kick, this.HandleKick.bind(this))
+			new NetworkObserver(PacketKind.Close, this.HandleClose.bind(this))
 		];
 		if (this.HasRoomKey()) {
 			this._servObs.push(new NetworkObserver(PacketKind.Join, this.HandleJoin.bind(this)));
@@ -126,12 +125,6 @@ export class LobbyManager implements ILobbyManager {
 
 	private HandleClose(data: NetworkMessage<any>): void {
 		this.OnKicked.Invoke();
-	}
-
-	private HandleKick(data: NetworkMessage<any>): void {
-		if (this._onlinePlayerManager.Player.Name === data.Content.PlayerName) {
-			this.OnKicked.Invoke();
-		}
 	}
 
 	private HandleReady(data: NetworkMessage<boolean>): void {

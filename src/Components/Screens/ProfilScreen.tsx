@@ -14,6 +14,7 @@ import { HookedComponent } from '../Hooks/HookedComponent';
 import { ProfilHook } from '../Hooks/ProfilHook';
 import { ProfilState } from '../Model/ProfilState';
 import { useState } from 'preact/hooks';
+import { Env } from '../../Env';
 
 export default class ProfilScreen extends HookedComponent<{}, ProfilHook, ProfilState> {
 	public Rendering(): JSX.Element {
@@ -36,14 +37,14 @@ export default class ProfilScreen extends HookedComponent<{}, ProfilHook, Profil
 									<Icon Value="fas fa-file-download" />
 								</SmBtn>
 							</Visible>
-							<Visible isVisible={this.Hook.State.SelectedRecords.length === 2}>
+							<Visible isVisible={this.Hook.State.SelectedRecords.length === 2 && !Env.IsPrd()}>
 								<SmBtn
 									callBack={() => {
 										this.Hook.ToCompare();
 									}}
 									color={ColorKind.Red}
 								>
-									<Icon Value="fas fa-not-equal" />
+									<Icon Value="fas fa-chart-pie" />
 								</SmBtn>
 							</Visible>
 						</Navbar>

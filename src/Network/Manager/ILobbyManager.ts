@@ -9,9 +9,9 @@ export interface ILobbyManager {
 
 	GetSetup(): BlueprintSetup;
 	SendMessage(content: string): void;
-	Kick(playerName: string): void;
 	SetReady(): void;
 	Start(): void;
 	Clear(): void;
 	Stop(): void;
+	Kick(playerName: string): void;
 }

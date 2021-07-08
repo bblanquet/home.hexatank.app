@@ -7,6 +7,7 @@ import './Components/Style/CircularMenu.css';
 import './Components/Style/IconStyle.css';
 import './Components/Style/Animation.css';
 import './Components/Style/BtnStyle.css';
+import 'flagpack/dist/flagpack.css';
 import '@fortawesome/fontawesome-free/js/fontawesome';
 import '@fortawesome/fontawesome-free/js/solid';
 import '@fortawesome/fontawesome-free/js/regular';

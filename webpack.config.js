@@ -35,8 +35,15 @@ module.exports = (env) => {
 					loader: 'ts-loader'
 				},
 				{
-					test: /\.svg$/,
-					loader: 'svg-inline-loader'
+					test: /\.svg/,
+					exclude: '/asset',
+					use: {
+						loader: 'svg-url-loader',
+						options: {
+							// make all svg images to work in IE
+							iesafe: true
+						}
+					}
 				},
 				{
 					test: /\.(scss|css)$/,

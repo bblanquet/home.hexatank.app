@@ -15,20 +15,21 @@ import { LobbyMode } from '../Model/LobbyMode';
 export class LobbyHook extends Hook<LobbyState> {
 	//SERVICE
 	public LobbyManager: ILobbyManager;
-	public OnlineManager: IOnlinePlayerManager;
+	public onlinePlayers: IOnlinePlayerManager;
+	private _onlineService: IOnlineService;
 
 	constructor(d: [LobbyState, StateUpdater<LobbyState>]) {
 		super(d[0], d[1]);
 		if (!SpriteProvider.IsLoaded()) {
 			return;
 		}
-		const lobbyService = Singletons.Load<IOnlineService>(SingletonKey.Online);
-		this.LobbyManager = lobbyService.GetLobbyManager();
-		this.OnlineManager = lobbyService.GetOnlinePlayerManager();
+		this._onlineService = Singletons.Load<IOnlineService>(SingletonKey.Online);
+		this.LobbyManager = this._onlineService.GetLobbyManager();
+		this.onlinePlayers = this._onlineService.GetOnlinePlayerManager();
 
 		this.LobbyManager.OnKicked.On(this.Back.bind(this));
 		this.LobbyManager.OnMessageReceived.On(this.OnMessage.bind(this));
-		this.OnlineManager.OnPlayersChanged.On(this.UpdatePlayers.bind(this));
+		this.onlinePlayers.OnPlayersChanged.On(this.UpdatePlayers.bind(this));
 		this.LobbyManager.OnStarting.On(() => {
 			this.LobbyManager.Clear();
 			route('{{sub_path}}Launching', true);
@@ -49,9 +50,18 @@ export class LobbyHook extends Hook<LobbyState> {
 	}
 
 	public UpdatePlayers(src: any, players: Dictionary<OnlinePlayer>): void {
+		if (!players.Exist(this.State.Player.Name)) {
+			this.Back();
+			return;
+		}
+
 		this.SetProp((e) => {
 			e.Players = players;
 		});
+
+		if (this.IsReady()) {
+			this.LobbyManager.Start();
+		}
 	}
 
 	public ChangeReady(): void {
@@ -60,11 +70,13 @@ export class LobbyHook extends Hook<LobbyState> {
 
 	public Back(): void {
 		this.LobbyManager.Stop();
+		this._onlineService.Collect();
 		route('{{sub_path}}Home', true);
 	}
 
-	public Launching(): void {
-		this.LobbyManager.Start();
+	public IsReady(): boolean {
+		const players = this.State.Players.Values();
+		return 2 <= players.length && players.every((e) => e.IsReady);
 	}
 
 	public Send(message: string): void {
@@ -74,6 +86,9 @@ export class LobbyHook extends Hook<LobbyState> {
 	public SetMode(mode: LobbyMode): void {
 		this.SetProp((e) => {
 			e.Mode = mode;
+			if (mode === LobbyMode.chat) {
+				e.HasReceivedMessage = false;
+			}
 		});
 	}
 
@@ -81,7 +96,16 @@ export class LobbyHook extends Hook<LobbyState> {
 		this.SetProp((e) => {
 			e.Messages = [ message ].concat(e.Messages);
 		});
+		if (this.State.Mode !== LobbyMode.chat) {
+			this.SetProp((e) => {
+				e.HasReceivedMessage = true;
+			});
+		}
 	}
 
-	public Unmount(): void {}
+	public Unmount(): void {
+		this.LobbyManager.OnKicked.Off(this.Back.bind(this));
+		this.LobbyManager.OnMessageReceived.Off(this.OnMessage.bind(this));
+		this.onlinePlayers.OnPlayersChanged.Off(this.UpdatePlayers.bind(this));
+	}
 }

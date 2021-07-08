@@ -7,6 +7,8 @@ import { ButtonOption } from '../Common/Button/ButtonOption';
 import Icon from '../Common/Icon/IconComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Redirect from '../Components/Redirect';
+import Visible from '../Components/Visible';
+import { Env } from '../../Env';
 
 export default class HomeScreen extends Component<any, any> {
 	constructor() {
@@ -62,12 +64,11 @@ export default class HomeScreen extends Component<any, any> {
 						<Btn color={ColorKind.Black} callBack={() => this.ToRecord()}>
 							<Icon Value="fas fa-user-circle" /> Profil
 						</Btn>
-						{/* <ButtonComponent color={ColorKind.Black} callBack={() => this.ToBadge()}>
-							<Icon Value="fas fa-award" /> Badge
-						</ButtonComponent> */}
-						<Btn color={ColorKind.Blue} callBack={() => this.ToMonitoring()}>
-							<Icon Value="fab fa-watchman-monitoring" /> Monitoring
-						</Btn>
+						<Visible isVisible={!Env.IsPrd()}>
+							<Btn color={ColorKind.Blue} callBack={() => this.ToMonitoring()}>
+								<Icon Value="fab fa-watchman-monitoring" /> Monitoring
+							</Btn>
+						</Visible>
 					</div>
 				</MdPanel>
 			</Redirect>

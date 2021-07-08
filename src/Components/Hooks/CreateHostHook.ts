@@ -25,6 +25,7 @@ export class CreateHostHook extends Hook<HostState> {
 		this._socket = Singletons.Load<ISocketService>(SingletonKey.Socket).Publish();
 		this._obs = [
 			new NetworkObserver(PacketKind.Exist, this.OnExist.bind(this)),
+			new NetworkObserver(PacketKind.Error, this.OnWrong.bind(this)),
 			new NetworkObserver(PacketKind.connect_error, this.OnError.bind(this))
 		];
 		this._socket.On(this._obs);
@@ -37,7 +38,7 @@ export class CreateHostHook extends Hook<HostState> {
 	public static DefaultState(): HostState {
 		const profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		return new HostState(
-			`${profilService.GetProfil().LastPlayerName}'s room`,
+			`${profilService.GetProfil().LastPlayerName} party`,
 			profilService.GetProfil().LastPlayerName,
 			'',
 			false
@@ -45,14 +46,16 @@ export class CreateHostHook extends Hook<HostState> {
 	}
 
 	public Start(): void {
-		this._socket.Emit(NetworkMessage.New(PacketKind.Exist, { RoomName: this.State.RoomName }));
+		this._socket.Emit(
+			NetworkMessage.New(PacketKind.Exist, { RoomName: this.State.RoomName, PlayerName: this.State.PlayerName })
+		);
 	}
 
 	public Randomize(): void {
 		const username = Usernames[Math.round(Math.random() * Usernames.length - 1)];
 		this.SetProp((e) => {
 			e.PlayerName = username;
-			e.RoomName = `${username}'s room`;
+			e.RoomName = `${username} party`;
 		});
 	}
 
@@ -74,6 +77,10 @@ export class CreateHostHook extends Hook<HostState> {
 
 	public Back(): void {
 		route('{{sub_path}}Home', true);
+	}
+
+	private OnWrong(message: NetworkMessage<string>): void {
+		this.OnNotification.Invoke(this, new NotificationState(LogKind.warning, message.Content));
 	}
 
 	private OnExist(message: NetworkMessage<{ Exist: boolean; RoomName: string }>): void {

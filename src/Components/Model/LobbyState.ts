@@ -11,6 +11,7 @@ export class LobbyState {
 	public Mode: LobbyMode = LobbyMode.pending;
 
 	//???
+	public HasReceivedMessage: boolean = false;
 	public Message: string = '';
 	public Messages: Message[] = [];
 

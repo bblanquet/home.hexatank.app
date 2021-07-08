@@ -1,8 +1,8 @@
 import { TimeTimer } from '../../../../../../Utils/Timer/TimeTimer';
 import { IGeneralRequester } from '../IGeneralRequester';
-import { AreaRequest } from '../../../../Utils/AreaRequest';
 import { Brain } from '../../../Brain';
-import { RequestType } from '../../../../Utils/RequestType';
+import { AreaRequest } from '../../../Utils/AreaRequest';
+import { RequestType } from '../../../Utils/RequestType';
 
 export class GeneralRaidRequester implements IGeneralRequester {
 	private _timeTime: TimeTimer;

@@ -26,6 +26,7 @@ export class GuestHook extends Hook<GuestState> {
 		this._obs = [
 			new NetworkObserver(PacketKind.Available, this.OnAvailable.bind(this)),
 			new NetworkObserver(PacketKind.Rooms, this.OnRoom.bind(this)),
+			new NetworkObserver(PacketKind.Error, this.OnWrong.bind(this)),
 			new NetworkObserver(PacketKind.connect, this.OnConnect.bind(this)),
 			new NetworkObserver(PacketKind.Password, this.OnPassword.bind(this)),
 			new NetworkObserver(PacketKind.connect_error, this.OnConnectError.bind(this))
@@ -50,7 +51,11 @@ export class GuestHook extends Hook<GuestState> {
 	}
 
 	private static FakeRooms(): RoomState[] {
-		return Usernames.map((e) => new RoomState(e, 2, false, 2));
+		return Usernames.map((e) => new RoomState(e, 'US', 2, false, 2));
+	}
+
+	private OnWrong(message: NetworkMessage<string>): void {
+		this.OnNotification.Invoke(this, new NotificationState(LogKind.warning, message.Content));
 	}
 
 	public Join(roomName: string): void {
@@ -123,7 +128,7 @@ export class GuestHook extends Hook<GuestState> {
 	}
 
 	private OnConnect(m: NetworkMessage<any>): void {
-		this._socket.Emit(NetworkMessage.New<any>(PacketKind.Rooms, {}));
+		this._socket.Emit(NetworkMessage.New<string>(PacketKind.Rooms, this.State.filter));
 	}
 
 	private OnPassword(m: NetworkMessage<{ Password: boolean; RoomName: string }>): void {

@@ -10,6 +10,7 @@ import Icon from '../Common/Icon/IconComponent';
 import ProgressComponent from '../Common/Progress/ProgressComponent';
 import { IAudioService } from '../../Services/Audio/IAudioService';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';
+import Switch from './Switch';
 
 export default class SmPopup extends Component<{ status: GameStatus; points: number }, { Kind: StatsKind }> {
 	private _profilService: IPlayerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
@@ -41,11 +42,19 @@ export default class SmPopup extends Component<{ status: GameStatus; points: num
 				style={`border:${this.props.status === GameStatus.Victory ? 'gold' : 'crimson'} 5px solid`}
 			>
 				<div class="title-popup-container">
-					{this.props.status === GameStatus.Victory ? (
-						<div class="fill-victory light-bounce" />
-					) : (
-						<div class="fill-defeat light-bounce" />
-					)}
+					<Switch
+						isVisible={this.props.status === GameStatus.Victory}
+						left={
+							<div class="fill-victory light-bounce">
+								<div class="fill-victory-star infinite-bounce" />
+							</div>
+						}
+						right={
+							<div class="fill-defeat light-bounce">
+								<div class="fill-defeat-eyes fade" />
+							</div>
+						}
+					/>
 				</div>
 				<div class="container-center">
 					<div class="container-center-horizontal" style="margin-top:15px;margin-bottom:15px;width:100%">

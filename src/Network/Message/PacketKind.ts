@@ -23,6 +23,7 @@ export enum PacketKind {
 	Exist,
 	Rooms,
 	Leave,
+	Error,
 
 	//general
 	OneWayPing,

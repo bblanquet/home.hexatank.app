@@ -31,16 +31,6 @@ export default class OptionPopup extends Component<
 		this.setState({});
 	}
 
-	private Save(): void {
-		const data = Singletons.Load<AppService>(SingletonKey.App).GetRecord().GetRecord();
-		const url = document.createElement('a');
-		const file = new Blob([ JSON.stringify(data) ], { type: 'application/json' });
-		url.href = URL.createObjectURL(file);
-		url.download = `${data.Title}.json`;
-		url.click();
-		URL.revokeObjectURL(url.href);
-	}
-
 	render() {
 		return (
 			<div class="generalContainer absolute-center-middle-menu menu-container fit-content">
@@ -99,14 +89,6 @@ export default class OptionPopup extends Component<
 						}}
 						isActive={this._soundService.IsMute()}
 					/>
-					<Btn
-						callBack={() => {
-							this.Save();
-						}}
-						color={ColorKind.Blue}
-					>
-						<Icon Value="fas fa-save" /> Save
-					</Btn>
 					<Btn
 						callBack={() => {
 							this.props.Quit();

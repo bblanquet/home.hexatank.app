@@ -36,7 +36,7 @@ export default class Notification extends Component<{ OnNotification: LiteEvent<
 		}
 		return (
 			<Visible isVisible={0 < this._hook.State.Message.length}>
-				<div class="toast-container" onClick={() => this._hook.Update()}>
+				<div class="toast-container">
 					<div
 						ref={(e) => (this._notificationDiv = e)}
 						class="my-toast bounce"

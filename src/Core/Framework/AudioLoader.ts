@@ -4,6 +4,11 @@ import { Howl } from 'howler';
 import { ILoader } from './ILoader';
 
 export class AudioLoader implements ILoader {
+	constructor() {
+		var context = new AudioContext();
+		context.
+	}
+
 	public static Assets: Dictionary<Howl> = new Dictionary<Howl>();
 	public Audios(): string[] {
 		return [

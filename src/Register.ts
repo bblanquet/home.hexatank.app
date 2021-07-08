@@ -37,7 +37,6 @@ export class Register {
 
 		Singletons.Register(SingletonKey.Socket, new SocketService());
 
-		var context = new AudioContext();
 		Singletons.Register(SingletonKey.Audio, new AudioService());
 
 		Singletons.Register(SingletonKey.GameContext, new GameContextService());

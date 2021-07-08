@@ -25,7 +25,7 @@ module.exports = (env) => {
 		},
 
 		optimization: {
-			minimize: !env.NODE_ENV.includes('local'),
+			minimize: true, //!env.NODE_ENV.includes('local'),
 			minimizer: [ new TerserPlugin() ]
 		},
 		module: {

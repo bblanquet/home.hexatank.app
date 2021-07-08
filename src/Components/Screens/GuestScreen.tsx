@@ -99,7 +99,9 @@ export default class GuestComponent extends HookedComponent<{}, GuestHook, Guest
 														</td>
 														<td class="align-self-center">
 															<Visible isVisible={roomInfo.Country !== 'na'}>
-																<span class={`fp fp-rounded ${roomInfo.Country}`} />
+																<span
+																	class={`fp fp-rounded ${roomInfo.Country.toLocaleLowerCase()}`}
+																/>
 															</Visible>
 														</td>
 														<td class="align-self-center">

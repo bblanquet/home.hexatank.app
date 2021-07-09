@@ -9,9 +9,11 @@ import { AssetExplorer } from '../../Core/Framework/AssetExplorer';
 import { SvgLoader } from '../../Core/Framework/SvgLoader';
 import Visible from '../Components/Visible';
 import { LoadingSentences } from '../Model/Text';
-import { Register } from '../../Register';
+import { SingletonContainer } from '../../SingletonContainer';
 import Background from '../Components/Background';
 import { AudioLoader } from '../../Core/Framework/AudioLoader';
+import { IAudioService } from '../../Services/Audio/IAudioService';
+import { Singletons, SingletonKey } from '../../Singletons';
 
 export default class LoadingScreen extends Component<
 	any,
@@ -36,7 +38,7 @@ export default class LoadingScreen extends Component<
 		});
 
 		const audioLoader = new AudioLoader();
-		const onAudioLoaded = new AssetLoader(audioLoader, 2).LoadAll(audioLoader.Audios());
+		const onAudioLoaded = new AssetLoader(audioLoader, 4).LoadAll(audioLoader.Audios());
 		onAudioLoaded.On((obj: any, percentage: number) => {
 			const roundedPercentage = Math.round(percentage);
 			if (roundedPercentage % 10 === 0 && roundedPercentage !== this._sentencePercentage) {
@@ -49,7 +51,7 @@ export default class LoadingScreen extends Component<
 
 	componentDidUpdate() {
 		if (this.state.Percentage === 100) {
-			new Register().Do();
+			new SingletonContainer().Register();
 			SpriteProvider.SetLoaded(true);
 		}
 	}
@@ -71,6 +73,8 @@ export default class LoadingScreen extends Component<
 	}
 
 	private ToHome(): void {
+		const soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
+		soundService.PlayLoungeMusic();
 		route('{{sub_path}}Home', true);
 	}
 

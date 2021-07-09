@@ -50,10 +50,7 @@ export class DiamondAudioManager implements IGameAudioManager {
 	}
 
 	private Play(def: string, volume: number = 1, loop: boolean = false): number | null {
-		if (this._soundService.Exist(def)) {
-			return this._soundService.Play(def, volume, loop);
-		}
-		return null;
+		return this._soundService.Play(def, volume, loop);
 	}
 
 	public PauseAll(): void {

@@ -8,7 +8,6 @@ import Icon from '../Common/Icon/IconComponent';
 import ActiveBtn from '../Common/Button/Stylish/ActiveBtn';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { IAudioService } from '../../Services/Audio/IAudioService';
-import { AppService } from '../../Services/App/AppService';
 
 export default class OptionPopup extends Component<
 	{ Status: GameStatus; Resume: () => void; Quit: () => void },

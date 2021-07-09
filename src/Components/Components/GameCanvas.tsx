@@ -15,7 +15,7 @@ export default class GameCanvas extends Component<
 	{ gameContext: IGameContextService<IBlueprint, IGameContext>; uncollect?: boolean },
 	{}
 > {
-	private _gameCanvas: HTMLDivElement;
+	private _gameCanvas: HTMLElement;
 	private _resizeFunc: any = this.ResizeTheCanvas.bind(this);
 	private _updater: ItemsUpdater;
 	private _appService: IAppService<IBlueprint>;
@@ -66,6 +66,7 @@ export default class GameCanvas extends Component<
 		return (
 			<PageAnalyser>
 				<div
+					style="overflow: hidden;display: block;"
 					ref={(dom) => {
 						this._gameCanvas = dom;
 					}}

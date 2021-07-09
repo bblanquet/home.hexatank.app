@@ -4,11 +4,6 @@ import { Howl } from 'howler';
 import { ILoader } from './ILoader';
 
 export class AudioLoader implements ILoader {
-	constructor() {
-		var context = new AudioContext();
-	}
-
-	public static Assets: Dictionary<Howl> = new Dictionary<Howl>();
 	public Audios(): string[] {
 		return [
 			AudioArchive.ayaya,
@@ -53,8 +48,7 @@ export class AudioLoader implements ILoader {
 	}
 
 	public Loading(path: string, onLoaded: () => void): void {
-		const howler = new Howl({ src: [ path ] });
-		howler.on('load', onLoaded);
-		AudioLoader.Assets.Add(path, howler);
+		const audio = new Audio(path);
+		audio.addEventListener('canplaythrough', onLoaded, false);
 	}
 }

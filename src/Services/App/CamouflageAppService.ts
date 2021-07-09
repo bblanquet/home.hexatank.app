@@ -108,6 +108,6 @@ export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 		this._audioService.Clear();
 		this._app.destroy();
 		this._app = null;
-		this._audioService.Reload();
+		this._audioService.PlayLoungeMusic();
 	}
 }

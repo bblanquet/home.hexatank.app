@@ -36,7 +36,6 @@ export default class RedScreen extends Component<
 					content={
 						<div class="container-center-horizontal">
 							<div style="width:80%">
-								{' '}
 								<div class="container-center">
 									<Face
 										eyes={[ 'fill-red-eyes-1', 'fill-red-eyes-2' ]}

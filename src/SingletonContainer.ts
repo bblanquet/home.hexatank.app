@@ -25,8 +25,8 @@ import { UpdateService } from './Services/Update/UpdateService';
 import { AppService } from './Services/App/AppService';
 import { Singletons, SingletonKey } from './Singletons';
 
-export class Register {
-	Do(): void {
+export class SingletonContainer {
+	Register(): void {
 		Singletons.Register(SingletonKey.PlayerProfil, new PlayerProfilService());
 		Singletons.Register(SingletonKey.Key, new KeyService());
 		Singletons.Register(SingletonKey.Online, new OnlineService());

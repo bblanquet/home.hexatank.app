@@ -119,6 +119,6 @@ export class AppService implements IAppService<GameBlueprint> {
 		this._onlineService.Collect();
 		this._app.destroy();
 		this._app = null;
-		this._audioService.Reload();
+		this._audioService.PlayLoungeMusic();
 	}
 }

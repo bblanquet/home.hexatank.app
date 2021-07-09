@@ -44,11 +44,11 @@ export class DiamondRenderer {
 	}
 
 	public AddClouds() {
-		new Cloud(200, 20 * GameSettings.Size, 800, SvgArchive.nature.clouds[0]);
-		new Cloud(400, 20 * GameSettings.Size, 1200, SvgArchive.nature.clouds[1]);
-		new Cloud(600, 20 * GameSettings.Size, 1600, SvgArchive.nature.clouds[2]);
-		new Cloud(800, 20 * GameSettings.Size, 800, SvgArchive.nature.clouds[3]);
-		new Cloud(1200, 20 * GameSettings.Size, 1600, SvgArchive.nature.clouds[4]);
+		new Cloud(GameSettings.Size * 2, 20 * GameSettings.Size, GameSettings.Size * 3, SvgArchive.nature.clouds[0]);
+		new Cloud(GameSettings.Size * 5, 20 * GameSettings.Size, GameSettings.Size * 6, SvgArchive.nature.clouds[1]);
+		new Cloud(GameSettings.Size * 8, 20 * GameSettings.Size, GameSettings.Size * 6, SvgArchive.nature.clouds[2]);
+		new Cloud(GameSettings.Size * 12, 20 * GameSettings.Size, GameSettings.Size * 8, SvgArchive.nature.clouds[3]);
+		new Cloud(GameSettings.Size * 6, 20 * GameSettings.Size, GameSettings.Size * 10, SvgArchive.nature.clouds[4]);
 	}
 
 	private SetLands(cells: Dictionary<Cell>, mode: MapKind, middleAreas: HexAxial[]) {

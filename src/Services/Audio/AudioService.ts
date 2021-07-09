@@ -1,23 +1,22 @@
 import { IAudioService } from './IAudioService';
 import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { Howl } from 'howler';
-import { AudioLoader } from '../../Core/Framework/AudioLoader';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { IGameAudioManager } from '../../Core/Framework/Audio/IGameAudioManager';
 
 export class AudioService implements IAudioService {
-	private _sounds: Dictionary<Howl>;
+	private _howls: Dictionary<Howl> = new Dictionary<Howl>();
 	private _gameAudioManager: IGameAudioManager;
 	private _isMute: boolean = false;
-	private _playingSounds: Dictionary<number>;
+	private _activeHowls: Dictionary<number>;
 	private _profilService: IPlayerProfilService;
 
 	constructor() {
-		this._playingSounds = new Dictionary<number>();
+		this._activeHowls = new Dictionary<number>();
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
-		this.Reload();
+		this._isMute = this._profilService.GetProfil().IsMute;
 	}
 	PlayLoungeMusic(): void {
 		if (!this._isMute) {
@@ -25,11 +24,6 @@ export class AudioService implements IAudioService {
 		} else {
 			this.Pause(AudioArchive.loungeMusic);
 		}
-	}
-	Reload(): void {
-		this._sounds = AudioLoader.Assets;
-		this._isMute = this._profilService.GetProfil().IsMute;
-		this.PlayLoungeMusic();
 	}
 
 	GetGameAudioManager(): IGameAudioManager {
@@ -52,11 +46,19 @@ export class AudioService implements IAudioService {
 		return this._isMute;
 	}
 
+	private Howl(content: string): Howl {
+		if (!this._howls.Exist(content)) {
+			const howler = new Howl({ src: [ content ] });
+			this._howls.Add(content, howler);
+		}
+		return this._howls.Get(content);
+	}
+
 	Pause(content: string, id?: number): void {
 		if (id) {
-			this._sounds.Get(content).pause(id);
+			this.Howl(content).pause(id);
 		} else {
-			this._sounds.Get(content).pause(this._playingSounds.Get(content));
+			this.Howl(content).pause(this._activeHowls.Get(content));
 		}
 	}
 
@@ -64,53 +66,45 @@ export class AudioService implements IAudioService {
 		if (!this._isMute) {
 			let soundId = 0;
 			if (id) {
-				soundId = this._sounds.Get(content).play(id);
+				soundId = this.Howl(content).play(id);
 			} else {
-				if (this._playingSounds.Exist(content)) {
-					soundId = this._playingSounds.Get(content);
+				if (this._activeHowls.Exist(content)) {
+					soundId = this._activeHowls.Get(content);
 				} else {
 					soundId = this.Play(content, volume);
 				}
-				this._sounds.Get(content).play(soundId);
+				this.Howl(content).play(soundId);
 			}
 
 			if (volume) {
-				this._sounds.Get(content).volume(volume, soundId);
+				this.Howl(content).volume(volume, soundId);
 			}
 		}
 	}
 
 	Stop(content: string, id: number): void {
-		this._sounds.Get(content).stop(id);
+		this.Howl(content).stop(id);
 	}
 
 	Play(content: string, volume: number, loop?: boolean): number | null {
 		if (!this._isMute) {
-			this._sounds.Get(content).volume(volume);
-			this._sounds.Get(content).loop(loop);
-			const sound = this._sounds.Get(content).play();
-			this._playingSounds.Add(content, sound);
+			this.Howl(content).volume(volume);
+			this.Howl(content).loop(loop);
+			const sound = this.Howl(content).play();
+			this._activeHowls.Add(content, sound);
 			return sound;
 		}
 		return null;
 	}
 
-	Exist(content: string): boolean {
-		return this._sounds.Exist(content);
-	}
-
 	Clear(): void {
-		this._sounds.Values().forEach((sound) => {
+		this._howls.Values().forEach((sound) => {
 			sound.stop();
 		});
-		this._playingSounds.Clear();
+		this._activeHowls.Clear();
 	}
 
 	Register(gameAudioManager: IGameAudioManager): void {
-		const copy = new Dictionary<Howl>();
-		this._sounds.Keys().forEach((k) => {
-			copy.Add(k, this._sounds.Get(k));
-		});
 		this._gameAudioManager = gameAudioManager;
 		if (!this.IsMute()) {
 			this._gameAudioManager.PlayMusic();

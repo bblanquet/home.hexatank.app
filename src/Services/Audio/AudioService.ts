@@ -48,7 +48,7 @@ export class AudioService implements IAudioService {
 
 	private Howl(content: string): Howl {
 		if (!this._howls.Exist(content)) {
-			const howler = new Howl({ src: [ content ] });
+			const howler = new Howl({ src: [ content ], html5: true });
 			this._howls.Add(content, howler);
 		}
 		return this._howls.Get(content);

@@ -50,5 +50,6 @@ export class AudioLoader implements ILoader {
 	public Loading(path: string, onLoaded: () => void): void {
 		const audio = new Audio(path);
 		audio.addEventListener('canplaythrough', onLoaded, false);
+		audio.load();
 	}
 }

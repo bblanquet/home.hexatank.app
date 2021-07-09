@@ -2,7 +2,7 @@ import { CamouflageContext } from '../../Context/CamouflageContext';
 import { Tank } from '../../../Items/Unit/Tank';
 import { SvgArchive } from '../../../Framework/SvgArchiver';
 import { AboveItem } from '../../../Items/AboveItem';
-import { HqSkinHelper } from '../Hq/HqSkinHelper';
+import { HqAppearance } from '../Hq/HqSkinHelper';
 import { Truck } from '../../../Items/Unit/Truck';
 import { SimpleFloor } from '../../../Items/Environment/SimpleFloor';
 import { Cloud } from '../../../Items/Environment/Cloud';
@@ -21,6 +21,7 @@ import { PatrolOrder } from '../../../Ia/Order/Composite/PatrolOrder';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
 import { GameState } from '../../Context/GameState';
+import { ColorKind } from '../../../../Components/Common/Button/Stylish/ColorKind';
 
 export class CamouflageRenderer {
 	public Render(blueprint: CamouflageBlueprint, gameState: GameState): CamouflageContext {
@@ -47,14 +48,14 @@ export class CamouflageRenderer {
 		this.SetHqLand(cells, SvgArchive.nature.hq, spots);
 		this.SetHqLand(cells, SvgArchive.nature.hq2, spots, 1);
 
-		const truck = new Truck(new Identity('player', new HqSkinHelper().GetSkin(0), true));
+		const truck = new Truck(new Identity('player', HqAppearance.Skins.Get(ColorKind[ColorKind.Red]), true));
 		truck.OverrideLife(1);
 		truck.SetPosition(cells.Get(departure.ToString()));
 		vehicles.push(truck);
 		const arrivalCell = cells.Get(arrival.ToString());
 		new AboveItem(arrivalCell, SvgArchive.arrow);
 
-		const iaId = new Identity('ia', new HqSkinHelper().GetSkin(1), false);
+		const iaId = new Identity('ia', HqAppearance.Skins.Get(ColorKind[ColorKind.Blue]), false);
 		blueprint.Patrols.forEach((patrol) => {
 			const tank = new Tank(iaId, false);
 			const d = new HexAxial(patrol.Departure.Position.Q, patrol.Departure.Position.R);

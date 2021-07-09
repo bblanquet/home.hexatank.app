@@ -7,6 +7,7 @@ import { BlueprintSetup } from '../../Components/Components/Form/BlueprintSetup'
 import { IOnlinePlayerManager } from './IOnlinePlayerManager';
 import { ErrorHandler, ErrorCat } from '../../Utils/Exceptions/ErrorHandler';
 import { MapSize } from '../../Core/Framework/Blueprint/Items/MapSize';
+import { HqAppearance } from '../../Core/Framework/Render/Hq/HqSkinHelper';
 export class OnlineBlueprintMaker {
 	constructor(private _onlinePlayerManager: IOnlinePlayerManager, private _blueprintSetup: BlueprintSetup) {}
 
@@ -21,7 +22,8 @@ export class OnlineBlueprintMaker {
 			this.ConvertSize(),
 			this.ConvertMapType(),
 			this.ConvertEnv(),
-			hqCount
+			hqCount,
+			HqAppearance.Colors
 		);
 		mapContext.PlayerName = this._onlinePlayerManager.Player.Name;
 		this.AssignIa(mapContext);

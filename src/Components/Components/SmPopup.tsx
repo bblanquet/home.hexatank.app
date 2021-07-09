@@ -2,7 +2,6 @@ import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import { StatsKind } from '../../Utils/Stats/StatsKind';
-import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 import { Singletons, SingletonKey } from '../../Singletons';
 import Btn from '../Common/Button/Stylish/Btn';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
@@ -13,14 +12,12 @@ import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 import Switch from './Switch';
 
 export default class SmPopup extends Component<{ status: GameStatus; points: number }, { Kind: StatsKind }> {
-	private _profilService: IPlayerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 	private _audioService: IAudioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 
 	componentDidMount() {
 		this.setState({
 			Kind: StatsKind.Unit
 		});
-		this._profilService.AddPoints(this.props.points);
 		if (this.props.status === GameStatus.Victory) {
 			this._audioService.Play(AudioArchive.victory, 0.1, false);
 		}
@@ -31,7 +28,6 @@ export default class SmPopup extends Component<{ status: GameStatus; points: num
 	}
 
 	private Quit(): void {
-		//this._profilService.Update();
 		route('{{sub_path}}Home', true);
 	}
 

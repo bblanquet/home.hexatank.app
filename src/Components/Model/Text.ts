@@ -6,6 +6,8 @@ export const RedSentences = [
 	'Your carefreeness will be your end.'
 ];
 
+export const BlueSentences = [ '...', 'zzzZZZzzzz.' ];
+
 export const LoadingSentences = [
 	'Designing nice trophies...',
 	'Setting satellites up for communication between troops...',

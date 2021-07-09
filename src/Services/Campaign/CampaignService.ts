@@ -13,6 +13,7 @@ import { MapShape } from '../../Core/Framework/Blueprint/Items/MapShape';
 import { ICampaignService } from './ICampaignService';
 import { BlueprintSetup } from '../../Components/Components/Form/BlueprintSetup';
 import { StageState } from './StageState';
+import { ColorKind } from '../../Components/Common/Button/Stylish/ColorKind';
 
 export class CampaignService implements ICampaignService {
 	private _training: Dictionary<IBlueprint>;
@@ -29,16 +30,61 @@ export class CampaignService implements ICampaignService {
 		this._training.Add((3).toString(), new DiamondBlueprintMaker().GetBluePrint());
 
 		this._red = new Dictionary<GameBlueprint>();
-		this._red.Add((1).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapShape.Flower, MapKind.Forest, 2));
-		this._red.Add((2).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapShape.Donut, MapKind.Forest, 2));
-		this._red.Add((3).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapShape.H, MapKind.Forest, 2));
-		this._red.Add((4).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapShape.Triangle, MapKind.Forest, 2));
+		this._red.Add(
+			(1).toString(),
+			new GameBlueprintMaker().GetBluePrint(+6, MapShape.Flower, MapKind.Forest, 2, [
+				ColorKind.Yellow,
+				ColorKind.Red
+			])
+		);
+		this._red.Add(
+			(2).toString(),
+			new GameBlueprintMaker().GetBluePrint(+6, MapShape.Donut, MapKind.Forest, 2, [
+				ColorKind.Yellow,
+				ColorKind.Red
+			])
+		);
+		this._red.Add(
+			(3).toString(),
+			new GameBlueprintMaker().GetBluePrint(+6, MapShape.H, MapKind.Forest, 2, [
+				ColorKind.Yellow,
+				ColorKind.Red
+			])
+		);
+		this._red.Add(
+			(4).toString(),
+			new GameBlueprintMaker().GetBluePrint(+6, MapShape.Triangle, MapKind.Forest, 2, [
+				ColorKind.Yellow,
+				ColorKind.Red
+			])
+		);
 
 		this._blue = new Dictionary<GameBlueprint>();
-		this._blue.Add((1).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapShape.Flower, MapKind.Sand, 2));
-		this._blue.Add((2).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapShape.Donut, MapKind.Sand, 2));
-		this._blue.Add((3).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapShape.H, MapKind.Sand, 2));
-		this._blue.Add((4).toString(), new GameBlueprintMaker().GetBluePrint(+6, MapShape.Triangle, MapKind.Sand, 2));
+		this._blue.Add(
+			(1).toString(),
+			new GameBlueprintMaker().GetBluePrint(+6, MapShape.Flower, MapKind.Ice, 2, [
+				ColorKind.Yellow,
+				ColorKind.Blue
+			])
+		);
+		this._blue.Add(
+			(2).toString(),
+			new GameBlueprintMaker().GetBluePrint(+6, MapShape.Donut, MapKind.Ice, 2, [
+				ColorKind.Yellow,
+				ColorKind.Blue
+			])
+		);
+		this._blue.Add(
+			(3).toString(),
+			new GameBlueprintMaker().GetBluePrint(+6, MapShape.H, MapKind.Ice, 2, [ ColorKind.Yellow, ColorKind.Blue ])
+		);
+		this._blue.Add(
+			(4).toString(),
+			new GameBlueprintMaker().GetBluePrint(+6, MapShape.Triangle, MapKind.Ice, 2, [
+				ColorKind.Yellow,
+				ColorKind.Blue
+			])
+		);
 	}
 
 	public Do(): void {
@@ -71,7 +117,7 @@ export class CampaignService implements ICampaignService {
 		return blueprint;
 	}
 
-	public GetButtons(kind: CampaignKind): StageState[] {
+	public GetStages(kind: CampaignKind): StageState[] {
 		if (kind === CampaignKind.blue) {
 			return this._playerProfil.GetProfil().BlueLvl;
 		} else if (kind === CampaignKind.training) {

@@ -1,5 +1,4 @@
 import { IOnlineService } from '../Online/IOnlineService';
-import { AudioArchive } from './../../Core/Framework/AudioArchiver';
 import { IAudioService } from './../Audio/IAudioService';
 import { StatsContext } from './../../Core/Framework/Stats/StatsContext';
 import { BrainInjecter } from './../../Core/Ia/Decision/BrainInjecter';
@@ -40,6 +39,9 @@ export class AppService implements IAppService<GameBlueprint> {
 	private _keyService: IKeyService;
 	private _audioService: IAudioService;
 	private _playerProfilService: IPlayerProfilService;
+	private _gameStatusChanged: any = this.GameStatusChanged.bind(this);
+	private _victory: () => void;
+	private _defeat: () => void;
 
 	constructor() {
 		this._appProvider = new AppProvider();
@@ -61,13 +63,16 @@ export class AppService implements IAppService<GameBlueprint> {
 		return this._recordContext;
 	}
 
-	public Register(blueprint: GameBlueprint): void {
+	public Register(blueprint: GameBlueprint, victory: () => void, defeat: () => void): void {
 		this._keyService.DefineKey(this);
 
 		GameSettings.Init();
 		GameSettings.SetNormalSpeed();
 		const gameState = new GameState();
 		this._context = blueprint;
+
+		this._victory = victory;
+		this._defeat = defeat;
 		this._app = this._appProvider.Provide(blueprint);
 		this._layerService.Register(this._app);
 		this._updateService.Register(gameState);
@@ -81,7 +86,7 @@ export class AppService implements IAppService<GameBlueprint> {
 		this._app.start();
 		this._gameAudioService = new GameAudioManager(blueprint, this._gameContext);
 		this._audioService.Register(this._gameAudioService);
-		this._gameContext.State.OnGameStatusChanged.On(this.GameStatusChanged.bind(this));
+		this._gameContext.State.OnGameStatusChanged.On(this._gameStatusChanged);
 
 		this._gameContext.GetCells().forEach((c) => {
 			c.AlwaysVisible();
@@ -89,8 +94,14 @@ export class AppService implements IAppService<GameBlueprint> {
 		CellStateSetter.SetStates(this._gameContext.GetCells());
 	}
 
-	private GameStatusChanged(e: any, status: GameStatus) {
+	private GameStatusChanged(e: any, status: GameStatus): void {
 		if (status === GameStatus.Defeat || status === GameStatus.Victory) {
+			if (status === GameStatus.Victory) {
+				this._victory();
+			}
+			if (status === GameStatus.Defeat) {
+				this._defeat();
+			}
 			this._recordContext.Stop(status === GameStatus.Victory);
 			const record = this._recordContext.GetRecord();
 			this._playerProfilService.Init();

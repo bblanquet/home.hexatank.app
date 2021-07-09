@@ -3,5 +3,5 @@ import { StageState } from './StageState';
 
 export interface ICampaignService {
 	GetMapContext(kind: CampaignKind, index: number): any;
-	GetButtons(kind: CampaignKind): StageState[];
+	GetStages(kind: CampaignKind): StageState[];
 }

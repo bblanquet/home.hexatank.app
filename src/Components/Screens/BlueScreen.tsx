@@ -1,31 +1,28 @@
-import { Component, h } from 'preact';
-import { route } from 'preact-router';
-import { IAppService } from '../../Services/App/IAppService';
-import { ICampaignService } from '../../Services/Campaign/ICampaignService';
-import { Singletons, SingletonKey } from '../../Singletons';
+import { h, JSX } from 'preact';
 import Redirect from '../Components/Redirect';
 import Btn from '../Common/Button/Stylish/Btn';
 import { LockBtn } from '../Common/Button/Stylish/LockBtn';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
-import { CampaignKind } from '../../Services/Campaign/CampaignKind';
 import { Face } from '../Components/Face';
 import StatBar from '../Components/StatBar';
-import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
 import Struct from '../Components/Struct';
 import { StageState } from '../../Services/Campaign/StageState';
 import { VictoryBtn } from '../Common/Button/Stylish/VictoryBtn';
+import { HookedComponent } from '../Hooks/HookedComponent';
+import { BlueHook } from '../Hooks/BlueHook';
+import { CampaignState } from '../Model/GreenState';
+import { useState } from 'preact/hooks';
+import Visible from '../Components/Visible';
 
-export default class BlueScreen extends Component<any, any> {
-	private _campaignService: ICampaignService;
-
-	constructor(props: any) {
-		super(props);
-		this._campaignService = Singletons.Load<ICampaignService>(SingletonKey.Campaign);
+export default class BlueScreen extends HookedComponent<{}, BlueHook, CampaignState> {
+	public GetDefaultHook(): BlueHook {
+		const [ state, setState ] = useState(BlueHook.DefaultState());
+		return new BlueHook(state, setState);
 	}
 
-	render() {
+	public Rendering(): JSX.Element {
 		return (
 			<Redirect>
 				<Struct
@@ -40,35 +37,47 @@ export default class BlueScreen extends Component<any, any> {
 										face={'fill-blue-face'}
 									/>
 								</div>
-								<div class="container-center">
+								<Visible isVisible={this.Hook.State.HasBubble}>
+									<div class="arrow-up" />
+									<p class="bubble">{this.Hook.State.CurrentSentence}</p>
 									<div class="container-center-horizontal">
+										<Btn callBack={() => this.Hook.SetBubble()} color={ColorKind.Black}>
+											<Icon Value="fas fa-undo-alt" /> Back
+										</Btn>
 										<Btn
-											callBack={() => {
-												this.RedCampaign();
-											}}
-											color={ColorKind.Black}
+											callBack={() => this.Hook.Start(this.Hook.State.Level)}
+											color={ColorKind.Blue}
 										>
-											<Icon Value="fas fa-long-arrow-alt-left" />
+											<Icon Value="fas fa-fist-raised" /> Fight
 										</Btn>
 									</div>
-									<div class="d-flex flex-wrap justify-content-center">
-										{this._campaignService.GetButtons(CampaignKind.blue).map((state, index) => {
-											if (state === StageState.lock) {
-												return <LockBtn />;
-											} else if (state === StageState.achieved) {
-												return <VictoryBtn />;
-											} else {
-												return this.GetButton(index + 1);
-											}
-										})}
-									</div>
+								</Visible>
+								<div class="container-center">
+									<Visible isVisible={!this.Hook.State.HasBubble}>
+										<div class="container-center-horizontal">
+											<Btn callBack={() => this.Hook.Red()} color={ColorKind.Black}>
+												<Icon Value="fas fa-long-arrow-alt-left" />
+											</Btn>
+										</div>
+										<div class="d-flex flex-wrap justify-content-center">
+											{this.Hook.GetStages().map((state, index) => {
+												if (state === StageState.lock) {
+													return <LockBtn />;
+												} else if (state === StageState.achieved) {
+													return <VictoryBtn />;
+												} else {
+													return this.GetButton(index + 1);
+												}
+											})}
+										</div>
+									</Visible>
 								</div>
 							</div>
 						</div>
 					}
 					footer={
 						<div class="navbar nav-inner">
-							<SmBtn callBack={() => this.Back()} color={ColorKind.Black}>
+							<SmBtn callBack={() => this.Hook.Back()} color={ColorKind.Black}>
 								<Icon Value="fas fa-undo-alt" /> Back
 							</SmBtn>
 						</div>
@@ -78,30 +87,11 @@ export default class BlueScreen extends Component<any, any> {
 		);
 	}
 
-	private Back() {
-		route('{{sub_path}}Home', true);
-	}
-
-	private RedCampaign() {
-		route('{{sub_path}}Red', true);
-	}
-
 	private GetButton(index: number) {
 		return (
-			<Btn
-				callBack={() => {
-					this.Start(index);
-				}}
-				color={ColorKind.Blue}
-			>
+			<Btn callBack={() => this.Hook.Select(index)} color={ColorKind.Blue}>
 				<Icon Value="fas fa-arrow-alt-circle-right" /> {index}
 			</Btn>
 		);
-	}
-
-	Start(index: number): void {
-		const mapContext = this._campaignService.GetMapContext(CampaignKind.blue, index);
-		Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App).Register(mapContext);
-		route('{{sub_path}}Canvas', true);
 	}
 }

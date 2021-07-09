@@ -94,6 +94,8 @@ export class PlayerProfilService implements IPlayerProfilService {
 			this.AddPoint(1);
 			if (0 < remainingPoints) {
 				this.Animation(remainingPoints);
+			} else {
+				this.Update();
 			}
 		}, 200);
 	}

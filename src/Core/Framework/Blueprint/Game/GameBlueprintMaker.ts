@@ -22,6 +22,8 @@ import { IMapBuilder } from '../../Builder/IPlaygroundBuilder';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { DecoratingPrints } from '../../../Items/Cell/Decorator/DecoratingPrints';
 import { DecoratingFactory } from '../../../Items/Cell/Decorator/ForestFactory';
+import { ColorKind } from '../../../../Components/Common/Button/Stylish/ColorKind';
+import { HqAppearance } from '../../Render/Hq/HqSkinHelper';
 
 export class GameBlueprintMaker {
 	private _builders: Dictionary<IMapBuilder>;
@@ -37,7 +39,13 @@ export class GameBlueprintMaker {
 		this._builders.Add(MapShape.Rectangle.toString(), new RectangleFlowerMapBuilder());
 	}
 
-	public GetBluePrint(mapSize: MapSize, mapType: MapShape, mapMode: MapKind, hqCount: number): GameBlueprint {
+	public GetBluePrint(
+		mapSize: MapSize,
+		mapType: MapShape,
+		mapMode: MapKind,
+		hqCount: number,
+		colors: ColorKind[]
+	): GameBlueprint {
 		const context = new GameBlueprint();
 		context.MapMode = mapMode;
 		const mapItems = new Array<CellPrint>();
@@ -67,7 +75,7 @@ export class GameBlueprintMaker {
 
 		context.Hqs = new Array<DiamondHq>();
 		//add diamonds and join them to hq
-		diamondPositions.forEach((diamondCoo) => {
+		diamondPositions.forEach((diamondCoo, index) => {
 			let diamonMapItem = new CellPrint();
 			diamonMapItem.Position = diamondCoo;
 			diamonMapItem.Type = CellType.Hq;
@@ -77,6 +85,7 @@ export class GameBlueprintMaker {
 				excluded.Add(p.ToString(), p);
 			});
 			let hqDiamond = new DiamondHq();
+			hqDiamond.Color = colors[index];
 			hqDiamond.Diamond = diamonMapItem;
 			hqDiamond.Hq = hqs[diamondPositions.indexOf(diamondCoo)];
 			context.Hqs.push(hqDiamond);

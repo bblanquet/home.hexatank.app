@@ -15,9 +15,10 @@ import { IKeyService } from '../Key/IKeyService';
 import { CellStateSetter } from '../../Core/Items/Cell/CellStateSetter';
 import { GameSettings } from '../../Core/Framework/GameSettings';
 import { IAudioService } from '../Audio/IAudioService';
-import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import { GameState } from '../../Core/Framework/Context/GameState';
+import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
+import { StageState } from '../Campaign/StageState';
 
 export class PowerAppService implements IAppService<FireBlueprint> {
 	private _blueprint: FireBlueprint;
@@ -27,11 +28,14 @@ export class PowerAppService implements IAppService<FireBlueprint> {
 	private _gameAudioService: PowerAudioManager;
 
 	private _gameContextService: IGameContextService<FireBlueprint, FireContext>;
+	private _playerProfilService: IPlayerProfilService;
 	private _interactionService: IInteractionService<FireContext>;
 	private _layerService: ILayerService;
 	private _updateService: IUpdateService;
 	private _keyService: IKeyService;
 	private _audioService: IAudioService;
+	private _victory: () => void;
+	private _defeat: () => void;
 
 	constructor() {
 		this._appProvider = new AppProvider();
@@ -43,11 +47,14 @@ export class PowerAppService implements IAppService<FireBlueprint> {
 		this._interactionService = Singletons.Load<IInteractionService<FireContext>>(SingletonKey.PowerInteraction);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 		this._audioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
+		this._playerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 	}
 
-	public Register(blueprint: FireBlueprint): void {
+	public Register(blueprint: FireBlueprint, victory: () => void, defeat: () => void): void {
 		this._keyService.DefineKey(this);
 
+		this._victory = victory;
+		this._defeat = defeat;
 		GameSettings.Init();
 		GameSettings.SetNormalSpeed();
 		const gameState = new GameState();
@@ -72,12 +79,10 @@ export class PowerAppService implements IAppService<FireBlueprint> {
 	}
 
 	private GameStatusChanged(e: any, status: GameStatus) {
-		if (status === GameStatus.Defeat) {
-			this._audioService.Play(AudioArchive.defeat, 0.5, false);
-		}
-
 		if (status === GameStatus.Victory) {
-			this._audioService.Play(AudioArchive.victory, 0.5, false);
+			this._victory();
+		} else if (status === GameStatus.Defeat) {
+			this._defeat();
 		}
 	}
 

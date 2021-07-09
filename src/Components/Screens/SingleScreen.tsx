@@ -15,6 +15,7 @@ import { BlueprintSetup } from '../Components/Form/BlueprintSetup';
 import Panel from '../Components/Panel/Panel';
 import Redirect from '../Components/Redirect';
 import { MapSize } from '../../Core/Framework/Blueprint/Items/MapSize';
+import { HqAppearance } from '../../Core/Framework/Render/Hq/HqSkinHelper';
 
 export default class SingleScreen extends Component<any, BlueprintSetup> {
 	private _profilService: IPlayerProfilService;
@@ -101,7 +102,8 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 			this.ConvertSize(),
 			this.ConvertMapType(),
 			this.ConvertEnv(),
-			hqCount
+			hqCount,
+			HqAppearance.Colors
 		);
 		if (!this.state.onylIa) {
 			const playerName = this._profilService.GetProfil().LastPlayerName;
@@ -115,7 +117,15 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 			}
 			index += 1;
 		});
-		Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App).Register(blueprint);
+		Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App).Register(
+			blueprint,
+			() => {
+				this._profilService.AddPoints(30);
+			},
+			() => {
+				this._profilService.AddPoints(3);
+			}
+		);
 		route('{{sub_path}}Canvas', true);
 	}
 }

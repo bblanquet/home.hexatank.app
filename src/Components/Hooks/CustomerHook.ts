@@ -54,7 +54,7 @@ export class MonitoringHook extends Hook<CustomerState> {
 			.then((response: AxiosResponse<ErrorDetail>) => {
 				try {
 					const data = RecordContent.To(JSON.parse(response.data.content));
-					this._appService.Register(data.Blueprint);
+					this._appService.Register(data.Blueprint, () => {}, () => {});
 					this._recordService.Register(data);
 					route('{{sub_path}}Player', true);
 				} catch (error) {

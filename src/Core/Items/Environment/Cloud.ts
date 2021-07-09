@@ -24,8 +24,8 @@ export class Cloud extends Item {
 		this._boundingBox = new BoundingBox();
 		this._boundingBox.X = this._min;
 		this._boundingBox.Y = this._y;
-		this._boundingBox.Width = GameSettings.Size * 3;
-		this._boundingBox.Height = GameSettings.Size * 3;
+		this._boundingBox.Width = GameSettings.Size * 2;
+		this._boundingBox.Height = GameSettings.Size * Math.sqrt(3);
 		this.InitPosition({ X: this._min, Y: this._y });
 	}
 

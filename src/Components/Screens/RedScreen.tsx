@@ -1,16 +1,9 @@
-import { Component, h } from 'preact';
-import { route } from 'preact-router';
-import { IAppService } from '../../Services/App/IAppService';
-import { ICampaignService } from '../../Services/Campaign/ICampaignService';
-import { Singletons, SingletonKey } from '../../Singletons';
+import { JSX, h } from 'preact';
 import Btn from '../Common/Button/Stylish/Btn';
 import { LockBtn } from '../Common/Button/Stylish/LockBtn';
 import { VictoryBtn } from '../Common/Button/Stylish/VictoryBtn';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
-import { CampaignKind } from '../../Services/Campaign/CampaignKind';
-import { RedSentences } from '../Model/Text';
-import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { Face } from '../Components/Face';
 import StatBar from '../Components/StatBar';
 import Redirect from '../Components/Redirect';
@@ -18,19 +11,18 @@ import Visible from '../Components/Visible';
 import Struct from '../Components/Struct';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
 import { StageState } from '../../Services/Campaign/StageState';
+import { RedHook } from '../Hooks/RedHook';
+import { HookedComponent } from '../Hooks/HookedComponent';
+import { CampaignState } from '../Model/GreenState';
+import { useState } from 'preact/hooks';
 
-export default class RedScreen extends Component<
-	any,
-	{ HasBubble: boolean; level: number; Sentence: string; CurrentSentence: string }
-> {
-	private _campaignService: ICampaignService;
-
-	constructor(props: any) {
-		super(props);
-		this._campaignService = Singletons.Load<ICampaignService>(SingletonKey.Campaign);
+export default class RedScreen extends HookedComponent<{}, RedHook, CampaignState> {
+	public GetDefaultHook(): RedHook {
+		const [ state, setState ] = useState(RedHook.DefaultState());
+		return new RedHook(state, setState);
 	}
 
-	render() {
+	public Rendering(): JSX.Element {
 		return (
 			<Redirect>
 				<Struct
@@ -45,24 +37,15 @@ export default class RedScreen extends Component<
 										face={'fill-red-face'}
 									/>
 								</div>
-								<Visible isVisible={this.state.HasBubble}>
+								<Visible isVisible={this.Hook.State.HasBubble}>
 									<div class="arrow-up" />
-									<p class="bubble">{this.state.CurrentSentence}</p>
+									<p class="bubble">{this.Hook.State.CurrentSentence}</p>
 									<div class="container-center-horizontal">
-										<Btn
-											callBack={() => {
-												this.setState({
-													HasBubble: !this.state.HasBubble
-												});
-											}}
-											color={ColorKind.Black}
-										>
+										<Btn callBack={() => this.Hook.SetBubble()} color={ColorKind.Black}>
 											<Icon Value="fas fa-undo-alt" /> Back
 										</Btn>
 										<Btn
-											callBack={() => {
-												this.Start(this.state.level);
-											}}
+											callBack={() => this.Hook.Start(this.Hook.State.Level)}
 											color={ColorKind.Red}
 										>
 											<Icon Value="fas fa-fist-raised" /> Fight
@@ -70,27 +53,17 @@ export default class RedScreen extends Component<
 									</div>
 								</Visible>
 								<div class="container-center">
-									<Visible isVisible={!this.state.HasBubble}>
+									<Visible isVisible={!this.Hook.State.HasBubble}>
 										<div class="container-center-horizontal">
-											<Btn
-												callBack={() => {
-													this.Green();
-												}}
-												color={ColorKind.Black}
-											>
+											<Btn callBack={() => this.Hook.Green()} color={ColorKind.Black}>
 												<Icon Value="fas fa-long-arrow-alt-left" />
 											</Btn>
-											<Btn
-												callBack={() => {
-													this.Blue();
-												}}
-												color={ColorKind.Black}
-											>
+											<Btn callBack={() => this.Hook.Blue()} color={ColorKind.Black}>
 												<Icon Value="fas fa-long-arrow-alt-right" />
 											</Btn>
 										</div>
 										<div class="d-flex flex-wrap justify-content-center">
-											{this._campaignService.GetButtons(CampaignKind.red).map((state, index) => {
+											{this.Hook.GetStages().map((state, index) => {
 												if (state === StageState.lock) {
 													return <LockBtn />;
 												} else if (state === StageState.achieved) {
@@ -107,7 +80,7 @@ export default class RedScreen extends Component<
 					}
 					footer={
 						<div class="navbar nav-inner">
-							<SmBtn callBack={() => this.Back()} color={ColorKind.Black}>
+							<SmBtn callBack={() => this.Hook.Back()} color={ColorKind.Black}>
 								<Icon Value="fas fa-undo-alt" /> Back
 							</SmBtn>
 						</div>
@@ -117,62 +90,11 @@ export default class RedScreen extends Component<
 		);
 	}
 
-	private Back() {
-		route('{{sub_path}}Home', true);
-	}
-
-	private Blue() {
-		route('{{sub_path}}Blue', true);
-	}
-
-	private Green() {
-		route('{{sub_path}}Green', true);
-	}
-
-	private _timeout: NodeJS.Timeout;
-
-	componentWillUnmount(): void {
-		clearTimeout(this._timeout);
-	}
-
-	private TextAnimation(): void {
-		if (this.state.CurrentSentence.length < this.state.Sentence.length) {
-			this.setState({
-				CurrentSentence: this.state.Sentence.substring(0, this.state.CurrentSentence.length + 1)
-			});
-		}
-
-		if (this.state.CurrentSentence.length < this.state.Sentence.length) {
-			this._timeout = setTimeout(() => {
-				this.TextAnimation();
-			}, 50);
-		}
-	}
-
 	private GetButton(index: number) {
 		return (
-			<Btn
-				callBack={() => {
-					this.setState({
-						HasBubble: !this.state.HasBubble,
-						level: index,
-						Sentence: RedSentences[Math.round((RedSentences.length - 1) * Math.random())],
-						CurrentSentence: ''
-					});
-					setTimeout(() => {
-						this.TextAnimation();
-					}, 100);
-				}}
-				color={ColorKind.Red}
-			>
+			<Btn callBack={() => this.Hook.Select(index)} color={ColorKind.Red}>
 				<Icon Value="fas fa-arrow-alt-circle-right" /> {index}
 			</Btn>
 		);
-	}
-
-	Start(index: number): void {
-		const mapContext = this._campaignService.GetMapContext(CampaignKind.red, index);
-		Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App).Register(mapContext);
-		route('{{sub_path}}Canvas', true);
 	}
 }

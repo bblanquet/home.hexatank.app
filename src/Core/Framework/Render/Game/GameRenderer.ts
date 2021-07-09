@@ -36,8 +36,8 @@ export class GameRenderer {
 		this.SetLands(cells, blueprint.MapMode, areas);
 		this.AddClouds();
 		if (blueprint.Hqs) {
-			blueprint.Hqs.forEach((hq, index) => {
-				hqs.push(new HqRender().Render(cells, hq, index));
+			blueprint.Hqs.forEach((hq) => {
+				hqs.push(new HqRender().Render(cells, hq));
 			});
 
 			//insert elements into playground

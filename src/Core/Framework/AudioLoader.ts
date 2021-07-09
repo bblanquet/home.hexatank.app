@@ -1,6 +1,4 @@
-import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { AudioArchive } from './AudioArchiver';
-import { Howl } from 'howler';
 import { ILoader } from './ILoader';
 
 export class AudioLoader implements ILoader {
@@ -66,7 +64,6 @@ export class AudioLoader implements ILoader {
 		} else {
 			audio.addEventListener('canplaythrough', () => onLoaded(), false);
 		}
-
 		audio.load();
 	}
 }

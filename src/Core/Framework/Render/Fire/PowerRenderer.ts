@@ -16,10 +16,11 @@ import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
 import { MapKind } from '../../Blueprint/Items/MapKind';
 import { Floor } from '../../../Items/Environment/Floor';
 import { Identity } from '../../../Items/Identity';
-import { HqSkinHelper } from '../Hq/HqSkinHelper';
+import { HqAppearance } from '../Hq/HqSkinHelper';
 import { AboveItem } from '../../../Items/AboveItem';
 import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
 import { GameState } from '../../Context/GameState';
+import { ColorKind } from '../../../../Components/Common/Button/Stylish/ColorKind';
 
 export class FireRenderer {
 	public Render(blueprint: FireBlueprint, gameState: GameState): FireContext {
@@ -41,14 +42,14 @@ export class FireRenderer {
 		const goal = new HexAxial(blueprint.Goal.Position.Q, blueprint.Goal.Position.R);
 		const goalCell = cells.Get(goal.ToString());
 
-		const iaId = new Identity('IA', new HqSkinHelper().GetSkin(0), false);
+		const iaId = new Identity('IA', HqAppearance.Skins.Get(ColorKind[ColorKind.Red]), false);
 		const shield = new HqLessShieldField(goalCell, iaId, new FakeHeadquarter());
 		goalCell.SetField(shield);
 		new AboveItem(goalCell, SvgArchive.arrow);
 
 		const arrival = new HexAxial(blueprint.Arrival.Position.Q, blueprint.Arrival.Position.R);
 		const arrivalCell = cells.Get(arrival.ToString());
-		const id = new Identity('Player', new HqSkinHelper().GetSkin(1), true);
+		const id = new Identity('Player', HqAppearance.Skins.Get(ColorKind[ColorKind.Blue]), true);
 		const tank = new Tank(id);
 		tank.SetPosition(arrivalCell);
 

@@ -9,8 +9,8 @@ export class PlayerProfil {
 
 	//levels
 	public GreenLvl: StageState[] = [ StageState.unlock, StageState.unlock, StageState.unlock ];
-	public RedLvl: StageState[] = [ StageState.achieved, StageState.unlock, StageState.lock, StageState.lock ];
-	public BlueLvl: StageState[] = [ StageState.lock, StageState.lock, StageState.lock, StageState.lock ];
+	public RedLvl: StageState[] = [ StageState.unlock, StageState.lock, StageState.lock, StageState.lock ];
+	public BlueLvl: StageState[] = [ StageState.unlock, StageState.lock, StageState.lock, StageState.lock ];
 
 	//stats
 	public CellCount: number = 0;

@@ -45,7 +45,7 @@ export class ProfilHook extends Hook<ProfilState> {
 	}
 
 	public Play(data: RecordContent): void {
-		this._appService.Register(data.Blueprint);
+		this._appService.Register(data.Blueprint, () => {}, () => {});
 		this._recordService.Register(data);
 		route('{{sub_path}}Player', true);
 	}

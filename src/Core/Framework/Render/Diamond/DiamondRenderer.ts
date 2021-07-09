@@ -16,6 +16,7 @@ import { SimpleFloor } from '../../../Items/Environment/SimpleFloor';
 import { AboveItem } from '../../../Items/AboveItem';
 import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
 import { GameState } from '../../Context/GameState';
+import { ColorKind } from '../../../../Components/Common/Button/Stylish/ColorKind';
 
 export class DiamondRenderer {
 	public Render(blueprint: DiamondBlueprint, gameState: GameState): DiamondContext {
@@ -33,7 +34,7 @@ export class DiamondRenderer {
 		).GetAreas(new HexAxial(blueprint.CenterItem.Position.Q, blueprint.CenterItem.Position.R));
 		this.SetLands(cells, blueprint.MapMode, areas);
 		this.AddClouds();
-		const hq = new HqRender().Render(cells, blueprint.HqDiamond, 0);
+		const hq = new HqRender().Render(cells, blueprint.HqDiamond);
 		this.SetHqLand(cells, SvgArchive.nature.hq, [ hq.GetCell().GetHexCoo() ]);
 		this.SetHqLand(cells, SvgArchive.nature.hq2, [ hq.GetCell().GetHexCoo() ], 1);
 

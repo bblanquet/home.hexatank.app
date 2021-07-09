@@ -60,7 +60,8 @@ export class OnlineService implements IOnlineService {
 		this._onlineGameContext = new OnlineGameContextManager(
 			this._socketWrapper,
 			this._onlinePlayerManager,
-			blueprintSetup
+			blueprintSetup,
+			Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil)
 		);
 		this.UpdatePlayerName(playerName);
 	}

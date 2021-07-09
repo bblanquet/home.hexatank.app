@@ -14,6 +14,7 @@ import { GameContext } from '../../Core/Framework/Context/GameContext';
 import { IGameContextService } from '../../Services/GameContext/IGameContextService';
 import { IOnlinePlayerManager } from './IOnlinePlayerManager';
 import { BlueprintSetup } from '../../Components/Components/Form/BlueprintSetup';
+import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 export class OnlineGameContextManager implements IOnlineGameContextManager {
 	private _peerObs: NetworkObserver[];
 	private _onlineService: IOnlineService;
@@ -22,7 +23,8 @@ export class OnlineGameContextManager implements IOnlineGameContextManager {
 	constructor(
 		private _socket: ISocketWrapper,
 		private _onlinePlayerManager: IOnlinePlayerManager,
-		private _blueprintSetup: BlueprintSetup
+		private _blueprintSetup: BlueprintSetup,
+		private _profilService: IPlayerProfilService
 	) {
 		this._onlineService = Singletons.Load<IOnlineService>(SingletonKey.Online);
 		this._gameContextService = Singletons.Load<IGameContextService<GameBlueprint, GameContext>>(
@@ -82,7 +84,15 @@ export class OnlineGameContextManager implements IOnlineGameContextManager {
 
 	private Load(blueprint: GameBlueprint) {
 		const appService = Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App);
-		appService.Register(blueprint);
+		appService.Register(
+			blueprint,
+			() => {
+				this._profilService.AddPoints(30);
+			},
+			() => {
+				this._profilService.AddPoints(3);
+			}
+		);
 		const context = this._gameContextService.Publish();
 		this._onlineService.Publish(new OnlineManager(this._socket, context, this._onlinePlayerManager));
 		this._onlinePlayerManager.Player.IsLoaded = true;

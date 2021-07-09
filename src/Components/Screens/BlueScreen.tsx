@@ -5,7 +5,7 @@ import { ICampaignService } from '../../Services/Campaign/ICampaignService';
 import { Singletons, SingletonKey } from '../../Singletons';
 import Redirect from '../Components/Redirect';
 import Btn from '../Common/Button/Stylish/Btn';
-import { LockButton } from '../Common/Button/Stylish/LockButton';
+import { LockBtn } from '../Common/Button/Stylish/LockBtn';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import { CampaignKind } from '../../Services/Campaign/CampaignKind';
@@ -14,6 +14,8 @@ import StatBar from '../Components/StatBar';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
 import Struct from '../Components/Struct';
+import { StageState } from '../../Services/Campaign/StageState';
+import { VictoryBtn } from '../Common/Button/Stylish/VictoryBtn';
 
 export default class BlueScreen extends Component<any, any> {
 	private _campaignService: ICampaignService;
@@ -50,15 +52,15 @@ export default class BlueScreen extends Component<any, any> {
 										</Btn>
 									</div>
 									<div class="d-flex flex-wrap justify-content-center">
-										{this._campaignService
-											.GetButtons(CampaignKind.blue)
-											.map((isPossible, index) => {
-												if (isPossible) {
-													return this.GetButton(index + 1);
-												} else {
-													return <LockButton />;
-												}
-											})}
+										{this._campaignService.GetButtons(CampaignKind.blue).map((state, index) => {
+											if (state === StageState.lock) {
+												return <LockBtn />;
+											} else if (state === StageState.achieved) {
+												return <VictoryBtn />;
+											} else {
+												return this.GetButton(index + 1);
+											}
+										})}
 									</div>
 								</div>
 							</div>

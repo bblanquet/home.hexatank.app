@@ -3,6 +3,7 @@ import { HexAxial } from '../../../Utils/Geometry/HexAxial';
 import { IMapBuilder } from './IPlaygroundBuilder';
 import { AreaSearch } from '../../Ia/Decision/Utils/AreaSearch';
 import { ErrorCat, ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
+import { MapSize } from '../Blueprint/Items/MapSize';
 
 export class YMapBuilder implements IMapBuilder {
 	public GetRefCoo(ranges: number): HexAxial {
@@ -10,6 +11,8 @@ export class YMapBuilder implements IMapBuilder {
 	}
 
 	public GetAllCoos(ranges: number): HexAxial[] {
+		ranges += 2;
+
 		if (ranges < 2) {
 			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
 		}

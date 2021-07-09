@@ -80,9 +80,9 @@ export class GameRenderer {
 			boundingBox.Y = cell.GetBoundingBox().Y - (boundingBox.Height / 2 - cell.GetBoundingBox().Height / 2);
 
 			let floor = SvgArchive.nature.forest.floor;
-			if (mode === MapKind.ice) {
+			if (mode === MapKind.Ice) {
 				floor = SvgArchive.nature.ice.floor;
-			} else if (mode === MapKind.sand) {
+			} else if (mode === MapKind.Sand) {
 				floor = SvgArchive.nature.sand.floor;
 			}
 

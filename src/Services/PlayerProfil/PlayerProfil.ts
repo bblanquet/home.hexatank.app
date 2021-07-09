@@ -1,4 +1,5 @@
 import { JsonRecordContent } from '../../Core/Framework/Record/Model/JsonRecordContent';
+import { StageState } from '../../Services/Campaign/StageState';
 export class PlayerProfil {
 	public LastPlayerName: string = 'John doe';
 	public IsMute: boolean = false;
@@ -7,13 +8,12 @@ export class PlayerProfil {
 	public Points: number = 0;
 
 	//levels
-	public TrainingLevel: number = 3;
-	public BlueLevel: number = 0;
-	public RedLevel: number = 1;
+	public GreenLvl: StageState[] = [ StageState.unlock, StageState.unlock, StageState.unlock ];
+	public RedLvl: StageState[] = [ StageState.achieved, StageState.unlock, StageState.lock, StageState.lock ];
+	public BlueLvl: StageState[] = [ StageState.lock, StageState.lock, StageState.lock, StageState.lock ];
 
 	//stats
 	public CellCount: number = 0;
 	public DeadCount: number = 0;
 	public VictoryCount: number = 0;
-	constructor() {}
 }

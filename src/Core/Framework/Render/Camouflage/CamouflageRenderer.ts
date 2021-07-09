@@ -70,11 +70,11 @@ export class CamouflageRenderer {
 	}
 
 	public AddClouds() {
-		new Cloud(GameSettings.Size * 2, 20 * GameSettings.Size, GameSettings.Size * 3, SvgArchive.nature.clouds[0]);
-		new Cloud(GameSettings.Size * 5, 20 * GameSettings.Size, GameSettings.Size * 6, SvgArchive.nature.clouds[1]);
-		new Cloud(GameSettings.Size * 8, 20 * GameSettings.Size, GameSettings.Size * 6, SvgArchive.nature.clouds[2]);
-		new Cloud(GameSettings.Size * 12, 20 * GameSettings.Size, GameSettings.Size * 8, SvgArchive.nature.clouds[3]);
-		new Cloud(GameSettings.Size * 6, 20 * GameSettings.Size, GameSettings.Size * 10, SvgArchive.nature.clouds[4]);
+		new Cloud(GameSettings.Size * 2, 20 * GameSettings.Size, -GameSettings.Size * 3, SvgArchive.nature.clouds[0]);
+		new Cloud(-GameSettings.Size * 5, 20 * GameSettings.Size, -GameSettings.Size * 15, SvgArchive.nature.clouds[1]);
+		new Cloud(GameSettings.Size * 8, 20 * GameSettings.Size, -GameSettings.Size * 13, SvgArchive.nature.clouds[2]);
+		new Cloud(-GameSettings.Size * 12, 20 * GameSettings.Size, -GameSettings.Size * 8, SvgArchive.nature.clouds[3]);
+		new Cloud(GameSettings.Size * 6, 20 * GameSettings.Size, -GameSettings.Size * 10, SvgArchive.nature.clouds[4]);
 	}
 
 	private SetLands(cells: Dictionary<Cell>, mode: MapKind, middleAreas: HexAxial[]) {
@@ -87,9 +87,9 @@ export class CamouflageRenderer {
 			boundingBox.Y = cell.GetBoundingBox().Y - (boundingBox.Height / 2 - cell.GetBoundingBox().Height / 2);
 
 			let floor = SvgArchive.nature.forest.floor;
-			if (mode === MapKind.ice) {
+			if (mode === MapKind.Ice) {
 				floor = SvgArchive.nature.ice.floor;
-			} else if (mode === MapKind.sand) {
+			} else if (mode === MapKind.Sand) {
 				floor = SvgArchive.nature.sand.floor;
 			}
 

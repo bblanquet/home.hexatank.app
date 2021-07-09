@@ -84,10 +84,10 @@ export default class BlueprintFormComponent extends Component<
 						<DropDownComponent
 							OnInput={(e: any) => {
 								this.setState({
-									MapType: e.target.value
+									Shape: e.target.value
 								});
 							}}
-							DefaultValue={this.state.MapType.toString()}
+							DefaultValue={this.state.Shape.toString()}
 							Label={'Shape'}
 							Values={[ 'Flower', 'Donut', 'Cheese', 'Triangle', 'Y', 'H', 'X', 'Rectangle' ]}
 						/>

@@ -11,9 +11,9 @@ export class AppProvider {
 
 	private GetColor(blueprint: IBlueprint): number {
 		let color = 0x00a651;
-		if (blueprint.MapMode === MapKind.sand) {
+		if (blueprint.MapMode === MapKind.Sand) {
 			color = 0xfece63;
-		} else if (blueprint.MapMode === MapKind.ice) {
+		} else if (blueprint.MapMode === MapKind.Ice) {
 			color = 0xacddf3;
 		}
 		return color;

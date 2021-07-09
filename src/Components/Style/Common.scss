@@ -109,6 +109,13 @@
 	width: fit-content;
 }
 
+.max-fit-content {
+	max-width: fit-content;
+	width: fit-content;
+	height: fit-content;
+	max-height: fit-content;
+}
+
 .fit-height {
 	height: fit-content;
 }

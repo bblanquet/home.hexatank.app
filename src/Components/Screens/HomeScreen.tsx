@@ -20,7 +20,7 @@ export default class HomeScreen extends Component<any, any> {
 	}
 
 	private ToCampaign(): void {
-		route('{{sub_path}}Training', true);
+		route('{{sub_path}}Green', true);
 	}
 
 	private ToHost(): void {

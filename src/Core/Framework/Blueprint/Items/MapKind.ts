@@ -1,5 +1,5 @@
 export enum MapKind {
-	sand = 0,
-	forest = 1,
-	ice = 2
+	Sand = 0,
+	Forest = 1,
+	Ice = 2
 }

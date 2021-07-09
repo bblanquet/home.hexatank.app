@@ -328,7 +328,7 @@ export const SvgArchive = {
 			cactus: './svg/nature/sand/cactus.svg',
 			cactusPlants: './svg/nature/sand/cactusPlants.svg',
 			whiteSkull: './svg/nature/sand/WhiteSkull.svg',
-			rock: './svg/nature/sand/rock.svg',
+			rock: './svg/nature/sand/sandRock.svg',
 			plants: './svg/nature/sand/plants.svg',
 			palmTree: './svg/nature/sand/palmTree.svg'
 		},

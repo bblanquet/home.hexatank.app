@@ -36,7 +36,7 @@ export class CamouflageBluePrintMaker {
 
 	public GetBluePrint(): CamouflageBlueprint {
 		const blueprint = new CamouflageBlueprint();
-		blueprint.MapMode = MapKind.forest;
+		blueprint.MapMode = MapKind.Forest;
 		const mapItems = new Array<CellPrint>();
 		const mapBuilder = this._builders.Get(MapShape.Rectangle.toString());
 		const coos = mapBuilder.GetAllCoos(6);
@@ -85,8 +85,8 @@ export class CamouflageBluePrintMaker {
 		});
 
 		const decorator = new DecoratingPrints(
-			DecoratingFactory.Obstacles.Get(MapKind[MapKind.forest]),
-			DecoratingFactory.Decorations.Get(MapKind[MapKind.forest])
+			DecoratingFactory.Obstacles.Get(MapKind[MapKind.Forest]),
+			DecoratingFactory.Decorations.Get(MapKind[MapKind.Forest])
 		);
 		//decorate tree, water, stone the map
 		coos.forEach((coo) => {

@@ -8,6 +8,7 @@ import { CheeseFlowerMapBuilder } from '../../Builder/CheeseFlowerMapBuilder';
 import { DonutFlowerMapBuilder } from '../../Builder/DonutFlowerMapBuilder';
 import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { MapKind } from '../Items/MapKind';
+import { MapSize } from '../Items/MapSize';
 import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
 import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
 import { DistanceHelper } from '../../../Items/Unit/MotionHelpers/DistanceHelper';
@@ -36,7 +37,7 @@ export class GameBlueprintMaker {
 		this._builders.Add(MapShape.Rectangle.toString(), new RectangleFlowerMapBuilder());
 	}
 
-	public GetBluePrint(mapSize: number, mapType: MapShape, mapMode: MapKind, hqCount: number): GameBlueprint {
+	public GetBluePrint(mapSize: MapSize, mapType: MapShape, mapMode: MapKind, hqCount: number): GameBlueprint {
 		const context = new GameBlueprint();
 		context.MapMode = mapMode;
 		const mapItems = new Array<CellPrint>();

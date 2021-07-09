@@ -4,7 +4,7 @@ import { IAppService } from '../../Services/App/IAppService';
 import { ICampaignService } from '../../Services/Campaign/ICampaignService';
 import { Singletons, SingletonKey } from '../../Singletons';
 import Btn from '../Common/Button/Stylish/Btn';
-import { LockButton } from '../Common/Button/Stylish/LockButton';
+import { LockBtn } from '../Common/Button/Stylish/LockBtn';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import { CampaignKind } from '../../Services/Campaign/CampaignKind';
@@ -18,6 +18,8 @@ import Visible from '../Components/Visible';
 import { GreenSentences } from '../Model/Text';
 import Struct from '../Components/Struct';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
+import { StageState } from '../../Services/Campaign/StageState';
+import { VictoryBtn } from '../Common/Button/Stylish/VictoryBtn';
 
 export default class GreenScreen extends Component<any, any> {
 	private _campaignService: ICampaignService;
@@ -86,11 +88,13 @@ export default class GreenScreen extends Component<any, any> {
 										<div class="d-flex flex-wrap justify-content-center">
 											{this._campaignService
 												.GetButtons(CampaignKind.training)
-												.map((isPossible, index) => {
-													if (isPossible) {
-														return this.GetButton(index + 1);
+												.map((state, index) => {
+													if (state === StageState.lock) {
+														return <LockBtn />;
+													} else if (state === StageState.achieved) {
+														return <VictoryBtn />;
 													} else {
-														return <LockButton />;
+														return this.GetButton(index + 1);
 													}
 												})}
 										</div>

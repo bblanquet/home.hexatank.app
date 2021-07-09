@@ -14,6 +14,7 @@ import BlueprintFormComponent from '../Components/Form/BlueprintFormComponent';
 import { BlueprintSetup } from '../Components/Form/BlueprintSetup';
 import Panel from '../Components/Panel/Panel';
 import Redirect from '../Components/Redirect';
+import { MapSize } from '../../Core/Framework/Blueprint/Items/MapSize';
 
 export default class SingleScreen extends Component<any, BlueprintSetup> {
 	private _profilService: IPlayerProfilService;
@@ -63,23 +64,34 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 		route('{{sub_path}}Home', true);
 	}
 
+	private ConvertMapType(): MapShape {
+		if (this.state.Shape === 'Flower') return MapShape.Flower;
+		if (this.state.Shape === 'Donut') return MapShape.Donut;
+		if (this.state.Shape === 'Cheese') return MapShape.Cheese;
+		if (this.state.Shape === 'Triangle') return MapShape.Triangle;
+		if (this.state.Shape === 'Y') return MapShape.Y;
+		if (this.state.Shape === 'H') return MapShape.H;
+		if (this.state.Shape === 'X') return MapShape.X;
+		return MapShape.Rectangle;
+	}
+
 	private ConvertSize(): number {
-		if (this.state.Size === 'Small') return 8;
-		if (this.state.Size === 'Medium') return 10;
-		if (this.state.Size === 'Large') return 12;
+		if (this.state.Size === 'Small') return MapSize.Small;
+		if (this.state.Size === 'Medium') return MapSize.Medium;
+		if (this.state.Size === 'Large') return MapSize.Large;
 		return 8;
 	}
 
 	private ConvertEnv(): MapKind {
-		if (this.state.Env === 'Sand') return MapKind.sand;
-		if (this.state.Env === 'Forest') return MapKind.forest;
-		if (this.state.Env === 'Ice') return MapKind.ice;
-		return MapKind.forest;
+		if (this.state.Env === 'Sand') return MapKind.Sand;
+		if (this.state.Env === 'Forest') return MapKind.Forest;
+		if (this.state.Env === 'Ice') return MapKind.Ice;
+		return MapKind.Forest;
 	}
 
 	Start(): void {
 		let hqCount = this.state.IaCount + 1;
-		if (this.ConvertSize() === 8 && 2 < hqCount) {
+		if (this.ConvertSize() === MapSize.Small && 2 < hqCount) {
 			hqCount = 2;
 		} else if (hqCount === 1) {
 			hqCount += 1;
@@ -105,16 +117,5 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 		});
 		Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App).Register(blueprint);
 		route('{{sub_path}}Canvas', true);
-	}
-
-	private ConvertMapType(): MapShape {
-		if (this.state.MapType === 'Flower') return MapShape.Flower;
-		if (this.state.MapType === 'Donut') return MapShape.Donut;
-		if (this.state.MapType === 'Cheese') return MapShape.Cheese;
-		if (this.state.MapType === 'Triangle') return MapShape.Triangle;
-		if (this.state.MapType === 'Y') return MapShape.Y;
-		if (this.state.MapType === 'H') return MapShape.H;
-		if (this.state.MapType === 'X') return MapShape.X;
-		return MapShape.Rectangle;
 	}
 }

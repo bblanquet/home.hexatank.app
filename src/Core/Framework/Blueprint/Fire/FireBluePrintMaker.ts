@@ -35,7 +35,7 @@ export class FireBluePrintMaker {
 
 	public GetBluePrint(): FireBlueprint {
 		const blueprint = new FireBlueprint();
-		blueprint.MapMode = MapKind.sand;
+		blueprint.MapMode = MapKind.Sand;
 		const mapItems = new Array<CellPrint>();
 		const mapBuilder = this._builders.Get(MapShape.Flower.toString());
 		const coos = mapBuilder.GetAllCoos(4);
@@ -66,8 +66,8 @@ export class FireBluePrintMaker {
 		});
 
 		const decorator = new DecoratingPrints(
-			DecoratingFactory.Obstacles.Get(MapKind[MapKind.sand]),
-			DecoratingFactory.Decorations.Get(MapKind[MapKind.sand])
+			DecoratingFactory.Obstacles.Get(MapKind[MapKind.Sand]),
+			DecoratingFactory.Decorations.Get(MapKind[MapKind.Sand])
 		);
 		//decorate tree, water, stone the map
 		coos.forEach((coo) => {

@@ -10,6 +10,7 @@ export class TriangleMapBuilder implements IMapBuilder {
 	}
 
 	public GetAllCoos(ranges: number): HexAxial[] {
+		ranges += 2;
 		if (ranges < 2) {
 			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
 		}

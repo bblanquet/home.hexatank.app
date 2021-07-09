@@ -15,7 +15,7 @@ export default class Option extends Component<{ Model: BlueprintSetup }> {
 					CallBack={(m: BlueprintSetup) => {
 						this.props.Model.Env = m.Env;
 						this.props.Model.IaCount = m.IaCount;
-						this.props.Model.MapType = m.MapType;
+						this.props.Model.Shape = m.Shape;
 						this.props.Model.Size = m.Size;
 						this.props.Model.onylIa = m.onylIa;
 					}}

@@ -6,7 +6,7 @@ import { MapKind } from '../../../Framework/Blueprint/Items/MapKind';
 export class DecoratingFactory {
 	public static Obstacles: Dictionary<DecoratingElement[]> = Dictionary.New([
 		{
-			key: MapKind[MapKind.forest],
+			key: MapKind[MapKind.Forest],
 			value: [
 				new DecoratingElement(CellType.Rock),
 				new DecoratingElement(CellType.Tree),
@@ -16,7 +16,7 @@ export class DecoratingFactory {
 			]
 		},
 		{
-			key: MapKind[MapKind.ice],
+			key: MapKind[MapKind.Ice],
 			value: [
 				new DecoratingElement(CellType.IceRock),
 				new DecoratingElement(CellType.IceTree),
@@ -25,7 +25,7 @@ export class DecoratingFactory {
 			]
 		},
 		{
-			key: MapKind[MapKind.sand],
+			key: MapKind[MapKind.Sand],
 			value: [
 				new DecoratingElement(CellType.SandRock),
 				new DecoratingElement(CellType.palmTree),
@@ -37,7 +37,7 @@ export class DecoratingFactory {
 
 	public static Decorations: Dictionary<DecoratingElement[]> = Dictionary.New([
 		{
-			key: MapKind[MapKind.forest],
+			key: MapKind[MapKind.Forest],
 			value: [
 				new DecoratingElement(CellType.Stone),
 				new DecoratingElement(CellType.Bush),
@@ -46,7 +46,7 @@ export class DecoratingFactory {
 			]
 		},
 		{
-			key: MapKind[MapKind.ice],
+			key: MapKind[MapKind.Ice],
 			value: [
 				new DecoratingElement(CellType.IceStone),
 				new DecoratingElement(CellType.IcePlants),
@@ -54,7 +54,7 @@ export class DecoratingFactory {
 			]
 		},
 		{
-			key: MapKind[MapKind.sand],
+			key: MapKind[MapKind.Sand],
 			value: [
 				new DecoratingElement(CellType.SandStone),
 				new DecoratingElement(CellType.SandCactusPlants),

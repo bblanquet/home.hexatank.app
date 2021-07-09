@@ -47,9 +47,26 @@ export class AudioLoader implements ILoader {
 		];
 	}
 
+	private IsIos(): boolean {
+		return (
+			[ 'iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod' ].includes(
+				navigator.platform
+			) ||
+			// iPad on iOS 13 detection
+			(navigator.userAgent.includes('Mac') && 'ontouchend' in document)
+		);
+	}
+
 	public Loading(path: string, onLoaded: () => void): void {
-		const audio = new Audio(path);
-		audio.addEventListener('canplaythrough', onLoaded, false);
+		const audio = new Audio();
+		audio.preload = 'auto';
+		audio.src = path;
+		if (this.IsIos()) {
+			onLoaded();
+		} else {
+			audio.addEventListener('canplaythrough', () => onLoaded(), false);
+		}
+
 		audio.load();
 	}
 }

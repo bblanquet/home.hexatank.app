@@ -11,7 +11,7 @@ export class XMapBuilder implements IMapBuilder {
 	}
 
 	public GetAllCoos(ranges: number): HexAxial[] {
-		ranges = ranges + 4;
+		ranges += 6;
 
 		if (ranges < 2) {
 			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
@@ -42,13 +42,13 @@ export class XMapBuilder implements IMapBuilder {
 
 	private Begin(ranges: number, x: number, y: number): boolean {
 		const half = Math.round(ranges / 2) - 1;
-		const quarter = Math.round(ranges / 4);
+		const quarter = Math.round(ranges / 4) + 1;
 		return x <= quarter && Math.round(half - quarter / 2) < y && y < Math.round(half + quarter / 2);
 	}
 
 	private End(ranges: number, x: number, y: number): boolean {
 		const half = Math.round(ranges / 2) - 1;
-		const quarter = Math.round(ranges / 4);
+		const quarter = Math.round(ranges / 4) + 1;
 		return ranges - (quarter + 1) <= x && Math.round(half - quarter / 2) < y && y < Math.round(half + quarter / 2);
 	}
 

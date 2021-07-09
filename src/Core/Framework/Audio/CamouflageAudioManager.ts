@@ -30,11 +30,11 @@ export class CamouflageAudioManager implements IGameAudioManager {
 	}
 
 	private GetMusic(): string {
-		if (this._mapContext.MapMode === MapKind.forest) {
+		if (this._mapContext.MapMode === MapKind.Forest) {
 			return AudioArchive.forestMusic;
-		} else if (this._mapContext.MapMode === MapKind.ice) {
+		} else if (this._mapContext.MapMode === MapKind.Ice) {
 			return AudioArchive.iceMusic;
-		} else if (this._mapContext.MapMode === MapKind.sand) {
+		} else if (this._mapContext.MapMode === MapKind.Sand) {
 			return AudioArchive.sandMusic;
 		}
 	}

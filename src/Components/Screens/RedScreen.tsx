@@ -4,7 +4,8 @@ import { IAppService } from '../../Services/App/IAppService';
 import { ICampaignService } from '../../Services/Campaign/ICampaignService';
 import { Singletons, SingletonKey } from '../../Singletons';
 import Btn from '../Common/Button/Stylish/Btn';
-import { LockButton } from '../Common/Button/Stylish/LockButton';
+import { LockBtn } from '../Common/Button/Stylish/LockBtn';
+import { VictoryBtn } from '../Common/Button/Stylish/VictoryBtn';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import { CampaignKind } from '../../Services/Campaign/CampaignKind';
@@ -16,6 +17,7 @@ import Redirect from '../Components/Redirect';
 import Visible from '../Components/Visible';
 import Struct from '../Components/Struct';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
+import { StageState } from '../../Services/Campaign/StageState';
 
 export default class RedScreen extends Component<
 	any,
@@ -72,7 +74,7 @@ export default class RedScreen extends Component<
 										<div class="container-center-horizontal">
 											<Btn
 												callBack={() => {
-													this.Training();
+													this.Green();
 												}}
 												color={ColorKind.Black}
 											>
@@ -80,7 +82,7 @@ export default class RedScreen extends Component<
 											</Btn>
 											<Btn
 												callBack={() => {
-													this.BlueCampaign();
+													this.Blue();
 												}}
 												color={ColorKind.Black}
 											>
@@ -88,15 +90,15 @@ export default class RedScreen extends Component<
 											</Btn>
 										</div>
 										<div class="d-flex flex-wrap justify-content-center">
-											{this._campaignService
-												.GetButtons(CampaignKind.red)
-												.map((isPossible, index) => {
-													if (isPossible) {
-														return this.GetButton(index + 1);
-													} else {
-														return <LockButton />;
-													}
-												})}
+											{this._campaignService.GetButtons(CampaignKind.red).map((state, index) => {
+												if (state === StageState.lock) {
+													return <LockBtn />;
+												} else if (state === StageState.achieved) {
+													return <VictoryBtn />;
+												} else {
+													return this.GetButton(index + 1);
+												}
+											})}
 										</div>
 									</Visible>
 								</div>
@@ -119,12 +121,12 @@ export default class RedScreen extends Component<
 		route('{{sub_path}}Home', true);
 	}
 
-	private BlueCampaign() {
+	private Blue() {
 		route('{{sub_path}}Blue', true);
 	}
 
-	private Training() {
-		route('{{sub_path}}Training', true);
+	private Green() {
+		route('{{sub_path}}Green', true);
 	}
 
 	private _timeout: NodeJS.Timeout;

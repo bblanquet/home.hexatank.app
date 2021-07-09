@@ -51,7 +51,7 @@ const App = (e: any) => {
 			<ErrorScreen path="{{sub_path}}Error" />
 			<SinglePlayerScreen path="{{sub_path}}SinglePlayer" />
 			<RedScreen path="{{sub_path}}Red" />
-			<GreenScreen path="{{sub_path}}Training" />
+			<GreenScreen path="{{sub_path}}Green" />
 			<BlueScreen path="{{sub_path}}Blue" />
 			<GameScreen path="{{sub_path}}Canvas" />
 			<BadgeScreen path="{{sub_path}}Badge" />

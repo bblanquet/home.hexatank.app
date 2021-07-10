@@ -5,19 +5,19 @@ import ActiveBtn from '../Common/Button/Stylish/ActiveBtn';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import Redirect from '../Components/Redirect';
-import Visible from '../Components/Visible';
+import Visible from '../Common/Struct/Visible';
 import Option from '../Components/Option';
 import { LobbyMode } from '../Model/LobbyMode';
 import { LobbyState } from '../Model/LobbyState';
 import { HookedComponent } from '../Hooks/HookedComponent';
 import { LobbyHook } from '../Hooks/LobbyHook';
 import { useState } from 'preact/hooks';
-import Struct from '../Components/Struct';
-import Navbar from '../Components/Navbar';
+import Body from '../Common/Struct/Body';
+import Navbar from '../Common/Struct/Navbar';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
 import SmActiveBtn from '../Common/Button/Stylish/SmActiveBtn';
 import MessageEmitter from '../Components/MessageEmitter';
-import Switch from '../Components/Switch';
+import Switch from '../Common/Struct/Switch';
 
 export default class LobbyScreen extends HookedComponent<{}, LobbyHook, LobbyState> {
 	public GetDefaultHook(): LobbyHook {
@@ -27,7 +27,7 @@ export default class LobbyScreen extends HookedComponent<{}, LobbyHook, LobbySta
 	public Rendering(): JSX.Element {
 		return (
 			<Redirect>
-				<Struct
+				<Body
 					header={
 						<Navbar>
 							<Visible isVisible={this.Hook.State.Player.IsAdmin}>

@@ -7,7 +7,7 @@ import Icon from '../Common/Icon/IconComponent';
 import { AssetLoader } from '../../Core/Framework/AssetLoader';
 import { AssetExplorer } from '../../Core/Framework/AssetExplorer';
 import { SvgLoader } from '../../Core/Framework/SvgLoader';
-import Visible from '../Components/Visible';
+import Visible from '../Common/Struct/Visible';
 import { LoadingSentences } from '../Model/Text';
 import { SingletonContainer } from '../../SingletonContainer';
 import Background from '../Components/Background';

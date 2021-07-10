@@ -1,6 +1,6 @@
 import { Component, h } from 'preact';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
-import Visible from './Visible';
+import Visible from '../Common/Struct/Visible';
 
 export class Face extends Component<
 	{

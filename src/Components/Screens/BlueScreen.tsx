@@ -7,14 +7,14 @@ import Icon from '../Common/Icon/IconComponent';
 import { Face } from '../Components/Face';
 import StatBar from '../Components/StatBar';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
-import Struct from '../Components/Struct';
+import Body from '../Common/Struct/Body';
 import { StageState } from '../../Services/Campaign/StageState';
 import { VictoryBtn } from '../Common/Button/Stylish/VictoryBtn';
 import { HookedComponent } from '../Hooks/HookedComponent';
 import { BlueHook } from '../Hooks/BlueHook';
 import { CampaignState } from '../Model/GreenState';
 import { useState } from 'preact/hooks';
-import Visible from '../Components/Visible';
+import Visible from '../Common/Struct/Visible';
 
 export default class BlueScreen extends HookedComponent<{}, BlueHook, CampaignState> {
 	public GetDefaultHook(): BlueHook {
@@ -25,7 +25,7 @@ export default class BlueScreen extends HookedComponent<{}, BlueHook, CampaignSt
 	public Rendering(): JSX.Element {
 		return (
 			<Redirect>
-				<Struct
+				<Body
 					header={<StatBar />}
 					content={
 						<div class="container-center-horizontal">

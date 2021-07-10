@@ -1,8 +1,8 @@
 import { h, Component, JSX } from 'preact';
-import PageAnalyser from './PageAnalyser';
-import Background from './Background';
+import PageAnalyser from '../../Components/PageAnalyser';
+import Background from '../../Components/Background';
 
-export default class Struct extends Component<
+export default class Body extends Component<
 	{ header: JSX.Element; content: JSX.Element; footer: JSX.Element; noScrollbar?: boolean },
 	any
 > {

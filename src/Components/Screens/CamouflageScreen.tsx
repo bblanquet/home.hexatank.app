@@ -6,7 +6,7 @@ import TruckMenuComponent from '../Components/Canvas/TruckMenuComponent';
 import OptionPopup from '../Components/OptionPopup';
 import Redirect from '../Components/Redirect';
 import SmPopup from '../Components/SmPopup';
-import Visible from '../Components/Visible';
+import Visible from '../Common/Struct/Visible';
 import { HookedComponent } from '../Hooks/HookedComponent';
 import { CamouflageHook } from '../Hooks/CamouflageHook';
 import { RuntimeState } from '../Model/RuntimeState';

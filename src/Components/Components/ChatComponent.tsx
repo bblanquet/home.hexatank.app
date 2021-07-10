@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 import Icon from '../Common/Icon/IconComponent';
 import { Message } from '../Model/Message';
-import Switch from './Switch';
+import Switch from '../Common/Struct/Switch';
 
 export default class ChatComponent extends Component<{ messages: Message[]; player: string }, {}> {
 	constructor() {

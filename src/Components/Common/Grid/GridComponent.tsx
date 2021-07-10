@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 
-export default class GridComponent extends Component<any, any> {
+export default class Grid extends Component<any, any> {
 	constructor() {
 		super();
 	}

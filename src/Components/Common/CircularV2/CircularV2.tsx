@@ -1,6 +1,6 @@
 import { h, Component, toChildArray, cloneElement } from 'preact';
 import { Point } from '../../../Utils/Geometry/Point';
-import Switch from '../../Components/Switch';
+import Switch from '../../Common/Struct/Switch';
 
 export default class CircularV2Component extends Component<{ OnCancel: () => void }, {}> {
 	private _positions: Point[] = [];

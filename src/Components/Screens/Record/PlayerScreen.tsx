@@ -14,13 +14,13 @@ import Redirect from '../../Components/Redirect';
 import { GameBlueprint } from '../../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { GameContext } from '../../../Core/Framework/Context/GameContext';
 import Icon from '../../Common/Icon/IconComponent';
-import Struct from '../../Components/Struct';
-import Navbar from '../../Components/Navbar';
-import Visible from '../../Components/Visible';
+import Body from '../../Common/Struct/Body';
+import Navbar from '../../Common/Struct/Navbar';
+import Visible from '../../Common/Struct/Visible';
 import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
 import SmActiveBtn from '../../Common/Button/Stylish/SmActiveBtn';
 import SmBtn from '../../Common/Button/Stylish/SmBtn';
-import Switch from '../../Components/Switch';
+import Switch from '../../Common/Struct/Switch';
 import LogComponent from '../../Components/LogComponent';
 import { RecordContent } from '../../../Core/Framework/Record/Model/RecordContent';
 import { Point } from '../../../Utils/Geometry/Point';
@@ -82,7 +82,7 @@ export default class PlayerScreen extends Component<
 	render() {
 		return (
 			<Redirect>
-				<Struct
+				<Body
 					noScrollbar={!this.state.IsLog}
 					header={
 						<span>

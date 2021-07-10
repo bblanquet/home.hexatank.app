@@ -4,9 +4,9 @@ import { ILobbyManager } from '../../Network/Manager/ILobbyManager';
 import { OnlinePlayer } from '../../Network/OnlinePlayer';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
-import GridComponent from '../Common/Grid/GridComponent';
+import Grid from '../Common/Grid/GridComponent';
 import Icon from '../Common/Icon/IconComponent';
-import Visible from './Visible';
+import Visible from '../Common/Struct/Visible';
 
 export default class PendingPlayers extends Component<{
 	Player: OnlinePlayer;
@@ -18,7 +18,7 @@ export default class PendingPlayers extends Component<{
 	}
 
 	render() {
-		return <GridComponent left={this.GetHeader()} right={this.GetContent()} />;
+		return <Grid left={this.GetHeader()} right={this.GetContent()} />;
 	}
 
 	private GetHeader() {

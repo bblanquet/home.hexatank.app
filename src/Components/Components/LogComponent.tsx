@@ -4,7 +4,7 @@ import { Component, h } from 'preact';
 import { LogKind } from '../../Utils/Logger/LogKind';
 import { LogMessage } from '../../Utils/Logger/LogMessage';
 import { StaticLogger } from '../../Utils/Logger/StaticLogger';
-import GridComponent from '../Common/Grid/GridComponent';
+import Grid from '../Common/Grid/GridComponent';
 import IconInputComponent from '../Common/Text/IconTextComponent';
 
 export default class LogComponent extends Component<
@@ -98,7 +98,7 @@ export default class LogComponent extends Component<
 						}}
 					/>
 				</div>
-				<GridComponent left={this.GetHeader()} right={this.GetContent()} />
+				<Grid left={this.GetHeader()} right={this.GetContent()} />
 			</div>
 		);
 	}

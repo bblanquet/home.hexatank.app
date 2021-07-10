@@ -2,7 +2,7 @@ import { h, Component } from 'preact';
 import { NotificationState } from '../Model/NotificationState';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import Icon from '../Common/Icon/IconComponent';
-import Visible from './Visible';
+import Visible from '../Common/Struct/Visible';
 import { useState } from 'preact/hooks';
 import { NotificationHook } from '../Hooks/NotificationHook';
 

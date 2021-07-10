@@ -13,7 +13,7 @@ import { ThunderMenuItem } from '../../../Core/Menu/Buttons/ThunderMenuItem';
 import CircularV2Component from '../../Common/CircularV2/CircularV2';
 import LightDarkBtn from '../../Common/Button/Standard/LightDarkBtn';
 import { Point } from '../../../Utils/Geometry/Point';
-import Switch from '../Switch';
+import Switch from '../../Common/Struct/Switch';
 
 export default class CellMenuComponent extends Component<
 	{

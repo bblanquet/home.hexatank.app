@@ -7,7 +7,7 @@ import { ButtonOption } from '../Common/Button/ButtonOption';
 import Icon from '../Common/Icon/IconComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Redirect from '../Components/Redirect';
-import Visible from '../Components/Visible';
+import Visible from '../Common/Struct/Visible';
 import { Env } from '../../Env';
 
 export default class HomeScreen extends Component<any, any> {

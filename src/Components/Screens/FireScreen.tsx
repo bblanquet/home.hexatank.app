@@ -8,14 +8,14 @@ import GameCanvas from '../Components/GameCanvas';
 import OptionPopup from '../Components/OptionPopup';
 import Redirect from '../Components/Redirect';
 import SmPopup from '../Components/SmPopup';
-import Visible from '../Components/Visible';
+import Visible from '../Common/Struct/Visible';
 import { HookedComponent } from '../Hooks/HookedComponent';
 import { FireHook } from '../Hooks/FireHook';
 import { RuntimeState } from '../Model/RuntimeState';
 import { useState } from 'preact/hooks';
 import MenuSwitcher from '../Components/Canvas/MenuSwitcher';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
-import Switch from '../Components/Switch';
+import Switch from '../Common/Struct/Switch';
 
 export default class FireScreen extends HookedComponent<{}, FireHook, RuntimeState> {
 	public GetDefaultHook(): FireHook {

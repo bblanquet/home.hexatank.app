@@ -5,7 +5,7 @@ import SmActiveBtn from '../Common/Button/Stylish/SmActiveBtn';
 import Icon from '../Common/Icon/IconComponent';
 import Panel from '../Components/Panel/Panel';
 import Redirect from '../Components/Redirect';
-import Visible from '../Components/Visible';
+import Visible from '../Common/Struct/Visible';
 import Notification from '../Components/Notification';
 import InputComponent from '../Common/Text/TextComponent';
 import { CreateHostHook } from '../Hooks/CreateHostHook';

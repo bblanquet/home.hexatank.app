@@ -9,14 +9,15 @@ import GameCanvas from '../Components/GameCanvas';
 import OptionPopup from '../Components/OptionPopup';
 import Redirect from '../Components/Redirect';
 import SmPopup from '../Components/SmPopup';
-import Visible from '../Components/Visible';
+import Visible from '../Common/Struct/Visible';
 import { HookedComponent } from '../Hooks/HookedComponent';
 import { DiamondHook } from '../Hooks/DiamondHook';
 import { RuntimeState } from '../Model/RuntimeState';
 import { useState } from 'preact/hooks';
 import MenuSwitcher from '../Components/Canvas/MenuSwitcher';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
-import Switch from '../Components/Switch';
+import Switch from '../Common/Struct/Switch';
+import Line from '../Common/Struct/Line';
 
 export default class DiamondScreen extends HookedComponent<{}, DiamondHook, RuntimeState> {
 	public GetDefaultHook() {
@@ -37,16 +38,22 @@ export default class DiamondScreen extends HookedComponent<{}, DiamondHook, Runt
 								class="btn btn-dark small-space space-out fill-option"
 								onClick={() => this.Hook.SetMenu()}
 							/>
-							<button type="button" class="btn btn-dark space-out">
-								<Visible isVisible={this.Hook.State.HasWarning}>
-									<span class="fill-noMoney badge badge-warning very-small-space middle very-small-right-margin blink_me">
-										{' '}
-									</span>
-								</Visible>
-								{this.Hook.State.Amount.toFixed(2)}
-								<span class="fill-diamond badge badge-secondary very-small-space middle very-small-left-margin very-small-right-margin">
-									{' '}
-								</span>
+							<button type="button" class="btn btn-dark space-out ">
+								<Line>
+									<Visible isVisible={this.Hook.State.HasWarning}>
+										<div
+											class="fill-noMoney radius-5px very-small-space blink_me space-out"
+											style="background-color:#ffc107"
+										/>
+									</Visible>
+									<div class="fit-content">
+										{this.Hook.State.Amount.toFixed(2)} / {this.Hook.GetGoalDiamond()}
+									</div>
+									<div
+										class="fill-diamond radius-5px very-small-space space-out"
+										style="background-color:#6c757d"
+									/>
+								</Line>
 							</button>
 							<TimerComponent
 								Duration={this.Hook.GetDuration()}

@@ -5,7 +5,7 @@ import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import { Face } from '../Components/Face';
 import StatBar from '../Components/StatBar';
-import Struct from '../Components/Struct';
+import Body from '../Common/Struct/Body';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
 
 export default class ErrorScreen extends Component {
@@ -15,7 +15,7 @@ export default class ErrorScreen extends Component {
 
 	render() {
 		return (
-			<Struct
+			<Body
 				header={<StatBar />}
 				content={
 					<div class="container-center">

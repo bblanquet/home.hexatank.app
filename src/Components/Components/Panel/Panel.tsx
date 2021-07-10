@@ -2,7 +2,7 @@ import { h, Component, JSX } from 'preact';
 import PageAnalyser from '../PageAnalyser';
 import StatBar from '../StatBar';
 import Background from '../Background';
-import Struct from '../Struct';
+import Body from '../../Common/Struct/Body';
 
 export default class Panel extends Component<{ content: JSX.Element; footer: JSX.Element }, any> {
 	constructor() {
@@ -13,7 +13,7 @@ export default class Panel extends Component<{ content: JSX.Element; footer: JSX
 		return (
 			<PageAnalyser>
 				<Background>
-					<Struct
+					<Body
 						header={<StatBar />}
 						content={
 							<span>

@@ -3,13 +3,13 @@ import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import SmActiveBtn from '../Common/Button/Stylish/SmActiveBtn';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
 import SmUploadBtn from '../Common/Button/Stylish/SmUploadBtn';
-import GridComponent from '../Common/Grid/GridComponent';
+import Grid from '../Common/Grid/GridComponent';
 import Icon from '../Common/Icon/IconComponent';
-import Struct from '../Components/Struct';
+import Body from '../Common/Struct/Body';
 import Redirect from '../Components/Redirect';
-import Switch from '../Components/Switch';
-import Visible from '../Components/Visible';
-import Navbar from '../Components/Navbar';
+import Switch from '../Common/Struct/Switch';
+import Visible from '../Common/Struct/Visible';
+import Navbar from '../Common/Struct/Navbar';
 import { HookedComponent } from '../Hooks/HookedComponent';
 import { ProfilHook } from '../Hooks/ProfilHook';
 import { ProfilState } from '../Model/ProfilState';
@@ -20,7 +20,7 @@ export default class ProfilScreen extends HookedComponent<{}, ProfilHook, Profil
 	public Rendering(): JSX.Element {
 		return (
 			<Redirect>
-				<Struct
+				<Body
 					header={
 						<Navbar>
 							<SmBtn callBack={() => this.Hook.Delete()} color={ColorKind.Black}>
@@ -50,7 +50,7 @@ export default class ProfilScreen extends HookedComponent<{}, ProfilHook, Profil
 						</Navbar>
 					}
 					content={
-						<GridComponent
+						<Grid
 							left={
 								<thead>
 									<tr class="d-flex">

@@ -1,20 +1,20 @@
 import { h, JSX } from 'preact';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
-import GridComponent from '../Common/Grid/GridComponent';
+import Grid from '../Common/Grid/GridComponent';
 import Icon from '../Common/Icon/IconComponent';
 import Redirect from '../Components/Redirect';
-import Visible from '../Components/Visible';
+import Visible from '../Common/Struct/Visible';
 import Notification from '../Components/Notification';
 import InputComponent from '../Common/Text/TextComponent';
 import IconInputComponent from '../Common/Text/IconTextComponent';
 import { GuestHook } from '../Hooks/GuestHook';
 import { useState } from 'preact/hooks';
-import Switch from '../Components/Switch';
+import Switch from '../Common/Struct/Switch';
 import { GuestState } from '../Model/GuestState';
 import { HookedComponent } from '../Hooks/HookedComponent';
-import Struct from '../Components/Struct';
-import Navbar from '../Components/Navbar';
+import Body from '../Common/Struct/Body';
+import Navbar from '../Common/Struct/Navbar';
 
 export default class GuestComponent extends HookedComponent<{}, GuestHook, GuestState> {
 	componentWillUnmount() {
@@ -29,7 +29,7 @@ export default class GuestComponent extends HookedComponent<{}, GuestHook, Guest
 	public Rendering(): JSX.Element {
 		return (
 			<Redirect>
-				<Struct
+				<Body
 					header={
 						<span>
 							<Navbar />
@@ -66,7 +66,7 @@ export default class GuestComponent extends HookedComponent<{}, GuestHook, Guest
 						</span>
 					}
 					content={
-						<GridComponent
+						<Grid
 							left={''}
 							right={
 								<Switch

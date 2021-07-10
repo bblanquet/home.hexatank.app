@@ -213,4 +213,8 @@ export class DiamondHook extends Hook<RuntimeState> {
 	public IsListeningVehicle(): boolean {
 		return this._interactionService.GetMultiSelectionContext().IsListeningUnit();
 	}
+
+	GetGoalDiamond(): number {
+		return this._gameContext.GetDiamond();
+	}
 }

@@ -32,6 +32,11 @@ export class DiamondContext implements IHqGameContext {
 			}
 		});
 	}
+
+	GetDiamond(): number {
+		return 50;
+	}
+
 	GetVehicles(): Vehicle[] {
 		return [];
 	}

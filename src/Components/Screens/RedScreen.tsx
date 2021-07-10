@@ -7,8 +7,8 @@ import Icon from '../Common/Icon/IconComponent';
 import { Face } from '../Components/Face';
 import StatBar from '../Components/StatBar';
 import Redirect from '../Components/Redirect';
-import Visible from '../Components/Visible';
-import Struct from '../Components/Struct';
+import Visible from '../Common/Struct/Visible';
+import Body from '../Common/Struct/Body';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
 import { StageState } from '../../Services/Campaign/StageState';
 import { RedHook } from '../Hooks/RedHook';
@@ -25,7 +25,7 @@ export default class RedScreen extends HookedComponent<{}, RedHook, CampaignStat
 	public Rendering(): JSX.Element {
 		return (
 			<Redirect>
-				<Struct
+				<Body
 					header={<StatBar />}
 					content={
 						<div class="container-center-horizontal">

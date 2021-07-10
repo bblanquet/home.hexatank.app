@@ -2,17 +2,17 @@ import { JSX, h } from 'preact';
 import { useState } from 'preact/hooks';
 import { MonitoringHook } from '../Hooks/CustomerHook';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
-import GridComponent from '../Common/Grid/GridComponent';
+import Grid from '../Common/Grid/GridComponent';
 import Icon from '../Common/Icon/IconComponent';
 import Notification from '../Components/Notification';
-import Switch from '../Components/Switch';
+import Switch from '../Common/Struct/Switch';
 import { HookedComponent } from '../Hooks/HookedComponent';
 import { CustomerState } from '../Model/CustomerState';
 import * as luxon from 'luxon';
 import { DateTime } from 'luxon';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
-import Struct from '../Components/Struct';
-import Navbar from '../Components/Navbar';
+import Body from '../Common/Struct/Body';
+import Navbar from '../Common/Struct/Navbar';
 
 export default class MonitorScreen extends HookedComponent<{}, MonitoringHook, CustomerState> {
 	public GetDefaultHook(): MonitoringHook {
@@ -23,10 +23,10 @@ export default class MonitorScreen extends HookedComponent<{}, MonitoringHook, C
 	public Rendering(): JSX.Element {
 		return (
 			<span>
-				<Struct
+				<Body
 					header={<Navbar />}
 					content={
-						<GridComponent
+						<Grid
 							left={''}
 							right={
 								<Switch

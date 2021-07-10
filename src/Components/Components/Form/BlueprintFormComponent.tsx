@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 import { BlueprintSetup } from './BlueprintSetup';
-import DropDownComponent from '../../Common/DropDown/DropDownComponent';
+import Dropdown from '../../Common/Input/Dropdown';
 import Redirect from '../Redirect';
 import Visible from '../../Common/Struct/Visible';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
@@ -8,6 +8,7 @@ import { isEqual } from 'lodash';
 import SmActiveBtn from '../../Common/Button/Stylish/SmActiveBtn';
 import { ColorKind } from '../../Common/Button/Stylish/ColorKind';
 import Icon from '../../Common/Icon/IconComponent';
+import Line from '../../Common/Struct/Line';
 
 export default class BlueprintFormComponent extends Component<
 	{ Model: BlueprintSetup; CallBack: (model: BlueprintSetup) => void },
@@ -33,8 +34,8 @@ export default class BlueprintFormComponent extends Component<
 		return (
 			<Redirect>
 				<Visible isVisible={!isNullOrUndefined(this.state) && !isNullOrUndefined(this.props)}>
-					<div class="container-center-horizontal">
-						<DropDownComponent
+					<Line>
+						<Dropdown
 							OnInput={(e: any) => {
 								this.setState({
 									IaCount: Number(e.target.value)
@@ -55,9 +56,9 @@ export default class BlueprintFormComponent extends Component<
 								this.setState({ onylIa: !this.state.onylIa });
 							}}
 						/>
-					</div>
-					<div class="container-center-horizontal">
-						<DropDownComponent
+					</Line>
+					<Line>
+						<Dropdown
 							OnInput={(e: any) => {
 								this.setState({
 									Env: e.target.value
@@ -67,9 +68,9 @@ export default class BlueprintFormComponent extends Component<
 							Label={'Env'}
 							Values={[ 'Forest', 'Sand', 'Ice' ]}
 						/>
-					</div>
-					<div class="container-center-horizontal">
-						<DropDownComponent
+					</Line>
+					<Line>
+						<Dropdown
 							OnInput={(e: any) => {
 								this.setState({
 									Size: e.target.value
@@ -79,9 +80,9 @@ export default class BlueprintFormComponent extends Component<
 							Label={'Size'}
 							Values={[ 'Small', 'Medium', 'Large' ]}
 						/>
-					</div>
-					<div class="container-center-horizontal">
-						<DropDownComponent
+					</Line>
+					<Line>
+						<Dropdown
 							OnInput={(e: any) => {
 								this.setState({
 									Shape: e.target.value
@@ -91,8 +92,7 @@ export default class BlueprintFormComponent extends Component<
 							Label={'Shape'}
 							Values={[ 'Flower', 'Donut', 'Cheese', 'Triangle', 'Y', 'H', 'X', 'Rectangle' ]}
 						/>
-					</div>
-					<p />
+					</Line>
 				</Visible>
 			</Redirect>
 		);

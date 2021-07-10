@@ -192,7 +192,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		}
 	}
 
-	public HasPower(): boolean {
+	public HasEnergy(): boolean {
 		return 0 < this.Reserve.GetUsedPower();
 	}
 

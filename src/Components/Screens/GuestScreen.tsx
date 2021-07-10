@@ -6,8 +6,8 @@ import Icon from '../Common/Icon/IconComponent';
 import Redirect from '../Components/Redirect';
 import Visible from '../Common/Struct/Visible';
 import Notification from '../Components/Notification';
-import InputComponent from '../Common/Text/TextComponent';
-import IconInputComponent from '../Common/Text/IconTextComponent';
+import CtmBtnInput from '../Common/Input/CtmBtnInput';
+import CtmIconInput from '../Common/Input/CtmIconInput';
 import { GuestHook } from '../Hooks/GuestHook';
 import { useState } from 'preact/hooks';
 import Switch from '../Common/Struct/Switch';
@@ -15,6 +15,8 @@ import { GuestState } from '../Model/GuestState';
 import { HookedComponent } from '../Hooks/HookedComponent';
 import Body from '../Common/Struct/Body';
 import Navbar from '../Common/Struct/Navbar';
+import Column from '../Common/Struct/Column';
+import Line from '../Common/Struct/Line';
 
 export default class GuestComponent extends HookedComponent<{}, GuestHook, GuestState> {
 	componentWillUnmount() {
@@ -31,39 +33,38 @@ export default class GuestComponent extends HookedComponent<{}, GuestHook, Guest
 			<Redirect>
 				<Body
 					header={
-						<span>
+						<div style="border-bottom:15px solid rgb(27, 27, 27); background-color:rgb(31, 31, 31);">
 							<Navbar />
-							<div style="margin:10px">
-								<div class="container-center-horizontal">
-									<InputComponent
-										max={15}
+							<div style="padding-top:10px;box-shadow: rgb(0,0,0,0.5) 0px 0px 10px 0px inset;">
+								<Column>
+									<Line>
+										<CtmBtnInput
+											max={15}
+											type={'text'}
+											value={this.Hook.State.PlayerName}
+											label={'Name'}
+											onInput={(e: any) => this.Hook.SetUsername(e.target.value as string)}
+											onClick={() => this.Hook.Randomize()}
+											icon={'fas fa-random'}
+										/>
+									</Line>
+									<CtmIconInput
 										type={'text'}
-										value={this.Hook.State.PlayerName}
-										label={'Name'}
+										value={this.Hook.State.filter}
+										icon={'fas fa-filter'}
 										isEditable={true}
-										onInput={(e: any) => this.Hook.SetUsername(e.target.value as string)}
+										onInput={(e: any) => this.Hook.SetFilter(e.target.value)}
 									/>
-									<div class="space-out" />
-									<SmBtn callBack={() => this.Hook.Randomize()} color={ColorKind.Blue}>
-										<Icon Value="fas fa-random" />
-									</SmBtn>
-								</div>
-								<IconInputComponent
-									type={'text'}
-									value={this.Hook.State.filter}
-									icon={'fas fa-filter'}
-									isEditable={true}
-									onInput={(e: any) => this.Hook.SetFilter(e.target.value)}
-								/>
-								<IconInputComponent
-									type={'text'}
-									value={this.Hook.State.Password}
-									icon={'fas fa-lock'}
-									isEditable={true}
-									onInput={(e: any) => this.Hook.SetPassword(e.target.value)}
-								/>
+									<CtmIconInput
+										type={'text'}
+										value={this.Hook.State.Password}
+										icon={'fas fa-lock'}
+										isEditable={true}
+										onInput={(e: any) => this.Hook.SetPassword(e.target.value)}
+									/>
+								</Column>
 							</div>
-						</span>
+						</div>
 					}
 					content={
 						<Grid

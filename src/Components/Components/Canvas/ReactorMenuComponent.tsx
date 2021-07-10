@@ -123,7 +123,7 @@ export default class ReactorMenuComponent extends Component<
 	}
 
 	private RenderAttack() {
-		if (this.props.Item.HasPower()) {
+		if (this.props.Item.HasEnergy()) {
 			return (
 				<button
 					type="button"
@@ -139,7 +139,7 @@ export default class ReactorMenuComponent extends Component<
 	}
 
 	private RenderSpeed() {
-		if (this.props.Item.HasPower()) {
+		if (this.props.Item.HasEnergy()) {
 			return (
 				<button
 					type="button"
@@ -155,7 +155,7 @@ export default class ReactorMenuComponent extends Component<
 	}
 
 	private RenderHeal() {
-		if (this.props.Item.HasPower()) {
+		if (this.props.Item.HasEnergy()) {
 			return (
 				<button
 					type="button"

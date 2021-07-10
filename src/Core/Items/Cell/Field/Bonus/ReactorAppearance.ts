@@ -12,6 +12,9 @@ import { BouncingScaleAnimator } from '../../../Animator/BouncingScaleAnimator';
 import { ReactorField } from './ReactorField';
 import { isNullOrUndefined } from '../../../../../Utils/ToolBox';
 import { ZKind } from '../../../ZKind';
+import { BasicItem } from '../../../BasicItem';
+import { FadeInOutAnimation } from '../../../Animator/FadeInOutAnimation';
+import { InfiniteFadeAnimation } from '../../../Animator/InfiniteFadeAnimation';
 
 export class ReactorAppearance extends Item {
 	private _isIncreasingOpacity: boolean = false;
@@ -20,6 +23,7 @@ export class ReactorAppearance extends Item {
 	private _rotator: IAnimator;
 	private _coverRotator: IAnimator;
 	private _lightAnimator: IAnimator;
+	private _energy: BasicItem;
 
 	constructor(public Reactor: ReactorField, private _light: string) {
 		super();
@@ -65,6 +69,11 @@ export class ReactorAppearance extends Item {
 		});
 
 		this.SetProperty(SvgArchive.bonus.reactor.light, (p) => (p.alpha = 0));
+
+		this._energy = new BasicItem(this.Reactor.GetBoundingBox(), SvgArchive.redElecton, ZKind.Sky);
+		this._energy.SetAnimator(new InfiniteFadeAnimation(this._energy, SvgArchive.redElecton, 0, 1, 0.05));
+		this._energy.SetVisible(() => !this.Reactor.HasEnergy());
+		this._energy.SetAlive(() => this.Reactor.IsUpdatable);
 	}
 
 	protected OnCellStateChanged(obj: any, cellState: CellState): void {

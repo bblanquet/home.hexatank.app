@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 
-export default class DropDownComponent extends Component<
+export default class Dropdown extends Component<
 	{ OnInput: (e: any) => void; Label: string; Values: string[]; DefaultValue: string },
 	{}
 > {
@@ -12,9 +12,7 @@ export default class DropDownComponent extends Component<
 		return (
 			<div class="input-group mb-3">
 				<div class="input-group-prepend">
-					<span class="input-group-text  black-primary custom-btn-layout-1" id="inputGroup-sizing-default">
-						{this.props.Label}
-					</span>
+					<span class="input-group-text black-primary custom-btn-layout-1">{this.props.Label}</span>
 				</div>
 				<select
 					value={this.props.DefaultValue ? this.props.DefaultValue : this.props.Values[0]}

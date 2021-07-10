@@ -7,7 +7,7 @@ import Panel from '../Components/Panel/Panel';
 import Redirect from '../Components/Redirect';
 import Visible from '../Common/Struct/Visible';
 import Notification from '../Components/Notification';
-import InputComponent from '../Common/Text/TextComponent';
+import CtmInput from '../Common/Input/CtmInput';
 import { CreateHostHook } from '../Hooks/CreateHostHook';
 import { useState } from 'preact/hooks';
 import { HookedComponent } from '../Hooks/HookedComponent';
@@ -39,26 +39,29 @@ export default class CreateHostScreen extends HookedComponent<{}, CreateHostHook
 										callBack={() => this.Hook.HasPassword()}
 									/>
 								</div>
-
-								<InputComponent
-									max={15}
-									value={this.Hook.State.PlayerName}
-									label={'Name'}
-									type={'text'}
-									isEditable={true}
-									onInput={(e: any) => this.Hook.SetUsername(e.target.value as string)}
-								/>
-								<InputComponent
-									max={15}
-									type={'text'}
-									value={this.Hook.State.RoomName}
-									label={'Room name'}
-									isEditable={true}
-									onInput={(e: any) => this.Hook.SetRoomname(e.target.value as string)}
-								/>
+								<div class="container-center-horizontal">
+									<CtmInput
+										max={15}
+										value={this.Hook.State.PlayerName}
+										label={'Name'}
+										type={'text'}
+										isEditable={true}
+										onInput={(e: any) => this.Hook.SetUsername(e.target.value as string)}
+									/>
+								</div>
+								<div class="container-center-horizontal">
+									<CtmInput
+										max={15}
+										type={'text'}
+										value={this.Hook.State.RoomName}
+										label={'Room name'}
+										isEditable={true}
+										onInput={(e: any) => this.Hook.SetRoomname(e.target.value as string)}
+									/>
+								</div>
 								<div class="container-center-horizontal">
 									<Visible isVisible={this.Hook.State.HasPassword}>
-										<InputComponent
+										<CtmInput
 											max={15}
 											type={'text'}
 											value={this.Hook.State.Password}

@@ -5,7 +5,7 @@ import { LogKind } from '../../Utils/Logger/LogKind';
 import { LogMessage } from '../../Utils/Logger/LogMessage';
 import { StaticLogger } from '../../Utils/Logger/StaticLogger';
 import Grid from '../Common/Grid/GridComponent';
-import IconInputComponent from '../Common/Text/IconTextComponent';
+import CtmIconInput from '../Common/Input/CtmIconInput';
 
 export default class LogComponent extends Component<
 	{ Messages: LogMessage[] },
@@ -27,7 +27,7 @@ export default class LogComponent extends Component<
 		return (
 			<div>
 				<div class="container-center-horizontal">
-					<IconInputComponent
+					<CtmIconInput
 						value={this.state.Filter}
 						icon={'fas fa-folder-plus'}
 						type={'text'}
@@ -44,7 +44,7 @@ export default class LogComponent extends Component<
 							}
 						}}
 					/>
-					<IconInputComponent
+					<CtmIconInput
 						value={this.state.Exclude}
 						icon={'fas fa-folder-minus'}
 						type={'text'}
@@ -63,7 +63,7 @@ export default class LogComponent extends Component<
 					/>
 				</div>
 				<div class="container-center-horizontal">
-					<IconInputComponent
+					<CtmIconInput
 						value={this.state.Min}
 						icon={'fas fa-step-forward'}
 						type={'number'}
@@ -80,7 +80,7 @@ export default class LogComponent extends Component<
 							}
 						}}
 					/>
-					<IconInputComponent
+					<CtmIconInput
 						value={this.state.Max}
 						icon={'fas fa-step-backward'}
 						type={'number'}

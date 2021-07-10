@@ -17,7 +17,7 @@ export class OverlockCombination extends AbstractSingleCombination {
 			this.IsNormalMode(context) &&
 			context.Items.length == 2 &&
 			context.Items[0] instanceof ReactorField &&
-			(context.Items[0] as ReactorField).HasPower() &&
+			(context.Items[0] as ReactorField).HasEnergy() &&
 			(context.Items[1] instanceof AttackMenuItem ||
 				context.Items[1] instanceof HealMenuItem ||
 				context.Items[1] instanceof SpeedFieldMenuItem)

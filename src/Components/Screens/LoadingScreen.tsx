@@ -27,7 +27,7 @@ export default class LoadingScreen extends Component<
 
 	componentDidMount() {
 		const svgLoad = new SvgLoader();
-		const onLoaded = new AssetLoader(svgLoad, 50).LoadAll(new AssetExplorer().GetAssets());
+		const onLoaded = new AssetLoader(svgLoad, 150).LoadAll(new AssetExplorer().GetAssets());
 		onLoaded.On((obj: any, percentage: number) => {
 			const roundedPercentage = Math.round(percentage);
 			if (roundedPercentage % 10 === 0 && roundedPercentage !== this._sentencePercentage) {

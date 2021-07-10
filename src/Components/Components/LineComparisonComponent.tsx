@@ -2,7 +2,7 @@ import { ICompareService } from '../../Services/Compare/ICompareService';
 import { h, Component } from 'preact';
 import { DeltaLineChart } from '../Common/Chart/Config/DeltaLineChart';
 import { RecordComparer } from '../Model/RecordComparer';
-import DropDownComponent from '../Common/DropDown/DropDownComponent';
+import Dropdown from '../Common/Input/Dropdown';
 import { DeltaRecordCurve } from '../Model/DeltaRecordCurve';
 import { Singletons, SingletonKey } from '../../Singletons';
 import Redirect from '../Components/Redirect';
@@ -64,7 +64,7 @@ export default class LineComparisonComponent extends Component<
 					<div class="statContainer menu-container">
 						<div class="container-center">
 							<div class="container-center-horizontal">
-								<DropDownComponent
+								<Dropdown
 									OnInput={(e: any) => {
 										const hqId = e.target.value as string;
 										const units = this._recordComparer.ComparedRecord.Hqs.Get(hqId).Units;
@@ -80,7 +80,7 @@ export default class LineComparisonComponent extends Component<
 									Values={this.state.HqIds}
 								/>
 								<div class="small-right-margin" />
-								<DropDownComponent
+								<Dropdown
 									OnInput={(e: any) => {
 										const unitId = e.target.value as string;
 										this.setState({

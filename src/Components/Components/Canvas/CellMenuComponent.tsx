@@ -1,7 +1,5 @@
 import { Component, h } from 'preact';
 import { GameSettings } from '../../../Core/Framework/GameSettings';
-import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
-import { InteractionContext } from '../../../Core/Interaction/InteractionContext';
 import { Item } from '../../../Core/Items/Item';
 import { AttackMenuItem } from '../../../Core/Menu/Buttons/AttackMenuItem';
 import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
@@ -18,21 +16,23 @@ import { Point } from '../../../Utils/Geometry/Point';
 import Switch from '../Switch';
 
 export default class CellMenuComponent extends Component<
-	{ Item: Item; ReactorCount: number; isCovered: boolean; Interaction: InteractionContext },
+	{
+		Item: Item;
+		ReactorCount: number;
+		isCovered: boolean;
+		callback: (e: Item) => void;
+	},
 	{}
 > {
-	constructor() {
-		super();
-	}
 	render() {
 		return (
 			<div class="circle-menu">
 				<Switch
 					isVisible={!this.props.isCovered}
 					left={
-						<CircularV2Component OnCancel={() => this.Cancel()}>
+						<CircularV2Component OnCancel={() => this.props.callback(new CancelMenuItem())}>
 							<LightDarkBtn
-								CallBack={() => this.SendContext(new ReactorMenuItem())}
+								CallBack={() => this.props.callback(new ReactorMenuItem())}
 								Amount={`${(this.props.ReactorCount + 1) * GameSettings.FieldPrice}`}
 								Icon="fill-reactor"
 								Point={new Point(0, 0)}
@@ -40,51 +40,51 @@ export default class CellMenuComponent extends Component<
 						</CircularV2Component>
 					}
 					right={
-						<CircularV2Component OnCancel={() => this.Cancel()}>
+						<CircularV2Component OnCancel={() => this.props.callback(new CancelMenuItem())}>
 							<LightDarkBtn
-								CallBack={() => this.SendContext(new ReactorMenuItem())}
+								CallBack={() => this.props.callback(new ReactorMenuItem())}
 								Amount={`${(this.props.ReactorCount + 1) * GameSettings.FieldPrice}`}
 								Icon="fill-reactor"
 								Point={new Point(0, 0)}
 							/>
 							<LightDarkBtn
-								CallBack={() => this.SendContext(new ThunderMenuItem())}
+								CallBack={() => this.props.callback(new ThunderMenuItem())}
 								Amount={`${GameSettings.FieldPrice}`}
 								Icon="fill-thunder"
 								Point={new Point(0, 0)}
 							/>
 							<LightDarkBtn
-								CallBack={() => this.SendContext(new ShieldMenuItem())}
+								CallBack={() => this.props.callback(new ShieldMenuItem())}
 								Amount={`${GameSettings.FieldPrice}`}
 								Icon="fill-shield"
 								Point={new Point(0, 0)}
 							/>
 							<LightDarkBtn
-								CallBack={() => this.SendContext(new MoneyMenuItem())}
+								CallBack={() => this.props.callback(new MoneyMenuItem())}
 								Amount={`${GameSettings.FieldPrice}`}
 								Icon="fill-money"
 								Point={new Point(0, 0)}
 							/>
 							<LightDarkBtn
-								CallBack={() => this.SendContext(new AttackMenuItem())}
+								CallBack={() => this.props.callback(new AttackMenuItem())}
 								Amount={`${GameSettings.FieldPrice}`}
 								Icon="fill-power"
 								Point={new Point(0, 0)}
 							/>
 							<LightDarkBtn
-								CallBack={() => this.SendContext(new PoisonMenuItem())}
+								CallBack={() => this.props.callback(new PoisonMenuItem())}
 								Amount={`${GameSettings.FieldPrice}`}
 								Icon="fill-poison"
 								Point={new Point(0, 0)}
 							/>
 							<LightDarkBtn
-								CallBack={() => this.SendContext(new SpeedFieldMenuItem())}
+								CallBack={() => this.props.callback(new SpeedFieldMenuItem())}
 								Amount={`${GameSettings.FieldPrice}`}
 								Icon="fill-speed"
 								Point={new Point(0, 0)}
 							/>
 							<LightDarkBtn
-								CallBack={() => this.SendContext(new HealMenuItem())}
+								CallBack={() => this.props.callback(new HealMenuItem())}
 								Amount={`${GameSettings.FieldPrice}`}
 								Icon="fill-medic"
 								Point={new Point(0, 0)}
@@ -94,14 +94,5 @@ export default class CellMenuComponent extends Component<
 				/>
 			</div>
 		);
-	}
-
-	private SendContext(item: Item): void {
-		this.props.Interaction.Kind = InteractionKind.Up;
-		this.props.Interaction.OnSelect(item);
-	}
-
-	private Cancel(): void {
-		this.SendContext(new CancelMenuItem());
 	}
 }

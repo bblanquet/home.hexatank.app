@@ -1,7 +1,6 @@
 import { Component, h } from 'preact';
 import { GameSettings } from '../../../Core/Framework/GameSettings';
 import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
-import { InteractionContext } from '../../../Core/Interaction/InteractionContext';
 import { Item } from '../../../Core/Items/Item';
 import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
 import { TankMenuItem } from '../../../Core/Menu/Buttons/TankMenuItem';
@@ -12,7 +11,7 @@ export default class HqMenuComponent extends Component<
 		TankRequestCount: number;
 		TruckRequestCount: number;
 		VehicleCount: number;
-		Interaction: InteractionContext;
+		callback: (e: Item) => void;
 	},
 	{}
 > {
@@ -24,7 +23,7 @@ export default class HqMenuComponent extends Component<
 						<button
 							type="button"
 							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new TankMenuItem())}
+							onClick={(e: any) => this.props.callback(new TankMenuItem())}
 						>
 							<div class="white-background">{this.props.TankRequestCount}</div>
 							<div class="fill-tank max-width standard-space" />
@@ -36,7 +35,7 @@ export default class HqMenuComponent extends Component<
 						<button
 							type="button"
 							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new TruckMenuItem())}
+							onClick={(e: any) => this.props.callback(new TruckMenuItem())}
 						>
 							<div class="white-background">{this.props.TruckRequestCount}</div>
 							<div class="fill-truck max-width standard-space" />
@@ -48,7 +47,7 @@ export default class HqMenuComponent extends Component<
 						<button
 							type="button"
 							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new CancelMenuItem())}
+							onClick={(e: any) => this.props.callback(new CancelMenuItem())}
 						>
 							<div class="fill-cancel max-width standard-space" />
 						</button>
@@ -56,10 +55,5 @@ export default class HqMenuComponent extends Component<
 				</div>
 			</div>
 		);
-	}
-
-	private SendContext(item: Item): void {
-		this.props.Interaction.Kind = InteractionKind.Up;
-		this.props.Interaction.OnSelect(item);
 	}
 }

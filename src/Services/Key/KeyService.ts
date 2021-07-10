@@ -1,4 +1,4 @@
-import { PowerAppService } from './../App/PowerAppService';
+import { PowerAppService } from '../App/FireAppService';
 import { CamouflageAppService } from '../App/CamouflageAppService';
 import { RecordAppService } from './../App/RecordAppService';
 import { AppService } from './../App/AppService';

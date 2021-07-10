@@ -52,7 +52,7 @@ export class ProfilHook extends Hook<ProfilState> {
 
 	public Select(data: RecordSelection): void {
 		data.IsSelected = !data.IsSelected;
-		this.SetProp((e) => (e.SelectedRecords = this.State.Records.filter((e) => e.IsSelected)));
+		this.Update((e) => (e.SelectedRecords = this.State.Records.filter((e) => e.IsSelected)));
 	}
 
 	public Delete(): void {
@@ -60,7 +60,7 @@ export class ProfilHook extends Hook<ProfilState> {
 			this._playerProfilService.DeleteRecord(name);
 		});
 		const records = this._playerProfilService.GetRecords();
-		this.SetProp((e) => {
+		this.Update((e) => {
 			(e.Records = records.map((r) => new RecordSelection(false, r))),
 				(e.SelectedRecords = new Array<RecordSelection>());
 		});
@@ -74,7 +74,7 @@ export class ProfilHook extends Hook<ProfilState> {
 				const data = JSON.parse(ev.target.result as string);
 				const record = RecordContent.To(data);
 				this._playerProfilService.GetProfil().Records.push(JsonRecordContent.To(record, false));
-				this.SetProp((e) => e.Records.push(new RecordSelection(false, record)));
+				this.Update((e) => e.Records.push(new RecordSelection(false, record)));
 			};
 		}
 	}

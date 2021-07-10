@@ -53,26 +53,26 @@ export class CreateHostHook extends Hook<HostState> {
 
 	public Randomize(): void {
 		const username = Usernames[Math.round(Math.random() * Usernames.length - 1)];
-		this.SetProp((e) => {
+		this.Update((e) => {
 			e.PlayerName = username;
 			e.RoomName = `${username} party`;
 		});
 	}
 
 	public SetRoomname(value: string): void {
-		this.SetProp((e) => (e.RoomName = value.substring(0, 15)));
+		this.Update((e) => (e.RoomName = value.substring(0, 15)));
 	}
 
 	public SetUsername(value: string): void {
-		this.SetProp((e) => (e.PlayerName = value.substring(0, 15)));
+		this.Update((e) => (e.PlayerName = value.substring(0, 15)));
 	}
 
 	public SetPassword(value: string): void {
-		this.SetProp((e) => (e.PlayerName = value.substring(0, 15)));
+		this.Update((e) => (e.PlayerName = value.substring(0, 15)));
 	}
 
 	public HasPassword(): void {
-		this.SetProp((e) => (e.HasPassword = !e.HasPassword));
+		this.Update((e) => (e.HasPassword = !e.HasPassword));
 	}
 
 	public Back(): void {

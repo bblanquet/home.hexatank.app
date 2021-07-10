@@ -55,7 +55,7 @@ export class LobbyHook extends Hook<LobbyState> {
 			return;
 		}
 
-		this.SetProp((e) => {
+		this.Update((e) => {
 			e.Players = players;
 		});
 
@@ -84,7 +84,7 @@ export class LobbyHook extends Hook<LobbyState> {
 	}
 
 	public SetMode(mode: LobbyMode): void {
-		this.SetProp((e) => {
+		this.Update((e) => {
 			e.Mode = mode;
 			if (mode === LobbyMode.chat) {
 				e.HasReceivedMessage = false;
@@ -93,11 +93,11 @@ export class LobbyHook extends Hook<LobbyState> {
 	}
 
 	private OnMessage(source: any, message: Message): void {
-		this.SetProp((e) => {
+		this.Update((e) => {
 			e.Messages = [ message ].concat(e.Messages);
 		});
 		if (this.State.Mode !== LobbyMode.chat) {
-			this.SetProp((e) => {
+			this.Update((e) => {
 				e.HasReceivedMessage = true;
 			});
 		}

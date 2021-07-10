@@ -1,172 +1,61 @@
-import { Component, h } from 'preact';
-import { Item } from '../../Core/Items/Item';
+import { JSX, h } from 'preact';
 import OnlinePlayersComponent from '../Components/Canvas/OnlinePlayersComponent';
-import { GameContext } from '../../Core/Framework/Context/GameContext';
-import { ISelectable } from '../../Core/ISelectable';
-import { GameSettings } from '../../Core/Framework/GameSettings';
 import GameCanvas from '../Components/GameCanvas';
 import OptionPopup from '../Components/OptionPopup';
 import { GameStatus } from '../../Core/Framework/GameStatus';
-import { OnlinePlayer } from '../../Network/OnlinePlayer';
 import Popup from '../Components/Popup';
-import { IGameContextService } from '../../Services/GameContext/IGameContextService';
-import { IInteractionService } from '../../Services/Interaction/IInteractionService';
-import { Singletons, SingletonKey } from '../../Singletons';
 import Redirect from '../Components/Redirect';
-import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 import ActiveRightBottomCornerButton from '../Common/Button/Corner/ActiveRightBottomCornerButton';
-import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
 import { MultiTankMenuItem } from '../../Core/Menu/Buttons/MultiTankMenuItem';
 import Visible from '../Components/Visible';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 import { MultiCellMenuItem } from '../../Core/Menu/Buttons/MultiCellMenuItem';
-import { IAppService } from '../../Services/App/IAppService';
-import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
-import { IAudioService } from '../../Services/Audio/IAudioService';
-import { IOnlineService } from '../../Services/Online/IOnlineService';
-import { Dictionary } from '../../Utils/Collections/Dictionary';
 import MenuSwitcher from '../Components/Canvas/MenuSwitcher';
 import SynchronizingComponent from '../Components/Canvas/SynchronizingComponent';
 import Switch from '../Components/Switch';
-import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { Cell } from '../../Core/Items/Cell/Cell';
+import { HookedComponent } from '../Hooks/HookedComponent';
+import { GameHook } from '../Hooks/GameHook';
+import { RuntimeState } from '../Model/RuntimeState';
+import { useState } from 'preact/hooks';
 
-export default class GameScreen extends Component<
-	any,
-	{
-		IsSynchronising: boolean;
-		IsSettingMenuVisible: boolean;
-		IsMultiMenuVisible: boolean;
-		HasWarning: boolean;
-		TankRequestCount: number;
-		TruckRequestCount: number;
-		Amount: number;
-		Item: Item;
-		Players: OnlinePlayer[];
-		GameStatus: GameStatus;
-		IsSettingPatrol: boolean;
-	}
-> {
-	private _gameContextService: IGameContextService<GameBlueprint, GameContext>;
-	private _soundService: IAudioService;
-	private _onlineService: IOnlineService;
-	private _interactionService: IInteractionService<GameContext>;
-	private _appService: IAppService<GameBlueprint>;
-	private _gameContext: GameContext;
-	private _timeout: SimpleEvent = new SimpleEvent();
-	private _onItemSelectionChanged: any = this.OnItemSelectionChanged.bind(this);
-
-	constructor() {
-		super();
-		this._gameContextService = Singletons.Load<IGameContextService<GameBlueprint, GameContext>>(
-			SingletonKey.GameContext
-		);
-		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-		this._onlineService = Singletons.Load<IOnlineService>(SingletonKey.Online);
-		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.Interaction);
-		this._appService = Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App);
-		this._gameContext = this._gameContextService.Publish();
-		this.setState({
-			IsSettingMenuVisible: false,
-			TankRequestCount: 0,
-			TruckRequestCount: 0,
-			Amount: GameSettings.PocketMoney,
-			HasWarning: false,
-			GameStatus: GameStatus.Pending,
-			IsSettingPatrol: false,
-			IsSynchronising: false
-		});
-		this._timeout.On(() => {
-			this.Stop(true);
-		});
-	}
-	private OnItemSelectionChanged(obj: any, item: ISelectable): void {
-		if (!item.IsSelected()) {
-			item.OnSelectionChanged.Off(this._onItemSelectionChanged);
-			this.setState({
-				Item: null
-			});
-		}
+export default class GameScreen extends HookedComponent<{}, GameHook, RuntimeState> {
+	public GetDefaultHook(): GameHook {
+		return new GameHook(useState(GameHook.DefaultState()));
 	}
 
-	componentDidMount() {
-		this._soundService.Pause(AudioArchive.loungeMusic);
-		const playerHq = this._gameContext.GetPlayerHq();
-		if (playerHq) {
-			playerHq.OnTruckChanged.On(this.HandleTruckChanged.bind(this));
-			playerHq.OnTankRequestChanged.On(this.HandleTankChanged.bind(this));
-			playerHq.OnDiamondCountChanged.On(this.HandleDiamondChanged.bind(this));
-			playerHq.OnCashMissing.On(this.HandleCashMissing.bind(this));
-		}
-		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
-		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
-		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
-		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
-		if (this._onlineService.GetOnlinePlayerManager()) {
-			this._onlineService
-				.GetOnlinePlayerManager()
-				.OnPlayersChanged.On((src: any, ps: Dictionary<OnlinePlayer>) => {
-					this.setState({ IsSynchronising: ps.Values().some((p) => !p.IsSync()) });
-				});
-		}
-	}
-
-	private SetMenu(): void {
-		const isSettingMenuVisible = !this.state.IsSettingMenuVisible;
-		this.setState({
-			IsSettingMenuVisible: isSettingMenuVisible
-		});
-		if (isSettingMenuVisible) {
-			this._soundService.GetGameAudioManager().PauseAll();
-		} else if (!this._soundService.IsMute()) {
-			this._soundService.GetGameAudioManager().PlayAll();
-		}
-
-		if (!this._onlineService.IsOnline()) {
-			this._gameContext.State.IsPause = isSettingMenuVisible;
-		}
-	}
-
-	private Stop(isVictory: boolean): void {
-		this._gameContext.State.IsPause = true;
-		this.setState({
-			IsSettingMenuVisible: false,
-			GameStatus: isVictory ? GameStatus.Victory : GameStatus.Defeat
-		});
-	}
-
-	render() {
+	public Rendering(): JSX.Element {
 		return (
 			<Redirect>
-				<OnlinePlayersComponent OnlineService={this._onlineService} />
-				<Visible isVisible={this.state.GameStatus !== GameStatus.Pending}>
+				<OnlinePlayersComponent OnlineService={this.Hook.GetOnlineManager()} />
+				<Visible isVisible={this.Hook.State.GameStatus !== GameStatus.Pending}>
 					<Popup
 						points={10}
-						status={this.state.GameStatus}
-						curves={this._appService.GetStats().GetCurves()}
-						context={this._appService.GetRecord().GetRecord()}
+						status={this.Hook.State.GameStatus}
+						curves={this.Hook.GetCurves()}
+						context={this.Hook.GetRecord()}
 					/>
 				</Visible>
-				<Visible isVisible={this.state.GameStatus === GameStatus.Pending}>
+				<Visible isVisible={this.Hook.State.GameStatus === GameStatus.Pending}>
 					<Switch
-						isVisible={this.state.IsSynchronising}
+						isVisible={this.Hook.State.IsSynchronising}
 						left={
 							<SynchronizingComponent
-								Timeout={this._timeout}
+								Timeout={this.Hook.Timeout}
 								Quit={() => {
-									this.Stop(false);
+									this.Hook.Stop(false);
 								}}
 							/>
 						}
 						right={
 							<Switch
-								isVisible={this.state.IsSettingMenuVisible}
+								isVisible={this.Hook.State.IsSettingMenuVisible}
 								left={
 									<OptionPopup
-										Status={this.state.GameStatus}
-										Resume={() => this.SetMenu()}
+										Status={this.Hook.State.GameStatus}
+										Resume={() => this.Hook.SetMenu()}
 										Quit={() => {
-											this.Stop(false);
+											this.Hook.Stop(false);
 										}}
 									/>
 								}
@@ -176,53 +65,46 @@ export default class GameScreen extends Component<
 											<button
 												type="button"
 												class="btn btn-dark small-space space-out fill-option"
-												onClick={() => this.SetMenu()}
+												onClick={() => this.Hook.SetMenu()}
 											/>
 											<button type="button" class="btn btn-dark space-out">
-												<Visible isVisible={this.state.HasWarning}>
+												<Visible isVisible={this.Hook.State.HasWarning}>
 													<span class="fill-noMoney badge badge-warning very-small-space middle very-small-right-margin blink_me">
 														{' '}
 													</span>
 												</Visible>
-												{this.state.Amount.toFixed(2)}
+												{this.Hook.State.Amount.toFixed(2)}
 												<span class="fill-diamond badge badge-secondary very-small-space middle very-small-left-margin very-small-right-margin">
 													{' '}
 												</span>
 											</button>
 										</div>
-										<Visible isVisible={isNullOrUndefined(this.state.Item)}>
+										<Visible isVisible={isNullOrUndefined(this.Hook.State.Item)}>
 											<div class="right-bottom-menu">
 												<ActiveRightBottomCornerButton
-													isActive={this._interactionService
-														.GetMultiSelectionContext()
-														.IsListeningUnit()}
-													callBack={() => this.SendContext(new MultiTankMenuItem())}
+													isActive={this.Hook.IsListeningVehicle()}
+													callBack={() => this.Hook.SendContext(new MultiTankMenuItem())}
 													logo="fill-tank-multi-cell"
 												/>
 												<ActiveRightBottomCornerButton
-													isActive={this._interactionService
-														.GetMultiSelectionContext()
-														.IsListeningCell()}
-													callBack={() => this.SendContext(new MultiCellMenuItem())}
+													isActive={this.Hook.IsListeningCell()}
+													callBack={() => this.Hook.SendContext(new MultiCellMenuItem())}
 													logo="fill-mult-cell"
 												/>
 											</div>
 										</Visible>
-										<Visible isVisible={!isNullOrUndefined(this.state.Item)}>
+										<Visible isVisible={!isNullOrUndefined(this.Hook.State.Item)}>
 											<MenuSwitcher
-												IsSettingPatrol={this.state.IsSettingPatrol}
-												TankRequestCount={this.state.TankRequestCount}
-												TruckRequestCount={this.state.TruckRequestCount}
-												VehicleCount={this._gameContext.GetPlayerHq().GetVehicleCount()}
-												ReactorCount={this._gameContext.GetPlayerHq().GetReactorsCount()}
-												Item={this.state.Item}
-												HasMultiMenu={this.state.IsMultiMenuVisible}
+												IsSettingPatrol={this.Hook.State.IsSettingPatrol}
+												TankRequestCount={this.Hook.State.TankRequestCount}
+												TruckRequestCount={this.Hook.State.TruckRequestCount}
+												VehicleCount={this.Hook.GetVehicleCount()}
+												ReactorCount={this.Hook.GetReactor()}
+												Item={this.Hook.State.Item}
+												callback={(e) => this.Hook.SendContext(e)}
+												HasMultiMenu={this.Hook.State.IsMultiMenuVisible}
 												IsCovered={
-													this.state.Item instanceof Cell ? (
-														this._gameContext.GetPlayerHq().IsCovered(this.state.Item)
-													) : (
-														true
-													)
+													this.Hook.State.Item instanceof Cell ? this.Hook.IsCovered() : true
 												}
 											/>
 										</Visible>
@@ -232,67 +114,8 @@ export default class GameScreen extends Component<
 						}
 					/>
 				</Visible>
-				<GameCanvas gameContext={this._gameContextService} />
+				<GameCanvas middle={this.Hook.GetMiddle()} />
 			</Redirect>
 		);
-	}
-
-	private SendContext(item: Item): void {
-		const interaction = this._interactionService.Publish();
-		interaction.Kind = InteractionKind.Up;
-		interaction.OnSelect(item);
-	}
-
-	private HandleMultiMenuShowed(src: any, isDisplayed: boolean): void {
-		this.setState({
-			IsMultiMenuVisible: isDisplayed
-		});
-	}
-
-	private HandleTruckChanged(obj: any, request: number): void {
-		this.setState({
-			TruckRequestCount: request
-		});
-	}
-
-	private HandleTankChanged(obj: any, request: number): void {
-		this.setState({
-			TankRequestCount: request
-		});
-	}
-
-	private HandleDiamondChanged(obj: any, amount: number): void {
-		this.setState({
-			Amount: amount
-		});
-	}
-
-	private HandleSelection(obj: any, selectedItem: Item): void {
-		((selectedItem as unknown) as ISelectable).OnSelectionChanged.On(this._onItemSelectionChanged);
-		this.setState({
-			Item: selectedItem
-		});
-	}
-
-	private HandleSettingPatrol(obj: any, value: boolean): void {
-		this.setState({
-			IsSettingPatrol: value
-		});
-	}
-
-	private HandleCashMissing(obj: any, value: boolean): void {
-		if (value !== this.state.HasWarning) {
-			this.setState({
-				HasWarning: value
-			});
-		}
-	}
-
-	private HandleGameStatus(obj: any, value: GameStatus): void {
-		if (value !== this.state.GameStatus) {
-			this.setState({
-				GameStatus: value
-			});
-		}
 	}
 }

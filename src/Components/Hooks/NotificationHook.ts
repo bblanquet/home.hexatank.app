@@ -21,12 +21,12 @@ export class NotificationHook extends Hook<NotificationState> {
 	}
 
 	private HandleNotification(src: any, notification: NotificationState): void {
-		this.SetProp((e) => {
+		this.Update((e) => {
 			e.Kind = notification.Kind;
 			e.Message = notification.Message;
 		});
 		if (0 < notification.Message.length) {
-			this.SetProp((e) => {
+			this.Update((e) => {
 				e.Kind = notification.Kind;
 				e.Message = notification.Message;
 			});
@@ -36,7 +36,7 @@ export class NotificationHook extends Hook<NotificationState> {
 				clearTimeout(this._timeout);
 			}
 			this._timeout = setTimeout(() => {
-				this.SetProp((e) => (e.Message = ''));
+				this.Update((e) => (e.Message = ''));
 			}, 3000);
 		}
 	}

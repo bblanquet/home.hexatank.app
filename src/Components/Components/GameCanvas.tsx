@@ -4,17 +4,13 @@ import { ItemsUpdater } from '../../Core/ItemsUpdater';
 import { Component, h } from 'preact';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { ILayerService } from '../../Services/Layer/ILayerService';
-import { IGameContextService } from '../../Services/GameContext/IGameContextService';
 import { IKeyService } from '../../Services/Key/IKeyService';
 import { IsMobile } from '../../Utils/ToolBox';
-import { IGameContext } from '../../Core/Framework/Context/IGameContext';
 import { IBlueprint } from '../../Core/Framework/Blueprint/IBlueprint';
 import PageAnalyser from './PageAnalyser';
+import { Point } from '../../Utils/Geometry/Point';
 
-export default class GameCanvas extends Component<
-	{ gameContext: IGameContextService<IBlueprint, IGameContext>; uncollect?: boolean },
-	{}
-> {
+export default class GameCanvas extends Component<{ middle: Point; uncollect?: boolean }, {}> {
 	private _gameCanvas: HTMLElement;
 	private _resizeFunc: any = this.ResizeTheCanvas.bind(this);
 	private _updater: ItemsUpdater;
@@ -27,11 +23,21 @@ export default class GameCanvas extends Component<
 
 	constructor() {
 		super();
-		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 		this._appService = Singletons.Load<IAppService<IBlueprint>>(this._keyService.GetAppKey());
-		this._updater = Singletons.Load<IUpdateService>(SingletonKey.Update).Publish();
 		this._stop = true;
+	}
+
+	private Init() {
+		this._gameCanvas.innerHTML = '';
+		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
+		this._updater = Singletons.Load<IUpdateService>(SingletonKey.Update).Publish();
+		this._gameCanvas.appendChild(this._appService.Publish().view);
+		this.ResizeTheCanvas();
+		this.SetCenter();
+		this._appService.OnRetried.On(() => {
+			this.Init();
+		});
 	}
 
 	componentDidMount() {
@@ -39,9 +45,7 @@ export default class GameCanvas extends Component<
 		window.addEventListener('resize', this._resizeFunc);
 		window.addEventListener('DOMContentLoaded', this._resizeFunc);
 		window.addEventListener('scroll', this._resizeFunc);
-		this._gameCanvas.appendChild(this._appService.Publish().view);
-		this.ResizeTheCanvas();
-		this.SetCenter();
+		this.Init();
 		this.GameLoop();
 	}
 
@@ -76,14 +80,11 @@ export default class GameCanvas extends Component<
 	}
 
 	protected SetCenter(): void {
-		const gameContext = this.props.gameContext.Publish();
-		if (gameContext && gameContext.GetPlayer()) {
-			const player = gameContext.GetPlayer();
-			const hqPoint = player.GetBoundingBox().GetCentralPoint();
+		if (this.props.middle) {
 			const halfWidth = this._width / 2;
 			const halfHeight = this._height / 2;
-			this._updater.ViewContext.SetX(-(hqPoint.X - halfWidth));
-			this._updater.ViewContext.SetY(-(hqPoint.Y - halfHeight));
+			this._updater.ViewContext.SetX(-(this.props.middle.X - halfWidth));
+			this._updater.ViewContext.SetY(-(this.props.middle.Y - halfHeight));
 		}
 	}
 

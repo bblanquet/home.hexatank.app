@@ -72,7 +72,7 @@ const App = (e: any) => {
 				status={GameStatus.Victory}
 				context={new JsonRecordContent()}
 			/>
-			<SmPopup path="{{sub_path}}SmPopup" points={10} status={GameStatus.Victory} />
+			<SmPopup path="{{sub_path}}SmPopup" status={GameStatus.Victory} />
 			<ComparisonScreen path="{{sub_path}}Comparison" />
 			<MonitorScreen path="{{sub_path}}Customer" />
 			<LogComponent path="{{sub_path}}Log" Messages={Logs()} />

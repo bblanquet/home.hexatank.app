@@ -23,6 +23,7 @@ import SmBtn from '../../Common/Button/Stylish/SmBtn';
 import Switch from '../../Components/Switch';
 import LogComponent from '../../Components/LogComponent';
 import { RecordContent } from '../../../Core/Framework/Record/Model/RecordContent';
+import { Point } from '../../../Utils/Geometry/Point';
 
 export default class PlayerScreen extends Component<
 	{},
@@ -103,7 +104,7 @@ export default class PlayerScreen extends Component<
 							left={<LogComponent Messages={this.GetRecord().Messages} />}
 							right={
 								<span>
-									<GameCanvas gameContext={this._gameService} uncollect={true} />
+									<GameCanvas middle={this.GetMiddle()} uncollect={true} />
 									<Visible isVisible={this.state.Item !== null && this.state.Item !== undefined}>
 										<UnitMenuComponent Vehicle={this.state.Item as Vehicle} />
 									</Visible>
@@ -120,6 +121,11 @@ export default class PlayerScreen extends Component<
 				/>
 			</Redirect>
 		);
+	}
+
+	private GetMiddle(): Point {
+		const player = this.context.GetPlayer();
+		return player.GetBoundingBox().GetCentralPoint();
 	}
 
 	private SetMenu(): void {

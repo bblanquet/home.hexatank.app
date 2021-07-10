@@ -1,6 +1,4 @@
 import { Component, h } from 'preact';
-import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
-import { InteractionContext } from '../../../Core/Interaction/InteractionContext';
 import { Item } from '../../../Core/Items/Item';
 import { Vehicle } from '../../../Core/Items/Unit/Vehicle';
 import { AbortMenuItem } from '../../../Core/Menu/Buttons/AbortMenuItem';
@@ -9,18 +7,9 @@ import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
 import { SearchMoneyMenuItem } from '../../../Core/Menu/Buttons/SearchMoneyMenuItem';
 
 export default class TruckMenuComponent extends Component<
-	{ Truck: Vehicle; isSettingPatrol: boolean; Interaction: InteractionContext },
+	{ Truck: Vehicle; isSettingPatrol: boolean; callBack: (item: Item) => void },
 	{}
 > {
-	constructor() {
-		super();
-	}
-	private SendContext(item: Item): void {
-		const interaction = this.props.Interaction;
-		interaction.Kind = InteractionKind.Up;
-		return interaction.OnSelect(item);
-	}
-
 	render() {
 		return (
 			<div class="left-column">
@@ -32,28 +21,28 @@ export default class TruckMenuComponent extends Component<
 						<button
 							type="button"
 							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new SearchMoneyMenuItem())}
+							onClick={(e: any) => this.props.callBack(new SearchMoneyMenuItem())}
 						>
 							<div class="fill-searchMoney max-width standard-space" />
 						</button>
 						<button
 							type="button"
 							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new CamouflageMenuItem())}
+							onClick={(e: any) => this.props.callBack(new CamouflageMenuItem())}
 						>
 							<div class="fill-camouflage max-width standard-space" />
 						</button>
 						<button
 							type="button"
 							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new AbortMenuItem())}
+							onClick={(e: any) => this.props.callBack(new AbortMenuItem())}
 						>
 							<div class="fill-abort max-width standard-space" />
 						</button>
 						<button
 							type="button"
 							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new CancelMenuItem())}
+							onClick={(e: any) => this.props.callBack(new CancelMenuItem())}
 						>
 							<div class="fill-cancel max-width standard-space" />
 						</button>

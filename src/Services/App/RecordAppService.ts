@@ -14,12 +14,14 @@ import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
 import { GameContext } from '../../Core/Framework/Context/GameContext';
 import { GameState } from '../../Core/Framework/Context/GameState';
+import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 
 export class RecordAppService implements IAppService<GameBlueprint> {
 	private _context: GameBlueprint;
 	private _app: PIXI.Application;
 	private _appProvider: AppProvider;
 	private _interactionManager: PIXI.InteractionManager;
+	OnRetried: SimpleEvent;
 
 	private _gameContextService: IGameContextService<GameBlueprint, GameContext>;
 	private _interactionService: IInteractionService<GameContext>;
@@ -37,12 +39,20 @@ export class RecordAppService implements IAppService<GameBlueprint> {
 		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.RecordInteraction);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 	}
+	Retry(): void {
+		throw new Error('Method not implemented.');
+	}
+	IsRetriable(): boolean {
+		return false;
+	}
 	GetStats(): StatsContext {
 		return null;
 	}
 	GetRecord(): RecordContext {
 		return null;
 	}
+
+	Restart(): void {}
 
 	public Register(blueprint: GameBlueprint): void {
 		this._keyService.DefineKey(this);

@@ -34,6 +34,7 @@ export class DiamondRenderer {
 		).GetAreas(new HexAxial(blueprint.CenterItem.Position.Q, blueprint.CenterItem.Position.R));
 		this.SetLands(cells, blueprint.MapMode, areas);
 		this.AddClouds();
+		blueprint.HqDiamond.Color = ColorKind.Purple;
 		const hq = new HqRender().Render(cells, blueprint.HqDiamond);
 		this.SetHqLand(cells, SvgArchive.nature.hq, [ hq.GetCell().GetHexCoo() ]);
 		this.SetHqLand(cells, SvgArchive.nature.hq2, [ hq.GetCell().GetHexCoo() ], 1);

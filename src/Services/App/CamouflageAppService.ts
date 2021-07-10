@@ -17,6 +17,7 @@ import { CamouflageContext } from '../../Core/Framework/Context/CamouflageContex
 import { IAudioService } from '../Audio/IAudioService';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import { GameState } from '../../Core/Framework/Context/GameState';
+import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 
 export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 	private _blueprint: CamouflageBlueprint;
@@ -31,11 +32,24 @@ export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 	private _keyService: IKeyService;
 	private _audioService: IAudioService;
 	private _gameAudioService: CamouflageAudioManager;
+	private _context: CamouflageContext;
 	private _gameStatusChanged: any = this.GameStatusChanged.bind(this);
 	private _victory: () => void;
 	private _defeat: () => void;
+	public OnRetried: SimpleEvent = new SimpleEvent();
 
-	constructor() {
+	Retry(): void {
+		this._context.State.OnGameStatusChanged.Off(this.GameStatusChanged.bind(this));
+		this.Collect();
+		this.Register(this._blueprint, this._victory, this._defeat);
+		this.OnRetried.Invoke();
+	}
+
+	IsRetriable(): boolean {
+		return true;
+	}
+
+	public Register(blueprint: CamouflageBlueprint, victory: () => void, defeat: () => void): void {
 		this._appProvider = new AppProvider();
 		this._gameContextService = Singletons.Load<IGameContextService<CamouflageBlueprint, CamouflageContext>>(
 			SingletonKey.CamouflageGameContext
@@ -48,9 +62,6 @@ export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 			SingletonKey.CamouflageInteraction
 		);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
-	}
-
-	public Register(blueprint: CamouflageBlueprint, victory: () => void, defeat: () => void): void {
 		this._keyService.DefineKey(this);
 
 		this._victory = victory;
@@ -64,16 +75,16 @@ export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 		this._updateService.Register(gameState);
 		this._layerService.Register(this._app);
 		this._gameContextService.Register(blueprint, gameState);
-		const gameContext = this._gameContextService.Publish();
-		this._interactionService.Register(this._input, gameContext);
-		this._gameAudioService = new CamouflageAudioManager(blueprint, gameContext);
+		this._context = this._gameContextService.Publish();
+		this._interactionService.Register(this._input, this._context);
+		this._gameAudioService = new CamouflageAudioManager(blueprint, this._context);
 		this._audioService.Register(this._gameAudioService);
-		gameContext.State.OnGameStatusChanged.On(this._gameStatusChanged);
+		this._context.State.OnGameStatusChanged.On(this._gameStatusChanged);
 
-		gameContext.GetCells().forEach((c) => {
+		this._context.GetCells().forEach((c) => {
 			c.AlwaysVisible();
 		});
-		CellStateSetter.SetStates(gameContext.GetCells());
+		CellStateSetter.SetStates(this._context.GetCells());
 		this._app.start();
 	}
 

@@ -32,12 +32,12 @@ export class MonitoringHook extends Hook<CustomerState> {
 		axios
 			.get('{{error_url}}/server/Exception/List')
 			.then((response: AxiosResponse<ErrorDetail[]>) => {
-				this.SetProp((e) => {
+				this.Update((e) => {
 					e.Errors = response.data;
 				});
 			})
 			.catch((error: AxiosError) => {
-				this.SetProp((e) => {
+				this.Update((e) => {
 					e.Errors = [];
 				});
 				this.OnNotification.Invoke(this, new NotificationState(LogKind.error, error.message));
@@ -65,7 +65,7 @@ export class MonitoringHook extends Hook<CustomerState> {
 				}
 			})
 			.catch((error: AxiosError) => {
-				this.SetProp((e) => {
+				this.Update((e) => {
 					e.Errors = [];
 				});
 				this.OnNotification.Invoke(this, new NotificationState(LogKind.error, error.message));

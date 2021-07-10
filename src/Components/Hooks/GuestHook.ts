@@ -64,19 +64,19 @@ export class GuestHook extends Hook<GuestState> {
 	}
 
 	public SetUsername(value: string): void {
-		this.SetProp((e) => (e.PlayerName = value.substring(0, 15)));
+		this.Update((e) => (e.PlayerName = value.substring(0, 15)));
 	}
 
 	public SetFilter(value: string): void {
-		this.SetProp((e) => (e.filter = value));
+		this.Update((e) => (e.filter = value));
 	}
 
 	public SetPassword(value: string): void {
-		this.SetProp((e) => (e.Password = value));
+		this.Update((e) => (e.Password = value));
 	}
 
 	public Randomize(): void {
-		this.SetProp((e) => {
+		this.Update((e) => {
 			e.PlayerName = Usernames[Math.round(Math.random() * Usernames.length - 1)];
 		});
 	}
@@ -111,7 +111,7 @@ export class GuestHook extends Hook<GuestState> {
 	}
 
 	private OnRoom(message: NetworkMessage<RoomState[]>): void {
-		this.SetProp((data) => {
+		this.Update((data) => {
 			data.Rooms = message.Content;
 		});
 	}

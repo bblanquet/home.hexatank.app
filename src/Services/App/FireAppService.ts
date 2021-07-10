@@ -18,7 +18,7 @@ import { IAudioService } from '../Audio/IAudioService';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import { GameState } from '../../Core/Framework/Context/GameState';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
-import { StageState } from '../Campaign/StageState';
+import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 
 export class PowerAppService implements IAppService<FireBlueprint> {
 	private _blueprint: FireBlueprint;
@@ -28,7 +28,7 @@ export class PowerAppService implements IAppService<FireBlueprint> {
 	private _gameAudioService: PowerAudioManager;
 
 	private _gameContextService: IGameContextService<FireBlueprint, FireContext>;
-	private _playerProfilService: IPlayerProfilService;
+	private _context: FireContext;
 	private _interactionService: IInteractionService<FireContext>;
 	private _layerService: ILayerService;
 	private _updateService: IUpdateService;
@@ -36,6 +36,7 @@ export class PowerAppService implements IAppService<FireBlueprint> {
 	private _audioService: IAudioService;
 	private _victory: () => void;
 	private _defeat: () => void;
+	public OnRetried: SimpleEvent = new SimpleEvent();
 
 	constructor() {
 		this._appProvider = new AppProvider();
@@ -47,7 +48,6 @@ export class PowerAppService implements IAppService<FireBlueprint> {
 		this._interactionService = Singletons.Load<IInteractionService<FireContext>>(SingletonKey.PowerInteraction);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 		this._audioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-		this._playerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 	}
 
 	public Register(blueprint: FireBlueprint, victory: () => void, defeat: () => void): void {
@@ -64,18 +64,29 @@ export class PowerAppService implements IAppService<FireBlueprint> {
 		this._updateService.Register(gameState);
 		this._layerService.Register(this._app);
 		this._gameContextService.Register(blueprint, gameState);
-		const gameContext = this._gameContextService.Publish();
-		this._interactionService.Register(this._interactionManager, gameContext);
-		this._gameAudioService = new PowerAudioManager(blueprint, gameContext);
+		this._context = this._gameContextService.Publish();
+		this._interactionService.Register(this._interactionManager, this._context);
+		this._gameAudioService = new PowerAudioManager(blueprint, this._context);
 		this._audioService.Register(this._gameAudioService);
-		gameContext.State.OnGameStatusChanged.On(this.GameStatusChanged.bind(this));
+		this._context.State.OnGameStatusChanged.On(this.GameStatusChanged.bind(this));
 
-		gameContext.GetCells().forEach((c) => {
+		this._context.GetCells().forEach((c) => {
 			c.AlwaysVisible();
 		});
 
-		CellStateSetter.SetStates(gameContext.GetCells());
+		CellStateSetter.SetStates(this._context.GetCells());
 		this._app.start();
+	}
+
+	Retry(): void {
+		this._context.State.OnGameStatusChanged.Off(this.GameStatusChanged.bind(this));
+		this.Collect();
+		this.Register(this._blueprint, this._victory, this._defeat);
+		this.OnRetried.Invoke();
+	}
+
+	IsRetriable(): boolean {
+		return true;
 	}
 
 	private GameStatusChanged(e: any, status: GameStatus) {

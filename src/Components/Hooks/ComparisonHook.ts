@@ -32,7 +32,7 @@ export class ComparisonHook extends Hook<ComparisonState> {
 	}
 
 	public ChangeState(value: ComparisonKind): void {
-		this.SetProp((e) => (e.Kind = value));
+		this.Update((e) => (e.Kind = value));
 	}
 
 	public Unmount(): void {}

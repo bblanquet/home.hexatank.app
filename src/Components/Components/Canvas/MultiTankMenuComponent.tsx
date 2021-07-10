@@ -1,6 +1,4 @@
 import { Component, h } from 'preact';
-import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
-import { InteractionContext } from '../../../Core/Interaction/InteractionContext';
 import { Item } from '../../../Core/Items/Item';
 import { UnitGroup } from '../../../Core/Items/UnitGroup';
 import { AbortMenuItem } from '../../../Core/Menu/Buttons/AbortMenuItem';
@@ -11,18 +9,10 @@ import { MultiOrderMenuItem } from '../../../Core/Menu/Buttons/MultiOrderMenuIte
 export default class MultiTankMenuComponent extends Component<
 	{
 		item: UnitGroup;
-		Interaction: InteractionContext;
+		callback: (e: Item) => void;
 	},
 	{}
 > {
-	constructor() {
-		super();
-	}
-	private SendContext(item: Item): void {
-		this.props.Interaction.Kind = InteractionKind.Up;
-		this.props.Interaction.OnSelect(item);
-	}
-
 	render() {
 		return (
 			<div class="left-column">
@@ -37,7 +27,7 @@ export default class MultiTankMenuComponent extends Component<
 									'btn btn-primary without-padding'
 								)
 							}
-							onClick={(e: any) => this.SendContext(new MultiOrderMenuItem())}
+							onClick={(e: any) => this.props.callback(new MultiOrderMenuItem())}
 						>
 							<div class="white-background">{this.props.item.IsListeningOrder ? 'ON' : 'OFF'}</div>
 							<div class="fill-active-order max-width standard-space" />
@@ -45,21 +35,21 @@ export default class MultiTankMenuComponent extends Component<
 						<button
 							type="button"
 							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new CamouflageMenuItem())}
+							onClick={(e: any) => this.props.callback(new CamouflageMenuItem())}
 						>
 							<div class="fill-camouflage max-width standard-space" />
 						</button>
 						<button
 							type="button"
 							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new AbortMenuItem())}
+							onClick={(e: any) => this.props.callback(new AbortMenuItem())}
 						>
 							<div class="fill-abort max-width standard-space" />
 						</button>
 						<button
 							type="button"
 							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.SendContext(new CancelMenuItem())}
+							onClick={(e: any) => this.props.callback(new CancelMenuItem())}
 						>
 							<div class="fill-cancel max-width standard-space" />
 						</button>

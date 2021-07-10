@@ -17,8 +17,7 @@ import { GameSettings } from '../../Core/Framework/GameSettings';
 import { IAudioService } from '../Audio/IAudioService';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import { GameState } from '../../Core/Framework/Context/GameState';
-import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
-import { StageState } from '../Campaign/StageState';
+import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 
 export class DiamondAppService implements IAppService<DiamondBlueprint> {
 	private _blueprint: DiamondBlueprint;
@@ -26,18 +25,19 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 	private _appProvider: AppProvider;
 	private _interactionManager: PIXI.InteractionManager;
 	private _gameAudioService: DiamondAudioManager;
+	private _context: DiamondContext;
 
 	private _gameContextService: IGameContextService<DiamondBlueprint, DiamondContext>;
 	private _interactionService: IInteractionService<DiamondContext>;
-	private _playerProfilService: IPlayerProfilService;
 	private _layerService: ILayerService;
 	private _updateService: IUpdateService;
 	private _keyService: IKeyService;
 	private _audioService: IAudioService;
 	private _victory: () => void;
 	private _defeat: () => void;
+	public OnRetried: SimpleEvent = new SimpleEvent();
 
-	constructor() {
+	public Register(blueprint: DiamondBlueprint, victory: () => void, defeat: () => void): void {
 		this._appProvider = new AppProvider();
 		this._gameContextService = Singletons.Load<IGameContextService<DiamondBlueprint, DiamondContext>>(
 			SingletonKey.DiamondGameContext
@@ -49,12 +49,7 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 		);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 		this._audioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-		this._playerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
-	}
-
-	public Register(blueprint: DiamondBlueprint, victory: () => void, defeat: () => void): void {
 		this._keyService.DefineKey(this);
-
 		this._victory = victory;
 		this._defeat = defeat;
 		GameSettings.Init();
@@ -67,18 +62,29 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 		this._updateService.Register(gameState);
 		this._layerService.Register(this._app);
 		this._gameContextService.Register(blueprint, gameState);
-		const gameContext = this._gameContextService.Publish();
-		this._interactionService.Register(this._interactionManager, gameContext);
+		this._context = this._gameContextService.Publish();
+		this._interactionService.Register(this._interactionManager, this._context);
 
-		this._gameAudioService = new DiamondAudioManager(blueprint, gameContext);
+		this._gameAudioService = new DiamondAudioManager(blueprint, this._context);
 		this._audioService.Register(this._gameAudioService);
-		gameContext.State.OnGameStatusChanged.On(this.GameStatusChanged.bind(this));
+		this._context.State.OnGameStatusChanged.On(this.GameStatusChanged.bind(this));
 
-		gameContext.GetCells().forEach((c) => {
+		this._context.GetCells().forEach((c) => {
 			c.AlwaysVisible();
 		});
-		CellStateSetter.SetStates(gameContext.GetCells());
+		CellStateSetter.SetStates(this._context.GetCells());
 		this._app.start();
+	}
+
+	Retry(): void {
+		this._context.State.OnGameStatusChanged.Off(this.GameStatusChanged.bind(this));
+		this.Collect();
+		this.Register(this._blueprint, this._victory, this._defeat);
+		this.OnRetried.Invoke();
+	}
+
+	IsRetriable(): boolean {
+		return true;
 	}
 
 	private GameStatusChanged(e: any, status: GameStatus) {

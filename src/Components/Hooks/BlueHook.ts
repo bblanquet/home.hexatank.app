@@ -44,7 +44,7 @@ export class BlueHook extends Hook<CampaignState> {
 
 	private TextAnimation(): void {
 		if (this.State.CurrentSentence.length < this.State.Sentence.length) {
-			this.SetProp((e) => {
+			this.Update((e) => {
 				e.CurrentSentence = e.Sentence.substring(0, e.CurrentSentence.length + 1);
 			});
 		}
@@ -57,7 +57,7 @@ export class BlueHook extends Hook<CampaignState> {
 	}
 
 	public SetBubble(): void {
-		this.SetProp((e) => {
+		this.Update((e) => {
 			e.HasBubble = !e.HasBubble;
 		});
 	}
@@ -81,7 +81,7 @@ export class BlueHook extends Hook<CampaignState> {
 	}
 
 	public Select(level: number): void {
-		this.SetProp((e) => {
+		this.Update((e) => {
 			e.HasBubble = !e.HasBubble;
 			e.Level = level;
 			e.Sentence = BlueSentences[Math.round((BlueSentences.length - 1) * Math.random())];

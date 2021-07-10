@@ -1,7 +1,5 @@
 import { Component, h } from 'preact';
 import * as luxon from 'luxon';
-import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
-import { InteractionContext } from '../../../Core/Interaction/InteractionContext';
 import { ReactorField } from '../../../Core/Items/Cell/Field/Bonus/ReactorField';
 import { Item } from '../../../Core/Items/Item';
 import { AttackMenuItem } from '../../../Core/Menu/Buttons/AttackMenuItem';
@@ -12,7 +10,10 @@ import { PlusMenuItem } from '../../../Core/Menu/Buttons/PlusMenuItem';
 import { SpeedFieldMenuItem } from '../../../Core/Menu/Buttons/SpeedFieldMenuItem';
 
 export default class ReactorMenuComponent extends Component<
-	{ Item: ReactorField; Interaction: InteractionContext },
+	{
+		Item: ReactorField;
+		callback: (e: Item) => void;
+	},
 	{ timeout: number }
 > {
 	constructor() {
@@ -71,7 +72,7 @@ export default class ReactorMenuComponent extends Component<
 							<button
 								type="button"
 								class="btn btn-dark without-padding"
-								onClick={(e: any) => this.SendContext(new CancelMenuItem())}
+								onClick={(e: any) => this.props.callback(new CancelMenuItem())}
 							>
 								<div class="fill-cancel max-width standard-space" />
 							</button>
@@ -93,14 +94,14 @@ export default class ReactorMenuComponent extends Component<
 							<button
 								type="button"
 								class="btn btn-dark without-padding"
-								onClick={(e: any) => this.SendContext(new PlusMenuItem())}
+								onClick={(e: any) => this.props.callback(new PlusMenuItem())}
 							>
 								<div class="fill-plus max-width standard-space" />
 							</button>
 							<button
 								type="button"
 								class="btn btn-dark without-padding"
-								onClick={(e: any) => this.SendContext(new MinusMenuItem())}
+								onClick={(e: any) => this.props.callback(new MinusMenuItem())}
 							>
 								<div class="fill-minus max-width standard-space" />
 							</button>
@@ -110,7 +111,7 @@ export default class ReactorMenuComponent extends Component<
 							<button
 								type="button"
 								class="btn btn-dark without-padding"
-								onClick={(e: any) => this.SendContext(new CancelMenuItem())}
+								onClick={(e: any) => this.props.callback(new CancelMenuItem())}
 							>
 								<div class="fill-cancel max-width standard-space" />
 							</button>
@@ -127,7 +128,7 @@ export default class ReactorMenuComponent extends Component<
 				<button
 					type="button"
 					class="btn btn-danger without-padding"
-					onClick={(e: any) => this.SendContext(new AttackMenuItem())}
+					onClick={(e: any) => this.props.callback(new AttackMenuItem())}
 				>
 					<div class="fill-energy-power max-width standard-space" />
 				</button>
@@ -143,7 +144,7 @@ export default class ReactorMenuComponent extends Component<
 				<button
 					type="button"
 					class="btn btn-danger without-padding"
-					onClick={(e: any) => this.SendContext(new SpeedFieldMenuItem())}
+					onClick={(e: any) => this.props.callback(new SpeedFieldMenuItem())}
 				>
 					<div class="fill-energy-speed max-width standard-space" />
 				</button>
@@ -159,7 +160,7 @@ export default class ReactorMenuComponent extends Component<
 				<button
 					type="button"
 					class="btn btn-danger without-padding"
-					onClick={(e: any) => this.SendContext(new HealMenuItem())}
+					onClick={(e: any) => this.props.callback(new HealMenuItem())}
 				>
 					<div class="fill-energy-heal max-width standard-space" />
 				</button>
@@ -167,10 +168,5 @@ export default class ReactorMenuComponent extends Component<
 		} else {
 			return '';
 		}
-	}
-
-	private SendContext(item: Item): void {
-		this.props.Interaction.Kind = InteractionKind.Up;
-		this.props.Interaction.OnSelect(item);
 	}
 }

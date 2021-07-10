@@ -48,7 +48,7 @@ export class RedHook extends Hook<CampaignState> {
 
 	private TextAnimation(): void {
 		if (this.State.CurrentSentence.length < this.State.Sentence.length) {
-			this.SetProp((e) => {
+			this.Update((e) => {
 				e.CurrentSentence = e.Sentence.substring(0, e.CurrentSentence.length + 1);
 			});
 		}
@@ -61,7 +61,7 @@ export class RedHook extends Hook<CampaignState> {
 	}
 
 	public SetBubble(): void {
-		this.SetProp((e) => {
+		this.Update((e) => {
 			e.HasBubble = !e.HasBubble;
 		});
 	}
@@ -85,7 +85,7 @@ export class RedHook extends Hook<CampaignState> {
 	}
 
 	public Select(level: number): void {
-		this.SetProp((e) => {
+		this.Update((e) => {
 			e.HasBubble = !e.HasBubble;
 			e.Level = level;
 			e.Sentence = RedSentences[Math.round((RedSentences.length - 1) * Math.random())];

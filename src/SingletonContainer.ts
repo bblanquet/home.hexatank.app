@@ -5,7 +5,7 @@ import { DiamondContextService } from './Services/GameContext/DiamondContextServ
 import { PowerContextService } from './Services/GameContext/PowerContextService';
 import { PowerInteractionService } from './Services/Interaction/PowerInteractionService';
 import { DiamondInteractionService } from './Services/Interaction/DiamondInteractionService';
-import { PowerAppService } from './Services/App/PowerAppService';
+import { PowerAppService } from './Services/App/FireAppService';
 import { DiamondAppService } from './Services/App/DiamondAppService';
 import { CamouflageGameContextService } from './Services/GameContext/CamouflageGameContextService';
 import { CamouflageInteractionService } from './Services/Interaction/CamouflageInteractionService';

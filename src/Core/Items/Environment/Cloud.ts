@@ -5,28 +5,29 @@ import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { InteractionContext } from '../../Interaction/InteractionContext';
 import { TickTimer } from '../../../Utils/Timer/TickTimer';
 import { ITimer } from '../../../Utils/Timer/ITimer';
+import { Point } from '../../../Utils/Geometry/Point';
 
 export class Cloud extends Item {
 	private _timer: ITimer;
-	IsFading: boolean;
+	public IsFading: boolean;
 	private _goingRight: boolean = true;
 	private _boundingBox: BoundingBox;
 
-	public GetBoundingBox(): BoundingBox {
-		return this._boundingBox;
-	}
-
-	constructor(private _min: number, private _max: number, private _y: number, private _sprite: string) {
+	constructor(private _point: Point, private _max: number, private _sprite: string) {
 		super();
 		this._timer = new TickTimer(3);
 		this.Z = ZKind.Sky;
 		this.GenerateSprite(this._sprite);
 		this._boundingBox = new BoundingBox();
-		this._boundingBox.X = this._min;
-		this._boundingBox.Y = this._y;
+		this._boundingBox.X = this._point.X;
+		this._boundingBox.Y = this._point.Y;
 		this._boundingBox.Width = GameSettings.Size * 2;
 		this._boundingBox.Height = GameSettings.Size * Math.sqrt(3);
-		this.InitPosition({ X: this._min, Y: this._y });
+		this.InitPosition(this._point);
+	}
+
+	public GetBoundingBox(): BoundingBox {
+		return this._boundingBox;
 	}
 
 	public Select(context: InteractionContext): boolean {
@@ -45,7 +46,7 @@ export class Cloud extends Item {
 		}
 
 		if (!this._goingRight) {
-			if (this._boundingBox.X <= this._min) {
+			if (this._boundingBox.X <= this._point.X) {
 				this._goingRight = true;
 			} else {
 				this._boundingBox.X -= 0.05;

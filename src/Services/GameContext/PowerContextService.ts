@@ -1,4 +1,4 @@
-import { FireRenderer } from '../../Core/Framework/Render/Fire/PowerRenderer';
+import { FireRenderer } from '../../Core/Framework/Render/Fire/FireRenderer';
 import { FireBlueprint } from '../../Core/Framework/Blueprint/Fire/FireBlueprint';
 import { FireContext } from '../../Core/Framework/Context/FireContext';
 import { IGameContextService } from './IGameContextService';

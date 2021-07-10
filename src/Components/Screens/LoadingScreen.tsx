@@ -15,10 +15,7 @@ import { AudioLoader } from '../../Core/Framework/AudioLoader';
 import { IAudioService } from '../../Services/Audio/IAudioService';
 import { Singletons, SingletonKey } from '../../Singletons';
 
-export default class LoadingScreen extends Component<
-	any,
-	{ SvgPercentage: number; AudioPercentage: number; Percentage: number }
-> {
+export default class LoadingScreen extends Component<any, { Percentage: number }> {
 	private _sentenceIndex: number = 0;
 	private _sentencePercentage: number = 0;
 	constructor() {
@@ -34,18 +31,9 @@ export default class LoadingScreen extends Component<
 				this._sentencePercentage = roundedPercentage;
 				this._sentenceIndex = (this._sentenceIndex + 1) % LoadingSentences.length;
 			}
-			this.SetSvg(percentage);
-		});
-
-		const audioLoader = new AudioLoader();
-		const onAudioLoaded = new AssetLoader(audioLoader, 4).LoadAll(audioLoader.Audios());
-		onAudioLoaded.On((obj: any, percentage: number) => {
-			const roundedPercentage = Math.round(percentage);
-			if (roundedPercentage % 10 === 0 && roundedPercentage !== this._sentencePercentage) {
-				this._sentencePercentage = roundedPercentage;
-				this._sentenceIndex = (this._sentenceIndex + 1) % LoadingSentences.length;
-			}
-			this.SetAudio(percentage);
+			this.setState({
+				Percentage: percentage
+			});
 		});
 	}
 
@@ -54,22 +42,6 @@ export default class LoadingScreen extends Component<
 			new SingletonContainer().Register();
 			SpriteProvider.SetLoaded(true);
 		}
-	}
-
-	private SetSvg(svg: number): void {
-		const percentage = svg / 2 + this.state.AudioPercentage / 2;
-		this.setState({
-			Percentage: percentage,
-			SvgPercentage: svg
-		});
-	}
-
-	private SetAudio(audio: number): void {
-		const percentage = audio / 2 + this.state.SvgPercentage / 2;
-		this.setState({
-			Percentage: percentage,
-			AudioPercentage: audio
-		});
 	}
 
 	private ToHome(): void {

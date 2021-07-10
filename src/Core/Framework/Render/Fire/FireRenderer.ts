@@ -5,22 +5,19 @@ import { HqLessShieldField } from '../../../Items/Cell/Field/Bonus/HqLessShieldF
 import { FireBlueprint } from '../../Blueprint/Fire/FireBlueprint';
 import { FireContext } from '../../Context/FireContext';
 import { SvgArchive } from '../../SvgArchiver';
-import { Cloud } from '../../../Items/Environment/Cloud';
-import { GameSettings } from '../../GameSettings';
 import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
 import { Cell } from '../../../Items/Cell/Cell';
 import { CellProperties } from '../../../Items/Cell/CellProperties';
 import { Dictionary } from '../../../../Utils/Collections/Dictionary';
-import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
-import { MapKind } from '../../Blueprint/Items/MapKind';
-import { Floor } from '../../../Items/Environment/Floor';
 import { Identity } from '../../../Items/Identity';
 import { HqAppearance } from '../Hq/HqSkinHelper';
 import { AboveItem } from '../../../Items/AboveItem';
 import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
 import { GameState } from '../../Context/GameState';
 import { ColorKind } from '../../../../Components/Common/Button/Stylish/ColorKind';
+import { CloudRender } from '../CloudRender';
+import { LandRender } from '../LandRender';
 
 export class FireRenderer {
 	public Render(blueprint: FireBlueprint, gameState: GameState): FireContext {
@@ -36,8 +33,8 @@ export class FireRenderer {
 		const areas = new AreaSearch(
 			Dictionary.To((c) => c.ToString(), cells.Values().map((c) => c.GetHexCoo()))
 		).GetAreas(new HexAxial(blueprint.CenterItem.Position.Q, blueprint.CenterItem.Position.R));
-		this.SetLands(cells, blueprint.MapMode, areas);
-		this.AddClouds();
+		new LandRender().SetLands(cells, blueprint.MapMode, areas);
+		new CloudRender().SetClouds(cells, areas);
 
 		const goal = new HexAxial(blueprint.Goal.Position.Q, blueprint.Goal.Position.R);
 		const goalCell = cells.Get(goal.ToString());
@@ -59,35 +56,5 @@ export class FireRenderer {
 		cells.Values().forEach((cell) => cell.SetPlayerHq(hq));
 
 		return new FireContext(gameState, cells.Values(), tank, hq, shield);
-	}
-
-	public AddClouds() {
-		new Cloud(GameSettings.Size * 2, 20 * GameSettings.Size, -GameSettings.Size * 3, SvgArchive.nature.clouds[0]);
-		new Cloud(-GameSettings.Size * 5, 20 * GameSettings.Size, -GameSettings.Size * 15, SvgArchive.nature.clouds[1]);
-		new Cloud(GameSettings.Size * 8, 20 * GameSettings.Size, -GameSettings.Size * 13, SvgArchive.nature.clouds[2]);
-		new Cloud(-GameSettings.Size * 12, 20 * GameSettings.Size, -GameSettings.Size * 8, SvgArchive.nature.clouds[3]);
-		new Cloud(GameSettings.Size * 6, 20 * GameSettings.Size, -GameSettings.Size * 10, SvgArchive.nature.clouds[4]);
-	}
-
-	private SetLands(cells: Dictionary<Cell>, mode: MapKind, middleAreas: HexAxial[]) {
-		middleAreas.forEach((corner) => {
-			const cell = cells.Get(corner.ToString());
-			const boundingBox = new BoundingBox();
-			boundingBox.Width = GameSettings.Size * 6;
-			boundingBox.Height = GameSettings.Size * 6;
-			boundingBox.X = cell.GetBoundingBox().X - (boundingBox.Width / 2 - cell.GetBoundingBox().Width / 2);
-			boundingBox.Y = cell.GetBoundingBox().Y - (boundingBox.Height / 2 - cell.GetBoundingBox().Height / 2);
-
-			let floor = SvgArchive.nature.forest.floor;
-			if (mode === MapKind.Ice) {
-				floor = SvgArchive.nature.ice.floor;
-			} else if (mode === MapKind.Sand) {
-				floor = SvgArchive.nature.sand.floor;
-			}
-
-			const land = new Floor(boundingBox, floor);
-			land.SetVisible(() => true);
-			land.SetAlive(() => true);
-		});
 	}
 }

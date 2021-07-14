@@ -10,6 +10,7 @@ export class TimeoutPeerHandler {
 	private _timeOut: NodeJS.Timeout;
 
 	constructor(private _peer: RtcPeer, private _context: PeerContext) {
+		StaticLogger.Log(LogKind.info, `Timeout Handler ${this._context.Owner} <> ${this._context.Recipient}`);
 		this._servPinger = new ServerPinger(this._context, 2000);
 		this._servPinger.OnPingReceived.On(this.HandlePingReceived.bind(this));
 		this._peer.OnIceStateChanged.On(this.HandleIceStateChanged.bind(this));

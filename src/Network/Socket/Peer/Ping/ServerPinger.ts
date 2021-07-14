@@ -1,6 +1,8 @@
 import { PeerContext } from './../PeerContext';
 import { BasicServerPinger } from './BasicServerPinger';
 import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
+import { LogKind } from '../../../../Utils/Logger/LogKind';
+import { StaticLogger } from '../../../../Utils/Logger/StaticLogger';
 
 export class ServerPinger {
 	public OnPingReceived: LiteEvent<number> = new LiteEvent<number>();
@@ -29,6 +31,7 @@ export class ServerPinger {
 			if (!this._isDone) {
 				this._serverPinger.Start(new Date().getTime());
 				this.Retry();
+				StaticLogger.Log(LogKind.info, `Server try to ping server`);
 			}
 		}, this._retryDuration);
 	}
@@ -38,6 +41,7 @@ export class ServerPinger {
 			let latency = Math.abs(new Date().getTime() - data);
 			if (latency < this._retryDuration) {
 				this._isDone = true;
+				StaticLogger.Log(LogKind.info, `Server ping received => ${latency}`);
 				this.OnPingReceived.Invoke(this, latency);
 				this.Stop();
 			}

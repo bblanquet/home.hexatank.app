@@ -89,10 +89,10 @@ export class SocketWrapper implements ISocketWrapper {
 
 	private HandleOffer(message: NetworkMessage<any>): void {
 		if (!this.PeerSockets.Exist(message.Emitter) && message.Recipient === this.Owner) {
-			const receiver = new RtcReceiver(
-				new PeerContext(this.ServerSocket, this.RoomName, this.Owner, message.Emitter)
-			);
+			const context = new PeerContext(this.ServerSocket, this.RoomName, this.Owner, message.Emitter);
+			const receiver = new RtcReceiver(context);
 			const receiverSocket = new PeerSocket(receiver);
+			new TimeoutPeerHandler(receiver, context);
 			this.PeerSockets.Add(message.Emitter, receiverSocket);
 			//todo subscription
 			receiverSocket.OnShutdown.On(this.OnShutdown.bind(this));

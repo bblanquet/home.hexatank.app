@@ -73,18 +73,6 @@ export default class BlueprintFormComponent extends Component<
 						<Dropdown
 							OnInput={(e: any) => {
 								this.setState({
-									Size: e.target.value
-								});
-							}}
-							DefaultValue={this.state.Size.toString()}
-							Label={'Size'}
-							Values={[ 'Small', 'Medium', 'Large' ]}
-						/>
-					</Line>
-					<Line>
-						<Dropdown
-							OnInput={(e: any) => {
-								this.setState({
 									Shape: e.target.value
 								});
 							}}

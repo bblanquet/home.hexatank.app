@@ -13,6 +13,7 @@ import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
 export class CellLessHeadquarter implements IHeadquarter {
 	private _reactors: Array<ReactorField> = new Array<ReactorField>();
 	private _batteryFields: Array<BatteryField> = new Array<BatteryField>();
+	private _vehicles: Array<Vehicle> = new Array<Vehicle>();
 
 	Identity: Identity;
 
@@ -37,6 +38,14 @@ export class CellLessHeadquarter implements IHeadquarter {
 		if (reactors.length === 1) {
 			reactors[0].EnergyUp();
 		}
+	}
+
+	AddVehicle(v: Vehicle): void {
+		this._vehicles.push(v);
+	}
+
+	GetVehicles(): Vehicle[] {
+		return this._vehicles;
 	}
 
 	public GetBatteryFields(): Array<BatteryField> {

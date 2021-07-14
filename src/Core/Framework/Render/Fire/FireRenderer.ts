@@ -39,21 +39,25 @@ export class FireRenderer {
 		const goal = new HexAxial(blueprint.Goal.Position.Q, blueprint.Goal.Position.R);
 		const goalCell = cells.Get(goal.ToString());
 
-		const iaId = new Identity('IA', HqAppearance.Skins.Get(ColorKind[ColorKind.Red]), false);
+		const iaId = new Identity('IA', HqAppearance.Skins.Get(ColorKind[ColorKind.Blue]), false);
 		const shield = new HqLessShieldField(goalCell, iaId, new FakeHeadquarter());
 		goalCell.SetField(shield);
 		new AboveItem(goalCell, SvgArchive.arrow);
 
 		const arrival = new HexAxial(blueprint.Arrival.Position.Q, blueprint.Arrival.Position.R);
 		const arrivalCell = cells.Get(arrival.ToString());
-		const id = new Identity('Player', HqAppearance.Skins.Get(ColorKind[ColorKind.Blue]), true);
+		const id = new Identity('Player', HqAppearance.Skins.Get(ColorKind[ColorKind.Red]), true);
 		const tank = new Tank(id);
 		tank.SetPosition(arrivalCell);
 
 		const hq = new CellLessHeadquarter();
-		hq.Identity = iaId;
+		hq.Identity = id;
+		hq.AddVehicle(tank);
 
-		cells.Values().forEach((cell) => cell.SetPlayerHq(hq));
+		cells.Values().forEach((cell) => {
+			cell.SetPlayerHq(id);
+			cell.Listen();
+		});
 
 		return new FireContext(gameState, cells.Values(), tank, hq, shield);
 	}

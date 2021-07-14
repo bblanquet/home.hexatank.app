@@ -10,6 +10,9 @@ export class LobbyState {
 
 	public Mode: LobbyMode = LobbyMode.pending;
 
+	public Duration: number = 6;
+	public Timing: boolean = false;
+
 	//???
 	public HasReceivedMessage: boolean = false;
 	public Message: string = '';

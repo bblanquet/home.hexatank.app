@@ -107,6 +107,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 		this.TotalLife = 200;
 		this.Life = 200;
 	}
+	GetVehicles(): Vehicle[] {
+		return this._vehicles;
+	}
 
 	public GetIdentity(): Identity {
 		return this.Identity;

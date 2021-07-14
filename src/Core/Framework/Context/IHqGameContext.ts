@@ -6,4 +6,5 @@ export interface IHqGameContext extends IGameContext {
 	OnPatrolSetting: LiteEvent<Boolean>;
 	GetPlayerHq(): IHeadquarter;
 	GetHqFromId(identity: Identity): IHeadquarter;
+	GetHqs(): IHeadquarter[];
 }

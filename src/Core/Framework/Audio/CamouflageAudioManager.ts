@@ -13,10 +13,12 @@ import { Item } from '../../Items/Item';
 import { Turrel } from '../../Items/Unit/Turrel';
 import { IAudioService } from '../../../Services/Audio/IAudioService';
 import { Relationship } from '../../Items/Identity';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 
 export class CamouflageAudioManager implements IGameAudioManager {
 	private _soundService: IAudioService;
 	private _audioId: number;
+	private _lastPlayed: Dictionary<number> = new Dictionary<number>();
 
 	constructor(private _mapContext: IBlueprint, private _gameContext: CamouflageContext) {
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
@@ -40,7 +42,14 @@ export class CamouflageAudioManager implements IGameAudioManager {
 	}
 
 	private Play(def: string, volume: number = 1, loop: boolean = false): number | null {
-		return this._soundService.Play(def, volume, loop);
+		const dateNow = Date.now();
+		if (this._lastPlayed.Exist(def) && this._lastPlayed.Get(def) < dateNow - 500) {
+			this._lastPlayed.Add(def, dateNow);
+			return this._soundService.Play(def, volume, loop);
+		} else if (!this._lastPlayed.Exist(def)) {
+			this._lastPlayed.Add(def, dateNow);
+			return this._soundService.Play(def, volume, loop);
+		}
 	}
 
 	public PauseAll(): void {

@@ -17,7 +17,6 @@ import { useState } from 'preact/hooks';
 import MenuSwitcher from '../Components/Canvas/MenuSwitcher';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 import Switch from '../Common/Struct/Switch';
-import Line from '../Common/Struct/Line';
 
 export default class DiamondScreen extends HookedComponent<{}, DiamondHook, RuntimeState> {
 	public GetDefaultHook() {
@@ -39,7 +38,10 @@ export default class DiamondScreen extends HookedComponent<{}, DiamondHook, Runt
 								onClick={() => this.Hook.SetMenu()}
 							/>
 							<button type="button" class="btn btn-dark space-out ">
-								<Line>
+								<div
+									class="d-flex justify-content-start"
+									style="flex-direction:row;align-content:space-between;align-items: center"
+								>
 									<Visible isVisible={this.Hook.State.HasWarning}>
 										<div
 											class="fill-noMoney radius-5px very-small-space blink_me space-out"
@@ -53,7 +55,7 @@ export default class DiamondScreen extends HookedComponent<{}, DiamondHook, Runt
 										class="fill-diamond radius-5px very-small-space space-out"
 										style="background-color:#6c757d"
 									/>
-								</Line>
+								</div>
 							</button>
 							<TimerComponent
 								Duration={this.Hook.GetDuration()}

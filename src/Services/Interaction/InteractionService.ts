@@ -1,7 +1,6 @@
 import { InputNotifier } from './../../Core/Interaction/InputNotifier';
 import { CombinationProvider } from './../../Core/Interaction/CombinationProvider';
 import { SelectableChecker } from './../../Core/Interaction/SelectableChecker';
-import { GameContext } from '../../Core/Framework/Context/GameContext';
 import { InteractionContext } from '../../Core/Interaction/InteractionContext';
 import { IInteractionService } from './IInteractionService';
 import { ILayerService } from '../Layer/ILayerService';
@@ -9,8 +8,9 @@ import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { Singletons, SingletonKey } from '../../Singletons';
 import * as PIXI from 'pixi.js';
 import { MultiSelectionContext } from '../../Core/Menu/Smart/MultiSelectionContext';
+import { IHqGameContext } from '../../Core/Framework/Context/IHqGameContext';
 
-export class InteractionService implements IInteractionService<GameContext> {
+export class InteractionService implements IInteractionService<IHqGameContext> {
 	private _layerService: ILayerService;
 	private _multiSelectionContext: MultiSelectionContext;
 	private _inputNotifier: InputNotifier;
@@ -21,7 +21,7 @@ export class InteractionService implements IInteractionService<GameContext> {
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}
 
-	Register(manager: PIXI.InteractionManager, gameContext: GameContext): void {
+	Register(manager: PIXI.InteractionManager, gameContext: IHqGameContext): void {
 		this._multiSelectionContext = new MultiSelectionContext();
 		this._inputNotifier = new InputNotifier();
 		const checker = new SelectableChecker(gameContext.GetPlayerHq() ? gameContext.GetPlayerHq().Identity : null);

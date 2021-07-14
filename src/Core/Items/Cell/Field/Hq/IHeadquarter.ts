@@ -30,6 +30,7 @@ export interface IHeadquarter {
 
 	Identity: Identity;
 	GetRelation(id: Identity): Relationship;
+	GetVehicles(): Vehicle[];
 
 	Buy(amount: number): boolean;
 	Earn(amount: number): void;

@@ -54,9 +54,13 @@ export class LobbyManager implements ILobbyManager {
 		return this._blueprintSetup;
 	}
 
-	SetReady(): void {
+	public SetReady(): void {
 		this._onlinePlayerManager.Player.IsReady = !this._onlinePlayerManager.Player.IsReady;
 		this._onlinePlayerManager.OnPlayersChanged.Invoke(this, this._onlinePlayerManager.Players);
+		this.SendReadyState();
+	}
+
+	public SendReadyState() {
 		this._socketWrapper.EmitAll<boolean>(PacketKind.Ready, this._onlinePlayerManager.Player.IsReady);
 	}
 

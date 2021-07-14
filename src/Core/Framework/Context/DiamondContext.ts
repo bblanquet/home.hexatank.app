@@ -32,6 +32,9 @@ export class DiamondContext implements IHqGameContext {
 			}
 		});
 	}
+	GetHqs(): IHeadquarter[] {
+		return [ this._hq ];
+	}
 
 	GetDiamond(): number {
 		return 50;

@@ -3,9 +3,7 @@ import { AnalyzeService } from './Services/Analyse/AnalyzeService';
 import { AudioService } from './Services/Audio/AudioService';
 import { DiamondContextService } from './Services/GameContext/DiamondContextService';
 import { PowerContextService } from './Services/GameContext/PowerContextService';
-import { PowerInteractionService } from './Services/Interaction/PowerInteractionService';
-import { DiamondInteractionService } from './Services/Interaction/DiamondInteractionService';
-import { PowerAppService } from './Services/App/FireAppService';
+import { FireAppService } from './Services/App/FireAppService';
 import { DiamondAppService } from './Services/App/DiamondAppService';
 import { CamouflageGameContextService } from './Services/GameContext/CamouflageGameContextService';
 import { CamouflageInteractionService } from './Services/Interaction/CamouflageInteractionService';
@@ -41,19 +39,17 @@ export class SingletonContainer {
 
 		Singletons.Register(SingletonKey.GameContext, new GameContextService());
 		Singletons.Register(SingletonKey.CamouflageGameContext, new CamouflageGameContextService());
-		Singletons.Register(SingletonKey.PowerGameContext, new PowerContextService());
+		Singletons.Register(SingletonKey.FireGameContext, new PowerContextService());
 		Singletons.Register(SingletonKey.DiamondGameContext, new DiamondContextService());
 
 		Singletons.Register(SingletonKey.Interaction, new InteractionService());
 		Singletons.Register(SingletonKey.RecordInteraction, new RecordInteractionService());
 		Singletons.Register(SingletonKey.CamouflageInteraction, new CamouflageInteractionService());
-		Singletons.Register(SingletonKey.PowerInteraction, new PowerInteractionService());
-		Singletons.Register(SingletonKey.DiamondInteraction, new DiamondInteractionService());
 
 		Singletons.Register(SingletonKey.App, new AppService());
 		Singletons.Register(SingletonKey.RecordApp, new RecordAppService());
 		Singletons.Register(SingletonKey.CamouflageApp, new CamouflageAppService());
-		Singletons.Register(SingletonKey.PowerApp, new PowerAppService());
+		Singletons.Register(SingletonKey.FireApp, new FireAppService());
 		Singletons.Register(SingletonKey.DiamondApp, new DiamondAppService());
 
 		Singletons.Register(SingletonKey.Campaign, new CampaignService());

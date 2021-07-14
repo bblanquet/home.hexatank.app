@@ -48,7 +48,7 @@ export class GameRenderer {
 			if (playerHq) {
 				playerHq.SetSelectionAnimation();
 				cells.Values().forEach((cell) => {
-					cell.SetPlayerHq(playerHq);
+					cell.SetPlayerHq(playerHq.Identity);
 					cell.Listen();
 				});
 				//make hq cells visible, need context to be setup :<, has to fix it one day

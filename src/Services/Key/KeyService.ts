@@ -1,4 +1,4 @@
-import { PowerAppService } from '../App/FireAppService';
+import { FireAppService } from '../App/FireAppService';
 import { CamouflageAppService } from '../App/CamouflageAppService';
 import { RecordAppService } from './../App/RecordAppService';
 import { AppService } from './../App/AppService';
@@ -22,8 +22,8 @@ export class KeyService implements IKeyService {
 			this._key = SingletonKey.RecordApp;
 		} else if (appService instanceof CamouflageAppService) {
 			this._key = SingletonKey.CamouflageApp;
-		} else if (appService instanceof PowerAppService) {
-			this._key = SingletonKey.PowerApp;
+		} else if (appService instanceof FireAppService) {
+			this._key = SingletonKey.FireApp;
 		} else if (appService instanceof DiamondAppService) {
 			this._key = SingletonKey.DiamondApp;
 		} else {

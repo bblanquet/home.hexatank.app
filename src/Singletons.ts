@@ -34,19 +34,17 @@ export enum SingletonKey {
 	App,
 	RecordApp,
 	CamouflageApp,
-	PowerApp,
+	FireApp,
 	DiamondApp,
 
 	GameContext,
 	CamouflageGameContext,
-	PowerGameContext,
+	FireGameContext,
 	DiamondGameContext,
 
 	Interaction,
 	RecordInteraction,
 	CamouflageInteraction,
-	PowerInteraction,
-	DiamondInteraction,
 
 	Analyze
 }

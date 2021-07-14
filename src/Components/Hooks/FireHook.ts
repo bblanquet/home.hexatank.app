@@ -56,10 +56,10 @@ export class FireHook extends Hook<RuntimeState> {
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 		this._appService = Singletons.Load<IAppService<CamouflageBlueprint>>(this._keyService.GetAppKey());
 		this._gameContextService = Singletons.Load<IGameContextService<FireBlueprint, FireContext>>(
-			SingletonKey.PowerGameContext
+			SingletonKey.FireGameContext
 		);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-		this._interactionService = Singletons.Load<IInteractionService<FireContext>>(SingletonKey.PowerInteraction);
+		this._interactionService = Singletons.Load<IInteractionService<FireContext>>(SingletonKey.Interaction);
 		this._gameContext = this._gameContextService.Publish();
 		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._soundService.Pause(AudioArchive.loungeMusic);
@@ -67,7 +67,6 @@ export class FireHook extends Hook<RuntimeState> {
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
-		this._interactionService.GetMultiSelectionContext().OnSelectionChanged.On(this._onItemSelectionChanged);
 		this._appService.OnRetried.On(this._handleRetry);
 	}
 
@@ -97,7 +96,6 @@ export class FireHook extends Hook<RuntimeState> {
 		this._gameContext.OnPatrolSetting.Clear();
 		this._gameContext.State.OnGameStatusChanged.Clear();
 		this._interactionService.OnMultiMenuShowed.Clear();
-		this._interactionService.GetMultiSelectionContext().OnSelectionChanged.Clear();
 		this._appService.OnRetried.Off(this._handleRetry);
 	}
 

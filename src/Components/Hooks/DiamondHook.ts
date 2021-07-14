@@ -75,7 +75,7 @@ export class DiamondHook extends Hook<RuntimeState> {
 			SingletonKey.DiamondGameContext
 		);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.DiamondInteraction);
+		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.Interaction);
 		this._gameContext = this._gameContextService.Publish();
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
 		this._soundService.Pause(AudioArchive.loungeMusic);

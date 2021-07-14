@@ -76,13 +76,6 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 		return MapShape.Rectangle;
 	}
 
-	private ConvertSize(): number {
-		if (this.state.Size === 'Small') return MapSize.Small;
-		if (this.state.Size === 'Medium') return MapSize.Medium;
-		if (this.state.Size === 'Large') return MapSize.Large;
-		return 8;
-	}
-
 	private ConvertEnv(): MapKind {
 		if (this.state.Env === 'Sand') return MapKind.Sand;
 		if (this.state.Env === 'Forest') return MapKind.Forest;
@@ -92,14 +85,11 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 
 	Start(): void {
 		let hqCount = this.state.IaCount + 1;
-		if (this.ConvertSize() === MapSize.Small && 2 < hqCount) {
-			hqCount = 2;
-		} else if (hqCount === 1) {
+		if (hqCount === 1) {
 			hqCount += 1;
 		}
 
 		const blueprint = new GameBlueprintMaker().GetBluePrint(
-			this.ConvertSize(),
 			this.ConvertMapType(),
 			this.ConvertEnv(),
 			hqCount,

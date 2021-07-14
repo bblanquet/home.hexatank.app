@@ -1,6 +1,4 @@
 import { IGameAudioManager } from './IGameAudioManager';
-import { GameBlueprint } from '../../Framework/Blueprint/Game/GameBlueprint';
-import { GameContext } from '../../Framework/Context/GameContext';
 import { IOrder } from '../../Ia/Order/IOrder';
 import { Singletons, SingletonKey } from '../../../Singletons';
 import { MapKind } from '../Blueprint/Items/MapKind';
@@ -8,19 +6,22 @@ import { Missile } from '../../Items/Unit/Missile';
 import { Tank } from '../../Items/Unit/Tank';
 import { AudioArchive } from '../AudioArchiver';
 import { Cell } from '../../Items/Cell/Cell';
-import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Item } from '../../Items/Item';
 import { Turrel } from '../../Items/Unit/Turrel';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { IAudioService } from '../../../Services/Audio/IAudioService';
 import { Relationship } from '../../Items/Identity';
+import { IHqGameContext } from '../Context/IHqGameContext';
+import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
 
 export class GameAudioManager implements IGameAudioManager {
 	private _soundService: IAudioService;
 	private _audioId: number;
+	private _lastPlayed: Dictionary<number> = new Dictionary<number>();
 
-	constructor(private _mapContext: GameBlueprint, private _gameContext: GameContext) {
+	constructor(private _mapKind: MapKind, private _gameContext: IHqGameContext) {
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
@@ -32,6 +33,9 @@ export class GameAudioManager implements IGameAudioManager {
 		this._gameContext.GetHqs().forEach((hq) => {
 			hq.OnVehicleCreated.On(this.HandleVehicle.bind(this));
 			hq.OnFieldAdded.On(this.HandleFieldChanged.bind(this));
+			hq.GetVehicles().forEach((v) => {
+				this.HandleVehicle(hq, v);
+			});
 		});
 	}
 
@@ -40,17 +44,24 @@ export class GameAudioManager implements IGameAudioManager {
 	}
 
 	private GetMusic(): string {
-		if (this._mapContext.MapMode === MapKind.Forest) {
+		if (this._mapKind === MapKind.Forest) {
 			return AudioArchive.forestMusic;
-		} else if (this._mapContext.MapMode === MapKind.Ice) {
+		} else if (this._mapKind === MapKind.Ice) {
 			return AudioArchive.iceMusic;
-		} else if (this._mapContext.MapMode === MapKind.Sand) {
+		} else if (this._mapKind === MapKind.Sand) {
 			return AudioArchive.sandMusic;
 		}
 	}
 
 	private Play(def: string, volume: number = 1, loop: boolean = false): number | null {
-		return this._soundService.Play(def, volume, loop);
+		const dateNow = Date.now();
+		if (this._lastPlayed.Exist(def) && this._lastPlayed.Get(def) < dateNow - 500) {
+			this._lastPlayed.Add(def, dateNow);
+			return this._soundService.Play(def, volume, loop);
+		} else if (!this._lastPlayed.Exist(def)) {
+			this._lastPlayed.Add(def, dateNow);
+			return this._soundService.Play(def, volume, loop);
+		}
 	}
 
 	public PauseAll(): void {
@@ -78,7 +89,7 @@ export class GameAudioManager implements IGameAudioManager {
 		this.Play(AudioArchive.powerUp, 0.05);
 	}
 
-	private HandleVehicle(src: Headquarter, vehicule: Vehicle): void {
+	private HandleVehicle(src: IHeadquarter, vehicule: Vehicle): void {
 		if (vehicule instanceof Tank) {
 			const t = vehicule as Tank;
 			t.OnMissileLaunched.On(this.HandleMissile.bind(this));

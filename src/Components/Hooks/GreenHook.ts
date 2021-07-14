@@ -47,7 +47,7 @@ export class GreenHook extends Hook<CampaignState> {
 			);
 			route('{{sub_path}}Camouflage', true);
 		} else if (blueprint instanceof FireBlueprint) {
-			Singletons.Load<IAppService<FireBlueprint>>(SingletonKey.PowerApp).Register(
+			Singletons.Load<IAppService<FireBlueprint>>(SingletonKey.FireApp).Register(
 				blueprint,
 				() => {
 					this._playerProfilService.GetProfil().GreenLvl[1] = StageState.achieved;

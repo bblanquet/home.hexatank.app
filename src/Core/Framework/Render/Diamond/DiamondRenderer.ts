@@ -41,6 +41,11 @@ export class DiamondRenderer {
 		const arrivalCell = cells.Get(blueprint.HqDiamond.Diamond.Position.ToString());
 		new AboveItem(arrivalCell, SvgArchive.arrow);
 
+		cells.Values().forEach((cell) => {
+			cell.SetPlayerHq(hq.Identity);
+			cell.Listen();
+		});
+
 		return new DiamondContext(gameState, cells.Values(), hq);
 	}
 

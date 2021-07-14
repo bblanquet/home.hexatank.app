@@ -11,6 +11,7 @@ import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
 import { Identity } from '../../Items/Identity';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { GameState } from './GameState';
+import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 
 export class FireContext implements IHqGameContext {
 	public OnPatrolSetting: LiteEvent<Boolean> = new LiteEvent<Boolean>();
@@ -30,6 +31,9 @@ export class FireContext implements IHqGameContext {
 		this._target.OnDestroyed.On((source: any, data: Item) => {
 			this.State.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
 		});
+	}
+	GetHqs(): IHeadquarter[] {
+		return [ this._fakeHq ];
 	}
 
 	GetVehicles(): Vehicle[] {

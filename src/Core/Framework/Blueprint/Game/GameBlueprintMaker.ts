@@ -8,7 +8,7 @@ import { CheeseFlowerMapBuilder } from '../../Builder/CheeseFlowerMapBuilder';
 import { DonutFlowerMapBuilder } from '../../Builder/DonutFlowerMapBuilder';
 import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { MapKind } from '../Items/MapKind';
-import { MapSize } from '../Items/MapSize';
+import { SizeProvider } from './SizeProvider';
 import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
 import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
 import { DistanceHelper } from '../../../Items/Unit/MotionHelpers/DistanceHelper';
@@ -23,7 +23,6 @@ import { GameSettings } from '../../../Framework/GameSettings';
 import { DecoratingPrints } from '../../../Items/Cell/Decorator/DecoratingPrints';
 import { DecoratingFactory } from '../../../Items/Cell/Decorator/ForestFactory';
 import { ColorKind } from '../../../../Components/Common/Button/Stylish/ColorKind';
-import { HqAppearance } from '../../Render/Hq/HqSkinHelper';
 
 export class GameBlueprintMaker {
 	private _builders: Dictionary<IMapBuilder>;
@@ -39,21 +38,16 @@ export class GameBlueprintMaker {
 		this._builders.Add(MapShape.Rectangle.toString(), new RectangleFlowerMapBuilder());
 	}
 
-	public GetBluePrint(
-		mapSize: MapSize,
-		mapType: MapShape,
-		mapMode: MapKind,
-		hqCount: number,
-		colors: ColorKind[]
-	): GameBlueprint {
+	public GetBluePrint(mapType: MapShape, mapMode: MapKind, hqCount: number, colors: ColorKind[]): GameBlueprint {
+		const size = new SizeProvider().GetSize(hqCount, mapType);
 		const context = new GameBlueprint();
 		context.MapMode = mapMode;
 		const mapItems = new Array<CellPrint>();
 		const mapBuilder = this._builders.Get(mapType.toString());
-		const coos = mapBuilder.GetAllCoos(mapSize);
+		const coos = mapBuilder.GetAllCoos(size);
 		GameSettings.MapSize = coos.length;
 		const cells = Dictionary.To<HexAxial>((e) => e.ToString(), coos);
-		const areas = mapBuilder.GetAreaCoos(mapSize);
+		const areas = mapBuilder.GetAreaCoos(size);
 		const farthestPointManager = new FartestPointsFinder();
 		const excluded = new Dictionary<HexAxial>();
 

@@ -55,7 +55,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	private _blueSelection: BasicItem;
 	private _whiteSelection: BasicItem;
 
-	private _playerHq: IHeadquarter = null;
+	private _playerIdentity: Identity = null;
 
 	private _destroyedFieldFunc: any = this.HandleFieldDestroyed.bind(this);
 
@@ -90,8 +90,8 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		});
 	}
 
-	public SetPlayerHq(playerHq: IHeadquarter): void {
-		this._playerHq = playerHq;
+	public SetPlayerHq(playerHq: Identity): void {
+		this._playerIdentity = playerHq;
 	}
 
 	public IsSelectable(): boolean {
@@ -122,14 +122,16 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	}
 
 	public UpdateSelectable(src: any, data: any): void {
-		if (!this._playerHq) {
+		if (!this._playerIdentity) {
 			this._isSelectable = false;
 		} else {
-			const identity = this._playerHq.Identity;
-			const hasFoeFilter = (cell: Cell) => cell && TypeTranslator.HasFoeVehicle(cell, identity);
+			const hasFoeFilter = (cell: Cell) => cell && TypeTranslator.HasFoeVehicle(cell, this._playerIdentity);
 			const noFoe = this.GetFilteredNearby(hasFoeFilter).length === 0;
 			this._isSelectable =
-				this._field instanceof BasicField && this.IsVisible() && noFoe && this.HasAllyNearby(identity);
+				this._field instanceof BasicField &&
+				this.IsVisible() &&
+				noFoe &&
+				this.HasAllyNearby(this._playerIdentity);
 		}
 	}
 
@@ -273,7 +275,6 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		const isSelected = this.IsSelected();
 		this.GetSprites().forEach((sprite) => (sprite.alpha = 0));
 		this.SetSelectedAppareance(isSelected);
-		state = this.SetHqState(state);
 
 		this.HandleCellStateChanged(state);
 
@@ -284,21 +285,6 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		if (isDiscovered) {
 			this.SetProperty(SvgArchive.hiddenCell, (e) => (e.alpha = 1));
 			this._shadowAnimator = new BouncingScaleDownAnimator(this, [ SvgArchive.hiddenCell ]);
-		}
-	}
-
-	//awfull
-	private SetHqState(state: CellState) {
-		let cells = new Array<Cell>();
-		if (this._playerHq && this._playerHq.GetCell()) {
-			cells.push(this._playerHq.GetCell());
-			cells = cells.concat(this._playerHq.GetCell().GetNearby());
-			if (cells.indexOf(this) !== -1) {
-				state = CellState.Visible;
-			}
-			return state;
-		} else {
-			return CellState.Visible;
 		}
 	}
 

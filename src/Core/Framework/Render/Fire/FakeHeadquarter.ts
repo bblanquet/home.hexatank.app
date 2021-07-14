@@ -24,6 +24,10 @@ export class FakeHeadquarter implements IHeadquarter {
 	OnReactorLost: LiteEvent<ReactorField>;
 	OnSelectionChanged: LiteEvent<ISelectable>;
 	Identity: Identity;
+
+	GetVehicles(): Vehicle[] {
+		throw new Error('Method not implemented.');
+	}
 	GetRelation(id: Identity): Relationship {
 		throw new Error('Method not implemented.');
 	}

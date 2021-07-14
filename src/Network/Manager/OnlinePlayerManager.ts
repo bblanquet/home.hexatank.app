@@ -8,9 +8,11 @@ import { NetworkObserver } from '../../Utils/Events/NetworkObserver';
 import { PacketKind } from '../Message/PacketKind';
 import { NetworkMessage } from '../Message/NetworkMessage';
 import { PeerSocket } from '../Socket/Peer/PeerSocket';
+import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 
 export class OnlinePlayerManager implements IOnlinePlayerManager {
 	public OnPlayersChanged: LiteEvent<Dictionary<OnlinePlayer>>;
+	public OnPlayerList: SimpleEvent;
 	private _servObs: NetworkObserver[];
 	private _peerObs: NetworkObserver[];
 
@@ -21,7 +23,7 @@ export class OnlinePlayerManager implements IOnlinePlayerManager {
 		public Players: Dictionary<OnlinePlayer>
 	) {
 		this.OnPlayersChanged = new LiteEvent<Dictionary<OnlinePlayer>>();
-
+		this.OnPlayerList = new SimpleEvent();
 		this._servObs = [
 			//room
 			new NetworkObserver(PacketKind.Players, this.HandlePlayers.bind(this))
@@ -75,6 +77,7 @@ export class OnlinePlayerManager implements IOnlinePlayerManager {
 			this.Players.Remove(c);
 		});
 		this.OnPlayersChanged.Invoke(this, this.Players);
+		this.OnPlayerList.Invoke();
 	}
 
 	public Clear(): void {

@@ -1,4 +1,3 @@
-import { PowerAudioManager } from '../../Core/Framework/Audio/PowerAudioManager';
 import { FireContext } from '../../Core/Framework/Context/FireContext';
 import { FireBlueprint } from '../../Core/Framework/Blueprint/Fire/FireBlueprint';
 import { RecordContext } from '../../Core/Framework/Record/RecordContext';
@@ -19,13 +18,14 @@ import { GameStatus } from '../../Core/Framework/GameStatus';
 import { GameState } from '../../Core/Framework/Context/GameState';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
+import { GameAudioManager } from '../../Core/Framework/Audio/GameAudioManager';
 
-export class PowerAppService implements IAppService<FireBlueprint> {
+export class FireAppService implements IAppService<FireBlueprint> {
 	private _blueprint: FireBlueprint;
 	private _app: PIXI.Application;
 	private _appProvider: AppProvider;
 	private _interactionManager: PIXI.InteractionManager;
-	private _gameAudioService: PowerAudioManager;
+	private _gameAudioService: GameAudioManager;
 
 	private _gameContextService: IGameContextService<FireBlueprint, FireContext>;
 	private _context: FireContext;
@@ -41,11 +41,11 @@ export class PowerAppService implements IAppService<FireBlueprint> {
 	constructor() {
 		this._appProvider = new AppProvider();
 		this._gameContextService = Singletons.Load<IGameContextService<FireBlueprint, FireContext>>(
-			SingletonKey.PowerGameContext
+			SingletonKey.FireGameContext
 		);
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
-		this._interactionService = Singletons.Load<IInteractionService<FireContext>>(SingletonKey.PowerInteraction);
+		this._interactionService = Singletons.Load<IInteractionService<FireContext>>(SingletonKey.Interaction);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 		this._audioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 	}
@@ -66,7 +66,7 @@ export class PowerAppService implements IAppService<FireBlueprint> {
 		this._gameContextService.Register(blueprint, gameState);
 		this._context = this._gameContextService.Publish();
 		this._interactionService.Register(this._interactionManager, this._context);
-		this._gameAudioService = new PowerAudioManager(blueprint, this._context);
+		this._gameAudioService = new GameAudioManager(blueprint.MapMode, this._context);
 		this._audioService.Register(this._gameAudioService);
 		this._context.State.OnGameStatusChanged.On(this.GameStatusChanged.bind(this));
 

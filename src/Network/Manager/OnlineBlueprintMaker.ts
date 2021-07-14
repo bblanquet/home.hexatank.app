@@ -6,20 +6,13 @@ import { MapKind } from '../../Core/Framework/Blueprint/Items/MapKind';
 import { BlueprintSetup } from '../../Components/Components/Form/BlueprintSetup';
 import { IOnlinePlayerManager } from './IOnlinePlayerManager';
 import { ErrorHandler, ErrorCat } from '../../Utils/Exceptions/ErrorHandler';
-import { MapSize } from '../../Core/Framework/Blueprint/Items/MapSize';
 import { HqAppearance } from '../../Core/Framework/Render/Hq/HqSkinHelper';
 export class OnlineBlueprintMaker {
 	constructor(private _onlinePlayerManager: IOnlinePlayerManager, private _blueprintSetup: BlueprintSetup) {}
 
 	public GetBlueprint(): GameBlueprint {
 		let hqCount = +this._blueprintSetup.IaCount + this._onlinePlayerManager.Players.Count();
-		if (this.ConvertSize() === 8 && 3 < hqCount) {
-			this._blueprintSetup.Size = 'Large';
-		} else if (this.ConvertSize() === 8 && 2 < hqCount) {
-			this._blueprintSetup.Size = 'Medium';
-		}
 		const mapContext = new GameBlueprintMaker().GetBluePrint(
-			this.ConvertSize(),
 			this.ConvertMapType(),
 			this.ConvertEnv(),
 			hqCount,
@@ -40,13 +33,6 @@ export class OnlineBlueprintMaker {
 		if (this._blueprintSetup.Shape === 'H') return MapShape.H;
 		if (this._blueprintSetup.Shape === 'X') return MapShape.X;
 		return MapShape.Rectangle;
-	}
-
-	private ConvertSize(): MapSize {
-		if (this._blueprintSetup.Size === 'Small') return MapSize.Small;
-		if (this._blueprintSetup.Size === 'Medium') return MapSize.Medium;
-		if (this._blueprintSetup.Size === 'Large') return MapSize.Large;
-		return 8;
 	}
 
 	private ConvertEnv(): MapKind {

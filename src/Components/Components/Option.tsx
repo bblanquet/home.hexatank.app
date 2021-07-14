@@ -16,7 +16,6 @@ export default class Option extends Component<{ Model: BlueprintSetup }> {
 						this.props.Model.Env = m.Env;
 						this.props.Model.IaCount = m.IaCount;
 						this.props.Model.Shape = m.Shape;
-						this.props.Model.Size = m.Size;
 						this.props.Model.onylIa = m.onylIa;
 					}}
 				/>

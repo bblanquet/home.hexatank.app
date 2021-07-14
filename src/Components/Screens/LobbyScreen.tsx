@@ -29,58 +29,65 @@ export default class LobbyScreen extends HookedComponent<{}, LobbyHook, LobbySta
 			<Redirect>
 				<Body
 					header={
-						<Navbar>
-							<Visible isVisible={this.Hook.State.Player.IsAdmin}>
+						<span>
+							<Navbar>
+								<Visible isVisible={this.Hook.State.Player.IsAdmin}>
+									<ActiveBtn
+										isActive={this.Hook.State.Mode === LobbyMode.setting}
+										leftColor={ColorKind.Red}
+										rightColor={ColorKind.Black}
+										left={<Icon Value={'fas fa-cogs'} />}
+										right={<Icon Value={'fas fa-cogs'} />}
+										callBack={() => {
+											this.Hook.SetMode(LobbyMode.setting);
+										}}
+									/>
+								</Visible>
 								<ActiveBtn
-									isActive={this.Hook.State.Mode === LobbyMode.setting}
+									isActive={this.Hook.State.Mode === LobbyMode.chat}
 									leftColor={ColorKind.Red}
 									rightColor={ColorKind.Black}
-									left={<Icon Value={'fas fa-cogs'} />}
-									right={<Icon Value={'fas fa-cogs'} />}
+									left={
+										<span>
+											<Visible isVisible={this.Hook.State.HasReceivedMessage}>
+												<span class="blink_me" style="margin:1px">
+													<Icon Value={'fas fa-exclamation'} />
+												</span>
+											</Visible>
+											<Icon Value={'fas fa-comments'} />
+										</span>
+									}
+									right={
+										<span>
+											<Visible isVisible={this.Hook.State.HasReceivedMessage}>
+												<span class="blink_me" style="margin:1px">
+													<Icon Value={'fas fa-exclamation'} />
+												</span>
+											</Visible>
+											<Icon Value={'fas fa-comments'} />
+										</span>
+									}
 									callBack={() => {
-										this.Hook.SetMode(LobbyMode.setting);
+										this.Hook.SetMode(LobbyMode.chat);
 									}}
 								/>
+								<ActiveBtn
+									isActive={this.Hook.State.Mode === LobbyMode.pending}
+									leftColor={ColorKind.Red}
+									rightColor={ColorKind.Black}
+									left={<Icon Value={'fas fa-clipboard-list'} />}
+									right={<Icon Value={'fas fa-clipboard-list'} />}
+									callBack={() => {
+										this.Hook.SetMode(LobbyMode.pending);
+									}}
+								/>
+							</Navbar>
+							<Visible isVisible={this.Hook.IsReady()}>
+								<span class="badge badge-primary" style="width:100%;border-radius:0px;margin:0px">
+									{`the game starts ${this.Hook.State.Duration} seconds later.`}
+								</span>
 							</Visible>
-							<ActiveBtn
-								isActive={this.Hook.State.Mode === LobbyMode.chat}
-								leftColor={ColorKind.Red}
-								rightColor={ColorKind.Black}
-								left={
-									<span>
-										<Visible isVisible={this.Hook.State.HasReceivedMessage}>
-											<span class="blink_me" style="margin:1px">
-												<Icon Value={'fas fa-exclamation'} />
-											</span>
-										</Visible>
-										<Icon Value={'fas fa-comments'} />
-									</span>
-								}
-								right={
-									<span>
-										<Visible isVisible={this.Hook.State.HasReceivedMessage}>
-											<span class="blink_me" style="margin:1px">
-												<Icon Value={'fas fa-exclamation'} />
-											</span>
-										</Visible>
-										<Icon Value={'fas fa-comments'} />
-									</span>
-								}
-								callBack={() => {
-									this.Hook.SetMode(LobbyMode.chat);
-								}}
-							/>
-							<ActiveBtn
-								isActive={this.Hook.State.Mode === LobbyMode.pending}
-								leftColor={ColorKind.Red}
-								rightColor={ColorKind.Black}
-								left={<Icon Value={'fas fa-clipboard-list'} />}
-								right={<Icon Value={'fas fa-clipboard-list'} />}
-								callBack={() => {
-									this.Hook.SetMode(LobbyMode.pending);
-								}}
-							/>
-						</Navbar>
+						</span>
 					}
 					content={
 						<div>

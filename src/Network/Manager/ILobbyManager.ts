@@ -10,6 +10,7 @@ export interface ILobbyManager {
 	GetSetup(): BlueprintSetup;
 	SendMessage(content: string): void;
 	SetReady(): void;
+	SendReadyState(): void;
 	Start(): void;
 	Clear(): void;
 	Stop(): void;

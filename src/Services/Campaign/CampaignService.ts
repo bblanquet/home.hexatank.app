@@ -32,28 +32,25 @@ export class CampaignService implements ICampaignService {
 		this._red = new Dictionary<GameBlueprint>();
 		this._red.Add(
 			(1).toString(),
-			new GameBlueprintMaker().GetBluePrint(+6, MapShape.Flower, MapKind.Forest, 2, [
+			new GameBlueprintMaker().GetBluePrint(MapShape.Flower, MapKind.Forest, 2, [
 				ColorKind.Yellow,
 				ColorKind.Red
 			])
 		);
 		this._red.Add(
 			(2).toString(),
-			new GameBlueprintMaker().GetBluePrint(+6, MapShape.Donut, MapKind.Forest, 2, [
+			new GameBlueprintMaker().GetBluePrint(MapShape.Donut, MapKind.Forest, 2, [
 				ColorKind.Yellow,
 				ColorKind.Red
 			])
 		);
 		this._red.Add(
 			(3).toString(),
-			new GameBlueprintMaker().GetBluePrint(+6, MapShape.H, MapKind.Forest, 2, [
-				ColorKind.Yellow,
-				ColorKind.Red
-			])
+			new GameBlueprintMaker().GetBluePrint(MapShape.H, MapKind.Forest, 2, [ ColorKind.Yellow, ColorKind.Red ])
 		);
 		this._red.Add(
 			(4).toString(),
-			new GameBlueprintMaker().GetBluePrint(+6, MapShape.Triangle, MapKind.Forest, 2, [
+			new GameBlueprintMaker().GetBluePrint(MapShape.Triangle, MapKind.Forest, 2, [
 				ColorKind.Yellow,
 				ColorKind.Red
 			])
@@ -62,25 +59,19 @@ export class CampaignService implements ICampaignService {
 		this._blue = new Dictionary<GameBlueprint>();
 		this._blue.Add(
 			(1).toString(),
-			new GameBlueprintMaker().GetBluePrint(+6, MapShape.Flower, MapKind.Ice, 2, [
-				ColorKind.Yellow,
-				ColorKind.Blue
-			])
+			new GameBlueprintMaker().GetBluePrint(MapShape.Flower, MapKind.Ice, 2, [ ColorKind.Yellow, ColorKind.Blue ])
 		);
 		this._blue.Add(
 			(2).toString(),
-			new GameBlueprintMaker().GetBluePrint(+6, MapShape.Donut, MapKind.Ice, 2, [
-				ColorKind.Yellow,
-				ColorKind.Blue
-			])
+			new GameBlueprintMaker().GetBluePrint(MapShape.Donut, MapKind.Ice, 2, [ ColorKind.Yellow, ColorKind.Blue ])
 		);
 		this._blue.Add(
 			(3).toString(),
-			new GameBlueprintMaker().GetBluePrint(+6, MapShape.H, MapKind.Ice, 2, [ ColorKind.Yellow, ColorKind.Blue ])
+			new GameBlueprintMaker().GetBluePrint(MapShape.H, MapKind.Ice, 2, [ ColorKind.Yellow, ColorKind.Blue ])
 		);
 		this._blue.Add(
 			(4).toString(),
-			new GameBlueprintMaker().GetBluePrint(+6, MapShape.Triangle, MapKind.Ice, 2, [
+			new GameBlueprintMaker().GetBluePrint(MapShape.Triangle, MapKind.Ice, 2, [
 				ColorKind.Yellow,
 				ColorKind.Blue
 			])

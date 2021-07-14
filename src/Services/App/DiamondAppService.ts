@@ -1,4 +1,3 @@
-import { DiamondAudioManager } from './../../Core/Framework/Audio/DiamondAudioManager';
 import { DiamondBlueprint } from './../../Core/Framework/Blueprint/Diamond/DiamondBlueprint';
 import { DiamondContext } from './../../Core/Framework/Context/DiamondContext';
 import { RecordContext } from '../../Core/Framework/Record/RecordContext';
@@ -18,13 +17,14 @@ import { IAudioService } from '../Audio/IAudioService';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import { GameState } from '../../Core/Framework/Context/GameState';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
+import { GameAudioManager } from '../../Core/Framework/Audio/GameAudioManager';
 
 export class DiamondAppService implements IAppService<DiamondBlueprint> {
 	private _blueprint: DiamondBlueprint;
 	private _app: PIXI.Application;
 	private _appProvider: AppProvider;
 	private _interactionManager: PIXI.InteractionManager;
-	private _gameAudioService: DiamondAudioManager;
+	private _gameAudioService: GameAudioManager;
 	private _context: DiamondContext;
 
 	private _gameContextService: IGameContextService<DiamondBlueprint, DiamondContext>;
@@ -44,9 +44,7 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 		);
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
-		this._interactionService = Singletons.Load<IInteractionService<DiamondContext>>(
-			SingletonKey.DiamondInteraction
-		);
+		this._interactionService = Singletons.Load<IInteractionService<DiamondContext>>(SingletonKey.Interaction);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 		this._audioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		this._keyService.DefineKey(this);
@@ -65,7 +63,7 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 		this._context = this._gameContextService.Publish();
 		this._interactionService.Register(this._interactionManager, this._context);
 
-		this._gameAudioService = new DiamondAudioManager(blueprint, this._context);
+		this._gameAudioService = new GameAudioManager(blueprint.MapMode, this._context);
 		this._audioService.Register(this._gameAudioService);
 		this._context.State.OnGameStatusChanged.On(this.GameStatusChanged.bind(this));
 

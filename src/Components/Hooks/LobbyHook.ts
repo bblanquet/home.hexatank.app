@@ -30,6 +30,7 @@ export class LobbyHook extends Hook<LobbyState> {
 		this.LobbyManager.OnKicked.On(this.Back.bind(this));
 		this.LobbyManager.OnMessageReceived.On(this.OnMessage.bind(this));
 		this.onlinePlayers.OnPlayersChanged.On(this.UpdatePlayers.bind(this));
+		this.onlinePlayers.OnPlayerList.On(this.UpdatePlayerList.bind(this));
 		this.LobbyManager.OnStarting.On(() => {
 			this.LobbyManager.Clear();
 			route('{{sub_path}}Launching', true);
@@ -59,8 +60,30 @@ export class LobbyHook extends Hook<LobbyState> {
 			e.Players = players;
 		});
 
-		if (this.IsReady()) {
+		if (this.IsReady() && !this.State.Timing) {
+			this.Timer(6);
+		}
+	}
+
+	public UpdatePlayerList(): void {
+		this.LobbyManager.SendReadyState();
+	}
+
+	private Timer(nextDuration: number) {
+		this.Update((e) => {
+			e.Duration = nextDuration;
+			e.Timing = true;
+		});
+		if (nextDuration === 0 && this.IsReady()) {
 			this.LobbyManager.Start();
+		} else if (this.IsReady()) {
+			setTimeout(() => {
+				this.Timer(Math.round(nextDuration - 1));
+			}, 1000);
+		} else {
+			this.Update((e) => {
+				e.Timing = false;
+			});
 		}
 	}
 
@@ -107,5 +130,6 @@ export class LobbyHook extends Hook<LobbyState> {
 		this.LobbyManager.OnKicked.Off(this.Back.bind(this));
 		this.LobbyManager.OnMessageReceived.Off(this.OnMessage.bind(this));
 		this.onlinePlayers.OnPlayersChanged.Off(this.UpdatePlayers.bind(this));
+		this.onlinePlayers.OnPlayerList.Off(this.UpdatePlayerList.bind(this));
 	}
 }

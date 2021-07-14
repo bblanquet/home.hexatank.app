@@ -2,7 +2,6 @@ export enum PacketKind {
 	connect,
 	reconnect,
 	connect_error,
-	connection,
 	disconnect,
 	Remove,
 	Create,

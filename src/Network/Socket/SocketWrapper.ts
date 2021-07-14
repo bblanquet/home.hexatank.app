@@ -14,6 +14,8 @@ import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { KindEventObserver } from '../../Utils/Events/KindEventObserver';
 import { ProtocolKind } from '../Message/ProtocolKind';
 import { PeerContext } from './Peer/PeerContext';
+import { LogKind } from '../../Utils/Logger/LogKind';
+import { StaticLogger } from '../../Utils/Logger/StaticLogger';
 
 export class SocketWrapper implements ISocketWrapper {
 	protected PeerSockets: Dictionary<PeerSocket> = new Dictionary<PeerSocket>();
@@ -112,6 +114,7 @@ export class SocketWrapper implements ISocketWrapper {
 
 	private HandleReset(message: NetworkMessage<any>): void {
 		if (this.PeerSockets.Exist(message.Emitter) && message.Recipient === this.Owner) {
+			StaticLogger.Log(LogKind.warning, `RESET ${this.Owner} <> ${message.Emitter}`);
 			this.PeerSockets.Get(message.Emitter).ShutDown();
 		}
 		this.CreateOfferSocket(message.Emitter);

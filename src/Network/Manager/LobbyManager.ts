@@ -31,11 +31,9 @@ export class LobbyManager implements ILobbyManager {
 			//room
 			new NetworkObserver(PacketKind.Joined, this.HandleJoined.bind(this)),
 			new NetworkObserver(PacketKind.Close, this.HandleClose.bind(this)),
-			new NetworkObserver(PacketKind.reconnect, this.Reconnect.bind(this))
+			new NetworkObserver(PacketKind.reconnect, this.Reconnect.bind(this)),
+			new NetworkObserver(PacketKind.connect, this.Reconnect.bind(this))
 		];
-		if (this.HasRoomKey()) {
-			this._servObs.push(new NetworkObserver(PacketKind.Join, this.HandleJoin.bind(this)));
-		}
 		this._serverSocket.On(this._servObs);
 
 		this._peerObs = [
@@ -63,10 +61,6 @@ export class LobbyManager implements ILobbyManager {
 
 	public SendReadyState() {
 		this._socketWrapper.EmitAll<boolean>(PacketKind.Ready, this._onlinePlayerManager.Player.IsReady);
-	}
-
-	private HasRoomKey(): boolean {
-		return this._lobby.Key !== '';
 	}
 
 	public Join() {
@@ -133,7 +127,9 @@ export class LobbyManager implements ILobbyManager {
 	}
 
 	private Reconnect(data: NetworkMessage<any>): void {
-		this.Join();
+		if (this._lobby.Key) {
+			this.Join();
+		}
 	}
 
 	private HandleReady(data: NetworkMessage<boolean>): void {

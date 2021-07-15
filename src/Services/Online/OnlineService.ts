@@ -25,19 +25,12 @@ export class OnlineService implements IOnlineService {
 	private _onlinePlayerManager: IOnlinePlayerManager;
 	private _runtime: OnlineManager;
 
-	public Register(
-		playerName: string,
-		roomName: string,
-		password: string,
-		hasPassword: boolean,
-		isAdmin: boolean
-	): void {
+	public Register(playerName: string, roomName: string, password: string | undefined, isAdmin: boolean): void {
 		const blueprintSetup = new BlueprintSetup();
 
 		const lobbyInfo = new Lobby();
 		lobbyInfo.Name = roomName;
 		lobbyInfo.Password = password;
-		lobbyInfo.HasPassword = hasPassword;
 
 		const player = new OnlinePlayer(playerName);
 		player.IsReady = false;

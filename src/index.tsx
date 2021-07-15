@@ -25,7 +25,7 @@ import BlueScreen from './Components/Screens/BlueScreen';
 import GameScreen from './Components/Screens/GameScreen';
 import BadgeScreen from './Components/Screens/BadgeScreen';
 import PlayerScreen from './Components/Screens/Record/PlayerScreen';
-import CreatingHostScreen from './Components/Screens/CreateHostScreen';
+import HostScreen from './Components/Screens/HostScreen';
 import LobbyScreen from './Components/Screens/LobbyScreen';
 import CamouflageScreen from './Components/Screens/CamouflageScreen';
 import ProfilScreen from './Components/Screens/ProfilScreen';
@@ -56,13 +56,13 @@ const App = (e: any) => {
 			<GameScreen path="{{sub_path}}Canvas" />
 			<BadgeScreen path="{{sub_path}}Badge" />
 			<PlayerScreen path="{{sub_path}}Player" />
-			<CreatingHostScreen path="{{sub_path}}CreatingHost" />
+			<HostScreen path="{{sub_path}}Host" />
 			<LobbyScreen path="{{sub_path}}Lobby" />
 			<CamouflageScreen path="{{sub_path}}Camouflage" />
 			<DiamondScreen path="{{sub_path}}Diamond" />
 			<FireScreen path="{{sub_path}}Fire" />
 			<ProfilScreen path="{{sub_path}}Profil" />
-			<GuestScreen path="{{sub_path}}OffJoin" />
+			<GuestScreen path="{{sub_path}}Guest" />
 			<RecordScreen path="{{sub_path}}Record" />
 			<LoadingPlayers path="{{sub_path}}Launching" />
 			<Popup

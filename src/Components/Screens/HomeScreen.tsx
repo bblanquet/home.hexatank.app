@@ -24,7 +24,7 @@ export default class HomeScreen extends Component<any, any> {
 	}
 
 	private ToHost(): void {
-		route('{{sub_path}}CreatingHost', true);
+		route('{{sub_path}}Host', true);
 	}
 
 	private ToRecord(): void {
@@ -32,7 +32,7 @@ export default class HomeScreen extends Component<any, any> {
 	}
 
 	private ToGuest(): void {
-		route('{{sub_path}}OffJoin', true);
+		route('{{sub_path}}Guest', true);
 	}
 
 	private ToBadge(): void {

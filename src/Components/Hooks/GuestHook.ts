@@ -94,8 +94,7 @@ export class GuestHook extends Hook<GuestState> {
 			Singletons.Load<IOnlineService>(SingletonKey.Online).Register(
 				this.State.PlayerName,
 				message.Content.RoomName,
-				this.State.Password,
-				this.State.Password !== null && this.State.Password !== '',
+				this.State.Password ? this.State.Password : undefined,
 				false
 			);
 			route('{{sub_path}}Lobby', true);

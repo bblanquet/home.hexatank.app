@@ -8,14 +8,14 @@ import Redirect from '../Components/Redirect';
 import Visible from '../Common/Struct/Visible';
 import Notification from '../Components/Notification';
 import CtmInput from '../Common/Input/CtmInput';
-import { CreateHostHook } from '../Hooks/CreateHostHook';
+import { HostHook } from '../Hooks/HostHook';
 import { useState } from 'preact/hooks';
 import { HookedComponent } from '../Hooks/HookedComponent';
 import { HostState } from '../Model/HostState';
 
-export default class CreateHostScreen extends HookedComponent<{}, CreateHostHook, HostState> {
-	public GetDefaultHook(): CreateHostHook {
-		return new CreateHostHook(useState(CreateHostHook.DefaultState()));
+export default class HostScreen extends HookedComponent<{}, HostHook, HostState> {
+	public GetDefaultHook(): HostHook {
+		return new HostHook(useState(HostHook.DefaultState()));
 	}
 
 	public Rendering(): JSX.Element {

@@ -15,7 +15,7 @@ import { route } from 'preact-router';
 import { StateUpdater } from 'preact/hooks';
 import { Usernames } from '../Model/Names';
 
-export class CreateHostHook extends Hook<HostState> {
+export class HostHook extends Hook<HostState> {
 	private _socket: IServerSocket;
 	private _obs: NetworkObserver[];
 	public OnNotification: LiteEvent<NotificationState> = new LiteEvent<NotificationState>();
@@ -68,7 +68,7 @@ export class CreateHostHook extends Hook<HostState> {
 	}
 
 	public SetPassword(value: string): void {
-		this.Update((e) => (e.PlayerName = value.substring(0, 15)));
+		this.Update((e) => (e.Password = value.substring(0, 15)));
 	}
 
 	public HasPassword(): void {
@@ -88,8 +88,7 @@ export class CreateHostHook extends Hook<HostState> {
 			Singletons.Load<IOnlineService>(SingletonKey.Online).Register(
 				this.State.PlayerName,
 				this.State.RoomName,
-				this.State.Password === undefined ? '' : this.State.Password,
-				this.State.HasPassword === undefined ? false : this.State.HasPassword,
+				this.State.Password ? this.State.Password : undefined,
 				true
 			);
 			route('{{sub_path}}Lobby', true);

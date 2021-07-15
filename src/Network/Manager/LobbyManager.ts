@@ -30,9 +30,7 @@ export class LobbyManager implements ILobbyManager {
 		this._servObs = [
 			//room
 			new NetworkObserver(PacketKind.Joined, this.HandleJoined.bind(this)),
-			new NetworkObserver(PacketKind.Close, this.HandleClose.bind(this)),
-			new NetworkObserver(PacketKind.reconnect, this.Reconnect.bind(this)),
-			new NetworkObserver(PacketKind.connect, this.Reconnect.bind(this))
+			new NetworkObserver(PacketKind.Close, this.HandleClose.bind(this))
 		];
 		this._serverSocket.On(this._servObs);
 
@@ -69,7 +67,6 @@ export class LobbyManager implements ILobbyManager {
 				PlayerName: this._onlinePlayerManager.Player.Name,
 				RoomName: this._lobby.Name,
 				Password: this._lobby.Password,
-				HasPassword: this._lobby.HasPassword,
 				Key: this._lobby.Key
 			})
 		);
@@ -110,26 +107,8 @@ export class LobbyManager implements ILobbyManager {
 		this._lobby.Key = data.Content;
 	}
 
-	private HandleJoin(data: NetworkMessage<any>): void {
-		this._serverSocket.Emit(
-			NetworkMessage.New<any>(PacketKind.Join, {
-				PlayerName: this._onlinePlayerManager.Player.Name,
-				RoomName: this._lobby,
-				Password: this._lobby.Password,
-				HasPassword: this._lobby.HasPassword,
-				Key: this._lobby.Key
-			})
-		);
-	}
-
 	private HandleClose(data: NetworkMessage<any>): void {
 		this.OnKicked.Invoke();
-	}
-
-	private Reconnect(data: NetworkMessage<any>): void {
-		if (this._lobby.Key) {
-			this.Join();
-		}
 	}
 
 	private HandleReady(data: NetworkMessage<boolean>): void {

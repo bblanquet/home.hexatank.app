@@ -35,10 +35,6 @@ export default class HomeScreen extends Component<any, any> {
 		route('{{sub_path}}Guest', true);
 	}
 
-	private ToBadge(): void {
-		route('{{sub_path}}Badge', true);
-	}
-
 	private ToMonitoring(): void {
 		route('{{sub_path}}Customer', true);
 	}

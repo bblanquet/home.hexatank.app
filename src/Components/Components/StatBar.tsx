@@ -23,25 +23,23 @@ export default class StatBar extends Component<any, { profil: PlayerProfil }> {
 	render() {
 		return (
 			<nav class="navbar nav-inner">
-				<Progress width={35} maxWidth={150} />
-				<div class="d-flex">
-					<SmActiveBtn
-						left={<Icon Value={'fas fa-volume-mute'} />}
-						right={<Icon Value={'fas fa-volume-up'} />}
-						leftColor={ColorKind.Black}
-						rightColor={ColorKind.Yellow}
-						callBack={() => {
-							if (this._soundService.IsMute()) {
-								this._soundService.On();
-							} else {
-								this._soundService.Off();
-							}
-							this._soundService.PlayLoungeMusic();
-							this.setState({});
-						}}
-						isActive={this._soundService && this._soundService.IsMute()}
-					/>
-				</div>
+				<Progress />
+				<SmActiveBtn
+					left={<Icon Value={'fas fa-volume-mute'} />}
+					right={<Icon Value={'fas fa-volume-up'} />}
+					leftColor={ColorKind.Black}
+					rightColor={ColorKind.Yellow}
+					callBack={() => {
+						if (this._soundService.IsMute()) {
+							this._soundService.On();
+						} else {
+							this._soundService.Off();
+						}
+						this._soundService.PlayLoungeMusic();
+						this.setState({});
+					}}
+					isActive={this._soundService && this._soundService.IsMute()}
+				/>
 			</nav>
 		);
 	}

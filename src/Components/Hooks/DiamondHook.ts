@@ -19,10 +19,13 @@ import { StateUpdater } from 'preact/hooks';
 import { Cell } from '../../Core/Items/Cell/Cell';
 import { IKeyService } from '../../Services/Key/IKeyService';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
+import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
+import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
 
 export class DiamondHook extends Hook<RuntimeState> {
 	private _gameContextService: IGameContextService<DiamondBlueprint, DiamondContext>;
 	private _soundService: IAudioService;
+	private _profilService: IPlayerProfilService;
 	private _interactionService: IInteractionService<GameContext>;
 	private _appService: IAppService<DiamondBlueprint>;
 	private _keyService: IKeyService;
@@ -39,6 +42,7 @@ export class DiamondHook extends Hook<RuntimeState> {
 		const playerHq = this._gameContext.GetPlayerHq();
 		playerHq.OnTruckChanged.Clear();
 		playerHq.OnTankRequestChanged.Clear();
+		this._profilService.OnPointsAdded.Clear();
 		playerHq.OnDiamondCountChanged.Clear();
 		playerHq.OnCashMissing.Clear();
 		this._gameContext.OnItemSelected.Clear();
@@ -72,6 +76,7 @@ export class DiamondHook extends Hook<RuntimeState> {
 	public Init(): void {
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 		this._appService = Singletons.Load<IAppService<DiamondBlueprint>>(this._keyService.GetAppKey());
+		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this._gameContextService = Singletons.Load<IGameContextService<DiamondBlueprint, DiamondContext>>(
 			SingletonKey.DiamondGameContext
 		);
@@ -85,11 +90,18 @@ export class DiamondHook extends Hook<RuntimeState> {
 		playerHq.OnTankRequestChanged.On(this.HandleTankChanged.bind(this));
 		playerHq.OnDiamondCountChanged.On(this.HandleDiamondChanged.bind(this));
 		playerHq.OnCashMissing.On(this.HandleCashMissing.bind(this));
+		this._profilService.OnPointsAdded.On(this.HandlePoints.bind(this));
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
 		this._appService.OnRetried.On(this._handleRetry);
+	}
+
+	private HandlePoints(e: any, details: PointDetails): void {
+		this.Update((e) => {
+			e.StatusDetails = details;
+		});
 	}
 
 	static DefaultState(): RuntimeState {

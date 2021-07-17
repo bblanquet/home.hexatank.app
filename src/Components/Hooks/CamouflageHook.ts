@@ -47,7 +47,6 @@ export class CamouflageHook extends Hook<RuntimeState> {
 			SingletonKey.CamouflageInteraction
 		);
 		this._gameContext = this._gameContextService.Publish();
-		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 
 		this._soundService.Pause(AudioArchive.loungeMusic);
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
@@ -146,12 +145,8 @@ export class CamouflageHook extends Hook<RuntimeState> {
 		}
 	}
 
-	public Quit(): void {
-		this._gameContext.State.IsPause = true;
-		this.Update((e) => {
-			e.HasMenu = false;
-			e.GameStatus = GameStatus.Defeat;
-		});
+	public Stop(isVictory: boolean): void {
+		this._gameContext.SetStatus(isVictory ? GameStatus.Victory : GameStatus.Defeat);
 	}
 
 	public SetMenu(): void {

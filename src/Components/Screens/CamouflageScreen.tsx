@@ -51,7 +51,7 @@ export default class CamouflageScreen extends HookedComponent<{}, CamouflageHook
 						<OptionPopup
 							Status={this.Hook.State.GameStatus}
 							Resume={() => this.Hook.SetMenu()}
-							Quit={() => this.Hook.Quit()}
+							Quit={() => this.Hook.Stop(false)}
 						/>
 					</Visible>
 				</Visible>

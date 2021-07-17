@@ -103,7 +103,7 @@ export default class DiamondScreen extends HookedComponent<{}, DiamondHook, Runt
 						<OptionPopup
 							Status={this.Hook.State.GameStatus}
 							Resume={() => this.Hook.SetMenu()}
-							Quit={() => this.Hook.Quit()}
+							Quit={() => this.Hook.Stop(false)}
 						/>
 					</Visible>
 				</Visible>

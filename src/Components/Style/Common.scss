@@ -762,6 +762,7 @@ body {
 	top: 0;
 	bottom: 0;
 	overflow-y: auto;
+	overflow-x: hidden;
 }
 /* width */
 ::-webkit-scrollbar {
@@ -770,15 +771,17 @@ body {
 
 /* Track */
 ::-webkit-scrollbar-track {
-	background: rgb(19, 19, 19);
+	background: rgb(19, 19, 19, 0.1);
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-	background: rgb(26, 26, 26);
+	background: rgb(87, 8, 8);
+	border-radius: 5px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-	background: rgb(26, 26, 26);
+	background: rgb(102, 9, 9);
+	border-radius: 5px;
 }

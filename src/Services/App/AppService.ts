@@ -21,6 +21,7 @@ import { GameStatus } from '../../Core/Framework/GameStatus';
 import { CellStateSetter } from '../../Core/Items/Cell/CellStateSetter';
 import { GameState } from '../../Core/Framework/Context/GameState';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
+import { Env } from '../../Env';
 
 export class AppService implements IAppService<GameBlueprint> {
 	private _blueprint: GameBlueprint;
@@ -102,9 +103,12 @@ export class AppService implements IAppService<GameBlueprint> {
 		this._audioService.Register(this._gameAudioService);
 		this._gameContext.State.OnGameStatusChanged.On(this._gameStatusChanged);
 
-		this._gameContext.GetCells().forEach((c) => {
-			c.AlwaysVisible();
-		});
+		if (!Env.IsPrd()) {
+			this._gameContext.GetCells().forEach((c) => {
+				c.AlwaysVisible();
+			});
+		}
+
 		CellStateSetter.SetStates(this._gameContext.GetCells());
 	}
 

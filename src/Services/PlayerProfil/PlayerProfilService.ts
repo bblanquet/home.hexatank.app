@@ -33,7 +33,7 @@ export class PlayerProfilService implements IPlayerProfilService {
 		let profil: PlayerProfil = null;
 		const blob = window.localStorage.getItem(this._key);
 		const parsedProfil = JSON.parse(blob as string);
-		if (parsedProfil) {
+		if (parsedProfil && (parsedProfil as PlayerProfil).Version === PlayerProfil.Version) {
 			profil = parsedProfil as PlayerProfil;
 		} else {
 			profil = new PlayerProfil();

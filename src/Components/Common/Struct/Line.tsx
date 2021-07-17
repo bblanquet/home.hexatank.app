@@ -4,8 +4,8 @@ export default class Line extends Component {
 	render() {
 		return (
 			<div
-				class="d-flex justify-content-start"
-				style="flex-direction:row;align-content:space-between;align-items: baseline"
+				class="d-flex "
+				style="flex-direction:row;align-content:space-between;align-items: baseline;margin-top:5px;margin-bottom:5px"
 			>
 				{this.props.children}
 			</div>

@@ -7,6 +7,7 @@ import './Components/Style/CircularMenu.css';
 import './Components/Style/IconStyle.css';
 import './Components/Style/Animation.css';
 import './Components/Style/BtnStyle.css';
+import './Components/Style/Progress.scss';
 import 'flagpack/dist/flagpack.css';
 import '@fortawesome/fontawesome-free/js/fontawesome';
 import '@fortawesome/fontawesome-free/js/solid';
@@ -24,7 +25,7 @@ import GreenScreen from './Components/Screens/GreenScreen';
 import BlueScreen from './Components/Screens/BlueScreen';
 import GameScreen from './Components/Screens/GameScreen';
 import BadgeScreen from './Components/Screens/BadgeScreen';
-import PlayerScreen from './Components/Screens/Record/PlayerScreen';
+import PlayerScreen from './Components/Screens/PlayerScreen';
 import HostScreen from './Components/Screens/HostScreen';
 import LobbyScreen from './Components/Screens/LobbyScreen';
 import CamouflageScreen from './Components/Screens/CamouflageScreen';
@@ -32,7 +33,7 @@ import ProfilScreen from './Components/Screens/ProfilScreen';
 import DiamondScreen from './Components/Screens/DiamondScreen';
 import FireScreen from './Components/Screens/FireScreen';
 import GuestScreen from './Components/Screens/GuestScreen';
-import RecordScreen from './Components/Screens/Record/PlayerScreen';
+import RecordScreen from './Components/Screens/PlayerScreen';
 import LoadingPlayers from './Components/Components/LoadingPlayers';
 import Popup from './Components/Components/Popup';
 import SmPopup from './Components/Components/SmPopup';
@@ -42,6 +43,7 @@ import MonitorScreen from './Components/Screens/MonitorScreen';
 import Notification from './Components/Components/Notification';
 import { LiteEvent } from './Utils/Events/LiteEvent';
 import { NotificationState } from './Components/Model/NotificationState';
+import { PointDetails } from './Services/PlayerProfil/PointDetails';
 
 const App = (e: any) => {
 	return (
@@ -67,12 +69,12 @@ const App = (e: any) => {
 			<LoadingPlayers path="{{sub_path}}Launching" />
 			<Popup
 				path="{{sub_path}}Popup"
-				points={30}
 				curves={DeltaCurves()}
-				status={GameStatus.Victory}
+				status={GameStatus.Defeat}
+				Details={new PointDetails(30, 40)}
 				context={new JsonRecordContent()}
 			/>
-			<SmPopup path="{{sub_path}}SmPopup" status={GameStatus.Victory} />
+			<SmPopup path="{{sub_path}}SmPopup" Status={GameStatus.Victory} Details={new PointDetails(30, 40)} />
 			<ComparisonScreen path="{{sub_path}}Comparison" />
 			<MonitorScreen path="{{sub_path}}Customer" />
 			<LogComponent path="{{sub_path}}Log" Messages={Logs()} />

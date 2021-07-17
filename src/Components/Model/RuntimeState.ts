@@ -1,6 +1,7 @@
 import { Item } from '../../Core/Items/Item';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import { OnlinePlayer } from '../../Network/OnlinePlayer';
+import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
 
 export class RuntimeState {
 	HasMenu: boolean;
@@ -18,4 +19,6 @@ export class RuntimeState {
 	Item: Item;
 	Players: OnlinePlayer[];
 	GameStatus: GameStatus;
+
+	StatusDetails: PointDetails;
 }

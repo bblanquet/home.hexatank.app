@@ -33,13 +33,13 @@ export class AudioService implements IAudioService {
 	On(): void {
 		this._isMute = false;
 		this._profilService.GetProfil().IsMute = this._isMute;
-		this._profilService.Update();
+		this._profilService.Save();
 	}
 
 	Off(): void {
 		this._isMute = true;
 		this._profilService.GetProfil().IsMute = this._isMute;
-		this._profilService.Update();
+		this._profilService.Save();
 	}
 
 	IsMute(): boolean {

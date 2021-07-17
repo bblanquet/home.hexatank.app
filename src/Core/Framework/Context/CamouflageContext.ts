@@ -34,6 +34,9 @@ export class CamouflageContext implements IGameContext {
 			}
 		});
 	}
+	SetStatus(status: GameStatus): void {
+		this.State.OnGameStatusChanged.Invoke(this, status);
+	}
 
 	public GetVehicles(): Vehicle[] {
 		return this._vehicles;

@@ -5,7 +5,7 @@ import { RtcPeer } from './Rtc/RtcPeer';
 
 export class TcpSender {
 	private _timeOut: NodeJS.Timeout;
-	private _timeoutSleep: number = 1000;
+	private _timeoutSleep: number = 2000;
 	private _retry: number = 4;
 	private _try: number = 0;
 	private _OnAckReceived: any;

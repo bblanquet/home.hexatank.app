@@ -1,11 +1,11 @@
-import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
+import { IInteractionService } from '../../Services/Interaction/IInteractionService';
 import { Component, h } from 'preact';
-import { CancelMenuItem } from '../../../../Core/Menu/Buttons/CancelMenuItem';
-import { Item } from '../../../../Core/Items/Item';
-import { InteractionKind } from '../../../../Core/Interaction/IInteractionContext';
-import { Vehicle } from '../../../../Core/Items/Unit/Vehicle';
-import { Singletons, SingletonKey } from '../../../../Singletons';
-import { GameContext } from '../../../../Core/Framework/Context/GameContext';
+import { CancelMenuItem } from '../../Core/Menu/Buttons/CancelMenuItem';
+import { Item } from '../../Core/Items/Item';
+import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
+import { Vehicle } from '../../Core/Items/Unit/Vehicle';
+import { Singletons, SingletonKey } from '../../Singletons';
+import { GameContext } from '../../Core/Framework/Context/GameContext';
 
 export default class UnitMenuComponent extends Component<{ Vehicle: Vehicle }, {}> {
 	private _interactionService: IInteractionService<GameContext>;

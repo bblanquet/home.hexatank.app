@@ -16,10 +16,13 @@ import { Point } from '../../Utils/Geometry/Point';
 import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
 import { IAppService } from '../../Services/App/IAppService';
 import { IKeyService } from '../../Services/Key/IKeyService';
+import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
+import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
 
 export class CamouflageHook extends Hook<RuntimeState> {
 	private _gameContextService: IGameContextService<CamouflageBlueprint, CamouflageContext>;
 	private _appService: IAppService<CamouflageBlueprint>;
+	private _profilService: IPlayerProfilService;
 	private _soundService: IAudioService;
 	private _keyService: IKeyService;
 	private _interactionService: IInteractionService<CamouflageContext>;
@@ -38,6 +41,7 @@ export class CamouflageHook extends Hook<RuntimeState> {
 		);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 		this._appService = Singletons.Load<IAppService<CamouflageBlueprint>>(this._keyService.GetAppKey());
+		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		this._interactionService = Singletons.Load<IInteractionService<CamouflageContext>>(
 			SingletonKey.CamouflageInteraction
@@ -50,6 +54,7 @@ export class CamouflageHook extends Hook<RuntimeState> {
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
+		this._profilService.OnPointsAdded.On(this.HandlePoints.bind(this));
 		this._appService.OnRetried.On(this._handleRetry);
 	}
 
@@ -70,6 +75,7 @@ export class CamouflageHook extends Hook<RuntimeState> {
 			state.Item = null;
 			state.Players = [];
 			state.GameStatus = GameStatus.Pending;
+			state.StatusDetails = null;
 		});
 	}
 
@@ -79,6 +85,7 @@ export class CamouflageHook extends Hook<RuntimeState> {
 		this._gameContext.OnPatrolSetting.Clear();
 		this._gameContext.State.OnGameStatusChanged.Clear();
 		this._interactionService.OnMultiMenuShowed.Clear();
+		this._profilService.OnPointsAdded.Clear();
 		this._appService.OnRetried.Off(this._handleRetry);
 	}
 
@@ -102,6 +109,8 @@ export class CamouflageHook extends Hook<RuntimeState> {
 		state.Item = null;
 		state.Players = [];
 		state.GameStatus = GameStatus.Pending;
+		state.StatusDetails = null;
+
 		return state;
 	}
 
@@ -110,6 +119,12 @@ export class CamouflageHook extends Hook<RuntimeState> {
 			item.OnSelectionChanged.Off(this._onItemSelectionChanged);
 			this.Update((e) => (e.Item = null));
 		}
+	}
+
+	private HandlePoints(e: any, details: PointDetails): void {
+		this.Update((e) => {
+			e.StatusDetails = details;
+		});
 	}
 
 	private HandleMultiMenuShowed(src: any, isDisplayed: boolean): void {

@@ -32,6 +32,11 @@ export class FireContext implements IHqGameContext {
 			this.State.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
 		});
 	}
+
+	SetStatus(status: GameStatus): void {
+		this.State.OnGameStatusChanged.Invoke(this, status);
+	}
+
 	GetHqs(): IHeadquarter[] {
 		return [ this._fakeHq ];
 	}

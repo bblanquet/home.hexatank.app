@@ -13,7 +13,7 @@ import { CampaignService } from './Services/Campaign/CampaignService';
 import { OnlineService } from './Services/Online/OnlineService';
 import { KeyService } from './Services/Key/KeyService';
 import { RecordInteractionService } from './Services/Interaction/RecordInteractionService';
-import { RecordAppService } from './Services/App/RecordAppService';
+import { PlayerAppService } from './Services/App/PlayerAppService';
 import { CompareService } from './Services/Compare/CompareService';
 import { GameContextService } from './Services/GameContext/GameContextService';
 import { LayerService } from './Services/Layer/LayerService';
@@ -47,7 +47,7 @@ export class SingletonContainer {
 		Singletons.Register(SingletonKey.CamouflageInteraction, new CamouflageInteractionService());
 
 		Singletons.Register(SingletonKey.App, new AppService());
-		Singletons.Register(SingletonKey.RecordApp, new RecordAppService());
+		Singletons.Register(SingletonKey.RecordApp, new PlayerAppService());
 		Singletons.Register(SingletonKey.CamouflageApp, new CamouflageAppService());
 		Singletons.Register(SingletonKey.FireApp, new FireAppService());
 		Singletons.Register(SingletonKey.DiamondApp, new DiamondAppService());

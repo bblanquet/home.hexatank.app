@@ -28,12 +28,17 @@ export default class GameScreen extends HookedComponent<{}, GameHook, RuntimeSta
 		return (
 			<Redirect>
 				<OnlinePlayersComponent OnlineService={this.Hook.GetOnlineManager()} />
-				<Visible isVisible={this.Hook.State.GameStatus !== GameStatus.Pending}>
+				<Visible
+					isVisible={
+						this.Hook.State.GameStatus !== GameStatus.Pending &&
+						!isNullOrUndefined(this.Hook.State.StatusDetails)
+					}
+				>
 					<Popup
-						points={10}
 						status={this.Hook.State.GameStatus}
 						curves={this.Hook.GetCurves()}
 						context={this.Hook.GetRecord()}
+						Details={this.Hook.State.StatusDetails}
 					/>
 				</Visible>
 				<Visible isVisible={this.Hook.State.GameStatus === GameStatus.Pending}>

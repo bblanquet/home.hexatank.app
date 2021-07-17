@@ -701,6 +701,19 @@ p.bubble {
 	box-shadow: inset 3px 4px 5px #000;
 }
 
+.notification {
+	width: 100%;
+	border-radius: 0px;
+	margin: 0px;
+	color: #fff;
+	background-color: #007bff;
+	padding: .25em .4em;
+	font-size: 75%;
+	font-weight: 700;
+	/* line-height: 1; */
+	text-align: center;
+}
+
 .background-pattern {
 	height: 100%;
 	background: radial-gradient(black 15%, transparent 16%) 0 0, radial-gradient(black 15%, transparent 16%) 8px 8px,

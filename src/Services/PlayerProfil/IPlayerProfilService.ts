@@ -1,20 +1,18 @@
 import { RecordContent } from '../../Core/Framework/Record/Model/RecordContent';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
-import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { PlayerProfil } from './PlayerProfil';
+import { PointDetails } from './PointDetails';
 
 export interface IPlayerProfilService {
-	DeleteRecord(name: string): void;
 	SetProfil(model: PlayerProfil): void;
 	GetProfil(): PlayerProfil;
+	Save(): void;
+	Load(): void;
+
+	DeleteRecord(name: string): void;
 	GetRecords(): RecordContent[];
-	GetLevel(): number;
-	GetNextLevelPercentage(): number;
-	GetColorLevel(): string;
-	Update(): void;
-	Init(): void;
+
 	GetPoints(): number;
 	AddPoints(points: number): void;
-	OnPointChanged: LiteEvent<number>;
-	OnLevelUp: SimpleEvent;
+	OnPointsAdded: LiteEvent<PointDetails>;
 }

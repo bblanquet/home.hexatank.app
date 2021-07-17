@@ -65,6 +65,7 @@ export class DiamondHook extends Hook<RuntimeState> {
 			state.Item = null;
 			state.Players = [];
 			state.GameStatus = GameStatus.Pending;
+			state.StatusDetails = null;
 		});
 	}
 
@@ -106,6 +107,7 @@ export class DiamondHook extends Hook<RuntimeState> {
 		state.Item = null;
 		state.Players = [];
 		state.GameStatus = GameStatus.Pending;
+		state.StatusDetails = null;
 		return state;
 	}
 

@@ -61,7 +61,7 @@ export class OnlineService implements IOnlineService {
 	private UpdatePlayerName(playerName: string) {
 		const playerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		playerProfilService.GetProfil().LastPlayerName = playerName;
-		playerProfilService.Update();
+		playerProfilService.Save();
 	}
 
 	IsOnline(): boolean {

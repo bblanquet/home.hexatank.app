@@ -51,6 +51,9 @@ export class GameContext implements IHqGameContext {
 			});
 		}
 	}
+	SetStatus(status: GameStatus): void {
+		this.State.OnGameStatusChanged.Invoke(this, status);
+	}
 	GetVehicles(): Vehicle[] {
 		return this._vehicles.Values();
 	}

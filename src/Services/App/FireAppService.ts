@@ -27,6 +27,7 @@ export class FireAppService implements IAppService<FireBlueprint> {
 	private _interactionManager: PIXI.InteractionManager;
 	private _gameAudioService: GameAudioManager;
 
+	private _playerProfilService: IPlayerProfilService;
 	private _gameContextService: IGameContextService<FireBlueprint, FireContext>;
 	private _context: FireContext;
 	private _interactionService: IInteractionService<FireContext>;
@@ -43,6 +44,7 @@ export class FireAppService implements IAppService<FireBlueprint> {
 		this._gameContextService = Singletons.Load<IGameContextService<FireBlueprint, FireContext>>(
 			SingletonKey.FireGameContext
 		);
+		this._playerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 		this._interactionService = Singletons.Load<IInteractionService<FireContext>>(SingletonKey.Interaction);
@@ -95,6 +97,7 @@ export class FireAppService implements IAppService<FireBlueprint> {
 		} else if (status === GameStatus.Defeat) {
 			this._defeat();
 		}
+		this._playerProfilService.Save();
 	}
 
 	GetStats(): StatsContext {

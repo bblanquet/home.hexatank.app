@@ -15,6 +15,8 @@ import { IAudioService } from '../../Services/Audio/IAudioService';
 import { IGameContextService } from '../../Services/GameContext/IGameContextService';
 import { IInteractionService } from '../../Services/Interaction/IInteractionService';
 import { IOnlineService } from '../../Services/Online/IOnlineService';
+import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
+import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { Groups } from '../../Utils/Collections/Groups';
@@ -28,6 +30,7 @@ export class GameHook extends Hook<RuntimeState> {
 	private _gameContextService: IGameContextService<GameBlueprint, GameContext>;
 	private _soundService: IAudioService;
 	private _onlineService: IOnlineService;
+	private _profilService: IPlayerProfilService;
 	private _interactionService: IInteractionService<GameContext>;
 	private _appService: IAppService<GameBlueprint>;
 	private _gameContext: GameContext;
@@ -58,6 +61,7 @@ export class GameHook extends Hook<RuntimeState> {
 		state.Item = null;
 		state.Players = [];
 		state.GameStatus = GameStatus.Pending;
+		state.StatusDetails = null;
 		return state;
 	}
 	public Init(): void {
@@ -66,6 +70,7 @@ export class GameHook extends Hook<RuntimeState> {
 		);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		this._onlineService = Singletons.Load<IOnlineService>(SingletonKey.Online);
+		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.Interaction);
 		this._appService = Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App);
 		this._gameContext = this._gameContextService.Publish();
@@ -79,6 +84,7 @@ export class GameHook extends Hook<RuntimeState> {
 		playerHq.OnTankRequestChanged.On(this.HandleTankChanged.bind(this));
 		playerHq.OnDiamondCountChanged.On(this.HandleDiamondChanged.bind(this));
 		playerHq.OnCashMissing.On(this.HandleCashMissing.bind(this));
+		this._profilService.OnPointsAdded.On(this.HandlePoints.bind(this));
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
@@ -112,6 +118,7 @@ export class GameHook extends Hook<RuntimeState> {
 			state.Item = null;
 			state.Players = [];
 			state.GameStatus = GameStatus.Pending;
+			state.StatusDetails = null;
 		});
 	}
 
@@ -123,9 +130,16 @@ export class GameHook extends Hook<RuntimeState> {
 		playerHq.OnCashMissing.Clear();
 		this._gameContext.OnItemSelected.Clear();
 		this._gameContext.OnPatrolSetting.Clear();
+		this._profilService.OnPointsAdded.Clear();
 		this._gameContext.State.OnGameStatusChanged.Clear();
 		this._interactionService.OnMultiMenuShowed.Clear();
 		this._appService.OnRetried.Off(this._handleRetry);
+	}
+
+	private HandlePoints(e: any, details: PointDetails): void {
+		this.Update((e) => {
+			e.StatusDetails = details;
+		});
 	}
 
 	public GetMiddle(): Point {
@@ -200,10 +214,7 @@ export class GameHook extends Hook<RuntimeState> {
 
 	public Stop(isVictory: boolean): void {
 		this._gameContext.State.IsPause = true;
-		this.Update((e) => {
-			e.IsSettingMenuVisible = false;
-			e.GameStatus = isVictory ? GameStatus.Victory : GameStatus.Defeat;
-		});
+		this._gameContext.SetStatus(isVictory ? GameStatus.Victory : GameStatus.Defeat);
 	}
 	public GetCurves(): Groups<Curve> {
 		return this._appService.GetStats().GetCurves();

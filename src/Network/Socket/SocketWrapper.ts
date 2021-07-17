@@ -28,7 +28,7 @@ export class SocketWrapper implements ISocketWrapper {
 	public OnPeerConnectionChanged: LiteEvent<PeerSocket> = new LiteEvent<PeerSocket>();
 	public OnReceived: KindEvent<PacketKind, INetworkMessage> = new KindEvent<PacketKind, INetworkMessage>();
 
-	constructor(serverSocket: IServerSocket, roomName: string, owner: string, private _isShy: boolean) {
+	constructor(serverSocket: IServerSocket, roomName: string, owner: string, private _isReceiver: boolean) {
 		this.Owner = owner;
 		this.RoomName = roomName;
 		this.ServerSocket = serverSocket;
@@ -46,8 +46,9 @@ export class SocketWrapper implements ISocketWrapper {
 			this.PeerSockets.Get(name).ShutDown();
 		});
 
-		if (!this._isShy) {
-			this._isShy = true;
+		if (!this._isReceiver) {
+			//socket becomes a receiver as soon as it sends offers
+			this._isReceiver = true;
 			if (this.PeerSockets.IsEmpty()) {
 				message.Content.forEach((recipient) => {
 					if (recipient !== this.Owner) {

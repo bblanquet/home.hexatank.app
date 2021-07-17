@@ -32,6 +32,10 @@ export class DiamondContext implements IHqGameContext {
 			}
 		});
 	}
+	SetStatus(status: GameStatus): void {
+		this.State.OnGameStatusChanged.Invoke(this, status);
+	}
+
 	GetHqs(): IHeadquarter[] {
 		return [ this._hq ];
 	}

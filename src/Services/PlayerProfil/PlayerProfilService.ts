@@ -1,27 +1,16 @@
 import { RecordContent } from '../../Core/Framework/Record/Model/RecordContent';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
-import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { IPlayerProfilService } from './IPlayerProfilService';
 import { PlayerProfil } from './PlayerProfil';
+import { PointDetails } from './PointDetails';
 
 export class PlayerProfilService implements IPlayerProfilService {
 	private _key: string = 'program6';
 	private _profil: PlayerProfil;
-	private _colors: string[] = [ '#fcba03', '#5cd1ff', '#f54ce1', '#f53361', '#6beb4b', '#5571ed', '#ed8f55' ];
-	public OnPointChanged: LiteEvent<number> = new LiteEvent<number>();
-	public OnLevelUp: SimpleEvent = new SimpleEvent();
+	public OnPointsAdded: LiteEvent<PointDetails> = new LiteEvent<PointDetails>();
 
 	constructor() {
-		this.Init();
-	}
-
-	private AddPoint(point: number): void {
-		const previousLevel = this.GetLevel();
-		this._profil.Points += point;
-		this.OnPointChanged.Invoke(this, this._profil.Points);
-		if (previousLevel < this.GetLevel()) {
-			this.OnLevelUp.Invoke();
-		}
+		this.Load();
 	}
 
 	GetPoints(): number {
@@ -30,17 +19,17 @@ export class PlayerProfilService implements IPlayerProfilService {
 
 	SetProfil(profil: PlayerProfil): void {
 		this._profil = profil;
-		this.Update();
+		this.Save();
 	}
 
 	GetProfil(): PlayerProfil {
 		if (!this._profil) {
-			this.Init();
+			this.Load();
 		}
 		return this._profil;
 	}
 
-	public Init(): void {
+	public Load(): void {
 		let profil: PlayerProfil = null;
 		const blob = window.localStorage.getItem(this._key);
 		const parsedProfil = JSON.parse(blob as string);
@@ -63,40 +52,17 @@ export class PlayerProfilService implements IPlayerProfilService {
 		return result;
 	}
 
-	GetLevel(): number {
-		return Math.trunc(this._profil.Points / 50);
-	}
-	GetNextLevelPercentage(): number {
-		const percentage = (this._profil.Points % 50) * 2;
-		return percentage;
-	}
-
-	GetColorLevel(): string {
-		const size = this.GetLevel() % this._colors.length;
-		return this._colors[size];
-	}
-
-	Update(): void {
+	Save(): void {
 		window.localStorage.setItem(this._key, JSON.stringify(this._profil));
 	}
 
 	DeleteRecord(name: string): void {
 		this._profil.Records = this._profil.Records.filter((r) => r.Title !== name);
-		this.Update();
+		this.Save();
 	}
 
 	AddPoints(points: number): void {
-		this.Animation(points);
-	}
-	private Animation(remainingPoints: number) {
-		setTimeout(() => {
-			remainingPoints--;
-			this.AddPoint(1);
-			if (0 < remainingPoints) {
-				this.Animation(remainingPoints);
-			} else {
-				this.Update();
-			}
-		}, 200);
+		this.OnPointsAdded.Invoke(this, new PointDetails(this.GetPoints(), points));
+		this._profil.Points += points;
 	}
 }

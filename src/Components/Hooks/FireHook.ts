@@ -18,9 +18,12 @@ import { IKeyService } from '../../Services/Key/IKeyService';
 import { FireContext } from '../../Core/Framework/Context/FireContext';
 import { FireBlueprint } from '../../Core/Framework/Blueprint/Fire/FireBlueprint';
 import { Cell } from '../../Core/Items/Cell/Cell';
+import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
+import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
 
 export class FireHook extends Hook<RuntimeState> {
 	private _gameContextService: IGameContextService<FireBlueprint, FireContext>;
+	private _profilService: IPlayerProfilService;
 	private _soundService: IAudioService;
 	private _interactionService: IInteractionService<FireContext>;
 	private _gameContext: FireContext;
@@ -49,6 +52,7 @@ export class FireHook extends Hook<RuntimeState> {
 		state.Item = null;
 		state.Players = [];
 		state.GameStatus = GameStatus.Pending;
+		state.StatusDetails = null;
 		return state;
 	}
 
@@ -58,12 +62,14 @@ export class FireHook extends Hook<RuntimeState> {
 		this._gameContextService = Singletons.Load<IGameContextService<FireBlueprint, FireContext>>(
 			SingletonKey.FireGameContext
 		);
+		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		this._interactionService = Singletons.Load<IInteractionService<FireContext>>(SingletonKey.Interaction);
 		this._gameContext = this._gameContextService.Publish();
 		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._soundService.Pause(AudioArchive.loungeMusic);
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
+		this._profilService.OnPointsAdded.On(this.HandlePoints.bind(this));
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
@@ -87,6 +93,7 @@ export class FireHook extends Hook<RuntimeState> {
 			state.Item = null;
 			state.Players = [];
 			state.GameStatus = GameStatus.Pending;
+			state.StatusDetails = null;
 		});
 	}
 
@@ -95,8 +102,15 @@ export class FireHook extends Hook<RuntimeState> {
 		this._gameContext.OnItemSelected.Clear();
 		this._gameContext.OnPatrolSetting.Clear();
 		this._gameContext.State.OnGameStatusChanged.Clear();
+		this._profilService.OnPointsAdded.Clear();
 		this._interactionService.OnMultiMenuShowed.Clear();
 		this._appService.OnRetried.Off(this._handleRetry);
+	}
+
+	private HandlePoints(e: any, details: PointDetails): void {
+		this.Update((e) => {
+			e.StatusDetails = details;
+		});
 	}
 
 	private OnItemSelectionChanged(obj: any, item: ISelectable): void {

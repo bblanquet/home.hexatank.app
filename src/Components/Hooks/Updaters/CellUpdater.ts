@@ -1,12 +1,12 @@
-import { FieldHelper } from '../../../../Core/Framework/FieldTypeHelper';
-import { RecordKind } from '../../../../Core/Framework/Record/Model/Item/State/RecordKind';
-import { RecordContent } from '../../../../Core/Framework/Record/Model/RecordContent';
-import { GameContext } from '../../../../Core/Framework/Context/GameContext';
-import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
-import { Dictionary } from '../../../../Utils/Collections/Dictionary';
-import { IField } from '../../../../Core/Items/Cell/Field/IField';
+import { FieldHelper } from '../../../Core/Framework/FieldTypeHelper';
+import { RecordKind } from '../../../Core/Framework/Record/Model/Item/State/RecordKind';
+import { RecordContent } from '../../../Core/Framework/Record/Model/RecordContent';
+import { GameContext } from '../../../Core/Framework/Context/GameContext';
+import { HexAxial } from '../../../Utils/Geometry/HexAxial';
+import { Dictionary } from '../../../Utils/Collections/Dictionary';
+import { IField } from '../../../Core/Items/Cell/Field/IField';
 import { IndexFinder } from './IndexFinder';
-import { isNullOrUndefined } from '../../../../Utils/ToolBox';
+import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class CellUpdater {
 	private _displayedFields: Dictionary<IField>;

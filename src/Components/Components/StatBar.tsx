@@ -4,7 +4,7 @@ import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilS
 import { PlayerProfil } from '../../Services/PlayerProfil/PlayerProfil';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import SmActiveBtn from '../Common/Button/Stylish/SmActiveBtn';
-import ProgressComponent from '../Common/Progress/ProgressComponent';
+import Progress from '../Common/Progress/Progress';
 import Icon from '../Common/Icon/IconComponent';
 import { IAudioService } from '../../Services/Audio/IAudioService';
 
@@ -23,8 +23,8 @@ export default class StatBar extends Component<any, { profil: PlayerProfil }> {
 	render() {
 		return (
 			<nav class="navbar nav-inner">
-				<ProgressComponent width={35} maxWidth={150} />
-				<div class="d-flex justify-content-start">
+				<Progress width={35} maxWidth={150} />
+				<div class="d-flex">
 					<SmActiveBtn
 						left={<Icon Value={'fas fa-volume-mute'} />}
 						right={<Icon Value={'fas fa-volume-up'} />}

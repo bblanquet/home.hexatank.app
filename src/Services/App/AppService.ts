@@ -118,10 +118,10 @@ export class AppService implements IAppService<GameBlueprint> {
 			}
 			this._recordContext.Stop(status === GameStatus.Victory);
 			const record = this._recordContext.GetRecord();
-			this._playerProfilService.Init();
+			this._playerProfilService.Load();
 			const profil = this._playerProfilService.GetProfil();
 			profil.Records.push(record);
-			this._playerProfilService.Update();
+			this._playerProfilService.Save();
 		}
 	}
 

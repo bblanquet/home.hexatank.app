@@ -18,6 +18,7 @@ import { IAudioService } from '../Audio/IAudioService';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import { GameState } from '../../Core/Framework/Context/GameState';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
+import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
 
 export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 	private _blueprint: CamouflageBlueprint;
@@ -25,6 +26,7 @@ export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 	private _appProvider: AppProvider;
 	private _input: PIXI.InteractionManager;
 
+	private _playerProfilService: IPlayerProfilService;
 	private _gameContextService: IGameContextService<CamouflageBlueprint, CamouflageContext>;
 	private _interactionService: IInteractionService<CamouflageContext>;
 	private _layerService: ILayerService;
@@ -51,6 +53,7 @@ export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 
 	public Register(blueprint: CamouflageBlueprint, victory: () => void, defeat: () => void): void {
 		this._appProvider = new AppProvider();
+		this._playerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this._gameContextService = Singletons.Load<IGameContextService<CamouflageBlueprint, CamouflageContext>>(
 			SingletonKey.CamouflageGameContext
 		);
@@ -94,6 +97,7 @@ export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 		} else if (status === GameStatus.Defeat) {
 			this._defeat();
 		}
+		this._playerProfilService.Save();
 	}
 
 	GetStats(): StatsContext {

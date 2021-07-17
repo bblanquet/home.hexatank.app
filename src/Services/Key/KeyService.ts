@@ -1,6 +1,6 @@
 import { FireAppService } from '../App/FireAppService';
 import { CamouflageAppService } from '../App/CamouflageAppService';
-import { RecordAppService } from './../App/RecordAppService';
+import { PlayerAppService } from '../App/PlayerAppService';
 import { AppService } from './../App/AppService';
 import { SingletonKey } from '../../Singletons';
 import { IKeyService } from './IKeyService';
@@ -18,7 +18,7 @@ export class KeyService implements IKeyService {
 		ErrorHandler.ThrowNull(appService);
 		if (appService instanceof AppService) {
 			this._key = SingletonKey.App;
-		} else if (appService instanceof RecordAppService) {
+		} else if (appService instanceof PlayerAppService) {
 			this._key = SingletonKey.RecordApp;
 		} else if (appService instanceof CamouflageAppService) {
 			this._key = SingletonKey.CamouflageApp;

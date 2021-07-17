@@ -83,9 +83,9 @@ export default class LobbyScreen extends HookedComponent<{}, LobbyHook, LobbySta
 								/>
 							</Navbar>
 							<Visible isVisible={this.Hook.IsReady()}>
-								<span class="badge badge-primary" style="width:100%;border-radius:0px;margin:0px">
+								<div class="notification">
 									{`the game starts ${this.Hook.State.Duration} seconds later.`}
-								</span>
+								</div>
 							</Visible>
 						</span>
 					}

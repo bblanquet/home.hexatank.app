@@ -37,17 +37,15 @@ export default class GuestComponent extends HookedComponent<{}, GuestHook, Guest
 							<Navbar />
 							<div style="padding-top:10px;box-shadow: rgb(0,0,0,0.5) 0px 0px 10px 0px inset;">
 								<Column>
-									<Line>
-										<CtmBtnInput
-											max={15}
-											type={'text'}
-											value={this.Hook.State.PlayerName}
-											label={'Name'}
-											onInput={(e: any) => this.Hook.SetUsername(e.target.value as string)}
-											onClick={() => this.Hook.Randomize()}
-											icon={'fas fa-random'}
-										/>
-									</Line>
+									<CtmBtnInput
+										max={15}
+										type={'text'}
+										value={this.Hook.State.PlayerName}
+										label={'Name'}
+										onInput={(e: any) => this.Hook.SetUsername(e.target.value as string)}
+										onClick={() => this.Hook.Randomize()}
+										icon={'fas fa-random'}
+									/>
 									<CtmIconInput
 										type={'text'}
 										value={this.Hook.State.filter}

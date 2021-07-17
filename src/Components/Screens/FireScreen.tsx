@@ -25,8 +25,13 @@ export default class FireScreen extends HookedComponent<{}, FireHook, RuntimeSta
 	public Rendering(): JSX.Element {
 		return (
 			<Redirect>
-				<Visible isVisible={this.Hook.State.GameStatus !== GameStatus.Pending}>
-					<SmPopup status={this.Hook.State.GameStatus} />
+				<Visible
+					isVisible={
+						this.Hook.State.GameStatus !== GameStatus.Pending &&
+						!isNullOrUndefined(this.Hook.State.StatusDetails)
+					}
+				>
+					<SmPopup Status={this.Hook.State.GameStatus} Details={this.Hook.State.StatusDetails} />
 				</Visible>
 				<Visible isVisible={this.Hook.State.GameStatus === GameStatus.Pending}>
 					<Visible isVisible={!this.Hook.State.HasMenu}>

@@ -1,170 +1,100 @@
 import { h, Component } from 'preact';
-import { route } from 'preact-router';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import { JsonRecordContent } from '../../Core/Framework/Record/Model/JsonRecordContent';
 import { Groups } from '../../Utils/Collections/Groups';
 import { Curve } from '../../Utils/Stats/Curve';
 import { StatsKind } from '../../Utils/Stats/StatsKind';
-import { Singletons, SingletonKey } from '../../Singletons';
-import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 import Btn from '../Common/Button/Stylish/Btn';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import SmActiveBtn from '../Common/Button/Stylish/SmActiveBtn';
 import { LineChart } from '../Common/Chart/Config/LineChart';
 import Icon from '../Common/Icon/IconComponent';
-import ProgressComponent from '../Common/Progress/ProgressComponent';
 import ChartContainer from '../Common/Chart/ChartContainer';
-import { AudioArchive } from '../../Core/Framework/AudioArchiver';
-import { IAudioService } from '../../Services/Audio/IAudioService';
-import Switch from '../Common/Struct/Switch';
+import TitleIcon from './TitleIcon';
 import Visible from '../Common/Struct/Visible';
-import { IBlueprint } from '../../Core/Framework/Blueprint/IBlueprint';
-import { IAppService } from '../../Services/App/IAppService';
-import { IKeyService } from '../../Services/Key/IKeyService';
+import Line from '../Common/Struct/Line';
+import Column from '../Common/Struct/Column';
+import { HookedComponent } from '../Hooks/HookedComponent';
+import { PopupHook } from '../Hooks/PopupHook';
+import { MockupPopHook } from '../Hooks/MockupPopHook';
+import { PopupState } from '../Model/PopupState';
+import { useState } from 'preact/hooks';
+import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
+import AnimatedProgress from '../Common/Progress/AnimatedProgress';
 
-export default class Popup extends Component<
-	{ curves: Groups<Curve>; context: JsonRecordContent; status: GameStatus; points: number },
-	{ Kind: StatsKind; Canvas: HTMLCanvasElement }
+export default class Popup extends HookedComponent<
+	{ curves: Groups<Curve>; context: JsonRecordContent; status: GameStatus; Details: PointDetails },
+	PopupHook,
+	PopupState
 > {
-	private _chart: LineChart = new LineChart();
-	private _profilService: IPlayerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
-	private _audioService: IAudioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-	private _appService: IAppService<IBlueprint>;
-	private _keyService: IKeyService;
-
-	constructor() {
-		super();
-		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
-		this._appService = Singletons.Load<IAppService<IBlueprint>>(this._keyService.GetAppKey());
+	public GetDefaultHook(): PopupHook {
+		const chart = new LineChart();
+		return new PopupHook(
+			useState(
+				new PopupState(
+					chart,
+					this.props.status,
+					this.props.curves,
+					StatsKind.Unit,
+					chart.GetCanvas(StatsKind[StatsKind.Unit], this.props.curves.Get(StatsKind[StatsKind.Unit]))
+				)
+			)
+		);
 	}
 
-	componentDidMount() {
-		this.setState({
-			Kind: StatsKind.Unit
-		});
-		this._profilService.AddPoints(this.props.points);
-		if (!this.state.Canvas) {
-			this.UpdateState(this.state.Kind);
-		}
-		if (this.props.status === GameStatus.Victory) {
-			this._audioService.Play(AudioArchive.victory, 0.1, false);
-		}
-
-		if (this.props.status === GameStatus.Defeat) {
-			this._audioService.Play(AudioArchive.defeat, 0.1, false);
-		}
-	}
-	componentDidUpdate() {
-		if (!this.state.Canvas) {
-			this.UpdateState(this.state.Kind);
-		}
-	}
-
-	private UpdateState(kind: StatsKind): void {
-		const curves = this.props.curves.Get(StatsKind[kind]);
-		if (curves) {
-			this.setState({
-				Kind: kind,
-				Canvas: this._chart.GetCanvas(StatsKind[kind], curves)
-			});
-		}
-	}
-
-	private Quit(): void {
-		route('{{sub_path}}Home', true);
-	}
-
-	render() {
+	public Rendering(): h.JSX.Element {
 		return (
 			<div
 				class="generalContainer absolute-center-middle-menu menu-container fit-content"
 				style={`border:${this.props.status === GameStatus.Victory ? 'gold' : 'crimson'} 5px solid`}
 			>
-				<div class="title-popup-container">
-					<Switch
-						isVisible={this.props.status === GameStatus.Victory}
-						left={
-							<div class="fill-victory light-bounce">
-								<div class="fill-victory-star infinite-bounce" />
-							</div>
-						}
-						right={
-							<div class="fill-defeat light-bounce">
-								<div class="fill-defeat-eyes fade" />
-							</div>
-						}
-					/>
-				</div>
-				<div class="container-center">
-					<div class="container-center-horizontal" style="margin-top:15px;margin-bottom:15px;width:100%">
-						<ProgressComponent width={80} maxWidth={0} />
-					</div>
-
-					<div class="container-center-horizontal">
-						<SmActiveBtn
-							left={<div class="fill-sm-tank max-width icon-space" />}
-							right={<div class="fill-sm-tank max-width icon-space" />}
-							leftColor={ColorKind.Black}
-							rightColor={ColorKind.Red}
-							isActive={this.state.Kind === StatsKind.Unit}
-							callBack={() => {
-								this.UpdateState(StatsKind.Unit);
-							}}
-						/>
-						<SmActiveBtn
-							left={<div class="fill-sm-hexa max-width icon-space" />}
-							right={<div class="fill-sm-hexa max-width icon-space" />}
-							leftColor={ColorKind.Black}
-							rightColor={ColorKind.Red}
-							isActive={this.state.Kind === StatsKind.Cell}
-							callBack={() => {
-								this.UpdateState(StatsKind.Cell);
-							}}
-						/>
-						<SmActiveBtn
-							left={<div class="fill-sm-diam max-width icon-space" />}
-							right={<div class="fill-sm-diam max-width icon-space" />}
-							leftColor={ColorKind.Black}
-							rightColor={ColorKind.Red}
-							isActive={this.state.Kind === StatsKind.Diamond}
-							callBack={() => {
-								this.UpdateState(StatsKind.Diamond);
-							}}
-						/>
-						<SmActiveBtn
-							left={<div class="fill-sm-fire max-width icon-space" />}
-							right={<div class="fill-sm-fire max-width icon-space" />}
-							leftColor={ColorKind.Black}
-							rightColor={ColorKind.Red}
-							isActive={this.state.Kind === StatsKind.Energy}
-							callBack={() => {
-								this.UpdateState(StatsKind.Energy);
-							}}
-						/>
-					</div>
-					<ChartContainer canvas={this.state.Canvas} height={null} />
-					<div class="container-center-horizontal">
+				<TitleIcon Status={this.props.status} />
+				<Column>
+					<AnimatedProgress Width={80} MaxWidth={0} Details={this.props.Details} />
+					<Line>
+						{this.GetButton(StatsKind.Unit, 'fill-sm-tank max-width icon-space')}
+						{this.GetButton(StatsKind.Cell, 'fill-sm-hexa max-width icon-space')}
+						{this.GetButton(StatsKind.Diamond, 'fill-sm-diam max-width icon-space')}
+						{this.GetButton(StatsKind.Energy, 'fill-sm-fire max-width icon-space')}
+					</Line>
+					<ChartContainer canvas={this.Hook.State.Canvas} height={null} />
+					<Line>
 						<Btn
 							callBack={() => {
-								this.Quit();
+								this.Hook.Quit();
 							}}
 							color={ColorKind.Black}
 						>
 							<Icon Value="fas fa-undo-alt" /> Back
 						</Btn>
-						<Visible isVisible={this.props.status === GameStatus.Defeat && this._appService.IsRetriable()}>
+						<Visible isVisible={this.Hook.HasRetry()}>
 							<Btn
 								callBack={() => {
-									this._appService.Retry();
+									this.Hook.Retry();
 								}}
 								color={ColorKind.Blue}
 							>
 								<Icon Value="fas fa-undo-alt" /> Retry
 							</Btn>
 						</Visible>
-					</div>
-				</div>
+					</Line>
+				</Column>
 			</div>
+		);
+	}
+
+	private GetButton(kind: StatsKind, icon: string) {
+		return (
+			<SmActiveBtn
+				left={<div class={icon} />}
+				right={<div class={icon} />}
+				leftColor={ColorKind.Black}
+				rightColor={ColorKind.Red}
+				isActive={this.Hook.State.Kind === kind}
+				callBack={() => {
+					this.Hook.UpdateState(kind);
+				}}
+			/>
 		);
 	}
 }

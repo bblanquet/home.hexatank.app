@@ -1,9 +1,9 @@
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
-import { GameSettings } from './../../Core/Framework/GameSettings';
-import { IInteractionService } from './../Interaction/IInteractionService';
-import { ILayerService } from './../Layer/ILayerService';
-import { IUpdateService } from './../Update/IUpdateService';
-import { IGameContextService } from './../GameContext/IGameContextService';
+import { GameSettings } from '../../Core/Framework/GameSettings';
+import { IInteractionService } from '../Interaction/IInteractionService';
+import { ILayerService } from '../Layer/ILayerService';
+import { IUpdateService } from '../Update/IUpdateService';
+import { IGameContextService } from '../GameContext/IGameContextService';
 import { AppProvider } from '../../Core/Framework/App/AppProvider';
 import { IAppService } from './IAppService';
 import { Singletons, SingletonKey } from '../../Singletons';
@@ -16,12 +16,12 @@ import { GameContext } from '../../Core/Framework/Context/GameContext';
 import { GameState } from '../../Core/Framework/Context/GameState';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 
-export class RecordAppService implements IAppService<GameBlueprint> {
+export class PlayerAppService implements IAppService<GameBlueprint> {
 	private _context: GameBlueprint;
 	private _app: PIXI.Application;
 	private _appProvider: AppProvider;
 	private _interactionManager: PIXI.InteractionManager;
-	OnRetried: SimpleEvent;
+	public OnRetried: SimpleEvent = new SimpleEvent();
 
 	private _gameContextService: IGameContextService<GameBlueprint, GameContext>;
 	private _interactionService: IInteractionService<GameContext>;
@@ -39,9 +39,8 @@ export class RecordAppService implements IAppService<GameBlueprint> {
 		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.RecordInteraction);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 	}
-	Retry(): void {
-		throw new Error('Method not implemented.');
-	}
+	Retry(): void {}
+
 	IsRetriable(): boolean {
 		return false;
 	}

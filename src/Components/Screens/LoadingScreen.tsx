@@ -11,7 +11,6 @@ import Visible from '../Common/Struct/Visible';
 import { LoadingSentences } from '../Model/Text';
 import { SingletonContainer } from '../../SingletonContainer';
 import Background from '../Components/Background';
-import { AudioLoader } from '../../Core/Framework/AudioLoader';
 import { IAudioService } from '../../Services/Audio/IAudioService';
 import { Singletons, SingletonKey } from '../../Singletons';
 
@@ -61,15 +60,10 @@ export default class LoadingScreen extends Component<any, { Percentage: number }
 						<div class="fill-tank-logo slow-bounce" />
 						<div class="fill-logo" />
 					</div>
-					<div class="progress" style="height:20px; border: 4px solid rgb(198, 198, 198);">
-						<div
-							class="progress-bar bg-danger "
-							role="progressbar"
-							style={'width:' + this.state.Percentage + '%'}
-							aria-valuenow="100"
-							aria-valuemin="0"
-							aria-valuemax="100"
-						/>
+					<div class="container">
+						<div class="progress progress-striped">
+							<div class="progress-bar" style={`width:${this.state.Percentage}%`} />
+						</div>
 					</div>
 					<Visible isVisible={this.state.Percentage < 100}>
 						<div class="container-center" style="color:white;font-weight:bold;text-align:center;">

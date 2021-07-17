@@ -18,6 +18,7 @@ import { GameStatus } from '../../Core/Framework/GameStatus';
 import { GameState } from '../../Core/Framework/Context/GameState';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { GameAudioManager } from '../../Core/Framework/Audio/GameAudioManager';
+import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
 
 export class DiamondAppService implements IAppService<DiamondBlueprint> {
 	private _blueprint: DiamondBlueprint;
@@ -27,6 +28,7 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 	private _gameAudioService: GameAudioManager;
 	private _context: DiamondContext;
 
+	private _playerProfilService: IPlayerProfilService;
 	private _gameContextService: IGameContextService<DiamondBlueprint, DiamondContext>;
 	private _interactionService: IInteractionService<DiamondContext>;
 	private _layerService: ILayerService;
@@ -42,6 +44,7 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 		this._gameContextService = Singletons.Load<IGameContextService<DiamondBlueprint, DiamondContext>>(
 			SingletonKey.DiamondGameContext
 		);
+		this._playerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 		this._interactionService = Singletons.Load<IInteractionService<DiamondContext>>(SingletonKey.Interaction);
@@ -91,6 +94,7 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 		} else if (status === GameStatus.Defeat) {
 			this._defeat();
 		}
+		this._playerProfilService.Save();
 	}
 
 	GetStats(): StatsContext {

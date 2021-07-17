@@ -59,7 +59,7 @@ export class Face extends Component<
 	render() {
 		return (
 			<Visible isVisible={!isNullOrUndefined(this.props)}>
-				<div class="generalContainer">
+				<div class="sizeContainer">
 					<div class="container-center">
 						<div class="logo-container">
 							<div class={this.props.face} />

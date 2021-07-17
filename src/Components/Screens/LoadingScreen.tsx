@@ -52,7 +52,7 @@ export default class LoadingScreen extends Component<any, { Percentage: number }
 	render() {
 		return (
 			<Background>
-				<div class="generalContainer absolute-center-middle">
+				<div class="sizeContainer absolute-center-middle-2">
 					<div class="logo-container">
 						<div class="fill-logo-back-container">
 							<div class="fill-logo-back spin-fade" />

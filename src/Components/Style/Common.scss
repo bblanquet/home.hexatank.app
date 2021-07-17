@@ -280,7 +280,7 @@
 	margin-bottom: 1rem;
 }
 
-.generalContainer {
+.sizeContainer {
 	z-index: 0;
 	width: 80%;
 	max-width: 500px;
@@ -293,17 +293,10 @@
 	margin: 20px;
 }
 
-.absolute-center-top {
+.absolute-center-middle-2 {
 	position: absolute;
 	left: 50%;
-	top: 0%;
-	transform: translate(-50%, 0%);
-}
-
-.absolute-center-bottom {
-	position: fixed;
-	left: 50%;
-	bottom: 0px;
+	top: 15vh;
 	transform: translate(-50%, 0%);
 }
 

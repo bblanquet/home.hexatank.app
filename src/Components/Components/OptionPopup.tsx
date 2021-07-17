@@ -32,7 +32,7 @@ export default class OptionPopup extends Component<
 
 	render() {
 		return (
-			<div class="generalContainer absolute-center-middle-menu menu-container fit-content">
+			<div class="sizeContainer absolute-center-middle-menu menu-container fit-content">
 				<div class="title-popup-container">
 					<div class="fill-logo-back-container">
 						<div class="fill-logo-back spin-fade" />

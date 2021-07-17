@@ -23,7 +23,7 @@ export default class SmPopup extends HookedComponent<
 	public Rendering(): h.JSX.Element {
 		return (
 			<div
-				class="generalContainer absolute-center-middle-menu menu-container fit-content"
+				class="sizeContainer absolute-center-middle-menu menu-container fit-content"
 				style={`border:${this.props.Status === GameStatus.Victory ? 'gold' : 'crimson'} 5px solid`}
 			>
 				<TitleIcon Status={this.props.Status} />

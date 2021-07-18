@@ -95,11 +95,7 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 			hqCount,
 			HqAppearance.Colors
 		);
-		if (!this.state.onylIa) {
-			const playerName = this._profilService.GetProfil().LastPlayerName;
-			blueprint.Hqs[0].PlayerName = playerName;
-			blueprint.PlayerName = playerName;
-		}
+
 		blueprint.Hqs.forEach((hq, index) => {
 			if (!hq.PlayerName) {
 				hq.isIa = true;
@@ -107,6 +103,11 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 			}
 			index += 1;
 		});
+
+		const playerName = this._profilService.GetProfil().LastPlayerName;
+		blueprint.Hqs[0].PlayerName = playerName;
+		blueprint.PlayerName = playerName;
+		blueprint.Hqs[0].isIa = this.state.onylIa;
 		Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App).Register(
 			blueprint,
 			() => {

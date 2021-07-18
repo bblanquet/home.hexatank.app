@@ -602,14 +602,13 @@ p.bubble {
 	font-size: small;
 	color: white;
 	line-height: 40px;
-	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5), -1px 1px 0 rgba(0, 0, 0, 0.8), 1px -1px 0 rgba(0, 0, 0, 0.8),
-		-1px -1px 0 rgba(0, 0, 0, 0.8), 0px 1px 0 rgba(0, 0, 0, 0.8), 0px -1px 0 rgba(0, 0, 0, 0.8),
-		-1px 0px 0 rgba(0, 0, 0, 0.8), 1px 0px 0 rgba(0, 0, 0, 0.8), 2px 2px 0 rgba(0, 0, 0, 0.8),
-		-2px 2px 0 rgba(0, 0, 0, 0.8), 2px -2px 0 rgba(0, 0, 0, 0.8), -2px -2px 0 rgba(0, 0, 0, 0.8),
-		0px 2px 0 rgba(0, 0, 0, 0.8), 0px -2px 0 rgba(0, 0, 0, 0.8), -2px 0px 0 rgba(0, 0, 0, 0.8),
-		2px 0px 0 rgba(0, 0, 0, 0.8), 1px 2px 0 rgba(0, 0, 0, 0.8), -1px 2px 0 rgba(0, 0, 0, 0.8),
-		1px -2px 0 rgba(0, 0, 0, 0.8), -1px -2px 0 rgba(0, 0, 0, 0.8), 2px 1px 0 rgba(0, 0, 0, 0.8),
-		-2px 1px 0 rgba(0, 0, 0, 0.8), 2px -1px 0 rgba(0, 0, 0, 0.8), -2px -1px 0 rgba(0, 0, 0, 0.8);
+	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5), -1px 1px 0 rgb(22, 22, 22), 1px -1px 0 rgb(22, 22, 22),
+		-1px -1px 0 rgb(22, 22, 22), 0px 1px 0 rgb(22, 22, 22), 0px -1px 0 rgb(22, 22, 22), -1px 0px 0 rgb(22, 22, 22),
+		1px 0px 0 rgb(22, 22, 22), 2px 2px 0 rgb(22, 22, 22), -2px 2px 0 rgb(22, 22, 22), 2px -2px 0 rgb(22, 22, 22),
+		-2px -2px 0 rgb(22, 22, 22), 0px 2px 0 rgb(22, 22, 22), 0px -2px 0 rgb(22, 22, 22), -2px 0px 0 rgb(22, 22, 22),
+		2px 0px 0 rgb(22, 22, 22), 1px 2px 0 rgb(22, 22, 22), -1px 2px 0 rgb(22, 22, 22), 1px -2px 0 rgb(22, 22, 22),
+		-1px -2px 0 rgb(22, 22, 22), 2px 1px 0 rgb(22, 22, 22), -2px 1px 0 rgb(22, 22, 22), 2px -1px 0 rgb(22, 22, 22),
+		-2px -1px 0 rgb(22, 22, 22);
 }
 
 .shadowEffect {

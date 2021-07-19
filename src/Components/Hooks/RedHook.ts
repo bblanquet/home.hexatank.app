@@ -67,9 +67,9 @@ export class RedHook extends Hook<CampaignState> {
 	}
 
 	public Start(index: number): void {
-		const mapContext = this._campaignService.GetMapContext(CampaignKind.red, index);
+		const blueprint = this._campaignService.GetBlueprint(CampaignKind.red, index);
 		Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App).Register(
-			mapContext,
+			blueprint,
 			() => {
 				this._playerProfilService.GetProfil().RedLvl[index] = StageState.achieved;
 				if (index + 1 < this._playerProfilService.GetProfil().RedLvl.length) {
@@ -77,9 +77,7 @@ export class RedHook extends Hook<CampaignState> {
 				}
 				this._playerProfilService.AddPoints(20);
 			},
-			() => {
-				this._playerProfilService.AddPoints(3);
-			}
+			() => this._playerProfilService.AddPoints(3)
 		);
 		route('{{sub_path}}Canvas', true);
 	}

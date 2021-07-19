@@ -33,7 +33,7 @@ export class GreenHook extends Hook<CampaignState> {
 	}
 
 	public Start(index: number): void {
-		const blueprint = this._campaignService.GetMapContext(CampaignKind.training, index);
+		const blueprint = this._campaignService.GetBlueprint(CampaignKind.training, index);
 		if (blueprint instanceof CamouflageBlueprint) {
 			Singletons.Load<IAppService<CamouflageBlueprint>>(SingletonKey.CamouflageApp).Register(
 				blueprint,

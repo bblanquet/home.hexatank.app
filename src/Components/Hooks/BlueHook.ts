@@ -63,7 +63,7 @@ export class BlueHook extends Hook<CampaignState> {
 	}
 
 	public Start(index: number): void {
-		const mapContext = this._campaignService.GetMapContext(CampaignKind.blue, index);
+		const mapContext = this._campaignService.GetBlueprint(CampaignKind.blue, index);
 		Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App).Register(
 			mapContext,
 			() => {

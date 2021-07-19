@@ -38,7 +38,9 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 		return (
 			<Redirect>
 				<Panel
-					content={<BlueprintForm Model={this.state} OnChanged={this.Update.bind(this)} />}
+					content={
+						<BlueprintForm Model={this.state} OnChanged={this.Update.bind(this)} EnableEmptyIa={false} />
+					}
 					footer={
 						<div class="navbar nav-inner">
 							<div class="left">
@@ -89,14 +91,26 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 
 	Start(): void {
 		const playerName = this._profilService.GetProfil().LastPlayerName;
-
 		const players = new Array<PlayerBlueprint>();
-		players.push(new PlayerBlueprint(playerName, HqAppearance.Colors[0], true));
-		this.state.IAs.forEach((ia, index) => {
-			players.push(
-				new PlayerBlueprint(`IA${index}`, HqAppearance.Colors[index + 1], false, this.ConvertBrain(ia))
-			);
-		});
+		if (this.state.IsFullIA) {
+			this.state.IAs.forEach((ia, index) => {
+				players.push(
+					new PlayerBlueprint(
+						`IA${index}`,
+						HqAppearance.Colors[index + 1],
+						index === 0,
+						this.ConvertBrain(ia)
+					)
+				);
+			});
+		} else {
+			players.push(new PlayerBlueprint(playerName, HqAppearance.Colors[0], true));
+			this.state.IAs.forEach((ia, index) => {
+				players.push(
+					new PlayerBlueprint(`IA${index}`, HqAppearance.Colors[index + 1], false, this.ConvertBrain(ia))
+				);
+			});
+		}
 
 		const blueprint = new GameBlueprintMaker().GetBluePrint(this.ConvertMapType(), this.ConvertEnv(), players);
 

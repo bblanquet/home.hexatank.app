@@ -11,7 +11,7 @@ import SmBtn from '../Common/Button/Stylish/SmBtn';
 import Column from '../Common/Struct/Column';
 
 export default class BlueprintForm extends Component<
-	{ Model: BlueprintSetup; OnChanged: (model: BlueprintSetup) => void },
+	{ Model: BlueprintSetup; OnChanged: (model: BlueprintSetup) => void; EnableEmptyIa: boolean },
 	BlueprintSetup
 > {
 	componentDidMount() {
@@ -101,7 +101,7 @@ export default class BlueprintForm extends Component<
 								<SmBtn
 									Color={ColorKind.Black}
 									OnClick={() => {
-										if (1 < this.state.IAs.length) {
+										if (this.props.EnableEmptyIa || 1 < this.state.IAs.length) {
 											this.setState({ IAs: this.state.IAs.filter((ia, i) => i !== index) });
 										}
 									}}

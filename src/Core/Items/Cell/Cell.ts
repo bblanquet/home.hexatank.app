@@ -182,7 +182,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
 		}
 		if (this._field) {
-			if (nextField instanceof BasicField === this._field instanceof BasicField) {
+			if (nextField instanceof BasicField && this._field instanceof BasicField) {
 				ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidType])));
 			}
 			this._field.OnDestroyed.Off(this._destroyedFieldFunc);

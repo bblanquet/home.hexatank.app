@@ -41,12 +41,12 @@ export default class RedScreen extends HookedComponent<{}, RedHook, CampaignStat
 									<div class="arrow-up" />
 									<p class="bubble">{this.Hook.State.CurrentSentence}</p>
 									<div class="container-center-horizontal">
-										<Btn callBack={() => this.Hook.SetBubble()} color={ColorKind.Black}>
+										<Btn OnClick={() => this.Hook.SetBubble()} Color={ColorKind.Black}>
 											<Icon Value="fas fa-undo-alt" /> Back
 										</Btn>
 										<Btn
-											callBack={() => this.Hook.Start(this.Hook.State.Level)}
-											color={ColorKind.Red}
+											OnClick={() => this.Hook.Start(this.Hook.State.Level)}
+											Color={ColorKind.Red}
 										>
 											<Icon Value="fas fa-fist-raised" /> Fight
 										</Btn>
@@ -55,10 +55,10 @@ export default class RedScreen extends HookedComponent<{}, RedHook, CampaignStat
 								<div class="container-center">
 									<Visible isVisible={!this.Hook.State.HasBubble}>
 										<div class="container-center-horizontal">
-											<Btn callBack={() => this.Hook.Green()} color={ColorKind.Black}>
+											<Btn OnClick={() => this.Hook.Green()} Color={ColorKind.Black}>
 												<Icon Value="fas fa-long-arrow-alt-left" />
 											</Btn>
-											<Btn callBack={() => this.Hook.Blue()} color={ColorKind.Black}>
+											<Btn OnClick={() => this.Hook.Blue()} Color={ColorKind.Black}>
 												<Icon Value="fas fa-long-arrow-alt-right" />
 											</Btn>
 										</div>
@@ -80,7 +80,7 @@ export default class RedScreen extends HookedComponent<{}, RedHook, CampaignStat
 					}
 					footer={
 						<div class="navbar nav-inner">
-							<SmBtn callBack={() => this.Hook.Back()} color={ColorKind.Black}>
+							<SmBtn OnClick={() => this.Hook.Back()} Color={ColorKind.Black}>
 								<Icon Value="fas fa-undo-alt" /> Back
 							</SmBtn>
 						</div>
@@ -92,7 +92,7 @@ export default class RedScreen extends HookedComponent<{}, RedHook, CampaignStat
 
 	private GetButton(index: number) {
 		return (
-			<Btn callBack={() => this.Hook.Select(index)} color={ColorKind.Red}>
+			<Btn OnClick={() => this.Hook.Select(index)} Color={ColorKind.Red}>
 				<Icon Value="fas fa-arrow-alt-circle-right" /> {index}
 			</Btn>
 		);

@@ -16,13 +16,13 @@ export default class ActiveBtn extends Component<
 	render() {
 		if (this.props.isActive) {
 			return (
-				<Btn color={this.props.leftColor} callBack={this.props.callBack}>
+				<Btn Color={this.props.leftColor} OnClick={this.props.callBack}>
 					{this.props.right}
 				</Btn>
 			);
 		} else {
 			return (
-				<Btn color={this.props.rightColor} callBack={this.props.callBack}>
+				<Btn Color={this.props.rightColor} OnClick={this.props.callBack}>
 					{this.props.left}
 				</Btn>
 			);

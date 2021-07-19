@@ -22,7 +22,7 @@ export class DiamondRenderer {
 		const cells = new Dictionary<Cell>();
 
 		blueprint.Cells.forEach((item) => {
-			const cell = new Cell(new CellProperties(new HexAxial(item.Position.Q, item.Position.R)), cells);
+			const cell = new Cell(new CellProperties(new HexAxial(item.Coo.Q, item.Coo.R)), cells);
 			Decorator.Decorate(cell, item.Type);
 			cell.InitSprite();
 			cells.Add(cell.Coo(), cell);
@@ -30,15 +30,15 @@ export class DiamondRenderer {
 
 		const areas = new AreaSearch(
 			Dictionary.To((c) => c.ToString(), cells.Values().map((c) => c.GetHexCoo()))
-		).GetAreas(new HexAxial(blueprint.CenterItem.Position.Q, blueprint.CenterItem.Position.R));
+		).GetAreas(new HexAxial(blueprint.CenterItem.Coo.Q, blueprint.CenterItem.Coo.R));
 		new LandRender().SetLands(cells, blueprint.MapMode, areas);
 		new CloudRender().SetClouds(cells, areas);
-		blueprint.HqDiamond.Color = ColorKind.Purple;
+		blueprint.HqDiamond.Player.Color = ColorKind.Purple;
 		const hq = new HqRender().Render(cells, blueprint.HqDiamond);
 		this.SetHqLand(cells, SvgArchive.nature.hq, [ hq.GetCell().GetHexCoo() ]);
 		this.SetHqLand(cells, SvgArchive.nature.hq2, [ hq.GetCell().GetHexCoo() ], 1);
 
-		const arrivalCell = cells.Get(blueprint.HqDiamond.Diamond.Position.ToString());
+		const arrivalCell = cells.Get(blueprint.HqDiamond.DiamondCell.Coo.ToString());
 		new AboveItem(arrivalCell, SvgArchive.arrow);
 
 		cells.Values().forEach((cell) => {

@@ -63,7 +63,7 @@ export default class ComparisonScreen extends HookedComponent<{}, ComparisonHook
 				}
 				footer={
 					<div class="navbar nav-inner">
-						<SmBtn callBack={() => route('{{sub_path}}Home', true)} color={ColorKind.Black}>
+						<SmBtn OnClick={() => route('{{sub_path}}Home', true)} Color={ColorKind.Black}>
 							<Icon Value="fas fa-undo-alt" /> Quit
 						</SmBtn>
 					</div>

@@ -31,15 +31,15 @@ export default class SmPopup extends HookedComponent<
 					<AnimatedProgress Width={80} MaxWidth={0} Details={this.props.Details} />
 					<Line>
 						<Btn
-							callBack={() => {
+							OnClick={() => {
 								this.Hook.Quit();
 							}}
-							color={ColorKind.Black}
+							Color={ColorKind.Black}
 						>
 							<Icon Value="fas fa-undo-alt" /> Back
 						</Btn>
 						<Visible isVisible={this.Hook.HasRetry()}>
-							<Btn callBack={() => this.Hook.Retry()} color={ColorKind.Blue}>
+							<Btn OnClick={() => this.Hook.Retry()} Color={ColorKind.Blue}>
 								<Icon Value="fas fa-undo-alt" /> Retry
 							</Btn>
 						</Visible>

@@ -1,6 +1,6 @@
 import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { OnlinePlayer } from '../../Network/OnlinePlayer';
-import { BlueprintSetup } from '../Components/Form/BlueprintSetup';
+import { BlueprintSetup } from './BlueprintSetup';
 import { Message } from './Message';
 import { LobbyMode } from './LobbyMode';
 

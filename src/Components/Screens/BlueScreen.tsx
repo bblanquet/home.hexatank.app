@@ -41,12 +41,12 @@ export default class BlueScreen extends HookedComponent<{}, BlueHook, CampaignSt
 									<div class="arrow-up" />
 									<p class="bubble">{this.Hook.State.CurrentSentence}</p>
 									<div class="container-center-horizontal">
-										<Btn callBack={() => this.Hook.SetBubble()} color={ColorKind.Black}>
+										<Btn OnClick={() => this.Hook.SetBubble()} Color={ColorKind.Black}>
 											<Icon Value="fas fa-undo-alt" /> Back
 										</Btn>
 										<Btn
-											callBack={() => this.Hook.Start(this.Hook.State.Level)}
-											color={ColorKind.Blue}
+											OnClick={() => this.Hook.Start(this.Hook.State.Level)}
+											Color={ColorKind.Blue}
 										>
 											<Icon Value="fas fa-fist-raised" /> Fight
 										</Btn>
@@ -55,7 +55,7 @@ export default class BlueScreen extends HookedComponent<{}, BlueHook, CampaignSt
 								<div class="container-center">
 									<Visible isVisible={!this.Hook.State.HasBubble}>
 										<div class="container-center-horizontal">
-											<Btn callBack={() => this.Hook.Red()} color={ColorKind.Black}>
+											<Btn OnClick={() => this.Hook.Red()} Color={ColorKind.Black}>
 												<Icon Value="fas fa-long-arrow-alt-left" />
 											</Btn>
 										</div>
@@ -77,7 +77,7 @@ export default class BlueScreen extends HookedComponent<{}, BlueHook, CampaignSt
 					}
 					footer={
 						<div class="navbar nav-inner">
-							<SmBtn callBack={() => this.Hook.Back()} color={ColorKind.Black}>
+							<SmBtn OnClick={() => this.Hook.Back()} Color={ColorKind.Black}>
 								<Icon Value="fas fa-undo-alt" /> Back
 							</SmBtn>
 						</div>
@@ -89,7 +89,7 @@ export default class BlueScreen extends HookedComponent<{}, BlueHook, CampaignSt
 
 	private GetButton(index: number) {
 		return (
-			<Btn callBack={() => this.Hook.Select(index)} color={ColorKind.Blue}>
+			<Btn OnClick={() => this.Hook.Select(index)} Color={ColorKind.Blue}>
 				<Icon Value="fas fa-arrow-alt-circle-right" /> {index}
 			</Btn>
 		);

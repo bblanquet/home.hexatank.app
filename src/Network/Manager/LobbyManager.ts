@@ -10,7 +10,7 @@ import { NetworkObserver } from '../../Utils/Events/NetworkObserver';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { IServerSocket } from '../Socket/Server/IServerSocket';
 import { PeerSocket } from '../Socket/Peer/PeerSocket';
-import { BlueprintSetup } from '../../Components/Components/Form/BlueprintSetup';
+import { BlueprintSetup } from '../../Components/Model/BlueprintSetup';
 
 export class LobbyManager implements ILobbyManager {
 	public OnKicked: SimpleEvent = new SimpleEvent();

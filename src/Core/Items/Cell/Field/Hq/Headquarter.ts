@@ -36,7 +36,6 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 	private _boundingBox: BoundingBox;
 	private _cell: Cell;
 	public Fields: Array<HeadquarterField>;
-	public IsPlayer: boolean;
 
 	private _tankRequestCount: number = 0;
 	private _network: HqNetwork;

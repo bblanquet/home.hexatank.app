@@ -1,10 +1,7 @@
-import { ColorKind } from '../../../../Components/Common/Button/Stylish/ColorKind';
 import { CellPrint } from '../Items/CellPrint';
-
+import { PlayerBlueprint } from './HqBlueprint';
 export class DiamondHq {
-	public Hq: CellPrint;
-	public Diamond: CellPrint;
-	public PlayerName: string;
-	public isIa: boolean = false;
-	public Color: ColorKind;
+	public Cell: CellPrint;
+	public DiamondCell: CellPrint;
+	public Player: PlayerBlueprint;
 }

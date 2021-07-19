@@ -22,10 +22,10 @@ export default class SmUploadBtn extends Component<
 	render() {
 		return (
 			<SmBtn
-				callBack={() => {
+				OnClick={() => {
 					this.ForceFileClick();
 				}}
-				color={this.props.color}
+				Color={this.props.color}
 			>
 				<Icon Value={this.props.icon} />
 			</SmBtn>

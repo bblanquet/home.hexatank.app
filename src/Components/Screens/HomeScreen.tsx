@@ -43,10 +43,10 @@ export default class HomeScreen extends Component<any, any> {
 			<Redirect>
 				<MdPanel>
 					<div class="container-center">
-						<Btn color={ColorKind.Red} callBack={() => this.ToCampaign()}>
+						<Btn Color={ColorKind.Red} OnClick={() => this.ToCampaign()}>
 							<Icon Value="fas fa-dungeon" /> Campaign
 						</Btn>
-						<Btn color={ColorKind.Red} callBack={() => this.ToSinglePlayer()}>
+						<Btn Color={ColorKind.Red} OnClick={() => this.ToSinglePlayer()}>
 							<Icon Value="fas fa-gamepad" /> Play
 						</Btn>
 						<DropDownBtn
@@ -57,11 +57,11 @@ export default class HomeScreen extends Component<any, any> {
 								new ButtonOption('Host', () => this.ToHost())
 							]}
 						/>
-						<Btn color={ColorKind.Black} callBack={() => this.ToRecord()}>
+						<Btn Color={ColorKind.Black} OnClick={() => this.ToRecord()}>
 							<Icon Value="fas fa-user-circle" /> Profil
 						</Btn>
 						<Visible isVisible={!Env.IsPrd()}>
-							<Btn color={ColorKind.Blue} callBack={() => this.ToMonitoring()}>
+							<Btn Color={ColorKind.Blue} OnClick={() => this.ToMonitoring()}>
 								<Icon Value="fab fa-watchman-monitoring" /> Monitoring
 							</Btn>
 						</Visible>

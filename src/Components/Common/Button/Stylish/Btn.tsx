@@ -5,7 +5,7 @@ import { Singletons, SingletonKey } from '../../../../Singletons';
 import { IAudioService } from '../../../../Services/Audio/IAudioService';
 import { ColorKind } from './ColorKind';
 
-export default class Btn extends Component<{ callBack: () => void; color: ColorKind }, any> {
+export default class Btn extends Component<{ OnClick: () => void; Color: ColorKind }, any> {
 	private _primary: Dictionary<string> = new Dictionary<string>();
 	private _secondary: Dictionary<string> = new Dictionary<string>();
 	constructor() {
@@ -29,12 +29,12 @@ export default class Btn extends Component<{ callBack: () => void; color: ColorK
 		return (
 			<div class="custom-btn-layout-4 fit-content btn-space">
 				<div class="custom-btn-layout-3 fit-content">
-					<div class={`custom-btn-layout-2 ${this._secondary.Get(ColorKind[this.props.color])} fit-content`}>
+					<div class={`custom-btn-layout-2 ${this._secondary.Get(ColorKind[this.props.Color])} fit-content`}>
 						<div
-							class={`custom-btn-layout-1 ${this._primary.Get(ColorKind[this.props.color])} fit-content`}
+							class={`custom-btn-layout-1 ${this._primary.Get(ColorKind[this.props.Color])} fit-content`}
 							onClick={() => {
 								this.Howl();
-								this.props.callBack();
+								this.props.OnClick();
 							}}
 						>
 							{this.props.children}

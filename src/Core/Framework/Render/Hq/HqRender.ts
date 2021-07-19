@@ -13,9 +13,9 @@ export class HqRender {
 		const diamondCell = cells.Get(this.DiamondCoo(blueprint));
 		diamondCell.SetField(new Diamond(diamondCell));
 		const id = new Identity(
-			blueprint.PlayerName,
-			HqAppearance.Skins.Get(ColorKind[blueprint.Color]),
-			!blueprint.isIa
+			blueprint.Player.Name,
+			HqAppearance.Skins.Get(ColorKind[blueprint.Player.Color]),
+			!blueprint.Player.IsIA
 		);
 		const cell = cells.Get(this.HqCoo(blueprint));
 		const hq = cell.SetField(new Headquarter(id, cell));
@@ -23,10 +23,10 @@ export class HqRender {
 	}
 
 	private HqCoo(hqDefinition: DiamondHq): string {
-		return new HexAxial(hqDefinition.Hq.Position.Q, hqDefinition.Hq.Position.R).ToString();
+		return new HexAxial(hqDefinition.Cell.Coo.Q, hqDefinition.Cell.Coo.R).ToString();
 	}
 
 	private DiamondCoo(hqDefinition: DiamondHq): string {
-		return new HexAxial(hqDefinition.Diamond.Position.Q, hqDefinition.Diamond.Position.R).ToString();
+		return new HexAxial(hqDefinition.DiamondCell.Coo.Q, hqDefinition.DiamondCell.Coo.R).ToString();
 	}
 }

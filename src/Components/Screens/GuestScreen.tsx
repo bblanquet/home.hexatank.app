@@ -66,7 +66,7 @@ export default class GuestComponent extends HookedComponent<{}, GuestHook, Guest
 					}
 					content={
 						<Grid
-							left={''}
+							left={<span />}
 							right={
 								<Switch
 									isLeft={this.Hook.State.Rooms.length === 0}
@@ -84,8 +84,8 @@ export default class GuestComponent extends HookedComponent<{}, GuestHook, Guest
 													<tr class="d-flex">
 														<td class="align-self-center">
 															<SmBtn
-																callBack={() => this.Hook.Join(roomInfo.Name)}
-																color={ColorKind.Black}
+																OnClick={() => this.Hook.Join(roomInfo.Name)}
+																Color={ColorKind.Black}
 															>
 																Join
 															</SmBtn>
@@ -119,20 +119,20 @@ export default class GuestComponent extends HookedComponent<{}, GuestHook, Guest
 						<div class="navbar nav-inner">
 							<div class="left">
 								<SmBtn
-									callBack={() => {
+									OnClick={() => {
 										this.Hook.Back();
 									}}
-									color={ColorKind.Black}
+									Color={ColorKind.Black}
 								>
 									<Icon Value="fas fa-undo-alt" /> Back
 								</SmBtn>
 							</div>
 							<div class="right">
 								<SmBtn
-									callBack={() => {
+									OnClick={() => {
 										this.Hook.Refresh();
 									}}
-									color={ColorKind.Red}
+									Color={ColorKind.Red}
 								>
 									<Icon Value="fas fa-sync-alt" /> Refresh
 								</SmBtn>

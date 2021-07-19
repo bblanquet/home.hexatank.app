@@ -39,7 +39,7 @@ export default class PendingPlayers extends Component<{
 						<tr class={this.props.Player.Name === player.Name ? 'row-blue d-flex' : 'd-flex'}>
 							<Visible isVisible={this.props.Player.IsAdmin}>
 								<td class="align-self-center">
-									<SmBtn callBack={() => this.MakeUserLeave(player.Name)} color={ColorKind.Black}>
+									<SmBtn OnClick={() => this.MakeUserLeave(player.Name)} Color={ColorKind.Black}>
 										<Icon Value={'fas fa-user-slash'} />
 									</SmBtn>
 								</td>

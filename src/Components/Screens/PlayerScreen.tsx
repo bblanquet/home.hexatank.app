@@ -33,7 +33,7 @@ export default class PlayerScreen extends HookedComponent<{}, PlayerHook, Player
 							<Navbar>
 								{this.Button(false, 'far fa-map')}
 								{this.Button(true, 'fas fa-stream')}
-								<SmBtn color={ColorKind.Black} callBack={() => this.Hook.SetMenu()}>
+								<SmBtn Color={ColorKind.Black} OnClick={() => this.Hook.SetMenu()}>
 									<Icon Value="fas fa-undo-alt" />
 								</SmBtn>
 							</Navbar>

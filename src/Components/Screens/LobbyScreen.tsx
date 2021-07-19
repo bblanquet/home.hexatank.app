@@ -116,7 +116,7 @@ export default class LobbyScreen extends HookedComponent<{}, LobbyHook, LobbySta
 							right={
 								<div class="navbar nav-inner">
 									<div class="left">
-										<SmBtn callBack={() => this.Hook.Back()} color={ColorKind.Black}>
+										<SmBtn OnClick={() => this.Hook.Back()} Color={ColorKind.Black}>
 											<Icon Value="fas fa-undo-alt" /> Back
 										</SmBtn>
 									</div>

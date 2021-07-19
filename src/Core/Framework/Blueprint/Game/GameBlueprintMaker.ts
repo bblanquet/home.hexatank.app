@@ -22,7 +22,7 @@ import { IMapBuilder } from '../../Builder/IPlaygroundBuilder';
 import { GameSettings } from '../../../Framework/GameSettings';
 import { DecoratingPrints } from '../../../Items/Cell/Decorator/DecoratingPrints';
 import { DecoratingFactory } from '../../../Items/Cell/Decorator/ForestFactory';
-import { ColorKind } from '../../../../Components/Common/Button/Stylish/ColorKind';
+import { PlayerBlueprint } from './HqBlueprint';
 
 export class GameBlueprintMaker {
 	private _builders: Dictionary<IMapBuilder>;
@@ -38,10 +38,10 @@ export class GameBlueprintMaker {
 		this._builders.Add(MapShape.Rectangle.toString(), new RectangleFlowerMapBuilder());
 	}
 
-	public GetBluePrint(mapType: MapShape, mapMode: MapKind, hqCount: number, colors: ColorKind[]): GameBlueprint {
-		const size = new SizeProvider().GetSize(hqCount, mapType);
-		const context = new GameBlueprint();
-		context.MapMode = mapMode;
+	public GetBluePrint(mapType: MapShape, mapMode: MapKind, players: PlayerBlueprint[]): GameBlueprint {
+		const size = new SizeProvider().GetSize(players.length, mapType);
+		const blueprint = new GameBlueprint();
+		blueprint.MapMode = mapMode;
 		const mapItems = new Array<CellPrint>();
 		const mapBuilder = this._builders.Get(mapType.toString());
 		const coos = mapBuilder.GetAllCoos(size);
@@ -51,13 +51,13 @@ export class GameBlueprintMaker {
 		const farthestPointManager = new FartestPointsFinder();
 		const excluded = new Dictionary<HexAxial>();
 
-		const hqPositions = farthestPointManager.GetPoints(areas, cells, hqCount);
-		const diamondPositions = this.GetDiamonds(hqPositions, cells, hqCount);
+		const hqCoos = farthestPointManager.GetPoints(areas, cells, players.length);
+		const diamondCoos = this.GetDiamonds(hqCoos, cells, players.length);
 		let hqs = new Array<CellPrint>();
 		//add hqs
-		hqPositions.forEach((hq) => {
+		hqCoos.forEach((hq) => {
 			let hqMapItem = new CellPrint();
-			hqMapItem.Position = hq;
+			hqMapItem.Coo = hq;
 			hqMapItem.Type = CellType.Hq;
 			mapItems.push(hqMapItem);
 			excluded.Add(hq.ToString(), hq);
@@ -67,11 +67,11 @@ export class GameBlueprintMaker {
 			hqs.push(hqMapItem);
 		});
 
-		context.Hqs = new Array<DiamondHq>();
+		blueprint.Hqs = new Array<DiamondHq>();
 		//add diamonds and join them to hq
-		diamondPositions.forEach((diamondCoo, index) => {
+		diamondCoos.forEach((diamondCoo, index) => {
 			let diamonMapItem = new CellPrint();
-			diamonMapItem.Position = diamondCoo;
+			diamonMapItem.Coo = diamondCoo;
 			diamonMapItem.Type = CellType.Hq;
 			mapItems.push(diamonMapItem);
 			excluded.Add(diamondCoo.ToString(), diamondCoo);
@@ -79,10 +79,10 @@ export class GameBlueprintMaker {
 				excluded.Add(p.ToString(), p);
 			});
 			let hqDiamond = new DiamondHq();
-			hqDiamond.Color = colors[index];
-			hqDiamond.Diamond = diamonMapItem;
-			hqDiamond.Hq = hqs[diamondPositions.indexOf(diamondCoo)];
-			context.Hqs.push(hqDiamond);
+			hqDiamond.Player = players[index];
+			hqDiamond.DiamondCell = diamonMapItem;
+			hqDiamond.Cell = hqs[diamondCoos.indexOf(diamondCoo)];
+			blueprint.Hqs.push(hqDiamond);
 		});
 
 		const decorator = new DecoratingPrints(
@@ -92,21 +92,22 @@ export class GameBlueprintMaker {
 		//decorate tree, water, stone the map
 		coos.forEach((coo) => {
 			let mapItem = new CellPrint();
-			mapItem.Position = coo;
+			mapItem.Coo = coo;
 			if (!excluded.Exist(coo.ToString())) {
 				mapItem.Type = decorator.GetDecoration();
 			} else {
 				mapItem.Type = CellType.None;
 			}
 
-			if (mapItems.filter((mi) => mi.Position.ToString() === mapItem.Position.ToString()).length === 0) {
+			if (mapItems.filter((mi) => mi.Coo.ToString() === mapItem.Coo.ToString()).length === 0) {
 				mapItems.push(mapItem);
 			}
 		});
 
-		context.Cells = mapItems;
-		context.CenterItem = mapItems[0];
-		return context;
+		blueprint.PlayerName = players.find((p) => p.IsPlayer).Name;
+		blueprint.Cells = mapItems;
+		blueprint.CenterItem = mapItems[0];
+		return blueprint;
 	}
 
 	private GetDiamonds(hqcells: Array<HexAxial>, coordinates: Dictionary<HexAxial>, hqCount: number): Array<HexAxial> {

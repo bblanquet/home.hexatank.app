@@ -5,7 +5,7 @@ import { Singletons, SingletonKey } from '../../../../Singletons';
 import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { ColorKind } from './ColorKind';
 
-export default class SmBtn extends Component<{ callBack: () => void; color: ColorKind }, any> {
+export default class SmBtn extends Component<{ OnClick: () => void; Color: ColorKind }, any> {
 	private _primary: Dictionary<string> = new Dictionary<string>();
 	private _secondary: Dictionary<string> = new Dictionary<string>();
 
@@ -29,12 +29,12 @@ export default class SmBtn extends Component<{ callBack: () => void; color: Colo
 	render() {
 		return (
 			<div class="custom-sm-btn-layout-3 fit-content" style="margin-left:5px;marigh-right:5px">
-				<div class={`custom-sm-btn-layout-2 ${this._secondary.Get(ColorKind[this.props.color])} fit-content`}>
+				<div class={`custom-sm-btn-layout-2 ${this._secondary.Get(ColorKind[this.props.Color])} fit-content`}>
 					<div
-						class={`custom-btn-layout-1 ${this._primary.Get(ColorKind[this.props.color])} fit-content`}
+						class={`custom-btn-layout-1 ${this._primary.Get(ColorKind[this.props.Color])} fit-content`}
 						onClick={() => {
 							this.Howl();
-							this.props.callBack();
+							this.props.OnClick();
 						}}
 					>
 						{this.props.children}

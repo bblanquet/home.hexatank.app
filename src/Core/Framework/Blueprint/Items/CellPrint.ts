@@ -9,14 +9,14 @@ export class CellPrint {
 	public CId: string;
 
 	public Type: CellType;
-	public Position: Coo;
+	public Coo: Coo;
 
 	public static New(q: number, r: number): CellPrint {
 		const m = new CellPrint();
-		m.Position = new Coo();
+		m.Coo = new Coo();
 		m.Type = CellType.None;
-		m.Position.R = r;
-		m.Position.Q = q;
+		m.Coo.R = r;
+		m.Coo.Q = q;
 		return m;
 	}
 

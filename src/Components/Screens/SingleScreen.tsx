@@ -10,12 +10,12 @@ import Icon from '../Common/Icon/IconComponent';
 import { MapShape } from '../../Core/Framework/Blueprint/Items/MapShape';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
-import BlueprintFormComponent from '../Components/Form/BlueprintFormComponent';
-import { BlueprintSetup } from '../Components/Form/BlueprintSetup';
+import BlueprintForm from '../Components/BlueprintForm';
+import { BlueprintSetup } from '../Model/BlueprintSetup';
 import Panel from '../Components/Panel/Panel';
 import Redirect from '../Components/Redirect';
-import { MapSize } from '../../Core/Framework/Blueprint/Items/MapSize';
 import { HqAppearance } from '../../Core/Framework/Render/Hq/HqSkinHelper';
+import { PlayerBlueprint } from '../../Core/Framework/Blueprint/Game/HqBlueprint';
 
 export default class SingleScreen extends Component<any, BlueprintSetup> {
 	private _profilService: IPlayerProfilService;
@@ -27,8 +27,8 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 	}
 
 	private Update(m: BlueprintSetup): void {
-		if (m.IaCount === 0) {
-			m.IaCount = 1;
+		if (m.IAs.length === 0) {
+			m.IAs.length = 1;
 		}
 		this.setState(m);
 	}
@@ -37,20 +37,16 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 		return (
 			<Redirect>
 				<Panel
-					content={
-						<div class="container-center">
-							<BlueprintFormComponent Model={this.state} CallBack={this.Update.bind(this)} />
-						</div>
-					}
+					content={<BlueprintForm Model={this.state} OnChanged={this.Update.bind(this)} />}
 					footer={
 						<div class="navbar nav-inner">
 							<div class="left">
-								<SmBtn callBack={() => this.Back()} color={ColorKind.Black}>
+								<SmBtn OnClick={() => this.Back()} Color={ColorKind.Black}>
 									<Icon Value="fas fa-undo-alt" /> Back
 								</SmBtn>
 							</div>
 							<div class="right">
-								<SmBtn callBack={() => this.Start()} color={ColorKind.Red}>
+								<SmBtn OnClick={() => this.Start()} Color={ColorKind.Red}>
 									<Icon Value="fas fa-arrow-alt-circle-right" /> Play
 								</SmBtn>
 							</div>
@@ -84,30 +80,16 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 	}
 
 	Start(): void {
-		let hqCount = this.state.IaCount + 1;
-		if (hqCount === 1) {
-			hqCount += 1;
-		}
+		const playerName = this._profilService.GetProfil().LastPlayerName;
 
-		const blueprint = new GameBlueprintMaker().GetBluePrint(
-			this.ConvertMapType(),
-			this.ConvertEnv(),
-			hqCount,
-			HqAppearance.Colors
-		);
-
-		blueprint.Hqs.forEach((hq, index) => {
-			if (!hq.PlayerName) {
-				hq.isIa = true;
-				hq.PlayerName = `IA-${index}`;
-			}
-			index += 1;
+		const players = new Array<PlayerBlueprint>();
+		players.push(new PlayerBlueprint(playerName, HqAppearance.Colors[0], true));
+		this.state.IAs.forEach((ia, index) => {
+			players.push(new PlayerBlueprint(playerName, HqAppearance.Colors[index + 1], false, ia));
 		});
 
-		const playerName = this._profilService.GetProfil().LastPlayerName;
-		blueprint.Hqs[0].PlayerName = playerName;
-		blueprint.PlayerName = playerName;
-		blueprint.Hqs[0].isIa = this.state.onylIa;
+		const blueprint = new GameBlueprintMaker().GetBluePrint(this.ConvertMapType(), this.ConvertEnv(), players);
+
 		Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App).Register(
 			blueprint,
 			() => this._profilService.AddPoints(30),

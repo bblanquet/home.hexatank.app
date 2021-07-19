@@ -21,7 +21,7 @@ export default class ErrorScreen extends Component {
 					<div class="container-center">
 						<Face eyes={[]} mouths={[]} face={'fill-exception'} />
 						<div class="text-detail shadowEffect width80percent">
-							<h5 class="card-title">OOPS an error occured</h5>
+							<h5 class="card-title">OOPS an error occured, we will fix it quickly!</h5>
 							<div>{GameContext.Error.message}</div>
 							<p />
 							<div class="sub-text-detail max200Height">{GameContext.Error.stack}</div>
@@ -31,10 +31,10 @@ export default class ErrorScreen extends Component {
 				footer={
 					<div class="navbar nav-inner">
 						<SmBtn
-							callBack={() => {
+							OnClick={() => {
 								this.Back();
 							}}
-							color={ColorKind.Black}
+							Color={ColorKind.Black}
 						>
 							<Icon Value="fas fa-undo-alt" /> Back
 						</SmBtn>

@@ -23,7 +23,7 @@ export default class ProfilScreen extends HookedComponent<{}, ProfilHook, Profil
 				<Body
 					header={
 						<Navbar>
-							<SmBtn callBack={() => this.Hook.Delete()} color={ColorKind.Black}>
+							<SmBtn OnClick={() => this.Hook.Delete()} Color={ColorKind.Black}>
 								<Icon Value="fas fa-trash" /> {this.Hook.State.SelectedRecords.length}
 							</SmBtn>
 							<SmUploadBtn
@@ -33,16 +33,16 @@ export default class ProfilScreen extends HookedComponent<{}, ProfilHook, Profil
 							/>
 
 							<Visible isVisible={this.Hook.State.SelectedRecords.length === 1}>
-								<SmBtn callBack={() => this.Hook.Download()} color={ColorKind.Green}>
+								<SmBtn OnClick={() => this.Hook.Download()} Color={ColorKind.Green}>
 									<Icon Value="fas fa-file-download" />
 								</SmBtn>
 							</Visible>
 							<Visible isVisible={this.Hook.State.SelectedRecords.length === 2 && !Env.IsPrd()}>
 								<SmBtn
-									callBack={() => {
+									OnClick={() => {
 										this.Hook.ToCompare();
 									}}
-									color={ColorKind.Red}
+									Color={ColorKind.Red}
 								>
 									<Icon Value="fas fa-chart-pie" />
 								</SmBtn>
@@ -92,8 +92,8 @@ export default class ProfilScreen extends HookedComponent<{}, ProfilHook, Profil
 															/>
 															<div class="very-small-left-margin" />
 															<SmBtn
-																callBack={() => this.Hook.Play(record.Record)}
-																color={ColorKind.Black}
+																OnClick={() => this.Hook.Play(record.Record)}
+																Color={ColorKind.Black}
 															>
 																<Icon Value="fas fa-play-circle" />
 															</SmBtn>
@@ -126,10 +126,10 @@ export default class ProfilScreen extends HookedComponent<{}, ProfilHook, Profil
 					footer={
 						<div class="navbar nav-inner">
 							<SmBtn
-								callBack={() => {
+								OnClick={() => {
 									this.Hook.ToHome();
 								}}
-								color={ColorKind.Black}
+								Color={ColorKind.Black}
 							>
 								<Icon Value="fas fa-undo-alt" /> Back
 							</SmBtn>

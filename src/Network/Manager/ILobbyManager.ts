@@ -1,4 +1,4 @@
-import { BlueprintSetup } from '../../Components/Components/Form/BlueprintSetup';
+import { BlueprintSetup } from '../../Components/Model/BlueprintSetup';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { Message } from '../../Components/Model/Message';

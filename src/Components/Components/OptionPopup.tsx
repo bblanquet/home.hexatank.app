@@ -42,10 +42,10 @@ export default class OptionPopup extends Component<
 				</div>
 				<div class="container-center" style="margin-top: -2vh">
 					<Btn
-						callBack={() => {
+						OnClick={() => {
 							this.props.Resume();
 						}}
-						color={ColorKind.Red}
+						Color={ColorKind.Red}
 					>
 						<Icon Value="fas fa-arrow-alt-circle-right" /> Resume
 					</Btn>
@@ -85,10 +85,10 @@ export default class OptionPopup extends Component<
 						isActive={this._soundService.IsMute()}
 					/>
 					<Btn
-						callBack={() => {
+						OnClick={() => {
 							this.props.Quit();
 						}}
-						color={ColorKind.Black}
+						Color={ColorKind.Black}
 					>
 						<Icon Value="fas fa-undo-alt" /> Quit
 					</Btn>

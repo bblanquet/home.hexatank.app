@@ -94,10 +94,10 @@ export default class BadgeScreen extends Component<any, { text: string }> {
 						</div>
 						<div class="container-center-horizontal">
 							<Btn
-								callBack={() => {
+								OnClick={() => {
 									this.Back();
 								}}
-								color={ColorKind.Black}
+								Color={ColorKind.Black}
 							>
 								<Icon Value="fas fa-undo-alt" /> Back
 							</Btn>

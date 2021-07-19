@@ -27,7 +27,7 @@ export default class MonitorScreen extends HookedComponent<{}, MonitoringHook, C
 					header={<Navbar />}
 					content={
 						<Grid
-							left={''}
+							left={<span />}
 							right={
 								<Switch
 									isLeft={this.Hook.State.Errors.length === 0}
@@ -47,8 +47,8 @@ export default class MonitorScreen extends HookedComponent<{}, MonitoringHook, C
 													<tr class="d-flex">
 														<td class="align-self-center">
 															<SmBtn
-																callBack={() => this.Hook.Play(error.id)}
-																color={ColorKind.Black}
+																OnClick={() => this.Hook.Play(error.id)}
+																Color={ColorKind.Black}
 															>
 																<Icon Value="fas fa-play-circle" />
 															</SmBtn>
@@ -71,12 +71,12 @@ export default class MonitorScreen extends HookedComponent<{}, MonitoringHook, C
 					footer={
 						<div class="navbar nav-inner">
 							<div class="left">
-								<SmBtn callBack={() => this.Hook.Back()} color={ColorKind.Black}>
+								<SmBtn OnClick={() => this.Hook.Back()} Color={ColorKind.Black}>
 									<Icon Value="fas fa-undo-alt" /> Back
 								</SmBtn>
 							</div>
 							<div class="right">
-								<SmBtn callBack={() => this.Hook.Refresh()} color={ColorKind.Red}>
+								<SmBtn OnClick={() => this.Hook.Refresh()} Color={ColorKind.Red}>
 									<Icon Value="fas fa-sync-alt" /> Refresh
 								</SmBtn>
 							</div>

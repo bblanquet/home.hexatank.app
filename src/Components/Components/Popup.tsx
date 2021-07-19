@@ -60,19 +60,19 @@ export default class Popup extends HookedComponent<
 					<ChartContainer canvas={this.Hook.State.Canvas} height={null} />
 					<Line>
 						<Btn
-							callBack={() => {
+							OnClick={() => {
 								this.Hook.Quit();
 							}}
-							color={ColorKind.Black}
+							Color={ColorKind.Black}
 						>
 							<Icon Value="fas fa-undo-alt" /> Back
 						</Btn>
 						<Visible isVisible={this.Hook.HasRetry()}>
 							<Btn
-								callBack={() => {
+								OnClick={() => {
 									this.Hook.Retry();
 								}}
-								color={ColorKind.Blue}
+								Color={ColorKind.Blue}
 							>
 								<Icon Value="fas fa-undo-alt" /> Retry
 							</Btn>

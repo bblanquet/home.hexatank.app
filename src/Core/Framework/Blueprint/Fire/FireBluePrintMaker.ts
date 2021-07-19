@@ -49,7 +49,7 @@ export class FireBluePrintMaker {
 		//add hqs
 		spots.forEach((spot, index) => {
 			let hqMapItem = new CellPrint();
-			hqMapItem.Position = spot;
+			hqMapItem.Coo = spot;
 			hqMapItem.Type = CellType.Hq;
 			mapItems.push(hqMapItem);
 			excluded.Add(spot.ToString(), spot);
@@ -72,7 +72,7 @@ export class FireBluePrintMaker {
 		//decorate tree, water, stone the map
 		coos.forEach((coo) => {
 			let mapItem = new CellPrint();
-			mapItem.Position = coo;
+			mapItem.Coo = coo;
 			if (!excluded.Exist(coo.ToString())) {
 				mapItem.Type = decorator.GetDecoration();
 				if (this.IsBlockingItem(decorator, mapItem) && !this.IsAroundEmpty(coo, mapItems, decorator)) {
@@ -82,7 +82,7 @@ export class FireBluePrintMaker {
 				mapItem.Type = CellType.None;
 			}
 
-			if (mapItems.filter((mi) => mi.Position.ToString() === mapItem.Position.ToString()).length === 0) {
+			if (mapItems.filter((mi) => mi.Coo.ToString() === mapItem.Coo.ToString()).length === 0) {
 				mapItems.push(mapItem);
 			}
 		});
@@ -95,7 +95,7 @@ export class FireBluePrintMaker {
 	public IsAroundEmpty(coo: HexAxial, mapItems: CellPrint[], decorator: DecoratingPrints): boolean {
 		let isEmpty = true;
 		coo.GetNeighbours(1).forEach((n) => {
-			const mapItem = mapItems.find((m) => m.Position.ToString() === n.ToString());
+			const mapItem = mapItems.find((m) => m.Coo.ToString() === n.ToString());
 			if (mapItem && this.IsBlockingItem(decorator, mapItem)) {
 				isEmpty = false;
 			}

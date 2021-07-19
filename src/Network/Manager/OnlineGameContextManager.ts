@@ -13,7 +13,7 @@ import { NetworkMessage } from '../Message/NetworkMessage';
 import { GameContext } from '../../Core/Framework/Context/GameContext';
 import { IGameContextService } from '../../Services/GameContext/IGameContextService';
 import { IOnlinePlayerManager } from './IOnlinePlayerManager';
-import { BlueprintSetup } from '../../Components/Components/Form/BlueprintSetup';
+import { BlueprintSetup } from '../../Components/Model/BlueprintSetup';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 export class OnlineGameContextManager implements IOnlineGameContextManager {
 	private _peerObs: NetworkObserver[];
@@ -70,14 +70,13 @@ export class OnlineGameContextManager implements IOnlineGameContextManager {
 
 	private HandleBlueprint(data: NetworkMessage<GameBlueprint>): void {
 		const blueprint = data.Content;
-		blueprint.PlayerName = this._onlinePlayerManager.Player.Name;
 		this.DisableIa(blueprint);
 		this.Load(blueprint);
 	}
 	private DisableIa(blueprint: GameBlueprint) {
 		if (!this._onlinePlayerManager.Player.IsAdmin) {
 			blueprint.Hqs.forEach((hq) => {
-				hq.isIa = false;
+				hq.Player.IA = null;
 			});
 		}
 	}

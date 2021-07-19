@@ -18,6 +18,8 @@ import { CellType } from '../Items/CellType';
 import { MapKind } from '../Items/MapKind';
 import { MapShape } from '../Items/MapShape';
 import { DiamondBlueprint } from './DiamondBlueprint';
+import { PlayerBlueprint } from '../Game/HqBlueprint';
+import { ColorKind } from '../../../../Components/Common/Button/Stylish/ColorKind';
 
 export class DiamondBlueprintMaker {
 	private _builders: Dictionary<IMapBuilder>;
@@ -44,27 +46,26 @@ export class DiamondBlueprintMaker {
 		const excluded = new Dictionary<HexAxial>();
 
 		const diamondHq = new DiamondHq();
-		diamondHq.Diamond = CellPrint.New(5, 1);
-		diamondHq.Hq = CellPrint.New(1, 0);
-		diamondHq.isIa = false;
-		diamondHq.PlayerName = '';
+		diamondHq.DiamondCell = CellPrint.New(5, 1);
+		diamondHq.Cell = CellPrint.New(1, 0);
+		diamondHq.Player = new PlayerBlueprint('', ColorKind.Blue, true);
 
 		let hqMapItem = new CellPrint();
-		hqMapItem.Position = diamondHq.Hq.Position;
+		hqMapItem.Coo = diamondHq.Cell.Coo;
 		hqMapItem.Type = CellType.Hq;
 		mapItems.push(hqMapItem);
-		excluded.Add(diamondHq.Hq.Position.ToString(), cells.Get(diamondHq.Hq.Position.ToString()));
-		cells.Get(diamondHq.Hq.Position.ToString()).GetNeighbours().forEach((p) => {
+		excluded.Add(diamondHq.Cell.Coo.ToString(), cells.Get(diamondHq.Cell.Coo.ToString()));
+		cells.Get(diamondHq.Cell.Coo.ToString()).GetNeighbours().forEach((p) => {
 			excluded.Add(p.ToString(), p);
 		});
 
 		//add diamonds and join them to hq
 		let diamonMapItem = new CellPrint();
-		diamonMapItem.Position = diamondHq.Diamond.Position;
+		diamonMapItem.Coo = diamondHq.DiamondCell.Coo;
 		diamonMapItem.Type = CellType.Hq;
 		mapItems.push(diamonMapItem);
-		excluded.Add(diamondHq.Diamond.Position.ToString(), cells.Get(diamondHq.Diamond.Position.ToString()));
-		cells.Get(diamondHq.Diamond.Position.ToString()).GetNeighbours().forEach((p) => {
+		excluded.Add(diamondHq.DiamondCell.Coo.ToString(), cells.Get(diamondHq.DiamondCell.Coo.ToString()));
+		cells.Get(diamondHq.DiamondCell.Coo.ToString()).GetNeighbours().forEach((p) => {
 			excluded.Add(p.ToString(), p);
 		});
 
@@ -77,7 +78,7 @@ export class DiamondBlueprintMaker {
 		//decorate tree, water, stone the map
 		coos.forEach((coo) => {
 			let mapItem = new CellPrint();
-			mapItem.Position = coo;
+			mapItem.Coo = coo;
 			if (!excluded.Exist(coo.ToString())) {
 				mapItem.Type = decorator.GetDecoration();
 				if (this.IsBlockingItem(decorator, mapItem) && !this.IsAroundEmpty(coo, mapItems, decorator)) {
@@ -87,7 +88,7 @@ export class DiamondBlueprintMaker {
 				mapItem.Type = CellType.None;
 			}
 
-			if (mapItems.filter((mi) => mi.Position.ToString() === mapItem.Position.ToString()).length === 0) {
+			if (mapItems.filter((mi) => mi.Coo.ToString() === mapItem.Coo.ToString()).length === 0) {
 				mapItems.push(mapItem);
 			}
 		});
@@ -99,7 +100,7 @@ export class DiamondBlueprintMaker {
 	public IsAroundEmpty(coo: HexAxial, mapItems: CellPrint[], decorator: DecoratingPrints): boolean {
 		let isEmpty = true;
 		coo.GetNeighbours(1).forEach((n) => {
-			const mapItem = mapItems.find((m) => m.Position.ToString() === n.ToString());
+			const mapItem = mapItems.find((m) => m.Coo.ToString() === n.ToString());
 			if (mapItem && this.IsBlockingItem(decorator, mapItem)) {
 				isEmpty = false;
 			}

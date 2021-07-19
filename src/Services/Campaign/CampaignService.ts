@@ -11,9 +11,10 @@ import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint
 import { MapKind } from '../../Core/Framework/Blueprint/Items/MapKind';
 import { MapShape } from '../../Core/Framework/Blueprint/Items/MapShape';
 import { ICampaignService } from './ICampaignService';
-import { BlueprintSetup } from '../../Components/Components/Form/BlueprintSetup';
+import { BlueprintSetup } from '../../Components/Model/BlueprintSetup';
 import { StageState } from './StageState';
 import { ColorKind } from '../../Components/Common/Button/Stylish/ColorKind';
+import { PlayerBlueprint } from '../../Core/Framework/Blueprint/Game/HqBlueprint';
 
 export class CampaignService implements ICampaignService {
 	private _training: Dictionary<IBlueprint>;
@@ -23,6 +24,7 @@ export class CampaignService implements ICampaignService {
 
 	constructor() {
 		this._playerProfil = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+		const playername = this._playerProfil.GetProfil().LastPlayerName;
 
 		this._training = new Dictionary<IBlueprint>();
 		this._training.Add((1).toString(), new CamouflageBluePrintMaker().GetBluePrint());
@@ -32,48 +34,60 @@ export class CampaignService implements ICampaignService {
 		this._red = new Dictionary<GameBlueprint>();
 		this._red.Add(
 			(1).toString(),
-			new GameBlueprintMaker().GetBluePrint(MapShape.Flower, MapKind.Forest, 2, [
-				ColorKind.Yellow,
-				ColorKind.Red
+			new GameBlueprintMaker().GetBluePrint(MapShape.Flower, MapKind.Forest, [
+				new PlayerBlueprint(playername, ColorKind.Yellow, true),
+				new PlayerBlueprint(playername, ColorKind.Red, false, 'bob')
 			])
 		);
 		this._red.Add(
 			(2).toString(),
-			new GameBlueprintMaker().GetBluePrint(MapShape.Donut, MapKind.Forest, 2, [
-				ColorKind.Yellow,
-				ColorKind.Red
+			new GameBlueprintMaker().GetBluePrint(MapShape.Donut, MapKind.Forest, [
+				new PlayerBlueprint(playername, ColorKind.Yellow, true),
+				new PlayerBlueprint(playername, ColorKind.Red, false, 'bob')
 			])
 		);
 		this._red.Add(
 			(3).toString(),
-			new GameBlueprintMaker().GetBluePrint(MapShape.H, MapKind.Forest, 2, [ ColorKind.Yellow, ColorKind.Red ])
+			new GameBlueprintMaker().GetBluePrint(MapShape.H, MapKind.Forest, [
+				new PlayerBlueprint(playername, ColorKind.Yellow, true),
+				new PlayerBlueprint(playername, ColorKind.Red, false, 'bob')
+			])
 		);
 		this._red.Add(
 			(4).toString(),
-			new GameBlueprintMaker().GetBluePrint(MapShape.Triangle, MapKind.Forest, 2, [
-				ColorKind.Yellow,
-				ColorKind.Red
+			new GameBlueprintMaker().GetBluePrint(MapShape.Triangle, MapKind.Forest, [
+				new PlayerBlueprint(playername, ColorKind.Yellow, true),
+				new PlayerBlueprint(playername, ColorKind.Red, false, 'bob')
 			])
 		);
 
 		this._blue = new Dictionary<GameBlueprint>();
 		this._blue.Add(
 			(1).toString(),
-			new GameBlueprintMaker().GetBluePrint(MapShape.Flower, MapKind.Ice, 2, [ ColorKind.Yellow, ColorKind.Blue ])
+			new GameBlueprintMaker().GetBluePrint(MapShape.Flower, MapKind.Ice, [
+				new PlayerBlueprint(playername, ColorKind.Yellow, true),
+				new PlayerBlueprint(playername, ColorKind.Blue, false, 'bob')
+			])
 		);
 		this._blue.Add(
 			(2).toString(),
-			new GameBlueprintMaker().GetBluePrint(MapShape.Donut, MapKind.Ice, 2, [ ColorKind.Yellow, ColorKind.Blue ])
+			new GameBlueprintMaker().GetBluePrint(MapShape.Donut, MapKind.Ice, [
+				new PlayerBlueprint(playername, ColorKind.Yellow, true),
+				new PlayerBlueprint(playername, ColorKind.Blue, false, 'bob')
+			])
 		);
 		this._blue.Add(
 			(3).toString(),
-			new GameBlueprintMaker().GetBluePrint(MapShape.H, MapKind.Ice, 2, [ ColorKind.Yellow, ColorKind.Blue ])
+			new GameBlueprintMaker().GetBluePrint(MapShape.H, MapKind.Ice, [
+				new PlayerBlueprint(playername, ColorKind.Yellow, true),
+				new PlayerBlueprint(playername, ColorKind.Blue, false, 'bob')
+			])
 		);
 		this._blue.Add(
 			(4).toString(),
-			new GameBlueprintMaker().GetBluePrint(MapShape.Triangle, MapKind.Ice, 2, [
-				ColorKind.Yellow,
-				ColorKind.Blue
+			new GameBlueprintMaker().GetBluePrint(MapShape.Triangle, MapKind.Ice, [
+				new PlayerBlueprint(playername, ColorKind.Yellow, true),
+				new PlayerBlueprint(playername, ColorKind.Blue, false, 'bob')
 			])
 		);
 	}
@@ -92,19 +106,6 @@ export class CampaignService implements ICampaignService {
 		} else if (kind === CampaignKind.training) {
 			return this._training.Get(index.toString());
 		}
-
-		blueprint.PlayerName = this._playerProfil.GetProfil().LastPlayerName;
-		if (blueprint.Hqs) {
-			blueprint.Hqs[0].PlayerName = blueprint.PlayerName;
-			blueprint.Hqs.forEach((hq, index) => {
-				if (!hq.PlayerName) {
-					hq.isIa = true;
-					hq.PlayerName = `IA-${index}`;
-				}
-				index += 1;
-			});
-		}
-
 		return blueprint;
 	}
 

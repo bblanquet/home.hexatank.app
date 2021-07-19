@@ -3,14 +3,14 @@ import { IBrainProvider } from './IBrain';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { ExpansionMaker } from '../Decision/ExpansionMaker/ExpansionMaker';
 import { Brain } from '../Decision/Brain';
-import { RequestHandler } from '../Decision/RequestHandler/RequestHandler';
-import { AreaRequestMaker } from '../Decision/RequestMaker/AreaRequestMaker';
-import { GeneralRequester } from '../Decision/RequestMaker/GeneralRequester/GeneralRequester';
-import { Area } from '../Decision/../Utils/Area';
-import { AreaSearch } from '../Decision/../Utils/AreaSearch';
+import { RequestHandler } from '../Decision/Handlers/RequestHandler';
+import { AreaRequestMaker } from '../Decision/Requests/AreaRequestMaker';
+import { GeneralRequester } from '../Decision/Requests/Global/GeneralRequester';
+import { Area } from '../Decision//Utils/Area';
+import { AreaSearch } from '../Decision/Utils/AreaSearch';
 import { IBrain } from '../Decision/IBrain';
 import { Groups } from '../../../Utils/Collections/Groups';
-import { ISimpleRequestHandler } from '../Decision/RequestHandler/ISimpleRequestHandler';
+import { ISimpleRequestHandler } from '../Decision/Handlers/ISimpleRequestHandler';
 import { GameContext } from '../../Framework/Context/GameContext';
 
 export class DummyBrain implements IBrainProvider {

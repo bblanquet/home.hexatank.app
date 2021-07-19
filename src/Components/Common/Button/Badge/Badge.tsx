@@ -16,10 +16,10 @@ export default class Badge extends Component<
 		return (
 			<div class="space-out-horizontal">
 				<SmBtn
-					callBack={() => {
+					OnClick={() => {
 						this.props.Onclick(this.props.text);
 					}}
-					color={ColorKind.Black}
+					Color={ColorKind.Black}
 				>
 					<div class={`${this.props.icon} max-width`}>
 						<Visible isVisible={this.props.percentage === 100}>

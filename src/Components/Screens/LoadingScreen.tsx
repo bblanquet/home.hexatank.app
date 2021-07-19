@@ -108,7 +108,7 @@ export default class LoadingScreen extends Component<
 						}
 						right={
 							<div class="container-center">
-								<Btn callBack={() => this.OnStart()} color={ColorKind.Red}>
+								<Btn OnClick={() => this.OnStart()} Color={ColorKind.Red}>
 									<Icon Value="fas fa-dungeon" /> Continue
 								</Btn>
 							</div>

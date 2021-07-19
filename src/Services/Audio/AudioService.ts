@@ -2,8 +2,6 @@ import { IAudioService } from './IAudioService';
 import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { Howl } from 'howler';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';
-import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
-import { Singletons, SingletonKey } from '../../Singletons';
 import { IGameAudioManager } from '../../Core/Framework/Audio/IGameAudioManager';
 
 export class AudioService implements IAudioService {
@@ -11,7 +9,6 @@ export class AudioService implements IAudioService {
 	private _gameAudioManager: IGameAudioManager;
 	private _isMute: boolean = false;
 	private _activeHowls: Dictionary<number>;
-	private _profilService: IPlayerProfilService;
 
 	constructor() {
 		this._activeHowls = new Dictionary<number>();

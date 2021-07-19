@@ -26,7 +26,7 @@ export default class HostScreen extends HookedComponent<{}, HostHook, HostState>
 						<div class="container-center-horizontal">
 							<div style="width:90%">
 								<div class="container-center-horizontal" style="margin-bottom:10px">
-									<SmBtn callBack={() => this.Hook.Randomize()} color={ColorKind.Blue}>
+									<SmBtn OnClick={() => this.Hook.Randomize()} Color={ColorKind.Blue}>
 										<Icon Value="fas fa-random" />
 									</SmBtn>
 									<div class="space-out" />
@@ -77,12 +77,12 @@ export default class HostScreen extends HookedComponent<{}, HostHook, HostState>
 					footer={
 						<div class="navbar nav-inner">
 							<div class="left">
-								<SmBtn callBack={() => this.Hook.Back()} color={ColorKind.Black}>
+								<SmBtn OnClick={() => this.Hook.Back()} Color={ColorKind.Black}>
 									<Icon Value="fas fa-undo-alt" /> Back
 								</SmBtn>
 							</div>
 							<div class="right">
-								<SmBtn callBack={() => this.Hook.Start()} color={ColorKind.Red}>
+								<SmBtn OnClick={() => this.Hook.Start()} Color={ColorKind.Red}>
 									<Icon Value="far fa-play-circle" /> Start
 								</SmBtn>
 							</div>

@@ -28,7 +28,7 @@ export class CamouflageRenderer {
 		const vehicles = new Array<Vehicle>();
 
 		blueprint.Cells.forEach((item) => {
-			const cell = new Cell(new CellProperties(new HexAxial(item.Position.Q, item.Position.R)), cells);
+			const cell = new Cell(new CellProperties(new HexAxial(item.Coo.Q, item.Coo.R)), cells);
 			Decorator.Decorate(cell, item.Type);
 			cell.InitSprite();
 			cells.Add(cell.Coo(), cell);
@@ -36,12 +36,12 @@ export class CamouflageRenderer {
 
 		const areas = new AreaSearch(
 			Dictionary.To((c) => c.ToString(), cells.Values().map((c) => c.GetHexCoo()))
-		).GetAreas(new HexAxial(blueprint.CenterItem.Position.Q, blueprint.CenterItem.Position.R));
+		).GetAreas(new HexAxial(blueprint.CenterItem.Coo.Q, blueprint.CenterItem.Coo.R));
 		new LandRender().SetLands(cells, blueprint.MapMode, areas);
 		new CloudRender().SetClouds(cells, areas);
 
-		const departure = new HexAxial(blueprint.Goal.Departure.Position.Q, blueprint.Goal.Departure.Position.R);
-		const arrival = new HexAxial(blueprint.Goal.Arrival.Position.Q, blueprint.Goal.Arrival.Position.R);
+		const departure = new HexAxial(blueprint.Goal.Departure.Coo.Q, blueprint.Goal.Departure.Coo.R);
+		const arrival = new HexAxial(blueprint.Goal.Arrival.Coo.Q, blueprint.Goal.Arrival.Coo.R);
 		const spots = [ departure, arrival ];
 
 		this.SetHqLand(cells, SvgArchive.nature.hq, spots);
@@ -57,8 +57,8 @@ export class CamouflageRenderer {
 		const iaId = new Identity('ia', HqAppearance.Skins.Get(ColorKind[ColorKind.Blue]), false);
 		blueprint.Patrols.forEach((patrol) => {
 			const tank = new Tank(iaId, false);
-			const d = new HexAxial(patrol.Departure.Position.Q, patrol.Departure.Position.R);
-			const a = new HexAxial(patrol.Arrival.Position.Q, patrol.Arrival.Position.R);
+			const d = new HexAxial(patrol.Departure.Coo.Q, patrol.Departure.Coo.R);
+			const a = new HexAxial(patrol.Arrival.Coo.Q, patrol.Arrival.Coo.R);
 			const dCell = cells.Get(d.ToString());
 			const aCell = cells.Get(a.ToString());
 			tank.SetPosition(dCell);

@@ -1,4 +1,5 @@
 import { BobBrain } from './../Brains/BobBrain';
+import { DummyBrain } from './../Brains/DummyBrain';
 import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { HexAxial } from './../../../Utils/Geometry/HexAxial';
 import { GameBlueprint } from '../../Framework/Blueprint/Game/GameBlueprint';
@@ -9,27 +10,28 @@ import { Cell } from '../../Items/Cell/Cell';
 import { DiamondHq } from '../../Framework/Blueprint/Game/DiamondHq';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
+import { PlayerBlueprint } from '../../Framework/Blueprint/Game/HqBlueprint';
 
 export class BrainInjecter {
-	public Inject(gameContext: GameContext, mapContext: GameBlueprint): void {
+	public Inject(gameContext: GameContext, blueprint: GameBlueprint): void {
 		const coos = Dictionary.To<HexAxial>((e) => e.ToString(), gameContext.GetCells().map((e) => e.GetHexCoo()));
 		const cells = Dictionary.To<Cell>((e) => e.Coo(), gameContext.GetCells().map((e) => e));
-		gameContext.GetHqs().forEach((hq, index) => {
-			if (this.IsIa(mapContext.Hqs, hq.GetCell().GetHexCoo())) {
+		gameContext.GetHqs().forEach((hq) => {
+			const detail = this.GetDetail(blueprint.Hqs, hq.Identity.Name);
+			if (detail.IsIA()) {
 				const areaSearch = new AreaSearch(coos);
 				const areas = this.GetAreas(areaSearch, hq, cells);
-				const diamondCell = cells.Get(this.GetDiamondHex(mapContext.Hqs, hq.GetCell().GetHexCoo()));
-				if (index === 0) {
+				const diamondCell = cells.Get(this.GetDiamondHex(blueprint.Hqs, hq.GetCell().GetHexCoo()));
+
+				if (detail.IA === 'bob') {
 					hq.Inject(
 						new BobBrain().GetBrain(hq, gameContext, areas, areaSearch, diamondCell.GetField() as Diamond)
 					);
 				} else {
 					hq.Inject(
-						new BobBrain().GetBrain(hq, gameContext, areas, areaSearch, diamondCell.GetField() as Diamond)
+						new DummyBrain().GetBrain(hq, gameContext, areas, areaSearch, diamondCell.GetField() as Diamond)
 					);
 				}
-			} else if (hq.Identity.Name === mapContext.PlayerName) {
-				hq.IsPlayer = true;
 			}
 		});
 	}
@@ -47,12 +49,11 @@ export class BrainInjecter {
 	}
 
 	private GetDiamondHex(diamondHqs: DiamondHq[], coo: HexAxial): string {
-		const diamondPosition = diamondHqs.find((d) => d.Hq.Position.Q == coo.Q && d.Hq.Position.R == coo.R).Diamond
-			.Position;
+		const diamondPosition = diamondHqs.find((d) => d.Cell.Coo.Q == coo.Q && d.Cell.Coo.R == coo.R).DiamondCell.Coo;
 		return new HexAxial(diamondPosition.Q, diamondPosition.R).ToString();
 	}
 
-	private IsIa(diamondHqs: DiamondHq[], coo: HexAxial): boolean {
-		return diamondHqs.find((d) => d.Hq.Position.Q == coo.Q && d.Hq.Position.R == coo.R).isIa;
+	private GetDetail(diamondHqs: DiamondHq[], name: string): PlayerBlueprint {
+		return diamondHqs.find((d) => d.Player.Name === name).Player;
 	}
 }

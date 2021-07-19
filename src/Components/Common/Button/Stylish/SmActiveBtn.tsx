@@ -16,13 +16,13 @@ export default class SmActiveBtn extends Component<
 	render() {
 		if (this.props.isActive) {
 			return (
-				<SmBtn color={this.props.leftColor} callBack={this.props.callBack}>
+				<SmBtn Color={this.props.leftColor} OnClick={this.props.callBack}>
 					{this.props.right}
 				</SmBtn>
 			);
 		} else {
 			return (
-				<SmBtn color={this.props.rightColor} callBack={this.props.callBack}>
+				<SmBtn Color={this.props.rightColor} OnClick={this.props.callBack}>
 					{this.props.left}
 				</SmBtn>
 			);

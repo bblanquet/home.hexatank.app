@@ -1,10 +1,6 @@
 import { ColorKind } from '../../../../Components/Common/Button/Stylish/ColorKind';
-import { isNullOrUndefined } from '../../../../Utils/ToolBox';
+import { BrainKind } from '../../../Ia/Decision/BrainKind';
 
 export class PlayerBlueprint {
-	constructor(public Name: string, public Color: ColorKind, public IsPlayer: boolean, public IA?: string) {}
-
-	public IsIA(): boolean {
-		return !isNullOrUndefined(this.IA);
-	}
+	constructor(public Name: string, public Color: ColorKind, public IsPlayer: boolean, public IA?: BrainKind) {}
 }

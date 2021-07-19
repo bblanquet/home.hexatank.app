@@ -6,23 +6,29 @@ import { BlueprintSetup } from '../../Components/Model/BlueprintSetup';
 import { IOnlinePlayerManager } from './IOnlinePlayerManager';
 import { HqAppearance } from '../../Core/Framework/Render/Hq/HqSkinHelper';
 import { PlayerBlueprint } from '../../Core/Framework/Blueprint/Game/HqBlueprint';
+import { BrainKind } from '../../Core/Ia/Decision/BrainKind';
 export class OnlineBlueprintMaker {
 	constructor(private _onlinePlayerManager: IOnlinePlayerManager, private _blueprintSetup: BlueprintSetup) {}
 
 	public GetBlueprint(): GameBlueprint {
 		const players = new Array<PlayerBlueprint>();
-		const index = 0;
+		let index = 0;
 		this._blueprintSetup.IAs.forEach((ia) => {
-			players.push(new PlayerBlueprint(`IA${index}`, HqAppearance.Colors[index], false, ia));
-			index + 1;
+			players.push(new PlayerBlueprint(`IA${index}`, HqAppearance.Colors[index], false, this.ConvertBrain(ia)));
+			index++;
 		});
 		this._onlinePlayerManager.Players.Values().forEach((pl) => {
-			players.push(new PlayerBlueprint(pl.Name, HqAppearance.Colors[index], false));
-			index + 1;
+			players.push(
+				new PlayerBlueprint(
+					pl.Name,
+					HqAppearance.Colors[index],
+					pl.Name === this._onlinePlayerManager.Player.Name
+				)
+			);
+			index++;
 		});
 
-		const mapContext = new GameBlueprintMaker().GetBluePrint(this.ConvertMapType(), this.ConvertEnv(), players);
-		return mapContext;
+		return new GameBlueprintMaker().GetBluePrint(this.ConvertMapType(), this.ConvertEnv(), players);
 	}
 
 	private ConvertMapType(): MapShape {
@@ -41,5 +47,12 @@ export class OnlineBlueprintMaker {
 		if (this._blueprintSetup.Env === 'Forest') return MapKind.Forest;
 		if (this._blueprintSetup.Env === 'Ice') return MapKind.Ice;
 		return MapKind.Forest;
+	}
+
+	private ConvertBrain(ia: string): BrainKind {
+		if (ia === 'Bob') return BrainKind.Bob;
+		if (ia === 'Simple') return BrainKind.Simple;
+		if (ia === 'Dummy') return BrainKind.Dummy;
+		return BrainKind.Bob;
 	}
 }

@@ -7,6 +7,7 @@ import { Diamond } from '../../../Items/Cell/Field/Diamond';
 import { DiamondHq } from '../../Blueprint/Game/DiamondHq';
 import { Cell } from '../../../Items/Cell/Cell';
 import { ColorKind } from '../../../../Components/Common/Button/Stylish/ColorKind';
+import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 
 export class HqRender {
 	public Render(cells: Dictionary<Cell>, blueprint: DiamondHq): Headquarter {
@@ -15,7 +16,7 @@ export class HqRender {
 		const id = new Identity(
 			blueprint.Player.Name,
 			HqAppearance.Skins.Get(ColorKind[blueprint.Player.Color]),
-			!blueprint.Player.IsIA
+			isNullOrUndefined(blueprint.Player.IA)
 		);
 		const cell = cells.Get(this.HqCoo(blueprint));
 		const hq = cell.SetField(new Headquarter(id, cell));

@@ -83,15 +83,8 @@ export class OnlineGameContextManager implements IOnlineGameContextManager {
 
 	private Load(blueprint: GameBlueprint) {
 		const appService = Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App);
-		appService.Register(
-			blueprint,
-			() => {
-				this._profilService.AddPoints(30);
-			},
-			() => {
-				this._profilService.AddPoints(3);
-			}
-		);
+		blueprint.PlayerName = this._onlinePlayerManager.Player.Name;
+		appService.Register(blueprint, () => this._profilService.AddPoints(30), () => this._profilService.AddPoints(3));
 		const context = this._gameContextService.Publish();
 		this._onlineService.Publish(new OnlineManager(this._socket, context, this._onlinePlayerManager));
 		this._onlinePlayerManager.Player.IsLoaded = true;

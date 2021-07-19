@@ -16,6 +16,7 @@ import Panel from '../Components/Panel/Panel';
 import Redirect from '../Components/Redirect';
 import { HqAppearance } from '../../Core/Framework/Render/Hq/HqSkinHelper';
 import { PlayerBlueprint } from '../../Core/Framework/Blueprint/Game/HqBlueprint';
+import { BrainKind } from '../../Core/Ia/Decision/BrainKind';
 
 export default class SingleScreen extends Component<any, BlueprintSetup> {
 	private _profilService: IPlayerProfilService;
@@ -79,13 +80,22 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 		return MapKind.Forest;
 	}
 
+	private ConvertBrain(ia: string): BrainKind {
+		if (ia === 'Bob') return BrainKind.Bob;
+		if (ia === 'Simple') return BrainKind.Simple;
+		if (ia === 'Dummy') return BrainKind.Dummy;
+		return BrainKind.Bob;
+	}
+
 	Start(): void {
 		const playerName = this._profilService.GetProfil().LastPlayerName;
 
 		const players = new Array<PlayerBlueprint>();
 		players.push(new PlayerBlueprint(playerName, HqAppearance.Colors[0], true));
 		this.state.IAs.forEach((ia, index) => {
-			players.push(new PlayerBlueprint(playerName, HqAppearance.Colors[index + 1], false, ia));
+			players.push(
+				new PlayerBlueprint(`IA${index}`, HqAppearance.Colors[index + 1], false, this.ConvertBrain(ia))
+			);
 		});
 
 		const blueprint = new GameBlueprintMaker().GetBluePrint(this.ConvertMapType(), this.ConvertEnv(), players);

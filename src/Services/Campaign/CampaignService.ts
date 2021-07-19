@@ -15,6 +15,7 @@ import { BlueprintSetup } from '../../Components/Model/BlueprintSetup';
 import { StageState } from './StageState';
 import { ColorKind } from '../../Components/Common/Button/Stylish/ColorKind';
 import { PlayerBlueprint } from '../../Core/Framework/Blueprint/Game/HqBlueprint';
+import { BrainKind } from '../../Core/Ia/Decision/BrainKind';
 
 export class CampaignService implements ICampaignService {
 	private _training: Dictionary<IBlueprint>;
@@ -36,28 +37,28 @@ export class CampaignService implements ICampaignService {
 			(1).toString(),
 			new GameBlueprintMaker().GetBluePrint(MapShape.Flower, MapKind.Forest, [
 				new PlayerBlueprint(playername, ColorKind.Yellow, true),
-				new PlayerBlueprint(playername, ColorKind.Red, false, 'bob')
+				new PlayerBlueprint(playername, ColorKind.Red, false, BrainKind.Bob)
 			])
 		);
 		this._red.Add(
 			(2).toString(),
 			new GameBlueprintMaker().GetBluePrint(MapShape.Donut, MapKind.Forest, [
 				new PlayerBlueprint(playername, ColorKind.Yellow, true),
-				new PlayerBlueprint(playername, ColorKind.Red, false, 'bob')
+				new PlayerBlueprint(playername, ColorKind.Red, false, BrainKind.Bob)
 			])
 		);
 		this._red.Add(
 			(3).toString(),
 			new GameBlueprintMaker().GetBluePrint(MapShape.H, MapKind.Forest, [
 				new PlayerBlueprint(playername, ColorKind.Yellow, true),
-				new PlayerBlueprint(playername, ColorKind.Red, false, 'bob')
+				new PlayerBlueprint(playername, ColorKind.Red, false, BrainKind.Bob)
 			])
 		);
 		this._red.Add(
 			(4).toString(),
 			new GameBlueprintMaker().GetBluePrint(MapShape.Triangle, MapKind.Forest, [
 				new PlayerBlueprint(playername, ColorKind.Yellow, true),
-				new PlayerBlueprint(playername, ColorKind.Red, false, 'bob')
+				new PlayerBlueprint(playername, ColorKind.Red, false, BrainKind.Bob)
 			])
 		);
 
@@ -66,28 +67,28 @@ export class CampaignService implements ICampaignService {
 			(1).toString(),
 			new GameBlueprintMaker().GetBluePrint(MapShape.Flower, MapKind.Ice, [
 				new PlayerBlueprint(playername, ColorKind.Yellow, true),
-				new PlayerBlueprint(playername, ColorKind.Blue, false, 'bob')
+				new PlayerBlueprint(playername, ColorKind.Blue, false, BrainKind.Bob)
 			])
 		);
 		this._blue.Add(
 			(2).toString(),
 			new GameBlueprintMaker().GetBluePrint(MapShape.Donut, MapKind.Ice, [
 				new PlayerBlueprint(playername, ColorKind.Yellow, true),
-				new PlayerBlueprint(playername, ColorKind.Blue, false, 'bob')
+				new PlayerBlueprint(playername, ColorKind.Blue, false, BrainKind.Bob)
 			])
 		);
 		this._blue.Add(
 			(3).toString(),
 			new GameBlueprintMaker().GetBluePrint(MapShape.H, MapKind.Ice, [
 				new PlayerBlueprint(playername, ColorKind.Yellow, true),
-				new PlayerBlueprint(playername, ColorKind.Blue, false, 'bob')
+				new PlayerBlueprint(playername, ColorKind.Blue, false, BrainKind.Bob)
 			])
 		);
 		this._blue.Add(
 			(4).toString(),
 			new GameBlueprintMaker().GetBluePrint(MapShape.Triangle, MapKind.Ice, [
 				new PlayerBlueprint(playername, ColorKind.Yellow, true),
-				new PlayerBlueprint(playername, ColorKind.Blue, false, 'bob')
+				new PlayerBlueprint(playername, ColorKind.Blue, false, BrainKind.Bob)
 			])
 		);
 	}

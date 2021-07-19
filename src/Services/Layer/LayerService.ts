@@ -21,7 +21,7 @@ export class LayerService implements ILayerService {
 			worldHeight: 1000,
 			interaction: app.renderer.plugins.interaction
 		});
-		this._viewPort.on('zoomed', (e: any) => {
+		(this._viewPort as any).on('zoomed', (e: any) => {
 			if (this._viewPort.scale.x < 0.7) {
 				this._viewPort.setZoom(0.7, true);
 				return;

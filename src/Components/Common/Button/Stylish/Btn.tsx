@@ -5,7 +5,9 @@ import { Singletons, SingletonKey } from '../../../../Singletons';
 import { IAudioService } from '../../../../Services/Audio/IAudioService';
 import { ColorKind } from './ColorKind';
 
-export default class Btn extends Component<{ callBack: () => void; color: ColorKind; isMute?: boolean }, any> {
+export default class Btn extends Component<{ callBack: () => void; color: ColorKind }, any> {
+	private _primary: Dictionary<string> = new Dictionary<string>();
+	private _secondary: Dictionary<string> = new Dictionary<string>();
 	constructor() {
 		super();
 		this._primary.Add(ColorKind[ColorKind.Black], 'black-primary');
@@ -31,9 +33,7 @@ export default class Btn extends Component<{ callBack: () => void; color: ColorK
 						<div
 							class={`custom-btn-layout-1 ${this._primary.Get(ColorKind[this.props.color])} fit-content`}
 							onClick={() => {
-								if (!this.props.isMute) {
-									Singletons.Load<IAudioService>(SingletonKey.Audio).Play(`${AudioArchive.ok}`, 0.2);
-								}
+								this.Howl();
 								this.props.callBack();
 							}}
 						>
@@ -45,6 +45,10 @@ export default class Btn extends Component<{ callBack: () => void; color: ColorK
 		);
 	}
 
-	private _primary: Dictionary<string> = new Dictionary<string>();
-	private _secondary: Dictionary<string> = new Dictionary<string>();
+	private Howl() {
+		const audioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
+		if (audioService) {
+			Singletons.Load<IAudioService>(SingletonKey.Audio).Play(`${AudioArchive.ok}`, 0.2);
+		}
+	}
 }

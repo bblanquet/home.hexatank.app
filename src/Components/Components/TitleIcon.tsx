@@ -7,7 +7,7 @@ export default class TitleIcon extends Component<{ Status: GameStatus }> {
 		return (
 			<div class="title-popup-container" style="margin-bottom:30px">
 				<Switch
-					isVisible={this.props.Status === GameStatus.Victory}
+					isLeft={this.props.Status === GameStatus.Victory}
 					left={
 						<div class="fill-victory light-bounce">
 							<div class="fill-victory-star infinite-bounce" />

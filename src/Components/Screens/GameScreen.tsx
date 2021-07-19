@@ -43,7 +43,7 @@ export default class GameScreen extends HookedComponent<{}, GameHook, RuntimeSta
 				</Visible>
 				<Visible isVisible={this.Hook.State.GameStatus === GameStatus.Pending}>
 					<Switch
-						isVisible={this.Hook.State.IsSynchronising}
+						isLeft={this.Hook.State.IsSynchronising}
 						left={
 							<SynchronizingComponent
 								Timeout={this.Hook.Timeout}
@@ -54,7 +54,7 @@ export default class GameScreen extends HookedComponent<{}, GameHook, RuntimeSta
 						}
 						right={
 							<Switch
-								isVisible={this.Hook.State.IsSettingMenuVisible}
+								isLeft={this.Hook.State.IsSettingMenuVisible}
 								left={
 									<OptionPopup
 										Status={this.Hook.State.GameStatus}

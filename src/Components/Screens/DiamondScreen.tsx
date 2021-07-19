@@ -69,7 +69,7 @@ export default class DiamondScreen extends HookedComponent<{}, DiamondHook, Runt
 							/>
 						</div>
 						<Switch
-							isVisible={isNullOrUndefined(this.Hook.State.Item)}
+							isLeft={isNullOrUndefined(this.Hook.State.Item)}
 							left={
 								<div class="right-bottom-menu">
 									<ActiveRightBottomCornerButton

@@ -30,7 +30,7 @@ export default class MonitorScreen extends HookedComponent<{}, MonitoringHook, C
 							left={''}
 							right={
 								<Switch
-									isVisible={this.Hook.State.Errors.length === 0}
+									isLeft={this.Hook.State.Errors.length === 0}
 									left={
 										<tbody>
 											<tr class="d-flex">

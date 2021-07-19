@@ -69,7 +69,7 @@ export default class GuestComponent extends HookedComponent<{}, GuestHook, Guest
 							left={''}
 							right={
 								<Switch
-									isVisible={this.Hook.State.Rooms.length === 0}
+									isLeft={this.Hook.State.Rooms.length === 0}
 									left={
 										<tbody>
 											<tr class="d-flex">

@@ -99,7 +99,7 @@ export default class ProfilScreen extends HookedComponent<{}, ProfilHook, Profil
 															</SmBtn>
 															<div class="very-small-left-margin">
 																<Switch
-																	isVisible={record.Record.IsVictory}
+																	isLeft={record.Record.IsVictory}
 																	left={
 																		<span style="color:#8fe336">
 																			<Icon Value={'fas fa-plus-square'} />

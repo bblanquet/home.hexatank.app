@@ -42,7 +42,7 @@ export default class PlayerScreen extends HookedComponent<{}, PlayerHook, Player
 					}
 					content={
 						<Switch
-							isVisible={this.Hook.State.IsLog}
+							isLeft={this.Hook.State.IsLog}
 							left={<LogComponent Messages={this.Hook.GetRecord().Messages} />}
 							right={
 								<span>

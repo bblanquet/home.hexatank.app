@@ -111,7 +111,7 @@ export default class LobbyScreen extends HookedComponent<{}, LobbyHook, LobbySta
 					}
 					footer={
 						<Switch
-							isVisible={this.Hook.State.Mode === LobbyMode.chat}
+							isLeft={this.Hook.State.Mode === LobbyMode.chat}
 							left={<MessageEmitter callBack={(m: string) => this.Hook.Send(m)} />}
 							right={
 								<div class="navbar nav-inner">

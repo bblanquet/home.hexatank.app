@@ -1,4 +1,7 @@
 import { h, Component } from 'preact';
+import { AudioArchive } from '../../../../Core/Framework/AudioArchiver';
+import { IAudioService } from '../../../../Services/Audio/IAudioService';
+import { Singletons, SingletonKey } from '../../../../Singletons';
 import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { ColorKind } from './ColorKind';
 
@@ -29,12 +32,22 @@ export default class SmBtn extends Component<{ callBack: () => void; color: Colo
 				<div class={`custom-sm-btn-layout-2 ${this._secondary.Get(ColorKind[this.props.color])} fit-content`}>
 					<div
 						class={`custom-btn-layout-1 ${this._primary.Get(ColorKind[this.props.color])} fit-content`}
-						onClick={this.props.callBack}
+						onClick={() => {
+							this.Howl();
+							this.props.callBack();
+						}}
 					>
 						{this.props.children}
 					</div>
 				</div>
 			</div>
 		);
+	}
+
+	private Howl() {
+		const audioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
+		if (audioService) {
+			Singletons.Load<IAudioService>(SingletonKey.Audio).Play(`${AudioArchive.ok}`, 0.2);
+		}
 	}
 }

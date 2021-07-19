@@ -1,4 +1,7 @@
 import { h, Component } from 'preact';
+import { AudioArchive } from '../../../../Core/Framework/AudioArchiver';
+import { IAudioService } from '../../../../Services/Audio/IAudioService';
+import { Singletons, SingletonKey } from '../../../../Singletons';
 import Icon from '../../Icon/IconComponent';
 import Btn from './Btn';
 import { ColorKind } from './ColorKind';
@@ -21,6 +24,7 @@ export default class UploadBtn extends Component<{ callBack: (e: any) => void; t
 		return (
 			<Btn
 				callBack={() => {
+					this.Howl();
 					this._fileInput.click();
 				}}
 				color={ColorKind.Blue}
@@ -28,5 +32,11 @@ export default class UploadBtn extends Component<{ callBack: (e: any) => void; t
 				<Icon Value={this.props.icon} /> {this.props.title}
 			</Btn>
 		);
+	}
+	private Howl() {
+		const audioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
+		if (audioService) {
+			Singletons.Load<IAudioService>(SingletonKey.Audio).Play(`${AudioArchive.ok}`, 0.2);
+		}
 	}
 }

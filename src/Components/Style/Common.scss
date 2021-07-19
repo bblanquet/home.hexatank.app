@@ -710,29 +710,20 @@ p.bubble {
 	text-align: center;
 }
 
+#gradient {
+	opacity: 1;
+	background-color: #22272b;
+	width: 100%;
+	height: 100vh;
+}
+
 .background-pattern {
-	height: 100%;
+	z-index: 2;
+	height: 100vh;
 	background: radial-gradient(black 15%, transparent 16%) 0 0, radial-gradient(black 15%, transparent 16%) 8px 8px,
 		radial-gradient(rgba(255, 255, 255, .1) 15%, transparent 20%) 0 1px,
 		radial-gradient(rgba(255, 255, 255, .1) 15%, transparent 20%) 8px 9px;
 	background-size: 16px 16px;
-}
-.background-color {
-	height: 100%;
-	background: linear-gradient(-45deg, #4f3927, #272727, #202020, #4f3927);
-	background-size: 150% 150%;
-	animation: gradient 10s ease infinite;
-}
-@keyframes gradient {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
 }
 
 html,
@@ -779,12 +770,12 @@ body {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-	background: rgb(87, 8, 8);
+	background: rgb(168, 39, 32);
 	border-radius: 5px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-	background: rgb(102, 9, 9);
+	background: rgb(168, 39, 32);
 	border-radius: 5px;
 }

@@ -110,12 +110,8 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 		blueprint.Hqs[0].isIa = this.state.onylIa;
 		Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App).Register(
 			blueprint,
-			() => {
-				this._profilService.AddPoints(30);
-			},
-			() => {
-				this._profilService.AddPoints(3);
-			}
+			() => this._profilService.AddPoints(30),
+			() => this._profilService.AddPoints(3)
 		);
 		route('{{sub_path}}Canvas', true);
 	}

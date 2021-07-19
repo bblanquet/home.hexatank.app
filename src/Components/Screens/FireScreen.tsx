@@ -43,7 +43,7 @@ export default class FireScreen extends HookedComponent<{}, FireHook, RuntimeSta
 							/>
 						</div>
 						<Switch
-							isVisible={isNullOrUndefined(this.Hook.State.Item)}
+							isLeft={isNullOrUndefined(this.Hook.State.Item)}
 							left={
 								<div class="right-bottom-menu">
 									<ActiveRightBottomCornerButton

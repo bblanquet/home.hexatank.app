@@ -20,7 +20,7 @@ export default class ChatComponent extends Component<{ messages: Message[]; play
 							{this.props.messages.map((message, index) => {
 								return (
 									<Switch
-										isVisible={message.Name === this.props.player}
+										isLeft={message.Name === this.props.player}
 										left={
 											<div class={index % 2 === 0 ? 'half-white' : ''}>
 												<div class="text-wine right-text">

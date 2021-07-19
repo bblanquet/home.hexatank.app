@@ -28,7 +28,7 @@ export default class CellMenuComponent extends Component<
 		return (
 			<div class="circle-menu">
 				<Switch
-					isVisible={!this.props.isCovered}
+					isLeft={!this.props.isCovered}
 					left={
 						<CircularV2Component OnCancel={() => this.props.callback(new CancelMenuItem())}>
 							<LightDarkBtn

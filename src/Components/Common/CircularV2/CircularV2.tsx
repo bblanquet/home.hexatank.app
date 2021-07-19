@@ -59,7 +59,7 @@ export default class CircularV2Component extends Component<{ OnCancel: () => voi
 			>
 				<div class="ring">
 					<Switch
-						isVisible={Array.isArray(this.props.children)}
+						isLeft={Array.isArray(this.props.children)}
 						left={toChildArray(this.props.children).map((child, i) => {
 							return this.Convert(child, i);
 						})}

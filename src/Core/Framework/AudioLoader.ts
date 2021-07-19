@@ -1,7 +1,11 @@
+import { Howl } from 'howler';
+import { IAudioService } from '../../Services/Audio/IAudioService';
 import { AudioArchive } from './AudioArchiver';
 import { ILoader } from './ILoader';
 
 export class AudioLoader implements ILoader {
+	constructor(private _audioService: IAudioService) {}
+
 	public Audios(): string[] {
 		return [
 			AudioArchive.ayaya,
@@ -56,14 +60,10 @@ export class AudioLoader implements ILoader {
 	}
 
 	public Loading(path: string, onLoaded: () => void): void {
-		const audio = new Audio();
-		audio.preload = 'auto';
-		audio.src = path;
-		if (this.IsIos()) {
+		const howl = new Howl({ src: [ path ], html5: true });
+		howl.once('load', () => {
+			this._audioService.Add(path, howl);
 			onLoaded();
-		} else {
-			audio.addEventListener('canplaythrough', () => onLoaded(), false);
-		}
-		audio.load();
+		});
 	}
 }

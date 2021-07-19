@@ -15,9 +15,8 @@ export class AudioService implements IAudioService {
 
 	constructor() {
 		this._activeHowls = new Dictionary<number>();
-		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
-		this._isMute = this._profilService.GetProfil().IsMute;
 	}
+
 	PlayLoungeMusic(): void {
 		if (!this._isMute) {
 			this.Play(AudioArchive.loungeMusic, 0.1, true);
@@ -30,16 +29,8 @@ export class AudioService implements IAudioService {
 		return this._gameAudioManager;
 	}
 
-	On(): void {
-		this._isMute = false;
-		this._profilService.GetProfil().IsMute = this._isMute;
-		this._profilService.Save();
-	}
-
-	Off(): void {
-		this._isMute = true;
-		this._profilService.GetProfil().IsMute = this._isMute;
-		this._profilService.Save();
+	SetMute(value: boolean): void {
+		this._isMute = value;
 	}
 
 	IsMute(): boolean {
@@ -52,6 +43,12 @@ export class AudioService implements IAudioService {
 			this._howls.Add(content, howler);
 		}
 		return this._howls.Get(content);
+	}
+
+	Add(path: string, howl: Howl): void {
+		if (!this._howls.Exist(path)) {
+			this._howls.Add(path, howl);
+		}
 	}
 
 	Pause(content: string, id?: number): void {

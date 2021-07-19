@@ -1,9 +1,10 @@
+import { Howl } from 'howler';
 import { IGameAudioManager } from '../../Core/Framework/Audio/IGameAudioManager';
 export interface IAudioService {
+	Add(path: string, howl: Howl): void;
 	Register(gameAudioManager: IGameAudioManager): void;
 	GetGameAudioManager(): IGameAudioManager;
-	On(): void;
-	Off(): void;
+	SetMute(value: boolean): void;
 	IsMute(): boolean;
 	Play(content: string, volume: number, loop?: boolean): number | null;
 	Stop(content: string, volume: number): void;

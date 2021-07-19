@@ -30,11 +30,7 @@ export default class StatBar extends Component<any, { profil: PlayerProfil }> {
 					leftColor={ColorKind.Black}
 					rightColor={ColorKind.Yellow}
 					callBack={() => {
-						if (this._soundService.IsMute()) {
-							this._soundService.On();
-						} else {
-							this._soundService.Off();
-						}
+						this._soundService.SetMute(!this._soundService.IsMute());
 						this._soundService.PlayLoungeMusic();
 						this.setState({});
 					}}

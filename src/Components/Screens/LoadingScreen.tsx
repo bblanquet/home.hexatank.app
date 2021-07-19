@@ -14,6 +14,8 @@ import Background from '../Components/Background';
 import { IAudioService } from '../../Services/Audio/IAudioService';
 import { Singletons, SingletonKey } from '../../Singletons';
 import Switch from '../Common/Struct/Switch';
+import { AudioService } from '../../Services/Audio/AudioService';
+import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 
 export default class LoadingScreen extends Component<
 	any,
@@ -39,8 +41,9 @@ export default class LoadingScreen extends Component<
 			}
 			this.SetSvg(percentage);
 		});
-
-		const audioLoad = new AudioLoader();
+		const audioService = new AudioService();
+		Singletons.Register(SingletonKey.Audio, audioService);
+		const audioLoad = new AudioLoader(audioService);
 		const onAudioLoaded = new AssetLoader(audioLoad, 4).LoadAll(audioLoad.Audios());
 		onLoaded.On((obj: any, percentage: number) => {
 			const roundedPercentage = Math.round(percentage);
@@ -72,7 +75,9 @@ export default class LoadingScreen extends Component<
 		if (this.state.Percentage === 100) {
 			new SingletonContainer().Register();
 			SpriteProvider.SetLoaded(true);
+			const profil = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 			const soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
+			soundService.SetMute(profil.GetProfil().IsMute);
 			soundService.PlayLoungeMusic();
 			route('{{sub_path}}Home', true);
 		}

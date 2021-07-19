@@ -1,6 +1,5 @@
 import { SocketService } from './Services/Socket/SocketService';
 import { AnalyzeService } from './Services/Analyse/AnalyzeService';
-import { AudioService } from './Services/Audio/AudioService';
 import { DiamondContextService } from './Services/GameContext/DiamondContextService';
 import { PowerContextService } from './Services/GameContext/PowerContextService';
 import { FireAppService } from './Services/App/FireAppService';
@@ -34,8 +33,6 @@ export class SingletonContainer {
 		Singletons.Register(SingletonKey.Record, new RecordService());
 
 		Singletons.Register(SingletonKey.Socket, new SocketService());
-
-		Singletons.Register(SingletonKey.Audio, new AudioService());
 
 		Singletons.Register(SingletonKey.GameContext, new GameContextService());
 		Singletons.Register(SingletonKey.CamouflageGameContext, new CamouflageGameContextService());

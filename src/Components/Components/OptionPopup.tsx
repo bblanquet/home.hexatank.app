@@ -79,11 +79,7 @@ export default class OptionPopup extends Component<
 						leftColor={ColorKind.Black}
 						rightColor={ColorKind.Yellow}
 						callBack={() => {
-							if (this._soundService.IsMute()) {
-								this._soundService.On();
-							} else {
-								this._soundService.Off();
-							}
+							this._soundService.SetMute(!this._soundService.IsMute());
 							this.setState({});
 						}}
 						isActive={this._soundService.IsMute()}

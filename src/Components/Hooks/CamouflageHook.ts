@@ -131,6 +131,7 @@ export class CamouflageHook extends Hook<RuntimeState> {
 	}
 
 	private HandleSelection(obj: any, selectedItem: Item): void {
+		navigator.vibrate([ 100 ]);
 		((selectedItem as unknown) as ISelectable).OnSelectionChanged.On(this._onItemSelectionChanged);
 		this.Update((e) => (e.Item = selectedItem));
 	}

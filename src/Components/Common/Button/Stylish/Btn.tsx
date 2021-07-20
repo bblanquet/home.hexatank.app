@@ -34,6 +34,7 @@ export default class Btn extends Component<{ OnClick: () => void; Color: ColorKi
 							class={`custom-btn-layout-1 ${this._primary.Get(ColorKind[this.props.Color])} fit-content`}
 							onClick={() => {
 								this.Howl();
+								navigator.vibrate([ 100 ]);
 								this.props.OnClick();
 							}}
 						>

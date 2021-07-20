@@ -34,7 +34,7 @@ export default class SmBtn extends Component<{ OnClick: () => void; Color: Color
 						class={`custom-btn-layout-1 ${this._primary.Get(ColorKind[this.props.Color])} fit-content`}
 						onClick={() => {
 							this.Howl();
-							navigator.vibrate([ 100 ]);
+							navigator.vibrate([ 50 ]);
 							this.props.OnClick();
 						}}
 					>

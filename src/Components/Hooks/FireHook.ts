@@ -126,7 +126,7 @@ export class FireHook extends Hook<RuntimeState> {
 
 	private HandleSelection(obj: any, selectedItem: Item): void {
 		((selectedItem as unknown) as ISelectable).OnSelectionChanged.On(this._onItemSelectionChanged);
-		navigator.vibrate([ 100 ]);
+		navigator.vibrate([ 50 ]);
 		this.Update((e) => (e.Item = selectedItem));
 	}
 

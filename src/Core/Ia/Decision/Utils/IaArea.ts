@@ -7,7 +7,6 @@ import { MedicField } from '../../../Items/Cell/Field/Bonus/MedicField';
 import { BasicField } from '../../../Items/Cell/Field/BasicField';
 import { FarmField } from '../../../Items/Cell/Field/Bonus/FarmField';
 import { BlockingField } from '../../../Items/Cell/Field/BlockingField';
-import { TroopDecisionMaker } from '../Troop/TroopDecisionMaker';
 import { Diamond } from '../../../Items/Cell/Field/Diamond';
 import { DistanceHelper } from '../../../Items/Unit/MotionHelpers/DistanceHelper';
 import { HeadquarterField } from '../../../Items/Cell/Field/Hq/HeadquarterField';
@@ -26,15 +25,21 @@ import { Relationship } from '../../../Items/Identity';
 import { Env } from '../../../../Env';
 
 export class IaArea {
-	public Troops: Array<TroopDecisionMaker>;
+	public Tanks: Array<Tank>;
 	private _trucks: Truck[] = [];
-	public OnTroopsChanged: LiteEvent<number>;
+	public OnTankChanged: LiteEvent<number>;
 	public OnRequestAdded: LiteEvent<string>;
+	public HasReceivedRequest: boolean;
 
 	private _range: number = 0; //range from HQ
 	private _viewArea: IaAreaView;
 	private _letters: string = 'abcdefghijklmnopqrstuvwxyz';
 	private _name: string;
+	private _isUnconnectable: boolean = false;
+	private _outerFoes: number;
+	private _innerFoes: number;
+	private _isDestroyed: boolean = false;
+
 	constructor(
 		private _hq: Headquarter,
 		private _spot: Area,
@@ -43,12 +48,12 @@ export class IaArea {
 	) {
 		this._name =
 			this._hq.Identity.Name[this._hq.Identity.Name.length - 1] + this._letters[_globalIa.AreaDecisions.length];
-		this.OnTroopsChanged = new LiteEvent<number>();
+		this.OnTankChanged = new LiteEvent<number>();
 		this.OnRequestAdded = new LiteEvent<string>();
 		if (!Env.IsPrd()) {
 			this._viewArea = new IaAreaView(this._hq, this);
 		}
-		this.Troops = new Array<TroopDecisionMaker>();
+		this.Tanks = new Array<Tank>();
 		let range = 1;
 		let isFound = false;
 		let areas = this._areaSearch.GetAreaRange(this._hq.GetCell().GetHexCoo(), range);
@@ -69,6 +74,13 @@ export class IaArea {
 		}
 	}
 
+	IsDestroyed(): boolean {
+		return this._isDestroyed;
+	}
+	Destroy() {
+		this._isDestroyed = true;
+	}
+
 	AddTruck(truck: Truck) {
 		this._trucks.push(truck);
 	}
@@ -78,11 +90,11 @@ export class IaArea {
 		return this._trucks;
 	}
 
-	GetName(): string {
+	public GetName(): string {
 		return this._name.toUpperCase();
 	}
 
-	ContainsTroop(): boolean {
+	public ContainsTroop(): boolean {
 		return this.GetSpot().GetStatus().HasUnit(this._hq);
 	}
 
@@ -90,7 +102,7 @@ export class IaArea {
 		return this._range;
 	}
 
-	GetFoesAroundArea(): Array<Area> {
+	public GetFoesAroundArea(): Array<Area> {
 		return this.GetSpot().GetAroundAreas().filter((a) => a.GetStatus().HasFoesOf(this._hq));
 	}
 
@@ -185,8 +197,8 @@ export class IaArea {
 		return this.GetSpot().GetStatus().HasField(Diamond.name);
 	}
 
-	public GetTroops(): Array<TroopDecisionMaker> {
-		return this.Troops;
+	public GetTroops(): Array<Tank> {
+		return this.Tanks;
 	}
 
 	public GetDistanceFromHq(): number {
@@ -279,8 +291,6 @@ export class IaArea {
 		return this._spot.GetStatus().GetCells([ BlockingField.name ]);
 	}
 
-	private _isUnconnectable: boolean = false;
-
 	public SetUnconnectable(): void {
 		this._isUnconnectable = true;
 	}
@@ -343,9 +353,6 @@ export class IaArea {
 		return false;
 	}
 
-	private _outerFoes: number;
-	private _innerFoes: number;
-
 	public CalculateFoes(): void {
 		this._outerFoes = this.CalculateOuterFoeCount();
 		this._innerFoes = this.CalculateInnerFoeCount();
@@ -375,53 +382,52 @@ export class IaArea {
 		return this.GetInnerFoeCount() + this.GetOuterFoeCount();
 	}
 
-	public HasTroop(): boolean {
-		return this.Troops.length > 0;
+	public HasTank(): boolean {
+		return this.Tanks.length > 0;
 	}
 
-	public IsTroopHealing(): boolean {
-		return this.Troops.map((t) => t.Tank).some((t) => t.HasDamage()) && this.HasMedic();
+	public IsTankDamaged(): boolean {
+		return this.Tanks.some((t) => t.HasDamage()) && this.HasMedic();
 	}
 
-	public IsTroopFighting(): boolean {
-		const result = this.Troops.map((t) => t.Tank).some((t) => t.HasTarget());
-		return result;
+	public IsTankEngaged(): boolean {
+		return this.Tanks.some((t) => t.HasTarget());
 	}
 
-	public DropTroop(): Tank {
-		if (this.Troops.length > 0) {
-			let troop = this.Troops.splice(0, 1)[0];
-			troop.Cancel();
-			return troop.Tank;
+	public Drop(): Tank {
+		if (this.Tanks.length > 0) {
+			let tank = this.Tanks.splice(0, 1)[0];
+			tank.CancelOrder();
+			return tank;
 		}
 		return null;
 	}
 
-	public DropSpecificTroop(troop: TroopDecisionMaker): boolean {
-		if (this.Troops.some((t) => t === troop)) {
-			this.Troops = this.Troops.filter((t) => t !== troop);
-			troop.Cancel();
-			this.OnTroopsChanged.Invoke(this, this.Troops.length);
+	public DropSpecific(tank: Tank): boolean {
+		if (this.Tanks.some((t) => t === tank)) {
+			this.Tanks = this.Tanks.filter((t) => t !== tank);
+			tank.CancelOrder();
+			this.OnTankChanged.Invoke(this, this.Tanks.length);
 			return true;
 		}
 		return false;
 	}
 
-	public AddTroop(tank: Tank, cell: Cell): void {
-		this.Troops.push(new TroopDecisionMaker(cell, tank, this));
-		this.OnTroopsChanged.Invoke(this, this.Troops.length);
+	public Add(tank: Tank): void {
+		this.Tanks.push(tank);
+		this.OnTankChanged.Invoke(this, this.Tanks.length);
 	}
 
 	public GetFreeUnitCellCount(): number {
-		return this._spot
-			.GetFreeUnitCells()
-			.filter((c) => this.Troops.filter((t) => c === t.CurrentPatrolDestination).length === 0).length;
+		return this._spot.GetFreeUnitCells().length;
+	}
+
+	public HasFreeUnitCell(): boolean {
+		return 0 < this._spot.GetFreeUnitCells().length;
 	}
 
 	public GetRandomFreeUnitCell(): Cell {
-		const cells = this._spot
-			.GetFreeUnitCells()
-			.filter((c) => this.Troops.filter((t) => c === t.CurrentPatrolDestination).length === 0);
+		const cells = this._spot.GetFreeUnitCells();
 
 		if (cells.length > 0) {
 			let index = Math.floor(Math.random() * (cells.length - 1)) + 0;
@@ -446,9 +452,9 @@ export class IaArea {
 
 	public HasIdleTroops(): boolean {
 		return (
-			(this.GetFoesCount() == 0 && this.Troops.length > 1) ||
+			(this.GetFoesCount() == 0 && this.Tanks.length > 1) ||
 			(this.GetFoesCount() == 0 && !this.IsBorder()) ||
-			(this.GetInnerFoeCount() == 0 && this.GetOuterFoeCount() < this.Troops.length + 2)
+			(this.GetInnerFoeCount() == 0 && this.GetOuterFoeCount() < this.Tanks.length + 2)
 		);
 	}
 }

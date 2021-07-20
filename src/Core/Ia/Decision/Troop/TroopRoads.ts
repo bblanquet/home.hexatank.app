@@ -1,10 +1,10 @@
-import { TroopDecisionMaker } from './TroopDecisionMaker';
 import { TroopDestination } from '../Utils/TroopDestination';
 import { Cell } from '../../../Items/Cell/Cell';
 import { isNullOrUndefined } from '../../../../Utils/ToolBox';
+import { Tank } from '../../../Items/Unit/Tank';
 
 export class TroopRoads {
-	public Troop: TroopDecisionMaker;
+	public Tank: Tank;
 	public Destinations: { [Danger: number]: Array<TroopDestination> };
 	public CurrentDestination: TroopDestination;
 	public PotentialNextDestination: TroopDestination;

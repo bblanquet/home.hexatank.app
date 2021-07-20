@@ -34,11 +34,11 @@ export class DiamondRoadRequest implements IGeneralRequester {
 		if (road === null) {
 			return [];
 		} else {
-			const result = global.AreaDecisions.filter((a) => road.some((c) => a.Area.GetSpot().Contains(c)));
+			const result = global.AreaDecisions.filter((a) => road.some((c) => a.GetSpot().Contains(c)));
 			//excule diamond & hq areas;
 			return result
-				.filter((r) => !(r.Area.GetSpot().Contains(departure) && r.Area.GetSpot().Contains(arrival)))
-				.map((a) => a.Area);
+				.filter((r) => !(r.GetSpot().Contains(departure) && r.GetSpot().Contains(arrival)))
+				.map((a) => a);
 		}
 	}
 }

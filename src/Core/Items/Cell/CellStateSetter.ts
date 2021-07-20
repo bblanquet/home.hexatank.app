@@ -2,7 +2,6 @@ import { GameBlueprint } from '../../Framework/Blueprint/Game/GameBlueprint';
 import { GameContext } from '../../Framework/Context/GameContext';
 import { Singletons, SingletonKey } from '../../../Singletons';
 import { IGameContextService } from '../../../Services/GameContext/IGameContextService';
-import { GameSettings } from '../../Framework/GameSettings';
 import { Cell } from './Cell';
 import { CellState } from './CellState';
 
@@ -29,21 +28,11 @@ export class CellStateSetter {
 			if (isContained) {
 				cell.SetState(CellState.Visible);
 			} else {
-				if (GameSettings.ShowEnemies) {
-					if (cell.HasAroundOccupier()) {
-						cell.SetState(CellState.Visible);
-					} else {
-						if (cell.GetState() !== CellState.Hidden) {
-							cell.SetState(CellState.Mist);
-						}
-					}
+				if (cell.HasAllyNearby(gameContext.GetPlayer().Identity)) {
+					cell.SetState(CellState.Visible);
 				} else {
-					if (cell.HasAllyNearby(gameContext.GetPlayer().Identity)) {
-						cell.SetState(CellState.Visible);
-					} else {
-						if (cell.GetState() !== CellState.Hidden) {
-							cell.SetState(CellState.Mist);
-						}
+					if (cell.GetState() !== CellState.Hidden) {
+						cell.SetState(CellState.Mist);
 					}
 				}
 			}

@@ -9,7 +9,7 @@ export class GeneralSquadRequest implements IGeneralRequester {
 
 	GetResquest(global: Brain): AreaRequest {
 		if (global.Hq.GetEarnedDiamond(this._duration) > GameSettings.TankPrice * this._tankCount) {
-			if (global.GetIaAreaByCell().Values().filter((a) => a.HasTroop()).length >= this._tankCount * 2) {
+			if (global.GetIaAreaByCell().Values().filter((a) => a.HasTank()).length >= this._tankCount * 2) {
 				return new AreaRequest(RequestType.Raid, this._priority.toString(), this._tankCount, null);
 			}
 		}

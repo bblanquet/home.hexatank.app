@@ -14,7 +14,7 @@ export class GeneralUpEnergyRequester implements IGeneralRequester {
 			const reactor = reactors[0];
 			const kingdomAreas = kingdom.CellAreas
 				.Values()
-				.map((c) => c.Area)
+				.map((c) => c)
 				.filter((a) => a.HasFreeFields() && a.GetInnerFoeCount() === 0);
 			let candidates = new Dictionary<IaArea>();
 

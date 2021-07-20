@@ -8,28 +8,31 @@ import { AStarEngine } from '../../../AStarEngine';
 import { TypeTranslator } from '../../../../Items/Cell/Field/TypeTranslator';
 import { Dictionary } from '../../../../../Utils/Collections/Dictionary';
 import { Tank } from '../../../../Items/Unit/Tank';
+import { MonitoredOrder } from '../../../Order/MonitoredOrder';
 
 export class DiamondRoadCleaningHandler implements ISimpleRequestHandler {
 	constructor(private _brain: Brain) {}
 
 	Handle(request: AreaRequest): void {
-		const obs = this.GetObstacles(this._brain);
-		const troop = request.Area.GetTroops()[0];
-		if (obs.length === 1) {
-			troop.SetTarget(obs[0]);
-		} else if (0 < obs.length) {
-			const candidates = new Array<Candidate>();
-			obs.forEach((ob) => {
-				var path = this.GetRoad(troop.Tank, ob);
-				if (path) {
-					candidates.push(new Candidate(ob, path.length));
-				}
-			});
+		const tank = request.Area.GetTroops()[0];
+		if (tank) {
+			const obs = this.GetObstacles(this._brain);
+			if (obs.length === 1) {
+				tank.GiveOrder(new MonitoredOrder(obs[0], tank));
+			} else if (0 < obs.length) {
+				const candidates = new Array<Candidate>();
+				obs.forEach((ob) => {
+					var path = this.GetRoad(tank, ob);
+					if (path) {
+						candidates.push(new Candidate(ob, path.length));
+					}
+				});
 
-			var min = Math.min(...candidates.map((c) => c.Cost));
-			const candidate = candidates.find((e) => e.Cost === min);
-			if (candidate) {
-				troop.SetTarget(candidate.Cell);
+				var min = Math.min(...candidates.map((c) => c.Cost));
+				const candidate = candidates.find((e) => e.Cost === min);
+				if (candidate) {
+					tank.GiveOrder(new MonitoredOrder(candidate.Cell, tank));
+				}
 			}
 		}
 	}

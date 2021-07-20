@@ -16,6 +16,7 @@ import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { Explosion } from './Explosion';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 import { ErrorCat, ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
+import { TypeTranslator } from '../Cell/Field/TypeTranslator';
 
 export class Tank extends Vehicle {
 	public Turrel: Turrel;
@@ -69,6 +70,10 @@ export class Tank extends Vehicle {
 	public Destroy(): void {
 		super.Destroy();
 		this.Turrel.Destroy();
+	}
+
+	public IsCloseFromEnemy(): boolean {
+		return this.GetCurrentCell().GetNearby().some((c) => TypeTranslator.HasFoeVehicle(c, this.Identity));
 	}
 
 	public Update(viewX: number, viewY: number): void {

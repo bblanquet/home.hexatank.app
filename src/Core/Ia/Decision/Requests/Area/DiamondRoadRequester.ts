@@ -12,12 +12,7 @@ export class DiamondRoadRequester implements IAreaRequestMaker {
 	constructor(private _priority: number, private _brain: Brain) {}
 
 	GetRequest(area: IaArea): AreaRequest {
-		if (
-			area.HasDiamond() &&
-			area.HasTroop() &&
-			!area.IsTroopFighting() &&
-			0 < this.GetObstacles(this._brain).length
-		) {
+		if (area.HasDiamond() && area.HasTank() && !area.IsTankEngaged() && 0 < this.GetObstacles(this._brain).length) {
 			return new AreaRequest(RequestType.DiamondRoadCleaning, this._priority.toString(), 1, area);
 		} else {
 			return new AreaRequest(RequestType.None, '0', 1, area);

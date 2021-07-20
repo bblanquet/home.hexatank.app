@@ -50,9 +50,9 @@ export class OnlineBlueprintMaker {
 	}
 
 	private ConvertBrain(ia: string): BrainKind {
-		if (ia === 'Bob') return BrainKind.Bob;
+		if (ia === 'Strong') return BrainKind.Strong;
 		if (ia === 'Simple') return BrainKind.Simple;
 		if (ia === 'Dummy') return BrainKind.Dummy;
-		return BrainKind.Bob;
+		return BrainKind.Strong;
 	}
 }

@@ -11,7 +11,7 @@ export class ShieldBorderRequester implements IAreaRequestMaker {
 			area.GetInnerFoeCount() === 0 &&
 			0 < area.GetFreeCoveredCells().length &&
 			0 < area.GetOuterFoeCount() &&
-			area.HasTroop() &&
+			area.HasTank() &&
 			area.HasFreeFields()
 		) {
 			return new AreaRequest(RequestType.BorderShield, this._priority.toString(), 1, area);

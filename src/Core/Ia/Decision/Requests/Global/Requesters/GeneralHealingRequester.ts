@@ -7,7 +7,7 @@ export class GeneralHealingRequester implements IGeneralRequester {
 	constructor(private _priority: number) {}
 
 	GetResquest(kingdom: Brain): AreaRequest {
-		const kingdomAreas = kingdom.AreaDecisions.map((a) => a.Area);
+		const kingdomAreas = kingdom.AreaDecisions.map((a) => a);
 		const candidates = kingdomAreas.filter(
 			(a) => !a.IsImportant() && a.HasFreeFields() && a.HasRoadField() && a.GetInnerFoeCount() === 0
 		);

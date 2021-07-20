@@ -29,12 +29,10 @@ export class TankMediumRequestHandler implements ISimpleRequestHandler {
 
 	private GetHelpFromIdleTanks(request: AreaRequest) {
 		while (this._kingdom.IdleTanks.HasTank() && request.RequestCount > 0) {
-			const cell = request.Area.GetRandomFreeUnitCell();
-
-			if (cell) {
+			if (request.Area.HasFreeUnitCell()) {
 				const tank = this._kingdom.IdleTanks.Pop();
 				ErrorHandler.ThrowNull(tank);
-				request.Area.AddTroop(tank, cell);
+				request.Area.Add(tank);
 				request.RequestCount -= 1;
 			} else {
 				return;
@@ -55,12 +53,11 @@ export class TankMediumRequestHandler implements ISimpleRequestHandler {
 
 	public BuyTank(area: IaArea): boolean {
 		let isCreated = false;
-		const cell = area.GetRandomFreeUnitCell();
-		if (!isNullOrUndefined(cell) && this._hq.Buy(GameSettings.TankPrice * this._hq.GetTankCount())) {
+		if (area.HasFreeUnitCell() && this._hq.Buy(GameSettings.TankPrice * this._hq.GetTankCount())) {
 			var lambda: any = (obj: any, vehicle: Vehicle) => {
 				if (vehicle instanceof Tank) {
 					const tank = vehicle as Tank;
-					area.AddTroop(tank, cell);
+					area.Add(tank);
 					isCreated = true;
 				}
 			};

@@ -5,6 +5,7 @@ export enum RequestType {
 	Factory = 'Factory',
 	Road = 'Road',
 	Tank = 'Tank',
+	Patrol = 'Patrol',
 	Truck = 'Truck',
 	BorderShield = 'BorderShield',
 	Defense = 'Defense',

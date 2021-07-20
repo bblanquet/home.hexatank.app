@@ -3,14 +3,16 @@ import { AreaRequest } from '../../Utils/AreaRequest';
 import { RequestType } from '../../Utils/RequestType';
 import { TargetMonitoredOrder } from '../../../Order/TargetMonitoredOrder';
 
-export class ClearRequestHandler implements ISimpleRequestHandler {
+export class PatrolHandler implements ISimpleRequestHandler {
 	Handle(request: AreaRequest): void {
-		if (request.Area.HasTank() && request.Area.HasNature() && !request.Area.IsTankEngaged()) {
-			const tank = request.Area.GetTroops()[0];
-			tank.GiveOrder(new TargetMonitoredOrder(request.Area.GetNatures()[0], tank));
+		const tank = request.Area.Tanks.find((t) => !t.HasOrder());
+		if (tank && request.Area.GetFreeUnitCellCount()) {
+			const cell = request.Area.GetRandomFreeUnitCell();
+			tank.GiveOrder(new TargetMonitoredOrder(cell, tank));
 		}
 	}
+
 	Type(): RequestType {
-		return RequestType.Clear;
+		return RequestType.Patrol;
 	}
 }

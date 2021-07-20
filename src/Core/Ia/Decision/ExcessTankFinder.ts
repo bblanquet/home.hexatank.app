@@ -14,9 +14,9 @@ export class ExcessTankFinder {
 		if (
 			area.GetFoesCount() == 0 &&
 			!area.IsBorder() &&
-			!(area.IsTroopFighting() || area.IsTroopHealing() || area.HasNature())
+			!(area.IsTankEngaged() || area.IsTankDamaged() || area.HasNature())
 		) {
-			return area.Troops.length;
+			return area.Tanks.length;
 		} else {
 			return 0;
 		}
@@ -33,6 +33,6 @@ export class ExcessTankFinder {
 
 	public Pop(): Tank {
 		this.SetExcessAreas();
-		return this._excessAreas[0].DropTroop();
+		return this._excessAreas[0].Drop();
 	}
 }

@@ -17,11 +17,11 @@ export class TankHighRequestHandler implements ISimpleRequestHandler {
 		var troopAreas = this.GetReinforcement(request);
 
 		troopAreas.forEach((area) => {
-			while (area.HasTroop()) {
+			while (area.HasTank()) {
 				if (request.RequestCount === 0) {
 					return;
 				}
-				if (!this.Assign(request, () => area.DropTroop())) {
+				if (!this.Assign(request, () => area.Drop())) {
 					return;
 				}
 			}
@@ -43,11 +43,10 @@ export class TankHighRequestHandler implements ISimpleRequestHandler {
 	}
 
 	private Assign(request: AreaRequest, drop: () => Tank): boolean {
-		const freeCell = request.Area.GetRandomFreeUnitCell();
-		if (freeCell) {
+		if (request.Area.HasFreeUnitCell()) {
 			const tank = drop();
 			ErrorHandler.ThrowNull(tank);
-			request.Area.AddTroop(tank, freeCell);
+			request.Area.Add(tank);
 			request.RequestCount -= 1;
 			return true;
 		} else {
@@ -68,8 +67,8 @@ export class TankHighRequestHandler implements ISimpleRequestHandler {
 				const aroundArea = this._kingdom.CellAreas.Get(coordinate);
 				if (!aroundArea.HasReceivedRequest) {
 					aroundArea.HasReceivedRequest = true;
-					if (aroundArea.Area.HasTroop()) {
-						troopAreas.push(aroundArea.Area);
+					if (aroundArea.HasTank()) {
+						troopAreas.push(aroundArea);
 					}
 				}
 			}

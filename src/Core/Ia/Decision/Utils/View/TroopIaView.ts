@@ -8,7 +8,7 @@ export class TroopIaView {
 
 	constructor(private _item: Item, private _iaArea: IaArea) {
 		this._aboveText = new AboveItemText(this._item);
-		this._iaArea.OnTroopsChanged.On(this.TroopsChanged.bind(this));
+		this._iaArea.OnTankChanged.On(this.TroopsChanged.bind(this));
 	}
 
 	private TroopsChanged(source: any, data: number): void {

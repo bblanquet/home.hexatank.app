@@ -412,7 +412,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 	}
 
 	public IsCovered(cell: Cell): boolean {
-		return this._reactors.filter((c) => c.IsCovered(cell)).length > 0;
+		return this._reactors.filter((reactor) => !reactor.IsLost && reactor.IsCovered(cell)).length > 0;
 	}
 
 	public AddReactor(reactor: ReactorField): void {

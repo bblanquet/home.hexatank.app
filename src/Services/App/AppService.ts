@@ -82,7 +82,7 @@ export class AppService implements IAppService<GameBlueprint> {
 		this._keyService.DefineKey(this);
 
 		GameSettings.Init();
-		GameSettings.SetNormalSpeed();
+		GameSettings.SetFastSpeed();
 		const gameState = new GameState();
 		this._blueprint = blueprint;
 

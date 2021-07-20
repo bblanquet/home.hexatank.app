@@ -10,8 +10,8 @@ export class TankMediumRequester implements IAreaRequestMaker {
 	public GetRequest(area: IaArea): AreaRequest {
 		const foes = area.GetFoesCount();
 
-		if (area.Troops.length <= foes) {
-			let requestTroops = area.Troops.length - area.GetFoesCount();
+		if (area.Tanks.length <= foes) {
+			let requestTroops = area.Tanks.length - area.GetFoesCount();
 
 			if (0 <= requestTroops) {
 				const freeCells = area.GetFreeUnitCellCount();
@@ -20,7 +20,7 @@ export class TankMediumRequester implements IAreaRequestMaker {
 					requestTroops = freeCells;
 				}
 
-				if (area.Troops.length < area.GetOuterFoeCount()) {
+				if (area.Tanks.length < area.GetOuterFoeCount()) {
 					return new AreaRequest(RequestType.Tank, this._priority.toString(), requestTroops, area);
 				}
 			}

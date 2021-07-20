@@ -9,14 +9,14 @@ export class TankRequester implements IAreaRequestMaker {
 
 	public GetRequest(area: IaArea): AreaRequest {
 		const foes = area.GetFoesCount();
-		if (area.Troops.length <= foes) {
-			let requestTroops = area.Troops.length - area.GetFoesCount();
+		if (area.Tanks.length <= foes) {
+			let requestTroops = area.Tanks.length - area.GetFoesCount();
 			if (0 <= requestTroops) {
 				if (0 < area.GetInnerFoeCount()) {
 					return new AreaRequest(RequestType.Tank, this._priority.toString(), requestTroops + 1, area);
 				}
 			}
-		} else if (area.Troops.length === 0 && area.HasNature()) {
+		} else if (area.Tanks.length === 0 && area.HasNature()) {
 			return new AreaRequest(RequestType.Tank, this._priority.toString(), 1, area);
 		}
 		return AreaRequestMaker.NoRequest(area);

@@ -41,6 +41,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	private _isLocked: boolean;
 	private _range: number = 0;
 
+	public IsLost: boolean = false;
 	public Links: Array<HqNetworkLink> = [];
 	public Charges: Dictionary<Charge> = new Dictionary<Charge>();
 
@@ -227,6 +228,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		}
 
 		if (vehicule.GetRelation(this.Identity) !== Relationship.Ally) {
+			this.IsLost = true;
 			this.SetSelected(false);
 			this.Reserve.Clear();
 			this.OnLost.Invoke(this, this);

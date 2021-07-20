@@ -22,7 +22,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 	public Energy: number = 0;
 	public Identity: Identity;
 	public OnEnergyChanged: LiteEvent<number> = new LiteEvent<number>();
-	private HandleReactorLost: any = this.Handle.bind(this);
+	private _handleReactorLost: any = this.Handle.bind(this);
 
 	constructor(cell: Cell, private _bonus: string[], protected hq: IHeadquarter, override: boolean = true) {
 		super(cell, hq.Identity);
@@ -42,7 +42,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 			this.InitPosition(cell.GetBoundingBox());
 		}
 		this._animator = new BouncingScaleAnimator(this);
-		this.hq.OnReactorLost.On(this.HandleReactorLost);
+		this.hq.OnReactorLost.On(this._handleReactorLost);
 		this.Include(hq, cell);
 	}
 
@@ -86,6 +86,11 @@ export abstract class BonusField extends Field implements IActiveContainer {
 	}
 
 	public Update(viewX: number, viewY: number): void {
+		if (!this.IsUpdatable) {
+			//got destroyed by a lost reactor
+			return;
+		}
+
 		if (this.GetCell().GetField() !== this) {
 			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidComputation])));
 		}

@@ -65,7 +65,8 @@ export class Squad implements IDoable {
 		if (0 < candidates.length) {
 			const closestCell = CellHelper.GetClosest(candidates, tank.GetCurrentCell());
 			const area = this._brain.GetIaAreaByCell().Get(closestCell.Coo());
-			area.AddTroop(tank, area.GetRandomFreeUnitCell());
+			area.Add(tank);
+			tank.GiveOrder(new TargetMonitoredOrder(area.GetRandomFreeUnitCell(), tank));
 		}
 	}
 

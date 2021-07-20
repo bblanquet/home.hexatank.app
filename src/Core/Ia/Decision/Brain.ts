@@ -6,7 +6,6 @@ import { IExpansionMaker } from './ExpansionMaker/IExpansionMaker';
 import { IBrain } from './IBrain';
 import { Groups } from '../../../Utils/Collections/Groups';
 import { Dictionary } from '../../../Utils/Collections/Dictionary';
-import { IAreaDecisionMaker } from './Area/IAreaDecisionMaker';
 import { ExcessTankFinder } from './ExcessTankFinder';
 import { AreaRequest } from './Utils/AreaRequest';
 import { IaArea } from './Utils/IaArea';
@@ -24,11 +23,11 @@ import { TimeTimer } from '../../../Utils/Timer/TimeTimer';
 import { ITimer } from '../../../Utils/Timer/ITimer';
 
 export class Brain implements IBrain {
-	public AreaDecisions: IAreaDecisionMaker[];
+	public AreaDecisions: IaArea[];
 	public Squads: Squad[];
 	public Trucks: Array<Truck> = new Array<Truck>();
 	public Tanks: Array<Tank> = new Array<Tank>();
-	public CellAreas: Dictionary<IAreaDecisionMaker>;
+	public CellAreas: Dictionary<IaArea>;
 	public IdleTanks: ExcessTankFinder;
 
 	public HasDiamondRoad: boolean = false;
@@ -41,9 +40,9 @@ export class Brain implements IBrain {
 	public AllAreas: Area[];
 
 	constructor(public Hq: Headquarter, public Areas: Area[]) {
-		this.AreaDecisions = new Array<IAreaDecisionMaker>();
+		this.AreaDecisions = new Array<IaArea>();
 		this.Squads = new Array<Squad>();
-		this.CellAreas = new Dictionary<IAreaDecisionMaker>();
+		this.CellAreas = new Dictionary<IaArea>();
 		this.IdleTanks = new ExcessTankFinder();
 
 		this.AllAreas = new Array<Area>();
@@ -84,7 +83,7 @@ export class Brain implements IBrain {
 	}
 
 	public IsConquested(area: Area): boolean {
-		return this.AreaDecisions.some((e) => e.Area.GetSpot() === area);
+		return this.AreaDecisions.some((e) => e.GetSpot() === area);
 	}
 
 	public SetDiamond(diamond: Diamond): void {
@@ -93,9 +92,9 @@ export class Brain implements IBrain {
 	}
 
 	public GetDecisionArea(cell: Cell): IaArea {
-		const areas = this.AreaDecisions.filter((c) => c.Area.HasCell(cell));
+		const areas = this.AreaDecisions.filter((c) => c.HasCell(cell));
 		if (0 < areas.length) {
-			return areas[0].Area;
+			return areas[0];
 		}
 		return null;
 	}
@@ -129,7 +128,7 @@ export class Brain implements IBrain {
 	}
 
 	public GetIaAreaByCell(): Dictionary<IaArea> {
-		return Dictionary.To<IaArea>((t) => t.GetCentralCell().Coo(), this.AreaDecisions.map((m) => m.Area));
+		return Dictionary.To<IaArea>((t) => t.GetCentralCell().Coo(), this.AreaDecisions.map((m) => m));
 	}
 
 	public Update(): void {
@@ -143,10 +142,9 @@ export class Brain implements IBrain {
 			const areas = new Array<IaArea>();
 			this.AreaDecisions = this.AreaDecisions.filter((t) => !t.IsDestroyed());
 			this.AreaDecisions.forEach((areaDecision) => {
-				areaDecision.Area.CalculateFoes();
+				areaDecision.CalculateFoes();
 				areaDecision.HasReceivedRequest = false;
-				areaDecision.Update();
-				areas.push(areaDecision.Area);
+				areas.push(areaDecision);
 			});
 			this.IdleTanks.CalculateExcess(areas);
 			const requests = this.GetRequests(areas);

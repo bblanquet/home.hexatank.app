@@ -1,17 +1,17 @@
-import { PowerUpRequester } from './../Decision/Requests/Area/PowerUpRequester';
-import { ShieldFieldBorderRequestHandler } from './../Decision/Handlers/Handler/Field/ShieldFieldBorderRequestHandler';
-import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
-import { DiamondRoadRequester } from './../Decision/Requests/Area/DiamondRoadRequester';
-import { DiamondRoadCleaningHandler } from './../Decision/Handlers/Handler/DiamondRoadCleaningHandler';
+import { PowerUpRequester } from '../Decision/Requests/Area/PowerUpRequester';
+import { ShieldFieldBorderRequestHandler } from '../Decision/Handlers/Handler/Field/ShieldFieldBorderRequestHandler';
+import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
+import { DiamondRoadRequester } from '../Decision/Requests/Area/DiamondRoadRequester';
+import { DiamondRoadCleaningHandler } from '../Decision/Handlers/Handler/DiamondRoadCleaningHandler';
 import { SimpleFarmFieldRequester } from '../Decision/Requests/Area/Field/SimpleFarmFieldRequester';
 import { ReactorShieldHandler } from '../Decision/Handlers/Handler/Field/ReactorShieldHandler';
 import { ReactorShieldRequester } from '../Decision/Requests/Area/Field/ReactorShieldRequester';
-import { FoeReactorRequester } from './../Decision/Requests/Area/FoeReactorRequester';
-import { EnemyReactorHandler } from './../Decision/Handlers/Handler/EnemyReactorHandler';
-import { SpeedUpRequester } from './../Decision/Requests/Area/SpeedUpRequester';
-import { SpeedUpHandler } from './../Decision/Handlers/Handler/SpeedUpHandler';
-import { PowerUpRequestHandler } from './../Decision/Handlers/Handler/PowerUpRequestHandler';
-import { DiamondExpansionMaker } from './../Decision/ExpansionMaker/DiamondExpansionMaker';
+import { FoeReactorRequester } from '../Decision/Requests/Area/FoeReactorRequester';
+import { EnemyReactorHandler } from '../Decision/Handlers/Handler/EnemyReactorHandler';
+import { SpeedUpRequester } from '../Decision/Requests/Area/SpeedUpRequester';
+import { SpeedUpHandler } from '../Decision/Handlers/Handler/SpeedUpHandler';
+import { PowerUpRequestHandler } from '../Decision/Handlers/Handler/PowerUpRequestHandler';
+import { DiamondExpansionMaker } from '../Decision/ExpansionMaker/DiamondExpansionMaker';
 import { IBrainProvider } from './IBrain';
 import { GameContext } from '../../Framework/Context/GameContext';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
@@ -31,7 +31,9 @@ import { EnergyRequestHandler } from '../Decision/Handlers/Handler/Field/EnergyR
 import { FarmFieldRequestHandler } from '../Decision/Handlers/Handler/Field/FarmFieldRequestHandler';
 import { HealingRequestHandler } from '../Decision/Handlers/Handler/Field/HealingRequestHandler';
 import { HealUnitRequestHandler } from '../Decision/Handlers/Handler/HealUnitRequestHandler';
+import { DefenseHandler } from '../Decision/Handlers/Handler/DefenseHandler';
 import { ReactorRequestHandler } from '../Decision/Handlers/Handler/ReactorRequestHandler';
+import { PatrolRequest } from '../Decision/Requests/Area/PatrolRequest';
 import { ShieldRequestHandler } from '../Decision/Handlers/Handler/Field/ShieldRequestHandler';
 import { SquadRequestHandler } from '../Decision/Handlers/Handler/SquadRequestHandler';
 import { TankHighRequestHandler } from '../Decision/Handlers/Handler/TankHighRequestHandler';
@@ -39,22 +41,25 @@ import { TankMediumRequestHandler } from '../Decision/Handlers/Handler/TankMediu
 import { TruckRequestHandler } from '../Decision/Handlers/Handler/TruckRequestHandler';
 import { ISimpleRequestHandler } from '../Decision/Handlers/ISimpleRequestHandler';
 import { ClearAreaRequester } from '../Decision/Requests/Area/ClearAreaRequester';
+import { PatrolHandler } from '../Decision/Handlers/Handler/PatrolHandler';
 import { HealUnitRequester } from '../Decision/Requests/Area/HealUnitRequester';
 import { ReactorFieldRequester } from '../Decision/Requests/Area/Field/ReactorFieldRequester';
 import { ShieldFieldAreaRequester } from '../Decision/Requests/Area/Field/ShieldFieldAreaRequester';
 import { ShieldBorderRequester } from '../Decision/Requests/Area/Field/ShieldBorderRequester';
 import { TankRequester } from '../Decision/Requests/Area/TankHighRequester';
 import { TruckRequest } from '../Decision/Requests/Area/TruckRequester';
+import { DefenseRequester } from '../Decision/Requests/Area/DefenseRequester';
 import { TankLowRequester } from '../Decision/Requests/Area/TankLowRequester';
 import { TankMediumRequester } from '../Decision/Requests/Area/TankMediumRequester';
 import { IBrain } from '../Decision/IBrain';
 
-export class BobBrain implements IBrainProvider {
+export class StrongBrain implements IBrainProvider {
 	GetBrain(hq: Headquarter, context: GameContext, areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
 		const brain = new Brain(hq, areas);
 
 		const handlers = new Groups<ISimpleRequestHandler>();
 		handlers.Add('10', new EnemyReactorHandler());
+		handlers.Add('10', new DefenseHandler());
 		handlers.Add('10', new PowerUpRequestHandler());
 		handlers.Add('10', new ClearRequestHandler());
 		handlers.Add('10', new ReactorRequestHandler(hq, context));
@@ -78,11 +83,13 @@ export class BobBrain implements IBrainProvider {
 		handlers.Add('2', new HealUnitRequestHandler(brain));
 		handlers.Add('2', new HealingRequestHandler(hq));
 
+		handlers.Add('1', new PatrolHandler());
 		handlers.Add('1', new TankMediumRequestHandler(brain, hq));
 
 		brain.Setup(
 			new AreaRequestMaker([
 				new PowerUpRequester(brain, 10),
+				new DefenseRequester(10),
 				new ReactorShieldRequester(9),
 				new DiamondRoadRequester(7, brain),
 				new ShieldBorderRequester(5),
@@ -96,7 +103,8 @@ export class BobBrain implements IBrainProvider {
 				new SimpleFarmFieldRequester(5),
 				new TankRequester(10),
 				new TankMediumRequester(5),
-				new TankLowRequester(1)
+				new TankLowRequester(1),
+				new PatrolRequest(1)
 			]),
 			new RequestHandler(handlers),
 			new DiamondExpansionMaker(hq, brain, areaSearch),

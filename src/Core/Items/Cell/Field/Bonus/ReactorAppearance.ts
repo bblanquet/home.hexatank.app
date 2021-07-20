@@ -13,7 +13,6 @@ import { ReactorField } from './ReactorField';
 import { isNullOrUndefined } from '../../../../../Utils/ToolBox';
 import { ZKind } from '../../../ZKind';
 import { BasicItem } from '../../../BasicItem';
-import { FadeInOutAnimation } from '../../../Animator/FadeInOutAnimation';
 import { InfiniteFadeAnimation } from '../../../Animator/InfiniteFadeAnimation';
 
 export class ReactorAppearance extends Item {
@@ -72,7 +71,7 @@ export class ReactorAppearance extends Item {
 
 		this._energy = new BasicItem(this.Reactor.GetBoundingBox(), SvgArchive.redElecton, ZKind.Sky);
 		this._energy.SetAnimator(new InfiniteFadeAnimation(this._energy, SvgArchive.redElecton, 0, 1, 0.05));
-		this._energy.SetVisible(() => !this.Reactor.HasEnergy());
+		this._energy.SetVisible(() => this.Reactor.GetCell().IsVisible() && !this.Reactor.HasEnergy());
 		this._energy.SetAlive(() => this.Reactor.IsUpdatable);
 	}
 

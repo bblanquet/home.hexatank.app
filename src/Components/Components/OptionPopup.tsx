@@ -1,6 +1,5 @@
 import { h, Component } from 'preact';
 import { StatsKind } from '../../Utils/Stats/StatsKind';
-import { GameSettings } from '../../Core/Framework/GameSettings';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import Btn from '../Common/Button/Stylish/Btn';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
@@ -23,13 +22,6 @@ export default class OptionPopup extends Component<
 		});
 	}
 
-	componentDidMount() {}
-
-	private Cheat(): void {
-		GameSettings.ShowEnemies = !GameSettings.ShowEnemies;
-		this.setState({});
-	}
-
 	render() {
 		return (
 			<div class="sizeContainer absolute-center-middle-menu menu-container fit-content">
@@ -49,22 +41,7 @@ export default class OptionPopup extends Component<
 					>
 						<Icon Value="fas fa-arrow-alt-circle-right" /> Resume
 					</Btn>
-					<ActiveBtn
-						left={
-							<span>
-								<Icon Value="fas fa-eye" /> Cheat
-							</span>
-						}
-						right={
-							<span>
-								<Icon Value="fas fa-eye-slash" /> Cheat
-							</span>
-						}
-						leftColor={ColorKind.Black}
-						rightColor={ColorKind.Red}
-						isActive={GameSettings.ShowEnemies}
-						callBack={() => this.Cheat()}
-					/>
+
 					<ActiveBtn
 						left={
 							<span>

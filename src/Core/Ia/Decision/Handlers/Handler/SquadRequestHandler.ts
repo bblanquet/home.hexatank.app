@@ -16,10 +16,10 @@ export class SquadRequestHandler implements ISimpleRequestHandler {
 			const hasTarget = squad.SetMainTarget();
 
 			if (hasTarget) {
-				const areas = this._global.GetIaAreaByCell().Values().filter((a) => a.HasTroop());
+				const areas = this._global.GetIaAreaByCell().Values().filter((a) => a.HasTank());
 				const total = 2;
 				areas.some((area) => {
-					squad.AddTank(area.DropTroop());
+					squad.AddTank(area.Drop());
 					if (total <= squad.GetTankCount()) {
 						return true;
 					}

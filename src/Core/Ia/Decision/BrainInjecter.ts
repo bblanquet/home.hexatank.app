@@ -1,4 +1,4 @@
-import { BobBrain } from './../Brains/BobBrain';
+import { StrongBrain } from '../Brains/StrongBrain';
 import { SimpleBrain } from './../Brains/SimpleBrain';
 import { DummyBrain } from './../Brains/DummyBrain';
 import { Dictionary } from '../../../Utils/Collections/Dictionary';
@@ -26,9 +26,15 @@ export class BrainInjecter {
 				const areas = this.GetAreas(areaSearch, hq, cells);
 				const diamondCell = cells.Get(this.GetDiamondHex(blueprint.Hqs, hq.GetCell().GetHexCoo()));
 
-				if (detail.IA === BrainKind.Bob) {
+				if (detail.IA === BrainKind.Strong) {
 					hq.Inject(
-						new BobBrain().GetBrain(hq, gameContext, areas, areaSearch, diamondCell.GetField() as Diamond)
+						new StrongBrain().GetBrain(
+							hq,
+							gameContext,
+							areas,
+							areaSearch,
+							diamondCell.GetField() as Diamond
+						)
 					);
 				} else if (detail.IA === BrainKind.Dummy) {
 					hq.Inject(

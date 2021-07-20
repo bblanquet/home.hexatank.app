@@ -1,5 +1,5 @@
 export enum BrainKind {
 	Dummy,
-	Bob,
+	Strong,
 	Simple
 }

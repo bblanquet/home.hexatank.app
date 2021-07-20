@@ -80,8 +80,8 @@ export default class BlueprintForm extends Component<
 									IsFullIA: e
 								});
 							}}
-							Default={'Bob'}
-							Values={[ 'Bob', 'Simple', 'Dummy' ]}
+							Default={'Strong'}
+							Values={[ 'Strong', 'Simple', 'Dummy' ]}
 						/>
 					</th>
 				</tr>

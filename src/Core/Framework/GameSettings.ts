@@ -25,7 +25,6 @@ export class GameSettings {
 	}
 
 	public static Size: number = 50;
-	public static ShowEnemies: boolean = false;
 
 	public static PocketMoney: number = 20;
 	public static MapSize: number = 0;
@@ -33,7 +32,6 @@ export class GameSettings {
 	public static Init(): void {
 		this.Size = 50;
 		this.MissileTranslationSpeed = 5;
-		this.ShowEnemies = false;
 		this.Fire = 10;
 		this.TankPrice = 8;
 		this.TruckPrice = 4;

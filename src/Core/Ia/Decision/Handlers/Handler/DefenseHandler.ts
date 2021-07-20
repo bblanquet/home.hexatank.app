@@ -1,64 +1,35 @@
-import { MonitoredOrder } from '../../Order/MonitoredOrder';
-import { IAreaDecisionMaker } from './IAreaDecisionMaker';
-import { AStarHelper } from '../../AStarHelper';
-import { FireField } from '../../../Items/Cell/Field/Bonus/FireField';
-import { IaArea } from '../Utils/IaArea';
-import { Dictionary } from '../../../../Utils/Collections/Dictionary';
-import { TroopRoads } from '../Troop/TroopRoads';
-import { Cell } from '../../../Items/Cell/Cell';
-import { Area } from '../Utils/Area';
-import { Tank } from '../../../Items/Unit/Tank';
-import { Groups } from '../../../../Utils/Collections/Groups';
-import { TroopDestination } from '../Utils/TroopDestination';
-import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
-import { GameSettings } from '../../../Framework/GameSettings';
-import { BasicField } from '../../../Items/Cell/Field/BasicField';
-import { AStarEngine } from '../../AStarEngine';
-import { isNullOrUndefined } from '../../../../Utils/ToolBox';
-import { TypeTranslator } from '../../../Items/Cell/Field/TypeTranslator';
-import { LogKind } from '../../../../Utils/Logger/LogKind';
-import { StaticLogger } from '../../../../Utils/Logger/StaticLogger';
+import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
+import { AreaRequest } from '../../Utils/AreaRequest';
+import { RequestType } from '../../Utils/RequestType';
+import { Dictionary } from '../../../../../Utils/Collections/Dictionary';
+import { Groups } from '../../../../../Utils/Collections/Groups';
+import { LogKind } from '../../../../../Utils/Logger/LogKind';
+import { StaticLogger } from '../../../../../Utils/Logger/StaticLogger';
+import { Cell } from '../../../../Items/Cell/Cell';
+import { TypeTranslator } from '../../../../Items/Cell/Field/TypeTranslator';
+import { Tank } from '../../../../Items/Unit/Tank';
+import { AStarEngine } from '../../../AStarEngine';
+import { AStarHelper } from '../../../AStarHelper';
+import { MonitoredOrder } from '../../../Order/MonitoredOrder';
+import { Area } from '../../Utils/Area';
+import { IaArea } from '../../Utils/IaArea';
+import { TroopRoads } from '../../Troop/TroopRoads';
+import { TroopDestination } from '../../Utils/TroopDestination';
+import { isNullOrUndefined } from '../../../../../Utils/ToolBox';
 
-export class AreaDecisionMaker implements IAreaDecisionMaker {
-	public HasReceivedRequest: boolean;
-	private _isDestroyed: boolean = false;
-
-	constructor(private _hq: Headquarter, public Area: IaArea) {}
-
-	public Update(): void {
-		this.Area.Troops = this.Area.Troops.filter((t) => t.Tank.IsAlive());
-
-		if (0 < this.Area.GetFoesCount()) {
-			this.Dispatch();
-		} else {
-			this.Area.Troops.forEach((troop) => {
-				troop.Update();
-			});
-		}
-	}
-
-	IsDestroyed(): boolean {
-		return this._isDestroyed;
-	}
-
-	Destroy(): void {
-		this._isDestroyed = true;
-	}
-
-	private Dispatch(): void {
-		if (0 < this.Area.GetTroops().length) {
-			this.LogTroopCount();
-			const ally = this.Area.GetTroops()[0].Tank;
+export class DefenseHandler implements ISimpleRequestHandler {
+	Handle(request: AreaRequest): void {
+		const area = request.Area;
+		if (0 < area.GetTroops().length) {
+			const ally = area.GetTroops()[0];
 
 			//#1 get in & out cells
-			const areas = this.GetAround(this.Area.GetSpot());
+			const areas = this.GetAround(area.GetSpot());
 
 			//#2 get enemies cells
 			const foeCells = this.GetFoeVehicleCells(areas, ally);
-			StaticLogger.Log(LogKind.info, `[DETECTED FOE] ${foeCells.length}`);
 
-			this.FireCell();
-			this.SendTroops(foeCells, ally);
+			this.SendTroops(area, foeCells, ally);
 		}
 	}
 
@@ -72,19 +43,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 		return as;
 	}
 
-	private FireCell(): void {
-		this.Area.GetTroops().filter((t) => t.IsCloseFromEnemy()).forEach((t) => {
-			let cell = t.Tank.GetCurrentCell();
-			if (GameSettings.FieldPrice < this._hq.GetAmount()) {
-				if (cell.GetField() instanceof BasicField && this._hq.IsCovered(cell)) {
-					cell.SetField(new FireField(cell, this._hq));
-					this._hq.Buy(GameSettings.FieldPrice);
-				}
-			}
-		});
-	}
-
-	private SendTroops(foeCells: Cell[], ally: Tank) {
+	private SendTroops(area: IaArea, foeCells: Cell[], ally: Tank) {
 		//#3 get enemy contact cells
 		const aroundFoeCells = this.GetAroundFoeCells(foeCells);
 
@@ -94,7 +53,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 		const cellsByDanger = this.ClassifyCellDanger(aroundFoeCells, ally);
 
 		//#5 find path to reach cells and classify them
-		const troopRoads = this.GetTroopRoads(cellsByDanger);
+		const troopRoads = this.GetTroopRoads(area, cellsByDanger);
 
 		//#6 select path
 		const bestTroopRoads = this.FindBestRoads(troopRoads);
@@ -104,8 +63,8 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 			bestTroopRoads.Keys().forEach((coordinate) => {
 				bestTroopRoads.Get(coordinate).forEach((troopSituation) => {
 					this.LogOrder(troopSituation);
-					troopSituation.Troop.Tank.GiveOrder(
-						new MonitoredOrder(troopSituation.CurrentDestination.Destination, troopSituation.Troop.Tank)
+					troopSituation.Tank.GiveOrder(
+						new MonitoredOrder(troopSituation.CurrentDestination.Destination, troopSituation.Tank)
 					);
 				});
 			});
@@ -202,12 +161,12 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 		return troopsByDest;
 	}
 
-	private GetTroopRoads(cellsByDanger: { [id: number]: Dictionary<Cell> }): Array<TroopRoads> {
+	private GetTroopRoads(area: IaArea, cellsByDanger: { [id: number]: Dictionary<Cell> }): Array<TroopRoads> {
 		let allTroopRoads = new Array<TroopRoads>();
 
-		this.Area.GetTroops().filter((t) => !t.IsCloseFromEnemy()).forEach((troop) => {
+		area.GetTroops().filter((t) => !t.IsCloseFromEnemy()).forEach((troop) => {
 			const troopRoads = new TroopRoads();
-			troopRoads.Troop = troop;
+			troopRoads.Tank = troop;
 			allTroopRoads.push(troopRoads);
 
 			for (let danger in cellsByDanger) {
@@ -215,7 +174,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 				cells.Keys().forEach((coordinate) => {
 					let destination = new TroopDestination(
 						cells.Get(coordinate),
-						this.GetRoad(troop.Tank.GetCurrentCell(), cells.Get(coordinate))
+						this.GetRoad(troop.GetCurrentCell(), cells.Get(coordinate))
 					);
 
 					if (!troopRoads.Destinations.hasOwnProperty(danger)) {
@@ -276,7 +235,7 @@ export class AreaDecisionMaker implements IAreaDecisionMaker {
 		);
 	}
 
-	private LogTroopCount() {
-		StaticLogger.Log(LogKind.info, `[ALERT] troops count ${this.Area.GetTroops().length}`);
+	Type(): RequestType {
+		return RequestType.Defense;
 	}
 }

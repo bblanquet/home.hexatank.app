@@ -83,9 +83,11 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 	}
 
 	private ConvertBrain(ia: string): BrainKind {
+		if (ia === 'Weak') return BrainKind.Weak;
+		if (ia === 'Normal') return BrainKind.Normal;
 		if (ia === 'Strong') return BrainKind.Strong;
-		if (ia === 'Simple') return BrainKind.Simple;
 		if (ia === 'Dummy') return BrainKind.Dummy;
+		if (ia === 'Kamikaze') return BrainKind.Kamikaze;
 		return BrainKind.Strong;
 	}
 

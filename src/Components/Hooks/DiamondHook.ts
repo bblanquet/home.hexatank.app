@@ -21,6 +21,7 @@ import { IKeyService } from '../../Services/Key/IKeyService';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
+import { AudioLoader } from '../../Core/Framework/AudioLoader';
 
 export class DiamondHook extends Hook<RuntimeState> {
 	private _gameContextService: IGameContextService<DiamondBlueprint, DiamondContext>;
@@ -84,7 +85,7 @@ export class DiamondHook extends Hook<RuntimeState> {
 		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.Interaction);
 		this._gameContext = this._gameContextService.Publish();
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
-		this._soundService.Pause(AudioArchive.loungeMusic);
+		this._soundService.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));
 		const playerHq = this._gameContext.GetPlayerHq();
 		playerHq.OnTruckChanged.On(this.HandleTruckChanged.bind(this));
 		playerHq.OnTankRequestChanged.On(this.HandleTankChanged.bind(this));

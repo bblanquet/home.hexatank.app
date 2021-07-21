@@ -1,6 +1,6 @@
-import { DiamondExpansionMaker } from './../Decision/ExpansionMaker/DiamondExpansionMaker';
-import { RequestHandler } from './../Decision/Handlers/RequestHandler';
-import { EnemyReactorHandler } from './../Decision/Handlers/Handler/EnemyReactorHandler';
+import { DiamondExpansionMaker } from '../Decision/ExpansionMaker/DiamondExpansionMaker';
+import { RequestHandler } from '../Decision/Handlers/RequestHandler';
+import { EnemyReactorHandler } from '../Decision/Handlers/Handler/EnemyReactorHandler';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { GameContext } from '../../Framework/Context/GameContext';
@@ -16,7 +16,7 @@ import { IBrainProvider } from './IBrain';
 import { GeneralRaidRequester } from '../Decision/Requests/Global/Requesters/GeneralRaidRequester';
 import { SimpleTankHander } from '../Decision/Handlers/Handler/SimpleTankHander';
 
-export class SimpleBrain implements IBrainProvider {
+export class KamikazeBrain implements IBrainProvider {
 	GetBrain(hq: Headquarter, context: GameContext, areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
 		const brain = new Brain(hq, areas);
 

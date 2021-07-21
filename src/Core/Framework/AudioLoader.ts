@@ -7,7 +7,7 @@ export class AudioLoader implements ILoader {
 	constructor(private _audioService: IAudioService) {}
 
 	public Audios(): string[] {
-		return [
+		const audios = [
 			AudioArchive.ayaya,
 			AudioArchive.copyThat,
 			AudioArchive.engage,
@@ -47,16 +47,18 @@ export class AudioLoader implements ILoader {
 			AudioArchive.victory,
 			AudioArchive.defeat
 		];
+
+		return audios.map((audio) => {
+			return AudioLoader.GetAudio(audio);
+		});
 	}
 
-	private IsIos(): boolean {
-		return (
-			[ 'iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod' ].includes(
-				navigator.platform
-			) ||
-			// iPad on iOS 13 detection
-			(navigator.userAgent.includes('Mac') && 'ontouchend' in document)
-		);
+	public static GetAudio(audio: string) {
+		let path = audio;
+		path = path.slice(1); //remove dot
+		path = `{{asset_path}}${path}`;
+		path = path.replace('//', '/');
+		return path;
 	}
 
 	public Loading(path: string, onLoaded: () => void): void {

@@ -15,6 +15,7 @@ import { Relationship } from '../../Items/Identity';
 import { IHqGameContext } from '../Context/IHqGameContext';
 import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
 import { Dictionary } from '../../../Utils/Collections/Dictionary';
+import { AudioLoader } from '../AudioLoader';
 
 export class GameAudioManager implements IGameAudioManager {
 	private _soundService: IAudioService;
@@ -45,11 +46,11 @@ export class GameAudioManager implements IGameAudioManager {
 
 	private GetMusic(): string {
 		if (this._mapKind === MapKind.Forest) {
-			return AudioArchive.forestMusic;
+			return AudioLoader.GetAudio(AudioArchive.forestMusic);
 		} else if (this._mapKind === MapKind.Ice) {
-			return AudioArchive.iceMusic;
+			return AudioLoader.GetAudio(AudioArchive.iceMusic);
 		} else if (this._mapKind === MapKind.Sand) {
-			return AudioArchive.sandMusic;
+			return AudioLoader.GetAudio(AudioArchive.sandMusic);
 		}
 	}
 
@@ -78,7 +79,7 @@ export class GameAudioManager implements IGameAudioManager {
 	}
 
 	private HandleMissingCash(src: any, r: ReactorField): void {
-		this.Play(AudioArchive.noMoney, 0.06);
+		this.Play(AudioLoader.GetAudio(AudioArchive.noMoney), 0.06);
 	}
 
 	private HandleReactor(src: any, r: ReactorField): void {
@@ -86,7 +87,7 @@ export class GameAudioManager implements IGameAudioManager {
 	}
 
 	private HandleOverlock(s: any, kind: string): void {
-		this.Play(AudioArchive.powerUp, 0.05);
+		this.Play(AudioLoader.GetAudio(AudioArchive.powerUp), 0.05);
 	}
 
 	private HandleVehicle(src: IHeadquarter, vehicule: Vehicle): void {
@@ -98,7 +99,7 @@ export class GameAudioManager implements IGameAudioManager {
 		vehicule.OnOrdering.On(this.HandleOrder.bind(this));
 
 		if (vehicule.GetCurrentCell().IsVisible()) {
-			this.Play(AudioArchive.unitPopup, 0.2);
+			this.Play(AudioLoader.GetAudio(AudioArchive.unitPopup), 0.2);
 		}
 	}
 	HandleOrder(src: Vehicle, order: IOrder): void {
@@ -106,15 +107,15 @@ export class GameAudioManager implements IGameAudioManager {
 		if (playerHq) {
 			if (src.GetRelation(playerHq.Identity) === Relationship.Ally) {
 				const voices = [
-					AudioArchive.ayaya,
-					AudioArchive.copyThat,
-					AudioArchive.engage,
-					AudioArchive.fireAtWills,
-					AudioArchive.sirYesSir,
-					AudioArchive.allClear,
-					AudioArchive.moveOut,
-					AudioArchive.understood,
-					AudioArchive.transmissionReceived
+					AudioLoader.GetAudio(AudioArchive.ayaya),
+					AudioLoader.GetAudio(AudioArchive.copyThat),
+					AudioLoader.GetAudio(AudioArchive.engage),
+					AudioLoader.GetAudio(AudioArchive.fireAtWills),
+					AudioLoader.GetAudio(AudioArchive.sirYesSir),
+					AudioLoader.GetAudio(AudioArchive.allClear),
+					AudioLoader.GetAudio(AudioArchive.moveOut),
+					AudioLoader.GetAudio(AudioArchive.understood),
+					AudioLoader.GetAudio(AudioArchive.transmissionReceived)
 				];
 				if (src.GetCurrentCell().IsVisible()) {
 					var index = Math.round(Math.random() * (voices.length - 1));
@@ -127,24 +128,24 @@ export class GameAudioManager implements IGameAudioManager {
 	private HandleMissile(src: any, missible: Missile): void {
 		const v = src as Turrel;
 		if (v.Base.GetCurrentCell().IsVisible()) {
-			this.Play(AudioArchive.shot3, 0.5);
+			this.Play(AudioLoader.GetAudio(AudioArchive.shot3), 0.5);
 		}
 		missible.OnDestroyed.On(this.HandleDestroyedMissile.bind(this));
 	}
 
 	private HandleDestroyedMissile(src: any, missible: Missile): void {
 		if (missible.Target.GetCurrentCell().IsVisible()) {
-			this.Play(AudioArchive.explosion, 1);
+			this.Play(AudioLoader.GetAudio(AudioArchive.explosion), 1);
 		}
 	}
 
 	private HandleFieldChanged(src: any, cell: Cell): void {
 		if (cell.IsVisible()) {
-			this.Play(AudioArchive.construction, 0.1);
+			this.Play(AudioLoader.GetAudio(AudioArchive.construction), 0.1);
 		}
 	}
 
 	private HandleSelection(src: any, vehicule: Item): void {
-		this.Play(AudioArchive.selection, 0.5);
+		this.Play(AudioLoader.GetAudio(AudioArchive.selection), 0.5);
 	}
 }

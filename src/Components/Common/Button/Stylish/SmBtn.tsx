@@ -1,5 +1,6 @@
 import { h, Component } from 'preact';
 import { AudioArchive } from '../../../../Core/Framework/AudioArchiver';
+import { AudioLoader } from '../../../../Core/Framework/AudioLoader';
 import { IAudioService } from '../../../../Services/Audio/IAudioService';
 import { Singletons, SingletonKey } from '../../../../Singletons';
 import { Dictionary } from '../../../../Utils/Collections/Dictionary';
@@ -48,7 +49,7 @@ export default class SmBtn extends Component<{ OnClick: () => void; Color: Color
 	private Howl() {
 		const audioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		if (audioService) {
-			Singletons.Load<IAudioService>(SingletonKey.Audio).Play(`${AudioArchive.ok}`, 0.2);
+			Singletons.Load<IAudioService>(SingletonKey.Audio).Play(AudioLoader.GetAudio(AudioArchive.ok), 0.2);
 		}
 	}
 }

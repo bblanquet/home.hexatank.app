@@ -20,6 +20,7 @@ import { FireBlueprint } from '../../Core/Framework/Blueprint/Fire/FireBlueprint
 import { Cell } from '../../Core/Items/Cell/Cell';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
+import { AudioLoader } from '../../Core/Framework/AudioLoader';
 
 export class FireHook extends Hook<RuntimeState> {
 	private _gameContextService: IGameContextService<FireBlueprint, FireContext>;
@@ -67,7 +68,7 @@ export class FireHook extends Hook<RuntimeState> {
 		this._interactionService = Singletons.Load<IInteractionService<FireContext>>(SingletonKey.Interaction);
 		this._gameContext = this._gameContextService.Publish();
 		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
-		this._soundService.Pause(AudioArchive.loungeMusic);
+		this._soundService.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		this._profilService.OnPointsAdded.On(this.HandlePoints.bind(this));
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));

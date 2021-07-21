@@ -22,14 +22,10 @@ export class AssetExplorer {
 		}
 	}
 
-	private GetAssetPath() {
-		return `{{asset_path}}`;
-	}
-
 	private GetPath(asset: string): string {
 		let path = asset;
 		path = path.slice(1); //remove dot
-		path = this.GetAssetPath() + path;
+		path = `{{asset_path}}${path}`;
 		path = path.replace('//', '/');
 		return path;
 	}

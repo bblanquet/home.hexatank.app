@@ -1,5 +1,7 @@
 import { StrongBrain } from '../Brains/StrongBrain';
-import { SimpleBrain } from './../Brains/SimpleBrain';
+import { NormalBrain } from '../Brains/NormalBrain';
+import { WeakBrain } from '../Brains/WeakBrain';
+import { KamikazeBrain } from '../Brains/KamikazeBrain';
 import { DummyBrain } from './../Brains/DummyBrain';
 import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { HexAxial } from './../../../Utils/Geometry/HexAxial';
@@ -36,13 +38,27 @@ export class BrainInjecter {
 							diamondCell.GetField() as Diamond
 						)
 					);
+				} else if (detail.IA === BrainKind.Normal) {
+					hq.Inject(
+						new NormalBrain().GetBrain(
+							hq,
+							gameContext,
+							areas,
+							areaSearch,
+							diamondCell.GetField() as Diamond
+						)
+					);
+				} else if (detail.IA === BrainKind.Weak) {
+					hq.Inject(
+						new WeakBrain().GetBrain(hq, gameContext, areas, areaSearch, diamondCell.GetField() as Diamond)
+					);
 				} else if (detail.IA === BrainKind.Dummy) {
 					hq.Inject(
 						new DummyBrain().GetBrain(hq, gameContext, areas, areaSearch, diamondCell.GetField() as Diamond)
 					);
-				} else if (detail.IA === BrainKind.Simple) {
+				} else if (detail.IA === BrainKind.Kamikaze) {
 					hq.Inject(
-						new SimpleBrain().GetBrain(
+						new KamikazeBrain().GetBrain(
 							hq,
 							gameContext,
 							areas,

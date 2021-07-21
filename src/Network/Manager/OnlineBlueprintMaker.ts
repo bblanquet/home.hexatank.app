@@ -13,10 +13,7 @@ export class OnlineBlueprintMaker {
 	public GetBlueprint(): GameBlueprint {
 		const players = new Array<PlayerBlueprint>();
 		let index = 0;
-		this._blueprintSetup.IAs.forEach((ia) => {
-			players.push(new PlayerBlueprint(`IA${index}`, HqAppearance.Colors[index], false, this.ConvertBrain(ia)));
-			index++;
-		});
+
 		this._onlinePlayerManager.Players.Values().forEach((pl) => {
 			players.push(
 				new PlayerBlueprint(
@@ -25,6 +22,15 @@ export class OnlineBlueprintMaker {
 					pl.Name === this._onlinePlayerManager.Player.Name
 				)
 			);
+			index++;
+		});
+
+		this._blueprintSetup.IAs.forEach((ia) => {
+			if (index < 3) {
+				players.push(
+					new PlayerBlueprint(`IA${index}`, HqAppearance.Colors[index], false, this.ConvertBrain(ia))
+				);
+			}
 			index++;
 		});
 
@@ -50,9 +56,11 @@ export class OnlineBlueprintMaker {
 	}
 
 	private ConvertBrain(ia: string): BrainKind {
+		if (ia === 'Weak') return BrainKind.Weak;
+		if (ia === 'Normal') return BrainKind.Normal;
 		if (ia === 'Strong') return BrainKind.Strong;
-		if (ia === 'Simple') return BrainKind.Simple;
 		if (ia === 'Dummy') return BrainKind.Dummy;
+		if (ia === 'Kamikaze') return BrainKind.Kamikaze;
 		return BrainKind.Strong;
 	}
 }

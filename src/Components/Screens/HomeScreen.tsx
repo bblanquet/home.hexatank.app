@@ -1,14 +1,13 @@
 import { h, Component } from 'preact';
 import { route } from 'preact-router';
-import MdPanel from '../Components/Panel/MdPanel';
 import Btn from '../Common/Button/Stylish/Btn';
 import DropDownBtn from '../Common/Button/Stylish/DropDownBtn';
 import { ButtonOption } from '../Common/Button/ButtonOption';
 import Icon from '../Common/Icon/IconComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
-import Redirect from '../Components/Redirect';
 import Visible from '../Common/Struct/Visible';
 import { Env } from '../../Env';
+import Panel from '../Components/Panel/Panel';
 
 export default class HomeScreen extends Component<any, any> {
 	constructor() {
@@ -40,8 +39,8 @@ export default class HomeScreen extends Component<any, any> {
 	}
 	render() {
 		return (
-			<Redirect>
-				<MdPanel>
+			<Panel
+				content={
 					<div class="container-center">
 						<Btn Color={ColorKind.Red} OnClick={() => this.ToCampaign()}>
 							<Icon Value="fas fa-dungeon" /> Campaign
@@ -66,8 +65,13 @@ export default class HomeScreen extends Component<any, any> {
 							</Btn>
 						</Visible>
 					</div>
-				</MdPanel>
-			</Redirect>
+				}
+				footer={
+					<div class="navbar nav-inner" style="font-weight:bold;">
+						v 0.8.0
+					</div>
+				}
+			/>
 		);
 	}
 }

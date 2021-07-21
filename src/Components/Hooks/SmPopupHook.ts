@@ -9,6 +9,7 @@ import { IAudioService } from '../../Services/Audio/IAudioService';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 import { SmState } from '../Model/SmState';
+import { AudioLoader } from '../../Core/Framework/AudioLoader';
 
 export class SmPopupHook extends Hook<SmState> {
 	private _audioService: IAudioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
@@ -20,11 +21,11 @@ export class SmPopupHook extends Hook<SmState> {
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 		this._appService = Singletons.Load<IAppService<IBlueprint>>(this._keyService.GetAppKey());
 		if (d[0].Status === GameStatus.Victory) {
-			this._audioService.Play(AudioArchive.victory, 0.1, false);
+			this._audioService.Play(AudioLoader.GetAudio(AudioArchive.victory), 0.1, false);
 		}
 
 		if (d[0].Status === GameStatus.Defeat) {
-			this._audioService.Play(AudioArchive.defeat, 0.1, false);
+			this._audioService.Play(AudioLoader.GetAudio(AudioArchive.defeat), 0.1, false);
 		}
 	}
 

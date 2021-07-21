@@ -3,6 +3,7 @@ import { AudioArchive } from '../../../../Core/Framework/AudioArchiver';
 import { Singletons, SingletonKey } from '../../../../Singletons';
 import { IAudioService } from '../../../../Services/Audio/IAudioService';
 import Icon from '../../Icon/IconComponent';
+import { AudioLoader } from '../../../../Core/Framework/AudioLoader';
 
 export class LockBtn extends Component<any, any> {
 	private _lockDiv: any;
@@ -19,7 +20,10 @@ export class LockBtn extends Component<any, any> {
 					<div
 						class={`custom-btn-layout-1 yellow-primary max-fit-content`}
 						onClick={() => {
-							Singletons.Load<IAudioService>(SingletonKey.Audio).Play(`${AudioArchive.nok}`, 0.1);
+							Singletons.Load<IAudioService>(SingletonKey.Audio).Play(
+								AudioLoader.GetAudio(AudioArchive.nok),
+								0.1
+							);
 							this._lockDiv.classList.remove('bounce');
 							setTimeout(() => {
 								this._lockDiv.classList.add('bounce');

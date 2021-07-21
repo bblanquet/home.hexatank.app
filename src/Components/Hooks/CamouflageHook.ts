@@ -18,6 +18,7 @@ import { IAppService } from '../../Services/App/IAppService';
 import { IKeyService } from '../../Services/Key/IKeyService';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
+import { AudioLoader } from '../../Core/Framework/AudioLoader';
 
 export class CamouflageHook extends Hook<RuntimeState> {
 	private _gameContextService: IGameContextService<CamouflageBlueprint, CamouflageContext>;
@@ -48,7 +49,7 @@ export class CamouflageHook extends Hook<RuntimeState> {
 		);
 		this._gameContext = this._gameContextService.Publish();
 
-		this._soundService.Pause(AudioArchive.loungeMusic);
+		this._soundService.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));

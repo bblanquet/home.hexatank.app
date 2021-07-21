@@ -1,5 +1,6 @@
 import { StateUpdater } from 'preact/hooks';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';
+import { AudioLoader } from '../../Core/Framework/AudioLoader';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { GameContext } from '../../Core/Framework/Context/GameContext';
 import { GameSettings } from '../../Core/Framework/GameSettings';
@@ -78,7 +79,7 @@ export class GameHook extends Hook<RuntimeState> {
 		this.Timeout.On(() => {
 			this.Stop(true);
 		});
-		this._soundService.Pause(AudioArchive.loungeMusic);
+		this._soundService.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));
 		const playerHq = this._gameContext.GetPlayerHq();
 		playerHq.OnTruckChanged.On(this.HandleTruckChanged.bind(this));
 		playerHq.OnTankRequestChanged.On(this.HandleTankChanged.bind(this));

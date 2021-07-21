@@ -71,17 +71,19 @@ export default class BlueprintForm extends Component<
 						<Picker
 							Label={'IA'}
 							OnClick={(e: string) => {
-								this.setState({
-									IAs: this.state.IAs.concat([ e ])
-								});
+								if (this.state.IAs.length < 3) {
+									this.setState({
+										IAs: this.state.IAs.concat([ e ])
+									});
+								}
 							}}
 							OnChange={(e: boolean) => {
 								this.setState({
 									IsFullIA: e
 								});
 							}}
-							Default={'Strong'}
-							Values={[ 'Strong', 'Simple', 'Dummy' ]}
+							Default={'Weak'}
+							Values={[ 'Weak', 'Normal', 'Strong', 'Dummy', 'Kamikaze' ]}
 						/>
 					</th>
 				</tr>

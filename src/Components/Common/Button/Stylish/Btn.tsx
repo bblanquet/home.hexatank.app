@@ -4,6 +4,7 @@ import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { Singletons, SingletonKey } from '../../../../Singletons';
 import { IAudioService } from '../../../../Services/Audio/IAudioService';
 import { ColorKind } from './ColorKind';
+import { AudioLoader } from '../../../../Core/Framework/AudioLoader';
 
 export default class Btn extends Component<{ OnClick: () => void; Color: ColorKind }, any> {
 	private _primary: Dictionary<string> = new Dictionary<string>();
@@ -49,7 +50,7 @@ export default class Btn extends Component<{ OnClick: () => void; Color: ColorKi
 	private Howl() {
 		const audioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		if (audioService) {
-			Singletons.Load<IAudioService>(SingletonKey.Audio).Play(`${AudioArchive.ok}`, 0.2);
+			Singletons.Load<IAudioService>(SingletonKey.Audio).Play(AudioLoader.GetAudio(AudioArchive.ok), 0.2);
 		}
 	}
 }

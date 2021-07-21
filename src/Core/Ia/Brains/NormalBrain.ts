@@ -53,7 +53,7 @@ import { TankLowRequester } from '../Decision/Requests/Area/TankLowRequester';
 import { TankMediumRequester } from '../Decision/Requests/Area/TankMediumRequester';
 import { IBrain } from '../Decision/IBrain';
 
-export class StrongBrain implements IBrainProvider {
+export class NormalBrain implements IBrainProvider {
 	GetBrain(hq: Headquarter, context: GameContext, areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
 		const brain = new Brain(hq, areas);
 
@@ -66,8 +66,6 @@ export class StrongBrain implements IBrainProvider {
 		handlers.Add('10', new TankHighRequestHandler(brain, new TankMediumRequestHandler(brain, hq)));
 		handlers.Add('10', new TruckRequestHandler(hq, brain));
 
-		handlers.Add('9', new ReactorShieldHandler(hq));
-
 		handlers.Add('8', new EnergyRequestHandler(hq));
 
 		handlers.Add('7', new DiamondRoadCleaningHandler(brain));
@@ -76,8 +74,6 @@ export class StrongBrain implements IBrainProvider {
 
 		handlers.Add('5', new FarmFieldRequestHandler(hq));
 		handlers.Add('5', new TankMediumRequestHandler(brain, hq));
-		handlers.Add('5', new ShieldFieldBorderRequestHandler(hq));
-		handlers.Add('5', new ShieldRequestHandler(hq));
 
 		handlers.Add('2', new HealUnitRequestHandler(brain));
 		handlers.Add('2', new HealingRequestHandler(hq));
@@ -89,13 +85,11 @@ export class StrongBrain implements IBrainProvider {
 			new AreaRequestMaker([
 				new PowerUpRequester(brain, 10),
 				new DefenseRequester(10),
-				new ReactorShieldRequester(9),
 				new DiamondRoadRequester(7, brain),
 				new ShieldBorderRequester(5),
 				new SpeedUpRequester(brain, 7),
 				new ReactorFieldRequester(10),
 				new FoeReactorRequester(10),
-				new ShieldFieldAreaRequester(5),
 				new HealUnitRequester(brain, 2),
 				new ClearAreaRequester(10),
 				new TruckRequest(10, 2),

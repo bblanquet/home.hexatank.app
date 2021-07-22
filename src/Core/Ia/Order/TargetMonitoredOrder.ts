@@ -8,7 +8,6 @@ import { TargetCellOrder } from './Composite/TargetCellOrder';
 import { ParentOrder } from './ParentOrder';
 import { IdleOrder } from './IdleOrder';
 import { TypeTranslator } from '../../Items/Cell/Field/TypeTranslator';
-import { AliveItem } from '../../Items/AliveItem';
 import { Relationship } from '../../Items/Identity';
 
 export class TargetMonitoredOrder extends ParentOrder {
@@ -36,11 +35,6 @@ export class TargetMonitoredOrder extends ParentOrder {
 	}
 
 	private UpdateOrder() {
-		const enemy = this.GetTarget();
-		if (enemy) {
-			this.Tank.SetMainTarget(enemy);
-		}
-
 		const nextRoad = new TargetRoadProvider(this.Tank, this.Destination).GetTargetRoad();
 		if (this.HasNext(nextRoad)) {
 			if (this.IsNextBetter(nextRoad)) {
@@ -76,23 +70,6 @@ export class TargetMonitoredOrder extends ParentOrder {
 		return path.every((p) => TypeTranslator.IsAccessible(p, this.Tank));
 	}
 
-	private GetTarget(): AliveItem {
-		if (this.Destination.HasOccupier()) {
-			const t = (this.Destination.GetOccupier() as any) as AliveItem;
-			if (t.GetRelation(this.Tank.Identity) !== Relationship.Ally) {
-				return t;
-			}
-		}
-
-		if (this.Destination.GetField() instanceof AliveItem) {
-			const field = (this.Destination.GetField() as any) as AliveItem;
-			if (field.GetRelation(this.Tank.Identity) !== Relationship.Ally) {
-				return field;
-			}
-		}
-		return null;
-	}
-
 	private GetChildOrder(targetCell: TargetRoad) {
 		if (targetCell.Road.length === 0) {
 			return new IdleOrder();
@@ -124,7 +101,9 @@ export class TargetMonitoredOrder extends ParentOrder {
 			this.FetchPath();
 		}
 
-		if (this.CurrentOrder.GetState() === OrderState.Passed || this.CurrentOrder.GetState() === OrderState.Cancel) {
+		if (this.CurrentOrder.GetState() === OrderState.Passed) {
+			this.FetchPath();
+		} else if (this.CurrentOrder.GetState() === OrderState.Cancel) {
 			this.ClearChild();
 		} else {
 			this.CurrentOrder.Update();

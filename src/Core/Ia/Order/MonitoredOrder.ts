@@ -78,7 +78,9 @@ export class MonitoredOrder extends ParentOrder {
 			this.FetchPath();
 		}
 
-		if (this.CurrentOrder.GetState() === OrderState.Passed || this.CurrentOrder.GetState() === OrderState.Cancel) {
+		if (this.CurrentOrder.GetState() === OrderState.Passed) {
+			this.FetchPath();
+		} else if (this.CurrentOrder.GetState() === OrderState.Cancel) {
 			this.ClearChild();
 		} else {
 			this.CurrentOrder.Update();

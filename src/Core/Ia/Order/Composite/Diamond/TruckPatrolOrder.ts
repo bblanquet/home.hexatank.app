@@ -55,7 +55,11 @@ export class TruckPatrolOrder extends ParentOrder {
 			this._isIdle = false;
 
 			if (nextOrder) {
+				if (this.CurrentOrder) {
+					this.CurrentOrder.OnPathFound.Clear();
+				}
 				this.SetCurrentOrder(nextOrder);
+				this.CurrentOrder.OnPathFound.On(this.HandlePathFound.bind(this));
 			} else {
 				this._isIdle = true;
 				this._idleTimer.Reset();

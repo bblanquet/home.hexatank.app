@@ -178,6 +178,11 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	}
 
 	public SetField<T extends IField>(nextField: T): T {
+		if (!((nextField as any) as Item).IsUpdatable) {
+			//self Destroyed field is not covered by reactor
+			return;
+		}
+
 		if (!nextField) {
 			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
 		}

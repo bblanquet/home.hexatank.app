@@ -7,7 +7,7 @@ export default class CtmIconInput extends Component<
 > {
 	render() {
 		return (
-			<div class="input-group mb-3" style="max-width:300px">
+			<div class="input-group mb-3" style="max-width:300px;margin-left:10px;margin-right:10px;">
 				<div class="input-group-prepend">
 					<span class="input-group-text black-primary custom-btn-layout-1" id="inputGroup-sizing-default">
 						<Icon Value={this.props.icon} />

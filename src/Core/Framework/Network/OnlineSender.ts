@@ -21,6 +21,7 @@ export class OnlineSender {
 	private _handleField: any = this.HandleChangedField.bind(this);
 	private _handleVehicle: any = this.HandleVehicleCreated.bind(this);
 	private _handleDestroyedField: any = this.HandleDestroyedField.bind(this);
+	private _handleTargetChanged: any = this.HandleTargetChanged.bind(this);
 
 	private _handleDestroyedVehicle: any = this.HandleVehicleDestroyed.bind(this);
 	private _handlePathChanged: any = this.HandlePathChanged.bind(this);
@@ -81,7 +82,7 @@ export class OnlineSender {
 		if (this.IsEmiting(vehicle.Identity)) {
 			if (vehicle instanceof Tank) {
 				const tank = vehicle as Tank;
-				tank.OnTargetChanged.On(this.HandleTargetChanged.bind(this));
+				tank.OnTargetChanged.On(this._handleTargetChanged);
 			}
 			vehicle.OnCamouflageChanged.On(this._handleCamouglage);
 			vehicle.OnPathFound.On(this._handlePathChanged);

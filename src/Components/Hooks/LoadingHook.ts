@@ -67,7 +67,7 @@ export class LoadingHook extends Hook<LoadingState> {
 			e.Percentage = percentage;
 			e.Audio = audio;
 		});
-		this.Check(percentage);
+		this.Check(audio === 100 && this.State.Svg === 100);
 	}
 
 	public SetSvg(svg: number): void {
@@ -76,11 +76,11 @@ export class LoadingHook extends Hook<LoadingState> {
 			e.Percentage = percentage;
 			e.Svg = svg;
 		});
-		this.Check(percentage);
+		this.Check(svg === 100 && this.State.Audio === 100);
 	}
 
-	Check(p: number) {
-		if (p === 100) {
+	Check(isLoaded: boolean): void {
+		if (isLoaded) {
 			new SingletonContainer().Register();
 			SpriteProvider.SetLoaded(true);
 			const profil = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);

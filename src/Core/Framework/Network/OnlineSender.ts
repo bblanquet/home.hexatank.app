@@ -22,6 +22,11 @@ export class OnlineSender {
 	private _handleVehicle: any = this.HandleVehicleCreated.bind(this);
 	private _handleDestroyedField: any = this.HandleDestroyedField.bind(this);
 
+	private _handleDestroyedVehicle: any = this.HandleVehicleDestroyed.bind(this);
+	private _handlePathChanged: any = this.HandlePathChanged.bind(this);
+	private _handleCamouglage: any = this.HandleCamouflageChanged.bind(this);
+	private _handleCancel: any = this.HandleCancel.bind(this);
+
 	public constructor(private _socket: ISocketWrapper, private _context: GameContext) {
 		this._context.GetCells().forEach((cell) => {
 			cell.OnFieldChanged.On(this._handleField);
@@ -77,15 +82,15 @@ export class OnlineSender {
 			if (vehicle instanceof Tank) {
 				const tank = vehicle as Tank;
 				tank.OnTargetChanged.On(this.HandleTargetChanged.bind(this));
-				tank.OnCamouflageChanged.On(this.HandleCamouflageChanged.bind(this));
 			}
-			vehicle.OnDestroyed.On(this.HandleDestroyedVehicle.bind(this));
-			vehicle.OnPathFound.On(this.HandlePathChanged.bind(this));
-			vehicle.OnOrdered.On(this.HandlePathChanged.bind(this));
-			vehicle.OnDestroyed.On(this.HandleVehicleDestroyed.bind(this));
+			vehicle.OnCamouflageChanged.On(this._handleCamouglage);
+			vehicle.OnPathFound.On(this._handlePathChanged);
+			vehicle.OnOrdered.On(this._handlePathChanged);
+			vehicle.OnOrderCanceled.On(this._handleCancel);
 			const message = this.Wrap<PacketContent<any>>(PacketKind.VehicleCreated, this.GetVContent(vehicle));
 			this._socket.Emit(message);
 		}
+		vehicle.OnDestroyed.On(this._handleDestroyedVehicle);
 	}
 
 	private HandleVehicleDestroyed(source: any, v: Vehicle) {
@@ -117,8 +122,15 @@ export class OnlineSender {
 		this._socket.Emit(message);
 	}
 
-	private HandleDestroyedVehicle(src: any, v: Vehicle): void {
-		const message = this.Wrap<PacketContent<any>>(PacketKind.VehicleDestroyed, this.GetVContent(v));
+	private HandleCancel(src: Vehicle, vh: Vehicle): void {
+		const content = new PacketContent<NextCellContent>();
+		content.Extra = new NextCellContent();
+		content.Id = src.Identity.Name;
+		content.VId = src.Id;
+		content.CId = src.GetCurrentCell().Coo();
+		content.Extra.NextCId = src.HasNextCell() ? src.GetNextCell().Coo() : '';
+		content.Extra.Path = [];
+		const message = this.Wrap<PacketContent<NextCellContent>>(PacketKind.PathChanged, content);
 		this._socket.Emit(message);
 	}
 

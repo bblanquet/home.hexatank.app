@@ -1,8 +1,8 @@
+import { AreaRequest } from '../../../Utils/AreaRequest';
+import { IaArea } from '../../../Utils/IaArea';
+import { RequestType } from '../../../Utils/RequestType';
 import { AreaRequestMaker } from '../../AreaRequestMaker';
 import { IAreaRequestMaker } from '../../IAreaRequestMaker';
-import { IaArea } from '../../../../Utils/IaArea';
-import { AreaRequest } from '../../../../Utils/AreaRequest';
-import { RequestType } from '../../../../Utils/RequestType';
 
 export class FarmFieldRequester implements IAreaRequestMaker {
 	constructor(private _priority: number) {}

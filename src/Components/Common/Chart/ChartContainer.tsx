@@ -24,9 +24,7 @@ export default class ChartContainer extends Component<{ canvas: HTMLCanvasElemen
 	render() {
 		return (
 			<div
-				style={`width:95%;height:${this.props.height !== null
-					? `${this.props.height}vh`
-					: '100%'};margin:20px;`}
+				style={`width:95%;height:${this.props.height !== null ? `${this.props.height}vh` : '100%'};`}
 				ref={(e) => {
 					this._container = e as HTMLDivElement;
 				}}

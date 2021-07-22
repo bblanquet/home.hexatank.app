@@ -45,6 +45,7 @@ export abstract class Vehicle extends AliveItem
 	public IsPacific: boolean = false;
 	protected RootSprites: Array<string>;
 	private WheelIndex: number;
+	public OnCamouflageChanged: LiteEvent<AliveItem> = new LiteEvent<AliveItem>();
 
 	public HasCamouflage: boolean;
 	public Camouflage: BasicItem;
@@ -82,7 +83,7 @@ export abstract class Vehicle extends AliveItem
 	public OnOrdering: LiteEvent<Cell[]> = new LiteEvent<Cell[]>();
 	public OnOrdered: LiteEvent<Cell[]> = new LiteEvent<Cell[]>();
 	public OnPathFound: LiteEvent<Cell[]> = new LiteEvent<Cell[]>();
-	public OnOrderStopped: LiteEvent<Vehicle> = new LiteEvent<Vehicle>();
+	public OnOrderCanceled: LiteEvent<Vehicle> = new LiteEvent<Vehicle>();
 	public OnTranslateStarted: LiteEvent<Cell> = new LiteEvent<Cell>();
 	public OnTranslateStopped: LiteEvent<Cell> = new LiteEvent<Cell>();
 	public OnPowerUp: LiteEvent<Up> = new LiteEvent<Up>();
@@ -218,9 +219,7 @@ export abstract class Vehicle extends AliveItem
 		this.RemoveCamouflage();
 		this._nextOrder = order;
 
-		if (!isNullOrUndefined(this._currentOrder)) {
-			this._currentOrder.Cancel();
-		}
+		this.CancelOrder();
 	}
 
 	GetCurrentPath(): Cell[] {
@@ -243,6 +242,7 @@ export abstract class Vehicle extends AliveItem
 	public CancelOrder(): void {
 		if (this._currentOrder) {
 			this._currentOrder.Cancel();
+			this.OnOrderCanceled.Invoke(this, this);
 		}
 	}
 
@@ -265,9 +265,7 @@ export abstract class Vehicle extends AliveItem
 		}
 
 		this._translationMaker.Reset();
-		if (this._currentOrder) {
-			this._currentOrder.Cancel();
-		}
+		this.CancelOrder();
 	}
 
 	public HasOrder(): boolean {
@@ -429,10 +427,6 @@ export abstract class Vehicle extends AliveItem
 		this._currentCell.OnCellStateChanged.On(this._handleCellStateChanged);
 		this._nextCell = null;
 
-		if (!this.HasOrder()) {
-			this.OnOrderStopped.Invoke(this, this);
-		}
-
 		if (this._currentCell.GetField().constructor !== previouscell.GetField().constructor) {
 			this._currentCell.GetField().SetPowerUp(this);
 		}
@@ -444,9 +438,7 @@ export abstract class Vehicle extends AliveItem
 	public Destroy(): void {
 		this.OnDestroyed.Invoke(this, this);
 		this.OnDestroyed.Clear();
-		if (this._currentOrder) {
-			this._currentOrder.Cancel();
-		}
+		this.CancelOrder();
 		if (this._nextOrder) {
 			this._nextOrder.Cancel();
 		}
@@ -529,6 +521,9 @@ export abstract class Vehicle extends AliveItem
 	}
 
 	public SetPosition(cell: Cell): void {
+		if (this._currentCell) {
+			this._currentCell.SetOccupier(null);
+		}
 		this.InitPosition(cell.GetBoundingBox());
 		this._currentCell = cell;
 		this._currentCell.SetOccupier(this);
@@ -566,6 +561,7 @@ export abstract class Vehicle extends AliveItem
 		if (this.HasNextCell()) {
 			return false;
 		}
+		this.OnCamouflageChanged.Invoke(this, this);
 		this.HasCamouflage = true;
 		this.camouflagedSprites = this.GetSprites().filter((s) => s.alpha !== 0);
 

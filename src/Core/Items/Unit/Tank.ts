@@ -25,7 +25,6 @@ export class Tank extends Vehicle {
 	private _targetUi: FollowingItem;
 
 	public OnTargetChanged: LiteEvent<AliveItem> = new LiteEvent<AliveItem>();
-	public OnCamouflageChanged: LiteEvent<AliveItem> = new LiteEvent<AliveItem>();
 	public OnMissileLaunched: LiteEvent<Missile> = new LiteEvent<Missile>();
 
 	constructor(identity: Identity, isPacific: boolean = false) {

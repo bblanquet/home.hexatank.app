@@ -9,14 +9,14 @@ export const RedSentences = [
 export const BlueSentences = [ '...', 'zzzZZZzzzz.' ];
 
 export const LoadingSentences = [
-	'Designing nice trophies...',
-	'Setting satellites up for communication between troops...',
 	'Importing ammo from abroad...',
 	'Analyzing vehicle blueprints...',
-	'Adding shining effects to precious resources...',
-	'Loading very manly sound effects...',
+	'Polishing nice trophies...',
 	'Manufacturing vehicle parts...',
 	'Recruting some vilains...',
+	'Setting antennas up for communication between troops...',
+	'Adding shining effects to precious resources...',
+	'Loading very manly sound effects...',
 	'Planting battlefield trees...',
 	'Painting vehicles with fancy colors...'
 ];

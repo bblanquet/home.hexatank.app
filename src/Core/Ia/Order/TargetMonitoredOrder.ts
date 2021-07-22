@@ -27,7 +27,7 @@ export class TargetMonitoredOrder extends ParentOrder {
 		this._vehicleCellChanged = true;
 	}
 
-	public Reset(): void {
+	public FetchPath(): void {
 		if (this.Tank.GetCurrentCell() === this.Destination) {
 			this.SetState(OrderState.Passed);
 		} else {
@@ -51,7 +51,8 @@ export class TargetMonitoredOrder extends ParentOrder {
 				}
 				this.OnPathFound.Invoke(this, nextRoad.Road);
 			}
-		} else {
+		} else if (!this.HasAccess(this.CurrentOrder.GetPath())) {
+			this.OnPathFound.Invoke(this, []);
 			this.SetCurrentOrder(new IdleOrder());
 		}
 	}
@@ -120,8 +121,7 @@ export class TargetMonitoredOrder extends ParentOrder {
 		if (this._vehicleCellChanged || (this.IsIdle() && this._idleTimer.IsElapsed())) {
 			this.ResetIdleTimer();
 			this._vehicleCellChanged = false;
-			this.ClearChild();
-			this.Reset();
+			this.FetchPath();
 		}
 
 		if (this.CurrentOrder.GetState() === OrderState.Passed || this.CurrentOrder.GetState() === OrderState.Cancel) {

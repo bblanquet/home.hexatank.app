@@ -58,7 +58,7 @@ export class OnlineReceiver {
 		const vehicle = this._context.GetVehicle(message.Content.VId);
 		if (vehicle) {
 			if (vehicle.IsAlive()) {
-				vehicle.SetCurrentLife(0);
+				vehicle.Destroy();
 				StaticLogger.Log(LogKind.info, `[DESTROY] ${message.Content.VId}`);
 			}
 		} else {
@@ -125,7 +125,7 @@ export class OnlineReceiver {
 					latency
 				);
 				if (0 < unsync.length) {
-					this.HandleConsistency(`[CONSISTENCY] ${message.Content.VId} wrong cell ${unsync}`);
+					this.HandleConsistency(`[CONSISTENCY] ${message.Content.VId} wrong ${unsync}`);
 				} else {
 					StaticLogger.Log(
 						LogKind.info,

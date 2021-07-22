@@ -19,7 +19,8 @@ export default class UnitMenuComponent extends Component<{ Vehicle: Vehicle }, {
 				<div class="middle2 max-width">
 					<div class="btn-group-vertical max-width">
 						<button type="button" class="btn btn-light without-padding">
-							{this.props.Vehicle.Id}
+							<div>{this.props.Vehicle.Id}</div>
+							<div>{this.props.Vehicle.GetCurrentCell().Coo()}</div>
 						</button>
 						<button
 							type="button"

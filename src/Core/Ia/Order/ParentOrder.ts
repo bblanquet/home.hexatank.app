@@ -11,13 +11,11 @@ export abstract class ParentOrder extends Order {
 	protected SetCurrentOrder(order: Order): void {
 		this.ClearChild();
 		this.CurrentOrder = order;
-		this.CurrentOrder.OnPathFound.On(this.HandlePathFound.bind(this));
 		this.CurrentOrder.OnNextStep.On(this.HandleNextStep.bind(this));
 	}
 
 	protected ClearChild() {
 		if (this.CurrentOrder) {
-			this.CurrentOrder.OnPathFound.Off(this.HandlePathFound.bind(this));
 			this.CurrentOrder.OnNextStep.Off(this.HandleNextStep.bind(this));
 		}
 	}

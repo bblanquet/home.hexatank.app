@@ -10,7 +10,6 @@ export class PathResolver {
 
 	public Resolve(vehicle: Vehicle, road: string[], cid: string, nextCid: string, latency: number): string {
 		let message = '';
-		let hasInconsistency = false;
 		const cells = this._context.GetCellDictionary();
 		const path = road.map((coo) => cells.Get(coo));
 		const status = new VehicleStatus(vehicle, cid, nextCid);
@@ -18,7 +17,13 @@ export class PathResolver {
 			const cell = cells.Get(cid);
 			const nextCell = nextCid ? cells.Get(nextCid) : null;
 			vehicle.ResetCell(cell, nextCell);
-			message = `${vehicle.GetCurrentCell().Coo()} ! ${cid}`;
+			if (status.IsDiverging()) {
+				message = `next ${vehicle.GetNextCell() ? vehicle.GetNextCell().Coo() : 'none'} ! ${nextCell
+					? nextCell
+					: 'none'}`;
+			} else if (status.IsUnsync()) {
+				message = `current ${vehicle.GetCurrentCell().Coo()} ! ${cid}`;
+			}
 		}
 
 		if (path && 0 < path.length) {

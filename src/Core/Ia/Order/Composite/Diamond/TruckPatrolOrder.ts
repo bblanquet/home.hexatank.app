@@ -37,7 +37,7 @@ export class TruckPatrolOrder extends ParentOrder {
 			if (this.CurrentOrder.GetState() === OrderState.Passed) {
 				this.SwitchOrder();
 			} else if (this.CurrentOrder.GetState() === OrderState.Failed) {
-				this.Reset();
+				this.FetchPath();
 			}
 		} else if (this.CurrentOrder) {
 			this.CurrentOrder.Update();
@@ -63,7 +63,7 @@ export class TruckPatrolOrder extends ParentOrder {
 		}
 	}
 
-	public Reset(): void {
+	public FetchPath(): void {
 		const orderGiver = this._diamondFieldOrder.IsOrder(this.CurrentOrder) ? this._diamondFieldOrder : this._hqOrder;
 		this.TryToSetNextOrder(orderGiver);
 	}

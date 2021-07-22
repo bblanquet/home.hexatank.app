@@ -38,12 +38,18 @@ export class HqNetworkLink extends Item {
 	}
 
 	private SetVisibility() {
-		if (this._leftReactorField.GetCell().IsVisible() && !this._leftReactorField.IsLost
-			&& this._rightReactorField.GetCell().IsVisible() && !this._rightReactorField.IsLost) {
+		if (
+			this._leftReactorField.GetCell().IsVisible() &&
+			!this._leftReactorField.IsLost &&
+			this._rightReactorField.GetCell().IsVisible() &&
+			!this._rightReactorField.IsLost
+		) {
 			this._isVisible = true;
 		} else {
 			this._isVisible = false;
-			this._graph?.clear();
+			if (this._graph && this._graph.geometry) {
+				this._graph.clear();
+			}
 		}
 	}
 

@@ -1,9 +1,9 @@
 import { h, Component } from 'preact';
 import { BarChart } from '../Common/Chart/Config/BarChart';
-import Redirect from '../Components/Redirect';
 import ChartContainer from '../Common/Chart/ChartContainer';
 import { StatusDuration } from '../Common/Chart/Model/StatusDuration';
 import { Dictionary } from '../../Utils/Collections/Dictionary';
+import Column from '../Common/Struct/Column';
 
 export default class BarComparisonComponent extends Component<
 	{ Data: Dictionary<StatusDuration[]> },
@@ -52,16 +52,16 @@ export default class BarComparisonComponent extends Component<
 
 	render() {
 		return (
-			<Redirect>
-				<div class="container-center-horizontal">
-					<div class="statContainer  menu-container">
-						<div class="container-center">
-							<ChartContainer canvas={this.state.Canvas} height={40} />
-							<span class="badge badge-light" ref={(d) => (this._ref = d)} />;
-						</div>
+			<Column>
+				<div class="menu-container" style="width:95%;margin:20px;display: flex">
+					<div style="position: relative;flex-grow: 1;min-height: 0;">
+						<ChartContainer canvas={this.state.Canvas} height={40} />
 					</div>
 				</div>
-			</Redirect>
+				<div class="container-center">
+					<div class="badge badge-light" ref={(d) => (this._ref = d)} />;
+				</div>
+			</Column>
 		);
 	}
 }

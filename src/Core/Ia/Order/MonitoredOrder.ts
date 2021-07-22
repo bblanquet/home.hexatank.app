@@ -25,18 +25,18 @@ export class MonitoredOrder extends ParentOrder {
 		this._vehicleCellChanged = true;
 	}
 
-	public Reset(): void {
+	public FetchPath(): void {
 		if (this.Vehicle.GetCurrentCell() === this.Destination) {
 			this.SetState(OrderState.Passed);
 		} else {
 			const nextRoad = new RoadProvider(this.Vehicle, this.Destination).GetBestRoad();
-			const road = this.CurrentOrder.GetPath();
 			if (this.HasNext(nextRoad)) {
 				if (this.IsNextBetter(nextRoad)) {
 					this.SetCurrentOrder(new BasicOrder(this.Vehicle, nextRoad));
 					this.OnPathFound.Invoke(this, nextRoad);
 				}
-			} else {
+			} else if (!this.HasAccess(this.CurrentOrder.GetPath())) {
+				this.OnPathFound.Invoke(this, []);
 				this.SetCurrentOrder(new IdleOrder());
 			}
 		}
@@ -75,8 +75,7 @@ export class MonitoredOrder extends ParentOrder {
 		if (this._vehicleCellChanged || (this.IsIdle() && this._idleTimer.IsElapsed())) {
 			this.ResetIdleTimer();
 			this._vehicleCellChanged = false;
-			this.ClearChild();
-			this.Reset();
+			this.FetchPath();
 		}
 
 		if (this.CurrentOrder.GetState() === OrderState.Passed || this.CurrentOrder.GetState() === OrderState.Cancel) {

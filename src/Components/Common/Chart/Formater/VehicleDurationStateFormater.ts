@@ -40,11 +40,15 @@ export class VehicleDurationStateFormater implements IDurationFormater {
 
 	private GetActionDurations(actions: RecordVehicleState[]): RecordStateDuration<RecordVehicleState>[] {
 		const durations = new Array<RecordStateDuration<RecordVehicleState>>();
-		actions.filter((a) => a.kind === RecordKind.Created || a.kind === RecordKind.Moved).forEach((a, index) => {
-			if (index + 1 < actions.length) {
-				durations.push(new RecordStateDuration(a, a.X, actions[index + 1].X));
-			}
-		});
+		actions
+			.filter(
+				(a) => a.kind === RecordKind.Created || a.kind === RecordKind.Moved || a.kind === RecordKind.Destroyed
+			)
+			.forEach((a, index) => {
+				if (index + 1 < actions.length) {
+					durations.push(new RecordStateDuration(a, a.X, actions[index + 1].X));
+				}
+			});
 		return durations;
 	}
 
@@ -68,7 +72,7 @@ export class VehicleDurationStateFormater implements IDurationFormater {
 		compared.States.forEach((action) => {
 			dates.push(action.X);
 		});
-		return dates.filter((x, i, a) => a.indexOf(x) === i).sort();
+		return dates.sort(); //.filter((date, index, a) => a.indexOf(date) === index)
 	}
 
 	private GetEmptyDurations(dates: number[]): Duration[] {

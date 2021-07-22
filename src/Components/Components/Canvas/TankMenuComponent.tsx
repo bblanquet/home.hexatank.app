@@ -16,7 +16,8 @@ export default class TankMenuComponent extends Component<
 				<div class="middle2 max-width">
 					<div class="btn-group-vertical max-width">
 						<button type="button" class="btn btn-light without-padding">
-							{this.props.Tank.Id}
+							<div>{this.props.Tank.Id}</div>
+							<div>{this.props.Tank.GetCurrentCell().Coo()}</div>
 						</button>
 						<button
 							type="button"

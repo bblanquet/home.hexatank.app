@@ -143,7 +143,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 				info.ItemsCount = this._selectedItem.length;
 				info.Items = this._selectedItem.map((s) => s.constructor.name);
 				this.OnInteractionChanged.Invoke(this, info);
-				StaticLogger.Log(LogKind.info, this.GetInteractionInfo());
+				//StaticLogger.Log(LogKind.info, this.GetInteractionInfo());
 			}
 
 			let context = new CombinationContext();
@@ -151,11 +151,11 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 			context.InteractionKind = this.Kind;
 			context.Point = this.Point;
 
-			StaticLogger.Log(LogKind.info, `TRIGGER ${InteractionKind[this.Kind]}`);
+			//StaticLogger.Log(LogKind.info, `TRIGGER ${InteractionKind[this.Kind]}`);
 
 			this._combinations.some((combination) => {
 				if (combination.Combine(context)) {
-					StaticLogger.Log(LogKind.success, `combination: ${combination.constructor.name}`);
+					//StaticLogger.Log(LogKind.success, `combination: ${combination.constructor.name}`);
 					return true;
 				}
 				return false;

@@ -16,7 +16,8 @@ export default class TruckMenuComponent extends Component<
 				<div class="middle2 max-width">
 					<div class="btn-group-vertical max-width">
 						<button type="button" class="btn btn-light without-padding">
-							{this.props.Truck.Id}
+							<div>{this.props.Truck.Id}</div>
+							<div>{this.props.Truck.GetCurrentCell().Coo()}</div>
 						</button>
 						<button
 							type="button"

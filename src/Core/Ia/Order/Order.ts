@@ -39,6 +39,7 @@ export abstract class Order implements IOrder {
 
 	public Cancel(): void {
 		this.SetState(OrderState.Cancel);
+		this.Clear();
 	}
 
 	public SetState(state: OrderState): void {

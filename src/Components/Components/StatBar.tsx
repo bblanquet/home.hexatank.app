@@ -1,22 +1,25 @@
 import { h, Component } from 'preact';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
-import { PlayerProfil } from '../../Services/PlayerProfil/PlayerProfil';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import SmActiveBtn from '../Common/Button/Stylish/SmActiveBtn';
 import Progress from '../Common/Progress/Progress';
 import Icon from '../Common/Icon/IconComponent';
 import { IAudioService } from '../../Services/Audio/IAudioService';
 
-export default class StatBar extends Component<any, { profil: PlayerProfil }> {
+export default class StatBar extends Component<any, { IsMute: boolean }> {
 	private _soundService: IAudioService;
 	private _profilService: IPlayerProfilService;
 
-	componentDidMount() {
+	constructor() {
+		super();
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+	}
+
+	componentDidMount() {
 		this.setState({
-			profil: this._profilService.GetProfil()
+			IsMute: this._profilService.GetProfil().IsMute
 		});
 	}
 
@@ -30,9 +33,12 @@ export default class StatBar extends Component<any, { profil: PlayerProfil }> {
 					leftColor={ColorKind.Black}
 					rightColor={ColorKind.Yellow}
 					callBack={() => {
-						this._soundService.SetMute(!this._soundService.IsMute());
+						const isMute = !this._soundService.IsMute();
+						this._soundService.SetMute(isMute);
+						this._profilService.GetProfil().IsMute = isMute;
+						this._profilService.Save();
 						this._soundService.PlayLoungeMusic();
-						this.setState({});
+						this.setState({ IsMute: isMute });
 					}}
 					isActive={this._soundService && this._soundService.IsMute()}
 				/>

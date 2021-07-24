@@ -7,10 +7,13 @@ import { Vehicle } from '../../Items/Unit/Vehicle';
 import { IdleOrder } from './IdleOrder';
 import { TimeTimer } from '../../../Utils/Timer/TimeTimer';
 import { TypeTranslator } from '../../Items/Cell/Field/TypeTranslator';
+import { isNullOrUndefined } from '../../../Utils/ToolBox';
+import { isEqual } from 'lodash';
 
 export class MonitoredOrder extends ParentOrder {
 	private _vehicleCellChanged: boolean;
 	private _idleTimer: TimeTimer;
+	private _currentPath: Cell[] = null;
 
 	constructor(protected Destination: Cell, protected Vehicle: Vehicle) {
 		super();
@@ -26,6 +29,7 @@ export class MonitoredOrder extends ParentOrder {
 	}
 
 	public FetchPath(): void {
+		let next: Cell[] = null;
 		if (this.Vehicle.GetCurrentCell() === this.Destination) {
 			this.SetState(OrderState.Passed);
 		} else {
@@ -33,12 +37,16 @@ export class MonitoredOrder extends ParentOrder {
 			if (this.HasNext(nextRoad)) {
 				if (this.IsNextBetter(nextRoad)) {
 					this.SetCurrentOrder(new BasicOrder(this.Vehicle, nextRoad));
-					this.OnPathFound.Invoke(this, nextRoad);
+					next = nextRoad;
 				}
 			} else if (!this.HasAccess(this.CurrentOrder.GetPath())) {
-				this.OnPathFound.Invoke(this, []);
+				next = [];
 				this.SetCurrentOrder(new IdleOrder());
 			}
+		}
+		if (!isNullOrUndefined(next) && !isEqual(next, this._currentPath)) {
+			this._currentPath = next;
+			this.OnPathFound.Invoke(this, this._currentPath);
 		}
 	}
 

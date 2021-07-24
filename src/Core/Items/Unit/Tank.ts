@@ -103,7 +103,6 @@ export class Tank extends Vehicle {
 
 	public CancelOrder(): void {
 		super.CancelOrder();
-		this.SetMainTarget(null);
 	}
 
 	public IsEnemyHqClose(): boolean {

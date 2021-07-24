@@ -9,6 +9,7 @@ import Grid from '../Common/Grid/GridComponent';
 import SmPanel from './Panel/SmPanel';
 
 export default class LoadingPlayers extends Component<any, { Players: OnlinePlayer[]; Player: OnlinePlayer }> {
+	private _updatePlayer: any = this.UpdateState.bind(this);
 	constructor() {
 		super();
 		const onlinePlayerManager = Singletons.Load<IOnlineService>(SingletonKey.Online).GetOnlinePlayerManager();
@@ -19,8 +20,13 @@ export default class LoadingPlayers extends Component<any, { Players: OnlinePlay
 			Player: onlinePlayerManager.Player,
 			Players: onlinePlayerManager.Players.Values()
 		});
-		onlinePlayerManager.OnPlayersChanged.On(this.UpdateState.bind(this));
+		onlinePlayerManager.OnPlayersChanged.On(this._updatePlayer);
 		onlineGameContextManager.Start();
+	}
+
+	componentWillUnmount() {
+		const onlinePlayerManager = Singletons.Load<IOnlineService>(SingletonKey.Online).GetOnlinePlayerManager();
+		onlinePlayerManager.OnPlayersChanged.Off(this._updatePlayer);
 	}
 
 	public UpdateState(src: any, players: Dictionary<OnlinePlayer>): void {

@@ -14,6 +14,9 @@ export class BasicOrder extends Order {
 	constructor(protected Vehicle: Vehicle, protected Road: Cell[]) {
 		super();
 		ErrorHandler.ThrowNullOrEmpty(this.Road);
+		this.Road.forEach((r) => {
+			ErrorHandler.ThrowNull(r);
+		});
 		this.Destination = Road[Road.length - 1];
 	}
 

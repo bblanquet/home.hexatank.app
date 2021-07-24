@@ -59,7 +59,7 @@ export class OnlineReceiver {
 		if (vehicle) {
 			if (vehicle.IsAlive()) {
 				vehicle.Destroy();
-				StaticLogger.Log(LogKind.info, `[DESTROY] ${message.Content.VId}`);
+				StaticLogger.Log(LogKind.info, `[DESTROY] [VEHICLE] ${message.Content.VId}`);
 			}
 		} else {
 			this.HandleConsistency(`[CONSISTENCY] ${message.Content.VId} not found`);
@@ -97,7 +97,6 @@ export class OnlineReceiver {
 			} else {
 				tank.SetMainTarget(null);
 			}
-			StaticLogger.Log(LogKind.info, `[TARGET] ${message.Content.VId}`);
 		}
 	}
 
@@ -117,21 +116,17 @@ export class OnlineReceiver {
 		if (vehicle) {
 			const hq = this._context.GetHqFromId(vehicle.Identity);
 			if (this.IsEmitingHq(hq.Identity.Name)) {
-				const unsync = this._pathResolver.Resolve(
+				this._pathResolver.Resolve(
 					vehicle,
 					message.Content.Extra.Path,
 					message.Content.CId,
 					message.Content.Extra.NextCId,
 					latency
 				);
-				if (0 < unsync.length) {
-					this.HandleConsistency(`[CONSISTENCY] ${message.Content.VId} wrong ${unsync}`);
-				} else {
-					StaticLogger.Log(
-						LogKind.info,
-						`[PATH CHANGED] ${message.Content.VId} [${message.Content.Extra.Path.join('|')}]`
-					);
-				}
+				StaticLogger.Log(
+					LogKind.info,
+					`[PATH CHANGED] ${message.Content.VId} [${message.Content.Extra.Path.join('|')}]`
+				);
 			}
 		} else {
 			this.HandleConsistency(`[CONSISTENCY] ${message.Content.VId} not found`);
@@ -144,7 +139,7 @@ export class OnlineReceiver {
 			const blockingField = field as BlockingField;
 			if (blockingField.IsAlive()) {
 				blockingField.Destroy();
-				StaticLogger.Log(LogKind.info, `[DESTROY] ${message.Content}`);
+				StaticLogger.Log(LogKind.info, `[DESTROY] FIELD ${message.Content}`);
 			}
 		}
 	}

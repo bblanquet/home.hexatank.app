@@ -247,7 +247,7 @@ export abstract class Vehicle extends AliveItem
 	}
 
 	//only online
-	public ResetCell(cell: Cell, nextCell: Cell = null): void {
+	public ResetCell(cell: Cell, nextCell: Cell = undefined): void {
 		if (this._currentCell) {
 			this._currentCell.SetOccupier(null);
 			this._currentCell = null;
@@ -255,17 +255,14 @@ export abstract class Vehicle extends AliveItem
 		this._currentCell = cell;
 		this._currentCell.SetOccupier(this);
 		this.InitCell(this._currentCell.GetBoundingBox());
-		if (this._nextCell) {
-			this._nextCell.SetOccupier(null);
-			this._nextCell = null;
-		}
 		if (nextCell) {
+			if (this._nextCell) {
+				this._nextCell.SetOccupier(null);
+			}
 			this._nextCell = nextCell;
 			this._nextCell.SetOccupier(this);
 		}
-
 		this._translationMaker.Reset();
-		this.CancelOrder();
 	}
 
 	public HasOrder(): boolean {

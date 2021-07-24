@@ -16,6 +16,8 @@ import { NextCellContent } from './Contents/NextCellContent';
 import { TargetContent } from './Contents/TargetContent';
 import { PacketContent } from './Contents/PacketContent';
 import { Identity } from '../../Items/Identity';
+import { LogKind } from '../../../Utils/Logger/LogKind';
+import { StaticLogger } from '../../../Utils/Logger/StaticLogger';
 
 export class OnlineSender {
 	private _handleField: any = this.HandleChangedField.bind(this);
@@ -98,8 +100,8 @@ export class OnlineSender {
 		if (v instanceof Tank) {
 			const tank = v as Tank;
 			tank.OnTargetChanged.Clear();
+			tank.OnPathFound.Clear();
 			tank.OnCamouflageChanged.Clear();
-			tank.OnOrdering.Clear();
 			tank.OnNextCellChanged.Clear();
 		}
 		const message = this.Wrap<string>(PacketKind.VehicleDestroyed, v.Id);
@@ -114,6 +116,10 @@ export class OnlineSender {
 		targetPacket.CId = src.GetCurrentCell().Coo();
 		targetPacket.Extra.HasTarget = src.HasTarget();
 		targetPacket.Extra.TargetCId = src.HasTarget() ? target.GetCurrentCell().Coo() : '';
+		StaticLogger.Log(
+			LogKind.info,
+			`[SENDING TARGET] ${src.Id} > ${src.HasTarget() ? target.GetCurrentCell().Coo() : 'none'}`
+		);
 		const message = this.Wrap<PacketContent<TargetContent>>(PacketKind.Target, targetPacket);
 		this._socket.Emit(message);
 	}

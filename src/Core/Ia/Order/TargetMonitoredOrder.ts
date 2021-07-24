@@ -9,10 +9,14 @@ import { ParentOrder } from './ParentOrder';
 import { IdleOrder } from './IdleOrder';
 import { TypeTranslator } from '../../Items/Cell/Field/TypeTranslator';
 import { Relationship } from '../../Items/Identity';
+import { isEqual } from 'lodash';
+import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
 export class TargetMonitoredOrder extends ParentOrder {
 	private _vehicleCellChanged: boolean;
 	private _idleTimer: TimeTimer;
+	private _currentPath: Cell[] = null;
+
 	constructor(protected Destination: Cell, protected Tank: Tank) {
 		super();
 		this.SetCurrentOrder(new IdleOrder());
@@ -35,19 +39,26 @@ export class TargetMonitoredOrder extends ParentOrder {
 	}
 
 	private UpdateOrder() {
+		let next: Cell[] = null;
 		const nextRoad = new TargetRoadProvider(this.Tank, this.Destination).GetTargetRoad();
 		if (this.HasNext(nextRoad)) {
 			if (this.IsNextBetter(nextRoad)) {
+				next = nextRoad.Road;
 				if (this.HasTarget(nextRoad.Target)) {
-					this.SetCurrentOrder(new TargetCellOrder(this.Tank, nextRoad.Target, this.GetChildOrder(nextRoad)));
+					this.SetCurrentOrder(
+						new TargetCellOrder(this.Tank, nextRoad.Target, new BasicOrder(this.Tank, nextRoad.Road))
+					);
 				} else {
 					this.SetCurrentOrder(new BasicOrder(this.Tank, nextRoad.Road));
 				}
-				this.OnPathFound.Invoke(this, nextRoad.Road);
 			}
 		} else if (!this.HasAccess(this.CurrentOrder.GetPath())) {
-			this.OnPathFound.Invoke(this, []);
+			next = [];
 			this.SetCurrentOrder(new IdleOrder());
+		}
+		if (!isNullOrUndefined(next) && !isEqual(next, this._currentPath)) {
+			this._currentPath = next;
+			this.OnPathFound.Invoke(this, this._currentPath);
 		}
 	}
 
@@ -68,14 +79,6 @@ export class TargetMonitoredOrder extends ParentOrder {
 	}
 	private HasAccess(path: Cell[]): boolean {
 		return path.every((p) => TypeTranslator.IsAccessible(p, this.Tank));
-	}
-
-	private GetChildOrder(targetCell: TargetRoad) {
-		if (targetCell.Road.length === 0) {
-			return new IdleOrder();
-		} else {
-			return new BasicOrder(this.Tank, targetCell.Road);
-		}
 	}
 
 	private HasTarget(cell: Cell): boolean {

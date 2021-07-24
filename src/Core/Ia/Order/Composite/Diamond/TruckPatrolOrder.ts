@@ -6,6 +6,7 @@ import { DiamondField } from '../../../../Items/Cell/Field/DiamondField';
 import { ParentOrder } from '../../ParentOrder';
 import { TimeTimer } from '../../../../../Utils/Timer/TimeTimer';
 import { IOrderGiver } from './IOrderGiver';
+import { IdleOrder } from '../../IdleOrder';
 
 export class TruckPatrolOrder extends ParentOrder {
 	private _idleTimer: TimeTimer;
@@ -50,17 +51,18 @@ export class TruckPatrolOrder extends ParentOrder {
 	}
 
 	private TryToSetNextOrder(order: IOrderGiver) {
+		if (this.CurrentOrder) {
+			this.CurrentOrder.OnPathFound.Clear();
+		}
 		if (!this._isIdle || (this._isIdle && this._idleTimer.IsElapsed())) {
 			const nextOrder = order.GetOrder();
 			this._isIdle = false;
 
 			if (nextOrder) {
-				if (this.CurrentOrder) {
-					this.CurrentOrder.OnPathFound.Clear();
-				}
 				this.SetCurrentOrder(nextOrder);
-				this.CurrentOrder.OnPathFound.On(this.HandlePathFound.bind(this));
+				nextOrder.OnPathFound.On(this.HandlePathFound.bind(this));
 			} else {
+				this.OnPathFound.Invoke(this, []);
 				this._isIdle = true;
 				this._idleTimer.Reset();
 			}

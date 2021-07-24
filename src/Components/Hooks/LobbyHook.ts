@@ -17,6 +17,11 @@ export class LobbyHook extends Hook<LobbyState> {
 	public LobbyManager: ILobbyManager;
 	public onlinePlayers: IOnlinePlayerManager;
 	private _onlineService: IOnlineService;
+	private _back: any = this.Back.bind(this);
+	private _message: any = this.OnMessage.bind(this);
+	private _update: any = this.UpdatePlayers.bind(this);
+	private _updateList: any = this.UpdatePlayerList.bind(this);
+	private _start: any = this.Start.bind(this);
 
 	constructor(d: [LobbyState, StateUpdater<LobbyState>]) {
 		super(d[0], d[1]);
@@ -27,14 +32,16 @@ export class LobbyHook extends Hook<LobbyState> {
 		this.LobbyManager = this._onlineService.GetLobbyManager();
 		this.onlinePlayers = this._onlineService.GetOnlinePlayerManager();
 
-		this.LobbyManager.OnKicked.On(this.Back.bind(this));
-		this.LobbyManager.OnMessageReceived.On(this.OnMessage.bind(this));
-		this.onlinePlayers.OnPlayersChanged.On(this.UpdatePlayers.bind(this));
-		this.onlinePlayers.OnPlayerList.On(this.UpdatePlayerList.bind(this));
-		this.LobbyManager.OnStarting.On(() => {
-			this.LobbyManager.Clear();
-			route('{{sub_path}}Launching', true);
-		});
+		this.LobbyManager.OnKicked.On(this._back);
+		this.LobbyManager.OnMessageReceived.On(this._message);
+		this.onlinePlayers.OnPlayersChanged.On(this._update);
+		this.onlinePlayers.OnPlayerList.On(this._updateList);
+		this.LobbyManager.OnStarting.On(this._start);
+	}
+
+	public Start(): void {
+		this.LobbyManager.Clear();
+		route('{{sub_path}}Launching', true);
 	}
 
 	static DefaultState(): LobbyState {
@@ -127,9 +134,10 @@ export class LobbyHook extends Hook<LobbyState> {
 	}
 
 	public Unmount(): void {
-		this.LobbyManager.OnKicked.Off(this.Back.bind(this));
-		this.LobbyManager.OnMessageReceived.Off(this.OnMessage.bind(this));
-		this.onlinePlayers.OnPlayersChanged.Off(this.UpdatePlayers.bind(this));
-		this.onlinePlayers.OnPlayerList.Off(this.UpdatePlayerList.bind(this));
+		this.LobbyManager.OnKicked.Off(this._back);
+		this.LobbyManager.OnMessageReceived.Off(this._message);
+		this.onlinePlayers.OnPlayersChanged.Off(this._update);
+		this.onlinePlayers.OnPlayerList.Off(this._updateList);
+		this.LobbyManager.OnStarting.Off(this._start);
 	}
 }

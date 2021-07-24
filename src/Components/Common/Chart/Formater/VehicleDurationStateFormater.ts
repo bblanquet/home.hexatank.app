@@ -10,6 +10,7 @@ import { RecordKind } from '../../../../Core/Framework/Record/Model/Item/State/R
 import { Duration } from '../Model/Duration';
 import * as luxon from 'luxon';
 import { IDurationFormater } from './IDurationFormater';
+import { FarmCombination } from '../../../../Core/Interaction/Combination/FarmCombination';
 
 export class VehicleDurationStateFormater implements IDurationFormater {
 	public Format(record: RecordContent, compRecord: RecordContent): Dictionary<StatusDuration[]> {
@@ -40,16 +41,15 @@ export class VehicleDurationStateFormater implements IDurationFormater {
 
 	private GetActionDurations(actions: RecordVehicleState[]): RecordStateDuration<RecordVehicleState>[] {
 		const durations = new Array<RecordStateDuration<RecordVehicleState>>();
-		actions
-			.filter(
-				(a) => a.kind === RecordKind.Created || a.kind === RecordKind.Moved || a.kind === RecordKind.Destroyed
-			)
-			.forEach((a, index) => {
-				if (index + 1 < actions.length) {
-					durations.push(new RecordStateDuration(a, a.X, actions[index + 1].X));
-				}
-			});
+		const movingActions = actions.filter(this.IsMovingAction());
+		for (let i = 0; i + 1 < movingActions.length; i++) {
+			durations.push(new RecordStateDuration(movingActions[i], movingActions[i].X, movingActions[i + 1].X));
+		}
 		return durations;
+	}
+
+	private IsMovingAction(): (value: RecordVehicleState, index: number, array: RecordVehicleState[]) => unknown {
+		return (a) => a.kind === RecordKind.Created || a.kind === RecordKind.Moved || a.kind === RecordKind.Destroyed;
 	}
 
 	private GetOverlappedIndex(step: Duration, list: RecordStateDuration<RecordVehicleState>[]): number {
@@ -66,10 +66,10 @@ export class VehicleDurationStateFormater implements IDurationFormater {
 
 	private GetDates(data: RecordUnit, compared: RecordUnit): number[] {
 		let dates = new Array<number>();
-		data.States.forEach((action) => {
+		data.States.filter(this.IsMovingAction()).forEach((action) => {
 			dates.push(action.X);
 		});
-		compared.States.forEach((action) => {
+		compared.States.filter(this.IsMovingAction()).forEach((action) => {
 			dates.push(action.X);
 		});
 		return dates.sort();
@@ -101,6 +101,7 @@ export class VehicleDurationStateFormater implements IDurationFormater {
 			if (emptyDuration.End < endDate) {
 				let index = this.GetOverlappedIndex(emptyDuration, durations);
 				let compIndex = this.GetOverlappedIndex(emptyDuration, compDurations);
+
 				if (index === null && compIndex === null) {
 					return true;
 				} else {
@@ -118,10 +119,6 @@ export class VehicleDurationStateFormater implements IDurationFormater {
 						emptyDuration,
 						startDate
 					)}`;
-
-					if (data.Id.includes('Moh') && state === DurationState.Wrong) {
-						var a = 0;
-					}
 
 					result.push(new StatusDuration(state, emptyDuration.Start, emptyDuration.End, label));
 					return false;

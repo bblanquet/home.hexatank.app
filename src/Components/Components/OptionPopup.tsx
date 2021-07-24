@@ -13,10 +13,12 @@ export default class OptionPopup extends Component<
 	{ Kind: StatsKind }
 > {
 	private _soundService: IAudioService;
-
 	constructor() {
 		super();
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
+	}
+
+	componentDidMount() {
 		this.setState({
 			Kind: StatsKind.Unit
 		});

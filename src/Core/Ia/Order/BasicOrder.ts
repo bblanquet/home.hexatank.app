@@ -1,4 +1,3 @@
-import { TypeTranslator } from './../../Items/Cell/Field/TypeTranslator';
 import { OrderState } from './OrderState';
 import { Order } from './Order';
 import { Cell } from '../../Items/Cell/Cell';
@@ -66,12 +65,7 @@ export class BasicOrder extends Order {
 	}
 
 	private GetNextStep(): Cell {
-		const candidate = this.Road.splice(0, 1)[0];
-		if (TypeTranslator.IsAccessible(candidate, this.Vehicle)) {
-			return candidate;
-		} else {
-			return null;
-		}
+		return this.Road.splice(0, 1)[0];
 	}
 
 	public Reset(): void {

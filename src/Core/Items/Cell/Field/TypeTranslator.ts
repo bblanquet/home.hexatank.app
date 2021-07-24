@@ -43,14 +43,14 @@ export class TypeTranslator {
 
 	public static HasFoeVehicle(cell: Cell, identity: Identity): boolean {
 		if (cell.HasOccupier()) {
-			return ((cell.GetOccupier() as any) as AliveItem).GetRelation(identity) === Relationship.Enemy;
+			return cell.GetOccupiers().some((oc) => oc.GetRelation(identity) === Relationship.Enemy);
 		}
 		return false;
 	}
 
 	public static GetRelation(cell: Cell, identity: Identity): Relationship {
 		if (cell.HasOccupier()) {
-			return ((cell.GetOccupier() as any) as AliveItem).GetRelation(identity);
+			return cell.GetOccupiers()[0].GetRelation(identity);
 		}
 		return identity.GetRelation(cell.GetField().GetIdentity());
 	}
@@ -69,7 +69,7 @@ export class TypeTranslator {
 	}
 
 	public static IsAccessible(c: Cell, vehicle: Vehicle): boolean {
-		if (c.GetOccupier() === vehicle) {
+		if (c.GetOccupiers().some((v) => v === vehicle)) {
 			return true;
 		}
 

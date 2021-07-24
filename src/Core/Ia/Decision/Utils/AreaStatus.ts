@@ -29,8 +29,10 @@ export class AreaStatus {
 		this._area.GetCells().forEach((c) => {
 			this.Update(c);
 			if (c.HasOccupier()) {
-				const vehicule = c.GetOccupier() as Vehicle;
-				this._units.Add(vehicule.Id, vehicule);
+				c.GetOccupiers().forEach((v) => {
+					const vehicule = v as Vehicle;
+					this._units.Add(vehicule.Id, vehicule);
+				});
 			}
 		});
 	}

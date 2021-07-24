@@ -43,6 +43,7 @@ export interface IHeadquarter {
 	IsCovered(cell: Cell): boolean;
 	GetCellEnergy(coo: HexAxial): number;
 	GetTotalEnergy(): number;
+	GetIdentity(): Identity;
 
 	GetBatteryFields(): Array<BatteryField>;
 	GetReactors(): Array<ReactorField>;

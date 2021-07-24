@@ -38,6 +38,7 @@ import { ICamouflageAble } from './ICamouflageAble';
 import { UpCalculator } from '../Cell/Field/Bonus/UpCalculator';
 import { FireUp } from './PowerUp/FireUp';
 import { SpeedUp } from './PowerUp/SpeedUp';
+// import { TypeTranslator } from '../Cell/Field/TypeTranslator';
 
 export abstract class Vehicle extends AliveItem
 	implements IMovable, IRotatable, ISelectable, ICancellable, ICamouflageAble {
@@ -248,19 +249,18 @@ export abstract class Vehicle extends AliveItem
 
 	//only online
 	public ResetCell(cell: Cell, nextCell: Cell = undefined): void {
-		if (this._currentCell) {
-			this._currentCell.SetOccupier(null);
-			this._currentCell = null;
+		if (this._currentCell && this._currentCell.GetOccupiers().some((o) => o === this)) {
+			this._currentCell.RemoveOccupier(this);
 		}
 		this._currentCell = cell;
-		this._currentCell.SetOccupier(this);
+		this._currentCell.AddOccupier(this);
 		this.InitCell(this._currentCell.GetBoundingBox());
 		if (nextCell) {
 			if (this._nextCell) {
-				this._nextCell.SetOccupier(null);
+				this._nextCell.RemoveOccupier(this);
 			}
 			this._nextCell = nextCell;
-			this._nextCell.SetOccupier(this);
+			this._nextCell.AddOccupier(this);
 		}
 		this._translationMaker.Reset();
 	}
@@ -409,27 +409,51 @@ export abstract class Vehicle extends AliveItem
 	protected abstract HandleCellStateChanged(obj: any, cellState: CellState): void;
 
 	public GoNextCell(): void {
-		let previouscell = this._currentCell;
+		let formerCell = this._currentCell;
 		this._currentCell.OnCellStateChanged.Off(this._handleCellStateChanged);
 
-		if (previouscell.GetOccupier() === this) {
-			previouscell.SetOccupier(null);
-			previouscell.OnVehicleChanged.Invoke(this, null);
+		if (formerCell.GetOccupiers().some((o) => o === this)) {
+			formerCell.RemoveOccupier(this);
+			formerCell.OnVehicleChanged.Invoke(this, null);
 		}
 
 		this._currentCell = this._nextCell;
 
-		this.OnCellChanged.Invoke(this, previouscell);
+		this.OnCellChanged.Invoke(this, formerCell);
 		this.HandleCellStateChanged(this, this._currentCell.GetState());
 		this._currentCell.OnCellStateChanged.On(this._handleCellStateChanged);
 		this._nextCell = null;
 
-		if (this._currentCell.GetField().constructor !== previouscell.GetField().constructor) {
+		if (this._currentCell.GetField().constructor !== formerCell.GetField().constructor) {
 			this._currentCell.GetField().SetPowerUp(this);
 		}
 
-		CellStateSetter.SetStates(previouscell.GetAll());
+		CellStateSetter.SetStates(formerCell.GetAll());
 		CellStateSetter.SetStates(this._currentCell.GetAll());
+
+		this.UnloadCell();
+	}
+
+	private UnloadCell() {
+		if (
+			this._currentCell.IsOverOccupied() &&
+			this._currentCell
+				.GetOccupiers()
+				.every((e) => e.GetCurrentCell() === this.GetCurrentCell() && !e.HasNextCell())
+		) {
+			const cell = this.GetCurrentCell();
+			const units = this._currentCell.GetOccupiers();
+			const sortNames = units.map((e) => e.Id).sort((a, b) => a.localeCompare(b));
+			sortNames.forEach((unitName, index) => {
+				if (0 < index) {
+					const unit = units.find((u) => u.Id === unitName);
+					// const freeCell = cell.GetNearby(1).find((c) => c && TypeTranslator.IsAccessible(c, unit));
+					// if (freeCell) {
+					// 	unit.SetNextCell(freeCell);
+					// }
+				}
+			});
+		}
 	}
 
 	public Destroy(): void {
@@ -440,9 +464,9 @@ export abstract class Vehicle extends AliveItem
 			this._nextOrder.Cancel();
 		}
 		super.Destroy();
-		this._currentCell.SetOccupier(null);
+		this._currentCell.RemoveOccupier(this);
 		if (!isNullOrUndefined(this._nextCell)) {
-			this._nextCell.SetOccupier(null);
+			this._nextCell.RemoveOccupier(this);
 		}
 		this.IsUpdatable = false;
 		this._leftDusts.forEach((ld) => ld.Destroy());
@@ -519,11 +543,11 @@ export abstract class Vehicle extends AliveItem
 
 	public SetPosition(cell: Cell): void {
 		if (this._currentCell) {
-			this._currentCell.SetOccupier(null);
+			this._currentCell.RemoveOccupier(this);
 		}
 		this.InitPosition(cell.GetBoundingBox());
 		this._currentCell = cell;
-		this._currentCell.SetOccupier(this);
+		this._currentCell.AddOccupier(this);
 		if (!this.IsPacific) {
 			this._currentCell.OnCellStateChanged.On(this._handleCellStateChanged);
 			this._handleCellStateChanged(this, this._currentCell.GetState());
@@ -541,13 +565,13 @@ export abstract class Vehicle extends AliveItem
 			this.RemoveCamouflage();
 		}
 		if (this._nextCell) {
-			if (this._nextCell.GetOccupier() === this) {
-				this._nextCell.SetOccupier(null);
+			if (this._nextCell.GetOccupiers().some((o) => o === this)) {
+				this._nextCell.RemoveOccupier(this);
 			}
 		}
 		this._nextCell = cell;
 		this.OnNextCellChanged.Invoke(this, this._nextCell);
-		this._nextCell.SetOccupier(this);
+		this._nextCell.AddOccupier(this);
 		this._nextCell.OnVehicleChanged.Invoke(this, this);
 		this._angleFinder.SetAngle(this._nextCell);
 	}

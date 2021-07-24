@@ -4,13 +4,13 @@ import { Brain } from '../../Brain';
 import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
 import { RequestType } from '../../Utils/RequestType';
 import { AreaRequest } from '../../Utils/AreaRequest';
-import { GameContext } from '../../../../Framework/Context/GameContext';
+import { IHeadquarter } from '../../../../Items/Cell/Field/Hq/IHeadquarter';
 
 export class SquadRequestHandler implements ISimpleRequestHandler {
-	constructor(private _gameContext: GameContext, private _global: Brain) {}
+	constructor(private _hqs: IHeadquarter[], private _global: Brain) {}
 
 	Handle(request: AreaRequest): void {
-		const foeHqs = this._gameContext.GetHqs().filter((h) => h !== this._global.Hq);
+		const foeHqs = this._hqs.filter((h) => h !== this._global.Hq);
 		if (0 < foeHqs.length) {
 			const squad = new Squad(new MapObserver(this._global.AllAreas, this._global.Hq), this._global);
 			const hasTarget = squad.SetMainTarget();

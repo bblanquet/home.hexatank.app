@@ -54,15 +54,15 @@ export class OnlineReceiver {
 		return hq && hq.Identity.Name !== this._context.GetPlayerHq().Identity.Name && !hq.IsIa();
 	}
 
-	private HandleVehicleDestroyed(message: NetworkMessage<PacketContent<any>>): void {
-		const vehicle = this._context.GetVehicle(message.Content.VId);
+	private HandleVehicleDestroyed(message: NetworkMessage<string>): void {
+		const vehicle = this._context.GetVehicle(message.Content);
 		if (vehicle) {
 			if (vehicle.IsAlive()) {
-				vehicle.Destroy();
-				StaticLogger.Log(LogKind.info, `[DESTROY] [VEHICLE] ${message.Content.VId}`);
+				vehicle.SetCurrentLife(0);
+				StaticLogger.Log(LogKind.info, `[DESTROY] [VEHICLE] ${message.Content}`);
 			}
 		} else {
-			this.HandleConsistency(`[CONSISTENCY] ${message.Content.VId} not found`);
+			this.HandleConsistency(`[CONSISTENCY] ${message.Content} not found`);
 		}
 	}
 

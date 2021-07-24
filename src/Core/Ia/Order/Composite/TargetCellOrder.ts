@@ -27,7 +27,7 @@ export class TargetCellOrder extends ParentOrder {
 
 	public GetTarget(): AliveItem {
 		if (this._targetCell.HasOccupier()) {
-			const t = (this._targetCell.GetOccupier() as any) as AliveItem;
+			const t = this._targetCell.GetOccupiers()[0];
 			if (t.GetRelation(this._tank.Identity) !== Relationship.Ally) {
 				return t;
 			}

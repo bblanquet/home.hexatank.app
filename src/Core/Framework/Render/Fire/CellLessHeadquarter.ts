@@ -32,6 +32,10 @@ export class CellLessHeadquarter implements IHeadquarter {
 	OnTankRequestChanged: LiteEvent<number> = new LiteEvent<number>();
 	Earn(amount: number): void {}
 	Flagcell: FlagCell;
+
+	GetIdentity(): Identity {
+		return this.Identity;
+	}
 	public AddBatteryField(energyField: BatteryField): void {
 		this._batteryFields.push(energyField);
 		const reactors = this._reactors.filter((c) => c.IsCovered(energyField.GetCell()));

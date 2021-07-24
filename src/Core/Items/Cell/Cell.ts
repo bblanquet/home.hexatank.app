@@ -14,7 +14,6 @@ import { CellState } from './CellState';
 import { SvgArchive } from '../../Framework/SvgArchiver';
 import { ISelectable } from '../../ISelectable';
 import { ICell } from './ICell';
-import { IMovable } from '../IMovable';
 import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 import { Point } from '../../../Utils/Geometry/Point';
 import { IInteractionContext } from '../../Interaction/IInteractionContext';
@@ -26,7 +25,6 @@ import { MultiSelectionContext } from '../../Menu/Smart/MultiSelectionContext';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 import { InfiniteFadeAnimation } from '../Animator/InfiniteFadeAnimation';
 import { BasicItem } from '../BasicItem';
-import { IHeadquarter } from './Field/Hq/IHeadquarter';
 import { TypeTranslator } from './Field/TypeTranslator';
 import { StaticLogger } from '../../../Utils/Logger/StaticLogger';
 import { LogKind } from '../../../Utils/Logger/LogKind';
@@ -48,7 +46,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 
 	private _cellStateSprites: Dictionary<Array<string>>;
-	private _occupier: IMovable;
+	private _occupiers: Vehicle[];
 	private _decorationSprite: string;
 	private _shadowAnimator: IAnimator = null;
 
@@ -61,6 +59,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 	constructor(properties: CellProperties, private _cells: Dictionary<Cell>) {
 		super();
+		this._occupiers = [];
 		this.Z = ZKind.Cell;
 		this._cellStateSprites = new Dictionary<Array<string>>();
 		this.Properties = properties;
@@ -96,6 +95,10 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 	public IsSelectable(): boolean {
 		return this._isSelectable;
+	}
+
+	public IsOverOccupied(): boolean {
+		return 1 < this._occupiers.length;
 	}
 
 	public SetSelectionAnimation(): void {
@@ -169,8 +172,8 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		this._state = CellState.Visible;
 	}
 
-	public GetOccupier(): IMovable {
-		return this._occupier;
+	public GetOccupiers(): Vehicle[] {
+		return this._occupiers;
 	}
 
 	public GetField(): IField {
@@ -195,16 +198,15 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		}
 		this._field = nextField;
 		this._field.OnDestroyed.On(this._destroyedFieldFunc);
-		const occ = this.GetOccupier();
-		if (occ instanceof Vehicle) {
-			this._field.SetPowerUp(occ);
-		}
+		this.GetOccupiers().forEach((oc) => {
+			this._field.SetPowerUp(oc);
+		});
 		this.OnFieldChanged.Invoke(this, this);
 		return nextField;
 	}
 
 	public HasOccupier(): boolean {
-		return !isNullOrUndefined(this._occupier);
+		return 0 < this._occupiers.length;
 	}
 
 	public HasAroundOccupier(): boolean {
@@ -215,12 +217,16 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		return this.HasAlly(a) || this.GetNearby().filter((c) => (<Cell>c).HasAlly(a)).length > 0;
 	}
 
-	public SetOccupier(movable: IMovable) {
-		this._occupier = movable;
+	public AddOccupier(movable: Vehicle) {
+		this._occupiers.push(movable);
+	}
+
+	public RemoveOccupier(movable: Vehicle) {
+		this._occupiers = this._occupiers.filter((o) => o !== movable);
 	}
 
 	public IsBlocked(): boolean {
-		return (!isNullOrUndefined(this._field) && this._field.IsBlocking()) || this._occupier != null;
+		return (!isNullOrUndefined(this._field) && this._field.IsBlocking()) || this.HasOccupier();
 	}
 
 	public HasBlockingField(): boolean {
@@ -232,18 +238,14 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	}
 
 	public IsShootable(): boolean {
-		return this._field.IsDesctrutible() || this._occupier != null;
+		return this._field.IsDesctrutible() || this.HasOccupier();
 	}
 
 	public GetShootableEntity(): AliveItem {
-		if (this._occupier != null) {
-			if (this._occupier instanceof Vehicle) {
-				const vehicle = this._occupier as Vehicle;
-				if (vehicle.GetCurrentCell() === this) {
-					return vehicle;
-				}
-			} else {
-				return <AliveItem>(this._occupier as any);
+		if (this.HasOccupier()) {
+			const vehicle = this._occupiers[0] as Vehicle;
+			if (vehicle.GetCurrentCell() === this) {
+				return vehicle;
 			}
 		}
 
@@ -257,8 +259,8 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	}
 
 	public HasAlly(id: Identity): boolean {
-		if (this._occupier && this._occupier instanceof AliveItem) {
-			return id.GetRelation(this._occupier.Identity) === Relationship.Ally;
+		if (this.HasOccupier()) {
+			return this._occupiers.some((oc) => id.GetRelation(oc.Identity) === Relationship.Ally);
 		}
 		if (this._field) {
 			return id.GetRelation(this._field.GetIdentity()) === Relationship.Ally;

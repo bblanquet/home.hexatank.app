@@ -31,6 +31,7 @@ import { ISpot } from '../../../../../Utils/Geometry/ISpot';
 import { IHeadquarter } from '../Hq/IHeadquarter';
 import { Identity, Relationship } from '../../../Identity';
 import { IHqGameContext } from '../../../../Framework/Context/IHqGameContext';
+import { Headquarter } from '../Hq/Headquarter';
 
 export class ReactorField extends Field implements ISelectable, ISpot<ReactorField> {
 	public Identity: Identity;
@@ -62,7 +63,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	constructor(
 		cell: Cell,
 		public Hq: IHeadquarter,
-		private _context: IHqGameContext,
+		private _hqs: IHeadquarter[],
 		private _light: string,
 		public IsPacific: boolean = false
 	) {
@@ -87,7 +88,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		this.RangeAnimation();
 		this.Hq.AddField(this, cell);
 
-		if (this.GetHq() === this._context.GetPlayerHq()) {
+		if (this.GetHq().Identity.IsPlayer) {
 			this.SetSelectionAnimation();
 		}
 	}
@@ -137,10 +138,12 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 
 		this.GetAllCells().forEach((c) => {
 			if (c.HasOccupier()) {
-				const vehicle = c.GetOccupier() as Vehicle;
-				if (vehicle.GetRelation(this.Hq.Identity) === Relationship.Ally && !vehicles.Exist(vehicle.Id)) {
-					vehicles.Add(vehicle.Id, vehicle);
-				}
+				c.GetOccupiers().forEach((occupier) => {
+					const vehicle = occupier as Vehicle;
+					if (vehicle.GetRelation(this.Hq.Identity) === Relationship.Ally && !vehicles.Exist(vehicle.Id)) {
+						vehicles.Add(vehicle.Id, vehicle);
+					}
+				});
 			}
 		});
 		return vehicles.Values();
@@ -239,9 +242,9 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 				charge.Destroy();
 			});
 			this.Charges.Clear();
-			const hq = this._context.GetHqFromId(vehicule.Identity);
+			const hq = this._hqs.find((hq) => hq.GetIdentity().Name === vehicule.Identity.Name);
 			const cell = this.GetCell();
-			var reactor = cell.SetField(new ReactorField(cell, hq, this._context, hq.Identity.Skin.GetLight()));
+			var reactor = cell.SetField(new ReactorField(cell, hq, this._hqs, hq.Identity.Skin.GetLight()));
 			hq.OnReactorConquested.Invoke(this, reactor);
 		}
 	}

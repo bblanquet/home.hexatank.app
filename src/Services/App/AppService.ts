@@ -97,7 +97,7 @@ export class AppService implements IAppService<GameBlueprint> {
 		this._interactionService.Register(this._interactionManager, this._gameContext);
 		this._recordContext = new RecordContext(blueprint, this._gameContext);
 		this._statContext = new StatsContext(this._gameContext);
-		new BrainInjecter().Inject(this._gameContext, blueprint);
+		new BrainInjecter().Inject(this._gameContext.GetHqs(), this._gameContext.GetCells(), blueprint.Hqs);
 		this._app.start();
 		this._gameAudioService = new GameAudioManager(blueprint.MapMode, this._gameContext);
 		this._audioService.Register(this._gameAudioService);

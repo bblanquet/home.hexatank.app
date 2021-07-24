@@ -36,7 +36,7 @@ export class ReactorCombination extends AbstractSingleCombination {
 							new ReactorField(
 								cell,
 								this._gameContext.GetPlayerHq(),
-								this._gameContext,
+								this._gameContext.GetHqs(),
 								this._gameContext.GetPlayerHq().Identity.Skin.GetLight()
 							)
 						);

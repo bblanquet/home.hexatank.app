@@ -25,6 +25,10 @@ export class FakeHeadquarter implements IHeadquarter {
 	OnSelectionChanged: LiteEvent<ISelectable>;
 	Identity: Identity;
 
+	GetIdentity(): Identity {
+		return this.Identity;
+	}
+
 	GetVehicles(): Vehicle[] {
 		throw new Error('Method not implemented.');
 	}

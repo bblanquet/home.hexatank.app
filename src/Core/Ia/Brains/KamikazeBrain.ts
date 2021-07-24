@@ -17,11 +17,11 @@ import { GeneralRaidRequester } from '../Decision/Requests/Global/Requesters/Gen
 import { SimpleTankHander } from '../Decision/Handlers/Handler/SimpleTankHander';
 
 export class KamikazeBrain implements IBrainProvider {
-	GetBrain(hq: Headquarter, context: GameContext, areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
-		const brain = new Brain(hq, areas);
+	GetBrain(hq: Headquarter, hqs: Headquarter[], areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
+		const brain = new Brain(hq, areas, true);
 
 		const handlers = new Groups<ISimpleRequestHandler>();
-		handlers.Add('10', new SimpleTankHander(context, brain));
+		handlers.Add('10', new SimpleTankHander(hqs, brain));
 
 		brain.Setup(
 			new AreaRequestMaker([]),

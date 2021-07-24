@@ -110,16 +110,17 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 	}
 
 	private ContainsSelectable(item: Item): Boolean {
+		const cell = item as Cell;
+
 		return (
-			this._checker.IsSelectable(<Item>(<any>(<Cell>item).GetOccupier())) ||
+			(cell.HasOccupier() && this._checker.IsSelectable(<Item>(<any>(<Cell>item).GetOccupiers()[0]))) ||
 			this._checker.IsSelectable(<Item>(<any>(<Cell>item).GetField()))
 		);
 	}
 
 	private GetSelectable(cell: Cell): Item {
-		const occupier = <Item>(<any>(<Cell>cell).GetOccupier());
-		if (this._checker.IsSelectableWithCell(occupier, cell)) {
-			return occupier;
+		if (cell.HasOccupier() && this._checker.IsSelectableWithCell(cell.GetOccupiers()[0], cell)) {
+			return cell.GetOccupiers()[0];
 		} else {
 			if (cell.GetField() instanceof BasicField) {
 				return cell;

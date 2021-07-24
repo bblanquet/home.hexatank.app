@@ -1,19 +1,10 @@
-import { PowerUpRequester } from '../Decision/Requests/Area/PowerUpRequester';
-import { ShieldFieldBorderRequestHandler } from '../Decision/Handlers/Handler/Field/ShieldFieldBorderRequestHandler';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { DiamondRoadRequester } from '../Decision/Requests/Area/DiamondRoadRequester';
 import { DiamondRoadCleaningHandler } from '../Decision/Handlers/Handler/DiamondRoadCleaningHandler';
-import { SimpleFarmFieldRequester } from '../Decision/Requests/Area/Field/SimpleFarmFieldRequester';
-import { ReactorShieldHandler } from '../Decision/Handlers/Handler/Field/ReactorShieldHandler';
-import { ReactorShieldRequester } from '../Decision/Requests/Area/Field/ReactorShieldRequester';
 import { FoeReactorRequester } from '../Decision/Requests/Area/FoeReactorRequester';
 import { EnemyReactorHandler } from '../Decision/Handlers/Handler/EnemyReactorHandler';
-import { SpeedUpRequester } from '../Decision/Requests/Area/SpeedUpRequester';
-import { SpeedUpHandler } from '../Decision/Handlers/Handler/SpeedUpHandler';
-import { PowerUpRequestHandler } from '../Decision/Handlers/Handler/PowerUpRequestHandler';
 import { DiamondExpansionMaker } from '../Decision/ExpansionMaker/DiamondExpansionMaker';
 import { IBrainProvider } from './IBrain';
-import { GameContext } from '../../Framework/Context/GameContext';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { Brain } from '../Decision/Brain';
 import { RequestHandler } from '../Decision/Handlers/RequestHandler';
@@ -27,14 +18,9 @@ import { GeneralSquadRequest } from '../Decision/Requests/Global/Requesters/Gene
 import { GeneralTruckRequester } from '../Decision/Requests/Global/Requesters/GeneralTruckRequester';
 import { Groups } from '../../../Utils/Collections/Groups';
 import { ClearRequestHandler } from '../Decision/Handlers/Handler/ClearRequestHandler';
-import { EnergyRequestHandler } from '../Decision/Handlers/Handler/Field/EnergyRequestHandler';
-import { FarmFieldRequestHandler } from '../Decision/Handlers/Handler/Field/FarmFieldRequestHandler';
-import { HealingRequestHandler } from '../Decision/Handlers/Handler/Field/HealingRequestHandler';
-import { HealUnitRequestHandler } from '../Decision/Handlers/Handler/HealUnitRequestHandler';
 import { DefenseHandler } from '../Decision/Handlers/Handler/DefenseHandler';
 import { ReactorRequestHandler } from '../Decision/Handlers/Handler/ReactorRequestHandler';
 import { PatrolRequest } from '../Decision/Requests/Area/PatrolRequest';
-import { ShieldRequestHandler } from '../Decision/Handlers/Handler/Field/ShieldRequestHandler';
 import { SquadRequestHandler } from '../Decision/Handlers/Handler/SquadRequestHandler';
 import { TankHighRequestHandler } from '../Decision/Handlers/Handler/TankHighRequestHandler';
 import { TankMediumRequestHandler } from '../Decision/Handlers/Handler/TankMediumRequestHandler';
@@ -42,10 +28,6 @@ import { TruckRequestHandler } from '../Decision/Handlers/Handler/TruckRequestHa
 import { ISimpleRequestHandler } from '../Decision/Handlers/ISimpleRequestHandler';
 import { ClearAreaRequester } from '../Decision/Requests/Area/ClearAreaRequester';
 import { PatrolHandler } from '../Decision/Handlers/Handler/PatrolHandler';
-import { HealUnitRequester } from '../Decision/Requests/Area/HealUnitRequester';
-import { ReactorFieldRequester } from '../Decision/Requests/Area/Field/ReactorFieldRequester';
-import { ShieldFieldAreaRequester } from '../Decision/Requests/Area/Field/ShieldFieldAreaRequester';
-import { ShieldBorderRequester } from '../Decision/Requests/Area/Field/ShieldBorderRequester';
 import { TankRequester } from '../Decision/Requests/Area/TankHighRequester';
 import { TruckRequest } from '../Decision/Requests/Area/TruckRequester';
 import { DefenseRequester } from '../Decision/Requests/Area/DefenseRequester';
@@ -54,19 +36,19 @@ import { TankMediumRequester } from '../Decision/Requests/Area/TankMediumRequest
 import { IBrain } from '../Decision/IBrain';
 
 export class WeakBrain implements IBrainProvider {
-	GetBrain(hq: Headquarter, context: GameContext, areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
-		const brain = new Brain(hq, areas);
+	GetBrain(hq: Headquarter, hqs: Headquarter[], areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
+		const brain = new Brain(hq, areas, true);
 
 		const handlers = new Groups<ISimpleRequestHandler>();
 		handlers.Add('10', new EnemyReactorHandler());
 		handlers.Add('10', new DefenseHandler());
 		handlers.Add('10', new ClearRequestHandler());
-		handlers.Add('10', new ReactorRequestHandler(hq, context));
+		handlers.Add('10', new ReactorRequestHandler(hq, hqs));
 		handlers.Add('10', new TankHighRequestHandler(brain, new TankMediumRequestHandler(brain, hq)));
 		handlers.Add('10', new TruckRequestHandler(hq, brain));
 
 		handlers.Add('7', new DiamondRoadCleaningHandler(brain));
-		handlers.Add('7', new SquadRequestHandler(context, brain));
+		handlers.Add('7', new SquadRequestHandler(hqs, brain));
 
 		handlers.Add('5', new TankMediumRequestHandler(brain, hq));
 

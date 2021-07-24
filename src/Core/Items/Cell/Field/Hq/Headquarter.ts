@@ -30,6 +30,7 @@ import { Item } from '../../../Item';
 import { Curve } from '../../../../../Utils/Stats/Curve';
 import { DateValue } from '../../../../../Utils/Stats/DateValue';
 import { isNullOrUndefined } from '../../../../../Utils/ToolBox';
+import { TruckBrain } from '../../../../Ia/Brains/TruckBrain';
 
 export class Headquarter extends AliveItem implements IField, ISelectable, IHeadquarter {
 	public Flagcell: FlagCell;
@@ -175,7 +176,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 
 	public CreateTank(cell: Cell = null): boolean {
 		let isCreated = false;
-		this.Fields.every((field) => {
+		this.Fields.some((field) => {
 			if (!field.GetCell().IsBlocked()) {
 				if (field.GetCell().IsVisible()) {
 					new Explosion(field.GetCell().GetBoundingBox(), SvgArchive.constructionEffects, ZKind.Sky, false);
@@ -189,9 +190,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 				if (this.Flagcell) {
 					tank.GiveOrder(new MonitoredOrder(this.Flagcell.GetCell(), tank));
 				}
-				return false;
+				return true;
 			}
-			return true;
+			return false;
 		});
 
 		return isCreated;
@@ -199,7 +200,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 
 	public CreateTruck(cell: Cell = null): boolean {
 		let isCreated = false;
-		this.Fields.every((field) => {
+		this.Fields.some((field) => {
 			if (!field.GetCell().IsBlocked()) {
 				if (field.GetCell().IsVisible()) {
 					new Explosion(field.GetCell().GetBoundingBox(), SvgArchive.constructionEffects, 5, false);
@@ -210,9 +211,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 				this.OnVehicleCreated.Invoke(this, truck);
 
 				isCreated = true;
-				return false;
+				return true;
 			}
-			return true;
+			return false;
 		});
 
 		return isCreated;
@@ -304,7 +305,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 	}
 
 	public IsIa(): boolean {
-		return !isNullOrUndefined(this._brain);
+		return !isNullOrUndefined(this._brain) && this._brain.IsIa();
 	}
 
 	public Inject(brain: IBrain): void {

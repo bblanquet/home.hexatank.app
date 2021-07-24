@@ -24,6 +24,11 @@ export class DiamondContext implements IHqGameContext {
 		this._cells = Dictionary.To((c) => c.Coo(), cells);
 		this.State = state;
 		this.OnTimerDone = new SimpleEvent();
+		this._hq.OnDiamondEarned.On(() => {
+			if (50 < this._hq.GetDiamondCount()) {
+				this.State.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
+			}
+		});
 		this.OnTimerDone.On(() => {
 			if (50 < this._hq.GetDiamondCount()) {
 				this.State.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
@@ -32,6 +37,7 @@ export class DiamondContext implements IHqGameContext {
 			}
 		});
 	}
+
 	SetStatus(status: GameStatus): void {
 		this.State.OnGameStatusChanged.Invoke(this, status);
 	}

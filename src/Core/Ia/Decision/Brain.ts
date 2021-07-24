@@ -1,4 +1,3 @@
-import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { MoneyOrder } from '../Order/Composite/MoneyOrder';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
@@ -21,6 +20,8 @@ import { Squad } from './Troop/Squad';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 import { TimeTimer } from '../../../Utils/Timer/TimeTimer';
 import { ITimer } from '../../../Utils/Timer/ITimer';
+import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
+import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 
 export class Brain implements IBrain {
 	public AreaDecisions: IaArea[];
@@ -39,7 +40,7 @@ export class Brain implements IBrain {
 	private _generalRequestMaker: IGeneralListRequester;
 	public AllAreas: Area[];
 
-	constructor(public Hq: Headquarter, public Areas: Area[]) {
+	constructor(public Hq: Headquarter, public Areas: Area[], private _isIa: boolean) {
 		this.AreaDecisions = new Array<IaArea>();
 		this.Squads = new Array<Squad>();
 		this.CellAreas = new Dictionary<IaArea>();
@@ -80,6 +81,9 @@ export class Brain implements IBrain {
 			this.GetIaAreaByCell().Remove(foundArea.GetCentralCell().Coo());
 			this.Areas.push(foundArea.GetSpot());
 		});
+	}
+	IsIa(): boolean {
+		return this._isIa;
 	}
 
 	public IsConquested(area: Area): boolean {

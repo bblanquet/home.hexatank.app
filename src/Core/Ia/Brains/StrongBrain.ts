@@ -54,15 +54,15 @@ import { TankMediumRequester } from '../Decision/Requests/Area/TankMediumRequest
 import { IBrain } from '../Decision/IBrain';
 
 export class StrongBrain implements IBrainProvider {
-	GetBrain(hq: Headquarter, context: GameContext, areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
-		const brain = new Brain(hq, areas);
+	GetBrain(hq: Headquarter, hqs: Headquarter[], areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
+		const brain = new Brain(hq, areas, true);
 
 		const handlers = new Groups<ISimpleRequestHandler>();
 		handlers.Add('10', new EnemyReactorHandler());
 		handlers.Add('10', new DefenseHandler());
 		handlers.Add('10', new PowerUpRequestHandler());
 		handlers.Add('10', new ClearRequestHandler());
-		handlers.Add('10', new ReactorRequestHandler(hq, context));
+		handlers.Add('10', new ReactorRequestHandler(hq, hqs));
 		handlers.Add('10', new TankHighRequestHandler(brain, new TankMediumRequestHandler(brain, hq)));
 		handlers.Add('10', new TruckRequestHandler(hq, brain));
 
@@ -72,7 +72,7 @@ export class StrongBrain implements IBrainProvider {
 
 		handlers.Add('7', new DiamondRoadCleaningHandler(brain));
 		handlers.Add('7', new SpeedUpHandler());
-		handlers.Add('7', new SquadRequestHandler(context, brain));
+		handlers.Add('7', new SquadRequestHandler(hqs, brain));
 
 		handlers.Add('5', new FarmFieldRequestHandler(hq));
 		handlers.Add('5', new TankMediumRequestHandler(brain, hq));

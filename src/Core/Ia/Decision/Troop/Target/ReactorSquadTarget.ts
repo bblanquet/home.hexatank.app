@@ -1,10 +1,10 @@
-import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 import { ISquadTarget } from './ISquadTarget';
 import { Cell } from '../../../../Items/Cell/Cell';
 import { Relationship } from '../../../../Items/Identity';
+import { IHeadquarter } from '../../../../Items/Cell/Field/Hq/IHeadquarter';
 
 export class ReactorSquadTarget implements ISquadTarget {
-	constructor(private _cell: Cell, private _hqSquad: Headquarter) {}
+	constructor(private _cell: Cell, private _hqSquad: IHeadquarter) {}
 
 	GetCell(): Cell {
 		return this._cell;

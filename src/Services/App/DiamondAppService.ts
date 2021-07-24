@@ -19,6 +19,8 @@ import { GameState } from '../../Core/Framework/Context/GameState';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { GameAudioManager } from '../../Core/Framework/Audio/GameAudioManager';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
+import { BrainInjecter } from '../../Core/Ia/Decision/BrainInjecter';
+import { Headquarter } from '../../Core/Items/Cell/Field/Hq/Headquarter';
 
 export class DiamondAppService implements IAppService<DiamondBlueprint> {
 	private _blueprint: DiamondBlueprint;
@@ -74,6 +76,9 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 			c.AlwaysVisible();
 		});
 		CellStateSetter.SetStates(this._context.GetCells());
+		new BrainInjecter().Inject(this._context.GetHqs() as Headquarter[], this._context.GetCells(), [
+			blueprint.HqDiamond
+		]);
 		this._app.start();
 	}
 

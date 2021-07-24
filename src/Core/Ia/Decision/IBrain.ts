@@ -5,4 +5,5 @@ export interface IBrain {
 	GetIaAreaByCell(): Dictionary<IaArea>;
 	GetDiamond(): Diamond;
 	Update(): void;
+	IsIa(): boolean;
 }

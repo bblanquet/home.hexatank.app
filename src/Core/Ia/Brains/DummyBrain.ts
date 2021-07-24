@@ -11,11 +11,10 @@ import { AreaSearch } from '../Decision/Utils/AreaSearch';
 import { IBrain } from '../Decision/IBrain';
 import { Groups } from '../../../Utils/Collections/Groups';
 import { ISimpleRequestHandler } from '../Decision/Handlers/ISimpleRequestHandler';
-import { GameContext } from '../../Framework/Context/GameContext';
 
 export class DummyBrain implements IBrainProvider {
-	GetBrain(hq: Headquarter, context: GameContext, areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
-		const brain = new Brain(hq, areas);
+	GetBrain(hq: Headquarter, hqs: Headquarter[], areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
+		const brain = new Brain(hq, areas, true);
 
 		const handlers = new Groups<ISimpleRequestHandler>();
 

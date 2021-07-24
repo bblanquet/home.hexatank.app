@@ -18,7 +18,7 @@ import { SimpleTankHander } from '../Decision/Handlers/Handler/SimpleTankHander'
 
 export class KamikazeBrain implements IBrainProvider {
 	GetBrain(hq: Headquarter, hqs: Headquarter[], areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
-		const brain = new Brain(hq, areas, true);
+		const brain = new Brain(hq, areas, diamond, true);
 
 		const handlers = new Groups<ISimpleRequestHandler>();
 		handlers.Add('10', new SimpleTankHander(hqs, brain));
@@ -30,7 +30,6 @@ export class KamikazeBrain implements IBrainProvider {
 			new GeneralRequester([ new GeneralRaidRequester(10) ])
 		);
 
-		brain.SetDiamond(diamond);
 		return brain;
 	}
 }

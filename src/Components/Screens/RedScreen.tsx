@@ -67,9 +67,16 @@ export default class RedScreen extends HookedComponent<{}, RedHook, CampaignStat
 												if (state === StageState.lock) {
 													return <LockBtn />;
 												} else if (state === StageState.achieved) {
-													return <VictoryBtn />;
+													return <VictoryBtn OnClick={() => this.Hook.Select(index + 1)} />;
 												} else {
-													return this.GetButton(index + 1);
+													return (
+														<Btn
+															OnClick={() => this.Hook.Select(index + 1)}
+															Color={ColorKind.Red}
+														>
+															<Icon Value="fas fa-arrow-alt-circle-right" /> {index + 1}
+														</Btn>
+													);
 												}
 											})}
 										</div>
@@ -87,14 +94,6 @@ export default class RedScreen extends HookedComponent<{}, RedHook, CampaignStat
 					}
 				/>
 			</Redirect>
-		);
-	}
-
-	private GetButton(index: number) {
-		return (
-			<Btn OnClick={() => this.Hook.Select(index)} Color={ColorKind.Red}>
-				<Icon Value="fas fa-arrow-alt-circle-right" /> {index}
-			</Btn>
 		);
 	}
 }

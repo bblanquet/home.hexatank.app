@@ -14,7 +14,7 @@ import { ISimpleRequestHandler } from '../Decision/Handlers/ISimpleRequestHandle
 
 export class DummyBrain implements IBrainProvider {
 	GetBrain(hq: Headquarter, hqs: Headquarter[], areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
-		const brain = new Brain(hq, areas, true);
+		const brain = new Brain(hq, areas, diamond, true);
 
 		const handlers = new Groups<ISimpleRequestHandler>();
 
@@ -25,7 +25,6 @@ export class DummyBrain implements IBrainProvider {
 			new GeneralRequester([])
 		);
 
-		brain.SetDiamond(diamond);
-		return null;
+		return brain;
 	}
 }

@@ -20,7 +20,6 @@ import { Squad } from './Troop/Squad';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 import { TimeTimer } from '../../../Utils/Timer/TimeTimer';
 import { ITimer } from '../../../Utils/Timer/ITimer';
-import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 
 export class Brain implements IBrain {
@@ -32,7 +31,6 @@ export class Brain implements IBrain {
 	public IdleTanks: ExcessTankFinder;
 
 	public HasDiamondRoad: boolean = false;
-	private _diamond: Diamond;
 	private _idleTimer: ITimer = new TimeTimer(1000);
 	private _requestMaker: IAreaRequestListMaker;
 	private _requestHandler: IRequestHandler;
@@ -40,7 +38,7 @@ export class Brain implements IBrain {
 	private _generalRequestMaker: IGeneralListRequester;
 	public AllAreas: Area[];
 
-	constructor(public Hq: Headquarter, public Areas: Area[], private _isIa: boolean) {
+	constructor(public Hq: Headquarter, public Areas: Area[], private _diamond: Diamond, private _isIa: boolean) {
 		this.AreaDecisions = new Array<IaArea>();
 		this.Squads = new Array<Squad>();
 		this.CellAreas = new Dictionary<IaArea>();
@@ -90,25 +88,12 @@ export class Brain implements IBrain {
 		return this.AreaDecisions.some((e) => e.GetSpot() === area);
 	}
 
-	public SetDiamond(diamond: Diamond): void {
-		this._diamond = diamond;
-		this._diamond.OnDestroyed.On(this.DiamondDestroyed.bind(this));
-	}
-
 	public GetDecisionArea(cell: Cell): IaArea {
 		const areas = this.AreaDecisions.filter((c) => c.HasCell(cell));
 		if (0 < areas.length) {
 			return areas[0];
 		}
 		return null;
-	}
-
-	private DiamondDestroyed(): void {
-		this._diamond.OnDestroyed.Clear();
-		this.Trucks.forEach((truck) => {
-			truck.CancelOrder();
-			truck.GiveOrder(new MoneyOrder(truck));
-		});
 	}
 
 	public GetDiamond(): Diamond {

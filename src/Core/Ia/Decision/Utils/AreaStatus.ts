@@ -30,8 +30,7 @@ export class AreaStatus {
 			this.Update(c);
 			if (c.HasOccupier()) {
 				c.GetOccupiers().forEach((v) => {
-					const vehicule = v as Vehicle;
-					this._units.Add(vehicule.Id, vehicule);
+					this._units.Add(v.Id, v);
 				});
 			}
 		});

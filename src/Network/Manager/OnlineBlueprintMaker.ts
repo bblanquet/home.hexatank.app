@@ -26,7 +26,7 @@ export class OnlineBlueprintMaker {
 		});
 
 		this._blueprintSetup.IAs.forEach((ia) => {
-			if (index < 3) {
+			if (index < 4) {
 				players.push(
 					new PlayerBlueprint(`IA${index}`, HqAppearance.Colors[index], false, this.ConvertBrain(ia))
 				);

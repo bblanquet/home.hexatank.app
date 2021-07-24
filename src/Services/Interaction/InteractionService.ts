@@ -9,6 +9,8 @@ import { Singletons, SingletonKey } from '../../Singletons';
 import * as PIXI from 'pixi.js';
 import { MultiSelectionContext } from '../../Core/Menu/Smart/MultiSelectionContext';
 import { IHqGameContext } from '../../Core/Framework/Context/IHqGameContext';
+import { GameContext } from '../../Core/Framework/Context/GameContext';
+import { route } from 'preact-router';
 
 export class InteractionService implements IInteractionService<IHqGameContext> {
 	private _layerService: ILayerService;
@@ -32,6 +34,10 @@ export class InteractionService implements IInteractionService<IHqGameContext> {
 			this._layerService.GetViewport(),
 			gameContext
 		);
+		this._interaction.OnError.On((src: any, data: Error) => {
+			GameContext.Error = data;
+			route('{{sub_path}}Error', true);
+		});
 
 		this._interaction.Listen();
 		(manager as any).on('pointerdown', this._inputNotifier.HandleMouseDown.bind(this._inputNotifier), false);

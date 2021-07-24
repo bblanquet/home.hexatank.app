@@ -5,7 +5,7 @@ import { IAudioService } from '../../../../Services/Audio/IAudioService';
 import Icon from '../../Icon/IconComponent';
 import { AudioLoader } from '../../../../Core/Framework/AudioLoader';
 
-export class VictoryBtn extends Component<any, any> {
+export class VictoryBtn extends Component<{ OnClick: () => void }, any> {
 	private _lockDiv: any;
 
 	render() {
@@ -24,10 +24,7 @@ export class VictoryBtn extends Component<any, any> {
 								AudioLoader.GetAudio(AudioArchive.ok),
 								0.1
 							);
-							this._lockDiv.classList.remove('bounce');
-							setTimeout(() => {
-								this._lockDiv.classList.add('bounce');
-							}, 10);
+							this.props.OnClick();
 						}}
 					>
 						<Icon Value="fas fa-flag" />

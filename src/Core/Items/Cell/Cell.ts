@@ -42,6 +42,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 	//events
 	public OnFieldChanged: ILiteEvent<Cell> = new LiteEvent<Cell>();
+	public OnVehicleIn: ILiteEvent<Vehicle> = new LiteEvent<Vehicle>();
 	public OnVehicleChanged: ILiteEvent<Vehicle> = new LiteEvent<Vehicle>();
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 
@@ -72,6 +73,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		});
 		this._selectionCircle = new PIXI.Circle(0, 0, GameSettings.Size / 2);
 		this.SetSelectionAnimation();
+		this.OnVehicleIn.On(this.UnloadCell.bind(this));
 	}
 
 	private HandleFieldDestroyed(src: any, field: Item): void {
@@ -98,7 +100,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	}
 
 	public IsOverOccupied(): boolean {
-		return 1 < this._occupiers.length;
+		return 1 < this.GetOccupiers().length;
 	}
 
 	public SetSelectionAnimation(): void {
@@ -122,6 +124,25 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 	IsEqualed(item: Cell): boolean {
 		return this === item;
+	}
+
+	private UnloadCell() {
+		if (
+			this.IsOverOccupied() &&
+			this.GetOccupiers().every((e) => e.GetCurrentCell() === this && !e.HasNextCell())
+		) {
+			const units = this.GetOccupiers();
+			const sortNames = units.map((e) => e.Id).sort((a, b) => a.localeCompare(b));
+			sortNames.forEach((unitName, index) => {
+				if (0 < index) {
+					const unit = units.find((u) => u.Id === unitName);
+					const freeCell = this.GetNearby(1).find((c) => c && TypeTranslator.IsAccessible(c, unit));
+					if (freeCell) {
+						unit.SetNextCell(freeCell);
+					}
+				}
+			});
+		}
 	}
 
 	public UpdateSelectable(src: any, data: any): void {
@@ -173,6 +194,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	}
 
 	public GetOccupiers(): Vehicle[] {
+		this._occupiers = this._occupiers.filter((o) => o.IsAlive());
 		return this._occupiers;
 	}
 
@@ -206,6 +228,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	}
 
 	public HasOccupier(): boolean {
+		this._occupiers = this._occupiers.filter((o) => o.IsAlive());
 		return 0 < this._occupiers.length;
 	}
 
@@ -217,12 +240,12 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		return this.HasAlly(a) || this.GetNearby().filter((c) => (<Cell>c).HasAlly(a)).length > 0;
 	}
 
-	public AddOccupier(movable: Vehicle) {
-		this._occupiers.push(movable);
+	public AddOccupier(vehicle: Vehicle) {
+		this._occupiers.push(vehicle);
 	}
 
-	public RemoveOccupier(movable: Vehicle) {
-		this._occupiers = this._occupiers.filter((o) => o !== movable);
+	public RemoveOccupier(vehicle: Vehicle) {
+		this._occupiers = this._occupiers.filter((o) => o !== vehicle);
 	}
 
 	public IsBlocked(): boolean {

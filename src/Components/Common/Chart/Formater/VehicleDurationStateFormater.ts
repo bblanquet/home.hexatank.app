@@ -72,7 +72,7 @@ export class VehicleDurationStateFormater implements IDurationFormater {
 		compared.States.forEach((action) => {
 			dates.push(action.X);
 		});
-		return dates.sort(); //.filter((date, index, a) => a.indexOf(date) === index)
+		return dates.sort();
 	}
 
 	private GetEmptyDurations(dates: number[]): Duration[] {
@@ -118,6 +118,10 @@ export class VehicleDurationStateFormater implements IDurationFormater {
 						emptyDuration,
 						startDate
 					)}`;
+
+					if (data.Id.includes('Moh') && state === DurationState.Wrong) {
+						var a = 0;
+					}
 
 					result.push(new StatusDuration(state, emptyDuration.Start, emptyDuration.End, label));
 					return false;

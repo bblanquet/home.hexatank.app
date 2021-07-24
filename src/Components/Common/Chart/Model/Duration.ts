@@ -15,4 +15,8 @@ export class Duration {
 	public Includes(value: Duration) {
 		return this.Start <= value.Start && value.End <= this.End;
 	}
+
+	public Equals(value: Duration) {
+		return this.Start === value.Start && value.End === this.End;
+	}
 }

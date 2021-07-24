@@ -12,6 +12,7 @@ import { CancelCombination } from '../../Core/Interaction/Combination/CancelComb
 import { ClearTrashCombination } from '../../Core/Interaction/Combination/ClearTrashCombination';
 import { SelectionCombination } from '../../Core/Interaction/Combination/SelectionCombination';
 import { MultiSelectionContext } from '../../Core/Menu/Smart/MultiSelectionContext';
+import { route } from 'preact-router';
 
 export class RecordInteractionService implements IInteractionService<GameContext> {
 	private _inputNotifier: InputNotifier;
@@ -38,6 +39,10 @@ export class RecordInteractionService implements IInteractionService<GameContext
 			this._layerService.GetViewport(),
 			gameContext
 		);
+		this._interaction.OnError.On((src: any, data: Error) => {
+			GameContext.Error = data;
+			route('{{sub_path}}Error', true);
+		});
 		this._interaction.Listen();
 		(manager as any).on('pointerdown', this._inputNotifier.HandleMouseDown.bind(this._inputNotifier), false);
 		(manager as any).on('pointermove', this._inputNotifier.HandleMouseMove.bind(this._inputNotifier), false);

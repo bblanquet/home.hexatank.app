@@ -2,7 +2,6 @@ import { BasicField } from './../Items/Cell/Field/BasicField';
 import { InteractionInfo } from './InteractionInfo';
 import { LiteEvent } from './../../Utils/Events/LiteEvent';
 import { IUpdateService } from './../../Services/Update/IUpdateService';
-import { UnitGroup } from '../Items/UnitGroup';
 import { ICombination } from './Combination/ICombination';
 import { InputNotifier } from './InputNotifier';
 import { CombinationContext } from './Combination/CombinationContext';
@@ -15,9 +14,8 @@ import { IInteractionContext, InteractionKind } from './IInteractionContext';
 import { ISelectableChecker } from './ISelectableChecker';
 import { ViewContext } from '../../Utils/Geometry/ViewContext';
 import { Singletons, SingletonKey } from '../../Singletons';
-import { StaticLogger } from '../../Utils/Logger/StaticLogger';
-import { LogKind } from '../../Utils/Logger/LogKind';
 import { IGameContext } from '../Framework/Context/IGameContext';
+import { Env } from '../../Env';
 
 export class InteractionContext implements IContextContainer, IInteractionContext {
 	private _updateService: IUpdateService;
@@ -25,6 +23,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 	public Point: PIXI.Point;
 	public View: ViewContext;
 	private _selectedItem: Array<Item>;
+	public OnError: LiteEvent<Error> = new LiteEvent<Error>();
 	public OnInteractionChanged: LiteEvent<InteractionInfo> = new LiteEvent<InteractionInfo>();
 
 	constructor(
@@ -113,14 +112,14 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 		const cell = item as Cell;
 
 		return (
-			(cell.HasOccupier() && this._checker.IsSelectable(<Item>(<any>(<Cell>item).GetOccupiers()[0]))) ||
-			this._checker.IsSelectable(<Item>(<any>(<Cell>item).GetField()))
+			cell.GetOccupiers().some((oc) => this._checker.IsSelectable(oc)) ||
+			this._checker.IsSelectable((cell.GetField() as any) as Item)
 		);
 	}
 
 	private GetSelectable(cell: Cell): Item {
-		if (cell.HasOccupier() && this._checker.IsSelectableWithCell(cell.GetOccupiers()[0], cell)) {
-			return cell.GetOccupiers()[0];
+		if (cell.GetOccupiers().some((oc) => this._checker.IsSelectable(oc))) {
+			return cell.GetOccupiers().find((oc) => this._checker.IsSelectable(oc));
 		} else {
 			if (cell.GetField() instanceof BasicField) {
 				return cell;
@@ -131,6 +130,20 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 	}
 
 	public OnSelect(item: Item): void {
+		if (Env.IsPrd()) {
+			try {
+				this.Select(item);
+			} catch (e) {
+				if (e instanceof Error) {
+					this.OnError.Invoke(this, e);
+				}
+			}
+		} else {
+			this.Select(item);
+		}
+	}
+
+	private Select(item: Item): void {
 		if (!this._gameContext.State.IsPause) {
 			if (item) {
 				if (item instanceof Cell && this.ContainsSelectable(item)) {
@@ -144,7 +157,6 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 				info.ItemsCount = this._selectedItem.length;
 				info.Items = this._selectedItem.map((s) => s.constructor.name);
 				this.OnInteractionChanged.Invoke(this, info);
-				//StaticLogger.Log(LogKind.info, this.GetInteractionInfo());
 			}
 
 			let context = new CombinationContext();
@@ -152,33 +164,13 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 			context.InteractionKind = this.Kind;
 			context.Point = this.Point;
 
-			//StaticLogger.Log(LogKind.info, `TRIGGER ${InteractionKind[this.Kind]}`);
-
 			this._combinations.some((combination) => {
 				if (combination.Combine(context)) {
-					//StaticLogger.Log(LogKind.success, `combination: ${combination.constructor.name}`);
 					return true;
 				}
 				return false;
 			});
 		}
-	}
-
-	private GetInteractionInfo() {
-		return `COUNT[${this._selectedItem.length}] ITEMS[ ${this._selectedItem.map(
-			(e) => `${e.constructor.name} `
-		)}] INT[${InteractionKind[this.Kind]}] ${this.GetDetail(this._selectedItem)}`;
-	}
-
-	private HasGroup(items: Item[]): boolean {
-		return 0 < items.length && items[0] instanceof UnitGroup;
-	}
-
-	private GetDetail(items: Item[]) {
-		if (!this.HasGroup(items)) {
-			return '';
-		}
-		return `GROUPLISTENING[${(items[0] as UnitGroup).IsListeningOrder}]`;
 	}
 
 	public HandleForcingSelectedItem(obj: any, data: { item: Item; isForced: boolean }): void {

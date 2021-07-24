@@ -51,12 +51,16 @@ import { DefenseRequester } from '../Decision/Requests/Area/DefenseRequester';
 import { TankLowRequester } from '../Decision/Requests/Area/TankLowRequester';
 import { TankMediumRequester } from '../Decision/Requests/Area/TankMediumRequester';
 import { IBrain } from '../Decision/IBrain';
+import { IdleTruckHandler } from '../Decision/Handlers/Handler/IdleTruckHandler';
+import { IdleTruckRequester } from '../Decision/Requests/Global/Requesters/IdleTruckRequester';
 
 export class NormalBrain implements IBrainProvider {
 	GetBrain(hq: Headquarter, hqs: Headquarter[], areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
-		const brain = new Brain(hq, areas, true);
+		const brain = new Brain(hq, areas, diamond, true);
 
 		const handlers = new Groups<ISimpleRequestHandler>();
+		handlers.Add('10', new IdleTruckHandler(brain));
+
 		handlers.Add('10', new EnemyReactorHandler());
 		handlers.Add('10', new DefenseHandler());
 		handlers.Add('10', new PowerUpRequestHandler());
@@ -102,6 +106,7 @@ export class NormalBrain implements IBrainProvider {
 			new DiamondExpansionMaker(hq, brain, areaSearch),
 			new GeneralRequester([
 				new GeneralTruckRequester(10),
+				new IdleTruckRequester(10, brain),
 				//new DiamondRoadRequest(7),
 				new GeneralHealingRequester(2),
 				new GeneralUpEnergyRequester(8),
@@ -109,7 +114,6 @@ export class NormalBrain implements IBrainProvider {
 			])
 		);
 
-		brain.SetDiamond(diamond);
 		return brain;
 	}
 }

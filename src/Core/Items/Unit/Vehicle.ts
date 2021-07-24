@@ -143,6 +143,10 @@ export abstract class Vehicle extends AliveItem
 		this.SetProperty(SvgArchive.wheels[0], (s) => (s.alpha = 1));
 	}
 
+	public GetCurrentOrder(): IOrder {
+		return this._currentOrder;
+	}
+
 	public IsMainCell(cell: Cell): boolean {
 		if (this.HasNextCell()) {
 			if (this._translationMaker.Percentage() < 50) {
@@ -253,6 +257,7 @@ export abstract class Vehicle extends AliveItem
 			this._currentCell.RemoveOccupier(this);
 		}
 		this._currentCell = cell;
+		this._currentCell.OnVehicleIn.Invoke(this, this);
 		this._currentCell.AddOccupier(this);
 		this.InitCell(this._currentCell.GetBoundingBox());
 		if (nextCell) {
@@ -430,30 +435,6 @@ export abstract class Vehicle extends AliveItem
 
 		CellStateSetter.SetStates(formerCell.GetAll());
 		CellStateSetter.SetStates(this._currentCell.GetAll());
-
-		this.UnloadCell();
-	}
-
-	private UnloadCell() {
-		if (
-			this._currentCell.IsOverOccupied() &&
-			this._currentCell
-				.GetOccupiers()
-				.every((e) => e.GetCurrentCell() === this.GetCurrentCell() && !e.HasNextCell())
-		) {
-			const cell = this.GetCurrentCell();
-			const units = this._currentCell.GetOccupiers();
-			const sortNames = units.map((e) => e.Id).sort((a, b) => a.localeCompare(b));
-			sortNames.forEach((unitName, index) => {
-				if (0 < index) {
-					const unit = units.find((u) => u.Id === unitName);
-					// const freeCell = cell.GetNearby(1).find((c) => c && TypeTranslator.IsAccessible(c, unit));
-					// if (freeCell) {
-					// 	unit.SetNextCell(freeCell);
-					// }
-				}
-			});
-		}
 	}
 
 	public Destroy(): void {

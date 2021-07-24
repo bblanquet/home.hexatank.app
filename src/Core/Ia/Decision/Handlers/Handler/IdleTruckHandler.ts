@@ -12,10 +12,12 @@ export class IdleTruckHandler implements ISimpleRequestHandler {
 	constructor(private _brain: Brain) {}
 
 	Handle(request: AreaRequest): void {
-		const trucks = this._brain.Hq.GetVehicles().filter((t) => t instanceof Truck);
-		const idleTrucks = trucks.filter((t) => !t.HasOrder()) as Truck[];
-		if (0 < idleTrucks.length) {
-			idleTrucks.forEach((truck) => {
+		this._brain.Hq
+			.GetVehicles()
+			.filter((t) => t instanceof Truck)
+			.map((t) => t as Truck)
+			.filter((t) => this.IsIdle(t as Truck))
+			.forEach((truck) => {
 				if (this._brain.GetDiamond().IsAlive()) {
 					truck.GiveOrder(
 						new TruckPatrolOrder(
@@ -28,8 +30,14 @@ export class IdleTruckHandler implements ISimpleRequestHandler {
 					truck.GiveOrder(new MoneyOrder(truck));
 				}
 			});
-		}
 	}
+
+	IsIdle(t: Truck): boolean {
+		return (
+			!t.HasOrder() || (t.GetCurrentOrder() instanceof TruckPatrolOrder && !this._brain.GetDiamond().IsAlive())
+		);
+	}
+
 	Type(): RequestType {
 		return RequestType.TruckOrder;
 	}

@@ -18,7 +18,7 @@ import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
 
 export class TruckBrain implements IBrainProvider {
 	GetBrain(hq: Headquarter, hqs: IHeadquarter[], areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
-		const brain = new Brain(hq, areas, false);
+		const brain = new Brain(hq, areas, diamond, false);
 
 		const handlers = new Groups<ISimpleRequestHandler>();
 		handlers.Add('10', new IdleTruckHandler(brain));
@@ -27,10 +27,9 @@ export class TruckBrain implements IBrainProvider {
 			new AreaRequestMaker([]),
 			new RequestHandler(handlers),
 			new DummyExpansionMaker(),
-			new GeneralRequester([ new IdleTruckRequester(10) ])
+			new GeneralRequester([ new IdleTruckRequester(10, brain) ])
 		);
 
-		brain.SetDiamond(diamond);
 		return brain;
 	}
 }

@@ -35,7 +35,7 @@ export class ReactorAppearance extends Item {
 					[ this.Reactor.Hq.Identity.Skin.GetReactor(), SvgArchive.bonus.reactor.light ],
 					0,
 					1,
-					0.05
+					0.1
 				);
 			} else {
 				this._lightAnimator = new FadeOutAnimation(
@@ -43,7 +43,7 @@ export class ReactorAppearance extends Item {
 					[ this.Reactor.Hq.Identity.Skin.GetReactor(), SvgArchive.bonus.reactor.light ],
 					1,
 					0,
-					0.05
+					0.1
 				);
 			}
 		});
@@ -61,7 +61,7 @@ export class ReactorAppearance extends Item {
 		this.Reactor.GetCell().OnCellStateChanged.On(this._onCellStateChanged);
 		this._animator = new BouncingScaleAnimator(this);
 		this._rotator = new RotationAnimator(this, [ SvgArchive.bonus.reactor.light ], true);
-		this._coverRotator = new RotationAnimator(this, [ SvgArchive.bonus.reactor.rotationCover ], true, 0.016);
+		this._coverRotator = new RotationAnimator(this, [ SvgArchive.bonus.reactor.rotationCover ], true, 0.06);
 
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.Reactor.GetCell().IsVisible();

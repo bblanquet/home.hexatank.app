@@ -2,14 +2,20 @@ import { MonitoredOrder } from './../../../Ia/Order/MonitoredOrder';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { ErrorHandler } from '../../../../Utils/Exceptions/ErrorHandler';
+import { Tank } from '../../../Items/Unit/Tank';
+import { TargetMonitoredOrder } from '../../../Ia/Order/TargetMonitoredOrder';
 
 export class MultiSelectionHelper {
 	public GiveOrders(vehicles: Vehicle[], selectedCells: Cell[]) {
-		selectedCells = selectedCells.filter((c) => !c.IsBlocked());
+		ErrorHandler.ThrowNullOrEmpty(vehicles);
+		ErrorHandler.ThrowNullOrEmpty(selectedCells);
+
 		if (selectedCells.length < vehicles.length) {
 			for (let index = 0; index < vehicles.length; index++) {
 				let modulo = index % selectedCells.length;
-				vehicles[index].GiveOrder(new MonitoredOrder(selectedCells[modulo], vehicles[index]));
+				const cell = selectedCells[modulo];
+				const vehicle = vehicles[index];
+				this.GiveOrder(vehicle, cell);
 			}
 		} else if (vehicles.length < selectedCells.length) {
 			let cells = new Array<Cell>();
@@ -20,18 +26,27 @@ export class MultiSelectionHelper {
 		}
 	}
 
+	private GiveOrder(vehicle: Vehicle, cell: Cell) {
+		if (vehicle instanceof Tank) {
+			vehicle.GiveOrder(new TargetMonitoredOrder(cell, vehicle as Tank));
+		} else if (!cell.IsBlocked()) {
+			vehicle.GiveOrder(new MonitoredOrder(cell, vehicle));
+		}
+	}
+
 	private SetPaths(vehicles: Vehicle[], selectedCells: Cell[]) {
 		let pathsVehicleList = this.GetVehiclePathsList(vehicles, selectedCells);
 		for (let index = 0; index < pathsVehicleList.length; index++) {
-			let cell = pathsVehicleList[index].Pop();
-			pathsVehicleList[index].GetVehicle().GiveOrder(new MonitoredOrder(cell, vehicles[index]));
+			const cell = pathsVehicleList[index].Pop();
+			const vehicle = vehicles[index];
+			this.GiveOrder(vehicle, cell);
 			pathsVehicleList.forEach((pathVehicle) => {
 				pathVehicle.Remove(cell.Coo());
 			});
 		}
 	}
 
-	public GetSubList(cells: Cell[], threshold: number, result: Cell[]): void {
+	private GetSubList(cells: Cell[], threshold: number, result: Cell[]): void {
 		if (result.length < threshold) {
 			let first = new Array<Cell>();
 			let second = new Array<Cell>();
@@ -45,7 +60,7 @@ export class MultiSelectionHelper {
 		}
 	}
 
-	public Split(rawList: Cell[], firstList: Cell[], secondList: Cell[]): Cell {
+	private Split(rawList: Cell[], firstList: Cell[], secondList: Cell[]): Cell {
 		var middle = Math.floor(rawList.length / 2);
 		for (let index = 0; index < middle; index++) {
 			firstList.push(rawList[index]);

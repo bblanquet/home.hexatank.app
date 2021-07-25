@@ -116,7 +116,7 @@ export abstract class Vehicle extends AliveItem
 
 		if (this.Identity.IsPlayer) {
 			this.GenerateSprite(SvgArchive.selectionBlueVehicle);
-			this._infiniteAnimator = new InfiniteFadeAnimation(this, SvgArchive.selectionBlueVehicle, 0, 1, 0.05);
+			this._infiniteAnimator = new InfiniteFadeAnimation(this, SvgArchive.selectionBlueVehicle, 0, 1, 0.1);
 			this.RootSprites.push(SvgArchive.selectionBlueVehicle);
 		}
 
@@ -257,7 +257,6 @@ export abstract class Vehicle extends AliveItem
 			this._currentCell.RemoveOccupier(this);
 		}
 		this._currentCell = cell;
-		this._currentCell.OnVehicleIn.Invoke(this, this);
 		this._currentCell.AddOccupier(this);
 		this.InitCell(this._currentCell.GetBoundingBox());
 		if (nextCell) {
@@ -435,6 +434,7 @@ export abstract class Vehicle extends AliveItem
 
 		CellStateSetter.SetStates(formerCell.GetAll());
 		CellStateSetter.SetStates(this._currentCell.GetAll());
+		this._currentCell.UnloadCell();
 	}
 
 	public Destroy(): void {

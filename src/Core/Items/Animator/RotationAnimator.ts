@@ -1,16 +1,19 @@
 import { IAnimator } from './IAnimator';
 import { Item } from '../Item';
+import { TimeTimer } from '../../../Utils/Timer/TimeTimer';
 
 export class RotationAnimator implements IAnimator {
 	IsDone: boolean;
+	private _timer: TimeTimer;
 
 	public constructor(
 		private _item: Item,
 		private _sprites: string[],
 		private _side: boolean,
-		private _current: number = 0.03
+		private _current: number = 0.05
 	) {
 		this._item.SetProperties(this._sprites, (e) => (e.alpha = 1));
+		this._timer = new TimeTimer(20);
 	}
 
 	public Init(radian: number) {
@@ -23,7 +26,9 @@ export class RotationAnimator implements IAnimator {
 
 	Reset(): void {}
 	Update(viewX: number, viewY: number): void {
-		const delta = this._side ? this._current : -this._current;
-		this._item.SetProperties(this._sprites, (s) => (s.rotation += delta));
+		if (this._timer.IsElapsed()) {
+			const delta = this._side ? this._current : -this._current;
+			this._item.SetProperties(this._sprites, (s) => (s.rotation += delta));
+		}
 	}
 }

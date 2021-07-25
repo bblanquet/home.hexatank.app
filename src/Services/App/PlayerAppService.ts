@@ -15,6 +15,7 @@ import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
 import { GameContext } from '../../Core/Framework/Context/GameContext';
 import { GameState } from '../../Core/Framework/Context/GameState';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
+import { CellState } from '../../Core/Items/Cell/CellState';
 
 export class PlayerAppService implements IAppService<GameBlueprint> {
 	private _context: GameBlueprint;
@@ -66,14 +67,15 @@ export class PlayerAppService implements IAppService<GameBlueprint> {
 		this._updateService.Register(gameState);
 		this._layerService.Register(this._app);
 		this._gameContextService.Register(blueprint, gameState);
-		const gameContext = this._gameContextService.Publish();
-		this._interactionService.Register(this._interactionManager, gameContext);
+		const context = this._gameContextService.Publish();
+		this._interactionService.Register(this._interactionManager, context);
 
-		gameContext.GetCells().forEach((c) => {
+		this._app.start();
+		CellStateSetter.SetStates(context.GetCells());
+		context.GetCells().forEach((c) => {
+			c.SetState(CellState.Visible);
 			c.AlwaysVisible();
 		});
-		CellStateSetter.SetStates(gameContext.GetCells());
-		this._app.start();
 	}
 
 	public Publish(): PIXI.Application {

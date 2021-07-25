@@ -100,7 +100,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 
 	public SetSelectionAnimation(): void {
 		const white = new BasicItem(this.GetCell().GetBoundingBox(), SvgArchive.selectionBlueReactor, ZKind.BelowCell);
-		white.SetAnimator(new InfiniteFadeAnimation(white, SvgArchive.selectionBlueReactor, 0, 1, 0.02));
+		white.SetAnimator(new InfiniteFadeAnimation(white, SvgArchive.selectionBlueReactor, 0, 1, 0.05));
 		white.SetVisible(() => this.IsUpdatable);
 		white.SetAlive(() => this.IsUpdatable);
 	}

@@ -120,7 +120,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 		blue.SetVisible(() => this.IsAlive());
 		blue.SetAlive(() => this.IsAlive());
 		const white = new BasicItem(this._cell.GetBoundingBox(), SvgArchive.selectionWhiteHq, ZKind.BelowCell);
-		white.SetAnimator(new InfiniteFadeAnimation(white, SvgArchive.selectionWhiteHq, 0, 1, 0.05));
+		white.SetAnimator(new InfiniteFadeAnimation(white, SvgArchive.selectionWhiteHq, 0, 1, 0.1));
 		white.SetVisible(() => this.IsAlive());
 		white.SetAlive(() => this.IsAlive());
 	}

@@ -34,7 +34,7 @@ export class UpAnimation extends Item {
 		});
 		this.IsCentralRef = true;
 		this.InitPosition(this._vehicle.GetBoundingBox());
-		this._animatorAnimator = new BouncingScaleUpAnimator(this, this._images, 0.001);
+		this._animatorAnimator = new BouncingScaleUpAnimator(this, this._images);
 
 		this._vehicle.OnCellChanged.On(this.CellChanged.bind(this));
 		this.GetCurrentSprites().Values().forEach((s) => {

@@ -42,7 +42,6 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 	//events
 	public OnFieldChanged: ILiteEvent<Cell> = new LiteEvent<Cell>();
-	public OnVehicleIn: ILiteEvent<Vehicle> = new LiteEvent<Vehicle>();
 	public OnVehicleChanged: ILiteEvent<Vehicle> = new LiteEvent<Vehicle>();
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 
@@ -73,7 +72,6 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		});
 		this._selectionCircle = new PIXI.Circle(0, 0, GameSettings.Size / 2);
 		this.SetSelectionAnimation();
-		this.OnVehicleIn.On(this.UnloadCell.bind(this));
 	}
 
 	private HandleFieldDestroyed(src: any, field: Item): void {
@@ -110,7 +108,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 		this._blueSelection = new BasicItem(this.GetBoundingBox(), SvgArchive.selectionBlueCell, ZKind.BelowCell);
 		this._blueSelection.SetAnimator(
-			new InfiniteFadeAnimation(this._blueSelection, SvgArchive.selectionBlueCell, 0, 1, 0.02)
+			new InfiniteFadeAnimation(this._blueSelection, SvgArchive.selectionBlueCell, 0, 1, 0.03)
 		);
 		this._blueSelection.SetVisible(() => this._isSelectable);
 		this._blueSelection.SetAlive(() => true);
@@ -126,7 +124,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		return this === item;
 	}
 
-	private UnloadCell() {
+	public UnloadCell() {
 		if (
 			this.IsOverOccupied() &&
 			this.GetOccupiers().every((e) => e.GetCurrentCell() === this && !e.HasNextCell())

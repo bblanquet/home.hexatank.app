@@ -1,7 +1,7 @@
 import { Cell } from '../../Items/Cell/Cell';
 import { TypeTranslator } from '../../Items/Cell/Field/TypeTranslator';
 import { WaterField } from '../../Items/Cell/Field/WaterField';
-import { Vehicle } from '../../Items/Unit/Vehicle';
+import { Tank } from '../../Items/Unit/Tank';
 import { AStarEngine } from '../AStarEngine';
 import { AStarHelper } from '../AStarHelper';
 
@@ -10,7 +10,7 @@ export class TargetRoad {
 }
 
 export class TargetRoadProvider {
-	constructor(protected Tank: Vehicle, protected Destination: Cell) {}
+	constructor(protected Tank: Tank, protected Destination: Cell) {}
 
 	private IsAround() {
 		return this.Tank.GetCurrentCell().GetNearby().some((c) => c === this.Destination);

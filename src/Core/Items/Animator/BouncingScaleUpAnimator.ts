@@ -5,7 +5,7 @@ import { IAnimator } from './IAnimator';
 export class BouncingScaleUpAnimator implements IAnimator {
 	public IsDone: boolean = false;
 	private _scale: number = 0;
-	private _step: number = 0.08;
+	private _step: number = 0.005;
 	private _isIncreasing: boolean = true;
 	private _speed: number;
 	private _timer: TimeTimer;
@@ -16,8 +16,8 @@ export class BouncingScaleUpAnimator implements IAnimator {
 			e.width = 0;
 			e.height = 0;
 		});
-		this._speed = 0.01;
-		this._timer = new TimeTimer(20);
+		this._speed = 0.005;
+		this._timer = new TimeTimer(10);
 	}
 	Reset(): void {
 		this._scale = 0;

@@ -5,15 +5,15 @@ import { IAnimator } from './IAnimator';
 export class BouncingScaleDownAnimator implements IAnimator {
 	public IsDone: boolean = false;
 	private _scale: number = 1;
-	private _step: number = 0.08;
+	private _step: number = 0.005;
 	private _isIncreasing: boolean = true;
 	private _timer: TimeTimer;
 	private _speed: number;
 
 	public constructor(private _item: Item, private _sprites: string[]) {
 		this._item.SetProperties(this._sprites, (e) => (e.alpha = 1));
-		this._speed = 0.01;
-		this._timer = new TimeTimer(20);
+		this._speed = 0.005;
+		this._timer = new TimeTimer(10);
 	}
 	Reset(): void {}
 

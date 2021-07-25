@@ -1,7 +1,7 @@
 export class GameSettings {
 	public static TurrelRotatingDuration: number = 1000;
 	public static RotatingDuration: number = 1000; //0.05
-	public static TranslatinDuration: number = 3000; //1
+	public static TranslatinDuration: number = 4000; //1
 	public static MissileTranslationSpeed: number = 5;
 
 	public static DiamondLoading: number = 300; //30

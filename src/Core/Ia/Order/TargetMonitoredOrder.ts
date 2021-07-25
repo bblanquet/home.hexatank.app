@@ -57,11 +57,17 @@ export class TargetMonitoredOrder extends ParentOrder {
 		} else if (!this.HasAccess(this.CurrentOrder.GetPath())) {
 			next = [];
 			this.SetCurrentOrder(new IdleOrder());
+		} else if (this.IsNextTo(nextRoad)) {
+			this.SetCurrentOrder(new TargetCellOrder(this.Tank, nextRoad.Target, new IdleOrder()));
 		}
 		if (!isNullOrUndefined(next) && !isEqual(next, this._currentPath)) {
 			this._currentPath = next;
 			this.OnPathFound.Invoke(this, this._currentPath);
 		}
+	}
+
+	private IsNextTo(nextRoad: TargetRoad) {
+		return nextRoad && nextRoad.Target && 0 === nextRoad.Road.length;
 	}
 
 	private HasNext(nextRoad: TargetRoad) {

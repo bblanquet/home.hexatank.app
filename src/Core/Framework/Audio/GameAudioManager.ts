@@ -105,7 +105,7 @@ export class GameAudioManager implements IGameAudioManager {
 	HandleOrder(src: Vehicle, order: IOrder): void {
 		const playerHq = this._gameContext.GetPlayerHq();
 		if (playerHq) {
-			if (src.GetRelation(playerHq.Identity) === Relationship.Ally) {
+			if (src.GetRelation(playerHq.Identity) === Relationship.Ally && src.IsSelected()) {
 				const voices = [
 					AudioLoader.GetAudio(AudioArchive.ayaya),
 					AudioLoader.GetAudio(AudioArchive.copyThat),

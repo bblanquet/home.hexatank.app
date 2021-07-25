@@ -16,6 +16,7 @@ import { LogKind } from '../../../Utils/Logger/LogKind';
 import { ItemsUpdater } from '../../ItemsUpdater';
 import { PacketContent } from './Contents/PacketContent';
 import { LiteEvent } from '../../../Utils/Events/LiteEvent';
+import { LifeContent } from './Contents/LifeContext';
 
 export class OnlineReceiver {
 	public OnInconsistency: LiteEvent<Date> = new LiteEvent<Date>();
@@ -26,6 +27,7 @@ export class OnlineReceiver {
 		this._obs = [
 			new NetworkObserver(PacketKind.VehicleCreated, this.HandleVehicleCreated.bind(this)),
 			new NetworkObserver(PacketKind.VehicleDestroyed, this.HandleVehicleDestroyed.bind(this)),
+			new NetworkObserver(PacketKind.Damaged, this.HandleVehicleDamaged.bind(this)),
 			new NetworkObserver(PacketKind.Target, this.HandleTarget.bind(this)),
 			new NetworkObserver(PacketKind.Camouflage, this.HandleCamouflage.bind(this)),
 			new NetworkObserver(PacketKind.PathChanged, this.HandlePathChanged.bind(this)),
@@ -52,6 +54,18 @@ export class OnlineReceiver {
 	private IsEmitingHq(name: string): boolean {
 		const hq = this._context.GetHqFromId(this.GetId(name));
 		return hq && hq.Identity.Name !== this._context.GetPlayerHq().Identity.Name && !hq.IsIa();
+	}
+
+	private HandleVehicleDamaged(message: NetworkMessage<PacketContent<LifeContent>>): void {
+		const vehicle = this._context.GetVehicle(message.Content.Id);
+		if (vehicle) {
+			if (vehicle.IsAlive() && message.Content.Extra.Life < vehicle.GetCurrentLife()) {
+				vehicle.SetCurrentLife(message.Content.Extra.Life);
+				StaticLogger.Log(LogKind.info, `[DESTROY] [VEHICLE] ${message.Content}`);
+			}
+		} else {
+			this.HandleConsistency(`[CONSISTENCY] ${message.Content} not found`);
+		}
 	}
 
 	private HandleVehicleDestroyed(message: NetworkMessage<string>): void {

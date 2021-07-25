@@ -49,6 +49,7 @@ export enum PacketKind {
 	PowerChanged,
 	Camouflage,
 	PathChanged,
+	Damaged,
 	FieldChanged,
 	SyncStart,
 	SyncLoaded,

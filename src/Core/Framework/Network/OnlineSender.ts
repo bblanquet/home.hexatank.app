@@ -13,6 +13,7 @@ import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
 import { PacketKind } from '../../../Network/Message/PacketKind';
 import { PeerSocket } from '../../../Network/Socket/Peer/PeerSocket';
 import { NextCellContent } from './Contents/NextCellContent';
+import { LifeContent } from './Contents/LifeContext';
 import { TargetContent } from './Contents/TargetContent';
 import { PacketContent } from './Contents/PacketContent';
 import { Identity } from '../../Items/Identity';
@@ -27,6 +28,7 @@ export class OnlineSender {
 
 	private _handleDestroyedVehicle: any = this.HandleVehicleDestroyed.bind(this);
 	private _handlePathChanged: any = this.HandlePathChanged.bind(this);
+	private _handleDamaged: any = this.HandleDamaged.bind(this);
 	private _handleCamouglage: any = this.HandleCamouflageChanged.bind(this);
 	private _handleCancel: any = this.HandleCancel.bind(this);
 
@@ -93,6 +95,7 @@ export class OnlineSender {
 			const message = this.Wrap<PacketContent<any>>(PacketKind.VehicleCreated, this.GetVContent(vehicle));
 			this._socket.Emit(message);
 		}
+		vehicle.OnDamageReceived.On(this._handleDamaged);
 		vehicle.OnDestroyed.On(this._handleDestroyedVehicle);
 	}
 
@@ -138,6 +141,17 @@ export class OnlineSender {
 		content.Extra.NextCId = src.HasNextCell() ? src.GetNextCell().Coo() : '';
 		content.Extra.Path = [];
 		const message = this.Wrap<PacketContent<NextCellContent>>(PacketKind.PathChanged, content);
+		this._socket.Emit(message);
+	}
+
+	private HandleDamaged(src: Vehicle, damage: number): void {
+		const content = new PacketContent<LifeContent>();
+		content.Extra = new LifeContent();
+		content.Id = src.Identity.Name;
+		content.VId = src.Id;
+		content.CId = src.GetCurrentCell().Coo();
+		content.Extra.Life = src.GetCurrentLife();
+		const message = this.Wrap<PacketContent<LifeContent>>(PacketKind.Damaged, content);
 		this._socket.Emit(message);
 	}
 

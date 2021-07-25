@@ -8,59 +8,42 @@ import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Visible from '../Common/Struct/Visible';
 import { Env } from '../../Env';
 import Panel from '../Components/Panel/Panel';
+import { IAudioService } from '../../Services/Audio/IAudioService';
+import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
+import { Singletons, SingletonKey } from '../../Singletons';
 
 export default class HomeScreen extends Component<any, any> {
-	constructor() {
-		super();
+	componentDidMount() {
+		const profil = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+		const soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
+		soundService.SetMute(profil.GetProfil().IsMute);
+		soundService.PlayLoungeMusic();
 	}
 
-	private ToSinglePlayer(): void {
-		route('{{sub_path}}SinglePlayer', true);
-	}
-
-	private ToCampaign(): void {
-		route('{{sub_path}}Green', true);
-	}
-
-	private ToHost(): void {
-		route('{{sub_path}}Host', true);
-	}
-
-	private ToRecord(): void {
-		route('{{sub_path}}Profil', true);
-	}
-
-	private ToGuest(): void {
-		route('{{sub_path}}Guest', true);
-	}
-
-	private ToMonitoring(): void {
-		route('{{sub_path}}Customer', true);
-	}
 	render() {
 		return (
 			<Panel
 				content={
 					<div class="container-center">
-						<Btn Color={ColorKind.Red} OnClick={() => this.ToCampaign()}>
+						<Btn Color={ColorKind.Red} OnClick={() => route('{{sub_path}}Green', true)}>
 							<Icon Value="fas fa-dungeon" /> Campaign
 						</Btn>
-						<Btn Color={ColorKind.Red} OnClick={() => this.ToSinglePlayer()}>
+						<Btn Color={ColorKind.Red} OnClick={() => route('{{sub_path}}SinglePlayer', true)}>
 							<Icon Value="fas fa-gamepad" /> Play
 						</Btn>
 						<DropDownBtn
 							icon={'fas fa-network-wired'}
 							title={'Multiplayers'}
 							items={[
-								new ButtonOption('Guest', () => this.ToGuest()),
-								new ButtonOption('Host', () => this.ToHost())
+								new ButtonOption('Guest', () => route('{{sub_path}}Guest', true)),
+								new ButtonOption('Host', () => route('{{sub_path}}Host', true))
 							]}
 						/>
-						<Btn Color={ColorKind.Black} OnClick={() => this.ToRecord()}>
+						<Btn Color={ColorKind.Black} OnClick={() => route('{{sub_path}}Profil', true)}>
 							<Icon Value="fas fa-user-circle" /> Profil
 						</Btn>
 						<Visible isVisible={!Env.IsPrd()}>
-							<Btn Color={ColorKind.Blue} OnClick={() => this.ToMonitoring()}>
+							<Btn Color={ColorKind.Blue} OnClick={() => route('{{sub_path}}Customer', true)}>
 								<Icon Value="fab fa-watchman-monitoring" /> Monitoring
 							</Btn>
 						</Visible>
@@ -68,7 +51,7 @@ export default class HomeScreen extends Component<any, any> {
 				}
 				footer={
 					<div class="navbar nav-inner" style="font-weight:bold;">
-						v 0.8.0
+						v 0.8.13
 					</div>
 				}
 			/>

@@ -21,6 +21,8 @@ import { Cell } from '../../Core/Items/Cell/Cell';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
 import { AudioLoader } from '../../Core/Framework/AudioLoader';
+import { LiteEvent } from '../../Utils/Events/LiteEvent';
+import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 
 export class FireHook extends Hook<RuntimeState> {
 	private _gameContextService: IGameContextService<FireBlueprint, FireContext>;
@@ -32,6 +34,8 @@ export class FireHook extends Hook<RuntimeState> {
 	private _appService: IAppService<CamouflageBlueprint>;
 	private _onItemSelectionChanged: any = this.OnItemSelectionChanged.bind(this);
 	private _handleRetry: any = this.Retry.bind(this);
+	public OnRefresh: SimpleEvent = new SimpleEvent();
+	public middle: Point;
 
 	constructor(d: [RuntimeState, StateUpdater<RuntimeState>]) {
 		super(d[0], d[1]);
@@ -74,7 +78,10 @@ export class FireHook extends Hook<RuntimeState> {
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
-		this._appService.OnRetried.On(this._handleRetry);
+		this._appService.OnRefresh.On(this._handleRetry);
+		const player = this._gameContext.GetPlayer();
+		this.middle = player.GetBoundingBox().GetCentralPoint();
+		this.OnRefresh.Invoke();
 	}
 
 	private Retry(): void {
@@ -105,7 +112,7 @@ export class FireHook extends Hook<RuntimeState> {
 		this._gameContext.State.OnGameStatusChanged.Clear();
 		this._profilService.OnPointsAdded.Clear();
 		this._interactionService.OnMultiMenuShowed.Clear();
-		this._appService.OnRetried.Off(this._handleRetry);
+		this._appService.OnRefresh.Off(this._handleRetry);
 	}
 
 	private HandlePoints(e: any, details: PointDetails): void {
@@ -141,9 +148,8 @@ export class FireHook extends Hook<RuntimeState> {
 		}
 	}
 
-	public GetMiddle(): Point {
-		const player = this._gameContext.GetPlayer();
-		return player.GetBoundingBox().GetCentralPoint();
+	public GetCenter(): Point {
+		return this.middle;
 	}
 
 	public SendContext(item: Item): void {

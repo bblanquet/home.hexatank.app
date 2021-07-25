@@ -21,6 +21,7 @@ import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { Groups } from '../../Utils/Collections/Groups';
+import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { Point } from '../../Utils/Geometry/Point';
 import { Curve } from '../../Utils/Stats/Curve';
@@ -38,6 +39,8 @@ export class GameHook extends Hook<RuntimeState> {
 	public Timeout: SimpleEvent = new SimpleEvent();
 	private _onItemSelectionChanged: any = this.OnItemSelectionChanged.bind(this);
 	private _handleRetry: any = this.Retry.bind(this);
+	public OnRefresh: SimpleEvent = new SimpleEvent();
+	public middle: Point;
 
 	constructor(d: [RuntimeState, StateUpdater<RuntimeState>]) {
 		super(d[0], d[1]);
@@ -90,7 +93,7 @@ export class GameHook extends Hook<RuntimeState> {
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
-		this._appService.OnRetried.On(this.Retry.bind(this));
+		this._appService.OnRefresh.On(this.Retry.bind(this));
 		if (this._onlineService.GetOnlinePlayerManager()) {
 			this._onlineService
 				.GetOnlinePlayerManager()
@@ -100,6 +103,9 @@ export class GameHook extends Hook<RuntimeState> {
 					});
 				});
 		}
+		const player = this._gameContext.GetPlayer();
+		this.middle = player.GetBoundingBox().GetCentralPoint();
+		this.OnRefresh.Invoke();
 	}
 
 	private Retry(): void {
@@ -134,7 +140,7 @@ export class GameHook extends Hook<RuntimeState> {
 		this._profilService.OnPointsAdded.Clear();
 		this._gameContext.State.OnGameStatusChanged.Clear();
 		this._interactionService.OnMultiMenuShowed.Clear();
-		this._appService.OnRetried.Off(this._handleRetry);
+		this._appService.OnRefresh.Off(this._handleRetry);
 	}
 
 	private HandlePoints(e: any, details: PointDetails): void {
@@ -143,9 +149,8 @@ export class GameHook extends Hook<RuntimeState> {
 		});
 	}
 
-	public GetMiddle(): Point {
-		const player = this._gameContext.GetPlayer();
-		return player.GetBoundingBox().GetCentralPoint();
+	public GetCenter(): Point {
+		return this.middle;
 	}
 
 	public SendContext(item: Item): void {

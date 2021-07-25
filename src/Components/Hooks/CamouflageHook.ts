@@ -19,6 +19,8 @@ import { IKeyService } from '../../Services/Key/IKeyService';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
 import { AudioLoader } from '../../Core/Framework/AudioLoader';
+import { LiteEvent } from '../../Utils/Events/LiteEvent';
+import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 
 export class CamouflageHook extends Hook<RuntimeState> {
 	private _gameContextService: IGameContextService<CamouflageBlueprint, CamouflageContext>;
@@ -30,6 +32,8 @@ export class CamouflageHook extends Hook<RuntimeState> {
 	private _gameContext: CamouflageContext;
 	private _onItemSelectionChanged: any = this.OnItemSelectionChanged.bind(this);
 	private _handleRetry: any = this.Retry.bind(this);
+	public OnRetried: SimpleEvent = new SimpleEvent();
+	public middle: Point;
 
 	constructor(d: [RuntimeState, StateUpdater<RuntimeState>]) {
 		super(d[0], d[1]);
@@ -49,13 +53,16 @@ export class CamouflageHook extends Hook<RuntimeState> {
 		);
 		this._gameContext = this._gameContextService.Publish();
 
-		this._soundService.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
 		this._profilService.OnPointsAdded.On(this.HandlePoints.bind(this));
-		this._appService.OnRetried.On(this._handleRetry);
+		this._appService.OnRefresh.On(this._handleRetry);
+		this._soundService.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));
+		const player = this._gameContext.GetPlayer();
+		this.middle = player.GetBoundingBox().GetCentralPoint();
+		this.OnRetried.Invoke();
 	}
 
 	private Retry(): void {
@@ -86,12 +93,11 @@ export class CamouflageHook extends Hook<RuntimeState> {
 		this._gameContext.State.OnGameStatusChanged.Clear();
 		this._interactionService.OnMultiMenuShowed.Clear();
 		this._profilService.OnPointsAdded.Clear();
-		this._appService.OnRetried.Off(this._handleRetry);
+		this._appService.OnRefresh.Off(this._handleRetry);
 	}
 
-	public GetMiddlePoint(): Point {
-		const player = this._gameContext.GetPlayer();
-		return player.GetBoundingBox().GetCentralPoint();
+	public GetCenter(): Point {
+		return this.middle;
 	}
 
 	static DefaultState(): RuntimeState {

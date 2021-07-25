@@ -46,7 +46,11 @@ export default class PlayerScreen extends HookedComponent<{}, PlayerHook, Player
 							left={<LogComponent Messages={this.Hook.GetRecord().Messages} />}
 							right={
 								<span>
-									<GameCanvas middle={this.Hook.GetMiddle()} uncollect={true} />
+									<GameCanvas
+										Center={this.Hook.GetCenter()}
+										OnRefresh={this.Hook.OnRefresh}
+										uncollect={true}
+									/>
 									<Visible
 										isVisible={this.Hook.State.Item !== null && this.Hook.State.Item !== undefined}
 									>

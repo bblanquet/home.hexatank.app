@@ -190,7 +190,6 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 	public AlwaysVisible() {
 		this._isAlwaysVisible = true;
-		this._state = CellState.Visible;
 	}
 
 	public GetOccupiers(): Vehicle[] {

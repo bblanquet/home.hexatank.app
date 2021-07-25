@@ -19,6 +19,7 @@ import { GameState } from '../../Core/Framework/Context/GameState';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { GameAudioManager } from '../../Core/Framework/Audio/GameAudioManager';
+import { CellState } from '../../Core/Items/Cell/CellState';
 
 export class FireAppService implements IAppService<FireBlueprint> {
 	private _blueprint: FireBlueprint;
@@ -37,7 +38,7 @@ export class FireAppService implements IAppService<FireBlueprint> {
 	private _audioService: IAudioService;
 	private _victory: () => void;
 	private _defeat: () => void;
-	public OnRetried: SimpleEvent = new SimpleEvent();
+	public OnRefresh: SimpleEvent = new SimpleEvent();
 
 	constructor() {
 		this._appProvider = new AppProvider();
@@ -72,19 +73,20 @@ export class FireAppService implements IAppService<FireBlueprint> {
 		this._audioService.Register(this._gameAudioService);
 		this._context.State.OnGameStatusChanged.On(this.GameStatusChanged.bind(this));
 
-		this._context.GetCells().forEach((c) => {
-			c.AlwaysVisible();
-		});
+		this._app.start();
 
 		CellStateSetter.SetStates(this._context.GetCells());
-		this._app.start();
+		this._context.GetCells().forEach((c) => {
+			c.SetState(CellState.Visible);
+			c.AlwaysVisible();
+		});
 	}
 
 	Retry(): void {
 		this._context.State.OnGameStatusChanged.Off(this.GameStatusChanged.bind(this));
 		this.Collect();
 		this.Register(this._blueprint, this._victory, this._defeat);
-		this.OnRetried.Invoke();
+		this.OnRefresh.Invoke();
 	}
 
 	IsRetriable(): boolean {
@@ -125,6 +127,5 @@ export class FireAppService implements IAppService<FireBlueprint> {
 		this._updateService.Collect();
 		this._app.destroy();
 		this._app = null;
-		this._audioService.PlayLoungeMusic();
 	}
 }

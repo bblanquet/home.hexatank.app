@@ -6,6 +6,7 @@ export interface IAudioService {
 	GetGameAudioManager(): IGameAudioManager;
 	SetMute(value: boolean): void;
 	IsMute(): boolean;
+	IsPlaying(content: string): boolean;
 	Play(content: string, volume: number, loop?: boolean): number | null;
 	Stop(content: string, volume: number): void;
 	PlayAgain(content: string, id?: number, volume?: number): void;

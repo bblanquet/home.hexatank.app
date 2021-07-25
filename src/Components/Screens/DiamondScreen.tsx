@@ -107,7 +107,7 @@ export default class DiamondScreen extends HookedComponent<{}, DiamondHook, Runt
 						/>
 					</Visible>
 				</Visible>
-				<GameCanvas middle={this.Hook.GetMiddle()} />
+				<GameCanvas Center={this.Hook.GetCenter()} OnRefresh={this.Hook.OnRefresh} />
 			</Redirect>
 		);
 	}

@@ -9,8 +9,9 @@ import { IsMobile } from '../../Utils/ToolBox';
 import { IBlueprint } from '../../Core/Framework/Blueprint/IBlueprint';
 import PageAnalyser from './PageAnalyser';
 import { Point } from '../../Utils/Geometry/Point';
+import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 
-export default class GameCanvas extends Component<{ middle: Point; uncollect?: boolean }, {}> {
+export default class GameCanvas extends Component<{ Center: Point; OnRefresh: SimpleEvent; uncollect?: boolean }, {}> {
 	private _gameCanvas: HTMLElement;
 	private _resizeFunc: any = this.ResizeTheCanvas.bind(this);
 	private _updater: ItemsUpdater;
@@ -29,13 +30,13 @@ export default class GameCanvas extends Component<{ middle: Point; uncollect?: b
 	}
 
 	private Init() {
-		this._gameCanvas.innerHTML = '';
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 		this._updater = Singletons.Load<IUpdateService>(SingletonKey.Update).Publish();
+		this._gameCanvas.innerHTML = '';
 		this._gameCanvas.appendChild(this._appService.Publish().view);
 		this.ResizeTheCanvas();
-		this.SetCenter();
-		this._appService.OnRetried.On(() => {
+		this.SetCenter(this.props.Center);
+		this.props.OnRefresh.On(() => {
 			this.Init();
 		});
 	}
@@ -45,8 +46,19 @@ export default class GameCanvas extends Component<{ middle: Point; uncollect?: b
 		window.addEventListener('resize', this._resizeFunc);
 		window.addEventListener('DOMContentLoaded', this._resizeFunc);
 		window.addEventListener('scroll', this._resizeFunc);
+
 		this.Init();
 		this.GameLoop();
+	}
+
+	SetCenter(point: Point) {
+		if (point) {
+			this.ResizeTheCanvas();
+			const halfWidth = this._width / 2;
+			const halfHeight = this._height / 2;
+			this._updater.ViewContext.SetX(-(point.X - halfWidth));
+			this._updater.ViewContext.SetY(-(point.Y - halfHeight));
+		}
 	}
 
 	componentWillUnmount() {
@@ -77,15 +89,6 @@ export default class GameCanvas extends Component<{ middle: Point; uncollect?: b
 				/>
 			</PageAnalyser>
 		);
-	}
-
-	protected SetCenter(): void {
-		if (this.props.middle) {
-			const halfWidth = this._width / 2;
-			const halfHeight = this._height / 2;
-			this._updater.ViewContext.SetX(-(this.props.middle.X - halfWidth));
-			this._updater.ViewContext.SetY(-(this.props.middle.Y - halfHeight));
-		}
 	}
 
 	public ResizeTheCanvas(): void {

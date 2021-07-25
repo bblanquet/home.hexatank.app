@@ -119,7 +119,7 @@ export default class GameScreen extends HookedComponent<{}, GameHook, RuntimeSta
 						}
 					/>
 				</Visible>
-				<GameCanvas middle={this.Hook.GetMiddle()} />
+				<GameCanvas Center={this.Hook.GetCenter()} OnRefresh={this.Hook.OnRefresh} />
 			</Redirect>
 		);
 	}

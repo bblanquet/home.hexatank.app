@@ -83,10 +83,6 @@ export class LoadingHook extends Hook<LoadingState> {
 		if (isLoaded) {
 			new SingletonContainer().Register();
 			SpriteProvider.SetLoaded(true);
-			const profil = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
-			const soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-			soundService.SetMute(profil.GetProfil().IsMute);
-			soundService.PlayLoungeMusic();
 			route('{{sub_path}}Home', true);
 		}
 	}

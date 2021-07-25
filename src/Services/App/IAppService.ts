@@ -12,6 +12,6 @@ export interface IAppService<T extends IBlueprint> extends IGarbage {
 	GetStats(): StatsContext;
 	GetRecord(): RecordContext;
 	Retry(): void;
-	OnRetried: SimpleEvent;
+	OnRefresh: SimpleEvent;
 	IsRetriable(): boolean;
 }

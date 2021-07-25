@@ -22,10 +22,11 @@ import { CellStateSetter } from '../../Core/Items/Cell/CellStateSetter';
 import { GameState } from '../../Core/Framework/Context/GameState';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { Env } from '../../Env';
+import { CellState } from '../../Core/Items/Cell/CellState';
 
 export class AppService implements IAppService<GameBlueprint> {
 	private _blueprint: GameBlueprint;
-	private _gameContext: GameContext;
+	private _context: GameContext;
 	private _recordContext: RecordContext;
 	private _statContext: StatsContext;
 	private _app: PIXI.Application;
@@ -44,7 +45,7 @@ export class AppService implements IAppService<GameBlueprint> {
 	private _gameStatusChanged: any = this.GameStatusChanged.bind(this);
 	private _victory: () => void;
 	private _defeat: () => void;
-	public OnRetried: SimpleEvent = new SimpleEvent();
+	public OnRefresh: SimpleEvent = new SimpleEvent();
 
 	constructor() {
 		this._appProvider = new AppProvider();
@@ -68,10 +69,10 @@ export class AppService implements IAppService<GameBlueprint> {
 	}
 
 	Retry(): void {
-		this._gameContext.State.OnGameStatusChanged.Off(this.GameStatusChanged.bind(this));
+		this._context.State.OnGameStatusChanged.Off(this.GameStatusChanged.bind(this));
 		this.Collect();
 		this.Register(this._blueprint, this._victory, this._defeat);
-		this.OnRetried.Invoke();
+		this.OnRefresh.Invoke();
 	}
 
 	IsRetriable(): boolean {
@@ -93,23 +94,21 @@ export class AppService implements IAppService<GameBlueprint> {
 		this._updateService.Register(gameState);
 		this._interactionManager = new PIXI.InteractionManager(this._app.renderer);
 		this._gameContextService.Register(blueprint, gameState);
-		this._gameContext = this._gameContextService.Publish();
-		this._interactionService.Register(this._interactionManager, this._gameContext);
-		this._recordContext = new RecordContext(blueprint, this._gameContext);
-		this._statContext = new StatsContext(this._gameContext);
-		new BrainInjecter().Inject(this._gameContext.GetHqs(), this._gameContext.GetCells(), blueprint.Hqs);
+		this._context = this._gameContextService.Publish();
+		this._interactionService.Register(this._interactionManager, this._context);
+		this._recordContext = new RecordContext(blueprint, this._context);
+		this._statContext = new StatsContext(this._context);
+		new BrainInjecter().Inject(this._context.GetHqs(), this._context.GetCells(), blueprint.Hqs);
 		this._app.start();
-		this._gameAudioService = new GameAudioManager(blueprint.MapMode, this._gameContext);
+		this._gameAudioService = new GameAudioManager(blueprint.MapMode, this._context);
 		this._audioService.Register(this._gameAudioService);
-		this._gameContext.State.OnGameStatusChanged.On(this._gameStatusChanged);
+		this._context.State.OnGameStatusChanged.On(this._gameStatusChanged);
 
-		if (!Env.IsPrd()) {
-			this._gameContext.GetCells().forEach((c) => {
-				c.AlwaysVisible();
-			});
-		}
-
-		CellStateSetter.SetStates(this._gameContext.GetCells());
+		CellStateSetter.SetStates(this._context.GetCells());
+		this._context.GetCells().forEach((c) => {
+			c.SetState(CellState.Visible);
+			c.AlwaysVisible();
+		});
 	}
 
 	private GameStatusChanged(e: any, status: GameStatus): void {
@@ -148,6 +147,5 @@ export class AppService implements IAppService<GameBlueprint> {
 		this._onlineService.Collect();
 		this._app.destroy();
 		this._app = null;
-		this._audioService.PlayLoungeMusic();
 	}
 }

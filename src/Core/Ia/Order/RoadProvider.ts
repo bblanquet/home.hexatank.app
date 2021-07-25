@@ -1,3 +1,4 @@
+import { ErrorCat, ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
 import { Cell } from '../../Items/Cell/Cell';
 import { TypeTranslator } from '../../Items/Cell/Field/TypeTranslator';
 import { WaterField } from '../../Items/Cell/Field/WaterField';
@@ -6,7 +7,9 @@ import { AStarEngine } from '../AStarEngine';
 import { AStarHelper } from '../AStarHelper';
 
 export class RoadProvider {
-	constructor(protected Vehicle: Vehicle, protected Destination: Cell) {}
+	constructor(protected Vehicle: Vehicle, protected Destination: Cell) {
+		ErrorHandler.ThrowNull(Destination);
+	}
 
 	public GetBestRoad(): Cell[] {
 		let road = new Array<Cell>();

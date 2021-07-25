@@ -21,7 +21,7 @@ export class PlayerAppService implements IAppService<GameBlueprint> {
 	private _app: PIXI.Application;
 	private _appProvider: AppProvider;
 	private _interactionManager: PIXI.InteractionManager;
-	public OnRetried: SimpleEvent = new SimpleEvent();
+	public OnRefresh: SimpleEvent = new SimpleEvent();
 
 	private _gameContextService: IGameContextService<GameBlueprint, GameContext>;
 	private _interactionService: IInteractionService<GameContext>;

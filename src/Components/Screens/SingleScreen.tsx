@@ -24,6 +24,9 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 	constructor(props: any) {
 		super(props);
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+	}
+
+	componentDidMount() {
 		this.setState(new BlueprintSetup());
 	}
 

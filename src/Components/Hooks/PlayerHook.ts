@@ -12,6 +12,8 @@ import { Point } from '../../Utils/Geometry/Point';
 import { IGameContextService } from '../../Services/GameContext/IGameContextService';
 import { ISelectable } from '../../Core/ISelectable';
 import { Item } from '../../Core/Items/Item';
+import { LiteEvent } from '../../Utils/Events/LiteEvent';
+import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 
 export class PlayerHook extends Hook<PlayerState> {
 	private _recordService: IRecordService;
@@ -19,6 +21,7 @@ export class PlayerHook extends Hook<PlayerState> {
 	private _onItemSelectionChanged: any = this.OnItemSelectionChanged.bind(this);
 	private _updater: RecordCanvasUpdater;
 	private _context: GameContext;
+	public OnRefresh: SimpleEvent = new SimpleEvent();
 
 	constructor(d: [PlayerState, StateUpdater<PlayerState>]) {
 		super(d[0], d[1]);
@@ -27,6 +30,7 @@ export class PlayerHook extends Hook<PlayerState> {
 		this._context = this._gameService.Publish();
 		this._updater = new RecordCanvasUpdater(this.GetRecord(), this._context);
 		this._context.OnItemSelected.On(this.UpdateSelection.bind(this));
+		this.OnRefresh.Invoke();
 	}
 
 	static DefaultState(): PlayerState {
@@ -47,7 +51,7 @@ export class PlayerHook extends Hook<PlayerState> {
 		}
 	}
 
-	public GetMiddle(): Point {
+	public GetCenter(): Point {
 		const player = this._context.GetPlayer();
 		return player.GetBoundingBox().GetCentralPoint();
 	}

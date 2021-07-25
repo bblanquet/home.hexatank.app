@@ -11,6 +11,7 @@ import { TypeTranslator } from '../../Items/Cell/Field/TypeTranslator';
 import { Relationship } from '../../Items/Identity';
 import { isEqual } from 'lodash';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
+import { ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
 
 export class TargetMonitoredOrder extends ParentOrder {
 	private _vehicleCellChanged: boolean;
@@ -19,6 +20,7 @@ export class TargetMonitoredOrder extends ParentOrder {
 
 	constructor(protected Destination: Cell, protected Tank: Tank) {
 		super();
+		ErrorHandler.ThrowNull(Destination);
 		this.SetCurrentOrder(new IdleOrder());
 		this._vehicleCellChanged = true;
 		this.Tank.OnCellChanged.On(this.VehicleCellChange.bind(this));

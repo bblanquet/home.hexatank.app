@@ -33,6 +33,8 @@ export class DiamondHook extends Hook<RuntimeState> {
 	private _gameContext: DiamondContext;
 	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
 	private _handleRetry: any = this.Retry.bind(this);
+	public OnRefresh: SimpleEvent = new SimpleEvent();
+	public middle: Point;
 
 	constructor(d: [RuntimeState, StateUpdater<RuntimeState>]) {
 		super(d[0], d[1]);
@@ -50,7 +52,7 @@ export class DiamondHook extends Hook<RuntimeState> {
 		this._gameContext.OnPatrolSetting.Clear();
 		this._gameContext.State.OnGameStatusChanged.Clear();
 		this._interactionService.OnMultiMenuShowed.Clear();
-		this._appService.OnRetried.Off(this._handleRetry);
+		this._appService.OnRefresh.Off(this._handleRetry);
 	}
 
 	private Retry(): void {
@@ -85,7 +87,6 @@ export class DiamondHook extends Hook<RuntimeState> {
 		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.Interaction);
 		this._gameContext = this._gameContextService.Publish();
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
-		this._soundService.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));
 		const playerHq = this._gameContext.GetPlayerHq();
 		playerHq.OnTruckChanged.On(this.HandleTruckChanged.bind(this));
 		playerHq.OnTankRequestChanged.On(this.HandleTankChanged.bind(this));
@@ -96,7 +97,11 @@ export class DiamondHook extends Hook<RuntimeState> {
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
-		this._appService.OnRetried.On(this._handleRetry);
+		this._appService.OnRefresh.On(this._handleRetry);
+		this._soundService.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));
+		const player = this._gameContext.GetPlayer();
+		this.middle = player.GetBoundingBox().GetCentralPoint();
+		this.OnRefresh.Invoke();
 	}
 
 	private HandlePoints(e: any, details: PointDetails): void {
@@ -188,9 +193,8 @@ export class DiamondHook extends Hook<RuntimeState> {
 		this._gameContext.State.IsPause = hasMenu;
 	}
 
-	public GetMiddle(): Point {
-		const player = this._gameContext.GetPlayer();
-		return player.GetBoundingBox().GetCentralPoint();
+	public GetCenter(): Point {
+		return this.middle;
 	}
 
 	public SendContext(item: Item): void {

@@ -54,7 +54,7 @@ export class GameRenderer {
 				//make hq cells visible, need context to be setup :<, has to fix it one day
 				playerHq.GetCurrentCell().SetState(CellState.Visible);
 				playerHq.GetCurrentCell().GetNearby().forEach((cell) => {
-					(<Cell>cell).SetState(CellState.Visible);
+					cell.SetState(CellState.Visible);
 				});
 			}
 		}

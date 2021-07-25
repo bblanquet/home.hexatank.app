@@ -81,7 +81,7 @@ export default class FireScreen extends HookedComponent<{}, FireHook, RuntimeSta
 						/>
 					</Visible>
 				</Visible>
-				<GameCanvas middle={this.Hook.GetMiddle()} />
+				<GameCanvas Center={this.Hook.GetCenter()} OnRefresh={this.Hook.OnRefresh} />
 			</Redirect>
 		);
 	}

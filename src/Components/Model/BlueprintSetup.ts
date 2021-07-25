@@ -5,7 +5,7 @@ export class BlueprintSetup {
 	public Shape: string;
 	constructor() {
 		this.IsFullIA = false;
-		this.IAs = [ 'Strong' ];
+		this.IAs = [ 'Weak' ];
 		this.Env = 'Forest';
 		this.Shape = 'Flower';
 	}

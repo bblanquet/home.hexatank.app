@@ -55,7 +55,7 @@ export default class CamouflageScreen extends HookedComponent<{}, CamouflageHook
 						/>
 					</Visible>
 				</Visible>
-				<GameCanvas middle={this.Hook.GetMiddlePoint()} />
+				<GameCanvas Center={this.Hook.GetCenter()} OnRefresh={this.Hook.OnRetried} />
 			</Redirect>
 		);
 	}

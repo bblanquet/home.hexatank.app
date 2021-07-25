@@ -19,6 +19,7 @@ import { GameStatus } from '../../Core/Framework/GameStatus';
 import { GameState } from '../../Core/Framework/Context/GameState';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
+import { CellState } from '../../Core/Items/Cell/CellState';
 
 export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 	private _blueprint: CamouflageBlueprint;
@@ -38,13 +39,13 @@ export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 	private _gameStatusChanged: any = this.GameStatusChanged.bind(this);
 	private _victory: () => void;
 	private _defeat: () => void;
-	public OnRetried: SimpleEvent = new SimpleEvent();
+	public OnRefresh: SimpleEvent = new SimpleEvent();
 
 	Retry(): void {
 		this._context.State.OnGameStatusChanged.Off(this.GameStatusChanged.bind(this));
 		this.Collect();
 		this.Register(this._blueprint, this._victory, this._defeat);
-		this.OnRetried.Invoke();
+		this.OnRefresh.Invoke();
 	}
 
 	IsRetriable(): boolean {
@@ -84,11 +85,12 @@ export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 		this._audioService.Register(this._gameAudioService);
 		this._context.State.OnGameStatusChanged.On(this._gameStatusChanged);
 
+		this._app.start();
+		CellStateSetter.SetStates(this._context.GetCells());
 		this._context.GetCells().forEach((c) => {
+			c.SetState(CellState.Visible);
 			c.AlwaysVisible();
 		});
-		CellStateSetter.SetStates(this._context.GetCells());
-		this._app.start();
 	}
 
 	private GameStatusChanged(e: any, status: GameStatus) {
@@ -125,6 +127,5 @@ export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 		this._audioService.Clear();
 		this._app.destroy();
 		this._app = null;
-		this._audioService.PlayLoungeMusic();
 	}
 }

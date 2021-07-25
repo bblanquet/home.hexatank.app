@@ -9,15 +9,17 @@ export class AudioService implements IAudioService {
 	private _howls: Dictionary<Howl> = new Dictionary<Howl>();
 	private _gameAudioManager: IGameAudioManager;
 	private _isMute: boolean = false;
-	private _activeHowls: Dictionary<number>;
+	private _activeHowls: Dictionary<number> = new Dictionary<number>();
 
-	constructor() {
-		this._activeHowls = new Dictionary<number>();
+	IsPlaying(content: string): boolean {
+		return this._howls.Exist(content) && this._howls.Get(content).playing();
 	}
 
 	PlayLoungeMusic(): void {
 		if (!this._isMute) {
-			this.Play(AudioLoader.GetAudio(AudioArchive.loungeMusic), 0.1, true);
+			if (!this.IsPlaying(AudioLoader.GetAudio(AudioArchive.loungeMusic))) {
+				this.Play(AudioLoader.GetAudio(AudioArchive.loungeMusic), 0.1, true);
+			}
 		} else {
 			this.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));
 		}

@@ -10,7 +10,6 @@ import { RecordKind } from '../../../../Core/Framework/Record/Model/Item/State/R
 import { Duration } from '../Model/Duration';
 import * as luxon from 'luxon';
 import { IDurationFormater } from './IDurationFormater';
-import { FarmCombination } from '../../../../Core/Interaction/Combination/FarmCombination';
 
 export class VehicleDurationStateFormater implements IDurationFormater {
 	public Format(record: RecordContent, compRecord: RecordContent): Dictionary<StatusDuration[]> {

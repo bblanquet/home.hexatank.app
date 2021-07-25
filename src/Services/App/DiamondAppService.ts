@@ -21,6 +21,7 @@ import { GameAudioManager } from '../../Core/Framework/Audio/GameAudioManager';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
 import { BrainInjecter } from '../../Core/Ia/Decision/BrainInjecter';
 import { Headquarter } from '../../Core/Items/Cell/Field/Hq/Headquarter';
+import { CellState } from '../../Core/Items/Cell/CellState';
 
 export class DiamondAppService implements IAppService<DiamondBlueprint> {
 	private _blueprint: DiamondBlueprint;
@@ -39,7 +40,7 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 	private _audioService: IAudioService;
 	private _victory: () => void;
 	private _defeat: () => void;
-	public OnRetried: SimpleEvent = new SimpleEvent();
+	public OnRefresh: SimpleEvent = new SimpleEvent();
 
 	public Register(blueprint: DiamondBlueprint, victory: () => void, defeat: () => void): void {
 		this._appProvider = new AppProvider();
@@ -72,21 +73,23 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 		this._audioService.Register(this._gameAudioService);
 		this._context.State.OnGameStatusChanged.On(this.GameStatusChanged.bind(this));
 
-		this._context.GetCells().forEach((c) => {
-			c.AlwaysVisible();
-		});
-		CellStateSetter.SetStates(this._context.GetCells());
 		new BrainInjecter().Inject(this._context.GetHqs() as Headquarter[], this._context.GetCells(), [
 			blueprint.HqDiamond
 		]);
 		this._app.start();
+
+		CellStateSetter.SetStates(this._context.GetCells());
+		this._context.GetCells().forEach((c) => {
+			c.SetState(CellState.Visible);
+			c.AlwaysVisible();
+		});
 	}
 
 	Retry(): void {
 		this._context.State.OnGameStatusChanged.Off(this.GameStatusChanged.bind(this));
 		this.Collect();
 		this.Register(this._blueprint, this._victory, this._defeat);
-		this.OnRetried.Invoke();
+		this.OnRefresh.Invoke();
 	}
 
 	IsRetriable(): boolean {
@@ -127,6 +130,5 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 		this._updateService.Collect();
 		this._app.destroy();
 		this._app = null;
-		this._audioService.PlayLoungeMusic();
 	}
 }

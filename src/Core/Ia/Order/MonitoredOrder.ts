@@ -9,6 +9,7 @@ import { TimeTimer } from '../../../Utils/Timer/TimeTimer';
 import { TypeTranslator } from '../../Items/Cell/Field/TypeTranslator';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 import { isEqual } from 'lodash';
+import { ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
 
 export class MonitoredOrder extends ParentOrder {
 	private _vehicleCellChanged: boolean;
@@ -17,6 +18,7 @@ export class MonitoredOrder extends ParentOrder {
 
 	constructor(protected Destination: Cell, protected Vehicle: Vehicle) {
 		super();
+		ErrorHandler.ThrowNull(Destination);
 		this.SetState(OrderState.Pending);
 		this.SetCurrentOrder(new IdleOrder());
 		this._vehicleCellChanged = true;

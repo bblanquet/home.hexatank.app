@@ -1,7 +1,7 @@
 import { BasicField } from './../../../Items/Cell/Field/BasicField';
 import { CellGroup } from './../../../Items/CellGroup';
 import { CombinationContext } from '../CombinationContext';
-import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
+import { MultiSelectionContext, SelectionKind } from '../../../Menu/Smart/MultiSelectionContext';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { ILayerService } from '../../../../Services/Layer/ILayerService';
 import { Singletons, SingletonKey } from '../../../../Singletons';
@@ -16,7 +16,7 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 	}
 
 	IsMatching(context: CombinationContext): boolean {
-		return this._multiSelectionContext.IsListeningCell() && context.Items.length === 0;
+		return this._multiSelectionContext.SelectionKind === SelectionKind.Cell && context.Items.length === 0;
 	}
 
 	Combine(context: CombinationContext): boolean {

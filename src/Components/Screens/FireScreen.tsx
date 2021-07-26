@@ -16,6 +16,7 @@ import { useState } from 'preact/hooks';
 import MenuSwitcher from '../Components/Canvas/MenuSwitcher';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 import Switch from '../Common/Struct/Switch';
+import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
 
 export default class FireScreen extends HookedComponent<{}, FireHook, RuntimeState> {
 	public GetDefaultHook(): FireHook {
@@ -47,12 +48,12 @@ export default class FireScreen extends HookedComponent<{}, FireHook, RuntimeSta
 							left={
 								<div class="right-bottom-menu">
 									<ActiveRightBottomCornerButton
-										isActive={this.Hook.IsListeningVehicle()}
+										isActive={this.Hook.State.SelectionKind === SelectionKind.Vehicle}
 										callBack={() => this.Hook.SendContext(new MultiTankMenuItem())}
 										logo="fill-tank-multi-cell"
 									/>
 									<ActiveRightBottomCornerButton
-										isActive={this.Hook.IsListeningCell()}
+										isActive={this.Hook.State.SelectionKind === SelectionKind.Cell}
 										callBack={() => this.Hook.SendContext(new MultiCellMenuItem())}
 										logo="fill-mult-cell"
 									/>

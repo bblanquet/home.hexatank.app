@@ -18,6 +18,7 @@ import { HookedComponent } from '../Hooks/HookedComponent';
 import { GameHook } from '../Hooks/GameHook';
 import { RuntimeState } from '../Model/RuntimeState';
 import { useState } from 'preact/hooks';
+import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
 
 export default class GameScreen extends HookedComponent<{}, GameHook, RuntimeState> {
 	public GetDefaultHook(): GameHook {
@@ -87,12 +88,12 @@ export default class GameScreen extends HookedComponent<{}, GameHook, RuntimeSta
 										<Visible isVisible={isNullOrUndefined(this.Hook.State.Item)}>
 											<div class="right-bottom-menu">
 												<ActiveRightBottomCornerButton
-													isActive={this.Hook.IsListeningVehicle()}
+													isActive={this.Hook.State.SelectionKind === SelectionKind.Vehicle}
 													callBack={() => this.Hook.SendContext(new MultiTankMenuItem())}
 													logo="fill-tank-multi-cell"
 												/>
 												<ActiveRightBottomCornerButton
-													isActive={this.Hook.IsListeningCell()}
+													isActive={this.Hook.State.SelectionKind === SelectionKind.Cell}
 													callBack={() => this.Hook.SendContext(new MultiCellMenuItem())}
 													logo="fill-mult-cell"
 												/>

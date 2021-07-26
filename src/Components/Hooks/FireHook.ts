@@ -21,8 +21,8 @@ import { Cell } from '../../Core/Items/Cell/Cell';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
 import { AudioLoader } from '../../Core/Framework/AudioLoader';
-import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
+import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
 
 export class FireHook extends Hook<RuntimeState> {
 	private _gameContextService: IGameContextService<FireBlueprint, FireContext>;
@@ -46,6 +46,7 @@ export class FireHook extends Hook<RuntimeState> {
 		const state = new RuntimeState();
 		state.HasMenu = false;
 		state.IsSettingMenuVisible = false;
+		state.SelectionKind = SelectionKind.None;
 		state.IsSettingPatrol = false;
 		state.IsSynchronising = false;
 		state.IsMultiMenuVisible = false;
@@ -78,6 +79,7 @@ export class FireHook extends Hook<RuntimeState> {
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
+		this._interactionService.GetMultiSelectionContext().OnModeChanged.On(this.HandleMultiSelection.bind(this));
 		this._appService.OnRefresh.On(this._handleRetry);
 		const player = this._gameContext.GetPlayer();
 		this.middle = player.GetBoundingBox().GetCentralPoint();
@@ -89,6 +91,7 @@ export class FireHook extends Hook<RuntimeState> {
 		this.Init();
 		this.Update((state) => {
 			state.HasMenu = false;
+			state.SelectionKind = SelectionKind.None;
 			state.IsSettingMenuVisible = false;
 			state.IsSettingPatrol = false;
 			state.IsSynchronising = false;
@@ -109,6 +112,7 @@ export class FireHook extends Hook<RuntimeState> {
 		this._gameContext.State.OnGameStatusChanged.Clear();
 		this._gameContext.OnItemSelected.Clear();
 		this._gameContext.OnPatrolSetting.Clear();
+		this._interactionService.GetMultiSelectionContext().OnModeChanged.Clear();
 		this._gameContext.State.OnGameStatusChanged.Clear();
 		this._profilService.OnPointsAdded.Clear();
 		this._interactionService.OnMultiMenuShowed.Clear();
@@ -126,6 +130,10 @@ export class FireHook extends Hook<RuntimeState> {
 			item.OnSelectionChanged.Off(this._onItemSelectionChanged);
 			this.Update((e) => (e.Item = null));
 		}
+	}
+
+	private HandleMultiSelection(src: any, kind: SelectionKind): void {
+		this.Update((e) => (e.SelectionKind = kind));
 	}
 
 	private HandleMultiMenuShowed(src: any, isDisplayed: boolean): void {
@@ -173,16 +181,8 @@ export class FireHook extends Hook<RuntimeState> {
 		this._gameContext.State.IsPause = hasMenu;
 	}
 
-	public IsListeningCell(): boolean {
-		return this._interactionService.GetMultiSelectionContext().IsListeningCell();
-	}
-
 	public IsCovered(): boolean {
 		return this._gameContext.GetPlayerHq().IsCovered(this.State.Item as Cell);
-	}
-
-	public IsListeningVehicle(): boolean {
-		return this._interactionService.GetMultiSelectionContext().IsListeningUnit();
 	}
 
 	public GetReactor(): number {

@@ -14,13 +14,13 @@ import * as PIXI from 'pixi.js';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 import { Singletons, SingletonKey } from '../../../Singletons';
 import { SimpleEvent } from '../../../Utils/Events/SimpleEvent';
+import { LiteEvent } from '../../../Utils/Events/LiteEvent';
 
 export class MultiSelectionContext implements IInteractionContext {
 	private _updateService: IUpdateService;
 	private _layerService: ILayerService;
 
-	private _isOn: boolean;
-	public _isUnitSelection: boolean;
+	public SelectionKind: SelectionKind;
 	public Kind: InteractionKind;
 
 	public Point: PIXI.Point;
@@ -29,6 +29,7 @@ export class MultiSelectionContext implements IInteractionContext {
 	public View: ViewContext;
 	private _viewport: any;
 
+	public OnModeChanged: LiteEvent<SelectionKind> = new LiteEvent<SelectionKind>();
 	public OnSelectionChanged: SimpleEvent = new SimpleEvent();
 
 	constructor() {
@@ -40,21 +41,17 @@ export class MultiSelectionContext implements IInteractionContext {
 	}
 
 	public Listen(isUnit: boolean): void {
-		this._isOn = true;
-		this._isUnitSelection = isUnit;
+		this.SelectionKind = isUnit ? SelectionKind.Vehicle : SelectionKind.Cell;
 		this.OnSelectionChanged.Invoke();
+		this.OnModeChanged.Invoke(this, this.SelectionKind);
 	}
 
 	public IsListening(): boolean {
-		return this._isOn;
+		return this.SelectionKind !== SelectionKind.None;
 	}
 
-	public IsListeningCell(): boolean {
-		return this._isOn && !this._isUnitSelection;
-	}
-
-	public IsListeningUnit(): boolean {
-		return this._isOn && this._isUnitSelection;
+	public GetSelectionKind(): SelectionKind {
+		return this.SelectionKind;
 	}
 
 	public Moving(point: Point): void {
@@ -68,7 +65,7 @@ export class MultiSelectionContext implements IInteractionContext {
 			this.View = null;
 		}
 
-		if (this._isOn) {
+		if (this.IsListening()) {
 			this._updateService.Publish().Items.forEach((item) => {
 				item.Select(this);
 			});
@@ -80,11 +77,12 @@ export class MultiSelectionContext implements IInteractionContext {
 	}
 
 	public Close(): void {
-		this._isOn = false;
+		this.SelectionKind = SelectionKind.None;
 		this._cells = new Dictionary<Cell>();
 		this._highlightingCells.forEach((c) => c.Destroy());
 		this._highlightingCells = [];
 		this.OnSelectionChanged.Invoke();
+		this.OnModeChanged.Invoke(this, this.SelectionKind);
 	}
 
 	public OnSelect(item: Item): void {
@@ -107,4 +105,10 @@ export class MultiSelectionContext implements IInteractionContext {
 			}
 		}
 	}
+}
+
+export enum SelectionKind {
+	None,
+	Cell,
+	Vehicle
 }

@@ -2,8 +2,8 @@ import { JsonRecordContent } from '../../Core/Framework/Record/Model/JsonRecordC
 import { StageState } from '../../Services/Campaign/StageState';
 export class PlayerProfil {
 	public LastPlayerName: string = 'John doe';
-	public Version: number = 1.1;
-	public static Version: number = 1.1;
+	public Version: number = 1.2;
+	public static Version: number = 1.2;
 	public IsMute: boolean = false;
 
 	public Records: JsonRecordContent[] = [];

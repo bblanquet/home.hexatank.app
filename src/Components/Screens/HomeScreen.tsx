@@ -18,10 +18,11 @@ export default class HomeScreen extends Component<any, { IsMenu: boolean }> {
 	private _versions: Versionning[] = [
 		new Versionning('0.8.13 (Doug/Marvin delivery)', [
 			'self-automated collector',
-			'remove war frog',
+			'remove fog of war',
 			'slow down game speed',
 			'replayable stage',
-			'fix some multiselection bug'
+			'fix some multiselection bug',
+			'improve online synchronisation'
 		])
 	];
 

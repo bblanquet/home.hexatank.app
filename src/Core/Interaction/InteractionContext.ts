@@ -16,6 +16,9 @@ import { ViewContext } from '../../Utils/Geometry/ViewContext';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { IGameContext } from '../Framework/Context/IGameContext';
 import { Env } from '../../Env';
+import { LogKind } from '../../Utils/Logger/LogKind';
+import { StaticLogger } from '../../Utils/Logger/StaticLogger';
+import { UnitGroup } from '../Items/UnitGroup';
 
 export class InteractionContext implements IContextContainer, IInteractionContext {
 	private _updateService: IUpdateService;
@@ -157,6 +160,9 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 				info.ItemsCount = this._selectedItem.length;
 				info.Items = this._selectedItem.map((s) => s.constructor.name);
 				this.OnInteractionChanged.Invoke(this, info);
+				if (!Env.IsPrd()) {
+					StaticLogger.Log(LogKind.info, this.GetInteractionInfo());
+				}
 			}
 
 			let context = new CombinationContext();
@@ -166,6 +172,9 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 
 			this._combinations.some((combination) => {
 				if (combination.Combine(context)) {
+					if (!Env.IsPrd()) {
+						StaticLogger.Log(LogKind.success, `combination: ${combination.constructor.name}`);
+					}
 					return true;
 				}
 				return false;
@@ -183,5 +192,22 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 
 	HandleClearContext(): void {
 		this._selectedItem = [];
+	}
+
+	private GetInteractionInfo() {
+		return `COUNT[${this._selectedItem.length}] ITEMS[ ${this._selectedItem.map(
+			(e) => `${e.constructor.name} `
+		)}] INT[${InteractionKind[this.Kind]}] ${this.GetDetail(this._selectedItem)}`;
+	}
+
+	private HasGroup(items: Item[]): boolean {
+		return 0 < items.length && items[0] instanceof UnitGroup;
+	}
+
+	private GetDetail(items: Item[]) {
+		if (!this.HasGroup(items)) {
+			return '';
+		}
+		return `GROUPLISTENING[${(items[0] as UnitGroup).IsListeningOrder}]`;
 	}
 }

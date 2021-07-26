@@ -38,7 +38,6 @@ import { ICamouflageAble } from './ICamouflageAble';
 import { UpCalculator } from '../Cell/Field/Bonus/UpCalculator';
 import { FireUp } from './PowerUp/FireUp';
 import { SpeedUp } from './PowerUp/SpeedUp';
-// import { TypeTranslator } from '../Cell/Field/TypeTranslator';
 
 export abstract class Vehicle extends AliveItem
 	implements IMovable, IRotatable, ISelectable, ICancellable, ICamouflageAble {

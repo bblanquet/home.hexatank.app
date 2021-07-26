@@ -22,6 +22,7 @@ import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
 import { AudioLoader } from '../../Core/Framework/AudioLoader';
+import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
 
 export class DiamondHook extends Hook<RuntimeState> {
 	private _gameContextService: IGameContextService<DiamondBlueprint, DiamondContext>;
@@ -50,6 +51,7 @@ export class DiamondHook extends Hook<RuntimeState> {
 		playerHq.OnCashMissing.Clear();
 		this._gameContext.OnItemSelected.Clear();
 		this._gameContext.OnPatrolSetting.Clear();
+		this._interactionService.GetMultiSelectionContext().OnModeChanged.Clear();
 		this._gameContext.State.OnGameStatusChanged.Clear();
 		this._interactionService.OnMultiMenuShowed.Clear();
 		this._appService.OnRefresh.Off(this._handleRetry);
@@ -68,6 +70,7 @@ export class DiamondHook extends Hook<RuntimeState> {
 			state.HasWarning = false;
 			state.TankRequestCount = 0;
 			state.TruckRequestCount = 0;
+			state.SelectionKind = SelectionKind.None;
 			state.Amount = GameSettings.PocketMoney;
 			state.Item = null;
 			state.Players = [];
@@ -97,6 +100,7 @@ export class DiamondHook extends Hook<RuntimeState> {
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
+		this._interactionService.GetMultiSelectionContext().OnModeChanged.On(this.HandleMultiSelection.bind(this));
 		this._appService.OnRefresh.On(this._handleRetry);
 		this._soundService.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));
 		const player = this._gameContext.GetPlayer();
@@ -125,6 +129,7 @@ export class DiamondHook extends Hook<RuntimeState> {
 		state.Item = null;
 		state.Players = [];
 		state.GameStatus = GameStatus.Pending;
+		state.SelectionKind = SelectionKind.None;
 		state.StatusDetails = null;
 		return state;
 	}
@@ -203,8 +208,8 @@ export class DiamondHook extends Hook<RuntimeState> {
 		interaction.OnSelect(item);
 	}
 
-	public IsListeningCell(): boolean {
-		return this._interactionService.GetMultiSelectionContext().IsListeningCell();
+	private HandleMultiSelection(src: any, kind: SelectionKind): void {
+		this.Update((e) => (e.SelectionKind = kind));
 	}
 
 	public GetReactor(): number {
@@ -224,10 +229,6 @@ export class DiamondHook extends Hook<RuntimeState> {
 
 	public IsCovered(): boolean {
 		return this._gameContext.GetPlayerHq().IsCovered(this.State.Item as Cell);
-	}
-
-	public IsListeningVehicle(): boolean {
-		return this._interactionService.GetMultiSelectionContext().IsListeningUnit();
 	}
 
 	GetGoalDiamond(): number {

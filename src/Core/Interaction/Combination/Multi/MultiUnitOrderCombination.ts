@@ -1,6 +1,6 @@
 import { UnitGroup } from '../../../Items/UnitGroup';
 import { CombinationContext } from '../CombinationContext';
-import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
+import { MultiSelectionContext, SelectionKind } from '../../../Menu/Smart/MultiSelectionContext';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { ILayerService } from '../../../../Services/Layer/ILayerService';
 import { Singletons, SingletonKey } from '../../../../Singletons';
@@ -15,7 +15,7 @@ export class MultiUnitOrderCombination extends AbstractSingleCombination {
 
 	IsMatching(context: CombinationContext): boolean {
 		return (
-			this._multiContext.IsListeningUnit() &&
+			this._multiContext.SelectionKind === SelectionKind.Vehicle &&
 			context.Items.length === 1 &&
 			context.Items[0] instanceof UnitGroup &&
 			(context.Items[0] as UnitGroup).IsListeningOrder

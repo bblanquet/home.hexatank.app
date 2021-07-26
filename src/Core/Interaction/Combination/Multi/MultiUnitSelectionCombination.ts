@@ -2,9 +2,8 @@ import { IHqGameContext } from './../../../Framework/Context/IHqGameContext';
 import { ILayerService } from './../../../../Services/Layer/ILayerService';
 import { UnitGroup } from '../../../Items/UnitGroup';
 import { CombinationContext } from '../CombinationContext';
-import { Cell } from '../../../Items/Cell/Cell';
 import { Vehicle } from '../../../Items/Unit/Vehicle';
-import { MultiSelectionContext } from '../../../Menu/Smart/MultiSelectionContext';
+import { MultiSelectionContext, SelectionKind } from '../../../Menu/Smart/MultiSelectionContext';
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { Singletons, SingletonKey } from '../../../../Singletons';
 import { Relationship } from '../../../Items/Identity';
@@ -20,7 +19,7 @@ export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 	}
 
 	IsMatching(context: CombinationContext): boolean {
-		return this._multiContext.IsListeningUnit() && context.Items.length === 0;
+		return this._multiContext.SelectionKind === SelectionKind.Vehicle && context.Items.length === 0;
 	}
 
 	Combine(context: CombinationContext): boolean {

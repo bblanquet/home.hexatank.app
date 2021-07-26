@@ -17,7 +17,6 @@ export class RoadField extends BonusField {
 		if (vehicule.IsPacific) {
 			return;
 		}
-		const energy = this.GetReactorsPower(this.hq);
 		const up = new SpeedUp(
 			vehicule,
 			new CellUpCondition(vehicule),

@@ -63,19 +63,20 @@ export class OnlineGameContextManager implements IOnlineGameContextManager {
 			const dispatcher = new OnlineBlueprintMaker(this._onlinePlayerManager, this._blueprintSetup);
 			const blueprint = dispatcher.GetBlueprint();
 			this._socket.EmitAll<GameBlueprint>(PacketKind.Blueprint, blueprint);
-			this.DisableIa(blueprint);
+			this.OverrideHqSettings(blueprint);
 			this.Load(blueprint);
 		}
 	}
 
 	private HandleBlueprint(data: NetworkMessage<GameBlueprint>): void {
 		const blueprint = data.Content;
-		this.DisableIa(blueprint);
+		this.OverrideHqSettings(blueprint);
 		this.Load(blueprint);
 	}
-	private DisableIa(blueprint: GameBlueprint) {
+	private OverrideHqSettings(blueprint: GameBlueprint) {
 		if (!this._onlinePlayerManager.Player.IsAdmin) {
 			blueprint.Hqs.forEach((hq) => {
+				hq.Player.IsPlayer = hq.Player.Name === this._onlinePlayerManager.Player.Name;
 				hq.Player.IA = null;
 			});
 		}

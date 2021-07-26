@@ -13,7 +13,7 @@ export default class ActiveRightBottomCornerButton extends Component<
 			return (
 				<RightBottomCornerButton
 					isSelected={this.props.isActive}
-					callBack={this.props.callBack}
+					OnClick={this.props.callBack}
 					logo={this.props.logo}
 				/>
 			);
@@ -21,7 +21,7 @@ export default class ActiveRightBottomCornerButton extends Component<
 			return (
 				<RightBottomCornerButton
 					isSelected={this.props.isActive}
-					callBack={this.props.callBack}
+					OnClick={this.props.callBack}
 					logo={this.props.logo}
 				/>
 			);

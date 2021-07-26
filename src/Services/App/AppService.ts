@@ -84,6 +84,9 @@ export class AppService implements IAppService<GameBlueprint> {
 
 		GameSettings.Init();
 		GameSettings.SetNormalSpeed();
+		if (Env.IsPrd()) {
+			GameSettings.SetNormalSpeed();
+		}
 		const gameState = new GameState();
 		this._blueprint = blueprint;
 

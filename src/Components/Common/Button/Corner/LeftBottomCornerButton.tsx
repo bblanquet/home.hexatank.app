@@ -1,6 +1,6 @@
 import { Component, h } from 'preact';
 export default class LeftBottomCornerButton extends Component<
-	{ callBack: () => void; isMute?: boolean; isSelected: boolean },
+	{ OnClick: () => void; isMute?: boolean; isSelected: boolean },
 	any
 > {
 	render() {
@@ -15,7 +15,10 @@ export default class LeftBottomCornerButton extends Component<
 						class={`custom-left-corner-btn-layout-1 ${this.props.isSelected
 							? 'blue-primary'
 							: 'blue-selection-primary'} fit-content`}
-						onClick={this.props.callBack}
+						OnClick={() => {
+							navigator.vibrate([ 50 ]);
+							this.props.OnClick();
+						}}
 					>
 						<div class={`fill-tank-multi-cell`} />
 					</div>

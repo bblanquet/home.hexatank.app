@@ -10,6 +10,7 @@ import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
 import { ISelectable } from '../../Core/ISelectable';
 import { Cell } from '../../Core/Items/Cell/Cell';
 import { Item } from '../../Core/Items/Item';
+import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
 import { OnlinePlayer } from '../../Network/OnlinePlayer';
 import { IAppService } from '../../Services/App/IAppService';
 import { IAudioService } from '../../Services/Audio/IAudioService';
@@ -21,7 +22,6 @@ import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { Groups } from '../../Utils/Collections/Groups';
-import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { Point } from '../../Utils/Geometry/Point';
 import { Curve } from '../../Utils/Stats/Curve';
@@ -57,6 +57,7 @@ export class GameHook extends Hook<RuntimeState> {
 		state.IsSettingPatrol = false;
 		state.IsSynchronising = false;
 		state.IsMultiMenuVisible = false;
+		state.SelectionKind = SelectionKind.None;
 		state.HasMultiMenu = false;
 		state.HasWarning = false;
 		state.TankRequestCount = 0;
@@ -93,6 +94,7 @@ export class GameHook extends Hook<RuntimeState> {
 		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
+		this._interactionService.GetMultiSelectionContext().OnModeChanged.On(this.HandleMultiSelection.bind(this));
 		this._appService.OnRefresh.On(this.Retry.bind(this));
 		if (this._onlineService.GetOnlinePlayerManager()) {
 			this._onlineService
@@ -113,6 +115,7 @@ export class GameHook extends Hook<RuntimeState> {
 		this.Init();
 		this.Update((state) => {
 			state.HasMenu = false;
+			state.SelectionKind = SelectionKind.None;
 			state.IsSettingMenuVisible = false;
 			state.IsSettingPatrol = false;
 			state.IsSynchronising = false;
@@ -135,6 +138,7 @@ export class GameHook extends Hook<RuntimeState> {
 		playerHq.OnTankRequestChanged.Clear();
 		playerHq.OnDiamondCountChanged.Clear();
 		playerHq.OnCashMissing.Clear();
+		this._interactionService.GetMultiSelectionContext().OnModeChanged.Clear();
 		this._gameContext.OnItemSelected.Clear();
 		this._gameContext.OnPatrolSetting.Clear();
 		this._profilService.OnPointsAdded.Clear();
@@ -161,6 +165,10 @@ export class GameHook extends Hook<RuntimeState> {
 
 	private HandleMultiMenuShowed(src: any, isDisplayed: boolean): void {
 		this.Update((e) => (e.IsSettingMenuVisible = isDisplayed));
+	}
+
+	private HandleMultiSelection(src: any, kind: SelectionKind): void {
+		this.Update((e) => (e.SelectionKind = kind));
 	}
 
 	private HandleTruckChanged(obj: any, request: number): void {
@@ -230,16 +238,8 @@ export class GameHook extends Hook<RuntimeState> {
 		return this._appService.GetRecord().GetRecord();
 	}
 
-	public IsListeningCell(): boolean {
-		return this._interactionService.GetMultiSelectionContext().IsListeningCell();
-	}
-
 	public IsCovered(): boolean {
 		return this._gameContext.GetPlayerHq().IsCovered(this.State.Item as Cell);
-	}
-
-	public IsListeningVehicle(): boolean {
-		return this._interactionService.GetMultiSelectionContext().IsListeningUnit();
 	}
 
 	public GetReactor(): number {

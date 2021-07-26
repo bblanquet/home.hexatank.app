@@ -6,7 +6,7 @@ export class UpCalculator {
 		} else if (energy === 1) {
 			return GameSettings.Fire;
 		} else {
-			return GameSettings.Fire + (energy - 1) * (GameSettings.Fire / 2);
+			return energy * (GameSettings.Fire - 1) / 2 + GameSettings.Fire;
 		}
 	}
 
@@ -23,7 +23,7 @@ export class UpCalculator {
 	}
 
 	public GetTranslationUp(energy: number): number {
-		return -energy * 250;
+		return -energy * 350;
 	}
 
 	public GetRotationUp(energy: number): number {

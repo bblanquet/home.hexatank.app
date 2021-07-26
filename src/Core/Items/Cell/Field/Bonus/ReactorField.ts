@@ -171,8 +171,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 						return;
 					}
 					if (v instanceof Tank) {
-						const powerUp = this._bonusValueProvider.GetAttack(this.GetPower());
-						v.AddPowerUp(new FireUp(v, new TimeUpCondition(), powerUp));
+						v.AddPowerUp(new FireUp(v, new TimeUpCondition(), this.GetPower()));
 					}
 				});
 			} else if (type instanceof HealMenuItem) {
@@ -180,8 +179,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 					if (v.IsPacific) {
 						return;
 					}
-					const powerUp = this._bonusValueProvider.GetHeal(this.GetPower());
-					v.AddPowerUp(new HealUp(v, new TimeUpCondition(), powerUp));
+					v.AddPowerUp(new HealUp(v, new TimeUpCondition(), this.GetPower()));
 				});
 			} else if (type instanceof SpeedFieldMenuItem) {
 				vehicles.forEach((v) => {

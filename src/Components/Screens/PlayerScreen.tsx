@@ -79,7 +79,7 @@ export default class PlayerScreen extends HookedComponent<{}, PlayerHook, Player
 				rightColor={ColorKind.Black}
 				left={<Icon Value={icon} />}
 				right={<Icon Value={icon} />}
-				callBack={() => this.Hook.ChangePage(state)}
+				OnClick={() => this.Hook.ChangePage(state)}
 			/>
 		);
 	}

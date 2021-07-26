@@ -64,10 +64,10 @@ export class FarmField extends BonusField {
 			this._lightItem.Update(viewX, viewY);
 		}
 
-		if (!this.IsFull() && this.Energy > 0) {
+		if (!this.IsFull() && 0 < this.Energy) {
 			if (this._timer.IsElapsed()) {
 				this.SetProperty(SvgArchive.bonus.fullMoney, (s) => (s.alpha += 0.1));
-				if (this.GetCurrentSprites().Get(SvgArchive.bonus.fullMoney).alpha >= 1) {
+				if (1 <= this.GetCurrentSprites().Get(SvgArchive.bonus.fullMoney).alpha) {
 					this._lightItem.Display();
 				}
 			}

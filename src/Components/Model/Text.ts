@@ -27,6 +27,6 @@ export function GreenSentences(index: number) {
 	} else if (index === 2) {
 		return 'Make a tank destroy a shield, to reach that goal, you will need to create powerup cells.';
 	} else {
-		return 'Retrieve at least 50 diamonds for your headquarter, you got 120 seconds soldier.';
+		return 'Retrieve at least 35 diamonds for your headquarter, you got 120 seconds soldier.';
 	}
 }

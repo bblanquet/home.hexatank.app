@@ -12,7 +12,12 @@ import { AStarEngine } from '../../AStarEngine';
 export class DiamondExpansionMaker implements IExpansionMaker {
 	private _diamondRoad: Area[];
 
-	constructor(private _hq: Headquarter, private _global: Brain, private _areaSearch: AreaSearch) {}
+	constructor(
+		private _hq: Headquarter,
+		private _global: Brain,
+		private _areaSearch: AreaSearch,
+		private _parallelism: number
+	) {}
 
 	private GetDiamondRoad(global: Brain): Area[] {
 		const departure = global.Hq.GetCell();
@@ -25,7 +30,7 @@ export class DiamondExpansionMaker implements IExpansionMaker {
 	}
 
 	public Expand(): void {
-		if (this._global.AreaDecisions.filter((a) => a.HasFreeFields()).length < 3) {
+		if (this._global.AreaDecisions.filter((a) => a.HasFreeFields()).length < this._parallelism) {
 			const area = this.FindArea();
 			if (!isNullOrUndefined(area)) {
 				if (GameSettings.TankPrice <= this._hq.GetAmount()) {

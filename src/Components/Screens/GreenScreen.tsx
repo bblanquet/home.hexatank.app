@@ -76,7 +76,6 @@ export default class GreenScreen extends HookedComponent<{}, GreenHook, Campaign
 															OnClick={() => this.Hook.Select(index + 1)}
 															Color={ColorKind.Green}
 														>
-															<Icon Value="fas fa-arrow-alt-circle-right" />
 															{this.GetIcon(index + 1)}
 														</Btn>
 													);

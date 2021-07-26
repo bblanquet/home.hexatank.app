@@ -7,6 +7,7 @@ import { CombinationContext } from './CombinationContext';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
+import { Tank } from '../../Items/Unit/Tank';
 
 export class SwitchToVehicleCombination extends AbstractSingleCombination {
 	constructor(private _gameContext: IHqGameContext) {
@@ -20,9 +21,9 @@ export class SwitchToVehicleCombination extends AbstractSingleCombination {
 			(context.Items[0] instanceof Cell ||
 				context.Items[0] instanceof ReactorField ||
 				context.Items[0] instanceof UnitGroup ||
-				context.Items[0] instanceof Vehicle ||
+				context.Items[0] instanceof Tank ||
 				context.Items[0] instanceof Headquarter) &&
-			context.Items[1] instanceof Vehicle
+			context.Items[1] instanceof Tank
 		);
 	}
 
@@ -30,7 +31,7 @@ export class SwitchToVehicleCombination extends AbstractSingleCombination {
 		if (this.IsMatching(context)) {
 			const hq = (context.Items[0] as any) as ISelectable;
 			hq.SetSelected(false);
-			const vehicle = context.Items[1] as Vehicle;
+			const vehicle = context.Items[1] as Tank;
 			vehicle.SetSelected(true);
 			this._gameContext.OnItemSelected.Invoke(this, vehicle);
 			context.Items.splice(0, 1);

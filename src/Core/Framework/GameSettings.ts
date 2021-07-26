@@ -42,11 +42,11 @@ export class GameSettings {
 	public static SetNormalSpeed(): void {
 		this.TurrelRotatingDuration = 1000;
 		this.RotatingDuration = 1000;
-		this.TranslatinDuration = 1000;
+		this.TranslatinDuration = 2500;
 		this.MissileTranslationSpeed = 5;
 
 		this.DiamondLoading = 300;
-		this.FarmLoading = 5000;
+		this.FarmLoading = 1000;
 
 		this.UnitLife = 100;
 		this.NatureLife = 40;

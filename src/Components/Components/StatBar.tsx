@@ -32,7 +32,7 @@ export default class StatBar extends Component<any, { IsMute: boolean }> {
 					right={<Icon Value={'fas fa-volume-up'} />}
 					leftColor={ColorKind.Black}
 					rightColor={ColorKind.Yellow}
-					callBack={() => {
+					OnClick={() => {
 						const isMute = !this._soundService.IsMute();
 						this._soundService.SetMute(isMute);
 						this._profilService.GetProfil().IsMute = isMute;

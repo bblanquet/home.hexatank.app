@@ -13,7 +13,6 @@ import { SpeedUpHandler } from '../Decision/Handlers/Handler/SpeedUpHandler';
 import { PowerUpRequestHandler } from '../Decision/Handlers/Handler/PowerUpRequestHandler';
 import { DiamondExpansionMaker } from '../Decision/ExpansionMaker/DiamondExpansionMaker';
 import { IBrainProvider } from './IBrain';
-import { GameContext } from '../../Framework/Context/GameContext';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { Brain } from '../Decision/Brain';
 import { RequestHandler } from '../Decision/Handlers/RequestHandler';
@@ -109,7 +108,7 @@ export class StrongBrain implements IBrainProvider {
 				new PatrolRequest(1)
 			]),
 			new RequestHandler(handlers),
-			new DiamondExpansionMaker(hq, brain, areaSearch),
+			new DiamondExpansionMaker(hq, brain, areaSearch, 2),
 			new GeneralRequester([
 				new GeneralTruckRequester(10),
 				new IdleTruckRequester(10, brain),

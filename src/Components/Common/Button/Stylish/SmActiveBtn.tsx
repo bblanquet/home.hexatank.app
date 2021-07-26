@@ -6,7 +6,7 @@ export default class SmActiveBtn extends Component<
 	{
 		left: JSX.Element;
 		right: JSX.Element;
-		callBack: () => void;
+		OnClick: () => void;
 		leftColor: ColorKind;
 		rightColor: ColorKind;
 		isActive: boolean;
@@ -16,13 +16,13 @@ export default class SmActiveBtn extends Component<
 	render() {
 		if (this.props.isActive) {
 			return (
-				<SmBtn Color={this.props.leftColor} OnClick={this.props.callBack}>
+				<SmBtn Color={this.props.leftColor} OnClick={this.props.OnClick}>
 					{this.props.right}
 				</SmBtn>
 			);
 		} else {
 			return (
-				<SmBtn Color={this.props.rightColor} OnClick={this.props.callBack}>
+				<SmBtn Color={this.props.rightColor} OnClick={this.props.OnClick}>
 					{this.props.left}
 				</SmBtn>
 			);

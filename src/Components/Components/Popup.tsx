@@ -91,7 +91,7 @@ export default class Popup extends HookedComponent<
 				leftColor={ColorKind.Black}
 				rightColor={ColorKind.Red}
 				isActive={this.Hook.State.Kind === kind}
-				callBack={() => {
+				OnClick={() => {
 					this.Hook.UpdateState(kind);
 				}}
 			/>

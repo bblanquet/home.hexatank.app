@@ -11,10 +11,10 @@ import { MultiSelectionContext } from '../../Core/Menu/Smart/MultiSelectionConte
 import { CancelCombination } from '../../Core/Interaction/Combination/CancelCombination';
 import { ClearTrashCombination } from '../../Core/Interaction/Combination/ClearTrashCombination';
 import { AbortCombination } from '../../Core/Interaction/Combination/AbortCombination';
-import { TruckCombination } from '../../Core/Interaction/Combination/TruckCombination';
 import { CamouflageCombination } from '../../Core/Interaction/Combination/CamouflageCombination';
 import { SimpleUnselectCombination } from '../../Core/Interaction/Combination/SimpleUnselectCombination';
 import { CamouflageContext } from '../../Core/Framework/Context/CamouflageContext';
+import { TankCombination } from '../../Core/Interaction/Combination/TankCombination';
 
 export class CamouflageInteractionService implements IInteractionService<CamouflageContext> {
 	private _layerService: ILayerService;
@@ -36,7 +36,7 @@ export class CamouflageInteractionService implements IInteractionService<Camoufl
 			[
 				new CancelCombination(),
 				new AbortCombination(),
-				new TruckCombination(),
+				new TankCombination(),
 				new SimpleUnselectCombination(checker, gameContext),
 				new CamouflageCombination(),
 				new ClearTrashCombination(checker),

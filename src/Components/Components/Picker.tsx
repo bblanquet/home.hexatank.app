@@ -42,7 +42,7 @@ export default class Picker extends Component<
 						left={<Icon Value={'fas fa-brain'} />}
 						leftColor={ColorKind.Black}
 						rightColor={ColorKind.Red}
-						callBack={() => {
+						OnClick={() => {
 							const newIa = !this.state.IsFullIA;
 							this.setState({ IsFullIA: newIa });
 							this.props.OnChange(newIa);

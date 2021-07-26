@@ -25,12 +25,12 @@ export class DiamondContext implements IHqGameContext {
 		this.State = state;
 		this.OnTimerDone = new SimpleEvent();
 		this._hq.OnDiamondEarned.On(() => {
-			if (50 < this._hq.GetDiamondCount()) {
+			if (35 < this._hq.GetDiamondCount()) {
 				this.State.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
 			}
 		});
 		this.OnTimerDone.On(() => {
-			if (50 < this._hq.GetDiamondCount()) {
+			if (35 < this._hq.GetDiamondCount()) {
 				this.State.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
 			} else {
 				this.State.OnGameStatusChanged.Invoke(this, GameStatus.Defeat);
@@ -47,7 +47,7 @@ export class DiamondContext implements IHqGameContext {
 	}
 
 	GetDiamond(): number {
-		return 50;
+		return 35;
 	}
 
 	GetVehicles(): Vehicle[] {

@@ -6,7 +6,7 @@ export default class ActiveBtn extends Component<
 	{
 		left: JSX.Element;
 		right: JSX.Element;
-		callBack: () => void;
+		OnClick: () => void;
 		leftColor: ColorKind;
 		rightColor: ColorKind;
 		isActive: boolean;
@@ -16,13 +16,13 @@ export default class ActiveBtn extends Component<
 	render() {
 		if (this.props.isActive) {
 			return (
-				<Btn Color={this.props.leftColor} OnClick={this.props.callBack}>
+				<Btn Color={this.props.leftColor} OnClick={this.props.OnClick}>
 					{this.props.right}
 				</Btn>
 			);
 		} else {
 			return (
-				<Btn Color={this.props.rightColor} OnClick={this.props.callBack}>
+				<Btn Color={this.props.rightColor} OnClick={this.props.OnClick}>
 					{this.props.left}
 				</Btn>
 			);

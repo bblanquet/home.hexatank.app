@@ -5,7 +5,7 @@ import { Item } from '../Items/Item';
 import { Cell } from '../Items/Cell/Cell';
 import { Vehicle } from '../Items/Unit/Vehicle';
 import { ReactorField } from '../Items/Cell/Field/Bonus/ReactorField';
-
+import { Tank } from '../Items/Unit/Tank';
 export class SelectableChecker implements ISelectableChecker {
 	constructor(private _playerIdentity: Identity) {}
 
@@ -15,7 +15,7 @@ export class SelectableChecker implements ISelectableChecker {
 		}
 		if (item instanceof Cell) {
 			return true;
-		} else if (item instanceof Vehicle) {
+		} else if (item instanceof Tank) {
 			const vehicle = <Vehicle>item;
 			return vehicle.Identity.Name === this._playerIdentity.Name;
 		} else if (item instanceof ReactorField) {

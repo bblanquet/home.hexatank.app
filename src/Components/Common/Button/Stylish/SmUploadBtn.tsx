@@ -3,10 +3,7 @@ import Icon from '../../Icon/IconComponent';
 import { ColorKind } from './ColorKind';
 import SmBtn from './SmBtn';
 
-export default class SmUploadBtn extends Component<
-	{ callBack: (e: any) => void; icon: string; color: ColorKind },
-	any
-> {
+export default class SmUploadBtn extends Component<{ OnClick: (e: any) => void; icon: string; color: ColorKind }, any> {
 	private _fileInput: HTMLInputElement;
 	constructor() {
 		super();
@@ -14,7 +11,7 @@ export default class SmUploadBtn extends Component<
 		this._fileInput.type = 'file';
 	}
 	componentDidMount() {
-		this._fileInput.onchange = (e: any) => this.props.callBack(e);
+		this._fileInput.onchange = (e: any) => this.props.OnClick(e);
 	}
 
 	componentWillUnmount() {}

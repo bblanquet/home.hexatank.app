@@ -26,7 +26,7 @@ export class KamikazeBrain implements IBrainProvider {
 		brain.Setup(
 			new AreaRequestMaker([]),
 			new RequestHandler(handlers),
-			new DiamondExpansionMaker(hq, brain, areaSearch),
+			new DiamondExpansionMaker(hq, brain, areaSearch, 0),
 			new GeneralRequester([ new GeneralRaidRequester(10) ])
 		);
 

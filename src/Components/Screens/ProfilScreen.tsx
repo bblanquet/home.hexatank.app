@@ -29,7 +29,7 @@ export default class ProfilScreen extends HookedComponent<{}, ProfilHook, Profil
 							<SmUploadBtn
 								color={ColorKind.Blue}
 								icon={'fas fa-file-upload'}
-								callBack={(e: any) => this.Hook.Upload(e)}
+								OnClick={(e: any) => this.Hook.Upload(e)}
 							/>
 
 							<Visible isVisible={this.Hook.State.SelectedRecords.length === 1}>
@@ -87,7 +87,7 @@ export default class ProfilScreen extends HookedComponent<{}, ProfilHook, Profil
 																right={<Icon Value={'fas fa-toggle-on'} />}
 																leftColor={ColorKind.Red}
 																rightColor={ColorKind.Black}
-																callBack={() => this.Hook.Select(record)}
+																OnClick={() => this.Hook.Select(record)}
 																isActive={record.IsSelected}
 															/>
 															<div class="very-small-left-margin" />

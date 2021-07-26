@@ -72,7 +72,7 @@ export default class RangeComponent extends Component<
 						right={<Icon Value={'fas fa-pause'} />}
 						leftColor={ColorKind.Black}
 						rightColor={ColorKind.Blue}
-						callBack={() => this.Pushed()}
+						OnClick={() => this.Pushed()}
 						isActive={this.state.isActive}
 					/>
 					<div class="range-wrap" style="margin:5px 5px 5px 5px;">

@@ -16,7 +16,7 @@ export class HqRender {
 		const id = new Identity(
 			blueprint.Player.Name,
 			HqAppearance.Skins.Get(ColorKind[blueprint.Player.Color]),
-			isNullOrUndefined(blueprint.Player.IA)
+			blueprint.Player.IsPlayer
 		);
 		const cell = cells.Get(this.HqCoo(blueprint));
 		const hq = cell.SetField(new Headquarter(id, cell));

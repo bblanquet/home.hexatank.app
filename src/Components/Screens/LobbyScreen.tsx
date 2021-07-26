@@ -38,7 +38,7 @@ export default class LobbyScreen extends HookedComponent<{}, LobbyHook, LobbySta
 										rightColor={ColorKind.Black}
 										left={<Icon Value={'fas fa-cogs'} />}
 										right={<Icon Value={'fas fa-cogs'} />}
-										callBack={() => {
+										OnClick={() => {
 											this.Hook.SetMode(LobbyMode.setting);
 										}}
 									/>
@@ -67,7 +67,7 @@ export default class LobbyScreen extends HookedComponent<{}, LobbyHook, LobbySta
 											<Icon Value={'fas fa-comments'} />
 										</span>
 									}
-									callBack={() => {
+									OnClick={() => {
 										this.Hook.SetMode(LobbyMode.chat);
 									}}
 								/>
@@ -77,7 +77,7 @@ export default class LobbyScreen extends HookedComponent<{}, LobbyHook, LobbySta
 									rightColor={ColorKind.Black}
 									left={<Icon Value={'fas fa-clipboard-list'} />}
 									right={<Icon Value={'fas fa-clipboard-list'} />}
-									callBack={() => {
+									OnClick={() => {
 										this.Hook.SetMode(LobbyMode.pending);
 									}}
 								/>
@@ -126,7 +126,7 @@ export default class LobbyScreen extends HookedComponent<{}, LobbyHook, LobbySta
 											right={<Icon Value={'fas fa-toggle-off'} />}
 											leftColor={ColorKind.Gray}
 											rightColor={ColorKind.Green}
-											callBack={() => this.Hook.ChangeReady()}
+											OnClick={() => this.Hook.ChangeReady()}
 											isActive={this.Hook.State.Player.IsReady}
 										/>
 									</div>

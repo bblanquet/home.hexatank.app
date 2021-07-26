@@ -72,7 +72,7 @@ export class WeakBrain implements IBrainProvider {
 				new PatrolRequest(1)
 			]),
 			new RequestHandler(handlers),
-			new DiamondExpansionMaker(hq, brain, areaSearch),
+			new DiamondExpansionMaker(hq, brain, areaSearch, 2),
 			new GeneralRequester([
 				new GeneralTruckRequester(10),
 				new IdleTruckRequester(10, brain),

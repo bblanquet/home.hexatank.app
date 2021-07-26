@@ -1,11 +1,8 @@
 import { PowerUpRequester } from '../Decision/Requests/Area/PowerUpRequester';
-import { ShieldFieldBorderRequestHandler } from '../Decision/Handlers/Handler/Field/ShieldFieldBorderRequestHandler';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { DiamondRoadRequester } from '../Decision/Requests/Area/DiamondRoadRequester';
 import { DiamondRoadCleaningHandler } from '../Decision/Handlers/Handler/DiamondRoadCleaningHandler';
 import { SimpleFarmFieldRequester } from '../Decision/Requests/Area/Field/SimpleFarmFieldRequester';
-import { ReactorShieldHandler } from '../Decision/Handlers/Handler/Field/ReactorShieldHandler';
-import { ReactorShieldRequester } from '../Decision/Requests/Area/Field/ReactorShieldRequester';
 import { FoeReactorRequester } from '../Decision/Requests/Area/FoeReactorRequester';
 import { EnemyReactorHandler } from '../Decision/Handlers/Handler/EnemyReactorHandler';
 import { SpeedUpRequester } from '../Decision/Requests/Area/SpeedUpRequester';
@@ -13,7 +10,6 @@ import { SpeedUpHandler } from '../Decision/Handlers/Handler/SpeedUpHandler';
 import { PowerUpRequestHandler } from '../Decision/Handlers/Handler/PowerUpRequestHandler';
 import { DiamondExpansionMaker } from '../Decision/ExpansionMaker/DiamondExpansionMaker';
 import { IBrainProvider } from './IBrain';
-import { GameContext } from '../../Framework/Context/GameContext';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { Brain } from '../Decision/Brain';
 import { RequestHandler } from '../Decision/Handlers/RequestHandler';
@@ -34,7 +30,6 @@ import { HealUnitRequestHandler } from '../Decision/Handlers/Handler/HealUnitReq
 import { DefenseHandler } from '../Decision/Handlers/Handler/DefenseHandler';
 import { ReactorRequestHandler } from '../Decision/Handlers/Handler/ReactorRequestHandler';
 import { PatrolRequest } from '../Decision/Requests/Area/PatrolRequest';
-import { ShieldRequestHandler } from '../Decision/Handlers/Handler/Field/ShieldRequestHandler';
 import { SquadRequestHandler } from '../Decision/Handlers/Handler/SquadRequestHandler';
 import { TankHighRequestHandler } from '../Decision/Handlers/Handler/TankHighRequestHandler';
 import { TankMediumRequestHandler } from '../Decision/Handlers/Handler/TankMediumRequestHandler';
@@ -103,7 +98,7 @@ export class NormalBrain implements IBrainProvider {
 				new PatrolRequest(1)
 			]),
 			new RequestHandler(handlers),
-			new DiamondExpansionMaker(hq, brain, areaSearch),
+			new DiamondExpansionMaker(hq, brain, areaSearch, 1),
 			new GeneralRequester([
 				new GeneralTruckRequester(10),
 				new IdleTruckRequester(10, brain),

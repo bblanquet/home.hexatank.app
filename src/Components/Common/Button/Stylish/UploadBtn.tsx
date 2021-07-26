@@ -6,9 +6,9 @@ import Icon from '../../Icon/IconComponent';
 import Btn from './Btn';
 import { ColorKind } from './ColorKind';
 
-export default class UploadBtn extends Component<{ callBack: (e: any) => void; title: string; icon: string }, any> {
+export default class UploadBtn extends Component<{ OnClick: (e: any) => void; title: string; icon: string }, any> {
 	private _fileInput: HTMLInputElement;
-	private _callback: any = (e: any) => this.props.callBack(e);
+	private _callback: any = (e: any) => this.props.OnClick(e);
 	constructor() {
 		super();
 		this._fileInput = document.createElement('input') as HTMLInputElement;

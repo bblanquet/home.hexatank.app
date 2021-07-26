@@ -36,7 +36,7 @@ export default class HostScreen extends HookedComponent<{}, HostHook, HostState>
 										leftColor={ColorKind.Black}
 										rightColor={ColorKind.Yellow}
 										isActive={this.Hook.State.HasPassword}
-										callBack={() => this.Hook.HasPassword()}
+										OnClick={() => this.Hook.HasPassword()}
 									/>
 								</div>
 								<div class="container-center-horizontal">

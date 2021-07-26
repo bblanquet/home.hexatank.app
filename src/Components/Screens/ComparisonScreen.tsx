@@ -29,7 +29,7 @@ export default class ComparisonScreen extends HookedComponent<{}, ComparisonHook
 				rightColor={ColorKind.Black}
 				left={<Icon Value={icon} />}
 				right={<Icon Value={icon} />}
-				callBack={() => this.Hook.ChangeState(state)}
+				OnClick={() => this.Hook.ChangeState(state)}
 			/>
 		);
 	}

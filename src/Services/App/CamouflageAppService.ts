@@ -71,7 +71,8 @@ export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 		this._victory = victory;
 		this._defeat = defeat;
 		GameSettings.Init();
-		GameSettings.SetFastSpeed();
+		GameSettings.SetNormalSpeed();
+		GameSettings.TranslatinDuration = 1000;
 		const gameState = new GameState();
 		this._blueprint = blueprint;
 		this._app = this._appProvider.Provide(blueprint);

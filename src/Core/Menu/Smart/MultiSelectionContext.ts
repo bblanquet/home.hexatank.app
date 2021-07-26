@@ -20,7 +20,7 @@ export class MultiSelectionContext implements IInteractionContext {
 	private _updateService: IUpdateService;
 	private _layerService: ILayerService;
 
-	public SelectionKind: SelectionKind;
+	public SelectionKind: SelectionKind = SelectionKind.None;
 	public Kind: InteractionKind;
 
 	public Point: PIXI.Point;

@@ -32,8 +32,6 @@ export class IdleTruckHandler implements IHandler {
 	}
 
 	private IsIdle(t: Truck): boolean {
-		return (
-			!t.HasOrder() || (t.GetCurrentOrder() instanceof TruckPatrolOrder && !this._brain.GetDiamond().IsAlive())
-		);
+		return !t.IsBusy() || (t.GetCurrentOrder() instanceof TruckPatrolOrder && !this._brain.GetDiamond().IsAlive());
 	}
 }

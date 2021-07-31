@@ -13,7 +13,7 @@ export class SpeedUpCondtion implements IAreaCondition {
 			reactor.GetPower() > 1 &&
 			!reactor.IsLocked() &&
 			area.GetInnerFoeCount() === 0 &&
-			0 === area.GetOuterFoeCount() &&
+			area.GetOuterFoeCount() === 0 &&
 			this._global.Trucks.some((t) => areas.some((a) => a.Contains(t.GetCurrentCell())))
 		);
 	}

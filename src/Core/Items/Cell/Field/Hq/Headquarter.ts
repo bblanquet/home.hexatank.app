@@ -45,7 +45,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 	private _diamondCurve: Curve = new Curve([], '');
 
 	//belongs
-	private _diamondCount: number = GameSettings.PocketMoney;
+	public DiamondCount: number = GameSettings.PocketMoney;
 	private _reactors: Array<ReactorField> = new Array<ReactorField>();
 	private _batteryFields: Array<BatteryField> = new Array<BatteryField>();
 	private _vehicles: Array<Vehicle> = new Array<Vehicle>();
@@ -154,7 +154,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 	}
 
 	public GetDiamondCount(): number {
-		return this._diamondCount;
+		return this.DiamondCount;
 	}
 
 	public GetRelation(id: Identity): Relationship {
@@ -254,7 +254,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 			this._tankRequestCount += 1;
 			const tankPrice = GameSettings.TankPrice * this.GetVehicleCount();
 			this.OnTankRequestChanged.Invoke(this, this._tankRequestCount);
-			if (this._diamondCount < tankPrice) {
+			if (this.DiamondCount < tankPrice) {
 				this.CashMissing();
 			}
 		}
@@ -279,7 +279,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 			this._truckRequestCount += 1;
 			const truckPrice = GameSettings.TruckPrice * this.GetVehicleCount();
 			this.OnTruckChanged.Invoke(this, this._truckRequestCount);
-			if (this._diamondCount < truckPrice) {
+			if (this.DiamondCount < truckPrice) {
 				this.CashMissing();
 			}
 		}
@@ -318,7 +318,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 		}
 		this._network.Update(viewX, viewY);
 		const truckPrice = GameSettings.TruckPrice * this.GetVehicleCount();
-		while (0 < this._truckRequestCount && truckPrice <= this._diamondCount) {
+		while (0 < this._truckRequestCount && truckPrice <= this.DiamondCount) {
 			if (this.Buy(truckPrice)) {
 				if (this.CreateTruck()) {
 					this.RemoveTruckRequest();
@@ -330,7 +330,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 		}
 
 		const tankPrice = GameSettings.TankPrice * this.GetVehicleCount();
-		while (0 < this._tankRequestCount && tankPrice <= this._diamondCount) {
+		while (0 < this._tankRequestCount && tankPrice <= this.DiamondCount) {
 			if (this.Buy(GameSettings.TankPrice * this.GetVehicleCount())) {
 				if (this.CreateTank()) {
 					this.RemoveTankRequest();
@@ -358,9 +358,9 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 	}
 
 	public Buy(amount: number): boolean {
-		if (this._diamondCount >= amount) {
-			this._diamondCount -= amount;
-			this.OnDiamondCountChanged.Invoke(this, this._diamondCount);
+		if (this.DiamondCount >= amount) {
+			this.DiamondCount -= amount;
+			this.OnDiamondCountChanged.Invoke(this, this.DiamondCount);
 			return true;
 		} else {
 			this.CashMissing();
@@ -370,8 +370,8 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 
 	public Earn(amount: number): void {
 		if (amount !== 0) {
-			this._diamondCount += amount;
-			this.OnDiamondCountChanged.Invoke(this, this._diamondCount);
+			this.DiamondCount += amount;
+			this.OnDiamondCountChanged.Invoke(this, this.DiamondCount);
 			if (0 < amount) {
 				this.OnDiamondEarned.Invoke(this, amount);
 			}
@@ -379,11 +379,11 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 	}
 
 	public GetAmount(): number {
-		return this._diamondCount;
+		return this.DiamondCount;
 	}
 
 	public HasMoney(cost: number): boolean {
-		if (cost <= this._diamondCount) {
+		if (cost <= this.DiamondCount) {
 			return true;
 		}
 		return false;

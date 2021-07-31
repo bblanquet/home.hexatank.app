@@ -20,6 +20,7 @@ import { MapShape } from '../Items/MapShape';
 import { DiamondBlueprint } from './DiamondBlueprint';
 import { PlayerBlueprint } from '../Game/HqBlueprint';
 import { ColorKind } from '../../../../Components/Common/Button/Stylish/ColorKind';
+import { BrainKind } from '../../../Ia/Decision/BrainKind';
 
 export class DiamondBlueprintMaker {
 	private _builders: Dictionary<IMapBuilder>;
@@ -48,7 +49,7 @@ export class DiamondBlueprintMaker {
 		const diamondHq = new DiamondHq();
 		diamondHq.DiamondCell = CellPrint.New(5, 1);
 		diamondHq.Cell = CellPrint.New(1, 0);
-		diamondHq.Player = new PlayerBlueprint('', ColorKind.Blue, true);
+		diamondHq.Player = new PlayerBlueprint('', ColorKind.Blue, true, BrainKind.Truck);
 
 		let hqMapItem = new CellPrint();
 		hqMapItem.Coo = diamondHq.Cell.Coo;

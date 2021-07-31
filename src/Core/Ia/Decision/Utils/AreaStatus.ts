@@ -42,12 +42,12 @@ export class AreaStatus {
 
 	private DetachFromFields(cell: Cell): void {
 		this._fields.Keys().forEach((key) => {
-			let cells = this._fields.Get(key);
-			if (cells.some((c) => c === cell)) {
+			let fieldCells = this._fields.Get(key);
+			if (fieldCells.some((c) => c === cell)) {
 				this._fields.Remove(key);
-				cells = cells.filter((c) => c !== cell);
-				if (0 < cells.length) {
-					this._fields.Add(key, cells);
+				fieldCells = fieldCells.filter((c) => c !== cell);
+				if (0 < fieldCells.length) {
+					this._fields.Add(key, fieldCells);
 				}
 			}
 		});

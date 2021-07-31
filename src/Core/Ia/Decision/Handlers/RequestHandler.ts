@@ -7,7 +7,7 @@ import { LogKind } from '../../../../Utils/Logger/LogKind';
 import { RequestId } from '../Requests/RequestId';
 
 export class HandlerIterator implements IHandlerIterator {
-	private _handlers: Groups<ISimpleHandler>;
+	private _handlers: Groups<ISimpleHandler> = new Groups<ISimpleHandler>();
 	constructor(handlers: Array<ISimpleHandler>) {
 		handlers.forEach((handler) => {
 			this._handlers.Add(handler.GetPriority().toString(), handler);
@@ -18,9 +18,8 @@ export class HandlerIterator implements IHandlerIterator {
 	}
 
 	public Iterate(requests: Groups<AreaRequest>) {
-		const priorities = requests.Keys().map((e) => +e).sort();
-		for (let index = priorities.length - 1; index > -1; index--) {
-			const priority = priorities[index].toString();
+		requests.Keys().map((e) => +e).sort().reverse().forEach((pr) => {
+			const priority = pr.toString();
 			requests.Get(priority).forEach((request) => {
 				if (request.Area) {
 					request.Area.OnRequestAdded.Invoke(this, request.RequestType);
@@ -32,6 +31,6 @@ export class HandlerIterator implements IHandlerIterator {
 				}
 				handler.Handle(request);
 			});
-		}
+		});
 	}
 }

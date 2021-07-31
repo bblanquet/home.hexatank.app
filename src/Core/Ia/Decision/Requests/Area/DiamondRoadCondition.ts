@@ -10,9 +10,7 @@ export class DiamondRoadCondition implements IAreaCondition {
 	constructor(private _brain: Brain) {}
 
 	Condition(area: IaArea): boolean {
-		return (
-			area.HasDiamond() && area.HasTank() && !area.IsTankEngaged() && 0 < this.GetObstacles(this._brain).length
-		);
+		return area.HasDiamond() && area.HasTank() && area.HasFreeTank() && 0 < this.GetObstacles(this._brain).length;
 	}
 
 	private GetObstacles(brain: Brain): Cell[] {
@@ -29,10 +27,7 @@ export class DiamondRoadCondition implements IAreaCondition {
 					.GetAll(1)
 					.filter(
 						(c) =>
-							c &&
-							c.IsBlocked() &&
-							TypeTranslator.IsNatureField(c.GetField()) &&
-							!TypeTranslator.IsDiamond(c.GetField())
+							c && TypeTranslator.IsNatureField(c.GetField()) && !TypeTranslator.IsDiamond(c.GetField())
 					)
 					.forEach((c) => {
 						if (!result.Exist(c.Coo())) {

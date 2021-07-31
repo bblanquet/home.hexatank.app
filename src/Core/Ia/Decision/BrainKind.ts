@@ -3,5 +3,6 @@ export enum BrainKind {
 	Kamikaze,
 	Weak,
 	Normal,
-	Strong
+	Strong,
+	Truck
 }

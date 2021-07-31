@@ -1,6 +1,7 @@
 import { TimeTimer } from '../../../../../../Utils/Timer/TimeTimer';
 import { Brain } from '../../../Brain';
 import { IaArea } from '../../../Utils/IaArea';
+import { GlobalRequestResult } from '../GlobalRequestResult';
 import { IGlobalCondition } from '../IGlobalCondition';
 
 export class SimpleSquadCondition implements IGlobalCondition {
@@ -8,10 +9,10 @@ export class SimpleSquadCondition implements IGlobalCondition {
 	constructor() {
 		this._timeTime = new TimeTimer(4000);
 	}
-	Condition(brain: Brain): IaArea {
+	Condition(brain: Brain): GlobalRequestResult {
 		if (this._timeTime.IsElapsed()) {
-			return brain.CellAreas.GetFromIndex(0);
+			return new GlobalRequestResult(true, null);
 		}
-		return null;
+		return new GlobalRequestResult(false, null);
 	}
 }

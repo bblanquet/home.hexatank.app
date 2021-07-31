@@ -4,7 +4,7 @@ import { TargetMonitoredOrder } from '../../../Order/TargetMonitoredOrder';
 
 export class PatrolHandler implements IHandler {
 	Handle(request: AreaRequest): void {
-		const tank = request.Area.Tanks.find((t) => !t.HasOrder());
+		const tank = request.Area.Tanks.find((t) => !t.IsBusy());
 		if (tank && request.Area.GetFreeUnitCellCount()) {
 			const cell = request.Area.GetRandomFreeUnitCell();
 			tank.GiveOrder(new TargetMonitoredOrder(cell, tank));

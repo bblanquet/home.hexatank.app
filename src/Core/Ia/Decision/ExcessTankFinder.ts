@@ -14,7 +14,7 @@ export class ExcessTankFinder {
 		if (
 			area.GetFoesCount() == 0 &&
 			!area.IsBorder() &&
-			!(area.IsTankEngaged() || area.IsTankDamaged() || area.HasNature())
+			!(!area.HasFreeTank() || area.IsTankDamaged() || area.HasNature())
 		) {
 			return area.Tanks.length;
 		} else {

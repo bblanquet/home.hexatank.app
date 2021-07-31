@@ -49,13 +49,13 @@ export class WeakBrain implements IBrainProvider {
 			new SimpleHandler(10, RequestType.FoeReactor, (e) => new FoeReactorHandler().Handle(e)),
 			new SimpleHandler(10, RequestType.Defense, (e) => new DefenseHandler().Handle(e)),
 			new SimpleHandler(10, RequestType.Clear, (e) => new ClearRequestHandler().Handle(e)),
-			new SimpleHandler(10, RequestType.Reactor, (e) => new ReactorRequestHandler(hq, hqs).Handle(e)),
+			new SimpleHandler(10, RequestType.ReactorField, (e) => new ReactorRequestHandler(hq, hqs).Handle(e)),
 			new SimpleHandler(10, RequestType.Tank, (e) =>
 				new TankHighRequestHandler(brain, new TankMediumRequestHandler(brain, hq)).Handle(e)
 			),
 			new SimpleHandler(10, RequestType.Truck, (e) => new TruckRequestHandler(hq, brain).Handle(e)),
 			new SimpleHandler(9, RequestType.ReactorShield, (e) => new ReactorShieldHandler(hq).Handle(e)),
-			new SimpleHandler(8, RequestType.Energy, (e) => new EnergyRequestHandler(hq).Handle(e)),
+			new SimpleHandler(8, RequestType.BatteryField, (e) => new EnergyRequestHandler(hq).Handle(e)),
 			new SimpleHandler(7, RequestType.DiamondRoadCleaning, (e) =>
 				new DiamondRoadCleaningHandler(brain).Handle(e)
 			),
@@ -77,7 +77,7 @@ export class WeakBrain implements IBrainProvider {
 				new AreaRequester(10, RequestType.DiamondRoadCleaning, (e) =>
 					new DiamondRoadCondition(brain).Condition(e)
 				),
-				new AreaRequester(10, RequestType.Reactor, (e) => new ReactorFieldCondition().Condition(e)),
+				new AreaRequester(10, RequestType.ReactorField, (e) => new ReactorFieldCondition().Condition(e)),
 				new AreaRequester(10, RequestType.FoeReactor, (e) => new FoeReactorCondition().Condition(e)),
 				new AreaRequester(10, RequestType.Clear, (e) => new ClearAreaCondition().Condition(e)),
 				new AreaRequester(10, RequestType.Truck, (e) => new TruckCondition(2).Condition(e)),

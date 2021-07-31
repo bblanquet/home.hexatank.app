@@ -109,7 +109,7 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 				);
 			});
 		} else {
-			players.push(new PlayerBlueprint(playerName, HqAppearance.Colors[0], true));
+			players.push(new PlayerBlueprint(playerName, HqAppearance.Colors[0], true, BrainKind.Truck));
 			this.state.IAs.forEach((ia, index) => {
 				players.push(
 					new PlayerBlueprint(`IA${index}`, HqAppearance.Colors[index + 1], false, this.ConvertBrain(ia))

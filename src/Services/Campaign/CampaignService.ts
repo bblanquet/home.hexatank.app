@@ -35,28 +35,28 @@ export class CampaignService implements ICampaignService {
 		this._red.Add(
 			(1).toString(),
 			new GameBlueprintMaker().GetBluePrint(MapShape.Flower, MapKind.Forest, [
-				new PlayerBlueprint(playername, ColorKind.Yellow, true),
+				new PlayerBlueprint(playername, ColorKind.Yellow, true, BrainKind.Truck),
 				new PlayerBlueprint('IA', ColorKind.Red, false, BrainKind.Weak)
 			])
 		);
 		this._red.Add(
 			(2).toString(),
 			new GameBlueprintMaker().GetBluePrint(MapShape.Donut, MapKind.Forest, [
-				new PlayerBlueprint(playername, ColorKind.Yellow, true),
+				new PlayerBlueprint(playername, ColorKind.Yellow, true, BrainKind.Truck),
 				new PlayerBlueprint('IA', ColorKind.Red, false, BrainKind.Weak)
 			])
 		);
 		this._red.Add(
 			(3).toString(),
 			new GameBlueprintMaker().GetBluePrint(MapShape.Cheese, MapKind.Forest, [
-				new PlayerBlueprint(playername, ColorKind.Yellow, true),
+				new PlayerBlueprint(playername, ColorKind.Yellow, true, BrainKind.Truck),
 				new PlayerBlueprint('IA', ColorKind.Red, false, BrainKind.Normal)
 			])
 		);
 		this._red.Add(
 			(4).toString(),
 			new GameBlueprintMaker().GetBluePrint(MapShape.Triangle, MapKind.Forest, [
-				new PlayerBlueprint(playername, ColorKind.Yellow, true),
+				new PlayerBlueprint(playername, ColorKind.Yellow, true, BrainKind.Truck),
 				new PlayerBlueprint('IA', ColorKind.Red, false, BrainKind.Normal)
 			])
 		);
@@ -65,28 +65,28 @@ export class CampaignService implements ICampaignService {
 		this._blue.Add(
 			(1).toString(),
 			new GameBlueprintMaker().GetBluePrint(MapShape.X, MapKind.Ice, [
-				new PlayerBlueprint(playername, ColorKind.Yellow, true),
+				new PlayerBlueprint(playername, ColorKind.Yellow, true, BrainKind.Truck),
 				new PlayerBlueprint('IA', ColorKind.Blue, false, BrainKind.Normal)
 			])
 		);
 		this._blue.Add(
 			(2).toString(),
 			new GameBlueprintMaker().GetBluePrint(MapShape.Donut, MapKind.Ice, [
-				new PlayerBlueprint(playername, ColorKind.Yellow, true),
+				new PlayerBlueprint(playername, ColorKind.Yellow, true, BrainKind.Truck),
 				new PlayerBlueprint('IA', ColorKind.Blue, false, BrainKind.Normal)
 			])
 		);
 		this._blue.Add(
 			(3).toString(),
 			new GameBlueprintMaker().GetBluePrint(MapShape.H, MapKind.Ice, [
-				new PlayerBlueprint(playername, ColorKind.Yellow, true),
+				new PlayerBlueprint(playername, ColorKind.Yellow, true, BrainKind.Truck),
 				new PlayerBlueprint('IA', ColorKind.Blue, false, BrainKind.Strong)
 			])
 		);
 		this._blue.Add(
 			(4).toString(),
 			new GameBlueprintMaker().GetBluePrint(MapShape.Rectangle, MapKind.Ice, [
-				new PlayerBlueprint(playername, ColorKind.Yellow, true),
+				new PlayerBlueprint(playername, ColorKind.Yellow, true, BrainKind.Truck),
 				new PlayerBlueprint('IA', ColorKind.Blue, false, BrainKind.Strong)
 			])
 		);

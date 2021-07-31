@@ -7,31 +7,24 @@ import { CellHelper } from '../../../../Items/Cell/CellHelper';
 import { ErrorHandler } from '../../../../../Utils/Exceptions/ErrorHandler';
 
 export class TankHighRequestHandler implements IHandler {
-	private _delta: number = 0;
-
-	constructor(private _kingdom: Brain, private _mediumRequest: IHandler) {}
+	constructor(private _brain: Brain, private _mediumRequest: IHandler) {}
 
 	Handle(request: AreaRequest): void {
-		this._delta = request.Area.Tanks.length - request.Area.GetFoesCount();
 		var troopAreas = this.GetReinforcement(request);
 
-		troopAreas.forEach((area) => {
-			while (area.HasTank()) {
-				if (this._delta === 0) {
-					return;
-				}
-				if (!this.Assign(request, () => area.Drop())) {
-					return;
-				}
+		const isPassed = troopAreas.some((area) => {
+			if (area.HasTank()) {
+				return this.Assign(request, () => area.Drop());
 			}
+			return false;
 		});
 
-		if (0 < this._delta) {
+		if (!isPassed) {
 			this._mediumRequest.Handle(request);
 		}
 
-		if (0 < this._delta) {
-			this._kingdom.GetSquads().forEach((squad) => {
+		if (!isPassed) {
+			this._brain.GetSquads().forEach((squad) => {
 				while (squad.HasTank()) {
 					if (!this.Assign(request, () => squad.Drop())) {
 						return;
@@ -46,7 +39,6 @@ export class TankHighRequestHandler implements IHandler {
 			const tank = drop();
 			ErrorHandler.ThrowNull(tank);
 			request.Area.Add(tank);
-			this._delta -= 1;
 			return true;
 		} else {
 			return false;
@@ -55,15 +47,15 @@ export class TankHighRequestHandler implements IHandler {
 
 	private GetReinforcement(request: AreaRequest) {
 		const troopAreas = new Array<IaArea>();
-		const kgAreas = this._kingdom.GetIaAreaByCell();
+		const kgAreas = this._brain.GetIaAreaByCell();
 		const cells = CellHelper.OrderByDistance(
 			kgAreas.Values().map((c) => c.GetCentralCell()),
 			request.Area.GetCentralCell()
 		);
 		for (const cell of cells) {
 			const coordinate = cell.Coo();
-			if (this._kingdom.CellAreas.Exist(coordinate)) {
-				const aroundArea = this._kingdom.CellAreas.Get(coordinate);
+			if (this._brain.CellAreas.Exist(coordinate)) {
+				const aroundArea = this._brain.CellAreas.Get(coordinate);
 				if (!aroundArea.HasReceivedRequest) {
 					aroundArea.HasReceivedRequest = true;
 					if (aroundArea.HasTank()) {

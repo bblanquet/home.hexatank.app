@@ -83,7 +83,7 @@ export class AppService implements IAppService<GameBlueprint> {
 		this._keyService.DefineKey(this);
 
 		GameSettings.Init();
-		GameSettings.SetNormalSpeed();
+		GameSettings.SetFastSpeed();
 		if (Env.IsPrd()) {
 			GameSettings.SetNormalSpeed();
 		}

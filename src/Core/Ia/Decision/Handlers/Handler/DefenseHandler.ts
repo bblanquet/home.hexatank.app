@@ -9,12 +9,12 @@ import { TypeTranslator } from '../../../../Items/Cell/Field/TypeTranslator';
 import { Tank } from '../../../../Items/Unit/Tank';
 import { AStarEngine } from '../../../AStarEngine';
 import { AStarHelper } from '../../../AStarHelper';
-import { MonitoredOrder } from '../../../Order/MonitoredOrder';
 import { Area } from '../../Utils/Area';
 import { IaArea } from '../../Utils/IaArea';
 import { TroopRoads } from '../../Troop/TroopRoads';
 import { TroopDestination } from '../../Utils/TroopDestination';
 import { isNullOrUndefined } from '../../../../../Utils/ToolBox';
+import { TargetMonitoredOrder } from '../../../Order/TargetMonitoredOrder';
 
 export class DefenseHandler implements IHandler {
 	Handle(request: AreaRequest): void {
@@ -63,7 +63,7 @@ export class DefenseHandler implements IHandler {
 				bestTroopRoads.Get(coordinate).forEach((troopSituation) => {
 					this.LogOrder(troopSituation);
 					troopSituation.Tank.GiveOrder(
-						new MonitoredOrder(troopSituation.CurrentDestination.Destination, troopSituation.Tank)
+						new TargetMonitoredOrder(troopSituation.CurrentDestination.Destination, troopSituation.Tank)
 					);
 				});
 			});

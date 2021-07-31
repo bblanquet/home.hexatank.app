@@ -11,7 +11,7 @@ export class ReactorRequestHandler implements IHandler {
 	constructor(private _hq: Headquarter, private _hqs: Headquarter[]) {}
 
 	Handle(request: AreaRequest): void {
-		if (GameSettings.FieldPrice < this._hq.GetAmount() && request.Area.ContainsTroop()) {
+		if (GameSettings.FieldPrice < this._hq.GetAmount() && request.Area.ContainsTank()) {
 			const cells = request.Area.GetSpot().GetCells().filter((c) => c.GetField() instanceof BasicField);
 			if (0 < cells.length) {
 				const isolatedCell = this.GetMostIsolatedCell(cells);

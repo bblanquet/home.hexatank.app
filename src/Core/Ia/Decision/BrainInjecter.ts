@@ -6,8 +6,6 @@ import { KamikazeBrain } from '../Brains/KamikazeBrain';
 import { DummyBrain } from './../Brains/DummyBrain';
 import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { HexAxial } from './../../../Utils/Geometry/HexAxial';
-import { GameBlueprint } from '../../Framework/Blueprint/Game/GameBlueprint';
-import { GameContext } from '../../Framework/Context/GameContext';
 import { Area } from './Utils/Area';
 import { AreaSearch } from './Utils/AreaSearch';
 import { Cell } from '../../Items/Cell/Cell';
@@ -16,8 +14,8 @@ import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { PlayerBlueprint } from '../../Framework/Blueprint/Game/HqBlueprint';
 import { BrainKind } from './BrainKind';
-import { isNullOrUndefined } from '../../../Utils/ToolBox';
 import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
+import { ErrorCat, ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
 
 export class BrainInjecter {
 	public Inject(hqs: Headquarter[], map: Cell[], hqPrints: Array<DiamondHq>): void {
@@ -28,28 +26,33 @@ export class BrainInjecter {
 			const areaSearch = new AreaSearch(coos);
 			const areas = this.GetAreas(areaSearch, hq, cells);
 			const diamondCell = cells.Get(this.GetDiamondHex(hqPrints, hq.GetCell().GetHexCoo()));
-			if (!isNullOrUndefined(detail.IA)) {
-				if (detail.IA === BrainKind.Strong) {
-					hq.Inject(
-						new StrongBrain().GetBrain(hq, hqs, areas, areaSearch, diamondCell.GetField() as Diamond)
-					);
-				} else if (detail.IA === BrainKind.Normal) {
-					hq.Inject(
-						new NormalBrain().GetBrain(hq, hqs, areas, areaSearch, diamondCell.GetField() as Diamond)
-					);
-				} else if (detail.IA === BrainKind.Weak) {
-					hq.Inject(new WeakBrain().GetBrain(hq, hqs, areas, areaSearch, diamondCell.GetField() as Diamond));
-				} else if (detail.IA === BrainKind.Dummy) {
-					hq.Inject(new DummyBrain().GetBrain(hq, hqs, areas, areaSearch, diamondCell.GetField() as Diamond));
-				} else if (detail.IA === BrainKind.Kamikaze) {
-					hq.Inject(
-						new KamikazeBrain().GetBrain(hq, hqs, areas, areaSearch, diamondCell.GetField() as Diamond)
-					);
-				}
-			} else if (detail.IsPlayer) {
-				hq.Inject(new TruckBrain().GetBrain(hq, hqs, areas, areaSearch, diamondCell.GetField() as Diamond));
-			}
+			this.Set(detail, hq, hqs, areas, areaSearch, diamondCell);
 		});
+	}
+
+	private Set(
+		detail: PlayerBlueprint,
+		hq: Headquarter,
+		hqs: Headquarter[],
+		areas: Area[],
+		areaSearch: AreaSearch,
+		diamondCell: Cell
+	) {
+		if (detail.IA === BrainKind.Strong) {
+			hq.Inject(new StrongBrain().GetBrain(hq, hqs, areas, areaSearch, diamondCell.GetField() as Diamond));
+		} else if (detail.IA === BrainKind.Normal) {
+			hq.Inject(new NormalBrain().GetBrain(hq, hqs, areas, areaSearch, diamondCell.GetField() as Diamond));
+		} else if (detail.IA === BrainKind.Weak) {
+			hq.Inject(new WeakBrain().GetBrain(hq, hqs, areas, areaSearch, diamondCell.GetField() as Diamond));
+		} else if (detail.IA === BrainKind.Dummy) {
+			hq.Inject(new DummyBrain().GetBrain(hq, hqs, areas, areaSearch, diamondCell.GetField() as Diamond));
+		} else if (detail.IA === BrainKind.Kamikaze) {
+			hq.Inject(new KamikazeBrain().GetBrain(hq, hqs, areas, areaSearch, diamondCell.GetField() as Diamond));
+		} else if (detail.IA === BrainKind.Truck) {
+			hq.Inject(new TruckBrain().GetBrain(hq, hqs, areas, areaSearch, diamondCell.GetField() as Diamond));
+		} else {
+			ErrorHandler.Throw(ErrorCat.null, `undefined AI`);
+		}
 	}
 
 	private GetAreas(areaSearch: AreaSearch, hq: IHeadquarter, cells: Dictionary<Cell>) {

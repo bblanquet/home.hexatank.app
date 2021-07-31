@@ -1,25 +1,32 @@
 export enum RequestType {
 	None = 'None',
-	Farm = 'Farm',
-	Clear = 'Clear',
-	Factory = 'Factory',
-	Road = 'Road',
-	Tank = 'Tank',
-	Patrol = 'Patrol',
-	Truck = 'Truck',
-	IdleTruck = 'IdleTruck',
-	BorderShield = 'BorderShield',
-	Defense = 'Defense',
-	Heal = 'Heal',
-	HealUnit = 'HealUnit',
-	Reactor = 'Reactor',
-	Energy = 'Energy',
-	Raid = 'Raid',
-	Shield = 'Shield',
-	DiamondRoad = 'DiamondRoad',
+
+	//powerup
 	SpeedUp = 'SpeedUp',
 	FireUp = 'FireUp',
-	FoeReactor = 'FoeReactor',
+
+	//field
+	FarmField = 'FarmField',
+	MedicField = 'MedicField',
+	BatteryField = 'BatteryField',
+	ShieldField = 'ShieldField',
 	ReactorShield = 'ReactorShield',
+	ReactorField = 'ReactorField',
+	RoadField = 'RoadField',
+	BorderShieldField = 'BorderShieldField',
+
+	//unit
+	Tank = 'Tank',
+	Truck = 'Truck',
+
+	//behaviour
+	Clear = 'Clear',
+	Patrol = 'Patrol',
+	IdleTruck = 'IdleTruck',
+	Defense = 'Defense',
+	HealUnit = 'HealUnit',
+	Raid = 'Raid',
+	DiamondRoad = 'DiamondRoad',
+	FoeReactor = 'FoeReactor',
 	DiamondRoadCleaning = 'DiamondRoadCleaning'
 }

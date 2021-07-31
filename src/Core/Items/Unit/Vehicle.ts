@@ -521,6 +521,10 @@ export abstract class Vehicle extends AliveItem
 		return !isNullOrUndefined(this._nextOrder);
 	}
 
+	public IsBusy(): boolean {
+		return this.HasOrder() || this.HasNextOrder();
+	}
+
 	public SetPosition(cell: Cell): void {
 		if (this._currentCell) {
 			this._currentCell.RemoveOccupier(this);

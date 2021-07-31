@@ -20,7 +20,8 @@ export class OnlineBlueprintMaker {
 				new PlayerBlueprint(
 					pl.Name,
 					HqAppearance.Colors[index],
-					pl.Name === this._onlinePlayerManager.Player.Name
+					pl.Name === this._onlinePlayerManager.Player.Name,
+					BrainKind.Truck
 				)
 			);
 			index++;

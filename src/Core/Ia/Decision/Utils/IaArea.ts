@@ -94,7 +94,7 @@ export class IaArea {
 		return this._name.toUpperCase();
 	}
 
-	public ContainsTroop(): boolean {
+	public ContainsTank(): boolean {
 		return this.GetSpot().GetStatus().HasUnit(this._hq);
 	}
 
@@ -390,8 +390,8 @@ export class IaArea {
 		return this.Tanks.some((t) => t.HasDamage()) && this.HasMedic();
 	}
 
-	public IsTankEngaged(): boolean {
-		return this.Tanks.some((t) => t.HasTarget() && t.HasOrder());
+	public HasFreeTank(): boolean {
+		return this.Tanks.some((t) => !t.IsBusy());
 	}
 
 	public Drop(): Tank {

@@ -7,7 +7,7 @@ import { AStarEngine } from '../../../AStarEngine';
 import { TypeTranslator } from '../../../../Items/Cell/Field/TypeTranslator';
 import { Dictionary } from '../../../../../Utils/Collections/Dictionary';
 import { Tank } from '../../../../Items/Unit/Tank';
-import { MonitoredOrder } from '../../../Order/MonitoredOrder';
+import { TargetMonitoredOrder } from '../../../Order/TargetMonitoredOrder';
 
 export class DiamondRoadCleaningHandler implements IHandler {
 	constructor(private _brain: Brain) {}
@@ -17,7 +17,7 @@ export class DiamondRoadCleaningHandler implements IHandler {
 		if (tank) {
 			const obs = this.GetObstacles(this._brain);
 			if (obs.length === 1) {
-				tank.GiveOrder(new MonitoredOrder(obs[0], tank));
+				tank.GiveOrder(new TargetMonitoredOrder(obs[0], tank));
 			} else if (0 < obs.length) {
 				const candidates = new Array<Candidate>();
 				obs.forEach((ob) => {
@@ -30,7 +30,7 @@ export class DiamondRoadCleaningHandler implements IHandler {
 				var min = Math.min(...candidates.map((c) => c.Cost));
 				const candidate = candidates.find((e) => e.Cost === min);
 				if (candidate) {
-					tank.GiveOrder(new MonitoredOrder(candidate.Cell, tank));
+					tank.GiveOrder(new TargetMonitoredOrder(candidate.Cell, tank));
 				}
 			}
 		}
@@ -56,10 +56,7 @@ export class DiamondRoadCleaningHandler implements IHandler {
 					.GetAll(1)
 					.filter(
 						(c) =>
-							c &&
-							c.IsBlocked() &&
-							TypeTranslator.IsNatureField(c.GetField()) &&
-							!TypeTranslator.IsDiamond(c.GetField())
+							c && TypeTranslator.IsNatureField(c.GetField()) && !TypeTranslator.IsDiamond(c.GetField())
 					)
 					.forEach((c) => {
 						if (!result.Exist(c.Coo())) {

@@ -4,7 +4,7 @@ import { IAreaCondition } from '../../IAreaCondition';
 export class ReactorFieldCondition implements IAreaCondition {
 	Condition(area: IaArea): boolean {
 		if (area.GetInnerFoeCount() === 0) {
-			if (!area.IsImportant() && area.IsCovered() !== ReactorAreaState.All && area.ContainsTroop()) {
+			if (!area.IsImportant() && area.IsCovered() !== ReactorAreaState.All && area.ContainsTank()) {
 				return true;
 			}
 		}

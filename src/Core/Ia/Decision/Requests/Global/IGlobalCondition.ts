@@ -1,6 +1,6 @@
 import { Brain } from '../../Brain';
-import { IaArea } from '../../Utils/IaArea';
+import { GlobalRequestResult } from './GlobalRequestResult';
 
 export interface IGlobalCondition {
-	Condition(brain: Brain): IaArea;
+	Condition(brain: Brain): GlobalRequestResult;
 }

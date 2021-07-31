@@ -5,10 +5,9 @@ import { TruckPatrolOrder } from '../../../Order/Composite/Diamond/TruckPatrolOr
 import { MoneyOrder } from '../../../Order/Composite/MoneyOrder';
 import { Brain } from '../../Brain';
 import { AreaRequest } from '../../Utils/AreaRequest';
-import { RequestType } from '../../Utils/RequestType';
-import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
+import { IHandler } from '../IHandler';
 
-export class IdleTruckHandler implements ISimpleRequestHandler {
+export class IdleTruckHandler implements IHandler {
 	constructor(private _brain: Brain) {}
 
 	Handle(request: AreaRequest): void {
@@ -32,13 +31,9 @@ export class IdleTruckHandler implements ISimpleRequestHandler {
 			});
 	}
 
-	IsIdle(t: Truck): boolean {
+	private IsIdle(t: Truck): boolean {
 		return (
 			!t.HasOrder() || (t.GetCurrentOrder() instanceof TruckPatrolOrder && !this._brain.GetDiamond().IsAlive())
 		);
-	}
-
-	Type(): RequestType {
-		return RequestType.TruckOrder;
 	}
 }

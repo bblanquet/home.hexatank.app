@@ -3,7 +3,11 @@ import { StaticLogger } from '../Logger/StaticLogger';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { IAnalyzeService } from '../../Services/Analyse/IAnalyzeService';
 import { Dictionary } from '../Collections/Dictionary';
-import { ErrorSender } from './ErrorSender';
+import { ErrorDetail } from '../../Components/Model/ErrorDetail';
+import axios from 'axios';
+import { IAppService } from '../../Services/App/IAppService';
+import { IBlueprint } from '../../Core/Framework/Blueprint/IBlueprint';
+import { IKeyService } from '../../Services/Key/IKeyService';
 
 export enum ErrorCat {
 	outOfRange,
@@ -17,18 +21,17 @@ export enum ErrorCat {
 }
 
 export class ErrorHandler {
-	private static _lastErrorDate: number = null;
+	private static _lastErrorDate: number = undefined;
 	private static _fiveSeconds = 5000;
-	private static _errorSender: ErrorSender = new ErrorSender();
 
 	private static IsNewError(): boolean {
 		const now = Date.now();
-		const isNew = !this._lastErrorDate || this._fiveSeconds < this._lastErrorDate - now;
+		const isNew = this._lastErrorDate === undefined || this._fiveSeconds < this._lastErrorDate - now;
 		this._lastErrorDate = now;
 		return isNew;
 	}
 
-	public static Cat: Dictionary<string> = Dictionary.New([
+	private static Cat: Dictionary<string> = Dictionary.New([
 		{ key: ErrorCat[ErrorCat.null], value: 'null object' },
 		{ key: ErrorCat[ErrorCat.outOfRange], value: 'out of range' },
 		{ key: ErrorCat[ErrorCat.nullEmpty], value: 'null or empty array' },
@@ -38,23 +41,31 @@ export class ErrorHandler {
 		{ key: ErrorCat[ErrorCat.methodNotImplemented], value: 'Method not implemented' }
 	]);
 
-	public static Throw(error: Error): void {
-		ErrorHandler.Register(error);
-		throw error;
+	public static Throw(cat: ErrorCat, message: string = ''): void {
+		throw new Error(`[${this.Cat.Get(ErrorCat[cat])}] ${message}`);
 	}
 
-	private static Register(error: Error) {
+	public static Log(error: Error) {
 		if (this.IsNewError()) {
 			StaticLogger.Log(LogKind.error, `${error.message}\n${error.name}\n${error.stack}`);
 			Singletons.Load<IAnalyzeService>(SingletonKey.Analyze).Event('exception', error);
-			this._errorSender.Send(error.name, error.stack);
 		}
+	}
+
+	public static Send(error: Error): void {
+		const payload = new ErrorDetail();
+		payload.date = new Date();
+		payload.name = error.message;
+		payload.stacktrace = error.stack;
+		const appKey = Singletons.Load<IKeyService>(SingletonKey.Key).GetAppKey();
+		const record = Singletons.Load<IAppService<IBlueprint>>(appKey).GetRecord();
+		payload.content = record ? JSON.stringify(record.GetRecord()) : '';
+		axios.post('{{error_url}}/server/Exception/Add', payload);
 	}
 
 	public static ThrowNull(obj: any): void {
 		if (obj === undefined || obj === null) {
 			const error = new Error('null exception');
-			ErrorHandler.Register(error);
 			throw error;
 		}
 	}
@@ -62,7 +73,6 @@ export class ErrorHandler {
 	public static ThrowNullOrEmpty(obj: any[]): void {
 		if (obj === undefined || obj === null || obj.length === 0) {
 			const error = new Error('null/empty exception');
-			ErrorHandler.Register(error);
 			throw error;
 		}
 	}

@@ -5,18 +5,14 @@ import { ShieldField } from '../../../../../Items/Cell/Field/Bonus/ShieldField';
 import { Headquarter } from '../../../../../Items/Cell/Field/Hq/Headquarter';
 import { Dictionary } from '../../../../../../Utils/Collections/Dictionary';
 import { AreaRequest } from '../../../Utils/AreaRequest';
-import { RequestType } from '../../../Utils/RequestType';
-import { ISimpleRequestHandler } from '../../ISimpleRequestHandler';
+import { IHandler } from '../../IHandler';
 
-export class ShieldFieldBorderRequestHandler implements ISimpleRequestHandler {
+export class ShieldFieldBorderRequestHandler implements IHandler {
 	constructor(private _hq: Headquarter) {}
 
 	Handle(request: AreaRequest): void {
 		const road = this.GetCells(request);
 		this.CreateShield(road);
-	}
-	Type(): RequestType {
-		return RequestType.BorderShield;
 	}
 
 	private GetCells(request: AreaRequest): Array<Cell> {

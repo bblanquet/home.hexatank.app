@@ -1,5 +1,4 @@
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
-import { MoneyOrder } from '../Order/Composite/MoneyOrder';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { IExpansionMaker } from './ExpansionMaker/IExpansionMaker';
 import { IBrain } from './IBrain';
@@ -11,16 +10,18 @@ import { IaArea } from './Utils/IaArea';
 import { Truck } from '../../Items/Unit/Truck';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Area } from './Utils/Area';
-import { IRequestHandler } from './Handlers/IRequestHandler';
+import { IHandlerIterator } from './Handlers/IHandlerIterator';
 import { Tank } from '../../Items/Unit/Tank';
-import { IAreaRequestListMaker } from './Requests/IAreaRequestListMaker';
-import { IGeneralListRequester } from './Requests/Global/IGeneralListRequester';
+import { IAreaRequestIterator } from './Requests/IAreaRequestIterator';
+import { IGlobalRequestIterator } from './Requests/Global/IGlobalRequestIterator';
 import { Cell } from '../../Items/Cell/Cell';
 import { Squad } from './Troop/Squad';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 import { TimeTimer } from '../../../Utils/Timer/TimeTimer';
 import { ITimer } from '../../../Utils/Timer/ITimer';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
+import { ErrorCat, ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
+import { RequestType } from './Utils/RequestType';
 
 export class Brain implements IBrain {
 	public AreaDecisions: IaArea[];
@@ -32,10 +33,10 @@ export class Brain implements IBrain {
 
 	public HasDiamondRoad: boolean = false;
 	private _idleTimer: ITimer = new TimeTimer(1000);
-	private _requestMaker: IAreaRequestListMaker;
-	private _requestHandler: IRequestHandler;
+	private _requesters: IAreaRequestIterator;
+	private _handlers: IHandlerIterator;
 	private _expansionMaker: IExpansionMaker;
-	private _generalRequestMaker: IGeneralListRequester;
+	private _globalRequester: IGlobalRequestIterator;
 	public AllAreas: Area[];
 
 	constructor(public Hq: Headquarter, public Areas: Area[], private _diamond: Diamond, private _isIa: boolean) {
@@ -66,11 +67,11 @@ export class Brain implements IBrain {
 			}
 		});
 
-		this.Hq.OnReactorLost.On((e: any, obj: ReactorField) => {
-			const c = obj.GetCell();
+		this.Hq.OnReactorLost.On((e: any, field: ReactorField) => {
+			const cell = field.GetCell();
 			let foundArea: IaArea = null;
 			this.GetIaAreaByCell().Values().some((area) => {
-				if (!area.HasCell(c)) {
+				if (!area.HasCell(cell)) {
 					foundArea = area;
 					return true;
 				}
@@ -104,16 +105,25 @@ export class Brain implements IBrain {
 		return this.Squads;
 	}
 
-	public Setup(
-		requestMaker: IAreaRequestListMaker,
-		requestHandler: IRequestHandler,
+	public Inject(
 		expansionMaker: IExpansionMaker,
-		generalRequestMaker: IGeneralListRequester
+		globalRequesters: IGlobalRequestIterator,
+		requesters: IAreaRequestIterator,
+		handlers: IHandlerIterator
 	) {
-		this._requestHandler = requestHandler;
-		this._requestMaker = requestMaker;
+		this._handlers = handlers;
+		this._requesters = requesters;
 		this._expansionMaker = expansionMaker;
-		this._generalRequestMaker = generalRequestMaker;
+		this._globalRequester = globalRequesters;
+
+		this._requesters.GetIds().concat(this._globalRequester.GetIds()).forEach((id) => {
+			if (!this._handlers.Exist(id)) {
+				ErrorHandler.Throw(
+					ErrorCat.invalidComputation,
+					`Handler unhandle ${id.Priority} ${RequestType[id.Type]}`
+				);
+			}
+		});
 	}
 
 	public GetIaAreaByCell(): Dictionary<IaArea> {
@@ -137,21 +147,19 @@ export class Brain implements IBrain {
 			});
 			this.IdleTanks.CalculateExcess(areas);
 			const requests = this.GetRequests(areas);
-			if (requests.Any()) {
-				this._requestHandler.HandleRequests(requests);
-			}
+			this._handlers.Iterate(requests);
 			this._expansionMaker.Expand();
 		}
 	}
 
 	private GetRequests(areas: IaArea[]): Groups<AreaRequest> {
 		const requests = new Groups<AreaRequest>();
-		this._generalRequestMaker.GetResquest(this).forEach((r) => {
+		this._globalRequester.GetResquest(this).forEach((r) => {
 			requests.Add(r.Priority, r);
 		});
 
 		areas.forEach((status) => {
-			this._requestMaker.GetRequest(status).forEach((r) => {
+			this._requesters.GetRequest(status).forEach((r) => {
 				requests.Add(r.Priority, r);
 			});
 		});

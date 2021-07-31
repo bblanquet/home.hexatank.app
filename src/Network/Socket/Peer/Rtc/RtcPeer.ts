@@ -86,7 +86,7 @@ export abstract class RtcPeer {
 				const message = this.Context.GetTemplate<any>(PacketKind.Offer);
 				message.Content = this.Connection.localDescription;
 				if (message.Recipient === message.Emitter) {
-					ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
+					ErrorHandler.Throw(ErrorCat.invalidParameter, `Recipient = Emitter ${message.Emitter}`);
 				}
 				this.Context.ServerSocket.Emit(message);
 			}

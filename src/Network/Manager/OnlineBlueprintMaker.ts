@@ -7,6 +7,7 @@ import { IOnlinePlayerManager } from './IOnlinePlayerManager';
 import { HqAppearance } from '../../Core/Framework/Render/Hq/HqSkinHelper';
 import { PlayerBlueprint } from '../../Core/Framework/Blueprint/Game/HqBlueprint';
 import { BrainKind } from '../../Core/Ia/Decision/BrainKind';
+import { Env } from '../../Env';
 export class OnlineBlueprintMaker {
 	constructor(private _onlinePlayerManager: IOnlinePlayerManager, private _blueprintSetup: BlueprintSetup) {}
 
@@ -25,14 +26,16 @@ export class OnlineBlueprintMaker {
 			index++;
 		});
 
-		this._blueprintSetup.IAs.forEach((ia) => {
-			if (index < 4) {
-				players.push(
-					new PlayerBlueprint(`IA${index}`, HqAppearance.Colors[index], false, this.ConvertBrain(ia))
-				);
-			}
-			index++;
-		});
+		if (!Env.IsPrd()) {
+			this._blueprintSetup.IAs.forEach((ia) => {
+				if (index < 4) {
+					players.push(
+						new PlayerBlueprint(`IA${index}`, HqAppearance.Colors[index], false, this.ConvertBrain(ia))
+					);
+				}
+				index++;
+			});
+		}
 
 		return new GameBlueprintMaker().GetBluePrint(this.ConvertMapType(), this.ConvertEnv(), players);
 	}

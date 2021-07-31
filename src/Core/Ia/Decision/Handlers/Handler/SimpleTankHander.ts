@@ -1,12 +1,11 @@
 import { MapObserver } from './../../MapObserver';
 import { Squad } from '../../Troop/Squad';
 import { Brain } from '../../Brain';
-import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
-import { RequestType } from '../../Utils/RequestType';
+import { IHandler } from '../IHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 
-export class SimpleTankHander implements ISimpleRequestHandler {
+export class SimpleTankHander implements IHandler {
 	constructor(private _hqs: Headquarter[], private _brain: Brain) {}
 
 	Handle(request: AreaRequest): void {
@@ -22,9 +21,5 @@ export class SimpleTankHander implements ISimpleRequestHandler {
 				}
 			}
 		}
-	}
-
-	Type(): RequestType {
-		return RequestType.Tank;
 	}
 }

@@ -97,11 +97,19 @@ export class GameAudioManager implements IGameAudioManager {
 		}
 
 		vehicule.OnOrdering.On(this.HandleOrder.bind(this));
+		vehicule.OnCamouflageChanged.On(this.HandleCamouflage.bind(this));
 
 		if (vehicule.GetCurrentCell().IsVisible()) {
 			this.Play(AudioLoader.GetAudio(AudioArchive.unitPopup), 0.2);
 		}
 	}
+
+	HandleCamouflage(src: Vehicle, v: Vehicle): void {
+		if (v.GetCurrentCell().IsVisible()) {
+			this.Play(AudioLoader.GetAudio(AudioArchive.unitPopup), 0.2);
+		}
+	}
+
 	HandleOrder(src: Vehicle, order: IOrder): void {
 		const playerHq = this._gameContext.GetPlayerHq();
 		if (playerHq) {

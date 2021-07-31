@@ -1,6 +1,7 @@
 import { AreaRequest } from './../Utils/AreaRequest';
 import { RequestType } from '../Utils/RequestType';
-export interface ISimpleRequestHandler {
+export interface ISimpleHandler {
 	Handle(request: AreaRequest): void;
-	Type(): RequestType;
+	GetType(): RequestType;
+	GetPriority(): number;
 }

@@ -10,7 +10,7 @@ export class KeyService implements IKeyService {
 	private _key: SingletonKey = SingletonKey.None;
 	GetAppKey(): SingletonKey {
 		if (this._key === SingletonKey.None) {
-			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
+			ErrorHandler.Throw(ErrorCat.invalidParameter);
 		}
 		return this._key;
 	}
@@ -27,7 +27,7 @@ export class KeyService implements IKeyService {
 		} else if (appService instanceof DiamondAppService) {
 			this._key = SingletonKey.DiamondApp;
 		} else {
-			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.outOfRange])));
+			ErrorHandler.Throw(ErrorCat.outOfRange);
 		}
 	}
 

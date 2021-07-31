@@ -5,6 +5,7 @@ import { route } from 'preact-router';
 import { StaticLogger } from '../../Utils/Logger/StaticLogger';
 import { LogKind } from '../../Utils/Logger/LogKind';
 import { GameState } from '../../Core/Framework/Context/GameState';
+import { ErrorHandler } from '../../Utils/Exceptions/ErrorHandler';
 
 export class UpdateService implements IUpdateService {
 	private _itemsUpdater: ItemsUpdater;
@@ -12,6 +13,8 @@ export class UpdateService implements IUpdateService {
 	Register(state: GameState): void {
 		this._itemsUpdater = new ItemsUpdater(state);
 		this._itemsUpdater.OnError.On((src: any, data: Error) => {
+			ErrorHandler.Log(data);
+			ErrorHandler.Send(data);
 			GameContext.Error = data;
 			route('{{sub_path}}Error', true);
 		});

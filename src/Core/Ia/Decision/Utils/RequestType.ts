@@ -7,7 +7,7 @@ export enum RequestType {
 	Tank = 'Tank',
 	Patrol = 'Patrol',
 	Truck = 'Truck',
-	TruckOrder = 'TruckOrder',
+	IdleTruck = 'IdleTruck',
 	BorderShield = 'BorderShield',
 	Defense = 'Defense',
 	Heal = 'Heal',
@@ -18,7 +18,7 @@ export enum RequestType {
 	Shield = 'Shield',
 	DiamondRoad = 'DiamondRoad',
 	SpeedUp = 'SpeedUp',
-	PowerUp = 'PowerUp',
+	FireUp = 'FireUp',
 	FoeReactor = 'FoeReactor',
 	ReactorShield = 'ReactorShield',
 	DiamondRoadCleaning = 'DiamondRoadCleaning'

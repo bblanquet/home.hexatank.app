@@ -206,11 +206,11 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		}
 
 		if (!nextField) {
-			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
+			ErrorHandler.Throw(ErrorCat.invalidParameter);
 		}
 		if (this._field) {
 			if (nextField instanceof BasicField && this._field instanceof BasicField) {
-				ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidType])));
+				ErrorHandler.Throw(ErrorCat.invalidType);
 			}
 			this._field.OnDestroyed.Off(this._destroyedFieldFunc);
 			((this._field as unknown) as Item).Destroy();

@@ -2,20 +2,15 @@ import { MoneyOrder } from '../../../Order/Composite/MoneyOrder';
 import { IBrain } from '../../IBrain';
 import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 import { TruckPatrolOrder } from '../../../Order/Composite/Diamond/TruckPatrolOrder';
-import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
+import { IHandler } from '../IHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { Vehicle } from '../../../../Items/Unit/Vehicle';
 import { Truck } from '../../../../Items/Unit/Truck';
 import { HqFieldOrder } from '../../../Order/Composite/Diamond/HqFieldOrder';
 import { DiamondFieldOrder } from '../../../Order/Composite/Diamond/DiamondFieldOrder';
-import { RequestType } from '../../Utils/RequestType';
 
-export class TruckRequestHandler implements ISimpleRequestHandler {
+export class TruckRequestHandler implements IHandler {
 	constructor(private _hq: Headquarter, private _kingdom: IBrain) {}
-
-	Type(): RequestType {
-		return RequestType.Truck;
-	}
 
 	public Handle(request: AreaRequest): void {
 		var lambda: any = (obj: any, vehicle: Vehicle) => {

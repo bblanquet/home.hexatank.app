@@ -25,7 +25,7 @@ export class HexCube {
 		this.Y = y;
 		this.Z = z;
 		if (!this.IsLegal()) {
-			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
+			ErrorHandler.Throw(ErrorCat.invalidParameter);
 		}
 	}
 

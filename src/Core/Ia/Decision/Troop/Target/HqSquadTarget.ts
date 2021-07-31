@@ -8,7 +8,7 @@ import { ErrorCat, ErrorHandler } from '../../../../../Utils/Exceptions/ErrorHan
 export class AliveSquadTarget implements ISquadTarget {
 	constructor(private _item: AliveItem) {
 		if (!(this._item instanceof AliveItem)) {
-			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidType])));
+			ErrorHandler.Throw(ErrorCat.invalidType, `target is already destroyed`);
 		}
 	}
 	Attack(tank: Tank): void {

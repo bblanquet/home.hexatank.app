@@ -52,7 +52,7 @@ export class MapObserver {
 		} else if (cell.GetField() instanceof Headquarter) {
 			return new AliveSquadTarget(cell.GetField() as Headquarter);
 		} else {
-			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidType])));
+			ErrorHandler.Throw(ErrorCat.invalidType);
 		}
 	}
 }

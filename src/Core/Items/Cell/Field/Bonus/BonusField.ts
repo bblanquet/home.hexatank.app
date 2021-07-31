@@ -92,7 +92,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 		}
 
 		if (this.GetCell().GetField() !== this) {
-			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidComputation])));
+			ErrorHandler.Throw(ErrorCat.invalidComputation, `field cell less`);
 		}
 
 		if (!this._animator.IsDone) {

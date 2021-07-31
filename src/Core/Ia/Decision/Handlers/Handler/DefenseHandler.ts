@@ -1,6 +1,5 @@
-import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
+import { IHandler } from '../IHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
-import { RequestType } from '../../Utils/RequestType';
 import { Dictionary } from '../../../../../Utils/Collections/Dictionary';
 import { Groups } from '../../../../../Utils/Collections/Groups';
 import { LogKind } from '../../../../../Utils/Logger/LogKind';
@@ -17,7 +16,7 @@ import { TroopRoads } from '../../Troop/TroopRoads';
 import { TroopDestination } from '../../Utils/TroopDestination';
 import { isNullOrUndefined } from '../../../../../Utils/ToolBox';
 
-export class DefenseHandler implements ISimpleRequestHandler {
+export class DefenseHandler implements IHandler {
 	Handle(request: AreaRequest): void {
 		const area = request.Area;
 		if (0 < area.GetTroops().length) {
@@ -233,9 +232,5 @@ export class DefenseHandler implements ISimpleRequestHandler {
 			LogKind.info,
 			`tank get order to go to ${troopSituation.CurrentDestination.Destination.Coo()}`
 		);
-	}
-
-	Type(): RequestType {
-		return RequestType.Defense;
 	}
 }

@@ -11,6 +11,7 @@ import { MultiSelectionContext } from '../../Core/Menu/Smart/MultiSelectionConte
 import { IHqGameContext } from '../../Core/Framework/Context/IHqGameContext';
 import { GameContext } from '../../Core/Framework/Context/GameContext';
 import { route } from 'preact-router';
+import { ErrorHandler } from '../../Utils/Exceptions/ErrorHandler';
 
 export class InteractionService implements IInteractionService<IHqGameContext> {
 	private _layerService: ILayerService;
@@ -35,6 +36,8 @@ export class InteractionService implements IInteractionService<IHqGameContext> {
 			gameContext
 		);
 		this._interaction.OnError.On((src: any, data: Error) => {
+			ErrorHandler.Log(data);
+			ErrorHandler.Send(data);
 			GameContext.Error = data;
 			route('{{sub_path}}Error', true);
 		});

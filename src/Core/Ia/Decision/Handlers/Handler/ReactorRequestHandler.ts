@@ -1,14 +1,13 @@
 import { Dictionary } from '../../../../../Utils/Collections/Dictionary';
-import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
+import { IHandler } from '../IHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
-import { RequestType } from '../../Utils/RequestType';
 import { BasicField } from '../../../../Items/Cell/Field/BasicField';
 import { GameSettings } from '../../../../Framework/GameSettings';
 import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 import { ReactorField } from '../../../../Items/Cell/Field/Bonus/ReactorField';
 import { Cell } from '../../../../Items/Cell/Cell';
 
-export class ReactorRequestHandler implements ISimpleRequestHandler {
+export class ReactorRequestHandler implements IHandler {
 	constructor(private _hq: Headquarter, private _hqs: Headquarter[]) {}
 
 	Handle(request: AreaRequest): void {
@@ -23,9 +22,6 @@ export class ReactorRequestHandler implements ISimpleRequestHandler {
 				this._hq.Buy((this._hq.GetReactorsCount() + 1) * GameSettings.FieldPrice);
 			}
 		}
-	}
-	Type(): RequestType {
-		return RequestType.Reactor;
 	}
 
 	private GetMostIsolatedCell(cells: Cell[]): Cell {

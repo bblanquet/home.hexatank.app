@@ -1,12 +1,11 @@
 import { MapObserver } from './../../MapObserver';
 import { Squad } from '../../Troop/Squad';
 import { Brain } from '../../Brain';
-import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
-import { RequestType } from '../../Utils/RequestType';
+import { IHandler } from '../IHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { IHeadquarter } from '../../../../Items/Cell/Field/Hq/IHeadquarter';
 
-export class SquadRequestHandler implements ISimpleRequestHandler {
+export class SquadRequestHandler implements IHandler {
 	constructor(private _hqs: IHeadquarter[], private _global: Brain) {}
 
 	Handle(request: AreaRequest): void {
@@ -28,9 +27,5 @@ export class SquadRequestHandler implements ISimpleRequestHandler {
 				this._global.Squads.push(squad);
 			}
 		}
-	}
-
-	Type(): RequestType {
-		return RequestType.Raid;
 	}
 }

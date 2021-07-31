@@ -61,7 +61,7 @@ export class FieldHelper {
 		} else if (obj instanceof HeadquarterField) {
 			return 'HeadquarterField';
 		}
-		ErrorHandler.Throw(new Error(`${ErrorHandler.Cat.Get(ErrorCat[ErrorCat.outOfRange])} ${obj.constructor.name}`));
+		ErrorHandler.Throw(ErrorCat.outOfRange, obj.constructor.name);
 	}
 
 	public static GetRecordName(obj: IField): RecordKind {
@@ -123,9 +123,7 @@ export class FieldHelper {
 		} else if (action === RecordKind.Blocking) {
 			return cell.SetField(new BlockingField(cell, SvgArchive.nature.forest.darkTree));
 		}
-		ErrorHandler.Throw(
-			new Error(`${ErrorHandler.Cat.Get(ErrorCat[ErrorCat.outOfRange])} ${action.constructor.name}`)
-		);
+		ErrorHandler.Throw(ErrorCat.outOfRange, action.constructor.name);
 	}
 
 	public static NewField(name: string, cell: Cell, hq: IHeadquarter, context: GameContext): IField {
@@ -160,6 +158,6 @@ export class FieldHelper {
 		} else if (name === 'BlockingField') {
 			return cell.SetField(new BlockingField(cell, SvgArchive.nature.forest.darkTree));
 		}
-		ErrorHandler.Throw(new Error(`${ErrorHandler.Cat.Get(ErrorCat[ErrorCat.outOfRange])} ${name}`));
+		ErrorHandler.Throw(ErrorCat.outOfRange, name);
 	}
 }

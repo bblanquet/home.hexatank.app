@@ -16,7 +16,7 @@ export class TickTimer implements ITimer {
 
 	SetTicks(tick: number): void {
 		if (tick <= 1) {
-			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
+			ErrorHandler.Throw(ErrorCat.invalidParameter, 'ticker < 1');
 		}
 
 		this._tick = tick;

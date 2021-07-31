@@ -13,6 +13,7 @@ import { ClearTrashCombination } from '../../Core/Interaction/Combination/ClearT
 import { SelectionCombination } from '../../Core/Interaction/Combination/SelectionCombination';
 import { MultiSelectionContext } from '../../Core/Menu/Smart/MultiSelectionContext';
 import { route } from 'preact-router';
+import { ErrorHandler } from '../../Utils/Exceptions/ErrorHandler';
 
 export class RecordInteractionService implements IInteractionService<GameContext> {
 	private _inputNotifier: InputNotifier;
@@ -40,6 +41,8 @@ export class RecordInteractionService implements IInteractionService<GameContext
 			gameContext
 		);
 		this._interaction.OnError.On((src: any, data: Error) => {
+			ErrorHandler.Log(data);
+			ErrorHandler.Send(data);
 			GameContext.Error = data;
 			route('{{sub_path}}Error', true);
 		});

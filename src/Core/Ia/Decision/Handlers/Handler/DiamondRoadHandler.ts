@@ -1,15 +1,14 @@
 import { RoadField } from './../../../../Items/Cell/Field/Bonus/RoadField';
 import { BasicField } from './../../../../Items/Cell/Field/BasicField';
 import { Brain } from '../../Brain';
-import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
+import { IHandler } from '../IHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
-import { RequestType } from '../../Utils/RequestType';
 import { Cell } from '../../../../Items/Cell/Cell';
 import { AStarEngine } from '../../../AStarEngine';
 import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 import { GameSettings } from '../../../../Framework/GameSettings';
 
-export class DiamondRoadHandler implements ISimpleRequestHandler {
+export class DiamondRoadHandler implements IHandler {
 	constructor(private _global: Brain, private _hq: Headquarter) {}
 
 	Handle(request: AreaRequest): void {
@@ -26,9 +25,6 @@ export class DiamondRoadHandler implements ISimpleRequestHandler {
 				});
 			}
 		}
-	}
-	Type(): RequestType {
-		return RequestType.DiamondRoad;
 	}
 
 	private GetCells(global: Brain): Cell[] {

@@ -12,11 +12,11 @@ export class RectangleMapBuilder implements IMapBuilder {
 
 	public GetAllCoos(ranges: number): HexAxial[] {
 		if (ranges < 2) {
-			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
+			ErrorHandler.Throw(ErrorCat.invalidParameter, `param: ${ranges}`);
 		}
 
 		if (ranges % 2 !== 0) {
-			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
+			ErrorHandler.Throw(ErrorCat.invalidParameter, `param: ${ranges}`);
 		}
 
 		const result = new Array<HexOffset>();

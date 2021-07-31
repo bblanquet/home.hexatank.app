@@ -1,18 +1,13 @@
-import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
+import { IHandler } from '../IHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
-import { RequestType } from '../../Utils/RequestType';
 import { TargetMonitoredOrder } from '../../../Order/TargetMonitoredOrder';
 
-export class PatrolHandler implements ISimpleRequestHandler {
+export class PatrolHandler implements IHandler {
 	Handle(request: AreaRequest): void {
 		const tank = request.Area.Tanks.find((t) => !t.HasOrder());
 		if (tank && request.Area.GetFreeUnitCellCount()) {
 			const cell = request.Area.GetRandomFreeUnitCell();
 			tank.GiveOrder(new TargetMonitoredOrder(cell, tank));
 		}
-	}
-
-	Type(): RequestType {
-		return RequestType.Patrol;
 	}
 }

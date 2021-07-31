@@ -1,12 +1,11 @@
 import { FarmField } from '../../../../../Items/Cell/Field/Bonus/FarmField';
 import { BasicField } from '../../../../../Items/Cell/Field/BasicField';
-import { ISimpleRequestHandler } from '../../ISimpleRequestHandler';
+import { IHandler } from '../../IHandler';
 import { AreaRequest } from '../../../Utils/AreaRequest';
-import { RequestType } from '../../../Utils/RequestType';
 import { GameSettings } from '../../../../../Framework/GameSettings';
 import { Headquarter } from '../../../../../Items/Cell/Field/Hq/Headquarter';
 
-export class FarmFieldRequestHandler implements ISimpleRequestHandler {
+export class FarmFieldRequestHandler implements IHandler {
 	constructor(private _hq: Headquarter) {}
 
 	Handle(request: AreaRequest): void {
@@ -21,8 +20,5 @@ export class FarmFieldRequestHandler implements ISimpleRequestHandler {
 				}
 			});
 		}
-	}
-	Type(): RequestType {
-		return RequestType.Farm;
 	}
 }

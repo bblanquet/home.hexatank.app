@@ -1,7 +1,6 @@
 import { ShieldField } from '../../../../../Items/Cell/Field/Bonus/ShieldField';
 import { Area } from '../../../Utils/Area';
-import { RequestType } from '../../../Utils/RequestType';
-import { ISimpleRequestHandler } from '../../ISimpleRequestHandler';
+import { IHandler } from '../../IHandler';
 import { AreaRequest } from '../../../Utils/AreaRequest';
 import { IaArea } from '../../../Utils/IaArea';
 import { AStarEngine } from '../../../../AStarEngine';
@@ -14,11 +13,8 @@ import { AStarHelper } from '../../../../AStarHelper';
 import { isNullOrUndefined } from '../../../../../../Utils/ToolBox';
 import { BasicField } from '../../../../../Items/Cell/Field/BasicField';
 
-export class RoadRequestHandler implements ISimpleRequestHandler {
+export class RoadRequestHandler implements IHandler {
 	constructor(private _hq: Headquarter) {}
-	Type(): RequestType {
-		return RequestType.Road;
-	}
 	Handle(request: AreaRequest): void {
 		const central = request.Area.GetCentralCell();
 		const allyAreas = request.Area.GetAllyAreas().filter((a) => a.IsConnected());

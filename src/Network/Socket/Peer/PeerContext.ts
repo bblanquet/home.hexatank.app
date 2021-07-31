@@ -11,7 +11,7 @@ export class PeerContext {
 		public Recipient: string
 	) {
 		if (this.Owner === this.Recipient) {
-			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
+			ErrorHandler.Throw(ErrorCat.invalidParameter, 'owner === recipient');
 		}
 	}
 

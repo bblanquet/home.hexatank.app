@@ -1,14 +1,23 @@
-import { ISimpleRequestHandler } from './ISimpleRequestHandler';
+import { ISimpleHandler } from './ISimpleRequestHandler';
 import { Groups } from '../../../../Utils/Collections/Groups';
-import { IRequestHandler } from './IRequestHandler';
+import { IHandlerIterator } from './IHandlerIterator';
 import { AreaRequest } from '../Utils/AreaRequest';
 import { StaticLogger } from '../../../../Utils/Logger/StaticLogger';
 import { LogKind } from '../../../../Utils/Logger/LogKind';
+import { RequestId } from '../Requests/RequestId';
 
-export class RequestHandler implements IRequestHandler {
-	constructor(private _handlers: Groups<ISimpleRequestHandler>) {}
+export class HandlerIterator implements IHandlerIterator {
+	private _handlers: Groups<ISimpleHandler>;
+	constructor(handlers: Array<ISimpleHandler>) {
+		handlers.forEach((handler) => {
+			this._handlers.Add(handler.GetPriority().toString(), handler);
+		});
+	}
+	Exist(id: RequestId): boolean {
+		return this._handlers.Values().some((v) => v.GetType() === id.Type && v.GetPriority() === id.Priority);
+	}
 
-	public HandleRequests(requests: Groups<AreaRequest>) {
+	public Iterate(requests: Groups<AreaRequest>) {
 		const priorities = requests.Keys().map((e) => +e).sort();
 		for (let index = priorities.length - 1; index > -1; index--) {
 			const priority = priorities[index].toString();
@@ -17,7 +26,7 @@ export class RequestHandler implements IRequestHandler {
 					request.Area.OnRequestAdded.Invoke(this, request.RequestType);
 				}
 
-				const handler = this._handlers.Get(request.Priority).find((d) => d.Type() === request.RequestType);
+				const handler = this._handlers.Get(request.Priority).find((d) => d.GetType() === request.RequestType);
 				if (!handler) {
 					StaticLogger.Log(LogKind.error, `could not find ${request.RequestType} ${request.Priority}`);
 				}

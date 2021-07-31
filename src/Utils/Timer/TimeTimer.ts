@@ -13,7 +13,7 @@ export class TimeTimer implements ITimer {
 
 	SetTicks(milliseconds: number): void {
 		if (milliseconds <= 1) {
-			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
+			ErrorHandler.Throw(ErrorCat.invalidParameter, 'milliseconds < 1');
 		}
 		this._milliseconds = milliseconds;
 		this._currentDate = Date.now() + this._milliseconds;

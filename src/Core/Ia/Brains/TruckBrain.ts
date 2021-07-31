@@ -1,33 +1,34 @@
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { IBrainProvider } from './IBrain';
-import { GameContext } from '../../Framework/Context/GameContext';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { Brain } from '../Decision/Brain';
-import { RequestHandler } from '../Decision/Handlers/RequestHandler';
-import { AreaRequestMaker } from '../Decision/Requests/AreaRequestMaker';
-import { GeneralRequester } from '../Decision/Requests/Global/GeneralRequester';
+import { HandlerIterator } from '../Decision/Handlers/RequestHandler';
+import { AreaRequestIterator } from '../Decision/Requests/AreaRequestIterator';
+import { GlobalRequestIterator } from '../Decision/Requests/Global/GlobalRequestIterator';
 import { Area } from '../Decision/Utils/Area';
 import { AreaSearch } from '../Decision/Utils/AreaSearch';
-import { Groups } from '../../../Utils/Collections/Groups';
-import { ISimpleRequestHandler } from '../Decision/Handlers/ISimpleRequestHandler';
 import { IBrain } from '../Decision/IBrain';
 import { DummyExpansionMaker } from '../Decision/ExpansionMaker/DummyExpansionMaker';
 import { IdleTruckHandler } from '../Decision/Handlers/Handler/IdleTruckHandler';
-import { IdleTruckRequester } from '../Decision/Requests/Global/Requesters/IdleTruckRequester';
+import { IdleTruckCondition } from '../Decision/Requests/Global/Requesters/IdleTruckCondition';
 import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
+import { SimpleHandler } from '../Decision/Handlers/SimpleHandler';
+import { RequestType } from '../Decision/Utils/RequestType';
+import { GlobalRequester } from '../Decision/Requests/Global/GlobalRequester';
 
 export class TruckBrain implements IBrainProvider {
 	GetBrain(hq: Headquarter, hqs: IHeadquarter[], areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
 		const brain = new Brain(hq, areas, diamond, false);
 
-		const handlers = new Groups<ISimpleRequestHandler>();
-		handlers.Add('10', new IdleTruckHandler(brain));
+		const handlers = [ new SimpleHandler(10, RequestType.IdleTruck, (e) => new IdleTruckHandler(brain).Handle(e)) ];
 
-		brain.Setup(
-			new AreaRequestMaker([]),
-			new RequestHandler(handlers),
+		brain.Inject(
 			new DummyExpansionMaker(),
-			new GeneralRequester([ new IdleTruckRequester(10, brain) ])
+			new GlobalRequestIterator([
+				new GlobalRequester(10, RequestType.IdleTruck, (e) => new IdleTruckCondition().Condition(e))
+			]),
+			new AreaRequestIterator([]),
+			new HandlerIterator(handlers)
 		);
 
 		return brain;

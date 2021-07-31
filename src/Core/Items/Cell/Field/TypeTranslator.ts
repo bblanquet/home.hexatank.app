@@ -65,7 +65,7 @@ export class TypeTranslator {
 		} else if (e instanceof Headquarter) {
 			return e as Headquarter;
 		}
-		ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.outOfRange])));
+		ErrorHandler.Throw(ErrorCat.outOfRange);
 	}
 
 	public static IsAccessible(c: Cell, vehicle: Vehicle): boolean {

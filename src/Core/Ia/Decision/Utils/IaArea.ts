@@ -391,7 +391,7 @@ export class IaArea {
 	}
 
 	public IsTankEngaged(): boolean {
-		return this.Tanks.some((t) => t.HasTarget());
+		return this.Tanks.some((t) => t.HasTarget() && t.HasOrder());
 	}
 
 	public Drop(): Tank {

@@ -8,7 +8,7 @@ export class Singletons {
 	public static Register(key: SingletonKey, obj: any): void {
 		StaticLogger.Log(LogKind.info, `${SingletonKey[key]}`);
 		if (this._singletons.Exist(SingletonKey[key])) {
-			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidParameter])));
+			ErrorHandler.Throw(ErrorCat.invalidParameter, `Singleton already exist ${SingletonKey[key]}`);
 		}
 		this._singletons.Add(key.toString(), obj);
 	}

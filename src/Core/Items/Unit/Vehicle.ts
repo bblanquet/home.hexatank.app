@@ -540,29 +540,31 @@ export abstract class Vehicle extends AliveItem
 		return false;
 	}
 
-	public SetNextCell(cell: Cell): void {
-		if (this.HasCamouflage) {
-			this.RemoveCamouflage();
-		}
-		if (this._nextCell) {
-			if (this._nextCell.GetOccupiers().some((o) => o === this)) {
-				this._nextCell.RemoveOccupier(this);
-			}
-		}
-		this._nextCell = cell;
-		this.OnNextCellChanged.Invoke(this, this._nextCell);
-		this._nextCell.AddOccupier(this);
-		this._nextCell.OnVehicleChanged.Invoke(this, this);
-		this._angleFinder.SetAngle(this._nextCell);
-	}
 	public GetCurrentCell(): Cell {
 		return this._currentCell;
 	}
+
+	public SetNextCell(cell: Cell): void {
+		if (this.HasCamouflage) {
+			this.RemoveCamouflage();
+		} else {
+			if (this._nextCell) {
+				if (this._nextCell.GetOccupiers().some((o) => o === this)) {
+					this._nextCell.RemoveOccupier(this);
+				}
+			}
+			this._nextCell = cell;
+			this.OnNextCellChanged.Invoke(this, this._nextCell);
+			this._nextCell.AddOccupier(this);
+			this._nextCell.OnVehicleChanged.Invoke(this, this);
+			this._angleFinder.SetAngle(this._nextCell);
+		}
+	}
+
 	SetCamouflage(): boolean {
 		if (this.HasNextCell()) {
 			return false;
 		}
-		this.OnCamouflageChanged.Invoke(this, this);
 		this.HasCamouflage = true;
 		this.camouflagedSprites = this.GetSprites().filter((s) => s.alpha !== 0);
 
@@ -586,18 +588,12 @@ export abstract class Vehicle extends AliveItem
 		});
 		this.Camouflage.SetAlive(() => this.IsAlive() && this.HasCamouflage);
 
-		new Explosion(
-			BoundingBox.NewFromBox(this.GetBoundingBox()),
-			SvgArchive.constructionEffects,
-			ZKind.Sky,
-			false,
-			5
-		);
-
+		new Explosion(BoundingBox.NewFromBox(this.GetBoundingBox()), SvgArchive.constructionEffects, ZKind.Sky, false);
+		this.OnCamouflageChanged.Invoke(this, this);
 		return true;
 	}
 
-	RemoveCamouflage() {
+	RemoveCamouflage(): void {
 		if (this.HasCamouflage) {
 			this.HasCamouflage = false;
 
@@ -617,6 +613,7 @@ export abstract class Vehicle extends AliveItem
 				}
 			}
 			this.camouflagedSprites = [];
+			this.OnCamouflageChanged.Invoke(this, this);
 		}
 	}
 }

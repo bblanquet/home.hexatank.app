@@ -1,33 +1,34 @@
 import { DiamondExpansionMaker } from '../Decision/ExpansionMaker/DiamondExpansionMaker';
-import { RequestHandler } from '../Decision/Handlers/RequestHandler';
-import { EnemyReactorHandler } from '../Decision/Handlers/Handler/EnemyReactorHandler';
+import { HandlerIterator } from '../Decision/Handlers/RequestHandler';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
-import { GameContext } from '../../Framework/Context/GameContext';
-import { Groups } from '../../../Utils/Collections/Groups';
 import { Brain } from '../Decision/Brain';
 import { IBrain } from '../Decision/IBrain';
-import { ISimpleRequestHandler } from '../Decision/Handlers/ISimpleRequestHandler';
-import { AreaRequestMaker } from '../Decision/Requests/AreaRequestMaker';
-import { GeneralRequester } from '../Decision/Requests/Global/GeneralRequester';
+import { AreaRequestIterator } from '../Decision/Requests/AreaRequestIterator';
+import { GlobalRequestIterator } from '../Decision/Requests/Global/GlobalRequestIterator';
 import { Area } from '../Decision/Utils/Area';
 import { AreaSearch } from '../Decision/Utils/AreaSearch';
 import { IBrainProvider } from './IBrain';
-import { GeneralRaidRequester } from '../Decision/Requests/Global/Requesters/GeneralRaidRequester';
+import { SimpleSquadCondition } from '../Decision/Requests/Global/Requesters/SimpleSquadCondition';
 import { SimpleTankHander } from '../Decision/Handlers/Handler/SimpleTankHander';
+import { GlobalRequester } from '../Decision/Requests/Global/GlobalRequester';
+import { RequestType } from '../Decision/Utils/RequestType';
+import { SimpleHandler } from '../Decision/Handlers/SimpleHandler';
 
 export class KamikazeBrain implements IBrainProvider {
 	GetBrain(hq: Headquarter, hqs: Headquarter[], areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
 		const brain = new Brain(hq, areas, diamond, true);
 
-		const handlers = new Groups<ISimpleRequestHandler>();
-		handlers.Add('10', new SimpleTankHander(hqs, brain));
-
-		brain.Setup(
-			new AreaRequestMaker([]),
-			new RequestHandler(handlers),
+		const handlers = [
+			new SimpleHandler(10, RequestType.IdleTruck, (e) => new SimpleTankHander(hqs, brain).Handle(e))
+		];
+		brain.Inject(
 			new DiamondExpansionMaker(hq, brain, areaSearch, 0),
-			new GeneralRequester([ new GeneralRaidRequester(10) ])
+			new GlobalRequestIterator([
+				new GlobalRequester(7, RequestType.Raid, (e) => new SimpleSquadCondition().Condition(e))
+			]),
+			new AreaRequestIterator([]),
+			new HandlerIterator(handlers)
 		);
 
 		return brain;

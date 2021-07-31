@@ -63,7 +63,7 @@ export class AreaStatus {
 		this.AttachHqField(cell);
 
 		if (7 < this.GetCellCount()) {
-			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidType])));
+			ErrorHandler.Throw(ErrorCat.invalidType, 'get more than 7 cells');
 		}
 	}
 

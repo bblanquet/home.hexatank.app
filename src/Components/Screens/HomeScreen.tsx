@@ -59,7 +59,7 @@ export default class HomeScreen extends Component<any, { IsMenu: boolean }> {
 									]}
 								/>
 								<Btn Color={ColorKind.Black} OnClick={() => route('{{sub_path}}Profil', true)}>
-									<Icon Value="fas fa-user-circle" /> Profil
+									<Icon Value="fas fa-user-circle" /> Profile
 								</Btn>
 								<Visible isVisible={!Env.IsPrd()}>
 									<Btn Color={ColorKind.Blue} OnClick={() => route('{{sub_path}}Customer', true)}>

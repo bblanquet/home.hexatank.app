@@ -1,10 +1,9 @@
-import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
+import { IHandler } from '../IHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
-import { RequestType } from '../../Utils/RequestType';
 import { Brain } from '../../Brain';
 import { MonitoredOrder } from '../../../Order/MonitoredOrder';
 
-export class HealUnitRequestHandler implements ISimpleRequestHandler {
+export class HealUnitRequestHandler implements IHandler {
 	constructor(private _kingdom: Brain) {}
 
 	Handle(request: AreaRequest): void {
@@ -24,8 +23,5 @@ export class HealUnitRequestHandler implements ISimpleRequestHandler {
 			currentArea.Add(t);
 			t.GiveOrder(new MonitoredOrder(destination, t));
 		});
-	}
-	Type(): RequestType {
-		return RequestType.HealUnit;
 	}
 }

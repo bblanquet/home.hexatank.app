@@ -21,11 +21,7 @@ export class ItemsUpdater implements IItemsUpdater {
 	}
 
 	public Update(): void {
-		if (this._lastUpdate) {
-			const nextUpdate = Date.now();
-			ItemsUpdater.UpdateSpan = nextUpdate - this._lastUpdate;
-			this._lastUpdate = nextUpdate;
-		}
+		this.CalculateUpdateDuration();
 		if (!this._state.IsPause) {
 			if (Env.IsPrd()) {
 				try {
@@ -38,6 +34,14 @@ export class ItemsUpdater implements IItemsUpdater {
 			} else {
 				this.Iterate();
 			}
+		}
+	}
+
+	private CalculateUpdateDuration() {
+		if (this._lastUpdate) {
+			const nextUpdate = Date.now();
+			ItemsUpdater.UpdateSpan = nextUpdate - this._lastUpdate;
+			this._lastUpdate = nextUpdate;
 		}
 	}
 

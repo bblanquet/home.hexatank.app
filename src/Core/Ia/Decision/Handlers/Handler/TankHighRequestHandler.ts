@@ -1,24 +1,23 @@
 import { Tank } from './../../../../Items/Unit/Tank';
 import { IaArea } from '../../Utils/IaArea';
 import { Brain } from '../../Brain';
-import { ISimpleRequestHandler } from '../ISimpleRequestHandler';
+import { IHandler } from '../IHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
-import { RequestType } from '../../Utils/RequestType';
 import { CellHelper } from '../../../../Items/Cell/CellHelper';
 import { ErrorHandler } from '../../../../../Utils/Exceptions/ErrorHandler';
 
-export class TankHighRequestHandler implements ISimpleRequestHandler {
-	constructor(private _kingdom: Brain, private _mediumRequest: ISimpleRequestHandler) {}
+export class TankHighRequestHandler implements IHandler {
+	private _delta: number = 0;
 
-	Type(): RequestType {
-		return RequestType.Tank;
-	}
+	constructor(private _kingdom: Brain, private _mediumRequest: IHandler) {}
+
 	Handle(request: AreaRequest): void {
+		this._delta = request.Area.Tanks.length - request.Area.GetFoesCount();
 		var troopAreas = this.GetReinforcement(request);
 
 		troopAreas.forEach((area) => {
 			while (area.HasTank()) {
-				if (request.RequestCount === 0) {
+				if (this._delta === 0) {
 					return;
 				}
 				if (!this.Assign(request, () => area.Drop())) {
@@ -27,11 +26,11 @@ export class TankHighRequestHandler implements ISimpleRequestHandler {
 			}
 		});
 
-		if (0 < request.RequestCount) {
+		if (0 < this._delta) {
 			this._mediumRequest.Handle(request);
 		}
 
-		if (0 < request.RequestCount) {
+		if (0 < this._delta) {
 			this._kingdom.GetSquads().forEach((squad) => {
 				while (squad.HasTank()) {
 					if (!this.Assign(request, () => squad.Drop())) {
@@ -47,7 +46,7 @@ export class TankHighRequestHandler implements ISimpleRequestHandler {
 			const tank = drop();
 			ErrorHandler.ThrowNull(tank);
 			request.Area.Add(tank);
-			request.RequestCount -= 1;
+			this._delta -= 1;
 			return true;
 		} else {
 			return false;

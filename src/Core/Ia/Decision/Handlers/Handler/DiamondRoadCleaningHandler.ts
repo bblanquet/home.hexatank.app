@@ -1,8 +1,7 @@
 import { AStarHelper } from './../../../AStarHelper';
 import { Brain } from '../../Brain';
-import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
+import { IHandler } from '../IHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
-import { RequestType } from '../../Utils/RequestType';
 import { Cell } from '../../../../Items/Cell/Cell';
 import { AStarEngine } from '../../../AStarEngine';
 import { TypeTranslator } from '../../../../Items/Cell/Field/TypeTranslator';
@@ -10,7 +9,7 @@ import { Dictionary } from '../../../../../Utils/Collections/Dictionary';
 import { Tank } from '../../../../Items/Unit/Tank';
 import { MonitoredOrder } from '../../../Order/MonitoredOrder';
 
-export class DiamondRoadCleaningHandler implements ISimpleRequestHandler {
+export class DiamondRoadCleaningHandler implements IHandler {
 	constructor(private _brain: Brain) {}
 
 	Handle(request: AreaRequest): void {
@@ -35,9 +34,6 @@ export class DiamondRoadCleaningHandler implements ISimpleRequestHandler {
 				}
 			}
 		}
-	}
-	Type(): RequestType {
-		return RequestType.DiamondRoadCleaning;
 	}
 
 	private GetRoad(tank: Tank, cell: Cell): Cell[] {

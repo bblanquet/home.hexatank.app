@@ -78,6 +78,10 @@ export class Tank extends Vehicle {
 	public Update(viewX: number, viewY: number): void {
 		super.Update(viewX, viewY);
 
+		// if (this.IsSelected()) {
+		// 	throw new Error('Method not implemented.');
+		// }
+
 		if (this._mainTarget != null && !this._mainTarget.IsAlive()) {
 			this._mainTarget = null;
 		}
@@ -179,7 +183,7 @@ export class Tank extends Vehicle {
 
 	public SetMainTarget(item: AliveItem): void {
 		if (item && item.GetRelation(this.Identity) === Relationship.Ally) {
-			ErrorHandler.Throw(new Error(ErrorHandler.Cat.Get(ErrorCat[ErrorCat.invalidComputation])));
+			ErrorHandler.Throw(ErrorCat.invalidComputation, 'test');
 		}
 
 		if (this._targetUi) {

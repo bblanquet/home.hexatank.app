@@ -1,12 +1,11 @@
-import { ISimpleRequestHandler } from '../../ISimpleRequestHandler';
+import { IHandler } from '../../IHandler';
 import { AreaRequest } from '../../../Utils/AreaRequest';
-import { RequestType } from '../../../Utils/RequestType';
 import { BasicField } from '../../../../../Items/Cell/Field/BasicField';
 import { GameSettings } from '../../../../../Framework/GameSettings';
 import { Headquarter } from '../../../../../Items/Cell/Field/Hq/Headquarter';
 import { BatteryField } from '../../../../../Items/Cell/Field/Bonus/BatteryField';
 
-export class EnergyRequestHandler implements ISimpleRequestHandler {
+export class EnergyRequestHandler implements IHandler {
 	constructor(private _hq: Headquarter) {}
 
 	Handle(request: AreaRequest): void {
@@ -28,9 +27,5 @@ export class EnergyRequestHandler implements ISimpleRequestHandler {
 				}
 			});
 		}
-	}
-
-	Type(): RequestType {
-		return RequestType.Energy;
 	}
 }

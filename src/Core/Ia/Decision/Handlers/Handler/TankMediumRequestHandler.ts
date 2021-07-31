@@ -1,39 +1,35 @@
 import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
-import { ISimpleRequestHandler } from './../ISimpleRequestHandler';
+import { IHandler } from '../IHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { Brain } from '../../Brain';
 import { IaArea } from '../../Utils/IaArea';
 import { GameSettings } from '../../../../Framework/GameSettings';
 import { Vehicle } from '../../../../Items/Unit/Vehicle';
 import { Tank } from '../../../../Items/Unit/Tank';
-import { RequestType } from '../../Utils/RequestType';
-import { isNullOrUndefined } from '../../../../../Utils/ToolBox';
 import { ErrorHandler } from '../../../../../Utils/Exceptions/ErrorHandler';
 
-export class TankMediumRequestHandler implements ISimpleRequestHandler {
-	constructor(private _kingdom: Brain, private _hq: Headquarter) {}
-
-	Type(): RequestType {
-		return RequestType.Tank;
-	}
+export class TankMediumRequestHandler implements IHandler {
+	private _delta: number = 0;
+	constructor(private _brain: Brain, private _hq: Headquarter) {}
 
 	public Handle(request: AreaRequest): void {
-		if (this._kingdom.IdleTanks.HasTank()) {
+		this._delta = request.Area.Tanks.length - request.Area.GetFoesCount();
+		if (this._brain.IdleTanks.HasTank()) {
 			this.GetHelpFromIdleTanks(request);
 		}
 
-		if (request.RequestCount > 0) {
+		if (this._delta > 0) {
 			this.GetHelpFromBuying(request);
 		}
 	}
 
 	private GetHelpFromIdleTanks(request: AreaRequest) {
-		while (this._kingdom.IdleTanks.HasTank() && request.RequestCount > 0) {
+		while (this._brain.IdleTanks.HasTank() && this._delta > 0) {
 			if (request.Area.HasFreeUnitCell()) {
-				const tank = this._kingdom.IdleTanks.Pop();
+				const tank = this._brain.IdleTanks.Pop();
 				ErrorHandler.ThrowNull(tank);
 				request.Area.Add(tank);
-				request.RequestCount -= 1;
+				this._delta -= 1;
 			} else {
 				return;
 			}
@@ -41,10 +37,10 @@ export class TankMediumRequestHandler implements ISimpleRequestHandler {
 	}
 
 	private GetHelpFromBuying(request: AreaRequest) {
-		while (request.RequestCount > 0) {
+		while (this._delta > 0) {
 			const isPassed = this.BuyTank(request.Area);
 			if (isPassed) {
-				request.RequestCount -= 1;
+				this._delta -= 1;
 			} else {
 				return;
 			}

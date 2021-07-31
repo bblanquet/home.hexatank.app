@@ -1,12 +1,11 @@
 import { BasicField } from '../../../../../Items/Cell/Field/BasicField';
-import { ISimpleRequestHandler } from '../../ISimpleRequestHandler';
+import { IHandler } from '../../IHandler';
 import { AreaRequest } from '../../../Utils/AreaRequest';
-import { RequestType } from '../../../Utils/RequestType';
 import { GameSettings } from '../../../../../Framework/GameSettings';
 import { Headquarter } from '../../../../../Items/Cell/Field/Hq/Headquarter';
 import { ShieldField } from '../../../../../Items/Cell/Field/Bonus/ShieldField';
 
-export class ReactorShieldHandler implements ISimpleRequestHandler {
+export class ReactorShieldHandler implements IHandler {
 	constructor(private _hq: Headquarter) {}
 
 	Handle(request: AreaRequest): void {
@@ -21,9 +20,5 @@ export class ReactorShieldHandler implements ISimpleRequestHandler {
 				});
 			}
 		}
-	}
-
-	Type(): RequestType {
-		return RequestType.ReactorShield;
 	}
 }

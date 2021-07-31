@@ -3,13 +3,10 @@ import { ShieldFieldBorderRequestHandler } from '../Decision/Handlers/Handler/Fi
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { DiamondRoadCondition } from '../Decision/Requests/Area/DiamondRoadCondition';
 import { DiamondRoadCleaningHandler } from '../Decision/Handlers/Handler/DiamondRoadCleaningHandler';
-import { BasicFarmFieldCondition } from '../Decision/Requests/Area/Field/BasicFarmFieldCondition';
 import { ReactorShieldHandler } from '../Decision/Handlers/Handler/Field/ReactorShieldHandler';
 import { FoeReactorCondition } from '../Decision/Requests/Area/FoeReactorCondition';
-import { EnemyReactorHandler as FoeReactorHandler } from '../Decision/Handlers/Handler/EnemyReactorHandler';
 import { SpeedUpCondtion } from '../Decision/Requests/Area/SpeedUpCondtion';
 import { SpeedUpHandler } from '../Decision/Handlers/Handler/SpeedUpHandler';
-import { FireUpHandler as FireUpRequestHandler } from '../Decision/Handlers/Handler/FireUpHandler';
 import { DiamondExpansionMaker } from '../Decision/ExpansionMaker/DiamondExpansionMaker';
 import { IBrainProvider } from './IBrain';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
@@ -55,6 +52,11 @@ import { GlobalRequester } from '../Decision/Requests/Global/GlobalRequester';
 import { RequestType } from '../Decision/Utils/RequestType';
 import { SimpleHandler } from '../Decision/Handlers/SimpleHandler';
 import { GameSettings } from '../../Framework/GameSettings';
+import { EnemyReactorHandler } from '../Decision/Handlers/Handler/EnemyReactorHandler';
+import { FireUpHandler } from '../Decision/Handlers/Handler/FireUpHandler';
+import { HealUpHandler } from '../Decision/Handlers/Handler/HealUpHandler';
+import { HealUpCondition } from '../Decision/Requests/Area/HealUpCondition';
+import { GlobalTruckCondition } from '../Decision/Requests/Global/Requesters/GlobalTruckCondition';
 
 export class NormalBrain implements IBrainProvider {
 	GetBrain(hq: Headquarter, hqs: Headquarter[], areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
@@ -63,12 +65,12 @@ export class NormalBrain implements IBrainProvider {
 		const handlers = [
 			//behaviour
 			new SimpleHandler(10, RequestType.IdleTruck, new IdleTruckHandler(brain)),
-			new SimpleHandler(10, RequestType.FoeReactor, new FoeReactorHandler()),
+			new SimpleHandler(10, RequestType.FoeReactor, new EnemyReactorHandler()),
 			new SimpleHandler(10, RequestType.Defense, new DefenseHandler()),
 			new SimpleHandler(10, RequestType.Clear, new ClearHandler()),
 			new SimpleHandler(7, RequestType.DiamondRoadCleaning, new DiamondRoadCleaningHandler(brain)),
 			new SimpleHandler(7, RequestType.Raid, new SquadRequestHandler(hqs, brain)),
-			new SimpleHandler(2, RequestType.HealUnit, new FindMedicFieldHandler(brain)),
+			new SimpleHandler(3, RequestType.HealUnit, new FindMedicFieldHandler(brain)),
 			new SimpleHandler(1, RequestType.Patrol, new PatrolHandler()),
 
 			//unit
@@ -82,8 +84,9 @@ export class NormalBrain implements IBrainProvider {
 			new SimpleHandler(10, RequestType.Truck, new TruckHandler(hq, brain)),
 
 			//powerup
-			new SimpleHandler(10, RequestType.FireUp, new FireUpRequestHandler()),
+			new SimpleHandler(10, RequestType.FireUp, new FireUpHandler()),
 			new SimpleHandler(7, RequestType.SpeedUp, new SpeedUpHandler()),
+			new SimpleHandler(5, RequestType.HealUp, new HealUpHandler()),
 
 			//field
 			new SimpleHandler(5, RequestType.BorderShieldField, new ShieldFieldBorderRequestHandler(hq)),
@@ -91,21 +94,24 @@ export class NormalBrain implements IBrainProvider {
 			new SimpleHandler(5, RequestType.FarmField, new FarmFieldRequestHandler(hq)),
 			new SimpleHandler(10, RequestType.ReactorField, new ReactorRequestHandler(hq, hqs)),
 			new SimpleHandler(8, RequestType.BatteryField, new EnergyRequestHandler(hq)),
-			new SimpleHandler(2, RequestType.MedicField, new HealingRequestHandler(hq)),
+			new SimpleHandler(3, RequestType.MedicField, new HealingRequestHandler(hq)),
 			new SimpleHandler(5, RequestType.ShieldField, new ShieldRequestHandler(hq))
 		];
 
 		brain.Inject(
 			new DiamondExpansionMaker(hq, brain, areaSearch, 1),
 			new GlobalRequestIterator([
+				//unit
+				new GlobalRequester(10, RequestType.Truck, new GlobalTruckCondition()),
+
 				//field
 				new GlobalRequester(8, RequestType.BatteryField, new GlobalBatteryCondition()),
 				new GlobalRequester(5, RequestType.FarmField, new GlobalFarmCondition()),
+				new GlobalRequester(3, RequestType.MedicField, new GlobalMedicFieldCondition()),
 
 				//behaviour
 				new GlobalRequester(10, RequestType.IdleTruck, new IdleTruckCondition()),
-				new GlobalRequester(7, RequestType.Raid, new SquadCondition(15000, 2)),
-				new GlobalRequester(2, RequestType.MedicField, new GlobalMedicFieldCondition())
+				new GlobalRequester(7, RequestType.Raid, new SquadCondition(15000, 2))
 			]),
 			new AreaRequestIterator([
 				//unit
@@ -117,16 +123,16 @@ export class NormalBrain implements IBrainProvider {
 				//field
 				new AreaRequester(9, RequestType.ReactorShield, new ReactorFieldCondition()),
 				new AreaRequester(5, RequestType.ShieldField, new ShieldFieldBarrierCondition()),
-				new AreaRequester(2, RequestType.MedicField, new FindMedicFieldCondition(brain)),
-				//new AreaRequester(5, RequestType.FarmField, new BasicFarmFieldCondition()),
 				new AreaRequester(5, RequestType.BorderShieldField, new ShieldBorderCondition()),
 				new AreaRequester(10, RequestType.ReactorField, new ReactorFieldCondition()),
 
 				//powerup
 				new AreaRequester(10, RequestType.FireUp, new FireUpCondition(brain)),
 				new AreaRequester(7, RequestType.SpeedUp, new SpeedUpCondtion(brain)),
+				new AreaRequester(5, RequestType.HealUp, new HealUpCondition(brain)),
 
 				//behaviour
+				new AreaRequester(3, RequestType.HealUnit, new FindMedicFieldCondition(brain)),
 				new AreaRequester(10, RequestType.Defense, new DefenseCondition()),
 				new AreaRequester(7, RequestType.DiamondRoadCleaning, new DiamondRoadCondition(brain)),
 				new AreaRequester(10, RequestType.FoeReactor, new FoeReactorCondition()),

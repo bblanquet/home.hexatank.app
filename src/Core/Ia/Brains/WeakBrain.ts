@@ -1,9 +1,6 @@
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { DiamondRoadCondition } from '../Decision/Requests/Area/DiamondRoadCondition';
 import { DiamondRoadCleaningHandler } from '../Decision/Handlers/Handler/DiamondRoadCleaningHandler';
-import { ReactorShieldHandler } from '../Decision/Handlers/Handler/Field/ReactorShieldHandler';
-import { FoeReactorCondition } from '../Decision/Requests/Area/FoeReactorCondition';
-import { EnemyReactorHandler as FoeReactorHandler } from '../Decision/Handlers/Handler/EnemyReactorHandler';
 import { DiamondExpansionMaker } from '../Decision/ExpansionMaker/DiamondExpansionMaker';
 import { IBrainProvider } from './IBrain';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
@@ -14,11 +11,8 @@ import { GlobalRequestIterator } from '../Decision/Requests/Global/GlobalRequest
 import { Area } from '../Decision/Utils/Area';
 import { AreaSearch } from '../Decision/Utils/AreaSearch';
 import { SquadCondition } from '../Decision/Requests/Global/Requesters/SquadCondition';
-import { GlobalFarmCondition } from '../Decision/Requests/Global/Requesters/GlobalFarmCondition';
 import { ClearHandler } from '../Decision/Handlers/Handler/ClearHandler';
-import { EnergyRequestHandler } from '../Decision/Handlers/Handler/Field/EnergyRequestHandler';
 import { DefenseHandler } from '../Decision/Handlers/Handler/DefenseHandler';
-import { ReactorRequestHandler } from '../Decision/Handlers/Handler/ReactorRequestHandler';
 import { PatrolCondition } from '../Decision/Requests/Area/PatrolCondition';
 import { SquadRequestHandler } from '../Decision/Handlers/Handler/SquadRequestHandler';
 import { TankHighRequestHandler } from '../Decision/Handlers/Handler/TankHighRequestHandler';
@@ -26,7 +20,6 @@ import { TankMediumRequestHandler } from '../Decision/Handlers/Handler/TankMediu
 import { TruckHandler } from '../Decision/Handlers/Handler/TruckHandler';
 import { ClearAreaCondition } from '../Decision/Requests/Area/ClearAreaCondition';
 import { PatrolHandler } from '../Decision/Handlers/Handler/PatrolHandler';
-import { ReactorFieldCondition } from '../Decision/Requests/Area/Field/ReactorFieldCondition';
 import { TankHighCondition } from '../Decision/Requests/Area/TankHighCondition';
 import { TruckCondition } from '../Decision/Requests/Area/TruckCondition';
 import { DefenseCondition } from '../Decision/Requests/Area/DefenseCondition';
@@ -39,15 +32,14 @@ import { AreaRequester } from '../Decision/Requests/AreaRequester';
 import { GlobalRequester } from '../Decision/Requests/Global/GlobalRequester';
 import { RequestType } from '../Decision/Utils/RequestType';
 import { SimpleHandler } from '../Decision/Handlers/SimpleHandler';
+import { GlobalTruckCondition } from '../Decision/Requests/Global/Requesters/GlobalTruckCondition';
 
 export class WeakBrain implements IBrainProvider {
 	GetBrain(hq: Headquarter, hqs: Headquarter[], areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
 		const brain = new Brain(hq, areas, diamond, true);
-
 		const handlers = [
 			//behaviour
 			new SimpleHandler(10, RequestType.IdleTruck, new IdleTruckHandler(brain)),
-			new SimpleHandler(10, RequestType.FoeReactor, new FoeReactorHandler()),
 			new SimpleHandler(10, RequestType.Defense, new DefenseHandler()),
 			new SimpleHandler(10, RequestType.Clear, new ClearHandler()),
 			new SimpleHandler(7, RequestType.DiamondRoadCleaning, new DiamondRoadCleaningHandler(brain)),
@@ -62,21 +54,14 @@ export class WeakBrain implements IBrainProvider {
 			),
 			new SimpleHandler(5, RequestType.Tank, new TankMediumRequestHandler(brain, hq)),
 			new SimpleHandler(1, RequestType.Tank, new TankMediumRequestHandler(brain, hq)),
-			new SimpleHandler(10, RequestType.Truck, new TruckHandler(hq, brain)),
-
-			//powerup
-
-			//field
-			new SimpleHandler(9, RequestType.ReactorShield, new ReactorShieldHandler(hq)),
-			new SimpleHandler(10, RequestType.ReactorField, new ReactorRequestHandler(hq, hqs)),
-			new SimpleHandler(8, RequestType.BatteryField, new EnergyRequestHandler(hq))
+			new SimpleHandler(10, RequestType.Truck, new TruckHandler(hq, brain))
 		];
 
 		brain.Inject(
 			new DiamondExpansionMaker(hq, brain, areaSearch, 2),
 			new GlobalRequestIterator([
-				//field
-				new GlobalRequester(5, RequestType.FarmField, new GlobalFarmCondition()),
+				//unit
+				new GlobalRequester(10, RequestType.Truck, new GlobalTruckCondition()),
 
 				//behaviour
 				new GlobalRequester(10, RequestType.IdleTruck, new IdleTruckCondition()),
@@ -89,17 +74,9 @@ export class WeakBrain implements IBrainProvider {
 				new AreaRequester(1, RequestType.Tank, new TankLowCondition()),
 				new AreaRequester(10, RequestType.Truck, new TruckCondition(2)),
 
-				//field
-				new AreaRequester(9, RequestType.ReactorShield, new ReactorFieldCondition()),
-				//new AreaRequester(5, RequestType.FarmField, new BasicFarmFieldCondition()),
-				new AreaRequester(10, RequestType.ReactorField, new ReactorFieldCondition()),
-
-				//powerup
-
 				//behaviour
 				new AreaRequester(10, RequestType.Defense, new DefenseCondition()),
 				new AreaRequester(7, RequestType.DiamondRoadCleaning, new DiamondRoadCondition(brain)),
-				new AreaRequester(10, RequestType.FoeReactor, new FoeReactorCondition()),
 				new AreaRequester(10, RequestType.Clear, new ClearAreaCondition()),
 				new AreaRequester(1, RequestType.Patrol, new PatrolCondition())
 			]),

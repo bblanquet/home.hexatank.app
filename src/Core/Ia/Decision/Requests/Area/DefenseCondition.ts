@@ -1,7 +1,7 @@
-import { IaArea } from '../../Utils/IaArea';
+import { BrainArea } from '../../Utils/BrainArea';
 import { IAreaCondition } from '../IAreaCondition';
 export class DefenseCondition implements IAreaCondition {
-	Condition(area: IaArea): boolean {
+	Condition(area: BrainArea): boolean {
 		return 0 < area.GetFoesCount();
 	}
 }

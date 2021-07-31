@@ -19,7 +19,7 @@ export class UpCalculator {
 	}
 
 	public GetDiamondValue(energy: number): number {
-		return this.GetAttack(energy) * 0.5;
+		return energy * 0.5;
 	}
 
 	public GetTranslationUp(energy: number): number {

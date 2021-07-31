@@ -3,13 +3,13 @@ import { TypeTranslator } from '../../../../Items/Cell/Field/TypeTranslator';
 import { Cell } from '../../../../Items/Cell/Cell';
 import { AStarEngine } from '../../../AStarEngine';
 import { Brain } from '../../Brain';
-import { IaArea } from '../../Utils/IaArea';
+import { BrainArea } from '../../Utils/BrainArea';
 import { IAreaCondition } from '../IAreaCondition';
 
 export class DiamondRoadCondition implements IAreaCondition {
 	constructor(private _brain: Brain) {}
 
-	Condition(area: IaArea): boolean {
+	Condition(area: BrainArea): boolean {
 		return area.HasDiamond() && area.HasTank() && area.HasFreeTank() && 0 < this.GetObstacles(this._brain).length;
 	}
 

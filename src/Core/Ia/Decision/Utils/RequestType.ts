@@ -4,6 +4,7 @@ export enum RequestType {
 	//powerup
 	SpeedUp = 'SpeedUp',
 	FireUp = 'FireUp',
+	HealUp = 'HealUp',
 
 	//field
 	FarmField = 'FarmField',

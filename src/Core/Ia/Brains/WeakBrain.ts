@@ -14,7 +14,7 @@ import { GlobalRequestIterator } from '../Decision/Requests/Global/GlobalRequest
 import { Area } from '../Decision/Utils/Area';
 import { AreaSearch } from '../Decision/Utils/AreaSearch';
 import { SquadCondition } from '../Decision/Requests/Global/Requesters/SquadCondition';
-import { GeneralTruckCondition } from '../Decision/Requests/Global/Requesters/GeneralTruckCondition';
+import { GlobalFarmCondition } from '../Decision/Requests/Global/Requesters/GlobalFarmCondition';
 import { ClearHandler } from '../Decision/Handlers/Handler/ClearHandler';
 import { EnergyRequestHandler } from '../Decision/Handlers/Handler/Field/EnergyRequestHandler';
 import { DefenseHandler } from '../Decision/Handlers/Handler/DefenseHandler';
@@ -23,7 +23,7 @@ import { PatrolCondition } from '../Decision/Requests/Area/PatrolCondition';
 import { SquadRequestHandler } from '../Decision/Handlers/Handler/SquadRequestHandler';
 import { TankHighRequestHandler } from '../Decision/Handlers/Handler/TankHighRequestHandler';
 import { TankMediumRequestHandler } from '../Decision/Handlers/Handler/TankMediumRequestHandler';
-import { TruckRequestHandler } from '../Decision/Handlers/Handler/TruckRequestHandler';
+import { TruckHandler } from '../Decision/Handlers/Handler/TruckHandler';
 import { ClearAreaCondition } from '../Decision/Requests/Area/ClearAreaCondition';
 import { PatrolHandler } from '../Decision/Handlers/Handler/PatrolHandler';
 import { ReactorFieldCondition } from '../Decision/Requests/Area/Field/ReactorFieldCondition';
@@ -62,7 +62,7 @@ export class WeakBrain implements IBrainProvider {
 			),
 			new SimpleHandler(5, RequestType.Tank, new TankMediumRequestHandler(brain, hq)),
 			new SimpleHandler(1, RequestType.Tank, new TankMediumRequestHandler(brain, hq)),
-			new SimpleHandler(10, RequestType.Truck, new TruckRequestHandler(hq, brain)),
+			new SimpleHandler(10, RequestType.Truck, new TruckHandler(hq, brain)),
 
 			//powerup
 
@@ -76,7 +76,7 @@ export class WeakBrain implements IBrainProvider {
 			new DiamondExpansionMaker(hq, brain, areaSearch, 2),
 			new GlobalRequestIterator([
 				//field
-				new GlobalRequester(5, RequestType.FarmField, new GeneralTruckCondition()),
+				new GlobalRequester(5, RequestType.FarmField, new GlobalFarmCondition()),
 
 				//behaviour
 				new GlobalRequester(10, RequestType.IdleTruck, new IdleTruckCondition()),

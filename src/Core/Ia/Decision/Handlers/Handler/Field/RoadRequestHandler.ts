@@ -2,7 +2,6 @@ import { ShieldField } from '../../../../../Items/Cell/Field/Bonus/ShieldField';
 import { Area } from '../../../Utils/Area';
 import { IHandler } from '../../IHandler';
 import { AreaRequest } from '../../../Utils/AreaRequest';
-import { IaArea } from '../../../Utils/IaArea';
 import { AStarEngine } from '../../../../AStarEngine';
 import { Cell } from '../../../../../Items/Cell/Cell';
 import { Headquarter } from '../../../../../Items/Cell/Field/Hq/Headquarter';
@@ -12,6 +11,7 @@ import { Groups } from '../../../../../../Utils/Collections/Groups';
 import { AStarHelper } from '../../../../AStarHelper';
 import { isNullOrUndefined } from '../../../../../../Utils/ToolBox';
 import { BasicField } from '../../../../../Items/Cell/Field/BasicField';
+import { BrainArea } from '../../../Utils/BrainArea';
 
 export class RoadRequestHandler implements IHandler {
 	constructor(private _hq: Headquarter) {}
@@ -51,7 +51,7 @@ export class RoadRequestHandler implements IHandler {
 		}
 	}
 
-	private GetFarthestAraFromHq(area: IaArea): Area {
+	private GetFarthestAraFromHq(area: BrainArea): Area {
 		const aroundAreas = area.GetSpot().GetAroundAreas().filter((a) => a.GetStatus().HasField(BasicField.name));
 		if (aroundAreas.length === 0) {
 			return null;
@@ -66,7 +66,7 @@ export class RoadRequestHandler implements IHandler {
 		}
 	}
 
-	private GetRoadToFarthestAreaFromHq(area: IaArea): Cell[] {
+	private GetRoadToFarthestAreaFromHq(area: BrainArea): Cell[] {
 		const destination = this.GetFarthestAraFromHq(area);
 		if (destination) {
 			let nextCell = destination.GetCentralCell();
@@ -81,7 +81,7 @@ export class RoadRequestHandler implements IHandler {
 		return [];
 	}
 
-	private GetRoadToConnectingArea(allyAreas: IaArea[], central: Cell): Cell[] {
+	private GetRoadToConnectingArea(allyAreas: BrainArea[], central: Cell): Cell[] {
 		const areaByHqDistance = this.GetAreaByHqDistance(allyAreas);
 		const closestHqArea = Math.min(...areaByHqDistance.Keys().map((k) => +k));
 		const connectingArea = areaByHqDistance.Get(closestHqArea.toString())[0];
@@ -99,8 +99,8 @@ export class RoadRequestHandler implements IHandler {
 		}
 	}
 
-	private GetAreaByHqDistance(allyAreas: IaArea[]) {
-		const groups = new Groups<IaArea>();
+	private GetAreaByHqDistance(allyAreas: BrainArea[]) {
+		const groups = new Groups<BrainArea>();
 		allyAreas.forEach((area) => {
 			groups.Add(area.GetDistanceFromHq().toString(), area);
 		});

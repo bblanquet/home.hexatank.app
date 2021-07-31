@@ -1,8 +1,8 @@
 import { AreaRequest } from '../Utils/AreaRequest';
-import { IaArea } from '../Utils/IaArea';
+import { BrainArea } from '../Utils/BrainArea';
 import { RequestId } from './RequestId';
 
 export interface IAreaRequestIterator {
-	GetRequest(area: IaArea): AreaRequest[];
+	GetRequest(area: BrainArea): AreaRequest[];
 	GetIds(): RequestId[];
 }

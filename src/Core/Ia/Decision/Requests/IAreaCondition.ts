@@ -1,5 +1,5 @@
-import { IaArea } from '../Utils/IaArea';
+import { BrainArea } from '../Utils/BrainArea';
 
 export interface IAreaCondition {
-	Condition(area: IaArea): boolean;
+	Condition(area: BrainArea): boolean;
 }

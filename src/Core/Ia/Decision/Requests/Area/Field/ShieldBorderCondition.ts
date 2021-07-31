@@ -1,7 +1,7 @@
-import { IaArea } from '../../../Utils/IaArea';
+import { BrainArea } from '../../../Utils/BrainArea';
 import { IAreaCondition } from '../../IAreaCondition';
 export class ShieldBorderCondition implements IAreaCondition {
-	Condition(area: IaArea): boolean {
+	Condition(area: BrainArea): boolean {
 		return (
 			area.GetInnerFoeCount() === 0 &&
 			0 < area.GetFreeCoveredCells().length &&

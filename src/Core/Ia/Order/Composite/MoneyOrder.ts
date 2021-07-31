@@ -3,6 +3,7 @@ import { Vehicle } from '../../../Items/Unit/Vehicle';
 import { Cell } from '../../../Items/Cell/Cell';
 import { FarmField } from '../../../Items/Cell/Field/Bonus/FarmField';
 import { ParentOrder } from '../ParentOrder';
+import { Relationship } from '../../../Items/Identity';
 
 export class MoneyOrder extends ParentOrder {
 	constructor(private _v: Vehicle) {
@@ -37,21 +38,20 @@ export class MoneyOrder extends ParentOrder {
 	}
 
 	public HasFullMoneyCell(range: number): boolean {
-		return this._v
-			.GetCurrentCell()
-			.GetRange(range)
-			.map((c) => c as Cell)
-			.some((c) => c.GetField() instanceof FarmField && (<FarmField>c.GetField()).IsFull() && !c.IsBlocked());
+		return this._v.GetCurrentCell().GetRange(range).map((c) => c as Cell).some((c) => this.IsFarm(c));
+	}
+
+	private IsFarm(c: Cell): boolean {
+		return (
+			c.GetField() instanceof FarmField &&
+			this._v.GetRelation(c.GetField().GetIdentity()) === Relationship.Ally &&
+			(c.GetField() as FarmField).IsFull() &&
+			!c.IsBlocked()
+		);
 	}
 
 	public GetFirstFullMoneyCell(range: number): Cell {
-		return this._v
-			.GetCurrentCell()
-			.GetRange(range)
-			.map((c) => c as Cell)
-			.filter(
-				(c) => c.GetField() instanceof FarmField && (<FarmField>c.GetField()).IsFull() && !c.IsBlocked()
-			)[0];
+		return this._v.GetCurrentCell().GetRange(range).map((c) => c as Cell).filter((c) => this.IsFarm(c))[0];
 	}
 
 	public TryToFindMoneyField(): void {

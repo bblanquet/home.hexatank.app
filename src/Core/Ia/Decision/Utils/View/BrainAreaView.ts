@@ -2,17 +2,17 @@ import { IaNameView } from './IaNameView';
 import { RequestIaView } from './RequestIaView';
 import { TroopIaView } from './TroopIaView';
 import { ZKind } from '../../../../Items/ZKind';
-import { IaArea } from '../IaArea';
+import { BrainArea } from '../BrainArea';
 import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 import { IInteractionContext } from '../../../../Interaction/IInteractionContext';
 import { Item } from '../../../../Items/Item';
 import { BoundingBox } from '../../../../../Utils/Geometry/BoundingBox';
 
-export class IaAreaView extends Item {
+export class BrainAreaView extends Item {
 	private _troopsView: TroopIaView;
 	private _nameView: IaNameView;
 	private _requestView: RequestIaView;
-	constructor(private _hq: Headquarter, private _area: IaArea) {
+	constructor(private _hq: Headquarter, private _area: BrainArea) {
 		super();
 		this.GenerateSprite(this._hq.Identity.Skin.GetArea(), (e) => {
 			e.alpha = 1;

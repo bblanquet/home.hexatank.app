@@ -5,10 +5,12 @@ import { DiamondRoadCondition } from '../Decision/Requests/Area/DiamondRoadCondi
 import { DiamondRoadCleaningHandler } from '../Decision/Handlers/Handler/DiamondRoadCleaningHandler';
 import { ReactorShieldHandler } from '../Decision/Handlers/Handler/Field/ReactorShieldHandler';
 import { FoeReactorCondition } from '../Decision/Requests/Area/FoeReactorCondition';
-import { EnemyReactorHandler as FoeReactorHandler } from '../Decision/Handlers/Handler/EnemyReactorHandler';
+import { EnemyReactorHandler } from '../Decision/Handlers/Handler/EnemyReactorHandler';
 import { SpeedUpCondtion } from '../Decision/Requests/Area/SpeedUpCondtion';
+import { HealUpCondition } from '../Decision/Requests/Area/HealUpCondition';
+import { HealUpHandler } from '../Decision/Handlers/Handler/HealUpHandler';
 import { SpeedUpHandler } from '../Decision/Handlers/Handler/SpeedUpHandler';
-import { PowerUpRequestHandler as FireUpRequestHandler } from '../Decision/Handlers/Handler/PowerUpRequestHandler';
+import { FireUpHandler } from '../Decision/Handlers/Handler/FireUpHandler';
 import { DiamondExpansionMaker } from '../Decision/ExpansionMaker/DiamondExpansionMaker';
 import { IBrainProvider } from './IBrain';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
@@ -20,12 +22,12 @@ import { Area } from '../Decision/Utils/Area';
 import { AreaSearch } from '../Decision/Utils/AreaSearch';
 import { GlobalMedicFieldCondition } from '../Decision/Requests/Global/Requesters/GlobalMedicFieldCondition';
 import { SquadCondition } from '../Decision/Requests/Global/Requesters/SquadCondition';
-import { GeneralTruckCondition } from '../Decision/Requests/Global/Requesters/GeneralTruckCondition';
+import { GlobalFarmCondition } from '../Decision/Requests/Global/Requesters/GlobalFarmCondition';
 import { ClearHandler } from '../Decision/Handlers/Handler/ClearHandler';
 import { EnergyRequestHandler } from '../Decision/Handlers/Handler/Field/EnergyRequestHandler';
 import { FarmFieldRequestHandler } from '../Decision/Handlers/Handler/Field/FarmFieldRequestHandler';
 import { HealingRequestHandler } from '../Decision/Handlers/Handler/Field/HealingRequestHandler';
-import { HealUnitRequestHandler } from '../Decision/Handlers/Handler/HealUnitRequestHandler';
+import { FindMedicFieldHandler } from '../Decision/Handlers/Handler/FindMedicFieldHandler';
 import { DefenseHandler } from '../Decision/Handlers/Handler/DefenseHandler';
 import { ReactorRequestHandler } from '../Decision/Handlers/Handler/ReactorRequestHandler';
 import { PatrolCondition } from '../Decision/Requests/Area/PatrolCondition';
@@ -33,10 +35,10 @@ import { ShieldRequestHandler } from '../Decision/Handlers/Handler/Field/ShieldR
 import { SquadRequestHandler } from '../Decision/Handlers/Handler/SquadRequestHandler';
 import { TankHighRequestHandler } from '../Decision/Handlers/Handler/TankHighRequestHandler';
 import { TankMediumRequestHandler } from '../Decision/Handlers/Handler/TankMediumRequestHandler';
-import { TruckRequestHandler } from '../Decision/Handlers/Handler/TruckRequestHandler';
+import { TruckHandler } from '../Decision/Handlers/Handler/TruckHandler';
 import { ClearAreaCondition } from '../Decision/Requests/Area/ClearAreaCondition';
 import { PatrolHandler } from '../Decision/Handlers/Handler/PatrolHandler';
-import { HealUpCondition } from '../Decision/Requests/Area/HealUpCondition';
+import { FindMedicFieldCondition } from '../Decision/Requests/Area/FindMedicFieldCondition';
 import { ReactorFieldCondition } from '../Decision/Requests/Area/Field/ReactorFieldCondition';
 import { ShieldBorderCondition } from '../Decision/Requests/Area/Field/ShieldBorderCondition';
 import { TankHighCondition } from '../Decision/Requests/Area/TankHighCondition';
@@ -46,6 +48,7 @@ import { TankLowCondition } from '../Decision/Requests/Area/TankLowCondition';
 import { TankMediumCondition } from '../Decision/Requests/Area/TankMediumCondition';
 import { IBrain } from '../Decision/IBrain';
 import { IdleTruckCondition } from '../Decision/Requests/Global/Requesters/IdleTruckCondition';
+import { GlobalTruckCondition } from '../Decision/Requests/Global/Requesters/GlobalTruckCondition';
 import { GlobalBatteryCondition } from '../Decision/Requests/Global/Requesters/GlobalBatteryCondition';
 import { IdleTruckHandler } from '../Decision/Handlers/Handler/IdleTruckHandler';
 import { AreaRequester } from '../Decision/Requests/AreaRequester';
@@ -62,12 +65,12 @@ export class StrongBrain implements IBrainProvider {
 		const handlers = [
 			//behaviour
 			new SimpleHandler(10, RequestType.IdleTruck, new IdleTruckHandler(brain)),
-			new SimpleHandler(10, RequestType.FoeReactor, new FoeReactorHandler()),
+			new SimpleHandler(10, RequestType.FoeReactor, new EnemyReactorHandler()),
 			new SimpleHandler(10, RequestType.Defense, new DefenseHandler()),
 			new SimpleHandler(10, RequestType.Clear, new ClearHandler()),
 			new SimpleHandler(7, RequestType.DiamondRoadCleaning, new DiamondRoadCleaningHandler(brain)),
 			new SimpleHandler(7, RequestType.Raid, new SquadRequestHandler(hqs, brain)),
-			new SimpleHandler(2, RequestType.HealUnit, new HealUnitRequestHandler(brain)),
+			new SimpleHandler(3, RequestType.HealUnit, new FindMedicFieldHandler(brain)),
 			new SimpleHandler(1, RequestType.Patrol, new PatrolHandler()),
 
 			//unit
@@ -78,11 +81,12 @@ export class StrongBrain implements IBrainProvider {
 			),
 			new SimpleHandler(5, RequestType.Tank, new TankMediumRequestHandler(brain, hq)),
 			new SimpleHandler(1, RequestType.Tank, new TankMediumRequestHandler(brain, hq)),
-			new SimpleHandler(10, RequestType.Truck, new TruckRequestHandler(hq, brain)),
+			new SimpleHandler(10, RequestType.Truck, new TruckHandler(hq, brain)),
 
 			//powerup
-			new SimpleHandler(10, RequestType.FireUp, new FireUpRequestHandler()),
+			new SimpleHandler(10, RequestType.FireUp, new FireUpHandler()),
 			new SimpleHandler(7, RequestType.SpeedUp, new SpeedUpHandler()),
+			new SimpleHandler(5, RequestType.HealUp, new HealUpHandler()),
 
 			//field
 			new SimpleHandler(5, RequestType.BorderShieldField, new ShieldFieldBorderRequestHandler(hq)),
@@ -90,17 +94,20 @@ export class StrongBrain implements IBrainProvider {
 			new SimpleHandler(5, RequestType.FarmField, new FarmFieldRequestHandler(hq)),
 			new SimpleHandler(10, RequestType.ReactorField, new ReactorRequestHandler(hq, hqs)),
 			new SimpleHandler(8, RequestType.BatteryField, new EnergyRequestHandler(hq)),
-			new SimpleHandler(2, RequestType.MedicField, new HealingRequestHandler(hq)),
+			new SimpleHandler(3, RequestType.MedicField, new HealingRequestHandler(hq)),
 			new SimpleHandler(5, RequestType.ShieldField, new ShieldRequestHandler(hq))
 		];
 
 		brain.Inject(
 			new DiamondExpansionMaker(hq, brain, areaSearch, 2),
 			new GlobalRequestIterator([
+				//unit
+				new GlobalRequester(10, RequestType.Truck, new GlobalTruckCondition()),
+
 				//field
 				new GlobalRequester(8, RequestType.BatteryField, new GlobalBatteryCondition()),
-				new GlobalRequester(5, RequestType.FarmField, new GeneralTruckCondition()),
-				new GlobalRequester(2, RequestType.MedicField, new GlobalMedicFieldCondition()),
+				new GlobalRequester(5, RequestType.FarmField, new GlobalFarmCondition()),
+				new GlobalRequester(3, RequestType.MedicField, new GlobalMedicFieldCondition()),
 
 				//behaviour
 				new GlobalRequester(10, RequestType.IdleTruck, new IdleTruckCondition()),
@@ -116,16 +123,16 @@ export class StrongBrain implements IBrainProvider {
 				//field
 				new AreaRequester(9, RequestType.ReactorShield, new ReactorFieldCondition()),
 				new AreaRequester(5, RequestType.ShieldField, new ShieldFieldBarrierCondition()),
-				new AreaRequester(2, RequestType.MedicField, new HealUpCondition(brain)),
-				//new AreaRequester(5, RequestType.FarmField, new BasicFarmFieldCondition()),
 				new AreaRequester(5, RequestType.BorderShieldField, new ShieldBorderCondition()),
 				new AreaRequester(10, RequestType.ReactorField, new ReactorFieldCondition()),
 
 				//powerup
 				new AreaRequester(10, RequestType.FireUp, new FireUpCondition(brain)),
 				new AreaRequester(7, RequestType.SpeedUp, new SpeedUpCondtion(brain)),
+				new AreaRequester(5, RequestType.HealUp, new HealUpCondition(brain)),
 
 				//behaviour
+				new AreaRequester(3, RequestType.HealUnit, new FindMedicFieldCondition(brain)),
 				new AreaRequester(10, RequestType.Defense, new DefenseCondition()),
 				new AreaRequester(7, RequestType.DiamondRoadCleaning, new DiamondRoadCondition(brain)),
 				new AreaRequester(10, RequestType.FoeReactor, new FoeReactorCondition()),

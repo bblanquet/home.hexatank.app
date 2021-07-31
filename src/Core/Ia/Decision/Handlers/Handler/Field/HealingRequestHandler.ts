@@ -9,16 +9,12 @@ export class HealingRequestHandler implements IHandler {
 	constructor(private _hq: Headquarter) {}
 
 	Handle(request: AreaRequest): void {
-		const cells = request.Area.GetSpot().GetCells().filter((c) => c.GetField() instanceof BasicField);
-
-		const price = cells.length * GameSettings.FieldPrice;
-		if (price < this._hq.GetAmount()) {
-			cells.forEach((c) => {
-				if (c.GetField() instanceof BasicField) {
-					new MedicField(c, this._hq);
-					this._hq.Buy(GameSettings.FieldPrice);
-				}
-			});
+		const freeCells = request.Area.GetFreeCoveredCells();
+		if (0 < freeCells.length) {
+			if (GameSettings.FieldPrice < this._hq.GetAmount()) {
+				const cell = freeCells[0];
+				cell.SetField(new MedicField(cell, this._hq));
+			}
 		}
 	}
 }

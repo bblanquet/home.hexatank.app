@@ -1,7 +1,7 @@
-import { TypeTranslator } from './../../../Items/Cell/Field/TypeTranslator';
-import { LiteEvent } from './../../../../Utils/Events/LiteEvent';
-import { IaAreaView } from './View/IaAreaView';
-import { ReactorField } from './../../../Items/Cell/Field/Bonus/ReactorField';
+import { TypeTranslator } from '../../../Items/Cell/Field/TypeTranslator';
+import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
+import { BrainAreaView } from './View/BrainAreaView';
+import { ReactorField } from '../../../Items/Cell/Field/Bonus/ReactorField';
 import { ShieldField } from '../../../Items/Cell/Field/Bonus/ShieldField';
 import { MedicField } from '../../../Items/Cell/Field/Bonus/MedicField';
 import { BasicField } from '../../../Items/Cell/Field/BasicField';
@@ -26,7 +26,7 @@ import { Env } from '../../../../Env';
 import { LogKind } from '../../../../Utils/Logger/LogKind';
 import { StaticLogger } from '../../../../Utils/Logger/StaticLogger';
 
-export class IaArea {
+export class BrainArea {
 	public Tanks: Array<Tank>;
 	private _trucks: Truck[] = [];
 	public OnTankChanged: LiteEvent<number>;
@@ -34,7 +34,7 @@ export class IaArea {
 	public HasReceivedRequest: boolean;
 
 	private _range: number = 0; //range from HQ
-	private _viewArea: IaAreaView;
+	private _viewArea: BrainAreaView;
 	private _letters: string = 'abcdefghijklmnopqrstuvwxyz';
 	private _name: string;
 	private _isUnconnectable: boolean = false;
@@ -49,11 +49,11 @@ export class IaArea {
 		private _areaSearch: AreaSearch
 	) {
 		this._name =
-			this._hq.Identity.Name[this._hq.Identity.Name.length - 1] + this._letters[_globalIa.AreaDecisions.length];
+			this._hq.Identity.Name[this._hq.Identity.Name.length - 1] + this._letters[_globalIa.BrainAreas.length];
 		this.OnTankChanged = new LiteEvent<number>();
 		this.OnRequestAdded = new LiteEvent<string>();
 		if (!Env.IsPrd()) {
-			this._viewArea = new IaAreaView(this._hq, this);
+			this._viewArea = new BrainAreaView(this._hq, this);
 		}
 		this.Tanks = new Array<Tank>();
 		let range = 1;
@@ -249,9 +249,9 @@ export class IaArea {
 		return result;
 	}
 
-	public GetAllyAreas(): IaArea[] {
+	public GetAllyAreas(): BrainArea[] {
 		const spots = this._spot.GetAroundAreas();
-		const allySpots = new Array<IaArea>();
+		const allySpots = new Array<BrainArea>();
 		const kingdom = this._globalIa.GetIaAreaByCell();
 		spots.forEach((s) => {
 			const coo = s.GetCentralCell().Coo();
@@ -262,12 +262,24 @@ export class IaArea {
 		return allySpots;
 	}
 
+	public GetCells(fields: string[]): Cell[] {
+		return this._spot.GetStatus().GetCells(fields);
+	}
+
 	public HasReactor(): boolean {
 		return this._spot.GetStatus().HasField(ReactorField.name);
 	}
 
 	public HasFarmField(): boolean {
 		return this._spot.GetStatus().HasField(FarmField.name);
+	}
+
+	public GetFarmCount(): number {
+		return this._spot.GetStatus().Count(FarmField.name);
+	}
+
+	public GetMedicCount(): number {
+		return this._spot.GetStatus().Count(MedicField.name);
 	}
 
 	public HasRoadField(): boolean {
@@ -426,7 +438,6 @@ export class IaArea {
 
 	public GetRandomFreeUnitCell(): Cell {
 		const cells = this._spot.GetFreeUnitCells();
-
 		if (cells.length > 0) {
 			let index = Math.floor(Math.random() * (cells.length - 1)) + 0;
 			return cells[index];

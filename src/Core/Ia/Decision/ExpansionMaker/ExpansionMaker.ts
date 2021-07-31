@@ -5,13 +5,13 @@ import { GameSettings } from '../../../Framework/GameSettings';
 import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 import { Area } from '../Utils/Area';
 import { AreaSearch } from '../Utils/AreaSearch';
-import { IaArea } from '../Utils/IaArea';
+import { BrainArea } from '../Utils/BrainArea';
 
 export class ExpansionMaker implements IExpansionMaker {
 	constructor(private _hq: Headquarter, private _global: Brain, private _areaSearch: AreaSearch) {}
 
 	public Expand(): void {
-		if (15 <= this._hq.GetAmount() && this._global.AreaDecisions.filter((a) => a.HasFreeFields()).length < 3) {
+		if (15 <= this._hq.GetAmount() && this._global.BrainAreas.filter((a) => a.HasFreeFields()).length < 3) {
 			const area = this.FindArea();
 			if (!isNullOrUndefined(area)) {
 				if (GameSettings.TankPrice <= this._hq.GetAmount()) {
@@ -23,8 +23,8 @@ export class ExpansionMaker implements IExpansionMaker {
 
 	public CreateArea(area: Area): void {
 		this._global.Areas.splice(this._global.Areas.indexOf(area), 1);
-		const areaDecision = new IaArea(this._hq, area, this._global, this._areaSearch);
-		this._global.AreaDecisions.push(areaDecision);
+		const areaDecision = new BrainArea(this._hq, area, this._global, this._areaSearch);
+		this._global.BrainAreas.push(areaDecision);
 		this._global.CellAreas.Add(area.GetCentralCell().Coo(), areaDecision);
 	}
 
@@ -39,7 +39,7 @@ export class ExpansionMaker implements IExpansionMaker {
 			return null;
 		}
 
-		if (0 === this._global.AreaDecisions.length) {
+		if (0 === this._global.BrainAreas.length) {
 			const diamondCell = this._global.GetDiamond().GetCell();
 			return this._global.Areas.filter((a) => a.GetCentralCell() === diamondCell)[0];
 		}

@@ -1,7 +1,7 @@
 import { Cell } from '../../../../../Items/Cell/Cell';
 import { AStarEngine } from '../../../../AStarEngine';
 import { Brain } from '../../../Brain';
-import { IaArea } from '../../../Utils/IaArea';
+import { BrainArea } from '../../../Utils/BrainArea';
 import { GlobalRequestResult } from '../GlobalRequestResult';
 import { IGlobalCondition } from '../IGlobalCondition';
 
@@ -21,7 +21,7 @@ export class DiamondRoadCondition implements IGlobalCondition {
 		return new GlobalRequestResult(false, null);
 	}
 
-	private GetDiamondAreas(global: Brain): IaArea[] {
+	private GetDiamondAreas(global: Brain): BrainArea[] {
 		const departure = global.Hq.GetCell();
 		const arrival = global.GetDiamond().GetCell();
 		const engine = new AStarEngine<Cell>((c: Cell) => c !== null, (c: Cell) => 1);
@@ -29,7 +29,7 @@ export class DiamondRoadCondition implements IGlobalCondition {
 		if (road === null) {
 			return [];
 		} else {
-			const result = global.AreaDecisions.filter((a) => road.some((c) => a.GetSpot().Contains(c)));
+			const result = global.BrainAreas.filter((a) => road.some((c) => a.GetSpot().Contains(c)));
 			//excule diamond & hq areas;
 			return result
 				.filter((r) => !(r.GetSpot().Contains(departure) && r.GetSpot().Contains(arrival)))

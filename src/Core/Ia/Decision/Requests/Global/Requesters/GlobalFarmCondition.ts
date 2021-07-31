@@ -2,11 +2,11 @@ import { Brain } from '../../../Brain';
 import { GlobalRequestResult } from '../GlobalRequestResult';
 import { IGlobalCondition } from '../IGlobalCondition';
 
-export class GlobalMedicFieldCondition implements IGlobalCondition {
+export class GlobalFarmCondition implements IGlobalCondition {
 	Condition(brain: Brain): GlobalRequestResult {
-		const medicCount = brain.BrainAreas.reduce((result, area) => result + area.GetMedicCount(), 0);
-		const emptyAreas = brain.BrainAreas.filter((a) => a.GetFreeCoveredCells().length > 0);
-		if (0 < emptyAreas.length && medicCount < brain.BrainAreas.length / 4) {
+		const farmCount = brain.BrainAreas.reduce((result, area) => result + area.GetFarmCount(), 0);
+		const emptyAreas = brain.BrainAreas.filter((a) => 0 < a.GetFreeCoveredCells().length);
+		if (0 < emptyAreas.length && farmCount < brain.BrainAreas.length / 2) {
 			return new GlobalRequestResult(true, emptyAreas[0]);
 		} else {
 			return new GlobalRequestResult(false, null);

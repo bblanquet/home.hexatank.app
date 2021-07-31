@@ -146,6 +146,14 @@ export class AreaStatus {
 		return this._fields.Exist(field);
 	}
 
+	public Count(field: string): number {
+		if (this.HasField(field)) {
+			return this._fields.Get(field).length;
+		} else {
+			return 0;
+		}
+	}
+
 	public HasFields(fields: string[]): boolean {
 		return fields.some((field) => this._fields.Exist(field));
 	}

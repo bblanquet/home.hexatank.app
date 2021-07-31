@@ -1,6 +1,6 @@
 import { Brain } from '../../Brain';
 import { AreaRequest } from '../../Utils/AreaRequest';
-import { IaArea } from '../../Utils/IaArea';
+import { BrainArea } from '../../Utils/BrainArea';
 import { RequestType } from '../../Utils/RequestType';
 import { AreaRequestIterator } from '../AreaRequestIterator';
 import { IGlobalRequester } from './IGlobalRequester';
@@ -16,7 +16,7 @@ export class GlobalRequester implements IGlobalRequester {
 		return this._type;
 	}
 
-	protected Request(area: IaArea): AreaRequest {
+	protected Request(area: BrainArea): AreaRequest {
 		return new AreaRequest(this.GetType(), this.GetPriority().toString(), area);
 	}
 

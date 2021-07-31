@@ -1,9 +1,9 @@
-import { IaArea } from '../Utils/IaArea';
+import { BrainArea } from '../Utils/BrainArea';
 import { AreaRequest } from '../Utils/AreaRequest';
 import { RequestType } from '../Utils/RequestType';
 
 export interface IAreaRequester {
-	GetRequest(area: IaArea): AreaRequest;
+	GetRequest(area: BrainArea): AreaRequest;
 	GetPriority(): number;
 	GetType(): RequestType;
 }

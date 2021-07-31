@@ -1,5 +1,5 @@
 import { Brain } from '../../../Brain';
-import { IaArea } from '../../../Utils/IaArea';
+import { BrainArea } from '../../../Utils/BrainArea';
 import { Dictionary } from '../../../../../../Utils/Collections/Dictionary';
 import { IGlobalCondition } from '../IGlobalCondition';
 import { GlobalRequestResult } from '../GlobalRequestResult';
@@ -10,7 +10,7 @@ export class GlobalBatteryCondition implements IGlobalCondition {
 		if (0 < noJuiceReactors.length) {
 			const noJuiceReactor = noJuiceReactors[0];
 			const iaAreas = brain.CellAreas.Values().filter((a) => a.HasFreeFields());
-			const candidates = new Dictionary<IaArea>();
+			const candidates = new Dictionary<BrainArea>();
 
 			noJuiceReactor.GetInternal().Values().forEach((c) =>
 				iaAreas.filter((a) => a.HasCell(c)).forEach((a) => {

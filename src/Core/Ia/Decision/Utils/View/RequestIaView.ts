@@ -1,11 +1,11 @@
 import { BelowItemText } from './../../../../Items/Text/BelowItemText';
-import { IaArea } from './../IaArea';
+import { BrainArea } from '../BrainArea';
 import { Item } from '../../../../Items/Item';
 export class RequestIaView {
 	private _belowText: BelowItemText;
 	private _amount: number;
 
-	constructor(private _item: Item, private _iaArea: IaArea) {
+	constructor(private _item: Item, private _iaArea: BrainArea) {
 		this._belowText = new BelowItemText(this._item);
 		this._iaArea.OnRequestAdded.On(this.TroopsChanged.bind(this));
 	}

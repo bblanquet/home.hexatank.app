@@ -1,5 +1,5 @@
 import { Tank } from './../../../../Items/Unit/Tank';
-import { IaArea } from '../../Utils/IaArea';
+import { BrainArea } from '../../Utils/BrainArea';
 import { Brain } from '../../Brain';
 import { IHandler } from '../IHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
@@ -46,7 +46,7 @@ export class TankHighRequestHandler implements IHandler {
 	}
 
 	private GetReinforcement(request: AreaRequest) {
-		const troopAreas = new Array<IaArea>();
+		const troopAreas = new Array<BrainArea>();
 		const kgAreas = this._brain.GetIaAreaByCell();
 		const cells = CellHelper.OrderByDistance(
 			kgAreas.Values().map((c) => c.GetCentralCell()),

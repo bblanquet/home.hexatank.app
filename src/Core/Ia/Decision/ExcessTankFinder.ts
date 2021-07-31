@@ -1,16 +1,16 @@
-import { IaArea } from './Utils/IaArea';
+import { BrainArea } from './Utils/BrainArea';
 import { Tank } from '../../Items/Unit/Tank';
 
 export class ExcessTankFinder {
-	private _excessAreas: Array<IaArea>;
+	private _excessAreas: Array<BrainArea>;
 
 	constructor() {}
 
-	public CalculateExcess(areas: Array<IaArea>): void {
+	public CalculateExcess(areas: Array<BrainArea>): void {
 		this._excessAreas = areas.filter((area) => 0 < this.GetExcess(area));
 	}
 
-	private GetExcess(area: IaArea): number {
+	private GetExcess(area: BrainArea): number {
 		if (
 			area.GetFoesCount() == 0 &&
 			!area.IsBorder() &&

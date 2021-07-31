@@ -9,7 +9,7 @@ import { Truck } from '../../../../Items/Unit/Truck';
 import { HqFieldOrder } from '../../../Order/Composite/Diamond/HqFieldOrder';
 import { DiamondFieldOrder } from '../../../Order/Composite/Diamond/DiamondFieldOrder';
 
-export class TruckRequestHandler implements IHandler {
+export class TruckHandler implements IHandler {
 	constructor(private _hq: Headquarter, private _kingdom: IBrain) {}
 
 	public Handle(request: AreaRequest): void {
@@ -28,7 +28,9 @@ export class TruckRequestHandler implements IHandler {
 					truck.GiveOrder(new MoneyOrder(truck));
 				}
 
-				request.Area.AddTruck(truck);
+				if (request.Area) {
+					request.Area.AddTruck(truck);
+				}
 			}
 		};
 		this._hq.OnVehicleCreated.On(lambda);

@@ -3,20 +3,20 @@ import { AreaRequest } from '../../Utils/AreaRequest';
 import { Brain } from '../../Brain';
 import { MonitoredOrder } from '../../../Order/MonitoredOrder';
 
-export class HealUnitRequestHandler implements IHandler {
-	constructor(private _kingdom: Brain) {}
+export class FindMedicFieldHandler implements IHandler {
+	constructor(private _brain: Brain) {}
 
 	Handle(request: AreaRequest): void {
-		const healingAreas = this._kingdom.GetIaAreaByCell().Values().filter((a) => a.HasMedic());
-		const damagedTroops = request.Area.Tanks.filter((t) => t.HasDamage());
-		let currentArea = healingAreas.pop();
-		damagedTroops.forEach((t) => {
+		const medicAreas = this._brain.BrainAreas.filter((a) => a.HasMedic());
+		const damagedTanks = request.Area.Tanks.filter((t) => t.HasDamage());
+		let currentArea = medicAreas.pop();
+		damagedTanks.forEach((t) => {
 			let destination = currentArea.GetRandomFreeUnitCell();
 			while (!destination) {
-				if (healingAreas.length === 0) {
+				if (medicAreas.length === 0) {
 					return;
 				}
-				currentArea = healingAreas.pop();
+				currentArea = medicAreas.pop();
 				destination = currentArea.GetRandomFreeUnitCell();
 			}
 			request.Area.DropSpecific(t);

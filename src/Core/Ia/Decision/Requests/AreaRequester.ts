@@ -1,5 +1,5 @@
 import { AreaRequest } from '../Utils/AreaRequest';
-import { IaArea } from '../Utils/IaArea';
+import { BrainArea } from '../Utils/BrainArea';
 import { RequestType } from '../Utils/RequestType';
 import { AreaRequestIterator } from './AreaRequestIterator';
 import { IAreaCondition } from './IAreaCondition';
@@ -14,11 +14,11 @@ export class AreaRequester implements IAreaRequester {
 		return this._type;
 	}
 
-	protected Request(area: IaArea): AreaRequest {
+	protected Request(area: BrainArea): AreaRequest {
 		return new AreaRequest(this.GetType(), this.GetPriority().toString(), area);
 	}
 
-	GetRequest(area: IaArea): AreaRequest {
+	GetRequest(area: BrainArea): AreaRequest {
 		if (this._condition.Condition(area)) {
 			return this.Request(area);
 		} else {

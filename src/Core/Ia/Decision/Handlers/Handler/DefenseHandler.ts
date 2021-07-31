@@ -10,7 +10,7 @@ import { Tank } from '../../../../Items/Unit/Tank';
 import { AStarEngine } from '../../../AStarEngine';
 import { AStarHelper } from '../../../AStarHelper';
 import { Area } from '../../Utils/Area';
-import { IaArea } from '../../Utils/IaArea';
+import { BrainArea } from '../../Utils/BrainArea';
 import { TroopRoads } from '../../Troop/TroopRoads';
 import { TroopDestination } from '../../Utils/TroopDestination';
 import { isNullOrUndefined } from '../../../../../Utils/ToolBox';
@@ -42,7 +42,7 @@ export class DefenseHandler implements IHandler {
 		return as;
 	}
 
-	private SendTroops(area: IaArea, foeCells: Cell[], ally: Tank) {
+	private SendTroops(area: BrainArea, foeCells: Cell[], ally: Tank) {
 		//#3 get enemy contact cells
 		const aroundFoeCells = this.GetAroundFoeCells(foeCells);
 
@@ -160,7 +160,7 @@ export class DefenseHandler implements IHandler {
 		return troopsByDest;
 	}
 
-	private GetTroopRoads(area: IaArea, cellsByDanger: { [id: number]: Dictionary<Cell> }): Array<TroopRoads> {
+	private GetTroopRoads(area: BrainArea, cellsByDanger: { [id: number]: Dictionary<Cell> }): Array<TroopRoads> {
 		let allTroopRoads = new Array<TroopRoads>();
 
 		area.Tanks.filter((t) => !t.IsCloseFromEnemy()).forEach((troop) => {

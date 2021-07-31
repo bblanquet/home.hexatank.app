@@ -1,12 +1,12 @@
 import { AboveItemText } from '../../../../Items/Text/AboveItemText';
 import { Item } from '../../../../Items/Item';
-import { IaArea } from './../IaArea';
+import { BrainArea } from '../BrainArea';
 
 export class TroopIaView {
 	private _aboveText: AboveItemText;
 	private _amount: number;
 
-	constructor(private _item: Item, private _iaArea: IaArea) {
+	constructor(private _item: Item, private _iaArea: BrainArea) {
 		this._aboveText = new AboveItemText(this._item);
 		this._iaArea.OnTankChanged.On(this.TroopsChanged.bind(this));
 	}

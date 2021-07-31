@@ -2,7 +2,7 @@ import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
 import { IHandler } from '../IHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { Brain } from '../../Brain';
-import { IaArea } from '../../Utils/IaArea';
+import { BrainArea } from '../../Utils/BrainArea';
 import { GameSettings } from '../../../../Framework/GameSettings';
 import { Vehicle } from '../../../../Items/Unit/Vehicle';
 import { Tank } from '../../../../Items/Unit/Tank';
@@ -33,7 +33,7 @@ export class TankMediumRequestHandler implements IHandler {
 		return this.BuyTank(request.Area);
 	}
 
-	public BuyTank(area: IaArea): boolean {
+	public BuyTank(area: BrainArea): boolean {
 		let isCreated = false;
 		if (area.HasFreeUnitCell() && this._hq.Buy(GameSettings.TankPrice * this._hq.GetTankCount())) {
 			var lambda: any = (obj: any, vehicle: Vehicle) => {

@@ -9,7 +9,7 @@ import { FoeReactorCondition } from '../Decision/Requests/Area/FoeReactorConditi
 import { EnemyReactorHandler as FoeReactorHandler } from '../Decision/Handlers/Handler/EnemyReactorHandler';
 import { SpeedUpCondtion } from '../Decision/Requests/Area/SpeedUpCondtion';
 import { SpeedUpHandler } from '../Decision/Handlers/Handler/SpeedUpHandler';
-import { PowerUpRequestHandler as FireUpRequestHandler } from '../Decision/Handlers/Handler/PowerUpRequestHandler';
+import { FireUpHandler as FireUpRequestHandler } from '../Decision/Handlers/Handler/FireUpHandler';
 import { DiamondExpansionMaker } from '../Decision/ExpansionMaker/DiamondExpansionMaker';
 import { IBrainProvider } from './IBrain';
 import { Diamond } from '../../Items/Cell/Field/Diamond';
@@ -21,12 +21,12 @@ import { Area } from '../Decision/Utils/Area';
 import { AreaSearch } from '../Decision/Utils/AreaSearch';
 import { GlobalMedicFieldCondition } from '../Decision/Requests/Global/Requesters/GlobalMedicFieldCondition';
 import { SquadCondition } from '../Decision/Requests/Global/Requesters/SquadCondition';
-import { GeneralTruckCondition } from '../Decision/Requests/Global/Requesters/GeneralTruckCondition';
+import { GlobalFarmCondition } from '../Decision/Requests/Global/Requesters/GlobalFarmCondition';
 import { ClearHandler } from '../Decision/Handlers/Handler/ClearHandler';
 import { EnergyRequestHandler } from '../Decision/Handlers/Handler/Field/EnergyRequestHandler';
 import { FarmFieldRequestHandler } from '../Decision/Handlers/Handler/Field/FarmFieldRequestHandler';
 import { HealingRequestHandler } from '../Decision/Handlers/Handler/Field/HealingRequestHandler';
-import { HealUnitRequestHandler } from '../Decision/Handlers/Handler/HealUnitRequestHandler';
+import { FindMedicFieldHandler } from '../Decision/Handlers/Handler/FindMedicFieldHandler';
 import { DefenseHandler } from '../Decision/Handlers/Handler/DefenseHandler';
 import { ReactorRequestHandler } from '../Decision/Handlers/Handler/ReactorRequestHandler';
 import { PatrolCondition } from '../Decision/Requests/Area/PatrolCondition';
@@ -34,10 +34,10 @@ import { ShieldRequestHandler } from '../Decision/Handlers/Handler/Field/ShieldR
 import { SquadRequestHandler } from '../Decision/Handlers/Handler/SquadRequestHandler';
 import { TankHighRequestHandler } from '../Decision/Handlers/Handler/TankHighRequestHandler';
 import { TankMediumRequestHandler } from '../Decision/Handlers/Handler/TankMediumRequestHandler';
-import { TruckRequestHandler } from '../Decision/Handlers/Handler/TruckRequestHandler';
+import { TruckHandler } from '../Decision/Handlers/Handler/TruckHandler';
 import { ClearAreaCondition } from '../Decision/Requests/Area/ClearAreaCondition';
 import { PatrolHandler } from '../Decision/Handlers/Handler/PatrolHandler';
-import { HealUpCondition } from '../Decision/Requests/Area/HealUpCondition';
+import { FindMedicFieldCondition } from '../Decision/Requests/Area/FindMedicFieldCondition';
 import { ReactorFieldCondition } from '../Decision/Requests/Area/Field/ReactorFieldCondition';
 import { ShieldFieldBarrierCondition } from '../Decision/Requests/Area/Field/ShieldFieldBarrierCondition';
 import { ShieldBorderCondition } from '../Decision/Requests/Area/Field/ShieldBorderCondition';
@@ -68,7 +68,7 @@ export class NormalBrain implements IBrainProvider {
 			new SimpleHandler(10, RequestType.Clear, new ClearHandler()),
 			new SimpleHandler(7, RequestType.DiamondRoadCleaning, new DiamondRoadCleaningHandler(brain)),
 			new SimpleHandler(7, RequestType.Raid, new SquadRequestHandler(hqs, brain)),
-			new SimpleHandler(2, RequestType.HealUnit, new HealUnitRequestHandler(brain)),
+			new SimpleHandler(2, RequestType.HealUnit, new FindMedicFieldHandler(brain)),
 			new SimpleHandler(1, RequestType.Patrol, new PatrolHandler()),
 
 			//unit
@@ -79,7 +79,7 @@ export class NormalBrain implements IBrainProvider {
 			),
 			new SimpleHandler(5, RequestType.Tank, new TankMediumRequestHandler(brain, hq)),
 			new SimpleHandler(1, RequestType.Tank, new TankMediumRequestHandler(brain, hq)),
-			new SimpleHandler(10, RequestType.Truck, new TruckRequestHandler(hq, brain)),
+			new SimpleHandler(10, RequestType.Truck, new TruckHandler(hq, brain)),
 
 			//powerup
 			new SimpleHandler(10, RequestType.FireUp, new FireUpRequestHandler()),
@@ -100,7 +100,7 @@ export class NormalBrain implements IBrainProvider {
 			new GlobalRequestIterator([
 				//field
 				new GlobalRequester(8, RequestType.BatteryField, new GlobalBatteryCondition()),
-				new GlobalRequester(5, RequestType.FarmField, new GeneralTruckCondition()),
+				new GlobalRequester(5, RequestType.FarmField, new GlobalFarmCondition()),
 
 				//behaviour
 				new GlobalRequester(10, RequestType.IdleTruck, new IdleTruckCondition()),
@@ -117,7 +117,7 @@ export class NormalBrain implements IBrainProvider {
 				//field
 				new AreaRequester(9, RequestType.ReactorShield, new ReactorFieldCondition()),
 				new AreaRequester(5, RequestType.ShieldField, new ShieldFieldBarrierCondition()),
-				new AreaRequester(2, RequestType.MedicField, new HealUpCondition(brain)),
+				new AreaRequester(2, RequestType.MedicField, new FindMedicFieldCondition(brain)),
 				//new AreaRequester(5, RequestType.FarmField, new BasicFarmFieldCondition()),
 				new AreaRequester(5, RequestType.BorderShieldField, new ShieldBorderCondition()),
 				new AreaRequester(10, RequestType.ReactorField, new ReactorFieldCondition()),

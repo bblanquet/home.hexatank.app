@@ -1,15 +1,24 @@
-import { IaArea } from '../../Utils/IaArea';
+import { Vehicle } from '../../../../Items/Unit/Vehicle';
 import { Brain } from '../../Brain';
+import { BrainArea } from '../../Utils/BrainArea';
 import { IAreaCondition } from '../IAreaCondition';
 export class HealUpCondition implements IAreaCondition {
-	constructor(private _kingdom: Brain) {}
-	Condition(area: IaArea): boolean {
-		if (area.GetInnerFoeCount() === 0) {
-			const hasHealing = this._kingdom.GetIaAreaByCell().Values().some((a) => a.HasMedic());
-			if (hasHealing && area.GetFoesCount() === 0 && !area.HasMedic() && area.Tanks.some((t) => t.HasDamage())) {
-				return true;
-			}
-		}
-		return false;
+	constructor(private _global: Brain) {}
+
+	Condition(area: BrainArea): boolean {
+		const areas = area.GetSpot().GetAroundAreas();
+		const reactor = this._global.Hq.GetReactors().find((e) => area.GetSpot().Contains(e.GetCell()));
+		const damageVehicles = ([ ...this._global.Tanks ] as Vehicle[])
+			.concat([ ...this._global.Trucks ])
+			.filter((v) => v.HasDamage());
+
+		return (
+			reactor &&
+			reactor.HasStock() &&
+			!reactor.IsLocked() &&
+			area.GetInnerFoeCount() === 0 &&
+			area.GetOuterFoeCount() === 0 &&
+			damageVehicles.some((t) => areas.some((a) => a.Contains(t.GetCurrentCell())))
+		);
 	}
 }

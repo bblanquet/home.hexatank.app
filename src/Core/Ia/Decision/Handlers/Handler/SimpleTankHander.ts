@@ -4,7 +4,6 @@ import { Brain } from '../../Brain';
 import { IHandler } from '../IHandler';
 import { AreaRequest } from '../../Utils/AreaRequest';
 import { Headquarter } from '../../../../Items/Cell/Field/Hq/Headquarter';
-
 export class SimpleTankHander implements IHandler {
 	constructor(private _hqs: Headquarter[], private _brain: Brain) {}
 

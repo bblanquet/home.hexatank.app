@@ -15,7 +15,7 @@ import { Area } from '../Decision/Utils/Area';
 import { AreaSearch } from '../Decision/Utils/AreaSearch';
 import { SquadCondition } from '../Decision/Requests/Global/Requesters/SquadCondition';
 import { GeneralTruckCondition } from '../Decision/Requests/Global/Requesters/GeneralTruckCondition';
-import { ClearRequestHandler } from '../Decision/Handlers/Handler/ClearRequestHandler';
+import { ClearHandler } from '../Decision/Handlers/Handler/ClearHandler';
 import { EnergyRequestHandler } from '../Decision/Handlers/Handler/Field/EnergyRequestHandler';
 import { DefenseHandler } from '../Decision/Handlers/Handler/DefenseHandler';
 import { ReactorRequestHandler } from '../Decision/Handlers/Handler/ReactorRequestHandler';
@@ -45,46 +45,63 @@ export class WeakBrain implements IBrainProvider {
 		const brain = new Brain(hq, areas, diamond, true);
 
 		const handlers = [
-			new SimpleHandler(10, RequestType.IdleTruck, (e) => new IdleTruckHandler(brain).Handle(e)),
-			new SimpleHandler(10, RequestType.FoeReactor, (e) => new FoeReactorHandler().Handle(e)),
-			new SimpleHandler(10, RequestType.Defense, (e) => new DefenseHandler().Handle(e)),
-			new SimpleHandler(10, RequestType.Clear, (e) => new ClearRequestHandler().Handle(e)),
-			new SimpleHandler(10, RequestType.ReactorField, (e) => new ReactorRequestHandler(hq, hqs).Handle(e)),
-			new SimpleHandler(10, RequestType.Tank, (e) =>
-				new TankHighRequestHandler(brain, new TankMediumRequestHandler(brain, hq)).Handle(e)
+			//behaviour
+			new SimpleHandler(10, RequestType.IdleTruck, new IdleTruckHandler(brain)),
+			new SimpleHandler(10, RequestType.FoeReactor, new FoeReactorHandler()),
+			new SimpleHandler(10, RequestType.Defense, new DefenseHandler()),
+			new SimpleHandler(10, RequestType.Clear, new ClearHandler()),
+			new SimpleHandler(7, RequestType.DiamondRoadCleaning, new DiamondRoadCleaningHandler(brain)),
+			new SimpleHandler(7, RequestType.Raid, new SquadRequestHandler(hqs, brain)),
+			new SimpleHandler(1, RequestType.Patrol, new PatrolHandler()),
+
+			//unit
+			new SimpleHandler(
+				10,
+				RequestType.Tank,
+				new TankHighRequestHandler(brain, new TankMediumRequestHandler(brain, hq))
 			),
-			new SimpleHandler(10, RequestType.Truck, (e) => new TruckRequestHandler(hq, brain).Handle(e)),
-			new SimpleHandler(9, RequestType.ReactorShield, (e) => new ReactorShieldHandler(hq).Handle(e)),
-			new SimpleHandler(8, RequestType.BatteryField, (e) => new EnergyRequestHandler(hq).Handle(e)),
-			new SimpleHandler(7, RequestType.DiamondRoadCleaning, (e) =>
-				new DiamondRoadCleaningHandler(brain).Handle(e)
-			),
-			new SimpleHandler(7, RequestType.Raid, (e) => new SquadRequestHandler(hqs, brain).Handle(e)),
-			new SimpleHandler(5, RequestType.Tank, (e) => new TankMediumRequestHandler(brain, hq).Handle(e)),
-			new SimpleHandler(1, RequestType.Patrol, (e) => new PatrolHandler().Handle(e)),
-			new SimpleHandler(1, RequestType.Tank, (e) => new TankMediumRequestHandler(brain, hq).Handle(e))
+			new SimpleHandler(5, RequestType.Tank, new TankMediumRequestHandler(brain, hq)),
+			new SimpleHandler(1, RequestType.Tank, new TankMediumRequestHandler(brain, hq)),
+			new SimpleHandler(10, RequestType.Truck, new TruckRequestHandler(hq, brain)),
+
+			//powerup
+
+			//field
+			new SimpleHandler(9, RequestType.ReactorShield, new ReactorShieldHandler(hq)),
+			new SimpleHandler(10, RequestType.ReactorField, new ReactorRequestHandler(hq, hqs)),
+			new SimpleHandler(8, RequestType.BatteryField, new EnergyRequestHandler(hq))
 		];
 
 		brain.Inject(
 			new DiamondExpansionMaker(hq, brain, areaSearch, 2),
 			new GlobalRequestIterator([
-				new GlobalRequester(10, RequestType.Truck, (e) => new GeneralTruckCondition().Condition(e)),
-				new GlobalRequester(10, RequestType.IdleTruck, (e) => new IdleTruckCondition().Condition(e)),
-				new GlobalRequester(7, RequestType.Raid, (e) => new SquadCondition(8000, 2).Condition(e))
+				//field
+				new GlobalRequester(5, RequestType.FarmField, new GeneralTruckCondition()),
+
+				//behaviour
+				new GlobalRequester(10, RequestType.IdleTruck, new IdleTruckCondition()),
+				new GlobalRequester(7, RequestType.Raid, new SquadCondition(15000, 2))
 			]),
 			new AreaRequestIterator([
-				new AreaRequester(10, RequestType.Defense, (e) => new DefenseCondition().Condition(e)),
-				new AreaRequester(10, RequestType.DiamondRoadCleaning, (e) =>
-					new DiamondRoadCondition(brain).Condition(e)
-				),
-				new AreaRequester(10, RequestType.ReactorField, (e) => new ReactorFieldCondition().Condition(e)),
-				new AreaRequester(10, RequestType.FoeReactor, (e) => new FoeReactorCondition().Condition(e)),
-				new AreaRequester(10, RequestType.Clear, (e) => new ClearAreaCondition().Condition(e)),
-				new AreaRequester(10, RequestType.Truck, (e) => new TruckCondition(2).Condition(e)),
-				new AreaRequester(10, RequestType.Tank, (e) => new TankHighCondition().Condition(e)),
-				new AreaRequester(5, RequestType.Tank, (e) => new TankMediumCondition().Condition(e)),
-				new AreaRequester(1, RequestType.Tank, (e) => new TankLowCondition().Condition(e)),
-				new AreaRequester(1, RequestType.Patrol, (e) => new PatrolCondition().Condition(e))
+				//unit
+				new AreaRequester(10, RequestType.Tank, new TankHighCondition()),
+				new AreaRequester(5, RequestType.Tank, new TankMediumCondition()),
+				new AreaRequester(1, RequestType.Tank, new TankLowCondition()),
+				new AreaRequester(10, RequestType.Truck, new TruckCondition(2)),
+
+				//field
+				new AreaRequester(9, RequestType.ReactorShield, new ReactorFieldCondition()),
+				//new AreaRequester(5, RequestType.FarmField, new BasicFarmFieldCondition()),
+				new AreaRequester(10, RequestType.ReactorField, new ReactorFieldCondition()),
+
+				//powerup
+
+				//behaviour
+				new AreaRequester(10, RequestType.Defense, new DefenseCondition()),
+				new AreaRequester(7, RequestType.DiamondRoadCleaning, new DiamondRoadCondition(brain)),
+				new AreaRequester(10, RequestType.FoeReactor, new FoeReactorCondition()),
+				new AreaRequester(10, RequestType.Clear, new ClearAreaCondition()),
+				new AreaRequester(1, RequestType.Patrol, new PatrolCondition())
 			]),
 			new HandlerIterator(handlers)
 		);

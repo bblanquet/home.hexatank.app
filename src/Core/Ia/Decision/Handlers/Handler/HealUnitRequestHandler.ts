@@ -8,7 +8,7 @@ export class HealUnitRequestHandler implements IHandler {
 
 	Handle(request: AreaRequest): void {
 		const healingAreas = this._kingdom.GetIaAreaByCell().Values().filter((a) => a.HasMedic());
-		const damagedTroops = request.Area.GetTroops().filter((t) => t.HasDamage());
+		const damagedTroops = request.Area.Tanks.filter((t) => t.HasDamage());
 		let currentArea = healingAreas.pop();
 		damagedTroops.forEach((t) => {
 			let destination = currentArea.GetRandomFreeUnitCell();

@@ -32,13 +32,15 @@ export default class GameCanvas extends Component<{ Center: Point; OnRefresh: Si
 	private Init() {
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 		this._updater = Singletons.Load<IUpdateService>(SingletonKey.Update).Publish();
-		this._gameCanvas.innerHTML = '';
-		this._gameCanvas.appendChild(this._appService.Publish().view);
-		this.ResizeTheCanvas();
-		this.SetCenter(this.props.Center);
-		this.props.OnRefresh.On(() => {
-			this.Init();
-		});
+		if (this._gameCanvas) {
+			this._gameCanvas.innerHTML = '';
+			this._gameCanvas.appendChild(this._appService.Publish().view);
+			this.ResizeTheCanvas();
+			this.SetCenter(this.props.Center);
+			this.props.OnRefresh.On(() => {
+				this.Init();
+			});
+		}
 	}
 
 	componentDidMount() {

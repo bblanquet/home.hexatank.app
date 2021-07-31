@@ -22,7 +22,7 @@ import { AreaSearch } from '../Decision/Utils/AreaSearch';
 import { GlobalMedicFieldCondition } from '../Decision/Requests/Global/Requesters/GlobalMedicFieldCondition';
 import { SquadCondition } from '../Decision/Requests/Global/Requesters/SquadCondition';
 import { GeneralTruckCondition } from '../Decision/Requests/Global/Requesters/GeneralTruckCondition';
-import { ClearRequestHandler } from '../Decision/Handlers/Handler/ClearRequestHandler';
+import { ClearHandler } from '../Decision/Handlers/Handler/ClearHandler';
 import { EnergyRequestHandler } from '../Decision/Handlers/Handler/Field/EnergyRequestHandler';
 import { FarmFieldRequestHandler } from '../Decision/Handlers/Handler/Field/FarmFieldRequestHandler';
 import { HealingRequestHandler } from '../Decision/Handlers/Handler/Field/HealingRequestHandler';
@@ -61,64 +61,77 @@ export class NormalBrain implements IBrainProvider {
 		const brain = new Brain(hq, areas, diamond, true);
 		hq.DiamondCount = GameSettings.PocketMoney * 2;
 		const handlers = [
-			new SimpleHandler(10, RequestType.IdleTruck, (e) => new IdleTruckHandler(brain).Handle(e)),
-			new SimpleHandler(10, RequestType.FoeReactor, (e) => new FoeReactorHandler().Handle(e)),
-			new SimpleHandler(10, RequestType.Defense, (e) => new DefenseHandler().Handle(e)),
-			new SimpleHandler(10, RequestType.FireUp, (e) => new FireUpRequestHandler().Handle(e)),
-			new SimpleHandler(10, RequestType.Clear, (e) => new ClearRequestHandler().Handle(e)),
-			new SimpleHandler(10, RequestType.ReactorField, (e) => new ReactorRequestHandler(hq, hqs).Handle(e)),
-			new SimpleHandler(10, RequestType.Tank, (e) =>
-				new TankHighRequestHandler(brain, new TankMediumRequestHandler(brain, hq)).Handle(e)
+			//behaviour
+			new SimpleHandler(10, RequestType.IdleTruck, new IdleTruckHandler(brain)),
+			new SimpleHandler(10, RequestType.FoeReactor, new FoeReactorHandler()),
+			new SimpleHandler(10, RequestType.Defense, new DefenseHandler()),
+			new SimpleHandler(10, RequestType.Clear, new ClearHandler()),
+			new SimpleHandler(7, RequestType.DiamondRoadCleaning, new DiamondRoadCleaningHandler(brain)),
+			new SimpleHandler(7, RequestType.Raid, new SquadRequestHandler(hqs, brain)),
+			new SimpleHandler(2, RequestType.HealUnit, new HealUnitRequestHandler(brain)),
+			new SimpleHandler(1, RequestType.Patrol, new PatrolHandler()),
+
+			//unit
+			new SimpleHandler(
+				10,
+				RequestType.Tank,
+				new TankHighRequestHandler(brain, new TankMediumRequestHandler(brain, hq))
 			),
-			new SimpleHandler(10, RequestType.Truck, (e) => new TruckRequestHandler(hq, brain).Handle(e)),
-			new SimpleHandler(9, RequestType.ReactorShield, (e) => new ReactorShieldHandler(hq).Handle(e)),
-			new SimpleHandler(8, RequestType.BatteryField, (e) => new EnergyRequestHandler(hq).Handle(e)),
-			new SimpleHandler(7, RequestType.DiamondRoadCleaning, (e) =>
-				new DiamondRoadCleaningHandler(brain).Handle(e)
-			),
-			new SimpleHandler(7, RequestType.SpeedUp, (e) => new SpeedUpHandler().Handle(e)),
-			new SimpleHandler(7, RequestType.Raid, (e) => new SquadRequestHandler(hqs, brain).Handle(e)),
-			new SimpleHandler(5, RequestType.FarmField, (e) => new FarmFieldRequestHandler(hq).Handle(e)),
-			new SimpleHandler(5, RequestType.Tank, (e) => new TankMediumRequestHandler(brain, hq).Handle(e)),
-			new SimpleHandler(5, RequestType.BorderShieldField, (e) =>
-				new ShieldFieldBorderRequestHandler(hq).Handle(e)
-			),
-			new SimpleHandler(5, RequestType.ShieldField, (e) => new ShieldRequestHandler(hq).Handle(e)),
-			new SimpleHandler(2, RequestType.HealUnit, (e) => new HealUnitRequestHandler(brain).Handle(e)),
-			new SimpleHandler(2, RequestType.MedicField, (e) => new HealingRequestHandler(hq).Handle(e)),
-			new SimpleHandler(1, RequestType.Patrol, (e) => new PatrolHandler().Handle(e)),
-			new SimpleHandler(1, RequestType.Tank, (e) => new TankMediumRequestHandler(brain, hq).Handle(e))
+			new SimpleHandler(5, RequestType.Tank, new TankMediumRequestHandler(brain, hq)),
+			new SimpleHandler(1, RequestType.Tank, new TankMediumRequestHandler(brain, hq)),
+			new SimpleHandler(10, RequestType.Truck, new TruckRequestHandler(hq, brain)),
+
+			//powerup
+			new SimpleHandler(10, RequestType.FireUp, new FireUpRequestHandler()),
+			new SimpleHandler(7, RequestType.SpeedUp, new SpeedUpHandler()),
+
+			//field
+			new SimpleHandler(5, RequestType.BorderShieldField, new ShieldFieldBorderRequestHandler(hq)),
+			new SimpleHandler(9, RequestType.ReactorShield, new ReactorShieldHandler(hq)),
+			new SimpleHandler(5, RequestType.FarmField, new FarmFieldRequestHandler(hq)),
+			new SimpleHandler(10, RequestType.ReactorField, new ReactorRequestHandler(hq, hqs)),
+			new SimpleHandler(8, RequestType.BatteryField, new EnergyRequestHandler(hq)),
+			new SimpleHandler(2, RequestType.MedicField, new HealingRequestHandler(hq)),
+			new SimpleHandler(5, RequestType.ShieldField, new ShieldRequestHandler(hq))
 		];
 
 		brain.Inject(
-			new DiamondExpansionMaker(hq, brain, areaSearch, 2),
+			new DiamondExpansionMaker(hq, brain, areaSearch, 1),
 			new GlobalRequestIterator([
-				new GlobalRequester(10, RequestType.Truck, (e) => new GeneralTruckCondition().Condition(e)),
-				new GlobalRequester(10, RequestType.IdleTruck, (e) => new IdleTruckCondition().Condition(e)),
-				new GlobalRequester(10, RequestType.HealUnit, (e) => new GlobalMedicFieldCondition().Condition(e)),
-				new GlobalRequester(8, RequestType.BatteryField, (e) => new GlobalBatteryCondition().Condition(e)),
-				new GlobalRequester(7, RequestType.Raid, (e) => new SquadCondition(8000, 2).Condition(e))
+				//field
+				new GlobalRequester(8, RequestType.BatteryField, new GlobalBatteryCondition()),
+				new GlobalRequester(5, RequestType.FarmField, new GeneralTruckCondition()),
+
+				//behaviour
+				new GlobalRequester(10, RequestType.IdleTruck, new IdleTruckCondition()),
+				new GlobalRequester(7, RequestType.Raid, new SquadCondition(15000, 2)),
+				new GlobalRequester(2, RequestType.MedicField, new GlobalMedicFieldCondition())
 			]),
 			new AreaRequestIterator([
-				new AreaRequester(10, RequestType.FireUp, (e) => new FireUpCondition(brain).Condition(e)),
-				new AreaRequester(10, RequestType.Defense, (e) => new DefenseCondition().Condition(e)),
-				new AreaRequester(10, RequestType.ReactorShield, (e) => new ReactorFieldCondition().Condition(e)),
-				new AreaRequester(10, RequestType.DiamondRoadCleaning, (e) =>
-					new DiamondRoadCondition(brain).Condition(e)
-				),
-				new AreaRequester(5, RequestType.BorderShieldField, (e) => new ShieldBorderCondition().Condition(e)),
-				new AreaRequester(7, RequestType.SpeedUp, (e) => new SpeedUpCondtion(brain).Condition(e)),
-				new AreaRequester(10, RequestType.ReactorField, (e) => new ReactorFieldCondition().Condition(e)),
-				new AreaRequester(10, RequestType.FoeReactor, (e) => new FoeReactorCondition().Condition(e)),
-				new AreaRequester(5, RequestType.ShieldField, (e) => new ShieldFieldBarrierCondition().Condition(e)),
-				new AreaRequester(2, RequestType.MedicField, (e) => new HealUpCondition(brain).Condition(e)),
-				new AreaRequester(10, RequestType.Clear, (e) => new ClearAreaCondition().Condition(e)),
-				new AreaRequester(10, RequestType.Truck, (e) => new TruckCondition(2).Condition(e)),
-				new AreaRequester(5, RequestType.FarmField, (e) => new BasicFarmFieldCondition().Condition(e)),
-				new AreaRequester(10, RequestType.Tank, (e) => new TankHighCondition().Condition(e)),
-				new AreaRequester(5, RequestType.Tank, (e) => new TankMediumCondition().Condition(e)),
-				new AreaRequester(1, RequestType.Tank, (e) => new TankLowCondition().Condition(e)),
-				new AreaRequester(1, RequestType.Patrol, (e) => new PatrolCondition().Condition(e))
+				//unit
+				new AreaRequester(10, RequestType.Tank, new TankHighCondition()),
+				new AreaRequester(5, RequestType.Tank, new TankMediumCondition()),
+				new AreaRequester(1, RequestType.Tank, new TankLowCondition()),
+				new AreaRequester(10, RequestType.Truck, new TruckCondition(2)),
+
+				//field
+				new AreaRequester(9, RequestType.ReactorShield, new ReactorFieldCondition()),
+				new AreaRequester(5, RequestType.ShieldField, new ShieldFieldBarrierCondition()),
+				new AreaRequester(2, RequestType.MedicField, new HealUpCondition(brain)),
+				//new AreaRequester(5, RequestType.FarmField, new BasicFarmFieldCondition()),
+				new AreaRequester(5, RequestType.BorderShieldField, new ShieldBorderCondition()),
+				new AreaRequester(10, RequestType.ReactorField, new ReactorFieldCondition()),
+
+				//powerup
+				new AreaRequester(10, RequestType.FireUp, new FireUpCondition(brain)),
+				new AreaRequester(7, RequestType.SpeedUp, new SpeedUpCondtion(brain)),
+
+				//behaviour
+				new AreaRequester(10, RequestType.Defense, new DefenseCondition()),
+				new AreaRequester(7, RequestType.DiamondRoadCleaning, new DiamondRoadCondition(brain)),
+				new AreaRequester(10, RequestType.FoeReactor, new FoeReactorCondition()),
+				new AreaRequester(10, RequestType.Clear, new ClearAreaCondition()),
+				new AreaRequester(1, RequestType.Patrol, new PatrolCondition())
 			]),
 			new HandlerIterator(handlers)
 		);

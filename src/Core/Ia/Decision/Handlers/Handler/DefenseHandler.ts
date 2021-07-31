@@ -19,8 +19,8 @@ import { TargetMonitoredOrder } from '../../../Order/TargetMonitoredOrder';
 export class DefenseHandler implements IHandler {
 	Handle(request: AreaRequest): void {
 		const area = request.Area;
-		if (0 < area.GetTroops().length) {
-			const ally = area.GetTroops()[0];
+		if (0 < area.Tanks.length) {
+			const ally = area.Tanks[0];
 
 			//#1 get in & out cells
 			const areas = this.GetAround(area.GetSpot());
@@ -163,7 +163,7 @@ export class DefenseHandler implements IHandler {
 	private GetTroopRoads(area: IaArea, cellsByDanger: { [id: number]: Dictionary<Cell> }): Array<TroopRoads> {
 		let allTroopRoads = new Array<TroopRoads>();
 
-		area.GetTroops().filter((t) => !t.IsCloseFromEnemy()).forEach((troop) => {
+		area.Tanks.filter((t) => !t.IsCloseFromEnemy()).forEach((troop) => {
 			const troopRoads = new TroopRoads();
 			troopRoads.Tank = troop;
 			allTroopRoads.push(troopRoads);

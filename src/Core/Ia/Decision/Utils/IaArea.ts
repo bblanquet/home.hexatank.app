@@ -23,6 +23,8 @@ import { AStarHelper } from '../../AStarHelper';
 import { Brain } from '../Brain';
 import { Relationship } from '../../../Items/Identity';
 import { Env } from '../../../../Env';
+import { LogKind } from '../../../../Utils/Logger/LogKind';
+import { StaticLogger } from '../../../../Utils/Logger/StaticLogger';
 
 export class IaArea {
 	public Tanks: Array<Tank>;
@@ -197,10 +199,6 @@ export class IaArea {
 		return this.GetSpot().GetStatus().HasField(Diamond.name);
 	}
 
-	public GetTroops(): Array<Tank> {
-		return this.Tanks;
-	}
-
 	public GetDistanceFromHq(): number {
 		return DistanceHelper.GetDistance(this.GetCentralCell().GetHexCoo(), this._hq.GetCell().GetHexCoo());
 	}
@@ -281,7 +279,7 @@ export class IaArea {
 	}
 
 	public HasNature(): boolean {
-		if (this.IsImportant()) {
+		if (this._spot.GetStatus().HasField(Diamond.name) || this._spot.GetStatus().HasField(HeadquarterField.name)) {
 			return false;
 		}
 		return this._spot.GetStatus().HasField(BlockingField.name);

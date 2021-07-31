@@ -6,12 +6,7 @@ export class HealUpCondition implements IAreaCondition {
 	Condition(area: IaArea): boolean {
 		if (area.GetInnerFoeCount() === 0) {
 			const hasHealing = this._kingdom.GetIaAreaByCell().Values().some((a) => a.HasMedic());
-			if (
-				hasHealing &&
-				area.GetFoesCount() === 0 &&
-				!area.HasMedic() &&
-				area.GetTroops().some((t) => t.HasDamage())
-			) {
+			if (hasHealing && area.GetFoesCount() === 0 && !area.HasMedic() && area.Tanks.some((t) => t.HasDamage())) {
 				return true;
 			}
 		}

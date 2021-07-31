@@ -13,7 +13,7 @@ export class DiamondRoadCleaningHandler implements IHandler {
 	constructor(private _brain: Brain) {}
 
 	Handle(request: AreaRequest): void {
-		const tank = request.Area.GetTroops()[0];
+		const tank = request.Area.Tanks[0];
 		if (tank) {
 			const obs = this.GetObstacles(this._brain);
 			if (obs.length === 1) {

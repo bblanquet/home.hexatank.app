@@ -60,25 +60,18 @@ export class Brain implements IBrain {
 			}
 		});
 		this.Hq.OnReactorConquested.On((e: any, obj: ReactorField) => {
-			const c = obj.GetCell();
-			let area = this.Areas.filter((a) => a.Contains(c))[0];
-			if (!isNullOrUndefined(area)) {
-				this._expansionMaker.CreateArea(area);
+			const conquestedArea = this.Areas.find((a) => a.Contains(obj.GetCell()));
+			if (conquestedArea) {
+				this._expansionMaker.CreateArea(conquestedArea);
 			}
 		});
 
 		this.Hq.OnReactorLost.On((e: any, field: ReactorField) => {
-			const cell = field.GetCell();
-			let foundArea: IaArea = null;
-			this.GetIaAreaByCell().Values().some((area) => {
-				if (!area.HasCell(cell)) {
-					foundArea = area;
-					return true;
-				}
-				return false;
-			});
-			this.GetIaAreaByCell().Remove(foundArea.GetCentralCell().Coo());
-			this.Areas.push(foundArea.GetSpot());
+			const lostReactorArea = this.GetIaAreaByCell().Values().find((area) => area.HasCell(field.GetCell()));
+			if (lostReactorArea) {
+				this.GetIaAreaByCell().Remove(lostReactorArea.GetCentralCell().Coo());
+				this.Areas.push(lostReactorArea.GetSpot());
+			}
 		});
 	}
 	IsIa(): boolean {
@@ -89,12 +82,8 @@ export class Brain implements IBrain {
 		return this.AreaDecisions.some((e) => e.GetSpot() === area);
 	}
 
-	public GetDecisionArea(cell: Cell): IaArea {
-		const areas = this.AreaDecisions.filter((c) => c.HasCell(cell));
-		if (0 < areas.length) {
-			return areas[0];
-		}
-		return null;
+	public GetIaArea(cell: Cell): IaArea {
+		return this.AreaDecisions.find((c) => c.HasCell(cell));
 	}
 
 	public GetDiamond(): Diamond {

@@ -21,13 +21,9 @@ export class KamikazeBrain implements IBrainProvider {
 
 		brain.Inject(
 			new DiamondExpansionMaker(hq, brain, areaSearch, 0),
-			new GlobalRequestIterator([
-				new GlobalRequester(10, RequestType.Raid, (e) => new SimpleSquadCondition().Condition(e))
-			]),
+			new GlobalRequestIterator([ new GlobalRequester(10, RequestType.Raid, new SimpleSquadCondition()) ]),
 			new AreaRequestIterator([]),
-			new HandlerIterator([
-				new SimpleHandler(10, RequestType.Raid, (e) => new SimpleTankHander(hqs, brain).Handle(e))
-			])
+			new HandlerIterator([ new SimpleHandler(10, RequestType.Raid, new SimpleTankHander(hqs, brain)) ])
 		);
 
 		return brain;

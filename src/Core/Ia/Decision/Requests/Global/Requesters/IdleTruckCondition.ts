@@ -2,7 +2,6 @@ import { IGlobalCondition } from '../IGlobalCondition';
 import { Truck } from '../../../../../Items/Unit/Truck';
 import { TruckPatrolOrder } from '../../../../Order/Composite/Diamond/TruckPatrolOrder';
 import { Brain } from '../../../Brain';
-import { IaArea } from '../../../Utils/IaArea';
 import { GlobalRequestResult } from '../GlobalRequestResult';
 
 export class IdleTruckCondition implements IGlobalCondition {

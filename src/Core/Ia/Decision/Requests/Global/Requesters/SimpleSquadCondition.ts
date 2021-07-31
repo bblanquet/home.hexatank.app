@@ -1,6 +1,5 @@
 import { TimeTimer } from '../../../../../../Utils/Timer/TimeTimer';
 import { Brain } from '../../../Brain';
-import { IaArea } from '../../../Utils/IaArea';
 import { GlobalRequestResult } from '../GlobalRequestResult';
 import { IGlobalCondition } from '../IGlobalCondition';
 

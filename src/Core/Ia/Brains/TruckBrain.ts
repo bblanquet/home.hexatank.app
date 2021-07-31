@@ -20,13 +20,11 @@ export class TruckBrain implements IBrainProvider {
 	GetBrain(hq: Headquarter, hqs: IHeadquarter[], areas: Area[], areaSearch: AreaSearch, diamond: Diamond): IBrain {
 		const brain = new Brain(hq, areas, diamond, false);
 
-		const handlers = [ new SimpleHandler(10, RequestType.IdleTruck, (e) => new IdleTruckHandler(brain).Handle(e)) ];
+		const handlers = [ new SimpleHandler(10, RequestType.IdleTruck, new IdleTruckHandler(brain)) ];
 
 		brain.Inject(
 			new DummyExpansionMaker(),
-			new GlobalRequestIterator([
-				new GlobalRequester(10, RequestType.IdleTruck, (e) => new IdleTruckCondition().Condition(e))
-			]),
+			new GlobalRequestIterator([ new GlobalRequester(10, RequestType.IdleTruck, new IdleTruckCondition()) ]),
 			new AreaRequestIterator([]),
 			new HandlerIterator(handlers)
 		);

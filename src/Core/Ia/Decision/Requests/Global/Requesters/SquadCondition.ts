@@ -1,7 +1,6 @@
 import { Brain } from '../../../Brain';
 import { GameSettings } from '../../../../../Framework/GameSettings';
 import { IGlobalCondition } from '../IGlobalCondition';
-import { IaArea } from '../../../Utils/IaArea';
 import { GlobalRequestResult } from '../GlobalRequestResult';
 
 export class SquadCondition implements IGlobalCondition {

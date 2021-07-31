@@ -14,14 +14,15 @@ export class ShieldRequestHandler implements IHandler {
 		if (1 < request.Area.GetRange()) {
 			cellCount = 3;
 		}
-
-		this.CreateShield(request.Area.GetClosesHqField(cellCount));
+		const freeCells = request.Area.GetFreeCoveredCells();
+		const cells = request.Area.GetClosesHqField(cellCount).filter((a) => freeCells.some((e) => a === e));
+		this.CreateShield(cells);
 	}
 
-	private CreateShield(road: Cell[]) {
-		const price = road.length * GameSettings.FieldPrice;
+	private CreateShield(cells: Cell[]) {
+		const price = cells.length * GameSettings.FieldPrice;
 		if (price < this._hq.GetAmount()) {
-			road.forEach((cell) => {
+			cells.forEach((cell) => {
 				if (cell.GetField() instanceof BasicField) {
 					cell.SetField(new ShieldField(cell, this._hq.Identity, this._hq));
 					this._hq.Buy(GameSettings.FieldPrice);

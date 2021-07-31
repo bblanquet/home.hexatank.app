@@ -4,14 +4,10 @@ import { IaArea } from '../../Utils/IaArea';
 import { RequestType } from '../../Utils/RequestType';
 import { AreaRequestIterator } from '../AreaRequestIterator';
 import { IGlobalRequester } from './IGlobalRequester';
-import { GlobalRequestResult } from './GlobalRequestResult';
+import { IGlobalCondition } from './IGlobalCondition';
 
 export class GlobalRequester implements IGlobalRequester {
-	constructor(
-		private _priority: number,
-		private _type: RequestType,
-		private _condition: (area: Brain) => GlobalRequestResult
-	) {}
+	constructor(private _priority: number, private _type: RequestType, private _condition: IGlobalCondition) {}
 
 	GetPriority(): number {
 		return this._priority;
@@ -25,7 +21,7 @@ export class GlobalRequester implements IGlobalRequester {
 	}
 
 	GetResquest(brain: Brain): AreaRequest {
-		const result = this._condition(brain);
+		const result = this._condition.Condition(brain);
 		if (result.HasRequest) {
 			return this.Request(result.Area);
 		} else {

@@ -61,25 +61,11 @@ export class AudioLoader implements ILoader {
 		return path;
 	}
 
-	private IsiOS(): boolean {
-		return (
-			[ 'iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod' ].includes(
-				navigator.platform
-			) ||
-			// iPad on iOS 13 detection
-			(navigator.userAgent.includes('Mac') && 'ontouchend' in document)
-		);
-	}
-
 	public Loading(path: string, onLoaded: () => void): void {
-		if (this.IsiOS()) {
+		const howl = new Howl({ src: [ path ], html5: true });
+		howl.once('load', () => {
+			this._audioService.Add(path, howl);
 			onLoaded();
-		} else {
-			const howl = new Howl({ src: [ path ], html5: true });
-			howl.once('load', () => {
-				this._audioService.Add(path, howl);
-				onLoaded();
-			});
-		}
+		});
 	}
 }

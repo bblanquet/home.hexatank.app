@@ -30,6 +30,16 @@ export class LoadingHook extends Hook<LoadingState> {
 		return LoadingSentences[this._sentenceIndex];
 	}
 
+	private IsiOS(): boolean {
+		return (
+			[ 'iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod' ].includes(
+				navigator.platform
+			) ||
+			// iPad on iOS 13 detection
+			(navigator.userAgent.includes('Mac') && 'ontouchend' in document)
+		);
+	}
+
 	public OnStart(): void {
 		this.Update((e) => {
 			e.IsLoading = true;
@@ -47,11 +57,12 @@ export class LoadingHook extends Hook<LoadingState> {
 			}
 			this.SetSvg(percentage);
 		});
+
 		const audioService = new AudioService();
 		Singletons.Register(SingletonKey.Audio, audioService);
 		const audioLoad = new AudioLoader(audioService);
 		const onAudioLoaded = new AssetLoader(audioLoad, 4).LoadAll(audioLoad.Audios());
-		onLoaded.On((obj: any, percentage: number) => {
+		onAudioLoaded.On((obj: any, percentage: number) => {
 			const roundedPercentage = Math.round(percentage);
 			if (roundedPercentage % 10 === 0 && roundedPercentage !== this._sentencePercentage) {
 				this._sentencePercentage = roundedPercentage;
@@ -59,6 +70,14 @@ export class LoadingHook extends Hook<LoadingState> {
 			}
 			this.SetAudio(percentage);
 		});
+
+		// if (this.IsiOS()) {
+		// 	this.Update((e) => {
+		// 		e.Audio = 100;
+		// 	});
+		// } else {
+
+		// }
 	}
 
 	public SetAudio(audio: number): void {

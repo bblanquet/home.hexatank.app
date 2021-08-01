@@ -9,6 +9,7 @@ import Picker from './Picker';
 import Grid from '../Common/Grid/GridComponent';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
 import Column from '../Common/Struct/Column';
+import { Env } from '../../Env';
 
 export default class BlueprintForm extends Component<
 	{ Model: BlueprintSetup; OnChanged: (model: BlueprintSetup) => void; EnableEmptyIa: boolean },
@@ -83,12 +84,20 @@ export default class BlueprintForm extends Component<
 								});
 							}}
 							Default={'Weak'}
-							Values={[ 'Weak', 'Normal', 'Strong', 'Dummy', 'Kamikaze' ]}
+							Values={this.GetIas()}
 						/>
 					</th>
 				</tr>
 			</thead>
 		);
+	}
+
+	private GetIas(): string[] {
+		if (Env.IsPrd()) {
+			return [ 'Weak', 'Normal', 'Strong' ];
+		} else {
+			return [ 'Weak', 'Normal', 'Strong', 'Dummy', 'Kamikaze' ];
+		}
 	}
 
 	private GetContent() {

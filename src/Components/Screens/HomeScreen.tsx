@@ -16,14 +16,23 @@ import Grid from '../Common/Grid/GridComponent';
 import SmActiveBtn from '../Common/Button/Stylish/SmActiveBtn';
 export default class HomeScreen extends Component<any, { IsMenu: boolean }> {
 	private _versions: Versionning[] = [
-		new Versionning('0.8.13 (Doug/Marvin delivery)', [
-			'self-automated collector',
-			'remove fog of war',
-			'slow down game speed',
-			'replayable stage',
-			'fix some multiselection bug',
-			'improve online synchronisation'
-		])
+		new Versionning(
+			'0.8.14',
+			[ 'fix hanging unit', 'fix and improve IA', 'improve online synchronisation #2' ],
+			[ 'Doug' ]
+		),
+		new Versionning(
+			'0.8.13',
+			[
+				'add self-automated collector',
+				'disable fog of war',
+				'change game speed',
+				'make stages onLoaded',
+				'fix some multiselection bug',
+				'improve online synchronisation #1'
+			],
+			[ 'Doug', 'Marvin' ]
+		)
 	];
 
 	componentDidMount() {
@@ -79,13 +88,15 @@ export default class HomeScreen extends Component<any, { IsMenu: boolean }> {
 								}
 								right={
 									<tbody>
-										<tr class="d-flex">
+										<tr class="d-flex flex-column ">
 											{this._versions.map((version) => (
-												<td class="align-self-center">
+												<td>
 													<span style="font-weight:bold">
 														<Icon Value="fas fa-truck" /> {version.Name}
 													</span>
 													{version.Features.map((feature) => <div>&#183; {feature}</div>)}
+													<div style="font-weight:bold">Bug hunters</div>
+													{version.Hunters.map((feature) => <div>&#183; {feature}</div>)}
 												</td>
 											))}
 										</tr>
@@ -97,7 +108,7 @@ export default class HomeScreen extends Component<any, { IsMenu: boolean }> {
 				}
 				footer={
 					<div class="navbar nav-inner" style="font-weight:bold;">
-						<div>v 0.8.13</div>
+						<div>v 0.8.14</div>
 						<SmActiveBtn
 							left={<Icon Value="fas fa-bug" />}
 							right={<Icon Value="fas fa-bug" />}
@@ -115,5 +126,5 @@ export default class HomeScreen extends Component<any, { IsMenu: boolean }> {
 	}
 }
 export class Versionning {
-	constructor(public Name: string, public Features: string[]) {}
+	constructor(public Name: string, public Features: string[], public Hunters: string[]) {}
 }

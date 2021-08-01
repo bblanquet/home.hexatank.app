@@ -41,31 +41,28 @@ export class LoadingHook extends Hook<LoadingState> {
 	}
 
 	public OnStart(): void {
-		this.Update((e) => {
-			e.IsLoading = true;
-			e.Percentage = 0;
-			e.Svg = 0;
-			e.Audio = 0;
-		});
-		const svgLoad = new SvgLoader();
-		const onLoaded = new AssetLoader(svgLoad, 150).LoadAll(new AssetExplorer().GetAssets());
-		onLoaded.On((obj: any, percentage: number) => {
-			const roundedPercentage = Math.round(percentage);
-			if (roundedPercentage % 10 === 0 && roundedPercentage !== this._sentencePercentage) {
-				this._sentencePercentage = roundedPercentage;
-				this._sentenceIndex = (this._sentenceIndex + 1) % LoadingSentences.length;
-			}
-			this.SetSvg(percentage);
-		});
-
 		const audioService = new AudioService();
 		Singletons.Register(SingletonKey.Audio, audioService);
 
 		if (this.IsiOS()) {
-			this.Update((e) => {
-				e.Audio = 100;
-			});
+			this.Next();
 		} else {
+			this.Update((e) => {
+				e.IsLoading = true;
+				e.Percentage = 0;
+				e.Svg = 0;
+				e.Audio = 0;
+			});
+			const svgLoad = new SvgLoader();
+			const onLoaded = new AssetLoader(svgLoad, 150).LoadAll(new AssetExplorer().GetAssets());
+			onLoaded.On((obj: any, percentage: number) => {
+				const roundedPercentage = Math.round(percentage);
+				if (roundedPercentage % 10 === 0 && roundedPercentage !== this._sentencePercentage) {
+					this._sentencePercentage = roundedPercentage;
+					this._sentenceIndex = (this._sentenceIndex + 1) % LoadingSentences.length;
+				}
+				this.SetSvg(percentage);
+			});
 			const audioLoad = new AudioLoader(audioService);
 			const onAudioLoaded = new AssetLoader(audioLoad, 4).LoadAll(audioLoad.Audios());
 			onAudioLoaded.On((obj: any, percentage: number) => {
@@ -85,7 +82,9 @@ export class LoadingHook extends Hook<LoadingState> {
 			e.Percentage = percentage;
 			e.Audio = audio;
 		});
-		this.Check(audio === 100 && this.State.Svg === 100);
+		if (audio === 100 && this.State.Svg === 100) {
+			this.Next();
+		}
 	}
 
 	public SetSvg(svg: number): void {
@@ -94,15 +93,15 @@ export class LoadingHook extends Hook<LoadingState> {
 			e.Percentage = percentage;
 			e.Svg = svg;
 		});
-		this.Check(svg === 100 && this.State.Audio === 100);
+		if (svg === 100 && this.State.Audio === 100) {
+			this.Next();
+		}
 	}
 
-	Check(isLoaded: boolean): void {
-		if (isLoaded) {
-			new SingletonContainer().Register();
-			SpriteProvider.SetLoaded(true);
-			route('{{sub_path}}Home', true);
-		}
+	Next(): void {
+		new SingletonContainer().Register();
+		SpriteProvider.SetLoaded(true);
+		route('{{sub_path}}Home', true);
 	}
 
 	public Unmount(): void {}

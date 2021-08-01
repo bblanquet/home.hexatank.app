@@ -60,24 +60,23 @@ export class LoadingHook extends Hook<LoadingState> {
 
 		const audioService = new AudioService();
 		Singletons.Register(SingletonKey.Audio, audioService);
-		const audioLoad = new AudioLoader(audioService);
-		const onAudioLoaded = new AssetLoader(audioLoad, 4).LoadAll(audioLoad.Audios());
-		onAudioLoaded.On((obj: any, percentage: number) => {
-			const roundedPercentage = Math.round(percentage);
-			if (roundedPercentage % 10 === 0 && roundedPercentage !== this._sentencePercentage) {
-				this._sentencePercentage = roundedPercentage;
-				this._sentenceIndex = (this._sentenceIndex + 1) % LoadingSentences.length;
-			}
-			this.SetAudio(percentage);
-		});
 
-		// if (this.IsiOS()) {
-		// 	this.Update((e) => {
-		// 		e.Audio = 100;
-		// 	});
-		// } else {
-
-		// }
+		if (this.IsiOS()) {
+			this.Update((e) => {
+				e.Audio = 100;
+			});
+		} else {
+			const audioLoad = new AudioLoader(audioService);
+			const onAudioLoaded = new AssetLoader(audioLoad, 4).LoadAll(audioLoad.Audios());
+			onAudioLoaded.On((obj: any, percentage: number) => {
+				const roundedPercentage = Math.round(percentage);
+				if (roundedPercentage % 10 === 0 && roundedPercentage !== this._sentencePercentage) {
+					this._sentencePercentage = roundedPercentage;
+					this._sentenceIndex = (this._sentenceIndex + 1) % LoadingSentences.length;
+				}
+				this.SetAudio(percentage);
+			});
+		}
 	}
 
 	public SetAudio(audio: number): void {

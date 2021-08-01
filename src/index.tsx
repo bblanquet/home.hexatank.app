@@ -44,7 +44,7 @@ import Notification from './Components/Components/Notification';
 import { LiteEvent } from './Utils/Events/LiteEvent';
 import { NotificationState } from './Components/Model/NotificationState';
 import { PointDetails } from './Services/PlayerProfil/PointDetails';
-import { Env } from './Env';
+import { Env } from './Utils/Env';
 if (!Env.IsPrd()) {
 	require('preact/debug');
 }

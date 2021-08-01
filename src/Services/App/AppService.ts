@@ -21,7 +21,7 @@ import { GameStatus } from '../../Core/Framework/GameStatus';
 import { CellStateSetter } from '../../Core/Items/Cell/CellStateSetter';
 import { GameState } from '../../Core/Framework/Context/GameState';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
-import { Env } from '../../Env';
+import { Env } from '../../Utils/Env';
 import { CellState } from '../../Core/Items/Cell/CellState';
 
 export class AppService implements IAppService<GameBlueprint> {

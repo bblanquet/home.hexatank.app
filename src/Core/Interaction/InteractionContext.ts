@@ -15,7 +15,7 @@ import { ISelectableChecker } from './ISelectableChecker';
 import { ViewContext } from '../../Utils/Geometry/ViewContext';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { IGameContext } from '../Framework/Context/IGameContext';
-import { Env } from '../../Env';
+import { Env } from '../../Utils/Env';
 import { LogKind } from '../../Utils/Logger/LogKind';
 import { StaticLogger } from '../../Utils/Logger/StaticLogger';
 import { UnitGroup } from '../Items/UnitGroup';

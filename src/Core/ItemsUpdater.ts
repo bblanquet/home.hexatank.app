@@ -3,7 +3,7 @@ import { ViewContext } from '../Utils/Geometry/ViewContext';
 import { IItemsUpdater } from './IItemsUpdater';
 import { Item } from './Items/Item';
 import { IInteractionContext } from './Interaction/IInteractionContext';
-import { Env } from '../Env';
+import { Env } from '../Utils/Env';
 import { GameState } from './Framework/Context/GameState';
 
 export class ItemsUpdater implements IItemsUpdater {

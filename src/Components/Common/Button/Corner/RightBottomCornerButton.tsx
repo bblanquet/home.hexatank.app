@@ -1,4 +1,6 @@
 import { Component, h } from 'preact';
+import { Vibrator } from '../../../../Utils/Vibrator';
+
 export default class RightBottomCornerButton extends Component<
 	{ OnClick: () => void; isMute?: boolean; isSelected: boolean; logo: string },
 	any
@@ -12,7 +14,7 @@ export default class RightBottomCornerButton extends Component<
 							? 'blue-selection-hover-primary'
 							: 'blue-selection-primary'}  fit-content`}
 						onClick={() => {
-							navigator.vibrate([ 50 ]);
+							Vibrator.Vibrate();
 							this.props.OnClick();
 						}}
 					>

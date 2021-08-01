@@ -30,50 +30,35 @@ export class LoadingHook extends Hook<LoadingState> {
 		return LoadingSentences[this._sentenceIndex];
 	}
 
-	private IsiOS(): boolean {
-		return (
-			[ 'iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod' ].includes(
-				navigator.platform
-			) ||
-			// iPad on iOS 13 detection
-			(navigator.userAgent.includes('Mac') && 'ontouchend' in document)
-		);
-	}
-
 	public OnStart(): void {
 		const audioService = new AudioService();
 		Singletons.Register(SingletonKey.Audio, audioService);
-
-		if (this.IsiOS()) {
-			this.Next();
-		} else {
-			this.Update((e) => {
-				e.IsLoading = true;
-				e.Percentage = 0;
-				e.Svg = 0;
-				e.Audio = 0;
-			});
-			const svgLoad = new SvgLoader();
-			const onLoaded = new AssetLoader(svgLoad, 150).LoadAll(new AssetExplorer().GetAssets());
-			onLoaded.On((obj: any, percentage: number) => {
-				const roundedPercentage = Math.round(percentage);
-				if (roundedPercentage % 10 === 0 && roundedPercentage !== this._sentencePercentage) {
-					this._sentencePercentage = roundedPercentage;
-					this._sentenceIndex = (this._sentenceIndex + 1) % LoadingSentences.length;
-				}
-				this.SetSvg(percentage);
-			});
-			const audioLoad = new AudioLoader(audioService);
-			const onAudioLoaded = new AssetLoader(audioLoad, 4).LoadAll(audioLoad.Audios());
-			onAudioLoaded.On((obj: any, percentage: number) => {
-				const roundedPercentage = Math.round(percentage);
-				if (roundedPercentage % 10 === 0 && roundedPercentage !== this._sentencePercentage) {
-					this._sentencePercentage = roundedPercentage;
-					this._sentenceIndex = (this._sentenceIndex + 1) % LoadingSentences.length;
-				}
-				this.SetAudio(percentage);
-			});
-		}
+		this.Update((e) => {
+			e.IsLoading = true;
+			e.Percentage = 0;
+			e.Svg = 0;
+			e.Audio = 0;
+		});
+		const svgLoad = new SvgLoader();
+		const onLoaded = new AssetLoader(svgLoad, 150).LoadAll(new AssetExplorer().GetAssets());
+		onLoaded.On((obj: any, percentage: number) => {
+			const roundedPercentage = Math.round(percentage);
+			if (roundedPercentage % 10 === 0 && roundedPercentage !== this._sentencePercentage) {
+				this._sentencePercentage = roundedPercentage;
+				this._sentenceIndex = (this._sentenceIndex + 1) % LoadingSentences.length;
+			}
+			this.SetSvg(percentage);
+		});
+		const audioLoad = new AudioLoader(audioService);
+		const onAudioLoaded = new AssetLoader(audioLoad, 4).LoadAll(audioLoad.Audios());
+		onAudioLoaded.On((obj: any, percentage: number) => {
+			const roundedPercentage = Math.round(percentage);
+			if (roundedPercentage % 10 === 0 && roundedPercentage !== this._sentencePercentage) {
+				this._sentencePercentage = roundedPercentage;
+				this._sentenceIndex = (this._sentenceIndex + 1) % LoadingSentences.length;
+			}
+			this.SetAudio(percentage);
+		});
 	}
 
 	public SetAudio(audio: number): void {

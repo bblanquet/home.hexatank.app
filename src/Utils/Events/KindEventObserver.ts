@@ -1,6 +1,6 @@
 import { route } from 'preact-router';
 import { GameContext } from '../../Core/Framework/Context/GameContext';
-import { Env } from '../../Env';
+import { Env } from '../Env';
 import { ErrorHandler } from '../Exceptions/ErrorHandler';
 
 export class KindEventObserver<TKind, TMessage> {

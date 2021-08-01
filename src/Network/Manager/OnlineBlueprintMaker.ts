@@ -7,7 +7,7 @@ import { IOnlinePlayerManager } from './IOnlinePlayerManager';
 import { HqAppearance } from '../../Core/Framework/Render/Hq/HqSkinHelper';
 import { PlayerBlueprint } from '../../Core/Framework/Blueprint/Game/HqBlueprint';
 import { BrainKind } from '../../Core/Ia/Decision/BrainKind';
-import { Env } from '../../Env';
+import { Env } from '../../Utils/Env';
 export class OnlineBlueprintMaker {
 	constructor(private _onlinePlayerManager: IOnlinePlayerManager, private _blueprintSetup: BlueprintSetup) {}
 

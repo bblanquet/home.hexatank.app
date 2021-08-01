@@ -22,7 +22,7 @@ import { AreaSearch } from './AreaSearch';
 import { AStarHelper } from '../../AStarHelper';
 import { Brain } from '../Brain';
 import { Relationship } from '../../../Items/Identity';
-import { Env } from '../../../../Env';
+import { Env } from '../../../../Utils/Env';
 import { LogKind } from '../../../../Utils/Logger/LogKind';
 import { StaticLogger } from '../../../../Utils/Logger/StaticLogger';
 

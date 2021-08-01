@@ -9,7 +9,7 @@ import Picker from './Picker';
 import Grid from '../Common/Grid/GridComponent';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
 import Column from '../Common/Struct/Column';
-import { Env } from '../../Env';
+import { Env } from '../../Utils/Env';
 
 export default class BlueprintForm extends Component<
 	{ Model: BlueprintSetup; OnChanged: (model: BlueprintSetup) => void; EnableEmptyIa: boolean },

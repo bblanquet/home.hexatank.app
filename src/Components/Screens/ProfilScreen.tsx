@@ -14,7 +14,7 @@ import { HookedComponent } from '../Hooks/HookedComponent';
 import { ProfilHook } from '../Hooks/ProfilHook';
 import { ProfilState } from '../Model/ProfilState';
 import { useState } from 'preact/hooks';
-import { Env } from '../../Env';
+import { Env } from '../../Utils/Env';
 
 export default class ProfilScreen extends HookedComponent<{}, ProfilHook, ProfilState> {
 	public Rendering(): JSX.Element {

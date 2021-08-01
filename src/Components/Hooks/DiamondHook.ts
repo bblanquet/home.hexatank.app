@@ -23,6 +23,7 @@ import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilS
 import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
 import { AudioLoader } from '../../Core/Framework/AudioLoader';
 import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
+import { Vibrator } from '../../Utils/Vibrator';
 
 export class DiamondHook extends Hook<RuntimeState> {
 	private _gameContextService: IGameContextService<DiamondBlueprint, DiamondContext>;
@@ -162,7 +163,7 @@ export class DiamondHook extends Hook<RuntimeState> {
 	}
 
 	private HandleSelection(obj: any, selectedItem: Item): void {
-		navigator.vibrate([ 50 ]);
+		Vibrator.Vibrate();
 		((selectedItem as unknown) as ISelectable).OnSelectionChanged.On(this._onItemSelectionChanged);
 		this.Update((e) => (e.Item = selectedItem));
 	}

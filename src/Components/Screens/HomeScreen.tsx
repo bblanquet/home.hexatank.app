@@ -6,7 +6,7 @@ import { ButtonOption } from '../Common/Button/ButtonOption';
 import Icon from '../Common/Icon/IconComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Visible from '../Common/Struct/Visible';
-import { Env } from '../../Env';
+import { Env } from '../../Utils/Env';
 import Panel from '../Components/Panel/Panel';
 import { IAudioService } from '../../Services/Audio/IAudioService';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';

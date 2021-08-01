@@ -4,7 +4,7 @@ import Icon from '../Common/Icon/IconComponent';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
 import Line from '../Common/Struct/Line';
-import { Env } from '../../Env';
+import { Env } from '../../Utils/Env';
 import SmActiveBtn from '../Common/Button/Stylish/SmActiveBtn';
 import Visible from '../Common/Struct/Visible';
 

@@ -27,6 +27,7 @@ import { Point } from '../../Utils/Geometry/Point';
 import { Curve } from '../../Utils/Stats/Curve';
 import { RuntimeState } from '../Model/RuntimeState';
 import { Hook } from './Hook';
+import { Vibrator } from '../../Utils/Vibrator';
 
 export class GameHook extends Hook<RuntimeState> {
 	private _gameContextService: IGameContextService<GameBlueprint, GameContext>;
@@ -185,7 +186,7 @@ export class GameHook extends Hook<RuntimeState> {
 
 	private HandleSelection(obj: any, selectedItem: Item): void {
 		((selectedItem as unknown) as ISelectable).OnSelectionChanged.On(this._onItemSelectionChanged);
-		navigator.vibrate([ 50 ]);
+		Vibrator.Vibrate();
 		this.Update((e) => (e.Item = selectedItem));
 	}
 

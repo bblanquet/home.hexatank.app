@@ -72,10 +72,10 @@ export class AudioLoader implements ILoader {
 	}
 
 	public Loading(path: string, onLoaded: () => void): void {
-		const howl = new Howl({ src: [ path ], html5: true });
 		if (this.IsiOS()) {
 			onLoaded();
 		} else {
+			const howl = new Howl({ src: [ path ], html5: true });
 			howl.once('load', () => {
 				this._audioService.Add(path, howl);
 				onLoaded();

@@ -21,6 +21,7 @@ import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
 import { AudioLoader } from '../../Core/Framework/AudioLoader';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
+import { Vibrator } from '../../Utils/Vibrator';
 
 export class CamouflageHook extends Hook<RuntimeState> {
 	private _gameContextService: IGameContextService<CamouflageBlueprint, CamouflageContext>;
@@ -138,7 +139,7 @@ export class CamouflageHook extends Hook<RuntimeState> {
 	}
 
 	private HandleSelection(obj: any, selectedItem: Item): void {
-		navigator.vibrate([ 50 ]);
+		Vibrator.Vibrate();
 		((selectedItem as unknown) as ISelectable).OnSelectionChanged.On(this._onItemSelectionChanged);
 		this.Update((e) => (e.Item = selectedItem));
 	}

@@ -23,6 +23,7 @@ import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
 import { AudioLoader } from '../../Core/Framework/AudioLoader';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
+import { Vibrator } from '../../Utils/Vibrator';
 
 export class FireHook extends Hook<RuntimeState> {
 	private _gameContextService: IGameContextService<FireBlueprint, FireContext>;
@@ -142,7 +143,7 @@ export class FireHook extends Hook<RuntimeState> {
 
 	private HandleSelection(obj: any, selectedItem: Item): void {
 		((selectedItem as unknown) as ISelectable).OnSelectionChanged.On(this._onItemSelectionChanged);
-		navigator.vibrate([ 50 ]);
+		Vibrator.Vibrate();
 		this.Update((e) => (e.Item = selectedItem));
 	}
 

@@ -5,6 +5,7 @@ import { Singletons, SingletonKey } from '../../../../Singletons';
 import { IAudioService } from '../../../../Services/Audio/IAudioService';
 import { ColorKind } from './ColorKind';
 import { AudioLoader } from '../../../../Core/Framework/AudioLoader';
+import { Vibrator } from '../../../../Utils/Vibrator';
 
 export default class Btn extends Component<{ OnClick: () => void; Color: ColorKind }, any> {
 	private _primary: Dictionary<string> = new Dictionary<string>();
@@ -35,7 +36,7 @@ export default class Btn extends Component<{ OnClick: () => void; Color: ColorKi
 							class={`custom-btn-layout-1 ${this._primary.Get(ColorKind[this.props.Color])} fit-content`}
 							onClick={() => {
 								this.Howl();
-								navigator.vibrate([ 50 ]);
+								Vibrator.Vibrate();
 								this.props.OnClick();
 							}}
 						>

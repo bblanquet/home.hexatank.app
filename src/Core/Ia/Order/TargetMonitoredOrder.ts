@@ -12,20 +12,33 @@ import { Relationship } from '../../Items/Identity';
 import { isEqual } from 'lodash';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 import { ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
+import { AliveItem } from '../../Items/AliveItem';
 
 export class TargetMonitoredOrder extends ParentOrder {
 	private _vehicleCellChanged: boolean;
 	private _idleTimer: TimeTimer;
 	private _currentPath: Cell[] = null;
 
-	constructor(protected Destination: Cell, protected Tank: Tank) {
+	private _origCell: Cell;
+	private _origTarget: AliveItem;
+
+	constructor(cell: Cell, protected Tank: Tank) {
 		super();
-		ErrorHandler.ThrowNull(Destination);
+		ErrorHandler.ThrowNull(cell);
 		this.SetCurrentOrder(new IdleOrder());
 		this._vehicleCellChanged = true;
 		this.Tank.OnCellChanged.On(this.VehicleCellChange.bind(this));
 		this.SetState(OrderState.Pending);
 		this._idleTimer = new TimeTimer(Math.random() * 1000);
+		this._origCell = cell;
+		this._origTarget = TypeTranslator.GetAliveItem(this._origCell, Tank.Identity);
+	}
+
+	public GetDestination(): Cell {
+		if (this._origTarget && this._origTarget.IsAlive()) {
+			return this._origTarget.GetCurrentCell();
+		}
+		return this._origCell;
 	}
 
 	private VehicleCellChange(src: any, cell: Cell): void {
@@ -33,7 +46,7 @@ export class TargetMonitoredOrder extends ParentOrder {
 	}
 
 	public FetchPath(): void {
-		if (this.Tank.GetCurrentCell() === this.Destination) {
+		if (this.Tank.GetCurrentCell() === this.GetDestination()) {
 			this.SetState(OrderState.Passed);
 		} else {
 			this.UpdateOrder();
@@ -42,7 +55,7 @@ export class TargetMonitoredOrder extends ParentOrder {
 
 	private UpdateOrder() {
 		let next: Cell[] = null;
-		const nextRoad = new TargetRoadProvider(this.Tank, this.Destination).GetTargetRoad();
+		const nextRoad = new TargetRoadProvider(this.Tank, this.GetDestination()).GetTargetRoad();
 		if (this.HasNext(nextRoad)) {
 			if (this.IsNextBetter(nextRoad)) {
 				next = nextRoad.Road;
@@ -79,7 +92,7 @@ export class TargetMonitoredOrder extends ParentOrder {
 			return true;
 		}
 		const road = this.CurrentOrder.GetPath();
-		if (road.length === 0) {
+		if (road.length === 0 || this.CurrentOrder.IsDone()) {
 			return true;
 		}
 
@@ -101,7 +114,7 @@ export class TargetMonitoredOrder extends ParentOrder {
 	}
 
 	Update(): void {
-		if (this.Tank.GetCurrentCell() === this.Destination) {
+		if (this.Tank.GetCurrentCell() === this.GetDestination()) {
 			this.SetState(OrderState.Passed);
 			return;
 		}

@@ -1,4 +1,3 @@
-import { BlockingField } from '../../Items/Cell/Field/BlockingField';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { TypeTranslator } from '../../Items/Cell/Field/TypeTranslator';
 import { Identity } from '../../Items/Identity';
@@ -17,6 +16,7 @@ import { ItemsUpdater } from '../../ItemsUpdater';
 import { PacketContent } from './Contents/PacketContent';
 import { LiteEvent } from '../../../Utils/Events/LiteEvent';
 import { LifeContent } from './Contents/LifeContext';
+import { AliveItem } from '../../Items/AliveItem';
 
 export class OnlineReceiver {
 	public OnInconsistency: LiteEvent<Date> = new LiteEvent<Date>();
@@ -27,6 +27,7 @@ export class OnlineReceiver {
 		this._obs = [
 			new NetworkObserver(PacketKind.VehicleCreated, this.HandleVehicleCreated.bind(this)),
 			new NetworkObserver(PacketKind.VehicleDestroyed, this.HandleVehicleDestroyed.bind(this)),
+			new NetworkObserver(PacketKind.FieldDamaged, this.HandleFieldDamaged.bind(this)),
 			new NetworkObserver(PacketKind.Damaged, this.HandleVehicleDamaged.bind(this)),
 			new NetworkObserver(PacketKind.Target, this.HandleTarget.bind(this)),
 			new NetworkObserver(PacketKind.Camouflage, this.HandleCamouflage.bind(this)),
@@ -53,7 +54,18 @@ export class OnlineReceiver {
 
 	private IsEmitingHq(name: string): boolean {
 		const hq = this._context.GetHqFromId(this.GetId(name));
-		return hq && hq.Identity.Name !== this._context.GetPlayerHq().Identity.Name && !hq.IsIa();
+		return hq && hq.IsAlive() && hq.Identity.Name !== this._context.GetPlayerHq().Identity.Name && !hq.IsIa();
+	}
+
+	private HandleFieldDamaged(message: NetworkMessage<PacketContent<LifeContent>>): void {
+		const field = this._context.GetCell(message.Content.CId).GetField();
+		if (field instanceof AliveItem) {
+			if (field.IsAlive() && message.Content.Extra.Life < field.GetCurrentLife()) {
+				field.SetCurrentLife(message.Content.Extra.Life);
+			}
+		} else {
+			this.HandleConsistency(`[CONSISTENCY] ${message.Content.CId} is supposed to have an alive field.`);
+		}
 	}
 
 	private HandleVehicleDamaged(message: NetworkMessage<PacketContent<LifeContent>>): void {
@@ -149,10 +161,10 @@ export class OnlineReceiver {
 
 	private HandleDestroyedField(message: NetworkMessage<string>): void {
 		const field = this._context.GetCell(message.Content).GetField();
-		if (field instanceof BlockingField) {
-			const blockingField = field as BlockingField;
-			if (blockingField.IsAlive()) {
-				blockingField.Destroy();
+		if (field instanceof AliveItem) {
+			const alive = field as AliveItem;
+			if (alive.IsAlive()) {
+				alive.Destroy();
 				StaticLogger.Log(LogKind.info, `[DESTROY] FIELD ${message.Content}`);
 			}
 		}

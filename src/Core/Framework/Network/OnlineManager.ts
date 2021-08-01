@@ -16,7 +16,7 @@ export class OnlineManager {
 	) {
 		this._receiver = new OnlineReceiver(this._socket, this._gameContext);
 		this._dispatcher = new OnlineSender(this._socket, this._gameContext);
-		this._sync = new OnlineSync(this._socket, this._receiver, this._gameContext, this._players);
+		this._sync = new OnlineSync(this._socket, this._gameContext, this._players);
 	}
 
 	public Clear(): void {

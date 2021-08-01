@@ -1,4 +1,3 @@
-import { OnlineReceiver } from './OnlineReceiver';
 import { ISocketWrapper } from '../../../Network/Socket/INetworkSocket';
 import { GameContext } from '../../Framework/Context/GameContext';
 import { IOnlinePlayerManager } from '../../../Network/Manager/IOnlinePlayerManager';
@@ -20,7 +19,6 @@ export class OnlineSync {
 
 	constructor(
 		private _socket: ISocketWrapper,
-		private _receiver: OnlineReceiver,
 		private _context: GameContext,
 		private _players: IOnlinePlayerManager
 	) {

@@ -61,7 +61,7 @@ export class MonitoredOrder extends ParentOrder {
 			return true;
 		}
 		const road = this.CurrentOrder.GetPath();
-		if (road.length === 0) {
+		if (road.length === 0 || this.CurrentOrder.IsDone()) {
 			return true;
 		}
 

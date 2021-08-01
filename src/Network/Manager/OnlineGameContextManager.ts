@@ -15,6 +15,7 @@ import { IGameContextService } from '../../Services/GameContext/IGameContextServ
 import { IOnlinePlayerManager } from './IOnlinePlayerManager';
 import { BlueprintSetup } from '../../Components/Model/BlueprintSetup';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
+import { BrainKind } from '../../Core/Ia/Decision/BrainKind';
 export class OnlineGameContextManager implements IOnlineGameContextManager {
 	private _peerObs: NetworkObserver[];
 	private _onlineService: IOnlineService;
@@ -77,7 +78,7 @@ export class OnlineGameContextManager implements IOnlineGameContextManager {
 		if (!this._onlinePlayerManager.Player.IsAdmin) {
 			blueprint.Hqs.forEach((hq) => {
 				hq.Player.IsPlayer = hq.Player.Name === this._onlinePlayerManager.Player.Name;
-				hq.Player.IA = null;
+				hq.Player.IA = BrainKind.Dummy;
 			});
 		}
 	}

@@ -50,6 +50,7 @@ export enum PacketKind {
 	Camouflage,
 	PathChanged,
 	Damaged,
+	FieldDamaged,
 	FieldChanged,
 	SyncStart,
 	SyncLoaded,

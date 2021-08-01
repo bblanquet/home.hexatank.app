@@ -1,6 +1,5 @@
 import { AliveItem } from '../../Items/AliveItem';
 import { Cell } from '../../Items/Cell/Cell';
-import { BlockingField } from '../../Items/Cell/Field/BlockingField';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { TypeTranslator } from '../../Items/Cell/Field/TypeTranslator';
 import { Item } from '../../Items/Item';
@@ -28,15 +27,18 @@ export class OnlineSender {
 
 	private _handleDestroyedVehicle: any = this.HandleVehicleDestroyed.bind(this);
 	private _handlePathChanged: any = this.HandlePathChanged.bind(this);
-	private _handleDamaged: any = this.HandleDamaged.bind(this);
+	private _handleVehicleDamaged: any = this.HandleVehicleDamaged.bind(this);
+	private _handleFieldDamaged: any = this.HandleFieldDamaged.bind(this);
 	private _handleCamouglage: any = this.HandleCamouflageChanged.bind(this);
 	private _handleCancel: any = this.HandleCancel.bind(this);
 
 	public constructor(private _socket: ISocketWrapper, private _context: GameContext) {
 		this._context.GetCells().forEach((cell) => {
+			const field = cell.GetField();
 			cell.OnFieldChanged.On(this._handleField);
-			if (cell.GetField() instanceof BlockingField) {
-				(cell.GetField() as BlockingField).OnDestroyed.On(this._handleDestroyedField);
+			if (field instanceof AliveItem) {
+				field.OnDamageReceived.On(this._handleFieldDamaged);
+				field.OnDestroyed.On(this._handleDestroyedField);
 			}
 		});
 
@@ -57,6 +59,12 @@ export class OnlineSender {
 
 	private HandleChangedField(source: any, c: Cell): void {
 		const field = c.GetField();
+
+		if (field instanceof AliveItem) {
+			field.OnDamageReceived.On(this._handleFieldDamaged);
+			field.OnDestroyed.On(this._handleDestroyedField);
+		}
+
 		if (!TypeTranslator.IsSpecialField(field) || this.IsEmiting(field.GetIdentity())) {
 			const content = new PacketContent<any>();
 			content.CId = c.Coo();
@@ -77,9 +85,11 @@ export class OnlineSender {
 	}
 
 	private HandleDestroyedField(source: any, item: Item): void {
-		const blockingField = item as BlockingField;
-		const message = this.Wrap<string>(PacketKind.FieldDestroyed, blockingField.GetCell().Coo());
-		this._socket.Emit(message);
+		if (item as AliveItem) {
+			const alive = item as AliveItem;
+			const message = this.Wrap<string>(PacketKind.FieldDestroyed, alive.GetCurrentCell().Coo());
+			this._socket.Emit(message);
+		}
 	}
 
 	private HandleVehicleCreated(source: any, vehicle: Vehicle): void {
@@ -95,7 +105,7 @@ export class OnlineSender {
 			const message = this.Wrap<PacketContent<any>>(PacketKind.VehicleCreated, this.GetVContent(vehicle));
 			this._socket.Emit(message);
 		}
-		vehicle.OnDamageReceived.On(this._handleDamaged);
+		vehicle.OnDamageReceived.On(this._handleVehicleDamaged);
 		vehicle.OnDestroyed.On(this._handleDestroyedVehicle);
 	}
 
@@ -144,7 +154,19 @@ export class OnlineSender {
 		this._socket.Emit(message);
 	}
 
-	private HandleDamaged(src: Vehicle, damage: number): void {
+	private HandleFieldDamaged(src: AliveItem, damage: number): void {
+		if (src.IsAlive()) {
+			const content = new PacketContent<LifeContent>();
+			content.Extra = new LifeContent();
+			content.Type = 'field';
+			content.CId = src.GetCurrentCell().Coo();
+			content.Extra.Life = src.GetCurrentLife();
+			const message = this.Wrap<PacketContent<LifeContent>>(PacketKind.FieldDamaged, content);
+			this._socket.Emit(message);
+		}
+	}
+
+	private HandleVehicleDamaged(src: Vehicle, damage: number): void {
 		const content = new PacketContent<LifeContent>();
 		content.Extra = new LifeContent();
 		content.Id = src.Identity.Name;

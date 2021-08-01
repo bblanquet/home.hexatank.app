@@ -39,20 +39,34 @@ export class GameContext implements IHqGameContext {
 
 		if (this._playerHq) {
 			this._playerHq.OnDestroyed.On(() => {
-				this.State.OnGameStatusChanged.Invoke(this, GameStatus.Defeat);
+				if (this.State.GameStatus === GameStatus.Pending) {
+					this.State.GameStatus = GameStatus.Defeat;
+					this.State.OnGameStatusChanged.Invoke(this, this.State.GameStatus);
+				}
 			});
 			const foes = this._hqs.filter((hq) => hq !== this._playerHq);
 			foes.forEach((foe) => {
 				foe.OnDestroyed.On(() => {
 					if (foes.every((e) => !e.IsAlive())) {
-						this.State.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
+						if (this.State.GameStatus === GameStatus.Pending) {
+							this.State.GameStatus = GameStatus.Victory;
+							this.State.OnGameStatusChanged.Invoke(this, this.State.GameStatus);
+						}
 					}
 				});
 			});
 		}
 	}
 	SetStatus(status: GameStatus): void {
-		this.State.OnGameStatusChanged.Invoke(this, status);
+		if (status === GameStatus.Defeat) {
+			this._playerHq.Destroy();
+		} else if (status === GameStatus.Victory) {
+			this._hqs.forEach((hq) => {
+				if (hq !== this._playerHq) {
+					hq.Destroy();
+				}
+			});
+		}
 	}
 	GetVehicles(): Vehicle[] {
 		return this._vehicles.Values();

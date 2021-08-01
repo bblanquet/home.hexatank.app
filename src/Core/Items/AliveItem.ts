@@ -106,7 +106,7 @@ export abstract class AliveItem extends Item {
 	}
 
 	public IsAlive(): boolean {
-		return 0 < this.Life;
+		return 0 < this.Life && this.IsUpdatable;
 	}
 
 	public GetCurrentLife(): number {

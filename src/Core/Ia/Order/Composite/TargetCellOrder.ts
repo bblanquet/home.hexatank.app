@@ -1,23 +1,17 @@
-import { RoadProvider } from './../RoadProvider';
 import { IdleOrder } from './../IdleOrder';
-import { BasicOrder } from './../BasicOrder';
-import { ZKind } from '../../../Items/ZKind';
-import { SvgArchive } from '../../../Framework/SvgArchiver';
 import { BasicItem } from '../../../Items/BasicItem';
 import { Cell } from '../../../Items/Cell/Cell';
 import { Tank } from '../../../Items/Unit/Tank';
 import { OrderState } from '../OrderState';
-import { AliveItem } from '../../../Items/AliveItem';
 import { ParentOrder } from '../ParentOrder';
 import { Order } from '../Order';
-import { Relationship } from '../../../Items/Identity';
+import { TypeTranslator } from '../../../Items/Cell/Field/TypeTranslator';
 
 export class TargetCellOrder extends ParentOrder {
 	private _targetUi: BasicItem;
 
-	constructor(private _tank: Tank, private _targetCell: Cell, order: Order) {
+	constructor(private _tank: Tank, private _cell: Cell, order: Order) {
 		super();
-		this._tank.SetMainTarget(this.GetTarget());
 		this.SetCurrentOrder(order);
 	}
 
@@ -25,30 +19,13 @@ export class TargetCellOrder extends ParentOrder {
 		return this.CurrentOrder instanceof IdleOrder;
 	}
 
-	public GetTarget(): AliveItem {
-		if (this._targetCell.HasOccupier()) {
-			return this._targetCell
-				.GetOccupiers()
-				.find((oc) => oc.GetRelation(this._tank.Identity) !== Relationship.Ally);
-		}
-
-		if (this._targetCell.GetField() instanceof AliveItem) {
-			const shield = (this._targetCell.GetField() as any) as AliveItem;
-			if (shield.GetRelation(this._tank.Identity) !== Relationship.Ally) {
-				return shield;
-			}
-		}
-		return null;
-	}
-
 	public Update(): void {
-		if (!this.GetTarget()) {
-			this.SetState(OrderState.Passed);
-			return;
-		}
-
-		if (!this.CurrentOrder.IsDone()) {
+		const target = TypeTranslator.GetAliveItem(this._cell, this._tank.Identity);
+		if (target && !this.CurrentOrder.IsDone()) {
+			this._tank.SetMainTarget(target);
 			this.CurrentOrder.Update();
+		} else {
+			this.SetState(OrderState.Passed);
 		}
 	}
 

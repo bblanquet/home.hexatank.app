@@ -55,6 +55,20 @@ export class TypeTranslator {
 		return identity.GetRelation(cell.GetField().GetIdentity());
 	}
 
+	public static GetAliveItem(cell: Cell, id: Identity): AliveItem {
+		if (cell.HasOccupier()) {
+			return cell.GetOccupiers().find((oc) => oc.GetRelation(id) !== Relationship.Ally);
+		}
+
+		if (cell.GetField() instanceof AliveItem) {
+			const field = (cell.GetField() as any) as AliveItem;
+			if (field.GetRelation(id) !== Relationship.Ally) {
+				return field;
+			}
+		}
+		return null;
+	}
+
 	public static GetHq(e: IField): IHeadquarter {
 		if (e instanceof BonusField) {
 			return (e as BonusField).GetHq();

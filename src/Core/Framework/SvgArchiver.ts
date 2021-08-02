@@ -237,6 +237,9 @@ export const SvgArchive = {
 		hq: {
 			bottom: './svg/building/hqMiddle.svg',
 			top: './svg/building/hqTop.svg',
+			black: {
+				field: './svg/building/black/hqCell.svg'
+			},
 			red: {
 				field: './svg/building/red/hqCell.svg'
 			},
@@ -253,6 +256,7 @@ export const SvgArchive = {
 	},
 	bonus: {
 		light: {
+			black: './svg/tank/black/light.svg',
 			blue: './svg/tank/blue/light.svg',
 			red: './svg/tank/red/light.svg',
 			yellow: './svg/tank/yellow/light.svg',
@@ -265,6 +269,7 @@ export const SvgArchive = {
 			blue: './svg/bonus/blue/reactor.svg',
 			gray: './svg/bonus/grayReactor.svg',
 			red: './svg/bonus/red/reactor.svg',
+			black: './svg/bonus/black/reactor.svg',
 			purple: './svg/bonus/purple/reactor.svg',
 			yellow: './svg/bonus/yellow/reactor.svg'
 		},
@@ -375,6 +380,13 @@ export const SvgArchive = {
 			truck: './svg/truck/purpleTruck.svg',
 			hq: './svg/building/purple/hqBottom.svg',
 			area: './svg/building/purple/cell.svg'
+		},
+		black: {
+			tank: './svg/tank/black/body.svg',
+			turrel: './svg/tank/black/head.svg',
+			truck: './svg/truck/blackTruck.svg',
+			hq: './svg/building/black/hqBottom.svg',
+			area: './svg/building/black/cell.svg'
 		}
 	},
 	wheel: './svg/tank/wheel/0.svg',

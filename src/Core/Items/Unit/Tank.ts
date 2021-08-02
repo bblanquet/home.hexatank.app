@@ -32,17 +32,16 @@ export class Tank extends Vehicle {
 	constructor(identity: Identity, isPacific: boolean = false) {
 		super(identity);
 		this.IsPacific = isPacific;
-		this.RootSprites.push(identity.Skin.GetBottomTankSprite());
-		this.GenerateSprite(identity.Skin.GetBottomTankSprite());
-
-		this.Turrel = new Turrel(identity.Skin, this);
-
 		if (this.Identity.IsPlayer) {
 			this.GenerateSprite(SvgArchive.selectionBlueVehicle);
 			this._infiniteAnimator = new InfiniteFadeAnimation(this, SvgArchive.selectionBlueVehicle, 0, 1, 0.05);
 			this.RootSprites.push(SvgArchive.selectionBlueVehicle);
 		}
 
+		this.RootSprites.push(identity.Skin.GetBottomTankSprite());
+		this.GenerateSprite(identity.Skin.GetBottomTankSprite());
+
+		this.Turrel = new Turrel(identity.Skin, this);
 		//make pivot sprite center
 		this.GetSprites().forEach((sprite) => {
 			sprite.width = this.BoundingBox.Width;

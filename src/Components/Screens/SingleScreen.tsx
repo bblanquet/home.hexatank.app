@@ -94,7 +94,9 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 		if (this.state.Color === 'Blue') return ColorKind.Blue;
 		if (this.state.Color === 'Yellow') return ColorKind.Yellow;
 		if (this.state.Color === 'Red') return ColorKind.Red;
-		return ColorKind.Purple;
+		if (this.state.Color === 'MM') return ColorKind.Purple;
+		if (this.state.Color === 'VP') return ColorKind.Black;
+		return ColorKind.Red;
 	}
 
 	private ConvertBrain(ia: string): BrainKind {

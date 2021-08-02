@@ -70,7 +70,7 @@ export default class BlueprintForm extends Component<
 								}}
 								Default={this.state.Color}
 								Label={'Color'}
-								Values={[ 'Blue', 'Yellow', 'Red', 'Purple' ]}
+								Values={[ 'Blue', 'Yellow', 'Red', 'MM', 'VP' ]}
 							/>
 						</Line>
 					</Visible>

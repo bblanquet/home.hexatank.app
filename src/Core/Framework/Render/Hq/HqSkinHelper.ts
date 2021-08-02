@@ -61,6 +61,20 @@ export class HqAppearance {
 				SvgArchive.bonus.reactor.purple,
 				'#51385E'
 			)
+		},
+		{
+			key: ColorKind[ColorKind.Black],
+			value: new ItemSkin(
+				SvgArchive.team.black.tank,
+				SvgArchive.team.black.turrel,
+				SvgArchive.team.black.truck,
+				SvgArchive.team.black.hq,
+				SvgArchive.building.hq.black.field,
+				SvgArchive.team.black.area,
+				SvgArchive.bonus.light.black,
+				SvgArchive.bonus.reactor.black,
+				'#FFFFFF'
+			)
 		}
 	]);
 

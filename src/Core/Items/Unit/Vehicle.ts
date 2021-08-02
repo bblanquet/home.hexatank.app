@@ -89,8 +89,6 @@ export abstract class Vehicle extends AliveItem
 	public OnPowerUp: LiteEvent<Up> = new LiteEvent<Up>();
 	public OnPowerDown: LiteEvent<Up> = new LiteEvent<Up>();
 
-	private _infiniteAnimator: InfiniteFadeAnimation;
-
 	constructor(identity: Identity) {
 		super();
 		this.Identity = identity;
@@ -112,12 +110,6 @@ export abstract class Vehicle extends AliveItem
 			this.GenerateSprite(wheel, (s) => (s.alpha = 0));
 			this.RootSprites.push(wheel);
 		});
-
-		if (this.Identity.IsPlayer) {
-			this.GenerateSprite(SvgArchive.selectionBlueVehicle);
-			this._infiniteAnimator = new InfiniteFadeAnimation(this, SvgArchive.selectionBlueVehicle, 0, 1, 0.1);
-			this.RootSprites.push(SvgArchive.selectionBlueVehicle);
-		}
 
 		this.WheelIndex = 0;
 		this._dustTimer = new TimeTimer(150);
@@ -461,10 +453,6 @@ export abstract class Vehicle extends AliveItem
 			this.Destroy();
 			new Crater(this.BoundingBox);
 			return;
-		}
-
-		if (this._infiniteAnimator) {
-			this._infiniteAnimator.Update(viewX, viewY);
 		}
 
 		if (!isNullOrUndefined(this._ups)) {

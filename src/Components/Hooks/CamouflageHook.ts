@@ -55,7 +55,6 @@ export class CamouflageHook extends Hook<RuntimeState> {
 		this._gameContext = this._gameContextService.Publish();
 
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
-		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
 		this._profilService.OnPointsAdded.On(this.HandlePoints.bind(this));
@@ -72,7 +71,6 @@ export class CamouflageHook extends Hook<RuntimeState> {
 		this.Update((state) => {
 			state.HasMenu = false;
 			state.IsSettingMenuVisible = false;
-			state.IsSettingPatrol = false;
 			state.IsSynchronising = false;
 			state.IsMultiMenuVisible = false;
 			state.HasMultiMenu = false;
@@ -105,7 +103,6 @@ export class CamouflageHook extends Hook<RuntimeState> {
 		const state = new RuntimeState();
 		state.HasMenu = false;
 		state.IsSettingMenuVisible = false;
-		state.IsSettingPatrol = false;
 		state.IsSynchronising = false;
 		state.IsMultiMenuVisible = false;
 		state.HasMultiMenu = false;
@@ -142,10 +139,6 @@ export class CamouflageHook extends Hook<RuntimeState> {
 		Vibrator.Vibrate();
 		((selectedItem as unknown) as ISelectable).OnSelectionChanged.On(this._onItemSelectionChanged);
 		this.Update((e) => (e.Item = selectedItem));
-	}
-
-	private HandleSettingPatrol(obj: any, isSettingPatrol: boolean): void {
-		this.Update((e) => (e.IsSettingPatrol = isSettingPatrol));
 	}
 
 	private HandleGameStatus(obj: any, gs: GameStatus): void {

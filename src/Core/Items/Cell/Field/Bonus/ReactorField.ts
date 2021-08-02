@@ -30,8 +30,6 @@ import { Item } from '../../../Item';
 import { ISpot } from '../../../../../Utils/Geometry/ISpot';
 import { IHeadquarter } from '../Hq/IHeadquarter';
 import { Identity, Relationship } from '../../../Identity';
-import { IHqGameContext } from '../../../../Framework/Context/IHqGameContext';
-import { Headquarter } from '../Hq/Headquarter';
 
 export class ReactorField extends Field implements ISelectable, ISpot<ReactorField> {
 	public Identity: Identity;
@@ -85,12 +83,13 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});
-		this.RangeAnimation();
+		this._range = this._totalRange;
 		this.Hq.AddField(this, cell);
 
 		if (this.GetHq().Identity.IsPlayer) {
 			this.SetSelectionAnimation();
 		}
+		this.CreateArea();
 	}
 
 	public AddLink(link: HqNetworkLink): void {
@@ -214,15 +213,6 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		return this._endLockDate;
 	}
 
-	private RangeAnimation(): void {
-		if (this._range < this._totalRange) {
-			this._range += 1;
-			this.RefreshInternal();
-			this.UpdateCellStates(this._range);
-			setTimeout(() => this.RangeAnimation(), 1000);
-		}
-	}
-
 	public Support(vehicule: Vehicle): void {
 		if (this.IsPacific) {
 			return;
@@ -323,21 +313,16 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 
 	public SetSelected(isSelected: boolean): void {
 		this.SetProperty(SvgArchive.selectionCell, (e) => (e.alpha = isSelected ? 1 : 0));
-		if (this.IsSelected()) {
-			this.CreateArea();
-		} else {
-			this.ClearArea();
-		}
 		this.OnSelectionChanged.Invoke(this, this);
 	}
 
 	private CreateArea() {
-		this.GetCell().GetRange(this._range).forEach((cell) => {
+		this.ClearArea();
+		this.GetCell().GetIncludedRange(this._range).forEach((cell) => {
 			const b = BoundingBox.NewFromBox((<Cell>cell).GetBoundingBox());
 			const area = new BasicItem(b, this.Hq.Identity.Skin.GetArea(), ZKind.AboveCell);
 			area.SetVisible(() => true);
 			area.SetAlive(() => true);
-
 			this._area.push(area);
 		});
 	}
@@ -367,6 +352,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 
 	public Destroy(): void {
 		super.Destroy();
+		this.ClearArea();
 		this.Links.forEach((l) => l.Destroy());
 		this.Links = [];
 		if (this._overlockAnimation) {

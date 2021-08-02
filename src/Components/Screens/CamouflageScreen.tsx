@@ -43,7 +43,6 @@ export default class CamouflageScreen extends HookedComponent<{}, CamouflageHook
 							<TruckMenuComponent
 								callBack={(e: Item) => this.Hook.SendContext(e)}
 								Truck={this.Hook.State.Item as Truck}
-								isSettingPatrol={this.Hook.State.IsSettingPatrol}
 							/>
 						</Visible>
 					</Visible>

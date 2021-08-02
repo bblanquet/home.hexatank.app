@@ -1,9 +1,9 @@
 import { UnitGroup } from '../../Items/UnitGroup';
-import { ICamouflageAble } from './../../Items/Unit/ICamouflageAble';
 import { CamouflageMenuItem } from '../../Menu/Buttons/CamouflageMenutItem';
 import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { Vehicle } from '../../Items/Unit/Vehicle';
+import { Tank } from '../../Items/Unit/Tank';
 
 export class CamouflageCombination extends AbstractSingleCombination {
 	IsMatching(context: CombinationContext): boolean {
@@ -15,13 +15,18 @@ export class CamouflageCombination extends AbstractSingleCombination {
 
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
-			const tank = (context.Items[0] as unknown) as ICamouflageAble;
+			const tank = context.Items[0] as Tank;
 			context.Items.splice(context.Items.length - 1, 1);
 			if (tank.HasCamouflage) {
 				tank.RemoveCamouflage();
 			} else {
-				return tank.SetCamouflage();
+				const isCamouflage = tank.SetCamouflage();
+				if (isCamouflage) {
+					tank.SetSelected(false);
+					this.ClearContext.Invoke();
+				}
 			}
+
 			return false;
 		}
 		return false;

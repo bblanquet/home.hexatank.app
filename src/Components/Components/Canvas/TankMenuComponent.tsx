@@ -4,12 +4,8 @@ import { Vehicle } from '../../../Core/Items/Unit/Vehicle';
 import { AbortMenuItem } from '../../../Core/Menu/Buttons/AbortMenuItem';
 import { CamouflageMenuItem } from '../../../Core/Menu/Buttons/CamouflageMenutItem';
 import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
-import { TargetMenuItem } from '../../../Core/Menu/Buttons/TargetMenuItem';
 
-export default class TankMenuComponent extends Component<
-	{ Tank: Vehicle; isSettingPatrol: boolean; callback: (e: Item) => void },
-	{}
-> {
+export default class TankMenuComponent extends Component<{ Tank: Vehicle; callback: (e: Item) => void }, {}> {
 	render() {
 		return (
 			<div class="left-column">
@@ -18,13 +14,6 @@ export default class TankMenuComponent extends Component<
 						<button type="button" class="btn btn-light without-padding">
 							<div>{this.props.Tank.Id}</div>
 							<div>{this.props.Tank.GetCurrentCell().Coo()}</div>
-						</button>
-						<button
-							type="button"
-							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.props.callback(new TargetMenuItem())}
-						>
-							<div class="fill-target max-width standard-space" />
 						</button>
 						<button
 							type="button"

@@ -2,7 +2,7 @@ import { h, Component } from 'preact';
 import { Point } from '../../../../Utils/Geometry/Point';
 
 export default class LightDarkBtn extends Component<
-	{ CallBack: () => void; Amount: string; Icon: string; Point: Point },
+	{ OnClick: () => void; Amount: string; Icon: string; Point: Point },
 	{}
 > {
 	constructor() {
@@ -12,7 +12,7 @@ export default class LightDarkBtn extends Component<
 	render() {
 		return (
 			<a
-				onClick={() => this.props.CallBack()}
+				onClick={() => this.props.OnClick()}
 				class="menuItem"
 				style={`left:${this.props.Point.X}%;top:${this.props.Point.Y}%`}
 			>

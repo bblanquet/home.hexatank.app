@@ -28,6 +28,8 @@ import { Curve } from '../../Utils/Stats/Curve';
 import { RuntimeState } from '../Model/RuntimeState';
 import { Hook } from './Hook';
 import { Vibrator } from '../../Utils/Vibrator';
+import { FieldProp } from '../Components/Canvas/FieldProp';
+import { CellGroup } from '../../Core/Items/CellGroup';
 
 export class GameHook extends Hook<RuntimeState> {
 	private _gameContextService: IGameContextService<GameBlueprint, GameContext>;
@@ -55,7 +57,6 @@ export class GameHook extends Hook<RuntimeState> {
 		const state = new RuntimeState();
 		state.HasMenu = false;
 		state.IsSettingMenuVisible = false;
-		state.IsSettingPatrol = false;
 		state.IsSynchronising = false;
 		state.IsMultiMenuVisible = false;
 		state.SelectionKind = SelectionKind.None;
@@ -92,7 +93,6 @@ export class GameHook extends Hook<RuntimeState> {
 		playerHq.OnCashMissing.On(this.HandleCashMissing.bind(this));
 		this._profilService.OnPointsAdded.On(this.HandlePoints.bind(this));
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
-		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
 		this._interactionService.GetMultiSelectionContext().OnModeChanged.On(this.HandleMultiSelection.bind(this));
@@ -118,7 +118,6 @@ export class GameHook extends Hook<RuntimeState> {
 			state.HasMenu = false;
 			state.SelectionKind = SelectionKind.None;
 			state.IsSettingMenuVisible = false;
-			state.IsSettingPatrol = false;
 			state.IsSynchronising = false;
 			state.IsMultiMenuVisible = false;
 			state.HasMultiMenu = false;
@@ -190,10 +189,6 @@ export class GameHook extends Hook<RuntimeState> {
 		this.Update((e) => (e.Item = selectedItem));
 	}
 
-	private HandleSettingPatrol(obj: any, value: boolean): void {
-		this.Update((e) => (e.IsSettingPatrol = value));
-	}
-
 	private HandleCashMissing(obj: any, value: boolean): void {
 		if (value !== this.State.HasWarning) {
 			this.Update((e) => (e.HasWarning = value));
@@ -248,5 +243,25 @@ export class GameHook extends Hook<RuntimeState> {
 	}
 	public GetVehicleCount(): number {
 		return this._gameContext.GetPlayerHq().GetVehicleCount();
+	}
+
+	GetFields(): FieldProp[] {
+		if (this.State.Item instanceof Cell) {
+			const cell = this.State.Item;
+			const hq = this._gameContext.GetPlayerHq();
+			if (hq.IsCovered(cell)) {
+				return FieldProp.All(hq, (e: Item) => {
+					this.SendContext(e);
+				});
+			} else {
+				return FieldProp.OnlyReactor(hq, (e: Item) => {
+					this.SendContext(e);
+				});
+			}
+		} else if (this.State.Item instanceof CellGroup) {
+			return FieldProp.AllExceptReactor((e: Item) => {
+				this.SendContext(e);
+			});
+		}
 	}
 }

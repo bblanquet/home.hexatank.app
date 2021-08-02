@@ -14,17 +14,17 @@ import { Headquarter } from '../../../Core/Items/Cell/Field/Hq/Headquarter';
 import { Tank } from '../../../Core/Items/Unit/Tank';
 import { Truck } from '../../../Core/Items/Unit/Truck';
 import { UnitGroup } from '../../../Core/Items/UnitGroup';
+import { FieldProp } from './FieldProp';
 
 export default class MenuSwitcher extends Component<
 	{
-		callback: (e: Item) => void;
-		IsSettingPatrol: boolean;
+		OnClick: (e: Item) => void;
 		TankRequestCount: number;
 		TruckRequestCount: number;
 		VehicleCount: number;
 		ReactorCount: number;
 		HasMultiMenu: boolean;
-		IsCovered: boolean;
+		Fields: FieldProp[];
 		Item: Item;
 	},
 	{}
@@ -34,43 +34,24 @@ export default class MenuSwitcher extends Component<
 			return <MultiMenuComponent Item={this.props.Item} />;
 		} else if (this.props.Item) {
 			if (this.props.Item instanceof Tank) {
-				return (
-					<TankMenuComponent
-						callback={this.props.callback}
-						Tank={this.props.Item}
-						isSettingPatrol={this.props.IsSettingPatrol}
-					/>
-				);
+				return <TankMenuComponent callback={this.props.OnClick} Tank={this.props.Item} />;
 			} else if (this.props.Item instanceof Truck) {
-				return (
-					<TruckMenuComponent
-						callBack={this.props.callback}
-						Truck={this.props.Item}
-						isSettingPatrol={this.props.IsSettingPatrol}
-					/>
-				);
+				return <TruckMenuComponent callBack={this.props.OnClick} Truck={this.props.Item} />;
 			} else if (this.props.Item instanceof UnitGroup) {
-				return <MultiTankMenuComponent callback={this.props.callback} item={this.props.Item} />;
+				return <MultiTankMenuComponent callback={this.props.OnClick} item={this.props.Item} />;
 			} else if (this.props.Item instanceof Headquarter) {
 				return (
 					<HqMenuComponent
-						callback={this.props.callback}
+						callback={this.props.OnClick}
 						TankRequestCount={this.props.TankRequestCount}
 						TruckRequestCount={this.props.TruckRequestCount}
 						VehicleCount={this.props.VehicleCount}
 					/>
 				);
 			} else if (this.props.Item instanceof ReactorField) {
-				return <ReactorMenuComponent Item={this.props.Item} callback={this.props.callback} />;
+				return <ReactorMenuComponent Item={this.props.Item} callback={this.props.OnClick} />;
 			} else if (this.props.Item instanceof Cell || this.props.Item instanceof CellGroup) {
-				return (
-					<CellMenuComponent
-						Item={this.props.Item}
-						isCovered={this.props.IsCovered}
-						callback={this.props.callback}
-						ReactorCount={this.props.ReactorCount}
-					/>
-				);
+				return <CellMenuComponent Fields={this.props.Fields} OnClick={this.props.OnClick} />;
 			}
 		}
 		return '';

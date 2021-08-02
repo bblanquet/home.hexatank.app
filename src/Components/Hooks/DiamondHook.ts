@@ -24,6 +24,8 @@ import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
 import { AudioLoader } from '../../Core/Framework/AudioLoader';
 import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
 import { Vibrator } from '../../Utils/Vibrator';
+import { FieldProp } from '../Components/Canvas/FieldProp';
+import { CellGroup } from '../../Core/Items/CellGroup';
 
 export class DiamondHook extends Hook<RuntimeState> {
 	private _gameContextService: IGameContextService<DiamondBlueprint, DiamondContext>;
@@ -64,7 +66,6 @@ export class DiamondHook extends Hook<RuntimeState> {
 		this.Update((state) => {
 			state.HasMenu = false;
 			state.IsSettingMenuVisible = false;
-			state.IsSettingPatrol = false;
 			state.IsSynchronising = false;
 			state.IsMultiMenuVisible = false;
 			state.HasMultiMenu = false;
@@ -98,7 +99,6 @@ export class DiamondHook extends Hook<RuntimeState> {
 		playerHq.OnCashMissing.On(this.HandleCashMissing.bind(this));
 		this._profilService.OnPointsAdded.On(this.HandlePoints.bind(this));
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
-		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
 		this._interactionService.GetMultiSelectionContext().OnModeChanged.On(this.HandleMultiSelection.bind(this));
@@ -119,7 +119,6 @@ export class DiamondHook extends Hook<RuntimeState> {
 		const state = new RuntimeState();
 		state.HasMenu = false;
 		state.IsSettingMenuVisible = false;
-		state.IsSettingPatrol = false;
 		state.IsSynchronising = false;
 		state.IsMultiMenuVisible = false;
 		state.HasMultiMenu = false;
@@ -166,10 +165,6 @@ export class DiamondHook extends Hook<RuntimeState> {
 		Vibrator.Vibrate();
 		((selectedItem as unknown) as ISelectable).OnSelectionChanged.On(this._onItemSelectionChanged);
 		this.Update((e) => (e.Item = selectedItem));
-	}
-
-	private HandleSettingPatrol(obj: any, isSettingPatrol: boolean): void {
-		this.Update((e) => (e.IsSettingPatrol = isSettingPatrol));
 	}
 
 	private HandleCashMissing(obj: any, hasWarning: boolean): void {
@@ -234,5 +229,25 @@ export class DiamondHook extends Hook<RuntimeState> {
 
 	GetGoalDiamond(): number {
 		return this._gameContext.GetDiamond();
+	}
+
+	GetFields(): FieldProp[] {
+		if (this.State.Item instanceof Cell) {
+			const cell = this.State.Item;
+			const hq = this._gameContext.GetPlayerHq();
+			if (hq.IsCovered(cell)) {
+				return FieldProp.All(hq, (e: Item) => {
+					this.SendContext(e);
+				});
+			} else {
+				return FieldProp.OnlyReactor(hq, (e: Item) => {
+					this.SendContext(e);
+				});
+			}
+		} else if (this.State.Item instanceof CellGroup) {
+			return FieldProp.AllExceptReactor((e: Item) => {
+				this.SendContext(e);
+			});
+		}
 	}
 }

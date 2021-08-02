@@ -77,8 +77,9 @@ export class OnlineGameContextManager implements IOnlineGameContextManager {
 	private OverrideHqSettings(blueprint: GameBlueprint) {
 		if (!this._onlinePlayerManager.Player.IsAdmin) {
 			blueprint.Hqs.forEach((hq) => {
-				hq.Player.IsPlayer = hq.Player.Name === this._onlinePlayerManager.Player.Name;
-				hq.Player.IA = BrainKind.Dummy;
+				const isPLayer = hq.Player.Name === this._onlinePlayerManager.Player.Name;
+				hq.Player.IsPlayer = isPLayer;
+				hq.Player.IA = isPLayer ? BrainKind.Truck : BrainKind.Dummy;
 			});
 		}
 	}

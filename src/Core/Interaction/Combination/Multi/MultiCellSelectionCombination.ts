@@ -5,12 +5,12 @@ import { MultiSelectionContext, SelectionKind } from '../../../Menu/Smart/MultiS
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { ILayerService } from '../../../../Services/Layer/ILayerService';
 import { Singletons, SingletonKey } from '../../../../Singletons';
-import { IGameContext } from '../../../Framework/Context/IGameContext';
+import { IHqGameContext } from '../../../Framework/Context/IHqGameContext';
 
 export class MultiCellSelectionCombination extends AbstractSingleCombination {
 	private _layerService: ILayerService;
 
-	constructor(private _multiSelectionContext: MultiSelectionContext, private _gameContext: IGameContext) {
+	constructor(private _multiSelectionContext: MultiSelectionContext, private _gameContext: IHqGameContext) {
 		super();
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}
@@ -23,7 +23,12 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 		if (this.IsMatching(context)) {
 			const cells = this._multiSelectionContext
 				.GetCells()
-				.filter((c) => c.GetField() instanceof BasicField && c.IsSelectable());
+				.filter(
+					(c) =>
+						c.GetField() instanceof BasicField &&
+						c.IsSelectable() &&
+						this._gameContext.GetPlayerHq().IsCovered(c)
+				);
 			if (0 < cells.length) {
 				const cellGroup = new CellGroup();
 				cellGroup.SetCells(cells);

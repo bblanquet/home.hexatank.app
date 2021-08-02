@@ -13,6 +13,7 @@ export default class Option extends Component<{ Model: BlueprintSetup }> {
 				<BlueprintForm
 					Model={this.props.Model}
 					EnableEmptyIa={true}
+					EnableColor={false}
 					OnChanged={(m: BlueprintSetup) => {
 						this.props.Model.Env = m.Env;
 						this.props.Model.IAs = m.IAs;

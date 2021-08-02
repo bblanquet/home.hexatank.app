@@ -16,12 +16,13 @@ export class OnlineBlueprintMaker {
 		let index = 0;
 
 		this._onlinePlayerManager.Players.Values().forEach((pl) => {
+			const isPLayer = pl.Name === this._onlinePlayerManager.Player.Name;
 			players.push(
 				new PlayerBlueprint(
 					pl.Name,
 					HqAppearance.Colors[index],
-					pl.Name === this._onlinePlayerManager.Player.Name,
-					BrainKind.Truck
+					isPLayer,
+					isPLayer ? BrainKind.Truck : BrainKind.Dummy
 				)
 			);
 			index++;

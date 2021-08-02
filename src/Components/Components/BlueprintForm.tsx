@@ -10,9 +10,10 @@ import Grid from '../Common/Grid/GridComponent';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
 import Column from '../Common/Struct/Column';
 import { Env } from '../../Utils/Env';
+import Visible from '../Common/Struct/Visible';
 
 export default class BlueprintForm extends Component<
-	{ Model: BlueprintSetup; OnChanged: (model: BlueprintSetup) => void; EnableEmptyIa: boolean },
+	{ Model: BlueprintSetup; OnChanged: (model: BlueprintSetup) => void; EnableEmptyIa: boolean; EnableColor: boolean },
 	BlueprintSetup
 > {
 	componentDidMount() {
@@ -58,6 +59,21 @@ export default class BlueprintForm extends Component<
 							Values={[ 'Flower', 'Donut', 'Cheese', 'Triangle', 'Y', 'H', 'X', 'Rectangle' ]}
 						/>
 					</Line>
+					<Visible isVisible={this.props.EnableColor}>
+						<Line>
+							<Dropdown
+								Color={ColorKind.Black}
+								OnInput={(e: any) => {
+									this.setState({
+										Color: e.target.value
+									});
+								}}
+								Default={this.state.Color}
+								Label={'Color'}
+								Values={[ 'Blue', 'Yellow', 'Red', 'Purple' ]}
+							/>
+						</Line>
+					</Visible>
 				</Column>
 				<Grid left={this.GetHeader()} right={this.GetContent()} isFitContent={true} />
 			</span>

@@ -24,6 +24,8 @@ import { AudioLoader } from '../../Core/Framework/AudioLoader';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
 import { Vibrator } from '../../Utils/Vibrator';
+import { FieldProp } from '../Components/Canvas/FieldProp';
+import { CellGroup } from '../../Core/Items/CellGroup';
 
 export class FireHook extends Hook<RuntimeState> {
 	private _gameContextService: IGameContextService<FireBlueprint, FireContext>;
@@ -48,7 +50,6 @@ export class FireHook extends Hook<RuntimeState> {
 		state.HasMenu = false;
 		state.IsSettingMenuVisible = false;
 		state.SelectionKind = SelectionKind.None;
-		state.IsSettingPatrol = false;
 		state.IsSynchronising = false;
 		state.IsMultiMenuVisible = false;
 		state.HasMultiMenu = false;
@@ -77,7 +78,6 @@ export class FireHook extends Hook<RuntimeState> {
 		this._soundService.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		this._profilService.OnPointsAdded.On(this.HandlePoints.bind(this));
-		this._gameContext.OnPatrolSetting.On(this.HandleSettingPatrol.bind(this));
 		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
 		this._interactionService.GetMultiSelectionContext().OnModeChanged.On(this.HandleMultiSelection.bind(this));
@@ -94,7 +94,6 @@ export class FireHook extends Hook<RuntimeState> {
 			state.HasMenu = false;
 			state.SelectionKind = SelectionKind.None;
 			state.IsSettingMenuVisible = false;
-			state.IsSettingPatrol = false;
 			state.IsSynchronising = false;
 			state.IsMultiMenuVisible = false;
 			state.HasMultiMenu = false;
@@ -147,10 +146,6 @@ export class FireHook extends Hook<RuntimeState> {
 		this.Update((e) => (e.Item = selectedItem));
 	}
 
-	private HandleSettingPatrol(obj: any, isSettingPatrol: boolean): void {
-		this.Update((e) => (e.IsSettingPatrol = isSettingPatrol));
-	}
-
 	private HandleGameStatus(obj: any, gs: GameStatus): void {
 		if (gs !== this.State.GameStatus) {
 			this.Update((e) => (e.GameStatus = gs));
@@ -195,5 +190,25 @@ export class FireHook extends Hook<RuntimeState> {
 
 	public Stop(isVictory: boolean): void {
 		this._gameContext.SetStatus(isVictory ? GameStatus.Victory : GameStatus.Defeat);
+	}
+
+	GetFields(): FieldProp[] {
+		if (this.State.Item instanceof Cell) {
+			const cell = this.State.Item;
+			const hq = this._gameContext.GetPlayerHq();
+			if (hq.IsCovered(cell)) {
+				return FieldProp.All(hq, (e: Item) => {
+					this.SendContext(e);
+				});
+			} else {
+				return FieldProp.OnlyReactor(hq, (e: Item) => {
+					this.SendContext(e);
+				});
+			}
+		} else if (this.State.Item instanceof CellGroup) {
+			return FieldProp.AllExceptReactor((e: Item) => {
+				this.SendContext(e);
+			});
+		}
 	}
 }

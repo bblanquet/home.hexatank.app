@@ -33,6 +33,7 @@ import { MultiSelectionCombination } from './Combination/Multi/MultiSelectionCom
 import { DisplayMultiMenuCombination } from './Combination/Multi/DisplayMultiMenuCombination';
 import { SwitchToReactorCombination } from './Combination/SwitchToReactorCombination';
 import { SwitchToCellCombination } from './Combination/SwitchToCellCombination';
+import { SwitchToOccCellCombination } from './Combination/SwitchToOccCellCombination';
 import { FarmCombination } from './Combination/FarmCombination';
 import { AbortCombination } from './Combination/AbortCombination';
 import { SwitchToHeadquarterCombination } from './Combination/SwitchToHeadquarterCombination';
@@ -70,6 +71,7 @@ export class CombinationProvider {
 			new ClearMultiSelectionMenuCombination(),
 
 			//SINGLE SELECTION
+			new SwitchToOccCellCombination(gameContext),
 			new SwitchToCellCombination(gameContext),
 			new SwitchToVehicleCombination(gameContext),
 			new SwitchToReactorCombination(gameContext),

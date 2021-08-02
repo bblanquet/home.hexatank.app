@@ -17,6 +17,7 @@ import { Explosion } from './Explosion';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 import { ErrorCat, ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
 import { TypeTranslator } from '../Cell/Field/TypeTranslator';
+import { InfiniteFadeAnimation } from '../Animator/InfiniteFadeAnimation';
 
 export class Tank extends Vehicle {
 	public Turrel: Turrel;
@@ -26,6 +27,7 @@ export class Tank extends Vehicle {
 
 	public OnTargetChanged: LiteEvent<AliveItem> = new LiteEvent<AliveItem>();
 	public OnMissileLaunched: LiteEvent<Missile> = new LiteEvent<Missile>();
+	private _infiniteAnimator: InfiniteFadeAnimation;
 
 	constructor(identity: Identity, isPacific: boolean = false) {
 		super(identity);
@@ -35,9 +37,16 @@ export class Tank extends Vehicle {
 
 		this.Turrel = new Turrel(identity.Skin, this);
 
+		if (this.Identity.IsPlayer) {
+			this.GenerateSprite(SvgArchive.selectionBlueVehicle);
+			this._infiniteAnimator = new InfiniteFadeAnimation(this, SvgArchive.selectionBlueVehicle, 0, 1, 0.1);
+			this.RootSprites.push(SvgArchive.selectionBlueVehicle);
+		}
+
 		//make pivot sprite center
 		this.GetSprites().forEach((sprite) => {
-			(sprite.width = this.BoundingBox.Width), (sprite.height = this.BoundingBox.Height);
+			sprite.width = this.BoundingBox.Width;
+			sprite.height = this.BoundingBox.Height;
 			sprite.anchor.set(0.5);
 		});
 		this.IsCentralRef = true;
@@ -93,6 +102,10 @@ export class Tank extends Vehicle {
 		this.Turrel.Update(viewX, viewY);
 
 		this.FindTargets();
+
+		if (this._infiniteAnimator) {
+			this._infiniteAnimator.Update(viewX, viewY);
+		}
 	}
 
 	public IsMainTargetClose(): boolean {

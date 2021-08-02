@@ -61,15 +61,14 @@ export default class FireScreen extends HookedComponent<{}, FireHook, RuntimeSta
 							}
 							right={
 								<MenuSwitcher
-									IsSettingPatrol={this.Hook.State.IsSettingPatrol}
 									TankRequestCount={this.Hook.State.TankRequestCount}
 									TruckRequestCount={this.Hook.State.TruckRequestCount}
 									VehicleCount={this.Hook.GetVehicleCount()}
 									ReactorCount={this.Hook.GetReactor()}
 									Item={this.Hook.State.Item}
-									callback={(e) => this.Hook.SendContext(e)}
+									OnClick={(e) => this.Hook.SendContext(e)}
 									HasMultiMenu={this.Hook.State.IsMultiMenuVisible}
-									IsCovered={this.Hook.State.Item instanceof Cell ? this.Hook.IsCovered() : true}
+									Fields={this.Hook.GetFields()}
 								/>
 							}
 						/>

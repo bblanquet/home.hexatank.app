@@ -9,7 +9,6 @@ export class RuntimeState {
 
 	HasMenu: boolean;
 	IsSettingMenuVisible: boolean;
-	IsSettingPatrol: boolean;
 	IsSynchronising: boolean;
 	IsMultiMenuVisible: boolean;
 

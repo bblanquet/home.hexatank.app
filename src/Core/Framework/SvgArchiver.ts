@@ -352,28 +352,28 @@ export const SvgArchive = {
 			turrel: './svg/tank/red/head.svg',
 			truck: './svg/truck/truck.svg',
 			hq: './svg/building/red/hqBottom.svg',
-			area: './svg/building/red/areaEnergy.svg'
+			area: './svg/building/red/cell.svg'
 		},
 		blue: {
 			tank: './svg/tank/blue/body.svg',
 			turrel: './svg/tank/blue/head.svg',
 			truck: './svg/truck/blueTruck.svg',
 			hq: './svg/building/blue/hqBottom.svg',
-			area: './svg/building/blue/areaEnergy.svg'
+			area: './svg/building/blue/cell.svg'
 		},
 		yellow: {
 			tank: './svg/tank/yellow/body.svg',
 			turrel: './svg/tank/yellow/head.svg',
 			truck: './svg/truck/yellowTruck.svg',
 			hq: './svg/building/yellow/hqBottom.svg',
-			area: './svg/building/yellow/areaEnergy.svg'
+			area: './svg/building/yellow/cell.svg'
 		},
 		purple: {
 			tank: './svg/tank/purple/body.svg',
 			turrel: './svg/tank/purple/head.svg',
 			truck: './svg/truck/purpleTruck.svg',
 			hq: './svg/building/purple/hqBottom.svg',
-			area: './svg/building/purple/areaEnergy.svg'
+			area: './svg/building/purple/cell.svg'
 		}
 	},
 	wheel: './svg/tank/wheel/0.svg',

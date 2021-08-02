@@ -42,7 +42,12 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 			<Redirect>
 				<Panel
 					content={
-						<BlueprintForm Model={this.state} OnChanged={this.Update.bind(this)} EnableEmptyIa={false} />
+						<BlueprintForm
+							Model={this.state}
+							OnChanged={this.Update.bind(this)}
+							EnableEmptyIa={false}
+							EnableColor={true}
+						/>
 					}
 					footer={
 						<div class="navbar nav-inner">
@@ -85,6 +90,13 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 		return MapKind.Forest;
 	}
 
+	private ConverColor(): ColorKind {
+		if (this.state.Color === 'Blue') return ColorKind.Blue;
+		if (this.state.Color === 'Yellow') return ColorKind.Yellow;
+		if (this.state.Color === 'Red') return ColorKind.Red;
+		return ColorKind.Purple;
+	}
+
 	private ConvertBrain(ia: string): BrainKind {
 		if (ia === 'Weak') return BrainKind.Weak;
 		if (ia === 'Normal') return BrainKind.Normal;
@@ -109,11 +121,10 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 				);
 			});
 		} else {
-			players.push(new PlayerBlueprint(playerName, HqAppearance.Colors[0], true, BrainKind.Truck));
+			const colors = [ ...HqAppearance.Colors ].filter((c) => c !== this.ConverColor());
+			players.push(new PlayerBlueprint(playerName, this.ConverColor(), true, BrainKind.Truck));
 			this.state.IAs.forEach((ia, index) => {
-				players.push(
-					new PlayerBlueprint(`IA${index}`, HqAppearance.Colors[index + 1], false, this.ConvertBrain(ia))
-				);
+				players.push(new PlayerBlueprint(`IA${index}`, colors[index], false, this.ConvertBrain(ia)));
 			});
 		}
 

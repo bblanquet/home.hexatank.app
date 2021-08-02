@@ -1,7 +1,5 @@
 import { TargetMonitoredOrder } from './../../Ia/Order/TargetMonitoredOrder';
-import { MonitoredOrder } from '../../Ia/Order/MonitoredOrder';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
-import { TargetOrder } from '../../Ia/Order/Composite/TargetOrder';
 import { Tank } from '../../Items/Unit/Tank';
 import { Cell } from '../../Items/Cell/Cell';
 import { CombinationContext } from './CombinationContext';
@@ -43,6 +41,8 @@ export class TankCombination extends AbstractSingleCombination {
 				tank.GiveOrder(order);
 				context.Items.splice(1, 1);
 			}
+			tank.SetSelected(false);
+			this.ClearContext.Invoke();
 			return true;
 		}
 		return false;

@@ -6,10 +6,7 @@ import { CamouflageMenuItem } from '../../../Core/Menu/Buttons/CamouflageMenutIt
 import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
 import { SearchMoneyMenuItem } from '../../../Core/Menu/Buttons/SearchMoneyMenuItem';
 
-export default class TruckMenuComponent extends Component<
-	{ Truck: Vehicle; isSettingPatrol: boolean; callBack: (item: Item) => void },
-	{}
-> {
+export default class TruckMenuComponent extends Component<{ Truck: Vehicle; callBack: (item: Item) => void }, {}> {
 	render() {
 		return (
 			<div class="left-column">

@@ -33,7 +33,6 @@ import { Identity, Relationship } from '../../../Identity';
 
 export class ReactorField extends Field implements ISelectable, ISpot<ReactorField> {
 	public Identity: Identity;
-	private _bonusValueProvider: UpCalculator = new UpCalculator();
 	//state
 	public Reserve: ReactorReserve;
 	private _totalRange: number = 3;
@@ -305,10 +304,6 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 				this.OnPowerChanged.Invoke(this, false);
 			}
 		}
-	}
-
-	private UpdateCellStates(range: number) {
-		CellStateSetter.SetStates(this.GetCell().GetAll(range));
 	}
 
 	public SetSelected(isSelected: boolean): void {

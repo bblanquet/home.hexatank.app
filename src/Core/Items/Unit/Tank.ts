@@ -39,7 +39,7 @@ export class Tank extends Vehicle {
 
 		if (this.Identity.IsPlayer) {
 			this.GenerateSprite(SvgArchive.selectionBlueVehicle);
-			this._infiniteAnimator = new InfiniteFadeAnimation(this, SvgArchive.selectionBlueVehicle, 0, 1, 0.1);
+			this._infiniteAnimator = new InfiniteFadeAnimation(this, SvgArchive.selectionBlueVehicle, 0, 1, 0.05);
 			this.RootSprites.push(SvgArchive.selectionBlueVehicle);
 		}
 

@@ -108,7 +108,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 		this._blueSelection = new BasicItem(this.GetBoundingBox(), SvgArchive.selectionBlueCell, ZKind.BelowCell);
 		this._blueSelection.SetAnimator(
-			new InfiniteFadeAnimation(this._blueSelection, SvgArchive.selectionBlueCell, 0, 1, 0.03)
+			new InfiniteFadeAnimation(this._blueSelection, SvgArchive.selectionBlueCell, 0, 1, 0.05)
 		);
 		this._blueSelection.SetVisible(() => this._isSelectable);
 		this._blueSelection.SetAlive(() => true);

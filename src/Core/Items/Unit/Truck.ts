@@ -6,6 +6,7 @@ import { Light } from '../Environment/Light';
 import { SvgArchive } from '../../Framework/SvgArchiver';
 import { CellState } from '../Cell/CellState';
 import { ITimer } from '../../../Utils/Timer/ITimer';
+import { InfiniteFadeAnimation } from '../Animator/InfiniteFadeAnimation';
 
 export class Truck extends Vehicle {
 	private _light: Light;

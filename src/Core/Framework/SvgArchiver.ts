@@ -166,6 +166,7 @@ export const SvgArchive = {
 	arrow: './svg/interaction/arrow.svg',
 	electon: './svg/bonus/electron.svg',
 	redElecton: './svg/bonus/redElectron.svg',
+	warning: './svg/truck/warning.svg',
 	hiddenCell: './svg/interaction/hiddenCell.svg',
 	halfVisibleCell: './svg/interaction/halfVisibleCell.svg',
 	selectionUnit: './svg/interaction/selectionUnit.svg',

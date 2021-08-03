@@ -13,7 +13,6 @@ import { MultiCellMenuItem } from '../../Core/Menu/Buttons/MultiCellMenuItem';
 import MenuSwitcher from '../Components/Canvas/MenuSwitcher';
 import SynchronizingComponent from '../Components/Canvas/SynchronizingComponent';
 import Switch from '../Common/Struct/Switch';
-import { Cell } from '../../Core/Items/Cell/Cell';
 import { HookedComponent } from '../Hooks/HookedComponent';
 import { GameHook } from '../Hooks/GameHook';
 import { RuntimeState } from '../Model/RuntimeState';

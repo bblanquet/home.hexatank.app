@@ -553,16 +553,25 @@ hr {
 	padding-top: 3px;
 }
 
+.bubbleApp {
+	border-radius: 20px;
+	padding: 5px;
+	background-color: lightgray;
+	font-weight: bold;
+	font-size: large;
+	font-family: sans-serif;
+	text-align: center;
+	color: rgb(48, 48, 48);
+	-webkit-box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+	-moz-box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+	box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+}
+
 p.bubble {
 	position: relative;
-	text-align: center;
 	line-height: 1.4em;
 	margin-top: -1px;
-	background-color: #fff;
-	border-radius: 30px;
-	font-family: sans-serif;
 	padding: 15px;
-	font-size: large;
 }
 .arrow-up {
 	width: 0;

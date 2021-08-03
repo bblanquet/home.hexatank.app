@@ -5,7 +5,7 @@ import { AbortMenuItem } from '../../../Core/Menu/Buttons/AbortMenuItem';
 import { CamouflageMenuItem } from '../../../Core/Menu/Buttons/CamouflageMenutItem';
 import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
 
-export default class TankMenuComponent extends Component<{ Tank: Vehicle; callback: (e: Item) => void }, {}> {
+export default class TankMenuComponent extends Component<{ Tank: Vehicle; Callback: (e: Item) => void }, {}> {
 	render() {
 		return (
 			<div class="left-column">
@@ -18,21 +18,21 @@ export default class TankMenuComponent extends Component<{ Tank: Vehicle; callba
 						<button
 							type="button"
 							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.props.callback(new CamouflageMenuItem())}
+							onClick={(e: any) => this.props.Callback(new CamouflageMenuItem())}
 						>
 							<div class="fill-camouflage max-width standard-space" />
 						</button>
 						<button
 							type="button"
 							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.props.callback(new AbortMenuItem())}
+							onClick={(e: any) => this.props.Callback(new AbortMenuItem())}
 						>
 							<div class="fill-abort max-width standard-space" />
 						</button>
 						<button
 							type="button"
 							class="btn btn-dark without-padding"
-							onClick={(e: any) => this.props.callback(new CancelMenuItem())}
+							onClick={(e: any) => this.props.Callback(new CancelMenuItem())}
 						>
 							<div class="fill-cancel max-width standard-space" />
 						</button>

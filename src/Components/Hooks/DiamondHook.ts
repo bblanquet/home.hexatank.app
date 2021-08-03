@@ -53,7 +53,6 @@ export class DiamondHook extends Hook<RuntimeState> {
 		playerHq.OnDiamondCountChanged.Clear();
 		playerHq.OnCashMissing.Clear();
 		this._gameContext.OnItemSelected.Clear();
-		this._gameContext.OnPatrolSetting.Clear();
 		this._interactionService.GetMultiSelectionContext().OnModeChanged.Clear();
 		this._gameContext.State.OnGameStatusChanged.Clear();
 		this._interactionService.OnMultiMenuShowed.Clear();
@@ -191,7 +190,7 @@ export class DiamondHook extends Hook<RuntimeState> {
 			}
 		}
 
-		this._gameContext.State.IsPause = hasMenu;
+		this._gameContext.State.SetPause(hasMenu);
 	}
 
 	public GetCenter(): Point {

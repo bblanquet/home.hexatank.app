@@ -16,7 +16,6 @@ export class GameContext implements IHqGameContext {
 	//should not be here
 	public static Error: Error;
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
-	public OnPatrolSetting: LiteEvent<Boolean> = new LiteEvent<Boolean>();
 	public State: GameState;
 
 	//elements

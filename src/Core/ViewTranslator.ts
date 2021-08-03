@@ -1,6 +1,7 @@
 import { ILayerService } from '../Services/Layer/ILayerService';
 import { IUpdateService } from '../Services/Update/IUpdateService';
 import { Singletons, SingletonKey } from '../Singletons';
+import { SimpleEvent } from '../Utils/Events/SimpleEvent';
 import { BoundingBox } from '../Utils/Geometry/BoundingBox';
 import { Point } from '../Utils/Geometry/Point';
 import { ItemsUpdater } from './ItemsUpdater';
@@ -13,11 +14,13 @@ export class ViewTranslator {
 	private _arrivalDate: number;
 	private _xDistance: number;
 	private _yDistance: number;
+	public OnDone: SimpleEvent;
 
 	constructor(private _b1: BoundingBox, private _b2: BoundingBox, private _milliseconds: number) {
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 		this._updater = Singletons.Load<IUpdateService>(SingletonKey.Update).Publish();
 		this._currentPoint = this._b1.GetCentralPoint();
+		this.OnDone = new SimpleEvent();
 	}
 
 	private GetPosition(): Point {
@@ -49,6 +52,8 @@ export class ViewTranslator {
 			setTimeout(() => {
 				this.Translate();
 			}, 10);
+		} else {
+			this.OnDone.Invoke();
 		}
 	}
 

@@ -34,7 +34,7 @@ export default class MenuSwitcher extends Component<
 			return <MultiMenuComponent Item={this.props.Item} />;
 		} else if (this.props.Item) {
 			if (this.props.Item instanceof Tank) {
-				return <TankMenuComponent callback={this.props.OnClick} Tank={this.props.Item} />;
+				return <TankMenuComponent Callback={this.props.OnClick} Tank={this.props.Item} />;
 			} else if (this.props.Item instanceof Truck) {
 				return <TruckMenuComponent callBack={this.props.OnClick} Truck={this.props.Item} />;
 			} else if (this.props.Item instanceof UnitGroup) {

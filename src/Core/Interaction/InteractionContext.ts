@@ -147,7 +147,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 	}
 
 	private Select(item: Item): void {
-		if (!this._gameContext.State.IsPause) {
+		if (this._gameContext.State.HasInteraction()) {
 			if (item) {
 				if (item instanceof Cell && this.ContainsSelectable(item)) {
 					item = this.GetSelectable(item);

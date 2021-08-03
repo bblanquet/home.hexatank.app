@@ -16,10 +16,17 @@ import MenuSwitcher from '../Components/Canvas/MenuSwitcher';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 import Switch from '../Common/Struct/Switch';
 import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
+import { GenericGameHook } from '../Hooks/GenericGameHook';
+import { FireV2Context } from '../../Core/Framework/Context/FireV2Context';
+import { FireBlueprint } from '../../Core/Framework/Blueprint/Fire/FireBlueprint';
 
-export default class FireScreen extends HookedComponent<{}, FireHook, RuntimeState> {
-	public GetDefaultHook(): FireHook {
-		return new FireHook(useState(FireHook.DefaultState()));
+export default class FireV2Screen extends HookedComponent<
+	{},
+	GenericGameHook<FireBlueprint, FireV2Context>,
+	RuntimeState
+> {
+	public GetDefaultHook(): GenericGameHook<FireBlueprint, FireV2Context> {
+		return new GenericGameHook<FireBlueprint, FireV2Context>(useState(FireHook.DefaultState()));
 	}
 
 	public Rendering(): JSX.Element {

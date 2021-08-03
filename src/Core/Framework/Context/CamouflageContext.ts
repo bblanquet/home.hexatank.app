@@ -15,7 +15,6 @@ export class CamouflageContext implements IGameContext {
 	//should not be here
 	public static Error: Error;
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
-	public OnPatrolSetting: LiteEvent<Boolean> = new LiteEvent<Boolean>();
 
 	//elements
 	private _cells: Dictionary<Cell>;

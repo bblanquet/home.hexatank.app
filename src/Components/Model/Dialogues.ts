@@ -27,6 +27,8 @@ export const trainingSentences = [
 	'You have 120 seconds to retrieve at least 35 diamonds.'
 ];
 
+export const Camouflage = [ 'bring your unit to this safe spot.', 'Be careful the path is full of obstacles...', '' ];
+
 export function GreenSentences(index: number) {
 	if (index === 1) {
 		return trainingSentences[0];

@@ -22,12 +22,15 @@ import { AudioLoader } from '../../Core/Framework/AudioLoader';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { Vibrator } from '../../Utils/Vibrator';
 import { ViewTranslator } from '../../Core/ViewTranslator';
+import { Camouflage } from '../Model/Dialogues';
+import { ILayerService } from '../../Services/Layer/ILayerService';
 
 export class CamouflageHook extends Hook<RuntimeState> {
 	private _gameContextService: IGameContextService<CamouflageBlueprint, CamouflageContext>;
 	private _appService: IAppService<CamouflageBlueprint>;
 	private _profilService: IPlayerProfilService;
 	private _soundService: IAudioService;
+	private _layerService: ILayerService;
 	private _keyService: IKeyService;
 	private _interactionService: IInteractionService<CamouflageContext>;
 	private _gameContext: CamouflageContext;
@@ -35,6 +38,8 @@ export class CamouflageHook extends Hook<RuntimeState> {
 	private _handleRetry: any = this.Retry.bind(this);
 	public OnRetried: SimpleEvent = new SimpleEvent();
 	public middle: Point;
+	private _steps = 0;
+	private _viewTranslator: ViewTranslator;
 
 	constructor(d: [RuntimeState, StateUpdater<RuntimeState>]) {
 		super(d[0], d[1]);
@@ -49,6 +54,7 @@ export class CamouflageHook extends Hook<RuntimeState> {
 		this._appService = Singletons.Load<IAppService<CamouflageBlueprint>>(this._keyService.GetAppKey());
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
+		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 		this._interactionService = Singletons.Load<IInteractionService<CamouflageContext>>(
 			SingletonKey.CamouflageInteraction
 		);
@@ -61,13 +67,17 @@ export class CamouflageHook extends Hook<RuntimeState> {
 		this._appService.OnRefresh.On(this._handleRetry);
 		this._soundService.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));
 		const player = this._gameContext.GetPlayer();
-		this.middle = player.GetBoundingBox().GetCentralPoint();
+		this.middle = this._gameContext.ArrivalCell.GetBoundingBox().GetCentralPoint();
 		this.OnRetried.Invoke();
-		new ViewTranslator(
+		this._gameContext.State.SetInteraction(false);
+		this._steps = 0;
+		this._viewTranslator = new ViewTranslator(
 			this._gameContext.ArrivalCell.GetBoundingBox(),
 			this._gameContext.DepartCell.GetBoundingBox(),
 			3000
-		).Start();
+		);
+		this._layerService.PauseNavigation();
+		this._viewTranslator.OnDone.On(this.OnTranslationDone.bind(this));
 	}
 
 	private Retry(): void {
@@ -87,13 +97,14 @@ export class CamouflageHook extends Hook<RuntimeState> {
 			state.Players = [];
 			state.GameStatus = GameStatus.Pending;
 			state.StatusDetails = null;
+			state.Sentence = Camouflage[0];
 		});
 	}
 
 	public Unmount(): void {
+		this._viewTranslator.OnDone.Clear();
 		this._gameContext.State.OnGameStatusChanged.Clear();
 		this._gameContext.OnItemSelected.Clear();
-		this._gameContext.OnPatrolSetting.Clear();
 		this._gameContext.State.OnGameStatusChanged.Clear();
 		this._interactionService.OnMultiMenuShowed.Clear();
 		this._profilService.OnPointsAdded.Clear();
@@ -119,6 +130,7 @@ export class CamouflageHook extends Hook<RuntimeState> {
 		state.Players = [];
 		state.GameStatus = GameStatus.Pending;
 		state.StatusDetails = null;
+		state.Sentence = Camouflage[0];
 
 		return state;
 	}
@@ -168,12 +180,27 @@ export class CamouflageHook extends Hook<RuntimeState> {
 			}
 		}
 
-		this._gameContext.State.IsPause = hasMenu;
+		this._gameContext.State.SetPause(hasMenu);
 	}
 
 	public SendContext(item: Item): void {
 		const interaction = this._interactionService.Publish();
 		interaction.Kind = InteractionKind.Up;
 		return interaction.OnSelect(item);
+	}
+
+	public SetNextSentence(): void {
+		this._steps++;
+		this.Update((e) => {
+			e.Sentence = Camouflage[this._steps];
+		});
+		if (1 === this._steps) {
+			this._viewTranslator.Start();
+		}
+	}
+
+	private OnTranslationDone(): void {
+		this._gameContext.State.SetInteraction(true);
+		this._layerService.StartNavigation();
 	}
 }

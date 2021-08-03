@@ -14,8 +14,6 @@ import { Point } from '../../Utils/Geometry/Point';
 import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
 import { IAppService } from '../../Services/App/IAppService';
 import { IKeyService } from '../../Services/Key/IKeyService';
-import { FireContext } from '../../Core/Framework/Context/FireContext';
-import { FireBlueprint } from '../../Core/Framework/Blueprint/Fire/FireBlueprint';
 import { Cell } from '../../Core/Items/Cell/Cell';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
@@ -25,15 +23,17 @@ import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
 import { Vibrator } from '../../Utils/Vibrator';
 import { FieldProp } from '../Components/Canvas/FieldProp';
 import { CellGroup } from '../../Core/Items/CellGroup';
-
-export class FireHook extends Hook<RuntimeState> {
-	private _gameContextService: IGameContextService<FireBlueprint, FireContext>;
+import { IBlueprint } from '../../Core/Framework/Blueprint/IBlueprint';
+import { IHqGameContext } from '../../Core/Framework/Context/IHqGameContext';
+//b,c
+export class GenericGameHook<T1 extends IBlueprint, T2 extends IHqGameContext> extends Hook<RuntimeState> {
+	private _gameContextService: IGameContextService<T1, T2>;
 	private _profilService: IPlayerProfilService;
 	private _soundService: IAudioService;
-	private _interactionService: IInteractionService<FireContext>;
-	private _gameContext: FireContext;
+	private _interactionService: IInteractionService<T2>;
+	private _gameContext: T2;
 	private _keyService: IKeyService;
-	private _appService: IAppService<FireBlueprint>;
+	private _appService: IAppService<T1>;
 	private _onItemSelectionChanged: any = this.OnItemSelectionChanged.bind(this);
 	private _handleRetry: any = this.Retry.bind(this);
 	public OnRefresh: SimpleEvent = new SimpleEvent();
@@ -65,13 +65,11 @@ export class FireHook extends Hook<RuntimeState> {
 
 	private Init() {
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
-		this._appService = Singletons.Load<IAppService<FireBlueprint>>(this._keyService.GetAppKey());
-		this._gameContextService = Singletons.Load<IGameContextService<FireBlueprint, FireContext>>(
-			SingletonKey.FireGameContext
-		);
+		this._appService = Singletons.Load<IAppService<T1>>(this._keyService.GetAppKey());
+		this._gameContextService = Singletons.Load<IGameContextService<T1, T2>>(this._keyService.GetAppKey());
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-		this._interactionService = Singletons.Load<IInteractionService<FireContext>>(SingletonKey.Interaction);
+		this._interactionService = Singletons.Load<IInteractionService<T2>>(SingletonKey.Interaction);
 		this._gameContext = this._gameContextService.Publish();
 		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._soundService.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));

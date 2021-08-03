@@ -140,7 +140,6 @@ export class GameHook extends Hook<RuntimeState> {
 		playerHq.OnCashMissing.Clear();
 		this._interactionService.GetMultiSelectionContext().OnModeChanged.Clear();
 		this._gameContext.OnItemSelected.Clear();
-		this._gameContext.OnPatrolSetting.Clear();
 		this._profilService.OnPointsAdded.Clear();
 		this._gameContext.State.OnGameStatusChanged.Clear();
 		this._interactionService.OnMultiMenuShowed.Clear();
@@ -219,12 +218,12 @@ export class GameHook extends Hook<RuntimeState> {
 		}
 
 		if (!this._onlineService.IsOnline()) {
-			this._gameContext.State.IsPause = isSettingMenuVisible;
+			this._gameContext.State.SetPause(isSettingMenuVisible);
 		}
 	}
 
 	public Stop(isVictory: boolean): void {
-		this._gameContext.State.IsPause = true;
+		this._gameContext.State.SetPause(true);
 		this._gameContext.SetStatus(isVictory ? GameStatus.Victory : GameStatus.Defeat);
 	}
 	public GetCurves(): Groups<Curve> {

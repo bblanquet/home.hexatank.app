@@ -11,7 +11,7 @@ import { SvgLoader } from '../../Core/Framework/SvgLoader';
 import { route } from 'preact-router';
 import { SpriteProvider } from '../../Core/Framework/SpriteProvider';
 import { SingletonContainer } from '../../SingletonContainer';
-import { LoadingSentences } from '../Model/Text';
+import { LoadingSentences } from '../Model/Dialogues';
 import { StateUpdater } from 'preact/hooks';
 
 export class LoadingHook extends Hook<LoadingState> {

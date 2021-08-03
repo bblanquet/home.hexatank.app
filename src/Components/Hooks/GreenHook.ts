@@ -11,7 +11,7 @@ import { CampaignState } from '../Model/GreenState';
 import { route } from 'preact-router';
 import { CampaignKind } from '../../Services/Campaign/CampaignKind';
 import { StageState } from '../../Services/Campaign/StageState';
-import { GreenSentences } from '../Model/Text';
+import { GreenSentences } from '../Model/Dialogues';
 
 export class GreenHook extends Hook<CampaignState> {
 	private _playerProfilService: IPlayerProfilService;
@@ -57,7 +57,7 @@ export class GreenHook extends Hook<CampaignState> {
 					this._playerProfilService.AddPoints(3);
 				}
 			);
-			route('{{sub_path}}Fire', true);
+			route('{{sub_path}}FireV2', true);
 		} else if (blueprint instanceof DiamondBlueprint) {
 			Singletons.Load<IAppService<DiamondBlueprint>>(SingletonKey.DiamondApp).Register(
 				blueprint,

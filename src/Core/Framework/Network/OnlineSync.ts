@@ -66,7 +66,7 @@ export class OnlineSync {
 	}
 
 	private HandleStart(message: NetworkMessage<any>): void {
-		this._context.State.IsPause = false;
+		this._context.State.SetPause(false);
 		this._players.Players.Values().forEach((player) => {
 			player.SetSync(true);
 		});
@@ -76,7 +76,7 @@ export class OnlineSync {
 		this._players.Players.Get(message.Emitter).SetSync(true);
 		if (this._players.Player.IsAdmin && this._players.IsSync()) {
 			this._socket.EmitAll(PacketKind.SyncStart, {});
-			this._context.State.IsPause = false;
+			this._context.State.SetPause(false);
 		}
 	}
 
@@ -100,7 +100,7 @@ export class OnlineSync {
 	}
 
 	private SetUnsync() {
-		this._context.State.IsPause = true;
+		this._context.State.SetPause(true);
 		this._players.Players.Values().forEach((player) => {
 			if (player.Name !== this._players.Player.Name) {
 				player.SetSync(false);

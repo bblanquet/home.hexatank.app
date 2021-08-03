@@ -1,18 +1,19 @@
 import { JSX, h } from 'preact';
-import { Truck } from '../../Core/Items/Unit/Truck';
 import GameCanvas from '../Components/GameCanvas';
 import { GameStatus } from '../../Core/Framework/GameStatus';
-import TruckMenuComponent from '../Components/Canvas/TruckMenuComponent';
 import OptionPopup from '../Components/OptionPopup';
 import Redirect from '../Components/Redirect';
 import SmPopup from '../Components/SmPopup';
 import Visible from '../Common/Struct/Visible';
+import Bubble from '../Components/Bubble';
 import { HookedComponent } from '../Hooks/HookedComponent';
 import { CamouflageHook } from '../Hooks/CamouflageHook';
 import { RuntimeState } from '../Model/RuntimeState';
 import { useState } from 'preact/hooks';
 import { Item } from '../../Core/Items/Item';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
+import TankMenuComponent from '../Components/Canvas/TankMenuComponent';
+import { Vehicle } from '../../Core/Items/Unit/Vehicle';
 
 export default class CamouflageScreen extends HookedComponent<{}, CamouflageHook, RuntimeState> {
 	public GetDefaultHook(): CamouflageHook {
@@ -40,9 +41,9 @@ export default class CamouflageScreen extends HookedComponent<{}, CamouflageHook
 							/>
 						</div>
 						<Visible isVisible={!this.Hook.State.HasMenu && !isNullOrUndefined(this.Hook.State.Item)}>
-							<TruckMenuComponent
-								callBack={(e: Item) => this.Hook.SendContext(e)}
-								Truck={this.Hook.State.Item as Truck}
+							<TankMenuComponent
+								Tank={this.Hook.State.Item as Vehicle}
+								Callback={(e: Item) => this.Hook.SendContext(e)}
 							/>
 						</Visible>
 					</Visible>
@@ -55,12 +56,11 @@ export default class CamouflageScreen extends HookedComponent<{}, CamouflageHook
 					</Visible>
 				</Visible>
 				<GameCanvas Center={this.Hook.GetCenter()} OnRefresh={this.Hook.OnRetried} />
-				<div style="left: 0px; bottom: 0px;position: absolute;text-align: center; border-radius: 20px;font-weight: bold;background-color: white;height: 90px;width: 90%;margin: 5%;">
-					<div>Reach this position.</div>
-					<div style="position: relative;left: 0px; bottom: 0px;">
-						<button className="btn btn-primary ">next</button>
-					</div>
-				</div>
+				<Visible
+					isVisible={!isNullOrUndefined(this.Hook.State.Sentence) && 0 < this.Hook.State.Sentence.length}
+				>
+					<Bubble Sentence={this.Hook.State.Sentence} OnNext={() => this.Hook.SetNextSentence()} />
+				</Visible>
 			</Redirect>
 		);
 	}

@@ -22,7 +22,7 @@ export class ItemsUpdater implements IItemsUpdater {
 
 	public Update(): void {
 		this.CalculateUpdateDuration();
-		if (!this._state.IsPause) {
+		if (!this._state.IsPause()) {
 			if (Env.IsPrd()) {
 				try {
 					this.Iterate();

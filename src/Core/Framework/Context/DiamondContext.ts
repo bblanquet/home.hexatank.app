@@ -12,7 +12,6 @@ import { GameStatus } from '../../Framework/GameStatus';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { GameState } from './GameState';
 export class DiamondContext implements IHqGameContext {
-	public OnPatrolSetting: LiteEvent<Boolean> = new LiteEvent<Boolean>();
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
 	public OnTimerDone: SimpleEvent;
 	public Duration: number = 120;

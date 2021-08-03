@@ -12,11 +12,11 @@ export class CellProperties {
 		this.Coordinate = coordinate;
 		this.Size = GameSettings.Size;
 		this.BoundingBox = new BoundingBox();
-		this.BoundingBox.Width = CellProperties.GetWidth(this.Size);
-		this.BoundingBox.Height = CellProperties.GetHeight(this.Size);
+		this.BoundingBox.SetWidth(CellProperties.GetWidth(this.Size));
+		this.BoundingBox.SetHeight(CellProperties.GetHeight(this.Size));
 		var pos = this.Coordinate.ToPixel(this.Size);
-		this.BoundingBox.X = pos.X;
-		this.BoundingBox.Y = pos.Y;
+		this.BoundingBox.SetX(pos.X);
+		this.BoundingBox.SetY(pos.Y);
 	}
 
 	public GetCentralPoint(): Point {

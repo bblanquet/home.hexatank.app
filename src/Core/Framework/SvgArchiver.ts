@@ -164,6 +164,7 @@ export const SvgArchive = {
 		floorExplosion: './svg/tank/floorExplosionTrace.svg'
 	},
 	arrow: './svg/interaction/arrow.svg',
+	hand: './svg/interaction/hand.svg',
 	electon: './svg/bonus/electron.svg',
 	redElecton: './svg/bonus/redElectron.svg',
 	warning: './svg/truck/warning.svg',

@@ -26,7 +26,7 @@ export class ChargeLink extends Item implements IMovable {
 			e.anchor.set(0.5);
 			e.alpha = 1;
 		});
-		this.InitPosition(this.GetBoundingBox());
+		this.InitPosition(this.GetBoundingBox().GetPosition());
 		this.IsCentralRef = true;
 		this._translateMaker = new TranslationMaker(this);
 		this._departure.OnCellStateChanged.On(this.CellStateChanged.bind(this));
@@ -50,8 +50,8 @@ export class ChargeLink extends Item implements IMovable {
 	}
 
 	public GoNextCell(): void {
-		this._boundingBox.X = this._departure.GetBoundingBox().X;
-		this._boundingBox.Y = this._departure.GetBoundingBox().Y;
+		this._boundingBox.SetX(this._departure.GetBoundingBox().GetX());
+		this._boundingBox.SetY(this._departure.GetBoundingBox().GetY());
 	}
 	public GetNextCell(): Cell {
 		return this._arrival;

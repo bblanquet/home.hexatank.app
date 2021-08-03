@@ -18,14 +18,14 @@ export class WaterField extends Field {
 		this.GenerateSprite(SvgArchive.nature.water.leaf);
 
 		this.GetSprites().forEach((sprite) => {
-			(sprite.width = this.GetCell().GetBoundingBox().Width),
-				(sprite.height = this.GetCell().GetBoundingBox().Height);
+			(sprite.width = this.GetCell().GetBoundingBox().GetWidth()),
+				(sprite.height = this.GetCell().GetBoundingBox().GetHeight());
 			sprite.anchor.set(0.5);
 		});
 
 		this.IsCentralRef = true;
 
-		this.InitPosition(cell.GetBoundingBox());
+		this.InitPosition(cell.GetBoundingBox().GetPosition());
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});

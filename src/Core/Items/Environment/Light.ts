@@ -20,7 +20,7 @@ export class Light extends Item {
 			});
 		});
 		this._isVisible = false;
-		this.InitPosition(boundingBox);
+		this.InitPosition(boundingBox.GetPosition());
 	}
 
 	public Destroy(): void {

@@ -20,7 +20,7 @@ export class BrainAreaView extends Item {
 		});
 		this.Z = ZKind.Sky;
 		this.IsCentralRef = true;
-		this.InitPosition(this._area.GetCentralCell().GetBoundingBox());
+		this.InitPosition(this._area.GetCentralCell().GetBoundingBox().GetPosition());
 		this._troopsView = new TroopIaView(this, this._area);
 		this._requestView = new RequestIaView(this, this._area);
 		this._nameView = new IaNameView(this, this._area);

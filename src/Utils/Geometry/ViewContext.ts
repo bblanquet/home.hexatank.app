@@ -9,18 +9,18 @@ export class ViewContext {
 	}
 
 	public GetX(): number {
-		return this.BoundingBox.X;
+		return this.BoundingBox.GetX();
 	}
 
 	public GetY(): number {
-		return this.BoundingBox.Y;
+		return this.BoundingBox.GetY();
 	}
 
 	public SetX(x: number): void {
-		this.BoundingBox.X = x;
+		this.BoundingBox.SetX(x);
 	}
 
 	public SetY(y: number): void {
-		this.BoundingBox.Y = y;
+		this.BoundingBox.SetY(y);
 	}
 }

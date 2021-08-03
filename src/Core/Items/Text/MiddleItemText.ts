@@ -18,11 +18,16 @@ export class MiddleItemText extends Item {
 	private _textMetrics: PIXI.TextMetrics;
 
 	public GetBoundingBox(): BoundingBox {
-		let x = this._item.GetBoundingBox().X + this._item.GetBoundingBox().Width / 2 - this._textMetrics.width / 2;
+		let x =
+			this._item.GetBoundingBox().GetX() +
+			this._item.GetBoundingBox().GetWidth() / 2 -
+			this._textMetrics.width / 2;
 
 		return BoundingBox.New(
 			x,
-			this._item.GetBoundingBox().Y + this._item.GetBoundingBox().Height / 2 - this._textMetrics.height / 2,
+			this._item.GetBoundingBox().GetY() +
+				this._item.GetBoundingBox().GetHeight() / 2 -
+				this._textMetrics.height / 2,
 			this._textMetrics.width,
 			this._textMetrics.height
 		);
@@ -70,9 +75,11 @@ export class MiddleItemText extends Item {
 		this._text.text = this._content.toString();
 		this._text.style.fill = this._color;
 		this._textMetrics = PIXI.TextMetrics.measureText(this._text.text, new PIXI.TextStyle(this._text.style));
-		this._text.x = this._item.GetBoundingBox().X + this._item.GetBoundingBox().Width / 2;
+		this._text.x = this._item.GetBoundingBox().GetX() + this._item.GetBoundingBox().GetWidth() / 2;
 		this._text.y =
-			this._item.GetBoundingBox().Y + this._item.GetBoundingBox().Height / 2 - this._textMetrics.height / 2;
+			this._item.GetBoundingBox().GetY() +
+			this._item.GetBoundingBox().GetHeight() / 2 -
+			this._textMetrics.height / 2;
 		this._text.visible = this._isVisible;
 	}
 

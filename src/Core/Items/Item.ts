@@ -90,8 +90,8 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 	}
 
 	protected InitCell(pos: { X: number; Y: number }) {
-		this.GetBoundingBox().X = pos.X;
-		this.GetBoundingBox().Y = pos.Y;
+		this.GetBoundingBox().SetX(pos.X);
+		this.GetBoundingBox().SetY(pos.Y);
 		const ref = this.GetRef();
 		this.DisplayObjects.forEach((obj) => {
 			obj.x = ref.X + this._updateService.Publish().ViewContext.GetX();
@@ -100,8 +100,8 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 		this.GetSprites().forEach((sprite) => {
 			sprite.x = ref.X + this._updateService.Publish().ViewContext.GetX();
 			sprite.y = ref.Y + this._updateService.Publish().ViewContext.GetY();
-			sprite.width = this.GetBoundingBox().Width;
-			sprite.height = this.GetBoundingBox().Height;
+			sprite.width = this.GetBoundingBox().GetWidth();
+			sprite.height = this.GetBoundingBox().GetHeight();
 		});
 	}
 
@@ -118,8 +118,8 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 		this.GetSprites().forEach((sprite) => {
 			sprite.x = ref.X + viewX;
 			sprite.y = ref.Y + viewY;
-			sprite.width = this.GetBoundingBox().Width;
-			sprite.height = this.GetBoundingBox().Height;
+			sprite.width = this.GetBoundingBox().GetWidth();
+			sprite.height = this.GetBoundingBox().GetHeight();
 		});
 	}
 

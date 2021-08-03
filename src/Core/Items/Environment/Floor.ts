@@ -19,7 +19,7 @@ export class Floor extends BasicItem {
 				e.alpha = 0;
 			});
 		});
-		this.InitPosition(boundingBox);
+		this.InitPosition(boundingBox.GetPosition());
 		this.IsCentralRef = true;
 		this._idleLongTimer = new TickTimer(this.GetRandom());
 	}

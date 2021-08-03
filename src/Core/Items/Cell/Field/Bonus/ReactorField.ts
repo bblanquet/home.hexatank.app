@@ -78,7 +78,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 
 		this.IsCentralRef = true;
 
-		this.InitPosition(cell.GetBoundingBox());
+		this.InitPosition(cell.GetBoundingBox().GetPosition());
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});

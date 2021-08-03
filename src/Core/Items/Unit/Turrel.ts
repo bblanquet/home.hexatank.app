@@ -56,7 +56,8 @@ export class Turrel extends Item implements IRotatable {
 		this.GenerateSprite(this._top);
 
 		this.GetSprites().forEach((sprite) => {
-			(sprite.width = this.Base.GetBoundingBox().Width), (sprite.height = this.Base.GetBoundingBox().Height);
+			(sprite.width = this.Base.GetBoundingBox().GetWidth()),
+				(sprite.height = this.Base.GetBoundingBox().GetHeight());
 			sprite.anchor.set(0.5);
 		});
 		this.IsCentralRef = true;
@@ -101,10 +102,10 @@ export class Turrel extends Item implements IRotatable {
 		this.IsAnimated = true;
 		const missile = new Missile(
 			BoundingBox.New(
-				this.GetBoundingBox().X,
-				this.GetBoundingBox().Y,
-				this.GetBoundingBox().Width,
-				this.GetBoundingBox().Height
+				this.GetBoundingBox().GetX(),
+				this.GetBoundingBox().GetY(),
+				this.GetBoundingBox().GetWidth(),
+				this.GetBoundingBox().GetHeight()
 			),
 			this.Base.GetTarget(),
 			this.Base.GetFire()

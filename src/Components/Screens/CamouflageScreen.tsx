@@ -55,6 +55,12 @@ export default class CamouflageScreen extends HookedComponent<{}, CamouflageHook
 					</Visible>
 				</Visible>
 				<GameCanvas Center={this.Hook.GetCenter()} OnRefresh={this.Hook.OnRetried} />
+				<div style="left: 0px; bottom: 0px;position: absolute;text-align: center; border-radius: 20px;font-weight: bold;background-color: white;height: 90px;width: 90%;margin: 5%;">
+					<div>Reach this position.</div>
+					<div style="position: relative;left: 0px; bottom: 0px;">
+						<button className="btn btn-primary ">next</button>
+					</div>
+				</div>
 			</Redirect>
 		);
 	}

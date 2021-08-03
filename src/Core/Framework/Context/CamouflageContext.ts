@@ -20,7 +20,14 @@ export class CamouflageContext implements IGameContext {
 	//elements
 	private _cells: Dictionary<Cell>;
 	private _vehicles: Vehicle[];
-	constructor(state: GameState, cells: Cell[], unit: Vehicle, vehicles: Vehicle[], arrivelCell: Cell) {
+	constructor(
+		state: GameState,
+		cells: Cell[],
+		unit: Vehicle,
+		vehicles: Vehicle[],
+		public DepartCell: Cell,
+		public ArrivalCell: Cell
+	) {
 		this._cells = Dictionary.To((c) => c.Coo(), cells);
 		this._unit = unit;
 		this._vehicles = vehicles;
@@ -29,7 +36,7 @@ export class CamouflageContext implements IGameContext {
 			this.State.OnGameStatusChanged.Invoke(this, GameStatus.Defeat);
 		});
 		this._unit.OnCellChanged.On((source: any, cell: Cell) => {
-			if (this._unit.GetCurrentCell() === arrivelCell) {
+			if (this._unit.GetCurrentCell() === ArrivalCell) {
 				this.State.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
 			}
 		});

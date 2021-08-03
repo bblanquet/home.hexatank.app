@@ -39,7 +39,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 			obj.visible = this.GetCell().IsVisible();
 		});
 		if (override) {
-			this.InitPosition(cell.GetBoundingBox());
+			this.InitPosition(cell.GetBoundingBox().GetPosition());
 		}
 		this._animator = new BouncingScaleAnimator(this);
 		this.hq.OnReactorLost.On(this._handleReactorLost);

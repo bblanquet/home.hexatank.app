@@ -99,8 +99,8 @@ export abstract class Vehicle extends AliveItem
 		this.SetProperties([ SvgArchive.selectionUnit ], (sprite) => (sprite.alpha = 0));
 
 		this.Z = ZKind.Cell;
-		this.BoundingBox.Width = CellProperties.GetWidth(GameSettings.Size);
-		this.BoundingBox.Height = CellProperties.GetHeight(GameSettings.Size);
+		this.BoundingBox.SetWidth(CellProperties.GetWidth(GameSettings.Size));
+		this.BoundingBox.SetHeight(CellProperties.GetHeight(GameSettings.Size));
 		this.RootSprites = new Array<string>();
 
 		this.GenerateSprite(SvgArchive.wheel);
@@ -249,7 +249,7 @@ export abstract class Vehicle extends AliveItem
 		}
 		this._currentCell = cell;
 		this._currentCell.AddOccupier(this);
-		this.InitCell(this._currentCell.GetBoundingBox());
+		this.InitCell(this._currentCell.GetBoundingBox().GetPosition());
 		if (nextCell) {
 			if (this._nextCell) {
 				this._nextCell.RemoveOccupier(this);
@@ -311,8 +311,8 @@ export abstract class Vehicle extends AliveItem
 	private HandleDust(): void {
 		if (this._dustTimer.IsElapsed()) {
 			const ref = this.GetBoundingBox().GetCentralPoint();
-			const width = this.GetBoundingBox().Width;
-			const height = this.GetBoundingBox().Height;
+			const width = this.GetBoundingBox().GetWidth();
+			const height = this.GetBoundingBox().GetHeight();
 
 			const left = new BoundingBox();
 			let leftPoint = new Point(0, 0);
@@ -327,8 +327,8 @@ export abstract class Vehicle extends AliveItem
 			leftPoint = this.RotatePoint(ref, this.CurrentRadius, leftPoint);
 
 			left.SetPosition(leftPoint);
-			left.Width = this.GetBoundingBox().Width / 5;
-			left.Height = this.GetBoundingBox().Width / 5;
+			left.SetWidth(this.GetBoundingBox().GetWidth() / 5);
+			left.SetHeight(this.GetBoundingBox().GetWidth() / 5);
 
 			this._leftDusts[this._dustIndex].Reset(left);
 			this._leftDusts[this._dustIndex].GetSprites().forEach((s) => {
@@ -348,8 +348,8 @@ export abstract class Vehicle extends AliveItem
 			rightPoint = this.RotatePoint(ref, this.CurrentRadius, rightPoint);
 
 			right.SetPosition(rightPoint);
-			right.Width = this.GetBoundingBox().Width / 5;
-			right.Height = this.GetBoundingBox().Width / 5;
+			right.SetWidth(this.GetBoundingBox().GetWidth() / 5);
+			right.SetHeight(this.GetBoundingBox().GetWidth() / 5);
 
 			this._rightDusts[this._dustIndex].Reset(right);
 			this._rightDusts[this._dustIndex].GetSprites().forEach((s) => {
@@ -517,7 +517,7 @@ export abstract class Vehicle extends AliveItem
 		if (this._currentCell) {
 			this._currentCell.RemoveOccupier(this);
 		}
-		this.InitPosition(cell.GetBoundingBox());
+		this.InitPosition(cell.GetBoundingBox().GetPosition());
 		this._currentCell = cell;
 		this._currentCell.AddOccupier(this);
 		if (!this.IsPacific) {

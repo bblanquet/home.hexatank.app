@@ -16,7 +16,7 @@ export class BasicItem extends Item {
 			e.anchor.set(0.5);
 			e.alpha = 0;
 		});
-		this.InitPosition(this._boundingBox);
+		this.InitPosition(this._boundingBox.GetPosition());
 		this.IsCentralRef = true;
 	}
 

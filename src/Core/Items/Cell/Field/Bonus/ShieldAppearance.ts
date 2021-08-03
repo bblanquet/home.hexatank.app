@@ -22,7 +22,7 @@ export class ShieldAppearance extends Item {
 
 		this.Animator = new BouncingScaleAnimator(this);
 		this._fadeAnimator = new InfiniteFadeAnimation(this, SvgArchive.bonus.shieldLight, 0.2, 1, 0.05);
-		this.InitPosition(this._aliveItem.GetBoundingBox());
+		this.InitPosition(this._aliveItem.GetBoundingBox().GetPosition());
 		this._aliveItem.GetCell().OnCellStateChanged.On(this.HandleCellStateChanged.bind(this));
 		this.HandleCellStateChanged(this, this._aliveItem.GetCell().GetState());
 

@@ -358,7 +358,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 			]);
 			this._cellStateSprites.Add(CellState[CellState.Visible], [ this._decorationSprite, SvgArchive.cell ]);
 		}
-		this.InitPosition(this.Properties.BoundingBox);
+		this.InitPosition(this.Properties.BoundingBox.GetPosition());
 	}
 
 	public GetHexCoo(): HexAxial {

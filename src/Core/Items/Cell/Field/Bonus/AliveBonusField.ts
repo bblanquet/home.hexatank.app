@@ -27,7 +27,7 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 			this.GenerateSprite(b);
 		});
 		this.GenerateSprite(this._id.Skin.GetLight());
-		this.InitPosition(cell.GetBoundingBox());
+		this.InitPosition(cell.GetBoundingBox().GetPosition());
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});

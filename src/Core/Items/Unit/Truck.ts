@@ -32,7 +32,8 @@ export class Truck extends Vehicle {
 		this._light = new Light(this.BoundingBox);
 
 		this.GetSprites().forEach((sprite) => {
-			(sprite.width = this.BoundingBox.Width), (sprite.height = this.BoundingBox.Height);
+			sprite.width = this.BoundingBox.GetWidth();
+			sprite.height = this.BoundingBox.GetHeight();
 			sprite.anchor.set(0.5);
 		});
 		this.IsCentralRef = true;

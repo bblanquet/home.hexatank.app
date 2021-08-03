@@ -91,18 +91,18 @@ export abstract class AliveItem extends Item {
 	public Update(viewX: number, viewY: number): void {
 		super.Update(viewX, viewY);
 		this._lifeBars.forEach((element) => {
-			element.x = this.GetBoundingBox().X + viewX + 20;
-			element.y = this.GetBoundingBox().Y + viewY + 10;
+			element.x = this.GetBoundingBox().GetX() + viewX + 20;
+			element.y = this.GetBoundingBox().GetY() + viewY + 10;
 			element.height = 4;
-			element.width = this.GetBoundingBox().Width - 40;
+			element.width = this.GetBoundingBox().GetWidth() - 40;
 		});
 
-		this._borderBar.x = this.GetBoundingBox().X + viewX + 18;
-		this._borderBar.y = this.GetBoundingBox().Y + viewY + 8;
+		this._borderBar.x = this.GetBoundingBox().GetX() + viewX + 18;
+		this._borderBar.y = this.GetBoundingBox().GetY() + viewY + 8;
 		this._borderBar.height = 8;
-		this._borderBar.width = this.GetBoundingBox().Width - 36;
+		this._borderBar.width = this.GetBoundingBox().GetWidth() - 36;
 
-		this._currentLifeBar.width = (this.GetBoundingBox().Width - 40) * (this.Life / this.TotalLife);
+		this._currentLifeBar.width = (this.GetBoundingBox().GetWidth() - 40) * (this.Life / this.TotalLife);
 	}
 
 	public IsAlive(): boolean {

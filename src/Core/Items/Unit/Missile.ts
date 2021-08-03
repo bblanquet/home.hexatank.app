@@ -32,7 +32,8 @@ export class Missile extends Item {
 		});
 
 		this.GetSprites().forEach((sprite) => {
-			(sprite.width = this.BoundingBox.Width), (sprite.height = this.BoundingBox.Height);
+			sprite.width = this.BoundingBox.GetWidth();
+			sprite.height = this.BoundingBox.GetHeight();
 			sprite.anchor.set(0.5);
 			sprite.alpha = 0;
 		});
@@ -41,7 +42,7 @@ export class Missile extends Item {
 
 		this._speed = GameSettings.MissileTranslationSpeed;
 
-		this.InitPosition(this.BoundingBox);
+		this.InitPosition(this.BoundingBox.GetPosition());
 		this.Rotate(radius);
 	}
 
@@ -91,8 +92,8 @@ export class Missile extends Item {
 			var speedX = -this._speed * Math.cos(angle);
 			var speedY = this._speed * Math.sin(angle);
 
-			this.GetBoundingBox().X += speedY * 1.5;
-			this.GetBoundingBox().Y += speedX * 1.5;
+			this.GetBoundingBox().SetX(this.GetBoundingBox().GetX() + speedY * 1.5);
+			this.GetBoundingBox().SetY(this.GetBoundingBox().GetY() + speedX * 1.5);
 
 			this.SetProperty(SvgArchive.missiles[this._currentMissile], (e) => (e.alpha = 0));
 			this._currentMissile = (this._currentMissile + 1) % SvgArchive.missiles.length;

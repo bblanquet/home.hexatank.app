@@ -27,7 +27,7 @@ export class Dust extends Item {
 			sp.anchor.set(0.5);
 		});
 		this.IsCentralRef = true;
-		this.InitPosition(boundingBox);
+		this.InitPosition(boundingBox.GetPosition());
 	}
 
 	public GetBoundingBox(): BoundingBox {

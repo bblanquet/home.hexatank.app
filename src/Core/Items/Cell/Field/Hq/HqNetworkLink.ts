@@ -25,7 +25,7 @@ export class HqNetworkLink extends Item {
 		this._current = this._start;
 		this._graph = new Graphics();
 		this.Push(this._graph);
-		this.InitPosition(this.GetBoundingBox());
+		this.InitPosition(this.GetBoundingBox().GetPosition());
 		this._leftReactorField.AddLink(this);
 		this._rightReactorField.AddLink(this);
 		this._leftReactorField.GetCell().OnCellStateChanged.On(this.CellStateChanged.bind(this));

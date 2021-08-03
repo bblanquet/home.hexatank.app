@@ -27,13 +27,13 @@ export class TransitionAnimation implements IAnimator {
 				this._current = this._isDown ? this._current - this._step : this._current + this._step;
 
 				if (this._isX) {
-					let x = this._item.GetBoundingBox().X;
+					let x = this._item.GetBoundingBox().GetX();
 					x = this._isDown ? x - this._step : x + this._step;
-					this._item.GetBoundingBox().X = x;
+					this._item.GetBoundingBox().SetX(x);
 				} else {
-					let y = this._item.GetBoundingBox().Y;
+					let y = this._item.GetBoundingBox().GetY();
 					y = this._isDown ? y - this._step : y + this._step;
-					this._item.GetBoundingBox().Y = y;
+					this._item.GetBoundingBox().SetY(y);
 				}
 			}
 		}

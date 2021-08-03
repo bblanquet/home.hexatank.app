@@ -16,7 +16,7 @@ export class FollowingItem extends Item {
 			e.anchor.set(0.5);
 			e.alpha = 0;
 		});
-		this.InitPosition(_item.GetBoundingBox());
+		this.InitPosition(_item.GetBoundingBox().GetPosition());
 		this.IsCentralRef = true;
 	}
 

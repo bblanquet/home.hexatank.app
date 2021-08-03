@@ -21,6 +21,7 @@ import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
 import { AudioLoader } from '../../Core/Framework/AudioLoader';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { Vibrator } from '../../Utils/Vibrator';
+import { ViewTranslator } from '../../Core/ViewTranslator';
 
 export class CamouflageHook extends Hook<RuntimeState> {
 	private _gameContextService: IGameContextService<CamouflageBlueprint, CamouflageContext>;
@@ -62,6 +63,11 @@ export class CamouflageHook extends Hook<RuntimeState> {
 		const player = this._gameContext.GetPlayer();
 		this.middle = player.GetBoundingBox().GetCentralPoint();
 		this.OnRetried.Invoke();
+		new ViewTranslator(
+			this._gameContext.ArrivalCell.GetBoundingBox(),
+			this._gameContext.DepartCell.GetBoundingBox(),
+			3000
+		).Start();
 	}
 
 	private Retry(): void {

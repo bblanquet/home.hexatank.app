@@ -7,10 +7,10 @@ export class InfiniteTransitionAnimator implements IAnimator {
 	private _animators: IAnimator[];
 	private _index: number = 0;
 
-	public constructor(private _item: Item, private _isX: boolean, private _distance: number, private _step: number) {
+	public constructor(item: Item, private _isX: boolean, private _distance: number, private _step: number) {
 		this._animators = [
-			new TransitionAnimation(_item, this._isX, this._distance, this._step),
-			new TransitionAnimation(_item, this._isX, -this._distance, this._step)
+			new TransitionAnimation(item, this._isX, this._distance, this._step),
+			new TransitionAnimation(item, this._isX, -this._distance, this._step)
 		];
 	}
 	Reset(): void {}

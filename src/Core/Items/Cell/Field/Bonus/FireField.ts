@@ -16,7 +16,7 @@ export class FireField extends BonusField {
 		this.GenerateSprite(SvgArchive.selectionCell, (e) => {
 			e.alpha = 0;
 		});
-		this.InitPosition(cell.GetBoundingBox());
+		this.InitPosition(cell.GetBoundingBox().GetPosition());
 	}
 
 	Support(vehicule: Vehicle): void {}

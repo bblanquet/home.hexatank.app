@@ -56,16 +56,16 @@ export class BouncingScaleUpAnimator implements IAnimator {
 	private SetBoundingBox(viewX: number, viewY: number) {
 		this._item.SetProperties(this._sprites, (obj) => {
 			const reference = this._item.GetRef();
-			obj.width = this._item.GetBoundingBox().Width * this._scale;
-			obj.height = this._item.GetBoundingBox().Height * this._scale;
+			obj.width = this._item.GetBoundingBox().GetWidth() * this._scale;
+			obj.height = this._item.GetBoundingBox().GetHeight() * this._scale;
 			if (!this._item.IsCentralRef) {
 				obj.x =
-					this._item.GetBoundingBox().Width / 2 -
-					this._item.GetBoundingBox().Width * this._scale / 2 +
+					this._item.GetBoundingBox().GetWidth() / 2 -
+					this._item.GetBoundingBox().GetWidth() * this._scale / 2 +
 					(reference.X + viewX);
 				obj.y =
-					this._item.GetBoundingBox().Height / 2 -
-					this._item.GetBoundingBox().Height * this._scale / 2 +
+					this._item.GetBoundingBox().GetHeight() / 2 -
+					this._item.GetBoundingBox().GetHeight() * this._scale / 2 +
 					(reference.Y + viewY);
 			}
 			obj.alpha = 1;

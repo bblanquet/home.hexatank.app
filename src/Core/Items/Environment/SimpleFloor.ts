@@ -11,7 +11,7 @@ export class SimpleFloor extends BasicItem {
 				e.alpha = 0;
 			});
 		});
-		this.InitPosition(boundingBox);
+		this.InitPosition(boundingBox.GetPosition());
 		this.IsCentralRef = true;
 	}
 

@@ -72,19 +72,15 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 		this.GenerateSprite(SvgArchive.selectionUnit);
 		this.SetProperty(SvgArchive.selectionUnit, (e) => (e.alpha = 0));
 
-		this._boundingBox = new BoundingBox();
-		this._boundingBox.Width = this._cell.GetBoundingBox().Width;
-		this._boundingBox.Height = this._cell.GetBoundingBox().Height;
-		this._boundingBox.X = this._cell.GetBoundingBox().X;
-		this._boundingBox.Y = this._cell.GetBoundingBox().Y;
+		this._boundingBox = BoundingBox.NewFromBox(this._cell.GetBoundingBox());
 
 		this.GenerateSprite(this.Identity.Skin.GetHq());
 		this.GenerateSprite(SvgArchive.building.hq.bottom);
 		this.GenerateSprite(SvgArchive.building.hq.top);
 
 		this.GetSprites().forEach((obj) => {
-			obj.width = this._boundingBox.Width;
-			obj.height = this._boundingBox.Height;
+			obj.width = this._boundingBox.GetWidth();
+			obj.height = this._boundingBox.GetHeight();
 			obj.anchor.set(0.5);
 		});
 		this.IsCentralRef = true;
@@ -97,7 +93,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 		this._onCellStateChanged = this.OncellStateChanged.bind(this);
 		this.OnDiamondEarned.On(this.HandleDiamondChanged.bind(this));
 		this._cell.OnCellStateChanged.On(this._onCellStateChanged);
-		this.InitPosition(cell.GetBoundingBox());
+		this.InitPosition(cell.GetBoundingBox().GetPosition());
 
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this._cell.IsVisible();

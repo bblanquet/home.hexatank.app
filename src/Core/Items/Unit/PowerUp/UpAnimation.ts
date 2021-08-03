@@ -27,13 +27,13 @@ export class UpAnimation extends Item {
 		this._rotationAnimator.SetStep(0.02);
 		//make pivot sprite center
 		this.GetSprites().forEach((sprite) => {
-			(sprite.width = this._vehicle.GetBoundingBox().Width),
-				(sprite.height = this._vehicle.GetBoundingBox().Height);
+			(sprite.width = this._vehicle.GetBoundingBox().GetWidth()),
+				(sprite.height = this._vehicle.GetBoundingBox().GetHeight());
 			sprite.anchor.set(0.5);
 			sprite.alpha = 0;
 		});
 		this.IsCentralRef = true;
-		this.InitPosition(this._vehicle.GetBoundingBox());
+		this.InitPosition(this._vehicle.GetBoundingBox().GetPosition());
 		this._animatorAnimator = new BouncingScaleUpAnimator(this, this._images);
 
 		this._vehicle.OnCellChanged.On(this.CellChanged.bind(this));

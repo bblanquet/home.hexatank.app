@@ -19,7 +19,7 @@ export class DiamondField extends Field {
 		this.Z = ZKind.Field;
 		this._timer = new TickTimer(3);
 		this.GenerateSprite(SvgArchive.diamondCell);
-		this.InitPosition(cell.GetBoundingBox());
+		this.InitPosition(cell.GetBoundingBox().GetPosition());
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});

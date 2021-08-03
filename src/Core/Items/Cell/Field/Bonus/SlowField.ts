@@ -11,7 +11,7 @@ export class SlowField extends Field {
 		super(cell, null);
 		this.Z = ZKind.Field;
 		this.GenerateSprite('');
-		this.InitPosition(cell.GetBoundingBox());
+		this.InitPosition(cell.GetBoundingBox().GetPosition());
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});

@@ -11,7 +11,7 @@ export default class PageAnalyser extends Component<any, any> {
 	}
 
 	componentDidMount() {
-		if (this.props) {
+		if (this.props && this._analyzerService) {
 			this._analyzerService.Page();
 		}
 	}

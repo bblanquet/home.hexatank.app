@@ -44,8 +44,8 @@ export class Tank extends Vehicle {
 		this.Turrel = new Turrel(identity.Skin, this);
 		//make pivot sprite center
 		this.GetSprites().forEach((sprite) => {
-			sprite.width = this.BoundingBox.Width;
-			sprite.height = this.BoundingBox.Height;
+			sprite.width = this.BoundingBox.GetWidth();
+			sprite.height = this.BoundingBox.GetHeight();
 			sprite.anchor.set(0.5);
 		});
 		this.IsCentralRef = true;
@@ -71,7 +71,7 @@ export class Tank extends Vehicle {
 
 	public SetPosition(cell: Cell): void {
 		super.SetPosition(cell);
-		this.Turrel.InitPosition(cell.GetBoundingBox());
+		this.Turrel.InitPosition(cell.GetBoundingBox().GetPosition());
 	}
 
 	public Destroy(): void {

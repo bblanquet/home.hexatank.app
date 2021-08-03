@@ -47,10 +47,13 @@ export class CamouflageRenderer {
 		this.SetHqLand(cells, SvgArchive.nature.hq, spots);
 		this.SetHqLand(cells, SvgArchive.nature.hq2, spots, 1);
 
-		const truck = new Tank(new Identity('player', HqAppearance.Skins.Get(ColorKind[ColorKind.Red]), true));
-		truck.OverrideLife(1);
-		truck.SetPosition(cells.Get(departure.ToString()));
-		vehicles.push(truck);
+		const tank = new Tank(new Identity('player', HqAppearance.Skins.Get(ColorKind[ColorKind.Red]), true));
+		tank.OverrideLife(1);
+		tank.SetPosition(cells.Get(departure.ToString()));
+		vehicles.push(tank);
+		const above = new AboveItem(tank, SvgArchive.hand);
+		above.SetVisible(() => !tank.IsSelected());
+
 		const arrivalCell = cells.Get(arrival.ToString());
 		new AboveItem(arrivalCell, SvgArchive.arrow);
 
@@ -66,18 +69,21 @@ export class CamouflageRenderer {
 			vehicles.push(tank);
 		});
 
-		return new CamouflageContext(gameState, cells.Values(), truck, vehicles, arrivalCell);
+		return new CamouflageContext(gameState, cells.Values(), tank, vehicles, tank.GetCurrentCell(), arrivalCell);
 	}
 
 	private SetHqLand(cells: Dictionary<Cell>, sprite: string, middleAreas: HexAxial[], z: number = 0) {
 		middleAreas.forEach((corner) => {
 			const cell = cells.Get(corner.ToString());
 			const boundingBox = new BoundingBox();
-			boundingBox.Width = GameSettings.Size * 6;
-			boundingBox.Height = GameSettings.Size * 6;
-			boundingBox.X = cell.GetBoundingBox().X - (boundingBox.Width / 2 - cell.GetBoundingBox().Width / 2);
-			boundingBox.Y = cell.GetBoundingBox().Y - (boundingBox.Height / 2 - cell.GetBoundingBox().Height / 2);
-
+			boundingBox.SetWidth(GameSettings.Size * 6);
+			boundingBox.SetHeight(GameSettings.Size * 6);
+			boundingBox.SetX(
+				cell.GetBoundingBox().GetX() - (boundingBox.GetWidth() / 2 - cell.GetBoundingBox().GetWidth() / 2)
+			);
+			boundingBox.SetY(
+				cell.GetBoundingBox().GetY() - (boundingBox.GetHeight() / 2 - cell.GetBoundingBox().GetHeight() / 2)
+			);
 			const land = new SimpleFloor(boundingBox, sprite, z);
 			land.SetVisible(() => true);
 			land.SetAlive(() => true);

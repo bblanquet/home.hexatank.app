@@ -18,11 +18,12 @@ export class Cloud extends Item {
 		this._timer = new TickTimer(3);
 		this.Z = ZKind.Sky;
 		this.GenerateSprite(this._sprite);
-		this._boundingBox = new BoundingBox();
-		this._boundingBox.X = this._point.X;
-		this._boundingBox.Y = this._point.Y;
-		this._boundingBox.Width = GameSettings.Size * 2;
-		this._boundingBox.Height = GameSettings.Size * Math.sqrt(3);
+		this._boundingBox = BoundingBox.New(
+			this._point.X,
+			this._point.Y,
+			GameSettings.Size * 2,
+			GameSettings.Size * Math.sqrt(3)
+		);
 		this.InitPosition(this._point);
 	}
 
@@ -38,18 +39,18 @@ export class Cloud extends Item {
 		super.Update(viewX, viewY);
 
 		if (this._goingRight) {
-			if (this._boundingBox.X >= this._max) {
+			if (this._boundingBox.GetX() >= this._max) {
 				this._goingRight = false;
 			} else {
-				this._boundingBox.X += 0.05;
+				this._boundingBox.SetX(this._boundingBox.GetX() + 0.05);
 			}
 		}
 
 		if (!this._goingRight) {
-			if (this._boundingBox.X <= this._point.X) {
+			if (this._boundingBox.GetX() <= this._point.X) {
 				this._goingRight = true;
 			} else {
-				this._boundingBox.X -= 0.05;
+				this._boundingBox.SetX(this._boundingBox.GetX() - 0.05);
 			}
 		}
 

@@ -17,7 +17,7 @@ export class FlagCell extends Item {
 			e.alpha = 0;
 		});
 		this._cell = cell;
-		this.InitPosition(cell.GetBoundingBox());
+		this.InitPosition(cell.GetBoundingBox().GetPosition());
 		this.IsCentralRef = true;
 	}
 
@@ -27,7 +27,7 @@ export class FlagCell extends Item {
 
 	public SetCell(cell: Cell): void {
 		this._cell = cell;
-		this.InitPosition(this._cell.GetBoundingBox());
+		this.InitPosition(this._cell.GetBoundingBox().GetPosition());
 	}
 	public GetBoundingBox(): BoundingBox {
 		return this._cell.GetBoundingBox();

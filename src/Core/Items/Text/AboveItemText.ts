@@ -22,8 +22,10 @@ export class AboveItemText extends Item {
 			this.UpdateText();
 		}
 		return BoundingBox.New(
-			this._item.GetBoundingBox().X + this._item.GetBoundingBox().Width / 2 - this._textMetrics.width / 2,
-			this._item.GetBoundingBox().Y - this._textMetrics.height / 2,
+			this._item.GetBoundingBox().GetX() +
+				this._item.GetBoundingBox().GetWidth() / 2 -
+				this._textMetrics.width / 2,
+			this._item.GetBoundingBox().GetY() - this._textMetrics.height / 2,
 			this._textMetrics.width,
 			this._textMetrics.height
 		);
@@ -71,8 +73,8 @@ export class AboveItemText extends Item {
 		this._text.text = this._content.toString();
 		this._text.style.fill = this._color;
 		this._textMetrics = PIXI.TextMetrics.measureText(this._text.text, new PIXI.TextStyle(this._text.style));
-		this._text.x = this._item.GetBoundingBox().X + this._item.GetBoundingBox().Width / 2;
-		this._text.y = this._item.GetBoundingBox().Y - this._item.GetBoundingBox().Height / 3;
+		this._text.x = this._item.GetBoundingBox().GetX() + this._item.GetBoundingBox().GetWidth() / 2;
+		this._text.y = this._item.GetBoundingBox().GetY() - this._item.GetBoundingBox().GetHeight() / 3;
 		this._text.visible = this._isVisible;
 	}
 

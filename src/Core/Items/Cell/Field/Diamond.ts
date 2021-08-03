@@ -34,7 +34,7 @@ export class Diamond extends AliveField {
 			this.Fields.push(field);
 			field.Loaded.On(this.OnLoaded.bind(this));
 		});
-		this.InitPosition(cell.GetBoundingBox());
+		this.InitPosition(cell.GetBoundingBox().GetPosition());
 		this.GetCurrentSprites().Values().forEach((obj) => {
 			obj.visible = this.GetCell().IsVisible();
 		});

@@ -1,16 +1,38 @@
+import { LiteEvent } from '../Events/LiteEvent';
 import { Point } from './Point';
 
 export class BoundingBox {
-	X: number;
-	Y: number;
-	Width: number;
-	Height: number;
+	private X: number;
+	private Y: number;
+	private Width: number;
+	private Height: number;
+
+	public OnXChanged: LiteEvent<number>;
+	public OnYChanged: LiteEvent<number>;
 
 	constructor() {
 		this.X = 0;
 		this.Y = 0;
 		this.Width = 0;
 		this.Height = 0;
+		this.OnXChanged = new LiteEvent<number>();
+		this.OnYChanged = new LiteEvent<number>();
+	}
+
+	GetX(): number {
+		return this.X;
+	}
+
+	GetY(): number {
+		return this.Y;
+	}
+
+	GetWidth(): number {
+		return this.Width;
+	}
+
+	GetHeight(): number {
+		return this.Height;
 	}
 
 	public static New(x: number, y: number, width: number, height: number): BoundingBox {
@@ -41,8 +63,28 @@ export class BoundingBox {
 	}
 
 	public SetPosition(point: Point): void {
-		this.X = point.X;
-		this.Y = point.Y;
+		this.SetX(point.X);
+		this.SetY(point.Y);
+	}
+
+	public SetX(x: number): void {
+		const formerX = this.X;
+		this.X = x;
+		this.OnXChanged.Invoke(this, formerX);
+	}
+
+	public SetY(y: number): void {
+		const formerY = this.Y;
+		this.Y = y;
+		this.OnYChanged.Invoke(this, formerY);
+	}
+
+	SetWidth(width: number): void {
+		this.Width = width;
+	}
+
+	SetHeight(height: number): void {
+		this.Height = height;
 	}
 
 	public GetCenter(): number {

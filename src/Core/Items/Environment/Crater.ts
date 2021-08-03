@@ -18,7 +18,7 @@ export class Crater extends Item {
 
 		this.GenerateSprite(SvgArchive.destruction.floorExplosion, (s) => (s.alpha = 0.6));
 		this.GenerateSprite(SvgArchive.destruction.debris);
-		this.InitPosition(boundingbox);
+		this.InitPosition(boundingbox.GetPosition());
 	}
 
 	public Destroy(): void {

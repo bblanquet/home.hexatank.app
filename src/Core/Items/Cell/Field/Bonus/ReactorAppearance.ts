@@ -55,7 +55,7 @@ export class ReactorAppearance extends Item {
 		this.GenerateSprite(SvgArchive.bonus.reactor.cover);
 		this.GenerateSprite(this._light);
 		this.GenerateSprite(SvgArchive.bonus.coverTop);
-		this.InitPosition(this.Reactor.GetCell().GetBoundingBox());
+		this.InitPosition(this.Reactor.GetCell().GetBoundingBox().GetPosition());
 
 		this._onCellStateChanged = this.OnCellStateChanged.bind(this);
 		this.Reactor.GetCell().OnCellStateChanged.On(this._onCellStateChanged);
@@ -135,8 +135,8 @@ export class ReactorAppearance extends Item {
 
 	private ChangeReferential(viewX: number, viewY: number) {
 		this.GetSprites().forEach((sprite) => {
-			(sprite.width = this.Reactor.GetCell().GetBoundingBox().Width),
-				(sprite.height = this.Reactor.GetCell().GetBoundingBox().Height);
+			(sprite.width = this.Reactor.GetCell().GetBoundingBox().GetWidth()),
+				(sprite.height = this.Reactor.GetCell().GetBoundingBox().GetHeight());
 			sprite.anchor.set(0.5);
 		});
 		this.IsCentralRef = true;

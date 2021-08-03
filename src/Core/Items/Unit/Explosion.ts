@@ -22,11 +22,7 @@ export class Explosion extends Item {
 		super();
 		this.Z = z;
 		this._timer = new TimeTimer(timer);
-		this.BoundingBox = new BoundingBox();
-		this.BoundingBox.X = boundingbox.X;
-		this.BoundingBox.Y = boundingbox.Y;
-		this.BoundingBox.Width = boundingbox.Width;
-		this.BoundingBox.Height = boundingbox.Height;
+		this.BoundingBox = BoundingBox.NewFromBox(boundingbox);
 
 		this._explosions = sprites;
 
@@ -37,7 +33,7 @@ export class Explosion extends Item {
 			});
 		});
 		this.IsCentralRef = true;
-		this.InitPosition(boundingbox);
+		this.InitPosition(boundingbox.GetPosition());
 	}
 
 	public Update(viewX: number, viewY: number): void {

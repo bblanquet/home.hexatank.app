@@ -36,12 +36,12 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 		const currentDate = new Date().getTime() - this._departureDate;
 		this._progress = this.GetPercentage(this._arrivalDate, currentDate);
 
-		vehicle.X = departure.X + this._progress * xDistance;
-		vehicle.Y = departure.Y + this._progress * yDistance;
+		vehicle.SetX(departure.GetX() + this._progress * xDistance);
+		vehicle.SetY(departure.GetY() + this._progress * yDistance);
 
 		if (this._progress === 1) {
-			vehicle.X = this._vehicle.GetNextCell().GetBoundingBox().X;
-			vehicle.Y = this._vehicle.GetNextCell().GetBoundingBox().Y;
+			vehicle.SetX(this._vehicle.GetNextCell().GetBoundingBox().GetX());
+			vehicle.SetY(this._vehicle.GetNextCell().GetBoundingBox().GetY());
 			this._departureDate = null;
 			this._arrivalDate = null;
 			this._vehicle.GoNextCell();

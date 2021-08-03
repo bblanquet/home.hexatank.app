@@ -66,11 +66,14 @@ export class GameRenderer {
 		middleAreas.forEach((corner) => {
 			const cell = cells.Get(corner.ToString());
 			const boundingBox = new BoundingBox();
-			boundingBox.Width = GameSettings.Size * 6;
-			boundingBox.Height = GameSettings.Size * 6;
-			boundingBox.X = cell.GetBoundingBox().X - (boundingBox.Width / 2 - cell.GetBoundingBox().Width / 2);
-			boundingBox.Y = cell.GetBoundingBox().Y - (boundingBox.Height / 2 - cell.GetBoundingBox().Height / 2);
-
+			boundingBox.SetWidth(GameSettings.Size * 6);
+			boundingBox.SetHeight(GameSettings.Size * 6);
+			boundingBox.SetX(
+				cell.GetBoundingBox().GetX() - (boundingBox.GetWidth() / 2 - cell.GetBoundingBox().GetWidth() / 2)
+			);
+			boundingBox.SetY(
+				cell.GetBoundingBox().GetY() - (boundingBox.GetHeight() / 2 - cell.GetBoundingBox().GetHeight() / 2)
+			);
 			const land = new SimpleFloor(boundingBox, sprite, z);
 			land.SetVisible(() => true);
 			land.SetAlive(() => true);

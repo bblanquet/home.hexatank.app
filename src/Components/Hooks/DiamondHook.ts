@@ -1,6 +1,6 @@
 import { RuntimeState } from '../Model/RuntimeState';
 import { Hook } from './Hook';
-import { IAppService } from '../../Services/App/IAppService';
+import { IBuilder } from '../../Services/Builder/IBuilder';
 import { IAudioService } from '../../Services/Audio/IAudioService';
 import { IGameworldService } from '../../Services/World/IGameworldService';
 import { IInteractionService } from '../../Services/Interaction/IInteractionService';
@@ -28,13 +28,13 @@ import { FieldProp } from '../Components/Canvas/FieldProp';
 import { CellGroup } from '../../Core/Items/CellGroup';
 
 export class DiamondHook extends Hook<RuntimeState> {
-	private _gameContextService: IGameworldService<DiamondBlueprint, Diamondworld>;
+	private _gameworldService: IGameworldService<DiamondBlueprint, Diamondworld>;
 	private _soundService: IAudioService;
 	private _profilService: IPlayerProfilService;
 	private _interactionService: IInteractionService<Gameworld>;
-	private _appService: IAppService<DiamondBlueprint>;
+	private _appService: IBuilder<DiamondBlueprint>;
 	private _keyService: IKeyService;
-	private _gameContext: Diamondworld;
+	private _gameworld: Diamondworld;
 	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
 	private _handleRetry: any = this.Retry.bind(this);
 	public OnRefresh: SimpleEvent = new SimpleEvent();
@@ -46,17 +46,17 @@ export class DiamondHook extends Hook<RuntimeState> {
 	}
 
 	public Unmount(): void {
-		const playerHq = this._gameContext.GetPlayerHq();
+		const playerHq = this._gameworld.GetPlayerHq();
 		playerHq.OnTruckChanged.Clear();
 		playerHq.OnTankRequestChanged.Clear();
 		this._profilService.OnPointsAdded.Clear();
 		playerHq.OnDiamondCountChanged.Clear();
 		playerHq.OnCashMissing.Clear();
-		this._gameContext.OnItemSelected.Clear();
+		this._gameworld.OnItemSelected.Clear();
 		this._interactionService.GetMultiSelectionContext().OnModeChanged.Clear();
-		this._gameContext.State.OnGameStatusChanged.Clear();
+		this._gameworld.State.OnGameStatusChanged.Clear();
 		this._interactionService.OnMultiMenuShowed.Clear();
-		this._appService.OnRefresh.Off(this._handleRetry);
+		this._appService.OnReloaded.Off(this._handleRetry);
 	}
 
 	private Retry(): void {
@@ -82,28 +82,28 @@ export class DiamondHook extends Hook<RuntimeState> {
 
 	public Init(): void {
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
-		this._appService = Singletons.Load<IAppService<DiamondBlueprint>>(this._keyService.GetAppKey());
+		this._appService = Singletons.Load<IBuilder<DiamondBlueprint>>(this._keyService.GetAppKey());
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
-		this._gameContextService = Singletons.Load<IGameworldService<DiamondBlueprint, Diamondworld>>(
-			SingletonKey.DiamondGameContext
+		this._gameworldService = Singletons.Load<IGameworldService<DiamondBlueprint, Diamondworld>>(
+			SingletonKey.Diamondworld
 		);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		this._interactionService = Singletons.Load<IInteractionService<Gameworld>>(SingletonKey.Interaction);
-		this._gameContext = this._gameContextService.Publish();
+		this._gameworld = this._gameworldService.Publish();
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
-		const playerHq = this._gameContext.GetPlayerHq();
+		const playerHq = this._gameworld.GetPlayerHq();
 		playerHq.OnTruckChanged.On(this.HandleTruckChanged.bind(this));
 		playerHq.OnTankRequestChanged.On(this.HandleTankChanged.bind(this));
 		playerHq.OnDiamondCountChanged.On(this.HandleDiamondChanged.bind(this));
 		playerHq.OnCashMissing.On(this.HandleCashMissing.bind(this));
 		this._profilService.OnPointsAdded.On(this.HandlePoints.bind(this));
-		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
-		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
+		this._gameworld.OnItemSelected.On(this.HandleSelection.bind(this));
+		this._gameworld.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
 		this._interactionService.GetMultiSelectionContext().OnModeChanged.On(this.HandleMultiSelection.bind(this));
-		this._appService.OnRefresh.On(this._handleRetry);
+		this._appService.OnReloaded.On(this._handleRetry);
 		this._soundService.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));
-		const player = this._gameContext.GetPlayer();
+		const player = this._gameworld.GetPlayer();
 		this.middle = player.GetBoundingBox().GetCentralPoint();
 		this.OnRefresh.Invoke();
 	}
@@ -134,7 +134,7 @@ export class DiamondHook extends Hook<RuntimeState> {
 	}
 
 	public Stop(isVictory: boolean): void {
-		this._gameContext.SetStatus(isVictory ? GameStatus.Victory : GameStatus.Defeat);
+		this._gameworld.SetStatus(isVictory ? GameStatus.Victory : GameStatus.Defeat);
 	}
 
 	private OnItemSelectionChanged(obj: any, item: ISelectable): void {
@@ -190,7 +190,7 @@ export class DiamondHook extends Hook<RuntimeState> {
 			}
 		}
 
-		this._gameContext.State.SetPause(hasMenu);
+		this._gameworld.State.SetPause(hasMenu);
 	}
 
 	public GetCenter(): Point {
@@ -208,32 +208,32 @@ export class DiamondHook extends Hook<RuntimeState> {
 	}
 
 	public GetReactor(): number {
-		return this._gameContext.GetPlayerHq().GetReactorsCount();
+		return this._gameworld.GetPlayerHq().GetReactorsCount();
 	}
 	public GetVehicleCount(): number {
-		return this._gameContext.GetPlayerHq().GetVehicleCount();
+		return this._gameworld.GetPlayerHq().GetVehicleCount();
 	}
 
 	public GetDuration(): number {
-		return this._gameContext.Duration;
+		return this._gameworld.Duration;
 	}
 
 	public OnTimerDone(): SimpleEvent {
-		return this._gameContext.OnTimerDone;
+		return this._gameworld.OnTimerDone;
 	}
 
 	public IsCovered(): boolean {
-		return this._gameContext.GetPlayerHq().IsCovered(this.State.Item as Cell);
+		return this._gameworld.GetPlayerHq().IsCovered(this.State.Item as Cell);
 	}
 
 	GetGoalDiamond(): number {
-		return this._gameContext.GetDiamond();
+		return this._gameworld.GetDiamond();
 	}
 
 	GetFields(): FieldProp[] {
 		if (this.State.Item instanceof Cell) {
 			const cell = this.State.Item;
-			const hq = this._gameContext.GetPlayerHq();
+			const hq = this._gameworld.GetPlayerHq();
 			if (hq.IsCovered(cell)) {
 				return FieldProp.All(hq, (e: Item) => {
 					this.SendContext(e);

@@ -4,7 +4,7 @@ import { CombinationContext } from './CombinationContext';
 import { IHqGameworld } from '../../Framework/World/IHqGameworld';
 
 export class AddTankCombination extends AbstractSingleCombination {
-	constructor(private _gameContext: IHqGameworld) {
+	constructor(private _gameworld: IHqGameworld) {
 		super();
 	}
 
@@ -18,7 +18,7 @@ export class AddTankCombination extends AbstractSingleCombination {
 
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
-			this._gameContext.GetPlayerHq().AddTankRequest();
+			this._gameworld.GetPlayerHq().AddTankRequest();
 			context.Items.splice(context.Items.length - 1, 1);
 			return true;
 		}

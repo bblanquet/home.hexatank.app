@@ -1,4 +1,4 @@
-import { IAppService } from '../../Services/App/IAppService';
+import { IBuilder } from '../../Services/Builder/IBuilder';
 import { IUpdateService } from '../../Services/Update/IUpdateService';
 import { ItemsUpdater } from '../../Core/ItemsUpdater';
 import { Component, h } from 'preact';
@@ -10,12 +10,13 @@ import { IBlueprint } from '../../Core/Framework/Blueprint/IBlueprint';
 import PageAnalyser from './PageAnalyser';
 import { Point } from '../../Utils/Geometry/Point';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
+import { IAppService } from '../../Services/App/IAppService';
 
 export default class GameCanvas extends Component<{ Center: Point; OnRefresh: SimpleEvent; uncollect?: boolean }, {}> {
 	private _gameCanvas: HTMLElement;
 	private _resizeFunc: any = this.ResizeTheCanvas.bind(this);
 	private _updater: ItemsUpdater;
-	private _appService: IAppService<IBlueprint>;
+	private _appService: IAppService;
 	private _keyService: IKeyService;
 	private _layerService: ILayerService;
 	private _stop: boolean;
@@ -25,7 +26,7 @@ export default class GameCanvas extends Component<{ Center: Point; OnRefresh: Si
 	constructor() {
 		super();
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
-		this._appService = Singletons.Load<IAppService<IBlueprint>>(this._keyService.GetAppKey());
+		this._appService = Singletons.Load<IAppService>(SingletonKey.App);
 		this._stop = true;
 	}
 
@@ -68,7 +69,7 @@ export default class GameCanvas extends Component<{ Center: Point; OnRefresh: Si
 		window.removeEventListener('DOMContentLoaded', this._resizeFunc);
 		window.removeEventListener('scroll', this._resizeFunc);
 		if (!this.props.uncollect) {
-			Singletons.Load<IAppService<IBlueprint>>(this._keyService.GetAppKey()).Collect();
+			Singletons.Load<IBuilder<IBlueprint>>(this._keyService.GetAppKey()).Collect();
 		}
 	}
 

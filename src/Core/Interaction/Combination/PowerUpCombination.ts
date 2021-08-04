@@ -6,7 +6,7 @@ import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { IHqGameworld } from '../../Framework/World/IHqGameworld';
 
 export class PowerUpCombination extends AbstractSingleCombination {
-	constructor(private _gameContext: IHqGameworld) {
+	constructor(private _gameworld: IHqGameworld) {
 		super();
 	}
 
@@ -24,9 +24,9 @@ export class PowerUpCombination extends AbstractSingleCombination {
 			let field = <ReactorField>context.Items[0];
 			if (
 				field.HasStock() ||
-				this._gameContext
+				this._gameworld
 					.GetPlayerHq()
-					.Buy(GameSettings.TruckPrice * this._gameContext.GetPlayerHq().GetTotalEnergy())
+					.Buy(GameSettings.TruckPrice * this._gameworld.GetPlayerHq().GetTotalEnergy())
 			) {
 				field.EnergyUp();
 			}

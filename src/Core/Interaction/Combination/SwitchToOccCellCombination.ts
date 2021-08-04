@@ -7,7 +7,7 @@ import { Tank } from '../../Items/Unit/Tank';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 
 export class SwitchToOccCellCombination extends AbstractSingleCombination {
-	constructor(private _gameContext: IHqGameworld) {
+	constructor(private _gameworld: IHqGameworld) {
 		super();
 	}
 	IsMatching(context: CombinationContext): boolean {
@@ -28,12 +28,12 @@ export class SwitchToOccCellCombination extends AbstractSingleCombination {
 			if (selected === selectable) {
 				if (field instanceof BasicField) {
 					cell.SetSelected(true);
-					this._gameContext.OnItemSelected.Invoke(this, cell);
+					this._gameworld.OnItemSelected.Invoke(this, cell);
 					context.Items.splice(0, 2);
 					context.Items.push(cell);
 				} else if (field instanceof ReactorField) {
 					field.SetSelected(true);
-					this._gameContext.OnItemSelected.Invoke(this, field);
+					this._gameworld.OnItemSelected.Invoke(this, field);
 					context.Items.splice(0, 2);
 					context.Items.push(field);
 				} else {

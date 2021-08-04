@@ -1,7 +1,7 @@
 import { Hook } from './Hook';
 import { ProfilState } from '../Model/ProfilState';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
-import { IAppService } from '../../Services/App/IAppService';
+import { IBuilder } from '../../Services/Builder/IBuilder';
 import { StateUpdater } from 'preact/hooks';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { RecordSelection } from '../Model/RecordSelection';
@@ -13,14 +13,14 @@ import { JsonRecordContent } from '../../Core/Framework/Record/Model/JsonRecordC
 import { RecordContent } from '../../Core/Framework/Record/Model/RecordContent';
 
 export class ProfilHook extends Hook<ProfilState> {
-	private _appService: IAppService<GameBlueprint>;
+	private _appService: IBuilder<GameBlueprint>;
 	private _recordService: IRecordService;
 	private _compareService: ICompareService;
 	private _playerProfilService: IPlayerProfilService;
 
 	constructor(d: [ProfilState, StateUpdater<ProfilState>]) {
 		super(d[0], d[1]);
-		this._appService = Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.RecordApp);
+		this._appService = Singletons.Load<IBuilder<GameBlueprint>>(SingletonKey.PlayerBuilder);
 		this._playerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this._recordService = Singletons.Load<IRecordService>(SingletonKey.Record);
 		this._compareService = Singletons.Load<ICompareService>(SingletonKey.Compare);

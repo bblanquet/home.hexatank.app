@@ -20,9 +20,12 @@ import { Cloudmaker } from '../Cloudmaker';
 import { Landmaker } from '../Landmaker';
 import { CellState } from '../../../Items/Cell/CellState';
 import { CellStateSetter } from '../../../Items/Cell/CellStateSetter';
+import { GameSettings } from '../../GameSettings';
 
 export class FireworldMaker {
 	public Make(blueprint: FireBlueprint, gameState: GameState): Fireworld {
+		GameSettings.Init();
+		GameSettings.SetNormalSpeed();
 		const cells = new Dictionary<Cell>();
 
 		blueprint.Cells.forEach((item) => {

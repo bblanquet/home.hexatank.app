@@ -21,10 +21,10 @@ export class CamouflageAudioManager implements IGameAudioManager {
 	private _audioId: number;
 	private _lastPlayed: Dictionary<number> = new Dictionary<number>();
 
-	constructor(private _mapContext: IBlueprint, private _gameContext: Camouflageworld) {
+	constructor(private _mapContext: IBlueprint, private _gameworld: Camouflageworld) {
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
-		this._gameContext.GetVehicles().forEach((v) => {
+		this._gameworld.OnItemSelected.On(this.HandleSelection.bind(this));
+		this._gameworld.GetVehicles().forEach((v) => {
 			this.HandleVehicle(null, v);
 		});
 	}
@@ -79,7 +79,7 @@ export class CamouflageAudioManager implements IGameAudioManager {
 		}
 	}
 	HandleOrder(src: Vehicle, order: IOrder): void {
-		const playerHq = this._gameContext.GetPlayer();
+		const playerHq = this._gameworld.GetPlayer();
 		if (playerHq) {
 			if (src.GetRelation(playerHq.Identity) === Relationship.Ally) {
 				const voices = [

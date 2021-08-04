@@ -6,9 +6,9 @@ export class RecordCanvasUpdater {
 	private _unitUpdater: UnitUpdater;
 	private _cellUpdater: CellUpdater;
 
-	constructor(private _ref: RecordContent, private _gameContext: Gameworld) {
-		this._unitUpdater = new UnitUpdater(this._ref, this._gameContext);
-		this._cellUpdater = new CellUpdater(this._ref, this._gameContext);
+	constructor(private _ref: RecordContent, private _gameworld: Gameworld) {
+		this._unitUpdater = new UnitUpdater(this._ref, this._gameworld);
+		this._cellUpdater = new CellUpdater(this._ref, this._gameworld);
 	}
 
 	public SetDate(date: number): void {

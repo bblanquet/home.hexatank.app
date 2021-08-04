@@ -5,9 +5,7 @@ import { IAnalyzeService } from '../../Services/Analyse/IAnalyzeService';
 import { Dictionary } from '../Collections/Dictionary';
 import { ErrorDetail } from '../../Components/Model/ErrorDetail';
 import axios from 'axios';
-import { IAppService } from '../../Services/App/IAppService';
-import { IBlueprint } from '../../Core/Framework/Blueprint/IBlueprint';
-import { IKeyService } from '../../Services/Key/IKeyService';
+import { IRecordContextService } from '../../Services/Record/IRecordContextService';
 
 export enum ErrorCat {
 	outOfRange,
@@ -57,8 +55,7 @@ export class ErrorHandler {
 		payload.date = new Date();
 		payload.name = error.message;
 		payload.stacktrace = error.stack;
-		const appKey = Singletons.Load<IKeyService>(SingletonKey.Key).GetAppKey();
-		const record = Singletons.Load<IAppService<IBlueprint>>(appKey).GetRecord();
+		const record = Singletons.Load<IRecordContextService>(SingletonKey.RecordContext).Publish();
 		payload.content = record ? JSON.stringify(record.GetRecord()) : '';
 		axios.post('{{error_url}}/server/Exception/Add', payload);
 	}

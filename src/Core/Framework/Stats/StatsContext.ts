@@ -14,9 +14,9 @@ export class StatsContext {
 		return this._curves;
 	}
 
-	constructor(private _gameContext: Gameworld) {
+	constructor(private _gameworld: Gameworld) {
 		this._refDate = new Date().getTime();
-		this._gameContext.GetHqs().forEach((hq) => {
+		this._gameworld.GetHqs().forEach((hq) => {
 			this._curves.Add(StatsKind[StatsKind.Unit], new Curve(new Array<DateValue>(), hq.Identity.Skin.GetColor()));
 			this._curves.Add(
 				StatsKind[StatsKind.Diamond],
@@ -40,7 +40,7 @@ export class StatsContext {
 
 	private HandleDiamondChanged(src: Headquarter, diamond: number): void {
 		const time = this.GetTime();
-		this._gameContext.GetHqs().forEach((hq) => {
+		this._gameworld.GetHqs().forEach((hq) => {
 			const curve = this._curves
 				.Get(StatsKind[StatsKind.Diamond])
 				.find((c) => c.Color === hq.Identity.Skin.GetColor());
@@ -50,7 +50,7 @@ export class StatsContext {
 
 	private HandleVehicleCreated(src: Headquarter, vehicule: Vehicle): void {
 		const time = this.GetTime();
-		this._gameContext.GetHqs().forEach((hq) => {
+		this._gameworld.GetHqs().forEach((hq) => {
 			const curve = this._curves
 				.Get(StatsKind[StatsKind.Unit])
 				.find((c) => c.Color === hq.Identity.Skin.GetColor());
@@ -60,7 +60,7 @@ export class StatsContext {
 
 	private HandleFieldChanged(src: Headquarter, field: number): void {
 		const time = this.GetTime();
-		this._gameContext.GetHqs().forEach((hq) => {
+		this._gameworld.GetHqs().forEach((hq) => {
 			const curve = this._curves
 				.Get(StatsKind[StatsKind.Cell])
 				.find((c) => c.Color === hq.Identity.Skin.GetColor());
@@ -70,7 +70,7 @@ export class StatsContext {
 
 	private HandleEnergyChanged(src: Headquarter, energy: number): void {
 		const time = this.GetTime();
-		this._gameContext.GetHqs().forEach((hq) => {
+		this._gameworld.GetHqs().forEach((hq) => {
 			const curve = this._curves
 				.Get(StatsKind[StatsKind.Energy])
 				.find((c) => c.Color === hq.Identity.Skin.GetColor());

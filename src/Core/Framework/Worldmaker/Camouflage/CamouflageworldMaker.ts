@@ -25,6 +25,10 @@ import { CellStateSetter } from '../../../Items/Cell/CellStateSetter';
 
 export class CamouflageworldMaker {
 	public Make(blueprint: CamouflageBlueprint, gameState: GameState): Camouflageworld {
+		GameSettings.Init();
+		GameSettings.SetNormalSpeed();
+		GameSettings.TranslatinDuration = 1000;
+
 		const cells = new Dictionary<Cell>();
 		const vehicles = new Array<Vehicle>();
 

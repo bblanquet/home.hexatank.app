@@ -5,16 +5,16 @@ import { DiamondworlMaker } from '../../Core/Framework/Worldmaker/Diamond/Diamon
 import { GameState } from '../../Core/Framework/World/GameState';
 
 export class DiamondworldService implements IGameworldService<DiamondBlueprint, Diamondworld> {
-	private _gameContext: Diamondworld;
+	private _gameworld: Diamondworld;
 
 	Register(blueprint: DiamondBlueprint, gameState: GameState): void {
-		this._gameContext = new DiamondworlMaker().Make(blueprint, gameState);
+		this._gameworld = new DiamondworlMaker().Make(blueprint, gameState);
 	}
 	Publish(): Diamondworld {
-		return this._gameContext;
+		return this._gameworld;
 	}
 
 	Collect(): void {
-		this._gameContext = null;
+		this._gameworld = null;
 	}
 }

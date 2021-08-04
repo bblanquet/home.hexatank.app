@@ -24,18 +24,18 @@ export class RecordContext implements IRecordContext {
 	private _handleField: any = this.HandleFieldChanged.bind(this);
 	private _handleLog: any = this.HandleLogs.bind(this);
 
-	constructor(blueprint: GameBlueprint, private _gameContext: Gameworld) {
+	constructor(blueprint: GameBlueprint, private _gameworld: Gameworld) {
 		this._record = new RecordContent();
-		this._record.PlayerName = this._gameContext.GetPlayer().Identity.Name;
+		this._record.PlayerName = this._gameworld.GetPlayer().Identity.Name;
 		this._record.Blueprint = blueprint;
 		this._record.StartDate = Date.now();
-		this._gameContext.GetHqs().forEach((hq) => {
+		this._gameworld.GetHqs().forEach((hq) => {
 			this._record.Hqs.Add(hq.Identity.Name, new RecordHq(hq.Identity.Name, hq.Identity.Skin.GetColor()));
 			hq.OnVehicleCreated.On(this._handleVehicle);
 		});
 
 		this._record.Dates.push(this._record.StartDate);
-		this._gameContext.GetCells().forEach((cell) => {
+		this._gameworld.GetCells().forEach((cell) => {
 			const action = new RecordCellState(this._record.StartDate, FieldHelper.GetRecordName(cell.GetField()));
 			if (action.kind !== RecordKind.None) {
 				const trackingCell = new RecordCell();

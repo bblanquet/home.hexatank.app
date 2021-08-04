@@ -4,7 +4,7 @@ import { Hook } from './Hook';
 import { BlueSentences } from '../Model/Dialogues';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { route } from 'preact-router';
-import { IAppService } from '../../Services/App/IAppService';
+import { IBuilder } from '../../Services/Builder/IBuilder';
 import { StateUpdater } from 'preact/hooks';
 import { CampaignKind } from '../../Services/Campaign/CampaignKind';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
@@ -64,7 +64,7 @@ export class BlueHook extends Hook<CampaignState> {
 
 	public Start(index: number): void {
 		const mapContext = this._campaignService.GetBlueprint(CampaignKind.blue, index);
-		Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App).Register(
+		Singletons.Load<IBuilder<GameBlueprint>>(SingletonKey.GameBuilder).Register(
 			mapContext,
 			() => {
 				this._playerProfilService.GetProfil().BlueLvl[index] = StageState.achieved;

@@ -9,18 +9,18 @@ import { LogKind } from '../../Utils/Logger/LogKind';
 import { route } from 'preact-router';
 import { RecordContent } from '../../Core/Framework/Record/Model/RecordContent';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
-import { IAppService } from '../../Services/App/IAppService';
+import { IBuilder } from '../../Services/Builder/IBuilder';
 import { IRecordService } from '../../Services/Record/IRecordService';
 import { Singletons, SingletonKey } from '../../Singletons';
 
 export class MonitoringHook extends Hook<CustomerState> {
 	public OnNotification: LiteEvent<NotificationState> = new LiteEvent<NotificationState>();
-	private _appService: IAppService<GameBlueprint>;
+	private _appService: IBuilder<GameBlueprint>;
 	private _recordService: IRecordService;
 
 	constructor(state: CustomerState, setState: StateUpdater<CustomerState>) {
 		super(state, setState);
-		this._appService = Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.RecordApp);
+		this._appService = Singletons.Load<IBuilder<GameBlueprint>>(SingletonKey.PlayerBuilder);
 		this._recordService = Singletons.Load<IRecordService>(SingletonKey.Record);
 		this.Refresh();
 	}

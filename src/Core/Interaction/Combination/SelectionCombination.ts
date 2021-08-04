@@ -12,7 +12,7 @@ import { ISelectableChecker } from '../ISelectableChecker';
 export class SelectionCombination extends AbstractSingleCombination {
 	private _checker: ISelectableChecker;
 
-	constructor(isSelectable: ISelectableChecker, private _gameContext: IGameworld) {
+	constructor(isSelectable: ISelectableChecker, private _gameworld: IGameworld) {
 		super();
 		this._checker = isSelectable;
 	}
@@ -35,23 +35,23 @@ export class SelectionCombination extends AbstractSingleCombination {
 				) {
 					const field = selectablecell.GetField() as ReactorField;
 					field.SetSelected(true);
-					this._gameContext.OnItemSelected.Invoke(this, field);
+					this._gameworld.OnItemSelected.Invoke(this, field);
 				} else if (
 					selectablecell.GetField() instanceof Headquarter &&
-					(selectablecell.GetField() as Headquarter) === this._gameContext.GetPlayer()
+					(selectablecell.GetField() as Headquarter) === this._gameworld.GetPlayer()
 				) {
 					const field = selectablecell.GetField() as Headquarter;
 					field.SetSelected(true);
-					this._gameContext.OnItemSelected.Invoke(this, field);
+					this._gameworld.OnItemSelected.Invoke(this, field);
 				} else if (selectablecell.GetField() instanceof BasicField && selectablecell.IsSelectable()) {
 					selectable.SetSelected(true);
-					this._gameContext.OnItemSelected.Invoke(this, item);
+					this._gameworld.OnItemSelected.Invoke(this, item);
 				} else {
 					return false;
 				}
 			} else {
 				selectable.SetSelected(true);
-				this._gameContext.OnItemSelected.Invoke(this, item);
+				this._gameworld.OnItemSelected.Invoke(this, item);
 			}
 			return true;
 		}

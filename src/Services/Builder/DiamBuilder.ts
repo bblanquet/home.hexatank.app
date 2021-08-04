@@ -1,38 +1,28 @@
-import { DiamondBlueprint } from './../../Core/Framework/Blueprint/Diamond/DiamondBlueprint';
+import { DiamondBlueprint } from '../../Core/Framework/Blueprint/Diamond/DiamondBlueprint';
 import { Diamondworld } from '../../Core/Framework/World/Diamondworld';
-import { RecordContext } from '../../Core/Framework/Record/RecordContext';
-import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
 import { IInteractionService } from '../Interaction/IInteractionService';
 import { ILayerService } from '../Layer/ILayerService';
 import { IUpdateService } from '../Update/IUpdateService';
 import { IGameworldService } from '../World/IGameworldService';
-import { AppProvider } from '../../Core/Framework/App/AppProvider';
-import { IAppService } from './IAppService';
+import { IBuilder } from './IBuilder';
 import { Singletons, SingletonKey } from '../../Singletons';
 import * as PIXI from 'pixi.js';
 import { IKeyService } from '../Key/IKeyService';
-import { CellStateSetter } from '../../Core/Items/Cell/CellStateSetter';
-import { GameSettings } from '../../Core/Framework/GameSettings';
 import { IAudioService } from '../Audio/IAudioService';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import { GameState } from '../../Core/Framework/World/GameState';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { GameAudioManager } from '../../Core/Framework/Audio/GameAudioManager';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
-import { BrainInjecter } from '../../Core/Ia/Decision/BrainInjecter';
-import { Headquarter } from '../../Core/Items/Cell/Field/Hq/Headquarter';
-import { CellState } from '../../Core/Items/Cell/CellState';
-
-export class DiamondAppService implements IAppService<DiamondBlueprint> {
+import { IAppService } from '../App/IAppService';
+export class DiamBuilder implements IBuilder<DiamondBlueprint> {
 	private _blueprint: DiamondBlueprint;
-	private _app: PIXI.Application;
-	private _appProvider: AppProvider;
+	private _appService: IAppService;
 	private _interactionManager: PIXI.InteractionManager;
 	private _gameAudioService: GameAudioManager;
 	private _context: Diamondworld;
-
 	private _playerProfilService: IPlayerProfilService;
-	private _gameContextService: IGameworldService<DiamondBlueprint, Diamondworld>;
+	private _gameworldService: IGameworldService<DiamondBlueprint, Diamondworld>;
 	private _interactionService: IInteractionService<Diamondworld>;
 	private _layerService: ILayerService;
 	private _updateService: IUpdateService;
@@ -40,12 +30,12 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 	private _audioService: IAudioService;
 	private _victory: () => void;
 	private _defeat: () => void;
-	public OnRefresh: SimpleEvent = new SimpleEvent();
+	public OnReloaded: SimpleEvent = new SimpleEvent();
 
-	public Register(blueprint: DiamondBlueprint, victory: () => void, defeat: () => void): void {
-		this._appProvider = new AppProvider();
-		this._gameContextService = Singletons.Load<IGameworldService<DiamondBlueprint, Diamondworld>>(
-			SingletonKey.DiamondGameContext
+	constructor() {
+		this._appService = Singletons.Load<IAppService>(SingletonKey.App);
+		this._gameworldService = Singletons.Load<IGameworldService<DiamondBlueprint, Diamondworld>>(
+			SingletonKey.Diamondworld
 		);
 		this._playerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
@@ -53,49 +43,36 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 		this._interactionService = Singletons.Load<IInteractionService<Diamondworld>>(SingletonKey.Interaction);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 		this._audioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
+	}
+
+	public Register(blueprint: DiamondBlueprint, victory: () => void, defeat: () => void): void {
 		this._keyService.DefineKey(this);
 		this._victory = victory;
 		this._defeat = defeat;
-		GameSettings.Init();
-		GameSettings.SetNormalSpeed();
 		const gameState = new GameState();
-
 		this._blueprint = blueprint;
-		this._app = this._appProvider.Provide(blueprint);
-		this._interactionManager = new PIXI.InteractionManager(this._app.renderer);
+		this._appService.Register(blueprint.MapMode);
+		const app = this._appService.Publish();
+		this._interactionManager = new PIXI.InteractionManager(app.renderer);
 		this._updateService.Register(gameState);
-		this._layerService.Register(this._app);
-		this._gameContextService.Register(blueprint, gameState);
-		this._context = this._gameContextService.Publish();
+		this._layerService.Register(app);
+		this._gameworldService.Register(blueprint, gameState);
+		this._context = this._gameworldService.Publish();
 		this._interactionService.Register(this._interactionManager, this._context);
-
 		this._gameAudioService = new GameAudioManager(blueprint.MapMode, this._context);
 		this._audioService.Register(this._gameAudioService);
 		this._context.State.OnGameStatusChanged.On(this.GameStatusChanged.bind(this));
-
-		new BrainInjecter().Inject(this._context.GetHqs() as Headquarter[], this._context.GetCells(), [
-			blueprint.HqDiamond
-		]);
-		this._app.start();
-
-		CellStateSetter.SetStates(this._context.GetCells());
-		this._context.GetCells().forEach((c) => {
-			c.SetState(CellState.Visible);
-			c.AlwaysVisible();
-		});
+		app.start();
 	}
-
-	Retry(): void {
+	Reload(): void {
 		this._context.State.OnGameStatusChanged.Off(this.GameStatusChanged.bind(this));
 		this.Collect();
 		this.Register(this._blueprint, this._victory, this._defeat);
-		this.OnRefresh.Invoke();
+		this.OnReloaded.Invoke();
 	}
-
-	IsRetriable(): boolean {
+	IsReloadable(): boolean {
 		return true;
 	}
-
 	private GameStatusChanged(e: any, status: GameStatus) {
 		if (status === GameStatus.Victory) {
 			this._victory();
@@ -104,31 +81,14 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 		}
 		this._playerProfilService.Save();
 	}
-
-	GetStats(): StatsContext {
-		return null;
-	}
-	GetRecord(): RecordContext {
-		return null;
-	}
-
-	public Publish(): PIXI.Application {
-		return this._app;
-	}
-
-	public Context(): DiamondBlueprint {
-		return this._blueprint;
-	}
-
 	public Collect(): void {
 		this._gameAudioService.StopAll();
 		this._audioService.Clear();
 		this._interactionManager.destroy();
-		this._gameContextService.Collect();
+		this._gameworldService.Collect();
 		this._interactionService.Collect();
 		this._layerService.Collect();
 		this._updateService.Collect();
-		this._app.destroy();
-		this._app = null;
+		this._appService.Collect();
 	}
 }

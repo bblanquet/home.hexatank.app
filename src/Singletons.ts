@@ -31,18 +31,21 @@ export enum SingletonKey {
 
 	Socket,
 
-	Blueprint,
-
 	App,
-	RecordApp,
-	CamouflageApp,
-	FireApp,
-	DiamondApp,
+	Blueprint,
+	Stats,
+	RecordContext,
 
-	GameContext,
-	CamouflageGameContext,
-	FireGameContext,
-	DiamondGameContext,
+	GameBuilder,
+	PlayerBuilder,
+	CamouflageBuilder,
+	FireBuilder,
+	DiamondBuilder,
+
+	Gameworld,
+	Camouflageworld,
+	Fireworld,
+	Diamondworld,
 
 	Interaction,
 	RecordInteraction,

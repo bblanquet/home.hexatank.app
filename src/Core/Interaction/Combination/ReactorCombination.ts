@@ -9,7 +9,7 @@ import { isNullOrUndefined } from '../../../Utils/ToolBox';
 import { IHqGameworld } from '../../Framework/World/IHqGameworld';
 
 export class ReactorCombination extends AbstractSingleCombination {
-	constructor(private _gameContext: IHqGameworld) {
+	constructor(private _gameworld: IHqGameworld) {
 		super();
 	}
 
@@ -28,16 +28,16 @@ export class ReactorCombination extends AbstractSingleCombination {
 			if (!isNullOrUndefined(cell)) {
 				if (cell.GetField() instanceof BasicField) {
 					if (
-						this._gameContext
+						this._gameworld
 							.GetPlayerHq()
-							.Buy(GameSettings.TruckPrice * this._gameContext.GetPlayerHq().GetReactorsCount())
+							.Buy(GameSettings.TruckPrice * this._gameworld.GetPlayerHq().GetReactorsCount())
 					) {
 						cell.SetField(
 							new ReactorField(
 								cell,
-								this._gameContext.GetPlayerHq(),
-								this._gameContext.GetHqs(),
-								this._gameContext.GetPlayerHq().Identity.Skin.GetLight()
+								this._gameworld.GetPlayerHq(),
+								this._gameworld.GetHqs(),
+								this._gameworld.GetPlayerHq().Identity.Skin.GetLight()
 							)
 						);
 					}

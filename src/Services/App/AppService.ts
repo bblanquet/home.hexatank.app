@@ -1,122 +1,26 @@
-import { IOnlineService } from '../Online/IOnlineService';
-import { IAudioService } from './../Audio/IAudioService';
-import { Gameworld } from '../../Core/Framework/World/Gameworld';
-import { GameAudioManager } from '../../Core/Framework/Audio/GameAudioManager';
-import { IKeyService } from './../Key/IKeyService';
-import { IInteractionService } from './../Interaction/IInteractionService';
-import { ILayerService } from './../Layer/ILayerService';
-import { IUpdateService } from './../Update/IUpdateService';
-import { IGameworldService } from '../World/IGameworldService';
-import { AppProvider } from '../../Core/Framework/App/AppProvider';
-import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
-import { IAppService } from './IAppService';
-import { Singletons, SingletonKey } from '../../Singletons';
 import * as PIXI from 'pixi.js';
-import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
-import { GameStatus } from '../../Core/Framework/GameStatus';
-import { GameState } from '../../Core/Framework/World/GameState';
-import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
-import { IBlueprintService } from '../Blueprint/IBlueprintService';
-
-export class AppService implements IAppService<GameBlueprint> {
-	private _blueprint: GameBlueprint;
-	private _world: Gameworld;
+import { MapKind } from '../../Core/Framework/Blueprint/Items/MapKind';
+import { IAppService } from './IAppService';
+export class AppService implements IAppService {
 	private _app: PIXI.Application;
-	private _appProvider: AppProvider;
-	private _interactionManager: PIXI.InteractionManager;
-	private _gameAudioService: GameAudioManager;
-
-	private _gameContextService: IGameworldService<GameBlueprint, Gameworld>;
-	private _interactionService: IInteractionService<Gameworld>;
-	private _layerService: ILayerService;
-	private _updateService: IUpdateService;
-	private _onlineService: IOnlineService;
-	private _keyService: IKeyService;
-	private _audioService: IAudioService;
-	private _playerProfilService: IPlayerProfilService;
-	private _blueprintService: IBlueprintService;
-	private _gameStatusChanged: any = this.GameStatusChanged.bind(this);
-	private _victory: () => void;
-	private _defeat: () => void;
-	public OnRefresh: SimpleEvent = new SimpleEvent();
-
-	constructor() {
-		this._appProvider = new AppProvider();
-		this._gameContextService = Singletons.Load<IGameworldService<GameBlueprint, Gameworld>>(
-			SingletonKey.GameContext
-		);
-		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
-		this._onlineService = Singletons.Load<IOnlineService>(SingletonKey.Online);
-		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
-		this._interactionService = Singletons.Load<IInteractionService<Gameworld>>(SingletonKey.Interaction);
-		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
-		this._audioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-		this._playerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
-		this._blueprintService = Singletons.Load<IBlueprintService>(SingletonKey.Blueprint);
-	}
-
-	Retry(): void {
-		this._world.State.OnGameStatusChanged.Off(this.GameStatusChanged.bind(this));
-		this.Collect();
-		this.Register(this._blueprint, this._victory, this._defeat);
-		this.OnRefresh.Invoke();
-	}
-
-	IsRetriable(): boolean {
-		return !this._onlineService.IsOnline();
-	}
-
-	public Register(blueprint: GameBlueprint, victory: () => void, defeat: () => void): void {
-		this._keyService.DefineKey(this);
-		const gameState = new GameState();
-		this._blueprint = blueprint;
-		this._victory = victory;
-		this._defeat = defeat;
-		this._app = this._appProvider.Provide(blueprint);
-		this._layerService.Register(this._app);
-		this._updateService.Register(gameState);
-		this._interactionManager = new PIXI.InteractionManager(this._app.renderer);
-		this._gameContextService.Register(blueprint, gameState);
-		this._world = this._gameContextService.Publish();
-		this._interactionService.Register(this._interactionManager, this._world);
-		this._app.start();
-		this._gameAudioService = new GameAudioManager(blueprint.MapMode, this._world);
-		this._audioService.Register(this._gameAudioService);
-		this._world.State.OnGameStatusChanged.On(this._gameStatusChanged);
-		this._blueprintService.Register(blueprint);
-	}
-
-	private GameStatusChanged(e: any, status: GameStatus): void {
-		if (status === GameStatus.Defeat || status === GameStatus.Victory) {
-			if (status === GameStatus.Victory) {
-				this._victory();
-			}
-			if (status === GameStatus.Defeat) {
-				this._defeat();
-			}
-			this._recordContext.Stop(status === GameStatus.Victory);
-			const record = this._recordContext.GetRecord();
-			this._playerProfilService.Load();
-			const profil = this._playerProfilService.GetProfil();
-			profil.Records.push(record);
-			this._playerProfilService.Save();
-		}
-	}
-
-	public Publish(): PIXI.Application {
+	Publish(): PIXI.Application {
 		return this._app;
 	}
-
-	public Collect(): void {
-		this._gameAudioService.StopAll();
-		this._audioService.Clear();
-		this._interactionManager.destroy();
-		this._gameContextService.Collect();
-		this._interactionService.Collect();
-		this._layerService.Collect();
-		this._updateService.Collect();
-		this._onlineService.Collect();
+	Collect(): void {
 		this._app.destroy();
-		this._app = null;
+	}
+	public Register(mapkind: MapKind): void {
+		this._app = new PIXI.Application({});
+		this._app.renderer.backgroundColor = this.GetColor(mapkind);
+	}
+
+	private GetColor(mapkind: MapKind): number {
+		let color = 0x00a651;
+		if (mapkind === MapKind.Sand) {
+			color = 0xfece63;
+		} else if (mapkind === MapKind.Ice) {
+			color = 0xacddf3;
+		}
+		return color;
 	}
 }

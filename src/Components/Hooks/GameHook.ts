@@ -12,7 +12,7 @@ import { Cell } from '../../Core/Items/Cell/Cell';
 import { Item } from '../../Core/Items/Item';
 import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
 import { OnlinePlayer } from '../../Network/OnlinePlayer';
-import { IAppService } from '../../Services/App/IAppService';
+import { IBuilder } from '../../Services/Builder/IBuilder';
 import { IAudioService } from '../../Services/Audio/IAudioService';
 import { IGameworldService } from '../../Services/World/IGameworldService';
 import { IInteractionService } from '../../Services/Interaction/IInteractionService';
@@ -30,15 +30,19 @@ import { Hook } from './Hook';
 import { Vibrator } from '../../Utils/Vibrator';
 import { FieldProp } from '../Components/Canvas/FieldProp';
 import { CellGroup } from '../../Core/Items/CellGroup';
+import { IRecordContextService } from '../../Services/Record/IRecordContextService';
+import { IStatsService } from '../../Services/Stats/IStatsService';
 
 export class GameHook extends Hook<RuntimeState> {
-	private _gameContextService: IGameworldService<GameBlueprint, Gameworld>;
+	private _gameworldService: IGameworldService<GameBlueprint, Gameworld>;
 	private _soundService: IAudioService;
+	private _recordContextService: IRecordContextService;
+	private _statsService: IStatsService;
 	private _onlineService: IOnlineService;
 	private _profilService: IPlayerProfilService;
 	private _interactionService: IInteractionService<Gameworld>;
-	private _appService: IAppService<GameBlueprint>;
-	private _gameContext: Gameworld;
+	private _appService: IBuilder<GameBlueprint>;
+	private _gameworld: Gameworld;
 	public Timeout: SimpleEvent = new SimpleEvent();
 	private _onItemSelectionChanged: any = this.OnItemSelectionChanged.bind(this);
 	private _handleRetry: any = this.Retry.bind(this);
@@ -72,31 +76,29 @@ export class GameHook extends Hook<RuntimeState> {
 		return state;
 	}
 	public Init(): void {
-		this._gameContextService = Singletons.Load<IGameworldService<GameBlueprint, Gameworld>>(
-			SingletonKey.GameContext
-		);
+		this._gameworldService = Singletons.Load<IGameworldService<GameBlueprint, Gameworld>>(SingletonKey.Gameworld);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		this._onlineService = Singletons.Load<IOnlineService>(SingletonKey.Online);
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this._interactionService = Singletons.Load<IInteractionService<Gameworld>>(SingletonKey.Interaction);
-		this._appService = Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App);
-		this._gameContext = this._gameContextService.Publish();
+		this._appService = Singletons.Load<IBuilder<GameBlueprint>>(SingletonKey.GameBuilder);
+		this._gameworld = this._gameworldService.Publish();
 
 		this.Timeout.On(() => {
 			this.Stop(true);
 		});
 		this._soundService.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));
-		const playerHq = this._gameContext.GetPlayerHq();
+		const playerHq = this._gameworld.GetPlayerHq();
 		playerHq.OnTruckChanged.On(this.HandleTruckChanged.bind(this));
 		playerHq.OnTankRequestChanged.On(this.HandleTankChanged.bind(this));
 		playerHq.OnDiamondCountChanged.On(this.HandleDiamondChanged.bind(this));
 		playerHq.OnCashMissing.On(this.HandleCashMissing.bind(this));
 		this._profilService.OnPointsAdded.On(this.HandlePoints.bind(this));
-		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
-		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
+		this._gameworld.OnItemSelected.On(this.HandleSelection.bind(this));
+		this._gameworld.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
 		this._interactionService.GetMultiSelectionContext().OnModeChanged.On(this.HandleMultiSelection.bind(this));
-		this._appService.OnRefresh.On(this.Retry.bind(this));
+		this._appService.OnReloaded.On(this.Retry.bind(this));
 		if (this._onlineService.GetOnlinePlayerManager()) {
 			this._onlineService
 				.GetOnlinePlayerManager()
@@ -106,7 +108,7 @@ export class GameHook extends Hook<RuntimeState> {
 					});
 				});
 		}
-		const player = this._gameContext.GetPlayer();
+		const player = this._gameworld.GetPlayer();
 		this.middle = player.GetBoundingBox().GetCentralPoint();
 		this.OnRefresh.Invoke();
 	}
@@ -133,17 +135,17 @@ export class GameHook extends Hook<RuntimeState> {
 	}
 
 	public Unmount(): void {
-		const playerHq = this._gameContext.GetPlayerHq();
+		const playerHq = this._gameworld.GetPlayerHq();
 		playerHq.OnTruckChanged.Clear();
 		playerHq.OnTankRequestChanged.Clear();
 		playerHq.OnDiamondCountChanged.Clear();
 		playerHq.OnCashMissing.Clear();
 		this._interactionService.GetMultiSelectionContext().OnModeChanged.Clear();
-		this._gameContext.OnItemSelected.Clear();
+		this._gameworld.OnItemSelected.Clear();
 		this._profilService.OnPointsAdded.Clear();
-		this._gameContext.State.OnGameStatusChanged.Clear();
+		this._gameworld.State.OnGameStatusChanged.Clear();
 		this._interactionService.OnMultiMenuShowed.Clear();
-		this._appService.OnRefresh.Off(this._handleRetry);
+		this._appService.OnReloaded.Off(this._handleRetry);
 	}
 
 	private HandlePoints(e: any, details: PointDetails): void {
@@ -218,36 +220,37 @@ export class GameHook extends Hook<RuntimeState> {
 		}
 
 		if (!this._onlineService.IsOnline()) {
-			this._gameContext.State.SetPause(isSettingMenuVisible);
+			this._gameworld.State.SetPause(isSettingMenuVisible);
 		}
 	}
 
 	public Stop(isVictory: boolean): void {
-		this._gameContext.State.SetPause(true);
-		this._gameContext.SetStatus(isVictory ? GameStatus.Victory : GameStatus.Defeat);
+		this._gameworld.State.SetPause(true);
+		this._gameworld.SetStatus(isVictory ? GameStatus.Victory : GameStatus.Defeat);
 	}
+
 	public GetCurves(): Groups<Curve> {
-		return this._appService.GetStats().GetCurves();
+		return this._statsService.Get().GetCurves();
 	}
 	public GetRecord(): JsonRecordContent {
-		return this._appService.GetRecord().GetRecord();
+		return this._recordContextService.Publish().GetRecord();
 	}
 
 	public IsCovered(): boolean {
-		return this._gameContext.GetPlayerHq().IsCovered(this.State.Item as Cell);
+		return this._gameworld.GetPlayerHq().IsCovered(this.State.Item as Cell);
 	}
 
 	public GetReactor(): number {
-		return this._gameContext.GetPlayerHq().GetReactorsCount();
+		return this._gameworld.GetPlayerHq().GetReactorsCount();
 	}
 	public GetVehicleCount(): number {
-		return this._gameContext.GetPlayerHq().GetVehicleCount();
+		return this._gameworld.GetPlayerHq().GetVehicleCount();
 	}
 
 	GetFields(): FieldProp[] {
 		if (this.State.Item instanceof Cell) {
 			const cell = this.State.Item;
-			const hq = this._gameContext.GetPlayerHq();
+			const hq = this._gameworld.GetPlayerHq();
 			if (hq.IsCovered(cell)) {
 				return FieldProp.All(hq, (e: Item) => {
 					this.SendContext(e);

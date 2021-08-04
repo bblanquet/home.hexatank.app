@@ -10,7 +10,7 @@ import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { Tank } from '../../Items/Unit/Tank';
 
 export class SwitchToVehicleCombination extends AbstractSingleCombination {
-	constructor(private _gameContext: IHqGameworld) {
+	constructor(private _gameworld: IHqGameworld) {
 		super();
 	}
 
@@ -33,7 +33,7 @@ export class SwitchToVehicleCombination extends AbstractSingleCombination {
 			hq.SetSelected(false);
 			const vehicle = context.Items[1] as Tank;
 			vehicle.SetSelected(true);
-			this._gameContext.OnItemSelected.Invoke(this, vehicle);
+			this._gameworld.OnItemSelected.Invoke(this, vehicle);
 			context.Items.splice(0, 1);
 			return true;
 		}

@@ -11,12 +11,12 @@ export class OnlineManager {
 	private _sync: OnlineSync;
 	constructor(
 		private _socket: ISocketWrapper,
-		private _gameContext: Gameworld,
+		private _gameworld: Gameworld,
 		private _players: IOnlinePlayerManager
 	) {
-		this._receiver = new OnlineReceiver(this._socket, this._gameContext);
-		this._dispatcher = new OnlineSender(this._socket, this._gameContext);
-		this._sync = new OnlineSync(this._socket, this._gameContext, this._players);
+		this._receiver = new OnlineReceiver(this._socket, this._gameworld);
+		this._dispatcher = new OnlineSender(this._socket, this._gameworld);
+		this._sync = new OnlineSync(this._socket, this._gameworld, this._players);
 	}
 
 	public Clear(): void {

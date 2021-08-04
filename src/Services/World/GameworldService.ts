@@ -5,16 +5,16 @@ import { GameworldMaker } from '../../Core/Framework/Worldmaker/Game/GameworldMa
 import { IGameworldService } from './IGameworldService';
 
 export class GameworldService implements IGameworldService<GameBlueprint, Gameworld> {
-	private _gameContext: Gameworld;
+	private _gameworld: Gameworld;
 
 	Register(blueprint: GameBlueprint, gameState: GameState): void {
-		this._gameContext = new GameworldMaker().Make(blueprint, gameState);
+		this._gameworld = new GameworldMaker().Make(blueprint, gameState);
 	}
 	Publish(): Gameworld {
-		return this._gameContext;
+		return this._gameworld;
 	}
 
 	Collect(): void {
-		this._gameContext = null;
+		this._gameworld = null;
 	}
 }

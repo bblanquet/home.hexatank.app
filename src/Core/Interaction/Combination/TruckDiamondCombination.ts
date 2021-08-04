@@ -12,7 +12,7 @@ import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { IHqGameworld } from '../../Framework/World/IHqGameworld';
 
 export class TruckDiamondCombination extends AbstractSingleCombination {
-	constructor(public _gameContext: IHqGameworld) {
+	constructor(public _gameworld: IHqGameworld) {
 		super();
 	}
 
@@ -31,7 +31,7 @@ export class TruckDiamondCombination extends AbstractSingleCombination {
 			let diamond = <Diamond>(context.Items[1] as Cell).GetField();
 			let order = new TruckPatrolOrder(
 				truck,
-				new HqFieldOrder(this._gameContext.GetHqFromId(truck.Identity), truck),
+				new HqFieldOrder(this._gameworld.GetHqFromId(truck.Identity), truck),
 				new DiamondFieldOrder(diamond, truck)
 			);
 			truck.GiveOrder(order);

@@ -3,7 +3,7 @@ import { Hook } from './Hook';
 import { CamouflageBlueprint } from '../../Core/Framework/Blueprint/Cam/CamouflageBlueprint';
 import { FireBlueprint } from '../../Core/Framework/Blueprint/Fire/FireBlueprint';
 import { DiamondBlueprint } from '../../Core/Framework/Blueprint/Diamond/DiamondBlueprint';
-import { IAppService } from '../../Services/App/IAppService';
+import { IBuilder } from '../../Services/Builder/IBuilder';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 import { ICampaignService } from '../../Services/Campaign/ICampaignService';
 import { Singletons, SingletonKey } from '../../Singletons';
@@ -35,7 +35,7 @@ export class GreenHook extends Hook<CampaignState> {
 	public Start(index: number): void {
 		const blueprint = this._campaignService.GetBlueprint(CampaignKind.training, index);
 		if (blueprint instanceof CamouflageBlueprint) {
-			Singletons.Load<IAppService<CamouflageBlueprint>>(SingletonKey.CamouflageApp).Register(
+			Singletons.Load<IBuilder<CamouflageBlueprint>>(SingletonKey.CamouflageBuilder).Register(
 				blueprint,
 				() => {
 					this._playerProfilService.GetProfil().GreenLvl[0] = StageState.achieved;
@@ -47,7 +47,7 @@ export class GreenHook extends Hook<CampaignState> {
 			);
 			route('{{sub_path}}Camouflage', true);
 		} else if (blueprint instanceof FireBlueprint) {
-			Singletons.Load<IAppService<FireBlueprint>>(SingletonKey.FireApp).Register(
+			Singletons.Load<IBuilder<FireBlueprint>>(SingletonKey.FireBuilder).Register(
 				blueprint,
 				() => {
 					this._playerProfilService.GetProfil().GreenLvl[1] = StageState.achieved;
@@ -59,7 +59,7 @@ export class GreenHook extends Hook<CampaignState> {
 			);
 			route('{{sub_path}}FireV2', true);
 		} else if (blueprint instanceof DiamondBlueprint) {
-			Singletons.Load<IAppService<DiamondBlueprint>>(SingletonKey.DiamondApp).Register(
+			Singletons.Load<IBuilder<DiamondBlueprint>>(SingletonKey.DiamondBuilder).Register(
 				blueprint,
 				() => {
 					this._playerProfilService.GetProfil().GreenLvl[2] = StageState.achieved;

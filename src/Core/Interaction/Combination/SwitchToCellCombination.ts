@@ -10,7 +10,7 @@ import { IHqGameworld } from '../../Framework/World/IHqGameworld';
 import { Tank } from '../../Items/Unit/Tank';
 
 export class SwitchToCellCombination extends AbstractSingleCombination {
-	constructor(private _gameContext: IHqGameworld) {
+	constructor(private _gameworld: IHqGameworld) {
 		super();
 	}
 	IsMatching(context: CombinationContext): boolean {
@@ -32,7 +32,7 @@ export class SwitchToCellCombination extends AbstractSingleCombination {
 
 				if ((context.Items[1] as Cell).GetField() instanceof BasicField) {
 					cell.SetSelected(true);
-					this._gameContext.OnItemSelected.Invoke(this, cell);
+					this._gameworld.OnItemSelected.Invoke(this, cell);
 					context.Items.splice(0, 1);
 				} else {
 					context.Items.splice(1, 1);

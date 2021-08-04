@@ -27,7 +27,7 @@ export class InputNotifier {
 
 	private _downDate: number | null;
 
-	constructor() {
+	constructor(manager: PIXI.InteractionManager) {
 		this._downPoint = new Point(0, 0);
 		this._currentPoint = new Point(0, 0);
 		this.UpEvent = new LiteEvent<Point>();
@@ -35,6 +35,10 @@ export class InputNotifier {
 		this.MovingEvent = new LiteEvent<Point>();
 		this.DoubleEvent = new LiteEvent<Point>();
 		this.DownEvent = new LiteEvent<Point>();
+		(manager as any).on('pointerdown', this.HandleMouseDown.bind(this), false);
+		(manager as any).on('pointermove', this.HandleMouseMove.bind(this), false);
+		(manager as any).on('pointerup', this.HandleMouseUp.bind(this), false);
+		manager.autoPreventDefault = false;
 	}
 
 	public HandleMouseMove(event: PIXI.InteractionEvent): void {

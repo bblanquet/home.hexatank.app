@@ -9,7 +9,7 @@ import { UnitGroup } from '../../Items/UnitGroup';
 import { IHqGameworld } from '../../Framework/World/IHqGameworld';
 
 export class SwitchToReactorCombination extends AbstractSingleCombination {
-	constructor(private _gameContext: IHqGameworld) {
+	constructor(private _gameworld: IHqGameworld) {
 		super();
 	}
 	IsMatching(context: CombinationContext): boolean {
@@ -35,7 +35,7 @@ export class SwitchToReactorCombination extends AbstractSingleCombination {
 				selectable.SetSelected(false);
 				const cell = context.Items[1] as Cell;
 				cell.SetSelected(true);
-				this._gameContext.OnItemSelected.Invoke(this, cell);
+				this._gameworld.OnItemSelected.Invoke(this, cell);
 				context.Items.splice(0, 1);
 				return true;
 			}

@@ -12,7 +12,7 @@ export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 	private _group: UnitGroup;
 	private _layerService: ILayerService;
 
-	constructor(private _multiContext: MultiSelectionContext, private _gameContext: IHqGameworld) {
+	constructor(private _multiContext: MultiSelectionContext, private _gameworld: IHqGameworld) {
 		super();
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 		this._group = new UnitGroup(this._multiContext);
@@ -37,7 +37,7 @@ export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 		const vehicles = new Array<Vehicle>();
 		this._multiContext.GetCells().forEach((c) => {
 			c.GetOccupiers().forEach((vehicle) => {
-				if (this._gameContext.GetPlayerHq().GetRelation(vehicle.Identity) === Relationship.Ally) {
+				if (this._gameworld.GetPlayerHq().GetRelation(vehicle.Identity) === Relationship.Ally) {
 					vehicles.push(vehicle);
 				}
 			});
@@ -45,7 +45,7 @@ export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 		this._group.SetUnits(vehicles);
 		if (this._group.Any()) {
 			this._group.SetSelected(true);
-			this._gameContext.OnItemSelected.Invoke(this, this._group);
+			this._gameworld.OnItemSelected.Invoke(this, this._group);
 			this.ForcingSelectedItem.Invoke(null, { item: this._group, isForced: true });
 			this._group.IsListeningOrder = false;
 		}

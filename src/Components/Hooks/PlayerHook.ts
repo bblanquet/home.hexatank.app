@@ -25,7 +25,7 @@ export class PlayerHook extends Hook<PlayerState> {
 
 	constructor(d: [PlayerState, StateUpdater<PlayerState>]) {
 		super(d[0], d[1]);
-		this._gameService = Singletons.Load<IGameworldService<GameBlueprint, Gameworld>>(SingletonKey.GameContext);
+		this._gameService = Singletons.Load<IGameworldService<GameBlueprint, Gameworld>>(SingletonKey.Gameworld);
 		this._recordService = Singletons.Load<IRecordService>(SingletonKey.Record);
 		this._context = this._gameService.Publish();
 		this._updater = new RecordCanvasUpdater(this.GetRecord(), this._context);

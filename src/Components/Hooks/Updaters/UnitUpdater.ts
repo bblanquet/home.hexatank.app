@@ -14,7 +14,7 @@ export class UnitUpdater {
 	private _displayedUnits: Dictionary<Vehicle>;
 	private _indexFinder: IndexFinder;
 
-	constructor(private _ref: RecordContent, private _gameContext: Gameworld) {
+	constructor(private _ref: RecordContent, private _gameworld: Gameworld) {
 		this._indexFinder = new IndexFinder();
 		this._displayedUnits = new Dictionary<Vehicle>();
 	}
@@ -27,7 +27,7 @@ export class UnitUpdater {
 	private UpdateActiveUnits(units: Dictionary<{ Axial: HexAxial; Hq: Headquarter; IsTank: boolean; Life: number }>) {
 		units.Keys().forEach((unitId) => {
 			const coo = units.Get(unitId).Axial.ToString();
-			const cell = this._gameContext.GetCell(coo);
+			const cell = this._gameworld.GetCell(coo);
 			if (this._displayedUnits.Exist(unitId)) {
 				if (this._displayedUnits.Get(unitId).GetCurrentCell().Coo() !== coo) {
 					this._displayedUnits.Get(unitId).SetPosition(cell);
@@ -73,7 +73,7 @@ export class UnitUpdater {
 						if (+action.kind !== RecordKind.Destroyed) {
 							coos.Add(key, {
 								Axial: new HexAxial(action.Amount.Q, action.Amount.R),
-								Hq: this._gameContext.GetHqs().find((c) => c.Identity.Name === hq.Name),
+								Hq: this._gameworld.GetHqs().find((c) => c.Identity.Name === hq.Name),
 								IsTank: hq.Units.Get(key).IsTank,
 								Life: action.life
 							});

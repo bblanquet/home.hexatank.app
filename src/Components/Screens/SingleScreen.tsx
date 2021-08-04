@@ -2,7 +2,7 @@ import { h, Component } from 'preact';
 import { route } from 'preact-router';
 import { GameBlueprintMaker } from '../../Core/Framework/Blueprint/Game/GameBlueprintMaker';
 import { MapKind } from '../../Core/Framework/Blueprint/Items/MapKind';
-import { IAppService } from '../../Services/App/IAppService';
+import { IBuilder } from '../../Services/Builder/IBuilder';
 import { Singletons, SingletonKey } from '../../Singletons';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
@@ -132,7 +132,7 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 
 		const blueprint = new GameBlueprintMaker().GetBluePrint(this.ConvertMapType(), this.ConvertEnv(), players);
 
-		Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App).Register(
+		Singletons.Load<IBuilder<GameBlueprint>>(SingletonKey.GameBuilder).Register(
 			blueprint,
 			() => this._profilService.AddPoints(30),
 			() => this._profilService.AddPoints(3)

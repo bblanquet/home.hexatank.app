@@ -14,7 +14,7 @@ import { StateUpdater } from 'preact/hooks';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import { Point } from '../../Utils/Geometry/Point';
 import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
-import { IAppService } from '../../Services/App/IAppService';
+import { IBuilder } from '../../Services/Builder/IBuilder';
 import { IKeyService } from '../../Services/Key/IKeyService';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
 import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
@@ -26,14 +26,14 @@ import { Camouflage } from '../Model/Dialogues';
 import { ILayerService } from '../../Services/Layer/ILayerService';
 
 export class CamouflageHook extends Hook<RuntimeState> {
-	private _gameContextService: IGameworldService<CamouflageBlueprint, Camouflageworld>;
-	private _appService: IAppService<CamouflageBlueprint>;
+	private _gameworldService: IGameworldService<CamouflageBlueprint, Camouflageworld>;
+	private _appService: IBuilder<CamouflageBlueprint>;
 	private _profilService: IPlayerProfilService;
 	private _soundService: IAudioService;
 	private _layerService: ILayerService;
 	private _keyService: IKeyService;
 	private _interactionService: IInteractionService<Camouflageworld>;
-	private _gameContext: Camouflageworld;
+	private _gameworld: Camouflageworld;
 	private _onItemSelectionChanged: any = this.OnItemSelectionChanged.bind(this);
 	private _handleRetry: any = this.Retry.bind(this);
 	public OnRetried: SimpleEvent = new SimpleEvent();
@@ -47,33 +47,33 @@ export class CamouflageHook extends Hook<RuntimeState> {
 	}
 
 	private Init() {
-		this._gameContextService = Singletons.Load<IGameworldService<CamouflageBlueprint, Camouflageworld>>(
-			SingletonKey.CamouflageGameContext
+		this._gameworldService = Singletons.Load<IGameworldService<CamouflageBlueprint, Camouflageworld>>(
+			SingletonKey.Camouflageworld
 		);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
-		this._appService = Singletons.Load<IAppService<CamouflageBlueprint>>(this._keyService.GetAppKey());
+		this._appService = Singletons.Load<IBuilder<CamouflageBlueprint>>(this._keyService.GetAppKey());
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 		this._interactionService = Singletons.Load<IInteractionService<Camouflageworld>>(
 			SingletonKey.CamouflageInteraction
 		);
-		this._gameContext = this._gameContextService.Publish();
+		this._gameworld = this._gameworldService.Publish();
 
-		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
-		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
+		this._gameworld.OnItemSelected.On(this.HandleSelection.bind(this));
+		this._gameworld.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
 		this._profilService.OnPointsAdded.On(this.HandlePoints.bind(this));
-		this._appService.OnRefresh.On(this._handleRetry);
+		this._appService.OnReloaded.On(this._handleRetry);
 		this._soundService.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));
-		const player = this._gameContext.GetPlayer();
-		this.middle = this._gameContext.ArrivalCell.GetBoundingBox().GetCentralPoint();
+		const player = this._gameworld.GetPlayer();
+		this.middle = this._gameworld.ArrivalCell.GetBoundingBox().GetCentralPoint();
 		this.OnRetried.Invoke();
-		this._gameContext.State.SetInteraction(false);
+		this._gameworld.State.SetInteraction(false);
 		this._steps = 0;
 		this._viewTranslator = new ViewTranslator(
-			this._gameContext.ArrivalCell.GetBoundingBox(),
-			this._gameContext.DepartCell.GetBoundingBox(),
+			this._gameworld.ArrivalCell.GetBoundingBox(),
+			this._gameworld.DepartCell.GetBoundingBox(),
 			3000
 		);
 		this._layerService.PauseNavigation();
@@ -103,12 +103,12 @@ export class CamouflageHook extends Hook<RuntimeState> {
 
 	public Unmount(): void {
 		this._viewTranslator.OnDone.Clear();
-		this._gameContext.State.OnGameStatusChanged.Clear();
-		this._gameContext.OnItemSelected.Clear();
-		this._gameContext.State.OnGameStatusChanged.Clear();
+		this._gameworld.State.OnGameStatusChanged.Clear();
+		this._gameworld.OnItemSelected.Clear();
+		this._gameworld.State.OnGameStatusChanged.Clear();
 		this._interactionService.OnMultiMenuShowed.Clear();
 		this._profilService.OnPointsAdded.Clear();
-		this._appService.OnRefresh.Off(this._handleRetry);
+		this._appService.OnReloaded.Off(this._handleRetry);
 	}
 
 	public GetCenter(): Point {
@@ -165,7 +165,7 @@ export class CamouflageHook extends Hook<RuntimeState> {
 	}
 
 	public Stop(isVictory: boolean): void {
-		this._gameContext.SetStatus(isVictory ? GameStatus.Victory : GameStatus.Defeat);
+		this._gameworld.SetStatus(isVictory ? GameStatus.Victory : GameStatus.Defeat);
 	}
 
 	public SetMenu(): void {
@@ -180,7 +180,7 @@ export class CamouflageHook extends Hook<RuntimeState> {
 			}
 		}
 
-		this._gameContext.State.SetPause(hasMenu);
+		this._gameworld.State.SetPause(hasMenu);
 	}
 
 	public SendContext(item: Item): void {
@@ -200,7 +200,7 @@ export class CamouflageHook extends Hook<RuntimeState> {
 	}
 
 	private OnTranslationDone(): void {
-		this._gameContext.State.SetInteraction(true);
+		this._gameworld.State.SetInteraction(true);
 		this._layerService.StartNavigation();
 	}
 }

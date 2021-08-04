@@ -22,16 +22,16 @@ export class GameAudioManager implements IGameAudioManager {
 	private _audioId: number;
 	private _lastPlayed: Dictionary<number> = new Dictionary<number>();
 
-	constructor(private _mapKind: MapKind, private _gameContext: IHqGameworld) {
+	constructor(private _mapKind: MapKind, private _world: IHqGameworld) {
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 
-		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
-		const playerHq = this._gameContext.GetPlayerHq();
+		this._world.OnItemSelected.On(this.HandleSelection.bind(this));
+		const playerHq = this._world.GetPlayerHq();
 		if (playerHq) {
 			playerHq.OnReactorAdded.On(this.HandleReactor.bind(this));
 			playerHq.OnCashMissing.On(this.HandleMissingCash.bind(this));
 		}
-		this._gameContext.GetHqs().forEach((hq) => {
+		this._world.GetHqs().forEach((hq) => {
 			hq.OnVehicleCreated.On(this.HandleVehicle.bind(this));
 			hq.OnFieldAdded.On(this.HandleFieldChanged.bind(this));
 			hq.GetVehicles().forEach((v) => {
@@ -111,7 +111,7 @@ export class GameAudioManager implements IGameAudioManager {
 	}
 
 	HandleOrder(src: Vehicle, order: IOrder): void {
-		const playerHq = this._gameContext.GetPlayerHq();
+		const playerHq = this._world.GetPlayerHq();
 		if (playerHq) {
 			if (src.GetRelation(playerHq.Identity) === Relationship.Ally && src.IsSelected()) {
 				const voices = [

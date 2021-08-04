@@ -1,10 +1,10 @@
-import { FireAppService } from '../App/FireAppService';
-import { CamouflageAppService } from '../App/CamouflageAppService';
-import { PlayerAppService } from '../App/PlayerAppService';
-import { AppService } from './../App/AppService';
+import { FireBuilder } from '../Builder/FireBuilder';
+import { CamBuilder } from '../Builder/CamBuilder';
+import { PlayerBuilder } from '../Builder/PlayerBuilder';
+import { GameBuilder } from '../Builder/GameBuilder';
 import { SingletonKey } from '../../Singletons';
 import { IKeyService } from './IKeyService';
-import { DiamondAppService } from '../App/DiamondAppService';
+import { DiamBuilder } from '../Builder/DiamBuilder';
 import { ErrorCat, ErrorHandler } from '../../Utils/Exceptions/ErrorHandler';
 export class KeyService implements IKeyService {
 	private _key: SingletonKey = SingletonKey.None;
@@ -16,16 +16,16 @@ export class KeyService implements IKeyService {
 	}
 	DefineKey(appService: any): void {
 		ErrorHandler.ThrowNull(appService);
-		if (appService instanceof AppService) {
-			this._key = SingletonKey.App;
-		} else if (appService instanceof PlayerAppService) {
-			this._key = SingletonKey.RecordApp;
-		} else if (appService instanceof CamouflageAppService) {
-			this._key = SingletonKey.CamouflageApp;
-		} else if (appService instanceof FireAppService) {
-			this._key = SingletonKey.FireApp;
-		} else if (appService instanceof DiamondAppService) {
-			this._key = SingletonKey.DiamondApp;
+		if (appService instanceof GameBuilder) {
+			this._key = SingletonKey.GameBuilder;
+		} else if (appService instanceof PlayerBuilder) {
+			this._key = SingletonKey.PlayerBuilder;
+		} else if (appService instanceof CamBuilder) {
+			this._key = SingletonKey.CamouflageBuilder;
+		} else if (appService instanceof FireBuilder) {
+			this._key = SingletonKey.FireBuilder;
+		} else if (appService instanceof DiamBuilder) {
+			this._key = SingletonKey.DiamondBuilder;
 		} else {
 			ErrorHandler.Throw(ErrorCat.outOfRange);
 		}

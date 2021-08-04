@@ -10,7 +10,7 @@ import { IHqGameworld } from '../../../Framework/World/IHqGameworld';
 export class MultiCellSelectionCombination extends AbstractSingleCombination {
 	private _layerService: ILayerService;
 
-	constructor(private _multiSelectionContext: MultiSelectionContext, private _gameContext: IHqGameworld) {
+	constructor(private _multiSelectionContext: MultiSelectionContext, private _gameworld: IHqGameworld) {
 		super();
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}
@@ -27,14 +27,14 @@ export class MultiCellSelectionCombination extends AbstractSingleCombination {
 					(c) =>
 						c.GetField() instanceof BasicField &&
 						c.IsSelectable() &&
-						this._gameContext.GetPlayerHq().IsCovered(c)
+						this._gameworld.GetPlayerHq().IsCovered(c)
 				);
 			if (0 < cells.length) {
 				const cellGroup = new CellGroup();
 				cellGroup.SetCells(cells);
 				cellGroup.SetSelected(true);
 				this.ForcingSelectedItem.Invoke(this, { item: cellGroup, isForced: true });
-				this._gameContext.OnItemSelected.Invoke(this, cellGroup);
+				this._gameworld.OnItemSelected.Invoke(this, cellGroup);
 			}
 			this._multiSelectionContext.Close();
 			this._layerService.StartNavigation();

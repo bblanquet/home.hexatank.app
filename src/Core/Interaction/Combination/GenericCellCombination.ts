@@ -8,7 +8,7 @@ import { IHqGameworld } from '../../Framework/World/IHqGameworld';
 
 export class GenericCellCombination extends AbstractSingleCombination {
 	constructor(
-		private _gameContext: IHqGameworld,
+		private _gameworld: IHqGameworld,
 		private _isType: (e: any) => boolean,
 		private _create: (e: Cell) => void
 	) {
@@ -29,7 +29,7 @@ export class GenericCellCombination extends AbstractSingleCombination {
 			let cell = <Cell>context.Items[0];
 			if (!isNullOrUndefined(cell)) {
 				if (cell.GetField() instanceof BasicField) {
-					if (this._gameContext.GetPlayerHq().Buy(GameSettings.FieldPrice)) {
+					if (this._gameworld.GetPlayerHq().Buy(GameSettings.FieldPrice)) {
 						this._create(cell);
 					}
 				}

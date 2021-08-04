@@ -9,7 +9,7 @@ import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { IHqGameworld } from '../../Framework/World/IHqGameworld';
 
 export class SwitchToHeadquarterCombination extends AbstractSingleCombination {
-	constructor(private _gameContext: IHqGameworld) {
+	constructor(private _gameworld: IHqGameworld) {
 		super();
 	}
 	IsMatching(context: CombinationContext): boolean {
@@ -30,7 +30,7 @@ export class SwitchToHeadquarterCombination extends AbstractSingleCombination {
 			selectable.SetSelected(false);
 			const hq = context.Items[1] as Headquarter;
 			hq.SetSelected(true);
-			this._gameContext.OnItemSelected.Invoke(this, hq);
+			this._gameworld.OnItemSelected.Invoke(this, hq);
 			context.Items.splice(0, 1);
 			return true;
 		}

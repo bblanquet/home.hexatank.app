@@ -30,7 +30,7 @@ import { Singletons, SingletonKey } from '../../../../Singletons';
 export class MultiCellBonusCombination extends AbstractSingleCombination {
 	private _layerService: ILayerService;
 
-	constructor(private _gameContext: IHqGameworld) {
+	constructor(private _gameworld: IHqGameworld) {
 		super();
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}
@@ -52,8 +52,8 @@ export class MultiCellBonusCombination extends AbstractSingleCombination {
 			let cells = context.Items[0] as CellGroup;
 			let menuItem = context.Items[1];
 			const cost = GameSettings.FieldPrice * cells.GetCells().length;
-			if (menuItem && this._gameContext.GetPlayerHq().Buy(cost)) {
-				const hq = this._gameContext.GetPlayerHq();
+			if (menuItem && this._gameworld.GetPlayerHq().Buy(cost)) {
+				const hq = this._gameworld.GetPlayerHq();
 				if (menuItem instanceof HealMenuItem) {
 					this.SetMenuItem(cells, (c) => c.SetField(new MedicField(c, hq)));
 				} else if (menuItem instanceof AttackMenuItem) {

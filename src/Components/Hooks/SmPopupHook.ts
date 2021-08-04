@@ -1,7 +1,7 @@
 import { StateUpdater } from 'preact/hooks';
 import { Hook } from './Hook';
 import { IBlueprint } from '../../Core/Framework/Blueprint/IBlueprint';
-import { IAppService } from '../../Services/App/IAppService';
+import { IBuilder } from '../../Services/Builder/IBuilder';
 import { IKeyService } from '../../Services/Key/IKeyService';
 import { route } from 'preact-router';
 import { Singletons, SingletonKey } from '../../Singletons';
@@ -13,13 +13,13 @@ import { AudioLoader } from '../../Core/Framework/AudioLoader';
 
 export class SmPopupHook extends Hook<SmState> {
 	private _audioService: IAudioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-	private _appService: IAppService<IBlueprint>;
+	private _appService: IBuilder<IBlueprint>;
 	private _keyService: IKeyService;
 
 	constructor(d: [SmState, StateUpdater<SmState>]) {
 		super(d[0], d[1]);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
-		this._appService = Singletons.Load<IAppService<IBlueprint>>(this._keyService.GetAppKey());
+		this._appService = Singletons.Load<IBuilder<IBlueprint>>(this._keyService.GetAppKey());
 		if (d[0].Status === GameStatus.Victory) {
 			this._audioService.Play(AudioLoader.GetAudio(AudioArchive.victory), 0.1, false);
 		}
@@ -34,11 +34,11 @@ export class SmPopupHook extends Hook<SmState> {
 	}
 
 	public HasRetry(): boolean {
-		return this.State.Status === GameStatus.Defeat && this._appService.IsRetriable();
+		return this.State.Status === GameStatus.Defeat && this._appService.IsReloadable();
 	}
 
 	public Retry(): void {
-		this._appService.Retry();
+		this._appService.Reload();
 	}
 
 	public Unmount(): void {}

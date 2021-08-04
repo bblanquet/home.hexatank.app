@@ -19,6 +19,8 @@ import { Env } from '../../Utils/Env';
 import { LogKind } from '../../Utils/Logger/LogKind';
 import { StaticLogger } from '../../Utils/Logger/StaticLogger';
 import { UnitGroup } from '../Items/UnitGroup';
+import { IGameworldService } from '../../Services/World/IGameworldService';
+import { GameState } from '../Framework/World/GameState';
 
 export class InteractionContext implements IContextContainer, IInteractionContext {
 	private _updateService: IUpdateService;
@@ -34,7 +36,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 		private _combinations: ICombination[],
 		private _checker: ISelectableChecker,
 		private _viewPort: any,
-		private _gameContext: IGameworld
+		private _gameState: GameState
 	) {
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
 		this._selectedItem = [];
@@ -42,17 +44,6 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 			combination.ClearContext.On(this.HandleClearContext.bind(this));
 			combination.ForcingSelectedItem.On(this.HandleForcingSelectedItem.bind(this));
 		});
-	}
-
-	public Mute(): void {
-		this._inputNotifier.MovingUpEvent.Off(this.MovingUp().bind(this));
-		this._inputNotifier.UpEvent.Off(this.Up().bind(this));
-		this._inputNotifier.DoubleEvent.Off(this.Doubling().bind(this));
-		this._inputNotifier.MovingUpEvent.Off(this.MovingUp().bind(this));
-		this._inputNotifier.MovingEvent.Off(this.Moving().bind(this));
-	}
-
-	public Listen(): void {
 		this._inputNotifier.UpEvent.On(this.Up().bind(this));
 		this._inputNotifier.MovingUpEvent.On(this.MovingUp().bind(this));
 		this._inputNotifier.DownEvent.On(this.Down().bind(this));
@@ -147,7 +138,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 	}
 
 	private Select(item: Item): void {
-		if (this._gameContext.State.HasInteraction()) {
+		if (this._gameState.HasInteraction()) {
 			if (item) {
 				if (item instanceof Cell && this.ContainsSelectable(item)) {
 					item = this.GetSelectable(item);

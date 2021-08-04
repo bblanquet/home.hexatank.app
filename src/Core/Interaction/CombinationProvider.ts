@@ -61,7 +61,7 @@ export class CombinationProvider {
 	GetCombination(
 		checker: ISelectableChecker,
 		multiSelectionContext: MultiSelectionContext,
-		gameContext: IHqGameworld
+		gameworld: IHqGameworld
 	): ICombination[] {
 		return [
 			//CLEAR
@@ -71,32 +71,32 @@ export class CombinationProvider {
 			new ClearMultiSelectionMenuCombination(),
 
 			//SINGLE SELECTION
-			new SwitchToOccCellCombination(gameContext),
-			new SwitchToCellCombination(gameContext),
-			new SwitchToVehicleCombination(gameContext),
-			new SwitchToReactorCombination(gameContext),
-			new SwitchToHeadquarterCombination(gameContext),
-			new UnselectCombination(checker, gameContext),
-			new SelectionCombination(checker, gameContext),
+			new SwitchToOccCellCombination(gameworld),
+			new SwitchToCellCombination(gameworld),
+			new SwitchToVehicleCombination(gameworld),
+			new SwitchToReactorCombination(gameworld),
+			new SwitchToHeadquarterCombination(gameworld),
+			new UnselectCombination(checker, gameworld),
+			new SelectionCombination(checker, gameworld),
 
 			//MULTI SELECTION
 			new MultiUnitOneCellOrderCombination(multiSelectionContext),
 			new DisplayMultiMenuCombination(multiSelectionContext),
 			new ActiveMultiSelectionCombination(multiSelectionContext),
 			new MultiSelectionCombination(multiSelectionContext),
-			new MultiCellSelectionCombination(multiSelectionContext, gameContext),
-			new MultiCellBonusCombination(gameContext),
-			new MultiUnitSelectionCombination(multiSelectionContext, gameContext),
+			new MultiCellSelectionCombination(multiSelectionContext, gameworld),
+			new MultiCellBonusCombination(gameworld),
+			new MultiUnitSelectionCombination(multiSelectionContext, gameworld),
 			new MultiUnitOrderCombination(multiSelectionContext),
 			new SwithcMultiCombination(multiSelectionContext),
 
 			//HQ
-			new AddTankCombination(gameContext),
-			new AddTruckCombination(gameContext),
+			new AddTankCombination(gameworld),
+			new AddTruckCombination(gameworld),
 
 			//VEHICLE
 			new AbortCombination(),
-			new TruckDiamondCombination(gameContext),
+			new TruckDiamondCombination(gameworld),
 			new TruckCombination(),
 			new CamouflageCombination(),
 			new TankCombination(),
@@ -104,57 +104,57 @@ export class CombinationProvider {
 			new FarmCombination(),
 
 			//CELL
-			new ReactorCombination(gameContext),
+			new ReactorCombination(gameworld),
 			new GenericCellCombination(
-				gameContext,
+				gameworld,
 				(e) => e instanceof SpeedFieldMenuItem,
-				(e) => e.SetField(new RoadField(e, gameContext.GetPlayerHq()))
+				(e) => e.SetField(new RoadField(e, gameworld.GetPlayerHq()))
 			),
 			new GenericCellCombination(
-				gameContext,
+				gameworld,
 				(e) => e instanceof AttackMenuItem,
-				(e) => e.SetField(new FireField(e, gameContext.GetPlayerHq()))
+				(e) => e.SetField(new FireField(e, gameworld.GetPlayerHq()))
 			),
 			new GenericCellCombination(
-				gameContext,
+				gameworld,
 				(e) => e instanceof SlowMenuItem,
 				(e) => e.SetField(new SlowField(e))
 			),
 			new GenericCellCombination(
-				gameContext,
+				gameworld,
 				(e) => e instanceof ShieldMenuItem,
-				(e) => e.SetField(new ShieldField(e, gameContext.GetPlayerHq().Identity, gameContext.GetPlayerHq()))
+				(e) => e.SetField(new ShieldField(e, gameworld.GetPlayerHq().Identity, gameworld.GetPlayerHq()))
 			),
 			new GenericCellCombination(
-				gameContext,
+				gameworld,
 				(e) => e instanceof PoisonMenuItem,
-				(e) => e.SetField(new PoisonField(e, gameContext.GetPlayerHq()))
+				(e) => e.SetField(new PoisonField(e, gameworld.GetPlayerHq()))
 			),
 			new GenericCellCombination(
-				gameContext,
+				gameworld,
 				(e) => e instanceof MoneyMenuItem,
-				(e) => e.SetField(new FarmField(e, gameContext.GetPlayerHq()))
+				(e) => e.SetField(new FarmField(e, gameworld.GetPlayerHq()))
 			),
 			new GenericCellCombination(
-				gameContext,
+				gameworld,
 				(e) => e instanceof ThunderMenuItem,
-				(e) => e.SetField(new BatteryField(e, gameContext.GetPlayerHq()))
+				(e) => e.SetField(new BatteryField(e, gameworld.GetPlayerHq()))
 			),
 			new GenericCellCombination(
-				gameContext,
+				gameworld,
 				(e) => e instanceof NetworkMenuItem,
-				(e) => e.SetField(new NetworkField(e, gameContext.GetPlayerHq()))
+				(e) => e.SetField(new NetworkField(e, gameworld.GetPlayerHq()))
 			),
 			new GenericCellCombination(
-				gameContext,
+				gameworld,
 				(e) => e instanceof HealMenuItem,
-				(e) => e.SetField(new MedicField(e, gameContext.GetPlayerHq()))
+				(e) => e.SetField(new MedicField(e, gameworld.GetPlayerHq()))
 			),
 
 			//REACTOR
 			new PowerDownCombination(),
 			new OverlockCombination(),
-			new PowerUpCombination(gameContext),
+			new PowerUpCombination(gameworld),
 
 			//CLEAR
 			new ClearTrashCombination(checker)

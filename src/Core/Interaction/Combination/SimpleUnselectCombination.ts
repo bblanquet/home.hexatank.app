@@ -11,7 +11,7 @@ import { IGameworld } from '../../Framework/World/IGameworld';
 export class SimpleUnselectCombination extends AbstractSingleCombination {
 	private _checker: ISelectableChecker;
 
-	constructor(isSelectable: ISelectableChecker, private _gameContext: IGameworld) {
+	constructor(isSelectable: ISelectableChecker, private _gameworld: IGameworld) {
 		super();
 		this._checker = isSelectable;
 	}

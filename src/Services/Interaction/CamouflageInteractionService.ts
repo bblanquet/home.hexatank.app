@@ -27,30 +27,25 @@ export class CamouflageInteractionService implements IInteractionService<Camoufl
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}
 
-	Register(manager: PIXI.InteractionManager, gameContext: Camouflageworld): void {
+	Register(manager: PIXI.InteractionManager, gameworld: Camouflageworld): void {
 		this._multiSelectionContext = new MultiSelectionContext();
-		this._inputNotifier = new InputNotifier();
-		const checker = new SelectableChecker(gameContext.GetPlayer().Identity);
+		this._inputNotifier = new InputNotifier(manager);
+		const checker = new SelectableChecker(gameworld.GetPlayer().Identity);
 		this._interaction = new InteractionContext(
 			this._inputNotifier,
 			[
 				new CancelCombination(),
 				new AbortCombination(),
 				new TankCombination(),
-				new SimpleUnselectCombination(checker, gameContext),
+				new SimpleUnselectCombination(checker, gameworld),
 				new CamouflageCombination(),
 				new ClearTrashCombination(checker),
-				new SimpleSelectionCombination(checker, gameContext)
+				new SimpleSelectionCombination(checker, gameworld)
 			],
 			checker,
 			this._layerService.GetViewport(),
-			gameContext
+			gameworld.State
 		);
-		this._interaction.Listen();
-		(manager as any).on('pointerdown', this._inputNotifier.HandleMouseDown.bind(this._inputNotifier), false);
-		(manager as any).on('pointermove', this._inputNotifier.HandleMouseMove.bind(this._inputNotifier), false);
-		(manager as any).on('pointerup', this._inputNotifier.HandleMouseUp.bind(this._inputNotifier), false);
-		manager.autoPreventDefault = false;
 	}
 
 	GetMultiSelectionContext(): MultiSelectionContext {

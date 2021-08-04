@@ -5,16 +5,16 @@ import { IGameworldService } from './IGameworldService';
 import { GameState } from '../../Core/Framework/World/GameState';
 
 export class FireworldService implements IGameworldService<FireBlueprint, Fireworld> {
-	private _gameContext: Fireworld;
+	private _gameworld: Fireworld;
 
 	Register(blueprint: FireBlueprint, gameState: GameState): void {
-		this._gameContext = new FireworldMaker().Make(blueprint, gameState);
+		this._gameworld = new FireworldMaker().Make(blueprint, gameState);
 	}
 	Publish(): Fireworld {
-		return this._gameContext;
+		return this._gameworld;
 	}
 
 	Collect(): void {
-		this._gameContext = null;
+		this._gameworld = null;
 	}
 }

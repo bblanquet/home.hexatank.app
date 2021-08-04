@@ -8,7 +8,7 @@ import { Vehicle } from '../../Items/Unit/Vehicle';
 export class SimpleSelectionCombination extends AbstractSingleCombination {
 	private _checker: ISelectableChecker;
 
-	constructor(isSelectable: ISelectableChecker, private _gameContext: IGameworld) {
+	constructor(isSelectable: ISelectableChecker, private _gameworld: IGameworld) {
 		super();
 		this._checker = isSelectable;
 	}
@@ -24,7 +24,7 @@ export class SimpleSelectionCombination extends AbstractSingleCombination {
 
 			if (selectable instanceof Vehicle) {
 				selectable.SetSelected(true);
-				this._gameContext.OnItemSelected.Invoke(this, item);
+				this._gameworld.OnItemSelected.Invoke(this, item);
 			}
 			return true;
 		}

@@ -24,16 +24,18 @@ export class InteractionService implements IInteractionService<IHqGameworld> {
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}
 
-	Register(manager: PIXI.InteractionManager, gameContext: IHqGameworld): void {
+	Register(manager: PIXI.InteractionManager, gameworld: IHqGameworld): void {
 		this._multiSelectionContext = new MultiSelectionContext();
-		this._inputNotifier = new InputNotifier();
-		const checker = new SelectableChecker(gameContext.GetPlayerHq() ? gameContext.GetPlayerHq().Identity : null);
+		this._inputNotifier = new InputNotifier(manager);
+		const checker = new SelectableChecker(gameworld.GetPlayerHq() ? gameworld.GetPlayerHq().Identity : null);
+		const cbs = new CombinationProvider().GetCombination(checker, this._multiSelectionContext, gameworld);
+
 		this._interaction = new InteractionContext(
 			this._inputNotifier,
-			new CombinationProvider().GetCombination(checker, this._multiSelectionContext, gameContext),
+			cbs,
 			checker,
 			this._layerService.GetViewport(),
-			gameContext
+			gameworld.State
 		);
 		this._interaction.OnError.On((src: any, data: Error) => {
 			ErrorHandler.Log(data);
@@ -41,12 +43,6 @@ export class InteractionService implements IInteractionService<IHqGameworld> {
 			Gameworld.Error = data;
 			route('{{sub_path}}Error', true);
 		});
-
-		this._interaction.Listen();
-		(manager as any).on('pointerdown', this._inputNotifier.HandleMouseDown.bind(this._inputNotifier), false);
-		(manager as any).on('pointermove', this._inputNotifier.HandleMouseMove.bind(this._inputNotifier), false);
-		(manager as any).on('pointerup', this._inputNotifier.HandleMouseUp.bind(this._inputNotifier), false);
-		manager.autoPreventDefault = false;
 	}
 
 	GetMultiSelectionContext(): MultiSelectionContext {

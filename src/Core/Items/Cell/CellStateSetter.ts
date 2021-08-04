@@ -7,18 +7,16 @@ import { CellState } from './CellState';
 
 export class CellStateSetter {
 	public static SetStates(cells: Array<Cell>): void {
-		const gameContextService = Singletons.Load<IGameworldService<GameBlueprint, Gameworld>>(
-			SingletonKey.GameContext
-		);
-		if (gameContextService.Publish()) {
-			cells.forEach((cell) => this.SetState(gameContextService.Publish(), cell));
+		const gameworldService = Singletons.Load<IGameworldService<GameBlueprint, Gameworld>>(SingletonKey.Gameworld);
+		if (gameworldService.Publish()) {
+			cells.forEach((cell) => this.SetState(gameworldService.Publish(), cell));
 		} else {
 			cells.forEach((cell) => cell.SetState(CellState.Visible));
 		}
 	}
 
-	public static SetState(gameContext: Gameworld, cell: Cell): void {
-		const playerHq = gameContext.GetPlayerHq();
+	public static SetState(gameworld: Gameworld, cell: Cell): void {
+		const playerHq = gameworld.GetPlayerHq();
 		if (playerHq !== null) {
 			const territoty = playerHq.GetReactors().map((f) => f.GetInternal());
 
@@ -28,7 +26,7 @@ export class CellStateSetter {
 			if (isContained) {
 				cell.SetState(CellState.Visible);
 			} else {
-				if (cell.HasAllyNearby(gameContext.GetPlayer().Identity)) {
+				if (cell.HasAllyNearby(gameworld.GetPlayer().Identity)) {
 					cell.SetState(CellState.Visible);
 				} else {
 					if (cell.GetState() !== CellState.Hidden) {

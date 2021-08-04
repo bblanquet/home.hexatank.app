@@ -12,10 +12,10 @@ export class CellUpdater {
 	private _displayedFields: Dictionary<IField>;
 	private _indexFinder: IndexFinder;
 
-	constructor(private _ref: RecordContent, private _gameContext: Gameworld) {
+	constructor(private _ref: RecordContent, private _gameworld: Gameworld) {
 		this._indexFinder = new IndexFinder();
 		this._displayedFields = new Dictionary<IField>();
-		this._gameContext.GetCells().forEach((c) => {
+		this._gameworld.GetCells().forEach((c) => {
 			this._displayedFields.Add(c.Coo(), c.GetField());
 		});
 	}
@@ -34,7 +34,7 @@ export class CellUpdater {
 			if (!isNullOrUndefined(dateIndex)) {
 				const action = cell.States[dateIndex];
 				coos.Add(coo, {
-					Axial: this._gameContext.GetCell(coo).GetHexCoo(),
+					Axial: this._gameworld.GetCell(coo).GetHexCoo(),
 					Action: action.kind
 				});
 			}
@@ -48,9 +48,9 @@ export class CellUpdater {
 			if (fieldAction !== coos.Get(key).Action) {
 				const field = FieldHelper.NewFieldFromRecord(
 					coos.Get(key).Action,
-					this._gameContext.GetCell(key),
-					this._gameContext.GetPlayerHq(),
-					this._gameContext
+					this._gameworld.GetCell(key),
+					this._gameworld.GetPlayerHq(),
+					this._gameworld
 				);
 				this._displayedFields.Add(key, field);
 			}

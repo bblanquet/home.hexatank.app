@@ -18,9 +18,13 @@ import { ColorKind } from '../../../../Components/Common/Button/Stylish/ColorKin
 import { Landmaker } from '../Landmaker';
 import { CellState } from '../../../Items/Cell/CellState';
 import { CellStateSetter } from '../../../Items/Cell/CellStateSetter';
+import { BrainInjecter } from '../../../Ia/Decision/BrainInjecter';
+import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 
 export class DiamondworlMaker {
 	public Make(blueprint: DiamondBlueprint, gameState: GameState): Diamondworld {
+		GameSettings.Init();
+		GameSettings.SetNormalSpeed();
 		const cells = new Dictionary<Cell>();
 
 		blueprint.Cells.forEach((item) => {
@@ -49,6 +53,9 @@ export class DiamondworlMaker {
 		});
 
 		const world = new Diamondworld(gameState, cells.Values(), hq);
+
+		new BrainInjecter().Inject(world.GetHqs() as Headquarter[], world.GetCells(), [ blueprint.HqDiamond ]);
+
 		CellStateSetter.SetStates(world.GetCells());
 		world.GetCells().forEach((c) => {
 			c.SetState(CellState.Visible);

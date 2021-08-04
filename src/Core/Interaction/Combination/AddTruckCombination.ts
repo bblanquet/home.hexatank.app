@@ -4,7 +4,7 @@ import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { CombinationContext } from './CombinationContext';
 
 export class AddTruckCombination extends AbstractSingleCombination {
-	constructor(private _gameContext: IHqGameworld) {
+	constructor(private _gameworld: IHqGameworld) {
 		super();
 	}
 
@@ -18,7 +18,7 @@ export class AddTruckCombination extends AbstractSingleCombination {
 
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
-			this._gameContext.GetPlayerHq().AddTruckRequest();
+			this._gameworld.GetPlayerHq().AddTruckRequest();
 			context.Items.splice(context.Items.length - 1, 1);
 			return true;
 		}

@@ -13,7 +13,7 @@ import { IGameworld } from '../../Framework/World/IGameworld';
 export class UnselectCombination extends AbstractSingleCombination {
 	private _checker: ISelectableChecker;
 
-	constructor(isSelectable: ISelectableChecker, private _gameContext: IGameworld) {
+	constructor(isSelectable: ISelectableChecker, private _gameworld: IGameworld) {
 		super();
 		this._checker = isSelectable;
 	}
@@ -52,7 +52,7 @@ export class UnselectCombination extends AbstractSingleCombination {
 						if (cell.GetField() instanceof BasicField && cell.GetState() === CellState.Visible) {
 							this.ForcingSelectedItem.Invoke(this, { item: cell, isForced: false });
 							cell.SetSelected(true);
-							this._gameContext.OnItemSelected.Invoke(this, cell);
+							this._gameworld.OnItemSelected.Invoke(this, cell);
 							return true;
 						}
 					}

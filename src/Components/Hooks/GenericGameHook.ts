@@ -12,7 +12,7 @@ import { StateUpdater } from 'preact/hooks';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import { Point } from '../../Utils/Geometry/Point';
 import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
-import { IAppService } from '../../Services/App/IAppService';
+import { IBuilder } from '../../Services/Builder/IBuilder';
 import { IKeyService } from '../../Services/Key/IKeyService';
 import { Cell } from '../../Core/Items/Cell/Cell';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
@@ -27,13 +27,13 @@ import { IBlueprint } from '../../Core/Framework/Blueprint/IBlueprint';
 import { IHqGameworld } from '../../Core/Framework/World/IHqGameworld';
 //b,c
 export class GenericGameHook<T1 extends IBlueprint, T2 extends IHqGameworld> extends Hook<RuntimeState> {
-	private _gameContextService: IGameworldService<T1, T2>;
+	private _gameworldService: IGameworldService<T1, T2>;
 	private _profilService: IPlayerProfilService;
 	private _soundService: IAudioService;
 	private _interactionService: IInteractionService<T2>;
-	private _gameContext: T2;
+	private _gameworld: T2;
 	private _keyService: IKeyService;
-	private _appService: IAppService<T1>;
+	private _appService: IBuilder<T1>;
 	private _onItemSelectionChanged: any = this.OnItemSelectionChanged.bind(this);
 	private _handleRetry: any = this.Retry.bind(this);
 	public OnRefresh: SimpleEvent = new SimpleEvent();
@@ -65,21 +65,21 @@ export class GenericGameHook<T1 extends IBlueprint, T2 extends IHqGameworld> ext
 
 	private Init() {
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
-		this._appService = Singletons.Load<IAppService<T1>>(this._keyService.GetAppKey());
-		this._gameContextService = Singletons.Load<IGameworldService<T1, T2>>(this._keyService.GetAppKey());
+		this._appService = Singletons.Load<IBuilder<T1>>(this._keyService.GetAppKey());
+		this._gameworldService = Singletons.Load<IGameworldService<T1, T2>>(this._keyService.GetAppKey());
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		this._interactionService = Singletons.Load<IInteractionService<T2>>(SingletonKey.Interaction);
-		this._gameContext = this._gameContextService.Publish();
-		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
+		this._gameworld = this._gameworldService.Publish();
+		this._gameworld.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._soundService.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));
-		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
+		this._gameworld.OnItemSelected.On(this.HandleSelection.bind(this));
 		this._profilService.OnPointsAdded.On(this.HandlePoints.bind(this));
-		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
+		this._gameworld.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
 		this._interactionService.GetMultiSelectionContext().OnModeChanged.On(this.HandleMultiSelection.bind(this));
-		this._appService.OnRefresh.On(this._handleRetry);
-		const player = this._gameContext.GetPlayer();
+		this._appService.OnReloaded.On(this._handleRetry);
+		const player = this._gameworld.GetPlayer();
 		this.middle = player.GetBoundingBox().GetCentralPoint();
 		this.OnRefresh.Invoke();
 	}
@@ -106,13 +106,13 @@ export class GenericGameHook<T1 extends IBlueprint, T2 extends IHqGameworld> ext
 	}
 
 	public Unmount(): void {
-		this._gameContext.State.OnGameStatusChanged.Clear();
-		this._gameContext.OnItemSelected.Clear();
+		this._gameworld.State.OnGameStatusChanged.Clear();
+		this._gameworld.OnItemSelected.Clear();
 		this._interactionService.GetMultiSelectionContext().OnModeChanged.Clear();
-		this._gameContext.State.OnGameStatusChanged.Clear();
+		this._gameworld.State.OnGameStatusChanged.Clear();
 		this._profilService.OnPointsAdded.Clear();
 		this._interactionService.OnMultiMenuShowed.Clear();
-		this._appService.OnRefresh.Off(this._handleRetry);
+		this._appService.OnReloaded.Off(this._handleRetry);
 	}
 
 	private HandlePoints(e: any, details: PointDetails): void {
@@ -170,28 +170,28 @@ export class GenericGameHook<T1 extends IBlueprint, T2 extends IHqGameworld> ext
 			}
 		}
 
-		this._gameContext.State.SetPause(hasMenu);
+		this._gameworld.State.SetPause(hasMenu);
 	}
 
 	public IsCovered(): boolean {
-		return this._gameContext.GetPlayerHq().IsCovered(this.State.Item as Cell);
+		return this._gameworld.GetPlayerHq().IsCovered(this.State.Item as Cell);
 	}
 
 	public GetReactor(): number {
-		return this._gameContext.GetPlayerHq().GetReactorsCount();
+		return this._gameworld.GetPlayerHq().GetReactorsCount();
 	}
 	public GetVehicleCount(): number {
-		return this._gameContext.GetPlayerHq().GetVehicleCount();
+		return this._gameworld.GetPlayerHq().GetVehicleCount();
 	}
 
 	public Stop(isVictory: boolean): void {
-		this._gameContext.SetStatus(isVictory ? GameStatus.Victory : GameStatus.Defeat);
+		this._gameworld.SetStatus(isVictory ? GameStatus.Victory : GameStatus.Defeat);
 	}
 
 	GetFields(): FieldProp[] {
 		if (this.State.Item instanceof Cell) {
 			const cell = this.State.Item;
-			const hq = this._gameContext.GetPlayerHq();
+			const hq = this._gameworld.GetPlayerHq();
 			if (hq.IsCovered(cell)) {
 				return FieldProp.All(hq, (e: Item) => {
 					this.SendContext(e);

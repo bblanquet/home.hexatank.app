@@ -25,20 +25,20 @@ export class RecordInteractionService implements IInteractionService<Gameworld> 
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}
 
-	Register(manager: PIXI.InteractionManager, gameContext: Gameworld): void {
-		this._inputNotifier = new InputNotifier();
+	Register(manager: PIXI.InteractionManager, gameworld: Gameworld): void {
+		this._inputNotifier = new InputNotifier(manager);
 		const checker = new TrackingSelectableChecker();
 		this._interaction = new InteractionContext(
 			this._inputNotifier,
 			[
 				new CancelCombination(),
 				new ClearTrashCombination(checker),
-				new SelectionCombination(checker, gameContext),
+				new SelectionCombination(checker, gameworld),
 				new TrackingClearTrashCombination()
 			],
 			checker,
 			this._layerService.GetViewport(),
-			gameContext
+			gameworld.State
 		);
 		this._interaction.OnError.On((src: any, data: Error) => {
 			ErrorHandler.Log(data);
@@ -46,11 +46,6 @@ export class RecordInteractionService implements IInteractionService<Gameworld> 
 			Gameworld.Error = data;
 			route('{{sub_path}}Error', true);
 		});
-		this._interaction.Listen();
-		(manager as any).on('pointerdown', this._inputNotifier.HandleMouseDown.bind(this._inputNotifier), false);
-		(manager as any).on('pointermove', this._inputNotifier.HandleMouseMove.bind(this._inputNotifier), false);
-		(manager as any).on('pointerup', this._inputNotifier.HandleMouseUp.bind(this._inputNotifier), false);
-		manager.autoPreventDefault = false;
 	}
 
 	GetMultiSelectionContext(): MultiSelectionContext {

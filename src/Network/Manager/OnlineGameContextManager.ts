@@ -3,7 +3,7 @@ import { IOnlineService } from '../../Services/Online/IOnlineService';
 import { OnlineBlueprintMaker } from './OnlineBlueprintMaker';
 import { ISocketWrapper } from './../Socket/INetworkSocket';
 import { IOnlineGameContextManager } from './IOnlineGameContextManager';
-import { IAppService } from '../../Services/App/IAppService';
+import { IBuilder } from '../../Services/Builder/IBuilder';
 import { NetworkObserver } from '../../Utils/Events/NetworkObserver';
 import { PacketKind } from '../Message/PacketKind';
 import { route } from 'preact-router';
@@ -19,7 +19,7 @@ import { BrainKind } from '../../Core/Ia/Decision/BrainKind';
 export class OnlineGameContextManager implements IOnlineGameContextManager {
 	private _peerObs: NetworkObserver[];
 	private _onlineService: IOnlineService;
-	private _gameContextService: IGameworldService<GameBlueprint, Gameworld>;
+	private _gameworldService: IGameworldService<GameBlueprint, Gameworld>;
 
 	constructor(
 		private _socket: ISocketWrapper,
@@ -28,9 +28,7 @@ export class OnlineGameContextManager implements IOnlineGameContextManager {
 		private _profilService: IPlayerProfilService
 	) {
 		this._onlineService = Singletons.Load<IOnlineService>(SingletonKey.Online);
-		this._gameContextService = Singletons.Load<IGameworldService<GameBlueprint, Gameworld>>(
-			SingletonKey.GameContext
-		);
+		this._gameworldService = Singletons.Load<IGameworldService<GameBlueprint, Gameworld>>(SingletonKey.Gameworld);
 
 		this._peerObs = [
 			new NetworkObserver(PacketKind.Blueprint, this.HandleBlueprint.bind(this)),
@@ -85,10 +83,10 @@ export class OnlineGameContextManager implements IOnlineGameContextManager {
 	}
 
 	private Load(blueprint: GameBlueprint) {
-		const appService = Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App);
+		const appService = Singletons.Load<IBuilder<GameBlueprint>>(SingletonKey.GameBuilder);
 		blueprint.PlayerName = this._onlinePlayerManager.Player.Name;
 		appService.Register(blueprint, () => this._profilService.AddPoints(30), () => this._profilService.AddPoints(3));
-		const context = this._gameContextService.Publish();
+		const context = this._gameworldService.Publish();
 		this._onlineService.Publish(new OnlineManager(this._socket, context, this._onlinePlayerManager));
 		this._onlinePlayerManager.Player.IsLoaded = true;
 		this._socket.EmitAll<boolean>(PacketKind.Loaded, true);

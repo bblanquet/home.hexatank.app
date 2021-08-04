@@ -4,9 +4,9 @@ import { BasicOrder } from '../../Ia/Order/BasicOrder';
 import { Cell } from '../../Items/Cell/Cell';
 import { VehicleStatus } from './VehicleStatus';
 import { LatencyCondition } from '../../Items/Unit/PowerUp/Condition/LatencyCondition';
-import { GameContext } from '../Context/GameContext';
+import { Gameworld } from '../World/Gameworld';
 export class PathResolver {
-	constructor(private _context: GameContext) {}
+	constructor(private _context: Gameworld) {}
 
 	public Resolve(vehicle: Vehicle, road: string[], cid: string, nextCid: string, latency: number): string {
 		let message = '';

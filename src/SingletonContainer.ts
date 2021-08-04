@@ -1,10 +1,10 @@
 import { SocketService } from './Services/Socket/SocketService';
 import { AnalyzeService } from './Services/Analyse/AnalyzeService';
-import { DiamondContextService } from './Services/GameContext/DiamondContextService';
-import { PowerContextService } from './Services/GameContext/PowerContextService';
+import { DiamondworldService } from './Services/World/DiamondworldService';
+import { FireworldService } from './Services/World/FireworldService';
 import { FireAppService } from './Services/App/FireAppService';
 import { DiamondAppService } from './Services/App/DiamondAppService';
-import { CamouflageGameContextService } from './Services/GameContext/CamouflageGameContextService';
+import { CamouflageworldService } from './Services/World/CamouflageworldService';
 import { CamouflageInteractionService } from './Services/Interaction/CamouflageInteractionService';
 import { CamouflageAppService } from './Services/App/CamouflageAppService';
 import { PlayerProfilService } from './Services/PlayerProfil/PlayerProfilService';
@@ -14,7 +14,7 @@ import { KeyService } from './Services/Key/KeyService';
 import { RecordInteractionService } from './Services/Interaction/RecordInteractionService';
 import { PlayerAppService } from './Services/App/PlayerAppService';
 import { CompareService } from './Services/Compare/CompareService';
-import { GameContextService } from './Services/GameContext/GameContextService';
+import { GameworldService } from './Services/World/GameworldService';
 import { LayerService } from './Services/Layer/LayerService';
 import { InteractionService } from './Services/Interaction/InteractionService';
 import { RecordService } from './Services/Record/RecordService';
@@ -34,10 +34,10 @@ export class SingletonContainer {
 
 		Singletons.Register(SingletonKey.Socket, new SocketService());
 
-		Singletons.Register(SingletonKey.GameContext, new GameContextService());
-		Singletons.Register(SingletonKey.CamouflageGameContext, new CamouflageGameContextService());
-		Singletons.Register(SingletonKey.FireGameContext, new PowerContextService());
-		Singletons.Register(SingletonKey.DiamondGameContext, new DiamondContextService());
+		Singletons.Register(SingletonKey.GameContext, new GameworldService());
+		Singletons.Register(SingletonKey.CamouflageGameContext, new CamouflageworldService());
+		Singletons.Register(SingletonKey.FireGameContext, new FireworldService());
+		Singletons.Register(SingletonKey.DiamondGameContext, new DiamondworldService());
 
 		Singletons.Register(SingletonKey.Interaction, new InteractionService());
 		Singletons.Register(SingletonKey.RecordInteraction, new RecordInteractionService());

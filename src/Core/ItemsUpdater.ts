@@ -4,7 +4,7 @@ import { IItemsUpdater } from './IItemsUpdater';
 import { Item } from './Items/Item';
 import { IInteractionContext } from './Interaction/IInteractionContext';
 import { Env } from '../Utils/Env';
-import { GameState } from './Framework/Context/GameState';
+import { GameState } from './Framework/World/GameState';
 
 export class ItemsUpdater implements IItemsUpdater {
 	public OnError: LiteEvent<Error> = new LiteEvent<Error>();

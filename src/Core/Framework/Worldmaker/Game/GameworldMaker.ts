@@ -1,24 +1,26 @@
 import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { SimpleFloor } from '../../../Items/Environment/SimpleFloor';
-import { GameContext } from '../../Context/GameContext';
-import { GameSettings } from '../../../Framework/GameSettings';
+import { Gameworld } from '../../World/Gameworld';
+import { GameSettings } from '../../GameSettings';
 import { CellProperties } from '../../../Items/Cell/CellProperties';
 import { CellState } from '../../../Items/Cell/CellState';
 import { Cell } from '../../../Items/Cell/Cell';
 import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
 import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
-import { SvgArchive } from '../../../Framework/SvgArchiver';
+import { SvgArchive } from '../../SvgArchiver';
 import { GameBlueprint } from '../../Blueprint/Game/GameBlueprint';
 import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
 import { HqRender } from '../Hq/HqRender';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
-import { GameState } from '../../Context/GameState';
-import { LandRender } from '../LandRender';
-import { CloudRender } from '../CloudRender';
+import { GameState } from '../../World/GameState';
+import { Landmaker } from '../Landmaker';
+import { Cloudmaker } from '../Cloudmaker';
+import { BrainInjecter } from '../../../Ia/Decision/BrainInjecter';
+import { CellStateSetter } from '../../../Items/Cell/CellStateSetter';
 
-export class GameRenderer {
-	public Render(blueprint: GameBlueprint, gameState: GameState): GameContext {
+export class GameworldMaker {
+	public Make(blueprint: GameBlueprint, gameState: GameState): Gameworld {
 		const cells = new Dictionary<Cell>();
 		let playerHq: Headquarter = null;
 		let hqs: Headquarter[] = [];
@@ -33,8 +35,8 @@ export class GameRenderer {
 		const areas = new AreaSearch(
 			Dictionary.To((c) => c.ToString(), cells.Values().map((c) => c.GetHexCoo()))
 		).GetAreas(new HexAxial(blueprint.CenterItem.Coo.Q, blueprint.CenterItem.Coo.R));
-		new LandRender().SetLands(cells, blueprint.MapMode, areas);
-		new CloudRender().SetClouds(cells, areas);
+		new Landmaker().SetLands(cells, blueprint.MapMode, areas);
+		new Cloudmaker().SetClouds(cells, areas);
 		if (blueprint.Hqs) {
 			blueprint.Hqs.forEach((hq) => {
 				hqs.push(new HqRender().Render(cells, hq));
@@ -59,7 +61,14 @@ export class GameRenderer {
 			}
 		}
 
-		return new GameContext(gameState, cells.Values(), hqs, playerHq);
+		const world = new Gameworld(gameState, cells.Values(), hqs, playerHq);
+		new BrainInjecter().Inject(world.GetHqs(), world.GetCells(), blueprint.Hqs);
+		CellStateSetter.SetStates(world.GetCells());
+		world.GetCells().forEach((c) => {
+			c.SetState(CellState.Visible);
+			c.AlwaysVisible();
+		});
+		return world;
 	}
 
 	private SetHqLand(cells: Dictionary<Cell>, sprite: string, middleAreas: HexAxial[], z: number = 0) {

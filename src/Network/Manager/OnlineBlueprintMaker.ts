@@ -4,7 +4,7 @@ import { MapShape } from '../../Core/Framework/Blueprint/Items/MapShape';
 import { MapKind } from '../../Core/Framework/Blueprint/Items/MapKind';
 import { BlueprintSetup } from '../../Components/Model/BlueprintSetup';
 import { IOnlinePlayerManager } from './IOnlinePlayerManager';
-import { HqAppearance } from '../../Core/Framework/Render/Hq/HqSkinHelper';
+import { HqAppearance } from '../../Core/Framework/Worldmaker/Hq/HqSkinHelper';
 import { PlayerBlueprint } from '../../Core/Framework/Blueprint/Game/HqBlueprint';
 import { BrainKind } from '../../Core/Ia/Decision/BrainKind';
 import { Env } from '../../Utils/Env';

@@ -7,7 +7,7 @@ import { SvgArchive } from '../SvgArchiver';
 import { MapKind } from '../Blueprint/Items/MapKind';
 import { BoundingBox } from '../../../Utils/Geometry/BoundingBox';
 
-export class LandRender {
+export class Landmaker {
 	public SetLands(cells: Dictionary<Cell>, mode: MapKind, middleAreas: HexAxial[]) {
 		middleAreas.forEach((corner) => {
 			const cell = cells.Get(corner.ToString());

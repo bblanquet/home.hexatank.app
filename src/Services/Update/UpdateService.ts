@@ -1,10 +1,10 @@
-import { GameContext } from '../../Core/Framework/Context/GameContext';
+import { Gameworld } from '../../Core/Framework/World/Gameworld';
 import { ItemsUpdater } from '../../Core/ItemsUpdater';
 import { IUpdateService } from './IUpdateService';
 import { route } from 'preact-router';
 import { StaticLogger } from '../../Utils/Logger/StaticLogger';
 import { LogKind } from '../../Utils/Logger/LogKind';
-import { GameState } from '../../Core/Framework/Context/GameState';
+import { GameState } from '../../Core/Framework/World/GameState';
 import { ErrorHandler } from '../../Utils/Exceptions/ErrorHandler';
 
 export class UpdateService implements IUpdateService {
@@ -15,7 +15,7 @@ export class UpdateService implements IUpdateService {
 		this._itemsUpdater.OnError.On((src: any, data: Error) => {
 			ErrorHandler.Log(data);
 			ErrorHandler.Send(data);
-			GameContext.Error = data;
+			Gameworld.Error = data;
 			route('{{sub_path}}Error', true);
 		});
 	}

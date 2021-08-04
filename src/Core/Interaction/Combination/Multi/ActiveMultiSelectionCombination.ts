@@ -6,15 +6,15 @@ import { MultiCellMenuItem } from '../../../Menu/Buttons/MultiCellMenuItem';
 import { MultiTankMenuItem } from '../../../Menu/Buttons/MultiTankMenuItem';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
 import { Singletons, SingletonKey } from '../../../../Singletons';
-import { GameContext } from '../../../Framework/Context/GameContext';
+import { Gameworld } from '../../../Framework/World/Gameworld';
 
 export class ActiveMultiSelectionCombination extends AbstractSingleCombination {
-	private _interactionService: IInteractionService<GameContext>;
+	private _interactionService: IInteractionService<Gameworld>;
 	private _layerService: ILayerService;
 
 	constructor(private _multiContext: MultiSelectionContext) {
 		super();
-		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.Interaction);
+		this._interactionService = Singletons.Load<IInteractionService<Gameworld>>(SingletonKey.Interaction);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}
 

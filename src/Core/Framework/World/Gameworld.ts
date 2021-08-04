@@ -1,4 +1,4 @@
-import { IHqGameContext } from './IHqGameContext';
+import { IHqGameworld } from './IHqGameworld';
 import { Identity } from '../../Items/Identity';
 import { Tank } from '../../Items/Unit/Tank';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
@@ -7,12 +7,14 @@ import { Vehicle } from '../../Items/Unit/Vehicle';
 import { LiteEvent } from '../../../Utils/Events/LiteEvent';
 import { Item } from '../../Items/Item';
 import { Cell } from '../../Items/Cell/Cell';
-import { GameStatus } from '../../Framework/GameStatus';
+import { GameStatus } from '../GameStatus';
 import { AliveItem } from '../../Items/AliveItem';
 import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
 import { GameState } from './GameState';
+import { Env } from '../../../Utils/Env';
+import { GameSettings } from '../GameSettings';
 
-export class GameContext implements IHqGameContext {
+export class Gameworld implements IHqGameworld {
 	//should not be here
 	public static Error: Error;
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
@@ -25,6 +27,12 @@ export class GameContext implements IHqGameContext {
 	private _vehicles: Dictionary<Vehicle> = new Dictionary<Vehicle>();
 	private _vehicleCount: number = 0;
 	constructor(state: GameState, cells: Cell[], hqs: Headquarter[] = null, playerHq: Headquarter = null) {
+		GameSettings.Init();
+		GameSettings.SetFastSpeed();
+		if (Env.IsPrd()) {
+			GameSettings.SetNormalSpeed();
+		}
+
 		this.State = state;
 		this._playerHq = playerHq;
 		this._hqs = hqs;

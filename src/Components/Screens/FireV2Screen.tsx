@@ -17,16 +17,16 @@ import { isNullOrUndefined } from '../../Utils/ToolBox';
 import Switch from '../Common/Struct/Switch';
 import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
 import { GenericGameHook } from '../Hooks/GenericGameHook';
-import { FireV2Context } from '../../Core/Framework/Context/FireV2Context';
+import { FireV2World } from '../../Core/Framework/World/FireV2Context';
 import { FireBlueprint } from '../../Core/Framework/Blueprint/Fire/FireBlueprint';
 
 export default class FireV2Screen extends HookedComponent<
 	{},
-	GenericGameHook<FireBlueprint, FireV2Context>,
+	GenericGameHook<FireBlueprint, FireV2World>,
 	RuntimeState
 > {
-	public GetDefaultHook(): GenericGameHook<FireBlueprint, FireV2Context> {
-		return new GenericGameHook<FireBlueprint, FireV2Context>(useState(FireHook.DefaultState()));
+	public GetDefaultHook(): GenericGameHook<FireBlueprint, FireV2World> {
+		return new GenericGameHook<FireBlueprint, FireV2World>(useState(FireHook.DefaultState()));
 	}
 
 	public Rendering(): JSX.Element {

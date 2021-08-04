@@ -1,4 +1,4 @@
-import { IHqGameContext } from './../../../Framework/Context/IHqGameContext';
+import { IHqGameworld } from '../../../Framework/World/IHqGameworld';
 import { ILayerService } from './../../../../Services/Layer/ILayerService';
 import { UnitGroup } from '../../../Items/UnitGroup';
 import { CombinationContext } from '../CombinationContext';
@@ -12,7 +12,7 @@ export class MultiUnitSelectionCombination extends AbstractSingleCombination {
 	private _group: UnitGroup;
 	private _layerService: ILayerService;
 
-	constructor(private _multiContext: MultiSelectionContext, private _gameContext: IHqGameContext) {
+	constructor(private _multiContext: MultiSelectionContext, private _gameContext: IHqGameworld) {
 		super();
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 		this._group = new UnitGroup(this._multiContext);

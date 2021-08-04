@@ -5,12 +5,12 @@ import { Item } from '../../Core/Items/Item';
 import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
 import { Vehicle } from '../../Core/Items/Unit/Vehicle';
 import { Singletons, SingletonKey } from '../../Singletons';
-import { GameContext } from '../../Core/Framework/Context/GameContext';
+import { Gameworld } from '../../Core/Framework/World/Gameworld';
 
 export default class UnitMenuComponent extends Component<{ Vehicle: Vehicle }, {}> {
-	private _interactionService: IInteractionService<GameContext>;
+	private _interactionService: IInteractionService<Gameworld>;
 	componentDidMount(): void {
-		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.RecordInteraction);
+		this._interactionService = Singletons.Load<IInteractionService<Gameworld>>(SingletonKey.RecordInteraction);
 	}
 
 	render() {

@@ -4,11 +4,11 @@ import { CombinationContext } from './CombinationContext';
 import { GameSettings } from '../../Framework/GameSettings';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
-import { IHqGameContext } from '../../Framework/Context/IHqGameContext';
+import { IHqGameworld } from '../../Framework/World/IHqGameworld';
 
 export class GenericCellCombination extends AbstractSingleCombination {
 	constructor(
-		private _gameContext: IHqGameContext,
+		private _gameContext: IHqGameworld,
 		private _isType: (e: any) => boolean,
 		private _create: (e: Cell) => void
 	) {

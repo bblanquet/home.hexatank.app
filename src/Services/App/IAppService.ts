@@ -8,9 +8,6 @@ import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 export interface IAppService<T extends IBlueprint> extends IGarbage {
 	Register(blueprint: T, victory: () => void, defeat: () => void): void;
 	Publish(): Application;
-	Context(): T;
-	GetStats(): StatsContext;
-	GetRecord(): RecordContext;
 	Retry(): void;
 	OnRefresh: SimpleEvent;
 	IsRetriable(): boolean;

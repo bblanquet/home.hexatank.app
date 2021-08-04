@@ -2,7 +2,7 @@ import { Hook } from './Hook';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 import { IAudioService } from '../../Services/Audio/IAudioService';
-import { IGameContextService } from '../../Services/GameContext/IGameContextService';
+import { IGameworldService } from '../../Services/World/IGameworldService';
 import { IInteractionService } from '../../Services/Interaction/IInteractionService';
 import { ISelectable } from '../../Core/ISelectable';
 import { GameSettings } from '../../Core/Framework/GameSettings';
@@ -24,10 +24,10 @@ import { Vibrator } from '../../Utils/Vibrator';
 import { FieldProp } from '../Components/Canvas/FieldProp';
 import { CellGroup } from '../../Core/Items/CellGroup';
 import { IBlueprint } from '../../Core/Framework/Blueprint/IBlueprint';
-import { IHqGameContext } from '../../Core/Framework/Context/IHqGameContext';
+import { IHqGameworld } from '../../Core/Framework/World/IHqGameworld';
 //b,c
-export class GenericGameHook<T1 extends IBlueprint, T2 extends IHqGameContext> extends Hook<RuntimeState> {
-	private _gameContextService: IGameContextService<T1, T2>;
+export class GenericGameHook<T1 extends IBlueprint, T2 extends IHqGameworld> extends Hook<RuntimeState> {
+	private _gameContextService: IGameworldService<T1, T2>;
 	private _profilService: IPlayerProfilService;
 	private _soundService: IAudioService;
 	private _interactionService: IInteractionService<T2>;
@@ -66,7 +66,7 @@ export class GenericGameHook<T1 extends IBlueprint, T2 extends IHqGameContext> e
 	private Init() {
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 		this._appService = Singletons.Load<IAppService<T1>>(this._keyService.GetAppKey());
-		this._gameContextService = Singletons.Load<IGameContextService<T1, T2>>(this._keyService.GetAppKey());
+		this._gameContextService = Singletons.Load<IGameworldService<T1, T2>>(this._keyService.GetAppKey());
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		this._interactionService = Singletons.Load<IInteractionService<T2>>(SingletonKey.Interaction);

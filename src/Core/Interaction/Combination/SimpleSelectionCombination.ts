@@ -1,4 +1,4 @@
-import { IGameContext } from '../../Framework/Context/IGameContext';
+import { IGameworld } from '../../Framework/World/IGameworld';
 import { ISelectable } from '../../ISelectable';
 import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
@@ -8,7 +8,7 @@ import { Vehicle } from '../../Items/Unit/Vehicle';
 export class SimpleSelectionCombination extends AbstractSingleCombination {
 	private _checker: ISelectableChecker;
 
-	constructor(isSelectable: ISelectableChecker, private _gameContext: IGameContext) {
+	constructor(isSelectable: ISelectableChecker, private _gameContext: IGameworld) {
 		super();
 		this._checker = isSelectable;
 	}

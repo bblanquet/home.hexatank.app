@@ -2,7 +2,7 @@ import { Hook } from './Hook';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 import { IAudioService } from '../../Services/Audio/IAudioService';
-import { IGameContextService } from '../../Services/GameContext/IGameContextService';
+import { IGameworldService } from '../../Services/World/IGameworldService';
 import { IInteractionService } from '../../Services/Interaction/IInteractionService';
 import { ISelectable } from '../../Core/ISelectable';
 import { GameSettings } from '../../Core/Framework/GameSettings';
@@ -14,7 +14,7 @@ import { Point } from '../../Utils/Geometry/Point';
 import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
 import { IAppService } from '../../Services/App/IAppService';
 import { IKeyService } from '../../Services/Key/IKeyService';
-import { FireContext } from '../../Core/Framework/Context/FireContext';
+import { Fireworld } from '../../Core/Framework/World/Fireworld';
 import { FireBlueprint } from '../../Core/Framework/Blueprint/Fire/FireBlueprint';
 import { Cell } from '../../Core/Items/Cell/Cell';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
@@ -27,11 +27,11 @@ import { FieldProp } from '../Components/Canvas/FieldProp';
 import { CellGroup } from '../../Core/Items/CellGroup';
 
 export class FireHook extends Hook<RuntimeState> {
-	private _gameContextService: IGameContextService<FireBlueprint, FireContext>;
+	private _gameContextService: IGameworldService<FireBlueprint, Fireworld>;
 	private _profilService: IPlayerProfilService;
 	private _soundService: IAudioService;
-	private _interactionService: IInteractionService<FireContext>;
-	private _gameContext: FireContext;
+	private _interactionService: IInteractionService<Fireworld>;
+	private _gameContext: Fireworld;
 	private _keyService: IKeyService;
 	private _appService: IAppService<FireBlueprint>;
 	private _onItemSelectionChanged: any = this.OnItemSelectionChanged.bind(this);
@@ -66,12 +66,12 @@ export class FireHook extends Hook<RuntimeState> {
 	private Init() {
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 		this._appService = Singletons.Load<IAppService<FireBlueprint>>(this._keyService.GetAppKey());
-		this._gameContextService = Singletons.Load<IGameContextService<FireBlueprint, FireContext>>(
+		this._gameContextService = Singletons.Load<IGameworldService<FireBlueprint, Fireworld>>(
 			SingletonKey.FireGameContext
 		);
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-		this._interactionService = Singletons.Load<IInteractionService<FireContext>>(SingletonKey.Interaction);
+		this._interactionService = Singletons.Load<IInteractionService<Fireworld>>(SingletonKey.Interaction);
 		this._gameContext = this._gameContextService.Publish();
 		this._gameContext.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
 		this._soundService.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));

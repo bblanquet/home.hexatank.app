@@ -1,5 +1,5 @@
 import { Component, h } from 'preact';
-import { GameContext } from '../../../Core/Framework/Context/GameContext';
+import { Gameworld } from '../../../Core/Framework/World/Gameworld';
 import { InteractionKind } from '../../../Core/Interaction/IInteractionContext';
 import { Item } from '../../../Core/Items/Item';
 import { MultiCellMenuItem } from '../../../Core/Menu/Buttons/MultiCellMenuItem';
@@ -11,10 +11,10 @@ import LightWhiteBtn from '../../Common/Button/Standard/LightWhiteBtn';
 import { Point } from '../../../Utils/Geometry/Point';
 
 export default class MultiMenuComponent extends Component<{ Item: Item }, {}> {
-	private _interactionService: IInteractionService<GameContext>;
+	private _interactionService: IInteractionService<Gameworld>;
 	constructor() {
 		super();
-		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.Interaction);
+		this._interactionService = Singletons.Load<IInteractionService<Gameworld>>(SingletonKey.Interaction);
 	}
 	render() {
 		return (

@@ -12,7 +12,7 @@ import { Turrel } from '../../Items/Unit/Turrel';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { IAudioService } from '../../../Services/Audio/IAudioService';
 import { Relationship } from '../../Items/Identity';
-import { IHqGameContext } from '../Context/IHqGameContext';
+import { IHqGameworld } from '../World/IHqGameworld';
 import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
 import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { AudioLoader } from '../AudioLoader';
@@ -22,7 +22,7 @@ export class GameAudioManager implements IGameAudioManager {
 	private _audioId: number;
 	private _lastPlayed: Dictionary<number> = new Dictionary<number>();
 
-	constructor(private _mapKind: MapKind, private _gameContext: IHqGameContext) {
+	constructor(private _mapKind: MapKind, private _gameContext: IHqGameworld) {
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));

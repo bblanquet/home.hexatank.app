@@ -7,7 +7,6 @@ import { Diamond } from '../../../Items/Cell/Field/Diamond';
 import { DiamondHq } from '../../Blueprint/Game/DiamondHq';
 import { Cell } from '../../../Items/Cell/Cell';
 import { ColorKind } from '../../../../Components/Common/Button/Stylish/ColorKind';
-import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 
 export class HqRender {
 	public Render(cells: Dictionary<Cell>, blueprint: DiamondHq): Headquarter {

@@ -1,4 +1,4 @@
-import { CamouflageContext } from '../../Framework/Context/CamouflageContext';
+import { Camouflageworld } from '../World/Camouflageworld';
 import { IGameAudioManager } from './IGameAudioManager';
 import { IBlueprint } from '../../Framework/Blueprint/IBlueprint';
 import { IOrder } from '../../Ia/Order/IOrder';
@@ -21,7 +21,7 @@ export class CamouflageAudioManager implements IGameAudioManager {
 	private _audioId: number;
 	private _lastPlayed: Dictionary<number> = new Dictionary<number>();
 
-	constructor(private _mapContext: IBlueprint, private _gameContext: CamouflageContext) {
+	constructor(private _mapContext: IBlueprint, private _gameContext: Camouflageworld) {
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		this._gameContext.OnItemSelected.On(this.HandleSelection.bind(this));
 		this._gameContext.GetVehicles().forEach((v) => {

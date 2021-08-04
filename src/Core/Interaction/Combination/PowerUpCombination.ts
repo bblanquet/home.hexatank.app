@@ -3,10 +3,10 @@ import { CombinationContext } from './CombinationContext';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { GameSettings } from '../../Framework/GameSettings';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
-import { IHqGameContext } from '../../Framework/Context/IHqGameContext';
+import { IHqGameworld } from '../../Framework/World/IHqGameworld';
 
 export class PowerUpCombination extends AbstractSingleCombination {
-	constructor(private _gameContext: IHqGameContext) {
+	constructor(private _gameContext: IHqGameworld) {
 		super();
 	}
 

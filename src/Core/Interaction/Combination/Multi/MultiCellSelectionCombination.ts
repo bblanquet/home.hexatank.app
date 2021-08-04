@@ -5,12 +5,12 @@ import { MultiSelectionContext, SelectionKind } from '../../../Menu/Smart/MultiS
 import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { ILayerService } from '../../../../Services/Layer/ILayerService';
 import { Singletons, SingletonKey } from '../../../../Singletons';
-import { IHqGameContext } from '../../../Framework/Context/IHqGameContext';
+import { IHqGameworld } from '../../../Framework/World/IHqGameworld';
 
 export class MultiCellSelectionCombination extends AbstractSingleCombination {
 	private _layerService: ILayerService;
 
-	constructor(private _multiSelectionContext: MultiSelectionContext, private _gameContext: IHqGameContext) {
+	constructor(private _multiSelectionContext: MultiSelectionContext, private _gameContext: IHqGameworld) {
 		super();
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}

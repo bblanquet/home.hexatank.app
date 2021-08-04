@@ -14,7 +14,7 @@ import BlueprintForm from '../Components/BlueprintForm';
 import { BlueprintSetup } from '../Model/BlueprintSetup';
 import Panel from '../Components/Panel/Panel';
 import Redirect from '../Components/Redirect';
-import { HqAppearance } from '../../Core/Framework/Render/Hq/HqSkinHelper';
+import { HqAppearance } from '../../Core/Framework/Worldmaker/Hq/HqSkinHelper';
 import { PlayerBlueprint } from '../../Core/Framework/Blueprint/Game/HqBlueprint';
 import { BrainKind } from '../../Core/Ia/Decision/BrainKind';
 

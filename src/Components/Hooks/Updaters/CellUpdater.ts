@@ -1,7 +1,7 @@
 import { FieldHelper } from '../../../Core/Framework/FieldTypeHelper';
 import { RecordKind } from '../../../Core/Framework/Record/Model/Item/State/RecordKind';
 import { RecordContent } from '../../../Core/Framework/Record/Model/RecordContent';
-import { GameContext } from '../../../Core/Framework/Context/GameContext';
+import { Gameworld } from '../../../Core/Framework/World/Gameworld';
 import { HexAxial } from '../../../Utils/Geometry/HexAxial';
 import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { IField } from '../../../Core/Items/Cell/Field/IField';
@@ -12,7 +12,7 @@ export class CellUpdater {
 	private _displayedFields: Dictionary<IField>;
 	private _indexFinder: IndexFinder;
 
-	constructor(private _ref: RecordContent, private _gameContext: GameContext) {
+	constructor(private _ref: RecordContent, private _gameContext: Gameworld) {
 		this._indexFinder = new IndexFinder();
 		this._displayedFields = new Dictionary<IField>();
 		this._gameContext.GetCells().forEach((c) => {

@@ -1,4 +1,4 @@
-import { IHqGameContext } from './../../../Framework/Context/IHqGameContext';
+import { IHqGameworld } from '../../../Framework/World/IHqGameworld';
 import { CellGroup } from './../../../Items/CellGroup';
 import { NetworkMenuItem } from './../../../Menu/Buttons/NetworkMenuItem';
 import { NetworkField } from './../../../Items/Cell/Field/Bonus/NetworkField';
@@ -30,7 +30,7 @@ import { Singletons, SingletonKey } from '../../../../Singletons';
 export class MultiCellBonusCombination extends AbstractSingleCombination {
 	private _layerService: ILayerService;
 
-	constructor(private _gameContext: IHqGameContext) {
+	constructor(private _gameContext: IHqGameworld) {
 		super();
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}

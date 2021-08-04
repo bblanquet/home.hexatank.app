@@ -1,10 +1,10 @@
 import { Hook } from './Hook';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';
-import { CamouflageContext } from '../../Core/Framework/Context/CamouflageContext';
+import { Camouflageworld } from '../../Core/Framework/World/Camouflageworld';
 import { CamouflageBlueprint } from '../../Core/Framework/Blueprint/Cam/CamouflageBlueprint';
 import { IAudioService } from '../../Services/Audio/IAudioService';
-import { IGameContextService } from '../../Services/GameContext/IGameContextService';
+import { IGameworldService } from '../../Services/World/IGameworldService';
 import { IInteractionService } from '../../Services/Interaction/IInteractionService';
 import { ISelectable } from '../../Core/ISelectable';
 import { GameSettings } from '../../Core/Framework/GameSettings';
@@ -26,14 +26,14 @@ import { Camouflage } from '../Model/Dialogues';
 import { ILayerService } from '../../Services/Layer/ILayerService';
 
 export class CamouflageHook extends Hook<RuntimeState> {
-	private _gameContextService: IGameContextService<CamouflageBlueprint, CamouflageContext>;
+	private _gameContextService: IGameworldService<CamouflageBlueprint, Camouflageworld>;
 	private _appService: IAppService<CamouflageBlueprint>;
 	private _profilService: IPlayerProfilService;
 	private _soundService: IAudioService;
 	private _layerService: ILayerService;
 	private _keyService: IKeyService;
-	private _interactionService: IInteractionService<CamouflageContext>;
-	private _gameContext: CamouflageContext;
+	private _interactionService: IInteractionService<Camouflageworld>;
+	private _gameContext: Camouflageworld;
 	private _onItemSelectionChanged: any = this.OnItemSelectionChanged.bind(this);
 	private _handleRetry: any = this.Retry.bind(this);
 	public OnRetried: SimpleEvent = new SimpleEvent();
@@ -47,7 +47,7 @@ export class CamouflageHook extends Hook<RuntimeState> {
 	}
 
 	private Init() {
-		this._gameContextService = Singletons.Load<IGameContextService<CamouflageBlueprint, CamouflageContext>>(
+		this._gameContextService = Singletons.Load<IGameworldService<CamouflageBlueprint, Camouflageworld>>(
 			SingletonKey.CamouflageGameContext
 		);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
@@ -55,7 +55,7 @@ export class CamouflageHook extends Hook<RuntimeState> {
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
-		this._interactionService = Singletons.Load<IInteractionService<CamouflageContext>>(
+		this._interactionService = Singletons.Load<IInteractionService<Camouflageworld>>(
 			SingletonKey.CamouflageInteraction
 		);
 		this._gameContext = this._gameContextService.Publish();

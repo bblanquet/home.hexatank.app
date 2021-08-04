@@ -6,10 +6,10 @@ import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { ISelectable } from '../../ISelectable';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { UnitGroup } from '../../Items/UnitGroup';
-import { IHqGameContext } from '../../Framework/Context/IHqGameContext';
+import { IHqGameworld } from '../../Framework/World/IHqGameworld';
 
 export class SwitchToReactorCombination extends AbstractSingleCombination {
-	constructor(private _gameContext: IHqGameContext) {
+	constructor(private _gameContext: IHqGameworld) {
 		super();
 	}
 	IsMatching(context: CombinationContext): boolean {

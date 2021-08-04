@@ -2,7 +2,7 @@ import { StateUpdater } from 'preact/hooks';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 import { AudioLoader } from '../../Core/Framework/AudioLoader';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
-import { GameContext } from '../../Core/Framework/Context/GameContext';
+import { Gameworld } from '../../Core/Framework/World/Gameworld';
 import { GameSettings } from '../../Core/Framework/GameSettings';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import { JsonRecordContent } from '../../Core/Framework/Record/Model/JsonRecordContent';
@@ -14,7 +14,7 @@ import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
 import { OnlinePlayer } from '../../Network/OnlinePlayer';
 import { IAppService } from '../../Services/App/IAppService';
 import { IAudioService } from '../../Services/Audio/IAudioService';
-import { IGameContextService } from '../../Services/GameContext/IGameContextService';
+import { IGameworldService } from '../../Services/World/IGameworldService';
 import { IInteractionService } from '../../Services/Interaction/IInteractionService';
 import { IOnlineService } from '../../Services/Online/IOnlineService';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
@@ -32,13 +32,13 @@ import { FieldProp } from '../Components/Canvas/FieldProp';
 import { CellGroup } from '../../Core/Items/CellGroup';
 
 export class GameHook extends Hook<RuntimeState> {
-	private _gameContextService: IGameContextService<GameBlueprint, GameContext>;
+	private _gameContextService: IGameworldService<GameBlueprint, Gameworld>;
 	private _soundService: IAudioService;
 	private _onlineService: IOnlineService;
 	private _profilService: IPlayerProfilService;
-	private _interactionService: IInteractionService<GameContext>;
+	private _interactionService: IInteractionService<Gameworld>;
 	private _appService: IAppService<GameBlueprint>;
-	private _gameContext: GameContext;
+	private _gameContext: Gameworld;
 	public Timeout: SimpleEvent = new SimpleEvent();
 	private _onItemSelectionChanged: any = this.OnItemSelectionChanged.bind(this);
 	private _handleRetry: any = this.Retry.bind(this);
@@ -72,13 +72,13 @@ export class GameHook extends Hook<RuntimeState> {
 		return state;
 	}
 	public Init(): void {
-		this._gameContextService = Singletons.Load<IGameContextService<GameBlueprint, GameContext>>(
+		this._gameContextService = Singletons.Load<IGameworldService<GameBlueprint, Gameworld>>(
 			SingletonKey.GameContext
 		);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		this._onlineService = Singletons.Load<IOnlineService>(SingletonKey.Online);
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
-		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.Interaction);
+		this._interactionService = Singletons.Load<IInteractionService<Gameworld>>(SingletonKey.Interaction);
 		this._appService = Singletons.Load<IAppService<GameBlueprint>>(SingletonKey.App);
 		this._gameContext = this._gameContextService.Publish();
 

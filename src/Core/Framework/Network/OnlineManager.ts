@@ -2,7 +2,7 @@ import { OnlineSender } from './OnlineSender';
 import { OnlineSync } from './OnlineSync';
 import { OnlineReceiver } from './OnlineReceiver';
 import { ISocketWrapper } from '../../../Network/Socket/INetworkSocket';
-import { GameContext } from '../Context/GameContext';
+import { Gameworld } from '../World/Gameworld';
 import { IOnlinePlayerManager } from '../../../Network/Manager/IOnlinePlayerManager';
 
 export class OnlineManager {
@@ -11,7 +11,7 @@ export class OnlineManager {
 	private _sync: OnlineSync;
 	constructor(
 		private _socket: ISocketWrapper,
-		private _gameContext: GameContext,
+		private _gameContext: Gameworld,
 		private _players: IOnlinePlayerManager
 	) {
 		this._receiver = new OnlineReceiver(this._socket, this._gameContext);

@@ -6,10 +6,10 @@ import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
-import { IHqGameContext } from '../../Framework/Context/IHqGameContext';
+import { IHqGameworld } from '../../Framework/World/IHqGameworld';
 
 export class SwitchToHeadquarterCombination extends AbstractSingleCombination {
-	constructor(private _gameContext: IHqGameContext) {
+	constructor(private _gameContext: IHqGameworld) {
 		super();
 	}
 	IsMatching(context: CombinationContext): boolean {

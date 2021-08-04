@@ -3,7 +3,7 @@ import { Tank } from '../../Items/Unit/Tank';
 import { RecordUnit } from './Model/Item/RecordUnit';
 import { RecordKind } from './Model/Item/State/RecordKind';
 import { JsonRecordContent } from './Model/JsonRecordContent';
-import { GameContext } from '../../Framework/Context/GameContext';
+import { Gameworld } from '../World/Gameworld';
 import { GameBlueprint } from '../../Framework/Blueprint/Game/GameBlueprint';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { Vehicle } from '../../Items/Unit/Vehicle';
@@ -24,7 +24,7 @@ export class RecordContext implements IRecordContext {
 	private _handleField: any = this.HandleFieldChanged.bind(this);
 	private _handleLog: any = this.HandleLogs.bind(this);
 
-	constructor(blueprint: GameBlueprint, private _gameContext: GameContext) {
+	constructor(blueprint: GameBlueprint, private _gameContext: Gameworld) {
 		this._record = new RecordContent();
 		this._record.PlayerName = this._gameContext.GetPlayer().Identity.Name;
 		this._record.Blueprint = blueprint;

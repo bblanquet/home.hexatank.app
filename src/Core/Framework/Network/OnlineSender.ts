@@ -5,7 +5,7 @@ import { TypeTranslator } from '../../Items/Cell/Field/TypeTranslator';
 import { Item } from '../../Items/Item';
 import { Tank } from '../../Items/Unit/Tank';
 import { Vehicle } from '../../Items/Unit/Vehicle';
-import { GameContext } from '../Context/GameContext';
+import { Gameworld } from '../World/Gameworld';
 import { FieldHelper } from '../FieldTypeHelper';
 import { ISocketWrapper } from '../../../Network/Socket/INetworkSocket';
 import { NetworkMessage } from '../../../Network/Message/NetworkMessage';
@@ -32,7 +32,7 @@ export class OnlineSender {
 	private _handleCamouglage: any = this.HandleCamouflageChanged.bind(this);
 	private _handleCancel: any = this.HandleCancel.bind(this);
 
-	public constructor(private _socket: ISocketWrapper, private _context: GameContext) {
+	public constructor(private _socket: ISocketWrapper, private _context: Gameworld) {
 		this._context.GetCells().forEach((cell) => {
 			const field = cell.GetField();
 			cell.OnFieldChanged.On(this._handleField);

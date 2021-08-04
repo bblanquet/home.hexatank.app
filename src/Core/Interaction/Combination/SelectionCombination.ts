@@ -1,5 +1,5 @@
 import { Headquarter } from './../../Items/Cell/Field/Hq/Headquarter';
-import { IGameContext } from '../../Framework/Context/IGameContext';
+import { IGameworld } from '../../Framework/World/IGameworld';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { ISelectable } from '../../ISelectable';
 import { Cell } from '../../Items/Cell/Cell';
@@ -12,7 +12,7 @@ import { ISelectableChecker } from '../ISelectableChecker';
 export class SelectionCombination extends AbstractSingleCombination {
 	private _checker: ISelectableChecker;
 
-	constructor(isSelectable: ISelectableChecker, private _gameContext: IGameContext) {
+	constructor(isSelectable: ISelectableChecker, private _gameContext: IGameworld) {
 		super();
 		this._checker = isSelectable;
 	}

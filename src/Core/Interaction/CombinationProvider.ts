@@ -1,5 +1,5 @@
 import { MultiUnitOneCellOrderCombination } from './Combination/Multi/MultiUnitOneCellOrderCombination';
-import { IHqGameContext } from './../Framework/Context/IHqGameContext';
+import { IHqGameworld } from '../Framework/World/IHqGameworld';
 import { ActiveMultiSelectionCombination } from './Combination/Multi/ActiveMultiSelectionCombination';
 import { ClearActiveMultiSelectionCombnation } from './Combination/Multi/ClearActiveMultiSelectionCombnation';
 import { OverlockCombination } from './Combination/OverlockCombination';
@@ -61,7 +61,7 @@ export class CombinationProvider {
 	GetCombination(
 		checker: ISelectableChecker,
 		multiSelectionContext: MultiSelectionContext,
-		gameContext: IHqGameContext
+		gameContext: IHqGameworld
 	): ICombination[] {
 		return [
 			//CLEAR

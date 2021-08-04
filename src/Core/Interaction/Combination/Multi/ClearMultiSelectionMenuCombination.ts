@@ -4,15 +4,15 @@ import { MultiCellMenuItem } from '../../../Menu/Buttons/MultiCellMenuItem';
 import { MultiTankMenuItem } from '../../../Menu/Buttons/MultiTankMenuItem';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
 import { Singletons, SingletonKey } from '../../../../Singletons';
-import { GameContext } from '../../../Framework/Context/GameContext';
+import { Gameworld } from '../../../Framework/World/Gameworld';
 
 export class ClearMultiSelectionMenuCombination extends AbstractSingleCombination {
 	private _isShowing: boolean = false;
-	private _interactionService: IInteractionService<GameContext>;
+	private _interactionService: IInteractionService<Gameworld>;
 
 	constructor() {
 		super();
-		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.Interaction);
+		this._interactionService = Singletons.Load<IInteractionService<Gameworld>>(SingletonKey.Interaction);
 		this._interactionService.OnMultiMenuShowed.On((src: any, isShowing) => {
 			this._isShowing = isShowing;
 		});

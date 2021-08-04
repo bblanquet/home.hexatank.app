@@ -6,10 +6,10 @@ import { IRecordService } from '../../Services/Record/IRecordService';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { route } from 'preact-router';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
-import { GameContext } from '../../Core/Framework/Context/GameContext';
+import { Gameworld } from '../../Core/Framework/World/Gameworld';
 import { RecordContent } from '../../Core/Framework/Record/Model/RecordContent';
 import { Point } from '../../Utils/Geometry/Point';
-import { IGameContextService } from '../../Services/GameContext/IGameContextService';
+import { IGameworldService } from '../../Services/World/IGameworldService';
 import { ISelectable } from '../../Core/ISelectable';
 import { Item } from '../../Core/Items/Item';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
@@ -17,15 +17,15 @@ import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 
 export class PlayerHook extends Hook<PlayerState> {
 	private _recordService: IRecordService;
-	private _gameService: IGameContextService<GameBlueprint, GameContext>;
+	private _gameService: IGameworldService<GameBlueprint, Gameworld>;
 	private _onItemSelectionChanged: any = this.OnItemSelectionChanged.bind(this);
 	private _updater: RecordCanvasUpdater;
-	private _context: GameContext;
+	private _context: Gameworld;
 	public OnRefresh: SimpleEvent = new SimpleEvent();
 
 	constructor(d: [PlayerState, StateUpdater<PlayerState>]) {
 		super(d[0], d[1]);
-		this._gameService = Singletons.Load<IGameContextService<GameBlueprint, GameContext>>(SingletonKey.GameContext);
+		this._gameService = Singletons.Load<IGameworldService<GameBlueprint, Gameworld>>(SingletonKey.GameContext);
 		this._recordService = Singletons.Load<IRecordService>(SingletonKey.Record);
 		this._context = this._gameService.Publish();
 		this._updater = new RecordCanvasUpdater(this.GetRecord(), this._context);

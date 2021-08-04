@@ -2,12 +2,12 @@ import { BasicField } from './../../Items/Cell/Field/BasicField';
 import { CombinationContext } from './CombinationContext';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
-import { IHqGameContext } from '../../Framework/Context/IHqGameContext';
+import { IHqGameworld } from '../../Framework/World/IHqGameworld';
 import { Tank } from '../../Items/Unit/Tank';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 
 export class SwitchToOccCellCombination extends AbstractSingleCombination {
-	constructor(private _gameContext: IHqGameContext) {
+	constructor(private _gameContext: IHqGameworld) {
 		super();
 	}
 	IsMatching(context: CombinationContext): boolean {

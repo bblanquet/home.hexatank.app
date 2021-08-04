@@ -1,5 +1,5 @@
 import { ISocketWrapper } from '../../../Network/Socket/INetworkSocket';
-import { GameContext } from '../../Framework/Context/GameContext';
+import { Gameworld } from '../World/Gameworld';
 import { IOnlinePlayerManager } from '../../../Network/Manager/IOnlinePlayerManager';
 import { PacketKind } from '../../../Network/Message/PacketKind';
 import { KindEventObserver } from '../../../Utils/Events/KindEventObserver';
@@ -17,11 +17,7 @@ export class OnlineSync {
 	private _handle: any = this.HandleConnection.bind(this);
 	private _pathResolver: PathResolver;
 
-	constructor(
-		private _socket: ISocketWrapper,
-		private _context: GameContext,
-		private _players: IOnlinePlayerManager
-	) {
+	constructor(private _socket: ISocketWrapper, private _context: Gameworld, private _players: IOnlinePlayerManager) {
 		this._obs = [
 			new KindEventObserver(PacketKind.SyncBlueprint, this.HandleBlueprint.bind(this)),
 			new KindEventObserver(PacketKind.SyncLoaded, this.HandleLoaded.bind(this)),

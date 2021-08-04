@@ -1,4 +1,4 @@
-import { GameContext } from '../../Framework/Context/GameContext';
+import { Gameworld } from '../World/Gameworld';
 import { Groups } from '../../../Utils/Collections/Groups';
 import { Curve } from '../../../Utils/Stats/Curve';
 import { DateValue } from '../../../Utils/Stats/DateValue';
@@ -14,7 +14,7 @@ export class StatsContext {
 		return this._curves;
 	}
 
-	constructor(private _gameContext: GameContext) {
+	constructor(private _gameContext: Gameworld) {
 		this._refDate = new Date().getTime();
 		this._gameContext.GetHqs().forEach((hq) => {
 			this._curves.Add(StatsKind[StatsKind.Unit], new Curve(new Array<DateValue>(), hq.Identity.Skin.GetColor()));

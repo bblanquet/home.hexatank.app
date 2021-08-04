@@ -6,7 +6,7 @@ import { Vehicle } from '../../../Core/Items/Unit/Vehicle';
 import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { Tank } from '../../../Core/Items/Unit/Tank';
 import { Truck } from '../../../Core/Items/Unit/Truck';
-import { GameContext } from '../../../Core/Framework/Context/GameContext';
+import { Gameworld } from '../../../Core/Framework/World/Gameworld';
 import { RecordContent } from '../../../Core/Framework/Record/Model/RecordContent';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 
@@ -14,7 +14,7 @@ export class UnitUpdater {
 	private _displayedUnits: Dictionary<Vehicle>;
 	private _indexFinder: IndexFinder;
 
-	constructor(private _ref: RecordContent, private _gameContext: GameContext) {
+	constructor(private _ref: RecordContent, private _gameContext: Gameworld) {
 		this._indexFinder = new IndexFinder();
 		this._displayedUnits = new Dictionary<Vehicle>();
 	}

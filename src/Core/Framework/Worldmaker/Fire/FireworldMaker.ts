@@ -3,7 +3,7 @@ import { Tank } from '../../../Items/Unit/Tank';
 import { CellLessHeadquarter } from './CellLessHeadquarter';
 import { HqLessShieldField } from '../../../Items/Cell/Field/Bonus/HqLessShieldField';
 import { FireBlueprint } from '../../Blueprint/Fire/FireBlueprint';
-import { FireContext } from '../../Context/FireContext';
+import { Fireworld } from '../../World/Fireworld';
 import { SvgArchive } from '../../SvgArchiver';
 import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
 import { Cell } from '../../../Items/Cell/Cell';
@@ -14,13 +14,15 @@ import { Identity } from '../../../Items/Identity';
 import { HqAppearance } from '../Hq/HqSkinHelper';
 import { AboveItem } from '../../../Items/AboveItem';
 import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
-import { GameState } from '../../Context/GameState';
+import { GameState } from '../../World/GameState';
 import { ColorKind } from '../../../../Components/Common/Button/Stylish/ColorKind';
-import { CloudRender } from '../CloudRender';
-import { LandRender } from '../LandRender';
+import { Cloudmaker } from '../Cloudmaker';
+import { Landmaker } from '../Landmaker';
+import { CellState } from '../../../Items/Cell/CellState';
+import { CellStateSetter } from '../../../Items/Cell/CellStateSetter';
 
-export class FireRenderer {
-	public Render(blueprint: FireBlueprint, gameState: GameState): FireContext {
+export class FireworldMaker {
+	public Make(blueprint: FireBlueprint, gameState: GameState): Fireworld {
 		const cells = new Dictionary<Cell>();
 
 		blueprint.Cells.forEach((item) => {
@@ -33,8 +35,8 @@ export class FireRenderer {
 		const areas = new AreaSearch(
 			Dictionary.To((c) => c.ToString(), cells.Values().map((c) => c.GetHexCoo()))
 		).GetAreas(new HexAxial(blueprint.CenterItem.Coo.Q, blueprint.CenterItem.Coo.R));
-		new LandRender().SetLands(cells, blueprint.MapMode, areas);
-		new CloudRender().SetClouds(cells, areas);
+		new Landmaker().SetLands(cells, blueprint.MapMode, areas);
+		new Cloudmaker().SetClouds(cells, areas);
 
 		const goal = new HexAxial(blueprint.Goal.Coo.Q, blueprint.Goal.Coo.R);
 		const goalCell = cells.Get(goal.ToString());
@@ -59,6 +61,12 @@ export class FireRenderer {
 			cell.Listen();
 		});
 
-		return new FireContext(gameState, cells.Values(), tank, hq, shield);
+		const world = new Fireworld(gameState, cells.Values(), tank, hq, shield);
+		CellStateSetter.SetStates(world.GetCells());
+		world.GetCells().forEach((c) => {
+			c.SetState(CellState.Visible);
+			c.AlwaysVisible();
+		});
+		return world;
 	}
 }

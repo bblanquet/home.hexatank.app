@@ -3,7 +3,7 @@ import { GameSettings } from '../../Core/Framework/GameSettings';
 import { IInteractionService } from '../Interaction/IInteractionService';
 import { ILayerService } from '../Layer/ILayerService';
 import { IUpdateService } from '../Update/IUpdateService';
-import { IGameContextService } from '../GameContext/IGameContextService';
+import { IGameworldService } from '../World/IGameworldService';
 import { AppProvider } from '../../Core/Framework/App/AppProvider';
 import { IAppService } from './IAppService';
 import { Singletons, SingletonKey } from '../../Singletons';
@@ -12,8 +12,8 @@ import { IKeyService } from '../Key/IKeyService';
 import { CellStateSetter } from '../../Core/Items/Cell/CellStateSetter';
 import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
-import { GameContext } from '../../Core/Framework/Context/GameContext';
-import { GameState } from '../../Core/Framework/Context/GameState';
+import { Gameworld } from '../../Core/Framework/World/Gameworld';
+import { GameState } from '../../Core/Framework/World/GameState';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { CellState } from '../../Core/Items/Cell/CellState';
 
@@ -24,20 +24,20 @@ export class PlayerAppService implements IAppService<GameBlueprint> {
 	private _interactionManager: PIXI.InteractionManager;
 	public OnRefresh: SimpleEvent = new SimpleEvent();
 
-	private _gameContextService: IGameContextService<GameBlueprint, GameContext>;
-	private _interactionService: IInteractionService<GameContext>;
+	private _gameContextService: IGameworldService<GameBlueprint, Gameworld>;
+	private _interactionService: IInteractionService<Gameworld>;
 	private _layerService: ILayerService;
 	private _updateService: IUpdateService;
 	private _keyService: IKeyService;
 
 	constructor() {
 		this._appProvider = new AppProvider();
-		this._gameContextService = Singletons.Load<IGameContextService<GameBlueprint, GameContext>>(
+		this._gameContextService = Singletons.Load<IGameworldService<GameBlueprint, Gameworld>>(
 			SingletonKey.GameContext
 		);
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
-		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.RecordInteraction);
+		this._interactionService = Singletons.Load<IInteractionService<Gameworld>>(SingletonKey.RecordInteraction);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 	}
 	Retry(): void {}

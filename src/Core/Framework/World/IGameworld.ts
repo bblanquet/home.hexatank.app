@@ -6,7 +6,7 @@ import { Vehicle } from '../../Items/Unit/Vehicle';
 import { LiteEvent } from '../../../Utils/Events/LiteEvent';
 import { GameStatus } from '../GameStatus';
 
-export interface IGameContext {
+export interface IGameworld {
 	OnItemSelected: LiteEvent<Item>;
 	GetCells(): Cell[];
 	GetVehicles(): Vehicle[];

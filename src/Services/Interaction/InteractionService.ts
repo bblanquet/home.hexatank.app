@@ -8,12 +8,12 @@ import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { Singletons, SingletonKey } from '../../Singletons';
 import * as PIXI from 'pixi.js';
 import { MultiSelectionContext } from '../../Core/Menu/Smart/MultiSelectionContext';
-import { IHqGameContext } from '../../Core/Framework/Context/IHqGameContext';
-import { GameContext } from '../../Core/Framework/Context/GameContext';
+import { IHqGameworld } from '../../Core/Framework/World/IHqGameworld';
+import { Gameworld } from '../../Core/Framework/World/Gameworld';
 import { route } from 'preact-router';
 import { ErrorHandler } from '../../Utils/Exceptions/ErrorHandler';
 
-export class InteractionService implements IInteractionService<IHqGameContext> {
+export class InteractionService implements IInteractionService<IHqGameworld> {
 	private _layerService: ILayerService;
 	private _multiSelectionContext: MultiSelectionContext;
 	private _inputNotifier: InputNotifier;
@@ -24,7 +24,7 @@ export class InteractionService implements IInteractionService<IHqGameContext> {
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}
 
-	Register(manager: PIXI.InteractionManager, gameContext: IHqGameContext): void {
+	Register(manager: PIXI.InteractionManager, gameContext: IHqGameworld): void {
 		this._multiSelectionContext = new MultiSelectionContext();
 		this._inputNotifier = new InputNotifier();
 		const checker = new SelectableChecker(gameContext.GetPlayerHq() ? gameContext.GetPlayerHq().Identity : null);
@@ -38,7 +38,7 @@ export class InteractionService implements IInteractionService<IHqGameContext> {
 		this._interaction.OnError.On((src: any, data: Error) => {
 			ErrorHandler.Log(data);
 			ErrorHandler.Send(data);
-			GameContext.Error = data;
+			Gameworld.Error = data;
 			route('{{sub_path}}Error', true);
 		});
 

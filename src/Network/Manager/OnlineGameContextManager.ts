@@ -10,8 +10,8 @@ import { route } from 'preact-router';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { NetworkMessage } from '../Message/NetworkMessage';
-import { GameContext } from '../../Core/Framework/Context/GameContext';
-import { IGameContextService } from '../../Services/GameContext/IGameContextService';
+import { Gameworld } from '../../Core/Framework/World/Gameworld';
+import { IGameworldService } from '../../Services/World/IGameworldService';
 import { IOnlinePlayerManager } from './IOnlinePlayerManager';
 import { BlueprintSetup } from '../../Components/Model/BlueprintSetup';
 import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
@@ -19,7 +19,7 @@ import { BrainKind } from '../../Core/Ia/Decision/BrainKind';
 export class OnlineGameContextManager implements IOnlineGameContextManager {
 	private _peerObs: NetworkObserver[];
 	private _onlineService: IOnlineService;
-	private _gameContextService: IGameContextService<GameBlueprint, GameContext>;
+	private _gameContextService: IGameworldService<GameBlueprint, Gameworld>;
 
 	constructor(
 		private _socket: ISocketWrapper,
@@ -28,7 +28,7 @@ export class OnlineGameContextManager implements IOnlineGameContextManager {
 		private _profilService: IPlayerProfilService
 	) {
 		this._onlineService = Singletons.Load<IOnlineService>(SingletonKey.Online);
-		this._gameContextService = Singletons.Load<IGameContextService<GameBlueprint, GameContext>>(
+		this._gameContextService = Singletons.Load<IGameworldService<GameBlueprint, Gameworld>>(
 			SingletonKey.GameContext
 		);
 

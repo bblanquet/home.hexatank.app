@@ -1,11 +1,11 @@
 import { DiamondBlueprint } from './../../Core/Framework/Blueprint/Diamond/DiamondBlueprint';
-import { DiamondContext } from './../../Core/Framework/Context/DiamondContext';
+import { Diamondworld } from '../../Core/Framework/World/Diamondworld';
 import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
 import { IInteractionService } from '../Interaction/IInteractionService';
 import { ILayerService } from '../Layer/ILayerService';
 import { IUpdateService } from '../Update/IUpdateService';
-import { IGameContextService } from '../GameContext/IGameContextService';
+import { IGameworldService } from '../World/IGameworldService';
 import { AppProvider } from '../../Core/Framework/App/AppProvider';
 import { IAppService } from './IAppService';
 import { Singletons, SingletonKey } from '../../Singletons';
@@ -15,7 +15,7 @@ import { CellStateSetter } from '../../Core/Items/Cell/CellStateSetter';
 import { GameSettings } from '../../Core/Framework/GameSettings';
 import { IAudioService } from '../Audio/IAudioService';
 import { GameStatus } from '../../Core/Framework/GameStatus';
-import { GameState } from '../../Core/Framework/Context/GameState';
+import { GameState } from '../../Core/Framework/World/GameState';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { GameAudioManager } from '../../Core/Framework/Audio/GameAudioManager';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
@@ -29,11 +29,11 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 	private _appProvider: AppProvider;
 	private _interactionManager: PIXI.InteractionManager;
 	private _gameAudioService: GameAudioManager;
-	private _context: DiamondContext;
+	private _context: Diamondworld;
 
 	private _playerProfilService: IPlayerProfilService;
-	private _gameContextService: IGameContextService<DiamondBlueprint, DiamondContext>;
-	private _interactionService: IInteractionService<DiamondContext>;
+	private _gameContextService: IGameworldService<DiamondBlueprint, Diamondworld>;
+	private _interactionService: IInteractionService<Diamondworld>;
 	private _layerService: ILayerService;
 	private _updateService: IUpdateService;
 	private _keyService: IKeyService;
@@ -44,13 +44,13 @@ export class DiamondAppService implements IAppService<DiamondBlueprint> {
 
 	public Register(blueprint: DiamondBlueprint, victory: () => void, defeat: () => void): void {
 		this._appProvider = new AppProvider();
-		this._gameContextService = Singletons.Load<IGameContextService<DiamondBlueprint, DiamondContext>>(
+		this._gameContextService = Singletons.Load<IGameworldService<DiamondBlueprint, Diamondworld>>(
 			SingletonKey.DiamondGameContext
 		);
 		this._playerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
-		this._interactionService = Singletons.Load<IInteractionService<DiamondContext>>(SingletonKey.Interaction);
+		this._interactionService = Singletons.Load<IInteractionService<Diamondworld>>(SingletonKey.Interaction);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 		this._audioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		this._keyService.DefineKey(this);

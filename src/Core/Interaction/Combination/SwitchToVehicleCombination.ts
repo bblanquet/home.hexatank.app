@@ -1,4 +1,4 @@
-import { IHqGameContext } from './../../Framework/Context/IHqGameContext';
+import { IHqGameworld } from '../../Framework/World/IHqGameworld';
 import { UnitGroup } from '../../Items/UnitGroup';
 import { ISelectable } from '../../ISelectable';
 import { Cell } from '../../Items/Cell/Cell';
@@ -10,7 +10,7 @@ import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { Tank } from '../../Items/Unit/Tank';
 
 export class SwitchToVehicleCombination extends AbstractSingleCombination {
-	constructor(private _gameContext: IHqGameContext) {
+	constructor(private _gameContext: IHqGameworld) {
 		super();
 	}
 

@@ -3,7 +3,7 @@ import { SvgArchive } from './SvgArchiver';
 import { DiamondField } from './../Items/Cell/Field/DiamondField';
 import { BlockingField } from './../Items/Cell/Field/BlockingField';
 import { BasicField } from './../Items/Cell/Field/BasicField';
-import { GameContext } from '../Framework/Context/GameContext';
+import { Gameworld } from './World/Gameworld';
 import { IField } from './../Items/Cell/Field/IField';
 import { FarmField } from './../Items/Cell/Field/Bonus/FarmField';
 import { MedicField } from './../Items/Cell/Field/Bonus/MedicField';
@@ -95,7 +95,7 @@ export class FieldHelper {
 		return RecordKind.None;
 	}
 
-	public static NewFieldFromRecord(action: RecordKind, cell: Cell, hq: IHeadquarter, context: GameContext): IField {
+	public static NewFieldFromRecord(action: RecordKind, cell: Cell, hq: IHeadquarter, context: Gameworld): IField {
 		if (action === RecordKind.Attack) {
 			return cell.SetField(new FireField(cell, hq));
 		} else if (action === RecordKind.Battery) {
@@ -126,7 +126,7 @@ export class FieldHelper {
 		ErrorHandler.Throw(ErrorCat.outOfRange, action.constructor.name);
 	}
 
-	public static NewField(name: string, cell: Cell, hq: IHeadquarter, context: GameContext): IField {
+	public static NewField(name: string, cell: Cell, hq: IHeadquarter, context: Gameworld): IField {
 		if (name === 'FireField') {
 			return cell.SetField(new FireField(cell, hq));
 		} else if (name === 'BatteryField') {

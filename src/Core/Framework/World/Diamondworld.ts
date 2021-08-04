@@ -4,14 +4,14 @@ import { Identity } from '../../Items/Identity';
 import { Item } from '../../Items/Item';
 import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { LiteEvent } from '../../../Utils/Events/LiteEvent';
-import { IHqGameContext } from './IHqGameContext';
+import { IHqGameworld } from './IHqGameworld';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
 import { SimpleEvent } from '../../../Utils/Events/SimpleEvent';
-import { GameStatus } from '../../Framework/GameStatus';
+import { GameStatus } from '../GameStatus';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { GameState } from './GameState';
-export class DiamondContext implements IHqGameContext {
+export class Diamondworld implements IHqGameworld {
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
 	public OnTimerDone: SimpleEvent;
 	public Duration: number = 120;

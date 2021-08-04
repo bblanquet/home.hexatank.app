@@ -1,7 +1,7 @@
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { TypeTranslator } from '../../Items/Cell/Field/TypeTranslator';
 import { Identity } from '../../Items/Identity';
-import { GameContext } from '../Context/GameContext';
+import { Gameworld } from '../World/Gameworld';
 import { FieldHelper } from '../FieldTypeHelper';
 import { PathResolver } from './PathResolver';
 import { ISocketWrapper } from '../../../Network/Socket/INetworkSocket';
@@ -22,7 +22,7 @@ export class OnlineReceiver {
 	public OnInconsistency: LiteEvent<Date> = new LiteEvent<Date>();
 	private _pathResolver: PathResolver;
 	private _obs: NetworkObserver[];
-	constructor(private _socket: ISocketWrapper, private _context: GameContext) {
+	constructor(private _socket: ISocketWrapper, private _context: Gameworld) {
 		this._pathResolver = new PathResolver(this._context);
 		this._obs = [
 			new NetworkObserver(PacketKind.VehicleCreated, this.HandleVehicleCreated.bind(this)),

@@ -14,7 +14,7 @@ import { IInteractionContext, InteractionKind } from './IInteractionContext';
 import { ISelectableChecker } from './ISelectableChecker';
 import { ViewContext } from '../../Utils/Geometry/ViewContext';
 import { Singletons, SingletonKey } from '../../Singletons';
-import { IGameContext } from '../Framework/Context/IGameContext';
+import { IGameworld } from '../Framework/World/IGameworld';
 import { Env } from '../../Utils/Env';
 import { LogKind } from '../../Utils/Logger/LogKind';
 import { StaticLogger } from '../../Utils/Logger/StaticLogger';
@@ -34,7 +34,7 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 		private _combinations: ICombination[],
 		private _checker: ISelectableChecker,
 		private _viewPort: any,
-		private _gameContext: IGameContext
+		private _gameContext: IGameworld
 	) {
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
 		this._selectedItem = [];

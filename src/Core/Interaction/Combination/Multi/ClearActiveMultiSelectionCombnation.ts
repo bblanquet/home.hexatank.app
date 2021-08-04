@@ -6,16 +6,16 @@ import { AbstractSingleCombination } from '../AbstractSingleCombination';
 import { Singletons, SingletonKey } from '../../../../Singletons';
 import { InteractionKind } from '../../IInteractionContext';
 import { IInteractionService } from '../../../../Services/Interaction/IInteractionService';
-import { GameContext } from '../../../Framework/Context/GameContext';
+import { Gameworld } from '../../../Framework/World/Gameworld';
 import { UnitGroup } from '../../../Items/UnitGroup';
 
 export class ClearActiveMultiSelectionCombnation extends AbstractSingleCombination {
-	private _interactionService: IInteractionService<GameContext>;
+	private _interactionService: IInteractionService<Gameworld>;
 	private _layerService: ILayerService;
 
 	constructor(private _multiSelectionContext: MultiSelectionContext) {
 		super();
-		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.Interaction);
+		this._interactionService = Singletons.Load<IInteractionService<Gameworld>>(SingletonKey.Interaction);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}
 

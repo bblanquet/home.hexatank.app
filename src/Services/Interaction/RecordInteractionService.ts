@@ -1,7 +1,7 @@
 import { TrackingClearTrashCombination } from './../../Core/Interaction/Combination/TrackingClearTrashCombination';
 import { TrackingSelectableChecker } from './../../Core/Interaction/TrackingSelectable';
 import { InputNotifier } from './../../Core/Interaction/InputNotifier';
-import { GameContext } from '../../Core/Framework/Context/GameContext';
+import { Gameworld } from '../../Core/Framework/World/Gameworld';
 import { InteractionContext } from '../../Core/Interaction/InteractionContext';
 import { IInteractionService } from './IInteractionService';
 import { ILayerService } from '../Layer/ILayerService';
@@ -15,7 +15,7 @@ import { MultiSelectionContext } from '../../Core/Menu/Smart/MultiSelectionConte
 import { route } from 'preact-router';
 import { ErrorHandler } from '../../Utils/Exceptions/ErrorHandler';
 
-export class RecordInteractionService implements IInteractionService<GameContext> {
+export class RecordInteractionService implements IInteractionService<Gameworld> {
 	private _inputNotifier: InputNotifier;
 	private _interaction: InteractionContext;
 	public OnMultiMenuShowed: LiteEvent<boolean> = new LiteEvent<boolean>();
@@ -25,7 +25,7 @@ export class RecordInteractionService implements IInteractionService<GameContext
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}
 
-	Register(manager: PIXI.InteractionManager, gameContext: GameContext): void {
+	Register(manager: PIXI.InteractionManager, gameContext: Gameworld): void {
 		this._inputNotifier = new InputNotifier();
 		const checker = new TrackingSelectableChecker();
 		this._interaction = new InteractionContext(
@@ -43,7 +43,7 @@ export class RecordInteractionService implements IInteractionService<GameContext
 		this._interaction.OnError.On((src: any, data: Error) => {
 			ErrorHandler.Log(data);
 			ErrorHandler.Send(data);
-			GameContext.Error = data;
+			Gameworld.Error = data;
 			route('{{sub_path}}Error', true);
 		});
 		this._interaction.Listen();

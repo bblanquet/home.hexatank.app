@@ -1,10 +1,10 @@
 import { Application } from 'pixi.js';
-import { RenderingLayers } from '../../Core/Framework/Render/RenderingLayers';
+import { LayerHandler } from './LayerHandler';
 import { IGarbage } from '../IGarbage';
 
 export interface ILayerService extends IGarbage {
 	Register(app: Application): void;
-	Publish(): RenderingLayers;
+	Publish(): LayerHandler;
 	GetViewport(): any;
 	PauseNavigation(): void;
 	StartNavigation(): void;

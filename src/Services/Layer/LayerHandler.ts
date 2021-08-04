@@ -1,8 +1,8 @@
-import { Dictionary } from '../../../Utils/Collections/Dictionary';
+import { Dictionary } from '../../Utils/Collections/Dictionary';
 import * as PIXI from 'pixi.js';
-import { Item } from '../../Items/Item';
+import { Item } from '../../Core/Items/Item';
 
-export class RenderingLayers {
+export class LayerHandler {
 	private _layers: Dictionary<PIXI.Container>;
 	constructor(viewportStage: any, stage: PIXI.Container) {
 		this._layers = new Dictionary<PIXI.Container>();

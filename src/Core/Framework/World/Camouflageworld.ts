@@ -1,4 +1,4 @@
-import { GameStatus } from '../../Framework/GameStatus';
+import { GameStatus } from '../GameStatus';
 import { AliveItem } from '../../Items/AliveItem';
 import { Cell } from '../../Items/Cell/Cell';
 import { Item } from '../../Items/Item';
@@ -6,9 +6,9 @@ import { Vehicle } from '../../Items/Unit/Vehicle';
 import { Dictionary } from '../../../Utils/Collections/Dictionary';
 import { LiteEvent } from '../../../Utils/Events/LiteEvent';
 import { GameState } from './GameState';
-import { IGameContext } from './IGameContext';
+import { IGameworld } from './IGameworld';
 
-export class CamouflageContext implements IGameContext {
+export class Camouflageworld implements IGameworld {
 	private _unit: Vehicle;
 	public State: GameState;
 

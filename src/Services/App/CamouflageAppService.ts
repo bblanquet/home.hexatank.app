@@ -5,7 +5,7 @@ import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
 import { IInteractionService } from '../Interaction/IInteractionService';
 import { ILayerService } from '../Layer/ILayerService';
 import { IUpdateService } from '../Update/IUpdateService';
-import { IGameContextService } from '../GameContext/IGameContextService';
+import { IGameworldService } from '../World/IGameworldService';
 import { AppProvider } from '../../Core/Framework/App/AppProvider';
 import { IAppService } from './IAppService';
 import { Singletons, SingletonKey } from '../../Singletons';
@@ -13,10 +13,10 @@ import * as PIXI from 'pixi.js';
 import { IKeyService } from '../Key/IKeyService';
 import { CellStateSetter } from '../../Core/Items/Cell/CellStateSetter';
 import { GameSettings } from '../../Core/Framework/GameSettings';
-import { CamouflageContext } from '../../Core/Framework/Context/CamouflageContext';
+import { Camouflageworld } from '../../Core/Framework/World/Camouflageworld';
 import { IAudioService } from '../Audio/IAudioService';
 import { GameStatus } from '../../Core/Framework/GameStatus';
-import { GameState } from '../../Core/Framework/Context/GameState';
+import { GameState } from '../../Core/Framework/World/GameState';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
 import { CellState } from '../../Core/Items/Cell/CellState';
@@ -28,14 +28,14 @@ export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 	private _input: PIXI.InteractionManager;
 
 	private _playerProfilService: IPlayerProfilService;
-	private _gameContextService: IGameContextService<CamouflageBlueprint, CamouflageContext>;
-	private _interactionService: IInteractionService<CamouflageContext>;
+	private _gameContextService: IGameworldService<CamouflageBlueprint, Camouflageworld>;
+	private _interactionService: IInteractionService<Camouflageworld>;
 	private _layerService: ILayerService;
 	private _updateService: IUpdateService;
 	private _keyService: IKeyService;
 	private _audioService: IAudioService;
 	private _gameAudioService: CamouflageAudioManager;
-	private _context: CamouflageContext;
+	private _context: Camouflageworld;
 	private _gameStatusChanged: any = this.GameStatusChanged.bind(this);
 	private _victory: () => void;
 	private _defeat: () => void;
@@ -55,14 +55,14 @@ export class CamouflageAppService implements IAppService<CamouflageBlueprint> {
 	public Register(blueprint: CamouflageBlueprint, victory: () => void, defeat: () => void): void {
 		this._appProvider = new AppProvider();
 		this._playerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
-		this._gameContextService = Singletons.Load<IGameContextService<CamouflageBlueprint, CamouflageContext>>(
+		this._gameContextService = Singletons.Load<IGameworldService<CamouflageBlueprint, Camouflageworld>>(
 			SingletonKey.CamouflageGameContext
 		);
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 		this._audioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 
-		this._interactionService = Singletons.Load<IInteractionService<CamouflageContext>>(
+		this._interactionService = Singletons.Load<IInteractionService<Camouflageworld>>(
 			SingletonKey.CamouflageInteraction
 		);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);

@@ -1,7 +1,7 @@
-import { DiamondBlueprint } from './../../Blueprint/Diamond/DiamondBlueprint';
-import { DiamondContext } from './../../Context/DiamondContext';
-import { SvgArchive } from './../../../Framework/SvgArchiver';
-import { GameSettings } from '../../../Framework/GameSettings';
+import { DiamondBlueprint } from '../../Blueprint/Diamond/DiamondBlueprint';
+import { Diamondworld } from '../../World/Diamondworld';
+import { SvgArchive } from '../../SvgArchiver';
+import { GameSettings } from '../../GameSettings';
 import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
 import { Cell } from '../../../Items/Cell/Cell';
 import { CellProperties } from '../../../Items/Cell/CellProperties';
@@ -12,13 +12,15 @@ import { HqRender } from '../Hq/HqRender';
 import { SimpleFloor } from '../../../Items/Environment/SimpleFloor';
 import { AboveItem } from '../../../Items/AboveItem';
 import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
-import { GameState } from '../../Context/GameState';
-import { CloudRender } from '../CloudRender';
+import { GameState } from '../../World/GameState';
+import { Cloudmaker } from '../Cloudmaker';
 import { ColorKind } from '../../../../Components/Common/Button/Stylish/ColorKind';
-import { LandRender } from '../LandRender';
+import { Landmaker } from '../Landmaker';
+import { CellState } from '../../../Items/Cell/CellState';
+import { CellStateSetter } from '../../../Items/Cell/CellStateSetter';
 
-export class DiamondRenderer {
-	public Render(blueprint: DiamondBlueprint, gameState: GameState): DiamondContext {
+export class DiamondworlMaker {
+	public Make(blueprint: DiamondBlueprint, gameState: GameState): Diamondworld {
 		const cells = new Dictionary<Cell>();
 
 		blueprint.Cells.forEach((item) => {
@@ -31,8 +33,8 @@ export class DiamondRenderer {
 		const areas = new AreaSearch(
 			Dictionary.To((c) => c.ToString(), cells.Values().map((c) => c.GetHexCoo()))
 		).GetAreas(new HexAxial(blueprint.CenterItem.Coo.Q, blueprint.CenterItem.Coo.R));
-		new LandRender().SetLands(cells, blueprint.MapMode, areas);
-		new CloudRender().SetClouds(cells, areas);
+		new Landmaker().SetLands(cells, blueprint.MapMode, areas);
+		new Cloudmaker().SetClouds(cells, areas);
 		blueprint.HqDiamond.Player.Color = ColorKind.Purple;
 		const hq = new HqRender().Render(cells, blueprint.HqDiamond);
 		this.SetHqLand(cells, SvgArchive.nature.hq, [ hq.GetCell().GetHexCoo() ]);
@@ -46,7 +48,13 @@ export class DiamondRenderer {
 			cell.Listen();
 		});
 
-		return new DiamondContext(gameState, cells.Values(), hq);
+		const world = new Diamondworld(gameState, cells.Values(), hq);
+		CellStateSetter.SetStates(world.GetCells());
+		world.GetCells().forEach((c) => {
+			c.SetState(CellState.Visible);
+			c.AlwaysVisible();
+		});
+		return world;
 	}
 
 	private SetHqLand(cells: Dictionary<Cell>, sprite: string, middleAreas: HexAxial[], z: number = 0) {

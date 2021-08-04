@@ -2,7 +2,7 @@ import { RuntimeState } from '../Model/RuntimeState';
 import { Hook } from './Hook';
 import { IAppService } from '../../Services/App/IAppService';
 import { IAudioService } from '../../Services/Audio/IAudioService';
-import { IGameContextService } from '../../Services/GameContext/IGameContextService';
+import { IGameworldService } from '../../Services/World/IGameworldService';
 import { IInteractionService } from '../../Services/Interaction/IInteractionService';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { Point } from '../../Utils/Geometry/Point';
@@ -10,8 +10,8 @@ import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
 import { ISelectable } from '../../Core/ISelectable';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 import { DiamondBlueprint } from '../../Core/Framework/Blueprint/Diamond/DiamondBlueprint';
-import { DiamondContext } from '../../Core/Framework/Context/DiamondContext';
-import { GameContext } from '../../Core/Framework/Context/GameContext';
+import { Diamondworld } from '../../Core/Framework/World/Diamondworld';
+import { Gameworld } from '../../Core/Framework/World/Gameworld';
 import { GameSettings } from '../../Core/Framework/GameSettings';
 import { Item } from '../../Core/Items/Item';
 import { GameStatus } from '../../Core/Framework/GameStatus';
@@ -28,13 +28,13 @@ import { FieldProp } from '../Components/Canvas/FieldProp';
 import { CellGroup } from '../../Core/Items/CellGroup';
 
 export class DiamondHook extends Hook<RuntimeState> {
-	private _gameContextService: IGameContextService<DiamondBlueprint, DiamondContext>;
+	private _gameContextService: IGameworldService<DiamondBlueprint, Diamondworld>;
 	private _soundService: IAudioService;
 	private _profilService: IPlayerProfilService;
-	private _interactionService: IInteractionService<GameContext>;
+	private _interactionService: IInteractionService<Gameworld>;
 	private _appService: IAppService<DiamondBlueprint>;
 	private _keyService: IKeyService;
-	private _gameContext: DiamondContext;
+	private _gameContext: Diamondworld;
 	private _onItemSelectionChanged: { (obj: any, selectable: ISelectable): void };
 	private _handleRetry: any = this.Retry.bind(this);
 	public OnRefresh: SimpleEvent = new SimpleEvent();
@@ -84,11 +84,11 @@ export class DiamondHook extends Hook<RuntimeState> {
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 		this._appService = Singletons.Load<IAppService<DiamondBlueprint>>(this._keyService.GetAppKey());
 		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
-		this._gameContextService = Singletons.Load<IGameContextService<DiamondBlueprint, DiamondContext>>(
+		this._gameContextService = Singletons.Load<IGameworldService<DiamondBlueprint, Diamondworld>>(
 			SingletonKey.DiamondGameContext
 		);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-		this._interactionService = Singletons.Load<IInteractionService<GameContext>>(SingletonKey.Interaction);
+		this._interactionService = Singletons.Load<IInteractionService<Gameworld>>(SingletonKey.Interaction);
 		this._gameContext = this._gameContextService.Publish();
 		this._onItemSelectionChanged = this.OnItemSelectionChanged.bind(this);
 		const playerHq = this._gameContext.GetPlayerHq();

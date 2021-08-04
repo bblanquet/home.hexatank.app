@@ -1,15 +1,15 @@
-import { RenderingLayers } from '../../Core/Framework/Render/RenderingLayers';
+import { LayerHandler } from './LayerHandler';
 import { ILayerService } from './ILayerService';
 import { Viewport } from 'pixi-viewport';
 import { Application } from 'pixi.js';
 
 export class LayerService implements ILayerService {
-	private _rendering: RenderingLayers;
+	private _rendering: LayerHandler;
 	private _viewPort: Viewport;
 
 	Register(app: Application): void {
 		this.SetViewport(app);
-		this._rendering = new RenderingLayers(this._viewPort, app.stage);
+		this._rendering = new LayerHandler(this._viewPort, app.stage);
 		this.StartNavigation();
 		app.stage.addChild(this._viewPort);
 	}
@@ -32,7 +32,7 @@ export class LayerService implements ILayerService {
 		});
 	}
 
-	Publish(): RenderingLayers {
+	Publish(): LayerHandler {
 		return this._rendering;
 	}
 

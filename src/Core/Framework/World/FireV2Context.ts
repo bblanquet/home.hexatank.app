@@ -1,6 +1,5 @@
-import { HqLessShieldField } from '../../Items/Cell/Field/Bonus/HqLessShieldField';
-import { CellLessHeadquarter } from '../Render/Fire/CellLessHeadquarter';
-import { IHqGameContext } from './IHqGameContext';
+import { CellLessHeadquarter } from '../Worldmaker/Fire/CellLessHeadquarter';
+import { IHqGameworld } from './IHqGameworld';
 import { GameStatus } from '../GameStatus';
 import { AliveItem } from '../../Items/AliveItem';
 import { Cell } from '../../Items/Cell/Cell';
@@ -11,7 +10,8 @@ import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
 import { Identity } from '../../Items/Identity';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { GameState } from './GameState';
-export class FireContext implements IHqGameContext {
+import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
+export class FireV2World implements IHqGameworld {
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
 	private _cells: Dictionary<Cell>;
 	public State: GameState;
@@ -21,7 +21,7 @@ export class FireContext implements IHqGameContext {
 		cells: Cell[],
 		private _unit: AliveItem,
 		private _fakeHq: CellLessHeadquarter,
-		private _target: HqLessShieldField
+		private _target: Headquarter
 	) {
 		this._cells = Dictionary.To((c) => c.Coo(), cells);
 		this.State = state;

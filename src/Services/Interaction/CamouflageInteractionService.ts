@@ -13,10 +13,10 @@ import { ClearTrashCombination } from '../../Core/Interaction/Combination/ClearT
 import { AbortCombination } from '../../Core/Interaction/Combination/AbortCombination';
 import { CamouflageCombination } from '../../Core/Interaction/Combination/CamouflageCombination';
 import { SimpleUnselectCombination } from '../../Core/Interaction/Combination/SimpleUnselectCombination';
-import { CamouflageContext } from '../../Core/Framework/Context/CamouflageContext';
+import { Camouflageworld } from '../../Core/Framework/World/Camouflageworld';
 import { TankCombination } from '../../Core/Interaction/Combination/TankCombination';
 
-export class CamouflageInteractionService implements IInteractionService<CamouflageContext> {
+export class CamouflageInteractionService implements IInteractionService<Camouflageworld> {
 	private _layerService: ILayerService;
 	private _multiSelectionContext: MultiSelectionContext;
 	private _inputNotifier: InputNotifier;
@@ -27,7 +27,7 @@ export class CamouflageInteractionService implements IInteractionService<Camoufl
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 	}
 
-	Register(manager: PIXI.InteractionManager, gameContext: CamouflageContext): void {
+	Register(manager: PIXI.InteractionManager, gameContext: Camouflageworld): void {
 		this._multiSelectionContext = new MultiSelectionContext();
 		this._inputNotifier = new InputNotifier();
 		const checker = new SelectableChecker(gameContext.GetPlayer().Identity);

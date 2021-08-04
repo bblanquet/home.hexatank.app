@@ -10,17 +10,19 @@ import { Identity } from '../../../Items/Identity';
 import { HqAppearance } from '../Hq/HqSkinHelper';
 import { AboveItem } from '../../../Items/AboveItem';
 import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
-import { GameState } from '../../Context/GameState';
+import { GameState } from '../../World/GameState';
 import { ColorKind } from '../../../../Components/Common/Button/Stylish/ColorKind';
-import { CloudRender } from '../CloudRender';
-import { LandRender } from '../LandRender';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
 import { ReactorField } from '../../../Items/Cell/Field/Bonus/ReactorField';
 import { CellLessHeadquarter } from '../Fire/CellLessHeadquarter';
-import { FireV2Context } from '../../Context/FireV2Context';
+import { FireV2World } from '../../World/FireV2Context';
+import { Landmaker } from '../Landmaker';
+import { Cloudmaker } from '../Cloudmaker';
+import { CellStateSetter } from '../../../Items/Cell/CellStateSetter';
+import { CellState } from '../../../Items/Cell/CellState';
 
 export class FireRendererV2 {
-	public Render(blueprint: FireBlueprint, gameState: GameState): FireV2Context {
+	public Render(blueprint: FireBlueprint, gameState: GameState): FireV2World {
 		const id = new Identity('Player', HqAppearance.Skins.Get(ColorKind[ColorKind.Red]), true);
 		const hq = new CellLessHeadquarter();
 		hq.Identity = id;
@@ -37,8 +39,8 @@ export class FireRendererV2 {
 		const areas = new AreaSearch(
 			Dictionary.To((c) => c.ToString(), cells.Values().map((c) => c.GetHexCoo()))
 		).GetAreas(new HexAxial(blueprint.CenterItem.Coo.Q, blueprint.CenterItem.Coo.R));
-		new LandRender().SetLands(cells, blueprint.MapMode, areas);
-		new CloudRender().SetClouds(cells, areas);
+		new Landmaker().SetLands(cells, blueprint.MapMode, areas);
+		new Cloudmaker().SetClouds(cells, areas);
 
 		const goal = new HexAxial(blueprint.Goal.Coo.Q, blueprint.Goal.Coo.R);
 		const targetCell = cells.Get(goal.ToString());
@@ -66,6 +68,13 @@ export class FireRendererV2 {
 			cell.Listen();
 		});
 
-		return new FireV2Context(gameState, cells.Values(), tank, hq, targetHq);
+		const world = new FireV2World(gameState, cells.Values(), tank, hq, targetHq);
+		CellStateSetter.SetStates(world.GetCells());
+		world.GetCells().forEach((c) => {
+			c.SetState(CellState.Visible);
+			c.AlwaysVisible();
+		});
+
+		return world;
 	}
 }

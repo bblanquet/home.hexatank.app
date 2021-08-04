@@ -1,6 +1,6 @@
 import { Component, h } from 'preact';
 import { route } from 'preact-router';
-import { GameContext } from '../../Core/Framework/Context/GameContext';
+import { Gameworld } from '../../Core/Framework/World/Gameworld';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import { Face } from '../Components/Face';
@@ -22,9 +22,9 @@ export default class ErrorScreen extends Component {
 						<Face eyes={[]} mouths={[]} face={'fill-exception'} />
 						<div class="text-detail shadowEffect width80percent">
 							<h5 class="card-title">OOPS an error occured, we will fix it quickly!</h5>
-							<div>{GameContext.Error.message}</div>
+							<div>{Gameworld.Error.message}</div>
 							<p />
-							<div class="sub-text-detail max200Height">{GameContext.Error.stack}</div>
+							<div class="sub-text-detail max200Height">{Gameworld.Error.stack}</div>
 						</div>
 					</div>
 				}

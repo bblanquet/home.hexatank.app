@@ -1,11 +1,11 @@
-import { FireContext } from '../../Core/Framework/Context/FireContext';
+import { Fireworld } from '../../Core/Framework/World/Fireworld';
 import { FireBlueprint } from '../../Core/Framework/Blueprint/Fire/FireBlueprint';
 import { RecordContext } from '../../Core/Framework/Record/RecordContext';
 import { StatsContext } from '../../Core/Framework/Stats/StatsContext';
 import { IInteractionService } from '../Interaction/IInteractionService';
 import { ILayerService } from '../Layer/ILayerService';
 import { IUpdateService } from '../Update/IUpdateService';
-import { IGameContextService } from '../GameContext/IGameContextService';
+import { IGameworldService } from '../World/IGameworldService';
 import { AppProvider } from '../../Core/Framework/App/AppProvider';
 import { IAppService } from './IAppService';
 import { Singletons, SingletonKey } from '../../Singletons';
@@ -15,7 +15,7 @@ import { CellStateSetter } from '../../Core/Items/Cell/CellStateSetter';
 import { GameSettings } from '../../Core/Framework/GameSettings';
 import { IAudioService } from '../Audio/IAudioService';
 import { GameStatus } from '../../Core/Framework/GameStatus';
-import { GameState } from '../../Core/Framework/Context/GameState';
+import { GameState } from '../../Core/Framework/World/GameState';
 import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { GameAudioManager } from '../../Core/Framework/Audio/GameAudioManager';
@@ -29,9 +29,9 @@ export class FireAppService implements IAppService<FireBlueprint> {
 	private _gameAudioService: GameAudioManager;
 
 	private _playerProfilService: IPlayerProfilService;
-	private _gameContextService: IGameContextService<FireBlueprint, FireContext>;
-	private _context: FireContext;
-	private _interactionService: IInteractionService<FireContext>;
+	private _gameContextService: IGameworldService<FireBlueprint, Fireworld>;
+	private _context: Fireworld;
+	private _interactionService: IInteractionService<Fireworld>;
 	private _layerService: ILayerService;
 	private _updateService: IUpdateService;
 	private _keyService: IKeyService;
@@ -42,13 +42,13 @@ export class FireAppService implements IAppService<FireBlueprint> {
 
 	constructor() {
 		this._appProvider = new AppProvider();
-		this._gameContextService = Singletons.Load<IGameContextService<FireBlueprint, FireContext>>(
+		this._gameContextService = Singletons.Load<IGameworldService<FireBlueprint, Fireworld>>(
 			SingletonKey.FireGameContext
 		);
 		this._playerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
-		this._interactionService = Singletons.Load<IInteractionService<FireContext>>(SingletonKey.Interaction);
+		this._interactionService = Singletons.Load<IInteractionService<Fireworld>>(SingletonKey.Interaction);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 		this._audioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 	}

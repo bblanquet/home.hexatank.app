@@ -31,6 +31,8 @@ export enum SingletonKey {
 
 	Socket,
 
+	Blueprint,
+
 	App,
 	RecordApp,
 	CamouflageApp,

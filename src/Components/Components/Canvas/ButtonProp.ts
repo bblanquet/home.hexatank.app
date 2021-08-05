@@ -1,4 +1,6 @@
+import { GameSettings } from '../../../Core/Framework/GameSettings';
 import { ReactorField } from '../../../Core/Items/Cell/Field/Bonus/ReactorField';
+import { Headquarter } from '../../../Core/Items/Cell/Field/Hq/Headquarter';
 import { Item } from '../../../Core/Items/Item';
 import { Vehicle } from '../../../Core/Items/Unit/Vehicle';
 import { UnitGroup } from '../../../Core/Items/UnitGroup';
@@ -12,6 +14,8 @@ import { MultiOrderMenuItem } from '../../../Core/Menu/Buttons/MultiOrderMenuIte
 import { PlusMenuItem } from '../../../Core/Menu/Buttons/PlusMenuItem';
 import { SearchMoneyMenuItem } from '../../../Core/Menu/Buttons/SearchMoneyMenuItem';
 import { SpeedFieldMenuItem } from '../../../Core/Menu/Buttons/SpeedFieldMenuItem';
+import { TankMenuItem } from '../../../Core/Menu/Buttons/TankMenuItem';
+import { TruckMenuItem } from '../../../Core/Menu/Buttons/TruckMenuItem';
 
 export class ButtonProp {
 	constructor(
@@ -40,6 +44,26 @@ export class ButtonProp {
 			new ButtonProp('fill-truck', 'btn-light', `${v.Id}\n${v.GetCurrentCell().Coo()}`, () => {}, false),
 			new ButtonProp('fill-searchMoney', 'btn-dark', '', () => callback(new SearchMoneyMenuItem()), false),
 			new ButtonProp('fill-abort', 'btn-dark', '', () => callback(new AbortMenuItem()), false),
+			new ButtonProp('fill-cancel', 'btn-dark', '', () => callback(new CancelMenuItem()), false)
+		];
+	}
+
+	public static HeadquarterList(h: Headquarter, callback: (e: Item) => void): ButtonProp[] {
+		return [
+			new ButtonProp(
+				'fill-tank',
+				'btn-dark',
+				`${GameSettings.TankPrice * h.GetVehicleCount()}`,
+				() => callback(new TankMenuItem()),
+				false
+			),
+			new ButtonProp(
+				'fill-truck',
+				'btn-dark',
+				`${GameSettings.TruckPrice * h.GetVehicleCount()}`,
+				() => callback(new TruckMenuItem()),
+				false
+			),
 			new ButtonProp('fill-cancel', 'btn-dark', '', () => callback(new CancelMenuItem()), false)
 		];
 	}

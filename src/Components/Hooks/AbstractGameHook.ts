@@ -32,6 +32,7 @@ import { Truck } from '../../Core/Items/Unit/Truck';
 import { ReactorField } from '../../Core/Items/Cell/Field/Bonus/ReactorField';
 import { UnitGroup } from '../../Core/Items/UnitGroup';
 import { Vehicle } from '../../Core/Items/Unit/Vehicle';
+import { Headquarter } from '../../Core/Items/Cell/Field/Hq/Headquarter';
 export abstract class AbstractGameHook<T1 extends IBlueprint, T2 extends IHqGameworld> extends Hook<RuntimeState> {
 	private _gameworldService: IGameworldService<T1, T2>;
 	protected LayerService: ILayerService;
@@ -55,11 +56,8 @@ export abstract class AbstractGameHook<T1 extends IBlueprint, T2 extends IHqGame
 		state.HasMenu = false;
 		state.IsSettingMenuVisible = false;
 		state.IsSynchronising = false;
-		state.IsMultiMenuVisible = false;
 		state.HasMultiMenu = false;
 		state.HasWarning = false;
-		state.TankRequestCount = 0;
-		state.TruckRequestCount = 0;
 		state.Amount = GameSettings.PocketMoney;
 		state.Item = null;
 		state.Players = [];
@@ -103,11 +101,8 @@ export abstract class AbstractGameHook<T1 extends IBlueprint, T2 extends IHqGame
 		state.SelectionKind = SelectionKind.None;
 		state.IsSettingMenuVisible = false;
 		state.IsSynchronising = false;
-		state.IsMultiMenuVisible = false;
 		state.HasMultiMenu = false;
 		state.HasWarning = false;
-		state.TankRequestCount = 0;
-		state.TruckRequestCount = 0;
 		state.Amount = GameSettings.PocketMoney;
 		state.Item = null;
 		state.Players = [];
@@ -220,6 +215,10 @@ export abstract class AbstractGameHook<T1 extends IBlueprint, T2 extends IHqGame
 	GetBtns(): ButtonProp[] {
 		if (this.State.Item instanceof Vehicle) {
 			return ButtonProp.TankList(this.State.Item, (e: Item) => {
+				this.SendContext(e);
+			});
+		} else if (this.State.Item instanceof Headquarter) {
+			return ButtonProp.HeadquarterList(this.State.Item, (e: Item) => {
 				this.SendContext(e);
 			});
 		} else if (this.State.Item instanceof Truck) {

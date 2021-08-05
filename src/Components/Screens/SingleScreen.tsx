@@ -12,11 +12,12 @@ import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint
 import { IPlayerProfileService } from '../../Services/PlayerProfil/IPlayerProfileService';
 import BlueprintForm from '../Components/BlueprintForm';
 import { BlueprintSetup } from '../Model/BlueprintSetup';
-import Panel from '../Components/Panel/Panel';
 import Redirect from '../Components/Redirect';
 import { HqAppearance } from '../../Core/Framework/Worldmaker/Hq/HqSkinHelper';
 import { PlayerBlueprint } from '../../Core/Framework/Blueprint/Game/HqBlueprint';
 import { BrainKind } from '../../Core/Ia/Decision/BrainKind';
+import Navbar from '../Common/Struct/Navbar';
+import Body from '../Common/Struct/Body';
 
 export default class SingleScreen extends Component<any, BlueprintSetup> {
 	private _profilService: IPlayerProfileService;
@@ -40,7 +41,8 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 	render() {
 		return (
 			<Redirect>
-				<Panel
+				<Body
+					header={<Navbar />}
 					content={
 						<BlueprintForm
 							Model={this.state}

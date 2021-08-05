@@ -39,7 +39,7 @@ export default class BlueScreen extends HookedComponent<{}, BlueHook, CampaignSt
 								</div>
 								<Visible isVisible={this.Hook.State.HasBubble}>
 									<div class="arrow-up" />
-									<p class="bubble">{this.Hook.State.CurrentSentence}</p>
+									<p class="bubble bubbleApp">{this.Hook.State.CurrentSentence}</p>
 									<div class="container-center-horizontal">
 										<Btn OnClick={() => this.Hook.SetBubble()} Color={ColorKind.Black}>
 											<Icon Value="fas fa-undo-alt" /> Back

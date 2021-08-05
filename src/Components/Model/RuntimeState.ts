@@ -10,12 +10,9 @@ export class RuntimeState {
 	HasMenu: boolean;
 	IsSettingMenuVisible: boolean;
 	IsSynchronising: boolean;
-	IsMultiMenuVisible: boolean;
 
 	HasMultiMenu: boolean;
 	HasWarning: boolean;
-	TankRequestCount: number;
-	TruckRequestCount: number;
 
 	Amount: number;
 	Item: Item;

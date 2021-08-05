@@ -1,4 +1,3 @@
-import { MonitoredOrder } from './../../../../Ia/Order/MonitoredOrder';
 import { IHeadquarter } from './IHeadquarter';
 import { Identity, Relationship } from './../../../Identity';
 import { IBrain } from './../../../../Ia/Decision/IBrain';
@@ -8,7 +7,6 @@ import { BasicItem } from './../../../BasicItem';
 import { ZKind } from './../../../ZKind';
 import { BatteryField } from '../Bonus/BatteryField';
 import { LiteEvent } from '../../../../../Utils/Events/LiteEvent';
-import { FlagCell } from '../../FlagCell';
 import { Tank } from '../../../Unit/Tank';
 import { InteractionContext } from '../../../../Interaction/InteractionContext';
 import { Cell } from '../../Cell';
@@ -30,15 +28,12 @@ import { Item } from '../../../Item';
 import { Curve } from '../../../../../Utils/Stats/Curve';
 import { DateValue } from '../../../../../Utils/Stats/DateValue';
 import { isNullOrUndefined } from '../../../../../Utils/ToolBox';
-import { TruckBrain } from '../../../../Ia/Brains/TruckBrain';
 
 export class Headquarter extends AliveItem implements IField, ISelectable, IHeadquarter {
-	public Flagcell: FlagCell;
 	private _boundingBox: BoundingBox;
 	private _cell: Cell;
 	public Fields: Array<HeadquarterField>;
 
-	private _tankRequestCount: number = 0;
 	private _network: HqNetwork;
 	private _brain: IBrain;
 
@@ -63,7 +58,6 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 	public OnReactorLost: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
 
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
-	public OnTankRequestChanged: LiteEvent<number> = new LiteEvent<number>();
 	constructor(public Identity: Identity, cell: Cell) {
 		super();
 		this.Z = ZKind.Cell;
@@ -103,6 +97,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 		this.TotalLife = 200;
 		this.Life = 200;
 	}
+
 	GetVehicles(): Vehicle[] {
 		return this._vehicles;
 	}
@@ -183,9 +178,6 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 				this.OnVehicleCreated.Invoke(this, tank);
 
 				isCreated = true;
-				if (this.Flagcell) {
-					tank.GiveOrder(new MonitoredOrder(this.Flagcell.GetCell(), tank));
-				}
 				return true;
 			}
 			return false;
@@ -241,53 +233,6 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 		this._vehicles.forEach((v) => v.SetDamage(v.GetCurrentLife()));
 	}
 
-	public GetTankRequests(): number {
-		return this._tankRequestCount;
-	}
-
-	public AddTankRequest(): void {
-		if (this._tankRequestCount < 4) {
-			this._tankRequestCount += 1;
-			const tankPrice = GameSettings.TankPrice * this.GetVehicleCount();
-			this.OnTankRequestChanged.Invoke(this, this._tankRequestCount);
-			if (this.DiamondCount < tankPrice) {
-				this.CashMissing();
-			}
-		}
-	}
-
-	public RemoveTankRequest(): void {
-		if (this._tankRequestCount > 0) {
-			this._tankRequestCount -= 1;
-			this.OnTankRequestChanged.Invoke(this, this._tankRequestCount);
-		}
-	}
-
-	private _truckRequestCount: number = 0;
-	public OnTruckChanged: LiteEvent<number> = new LiteEvent<number>();
-
-	public GetTruckRequests(): number {
-		return this._truckRequestCount;
-	}
-
-	public AddTruckRequest(): void {
-		if (this._truckRequestCount < 4) {
-			this._truckRequestCount += 1;
-			const truckPrice = GameSettings.TruckPrice * this.GetVehicleCount();
-			this.OnTruckChanged.Invoke(this, this._truckRequestCount);
-			if (this.DiamondCount < truckPrice) {
-				this.CashMissing();
-			}
-		}
-	}
-
-	public RemoveTruckRequest(): void {
-		if (this._truckRequestCount > 0) {
-			this._truckRequestCount -= 1;
-			this.OnTruckChanged.Invoke(this, this._truckRequestCount);
-		}
-	}
-
 	public OnCashMissing: LiteEvent<Boolean> = new LiteEvent<boolean>();
 	private _cashMissedTimeout: any;
 	public CashMissing(): void {
@@ -308,34 +253,24 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 		this._brain = brain;
 	}
 
+	BuyTank(): void {
+		const tankPrice = GameSettings.TankPrice * this.GetVehicleCount();
+		if (this.Buy(tankPrice)) {
+			this.CreateTank();
+		}
+	}
+	BuyTruck(): void {
+		const truckPrice = GameSettings.TruckPrice * this.GetVehicleCount();
+		if (this.Buy(truckPrice)) {
+			this.CreateTruck();
+		}
+	}
+
 	public Update(viewX: number, viewY: number): void {
 		if (this._brain) {
 			this._brain.Update();
 		}
 		this._network.Update(viewX, viewY);
-		const truckPrice = GameSettings.TruckPrice * this.GetVehicleCount();
-		while (0 < this._truckRequestCount && truckPrice <= this.DiamondCount) {
-			if (this.Buy(truckPrice)) {
-				if (this.CreateTruck()) {
-					this.RemoveTruckRequest();
-				} else {
-					//no available slots
-					break;
-				}
-			}
-		}
-
-		const tankPrice = GameSettings.TankPrice * this.GetVehicleCount();
-		while (0 < this._tankRequestCount && tankPrice <= this.DiamondCount) {
-			if (this.Buy(GameSettings.TankPrice * this.GetVehicleCount())) {
-				if (this.CreateTank()) {
-					this.RemoveTankRequest();
-				} else {
-					//no available slots
-					break;
-				}
-			}
-		}
 
 		this.SetProperty(SvgArchive.building.hq.bottom, (sprite) => (sprite.rotation += 0.1));
 

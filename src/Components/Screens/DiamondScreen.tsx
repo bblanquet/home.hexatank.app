@@ -92,13 +92,10 @@ export default class DiamondScreen extends HookedComponent<{}, DiamondHook, Runt
 									}
 									right={
 										<MenuSwitcher
-											TankRequestCount={this.Hook.State.TankRequestCount}
-											TruckRequestCount={this.Hook.State.TruckRequestCount}
 											VehicleCount={this.Hook.GetVehicleCount()}
 											ReactorCount={this.Hook.GetReactor()}
 											Item={this.Hook.State.Item}
 											OnClick={(e) => this.Hook.SendContext(e)}
-											HasMultiMenu={this.Hook.State.IsMultiMenuVisible}
 											FieldBtns={this.Hook.GetFieldBtns()}
 											Btns={this.Hook.GetBtns()}
 										/>

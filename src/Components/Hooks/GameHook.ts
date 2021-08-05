@@ -37,11 +37,12 @@ import { Tank } from '../../Core/Items/Unit/Tank';
 import { Truck } from '../../Core/Items/Unit/Truck';
 import { ReactorField } from '../../Core/Items/Cell/Field/Bonus/ReactorField';
 import { UnitGroup } from '../../Core/Items/UnitGroup';
+import { Headquarter } from '../../Core/Items/Cell/Field/Hq/Headquarter';
 
 export class GameHook extends Hook<RuntimeState> {
 	private _gameworldService: IGameworldService<GameBlueprint, Gameworld>;
 	private _soundService: IAudioService;
-	private _recordContextService: IRecordContextService;
+	private _recordService: IRecordContextService;
 	private _statsService: IStatsService;
 	private _onlineService: IOnlineService;
 	private _profilService: IPlayerProfileService;
@@ -67,12 +68,9 @@ export class GameHook extends Hook<RuntimeState> {
 		state.HasMenu = false;
 		state.IsSettingMenuVisible = false;
 		state.IsSynchronising = false;
-		state.IsMultiMenuVisible = false;
 		state.SelectionKind = SelectionKind.None;
 		state.HasMultiMenu = false;
 		state.HasWarning = false;
-		state.TankRequestCount = 0;
-		state.TruckRequestCount = 0;
 		state.Amount = GameSettings.PocketMoney;
 		state.Item = null;
 		state.Players = [];
@@ -83,6 +81,8 @@ export class GameHook extends Hook<RuntimeState> {
 	public Init(): void {
 		this._gameworldService = Singletons.Load<IGameworldService<GameBlueprint, Gameworld>>(SingletonKey.Gameworld);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
+		this._recordService = Singletons.Load<IRecordContextService>(SingletonKey.RecordContext);
+		this._statsService = Singletons.Load<IStatsService>(SingletonKey.Stats);
 		this._onlineService = Singletons.Load<IOnlineService>(SingletonKey.Online);
 		this._profilService = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
 		this._interactionService = Singletons.Load<IInteractionService<Gameworld>>(SingletonKey.Interaction);
@@ -94,8 +94,6 @@ export class GameHook extends Hook<RuntimeState> {
 		});
 		this._soundService.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));
 		const playerHq = this._gameworld.GetPlayerHq();
-		playerHq.OnTruckChanged.On(this.HandleTruckChanged.bind(this));
-		playerHq.OnTankRequestChanged.On(this.HandleTankChanged.bind(this));
 		playerHq.OnDiamondCountChanged.On(this.HandleDiamondChanged.bind(this));
 		playerHq.OnCashMissing.On(this.HandleCashMissing.bind(this));
 		this._profilService.OnPointsAdded.On(this.HandlePoints.bind(this));
@@ -126,11 +124,8 @@ export class GameHook extends Hook<RuntimeState> {
 			state.SelectionKind = SelectionKind.None;
 			state.IsSettingMenuVisible = false;
 			state.IsSynchronising = false;
-			state.IsMultiMenuVisible = false;
 			state.HasMultiMenu = false;
 			state.HasWarning = false;
-			state.TankRequestCount = 0;
-			state.TruckRequestCount = 0;
 			state.Amount = GameSettings.PocketMoney;
 			state.Item = null;
 			state.Players = [];
@@ -141,8 +136,6 @@ export class GameHook extends Hook<RuntimeState> {
 
 	public Unmount(): void {
 		const playerHq = this._gameworld.GetPlayerHq();
-		playerHq.OnTruckChanged.Clear();
-		playerHq.OnTankRequestChanged.Clear();
 		playerHq.OnDiamondCountChanged.Clear();
 		playerHq.OnCashMissing.Clear();
 		this._interactionService.GetMultiSelectionContext().OnModeChanged.Clear();
@@ -175,14 +168,6 @@ export class GameHook extends Hook<RuntimeState> {
 
 	private HandleMultiSelection(src: any, kind: SelectionKind): void {
 		this.Update((e) => (e.SelectionKind = kind));
-	}
-
-	private HandleTruckChanged(obj: any, request: number): void {
-		this.Update((e) => (e.TruckRequestCount = request));
-	}
-
-	private HandleTankChanged(obj: any, request: number): void {
-		this.Update((e) => (e.TankRequestCount = request));
 	}
 
 	private HandleDiamondChanged(obj: any, amount: number): void {
@@ -238,7 +223,7 @@ export class GameHook extends Hook<RuntimeState> {
 		return this._statsService.Get().GetCurves();
 	}
 	public GetRecord(): JsonRecordContent {
-		return this._recordContextService.Publish().GetRecord();
+		return this._recordService.Publish().GetRecord();
 	}
 
 	public IsCovered(): boolean {
@@ -279,6 +264,10 @@ export class GameHook extends Hook<RuntimeState> {
 			});
 		} else if (this.State.Item instanceof Truck) {
 			return ButtonProp.TruckList(this.State.Item, (e: Item) => {
+				this.SendContext(e);
+			});
+		} else if (this.State.Item instanceof Headquarter) {
+			return ButtonProp.HeadquarterList(this.State.Item, (e: Item) => {
 				this.SendContext(e);
 			});
 		} else if (this.State.Item instanceof ReactorField) {

@@ -4,7 +4,6 @@ import { ReactorField } from '../Bonus/ReactorField';
 import { Cell } from '../../Cell';
 import { Item } from '../../../Item';
 import { BatteryField } from '../Bonus/BatteryField';
-import { FlagCell } from '../../FlagCell';
 import { ISelectable } from '../../../../ISelectable';
 import { LiteEvent } from '../../../../../Utils/Events/LiteEvent';
 import { Vehicle } from '../../../Unit/Vehicle';
@@ -15,8 +14,6 @@ export interface IHeadquarter {
 	OnDiamondEarned: LiteEvent<number>;
 
 	OnVehicleCreated: LiteEvent<Vehicle>;
-	OnTruckChanged: LiteEvent<number>;
-	OnTankRequestChanged: LiteEvent<number>;
 
 	OnFieldCountchanged: LiteEvent<number>;
 	OnFieldAdded: LiteEvent<Cell>;
@@ -34,8 +31,8 @@ export interface IHeadquarter {
 
 	Buy(amount: number): boolean;
 	Earn(amount: number): void;
-	AddTruckRequest(): void;
-	AddTankRequest(): void;
+	BuyTank(): void;
+	BuyTruck(): void;
 	AddField(field: Item, cell: Cell): void;
 	AddBatteryField(energyField: BatteryField): void;
 	GetVehicleCount(): number;
@@ -52,5 +49,4 @@ export interface IHeadquarter {
 
 	GetCell(): Cell;
 	IsIa(): boolean;
-	Flagcell: FlagCell;
 }

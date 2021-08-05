@@ -52,11 +52,8 @@ export class FireV2Hook extends AbstractGameHook<FireBlueprint, FireV2World> {
 		state.HasMenu = false;
 		state.IsSettingMenuVisible = false;
 		state.IsSynchronising = false;
-		state.IsMultiMenuVisible = false;
 		state.HasMultiMenu = false;
 		state.HasWarning = false;
-		state.TankRequestCount = 0;
-		state.TruckRequestCount = 0;
 		state.Amount = GameSettings.PocketMoney;
 		state.Item = null;
 		state.Players = [];

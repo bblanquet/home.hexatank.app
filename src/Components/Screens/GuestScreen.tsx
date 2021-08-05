@@ -35,7 +35,10 @@ export default class GuestComponent extends HookedComponent<{}, GuestHook, Guest
 					header={
 						<div style="border-bottom:15px solid rgb(27, 27, 27); background-color:rgb(31, 31, 31);">
 							<Navbar />
-							<div style="padding-top:10px;box-shadow: rgb(0,0,0,0.5) 0px 0px 10px 0px inset;">
+							<div
+								class="square"
+								style="padding-top:10px;box-shadow: rgb(0,0,0,0.5) 0px 0px 10px 0px inset;"
+							>
 								<Column>
 									<CtmBtnInput
 										max={15}

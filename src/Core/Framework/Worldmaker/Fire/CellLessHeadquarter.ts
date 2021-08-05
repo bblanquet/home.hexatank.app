@@ -84,8 +84,8 @@ export class CellLessHeadquarter implements IHeadquarter {
 	Buy(amount: number): boolean {
 		return true;
 	}
-	AddTruckRequest(): void {}
-	AddTankRequest(): void {}
+	BuyTruck(): void {}
+	BuyTank(): void {}
 	public GetReactorsCount(): number {
 		return this._reactors.length;
 	}

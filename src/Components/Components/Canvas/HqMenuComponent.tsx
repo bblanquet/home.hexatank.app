@@ -8,8 +8,6 @@ import { TruckMenuItem } from '../../../Core/Menu/Buttons/TruckMenuItem';
 
 export default class HqMenuComponent extends Component<
 	{
-		TankRequestCount: number;
-		TruckRequestCount: number;
 		VehicleCount: number;
 		callback: (e: Item) => void;
 	},
@@ -25,7 +23,7 @@ export default class HqMenuComponent extends Component<
 							class="btn btn-dark without-padding"
 							onClick={(e: any) => this.props.callback(new TankMenuItem())}
 						>
-							<div class="white-background">{this.props.TankRequestCount}</div>
+							<div class="white-background">{0}</div>
 							<div class="fill-tank max-width standard-space" />
 							<div class="max-width align-text-center darker">
 								{GameSettings.TankPrice * this.props.VehicleCount}{' '}
@@ -37,7 +35,7 @@ export default class HqMenuComponent extends Component<
 							class="btn btn-dark without-padding"
 							onClick={(e: any) => this.props.callback(new TruckMenuItem())}
 						>
-							<div class="white-background">{this.props.TruckRequestCount}</div>
+							<div class="white-background">{0}</div>
 							<div class="fill-truck max-width standard-space" />
 							<div class="max-width align-text-center darker">
 								{GameSettings.TruckPrice * this.props.VehicleCount}{' '}

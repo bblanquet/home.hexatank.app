@@ -10,6 +10,12 @@ import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
 import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
 import { IHeadquarter } from '../../../Items/Cell/Field/Hq/IHeadquarter';
 export class FakeHeadquarter implements IHeadquarter {
+	BuyTank(): void {
+		throw new Error('Method not implemented.');
+	}
+	BuyTruck(): void {
+		throw new Error('Method not implemented.');
+	}
 	OnCashMissing: LiteEvent<Boolean>;
 	OnDiamondCountChanged: LiteEvent<number>;
 	OnDiamondEarned: LiteEvent<number>;

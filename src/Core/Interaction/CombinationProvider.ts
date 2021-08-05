@@ -30,7 +30,6 @@ import { ClearMultiSelectionMenuCombination } from './Combination/Multi/ClearMul
 import { ClearMultiCellBonusCombination } from './Combination/Multi/ClearMultiCellBonusCombination';
 import { MultiCellBonusCombination } from './Combination/Multi/MultiCellBonusCombination';
 import { MultiSelectionCombination } from './Combination/Multi/MultiSelectionCombination';
-import { DisplayMultiMenuCombination } from './Combination/Multi/DisplayMultiMenuCombination';
 import { SwitchToReactorCombination } from './Combination/SwitchToReactorCombination';
 import { SwitchToCellCombination } from './Combination/SwitchToCellCombination';
 import { SwitchToOccCellCombination } from './Combination/SwitchToOccCellCombination';
@@ -81,7 +80,6 @@ export class CombinationProvider {
 
 			//MULTI SELECTION
 			new MultiUnitOneCellOrderCombination(multiSelectionContext),
-			new DisplayMultiMenuCombination(multiSelectionContext),
 			new ActiveMultiSelectionCombination(multiSelectionContext),
 			new MultiSelectionCombination(multiSelectionContext),
 			new MultiCellSelectionCombination(multiSelectionContext, gameworld),

@@ -48,6 +48,7 @@ export class GameBuilder implements IBuilder<GameBlueprint> {
 		this._gameContextService = Singletons.Load<IGameworldService<GameBlueprint, Gameworld>>(SingletonKey.Gameworld);
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
 		this._onlineService = Singletons.Load<IOnlineService>(SingletonKey.Online);
+		this._statService = Singletons.Load<IStatsService>(SingletonKey.Stats);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 		this._interactionService = Singletons.Load<IInteractionService<Gameworld>>(SingletonKey.Interaction);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);

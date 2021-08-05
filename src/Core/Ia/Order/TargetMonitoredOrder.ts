@@ -24,7 +24,7 @@ export class TargetMonitoredOrder extends ParentOrder {
 
 	constructor(cell: Cell, protected Tank: Tank) {
 		super();
-		ErrorHandler.ThrowNull(cell);
+		ErrorHandler.ThrowNullOrUndefined(cell);
 		this.SetCurrentOrder(new IdleOrder());
 		this._vehicleCellChanged = true;
 		this.Tank.OnCellChanged.On(this.VehicleCellChange.bind(this));

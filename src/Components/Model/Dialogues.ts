@@ -36,12 +36,22 @@ export const Fire = [
 	''
 ];
 
-export const outpost = [
+export const Outpost = [
 	'Let settle an outpost in this land, that will enable you to fix your tank.',
 	'',
 	"Well done, you have a operational outpost, this outpost will help you to assist your units. let's start by repairing your tank.",
 	'',
-	"Now that your tank is like new, let's destroy this ugly boulder over there.",
+	"Now that your tank is as good as new, let's increase its fire power.",
+	'',
+	"Let's destroy this ugly boulder over there with our new fire power.",
+	''
+];
+
+export const Diamond = [
+	"Let's retrieve some resources for your headquarter.",
+	'',
+	"Well done, you created your first collector, don't worry they are self-automated they will collect diamonds by themselves.",
+	'However, you can and should create an outpost to speed them up.',
 	''
 ];
 

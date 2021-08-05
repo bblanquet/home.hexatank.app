@@ -18,6 +18,7 @@ import { isNullOrUndefined } from '../../Utils/ToolBox';
 import Switch from '../Common/Struct/Switch';
 import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
 import { SingletonKey } from '../../Singletons';
+import Bubble from '../Components/Bubble';
 
 export default class DiamondScreen extends HookedComponent<{}, DiamondHook, RuntimeState> {
 	public GetDefaultHook() {
@@ -35,79 +36,86 @@ export default class DiamondScreen extends HookedComponent<{}, DiamondHook, Runt
 				>
 					<SmPopup Status={this.Hook.State.GameStatus} Details={this.Hook.State.StatusDetails} />
 				</Visible>
-				<Visible isVisible={this.Hook.State.GameStatus === GameStatus.Pending}>
-					<Visible isVisible={!this.Hook.State.HasMenu}>
-						<div style="position: fixed;">
-							<button
-								type="button"
-								class="btn btn-dark small-space space-out fill-option"
-								onClick={() => this.Hook.SetMenu()}
-							/>
-							<button type="button" class="btn btn-dark space-out ">
-								<div
-									class="d-flex"
-									style="flex-direction:row;align-content:space-between;align-items: center"
-								>
-									<Visible isVisible={this.Hook.State.HasWarning}>
+				<Switch
+					isLeft={!isNullOrUndefined(this.Hook.State.Sentence) && 0 < this.Hook.State.Sentence.length}
+					left={<Bubble Sentence={this.Hook.State.Sentence} OnNext={() => this.Hook.SetNextSentence()} />}
+					right={
+						<Visible isVisible={this.Hook.State.GameStatus === GameStatus.Pending}>
+							<Visible isVisible={!this.Hook.State.HasMenu}>
+								<div style="position: fixed;">
+									<button
+										type="button"
+										class="btn btn-dark small-space space-out fill-option"
+										onClick={() => this.Hook.SetMenu()}
+									/>
+									<button type="button" class="btn btn-dark space-out ">
 										<div
-											class="fill-noMoney radius-5px very-small-space blink_me space-out"
-											style="background-color:#ffc107"
+											class="d-flex"
+											style="flex-direction:row;align-content:space-between;align-items: center"
+										>
+											<Visible isVisible={this.Hook.State.HasWarning}>
+												<div
+													class="fill-noMoney radius-5px very-small-space blink_me space-out"
+													style="background-color:#ffc107"
+												/>
+											</Visible>
+											<div class="fit-content">
+												{this.Hook.State.Amount.toFixed(2)} / {this.Hook.GetGoalDiamond()}
+											</div>
+											<div
+												class="fill-diamond radius-5px very-small-space space-out"
+												style="background-color:#6c757d"
+											/>
+										</div>
+									</button>
+									<TimerComponent
+										Duration={this.Hook.GetDuration()}
+										OnTimerDone={this.Hook.OnTimerDone()}
+										isPause={this.Hook.State.HasMenu}
+									/>
+								</div>
+								<Switch
+									isLeft={isNullOrUndefined(this.Hook.State.Item)}
+									left={
+										<div class="right-bottom-menu">
+											<ActiveRightBottomCornerButton
+												isActive={this.Hook.State.SelectionKind === SelectionKind.Vehicle}
+												callBack={() => this.Hook.SendContext(new MultiTankMenuItem())}
+												logo="fill-tank-multi-cell"
+											/>
+											<ActiveRightBottomCornerButton
+												isActive={this.Hook.State.SelectionKind === SelectionKind.Cell}
+												callBack={() => this.Hook.SendContext(new MultiCellMenuItem())}
+												logo="fill-mult-cell"
+											/>
+										</div>
+									}
+									right={
+										<MenuSwitcher
+											TankRequestCount={this.Hook.State.TankRequestCount}
+											TruckRequestCount={this.Hook.State.TruckRequestCount}
+											VehicleCount={this.Hook.GetVehicleCount()}
+											ReactorCount={this.Hook.GetReactor()}
+											Item={this.Hook.State.Item}
+											OnClick={(e) => this.Hook.SendContext(e)}
+											HasMultiMenu={this.Hook.State.IsMultiMenuVisible}
+											FieldBtns={this.Hook.GetFieldBtns()}
+											Btns={this.Hook.GetBtns()}
 										/>
-									</Visible>
-									<div class="fit-content">
-										{this.Hook.State.Amount.toFixed(2)} / {this.Hook.GetGoalDiamond()}
-									</div>
-									<div
-										class="fill-diamond radius-5px very-small-space space-out"
-										style="background-color:#6c757d"
-									/>
-								</div>
-							</button>
-							<TimerComponent
-								Duration={this.Hook.GetDuration()}
-								OnTimerDone={this.Hook.OnTimerDone()}
-								isPause={this.Hook.State.HasMenu}
-							/>
-						</div>
-						<Switch
-							isLeft={isNullOrUndefined(this.Hook.State.Item)}
-							left={
-								<div class="right-bottom-menu">
-									<ActiveRightBottomCornerButton
-										isActive={this.Hook.State.SelectionKind === SelectionKind.Vehicle}
-										callBack={() => this.Hook.SendContext(new MultiTankMenuItem())}
-										logo="fill-tank-multi-cell"
-									/>
-									<ActiveRightBottomCornerButton
-										isActive={this.Hook.State.SelectionKind === SelectionKind.Cell}
-										callBack={() => this.Hook.SendContext(new MultiCellMenuItem())}
-										logo="fill-mult-cell"
-									/>
-								</div>
-							}
-							right={
-								<MenuSwitcher
-									TankRequestCount={this.Hook.State.TankRequestCount}
-									TruckRequestCount={this.Hook.State.TruckRequestCount}
-									VehicleCount={this.Hook.GetVehicleCount()}
-									ReactorCount={this.Hook.GetReactor()}
-									Item={this.Hook.State.Item}
-									OnClick={(e) => this.Hook.SendContext(e)}
-									HasMultiMenu={this.Hook.State.IsMultiMenuVisible}
-									FieldBtns={this.Hook.GetFieldBtns()}
-									Btns={this.Hook.GetBtns()}
+									}
 								/>
-							}
-						/>
-					</Visible>
-					<Visible isVisible={this.Hook.State.HasMenu}>
-						<OptionPopup
-							Status={this.Hook.State.GameStatus}
-							Resume={() => this.Hook.SetMenu()}
-							Quit={() => this.Hook.Stop(false)}
-						/>
-					</Visible>
-				</Visible>
+							</Visible>
+
+							<Visible isVisible={this.Hook.State.HasMenu}>
+								<OptionPopup
+									Status={this.Hook.State.GameStatus}
+									Resume={() => this.Hook.SetMenu()}
+									Quit={() => this.Hook.Stop(false)}
+								/>
+							</Visible>
+						</Visible>
+					}
+				/>
 				<GameCanvas Center={this.Hook.GetCenter()} OnRefresh={this.Hook.OnRefresh} />
 			</Redirect>
 		);

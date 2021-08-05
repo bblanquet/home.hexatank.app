@@ -8,7 +8,7 @@ import { AStarHelper } from '../AStarHelper';
 
 export class RoadProvider {
 	constructor(protected Vehicle: Vehicle, protected Destination: Cell) {
-		ErrorHandler.ThrowNull(Destination);
+		ErrorHandler.ThrowNullOrUndefined(Destination);
 	}
 
 	public GetBestRoad(): Cell[] {

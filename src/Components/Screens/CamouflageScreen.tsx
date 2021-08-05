@@ -14,6 +14,7 @@ import { isNullOrUndefined } from '../../Utils/ToolBox';
 import { Vehicle } from '../../Core/Items/Unit/Vehicle';
 import { ButtonProp } from '../Components/Canvas/ButtonProp';
 import MenuBtn from '../Components/Canvas/MenuBtn';
+import LeftMenu from '../Components/Canvas/LeftMenu';
 
 export default class CamouflageScreen extends HookedComponent<{}, CamouflageHook, RuntimeState> {
 	public GetDefaultHook(): CamouflageHook {
@@ -41,16 +42,11 @@ export default class CamouflageScreen extends HookedComponent<{}, CamouflageHook
 							/>
 						</div>
 						<Visible isVisible={!this.Hook.State.HasMenu && !isNullOrUndefined(this.Hook.State.Item)}>
-							<div class="left-column">
-								<div class="middle2 max-width">
-									<div class="btn-group-vertical max-width">
-										{ButtonProp.TankList(
-											this.Hook.State.Item as Vehicle,
-											this.Hook.SendContext
-										).map((button) => <MenuBtn Btn={button} />)}
-									</div>
-								</div>
-							</div>;
+							<LeftMenu
+								Btns={ButtonProp.TankList(this.Hook.State.Item as Vehicle, (e) =>
+									this.Hook.SendContext(e)
+								)}
+							/>
 						</Visible>
 					</Visible>
 					<Visible isVisible={this.Hook.State.HasMenu}>

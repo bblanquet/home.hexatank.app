@@ -20,6 +20,8 @@ import { CellState } from '../../../Items/Cell/CellState';
 import { CellStateSetter } from '../../../Items/Cell/CellStateSetter';
 import { BrainInjecter } from '../../../Ia/Decision/BrainInjecter';
 import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
+import { Diamond } from '../../../Items/Cell/Field/Diamond';
+import { DiamondHq } from '../../Blueprint/Game/DiamondHq';
 
 export class DiamondworlMaker {
 	public Make(blueprint: DiamondBlueprint, gameState: GameState): Diamondworld {
@@ -45,14 +47,16 @@ export class DiamondworlMaker {
 		this.SetHqLand(cells, SvgArchive.nature.hq2, [ hq.GetCell().GetHexCoo() ], 1);
 
 		const arrivalCell = cells.Get(blueprint.HqDiamond.DiamondCell.Coo.ToString());
-		new AboveItem(arrivalCell, SvgArchive.arrow);
+		new AboveItem(arrivalCell, SvgArchive.mine);
 
 		cells.Values().forEach((cell) => {
 			cell.SetPlayerHq(hq.Identity);
 			cell.Listen();
 		});
 
-		const world = new Diamondworld(gameState, cells.Values(), hq);
+		const world = new Diamondworld(gameState, cells.Values(), hq, cells
+			.Get(this.DiamondCoo(blueprint.HqDiamond))
+			.GetField() as Diamond);
 
 		new BrainInjecter().Inject(world.GetHqs() as Headquarter[], world.GetCells(), [ blueprint.HqDiamond ]);
 
@@ -62,6 +66,10 @@ export class DiamondworlMaker {
 			c.AlwaysVisible();
 		});
 		return world;
+	}
+
+	private DiamondCoo(hqDefinition: DiamondHq): string {
+		return new HexAxial(hqDefinition.DiamondCell.Coo.Q, hqDefinition.DiamondCell.Coo.R).ToString();
 	}
 
 	private SetHqLand(cells: Dictionary<Cell>, sprite: string, middleAreas: HexAxial[], z: number = 0) {

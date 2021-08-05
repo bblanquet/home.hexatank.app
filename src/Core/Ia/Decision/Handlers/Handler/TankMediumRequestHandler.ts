@@ -21,7 +21,7 @@ export class TankMediumRequestHandler implements IHandler {
 		while (this._brain.IdleTanks.HasTank()) {
 			if (request.Area.HasFreeUnitCell()) {
 				const tank = this._brain.IdleTanks.Pop();
-				ErrorHandler.ThrowNull(tank);
+				ErrorHandler.ThrowNullOrUndefined(tank);
 				request.Area.Add(tank);
 			} else {
 				return;

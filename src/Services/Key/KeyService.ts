@@ -10,7 +10,7 @@ export class KeyService implements IKeyService {
 		return this._key;
 	}
 	DefineKey(key: SingletonKey): void {
-		ErrorHandler.ThrowNull(key);
+		ErrorHandler.ThrowNullOrUndefined(key);
 		this._key = key;
 	}
 

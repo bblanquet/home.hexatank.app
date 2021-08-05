@@ -1,6 +1,6 @@
 import { FireBlueprint } from '../../Core/Framework/Blueprint/Fire/FireBlueprint';
 import { AbstractGameHook } from './AbstractGameHook';
-import { outpost } from '../Model/Dialogues';
+import { Outpost } from '../Model/Dialogues';
 import { RuntimeState } from '../Model/RuntimeState';
 import { GameSettings } from '../../Core/Framework/GameSettings';
 import { GameStatus } from '../../Core/Framework/GameStatus';
@@ -30,43 +30,79 @@ import { UnitGroup } from '../../Core/Items/UnitGroup';
 import { CancelMenuItem } from '../../Core/Menu/Buttons/CancelMenuItem';
 import { MinusMenuItem } from '../../Core/Menu/Buttons/MinusMenuItem';
 import { PlusMenuItem } from '../../Core/Menu/Buttons/PlusMenuItem';
+import { FireField } from '../../Core/Items/Cell/Field/Bonus/FireField';
 
 export class OutpostHook extends AbstractGameHook<FireBlueprint, Outpostworld> {
 	private _steps = 0;
 	private hasJuicedReactor: boolean = false;
 
+	private _onDamage: any;
+	private _onReactor: any;
+	private _onField: any;
+
 	protected Init() {
 		super.Init();
+
+		this._onDamage = this.OnDamaged.bind(this);
+		this._onReactor = this.OnPowerUp.bind(this);
+		this._onField = this.OnFieldChanged.bind(this);
+
 		this._steps = 0;
 		this.LayerService.PauseNavigation();
 		this.Gameworld.GetPlayerHq().OnReactorAdded.On((src: any, r: ReactorField) => {
-			r.OnPowerChanged.On((src: ReactorField, r: boolean) => {
-				if (!this.hasJuicedReactor && src.HasEnergy()) {
-					this.hasJuicedReactor = true;
-					const above = new AboveItem(src, SvgArchive.hand);
-					above.SetVisible(() => !src.IsSelected());
-					src.OnOverlocked.On(() => {
-						above.Destroy();
-					});
-					this._steps = 2;
-					this.SetSentence();
-				}
+			r.OnPowerChanged.On(this._onReactor);
+		});
+		this.Gameworld.GetPlayer().OnDamageReceived.On(this._onDamage);
+		this.Gameworld.FireCell.OnFieldChanged.On(this._onField);
+	}
+
+	private OnFieldChanged(src: Cell, data: Cell): void {
+		if (data.GetField() instanceof FireField) {
+			this._steps = 6;
+			this.SetSentence();
+			const arrow = new AboveItem(this.Gameworld.FireCell, SvgArchive.arrow);
+			arrow.SetVisible(() => !this.Gameworld.FireCell.HasOccupier());
+			const target = new AboveItem(this.Gameworld.Boulder, SvgArchive.direction.target);
+			target.SetVisible(() => this.Gameworld.FireCell.HasOccupier());
+		}
+	}
+
+	private OnPowerUp(src: ReactorField, r: boolean): void {
+		if (!this.hasJuicedReactor && src.HasEnergy()) {
+			this.Gameworld.GetPlayerHq().OnReactorAdded.Clear();
+			src.OnPowerChanged.Clear();
+			this.hasJuicedReactor = true;
+			const hand = new AboveItem(src, SvgArchive.hand);
+			hand.SetVisible(() => !src.IsSelected());
+			src.OnOverlocked.On(() => {
+				hand.Destroy();
 			});
-		});
-		this.Gameworld.GetPlayer().OnDamageReceived.On((src: Tank, r: number) => {
-			if (src.GetTotalLife() === src.GetCurrentLife()) {
-			}
-		});
+			this._steps = 2;
+			this.SetSentence();
+		}
+	}
+
+	private OnDamaged(src: Tank, r: number): void {
+		if (src.GetTotalLife() === src.GetCurrentLife()) {
+			this.Gameworld.GetPlayer().OnDamageReceived.Off(this._onDamage);
+			this._steps = 4;
+			this.SetSentence();
+			const above = new AboveItem(this.Gameworld.FireCell, SvgArchive.hand);
+			above.SetVisible(() => !src.IsSelected());
+			this.Gameworld.FireCell.OnFieldChanged.On((src: Cell, data: Cell) => {
+				above.Destroy();
+			});
+		}
 	}
 
 	protected Default(state: RuntimeState) {
 		super.Default(state);
-		state.Sentence = outpost[0];
+		state.Sentence = Outpost[0];
 	}
 
 	private SetSentence() {
 		this.Update((e) => {
-			e.Sentence = outpost[this._steps];
+			e.Sentence = Outpost[this._steps];
 			if (e.Sentence === '') {
 				this.Gameworld.State.SetInteraction(true);
 				this.LayerService.StartNavigation();
@@ -105,7 +141,7 @@ export class OutpostHook extends AbstractGameHook<FireBlueprint, Outpostworld> {
 		state.Players = [];
 		state.GameStatus = GameStatus.Pending;
 		state.StatusDetails = null;
-		state.Sentence = outpost[0];
+		state.Sentence = Outpost[0];
 		return state;
 	}
 
@@ -115,7 +151,11 @@ export class OutpostHook extends AbstractGameHook<FireBlueprint, Outpostworld> {
 			const hq = this.Gameworld.GetPlayerHq();
 			if (hq.IsCovered(cell)) {
 				if (cell === this.Gameworld.BatteryCell) {
-					return OutpostHook.All(hq, (e: Item) => {
+					return this.Battery(hq, (e: Item) => {
+						this.SendContext(e);
+					});
+				} else if (cell === this.Gameworld.FireCell) {
+					return this.Fire(hq, (e: Item) => {
 						this.SendContext(e);
 					});
 				} else {
@@ -135,7 +175,22 @@ export class OutpostHook extends AbstractGameHook<FireBlueprint, Outpostworld> {
 		}
 	}
 
-	public static All(hq: IHeadquarter, callback: (e: Item) => void): FieldProp[] {
+	public Fire(hq: IHeadquarter, callback: (e: Item) => void): FieldProp[] {
+		return [
+			new FieldProp('fill-reactor', (hq.GetReactorsCount() + 1) * GameSettings.FieldPrice, () =>
+				callback(new ReactorMenuItem())
+			),
+			new FieldProp('fill-thunder', GameSettings.FieldPrice, () => callback(new ThunderMenuItem())),
+			new FieldProp('fill-shield', GameSettings.FieldPrice, () => callback(new ShieldMenuItem())),
+			new FieldProp('fill-money', GameSettings.FieldPrice, () => callback(new MoneyMenuItem())),
+			new FieldProp('fill-power', GameSettings.FieldPrice, () => callback(new AttackMenuItem()), true),
+			new FieldProp('fill-poison', GameSettings.FieldPrice, () => callback(new PoisonMenuItem())),
+			new FieldProp('fill-speed', GameSettings.FieldPrice, () => callback(new SpeedFieldMenuItem())),
+			new FieldProp('fill-medic', GameSettings.FieldPrice, () => callback(new HealMenuItem()))
+		];
+	}
+
+	public Battery(hq: IHeadquarter, callback: (e: Item) => void): FieldProp[] {
 		return [
 			new FieldProp('fill-reactor', (hq.GetReactorsCount() + 1) * GameSettings.FieldPrice, () =>
 				callback(new ReactorMenuItem())

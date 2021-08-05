@@ -14,6 +14,7 @@ import { KeyService } from './Services/Key/KeyService';
 import { RecordInteractionService } from './Services/Interaction/RecordInteractionService';
 import { CompareService } from './Services/Compare/CompareService';
 import { GameworldService } from './Services/World/GameworldService';
+import { BlueprintService } from './Services/Blueprint/BlueprintService';
 import { LayerService } from './Services/Layer/LayerService';
 import { AppService } from './Services/App/AppService';
 import { InteractionService } from './Services/Interaction/InteractionService';
@@ -56,6 +57,7 @@ export class SingletonContainer {
 		Singletons.Register(SingletonKey.Outpostworld, new OutpostworldService());
 		Singletons.Register(SingletonKey.Diamondworld, new DiamondworldService());
 
+		Singletons.Register(SingletonKey.Blueprint, new BlueprintService());
 		Singletons.Register(SingletonKey.Interaction, new InteractionService());
 		Singletons.Register(SingletonKey.RecordInteraction, new RecordInteractionService());
 		Singletons.Register(SingletonKey.CamouflageInteraction, new CamouflageInteractionService());

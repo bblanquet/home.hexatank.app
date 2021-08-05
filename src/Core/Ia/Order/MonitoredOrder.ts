@@ -18,7 +18,7 @@ export class MonitoredOrder extends ParentOrder {
 
 	constructor(protected Destination: Cell, protected Vehicle: Vehicle) {
 		super();
-		ErrorHandler.ThrowNull(Destination);
+		ErrorHandler.ThrowNullOrUndefined(Destination);
 		this.SetState(OrderState.Pending);
 		this.SetCurrentOrder(new IdleOrder());
 		this._vehicleCellChanged = true;

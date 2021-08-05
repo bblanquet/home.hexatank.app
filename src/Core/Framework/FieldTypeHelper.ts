@@ -25,7 +25,7 @@ import { HeadquarterField } from '../Items/Cell/Field/Hq/HeadquarterField';
 export class FieldHelper {
 	//has to use it because of ofuscator
 	public static GetName(obj: IField): string {
-		ErrorHandler.ThrowNull(obj);
+		ErrorHandler.ThrowNullOrUndefined(obj);
 		if (obj instanceof FireField) {
 			return 'FireField';
 		} else if (obj instanceof BatteryField) {

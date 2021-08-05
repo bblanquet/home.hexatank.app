@@ -1,9 +1,11 @@
+import { ErrorHandler } from '../Exceptions/ErrorHandler';
 import { ILiteEvent } from './ILiteEvent';
 
 export class LiteEvent<T> implements ILiteEvent<T> {
 	private handlers: { (obj: any, data: T): void }[] = [];
 
 	public On(handler: { (obj: any, data: T): void }): void {
+		ErrorHandler.ThrowNullOrUndefined(handler);
 		this.handlers.push(handler);
 	}
 

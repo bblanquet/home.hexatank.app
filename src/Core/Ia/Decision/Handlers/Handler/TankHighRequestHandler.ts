@@ -37,7 +37,7 @@ export class TankHighRequestHandler implements IHandler {
 	private Assign(request: AreaRequest, drop: () => Tank): boolean {
 		if (request.Area.HasFreeUnitCell()) {
 			const tank = drop();
-			ErrorHandler.ThrowNull(tank);
+			ErrorHandler.ThrowNullOrUndefined(tank);
 			request.Area.Add(tank);
 			return true;
 		} else {

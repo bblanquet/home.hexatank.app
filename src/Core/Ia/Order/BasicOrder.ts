@@ -14,7 +14,7 @@ export class BasicOrder extends Order {
 		super();
 		ErrorHandler.ThrowNullOrEmpty(this.Road);
 		this.Road.forEach((r) => {
-			ErrorHandler.ThrowNull(r);
+			ErrorHandler.ThrowNullOrUndefined(r);
 		});
 		this.Destination = Road[Road.length - 1];
 	}

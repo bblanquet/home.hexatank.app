@@ -117,6 +117,10 @@ export abstract class AliveItem extends Item {
 		return this.TotalLife;
 	}
 
+	public HasFullLife(): boolean {
+		return this.TotalLife === this.Life;
+	}
+
 	public SetCurrentLife(life: number): void {
 		this.Life = life;
 		this.UpdateDamage();

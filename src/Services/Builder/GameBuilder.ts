@@ -18,6 +18,7 @@ import { GameState } from '../../Core/Framework/World/GameState';
 import { IAppService } from '../App/IAppService';
 import { IStatsService } from '../Stats/IStatsService';
 import { IRecordContextService } from '../Record/IRecordContextService';
+import { IBlueprintService } from '../Blueprint/IBlueprintService';
 
 export class GameBuilder implements IBuilder<GameBlueprint> {
 	private _blueprint: GameBlueprint;
@@ -25,6 +26,7 @@ export class GameBuilder implements IBuilder<GameBlueprint> {
 	private _appService: IAppService;
 	private _interactionManager: PIXI.InteractionManager;
 	private _gameAudioService: GameAudioManager;
+	private _blueprintService: IBlueprintService;
 
 	private _gameContextService: IGameworldService<GameBlueprint, Gameworld>;
 	private _interactionService: IInteractionService<Gameworld>;
@@ -42,6 +44,7 @@ export class GameBuilder implements IBuilder<GameBlueprint> {
 	public OnReloaded: SimpleEvent = new SimpleEvent();
 	constructor() {
 		this._appService = Singletons.Load<IAppService>(SingletonKey.App);
+		this._blueprintService = Singletons.Load<IBlueprintService>(SingletonKey.Blueprint);
 		this._gameContextService = Singletons.Load<IGameworldService<GameBlueprint, Gameworld>>(SingletonKey.Gameworld);
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
 		this._onlineService = Singletons.Load<IOnlineService>(SingletonKey.Online);
@@ -54,6 +57,7 @@ export class GameBuilder implements IBuilder<GameBlueprint> {
 	}
 	public Register(blueprint: GameBlueprint, victory: () => void, defeat: () => void): void {
 		this._keyService.DefineKey(SingletonKey.GameBuilder);
+		this._blueprintService.Register(blueprint);
 		const gameState = new GameState();
 		this._blueprint = blueprint;
 		this._victory = victory;

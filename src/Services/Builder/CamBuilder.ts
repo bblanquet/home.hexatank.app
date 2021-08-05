@@ -15,9 +15,11 @@ import { GameState } from '../../Core/Framework/World/GameState';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { IPlayerProfileService } from '../PlayerProfil/IPlayerProfileService';
 import { IAppService } from '../App/IAppService';
+import { IBlueprintService } from '../Blueprint/IBlueprintService';
 export class CamBuilder implements IBuilder<CamouflageBlueprint> {
 	private _blueprint: CamouflageBlueprint;
 	private _appService: IAppService;
+	private _blueprintService: IBlueprintService;
 	private _input: PIXI.InteractionManager;
 	private _playerProfilService: IPlayerProfileService;
 	private _gameworldService: IGameworldService<CamouflageBlueprint, Camouflageworld>;
@@ -35,6 +37,7 @@ export class CamBuilder implements IBuilder<CamouflageBlueprint> {
 
 	constructor() {
 		this._appService = Singletons.Load<IAppService>(SingletonKey.App);
+		this._blueprintService = Singletons.Load<IBlueprintService>(SingletonKey.Blueprint);
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
@@ -61,6 +64,7 @@ export class CamBuilder implements IBuilder<CamouflageBlueprint> {
 	}
 	public Register(blueprint: CamouflageBlueprint, victory: () => void, defeat: () => void): void {
 		this._keyService.DefineKey(SingletonKey.CamouflageBuilder);
+		this._blueprintService.Register(blueprint);
 		this._victory = victory;
 		this._defeat = defeat;
 		const gameState = new GameState();

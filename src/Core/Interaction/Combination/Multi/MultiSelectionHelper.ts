@@ -70,7 +70,7 @@ export class MultiSelectionHelper {
 		}
 
 		let result = rawList[middle];
-		ErrorHandler.ThrowNull(result);
+		ErrorHandler.ThrowNullOrUndefined(result);
 		return result;
 	}
 

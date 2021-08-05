@@ -52,6 +52,7 @@ export class CamouflageworldMaker {
 		new HqLandmaker().SetHqLand(cells, SvgArchive.nature.hq2, spots, 1);
 
 		const tank = new Tank(new Identity('player', HqAppearance.Skins.Get(ColorKind[ColorKind.Red]), true));
+		tank.Id = 'tank';
 		tank.OverrideLife(1);
 		tank.SetPosition(cells.Get(departure.ToString()));
 		vehicles.push(tank);
@@ -64,6 +65,7 @@ export class CamouflageworldMaker {
 		const iaId = new Identity('ia', HqAppearance.Skins.Get(ColorKind[ColorKind.Blue]), false);
 		blueprint.Patrols.forEach((patrol) => {
 			const tank = new Tank(iaId, false);
+			tank.Id = 'tank';
 			const d = new HexAxial(patrol.Departure.Coo.Q, patrol.Departure.Coo.R);
 			const a = new HexAxial(patrol.Arrival.Coo.Q, patrol.Arrival.Coo.R);
 			const dCell = cells.Get(d.ToString());

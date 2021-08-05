@@ -23,12 +23,16 @@ export class ButtonProp {
 	) {}
 
 	public static TankList(v: Vehicle, callback: (e: Item) => void): ButtonProp[] {
-		return [
-			new ButtonProp('fill-tank', 'btn-light', `${v.Id}\n${v.GetCurrentCell().Coo()}`, () => {}, false),
-			new ButtonProp('fill-camouflage', 'btn-dark', '', () => callback(new CamouflageMenuItem()), false),
-			new ButtonProp('fill-abort', 'btn-dark', '', () => callback(new AbortMenuItem()), false),
-			new ButtonProp('fill-cancel', 'btn-dark', '', () => callback(new CancelMenuItem()), false)
-		];
+		if (v) {
+			return [
+				new ButtonProp('fill-tank', 'btn-light', `${v.Id}\n${v.GetCurrentCell().Coo()}`, () => {}, false),
+				new ButtonProp('fill-camouflage', 'btn-dark', '', () => callback(new CamouflageMenuItem()), false),
+				new ButtonProp('fill-abort', 'btn-dark', '', () => callback(new AbortMenuItem()), false),
+				new ButtonProp('fill-cancel', 'btn-dark', '', () => callback(new CancelMenuItem()), false)
+			];
+		} else {
+			return [];
+		}
 	}
 
 	public static TruckList(v: Vehicle, callback: (e: Item) => void): ButtonProp[] {

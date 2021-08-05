@@ -15,6 +15,7 @@ import { GameAudioManager } from '../../Core/Framework/Audio/GameAudioManager';
 import { IAppService } from '../App/IAppService';
 import { IBlueprint } from '../../Core/Framework/Blueprint/IBlueprint';
 import { IHqGameworld } from '../../Core/Framework/World/IHqGameworld';
+import { IBlueprintService } from '../Blueprint/IBlueprintService';
 export class GenericBuilder<TB extends IBlueprint, TG extends IHqGameworld> implements IBuilder<TB> {
 	private _blueprint: TB;
 	private _appService: IAppService;
@@ -31,9 +32,11 @@ export class GenericBuilder<TB extends IBlueprint, TG extends IHqGameworld> impl
 	private _victory: () => void;
 	private _defeat: () => void;
 	public OnReloaded: SimpleEvent = new SimpleEvent();
+	private _blueprintService: IBlueprintService;
 
 	constructor(private _app: SingletonKey, private _world: SingletonKey) {
 		this._appService = Singletons.Load<IAppService>(SingletonKey.App);
+		this._blueprintService = Singletons.Load<IBlueprintService>(SingletonKey.Blueprint);
 		this._gameworldService = Singletons.Load<IGameworldService<TB, TG>>(this._world);
 		this._playerProfilService = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
@@ -44,6 +47,7 @@ export class GenericBuilder<TB extends IBlueprint, TG extends IHqGameworld> impl
 	}
 	public Register(blueprint: TB, victory: () => void, defeat: () => void): void {
 		this._keyService.DefineKey(this._app);
+		this._blueprintService.Register(blueprint);
 		this._victory = victory;
 		this._defeat = defeat;
 		const gameState = new GameState();

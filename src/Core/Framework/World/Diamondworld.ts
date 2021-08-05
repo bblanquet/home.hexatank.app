@@ -11,6 +11,7 @@ import { SimpleEvent } from '../../../Utils/Events/SimpleEvent';
 import { GameStatus } from '../GameStatus';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { GameState } from './GameState';
+import { Diamond } from '../../Items/Cell/Field/Diamond';
 export class Diamondworld implements IHqGameworld {
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
 	public OnTimerDone: SimpleEvent;
@@ -19,17 +20,17 @@ export class Diamondworld implements IHqGameworld {
 
 	private _cells: Dictionary<Cell>;
 
-	constructor(state: GameState, cells: Cell[], private _hq: Headquarter) {
+	constructor(state: GameState, cells: Cell[], public Hq: Headquarter, public Diamond: Diamond) {
 		this._cells = Dictionary.To((c) => c.Coo(), cells);
 		this.State = state;
 		this.OnTimerDone = new SimpleEvent();
-		this._hq.OnDiamondEarned.On(() => {
-			if (35 < this._hq.GetDiamondCount()) {
+		this.Hq.OnDiamondEarned.On(() => {
+			if (35 <= this.Hq.GetDiamondCount()) {
 				this.State.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
 			}
 		});
 		this.OnTimerDone.On(() => {
-			if (35 < this._hq.GetDiamondCount()) {
+			if (35 <= this.Hq.GetDiamondCount()) {
 				this.State.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
 			} else {
 				this.State.OnGameStatusChanged.Invoke(this, GameStatus.Defeat);
@@ -42,7 +43,7 @@ export class Diamondworld implements IHqGameworld {
 	}
 
 	GetHqs(): IHeadquarter[] {
-		return [ this._hq ];
+		return [ this.Hq ];
 	}
 
 	GetDiamond(): number {
@@ -54,12 +55,12 @@ export class Diamondworld implements IHqGameworld {
 	}
 
 	GetPlayerHq(): IHeadquarter {
-		return this._hq;
+		return this.Hq;
 	}
 
 	GetHqFromId(identity: Identity): IHeadquarter {
-		if (this._hq.Identity.Name === identity.Name) {
-			return this._hq;
+		if (this.Hq.Identity.Name === identity.Name) {
+			return this.Hq;
 		}
 		return null;
 	}
@@ -67,6 +68,6 @@ export class Diamondworld implements IHqGameworld {
 		return this._cells.Values();
 	}
 	GetPlayer(): AliveItem {
-		return this._hq;
+		return this.Hq;
 	}
 }

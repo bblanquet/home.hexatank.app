@@ -19,15 +19,21 @@ export class Outpostworld implements IHqGameworld {
 	constructor(
 		state: GameState,
 		cells: Cell[],
-		private _fakeHq: CellLessHeadquarter,
+		private _cellLessHq: CellLessHeadquarter,
 		private _playerUnit: AliveItem,
 		public BatteryCell: Cell,
+		public FireCell: Cell,
 		public Boulder: BlockingField
 	) {
 		this._cells = Dictionary.To((c) => c.Coo(), cells);
 		this.State = state;
 		this._playerUnit.OnDamageReceived.On((source: Vehicle, data: number) => {
-			if (source.GetCurrentLife() === source.GetTotalLife() && !Boulder.IsUpdatable) {
+			if (this._playerUnit.HasFullLife() && !Boulder.IsAlive()) {
+				this.State.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
+			}
+		});
+		this.Boulder.OnDamageReceived.On((source: Vehicle, data: number) => {
+			if (this._playerUnit.HasFullLife() && !Boulder.IsAlive()) {
 				this.State.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
 			}
 		});
@@ -38,7 +44,7 @@ export class Outpostworld implements IHqGameworld {
 	}
 
 	GetHqs(): IHeadquarter[] {
-		return [ this._fakeHq ];
+		return [ this._cellLessHq ];
 	}
 
 	GetVehicles(): Vehicle[] {
@@ -53,12 +59,12 @@ export class Outpostworld implements IHqGameworld {
 	}
 
 	GetPlayerHq(): IHeadquarter {
-		return this._fakeHq;
+		return this._cellLessHq;
 	}
 
 	GetHqFromId(identity: Identity): IHeadquarter {
-		if (this._fakeHq.Identity.Name === identity.Name) {
-			return this._fakeHq;
+		if (this._cellLessHq.Identity.Name === identity.Name) {
+			return this._cellLessHq;
 		}
 		return null;
 	}

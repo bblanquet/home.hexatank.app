@@ -1,6 +1,5 @@
 import { h, Component } from 'preact';
 import Icon from '../Common/Icon/IconComponent';
-import Line from '../Common/Struct/Line';
 
 export default class Bubble extends Component<
 	{ Sentence: string; OnNext: () => void },
@@ -36,7 +35,8 @@ export default class Bubble extends Component<
 
 	public TextAnimation(): void {
 		if (this.state.CurrentSentence.length < this.state.Sentence.length) {
-			this.setState({ CurrentSentence: this.props.Sentence.substring(0, this.state.CurrentSentence.length + 1) });
+			let size = this.state.CurrentSentence.length + 2;
+			this.setState({ CurrentSentence: this.props.Sentence.substring(0, size) });
 		}
 
 		if (this.state.CurrentSentence.length < this.state.Sentence.length) {

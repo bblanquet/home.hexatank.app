@@ -7,7 +7,7 @@ export class AreaSearch {
 	constructor(private _hexCoos: Dictionary<HexAxial>) {}
 
 	public GetAreas(coordinate: HexAxial): Array<HexAxial> {
-		ErrorHandler.ThrowNull(coordinate);
+		ErrorHandler.ThrowNullOrUndefined(coordinate);
 
 		var result = new Array<HexAxial>();
 		this.GetAllAreas(coordinate, result);
@@ -15,7 +15,7 @@ export class AreaSearch {
 	}
 
 	private GetAllAreas(currentCoo: HexAxial, result: Array<HexAxial>): void {
-		ErrorHandler.ThrowNull(currentCoo);
+		ErrorHandler.ThrowNullOrUndefined(currentCoo);
 		if (result.every((a) => !a.IsEqualed(currentCoo))) {
 			result.push(currentCoo);
 		}

@@ -60,7 +60,7 @@ export class ErrorHandler {
 		axios.post('{{error_url}}/server/Exception/Add', payload);
 	}
 
-	public static ThrowNull(obj: any): void {
+	public static ThrowNullOrUndefined(obj: any): void {
 		if (obj === undefined || obj === null) {
 			const error = new Error('null exception');
 			throw error;

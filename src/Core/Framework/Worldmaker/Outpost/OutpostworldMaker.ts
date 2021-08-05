@@ -77,20 +77,26 @@ export class OutpostworlddMaker {
 			() => batteryCell.GetField() instanceof BasicField && reactorCell.GetField() instanceof ReactorField
 		);
 
-		let c = cells.Get(new HexAxial(-1, 2).ToString());
-		if (!(c.GetField() instanceof BasicField)) {
-			c.GetField().Destroy();
+		const fireCell = cells.Get(new HexAxial(-1, 2).ToString());
+		if (!(fireCell.GetField() instanceof BasicField)) {
+			fireCell.GetField().Destroy();
 		}
 
-		c = cells.Get(new HexAxial(0, 2).ToString());
-		const boulder = new BlockingField(c, SvgArchive.nature.forest.rock);
-
-		if (!(c.GetField() instanceof BasicField)) {
-			c.GetField().Destroy();
-			c.SetField(boulder);
+		const boulderCell = cells.Get(new HexAxial(0, 2).ToString());
+		if (!(boulderCell.GetField() instanceof BasicField)) {
+			boulderCell.GetField().Destroy();
 		}
+		boulderCell.SetField(new BlockingField(boulderCell, SvgArchive.nature.forest.rock));
 
-		const world = new Outpostworld(gameState, cells.Values(), hq, tank, batteryCell, boulder);
+		const world = new Outpostworld(
+			gameState,
+			cells.Values(),
+			hq,
+			tank,
+			batteryCell,
+			fireCell,
+			boulderCell.GetField() as BlockingField
+		);
 		CellStateSetter.SetStates(world.GetCells());
 		world.GetCells().forEach((c) => {
 			c.SetState(CellState.Visible);

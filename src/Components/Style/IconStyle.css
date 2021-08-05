@@ -14,6 +14,70 @@
 	background-image: url('{{asset_path}}svg/UI/icon/blueprintTruck.svg');
 }
 
+.fill-sand-tree {
+	overflow: hidden;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{asset_path}}svg/nature/sand/palmTree.svg');
+}
+
+.fill-ice-tree {
+	overflow: hidden;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{asset_path}}svg/nature/ice/tree.svg');
+}
+
+.fill-forest-tree {
+	overflow: hidden;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{asset_path}}svg/nature/forest/darkTree.svg');
+}
+
+.fill-blue-tank {
+	overflow: hidden;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{asset_path}}svg/UI/tank/blue.svg');
+}
+
+.fill-red-tank {
+	overflow: hidden;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{asset_path}}svg/UI/tank/red.svg');
+}
+
+.fill-black-tank {
+	overflow: hidden;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{asset_path}}svg/UI/tank/black.svg');
+}
+
+.fill-purple-tank {
+	overflow: hidden;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{asset_path}}svg/UI/tank/purple.svg');
+}
+
+.fill-yellow-tank {
+	overflow: hidden;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{asset_path}}svg/UI/tank/yellow.svg');
+}
+
 .fill-empty {
 	overflow: hidden;
 	background-size: contain;

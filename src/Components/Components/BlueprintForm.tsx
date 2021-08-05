@@ -11,6 +11,7 @@ import SmBtn from '../Common/Button/Stylish/SmBtn';
 import Column from '../Common/Struct/Column';
 import { Env } from '../../Utils/Env';
 import Visible from '../Common/Struct/Visible';
+import ImgPicker from '../Common/Picker/ImgPicker';
 
 export default class BlueprintForm extends Component<
 	{ Model: BlueprintSetup; OnChanged: (model: BlueprintSetup) => void; EnableEmptyIa: boolean; EnableColor: boolean },
@@ -33,19 +34,34 @@ export default class BlueprintForm extends Component<
 		return (
 			<span>
 				<Column>
-					<Line>
-						<Dropdown
-							Color={ColorKind.Black}
-							OnInput={(e: any) => {
+					<Visible isVisible={this.props.EnableColor}>
+						<ImgPicker
+							Items={[
+								{ Css: 'fill-blue-tank', Color: 'white' },
+								{ Css: 'fill-black-tank', Color: 'white' },
+								{ Css: 'fill-red-tank', Color: 'white' },
+								{ Css: 'fill-yellow-tank', Color: 'white' },
+								{ Css: 'fill-purple-tank', Color: 'white' }
+							]}
+							OnSelected={(e: number) => {
 								this.setState({
-									Env: e.target.value
+									Color: [ 'Blue', 'VP', 'Red', 'Yellow', 'MM' ][e]
 								});
 							}}
-							Default={this.state.Env}
-							Label={'Env'}
-							Values={[ 'Forest', 'Sand', 'Ice' ]}
 						/>
-					</Line>
+					</Visible>
+					<ImgPicker
+						Items={[
+							{ Css: 'fill-forest-tree', Color: '#00a651' },
+							{ Css: 'fill-sand-tree', Color: '#fece63' },
+							{ Css: 'fill-ice-tree', Color: '#acddf3' }
+						]}
+						OnSelected={(e: number) => {
+							this.setState({
+								Env: [ 'Forest', 'Sand', 'Ice' ][e]
+							});
+						}}
+					/>
 					<Line>
 						<Dropdown
 							Color={ColorKind.Black}
@@ -59,21 +75,6 @@ export default class BlueprintForm extends Component<
 							Values={[ 'Flower', 'Donut', 'Cheese', 'Triangle', 'Y', 'H', 'X', 'Rectangle' ]}
 						/>
 					</Line>
-					<Visible isVisible={this.props.EnableColor}>
-						<Line>
-							<Dropdown
-								Color={ColorKind.Black}
-								OnInput={(e: any) => {
-									this.setState({
-										Color: e.target.value
-									});
-								}}
-								Default={this.state.Color}
-								Label={'Color'}
-								Values={[ 'Blue', 'Yellow', 'Red', 'MM', 'VP' ]}
-							/>
-						</Line>
-					</Visible>
 				</Column>
 				<Grid left={this.GetHeader()} right={this.GetContent()} isFitContent={true} />
 			</span>

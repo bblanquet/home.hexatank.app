@@ -794,3 +794,31 @@ body {
 		linear-gradient(to right, #313131 1px, rgb(27, 27, 27) 1px);
 	background-size: 20px 20px;
 }
+
+.imgBorder {
+	background: rgb(198, 198, 198);
+	background: linear-gradient(
+		90deg,
+		rgba(198, 198, 198, 1) 0%,
+		rgba(198, 198, 198, 1) 48%,
+		rgba(198, 198, 198, 1) 50%,
+		rgba(219, 219, 219, 1) 51%,
+		rgba(219, 219, 219, 1) 100%
+	);
+	padding: 5px;
+	width: 75px;
+	height: 75px;
+	min-width: 75px;
+	min-height: 75px;
+	border-radius: 10px;
+}
+
+.imgContainer {
+	background: rgb(238, 238, 238);
+	width: 65px;
+	height: 65px;
+	min-width: 65px;
+	min-height: 65px;
+	border-radius: 10px;
+	border: 1px solid rgb(139, 139, 139);
+}

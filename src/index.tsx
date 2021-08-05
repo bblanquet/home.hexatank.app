@@ -17,6 +17,7 @@ import { GameStatus } from './Core/Framework/GameStatus';
 import { DeltaCurves, Logs } from '../test/Variables';
 import { JsonRecordContent } from './Core/Framework/Record/Model/JsonRecordContent';
 import HomeScreen from './Components/Screens/HomeScreen';
+import MockScreen from './Components/Screens/MockScreen';
 import LoadingScreen from './Components/Screens/LoadingScreen';
 import ErrorScreen from './Components/Screens/ErrorScreen';
 import SinglePlayerScreen from './Components/Screens/SingleScreen';
@@ -54,6 +55,7 @@ if (!Env.IsPrd()) {
 const App = (e: any) => {
 	return (
 		<Router>
+			<MockScreen path="{{sub_path}}Mock" />
 			<HomeScreen path="{{sub_path}}Home" />
 			<LoadingScreen path="{{sub_path}}Loading" default />
 			<ErrorScreen path="{{sub_path}}Error" />

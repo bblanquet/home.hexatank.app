@@ -10,8 +10,8 @@ import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
 import { Identity } from '../../Items/Identity';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { GameState } from './GameState';
-import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
-export class FireV2World implements IHqGameworld {
+import { BlockingField } from '../../Items/Cell/Field/BlockingField';
+export class Outpostworld implements IHqGameworld {
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
 	private _cells: Dictionary<Cell>;
 	public State: GameState;
@@ -19,14 +19,17 @@ export class FireV2World implements IHqGameworld {
 	constructor(
 		state: GameState,
 		cells: Cell[],
-		private _unit: AliveItem,
 		private _fakeHq: CellLessHeadquarter,
-		private _target: Headquarter
+		private _playerUnit: AliveItem,
+		public BatteryCell: Cell,
+		public Boulder: BlockingField
 	) {
 		this._cells = Dictionary.To((c) => c.Coo(), cells);
 		this.State = state;
-		this._target.OnDestroyed.On((source: any, data: Item) => {
-			this.State.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
+		this._playerUnit.OnDamageReceived.On((source: Vehicle, data: number) => {
+			if (source.GetCurrentLife() === source.GetTotalLife() && !Boulder.IsUpdatable) {
+				this.State.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
+			}
 		});
 	}
 
@@ -46,7 +49,7 @@ export class FireV2World implements IHqGameworld {
 		return this._cells.Values();
 	}
 	GetPlayer(): AliveItem {
-		return this._unit;
+		return this._playerUnit;
 	}
 
 	GetPlayerHq(): IHeadquarter {

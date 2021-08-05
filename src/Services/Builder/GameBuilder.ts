@@ -9,8 +9,7 @@ import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint
 import { IBuilder } from './IBuilder';
 import { Singletons, SingletonKey } from '../../Singletons';
 import * as PIXI from 'pixi.js';
-import { RecordContext } from '../../Core/Framework/Record/RecordContext';
-import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
+import { IPlayerProfileService } from '../PlayerProfil/IPlayerProfileService';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { Gameworld } from '../../Core/Framework/World/Gameworld';
@@ -18,11 +17,11 @@ import { IGameworldService } from '../World/IGameworldService';
 import { GameState } from '../../Core/Framework/World/GameState';
 import { IAppService } from '../App/IAppService';
 import { IStatsService } from '../Stats/IStatsService';
+import { IRecordContextService } from '../Record/IRecordContextService';
 
 export class GameBuilder implements IBuilder<GameBlueprint> {
 	private _blueprint: GameBlueprint;
 	private _gameworld: Gameworld;
-	private _recordContext: RecordContext;
 	private _appService: IAppService;
 	private _interactionManager: PIXI.InteractionManager;
 	private _gameAudioService: GameAudioManager;
@@ -31,16 +30,16 @@ export class GameBuilder implements IBuilder<GameBlueprint> {
 	private _interactionService: IInteractionService<Gameworld>;
 	private _layerService: ILayerService;
 	private _statService: IStatsService;
+	private _recordService: IRecordContextService;
 	private _updateService: IUpdateService;
 	private _onlineService: IOnlineService;
 	private _keyService: IKeyService;
 	private _audioService: IAudioService;
-	private _playerProfilService: IPlayerProfilService;
+	private _playerProfilService: IPlayerProfileService;
 	private _gameStatusChanged: any = this.GameStatusChanged.bind(this);
 	private _victory: () => void;
 	private _defeat: () => void;
 	public OnReloaded: SimpleEvent = new SimpleEvent();
-
 	constructor() {
 		this._appService = Singletons.Load<IAppService>(SingletonKey.App);
 		this._gameContextService = Singletons.Load<IGameworldService<GameBlueprint, Gameworld>>(SingletonKey.Gameworld);
@@ -50,22 +49,11 @@ export class GameBuilder implements IBuilder<GameBlueprint> {
 		this._interactionService = Singletons.Load<IInteractionService<Gameworld>>(SingletonKey.Interaction);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 		this._audioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-		this._playerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+		this._playerProfilService = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
+		this._recordService = Singletons.Load<IRecordContextService>(SingletonKey.RecordContext);
 	}
-
-	Reload(): void {
-		this._gameworld.State.OnGameStatusChanged.Off(this.GameStatusChanged.bind(this));
-		this.Collect();
-		this.Register(this._blueprint, this._victory, this._defeat);
-		this.OnReloaded.Invoke();
-	}
-
-	IsReloadable(): boolean {
-		return !this._onlineService.IsOnline();
-	}
-
 	public Register(blueprint: GameBlueprint, victory: () => void, defeat: () => void): void {
-		this._keyService.DefineKey(this);
+		this._keyService.DefineKey(SingletonKey.GameBuilder);
 		const gameState = new GameState();
 		this._blueprint = blueprint;
 		this._victory = victory;
@@ -79,12 +67,21 @@ export class GameBuilder implements IBuilder<GameBlueprint> {
 		this._gameworld = this._gameContextService.Publish();
 		this._interactionService.Register(this._interactionManager, this._gameworld);
 		this._statService.Register(this._gameworld);
+		this._recordService.Register(blueprint, this._gameworld);
 		this._gameAudioService = new GameAudioManager(blueprint.MapMode, this._gameworld);
 		this._audioService.Register(this._gameAudioService);
 		this._gameworld.State.OnGameStatusChanged.On(this._gameStatusChanged);
 		app.start();
 	}
-
+	Reload(): void {
+		this._gameworld.State.OnGameStatusChanged.Off(this.GameStatusChanged.bind(this));
+		this.Collect();
+		this.Register(this._blueprint, this._victory, this._defeat);
+		this.OnReloaded.Invoke();
+	}
+	IsReloadable(): boolean {
+		return !this._onlineService.IsOnline();
+	}
 	private GameStatusChanged(e: any, status: GameStatus): void {
 		if (status === GameStatus.Defeat || status === GameStatus.Victory) {
 			if (status === GameStatus.Victory) {
@@ -93,15 +90,16 @@ export class GameBuilder implements IBuilder<GameBlueprint> {
 			if (status === GameStatus.Defeat) {
 				this._defeat();
 			}
-			this._recordContext.Stop(status === GameStatus.Victory);
-			const record = this._recordContext.GetRecord();
+
+			const recordContext = this._recordService.Publish();
+			recordContext.Stop(status === GameStatus.Victory);
+			const record = recordContext.GetRecord();
 			this._playerProfilService.Load();
 			const profil = this._playerProfilService.GetProfil();
 			profil.Records.push(record);
 			this._playerProfilService.Save();
 		}
 	}
-
 	public Collect(): void {
 		this._gameAudioService.StopAll();
 		this._audioService.Clear();

@@ -49,7 +49,7 @@ export class FireworldMaker {
 		goalCell.SetField(shield);
 		new AboveItem(goalCell, SvgArchive.arrow);
 
-		const arrival = new HexAxial(blueprint.Arrival.Coo.Q, blueprint.Arrival.Coo.R);
+		const arrival = new HexAxial(blueprint.Departure.Coo.Q, blueprint.Departure.Coo.R);
 		const arrivalCell = cells.Get(arrival.ToString());
 		const id = new Identity('Player', HqAppearance.Skins.Get(ColorKind[ColorKind.Red]), true);
 		const tank = new Tank(id);

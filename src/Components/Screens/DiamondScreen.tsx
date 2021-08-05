@@ -1,6 +1,5 @@
 import { JSX, h } from 'preact';
 import { GameStatus } from '../../Core/Framework/GameStatus';
-import { Cell } from '../../Core/Items/Cell/Cell';
 import { MultiCellMenuItem } from '../../Core/Menu/Buttons/MultiCellMenuItem';
 import { MultiTankMenuItem } from '../../Core/Menu/Buttons/MultiTankMenuItem';
 import ActiveRightBottomCornerButton from '../Common/Button/Corner/ActiveRightBottomCornerButton';
@@ -18,10 +17,11 @@ import MenuSwitcher from '../Components/Canvas/MenuSwitcher';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 import Switch from '../Common/Struct/Switch';
 import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
+import { SingletonKey } from '../../Singletons';
 
 export default class DiamondScreen extends HookedComponent<{}, DiamondHook, RuntimeState> {
 	public GetDefaultHook() {
-		return new DiamondHook(useState(DiamondHook.DefaultState()));
+		return new DiamondHook(SingletonKey.Diamondworld, useState(DiamondHook.DefaultState()));
 	}
 
 	public Rendering(): JSX.Element {
@@ -94,7 +94,8 @@ export default class DiamondScreen extends HookedComponent<{}, DiamondHook, Runt
 									Item={this.Hook.State.Item}
 									OnClick={(e) => this.Hook.SendContext(e)}
 									HasMultiMenu={this.Hook.State.IsMultiMenuVisible}
-									Fields={this.Hook.GetFields()}
+									FieldBtns={this.Hook.GetFieldBtns()}
+									Btns={this.Hook.GetBtns()}
 								/>
 							}
 						/>

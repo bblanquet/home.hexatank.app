@@ -3,14 +3,12 @@ import { Tank } from '../../../Items/Unit/Tank';
 import { SvgArchive } from '../../SvgArchiver';
 import { AboveItem } from '../../../Items/AboveItem';
 import { HqAppearance } from '../Hq/HqSkinHelper';
-import { SimpleFloor } from '../../../Items/Environment/SimpleFloor';
 import { CamouflageBlueprint } from '../../Blueprint/Cam/CamouflageBlueprint';
 import { GameSettings } from '../../GameSettings';
 import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
 import { Cell } from '../../../Items/Cell/Cell';
 import { CellProperties } from '../../../Items/Cell/CellProperties';
 import { Dictionary } from '../../../../Utils/Collections/Dictionary';
-import { BoundingBox } from '../../../../Utils/Geometry/BoundingBox';
 import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
 import { Identity } from '../../../Items/Identity';
 import { PatrolOrder } from '../../../Ia/Order/Composite/PatrolOrder';
@@ -20,6 +18,7 @@ import { GameState } from '../../World/GameState';
 import { ColorKind } from '../../../../Components/Common/Button/Stylish/ColorKind';
 import { Cloudmaker } from '../Cloudmaker';
 import { Landmaker } from '../Landmaker';
+import { HqLandmaker } from '../HqLandmaker';
 import { CellState } from '../../../Items/Cell/CellState';
 import { CellStateSetter } from '../../../Items/Cell/CellStateSetter';
 
@@ -49,8 +48,8 @@ export class CamouflageworldMaker {
 		const arrival = new HexAxial(blueprint.Goal.Arrival.Coo.Q, blueprint.Goal.Arrival.Coo.R);
 		const spots = [ departure, arrival ];
 
-		this.SetHqLand(cells, SvgArchive.nature.hq, spots);
-		this.SetHqLand(cells, SvgArchive.nature.hq2, spots, 1);
+		new HqLandmaker().SetHqLand(cells, SvgArchive.nature.hq, spots);
+		new HqLandmaker().SetHqLand(cells, SvgArchive.nature.hq2, spots, 1);
 
 		const tank = new Tank(new Identity('player', HqAppearance.Skins.Get(ColorKind[ColorKind.Red]), true));
 		tank.OverrideLife(1);
@@ -88,23 +87,5 @@ export class CamouflageworldMaker {
 			c.AlwaysVisible();
 		});
 		return world;
-	}
-
-	private SetHqLand(cells: Dictionary<Cell>, sprite: string, middleAreas: HexAxial[], z: number = 0) {
-		middleAreas.forEach((corner) => {
-			const cell = cells.Get(corner.ToString());
-			const boundingBox = new BoundingBox();
-			boundingBox.SetWidth(GameSettings.Size * 6);
-			boundingBox.SetHeight(GameSettings.Size * 6);
-			boundingBox.SetX(
-				cell.GetBoundingBox().GetX() - (boundingBox.GetWidth() / 2 - cell.GetBoundingBox().GetWidth() / 2)
-			);
-			boundingBox.SetY(
-				cell.GetBoundingBox().GetY() - (boundingBox.GetHeight() / 2 - cell.GetBoundingBox().GetHeight() / 2)
-			);
-			const land = new SimpleFloor(boundingBox, sprite, z);
-			land.SetVisible(() => true);
-			land.SetAlive(() => true);
-		});
 	}
 }

@@ -16,7 +16,7 @@ import { Point } from '../../Utils/Geometry/Point';
 import { InteractionKind } from '../../Core/Interaction/IInteractionContext';
 import { IBuilder } from '../../Services/Builder/IBuilder';
 import { IKeyService } from '../../Services/Key/IKeyService';
-import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
+import { IPlayerProfileService } from '../../Services/PlayerProfil/IPlayerProfileService';
 import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
 import { AudioLoader } from '../../Core/Framework/AudioLoader';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
@@ -28,7 +28,7 @@ import { ILayerService } from '../../Services/Layer/ILayerService';
 export class CamouflageHook extends Hook<RuntimeState> {
 	private _gameworldService: IGameworldService<CamouflageBlueprint, Camouflageworld>;
 	private _appService: IBuilder<CamouflageBlueprint>;
-	private _profilService: IPlayerProfilService;
+	private _profilService: IPlayerProfileService;
 	private _soundService: IAudioService;
 	private _layerService: ILayerService;
 	private _keyService: IKeyService;
@@ -52,7 +52,7 @@ export class CamouflageHook extends Hook<RuntimeState> {
 		);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 		this._appService = Singletons.Load<IBuilder<CamouflageBlueprint>>(this._keyService.GetAppKey());
-		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+		this._profilService = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 		this._interactionService = Singletons.Load<IInteractionService<Camouflageworld>>(
@@ -72,8 +72,7 @@ export class CamouflageHook extends Hook<RuntimeState> {
 		this._gameworld.State.SetInteraction(false);
 		this._steps = 0;
 		this._viewTranslator = new ViewTranslator(
-			this._gameworld.ArrivalCell.GetBoundingBox(),
-			this._gameworld.DepartCell.GetBoundingBox(),
+			[ this._gameworld.ArrivalCell.GetBoundingBox(), this._gameworld.DepartCell.GetBoundingBox() ],
 			3000
 		);
 		this._layerService.PauseNavigation();
@@ -131,7 +130,6 @@ export class CamouflageHook extends Hook<RuntimeState> {
 		state.GameStatus = GameStatus.Pending;
 		state.StatusDetails = null;
 		state.Sentence = Camouflage[0];
-
 		return state;
 	}
 
@@ -195,7 +193,7 @@ export class CamouflageHook extends Hook<RuntimeState> {
 			e.Sentence = Camouflage[this._steps];
 		});
 		if (1 === this._steps) {
-			this._viewTranslator.Start();
+			this._viewTranslator.Next();
 		}
 	}
 

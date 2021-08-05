@@ -1,10 +1,7 @@
 import { StateUpdater } from 'preact/hooks';
 import { Hook } from './Hook';
-import { CamouflageBlueprint } from '../../Core/Framework/Blueprint/Cam/CamouflageBlueprint';
-import { FireBlueprint } from '../../Core/Framework/Blueprint/Fire/FireBlueprint';
-import { DiamondBlueprint } from '../../Core/Framework/Blueprint/Diamond/DiamondBlueprint';
 import { IBuilder } from '../../Services/Builder/IBuilder';
-import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
+import { IPlayerProfileService } from '../../Services/PlayerProfil/IPlayerProfileService';
 import { ICampaignService } from '../../Services/Campaign/ICampaignService';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { CampaignState } from '../Model/GreenState';
@@ -12,16 +9,18 @@ import { route } from 'preact-router';
 import { CampaignKind } from '../../Services/Campaign/CampaignKind';
 import { StageState } from '../../Services/Campaign/StageState';
 import { GreenSentences } from '../Model/Dialogues';
+import { IBlueprint } from '../../Core/Framework/Blueprint/IBlueprint';
+import { MapKind } from '../../Core/Framework/Blueprint/Items/MapKind';
 
 export class GreenHook extends Hook<CampaignState> {
-	private _playerProfilService: IPlayerProfilService;
+	private _playerProfilService: IPlayerProfileService;
 	private _campaignService: ICampaignService;
 	private _timeout: NodeJS.Timeout;
 
 	public constructor(public State: CampaignState, protected SetState: StateUpdater<CampaignState>) {
 		super(State, SetState);
 		this._campaignService = Singletons.Load<ICampaignService>(SingletonKey.Campaign);
-		this._playerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+		this._playerProfilService = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
 	}
 
 	public Unmount(): void {
@@ -34,43 +33,38 @@ export class GreenHook extends Hook<CampaignState> {
 
 	public Start(index: number): void {
 		const blueprint = this._campaignService.GetBlueprint(CampaignKind.training, index);
-		if (blueprint instanceof CamouflageBlueprint) {
-			Singletons.Load<IBuilder<CamouflageBlueprint>>(SingletonKey.CamouflageBuilder).Register(
-				blueprint,
-				() => {
-					this._playerProfilService.GetProfil().GreenLvl[0] = StageState.achieved;
-					this._playerProfilService.AddPoints(20);
-				},
-				() => {
-					this._playerProfilService.AddPoints(3);
-				}
-			);
+		if (index === 1) {
+			this.Build(SingletonKey.CamouflageBuilder, blueprint, index, 20, 3);
 			route('{{sub_path}}Camouflage', true);
-		} else if (blueprint instanceof FireBlueprint) {
-			Singletons.Load<IBuilder<FireBlueprint>>(SingletonKey.FireBuilder).Register(
-				blueprint,
-				() => {
-					this._playerProfilService.GetProfil().GreenLvl[1] = StageState.achieved;
-					this._playerProfilService.AddPoints(20);
-				},
-				() => {
-					this._playerProfilService.AddPoints(3);
-				}
-			);
+		} else if (index === 2) {
+			this.Build(SingletonKey.FireV2Builder, blueprint, index, 20, 3);
 			route('{{sub_path}}FireV2', true);
-		} else if (blueprint instanceof DiamondBlueprint) {
-			Singletons.Load<IBuilder<DiamondBlueprint>>(SingletonKey.DiamondBuilder).Register(
-				blueprint,
-				() => {
-					this._playerProfilService.GetProfil().GreenLvl[2] = StageState.achieved;
-					this._playerProfilService.AddPoints(20);
-				},
-				() => {
-					this._playerProfilService.AddPoints(3);
-				}
-			);
+		} else if (index === 3) {
+			this.Build(SingletonKey.OutpostBuilder, blueprint, index, 20, 3);
+			route('{{sub_path}}Outpost', true);
+		} else if (index === 4) {
+			this.Build(SingletonKey.DiamondBuilder, blueprint, index, 20, 3);
 			route('{{sub_path}}Diamond', true);
 		}
+	}
+
+	private Build<T extends IBlueprint>(
+		builder: SingletonKey,
+		blueprint: T,
+		index: number,
+		win: number,
+		loose: number
+	) {
+		Singletons.Load<IBuilder<T>>(builder).Register(
+			blueprint,
+			() => {
+				this._playerProfilService.GetProfil().GreenLvl[index] = StageState.achieved;
+				this._playerProfilService.AddPoints(win);
+			},
+			() => {
+				this._playerProfilService.AddPoints(loose);
+			}
+		);
 	}
 
 	public SetBubble(): void {

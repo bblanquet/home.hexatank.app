@@ -33,6 +33,7 @@ import ProfilScreen from './Components/Screens/ProfilScreen';
 import DiamondScreen from './Components/Screens/DiamondScreen';
 import FireScreen from './Components/Screens/FireScreen';
 import FireV2Screen from './Components/Screens/FireV2Screen';
+import OutpostScreen from './Components/Screens/OutpostScreen';
 import GuestScreen from './Components/Screens/GuestScreen';
 import RecordScreen from './Components/Screens/PlayerScreen';
 import LoadingPlayers from './Components/Components/LoadingPlayers';
@@ -69,6 +70,7 @@ const App = (e: any) => {
 			<DiamondScreen path="{{sub_path}}Diamond" />
 			<FireScreen path="{{sub_path}}Fire" />
 			<FireV2Screen path="{{sub_path}}FireV2" />
+			<OutpostScreen path="{{sub_path}}Outpost" />
 			<ProfilScreen path="{{sub_path}}Profil" />
 			<GuestScreen path="{{sub_path}}Guest" />
 			<RecordScreen path="{{sub_path}}Record" />

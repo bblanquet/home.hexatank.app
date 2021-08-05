@@ -14,7 +14,7 @@ import { Gameworld } from '../../Core/Framework/World/Gameworld';
 import { IGameworldService } from '../../Services/World/IGameworldService';
 import { IOnlinePlayerManager } from './IOnlinePlayerManager';
 import { BlueprintSetup } from '../../Components/Model/BlueprintSetup';
-import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
+import { IPlayerProfileService } from '../../Services/PlayerProfil/IPlayerProfileService';
 import { BrainKind } from '../../Core/Ia/Decision/BrainKind';
 export class OnlineGameContextManager implements IOnlineGameContextManager {
 	private _peerObs: NetworkObserver[];
@@ -25,7 +25,7 @@ export class OnlineGameContextManager implements IOnlineGameContextManager {
 		private _socket: ISocketWrapper,
 		private _onlinePlayerManager: IOnlinePlayerManager,
 		private _blueprintSetup: BlueprintSetup,
-		private _profilService: IPlayerProfilService
+		private _profilService: IPlayerProfileService
 	) {
 		this._onlineService = Singletons.Load<IOnlineService>(SingletonKey.Online);
 		this._gameworldService = Singletons.Load<IGameworldService<GameBlueprint, Gameworld>>(SingletonKey.Gameworld);

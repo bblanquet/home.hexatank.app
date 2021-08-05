@@ -16,10 +16,12 @@ import MenuSwitcher from '../Components/Canvas/MenuSwitcher';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 import Switch from '../Common/Struct/Switch';
 import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
+import { SingletonKey } from '../../Singletons';
+import { AbstractGameHook } from '../Hooks/AbstractGameHook';
 
 export default class FireScreen extends HookedComponent<{}, FireHook, RuntimeState> {
 	public GetDefaultHook(): FireHook {
-		return new FireHook(useState(FireHook.DefaultState()));
+		return new FireHook(SingletonKey.Fireworld, useState(AbstractGameHook.DefaultState()));
 	}
 
 	public Rendering(): JSX.Element {
@@ -67,7 +69,8 @@ export default class FireScreen extends HookedComponent<{}, FireHook, RuntimeSta
 									Item={this.Hook.State.Item}
 									OnClick={(e) => this.Hook.SendContext(e)}
 									HasMultiMenu={this.Hook.State.IsMultiMenuVisible}
-									Fields={this.Hook.GetFields()}
+									FieldBtns={this.Hook.GetFieldBtns()}
+									Btns={this.Hook.GetBtns()}
 								/>
 							}
 						/>

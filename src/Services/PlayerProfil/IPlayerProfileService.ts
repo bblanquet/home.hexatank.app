@@ -1,11 +1,11 @@
 import { RecordContent } from '../../Core/Framework/Record/Model/RecordContent';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
-import { PlayerProfil } from './PlayerProfil';
+import { PlayerProfile } from './PlayerProfile';
 import { PointDetails } from './PointDetails';
 
-export interface IPlayerProfilService {
-	SetProfil(model: PlayerProfil): void;
-	GetProfil(): PlayerProfil;
+export interface IPlayerProfileService {
+	SetProfil(model: PlayerProfile): void;
+	GetProfil(): PlayerProfile;
 	Save(): void;
 	Load(): void;
 

@@ -2,8 +2,8 @@ import { SocketService } from './Services/Socket/SocketService';
 import { AnalyzeService } from './Services/Analyse/AnalyzeService';
 import { DiamondworldService } from './Services/World/DiamondworldService';
 import { FireworldService } from './Services/World/FireworldService';
-import { FireBuilder } from './Services/Builder/FireBuilder';
-import { DiamBuilder } from './Services/Builder/DiamBuilder';
+import { FireV2worldService } from './Services/World/FireV2worldService';
+import { OutpostworldService } from './Services/World/OutpostworldService';
 import { CamouflageworldService } from './Services/World/CamouflageworldService';
 import { CamouflageInteractionService } from './Services/Interaction/CamouflageInteractionService';
 import { CamBuilder } from './Services/Builder/CamBuilder';
@@ -12,7 +12,6 @@ import { CampaignService } from './Services/Campaign/CampaignService';
 import { OnlineService } from './Services/Online/OnlineService';
 import { KeyService } from './Services/Key/KeyService';
 import { RecordInteractionService } from './Services/Interaction/RecordInteractionService';
-import { PlayerBuilder } from './Services/Builder/PlayerBuilder';
 import { CompareService } from './Services/Compare/CompareService';
 import { GameworldService } from './Services/World/GameworldService';
 import { LayerService } from './Services/Layer/LayerService';
@@ -23,7 +22,16 @@ import { RecordContextService } from './Services/Record/RecordContextService';
 import { UpdateService } from './Services/Update/UpdateService';
 import { StatsService } from './Services/Stats/StatsService';
 import { GameBuilder } from './Services/Builder/GameBuilder';
+import { GenericBuilder } from './Services/Builder/GenericBuilder';
 import { Singletons, SingletonKey } from './Singletons';
+import { FireBlueprint } from './Core/Framework/Blueprint/Fire/FireBlueprint';
+import { Fireworld } from './Core/Framework/World/Fireworld';
+import { DiamondBlueprint } from './Core/Framework/Blueprint/Diamond/DiamondBlueprint';
+import { Diamondworld } from './Core/Framework/World/Diamondworld';
+import { GameBlueprint } from './Core/Framework/Blueprint/Game/GameBlueprint';
+import { Gameworld } from './Core/Framework/World/Gameworld';
+import { FireV2World } from './Core/Framework/World/FireV2World';
+import { Outpostworld } from './Core/Framework/World/Outpostworld';
 
 export class SingletonContainer {
 	Register(): void {
@@ -44,6 +52,8 @@ export class SingletonContainer {
 		Singletons.Register(SingletonKey.Gameworld, new GameworldService());
 		Singletons.Register(SingletonKey.Camouflageworld, new CamouflageworldService());
 		Singletons.Register(SingletonKey.Fireworld, new FireworldService());
+		Singletons.Register(SingletonKey.FireV2world, new FireV2worldService());
+		Singletons.Register(SingletonKey.Outpostworld, new OutpostworldService());
 		Singletons.Register(SingletonKey.Diamondworld, new DiamondworldService());
 
 		Singletons.Register(SingletonKey.Interaction, new InteractionService());
@@ -51,10 +61,27 @@ export class SingletonContainer {
 		Singletons.Register(SingletonKey.CamouflageInteraction, new CamouflageInteractionService());
 
 		Singletons.Register(SingletonKey.GameBuilder, new GameBuilder());
-		Singletons.Register(SingletonKey.PlayerBuilder, new PlayerBuilder());
+		Singletons.Register(
+			SingletonKey.PlayerBuilder,
+			new GenericBuilder<GameBlueprint, Gameworld>(SingletonKey.PlayerBuilder, SingletonKey.Gameworld)
+		);
 		Singletons.Register(SingletonKey.CamouflageBuilder, new CamBuilder());
-		Singletons.Register(SingletonKey.FireBuilder, new FireBuilder());
-		Singletons.Register(SingletonKey.DiamondBuilder, new DiamBuilder());
+		Singletons.Register(
+			SingletonKey.FireBuilder,
+			new GenericBuilder<FireBlueprint, Fireworld>(SingletonKey.FireBuilder, SingletonKey.Fireworld)
+		);
+		Singletons.Register(
+			SingletonKey.FireV2Builder,
+			new GenericBuilder<FireBlueprint, FireV2World>(SingletonKey.FireV2Builder, SingletonKey.FireV2world)
+		);
+		Singletons.Register(
+			SingletonKey.DiamondBuilder,
+			new GenericBuilder<DiamondBlueprint, Diamondworld>(SingletonKey.DiamondBuilder, SingletonKey.Diamondworld)
+		);
+		Singletons.Register(
+			SingletonKey.OutpostBuilder,
+			new GenericBuilder<FireBlueprint, Outpostworld>(SingletonKey.OutpostBuilder, SingletonKey.Outpostworld)
+		);
 
 		Singletons.Register(SingletonKey.Campaign, new CampaignService());
 		Singletons.Register(SingletonKey.Analyze, new AnalyzeService());

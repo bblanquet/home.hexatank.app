@@ -5,7 +5,7 @@ import { IOnlinePlayerManager } from '../../Network/Manager/IOnlinePlayerManager
 import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { OnlinePlayer } from '../../Network/OnlinePlayer';
-import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
+import { IPlayerProfileService } from '../PlayerProfil/IPlayerProfileService';
 import { IOnlineService } from './IOnlineService';
 import { ISocketService } from '../Socket/ISocketService';
 import { ILobbyManager } from '../../Network/Manager/ILobbyManager';
@@ -54,12 +54,12 @@ export class OnlineService implements IOnlineService {
 			this._socketWrapper,
 			this._onlinePlayerManager,
 			blueprintSetup,
-			Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil)
+			Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil)
 		);
 		this.UpdatePlayerName(playerName);
 	}
 	private UpdatePlayerName(playerName: string) {
-		const playerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+		const playerProfilService = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
 		playerProfilService.GetProfil().LastPlayerName = playerName;
 		playerProfilService.Save();
 	}

@@ -8,7 +8,7 @@ import { NetworkMessage } from '../../Network/Message/NetworkMessage';
 import { PacketKind } from '../../Network/Message/PacketKind';
 import { IServerSocket } from '../../Network/Socket/Server/IServerSocket';
 import { IOnlineService } from '../../Services/Online/IOnlineService';
-import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
+import { IPlayerProfileService } from '../../Services/PlayerProfil/IPlayerProfileService';
 import { ISocketService } from '../../Services/Socket/ISocketService';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { NotificationState } from '../Model/NotificationState';
@@ -40,7 +40,7 @@ export class GuestHook extends Hook<GuestState> {
 	}
 
 	public static DefaultState(): GuestState {
-		const profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+		const profilService = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
 		return {
 			Rooms: new Array<RoomState>(),
 			PlayerName: profilService.GetProfil().LastPlayerName,

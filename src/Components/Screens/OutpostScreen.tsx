@@ -9,7 +9,7 @@ import Redirect from '../Components/Redirect';
 import SmPopup from '../Components/SmPopup';
 import Visible from '../Common/Struct/Visible';
 import { HookedComponent } from '../Hooks/HookedComponent';
-import { FireV2Hook } from '../Hooks/FireV2Hook';
+import { OutpostHook } from '../Hooks/OutpostHook';
 import { RuntimeState } from '../Model/RuntimeState';
 import { useState } from 'preact/hooks';
 import MenuSwitcher from '../Components/Canvas/MenuSwitcher';
@@ -19,9 +19,9 @@ import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
 import { SingletonKey } from '../../Singletons';
 import Bubble from '../Components/Bubble';
 
-export default class FireV2Screen extends HookedComponent<{}, FireV2Hook, RuntimeState> {
-	public GetDefaultHook(): FireV2Hook {
-		return new FireV2Hook(SingletonKey.FireV2world, useState(FireV2Hook.DefaultState()));
+export default class OutpostScreen extends HookedComponent<{}, OutpostHook, RuntimeState> {
+	public GetDefaultHook(): OutpostHook {
+		return new OutpostHook(SingletonKey.Outpostworld, useState(OutpostHook.DefaultState()));
 	}
 
 	public Rendering(): JSX.Element {

@@ -13,13 +13,13 @@ import { IAudioService } from '../Audio/IAudioService';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import { GameState } from '../../Core/Framework/World/GameState';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
-import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
+import { IPlayerProfileService } from '../PlayerProfil/IPlayerProfileService';
 import { IAppService } from '../App/IAppService';
 export class CamBuilder implements IBuilder<CamouflageBlueprint> {
 	private _blueprint: CamouflageBlueprint;
 	private _appService: IAppService;
 	private _input: PIXI.InteractionManager;
-	private _playerProfilService: IPlayerProfilService;
+	private _playerProfilService: IPlayerProfileService;
 	private _gameworldService: IGameworldService<CamouflageBlueprint, Camouflageworld>;
 	private _interactionService: IInteractionService<Camouflageworld>;
 	private _layerService: ILayerService;
@@ -39,7 +39,7 @@ export class CamBuilder implements IBuilder<CamouflageBlueprint> {
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 		this._audioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-		this._playerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+		this._playerProfilService = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
 		this._appService = Singletons.Load<IAppService>(SingletonKey.App);
 		this._gameworldService = Singletons.Load<IGameworldService<CamouflageBlueprint, Camouflageworld>>(
 			SingletonKey.Camouflageworld
@@ -60,7 +60,7 @@ export class CamBuilder implements IBuilder<CamouflageBlueprint> {
 		return true;
 	}
 	public Register(blueprint: CamouflageBlueprint, victory: () => void, defeat: () => void): void {
-		this._keyService.DefineKey(this);
+		this._keyService.DefineKey(SingletonKey.CamouflageBuilder);
 		this._victory = victory;
 		this._defeat = defeat;
 		const gameState = new GameState();

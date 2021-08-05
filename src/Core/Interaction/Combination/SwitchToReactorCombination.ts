@@ -7,6 +7,7 @@ import { ISelectable } from '../../ISelectable';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { UnitGroup } from '../../Items/UnitGroup';
 import { IHqGameworld } from '../../Framework/World/IHqGameworld';
+import { Relationship } from '../../Items/Identity';
 
 export class SwitchToReactorCombination extends AbstractSingleCombination {
 	constructor(private _gameworld: IHqGameworld) {
@@ -20,8 +21,14 @@ export class SwitchToReactorCombination extends AbstractSingleCombination {
 				context.Items[0] instanceof Headquarter ||
 				context.Items[0] instanceof UnitGroup ||
 				context.Items[0] instanceof Cell) &&
-			context.Items[1] instanceof ReactorField
+			(context.Items[1] instanceof ReactorField && this.IsAlly(context))
 		);
+	}
+
+	private IsAlly(context: CombinationContext): boolean {
+		const reactor = context.Items[1] as ReactorField;
+		const player = this._gameworld.GetPlayer();
+		return player.Identity.GetRelation(reactor.GetIdentity()) === Relationship.Ally;
 	}
 
 	Combine(context: CombinationContext): boolean {

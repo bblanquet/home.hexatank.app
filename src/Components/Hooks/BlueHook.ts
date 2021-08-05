@@ -7,19 +7,19 @@ import { route } from 'preact-router';
 import { IBuilder } from '../../Services/Builder/IBuilder';
 import { StateUpdater } from 'preact/hooks';
 import { CampaignKind } from '../../Services/Campaign/CampaignKind';
-import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
+import { IPlayerProfileService } from '../../Services/PlayerProfil/IPlayerProfileService';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { StageState } from '../../Services/Campaign/StageState';
 
 export class BlueHook extends Hook<CampaignState> {
 	private _timeout: NodeJS.Timeout;
 	private _campaignService: ICampaignService;
-	private _playerProfilService: IPlayerProfilService;
+	private _playerProfilService: IPlayerProfileService;
 
 	public constructor(public State: CampaignState, protected SetState: StateUpdater<CampaignState>) {
 		super(State, SetState);
 		this._campaignService = Singletons.Load<ICampaignService>(SingletonKey.Campaign);
-		this._playerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+		this._playerProfilService = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
 	}
 
 	public GetStages(): StageState[] {
@@ -63,9 +63,9 @@ export class BlueHook extends Hook<CampaignState> {
 	}
 
 	public Start(index: number): void {
-		const mapContext = this._campaignService.GetBlueprint(CampaignKind.blue, index);
+		const blueprint = this._campaignService.GetBlueprint(CampaignKind.blue, index);
 		Singletons.Load<IBuilder<GameBlueprint>>(SingletonKey.GameBuilder).Register(
-			mapContext,
+			blueprint as any,
 			() => {
 				this._playerProfilService.GetProfil().BlueLvl[index] = StageState.achieved;
 				if (index + 1 < this._playerProfilService.GetProfil().BlueLvl.length) {

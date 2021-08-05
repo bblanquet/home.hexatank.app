@@ -11,7 +11,12 @@ import { SpeedFieldMenuItem } from '../../../Core/Menu/Buttons/SpeedFieldMenuIte
 import { ThunderMenuItem } from '../../../Core/Menu/Buttons/ThunderMenuItem';
 
 export class FieldProp {
-	constructor(public Icon: string, public Amount: number, public OnCLick: () => void) {}
+	constructor(
+		public Icon: string,
+		public Amount: number,
+		public OnCLick: () => void,
+		public isBlink: boolean = false
+	) {}
 
 	public static All(hq: IHeadquarter, callback: (e: Item) => void): FieldProp[] {
 		return [

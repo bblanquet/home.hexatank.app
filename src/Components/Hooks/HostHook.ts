@@ -6,7 +6,7 @@ import { PacketKind } from '../../Network/Message/PacketKind';
 import { LogKind } from '../../Utils/Logger/LogKind';
 import { NetworkMessage } from '../../Network/Message/NetworkMessage';
 import { IOnlineService } from '../../Services/Online/IOnlineService';
-import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
+import { IPlayerProfileService } from '../../Services/PlayerProfil/IPlayerProfileService';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { HostState } from '../Model/HostState';
 import { NotificationState } from '../Model/NotificationState';
@@ -36,7 +36,7 @@ export class HostHook extends Hook<HostState> {
 	}
 
 	public static DefaultState(): HostState {
-		const profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+		const profilService = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
 		return new HostState(
 			`${profilService.GetProfil().LastPlayerName} party`,
 			profilService.GetProfil().LastPlayerName,

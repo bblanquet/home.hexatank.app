@@ -17,7 +17,7 @@ import { IAudioService } from '../../Services/Audio/IAudioService';
 import { IGameworldService } from '../../Services/World/IGameworldService';
 import { IInteractionService } from '../../Services/Interaction/IInteractionService';
 import { IOnlineService } from '../../Services/Online/IOnlineService';
-import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
+import { IPlayerProfileService } from '../../Services/PlayerProfil/IPlayerProfileService';
 import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { Dictionary } from '../../Utils/Collections/Dictionary';
@@ -32,6 +32,11 @@ import { FieldProp } from '../Components/Canvas/FieldProp';
 import { CellGroup } from '../../Core/Items/CellGroup';
 import { IRecordContextService } from '../../Services/Record/IRecordContextService';
 import { IStatsService } from '../../Services/Stats/IStatsService';
+import { ButtonProp } from '../Components/Canvas/ButtonProp';
+import { Tank } from '../../Core/Items/Unit/Tank';
+import { Truck } from '../../Core/Items/Unit/Truck';
+import { ReactorField } from '../../Core/Items/Cell/Field/Bonus/ReactorField';
+import { UnitGroup } from '../../Core/Items/UnitGroup';
 
 export class GameHook extends Hook<RuntimeState> {
 	private _gameworldService: IGameworldService<GameBlueprint, Gameworld>;
@@ -39,7 +44,7 @@ export class GameHook extends Hook<RuntimeState> {
 	private _recordContextService: IRecordContextService;
 	private _statsService: IStatsService;
 	private _onlineService: IOnlineService;
-	private _profilService: IPlayerProfilService;
+	private _profilService: IPlayerProfileService;
 	private _interactionService: IInteractionService<Gameworld>;
 	private _appService: IBuilder<GameBlueprint>;
 	private _gameworld: Gameworld;
@@ -79,7 +84,7 @@ export class GameHook extends Hook<RuntimeState> {
 		this._gameworldService = Singletons.Load<IGameworldService<GameBlueprint, Gameworld>>(SingletonKey.Gameworld);
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		this._onlineService = Singletons.Load<IOnlineService>(SingletonKey.Online);
-		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+		this._profilService = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
 		this._interactionService = Singletons.Load<IInteractionService<Gameworld>>(SingletonKey.Interaction);
 		this._appService = Singletons.Load<IBuilder<GameBlueprint>>(SingletonKey.GameBuilder);
 		this._gameworld = this._gameworldService.Publish();
@@ -247,7 +252,7 @@ export class GameHook extends Hook<RuntimeState> {
 		return this._gameworld.GetPlayerHq().GetVehicleCount();
 	}
 
-	GetFields(): FieldProp[] {
+	GetFieldBtns(): FieldProp[] {
 		if (this.State.Item instanceof Cell) {
 			const cell = this.State.Item;
 			const hq = this._gameworld.GetPlayerHq();
@@ -262,6 +267,26 @@ export class GameHook extends Hook<RuntimeState> {
 			}
 		} else if (this.State.Item instanceof CellGroup) {
 			return FieldProp.AllExceptReactor((e: Item) => {
+				this.SendContext(e);
+			});
+		}
+	}
+
+	GetBtns(): ButtonProp[] {
+		if (this.State.Item instanceof Tank) {
+			return ButtonProp.TankList(this.State.Item, (e: Item) => {
+				this.SendContext(e);
+			});
+		} else if (this.State.Item instanceof Truck) {
+			return ButtonProp.TruckList(this.State.Item, (e: Item) => {
+				this.SendContext(e);
+			});
+		} else if (this.State.Item instanceof ReactorField) {
+			return ButtonProp.ReactorList(this.State.Item, (e: Item) => {
+				this.SendContext(e);
+			});
+		} else if (this.State.Item instanceof UnitGroup) {
+			return ButtonProp.MultiList(this.State.Item, (e: Item) => {
 				this.SendContext(e);
 			});
 		}

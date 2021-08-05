@@ -1,5 +1,3 @@
-import { DiamondBlueprint } from '../../Core/Framework/Blueprint/Diamond/DiamondBlueprint';
-import { Diamondworld } from '../../Core/Framework/World/Diamondworld';
 import { IInteractionService } from '../Interaction/IInteractionService';
 import { ILayerService } from '../Layer/ILayerService';
 import { IUpdateService } from '../Update/IUpdateService';
@@ -11,19 +9,21 @@ import { IKeyService } from '../Key/IKeyService';
 import { IAudioService } from '../Audio/IAudioService';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import { GameState } from '../../Core/Framework/World/GameState';
+import { IPlayerProfileService } from '../PlayerProfil/IPlayerProfileService';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { GameAudioManager } from '../../Core/Framework/Audio/GameAudioManager';
-import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
 import { IAppService } from '../App/IAppService';
-export class DiamBuilder implements IBuilder<DiamondBlueprint> {
-	private _blueprint: DiamondBlueprint;
+import { IBlueprint } from '../../Core/Framework/Blueprint/IBlueprint';
+import { IHqGameworld } from '../../Core/Framework/World/IHqGameworld';
+export class GenericBuilder<TB extends IBlueprint, TG extends IHqGameworld> implements IBuilder<TB> {
+	private _blueprint: TB;
 	private _appService: IAppService;
 	private _interactionManager: PIXI.InteractionManager;
 	private _gameAudioService: GameAudioManager;
-	private _context: Diamondworld;
-	private _playerProfilService: IPlayerProfilService;
-	private _gameworldService: IGameworldService<DiamondBlueprint, Diamondworld>;
-	private _interactionService: IInteractionService<Diamondworld>;
+	private _playerProfilService: IPlayerProfileService;
+	private _gameworldService: IGameworldService<TB, TG>;
+	private _context: TG;
+	private _interactionService: IInteractionService<TG>;
 	private _layerService: ILayerService;
 	private _updateService: IUpdateService;
 	private _keyService: IKeyService;
@@ -32,21 +32,18 @@ export class DiamBuilder implements IBuilder<DiamondBlueprint> {
 	private _defeat: () => void;
 	public OnReloaded: SimpleEvent = new SimpleEvent();
 
-	constructor() {
+	constructor(private _app: SingletonKey, private _world: SingletonKey) {
 		this._appService = Singletons.Load<IAppService>(SingletonKey.App);
-		this._gameworldService = Singletons.Load<IGameworldService<DiamondBlueprint, Diamondworld>>(
-			SingletonKey.Diamondworld
-		);
-		this._playerProfilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+		this._gameworldService = Singletons.Load<IGameworldService<TB, TG>>(this._world);
+		this._playerProfilService = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
-		this._interactionService = Singletons.Load<IInteractionService<Diamondworld>>(SingletonKey.Interaction);
+		this._interactionService = Singletons.Load<IInteractionService<TG>>(SingletonKey.Interaction);
 		this._keyService = Singletons.Load<IKeyService>(SingletonKey.Key);
 		this._audioService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 	}
-
-	public Register(blueprint: DiamondBlueprint, victory: () => void, defeat: () => void): void {
-		this._keyService.DefineKey(this);
+	public Register(blueprint: TB, victory: () => void, defeat: () => void): void {
+		this._keyService.DefineKey(this._app);
 		this._victory = victory;
 		this._defeat = defeat;
 		const gameState = new GameState();

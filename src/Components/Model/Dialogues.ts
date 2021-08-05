@@ -23,11 +23,27 @@ export const LoadingSentences = [
 
 export const trainingSentences = [
 	'You have to make a tank reach its destination.',
-	'You have to destroy a force field, to reach that goal, you will have to generate power up cells.',
-	'You have 120 seconds to retrieve at least 35 diamonds.'
+	'You have to destroy the oponent outpost.',
+	'You have to create your own outpost.',
+	'You have retrieve resources for your headquarter.'
 ];
 
 export const Camouflage = [ 'bring your unit to this safe spot.', 'Be careful the path is full of obstacles...', '' ];
+export const Fire = [
+	'The opponent is very confident of his new highly protected headquarter, destroy it!',
+	'To breach out try to conquest reactors first, arrows point them out.',
+	'Good luck soldier.',
+	''
+];
+
+export const outpost = [
+	'Let settle an outpost in this land, that will enable you to fix your tank.',
+	'',
+	"Well done, you have a operational outpost, this outpost will help you to assist your units. let's start by repairing your tank.",
+	'',
+	"Now that your tank is like new, let's destroy this ugly boulder over there.",
+	''
+];
 
 export function GreenSentences(index: number) {
 	if (index === 1) {

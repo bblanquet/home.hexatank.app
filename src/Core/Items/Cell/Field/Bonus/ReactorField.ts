@@ -1,4 +1,3 @@
-import { UpCalculator } from './UpCalculator';
 import { Dictionary } from '../../../../../Utils/Collections/Dictionary';
 import { Charge } from '../Hq/Charge';
 import { ZKind } from './../../../ZKind';
@@ -6,7 +5,6 @@ import { BatteryField } from './BatteryField';
 import { BasicRangeAnimator } from '../../../Animator/BasicRangeAnimator';
 import { ReactorAppearance } from './ReactorAppearance';
 import { SvgArchive } from '../../../../Framework/SvgArchiver';
-import { CellStateSetter } from '../../CellStateSetter';
 import { ReactorReserve } from '../ReactorReserve';
 import { BasicItem } from '../../../BasicItem';
 import { ISelectable } from '../../../../ISelectable';

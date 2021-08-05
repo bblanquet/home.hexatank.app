@@ -8,6 +8,7 @@ import { CellState } from '../../Items/Cell/CellState';
 import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { ISelectableChecker } from '../ISelectableChecker';
+import { Relationship } from '../../Items/Identity';
 
 export class SelectionCombination extends AbstractSingleCombination {
 	private _checker: ISelectableChecker;
@@ -30,6 +31,9 @@ export class SelectionCombination extends AbstractSingleCombination {
 				const selectablecell = selectable as Cell;
 				if (
 					selectablecell.GetField() instanceof ReactorField &&
+					(selectablecell.GetField() as ReactorField)
+						.GetIdentity()
+						.GetRelation(this._gameworld.GetPlayer().Identity) === Relationship.Ally &&
 					selectablecell.GetState() === CellState.Visible &&
 					!(selectablecell.GetField() as ReactorField).IsLocked()
 				) {

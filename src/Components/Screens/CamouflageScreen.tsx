@@ -10,10 +10,10 @@ import { HookedComponent } from '../Hooks/HookedComponent';
 import { CamouflageHook } from '../Hooks/CamouflageHook';
 import { RuntimeState } from '../Model/RuntimeState';
 import { useState } from 'preact/hooks';
-import { Item } from '../../Core/Items/Item';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
-import TankMenuComponent from '../Components/Canvas/TankMenuComponent';
 import { Vehicle } from '../../Core/Items/Unit/Vehicle';
+import { ButtonProp } from '../Components/Canvas/ButtonProp';
+import MenuBtn from '../Components/Canvas/MenuBtn';
 
 export default class CamouflageScreen extends HookedComponent<{}, CamouflageHook, RuntimeState> {
 	public GetDefaultHook(): CamouflageHook {
@@ -41,10 +41,16 @@ export default class CamouflageScreen extends HookedComponent<{}, CamouflageHook
 							/>
 						</div>
 						<Visible isVisible={!this.Hook.State.HasMenu && !isNullOrUndefined(this.Hook.State.Item)}>
-							<TankMenuComponent
-								Tank={this.Hook.State.Item as Vehicle}
-								Callback={(e: Item) => this.Hook.SendContext(e)}
-							/>
+							<div class="left-column">
+								<div class="middle2 max-width">
+									<div class="btn-group-vertical max-width">
+										{ButtonProp.TankList(
+											this.Hook.State.Item as Vehicle,
+											this.Hook.SendContext
+										).map((button) => <MenuBtn Btn={button} />)}
+									</div>
+								</div>
+							</div>;
 						</Visible>
 					</Visible>
 					<Visible isVisible={this.Hook.State.HasMenu}>

@@ -9,7 +9,7 @@ import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import { MapShape } from '../../Core/Framework/Blueprint/Items/MapShape';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
-import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
+import { IPlayerProfileService } from '../../Services/PlayerProfil/IPlayerProfileService';
 import BlueprintForm from '../Components/BlueprintForm';
 import { BlueprintSetup } from '../Model/BlueprintSetup';
 import Panel from '../Components/Panel/Panel';
@@ -19,11 +19,11 @@ import { PlayerBlueprint } from '../../Core/Framework/Blueprint/Game/HqBlueprint
 import { BrainKind } from '../../Core/Ia/Decision/BrainKind';
 
 export default class SingleScreen extends Component<any, BlueprintSetup> {
-	private _profilService: IPlayerProfilService;
+	private _profilService: IPlayerProfileService;
 
 	constructor(props: any) {
 		super(props);
-		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+		this._profilService = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
 	}
 
 	componentDidMount() {

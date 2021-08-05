@@ -9,7 +9,7 @@ import Visible from '../Common/Struct/Visible';
 import { Env } from '../../Utils/Env';
 import Panel from '../Components/Panel/Panel';
 import { IAudioService } from '../../Services/Audio/IAudioService';
-import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
+import { IPlayerProfileService } from '../../Services/PlayerProfil/IPlayerProfileService';
 import { Singletons, SingletonKey } from '../../Singletons';
 import Switch from '../Common/Struct/Switch';
 import Grid from '../Common/Grid/GridComponent';
@@ -36,7 +36,7 @@ export default class HomeScreen extends Component<any, { IsMenu: boolean }> {
 	];
 
 	componentDidMount() {
-		const profil = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+		const profil = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
 		const soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
 		soundService.SetMute(profil.GetProfil().IsMute);
 		soundService.PlayLoungeMusic();

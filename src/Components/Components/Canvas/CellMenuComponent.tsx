@@ -22,6 +22,7 @@ export default class CellMenuComponent extends Component<
 							OnClick={() => f.OnCLick()}
 							Amount={f.Amount.toString()}
 							Icon={f.Icon}
+							isBlink={f.isBlink}
 							Point={new Point(0, 0)}
 						/>
 					))}

@@ -107,7 +107,8 @@ export default class GameScreen extends HookedComponent<{}, GameHook, RuntimeSta
 												Item={this.Hook.State.Item}
 												OnClick={(e) => this.Hook.SendContext(e)}
 												HasMultiMenu={this.Hook.State.IsMultiMenuVisible}
-												Fields={this.Hook.GetFields()}
+												FieldBtns={this.Hook.GetFieldBtns()}
+												Btns={this.Hook.GetBtns()}
 											/>
 										</Visible>
 									</span>

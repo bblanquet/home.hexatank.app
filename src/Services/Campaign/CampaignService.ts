@@ -3,7 +3,7 @@ import { FireBluePrintMaker } from '../../Core/Framework/Blueprint/Fire/FireBlue
 import { CamouflageBluePrintMaker } from '../../Core/Framework/Blueprint/Cam/CamouflageBlueprintMaker';
 import { DiamondBlueprintMaker } from './../../Core/Framework/Blueprint/Diamond/DiamondBlueprintMaker';
 import { Singletons, SingletonKey } from '../../Singletons';
-import { IPlayerProfilService } from '../PlayerProfil/IPlayerProfilService';
+import { IPlayerProfileService } from '../PlayerProfil/IPlayerProfileService';
 import { GameBlueprintMaker } from '../../Core/Framework/Blueprint/Game/GameBlueprintMaker';
 import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { CampaignKind } from './CampaignKind';
@@ -20,16 +20,17 @@ export class CampaignService implements ICampaignService {
 	private _training: Dictionary<IBlueprint>;
 	private _red: Dictionary<GameBlueprint>;
 	private _blue: Dictionary<GameBlueprint>;
-	private _playerProfil: IPlayerProfilService;
+	private _playerProfil: IPlayerProfileService;
 
 	constructor() {
-		this._playerProfil = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+		this._playerProfil = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
 		const playername = this._playerProfil.GetProfil().LastPlayerName;
 
 		this._training = new Dictionary<IBlueprint>();
 		this._training.Add((1).toString(), new CamouflageBluePrintMaker().GetBluePrint());
-		this._training.Add((2).toString(), new FireBluePrintMaker().GetBluePrint());
-		this._training.Add((3).toString(), new DiamondBlueprintMaker().GetBluePrint());
+		this._training.Add((2).toString(), new FireBluePrintMaker().GetBluePrint(MapKind.Sand));
+		this._training.Add((3).toString(), new FireBluePrintMaker().GetBluePrint(MapKind.Forest));
+		this._training.Add((4).toString(), new DiamondBlueprintMaker().GetBluePrint());
 
 		this._red = new Dictionary<GameBlueprint>();
 		this._red.Add(
@@ -92,7 +93,7 @@ export class CampaignService implements ICampaignService {
 		);
 	}
 
-	public GetBlueprint(kind: CampaignKind, index: number): any {
+	public GetBlueprint(kind: CampaignKind, index: number): IBlueprint {
 		let blueprint: GameBlueprint;
 
 		if (kind === CampaignKind.red) {

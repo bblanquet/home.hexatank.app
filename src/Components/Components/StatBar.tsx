@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 import { Singletons, SingletonKey } from '../../Singletons';
-import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
+import { IPlayerProfileService } from '../../Services/PlayerProfil/IPlayerProfileService';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import SmActiveBtn from '../Common/Button/Stylish/SmActiveBtn';
 import Progress from '../Common/Progress/Progress';
@@ -9,12 +9,12 @@ import { IAudioService } from '../../Services/Audio/IAudioService';
 
 export default class StatBar extends Component<any, { IsMute: boolean }> {
 	private _soundService: IAudioService;
-	private _profilService: IPlayerProfilService;
+	private _profilService: IPlayerProfileService;
 
 	constructor() {
 		super();
 		this._soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+		this._profilService = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
 	}
 
 	componentDidMount() {

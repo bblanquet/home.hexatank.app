@@ -12,17 +12,22 @@ import { AboveItem } from '../../../Items/AboveItem';
 import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
 import { GameState } from '../../World/GameState';
 import { ColorKind } from '../../../../Components/Common/Button/Stylish/ColorKind';
-import { Headquarter } from '../../../Items/Cell/Field/Hq/Headquarter';
-import { ReactorField } from '../../../Items/Cell/Field/Bonus/ReactorField';
 import { CellLessHeadquarter } from '../Fire/CellLessHeadquarter';
-import { FireV2World } from '../../World/FireV2Context';
 import { Landmaker } from '../Landmaker';
 import { Cloudmaker } from '../Cloudmaker';
 import { CellStateSetter } from '../../../Items/Cell/CellStateSetter';
 import { CellState } from '../../../Items/Cell/CellState';
+import { GameSettings } from '../../GameSettings';
+import { Outpostworld } from '../../World/Outpostworld';
+import { BasicField } from '../../../Items/Cell/Field/BasicField';
+import { ReactorField } from '../../../Items/Cell/Field/Bonus/ReactorField';
+import { BlockingField } from '../../../Items/Cell/Field/BlockingField';
 
-export class FireRendererV2 {
-	public Render(blueprint: FireBlueprint, gameState: GameState): FireV2World {
+export class OutpostworlddMaker {
+	public Make(blueprint: FireBlueprint, gameState: GameState): Outpostworld {
+		GameSettings.Init();
+		GameSettings.SetNormalSpeed();
+		GameSettings.TranslatinDuration = 1000;
 		const id = new Identity('Player', HqAppearance.Skins.Get(ColorKind[ColorKind.Red]), true);
 		const hq = new CellLessHeadquarter();
 		hq.Identity = id;
@@ -42,33 +47,50 @@ export class FireRendererV2 {
 		new Landmaker().SetLands(cells, blueprint.MapMode, areas);
 		new Cloudmaker().SetClouds(cells, areas);
 
-		const goal = new HexAxial(blueprint.Goal.Coo.Q, blueprint.Goal.Coo.R);
-		const targetCell = cells.Get(goal.ToString());
-
-		const iaId = new Identity('IA', HqAppearance.Skins.Get(ColorKind[ColorKind.Blue]), false);
-		const targetHq = new Headquarter(iaId, targetCell);
-		targetCell.SetField(targetHq);
-		new AboveItem(targetCell, SvgArchive.direction.target);
-
-		let c = cells.Get(new HexAxial(5, 1).ToString());
-		c.SetField(new ReactorField(c, targetHq, [ hq, targetHq ], targetHq.Identity.Skin.GetLight()));
-
-		c = cells.Get(new HexAxial(0, 5).ToString());
-		c.SetField(new ReactorField(c, targetHq, [ hq, targetHq ], targetHq.Identity.Skin.GetLight()));
-
-		const arrival = new HexAxial(blueprint.Arrival.Coo.Q, blueprint.Arrival.Coo.R);
+		const arrival = new HexAxial(blueprint.Departure.Coo.Q, blueprint.Departure.Coo.R);
 		const arrivalCell = cells.Get(arrival.ToString());
-
-		const tank = new Tank(id);
-		hq.AddVehicle(tank);
-		tank.SetPosition(arrivalCell);
 
 		cells.Values().forEach((cell) => {
 			cell.SetPlayerHq(id);
 			cell.Listen();
 		});
 
-		const world = new FireV2World(gameState, cells.Values(), tank, hq, targetHq);
+		const tank = new Tank(id);
+		tank.Id = 'Tank';
+		hq.AddVehicle(tank);
+		tank.SetPosition(arrivalCell);
+		tank.SetDamage(5);
+
+		const reactorCell = cells.Get(new HexAxial(0, 1).ToString());
+		if (!(reactorCell.GetField() instanceof BasicField)) {
+			reactorCell.GetField().Destroy();
+		}
+		const above = new AboveItem(reactorCell, SvgArchive.hand);
+		above.SetVisible(() => reactorCell.GetField() instanceof BasicField);
+
+		const batteryCell = cells.Get(new HexAxial(1, 1).ToString());
+		if (!(batteryCell.GetField() instanceof BasicField)) {
+			batteryCell.GetField().Destroy();
+		}
+		const above2 = new AboveItem(batteryCell, SvgArchive.hand);
+		above2.SetVisible(
+			() => batteryCell.GetField() instanceof BasicField && reactorCell.GetField() instanceof ReactorField
+		);
+
+		let c = cells.Get(new HexAxial(-1, 2).ToString());
+		if (!(c.GetField() instanceof BasicField)) {
+			c.GetField().Destroy();
+		}
+
+		c = cells.Get(new HexAxial(0, 2).ToString());
+		const boulder = new BlockingField(c, SvgArchive.nature.forest.rock);
+
+		if (!(c.GetField() instanceof BasicField)) {
+			c.GetField().Destroy();
+			c.SetField(boulder);
+		}
+
+		const world = new Outpostworld(gameState, cells.Values(), hq, tank, batteryCell, boulder);
 		CellStateSetter.SetStates(world.GetCells());
 		world.GetCells().forEach((c) => {
 			c.SetState(CellState.Visible);

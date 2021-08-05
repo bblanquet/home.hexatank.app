@@ -1,13 +1,13 @@
 import { h, Component } from 'preact';
-import { IPlayerProfilService } from '../../../Services/PlayerProfil/IPlayerProfilService';
+import { IPlayerProfileService } from '../../../Services/PlayerProfil/IPlayerProfileService';
 import { PlayerUtils } from '../../../Services/PlayerProfil/PlayerUtils';
 import { Singletons, SingletonKey } from '../../../Singletons';
 
 export default class Progress extends Component<{}, {}> {
-	private _profilService: IPlayerProfilService;
+	private _profilService: IPlayerProfileService;
 	constructor() {
 		super();
-		this._profilService = Singletons.Load<IPlayerProfilService>(SingletonKey.PlayerProfil);
+		this._profilService = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
 	}
 
 	render() {

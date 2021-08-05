@@ -1,12 +1,12 @@
 import { RecordContent } from '../../Core/Framework/Record/Model/RecordContent';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
-import { IPlayerProfilService } from './IPlayerProfilService';
-import { PlayerProfil } from './PlayerProfil';
+import { IPlayerProfileService } from './IPlayerProfileService';
+import { PlayerProfile } from './PlayerProfile';
 import { PointDetails } from './PointDetails';
 
-export class PlayerProfilService implements IPlayerProfilService {
+export class PlayerProfilService implements IPlayerProfileService {
 	private _key: string = 'program6';
-	private _profil: PlayerProfil;
+	private _profil: PlayerProfile;
 	public OnPointsAdded: LiteEvent<PointDetails> = new LiteEvent<PointDetails>();
 
 	constructor() {
@@ -17,12 +17,12 @@ export class PlayerProfilService implements IPlayerProfilService {
 		return this._profil.Points;
 	}
 
-	SetProfil(profil: PlayerProfil): void {
+	SetProfil(profil: PlayerProfile): void {
 		this._profil = profil;
 		this.Save();
 	}
 
-	GetProfil(): PlayerProfil {
+	GetProfil(): PlayerProfile {
 		if (!this._profil) {
 			this.Load();
 		}
@@ -30,13 +30,13 @@ export class PlayerProfilService implements IPlayerProfilService {
 	}
 
 	public Load(): void {
-		let profil: PlayerProfil = null;
+		let profil: PlayerProfile = null;
 		const blob = window.localStorage.getItem(this._key);
 		const parsedProfil = JSON.parse(blob as string);
-		if (parsedProfil && (parsedProfil as PlayerProfil).Version === PlayerProfil.Version) {
-			profil = parsedProfil as PlayerProfil;
+		if (parsedProfil && (parsedProfil as PlayerProfile).Version === PlayerProfile.Version) {
+			profil = parsedProfil as PlayerProfile;
 		} else {
-			profil = new PlayerProfil();
+			profil = new PlayerProfile();
 		}
 		this.SetProfil(profil);
 	}

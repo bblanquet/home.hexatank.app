@@ -1,9 +1,7 @@
 import { Component, h } from 'preact';
-import TankMenuComponent from './TankMenuComponent';
-import MultiTankMenuComponent from './MultiTankMenuComponent';
+import LeftMenu from './LeftMenu';
 import CellMenuComponent from './CellMenuComponent';
 import MultiMenuComponent from './MultiMenuComponent';
-import TruckMenuComponent from './TruckMenuComponent';
 import ReactorMenuComponent from './ReactorMenuComponent';
 import HqMenuComponent from './HqMenuComponent';
 import { CellGroup } from '../../../Core/Items/CellGroup';
@@ -11,10 +9,11 @@ import { Item } from '../../../Core/Items/Item';
 import { Cell } from '../../../Core/Items/Cell/Cell';
 import { ReactorField } from '../../../Core/Items/Cell/Field/Bonus/ReactorField';
 import { Headquarter } from '../../../Core/Items/Cell/Field/Hq/Headquarter';
-import { Tank } from '../../../Core/Items/Unit/Tank';
-import { Truck } from '../../../Core/Items/Unit/Truck';
 import { UnitGroup } from '../../../Core/Items/UnitGroup';
 import { FieldProp } from './FieldProp';
+import { ButtonProp } from './ButtonProp';
+import { Vehicle } from '../../../Core/Items/Unit/Vehicle';
+import MenuBtn from './MenuBtn';
 
 export default class MenuSwitcher extends Component<
 	{
@@ -24,7 +23,8 @@ export default class MenuSwitcher extends Component<
 		VehicleCount: number;
 		ReactorCount: number;
 		HasMultiMenu: boolean;
-		Fields: FieldProp[];
+		FieldBtns: FieldProp[];
+		Btns: ButtonProp[];
 		Item: Item;
 	},
 	{}
@@ -33,12 +33,8 @@ export default class MenuSwitcher extends Component<
 		if (this.props.HasMultiMenu) {
 			return <MultiMenuComponent Item={this.props.Item} />;
 		} else if (this.props.Item) {
-			if (this.props.Item instanceof Tank) {
-				return <TankMenuComponent Callback={this.props.OnClick} Tank={this.props.Item} />;
-			} else if (this.props.Item instanceof Truck) {
-				return <TruckMenuComponent callBack={this.props.OnClick} Truck={this.props.Item} />;
-			} else if (this.props.Item instanceof UnitGroup) {
-				return <MultiTankMenuComponent callback={this.props.OnClick} item={this.props.Item} />;
+			if (this.props.Item instanceof Vehicle || this.props.Item instanceof UnitGroup) {
+				return <LeftMenu Btns={this.props.Btns} />;
 			} else if (this.props.Item instanceof Headquarter) {
 				return (
 					<HqMenuComponent
@@ -49,9 +45,9 @@ export default class MenuSwitcher extends Component<
 					/>
 				);
 			} else if (this.props.Item instanceof ReactorField) {
-				return <ReactorMenuComponent Item={this.props.Item} callback={this.props.OnClick} />;
+				return <ReactorMenuComponent Item={this.props.Item} Btns={this.props.Btns} />;
 			} else if (this.props.Item instanceof Cell || this.props.Item instanceof CellGroup) {
-				return <CellMenuComponent Fields={this.props.Fields} OnClick={this.props.OnClick} />;
+				return <CellMenuComponent Fields={this.props.FieldBtns} OnClick={this.props.OnClick} />;
 			}
 		}
 		return '';

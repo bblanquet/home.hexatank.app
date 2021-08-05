@@ -76,7 +76,7 @@ export default class GreenScreen extends HookedComponent<{}, GreenHook, Campaign
 															OnClick={() => this.Hook.Select(index + 1)}
 															Color={ColorKind.Green}
 														>
-															{this.GetIcon(index + 1)}
+															<Icon Value="fas fa-arrow-alt-circle-right" /> {index + 1}
 														</Btn>
 													);
 												}
@@ -97,15 +97,5 @@ export default class GreenScreen extends HookedComponent<{}, GreenHook, Campaign
 				/>
 			</Redirect>
 		);
-	}
-
-	private GetIcon(index: number) {
-		if (index === 1) {
-			return <div class="fill-sm-hexa max-width icon-space" />;
-		} else if (index === 2) {
-			return <div class="fill-sm-tank max-width icon-space" />;
-		} else {
-			return <div class="fill-sm-diam max-width icon-space" />;
-		}
 	}
 }

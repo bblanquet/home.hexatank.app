@@ -1,7 +1,7 @@
 import { Hook } from './Hook';
 import { LoadingState } from '../Model/LoadingState';
 import { AudioService } from '../../Services/Audio/AudioService';
-import { IPlayerProfilService } from '../../Services/PlayerProfil/IPlayerProfilService';
+import { IPlayerProfileService } from '../../Services/PlayerProfil/IPlayerProfileService';
 import { IAudioService } from '../../Services/Audio/IAudioService';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { AssetLoader } from '../../Core/Framework/AssetLoader';

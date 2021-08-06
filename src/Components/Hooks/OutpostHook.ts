@@ -1,4 +1,4 @@
-import { FireBlueprint } from '../../Core/Framework/Blueprint/Fire/FireBlueprint';
+import { SmallBlueprint } from '../../Core/Framework/Blueprint/Small/SmallBlueprint';
 import { AbstractGameHook } from './AbstractGameHook';
 import { Outpost } from '../Model/Dialogues';
 import { RuntimeState } from '../Model/RuntimeState';
@@ -32,7 +32,7 @@ import { MinusMenuItem } from '../../Core/Menu/Buttons/MinusMenuItem';
 import { PlusMenuItem } from '../../Core/Menu/Buttons/PlusMenuItem';
 import { FireField } from '../../Core/Items/Cell/Field/Bonus/FireField';
 
-export class OutpostHook extends AbstractGameHook<FireBlueprint, Outpostworld> {
+export class OutpostHook extends AbstractGameHook<SmallBlueprint, Outpostworld> {
 	private _steps = 0;
 	private hasJuicedReactor: boolean = false;
 

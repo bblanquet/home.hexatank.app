@@ -1,5 +1,5 @@
 import { Tank } from '../../../Items/Unit/Tank';
-import { FireBlueprint } from '../../Blueprint/Fire/FireBlueprint';
+import { SmallBlueprint } from '../../Blueprint/Small/SmallBlueprint';
 import { SvgArchive } from '../../SvgArchiver';
 import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
 import { Cell } from '../../../Items/Cell/Cell';
@@ -12,7 +12,7 @@ import { AboveItem } from '../../../Items/AboveItem';
 import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
 import { GameState } from '../../World/GameState';
 import { ColorKind } from '../../../../Components/Common/Button/Stylish/ColorKind';
-import { CellLessHeadquarter } from '../Fire/CellLessHeadquarter';
+import { CellLessHeadquarter } from '../CellLessHeadquarter';
 import { Landmaker } from '../Landmaker';
 import { Cloudmaker } from '../Cloudmaker';
 import { CellStateSetter } from '../../../Items/Cell/CellStateSetter';
@@ -24,7 +24,7 @@ import { ReactorField } from '../../../Items/Cell/Field/Bonus/ReactorField';
 import { BlockingField } from '../../../Items/Cell/Field/BlockingField';
 
 export class OutpostworlddMaker {
-	public Make(blueprint: FireBlueprint, gameState: GameState): Outpostworld {
+	public Make(blueprint: SmallBlueprint, gameState: GameState): Outpostworld {
 		GameSettings.Init();
 		GameSettings.SetNormalSpeed();
 		GameSettings.TranslatinDuration = 1000;

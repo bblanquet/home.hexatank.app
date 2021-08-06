@@ -1,5 +1,5 @@
 import { Hook } from './Hook';
-import { ProfilState } from '../Model/ProfilState';
+import { ProfileState } from '../Model/ProfileState';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { IBuilder } from '../../Services/Builder/IBuilder';
 import { StateUpdater } from 'preact/hooks';
@@ -12,13 +12,13 @@ import { route } from 'preact-router';
 import { JsonRecordContent } from '../../Core/Framework/Record/Model/JsonRecordContent';
 import { RecordContent } from '../../Core/Framework/Record/Model/RecordContent';
 
-export class ProfilHook extends Hook<ProfilState> {
+export class ProfileHook extends Hook<ProfileState> {
 	private _appService: IBuilder<GameBlueprint>;
 	private _recordService: IRecordService;
 	private _compareService: ICompareService;
 	private _playerProfilService: IPlayerProfileService;
 
-	constructor(d: [ProfilState, StateUpdater<ProfilState>]) {
+	constructor(d: [ProfileState, StateUpdater<ProfileState>]) {
 		super(d[0], d[1]);
 		this._appService = Singletons.Load<IBuilder<GameBlueprint>>(SingletonKey.PlayerBuilder);
 		this._playerProfilService = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
@@ -26,8 +26,8 @@ export class ProfilHook extends Hook<ProfilState> {
 		this._compareService = Singletons.Load<ICompareService>(SingletonKey.Compare);
 	}
 
-	public static DefaultState(): ProfilState {
-		const state = new ProfilState();
+	public static DefaultState(): ProfileState {
+		const state = new ProfileState();
 		const playerProfilSvc = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
 		const records = playerProfilSvc.GetRecords();
 		state.Records = records.map((r) => new RecordSelection(false, r));

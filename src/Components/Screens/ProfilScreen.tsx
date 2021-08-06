@@ -11,12 +11,12 @@ import Switch from '../Common/Struct/Switch';
 import Visible from '../Common/Struct/Visible';
 import Navbar from '../Common/Struct/Navbar';
 import { HookedComponent } from '../Hooks/HookedComponent';
-import { ProfilHook } from '../Hooks/ProfilHook';
-import { ProfilState } from '../Model/ProfilState';
+import { ProfileHook } from '../Hooks/ProfileHook';
+import { ProfileState } from '../Model/ProfileState';
 import { useState } from 'preact/hooks';
 import { Env } from '../../Utils/Env';
 
-export default class ProfilScreen extends HookedComponent<{}, ProfilHook, ProfilState> {
+export default class ProfilScreen extends HookedComponent<{}, ProfileHook, ProfileState> {
 	public Rendering(): JSX.Element {
 		return (
 			<Redirect>
@@ -140,6 +140,6 @@ export default class ProfilScreen extends HookedComponent<{}, ProfilHook, Profil
 		);
 	}
 	public GetDefaultHook() {
-		return new ProfilHook(useState(ProfilHook.DefaultState()));
+		return new ProfileHook(useState(ProfileHook.DefaultState()));
 	}
 }

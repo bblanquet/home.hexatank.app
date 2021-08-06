@@ -1,16 +1,16 @@
-import { FireBlueprint } from '../../Core/Framework/Blueprint/Fire/FireBlueprint';
+import { SmallBlueprint } from '../../Core/Framework/Blueprint/Small/SmallBlueprint';
 import { IGameworldService } from './IGameworldService';
 import { GameState } from '../../Core/Framework/World/GameState';
-import { FireV2worldMaker } from '../../Core/Framework/Worldmaker/FireV2/FireV2worldMaker';
-import { FireV2World } from '../../Core/Framework/World/FireV2World';
+import { FireworldMaker } from '../../Core/Framework/Worldmaker/Fire/FireworldMaker';
+import { Fireworld } from '../../Core/Framework/World/Fireworld';
 
-export class FireV2worldService implements IGameworldService<FireBlueprint, FireV2World> {
-	private _gameworld: FireV2World;
+export class FireV2worldService implements IGameworldService<SmallBlueprint, Fireworld> {
+	private _gameworld: Fireworld;
 
-	Register(blueprint: FireBlueprint, gameState: GameState): void {
-		this._gameworld = new FireV2worldMaker().Make(blueprint, gameState);
+	Register(blueprint: SmallBlueprint, gameState: GameState): void {
+		this._gameworld = new FireworldMaker().Make(blueprint, gameState);
 	}
-	Publish(): FireV2World {
+	Publish(): Fireworld {
 		return this._gameworld;
 	}
 

@@ -1,5 +1,4 @@
-import { HqLessShieldField } from '../../Items/Cell/Field/Bonus/HqLessShieldField';
-import { CellLessHeadquarter } from '../Worldmaker/Fire/CellLessHeadquarter';
+import { CellLessHeadquarter } from '../Worldmaker/CellLessHeadquarter';
 import { IHqGameworld } from './IHqGameworld';
 import { GameStatus } from '../GameStatus';
 import { AliveItem } from '../../Items/AliveItem';
@@ -11,6 +10,7 @@ import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
 import { Identity } from '../../Items/Identity';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { GameState } from './GameState';
+import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 export class Fireworld implements IHqGameworld {
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
 	private _cells: Dictionary<Cell>;
@@ -19,9 +19,10 @@ export class Fireworld implements IHqGameworld {
 	constructor(
 		state: GameState,
 		cells: Cell[],
-		private _unit: AliveItem,
+		private _playerUnit: AliveItem,
 		private _fakeHq: CellLessHeadquarter,
-		private _target: HqLessShieldField
+		private _target: Headquarter,
+		public Steps: Cell[]
 	) {
 		this._cells = Dictionary.To((c) => c.Coo(), cells);
 		this.State = state;
@@ -46,7 +47,7 @@ export class Fireworld implements IHqGameworld {
 		return this._cells.Values();
 	}
 	GetPlayer(): AliveItem {
-		return this._unit;
+		return this._playerUnit;
 	}
 
 	GetPlayerHq(): IHeadquarter {

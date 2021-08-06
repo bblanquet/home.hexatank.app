@@ -1,6 +1,6 @@
 import { RecordSelection } from './RecordSelection';
 
-export class ProfilState {
+export class ProfileState {
 	Records: RecordSelection[];
 	SelectedRecords: RecordSelection[];
 }

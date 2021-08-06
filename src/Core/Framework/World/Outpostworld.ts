@@ -1,4 +1,4 @@
-import { CellLessHeadquarter } from '../Worldmaker/Fire/CellLessHeadquarter';
+import { CellLessHeadquarter } from '../Worldmaker/CellLessHeadquarter';
 import { IHqGameworld } from './IHqGameworld';
 import { GameStatus } from '../GameStatus';
 import { AliveItem } from '../../Items/AliveItem';

@@ -1,5 +1,5 @@
 import { IBlueprint } from './../../Core/Framework/Blueprint/IBlueprint';
-import { FireBluePrintMaker } from '../../Core/Framework/Blueprint/Fire/FireBluePrintMaker';
+import { SmallBlueprintMaker } from '../../Core/Framework/Blueprint/Small/SmallBlueprintMaker';
 import { CamouflageBluePrintMaker } from '../../Core/Framework/Blueprint/Cam/CamouflageBlueprintMaker';
 import { DiamondBlueprintMaker } from './../../Core/Framework/Blueprint/Diamond/DiamondBlueprintMaker';
 import { Singletons, SingletonKey } from '../../Singletons';
@@ -28,9 +28,10 @@ export class CampaignService implements ICampaignService {
 
 		this._training = new Dictionary<IBlueprint>();
 		this._training.Add((1).toString(), new CamouflageBluePrintMaker().GetBluePrint());
-		this._training.Add((2).toString(), new FireBluePrintMaker().GetBluePrint(MapKind.Sand));
-		this._training.Add((3).toString(), new FireBluePrintMaker().GetBluePrint(MapKind.Forest));
+		this._training.Add((2).toString(), new SmallBlueprintMaker().GetBluePrint(MapKind.Sand));
+		this._training.Add((3).toString(), new SmallBlueprintMaker().GetBluePrint(MapKind.Forest));
 		this._training.Add((4).toString(), new DiamondBlueprintMaker().GetBluePrint());
+		this._training.Add((5).toString(), new SmallBlueprintMaker().GetBluePrint(MapKind.Forest));
 
 		this._red = new Dictionary<GameBlueprint>();
 		this._red.Add(

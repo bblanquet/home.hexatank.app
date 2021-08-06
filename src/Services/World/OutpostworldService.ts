@@ -1,13 +1,13 @@
-import { FireBlueprint } from '../../Core/Framework/Blueprint/Fire/FireBlueprint';
+import { SmallBlueprint } from '../../Core/Framework/Blueprint/Small/SmallBlueprint';
 import { IGameworldService } from './IGameworldService';
 import { GameState } from '../../Core/Framework/World/GameState';
 import { Outpostworld } from '../../Core/Framework/World/Outpostworld';
 import { OutpostworlddMaker } from '../../Core/Framework/Worldmaker/Outpost/OutpostworldMaker';
 
-export class OutpostworldService implements IGameworldService<FireBlueprint, Outpostworld> {
+export class OutpostworldService implements IGameworldService<SmallBlueprint, Outpostworld> {
 	private _gameworld: Outpostworld;
 
-	Register(blueprint: FireBlueprint, gameState: GameState): void {
+	Register(blueprint: SmallBlueprint, gameState: GameState): void {
 		this._gameworld = new OutpostworlddMaker().Make(blueprint, gameState);
 	}
 	Publish(): Outpostworld {

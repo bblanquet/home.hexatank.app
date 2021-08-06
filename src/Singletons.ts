@@ -39,15 +39,15 @@ export enum SingletonKey {
 	GameBuilder,
 	PlayerBuilder,
 	CamouflageBuilder,
+	MultioutpostBuilder,
 	FireBuilder,
-	FireV2Builder,
 	DiamondBuilder,
 	OutpostBuilder,
 
 	Gameworld,
 	Camouflageworld,
+	Multioutpostworld,
 	Fireworld,
-	FireV2world,
 	Outpostworld,
 	Diamondworld,
 

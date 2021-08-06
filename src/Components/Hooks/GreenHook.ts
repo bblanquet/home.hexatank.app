@@ -36,7 +36,7 @@ export class GreenHook extends Hook<CampaignState> {
 			this.Build(SingletonKey.CamouflageBuilder, blueprint, index - 1, 20, 3);
 			route('{{sub_path}}Camouflage', true);
 		} else if (index === 2) {
-			this.Build(SingletonKey.FireV2Builder, blueprint, index - 1, 20, 3);
+			this.Build(SingletonKey.FireBuilder, blueprint, index - 1, 20, 3);
 			route('{{sub_path}}FireV2', true);
 		} else if (index === 3) {
 			this.Build(SingletonKey.OutpostBuilder, blueprint, index - 1, 20, 3);
@@ -44,6 +44,9 @@ export class GreenHook extends Hook<CampaignState> {
 		} else if (index === 4) {
 			this.Build(SingletonKey.DiamondBuilder, blueprint, index - 1, 20, 3);
 			route('{{sub_path}}Diamond', true);
+		} else if (index === 5) {
+			this.Build(SingletonKey.MultioutpostBuilder, blueprint, index - 1, 20, 3);
+			route('{{sub_path}}Multioutpost', true);
 		}
 	}
 

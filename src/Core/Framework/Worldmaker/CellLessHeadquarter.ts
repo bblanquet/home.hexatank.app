@@ -1,14 +1,14 @@
-import { Identity, Relationship } from '../../../Items/Identity';
-import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
-import { IHeadquarter } from '../../../Items/Cell/Field/Hq/IHeadquarter';
-import { Cell } from '../../../Items/Cell/Cell';
-import { ReactorField } from '../../../Items/Cell/Field/Bonus/ReactorField';
-import { Item } from '../../../Items/Item';
-import { BatteryField } from '../../../Items/Cell/Field/Bonus/BatteryField';
-import { FlagCell } from '../../../Items/Cell/FlagCell';
-import { ISelectable } from '../../../ISelectable';
-import { Vehicle } from '../../../Items/Unit/Vehicle';
-import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
+import { Identity, Relationship } from '../../Items/Identity';
+import { HexAxial } from '../../../Utils/Geometry/HexAxial';
+import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
+import { Cell } from '../../Items/Cell/Cell';
+import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
+import { Item } from '../../Items/Item';
+import { BatteryField } from '../../Items/Cell/Field/Bonus/BatteryField';
+import { FlagCell } from '../../Items/Cell/FlagCell';
+import { ISelectable } from '../../ISelectable';
+import { Vehicle } from '../../Items/Unit/Vehicle';
+import { LiteEvent } from '../../../Utils/Events/LiteEvent';
 
 export class CellLessHeadquarter implements IHeadquarter {
 	private _reactors: Array<ReactorField> = new Array<ReactorField>();

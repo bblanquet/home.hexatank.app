@@ -25,13 +25,13 @@ import { StatsService } from './Services/Stats/StatsService';
 import { GameBuilder } from './Services/Builder/GameBuilder';
 import { GenericBuilder } from './Services/Builder/GenericBuilder';
 import { Singletons, SingletonKey } from './Singletons';
-import { FireBlueprint } from './Core/Framework/Blueprint/Fire/FireBlueprint';
-import { Fireworld } from './Core/Framework/World/Fireworld';
+import { SmallBlueprint } from './Core/Framework/Blueprint/Small/SmallBlueprint';
+import { Multioutpostworld } from './Core/Framework/World/Multioutpostworld';
 import { DiamondBlueprint } from './Core/Framework/Blueprint/Diamond/DiamondBlueprint';
 import { Diamondworld } from './Core/Framework/World/Diamondworld';
 import { GameBlueprint } from './Core/Framework/Blueprint/Game/GameBlueprint';
 import { Gameworld } from './Core/Framework/World/Gameworld';
-import { FireV2World } from './Core/Framework/World/FireV2World';
+import { Fireworld } from './Core/Framework/World/Fireworld';
 import { Outpostworld } from './Core/Framework/World/Outpostworld';
 
 export class SingletonContainer {
@@ -52,8 +52,8 @@ export class SingletonContainer {
 
 		Singletons.Register(SingletonKey.Gameworld, new GameworldService());
 		Singletons.Register(SingletonKey.Camouflageworld, new CamouflageworldService());
-		Singletons.Register(SingletonKey.Fireworld, new FireworldService());
-		Singletons.Register(SingletonKey.FireV2world, new FireV2worldService());
+		Singletons.Register(SingletonKey.Multioutpostworld, new FireworldService());
+		Singletons.Register(SingletonKey.Fireworld, new FireV2worldService());
 		Singletons.Register(SingletonKey.Outpostworld, new OutpostworldService());
 		Singletons.Register(SingletonKey.Diamondworld, new DiamondworldService());
 
@@ -69,12 +69,15 @@ export class SingletonContainer {
 		);
 		Singletons.Register(SingletonKey.CamouflageBuilder, new CamBuilder());
 		Singletons.Register(
-			SingletonKey.FireBuilder,
-			new GenericBuilder<FireBlueprint, Fireworld>(SingletonKey.FireBuilder, SingletonKey.Fireworld)
+			SingletonKey.MultioutpostBuilder,
+			new GenericBuilder<SmallBlueprint, Multioutpostworld>(
+				SingletonKey.MultioutpostBuilder,
+				SingletonKey.Multioutpostworld
+			)
 		);
 		Singletons.Register(
-			SingletonKey.FireV2Builder,
-			new GenericBuilder<FireBlueprint, FireV2World>(SingletonKey.FireV2Builder, SingletonKey.FireV2world)
+			SingletonKey.FireBuilder,
+			new GenericBuilder<SmallBlueprint, Fireworld>(SingletonKey.FireBuilder, SingletonKey.Fireworld)
 		);
 		Singletons.Register(
 			SingletonKey.DiamondBuilder,
@@ -82,7 +85,7 @@ export class SingletonContainer {
 		);
 		Singletons.Register(
 			SingletonKey.OutpostBuilder,
-			new GenericBuilder<FireBlueprint, Outpostworld>(SingletonKey.OutpostBuilder, SingletonKey.Outpostworld)
+			new GenericBuilder<SmallBlueprint, Outpostworld>(SingletonKey.OutpostBuilder, SingletonKey.Outpostworld)
 		);
 
 		Singletons.Register(SingletonKey.Campaign, new CampaignService());

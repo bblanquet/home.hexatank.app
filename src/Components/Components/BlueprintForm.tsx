@@ -12,6 +12,7 @@ import Column from '../Common/Struct/Column';
 import { Env } from '../../Utils/Env';
 import Visible from '../Common/Struct/Visible';
 import ImgPicker from '../Common/Picker/ImgPicker';
+import TextPicker from '../Common/Picker/TextPicker';
 
 export default class BlueprintForm extends Component<
 	{ Model: BlueprintSetup; OnChanged: (model: BlueprintSetup) => void; EnableEmptyIa: boolean; EnableColor: boolean },
@@ -62,19 +63,14 @@ export default class BlueprintForm extends Component<
 							});
 						}}
 					/>
-					<Line>
-						<Dropdown
-							Color={ColorKind.Black}
-							OnInput={(e: any) => {
-								this.setState({
-									Shape: e.target.value
-								});
-							}}
-							Default={this.state.Shape}
-							Label={'Shape'}
-							Values={[ 'Flower', 'Donut', 'Cheese', 'Triangle', 'Y', 'H', 'X', 'Rectangle' ]}
-						/>
-					</Line>
+					<TextPicker
+						Items={[ 'Flower', 'Donut', 'Cheese', 'Triangle', 'Y', 'H', 'X', 'Rectangle' ]}
+						OnSelected={(e: number) => {
+							this.setState({
+								Shape: [ 'Flower', 'Donut', 'Cheese', 'Triangle', 'Y', 'H', 'X', 'Rectangle' ][e]
+							});
+						}}
+					/>
 				</Column>
 				<Grid left={this.GetHeader()} right={this.GetContent()} isFitContent={true} />
 			</span>

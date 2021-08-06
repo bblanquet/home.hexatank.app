@@ -25,7 +25,8 @@ export const trainingSentences = [
 	'You have to make a tank reach its destination.',
 	'You have to destroy the oponent outpost.',
 	'You have to create your own outpost.',
-	'You have retrieve resources for your headquarter.'
+	'You have to retrieve resources for your headquarter.',
+	'You have to improve the current outpost.'
 ];
 
 export const Camouflage = [ 'bring your unit to this safe spot.', 'Be careful the path is full of obstacles...', '' ];

@@ -822,3 +822,26 @@ body {
 	border-radius: 10px;
 	border: 1px solid rgb(139, 139, 139);
 }
+
+.textBorder {
+	background: rgb(198, 198, 198);
+	background: linear-gradient(
+		90deg,
+		rgba(198, 198, 198, 1) 0%,
+		rgba(198, 198, 198, 1) 48%,
+		rgba(198, 198, 198, 1) 50%,
+		rgba(219, 219, 219, 1) 51%,
+		rgba(219, 219, 219, 1) 100%
+	);
+	padding: 5px;
+	border-radius: 10px;
+}
+
+.textContainer {
+	background: rgb(238, 238, 238);
+	border-radius: 10px;
+	border: 1px solid rgb(139, 139, 139);
+	width: 125px;
+	font-weight: bold;
+	text-align: center;
+}

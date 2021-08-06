@@ -32,8 +32,8 @@ import LobbyScreen from './Components/Screens/LobbyScreen';
 import CamouflageScreen from './Components/Screens/CamouflageScreen';
 import ProfilScreen from './Components/Screens/ProfilScreen';
 import DiamondScreen from './Components/Screens/DiamondScreen';
+import MultioutpostScreen from './Components/Screens/MultioutpostScreen';
 import FireScreen from './Components/Screens/FireScreen';
-import FireV2Screen from './Components/Screens/FireV2Screen';
 import OutpostScreen from './Components/Screens/OutpostScreen';
 import GuestScreen from './Components/Screens/GuestScreen';
 import RecordScreen from './Components/Screens/PlayerScreen';
@@ -71,7 +71,7 @@ const App = (e: any) => {
 			<CamouflageScreen path="{{sub_path}}Camouflage" />
 			<DiamondScreen path="{{sub_path}}Diamond" />
 			<FireScreen path="{{sub_path}}Fire" />
-			<FireV2Screen path="{{sub_path}}FireV2" />
+			<MultioutpostScreen path="{{sub_path}}Multioutpost" />
 			<OutpostScreen path="{{sub_path}}Outpost" />
 			<ProfilScreen path="{{sub_path}}Profil" />
 			<GuestScreen path="{{sub_path}}Guest" />

@@ -1,14 +1,14 @@
-import { ISelectable } from '../../../ISelectable';
-import { Cell } from '../../../Items/Cell/Cell';
-import { BatteryField } from '../../../Items/Cell/Field/Bonus/BatteryField';
-import { ReactorField } from '../../../Items/Cell/Field/Bonus/ReactorField';
-import { FlagCell } from '../../../Items/Cell/FlagCell';
-import { Identity, Relationship } from '../../../Items/Identity';
-import { Item } from '../../../Items/Item';
-import { Vehicle } from '../../../Items/Unit/Vehicle';
-import { LiteEvent } from '../../../../Utils/Events/LiteEvent';
-import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
-import { IHeadquarter } from '../../../Items/Cell/Field/Hq/IHeadquarter';
+import { ISelectable } from '../../ISelectable';
+import { Cell } from '../../Items/Cell/Cell';
+import { BatteryField } from '../../Items/Cell/Field/Bonus/BatteryField';
+import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
+import { FlagCell } from '../../Items/Cell/FlagCell';
+import { Identity, Relationship } from '../../Items/Identity';
+import { Item } from '../../Items/Item';
+import { Vehicle } from '../../Items/Unit/Vehicle';
+import { LiteEvent } from '../../../Utils/Events/LiteEvent';
+import { HexAxial } from '../../../Utils/Geometry/HexAxial';
+import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
 export class FakeHeadquarter implements IHeadquarter {
 	BuyTank(): void {
 		throw new Error('Method not implemented.');
@@ -89,5 +89,4 @@ export class FakeHeadquarter implements IHeadquarter {
 	IsIa(): boolean {
 		throw new Error('Method not implemented.');
 	}
-	Flagcell: FlagCell;
 }

@@ -1,4 +1,4 @@
-import { FireBlueprint } from './FireBlueprint';
+import { SmallBlueprint } from './SmallBlueprint';
 import { MapShape } from '../Items/MapShape';
 import { RectangleFlowerMapBuilder } from '../../Builder/RectangleFlowerMapBuilder';
 import { YFlowerMapBuilder } from '../../Builder/YFlowerMapBuilder';
@@ -19,7 +19,7 @@ import { GameSettings } from '../../GameSettings';
 import { DecoratingPrints } from '../../../Items/Cell/Decorator/DecoratingPrints';
 import { DecoratingFactory } from '../../../Items/Cell/Decorator/ForestFactory';
 
-export class FireBluePrintMaker {
+export class SmallBlueprintMaker {
 	private _builders: Dictionary<IMapBuilder>;
 	constructor() {
 		this._builders = new Dictionary<IMapBuilder>();
@@ -33,8 +33,8 @@ export class FireBluePrintMaker {
 		this._builders.Add(MapShape.Rectangle.toString(), new RectangleFlowerMapBuilder());
 	}
 
-	public GetBluePrint(kind: MapKind): FireBlueprint {
-		const blueprint = new FireBlueprint();
+	public GetBluePrint(kind: MapKind): SmallBlueprint {
+		const blueprint = new SmallBlueprint();
 		blueprint.MapMode = kind;
 		const mapItems = new Array<CellPrint>();
 		const mapBuilder = this._builders.Get(MapShape.Flower.toString());

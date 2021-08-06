@@ -8,8 +8,8 @@ import { Cell } from '../../../Core/Items/Cell/Cell';
 import { ReactorField } from '../../../Core/Items/Cell/Field/Bonus/ReactorField';
 import { Headquarter } from '../../../Core/Items/Cell/Field/Hq/Headquarter';
 import { UnitGroup } from '../../../Core/Items/UnitGroup';
-import { FieldProp } from './FieldProp';
-import { ButtonProp } from './ButtonProp';
+import { CircleBtnProps } from './CircleBtnProps';
+import { BtnProps } from './BtnProps';
 import { Vehicle } from '../../../Core/Items/Unit/Vehicle';
 
 export default class MenuSwitcher extends Component<
@@ -17,8 +17,8 @@ export default class MenuSwitcher extends Component<
 		OnClick: (e: Item) => void;
 		VehicleCount: number;
 		ReactorCount: number;
-		FieldBtns: FieldProp[];
-		Btns: ButtonProp[];
+		FieldBtns: CircleBtnProps[];
+		Btns: BtnProps[];
 		Item: Item;
 	},
 	{}

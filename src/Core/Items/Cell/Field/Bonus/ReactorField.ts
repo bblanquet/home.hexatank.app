@@ -130,19 +130,14 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	}
 
 	private GetVehicles(): Array<Vehicle> {
-		const vehicles = new Dictionary<Vehicle>();
-
-		this.GetAllCells().forEach((c) => {
-			if (c.HasOccupier()) {
-				c.GetOccupiers().forEach((occupier) => {
-					const vehicle = occupier as Vehicle;
-					if (vehicle.GetRelation(this.Hq.Identity) === Relationship.Ally && !vehicles.Exist(vehicle.Id)) {
-						vehicles.Add(vehicle.Id, vehicle);
-					}
-				});
+		const vehicles = new Array<Vehicle>();
+		const cells = Dictionary.To((c) => c.Coo(), this.GetAllCells());
+		this.Hq.GetVehicles().forEach((v) => {
+			if (cells.Exist(v.GetCurrentCell().Coo())) {
+				vehicles.push(v);
 			}
 		});
-		return vehicles.Values();
+		return vehicles;
 	}
 
 	private GetPowerUp(type: any): string {
@@ -313,7 +308,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		this.ClearArea();
 		this.GetCell().GetIncludedRange(this._range).forEach((cell) => {
 			const b = BoundingBox.NewFromBox((<Cell>cell).GetBoundingBox());
-			const area = new BasicItem(b, this.Hq.Identity.Skin.GetArea(), ZKind.AboveCell);
+			const area = new BasicItem(b, this.Hq.Identity.Skin.GetArea(), ZKind.Cell);
 			area.SetVisible(() => true);
 			area.SetAlive(() => true);
 			this._area.push(area);

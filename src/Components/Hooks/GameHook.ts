@@ -28,11 +28,11 @@ import { Curve } from '../../Utils/Stats/Curve';
 import { RuntimeState } from '../Model/RuntimeState';
 import { Hook } from './Hook';
 import { Vibrator } from '../../Utils/Vibrator';
-import { FieldProp } from '../Components/Canvas/FieldProp';
+import { CircleBtnProps } from '../Components/Canvas/CircleBtnProps';
 import { CellGroup } from '../../Core/Items/CellGroup';
 import { IRecordContextService } from '../../Services/Record/IRecordContextService';
 import { IStatsService } from '../../Services/Stats/IStatsService';
-import { ButtonProp } from '../Components/Canvas/ButtonProp';
+import { BtnProps } from '../Components/Canvas/BtnProps';
 import { Tank } from '../../Core/Items/Unit/Tank';
 import { Truck } from '../../Core/Items/Unit/Truck';
 import { ReactorField } from '../../Core/Items/Cell/Field/Bonus/ReactorField';
@@ -237,45 +237,45 @@ export class GameHook extends Hook<RuntimeState> {
 		return this._gameworld.GetPlayerHq().GetVehicleCount();
 	}
 
-	GetFieldBtns(): FieldProp[] {
+	GetFieldBtns(): CircleBtnProps[] {
 		if (this.State.Item instanceof Cell) {
 			const cell = this.State.Item;
 			const hq = this._gameworld.GetPlayerHq();
 			if (hq.IsCovered(cell)) {
-				return FieldProp.All(hq, (e: Item) => {
+				return CircleBtnProps.All(hq, (e: Item) => {
 					this.SendContext(e);
 				});
 			} else {
-				return FieldProp.OnlyReactor(hq, (e: Item) => {
+				return CircleBtnProps.OnlyReactor(hq, (e: Item) => {
 					this.SendContext(e);
 				});
 			}
 		} else if (this.State.Item instanceof CellGroup) {
-			return FieldProp.AllExceptReactor((e: Item) => {
+			return CircleBtnProps.AllExceptReactor((e: Item) => {
 				this.SendContext(e);
 			});
 		}
 	}
 
-	GetBtns(): ButtonProp[] {
+	GetBtns(): BtnProps[] {
 		if (this.State.Item instanceof Tank) {
-			return ButtonProp.TankList(this.State.Item, (e: Item) => {
+			return BtnProps.TankList(this.State.Item, (e: Item) => {
 				this.SendContext(e);
 			});
 		} else if (this.State.Item instanceof Truck) {
-			return ButtonProp.TruckList(this.State.Item, (e: Item) => {
+			return BtnProps.TruckList(this.State.Item, (e: Item) => {
 				this.SendContext(e);
 			});
 		} else if (this.State.Item instanceof Headquarter) {
-			return ButtonProp.HeadquarterList(this.State.Item, (e: Item) => {
+			return BtnProps.HeadquarterList(this.State.Item, (e: Item) => {
 				this.SendContext(e);
 			});
 		} else if (this.State.Item instanceof ReactorField) {
-			return ButtonProp.ReactorList(this.State.Item, (e: Item) => {
+			return BtnProps.ReactorList(this.State.Item, (e: Item) => {
 				this.SendContext(e);
 			});
 		} else if (this.State.Item instanceof UnitGroup) {
-			return ButtonProp.MultiList(this.State.Item, (e: Item) => {
+			return BtnProps.MultiList(this.State.Item, (e: Item) => {
 				this.SendContext(e);
 			});
 		}

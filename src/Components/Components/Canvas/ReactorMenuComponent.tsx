@@ -2,12 +2,12 @@ import { Component, h } from 'preact';
 import * as luxon from 'luxon';
 import { ReactorField } from '../../../Core/Items/Cell/Field/Bonus/ReactorField';
 import MenuBtn from './MenuBtn';
-import { ButtonProp } from './ButtonProp';
+import { BtnProps } from './BtnProps';
 import Visible from '../../Common/Struct/Visible';
 export default class ReactorMenuComponent extends Component<
 	{
 		Item: ReactorField;
-		Btns: ButtonProp[];
+		Btns: BtnProps[];
 	},
 	{ timeout: number }
 > {

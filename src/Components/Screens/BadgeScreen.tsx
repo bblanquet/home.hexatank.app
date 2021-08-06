@@ -63,47 +63,45 @@ export default class BadgeScreen extends Component<any, { text: string }> {
 	render() {
 		return (
 			<Redirect>
-				<SmPanel>
-					<div class="container-center">
-						<div
-							class="text-detail effect7"
-							ref={(e: HTMLDivElement) => {
-								this._textDiv = e;
-							}}
-						>
-							<div class="d-flex flex-wrap justify-content-center">
-								{this._data.map((d) => (
-									<div style="padding-left:5px;padding-right:5px;">
-										<Badge
-											Onclick={(e: string) => {
-												this.setState({
-													text: e
-												});
-											}}
-											icon={d.icon}
-											percentage={d.percentage}
-											text={d.text}
-										/>
-									</div>
-								))}
-							</div>
-							<hr />
-							<div class="container-center-horizontal">
-								<div style="min-height:50px;max-height:50px;">{this.state.text}</div>
-							</div>
+				<div class="container-center">
+					<div
+						class="text-detail effect7"
+						ref={(e: HTMLDivElement) => {
+							this._textDiv = e;
+						}}
+					>
+						<div class="d-flex flex-wrap justify-content-center">
+							{this._data.map((d) => (
+								<div style="padding-left:5px;padding-right:5px;">
+									<Badge
+										Onclick={(e: string) => {
+											this.setState({
+												text: e
+											});
+										}}
+										icon={d.icon}
+										percentage={d.percentage}
+										text={d.text}
+									/>
+								</div>
+							))}
 						</div>
+						<hr />
 						<div class="container-center-horizontal">
-							<Btn
-								OnClick={() => {
-									this.Back();
-								}}
-								Color={ColorKind.Black}
-							>
-								<Icon Value="fas fa-undo-alt" /> Back
-							</Btn>
+							<div style="min-height:50px;max-height:50px;">{this.state.text}</div>
 						</div>
 					</div>
-				</SmPanel>
+					<div class="container-center-horizontal">
+						<Btn
+							OnClick={() => {
+								this.Back();
+							}}
+							Color={ColorKind.Black}
+						>
+							<Icon Value="fas fa-undo-alt" /> Back
+						</Btn>
+					</div>
+				</div>
 			</Redirect>
 		);
 	}

@@ -21,13 +21,12 @@ import { AudioLoader } from '../../Core/Framework/AudioLoader';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
 import { Vibrator } from '../../Utils/Vibrator';
-import { FieldProp } from '../Components/Canvas/FieldProp';
+import { CircleBtnProps } from '../Components/Canvas/CircleBtnProps';
 import { CellGroup } from '../../Core/Items/CellGroup';
 import { IBlueprint } from '../../Core/Framework/Blueprint/IBlueprint';
 import { IHqGameworld } from '../../Core/Framework/World/IHqGameworld';
 import { ILayerService } from '../../Services/Layer/ILayerService';
-import { ButtonProp } from '../Components/Canvas/ButtonProp';
-import { Tank } from '../../Core/Items/Unit/Tank';
+import { BtnProps } from '../Components/Canvas/BtnProps';
 import { Truck } from '../../Core/Items/Unit/Truck';
 import { ReactorField } from '../../Core/Items/Cell/Field/Bonus/ReactorField';
 import { UnitGroup } from '../../Core/Items/UnitGroup';
@@ -84,8 +83,13 @@ export abstract class AbstractGameHook<T1 extends IBlueprint, T2 extends IHqGame
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
 		this._interactionService.GetMultiSelectionContext().OnModeChanged.On(this.HandleMultiSelection.bind(this));
 		this._appService.OnReloaded.On(this._handleRetry);
-		const player = this.Gameworld.GetPlayer();
+		const player = this.Gameworld.GetPlayerHq();
+		player.OnDiamondCountChanged.On(this.HandleDiamondChanged.bind(this));
 		this.OnRefresh.Invoke();
+	}
+
+	private HandleDiamondChanged(obj: any, amount: number): void {
+		this.Update((e) => (e.Amount = amount));
 	}
 
 	private Retry(): void {
@@ -113,6 +117,8 @@ export abstract class AbstractGameHook<T1 extends IBlueprint, T2 extends IHqGame
 	public Unmount(): void {
 		this.Gameworld.State.OnGameStatusChanged.Clear();
 		this.Gameworld.OnItemSelected.Clear();
+		const player = this.Gameworld.GetPlayerHq();
+		player.OnDiamondCountChanged.Clear();
 		this._interactionService.GetMultiSelectionContext().OnModeChanged.Clear();
 		this.Gameworld.State.OnGameStatusChanged.Clear();
 		this._profilService.OnPointsAdded.Clear();
@@ -193,44 +199,44 @@ export abstract class AbstractGameHook<T1 extends IBlueprint, T2 extends IHqGame
 		this.Gameworld.SetStatus(isVictory ? GameStatus.Victory : GameStatus.Defeat);
 	}
 
-	GetFieldBtns(): FieldProp[] {
+	GetFieldBtns(): CircleBtnProps[] {
 		if (this.State.Item instanceof Cell) {
 			const cell = this.State.Item;
 			const hq = this.Gameworld.GetPlayerHq();
 			if (hq.IsCovered(cell)) {
-				return FieldProp.All(hq, (e: Item) => {
+				return CircleBtnProps.All(hq, (e: Item) => {
 					this.SendContext(e);
 				});
 			} else {
-				return FieldProp.OnlyReactor(hq, (e: Item) => {
+				return CircleBtnProps.OnlyReactor(hq, (e: Item) => {
 					this.SendContext(e);
 				});
 			}
 		} else if (this.State.Item instanceof CellGroup) {
-			return FieldProp.AllExceptReactor((e: Item) => {
+			return CircleBtnProps.AllExceptReactor((e: Item) => {
 				this.SendContext(e);
 			});
 		}
 	}
-	GetBtns(): ButtonProp[] {
+	GetBtns(): BtnProps[] {
 		if (this.State.Item instanceof Vehicle) {
-			return ButtonProp.TankList(this.State.Item, (e: Item) => {
+			return BtnProps.TankList(this.State.Item, (e: Item) => {
 				this.SendContext(e);
 			});
 		} else if (this.State.Item instanceof Headquarter) {
-			return ButtonProp.HeadquarterList(this.State.Item, (e: Item) => {
+			return BtnProps.HeadquarterList(this.State.Item, (e: Item) => {
 				this.SendContext(e);
 			});
 		} else if (this.State.Item instanceof Truck) {
-			return ButtonProp.TruckList(this.State.Item, (e: Item) => {
+			return BtnProps.TruckList(this.State.Item, (e: Item) => {
 				this.SendContext(e);
 			});
 		} else if (this.State.Item instanceof ReactorField) {
-			return ButtonProp.ReactorList(this.State.Item, (e: Item) => {
+			return BtnProps.ReactorList(this.State.Item, (e: Item) => {
 				this.SendContext(e);
 			});
 		} else if (this.State.Item instanceof UnitGroup) {
-			return ButtonProp.MultiList(this.State.Item, (e: Item) => {
+			return BtnProps.MultiList(this.State.Item, (e: Item) => {
 				this.SendContext(e);
 			});
 		}

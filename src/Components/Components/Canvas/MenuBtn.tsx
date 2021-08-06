@@ -1,8 +1,8 @@
 import { Component, h } from 'preact';
-import { ButtonProp } from './ButtonProp';
+import { BtnProps } from './BtnProps';
 import Visible from '../../Common/Struct/Visible';
 
-export default class MenuBtn extends Component<{ Btn: ButtonProp }, {}> {
+export default class MenuBtn extends Component<{ Btn: BtnProps }, {}> {
 	render() {
 		return (
 			<button
@@ -13,7 +13,12 @@ export default class MenuBtn extends Component<{ Btn: ButtonProp }, {}> {
 			>
 				<div class={`${this.props.Btn.Icon} max-width standard-space`} />
 				<Visible isVisible={0 < this.props.Btn.Text.length}>
-					<div class="max-width align-text-center darker">{this.props.Btn.Text}</div>
+					<div class="max-width align-text-center darker">
+						{this.props.Btn.Text}
+						<Visible isVisible={this.props.Btn.HasPrice}>
+							<span class="fill-diamond badge very-small-space middle"> </span>
+						</Visible>
+					</div>
 				</Visible>
 			</button>
 		);

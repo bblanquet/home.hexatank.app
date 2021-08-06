@@ -3,12 +3,12 @@ import { Item } from '../../../Core/Items/Item';
 import { CancelMenuItem } from '../../../Core/Menu/Buttons/CancelMenuItem';
 import LightDarkBtn from '../../Common/Button/Standard/LightDarkBtn';
 import { Point } from '../../../Utils/Geometry/Point';
-import { FieldProp } from './FieldProp';
+import { CircleBtnProps } from './CircleBtnProps';
 import CircularV2Component from '../../Common/CircularV2/CircularV2';
 
 export default class CellMenuComponent extends Component<
 	{
-		Fields: FieldProp[];
+		Fields: CircleBtnProps[];
 		OnClick: (e: Item) => void;
 	},
 	{}

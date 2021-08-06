@@ -12,17 +12,26 @@ import { AboveItem } from '../../Core/Items/AboveItem';
 import { Vehicle } from '../../Core/Items/Unit/Vehicle';
 import { Truck } from '../../Core/Items/Unit/Truck';
 import { Point } from '../../Utils/Geometry/Point';
+import { ReactorField } from '../../Core/Items/Cell/Field/Bonus/ReactorField';
+import { Headquarter } from '../../Core/Items/Cell/Field/Hq/Headquarter';
+import { Item } from '../../Core/Items/Item';
+import { UnitGroup } from '../../Core/Items/UnitGroup';
+import { BtnProps } from '../Components/Canvas/BtnProps';
+import { CancelMenuItem } from '../../Core/Menu/Buttons/CancelMenuItem';
+import { TankMenuItem } from '../../Core/Menu/Buttons/TankMenuItem';
+import { TruckMenuItem } from '../../Core/Menu/Buttons/TruckMenuItem';
 
 export class DiamondHook extends AbstractGameHook<DiamondBlueprint, Diamondworld> {
 	private _steps = 0;
 	private _viewTranslator: ViewTranslator;
+	private _hasTruck: boolean = false;
 
 	protected Init() {
 		super.Init();
 		this._steps = 0;
 		this._viewTranslator = new ViewTranslator(
 			[ this.Gameworld.Diamond.GetBoundingBox(), this.Gameworld.Hq.GetBoundingBox() ],
-			3000
+			2000
 		);
 		this.LayerService.PauseNavigation();
 		this._viewTranslator.OnDone.On(this.OnTranslationDone.bind(this));
@@ -30,7 +39,8 @@ export class DiamondHook extends AbstractGameHook<DiamondBlueprint, Diamondworld
 		const hand = new AboveItem(this.Gameworld.Hq, SvgArchive.hand);
 		hand.SetVisible(() => !this.Gameworld.Hq.IsSelected());
 		this.Gameworld.Hq.OnVehicleCreated.On((src: any, v: Vehicle) => {
-			if (v instanceof Truck) {
+			if (v instanceof Truck && !this._hasTruck) {
+				this._hasTruck = true;
 				hand.Destroy();
 				this._steps = 2;
 				this.SetSentence();
@@ -91,5 +101,55 @@ export class DiamondHook extends AbstractGameHook<DiamondBlueprint, Diamondworld
 
 	public OnTimerDone(): SimpleEvent {
 		return this.Gameworld.OnTimerDone;
+	}
+
+	GetBtns(): BtnProps[] {
+		if (this.State.Item instanceof Vehicle) {
+			return BtnProps.TankList(this.State.Item, (e: Item) => {
+				this.SendContext(e);
+			});
+		} else if (this.State.Item instanceof Headquarter && !this._hasTruck) {
+			return this.HeadquarterList(this.State.Item, (e: Item) => {
+				this.SendContext(e);
+			});
+		} else if (this.State.Item instanceof Headquarter) {
+			return BtnProps.HeadquarterList(this.State.Item, (e: Item) => {
+				this.SendContext(e);
+			});
+		} else if (this.State.Item instanceof Truck) {
+			return BtnProps.TruckList(this.State.Item, (e: Item) => {
+				this.SendContext(e);
+			});
+		} else if (this.State.Item instanceof ReactorField) {
+			return BtnProps.ReactorList(this.State.Item, (e: Item) => {
+				this.SendContext(e);
+			});
+		} else if (this.State.Item instanceof UnitGroup) {
+			return BtnProps.MultiList(this.State.Item, (e: Item) => {
+				this.SendContext(e);
+			});
+		}
+	}
+
+	public HeadquarterList(h: Headquarter, callback: (e: Item) => void): BtnProps[] {
+		return [
+			new BtnProps(
+				'fill-tank',
+				'btn-light',
+				`${GameSettings.TankPrice * h.GetVehicleCount()}`,
+				() => callback(new TankMenuItem()),
+				false,
+				true
+			),
+			new BtnProps(
+				'fill-truck',
+				'btn-primary',
+				`${GameSettings.TruckPrice * h.GetVehicleCount()}`,
+				() => callback(new TruckMenuItem()),
+				true,
+				true
+			),
+			new BtnProps('fill-cancel', 'btn-dark', '', () => callback(new CancelMenuItem()))
+		];
 	}
 }

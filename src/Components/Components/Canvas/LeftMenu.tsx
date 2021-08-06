@@ -1,10 +1,10 @@
 import { Component, h } from 'preact';
-import { ButtonProp } from './ButtonProp';
+import { BtnProps } from './BtnProps';
 import MenuBtn from './MenuBtn';
 
 export default class LeftMenu extends Component<
 	{
-		Btns: ButtonProp[];
+		Btns: BtnProps[];
 	},
 	{}
 > {

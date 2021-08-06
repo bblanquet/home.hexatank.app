@@ -6,7 +6,7 @@ import { GameSettings } from '../../Core/Framework/GameSettings';
 import { GameStatus } from '../../Core/Framework/GameStatus';
 import { Point } from '../../Utils/Geometry/Point';
 import { Outpostworld } from '../../Core/Framework/World/Outpostworld';
-import { FieldProp } from '../Components/Canvas/FieldProp';
+import { CircleBtnProps } from '../Components/Canvas/CircleBtnProps';
 import { Cell } from '../../Core/Items/Cell/Cell';
 import { Item } from '../../Core/Items/Item';
 import { CellGroup } from '../../Core/Items/CellGroup';
@@ -23,7 +23,7 @@ import { ReactorField } from '../../Core/Items/Cell/Field/Bonus/ReactorField';
 import { AboveItem } from '../../Core/Items/AboveItem';
 import { SvgArchive } from '../../Core/Framework/SvgArchiver';
 import { Tank } from '../../Core/Items/Unit/Tank';
-import { ButtonProp } from '../Components/Canvas/ButtonProp';
+import { BtnProps } from '../Components/Canvas/BtnProps';
 import { Vehicle } from '../../Core/Items/Unit/Vehicle';
 import { Truck } from '../../Core/Items/Unit/Truck';
 import { UnitGroup } from '../../Core/Items/UnitGroup';
@@ -142,7 +142,7 @@ export class OutpostHook extends AbstractGameHook<FireBlueprint, Outpostworld> {
 		return state;
 	}
 
-	GetFieldBtns(): FieldProp[] {
+	GetFieldBtns(): CircleBtnProps[] {
 		if (this.State.Item instanceof Cell) {
 			const cell = this.State.Item;
 			const hq = this.Gameworld.GetPlayerHq();
@@ -156,59 +156,59 @@ export class OutpostHook extends AbstractGameHook<FireBlueprint, Outpostworld> {
 						this.SendContext(e);
 					});
 				} else {
-					return FieldProp.All(hq, (e: Item) => {
+					return CircleBtnProps.All(hq, (e: Item) => {
 						this.SendContext(e);
 					});
 				}
 			} else {
-				return FieldProp.OnlyReactor(hq, (e: Item) => {
+				return CircleBtnProps.OnlyReactor(hq, (e: Item) => {
 					this.SendContext(e);
 				});
 			}
 		} else if (this.State.Item instanceof CellGroup) {
-			return FieldProp.AllExceptReactor((e: Item) => {
+			return CircleBtnProps.AllExceptReactor((e: Item) => {
 				this.SendContext(e);
 			});
 		}
 	}
 
-	public Fire(hq: IHeadquarter, callback: (e: Item) => void): FieldProp[] {
+	public Fire(hq: IHeadquarter, callback: (e: Item) => void): CircleBtnProps[] {
 		return [
-			new FieldProp('fill-reactor', (hq.GetReactorsCount() + 1) * GameSettings.FieldPrice, () =>
+			new CircleBtnProps('fill-reactor', (hq.GetReactorsCount() + 1) * GameSettings.FieldPrice, () =>
 				callback(new ReactorMenuItem())
 			),
-			new FieldProp('fill-thunder', GameSettings.FieldPrice, () => callback(new ThunderMenuItem())),
-			new FieldProp('fill-shield', GameSettings.FieldPrice, () => callback(new ShieldMenuItem())),
-			new FieldProp('fill-money', GameSettings.FieldPrice, () => callback(new MoneyMenuItem())),
-			new FieldProp('fill-power', GameSettings.FieldPrice, () => callback(new AttackMenuItem()), true),
-			new FieldProp('fill-poison', GameSettings.FieldPrice, () => callback(new PoisonMenuItem())),
-			new FieldProp('fill-speed', GameSettings.FieldPrice, () => callback(new SpeedFieldMenuItem())),
-			new FieldProp('fill-medic', GameSettings.FieldPrice, () => callback(new HealMenuItem()))
+			new CircleBtnProps('fill-thunder', GameSettings.FieldPrice, () => callback(new ThunderMenuItem())),
+			new CircleBtnProps('fill-shield', GameSettings.FieldPrice, () => callback(new ShieldMenuItem())),
+			new CircleBtnProps('fill-money', GameSettings.FieldPrice, () => callback(new MoneyMenuItem())),
+			new CircleBtnProps('fill-power', GameSettings.FieldPrice, () => callback(new AttackMenuItem()), true),
+			new CircleBtnProps('fill-poison', GameSettings.FieldPrice, () => callback(new PoisonMenuItem())),
+			new CircleBtnProps('fill-speed', GameSettings.FieldPrice, () => callback(new SpeedFieldMenuItem())),
+			new CircleBtnProps('fill-medic', GameSettings.FieldPrice, () => callback(new HealMenuItem()))
 		];
 	}
 
-	public Battery(hq: IHeadquarter, callback: (e: Item) => void): FieldProp[] {
+	public Battery(hq: IHeadquarter, callback: (e: Item) => void): CircleBtnProps[] {
 		return [
-			new FieldProp('fill-reactor', (hq.GetReactorsCount() + 1) * GameSettings.FieldPrice, () =>
+			new CircleBtnProps('fill-reactor', (hq.GetReactorsCount() + 1) * GameSettings.FieldPrice, () =>
 				callback(new ReactorMenuItem())
 			),
-			new FieldProp('fill-thunder', GameSettings.FieldPrice, () => callback(new ThunderMenuItem()), true),
-			new FieldProp('fill-shield', GameSettings.FieldPrice, () => callback(new ShieldMenuItem())),
-			new FieldProp('fill-money', GameSettings.FieldPrice, () => callback(new MoneyMenuItem())),
-			new FieldProp('fill-power', GameSettings.FieldPrice, () => callback(new AttackMenuItem())),
-			new FieldProp('fill-poison', GameSettings.FieldPrice, () => callback(new PoisonMenuItem())),
-			new FieldProp('fill-speed', GameSettings.FieldPrice, () => callback(new SpeedFieldMenuItem())),
-			new FieldProp('fill-medic', GameSettings.FieldPrice, () => callback(new HealMenuItem()))
+			new CircleBtnProps('fill-thunder', GameSettings.FieldPrice, () => callback(new ThunderMenuItem()), true),
+			new CircleBtnProps('fill-shield', GameSettings.FieldPrice, () => callback(new ShieldMenuItem())),
+			new CircleBtnProps('fill-money', GameSettings.FieldPrice, () => callback(new MoneyMenuItem())),
+			new CircleBtnProps('fill-power', GameSettings.FieldPrice, () => callback(new AttackMenuItem())),
+			new CircleBtnProps('fill-poison', GameSettings.FieldPrice, () => callback(new PoisonMenuItem())),
+			new CircleBtnProps('fill-speed', GameSettings.FieldPrice, () => callback(new SpeedFieldMenuItem())),
+			new CircleBtnProps('fill-medic', GameSettings.FieldPrice, () => callback(new HealMenuItem()))
 		];
 	}
 
-	GetBtns(): ButtonProp[] {
+	GetBtns(): BtnProps[] {
 		if (this.State.Item instanceof Vehicle) {
-			return ButtonProp.TankList(this.State.Item, (e: Item) => {
+			return BtnProps.TankList(this.State.Item, (e: Item) => {
 				this.SendContext(e);
 			});
 		} else if (this.State.Item instanceof Truck) {
-			return ButtonProp.TruckList(this.State.Item, (e: Item) => {
+			return BtnProps.TruckList(this.State.Item, (e: Item) => {
 				this.SendContext(e);
 			});
 		} else if (
@@ -219,55 +219,55 @@ export class OutpostHook extends AbstractGameHook<FireBlueprint, Outpostworld> {
 				this.SendContext(e);
 			});
 		} else if (this.State.Item instanceof ReactorField) {
-			return ButtonProp.ReactorList(this.State.Item, (e: Item) => {
+			return BtnProps.ReactorList(this.State.Item, (e: Item) => {
 				this.SendContext(e);
 			});
 		} else if (this.State.Item instanceof UnitGroup) {
-			return ButtonProp.MultiList(this.State.Item, (e: Item) => {
+			return BtnProps.MultiList(this.State.Item, (e: Item) => {
 				this.SendContext(e);
 			});
 		}
 	}
 
-	public ReactorMenu(item: ReactorField, callback: (e: Item) => void): ButtonProp[] {
+	public ReactorMenu(item: ReactorField, callback: (e: Item) => void): BtnProps[] {
 		if (item.IsLocked()) {
-			return [ new ButtonProp('fill-cancel', 'btn-dark', '', () => callback(new CancelMenuItem()), false) ];
+			return [ new BtnProps('fill-cancel', 'btn-dark', '', () => callback(new CancelMenuItem()), false) ];
 		}
 
 		if (item.Reserve.GetTotalBatteries() === 0) {
 			return [
-				new ButtonProp(
+				new BtnProps(
 					'fill-energy',
 					'btn-secondary',
 					`${item.Reserve.GetUsedPower()}/${item.Reserve.GetTotalBatteries()}`,
 					() => {},
 					true
 				),
-				new ButtonProp('fill-cancel', 'btn-dark', '', () => callback(new CancelMenuItem()), false)
+				new BtnProps('fill-cancel', 'btn-dark', '', () => callback(new CancelMenuItem()), false)
 			];
 		}
 
 		if (item.HasEnergy()) {
 			return [
-				new ButtonProp(
+				new BtnProps(
 					'fill-energy',
 					'btn-light',
 					`${item.Reserve.GetUsedPower()}/${item.Reserve.GetTotalBatteries()}`,
 					() => {},
 					false
 				),
-				new ButtonProp('fill-plus', 'btn-dark', '', () => callback(new PlusMenuItem()), false),
-				new ButtonProp('fill-minus', 'btn-dark', '', () => callback(new MinusMenuItem()), false),
+				new BtnProps('fill-plus', 'btn-dark', '', () => callback(new PlusMenuItem()), false),
+				new BtnProps('fill-minus', 'btn-dark', '', () => callback(new MinusMenuItem()), false),
 
-				new ButtonProp('fill-energy-power', 'btn-danger', '', () => callback(new AttackMenuItem()), false),
-				new ButtonProp('fill-energy-speed', 'btn-primary', '', () => callback(new SpeedFieldMenuItem()), false),
-				new ButtonProp('fill-energy-heal', 'btn-success', '', () => callback(new HealMenuItem()), true),
+				new BtnProps('fill-energy-power', 'btn-danger', '', () => callback(new AttackMenuItem()), false),
+				new BtnProps('fill-energy-speed', 'btn-primary', '', () => callback(new SpeedFieldMenuItem()), false),
+				new BtnProps('fill-energy-heal', 'btn-success', '', () => callback(new HealMenuItem()), true),
 
-				new ButtonProp('fill-cancel', 'btn-dark', '', () => callback(new CancelMenuItem()), false)
+				new BtnProps('fill-cancel', 'btn-dark', '', () => callback(new CancelMenuItem()), false)
 			];
 		} else {
 			return [
-				new ButtonProp(
+				new BtnProps(
 					'fill-energy',
 					'btn-secondary',
 					`${item.Reserve.GetUsedPower()}/${item.Reserve.GetTotalBatteries()}`,
@@ -275,14 +275,14 @@ export class OutpostHook extends AbstractGameHook<FireBlueprint, Outpostworld> {
 					false
 				),
 
-				new ButtonProp('fill-plus', 'btn-dark', '', () => callback(new PlusMenuItem()), false),
-				new ButtonProp('fill-minus', 'btn-dark', '', () => callback(new MinusMenuItem()), false),
+				new BtnProps('fill-plus', 'btn-dark', '', () => callback(new PlusMenuItem()), false),
+				new BtnProps('fill-minus', 'btn-dark', '', () => callback(new MinusMenuItem()), false),
 
-				new ButtonProp('fill-energy-power', 'btn-secondary', '', () => {}, false),
-				new ButtonProp('fill-energy-speed', 'btn-secondary', '', () => {}, false),
-				new ButtonProp('fill-energy-heal', 'btn-secondary', '', () => {}, false),
+				new BtnProps('fill-energy-power', 'btn-secondary', '', () => {}, false),
+				new BtnProps('fill-energy-speed', 'btn-secondary', '', () => {}, false),
+				new BtnProps('fill-energy-heal', 'btn-secondary', '', () => {}, false),
 
-				new ButtonProp('fill-cancel', 'btn-dark', '', () => callback(new CancelMenuItem()), false)
+				new BtnProps('fill-cancel', 'btn-dark', '', () => callback(new CancelMenuItem()), false)
 			];
 		}
 	}

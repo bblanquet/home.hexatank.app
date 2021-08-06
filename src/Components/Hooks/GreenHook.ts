@@ -10,7 +10,6 @@ import { CampaignKind } from '../../Services/Campaign/CampaignKind';
 import { StageState } from '../../Services/Campaign/StageState';
 import { GreenSentences } from '../Model/Dialogues';
 import { IBlueprint } from '../../Core/Framework/Blueprint/IBlueprint';
-import { MapKind } from '../../Core/Framework/Blueprint/Items/MapKind';
 
 export class GreenHook extends Hook<CampaignState> {
 	private _playerProfilService: IPlayerProfileService;
@@ -34,16 +33,16 @@ export class GreenHook extends Hook<CampaignState> {
 	public Start(index: number): void {
 		const blueprint = this._campaignService.GetBlueprint(CampaignKind.training, index);
 		if (index === 1) {
-			this.Build(SingletonKey.CamouflageBuilder, blueprint, index, 20, 3);
+			this.Build(SingletonKey.CamouflageBuilder, blueprint, index - 1, 20, 3);
 			route('{{sub_path}}Camouflage', true);
 		} else if (index === 2) {
-			this.Build(SingletonKey.FireV2Builder, blueprint, index, 20, 3);
+			this.Build(SingletonKey.FireV2Builder, blueprint, index - 1, 20, 3);
 			route('{{sub_path}}FireV2', true);
 		} else if (index === 3) {
-			this.Build(SingletonKey.OutpostBuilder, blueprint, index, 20, 3);
+			this.Build(SingletonKey.OutpostBuilder, blueprint, index - 1, 20, 3);
 			route('{{sub_path}}Outpost', true);
 		} else if (index === 4) {
-			this.Build(SingletonKey.DiamondBuilder, blueprint, index, 20, 3);
+			this.Build(SingletonKey.DiamondBuilder, blueprint, index - 1, 20, 3);
 			route('{{sub_path}}Diamond', true);
 		}
 	}
@@ -51,14 +50,14 @@ export class GreenHook extends Hook<CampaignState> {
 	private Build<T extends IBlueprint>(
 		builder: SingletonKey,
 		blueprint: T,
-		index: number,
+		stage: number,
 		win: number,
 		loose: number
 	) {
 		Singletons.Load<IBuilder<T>>(builder).Register(
 			blueprint,
 			() => {
-				this._playerProfilService.GetProfil().GreenLvl[index] = StageState.achieved;
+				this._playerProfilService.GetProfil().GreenLvl[stage] = StageState.achieved;
 				this._playerProfilService.AddPoints(win);
 			},
 			() => {

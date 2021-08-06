@@ -10,6 +10,13 @@ export const SvgArchive = {
 			hexa: './svg/UI/badge/hexa.svg',
 			tank: './svg/UI/badge/tank.svg'
 		},
+		tank: {
+			red: './svg/UI/tank/red.svg',
+			yellow: './svg/UI/tank/yellow.svg',
+			black: './svg/UI/tank/black.svg',
+			blue: './svg/UI/tank/blue.svg',
+			purple: './svg/UI/tank/purple.svg'
+		},
 		building: {
 			sm: './svg/UI/building/1.svg',
 			md: './svg/UI/building/2.svg',

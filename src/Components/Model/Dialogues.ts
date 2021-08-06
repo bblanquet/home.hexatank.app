@@ -52,6 +52,7 @@ export const Diamond = [
 	'',
 	"Well done, you created your first collector, don't worry they are self-automated they will collect diamonds by themselves.",
 	'However, you can and should create an outpost to speed them up.',
+	'You have less than 2 minutes to retrieve 35 diamonds.',
 	''
 ];
 

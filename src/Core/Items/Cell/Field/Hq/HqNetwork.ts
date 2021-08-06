@@ -1,14 +1,14 @@
 import { ReactorField } from './../Bonus/ReactorField';
-import { Headquarter } from './Headquarter';
 import { IInteractionContext } from '../../../../Interaction/IInteractionContext';
 import { BoundingBox } from '../../../../../Utils/Geometry/BoundingBox';
 import { Item } from '../../../Item';
 import { HqNetworkLink } from './HqNetworkLink';
+import { IHeadquarter } from './IHeadquarter';
 
 export class HqNetwork extends Item {
 	private _links: HqNetworkLink[];
 
-	constructor(private _hq: Headquarter) {
+	constructor(private _hq: IHeadquarter) {
 		super();
 		this._links = new Array<HqNetworkLink>();
 		this._hq.OnReactorAdded.On(this.ReactorAdded.bind(this));

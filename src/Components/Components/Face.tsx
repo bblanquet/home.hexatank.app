@@ -59,23 +59,21 @@ export class Face extends Component<
 	render() {
 		return (
 			<Visible isVisible={!isNullOrUndefined(this.props)}>
-				<div class="sizeContainer">
-					<div class="container-center">
-						<div class="logo-container">
-							<div class={this.props.face} />
-							<div
-								class={this.props.eyes[0]}
-								ref={(dom) => {
-									this._eyesDiv = dom;
-								}}
-							/>
-							<div
-								class={this.props.mouths[0]}
-								ref={(dom) => {
-									this._mouthDiv = dom;
-								}}
-							/>
-						</div>
+				<div class="faceContainer">
+					<div class="logo-container">
+						<div class={this.props.face} />
+						<div
+							class={this.props.eyes[0]}
+							ref={(dom) => {
+								this._eyesDiv = dom;
+							}}
+						/>
+						<div
+							class={this.props.mouths[0]}
+							ref={(dom) => {
+								this._mouthDiv = dom;
+							}}
+						/>
 					</div>
 				</div>
 			</Visible>

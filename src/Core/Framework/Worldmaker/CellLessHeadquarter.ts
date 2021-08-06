@@ -5,10 +5,10 @@ import { Cell } from '../../Items/Cell/Cell';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { Item } from '../../Items/Item';
 import { BatteryField } from '../../Items/Cell/Field/Bonus/BatteryField';
-import { FlagCell } from '../../Items/Cell/FlagCell';
 import { ISelectable } from '../../ISelectable';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { LiteEvent } from '../../../Utils/Events/LiteEvent';
+import { HqNetwork } from '../../Items/Cell/Field/Hq/HqNetwork';
 
 export class CellLessHeadquarter implements IHeadquarter {
 	private _reactors: Array<ReactorField> = new Array<ReactorField>();
@@ -31,7 +31,11 @@ export class CellLessHeadquarter implements IHeadquarter {
 	OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 	OnTankRequestChanged: LiteEvent<number> = new LiteEvent<number>();
 	Earn(amount: number): void {}
-	Flagcell: FlagCell;
+	private _network: HqNetwork;
+
+	constructor() {
+		this._network = new HqNetwork(this);
+	}
 
 	GetIdentity(): Identity {
 		return this.Identity;

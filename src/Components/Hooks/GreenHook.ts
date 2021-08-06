@@ -37,7 +37,7 @@ export class GreenHook extends Hook<CampaignState> {
 			route('{{sub_path}}Camouflage', true);
 		} else if (index === 2) {
 			this.Build(SingletonKey.FireBuilder, blueprint, index - 1, 20, 3);
-			route('{{sub_path}}FireV2', true);
+			route('{{sub_path}}Fire', true);
 		} else if (index === 3) {
 			this.Build(SingletonKey.OutpostBuilder, blueprint, index - 1, 20, 3);
 			route('{{sub_path}}Outpost', true);
@@ -81,6 +81,9 @@ export class GreenHook extends Hook<CampaignState> {
 
 	public RedCampaign() {
 		route('{{sub_path}}Red', true);
+	}
+	public BlueCampaign() {
+		route('{{sub_path}}Blue', true);
 	}
 
 	public GetStages(): StageState[] {

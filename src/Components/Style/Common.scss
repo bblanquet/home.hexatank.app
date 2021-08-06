@@ -282,9 +282,13 @@
 }
 
 .sizeContainer {
-	z-index: 0;
 	width: 80%;
 	max-width: 500px;
+	padding: 10px;
+}
+
+.faceContainer {
+	width: 200px;
 	padding: 10px;
 }
 

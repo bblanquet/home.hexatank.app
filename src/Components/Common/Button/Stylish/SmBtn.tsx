@@ -30,7 +30,7 @@ export default class SmBtn extends Component<{ OnClick: () => void; Color: Color
 
 	render() {
 		return (
-			<div class="custom-sm-btn-layout-3 fit-content" style="margin-left:5px;margin-right:5px">
+			<div class="custom-sm-btn-layout-3 fit-content" style="margin:5px">
 				<div class={`custom-sm-btn-layout-2 ${this._secondary.Get(ColorKind[this.props.Color])} fit-content`}>
 					<div
 						class={`custom-btn-layout-1 ${this._primary.Get(ColorKind[this.props.Color])} fit-content`}

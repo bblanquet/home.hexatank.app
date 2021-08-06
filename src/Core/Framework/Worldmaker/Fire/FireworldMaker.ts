@@ -94,6 +94,7 @@ export class FireworldMaker {
 		});
 
 		const tank = new Tank(id);
+		tank.Id = 'tank';
 		hq.AddVehicle(tank);
 		tank.SetPosition(arrivalCell);
 		const above = new AboveItem(tank, SvgArchive.hand);

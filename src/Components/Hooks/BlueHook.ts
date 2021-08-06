@@ -38,6 +38,10 @@ export class BlueHook extends Hook<CampaignState> {
 		route('{{sub_path}}Red', true);
 	}
 
+	public Green() {
+		route('{{sub_path}}Green', true);
+	}
+
 	public Unmount(): void {
 		clearTimeout(this._timeout);
 	}

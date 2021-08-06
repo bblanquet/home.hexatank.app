@@ -89,6 +89,17 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		this.CreateArea();
 	}
 
+	public ChangeEnergy(): void {
+		if (this.Reserve.GetTotalBatteries() === this.Reserve.GetUsedPower()) {
+			this.Reserve.Clear();
+			if (this.Reserve.GetUsedPower() === 0) {
+				this.OnPowerChanged.Invoke(this, false);
+			}
+		} else {
+			this.Reserve.FullCharges();
+		}
+	}
+
 	public AddLink(link: HqNetworkLink): void {
 		this.Links.push(link);
 		link.OnDestroyed.On((e: any, d: Item) => (this.Links = this.Links.filter((e) => !e.IsDestroyed())));

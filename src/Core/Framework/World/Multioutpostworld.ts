@@ -1,4 +1,3 @@
-import { HqLessShieldField } from '../../Items/Cell/Field/Bonus/HqLessShieldField';
 import { CellLessHeadquarter } from '../Worldmaker/CellLessHeadquarter';
 import { IHqGameworld } from './IHqGameworld';
 import { GameStatus } from '../GameStatus';
@@ -21,13 +20,12 @@ export class Multioutpostworld implements IHqGameworld {
 		cells: Cell[],
 		private _unit: AliveItem,
 		private _fakeHq: CellLessHeadquarter,
-		private _target: HqLessShieldField
+		public Target: Cell,
+		public ReactorA: Cell,
+		public ReactorB: Cell
 	) {
 		this._cells = Dictionary.To((c) => c.Coo(), cells);
 		this.State = state;
-		this._target.OnDestroyed.On((source: any, data: Item) => {
-			this.State.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
-		});
 	}
 
 	SetStatus(status: GameStatus): void {

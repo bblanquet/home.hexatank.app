@@ -62,8 +62,29 @@ export class ReactorReserve {
 		});
 	}
 
+	public FullCharges(): void {
+		if (0 < this.GetAvailableBatteries().length) {
+			this.GetAvailableBatteries().forEach((battery) => {
+				const charge = new Charge(this._hq, battery, this._reactor);
+				charge.OnDestroyed.On(this._ref);
+				this._reactor.Charges.Add(battery.GetCell().Coo(), charge);
+				this.UpdateBonusCells(true);
+			});
+		}
+	}
+
+	public EmptyCharges(): void {
+		if (0 < this._reactor.Charges.Values().length) {
+			const charges = this._reactor.Charges.Values();
+			charges.forEach((charge) => {
+				charge.Destroy();
+				this.UpdateBonusCells(false);
+			});
+		}
+	}
+
 	public Low(): void {
-		if (this._reactor.Charges.Values().length > 0) {
+		if (0 < this._reactor.Charges.Values().length) {
 			const charges = this._reactor.Charges.Values();
 			let farthestCharge = charges[0];
 			charges.forEach((charge) => {

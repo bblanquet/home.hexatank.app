@@ -12,6 +12,7 @@ import { HealMenuItem } from '../../../Core/Menu/Buttons/HealMenuItem';
 import { MinusMenuItem } from '../../../Core/Menu/Buttons/MinusMenuItem';
 import { MultiOrderMenuItem } from '../../../Core/Menu/Buttons/MultiOrderMenuItem';
 import { PlusMenuItem } from '../../../Core/Menu/Buttons/PlusMenuItem';
+import { ElecMenuItem } from '../../../Core/Menu/Buttons/ElecMenuItem';
 import { SearchMoneyMenuItem } from '../../../Core/Menu/Buttons/SearchMoneyMenuItem';
 import { SpeedFieldMenuItem } from '../../../Core/Menu/Buttons/SpeedFieldMenuItem';
 import { TankMenuItem } from '../../../Core/Menu/Buttons/TankMenuItem';
@@ -110,7 +111,7 @@ export class BtnProps {
 					'fill-energy',
 					'btn-light',
 					`${item.Reserve.GetUsedPower()}/${item.Reserve.GetTotalBatteries()}`,
-					() => {}
+					() => callback(new ElecMenuItem())
 				),
 				new BtnProps('fill-plus', 'btn-dark', '', () => callback(new PlusMenuItem())),
 				new BtnProps('fill-minus', 'btn-dark', '', () => callback(new MinusMenuItem())),
@@ -127,7 +128,7 @@ export class BtnProps {
 					'fill-energy',
 					'btn-secondary',
 					`${item.Reserve.GetUsedPower()}/${item.Reserve.GetTotalBatteries()}`,
-					() => {}
+					() => callback(new ElecMenuItem())
 				),
 
 				new BtnProps('fill-plus', 'btn-dark', '', () => callback(new PlusMenuItem())),

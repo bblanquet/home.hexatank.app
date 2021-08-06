@@ -21,9 +21,16 @@ import { Landmaker } from '../Landmaker';
 import { CellState } from '../../../Items/Cell/CellState';
 import { CellStateSetter } from '../../../Items/Cell/CellStateSetter';
 import { GameSettings } from '../../GameSettings';
+import { ReactorField } from '../../../Items/Cell/Field/Bonus/ReactorField';
+import { BatteryField } from '../../../Items/Cell/Field/Bonus/BatteryField';
+import { BasicField } from '../../../Items/Cell/Field/BasicField';
+import { ShieldField } from '../../../Items/Cell/Field/Bonus/ShieldField';
+import { MedicField } from '../../../Items/Cell/Field/Bonus/MedicField';
 
 export class MultioutpostworlMaker {
 	public Make(blueprint: SmallBlueprint, gameState: GameState): Multioutpostworld {
+		const id = new Identity('Player', HqAppearance.Skins.Get(ColorKind[ColorKind.Red]), true);
+
 		GameSettings.Init();
 		GameSettings.SetNormalSpeed();
 		const cells = new Dictionary<Cell>();
@@ -35,36 +42,65 @@ export class MultioutpostworlMaker {
 			cells.Add(cell.Coo(), cell);
 		});
 
+		cells.Values().forEach((cell) => {
+			cell.SetPlayerHq(id);
+			cell.Listen();
+		});
+
 		const areas = new AreaSearch(
 			Dictionary.To((c) => c.ToString(), cells.Values().map((c) => c.GetHexCoo()))
 		).GetAreas(new HexAxial(blueprint.CenterItem.Coo.Q, blueprint.CenterItem.Coo.R));
 		new Landmaker().SetLands(cells, blueprint.MapMode, areas);
 		new Cloudmaker().SetClouds(cells, areas);
 
-		const goal = new HexAxial(blueprint.Goal.Coo.Q, blueprint.Goal.Coo.R);
-		const goalCell = cells.Get(goal.ToString());
-
-		const iaId = new Identity('IA', HqAppearance.Skins.Get(ColorKind[ColorKind.Blue]), false);
-		const shield = new HqLessShieldField(goalCell, iaId, new FakeHeadquarter());
-		goalCell.SetField(shield);
-		new AboveItem(goalCell, SvgArchive.arrow);
-
 		const arrival = new HexAxial(blueprint.Departure.Coo.Q, blueprint.Departure.Coo.R);
 		const arrivalCell = cells.Get(arrival.ToString());
-		const id = new Identity('Player', HqAppearance.Skins.Get(ColorKind[ColorKind.Red]), true);
 		const tank = new Tank(id);
+		tank.Id = 'tank';
 		tank.SetPosition(arrivalCell);
 
 		const hq = new CellLessHeadquarter();
 		hq.Identity = id;
 		hq.AddVehicle(tank);
 
-		cells.Values().forEach((cell) => {
-			cell.SetPlayerHq(id);
-			cell.Listen();
+		const r = new Array<Cell>();
+		[ new HexAxial(-1, 3), new HexAxial(5, 1) ].forEach((h) => {
+			let c = cells.Get(h.ToString());
+			r.push(c);
+			c.SetField(new ReactorField(c, hq, [ hq ], hq.Identity.Skin.GetLight()));
 		});
 
-		const world = new Multioutpostworld(gameState, cells.Values(), tank, hq, shield);
+		[
+			new HexAxial(-2, 4),
+			new HexAxial(-2, 3),
+			new HexAxial(-1, 2),
+			new HexAxial(-1, 4),
+			new HexAxial(0, 2),
+			new HexAxial(0, 3)
+		].forEach((h) => {
+			let c = cells.Get(h.ToString());
+			let r = new BatteryField(cells.Get(h.ToString()), hq);
+			c.SetField(r);
+		});
+
+		const fireCell = cells.Get(new HexAxial(2, 2).ToString());
+		if (!(fireCell.GetField() instanceof BasicField)) {
+			fireCell.GetField().Destroy();
+		}
+
+		[ new HexAxial(5, 2) ].forEach((h) => {
+			let c = cells.Get(h.ToString());
+			let r = new ShieldField(cells.Get(h.ToString()), hq.Identity, hq);
+			c.SetField(r);
+		});
+
+		[ new HexAxial(4, 1) ].forEach((h) => {
+			let c = cells.Get(h.ToString());
+			let r = new MedicField(cells.Get(h.ToString()), hq);
+			c.SetField(r);
+		});
+
+		const world = new Multioutpostworld(gameState, cells.Values(), tank, hq, fireCell, r[0], r[1]);
 		CellStateSetter.SetStates(world.GetCells());
 		world.GetCells().forEach((c) => {
 			c.SetState(CellState.Visible);

@@ -38,6 +38,7 @@ import { AbortCombination } from './Combination/AbortCombination';
 import { SwitchToHeadquarterCombination } from './Combination/SwitchToHeadquarterCombination';
 import { PowerUpCombination } from './Combination/PowerUpCombination';
 import { PowerDownCombination } from './Combination/PowerDownCombination';
+import { PowerCombination } from './Combination/PowerCombination';
 import { ReactorCombination } from './Combination/ReactorCombination';
 import { CamouflageCombination } from './Combination/CamouflageCombination';
 import { MultiSelectionContext } from '../Menu/Smart/MultiSelectionContext';
@@ -151,6 +152,7 @@ export class CombinationProvider {
 
 			//REACTOR
 			new PowerDownCombination(),
+			new PowerCombination(),
 			new OverlockCombination(),
 			new PowerUpCombination(gameworld),
 

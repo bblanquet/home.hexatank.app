@@ -748,45 +748,72 @@
 }
 
 .fill-light-1 {
-	width: 50px;
-	height: 50px;
-	background-size: contain;
+	width: 40px;
+	height: 40px;
+	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
 	background-image: url('{{asset_path}}svg/UI/effect/light1.svg');
 }
 
 .fill-light-2 {
-	width: 50px;
-	height: 50px;
-	background-size: contain;
+	width: 40px;
+	height: 40px;
+	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
 	background-image: url('{{asset_path}}svg/UI/effect/light2.svg');
 }
 
 .fill-light-3 {
-	width: 50px;
-	height: 50px;
-	background-size: contain;
+	width: 40px;
+	height: 40px;
+	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
 	background-image: url('{{asset_path}}svg/UI/effect/light3.svg');
 }
 
 .fill-light-4 {
-	width: 50px;
-	height: 50px;
-	background-size: contain;
+	width: 40px;
+	height: 40px;
+	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
 	background-image: url('{{asset_path}}svg/UI/effect/light4.svg');
 }
 
+.fill-campaign {
+	width: 40px;
+	height: 40px;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{asset_path}}svg/UI/icon/campaign.svg');
+}
+
+.fill-gold-campaign {
+	width: 40px;
+	height: 40px;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{asset_path}}svg/UI/icon/goldCampaign.svg');
+}
+
+.fill-lock {
+	width: 40px;
+	height: 40px;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('{{asset_path}}svg/UI/badge/lock.svg');
+}
+
 .fill-campaign-badge {
-	width: 50px;
-	height: 50px;
-	background-size: contain;
+	width: 40px;
+	height: 40px;
+	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
 	background-image: url('{{asset_path}}svg/UI/badge/campaign.svg');

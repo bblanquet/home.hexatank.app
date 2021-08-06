@@ -6,7 +6,6 @@ import Icon from '../Common/Icon/IconComponent';
 import { Face } from '../Components/Face';
 import StatBar from '../Components/StatBar';
 import Redirect from '../Components/Redirect';
-import Visible from '../Common/Struct/Visible';
 import Body from '../Common/Struct/Body';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
 import { StageState } from '../../Services/Campaign/StageState';
@@ -15,6 +14,10 @@ import { HookedComponent } from '../Hooks/HookedComponent';
 import { GreenHook } from '../Hooks/GreenHook';
 import { useState } from 'preact/hooks';
 import { CampaignState } from '../Model/GreenState';
+import Column from '../Common/Struct/Column';
+import Switch from '../Common/Struct/Switch';
+import AnimatedIcon from '../Common/Button/Badge/AnimatedIcon';
+import Line from '../Common/Struct/Line';
 
 export default class GreenScreen extends HookedComponent<{}, GreenHook, CampaignState> {
 	public GetDefaultHook(): GreenHook {
@@ -28,9 +31,15 @@ export default class GreenScreen extends HookedComponent<{}, GreenHook, Campaign
 				<Body
 					header={<StatBar />}
 					content={
-						<div class="container-center-horizontal">
-							<div style="width:80%">
-								<div class="container-center">
+						<div>
+							<div class="container-center">
+								<div
+									class="d-flex"
+									style="flex-direction:row;align-content:space-between;align-items: center; margin:10px"
+								>
+									<SmBtn OnClick={() => this.Hook.BlueCampaign()} Color={ColorKind.Blue}>
+										<Icon Value="fas fa-chevron-left" />
+									</SmBtn>
 									<Face
 										eyes={[ 'fill-green-eyes1', 'fill-green-eyes2' ]}
 										mouths={[
@@ -41,50 +50,73 @@ export default class GreenScreen extends HookedComponent<{}, GreenHook, Campaign
 										]}
 										face={'fill-green-face'}
 									/>
+
+									<SmBtn OnClick={() => this.Hook.RedCampaign()} Color={ColorKind.Red}>
+										<Icon Value="fas fa-chevron-right" />
+									</SmBtn>
 								</div>
-								<Visible isVisible={this.Hook.State.HasBubble}>
-									<div class="arrow-up" />
-									<p class="bubble bubbleApp">{this.Hook.State.CurrentSentence}</p>
-									<div class="container-center-horizontal">
-										<Btn OnClick={() => this.Hook.SetBubble()} Color={ColorKind.Black}>
-											<Icon Value="fas fa-undo-alt" /> Back
-										</Btn>
-										<Btn
-											OnClick={() => this.Hook.Start(this.Hook.State.Level)}
-											Color={ColorKind.Green}
-										>
-											<Icon Value="fas fa-fist-raised" /> Train
-										</Btn>
-									</div>
-								</Visible>
-								<Visible isVisible={!this.Hook.State.HasBubble}>
-									<div class="container-center">
+							</div>
+							<Switch
+								isLeft={this.Hook.State.HasBubble}
+								left={
+									<div>
+										<div class="arrow-up" />
+										<p class="bubble bubbleApp">{this.Hook.State.CurrentSentence}</p>
 										<div class="container-center-horizontal">
-											<Btn OnClick={() => this.Hook.RedCampaign()} Color={ColorKind.Black}>
-												<Icon Value="fas fa-long-arrow-alt-right" />
+											<Btn OnClick={() => this.Hook.SetBubble()} Color={ColorKind.Black}>
+												<Icon Value="fas fa-undo-alt" /> Back
+											</Btn>
+											<Btn
+												OnClick={() => this.Hook.Start(this.Hook.State.Level)}
+												Color={ColorKind.Green}
+											>
+												<Icon Value="fas fa-fist-raised" /> Train
 											</Btn>
 										</div>
-										<div class="d-flex flex-wrap justify-content-center">
+									</div>
+								}
+								right={
+									<div class="container-center">
+										<div style="display: flex;flex-flow: row wrap;justify-content: space-around; width:200px">
 											{this.Hook.GetStages().map((state, index) => {
 												if (state === StageState.lock) {
-													return <LockBtn />;
+													return <LockBtn Index={index + 1} />;
 												} else if (state === StageState.achieved) {
-													return <VictoryBtn OnClick={() => this.Hook.Select(index + 1)} />;
-												} else {
 													return (
-														<Btn
+														<SmBtn
 															OnClick={() => this.Hook.Select(index + 1)}
 															Color={ColorKind.Green}
 														>
+															<div class={`fill-gold-campaign max-width`}>
+																<AnimatedIcon
+																	values={[
+																		'fill-light-1',
+																		'fill-light-2',
+																		'fill-light-3',
+																		'fill-light-4'
+																	]}
+																	frequency={1000}
+																/>
+															</div>
 															<Icon Value="fas fa-arrow-alt-circle-right" /> {index + 1}
-														</Btn>
+														</SmBtn>
+													);
+												} else {
+													return (
+														<SmBtn
+															OnClick={() => this.Hook.Select(index + 1)}
+															Color={ColorKind.Green}
+														>
+															<div class={`fill-campaign max-width`} />
+															<Icon Value="fas fa-arrow-alt-circle-right" /> {index + 1}
+														</SmBtn>
 													);
 												}
 											})}
 										</div>
 									</div>
-								</Visible>
-							</div>
+								}
+							/>
 						</div>
 					}
 					footer={

@@ -48,6 +48,13 @@ export const Outpost = [
 	''
 ];
 
+export const Multioutpost = [
+	'One of your reactor is full juice.',
+	'The other one is out of juice.',
+	"let's make connection between these two reactors to share resources.",
+	''
+];
+
 export const Diamond = [
 	"Let's retrieve some resources for your headquarter.",
 	'',

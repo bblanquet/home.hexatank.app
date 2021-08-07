@@ -17,10 +17,10 @@ import { isNullOrUndefined } from '../../Utils/ToolBox';
 import Switch from '../Common/Struct/Switch';
 import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
 import { SingletonKey } from '../../Singletons';
-import { AbstractGameHook } from '../Hooks/AbstractGameHook';
 import Bubble from '../Components/Bubble';
+import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 
-export default class MultioutpostScreen extends HookedComponent<{}, MultioutpostHook, RuntimeState> {
+export default class MultipostScreen extends HookedComponent<{}, MultioutpostHook, RuntimeState> {
 	public GetDefaultHook(): MultioutpostHook {
 		return new MultioutpostHook(SingletonKey.Multioutpostworld, useState(MultioutpostHook.DefaultState()));
 	}
@@ -50,7 +50,13 @@ export default class MultioutpostScreen extends HookedComponent<{}, Multioutpost
 				<GameCanvas Center={this.Hook.GetCenter()} OnRefresh={this.Hook.OnRefresh} />
 				<Switch
 					isLeft={!isNullOrUndefined(this.Hook.State.Sentence) && 0 < this.Hook.State.Sentence.length}
-					left={<Bubble Sentence={this.Hook.State.Sentence} OnNext={() => this.Hook.SetNextSentence()} />}
+					left={
+						<Bubble
+							Color={ColorKind.Green}
+							Sentence={this.Hook.State.Sentence}
+							OnNext={() => this.Hook.SetNextSentence()}
+						/>
+					}
 					right={
 						<Visible isVisible={this.Hook.State.GameStatus === GameStatus.Pending}>
 							<Visible isVisible={!this.Hook.State.HasMenu}>

@@ -8,7 +8,7 @@ import { CampaignState } from '../Model/GreenState';
 import { route } from 'preact-router';
 import { CampaignKind } from '../../Services/Campaign/CampaignKind';
 import { StageState } from '../../Services/Campaign/StageState';
-import { GreenSentences } from '../Model/Dialogues';
+import { Green } from '../Model/Dialogues';
 import { IBlueprint } from '../../Core/Framework/Blueprint/IBlueprint';
 
 export class GreenHook extends Hook<CampaignState> {
@@ -62,6 +62,9 @@ export class GreenHook extends Hook<CampaignState> {
 			() => {
 				this._playerProfilService.GetProfil().GreenLvl[stage] = StageState.achieved;
 				this._playerProfilService.AddPoints(win);
+				if (stage + 1 < this._playerProfilService.GetProfil().GreenLvl.length) {
+					this._playerProfilService.GetProfil().GreenLvl[stage + 1] = StageState.unlock;
+				}
 			},
 			() => {
 				this._playerProfilService.AddPoints(loose);
@@ -107,7 +110,7 @@ export class GreenHook extends Hook<CampaignState> {
 		this.Update((e) => {
 			e.HasBubble = !e.HasBubble;
 			e.Level = level;
-			e.Sentence = GreenSentences(level);
+			e.Sentence = Green[Math.round((Green.length - 1) * Math.random())];
 			e.CurrentSentence = '';
 		});
 		setTimeout(() => {

@@ -8,43 +8,44 @@ import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Visible from '../Common/Struct/Visible';
 import { Env } from '../../Utils/Env';
 import Panel from '../Components/Panel/Panel';
-import { Versionning } from '../Model/Versionning';
 import { IAudioService } from '../../Services/Audio/IAudioService';
 import { IPlayerProfileService } from '../../Services/PlayerProfil/IPlayerProfileService';
 import { Singletons, SingletonKey } from '../../Singletons';
 import Switch from '../Common/Struct/Switch';
 import Grid from '../Common/Grid/GridComponent';
+import Notification from '../Components/Notification';
 import SmActiveBtn from '../Common/Button/Stylish/SmActiveBtn';
-export default class HomeScreen extends Component<any, { IsMenu: boolean }> {
-	private _versions: Versionning[] = [
-		new Versionning('0.8.2', [ 'stuffs' ], [ 'Marvin' ]),
-		new Versionning(
-			'0.8.14',
-			[ 'fix hanging unit', 'fix and improve IA', 'improve online synchronisation #2' ],
-			[ 'Doug' ]
-		),
-		new Versionning(
-			'0.8.13',
-			[
-				'add self-automated collector',
-				'disable fog of war',
-				'change game speed',
-				'make stages onLoaded',
-				'fix some multiselection bug',
-				'improve online synchronisation #1'
-			],
-			[ 'Doug', 'Marvin' ]
-		)
-	];
+import { IVersionService } from '../../Services/Version/IVersionService';
+import { LiteEvent } from '../../Utils/Events/LiteEvent';
+import { NotificationState } from '../Model/NotificationState';
+import { Home } from '../Model/Dialogues';
+import { LogKind } from '../../Utils/Logger/LogKind';
+export default class HomeScreen extends Component<
+	any,
+	{ IsMenu: boolean; Notification: LiteEvent<NotificationState> }
+> {
+	private _playerProfile: IPlayerProfileService;
+	private _audio: IAudioService;
+	private _version: IVersionService;
+	constructor() {
+		super();
+		this._playerProfile = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
+		this._audio = Singletons.Load<IAudioService>(SingletonKey.Audio);
+		this._version = Singletons.Load<IVersionService>(SingletonKey.Version);
+	}
 
 	componentDidMount() {
-		const profil = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
-		const soundService = Singletons.Load<IAudioService>(SingletonKey.Audio);
-		soundService.SetMute(profil.GetProfil().IsMute);
-		soundService.PlayLoungeMusic();
+		this._audio.SetMute(this._playerProfile.GetProfil().IsMute);
+		this._audio.PlayLoungeMusic();
 		this.setState({
-			IsMenu: true
+			IsMenu: true,
+			Notification: new LiteEvent<NotificationState>()
 		});
+		if (this._playerProfile.GetPoints() < 30) {
+			setTimeout(() => {
+				this.state.Notification.Invoke(this, new NotificationState(LogKind.message, Home));
+			}, 300);
+		}
 	}
 
 	render() {
@@ -77,6 +78,7 @@ export default class HomeScreen extends Component<any, { IsMenu: boolean }> {
 										<Icon Value="fab fa-watchman-monitoring" /> Monitoring
 									</Btn>
 								</Visible>
+								<Notification OnNotification={this.state.Notification} />
 							</div>
 						}
 						right={
@@ -91,7 +93,7 @@ export default class HomeScreen extends Component<any, { IsMenu: boolean }> {
 								right={
 									<tbody>
 										<tr class="d-flex flex-column ">
-											{this._versions.map((version) => (
+											{this._version.GetVersions().map((version) => (
 												<td>
 													<span style="font-weight:bold">
 														<Icon Value="fas fa-truck" /> {version.Name}
@@ -110,7 +112,7 @@ export default class HomeScreen extends Component<any, { IsMenu: boolean }> {
 				}
 				footer={
 					<div class="navbar nav-inner" style="font-weight:bold;">
-						<div>v 0.8.2</div>
+						<div>v {this._version.GetVersionNumber()}</div>
 						<SmActiveBtn
 							left={<Icon Value="fas fa-bug" />}
 							right={<Icon Value="fas fa-bug" />}

@@ -62,17 +62,18 @@ export class MultioutpostHook extends AbstractGameHook<SmallBlueprint, Multioutp
 		this._steps = 0;
 		const tank = this.Gameworld.Tank as Tank;
 		const hand = new AboveItem(tank, SvgArchive.hand);
-		hand.SetVisible(() => !tank.IsSelected() && tank.GetCurrentCell() !== this.Gameworld.Pos);
+		hand.SetVisible(() => !tank.IsSelected() && tank.GetCurrentCell() !== this.Gameworld.MiddleCell);
 
-		const cell = this.Gameworld.Pos;
+		const cell = this.Gameworld.MiddleCell;
 		const arrow = new AboveItem(cell, SvgArchive.arrow);
-		arrow.SetVisible(() => tank.IsSelected() && tank.GetCurrentCell() !== this.Gameworld.Pos);
+		arrow.SetVisible(() => tank.IsSelected() && tank.GetCurrentCell() !== this.Gameworld.MiddleCell);
 
 		const target = this.Gameworld.NextReactor;
 		const hand2 = new AboveItem(target, SvgArchive.hand);
-		hand2.SetVisible(() => tank.GetCurrentCell() === this.Gameworld.Pos);
+		hand2.SetVisible(() => tank.GetCurrentCell() === this.Gameworld.MiddleCell);
 
 		this.Gameworld.NextReactor.OnFieldChanged.On((src: any, cell: Cell) => {
+			this.Gameworld.NextReactor.OnFieldChanged.Clear();
 			hand.Destroy();
 			arrow.Destroy();
 			hand2.Destroy();
@@ -87,6 +88,7 @@ export class MultioutpostHook extends AbstractGameHook<SmallBlueprint, Multioutp
 						this.Gameworld.ReactorA.GetStockAmount() === 3 &&
 						this.Gameworld.NextReactor.GetField() instanceof ReactorField
 					) {
+						this.Gameworld.ReactorA.OnEnergyChanged.Clear();
 						this.SendContext(new CancelMenuItem());
 						hand3.Destroy();
 						const hand4 = new AboveItem(this.Gameworld.ReactorB, SvgArchive.hand);
@@ -94,6 +96,21 @@ export class MultioutpostHook extends AbstractGameHook<SmallBlueprint, Multioutp
 						this._viewTranslator2.Next();
 						this._steps = 7;
 						this.SetSentence();
+
+						this.Gameworld.ReactorB.OnEnergyChanged.On((src: any, power: number) => {
+							if (power === 3) {
+								hand4.Destroy();
+								this.SendContext(new CancelMenuItem());
+								this._steps = 9;
+								this.SetSentence();
+								const medicCell = this.Gameworld.MedicCell;
+								const hand5 = new AboveItem(this.Gameworld.Tank, SvgArchive.hand);
+								hand5.SetVisible(() => !tank.IsSelected() && tank.GetCurrentCell() !== medicCell);
+
+								const arrow = new AboveItem(medicCell, SvgArchive.arrow);
+								arrow.SetVisible(() => tank.IsSelected() && tank.GetCurrentCell() !== medicCell);
+							}
+						});
 					}
 				});
 			}

@@ -19,6 +19,7 @@ import { LayerService } from './Services/Layer/LayerService';
 import { AppService } from './Services/App/AppService';
 import { InteractionService } from './Services/Interaction/InteractionService';
 import { RecordService } from './Services/Record/RecordService';
+import { VersionService } from './Services/Version/VersionService';
 import { RecordContextService } from './Services/Record/RecordContextService';
 import { UpdateService } from './Services/Update/UpdateService';
 import { StatsService } from './Services/Stats/StatsService';

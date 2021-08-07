@@ -1,7 +1,7 @@
 import { ICampaignService } from '../../Services/Campaign/ICampaignService';
 import { CampaignState } from '../Model/GreenState';
 import { Hook } from './Hook';
-import { RedSentences } from '../Model/Dialogues';
+import { Red } from '../Model/Dialogues';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { route } from 'preact-router';
 import { IBuilder } from '../../Services/Builder/IBuilder';
@@ -66,14 +66,14 @@ export class RedHook extends Hook<CampaignState> {
 		});
 	}
 
-	public Start(index: number): void {
-		const blueprint = this._campaignService.GetBlueprint(CampaignKind.red, index);
+	public Start(stage: number): void {
+		const blueprint = this._campaignService.GetBlueprint(CampaignKind.red, stage);
 		Singletons.Load<IBuilder<GameBlueprint>>(SingletonKey.GameBuilder).Register(
 			blueprint as any,
 			() => {
-				this._playerProfilService.GetProfil().RedLvl[index] = StageState.achieved;
-				if (index + 1 < this._playerProfilService.GetProfil().RedLvl.length) {
-					this._playerProfilService.GetProfil().RedLvl[index + 1] = StageState.unlock;
+				this._playerProfilService.GetProfil().RedLvl[stage] = StageState.achieved;
+				if (stage + 1 < this._playerProfilService.GetProfil().RedLvl.length) {
+					this._playerProfilService.GetProfil().RedLvl[stage + 1] = StageState.unlock;
 				}
 				this._playerProfilService.AddPoints(20);
 			},
@@ -86,7 +86,7 @@ export class RedHook extends Hook<CampaignState> {
 		this.Update((e) => {
 			e.HasBubble = !e.HasBubble;
 			e.Level = level;
-			e.Sentence = RedSentences[Math.round((RedSentences.length - 1) * Math.random())];
+			e.Sentence = Red[Math.round((Red.length - 1) * Math.random())];
 			e.CurrentSentence = '';
 		});
 		setTimeout(() => {

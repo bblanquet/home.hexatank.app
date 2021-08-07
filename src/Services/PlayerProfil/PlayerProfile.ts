@@ -12,10 +12,10 @@ export class PlayerProfile {
 	//levels
 	public GreenLvl: StageState[] = [
 		StageState.unlock,
-		StageState.unlock,
-		StageState.unlock,
-		StageState.unlock,
-		StageState.unlock
+		StageState.lock,
+		StageState.lock,
+		StageState.lock,
+		StageState.lock
 	];
 	public RedLvl: StageState[] = [ StageState.unlock, StageState.lock, StageState.lock, StageState.lock ];
 	public BlueLvl: StageState[] = [ StageState.unlock, StageState.lock, StageState.lock, StageState.lock ];

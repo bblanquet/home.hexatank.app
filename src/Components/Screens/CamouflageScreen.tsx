@@ -15,6 +15,7 @@ import { Vehicle } from '../../Core/Items/Unit/Vehicle';
 import { BtnProps } from '../Components/Canvas/BtnProps';
 import MenuBtn from '../Components/Canvas/MenuBtn';
 import LeftMenu from '../Components/Canvas/LeftMenu';
+import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 
 export default class CamouflageScreen extends HookedComponent<{}, CamouflageHook, RuntimeState> {
 	public GetDefaultHook(): CamouflageHook {
@@ -61,7 +62,11 @@ export default class CamouflageScreen extends HookedComponent<{}, CamouflageHook
 				<Visible
 					isVisible={!isNullOrUndefined(this.Hook.State.Sentence) && 0 < this.Hook.State.Sentence.length}
 				>
-					<Bubble Sentence={this.Hook.State.Sentence} OnNext={() => this.Hook.SetNextSentence()} />
+					<Bubble
+						Color={ColorKind.Green}
+						Sentence={this.Hook.State.Sentence}
+						OnNext={() => this.Hook.SetNextSentence()}
+					/>
 				</Visible>
 			</Redirect>
 		);

@@ -1,12 +1,14 @@
 import { Component, h } from 'preact';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 import Visible from '../Common/Struct/Visible';
+import { SizeKind } from '../Model/SizeKind';
 
 export class Face extends Component<
 	{
-		eyes: string[];
-		mouths: string[];
-		face: string;
+		Size: SizeKind;
+		Eyes: string[];
+		Mouths: string[];
+		Face: string;
 	},
 	any
 > {
@@ -30,9 +32,9 @@ export class Face extends Component<
 	private EyesAnimation(): void {
 		clearInterval(this._eyesTimer);
 		let current = this._eyesIndex;
-		this._eyesIndex = (this._eyesIndex + 1) % this.props.eyes.length;
-		this._eyesDiv.classList.remove(this.props.eyes[current]);
-		this._eyesDiv.classList.add(this.props.eyes[this._eyesIndex]);
+		this._eyesIndex = (this._eyesIndex + 1) % this.props.Eyes.length;
+		this._eyesDiv.classList.remove(this.props.Eyes[current]);
+		this._eyesDiv.classList.add(this.props.Eyes[this._eyesIndex]);
 
 		if (this._eyesIndex === 0) {
 			this._eyesTimer = setInterval(() => this.EyesAnimation(), 2000);
@@ -45,9 +47,9 @@ export class Face extends Component<
 		clearInterval(this._mouthTimer);
 
 		let current = this._mouthIndex;
-		this._mouthIndex = (this._mouthIndex + 1) % this.props.mouths.length;
-		this._mouthDiv.classList.remove(this.props.mouths[current]);
-		this._mouthDiv.classList.add(this.props.mouths[this._mouthIndex]);
+		this._mouthIndex = (this._mouthIndex + 1) % this.props.Mouths.length;
+		this._mouthDiv.classList.remove(this.props.Mouths[current]);
+		this._mouthDiv.classList.add(this.props.Mouths[this._mouthIndex]);
 
 		if (this._eyesIndex === 0) {
 			this._mouthTimer = setInterval(() => this.MouthAnimation(), 1000);
@@ -56,20 +58,30 @@ export class Face extends Component<
 		}
 	}
 
+	public GetSize(): number {
+		if (this.props.Size === SizeKind.Bg) {
+			return 200;
+		} else if (this.props.Size === SizeKind.Md) {
+			return 100;
+		} else {
+			return 75;
+		}
+	}
+
 	render() {
 		return (
 			<Visible isVisible={!isNullOrUndefined(this.props)}>
-				<div class="faceContainer">
-					<div class="logo-container">
-						<div class={this.props.face} />
+				<div style={`width:${this.GetSize()}px;height:${this.GetSize()}px;`}>
+					<div style={`position: relative;width:${this.GetSize()}px;height:${this.GetSize()}px;`}>
+						<div class={this.props.Face} />
 						<div
-							class={this.props.eyes[0]}
+							class={this.props.Eyes[0]}
 							ref={(dom) => {
 								this._eyesDiv = dom;
 							}}
 						/>
 						<div
-							class={this.props.mouths[0]}
+							class={this.props.Mouths[0]}
 							ref={(dom) => {
 								this._mouthDiv = dom;
 							}}

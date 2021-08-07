@@ -9,7 +9,6 @@ import { IInteractionContext } from '../../Interaction/IInteractionContext';
 import { Point } from '../../../Utils/Geometry/Point';
 import { Cell } from '../../Items/Cell/Cell';
 import { Item } from '../../Items/Item';
-import { ViewContext } from '../../../Utils/Geometry/ViewContext';
 import * as PIXI from 'pixi.js';
 import { isNullOrUndefined } from '../../../Utils/ToolBox';
 import { Singletons, SingletonKey } from '../../../Singletons';

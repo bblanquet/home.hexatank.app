@@ -17,6 +17,7 @@ import Switch from '../Common/Struct/Switch';
 import AnimatedIcon from '../Common/Button/Badge/AnimatedIcon';
 import Line from '../Common/Struct/Line';
 import Column from '../Common/Struct/Column';
+import { SizeKind } from '../Model/SizeKind';
 
 export default class GreenScreen extends HookedComponent<{}, GreenHook, CampaignState> {
 	public GetDefaultHook(): GreenHook {
@@ -40,14 +41,15 @@ export default class GreenScreen extends HookedComponent<{}, GreenHook, Campaign
 										<Icon Value="fas fa-chevron-left" />
 									</SmBtn>
 									<Face
-										eyes={[ 'fill-green-eyes1', 'fill-green-eyes2' ]}
-										mouths={[
+										Size={SizeKind.Bg}
+										Eyes={[ 'fill-green-eyes1', 'fill-green-eyes2' ]}
+										Mouths={[
 											'fill-green-mouth-1',
 											'fill-green-mouth-2',
 											'fill-green-mouth-3',
 											'fill-green-mouth-4'
 										]}
-										face={'fill-green-face'}
+										Face={'fill-green-face'}
 									/>
 
 									<SmBtn OnClick={() => this.Hook.RedCampaign()} Color={ColorKind.Red}>

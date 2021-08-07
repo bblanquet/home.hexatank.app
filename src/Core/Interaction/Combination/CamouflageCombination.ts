@@ -27,7 +27,7 @@ export class CamouflageCombination extends AbstractSingleCombination {
 				}
 			}
 
-			return false;
+			return true;
 		}
 		return false;
 	}

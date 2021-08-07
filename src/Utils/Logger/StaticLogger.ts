@@ -12,14 +12,27 @@ export class StaticLogger {
 
 	public static Colors: Dictionary<string> = Dictionary.New([
 		{ key: LogKind[LogKind.none], value: '#000000' },
+		{ key: LogKind[LogKind.message], value: '#ededed' },
 		{ key: LogKind[LogKind.info], value: '#36a6e3' },
 		{ key: LogKind[LogKind.success], value: '#8fe336' },
 		{ key: LogKind[LogKind.warning], value: '#e38736' },
 		{ key: LogKind[LogKind.error], value: '#8c2323' },
 		{ key: LogKind[LogKind.dangerous], value: '#d93232' }
 	]);
+
+	public static SecondaryColors: Dictionary<string> = Dictionary.New([
+		{ key: LogKind[LogKind.none], value: '#FFFFFF' },
+		{ key: LogKind[LogKind.message], value: '#2e2e2e' },
+		{ key: LogKind[LogKind.info], value: '#FFFFFF' },
+		{ key: LogKind[LogKind.success], value: '#FFFFFF' },
+		{ key: LogKind[LogKind.warning], value: '#FFFFFF' },
+		{ key: LogKind[LogKind.error], value: '#FFFFFF' },
+		{ key: LogKind[LogKind.dangerous], value: '#FFFFFF' }
+	]);
+
 	private static _style: Dictionary<string> = Dictionary.New([
 		{ key: LogKind[LogKind.none], value: 'normal' },
+		{ key: LogKind[LogKind.message], value: 'bold' },
 		{ key: LogKind[LogKind.info], value: 'bold' },
 		{ key: LogKind[LogKind.success], value: 'bold' },
 		{ key: LogKind[LogKind.warning], value: 'bold' },

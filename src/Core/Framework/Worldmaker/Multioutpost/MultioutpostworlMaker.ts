@@ -1,10 +1,7 @@
-import { FakeHeadquarter } from '../FakeHeadquarter';
 import { Tank } from '../../../Items/Unit/Tank';
 import { CellLessHeadquarter } from '../CellLessHeadquarter';
-import { HqLessShieldField } from '../../../Items/Cell/Field/Bonus/HqLessShieldField';
 import { SmallBlueprint } from '../../Blueprint/Small/SmallBlueprint';
 import { Multioutpostworld } from '../../World/Multioutpostworld';
-import { SvgArchive } from '../../SvgArchiver';
 import { AreaSearch } from '../../../Ia/Decision/Utils/AreaSearch';
 import { Cell } from '../../../Items/Cell/Cell';
 import { CellProperties } from '../../../Items/Cell/CellProperties';
@@ -12,7 +9,6 @@ import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 import { HexAxial } from '../../../../Utils/Geometry/HexAxial';
 import { Identity } from '../../../Items/Identity';
 import { HqAppearance } from '../Hq/HqSkinHelper';
-import { AboveItem } from '../../../Items/AboveItem';
 import { Decorator } from '../../../Items/Cell/Decorator/Decorator';
 import { GameState } from '../../World/GameState';
 import { ColorKind } from '../../../../Components/Common/Button/Stylish/ColorKind';
@@ -59,6 +55,7 @@ export class MultioutpostworlMaker {
 		const tank = new Tank(id);
 		tank.Id = 'tank';
 		tank.SetPosition(arrivalCell);
+		tank.SetDamage(20);
 
 		const hq = new CellLessHeadquarter();
 		hq.Identity = id;
@@ -89,9 +86,9 @@ export class MultioutpostworlMaker {
 			nextR.GetField().Destroy();
 		}
 
-		const target = cells.Get(new HexAxial(2, 1).ToString());
-		if (!(target.GetField() instanceof BasicField)) {
-			target.GetField().Destroy();
+		const middleCell = cells.Get(new HexAxial(2, 1).ToString());
+		if (!(middleCell.GetField() instanceof BasicField)) {
+			middleCell.GetField().Destroy();
 		}
 
 		[ new HexAxial(5, 2) ].forEach((h) => {
@@ -100,18 +97,19 @@ export class MultioutpostworlMaker {
 			c.SetField(r);
 		});
 
-		[ new HexAxial(4, 1) ].forEach((h) => {
-			let c = cells.Get(h.ToString());
-			let r = new MedicField(cells.Get(h.ToString()), hq);
-			c.SetField(r);
-		});
+		const medicCell = cells.Get(new HexAxial(4, 1).ToString());
+		if (!(medicCell.GetField() instanceof BasicField)) {
+			medicCell.GetField().Destroy();
+		}
+		medicCell.SetField(new MedicField(medicCell, hq));
 
 		const world = new Multioutpostworld(
 			gameState,
 			cells.Values(),
 			tank,
 			hq,
-			target,
+			middleCell,
+			medicCell,
 			nextR,
 			r[0].GetField() as ReactorField,
 			r[1].GetField() as ReactorField

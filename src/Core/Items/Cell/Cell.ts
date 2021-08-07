@@ -42,8 +42,8 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	private _field: IField;
 
 	//events
-	public OnFieldChanged: ILiteEvent<Cell> = new LiteEvent<Cell>();
-	public OnVehicleChanged: ILiteEvent<Vehicle> = new LiteEvent<Vehicle>();
+	public OnFieldChanged: LiteEvent<Cell> = new LiteEvent<Cell>();
+	public OnVehicleChanged: LiteEvent<Vehicle> = new LiteEvent<Vehicle>();
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 
 	private _cellStateSprites: Dictionary<Array<string>>;

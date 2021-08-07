@@ -19,6 +19,7 @@ import Switch from '../Common/Struct/Switch';
 import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
 import { SingletonKey } from '../../Singletons';
 import Bubble from '../Components/Bubble';
+import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 
 export default class DiamondScreen extends HookedComponent<{}, DiamondHook, RuntimeState> {
 	public GetDefaultHook() {
@@ -38,7 +39,13 @@ export default class DiamondScreen extends HookedComponent<{}, DiamondHook, Runt
 				</Visible>
 				<Switch
 					isLeft={!isNullOrUndefined(this.Hook.State.Sentence) && 0 < this.Hook.State.Sentence.length}
-					left={<Bubble Sentence={this.Hook.State.Sentence} OnNext={() => this.Hook.SetNextSentence()} />}
+					left={
+						<Bubble
+							Color={ColorKind.Green}
+							Sentence={this.Hook.State.Sentence}
+							OnNext={() => this.Hook.SetNextSentence()}
+						/>
+					}
 					right={
 						<Visible isVisible={this.Hook.State.GameStatus === GameStatus.Pending}>
 							<Visible isVisible={!this.Hook.State.HasMenu}>

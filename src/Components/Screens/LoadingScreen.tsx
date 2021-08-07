@@ -50,7 +50,7 @@ export default class LoadingScreen extends HookedComponent<{}, LoadingHook, Load
 				}
 				footer={
 					<div class="navbar nav-inner" style="font-weight:bold;">
-						<div>v 0.8.2</div>
+						<div>v {this.Hook.GetVersion()}</div>
 					</div>
 				}
 			/>

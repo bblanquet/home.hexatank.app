@@ -1,7 +1,7 @@
 import { ICampaignService } from '../../Services/Campaign/ICampaignService';
 import { CampaignState } from '../Model/GreenState';
 import { Hook } from './Hook';
-import { BlueSentences } from '../Model/Dialogues';
+import { Blue } from '../Model/Dialogues';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { route } from 'preact-router';
 import { IBuilder } from '../../Services/Builder/IBuilder';
@@ -88,7 +88,7 @@ export class BlueHook extends Hook<CampaignState> {
 		this.Update((e) => {
 			e.HasBubble = !e.HasBubble;
 			e.Level = level;
-			e.Sentence = BlueSentences[Math.round((BlueSentences.length - 1) * Math.random())];
+			e.Sentence = Blue[Math.round((Blue.length - 1) * Math.random())];
 			e.CurrentSentence = '';
 		});
 		setTimeout(() => {

@@ -1,4 +1,4 @@
-export const RedSentences = [
+export const Red = [
 	'There is no hero without a villain',
 	'I like being a villain. Villains are more exciting.',
 	'My mustache made me look more like a villain. I wish I had a mustache...',
@@ -6,7 +6,9 @@ export const RedSentences = [
 	'History will decide if I’m a villain or a hero.'
 ];
 
-export const BlueSentences = [ '...', 'zzzZZZzzzz.', 'Mmmmh' ];
+export const Blue = [ '...', 'zzzZZZzzzz.', 'Mmmmh' ];
+
+export const Home = 'Hey, looks like you are new, come in campaign mode to get a training session with me.';
 
 export const LoadingSentences = [
 	'Importing ammo from abroad...',
@@ -21,17 +23,17 @@ export const LoadingSentences = [
 	'Painting vehicles with fancy colors...'
 ];
 
-export const trainingSentences = [
-	'You have to make a tank reach its destination.',
-	'You have to destroy the oponent outpost.',
-	'You have to create your own outpost.',
-	'You have to retrieve resources for your headquarter.',
-	'You have to improve the current outpost.'
+export const Green = [
+	'Don’t tell my mum I drive tanks, she thinks I am musician.',
+	"Let's have fun in this training session.",
+	'The best tank terrain is that without anti-tank weapons.',
+	'The best armor is staying out of gun-shot.'
 ];
 
-export const Camouflage = [ 'bring your unit to this safe spot.', 'Be careful the path is full of obstacles...', '' ];
+export const Camouflage = [ 'Bring your unit to this safe spot.', 'Be careful the path is full of obstacles...', '' ];
 export const Fire = [
-	'The opponent is very confident of his new highly protected headquarter, destroy it!',
+	'The opponent is very confident of his new highly protected headquarter.',
+	'Show him that is not that well protected.',
 	'To breach out try to conquest reactors first, arrows point them out.',
 	'Good luck soldier.',
 	''
@@ -50,13 +52,17 @@ export const Outpost = [
 
 export const Multioutpost = [
 	'One of your outpost is full juice.',
-	'The other one is out of juice.',
-	"let's make connection between these two outpost to share resources.",
+	'And the other one is out of juice.',
+	"Let's make a connection between these two outposts to share resources.",
 	'',
-	'Well done, the blue line between outposts represents the connection.',
-	"Let's start to transfert energy from one to the other one.",
+	'Well done, reactors are now linked.',
+	"Let's start to transfert some powers from one to another.",
 	'',
-	"Almost done, let's used these released resources for this outpost.",
+	"Almost done, let's used these released powers for this outpost.",
+	'',
+	'Well done, the outpost is powered by three power units.',
+	'An outpost brings strong power up to your units when it holds multiple power units.',
+	"Let's fix your unit.",
 	''
 ];
 
@@ -68,13 +74,3 @@ export const Diamond = [
 	'You have less than 2 minutes to retrieve 35 diamonds.',
 	''
 ];
-
-export function GreenSentences(index: number) {
-	if (index === 1) {
-		return trainingSentences[0];
-	} else if (index === 2) {
-		return trainingSentences[1];
-	} else {
-		return trainingSentences[2];
-	}
-}

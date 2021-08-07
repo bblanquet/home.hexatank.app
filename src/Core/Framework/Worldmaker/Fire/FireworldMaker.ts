@@ -102,7 +102,8 @@ export class FireworldMaker {
 
 		const world = new Fireworld(gameState, cells.Values(), tank, hq, targetHq, [
 			cells.Get(blueprint.Goal.Coo.ToString()),
-			cells.Get(new HexAxial(0, 6).ToString()),
+			cells.Get(new HexAxial(0, 5).ToString()),
+			cells.Get(new HexAxial(5, 1).ToString()),
 			cells.Get(blueprint.Departure.Coo.ToString())
 		]);
 		CellStateSetter.SetStates(world.GetCells());

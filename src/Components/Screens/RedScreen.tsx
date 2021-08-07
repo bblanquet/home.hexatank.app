@@ -16,6 +16,7 @@ import { useState } from 'preact/hooks';
 import AnimatedIcon from '../Common/Button/Badge/AnimatedIcon';
 import Switch from '../Common/Struct/Switch';
 import Column from '../Common/Struct/Column';
+import { SizeKind } from '../Model/SizeKind';
 
 export default class RedScreen extends HookedComponent<{}, RedHook, CampaignState> {
 	public GetDefaultHook(): RedHook {
@@ -39,9 +40,10 @@ export default class RedScreen extends HookedComponent<{}, RedHook, CampaignStat
 										<Icon Value="fas fa-chevron-left" />
 									</SmBtn>
 									<Face
-										eyes={[ 'fill-red-eyes-1', 'fill-red-eyes-2' ]}
-										mouths={[ 'fill-red-mouth-1', 'fill-red-mouth-2', 'fill-red-mouth-3' ]}
-										face={'fill-red-face'}
+										Size={SizeKind.Bg}
+										Eyes={[ 'fill-red-eyes-1', 'fill-red-eyes-2' ]}
+										Mouths={[ 'fill-red-mouth-1', 'fill-red-mouth-2', 'fill-red-mouth-3' ]}
+										Face={'fill-red-face'}
 									/>
 									<SmBtn OnClick={() => this.Hook.Blue()} Color={ColorKind.Blue}>
 										<Icon Value="fas fa-chevron-right" />

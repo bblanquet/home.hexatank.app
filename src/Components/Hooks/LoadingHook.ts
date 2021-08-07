@@ -1,8 +1,6 @@
 import { Hook } from './Hook';
 import { LoadingState } from '../Model/LoadingState';
 import { AudioService } from '../../Services/Audio/AudioService';
-import { IPlayerProfileService } from '../../Services/PlayerProfil/IPlayerProfileService';
-import { IAudioService } from '../../Services/Audio/IAudioService';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { AssetLoader } from '../../Core/Framework/AssetLoader';
 import { AudioLoader } from '../../Core/Framework/AudioLoader';
@@ -13,13 +11,21 @@ import { SpriteProvider } from '../../Core/Framework/SpriteProvider';
 import { SingletonContainer } from '../../SingletonContainer';
 import { LoadingSentences } from '../Model/Dialogues';
 import { StateUpdater } from 'preact/hooks';
+import { IVersionService } from '../../Services/Version/IVersionService';
+import { VersionService } from '../../Services/Version/VersionService';
 
 export class LoadingHook extends Hook<LoadingState> {
 	private _sentenceIndex: number = 0;
 	private _sentencePercentage: number = 0;
+	private _audio: AudioService;
+	private _version: IVersionService;
 
 	constructor(d: [LoadingState, StateUpdater<LoadingState>]) {
 		super(d[0], d[1]);
+		this._audio = new AudioService();
+		Singletons.Register(SingletonKey.Audio, this._audio);
+		this._version = new VersionService();
+		Singletons.Register(SingletonKey.Version, this._version);
 	}
 
 	static DefaultState(): LoadingState {
@@ -41,8 +47,6 @@ export class LoadingHook extends Hook<LoadingState> {
 	}
 
 	public OnStart(): void {
-		const audioService = new AudioService();
-		Singletons.Register(SingletonKey.Audio, audioService);
 		this.Update((e) => {
 			e.IsLoading = true;
 			e.Percentage = 0;
@@ -62,7 +66,7 @@ export class LoadingHook extends Hook<LoadingState> {
 		if (this.IsiOS()) {
 			this.SetAudio(100);
 		} else {
-			const audioLoad = new AudioLoader(audioService);
+			const audioLoad = new AudioLoader(this._audio);
 			const onAudioLoaded = new AssetLoader(audioLoad, 4).LoadAll(audioLoad.Audios());
 			onAudioLoaded.On((obj: any, percentage: number) => {
 				const roundedPercentage = Math.round(percentage);
@@ -101,6 +105,10 @@ export class LoadingHook extends Hook<LoadingState> {
 		new SingletonContainer().Register();
 		SpriteProvider.SetLoaded(true);
 		route('{{sub_path}}Home', true);
+	}
+
+	public GetVersion(): string {
+		return this._version.GetVersionNumber();
 	}
 
 	public Unmount(): void {}

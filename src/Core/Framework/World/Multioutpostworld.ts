@@ -21,13 +21,19 @@ export class Multioutpostworld implements IHqGameworld {
 		cells: Cell[],
 		public Tank: AliveItem,
 		private _fakeHq: CellLessHeadquarter,
-		public Pos: Cell,
+		public MiddleCell: Cell,
+		public MedicCell: Cell,
 		public NextReactor: Cell,
 		public ReactorA: ReactorField,
 		public ReactorB: ReactorField
 	) {
 		this._cells = Dictionary.To((c) => c.Coo(), cells);
 		this.State = state;
+		Tank.OnDamageReceived.On((src: AliveItem, damage: number) => {
+			if (src.HasFullLife() && NextReactor.GetField() instanceof ReactorField && ReactorB.HasEnergy()) {
+				this.State.OnGameStatusChanged.Invoke(this, GameStatus.Victory);
+			}
+		});
 	}
 
 	SetStatus(status: GameStatus): void {

@@ -1,10 +1,13 @@
 import { h, Component } from 'preact';
 import { NotificationState } from '../Model/NotificationState';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
-import Icon from '../Common/Icon/IconComponent';
 import Visible from '../Common/Struct/Visible';
 import { useState } from 'preact/hooks';
 import { NotificationHook } from '../Hooks/NotificationHook';
+import { SizeKind } from '../Model/SizeKind';
+import YellowFace from './Faces/YellowFace';
+import GreenFace from './Faces/GreenFace';
+import Switch from '../Common/Struct/Switch';
 
 export default class Notification extends Component<{ OnNotification: LiteEvent<NotificationState> }> {
 	private _notificationDiv: HTMLElement;
@@ -22,9 +25,9 @@ export default class Notification extends Component<{ OnNotification: LiteEvent<
 
 	private Animate() {
 		if (this._notificationDiv) {
-			this._notificationDiv.classList.remove('bounce');
+			this._notificationDiv.classList.remove('slow-bounce');
 			setTimeout(() => {
-				this._notificationDiv.classList.add('bounce');
+				this._notificationDiv.classList.add('slow-bounce');
 			}, 50);
 		}
 	}
@@ -39,13 +42,17 @@ export default class Notification extends Component<{ OnNotification: LiteEvent<
 				<div class="toast-container">
 					<div
 						ref={(e) => (this._notificationDiv = e)}
-						class="my-toast bounce"
-						style={`background-color:${this._hook.GetColor()};`}
+						class="my-toast slow-bounce"
+						style={`background-color:${this._hook.GetColor()};color:${this._hook.GetSecondaryColor()}`}
 					>
-						<span class="space-out">
-							<Icon Value={this._hook.GetIcon()} />
-						</span>
-						<span class="space-out">{this._hook.State.Message}</span>
+						<div class="d-flex" style="flex-direction:row;align-content:space-between;align-items: center">
+							<Switch
+								isLeft={this._hook.IsError()}
+								left={<YellowFace Size={SizeKind.Sm} />}
+								right={<GreenFace Size={SizeKind.Sm} />}
+							/>
+							<div style="width:100%">{this._hook.State.Message}</div>
+						</div>
 					</div>
 				</div>
 			</Visible>

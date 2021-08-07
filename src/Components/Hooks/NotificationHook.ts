@@ -37,7 +37,7 @@ export class NotificationHook extends Hook<NotificationState> {
 			}
 			this._timeout = setTimeout(() => {
 				this.Update((e) => (e.Message = ''));
-			}, 3000);
+			}, 5000);
 		}
 	}
 
@@ -56,5 +56,13 @@ export class NotificationHook extends Hook<NotificationState> {
 
 	public GetColor() {
 		return StaticLogger.Colors.Get(LogKind[this.State.Kind]);
+	}
+
+	public GetSecondaryColor() {
+		return StaticLogger.SecondaryColors.Get(LogKind[this.State.Kind]);
+	}
+
+	public IsError(): boolean {
+		return [ LogKind.warning, LogKind.dangerous, LogKind.error ].includes(this.State.Kind);
 	}
 }

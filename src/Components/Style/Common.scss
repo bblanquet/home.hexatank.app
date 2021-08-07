@@ -287,11 +287,6 @@
 	padding: 10px;
 }
 
-.faceContainer {
-	width: 200px;
-	padding: 10px;
-}
-
 .statContainer {
 	z-index: 0;
 	width: 100%;
@@ -398,13 +393,19 @@
 
 .my-toast {
 	position: absolute;
-	width: 80%;
+	width: 60%;
 	color: white;
 	text-align: center;
 	padding: 5px;
 	font-weight: bold;
 	border-radius: 10px;
 	height: fit-content;
+}
+
+@media (max-width: 800px) {
+	.my-toast {
+		width: 80%;
+	}
 }
 
 .menu-container {

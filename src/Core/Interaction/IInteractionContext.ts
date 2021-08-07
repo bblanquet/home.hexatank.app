@@ -1,4 +1,3 @@
-import { ViewContext } from './../../Utils/Geometry/ViewContext';
 import { Item } from '../Items/Item';
 import { Point } from 'pixi.js';
 

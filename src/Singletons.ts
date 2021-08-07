@@ -28,6 +28,7 @@ export enum SingletonKey {
 	PlayerProfil,
 	Audio,
 	Record,
+	Version,
 
 	Socket,
 

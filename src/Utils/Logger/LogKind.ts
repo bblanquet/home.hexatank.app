@@ -4,5 +4,6 @@ export enum LogKind {
 	dangerous,
 	error,
 	warning,
-	info
+	info,
+	message
 }

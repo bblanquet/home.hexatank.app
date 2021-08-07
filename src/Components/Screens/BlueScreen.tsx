@@ -18,6 +18,7 @@ import Visible from '../Common/Struct/Visible';
 import AnimatedIcon from '../Common/Button/Badge/AnimatedIcon';
 import Switch from '../Common/Struct/Switch';
 import Column from '../Common/Struct/Column';
+import { SizeKind } from '../Model/SizeKind';
 
 export default class BlueScreen extends HookedComponent<{}, BlueHook, CampaignState> {
 	public GetDefaultHook(): BlueHook {
@@ -41,9 +42,10 @@ export default class BlueScreen extends HookedComponent<{}, BlueHook, CampaignSt
 										<Icon Value="fas fa-chevron-left" />
 									</SmBtn>
 									<Face
-										eyes={[ 'fill-blue-eyes-1', 'fill-blue-eyes-2' ]}
-										mouths={[ 'fill-blue-mouth-1', 'fill-blue-mouth-2', 'fill-blue-mouth-3' ]}
-										face={'fill-blue-face'}
+										Size={SizeKind.Bg}
+										Eyes={[ 'fill-blue-eyes-1', 'fill-blue-eyes-2' ]}
+										Mouths={[ 'fill-blue-mouth-1', 'fill-blue-mouth-2', 'fill-blue-mouth-3' ]}
+										Face={'fill-blue-face'}
 									/>
 									<SmBtn OnClick={() => this.Hook.Green()} Color={ColorKind.Green}>
 										<Icon Value="fas fa-chevron-right" />

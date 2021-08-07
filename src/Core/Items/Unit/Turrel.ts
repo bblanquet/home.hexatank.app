@@ -75,8 +75,8 @@ export class Turrel extends Item implements IRotatable {
 		return this.Base.GetBoundingBox();
 	}
 
-	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
+	public Update(): void {
+		super.Update();
 		this.Action();
 	}
 

@@ -199,7 +199,7 @@ export abstract class AbstractGameHook<T1 extends IBlueprint, T2 extends IHqGame
 		this.Gameworld.SetStatus(isVictory ? GameStatus.Victory : GameStatus.Defeat);
 	}
 
-	GetFieldBtns(): CircleBtnProps[] {
+	public GetFieldBtns(): CircleBtnProps[] {
 		if (this.State.Item instanceof Cell) {
 			const cell = this.State.Item;
 			const hq = this.Gameworld.GetPlayerHq();

@@ -44,13 +44,13 @@ export class FollowingItem extends Item {
 		return false;
 	}
 
-	public Update(viewX: number, viewY: number): void {
+	public Update(): void {
 		if (this.IsUpdatable) {
-			super.Update(viewX, viewY);
+			super.Update();
 			const visible = this._isVisible();
 			if (visible) {
 				if (this._animator && !this._animator.IsDone) {
-					this._animator.Update(viewX, viewY);
+					this._animator.Update();
 				} else {
 					this.SetProperty(this._spriteName, (e) => (e.alpha = visible ? 1 : 0));
 				}

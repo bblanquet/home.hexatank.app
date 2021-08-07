@@ -15,12 +15,12 @@ export class InfiniteTransitionAnimator implements IAnimator {
 	}
 	Reset(): void {}
 
-	Update(viewX: number, viewY: number): void {
+	Update(): void {
 		if (this._animators[this._index].IsDone) {
 			this._index = (this._index + 1) % this._animators.length;
 			this._animators[this._index].Reset();
 		}
 
-		this._animators[this._index].Update(viewX, viewY);
+		this._animators[this._index].Update();
 	}
 }

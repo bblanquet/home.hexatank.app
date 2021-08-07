@@ -25,5 +25,5 @@ export class BasicField extends Field {
 	public Select(context: InteractionContext): boolean {
 		return false;
 	}
-	public Update(viewX: number, viewY: number): void {}
+	public Update(): void {}
 }

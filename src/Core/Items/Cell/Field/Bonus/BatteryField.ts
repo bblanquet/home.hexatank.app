@@ -32,10 +32,10 @@ export class BatteryField extends BonusField {
 
 	Support(vehicule: Vehicle): void {}
 
-	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
+	public Update(): void {
+		super.Update();
 		if (this._ani && !this._ani.IsDone) {
-			this._ani.Update(viewX, viewY);
+			this._ani.Update();
 		}
 	}
 }

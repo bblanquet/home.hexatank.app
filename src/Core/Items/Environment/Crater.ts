@@ -34,8 +34,8 @@ export class Crater extends Item {
 		return false;
 	}
 
-	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
+	public Update(): void {
+		super.Update();
 
 		if (this._isDone) {
 			this.Destroy();

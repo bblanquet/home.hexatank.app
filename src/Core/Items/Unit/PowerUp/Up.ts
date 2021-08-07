@@ -29,9 +29,9 @@ export abstract class Up {
 		}
 	}
 
-	public Update(viewX: number, viewY: number): void {
+	public Update(): void {
 		if (this.Animation) {
-			this.Animation.Update(viewX, viewY);
+			this.Animation.Update();
 		}
 	}
 

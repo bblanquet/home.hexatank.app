@@ -62,21 +62,21 @@ export class UpAnimation extends Item {
 		return false;
 	}
 
-	public Update(viewX: number, viewY: number): void {
+	public Update(): void {
 		if (!this.IsUpdatable) {
 			return;
 		}
-		super.Update(viewX, viewY);
+		super.Update();
 
 		if (!isNullOrUndefined(this._animatorAnimator)) {
-			this._animatorAnimator.Update(viewX, viewY);
+			this._animatorAnimator.Update();
 			if (this._animatorAnimator.IsDone) {
 				this._animatorAnimator = null;
 			}
 		}
 
 		if (this._rotationAnimator) {
-			this._rotationAnimator.Update(viewX, viewY);
+			this._rotationAnimator.Update();
 			if (this._animationTimer.IsElapsed()) {
 				this.SetProperty(this._animImages[this._imgIndex], (e) => (e.alpha = 0));
 				this._imgIndex = (this._imgIndex + 1) % this._animImages.length;

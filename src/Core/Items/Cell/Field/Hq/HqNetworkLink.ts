@@ -9,7 +9,7 @@ import { CellState } from '../../CellState';
 export class HqNetworkLink extends Item {
 	private _graph: Graphics;
 	private _isDestroyed: boolean = false;
-	private _current: number;
+	private _alpha: number;
 	private _start: number;
 	private _end: number;
 	private _step: number;
@@ -22,7 +22,7 @@ export class HqNetworkLink extends Item {
 		this._start = 0.3;
 		this._end = 1;
 		this._step = 0.005;
-		this._current = this._start;
+		this._alpha = this._start;
 		this._graph = new Graphics();
 		this.Push(this._graph);
 		this.InitPosition(this.GetBoundingBox().GetPosition());
@@ -86,32 +86,33 @@ export class HqNetworkLink extends Item {
 		super.Destroy();
 	}
 
-	public Update(viewX: number, viewY: number): void {
+	public Update(): void {
 		if (this._isDestroyed) {
 			return;
 		}
 		if (this._isVisible) {
-			if (this._end < this._current) {
+			if (this._end < this._alpha) {
 				this._isFadeIn = false;
-				this._current = this._end;
+				this._alpha = this._end;
 			}
 
-			if (this._current < this._start) {
+			if (this._alpha < this._start) {
 				this._isFadeIn = true;
-				this._current = this._start;
+				this._alpha = this._start;
 			}
 
 			if (this._isFadeIn) {
-				this._current += this._step;
+				this._alpha += this._step;
 			} else {
-				this._current -= this._step;
+				this._alpha -= this._step;
 			}
 
 			this._graph.clear();
-			this._graph.lineStyle(3, 0x68c7f1, this._current);
-			var aPoint = this._leftReactorField.GetBoundingBox().GetCentralPoint();
-			var bPoint = this._rightReactorField.GetBoundingBox().GetCentralPoint();
-			this._graph.moveTo(aPoint.X, aPoint.Y).lineTo(bPoint.X, bPoint.Y);
+			this._graph = new Graphics();
+			this._graph.lineStyle(3, 0x68c7f1, this._alpha);
+			const left = this._leftReactorField.GetBoundingBox().GetCentralPoint();
+			const right = this._rightReactorField.GetBoundingBox().GetCentralPoint();
+			this._graph.moveTo(left.X, left.Y).lineTo(right.X, right.Y);
 		}
 	}
 }

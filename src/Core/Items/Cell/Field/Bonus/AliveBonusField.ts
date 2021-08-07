@@ -65,11 +65,11 @@ export abstract class AliveBonusField extends AliveField implements IActiveConta
 		return this.GetCell().GetBoundingBox();
 	}
 
-	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
+	public Update(): void {
+		super.Update();
 
 		if (!this._animator.IsDone) {
-			this._animator.Update(viewX, viewY);
+			this._animator.Update();
 		}
 
 		this.AnimateLight();

@@ -23,7 +23,7 @@ export class FadeInAnimation implements IAnimator {
 		this.IsDone = false;
 	}
 
-	Update(viewX: number, viewY: number): void {
+	Update(): void {
 		if (this._timer.IsElapsed()) {
 			if (this._end > this._current) {
 				this._current += this._step;

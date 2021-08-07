@@ -25,7 +25,7 @@ export class RotationAnimator implements IAnimator {
 	}
 
 	Reset(): void {}
-	Update(viewX: number, viewY: number): void {
+	Update(): void {
 		if (this._timer.IsElapsed()) {
 			const delta = this._side ? this._current : -this._current;
 			this._item.SetProperties(this._sprites, (s) => (s.rotation += delta));

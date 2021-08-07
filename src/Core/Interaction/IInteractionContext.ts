@@ -6,7 +6,6 @@ export interface IInteractionContext {
 	Kind: InteractionKind;
 	Point: Point;
 	OnSelect(item: Item): void;
-	View: ViewContext;
 }
 
 export enum InteractionKind {

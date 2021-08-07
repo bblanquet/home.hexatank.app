@@ -78,14 +78,14 @@ export class AboveItemText extends Item {
 		this._text.visible = this._isVisible;
 	}
 
-	public Update(viewX: number, viewY: number): void {
+	public Update(): void {
 		if (this._item.IsUpdatable) {
-			super.Update(viewX, viewY);
+			super.Update();
 			if (this._isVisible) {
 				if (!this._animator.IsDone) {
 					this.UpdateText();
 				}
-				this._animator.Update(viewX, viewY);
+				this._animator.Update();
 				if (this._visibleTimer && this._visibleTimer.IsElapsed()) {
 					this._isVisible = false;
 					this._text.visible = false;

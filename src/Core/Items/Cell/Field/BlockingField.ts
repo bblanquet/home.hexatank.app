@@ -50,12 +50,12 @@ export class BlockingField extends AliveField {
 		return false;
 	}
 
-	public Update(viewX: number, viewY: number): void {
+	public Update(): void {
 		if (!this.IsAlive()) {
 			this.Destroy();
 			return;
 		}
-		super.Update(viewX, viewY);
+		super.Update();
 	}
 
 	public Destroy(): void {

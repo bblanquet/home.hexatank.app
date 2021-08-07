@@ -37,8 +37,8 @@ export class WaterField extends Field {
 		});
 	}
 
-	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
+	public Update(): void {
+		super.Update();
 		this.SetProperty(SvgArchive.nature.water.leaf, (s) => (s.rotation += 0.005));
 
 		this.SetProperty(SvgArchive.nature.water.middle.wave, (s) => {

@@ -80,8 +80,8 @@ export class Missile extends Item {
 		return radius;
 	}
 
-	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
+	public Update(): void {
+		super.Update();
 
 		if (!this.IsReached) {
 			this.IsReached = this.IsTargetReached();

@@ -49,11 +49,11 @@ export class AboveItem extends Item {
 		this._isVisible = show;
 	}
 
-	Update(vx: number, vy: number): void {
+	Update(): void {
 		if (this._isVisible()) {
 			this.SetProperty(this._sprite, (e) => (e.alpha = 1));
-			super.Update(vx, vy);
-			this._animator.Update(vx, vy);
+			super.Update();
+			this._animator.Update();
 		} else {
 			this.SetProperty(this._sprite, (e) => (e.alpha = 0));
 		}

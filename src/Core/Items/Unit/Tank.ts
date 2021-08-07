@@ -83,8 +83,8 @@ export class Tank extends Vehicle {
 		return this.GetCurrentCell().GetNearby().some((c) => TypeTranslator.HasFoeVehicle(c, this.Identity));
 	}
 
-	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
+	public Update(): void {
+		super.Update();
 
 		// if (this.IsSelected()) {
 		// 	throw new Error('Method not implemented.');
@@ -98,12 +98,12 @@ export class Tank extends Vehicle {
 			this._currentTarget = null;
 		}
 
-		this.Turrel.Update(viewX, viewY);
+		this.Turrel.Update();
 
 		this.FindTargets();
 
 		if (this._infiniteAnimator) {
-			this._infiniteAnimator.Update(viewX, viewY);
+			this._infiniteAnimator.Update();
 		}
 	}
 

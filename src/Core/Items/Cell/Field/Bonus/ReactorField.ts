@@ -52,6 +52,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	//events
 	public OnSelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 	public OnPowerChanged: LiteEvent<boolean> = new LiteEvent<boolean>();
+	public OnEnergyChanged: LiteEvent<number> = new LiteEvent<number>();
 	public OnLost: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
 	public OnOverlocked: LiteEvent<string> = new LiteEvent<string>();
 
@@ -92,11 +93,15 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	public ChangeEnergy(): void {
 		if (this.Reserve.GetTotalBatteries() === this.Reserve.GetUsedPower()) {
 			this.Reserve.Clear();
-			if (this.Reserve.GetUsedPower() === 0) {
-				this.OnPowerChanged.Invoke(this, false);
-			}
-		} else {
+			this.OnPowerChanged.Invoke(this, false);
+			this.OnEnergyChanged.Invoke(this, this.Reserve.GetUsedPower());
+		} else if (this.HasStock()) {
+			const isEmpty = this.Reserve.GetUsedPower() === 0;
 			this.Reserve.FullCharges();
+			if (isEmpty) {
+				this.OnPowerChanged.Invoke(this, true);
+			}
+			this.OnEnergyChanged.Invoke(this, this.Reserve.GetUsedPower());
 		}
 	}
 
@@ -256,24 +261,24 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		return false;
 	}
 
-	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
+	public Update(): void {
+		super.Update();
 
-		this.Appearance.Update(viewX, viewY);
+		this.Appearance.Update();
 
 		if (this._area) {
 			this._area.forEach((area) => {
-				area.Update(viewX, viewY);
+				area.Update();
 			});
 		}
 
 		if (this._overlockAnimation && !this._overlockAnimation.IsDone) {
-			this._overlockAnimation.Update(viewX, viewY);
+			this._overlockAnimation.Update();
 		}
 
 		if (this.Charges) {
 			this.Charges.Values().forEach((charge) => {
-				charge.Update(viewX, viewY);
+				charge.Update();
 			});
 		}
 	}
@@ -295,6 +300,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		if (formerEnergy === 0 && this.Reserve.GetUsedPower() === 1) {
 			this.OnPowerChanged.Invoke(this, true);
 		}
+		this.OnEnergyChanged.Invoke(this, this.Reserve.GetUsedPower());
 	}
 
 	public GetPower(): number {
@@ -307,6 +313,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 			if (this.Reserve.GetUsedPower() === 0) {
 				this.OnPowerChanged.Invoke(this, false);
 			}
+			this.OnEnergyChanged.Invoke(this, this.Reserve.GetUsedPower());
 		}
 	}
 
@@ -371,6 +378,10 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 
 	public HasStock(): boolean {
 		return this.Reserve.HasStock();
+	}
+
+	public GetStockAmount(): number {
+		return this.Reserve.GetAvailableBatteries().length;
 	}
 
 	public IsSelected(): boolean {

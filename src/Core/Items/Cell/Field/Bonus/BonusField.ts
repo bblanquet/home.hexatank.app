@@ -85,7 +85,7 @@ export abstract class BonusField extends Field implements IActiveContainer {
 		return false;
 	}
 
-	public Update(viewX: number, viewY: number): void {
+	public Update(): void {
 		if (!this.IsUpdatable) {
 			//got destroyed by a lost reactor
 			return;
@@ -96,9 +96,9 @@ export abstract class BonusField extends Field implements IActiveContainer {
 		}
 
 		if (!this._animator.IsDone) {
-			this._animator.Update(viewX, viewY);
+			this._animator.Update();
 		} else {
-			super.Update(viewX, viewY);
+			super.Update();
 		}
 		if (0 < this.Energy) {
 			this.SetProperty(this.hq.Identity.Skin.GetLight(), (s) => {

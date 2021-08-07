@@ -26,8 +26,6 @@ export class MultiSelectionContext implements IInteractionContext {
 	public Point: PIXI.Point;
 	private _cells: Dictionary<Cell>;
 	private _highlightingCells: BasicItem[];
-	public View: ViewContext;
-	private _viewport: any;
 
 	public OnModeChanged: LiteEvent<SelectionKind> = new LiteEvent<SelectionKind>();
 	public OnSelectionChanged: SimpleEvent = new SimpleEvent();
@@ -35,7 +33,6 @@ export class MultiSelectionContext implements IInteractionContext {
 	constructor() {
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
-		this._viewport = this._layerService.GetViewport();
 		this._cells = new Dictionary<Cell>();
 		this._highlightingCells = new Array<BasicItem>();
 	}
@@ -56,15 +53,6 @@ export class MultiSelectionContext implements IInteractionContext {
 
 	public Moving(point: Point): void {
 		this.Point = new PIXI.Point(point.X, point.Y);
-		if (this._viewport.lastViewport) {
-			this.View = new ViewContext();
-			this.View.Scale = this._viewport.lastViewport.scaleX;
-			this.View.SetX(this._viewport.left);
-			this.View.SetY(this._viewport.top);
-		} else {
-			this.View = null;
-		}
-
 		if (this.IsListening()) {
 			this._updateService.Publish().Items.forEach((item) => {
 				item.Select(this);

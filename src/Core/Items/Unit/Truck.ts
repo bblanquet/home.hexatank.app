@@ -85,8 +85,8 @@ export class Truck extends Vehicle {
 		});
 	}
 
-	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
+	public Update(): void {
+		super.Update();
 		if (0 < this._diamondsCount) {
 			if (!this._light.IsVisible()) {
 				this._light.Display();
@@ -98,6 +98,6 @@ export class Truck extends Vehicle {
 		}
 
 		this._light.GetSprites().forEach((s) => (s.visible = this.GetCurrentCell().IsVisible()));
-		this._light.Update(viewX, viewY);
+		this._light.Update();
 	}
 }

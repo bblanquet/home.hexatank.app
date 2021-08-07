@@ -18,15 +18,15 @@ export class BouncingScaleAnimator implements IAnimator {
 	}
 	Reset(): void {}
 
-	Update(viewX: number, viewY: number): void {
+	Update(): void {
 		if (this._timer.IsElapsed()) {
 			if (this._isIncreasing) {
 				this._scale += this._step;
-				this.SetBoundingBox(viewX, viewY);
+				this.SetBoundingBox();
 				this._step += 0.005;
 			} else {
 				this._scale -= this._step;
-				this.SetBoundingBox(viewX, viewY);
+				this.SetBoundingBox();
 			}
 
 			if (this._scale > 1.2) {
@@ -35,15 +35,15 @@ export class BouncingScaleAnimator implements IAnimator {
 
 			if (this._scale <= 1 && !this._isIncreasing) {
 				this._scale = 1;
-				this.SetBoundingBox(viewX, viewY);
+				this.SetBoundingBox();
 				this.IsDone = true;
 			}
 		} else {
-			this.SetBoundingBox(viewX, viewY);
+			this.SetBoundingBox();
 		}
 	}
 
-	private SetBoundingBox(viewX: number, viewY: number) {
+	private SetBoundingBox() {
 		this._item.GetSprites().forEach((obj) => {
 			obj.width = this._item.GetBoundingBox().GetWidth() * this._scale;
 			obj.height = this._item.GetBoundingBox().GetHeight() * this._scale;
@@ -52,11 +52,11 @@ export class BouncingScaleAnimator implements IAnimator {
 				obj.x =
 					this._item.GetBoundingBox().GetWidth() / 2 -
 					this._item.GetBoundingBox().GetWidth() * this._scale / 2 +
-					(reference.X + viewX);
+					reference.X;
 				obj.y =
 					this._item.GetBoundingBox().GetHeight() / 2 -
 					this._item.GetBoundingBox().GetHeight() * this._scale / 2 +
-					(reference.Y + viewY);
+					reference.Y;
 			}
 		});
 	}

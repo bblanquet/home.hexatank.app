@@ -10,6 +10,7 @@ import { IHeadquarter } from '../../Items/Cell/Field/Hq/IHeadquarter';
 import { Identity } from '../../Items/Identity';
 import { Vehicle } from '../../Items/Unit/Vehicle';
 import { GameState } from './GameState';
+import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 export class Multioutpostworld implements IHqGameworld {
 	public OnItemSelected: LiteEvent<Item> = new LiteEvent<Item>();
 	private _cells: Dictionary<Cell>;
@@ -18,11 +19,12 @@ export class Multioutpostworld implements IHqGameworld {
 	constructor(
 		state: GameState,
 		cells: Cell[],
-		private _unit: AliveItem,
+		public Tank: AliveItem,
 		private _fakeHq: CellLessHeadquarter,
-		public Target: Cell,
-		public ReactorA: Cell,
-		public ReactorB: Cell
+		public Pos: Cell,
+		public NextReactor: Cell,
+		public ReactorA: ReactorField,
+		public ReactorB: ReactorField
 	) {
 		this._cells = Dictionary.To((c) => c.Coo(), cells);
 		this.State = state;
@@ -44,7 +46,7 @@ export class Multioutpostworld implements IHqGameworld {
 		return this._cells.Values();
 	}
 	GetPlayer(): AliveItem {
-		return this._unit;
+		return this.Tank;
 	}
 
 	GetPlayerHq(): IHeadquarter {

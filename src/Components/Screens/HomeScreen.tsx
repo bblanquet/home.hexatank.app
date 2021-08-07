@@ -8,6 +8,7 @@ import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Visible from '../Common/Struct/Visible';
 import { Env } from '../../Utils/Env';
 import Panel from '../Components/Panel/Panel';
+import { Versionning } from '../Model/Versionning';
 import { IAudioService } from '../../Services/Audio/IAudioService';
 import { IPlayerProfileService } from '../../Services/PlayerProfil/IPlayerProfileService';
 import { Singletons, SingletonKey } from '../../Singletons';
@@ -16,6 +17,7 @@ import Grid from '../Common/Grid/GridComponent';
 import SmActiveBtn from '../Common/Button/Stylish/SmActiveBtn';
 export default class HomeScreen extends Component<any, { IsMenu: boolean }> {
 	private _versions: Versionning[] = [
+		new Versionning('0.8.2', [ 'stuffs' ], [ 'Marvin' ]),
 		new Versionning(
 			'0.8.14',
 			[ 'fix hanging unit', 'fix and improve IA', 'improve online synchronisation #2' ],
@@ -108,7 +110,7 @@ export default class HomeScreen extends Component<any, { IsMenu: boolean }> {
 				}
 				footer={
 					<div class="navbar nav-inner" style="font-weight:bold;">
-						<div>v 0.8.14</div>
+						<div>v 0.8.2</div>
 						<SmActiveBtn
 							left={<Icon Value="fas fa-bug" />}
 							right={<Icon Value="fas fa-bug" />}
@@ -124,7 +126,4 @@ export default class HomeScreen extends Component<any, { IsMenu: boolean }> {
 			/>
 		);
 	}
-}
-export class Versionning {
-	constructor(public Name: string, public Features: string[], public Hunters: string[]) {}
 }

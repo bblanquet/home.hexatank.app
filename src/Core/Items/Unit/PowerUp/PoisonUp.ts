@@ -16,8 +16,8 @@ export class PoisonUp extends Up {
 		this._timer = new TimeTimer(1000);
 	}
 
-	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
+	public Update(): void {
+		super.Update();
 		if (this._timer.IsElapsed()) {
 			this.Vehicle.SetDamage(Math.abs(this._upCalculator.GetPoison(this.GetCurrentEnergy())));
 		}

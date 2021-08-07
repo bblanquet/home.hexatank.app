@@ -36,8 +36,8 @@ export class VolcanoField extends Field {
 		});
 	}
 
-	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
+	public Update(): void {
+		super.Update();
 
 		this.SetProperty(SvgArchive.nature.volcanaoAnimation, (s) => {
 			if (s.alpha < 0) {

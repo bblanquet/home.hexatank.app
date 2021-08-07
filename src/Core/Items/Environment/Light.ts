@@ -48,8 +48,8 @@ export class Light extends Item {
 		SvgArchive.lights.forEach((l) => this.SetProperty(l, (s) => (s.alpha = 0)));
 	}
 
-	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
+	public Update(): void {
+		super.Update();
 
 		if (this._isVisible) {
 			this.SetProperty(SvgArchive.lights[this._lightIndex], (s) => {

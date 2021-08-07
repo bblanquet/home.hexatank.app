@@ -42,14 +42,14 @@ export class ShieldAppearance extends Item {
 		});
 	}
 
-	public Update(viewX: number, viewY: number): void {
+	public Update(): void {
 		if (this._aliveItem.IsAlive()) {
 			if (0 < this._aliveItem.Energy) {
-				this._fadeAnimator.Update(viewX, viewY);
+				this._fadeAnimator.Update();
 			}
-			super.Update(viewX, viewY);
+			super.Update();
 			if (!this.Animator.IsDone) {
-				this.Animator.Update(viewX, viewY);
+				this.Animator.Update();
 			}
 		} else {
 			this.Destroy();

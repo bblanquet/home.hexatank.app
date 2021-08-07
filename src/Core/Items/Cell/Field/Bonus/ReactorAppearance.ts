@@ -93,28 +93,28 @@ export class ReactorAppearance extends Item {
 		return false;
 	}
 
-	public Update(viewX: number, viewY: number): void {
+	public Update(): void {
 		if (!this.IsUpdatable) {
 			return;
 		}
 
 		if (!this._animator.IsDone) {
-			this._animator.Update(viewX, viewY);
+			this._animator.Update();
 			if (this._animator.IsDone) {
-				this.ChangeReferential(viewX, viewY);
+				this.ChangeReferential();
 			}
 		} else {
-			super.Update(viewX, viewY);
+			super.Update();
 		}
 
 		if (this.Reactor.IsLocked()) {
-			this._coverRotator.Update(viewX, viewY);
+			this._coverRotator.Update();
 		}
 
 		if (!isNullOrUndefined(this._lightAnimator)) {
-			this._lightAnimator.Update(viewX, viewY);
+			this._lightAnimator.Update();
 		}
-		this._rotator.Update(viewX, viewY);
+		this._rotator.Update();
 
 		this.SetProperty(this._light, (s) => {
 			if (s.alpha < 0.1) {
@@ -133,13 +133,13 @@ export class ReactorAppearance extends Item {
 		return this.Reactor.GetIdentity().GetRelation(item);
 	}
 
-	private ChangeReferential(viewX: number, viewY: number) {
+	private ChangeReferential() {
 		this.GetSprites().forEach((sprite) => {
 			(sprite.width = this.Reactor.GetCell().GetBoundingBox().GetWidth()),
 				(sprite.height = this.Reactor.GetCell().GetBoundingBox().GetHeight());
 			sprite.anchor.set(0.5);
 		});
 		this.IsCentralRef = true;
-		super.Update(viewX, viewY);
+		super.Update();
 	}
 }

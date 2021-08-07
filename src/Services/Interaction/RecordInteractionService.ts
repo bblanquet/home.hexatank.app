@@ -4,9 +4,7 @@ import { InputNotifier } from './../../Core/Interaction/InputNotifier';
 import { Gameworld } from '../../Core/Framework/World/Gameworld';
 import { InteractionContext } from '../../Core/Interaction/InteractionContext';
 import { IInteractionService } from './IInteractionService';
-import { ILayerService } from '../Layer/ILayerService';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
-import { Singletons, SingletonKey } from '../../Singletons';
 import * as PIXI from 'pixi.js';
 import { CancelCombination } from '../../Core/Interaction/Combination/CancelCombination';
 import { ClearTrashCombination } from '../../Core/Interaction/Combination/ClearTrashCombination';
@@ -19,11 +17,6 @@ export class RecordInteractionService implements IInteractionService<Gameworld> 
 	private _inputNotifier: InputNotifier;
 	private _interaction: InteractionContext;
 	public OnMultiMenuShowed: LiteEvent<boolean> = new LiteEvent<boolean>();
-	private _layerService: ILayerService;
-
-	constructor() {
-		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
-	}
 
 	Register(manager: PIXI.InteractionManager, gameworld: Gameworld): void {
 		this._inputNotifier = new InputNotifier(manager);
@@ -37,7 +30,6 @@ export class RecordInteractionService implements IInteractionService<Gameworld> 
 				new TrackingClearTrashCombination()
 			],
 			checker,
-			this._layerService.GetViewport(),
 			gameworld.State
 		);
 		this._interaction.OnError.On((src: any, data: Error) => {

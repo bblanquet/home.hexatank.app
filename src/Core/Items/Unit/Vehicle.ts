@@ -448,7 +448,7 @@ export abstract class Vehicle extends AliveItem
 		CellStateSetter.SetStates(this._currentCell.GetAll());
 	}
 
-	public Update(viewX: number, viewY: number): void {
+	public Update(): void {
 		if (!this.IsAlive()) {
 			this.Destroy();
 			new Crater(this.BoundingBox);
@@ -457,7 +457,7 @@ export abstract class Vehicle extends AliveItem
 
 		if (!isNullOrUndefined(this._ups)) {
 			this._ups.forEach((up) => {
-				up.Update(viewX, viewY);
+				up.Update();
 			});
 		}
 
@@ -472,7 +472,7 @@ export abstract class Vehicle extends AliveItem
 			this.Moving();
 		}
 
-		super.Update(viewX, viewY);
+		super.Update();
 	}
 
 	private SetCurrentOrder() {

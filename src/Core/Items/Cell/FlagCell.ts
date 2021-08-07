@@ -35,8 +35,8 @@ export class FlagCell extends Item {
 	public Select(context: InteractionContext): boolean {
 		return false;
 	}
-	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
+	public Update(): void {
+		super.Update();
 
 		this.SetProperty(SvgArchive.flagCell, (s) => {
 			if (s.alpha < 0) {

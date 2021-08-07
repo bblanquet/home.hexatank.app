@@ -55,9 +55,9 @@ export class HeadquarterField extends Field {
 		return false;
 	}
 
-	public Update(viewX: number, viewY: number): void {
+	public Update(): void {
 		if (this.IsUpdatable) {
-			super.Update(viewX, viewY);
+			super.Update();
 
 			if (this._timer.IsElapsed()) {
 				if (this.GetSprites()[0].alpha < 0.25) {

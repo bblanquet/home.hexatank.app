@@ -45,7 +45,7 @@ export class HqLessShieldField extends AliveBonusField {
 		return this.Identity.GetRelation(id);
 	}
 
-	public Update(viewX: number, viewY: number): void {
+	public Update(): void {
 		if (!this.IsAlive()) {
 			this.Destroy();
 			return;
@@ -56,7 +56,7 @@ export class HqLessShieldField extends AliveBonusField {
 					this.SetDamage(-fixValue);
 				}
 			}
-			super.Update(viewX, viewY);
+			super.Update();
 		}
 	}
 

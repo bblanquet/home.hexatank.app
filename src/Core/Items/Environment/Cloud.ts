@@ -35,8 +35,8 @@ export class Cloud extends Item {
 		return false;
 	}
 
-	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
+	public Update(): void {
+		super.Update();
 
 		if (this._goingRight) {
 			if (this._boundingBox.GetX() >= this._max) {

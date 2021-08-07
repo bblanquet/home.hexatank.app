@@ -17,15 +17,10 @@ import { Camouflageworld } from '../../Core/Framework/World/Camouflageworld';
 import { TankCombination } from '../../Core/Interaction/Combination/TankCombination';
 
 export class CamouflageInteractionService implements IInteractionService<Camouflageworld> {
-	private _layerService: ILayerService;
 	private _multiSelectionContext: MultiSelectionContext;
 	private _inputNotifier: InputNotifier;
 	private _interaction: InteractionContext;
 	public OnMultiMenuShowed: LiteEvent<boolean> = new LiteEvent<boolean>();
-
-	constructor() {
-		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
-	}
 
 	Register(manager: PIXI.InteractionManager, gameworld: Camouflageworld): void {
 		this._multiSelectionContext = new MultiSelectionContext();
@@ -43,7 +38,6 @@ export class CamouflageInteractionService implements IInteractionService<Camoufl
 				new SimpleSelectionCombination(checker, gameworld)
 			],
 			checker,
-			this._layerService.GetViewport(),
 			gameworld.State
 		);
 	}

@@ -24,7 +24,7 @@ export class FadeInOutAnimation implements IAnimator {
 	}
 	Reset(): void {}
 
-	Update(viewX: number, viewY: number): void {
+	Update(): void {
 		if (this.IsDone) {
 			return;
 		}
@@ -40,6 +40,6 @@ export class FadeInOutAnimation implements IAnimator {
 			this._count += 1;
 		}
 
-		this._animators[this._index].Update(viewX, viewY);
+		this._animators[this._index].Update();
 	}
 }

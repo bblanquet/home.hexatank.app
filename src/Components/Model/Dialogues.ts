@@ -49,9 +49,14 @@ export const Outpost = [
 ];
 
 export const Multioutpost = [
-	'One of your reactor is full juice.',
+	'One of your outpost is full juice.',
 	'The other one is out of juice.',
-	"let's make connection between these two reactors to share resources.",
+	"let's make connection between these two outpost to share resources.",
+	'',
+	'Well done, the blue line between outposts represents the connection.',
+	"Let's start to transfert energy from one to the other one.",
+	'',
+	"Almost done, let's used these released resources for this outpost.",
 	''
 ];
 

@@ -266,12 +266,10 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 		}
 	}
 
-	public Update(viewX: number, viewY: number): void {
+	public Update(): void {
 		if (this._brain) {
 			this._brain.Update();
 		}
-		this._network.Update(viewX, viewY);
-
 		this.SetProperty(SvgArchive.building.hq.bottom, (sprite) => (sprite.rotation += 0.1));
 
 		if (!this.IsAlive()) {
@@ -280,7 +278,7 @@ export class Headquarter extends AliveItem implements IField, ISelectable, IHead
 			return;
 		}
 
-		super.Update(viewX, viewY);
+		super.Update();
 
 		this.Fields.forEach((field) => {
 			this.Earn(field.Diamonds);

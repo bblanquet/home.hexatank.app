@@ -38,12 +38,12 @@ export class Dust extends Item {
 		//do nothing
 		return false;
 	}
-	public Update(viewX: number, viewY: number): void {
+	public Update(): void {
 		if (!this.IsUpdatable) {
 			return;
 		}
 
-		super.Update(viewX, viewY);
+		super.Update();
 
 		if (0 <= this.currentDust && this.currentDust < SvgArchive.dusts.length) {
 			this.SetProperty(SvgArchive.dusts[this.currentDust], (s) => (s.rotation += 0.1));

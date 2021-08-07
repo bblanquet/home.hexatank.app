@@ -36,8 +36,8 @@ export class Explosion extends Item {
 		this.InitPosition(boundingbox.GetPosition());
 	}
 
-	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
+	public Update(): void {
+		super.Update();
 
 		if (this._isStarted) {
 			this._isStarted = false;

@@ -76,8 +76,8 @@ export class ChargeLink extends Item implements IMovable {
 		return false;
 	}
 
-	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
+	public Update(): void {
+		super.Update();
 		this._translateMaker.Translate();
 	}
 }

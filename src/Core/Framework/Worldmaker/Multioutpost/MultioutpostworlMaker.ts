@@ -33,6 +33,7 @@ export class MultioutpostworlMaker {
 
 		GameSettings.Init();
 		GameSettings.SetNormalSpeed();
+		GameSettings.TranslatinDuration = 1000;
 		const cells = new Dictionary<Cell>();
 
 		blueprint.Cells.forEach((item) => {
@@ -83,9 +84,14 @@ export class MultioutpostworlMaker {
 			c.SetField(r);
 		});
 
-		const fireCell = cells.Get(new HexAxial(2, 2).ToString());
-		if (!(fireCell.GetField() instanceof BasicField)) {
-			fireCell.GetField().Destroy();
+		const nextR = cells.Get(new HexAxial(2, 2).ToString());
+		if (!(nextR.GetField() instanceof BasicField)) {
+			nextR.GetField().Destroy();
+		}
+
+		const target = cells.Get(new HexAxial(2, 1).ToString());
+		if (!(target.GetField() instanceof BasicField)) {
+			target.GetField().Destroy();
 		}
 
 		[ new HexAxial(5, 2) ].forEach((h) => {
@@ -100,7 +106,16 @@ export class MultioutpostworlMaker {
 			c.SetField(r);
 		});
 
-		const world = new Multioutpostworld(gameState, cells.Values(), tank, hq, fireCell, r[0], r[1]);
+		const world = new Multioutpostworld(
+			gameState,
+			cells.Values(),
+			tank,
+			hq,
+			target,
+			nextR,
+			r[0].GetField() as ReactorField,
+			r[1].GetField() as ReactorField
+		);
 		CellStateSetter.SetStates(world.GetCells());
 		world.GetCells().forEach((c) => {
 			c.SetState(CellState.Visible);

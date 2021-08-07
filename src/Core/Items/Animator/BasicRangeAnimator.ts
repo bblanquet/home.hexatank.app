@@ -34,7 +34,7 @@ export class BasicRangeAnimator implements IAnimator {
 		this._animators = [];
 		this.IsDone = false;
 	}
-	Update(viewX: number, viewY: number): void {
+	Update(): void {
 		if (this.IsDone) {
 			return;
 		}

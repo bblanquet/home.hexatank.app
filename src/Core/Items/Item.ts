@@ -109,15 +109,15 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 		this._layerService.Publish().Add(this);
 	}
 
-	public Update(viewX: number, viewY: number): void {
+	public Update(): void {
 		const ref = this.GetRef();
 		this.DisplayObjects.forEach((obj) => {
-			obj.x = ref.X + viewX;
-			obj.y = ref.Y + viewY;
+			obj.x = ref.X;
+			obj.y = ref.Y;
 		});
 		this.GetSprites().forEach((sprite) => {
-			sprite.x = ref.X + viewX;
-			sprite.y = ref.Y + viewY;
+			sprite.x = ref.X;
+			sprite.y = ref.Y;
 			sprite.width = this.GetBoundingBox().GetWidth();
 			sprite.height = this.GetBoundingBox().GetHeight();
 		});

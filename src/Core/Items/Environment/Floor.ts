@@ -24,8 +24,8 @@ export class Floor extends BasicItem {
 		this._idleLongTimer = new TickTimer(this.GetRandom());
 	}
 
-	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
+	public Update(): void {
+		super.Update();
 
 		if (this._idleLongTimer.IsElapsed()) {
 			this._idleLongTimer = new TickTimer(this.GetRandom());

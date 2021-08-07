@@ -18,7 +18,7 @@ export class TransitionAnimation implements IAnimator {
 		this.IsDone = false;
 	}
 
-	Update(viewX: number, viewY: number): void {
+	Update(): void {
 		if (this._timer.IsElapsed()) {
 			if (Math.abs(Math.abs(this._distance) - Math.abs(this._current)) < Math.abs(this._step)) {
 				this.IsDone = true;

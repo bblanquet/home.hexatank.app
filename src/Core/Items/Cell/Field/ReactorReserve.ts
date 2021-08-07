@@ -101,7 +101,7 @@ export class ReactorReserve {
 		return this.GetAvailableBatteries().length > 0;
 	}
 
-	private GetAvailableBatteries(): Array<BatteryField> {
+	public GetAvailableBatteries(): Array<BatteryField> {
 		const reactors = this._reactor
 			.GetConnectedReactors()
 			.map((e) => e.GetInternalBatteries())

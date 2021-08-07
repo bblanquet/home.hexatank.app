@@ -19,14 +19,13 @@ import { Env } from '../../Utils/Env';
 import { LogKind } from '../../Utils/Logger/LogKind';
 import { StaticLogger } from '../../Utils/Logger/StaticLogger';
 import { UnitGroup } from '../Items/UnitGroup';
-import { IGameworldService } from '../../Services/World/IGameworldService';
 import { GameState } from '../Framework/World/GameState';
 
 export class InteractionContext implements IContextContainer, IInteractionContext {
 	private _updateService: IUpdateService;
 	public Kind: InteractionKind;
 	public Point: PIXI.Point;
-	public View: ViewContext;
+	public Scale: number;
 	private _selectedItem: Array<Item>;
 	public OnError: LiteEvent<Error> = new LiteEvent<Error>();
 	public OnInteractionChanged: LiteEvent<InteractionInfo> = new LiteEvent<InteractionInfo>();
@@ -35,7 +34,6 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 		private _inputNotifier: InputNotifier,
 		private _combinations: ICombination[],
 		private _checker: ISelectableChecker,
-		private _viewPort: any,
 		private _gameState: GameState
 	) {
 		this._updateService = Singletons.Load<IUpdateService>(SingletonKey.Update);
@@ -90,15 +88,6 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 	private NotifyContext(kind: InteractionKind, point: Point) {
 		this.Point = new PIXI.Point(point.X, point.Y);
 		this.Kind = kind;
-		if (this._viewPort.lastViewport) {
-			this.View = new ViewContext();
-			this.View.Scale = this._viewPort.lastViewport.scaleX;
-			this.View.SetX(this._viewPort.left);
-			this.View.SetY(this._viewPort.top);
-		} else {
-			this.View = null;
-		}
-
 		this._updateService.Publish().Select(this);
 	}
 

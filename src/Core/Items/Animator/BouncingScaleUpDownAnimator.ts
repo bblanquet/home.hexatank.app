@@ -21,7 +21,7 @@ export class BouncingScaleUpDownAnimator implements IAnimator {
 	}
 	Reset(): void {}
 
-	Update(viewX: number, viewY: number): void {
+	Update(): void {
 		if (this._timer.IsElapsed()) {
 			if (this._isIncreasing) {
 				this._scale += this._step;

@@ -88,17 +88,17 @@ export abstract class AliveItem extends Item {
 		}
 	}
 
-	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
+	public Update(): void {
+		super.Update();
 		this._lifeBars.forEach((element) => {
-			element.x = this.GetBoundingBox().GetX() + viewX + 20;
-			element.y = this.GetBoundingBox().GetY() + viewY + 10;
+			element.x = this.GetBoundingBox().GetX() + 20;
+			element.y = this.GetBoundingBox().GetY() + 10;
 			element.height = 4;
 			element.width = this.GetBoundingBox().GetWidth() - 40;
 		});
 
-		this._borderBar.x = this.GetBoundingBox().GetX() + viewX + 18;
-		this._borderBar.y = this.GetBoundingBox().GetY() + viewY + 8;
+		this._borderBar.x = this.GetBoundingBox().GetX() + 18;
+		this._borderBar.y = this.GetBoundingBox().GetY() + 8;
 		this._borderBar.height = 8;
 		this._borderBar.width = this.GetBoundingBox().GetWidth() - 36;
 

@@ -15,7 +15,7 @@ export class SimpleFloor extends BasicItem {
 		this.IsCentralRef = true;
 	}
 
-	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
+	public Update(): void {
+		super.Update();
 	}
 }

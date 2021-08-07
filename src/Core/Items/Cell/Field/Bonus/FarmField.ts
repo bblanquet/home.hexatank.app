@@ -57,11 +57,11 @@ export class FarmField extends BonusField {
 		}
 	}
 
-	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
+	public Update(): void {
+		super.Update();
 
 		if (this.IsFull() && this.GetCell().GetState() === CellState.Visible) {
-			this._lightItem.Update(viewX, viewY);
+			this._lightItem.Update();
 		}
 
 		if (!this.IsFull() && 0 < this.Energy) {

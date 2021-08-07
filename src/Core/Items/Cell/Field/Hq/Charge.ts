@@ -75,9 +75,9 @@ export class Charge extends Item {
 		return false;
 	}
 
-	public Update(viewX: number, viewY: number): void {
+	public Update(): void {
 		this._links.forEach((e) => {
-			e.Update(viewX, viewY);
+			e.Update();
 		});
 	}
 }

@@ -75,7 +75,7 @@ export class ShieldField extends AliveBonusField {
 		return this.GetIdentity().GetRelation(item);
 	}
 
-	public Update(viewX: number, viewY: number): void {
+	public Update(): void {
 		if (!this.IsAlive()) {
 			this.Destroy();
 			return;
@@ -86,7 +86,7 @@ export class ShieldField extends AliveBonusField {
 					this.SetDamage(-fixValue);
 				}
 			}
-			super.Update(viewX, viewY);
+			super.Update();
 		}
 	}
 

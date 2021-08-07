@@ -9,15 +9,14 @@ import Redirect from '../Components/Redirect';
 import Body from '../Common/Struct/Body';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
 import { StageState } from '../../Services/Campaign/StageState';
-import { VictoryBtn } from '../Common/Button/Stylish/VictoryBtn';
 import { HookedComponent } from '../Hooks/HookedComponent';
 import { GreenHook } from '../Hooks/GreenHook';
 import { useState } from 'preact/hooks';
 import { CampaignState } from '../Model/GreenState';
-import Column from '../Common/Struct/Column';
 import Switch from '../Common/Struct/Switch';
 import AnimatedIcon from '../Common/Button/Badge/AnimatedIcon';
 import Line from '../Common/Struct/Line';
+import Column from '../Common/Struct/Column';
 
 export default class GreenScreen extends HookedComponent<{}, GreenHook, CampaignState> {
 	public GetDefaultHook(): GreenHook {
@@ -60,8 +59,12 @@ export default class GreenScreen extends HookedComponent<{}, GreenHook, Campaign
 								isLeft={this.Hook.State.HasBubble}
 								left={
 									<div>
-										<div class="arrow-up" />
-										<p class="bubble bubbleApp">{this.Hook.State.CurrentSentence}</p>
+										<Column>
+											<div class="arrow-up" />
+											<div class="bubbleApp" style="width:fit-content;padding:10px">
+												{this.Hook.State.CurrentSentence}
+											</div>
+										</Column>
 										<div class="container-center-horizontal">
 											<Btn OnClick={() => this.Hook.SetBubble()} Color={ColorKind.Black}>
 												<Icon Value="fas fa-undo-alt" /> Back

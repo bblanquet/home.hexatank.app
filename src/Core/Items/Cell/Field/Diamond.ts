@@ -84,15 +84,15 @@ export class Diamond extends AliveField {
 		this.Lights.Destroy();
 	}
 
-	public Update(viewX: number, viewY: number): void {
+	public Update(): void {
 		if (!this.IsAlive()) {
 			this.Destroy();
 			new Crater(this.BoundingBox);
 			return;
 		}
 
-		super.Update(viewX, viewY);
-		this.Lights.Update(viewX, viewY);
+		super.Update();
+		this.Lights.Update();
 	}
 
 	public Select(context: InteractionContext): boolean {

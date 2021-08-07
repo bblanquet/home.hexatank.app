@@ -48,7 +48,7 @@ export class ItemsUpdater implements IItemsUpdater {
 	private Iterate() {
 		this.Items = this.Items.filter((item) => item.IsUpdatable);
 		this.Items.forEach((item) => {
-			item.Update(this.ViewContext.GetX(), this.ViewContext.GetY());
+			item.Update();
 		});
 	}
 }

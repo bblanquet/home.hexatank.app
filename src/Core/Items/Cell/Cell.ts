@@ -31,7 +31,8 @@ import { LogKind } from '../../../Utils/Logger/LogKind';
 import { ErrorCat, ErrorHandler } from '../../../Utils/Exceptions/ErrorHandler';
 
 export class Cell extends Item implements ICell<Cell>, ISelectable {
-	private _selectionCircle: PIXI.Circle;
+	private _hitbox: PIXI.Circle;
+	private _multihitbox: PIXI.Circle;
 	public Properties: CellProperties;
 
 	//state
@@ -56,6 +57,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	private _playerIdentity: Identity = null;
 
 	private _destroyedFieldFunc: any = this.HandleFieldDestroyed.bind(this);
+	private _circle = new PIXI.Graphics();
 
 	constructor(properties: CellProperties, private _cells: Dictionary<Cell>) {
 		super();
@@ -70,7 +72,9 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 			e.alpha = 0;
 			e.anchor.set(0.5);
 		});
-		this._selectionCircle = new PIXI.Circle(0, 0, GameSettings.Size / 2);
+		this.Push(this._circle);
+		this._hitbox = new PIXI.Circle(0, 0, GameSettings.Size / 2);
+		this._multihitbox = new PIXI.Circle(0, 0, GameSettings.Size / 2);
 		this.SetSelectionAnimation();
 	}
 
@@ -438,31 +442,42 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		return cells;
 	}
 
-	public Update(viewX: number, viewY: number): void {
-		super.Update(viewX, viewY);
-		this._whiteSelection.Update(viewX, viewY);
-		this._blueSelection.Update(viewX, viewY);
+	public Update(): void {
+		super.Update();
+		this.UpdateHitbox();
+
+		this._whiteSelection.Update();
+		this._blueSelection.Update();
 
 		if (this._shadowAnimator) {
 			if (this._shadowAnimator.IsDone) {
 				this._shadowAnimator = null;
 			} else {
-				this._shadowAnimator.Update(viewX, viewY);
+				this._shadowAnimator.Update();
 			}
 		}
 	}
 
-	public Select(context: IInteractionContext): boolean {
-		if (context.View) {
-			let scale = context.View.Scale;
-			this._selectionCircle.radius = //a bit ulgy MultiSelectionContext
-				context instanceof MultiSelectionContext ? GameSettings.Size / 2 * scale : GameSettings.Size * scale;
-			this._selectionCircle.radius = GameSettings.Size * scale;
-			this._selectionCircle.x = (this.GetSprites()[0].x - context.View.GetX()) * scale;
-			this._selectionCircle.y = (this.GetSprites()[0].y - context.View.GetY()) * scale;
-		}
+	private UpdateHitbox() {
+		const box = this.GetBoundingBox();
+		this._hitbox.radius = this.GetBoundingBox().GetWidth() / 3;
+		this._hitbox.x = box.GetX();
+		this._hitbox.y = box.GetY();
 
-		var isSelected = this._selectionCircle.contains(context.Point.x, context.Point.y);
+		this._multihitbox.radius = this.GetBoundingBox().GetWidth() / 4;
+		this._multihitbox.x = box.GetX() + this._multihitbox.radius / 2;
+		this._multihitbox.y = box.GetY() + this._multihitbox.radius / 2;
+
+		this._circle.clear();
+		this._circle.beginFill(0xffffff);
+		this._circle.drawCircle(this._hitbox.x, this._hitbox.y, this._hitbox.radius);
+	}
+
+	public Select(context: IInteractionContext): boolean {
+		var isSelected =
+			context instanceof MultiSelectionContext
+				? this._multihitbox.contains(context.Point.x, context.Point.y)
+				: this._hitbox.contains(context.Point.x, context.Point.y);
 		if (isSelected) {
 			StaticLogger.Log(LogKind.info, `Q:${this.GetHexCoo().Q} R:${this.GetHexCoo().R}`);
 			context.OnSelect(this);

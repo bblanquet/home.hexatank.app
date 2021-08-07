@@ -1,11 +1,11 @@
 import { Component, h } from 'preact';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 import Visible from '../Common/Struct/Visible';
-import { SizeKind } from '../Model/SizeKind';
+import { SizeType } from '../Model/SizeType';
 
 export class Face extends Component<
 	{
-		Size: SizeKind;
+		Size: SizeType;
 		Eyes: string[];
 		Mouths: string[];
 		Face: string;
@@ -59,9 +59,9 @@ export class Face extends Component<
 	}
 
 	public GetSize(): number {
-		if (this.props.Size === SizeKind.Bg) {
+		if (this.props.Size === SizeType.Bg) {
 			return 200;
-		} else if (this.props.Size === SizeKind.Md) {
+		} else if (this.props.Size === SizeType.Md) {
 			return 100;
 		} else {
 			return 75;

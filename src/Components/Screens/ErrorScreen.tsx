@@ -7,7 +7,7 @@ import YellowFace from '../Components/Faces/YellowFace';
 import StatBar from '../Components/StatBar';
 import Body from '../Common/Struct/Body';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
-import { SizeKind } from '../Model/SizeKind';
+import { SizeType } from '../Model/SizeType';
 
 export default class ErrorScreen extends Component {
 	private Back() {
@@ -20,7 +20,7 @@ export default class ErrorScreen extends Component {
 				header={<StatBar />}
 				content={
 					<div class="container-center">
-						<YellowFace Size={SizeKind.Bg} />
+						<YellowFace Size={SizeType.Bg} />
 						<div class="text-detail shadowEffect width80percent">
 							<h5 class="card-title">OOPS an error occured, we will fix it quickly!</h5>
 							<div>{Gameworld.Error.message}</div>

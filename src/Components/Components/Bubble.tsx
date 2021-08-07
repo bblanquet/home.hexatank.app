@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
-import { SizeKind } from '../Model/SizeKind';
+import { SizeType } from '../Model/SizeType';
 import GreenFace from './Faces/GreenFace';
 import YellowFace from './Faces/YellowFace';
 import BlueFace from './Faces/BlueFace';
@@ -54,13 +54,13 @@ export default class Bubble extends Component<
 
 	public GetFace() {
 		if (this.props.Color === ColorKind.Blue) {
-			return <BlueFace Size={SizeKind.Sm} />;
+			return <BlueFace Size={SizeType.Sm} />;
 		} else if (this.props.Color === ColorKind.Green) {
-			return <GreenFace Size={SizeKind.Sm} />;
+			return <GreenFace Size={SizeType.Sm} />;
 		} else if (this.props.Color === ColorKind.Red) {
-			return <RedFace Size={SizeKind.Sm} />;
+			return <RedFace Size={SizeType.Sm} />;
 		}
-		return <YellowFace Size={SizeKind.Sm} />;
+		return <YellowFace Size={SizeType.Sm} />;
 	}
 
 	render() {

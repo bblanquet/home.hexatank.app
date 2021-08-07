@@ -1,10 +1,10 @@
 import { h, Component } from 'preact';
-import { SizeKind } from '../../Model/Sizekind';
+import { SizeType } from '../../Model/SizeType';
 import { Face } from '../Face';
 
 export default class BlueFace extends Component<
 	{
-		Size: SizeKind;
+		Size: SizeType;
 	},
 	{}
 > {

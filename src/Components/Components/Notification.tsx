@@ -4,7 +4,7 @@ import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import Visible from '../Common/Struct/Visible';
 import { useState } from 'preact/hooks';
 import { NotificationHook } from '../Hooks/NotificationHook';
-import { SizeKind } from '../Model/SizeKind';
+import { SizeType } from '../Model/SizeType';
 import YellowFace from './Faces/YellowFace';
 import GreenFace from './Faces/GreenFace';
 import Switch from '../Common/Struct/Switch';
@@ -48,8 +48,8 @@ export default class Notification extends Component<{ OnNotification: LiteEvent<
 						<div class="d-flex" style="flex-direction:row;align-content:space-between;align-items: center">
 							<Switch
 								isLeft={this._hook.IsError()}
-								left={<YellowFace Size={SizeKind.Sm} />}
-								right={<GreenFace Size={SizeKind.Sm} />}
+								left={<YellowFace Size={SizeType.Sm} />}
+								right={<GreenFace Size={SizeType.Sm} />}
 							/>
 							<div style="width:100%">{this._hook.State.Message}</div>
 						</div>

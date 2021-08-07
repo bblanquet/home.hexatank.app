@@ -8,7 +8,7 @@ import AnimatedIcon from '../Common/Button/Badge/AnimatedIcon';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
 import Line from '../Common/Struct/Line';
 import { Face } from '../Components/Face';
-import { SizeKind } from '../Model/SizeKind';
+import { SizeType } from '../Model/SizeType';
 
 export default class MockScreen extends Component<{}, {}> {
 	render() {
@@ -25,7 +25,7 @@ export default class MockScreen extends Component<{}, {}> {
 								<Icon Value="fas fa-chevron-left" />
 							</SmBtn>
 							<Face
-								Size={SizeKind.Bg}
+								Size={SizeType.Bg}
 								Eyes={[ 'fill-green-eyes1', 'fill-green-eyes2' ]}
 								Mouths={[
 									'fill-green-mouth-1',

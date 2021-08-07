@@ -33,7 +33,7 @@ import { MinusMenuItem } from '../../Core/Menu/Buttons/MinusMenuItem';
 import { CancelMenuItem } from '../../Core/Menu/Buttons/CancelMenuItem';
 import { ElecMenuItem } from '../../Core/Menu/Buttons/ElecMenuItem';
 import { PlusMenuItem } from '../../Core/Menu/Buttons/PlusMenuItem';
-export class MultioutpostHook extends AbstractGameHook<SmallBlueprint, Multioutpostworld> {
+export class MultipostHook extends AbstractGameHook<SmallBlueprint, Multioutpostworld> {
 	private _steps = 0;
 	private _viewTranslator: ViewTranslator;
 	private _viewTranslator2: ViewTranslator;

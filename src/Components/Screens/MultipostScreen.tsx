@@ -9,7 +9,7 @@ import Redirect from '../Components/Redirect';
 import SmPopup from '../Components/SmPopup';
 import Visible from '../Common/Struct/Visible';
 import { HookedComponent } from '../Hooks/HookedComponent';
-import { MultioutpostHook } from '../Hooks/MultioutpostHook';
+import { MultipostHook } from '../Hooks/MultipostHook';
 import { RuntimeState } from '../Model/RuntimeState';
 import { useState } from 'preact/hooks';
 import MenuSwitcher from '../Components/Canvas/MenuSwitcher';
@@ -20,9 +20,9 @@ import { SingletonKey } from '../../Singletons';
 import Bubble from '../Components/Bubble';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 
-export default class MultipostScreen extends HookedComponent<{}, MultioutpostHook, RuntimeState> {
-	public GetDefaultHook(): MultioutpostHook {
-		return new MultioutpostHook(SingletonKey.Multioutpostworld, useState(MultioutpostHook.DefaultState()));
+export default class MultipostScreen extends HookedComponent<{}, MultipostHook, RuntimeState> {
+	public GetDefaultHook(): MultipostHook {
+		return new MultipostHook(SingletonKey.Multioutpostworld, useState(MultipostHook.DefaultState()));
 	}
 
 	public Rendering(): JSX.Element {

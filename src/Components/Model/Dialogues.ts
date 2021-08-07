@@ -8,7 +8,7 @@ export const Red = [
 
 export const Blue = [ '...', 'zzzZZZzzzz.', 'Mmmmh' ];
 
-export const Home = 'Hey, looks like you are new, come in campaign mode to get a training session with me.';
+export const Home = 'Hey! join me in campaign mode to get a training session.';
 
 export const LoadingSentences = [
 	'Importing ammo from abroad...',

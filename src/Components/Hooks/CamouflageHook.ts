@@ -37,7 +37,6 @@ export class CamouflageHook extends Hook<RuntimeState> {
 	private _onItemSelectionChanged: any = this.OnItemSelectionChanged.bind(this);
 	private _handleRetry: any = this.Retry.bind(this);
 	public OnRetried: SimpleEvent = new SimpleEvent();
-	public middle: Point;
 	private _steps = 0;
 	private _viewTranslator: ViewTranslator;
 
@@ -66,8 +65,6 @@ export class CamouflageHook extends Hook<RuntimeState> {
 		this._profilService.OnPointsAdded.On(this.HandlePoints.bind(this));
 		this._appService.OnReloaded.On(this._handleRetry);
 		this._soundService.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));
-		const player = this._gameworld.GetPlayer();
-		this.middle = this._gameworld.ArrivalCell.GetBoundingBox().GetCentralPoint();
 		this.OnRetried.Invoke();
 		this._gameworld.State.SetInteraction(false);
 		this._steps = 0;
@@ -108,7 +105,7 @@ export class CamouflageHook extends Hook<RuntimeState> {
 	}
 
 	public GetCenter(): Point {
-		return this.middle;
+		return this._gameworld.ArrivalCell.GetBoundingBox().GetCentralPoint();
 	}
 
 	static DefaultState(): RuntimeState {

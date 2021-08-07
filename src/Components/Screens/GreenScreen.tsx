@@ -61,7 +61,10 @@ export default class GreenScreen extends HookedComponent<{}, GreenHook, Campaign
 									<div>
 										<Column>
 											<div class="arrow-up" />
-											<div class="bubbleApp" style="width:fit-content;padding:10px">
+											<div
+												class="bubbleApp"
+												style="width:fit-content;min-width:30px;padding:10px"
+											>
 												{this.Hook.State.CurrentSentence}
 											</div>
 										</Column>

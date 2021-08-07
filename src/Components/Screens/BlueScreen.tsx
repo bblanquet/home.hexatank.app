@@ -17,6 +17,7 @@ import { useState } from 'preact/hooks';
 import Visible from '../Common/Struct/Visible';
 import AnimatedIcon from '../Common/Button/Badge/AnimatedIcon';
 import Switch from '../Common/Struct/Switch';
+import Column from '../Common/Struct/Column';
 
 export default class BlueScreen extends HookedComponent<{}, BlueHook, CampaignState> {
 	public GetDefaultHook(): BlueHook {
@@ -54,8 +55,15 @@ export default class BlueScreen extends HookedComponent<{}, BlueHook, CampaignSt
 								isLeft={this.Hook.State.HasBubble}
 								left={
 									<div>
-										<div class="arrow-up" />
-										<p class="bubble bubbleApp">{this.Hook.State.CurrentSentence}</p>
+										<Column>
+											<div class="arrow-up" />
+											<div
+												class="bubbleApp"
+												style="width:fit-content;min-width:30px;padding:10px"
+											>
+												{this.Hook.State.CurrentSentence}
+											</div>
+										</Column>
 										<div class="container-center-horizontal">
 											<Btn OnClick={() => this.Hook.SetBubble()} Color={ColorKind.Black}>
 												<Icon Value="fas fa-undo-alt" /> Back

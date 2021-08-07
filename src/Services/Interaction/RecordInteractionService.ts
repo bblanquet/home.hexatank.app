@@ -12,6 +12,8 @@ import { SelectionCombination } from '../../Core/Interaction/Combination/Selecti
 import { MultiSelectionContext } from '../../Core/Menu/Smart/MultiSelectionContext';
 import { route } from 'preact-router';
 import { ErrorHandler } from '../../Utils/Exceptions/ErrorHandler';
+import { Singletons, SingletonKey } from '../../Singletons';
+import { ILayerService } from '../Layer/ILayerService';
 
 export class RecordInteractionService implements IInteractionService<Gameworld> {
 	private _inputNotifier: InputNotifier;
@@ -19,7 +21,8 @@ export class RecordInteractionService implements IInteractionService<Gameworld> 
 	public OnMultiMenuShowed: LiteEvent<boolean> = new LiteEvent<boolean>();
 
 	Register(manager: PIXI.InteractionManager, gameworld: Gameworld): void {
-		this._inputNotifier = new InputNotifier(manager);
+		const layer = Singletons.Load<ILayerService>(SingletonKey.Layer);
+		this._inputNotifier = new InputNotifier(manager, layer.GetViewport());
 		const checker = new TrackingSelectableChecker();
 		this._interaction = new InteractionContext(
 			this._inputNotifier,

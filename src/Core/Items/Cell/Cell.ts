@@ -58,6 +58,7 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 
 	private _destroyedFieldFunc: any = this.HandleFieldDestroyed.bind(this);
 	private _circle = new PIXI.Graphics();
+	private _multiCircle = new PIXI.Graphics();
 
 	constructor(properties: CellProperties, private _cells: Dictionary<Cell>) {
 		super();
@@ -73,9 +74,10 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 			e.anchor.set(0.5);
 		});
 		this.Push(this._circle);
-		this._hitbox = new PIXI.Circle(0, 0, GameSettings.Size / 2);
-		this._multihitbox = new PIXI.Circle(0, 0, GameSettings.Size / 2);
+		this.Push(this._multiCircle);
 		this.SetSelectionAnimation();
+		this._hitbox = new PIXI.Circle(0, 0, this.GetBoundingBox().GetWidth() / 2);
+		this._multihitbox = new PIXI.Circle(0, 0, this.GetBoundingBox().GetWidth() / 3);
 	}
 
 	private HandleFieldDestroyed(src: any, field: Item): void {
@@ -459,18 +461,22 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	}
 
 	private UpdateHitbox() {
-		const box = this.GetBoundingBox();
-		this._hitbox.radius = this.GetBoundingBox().GetWidth() / 3;
-		this._hitbox.x = box.GetX();
-		this._hitbox.y = box.GetY();
-
-		this._multihitbox.radius = this.GetBoundingBox().GetWidth() / 4;
-		this._multihitbox.x = box.GetX() + this._multihitbox.radius / 2;
-		this._multihitbox.y = box.GetY() + this._multihitbox.radius / 2;
+		const smallRadius = this.GetBoundingBox().GetWidth() / 3;
+		const radius = this.GetBoundingBox().GetWidth() / 4;
 
 		this._circle.clear();
-		this._circle.beginFill(0xffffff);
-		this._circle.drawCircle(this._hitbox.x, this._hitbox.y, this._hitbox.radius);
+		this._circle.lineStyle(2, 0xffffff, 0.2);
+		this._circle.drawCircle(0, 0, smallRadius);
+
+		this._multiCircle.clear();
+		this._multiCircle.lineStyle(2, 0x428af5, 0.2);
+		this._multiCircle.drawCircle(0, 0, radius);
+
+		this._hitbox.x = this._circle.x;
+		this._hitbox.y = this._circle.y;
+
+		this._multihitbox.x = this._multiCircle.x;
+		this._multihitbox.y = this._multiCircle.y;
 	}
 
 	public Select(context: IInteractionContext): boolean {

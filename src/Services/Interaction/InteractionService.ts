@@ -10,6 +10,8 @@ import { IHqGameworld } from '../../Core/Framework/World/IHqGameworld';
 import { Gameworld } from '../../Core/Framework/World/Gameworld';
 import { route } from 'preact-router';
 import { ErrorHandler } from '../../Utils/Exceptions/ErrorHandler';
+import { Singletons, SingletonKey } from '../../Singletons';
+import { ILayerService } from '../Layer/ILayerService';
 
 export class InteractionService implements IInteractionService<IHqGameworld> {
 	private _multiSelectionContext: MultiSelectionContext;
@@ -19,7 +21,8 @@ export class InteractionService implements IInteractionService<IHqGameworld> {
 
 	Register(manager: PIXI.InteractionManager, gameworld: IHqGameworld): void {
 		this._multiSelectionContext = new MultiSelectionContext();
-		this._inputNotifier = new InputNotifier(manager);
+		const layer = Singletons.Load<ILayerService>(SingletonKey.Layer);
+		this._inputNotifier = new InputNotifier(manager, layer.GetViewport());
 		const checker = new SelectableChecker(gameworld.GetPlayerHq() ? gameworld.GetPlayerHq().Identity : null);
 		const cbs = new CombinationProvider().GetCombination(checker, this._multiSelectionContext, gameworld);
 

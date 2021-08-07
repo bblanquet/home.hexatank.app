@@ -2,6 +2,7 @@ import { Point } from '../../Utils/Geometry/Point';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import * as PIXI from 'pixi.js';
 import { GameSettings } from '../Framework/GameSettings';
+import { Viewport } from 'pixi-viewport';
 
 export class InputNotifier {
 	private _isDown: boolean = false;
@@ -27,7 +28,7 @@ export class InputNotifier {
 
 	private _downDate: number | null;
 
-	constructor(manager: PIXI.InteractionManager) {
+	constructor(manager: PIXI.InteractionManager, private _viewport: Viewport) {
 		this._downPoint = new Point(0, 0);
 		this._currentPoint = new Point(0, 0);
 		this.UpEvent = new LiteEvent<Point>();
@@ -43,10 +44,18 @@ export class InputNotifier {
 
 	public HandleMouseMove(event: PIXI.InteractionEvent): void {
 		if (this._isDown) {
-			this._currentPoint.X = event.data.global.x;
-			this._currentPoint.Y = event.data.global.y;
+			this._currentPoint.X = this.GetX(event);
+			this._currentPoint.Y = this.GetY(event);
 			this.MovingEvent.Invoke(new Point(this._currentPoint.X, this._currentPoint.Y));
 		}
+	}
+
+	private GetY(event: PIXI.InteractionEvent): number {
+		return (event.data.global.y - this._viewport.y) / this._viewport.scale.x;
+	}
+
+	private GetX(event: PIXI.InteractionEvent): number {
+		return (event.data.global.x - this._viewport.x) / this._viewport.scale.x;
 	}
 
 	public HandleMouseDown(event: PIXI.InteractionEvent): void {
@@ -58,11 +67,11 @@ export class InputNotifier {
 		}
 		this._downDate = new Date().getTime();
 
-		this._currentPoint.X = event.data.global.x;
-		this._currentPoint.Y = event.data.global.y;
+		this._currentPoint.X = this.GetX(event);
+		this._currentPoint.Y = this.GetY(event);
 
-		this._downPoint.X = event.data.global.x;
-		this._downPoint.Y = event.data.global.y;
+		this._downPoint.X = this.GetX(event);
+		this._downPoint.Y = this.GetY(event);
 
 		if (this.IsDouble(pvsDownDate)) {
 			const dist = Math.abs(this._currentPoint.GetDistance(pvsDownPoint));
@@ -85,8 +94,8 @@ export class InputNotifier {
 
 	public HandleMouseUp(event: PIXI.InteractionEvent): void {
 		this._isDown = false;
-		this._currentPoint.X = event.data.global.x;
-		this._currentPoint.Y = event.data.global.y;
+		this._currentPoint.X = this.GetX(event);
+		this._currentPoint.Y = this.GetY(event);
 
 		const dist = Math.abs(this._currentPoint.GetDistance(this._downPoint));
 

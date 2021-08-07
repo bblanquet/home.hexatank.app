@@ -465,11 +465,11 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 		const radius = this.GetBoundingBox().GetWidth() / 4;
 
 		this._circle.clear();
-		this._circle.lineStyle(2, 0xffffff, 0.2);
+		this._circle.lineStyle(2, 0xffffff, 0);
 		this._circle.drawCircle(0, 0, smallRadius);
 
 		this._multiCircle.clear();
-		this._multiCircle.lineStyle(2, 0x428af5, 0.2);
+		this._multiCircle.lineStyle(2, 0x428af5, 0);
 		this._multiCircle.drawCircle(0, 0, radius);
 
 		this._hitbox.x = this._circle.x;

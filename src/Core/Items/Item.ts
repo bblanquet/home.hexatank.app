@@ -10,12 +10,10 @@ import { IUpdatable } from '../IUpdatable';
 import { Point } from '../../Utils/Geometry/Point';
 import { IBoundingBoxContainer } from '../IBoundingBoxContainer';
 import { IInteractionContext } from '../Interaction/IInteractionContext';
-import { Viewport } from 'pixi-viewport';
 
 export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 	private _updateService: IUpdateService;
 	protected _layerService: ILayerService;
-	private _viewport: Viewport;
 	private DisplayObjects: Array<PIXI.DisplayObject>;
 	private _spriteManager: SpriteManager;
 
@@ -31,7 +29,6 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 		this._spriteManager = new SpriteManager();
 		this.DisplayObjects = new Array<PIXI.DisplayObject>();
 		this.IsUpdatable = isUpdatable;
-		this._viewport = this._layerService.GetViewport();
 		if (this.IsUpdatable) {
 			this._updateService.Publish().Items.push(this);
 		}
@@ -96,12 +93,12 @@ export abstract class Item implements IUpdatable, IBoundingBoxContainer {
 		this.GetBoundingBox().SetY(pos.Y);
 		const ref = this.GetRef();
 		this.DisplayObjects.forEach((obj) => {
-			obj.x = ref.X + this._viewport.x;
-			obj.y = ref.Y + this._viewport.y;
+			obj.x = ref.X;
+			obj.y = ref.Y;
 		});
 		this.GetSprites().forEach((sprite) => {
-			sprite.x = ref.X + this._viewport.x;
-			sprite.y = ref.Y + this._viewport.y;
+			sprite.x = ref.X;
+			sprite.y = ref.Y;
 			sprite.width = this.GetBoundingBox().GetWidth();
 			sprite.height = this.GetBoundingBox().GetHeight();
 		});

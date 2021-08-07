@@ -17,6 +17,7 @@ import AnimatedIcon from '../Common/Button/Badge/AnimatedIcon';
 import Switch from '../Common/Struct/Switch';
 import Column from '../Common/Struct/Column';
 import { SizeType } from '../Model/SizeType';
+import RedFace from '../Components/Faces/RedFace';
 
 export default class RedScreen extends HookedComponent<{}, RedHook, CampaignState> {
 	public GetDefaultHook(): RedHook {
@@ -39,12 +40,7 @@ export default class RedScreen extends HookedComponent<{}, RedHook, CampaignStat
 									<SmBtn OnClick={() => this.Hook.Green()} Color={ColorKind.Green}>
 										<Icon Value="fas fa-chevron-left" />
 									</SmBtn>
-									<Face
-										Size={SizeType.Bg}
-										Eyes={[ 'fill-red-eyes-1', 'fill-red-eyes-2' ]}
-										Mouths={[ 'fill-red-mouth-1', 'fill-red-mouth-2', 'fill-red-mouth-3' ]}
-										Face={'fill-red-face'}
-									/>
+									<RedFace Size={SizeType.Bg} />
 									<SmBtn OnClick={() => this.Hook.Blue()} Color={ColorKind.Blue}>
 										<Icon Value="fas fa-chevron-right" />
 									</SmBtn>
@@ -58,7 +54,7 @@ export default class RedScreen extends HookedComponent<{}, RedHook, CampaignStat
 											<div class="arrow-up" />
 											<div
 												class="bubbleApp"
-												style="width:fit-content;min-width:30px;padding:10px"
+												style="width:fit-content;max-width:80%;min-width:50px;padding:10px"
 											>
 												{this.Hook.State.CurrentSentence}
 											</div>

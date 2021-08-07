@@ -19,6 +19,7 @@ import AnimatedIcon from '../Common/Button/Badge/AnimatedIcon';
 import Switch from '../Common/Struct/Switch';
 import Column from '../Common/Struct/Column';
 import { SizeType } from '../Model/SizeType';
+import BlueFace from '../Components/Faces/BlueFace';
 
 export default class BlueScreen extends HookedComponent<{}, BlueHook, CampaignState> {
 	public GetDefaultHook(): BlueHook {
@@ -41,12 +42,7 @@ export default class BlueScreen extends HookedComponent<{}, BlueHook, CampaignSt
 									<SmBtn OnClick={() => this.Hook.Red()} Color={ColorKind.Red}>
 										<Icon Value="fas fa-chevron-left" />
 									</SmBtn>
-									<Face
-										Size={SizeType.Bg}
-										Eyes={[ 'fill-blue-eyes-1', 'fill-blue-eyes-2' ]}
-										Mouths={[ 'fill-blue-mouth-1', 'fill-blue-mouth-2', 'fill-blue-mouth-3' ]}
-										Face={'fill-blue-face'}
-									/>
+									<BlueFace Size={SizeType.Bg} />
 									<SmBtn OnClick={() => this.Hook.Green()} Color={ColorKind.Green}>
 										<Icon Value="fas fa-chevron-right" />
 									</SmBtn>
@@ -61,7 +57,7 @@ export default class BlueScreen extends HookedComponent<{}, BlueHook, CampaignSt
 											<div class="arrow-up" />
 											<div
 												class="bubbleApp"
-												style="width:fit-content;min-width:30px;padding:10px"
+												style="width:fit-content;max-width:80%;min-width:50px;padding:10px"
 											>
 												{this.Hook.State.CurrentSentence}
 											</div>

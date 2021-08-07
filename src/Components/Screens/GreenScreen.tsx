@@ -18,6 +18,7 @@ import AnimatedIcon from '../Common/Button/Badge/AnimatedIcon';
 import Line from '../Common/Struct/Line';
 import Column from '../Common/Struct/Column';
 import { SizeType } from '../Model/SizeType';
+import GreenFace from '../Components/Faces/GreenFace';
 
 export default class GreenScreen extends HookedComponent<{}, GreenHook, CampaignState> {
 	public GetDefaultHook(): GreenHook {
@@ -40,18 +41,7 @@ export default class GreenScreen extends HookedComponent<{}, GreenHook, Campaign
 									<SmBtn OnClick={() => this.Hook.BlueCampaign()} Color={ColorKind.Blue}>
 										<Icon Value="fas fa-chevron-left" />
 									</SmBtn>
-									<Face
-										Size={SizeType.Bg}
-										Eyes={[ 'fill-green-eyes1', 'fill-green-eyes2' ]}
-										Mouths={[
-											'fill-green-mouth-1',
-											'fill-green-mouth-2',
-											'fill-green-mouth-3',
-											'fill-green-mouth-4'
-										]}
-										Face={'fill-green-face'}
-									/>
-
+									<GreenFace Size={SizeType.Bg} />
 									<SmBtn OnClick={() => this.Hook.RedCampaign()} Color={ColorKind.Red}>
 										<Icon Value="fas fa-chevron-right" />
 									</SmBtn>
@@ -65,7 +55,7 @@ export default class GreenScreen extends HookedComponent<{}, GreenHook, Campaign
 											<div class="arrow-up" />
 											<div
 												class="bubbleApp"
-												style="width:fit-content;min-width:30px;padding:10px"
+												style="width:fit-content;max-width:80%;min-width:50px;padding:10px"
 											>
 												{this.Hook.State.CurrentSentence}
 											</div>

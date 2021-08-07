@@ -1,5 +1,4 @@
 import { LiteEvent } from '../Utils/Events/LiteEvent';
-import { ViewContext } from '../Utils/Geometry/ViewContext';
 import { IItemsUpdater } from './IItemsUpdater';
 import { Item } from './Items/Item';
 import { IInteractionContext } from './Interaction/IInteractionContext';
@@ -9,12 +8,9 @@ import { GameState } from './Framework/World/GameState';
 export class ItemsUpdater implements IItemsUpdater {
 	public OnError: LiteEvent<Error> = new LiteEvent<Error>();
 	public Items: Array<Item> = new Array<Item>();
-	public ViewContext: ViewContext;
 	public static UpdateSpan: number = 15;
 	private _lastUpdate: number = undefined;
-	constructor(private _state: GameState) {
-		this.ViewContext = new ViewContext();
-	}
+	constructor(private _state: GameState) {}
 
 	public Select(event: IInteractionContext): void {
 		this.Items.some((item) => item.Select(event));

@@ -1,3 +1,4 @@
+import { Viewport } from 'pixi-viewport';
 import { ILayerService } from '../Services/Layer/ILayerService';
 import { IUpdateService } from '../Services/Update/IUpdateService';
 import { Singletons, SingletonKey } from '../Singletons';
@@ -9,7 +10,7 @@ import { Point } from '../Utils/Geometry/Point';
 import { ItemsUpdater } from './ItemsUpdater';
 
 export class ViewTranslator {
-	private _updater: ItemsUpdater;
+	private _viewport: Viewport;
 	private _layerService: ILayerService;
 	private _currentPoint: Point;
 	private _departureDate: number;
@@ -23,7 +24,7 @@ export class ViewTranslator {
 	constructor(private _b: BoundingBox[], private _milliseconds: number) {
 		ErrorHandler.ThrowNullOrEmpty(this._b);
 		this._layerService = Singletons.Load<ILayerService>(SingletonKey.Layer);
-		this._updater = Singletons.Load<IUpdateService>(SingletonKey.Update).Publish();
+		this._viewport = this._layerService.GetViewport();
 		this._currentPoint = this._b[0].GetCentralPoint();
 		this.OnDone = new SimpleEvent();
 		this.OnNext = new LiteEvent<number>();
@@ -79,7 +80,7 @@ export class ViewTranslator {
 		this._currentPoint.X = this._b[this._current].GetCentralPoint().X + progress * this._xDistance;
 		this._currentPoint.Y = this._b[this._current].GetCentralPoint().Y + progress * this._yDistance;
 		const p = this.GetPosition();
-		this._updater.ViewContext.SetX(p.X);
-		this._updater.ViewContext.SetY(p.Y);
+		this._viewport.x = p.X;
+		this._viewport.y = p.Y;
 	}
 }

@@ -57,10 +57,11 @@ export default class GameCanvas extends Component<{ Center: Point; OnRefresh: Si
 	SetCenter(point: Point) {
 		if (point) {
 			this.ResizeTheCanvas();
+			const viewport = this._layerService.GetViewport();
 			const halfWidth = this._width / 2;
 			const halfHeight = this._height / 2;
-			this._updater.ViewContext.SetX(-(point.X - halfWidth));
-			this._updater.ViewContext.SetY(-(point.Y - halfHeight));
+			viewport.x = -(point.X - halfWidth);
+			viewport.y = -(point.X - halfHeight);
 		}
 	}
 

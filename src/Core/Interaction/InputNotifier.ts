@@ -44,18 +44,16 @@ export class InputNotifier {
 
 	public HandleMouseMove(event: PIXI.InteractionEvent): void {
 		if (this._isDown) {
-			this._currentPoint.X = this.GetX(event);
-			this._currentPoint.Y = this.GetY(event);
+			this._currentPoint = this.GetRelative(event);
 			this.MovingEvent.Invoke(new Point(this._currentPoint.X, this._currentPoint.Y));
 		}
 	}
 
-	private GetY(event: PIXI.InteractionEvent): number {
-		return (event.data.global.y - this._viewport.y) / this._viewport.scale.x;
-	}
-
-	private GetX(event: PIXI.InteractionEvent): number {
-		return (event.data.global.x - this._viewport.x) / this._viewport.scale.x;
+	private GetRelative(event: PIXI.InteractionEvent): Point {
+		return new Point(
+			(event.data.global.x - this._viewport.x) / this._viewport.scale.x,
+			(event.data.global.y - this._viewport.y) / this._viewport.scale.x
+		);
 	}
 
 	public HandleMouseDown(event: PIXI.InteractionEvent): void {
@@ -66,12 +64,8 @@ export class InputNotifier {
 			pvsDownPoint = new Point(this._downPoint.X, this._downPoint.Y);
 		}
 		this._downDate = new Date().getTime();
-
-		this._currentPoint.X = this.GetX(event);
-		this._currentPoint.Y = this.GetY(event);
-
-		this._downPoint.X = this.GetX(event);
-		this._downPoint.Y = this.GetY(event);
+		this._currentPoint = this.GetRelative(event);
+		this._downPoint = new Point(event.data.global.x, event.data.global.y);
 
 		if (this.IsDouble(pvsDownDate)) {
 			const dist = Math.abs(this._currentPoint.GetDistance(pvsDownPoint));
@@ -94,10 +88,9 @@ export class InputNotifier {
 
 	public HandleMouseUp(event: PIXI.InteractionEvent): void {
 		this._isDown = false;
-		this._currentPoint.X = this.GetX(event);
-		this._currentPoint.Y = this.GetY(event);
-
-		const dist = Math.abs(this._currentPoint.GetDistance(this._downPoint));
+		this._currentPoint = this.GetRelative(event);
+		const upPoint = new Point(event.data.global.x, event.data.global.y);
+		const dist = Math.abs(upPoint.GetDistance(this._downPoint));
 
 		setTimeout(() => {
 			if (this._downDate !== null) {

@@ -11,6 +11,7 @@ import { IPlayerProfileService } from '../../Services/PlayerProfil/IPlayerProfil
 import { route } from 'preact-router';
 import { JsonRecordContent } from '../../Core/Framework/Record/Model/JsonRecordContent';
 import { RecordContent } from '../../Core/Framework/Record/Model/RecordContent';
+import { BrainKind } from '../../Core/Ia/Decision/BrainKind';
 
 export class ProfileHook extends Hook<ProfileState> {
 	private _appService: IBuilder<GameBlueprint>;
@@ -45,6 +46,9 @@ export class ProfileHook extends Hook<ProfileState> {
 	}
 
 	public Play(data: RecordContent): void {
+		data.Blueprint.Hqs.forEach((hq) => {
+			hq.Player.IA = BrainKind.Dummy;
+		});
 		this._appService.Register(data.Blueprint, () => {}, () => {});
 		this._recordService.Register(data);
 		route('{{sub_path}}Player', true);

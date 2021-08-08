@@ -8,25 +8,25 @@ export const Red = [
 
 export const Blue = [ '...', 'zzzZZZzzzz.', 'Mmmmh' ];
 
-export const Home = 'Hey! join me in campaign mode to get a training session.';
+export const Home = 'Hey! Join me in campaign mode to get a training session.';
 
 export const LoadingSentences = [
 	'Importing ammo from abroad...',
 	'Analyzing vehicle blueprints...',
-	'Polishing nice trophies...',
+	'Polishing nice icons...',
 	'Manufacturing vehicle parts...',
 	'Recruting some villains...',
 	'Setting antennas up for communication between troops...',
 	'Adding shining effects to precious resources...',
 	'Loading very manly sound effects...',
-	'Planting battlefield trees...',
+	'Planting trees in battlefields ...',
 	'Painting vehicles with fancy colors...'
 ];
 
 export const Green = [
 	'Don’t tell my mum I drive tanks, she thinks I am musician.',
 	"Let's have fun in this training session.",
-	'The best tank terrain is that without anti-tank weapons.',
+	'the manliest thing that you can have is a fancy tank.',
 	'The best armor is staying out of gun-shot.'
 ];
 

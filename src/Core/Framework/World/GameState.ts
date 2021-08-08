@@ -11,7 +11,7 @@ export class GameState {
 
 	public SetPause(value: boolean): void {
 		this._isPause = value;
-		this._hasInteraction = value;
+		this._hasInteraction = !value;
 	}
 
 	public IsPause(): boolean {

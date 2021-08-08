@@ -27,12 +27,6 @@ export class Gameworld implements IHqGameworld {
 	private _vehicles: Dictionary<Vehicle> = new Dictionary<Vehicle>();
 	private _vehicleCount: number = 0;
 	constructor(state: GameState, cells: Cell[], hqs: Headquarter[] = null, playerHq: Headquarter = null) {
-		GameSettings.Init();
-		GameSettings.SetFastSpeed();
-		if (Env.IsPrd()) {
-			GameSettings.SetNormalSpeed();
-		}
-
 		this.State = state;
 		this._playerHq = playerHq;
 		this._hqs = hqs;

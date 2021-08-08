@@ -3,7 +3,7 @@ import { SimpleEvent } from '../../../Utils/Events/SimpleEvent';
 import Icon from '../../Common/Icon/IconComponent';
 import TimerComponent from '../../Common/Timer/TimerComponent';
 
-export default class SynchronizingComponent extends Component<{ Quit: () => void; Timeout: SimpleEvent }, {}> {
+export default class SyncPopup extends Component<{ Quit: () => void; Timeout: SimpleEvent }, {}> {
 	constructor() {
 		super();
 	}

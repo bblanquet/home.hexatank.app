@@ -18,9 +18,16 @@ import { Landmaker } from '../Landmaker';
 import { Cloudmaker } from '../Cloudmaker';
 import { BrainInjecter } from '../../../Ia/Decision/BrainInjecter';
 import { CellStateSetter } from '../../../Items/Cell/CellStateSetter';
+import { Env } from '../../../../Utils/Env';
 
 export class GameworldMaker {
 	public Make(blueprint: GameBlueprint, gameState: GameState): Gameworld {
+		GameSettings.Init();
+		GameSettings.SetNormalSpeed();
+		if (Env.IsPrd()) {
+			GameSettings.SetNormalSpeed();
+		}
+
 		const cells = new Dictionary<Cell>();
 		let playerHq: Headquarter = null;
 		let hqs: Headquarter[] = [];

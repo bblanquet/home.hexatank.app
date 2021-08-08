@@ -66,7 +66,7 @@ export class PatrolOrder extends Order {
 			this.StartMoving();
 		}
 
-		if (this._currentOrder.IsDone() || this._currentPatrolcell.IsBlocked()) {
+		if (this._currentOrder.IsDone()) {
 			const index = (this._patrolcells.indexOf(this._currentPatrolcell) + 1) % this._patrolcells.length;
 			this._currentPatrolcell = this._patrolcells[index];
 			this.StartMoving();

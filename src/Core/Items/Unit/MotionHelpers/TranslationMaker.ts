@@ -6,7 +6,7 @@ import { isNullOrUndefined } from '../../../../Utils/ToolBox';
 export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implements ITranslationMaker {
 	private _vehicle: T;
 	private _departureDate: number;
-	private _arrivalDate: number;
+	private _arrivalDuration: number;
 	private _progress: number = 0;
 
 	constructor(item: T) {
@@ -33,8 +33,8 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 
 		this.Init();
 
-		const currentDate = new Date().getTime() - this._departureDate;
-		this._progress = this.GetPercentage(this._arrivalDate, currentDate);
+		const currentDuration = Date.now() - this._departureDate;
+		this._progress = this.GetPercentage(this._arrivalDuration, currentDuration);
 
 		vehicle.SetX(departure.GetX() + this._progress * xDistance);
 		vehicle.SetY(departure.GetY() + this._progress * yDistance);
@@ -43,7 +43,7 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 			vehicle.SetX(this._vehicle.GetNextCell().GetBoundingBox().GetX());
 			vehicle.SetY(this._vehicle.GetNextCell().GetBoundingBox().GetY());
 			this._departureDate = null;
-			this._arrivalDate = null;
+			this._arrivalDuration = null;
 			this._vehicle.GoNextCell();
 			this._progress = 0;
 			this._vehicle.OnTranslateStopped.Invoke(this._vehicle, this._vehicle.GetNextCell());
@@ -52,28 +52,23 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 
 	Update(): void {
 		if (this._departureDate) {
-			const alreadyDone = this._progress * (this._arrivalDate - this._departureDate);
-			const nextDuration = this._vehicle.GetTranslationDuration() - alreadyDone;
-			if (nextDuration < 0) {
-				this._arrivalDate = new Date(this._departureDate + nextDuration).getTime() - this._departureDate;
-			} else {
-				this._arrivalDate = new Date(this._departureDate).getTime() - this._departureDate;
-			}
+			const now = Date.now();
+			const p = this._progress > 1 ? 0 : 1 - this._progress;
+			this._arrivalDuration = this._vehicle.GetTranslationDuration() * (1 - this._progress);
 		}
 	}
 
 	private Init() {
-		if (isNullOrUndefined(this._arrivalDate)) {
+		if (isNullOrUndefined(this._arrivalDuration)) {
 			this._progress = 0;
 			this._departureDate = new Date().getTime();
-			this._arrivalDate =
-				new Date(this._departureDate + this._vehicle.GetTranslationDuration()).getTime() - this._departureDate;
+			this._arrivalDuration = this._vehicle.GetTranslationDuration();
 			this._vehicle.OnTranslateStarted.Invoke(this._vehicle, this._vehicle.GetNextCell());
 		}
 	}
 
 	Reset(): void {
-		this._arrivalDate = null;
+		this._arrivalDuration = null;
 	}
 
 	Percentage(): number {
@@ -82,7 +77,7 @@ export class TranslationMaker<T extends IMovable & IBoundingBoxContainer> implem
 	}
 	Duration(): number {
 		this.Init();
-		const duration = this._arrivalDate - this._departureDate;
+		const duration = this._arrivalDuration - this._departureDate;
 		return duration - this._progress * duration;
 	}
 }

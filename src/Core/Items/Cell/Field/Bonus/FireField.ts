@@ -10,13 +10,8 @@ import { LiteEvent } from '../../../../../Utils/Events/LiteEvent';
 import { IHeadquarter } from '../Hq/IHeadquarter';
 
 export class FireField extends BonusField {
-	SelectionChanged: LiteEvent<ISelectable> = new LiteEvent<ISelectable>();
 	constructor(cell: Cell, hq: IHeadquarter) {
-		super(cell, [ SvgArchive.bonus.strength ], hq, false);
-		this.GenerateSprite(SvgArchive.selectionCell, (e) => {
-			e.alpha = 0;
-		});
-		this.InitPosition(cell.GetBoundingBox().GetPosition());
+		super(cell, [ SvgArchive.bonus.strength ], hq);
 	}
 
 	Support(vehicule: Vehicle): void {}

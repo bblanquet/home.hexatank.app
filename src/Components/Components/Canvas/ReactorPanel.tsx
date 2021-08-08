@@ -4,7 +4,7 @@ import { ReactorField } from '../../../Core/Items/Cell/Field/Bonus/ReactorField'
 import MenuBtn from './MenuBtn';
 import { BtnProps } from './BtnProps';
 import Visible from '../../Common/Struct/Visible';
-export default class ReactorMenuComponent extends Component<
+export default class ReactorPanel extends Component<
 	{
 		Item: ReactorField;
 		Btns: BtnProps[];

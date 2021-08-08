@@ -43,7 +43,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 
 	//UI
 	public Appearance: ReactorAppearance;
-	private _overlockAnimation: BasicRangeAnimator;
+	private _overclockAnimation: BasicRangeAnimator;
 
 	//cells
 	private _area: Array<BasicItem> = new Array<BasicItem>();
@@ -122,7 +122,7 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	}
 
 	private StartOverclockAnimation(): void {
-		this._overlockAnimation = new BasicRangeAnimator(this.GetCell(), this._totalRange);
+		this._overclockAnimation = new BasicRangeAnimator(this.GetCell(), this._totalRange);
 	}
 
 	public GetConnectedReactors(): Array<ReactorField> {
@@ -146,14 +146,19 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	}
 
 	private GetVehicles(): Array<Vehicle> {
-		const vehicles = new Array<Vehicle>();
-		const cells = Dictionary.To((c) => c.Coo(), this.GetAllCells());
-		this.Hq.GetVehicles().forEach((v) => {
-			if (cells.Exist(v.GetCurrentCell().Coo())) {
-				vehicles.push(v);
-			}
+		const vehicles = new Dictionary<Vehicle>();
+
+		this.GetAllCells().forEach((c) => {
+			c.GetOccupiers().forEach((oc) => {
+				if (oc.GetRelation(this.Identity) === Relationship.Ally) {
+					if (!vehicles.Exist(oc.Id)) {
+						vehicles.Add(oc.Id, oc);
+					}
+				}
+			});
 		});
-		return vehicles;
+
+		return vehicles.Values();
 	}
 
 	private GetPowerUp(type: any): string {
@@ -272,8 +277,8 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 			});
 		}
 
-		if (this._overlockAnimation && !this._overlockAnimation.IsDone) {
-			this._overlockAnimation.Update();
+		if (this._overclockAnimation && !this._overclockAnimation.IsDone) {
+			this._overclockAnimation.Update();
 		}
 
 		if (this.Charges) {
@@ -361,8 +366,8 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		this.ClearArea();
 		this.Links.forEach((l) => l.Destroy());
 		this.Links = [];
-		if (this._overlockAnimation) {
-			this._overlockAnimation.Destroy();
+		if (this._overclockAnimation) {
+			this._overclockAnimation.Destroy();
 		}
 		if (this.Appearance) {
 			this.Appearance.Destroy();

@@ -1,7 +1,7 @@
 import { Component, h } from 'preact';
 import LeftMenu from './LeftMenu';
 import CellMenuComponent from './CellMenuComponent';
-import ReactorMenuComponent from './ReactorMenuComponent';
+import ReactorPanel from './ReactorPanel';
 import { CellGroup } from '../../../Core/Items/CellGroup';
 import { Item } from '../../../Core/Items/Item';
 import { Cell } from '../../../Core/Items/Cell/Cell';
@@ -32,7 +32,7 @@ export default class MenuSwitcher extends Component<
 			) {
 				return <LeftMenu Btns={this.props.Btns} />;
 			} else if (this.props.Item instanceof ReactorField) {
-				return <ReactorMenuComponent Item={this.props.Item} Btns={this.props.Btns} />;
+				return <ReactorPanel Item={this.props.Item} Btns={this.props.Btns} />;
 			} else if (this.props.Item instanceof Cell || this.props.Item instanceof CellGroup) {
 				return <CellMenuComponent Fields={this.props.FieldBtns} OnClick={this.props.OnClick} />;
 			}

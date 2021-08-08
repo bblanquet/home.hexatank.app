@@ -1,5 +1,5 @@
 import { JSX, h } from 'preact';
-import OnlinePlayersComponent from '../Components/Canvas/OnlinePlayersComponent';
+import OnlinePlayersBoard from '../Components/Canvas/OnlinePlayersBoard';
 import GameCanvas from '../Components/GameCanvas';
 import OptionPopup from '../Components/OptionPopup';
 import { GameStatus } from '../../Core/Framework/GameStatus';
@@ -11,7 +11,7 @@ import Visible from '../Common/Struct/Visible';
 import { isNullOrUndefined } from '../../Utils/ToolBox';
 import { MultiCellMenuItem } from '../../Core/Menu/Buttons/MultiCellMenuItem';
 import MenuSwitcher from '../Components/Canvas/MenuSwitcher';
-import SynchronizingComponent from '../Components/Canvas/SynchronizingComponent';
+import SyncPopup from '../Components/Canvas/SyncPopup';
 import Switch from '../Common/Struct/Switch';
 import { HookedComponent } from '../Hooks/HookedComponent';
 import { GameHook } from '../Hooks/GameHook';
@@ -27,7 +27,7 @@ export default class GameScreen extends HookedComponent<{}, GameHook, RuntimeSta
 	public Rendering(): JSX.Element {
 		return (
 			<Redirect>
-				<OnlinePlayersComponent OnlineService={this.Hook.GetOnlineManager()} />
+				<OnlinePlayersBoard OnlineService={this.Hook.GetOnlineManager()} />
 				<Visible
 					isVisible={
 						this.Hook.State.GameStatus !== GameStatus.Pending &&
@@ -45,7 +45,7 @@ export default class GameScreen extends HookedComponent<{}, GameHook, RuntimeSta
 					<Switch
 						isLeft={this.Hook.State.IsSynchronising}
 						left={
-							<SynchronizingComponent
+							<SyncPopup
 								Timeout={this.Hook.Timeout}
 								Quit={() => {
 									this.Hook.Stop(false);

@@ -4,7 +4,7 @@ import { IOnlineService } from '../../../Services/Online/IOnlineService';
 import Icon from '../../Common/Icon/IconComponent';
 import Visible from '../../Common/Struct/Visible';
 
-export default class OnlinePlayersComponent extends Component<{ OnlineService: IOnlineService }, {}> {
+export default class OnlinePlayersBoard extends Component<{ OnlineService: IOnlineService }, {}> {
 	render() {
 		return (
 			<Visible isVisible={this.props.OnlineService.IsOnline()}>

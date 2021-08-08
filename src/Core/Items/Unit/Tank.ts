@@ -216,7 +216,7 @@ export class Tank extends Vehicle {
 		return this._mainTarget;
 	}
 
-	SetCamouflage(): boolean {
+	public SetCamouflage(): boolean {
 		if (this.HasNextCell()) {
 			return false;
 		}
@@ -255,7 +255,7 @@ export class Tank extends Vehicle {
 		return true;
 	}
 
-	RemoveCamouflage() {
+	public RemoveCamouflage(): void {
 		if (this.HasCamouflage) {
 			this.HasCamouflage = false;
 

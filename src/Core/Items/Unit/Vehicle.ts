@@ -177,6 +177,10 @@ export abstract class Vehicle extends AliveItem
 		return rotationDuration;
 	}
 
+	GetProgress(): number {
+		return this._translationMaker.Percentage();
+	}
+
 	public GetFire(): number {
 		let fire = GameSettings.Fire;
 		this._ups.filter((up) => up instanceof FireUp).forEach((up) => {

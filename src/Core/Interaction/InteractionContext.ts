@@ -18,6 +18,7 @@ import { LogKind } from '../../Utils/Logger/LogKind';
 import { StaticLogger } from '../../Utils/Logger/StaticLogger';
 import { UnitGroup } from '../Items/UnitGroup';
 import { GameState } from '../Framework/World/GameState';
+import { Vehicle } from '../Items/Unit/Vehicle';
 
 export class InteractionContext implements IContextContainer, IInteractionContext {
 	private _updateService: IUpdateService;
@@ -99,8 +100,8 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 	}
 
 	private GetSelectable(cell: Cell): Item {
-		if (cell.GetOccupiers().some((oc) => this._checker.IsSelectable(oc))) {
-			return cell.GetOccupiers().find((oc) => this._checker.IsSelectable(oc));
+		if (this.HasOcuppier(cell)) {
+			return cell.GetOccupiers().find((oc) => this._checker.IsSelectable(oc) && this.IsIn(cell, oc));
 		} else {
 			if (cell.GetField() instanceof BasicField) {
 				return cell;
@@ -108,6 +109,17 @@ export class InteractionContext implements IContextContainer, IInteractionContex
 				return <Item>(<any>(<Cell>cell).GetField());
 			}
 		}
+	}
+
+	private HasOcuppier(cell: Cell): boolean {
+		return cell.GetOccupiers().some((oc) => this._checker.IsSelectable(oc) && this.IsIn(cell, oc));
+	}
+
+	private IsIn(cell: Cell, vehicle: Vehicle): boolean {
+		return (
+			(vehicle.GetCurrentCell() === cell && (!vehicle.HasNextCell() || vehicle.GetProgress() < 50)) ||
+			(vehicle.HasNextCell() && vehicle.GetNextCell() === cell && vehicle.GetProgress() > 50)
+		);
 	}
 
 	public OnSelect(item: Item): void {

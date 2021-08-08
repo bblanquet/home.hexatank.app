@@ -19,6 +19,7 @@ import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
 import { SingletonKey } from '../../Singletons';
 import Bubble from '../Components/Bubble';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
+import TopButtons from '../Components/TopButtons';
 
 export default class MultipostScreen extends HookedComponent<{}, MultipostHook, RuntimeState> {
 	public GetDefaultHook(): MultipostHook {
@@ -38,13 +39,11 @@ export default class MultipostScreen extends HookedComponent<{}, MultipostHook, 
 				</Visible>
 				<Visible isVisible={this.Hook.State.GameStatus === GameStatus.Pending}>
 					<Visible isVisible={!this.Hook.State.HasMenu}>
-						<div style="position: fixed;">
-							<button
-								type="button"
-								class="btn btn-dark small-space space-out fill-option"
-								onClick={() => this.Hook.SetMenu()}
-							/>
-						</div>
+						<TopButtons
+							OnClick={() => this.Hook.SetMenu()}
+							HasWarning={this.Hook.State.HasWarning}
+							Amount={this.Hook.State.Amount}
+						/>
 					</Visible>
 				</Visible>
 				<GameCanvas Center={this.Hook.GetCenter()} OnRefresh={this.Hook.OnRefresh} />

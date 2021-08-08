@@ -12,9 +12,9 @@ import { CancelCombination } from '../../Core/Interaction/Combination/CancelComb
 import { ClearTrashCombination } from '../../Core/Interaction/Combination/ClearTrashCombination';
 import { AbortCombination } from '../../Core/Interaction/Combination/AbortCombination';
 import { CamouflageCombination } from '../../Core/Interaction/Combination/CamouflageCombination';
-import { SimpleUnselectCombination } from '../../Core/Interaction/Combination/SimpleUnselectCombination';
 import { Camouflageworld } from '../../Core/Framework/World/Camouflageworld';
 import { TankCombination } from '../../Core/Interaction/Combination/TankCombination';
+import { SwitchToVehicleCombination } from '../../Core/Interaction/Combination/SwitchToVehicleCombination';
 
 export class CamouflageInteractionService implements IInteractionService<Camouflageworld> {
 	private _multiSelectionContext: MultiSelectionContext;
@@ -33,10 +33,10 @@ export class CamouflageInteractionService implements IInteractionService<Camoufl
 				new CancelCombination(),
 				new AbortCombination(),
 				new TankCombination(),
-				new SimpleUnselectCombination(checker, gameworld),
 				new CamouflageCombination(),
 				new ClearTrashCombination(checker),
-				new SimpleSelectionCombination(checker, gameworld)
+				new SimpleSelectionCombination(checker, gameworld),
+				new SwitchToVehicleCombination(gameworld)
 			],
 			checker,
 			gameworld.State

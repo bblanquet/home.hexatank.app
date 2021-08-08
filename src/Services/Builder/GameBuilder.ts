@@ -95,6 +95,7 @@ export class GameBuilder implements IBuilder<GameBlueprint> {
 			if (status === GameStatus.Defeat) {
 				this._defeat();
 			}
+			this._playerProfilService.Save();
 
 			const recordContext = this._recordService.Publish();
 			recordContext.Stop(status === GameStatus.Victory);

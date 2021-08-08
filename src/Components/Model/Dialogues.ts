@@ -6,6 +6,9 @@ export const Red = [
 	'History will decide if I’m a villain or a hero.'
 ];
 
+export const RedGame = [ 'I will not let you win.' ];
+export const BlueGame = [ 'zzzZZZzzzz...' ];
+
 export const Blue = [ '...', 'zzzZZZzzzz.', 'Mmmmh' ];
 
 export const Home = 'Hey! Join me in campaign mode to get a training session.';

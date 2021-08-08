@@ -9,7 +9,6 @@ import Redirect from '../Components/Redirect';
 import SmPopup from '../Components/SmPopup';
 import Visible from '../Common/Struct/Visible';
 import { HookedComponent } from '../Hooks/HookedComponent';
-import { OutpostHook } from '../Hooks/OutpostHook';
 import { RuntimeState } from '../Model/RuntimeState';
 import { useState } from 'preact/hooks';
 import MenuSwitcher from '../Components/Canvas/MenuSwitcher';
@@ -19,11 +18,12 @@ import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
 import { SingletonKey } from '../../Singletons';
 import Bubble from '../Components/Bubble';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
+import { RedGameHook } from '../Hooks/RedGameHook';
 import TopButtons from '../Components/TopButtons';
 
-export default class OutpostScreen extends HookedComponent<{}, OutpostHook, RuntimeState> {
-	public GetDefaultHook(): OutpostHook {
-		return new OutpostHook(SingletonKey.Outpostworld, useState(OutpostHook.DefaultState()));
+export default class RedGameScreen extends HookedComponent<{}, RedGameHook, RuntimeState> {
+	public GetDefaultHook(): RedGameHook {
+		return new RedGameHook(SingletonKey.Gameworld, useState(RedGameHook.DefaultState()));
 	}
 
 	public Rendering(): JSX.Element {
@@ -51,7 +51,7 @@ export default class OutpostScreen extends HookedComponent<{}, OutpostHook, Runt
 					isLeft={!isNullOrUndefined(this.Hook.State.Sentence) && 0 < this.Hook.State.Sentence.length}
 					left={
 						<Bubble
-							Color={ColorKind.Green}
+							Color={ColorKind.Red}
 							Sentence={this.Hook.State.Sentence}
 							OnNext={() => this.Hook.SetNextSentence()}
 						/>

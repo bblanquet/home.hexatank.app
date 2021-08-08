@@ -2,15 +2,15 @@ import { IHqGameworld } from '../../Framework/World/IHqGameworld';
 import { UnitGroup } from '../../Items/UnitGroup';
 import { ISelectable } from '../../ISelectable';
 import { Cell } from '../../Items/Cell/Cell';
-import { Vehicle } from '../../Items/Unit/Vehicle';
 import { CombinationContext } from './CombinationContext';
 import { ReactorField } from '../../Items/Cell/Field/Bonus/ReactorField';
 import { Headquarter } from '../../Items/Cell/Field/Hq/Headquarter';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { Tank } from '../../Items/Unit/Tank';
+import { IGameworld } from '../../Framework/World/IGameworld';
 
 export class SwitchToVehicleCombination extends AbstractSingleCombination {
-	constructor(private _gameworld: IHqGameworld) {
+	constructor(private _gameworld: IGameworld) {
 		super();
 	}
 

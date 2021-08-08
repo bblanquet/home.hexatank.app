@@ -252,7 +252,14 @@ export class Cell extends Item implements ICell<Cell>, ISelectable {
 	}
 
 	public IsBlocked(): boolean {
-		return (!isNullOrUndefined(this._field) && this._field.IsBlocking()) || this.HasOccupier();
+		if (this._field && this._field.IsBlocking()) {
+			return true;
+		}
+		if (this.HasOccupier()) {
+			return this.GetOccupiers().some((oc) => !oc.HasNextCell() || oc.GetNextCell() === this);
+		}
+
+		return false;
 	}
 
 	public HasBlockingField(): boolean {

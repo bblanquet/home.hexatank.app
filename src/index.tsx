@@ -22,6 +22,8 @@ import LoadingScreen from './Components/Screens/LoadingScreen';
 import ErrorScreen from './Components/Screens/ErrorScreen';
 import SinglePlayerScreen from './Components/Screens/SingleScreen';
 import RedScreen from './Components/Screens/RedScreen';
+import RedGameScreen from './Components/Screens/RedGameScreen';
+import BlueGameScreen from './Components/Screens/BlueGameScreen';
 import GreenScreen from './Components/Screens/GreenScreen';
 import BlueScreen from './Components/Screens/BlueScreen';
 import GameScreen from './Components/Screens/GameScreen';
@@ -61,6 +63,8 @@ const App = (e: any) => {
 			<ErrorScreen path="{{sub_path}}Error" />
 			<SinglePlayerScreen path="{{sub_path}}SinglePlayer" />
 			<RedScreen path="{{sub_path}}Red" />
+			<RedGameScreen path="{{sub_path}}RedGame" />
+			<BlueGameScreen path="{{sub_path}}BlueGame" />
 			<GreenScreen path="{{sub_path}}Green" />
 			<BlueScreen path="{{sub_path}}Blue" />
 			<GameScreen path="{{sub_path}}Canvas" />

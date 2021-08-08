@@ -94,15 +94,15 @@ export class CampaignService implements ICampaignService {
 		);
 	}
 
-	public GetBlueprint(kind: CampaignKind, index: number): IBlueprint {
+	public GetBlueprint(kind: CampaignKind, lvl: number): IBlueprint {
 		let blueprint: GameBlueprint;
 
 		if (kind === CampaignKind.red) {
-			blueprint = this._red.Get(index.toString());
+			blueprint = this._red.Get(lvl.toString());
 		} else if (kind === CampaignKind.blue) {
-			blueprint = this._blue.Get(index.toString());
+			blueprint = this._blue.Get(lvl.toString());
 		} else if (kind === CampaignKind.training) {
-			return this._training.Get(index.toString());
+			return this._training.Get(lvl.toString());
 		}
 		return blueprint;
 	}

@@ -63,10 +63,7 @@ export default class RedScreen extends HookedComponent<{}, RedHook, CampaignStat
 											<Btn OnClick={() => this.Hook.SetBubble()} Color={ColorKind.Black}>
 												<Icon Value="fas fa-undo-alt" /> Back
 											</Btn>
-											<Btn
-												OnClick={() => this.Hook.Start(this.Hook.State.Level)}
-												Color={ColorKind.Red}
-											>
+											<Btn OnClick={() => this.Hook.Start()} Color={ColorKind.Red}>
 												<Icon Value="fas fa-fist-raised" /> Fight
 											</Btn>
 										</div>
@@ -77,11 +74,11 @@ export default class RedScreen extends HookedComponent<{}, RedHook, CampaignStat
 										<div style="display: flex;flex-flow: row wrap;justify-content: space-around; width:200px">
 											{this.Hook.GetStages().map((state, index) => {
 												if (state === StageState.lock) {
-													return <LockBtn Index={index + 1} />;
+													return <LockBtn Index={this.GetLevel(index)} />;
 												} else if (state === StageState.achieved) {
 													return (
 														<SmBtn
-															OnClick={() => this.Hook.Select(index + 1)}
+															OnClick={() => this.Hook.Select(this.GetLevel(index))}
 															Color={ColorKind.Red}
 														>
 															<div class={`fill-gold-campaign max-width`}>
@@ -95,17 +92,19 @@ export default class RedScreen extends HookedComponent<{}, RedHook, CampaignStat
 																	frequency={1000}
 																/>
 															</div>
-															<Icon Value="fas fa-arrow-alt-circle-right" /> {index + 1}
+															<Icon Value="fas fa-arrow-alt-circle-right" />{' '}
+															{this.GetLevel(index)}
 														</SmBtn>
 													);
 												} else {
 													return (
 														<SmBtn
-															OnClick={() => this.Hook.Select(index + 1)}
+															OnClick={() => this.Hook.Select(this.GetLevel(index))}
 															Color={ColorKind.Red}
 														>
 															<div class={`fill-campaign max-width`} />
-															<Icon Value="fas fa-arrow-alt-circle-right" /> {index + 1}
+															<Icon Value="fas fa-arrow-alt-circle-right" />{' '}
+															{this.GetLevel(index)}
 														</SmBtn>
 													);
 												}
@@ -126,5 +125,9 @@ export default class RedScreen extends HookedComponent<{}, RedHook, CampaignStat
 				/>
 			</Redirect>
 		);
+	}
+
+	private GetLevel(index: number): number {
+		return index + 1;
 	}
 }

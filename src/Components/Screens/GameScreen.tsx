@@ -12,6 +12,7 @@ import { isNullOrUndefined } from '../../Utils/ToolBox';
 import { MultiCellMenuItem } from '../../Core/Menu/Buttons/MultiCellMenuItem';
 import MenuSwitcher from '../Components/Canvas/MenuSwitcher';
 import SyncPopup from '../Components/Canvas/SyncPopup';
+import TopButtons from '../Components/TopButtons';
 import Switch from '../Common/Struct/Switch';
 import { HookedComponent } from '../Hooks/HookedComponent';
 import { GameHook } from '../Hooks/GameHook';
@@ -66,24 +67,11 @@ export default class GameScreen extends HookedComponent<{}, GameHook, RuntimeSta
 								}
 								right={
 									<span>
-										<div style="position: fixed;">
-											<button
-												type="button"
-												class="btn btn-dark small-space space-out fill-option"
-												onClick={() => this.Hook.SetMenu()}
-											/>
-											<button type="button" class="btn btn-dark space-out">
-												<Visible isVisible={this.Hook.State.HasWarning}>
-													<span class="fill-noMoney badge badge-warning very-small-space middle very-small-right-margin blink_me">
-														{' '}
-													</span>
-												</Visible>
-												{this.Hook.State.Amount.toFixed(2)}
-												<span class="fill-diamond badge badge-secondary very-small-space middle very-small-left-margin very-small-right-margin">
-													{' '}
-												</span>
-											</button>
-										</div>
+										<TopButtons
+											OnClick={() => this.Hook.SetMenu()}
+											HasWarning={this.Hook.State.HasWarning}
+											Amount={this.Hook.State.Amount}
+										/>
 										<Visible isVisible={isNullOrUndefined(this.Hook.State.Item)}>
 											<div class="right-bottom-menu">
 												<ActiveRightBottomCornerButton

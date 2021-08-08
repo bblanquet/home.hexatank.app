@@ -30,40 +30,34 @@ export class GreenHook extends Hook<CampaignState> {
 		return new CampaignState();
 	}
 
-	public Start(index: number): void {
-		const blueprint = this._campaignService.GetBlueprint(CampaignKind.training, index);
-		if (index === 1) {
-			this.Build(SingletonKey.CamouflageBuilder, blueprint, index - 1, 20, 3);
+	public Start(): void {
+		const blueprint = this._campaignService.GetBlueprint(CampaignKind.training, this.State.Level);
+		if (this.State.Level === 1) {
+			this.Build(SingletonKey.CamouflageBuilder, blueprint, 20, 3);
 			route('{{sub_path}}Camouflage', true);
-		} else if (index === 2) {
-			this.Build(SingletonKey.FireBuilder, blueprint, index - 1, 20, 3);
+		} else if (this.State.Level === 2) {
+			this.Build(SingletonKey.FireBuilder, blueprint, 20, 3);
 			route('{{sub_path}}Fire', true);
-		} else if (index === 3) {
-			this.Build(SingletonKey.OutpostBuilder, blueprint, index - 1, 20, 3);
+		} else if (this.State.Level === 3) {
+			this.Build(SingletonKey.OutpostBuilder, blueprint, 20, 3);
 			route('{{sub_path}}Outpost', true);
-		} else if (index === 4) {
-			this.Build(SingletonKey.DiamondBuilder, blueprint, index - 1, 20, 3);
+		} else if (this.State.Level === 4) {
+			this.Build(SingletonKey.DiamondBuilder, blueprint, 20, 3);
 			route('{{sub_path}}Diamond', true);
-		} else if (index === 5) {
-			this.Build(SingletonKey.MultioutpostBuilder, blueprint, index - 1, 20, 3);
+		} else if (this.State.Level === 5) {
+			this.Build(SingletonKey.MultioutpostBuilder, blueprint, 20, 3);
 			route('{{sub_path}}Multioutpost', true);
 		}
 	}
 
-	private Build<T extends IBlueprint>(
-		builder: SingletonKey,
-		blueprint: T,
-		stage: number,
-		win: number,
-		loose: number
-	) {
+	private Build<T extends IBlueprint>(builder: SingletonKey, blueprint: T, win: number, loose: number) {
 		Singletons.Load<IBuilder<T>>(builder).Register(
 			blueprint,
 			() => {
-				this._playerProfilService.GetProfil().GreenLvl[stage] = StageState.achieved;
+				this._playerProfilService.GetProfil().GreenLvl[this.State.Level - 1] = StageState.achieved;
 				this._playerProfilService.AddPoints(win);
-				if (stage + 1 < this._playerProfilService.GetProfil().GreenLvl.length) {
-					this._playerProfilService.GetProfil().GreenLvl[stage + 1] = StageState.unlock;
+				if (this.State.Level < this._playerProfilService.GetProfil().GreenLvl.length) {
+					this._playerProfilService.GetProfil().GreenLvl[this.State.Level] = StageState.unlock;
 				}
 			},
 			() => {

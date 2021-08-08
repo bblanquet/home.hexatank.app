@@ -66,14 +66,14 @@ export class BlueHook extends Hook<CampaignState> {
 		});
 	}
 
-	public Start(index: number): void {
-		const blueprint = this._campaignService.GetBlueprint(CampaignKind.blue, index);
+	public Start(): void {
+		const blueprint = this._campaignService.GetBlueprint(CampaignKind.blue, this.State.Level);
 		Singletons.Load<IBuilder<GameBlueprint>>(SingletonKey.GameBuilder).Register(
 			blueprint as any,
 			() => {
-				this._playerProfilService.GetProfil().BlueLvl[index] = StageState.achieved;
-				if (index + 1 < this._playerProfilService.GetProfil().BlueLvl.length) {
-					this._playerProfilService.GetProfil().BlueLvl[index + 1] = StageState.unlock;
+				this._playerProfilService.GetProfil().BlueLvl[this.State.Level - 1] = StageState.achieved;
+				if (this.State.Level < this._playerProfilService.GetProfil().BlueLvl.length) {
+					this._playerProfilService.GetProfil().BlueLvl[this.State.Level] = StageState.unlock;
 				}
 				this._playerProfilService.AddPoints(30);
 			},
@@ -81,7 +81,7 @@ export class BlueHook extends Hook<CampaignState> {
 				this._playerProfilService.AddPoints(3);
 			}
 		);
-		route('{{sub_path}}Canvas', true);
+		route('{{sub_path}}BlueGame', true);
 	}
 
 	public Select(level: number): void {

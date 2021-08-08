@@ -66,20 +66,20 @@ export class RedHook extends Hook<CampaignState> {
 		});
 	}
 
-	public Start(stage: number): void {
-		const blueprint = this._campaignService.GetBlueprint(CampaignKind.red, stage);
+	public Start(): void {
+		const blueprint = this._campaignService.GetBlueprint(CampaignKind.red, this.State.Level);
 		Singletons.Load<IBuilder<GameBlueprint>>(SingletonKey.GameBuilder).Register(
 			blueprint as any,
 			() => {
-				this._playerProfilService.GetProfil().RedLvl[stage] = StageState.achieved;
-				if (stage + 1 < this._playerProfilService.GetProfil().RedLvl.length) {
-					this._playerProfilService.GetProfil().RedLvl[stage + 1] = StageState.unlock;
+				this._playerProfilService.GetProfil().RedLvl[this.State.Level - 1] = StageState.achieved;
+				if (this.State.Level < this._playerProfilService.GetProfil().RedLvl.length) {
+					this._playerProfilService.GetProfil().RedLvl[this.State.Level] = StageState.unlock;
 				}
 				this._playerProfilService.AddPoints(20);
 			},
 			() => this._playerProfilService.AddPoints(3)
 		);
-		route('{{sub_path}}Canvas', true);
+		route('{{sub_path}}RedGame', true);
 	}
 
 	public Select(level: number): void {

@@ -20,6 +20,7 @@ import { SelectionKind } from '../../Core/Menu/Smart/MultiSelectionContext';
 import { SingletonKey } from '../../Singletons';
 import Bubble from '../Components/Bubble';
 import { ColorKind } from '../Common/Button/Stylish/ColorKind';
+import TopButtons from '../Components/TopButtons';
 
 export default class DiamondScreen extends HookedComponent<{}, DiamondHook, RuntimeState> {
 	public GetDefaultHook() {

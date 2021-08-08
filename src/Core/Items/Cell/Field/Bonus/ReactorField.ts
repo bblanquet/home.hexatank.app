@@ -151,7 +151,6 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 
 	private GetVehicles(): Array<Vehicle> {
 		const vehicles = new Dictionary<Vehicle>();
-
 		this.GetAllCells().forEach((c) => {
 			c.GetOccupiers().forEach((oc) => {
 				if (oc.GetRelation(this.Identity) === Relationship.Ally) {
@@ -348,7 +347,9 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	}
 
 	public GetAllCells(): Cell[] {
-		return this.GetCell().GetNearby(this._totalRange).map((c) => c as Cell);
+		const cells = this.GetCell().GetNearby(this._totalRange).map((c) => c as Cell);
+		cells.push(this.GetCell());
+		return cells;
 	}
 
 	public Destroy(): void {

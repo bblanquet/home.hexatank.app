@@ -8,6 +8,7 @@ import StatBar from '../Components/StatBar';
 import Body from '../Common/Struct/Body';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
 import { SizeType } from '../Model/SizeType';
+import { Issue } from '../Model/Dialogues';
 
 export default class ErrorScreen extends Component {
 	private Back() {
@@ -22,7 +23,7 @@ export default class ErrorScreen extends Component {
 					<div class="container-center">
 						<YellowFace Size={SizeType.Bg} />
 						<div class="text-detail shadowEffect width80percent">
-							<h5 class="card-title">OOPS an error occured, we will fix it quickly!</h5>
+							<h5 class="card-title">{Issue}</h5>
 							<div>{Gameworld.Error.message}</div>
 							<p />
 							<div class="sub-text-detail max200Height">{Gameworld.Error.stack}</div>

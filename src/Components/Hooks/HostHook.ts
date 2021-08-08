@@ -14,6 +14,7 @@ import { Hook } from './Hook';
 import { route } from 'preact-router';
 import { StateUpdater } from 'preact/hooks';
 import { Usernames } from '../Model/Names';
+import { ServerIssue } from '../Model/Dialogues';
 
 export class HostHook extends Hook<HostState> {
 	private _socket: IServerSocket;
@@ -101,9 +102,6 @@ export class HostHook extends Hook<HostState> {
 	}
 
 	private OnError(message: NetworkMessage<any>): void {
-		this.OnNotification.Invoke(
-			this,
-			new NotificationState(LogKind.error, `OOPS Server doesn't seem to be running.`)
-		);
+		this.OnNotification.Invoke(this, new NotificationState(LogKind.error, ServerIssue));
 	}
 }

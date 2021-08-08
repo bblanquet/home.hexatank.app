@@ -26,8 +26,8 @@ export const LoadingSentences = [
 export const Green = [
 	'Don’t tell my mum I drive tanks, she thinks I am musician.',
 	"Let's have fun in this training session.",
-	'the manliest thing that you can have is a fancy tank.',
-	'The best armor is staying out of gun-shot.'
+	'The manliest thing on earth can only be a fancy tank.',
+	'I like when a man speaks from the tank.'
 ];
 
 export const Camouflage = [ 'Bring your unit to this safe spot.', 'Be careful the path is full of obstacles...', '' ];
@@ -74,3 +74,6 @@ export const Diamond = [
 	'You have less than 2 minutes to retrieve 35 diamonds.',
 	''
 ];
+
+export const ServerIssue = "OOPS the Server doesn't seem to be running. Don't worry, we will fix it quickly!";
+export const Issue = 'OOPS an error occured, we will fix it quickly!';

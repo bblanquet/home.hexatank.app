@@ -431,6 +431,7 @@ export abstract class Vehicle extends AliveItem
 	public Destroy(): void {
 		this.OnDestroyed.Invoke(this, this);
 		this.OnDestroyed.Clear();
+		this.SetSelected(false);
 		this.CancelOrder();
 		if (this._nextOrder) {
 			this._nextOrder.Cancel();

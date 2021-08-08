@@ -22,8 +22,8 @@ export class OnlineReceiver {
 	public OnInconsistency: LiteEvent<Date> = new LiteEvent<Date>();
 	private _pathResolver: PathResolver;
 	private _obs: NetworkObserver[];
-	constructor(private _socket: ISocketWrapper, private _context: Gameworld) {
-		this._pathResolver = new PathResolver(this._context);
+	constructor(private _socket: ISocketWrapper, private _gameworld: Gameworld) {
+		this._pathResolver = new PathResolver(this._gameworld);
 		this._obs = [
 			new NetworkObserver(PacketKind.VehicleCreated, this.HandleVehicleCreated.bind(this)),
 			new NetworkObserver(PacketKind.VehicleDestroyed, this.HandleVehicleDestroyed.bind(this)),
@@ -53,12 +53,12 @@ export class OnlineReceiver {
 	}
 
 	private IsEmitingHq(name: string): boolean {
-		const hq = this._context.GetHqFromId(this.GetId(name));
-		return hq && hq.IsAlive() && hq.Identity.Name !== this._context.GetPlayerHq().Identity.Name && !hq.IsIa();
+		const hq = this._gameworld.GetHqFromId(this.GetId(name));
+		return hq && hq.IsAlive() && hq.Identity.Name !== this._gameworld.GetPlayerHq().Identity.Name && !hq.IsIa();
 	}
 
 	private HandleFieldDamaged(message: NetworkMessage<PacketContent<LifeContent>>): void {
-		const field = this._context.GetCell(message.Content.CId).GetField();
+		const field = this._gameworld.GetCell(message.Content.CId).GetField();
 		if (field instanceof AliveItem) {
 			if (field.IsAlive() && message.Content.Extra.Life < field.GetCurrentLife()) {
 				field.SetCurrentLife(message.Content.Extra.Life);
@@ -69,7 +69,7 @@ export class OnlineReceiver {
 	}
 
 	private HandleVehicleDamaged(message: NetworkMessage<PacketContent<LifeContent>>): void {
-		const vehicle = this._context.GetVehicle(message.Content.Id);
+		const vehicle = this._gameworld.GetVehicle(message.Content.Id);
 		if (vehicle) {
 			if (vehicle.IsAlive() && message.Content.Extra.Life < vehicle.GetCurrentLife()) {
 				vehicle.SetCurrentLife(message.Content.Extra.Life);
@@ -81,7 +81,7 @@ export class OnlineReceiver {
 	}
 
 	private HandleVehicleDestroyed(message: NetworkMessage<string>): void {
-		const vehicle = this._context.GetVehicle(message.Content);
+		const vehicle = this._gameworld.GetVehicle(message.Content);
 		if (vehicle) {
 			if (vehicle.IsAlive()) {
 				vehicle.SetCurrentLife(0);
@@ -99,9 +99,9 @@ export class OnlineReceiver {
 
 	private HandleVehicleCreated(message: NetworkMessage<PacketContent<any>>): void {
 		if (this.IsEmitingHq(message.Content.Id)) {
-			if (!this._context.ExistUnit(message.Content.VId)) {
-				const hq = this._context.GetHqFromId(this.GetId(message.Content.Id));
-				const coo = this._context.GetCell(message.Content.CId);
+			if (!this._gameworld.ExistUnit(message.Content.VId)) {
+				const hq = this._gameworld.GetHqFromId(this.GetId(message.Content.Id));
+				const coo = this._gameworld.GetCell(message.Content.CId);
 				if (message.Content.Type === 'Tank') {
 					hq.CreateTank(coo);
 				} else if (message.Content.Type === 'Truck') {
@@ -115,10 +115,10 @@ export class OnlineReceiver {
 
 	private HandleTarget(message: NetworkMessage<PacketContent<TargetContent>>): void {
 		const content = message.Content;
-		const tank = this._context.GetTank(content.VId);
+		const tank = this._gameworld.GetTank(content.VId);
 		if (this.IsEmitingHq(message.Content.Id)) {
 			if (content.Extra.HasTarget && content.Extra.TargetCId) {
-				const cell = this._context.GetCell(content.Extra.TargetCId);
+				const cell = this._gameworld.GetCell(content.Extra.TargetCId);
 				tank.SetMainTarget(cell.GetShootableEntity());
 			} else {
 				tank.SetMainTarget(null);
@@ -127,8 +127,8 @@ export class OnlineReceiver {
 	}
 
 	private HandleCamouflage(message: NetworkMessage<string>): void {
-		const unit = this._context.GetTank(message.Content);
-		const hq = this._context.GetHqFromId(unit.Identity);
+		const unit = this._gameworld.GetTank(message.Content);
+		const hq = this._gameworld.GetHqFromId(unit.Identity);
 		if (this.IsEmitingHq(hq.Identity.Name)) {
 			unit.SetCamouflage();
 			StaticLogger.Log(LogKind.info, `[CAMOUFLAGE] ${unit.Id}`);
@@ -138,9 +138,9 @@ export class OnlineReceiver {
 	private HandlePathChanged(message: NetworkMessage<PacketContent<NextCellContent>>): void {
 		const latency = message.Latency + Math.round(ItemsUpdater.UpdateSpan / 2);
 		const vId = message.Content.VId;
-		const vehicle = this._context.GetVehicle(vId);
+		const vehicle = this._gameworld.GetVehicle(vId);
 		if (vehicle) {
-			const hq = this._context.GetHqFromId(vehicle.Identity);
+			const hq = this._gameworld.GetHqFromId(vehicle.Identity);
 			if (this.IsEmitingHq(hq.Identity.Name)) {
 				this._pathResolver.Resolve(
 					vehicle,
@@ -160,7 +160,7 @@ export class OnlineReceiver {
 	}
 
 	private HandleDestroyedField(message: NetworkMessage<string>): void {
-		const field = this._context.GetCell(message.Content).GetField();
+		const field = this._gameworld.GetCell(message.Content).GetField();
 		if (field instanceof AliveItem) {
 			const alive = field as AliveItem;
 			if (alive.IsAlive()) {
@@ -174,7 +174,7 @@ export class OnlineReceiver {
 		if (message.Content.Type === 'BasicField') {
 			return;
 		}
-		const cell = this._context.GetCell(message.Content.CId);
+		const cell = this._gameworld.GetCell(message.Content.CId);
 		const hq = this.GetHq(message);
 		if (this.IsEmitingHq(hq.Identity.Name)) {
 			if (TypeTranslator.IsSpecialField(cell.GetField())) {
@@ -182,19 +182,19 @@ export class OnlineReceiver {
 					`[CONSISTENCY] ${message.Content.Type} ${message.Content.CId} is not a basic field`
 				);
 			}
-			const field = FieldHelper.NewField(message.Content.Type, cell, hq, this._context);
+			const field = FieldHelper.NewField(message.Content.Type, cell, hq, this._gameworld);
 			StaticLogger.Log(LogKind.info, `[CREATE] ${message.Content.CId} ${message.Content.Type}`);
 		}
 	}
 
 	private GetHq(message: NetworkMessage<PacketContent<any>>) {
-		return message.Content.Id ? this._context.GetHqFromId(this.GetId(message.Content.Id)) : null;
+		return message.Content.Id ? this._gameworld.GetHqFromId(this.GetId(message.Content.Id)) : null;
 	}
 
 	private HandleEnergyChanged(message: NetworkMessage<PacketContent<boolean>>): void {
 		const hq = this.GetHq(message);
 		if (this.IsEmitingHq(hq.Identity.Name)) {
-			const cell = this._context.GetCell(message.Content.CId);
+			const cell = this._gameworld.GetCell(message.Content.CId);
 			const reactor = cell.GetField() as ReactorField;
 			if (message.Content.Extra) {
 				reactor.EnergyUp();
@@ -208,7 +208,7 @@ export class OnlineReceiver {
 	private HandleOverlocked(message: NetworkMessage<PacketContent<string>>): void {
 		const hq = this.GetHq(message);
 		if (this.IsEmitingHq(hq.Identity.Name)) {
-			const cell = this._context.GetCell(message.Content.CId);
+			const cell = this._gameworld.GetCell(message.Content.CId);
 			const reactor = cell.GetField() as ReactorField;
 			reactor.Overclock(TypeTranslator.GetPowerUp(message.Content.Extra));
 			StaticLogger.Log(LogKind.info, `[OVERCLOCK] ${message.Content.CId} ${message.Content.Type}`);

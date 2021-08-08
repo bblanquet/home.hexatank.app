@@ -28,6 +28,8 @@ import { Item } from '../../../Item';
 import { ISpot } from '../../../../../Utils/Geometry/ISpot';
 import { IHeadquarter } from '../Hq/IHeadquarter';
 import { Identity, Relationship } from '../../../Identity';
+import { IOnlineService } from '../../../../../Services/Online/IOnlineService';
+import { SingletonKey, Singletons } from '../../../../../Singletons';
 
 export class ReactorField extends Field implements ISelectable, ISpot<ReactorField> {
 	public Identity: Identity;
@@ -39,7 +41,6 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 
 	public IsLost: boolean = false;
 	public Links: Array<HqNetworkLink> = [];
-	public Charges: Dictionary<Charge> = new Dictionary<Charge>();
 
 	//UI
 	public Appearance: ReactorAppearance;
@@ -55,6 +56,9 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	public OnEnergyChanged: LiteEvent<number> = new LiteEvent<number>();
 	public OnLost: LiteEvent<ReactorField> = new LiteEvent<ReactorField>();
 	public OnOverlocked: LiteEvent<string> = new LiteEvent<string>();
+
+	//sad to have this coupling
+	private _onlineService: IOnlineService = Singletons.Load<IOnlineService>(SingletonKey.Online);
 
 	constructor(
 		cell: Cell,
@@ -208,8 +212,6 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		return 0 < this.Reserve.GetUsedPower();
 	}
 
-	public ClearPower(): void {}
-
 	private _endLockDate: number;
 
 	private SetLocked(l: boolean): void {
@@ -226,28 +228,30 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 		return this._endLockDate;
 	}
 
+	private IsTrustful(id: Identity): boolean {
+		return !(this._onlineService.IsOnline() && !id.IsPlayer);
+	}
+
 	public Support(vehicule: Vehicle): void {
 		if (this.IsPacific) {
 			return;
+		} else {
+			const id = vehicule.Identity;
+			if (this.IsTrustful(id)) {
+				if (this.Hq.GetRelation(id) !== Relationship.Ally) {
+					this.Swap(id);
+				}
+			}
 		}
+	}
 
-		if (vehicule.GetRelation(this.Identity) !== Relationship.Ally) {
-			this.IsLost = true;
-			this.SetSelected(false);
-			this.Reserve.Clear();
-			this.OnLost.Invoke(this, this);
-			this.OnLost.Clear();
-
-			this.Appearance.Destroy();
-			this.Charges.Values().forEach((charge) => {
-				charge.Destroy();
-			});
-			this.Charges.Clear();
-			const hq = this._hqs.find((hq) => hq.GetIdentity().Name === vehicule.Identity.Name);
-			const cell = this.GetCell();
-			var reactor = cell.SetField(new ReactorField(cell, hq, this._hqs, hq.Identity.Skin.GetLight()));
-			hq.OnReactorConquested.Invoke(this, reactor);
-		}
+	public Swap(id: Identity) {
+		this.Destroy();
+		const hq = this._hqs.find((hq) => hq.GetIdentity().Name === id.Name);
+		hq.OnReactorConquested.Invoke(
+			this,
+			this.GetCell().SetField(new ReactorField(this.GetCell(), hq, this._hqs, hq.Identity.Skin.GetLight()))
+		);
 	}
 
 	public IsDesctrutible(): boolean {
@@ -269,22 +273,8 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 	public Update(): void {
 		super.Update();
 
-		this.Appearance.Update();
-
-		if (this._area) {
-			this._area.forEach((area) => {
-				area.Update();
-			});
-		}
-
 		if (this._overclockAnimation && !this._overclockAnimation.IsDone) {
 			this._overclockAnimation.Update();
-		}
-
-		if (this.Charges) {
-			this.Charges.Values().forEach((charge) => {
-				charge.Update();
-			});
 		}
 	}
 
@@ -363,7 +353,12 @@ export class ReactorField extends Field implements ISelectable, ISpot<ReactorFie
 
 	public Destroy(): void {
 		super.Destroy();
+		this.IsLost = true;
+		this.Reserve.Clear();
+		this.OnLost.Invoke(this, this);
+		this.OnLost.Clear();
 		this.ClearArea();
+		this.SetSelected(false);
 		this.Links.forEach((l) => l.Destroy());
 		this.Links = [];
 		if (this._overclockAnimation) {

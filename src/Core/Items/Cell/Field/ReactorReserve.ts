@@ -6,27 +6,29 @@ import { AliveBonusField } from './Bonus/AliveBonusField';
 import { Item } from '../../Item';
 import { IHeadquarter } from './Hq/IHeadquarter';
 import { Relationship } from '../../Identity';
+import { Dictionary } from '../../../../Utils/Collections/Dictionary';
 
 export class ReactorReserve {
 	private _ref: any;
+	public Charges: Dictionary<Charge> = new Dictionary<Charge>();
 	constructor(private _hq: IHeadquarter, private _reactor: ReactorField) {
 		this._ref = this.ChargeDestroyed.bind(this);
 	}
 
 	GetUsedPower(): number {
-		return this._reactor.Charges.Values().length;
+		return this.Charges.Values().length;
 	}
 
 	Clear(): void {
-		this._reactor.Charges.Values().forEach((c) => {
+		this.Charges.Values().forEach((c) => {
 			c.Destroy();
 			this.UpdateBonusCells(false);
 		});
-		this._reactor.Charges.Clear();
+		this.Charges.Clear();
 	}
 
 	public GetTotalBatteries(): number {
-		return this.GetAvailableBatteries().length + this._reactor.Charges.Values().length;
+		return this.GetAvailableBatteries().length + this.Charges.Values().length;
 	}
 
 	public High(): void {
@@ -35,7 +37,7 @@ export class ReactorReserve {
 			const battery = remains.shift();
 			const charge = new Charge(this._hq, battery, this._reactor);
 			charge.OnDestroyed.On(this._ref);
-			this._reactor.Charges.Add(battery.GetCell().Coo(), charge);
+			this.Charges.Add(battery.GetCell().Coo(), charge);
 			this.UpdateBonusCells(true);
 		}
 	}
@@ -43,7 +45,7 @@ export class ReactorReserve {
 	private ChargeDestroyed(source: any, r: Item) {
 		const charge = (r as Charge).GetCell();
 		charge.OnDestroyed.Off(this._ref);
-		this._reactor.Charges.Remove(charge.Coo());
+		this.Charges.Remove(charge.Coo());
 	}
 
 	private UpdateBonusCells(isUp: boolean) {
@@ -67,15 +69,15 @@ export class ReactorReserve {
 			this.GetAvailableBatteries().forEach((battery) => {
 				const charge = new Charge(this._hq, battery, this._reactor);
 				charge.OnDestroyed.On(this._ref);
-				this._reactor.Charges.Add(battery.GetCell().Coo(), charge);
+				this.Charges.Add(battery.GetCell().Coo(), charge);
 				this.UpdateBonusCells(true);
 			});
 		}
 	}
 
 	public EmptyCharges(): void {
-		if (0 < this._reactor.Charges.Values().length) {
-			const charges = this._reactor.Charges.Values();
+		if (0 < this.Charges.Values().length) {
+			const charges = this.Charges.Values();
 			charges.forEach((charge) => {
 				charge.Destroy();
 				this.UpdateBonusCells(false);
@@ -84,8 +86,8 @@ export class ReactorReserve {
 	}
 
 	public Low(): void {
-		if (0 < this._reactor.Charges.Values().length) {
-			const charges = this._reactor.Charges.Values();
+		if (0 < this.Charges.Values().length) {
+			const charges = this.Charges.Values();
 			let farthestCharge = charges[0];
 			charges.forEach((charge) => {
 				if (farthestCharge.GetDistance() < charge.GetDistance()) {

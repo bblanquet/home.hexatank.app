@@ -22,6 +22,9 @@ import { VolcanoField } from '../Items/Cell/Field/VolcanoField';
 import { WaterField } from '../Items/Cell/Field/WaterField';
 import { Headquarter } from '../Items/Cell/Field/Hq/Headquarter';
 import { HeadquarterField } from '../Items/Cell/Field/Hq/HeadquarterField';
+import { MapKind } from './Blueprint/Items/MapKind';
+import { SingletonKey, Singletons } from '../../Singletons';
+import { IBlueprintService } from '../../Services/Blueprint/IBlueprintService';
 export class FieldHelper {
 	//has to use it because of ofuscator
 	public static GetName(obj: IField): string {
@@ -156,7 +159,14 @@ export class FieldHelper {
 		} else if (name === 'WaterField') {
 			return cell.SetField(new WaterField(cell));
 		} else if (name === 'BlockingField') {
-			return cell.SetField(new BlockingField(cell, SvgArchive.nature.forest.darkTree));
+			const mode = Singletons.Load<IBlueprintService>(SingletonKey.Blueprint).Get().MapMode;
+			if (mode === MapKind.Forest) {
+				return cell.SetField(new BlockingField(cell, SvgArchive.nature.forest.darkTree));
+			} else if (mode === MapKind.Ice) {
+				return cell.SetField(new BlockingField(cell, SvgArchive.nature.ice.tree2));
+			} else if (mode === MapKind.Sand) {
+				return cell.SetField(new BlockingField(cell, SvgArchive.nature.sand.palmTree));
+			}
 		}
 		ErrorHandler.Throw(ErrorCat.outOfRange, name);
 	}

@@ -15,6 +15,7 @@ import { NotificationState } from '../Model/NotificationState';
 import { StateUpdater } from 'preact/hooks';
 import { GuestState } from '../Model/GuestState';
 import { Usernames } from '../Model/Names';
+import { ServerIssue } from '../Model/Dialogues';
 
 export class GuestHook extends Hook<GuestState> {
 	private _socket: IServerSocket;
@@ -139,9 +140,6 @@ export class GuestHook extends Hook<GuestState> {
 	}
 
 	private OnConnectError(m: any): void {
-		this.OnNotification.Invoke(
-			this,
-			new NotificationState(LogKind.error, `OOPS Server doesn't seem to be running.`)
-		);
+		this.OnNotification.Invoke(this, new NotificationState(LogKind.error, ServerIssue));
 	}
 }

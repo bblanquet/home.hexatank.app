@@ -4,7 +4,7 @@ import { IVersionService } from './IVersionService';
 export class VersionService implements IVersionService {
 	private _versions: Versionning[] = [
 		new Versionning(
-			'0.8.21',
+			'0.8.22',
 			[ 'Improve tutorials', 'authorize overlapping between units', 'improve online syncrhonisation #3' ],
 			[ 'Marvin' ]
 		),

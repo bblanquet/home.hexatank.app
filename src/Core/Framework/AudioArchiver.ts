@@ -12,7 +12,6 @@ export const AudioArchive = {
 
 	construction: './audio/construction.wav',
 
-	tankMoving: './audio/engine.wav',
 	vehicle: './audio/vehicle.wav',
 
 	shot: './audio/shot.wav',

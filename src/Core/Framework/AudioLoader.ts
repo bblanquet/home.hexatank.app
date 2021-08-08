@@ -26,7 +26,6 @@ export class AudioLoader implements ILoader {
 			AudioArchive.fieldPopup,
 			AudioArchive.selection,
 			AudioArchive.explosion,
-			AudioArchive.tankMoving,
 			AudioArchive.vehicle,
 
 			AudioArchive.death,

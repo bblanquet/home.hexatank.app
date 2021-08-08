@@ -3,10 +3,14 @@ import { IVersionService } from './IVersionService';
 
 export class VersionService implements IVersionService {
 	private _versions: Versionning[] = [
-		new Versionning('0.8.2', [ 'stuffs' ], [ 'Marvin' ]),
+		new Versionning(
+			'0.8.21',
+			[ 'Improve tutorials', 'authorize overlapping between units', 'improve online syncrhonisation #3' ],
+			[ 'Marvin' ]
+		),
 		new Versionning(
 			'0.8.14',
-			[ 'fix hanging unit', 'fix and improve IA', 'improve online synchronisation #2' ],
+			[ 'fix frozen units', 'fix and improve IA', 'improve online synchronisation #2' ],
 			[ 'Doug' ]
 		),
 		new Versionning(

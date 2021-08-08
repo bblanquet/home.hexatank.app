@@ -86,10 +86,6 @@ export class Tank extends Vehicle {
 	public Update(): void {
 		super.Update();
 
-		// if (this.IsSelected()) {
-		// 	throw new Error('Method not implemented.');
-		// }
-
 		if (this._mainTarget != null && !this._mainTarget.IsAlive()) {
 			this._mainTarget = null;
 		}

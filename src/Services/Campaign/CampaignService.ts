@@ -24,7 +24,7 @@ export class CampaignService implements ICampaignService {
 
 	constructor() {
 		this._playerProfil = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
-		const playername = this._playerProfil.GetProfil().LastPlayerName;
+		const playername = this._playerProfil.GetProfile().LastPlayerName;
 
 		this._training = new Dictionary<IBlueprint>();
 		this._training.Add((1).toString(), new CamouflageBluePrintMaker().GetBluePrint());
@@ -109,11 +109,11 @@ export class CampaignService implements ICampaignService {
 
 	public GetStages(kind: CampaignKind): StageState[] {
 		if (kind === CampaignKind.blue) {
-			return this._playerProfil.GetProfil().BlueLvl;
+			return this._playerProfil.GetProfile().BlueLvl;
 		} else if (kind === CampaignKind.training) {
-			return this._playerProfil.GetProfil().GreenLvl;
+			return this._playerProfil.GetProfile().GreenLvl;
 		} else {
-			return this._playerProfil.GetProfil().RedLvl;
+			return this._playerProfil.GetProfile().RedLvl;
 		}
 	}
 }

@@ -17,12 +17,12 @@ export class PlayerProfilService implements IPlayerProfileService {
 		return this._profil.Points;
 	}
 
-	SetProfil(profil: PlayerProfile): void {
+	SetProfile(profil: PlayerProfile): void {
 		this._profil = profil;
 		this.Save();
 	}
 
-	GetProfil(): PlayerProfile {
+	GetProfile(): PlayerProfile {
 		if (!this._profil) {
 			this.Load();
 		}
@@ -38,11 +38,11 @@ export class PlayerProfilService implements IPlayerProfileService {
 		} else {
 			profil = new PlayerProfile();
 		}
-		this.SetProfil(profil);
+		this.SetProfile(profil);
 	}
 
 	public GetRecords(): RecordContent[] {
-		const p = this.GetProfil();
+		const p = this.GetProfile();
 		const result: RecordContent[] = [];
 		if (p.Records) {
 			p.Records.forEach((jsonRecord) => {

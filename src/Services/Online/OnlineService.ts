@@ -60,7 +60,7 @@ export class OnlineService implements IOnlineService {
 	}
 	private UpdatePlayerName(playerName: string) {
 		const playerProfilService = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
-		playerProfilService.GetProfil().LastPlayerName = playerName;
+		playerProfilService.GetProfile().LastPlayerName = playerName;
 		playerProfilService.Save();
 	}
 

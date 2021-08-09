@@ -44,7 +44,7 @@ export class GuestHook extends Hook<GuestState> {
 		const profilService = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
 		return {
 			Rooms: new Array<RoomState>(),
-			PlayerName: profilService.GetProfil().LastPlayerName,
+			PlayerName: profilService.GetProfile().LastPlayerName,
 			filter: '',
 			Password: ''
 		};

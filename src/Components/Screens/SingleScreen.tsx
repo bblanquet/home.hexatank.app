@@ -111,7 +111,7 @@ export default class SingleScreen extends Component<any, BlueprintSetup> {
 	}
 
 	Start(): void {
-		const playerName = this._profilService.GetProfil().LastPlayerName;
+		const playerName = this._profilService.GetProfile().LastPlayerName;
 		const players = new Array<PlayerBlueprint>();
 		if (this.state.IsFullIA) {
 			this.state.IAs.forEach((ia, index) => {

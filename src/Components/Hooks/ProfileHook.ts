@@ -77,7 +77,7 @@ export class ProfileHook extends Hook<ProfileState> {
 			reader.onload = (ev: ProgressEvent<FileReader>) => {
 				const data = JSON.parse(ev.target.result as string);
 				const record = RecordContent.To(data);
-				this._playerProfilService.GetProfil().Records.push(JsonRecordContent.To(record, false));
+				this._playerProfilService.GetProfile().Records.push(JsonRecordContent.To(record, false));
 				this.Update((e) => e.Records.push(new RecordSelection(false, record)));
 			};
 		}

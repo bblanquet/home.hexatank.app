@@ -572,12 +572,23 @@ hr {
 	box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
 }
 
-p.bubble {
-	position: relative;
-	line-height: 1.4em;
-	margin-top: -1px;
-	padding: 15px;
+.abs-bottom {
+	position: absolute;
+	left: 0%;
+	bottom: 0%;
+	width: 90%;
+	margin: 5%;
 }
+@media only screen and (min-width: 768px) {
+	.abs-bottom {
+		position: absolute;
+		left: 20%;
+		bottom: 0%;
+		width: 60%;
+		margin: 5%;
+	}
+}
+
 .arrow-up {
 	width: 0;
 	height: 0;

@@ -65,7 +65,7 @@ export default class Bubble extends Component<
 
 	render() {
 		return (
-			<div class="bubbleApp" style="left: 0px; bottom: 0px;position: absolute;fit-content;width: 90%;margin: 5%;">
+			<div class="bubbleApp abs-bottom">
 				<div class="d-flex" style="flex-direction:row;align-content:space-between;align-items: center">
 					{this.GetFace()}
 					<div style="width:100%">{this.state.CurrentSentence}</div>

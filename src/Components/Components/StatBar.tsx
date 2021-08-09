@@ -19,7 +19,7 @@ export default class StatBar extends Component<any, { IsMute: boolean }> {
 
 	componentDidMount() {
 		this.setState({
-			IsMute: this._profilService.GetProfil().IsMute
+			IsMute: this._profilService.GetProfile().IsMute
 		});
 	}
 
@@ -35,7 +35,7 @@ export default class StatBar extends Component<any, { IsMute: boolean }> {
 					OnClick={() => {
 						const isMute = !this._soundService.IsMute();
 						this._soundService.SetMute(isMute);
-						this._profilService.GetProfil().IsMute = isMute;
+						this._profilService.GetProfile().IsMute = isMute;
 						this._profilService.Save();
 						this._soundService.PlayLoungeMusic();
 						this.setState({ IsMute: isMute });

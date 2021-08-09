@@ -68,12 +68,13 @@ export class RedHook extends Hook<CampaignState> {
 
 	public Start(): void {
 		const blueprint = this._campaignService.GetBlueprint(CampaignKind.red, this.State.Level);
+		const profile = this._playerProfilService.GetProfile();
 		Singletons.Load<IBuilder<GameBlueprint>>(SingletonKey.GameBuilder).Register(
 			blueprint as any,
 			() => {
-				this._playerProfilService.GetProfil().RedLvl[this.State.Level - 1] = StageState.achieved;
-				if (this.State.Level < this._playerProfilService.GetProfil().RedLvl.length) {
-					this._playerProfilService.GetProfil().RedLvl[this.State.Level] = StageState.unlock;
+				profile.RedLvl[this.State.Level - 1] = StageState.achieved;
+				if (this.State.Level < profile.RedLvl.length && profile.RedLvl[this.State.Level] === StageState.lock) {
+					profile.RedLvl[this.State.Level] = StageState.unlock;
 				}
 				this._playerProfilService.AddPoints(20);
 			},

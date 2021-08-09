@@ -39,8 +39,8 @@ export class HostHook extends Hook<HostState> {
 	public static DefaultState(): HostState {
 		const profilService = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
 		return new HostState(
-			`${profilService.GetProfil().LastPlayerName} party`,
-			profilService.GetProfil().LastPlayerName,
+			`${profilService.GetProfile().LastPlayerName} party`,
+			profilService.GetProfile().LastPlayerName,
 			'',
 			false
 		);

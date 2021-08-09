@@ -4,8 +4,8 @@ import { PlayerProfile } from './PlayerProfile';
 import { PointDetails } from './PointDetails';
 
 export interface IPlayerProfileService {
-	SetProfil(model: PlayerProfile): void;
-	GetProfil(): PlayerProfile;
+	SetProfile(model: PlayerProfile): void;
+	GetProfile(): PlayerProfile;
 	Save(): void;
 	Load(): void;
 

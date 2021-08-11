@@ -244,10 +244,9 @@ export class Tank extends Vehicle {
 			BoundingBox.NewFromBox(this.GetBoundingBox()),
 			SvgArchive.constructionEffects,
 			ZKind.Sky,
-			false,
-			5
+			false
 		);
-
+		this.OnCamouflageChanged.Invoke(this, this);
 		return true;
 	}
 
@@ -271,6 +270,7 @@ export class Tank extends Vehicle {
 				}
 			}
 			this.camouflagedSprites = [];
+			this.OnCamouflageChanged.Invoke(this, this);
 		}
 	}
 }

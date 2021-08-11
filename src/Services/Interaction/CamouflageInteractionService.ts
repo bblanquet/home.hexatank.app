@@ -30,12 +30,12 @@ export class CamouflageInteractionService implements IInteractionService<Camoufl
 		this._interaction = new InteractionContext(
 			this._inputNotifier,
 			[
+				new SimpleSelectionCombination(checker, gameworld),
 				new CancelCombination(),
 				new AbortCombination(),
 				new TankCombination(),
 				new CamouflageCombination(),
 				new ClearTrashCombination(checker),
-				new SimpleSelectionCombination(checker, gameworld),
 				new SwitchToVehicleCombination(gameworld)
 			],
 			checker,

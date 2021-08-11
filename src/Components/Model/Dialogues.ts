@@ -22,7 +22,7 @@ export const LoadingSentences = [
 	'Setting antennas up for communication between troops...',
 	'Adding shining effects to precious resources...',
 	'Loading very manly sound effects...',
-	'Planting trees in battlefields ...',
+	'Planting trees on  battlefields ...',
 	'Painting vehicles with fancy colors...'
 ];
 

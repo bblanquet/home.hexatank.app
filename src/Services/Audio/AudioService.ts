@@ -1,9 +1,7 @@
 import { IAudioService } from './IAudioService';
 import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { Howl } from 'howler';
-import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 import { IGameAudioManager } from '../../Core/Framework/Audio/IGameAudioManager';
-import { AudioLoader } from '../../Core/Framework/AudioLoader';
 
 export class AudioService implements IAudioService {
 	private _howls: Dictionary<Howl> = new Dictionary<Howl>();
@@ -13,16 +11,6 @@ export class AudioService implements IAudioService {
 
 	IsPlaying(content: string): boolean {
 		return this._howls.Exist(content) && this._howls.Get(content).playing();
-	}
-
-	PlayLoungeMusic(): void {
-		if (!this._isMute) {
-			if (!this.IsPlaying(AudioLoader.GetAudio(AudioArchive.loungeMusic))) {
-				this.Play(AudioLoader.GetAudio(AudioArchive.loungeMusic), 0.1, true);
-			}
-		} else {
-			this.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));
-		}
 	}
 
 	GetGameAudioManager(): IGameAudioManager {

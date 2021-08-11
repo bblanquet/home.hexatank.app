@@ -64,7 +64,6 @@ export class CamouflageHook extends Hook<RuntimeState> {
 		this._interactionService.OnMultiMenuShowed.On(this.HandleMultiMenuShowed.bind(this));
 		this._profilService.OnPointsAdded.On(this.HandlePoints.bind(this));
 		this._appService.OnReloaded.On(this._handleRetry);
-		this._soundService.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));
 		this.OnRetried.Invoke();
 		this._gameworld.State.SetInteraction(false);
 		this._steps = 0;

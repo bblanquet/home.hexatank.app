@@ -76,7 +76,6 @@ export abstract class AbstractGameHook<T1 extends IBlueprint, T2 extends IHqGame
 		this._interactionService = Singletons.Load<IInteractionService<T2>>(SingletonKey.Interaction);
 		this.Gameworld = this._gameworldService.Publish();
 		this.Gameworld.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));
-		this._soundService.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));
 		this.Gameworld.OnItemSelected.On(this.HandleSelection.bind(this));
 		this._profilService.OnPointsAdded.On(this.HandlePoints.bind(this));
 		this.Gameworld.State.OnGameStatusChanged.On(this.HandleGameStatus.bind(this));

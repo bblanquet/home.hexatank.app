@@ -12,5 +12,4 @@ export interface IAudioService {
 	PlayAgain(content: string, id?: number, volume?: number): void;
 	Clear(): void;
 	Pause(content: string, id?: number): void;
-	PlayLoungeMusic(): void;
 }

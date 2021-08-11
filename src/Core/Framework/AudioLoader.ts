@@ -38,7 +38,6 @@ export class AudioLoader implements ILoader {
 			AudioArchive.powerUp2,
 			AudioArchive.noMoney,
 
-			AudioArchive.loungeMusic,
 			AudioArchive.iceMusic,
 			AudioArchive.sandMusic,
 			AudioArchive.forestMusic,

@@ -3,7 +3,6 @@ import RangeComponent from '../Common/Range/RangeComponent';
 import UnitMenuComponent from '../Components/UnitMenuComponent';
 import { Vehicle } from '../../Core/Items/Unit/Vehicle';
 import GameCanvas from '../Components/GameCanvas';
-import Redirect from '../Components/Redirect';
 import Icon from '../Common/Icon/IconComponent';
 import Body from '../Common/Struct/Body';
 import Navbar from '../Common/Struct/Navbar';
@@ -25,49 +24,65 @@ export default class PlayerScreen extends HookedComponent<{}, PlayerHook, Player
 
 	public Rendering(): JSX.Element {
 		return (
-			<Redirect>
-				<Body
-					noScrollbar={!this.Hook.State.IsLog}
-					header={
-						<span>
-							<Navbar>
-								{this.Button(false, 'far fa-map')}
-								{this.Button(true, 'fas fa-stream')}
-								<SmBtn Color={ColorKind.Black} OnClick={() => this.Hook.SetMenu()}>
-									<Icon Value="fas fa-undo-alt" />
-								</SmBtn>
-							</Navbar>
-							<div class="notification">{this.Hook.GetRecord().Title}</div>
-						</span>
-					}
-					content={
-						<Switch
-							isLeft={this.Hook.State.IsLog}
-							left={<LogComponent Messages={this.Hook.GetRecord().Messages} />}
-							right={
-								<span>
-									<GameCanvas
-										Center={this.Hook.GetCenter()}
-										OnRefresh={this.Hook.OnRefresh}
-										uncollect={true}
-									/>
-									<Visible
-										isVisible={this.Hook.State.Item !== null && this.Hook.State.Item !== undefined}
-									>
-										<UnitMenuComponent Vehicle={this.Hook.State.Item as Vehicle} />
-									</Visible>
-								</span>
-							}
-						/>
-					}
-					footer={
-						<RangeComponent
-							dataSet={this.Hook.GetRecord().Dates}
-							onChange={(e: number) => this.Hook.HandleRangeChanged(e)}
-						/>
-					}
-				/>
-			</Redirect>
+			<Switch
+				isLeft={this.Hook.State.IsLog}
+				left={
+					<Body
+						noScrollbar={!this.Hook.State.IsLog}
+						header={
+							<span>
+								<Navbar>
+									{this.Button(false, 'far fa-map')}
+									{this.Button(true, 'fas fa-stream')}
+									<SmBtn Color={ColorKind.Black} OnClick={() => this.Hook.SetMenu()}>
+										<Icon Value="fas fa-undo-alt" />
+									</SmBtn>
+								</Navbar>
+								<div class="notification">{this.Hook.GetRecord().Title}</div>
+							</span>
+						}
+						content={<LogComponent Messages={this.Hook.GetRecord().Messages} />}
+						footer={<div class="navbar nav-inner" />}
+					/>
+				}
+				right={
+					<Body
+						noScrollbar={!this.Hook.State.IsLog}
+						header={
+							<span>
+								<Navbar>
+									{this.Button(false, 'far fa-map')}
+									{this.Button(true, 'fas fa-stream')}
+									<SmBtn Color={ColorKind.Black} OnClick={() => this.Hook.SetMenu()}>
+										<Icon Value="fas fa-undo-alt" />
+									</SmBtn>
+								</Navbar>
+								<div class="notification">{this.Hook.GetRecord().Title}</div>
+							</span>
+						}
+						content={
+							<span>
+								<GameCanvas
+									Center={this.Hook.GetCenter()}
+									OnRefresh={this.Hook.OnRefresh}
+									uncollect={true}
+								/>
+								<Visible
+									isVisible={this.Hook.State.Item !== null && this.Hook.State.Item !== undefined}
+								>
+									<UnitMenuComponent Vehicle={this.Hook.State.Item as Vehicle} />
+								</Visible>
+							</span>
+						}
+						footer={
+							<RangeComponent
+								dataSet={this.Hook.GetRecord().Dates}
+								onChange={(e: number) => this.Hook.HandleRangeChanged(e)}
+							/>
+						}
+					/>
+				}
+			/>
 		);
 	}
 

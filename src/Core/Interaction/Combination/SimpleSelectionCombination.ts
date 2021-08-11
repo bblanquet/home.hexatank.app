@@ -3,7 +3,7 @@ import { ISelectable } from '../../ISelectable';
 import { CombinationContext } from './CombinationContext';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { ISelectableChecker } from '../ISelectableChecker';
-import { Vehicle } from '../../Items/Unit/Vehicle';
+import { Tank } from '../../Items/Unit/Tank';
 
 export class SimpleSelectionCombination extends AbstractSingleCombination {
 	private _checker: ISelectableChecker;
@@ -19,14 +19,17 @@ export class SimpleSelectionCombination extends AbstractSingleCombination {
 
 	Combine(context: CombinationContext): boolean {
 		if (this.IsMatching(context)) {
-			const item = context.Items[0];
-			const selectable = this.ToSelectableItem(item);
-
-			if (selectable instanceof Vehicle) {
+			if (context.Items[0] instanceof Tank) {
+				const selectable = this.ToSelectableItem(context.Items[0]);
 				selectable.SetSelected(true);
-				this._gameworld.OnItemSelected.Invoke(this, item);
+				this._gameworld.OnItemSelected.Invoke(this, context.Items[0]);
+				return true;
+			} else {
+				const selectable = this.ToSelectableItem(context.Items[0]);
+				selectable.SetSelected(false);
+				this.ClearContext.Invoke();
+				return true;
 			}
-			return true;
 		}
 		return false;
 	}

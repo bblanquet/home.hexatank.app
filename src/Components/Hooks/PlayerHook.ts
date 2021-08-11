@@ -12,12 +12,13 @@ import { Point } from '../../Utils/Geometry/Point';
 import { IGameworldService } from '../../Services/World/IGameworldService';
 import { ISelectable } from '../../Core/ISelectable';
 import { Item } from '../../Core/Items/Item';
-import { LiteEvent } from '../../Utils/Events/LiteEvent';
 import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
+import { IBuilder } from '../../Services/Builder/IBuilder';
 
 export class PlayerHook extends Hook<PlayerState> {
 	private _recordService: IRecordService;
 	private _gameService: IGameworldService<GameBlueprint, Gameworld>;
+	private _appService: IBuilder<GameBlueprint>;
 	private _onItemSelectionChanged: any = this.OnItemSelectionChanged.bind(this);
 	private _updater: RecordCanvasUpdater;
 	private _context: Gameworld;
@@ -25,6 +26,7 @@ export class PlayerHook extends Hook<PlayerState> {
 
 	constructor(d: [PlayerState, StateUpdater<PlayerState>]) {
 		super(d[0], d[1]);
+		this._appService = Singletons.Load<IBuilder<GameBlueprint>>(SingletonKey.PlayerBuilder);
 		this._gameService = Singletons.Load<IGameworldService<GameBlueprint, Gameworld>>(SingletonKey.Gameworld);
 		this._recordService = Singletons.Load<IRecordService>(SingletonKey.Record);
 		this._context = this._gameService.Publish();
@@ -41,6 +43,7 @@ export class PlayerHook extends Hook<PlayerState> {
 	}
 
 	public Unmount(): void {
+		this._appService.Collect();
 		this._gameService.Collect();
 	}
 

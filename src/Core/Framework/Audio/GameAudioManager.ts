@@ -41,7 +41,7 @@ export class GameAudioManager implements IGameAudioManager {
 	}
 
 	public PlayMusic(): void {
-		this._soundService.Play(this.GetMusic(), 0.05, true);
+		this._soundService.Play(this.GetMusic(), 0.01, true);
 	}
 
 	private GetMusic(): string {

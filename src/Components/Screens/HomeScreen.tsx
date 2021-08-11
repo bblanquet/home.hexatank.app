@@ -36,7 +36,6 @@ export default class HomeScreen extends Component<
 
 	componentDidMount() {
 		this._audio.SetMute(this._playerProfile.GetProfile().IsMute);
-		this._audio.PlayLoungeMusic();
 		this.setState({
 			IsMenu: true,
 			Notification: new LiteEvent<NotificationState>()

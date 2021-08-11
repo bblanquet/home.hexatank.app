@@ -92,7 +92,6 @@ export class GameHook extends Hook<RuntimeState> {
 		this.Timeout.On(() => {
 			this.Stop(true);
 		});
-		this._soundService.Pause(AudioLoader.GetAudio(AudioArchive.loungeMusic));
 		const playerHq = this._gameworld.GetPlayerHq();
 		playerHq.OnDiamondCountChanged.On(this.HandleDiamondChanged.bind(this));
 		playerHq.OnCashMissing.On(this.HandleCashMissing.bind(this));

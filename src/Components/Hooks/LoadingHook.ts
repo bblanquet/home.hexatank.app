@@ -67,7 +67,7 @@ export class LoadingHook extends Hook<LoadingState> {
 			this.SetAudio(100);
 		} else {
 			const audioLoad = new AudioLoader(this._audio);
-			const onAudioLoaded = new AssetLoader(audioLoad, 4).LoadAll(audioLoad.Audios());
+			const onAudioLoaded = new AssetLoader(audioLoad, 8).LoadAll(audioLoad.Audios());
 			onAudioLoaded.On((obj: any, percentage: number) => {
 				const roundedPercentage = Math.round(percentage);
 				if (roundedPercentage % 10 === 0 && roundedPercentage !== this._sentencePercentage) {

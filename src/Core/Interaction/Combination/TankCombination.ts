@@ -41,8 +41,6 @@ export class TankCombination extends AbstractSingleCombination {
 				tank.GiveOrder(order);
 				context.Items.splice(1, 1);
 			}
-			tank.SetSelected(false);
-			this.ClearContext.Invoke();
 			return true;
 		}
 		return false;

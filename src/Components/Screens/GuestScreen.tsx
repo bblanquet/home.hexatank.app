@@ -16,7 +16,6 @@ import { HookedComponent } from '../Hooks/HookedComponent';
 import Body from '../Common/Struct/Body';
 import Navbar from '../Common/Struct/Navbar';
 import Column from '../Common/Struct/Column';
-import Line from '../Common/Struct/Line';
 
 export default class GuestComponent extends HookedComponent<{}, GuestHook, GuestState> {
 	componentWillUnmount() {

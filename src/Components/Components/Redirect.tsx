@@ -4,9 +4,9 @@ import { SpriteProvider } from '../../Core/Framework/SpriteProvider';
 
 export default class Redirect extends Component<any, any> {
 	componentWillMount() {
-		// if (!SpriteProvider.IsLoaded()) {
-		// 	route('{{sub_path}}Loading', true);
-		// }
+		if (!SpriteProvider.IsLoaded()) {
+			route('{{sub_path}}Loading', true);
+		}
 	}
 
 	render() {

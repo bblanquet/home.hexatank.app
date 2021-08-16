@@ -18,7 +18,7 @@ export const LoadingSentences = [
 	'Analyzing vehicle blueprints...',
 	'Polishing nice icons...',
 	'Manufacturing vehicle parts...',
-	'Recruting some villains...',
+	'Recruiting some villains...',
 	'Setting antennas up for communication between troops...',
 	'Adding shining effects to precious resources...',
 	'Loading very manly sound effects...',
@@ -45,21 +45,21 @@ export const Fire = [
 export const Outpost = [
 	'Let settle an outpost in this land, that will enable you to fix your tank.',
 	'',
-	"Well done, you have a operational outpost, this outpost will help you to assist your units. let's start by repairing your tank.",
+	"Well done, you have an operational outpost, this outpost will help you to assist your units. let's start by repairing your tank.",
 	'',
-	"Now that your tank is as good as new, let's increase its fire power.",
+	"Now that your tank is as good as new, let's increase its firepower.",
 	'',
-	"Let's destroy this ugly boulder over there with our new fire power.",
+	"Let's destroy this ugly boulder over there with our new firepower.",
 	''
 ];
 
 export const Multioutpost = [
-	'One of your outpost is full juice.',
+	'One of your outposts is full juice.',
 	'And the other one is out of juice.',
 	"Let's make a connection between these two outposts to share resources.",
 	'',
 	'Well done, reactors are now linked.',
-	"Let's start to transfert some powers from one to another.",
+	"Let's start to transfer some powers from one to another.",
 	'',
 	"Almost done, let's used these released powers for this outpost.",
 	'',
@@ -79,4 +79,4 @@ export const Diamond = [
 ];
 
 export const ServerIssue = "OOPS the Server doesn't seem to be running. Don't worry, we will fix it quickly!";
-export const Issue = 'OOPS an error occured, we will fix it quickly!';
+export const Issue = 'OOPS an error occurred, we will fix it quickly!';

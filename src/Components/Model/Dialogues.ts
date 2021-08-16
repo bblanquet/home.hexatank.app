@@ -27,7 +27,7 @@ export const LoadingSentences = [
 ];
 
 export const Green = [
-	'Don’t tell my mum I drive tanks, she thinks I am musician.',
+	'Don’t tell my mum I drive tanks, she thinks I am a musician.',
 	"Let's have fun in this training session.",
 	'The manliest thing on earth can only be a fancy tank.',
 	'I like when a man speaks from the tank.'

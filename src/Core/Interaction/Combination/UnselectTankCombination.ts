@@ -7,7 +7,7 @@ import { CellState } from '../../Items/Cell/CellState';
 import { AbstractSingleCombination } from './AbstractSingleCombination';
 import { Relationship } from '../../Items/Identity';
 
-export class TankCombination extends AbstractSingleCombination {
+export class UnselectTankCombination extends AbstractSingleCombination {
 	IsMatching(context: CombinationContext): boolean {
 		return (
 			this.IsNormalMode(context) &&
@@ -41,8 +41,6 @@ export class TankCombination extends AbstractSingleCombination {
 				tank.GiveOrder(order);
 				context.Items.splice(1, 1);
 			}
-			tank.SetSelected(false);
-			this.ClearContext.Invoke();
 			return true;
 		}
 		return false;

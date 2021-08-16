@@ -13,7 +13,7 @@ import { ClearTrashCombination } from '../../Core/Interaction/Combination/ClearT
 import { AbortCombination } from '../../Core/Interaction/Combination/AbortCombination';
 import { CamouflageCombination } from '../../Core/Interaction/Combination/CamouflageCombination';
 import { Camouflageworld } from '../../Core/Framework/World/Camouflageworld';
-import { TankCombination } from '../../Core/Interaction/Combination/TankCombination';
+import { UnselectTankCombination } from '../../Core/Interaction/Combination/UnselectTankCombination';
 import { SwitchToVehicleCombination } from '../../Core/Interaction/Combination/SwitchToVehicleCombination';
 
 export class CamouflageInteractionService implements IInteractionService<Camouflageworld> {
@@ -33,7 +33,7 @@ export class CamouflageInteractionService implements IInteractionService<Camoufl
 				new SimpleSelectionCombination(checker, gameworld),
 				new CancelCombination(),
 				new AbortCombination(),
-				new TankCombination(),
+				new UnselectTankCombination(),
 				new CamouflageCombination(),
 				new ClearTrashCombination(checker),
 				new SwitchToVehicleCombination(gameworld)

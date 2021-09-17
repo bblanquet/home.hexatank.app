@@ -6,7 +6,7 @@ export default class LeftBottomCornerButton extends Component<
 > {
 	render() {
 		return (
-			<div class="custom-left-corner-sm-btn-layout-3 fit-content">
+			<div role="button" class="custom-left-corner-sm-btn-layout-3 fit-content">
 				<div
 					class={`custom-left-corner-sm-btn-layout-2 ${this.props.isSelected
 						? 'blue-secondary'

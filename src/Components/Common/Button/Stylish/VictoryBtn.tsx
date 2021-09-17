@@ -11,6 +11,7 @@ export class VictoryBtn extends Component<{ OnClick: () => void }, any> {
 	render() {
 		return (
 			<div
+				role="button"
 				class={`custom-btn-layout-4 green-secondary max-fit-content btn-space`}
 				ref={(e: any) => {
 					this._lockDiv = e;

@@ -3,6 +3,7 @@ import { IVersionService } from './IVersionService';
 
 export class VersionService implements IVersionService {
 	private _versions: Versionning[] = [
+		new Versionning('0.8.26', [ 'Add a rank system' ], [ 'None' ]),
 		new Versionning('0.8.25', [ 'Change the selection behavior in training' ], [ 'Marvin' ]),
 		new Versionning(
 			'0.8.23',

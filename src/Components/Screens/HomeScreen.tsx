@@ -72,6 +72,9 @@ export default class HomeScreen extends Component<
 								<Btn Color={ColorKind.Black} OnClick={() => route('{{sub_path}}Profil', true)}>
 									<Icon Value="fas fa-user-circle" /> Profile
 								</Btn>
+								<Btn Color={ColorKind.Yellow} OnClick={() => route('{{sub_path}}Ranking', true)}>
+									<Icon Value="fas fa-medal" /> Ranking
+								</Btn>
 								<Visible isVisible={!Env.IsPrd()}>
 									<Btn Color={ColorKind.Blue} OnClick={() => route('{{sub_path}}Customer', true)}>
 										<Icon Value="fab fa-watchman-monitoring" /> Monitoring

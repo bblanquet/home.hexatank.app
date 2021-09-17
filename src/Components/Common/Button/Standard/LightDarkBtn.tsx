@@ -17,6 +17,7 @@ export default class LightDarkBtn extends Component<
 				style={`left:${this.props.Point.X}%;top:${this.props.Point.Y}%`}
 			>
 				<div
+					role="button"
 					className={`btn ${this.props.isBlink ? ' btn-primary blink_me' : 'btn-dark'} btn-circle `}
 					style={`opacity:${this.props.Point.IsOrigin() ? 0 : 1}; border:1px solid #aaaaaa;`}
 				>

@@ -29,7 +29,7 @@ export default class Btn extends Component<{ OnClick: () => void; Color: ColorKi
 
 	render() {
 		return (
-			<div class="custom-btn-layout-4 fit-content btn-space">
+			<div role="button" class="custom-btn-layout-4 fit-content btn-space">
 				<div class="custom-btn-layout-3 fit-content">
 					<div class={`custom-btn-layout-2 ${this._secondary.Get(ColorKind[this.props.Color])} fit-content`}>
 						<div

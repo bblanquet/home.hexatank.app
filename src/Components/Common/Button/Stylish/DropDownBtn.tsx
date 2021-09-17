@@ -9,7 +9,7 @@ export default class DropDownBtn extends Component<{ title: string; icon: string
 
 	render() {
 		return (
-			<div class="dropdown show">
+			<div role="button" class="dropdown show">
 				<div class="custom-btn-layout-4 fit-content btn-space" data-toggle="dropdown">
 					<div class="custom-btn-layout-3 fit-content">
 						<div class="red-secondary custom-btn-layout-2 fit-content">

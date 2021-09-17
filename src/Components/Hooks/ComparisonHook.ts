@@ -1,4 +1,4 @@
-import { Hook } from './Hook';
+import { Hook } from '../Framework/Hook';
 import { ComparisonState } from '../Model/ComparisonState';
 import { StateUpdater } from 'preact/hooks';
 import { ICompareService } from '../../Services/Compare/ICompareService';

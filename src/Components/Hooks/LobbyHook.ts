@@ -9,7 +9,7 @@ import { Singletons, SingletonKey } from '../../Singletons';
 import { Dictionary } from '../../Utils/Collections/Dictionary';
 import { Message } from '../Model/Message';
 import { LobbyState } from '../Model/LobbyState';
-import { Hook } from './Hook';
+import { Hook } from '../Framework/Hook';
 import { LobbyMode } from '../Model/LobbyMode';
 
 export class LobbyHook extends Hook<LobbyState> {

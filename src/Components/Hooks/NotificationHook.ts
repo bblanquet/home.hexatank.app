@@ -1,4 +1,4 @@
-import { Hook } from './Hook';
+import { Hook } from '../Framework/Hook';
 import { NotificationState } from '../Model/NotificationState';
 import { LogKind } from '../../Utils/Logger/LogKind';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';

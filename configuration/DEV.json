@@ -3,7 +3,7 @@
 	"keys": [
 		{
 			"search": "{{error_url}}",
-			"replace": "https://kimchistudio.tech",
+			"replace": "https://kimchistudio.tech/server",
 			"flags": "g"
 		},
 		{

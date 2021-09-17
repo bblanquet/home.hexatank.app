@@ -1,4 +1,4 @@
-import { Hook } from './Hook';
+import { Hook } from '../Framework/Hook';
 import { Singletons, SingletonKey } from '../../Singletons';
 import { AudioArchive } from '../../Core/Framework/AudioArchiver';
 import { Camouflageworld } from '../../Core/Framework/World/Camouflageworld';

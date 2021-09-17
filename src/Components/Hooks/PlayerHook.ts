@@ -1,6 +1,6 @@
 import { StateUpdater } from 'preact/hooks';
 import { PlayerState } from '../Model/PlayerState';
-import { Hook } from './Hook';
+import { Hook } from '../Framework/Hook';
 import { RecordCanvasUpdater } from './Updaters/RecordCanvasUpdater';
 import { IRecordService } from '../../Services/Record/IRecordService';
 import { Singletons, SingletonKey } from '../../Singletons';

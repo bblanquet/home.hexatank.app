@@ -8,7 +8,7 @@ import OptionPopup from '../Components/OptionPopup';
 import Redirect from '../Components/Redirect';
 import SmPopup from '../Components/SmPopup';
 import Visible from '../Common/Struct/Visible';
-import { HookedComponent } from '../Hooks/HookedComponent';
+import { HookedComponent } from '../Framework/HookedComponent';
 import { FireHook } from '../Hooks/FireHook';
 import { RuntimeState } from '../Model/RuntimeState';
 import { useState } from 'preact/hooks';

@@ -12,7 +12,7 @@ import { GuestHook } from '../Hooks/GuestHook';
 import { useState } from 'preact/hooks';
 import Switch from '../Common/Struct/Switch';
 import { GuestState } from '../Model/GuestState';
-import { HookedComponent } from '../Hooks/HookedComponent';
+import { HookedComponent } from '../Framework/HookedComponent';
 import Body from '../Common/Struct/Body';
 import Navbar from '../Common/Struct/Navbar';
 import Column from '../Common/Struct/Column';

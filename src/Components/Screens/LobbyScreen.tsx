@@ -9,7 +9,7 @@ import Visible from '../Common/Struct/Visible';
 import Option from '../Components/Option';
 import { LobbyMode } from '../Model/LobbyMode';
 import { LobbyState } from '../Model/LobbyState';
-import { HookedComponent } from '../Hooks/HookedComponent';
+import { HookedComponent } from '../Framework/HookedComponent';
 import { LobbyHook } from '../Hooks/LobbyHook';
 import { useState } from 'preact/hooks';
 import Body from '../Common/Struct/Body';

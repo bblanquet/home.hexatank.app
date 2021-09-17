@@ -10,7 +10,7 @@ import Notification from '../Components/Notification';
 import CtmInput from '../Common/Input/CtmInput';
 import { HostHook } from '../Hooks/HostHook';
 import { useState } from 'preact/hooks';
-import { HookedComponent } from '../Hooks/HookedComponent';
+import { HookedComponent } from '../Framework/HookedComponent';
 import { HostState } from '../Model/HostState';
 
 export default class HostScreen extends HookedComponent<{}, HostHook, HostState> {

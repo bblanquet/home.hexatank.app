@@ -172,7 +172,7 @@ export default class LogComponent extends Component<
 					''
 				) : (
 					this.state.FilteredMsgs.map((message: LogMessage) => (
-						<tr class="d-flex">
+						<tr>
 							<td
 								class="align-self-center"
 								style={`color:${StaticLogger.Colors.Get(LogKind[message.Kind])}`}

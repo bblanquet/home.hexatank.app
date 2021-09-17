@@ -9,7 +9,7 @@ import Redirect from '../Components/Redirect';
 import Body from '../Common/Struct/Body';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
 import { StageState } from '../../Services/Campaign/StageState';
-import { HookedComponent } from '../Hooks/HookedComponent';
+import { HookedComponent } from '../Framework/HookedComponent';
 import { GreenHook } from '../Hooks/GreenHook';
 import { useState } from 'preact/hooks';
 import { CampaignState } from '../Model/GreenState';

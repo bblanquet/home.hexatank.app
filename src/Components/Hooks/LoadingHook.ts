@@ -1,4 +1,4 @@
-import { Hook } from './Hook';
+import { Hook } from '../Framework/Hook';
 import { LoadingState } from '../Model/LoadingState';
 import { AudioService } from '../../Services/Audio/AudioService';
 import { Singletons, SingletonKey } from '../../Singletons';

@@ -1,4 +1,4 @@
-import { Hook } from './Hook';
+import { Hook } from '../Framework/Hook';
 import { Component, JSX } from 'preact';
 
 export abstract class HookedComponent<T1, T2 extends Hook<T3>, T3> extends Component<T1> {

@@ -14,7 +14,7 @@ import MenuSwitcher from '../Components/Canvas/MenuSwitcher';
 import SyncPopup from '../Components/Canvas/SyncPopup';
 import TopButtons from '../Components/TopButtons';
 import Switch from '../Common/Struct/Switch';
-import { HookedComponent } from '../Hooks/HookedComponent';
+import { HookedComponent } from '../Framework/HookedComponent';
 import { GameHook } from '../Hooks/GameHook';
 import { RuntimeState } from '../Model/RuntimeState';
 import { useState } from 'preact/hooks';

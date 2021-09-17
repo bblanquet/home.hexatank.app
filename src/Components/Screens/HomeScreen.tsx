@@ -76,7 +76,7 @@ export default class HomeScreen extends Component<
 									<Icon Value="fas fa-medal" /> Ranking
 								</Btn>
 								<Visible isVisible={!Env.IsPrd()}>
-									<Btn Color={ColorKind.Blue} OnClick={() => route('{{sub_path}}Customer', true)}>
+									<Btn Color={ColorKind.Blue} OnClick={() => route('{{sub_path}}Monitoring', true)}>
 										<Icon Value="fab fa-watchman-monitoring" /> Monitoring
 									</Btn>
 								</Visible>

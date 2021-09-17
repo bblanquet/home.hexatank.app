@@ -1,5 +1,5 @@
 import { StateUpdater } from 'preact/hooks';
-import { Hook } from './Hook';
+import { Hook } from '../Framework/Hook';
 import { IBuilder } from '../../Services/Builder/IBuilder';
 import { IPlayerProfileService } from '../../Services/PlayerProfil/IPlayerProfileService';
 import { ICampaignService } from '../../Services/Campaign/ICampaignService';

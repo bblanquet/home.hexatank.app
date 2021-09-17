@@ -6,7 +6,7 @@ import Redirect from '../Components/Redirect';
 import SmPopup from '../Components/SmPopup';
 import Visible from '../Common/Struct/Visible';
 import Bubble from '../Components/Bubble';
-import { HookedComponent } from '../Hooks/HookedComponent';
+import { HookedComponent } from '../Framework/HookedComponent';
 import { CamouflageHook } from '../Hooks/CamouflageHook';
 import { RuntimeState } from '../Model/RuntimeState';
 import { useState } from 'preact/hooks';

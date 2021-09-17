@@ -1,4 +1,4 @@
-import { Hook } from './Hook';
+import { Hook } from '../Framework/Hook';
 import { PopupState } from '../Model/PopupState';
 import { StateUpdater } from 'preact/hooks';
 import { route } from 'preact-router';

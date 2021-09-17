@@ -4,7 +4,7 @@ import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Icon from '../Common/Icon/IconComponent';
 import Switch from '../Common/Struct/Switch';
 import { LoadingState } from '../Model/LoadingState';
-import { HookedComponent } from '../Hooks/HookedComponent';
+import { HookedComponent } from '../Framework/HookedComponent';
 import { LoadingHook } from '../Hooks/LoadingHook';
 import { useState } from 'preact/hooks';
 import Body from '../Common/Struct/Body';

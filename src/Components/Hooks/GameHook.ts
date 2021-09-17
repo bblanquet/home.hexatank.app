@@ -26,7 +26,7 @@ import { SimpleEvent } from '../../Utils/Events/SimpleEvent';
 import { Point } from '../../Utils/Geometry/Point';
 import { Curve } from '../../Utils/Stats/Curve';
 import { RuntimeState } from '../Model/RuntimeState';
-import { Hook } from './Hook';
+import { Hook } from '../Framework/Hook';
 import { Vibrator } from '../../Utils/Vibrator';
 import { CircleBtnProps } from '../Components/Canvas/CircleBtnProps';
 import { CellGroup } from '../../Core/Items/CellGroup';

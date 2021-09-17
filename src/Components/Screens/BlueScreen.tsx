@@ -10,7 +10,7 @@ import SmBtn from '../Common/Button/Stylish/SmBtn';
 import Body from '../Common/Struct/Body';
 import { StageState } from '../../Services/Campaign/StageState';
 import { VictoryBtn } from '../Common/Button/Stylish/VictoryBtn';
-import { HookedComponent } from '../Hooks/HookedComponent';
+import { HookedComponent } from '../Framework/HookedComponent';
 import { BlueHook } from '../Hooks/BlueHook';
 import { CampaignState } from '../Model/GreenState';
 import { useState } from 'preact/hooks';

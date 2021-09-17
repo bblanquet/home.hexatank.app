@@ -1,5 +1,5 @@
 import { StateUpdater } from 'preact/hooks';
-import { Hook } from './Hook';
+import { Hook } from '../Framework/Hook';
 import { route } from 'preact-router';
 import { SmState } from '../Model/SmState';
 

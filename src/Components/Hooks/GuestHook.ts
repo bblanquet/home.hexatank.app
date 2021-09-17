@@ -1,4 +1,4 @@
-import { Hook } from './Hook';
+import { Hook } from '../Framework/Hook';
 import { RoomState } from '../Model/RoomState';
 import { route } from 'preact-router';
 import { LiteEvent } from '../../Utils/Events/LiteEvent';

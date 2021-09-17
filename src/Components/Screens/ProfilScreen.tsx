@@ -10,7 +10,7 @@ import Redirect from '../Components/Redirect';
 import Switch from '../Common/Struct/Switch';
 import Visible from '../Common/Struct/Visible';
 import Navbar from '../Common/Struct/Navbar';
-import { HookedComponent } from '../Hooks/HookedComponent';
+import { HookedComponent } from '../Framework/HookedComponent';
 import { ProfileHook } from '../Hooks/ProfileHook';
 import { ProfileState } from '../Model/ProfileState';
 import { useState } from 'preact/hooks';

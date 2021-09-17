@@ -14,7 +14,7 @@ import TitleIcon from './TitleIcon';
 import Visible from '../Common/Struct/Visible';
 import Line from '../Common/Struct/Line';
 import Column from '../Common/Struct/Column';
-import { HookedComponent } from '../Hooks/HookedComponent';
+import { HookedComponent } from '../Framework/HookedComponent';
 import { PopupHook } from '../Hooks/PopupHook';
 import { MockupPopHook } from '../Hooks/MockupPopHook';
 import { PopupState } from '../Model/PopupState';

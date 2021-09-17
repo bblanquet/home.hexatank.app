@@ -10,7 +10,7 @@ import { IPlayerProfileService } from '../../Services/PlayerProfil/IPlayerProfil
 import { Singletons, SingletonKey } from '../../Singletons';
 import { HostState } from '../Model/HostState';
 import { NotificationState } from '../Model/NotificationState';
-import { Hook } from './Hook';
+import { Hook } from '../Framework/Hook';
 import { route } from 'preact-router';
 import { StateUpdater } from 'preact/hooks';
 import { Usernames } from '../Model/Names';

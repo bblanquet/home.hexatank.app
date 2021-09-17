@@ -1,6 +1,6 @@
 import { ICampaignService } from '../../Services/Campaign/ICampaignService';
 import { CampaignState } from '../Model/GreenState';
-import { Hook } from './Hook';
+import { Hook } from '../Framework/Hook';
 import { Blue } from '../Model/Dialogues';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { route } from 'preact-router';

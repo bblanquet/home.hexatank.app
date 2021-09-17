@@ -10,7 +10,7 @@ import Body from '../Common/Struct/Body';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
 import { StageState } from '../../Services/Campaign/StageState';
 import { RedHook } from '../Hooks/RedHook';
-import { HookedComponent } from '../Hooks/HookedComponent';
+import { HookedComponent } from '../Framework/HookedComponent';
 import { CampaignState } from '../Model/GreenState';
 import { useState } from 'preact/hooks';
 import AnimatedIcon from '../Common/Button/Badge/AnimatedIcon';

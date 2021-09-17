@@ -1,4 +1,4 @@
-import { Hook } from './Hook';
+import { Hook } from '../Framework/Hook';
 import { ProfileState } from '../Model/ProfileState';
 import { GameBlueprint } from '../../Core/Framework/Blueprint/Game/GameBlueprint';
 import { IBuilder } from '../../Services/Builder/IBuilder';

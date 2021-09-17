@@ -9,7 +9,7 @@ import Visible from '../Common/Struct/Visible';
 import { PointDetails } from '../../Services/PlayerProfil/PointDetails';
 import Line from '../Common/Struct/Line';
 import Column from '../Common/Struct/Column';
-import { HookedComponent } from '../Hooks/HookedComponent';
+import { HookedComponent } from '../Framework/HookedComponent';
 import { SmPopupHook } from '../Hooks/SmPopupHook';
 import { MockupSmHook } from '../Hooks/MockupSmHook';
 import { useState } from 'preact/hooks';

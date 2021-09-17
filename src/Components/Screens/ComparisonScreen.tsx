@@ -8,7 +8,7 @@ import BarComparisonComponent from '../Components/BarComparisonComponent';
 import LogComponent from '../Components/LogComponent';
 import { ComparisonState } from '../Model/ComparisonState';
 import { ComparisonHook } from '../Hooks/ComparisonHook';
-import { HookedComponent } from '../Hooks/HookedComponent';
+import { HookedComponent } from '../Framework/HookedComponent';
 import { useState } from 'preact/hooks';
 import Body from '../Common/Struct/Body';
 import Navbar from '../Common/Struct/Navbar';

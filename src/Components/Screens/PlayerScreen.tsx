@@ -12,7 +12,7 @@ import SmActiveBtn from '../Common/Button/Stylish/SmActiveBtn';
 import SmBtn from '../Common/Button/Stylish/SmBtn';
 import Switch from '../Common/Struct/Switch';
 import LogComponent from '../Components/LogComponent';
-import { HookedComponent } from '../Hooks/HookedComponent';
+import { HookedComponent } from '../Framework/HookedComponent';
 import { PlayerState } from '../Model/PlayerState';
 import { PlayerHook } from '../Hooks/PlayerHook';
 import { useState } from 'preact/hooks';

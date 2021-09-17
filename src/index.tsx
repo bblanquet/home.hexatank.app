@@ -39,6 +39,7 @@ import FireScreen from './Components/Screens/FireScreen';
 import OutpostScreen from './Components/Screens/OutpostScreen';
 import GuestScreen from './Components/Screens/GuestScreen';
 import RecordScreen from './Components/Screens/PlayerScreen';
+import RankingScreen from './Components/Screens/RankingScreen';
 import LoadingPlayers from './Components/Components/LoadingPlayers';
 import Popup from './Components/Components/Popup';
 import SmPopup from './Components/Components/SmPopup';
@@ -80,6 +81,7 @@ const App = (e: any) => {
 			<ProfilScreen path="{{sub_path}}Profil" />
 			<GuestScreen path="{{sub_path}}Guest" />
 			<RecordScreen path="{{sub_path}}Record" />
+			<RankingScreen path="{{sub_path}}Ranking" />
 			<LoadingPlayers path="{{sub_path}}Launching" />
 			<Popup
 				path="{{sub_path}}Popup"
@@ -90,7 +92,7 @@ const App = (e: any) => {
 			/>
 			<SmPopup path="{{sub_path}}SmPopup" Status={GameStatus.Victory} Details={new PointDetails(30, 40)} />
 			<ComparisonScreen path="{{sub_path}}Comparison" />
-			<MonitorScreen path="{{sub_path}}Customer" />
+			<MonitorScreen path="{{sub_path}}Monitoring" />
 			<LogComponent path="{{sub_path}}Log" Messages={Logs()} />
 			<Notification path="{{sub_path}}Log" OnNotification={new LiteEvent<NotificationState>()} />
 		</Router>

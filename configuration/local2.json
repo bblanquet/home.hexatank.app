@@ -2,7 +2,7 @@
 	"root": "/",
 	"keys": [
 		{
-			"search": "{{error_url}}",
+			"search": "{{server}}",
 			"replace": "https://kimchistudio.tech/server",
 			"flags": "g"
 		},

@@ -77,6 +77,7 @@ export class HostHook extends Hook<HostState> {
 	}
 
 	public Back(): void {
+		this._socket.Close();
 		route('{{sub_path}}Home', true);
 	}
 

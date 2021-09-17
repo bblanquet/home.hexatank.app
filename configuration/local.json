@@ -2,7 +2,7 @@
 	"root": "/",
 	"keys": [
 		{
-			"search": "{{error_url}}",
+			"search": "{{server}}",
 			"replace": "http://localhost:49154",
 			"flags": "g"
 		},

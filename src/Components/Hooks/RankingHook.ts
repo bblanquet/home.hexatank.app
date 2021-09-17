@@ -25,7 +25,7 @@ export class RankingHook extends Hook<PlayerRankState> {
 			e.State = RequestState.LOADING;
 		});
 		axios
-			.get('{{error_url}}/player/top100')
+			.get('{{server}}/player/top100')
 			.then((response: AxiosResponse<PlayerRank[]>) => {
 				this.Update((e) => {
 					e.Players = response.data;

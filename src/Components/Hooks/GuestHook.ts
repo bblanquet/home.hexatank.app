@@ -50,10 +50,6 @@ export class GuestHook extends Hook<GuestState> {
 		};
 	}
 
-	private static FakeRooms(): RoomState[] {
-		return Usernames.map((e) => new RoomState(e, 'US', 2, false, 2));
-	}
-
 	private OnWrong(message: NetworkMessage<string>): void {
 		this.OnNotification.Invoke(this, new NotificationState(LogKind.warning, message.Content));
 	}
@@ -83,6 +79,7 @@ export class GuestHook extends Hook<GuestState> {
 	}
 
 	public Back() {
+		this._socket.Close();
 		route('{{sub_path}}Home', true);
 	}
 

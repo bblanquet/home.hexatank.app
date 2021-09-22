@@ -53,7 +53,7 @@ export class CamouflageworldMaker {
 
 		const tank = new Tank(new Identity('player', HqAppearance.Skins.Get(ColorKind[ColorKind.Red]), true));
 		tank.Id = 'tank';
-		tank.OverrideLife(1);
+		tank.OverrideLife(30);
 		tank.SetPosition(cells.Get(departure.ToString()));
 		vehicles.push(tank);
 		const above = new AboveItem(tank, SvgArchive.hand);

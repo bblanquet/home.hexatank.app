@@ -15,8 +15,9 @@ export default class CtmInput extends Component<
 					type={this.props.type}
 					value={this.props.value}
 					onInput={(e: any) => this.props.onInput(e)}
-					disabled={!this.props.isEditable}
+					readonly={!this.props.isEditable}
 					class="form-control"
+					style={this.props.isEditable ? '' : 'color: white;font-weight: bold;background-color: #5db1de;'}
 					aria-label="Default"
 				/>
 			</div>

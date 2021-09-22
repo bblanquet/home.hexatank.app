@@ -16,6 +16,7 @@ import { HookedComponent } from '../Framework/HookedComponent';
 import Body from '../Common/Struct/Body';
 import Navbar from '../Common/Struct/Navbar';
 import Column from '../Common/Struct/Column';
+import CtmInput from '../Common/Input/CtmInput';
 
 export default class GuestComponent extends HookedComponent<{}, GuestHook, GuestState> {
 	componentWillUnmount() {
@@ -39,15 +40,31 @@ export default class GuestComponent extends HookedComponent<{}, GuestHook, Guest
 								style="padding-top:10px;box-shadow: rgb(0,0,0,0.5) 0px 0px 10px 0px inset;"
 							>
 								<Column>
-									<CtmBtnInput
-										max={15}
-										type={'text'}
-										value={this.Hook.State.PlayerName}
-										label={'Name'}
-										onInput={(e: any) => this.Hook.SetUsername(e.target.value as string)}
-										onClick={() => this.Hook.Randomize()}
-										icon={'fas fa-random'}
+									<Switch
+										isLeft={this.Hook.IsLogged()}
+										left={
+											<CtmInput
+												max={15}
+												value={this.Hook.State.PlayerName}
+												label={'Name'}
+												type={'text'}
+												isEditable={false}
+												onInput={(e: any) => {}}
+											/>
+										}
+										right={
+											<CtmBtnInput
+												max={15}
+												type={'text'}
+												value={this.Hook.State.PlayerName}
+												label={'Name'}
+												onInput={(e: any) => this.Hook.SetUsername(e.target.value as string)}
+												onClick={() => this.Hook.Randomize()}
+												icon={'fas fa-random'}
+											/>
+										}
 									/>
+
 									<CtmIconInput
 										type={'text'}
 										value={this.Hook.State.filter}

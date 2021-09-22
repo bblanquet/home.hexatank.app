@@ -31,7 +31,7 @@ export class GreenHook extends Hook<CampaignState> {
 	}
 
 	public Start(): void {
-		const blueprint = this._campaignService.GetBlueprint(CampaignKind.training, this.State.Level);
+		const blueprint = this._campaignService.GetBlueprint(CampaignKind.green, this.State.Level);
 		if (this.State.Level === 1) {
 			this.Build(SingletonKey.CamouflageBuilder, blueprint, 20, 3);
 			route('{{sub_path}}Camouflage', true);
@@ -51,18 +51,10 @@ export class GreenHook extends Hook<CampaignState> {
 	}
 
 	private Build<T extends IBlueprint>(builder: SingletonKey, blueprint: T, win: number, loose: number) {
-		const profile = this._playerProfilService.GetProfile();
-
 		Singletons.Load<IBuilder<T>>(builder).Register(
 			blueprint,
 			() => {
-				profile.GreenLvl[this.State.Level - 1] = StageState.achieved;
-				if (
-					this.State.Level < profile.GreenLvl.length &&
-					profile.GreenLvl[this.State.Level] === StageState.lock
-				) {
-					profile.GreenLvl[this.State.Level] = StageState.unlock;
-				}
+				this._playerProfilService.SetStage(CampaignKind.green, this.State.Level);
 				this._playerProfilService.AddPoints(20);
 			},
 			() => this._playerProfilService.AddPoints(3)
@@ -87,7 +79,7 @@ export class GreenHook extends Hook<CampaignState> {
 	}
 
 	public GetStages(): StageState[] {
-		return this._campaignService.GetStages(CampaignKind.training);
+		return this._campaignService.GetStages(CampaignKind.green);
 	}
 
 	public TextAnimation(): void {

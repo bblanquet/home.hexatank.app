@@ -34,7 +34,7 @@ export class MonitoringHook extends Hook<MonitoringState> {
 			e.State = RequestState.LOADING;
 		});
 		axios
-			.get('{{server}}/Exception/List')
+			.get('{{server}}/Error/List')
 			.then((response: AxiosResponse<ErrorDetail[]>) => {
 				this.Update((e) => {
 					e.Errors = response.data;
@@ -56,7 +56,7 @@ export class MonitoringHook extends Hook<MonitoringState> {
 
 	public Play(errorId: number): void {
 		axios
-			.get(`{{server}}/Exception/Get?id=${errorId}`)
+			.get(`{{server}}/Error/Get?id=${errorId}`)
 			.then((response: AxiosResponse<ErrorDetail>) => {
 				try {
 					const data = RecordContent.To(JSON.parse(response.data.content));

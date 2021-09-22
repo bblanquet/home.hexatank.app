@@ -17,21 +17,21 @@ import { PlayerBlueprint } from '../../Core/Framework/Blueprint/Game/HqBlueprint
 import { BrainKind } from '../../Core/Ia/Decision/BrainKind';
 
 export class CampaignService implements ICampaignService {
-	private _training: Dictionary<IBlueprint>;
+	private _green: Dictionary<IBlueprint>;
 	private _red: Dictionary<GameBlueprint>;
 	private _blue: Dictionary<GameBlueprint>;
 	private _playerProfil: IPlayerProfileService;
 
 	constructor() {
 		this._playerProfil = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
-		const playername = this._playerProfil.GetProfile().LastPlayerName;
+		const playername = this._playerProfil.GetProfile().Details.name;
 
-		this._training = new Dictionary<IBlueprint>();
-		this._training.Add((1).toString(), new CamouflageBluePrintMaker().GetBluePrint());
-		this._training.Add((2).toString(), new SmallBlueprintMaker().GetBluePrint(MapKind.Sand));
-		this._training.Add((3).toString(), new SmallBlueprintMaker().GetBluePrint(MapKind.Forest));
-		this._training.Add((4).toString(), new DiamondBlueprintMaker().GetBluePrint());
-		this._training.Add((5).toString(), new SmallBlueprintMaker().GetBluePrint(MapKind.Forest));
+		this._green = new Dictionary<IBlueprint>();
+		this._green.Add((1).toString(), new CamouflageBluePrintMaker().GetBluePrint());
+		this._green.Add((2).toString(), new SmallBlueprintMaker().GetBluePrint(MapKind.Sand));
+		this._green.Add((3).toString(), new SmallBlueprintMaker().GetBluePrint(MapKind.Forest));
+		this._green.Add((4).toString(), new DiamondBlueprintMaker().GetBluePrint());
+		this._green.Add((5).toString(), new SmallBlueprintMaker().GetBluePrint(MapKind.Forest));
 
 		this._red = new Dictionary<GameBlueprint>();
 		this._red.Add(
@@ -101,19 +101,32 @@ export class CampaignService implements ICampaignService {
 			blueprint = this._red.Get(lvl.toString());
 		} else if (kind === CampaignKind.blue) {
 			blueprint = this._blue.Get(lvl.toString());
-		} else if (kind === CampaignKind.training) {
-			return this._training.Get(lvl.toString());
+		} else if (kind === CampaignKind.green) {
+			return this._green.Get(lvl.toString());
 		}
 		return blueprint;
 	}
 
 	public GetStages(kind: CampaignKind): StageState[] {
 		if (kind === CampaignKind.blue) {
-			return this._playerProfil.GetProfile().BlueLvl;
-		} else if (kind === CampaignKind.training) {
-			return this._playerProfil.GetProfile().GreenLvl;
+			return this.Stages(this._playerProfil.GetProfile().Details.blue, this._blue.Count());
+		} else if (kind === CampaignKind.green) {
+			return this.Stages(this._playerProfil.GetProfile().Details.green, this._green.Count());
 		} else {
-			return this._playerProfil.GetProfile().RedLvl;
+			return this.Stages(this._playerProfil.GetProfile().Details.red, this._red.Count());
 		}
+	}
+	private Stages(value: number, count: number): StageState[] {
+		const result = new Array<StageState>();
+		for (let i = 0; i < this._blue.Count(); i++) {
+			if (i < value) {
+				result.push(StageState.achieved);
+			} else if (i === value) {
+				result.push(StageState.unlock);
+			} else {
+				result.push(StageState.lock);
+			}
+		}
+		return result;
 	}
 }

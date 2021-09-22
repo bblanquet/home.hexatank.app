@@ -93,21 +93,23 @@ export default class HomeScreen extends HookedComponent<{}, HomeHook, HomeState>
 							<Switch
 								isLeft={this.Hook.HasToken()}
 								left={
-									<Line>
-										<div class="card" style="width: 18rem;">
-											<img src="..." class="card-img-top" alt="..." />
-											<div class="card-body">
-												<h5 class="card-title">Card title</h5>
-												<p class="card-text">
-													Some quick example text to build on the card title and make up the
-													bulk of the card's content.
-												</p>
-												<a href="#" class="btn btn-primary">
-													Go somewhere
-												</a>
-											</div>
+									<div class="container-center">
+										<div class="text-detail shadowEffect width80percent">
+											<h5 class="card-title">Welcome {this.Hook.GetName()}</h5>
+											<p class="card-text">You are currently ranked #{this.Hook.State.Rank}.</p>
+											<p />
+											<Line>
+												<SmBtn
+													OnClick={() => {
+														this.Hook.LogOut();
+													}}
+													Color={ColorKind.Red}
+												>
+													<Icon Value="fas fa-sign-in-alt" /> Log out
+												</SmBtn>
+											</Line>
 										</div>
-									</Line>
+									</div>
 								}
 								right={
 									<Column>
@@ -115,20 +117,24 @@ export default class HomeScreen extends HookedComponent<{}, HomeHook, HomeState>
 											<CtmInput
 												max={15}
 												type={'text'}
-												value={''}
+												value={this.Hook.State.Name}
 												label={'Name'}
 												isEditable={true}
-												onInput={(e: any) => {}}
+												onInput={(e: any) => {
+													this.Hook.SetName(e.target.value);
+												}}
 											/>
 										</Line>
 										<Line>
 											<CtmInput
 												max={15}
 												type={'password'}
-												value={''}
+												value={this.Hook.State.Password}
 												label={'Password'}
 												isEditable={true}
-												onInput={(e: any) => {}}
+												onInput={(e: any) => {
+													this.Hook.SetPassword(e.target.value);
+												}}
 											/>
 										</Line>
 										<Line>
@@ -171,8 +177,20 @@ export default class HomeScreen extends HookedComponent<{}, HomeHook, HomeState>
 								}}
 							/>
 							<SmActiveBtn
-								left={<Icon Value="fas fa-user-circle" />}
-								right={<Icon Value="fas fa-user-circle" />}
+								left={
+									<Switch
+										isLeft={this.Hook.HasToken()}
+										left={<Icon Value="fas fa-id-card-alt" />}
+										right={<Icon Value="fas fa-sign-in-alt" />}
+									/>
+								}
+								right={
+									<Switch
+										isLeft={this.Hook.HasToken()}
+										left={<Icon Value="fas fa-id-card-alt" />}
+										right={<Icon Value="fas fa-sign-in-alt" />}
+									/>
+								}
 								isActive={this.Hook.State.Kind === HomeKind.Login}
 								leftColor={ColorKind.Red}
 								rightColor={ColorKind.Black}

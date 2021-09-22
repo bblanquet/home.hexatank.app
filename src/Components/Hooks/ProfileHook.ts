@@ -30,7 +30,7 @@ export class ProfileHook extends Hook<ProfileState> {
 	public static DefaultState(): ProfileState {
 		const state = new ProfileState();
 		const playerProfilSvc = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
-		const records = playerProfilSvc.GetRecords();
+		const records = playerProfilSvc.GetHistory();
 		state.Records = records.map((r) => new RecordSelection(false, r));
 		state.SelectedRecords = [];
 		return state;
@@ -61,9 +61,9 @@ export class ProfileHook extends Hook<ProfileState> {
 
 	public Delete(): void {
 		this.State.SelectedRecords.map((r) => r.Record.Title).forEach((name) => {
-			this._playerProfilService.DeleteRecord(name);
+			this._playerProfilService.DeleteHistory(name);
 		});
-		const records = this._playerProfilService.GetRecords();
+		const records = this._playerProfilService.GetHistory();
 		this.Update((e) => {
 			(e.Records = records.map((r) => new RecordSelection(false, r))),
 				(e.SelectedRecords = new Array<RecordSelection>());
@@ -77,7 +77,7 @@ export class ProfileHook extends Hook<ProfileState> {
 			reader.onload = (ev: ProgressEvent<FileReader>) => {
 				const data = JSON.parse(ev.target.result as string);
 				const record = RecordContent.To(data);
-				this._playerProfilService.GetProfile().Records.push(JsonRecordContent.To(record, false));
+				this._playerProfilService.GetProfile().History.push(JsonRecordContent.To(record, false));
 				this.Update((e) => e.Records.push(new RecordSelection(false, record)));
 			};
 		}

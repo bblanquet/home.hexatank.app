@@ -20,6 +20,7 @@ export class HostHook extends Hook<HostState> {
 	private _socket: IServerSocket;
 	private _obs: NetworkObserver[];
 	public OnNotification: LiteEvent<NotificationState> = new LiteEvent<NotificationState>();
+	private _playerSvc: IPlayerProfileService;
 
 	constructor(d: [HostState, StateUpdater<HostState>]) {
 		super(d[0], d[1]);
@@ -30,6 +31,7 @@ export class HostHook extends Hook<HostState> {
 			new NetworkObserver(PacketKind.connect_error, this.OnError.bind(this))
 		];
 		this._socket.On(this._obs);
+		this._playerSvc = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
 	}
 
 	public Unmount(): void {
@@ -37,13 +39,20 @@ export class HostHook extends Hook<HostState> {
 	}
 
 	public static DefaultState(): HostState {
-		const profilService = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
+		const profileSvc = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
 		return new HostState(
-			`${profilService.GetProfile().LastPlayerName} party`,
-			profilService.GetProfile().LastPlayerName,
+			`${profileSvc.GetProfile().Details.name} party`,
+			profileSvc.GetProfile().Details.name,
 			'',
 			false
 		);
+	}
+
+	public GetName(): string {
+		return this._playerSvc.GetProfile().Details.name;
+	}
+	public IsLogged(): boolean {
+		return this._playerSvc.HasToken();
 	}
 
 	public Start(): void {
@@ -65,7 +74,9 @@ export class HostHook extends Hook<HostState> {
 	}
 
 	public SetUsername(value: string): void {
-		this.Update((e) => (e.PlayerName = value.substring(0, 15)));
+		if (!this.IsLogged()) {
+			this.Update((e) => (e.PlayerName = value.substring(0, 15)));
+		}
 	}
 
 	public SetPassword(value: string): void {

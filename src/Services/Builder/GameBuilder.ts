@@ -101,8 +101,7 @@ export class GameBuilder implements IBuilder<GameBlueprint> {
 			recordContext.Stop(status === GameStatus.Victory);
 			const record = recordContext.GetRecord();
 			this._playerProfilService.Load();
-			const profil = this._playerProfilService.GetProfile();
-			profil.Records.push(record);
+			this._playerProfilService.AddHistory(record);
 			this._playerProfilService.Save();
 		}
 	}

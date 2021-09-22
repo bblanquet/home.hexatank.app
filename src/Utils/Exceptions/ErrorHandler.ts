@@ -57,7 +57,7 @@ export class ErrorHandler {
 		payload.stacktrace = error.stack;
 		const record = Singletons.Load<IRecordContextService>(SingletonKey.RecordContext).Publish();
 		payload.content = record ? JSON.stringify(record.GetRecord()) : '';
-		axios.post('{{server}}/Exception/Add', payload);
+		axios.post('{{server}}/Error/Add', payload);
 	}
 
 	public static ThrowNullOrUndefined(obj: any): void {

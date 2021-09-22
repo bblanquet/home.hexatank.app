@@ -68,17 +68,10 @@ export class BlueHook extends Hook<CampaignState> {
 
 	public Start(): void {
 		const blueprint = this._campaignService.GetBlueprint(CampaignKind.blue, this.State.Level);
-		const profile = this._playerProfilService.GetProfile();
 		Singletons.Load<IBuilder<GameBlueprint>>(SingletonKey.GameBuilder).Register(
 			blueprint as any,
 			() => {
-				profile.BlueLvl[this.State.Level - 1] = StageState.achieved;
-				if (
-					this.State.Level < profile.BlueLvl.length &&
-					profile.BlueLvl[this.State.Level] === StageState.lock
-				) {
-					profile.BlueLvl[this.State.Level] = StageState.unlock;
-				}
+				this._playerProfilService.SetStage(CampaignKind.blue, this.State.Level);
 				this._playerProfilService.AddPoints(20);
 			},
 			() => this._playerProfilService.AddPoints(3)

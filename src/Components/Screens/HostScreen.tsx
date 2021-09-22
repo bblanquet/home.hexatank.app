@@ -45,7 +45,7 @@ export default class HostScreen extends HookedComponent<{}, HostHook, HostState>
 										value={this.Hook.State.PlayerName}
 										label={'Name'}
 										type={'text'}
-										isEditable={true}
+										isEditable={!this.Hook.IsLogged()}
 										onInput={(e: any) => this.Hook.SetUsername(e.target.value as string)}
 									/>
 								</div>

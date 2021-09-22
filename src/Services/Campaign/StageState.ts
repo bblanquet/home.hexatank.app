@@ -1,5 +1,5 @@
 export enum StageState {
-	lock,
-	unlock,
-	achieved
+	lock = 0,
+	unlock = 1,
+	achieved = 2
 }

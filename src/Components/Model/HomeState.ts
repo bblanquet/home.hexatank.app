@@ -7,4 +7,5 @@ export class HomeState {
 	Notification: LiteEvent<NotificationState>;
 	Name: string;
 	Password: string;
+	Rank: string;
 }

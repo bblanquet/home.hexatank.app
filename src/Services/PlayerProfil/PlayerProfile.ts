@@ -1,28 +1,10 @@
 import { JsonRecordContent } from '../../Core/Framework/Record/Model/JsonRecordContent';
-import { StageState } from '../Campaign/StageState';
+import { PlayerDetails } from './PlayerDetails';
 export class PlayerProfile {
-	public LastPlayerName: string = 'John doe';
-	public Token: string;
-	public Version: number = 1.5;
+	public CurrentVersion: number = 1.5;
 	public static Version: number = 1.5;
+	public Token: string = '';
+	public Details: PlayerDetails = new PlayerDetails();
+	public History: JsonRecordContent[] = [];
 	public IsMute: boolean = false;
-
-	public Records: JsonRecordContent[] = [];
-	public Points: number = 0;
-
-	//levels
-	public GreenLvl: StageState[] = [
-		StageState.unlock,
-		StageState.lock,
-		StageState.lock,
-		StageState.lock,
-		StageState.lock
-	];
-	public RedLvl: StageState[] = [ StageState.unlock, StageState.lock, StageState.lock, StageState.lock ];
-	public BlueLvl: StageState[] = [ StageState.unlock, StageState.lock, StageState.lock, StageState.lock ];
-
-	//stats
-	public CellCount: number = 0;
-	public DeadCount: number = 0;
-	public VictoryCount: number = 0;
 }

@@ -21,6 +21,7 @@ export class GuestHook extends Hook<GuestState> {
 	private _socket: IServerSocket;
 	private _obs: NetworkObserver[];
 	public OnNotification: LiteEvent<NotificationState> = new LiteEvent<NotificationState>();
+	private _playerSvc: IPlayerProfileService;
 
 	constructor(data: GuestState, protected SetState: StateUpdater<GuestState>) {
 		super(data, SetState);
@@ -34,6 +35,11 @@ export class GuestHook extends Hook<GuestState> {
 		];
 		this._socket = Singletons.Load<ISocketService>(SingletonKey.Socket).Publish();
 		this._socket.On(this._obs);
+		this._playerSvc = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
+	}
+
+	public IsLogged(): boolean {
+		return this._playerSvc.HasToken();
 	}
 
 	public Unmount(): void {
@@ -44,7 +50,7 @@ export class GuestHook extends Hook<GuestState> {
 		const profilService = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
 		return {
 			Rooms: new Array<RoomState>(),
-			PlayerName: profilService.GetProfile().LastPlayerName,
+			PlayerName: profilService.GetProfile().Details.name,
 			filter: '',
 			Password: ''
 		};

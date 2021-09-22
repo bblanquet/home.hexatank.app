@@ -27,7 +27,7 @@ export class Token {
 	}
 
 	public IsValid(): boolean {
-		return this._content.nbf * 1000 < Date.now() && Date.now() < this._content.exp * 1000;
+		return Date.now() < this._content.exp * 1000;
 	}
 }
 

@@ -2,8 +2,8 @@ import { JsonRecordContent } from '../../Core/Framework/Record/Model/JsonRecordC
 import { PlayerDetails } from './PlayerDetails';
 import { Token } from './Token';
 export class PlayerProfile {
-	public CurrentVersion: number = 1.5;
-	public static Version: number = 1.5;
+	public CurrentVersion: number = 1.6;
+	public static Version: number = 1.6;
 	public Token: Token = null;
 	public Details: PlayerDetails = new PlayerDetails();
 	public History: JsonRecordContent[] = [];

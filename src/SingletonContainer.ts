@@ -8,6 +8,7 @@ import { CamouflageworldService } from './Services/World/CamouflageworldService'
 import { CamouflageInteractionService } from './Services/Interaction/CamouflageInteractionService';
 import { CamBuilder } from './Services/Builder/CamBuilder';
 import { PlayerProfilService } from './Services/PlayerProfil/PlayerProfilService';
+import { ApiService } from './Services/PlayerProfil/ApiService';
 import { CampaignService } from './Services/Campaign/CampaignService';
 import { OnlineService } from './Services/Online/OnlineService';
 import { KeyService } from './Services/Key/KeyService';
@@ -19,7 +20,6 @@ import { LayerService } from './Services/Layer/LayerService';
 import { AppService } from './Services/App/AppService';
 import { InteractionService } from './Services/Interaction/InteractionService';
 import { RecordService } from './Services/Record/RecordService';
-import { VersionService } from './Services/Version/VersionService';
 import { RecordContextService } from './Services/Record/RecordContextService';
 import { UpdateService } from './Services/Update/UpdateService';
 import { StatsService } from './Services/Stats/StatsService';
@@ -38,6 +38,7 @@ import { Outpostworld } from './Core/Framework/World/Outpostworld';
 export class SingletonContainer {
 	Register(): void {
 		Singletons.Register(SingletonKey.PlayerProfil, new PlayerProfilService());
+		Singletons.Register(SingletonKey.Api, new ApiService());
 		Singletons.Register(SingletonKey.Key, new KeyService());
 		Singletons.Register(SingletonKey.Update, new UpdateService());
 		Singletons.Register(SingletonKey.Compare, new CompareService());

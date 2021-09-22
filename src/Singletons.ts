@@ -56,5 +56,6 @@ export enum SingletonKey {
 	RecordInteraction,
 	CamouflageInteraction,
 
-	Analyze
+	Analyze,
+	Api
 }

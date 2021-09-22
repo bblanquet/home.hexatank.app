@@ -8,6 +8,7 @@ import { ColorKind } from '../Common/Button/Stylish/ColorKind';
 import Visible from '../Common/Struct/Visible';
 import { Env } from '../../Utils/Env';
 import Panel from '../Components/Panel/Panel';
+import Card from '../Components/Card';
 import Grid from '../Common/Grid/GridComponent';
 import Notification from '../Components/Notification';
 import SmActiveBtn from '../Common/Button/Stylish/SmActiveBtn';
@@ -93,10 +94,15 @@ export default class HomeScreen extends HookedComponent<{}, HomeHook, HomeState>
 							<Switch
 								isLeft={this.Hook.HasToken()}
 								left={
-									<div class="container-center">
-										<div class="text-detail shadowEffect width80percent">
+									<Card>
+										<span>
 											<h5 class="card-title">Welcome {this.Hook.GetName()}</h5>
-											<p class="card-text">You are currently ranked #{this.Hook.State.Rank}.</p>
+											<p class="card-text">
+												You are currently ranked
+												<span class="badge badge-light space-out">
+													#{this.Hook.State.Rank}
+												</span>.
+											</p>
 											<p />
 											<Line>
 												<SmBtn
@@ -108,8 +114,8 @@ export default class HomeScreen extends HookedComponent<{}, HomeHook, HomeState>
 													<Icon Value="fas fa-sign-in-alt" /> Log out
 												</SmBtn>
 											</Line>
-										</div>
-									</div>
+										</span>
+									</Card>
 								}
 								right={
 									<Column>

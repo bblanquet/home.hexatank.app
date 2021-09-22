@@ -10,19 +10,24 @@ import { Home } from '../Model/Dialogues';
 import { LogKind } from '../../Utils/Logger/LogKind';
 import { StateUpdater } from 'preact/hooks';
 import { HomeKind } from '../Model/HomeKind';
+import { AuthentificateRequest } from '../../Services/PlayerProfil/AuthentificateRequest';
+import { AuthentificateResponse } from '../../Services/PlayerProfil/AuthentificateResponse';
 import { Versionning } from '../Model/Versionning';
-import axios, { AxiosError, AxiosResponse } from 'axios';
 import { PlayerDetails } from '../../Services/PlayerProfil/PlayerDetails';
+import { IApiService } from '../../Services/PlayerProfil/IApiService';
+import { ApiError } from '../../Services/PlayerProfil/ApiService';
 
 export class HomeHook extends Hook<HomeState> {
 	private _playerSvc: IPlayerProfileService;
 	private _audioSvc: IAudioService;
+	private _apiSvc: IApiService;
 	private _versionSvc: IVersionService;
 
 	constructor(data: HomeState, protected SetState: StateUpdater<HomeState>) {
 		super(data, SetState);
 		this._playerSvc = Singletons.Load<IPlayerProfileService>(SingletonKey.PlayerProfil);
 		this._audioSvc = Singletons.Load<IAudioService>(SingletonKey.Audio);
+		this._apiSvc = Singletons.Load<IApiService>(SingletonKey.Api);
 		this._versionSvc = Singletons.Load<IVersionService>(SingletonKey.Version);
 		this._audioSvc.SetMute(this._playerSvc.GetProfile().IsMute);
 		this.Update((e) => {
@@ -86,96 +91,82 @@ export class HomeHook extends Hook<HomeState> {
 	}
 
 	public UpdateRank(): void {
-		axios
-			.get('{{server}}/Player/rank', {
-				headers: { Authorization: `Bearer ${this._playerSvc.GetProfile().Token}` }
-			})
-			.then((response: AxiosResponse<number>) => {
+		this._apiSvc.Get<void, number>(
+			'Player/rank',
+			null,
+			(value: number) => {
 				this.Update((e) => {
-					e.Rank = response.data.toString();
+					e.Rank = value.toString();
 				});
-			});
+			},
+			(e: ApiError) => {
+				this.State.Notification.Invoke(this, new NotificationState(LogKind.error, e.name));
+			}
+		);
 	}
 
 	public SignIn(): void {
-		axios
-			.post('{{server}}/Authentification/signIn', {
-				name: this.State.Name,
-				password: this.State.Password
-			})
-			.then((response: AxiosResponse<{ name: string; token: string }>) => {
-				const profile = this._playerSvc.GetProfile();
-				profile.Token = response.data.token;
-				profile.Details.name = response.data.name;
-				this._playerSvc.Save();
+		this._apiSvc.Post<AuthentificateRequest, AuthentificateResponse>(
+			'Authentification/signIn',
+			new AuthentificateRequest(this.State.Name, this.State.Password),
+			(r: AuthentificateResponse) => {
+				this._playerSvc.SetToken(r.name, r.token);
 				this.Update((e) => {
 					e.Password = '';
 				});
 				this.SetDetails();
 				this.UpdateRank();
-			})
-			.catch((error: AxiosError<any>) => {
-				if (error.response && error.response.data.message) {
-					this.State.Notification.Invoke(
-						this,
-						new NotificationState(LogKind.error, error.response.data.message)
-					);
-				} else {
-					this.State.Notification.Invoke(this, new NotificationState(LogKind.error, error.message));
-				}
-			});
+			},
+			(e: ApiError) => {
+				this.State.Notification.Invoke(this, new NotificationState(LogKind.error, e.name));
+			}
+		);
 	}
 
 	private CheckTokenValidity(): void {
-		const profile = this._playerSvc.GetProfile();
-		axios
-			.get('{{server}}/Authentification/isValid', {
-				params: { token: profile.Token }
-			})
-			.then((response: AxiosResponse<boolean>) => {
-				if (response.data) {
+		this._apiSvc.Get<{ token: string }, boolean>(
+			'Authentification/isValid',
+			{ token: this._playerSvc.GetProfile().Token.data },
+			(isValid: boolean) => {
+				if (isValid) {
 					this.UpdateRank();
 				} else {
 					this.LogOut();
 				}
-			});
+			},
+			(er: ApiError) => {
+				this.State.Notification.Invoke(this, new NotificationState(LogKind.error, er.name));
+			}
+		);
 	}
 
 	private SetDetails() {
-		const profile = this._playerSvc.GetProfile();
-		axios
-			.get('{{server}}/Player/details', { headers: { Authorization: `Bearer ${profile.Token}` } })
-			.then((response: AxiosResponse<PlayerDetails>) => {
-				profile.Details = response.data;
-				this._playerSvc.Save();
-			});
+		this._apiSvc.Get<void, PlayerDetails>(
+			'Player/details',
+			null,
+			(r: PlayerDetails) => {
+				this._playerSvc.SetDetails(r);
+			},
+			(err: ApiError) => {
+				this.State.Notification.Invoke(this, new NotificationState(LogKind.error, err.name));
+			}
+		);
 	}
 
 	public SignUp(): void {
-		axios
-			.post('{{server}}/Authentification/signUp', {
-				name: this.State.Name,
-				password: this.State.Password
-			})
-			.then((response: AxiosResponse<{ name: string; token: string }>) => {
-				const profile = this._playerSvc.GetProfile();
-				profile.Token = response.data.token;
-				profile.Details.name = response.data.name;
-				this._playerSvc.Save();
+		this._apiSvc.Post<AuthentificateRequest, AuthentificateResponse>(
+			'Authentification/signUp',
+			new AuthentificateRequest(this.State.Name, this.State.Password),
+			(r: AuthentificateResponse) => {
+				this._playerSvc.SetToken(r.name, r.token);
 				this.Update((e) => {
 					e.Password = '';
 				});
-			})
-			.catch((error: AxiosError) => {
-				if (error.response && error.response.data.message) {
-					this.State.Notification.Invoke(
-						this,
-						new NotificationState(LogKind.error, error.response.data.message)
-					);
-				} else {
-					this.State.Notification.Invoke(this, new NotificationState(LogKind.error, error.message));
-				}
-			});
+			},
+			(err: ApiError) => {
+				this.State.Notification.Invoke(this, new NotificationState(LogKind.error, err.name));
+			}
+		);
 	}
 
 	public Unmount(): void {}

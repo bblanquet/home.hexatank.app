@@ -151,6 +151,13 @@ export default class HomeScreen extends HookedComponent<{}, HomeHook, HomeState>
 												<Icon Value="fas fa-sign-in-alt" /> Sign in
 											</SmBtn>
 										</Line>
+										<Line>
+											<Card>
+												<h5 class="card-title">Note</h5>
+												Having an account only makes you eligible for the online ranking, it is
+												not required to have one for playing Hexa Tank.
+											</Card>
+										</Line>
 									</Column>
 								}
 							/>

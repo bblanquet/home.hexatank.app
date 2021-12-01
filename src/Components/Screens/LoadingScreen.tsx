@@ -40,7 +40,7 @@ export default class LoadingScreen extends HookedComponent<{}, LoadingHook, Load
 							}
 							right={
 								<div class="container-center">
-									<Btn OnClick={() => this.Hook.OnStart()} Color={ColorKind.Yellow}>
+									<Btn OnClick={() => this.Hook.OnStart()} Color={ColorKind.Red}>
 										<Icon Value="fas fa-dungeon" /> Continue
 									</Btn>
 								</div>

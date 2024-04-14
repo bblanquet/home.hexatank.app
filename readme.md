@@ -6,13 +6,14 @@
 Hexa tank is a real-time strategy game where you need to defeat your opponents by colonizing areas.
 When an area is colonized you can install bonus cells to upgrade your tanks. An upgraded tank is a tank that conquests!
 
-Features
-• Well guided tutorial.
-• Two villains to defeat in campaign mode.
-• Possible to play a customized match in a single player.
-• Multiplayer is available, playable against friends however a good connection is required.
-• No registration.
-• No advertisement.
+Features:
+<br>
+- Well guided tutorial.
+- Two villains to defeat in campaign mode.
+- Possible to play a customized match in a single player.
+- Multiplayer is available, playable against friends however a good connection is required.
+- No registration.
+- No advertisement.
 
 The game is still under development, any great ideas to improve it is welcome.
 

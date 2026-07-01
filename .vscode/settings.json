@@ -1,8 +1,0 @@
-{
-    "git.ignoreLimitWarning": true,
-    "mocha.requires": [
-        "ts-node/register"
-      ],
-    "mocha.files.glob": "test/**/*.spec.ts",
-    "editor.formatOnSave": true
-}
